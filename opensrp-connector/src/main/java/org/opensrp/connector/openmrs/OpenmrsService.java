@@ -5,6 +5,7 @@ import static org.opensrp.connector.openmrs.OpenmrsConstants.OPENMRS_DATE;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.management.InvalidAttributeValueException;
@@ -121,7 +122,7 @@ public class OpenmrsService {
 
 		//PATIENT/PERSON INFO
 		JSONObject patient = new JSONObject();
-		patient.put(PersonField.IDENTIFIER.OMR_FIELD(), fs.entityId());
+		patient.put(PersonField.IDENTIFIER.OMR_FIELD(), PersonField.IDENTIFIER.SRP_VALUE(fs));
 		patient.put(PersonField.IDENTIFIER_TYPE.OMR_FIELD(), "TB_IDENTIFIER");
 		String firstname = PersonField.FIRST_NAME.SRP_VALUE(fs);
 		String lastname = PersonField.LAST_NAME.SRP_VALUE(fs);
@@ -147,12 +148,12 @@ public class OpenmrsService {
 		
 		if(fs.formName().toLowerCase().contains("tb_registration")){
 			patient.put(PersonField.IS_NEW_PERSON.OMR_FIELD(), true);
-			fs.getFormMetaData().put(OPENMRS_CASEID_ATTR_NAME, fs.entityId());
-			en.put(createTBFollowupEncounterAndObs(fs));
+			fs.getFormMetaData().put(OPENMRS_CASEID_ATTR_NAME, PersonField.IDENTIFIER.SRP_VALUE(fs));
+			en.put(createTBRegistrationEncounterAndObs(fs));
 		}
 		else if(fs.formName().toLowerCase().contains("tb_followup")){
 			patient.put(PersonField.IS_NEW_PERSON.OMR_FIELD(), false);
-			fs.getFormMetaData().put(OPENMRS_CASEID_ATTR_NAME, fs.entityId());
+			fs.getFormMetaData().put(OPENMRS_CASEID_ATTR_NAME, PersonField.IDENTIFIER.SRP_VALUE(fs));
 			en.put(createTBFollowupEncounterAndObs(fs));
 		}
 
@@ -172,8 +173,10 @@ public class OpenmrsService {
     
     private int fillEncounterAndFormDetailsObs(FormSubmission fs, JSONObject encounter, JSONArray obarr, int indexObsStart) throws JSONException{
     	//Form details in OBS
-    	encounter.put(FormField.ENCOUNTER_LOCATION.OMR_FIELD(), FormField.ENCOUNTER_LOCATION.SRP_VALUE(fs));
-		encounter.put(FormField.ENCOUNTER_DATE.OMR_FIELD(), FormField.ENCOUNTER_DATE.SRP_VALUE(fs)+" 00:00:00");
+    	String l = FormField.ENCOUNTER_LOCATION.SRP_VALUE(fs);
+    	encounter.put(FormField.ENCOUNTER_LOCATION.OMR_FIELD(), l==null?"1":l);
+    	String ed = FormField.ENCOUNTER_DATE.SRP_VALUE(fs);
+		encounter.put(FormField.ENCOUNTER_DATE.OMR_FIELD(), ed==null?(OPENMRS_DATE.format(new Date())+" 00:00:00"):(ed+" 00:00:00"));
 		encounter.put(FormField.FORM_CREATOR.OMR_FIELD(), "daemon");
 
 		return indexObsStart;
@@ -214,9 +217,9 @@ public class OpenmrsService {
 		// pregnancy and delivery info
 		FormField.WEIGHT.createConceptObs(obarr, fs, i++, null);
 		
-		FormField.BMI.createConceptObs(obarr, fs, i++, null);
-		FormField.SMEAR.createCodedObsWith(obarr, fs, i++, null);
-		FormField.RESISTANCE_TYPE.createCodedObsWith(obarr, fs, i++, null);
+		FormField.CUR_BMI.createConceptObs(obarr, fs, i++, null);
+		FormField.CUR_SMEAR.createCodedObsWith(obarr, fs, i++, null);
+		FormField.CUR_RESISTANCE_DRUGS.createCodedObsWith(obarr, fs, i++, null);
 
 		// must get i so tht obs ids donot get repeated
 		i = fillEncounterAndFormDetailsObs(fs, encounter, obarr, i);

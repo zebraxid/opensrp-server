@@ -46,7 +46,7 @@ public class FormDataRepository {
         designDocMap = new HashMap<>();
         fieldSetMap = new HashMap<>();
         designDocMap.put(AllConstants.FormEntityTypes.ELIGIBLE_COUPLE_TYPE, "EligibleCouple");
-        designDocMap.put(AllConstants.FormEntityTypes.PERSON_TYPE, "Person");
+        designDocMap.put(AllConstants.FormEntityTypes.PERSON_TYPE, "person");
         designDocMap.put(AllConstants.FormEntityTypes.MOTHER_TYPE, "Mother");
         designDocMap.put(AllConstants.FormEntityTypes.CHILD_TYPE, "Child");
         fieldSetMap.put(AllConstants.FormEntityTypes.ELIGIBLE_COUPLE_TYPE, EligibleCouple.class.getDeclaredFields());

@@ -87,11 +87,12 @@ public class DrishtiAuthenticationProviderTest {
 
     @Test
     @Ignore
-    public void toGenerateUserPasswordsAndSalt() throws Exception {
-        String username = "username";
-        String password = "password";
+    public static String toGenerateUserPasswordsAndSalt(String username, String password) throws Exception {
         UUID salt = randomUUID();
         String hashedPassword = new ShaPasswordEncoder().encodePassword(password, salt);
-        System.out.println(new Gson().toJson(new DrishtiUser(username, hashedPassword, salt.toString(), asList("ROLE_USER"), true)));
+        return new Gson().toJson(new DrishtiUser(username, hashedPassword, salt.toString(), asList("ROLE_USER"), true));
     }
+    public static void main(String[] args) throws Exception {
+		System.out.println(toGenerateUserPasswordsAndSalt("demo1", "1"));
+	}
 }

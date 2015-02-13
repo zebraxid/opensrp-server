@@ -1,0 +1,889 @@
+[INFO] Scanning for projects...
+[INFO] Reactor build order: 
+[INFO]   Drishti
+[INFO]   drishti-common
+[INFO]   drishti-scheduler
+[INFO]   drishti-interface
+[INFO]   drishti-form
+[INFO]   drishti-mother-child
+[INFO]   drishti-web
+[INFO]   drishti-reporting
+[INFO]   opensrp-connector
+[INFO] ------------------------------------------------------------------------
+[INFO] Building Drishti
+[INFO]    task-segment: [clean, install]
+[INFO] ------------------------------------------------------------------------
+[INFO] [clean:clean {execution: default-clean}]
+Downloading: http://searls-maven-repository.googlecode.com/svn/trunk/snapshots/org/apache/maven/plugins/maven-site-plugin/2.1/maven-site-plugin-2.1.pom
+[INFO] Unable to find resource 'org.apache.maven.plugins:maven-site-plugin:pom:2.1' in repository jasmine-js-bdd (http://searls-maven-repository.googlecode.com/svn/trunk/snapshots)
+Downloading: http://repo1.maven.org/maven2/org/apache/maven/plugins/maven-site-plugin/2.1/maven-site-plugin-2.1.pom
+4/13K8/13K8/13K12/13K13/13K13K downloaded  (maven-site-plugin-2.1.pom)
+Downloading: http://searls-maven-repository.googlecode.com/svn/trunk/snapshots/org/apache/maven/plugins/maven-site-plugin/2.1/maven-site-plugin-2.1.jar
+[INFO] Unable to find resource 'org.apache.maven.plugins:maven-site-plugin:maven-plugin:2.1' in repository jasmine-js-bdd (http://searls-maven-repository.googlecode.com/svn/trunk/snapshots)
+Downloading: http://repo1.maven.org/maven2/org/apache/maven/plugins/maven-site-plugin/2.1/maven-site-plugin-2.1.jar
+4/82K6/82K9/82K13/82K15/82K19/82K20/82K23/82K27/82K27/82K30/82K32/82K34/82K38/82K39/82K40/82K43/82K46/82K47/82K50/82K53/82K56/82K57/82K60/82K63/82K66/82K67/82K70/82K73/82K75/82K78/82K80/82K82/82K82K downloaded  (maven-site-plugin-2.1.jar)
+Downloading: http://searls-maven-repository.googlecode.com/svn/trunk/snapshots/org/apache/maven/doxia/doxia-module-apt/1.1.2/doxia-module-apt-1.1.2.pom
+[INFO] Unable to find resource 'org.apache.maven.doxia:doxia-module-apt:pom:1.1.2' in repository jasmine-js-bdd (http://searls-maven-repository.googlecode.com/svn/trunk/snapshots)
+Downloading: http://repo1.maven.org/maven2/org/apache/maven/doxia/doxia-module-apt/1.1.2/doxia-module-apt-1.1.2.pom
+2/2K2K downloaded  (doxia-module-apt-1.1.2.pom)
+Downloading: http://searls-maven-repository.googlecode.com/svn/trunk/snapshots/org/apache/maven/doxia/doxia-module-xdoc/1.1.2/doxia-module-xdoc-1.1.2.pom
+[INFO] Unable to find resource 'org.apache.maven.doxia:doxia-module-xdoc:pom:1.1.2' in repository jasmine-js-bdd (http://searls-maven-repository.googlecode.com/svn/trunk/snapshots)
+Downloading: http://repo1.maven.org/maven2/org/apache/maven/doxia/doxia-module-xdoc/1.1.2/doxia-module-xdoc-1.1.2.pom
+4/4K4/4K4K downloaded  (doxia-module-xdoc-1.1.2.pom)
+Downloading: http://searls-maven-repository.googlecode.com/svn/trunk/snapshots/org/apache/maven/shared/maven-doxia-tools/1.2/maven-doxia-tools-1.2.pom
+[INFO] Unable to find resource 'org.apache.maven.shared:maven-doxia-tools:pom:1.2' in repository jasmine-js-bdd (http://searls-maven-repository.googlecode.com/svn/trunk/snapshots)
+Downloading: http://repo1.maven.org/maven2/org/apache/maven/shared/maven-doxia-tools/1.2/maven-doxia-tools-1.2.pom
+4/6K6/6K6K downloaded  (maven-doxia-tools-1.2.pom)
+Downloading: http://searls-maven-repository.googlecode.com/svn/trunk/snapshots/org/apache/maven/shared/maven-shared-components/14/maven-shared-components-14.pom
+[INFO] Unable to find resource 'org.apache.maven.shared:maven-shared-components:pom:14' in repository jasmine-js-bdd (http://searls-maven-repository.googlecode.com/svn/trunk/snapshots)
+Downloading: http://repo1.maven.org/maven2/org/apache/maven/shared/maven-shared-components/14/maven-shared-components-14.pom
+4/9K8/9K9/9K9K downloaded  (maven-shared-components-14.pom)
+Downloading: http://searls-maven-repository.googlecode.com/svn/trunk/snapshots/org/apache/maven/wagon/wagon-provider-api/1.0-beta-4/wagon-provider-api-1.0-beta-4.pom
+[INFO] Unable to find resource 'org.apache.maven.wagon:wagon-provider-api:pom:1.0-beta-4' in repository jasmine-js-bdd (http://searls-maven-repository.googlecode.com/svn/trunk/snapshots)
+Downloading: http://repo1.maven.org/maven2/org/apache/maven/wagon/wagon-provider-api/1.0-beta-4/wagon-provider-api-1.0-beta-4.pom
+906/906b906b downloaded  (wagon-provider-api-1.0-beta-4.pom)
+Downloading: http://searls-maven-repository.googlecode.com/svn/trunk/snapshots/org/apache/maven/wagon/wagon/1.0-beta-4/wagon-1.0-beta-4.pom
+[INFO] Unable to find resource 'org.apache.maven.wagon:wagon:pom:1.0-beta-4' in repository jasmine-js-bdd (http://searls-maven-repository.googlecode.com/svn/trunk/snapshots)
+Downloading: http://repo1.maven.org/maven2/org/apache/maven/wagon/wagon/1.0-beta-4/wagon-1.0-beta-4.pom
+1/10K3/10K7/10K10/10K10K downloaded  (wagon-1.0-beta-4.pom)
+Downloading: http://searls-maven-repository.googlecode.com/svn/trunk/snapshots/org/codehaus/plexus/plexus-velocity/1.1.8/plexus-velocity-1.1.8.pom
+[INFO] Unable to find resource 'org.codehaus.plexus:plexus-velocity:pom:1.1.8' in repository jasmine-js-bdd (http://searls-maven-repository.googlecode.com/svn/trunk/snapshots)
+Downloading: http://repo1.maven.org/maven2/org/codehaus/plexus/plexus-velocity/1.1.8/plexus-velocity-1.1.8.pom
+1/1K1/1K1K downloaded  (plexus-velocity-1.1.8.pom)
+Downloading: http://searls-maven-repository.googlecode.com/svn/trunk/snapshots/org/mortbay/jetty/jetty/6.1.5/jetty-6.1.5.pom
+[INFO] Unable to find resource 'org.mortbay.jetty:jetty:pom:6.1.5' in repository jasmine-js-bdd (http://searls-maven-repository.googlecode.com/svn/trunk/snapshots)
+Downloading: http://repo1.maven.org/maven2/org/mortbay/jetty/jetty/6.1.5/jetty-6.1.5.pom
+4/4K4/4K4K downloaded  (jetty-6.1.5.pom)
+Downloading: http://searls-maven-repository.googlecode.com/svn/trunk/snapshots/org/mortbay/jetty/project/6.1.5/project-6.1.5.pom
+[INFO] Unable to find resource 'org.mortbay.jetty:project:pom:6.1.5' in repository jasmine-js-bdd (http://searls-maven-repository.googlecode.com/svn/trunk/snapshots)
+Downloading: http://repo1.maven.org/maven2/org/mortbay/jetty/project/6.1.5/project-6.1.5.pom
+4/12K8/12K12/12K12/12K12K downloaded  (project-6.1.5.pom)
+Downloading: http://searls-maven-repository.googlecode.com/svn/trunk/snapshots/org/mortbay/jetty/jetty-util/6.1.5/jetty-util-6.1.5.pom
+[INFO] Unable to find resource 'org.mortbay.jetty:jetty-util:pom:6.1.5' in repository jasmine-js-bdd (http://searls-maven-repository.googlecode.com/svn/trunk/snapshots)
+Downloading: http://maven.springframework.org/release/org/mortbay/jetty/jetty-util/6.1.5/jetty-util-6.1.5.pom
+[INFO] Unable to find resource 'org.mortbay.jetty:jetty-util:pom:6.1.5' in repository spring-maven-release (http://maven.springframework.org/release)
+Downloading: http://maven.springframework.org/milestone/org/mortbay/jetty/jetty-util/6.1.5/jetty-util-6.1.5.pom
+[INFO] Unable to find resource 'org.mortbay.jetty:jetty-util:pom:6.1.5' in repository spring-maven-milestone (http://maven.springframework.org/milestone)
+Downloading: http://nexus.motechproject.org/content/repositories/drishti/org/mortbay/jetty/jetty-util/6.1.5/jetty-util-6.1.5.pom
+[INFO] Unable to find resource 'org.mortbay.jetty:jetty-util:pom:6.1.5' in repository motech.drishti (http://nexus.motechproject.org/content/repositories/drishti)
+Downloading: http://nexus.motechproject.org/content/repositories/snapshots/org/mortbay/jetty/jetty-util/6.1.5/jetty-util-6.1.5.pom
+[INFO] Unable to find resource 'org.mortbay.jetty:jetty-util:pom:6.1.5' in repository motech.nexus (http://nexus.motechproject.org/content/repositories/snapshots)
+Downloading: http://nexus.motechproject.org/content/repositories/releases/org/mortbay/jetty/jetty-util/6.1.5/jetty-util-6.1.5.pom
+[INFO] Unable to find resource 'org.mortbay.jetty:jetty-util:pom:6.1.5' in repository motech.nexus.release (http://nexus.motechproject.org/content/repositories/releases)
+Downloading: http://snapshots.repository.codehaus.org/org/mortbay/jetty/jetty-util/6.1.5/jetty-util-6.1.5.pom
+[INFO] Unable to find resource 'org.mortbay.jetty:jetty-util:pom:6.1.5' in repository codehaus.org (http://snapshots.repository.codehaus.org)
+Downloading: http://people.apache.org/repo/m2-snapshot-repository//org/mortbay/jetty/jetty-util/6.1.5/jetty-util-6.1.5.pom
+[INFO] Unable to find resource 'org.mortbay.jetty:jetty-util:pom:6.1.5' in repository apache.m2.incubator (http://people.apache.org/repo/m2-snapshot-repository/)
+Downloading: http://repo1.maven.org/maven2/org/mortbay/jetty/jetty-util/6.1.5/jetty-util-6.1.5.pom
+3/3K3K downloaded  (jetty-util-6.1.5.pom)
+Downloading: http://searls-maven-repository.googlecode.com/svn/trunk/snapshots/org/mortbay/jetty/servlet-api-2.5/6.1.5/servlet-api-2.5-6.1.5.pom
+[INFO] Unable to find resource 'org.mortbay.jetty:servlet-api-2.5:pom:6.1.5' in repository jasmine-js-bdd (http://searls-maven-repository.googlecode.com/svn/trunk/snapshots)
+Downloading: http://maven.springframework.org/release/org/mortbay/jetty/servlet-api-2.5/6.1.5/servlet-api-2.5-6.1.5.pom
+[INFO] Unable to find resource 'org.mortbay.jetty:servlet-api-2.5:pom:6.1.5' in repository spring-maven-release (http://maven.springframework.org/release)
+Downloading: http://maven.springframework.org/milestone/org/mortbay/jetty/servlet-api-2.5/6.1.5/servlet-api-2.5-6.1.5.pom
+[INFO] Unable to find resource 'org.mortbay.jetty:servlet-api-2.5:pom:6.1.5' in repository spring-maven-milestone (http://maven.springframework.org/milestone)
+Downloading: http://nexus.motechproject.org/content/repositories/drishti/org/mortbay/jetty/servlet-api-2.5/6.1.5/servlet-api-2.5-6.1.5.pom
+[INFO] Unable to find resource 'org.mortbay.jetty:servlet-api-2.5:pom:6.1.5' in repository motech.drishti (http://nexus.motechproject.org/content/repositories/drishti)
+Downloading: http://nexus.motechproject.org/content/repositories/snapshots/org/mortbay/jetty/servlet-api-2.5/6.1.5/servlet-api-2.5-6.1.5.pom
+[INFO] Unable to find resource 'org.mortbay.jetty:servlet-api-2.5:pom:6.1.5' in repository motech.nexus (http://nexus.motechproject.org/content/repositories/snapshots)
+Downloading: http://nexus.motechproject.org/content/repositories/releases/org/mortbay/jetty/servlet-api-2.5/6.1.5/servlet-api-2.5-6.1.5.pom
+[INFO] Unable to find resource 'org.mortbay.jetty:servlet-api-2.5:pom:6.1.5' in repository motech.nexus.release (http://nexus.motechproject.org/content/repositories/releases)
+Downloading: http://snapshots.repository.codehaus.org/org/mortbay/jetty/servlet-api-2.5/6.1.5/servlet-api-2.5-6.1.5.pom
+[INFO] Unable to find resource 'org.mortbay.jetty:servlet-api-2.5:pom:6.1.5' in repository codehaus.org (http://snapshots.repository.codehaus.org)
+Downloading: http://people.apache.org/repo/m2-snapshot-repository//org/mortbay/jetty/servlet-api-2.5/6.1.5/servlet-api-2.5-6.1.5.pom
+[INFO] Unable to find resource 'org.mortbay.jetty:servlet-api-2.5:pom:6.1.5' in repository apache.m2.incubator (http://people.apache.org/repo/m2-snapshot-repository/)
+Downloading: http://repo1.maven.org/maven2/org/mortbay/jetty/servlet-api-2.5/6.1.5/servlet-api-2.5-6.1.5.pom
+3/3K3K downloaded  (servlet-api-2.5-6.1.5.pom)
+Downloading: http://searls-maven-repository.googlecode.com/svn/trunk/snapshots/org/apache/maven/doxia/doxia-module-xhtml/1.1.2/doxia-module-xhtml-1.1.2.jar
+Downloading: http://searls-maven-repository.googlecode.com/svn/trunk/snapshots/org/mortbay/jetty/jetty/6.1.5/jetty-6.1.5.jar
+Downloading: http://searls-maven-repository.googlecode.com/svn/trunk/snapshots/org/apache/maven/shared/maven-doxia-tools/1.2/maven-doxia-tools-1.2.jar
+Downloading: http://searls-maven-repository.googlecode.com/svn/trunk/snapshots/org/codehaus/plexus/plexus-velocity/1.1.8/plexus-velocity-1.1.8.jar
+[INFO] Unable to find resource 'org.apache.maven.shared:maven-doxia-tools:jar:1.2' in repository jasmine-js-bdd (http://searls-maven-repository.googlecode.com/svn/trunk/snapshots)
+Downloading: http://repo1.maven.org/maven2/org/apache/maven/shared/maven-doxia-tools/1.2/maven-doxia-tools-1.2.jar
+[INFO] Unable to find resource 'org.mortbay.jetty:jetty:jar:6.1.5' in repository jasmine-js-bdd (http://searls-maven-repository.googlecode.com/svn/trunk/snapshots)
+[INFO] Unable to find resource 'org.apache.maven.doxia:doxia-module-xhtml:jar:1.1.2' in repository jasmine-js-bdd (http://searls-maven-repository.googlecode.com/svn/trunk/snapshots)
+Downloading: http://repo1.maven.org/maven2/org/mortbay/jetty/jetty/6.1.5/jetty-6.1.5.jar
+Downloading: http://repo1.maven.org/maven2/org/apache/maven/doxia/doxia-module-xhtml/1.1.2/doxia-module-xhtml-1.1.2.jar
+[INFO] Unable to find resource 'org.codehaus.plexus:plexus-velocity:jar:1.1.8' in repository jasmine-js-bdd (http://searls-maven-repository.googlecode.com/svn/trunk/snapshots)
+Downloading: http://repo1.maven.org/maven2/org/codehaus/plexus/plexus-velocity/1.1.8/plexus-velocity-1.1.8.jar
+4/41K8/41K12/41K13/41K13/41K 4/14K15/41K 4/14K15/41K 4/14K 4/7K15/41K 4/14K 4/7K 4/474K15/41K 4/14K 7/7K 4/474K15/41K 4/14K 7/7K 8/474K7K downloaded  (plexus-velocity-1.1.8.jar)
+15/41K 4/14K 12/474K15/41K 4/14K 13/474K19/41K 4/14K 13/474K23/41K 4/14K 13/474K27/41K 4/14K 13/474K31/41K 4/14K 13/474K35/41K 4/14K 13/474K37/41K 4/14K 13/474K37/41K 8/14K 13/474K37/41K 12/14K 13/474K37/41K 13/14K 13/474K37/41K 13/14K 17/474K37/41K 14/14K 17/474K14K downloaded  (doxia-module-xhtml-1.1.2.jar)
+37/41K 17/474K37/41K 21/474K41/41K 21/474K41/41K 25/474K41K downloaded  (maven-doxia-tools-1.2.jar)
+29/474K33/474K36/474KDownloading: http://searls-maven-repository.googlecode.com/svn/trunk/snapshots/org/apache/maven/doxia/doxia-module-apt/1.1.2/doxia-module-apt-1.1.2.jar
+40/474K44/474K48/474K52/474K56/474K60/474K64/474K68/474K68/474K[INFO] Unable to find resource 'org.apache.maven.doxia:doxia-module-apt:jar:1.1.2' in repository jasmine-js-bdd (http://searls-maven-repository.googlecode.com/svn/trunk/snapshots)
+Downloading: http://repo1.maven.org/maven2/org/apache/maven/doxia/doxia-module-apt/1.1.2/doxia-module-apt-1.1.2.jar
+72/474K74/474K77/474K80/474K84/474K88/474K92/474K94/474K94/474K 4/50K94/474K 8/50K94/474K 12/50K94/474K 16/50K94/474K 17/50K98/474K 17/50K101/474K 17/50K105/474K 17/50K108/474K 17/50K112/474K 17/50K115/474K 17/50K119/474K 17/50K123/474K 17/50K124/474K 17/50K124/474K 21/50K124/474K 25/50K124/474K 29/50K124/474K 33/50K124/474K 37/50K124/474K 41/50K124/474K 43/50K128/474K 43/50K129/474K 43/50K132/474K 43/50K136/474K 43/50K139/474K 43/50K140/474K 43/50K143/474K 43/50K147/474K 43/50K151/474K 43/50K155/474K 43/50K155/474K 47/50K155/474K 50/50K50K downloaded  (doxia-module-apt-1.1.2.jar)
+159/474K159/474K163/474K167/474K171/474K172/474K173/474K177/474K181/474K185/474K186/474K189/474KDownloading: http://searls-maven-repository.googlecode.com/svn/trunk/snapshots/org/apache/maven/doxia/doxia-module-xdoc/1.1.2/doxia-module-xdoc-1.1.2.jar
+191/474K195/474K199/474K203/474K206/474K208/474K211/474K215/474K218/474K221/474K223/474K224/474K227/474K231/474K235/474K239/474K241/474K242/474K244/474K248/474K252/474K254/474K258/474K258/474K261/474K[INFO] Unable to find resource 'org.apache.maven.doxia:doxia-module-xdoc:jar:1.1.2' in repository jasmine-js-bdd (http://searls-maven-repository.googlecode.com/svn/trunk/snapshots)
+Downloading: http://repo1.maven.org/maven2/org/apache/maven/doxia/doxia-module-xdoc/1.1.2/doxia-module-xdoc-1.1.2.jar
+262/474K264/474K268/474K272/474K276/474K276/474K279/474K283/474K285/474K289/474K290/474K293/474K295/474K297/474K297/474K 4/35K297/474K 8/35K299/474K 8/35K299/474K 12/35K299/474K 16/35K299/474K 19/35K299/474K 23/35K299/474K 26/35K302/474K 26/35K303/474K 26/35K307/474K 26/35K311/474K 26/35K315/474K 26/35K316/474K 26/35K319/474K 26/35K321/474K 26/35K325/474K 26/35K327/474K 26/35K330/474K 26/35K331/474K 26/35K333/474K 26/35K336/474K 26/35K337/474K 26/35K340/474K 26/35K344/474K 26/35K346/474K 26/35K350/474K 26/35K350/474K 26/35K351/474K 26/35K353/474K 26/35K354/474K 26/35K355/474K 26/35K359/474K 26/35K361/474K 26/35K365/474K 26/35K365/474K 26/35K369/474K 26/35K371/474K 26/35K374/474K 26/35K374/474K 30/35K374/474K 34/35K374/474K 35/35K35K downloaded  (doxia-module-xdoc-1.1.2.jar)
+375/474K378/474K381/474K384/474K388/474K388/474K391/474K392/474K395/474K398/474K402/474K402/474K404/474K408/474K409/474K412/474KDownloading: http://searls-maven-repository.googlecode.com/svn/trunk/snapshots/org/apache/maven/doxia/doxia-module-fml/1.1.2/doxia-module-fml-1.1.2.jar
+415/474K418/474K422/474K422/474K426/474K429/474K430/474K434/474K436/474K437/474K439/474K442/474K445/474K447/474K450/474K453/474K456/474K459/474K463/474K466/474K467/474K470/474K471/474K474/474K474K downloaded  (jetty-6.1.5.jar)
+[INFO] Unable to find resource 'org.apache.maven.doxia:doxia-module-fml:jar:1.1.2' in repository jasmine-js-bdd (http://searls-maven-repository.googlecode.com/svn/trunk/snapshots)
+Downloading: http://repo1.maven.org/maven2/org/apache/maven/doxia/doxia-module-fml/1.1.2/doxia-module-fml-1.1.2.jar
+Downloading: http://searls-maven-repository.googlecode.com/svn/trunk/snapshots/org/mortbay/jetty/jetty-util/6.1.5/jetty-util-6.1.5.jar
+0/36K4/36K6/36K9/36K13/36K16/36K[INFO] Unable to find resource 'org.mortbay.jetty:jetty-util:jar:6.1.5' in repository jasmine-js-bdd (http://searls-maven-repository.googlecode.com/svn/trunk/snapshots)
+Downloading: http://maven.springframework.org/release/org/mortbay/jetty/jetty-util/6.1.5/jetty-util-6.1.5.jar
+17/36K19/36K23/36K26/36K27/36K30/36K34/36K34/36K36/36K36/36K36K downloaded  (doxia-module-fml-1.1.2.jar)
+Downloading: http://searls-maven-repository.googlecode.com/svn/trunk/snapshots/org/apache/maven/doxia/doxia-decoration-model/1.1.2/doxia-decoration-model-1.1.2.jar
+[INFO] Unable to find resource 'org.mortbay.jetty:jetty-util:jar:6.1.5' in repository spring-maven-release (http://maven.springframework.org/release)
+Downloading: http://maven.springframework.org/milestone/org/mortbay/jetty/jetty-util/6.1.5/jetty-util-6.1.5.jar
+[INFO] Unable to find resource 'org.apache.maven.doxia:doxia-decoration-model:jar:1.1.2' in repository jasmine-js-bdd (http://searls-maven-repository.googlecode.com/svn/trunk/snapshots)
+Downloading: http://repo1.maven.org/maven2/org/apache/maven/doxia/doxia-decoration-model/1.1.2/doxia-decoration-model-1.1.2.jar
+4/51K8/51K[INFO] Unable to find resource 'org.mortbay.jetty:jetty-util:jar:6.1.5' in repository spring-maven-milestone (http://maven.springframework.org/milestone)
+10/51KDownloading: http://nexus.motechproject.org/content/repositories/drishti/org/mortbay/jetty/jetty-util/6.1.5/jetty-util-6.1.5.jar
+14/51K16/51K17/51K21/51K22/51K26/51K29/51K33/51K33/51K37/51K37/51K41/51K44/51K48/51K51/51K51K downloaded  (doxia-decoration-model-1.1.2.jar)
+Downloading: http://searls-maven-repository.googlecode.com/svn/trunk/snapshots/org/apache/maven/doxia/doxia-site-renderer/1.1.2/doxia-site-renderer-1.1.2.jar
+[INFO] Unable to find resource 'org.apache.maven.doxia:doxia-site-renderer:jar:1.1.2' in repository jasmine-js-bdd (http://searls-maven-repository.googlecode.com/svn/trunk/snapshots)
+Downloading: http://repo1.maven.org/maven2/org/apache/maven/doxia/doxia-site-renderer/1.1.2/doxia-site-renderer-1.1.2.jar
+4/49K8/49K10/49K14/49K15/49K19/49K19/49K23/49K25/49K29/49K30/49K34/49K34/49K38/49K39/49K40/49K44/49K48/49K49/49K49K downloaded  (doxia-site-renderer-1.1.2.jar)
+[INFO] Unable to find resource 'org.mortbay.jetty:jetty-util:jar:6.1.5' in repository motech.drishti (http://nexus.motechproject.org/content/repositories/drishti)
+Downloading: http://nexus.motechproject.org/content/repositories/snapshots/org/mortbay/jetty/jetty-util/6.1.5/jetty-util-6.1.5.jar
+[INFO] Unable to find resource 'org.mortbay.jetty:jetty-util:jar:6.1.5' in repository motech.nexus (http://nexus.motechproject.org/content/repositories/snapshots)
+Downloading: http://nexus.motechproject.org/content/repositories/releases/org/mortbay/jetty/jetty-util/6.1.5/jetty-util-6.1.5.jar
+[INFO] Unable to find resource 'org.mortbay.jetty:jetty-util:jar:6.1.5' in repository motech.nexus.release (http://nexus.motechproject.org/content/repositories/releases)
+Downloading: http://snapshots.repository.codehaus.org/org/mortbay/jetty/jetty-util/6.1.5/jetty-util-6.1.5.jar
+[INFO] Unable to find resource 'org.mortbay.jetty:jetty-util:jar:6.1.5' in repository codehaus.org (http://snapshots.repository.codehaus.org)
+Downloading: http://people.apache.org/repo/m2-snapshot-repository//org/mortbay/jetty/jetty-util/6.1.5/jetty-util-6.1.5.jar
+[INFO] Unable to find resource 'org.mortbay.jetty:jetty-util:jar:6.1.5' in repository apache.m2.incubator (http://people.apache.org/repo/m2-snapshot-repository/)
+Downloading: http://repo1.maven.org/maven2/org/mortbay/jetty/jetty-util/6.1.5/jetty-util-6.1.5.jar
+2/134K6/134K10/134K13/134K17/134K19/134K23/134K27/134K31/134K33/134K37/134K39/134K42/134K46/134K46/134K50/134K53/134K57/134K58/134K60/134K64/134K64/134K66/134K70/134K70/134K74/134K75/134K78/134K82/134K83/134K85/134K89/134K93/134K97/134K101/134K104/134K108/134K112/134K114/134K118/134K122/134K122/134K126/134K126/134K130/134K134/134K134K downloaded  (jetty-util-6.1.5.jar)
+Downloading: http://searls-maven-repository.googlecode.com/svn/trunk/snapshots/org/mortbay/jetty/servlet-api-2.5/6.1.5/servlet-api-2.5-6.1.5.jar
+[INFO] Unable to find resource 'org.mortbay.jetty:servlet-api-2.5:jar:6.1.5' in repository jasmine-js-bdd (http://searls-maven-repository.googlecode.com/svn/trunk/snapshots)
+Downloading: http://maven.springframework.org/release/org/mortbay/jetty/servlet-api-2.5/6.1.5/servlet-api-2.5-6.1.5.jar
+[INFO] Unable to find resource 'org.mortbay.jetty:servlet-api-2.5:jar:6.1.5' in repository spring-maven-release (http://maven.springframework.org/release)
+Downloading: http://maven.springframework.org/milestone/org/mortbay/jetty/servlet-api-2.5/6.1.5/servlet-api-2.5-6.1.5.jar
+[INFO] Unable to find resource 'org.mortbay.jetty:servlet-api-2.5:jar:6.1.5' in repository spring-maven-milestone (http://maven.springframework.org/milestone)
+Downloading: http://nexus.motechproject.org/content/repositories/drishti/org/mortbay/jetty/servlet-api-2.5/6.1.5/servlet-api-2.5-6.1.5.jar
+[INFO] Unable to find resource 'org.mortbay.jetty:servlet-api-2.5:jar:6.1.5' in repository motech.drishti (http://nexus.motechproject.org/content/repositories/drishti)
+Downloading: http://nexus.motechproject.org/content/repositories/snapshots/org/mortbay/jetty/servlet-api-2.5/6.1.5/servlet-api-2.5-6.1.5.jar
+[INFO] Unable to find resource 'org.mortbay.jetty:servlet-api-2.5:jar:6.1.5' in repository motech.nexus (http://nexus.motechproject.org/content/repositories/snapshots)
+Downloading: http://nexus.motechproject.org/content/repositories/releases/org/mortbay/jetty/servlet-api-2.5/6.1.5/servlet-api-2.5-6.1.5.jar
+[INFO] Unable to find resource 'org.mortbay.jetty:servlet-api-2.5:jar:6.1.5' in repository motech.nexus.release (http://nexus.motechproject.org/content/repositories/releases)
+Downloading: http://snapshots.repository.codehaus.org/org/mortbay/jetty/servlet-api-2.5/6.1.5/servlet-api-2.5-6.1.5.jar
+[INFO] Unable to find resource 'org.mortbay.jetty:servlet-api-2.5:jar:6.1.5' in repository codehaus.org (http://snapshots.repository.codehaus.org)
+Downloading: http://people.apache.org/repo/m2-snapshot-repository//org/mortbay/jetty/servlet-api-2.5/6.1.5/servlet-api-2.5-6.1.5.jar
+[INFO] Unable to find resource 'org.mortbay.jetty:servlet-api-2.5:jar:6.1.5' in repository apache.m2.incubator (http://people.apache.org/repo/m2-snapshot-repository/)
+Downloading: http://repo1.maven.org/maven2/org/mortbay/jetty/servlet-api-2.5/6.1.5/servlet-api-2.5-6.1.5.jar
+0/129K3/129K5/129K9/129K13/129K13/129K16/129K17/129K21/129K22/129K26/129K30/129K33/129K37/129K37/129K40/129K42/129K43/129K47/129K47/129K50/129K53/129K54/129K56/129K60/129K60/129K61/129K65/129K68/129K72/129K76/129K77/129K80/129K83/129K87/129K87/129K91/129K91/129K95/129K98/129K102/129K104/129K105/129K109/129K113/129K117/129K121/129K122/129K126/129K128/129K129/129K129K downloaded  (servlet-api-2.5-6.1.5.jar)
+[INFO] [site:attach-descriptor {execution: default-attach-descriptor}]
+[INFO] [install:install {execution: default-install}]
+[INFO] Installing /home/julkar/workspace/opensrp-server/pom.xml to /home/julkar/.m2/repository/org/ei/drishti/drishti/0.1-SNAPSHOT/drishti-0.1-SNAPSHOT.pom
+[INFO] ------------------------------------------------------------------------
+[INFO] Building drishti-common
+[INFO]    task-segment: [clean, install]
+[INFO] ------------------------------------------------------------------------
+[INFO] [clean:clean {execution: default-clean}]
+[INFO] Deleting file set: /home/julkar/workspace/opensrp-server/drishti-common/target (included: [**], excluded: [])
+Downloading: http://searls-maven-repository.googlecode.com/svn/trunk/snapshots/org/apache/maven/plugins/maven-jar-plugin/2.2/maven-jar-plugin-2.2.pom
+[INFO] Unable to find resource 'org.apache.maven.plugins:maven-jar-plugin:pom:2.2' in repository jasmine-js-bdd (http://searls-maven-repository.googlecode.com/svn/trunk/snapshots)
+Downloading: http://repo1.maven.org/maven2/org/apache/maven/plugins/maven-jar-plugin/2.2/maven-jar-plugin-2.2.pom
+4/8K8/8K8/8K8K downloaded  (maven-jar-plugin-2.2.pom)
+Downloading: http://searls-maven-repository.googlecode.com/svn/trunk/snapshots/org/apache/maven/plugins/maven-plugins/10/maven-plugins-10.pom
+[INFO] Unable to find resource 'org.apache.maven.plugins:maven-plugins:pom:10' in repository jasmine-js-bdd (http://searls-maven-repository.googlecode.com/svn/trunk/snapshots)
+Downloading: http://repo1.maven.org/maven2/org/apache/maven/plugins/maven-plugins/10/maven-plugins-10.pom
+3/7K5/7K7/7K7K downloaded  (maven-plugins-10.pom)
+Downloading: http://searls-maven-repository.googlecode.com/svn/trunk/snapshots/org/apache/maven/plugins/maven-jar-plugin/2.2/maven-jar-plugin-2.2.jar
+[INFO] Unable to find resource 'org.apache.maven.plugins:maven-jar-plugin:maven-plugin:2.2' in repository jasmine-js-bdd (http://searls-maven-repository.googlecode.com/svn/trunk/snapshots)
+Downloading: http://repo1.maven.org/maven2/org/apache/maven/plugins/maven-jar-plugin/2.2/maven-jar-plugin-2.2.jar
+4/26K8/26K9/26K12/26K16/26K20/26K20/26K24/26K26/26K26K downloaded  (maven-jar-plugin-2.2.jar)
+[debug] execute contextualize
+[INFO] [resources:resources {execution: default-resources}]
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 1 resource
+Downloading: http://searls-maven-repository.googlecode.com/svn/trunk/snapshots/org/apache/maven/wagon/wagon-webdav/1.0-beta-2/wagon-webdav-1.0-beta-2.pom
+[INFO] Unable to find resource 'org.apache.maven.wagon:wagon-webdav:pom:1.0-beta-2' in repository jasmine-js-bdd (http://searls-maven-repository.googlecode.com/svn/trunk/snapshots)
+Downloading: http://maven.springframework.org/release/org/apache/maven/wagon/wagon-webdav/1.0-beta-2/wagon-webdav-1.0-beta-2.pom
+[INFO] Unable to find resource 'org.apache.maven.wagon:wagon-webdav:pom:1.0-beta-2' in repository spring-maven-release (http://maven.springframework.org/release)
+Downloading: http://maven.springframework.org/milestone/org/apache/maven/wagon/wagon-webdav/1.0-beta-2/wagon-webdav-1.0-beta-2.pom
+[INFO] Unable to find resource 'org.apache.maven.wagon:wagon-webdav:pom:1.0-beta-2' in repository spring-maven-milestone (http://maven.springframework.org/milestone)
+Downloading: http://nexus.motechproject.org/content/repositories/drishti/org/apache/maven/wagon/wagon-webdav/1.0-beta-2/wagon-webdav-1.0-beta-2.pom
+[INFO] Unable to find resource 'org.apache.maven.wagon:wagon-webdav:pom:1.0-beta-2' in repository motech.drishti (http://nexus.motechproject.org/content/repositories/drishti)
+Downloading: http://nexus.motechproject.org/content/repositories/snapshots/org/apache/maven/wagon/wagon-webdav/1.0-beta-2/wagon-webdav-1.0-beta-2.pom
+[INFO] Unable to find resource 'org.apache.maven.wagon:wagon-webdav:pom:1.0-beta-2' in repository motech.nexus (http://nexus.motechproject.org/content/repositories/snapshots)
+Downloading: http://nexus.motechproject.org/content/repositories/releases/org/apache/maven/wagon/wagon-webdav/1.0-beta-2/wagon-webdav-1.0-beta-2.pom
+[INFO] Unable to find resource 'org.apache.maven.wagon:wagon-webdav:pom:1.0-beta-2' in repository motech.nexus.release (http://nexus.motechproject.org/content/repositories/releases)
+Downloading: http://repo1.maven.org/maven2/org/apache/maven/wagon/wagon-webdav/1.0-beta-2/wagon-webdav-1.0-beta-2.pom
+1/1K1K downloaded  (wagon-webdav-1.0-beta-2.pom)
+Downloading: http://searls-maven-repository.googlecode.com/svn/trunk/snapshots/slide/slide-webdavlib/2.1/slide-webdavlib-2.1.pom
+[INFO] Unable to find resource 'slide:slide-webdavlib:pom:2.1' in repository jasmine-js-bdd (http://searls-maven-repository.googlecode.com/svn/trunk/snapshots)
+Downloading: http://maven.springframework.org/release/slide/slide-webdavlib/2.1/slide-webdavlib-2.1.pom
+[INFO] Unable to find resource 'slide:slide-webdavlib:pom:2.1' in repository spring-maven-release (http://maven.springframework.org/release)
+Downloading: http://maven.springframework.org/milestone/slide/slide-webdavlib/2.1/slide-webdavlib-2.1.pom
+[INFO] Unable to find resource 'slide:slide-webdavlib:pom:2.1' in repository spring-maven-milestone (http://maven.springframework.org/milestone)
+Downloading: http://nexus.motechproject.org/content/repositories/drishti/slide/slide-webdavlib/2.1/slide-webdavlib-2.1.pom
+[INFO] Unable to find resource 'slide:slide-webdavlib:pom:2.1' in repository motech.drishti (http://nexus.motechproject.org/content/repositories/drishti)
+Downloading: http://nexus.motechproject.org/content/repositories/snapshots/slide/slide-webdavlib/2.1/slide-webdavlib-2.1.pom
+[INFO] Unable to find resource 'slide:slide-webdavlib:pom:2.1' in repository motech.nexus (http://nexus.motechproject.org/content/repositories/snapshots)
+Downloading: http://nexus.motechproject.org/content/repositories/releases/slide/slide-webdavlib/2.1/slide-webdavlib-2.1.pom
+[INFO] Unable to find resource 'slide:slide-webdavlib:pom:2.1' in repository motech.nexus.release (http://nexus.motechproject.org/content/repositories/releases)
+Downloading: http://repo1.maven.org/maven2/slide/slide-webdavlib/2.1/slide-webdavlib-2.1.pom
+648/648b648b downloaded  (slide-webdavlib-2.1.pom)
+Downloading: http://searls-maven-repository.googlecode.com/svn/trunk/snapshots/commons-httpclient/commons-httpclient/2.0.2/commons-httpclient-2.0.2.pom
+[INFO] Unable to find resource 'commons-httpclient:commons-httpclient:pom:2.0.2' in repository jasmine-js-bdd (http://searls-maven-repository.googlecode.com/svn/trunk/snapshots)
+Downloading: http://maven.springframework.org/release/commons-httpclient/commons-httpclient/2.0.2/commons-httpclient-2.0.2.pom
+[INFO] Unable to find resource 'commons-httpclient:commons-httpclient:pom:2.0.2' in repository spring-maven-release (http://maven.springframework.org/release)
+Downloading: http://maven.springframework.org/milestone/commons-httpclient/commons-httpclient/2.0.2/commons-httpclient-2.0.2.pom
+[INFO] Unable to find resource 'commons-httpclient:commons-httpclient:pom:2.0.2' in repository spring-maven-milestone (http://maven.springframework.org/milestone)
+Downloading: http://nexus.motechproject.org/content/repositories/drishti/commons-httpclient/commons-httpclient/2.0.2/commons-httpclient-2.0.2.pom
+[INFO] Unable to find resource 'commons-httpclient:commons-httpclient:pom:2.0.2' in repository motech.drishti (http://nexus.motechproject.org/content/repositories/drishti)
+Downloading: http://nexus.motechproject.org/content/repositories/snapshots/commons-httpclient/commons-httpclient/2.0.2/commons-httpclient-2.0.2.pom
+[INFO] Unable to find resource 'commons-httpclient:commons-httpclient:pom:2.0.2' in repository motech.nexus (http://nexus.motechproject.org/content/repositories/snapshots)
+Downloading: http://nexus.motechproject.org/content/repositories/releases/commons-httpclient/commons-httpclient/2.0.2/commons-httpclient-2.0.2.pom
+[INFO] Unable to find resource 'commons-httpclient:commons-httpclient:pom:2.0.2' in repository motech.nexus.release (http://nexus.motechproject.org/content/repositories/releases)
+Downloading: http://repo1.maven.org/maven2/commons-httpclient/commons-httpclient/2.0.2/commons-httpclient-2.0.2.pom
+4/6K6/6K6K downloaded  (commons-httpclient-2.0.2.pom)
+Downloading: http://searls-maven-repository.googlecode.com/svn/trunk/snapshots/de/zeigermann/xml/xml-im-exporter/1.1/xml-im-exporter-1.1.pom
+[INFO] Unable to find resource 'de.zeigermann.xml:xml-im-exporter:pom:1.1' in repository jasmine-js-bdd (http://searls-maven-repository.googlecode.com/svn/trunk/snapshots)
+Downloading: http://maven.springframework.org/release/de/zeigermann/xml/xml-im-exporter/1.1/xml-im-exporter-1.1.pom
+[INFO] Unable to find resource 'de.zeigermann.xml:xml-im-exporter:pom:1.1' in repository spring-maven-release (http://maven.springframework.org/release)
+Downloading: http://maven.springframework.org/milestone/de/zeigermann/xml/xml-im-exporter/1.1/xml-im-exporter-1.1.pom
+[INFO] Unable to find resource 'de.zeigermann.xml:xml-im-exporter:pom:1.1' in repository spring-maven-milestone (http://maven.springframework.org/milestone)
+Downloading: http://nexus.motechproject.org/content/repositories/drishti/de/zeigermann/xml/xml-im-exporter/1.1/xml-im-exporter-1.1.pom
+[INFO] Unable to find resource 'de.zeigermann.xml:xml-im-exporter:pom:1.1' in repository motech.drishti (http://nexus.motechproject.org/content/repositories/drishti)
+Downloading: http://nexus.motechproject.org/content/repositories/snapshots/de/zeigermann/xml/xml-im-exporter/1.1/xml-im-exporter-1.1.pom
+[INFO] Unable to find resource 'de.zeigermann.xml:xml-im-exporter:pom:1.1' in repository motech.nexus (http://nexus.motechproject.org/content/repositories/snapshots)
+Downloading: http://nexus.motechproject.org/content/repositories/releases/de/zeigermann/xml/xml-im-exporter/1.1/xml-im-exporter-1.1.pom
+[INFO] Unable to find resource 'de.zeigermann.xml:xml-im-exporter:pom:1.1' in repository motech.nexus.release (http://nexus.motechproject.org/content/repositories/releases)
+Downloading: http://repo1.maven.org/maven2/de/zeigermann/xml/xml-im-exporter/1.1/xml-im-exporter-1.1.pom
+248/248b248b downloaded  (xml-im-exporter-1.1.pom)
+[INFO] [compiler:compile {execution: default-compile}]
+[INFO] Compiling 28 source files to /home/julkar/workspace/opensrp-server/drishti-common/target/classes
+[debug] execute contextualize
+[INFO] [resources:testResources {execution: default-testResources}]
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory /home/julkar/workspace/opensrp-server/drishti-common/src/test/resources
+[INFO] [compiler:testCompile {execution: default-testCompile}]
+[INFO] Compiling 5 source files to /home/julkar/workspace/opensrp-server/drishti-common/target/test-classes
+[INFO] [surefire:test {execution: default-test}]
+[INFO] Tests are skipped.
+Downloading: http://searls-maven-repository.googlecode.com/svn/trunk/snapshots/org/apache/maven/maven-archiver/2.3/maven-archiver-2.3.pom
+[INFO] Unable to find resource 'org.apache.maven:maven-archiver:pom:2.3' in repository jasmine-js-bdd (http://searls-maven-repository.googlecode.com/svn/trunk/snapshots)
+Downloading: http://repo1.maven.org/maven2/org/apache/maven/maven-archiver/2.3/maven-archiver-2.3.pom
+3/3K3K downloaded  (maven-archiver-2.3.pom)
+Downloading: http://searls-maven-repository.googlecode.com/svn/trunk/snapshots/org/codehaus/plexus/plexus-container-default/1.0-alpha-15/plexus-container-default-1.0-alpha-15.pom
+[INFO] Unable to find resource 'org.codehaus.plexus:plexus-container-default:pom:1.0-alpha-15' in repository jasmine-js-bdd (http://searls-maven-repository.googlecode.com/svn/trunk/snapshots)
+Downloading: http://maven.springframework.org/release/org/codehaus/plexus/plexus-container-default/1.0-alpha-15/plexus-container-default-1.0-alpha-15.pom
+[INFO] Unable to find resource 'org.codehaus.plexus:plexus-container-default:pom:1.0-alpha-15' in repository spring-maven-release (http://maven.springframework.org/release)
+Downloading: http://maven.springframework.org/milestone/org/codehaus/plexus/plexus-container-default/1.0-alpha-15/plexus-container-default-1.0-alpha-15.pom
+[INFO] Unable to find resource 'org.codehaus.plexus:plexus-container-default:pom:1.0-alpha-15' in repository spring-maven-milestone (http://maven.springframework.org/milestone)
+Downloading: http://nexus.motechproject.org/content/repositories/drishti/org/codehaus/plexus/plexus-container-default/1.0-alpha-15/plexus-container-default-1.0-alpha-15.pom
+[INFO] Unable to find resource 'org.codehaus.plexus:plexus-container-default:pom:1.0-alpha-15' in repository motech.drishti (http://nexus.motechproject.org/content/repositories/drishti)
+Downloading: http://nexus.motechproject.org/content/repositories/snapshots/org/codehaus/plexus/plexus-container-default/1.0-alpha-15/plexus-container-default-1.0-alpha-15.pom
+[INFO] Unable to find resource 'org.codehaus.plexus:plexus-container-default:pom:1.0-alpha-15' in repository motech.nexus (http://nexus.motechproject.org/content/repositories/snapshots)
+Downloading: http://nexus.motechproject.org/content/repositories/releases/org/codehaus/plexus/plexus-container-default/1.0-alpha-15/plexus-container-default-1.0-alpha-15.pom
+[INFO] Unable to find resource 'org.codehaus.plexus:plexus-container-default:pom:1.0-alpha-15' in repository motech.nexus.release (http://nexus.motechproject.org/content/repositories/releases)
+Downloading: http://repo1.maven.org/maven2/org/codehaus/plexus/plexus-container-default/1.0-alpha-15/plexus-container-default-1.0-alpha-15.pom
+1/1K1K downloaded  (plexus-container-default-1.0-alpha-15.pom)
+Downloading: http://searls-maven-repository.googlecode.com/svn/trunk/snapshots/org/codehaus/plexus/plexus-containers/1.0-alpha-15/plexus-containers-1.0-alpha-15.pom
+[INFO] Unable to find resource 'org.codehaus.plexus:plexus-containers:pom:1.0-alpha-15' in repository jasmine-js-bdd (http://searls-maven-repository.googlecode.com/svn/trunk/snapshots)
+Downloading: http://maven.springframework.org/release/org/codehaus/plexus/plexus-containers/1.0-alpha-15/plexus-containers-1.0-alpha-15.pom
+[INFO] Unable to find resource 'org.codehaus.plexus:plexus-containers:pom:1.0-alpha-15' in repository spring-maven-release (http://maven.springframework.org/release)
+Downloading: http://maven.springframework.org/milestone/org/codehaus/plexus/plexus-containers/1.0-alpha-15/plexus-containers-1.0-alpha-15.pom
+[INFO] Unable to find resource 'org.codehaus.plexus:plexus-containers:pom:1.0-alpha-15' in repository spring-maven-milestone (http://maven.springframework.org/milestone)
+Downloading: http://nexus.motechproject.org/content/repositories/drishti/org/codehaus/plexus/plexus-containers/1.0-alpha-15/plexus-containers-1.0-alpha-15.pom
+[INFO] Unable to find resource 'org.codehaus.plexus:plexus-containers:pom:1.0-alpha-15' in repository motech.drishti (http://nexus.motechproject.org/content/repositories/drishti)
+Downloading: http://nexus.motechproject.org/content/repositories/snapshots/org/codehaus/plexus/plexus-containers/1.0-alpha-15/plexus-containers-1.0-alpha-15.pom
+[INFO] Unable to find resource 'org.codehaus.plexus:plexus-containers:pom:1.0-alpha-15' in repository motech.nexus (http://nexus.motechproject.org/content/repositories/snapshots)
+Downloading: http://nexus.motechproject.org/content/repositories/releases/org/codehaus/plexus/plexus-containers/1.0-alpha-15/plexus-containers-1.0-alpha-15.pom
+[INFO] Unable to find resource 'org.codehaus.plexus:plexus-containers:pom:1.0-alpha-15' in repository motech.nexus.release (http://nexus.motechproject.org/content/repositories/releases)
+Downloading: http://repo1.maven.org/maven2/org/codehaus/plexus/plexus-containers/1.0-alpha-15/plexus-containers-1.0-alpha-15.pom
+1/1K1/1K1K downloaded  (plexus-containers-1.0-alpha-15.pom)
+Downloading: http://searls-maven-repository.googlecode.com/svn/trunk/snapshots/org/codehaus/plexus/plexus-component-api/1.0-alpha-15/plexus-component-api-1.0-alpha-15.pom
+[INFO] Unable to find resource 'org.codehaus.plexus:plexus-component-api:pom:1.0-alpha-15' in repository jasmine-js-bdd (http://searls-maven-repository.googlecode.com/svn/trunk/snapshots)
+Downloading: http://maven.springframework.org/release/org/codehaus/plexus/plexus-component-api/1.0-alpha-15/plexus-component-api-1.0-alpha-15.pom
+[INFO] Unable to find resource 'org.codehaus.plexus:plexus-component-api:pom:1.0-alpha-15' in repository spring-maven-release (http://maven.springframework.org/release)
+Downloading: http://maven.springframework.org/milestone/org/codehaus/plexus/plexus-component-api/1.0-alpha-15/plexus-component-api-1.0-alpha-15.pom
+[INFO] Unable to find resource 'org.codehaus.plexus:plexus-component-api:pom:1.0-alpha-15' in repository spring-maven-milestone (http://maven.springframework.org/milestone)
+Downloading: http://nexus.motechproject.org/content/repositories/drishti/org/codehaus/plexus/plexus-component-api/1.0-alpha-15/plexus-component-api-1.0-alpha-15.pom
+[INFO] Unable to find resource 'org.codehaus.plexus:plexus-component-api:pom:1.0-alpha-15' in repository motech.drishti (http://nexus.motechproject.org/content/repositories/drishti)
+Downloading: http://nexus.motechproject.org/content/repositories/snapshots/org/codehaus/plexus/plexus-component-api/1.0-alpha-15/plexus-component-api-1.0-alpha-15.pom
+[INFO] Unable to find resource 'org.codehaus.plexus:plexus-component-api:pom:1.0-alpha-15' in repository motech.nexus (http://nexus.motechproject.org/content/repositories/snapshots)
+Downloading: http://nexus.motechproject.org/content/repositories/releases/org/codehaus/plexus/plexus-component-api/1.0-alpha-15/plexus-component-api-1.0-alpha-15.pom
+[INFO] Unable to find resource 'org.codehaus.plexus:plexus-component-api:pom:1.0-alpha-15' in repository motech.nexus.release (http://nexus.motechproject.org/content/repositories/releases)
+Downloading: http://repo1.maven.org/maven2/org/codehaus/plexus/plexus-component-api/1.0-alpha-15/plexus-component-api-1.0-alpha-15.pom
+948/948b948b downloaded  (plexus-component-api-1.0-alpha-15.pom)
+Downloading: http://searls-maven-repository.googlecode.com/svn/trunk/snapshots/org/codehaus/plexus/plexus-classworlds/1.2-alpha-6/plexus-classworlds-1.2-alpha-6.pom
+[INFO] Unable to find resource 'org.codehaus.plexus:plexus-classworlds:pom:1.2-alpha-6' in repository jasmine-js-bdd (http://searls-maven-repository.googlecode.com/svn/trunk/snapshots)
+Downloading: http://maven.springframework.org/release/org/codehaus/plexus/plexus-classworlds/1.2-alpha-6/plexus-classworlds-1.2-alpha-6.pom
+[INFO] Unable to find resource 'org.codehaus.plexus:plexus-classworlds:pom:1.2-alpha-6' in repository spring-maven-release (http://maven.springframework.org/release)
+Downloading: http://maven.springframework.org/milestone/org/codehaus/plexus/plexus-classworlds/1.2-alpha-6/plexus-classworlds-1.2-alpha-6.pom
+[INFO] Unable to find resource 'org.codehaus.plexus:plexus-classworlds:pom:1.2-alpha-6' in repository spring-maven-milestone (http://maven.springframework.org/milestone)
+Downloading: http://nexus.motechproject.org/content/repositories/drishti/org/codehaus/plexus/plexus-classworlds/1.2-alpha-6/plexus-classworlds-1.2-alpha-6.pom
+[INFO] Unable to find resource 'org.codehaus.plexus:plexus-classworlds:pom:1.2-alpha-6' in repository motech.drishti (http://nexus.motechproject.org/content/repositories/drishti)
+Downloading: http://nexus.motechproject.org/content/repositories/snapshots/org/codehaus/plexus/plexus-classworlds/1.2-alpha-6/plexus-classworlds-1.2-alpha-6.pom
+[INFO] Unable to find resource 'org.codehaus.plexus:plexus-classworlds:pom:1.2-alpha-6' in repository motech.nexus (http://nexus.motechproject.org/content/repositories/snapshots)
+Downloading: http://nexus.motechproject.org/content/repositories/releases/org/codehaus/plexus/plexus-classworlds/1.2-alpha-6/plexus-classworlds-1.2-alpha-6.pom
+[INFO] Unable to find resource 'org.codehaus.plexus:plexus-classworlds:pom:1.2-alpha-6' in repository motech.nexus.release (http://nexus.motechproject.org/content/repositories/releases)
+Downloading: http://repo1.maven.org/maven2/org/codehaus/plexus/plexus-classworlds/1.2-alpha-6/plexus-classworlds-1.2-alpha-6.pom
+2/2K2K downloaded  (plexus-classworlds-1.2-alpha-6.pom)
+Downloading: http://searls-maven-repository.googlecode.com/svn/trunk/snapshots/org/codehaus/plexus/plexus-component-api/1.0-alpha-16/plexus-component-api-1.0-alpha-16.pom
+[INFO] Unable to find resource 'org.codehaus.plexus:plexus-component-api:pom:1.0-alpha-16' in repository jasmine-js-bdd (http://searls-maven-repository.googlecode.com/svn/trunk/snapshots)
+Downloading: http://maven.springframework.org/release/org/codehaus/plexus/plexus-component-api/1.0-alpha-16/plexus-component-api-1.0-alpha-16.pom
+[INFO] Unable to find resource 'org.codehaus.plexus:plexus-component-api:pom:1.0-alpha-16' in repository spring-maven-release (http://maven.springframework.org/release)
+Downloading: http://maven.springframework.org/milestone/org/codehaus/plexus/plexus-component-api/1.0-alpha-16/plexus-component-api-1.0-alpha-16.pom
+[INFO] Unable to find resource 'org.codehaus.plexus:plexus-component-api:pom:1.0-alpha-16' in repository spring-maven-milestone (http://maven.springframework.org/milestone)
+Downloading: http://nexus.motechproject.org/content/repositories/drishti/org/codehaus/plexus/plexus-component-api/1.0-alpha-16/plexus-component-api-1.0-alpha-16.pom
+[INFO] Unable to find resource 'org.codehaus.plexus:plexus-component-api:pom:1.0-alpha-16' in repository motech.drishti (http://nexus.motechproject.org/content/repositories/drishti)
+Downloading: http://nexus.motechproject.org/content/repositories/snapshots/org/codehaus/plexus/plexus-component-api/1.0-alpha-16/plexus-component-api-1.0-alpha-16.pom
+[INFO] Unable to find resource 'org.codehaus.plexus:plexus-component-api:pom:1.0-alpha-16' in repository motech.nexus (http://nexus.motechproject.org/content/repositories/snapshots)
+Downloading: http://nexus.motechproject.org/content/repositories/releases/org/codehaus/plexus/plexus-component-api/1.0-alpha-16/plexus-component-api-1.0-alpha-16.pom
+[INFO] Unable to find resource 'org.codehaus.plexus:plexus-component-api:pom:1.0-alpha-16' in repository motech.nexus.release (http://nexus.motechproject.org/content/repositories/releases)
+Downloading: http://repo1.maven.org/maven2/org/codehaus/plexus/plexus-component-api/1.0-alpha-16/plexus-component-api-1.0-alpha-16.pom
+2/2K2K downloaded  (plexus-component-api-1.0-alpha-16.pom)
+Downloading: http://searls-maven-repository.googlecode.com/svn/trunk/snapshots/org/codehaus/plexus/plexus-containers/1.0-alpha-16/plexus-containers-1.0-alpha-16.pom
+[INFO] Unable to find resource 'org.codehaus.plexus:plexus-containers:pom:1.0-alpha-16' in repository jasmine-js-bdd (http://searls-maven-repository.googlecode.com/svn/trunk/snapshots)
+Downloading: http://maven.springframework.org/release/org/codehaus/plexus/plexus-containers/1.0-alpha-16/plexus-containers-1.0-alpha-16.pom
+[INFO] Unable to find resource 'org.codehaus.plexus:plexus-containers:pom:1.0-alpha-16' in repository spring-maven-release (http://maven.springframework.org/release)
+Downloading: http://maven.springframework.org/milestone/org/codehaus/plexus/plexus-containers/1.0-alpha-16/plexus-containers-1.0-alpha-16.pom
+[INFO] Unable to find resource 'org.codehaus.plexus:plexus-containers:pom:1.0-alpha-16' in repository spring-maven-milestone (http://maven.springframework.org/milestone)
+Downloading: http://nexus.motechproject.org/content/repositories/drishti/org/codehaus/plexus/plexus-containers/1.0-alpha-16/plexus-containers-1.0-alpha-16.pom
+[INFO] Unable to find resource 'org.codehaus.plexus:plexus-containers:pom:1.0-alpha-16' in repository motech.drishti (http://nexus.motechproject.org/content/repositories/drishti)
+Downloading: http://nexus.motechproject.org/content/repositories/snapshots/org/codehaus/plexus/plexus-containers/1.0-alpha-16/plexus-containers-1.0-alpha-16.pom
+[INFO] Unable to find resource 'org.codehaus.plexus:plexus-containers:pom:1.0-alpha-16' in repository motech.nexus (http://nexus.motechproject.org/content/repositories/snapshots)
+Downloading: http://nexus.motechproject.org/content/repositories/releases/org/codehaus/plexus/plexus-containers/1.0-alpha-16/plexus-containers-1.0-alpha-16.pom
+[INFO] Unable to find resource 'org.codehaus.plexus:plexus-containers:pom:1.0-alpha-16' in repository motech.nexus.release (http://nexus.motechproject.org/content/repositories/releases)
+Downloading: http://repo1.maven.org/maven2/org/codehaus/plexus/plexus-containers/1.0-alpha-16/plexus-containers-1.0-alpha-16.pom
+1/1K1K downloaded  (plexus-containers-1.0-alpha-16.pom)
+Downloading: http://searls-maven-repository.googlecode.com/svn/trunk/snapshots/org/codehaus/plexus/plexus-utils/1.4.9/plexus-utils-1.4.9.pom
+[INFO] Unable to find resource 'org.codehaus.plexus:plexus-utils:pom:1.4.9' in repository jasmine-js-bdd (http://searls-maven-repository.googlecode.com/svn/trunk/snapshots)
+Downloading: http://maven.springframework.org/release/org/codehaus/plexus/plexus-utils/1.4.9/plexus-utils-1.4.9.pom
+[INFO] Unable to find resource 'org.codehaus.plexus:plexus-utils:pom:1.4.9' in repository spring-maven-release (http://maven.springframework.org/release)
+Downloading: http://maven.springframework.org/milestone/org/codehaus/plexus/plexus-utils/1.4.9/plexus-utils-1.4.9.pom
+[INFO] Unable to find resource 'org.codehaus.plexus:plexus-utils:pom:1.4.9' in repository spring-maven-milestone (http://maven.springframework.org/milestone)
+Downloading: http://nexus.motechproject.org/content/repositories/drishti/org/codehaus/plexus/plexus-utils/1.4.9/plexus-utils-1.4.9.pom
+[INFO] Unable to find resource 'org.codehaus.plexus:plexus-utils:pom:1.4.9' in repository motech.drishti (http://nexus.motechproject.org/content/repositories/drishti)
+Downloading: http://nexus.motechproject.org/content/repositories/snapshots/org/codehaus/plexus/plexus-utils/1.4.9/plexus-utils-1.4.9.pom
+[INFO] Unable to find resource 'org.codehaus.plexus:plexus-utils:pom:1.4.9' in repository motech.nexus (http://nexus.motechproject.org/content/repositories/snapshots)
+Downloading: http://nexus.motechproject.org/content/repositories/releases/org/codehaus/plexus/plexus-utils/1.4.9/plexus-utils-1.4.9.pom
+[INFO] Unable to find resource 'org.codehaus.plexus:plexus-utils:pom:1.4.9' in repository motech.nexus.release (http://nexus.motechproject.org/content/repositories/releases)
+Downloading: http://repo1.maven.org/maven2/org/codehaus/plexus/plexus-utils/1.4.9/plexus-utils-1.4.9.pom
+2/2K2K downloaded  (plexus-utils-1.4.9.pom)
+Downloading: http://searls-maven-repository.googlecode.com/svn/trunk/snapshots/org/codehaus/plexus/plexus-utils/1.4.9/plexus-utils-1.4.9.jar
+Downloading: http://searls-maven-repository.googlecode.com/svn/trunk/snapshots/org/apache/maven/maven-archiver/2.3/maven-archiver-2.3.jar
+[INFO] Unable to find resource 'org.apache.maven:maven-archiver:jar:2.3' in repository jasmine-js-bdd (http://searls-maven-repository.googlecode.com/svn/trunk/snapshots)
+Downloading: http://repo1.maven.org/maven2/org/apache/maven/maven-archiver/2.3/maven-archiver-2.3.jar
+[INFO] Unable to find resource 'org.codehaus.plexus:plexus-utils:jar:1.4.9' in repository jasmine-js-bdd (http://searls-maven-repository.googlecode.com/svn/trunk/snapshots)
+Downloading: http://repo1.maven.org/maven2/org/codehaus/plexus/plexus-utils/1.4.9/plexus-utils-1.4.9.jar
+4/17K5/17K9/17K13/17K13/17K13/17K 4/199K13/17K 8/199K13/17K 12/199K13/17K 13/199K16/17K 13/199K17/17K 13/199K17K downloaded  (maven-archiver-2.3.jar)
+17/199K19/199K22/199K25/199K29/199K32/199K36/199K37/199K41/199K42/199K46/199K49/199K50/199K54/199K54/199K58/199K58/199K60/199K64/199K68/199K68/199K72/199K76/199K80/199K81/199K83/199K84/199K88/199K92/199K96/199K97/199K101/199K105/199K108/199K112/199K116/199K120/199K124/199K128/199K132/199K136/199K139/199K143/199K147/199K148/199K149/199K150/199K153/199K156/199K159/199K162/199K163/199K167/199K170/199K172/199K176/199K179/199K183/199K183/199K187/199K191/199K191/199K195/199K196/199K199/199K199K downloaded  (plexus-utils-1.4.9.jar)
+[INFO] [jar:jar {execution: default-jar}]
+[INFO] Building jar: /home/julkar/workspace/opensrp-server/drishti-common/target/drishti-common-0.1-SNAPSHOT.jar
+[INFO] [install:install {execution: default-install}]
+[INFO] Installing /home/julkar/workspace/opensrp-server/drishti-common/target/drishti-common-0.1-SNAPSHOT.jar to /home/julkar/.m2/repository/org/ei/drishti/drishti-common/0.1-SNAPSHOT/drishti-common-0.1-SNAPSHOT.jar
+[INFO] ------------------------------------------------------------------------
+[INFO] Building drishti-scheduler
+[INFO]    task-segment: [clean, install]
+[INFO] ------------------------------------------------------------------------
+[INFO] [clean:clean {execution: default-clean}]
+[INFO] Deleting file set: /home/julkar/workspace/opensrp-server/drishti-scheduler/target (included: [**], excluded: [])
+[debug] execute contextualize
+[INFO] [resources:resources {execution: default-resources}]
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory /home/julkar/workspace/opensrp-server/drishti-scheduler/src/main/resources
+[INFO] [compiler:compile {execution: default-compile}]
+[INFO] Compiling 10 source files to /home/julkar/workspace/opensrp-server/drishti-scheduler/target/classes
+[debug] execute contextualize
+[INFO] [resources:testResources {execution: default-testResources}]
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory /home/julkar/workspace/opensrp-server/drishti-scheduler/src/test/resources
+[INFO] [compiler:testCompile {execution: default-testCompile}]
+[INFO] Compiling 2 source files to /home/julkar/workspace/opensrp-server/drishti-scheduler/target/test-classes
+[INFO] [surefire:test {execution: default-test}]
+[INFO] Tests are skipped.
+[INFO] [jar:jar {execution: default-jar}]
+[INFO] Building jar: /home/julkar/workspace/opensrp-server/drishti-scheduler/target/drishti-scheduler-0.1-SNAPSHOT.jar
+[INFO] [install:install {execution: default-install}]
+[INFO] Installing /home/julkar/workspace/opensrp-server/drishti-scheduler/target/drishti-scheduler-0.1-SNAPSHOT.jar to /home/julkar/.m2/repository/org/ei/drishti/drishti-scheduler/0.1-SNAPSHOT/drishti-scheduler-0.1-SNAPSHOT.jar
+[INFO] ------------------------------------------------------------------------
+[INFO] Building drishti-interface
+[INFO]    task-segment: [clean, install]
+[INFO] ------------------------------------------------------------------------
+[INFO] [clean:clean {execution: default-clean}]
+[INFO] Deleting file set: /home/julkar/workspace/opensrp-server/drishti-interface/target (included: [**], excluded: [])
+[debug] execute contextualize
+[INFO] [resources:resources {execution: default-resources}]
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory /home/julkar/workspace/opensrp-server/drishti-interface/src/main/resources
+[INFO] [compiler:compile {execution: default-compile}]
+[INFO] Compiling 35 source files to /home/julkar/workspace/opensrp-server/drishti-interface/target/classes
+[debug] execute contextualize
+[INFO] [resources:testResources {execution: default-testResources}]
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory /home/julkar/workspace/opensrp-server/drishti-interface/src/test/resources
+[INFO] [compiler:testCompile {execution: default-testCompile}]
+[INFO] Nothing to compile - all classes are up to date
+[INFO] [surefire:test {execution: default-test}]
+[INFO] Tests are skipped.
+[INFO] [jar:jar {execution: default-jar}]
+[INFO] Building jar: /home/julkar/workspace/opensrp-server/drishti-interface/target/drishti-interface-0.1-SNAPSHOT.jar
+[INFO] [install:install {execution: default-install}]
+[INFO] Installing /home/julkar/workspace/opensrp-server/drishti-interface/target/drishti-interface-0.1-SNAPSHOT.jar to /home/julkar/.m2/repository/org/ei/drishti/drishti-interface/0.1-SNAPSHOT/drishti-interface-0.1-SNAPSHOT.jar
+[INFO] ------------------------------------------------------------------------
+[INFO] Building drishti-form
+[INFO]    task-segment: [clean, install]
+[INFO] ------------------------------------------------------------------------
+[INFO] [clean:clean {execution: default-clean}]
+[INFO] Deleting file set: /home/julkar/workspace/opensrp-server/drishti-form/target (included: [**], excluded: [])
+[debug] execute contextualize
+[INFO] [resources:resources {execution: default-resources}]
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 1 resource
+[INFO] [compiler:compile {execution: default-compile}]
+[INFO] Compiling 8 source files to /home/julkar/workspace/opensrp-server/drishti-form/target/classes
+[debug] execute contextualize
+[INFO] [resources:testResources {execution: default-testResources}]
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 1 resource
+[INFO] [compiler:testCompile {execution: default-testCompile}]
+[INFO] Compiling 2 source files to /home/julkar/workspace/opensrp-server/drishti-form/target/test-classes
+[INFO] [surefire:test {execution: default-test}]
+[INFO] Tests are skipped.
+[INFO] [jar:jar {execution: default-jar}]
+[INFO] Building jar: /home/julkar/workspace/opensrp-server/drishti-form/target/drishti-form-0.1-SNAPSHOT.jar
+[INFO] [install:install {execution: default-install}]
+[INFO] Installing /home/julkar/workspace/opensrp-server/drishti-form/target/drishti-form-0.1-SNAPSHOT.jar to /home/julkar/.m2/repository/org/ei/drishti/drishti-form/0.1-SNAPSHOT/drishti-form-0.1-SNAPSHOT.jar
+[INFO] ------------------------------------------------------------------------
+[INFO] Building drishti-mother-child
+[INFO]    task-segment: [clean, install]
+[INFO] ------------------------------------------------------------------------
+[INFO] [clean:clean {execution: default-clean}]
+[INFO] Deleting file set: /home/julkar/workspace/opensrp-server/drishti-mother-child/target (included: [**], excluded: [])
+[debug] execute contextualize
+[INFO] [resources:resources {execution: default-resources}]
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 38 resources
+[INFO] [compiler:compile {execution: default-compile}]
+[INFO] Compiling 299 source files to /home/julkar/workspace/opensrp-server/drishti-mother-child/target/classes
+[debug] execute contextualize
+[INFO] [resources:testResources {execution: default-testResources}]
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 5 resources
+[INFO] [compiler:testCompile {execution: default-testCompile}]
+[INFO] Compiling 226 source files to /home/julkar/workspace/opensrp-server/drishti-mother-child/target/test-classes
+[INFO] [surefire:test {execution: default-test}]
+[INFO] Tests are skipped.
+[INFO] [jar:jar {execution: default-jar}]
+[INFO] Building jar: /home/julkar/workspace/opensrp-server/drishti-mother-child/target/drishti-mother-child-0.1-SNAPSHOT.jar
+[INFO] [install:install {execution: default-install}]
+[INFO] Installing /home/julkar/workspace/opensrp-server/drishti-mother-child/target/drishti-mother-child-0.1-SNAPSHOT.jar to /home/julkar/.m2/repository/org/ei/drishti/drishti-mother-child/0.1-SNAPSHOT/drishti-mother-child-0.1-SNAPSHOT.jar
+[INFO] ------------------------------------------------------------------------
+[INFO] Building drishti-web
+[INFO]    task-segment: [clean, install]
+[INFO] ------------------------------------------------------------------------
+[INFO] [clean:clean {execution: default-clean}]
+[INFO] Deleting file set: /home/julkar/workspace/opensrp-server/drishti-web/target (included: [**], excluded: [])
+[debug] execute contextualize
+[INFO] [resources:resources {execution: default-resources}]
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 47 resources
+[INFO] Copying 2 resources
+[INFO] Copying 38 resources
+[INFO] snapshot org.motechproject:motech-schedule-testing:0.12-DRISTHI-SNAPSHOT: checking for updates from central
+[INFO] snapshot org.motechproject:motech-schedule-testing:0.12-DRISTHI-SNAPSHOT: checking for updates from spring-maven-release
+[INFO] snapshot org.motechproject:motech-schedule-testing:0.12-DRISTHI-SNAPSHOT: checking for updates from spring-maven-milestone
+[INFO] snapshot org.motechproject:motech-schedule-testing:0.12-DRISTHI-SNAPSHOT: checking for updates from motech.drishti
+[INFO] snapshot org.motechproject:motech-schedule-testing:0.12-DRISTHI-SNAPSHOT: checking for updates from motech.nexus
+[WARNING] *** CHECKSUM FAILED - Checksum failed on download: local = 'dbf5df23fb84217853a0b4100f72f26bf039fa00'; remote = '3971b80faaef45d41c3cd47f396a39818d1df810' - RETRYING
+[WARNING] *** CHECKSUM FAILED - Checksum failed on download: local = 'dbf5df23fb84217853a0b4100f72f26bf039fa00'; remote = '3971b80faaef45d41c3cd47f396a39818d1df810' - IGNORING
+[INFO] snapshot org.motechproject:motech-schedule-testing:0.12-DRISTHI-SNAPSHOT: checking for updates from motech.nexus.release
+Downloading: http://nexus.motechproject.org/content/repositories/snapshots/org/motechproject/motech-schedule-testing/0.12-DRISTHI-SNAPSHOT/motech-schedule-testing-0.12-DRISTHI-SNAPSHOT.pom
+[INFO] snapshot org.motechproject:motech-delivery-tools:0.12-SNAPSHOT: checking for updates from central
+[INFO] snapshot org.motechproject:motech-delivery-tools:0.12-SNAPSHOT: checking for updates from spring-maven-release
+[INFO] snapshot org.motechproject:motech-delivery-tools:0.12-SNAPSHOT: checking for updates from spring-maven-milestone
+[INFO] snapshot org.motechproject:motech-delivery-tools:0.12-SNAPSHOT: checking for updates from motech.drishti
+[INFO] snapshot org.motechproject:motech-delivery-tools:0.12-SNAPSHOT: checking for updates from motech.nexus
+[WARNING] *** CHECKSUM FAILED - Checksum failed on download: local = '7f07ef36d5e0e593ccda7fe7858115edd4150c69'; remote = 'e423982208e03ca9cd98c1b1c04deb4749d66ccc' - RETRYING
+[WARNING] *** CHECKSUM FAILED - Checksum failed on download: local = '7f07ef36d5e0e593ccda7fe7858115edd4150c69'; remote = 'e423982208e03ca9cd98c1b1c04deb4749d66ccc' - IGNORING
+[INFO] snapshot org.motechproject:motech-delivery-tools:0.12-SNAPSHOT: checking for updates from motech.nexus.release
+Downloading: http://nexus.motechproject.org/content/repositories/snapshots/org/motechproject/motech-delivery-tools/0.12-SNAPSHOT/motech-delivery-tools-0.12-SNAPSHOT.pom
+[INFO] snapshot org.motechproject:motech-delivery:0.12-SNAPSHOT: checking for updates from central
+[INFO] snapshot org.motechproject:motech-delivery:0.12-SNAPSHOT: checking for updates from spring-maven-release
+[INFO] snapshot org.motechproject:motech-delivery:0.12-SNAPSHOT: checking for updates from spring-maven-milestone
+[INFO] snapshot org.motechproject:motech-delivery:0.12-SNAPSHOT: checking for updates from motech.drishti
+[INFO] snapshot org.motechproject:motech-delivery:0.12-SNAPSHOT: checking for updates from motech.nexus
+[WARNING] *** CHECKSUM FAILED - Checksum failed on download: local = '650de3e3e97a287a2308b41f75889a56684384be'; remote = 'c777c0d2efda5a0a929f329c2e97fa3c30160bab' - RETRYING
+[WARNING] *** CHECKSUM FAILED - Checksum failed on download: local = '650de3e3e97a287a2308b41f75889a56684384be'; remote = 'c777c0d2efda5a0a929f329c2e97fa3c30160bab' - IGNORING
+[INFO] snapshot org.motechproject:motech-delivery:0.12-SNAPSHOT: checking for updates from motech.nexus.release
+Downloading: http://nexus.motechproject.org/content/repositories/snapshots/org/motechproject/motech-delivery/0.12-SNAPSHOT/motech-delivery-0.12-SNAPSHOT.pom
+Downloading: http://maven.springframework.org/release/log4j/log4j/1.2.14/log4j-1.2.14.jar
+[INFO] Unable to find resource 'log4j:log4j:jar:1.2.14' in repository spring-maven-release (http://maven.springframework.org/release)
+Downloading: http://maven.springframework.org/milestone/log4j/log4j/1.2.14/log4j-1.2.14.jar
+[INFO] Unable to find resource 'log4j:log4j:jar:1.2.14' in repository spring-maven-milestone (http://maven.springframework.org/milestone)
+Downloading: http://nexus.motechproject.org/content/repositories/drishti/log4j/log4j/1.2.14/log4j-1.2.14.jar
+[INFO] Unable to find resource 'log4j:log4j:jar:1.2.14' in repository motech.drishti (http://nexus.motechproject.org/content/repositories/drishti)
+Downloading: http://nexus.motechproject.org/content/repositories/snapshots/log4j/log4j/1.2.14/log4j-1.2.14.jar
+[INFO] Unable to find resource 'log4j:log4j:jar:1.2.14' in repository motech.nexus (http://nexus.motechproject.org/content/repositories/snapshots)
+Downloading: http://nexus.motechproject.org/content/repositories/releases/log4j/log4j/1.2.14/log4j-1.2.14.jar
+[INFO] Unable to find resource 'log4j:log4j:jar:1.2.14' in repository motech.nexus.release (http://nexus.motechproject.org/content/repositories/releases)
+Downloading: http://repo1.maven.org/maven2/log4j/log4j/1.2.14/log4j-1.2.14.jar
+0/358K2/358K6/358K10/358K13/358K16/358K17/358K19/358K22/358K25/358K29/358K30/358K34/358K38/358K40/358K42/358K43/358K47/358K47/358K49/358K53/358K57/358K61/358K63/358K67/358K71/358K74/358K78/358K78/358K80/358K83/358K87/358K87/358K88/358K92/358K94/358K98/358K102/358K106/358K110/358K114/358K118/358K118/358K122/358K126/358K128/358K131/358K133/358K137/358K138/358K142/358K142/358K146/358K150/358K154/358K158/358K162/358K166/358K170/358K170/358K174/358K178/358K182/358K186/358K190/358K191/358K194/358K197/358K201/358K201/358K205/358K206/358K207/358K211/358K214/358K218/358K220/358K224/358K225/358K229/358K233/358K237/358K241/358K245/358K247/358K251/358K255/358K258/358K261/358K264/358K266/358K269/358K271/358K275/358K278/358K282/358K282/358K286/358K288/358K292/358K296/358K296/358K300/358K302/358K306/358K310/358K314/358K318/358K320/358K324/358K328/358K332/358K336/358K340/358K344/358K348/358K352/358K356/358K358/358K358K downloaded  (log4j-1.2.14.jar)
+[INFO] [compiler:compile {execution: default-compile}]
+[INFO] Compiling 19 source files to /home/julkar/workspace/opensrp-server/drishti-web/target/classes
+[debug] execute contextualize
+[INFO] [resources:testResources {execution: default-testResources}]
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory /home/julkar/workspace/opensrp-server/drishti-web/src/test/resources
+Downloading: http://nexus.motechproject.org/content/repositories/snapshots/org/motechproject/motech-schedule-testing/0.12-DRISTHI-SNAPSHOT/motech-schedule-testing-0.12-DRISTHI-SNAPSHOT.jar
+[INFO] [compiler:testCompile {execution: default-testCompile}]
+[INFO] Compiling 9 source files to /home/julkar/workspace/opensrp-server/drishti-web/target/test-classes
+[INFO] [surefire:test {execution: default-test}]
+[INFO] Tests are skipped.
+[INFO] Preparing jasmine:test
+[WARNING] Removing: test from forked lifecycle, to prevent recursive invocation.
+[WARNING] Removing: test from forked lifecycle, to prevent recursive invocation.
+[WARNING] While downloading xml-apis:xml-apis:2.0.2
+  This artifact has been relocated to xml-apis:xml-apis:1.0.b2.
+
+
+[INFO] [jasmine:generateManualRunner {execution: default}]
+[INFO] Generating runner 'ManualSpecRunner.html' in the Jasmine plugin's target directory to open in a browser to facilitate faster feedback.
+[debug] execute contextualize
+[INFO] [resources:resources {execution: default-resources}]
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 47 resources
+[INFO] Copying 2 resources
+[INFO] Copying 38 resources
+[INFO] [jasmine:resources {execution: default}]
+[INFO] Processing JavaScript Sources
+[INFO] [compiler:compile {execution: default-compile}]
+[INFO] Nothing to compile - all classes are up to date
+[debug] execute contextualize
+[INFO] [resources:testResources {execution: default-testResources}]
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory /home/julkar/workspace/opensrp-server/drishti-web/src/test/resources
+[INFO] [jasmine:testResources {execution: default}]
+[INFO] Processing JavaScript Specs
+[INFO] [jasmine:test {execution: default}]
+[INFO] Skipping Jasmine Specs
+[INFO] [war:war {execution: default-war}]
+[INFO] Packaging webapp
+[INFO] Assembling webapp [drishti-web] in [/home/julkar/workspace/opensrp-server/drishti-web/target/drishti-web-0.1-SNAPSHOT]
+[INFO] Processing war project
+[INFO] Copying webapp resources [/home/julkar/workspace/opensrp-server/drishti-web/src/main/webapp]
+[INFO] Webapp assembled in [137 msecs]
+[INFO] Building war: /home/julkar/workspace/opensrp-server/drishti-web/target/drishti-web-0.1-SNAPSHOT.war
+[INFO] WEB-INF/web.xml already added, skipping
+[INFO] Preparing jetty:run
+[WARNING] Removing: run from forked lifecycle, to prevent recursive invocation.
+[WARNING] Removing: test from forked lifecycle, to prevent recursive invocation.
+[debug] execute contextualize
+[INFO] [resources:resources {execution: default-resources}]
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 47 resources
+[INFO] Copying 2 resources
+[INFO] Copying 38 resources
+[INFO] [compiler:compile {execution: default-compile}]
+[INFO] Nothing to compile - all classes are up to date
+[debug] execute contextualize
+[INFO] [resources:testResources {execution: default-testResources}]
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory /home/julkar/workspace/opensrp-server/drishti-web/src/test/resources
+[INFO] [compiler:testCompile {execution: default-testCompile}]
+[INFO] Nothing to compile - all classes are up to date
+[INFO] [jetty:run {execution: start-jetty}]
+[INFO] Configuring Jetty for project: drishti-web
+[INFO] webAppSourceDirectory /home/julkar/workspace/opensrp-server/drishti-web/src/main/webapp does not exist. Defaulting to /home/julkar/workspace/opensrp-server/drishti-web/src/main/webapp
+[INFO] Reload Mechanic: automatic
+[INFO] Classes = /home/julkar/workspace/opensrp-server/drishti-web/target/classes
+[INFO] Context path = /
+[INFO] Tmp directory = /home/julkar/workspace/opensrp-server/drishti-web/target/tmp
+[INFO] Web defaults = org/eclipse/jetty/webapp/webdefault.xml
+[INFO] Web overrides =  none
+[INFO] web.xml file = file:/home/julkar/workspace/opensrp-server/drishti-web/src/main/webapp/WEB-INF/web.xml
+[INFO] Webapp directory = /home/julkar/workspace/opensrp-server/drishti-web/src/main/webapp
+[INFO] Starting jetty 8.0.1.v20110908 ...
+[DRISHTI] 13022015 14:24:15,961 INFO  [main] [ContextLoader] Root WebApplicationContext: initialization started
+[DRISHTI] 13022015 14:24:16,008 INFO  [main] [XmlWebApplicationContext] Refreshing Root WebApplicationContext: startup date [Fri Feb 13 14:24:16 BDT 2015]; root of context hierarchy
+[DRISHTI] 13022015 14:24:16,043 INFO  [main] [XmlBeanDefinitionReader] Loading XML bean definitions from URL [file:/home/julkar/workspace/opensrp-server/drishti-web/target/classes/spring/applicationContext-drishti-web.xml]
+[DRISHTI] 13022015 14:24:16,145 INFO  [main] [XmlBeanDefinitionReader] Loading XML bean definitions from class path resource [applicationContext-drishti.xml]
+[DRISHTI] 13022015 14:24:16,198 INFO  [main] [XmlBeanDefinitionReader] Loading XML bean definitions from class path resource [applicationScheduler.xml]
+[DRISHTI] 13022015 14:24:16,258 INFO  [main] [XmlBeanDefinitionReader] Loading XML bean definitions from class path resource [schedulerFiredEventChannelAdapter.xml]
+[DRISHTI] 13022015 14:24:16,399 INFO  [main] [XmlBeanDefinitionReader] Loading XML bean definitions from class path resource [schedulerInboundChannelAdapter.xml]
+[DRISHTI] 13022015 14:24:16,484 INFO  [main] [XmlBeanDefinitionReader] Loading XML bean definitions from class path resource [applicationPlatformServerAPI.xml]
+[DRISHTI] 13022015 14:24:16,509 INFO  [main] [XmlBeanDefinitionReader] Loading XML bean definitions from class path resource [integrationCommonAPI.xml]
+[DRISHTI] 13022015 14:24:16,529 INFO  [main] [DefaultListableBeanFactory] Overriding bean definition for bean 'connectionFactory': replacing [Generic bean: class [org.springframework.jms.connection.CachingConnectionFactory]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null; defined in class path resource [applicationScheduler.xml]] with [Generic bean: class [org.springframework.jms.connection.CachingConnectionFactory]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null; defined in class path resource [integrationCommonAPI.xml]]
+[DRISHTI] 13022015 14:24:16,530 INFO  [main] [DefaultListableBeanFactory] Overriding bean definition for bean 'schedulerQueue': replacing [Generic bean: class [org.apache.activemq.command.ActiveMQQueue]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null; defined in class path resource [applicationScheduler.xml]] with [Generic bean: class [org.apache.activemq.command.ActiveMQQueue]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null; defined in class path resource [integrationCommonAPI.xml]]
+[DRISHTI] 13022015 14:24:16,530 INFO  [main] [DefaultListableBeanFactory] Overriding bean definition for bean 'eventQueue': replacing [Generic bean: class [org.apache.activemq.command.ActiveMQQueue]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null; defined in class path resource [applicationScheduler.xml]] with [Generic bean: class [org.apache.activemq.command.ActiveMQQueue]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null; defined in class path resource [integrationCommonAPI.xml]]
+[DRISHTI] 13022015 14:24:16,530 INFO  [main] [XmlBeanDefinitionReader] Loading XML bean definitions from class path resource [outboundEventChannelAdapterAPI.xml]
+[DRISHTI] 13022015 14:24:16,580 INFO  [main] [XmlBeanDefinitionReader] Loading XML bean definitions from class path resource [inboundEventChannelAdapter.xml]
+[DRISHTI] 13022015 14:24:16,630 INFO  [main] [DefaultListableBeanFactory] Overriding bean definition for bean 'jmsin': replacing [Generic bean: class [org.springframework.integration.jms.JmsMessageDrivenEndpoint]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null] with [Generic bean: class [org.springframework.integration.jms.JmsMessageDrivenEndpoint]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null]
+[DRISHTI] 13022015 14:24:16,631 INFO  [main] [XmlBeanDefinitionReader] Loading XML bean definitions from class path resource [outboundScheduleJobChannelAdapter.xml]
+[DRISHTI] 13022015 14:24:16,671 INFO  [main] [XmlBeanDefinitionReader] Loading XML bean definitions from class path resource [applicationPlatformCommonAPI.xml]
+[DRISHTI] 13022015 14:24:16,741 INFO  [main] [XmlBeanDefinitionReader] Loading XML bean definitions from class path resource [applicationSmsHttp.xml]
+[DRISHTI] 13022015 14:24:16,769 INFO  [main] [XmlBeanDefinitionReader] Loading XML bean definitions from class path resource [applicationSmsAPI.xml]
+[DRISHTI] 13022015 14:24:16,791 INFO  [main] [XmlBeanDefinitionReader] Loading XML bean definitions from class path resource [applicationSchedulerTrackingAPI.xml]
+[DRISHTI] 13022015 14:24:16,807 INFO  [main] [DefaultListableBeanFactory] Overriding bean definition for bean 'couchdbProperties': replacing [Generic bean: class [org.springframework.beans.factory.config.PropertiesFactoryBean]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null] with [Generic bean: class [org.springframework.beans.factory.config.PropertiesFactoryBean]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null]
+[DRISHTI] 13022015 14:24:16,807 INFO  [main] [DefaultListableBeanFactory] Overriding bean definition for bean 'quartzProperties': replacing [Generic bean: class [org.springframework.beans.factory.config.PropertiesFactoryBean]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null] with [Generic bean: class [org.springframework.beans.factory.config.PropertiesFactoryBean]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null]
+[DRISHTI] 13022015 14:24:16,808 INFO  [main] [DefaultListableBeanFactory] Overriding bean definition for bean 'httpClient': replacing [Generic bean: class [org.ektorp.spring.HttpClientFactoryBean]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null; defined in class path resource [applicationPlatformCommonAPI.xml]] with [Generic bean: class [org.ektorp.spring.HttpClientFactoryBean]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null; defined in class path resource [applicationSchedulerTrackingAPI.xml]]
+[DRISHTI] 13022015 14:24:16,808 INFO  [main] [DefaultListableBeanFactory] Overriding bean definition for bean 'couchDbInstance': replacing [Generic bean: class [org.ektorp.impl.StdCouchDbInstance]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null; defined in class path resource [applicationPlatformCommonAPI.xml]] with [Generic bean: class [org.ektorp.impl.StdCouchDbInstance]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null; defined in class path resource [applicationSchedulerTrackingAPI.xml]]
+[DRISHTI] 13022015 14:24:16,809 INFO  [main] [DefaultListableBeanFactory] Overriding bean definition for bean 'schedulerFactoryBean': replacing [Generic bean: class [org.springframework.scheduling.quartz.SchedulerFactoryBean]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null; defined in class path resource [applicationScheduler.xml]] with [Generic bean: class [org.springframework.scheduling.quartz.SchedulerFactoryBean]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null; defined in class path resource [applicationSchedulerTrackingAPI.xml]]
+[DRISHTI] 13022015 14:24:17,125 INFO  [main] [DefaultListableBeanFactory] Overriding bean definition for bean 'statsdAgent': replacing [Generic bean: class [org.motechproject.metrics.impl.StatsdAgentBackendImpl]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null; defined in class path resource [applicationPlatformCommonAPI.xml]] with [Generic bean: class [org.motechproject.metrics.impl.LoggingAgentBackendImpl]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null; defined in class path resource [applicationContext-drishti.xml]]
+[DRISHTI] 13022015 14:24:17,126 INFO  [main] [XmlBeanDefinitionReader] Loading XML bean definitions from class path resource [applicationContext-drishti-form.xml]
+[DRISHTI] 13022015 14:24:17,139 INFO  [main] [XmlBeanDefinitionReader] Loading XML bean definitions from class path resource [applicationPlatformCommonAPI.xml]
+[DRISHTI] 13022015 14:24:17,155 INFO  [main] [DefaultListableBeanFactory] Overriding bean definition for bean 'couchdbProperties': replacing [Generic bean: class [org.springframework.beans.factory.config.PropertiesFactoryBean]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null] with [Generic bean: class [org.springframework.beans.factory.config.PropertiesFactoryBean]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null]
+[DRISHTI] 13022015 14:24:17,161 INFO  [main] [DefaultListableBeanFactory] Overriding bean definition for bean 'httpClient': replacing [Generic bean: class [org.ektorp.spring.HttpClientFactoryBean]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null; defined in class path resource [applicationSchedulerTrackingAPI.xml]] with [Generic bean: class [org.ektorp.spring.HttpClientFactoryBean]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null; defined in class path resource [applicationPlatformCommonAPI.xml]]
+[DRISHTI] 13022015 14:24:17,162 INFO  [main] [DefaultListableBeanFactory] Overriding bean definition for bean 'couchDbInstance': replacing [Generic bean: class [org.ektorp.impl.StdCouchDbInstance]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null; defined in class path resource [applicationSchedulerTrackingAPI.xml]] with [Generic bean: class [org.ektorp.impl.StdCouchDbInstance]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null; defined in class path resource [applicationPlatformCommonAPI.xml]]
+[DRISHTI] 13022015 14:24:17,162 INFO  [main] [DefaultListableBeanFactory] Overriding bean definition for bean 'ruleDatabase': replacing [Generic bean: class [org.ektorp.impl.StdCouchDbConnector]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null; defined in class path resource [applicationPlatformCommonAPI.xml]] with [Generic bean: class [org.ektorp.impl.StdCouchDbConnector]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null; defined in class path resource [applicationPlatformCommonAPI.xml]]
+[DRISHTI] 13022015 14:24:17,163 INFO  [main] [DefaultListableBeanFactory] Overriding bean definition for bean 'metricsAgent': replacing [Generic bean: class [org.motechproject.metrics.impl.MultipleMetricsAgentImpl]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null; defined in class path resource [applicationPlatformCommonAPI.xml]] with [Generic bean: class [org.motechproject.metrics.impl.MultipleMetricsAgentImpl]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null; defined in class path resource [applicationPlatformCommonAPI.xml]]
+[DRISHTI] 13022015 14:24:17,163 INFO  [main] [DefaultListableBeanFactory] Overriding bean definition for bean 'loggingAgent': replacing [Generic bean: class [org.motechproject.metrics.impl.LoggingAgentBackendImpl]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null; defined in class path resource [applicationPlatformCommonAPI.xml]] with [Generic bean: class [org.motechproject.metrics.impl.LoggingAgentBackendImpl]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null; defined in class path resource [applicationPlatformCommonAPI.xml]]
+[DRISHTI] 13022015 14:24:17,164 INFO  [main] [DefaultListableBeanFactory] Overriding bean definition for bean 'statsdAgent': replacing [Generic bean: class [org.motechproject.metrics.impl.LoggingAgentBackendImpl]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null; defined in class path resource [applicationContext-drishti.xml]] with [Generic bean: class [org.motechproject.metrics.impl.StatsdAgentBackendImpl]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null; defined in class path resource [applicationPlatformCommonAPI.xml]]
+[DRISHTI] 13022015 14:24:17,171 INFO  [main] [XmlBeanDefinitionReader] Loading XML bean definitions from URL [file:/home/julkar/workspace/opensrp-server/drishti-web/target/classes/spring/securityContext.xml]
+[DRISHTI] 13022015 14:24:17,196 INFO  [main] [SpringSecurityCoreVersion] You are running with Spring Security Core 3.1.0.RELEASE
+[DRISHTI] 13022015 14:24:17,196 INFO  [main] [SecurityNamespaceHandler] Spring Security 'config' module version is 3.1.0.RELEASE
+[DRISHTI] 13022015 14:24:17,236 INFO  [main] [AuthenticationConfigBuilder] No login page configured. The default internal one will be used. Use the 'login-page' attribute to set the URL of the login page.
+[DRISHTI] 13022015 14:24:17,240 INFO  [main] [HttpSecurityBeanDefinitionParser] Checking sorted filter chain: [Root bean: class [org.springframework.security.web.context.SecurityContextPersistenceFilter]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null, order = 300, Root bean: class [org.springframework.security.web.authentication.logout.LogoutFilter]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null, order = 400, <org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter#0>, order = 800, Root bean: class [org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null, order = 1000, Root bean: class [org.springframework.security.web.authentication.www.BasicAuthenticationFilter]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null, order = 1200, Root bean: class [org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null, order = 1400, Root bean: class [org.springframework.security.web.authentication.AnonymousAuthenticationFilter]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null, order = 1700, Root bean: class [org.springframework.security.web.access.ExceptionTranslationFilter]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null, order = 1900, <org.springframework.security.web.access.intercept.FilterSecurityInterceptor#0>, order = 2000]
+[DRISHTI] 13022015 14:24:17,241 INFO  [main] [DefaultListableBeanFactory] Overriding bean definition for bean 'drishtiAuthenticationProvider': replacing [Generic bean: class [org.ei.drishti.web.security.DrishtiAuthenticationProvider]; scope=singleton; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null; defined in file [/home/julkar/workspace/opensrp-server/drishti-web/target/classes/org/ei/drishti/web/security/DrishtiAuthenticationProvider.class]] with [Generic bean: class [org.ei.drishti.web.security.DrishtiAuthenticationProvider]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null; defined in URL [file:/home/julkar/workspace/opensrp-server/drishti-web/target/classes/spring/securityContext.xml]]
+[DRISHTI] 13022015 14:24:17,791 INFO  [main] [PropertyPlaceholderConfigurer] Loading properties file from class path resource [activemq.properties]
+[DRISHTI] 13022015 14:24:17,799 INFO  [main] [PropertyPlaceholderConfigurer] Loading properties file from class path resource [activemq.properties]
+[DRISHTI] 13022015 14:24:17,804 INFO  [main] [PropertyPlaceholderConfigurer] Loading properties file from class path resource [activemq.properties]
+[DRISHTI] 13022015 14:24:17,809 INFO  [main] [PropertyPlaceholderConfigurer] Loading properties file from class path resource [activemq.properties]
+[DRISHTI] 13022015 14:24:17,815 INFO  [main] [DefaultConfiguringBeanFactoryPostProcessor] No bean named 'errorChannel' has been explicitly defined. Therefore, a default PublishSubscribeChannel will be created.
+[DRISHTI] 13022015 14:24:17,815 INFO  [main] [DefaultConfiguringBeanFactoryPostProcessor] No bean named 'taskScheduler' has been explicitly defined. Therefore, a default ThreadPoolTaskScheduler will be created.
+[DRISHTI] 13022015 14:24:17,893 INFO  [main] [DefaultListableBeanFactory] Pre-instantiating singletons in org.springframework.beans.factory.support.DefaultListableBeanFactory@7ee2cd7b: defining beans [org.springframework.beans.factory.config.PropertyPlaceholderConfigurer#0,org.springframework.context.annotation.internalConfigurationAnnotationProcessor,org.springframework.context.annotation.internalAutowiredAnnotationProcessor,org.springframework.context.annotation.internalRequiredAnnotationProcessor,org.springframework.context.annotation.internalCommonAnnotationProcessor,org.springframework.beans.factory.config.PropertyPlaceholderConfigurer#1,channelInitializer,$autoCreateChannelCandidates,org.springframework.integration.internalDefaultConfiguringBeanFactoryPostProcessor,schedulerFireEventGateway,schedulerGatewayToEventJmsoutChannel,org.springframework.integration.jms.JmsSendingMessageHandler#0,schedulerjmsout,org.springframework.jms.listener.DefaultMessageListenerContainer#0,org.springframework.integration.jms.ChannelPublishingJmsMessageListener#0,jmsin,jmsinToSchedulerChannel,org.springframework.integration.config.RouterFactoryBean#0,org.springframework.integration.config.ConsumerEndpointFactoryBean#0,scheduleChannel,scheduleRunOnceChannel,scheduleRepeatingChannel,unscheduleChannel,org.springframework.integration.handler.MethodInvokingMessageHandler#0,org.springframework.integration.config.ConsumerEndpointFactoryBean#1,org.springframework.integration.handler.MethodInvokingMessageHandler#1,org.springframework.integration.config.ConsumerEndpointFactoryBean#2,org.springframework.integration.handler.MethodInvokingMessageHandler#2,org.springframework.integration.config.ConsumerEndpointFactoryBean#3,org.springframework.integration.handler.MethodInvokingMessageHandler#3,org.springframework.integration.config.ConsumerEndpointFactoryBean#4,quartzProperties,connectionFactory,schedulerQueue,eventQueue,schedulerFactoryBean,schedulerService,org.springframework.beans.factory.config.PropertyPlaceholderConfigurer#2,outboundEventGateway,eventGatewayToEventJmsoutChannel,org.springframework.integration.jms.JmsSendingMessageHandler#1,eventjmsout,org.springframework.beans.factory.config.PropertyPlaceholderConfigurer#3,org.springframework.jms.listener.DefaultMessageListenerContainer#1,org.springframework.integration.jms.ChannelPublishingJmsMessageListener#1,eventChannel,org.springframework.integration.handler.MethodInvokingMessageHandler#4,outboundChannelAdapter,outboundScheduleJobGateway,scheduleJobGatewayToEventJmsoutChannel,org.springframework.integration.jms.JmsSendingMessageHandler#2,schedulejmsout,couchdbProperties,allRules,httpClient,couchDbInstance,ruleDatabase,metricsAgent,loggingAgent,statsdAgent,eventRelay,eventListenerRegistry,motechContext,eventContext,osgiConfig,osgiFramework,osgiFrameworkService,eventAnnotationBeanPostProcessor,smsHttpProperties,smsSendHandler,templateReader,smsHttpService,inboundSmsController,multiThreadedHttpConnectionManager,commonsHttpClient,smsAuditService,smsApiProperties,messageSplitter,smsServiceImpl,smsService,schedule_tracking,scheduleTrackingDbConnector,scheduleFactory,allEnrollments,allSchedules,trackedSchedulesJsonReaderImpl,endOfMilestoneListener,enrollmentAlertService,enrollmentDefaultmentService,enrollmentRecordMapper,enrollmentService,enrollmentsQueryService,scheduleTrackingService,drishti,ANMDetailsController,fakeSMSController,ANMLocationController,fakeReportController,fakeTimeController,fakeActionController,entitiesController,auditMessageController,registerController,userController,actionController,formSubmissionController,drishtiAuthenticationProvider,openmrsAuthServiceImpl,applicationStartupListener,alertController,PNCRegisterMapper,FPRegisterMapper,ECRegisterMapper,childRegisterMapper,ANCRegisterMapper,forceFulfillAction,autoClosePNCAction,alertCreationAction,allActions,allChildren,allMothers,formDataRepository,allMCTSReports,allDrishtiUsers,allPersons,allEligibleCouples,allFormExportTokens,allInfantBalanceOnHandReportTokens,ECService,PNCRegisterService,DMPAInjectableStrategy,condomStrategy,femaleSterilizationStrategy,OCPStrategy,maleSterilizationStrategy,IUDStrategy,defaultFPMethodStrategy,FPMethodStrategyFactory,personSchedulesService,scheduleService,PNCSchedulesService,childSchedulesService,ANCSchedulesService,ECSchedulingService,entitiesService,MCTSSMSService,actionService,FPRegisterService,childRegisterService,formSubmissionRouter,formEntityService,ziggyService,ziggyFileLoader,MCTSSMSReportService,childRegistrationECHandler,ANCRegistrationHandler,ECCloseHandler,PNCVisitHandler,ANCCloseHandler,childIllnessHandler,deliveryOutcomeHandler,reportFieldsDefinition,FPReferralFollowupHandler,IFAHandler,vitaminAHandler,childRegistrationOAHandler,childCloseHandler,ANCVisitHandler,PNCRegistrationOAHandler,FPChangeHandler,FPComplicationsHandler,postpartumFamilyPlanningHandler,PNCCloseHandler,childImmunizationsHandler,recordECPsHandler,ANCRegistrationOAHandler,deliveryPlanHandler,ECRegistrationHandler,ANCInvestigationsHandler,renewFPProductHandler,ECEditHandler,FPFollowupHandler,hbTestHandler,TTHandler,drishtiSMSService,PNCService,ANMDetailsService,ANCService,ANCRegisterService,childService,personService,MCTSReportService,spontaneousAbortionAtHomeAtHomeOrSubCenterRule,shouldMotherBeReferredImmediatelyRule,isDeathWasCausedByDiarrheaRule,isVitaminA1DoseGivenRule,isJEImmunizationGivenRule,serviceProvidedAtSub_CenterRule,isMotherDidNotSurvivedOnDeliveryRule,isDPTBooster2ImmunizationGivenRule,currentFPMethodIsCondomRule,newFPMethodIsOCPRule,isPentavalent2ImmunizationGivenRule,isChildDiseaseReportedAsDiarrheaDehydrationRule,isVitaminA5DoseGivenRule,isPNCVisitFirstBetween2And14DaysOfDeliveryRule,relocationIsPermanentRule,isChildClosedDueToDeathRule,isMotherClosedDueToDeathRule,isMotherDoesNotHaveBadSmellLocheaRule,isDeathWasCausedByLBWRule,isChildBelowThreeYearsRule,isMotherHasHemorrhageRule,casteIsSCRule,isOPV2ImmunizationGivenRule,isChildDiseaseReportedAsMeaslesRule,currentFPMethodIsCentchromanRule,isChildBetween6to12MonthsRule,PNCVisitHappenedBetween2And14DaysOfDeliveryRule,isHypertensionDetectedRule,isChildAgeGreaterThanOrEqualTo16MonthsRule,isPersonModerateAnaemicRule,IUDRemovedAtHomeAtHomeOrSubCenterRule,deliveryIsAttendedBySBATrainedPersonRule,isThirdANCVisitRule,isAllImmunizationsGivenRule,isDeathDueToSpontaneousAbortionRule,isChildMaleRule,isHypertensionStateChangedRule,isDeathWasCausedByAsphyxiaRule,isPNCVisitBetween2And7DaysOfDeliveryRule,newFPMethodIsCentchromanPillsRule,isSecondANCVisitRule,isOPV3ImmunizationGivenRule,isDeathDueToOtherReasonsRule,isANCRegisteredWithinTwelveWeeksOfPregnancy,isPNCVisit48HoursOfDeliveryRule,isDeathDueToAbortionRule,casteIsSTRule,isPNCVisitHappenedWithin42DaysOfDeliveryRule,deliveryHappenedAtHomeRule,isTT2OrTTBoosterDoseGivenForMother,isAllImmunizationsGivenEitherWithMeaslesOrMMRRule,isChildMoreThan16MonthsRule,isVitaminA8DoseGivenRule,isChildLessThan23MonthsRule,currentFPMethodIsEitherMaleOrFemaleSterilizationRule,isMotherClosedDueToDeathOfWomanRule,deliveryIsAttendedByNonSBATrainedPersonRule,isVitaminA7DoseGivenRule,isNotOutOfAreaRule,isOPVBoosterImmunizationGivenRule,isDeliveryDateOneYearInThePastRule,isPersonSevereAnaemicRule,isTT1DoseGivenForMother,moreThanZeroOCPStripsSuppliedRule,currentFPMethodIsOCPRule,isVitaminA3DoseGivenRule,currentFPMethodIsFemaleSterilizationRule,PNCVisitHappenedAtSubCenterOrHomeRule,isHepB0ImmunizationGivenRule,isMeaslesImmunizationGivenRule,isTT2DoseGivenForMother,isVitaminA4DoseGivenRule,minimumThreeANCVisitsHappenedOnTimeRule,isDeathDueToHighFeverRule,PNCVisitHappenedWithin2DaysOfDeliveryRule,isDPTBoosterImmunizationGivenRule,isChildFemaleRule,isMotherDoesNotHaveFeverRule,isDeathWasCausedBySepsisRule,currentFPMethodIsDMPAInjectableRule,isHypertensionDetectedForFirstTimeRule,moreThan100IFATabletsAreProvidedRule,isDeathDueToSevereHyperTensionOrFitsRule,isDeathDueToProlongedObstructedLaborRule,isChildBelowFiveYearsRule,isPNCVisitFirstRule,isChildDiseaseReportedAsMalariaRule,isOPV0ImmunizationGivenRule,isChildLessThanOneYearOldRule,isDeathWasCausedByMeaslesRule,womanIsDischargedWithin48HoursOfDeliveryRule,isSterilizationFailureRule,isDeathWasCausedByPneumoniaRule,currentFPMethodIsMaleSterilizationRule,moreThanZeroCondomsSuppliedRule,isDeathWasCausedByFeverRelatedRule,isFirstANCVisitRule,isRiskObservedBleedingRule,currentFPMethodIsIUDRule,isMotherHasFeverRule,moreThanZeroECPsSuppliedRule,isPersonAnaemicRule,isMotherHavingDiabeticRule,isJsyBeneficiaryRule,isChildBetween9to12MonthsRule,isDeathDueToSterilizationRule,serviceProvidedAtSubCenterRule,isMotherHasBadSmellLocheaRule,isVitaminA6DoseGivenRule,isDeathWasCausedByOthersRule,isChildBetween12And23MonthsRule,isPersonNormalAnaemicRule,isPentavalent3ImmunizationGivenRule,isDeathWithin24HoursRule,isPentavalent1ImmunizationGivenRule,isOPV1ImmunizationGivenRule,isEconomicStatusAPLRule,isVitaminA2DoseGivenRule,newFPMethodIsCondomRule,isSideEffectDueToSterilizationRule,isEconomicStatusBPLRule,isVitaminA9DoseGivenRule,isMotherHavingMalariaParasiteRule,isPersonAnaemicStatusChangedRule,isMMRImmunizationGivenRule,isChildMoreThan5YearsOldRule,isDeathCausedByImmunizationRule,isTTBoosterDoseGivenForMother,isMeaslesBoosterImmunizationGivenRule,isBCGImmunizationGivenRule,isDeathDueToBleedingRule,isFourthANCVisitRule,isChildLessThanFourWeeksOldRule,referenceDataRepository,casteIsOthersRule,moreThanZeroCentchromanPillsSuppliedRule,isMotherDoesNotHaveHemorrhageRule,ANMReportingService,childReportingService,MCTSReportDefinitionLoader,formSubmissionReportService,rulesFactory,reportDefinitionLoader,reporterFactory,motherReporter,motherReportingService,reportingService,childReporter,ECReportingService,locationLoader,MCTSReporter,eligibleCoupleReporter,ECRegisterService,registerService,reportingEventListener,MCTSReportEventListener,formEventListener,ANMReportScheduler,alertRouter,drishtiFormScheduler,MCTSReportScheduler,auditor,monitor,httpAgent,reportMonth,allFormSubmissions,formSubmissionService,drishtiDatabaseConnector,drishtiMCTSDatabaseConnector,drishtiFormDatabaseConnector,org.springframework.security.filterChains,org.springframework.security.filterChainProxy,org.springframework.security.web.PortMapperImpl#0,org.springframework.security.config.authentication.AuthenticationManagerFactoryBean#0,org.springframework.security.authentication.ProviderManager#0,org.springframework.security.web.context.NullSecurityContextRepository#0,org.springframework.security.web.savedrequest.NullRequestCache#0,org.springframework.security.access.vote.AffirmativeBased#0,org.springframework.security.web.access.intercept.FilterSecurityInterceptor#0,org.springframework.security.web.access.DefaultWebInvocationPrivilegeEvaluator#0,org.springframework.security.authentication.AnonymousAuthenticationProvider#0,org.springframework.security.web.authentication.www.BasicAuthenticationEntryPoint#0,org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter#0,org.springframework.security.userDetailsServiceFactory,org.springframework.security.web.DefaultSecurityFilterChain#0,shaPasswordEncoder,org.springframework.security.authentication.DefaultAuthenticationEventPublisher#0,org.springframework.security.authenticationManager,org.springframework.web.servlet.resource.DefaultServletHttpRequestHandler#0,org.springframework.web.servlet.handler.SimpleUrlHandlerMapping#0,org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping,org.springframework.web.servlet.mvc.HttpRequestHandlerAdapter,org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter,org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping#0,org.springframework.format.support.FormattingConversionServiceFactoryBean#0,org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter#0,org.springframework.web.servlet.handler.MappedInterceptor#0,org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver#0,org.springframework.web.servlet.mvc.annotation.ResponseStatusExceptionResolver#0,org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver#0,org.springframework.context.annotation.ConfigurationClassPostProcessor$ImportAwareBeanPostProcessor#0,nullChannel,errorChannel,_org.springframework.integration.errorLogger,taskScheduler,org.springframework.integration.config.IdGeneratorConfigurer#0]; root of factory hierarchy
+[DRISHTI] 13022015 14:24:17,997 INFO  [main] [ThreadPoolTaskScheduler] Initializing ExecutorService  'taskScheduler'
+[DRISHTI] 13022015 14:24:18,010 INFO  [main] [GatewayProxyFactoryBean$MethodInvocationGateway] started schedulerFireEventGateway
+[DRISHTI] 13022015 14:24:18,011 INFO  [main] [GatewayProxyFactoryBean] started schedulerFireEventGateway
+[DRISHTI] 13022015 14:24:18,252 INFO  [main] [GatewayProxyFactoryBean$MethodInvocationGateway] started outboundEventGateway
+[DRISHTI] 13022015 14:24:18,252 INFO  [main] [GatewayProxyFactoryBean] started outboundEventGateway
+[DRISHTI] 13022015 14:24:18,260 INFO  [main] [GatewayProxyFactoryBean$MethodInvocationGateway] started outboundScheduleJobGateway
+[DRISHTI] 13022015 14:24:18,260 INFO  [main] [GatewayProxyFactoryBean$MethodInvocationGateway] started outboundScheduleJobGateway
+[DRISHTI] 13022015 14:24:18,260 INFO  [main] [GatewayProxyFactoryBean$MethodInvocationGateway] started outboundScheduleJobGateway
+[DRISHTI] 13022015 14:24:18,260 INFO  [main] [GatewayProxyFactoryBean$MethodInvocationGateway] started outboundScheduleJobGateway
+[DRISHTI] 13022015 14:24:18,260 INFO  [main] [GatewayProxyFactoryBean] started outboundScheduleJobGateway
+[DRISHTI] 13022015 14:24:18,300 INFO  [main] [SchedulerFactoryBean] Loading Quartz config from [class path resource [quartz.properties]]
+[DRISHTI] 13022015 14:24:18,343 INFO  [main] [MLog] MLog clients using log4j logging.
+[DRISHTI] 13022015 14:24:18,405 INFO  [main] [C3P0Registry] Initializing c3p0-0.9.1.1 [built 15-March-2007 01:32:31; debug? true; trace: 10]
+[DRISHTI] 13022015 14:24:18,488 INFO  [main] [PropertiesFactoryBean] Loading properties file from class path resource [quartz.properties]
+[DRISHTI] 13022015 14:24:18,592 INFO  [main] [PropertiesFactoryBean] Loading properties file from class path resource [couchdb.properties]
+[DRISHTI] 13022015 14:24:18,610 INFO  [main] [HttpClientFactoryBean] Starting couchDb connector on localhost:5984...
+[DRISHTI] 13022015 14:24:19,023 INFO  [main] [PropertiesFactoryBean] Loading properties file from class path resource [osgi.properties]
+[DRISHTI] 13022015 14:24:19,115 INFO  [main] [PropertiesFactoryBean] Loading properties file from class path resource [sms-http.properties]
+[DRISHTI] 13022015 14:24:19,274 INFO  [main] [PropertiesFactoryBean] Loading properties file from class path resource [sms-api.properties]
+[DRISHTI] 13022015 14:24:19,288 INFO  [main] [PropertiesFactoryBean] Loading properties file from class path resource [schedule_tracking.properties]
+[DRISHTI] 13022015 14:24:19,289 INFO  [main] [PropertiesFactoryBean] Loading properties file from class path resource [drishti.properties]
+[DRISHTI] 13022015 14:24:23,494 INFO  [main] [DefaultSecurityFilterChain] Creating filter chain: org.springframework.security.web.util.AnyRequestMatcher@1, [org.springframework.security.web.context.SecurityContextPersistenceFilter@1c1992bc, org.springframework.security.web.authentication.logout.LogoutFilter@52f0830d, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@2c2bf505, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@79e331ea, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@32e2382a, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@21d5677f, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@417dd433, org.springframework.security.web.access.ExceptionTranslationFilter@2bf681dc, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@44c7a910]
+[DRISHTI] 13022015 14:24:23,582 INFO  [main] [SimpleUrlHandlerMapping] Mapped URL path [/**] onto handler 'org.springframework.web.servlet.resource.DefaultServletHttpRequestHandler#0'
+[DRISHTI] 13022015 14:24:23,646 INFO  [main] [RequestMappingHandlerMapping] Mapped "{[/sms/inbound],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public void org.motechproject.sms.http.web.InboundSmsController.handle(javax.servlet.http.HttpServletRequest)
+[DRISHTI] 13022015 14:24:23,649 INFO  [main] [RequestMappingHandlerMapping] Mapped "{[/anms],methods=[GET],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public org.springframework.http.ResponseEntity<org.ei.drishti.dto.register.ANMDetailsDTO> org.ei.drishti.web.controller.ANMDetailsController.allANMs()
+[DRISHTI] 13022015 14:24:23,649 INFO  [main] [RequestMappingHandlerMapping] Mapped "{[/send-sms],methods=[POST],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public java.lang.String org.ei.drishti.web.controller.FakeSMSController.sendSMS()
+[DRISHTI] 13022015 14:24:23,650 INFO  [main] [RequestMappingHandlerMapping] Mapped "{[/anm-villages],methods=[GET],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public org.springframework.http.ResponseEntity<org.ei.drishti.dto.VillagesDTO> org.ei.drishti.web.controller.ANMLocationController.villagesForANM()
+[DRISHTI] 13022015 14:24:23,651 INFO  [main] [RequestMappingHandlerMapping] Mapped "{[/report/fetch],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public java.lang.String org.ei.drishti.web.controller.fake.FakeReportController.runANMReportFetch() throws java.lang.Exception
+[DRISHTI] 13022015 14:24:23,651 INFO  [main] [RequestMappingHandlerMapping] Mapped "{[/report/force-aggregate],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public java.lang.String org.ei.drishti.web.controller.fake.FakeReportController.forceAggregateReports() throws java.lang.Exception
+[DRISHTI] 13022015 14:24:23,652 INFO  [main] [RequestMappingHandlerMapping] Mapped "{[/time/set],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public java.lang.String org.ei.drishti.web.controller.fake.FakeTimeController.setTime(java.lang.Integer) throws java.io.IOException
+[DRISHTI] 13022015 14:24:23,652 INFO  [main] [RequestMappingHandlerMapping] Mapped "{[/action/submit],methods=[POST],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public java.lang.String org.ei.drishti.web.controller.fake.FakeActionController.submitFakeAction(java.lang.String,java.lang.String) throws java.lang.Exception
+[DRISHTI] 13022015 14:24:23,653 INFO  [main] [RequestMappingHandlerMapping] Mapped "{[/entities-as-json],methods=[GET],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public org.springframework.http.ResponseEntity<java.util.List<org.ei.drishti.dto.register.EntityDetailDTO>> org.ei.drishti.web.controller.EntitiesController.allEntities(java.lang.String)
+[DRISHTI] 13022015 14:24:23,654 INFO  [main] [RequestMappingHandlerMapping] Mapped "{[/audit/messages],methods=[GET],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public java.util.List<org.ei.drishti.web.controller.AuditMessageController$AuditMessageItem> org.ei.drishti.web.controller.AuditMessageController.getAuditMessages(long) throws java.io.IOException
+[DRISHTI] 13022015 14:24:23,656 INFO  [main] [RequestMappingHandlerMapping] Mapped "{[/registers/anc],methods=[GET],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public org.springframework.http.ResponseEntity<org.ei.drishti.dto.register.ANCRegisterDTO> org.ei.drishti.web.controller.RegisterController.ancRegister(java.lang.String)
+[DRISHTI] 13022015 14:24:23,656 INFO  [main] [RequestMappingHandlerMapping] Mapped "{[/registers/child],methods=[GET],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public org.springframework.http.ResponseEntity<org.ei.drishti.dto.register.ChildRegisterDTO> org.ei.drishti.web.controller.RegisterController.childRegister(java.lang.String)
+[DRISHTI] 13022015 14:24:23,657 INFO  [main] [RequestMappingHandlerMapping] Mapped "{[/registers/fp],methods=[GET],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public org.springframework.http.ResponseEntity<org.ei.drishti.dto.register.FPRegisterDTO> org.ei.drishti.web.controller.RegisterController.fpRegister(java.lang.String)
+[DRISHTI] 13022015 14:24:23,657 INFO  [main] [RequestMappingHandlerMapping] Mapped "{[/registers/pnc],methods=[GET],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public org.springframework.http.ResponseEntity<org.ei.drishti.dto.register.PNCRegisterDTO> org.ei.drishti.web.controller.RegisterController.pncRegister(java.lang.String)
+[DRISHTI] 13022015 14:24:23,657 INFO  [main] [RequestMappingHandlerMapping] Mapped "{[/registers/ec],methods=[GET],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public org.springframework.http.ResponseEntity<org.ei.drishti.dto.register.ECRegisterDTO> org.ei.drishti.web.controller.RegisterController.ecRegister(java.lang.String)
+[DRISHTI] 13022015 14:24:23,659 INFO  [main] [RequestMappingHandlerMapping] Mapped "{[/authenticate-user],methods=[GET],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public org.springframework.http.ResponseEntity<org.springframework.http.HttpStatus> org.ei.drishti.web.controller.UserController.authenticateUser()
+[DRISHTI] 13022015 14:24:23,659 INFO  [main] [RequestMappingHandlerMapping] Mapped "{[/user-details],methods=[GET],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public org.springframework.http.ResponseEntity<org.ei.drishti.common.domain.UserDetail> org.ei.drishti.web.controller.UserController.userDetail(java.lang.String)
+[DRISHTI] 13022015 14:24:23,660 INFO  [main] [RequestMappingHandlerMapping] Mapped "{[/actions],methods=[GET],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public java.util.List<org.ei.drishti.dto.Action> org.ei.drishti.web.controller.ActionController.getNewActionForANM(java.lang.String,java.lang.Long)
+[DRISHTI] 13022015 14:24:23,663 INFO  [main] [RequestMappingHandlerMapping] Mapped "{[/all-form-submissions],methods=[GET],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto private java.util.List<org.ei.drishti.dto.form.FormSubmissionDTO> org.ei.drishti.web.controller.FormSubmissionController.getAllFormSubmissions(java.lang.Long,java.lang.Integer)
+[DRISHTI] 13022015 14:24:23,663 INFO  [main] [RequestMappingHandlerMapping] Mapped "{[/form-submissions],methods=[POST],params=[],headers=[],consumes=[],produces=[application/json],custom=[]}" onto public org.springframework.http.ResponseEntity<org.springframework.http.HttpStatus> org.ei.drishti.web.controller.FormSubmissionController.submitForms(java.util.List<org.ei.drishti.dto.form.FormSubmissionDTO>)
+[DRISHTI] 13022015 14:24:23,663 INFO  [main] [RequestMappingHandlerMapping] Mapped "{[/form-submissions],methods=[GET],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto private java.util.List<org.ei.drishti.dto.form.FormSubmissionDTO> org.ei.drishti.web.controller.FormSubmissionController.getNewSubmissionsForANM(java.lang.String,java.lang.Long,java.lang.Integer)
+[DRISHTI] 13022015 14:24:23,944 INFO  [main] [DefaultLifecycleProcessor] Starting beans in phase -2147483648
+[DRISHTI] 13022015 14:24:23,944 INFO  [main] [EventDrivenConsumer] Adding {jms:outbound-channel-adapter:schedulerjmsout} as a subscriber to the 'schedulerGatewayToEventJmsoutChannel' channel
+[DRISHTI] 13022015 14:24:23,944 INFO  [main] [DirectChannel] Channel 'schedulerGatewayToEventJmsoutChannel' has 1 subscriber(s).
+[DRISHTI] 13022015 14:24:23,944 INFO  [main] [EventDrivenConsumer] started schedulerjmsout
+[DRISHTI] 13022015 14:24:23,944 INFO  [main] [EventDrivenConsumer] Adding {router} as a subscriber to the 'jmsinToSchedulerChannel' channel
+[DRISHTI] 13022015 14:24:23,944 INFO  [main] [DirectChannel] Channel 'jmsinToSchedulerChannel' has 1 subscriber(s).
+[DRISHTI] 13022015 14:24:23,944 INFO  [main] [EventDrivenConsumer] started org.springframework.integration.config.ConsumerEndpointFactoryBean#0
+[DRISHTI] 13022015 14:24:23,944 INFO  [main] [EventDrivenConsumer] Adding {outbound-channel-adapter} as a subscriber to the 'scheduleChannel' channel
+[DRISHTI] 13022015 14:24:23,945 INFO  [main] [DirectChannel] Channel 'scheduleChannel' has 1 subscriber(s).
+[DRISHTI] 13022015 14:24:23,945 INFO  [main] [EventDrivenConsumer] started org.springframework.integration.config.ConsumerEndpointFactoryBean#1
+[DRISHTI] 13022015 14:24:23,945 INFO  [main] [EventDrivenConsumer] Adding {outbound-channel-adapter} as a subscriber to the 'scheduleRunOnceChannel' channel
+[DRISHTI] 13022015 14:24:23,945 INFO  [main] [DirectChannel] Channel 'scheduleRunOnceChannel' has 1 subscriber(s).
+[DRISHTI] 13022015 14:24:23,945 INFO  [main] [EventDrivenConsumer] started org.springframework.integration.config.ConsumerEndpointFactoryBean#2
+[DRISHTI] 13022015 14:24:23,945 INFO  [main] [EventDrivenConsumer] Adding {outbound-channel-adapter} as a subscriber to the 'scheduleRepeatingChannel' channel
+[DRISHTI] 13022015 14:24:23,945 INFO  [main] [DirectChannel] Channel 'scheduleRepeatingChannel' has 1 subscriber(s).
+[DRISHTI] 13022015 14:24:23,945 INFO  [main] [EventDrivenConsumer] started org.springframework.integration.config.ConsumerEndpointFactoryBean#3
+[DRISHTI] 13022015 14:24:23,945 INFO  [main] [EventDrivenConsumer] Adding {outbound-channel-adapter} as a subscriber to the 'unscheduleChannel' channel
+[DRISHTI] 13022015 14:24:23,945 INFO  [main] [DirectChannel] Channel 'unscheduleChannel' has 1 subscriber(s).
+[DRISHTI] 13022015 14:24:23,945 INFO  [main] [EventDrivenConsumer] started org.springframework.integration.config.ConsumerEndpointFactoryBean#4
+[DRISHTI] 13022015 14:24:23,945 INFO  [main] [EventDrivenConsumer] Adding {jms:outbound-channel-adapter:eventjmsout} as a subscriber to the 'eventGatewayToEventJmsoutChannel' channel
+[DRISHTI] 13022015 14:24:23,945 INFO  [main] [DirectChannel] Channel 'eventGatewayToEventJmsoutChannel' has 1 subscriber(s).
+[DRISHTI] 13022015 14:24:23,945 INFO  [main] [EventDrivenConsumer] started eventjmsout
+[DRISHTI] 13022015 14:24:23,945 INFO  [main] [EventDrivenConsumer] Adding {outbound-channel-adapter:outboundChannelAdapter} as a subscriber to the 'eventChannel' channel
+[DRISHTI] 13022015 14:24:23,945 INFO  [main] [DirectChannel] Channel 'eventChannel' has 1 subscriber(s).
+[DRISHTI] 13022015 14:24:23,946 INFO  [main] [EventDrivenConsumer] started outboundChannelAdapter
+[DRISHTI] 13022015 14:24:23,946 INFO  [main] [EventDrivenConsumer] Adding {jms:outbound-channel-adapter:schedulejmsout} as a subscriber to the 'scheduleJobGatewayToEventJmsoutChannel' channel
+[DRISHTI] 13022015 14:24:23,946 INFO  [main] [DirectChannel] Channel 'scheduleJobGatewayToEventJmsoutChannel' has 1 subscriber(s).
+[DRISHTI] 13022015 14:24:23,946 INFO  [main] [EventDrivenConsumer] started schedulejmsout
+[DRISHTI] 13022015 14:24:23,946 INFO  [main] [EventDrivenConsumer] Adding {logging-channel-adapter:_org.springframework.integration.errorLogger} as a subscriber to the 'errorChannel' channel
+[DRISHTI] 13022015 14:24:23,946 INFO  [main] [PublishSubscribeChannel] Channel 'errorChannel' has 1 subscriber(s).
+[DRISHTI] 13022015 14:24:23,946 INFO  [main] [EventDrivenConsumer] started _org.springframework.integration.errorLogger
+[DRISHTI] 13022015 14:24:23,946 INFO  [main] [DefaultLifecycleProcessor] Starting beans in phase 0
+[DRISHTI] 13022015 14:24:23,946 INFO  [main] [ChannelPublishingJmsMessageListener$GatewayDelegate] started org.springframework.integration.jms.ChannelPublishingJmsMessageListener$GatewayDelegate@593aed8a
+[DRISHTI] 13022015 14:24:24,179 INFO  [main] [CachingConnectionFactory] Established shared JMS Connection: ActiveMQConnection {id=ID:nain-35909-1423815864005-0:1,clientId=null,started=false}
+[DRISHTI] 13022015 14:24:24,193 INFO  [main] [JmsMessageDrivenEndpoint] started jmsin
+[DRISHTI] 13022015 14:24:24,193 INFO  [main] [DefaultLifecycleProcessor] Starting beans in phase 2147483647
+[DRISHTI] 13022015 14:24:24,193 INFO  [main] [SchedulerFactoryBean] Starting Quartz Scheduler now
+[DRISHTI] 13022015 14:24:24,272 INFO  [main] [AbstractPoolBackedDataSource] Initializing c3p0 pool... com.mchange.v2.c3p0.ComboPooledDataSource [ acquireIncrement -> 3, acquireRetryAttempts -> 30, acquireRetryDelay -> 1000, autoCommitOnClose -> false, automaticTestTable -> null, breakAfterAcquireFailure -> false, checkoutTimeout -> 0, connectionCustomizerClassName -> null, connectionTesterClassName -> com.mchange.v2.c3p0.impl.DefaultConnectionTester, dataSourceName -> z8kfsx97102x1o71sr1c0k|7938fc88, debugUnreturnedConnectionStackTraces -> false, description -> null, driverClass -> org.postgresql.Driver, factoryClassLocation -> null, forceIgnoreUnresolvedTransactions -> false, identityToken -> z8kfsx97102x1o71sr1c0k|7938fc88, idleConnectionTestPeriod -> 0, initialPoolSize -> 3, jdbcUrl -> jdbc:postgresql://localhost/motechquartz, lastAcquisitionFailureDefaultUser -> null, maxAdministrativeTaskTime -> 0, maxConnectionAge -> 0, maxIdleTime -> 0, maxIdleTimeExcessConnections -> 0, maxPoolSize -> 30, maxStatements -> 0, maxStatementsPerConnection -> 120, minPoolSize -> 1, numHelperThreads -> 3, numThreadsAwaitingCheckoutDefaultUser -> 0, preferredTestQuery -> null, properties -> {user=******, password=******}, propertyCycle -> 0, testConnectionOnCheckin -> false, testConnectionOnCheckout -> false, unreturnedConnectionTimeout -> 0, usesTraditionalReflectiveProxies -> false ]
+[DRISHTI] 13022015 14:24:53,386 WARN  [com.mchange.v2.async.ThreadPoolAsynchronousRunner$PoolThread-#0] [BasicResourcePool] com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask@78d962a9 -- Acquisition Attempt Failed!!! Clearing pending acquires. While trying to acquire a needed new resource, we failed to succeed more than the maximum number of allowed acquisition attempts (30). Last acquisition attempt exception: 
+org.postgresql.util.PSQLException: FATAL: password authentication failed for user "postgres"
+	at org.postgresql.core.v3.ConnectionFactoryImpl.doAuthentication(ConnectionFactoryImpl.java:291)
+	at org.postgresql.core.v3.ConnectionFactoryImpl.openConnectionImpl(ConnectionFactoryImpl.java:108)
+	at org.postgresql.core.ConnectionFactory.openConnection(ConnectionFactory.java:66)
+	at org.postgresql.jdbc2.AbstractJdbc2Connection.<init>(AbstractJdbc2Connection.java:125)
+	at org.postgresql.jdbc3.AbstractJdbc3Connection.<init>(AbstractJdbc3Connection.java:30)
+	at org.postgresql.jdbc3g.AbstractJdbc3gConnection.<init>(AbstractJdbc3gConnection.java:22)
+	at org.postgresql.jdbc4.AbstractJdbc4Connection.<init>(AbstractJdbc4Connection.java:30)
+	at org.postgresql.jdbc4.Jdbc4Connection.<init>(Jdbc4Connection.java:24)
+	at org.postgresql.Driver.makeConnection(Driver.java:393)
+	at org.postgresql.Driver.connect(Driver.java:267)
+	at com.mchange.v2.c3p0.DriverManagerDataSource.getConnection(DriverManagerDataSource.java:135)
+	at com.mchange.v2.c3p0.WrapperConnectionPoolDataSource.getPooledConnection(WrapperConnectionPoolDataSource.java:182)
+	at com.mchange.v2.c3p0.WrapperConnectionPoolDataSource.getPooledConnection(WrapperConnectionPoolDataSource.java:171)
+	at com.mchange.v2.c3p0.impl.C3P0PooledConnectionPool$1PooledConnectionResourcePoolManager.acquireResource(C3P0PooledConnectionPool.java:137)
+	at com.mchange.v2.resourcepool.BasicResourcePool.doAcquire(BasicResourcePool.java:1014)
+	at com.mchange.v2.resourcepool.BasicResourcePool.access$800(BasicResourcePool.java:32)
+	at com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask.run(BasicResourcePool.java:1810)
+	at com.mchange.v2.async.ThreadPoolAsynchronousRunner$PoolThread.run(ThreadPoolAsynchronousRunner.java:547)
+[DRISHTI] 13022015 14:24:53,386 WARN  [com.mchange.v2.async.ThreadPoolAsynchronousRunner$PoolThread-#1] [BasicResourcePool] com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask@1e2b9a85 -- Acquisition Attempt Failed!!! Clearing pending acquires. While trying to acquire a needed new resource, we failed to succeed more than the maximum number of allowed acquisition attempts (30). Last acquisition attempt exception: 
+org.postgresql.util.PSQLException: FATAL: password authentication failed for user "postgres"
+	at org.postgresql.core.v3.ConnectionFactoryImpl.doAuthentication(ConnectionFactoryImpl.java:291)
+	at org.postgresql.core.v3.ConnectionFactoryImpl.openConnectionImpl(ConnectionFactoryImpl.java:108)
+	at org.postgresql.core.ConnectionFactory.openConnection(ConnectionFactory.java:66)
+	at org.postgresql.jdbc2.AbstractJdbc2Connection.<init>(AbstractJdbc2Connection.java:125)
+	at org.postgresql.jdbc3.AbstractJdbc3Connection.<init>(AbstractJdbc3Connection.java:30)
+	at org.postgresql.jdbc3g.AbstractJdbc3gConnection.<init>(AbstractJdbc3gConnection.java:22)
+	at org.postgresql.jdbc4.AbstractJdbc4Connection.<init>(AbstractJdbc4Connection.java:30)
+	at org.postgresql.jdbc4.Jdbc4Connection.<init>(Jdbc4Connection.java:24)
+	at org.postgresql.Driver.makeConnection(Driver.java:393)
+	at org.postgresql.Driver.connect(Driver.java:267)
+	at com.mchange.v2.c3p0.DriverManagerDataSource.getConnection(DriverManagerDataSource.java:135)
+	at com.mchange.v2.c3p0.WrapperConnectionPoolDataSource.getPooledConnection(WrapperConnectionPoolDataSource.java:182)
+	at com.mchange.v2.c3p0.WrapperConnectionPoolDataSource.getPooledConnection(WrapperConnectionPoolDataSource.java:171)
+	at com.mchange.v2.c3p0.impl.C3P0PooledConnectionPool$1PooledConnectionResourcePoolManager.acquireResource(C3P0PooledConnectionPool.java:137)
+	at com.mchange.v2.resourcepool.BasicResourcePool.doAcquire(BasicResourcePool.java:1014)
+	at com.mchange.v2.resourcepool.BasicResourcePool.access$800(BasicResourcePool.java:32)
+	at com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask.run(BasicResourcePool.java:1810)
+	at com.mchange.v2.async.ThreadPoolAsynchronousRunner$PoolThread.run(ThreadPoolAsynchronousRunner.java:547)
+[DRISHTI] 13022015 14:24:53,386 WARN  [com.mchange.v2.async.ThreadPoolAsynchronousRunner$PoolThread-#2] [BasicResourcePool] com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask@7dc833b -- Acquisition Attempt Failed!!! Clearing pending acquires. While trying to acquire a needed new resource, we failed to succeed more than the maximum number of allowed acquisition attempts (30). Last acquisition attempt exception: 
+org.postgresql.util.PSQLException: FATAL: password authentication failed for user "postgres"
+	at org.postgresql.core.v3.ConnectionFactoryImpl.doAuthentication(ConnectionFactoryImpl.java:291)
+	at org.postgresql.core.v3.ConnectionFactoryImpl.openConnectionImpl(ConnectionFactoryImpl.java:108)
+	at org.postgresql.core.ConnectionFactory.openConnection(ConnectionFactory.java:66)
+	at org.postgresql.jdbc2.AbstractJdbc2Connection.<init>(AbstractJdbc2Connection.java:125)
+	at org.postgresql.jdbc3.AbstractJdbc3Connection.<init>(AbstractJdbc3Connection.java:30)
+	at org.postgresql.jdbc3g.AbstractJdbc3gConnection.<init>(AbstractJdbc3gConnection.java:22)
+	at org.postgresql.jdbc4.AbstractJdbc4Connection.<init>(AbstractJdbc4Connection.java:30)
+	at org.postgresql.jdbc4.Jdbc4Connection.<init>(Jdbc4Connection.java:24)
+	at org.postgresql.Driver.makeConnection(Driver.java:393)
+	at org.postgresql.Driver.connect(Driver.java:267)
+	at com.mchange.v2.c3p0.DriverManagerDataSource.getConnection(DriverManagerDataSource.java:135)
+	at com.mchange.v2.c3p0.WrapperConnectionPoolDataSource.getPooledConnection(WrapperConnectionPoolDataSource.java:182)
+	at com.mchange.v2.c3p0.WrapperConnectionPoolDataSource.getPooledConnection(WrapperConnectionPoolDataSource.java:171)
+	at com.mchange.v2.c3p0.impl.C3P0PooledConnectionPool$1PooledConnectionResourcePoolManager.acquireResource(C3P0PooledConnectionPool.java:137)
+	at com.mchange.v2.resourcepool.BasicResourcePool.doAcquire(BasicResourcePool.java:1014)
+	at com.mchange.v2.resourcepool.BasicResourcePool.access$800(BasicResourcePool.java:32)
+	at com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask.run(BasicResourcePool.java:1810)
+	at com.mchange.v2.async.ThreadPoolAsynchronousRunner$PoolThread.run(ThreadPoolAsynchronousRunner.java:547)
+[DRISHTI] 13022015 14:24:53,392 INFO  [main] [DefaultListableBeanFactory] Destroying singletons in org.springframework.beans.factory.support.DefaultListableBeanFactory@7ee2cd7b: defining beans [org.springframework.beans.factory.config.PropertyPlaceholderConfigurer#0,org.springframework.context.annotation.internalConfigurationAnnotationProcessor,org.springframework.context.annotation.internalAutowiredAnnotationProcessor,org.springframework.context.annotation.internalRequiredAnnotationProcessor,org.springframework.context.annotation.internalCommonAnnotationProcessor,org.springframework.beans.factory.config.PropertyPlaceholderConfigurer#1,channelInitializer,$autoCreateChannelCandidates,org.springframework.integration.internalDefaultConfiguringBeanFactoryPostProcessor,schedulerFireEventGateway,schedulerGatewayToEventJmsoutChannel,org.springframework.integration.jms.JmsSendingMessageHandler#0,schedulerjmsout,org.springframework.jms.listener.DefaultMessageListenerContainer#0,org.springframework.integration.jms.ChannelPublishingJmsMessageListener#0,jmsin,jmsinToSchedulerChannel,org.springframework.integration.config.RouterFactoryBean#0,org.springframework.integration.config.ConsumerEndpointFactoryBean#0,scheduleChannel,scheduleRunOnceChannel,scheduleRepeatingChannel,unscheduleChannel,org.springframework.integration.handler.MethodInvokingMessageHandler#0,org.springframework.integration.config.ConsumerEndpointFactoryBean#1,org.springframework.integration.handler.MethodInvokingMessageHandler#1,org.springframework.integration.config.ConsumerEndpointFactoryBean#2,org.springframework.integration.handler.MethodInvokingMessageHandler#2,org.springframework.integration.config.ConsumerEndpointFactoryBean#3,org.springframework.integration.handler.MethodInvokingMessageHandler#3,org.springframework.integration.config.ConsumerEndpointFactoryBean#4,quartzProperties,connectionFactory,schedulerQueue,eventQueue,schedulerFactoryBean,schedulerService,org.springframework.beans.factory.config.PropertyPlaceholderConfigurer#2,outboundEventGateway,eventGatewayToEventJmsoutChannel,org.springframework.integration.jms.JmsSendingMessageHandler#1,eventjmsout,org.springframework.beans.factory.config.PropertyPlaceholderConfigurer#3,org.springframework.jms.listener.DefaultMessageListenerContainer#1,org.springframework.integration.jms.ChannelPublishingJmsMessageListener#1,eventChannel,org.springframework.integration.handler.MethodInvokingMessageHandler#4,outboundChannelAdapter,outboundScheduleJobGateway,scheduleJobGatewayToEventJmsoutChannel,org.springframework.integration.jms.JmsSendingMessageHandler#2,schedulejmsout,couchdbProperties,allRules,httpClient,couchDbInstance,ruleDatabase,metricsAgent,loggingAgent,statsdAgent,eventRelay,eventListenerRegistry,motechContext,eventContext,osgiConfig,osgiFramework,osgiFrameworkService,eventAnnotationBeanPostProcessor,smsHttpProperties,smsSendHandler,templateReader,smsHttpService,inboundSmsController,multiThreadedHttpConnectionManager,commonsHttpClient,smsAuditService,smsApiProperties,messageSplitter,smsServiceImpl,smsService,schedule_tracking,scheduleTrackingDbConnector,scheduleFactory,allEnrollments,allSchedules,trackedSchedulesJsonReaderImpl,endOfMilestoneListener,enrollmentAlertService,enrollmentDefaultmentService,enrollmentRecordMapper,enrollmentService,enrollmentsQueryService,scheduleTrackingService,drishti,ANMDetailsController,fakeSMSController,ANMLocationController,fakeReportController,fakeTimeController,fakeActionController,entitiesController,auditMessageController,registerController,userController,actionController,formSubmissionController,drishtiAuthenticationProvider,openmrsAuthServiceImpl,applicationStartupListener,alertController,PNCRegisterMapper,FPRegisterMapper,ECRegisterMapper,childRegisterMapper,ANCRegisterMapper,forceFulfillAction,autoClosePNCAction,alertCreationAction,allActions,allChildren,allMothers,formDataRepository,allMCTSReports,allDrishtiUsers,allPersons,allEligibleCouples,allFormExportTokens,allInfantBalanceOnHandReportTokens,ECService,PNCRegisterService,DMPAInjectableStrategy,condomStrategy,femaleSterilizationStrategy,OCPStrategy,maleSterilizationStrategy,IUDStrategy,defaultFPMethodStrategy,FPMethodStrategyFactory,personSchedulesService,scheduleService,PNCSchedulesService,childSchedulesService,ANCSchedulesService,ECSchedulingService,entitiesService,MCTSSMSService,actionService,FPRegisterService,childRegisterService,formSubmissionRouter,formEntityService,ziggyService,ziggyFileLoader,MCTSSMSReportService,childRegistrationECHandler,ANCRegistrationHandler,ECCloseHandler,PNCVisitHandler,ANCCloseHandler,childIllnessHandler,deliveryOutcomeHandler,reportFieldsDefinition,FPReferralFollowupHandler,IFAHandler,vitaminAHandler,childRegistrationOAHandler,childCloseHandler,ANCVisitHandler,PNCRegistrationOAHandler,FPChangeHandler,FPComplicationsHandler,postpartumFamilyPlanningHandler,PNCCloseHandler,childImmunizationsHandler,recordECPsHandler,ANCRegistrationOAHandler,deliveryPlanHandler,ECRegistrationHandler,ANCInvestigationsHandler,renewFPProductHandler,ECEditHandler,FPFollowupHandler,hbTestHandler,TTHandler,drishtiSMSService,PNCService,ANMDetailsService,ANCService,ANCRegisterService,childService,personService,MCTSReportService,spontaneousAbortionAtHomeAtHomeOrSubCenterRule,shouldMotherBeReferredImmediatelyRule,isDeathWasCausedByDiarrheaRule,isVitaminA1DoseGivenRule,isJEImmunizationGivenRule,serviceProvidedAtSub_CenterRule,isMotherDidNotSurvivedOnDeliveryRule,isDPTBooster2ImmunizationGivenRule,currentFPMethodIsCondomRule,newFPMethodIsOCPRule,isPentavalent2ImmunizationGivenRule,isChildDiseaseReportedAsDiarrheaDehydrationRule,isVitaminA5DoseGivenRule,isPNCVisitFirstBetween2And14DaysOfDeliveryRule,relocationIsPermanentRule,isChildClosedDueToDeathRule,isMotherClosedDueToDeathRule,isMotherDoesNotHaveBadSmellLocheaRule,isDeathWasCausedByLBWRule,isChildBelowThreeYearsRule,isMotherHasHemorrhageRule,casteIsSCRule,isOPV2ImmunizationGivenRule,isChildDiseaseReportedAsMeaslesRule,currentFPMethodIsCentchromanRule,isChildBetween6to12MonthsRule,PNCVisitHappenedBetween2And14DaysOfDeliveryRule,isHypertensionDetectedRule,isChildAgeGreaterThanOrEqualTo16MonthsRule,isPersonModerateAnaemicRule,IUDRemovedAtHomeAtHomeOrSubCenterRule,deliveryIsAttendedBySBATrainedPersonRule,isThirdANCVisitRule,isAllImmunizationsGivenRule,isDeathDueToSpontaneousAbortionRule,isChildMaleRule,isHypertensionStateChangedRule,isDeathWasCausedByAsphyxiaRule,isPNCVisitBetween2And7DaysOfDeliveryRule,newFPMethodIsCentchromanPillsRule,isSecondANCVisitRule,isOPV3ImmunizationGivenRule,isDeathDueToOtherReasonsRule,isANCRegisteredWithinTwelveWeeksOfPregnancy,isPNCVisit48HoursOfDeliveryRule,isDeathDueToAbortionRule,casteIsSTRule,isPNCVisitHappenedWithin42DaysOfDeliveryRule,deliveryHappenedAtHomeRule,isTT2OrTTBoosterDoseGivenForMother,isAllImmunizationsGivenEitherWithMeaslesOrMMRRule,isChildMoreThan16MonthsRule,isVitaminA8DoseGivenRule,isChildLessThan23MonthsRule,currentFPMethodIsEitherMaleOrFemaleSterilizationRule,isMotherClosedDueToDeathOfWomanRule,deliveryIsAttendedByNonSBATrainedPersonRule,isVitaminA7DoseGivenRule,isNotOutOfAreaRule,isOPVBoosterImmunizationGivenRule,isDeliveryDateOneYearInThePastRule,isPersonSevereAnaemicRule,isTT1DoseGivenForMother,moreThanZeroOCPStripsSuppliedRule,currentFPMethodIsOCPRule,isVitaminA3DoseGivenRule,currentFPMethodIsFemaleSterilizationRule,PNCVisitHappenedAtSubCenterOrHomeRule,isHepB0ImmunizationGivenRule,isMeaslesImmunizationGivenRule,isTT2DoseGivenForMother,isVitaminA4DoseGivenRule,minimumThreeANCVisitsHappenedOnTimeRule,isDeathDueToHighFeverRule,PNCVisitHappenedWithin2DaysOfDeliveryRule,isDPTBoosterImmunizationGivenRule,isChildFemaleRule,isMotherDoesNotHaveFeverRule,isDeathWasCausedBySepsisRule,currentFPMethodIsDMPAInjectableRule,isHypertensionDetectedForFirstTimeRule,moreThan100IFATabletsAreProvidedRule,isDeathDueToSevereHyperTensionOrFitsRule,isDeathDueToProlongedObstructedLaborRule,isChildBelowFiveYearsRule,isPNCVisitFirstRule,isChildDiseaseReportedAsMalariaRule,isOPV0ImmunizationGivenRule,isChildLessThanOneYearOldRule,isDeathWasCausedByMeaslesRule,womanIsDischargedWithin48HoursOfDeliveryRule,isSterilizationFailureRule,isDeathWasCausedByPneumoniaRule,currentFPMethodIsMaleSterilizationRule,moreThanZeroCondomsSuppliedRule,isDeathWasCausedByFeverRelatedRule,isFirstANCVisitRule,isRiskObservedBleedingRule,currentFPMethodIsIUDRule,isMotherHasFeverRule,moreThanZeroECPsSuppliedRule,isPersonAnaemicRule,isMotherHavingDiabeticRule,isJsyBeneficiaryRule,isChildBetween9to12MonthsRule,isDeathDueToSterilizationRule,serviceProvidedAtSubCenterRule,isMotherHasBadSmellLocheaRule,isVitaminA6DoseGivenRule,isDeathWasCausedByOthersRule,isChildBetween12And23MonthsRule,isPersonNormalAnaemicRule,isPentavalent3ImmunizationGivenRule,isDeathWithin24HoursRule,isPentavalent1ImmunizationGivenRule,isOPV1ImmunizationGivenRule,isEconomicStatusAPLRule,isVitaminA2DoseGivenRule,newFPMethodIsCondomRule,isSideEffectDueToSterilizationRule,isEconomicStatusBPLRule,isVitaminA9DoseGivenRule,isMotherHavingMalariaParasiteRule,isPersonAnaemicStatusChangedRule,isMMRImmunizationGivenRule,isChildMoreThan5YearsOldRule,isDeathCausedByImmunizationRule,isTTBoosterDoseGivenForMother,isMeaslesBoosterImmunizationGivenRule,isBCGImmunizationGivenRule,isDeathDueToBleedingRule,isFourthANCVisitRule,isChildLessThanFourWeeksOldRule,referenceDataRepository,casteIsOthersRule,moreThanZeroCentchromanPillsSuppliedRule,isMotherDoesNotHaveHemorrhageRule,ANMReportingService,childReportingService,MCTSReportDefinitionLoader,formSubmissionReportService,rulesFactory,reportDefinitionLoader,reporterFactory,motherReporter,motherReportingService,reportingService,childReporter,ECReportingService,locationLoader,MCTSReporter,eligibleCoupleReporter,ECRegisterService,registerService,reportingEventListener,MCTSReportEventListener,formEventListener,ANMReportScheduler,alertRouter,drishtiFormScheduler,MCTSReportScheduler,auditor,monitor,httpAgent,reportMonth,allFormSubmissions,formSubmissionService,drishtiDatabaseConnector,drishtiMCTSDatabaseConnector,drishtiFormDatabaseConnector,org.springframework.security.filterChains,org.springframework.security.filterChainProxy,org.springframework.security.web.PortMapperImpl#0,org.springframework.security.config.authentication.AuthenticationManagerFactoryBean#0,org.springframework.security.authentication.ProviderManager#0,org.springframework.security.web.context.NullSecurityContextRepository#0,org.springframework.security.web.savedrequest.NullRequestCache#0,org.springframework.security.access.vote.AffirmativeBased#0,org.springframework.security.web.access.intercept.FilterSecurityInterceptor#0,org.springframework.security.web.access.DefaultWebInvocationPrivilegeEvaluator#0,org.springframework.security.authentication.AnonymousAuthenticationProvider#0,org.springframework.security.web.authentication.www.BasicAuthenticationEntryPoint#0,org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter#0,org.springframework.security.userDetailsServiceFactory,org.springframework.security.web.DefaultSecurityFilterChain#0,shaPasswordEncoder,org.springframework.security.authentication.DefaultAuthenticationEventPublisher#0,org.springframework.security.authenticationManager,org.springframework.web.servlet.resource.DefaultServletHttpRequestHandler#0,org.springframework.web.servlet.handler.SimpleUrlHandlerMapping#0,org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping,org.springframework.web.servlet.mvc.HttpRequestHandlerAdapter,org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter,org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping#0,org.springframework.format.support.FormattingConversionServiceFactoryBean#0,org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter#0,org.springframework.web.servlet.handler.MappedInterceptor#0,org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver#0,org.springframework.web.servlet.mvc.annotation.ResponseStatusExceptionResolver#0,org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver#0,org.springframework.context.annotation.ConfigurationClassPostProcessor$ImportAwareBeanPostProcessor#0,nullChannel,errorChannel,_org.springframework.integration.errorLogger,taskScheduler,org.springframework.integration.config.IdGeneratorConfigurer#0]; root of factory hierarchy
+[DRISHTI] 13022015 14:24:53,454 INFO  [main] [HttpClientFactoryBean] Stopping couchDb connector...
+[DRISHTI] 13022015 14:24:53,455 INFO  [main] [SchedulerFactoryBean] Shutting down Quartz Scheduler
+[DRISHTI] 13022015 14:24:53,458 INFO  [main] [ChannelPublishingJmsMessageListener$GatewayDelegate] stopped org.springframework.integration.jms.ChannelPublishingJmsMessageListener$GatewayDelegate@593aed8a
+[DRISHTI] 13022015 14:24:53,458 INFO  [main] [JmsMessageDrivenEndpoint] stopped jmsin
+[DRISHTI] 13022015 14:24:54,282 INFO  [main] [ThreadPoolTaskScheduler] Shutting down ExecutorService 'taskScheduler'
+[DRISHTI] 13022015 14:24:54,283 ERROR [main] [ContextLoader] Context initialization failed
+org.springframework.context.ApplicationContextException: Failed to start bean 'schedulerFactoryBean'; nested exception is org.springframework.scheduling.SchedulingException: Could not start Quartz Scheduler; nested exception is org.quartz.SchedulerConfigException: Failure occured during job recovery. [See nested exception: org.quartz.JobPersistenceException: Failed to obtain DB connection from data source 'motechDS': java.sql.SQLException: Connections could not be acquired from the underlying database! [See nested exception: java.sql.SQLException: Connections could not be acquired from the underlying database!]]
+	at org.springframework.context.support.DefaultLifecycleProcessor.doStart(DefaultLifecycleProcessor.java:170)
+	at org.springframework.context.support.DefaultLifecycleProcessor.access$1(DefaultLifecycleProcessor.java:154)
+	at org.springframework.context.support.DefaultLifecycleProcessor$LifecycleGroup.start(DefaultLifecycleProcessor.java:339)
+	at org.springframework.context.support.DefaultLifecycleProcessor.startBeans(DefaultLifecycleProcessor.java:143)
+	at org.springframework.context.support.DefaultLifecycleProcessor.onRefresh(DefaultLifecycleProcessor.java:108)
+	at org.springframework.context.support.AbstractApplicationContext.finishRefresh(AbstractApplicationContext.java:926)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:467)
+	at org.springframework.web.context.ContextLoader.configureAndRefreshWebApplicationContext(ContextLoader.java:384)
+	at org.springframework.web.context.ContextLoader.initWebApplicationContext(ContextLoader.java:283)
+	at org.springframework.web.context.ContextLoaderListener.contextInitialized(ContextLoaderListener.java:111)
+	at org.eclipse.jetty.server.handler.ContextHandler.callContextInitialized(ContextHandler.java:672)
+	at org.eclipse.jetty.servlet.ServletContextHandler.callContextInitialized(ServletContextHandler.java:403)
+	at org.eclipse.jetty.server.handler.ContextHandler.startContext(ContextHandler.java:664)
+	at org.eclipse.jetty.servlet.ServletContextHandler.startContext(ServletContextHandler.java:239)
+	at org.eclipse.jetty.webapp.WebAppContext.startContext(WebAppContext.java:1212)
+	at org.eclipse.jetty.server.handler.ContextHandler.doStart(ContextHandler.java:610)
+	at org.eclipse.jetty.webapp.WebAppContext.doStart(WebAppContext.java:453)
+	at org.mortbay.jetty.plugin.JettyWebAppContext.doStart(JettyWebAppContext.java:234)
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
+	at org.eclipse.jetty.server.handler.HandlerCollection.doStart(HandlerCollection.java:224)
+	at org.eclipse.jetty.server.handler.ContextHandlerCollection.doStart(ContextHandlerCollection.java:167)
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
+	at org.eclipse.jetty.server.handler.HandlerCollection.doStart(HandlerCollection.java:224)
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
+	at org.eclipse.jetty.server.handler.HandlerWrapper.doStart(HandlerWrapper.java:89)
+	at org.eclipse.jetty.server.Server.doStart(Server.java:262)
+	at org.mortbay.jetty.plugin.JettyServer.doStart(JettyServer.java:67)
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:59)
+	at org.mortbay.jetty.plugin.AbstractJettyMojo.startJetty(AbstractJettyMojo.java:333)
+	at org.mortbay.jetty.plugin.AbstractJettyMojo.execute(AbstractJettyMojo.java:273)
+	at org.mortbay.jetty.plugin.JettyRunMojo.execute(JettyRunMojo.java:548)
+	at org.apache.maven.plugin.DefaultPluginManager.executeMojo(DefaultPluginManager.java:490)
+	at org.apache.maven.lifecycle.DefaultLifecycleExecutor.executeGoals(DefaultLifecycleExecutor.java:694)
+	at org.apache.maven.lifecycle.DefaultLifecycleExecutor.executeGoalWithLifecycle(DefaultLifecycleExecutor.java:556)
+	at org.apache.maven.lifecycle.DefaultLifecycleExecutor.executeGoal(DefaultLifecycleExecutor.java:535)
+	at org.apache.maven.lifecycle.DefaultLifecycleExecutor.executeGoalAndHandleFailures(DefaultLifecycleExecutor.java:387)
+	at org.apache.maven.lifecycle.DefaultLifecycleExecutor.executeTaskSegments(DefaultLifecycleExecutor.java:348)
+	at org.apache.maven.lifecycle.DefaultLifecycleExecutor.execute(DefaultLifecycleExecutor.java:180)
+	at org.apache.maven.DefaultMaven.doExecute(DefaultMaven.java:328)
+	at org.apache.maven.DefaultMaven.execute(DefaultMaven.java:138)
+	at org.apache.maven.cli.MavenCli.main(MavenCli.java:362)
+	at org.apache.maven.cli.compat.CompatibleMain.main(CompatibleMain.java:60)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.codehaus.classworlds.Launcher.launchEnhanced(Launcher.java:315)
+	at org.codehaus.classworlds.Launcher.launch(Launcher.java:255)
+	at org.codehaus.classworlds.Launcher.mainWithExitCode(Launcher.java:430)
+	at org.codehaus.classworlds.Launcher.main(Launcher.java:375)
+Caused by: org.springframework.scheduling.SchedulingException: Could not start Quartz Scheduler; nested exception is org.quartz.SchedulerConfigException: Failure occured during job recovery. [See nested exception: org.quartz.JobPersistenceException: Failed to obtain DB connection from data source 'motechDS': java.sql.SQLException: Connections could not be acquired from the underlying database! [See nested exception: java.sql.SQLException: Connections could not be acquired from the underlying database!]]
+	at org.springframework.scheduling.quartz.SchedulerFactoryBean.start(SchedulerFactoryBean.java:715)
+	at org.springframework.context.support.DefaultLifecycleProcessor.doStart(DefaultLifecycleProcessor.java:167)
+	... 49 more
+Caused by: org.quartz.SchedulerConfigException: Failure occured during job recovery. [See nested exception: org.quartz.JobPersistenceException: Failed to obtain DB connection from data source 'motechDS': java.sql.SQLException: Connections could not be acquired from the underlying database! [See nested exception: java.sql.SQLException: Connections could not be acquired from the underlying database!]]
+	at org.quartz.impl.jdbcjobstore.JobStoreSupport.schedulerStarted(JobStoreSupport.java:683)
+	at org.quartz.core.QuartzScheduler.start(QuartzScheduler.java:526)
+	at org.quartz.impl.StdScheduler.start(StdScheduler.java:143)
+	at org.springframework.scheduling.quartz.SchedulerFactoryBean.startScheduler(SchedulerFactoryBean.java:649)
+	at org.springframework.scheduling.quartz.SchedulerFactoryBean.start(SchedulerFactoryBean.java:712)
+	... 50 more
+Caused by: org.quartz.JobPersistenceException: Failed to obtain DB connection from data source 'motechDS': java.sql.SQLException: Connections could not be acquired from the underlying database! [See nested exception: java.sql.SQLException: Connections could not be acquired from the underlying database!]
+	at org.quartz.impl.jdbcjobstore.JobStoreSupport.getConnection(JobStoreSupport.java:767)
+	at org.quartz.impl.jdbcjobstore.JobStoreTX.getNonManagedTXConnection(JobStoreTX.java:71)
+	at org.quartz.impl.jdbcjobstore.JobStoreSupport.executeInNonManagedTXLock(JobStoreSupport.java:3808)
+	at org.quartz.impl.jdbcjobstore.JobStoreSupport.executeInNonManagedTXLock(JobStoreSupport.java:3773)
+	at org.quartz.impl.jdbcjobstore.JobStoreSupport.recoverJobs(JobStoreSupport.java:823)
+	at org.quartz.impl.jdbcjobstore.JobStoreSupport.schedulerStarted(JobStoreSupport.java:681)
+	... 54 more
+Caused by: java.sql.SQLException: Connections could not be acquired from the underlying database!
+	at com.mchange.v2.sql.SqlUtils.toSQLException(SqlUtils.java:106)
+	at com.mchange.v2.c3p0.impl.C3P0PooledConnectionPool.checkoutPooledConnection(C3P0PooledConnectionPool.java:529)
+	at com.mchange.v2.c3p0.impl.AbstractPoolBackedDataSource.getConnection(AbstractPoolBackedDataSource.java:128)
+	at org.quartz.utils.PoolingConnectionProvider.getConnection(PoolingConnectionProvider.java:247)
+	at org.quartz.utils.DBConnectionManager.getConnection(DBConnectionManager.java:108)
+	at org.quartz.impl.jdbcjobstore.JobStoreSupport.getConnection(JobStoreSupport.java:764)
+	... 59 more
+Caused by: com.mchange.v2.resourcepool.CannotAcquireResourceException: A ResourcePool could not acquire a resource from its primary factory or source.
+	at com.mchange.v2.resourcepool.BasicResourcePool.awaitAvailable(BasicResourcePool.java:1319)
+	at com.mchange.v2.resourcepool.BasicResourcePool.prelimCheckoutResource(BasicResourcePool.java:557)
+	at com.mchange.v2.resourcepool.BasicResourcePool.checkoutResource(BasicResourcePool.java:477)
+	at com.mchange.v2.c3p0.impl.C3P0PooledConnectionPool.checkoutPooledConnection(C3P0PooledConnectionPool.java:525)
+	... 63 more
+[INFO] ------------------------------------------------------------------------
+[ERROR] BUILD ERROR
+[INFO] ------------------------------------------------------------------------
+[INFO] Failure
+
+Embedded error: Address already in use
+[INFO] ------------------------------------------------------------------------
+[INFO] For more information, run Maven with the -e switch
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 7 minutes 6 seconds
+[INFO] Finished at: Fri Feb 13 14:24:55 BDT 2015
+[INFO] Final Memory: 118M/503M
+[INFO] ------------------------------------------------------------------------

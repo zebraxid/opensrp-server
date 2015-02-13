@@ -16,8 +16,8 @@ public class OpenmrsConstants {
 
 	public static enum PersonField{
 		IS_NEW_PERSON("is_new_person", null),
-		IDENTIFIER("identifier", "case_id"),
-		IDENTIFIER_TYPE("identifier_type", null),
+		IDENTIFIER("identifier", "id"),
+		IDENTIFIER_TYPE("identifier_type", "TB_IDENTIFIER"),
 		FIRST_NAME("given_name", "name"),
 		LAST_NAME("family_name", "family_name"),
 		GENDER("gender", "sex"),
@@ -50,17 +50,17 @@ public class OpenmrsConstants {
 		//TB_FUP_FORM_ID("form_id", null, "4"),
 		//TB_FUP_FORM_NAME("form_name", null, "birth notification mobile"),
 		
-		DEATH_FORM_TYPE("encounter_type", null, "DEATH DETAILED REPORT"),
+		/*DEATH_FORM_TYPE("encounter_type", null, "DEATH DETAILED REPORT"),
 		DEATH_FORM_ID("form_id", null, "6"),
-		DEATH_FORM_NAME("form_name", null, "death notification mobile"),
+		DEATH_FORM_NAME("form_name", null, "death notification mobile"),*/
 		
 		TB_REG_FORM_TYPE("encounter_type", null, "TB_REGISTRATION"),
 		//TB_REG_FORM_ID("form_id", null, "35"),
 		//TB_REG_FORM_NAME("form_name", null, "pregnancy notification mobile"),
 
-		VERBAL_AUTOPSY_FORM_TYPE("encounter_type", null, "VERBAL AUTOPSY"),
+		/*VERBAL_AUTOPSY_FORM_TYPE("encounter_type", null, "VERBAL AUTOPSY"),
 		VERBAL_AUTOPSY_FORM_ID("form_id", null, "3005"),//TODO FORMID
-		VERBAL_AUTOPSY_FORM_NAME("form_name", null, "verbal autopsy mobile"),
+		VERBAL_AUTOPSY_FORM_NAME("form_name", null, "verbal autopsy mobile"),*/
 		
 		ENCOUNTER_LOCATION("location_id", "address_encounter_center", null),
 		ENCOUNTER_DATE("encounter_datetime", "today", null),
@@ -119,6 +119,9 @@ public class OpenmrsConstants {
 		RESISTANCE_DRUGS("159956","resistance_drugs",null),
 		RISK_FACTORS("162696","risk_factors",null),
 		
+		CUR_SMEAR("307","current_smear",null),
+		CUR_BMI("1342","current_bmi",null),
+		CUR_RESISTANCE_DRUGS("159956","current_resistance_drugs",null),
 		
 		;
 		

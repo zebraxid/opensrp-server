@@ -31,7 +31,7 @@ public class UserController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/authenticate-user")
     public ResponseEntity<HttpStatus> authenticateUser() {
-        return new ResponseEntity<>(null, allowOrigin(drishtiSiteUrl), OK);
+        return new ResponseEntity<>(null, allowOrigin("*"), OK);
     }
 
     public DrishtiUser currentUser() {
