@@ -32,7 +32,6 @@ public class ZiggyService {
     private Object ziggyFormController;
     private Invocable invocable;
 
-    public ZiggyService(){}
     @Autowired
     public ZiggyService(ZiggyFileLoader ziggyFileLoader,FormDataRepository dataRepository,FormSubmissionRouter formSubmissionRouter) throws Exception {
         this.ziggyFileLoader = ziggyFileLoader;

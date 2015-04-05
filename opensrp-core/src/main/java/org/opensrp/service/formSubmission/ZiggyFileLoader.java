@@ -1,6 +1,7 @@
 package org.opensrp.service.formSubmission;
 
 import org.apache.commons.io.IOUtils;
+import org.codehaus.jackson.map.SerializerFactory.Config;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.Properties;
 
 import static java.text.MessageFormat.format;
 
@@ -23,7 +25,7 @@ public class ZiggyFileLoader {
     private String formDirectoryName;
 
     @Autowired
-    public ZiggyFileLoader(@Value("#{opensrp['js.directory.name']}") String jsDirectoryName, @Value("#{opensrp['form.directory.name']}") String formDirectoryName) {
+    public ZiggyFileLoader(@Value("#{opensrp['js.directory.name']}") String jsDirectoryName, @Value("#{opensrp['form.directory.name']}") String formDirectoryName) throws IOException {
         this.jsDirectoryName = jsDirectoryName;
         this.formDirectoryName = formDirectoryName;
     }
