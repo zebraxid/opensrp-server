@@ -9,7 +9,7 @@ import org.opensrp.register.repository.AllEligibleCouples;
 import org.opensrp.register.repository.AllMothers;
 import org.opensrp.service.formSubmission.handler.ReportFieldsDefinition;
 import org.opensrp.register.service.reporting.MotherReportingService;
-import org.opensrp.service.reporting.rules.IsHypertensionDetectedRule;
+import org.opensrp.register.service.reporting.rules.IsHypertensionDetectedRule;
 import org.opensrp.register.service.scheduling.ANCSchedulesService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
