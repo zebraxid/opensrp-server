@@ -30,13 +30,9 @@ public class Mother extends MotechBaseDataObject {
     @JsonProperty
     private String anmIdentifier;
     @JsonProperty
+    private String locationId;
+    @JsonProperty
     private String referenceDate;
-    @JsonProperty
-    private String village;
-    @JsonProperty
-    private String subCenter;
-    @JsonProperty
-    private String phc;
     @JsonProperty
     private String isClosed;
     @JsonProperty
@@ -73,16 +69,14 @@ public class Mother extends MotechBaseDataObject {
         anmIdentifier = identifier;
         return this;
     }
-
-    public Mother withLMP(LocalDate lmp) {
-        this.referenceDate = lmp.toString();
+    
+    public Mother withLocationId(String locationId) {
+        this.locationId = locationId;
         return this;
     }
 
-    public Mother withLocation(String village, String subCenter, String phc) {
-        this.village = village;
-        this.subCenter = subCenter;
-        this.phc = phc;
+    public Mother withLMP(LocalDate lmp) {
+        this.referenceDate = lmp.toString();
         return this;
     }
 
@@ -111,21 +105,9 @@ public class Mother extends MotechBaseDataObject {
     public String anmIdentifier() {
         return anmIdentifier;
     }
-
-    public String village() {
-        return village;
-    }
-
-    public String phc() {
-        return phc;
-    }
-
-    public String subCenter() {
-        return subCenter;
-    }
-
-    public Location location() {
-        return new Location(village, subCenter, phc);
+    
+    public String locationId() {
+        return locationId;
     }
 
     public Map<String, String> details() {

@@ -9,7 +9,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.ektorp.support.TypeDiscriminator;
-import org.opensrp.common.domain.Location;
+import org.opensrp.api.domain.Location;
 
 @TypeDiscriminator("doc.type == 'Event'")
 public class Event extends BaseDataObject{

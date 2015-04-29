@@ -26,6 +26,8 @@ public class Child extends MotechBaseDataObject {
     @JsonProperty
     private String anmIdentifier;
     @JsonProperty
+    private String locationId;
+    @JsonProperty
     private String dateOfBirth;
     @JsonProperty
     private String weight;
@@ -35,12 +37,6 @@ public class Child extends MotechBaseDataObject {
     private String bloodGroup;
     @JsonProperty
     private String immunizationsGiven;
-    @JsonProperty
-    private String village;
-    @JsonProperty
-    private String subCenter;
-    @JsonProperty
-    private String phc;
     @JsonProperty
     private String isClosed;
     @JsonProperty
@@ -71,10 +67,8 @@ public class Child extends MotechBaseDataObject {
         return this;
     }
 
-    public Child withLocation(String village, String subCenter, String phc) {
-        this.village = village;
-        this.subCenter = subCenter;
-        this.phc = phc;
+    public Child withLocationId(String locationId) {
+        this.locationId = locationId;
         return this;
     }
 
@@ -133,6 +127,10 @@ public class Child extends MotechBaseDataObject {
         return anmIdentifier;
     }
 
+    public String locationId() {
+        return locationId;
+    }
+
     public List<String> immunizationsGiven() {
         if (!StringUtils.isEmpty(immunizationsGiven)) {
             return new ArrayList<>(Arrays.asList(immunizationsGiven.split(" ")));
@@ -150,10 +148,6 @@ public class Child extends MotechBaseDataObject {
 
     public String weight() {
         return weight;
-    }
-
-    public Location location() {
-        return new Location(village, subCenter, phc);
     }
 
     public Map<String, String> immunizations() {
