@@ -72,7 +72,7 @@ public class FPRegisterServiceTest {
         details.put("currentMethod", "iud");
         EligibleCouple firstEligibleCouple = new EligibleCouple("ec id1", "90")
                 .withCouple("Saranya", "Manjunatha")
-                .withLocation("boregowdanakoppalu", "hosa_agrahara", "phc")
+                .withLocationId("boregowdanakoppalu")
                 .withDetails(details)
                 .withIUDFPDetails(asList(new IUDFPDetails(
                         "2014-02-23", "district hospital", "2014-04-12", "negative"),
@@ -81,18 +81,18 @@ public class FPRegisterServiceTest {
                         new OCPFPDetails("2014-06-23", asList(refill1, refill2, refill3, refill4), "2014-07-12", "negative")));
         EligibleCouple secondEligibleCouple = new EligibleCouple("ec id2", "91")
                 .withCouple("Saranya", "Manjunatha")
-                .withLocation("boregowdanakoppalu", "hosa_agrahara", "phc")
+                .withLocationId("boregowdanakoppalu")
                 .withDetails(details)
                 .withCondomFPDetails(asList(new CondomFPDetails("2014-02-23", asList(refill1, refill2)),
                         new CondomFPDetails("2014-06-23", asList(refill1, refill2))));
         EligibleCouple thirdEligibleCouple = new EligibleCouple("ec id3", "92")
                 .withCouple("Saranya", "Manjunatha")
-                .withLocation("boregowdanakoppalu", "hosa_agrahara", "phc")
+                .withLocationId("boregowdanakoppalu")
                 .withDetails(details)
                 .withOCPFPDetails(asList(new OCPFPDetails("2014-02-23", asList(refill1, refill2, refill3, refill4), "2014-08-12", "negative")));
         EligibleCouple fourthEligibleCouple = new EligibleCouple("ec id4", "93")
                 .withCouple("Saranya", "Manjunatha")
-                .withLocation("boregowdanakoppalu", "hosa_agrahara", "phc")
+                .withLocationId("boregowdanakoppalu")
                 .withDetails(details)
                 .withMaleSterilizationFPDetails(asList(new MaleSterilizationFPDetails("nsv", "2014-05-01",
                         asList("2014-05-06", "2014-05-10")),
@@ -100,7 +100,7 @@ public class FPRegisterServiceTest {
                                 asList("2014-05-06", "2014-05-10"))));
         EligibleCouple fifthEligibleCouple = new EligibleCouple("ec id5", "94")
                 .withCouple("Saranya", "Manjunatha")
-                .withLocation("boregowdanakoppalu", "hosa_agrahara", "phc")
+                .withLocationId("boregowdanakoppalu")
                 .withDetails(details)
                 .withFemaleSterilizationFPDetails(asList(
                         new FemaleSterilizationFPDetails("minilap", "2014-06-02",

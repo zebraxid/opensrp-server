@@ -63,7 +63,7 @@ public class FormDataRepositoryIntegrationTest {
                 .put("isHighPriority", "no")
                 .map();
         EligibleCouple expectedEligibleCouple = new EligibleCouple("entity id 1", "ec 123")
-                .withCouple("asha", "raja").withLocation("", "sub center", "phc").withDetails(expectedDetails);
+                .withCouple("asha", "raja").withLocationId("").withDetails(expectedDetails);
         assertEquals(expectedEligibleCouple, savedEC);
     }
 
@@ -95,7 +95,7 @@ public class FormDataRepositoryIntegrationTest {
                 .put("isHighPriority", "no")
                 .map();
         EligibleCouple expectedEligibleCouple = new EligibleCouple("entity id 1", "ec 123")
-                .withCouple("asha", "raja").withLocation("", "sub center", "phc").withDetails(expectedDetails);
+                .withCouple("asha", "raja").withLocationId("").withDetails(expectedDetails);
         assertEquals(expectedEligibleCouple, savedEC);
         assertEquals(existingEligibleCouple, existingEC);
     }
@@ -116,7 +116,7 @@ public class FormDataRepositoryIntegrationTest {
                 .put("bloodGroup", "o-ve")
                 .map();
         EligibleCouple oldEC = new EligibleCouple("entity id 1", "ec 123")
-                .withCouple("old wife name", "old husband name").withLocation("old village", "sub center", "phc").withDetails(oldDetails);
+                .withCouple("old wife name", "old husband name").withLocationId("old village").withDetails(oldDetails);
         eligibleCouples.add(oldEC);
 
         String entityId = repository.saveEntity("eligible_couple", fieldsJSON);
@@ -128,7 +128,7 @@ public class FormDataRepositoryIntegrationTest {
                 .put("bloodGroup", "o-ve")
                 .map();
         EligibleCouple expectedEligibleCouple = new EligibleCouple("entity id 1", "ec 123")
-                .withCouple("asha", "raja").withLocation("", "sub center", "phc").withDetails(expectedDetails);
+                .withCouple("asha", "raja").withLocationId("").withDetails(expectedDetails);
         assertEquals(expectedEligibleCouple, savedEC);
     }
 

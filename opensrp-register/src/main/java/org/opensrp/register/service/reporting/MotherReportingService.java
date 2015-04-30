@@ -162,7 +162,7 @@ public class MotherReportingService {
 
     private Location loadLocationFromEC(Mother mother) {
         EligibleCouple couple = allEligibleCouples.findByCaseId(mother.ecCaseId());
-        return new Location(couple.village(), couple.subCenter(), couple.phc());
+        return new Location(couple.locationId(), couple.locationId(), couple.locationId());
     }
 
     private void reportIfInstitutionalDelivery(SafeMap reportData, Mother mother, Location location) {

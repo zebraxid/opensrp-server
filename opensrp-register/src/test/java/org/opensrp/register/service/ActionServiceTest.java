@@ -105,7 +105,7 @@ public class ActionServiceTest {
 
     @Test
     public void shouldCreateACloseActionForAVisitOfAMother() throws Exception {
-        when(allMothers.findByCaseId("Case X")).thenReturn(new Mother("Case X", "EC-CASE-1", "Thayi 1").withAnm("ANM ID 1").withLocation("bherya", "Sub Center", "PHC X"));
+        when(allMothers.findByCaseId("Case X")).thenReturn(new Mother("Case X", "EC-CASE-1", "Thayi 1").withAnm("ANM ID 1").withLocationId("bherya"));
 
         service.markAlertAsClosed("Case X", "ANM ID 1", "ANC 1", "2012-12-12");
 

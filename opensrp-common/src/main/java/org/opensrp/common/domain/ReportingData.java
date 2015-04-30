@@ -26,9 +26,9 @@ public class ReportingData implements Serializable {
                 .with(ANM_IDENTIFIER, anmIdentifier)
                 .with(INDICATOR, indicator.value())
                 .with(EXTERNAL_ID, externalId)
-                .with(VILLAGE, location.village())
-                .with(SUB_CENTER, location.subCenter())
-                .with(PHC, location.phc())
+              //  .with(VILLAGE, location.village())
+               // .with(SUB_CENTER, location.subCenter())
+               // .with(PHC, location.phc())
                 .with(SERVICE_PROVIDED_DATE, date)
                 .with(DRISTHI_ENTITY_ID, dristhiEntityId)
                 .with(SERVICE_PROVIDER_TYPE, SERVICE_PROVIDER_ANM);
@@ -89,9 +89,9 @@ public class ReportingData implements Serializable {
         addToMissingDataIfFieldValueIsMissing(EXTERNAL_ID, missingData);
         addToMissingDataIfFieldValueIsMissing(INDICATOR, missingData);
         addToMissingDataIfFieldValueIsMissing(SERVICE_PROVIDED_DATE, missingData);
-        addToMissingDataIfFieldValueIsMissing(VILLAGE, missingData);
-        addToMissingDataIfFieldValueIsMissing(SUB_CENTER, missingData);
-        addToMissingDataIfFieldValueIsMissing(PHC, missingData);
+       // addToMissingDataIfFieldValueIsMissing(VILLAGE, missingData);
+       // addToMissingDataIfFieldValueIsMissing(SUB_CENTER, missingData);
+       // addToMissingDataIfFieldValueIsMissing(PHC, missingData);
         addToMissingDataIfFieldValueIsMissing(DRISTHI_ENTITY_ID, missingData);
         return missingData;
     }

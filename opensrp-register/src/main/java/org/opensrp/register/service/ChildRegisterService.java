@@ -53,8 +53,6 @@ public class ChildRegisterService {
                     .withWifeName(ec.wifeName())
                     .withHusbandName(ec.husbandName())
                     .withWifeDOB(ec.wifeDOB().toString())
-                    .withVillage(ec.location().village())
-                    .withSubCenter(ec.location().subCenter())
                     .withDOB(child.dateOfBirth())
                     .withImmunizations(child.immunizations())
                     .withVitaminADoses(child.vitaminADoses());

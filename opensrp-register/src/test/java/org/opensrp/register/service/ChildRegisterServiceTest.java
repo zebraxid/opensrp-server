@@ -68,7 +68,7 @@ public class ChildRegisterServiceTest {
         Mother mother = new Mother("mother id", "ec id", "thayi card number 1");
         EligibleCouple eligibleCouple = new EligibleCouple("ec id", "123")
                 .withCouple("name1", "name2")
-                .withLocation("boregowdanakoppalu", "hosa_agrahara", "phc")
+                .withLocationId("boregowdanakoppalu")
                 .withDetails(
                         mapOf("womanDOB", "1989-01-01"));
         ChildRegister expectedRegister = new ChildRegister(asList(new ChildRegisterEntry()
@@ -76,8 +76,6 @@ public class ChildRegisterServiceTest {
                 .withWifeName("name1")
                 .withHusbandName("name2")
                 .withWifeDOB("1989-01-01")
-                .withVillage("boregowdanakoppalu")
-                .withSubCenter("hosa_agrahara")
                 .withDOB("2013-01-01")
                 .withImmunizations(immunizations)
                 .withVitaminADoses(vitaminADoses)));

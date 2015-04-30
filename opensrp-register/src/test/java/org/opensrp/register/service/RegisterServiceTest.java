@@ -194,7 +194,7 @@ public class RegisterServiceTest {
                 );
         EligibleCouple eligibleCouple = new EligibleCouple("ecCaseId", "123")
                 .withANMIdentifier("anm1")
-                .withLocation("village", "sc", "phc")
+                .withLocationId("village")
                 .withCouple("wife Name", "husband Name")
                 .withDetails(
                         create("registrationDate", "2013-01-01")
@@ -228,9 +228,6 @@ public class RegisterServiceTest {
                 .withRegistrationDate("2013-01-01")
                 .withWifeName("wife Name")
                 .withHusbandName("husband Name")
-                .withVillage("village")
-                .withSubCenter("sc")
-                .withPHC("phc")
                 .withWifeAge("23")
                 .withHusbandAge("32")
                 .withHouseholdNumber("22")

@@ -40,7 +40,8 @@ public class LocationLoader implements ILocationLoader {
 
     private Location loadLocationForEC(String caseId) {
         EligibleCouple couple = allEligibleCouples.findByCaseId(caseId);
-        return couple.location();
+        //return couple.location();
+        return new Location(couple.locationId(), couple.locationId(), couple.locationId());
     }
 
     private Location loadLocationForMother(String caseId) {

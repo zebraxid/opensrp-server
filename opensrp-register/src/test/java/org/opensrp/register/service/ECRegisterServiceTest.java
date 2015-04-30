@@ -48,7 +48,7 @@ public class ECRegisterServiceTest {
                 );
         EligibleCouple eligibleCouple = new EligibleCouple("ecCaseId", "123")
                 .withANMIdentifier("anm1")
-                .withLocation("village", "sc", "phc")
+                .withLocationId("locationId")
                 .withCouple("wife Name", "husband Name")
                 .withDetails(
                         create("registrationDate", "2013-01-01")
@@ -83,9 +83,6 @@ public class ECRegisterServiceTest {
                 .withRegistrationDate("2013-01-01")
                 .withWifeName("wife Name")
                 .withHusbandName("husband Name")
-                .withVillage("village")
-                .withSubCenter("sc")
-                .withPHC("phc")
                 .withWifeAge("23")
                 .withHusbandAge("32")
                 .withHouseholdNumber("22")
@@ -130,7 +127,7 @@ public class ECRegisterServiceTest {
                 );
         EligibleCouple eligibleCouple = new EligibleCouple("ecCaseId", "123")
                 .withANMIdentifier("anm1")
-                .withLocation("village", "sc", "phc")
+                .withLocationId("LocationId")
                 .withCouple("wife Name", "husband Name")
                 .withDetails(
                         create("registrationDate", "2013-01-01")
@@ -164,9 +161,6 @@ public class ECRegisterServiceTest {
                 .withRegistrationDate("2013-01-01")
                 .withWifeName("wife Name")
                 .withHusbandName("husband Name")
-                .withVillage("village")
-                .withSubCenter("sc")
-                .withPHC("phc")
                 .withWifeAge("23")
                 .withHusbandAge("32")
                 .withHouseholdNumber("22")

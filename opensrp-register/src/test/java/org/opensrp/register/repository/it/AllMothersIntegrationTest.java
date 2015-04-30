@@ -43,7 +43,7 @@ public class AllMothersIntegrationTest {
         Mother mother = new Mother("CASE-1", "EC-CASE-1", "THAYI-CARD-1")
                 .withAnm("ANM ID 1")
                 .withLMP(DateUtil.tomorrow())
-                .withLocation("bherya", "Sub Center", "PHC X")
+                .withLocationId("bherya")
                 .withANCVisits(asList(
                         create("ancVisitDate", "2014-02-14")
                                 .put("weight", "70")

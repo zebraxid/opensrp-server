@@ -317,7 +317,7 @@ public class ChildReportingService {
 
     private Location loadLocationOfChild(Child child) {
         EligibleCouple couple = getEligibleCouple(child);
-        return new Location(couple.village(), couple.subCenter(), couple.phc());
+        return new Location(couple.locationId(), couple.locationId(), couple.locationId());
     }
 
     private void reportBirthWeight(Child child, String submissionDate, Location location) {
@@ -506,7 +506,7 @@ public class ChildReportingService {
             //#TODO: Refactor to remove the DB calls
             EligibleCouple couple = getEligibleCouple(child);
             String externalId = getExternalId(child, couple);
-            Location location = new Location(couple.village(), couple.subCenter(), couple.phc());
+            Location location = new Location(couple.locationId(), couple.locationId(), couple.locationId());
             ReportingData serviceProvidedDataForChild = serviceProvidedData(child.anmIdentifier(), externalId, indicator, date, location, child.caseId());
             ReportingData anmReportDataForChild = anmReportData(child.anmIdentifier(), child.caseId(), indicator, date);
             serviceProvidedData.add(serviceProvidedDataForChild);
@@ -528,7 +528,7 @@ public class ChildReportingService {
         for (Child child : children) {
             Mother mother = selectFirst(mothers, having(on(Mother.class).caseId(), equalTo(child.motherCaseId())));
             EligibleCouple ec = selectFirst(ecs, having(on(EligibleCouple.class).caseId(), equalTo(mother.ecCaseId())));
-            Location location = ec.location();
+            Location location = null;//ec.locationId();
             String externalId = getExternalId(child, ec);
             ReportingData serviceProvidedDataForChild = serviceProvidedData(child.anmIdentifier(), externalId, indicator, date, location, child.caseId());
             ReportingData anmReportDataForChild = anmReportData(child.anmIdentifier(), child.caseId(), indicator, date);
