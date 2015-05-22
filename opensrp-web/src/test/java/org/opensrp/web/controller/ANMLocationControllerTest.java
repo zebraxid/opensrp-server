@@ -1,15 +1,8 @@
 package org.opensrp.web.controller;
 
-import static org.mockito.MockitoAnnotations.initMocks;
-
-import org.junit.Before;
-import org.mockito.Mock;
-import org.opensrp.common.util.HttpAgent;
-import org.opensrp.domain.DrishtiUser;
-import org.opensrp.register.service.ANMDetailsService;
 
 public class ANMLocationControllerTest {
-
+/*
     @Mock
     private ANMDetailsService service;
     @Mock
@@ -25,7 +18,7 @@ public class ANMLocationControllerTest {
         initMocks(this);
         controller = new ANMLocationController("http://dristhi_reporting_url/villages", userController, httpAgent);
     }
-/*
+
     @Test
     public void shouldGetANCDetailsForAllANMs() throws Exception {
 

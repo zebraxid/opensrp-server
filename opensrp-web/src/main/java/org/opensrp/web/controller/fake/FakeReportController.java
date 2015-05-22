@@ -1,7 +1,6 @@
 package org.opensrp.web.controller.fake;
 
 import org.opensrp.common.util.HttpAgent;
-import org.opensrp.register.listener.ReportingEventListener;
 import org.motechproject.scheduler.domain.MotechEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,7 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class FakeReportController {
-    private ReportingEventListener reportingEventListener;
+  /*  private ReportingEventListener reportingEventListener;
     private HttpAgent httpAgent;
     private String reportURL;
 
@@ -35,5 +34,5 @@ public class FakeReportController {
     public String forceAggregateReports() throws Exception {
         httpAgent.get(reportURL + "/" + "force-aggregate");
         return "Done";
-    }
+    }*/
 }

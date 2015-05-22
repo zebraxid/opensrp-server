@@ -1,39 +1,14 @@
 package org.opensrp.integration;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
-import org.joda.time.DateTime;
-import org.joda.time.LocalDate;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
-import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.motechproject.delivery.schedule.util.FakeSchedule;
-import org.motechproject.delivery.schedule.util.ScheduleVisualization;
-import org.motechproject.delivery.schedule.util.ScheduleWithCapture;
-import org.motechproject.delivery.schedule.util.SetDateAction;
-import org.motechproject.model.Time;
-import org.motechproject.scheduletracking.api.service.ScheduleTrackingService;
 import org.motechproject.testing.utils.BaseUnitTest;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import java.io.File;
-import java.util.Date;
-
-import static org.opensrp.common.AllConstants.ChildImmunizationFields.*;
-import static org.opensrp.common.util.DateUtil.fakeIt;
-import static org.opensrp.register.DrishtiScheduleConstants.ChildScheduleConstants.*;
-import static org.motechproject.scheduletracking.api.domain.WindowName.*;
-import static org.motechproject.util.DateUtil.newDate;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:spring/applicationContext-opensrp-web.xml")
 public class DrishtiSchedulesIntegrationTest extends BaseUnitTest {
-    private static final int JANUARY = 1;
+   /* private static final int JANUARY = 1;
     private static final int FEBRUARY = 2;
     private static final int MARCH = 3;
     private static final int APRIL = 4;
@@ -569,4 +544,4 @@ public class DrishtiSchedulesIntegrationTest extends BaseUnitTest {
     private Date dateWithYear(int day, int month, int year) {
         return new DateTime(year, month, day, 14, 0).toDate();
     }
-}
+*/}
