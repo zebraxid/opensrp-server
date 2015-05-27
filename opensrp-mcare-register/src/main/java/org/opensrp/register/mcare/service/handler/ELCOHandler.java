@@ -19,6 +19,8 @@ public class ELCOHandler implements FormSubmissionHandler {
 
 	@Override
 	public void handle(FormSubmission submission) {
+
+		eLCOService.registerELCO(submission);
 		
 	}
 

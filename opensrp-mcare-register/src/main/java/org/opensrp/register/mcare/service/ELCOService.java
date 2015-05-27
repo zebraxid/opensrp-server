@@ -1,66 +1,59 @@
 package org.opensrp.register.mcare.service;
 
 import static org.opensrp.common.AllConstants.CommonFormFields.ID;
-import static org.opensrp.common.AllConstants.HHRegistrationFields.ELCO_REGISTRATION_SUB_FORM_NAME;
+import static org.opensrp.common.AllConstants.HHRegistrationFields.ELCO_REGISTRATION_SUB_FORM_NAME_CENSUS;
 
 import java.util.Map;
 
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.form.domain.SubFormData;
 import org.opensrp.register.mcare.domain.Elco;
-import org.opensrp.register.mcare.domain.HouseHold;
 import org.opensrp.register.mcare.repository.AllElcos;
 import org.opensrp.register.mcare.repository.AllHouseHolds;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_BIRTHDATE;
-import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_WOMLNAME;
-import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_WOMNID;
-import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_WOMFNAME;
-import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_HUSNAME;
-import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_GENDER;
-import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_ELIGIBLE;
-import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_DISPLAY_AGE;
-import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_WOMBID;
-import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_WOMAGE;
 
 
 @Service
 public class ELCOService {
 	private static Logger logger = LoggerFactory.getLogger(ELCOService.class.toString());
 	
-	private AllHouseHolds allHouseHolds;
+	private HHService hhService;
 	private AllElcos allEcos;
 
 	@Autowired
-	public ELCOService(AllHouseHolds allHouseHolds, AllElcos allEcos)
+	public ELCOService(AllHouseHolds allHouseHolds, AllElcos allEcos, HHService hhService)
 	{
 		this.allEcos = allEcos;
-		this.allHouseHolds = allHouseHolds;
+		this.hhService = hhService;
 	}
 	
 	public void registerELCO(FormSubmission submission)
 	{
-		HouseHold houseHold = allHouseHolds.findByCASEID(submission.entityId());
-		SubFormData subFormData = submission.getSubFormByName(ELCO_REGISTRATION_SUB_FORM_NAME);
+		SubFormData subFormData = submission.getSubFormByName(ELCO_REGISTRATION_SUB_FORM_NAME_CENSUS);
 		
 		for (Map<String, String> elcoFields : subFormData.instances()) {
 			
-			Elco elco = allEcos.findByCaseId(elcoFields.get(ID));
-			
-			elco.withFWBIRTHDATE(FW_BIRTHDATE)
-			.withFWGENDER(FW_GENDER)
-			.withFWWOMFNAME(FW_WOMFNAME)
-			.withFWHUSNAME(FW_HUSNAME)
-			.withFWWOMBID(FW_WOMBID)
-			.withFWWOMFNAME(FW_WOMFNAME)
-			.withFWDISPLAYAGE(FW_DISPLAY_AGE)
-			.withFWELIGIBLE(FW_ELIGIBLE);
+			Elco elco = allEcos.findByCaseId(elcoFields.get(ID))
+					.withPROVIDERID(submission.anmId());
+					/*.withGOBHHID(FW_GOBHHID)
+					.withJiVitAHHID(FW_JiVitAHHID)
+					.withFWWOMFNAME(FW_WOMFNAME)
+					.withFWWOMFNAME(FW_WOMLNAME)
+					.withFWWOMBID(FW_WOMNID)
+					.withFWWOMBID(FW_WOMBID)
+					.withFWHUSNAME(FW_HUSNAME)
+					.withFWGENDER(FW_GENDER)
+					.withFWBIRTHDATE(FW_BIRTHDATE)
+					.withFWWOMAGE(FW_WOMAGE)
+					.withFWELIGIBLE(FW_ELIGIBLE);*/
 			
 			allEcos.update(elco);
 		}
+		
+		hhService.registerHouseHold(submission);
 		
 	}
 	

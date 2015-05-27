@@ -31,6 +31,14 @@ public class FormDataRepositoryImpl extends FormDataRepository{
     private static final String DETAILS = "details";
     private static final String DOCUMENT_TYPE = "type";
     private static final String ID_FIELD_ON_ENTITY = "CASEID";
+    private static final String TODAY_FIELD_ON_ENTITY = "TODAY";
+    private static final String LOCATIONID_FIELD_ON_ENTITY = "LOCATIONID";
+    private static final String START_FIELD_ON_ENTITY = "START";
+    private static final String END_FIELD_ON_ENTITY = "END";
+    private static final String TODAY = "today";
+    private static final String LOCATIONID = "existing_location";
+    private static final String START = "start";
+    private static final String END = "end";
     private static final String CASE_ID_VIEW_NAME = "by_cASEID";
     private Map<String, Field[]> fieldSetMap;
     private CouchDbConnector db;
@@ -74,11 +82,21 @@ public class FormDataRepositoryImpl extends FormDataRepository{
 
         List<String> fieldList = getFieldsList(entityType);
         for (String fieldName : updatedFieldsMap.keySet()) {
+        	
             if (fieldList.contains(fieldName)) {
                 entity.put(fieldName, updatedFieldsMap.get(fieldName));
             } else if (fieldName.equals(ID)) {
                 entity.put(ID_FIELD_ON_ENTITY, updatedFieldsMap.get(fieldName));
-            } else {
+            }/*else if (fieldName.equals(TODAY)) {
+                entity.put(TODAY_FIELD_ON_ENTITY, updatedFieldsMap.get(fieldName));
+            }else if (fieldName.equals(LOCATIONID)) {
+                entity.put(LOCATIONID_FIELD_ON_ENTITY, updatedFieldsMap.get(fieldName));
+            }else if (fieldName.equals(START)) {
+                entity.put(START_FIELD_ON_ENTITY, updatedFieldsMap.get(fieldName));
+            }else if (fieldName.equals(END)) {
+                entity.put(END_FIELD_ON_ENTITY, updatedFieldsMap.get(fieldName));
+            }*/
+            else {
                 details.put(fieldName, updatedFieldsMap.get(fieldName));
             }
         }

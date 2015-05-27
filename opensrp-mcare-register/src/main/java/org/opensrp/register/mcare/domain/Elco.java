@@ -7,7 +7,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
 import org.ektorp.support.TypeDiscriminator;
 import org.motechproject.model.MotechBaseDataObject;
 
-@TypeDiscriminator("doc.type === 'ELCO'")
+@TypeDiscriminator("doc.type === 'Elco'")
 public class Elco extends MotechBaseDataObject {
 
 	@JsonProperty
@@ -22,6 +22,10 @@ public class Elco extends MotechBaseDataObject {
 	private String START;
 	@JsonProperty
 	private String END;
+	@JsonProperty
+	private String GOBHHID;
+	@JsonProperty
+	private String JiVitAHHID;
 	@JsonProperty
 	private String FWCENDATE;
 	@JsonProperty
@@ -67,6 +71,10 @@ public class Elco extends MotechBaseDataObject {
 		this.LOCATIONID = LOCATIONID;
 		return this;
 	}
+	public Elco withTODAY(String TODAY) {
+		this.TODAY = TODAY;
+		return this;
+	}
 	public Elco withSTART(String START) {
 		this.START = START;
 		return this;
@@ -75,6 +83,16 @@ public class Elco extends MotechBaseDataObject {
 		this.END = END;
 		return this;
 	}
+	public Elco withGOBHHID(String GOBHHID) {
+		this.GOBHHID = GOBHHID;
+		return this;
+	}
+
+	public Elco withJiVitAHHID(String JiVitAHHID) {
+		this.JiVitAHHID = JiVitAHHID;
+		return this;
+	}
+
 	public Elco withFWCENDATE(String FWCENDATE) {
 		this.FWCENDATE = FWCENDATE;
 		return this;
@@ -112,6 +130,10 @@ public class Elco extends MotechBaseDataObject {
 		this.FWGENDER = FWGENDER;
 		return this;
 	}
+	public Elco withFWWOMAGE(String FWWOMAGE) {
+		this.FWWOMAGE = FWWOMAGE;
+		return this;
+	}
 	public Elco withFWDISPLAYAGE(String FWDISPLAYAGE) {
 		this.FWDISPLAYAGE = FWDISPLAYAGE;
 		return this;
@@ -136,22 +158,33 @@ public class Elco extends MotechBaseDataObject {
 		this.FWELIGIBLE = FWELIGIBLE;
 		return this;
 	}
+	public String CASEID() {
+		return CASEID;
+	}
 	public String PROVIDERID() {
 		return PROVIDERID;
 	}
 	public String LOCATIONID() {
 		return LOCATIONID;
 	}
-	public String START(String START) {
+	public String TODAY() {
+		return TODAY;
+	}
+	public String START() {
 		return START;
 	}
-	public String END(String END) {
+	public String END() {
 		return  END;
+	}
+	public String GOBHHID() {
+		return GOBHHID;
+	}
+	public String JiVitAHHID() {
+		return JiVitAHHID;
 	}
 	public String FWCENDATE() {
 		return FWCENDATE;
 	}
-
 	public String FWCENSTAT() {
 		return FWCENSTAT;
 	}
@@ -175,6 +208,9 @@ public class Elco extends MotechBaseDataObject {
 	}
 	public String FWGENDER() {
 		return FWGENDER;
+	}
+	public String FWWOMAGE() {
+		return FWWOMAGE;
 	}
 	public String FWDISPLAYAGE() {
 		return FWDISPLAYAGE;

@@ -22,7 +22,7 @@ public class AllElcos extends MotechBaseRepository<Elco>{
 
 	@GenerateView
 	public Elco findByCaseId(String caseId) {
-		List<Elco> elcos = queryView("by_CASEID", caseId);
+		List<Elco> elcos = queryView("by_cASEID", caseId);
 		if (elcos == null || elcos.isEmpty()) {
 			return null;
 		}

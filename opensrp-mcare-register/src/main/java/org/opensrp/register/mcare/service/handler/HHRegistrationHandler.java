@@ -24,6 +24,5 @@ public class HHRegistrationHandler implements FormSubmissionHandler {
 	public void handle(FormSubmission submission) {
 		
 		hhService.registerHouseHold(submission);
-		elcoService.registerELCO(submission);
 	}
 }

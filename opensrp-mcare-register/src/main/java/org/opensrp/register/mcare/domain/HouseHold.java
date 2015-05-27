@@ -1,6 +1,7 @@
 package org.opensrp.register.mcare.domain;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -36,7 +37,9 @@ public class HouseHold extends MotechBaseDataObject {
 	@JsonProperty
 	private String FWNHHHGPS;
 	@JsonProperty
-	private String FWHOHNAME;
+	private String FWHOHFNAME;
+	@JsonProperty
+	private String FWHOHLNAME;
 	@JsonProperty
 	private String FWHOHBIRTHDATE;
 	@JsonProperty
@@ -46,34 +49,42 @@ public class HouseHold extends MotechBaseDataObject {
 	@JsonProperty
 	private String FWNHHMWRA;
 	@JsonProperty
+	private String MWRA;
+	@JsonProperty
 	private List<Map<String, String>> ELCODETAILS;
+	@JsonProperty
+	private Map<String, String> details;
 
 	public HouseHold() {
 
 		this.ELCODETAILS = new ArrayList<>();
 	}
 
-    public HouseHold withPROVIDERID(String PROVIDERID) {
-        this.PROVIDERID = PROVIDERID;
-        return this;
-    }
+	public HouseHold withPROVIDERID(String PROVIDERID) {
+		this.PROVIDERID = PROVIDERID;
+		return this;
+	}
+
 	public HouseHold withLOCATIONID(String LOCATIONID) {
 		this.LOCATIONID = LOCATIONID;
 		return this;
 	}
+
 	public HouseHold withTODAY(String TODAY) {
 		this.TODAY = TODAY;
 		return this;
 	}
+
 	public HouseHold withSTART(String START) {
 		this.START = START;
 		return this;
 	}
+
 	public HouseHold withEND(String END) {
 		this.END = END;
 		return this;
 	}
-	
+
 	public HouseHold withFWNHREGDATE(String FWNHREGDATE) {
 		this.FWNHREGDATE = FWNHREGDATE;
 		return this;
@@ -99,8 +110,14 @@ public class HouseHold extends MotechBaseDataObject {
 		return this;
 	}
 
-	public HouseHold withFWHOHNAME(String FWHOHNAME) {
-		this.FWHOHNAME = FWHOHNAME;
+	public HouseHold withFWHOHFNAME(String FWHOHFNAME) {
+		this.FWHOHFNAME = FWHOHFNAME;
+		return this;
+	}
+
+	
+	public HouseHold withFWHOHLNAME(String FWHOHLNAME) {
+		this.FWHOHLNAME = FWHOHLNAME;
 		return this;
 	}
 
@@ -118,9 +135,14 @@ public class HouseHold extends MotechBaseDataObject {
 		this.FWHOHGENDER = FWHOHGENDER;
 		return this;
 	}
-
+	
 	public HouseHold withFWNHHMWRA(String FWNHHMWRA) {
 		this.FWNHHMWRA = FWNHHMWRA;
+		return this;
+	}
+
+	public HouseHold withMWRA(String MWRA) {
+		this.MWRA = MWRA;
 		return this;
 	}
 
@@ -128,36 +150,41 @@ public class HouseHold extends MotechBaseDataObject {
 		this.ELCODETAILS = ELCODETAILS;
 		return this;
 	}
-
+	public HouseHold withDetails(Map<String, String> details) {
+        this.details = new HashMap<>(details);
+        return this;
+    }
 	public String CASEID() {
-        return CASEID;
-    }
-	
-    public String PROVIDERID() {
-        return PROVIDERID;
-    }
-    
+		return CASEID;
+	}
+
+	public String PROVIDERID() {
+		return PROVIDERID;
+	}
+
 	public String LOCATIONID() {
 		return LOCATIONID;
 	}
-	
+
 	public String TODAY() {
 		return TODAY;
 	}
-	
+
 	public String START() {
 		return START;
-		
+
 	}
+
 	public String END() {
 		return END;
 	}
+
 	public String FWNHREGDATE() {
 		return FWNHREGDATE;
 	}
 
 	public String FWGOBHHID() {
-		return  FWGOBHHID;
+		return FWGOBHHID;
 	}
 
 	public String FWJIVHHID() {
@@ -172,8 +199,11 @@ public class HouseHold extends MotechBaseDataObject {
 		return FWNHNEARTO;
 	}
 
-	public String FWHOHNAME() {
-		return FWHOHNAME;
+	public String FWHOHFNAME() {
+		return FWHOHFNAME;
+	}
+	public String FWHOHLNAME() {
+		return FWHOHLNAME;
 	}
 
 	public String FWHOHBIRTHDATE() {
@@ -188,19 +218,32 @@ public class HouseHold extends MotechBaseDataObject {
 		return FWHOHGENDER;
 	}
 
-	public String FWNHHMWRA() {
+	public String FWNHHMWRA(String FWNHHMWRA) {
 		return FWNHHMWRA;
 	}
+
+	public String MWRA() {
+		return MWRA;
+	}
+
 	public List<Map<String, String>> ELCODETAILS() {
 		if (ELCODETAILS == null) {
 			ELCODETAILS = new ArrayList<>();
 		}
 		return ELCODETAILS;
 	}
-	
-	 private String getCASEID() {
-	        return CASEID;
-	    }
+
+	private String getCASEID() {
+		return CASEID;
+	}
+
+	public Map<String, String> details() {
+		return details;
+	}
+
+	public String getDetail(String name) {
+		return details.get(name);
+	}
 
 	@Override
 	public boolean equals(Object o) {

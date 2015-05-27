@@ -20,10 +20,12 @@ public class HandlerMapper implements IHandlerMapper {
 	@Autowired
 	public HandlerMapper(  
 			AllFormSubmissions formSubmissionsRepository,
-			HHRegistrationHandler hhRegistrationHandler)
+			HHRegistrationHandler hhRegistrationHandler,
+			ELCOHandler elcoHandler)
 	{
 		handlerMap = EasyMap.create(HH_REGISTRATION, (FormSubmissionHandler) hhRegistrationHandler)
-                               .map();
+				     .put(ELCO_REGISTRATION, elcoHandler)
+                     .map();
 	}
 
 	@Override

@@ -1,8 +1,11 @@
 package org.opensrp.register.mcare.service;
 
 import static java.text.MessageFormat.format;
+import static org.opensrp.common.AllConstants.Form.HH_REGISTRATION;
+import static org.opensrp.common.AllConstants.Form.ELCO_REGISTRATION;
 import static org.opensrp.common.AllConstants.CommonFormFields.ID;
-import static org.opensrp.common.AllConstants.HHRegistrationFields.REFERENCE_DATE;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_GOBHHID;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_JiVitAHHID;
 import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_BIRTHDATE;
 import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_DISPLAY_AGE;
 import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_ELIGIBLE;
@@ -13,8 +16,9 @@ import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_WOMBID;
 import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_WOMFNAME;
 import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_WOMLNAME;
 import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_WOMNID;
-import static org.opensrp.common.AllConstants.FamilyPlanningFormFields.CURRENT_FP_METHOD_FIELD_NAME;
-import static org.opensrp.common.AllConstants.HHRegistrationFields.ELCO_REGISTRATION_SUB_FORM_NAME;
+import static org.opensrp.common.AllConstants.HHRegistrationFields.ELCO_REGISTRATION_SUB_FORM_NAME_HH;
+import static org.opensrp.common.AllConstants.HHRegistrationFields.ELCO_REGISTRATION_SUB_FORM_NAME_CENSUS;
+import static org.opensrp.common.AllConstants.HHRegistrationFields.REFERENCE_DATE;
 import static org.opensrp.common.util.EasyMap.create;
 
 import java.util.ArrayList;
@@ -23,7 +27,9 @@ import java.util.Map;
 
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.form.domain.SubFormData;
+import org.opensrp.register.mcare.domain.Elco;
 import org.opensrp.register.mcare.domain.HouseHold;
+import org.opensrp.register.mcare.repository.AllElcos;
 import org.opensrp.register.mcare.repository.AllHouseHolds;
 import org.opensrp.register.mcare.service.scheduling.HHSchedulesService;
 import org.slf4j.Logger;
@@ -33,45 +39,58 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class HHService {
+
 	private static Logger logger = LoggerFactory.getLogger(HHService.class
 			.toString());
 	private AllHouseHolds allHouseHolds;
+	private AllElcos allEcos;
 	private HHSchedulesService hhSchedulesService;
 
 	@Autowired
-	public HHService(AllHouseHolds allHouseHolds, HHSchedulesService hhSchedulesService) {
+	public HHService(AllHouseHolds allHouseHolds, AllElcos allEcos,
+			HHSchedulesService hhSchedulesService) {
 		this.allHouseHolds = allHouseHolds;
+		this.allEcos = allEcos;
 		this.hhSchedulesService = hhSchedulesService;
 	}
 
 	public void registerHouseHold(FormSubmission submission) {
-		
+
 		HouseHold houseHold = allHouseHolds.findByCASEID(submission.entityId());
+
+		if (houseHold == null) {
+			logger.warn(format(
+					"Failed to handle Census form as there is no household registered with ID: {0}",
+					submission.entityId()));
+			return;
+		}
 		
-		 if (houseHold == null) {
-	            logger.warn(format("Failed to handle census form as there is no household registered with ID: {0}", submission.entityId()));
-	            return;
-	        }
-		SubFormData subFormData = submission
-				.getSubFormByName(ELCO_REGISTRATION_SUB_FORM_NAME);
+		SubFormData subFormData =null;
+		
+		if (submission.formName().equals(HH_REGISTRATION)) 
+			 subFormData = submission.getSubFormByName(ELCO_REGISTRATION_SUB_FORM_NAME_HH);
+		
+		else
+			subFormData = submission.getSubFormByName(ELCO_REGISTRATION_SUB_FORM_NAME_CENSUS);
 
 		addELCODetailsToHH(submission, subFormData, houseHold);
 
 		houseHold.withPROVIDERID(submission.anmId());
 		houseHold.withTODAY(submission.getField(REFERENCE_DATE));
 		allHouseHolds.update(houseHold);
-		
-		hhSchedulesService.enrollIntoMilestoneOfCensus(submission.entityId(), submission.getField(REFERENCE_DATE));
+
+		hhSchedulesService.enrollIntoMilestoneOfCensus(submission.entityId(),
+				submission.getField(REFERENCE_DATE));
 	}
 
 	private void addELCODetailsToHH(FormSubmission submission,
 			SubFormData subFormData, HouseHold houseHold) {
-		List<Map<String, String>> elcoDetails = new ArrayList<>(
-				houseHold.ELCODETAILS());
 
 		for (Map<String, String> elcoFields : subFormData.instances()) {
 
 			Map<String, String> elco = create(ID, elcoFields.get(ID))
+					.put(FW_GOBHHID, elcoFields.get(FW_GOBHHID))
+					.put(FW_JiVitAHHID, elcoFields.get(FW_JiVitAHHID))
 					.put(FW_WOMFNAME, elcoFields.get(FW_WOMFNAME))
 					.put(FW_WOMLNAME, elcoFields.get(FW_WOMLNAME))
 					.put(FW_WOMNID, elcoFields.get(FW_WOMNID))
@@ -81,13 +100,16 @@ public class HHService {
 					.put(FW_BIRTHDATE, elcoFields.get(FW_BIRTHDATE))
 					.put(FW_WOMAGE, elcoFields.get(FW_WOMAGE))
 					.put(FW_DISPLAY_AGE, elcoFields.get(FW_DISPLAY_AGE))
-					.put(FW_ELIGIBLE, elcoFields.get(FW_ELIGIBLE))
-					.map();
-			
-			elcoDetails.add(elco);
-		}
-		
-		houseHold.withELCODETAILS(elcoDetails);
+					.put(FW_ELIGIBLE, elcoFields.get(FW_ELIGIBLE)).map();
+			houseHold.ELCODETAILS().add(elco);
 
+			/*
+			 * Elco elcoRegistry = allEcos.findByCaseId(elcoFields.get(ID))
+			 * .withPROVIDERID(submission.anmId());
+			 * 
+			 * allEcos.update(elcoRegistry);
+			 */
+
+		}
 	}
 }

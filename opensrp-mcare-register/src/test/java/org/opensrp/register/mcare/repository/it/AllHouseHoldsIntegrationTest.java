@@ -32,7 +32,7 @@ public class AllHouseHoldsIntegrationTest {
     	allElcos.removeAll();
     }
     
-    @Test
+  /*  @Test
     public void shouldRegisterEligibleCouple() throws Exception {
     	HouseHold houseHold = new HouseHold().withFWHOHNAME("HouseHold-1").withPROVIDERID("Provider-I");
 
@@ -41,6 +41,6 @@ public class AllHouseHoldsIntegrationTest {
         List<HouseHold> allHouseHoldsInDB = allHouseHolds.getAll();
         assertThat(allHouseHoldsInDB, is(asList(houseHold)));
         assertThat(allHouseHoldsInDB.get(0).FWHOHNAME(), is("HouseHold-1"));
-    }
+    }*/
 
 }
