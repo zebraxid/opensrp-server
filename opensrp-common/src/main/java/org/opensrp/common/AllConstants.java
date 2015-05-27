@@ -18,7 +18,8 @@ public class AllConstants {
 
 
     public static class Form {
-    	public static final String HH_REGISTRATION = "hh_registration";
+    	public static final String HH_REGISTRATION = "new_household_registration";
+    	public static final String ELCO_REGISTRATION = "census_enrollment_form";
     	
     	
         public static final String ENTITY_ID = "entityId";
@@ -95,12 +96,18 @@ public class AllConstants {
     
     public static class HHRegistrationFields
     {
-    	public static final String ELCO_REGISTRATION_SUB_FORM_NAME = "elco_registration";
+    	public static final String ELCO_REGISTRATION_SUB_FORM_NAME_HH = "elco_registration_hh";
+    	public static final String ELCO_REGISTRATION_SUB_FORM_NAME_CENSUS = "elco_registration_ce";
     	public static final String REFERENCE_DATE = "today";
     }
     
     public static class ELCORegistrationFields
     {
+    	public static final String FW_PROVIDERID ="PROVIDERID";
+    	public static final String FW_LOCATIONID ="LOCATIONID";
+    	public static final String FW_TODAY ="TODAY";
+    	public static final String FW_GOBHHID ="TODAY";
+    	public static final String FW_JiVitAHHID ="JiVitAHHID";
     	public static final String FW_WOMFNAME = "FWWOMFNAME";
     	public static final String FW_WOMLNAME = "FWWOMLNAME";
     	public static final String FW_WOMNID = "FWWOMNID";
