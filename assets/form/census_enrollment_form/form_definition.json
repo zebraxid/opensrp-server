@@ -9,6 +9,10 @@
         "shouldLoadValue": true
       },
       {
+        "name": "location_name",
+        "shouldLoadValue": true
+      },
+      {
         "name": "existing_location",
         "bind": "/model/instance/CensusNewWomanRegistrationForm/existing_location"
       },
@@ -65,6 +69,12 @@
         "bind_type": "elco",
         "default_bind_path": "/model/instance/CensusNewWomanRegistrationForm/woman",
         "fields": [
+          {
+            "name": "id"
+          },
+          {
+            "name": "relationalid"
+          },
           {
             "name": "GOBHHID",
             "bind": "/model/instance/CensusNewWomanRegistrationForm/woman/GOBHHID"

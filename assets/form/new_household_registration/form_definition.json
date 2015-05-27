@@ -1,5 +1,5 @@
 {
-  "form_data_definition_version": "1",
+  "form_data_definition_version": "4",
   "form": {
     "default_bind_path": "/model/instance/FWNewHH",
     "bind_type": "household",
@@ -7,6 +7,10 @@
       {
         "name": "id",
         "shouldLoadValue": true
+      },
+      {
+         "name": "location_name",
+         "bind": "/model/instance/FWNewHH/location_name"
       },
       {
         "name": "existing_location",
@@ -88,9 +92,9 @@
             "shouldLoadValue": true
           },
           {
-                                "name": "relationalid",
-                                "shouldLoadValue": true
-                              },
+            "name": "relationalid",
+            "shouldLoadValue": true
+          },
           {
             "name": "GOBHHID",
             "bind": "/model/instance/FWNewHH/woman/GOBHHID"

@@ -1,6 +1,6 @@
 <model>
     <instance>
-        <CensusNewWomanRegistrationForm encounter_type="Census and New Woman Registration" id="CensusNewWomanRegistrationForm" version="201505061345">
+        <CensusNewWomanRegistrationForm encounter_type="Census and New Woman Registration" id="CensusNewWomanRegistrationForm" version="201505241148">
             <formhub>
                 <uuid/>
             </formhub>
@@ -12,7 +12,7 @@
             <existing_GOBHHID/>
             <existing_JiVitAHHID/>
             <FWCENDATE openmrs_entity="concept" openmrs_entity_id="160753AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
-            <FWCENSTAT/>
+            <FWCENSTAT openmrs_entity="concept"/>
             <woman template="" openmrs_entity="person" openmrs_entity_id="Census and New Woman Registration">
                 <GOBHHID/>
                 <JiVitAHHID/>
@@ -25,10 +25,10 @@
                 <FWGENDER openmrs_entity="person" openmrs_entity_id="gender"/>
                 <FWWOMAGE/>
                 <display_age/>
-                <FWCWOMSTRMEN/>
-                <FWCWOMHUSALV openmrs_entity="concept" openmrs_entity_id="5561AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
-                <FWCWOMHUSLIV openmrs_entity="concept" openmrs_entity_id="1060AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
-                <FWCWOMHUSSTR/>
+                <FWCWOMSTRMEN openmrs_entity="concept"/>
+                <FWCWOMHUSALV openmrs_entity="concept"/>
+                <FWCWOMHUSLIV openmrs_entity="concept"/>
+                <FWCWOMHUSSTR openmrs_entity="concept"/>
                 <FWELIGIBLE/>
                 <add_women/>
             </woman>
