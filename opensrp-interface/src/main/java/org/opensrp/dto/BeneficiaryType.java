@@ -5,7 +5,7 @@ public enum BeneficiaryType {
     mother("mother"),
     ec("ec"),
     elco("elco"),
-    hh("hh");
+    household("household");
     private String value;
 
     BeneficiaryType(String value) {
