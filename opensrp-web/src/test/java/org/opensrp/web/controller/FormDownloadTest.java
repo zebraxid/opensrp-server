@@ -26,7 +26,7 @@ public class FormDownloadTest
 		
 		String versions = formDownLoadController.getAllAvailableVersion();
 		System.out.println("available version:::"+versions);
-		readZip(new ByteArrayInputStream(formDownLoadController.getForm("delivery_outcome", resp)));
+		//readZip(new ByteArrayInputStream(formDownLoadController.getForm("delivery_outcome", resp)));
 	}	
 	
 	public void readZip(InputStream fip) throws IOException {

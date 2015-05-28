@@ -164,7 +164,7 @@
         </dependency>
         <dependency>
             <groupId>org.opensrp</groupId>
-            <artifactId>opensrp-register</artifactId>
+            <artifactId>opensrp-register-mcare</artifactId>
             <version>${release.version}</version>
         </dependency>
         <dependency>

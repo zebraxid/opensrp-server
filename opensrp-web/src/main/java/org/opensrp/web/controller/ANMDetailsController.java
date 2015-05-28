@@ -1,38 +1,10 @@
 package org.opensrp.web.controller;
 
-import ch.lambdaj.function.convert.Converter;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import org.apache.commons.lang.exception.ExceptionUtils;
-import org.opensrp.common.util.HttpAgent;
-import org.opensrp.common.util.HttpResponse;
-import org.opensrp.domain.ANMDetail;
-import org.opensrp.domain.ANMDetails;
-import org.opensrp.register.service.ANMDetailsService;
-import org.opensrp.dto.ANMDTO;
-import org.opensrp.dto.register.ANMDetailDTO;
-import org.opensrp.dto.register.ANMDetailsDTO;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import java.text.MessageFormat;
-import java.util.List;
-
-import static org.opensrp.web.HttpHeaderFactory.allowOrigin;
-import static ch.lambdaj.collection.LambdaCollections.with;
-import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
 @Controller
 public class ANMDetailsController {
-    private static Logger logger = LoggerFactory.getLogger(ANMDetailsController.class.toString());
+    /*private static Logger logger = LoggerFactory.getLogger(ANMDetailsController.class.toString());
     private ANMDetailsService anmDetailsService;
     private final String opensrpSiteUrl;
     private String opensrpANMDetailsUrl;
@@ -88,5 +60,5 @@ public class ANMDetailsController {
                             }
                         });
         return new ANMDetailsDTO(anmDetailsDTO);
-    }
+    }*/
 }
