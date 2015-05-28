@@ -1,32 +1,10 @@
 package org.opensrp.web.controller;
 
-import static ch.lambdaj.collection.LambdaCollections.with;
-import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
-
-import java.text.MessageFormat;
-import java.util.List;
-
-import org.apache.commons.lang.exception.ExceptionUtils;
-import org.opensrp.domain.EntityDetail;
-import org.opensrp.dto.register.EntityDetailDTO;
-import org.opensrp.register.service.EntitiesService;
-import org.opensrp.repository.AllOpenSRPUsers;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import ch.lambdaj.function.convert.Converter;
 
 @Controller
 public class EntitiesController {
-    private static Logger logger = LoggerFactory.getLogger(EntitiesController.class.toString());
+  /*  private static Logger logger = LoggerFactory.getLogger(EntitiesController.class.toString());
     private EntitiesService service;
     private AllOpenSRPUsers allOpenSRPUsers;
 
@@ -64,5 +42,5 @@ public class EntitiesController {
                             }
                         });
         return entityDetailsDTO;
-    }
+    }*/
 }

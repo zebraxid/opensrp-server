@@ -18,6 +18,10 @@ public class AllConstants {
 
 
     public static class Form {
+    	public static final String HH_REGISTRATION = "new_household_registration";
+    	public static final String ELCO_REGISTRATION = "census_enrollment_form";
+    	
+    	
         public static final String ENTITY_ID = "entityId";
         public static final String ANM_ID = "anmId";
         public static final String FORM_NAME = "formName";
@@ -88,6 +92,37 @@ public class AllConstants {
         public static final String PHC = "phc";
         public static final String QUANTITY = "quantity";
         public static final String SERVICE_PROVIDER_ANM = "ANM";
+    }
+    
+    public static class HHRegistrationFields
+    {
+    	public static final String ELCO_REGISTRATION_SUB_FORM_NAME_HH = "elco_registration_hh";
+    	public static final String ELCO_REGISTRATION_SUB_FORM_NAME_CENSUS = "elco_registration_ce";
+    	public static final String REFERENCE_DATE = "today";
+    }
+    
+    public static class ELCORegistrationFields
+    {
+    	public static final String FW_PROVIDERID ="PROVIDERID";
+    	public static final String FW_LOCATIONID ="LOCATIONID";
+    	public static final String FW_TODAY ="TODAY";
+    	public static final String FW_GOBHHID ="TODAY";
+    	public static final String FW_JiVitAHHID ="JiVitAHHID";
+    	public static final String FW_WOMFNAME = "FWWOMFNAME";
+    	public static final String FW_WOMLNAME = "FWWOMLNAME";
+    	public static final String FW_WOMNID = "FWWOMNID";
+    	public static final String FW_WOMBID = "FWWOMBID";
+    	public static final String FW_HUSNAME = "FWHUSNAME";
+    	public static final String FW_BIRTHDATE = "FWBIRTHDATE";
+    	public static final String FW_GENDER = "FWGENDER";
+    	public static final String FW_WOMAGE = "FWWOMAGE";
+    	public static final String FW_DISPLAY_AGE = "FWDISPLAYAGE";
+    	public static final String FW_CWOMSTRMEN = "FWCWOMSTRMEN";
+    	public static final String FW_CWOMHUSALV = "FWCWOMHUSALV";
+    	public static final String FW_CWOMHUSSTR = "FWCWOMHUSSTR";
+    	public static final String FW_CWOMHUSLIV = "FWCWOMHUSLIV";
+    	public static final String FW_ELIGIBLE = "FWELIGIBLE";
+    	
     }
 
     public static class ECRegistrationFields {
@@ -435,6 +470,9 @@ public class AllConstants {
         public static final String MOTHER_TYPE = "mother";
         public static final String ELIGIBLE_COUPLE_TYPE = "eligible_couple";
         public static final String MCTS_REPORT_TYPE = "MCTSReport";
+        
+        public static final String HOUSE_HOLD_TYPE = "household";
+        public static final String ELCO_TYPE = "elco";
     }
 
     public static class HTTP {

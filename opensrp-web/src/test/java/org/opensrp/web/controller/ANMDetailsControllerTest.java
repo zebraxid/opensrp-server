@@ -1,16 +1,9 @@
 package org.opensrp.web.controller;
 
-import static org.mockito.MockitoAnnotations.initMocks;
-
-import org.junit.Before;
-import org.mockito.Mock;
-import org.opensrp.common.util.HttpAgent;
-import org.opensrp.domain.DrishtiUser;
-import org.opensrp.register.service.ANMDetailsService;
 
 public class ANMDetailsControllerTest {
 
-    @Mock
+   /* @Mock
     private ANMDetailsService service;
     @Mock
     private HttpAgent httpAgent;
@@ -26,7 +19,7 @@ public class ANMDetailsControllerTest {
         controller = new ANMDetailsController(service, "http://dristhi_site_url", "http://dristhi_reporting_url/anms", userController, httpAgent);
     }
 
-/*    @Test
+    @Test
     public void shouldGetANCDetailsForAllANMs() throws Exception {
         when(httpAgent.get("http://dristhi_reporting_url/anms?anm-id=bhe1")).
                 thenReturn(new HttpResponse(true,

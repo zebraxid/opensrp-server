@@ -23,7 +23,7 @@ import org.opensrp.dto.form.FormSubmissionDTO;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.form.service.FormSubmissionConverter;
 import org.opensrp.form.service.FormSubmissionService;
-import org.opensrp.register.DrishtiScheduleConstants.OpenSRPEvent;
+import org.opensrp.register.mcare.OpenSRPScheduleConstants.OpenSRPEvent;
 import org.opensrp.scheduler.SystemEvent;
 import org.opensrp.scheduler.TaskSchedulerService;
 import org.slf4j.Logger;
@@ -105,7 +105,7 @@ public class FormSubmissionController {
 
             scheduler.notifyEvent(new SystemEvent<>(OpenSRPEvent.FORM_SUBMISSION, formSubmissionsDTO));
             
-            try{
+         /*   try{
             ////////TODO MAIMOONA : SHOULD BE IN EVENT but event needs to be moved to web so for now kept here
             String json = new Gson().toJson(formSubmissionsDTO);
             System.out.println("MMMMMMMMMMMYYYYYYYYYYYYYY::"+json);
@@ -151,8 +151,10 @@ public class FormSubmissionController {
             catch(Exception e){
             	e.printStackTrace();
             }
+            */
             logger.debug(format("Added Form submissions to queue.\nSubmissions: {0}", formSubmissionsDTO));
-        } catch (Exception e) {
+        } 
+        catch (Exception e) {
             logger.error(format("Form submissions processing failed with exception {0}.\nSubmissions: {1}", e, formSubmissionsDTO));
             return new ResponseEntity<>(INTERNAL_SERVER_ERROR);
         }

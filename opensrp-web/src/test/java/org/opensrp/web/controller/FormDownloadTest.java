@@ -11,31 +11,32 @@ import java.util.zip.ZipInputStream;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.opensrp.web.controller.FormDownLoadController;
 
 public class FormDownloadTest 
 {
 	@Mock
 	MockHttpServletResponse resp = new MockHttpServletResponse();
 	
-	@Test
+	/*@Test
 	public void shouldReturnAvailableVersion() throws URISyntaxException, IOException
 	{
         String filename = "form/";
 
-		FormDownLoadController formDownLoadController = new FormDownLoadController(filename, "model.xml,form.xml,form_definition.json");
+        FormDownLoadController formDownLoadController = new FormDownLoadController(filename, "model.xml,form.xml,form_definition.json");
 		
 		String versions = formDownLoadController.getAllAvailableVersion();
 		System.out.println("available version:::"+versions);
 		readZip(new ByteArrayInputStream(formDownLoadController.getForm("delivery_outcome", resp)));
 	}	
-	
+	*/
 	public void readZip(InputStream fip) throws IOException {
         // create a buffer to improve copy performance later.
         byte[] buffer = new byte[2048];
 
         // open the zip file stream
         ZipInputStream stream = new ZipInputStream(fip);
-        String outdir = "g:\\";
+        String outdir = "/home";
 
         try
         {

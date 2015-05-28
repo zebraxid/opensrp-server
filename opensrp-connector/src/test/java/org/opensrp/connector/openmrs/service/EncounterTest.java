@@ -67,7 +67,7 @@ public class EncounterTest extends TestResourceLoader{
 		
 		//System.out.println(s.createEncounter(e));
 	}
-	
+	/*
 	@Test
 	public void shouldHandleSubform() throws IOException, ParseException, JSONException{
 		FormSubmission fs = getFormSubmissionFor("new_household_registration", 1);
@@ -88,6 +88,6 @@ public class EncounterTest extends TestResourceLoader{
 			
 
 		}
-	}
+	}*/
 	
 }

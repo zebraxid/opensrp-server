@@ -1,7 +1,7 @@
 package org.opensrp.dto;
 
 public enum AlertStatus {
-    upcoming("upcoming"), normal("normal"), urgent("urgent"), inProcess("inProcess"), complete("complete");
+    upcoming("upcoming"), normal("normal"), urgent("urgent"), expired("expired"), inProcess("inProcess"), complete("complete");
 
     private String value;
 

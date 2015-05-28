@@ -3,6 +3,7 @@ package org.opensrp.scheduler.service;
 import static org.opensrp.dto.BeneficiaryType.child;
 import static org.opensrp.dto.BeneficiaryType.ec;
 import static org.opensrp.dto.BeneficiaryType.mother;
+import static org.opensrp.dto.BeneficiaryType.household;
 
 import java.util.List;
 
@@ -29,7 +30,7 @@ public class ActionService {
     }
 
     public void alertForBeneficiary(BeneficiaryType beneficiaryType, String caseID, String anmIdentifier, String scheduleName, String visitCode, AlertStatus alertStatus, DateTime startDate, DateTime expiryDate) {
-    	if (!(mother.equals(beneficiaryType)||child.equals(beneficiaryType)||ec.equals(beneficiaryType))) {
+    	if (!(mother.equals(beneficiaryType)||child.equals(beneficiaryType)||ec.equals(beneficiaryType)||household.equals(beneficiaryType))) {
             throw new IllegalArgumentException("Beneficiary Type : " + beneficiaryType + " is of unknown type");
         }
     	allActions.addOrUpdateAlert(new Action(caseID, anmIdentifier, ActionData.createAlert(beneficiaryType, scheduleName, visitCode, alertStatus, startDate, expiryDate)));

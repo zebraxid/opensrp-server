@@ -20,6 +20,7 @@
 		<module>opensrp-connector</module>
 		<module>opensrp-reporting</module>
 		<module>opensrp-web</module>
+		<module>opensrp-mcare-register</module>
 	</modules>
 
 	<properties>
