@@ -10,6 +10,8 @@ import org.motechproject.scheduler.domain.CronSchedulableJob;
 import org.motechproject.scheduler.domain.MotechEvent;
 import org.motechproject.scheduler.domain.RepeatingSchedulableJob;
 import org.motechproject.scheduler.gateway.OutboundEventGateway;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +20,7 @@ public class TaskSchedulerService {
 	private MotechSchedulerService motechSchedulerService;
 	private OutboundEventGateway gateway;
 	private AlertRouter router;
+	private static Logger logger = LoggerFactory.getLogger(TaskSchedulerService.class.toString());
    
 	@Autowired
 	public TaskSchedulerService(MotechSchedulerService schedulerService, OutboundEventGateway gateway, AlertRouter router) {
@@ -41,6 +44,8 @@ public class TaskSchedulerService {
 			data = new HashMap<>();
 		}
         MotechEvent event = new MotechEvent(job.SUBJECT, data);
+        //System.out.println("startTimeDate: " + startTime.getDate() + ", startTimeDateTime: " + startTime.getTime());
+        logger.info("Going to start a RepeatingSchedulableJob startTime:{0} and endTime:{1}", startTime.getDate(),startTime.getTime());
         startJob(new RepeatingSchedulableJob(event, startTime, job.getEndTime(), job.getRepeatIntervalMilis()));
     }
 	
