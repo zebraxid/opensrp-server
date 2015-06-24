@@ -29,7 +29,7 @@ public class HouseHold extends MotechBaseDataObject {
 	@JsonProperty
 	private String FWNHREGDATE;
 	@JsonProperty
-	private String FWGOBHHID;
+	private String FWGOBHHID; 
 	@JsonProperty
 	private String FWJIVHHID;
 	@JsonProperty
@@ -41,7 +41,7 @@ public class HouseHold extends MotechBaseDataObject {
 	@JsonProperty
 	private String FWHOHLNAME;
 	@JsonProperty
-	private String FWHOHBIRTHDATE;
+	private String FWHOHBIRTHDATE; 
 	@JsonProperty
 	private String FWHOHGENDER;
 	@JsonProperty

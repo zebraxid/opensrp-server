@@ -1,5 +1,6 @@
 package org.opensrp.register.mcare.repository;
 
+import static java.text.MessageFormat.format;
 import static java.util.UUID.randomUUID;
 
 import java.lang.reflect.Field;
@@ -18,6 +19,9 @@ import org.opensrp.common.AllConstants;
 import org.opensrp.register.mcare.domain.Elco;
 import org.opensrp.register.mcare.domain.HouseHold;
 import org.opensrp.repository.FormDataRepository;
+import org.opensrp.service.formSubmission.ZiggyService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
@@ -43,6 +47,8 @@ public class FormDataRepositoryImpl extends FormDataRepository{
     private Map<String, Field[]> fieldSetMap;
     private CouchDbConnector db;
     private Map<String, String> designDocMap;
+    
+    private static Logger logger = LoggerFactory.getLogger(FormDataRepositoryImpl.class.toString());
 
     @Autowired
     public FormDataRepositoryImpl(@Qualifier(AllConstants.OPENSRP_DATABASE_CONNECTOR) CouchDbConnector db) {
@@ -103,6 +109,7 @@ public class FormDataRepositoryImpl extends FormDataRepository{
         entity.put(DETAILS, details);
 
         db.update(entity);
+        logger.info(format("Update form successful, with params: {0}.",entityType ));
         return entityId;
     }
 

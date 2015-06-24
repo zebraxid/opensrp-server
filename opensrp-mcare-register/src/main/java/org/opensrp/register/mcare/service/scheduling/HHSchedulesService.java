@@ -24,7 +24,7 @@ public class HHSchedulesService {
 
 	public void enrollIntoMilestoneOfCensus(String entityId, String date)
 	{
-	    logger.info(format("Enrolling household into Census schedule. Id: ", entityId));
+	    logger.info(format("Enrolling household into Census schedule. Id: {0}", entityId));
 	    
 		scheduler.enrollIntoSchedule(entityId, HH_SCHEDULE_CENSUS, date);
 	}

@@ -58,7 +58,7 @@ public class FormEventListener {
             return;
         }
         try {
-            logger.info("Fetching Forms");
+            logger.info("Fetching Forms subject: " + event.getSubject());
             long version = getVersion();
 
             List<FormSubmissionDTO> formSubmissionDTOs = formSubmissionService.fetch(version);

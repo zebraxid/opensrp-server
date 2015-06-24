@@ -11,13 +11,11 @@ import org.springframework.stereotype.Component;
 public class HHRegistrationHandler implements FormSubmissionHandler {
 	
 	private HHService hhService;
-	private ELCOService elcoService;
 	
 	@Autowired
-	public HHRegistrationHandler(HHService hhService, ELCOService elcoService)
+	public HHRegistrationHandler(HHService hhService)
 	{
 		this.hhService = hhService;
-		this.elcoService = elcoService;
 	}
 
 	@Override

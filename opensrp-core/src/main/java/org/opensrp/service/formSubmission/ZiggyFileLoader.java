@@ -25,7 +25,7 @@ public class ZiggyFileLoader {
     @Autowired
     public ZiggyFileLoader(@Value("#{opensrp['js.directory.name']}") String jsDirectoryName, @Value("#{opensrp['form.directory.name']}") String formDirectoryName) throws IOException {
         this.jsDirectoryName = jsDirectoryName;
-        this.formDirectoryName = formDirectoryName;
+        this.formDirectoryName = formDirectoryName;  
     }
 
     public String getJSFiles() throws IOException, URISyntaxException {
