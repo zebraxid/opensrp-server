@@ -2,6 +2,7 @@ package org.opensrp.register.mcare.service;
 
 import static org.opensrp.common.AllConstants.CommonFormFields.ID;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.ELCO_REGISTRATION_SUB_FORM_NAME_CENSUS;
+import static org.opensrp.common.AllConstants.HHRegistrationFields.REFERENCE_DATE;
 
 import java.util.Map;
 
@@ -10,6 +11,7 @@ import org.opensrp.form.domain.SubFormData;
 import org.opensrp.register.mcare.domain.Elco;
 import org.opensrp.register.mcare.repository.AllElcos;
 import org.opensrp.register.mcare.repository.AllHouseHolds;
+import org.opensrp.register.mcare.service.scheduling.ELCOScheduleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,12 +24,14 @@ public class ELCOService {
 	
 	private HHService hhService;
 	private AllElcos allEcos;
+	private ELCOScheduleService elcoScheduleService;
 
 	@Autowired
-	public ELCOService(AllHouseHolds allHouseHolds, AllElcos allEcos, HHService hhService)
+	public ELCOService(AllHouseHolds allHouseHolds, AllElcos allEcos, HHService hhService, ELCOScheduleService elcoScheduleService)
 	{
 		this.allEcos = allEcos;
 		this.hhService = hhService;
+		this.elcoScheduleService = elcoScheduleService;
 	}
 	
 	public void registerELCO(FormSubmission submission)
@@ -55,6 +59,9 @@ public class ELCOService {
 		
 		hhService.registerHouseHold(submission);
 		
+		elcoScheduleService.enrollIntoMilestoneOfPSRF(submission.entityId(),
+				submission.getField(REFERENCE_DATE));
+
 	}
 	
 	

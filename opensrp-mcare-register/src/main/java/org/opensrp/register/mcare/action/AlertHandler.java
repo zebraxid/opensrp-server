@@ -38,6 +38,7 @@ import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherSchedule
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_TT_1;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_TT_2;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.HHSchedulesConstants.HH_SCHEDULE_CENSUS;
+import static org.opensrp.register.mcare.OpenSRPScheduleConstants.HHSchedulesConstants.ELCO_SCHEDULE_PSRF;
 import static org.opensrp.scheduler.Matcher.any;
 import static org.opensrp.scheduler.Matcher.anyOf;
 import static org.opensrp.scheduler.Matcher.eq;
@@ -51,66 +52,72 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class AlertHandler {
-    @Autowired
-    public AlertHandler(TaskSchedulerService scheduler,
-                           @Qualifier("AlertCreationAction") HookedEvent alertCreation) {
-    	/*
-    	scheduler.addHookedEvent(eq(SCHEDULE_ANC), any(), eq(max.toString()), forceFulfill);
-    	scheduler.addHookedEvent(eq(SCHEDULE_LAB), any(), eq(max.toString()), forceFulfill);
-    	scheduler.addHookedEvent(eq(SCHEDULE_AUTO_CLOSE_PNC), any(), any(), autoClosePNCAction);
-    	scheduler.addHookedEvent(motherSchedules(), any(), anyOf(earliest.toString(), due.toString(), late.toString()),
-                alertCreation).addExtraData("beneficiaryType", "mother");
-    	scheduler.addHookedEvent(childSchedules(), any(), anyOf(earliest.toString(), due.toString(),
-                late.toString(), max.toString()), 
-                alertCreation).addExtraData("beneficiaryType", "child");
-    	scheduler.addHookedEvent(ecSchedules(), any(), anyOf(earliest.toString(), due.toString(), late.toString()),
-                alertCreation).addExtraData("beneficiaryType", "ec");
-    	*/
-    	scheduler.addHookedEvent(hhSchedules(), any(), anyOf(earliest.toString(), due.toString(), late.toString(), max.toString()),
-                alertCreation).addExtraData("beneficiaryType", "household");
-    
-    }
+	@Autowired
+	public AlertHandler(TaskSchedulerService scheduler,
+			@Qualifier("AlertCreationAction") HookedEvent alertCreation) {
+		/*
+		 * scheduler.addHookedEvent(eq(SCHEDULE_ANC), any(), eq(max.toString()),
+		 * forceFulfill); scheduler.addHookedEvent(eq(SCHEDULE_LAB), any(),
+		 * eq(max.toString()), forceFulfill);
+		 * scheduler.addHookedEvent(eq(SCHEDULE_AUTO_CLOSE_PNC), any(), any(),
+		 * autoClosePNCAction); scheduler.addHookedEvent(motherSchedules(),
+		 * any(), anyOf(earliest.toString(), due.toString(), late.toString()),
+		 * alertCreation).addExtraData("beneficiaryType", "mother");
+		 * scheduler.addHookedEvent(childSchedules(), any(),
+		 * anyOf(earliest.toString(), due.toString(), late.toString(),
+		 * max.toString()), alertCreation).addExtraData("beneficiaryType",
+		 * "child"); scheduler.addHookedEvent(ecSchedules(), any(),
+		 * anyOf(earliest.toString(), due.toString(), late.toString()),
+		 * alertCreation).addExtraData("beneficiaryType", "ec");
+		 */
+		scheduler.addHookedEvent(
+				hhSchedules(),
+				any(),
+				anyOf(earliest.toString(), due.toString(), late.toString(),
+						max.toString()), alertCreation).addExtraData(
+				"beneficiaryType", "household");
 
-    private Matcher childSchedules() {
-        return anyOf(CHILD_SCHEDULE_BCG,
+		scheduler.addHookedEvent(
+				hhSchedules(),
+				any(),
+				anyOf(earliest.toString(), due.toString(), late.toString(),
+						max.toString()), alertCreation).addExtraData(
+				"beneficiaryType", "elco");
 
-                CHILD_SCHEDULE_DPT_BOOSTER1,
-                CHILD_SCHEDULE_DPT_BOOSTER2,
+	}
 
-                CHILD_SCHEDULE_MEASLES,
-                CHILD_SCHEDULE_MEASLES_BOOSTER,
+	private Matcher childSchedules() {
+		return anyOf(CHILD_SCHEDULE_BCG,
 
-                CHILD_SCHEDULE_OPV_0_AND_1,
-                CHILD_SCHEDULE_OPV_2,
-                CHILD_SCHEDULE_OPV_3,
-                CHILD_SCHEDULE_OPV_BOOSTER,
+		CHILD_SCHEDULE_DPT_BOOSTER1, CHILD_SCHEDULE_DPT_BOOSTER2,
 
-                CHILD_SCHEDULE_PENTAVALENT_1,
-                CHILD_SCHEDULE_PENTAVALENT_2,
-                CHILD_SCHEDULE_PENTAVALENT_3
-        );
-    }
+		CHILD_SCHEDULE_MEASLES, CHILD_SCHEDULE_MEASLES_BOOSTER,
 
-    private Matcher motherSchedules() {
-        return anyOf(SCHEDULE_ANC, SCHEDULE_TT_1, SCHEDULE_TT_2, SCHEDULE_IFA_1, SCHEDULE_IFA_2, SCHEDULE_IFA_3,
-                SCHEDULE_LAB, SCHEDULE_EDD, SCHEDULE_HB_TEST_1, SCHEDULE_HB_TEST_2, SCHEDULE_HB_FOLLOWUP_TEST,
-                SCHEDULE_DELIVERY_PLAN);
-    }
+		CHILD_SCHEDULE_OPV_0_AND_1, CHILD_SCHEDULE_OPV_2, CHILD_SCHEDULE_OPV_3,
+				CHILD_SCHEDULE_OPV_BOOSTER,
 
-    private Matcher ecSchedules() {
-        return anyOf(EC_SCHEDULE_DMPA_INJECTABLE_REFILL,
-                EC_SCHEDULE_OCP_REFILL,
-                EC_SCHEDULE_CONDOM_REFILL,
-                EC_SCHEDULE_FEMALE_STERILIZATION_FOLLOWUP,
-                EC_SCHEDULE_MALE_STERILIZATION_FOLLOWUP,
-                EC_SCHEDULE_IUD_FOLLOWUP,
-                EC_SCHEDULE_FP_FOLLOWUP,
-                EC_SCHEDULE_FP_REFERRAL_FOLLOWUP_MILESTONE);
-    }
+				CHILD_SCHEDULE_PENTAVALENT_1, CHILD_SCHEDULE_PENTAVALENT_2,
+				CHILD_SCHEDULE_PENTAVALENT_3);
+	}
+
+	private Matcher motherSchedules() {
+		return anyOf(SCHEDULE_ANC, SCHEDULE_TT_1, SCHEDULE_TT_2,
+				SCHEDULE_IFA_1, SCHEDULE_IFA_2, SCHEDULE_IFA_3, SCHEDULE_LAB,
+				SCHEDULE_EDD, SCHEDULE_HB_TEST_1, SCHEDULE_HB_TEST_2,
+				SCHEDULE_HB_FOLLOWUP_TEST, SCHEDULE_DELIVERY_PLAN);
+	}
+
+	private Matcher ecSchedules() {
+		return anyOf(EC_SCHEDULE_DMPA_INJECTABLE_REFILL,
+				EC_SCHEDULE_OCP_REFILL, EC_SCHEDULE_CONDOM_REFILL,
+				EC_SCHEDULE_FEMALE_STERILIZATION_FOLLOWUP,
+				EC_SCHEDULE_MALE_STERILIZATION_FOLLOWUP,
+				EC_SCHEDULE_IUD_FOLLOWUP, EC_SCHEDULE_FP_FOLLOWUP,
+				EC_SCHEDULE_FP_REFERRAL_FOLLOWUP_MILESTONE);
+	}
 
 	private Matcher hhSchedules() {
-	    return anyOf(HH_SCHEDULE_CENSUS);
-		
+		return anyOf(HH_SCHEDULE_CENSUS, ELCO_SCHEDULE_PSRF);
+
 	}
 }
-

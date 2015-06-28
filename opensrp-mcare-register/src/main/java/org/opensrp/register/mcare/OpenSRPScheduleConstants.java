@@ -75,5 +75,6 @@ public class OpenSRPScheduleConstants {
     }
     public static class HHSchedulesConstants {
     	public static final String HH_SCHEDULE_CENSUS = "FW CENSUS";
+    	public static final String ELCO_SCHEDULE_PSRF = "FWA PSRF";
     }
 }
