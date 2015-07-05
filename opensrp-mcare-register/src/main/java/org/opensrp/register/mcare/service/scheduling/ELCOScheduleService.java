@@ -1,13 +1,15 @@
 package org.opensrp.register.mcare.service.scheduling;
 
 import static java.text.MessageFormat.format;
-import static org.opensrp.register.mcare.OpenSRPScheduleConstants.HHSchedulesConstants.ELCO_SCHEDULE_PSRF;
+import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ELCOSchedulesConstants.ELCO_SCHEDULE_PSRF;
 
 import org.opensrp.scheduler.HealthSchedulerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class ELCOScheduleService {
 	
 	private static Logger logger = LoggerFactory.getLogger(ELCOScheduleService.class.toString());
@@ -20,11 +22,11 @@ public class ELCOScheduleService {
 		this.scheduler = scheduler;
 	}
 	
-	public void enrollIntoMilestoneOfPSRF(String entityId, String date)
+	public void enrollIntoMilestoneOfPSRF(String caseId, String date)
 	{
-	    logger.info(format("Enrolling household into Census schedule. Id: {0}", entityId));
+	    logger.info(format("Enrolling Elco into PSRF schedule. Id: {0}", caseId));
 	    
-		scheduler.enrollIntoSchedule(entityId, ELCO_SCHEDULE_PSRF, date);
+		scheduler.enrollIntoSchedule(caseId, ELCO_SCHEDULE_PSRF, date);
 	}
 	
 }

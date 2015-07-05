@@ -16,7 +16,7 @@ import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_WOMBID;
 import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_WOMFNAME;
 import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_WOMLNAME;
 import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_WOMNID;
-import static org.opensrp.common.AllConstants.HHRegistrationFields.ELCO_REGISTRATION_SUB_FORM_NAME_HH;
+import static org.opensrp.common.AllConstants.HHRegistrationFields.ELCO_REGISTRATION_SUB_FORM_NAME;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.ELCO_REGISTRATION_SUB_FORM_NAME_CENSUS;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.REFERENCE_DATE;
 import static org.opensrp.common.util.EasyMap.create;
@@ -43,14 +43,14 @@ public class HHService {
 	private static Logger logger = LoggerFactory.getLogger(HHService.class
 			.toString());
 	private AllHouseHolds allHouseHolds;
-	private AllElcos allEcos;
+	private ELCOService elcoService;
 	private HHSchedulesService hhSchedulesService;
 
 	@Autowired
-	public HHService(AllHouseHolds allHouseHolds, AllElcos allEcos,
+	public HHService(AllHouseHolds allHouseHolds, ELCOService elcoService,
 			HHSchedulesService hhSchedulesService) {
 		this.allHouseHolds = allHouseHolds;
-		this.allEcos = allEcos;
+		this.elcoService = elcoService;
 		this.hhSchedulesService = hhSchedulesService;
 	}
 
@@ -67,11 +67,8 @@ public class HHService {
 		
 		SubFormData subFormData =null;
 		
-		if (submission.formName().equals(HH_REGISTRATION)) 
-			 subFormData = submission.getSubFormByName(ELCO_REGISTRATION_SUB_FORM_NAME_HH);
 		
-		else
-			subFormData = submission.getSubFormByName(ELCO_REGISTRATION_SUB_FORM_NAME_CENSUS);
+		subFormData = submission.getSubFormByName(ELCO_REGISTRATION_SUB_FORM_NAME);
 
 		addELCODetailsToHH(submission, subFormData, houseHold);
 
@@ -81,6 +78,8 @@ public class HHService {
 
 		hhSchedulesService.enrollIntoMilestoneOfCensus(submission.entityId(),
 				submission.getField(REFERENCE_DATE));
+		
+		elcoService.registerELCO(submission);
 	}
 
 	private void addELCODetailsToHH(FormSubmission submission,
@@ -111,5 +110,26 @@ public class HHService {
 			 */
 
 		}
+		
 	}
+	
+	public String getEntityIdBybrnId(String brnId)
+	{
+	   List<HouseHold> houseHolds =	allHouseHolds.findAllHouseHolds();
+	   
+	   if (houseHolds == null || houseHolds.isEmpty()) {
+           return null;
+       }
+	   
+	   for (HouseHold household : houseHolds)
+	   {
+		   for ( Map<String, String> elco : household.ELCODETAILS()) 
+		   {
+			   if( elco.get("FWWOMBID").equals(brnId))
+				   return household.CASEID();
+		   }
+	   }
+	   return null;
+	}
+	
 }

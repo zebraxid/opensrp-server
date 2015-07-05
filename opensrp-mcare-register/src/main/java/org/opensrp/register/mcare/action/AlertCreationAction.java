@@ -11,6 +11,7 @@ import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.opensrp.dto.BeneficiaryType;
+import org.opensrp.register.mcare.domain.Elco;
 import org.opensrp.register.mcare.domain.HouseHold;
 import org.opensrp.register.mcare.repository.AllElcos;
 import org.opensrp.register.mcare.repository.AllHouseHolds;
@@ -47,16 +48,21 @@ public class AlertCreationAction implements HookedEvent {
 		String caseID = event.externalId();
 		DateTime startOfEarliestWindow = new DateTime();
 		DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd");
-		HouseHold houseHold = allHouseHolds.findByCASEID(caseID);
 		
 		if (household.equals(beneficiaryType)) {
-
+			HouseHold houseHold = allHouseHolds.findByCASEID(caseID);
 			if (houseHold != null) {
 				providerId = houseHold.PROVIDERID();
 				startOfEarliestWindow = DateTime.parse(houseHold.TODAY(),formatter);
 			}
 		} else if (elco.equals(beneficiaryType)) {
-			providerId = allElcos.findByCaseId(caseID).PROVIDERID();
+			
+			Elco elco = allElcos.findByCaseId(caseID);
+			
+			if (elco != null) {
+				providerId = elco.PROVIDERID();
+				startOfEarliestWindow = DateTime.parse(elco.TODAY(),formatter);
+			}
 		}
 		/*
 		 * else if (ec.equals(beneficiaryType)) { providerId =
