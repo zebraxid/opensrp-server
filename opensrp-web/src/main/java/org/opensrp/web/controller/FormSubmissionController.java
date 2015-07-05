@@ -24,6 +24,7 @@ import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.form.service.FormSubmissionConverter;
 import org.opensrp.form.service.FormSubmissionService;
 import org.opensrp.register.mcare.OpenSRPScheduleConstants.OpenSRPEvent;
+import org.opensrp.register.mcare.service.HHService;
 import org.opensrp.scheduler.SystemEvent;
 import org.opensrp.scheduler.TaskSchedulerService;
 import org.slf4j.Logger;
@@ -51,11 +52,12 @@ public class FormSubmissionController {
     private OpenmrsConnector openmrsConnector;
     private PatientService patientService;
     private HouseholdService householdService;
+    private HHService hhService;
 
     @Autowired
     public FormSubmissionController(FormSubmissionService formSubmissionService, TaskSchedulerService scheduler,
     		EncounterService encounterService, OpenmrsConnector openmrsConnector, PatientService patientService, 
-    		HouseholdService householdService) {
+    		HouseholdService householdService, HHService hhService) {
         this.formSubmissionService = formSubmissionService;
         this.scheduler = scheduler;
         
@@ -63,6 +65,7 @@ public class FormSubmissionController {
         this.openmrsConnector = openmrsConnector;
         this.patientService = patientService;
         this.householdService = householdService;
+        this.hhService = hhService;
     }
 
     @RequestMapping(method = GET, value = "/form-submissions")
@@ -160,4 +163,16 @@ public class FormSubmissionController {
         }
         return new ResponseEntity<>(CREATED);
     }
+    
+    @RequestMapping(method = GET, value = "/entity-id")
+    @ResponseBody
+    public String getEntityIdForBRN(@RequestParam("brn-id") String brnId)
+    {
+    	return hhService.getEntityIdBybrnId(brnId);
+    }
+    
+    public void getProviderForLocationName()
+	{
+		
+	}
 }
