@@ -27,18 +27,20 @@ import org.springframework.stereotype.Service;
 public class ScheduleService {
     private final ScheduleTrackingService scheduleTrackingService;
     private final AllSchedules allSchedules;
-    private int preferredTime;
+    private int preferredTimeHH;
+    private int preferredTimeMM;
 
     @Autowired
-    public ScheduleService(ScheduleTrackingService scheduleTrackingService, AllSchedules allSchedules, @Value("#{opensrp['preferred.time']}") int preferredTime) {
+    public ScheduleService(ScheduleTrackingService scheduleTrackingService, AllSchedules allSchedules, @Value("#{opensrp['preferred.time.hh']}") int preferredTimeHH, @Value("#{opensrp['preferred.time.mm']}") int preferredTimeMM) {
         this.scheduleTrackingService = scheduleTrackingService;
         this.allSchedules = allSchedules;
-        this.preferredTime = preferredTime;
+        this.preferredTimeHH = preferredTimeHH;
+        this.preferredTimeMM = preferredTimeMM;
     }
 
     public void enroll(String entityId, String scheduleName, String referenceDate) {
         String startingMilestoneName = getStartingMilestoneName(scheduleName, parse(referenceDate));
-        EnrollmentRequest request = new EnrollmentRequest(entityId, scheduleName, new Time(new LocalTime(20, 30)),
+        EnrollmentRequest request = new EnrollmentRequest(entityId, scheduleName, new Time(new LocalTime(preferredTimeHH, preferredTimeMM)),
                 parse(referenceDate), null, null, null, startingMilestoneName, null);
         scheduleTrackingService.enroll(request);
     }
@@ -54,7 +56,7 @@ public class ScheduleService {
 
     public void enroll(String entityId, String scheduleName, String milestone, String referenceDate) {
         EnrollmentRequest request = new EnrollmentRequest(entityId, scheduleName,
-                new Time(new LocalTime(preferredTime, 0)), parse(referenceDate), null, null, null, milestone, null);
+                new Time(new LocalTime(preferredTimeHH, preferredTimeMM)), parse(referenceDate), null, null, null, milestone, null);
         scheduleTrackingService.enroll(request);
     }
     

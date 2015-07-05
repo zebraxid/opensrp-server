@@ -88,8 +88,8 @@ public class FormSubmissionRouter {
 				submission.entityId()));
 		try {
 			handler.handle(submission);
-			formSubmissionReportService.reportFor(submission);
-			mctsReportService.reportFor(submission);
+			//formSubmissionReportService.reportFor(submission);
+			//mctsReportService.reportFor(submission);
 		} catch (Exception e) {
 			logger.error(format(
 					"Handling {0} form submission with instance Id: {1} for entity: {2} failed with exception : {3}",
