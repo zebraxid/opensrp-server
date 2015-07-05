@@ -38,7 +38,7 @@ import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherSchedule
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_TT_1;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_TT_2;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.HHSchedulesConstants.HH_SCHEDULE_CENSUS;
-import static org.opensrp.register.mcare.OpenSRPScheduleConstants.HHSchedulesConstants.ELCO_SCHEDULE_PSRF;
+import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ELCOSchedulesConstants.ELCO_SCHEDULE_PSRF;
 import static org.opensrp.scheduler.Matcher.any;
 import static org.opensrp.scheduler.Matcher.anyOf;
 import static org.opensrp.scheduler.Matcher.eq;
@@ -78,7 +78,7 @@ public class AlertHandler {
 				"beneficiaryType", "household");
 
 		scheduler.addHookedEvent(
-				hhSchedules(),
+				elcoSchedules(),
 				any(),
 				anyOf(earliest.toString(), due.toString(), late.toString(),
 						max.toString()), alertCreation).addExtraData(
@@ -117,7 +117,11 @@ public class AlertHandler {
 	}
 
 	private Matcher hhSchedules() {
-		return anyOf(HH_SCHEDULE_CENSUS, ELCO_SCHEDULE_PSRF);
+		return anyOf(HH_SCHEDULE_CENSUS);
 
 	}
+	private Matcher elcoSchedules() {
+		return anyOf(ELCO_SCHEDULE_PSRF);
+	}
+
 }

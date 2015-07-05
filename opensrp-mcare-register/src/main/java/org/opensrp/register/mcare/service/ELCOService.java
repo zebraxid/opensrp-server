@@ -1,6 +1,7 @@
 package org.opensrp.register.mcare.service;
 
 import static org.opensrp.common.AllConstants.CommonFormFields.ID;
+import static org.opensrp.common.AllConstants.HHRegistrationFields.ELCO_REGISTRATION_SUB_FORM_NAME;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.ELCO_REGISTRATION_SUB_FORM_NAME_CENSUS;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.REFERENCE_DATE;
 
@@ -22,26 +23,28 @@ import org.springframework.stereotype.Service;
 public class ELCOService {
 	private static Logger logger = LoggerFactory.getLogger(ELCOService.class.toString());
 	
-	private HHService hhService;
+	//private HHService hhService;
 	private AllElcos allEcos;
 	private ELCOScheduleService elcoScheduleService;
 
 	@Autowired
-	public ELCOService(AllHouseHolds allHouseHolds, AllElcos allEcos, HHService hhService, ELCOScheduleService elcoScheduleService)
+	public ELCOService(AllHouseHolds allHouseHolds, AllElcos allEcos,/* HHService hhService,*/ ELCOScheduleService elcoScheduleService)
 	{
 		this.allEcos = allEcos;
-		this.hhService = hhService;
+		//this.hhService = hhService;
 		this.elcoScheduleService = elcoScheduleService;
 	}
 	
 	public void registerELCO(FormSubmission submission)
 	{
-		SubFormData subFormData = submission.getSubFormByName(ELCO_REGISTRATION_SUB_FORM_NAME_CENSUS);
+		SubFormData subFormData = submission.getSubFormByName(ELCO_REGISTRATION_SUB_FORM_NAME);
 		
 		for (Map<String, String> elcoFields : subFormData.instances()) {
 			
 			Elco elco = allEcos.findByCaseId(elcoFields.get(ID))
-					.withPROVIDERID(submission.anmId());
+					.withPROVIDERID(submission.anmId())
+					.withTODAY(submission.getField(REFERENCE_DATE));
+			
 					/*.withGOBHHID(FW_GOBHHID)
 					.withJiVitAHHID(FW_JiVitAHHID)
 					.withFWWOMFNAME(FW_WOMFNAME)
@@ -55,12 +58,13 @@ public class ELCOService {
 					.withFWELIGIBLE(FW_ELIGIBLE);*/
 			
 			allEcos.update(elco);
+			
+			elcoScheduleService.enrollIntoMilestoneOfPSRF(elcoFields.get(ID),
+					submission.getField(REFERENCE_DATE));
 		}
 		
-		hhService.registerHouseHold(submission);
+		//hhService.registerHouseHold(submission);
 		
-		elcoScheduleService.enrollIntoMilestoneOfPSRF(submission.entityId(),
-				submission.getField(REFERENCE_DATE));
 
 	}
 	
