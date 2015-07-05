@@ -96,7 +96,7 @@ public class AllConstants {
     
     public static class HHRegistrationFields
     {
-    	public static final String ELCO_REGISTRATION_SUB_FORM_NAME_HH = "elco_registration_hh";
+    	public static final String ELCO_REGISTRATION_SUB_FORM_NAME = "elco_registration";
     	public static final String ELCO_REGISTRATION_SUB_FORM_NAME_CENSUS = "elco_registration_ce";
     	public static final String REFERENCE_DATE = "today";
     }
