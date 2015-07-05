@@ -1,5 +1,5 @@
 {
-  "form_data_definition_version": "1",
+  "form_data_definition_version": "2",
   "form": {
     "default_bind_path": "/model/instance/CensusNewWomanRegistrationForm",
     "bind_type": "household",
@@ -65,7 +65,7 @@
     ],
     "sub_forms": [
       {
-        "name": "elco_registration_ce",
+        "name": "elco_registration",
         "bind_type": "elco",
         "default_bind_path": "/model/instance/CensusNewWomanRegistrationForm/woman",
         "fields": [
