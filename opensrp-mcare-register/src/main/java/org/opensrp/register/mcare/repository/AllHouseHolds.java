@@ -7,7 +7,6 @@ import org.ektorp.support.GenerateView;
 import org.ektorp.support.View;
 import org.motechproject.dao.MotechBaseRepository;
 import org.opensrp.common.AllConstants;
-import org.opensrp.register.domain.EligibleCouple;
 import org.opensrp.register.mcare.domain.HouseHold;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,12 +33,12 @@ public class AllHouseHolds extends MotechBaseRepository<HouseHold> {
 		return houseHolds.get(0);
 	}
 	
-	 @View(name = "all_ecs",
-	            map = "function(doc) { if (doc.type === 'EligibleCouple') { emit(doc.anmIdentifier); } }")
-	    public HouseHold findEntityIdByBRNId(String anmIdentifier) {
-	        return db.queryView(createQuery("all_ecs")
-	                .key(anmIdentifier)
-	                .includeDocs(true), EligibleCouple.class);
+	 @View(name = "all_households",
+	            map = "function(doc) { if (doc.type === 'HouseHold' && doc.ELCODETAILS.FWWOMBID) { emit(doc.PROVIDERID, doc.CASEID); } }")
+	    public List<HouseHold> findAllHouseHolds() {
+	        return db.queryView(createQuery("all_households")
+	                .includeDocs(true), 
+	                 HouseHold.class);
 	    }
 	
 }
