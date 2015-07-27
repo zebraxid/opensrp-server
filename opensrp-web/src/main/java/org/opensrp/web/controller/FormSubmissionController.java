@@ -126,7 +126,7 @@ public class FormSubmissionController {
 	            	
 	            	if(p != null){	            		
 	            		Event e = openmrsConnector.getEventFromFormSubmission(formSubmission);
-		        		System.out.println(encounterService.createEncounter(e));
+		        		//System.out.println(encounterService.createEncounter(e));
 	            	}
 	            	else {
 	            		Map<String, Map<String, Object>> dep = openmrsConnector.getDependentClientsFromFormSubmission(formSubmission);
@@ -143,9 +143,9 @@ public class FormSubmissionController {
 	            		}
 	            		else {
 	            			Client c = openmrsConnector.getClientFromFormSubmission(formSubmission);
-	            			System.out.println(patientService.createPatient(c));
+	            			//System.out.println(patientService.createPatient(c));
 	            			Event e = openmrsConnector.getEventFromFormSubmission(formSubmission);
-			        		System.out.println(encounterService.createEncounter(e));
+			        		//System.out.println(encounterService.createEncounter(e));
 	            		}
 	            	}
             	}

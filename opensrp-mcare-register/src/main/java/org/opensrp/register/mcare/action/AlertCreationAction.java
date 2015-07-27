@@ -1,10 +1,8 @@
 package org.opensrp.register.mcare.action;
 
-import static org.opensrp.dto.BeneficiaryType.ec;
 import static org.opensrp.dto.BeneficiaryType.elco;
 import static org.opensrp.dto.BeneficiaryType.household;
 
-import java.util.List;
 import java.util.Map;
 
 import org.joda.time.DateTime;

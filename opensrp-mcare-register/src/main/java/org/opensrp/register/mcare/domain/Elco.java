@@ -1,6 +1,8 @@
 package org.opensrp.register.mcare.domain;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -63,6 +65,9 @@ public class Elco extends MotechBaseDataObject {
 	private String FWELIGIBLE;
 	@JsonProperty
 	private Map<String, String> details;
+	
+	@JsonProperty
+	private List<Map<String, String>> PSRFDETAILS;
 
 	public Elco() {
 
@@ -167,6 +172,10 @@ public class Elco extends MotechBaseDataObject {
         this.details = new HashMap<>(details);
         return this;
     }
+	public Elco withPSRFDETAILS(List<Map<String, String>> PSRFDETAILS) {
+		this.PSRFDETAILS = PSRFDETAILS;
+		return this;
+	}
 	public String CASEID() {
 		return CASEID;
 	}
@@ -249,6 +258,13 @@ public class Elco extends MotechBaseDataObject {
 
 	public String getDetail(String name) {
 		return details.get(name);
+	}
+
+	public List<Map<String, String>> PSRFDETAILS() {
+		if (PSRFDETAILS == null) {
+			PSRFDETAILS = new ArrayList<>();
+		}
+		return PSRFDETAILS;
 	}
 
 	@Override

@@ -20,6 +20,7 @@ public class AllConstants {
     public static class Form {
     	public static final String HH_REGISTRATION = "new_household_registration";
     	public static final String ELCO_REGISTRATION = "census_enrollment_form";
+    	public static final String PSRF_FORM = "psrf_form";
     	
     	
         public static final String ENTITY_ID = "entityId";
@@ -125,6 +126,35 @@ public class AllConstants {
     	
     }
 
+    public static class PSRFFields
+    {
+    	public static final String FW_PSRDATE ="FWPSRDATE";
+    	public static final String FW_CONFIRMATION ="FWCONFIRMATION";
+    	public static final String FW_PSRSTS ="FWPSRSTS";
+    	public static final String FW_PSRLMP ="FWPSRLMP";
+    	public static final String FW_PSRPREGSTS ="FWPSRPREGSTS";
+    	public static final String FW_PSRWOMPREGWTD ="FWPSRWOMPREGWTD";
+    	public static final String FW_PSRHUSPREGWTD ="FWPSRHUSPREGWTD";
+    	public static final String FW_PSREVRPREG ="FWPSREVRPREG";
+    	public static final String FW_PSRTOTBIRTH ="FWPSRTOTBIRTH";
+    	public static final String FW_PSRNBDTH ="FWPSRNBDTH";
+    	public static final String FW_PSRPRSB ="FWPSRPRSB";
+    	public static final String FW_PSRPRMC ="FWPSRPRMC";
+    	public static final String FW_PSRPREGTWYRS ="FWPSRPREGTWYRS";
+    	public static final String FW_PSRPRVPREGCOMP ="FWPSRPRVPREGCOMP";
+    	public static final String FW_PSRPRCHECKS ="FWPSRPRCHECKS";
+    	public static final String FW_PSRVDGMEM ="FWPSRVDGMEM";
+    	public static final String FW_PSRWOMEDU ="FWPSRWOMEDU";
+    	public static final String FW_PSRHHLAT ="FWPSRHHLAT";
+    	public static final String FW_PSRHHRICE ="FWPSRHHRICE";
+    	public static final String FW_PSRANM ="FWPSRANM";
+    	public static final String FW_PSRHBP ="FWPSRHBP";
+    	public static final String FW_PSRDBT ="FWPSRDBT";
+    	public static final String FW_PSRTHY ="FWPSRTHY";
+    	public static final String FW_PSRHGT ="FWPSRHGT";
+    	public static final String FW_PSRMUAC ="FWPSRMUAC";	
+    }
+    
     public static class ECRegistrationFields {
         public static final String CASTE = "caste";
         public static final String RELIGION = "religion";
