@@ -1,22 +1,20 @@
-Date of Release: 27-May-2015
+Date of Release: 10-Jul-2015
 
 New Features
 ============
-- Allows to get list of all report definitions in openmrs
-- Allows to fetch complete report definition and data for that report
-- Added latest form files for houdehold and census registration form to opensrp-server assets.
-- Household data is also pushed to openmrs
+- #64 - Code made compatible with postgres and mysql both with changing of few settings only with in 4 steps
 
 Changes
 =======
-- Refactored HttpUtil to throw specific exception
-- Household doesnot try saving empty repeat group sent by client
-- Locations returned from Team management module as well as person attribute if not found in team module
+- Removed commented out snippets to clean code
+- Organized migration scripts in separate folder in reporting resources w.r.t. DBMS
+- Organized quartz db init scripts in opensrp-server/build/sql w.r.t DBMS
+- Moved schedule-tracking.properties from opensrp-web to opensrp-server/assets/config
+- removed couchdb-seed-data folder from opensrp-server as this is not needed 
 
 Fixes
 =====
-- Fixed to make sure that form doesnot throw NPE incase no bind is found for field
-- Fix to make sure that formDirName is not overridden to make it accessible n times in tests
+- 
 
 Known Issues
 ============

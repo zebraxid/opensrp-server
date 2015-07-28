@@ -10,6 +10,7 @@
                 "late": ["140 Days"],
                 "max": ["141 Days"]
             },
+
             "alerts": [
                 {
                     "window": "earliest",
@@ -35,7 +36,6 @@
                     "interval": ["1 Day"],
                     "count": "1"
                 }
-                
             ]
         }
     ]

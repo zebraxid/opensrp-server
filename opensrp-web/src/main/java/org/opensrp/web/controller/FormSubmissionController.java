@@ -171,8 +171,4 @@ public class FormSubmissionController {
     	return hhService.getEntityIdBybrnId(brnId);
     }
     
-    public void getProviderForLocationName()
-	{
-		
-	}
-}
+   }

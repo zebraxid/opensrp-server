@@ -101,7 +101,7 @@ public class OpenmrsConnector {
 		List<String> a = new ArrayList<>();
 		a .add("encounter_type");
 		Event e = new Event()
-			.withBaseEntityId(fs.entityId())
+			.withBaseEntityId(subformInstance.get("id"))
 			.withEventDate(OpenmrsService.OPENMRS_DATE.parse(fs.getField(encounterDateField)))
 			.withEventType(eventType)
 			.withLocationId(fs.getField(encounterLocation))
@@ -294,6 +294,7 @@ public class OpenmrsConnector {
 					Map<String, Object> cne = new HashMap<>();
 					
 					//String firstName = sfdata.get(getFieldName(Person.first_name, sbf.name(), fs));
+
 					String middleName = sfdata.get(getFieldName(Person.middle_name, sbf.name(), fs));
 					String lastName = sfdata.get(getFieldName(Person.last_name, sbf.name(), fs));
 					Date birthdate = OpenmrsService.OPENMRS_DATE.parse(sfdata.get(getFieldName(Person.birthdate, sbf.name(), fs)));
@@ -310,7 +311,7 @@ public class OpenmrsConnector {
 							birthdateApprox, deathdateApprox, gender, addresses, extractAttributes(sfdata, sbf.name(), fs)))
                     .withIdentifiers(idents);							
 				//	.withIdentifiers(extractIdentifiers(sfdata, sbf.name(), fs));
-					
+
 					cne.put("client", c);
 					cne.put("event", getEventForSubform(fs, sbf.name(), att.get("openmrs_entity_id"), sfdata));
 					

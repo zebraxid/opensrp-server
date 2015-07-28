@@ -19,11 +19,17 @@
             <FWHOHGENDER openmrs_entity="person" openmrs_entity_id="gender"/>
             <FWNHHMBRNUM openmrs_entity="concept" openmrs_entity_id="5611AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
             <FWNHHMWRA/>
+<<<<<<< HEAD
             <woman template="" openmrs_entity="person" openmrs_entity_id="New Woman Registration">
                 <GOBHHID openmrs_entity_id="person_identifier"/>
                 <JiVitAHHID openmrs_entity_id="person_identifier"/>
                 <REGDATE openmrs_entity="concept" openmrs_entity_id="160753AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
                 <LOCATION/>
+=======
+            <woman template="" openmrs_entity="person" openmrs_entity_id="Census and New Woman Registration">
+                <GOBHHID/>
+                <JiVitAHHID/>
+>>>>>>> 994b424af6be589843977a221fb7a2d22c5bc6b0
                 <FWWOMFNAME openmrs_entity="person" openmrs_entity_id="first_name"/>
                 <FWWOMLNAME openmrs_entity="person" openmrs_entity_id="last_name"/>
                 <FWWOMNID openmrs_entity="person_identifier" openmrs_entity_id="NID"/>

@@ -1,5 +1,4 @@
 package org.opensrp.web.controller;
-import java.io.ByteArrayInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,8 +26,8 @@ public class FormDownloadTest
 		
 		String versions = formDownLoadController.getAllAvailableVersion();
 		System.out.println("available version:::"+versions);
-		readZip(new ByteArrayInputStream(formDownLoadController.getForm("delivery_outcome", resp)));
 	}	
+<<<<<<< HEAD
 	*/
 	public void readZip(InputStream fip) throws IOException {
         // create a buffer to improve copy performance later.
