@@ -59,22 +59,15 @@ public class FormSubmissionController {
     private OpenmrsConnector openmrsConnector;
     private PatientService patientService;
     private HouseholdService householdService;
-<<<<<<< HEAD
     private HHService hhService;
     private OpenmrsUserService openmrsUserService;
-=======
     private ErrorTraceService errorTraceService;
     
->>>>>>> c5f79d30880d25962419ad527f441ebba423e56c
 
     @Autowired
     public FormSubmissionController(FormSubmissionService formSubmissionService, TaskSchedulerService scheduler,
     		EncounterService encounterService, OpenmrsConnector openmrsConnector, PatientService patientService, 
-<<<<<<< HEAD
-    		HouseholdService householdService, HHService hhService, OpenmrsUserService openmrsUserService) {
-=======
-    		HouseholdService householdService, ErrorTraceService errorTraceService) {
->>>>>>> c5f79d30880d25962419ad527f441ebba423e56c
+    		HouseholdService householdService, HHService hhService, OpenmrsUserService openmrsUserService, ErrorTraceService errorTraceService) {
         this.formSubmissionService = formSubmissionService;
         this.scheduler = scheduler;
         this.errorTraceService=errorTraceService;
@@ -128,12 +121,8 @@ public class FormSubmissionController {
 
             scheduler.notifyEvent(new SystemEvent<>(OpenSRPEvent.FORM_SUBMISSION, formSubmissionsDTO));
             
-<<<<<<< HEAD
-           try{
-=======
             try{
-          
->>>>>>> c5f79d30880d25962419ad527f441ebba423e56c
+
             ////////TODO MAIMOONA : SHOULD BE IN EVENT but event needs to be moved to web so for now kept here
             String json = new Gson().toJson(formSubmissionsDTO);
             System.out.println("MMMMMMMMMMMYYYYYYYYYYYYYY::"+json);
@@ -193,7 +182,6 @@ public class FormSubmissionController {
         return new ResponseEntity<>(CREATED);
     }
     
-<<<<<<< HEAD
     @RequestMapping(method = GET, value = "/entity-id")
     @ResponseBody
     public ResponseEntity<String> getEntityIdForBRN(@RequestParam("brn-id") List<String> brnIdList)
@@ -213,10 +201,8 @@ public class FormSubmissionController {
 			e.printStackTrace();
 		}
 		return new ResponseEntity<>(new Gson().toJson("demotest"),OK);
-    }
-    
-   }
-=======
+    }    
+   
     private void addFormToOpenMRS(FormSubmission formSubmission){
     	if(openmrsConnector.isOpenmrsForm(formSubmission)){
         	JSONObject p = null;
@@ -292,4 +278,3 @@ public class FormSubmissionController {
     	
     }
 }
->>>>>>> c5f79d30880d25962419ad527f441ebba423e56c
