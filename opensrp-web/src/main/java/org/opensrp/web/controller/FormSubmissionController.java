@@ -7,10 +7,12 @@ import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
+import static org.springframework.http.HttpStatus.OK;
 
 import java.util.List;
 import java.util.Map;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.opensrp.api.domain.Client;
 import org.opensrp.api.domain.Event;
@@ -18,6 +20,7 @@ import org.opensrp.connector.OpenmrsConnector;
 import org.opensrp.connector.openmrs.constants.OpenmrsHouseHold;
 import org.opensrp.connector.openmrs.service.EncounterService;
 import org.opensrp.connector.openmrs.service.HouseholdService;
+import org.opensrp.connector.openmrs.service.OpenmrsUserService;
 import org.opensrp.connector.openmrs.service.PatientService;
 import org.opensrp.dto.form.FormSubmissionDTO;
 import org.opensrp.form.domain.FormSubmission;
@@ -53,11 +56,12 @@ public class FormSubmissionController {
     private PatientService patientService;
     private HouseholdService householdService;
     private HHService hhService;
+    private OpenmrsUserService openmrsUserService;
 
     @Autowired
     public FormSubmissionController(FormSubmissionService formSubmissionService, TaskSchedulerService scheduler,
     		EncounterService encounterService, OpenmrsConnector openmrsConnector, PatientService patientService, 
-    		HouseholdService householdService, HHService hhService) {
+    		HouseholdService householdService, HHService hhService, OpenmrsUserService openmrsUserService) {
         this.formSubmissionService = formSubmissionService;
         this.scheduler = scheduler;
         
@@ -66,6 +70,7 @@ public class FormSubmissionController {
         this.patientService = patientService;
         this.householdService = householdService;
         this.hhService = hhService;
+        this.openmrsUserService = openmrsUserService;
     }
 
     @RequestMapping(method = GET, value = "/form-submissions")
@@ -166,9 +171,23 @@ public class FormSubmissionController {
     
     @RequestMapping(method = GET, value = "/entity-id")
     @ResponseBody
-    public String getEntityIdForBRN(@RequestParam("brn-id") String brnId)
+    public ResponseEntity<String> getEntityIdForBRN(@RequestParam("brn-id") List<String> brnIdList)
     {
-    	return hhService.getEntityIdBybrnId(brnId);
+    	return new ResponseEntity<>(new Gson().toJson(hhService.getEntityIdBybrnId(brnIdList)),OK);
+    }
+    
+    @RequestMapping(method = GET, value = "/user-location")
+    @ResponseBody
+    public ResponseEntity<String> getUserByLocation(@RequestParam("location-name") String locationName)
+    {
+    	JSONObject userObject=null;
+    	try {
+    		userObject =  openmrsUserService.getTeamMemberByLocation(locationName);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return new ResponseEntity<>(new Gson().toJson("demotest"),OK);
     }
     
    }
