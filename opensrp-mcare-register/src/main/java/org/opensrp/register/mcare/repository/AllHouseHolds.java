@@ -34,7 +34,7 @@ public class AllHouseHolds extends MotechBaseRepository<HouseHold> {
 	}
 	
 	 @View(name = "all_households",
-	            map = "function(doc) { if (doc.type === 'HouseHold' && doc.ELCODETAILS.FWWOMBID) { emit(doc.PROVIDERID, doc.CASEID); } }")
+	            map = "function(doc) { if (doc.type === 'HouseHold') { emit(doc.PROVIDERID, doc.CASEID); } }")
 	    public List<HouseHold> findAllHouseHolds() {
 	        return db.queryView(createQuery("all_households")
 	                .includeDocs(true), 

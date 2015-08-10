@@ -113,7 +113,7 @@ public class HHService {
 		
 	}
 	
-	public String getEntityIdBybrnId(String brnId)
+	public String getEntityIdBybrnId(List<String> brnIdList)
 	{
 	   List<HouseHold> houseHolds =	allHouseHolds.findAllHouseHolds();
 	   
@@ -125,7 +125,7 @@ public class HHService {
 	   {
 		   for ( Map<String, String> elco : household.ELCODETAILS()) 
 		   {
-			   if( elco.get("FWWOMBID").equals(brnId))
+			   if(brnIdList.contains(elco.get("FWWOMBID")))
 				   return household.CASEID();
 		   }
 	   }
