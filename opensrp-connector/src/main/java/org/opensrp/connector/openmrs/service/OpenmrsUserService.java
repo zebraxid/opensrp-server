@@ -76,6 +76,7 @@ public class OpenmrsUserService extends OpenmrsService{
 		HttpResponse op = HttpUtil.get(HttpUtil.removeEndingSlash(OPENMRS_BASE_URL)+"/"+TEAM_MEMBER_URL+"/"+uuid, "v=full", OPENMRS_USER, OPENMRS_PWD);
 		return new JSONObject(op.body());
 	}
+	
 	public JSONObject getTeamMemberByLocation(String location) throws JSONException{
 		HttpResponse op = HttpUtil.get(HttpUtil.removeEndingSlash(OPENMRS_BASE_URL)+"/"+TEAM_MEMBER_LOCATION_URL, "v=full&q="+location, OPENMRS_USER, OPENMRS_PWD);
 		return new JSONObject(op.body());

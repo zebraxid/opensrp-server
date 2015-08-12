@@ -88,6 +88,18 @@ public class HealthSchedulerService {
         return scheduleService.getEnrollment(entityId, scheduleName);
     }
 	
+/*	public void alertFor(String windowName, BeneficiaryType beneficiaryType, String entityId, 
+			String providerId, String schedule, String milestone, 
+			DateTime startOfDueWindow, DateTime startOfLateWindow, DateTime startOfMaxWindow) {
+		if (WindowName.late.toString().equals(windowName)) {
+            actionService.alertForBeneficiary(beneficiaryType, entityId, providerId, schedule, milestone, urgent, startOfLateWindow, startOfMaxWindow);
+        } else if (WindowName.earliest.toString().equals(windowName)) {
+            actionService.alertForBeneficiary(beneficiaryType, entityId, providerId, schedule, milestone, upcoming, startOfDueWindow, startOfLateWindow);
+        } else {
+            actionService.alertForBeneficiary(beneficiaryType, entityId, providerId, schedule, milestone, normal, startOfDueWindow, startOfLateWindow);
+        }
+	}*/
+	
 	public void alertFor(String windowName, BeneficiaryType beneficiaryType, String entityId, 
 			String providerId, String schedule, String milestone, DateTime  startOfEarliestWindow,
 			DateTime startOfDueWindow, DateTime startOfLateWindow, DateTime startOfMaxWindow) {
@@ -110,3 +122,4 @@ public class HealthSchedulerService {
 				startDate, expiryDate);
 	}
 }
+
