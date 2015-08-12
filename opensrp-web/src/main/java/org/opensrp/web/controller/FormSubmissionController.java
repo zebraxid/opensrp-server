@@ -62,7 +62,6 @@ public class FormSubmissionController {
     private HHService hhService;
     private OpenmrsUserService openmrsUserService;
     private ErrorTraceService errorTraceService;
-    
 
     @Autowired
     public FormSubmissionController(FormSubmissionService formSubmissionService, TaskSchedulerService scheduler,
@@ -128,6 +127,7 @@ public class FormSubmissionController {
             System.out.println("MMMMMMMMMMMYYYYYYYYYYYYYY::"+json);
             List<FormSubmissionDTO> formSubmissions = new Gson().fromJson(json, new TypeToken<List<FormSubmissionDTO>>() {
             }.getType());
+            
             List<FormSubmission> fsl = with(formSubmissions).convert(new Converter<FormSubmissionDTO, FormSubmission>() {
                 @Override
                 public FormSubmission convert(FormSubmissionDTO submission) {
