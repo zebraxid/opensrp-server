@@ -73,11 +73,16 @@ public class Elco extends MotechBaseDataObject {
 
 	}
 
+	public Elco withCASEID(String CASEID) {
+		this.CASEID = CASEID;
+		return this;
+	}
+	
 	public Elco withPROVIDERID(String PROVIDERID) {
 		this.PROVIDERID = PROVIDERID;
 		return this;
 	}
-	public Elco withLOCATIONID(String LOCATIONID) {
+	public Elco withLOCATIONID(String LOCAoTIONID) {
 		this.LOCATIONID = LOCATIONID;
 		return this;
 	}

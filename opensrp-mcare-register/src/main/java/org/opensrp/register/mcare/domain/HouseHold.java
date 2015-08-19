@@ -11,6 +11,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.ektorp.support.TypeDiscriminator;
 import org.motechproject.model.MotechBaseDataObject;
+import org.opensrp.dto.register.HHRegisterEntryDTO;
 
 @TypeDiscriminator("doc.type === 'HouseHold'")
 public class HouseHold extends MotechBaseDataObject {
@@ -58,6 +59,11 @@ public class HouseHold extends MotechBaseDataObject {
 	public HouseHold() {
 
 		this.ELCODETAILS = new ArrayList<>();
+	}
+	
+	public HouseHold withCASEID(String CASEID) {
+		this.CASEID = CASEID;
+		return this;
 	}
 
 	public HouseHold withPROVIDERID(String PROVIDERID) {
@@ -150,10 +156,12 @@ public class HouseHold extends MotechBaseDataObject {
 		this.ELCODETAILS = ELCODETAILS;
 		return this;
 	}
+	
 	public HouseHold withDetails(Map<String, String> details) {
         this.details = new HashMap<>(details);
         return this;
     }
+
 	public String CASEID() {
 		return CASEID;
 	}
@@ -218,7 +226,7 @@ public class HouseHold extends MotechBaseDataObject {
 		return FWHOHGENDER;
 	}
 
-	public String FWNHHMWRA(String FWNHHMWRA) {
+	public String FWNHHMWRA() {
 		return FWNHHMWRA;
 	}
 
@@ -244,7 +252,17 @@ public class HouseHold extends MotechBaseDataObject {
 	public String getDetail(String name) {
 		return details.get(name);
 	}
+	
+	public String getELCODetail(String name) {	
+		/*int size = ELCODETAILS.size();
+		String elems = "";
+		for (int i = 0; i < size; i++)
+			elems = elems + ELCODETAILS.get(i).get(name) + " " ;
+		return elems;	*/	
 
+		return ELCODETAILS.get(0).get(name);
+	}
+	
 	@Override
 	public boolean equals(Object o) {
 		return EqualsBuilder.reflectionEquals(this, o, "id", "revision");

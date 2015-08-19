@@ -56,6 +56,11 @@ public class HHRegisterEntryDTO {
 
 		this.ELCODETAILS = new ArrayList<>();
 	}
+	
+	public HHRegisterEntryDTO withCASEID(String CASEID) {
+		this.CASEID = CASEID;
+		return this;
+	}
 
 	public HHRegisterEntryDTO withPROVIDERID(String PROVIDERID) {
 		this.PROVIDERID = PROVIDERID;
