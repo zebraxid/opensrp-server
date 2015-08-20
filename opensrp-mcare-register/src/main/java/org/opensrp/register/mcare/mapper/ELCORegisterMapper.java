@@ -31,8 +31,8 @@ public class ELCORegisterMapper {
                                 .withPROVIDERID(entry.PROVIDERID())
                         		.withLOCATIONID(entry.LOCATIONID())
                         		.withTODAY(entry.TODAY())
-                        		.withSTART(entry.START())
-                        		.withEND(entry.END())
+                        		//.withSTART(entry.START())
+                        		//.withEND(entry.END())
                         		.withGOBHHID(entry.GOBHHID())
                         		.withJiVitAHHID(entry.JiVitAHHID())
                         		.withFWCENDATE(entry.FWCENDATE())
@@ -46,13 +46,15 @@ public class ELCORegisterMapper {
                         		.withFWGENDER(entry.FWGENDER())
                         		.withFWWOMAGE(entry.FWWOMAGE())
                         		.withFWELIGIBLE(entry.FWELIGIBLE())
+                        		.withDetails(entry.details())
+                        		.withPSRFDETAILS(entry.PSRFDETAILS())
+                        		.withSTART(entry.START())
+                        		.withEND(entry.END())
                         		.withFWDISPLAYAGE(entry.FWDISPLAYAGE())
                         		.withFWWOMSTRMEN(entry.FWWOMSTRMEN())
                         		.withFWWOMHUSSTR(entry.FWWOMHUSSTR())
                         		.withFWWOMHUSALV(entry.FWWOMHUSALV())
-                        		.withFWWOMHUSLIV(entry.FWWOMHUSLIV())           	
-                        		.withDetails(entry.details())
-                        		.withPSRFDETAILS(entry.PSRFDETAILS());   
+                        		.withFWWOMHUSLIV(entry.FWWOMHUSLIV());   
                             }
                         });
         

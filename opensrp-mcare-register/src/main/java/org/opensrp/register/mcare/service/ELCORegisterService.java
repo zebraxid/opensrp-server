@@ -33,8 +33,8 @@ public class ELCORegisterService {
             		.withPROVIDERID(ec.PROVIDERID())
             		.withLOCATIONID(ec.LOCATIONID())
             		.withTODAY(ec.TODAY())
-            		.withSTART(ec.START())
-            		.withEND(ec.END())
+            		//.withSTART(ec.START())
+            		//.withEND(ec.END())
             		.withGOBHHID(ec.GOBHHID())
             		.withJiVitAHHID(ec.JiVitAHHID())
             		.withFWCENDATE(ec.FWCENDATE())
@@ -48,13 +48,16 @@ public class ELCORegisterService {
             		.withFWGENDER(ec.FWGENDER())
             		.withFWWOMAGE(ec.FWWOMAGE())
             		.withFWELIGIBLE(ec.FWELIGIBLE())
-            		.withFWDISPLAYAGE(ec.getDetail(FW_DISPLAY_AGE))
-            		.withFWWOMSTRMEN(ec.getDetail(FW_CWOMSTRMEN))
-            		.withFWWOMHUSSTR(ec.getDetail(FW_CWOMHUSSTR))
-            		.withFWWOMHUSALV(ec.getDetail(FW_CWOMHUSALV))
-            		.withFWWOMHUSLIV(ec.getDetail(FW_CWOMHUSLIV))          	
             		.withDetails(ec.details())
-            		.withPSRFDETAILS(ec.PSRFDETAILS());        	
+            		.withPSRFDETAILS(ec.PSRFDETAILS())
+            		.withSTART(ec.getDetail(START_DATE))
+            		.withEND(ec.getDetail(END_DATE))
+            		.withFWDISPLAYAGE(ec.getDetail(FW_DISPLAY_AGE))
+            		.withFWWOMSTRMEN(ec.getDetail(FW_NHWOMSTRMEN))
+            		.withFWWOMHUSSTR(ec.getDetail(FW_NHWOMHUSSTR))
+            		.withFWWOMHUSALV(ec.getDetail(FW_NHWOMHUSALV))
+            		.withFWWOMHUSLIV(ec.getDetail(FW_NHWOMHUSLIV));     
+            
             elcoRegisterEntries.add(ecRegisterEntry);
         }
         return new ELCORegister(elcoRegisterEntries);
