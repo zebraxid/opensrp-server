@@ -88,7 +88,7 @@ public class HttpUtil {
         url = (url+(StringUtils.isEmptyOrWhitespaceOnly(payload)?"":("?"+payload))).replaceAll(" ", "%20");
     	URL urlo = new URL(url);
 		HttpURLConnection conn = (HttpURLConnection) urlo.openConnection();
-		conn.setRequestProperty("Accept-Charset", charset);
+		conn.setRequestProperty("Accept-Charset", charset);//Trojanhorse30
 		
 		if(useBasicAuth){
 			String encoded = new String(Base64.encodeBase64((username+":"+password).getBytes()));

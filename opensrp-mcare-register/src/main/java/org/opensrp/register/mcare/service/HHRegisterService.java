@@ -18,7 +18,6 @@ public class HHRegisterService {
 	public HHRegisterService(AllHouseHolds allHouseHolds)
 	{
 		this.allHouseHolds = allHouseHolds;
-		
 	}
 
 	public void getHHRegisterForProvider(String providerId)
