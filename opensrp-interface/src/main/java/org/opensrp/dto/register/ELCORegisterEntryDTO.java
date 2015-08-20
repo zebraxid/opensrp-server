@@ -69,6 +69,11 @@ public class ELCORegisterEntryDTO {
 
 	}
 
+	public ELCORegisterEntryDTO withCASEID(String CASEID) {
+		this.CASEID = CASEID;
+		return this;
+	}
+	
 	public ELCORegisterEntryDTO withPROVIDERID(String PROVIDERID) {
 		this.PROVIDERID = PROVIDERID;
 		return this;

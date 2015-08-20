@@ -9,6 +9,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.codehaus.jackson.annotate.JsonProperty;
+import org.opensrp.dto.register.ELCORegisterEntryDTO;
 
 public class ELCORegisterEntry {
 	
@@ -66,6 +67,11 @@ public class ELCORegisterEntry {
 
 	public ELCORegisterEntry() {
 
+	}
+	
+	public ELCORegisterEntry withCASEID(String CASEID) {
+		this.CASEID = CASEID;
+		return this;
 	}
 
 	public ELCORegisterEntry withPROVIDERID(String PROVIDERID) {

@@ -1,5 +1,5 @@
 {
-  "form_data_definition_version": "8",
+  "form_data_definition_version": "9",
   "form": {
     "default_bind_path": "/model/instance/FWNewHH",
     "bind_type": "household",

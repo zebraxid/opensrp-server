@@ -9,6 +9,8 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.codehaus.jackson.annotate.JsonProperty;
+import org.opensrp.dto.register.HHRegisterEntryDTO;
+import org.opensrp.register.mcare.domain.HouseHold;
 
 public class HHRegisterEntry {
 
@@ -51,12 +53,17 @@ public class HHRegisterEntry {
 	private List<Map<String, String>> ELCODETAILS;
 	
 	private Map<String, String> details;
-
+	
 	public HHRegisterEntry() {
 
 		this.ELCODETAILS = new ArrayList<>();
 	}
 
+	public HHRegisterEntry withCASEID(String CASEID) {
+		this.CASEID = CASEID;
+		return this;
+	}
+	
 	public HHRegisterEntry withPROVIDERID(String PROVIDERID) {
 		this.PROVIDERID = PROVIDERID;
 		return this;
@@ -147,10 +154,12 @@ public class HHRegisterEntry {
 		this.ELCODETAILS = ELCODETAILS;
 		return this;
 	}
+	
 	public HHRegisterEntry withDetails(Map<String, String> details) {
         this.details = new HashMap<>(details);
         return this;
     }
+	
 	public String CASEID() {
 		return CASEID;
 	}
@@ -215,7 +224,7 @@ public class HHRegisterEntry {
 		return FWHOHGENDER;
 	}
 
-	public String FWNHHMWRA(String FWNHHMWRA) {
+	public String FWNHHMWRA() {
 		return FWNHHMWRA;
 	}
 
@@ -241,7 +250,17 @@ public class HHRegisterEntry {
 	public String getDetail(String name) {
 		return details.get(name);
 	}
-
+	
+	public String getELCODetail(String name) {	
+		/*int size = ELCODETAILS.size();
+		String elems = "";
+		for (int i = 0; i < size; i++)
+			elems = elems + ELCODETAILS.get(i).get(name) + " " ;
+		return elems;	*/		
+		
+		return ELCODETAILS.get(0).get(name);
+	}
+	
 	@Override
 	public boolean equals(Object o) {
 		return EqualsBuilder.reflectionEquals(this, o, "id", "revision");
