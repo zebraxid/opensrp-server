@@ -92,10 +92,11 @@ public class HealthSchedulerService {
 			String providerId, String schedule, String milestone, DateTime  startOfEarliestWindow,
 			DateTime startOfDueWindow, DateTime startOfLateWindow, DateTime startOfMaxWindow) {
 		
-		if(WindowName.max.toString().equals(windowName))
+		/*if(WindowName.max.toString().equals(windowName))
 		{
 			actionService.alertForBeneficiary(beneficiaryType, entityId, providerId, schedule, milestone, expired, startOfMaxWindow, startOfMaxWindow.plusDays(1));
-		}else if (WindowName.late.toString().equals(windowName)) {
+		}*/
+		if (WindowName.late.toString().equals(windowName)) {
             actionService.alertForBeneficiary(beneficiaryType, entityId, providerId, schedule, milestone, urgent, startOfLateWindow, startOfMaxWindow);
         } else if (WindowName.due.toString().equals(windowName)) {
             actionService.alertForBeneficiary(beneficiaryType, entityId, providerId, schedule, milestone, upcoming, startOfDueWindow, startOfLateWindow);
