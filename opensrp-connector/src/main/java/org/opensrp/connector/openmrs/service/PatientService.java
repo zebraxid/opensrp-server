@@ -174,6 +174,13 @@ public class PatientService extends OpenmrsService{
 	
 	public JSONObject createPatient(Client c) throws JSONException
 	{
+		JSONObject patientExist = null;
+		patientExist = getPatientByIdentifier(c.getBaseEntity().getId());
+		if (patientExist != null){
+			System.out.println("person or patient already existis inside openmrs id:" + c.getBaseEntity().getId());
+			return patientExist;
+		}
+		
 		JSONObject p = new JSONObject();
 		p.put("person", createPerson(c.getBaseEntity()).getString("uuid"));
 		JSONArray ids = new JSONArray();

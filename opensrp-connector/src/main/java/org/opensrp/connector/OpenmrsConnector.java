@@ -259,6 +259,7 @@ public class OpenmrsConnector {
 	
 	public Client getClientFromFormSubmission(FormSubmission fs) throws ParseException {
 		String firstName = fs.getField(getFieldName(Person.first_name, fs));
+		System.out.println ("getClientFromFormSubmission firstName: " + firstName);
 		String middleName = fs.getField(getFieldName(Person.middle_name, fs));
 		String lastName = fs.getField(getFieldName(Person.last_name, fs));
 		Date birthdate = OpenmrsService.OPENMRS_DATE.parse(fs.getField(getFieldName(Person.birthdate, fs)));
@@ -279,14 +280,13 @@ public class OpenmrsConnector {
 	
 	public Map<String, Map<String, Object>> getDependentClientsFromFormSubmission(FormSubmission fs) throws ParseException {
 		Map<String, Map<String, Object>> map = new HashMap<>();
-		for (SubFormData sbf : fs.subForms()) {
-			System.out.println ("getDependentClientsFromFormSubmission sbf: " + sbf.name());
+		for (SubFormData sbf : fs.subForms()) {			
 			Map<String, String> att = formAttributeMapper.getAttributesForSubform(sbf.name(), fs);
 			if(att.size() > 0 && att.get("openmrs_entity").equalsIgnoreCase("person")){
 				for (Map<String, String> sfdata : sbf.instances()) {
-					Map<String, Object> cne = new HashMap<>();
-					
+					Map<String, Object> cne = new HashMap<>();					
 					String firstName = sfdata.get(getFieldName(Person.first_name, sbf.name(), fs));
+					System.out.println ("getDependentClientsFromFormSubmission firstName: " + firstName);
 					String middleName = sfdata.get(getFieldName(Person.middle_name, sbf.name(), fs));
 					String lastName = sfdata.get(getFieldName(Person.last_name, sbf.name(), fs));
 					Date birthdate = OpenmrsService.OPENMRS_DATE.parse(sfdata.get(getFieldName(Person.birthdate, sbf.name(), fs)));
@@ -310,7 +310,7 @@ public class OpenmrsConnector {
 				}
 			}
 		}
-		System.out.println ("getDependentClientsFromFormSubmission map: " + map.toString());
+		System.out.println ("getDependentClientsFromFormSubmission mapsize: " + map.size());
 		return map;
 	}
 }

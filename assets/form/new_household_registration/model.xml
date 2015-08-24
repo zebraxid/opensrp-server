@@ -1,6 +1,6 @@
 <model>
     <instance>
-        <FWNewHH encounter_type="New Household Registration" id="FWNewHH" version="201508190848">
+        <FWNewHH encounter_type="New Household Registration" id="FWNewHH" version="201508190336">
             <formhub>
                 <uuid/>
             </formhub>
@@ -23,10 +23,9 @@
             <woman template="" openmrs_entity="person" openmrs_entity_id="New Woman Registration">
                 <GOBHHID openmrs_entity="person_attribute" openmrs_entity_id="GoB_HHID"/>
                 <JiVitAHHID openmrs_entity="person_attribute" openmrs_entity_id="JiVitA_HHID"/>
-                <REGDATE/>
                 <FWWOMFNAME openmrs_entity="person" openmrs_entity_id="first_name"/>
                 <FWWOMLNAME openmrs_entity="person" openmrs_entity_id="last_name"/>
-                <FWWOMNID openmrs_entity="person_attribute" openmrs_entity_id="NID"/>
+                <FWWOMNID openmrs_entity="person_identifier" openmrs_entity_id="NID"/>
                 <FWWOMBID/>
                 <FWWOMRETYPEBID openmrs_entity="person_identifier" openmrs_entity_id="Birth Registration ID"/>
                 <FWHUSNAME openmrs_entity="concept" openmrs_entity_id="161135AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
