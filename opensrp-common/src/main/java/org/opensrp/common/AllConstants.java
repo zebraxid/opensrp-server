@@ -99,7 +99,23 @@ public class AllConstants {
     {
     	public static final String ELCO_REGISTRATION_SUB_FORM_NAME = "elco_registration";
     	public static final String ELCO_REGISTRATION_SUB_FORM_NAME_CENSUS = "elco_registration_ce";
+    	public static final String LOCATION_NAME = "location_name";
     	public static final String REFERENCE_DATE = "today";
+    	public static final String START_DATE = "start";
+    	public static final String END_DATE = "end";
+    	public static final String FW_WOMAGE = "FWWOMAGE";
+    	public static final String FW_BIRTHDATE = "FWBIRTHDATE";
+    	public static final String id = "id";
+    	public static final String FW_WOMLNAME = "FWWOMLNAME";
+    	public static final String FW_WOMFNAME = "FWWOMFNAME";
+    	public static final String FW_JiVitAHHID = "JiVitAHHID";
+    	public static final String FW_GENDER = "FWGENDER";
+    	public static final String FW_WOMBID = "FWWOMBID";
+    	public static final String FW_WOMNID = "FWWOMNID";
+    	public static final String FW_HUSNAME = "FWHUSNAME";
+    	public static final String FW_ELIGIBLE = "FWELIGIBLE";
+    	public static final String FW_DISPLAY_AGE = "FWDISPLAYAGE";
+    	
     }
     
     public static class ELCORegistrationFields
@@ -107,7 +123,9 @@ public class AllConstants {
     	public static final String FW_PROVIDERID ="PROVIDERID";
     	public static final String FW_LOCATIONID ="LOCATIONID";
     	public static final String FW_TODAY ="TODAY";
-    	public static final String FW_GOBHHID ="TODAY";
+    	public static final String START_DATE = "start";
+    	public static final String END_DATE = "end";
+    	public static final String FW_GOBHHID ="GOBHHID";
     	public static final String FW_JiVitAHHID ="JiVitAHHID";
     	public static final String FW_WOMFNAME = "FWWOMFNAME";
     	public static final String FW_WOMLNAME = "FWWOMLNAME";
@@ -117,11 +135,11 @@ public class AllConstants {
     	public static final String FW_BIRTHDATE = "FWBIRTHDATE";
     	public static final String FW_GENDER = "FWGENDER";
     	public static final String FW_WOMAGE = "FWWOMAGE";
-    	public static final String FW_DISPLAY_AGE = "FWDISPLAYAGE";
-    	public static final String FW_CWOMSTRMEN = "FWCWOMSTRMEN";
-    	public static final String FW_CWOMHUSALV = "FWCWOMHUSALV";
-    	public static final String FW_CWOMHUSSTR = "FWCWOMHUSSTR";
-    	public static final String FW_CWOMHUSLIV = "FWCWOMHUSLIV";
+    	public static final String FW_DISPLAY_AGE = "display_age";
+    	public static final String FW_NHWOMSTRMEN = "FWNHWOMSTRMEN";
+    	public static final String FW_NHWOMHUSALV = "FWNHWOMHUSALV";
+    	public static final String FW_NHWOMHUSSTR = "FWNHWOMHUSSTR";
+    	public static final String FW_NHWOMHUSLIV = "FWNHWOMHUSLIV";
     	public static final String FW_ELIGIBLE = "FWELIGIBLE";
     	
     }

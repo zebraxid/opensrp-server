@@ -13,6 +13,7 @@ public class OpenmrsUserService extends OpenmrsService{
 
 	private static final String AUTHENTICATION_URL = "ws/rest/v1/session";
 	private static final String USER_URL = "ws/rest/v1/user";
+	private static final String PERSON_URL = "ws/rest/v1/person";
 	private static final String TEAM_MEMBER_URL = "ws/rest/v1/teammodule/member";
 	private static final String TEAM_MEMBER_LOCATION_URL = "ws/rest/v1/teammodule/memberLocation";
 	
@@ -76,8 +77,8 @@ public class OpenmrsUserService extends OpenmrsService{
 		HttpResponse op = HttpUtil.get(HttpUtil.removeEndingSlash(OPENMRS_BASE_URL)+"/"+TEAM_MEMBER_URL+"/"+uuid, "v=full", OPENMRS_USER, OPENMRS_PWD);
 		return new JSONObject(op.body());
 	}
-	
 	public JSONObject getTeamMemberByLocation(String location) throws JSONException{
+		//HttpResponse opPerson = HttpUtil.get(HttpUtil.removeEndingSlash(OPENMRS_BASE_URL)+"/"+USER_URL, "v=full&uuid=23f56e82-ed2b-433a-8cad-de42b94c39e6", OPENMRS_USER, OPENMRS_PWD);
 		HttpResponse op = HttpUtil.get(HttpUtil.removeEndingSlash(OPENMRS_BASE_URL)+"/"+TEAM_MEMBER_LOCATION_URL, "v=full&q="+location, OPENMRS_USER, OPENMRS_PWD);
 		return new JSONObject(op.body());
 	}
