@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.ektorp.CouchDbConnector;
 import org.ektorp.support.GenerateView;
+import org.ektorp.support.View;
 import org.motechproject.dao.MotechBaseRepository;
 import org.opensrp.common.AllConstants;
 import org.opensrp.register.mcare.domain.Elco;
@@ -28,4 +29,13 @@ public class AllElcos extends MotechBaseRepository<Elco>{
 		}
 		return elcos.get(0);
 	}
+	
+	 @View(name = "all_open_elcos_for_provider",
+	            map = "function(doc) { if (doc.type === 'Elco' && doc.PROVIDERID) { emit(doc.PROVIDERID); } }")
+	    public List<Elco> allOpenELCOsForProvider(String providerId) {
+	        return db.queryView(createQuery("all_open_elcos_for_provider")
+	                .key(providerId)
+	                .includeDocs(true), Elco.class);
+	    }
+
 }

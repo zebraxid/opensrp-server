@@ -1,4 +1,4 @@
-package org.opensrp.register.mcare.domain;
+package org.opensrp.register.mcare;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,175 +9,171 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.codehaus.jackson.annotate.JsonProperty;
-import org.ektorp.support.TypeDiscriminator;
-import org.motechproject.model.MotechBaseDataObject;
+import org.opensrp.dto.register.ELCORegisterEntryDTO;
 
-@TypeDiscriminator("doc.type === 'Elco'")
-public class Elco extends MotechBaseDataObject {
-
-	@JsonProperty
+public class ELCORegisterEntry {
+	
 	private String CASEID;
-	@JsonProperty
+	
 	private String LOCATIONID;
-	@JsonProperty
+	
 	private String PROVIDERID;
-	@JsonProperty
+	
 	private String TODAY;
-	@JsonProperty
+	
 	private String START;
-	@JsonProperty
+	
 	private String END;
-	@JsonProperty
+	
 	private String GOBHHID;
-	@JsonProperty
+	
 	private String JiVitAHHID;
-	@JsonProperty
+	
 	private String FWCENDATE;
-	@JsonProperty
+	
 	private String FWCENSTAT;
-	@JsonProperty
+	
 	private String FWWOMFNAME;
-	@JsonProperty
+	
 	private String FWWOMLNAME;
-	@JsonProperty
+	
 	private String FWWOMNID;
-	@JsonProperty
+	
 	private String FWWOMBID;
-	@JsonProperty
+	
 	private String FWHUSNAME;
-	@JsonProperty
+	
 	private String FWBIRTHDATE;
-	@JsonProperty
+	
 	private String FWGENDER;
-	@JsonProperty
+	
 	private String FWWOMAGE;
-	@JsonProperty
+	
 	private String FWDISPLAYAGE;
-	@JsonProperty
+	
 	private String FWWOMSTRMEN;
-	@JsonProperty
+	
 	private String FWWOMHUSALV;
-	@JsonProperty
+	
 	private String FWWOMHUSSTR;
-	@JsonProperty
+	
 	private String FWWOMHUSLIV;
-	@JsonProperty
+	
 	private String FWELIGIBLE;
-	@JsonProperty
+	
 	private Map<String, String> details;
 	
-	@JsonProperty
 	private List<Map<String, String>> PSRFDETAILS;
 
-	public Elco() {
+	public ELCORegisterEntry() {
 
 	}
-
-	public Elco withCASEID(String CASEID) {
+	
+	public ELCORegisterEntry withCASEID(String CASEID) {
 		this.CASEID = CASEID;
 		return this;
 	}
-	
-	public Elco withPROVIDERID(String PROVIDERID) {
+
+	public ELCORegisterEntry withPROVIDERID(String PROVIDERID) {
 		this.PROVIDERID = PROVIDERID;
 		return this;
 	}
-	public Elco withLOCATIONID(String LOCAoTIONID) {
+	public ELCORegisterEntry withLOCATIONID(String LOCATIONID) {
 		this.LOCATIONID = LOCATIONID;
 		return this;
 	}
-	public Elco withTODAY(String TODAY) {
+	public ELCORegisterEntry withTODAY(String TODAY) {
 		this.TODAY = TODAY;
 		return this;
 	}
-	public Elco withSTART(String START) {
+	public ELCORegisterEntry withSTART(String START) {
 		this.START = START;
 		return this;
 	}
-	public Elco withEND(String END) {
+	public ELCORegisterEntry withEND(String END) {
 		this.END = END;
 		return this;
 	}
-	public Elco withGOBHHID(String GOBHHID) {
+	public ELCORegisterEntry withGOBHHID(String GOBHHID) {
 		this.GOBHHID = GOBHHID;
 		return this;
 	}
 
-	public Elco withJiVitAHHID(String JiVitAHHID) {
+	public ELCORegisterEntry withJiVitAHHID(String JiVitAHHID) {
 		this.JiVitAHHID = JiVitAHHID;
 		return this;
 	}
 
-	public Elco withFWCENDATE(String FWCENDATE) {
+	public ELCORegisterEntry withFWCENDATE(String FWCENDATE) {
 		this.FWCENDATE = FWCENDATE;
 		return this;
 	}
 
-	public Elco withFWCENSTAT(String FWCENSTAT) {
+	public ELCORegisterEntry withFWCENSTAT(String FWCENSTAT) {
 		this.FWCENSTAT = FWCENSTAT;
 		return this;
 	}
-	public Elco withFWWOMFNAME(String FWWOMFNAME) {
+	public ELCORegisterEntry withFWWOMFNAME(String FWWOMFNAME) {
 		this.FWWOMFNAME = FWWOMFNAME;
 		return this;
 	}
-	public Elco withFWWOMLNAME(String FWWOMLNAME) {
+	public ELCORegisterEntry withFWWOMLNAME(String FWWOMLNAME) {
 		this.FWWOMLNAME = FWWOMLNAME;
 		return this;
 	}
-	public Elco withFWWOMNID(String FWWOMNID) {
+	public ELCORegisterEntry withFWWOMNID(String FWWOMNID) {
 		this.FWWOMNID = FWWOMNID;
 		return this;
 	}
-	public Elco withFWWOMBID(String FWWOMBID) {
+	public ELCORegisterEntry withFWWOMBID(String FWWOMBID) {
 		this.FWWOMBID = FWWOMBID;
 		return this;
 	}
-	public Elco withFWHUSNAME(String FWHUSNAME) {
+	public ELCORegisterEntry withFWHUSNAME(String FWHUSNAME) {
 		this.FWHUSNAME = FWHUSNAME;
 		return this;
 	}
-	public Elco withFWBIRTHDATE(String FWBIRTHDATE) {
+	public ELCORegisterEntry withFWBIRTHDATE(String FWBIRTHDATE) {
 		this.FWBIRTHDATE = FWBIRTHDATE;
 		return this;
 	}
-	public Elco withFWGENDER(String FWGENDER) {
+	public ELCORegisterEntry withFWGENDER(String FWGENDER) {
 		this.FWGENDER = FWGENDER;
 		return this;
 	}
-	public Elco withFWWOMAGE(String FWWOMAGE) {
+	public ELCORegisterEntry withFWWOMAGE(String FWWOMAGE) {
 		this.FWWOMAGE = FWWOMAGE;
 		return this;
 	}
-	public Elco withFWDISPLAYAGE(String FWDISPLAYAGE) {
+	public ELCORegisterEntry withFWDISPLAYAGE(String FWDISPLAYAGE) {
 		this.FWDISPLAYAGE = FWDISPLAYAGE;
 		return this;
 	}
-	public Elco withFWWOMSTRMEN(String FWWOMSTRMEN) {
+	public ELCORegisterEntry withFWWOMSTRMEN(String FWWOMSTRMEN) {
 		this.FWWOMSTRMEN = FWWOMSTRMEN;
 		return this;
 	}
-	public Elco withFWWOMHUSSTR(String FWWOMHUSSTR) {
+	public ELCORegisterEntry withFWWOMHUSSTR(String FWWOMHUSSTR) {
 		this.FWWOMHUSSTR = FWWOMHUSSTR;
 		return this;
 	}
-	public Elco withFWWOMHUSALV(String FWWOMHUSALV) {
+	public ELCORegisterEntry withFWWOMHUSALV(String FWWOMHUSALV) {
 		this.FWWOMHUSALV = FWWOMHUSALV;
 		return this;
 	}
-	public Elco withFWWOMHUSLIV(String FWWOMHUSLIV) {
+	public ELCORegisterEntry withFWWOMHUSLIV(String FWWOMHUSLIV) {
 		this.FWWOMHUSLIV = FWWOMHUSLIV;
 		return this;
 	}
-	public Elco withFWELIGIBLE(String FWELIGIBLE) {
+	public ELCORegisterEntry withFWELIGIBLE(String FWELIGIBLE) {
 		this.FWELIGIBLE = FWELIGIBLE;
 		return this;
 	}
-	public Elco withDetails(Map<String, String> details) {
+	public ELCORegisterEntry withDetails(Map<String, String> details) {
         this.details = new HashMap<>(details);
         return this;
     }
-	public Elco withPSRFDETAILS(List<Map<String, String>> PSRFDETAILS) {
+	public ELCORegisterEntry withPSRFDETAILS(List<Map<String, String>> PSRFDETAILS) {
 		this.PSRFDETAILS = PSRFDETAILS;
 		return this;
 	}
@@ -284,4 +280,5 @@ public class Elco extends MotechBaseDataObject {
 	public String toString() {
 		return ToStringBuilder.reflectionToString(this);
 	}
+
 }
