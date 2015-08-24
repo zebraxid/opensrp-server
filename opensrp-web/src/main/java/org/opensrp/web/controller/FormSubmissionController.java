@@ -204,6 +204,18 @@ public class FormSubmissionController {
     }    
    
     private void addFormToOpenMRS(FormSubmission formSubmission){
+    	/*
+    	 * TODO: 
+    	 * case 1: H_n_W_n(1)
+    	 * case 2: H_o_W_n(1)
+    	 * case 3: H_n_W_n(n)
+    	 * case 4: H_o_W_n(n)
+    	 * case 5: H_n_W_n(0)    	 * 
+    	 * 
+    	 * */
+    	
+    	System.out.println("Sending data to openMRS/***********************************************************************/ entityId: " + formSubmission.entityId());
+    	
     	if(openmrsConnector.isOpenmrsForm(formSubmission)){
         	JSONObject p = null;
 			try {
@@ -215,10 +227,12 @@ public class FormSubmissionController {
 				e1.printStackTrace();
 			}
         	
-        	if(p != null){	            		
+        	if(p != null){	
+        		System.out.println("Existing patient found into openMRS /***********************************************************************/ ");
         		Event e;
 				try {
 					e = openmrsConnector.getEventFromFormSubmission(formSubmission);
+					System.out.println("Creates and encounter into openMRS /***********************************************************************/ ");
 					System.out.println(encounterService.createEncounter(e));
 				} catch (ParseException e1) {
 				
@@ -238,19 +252,21 @@ public class FormSubmissionController {
         	}
         	else {
         		Map<String, Map<String, Object>> dep;
+        		System.out.println("Patient not found into openMRS /***********************************************************************/ ");
 				try {
 					dep = openmrsConnector.getDependentClientsFromFormSubmission(formSubmission);
 					if(dep.size()>0){
+						System.out.println("Dependent client exist into openmrs /***********************************************************************/ ");
 	        			Client hhhClient = openmrsConnector.getClientFromFormSubmission(formSubmission);
 	        			Event hhhEvent = openmrsConnector.getEventFromFormSubmission(formSubmission);
 	        			OpenmrsHouseHold hh = new OpenmrsHouseHold(hhhClient, hhhEvent);
 		    			for (Map<String, Object> cm : dep.values()) {
 		    				hh.addHHMember((Client)cm.get("client"), (Event)cm.get("event"));
-		    			}
-		    			
+		    			}		    			
 		    			householdService.saveHH(hh);
 				}
 					else {
+						System.out.println("Patient and Dependent client not exist into openmrs /***********************************************************************/ ");
 	        			Client c = openmrsConnector.getClientFromFormSubmission(formSubmission);
 	        			System.out.println(patientService.createPatient(c));
 	        			Event e = openmrsConnector.getEventFromFormSubmission(formSubmission);
