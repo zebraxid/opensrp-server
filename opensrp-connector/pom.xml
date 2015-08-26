@@ -1,8 +1,7 @@
-
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
         <artifactId>opensrp</artifactId>
         <groupId>org.opensrp</groupId>
         <version>0.1-SNAPSHOT</version>
@@ -13,16 +12,16 @@
     <name>opensrp-connector</name>
     <url>http://github.com/OpenSRP/opensrp-server</url>
 
-	<properties>
-		<jetty.port>9977</jetty.port>
+    <properties>
+        <jetty.port>9977</jetty.port>
         <release.version>0.1-SNAPSHOT</release.version>
-		<main.basedir>${project.basedir}/..</main.basedir>
-	</properties>
-	
-	<build>
-		<finalName>opensrp-connector</finalName>
+        <main.basedir>${project.basedir}/..</main.basedir>
+    </properties>
+    
+    <build>
+        <finalName>opensrp-connector</finalName>
         <resources>
-			<resource>
+            <resource>
                 <directory>src/main/resources</directory>
             </resource>
             <resource>
@@ -32,7 +31,7 @@
                 <directory>../build</directory>
                 <filtering>true</filtering>
                 <includes>
-                	<include>maven.properties</include>
+                    <include>maven.properties</include>
                 </includes>
             </resource>
             <resource>
@@ -175,10 +174,10 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-		   <groupId>org.javassist</groupId>
-		   <artifactId>javassist</artifactId>
-		   <version>3.18.1-GA</version>
-		</dependency>
+           <groupId>org.javassist</groupId>
+           <artifactId>javassist</artifactId>
+           <version>3.18.1-GA</version>
+        </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>

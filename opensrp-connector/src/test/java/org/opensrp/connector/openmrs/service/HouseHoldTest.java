@@ -1,4 +1,3 @@
-
 package org.opensrp.connector.openmrs.service;
 
 import static org.hamcrest.Matchers.equalTo;

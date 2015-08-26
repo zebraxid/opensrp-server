@@ -1,4 +1,3 @@
-
 package org.opensrp.connector.openmrs.constants;
 
 import java.util.ArrayList;

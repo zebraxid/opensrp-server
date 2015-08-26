@@ -1,4 +1,3 @@
-
 package org.opensrp.connector.openmrs.service;
 
 import java.util.List;
@@ -205,3 +204,4 @@ public class PatientService extends OpenmrsService{
 		return new JSONObject(HttpUtil.post(getURL()+"/"+PATIENT_URL, "", p.toString(), OPENMRS_USER, OPENMRS_PWD).body());
 	}
 }
+
