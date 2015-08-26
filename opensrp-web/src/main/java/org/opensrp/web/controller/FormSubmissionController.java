@@ -19,13 +19,16 @@ import org.opensrp.connector.openmrs.constants.OpenmrsHouseHold;
 import org.opensrp.connector.openmrs.service.EncounterService;
 import org.opensrp.connector.openmrs.service.HouseholdService;
 import org.opensrp.connector.openmrs.service.PatientService;
+import org.opensrp.domain.Multimedia;
 import org.opensrp.dto.form.FormSubmissionDTO;
+import org.opensrp.dto.form.MultimediaDTO;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.form.service.FormSubmissionConverter;
 import org.opensrp.form.service.FormSubmissionService;
 import org.opensrp.register.DrishtiScheduleConstants.OpenSRPEvent;
 import org.opensrp.scheduler.SystemEvent;
 import org.opensrp.scheduler.TaskSchedulerService;
+import org.opensrp.service.MultimediaService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +39,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import ch.lambdaj.function.convert.Converter;
 
@@ -51,11 +55,12 @@ public class FormSubmissionController {
     private OpenmrsConnector openmrsConnector;
     private PatientService patientService;
     private HouseholdService householdService;
+    private MultimediaService multimediaService;
 
     @Autowired
     public FormSubmissionController(FormSubmissionService formSubmissionService, TaskSchedulerService scheduler,
     		EncounterService encounterService, OpenmrsConnector openmrsConnector, PatientService patientService, 
-    		HouseholdService householdService) {
+    		HouseholdService householdService, MultimediaService multimediaService) {
         this.formSubmissionService = formSubmissionService;
         this.scheduler = scheduler;
         
@@ -63,6 +68,7 @@ public class FormSubmissionController {
         this.openmrsConnector = openmrsConnector;
         this.patientService = patientService;
         this.householdService = householdService;
+        this.multimediaService = multimediaService;
     }
 
     @RequestMapping(method = GET, value = "/form-submissions")
@@ -157,5 +163,37 @@ public class FormSubmissionController {
             return new ResponseEntity<>(INTERNAL_SERVER_ERROR);
         }
         return new ResponseEntity<>(CREATED);
+    }
+    
+    @RequestMapping(headers = {"Accept=application/json"}, method = GET, value = "/multimedia-file")
+    public List<MultimediaDTO> getFiles(@RequestParam("anm-id") String providerId) {
+    	
+    	List<Multimedia> Multimedias = multimediaService.getMultimediaFiles(providerId);
+    	
+    	return with(Multimedias).convert(new Converter<Multimedia, MultimediaDTO>() {
+			@Override
+			public MultimediaDTO convert(Multimedia md) {
+				return new MultimediaDTO(md.getCaseId(), md.getProviderId(), md.getFileName());
+			}
+		});
+    }
+    @RequestMapping(headers = {"Accept=application/json"}, method = POST, value = "/multimedia-file")
+    public ResponseEntity<HttpStatus> uploadFiles(@RequestBody List<MultimediaDTO> multimediaDTO, @RequestParam("file") MultipartFile file) {
+    	String json = new Gson().toJson(multimediaDTO);
+    	List<MultimediaDTO> multimedia = new Gson().fromJson(json, new TypeToken<MultimediaDTO>() {
+        }.getType());
+    	
+    	 List<Multimedia> mdl = with(multimedia).convert(new Converter<MultimediaDTO, Multimedia>() {
+             @Override
+             public Multimedia convert(MultimediaDTO multimedia) {
+                 return new Multimedia(multimedia.caseId(), multimedia.providerId(), multimedia.fileName());
+             }
+         });
+    	
+    	 for(Multimedia md : mdl)
+    	 {
+    		 multimediaService.saveMultimediaFile(md, file);
+    	 }
+    	 return new ResponseEntity<>(HttpStatus.OK);
     }
 }
