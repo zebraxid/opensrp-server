@@ -286,6 +286,7 @@ public class OpenmrsConnector {
 				for (Map<String, String> sfdata : sbf.instances()) {
 					Map<String, Object> cne = new HashMap<>();					
 					String firstName = sfdata.get(getFieldName(Person.first_name, sbf.name(), fs));
+					if (firstName.length() == 0) return map; 
 					System.out.println ("getDependentClientsFromFormSubmission firstName: " + firstName);
 					String middleName = sfdata.get(getFieldName(Person.middle_name, sbf.name(), fs));
 					String lastName = sfdata.get(getFieldName(Person.last_name, sbf.name(), fs));
