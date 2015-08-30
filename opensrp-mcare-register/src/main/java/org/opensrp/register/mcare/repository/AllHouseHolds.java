@@ -53,12 +53,14 @@ public class AllHouseHolds extends MotechBaseRepository<HouseHold> {
 	public List<HouseHold> allHHsVisited7Days(String providerId) {
 
 		LocalDate today = LocalDate.now();
-
-		return db.queryView(
+		
+		List<HouseHold> houseHolds = db.queryView(
 				createQuery("all_hhs_prev_7_days")
 						.startKey(today.minusDays(100))
 						.endKey(today)
 						//.key(providerId)
 						.includeDocs(true), HouseHold.class);
+
+		return houseHolds;
 	}
 }
