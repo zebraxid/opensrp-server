@@ -113,9 +113,7 @@ public class PatientService extends OpenmrsService{
 		}
 		JSONArray attrs = new JSONArray();
 		for (Entry<String, Object> at : attributes.entrySet()) {
-			JSONObject a = new JSONObject();
-			//if (!getPersonAttributeType(at.getKey()).getString("uuid").toString().equals("FWWOMNID")){
-			//System.out.println ("convertAttributesToOpenmrsJson : " + getPersonAttributeType(at.getKey()).getString("uuid").toString());
+			JSONObject a = new JSONObject();			
 			if(attrs.length()<2){
 				a.put("attributeType", getPersonAttributeType(at.getKey()).getString("uuid"));
 				a.put("value", at.getValue());
