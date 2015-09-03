@@ -14,7 +14,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class MultimediaRepository extends MotechBaseRepository<Multimedia> {
-	
+
 	@Autowired
 	protected MultimediaRepository(
 			@Qualifier(AllConstants.OPENSRP_DATABASE_CONNECTOR) CouchDbConnector db) {
@@ -29,14 +29,11 @@ public class MultimediaRepository extends MotechBaseRepository<Multimedia> {
 		}
 		return files.get(0);
 	}
-	
-	 @View(name = "all_multimedia_files",
-	            map = "function(doc) { if (doc.type === 'Multimedia') { emit(doc.providerId); } }")
-	    public List<Multimedia> all(String providerId) {
-	        return db.queryView(createQuery("all_multimedia_files")
-	                .key(providerId)
-	                .includeDocs(true), Multimedia.class);
-	    }
 
+	@View(name = "all_multimedia_files", map = "function(doc) { if (doc.type === 'Multimedia') { emit(doc.providerId); } }")
+	public List<Multimedia> all(String providerId) {
+		return db.queryView(createQuery("all_multimedia_files").key(providerId)
+				.includeDocs(true), Multimedia.class);
+	}
 
 }

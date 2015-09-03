@@ -59,21 +59,14 @@ public class FormSubmissionController {
     private OpenmrsConnector openmrsConnector;
     private PatientService patientService;
     private HouseholdService householdService;
-<<<<<<< HEAD
     private HHService hhService;
     private OpenmrsUserService openmrsUserService;
-=======
     private MultimediaService multimediaService;
->>>>>>> master
 
     @Autowired
     public FormSubmissionController(FormSubmissionService formSubmissionService, TaskSchedulerService scheduler,
     		EncounterService encounterService, OpenmrsConnector openmrsConnector, PatientService patientService, 
-<<<<<<< HEAD
-    		HouseholdService householdService, HHService hhService, OpenmrsUserService openmrsUserService) {
-=======
     		HouseholdService householdService, MultimediaService multimediaService) {
->>>>>>> master
         this.formSubmissionService = formSubmissionService;
         this.scheduler = scheduler;
         
@@ -81,12 +74,9 @@ public class FormSubmissionController {
         this.openmrsConnector = openmrsConnector;
         this.patientService = patientService;
         this.householdService = householdService;
-<<<<<<< HEAD
         this.hhService = hhService;
         this.openmrsUserService = openmrsUserService;
-=======
         this.multimediaService = multimediaService;
->>>>>>> master
     }
 
     @RequestMapping(method = GET, value = "/form-submissions")
@@ -186,7 +176,6 @@ public class FormSubmissionController {
         return new ResponseEntity<>(CREATED);
     }
     
-<<<<<<< HEAD
     @RequestMapping(method = GET, value = "/entity-id")
     @ResponseBody
     public ResponseEntity<String> getEntityIdForBRN(@RequestParam("brn-id") List<String> brnIdList)
@@ -208,8 +197,6 @@ public class FormSubmissionController {
 		return new ResponseEntity<>(new Gson().toJson("demotest"),OK);
     }
     
-   }
-=======
     @RequestMapping(headers = {"Accept=application/json"}, method = GET, value = "/multimedia-file")
     public List<MultimediaDTO> getFiles(@RequestParam("anm-id") String providerId) {
     	
@@ -224,6 +211,8 @@ public class FormSubmissionController {
     }
     @RequestMapping(headers = {"Accept=application/json"}, method = POST, value = "/multimedia-file")
     public ResponseEntity<HttpStatus> uploadFiles(@RequestBody List<MultimediaDTO> multimediaDTO, @RequestParam("file") MultipartFile file) {
+    	
+    	
     	String json = new Gson().toJson(multimediaDTO);
     	List<MultimediaDTO> multimedia = new Gson().fromJson(json, new TypeToken<MultimediaDTO>() {
         }.getType());
@@ -242,4 +231,3 @@ public class FormSubmissionController {
     	 return new ResponseEntity<>(HttpStatus.OK);
     }
 }
->>>>>>> master
