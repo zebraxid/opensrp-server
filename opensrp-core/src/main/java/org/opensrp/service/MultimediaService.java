@@ -42,7 +42,7 @@ public class MultimediaService {
 				Multimedia multimediaFile = new Multimedia()
 						.withCaseId(multimediaDTO.caseId())
 						.withProviderId(multimediaDTO.providerId())
-						.withFileName(multimediaDTO.fileName());
+						.withFileName(multimediaDTO.contentType());
 
 				multimediaRepository.add(multimediaFile);
 

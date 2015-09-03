@@ -12,12 +12,12 @@ public class MultimediaDTO {
 	@JsonProperty
 	private String providerId;
 	@JsonProperty
-	private String fileName;
+	private String contentType;
 
-	public MultimediaDTO(String caseId, String providerId, String fileName) {
+	public MultimediaDTO(String caseId, String providerId, String contentType) {
 		this.caseId = caseId;
 		this.providerId = providerId;
-		this.fileName = fileName;
+		this.contentType = contentType;
 	}
 
 	public String caseId() {
@@ -28,8 +28,8 @@ public class MultimediaDTO {
 		return this.providerId;
 	}
 
-	public String fileName() {
-		return this.fileName;
+	public String contentType() {
+		return this.contentType;
 	}
 
 	@Override
