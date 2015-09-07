@@ -4,6 +4,11 @@ import static java.text.MessageFormat.format;
 import static org.opensrp.common.AllConstants.Form.HH_REGISTRATION;
 import static org.opensrp.common.AllConstants.Form.ELCO_REGISTRATION;
 import static org.opensrp.common.AllConstants.CommonFormFields.ID;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_PROVIDERID;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_LOCATIONID;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_TODAY;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.START_DATE;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.END_DATE;
 import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_GOBHHID;
 import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_JiVitAHHID;
 import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_BIRTHDATE;
@@ -16,6 +21,10 @@ import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_WOMBID;
 import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_WOMFNAME;
 import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_WOMLNAME;
 import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_WOMNID;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_NHWOMSTRMEN;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_NHWOMHUSALV;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_NHWOMHUSSTR;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_NHWOMHUSLIV;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.ELCO_REGISTRATION_SUB_FORM_NAME;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.ELCO_REGISTRATION_SUB_FORM_NAME_CENSUS;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.REFERENCE_DATE;
@@ -88,6 +97,11 @@ public class HHService {
 		for (Map<String, String> elcoFields : subFormData.instances()) {
 
 			Map<String, String> elco = create(ID, elcoFields.get(ID))
+					.put(FW_PROVIDERID, elcoFields.get(FW_PROVIDERID))
+					.put(FW_LOCATIONID, elcoFields.get(FW_LOCATIONID))
+					.put(FW_TODAY, elcoFields.get(FW_TODAY))
+					.put(START_DATE, elcoFields.get(START_DATE))
+					.put(END_DATE, elcoFields.get(END_DATE))
 					.put(FW_GOBHHID, elcoFields.get(FW_GOBHHID))
 					.put(FW_JiVitAHHID, elcoFields.get(FW_JiVitAHHID))
 					.put(FW_WOMFNAME, elcoFields.get(FW_WOMFNAME))
@@ -99,9 +113,13 @@ public class HHService {
 					.put(FW_BIRTHDATE, elcoFields.get(FW_BIRTHDATE))
 					.put(FW_WOMAGE, elcoFields.get(FW_WOMAGE))
 					.put(FW_DISPLAY_AGE, elcoFields.get(FW_DISPLAY_AGE))
+					.put(FW_NHWOMSTRMEN, elcoFields.get(FW_NHWOMSTRMEN))
+					.put(FW_NHWOMHUSALV, elcoFields.get(FW_NHWOMHUSALV))
+					.put(FW_NHWOMHUSSTR, elcoFields.get(FW_NHWOMHUSSTR))
+					.put(FW_NHWOMHUSLIV, elcoFields.get(FW_NHWOMHUSLIV))
 					.put(FW_ELIGIBLE, elcoFields.get(FW_ELIGIBLE)).map();
 			houseHold.ELCODETAILS().add(elco);
-
+			
 			/*
 			 * Elco elcoRegistry = allEcos.findByCaseId(elcoFields.get(ID))
 			 * .withPROVIDERID(submission.anmId());
