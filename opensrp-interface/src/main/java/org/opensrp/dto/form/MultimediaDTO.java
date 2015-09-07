@@ -13,7 +13,11 @@ public class MultimediaDTO {
 	private String providerId;
 	@JsonProperty
 	private String contentType;
-
+	
+	public MultimediaDTO()
+	{
+		
+	}
 	public MultimediaDTO(String caseId, String providerId, String contentType) {
 		this.caseId = caseId;
 		this.providerId = providerId;

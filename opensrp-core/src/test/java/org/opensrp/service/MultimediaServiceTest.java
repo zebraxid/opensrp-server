@@ -49,8 +49,14 @@ public class MultimediaServiceTest {
 	{
 		MultimediaDTO multimedia = new MultimediaDTO("12345678", "opensrp", "test.jpg");
 		
+		Multimedia multimediaFile = new Multimedia()
+		.withCaseId(multimedia.caseId())
+		.withProviderId(multimedia.providerId())
+		.withFileName(multimedia.contentType());
+
+          multimediaRepository.add(multimediaFile);
+		
 		  FileInputStream fis = new FileInputStream("/home/julkar/nain/image.jpeg");
-		  
 		  
           MultipartFile multipartFile = null;
 		try {
@@ -59,9 +65,8 @@ public class MultimediaServiceTest {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 		
-		multimediaService.saveMultimediaFile(multimedia,multipartFile);
+		multimediaService.uoloadFile(multimedia,multipartFile);
 		
 	}
 	

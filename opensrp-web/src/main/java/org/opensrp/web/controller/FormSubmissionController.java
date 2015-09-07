@@ -194,7 +194,7 @@ public class FormSubmissionController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return new ResponseEntity<>(new Gson().toJson("demotest"),OK);
+		return new ResponseEntity<>(new Gson().toJson(userObject),OK);
     }
     
     @RequestMapping(headers = {"Accept=application/json"}, method = GET, value = "/multimedia-file")

@@ -20,10 +20,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class ActionService {
     private AllActions allActions;
+    private ReportActionService reportActionService;
 
     @Autowired
-    public ActionService(AllActions allActions) {
+    public ActionService(AllActions allActions, ReportActionService reportActionService) {
         this.allActions = allActions;
+        this.reportActionService = reportActionService;
     }
 
     public List<Action> getNewAlertsForANM(String anmIdentifier, long timeStamp) {
@@ -35,6 +37,7 @@ public class ActionService {
             throw new IllegalArgumentException("Beneficiary Type : " + beneficiaryType + " is of unknown type");
         }
     	allActions.addOrUpdateAlert(new Action(caseID, anmIdentifier, ActionData.createAlert(beneficiaryType, scheduleName, visitCode, alertStatus, startDate, expiryDate)));
+    	reportActionService.alertForReporting(beneficiaryType, caseID, anmIdentifier, scheduleName, visitCode, alertStatus, startDate, expiryDate);
     }
 
     public void markAllAlertsAsInactive(String entityId) {
