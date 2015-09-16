@@ -88,7 +88,7 @@ public class HealthSchedulerService {
         return scheduleService.getEnrollment(entityId, scheduleName);
     }
 	
-	public void alertFor(String windowName, BeneficiaryType beneficiaryType, String entityId, 
+	public void alertFor(String windowName, BeneficiaryType beneficiaryType, String entityId, String instanceId,
 			String providerId, String schedule, String milestone, DateTime  startOfEarliestWindow,
 			DateTime startOfDueWindow, DateTime startOfLateWindow, DateTime startOfMaxWindow) {
 		
@@ -97,17 +97,17 @@ public class HealthSchedulerService {
 			actionService.alertForBeneficiary(beneficiaryType, entityId, providerId, schedule, milestone, expired, startOfMaxWindow, startOfMaxWindow.plusDays(1));
 		}*/
 		if (WindowName.late.toString().equals(windowName)) {
-            actionService.alertForBeneficiary(beneficiaryType, entityId, providerId, schedule, milestone, urgent, startOfLateWindow, startOfMaxWindow);
+            actionService.alertForBeneficiary(beneficiaryType, entityId, instanceId, providerId, schedule, milestone, urgent, startOfLateWindow, startOfMaxWindow);
         } else if (WindowName.due.toString().equals(windowName)) {
-            actionService.alertForBeneficiary(beneficiaryType, entityId, providerId, schedule, milestone, upcoming, startOfDueWindow, startOfLateWindow);
+            actionService.alertForBeneficiary(beneficiaryType, entityId, instanceId, providerId, schedule, milestone, upcoming, startOfDueWindow, startOfLateWindow);
         } else if( WindowName.earliest.toString().equals(windowName)){
-            actionService.alertForBeneficiary(beneficiaryType, entityId, providerId, schedule, milestone, normal, startOfEarliestWindow, startOfDueWindow);
+            actionService.alertForBeneficiary(beneficiaryType, entityId, instanceId, providerId, schedule, milestone, normal, startOfEarliestWindow, startOfDueWindow);
         }
 	}
 	
-	public void alertFor(BeneficiaryType beneficiaryType, String entityId, String providerId, String schedule, 
+	public void alertFor(BeneficiaryType beneficiaryType, String entityId, String instanceId, String providerId, String schedule, 
 			String milestone, AlertStatus alertStatus, DateTime startDate, DateTime expiryDate) {
-		actionService.alertForBeneficiary(beneficiaryType, entityId, providerId, schedule, milestone, alertStatus,
+		actionService.alertForBeneficiary(beneficiaryType, entityId, instanceId, providerId, schedule, milestone, alertStatus,
 				startDate, expiryDate);
 	}
 }

@@ -69,6 +69,7 @@ public class ELCOService {
 		for (Map<String, String> elcoFields : subFormData.instances()) {
 
 			Elco elco = allEcos.findByCaseId(elcoFields.get(ID))
+					.withINSTANCEID(submission.instanceId())
 					.withPROVIDERID(submission.anmId())
 					.withTODAY(submission.getField(REFERENCE_DATE));
 			
@@ -93,6 +94,7 @@ public class ELCOService {
 			addELCODetailsToHH(submission, subFormData, houseHold);
 
 			houseHold.withPROVIDERID(submission.anmId());
+			houseHold.withINSTANCEID(submission.instanceId());
 			houseHold.withTODAY(submission.getField(REFERENCE_DATE));
 			allHouseHolds.update(houseHold);
 		}
