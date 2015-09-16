@@ -13,15 +13,18 @@ public class MultimediaDTO {
 	private String providerId;
 	@JsonProperty
 	private String contentType;
+	@JsonProperty
+	private String filePath;
 	
 	public MultimediaDTO()
 	{
 		
 	}
-	public MultimediaDTO(String caseId, String providerId, String contentType) {
+	public MultimediaDTO(String caseId, String providerId, String contentType, String filePath) {
 		this.caseId = caseId;
 		this.providerId = providerId;
 		this.contentType = contentType;
+		this.filePath = filePath;
 	}
 
 	public String caseId() {
@@ -34,6 +37,10 @@ public class MultimediaDTO {
 
 	public String contentType() {
 		return this.contentType;
+	}
+
+	public String filePath() {
+		return this.filePath;
 	}
 
 	@Override
