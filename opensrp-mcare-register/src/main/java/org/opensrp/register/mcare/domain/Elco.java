@@ -18,6 +18,8 @@ public class Elco extends MotechBaseDataObject {
 	@JsonProperty
 	private String CASEID;
 	@JsonProperty
+	private String INSTANCEID;
+	@JsonProperty
 	private String LOCATIONID;
 	@JsonProperty
 	private String PROVIDERID;
@@ -78,6 +80,11 @@ public class Elco extends MotechBaseDataObject {
 		return this;
 	}
 	
+	public Elco withINSTANCEID(String INSTANCEID) {
+		this.INSTANCEID = INSTANCEID;
+		return this;
+	}
+
 	public Elco withPROVIDERID(String PROVIDERID) {
 		this.PROVIDERID = PROVIDERID;
 		return this;
@@ -183,6 +190,10 @@ public class Elco extends MotechBaseDataObject {
 	}
 	public String CASEID() {
 		return CASEID;
+	}
+	public String INSTANCEID()
+	{
+		return INSTANCEID;
 	}
 	public String PROVIDERID() {
 		return PROVIDERID;

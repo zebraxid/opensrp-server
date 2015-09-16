@@ -21,6 +21,8 @@ public class ReportAction extends MotechBaseDataObject  {
     @JsonProperty
     private String caseID;
     @JsonProperty
+    private String instanceId;
+    @JsonProperty
     private Map<String, String> data;
     @JsonProperty
     private String actionTarget;
@@ -40,9 +42,10 @@ public class ReportAction extends MotechBaseDataObject  {
     private ReportAction() {
     }
 
-    public ReportAction(String caseId, String anmIdentifier, ActionData actionData) {
+    public ReportAction(String caseId, String instanceId, String anmIdentifier, ActionData actionData) {
         this.anmIdentifier = anmIdentifier;
         this.caseID = caseId;
+        this.instanceId = instanceId;
         this.data = actionData.data();
         this.actionTarget = actionData.target();
         this.actionType = actionData.type();
@@ -59,7 +62,12 @@ public class ReportAction extends MotechBaseDataObject  {
     public String caseId() {
         return caseID;
     }
+    
+    public String instanceId() {
+        return instanceId;
+    }
 
+    
     public Map<String, String> data() {
         return data;
     }

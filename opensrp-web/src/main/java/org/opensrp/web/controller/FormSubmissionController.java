@@ -198,24 +198,25 @@ public class FormSubmissionController {
     }
     
     @RequestMapping(headers = {"Accept=application/json"}, method = GET, value = "/multimedia-file")
+    @ResponseBody
     public List<MultimediaDTO> getFiles(@RequestParam("anm-id") String providerId) {
     	
-    	List<Multimedia> Multimedias = multimediaService.getMultimediaFiles(providerId);
+    	List<Multimedia> allMultimedias = multimediaService.getMultimediaFiles(providerId);
     	
-    	return with(Multimedias).convert(new Converter<Multimedia, MultimediaDTO>() {
+    	return with(allMultimedias).convert(new Converter<Multimedia, MultimediaDTO>() {
 			@Override
 			public MultimediaDTO convert(Multimedia md) {
-				return new MultimediaDTO(md.getCaseId(), md.getProviderId(), md.getFileName());
+				return new MultimediaDTO(md.getCaseId(), md.getProviderId(), md.getContentType(), md.getFilePath());
 			}
 		});
     }
-    @RequestMapping(headers = {"Accept=application/json"}, method = POST, value = "/multimedia-file")
-    public ResponseEntity<HttpStatus> uploadFiles(@RequestParam("anm-id") String providerId, @RequestParam("entity-id") String entityId,@RequestParam("content-type") String contentType, @RequestParam("file") MultipartFile file) {
+    @RequestMapping(headers = {"Accept=multipart/form-data"}, method = POST, value = "/multimedia-file")
+    public ResponseEntity<String> uploadFiles(@RequestParam("anm-id") String providerId, @RequestParam("entity-id") String entityId,@RequestParam("content-type") String contentType, @RequestParam("file") MultipartFile file) {
     	
-    	MultimediaDTO multimediaDTO = new MultimediaDTO(entityId, providerId, contentType);
+    	MultimediaDTO multimediaDTO = new MultimediaDTO(entityId, providerId, contentType, null);
     	
-    		 multimediaService.saveMultimediaFile(multimediaDTO, file);
+    	String status = multimediaService.saveMultimediaFile(multimediaDTO, file);
     	 
-    	 return new ResponseEntity<>(HttpStatus.OK);
+    	 return new ResponseEntity<>(new Gson().toJson(status), OK);
     }
 }

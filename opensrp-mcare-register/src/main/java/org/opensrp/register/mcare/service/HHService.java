@@ -82,6 +82,7 @@ public class HHService {
 		addELCODetailsToHH(submission, subFormData, houseHold);
 
 		houseHold.withPROVIDERID(submission.anmId());
+		houseHold.withINSTANCEID(submission.instanceId());
 		houseHold.withTODAY(submission.getField(REFERENCE_DATE));
 		allHouseHolds.update(houseHold);
 

@@ -16,14 +16,17 @@ public class Multimedia extends MotechBaseDataObject {
 	private String providerId;
 	@JsonProperty
 	private String contentType;
+	@JsonProperty
+	private String filePath;
 	
 	public Multimedia() {
 
 	}
-	public Multimedia( String caseId, String providerId, String contentType) {
+	public Multimedia( String caseId, String providerId, String contentType, String filePath) {
 		this.caseId = caseId;
 		this.providerId  = providerId; 
 		this.contentType = contentType;
+		this.filePath = filePath;
 	}
 
 	public Multimedia withCaseId(String caseId) {
@@ -35,27 +38,40 @@ public class Multimedia extends MotechBaseDataObject {
 		return this;
 	}
 
-	public Multimedia withFileName(String contentType) {
+	public Multimedia withContentType(String contentType) {
 		this.contentType = contentType;
 		return this;
 	}
+
+	public Multimedia withFilePath(String filePath) {
+		this.filePath = filePath;
+		return this;
+	}
+
 	public String getCaseId() {
 		return caseId;
 	}
 	public String getProviderId() {
 		return providerId;
 	}
-	public String getFileName() {
+	public String getContentType() {
 		return contentType;
 	}
+	public String getFilePath() {
+		return filePath;
+	}
+
 	public void setCaseId(String caseId) {
 		this.caseId = caseId;
 	}
 	public void setProviderId(String providerId) {
 		this.providerId = providerId;
 	}
-	public void setFileName(String contentType) {
+	public void setContentType(String contentType) {
 		this.contentType = contentType;
+	}
+	public void setFilePath(String filePath) {
+		this.filePath = filePath;
 	}
 	
 	@Override

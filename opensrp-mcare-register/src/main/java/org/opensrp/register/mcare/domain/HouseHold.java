@@ -18,6 +18,8 @@ public class HouseHold extends MotechBaseDataObject {
 	@JsonProperty
 	private String CASEID;
 	@JsonProperty
+	private String INSTANCEID;
+	@JsonProperty
 	private String PROVIDERID;
 	@JsonProperty
 	private String LOCATIONID;
@@ -63,6 +65,11 @@ public class HouseHold extends MotechBaseDataObject {
 	
 	public HouseHold withCASEID(String CASEID) {
 		this.CASEID = CASEID;
+		return this;
+	}
+
+	public HouseHold withINSTANCEID(String INSTANCEID) {
+		this.INSTANCEID = INSTANCEID;
 		return this;
 	}
 
@@ -164,6 +171,10 @@ public class HouseHold extends MotechBaseDataObject {
 
 	public String CASEID() {
 		return CASEID;
+	}
+
+	public String INSTANCEID() {
+		return INSTANCEID;
 	}
 
 	public String PROVIDERID() {

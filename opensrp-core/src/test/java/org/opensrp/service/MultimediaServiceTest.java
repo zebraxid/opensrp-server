@@ -5,8 +5,11 @@ import static org.mockito.MockitoAnnotations.initMocks;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,7 +33,7 @@ public class MultimediaServiceTest {
 	@Mock
 	private MultimediaService multimediaService;
 
-	@Mock
+	@Autowired
 	private MultimediaRepository multimediaRepository;
 	
 	@Autowired
@@ -47,18 +50,12 @@ public class MultimediaServiceTest {
 	@Test
 	public void shouldSaveMultimediaFile() throws FileNotFoundException
 	{
-		MultimediaDTO multimedia = new MultimediaDTO("12345678", "opensrp", "test.jpg");
-		
-		Multimedia multimediaFile = new Multimedia()
-		.withCaseId(multimedia.caseId())
-		.withProviderId(multimedia.providerId())
-		.withFileName(multimedia.contentType());
-
-          multimediaRepository.add(multimediaFile);
+		  MultimediaDTO multimedia = new MultimediaDTO("1234567891", "opensrp","image/jpeg", "../assets/multimedia/opensrp/images/1234567891.jpg");
 		
 		  FileInputStream fis = new FileInputStream("/home/julkar/nain/image.jpeg");
 		  
           MultipartFile multipartFile = null;
+          
 		try {
 			multipartFile = new MockMultipartFile("file", fis);
 		} catch (IOException e) {
@@ -66,8 +63,43 @@ public class MultimediaServiceTest {
 			e.printStackTrace();
 		}
 		
-		multimediaService.uoloadFile(multimedia,multipartFile);
+		String status = multimediaService.saveMultimediaFile(multimedia,multipartFile);
+		
+		Assert.assertEquals("success", status);
 		
 	}
-	
+	@Test
+	public void shouldGetMultimediaFiles() throws FileNotFoundException
+	{
+		 MultimediaDTO multimediaDTO = new MultimediaDTO("1234567890", "opensrp","image/jpeg", "../assets/multimedia/opensrp/images/1234567890.jpg");
+		
+		Multimedia expectedMultimedia = new Multimedia()
+		.withCaseId(multimediaDTO.caseId())
+		.withProviderId(multimediaDTO.providerId())
+		.withContentType(multimediaDTO.contentType())
+		.withFilePath(multimediaDTO.filePath());
+		
+		FileInputStream fis = new FileInputStream("/home/julkar/nain/image.jpeg");
+		  
+          MultipartFile multipartFile = null;
+          
+		try {
+			multipartFile = new MockMultipartFile("file", fis);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		boolean status = multimediaService.uploadFile(multimediaDTO, multipartFile);
+		
+		if(status)
+			multimediaRepository.add(expectedMultimedia);
+		
+		List<Multimedia> multimediaFiles = multimediaService.getMultimediaFiles("opensrp");
+		
+		for(Multimedia actualMultimedia : multimediaFiles)
+		{
+			if(actualMultimedia.getCaseId().equals(multimediaDTO.caseId()))
+					Assert.assertEquals(expectedMultimedia.getFilePath(),actualMultimedia.getFilePath());
+		}
+	}
 }

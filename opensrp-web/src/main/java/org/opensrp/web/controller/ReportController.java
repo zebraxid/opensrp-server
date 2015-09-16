@@ -1,7 +1,12 @@
 package org.opensrp.web.controller;
 
+import static ch.lambdaj.collection.LambdaCollections.with;
+
+import java.util.List;
+
 import org.json.JSONException;
 import org.opensrp.connector.openmrs.service.OpenmrsReportingService;
+import org.opensrp.dto.Action;
 import org.opensrp.dto.register.HHRegisterDTO;
 import org.opensrp.register.mcare.HHRegister;
 import org.opensrp.register.mcare.service.reporting.HHReportService;
@@ -12,9 +17,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.opensrp.register.mcare.mapper.ELCORegisterMapper;
 import org.opensrp.register.mcare.mapper.HHRegisterMapper;
 
+
+import ch.lambdaj.function.convert.Converter;
 
 import com.google.gson.Gson;
 
@@ -54,4 +62,17 @@ public class ReportController {
 		 HHRegister hhRegister = hhReportService.getHHDataVisitedPrev7Days(providerId);
 	     return new ResponseEntity<>(hhRegisterMapper.mapToDTO(hhRegister), HttpStatus.OK);
     }
+/*
+    @RequestMapping(method = RequestMethod.GET, value = "/report/actions")
+    @ResponseBody
+    public List<Action> getNewActionForANM(@RequestParam("anmIdentifier") String anmIdentifier, @RequestParam("timeStamp") Long timeStamp){
+        List<org.opensrp.scheduler.Action> actions = actionService.getNewAlertsForANM(anmIdentifier, timeStamp);
+        return with(actions).convert(new Converter<org.opensrp.scheduler.Action, Action>() {
+            @Override
+            public Action convert(org.opensrp.scheduler.Action action) {
+                return ActionConvertor.from(action);
+            }
+        });
+    }*/
+
 }
