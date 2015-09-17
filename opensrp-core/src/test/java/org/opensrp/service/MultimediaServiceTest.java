@@ -50,7 +50,7 @@ public class MultimediaServiceTest {
 	@Test
 	public void shouldSaveMultimediaFile() throws FileNotFoundException
 	{
-		  MultimediaDTO multimedia = new MultimediaDTO("1234567891", "opensrp","image/jpeg", "../assets/multimedia/opensrp/images/1234567891.jpg");
+		  MultimediaDTO multimedia = new MultimediaDTO("1234567891", "opensrp","image/jpeg", "../assets/multimedia/opensrp/images/1234567891.jpg","nid");
 		
 		  FileInputStream fis = new FileInputStream("/home/julkar/nain/image.jpeg");
 		  
@@ -71,13 +71,14 @@ public class MultimediaServiceTest {
 	@Test
 	public void shouldGetMultimediaFiles() throws FileNotFoundException
 	{
-		 MultimediaDTO multimediaDTO = new MultimediaDTO("1234567890", "opensrp","image/jpeg", "../assets/multimedia/opensrp/images/1234567890.jpg");
+		 MultimediaDTO multimediaDTO = new MultimediaDTO("1234567890", "opensrp","image/jpeg", "../assets/multimedia/opensrp/images/1234567890.jpg","profile");
 		
 		Multimedia expectedMultimedia = new Multimedia()
 		.withCaseId(multimediaDTO.caseId())
 		.withProviderId(multimediaDTO.providerId())
 		.withContentType(multimediaDTO.contentType())
-		.withFilePath(multimediaDTO.filePath());
+		.withFilePath(multimediaDTO.filePath())
+		.withFileCategory(multimediaDTO.fileCategory());
 		
 		FileInputStream fis = new FileInputStream("/home/julkar/nain/image.jpeg");
 		  

@@ -15,16 +15,19 @@ public class MultimediaDTO {
 	private String contentType;
 	@JsonProperty
 	private String filePath;
+	@JsonProperty
+	private String fileCategory;
 	
 	public MultimediaDTO()
 	{
 		
 	}
-	public MultimediaDTO(String caseId, String providerId, String contentType, String filePath) {
+	public MultimediaDTO(String caseId, String providerId, String contentType, String filePath,String fileCategory) {
 		this.caseId = caseId;
 		this.providerId = providerId;
 		this.contentType = contentType;
 		this.filePath = filePath;
+		this.fileCategory = fileCategory;
 	}
 
 	public String caseId() {
@@ -43,6 +46,9 @@ public class MultimediaDTO {
 		return this.filePath;
 	}
 
+	public String fileCategory() {
+		return this.fileCategory;
+	}
 	@Override
 	public boolean equals(Object o) {
 		return EqualsBuilder.reflectionEquals(this, o);

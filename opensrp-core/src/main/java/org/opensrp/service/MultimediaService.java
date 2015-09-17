@@ -40,7 +40,8 @@ public class MultimediaService {
 						.withCaseId(multimediaDTO.caseId())
 						.withProviderId(multimediaDTO.providerId())
 						.withContentType(multimediaDTO.contentType())
-						.withFilePath(multimediaDirPath);
+						.withFilePath(multimediaDirPath)
+						.withFileCategory(multimediaDTO.fileCategory());
 
 				multimediaRepository.add(multimediaFile);
 

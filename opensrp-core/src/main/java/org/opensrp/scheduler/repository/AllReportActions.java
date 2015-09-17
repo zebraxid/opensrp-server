@@ -7,11 +7,13 @@ import java.util.Map;
 
 import org.opensrp.dto.AlertStatus;
 import org.opensrp.dto.BeneficiaryType;
+import org.ektorp.ComplexKey;
 import org.ektorp.CouchDbConnector;
 import org.ektorp.ViewResult;
 import org.ektorp.support.GenerateView;
 import org.ektorp.support.View;
 import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 import org.motechproject.dao.MotechBaseRepository;
 import org.opensrp.common.AllConstants;
 import org.opensrp.dto.ActionData;
@@ -44,12 +46,17 @@ public class AllReportActions extends MotechBaseRepository<ReportAction> {
         add(alertAction);
     }
 	
-	@View(name = "all_visits_scheduled_by_server" , map="function(doc){if(doc.type=='ReportAction'){emit(doc.instanceId, doc)}}")
-	public Map<String, ReportAction> findAllSchedulesForVisits()
+	@View(name = "all_visits_scheduled_by_server" , 
+			 map = "function(doc) { " +
+	                    "if(doc.type === 'ReportAction' && doc.actionTarget === 'alert' && doc.anmIdentifier && doc.caseID && doc.data && doc.data.scheduleName) {" +
+	                    "emit([doc.anmIdentifier, doc.data.scheduleName], null)} " +
+	                    "}")
+	public Map<String, ReportAction> findAllSchedulesForVisits(String anmIdentifier, String scheduleName, LocalDate startDate, LocalDate endDate)
 	{
 		Map<String, ReportAction> schedulesMap = new HashMap<String,ReportAction>();
+		 ComplexKey key = ComplexKey.of(anmIdentifier, scheduleName);
 		
-		 List<ViewResult.Row> rows = db.queryView(createQuery("all_visits_scheduled_by_server")
+		 List<ViewResult.Row> rows = db.queryView(createQuery("all_visits_scheduled_by_server").key(key)
 				 .cacheOk(true)).getRows();
 		 
 		 for(ViewResult.Row row : rows)

@@ -206,14 +206,14 @@ public class FormSubmissionController {
     	return with(allMultimedias).convert(new Converter<Multimedia, MultimediaDTO>() {
 			@Override
 			public MultimediaDTO convert(Multimedia md) {
-				return new MultimediaDTO(md.getCaseId(), md.getProviderId(), md.getContentType(), md.getFilePath());
+				return new MultimediaDTO(md.getCaseId(), md.getProviderId(), md.getContentType(), md.getFilePath(), md.getFileCategory());
 			}
 		});
     }
     @RequestMapping(headers = {"Accept=multipart/form-data"}, method = POST, value = "/multimedia-file")
-    public ResponseEntity<String> uploadFiles(@RequestParam("anm-id") String providerId, @RequestParam("entity-id") String entityId,@RequestParam("content-type") String contentType, @RequestParam("file") MultipartFile file) {
+    public ResponseEntity<String> uploadFiles(@RequestParam("anm-id") String providerId, @RequestParam("entity-id") String entityId,@RequestParam("content-type") String contentType, @RequestParam("file-category") String fileCategory, @RequestParam("file") MultipartFile file) {
     	
-    	MultimediaDTO multimediaDTO = new MultimediaDTO(entityId, providerId, contentType, null);
+    	MultimediaDTO multimediaDTO = new MultimediaDTO(entityId, providerId, contentType, null, fileCategory);
     	
     	String status = multimediaService.saveMultimediaFile(multimediaDTO, file);
     	 

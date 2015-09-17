@@ -18,15 +18,19 @@ public class Multimedia extends MotechBaseDataObject {
 	private String contentType;
 	@JsonProperty
 	private String filePath;
+	@JsonProperty
+	private String fileCategory;
+	
 	
 	public Multimedia() {
 
 	}
-	public Multimedia( String caseId, String providerId, String contentType, String filePath) {
+	public Multimedia( String caseId, String providerId, String contentType, String filePath, String fileCategory) {
 		this.caseId = caseId;
 		this.providerId  = providerId; 
 		this.contentType = contentType;
 		this.filePath = filePath;
+		this.fileCategory = fileCategory;
 	}
 
 	public Multimedia withCaseId(String caseId) {
@@ -48,6 +52,11 @@ public class Multimedia extends MotechBaseDataObject {
 		return this;
 	}
 
+	public Multimedia withFileCategory(String fileCategory) {
+		this.fileCategory = fileCategory;
+		return this;
+	}
+	
 	public String getCaseId() {
 		return caseId;
 	}
@@ -59,6 +68,9 @@ public class Multimedia extends MotechBaseDataObject {
 	}
 	public String getFilePath() {
 		return filePath;
+	}
+	public String getFileCategory() {
+		return fileCategory;
 	}
 
 	public void setCaseId(String caseId) {
@@ -73,7 +85,10 @@ public class Multimedia extends MotechBaseDataObject {
 	public void setFilePath(String filePath) {
 		this.filePath = filePath;
 	}
-	
+	public void setFileCategory(String fileCategory) {
+		this.fileCategory = fileCategory;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		return EqualsBuilder.reflectionEquals(this, o, "id");
