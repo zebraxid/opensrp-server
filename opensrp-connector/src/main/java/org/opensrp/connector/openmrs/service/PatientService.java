@@ -114,11 +114,9 @@ public class PatientService extends OpenmrsService{
 		JSONArray attrs = new JSONArray();
 		for (Entry<String, Object> at : attributes.entrySet()) {
 			JSONObject a = new JSONObject();			
-			//if(attrs.length()<2){
 				a.put("attributeType", getPersonAttributeType(at.getKey()).getString("uuid"));
 				a.put("value", at.getValue());
 				attrs.put(a);
-			//}
 		}
 		
 		return attrs;
@@ -186,19 +184,21 @@ public class PatientService extends OpenmrsService{
 		JSONObject p = new JSONObject();
 		p.put("person", createPerson(c.getBaseEntity()).getString("uuid"));
 		JSONArray ids = new JSONArray();
-		for (Entry<String, String> id : c.getIdentifiers().entrySet()) {
-			JSONObject jio = new JSONObject();
-			JSONObject idobj = getIdentifierType(id.getKey());
-			if(idobj == null){
-				idobj = createIdentifierType(id.getKey(), id.getKey()+" - FOR THRIVE OPENSRP");
+		if (c.getIdentifiers() != null) {
+			for (Entry<String, String> id : c.getIdentifiers().entrySet()) {
+				JSONObject jio = new JSONObject();
+				JSONObject idobj = getIdentifierType(id.getKey());
+				if (idobj == null) {
+					idobj = createIdentifierType(id.getKey(), id.getKey()
+							+ " - FOR THRIVE OPENSRP");
+				}
+				jio.put("identifierType", idobj.getString("uuid"));
+				jio.put("identifier", id.getValue());
+				Object cloc = c.getBaseEntity().getAttribute("Location");
+				jio.put("location", cloc == null ? "Unknown Location" : cloc);
+				// jio.put("preferred", true);
+				ids.put(jio);
 			}
-			jio.put("identifierType", idobj.getString("uuid"));
-			jio.put("identifier", id.getValue());
-			Object cloc = c.getBaseEntity().getAttribute("Location");
-			jio.put("location", cloc == null?"Unknown Location":cloc);
-			//jio.put("preferred", true);
-
-			ids.put(jio);
 		}
 		
 		JSONObject jio = new JSONObject();
