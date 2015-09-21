@@ -1,4 +1,9 @@
-package org.opensrp.register.mcare.service;
+package org.opensrp.register.mcare.service.reporting;
+
+import static org.opensrp.common.AllConstants.HHRegistrationFields.END_DATE;
+import static org.opensrp.common.AllConstants.HHRegistrationFields.LOCATION_NAME;
+import static org.opensrp.common.AllConstants.HHRegistrationFields.REFERENCE_DATE;
+import static org.opensrp.common.AllConstants.HHRegistrationFields.START_DATE;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,26 +12,24 @@ import org.opensrp.register.mcare.HHRegister;
 import org.opensrp.register.mcare.HHRegisterEntry;
 import org.opensrp.register.mcare.domain.HouseHold;
 import org.opensrp.register.mcare.repository.AllHouseHolds;
-import static org.opensrp.common.AllConstants.HHRegistrationFields.*;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class HHRegisterService {
+public class HHReportService {
 	
-	private final AllHouseHolds allHouseHolds;
+	private AllHouseHolds allHouseHolds;
 	
 	@Autowired
-	public HHRegisterService(AllHouseHolds allHouseHolds)
+	public HHReportService(AllHouseHolds allHouseHolds)
 	{
 		this.allHouseHolds = allHouseHolds;
 	}
 
-	public HHRegister getHHRegisterForProvider(String providerId)
+	public HHRegister getHHDataVisitedPrev7Days(String providerId)
 	{
 		ArrayList<HHRegisterEntry> hhRegisterEntries = new ArrayList<>();
-        List<HouseHold> hhs = allHouseHolds.allOpenHHsForProvider(providerId);
+        List<HouseHold> hhs = allHouseHolds.allHHsVisited7Days(providerId);
         
         for (HouseHold hh : hhs) {
         	HHRegisterEntry hhRegisterEntry = new HHRegisterEntry()
@@ -37,14 +40,6 @@ public class HHRegisterService {
         		.withFWNHREGDATE(hh.FWNHREGDATE())
         		.withFWGOBHHID(hh.FWGOBHHID())
         		.withFWJIVHHID(hh.FWJIVHHID())
-        		.withFWCOUNTRY(hh.FWCOUNTRY())
-                .withFWDIVISION(hh.FWDIVISION())
-                .withFWDISTRICT(hh.FWDISTRICT())
-                .withFWUPAZILLA(hh.FWUPAZILLA())
-                .withFWUNION(hh.FWUNION())
-                .withFWWARD(hh.FWWARD())
-                .withFWSUBUNIT(hh.FWSUBUNIT())
-                .withFWMAUZA_PARA(hh.FWMAUZA_PARA())
         		.withFWNHHHGPS(hh.FWNHHHGPS())
         		.withFWHOHFNAME(hh.FWHOHFNAME())
         		.withFWHOHLNAME(hh.FWHOHLNAME())

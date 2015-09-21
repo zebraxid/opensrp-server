@@ -32,7 +32,21 @@ public class HHRegisterEntry {
 	
 	private String FWJIVHHID;
 	
-	private String FWNHNEARTO;
+	private String FWCOUNTRY;
+
+	private String FWDIVISION;
+
+	private String FWDISTRICT;
+	
+	private String FWUPAZILLA;
+	
+	private String FWUNION;
+	
+	private String FWWARD;
+	
+	private String FWSUBUNIT;
+	
+	private String FWMAUZA_PARA;
 	
 	private String FWNHHHGPS;
 	
@@ -109,16 +123,50 @@ public class HHRegisterEntry {
 		return this;
 	}
 
-	public HHRegisterEntry withFWNHNEARTO(String FWNHNEARTO) {
-		this.FWNHNEARTO = FWNHNEARTO;
-		return this;
-	}
-
 	public HHRegisterEntry withFWHOHFNAME(String FWHOHFNAME) {
 		this.FWHOHFNAME = FWHOHFNAME;
 		return this;
 	}
+	
+	public HHRegisterEntry withFWCOUNTRY(String FWCOUNTRY) {
+		this.FWCOUNTRY = FWCOUNTRY;
+		return this;
+	}
+	
+	public HHRegisterEntry withFWDIVISION(String FWDIVISION) {
+		this.FWDIVISION = FWDIVISION;
+		return this;
+	}
 
+	public HHRegisterEntry withFWDISTRICT(String FWDISTRICT) {
+		this.FWDISTRICT = FWDISTRICT;
+		return this;
+	}
+
+	public HHRegisterEntry withFWUPAZILLA(String FWUPAZILLA) {
+		this.FWUPAZILLA = FWUPAZILLA;
+		return this;
+	}
+
+	public HHRegisterEntry withFWUNION(String FWUNION) {
+		this.FWUNION = FWUNION;
+		return this;
+	}
+
+	public HHRegisterEntry withFWWARD(String FWWARD) {
+		this.FWWARD = FWWARD;
+		return this;
+	}
+
+	public HHRegisterEntry withFWSUBUNIT(String FWSUBUNIT) {
+		this.FWSUBUNIT = FWSUBUNIT;
+		return this;
+	}
+
+	public HHRegisterEntry withFWMAUZA_PARA(String FWMAUZA_PARA) {
+		this.FWMAUZA_PARA = FWMAUZA_PARA;
+		return this;
+	}
 	
 	public HHRegisterEntry withFWHOHLNAME(String FWHOHLNAME) {
 		this.FWHOHLNAME = FWHOHLNAME;
@@ -201,8 +249,36 @@ public class HHRegisterEntry {
 		return FWNHHHGPS;
 	}
 
-	public String FWNHNEARTO() {
-		return FWNHNEARTO;
+	public String FWCOUNTRY() {
+		return FWCOUNTRY;
+	}
+	
+	public String FWDIVISION() {
+		return FWDIVISION;
+	}
+	
+	public String FWDISTRICT() {
+		return FWDISTRICT;
+	}
+	
+	public String FWUPAZILLA() {
+		return FWUPAZILLA;
+	}
+	
+	public String FWUNION() {
+		return FWUNION;
+	}
+	
+	public String FWWARD() {
+		return FWWARD;
+	}
+	
+	public String FWSUBUNIT() {
+		return FWSUBUNIT;
+	}
+	
+	public String FWMAUZA_PARA() {
+		return FWMAUZA_PARA;
 	}
 
 	public String FWHOHFNAME() {

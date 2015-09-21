@@ -30,7 +30,21 @@ public class HHRegisterEntryDTO {
 	@JsonProperty
 	private String FWJIVHHID;
 	@JsonProperty
-	private String FWNHNEARTO;
+	private String FWCOUNTRY;
+	@JsonProperty
+	private String FWDIVISION;
+	@JsonProperty
+	private String FWDISTRICT;
+	@JsonProperty
+	private String FWUPAZILLA;
+	@JsonProperty
+	private String FWUNION;
+	@JsonProperty
+	private String FWWARD;
+	@JsonProperty
+	private String FWSUBUNIT;
+	@JsonProperty
+	private String FWMAUZA_PARA;
 	@JsonProperty
 	private String FWNHHHGPS;
 	@JsonProperty
@@ -107,8 +121,43 @@ public class HHRegisterEntryDTO {
 		return this;
 	}
     
-	public HHRegisterEntryDTO withFWNHNEARTO(String FWNHNEARTO) {
-		this.FWNHNEARTO = FWNHNEARTO;
+	public HHRegisterEntryDTO withFWCOUNTRY(String FWCOUNTRY) {
+		this.FWCOUNTRY = FWCOUNTRY;
+		return this;
+	}
+	
+	public HHRegisterEntryDTO withFWDIVISION(String FWDIVISION) {
+		this.FWDIVISION = FWDIVISION;
+		return this;
+	}
+	
+	public HHRegisterEntryDTO withFWDISTRICT(String FWDISTRICT) {
+		this.FWDISTRICT = FWDISTRICT;
+		return this;
+	}
+	
+	public HHRegisterEntryDTO withFWUPAZILLA(String FWUPAZILLA) {
+		this.FWUPAZILLA = FWUPAZILLA;
+		return this;
+	}
+	
+	public HHRegisterEntryDTO withFWUNION(String FWUNION) {
+		this.FWUNION = FWUNION;
+		return this;
+	}
+	
+	public HHRegisterEntryDTO withFWWARD(String FWWARD) {
+		this.FWWARD = FWWARD;
+		return this;
+	}
+	
+	public HHRegisterEntryDTO withFWSUBUNIT(String FWSUBUNIT) {
+		this.FWSUBUNIT = FWSUBUNIT;
+		return this;
+	}
+	
+	public HHRegisterEntryDTO withFWMAUZA_PARA(String FWMAUZA_PARA) {
+		this.FWMAUZA_PARA = FWMAUZA_PARA;
 		return this;
 	}
 

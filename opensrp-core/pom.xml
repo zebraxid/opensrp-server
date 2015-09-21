@@ -16,6 +16,21 @@
     <properties>
         <main.basedir>${project.basedir}/..</main.basedir>
     </properties>
+  <!--   <build>
+        <finalName>opensrp-core</finalName>
+        <resources>
+            <resource>
+                 <directory>../assets/config</directory>
+            </resource>
+            <resource>
+                <directory>../build</directory>
+                <filtering>true</filtering>
+                <includes>
+                	<include>maven.properties</include>
+                </includes>
+            </resource>
+        </resources>
+    </build> -->
 
     <dependencies>
         <dependency>

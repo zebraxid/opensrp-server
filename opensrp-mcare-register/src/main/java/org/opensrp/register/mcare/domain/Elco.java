@@ -18,6 +18,8 @@ public class Elco extends MotechBaseDataObject {
 	@JsonProperty
 	private String CASEID;
 	@JsonProperty
+	private String INSTANCEID;
+	@JsonProperty
 	private String LOCATIONID;
 	@JsonProperty
 	private String PROVIDERID;
@@ -40,9 +42,15 @@ public class Elco extends MotechBaseDataObject {
 	@JsonProperty
 	private String FWWOMLNAME;
 	@JsonProperty
+	private String FWWOMANYID;
+	@JsonProperty
 	private String FWWOMNID;
 	@JsonProperty
+	private String FWWOMRETYPENID;
+	@JsonProperty
 	private String FWWOMBID;
+	@JsonProperty
+	private String FWWOMRETYPEBID;
 	@JsonProperty
 	private String FWHUSNAME;
 	@JsonProperty
@@ -64,6 +72,26 @@ public class Elco extends MotechBaseDataObject {
 	@JsonProperty
 	private String FWELIGIBLE;
 	@JsonProperty
+	private String FWWOMCOUNTRY;
+	@JsonProperty
+	private String FWWOMDIVISION;
+	@JsonProperty
+	private String FWWOMDISTRICT;
+	@JsonProperty
+	private String FWWOMUPAZILLA;
+	@JsonProperty
+	private String FWWOMUNION;
+	@JsonProperty
+	private String FWWOMWARD;
+	@JsonProperty
+	private String FWWOMSUBUNIT;
+	@JsonProperty
+	private String FWWOMMAUZA_PARA;
+	@JsonProperty
+	private String FWWOMGOBHHID;
+	@JsonProperty
+	private String FWWOMGPS;
+	@JsonProperty
 	private Map<String, String> details;
 	
 	@JsonProperty
@@ -78,6 +106,11 @@ public class Elco extends MotechBaseDataObject {
 		return this;
 	}
 	
+	public Elco withINSTANCEID(String INSTANCEID) {
+		this.INSTANCEID = INSTANCEID;
+		return this;
+	}
+
 	public Elco withPROVIDERID(String PROVIDERID) {
 		this.PROVIDERID = PROVIDERID;
 		return this;
@@ -125,12 +158,24 @@ public class Elco extends MotechBaseDataObject {
 		this.FWWOMLNAME = FWWOMLNAME;
 		return this;
 	}
+	public Elco withFWWOMANYID(String FWWOMANYID) {
+		this.FWWOMANYID = FWWOMANYID;
+		return this;
+	}
 	public Elco withFWWOMNID(String FWWOMNID) {
 		this.FWWOMNID = FWWOMNID;
 		return this;
 	}
+	public Elco withFWWOMRETYPENID(String FWWOMRETYPENID) {
+		this.FWWOMRETYPENID = FWWOMRETYPENID;
+		return this;
+	}
 	public Elco withFWWOMBID(String FWWOMBID) {
 		this.FWWOMBID = FWWOMBID;
+		return this;
+	}
+	public Elco withFWWOMRETYPEBID(String FWWOMRETYPEBID) {
+		this.FWWOMRETYPEBID = FWWOMRETYPEBID;
 		return this;
 	}
 	public Elco withFWHUSNAME(String FWHUSNAME) {
@@ -173,6 +218,46 @@ public class Elco extends MotechBaseDataObject {
 		this.FWELIGIBLE = FWELIGIBLE;
 		return this;
 	}
+	public Elco withFWWOMCOUNTRY(String FWWOMCOUNTRY) {
+		this.FWWOMCOUNTRY = FWWOMCOUNTRY;
+		return this;
+	}
+	public Elco withFWWOMDIVISION(String FWWOMDIVISION) {
+		this.FWWOMDIVISION = FWWOMDIVISION;
+		return this;
+	}
+	public Elco withFWWOMDISTRICT(String FWWOMDISTRICT) {
+		this.FWWOMDISTRICT = FWWOMDISTRICT;
+		return this;
+	}
+	public Elco withFWWOMUPAZILLA(String FWWOMUPAZILLA) {
+		this.FWWOMUPAZILLA = FWWOMUPAZILLA;
+		return this;
+	}
+	public Elco withFWWOMUNION(String FWWOMUNION) {
+		this.FWWOMUNION = FWWOMUNION;
+		return this;
+	}
+	public Elco withFWWOMWARD(String FWWOMWARD) {
+		this.FWWOMWARD = FWWOMWARD;
+		return this;
+	}
+	public Elco withFWWOMSUBUNIT(String FWWOMSUBUNIT) {
+		this.FWWOMSUBUNIT = FWWOMSUBUNIT;
+		return this;
+	}
+	public Elco withFWWOMMAUZA_PARA(String FWWOMMAUZA_PARA) {
+		this.FWWOMMAUZA_PARA = FWWOMMAUZA_PARA;
+		return this;
+	}
+	public Elco withFWWOMGOBHHID(String FWWOMGOBHHID) {
+		this.FWWOMGOBHHID = FWWOMGOBHHID;
+		return this;
+	}
+	public Elco withFWWOMGPS(String FWWOMGPS) {
+		this.FWWOMGPS = FWWOMGPS;
+		return this;
+	}
 	public Elco withDetails(Map<String, String> details) {
         this.details = new HashMap<>(details);
         return this;
@@ -183,6 +268,10 @@ public class Elco extends MotechBaseDataObject {
 	}
 	public String CASEID() {
 		return CASEID;
+	}
+	public String INSTANCEID()
+	{
+		return INSTANCEID;
 	}
 	public String PROVIDERID() {
 		return PROVIDERID;
@@ -217,11 +306,20 @@ public class Elco extends MotechBaseDataObject {
 	public String FWWOMLNAME() {
 		return FWWOMLNAME;
 	}
+	public String FWWOMANYID() {
+		return FWWOMANYID;
+	}
 	public String FWWOMNID() {
 		return FWWOMNID;
 	}
+	public String FWWOMRETYPENID() {
+		return FWWOMRETYPENID;
+	}
 	public String FWWOMBID() {
 		return FWWOMBID;
+	}
+	public String FWWOMRETYPEBID() {
+		return FWWOMRETYPEBID;
 	}
 	public String FWHUSNAME() {
 		return FWHUSNAME;
@@ -252,6 +350,36 @@ public class Elco extends MotechBaseDataObject {
 	}
 	public String FWELIGIBLE() {
 		return FWELIGIBLE;
+	}
+	public String FWWOMCOUNTRY() {
+		return FWWOMCOUNTRY;
+	}
+	public String FWWOMDIVISION() {
+		return FWWOMDIVISION;
+	}
+	public String FWWOMDISTRICT() {
+		return FWWOMDISTRICT;
+	}
+	public String FWWOMUPAZILLA() {
+		return FWWOMUPAZILLA;
+	}
+	public String FWWOMUNION() {
+		return FWWOMUNION;
+	}
+	public String FWWOMWARD() {
+		return FWWOMWARD;
+	}
+	public String FWWOMSUBUNIT() {
+		return FWWOMSUBUNIT;
+	}
+	public String FWWOMMAUZA_PARA() {
+		return FWWOMMAUZA_PARA;
+	}
+	public String FWWOMGOBHHID() {
+		return FWWOMGOBHHID;
+	}
+	public String FWWOMGPS() {
+		return FWWOMGPS;
 	}
 	 private String getCASEID() {
 	        return CASEID;

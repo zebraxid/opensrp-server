@@ -36,9 +36,15 @@ public class ELCORegisterEntryDTO {
 	@JsonProperty
 	private String FWWOMLNAME;
 	@JsonProperty
+	private String FWWOMANYID;
+	@JsonProperty
 	private String FWWOMNID;
 	@JsonProperty
+	private String FWWOMRETYPENID;
+	@JsonProperty
 	private String FWWOMBID;
+	@JsonProperty
+	private String FWWOMRETYPEBID;
 	@JsonProperty
 	private String FWHUSNAME;
 	@JsonProperty
@@ -59,6 +65,26 @@ public class ELCORegisterEntryDTO {
 	private String FWWOMHUSLIV;
 	@JsonProperty
 	private String FWELIGIBLE;
+	@JsonProperty
+	private String FWWOMCOUNTRY;
+	@JsonProperty
+	private String FWWOMDIVISION;
+	@JsonProperty
+	private String FWWOMDISTRICT;
+	@JsonProperty
+	private String FWWOMUPAZILLA;
+	@JsonProperty
+	private String FWWOMUNION;
+	@JsonProperty
+	private String FWWOMWARD;
+	@JsonProperty
+	private String FWWOMSUBUNIT;
+	@JsonProperty
+	private String FWWOMMAUZA_PARA;
+	@JsonProperty
+	private String FWWOMGOBHHID;
+	@JsonProperty
+	private String FWWOMGPS;
 	@JsonProperty
 	private Map<String, String> details;
 	
@@ -121,12 +147,24 @@ public class ELCORegisterEntryDTO {
 		this.FWWOMLNAME = FWWOMLNAME;
 		return this;
 	}
+	public ELCORegisterEntryDTO withFWWOMANYID(String FWWOMANYID) {
+		this.FWWOMANYID = FWWOMANYID;
+		return this;
+	}
 	public ELCORegisterEntryDTO withFWWOMNID(String FWWOMNID) {
 		this.FWWOMNID = FWWOMNID;
 		return this;
 	}
+	public ELCORegisterEntryDTO withFWWOMRETYPENID(String FWWOMRETYPENID) {
+		this.FWWOMRETYPENID = FWWOMRETYPENID;
+		return this;
+	}
 	public ELCORegisterEntryDTO withFWWOMBID(String FWWOMBID) {
 		this.FWWOMBID = FWWOMBID;
+		return this;
+	}
+	public ELCORegisterEntryDTO withFWWOMRETYPEBID(String FWWOMRETYPEBID) {
+		this.FWWOMRETYPEBID = FWWOMRETYPEBID;
 		return this;
 	}
 	public ELCORegisterEntryDTO withFWHUSNAME(String FWHUSNAME) {
@@ -167,6 +205,46 @@ public class ELCORegisterEntryDTO {
 	}
 	public ELCORegisterEntryDTO withFWELIGIBLE(String FWELIGIBLE) {
 		this.FWELIGIBLE = FWELIGIBLE;
+		return this;
+	}
+	public ELCORegisterEntryDTO withFWWOMCOUNTRY(String FWWOMCOUNTRY) {
+		this.FWWOMCOUNTRY = FWWOMCOUNTRY;
+		return this;
+	}
+	public ELCORegisterEntryDTO withFWWOMDIVISION(String FWWOMDIVISION) {
+		this.FWWOMDIVISION = FWWOMDIVISION;
+		return this;
+	}
+	public ELCORegisterEntryDTO withFWWOMDISTRICT(String FWWOMDISTRICT) {
+		this.FWWOMDISTRICT = FWWOMDISTRICT;
+		return this;
+	}
+	public ELCORegisterEntryDTO withFWWOMUPAZILLA(String FWWOMUPAZILLA) {
+		this.FWWOMUPAZILLA = FWWOMUPAZILLA;
+		return this;
+	}
+	public ELCORegisterEntryDTO withFWWOMUNION(String FWWOMUNION) {
+		this.FWWOMUNION = FWWOMUNION;
+		return this;
+	}
+	public ELCORegisterEntryDTO withFWWOMWARD(String FWWOMWARD) {
+		this.FWWOMWARD = FWWOMWARD;
+		return this;
+	}
+	public ELCORegisterEntryDTO withFWWOMSUBUNIT(String FWWOMSUBUNIT) {
+		this.FWWOMSUBUNIT = FWWOMSUBUNIT;
+		return this;
+	}
+	public ELCORegisterEntryDTO withFWWOMMAUZA_PARA(String FWWOMMAUZA_PARA) {
+		this.FWWOMMAUZA_PARA = FWWOMMAUZA_PARA;
+		return this;
+	}
+	public ELCORegisterEntryDTO withFWWOMGOBHHID(String FWWOMGOBHHID) {
+		this.FWWOMGOBHHID = FWWOMGOBHHID;
+		return this;
+	}
+	public ELCORegisterEntryDTO withFWWOMGPS(String FWWOMGPS) {
+		this.FWWOMGPS = FWWOMGPS;
 		return this;
 	}
 	public ELCORegisterEntryDTO withDetails(Map<String, String> details) {

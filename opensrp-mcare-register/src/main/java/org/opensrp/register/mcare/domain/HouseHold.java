@@ -18,6 +18,8 @@ public class HouseHold extends MotechBaseDataObject {
 	@JsonProperty
 	private String CASEID;
 	@JsonProperty
+	private String INSTANCEID;
+	@JsonProperty
 	private String PROVIDERID;
 	@JsonProperty
 	private String LOCATIONID;
@@ -34,7 +36,21 @@ public class HouseHold extends MotechBaseDataObject {
 	@JsonProperty
 	private String FWJIVHHID;
 	@JsonProperty
-	private String FWNHNEARTO;
+	private String FWCOUNTRY;
+	@JsonProperty
+	private String FWDIVISION;
+	@JsonProperty
+	private String FWDISTRICT;
+	@JsonProperty
+	private String FWUPAZILLA;
+	@JsonProperty
+	private String FWUNION;
+	@JsonProperty
+	private String FWWARD;
+	@JsonProperty
+	private String FWSUBUNIT;
+	@JsonProperty
+	private String FWMAUZA_PARA;
 	@JsonProperty
 	private String FWNHHHGPS;
 	@JsonProperty
@@ -63,6 +79,11 @@ public class HouseHold extends MotechBaseDataObject {
 	
 	public HouseHold withCASEID(String CASEID) {
 		this.CASEID = CASEID;
+		return this;
+	}
+
+	public HouseHold withINSTANCEID(String INSTANCEID) {
+		this.INSTANCEID = INSTANCEID;
 		return this;
 	}
 
@@ -111,8 +132,43 @@ public class HouseHold extends MotechBaseDataObject {
 		return this;
 	}
 
-	public HouseHold withFWNHNEARTO(String FWNHNEARTO) {
-		this.FWNHNEARTO = FWNHNEARTO;
+	public HouseHold withFWCOUNTRY(String FWCOUNTRY) {
+		this.FWCOUNTRY = FWCOUNTRY;
+		return this;
+	}
+
+	public HouseHold withFWDIVISION(String FWDIVISION) {
+		this.FWDIVISION = FWDIVISION;
+		return this;
+	}
+
+	public HouseHold withFWDISTRICT(String FWDISTRICT) {
+		this.FWDISTRICT = FWDISTRICT;
+		return this;
+	}
+
+	public HouseHold withFWUPAZILLA(String FWUPAZILLA) {
+		this.FWUPAZILLA = FWUPAZILLA;
+		return this;
+	}
+
+	public HouseHold withFWUNION(String FWUNION) {
+		this.FWUNION = FWUNION;
+		return this;
+	}
+
+	public HouseHold withFWWARD(String FWWARD) {
+		this.FWWARD = FWWARD;
+		return this;
+	}
+
+	public HouseHold withFWSUBUNIT(String FWSUBUNIT) {
+		this.FWSUBUNIT = FWSUBUNIT;
+		return this;
+	}
+	
+	public HouseHold withFWMAUZA_PARA(String FWMAUZA_PARA) {
+		this.FWMAUZA_PARA = FWMAUZA_PARA;
 		return this;
 	}
 
@@ -166,6 +222,10 @@ public class HouseHold extends MotechBaseDataObject {
 		return CASEID;
 	}
 
+	public String INSTANCEID() {
+		return INSTANCEID;
+	}
+
 	public String PROVIDERID() {
 		return PROVIDERID;
 	}
@@ -203,8 +263,36 @@ public class HouseHold extends MotechBaseDataObject {
 		return FWNHHHGPS;
 	}
 
-	public String FWNHNEARTO() {
-		return FWNHNEARTO;
+	public String FWCOUNTRY() {
+		return FWCOUNTRY;
+	}
+	
+	public String FWDIVISION() {
+		return FWDIVISION;
+	}
+	
+	public String FWDISTRICT() {
+		return FWDISTRICT;
+	}
+	
+	public String FWUPAZILLA() {
+		return FWUPAZILLA;
+	}
+	
+	public String FWUNION() {
+		return FWUNION;
+	}
+	
+	public String FWWARD() {
+		return FWWARD;
+	}
+	
+	public String FWSUBUNIT() {
+		return FWSUBUNIT;
+	}
+	
+	public String FWMAUZA_PARA() {
+		return FWMAUZA_PARA;
 	}
 
 	public String FWHOHFNAME() {

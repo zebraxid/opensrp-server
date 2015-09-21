@@ -17,6 +17,7 @@ public class AllConstants {
     public static final String EMPTY_STRING = "";
     public static final String OPENSRP_ERRORTRACE_DATABASE="opensrpErrorTraceDatabaseConnector";
 
+
     public static class Form {
     	public static final String HH_REGISTRATION = "new_household_registration";
     	public static final String ELCO_REGISTRATION = "census_enrollment_form";
@@ -129,8 +130,11 @@ public class AllConstants {
     	public static final String FW_JiVitAHHID ="JiVitAHHID";
     	public static final String FW_WOMFNAME = "FWWOMFNAME";
     	public static final String FW_WOMLNAME = "FWWOMLNAME";
+    	public static final String FW_WOMANYID = "FWWOMANYID";
     	public static final String FW_WOMNID = "FWWOMNID";
+    	public static final String FW_WOMRETYPENID = "FWWOMRETYPENID";
     	public static final String FW_WOMBID = "FWWOMBID";
+    	public static final String FW_WOMRETYPEBID = "FWWOMRETYPEBID";
     	public static final String FW_HUSNAME = "FWHUSNAME";
     	public static final String FW_BIRTHDATE = "FWBIRTHDATE";
     	public static final String FW_GENDER = "FWGENDER";
@@ -141,6 +145,16 @@ public class AllConstants {
     	public static final String FW_NHWOMHUSSTR = "FWNHWOMHUSSTR";
     	public static final String FW_NHWOMHUSLIV = "FWNHWOMHUSLIV";
     	public static final String FW_ELIGIBLE = "FWELIGIBLE";
+    	public static final String FW_WOMCOUNTRY ="FWWOMCOUNTRY";
+    	public static final String FW_WOMDIVISION ="FWWOMDIVISION";
+    	public static final String FW_WOMDISTRICT ="FWWOMDISTRICT";
+    	public static final String FW_WOMUPAZILLA ="FWWOMUPAZILLA";
+    	public static final String FW_WOMUNION ="FWWOMUNION";
+    	public static final String FW_WOMWARD ="FWWOMWARD";
+    	public static final String FW_WOMSUBUNIT ="FWWOMSUBUNIT";
+    	public static final String FW_WOMMAUZA_PARA ="FWWOMMAUZA_PARA";
+    	public static final String FW_WOMGOBHHID ="FWWOMGOBHHID";
+    	public static final String FW_WOMGPS ="FWWOMGPS";
     	
     }
 
@@ -171,6 +185,9 @@ public class AllConstants {
     	public static final String FW_PSRTHY ="FWPSRTHY";
     	public static final String FW_PSRHGT ="FWPSRHGT";
     	public static final String FW_PSRMUAC ="FWPSRMUAC";	
+    	public static final String FW_PSRPHONE ="FWPSRPHONE";
+    	public static final String FW_PSRPHONENUM ="FWPSRPHONENUM";	
+    	
     }
     
     public static class ECRegistrationFields {

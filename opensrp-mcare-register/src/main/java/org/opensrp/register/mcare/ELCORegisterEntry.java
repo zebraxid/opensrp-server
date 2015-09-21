@@ -10,6 +10,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.opensrp.dto.register.ELCORegisterEntryDTO;
+import org.opensrp.register.mcare.domain.Elco;
 
 public class ELCORegisterEntry {
 	
@@ -37,9 +38,15 @@ public class ELCORegisterEntry {
 	
 	private String FWWOMLNAME;
 	
+	private String FWWOMANYID;
+	
 	private String FWWOMNID;
 	
+	private String FWWOMRETYPENID;
+	
 	private String FWWOMBID;
+	
+	private String FWWOMRETYPEBID;
 	
 	private String FWHUSNAME;
 	
@@ -60,6 +67,26 @@ public class ELCORegisterEntry {
 	private String FWWOMHUSLIV;
 	
 	private String FWELIGIBLE;
+	
+	private String FWWOMCOUNTRY;
+	
+	private String FWWOMDIVISION;
+	
+	private String FWWOMDISTRICT;
+	
+	private String FWWOMUPAZILLA;
+	
+	private String FWWOMUNION;
+	
+	private String FWWOMWARD;
+	
+	private String FWWOMSUBUNIT;
+	
+	private String FWWOMMAUZA_PARA;
+	
+	private String FWWOMGOBHHID;
+	
+	private String FWWOMGPS;
 	
 	private Map<String, String> details;
 	
@@ -121,12 +148,24 @@ public class ELCORegisterEntry {
 		this.FWWOMLNAME = FWWOMLNAME;
 		return this;
 	}
+	public ELCORegisterEntry withFWWOMANYID(String FWWOMANYID) {
+		this.FWWOMANYID = FWWOMANYID;
+		return this;
+	}
 	public ELCORegisterEntry withFWWOMNID(String FWWOMNID) {
 		this.FWWOMNID = FWWOMNID;
 		return this;
 	}
+	public ELCORegisterEntry withFWWOMRETYPENID(String FWWOMRETYPENID) {
+		this.FWWOMRETYPENID = FWWOMRETYPENID;
+		return this;
+	}
 	public ELCORegisterEntry withFWWOMBID(String FWWOMBID) {
 		this.FWWOMBID = FWWOMBID;
+		return this;
+	}
+	public ELCORegisterEntry withFWWOMRETYPEBID(String FWWOMRETYPEBID) {
+		this.FWWOMRETYPEBID = FWWOMRETYPEBID;
 		return this;
 	}
 	public ELCORegisterEntry withFWHUSNAME(String FWHUSNAME) {
@@ -167,6 +206,46 @@ public class ELCORegisterEntry {
 	}
 	public ELCORegisterEntry withFWELIGIBLE(String FWELIGIBLE) {
 		this.FWELIGIBLE = FWELIGIBLE;
+		return this;
+	}
+	public ELCORegisterEntry withFWWOMCOUNTRY(String FWWOMCOUNTRY) {
+		this.FWWOMCOUNTRY = FWWOMCOUNTRY;
+		return this;
+	}
+	public ELCORegisterEntry withFWWOMDIVISION(String FWWOMDIVISION) {
+		this.FWWOMDIVISION = FWWOMDIVISION;
+		return this;
+	}
+	public ELCORegisterEntry withFWWOMDISTRICT(String FWWOMDISTRICT) {
+		this.FWWOMDISTRICT = FWWOMDISTRICT;
+		return this;
+	}
+	public ELCORegisterEntry withFWWOMUPAZILLA(String FWWOMUPAZILLA) {
+		this.FWWOMUPAZILLA = FWWOMUPAZILLA;
+		return this;
+	}
+	public ELCORegisterEntry withFWWOMUNION(String FWWOMUNION) {
+		this.FWWOMUNION = FWWOMUNION;
+		return this;
+	}
+	public ELCORegisterEntry withFWWOMWARD(String FWWOMWARD) {
+		this.FWWOMWARD = FWWOMWARD;
+		return this;
+	}
+	public ELCORegisterEntry withFWWOMSUBUNIT(String FWWOMSUBUNIT) {
+		this.FWWOMSUBUNIT = FWWOMSUBUNIT;
+		return this;
+	}
+	public ELCORegisterEntry withFWWOMMAUZA_PARA(String FWWOMMAUZA_PARA) {
+		this.FWWOMMAUZA_PARA = FWWOMMAUZA_PARA;
+		return this;
+	}
+	public ELCORegisterEntry withFWWOMGOBHHID(String FWWOMGOBHHID) {
+		this.FWWOMGOBHHID = FWWOMGOBHHID;
+		return this;
+	}
+	public ELCORegisterEntry withFWWOMGPS(String FWWOMGPS) {
+		this.FWWOMGPS = FWWOMGPS;
 		return this;
 	}
 	public ELCORegisterEntry withDetails(Map<String, String> details) {
@@ -213,11 +292,20 @@ public class ELCORegisterEntry {
 	public String FWWOMLNAME() {
 		return FWWOMLNAME;
 	}
+	public String FWWOMANYID() {
+		return FWWOMANYID;
+	}
 	public String FWWOMNID() {
 		return FWWOMNID;
 	}
+	public String FWWOMRETYPENID() {
+		return FWWOMRETYPENID;
+	}
 	public String FWWOMBID() {
 		return FWWOMBID;
+	}
+	public String FWWOMRETYPEBID() {
+		return FWWOMRETYPEBID;
 	}
 	public String FWHUSNAME() {
 		return FWHUSNAME;
@@ -248,6 +336,36 @@ public class ELCORegisterEntry {
 	}
 	public String FWELIGIBLE() {
 		return FWELIGIBLE;
+	}
+	public String FWWOMCOUNTRY() {
+		return FWWOMCOUNTRY;
+	}
+	public String FWWOMDIVISION() {
+		return FWWOMDIVISION;
+	}
+	public String FWWOMDISTRICT() {
+		return FWWOMDISTRICT;
+	}
+	public String FWWOMUPAZILLA() {
+		return FWWOMUPAZILLA;
+	}
+	public String FWWOMUNION() {
+		return FWWOMUNION;
+	}
+	public String FWWOMWARD() {
+		return FWWOMWARD;
+	}
+	public String FWWOMSUBUNIT() {
+		return FWWOMSUBUNIT;
+	}
+	public String FWWOMMAUZA_PARA() {
+		return FWWOMMAUZA_PARA;
+	}
+	public String FWWOMGOBHHID() {
+		return FWWOMGOBHHID;
+	}
+	public String FWWOMGPS() {
+		return FWWOMGPS;
 	}
 	 private String getCASEID() {
 	        return CASEID;

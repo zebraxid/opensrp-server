@@ -42,6 +42,7 @@ public class AlertCreationAction implements HookedEvent {
 
 		// TODO: Get rid of this horrible if-else after Motech-Platform fixes
 		// the bug related to metadata in motech-schedule-tracking.
+		String instanceId = null;
 		String providerId = null;
 		String caseID = event.externalId();
 		DateTime startOfEarliestWindow = new DateTime();
@@ -50,6 +51,7 @@ public class AlertCreationAction implements HookedEvent {
 		if (household.equals(beneficiaryType)) {
 			HouseHold houseHold = allHouseHolds.findByCASEID(caseID);
 			if (houseHold != null) {
+				instanceId= houseHold.INSTANCEID();
 				providerId = houseHold.PROVIDERID();
 				startOfEarliestWindow = DateTime.parse(houseHold.TODAY(),formatter);
 			}
@@ -58,6 +60,7 @@ public class AlertCreationAction implements HookedEvent {
 			Elco elco = allElcos.findByCaseId(caseID);
 			
 			if (elco != null) {
+				instanceId= elco.INSTANCEID();
 				providerId = elco.PROVIDERID();
 				startOfEarliestWindow = DateTime.parse(elco.TODAY(),formatter);
 			}
@@ -71,7 +74,7 @@ public class AlertCreationAction implements HookedEvent {
 					+ beneficiaryType + " is of unknown type");
 		}
 
-		scheduler.alertFor(event.windowName(), beneficiaryType, caseID, providerId, event.scheduleName(), event.milestoneName(),
+		scheduler.alertFor(event.windowName(), beneficiaryType, caseID, instanceId, providerId, event.scheduleName(), event.milestoneName(),
 				startOfEarliestWindow, event.startOfDueWindow(),
 				event.startOfLateWindow(), event.startOfMaxWindow());
 	}
