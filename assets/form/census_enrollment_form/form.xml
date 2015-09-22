@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<root><<form autocomplete="off" novalidate="novalidate" class="or clearfix" id="CensusNewWomanRegistrationForm">
+<root><form autocomplete="off" novalidate="novalidate" class="or clearfix" id="CensusNewWomanRegistrationForm">
 <!--This form was created by transforming a OpenRosa-flavored (X)Form using an XSLT sheet created by Enketo LLC.--><section class="form-logo"> </section><h3 id="form-title">&#x9A8;&#x9A4;&#x9C1;&#x9A8; &#x9AE;&#x9B9;&#x9BF;&#x9B2;&#x9BE; &#x9A8;&#x9BF;&#x9AC;&#x9A8;&#x9CD;&#x9A7;&#x9A8; &#x9AB;&#x9B0;&#x9CD;&#x9AE;</h3><select id="form-languages" data-default-lang="bn"><option value="bn">Bengali</option> <option value="en">English</option> </select>
   
   

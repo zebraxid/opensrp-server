@@ -1,4 +1,4 @@
-model>
+<model>
     <instance>
         <CensusNewWomanRegistrationForm encounter_type="Census Visit" id="CensusNewWomanRegistrationForm" version="201509150619">
           <formhub>
