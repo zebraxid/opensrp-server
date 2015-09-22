@@ -177,11 +177,11 @@
       },
       {
         "name": "FWPSRPHONE",
-        "bind": "/model/instance/PregnancySurveillanceRegistrationForm/psrf_met/psrf_pregnant/FWPSRMUAC"
+        "bind": "/model/instance/PregnancySurveillanceRegistrationForm/psrf_met/psrf_pregnant/FWPSRPHONE"
       },
       {
         "name": "FWPSRPHONENUM",
-        "bind": "/model/instance/PregnancySurveillanceRegistrationForm/psrf_met/psrf_pregnant/FWPSRMUAC"
+        "bind": "/model/instance/PregnancySurveillanceRegistrationForm/psrf_met/psrf_pregnant/FWPSRPHONENUM"
       }
     ]
   }
