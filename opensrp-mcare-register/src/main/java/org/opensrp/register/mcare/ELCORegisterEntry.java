@@ -8,13 +8,12 @@ import java.util.Map;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.codehaus.jackson.annotate.JsonProperty;
-import org.opensrp.dto.register.ELCORegisterEntryDTO;
-import org.opensrp.register.mcare.domain.Elco;
 
 public class ELCORegisterEntry {
 	
 	private String CASEID;
+	
+	private String INSTANCEID;
 	
 	private String LOCATIONID;
 	
@@ -100,7 +99,10 @@ public class ELCORegisterEntry {
 		this.CASEID = CASEID;
 		return this;
 	}
-
+	public ELCORegisterEntry withINSTANCEID(String INSTANCEID) {
+		this.INSTANCEID = INSTANCEID;
+		return this;
+	}
 	public ELCORegisterEntry withPROVIDERID(String PROVIDERID) {
 		this.PROVIDERID = PROVIDERID;
 		return this;
@@ -258,6 +260,10 @@ public class ELCORegisterEntry {
 	}
 	public String CASEID() {
 		return CASEID;
+	}
+	public String INSTANCEID()
+	{
+		return INSTANCEID;
 	}
 	public String PROVIDERID() {
 		return PROVIDERID;

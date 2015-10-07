@@ -11,7 +11,6 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.ektorp.support.TypeDiscriminator;
 import org.motechproject.model.MotechBaseDataObject;
-import org.opensrp.dto.register.HHRegisterEntryDTO;
 
 @TypeDiscriminator("doc.type === 'HouseHold'")
 public class HouseHold extends MotechBaseDataObject {

@@ -14,6 +14,8 @@ public class HHRegisterEntryDTO {
 	@JsonProperty
 	private String CASEID;
 	@JsonProperty
+	private String INSTANCEID;
+	@JsonProperty
 	private String PROVIDERID;
 	@JsonProperty
 	private String LOCATIONID;
@@ -73,6 +75,11 @@ public class HHRegisterEntryDTO {
 	
 	public HHRegisterEntryDTO withCASEID(String CASEID) {
 		this.CASEID = CASEID;
+		return this;
+	}
+	
+	public HHRegisterEntryDTO withINSTANCEID(String INSTANCEID) {
+		this.INSTANCEID = INSTANCEID;
 		return this;
 	}
 

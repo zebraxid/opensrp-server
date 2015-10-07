@@ -14,6 +14,8 @@ public class ELCORegisterEntryDTO {
 	@JsonProperty
 	private String CASEID;
 	@JsonProperty
+	private String INSTANCEID;
+	@JsonProperty
 	private String LOCATIONID;
 	@JsonProperty
 	private String PROVIDERID;
@@ -99,7 +101,10 @@ public class ELCORegisterEntryDTO {
 		this.CASEID = CASEID;
 		return this;
 	}
-	
+	public ELCORegisterEntryDTO withINSTANCEID(String INSTANCEID) {
+		this.INSTANCEID = INSTANCEID;
+		return this;
+	}
 	public ELCORegisterEntryDTO withPROVIDERID(String PROVIDERID) {
 		this.PROVIDERID = PROVIDERID;
 		return this;

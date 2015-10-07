@@ -55,7 +55,7 @@
           <FWWOMBID/>
           <FWWOMRETYPEBID openmrs_entity="person_identifier" openmrs_entity_id="Birth Registration ID"/>
           <FWHUSNAME openmrs_entity="concept" openmrs_entity_id="161135AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
-          <FWBIRTHDATE openmrs_entity="person" openmrs_entity_id="birthdate">2000-01-02 00:00:00</FWBIRTHDATE>
+          <FWBIRTHDATE openmrs_entity="person" openmrs_entity_id="birthdate">2000-01-02</FWBIRTHDATE>
           <FWGENDER openmrs_entity="person" openmrs_entity_id="gender"/>
           <FWWOMAGE openmrs_entity="concept" openmrs_entity_id="1532AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
           <display_age/>

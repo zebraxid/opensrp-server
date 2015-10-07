@@ -8,13 +8,12 @@ import java.util.Map;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.codehaus.jackson.annotate.JsonProperty;
-import org.opensrp.dto.register.HHRegisterEntryDTO;
-import org.opensrp.register.mcare.domain.HouseHold;
 
 public class HHRegisterEntry {
 
 	private String CASEID;
+	
+	private String INSTANCEID;
 	
 	private String PROVIDERID;
 	
@@ -75,6 +74,11 @@ public class HHRegisterEntry {
 
 	public HHRegisterEntry withCASEID(String CASEID) {
 		this.CASEID = CASEID;
+		return this;
+	}
+	
+	public HHRegisterEntry withINSTANCEID(String INSTANCEID) {
+		this.INSTANCEID = INSTANCEID;
 		return this;
 	}
 	
@@ -210,6 +214,10 @@ public class HHRegisterEntry {
 	
 	public String CASEID() {
 		return CASEID;
+	}
+	
+	public String INSTANCEID() {
+		return INSTANCEID;
 	}
 
 	public String PROVIDERID() {

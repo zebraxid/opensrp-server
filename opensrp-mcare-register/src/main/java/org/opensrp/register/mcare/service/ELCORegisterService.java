@@ -30,6 +30,7 @@ public class ELCORegisterService {
         for (Elco ec : elcos) {
             ELCORegisterEntry ecRegisterEntry = new ELCORegisterEntry()
             		.withCASEID(ec.CASEID())
+            		.withINSTANCEID(ec.INSTANCEID())
             		.withPROVIDERID(ec.PROVIDERID())
             		.withLOCATIONID(ec.LOCATIONID())
             		.withTODAY(ec.TODAY())

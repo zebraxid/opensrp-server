@@ -4,8 +4,6 @@ import org.opensrp.dto.register.ELCORegisterDTO;
 import org.opensrp.dto.register.ELCORegisterEntryDTO;
 import org.opensrp.register.mcare.ELCORegisterEntry;
 import org.opensrp.register.mcare.ELCORegister;
-import static org.opensrp.common.AllConstants.ELCORegistrationFields.*;
-
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,6 +26,7 @@ public class ELCORegisterMapper {
                             public ELCORegisterEntryDTO convert(ELCORegisterEntry entry) {
                                 return new ELCORegisterEntryDTO()
                                 .withCASEID(entry.CASEID())
+                                .withINSTANCEID(entry.INSTANCEID())
                                 .withPROVIDERID(entry.PROVIDERID())
                         		.withLOCATIONID(entry.LOCATIONID())
                         		.withTODAY(entry.TODAY())
