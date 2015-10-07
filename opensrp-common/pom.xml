@@ -64,7 +64,12 @@
             <artifactId>motech-platform-common-api</artifactId>
             <version>${motech.version}</version>
         </dependency>
-
+		<dependency>
+		  <groupId>org.apache.httpcomponents</groupId>
+		  <artifactId>httpmime</artifactId>
+		  <version>4.1.2</version>
+		  <scope>compile</scope>
+		</dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>

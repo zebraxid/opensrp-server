@@ -1,9 +1,23 @@
 package org.opensrp.connector.openmrs.service;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.apache.commons.httpclient.HttpVersion;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.content.ContentBody;
+import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.CoreProtocolPNames;
+import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -216,6 +230,35 @@ public class PatientService extends OpenmrsService{
 		
 		p.put("identifiers", ids);
 		return new JSONObject(HttpUtil.post(getURL()+"/"+PATIENT_URL, "", p.toString(), OPENMRS_USER, OPENMRS_PWD).body());
+	}
+	
+	public void postFile() throws ClientProtocolException, IOException
+	{
+		    HttpClient httpclient = new DefaultHttpClient();
+		    httpclient.getParams().setParameter(CoreProtocolPNames.PROTOCOL_VERSION, HttpVersion.HTTP_1_1);
+
+		    HttpPost httppost = new HttpPost("http://localhost:9000/upload");
+		    File file = new File("C:\\Users\\joao\\Pictures\\bla.jpg");
+
+		    MultipartEntity mpEntity = new MultipartEntity();
+		    ContentBody cbFile = new FileBody(file, "image/jpeg");
+		    mpEntity.addPart("userfile", cbFile);
+
+
+		    httppost.setEntity(mpEntity);
+		    System.out.println("executing request " + httppost.getRequestLine());
+		    HttpResponse response = httpclient.execute(httppost);
+		    HttpEntity resEntity = response.getEntity();
+
+		    System.out.println(response.getStatusLine());
+		    if (resEntity != null) {
+		      System.out.println(EntityUtils.toString(resEntity));
+		    }
+		    if (resEntity != null) {
+		      resEntity.consumeContent();
+		    }
+
+		    httpclient.getConnectionManager().shutdown();
 	}
 }
 

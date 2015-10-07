@@ -538,6 +538,7 @@ public class AllConstants {
         
         public static final String HOUSE_HOLD_TYPE = "household";
         public static final String ELCO_TYPE = "elco";
+        public static final String MCARE_MOTHER_TYPE = "mcaremother";
     }
 
     public static class HTTP {

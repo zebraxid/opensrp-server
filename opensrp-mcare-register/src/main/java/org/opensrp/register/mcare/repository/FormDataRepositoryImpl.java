@@ -18,6 +18,7 @@ import org.ektorp.ViewResult;
 import org.opensrp.common.AllConstants;
 import org.opensrp.register.mcare.domain.Elco;
 import org.opensrp.register.mcare.domain.HouseHold;
+import org.opensrp.register.mcare.domain.Mother;
 import org.opensrp.repository.FormDataRepository;
 import org.opensrp.service.formSubmission.ZiggyService;
 import org.slf4j.Logger;
@@ -62,8 +63,10 @@ public class FormDataRepositoryImpl extends FormDataRepository{
         
         designDocMap.put(AllConstants.FormEntityTypes.HOUSE_HOLD_TYPE, "HouseHold");
         designDocMap.put(AllConstants.FormEntityTypes.ELCO_TYPE, "Elco");
+        designDocMap.put(AllConstants.FormEntityTypes.MOTHER_TYPE, "Mother");
         fieldSetMap.put(AllConstants.FormEntityTypes.HOUSE_HOLD_TYPE, HouseHold.class.getDeclaredFields());
         fieldSetMap.put(AllConstants.FormEntityTypes.ELCO_TYPE, Elco.class.getDeclaredFields());
+        fieldSetMap.put(AllConstants.FormEntityTypes.MOTHER_TYPE, Mother.class.getDeclaredFields());
     }
 
     public String saveEntity(String entityType, String fields) {
