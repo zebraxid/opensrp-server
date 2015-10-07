@@ -7,10 +7,9 @@
             "scheduleWindows": {
                 "earliest": ["84 Days"],
                 "due": ["112 Days"],
-                "late": ["140 Days"],
-                "max": ["141 Days"]
+                "late": ["143 Weeks"],
+                "max": ["144 Weeks"]
             },
-
             "alerts": [
                 {
                     "window": "earliest",
@@ -28,14 +27,15 @@
                     "window": "late",
                     "offset": ["112 Days"],
                     "interval": ["1 Day"],
-                    "count": "28"
+                    "count": "889"
                 },
                 {
                     "window": "max",
-                    "offset": ["140 Days"],
+                    "offset": ["143 Weeks"],
                     "interval": ["1 Day"],
-                    "count": "1"
+                    "count": "7"
                 }
+                
             ]
         }
     ]

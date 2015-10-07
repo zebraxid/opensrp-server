@@ -1,8 +1,6 @@
 package org.opensrp.register.mcare.mapper;
 
 import static ch.lambdaj.collection.LambdaCollections.with;
-import static org.opensrp.common.AllConstants.HHRegistrationFields.*;
-
 import java.util.List;
 
 import org.opensrp.dto.register.HHRegisterDTO;
@@ -30,6 +28,7 @@ public class HHRegisterMapper {
                             public HHRegisterEntryDTO convert(HHRegisterEntry entry) {
                                 return new HHRegisterEntryDTO()
                                 .withCASEID(entry.CASEID())
+                                .withINSTANCEID(entry.INSTANCEID())
                                 .withPROVIDERID(entry.PROVIDERID())  
                         		//.withLOCATIONID(entry.LOCATIONID())
                         		.withTODAY(entry.TODAY())

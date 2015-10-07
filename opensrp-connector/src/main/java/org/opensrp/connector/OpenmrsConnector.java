@@ -288,9 +288,12 @@ public class OpenmrsConnector {
 					String firstName = sfdata.get(getFieldName(Person.first_name, sbf.name(), fs));
 					if (firstName.length() == 0) return map; 
 					System.out.println ("getDependentClientsFromFormSubmission firstName: " + firstName);
+					System.out.println (sfdata.get(getFieldName(Person.birthdate, sbf.name(), fs)));
+					System.out.println (sfdata.get(getFieldName(Person.gender, sbf.name(), fs)));
 					String middleName = sfdata.get(getFieldName(Person.middle_name, sbf.name(), fs));
 					String lastName = sfdata.get(getFieldName(Person.last_name, sbf.name(), fs));
-					Date birthdate = OpenmrsService.OPENMRS_DATE.parse(sfdata.get(getFieldName(Person.birthdate, sbf.name(), fs)));
+					String bd = sfdata.get(getFieldName(Person.birthdate, sbf.name(), fs));
+					Date birthdate = bd==null?null:OpenmrsService.OPENMRS_DATE.parse(bd);
 					String dd = sfdata.get(getFieldName(Person.deathdate, sbf.name(), fs));
 					Date deathdate = dd==null?null:OpenmrsService.OPENMRS_DATE.parse(dd);
 					Boolean birthdateApprox = true;
