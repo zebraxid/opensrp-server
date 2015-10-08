@@ -24,14 +24,6 @@ import com.mysql.jdbc.StringUtils;
 public class HttpUtil {
 
     public HttpUtil() {
-        BasicHttpParams basicHttpParams = new BasicHttpParams();
-        HttpConnectionParams.setConnectionTimeout(basicHttpParams, 30000);
-        HttpConnectionParams.setSoTimeout(basicHttpParams, 60000);
-
-        SchemeRegistry registry = new SchemeRegistry();
-        registry.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));
-
-        ClientConnectionManager connectionManager = new ThreadSafeClientConnManager(basicHttpParams, registry);
     }
 
     /**
