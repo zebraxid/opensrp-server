@@ -1,7 +1,7 @@
 package org.opensrp.register.service.handler;
 
 import org.opensrp.form.domain.FormSubmission;
-import org.opensrp.register.service.ECService;
+import org.opensrp.register.service.KIService;
 import org.opensrp.service.formSubmission.handler.FormSubmissionHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -11,16 +11,15 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class KartuIbuHandler implements FormSubmissionHandler {
-    private ECService ecService;
+    private KIService kiService;
 
     @Autowired
-    public KartuIbuHandler(ECService ecService) {
-        this.ecService = ecService;
+    public KartuIbuHandler(KIService kiService) {
+        this.kiService = kiService;
     }
 
     @Override
     public void handle(FormSubmission submission) {
-
-        ecService.registerKartuIbu(submission);
+        kiService.registerKartuIbu(submission);
     }
 }

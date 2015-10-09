@@ -2,6 +2,7 @@ package org.opensrp.register.service;
 
 import org.opensrp.common.AllConstants;
 import org.opensrp.common.util.IntegerUtil;
+import org.opensrp.register.domain.EligibleCouple;
 import org.opensrp.register.domain.Mother;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.register.service.scheduling.KbSchedulesService;
@@ -17,27 +18,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
-import java.util.List;
-import java.util.Map;
-
-import static java.lang.Integer.parseInt;
-import static java.text.MessageFormat.format;
-import static org.opensrp.common.AllConstants.ANCCloseFields.DEATH_OF_WOMAN_VALUE;
-import static org.opensrp.common.AllConstants.ANCCloseFields.PERMANENT_RELOCATION_VALUE;
-import static org.opensrp.common.AllConstants.ANCFormFields.*;
-import static org.opensrp.common.AllConstants.ANCInvestigationsFormFields.*;
-import static org.opensrp.common.AllConstants.ANCVisitFormFields.*;
-import static org.opensrp.common.AllConstants.BOOLEAN_FALSE_VALUE;
-import static org.opensrp.common.AllConstants.BOOLEAN_TRUE_VALUE;
-import static org.opensrp.common.AllConstants.CommonFormFields.REFERENCE_DATE;
-import static org.opensrp.common.AllConstants.CommonFormFields.SUBMISSION_DATE_FIELD_NAME;
-import static org.opensrp.common.AllConstants.EntityCloseFormFields.CLOSE_REASON_FIELD_NAME;
-import static org.opensrp.common.AllConstants.HbTestFormFields.*;
-import static org.opensrp.common.AllConstants.IFAFields.IFA_TABLETS_DATE;
-import static org.opensrp.common.AllConstants.IFAFields.NUMBER_OF_IFA_TABLETS_GIVEN;
-import static org.opensrp.common.util.EasyMap.create;
-import static org.joda.time.LocalDate.parse;
+import static org.opensrp.common.AllConstants.FamilyPlanningFormFields.CURRENT_FP_METHOD_FIELD_NAME;
+import static org.opensrp.common.AllConstants.KbFormFields.*;
 
 @Service
 public class KbService {
@@ -64,40 +46,21 @@ public class KbService {
     }
 
     public void registerKB(FormSubmission submission) {
-        String motherId = submission.getField(AllConstants.ANCFormFields.ID_IBU);
-
-        if (!eligibleCouples.exists(submission.entityId())) {
-            logger.warn(format("Found mother without registered eligible couple. Ignoring: {0} for mother with id: {1} for ANM: {2}",
-                    submission.entityId(), motherId, submission.anmId()));
+        EligibleCouple ki = eligibleCouples.findByCaseId(submission.entityId());
+        if (ki == null) {
+            logger.warn("Tried register KB of a non-existing KI, with submission: " + submission);
             return;
         }
 
-        Mother mother = allMothers.findByCaseId(motherId);
-        allMothers.update(mother.withAnm(submission.anmId()));
+        String kbMethod = submission.getField(JENIS_KONTRASEPSI);
+        ki.details().put(CURRENT_FP_METHOD_FIELD_NAME, kbMethod);
+        ki.details().put(KETERANGAN_PESERTA_KB, submission.getField(KETERANGAN_PESERTA_KB));
 
-//        KbInjection(submission);
-
-//        List<String> reportFields = reportFieldsDefinition.get(submission.formName());
-//        reportingService.registerANC(new SafeMap(submission.getFields(reportFields)));
-    }
-
-    public void KbInjection(FormSubmission submission) {
-        String motherId = submission.getField(AllConstants.ANCFormFields.MOTHER_ID);
-
-        Mother mother = allMothers.findByCaseId(motherId);
-
-    //    ancSchedulesService.enrollMother(motherId, parse(submission.getField(REFERENCE_DATE)));
-
-//        List<String> reportFields = reportFieldsDefinition.get(submission.formName());
-        if (mother == null) {
-            logger.warn("Tried to handle KB provided without registered mother. Submission: " + submission);
-            return;
-        }
-        String jenisKontrasepsiYangDigunakan = submission.getField("jenisKontrasepsi");
+        eligibleCouples.update(ki);
         kbSchedulesService.kbHasHappen(submission.entityId(),
                 submission.anmId(),
-                jenisKontrasepsiYangDigunakan,
-                submission.getField("tanggalkunjungan"));
+                kbMethod,
+                submission.getField(TANGGAL_KUNJUNGAN));
     }
 
     public void KbFollowUp(FormSubmission submission) {
@@ -105,9 +68,6 @@ public class KbService {
 
         Mother mother = allMothers.findByCaseId(motherId);
 
-        //    ancSchedulesService.enrollMother(motherId, parse(submission.getField(REFERENCE_DATE)));
-
-//        List<String> reportFields = reportFieldsDefinition.get(submission.formName());
         if (mother == null) {
             logger.warn("Tried to handle KB provided without registered mother. Submission: " + submission);
             return;

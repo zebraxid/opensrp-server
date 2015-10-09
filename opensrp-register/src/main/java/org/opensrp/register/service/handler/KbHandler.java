@@ -18,6 +18,5 @@ public class KbHandler implements FormSubmissionHandler {
     @Override
     public void handle(FormSubmission submission) {
         kbService.registerKB(submission);
-        kbService.KbInjection(submission);
     }
 }

@@ -30,7 +30,7 @@ public class ApplicationStartupListener implements ApplicationListener<ContextRe
     		@Value("#{opensrp['mcts.poll.time.interval.in.minutes']}") int mctsPollIntervalInHours,
     		@Value("#{opensrp['openmrs.scheduletracker.syncer.interval-min']}") int openmrsSchSyncerMin) {
         this.scheduler = scheduler;
-        formSchedule = new RepeatingSchedule(DrishtiScheduleConstants.FORM_SCHEDULE_SUBJECT, 2, TimeUnit.MINUTES, formPollInterval, TimeUnit.MINUTES);
+        formSchedule = new RepeatingSchedule(DrishtiScheduleConstants.FORM_SCHEDULE_SUBJECT, 2, TimeUnit.MINUTES, 2, TimeUnit.MINUTES);
         openmrsScheduleSyncerScheduler = new RepeatingSchedule(OpenmrsConstants.SCHEDULER_TRACKER_SYNCER_SUBJECT, 2, TimeUnit.MINUTES, openmrsSchSyncerMin, TimeUnit.MINUTES);
         anmReportScheduler = new RepeatingSchedule(DrishtiScheduleConstants.ANM_REPORT_SCHEDULE_SUBJECT, 2, TimeUnit.MINUTES, 2, TimeUnit.MINUTES);
         mctsReportScheduler = new RepeatingSchedule(DrishtiScheduleConstants.MCTS_REPORT_SCHEDULE_SUBJECT, 2, TimeUnit.MINUTES, 2, TimeUnit.MINUTES);

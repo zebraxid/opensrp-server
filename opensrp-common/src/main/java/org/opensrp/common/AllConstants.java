@@ -187,6 +187,7 @@ public class AllConstants {
         public static final String TANGGAL_KUNJUNGAN = "tanggalkunjungan";
         public static final String JENIS_KONTRASEPSI="jenisKontrasepsi";
         public static final String IMPLANT = "Implant";
+        public static final String KETERANGAN_PESERTA_KB = "keteranganTentangPesertaKB";
         public static final String KB_IUD = "iud";
         public static final String SUNTIK_DEPOPROVERA ="suntik_depoprovera";
         public static final String SUNTIK_CYCLOFEM ="suntik_cyclofem";
