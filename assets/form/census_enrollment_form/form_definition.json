@@ -141,6 +141,22 @@
             "bind": "/model/instance/CensusNewWomanRegistrationForm/woman/FWWOMLNAME"
           },
           {
+            "name": "FWBIRTHDATE",
+            "bind": "/model/instance/CensusNewWomanRegistrationForm/woman/FWBIRTHDATE"
+          },
+          {
+            "name": "FWGENDER",
+            "bind": "/model/instance/CensusNewWomanRegistrationForm/woman/FWGENDER"
+          },
+          {
+            "name": "FWWOMAGE",
+            "bind": "/model/instance/CensusNewWomanRegistrationForm/woman/FWWOMAGE"
+          },
+          {
+            "name": "display_age",
+            "bind": "/model/instance/CensusNewWomanRegistrationForm/woman/display_age"
+          },
+          {
             "name": "FWNHWOMSTRMEN",
             "bind": "/model/instance/CensusNewWomanRegistrationForm/woman/FWNHWOMSTRMEN"
           },
@@ -183,22 +199,6 @@
           {
             "name": "FWHUSNAME",
             "bind": "/model/instance/CensusNewWomanRegistrationForm/woman/eligible/FWHUSNAME"
-          },
-          {
-            "name": "FWBIRTHDATE",
-            "bind": "/model/instance/CensusNewWomanRegistrationForm/woman/eligible/FWBIRTHDATE"
-          },
-          {
-            "name": "FWGENDER",
-            "bind": "/model/instance/CensusNewWomanRegistrationForm/woman/eligible/FWGENDER"
-          },
-          {
-            "name": "FWWOMAGE",
-            "bind": "/model/instance/CensusNewWomanRegistrationForm/woman/eligible/FWWOMAGE"
-          },
-          {
-            "name": "display_age",
-            "bind": "/model/instance/CensusNewWomanRegistrationForm/woman/eligible/display_age"
           },
           {
             "name": "FWWOMCOUNTRY",

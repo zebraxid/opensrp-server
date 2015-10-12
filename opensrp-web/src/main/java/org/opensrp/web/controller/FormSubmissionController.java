@@ -66,7 +66,7 @@ public class FormSubmissionController {
     @Autowired
     public FormSubmissionController(FormSubmissionService formSubmissionService, TaskSchedulerService scheduler,
     		EncounterService encounterService, OpenmrsConnector openmrsConnector, PatientService patientService, 
-    		HouseholdService householdService, MultimediaService multimediaService) {
+    		HouseholdService householdService, MultimediaService multimediaService, OpenmrsUserService openmrsUserService) {
         this.formSubmissionService = formSubmissionService;
         this.scheduler = scheduler;
         
@@ -188,13 +188,24 @@ public class FormSubmissionController {
     public ResponseEntity<String> getUserByLocation(@RequestParam("location-name") String locationName)
     {
     	JSONObject userObject=null;
+    	System.out.println("\n getUserByLocation : "+openmrsUserService.getTeamMemberByLocationTest(locationName) + "\n");
     	try {
     		userObject =  openmrsUserService.getTeamMemberByLocation(locationName);
-		} catch (JSONException e) {
+    		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return new ResponseEntity<>(new Gson().toJson(userObject),OK);
+    }
+    
+    @RequestMapping(method = GET, value = "/user-locationtest")
+    @ResponseBody
+    public ResponseEntity<HttpStatus> getUserByLocationtest(@RequestParam("location-name") String locationName)
+    {
+    	
+    	System.out.println("\n LocationTest : "+ openmrsUserService.getTeamMemberByLocationTest(locationName) + "\n");
+    	
+    	return new ResponseEntity<>(OK);
     }
     
     @RequestMapping(headers = {"Accept=application/json"}, method = GET, value = "/multimedia-file")
