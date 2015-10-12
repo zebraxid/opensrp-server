@@ -188,7 +188,6 @@ public class FormSubmissionController {
     public ResponseEntity<String> getUserByLocation(@RequestParam("location-name") String locationName)
     {
     	JSONObject userObject=null;
-    	System.out.println("\n getUserByLocation : "+openmrsUserService.getTeamMemberByLocationTest(locationName) + "\n");
     	try {
     		userObject =  openmrsUserService.getTeamMemberByLocation(locationName);
     		} catch (JSONException e) {
@@ -196,16 +195,6 @@ public class FormSubmissionController {
 			e.printStackTrace();
 		}
 		return new ResponseEntity<>(new Gson().toJson(userObject),OK);
-    }
-    
-    @RequestMapping(method = GET, value = "/user-locationtest")
-    @ResponseBody
-    public ResponseEntity<HttpStatus> getUserByLocationtest(@RequestParam("location-name") String locationName)
-    {
-    	
-    	System.out.println("\n LocationTest : "+ openmrsUserService.getTeamMemberByLocationTest(locationName) + "\n");
-    	
-    	return new ResponseEntity<>(OK);
     }
     
     @RequestMapping(headers = {"Accept=application/json"}, method = GET, value = "/multimedia-file")
