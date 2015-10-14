@@ -183,7 +183,7 @@ public class FormSubmissionController {
     	return new ResponseEntity<>(new Gson().toJson(hhService.getEntityIdBybrnId(brnIdList)),OK);
     }
     
-    @RequestMapping(method = GET, value = "/user-location")
+   /* @RequestMapping(method = GET, value = "/user-location")
     @ResponseBody
     public ResponseEntity<String> getUserByLocation(@RequestParam("location-name") String locationName)
     {
@@ -208,7 +208,7 @@ public class FormSubmissionController {
     	return new ResponseEntity<>(OK);
     }
     
-    @RequestMapping(headers = {"Accept=application/json"}, method = GET, value = "/multimedia-file")
+*/    @RequestMapping(headers = {"Accept=application/json"}, method = GET, value = "/multimedia-file")
     @ResponseBody
     public List<MultimediaDTO> getFiles(@RequestParam("anm-id") String providerId) {
     	
