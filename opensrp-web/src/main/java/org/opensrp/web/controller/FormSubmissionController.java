@@ -188,7 +188,6 @@ public class FormSubmissionController {
     public ResponseEntity<String> getUserByLocation(@RequestParam("location-name") String locationName)
     {
     	JSONObject userObject=null;
-    	System.out.println("\n getUserByLocation : "+openmrsUserService.getTeamMemberByLocationTest(locationName) + "\n");
     	try {
     		userObject =  openmrsUserService.getTeamMemberByLocation(locationName);
     		} catch (JSONException e) {
@@ -208,7 +207,8 @@ public class FormSubmissionController {
     	return new ResponseEntity<>(OK);
     }
     
-*/    @RequestMapping(headers = {"Accept=application/json"}, method = GET, value = "/multimedia-file")
+*/  
+    @RequestMapping(headers = {"Accept=application/json"}, method = GET, value = "/multimedia-file")
     @ResponseBody
     public List<MultimediaDTO> getFiles(@RequestParam("anm-id") String providerId) {
     	
