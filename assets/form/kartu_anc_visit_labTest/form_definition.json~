@@ -1,0 +1,83 @@
+{
+  "form_data_definition_version": "1",
+  "form": {
+    "bind_type": "ibu",
+    "default_bind_path": "/model/instance/ANC_Visit/",
+    "fields": [
+      {
+        "name": "id",
+        "shouldLoadValue": true
+      },
+      {
+        "name": "kiId",
+        "shouldLoadValue": true,
+        "source": "ibu.kartu_ibu.id"
+      },
+      {
+        "name": "referenceDate",
+        "bind": "/model/instance/ANC_Visit/B01043"
+      },
+      {
+        "name": "laboratoriumPeriksaHbHasil",
+        "bind": "/model/instance/ANC_Visit/B01066"
+      },
+      {
+        "name": "laboratoriumPeriksaHbAnemia",
+        "bind": "/model/instance/ANC_Visit/B01067"
+      },
+      {
+        "name": "laboratoriumProteinUria",
+        "bind": "/model/instance/ANC_Visit/B01068"
+      },
+      {
+        "name": "laboratoriumGulaDarah",
+        "bind": "/model/instance/ANC_Visit/B01069"
+      },
+      {
+        "name": "laboratoriumThalasemia",
+        "bind": "/model/instance/ANC_Visit/B01070"
+      },
+      {
+        "name": "laboratoriumSifilis",
+        "bind": "/model/instance/ANC_Visit/B01071"
+      },
+      {
+        "name": "laboratoriumHbsAg",
+        "bind": "/model/instance/ANC_Visit/B01072"
+      },
+      {
+        "name": "anemiaRisk",
+        "bind": "/model/instance/ANC_Visit/anemia_risk",
+        "source": "ibu.kartu_ibu.anemiaRisk"
+      },
+      {
+        "name": "diabetesRisk",
+        "bind": "/model/instance/ANC_Visit/diabetes_risk",
+        "source": "ibu.kartu_ibu.diabetesRisk"
+      },
+      {
+        "name": "isHighRiskPregnancy",
+        "bind": "/model/instance/ANC_Visit/is_high_risk_pregnancy",
+        "source": "ibu.kartu_ibu.isHighRiskPregnancy"
+      },
+      {
+        "name": "highRiskPregnancyReason",
+        "bind": "/model/instance/ANC_Visit/high_risk_pregnancy_reason",
+        "source": "ibu.kartu_ibu.highRiskPregnancyReason"
+      },
+      {
+        "name": "highRiskNote",
+        "bind": "/model/instance/ANC_Visit/high_risk_note",
+        "source": "ibu.kartu_ibu.highRiskNote"
+      },
+      {
+        "name": "submissionDate",
+        "bind": "/model/instance/ANC_Visit/today"
+      },
+      {
+        "name": "registrationDate",
+        "bind": "/model/instance/ANC_Visit/reg_date"
+      }
+    ]
+  }
+}

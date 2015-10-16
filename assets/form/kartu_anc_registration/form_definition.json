@@ -14,320 +14,100 @@
       },
       {
         "name": "referenceDate",
-        "bind": "/model/instance/Register_ANC_only/tanggal_periksa",
+        "bind": "/model/instance/Register_ANC_only/B01026",
         "source": "kartu_ibu.ibu.referenceDate"
       },
       {
         "name": "gravida",
-        "bind": "/model/instance/Register_ANC_only/gravida",
+        "bind": "/model/instance/Register_ANC_only/B01022",
         "shouldLoadValue": true
       },
       {
         "name": "partus",
-        "bind": "/model/instance/Register_ANC_only/partus",
+        "bind": "/model/instance/Register_ANC_only/B01023",
         "shouldLoadValue": true
       },
       {
         "name": "abortus",
-        "bind": "/model/instance/Register_ANC_only/abortus",
+        "bind": "/model/instance/Register_ANC_only/B01024",
         "shouldLoadValue": true
       },
       {
         "name": "hidup",
-        "bind": "/model/instance/Register_ANC_only/hidup",
+        "bind": "/model/instance/Register_ANC_only/B01025",
         "shouldLoadValue": true
       },
       {
         "name": "persalinanSebelumnya",
-        "bind": "/model/instance/Register_ANC_only/persalinan_sebelumnya",
+        "bind": "/model/instance/Register_ANC_only/B01029",
         "source": "kartu_ibu.ibu.persalinanSebelumnya"
       },
       {
-        "name": "rkk",
-        "bind": "/model/instance/Register_ANC_only/rkk",
-        "source": "kartu_ibu.ibu.rkk"
-      },
-      {
         "name": "riwayatKomplikasiKebidanan",
-        "bind": "/model/instance/Register_ANC_only/riwayat_komplikasi_kebidanan",
+        "bind": "/model/instance/Register_ANC_only/B01033",
         "source": "kartu_ibu.ibu.riwayatKomplikasiKebidanan"
       },
       {
         "name": "rkklainnya",
-        "bind": "/model/instance/Register_ANC_only/rkklainnya",
+        "bind": "/model/instance/Register_ANC_only/B01033L",
         "source": "kartu_ibu.ibu.rkklainnya"
       },
       {
-        "name": "kronis",
-        "bind": "/model/instance/Register_ANC_only/kronis",
-        "source": "kartu_ibu.ibu.kronis"
-      },
-      {
         "name": "penyakitKronis",
-        "bind": "/model/instance/Register_ANC_only/penyakit_kronis",
+        "bind": "/model/instance/Register_ANC_only/B01034",
         "source": "kartu_ibu.ibu.penyakitKronis"
       },
       {
         "name": "rpkLainnya",
-        "bind": "/model/instance/Register_ANC_only/rpklainnya",
+        "bind": "/model/instance/Register_ANC_only/B01034L",
         "source": "kartu_ibu.ibu.rpkLainnya"
       },
       {
         "name": "Alergi",
-        "bind": "/model/instance/Register_ANC_only/alergi",
+        "bind": "/model/instance/Register_ANC_only/B01035",
         "source": "kartu_ibu.ibu.Alergi"
       },
       {
-        "name": "kelainanBentuk",
-        "bind": "/model/instance/Register_ANC_only/kelainanbentuk",
-        "source": "kartu_ibu.ibu.kelainanBentuk"
-      },
-      {
         "name": "tanggalHPHT",
-        "bind": "/model/instance/Register_ANC_only/tanggal_hpht",
+        "bind": "/model/instance/Register_ANC_only/B01027",
         "source": "kartu_ibu.ibu.tanggalHPHT"
       },
       {
         "name": "htp",
-        "bind": "/model/instance/Register_ANC_only/htp"
+        "bind": "/model/instance/Register_ANC_only/B01028"
       },
       {
         "name": "trimesterKe",
-        "bind": "/model/instance/Register_ANC_only/trimester_ke"
-      },
-      {
-        "name": "ancKe",
-        "bind": "/model/instance/Register_ANC_only/anc_ke"
+        "bind": "/model/instance/Register_ANC_only/B01047"
       },
       {
         "name": "bukuKIA",
-        "bind": "/model/instance/Register_ANC_only/buku_kia",
+        "bind": "/model/instance/Register_ANC_only/B01032",
         "source": "kartu_ibu.ibu.bukuKIA"
       },
       {
         "name": "tanggalMemperolehBukuKia",
-        "bind": "/model/instance/Register_ANC_only/tanggal_memperoleh_buku_kia",
+        "bind": "/model/instance/Register_ANC_only/B02010",
         "source": "kartu_ibu.ibu.tanggalMemperolehBukuKia"
       },
       {
         "name": "jamkesmas",
-        "bind": "/model/instance/Register_ANC_only/jamkesmas"
-      },
-      {
-        "name": "caraMasukTempatPelayanan",
-        "bind": "/model/instance/Register_ANC_only/cara_masuk_tempat_pelayanan"
-      },
-      {
-        "name": "anamnesisIbu",
-        "bind": "/model/instance/Register_ANC_only/anamnesis_ibu"
-      },
-      {
-        "name": "bbSebelumHamil",
-        "bind": "/model/instance/Register_ANC_only/bb_kg_1",
-        "source": "kartu_ibu.ibu.bbSebelumHamil"
+        "bind": "/model/instance/Register_ANC_only/B01044"
       },
       {
         "name": "tbCM",
-        "bind": "/model/instance/Register_ANC_only/tb_cm",
+        "bind": "/model/instance/Register_ANC_only/B01031",
         "source": "kartu_ibu.ibu.tbCM"
       },
       {
         "name": "bbKg",
-        "bind": "/model/instance/Register_ANC_only/bb_kg_2",
+        "bind": "/model/instance/Register_ANC_only/B01030",
         "source": "kartu_ibu.ibu.bbKg"
       },
       {
-        "name": "tandaVitalTDSistolik",
-        "bind": "/model/instance/Register_ANC_only/td_sistolik"
-      },
-      {
-        "name": "tandaVitalTDDiastolik",
-        "bind": "/model/instance/Register_ANC_only/td_diastolik"
-      },
-      {
         "name": "hasilPemeriksaanLILA",
-        "bind": "/model/instance/Register_ANC_only/lila_cm",
+        "bind": "/model/instance/Register_ANC_only/B01052",
         "source": "kartu_ibu.ibu.hasilPemeriksaanLILA"
-      },
-      {
-        "name": "statusGiziibu",
-        "bind": "/model/instance/Register_ANC_only/status_gizi_ibu",
-        "source": "kartu_ibu.ibu.statusGiziibu"
-      },
-      {
-        "name": "tfu",
-        "bind": "/model/instance/Register_ANC_only/tfu",
-        "source": "kartu_ibu.ibu.tfu"
-      },
-      {
-        "name": "refleksPatelaIbu",
-        "bind": "/model/instance/Register_ANC_only/refleks_patela_ibu",
-        "source": "kartu_ibu.ibu.refleksPatelaIbu"
-      },
-      {
-        "name": "djj",
-        "bind": "/model/instance/Register_ANC_only/djj",
-        "source": "kartu_ibu.ibu.djj"
-      },
-      {
-        "name": "kepalaJaninTerhadapPAP",
-        "bind": "/model/instance/Register_ANC_only/kepala_terhadap_janin_pap",
-        "source": "kartu_ibu.ibu.kepalaJaninTerhadapPAP"
-      },
-      {
-        "name": "taksiranBeratJanin",
-        "bind": "/model/instance/Register_ANC_only/taksiran_berat_janin",
-        "source": "kartu_ibu.ibu.taksiranBeratJanin"
-      },
-      {
-        "name": "persentasiJanin",
-        "bind": "/model/instance/Register_ANC_only/persentasi_janin",
-        "source": "kartu_ibu.ibu.persentasiJanin"
-      },
-      {
-        "name": "jumlahJanin",
-        "bind": "/model/instance/Register_ANC_only/jumlah_janin",
-        "source": "kartu_ibu.ibu.jumlahJanin"
-      },
-      {
-        "name": "statusImunisasitt",
-        "bind": "/model/instance/Register_ANC_only/status_imunisasi_tt",
-        "source": "kartu_ibu.ibu.statusImunisasitt"
-      },
-      {
-        "name": "pelayananInjeksitt",
-        "bind": "/model/instance/Register_ANC_only/pelayanan_injeksi_tt",
-        "source": "kartu_ibu.ibu.pelayananInjeksitt"
-      },
-      {
-        "name": "pelayananCatatDiBukuKia",
-        "bind": "/model/instance/Register_ANC_only/pelayanan_catat_buku_kia",
-        "source": "kartu_ibu.ibu.pelayananCatatDiBukuKia"
-      },
-      {
-        "name": "pelayananfe",
-        "bind": "/model/instance/Register_ANC_only/pelayananfe",
-        "source": "kartu_ibu.ibu.pelayananfe"
-      },
-      {
-        "name": "pelayananFe",
-        "bind": "/model/instance/Register_ANC_only/pelayanan_fe",
-        "source": "kartu_ibu.ibu.pelayananFe"
-      },
-      {
-        "name": "labCheck",
-        "bind": "/model/instance/Register_ANC_only/Labcheck",
-        "source": "kartu_ibu.ibu.labCheck"
-      },
-      {
-        "name": "laboratoriumPeriksaHbDilakukan",
-        "bind": "/model/instance/Register_ANC_only/laboratorium_periksa_hb_dilakukan"
-      },
-      {
-        "name": "laboratoriumPeriksaHbHasil",
-        "bind": "/model/instance/Register_ANC_only/laboratorium_periksa_hb_hasil"
-      },
-      {
-        "name": "laboratoriumPeriksaHbAnemia",
-        "bind": "/model/instance/Register_ANC_only/laboratorium_periksa_hb_anemia"
-      },
-      {
-        "name": "laboratoriumProteinUria",
-        "bind": "/model/instance/Register_ANC_only/laboratorium_protein_uria"
-      },
-      {
-        "name": "laboratoriumGulaDarah",
-        "bind": "/model/instance/Register_ANC_only/laboratorium_gula_darah"
-      },
-      {
-        "name": "laboratoriumThalasemia",
-        "bind": "/model/instance/Register_ANC_only/laboratorium_thalasemia"
-      },
-      {
-        "name": "laboratoriumSifilis",
-        "bind": "/model/instance/Register_ANC_only/laboratorium_sifilis"
-      },
-      {
-        "name": "laboratoriumHbsAg",
-        "bind": "/model/instance/Register_ANC_only/laboratorium_hbsag"
-      },
-      {
-        "name": "programIntegration",
-        "bind": "/model/instance/Register_ANC_only/program_integration"
-      },
-      {
-        "name": "integrasiProgrampmtctvct",
-        "bind": "/model/instance/Register_ANC_only/integrasi_program_pmtct_vct"
-      },
-      {
-        "name": "integrasiProgrampmtctPeriksaDarah",
-        "bind": "/model/instance/Register_ANC_only/integrasi_program_pmtct_periksa_darah"
-      },
-      {
-        "name": "integrasiProgrampmtctSerologi",
-        "bind": "/model/instance/Register_ANC_only/integrasi_program_pmtct_serologi"
-      },
-      {
-        "name": "integrasiProgrampmtctarvProfilaksis",
-        "bind": "/model/instance/Register_ANC_only/integrasi_program_pmtct_arv"
-      },
-      {
-        "name": "integrasiProgramMalariaPeriksaDarah",
-        "bind": "/model/instance/Register_ANC_only/integrasi_program_malaria_periksa_darah"
-      },
-      {
-        "name": "integrasiProgramMalariaMalaria",
-        "bind": "/model/instance/Register_ANC_only/integrasi_program_malaria_malaria"
-      },
-      {
-        "name": "integrasiProgramMalariaObat",
-        "bind": "/model/instance/Register_ANC_only/integrasi_program_malaria_obat"
-      },
-      {
-        "name": "integrasiProgramMalariaKelambuBerinsektisida",
-        "bind": "/model/instance/Register_ANC_only/integrasi_program_malaria_kelambu"
-      },
-      {
-        "name": "integrasiProgramtbDahak",
-        "bind": "/model/instance/Register_ANC_only/integrasi_program_tb_dahak"
-      },
-      {
-        "name": "integrasiProgramtbtbc",
-        "bind": "/model/instance/Register_ANC_only/integrasi_program_tb_tbc"
-      },
-      {
-        "name": "integrasiProgramtbObat",
-        "bind": "/model/instance/Register_ANC_only/integrasi_program_tb_obat"
-      },
-      {
-        "name": "resikoTerdeteksiPertamaKaliOleh",
-        "bind": "/model/instance/Register_ANC_only/resiko_terdeksi_pertama_kali"
-      },
-      {
-        "name": "komplikasidalamKehamilan",
-        "bind": "/model/instance/Register_ANC_only/komplikasi_dalam_kehamilan"
-      },
-      {
-        "name": "rujukan",
-        "bind": "/model/instance/Register_ANC_only/rujukan"
-      },
-      {
-        "name": "dirujukKe",
-        "bind": "/model/instance/Register_ANC_only/dirujuk_ke"
-      },
-      {
-        "name": "lainLain",
-        "bind": "/model/instance/Register_ANC_only/dirujuk_keL"
-      },
-      {
-        "name": "keadaanIbusaatTiba",
-        "bind": "/model/instance/Register_ANC_only/keadaan_ibu_saat_tiba",
-        "source": "kartu_ibu.ibu.keadaanIbusaatTiba"
-      },
-      {
-        "name": "keadaanIbusaatPulang",
-        "bind": "/model/instance/Register_ANC_only/keadaan_ibu_saat_pulang",
-        "source": "kartu_ibu.ibu.keadaanIbusaatPulang"
       },
       {
         "name": "keterangan",
@@ -347,22 +127,6 @@
         "bind": "/model/instance/Register_ANC_only/PIH_risk"
       },
       {
-        "name": "diabetesRisk",
-        "bind": "/model/instance/Register_ANC_only/diabetes_risk"
-      },
-      {
-        "name": "fetusNumberRisk",
-        "bind": "/model/instance/Register_ANC_only/fetus_number_risk"
-      },
-      {
-        "name": "fetusSizeRisk",
-        "bind": "/model/instance/Register_ANC_only/fetus_size_risk"
-      },
-      {
-        "name": "fetusMalpresentationRisk",
-        "bind": "/model/instance/Register_ANC_only/fetus_Malpresentation_risk"
-      },
-      {
         "name": "tbcRisk",
         "bind": "/model/instance/Register_ANC_only/TBC_risk"
       },
@@ -376,7 +140,7 @@
       },
       {
         "name": "tooManyChildrenRisk",
-        "bind": "/model/instance/Register_ANC_only/`"
+        "bind": "/model/instance/Register_ANC_only/Too_many_children_risk"
       },
       {
         "name": "abortusRisk",
