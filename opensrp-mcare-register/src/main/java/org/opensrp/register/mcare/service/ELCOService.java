@@ -1,3 +1,7 @@
+/**
+ * The ELCOService class implements ELCO registry, Census Enrollment and PSRF schedule. 
+ * @author julkar nain 
+ */
 package org.opensrp.register.mcare.service;
 
 import static java.text.MessageFormat.format;
@@ -15,6 +19,7 @@ import org.opensrp.register.mcare.domain.HouseHold;
 import org.opensrp.register.mcare.repository.AllElcos;
 import org.opensrp.register.mcare.repository.AllHouseHolds;
 import org.opensrp.register.mcare.service.scheduling.ELCOScheduleService;
+import org.opensrp.register.mcare.service.scheduling.HHSchedulesService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,13 +36,15 @@ public class ELCOService {
 
 	private AllHouseHolds allHouseHolds;
 	private AllElcos allEcos;
+	private HHSchedulesService hhSchedulesService;
 	private ELCOScheduleService elcoScheduleService;
 
 	@Autowired
-	public ELCOService(AllHouseHolds allHouseHolds, AllElcos allEcos,
+	public ELCOService(AllHouseHolds allHouseHolds, AllElcos allEcos, HHSchedulesService hhSchedulesService,
 			ELCOScheduleService elcoScheduleService) {
 		this.allHouseHolds = allHouseHolds;
 		this.allEcos = allEcos;
+		this.hhSchedulesService = hhSchedulesService;
 		this.elcoScheduleService = elcoScheduleService;
 	}
 
@@ -77,6 +84,10 @@ public class ELCOService {
 			houseHold.withINSTANCEID(submission.instanceId());
 			houseHold.withTODAY(submission.getField(REFERENCE_DATE));
 			allHouseHolds.update(houseHold);
+			
+			hhSchedulesService.enrollIntoMilestoneOfCensus(submission.entityId(),
+					submission.getField(REFERENCE_DATE));
+
 		}
 	}
 	
@@ -173,5 +184,8 @@ public class ELCOService {
 			elco.withTODAY(submission.getField(REFERENCE_DATE));
 			
 			allEcos.update(elco);
+			
+			elcoScheduleService.enrollIntoMilestoneOfPSRF(submission.entityId(),
+					submission.getField(REFERENCE_DATE));
 	}
 }
