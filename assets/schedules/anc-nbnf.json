@@ -1,0 +1,35 @@
+{
+    "name": "ANC NBNF",
+    "absolute": true,
+    "milestones": [
+        {
+            "name": "ANC NBNF",
+            "scheduleWindows": {
+                "earliest": ["261 Days"],
+                "due": ["262 Days"],
+                "late": ["263 Days"]
+            },
+            "alerts": [
+            	{
+                    "window": "earliest",
+                    "offset": ["0 Days"],
+                    "interval": ["1 Day"],
+                    "count": "261"
+                },
+                {
+                    "window": "due",
+                    "offset": ["261 Days"],
+                    "interval": ["1 Day"],
+                    "count": "1"
+                },
+                {
+                    "window": "late",
+                    "offset": ["262 Days"],
+                    "interval": ["1 Day"],
+                    "count": "1"
+                }
+                
+            ]
+        }
+    ]
+}
