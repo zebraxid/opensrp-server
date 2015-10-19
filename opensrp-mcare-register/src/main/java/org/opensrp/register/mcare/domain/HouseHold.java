@@ -65,7 +65,11 @@ public class HouseHold extends MotechBaseDataObject {
 	@JsonProperty
 	private String FWNHHMWRA;
 	@JsonProperty
-	private String MWRA;
+	private String ELCO;
+	@JsonProperty
+	private String user_type;
+	@JsonProperty
+	private String external_user_ID;
 	@JsonProperty
 	private List<Map<String, String>> ELCODETAILS;
 	@JsonProperty
@@ -202,8 +206,18 @@ public class HouseHold extends MotechBaseDataObject {
 		return this;
 	}
 
-	public HouseHold withMWRA(String MWRA) {
-		this.MWRA = MWRA;
+	public HouseHold withELCO(String ELCO) {
+		this.ELCO = ELCO;
+		return this;
+	}
+	
+	public HouseHold withuser_type(String user_type) {
+		this.user_type = user_type;
+		return this;
+	}
+
+	public HouseHold withexternal_user_ID(String external_user_ID) {
+		this.external_user_ID = external_user_ID;
 		return this;
 	}
 
@@ -317,8 +331,16 @@ public class HouseHold extends MotechBaseDataObject {
 		return FWNHHMWRA;
 	}
 
-	public String MWRA() {
-		return MWRA;
+	public String ELCO() {
+		return ELCO;
+	}
+	
+	public String user_type() {
+		return user_type;
+	}
+
+	public String external_user_ID() {
+		return external_user_ID;
 	}
 
 	public List<Map<String, String>> ELCODETAILS() {
@@ -363,6 +385,6 @@ public class HouseHold extends MotechBaseDataObject {
 	@Override
 	public String toString() {
 		return ToStringBuilder.reflectionToString(this);
-	}
+	}	
 
 }

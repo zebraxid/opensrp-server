@@ -60,8 +60,12 @@ public class HHRegisterEntry {
 	private String FWNHHMBRNUM;
 	
 	private String FWNHHMWRA;
+
+	private String ELCO;
 	
-	private String MWRA;
+	private String user_type;
+
+	private String external_user_ID;
 	
 	private List<Map<String, String>> ELCODETAILS;
 	
@@ -197,8 +201,18 @@ public class HHRegisterEntry {
 		return this;
 	}
 
-	public HHRegisterEntry withMWRA(String MWRA) {
-		this.MWRA = MWRA;
+	public HHRegisterEntry withELCO(String ELCO) {
+		this.ELCO = ELCO;
+		return this;
+	}
+	
+	public HHRegisterEntry withuser_type(String user_type) {
+		this.user_type = user_type;
+		return this;
+	}
+
+	public HHRegisterEntry withexternal_user_ID(String external_user_ID) {
+		this.external_user_ID = external_user_ID;
 		return this;
 	}
 
@@ -312,8 +326,16 @@ public class HHRegisterEntry {
 		return FWNHHMWRA;
 	}
 
-	public String MWRA() {
-		return MWRA;
+	public String ELCO() {
+		return ELCO;
+	}
+	
+	public String user_type() {
+		return user_type;
+	}
+
+	public String external_user_ID() {
+		return external_user_ID;
 	}
 
 	public List<Map<String, String>> ELCODETAILS() {

@@ -62,7 +62,11 @@ public class HHRegisterEntryDTO {
 	@JsonProperty
 	private String FWNHHMWRA;
 	@JsonProperty
-	private String MWRA;
+	private String ELCO;
+	@JsonProperty
+	private String user_type;
+	@JsonProperty
+	private String external_user_ID;
 	@JsonProperty
 	private List<Map<String, String>> ELCODETAILS;
 	@JsonProperty
@@ -199,8 +203,18 @@ public class HHRegisterEntryDTO {
 		return this;
 	}
 
-	public HHRegisterEntryDTO withMWRA(String MWRA) {
-		this.MWRA = MWRA;
+	public HHRegisterEntryDTO withELCO(String ELCO) {
+		this.ELCO = ELCO;
+		return this;
+	}
+	
+	public HHRegisterEntryDTO withuser_type(String user_type) {
+		this.user_type = user_type;
+		return this;
+	}
+
+	public HHRegisterEntryDTO withexternal_user_ID(String external_user_ID) {
+		this.external_user_ID = external_user_ID;
 		return this;
 	}
 
