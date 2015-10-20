@@ -1,0 +1,134 @@
+{
+    "name": "ANC RV",
+    "absolute": true,
+    "milestones": [
+        {
+            "name": "ANC RV1",
+            "scheduleWindows": {
+                "earliest": ["51 Days"],
+                "due": ["56 Days"],
+                "late": ["163 Days"],
+                "max": ["163 Days"]
+            },
+            "alerts": [
+            	{
+                    "window": "earliest",
+                    "offset": ["0 Days"],
+                    "interval": ["1 Day"],
+                    "count": "51"
+                },
+                {
+                    "window": "due",
+                    "offset": ["51 Days"],
+                    "interval": ["1 Day"],
+                    "count": "5"
+                },
+                {
+                    "window": "late",
+                    "offset": ["56 Days"],
+                    "interval": ["1 Day"],
+                    "count": "107"
+                },
+                {
+                    "window": "max",
+                    "offset": ["163 Days"],
+                    "interval": ["1 Day"],
+                    "count": "1"
+                }
+                
+            ]
+        },
+        {
+            "name": "ANC RV2",
+            "scheduleWindows": {
+                "earliest": ["163 Days"],
+                "due": ["168 Days"],
+                "late": ["219 Days"],
+                "max": ["219 Days"]
+            },
+            "alerts": [           
+                {
+                    "window": "due",
+                    "offset": ["163 Days"],
+                    "interval": ["1 Day"],
+                    "count": "5"
+                },
+                {
+                    "window": "late",
+                    "offset": ["168 Days"],
+                    "interval": ["1 Day"],
+                    "count": "51"
+                }              
+            ]
+        },
+        {
+            "name": "ANC RV3",
+            "scheduleWindows": {
+                "earliest": ["219 Days"],
+                "due": ["224 Days"],
+                "late": ["247 Days"],
+                "max": ["247 Days"]
+            },
+            "alerts": [            	
+                {
+                    "window": "due",
+                    "offset": ["219 Days"],
+                    "interval": ["1 Day"],
+                    "count": "5"
+                },
+                {
+                    "window": "late",
+                    "offset": ["224 Days"],
+                    "interval": ["1 Day"],
+                    "count": "23"
+                }            
+            ]
+        },
+        {
+            "name": "ANC RV4",
+            "scheduleWindows": {
+                "earliest": ["247 Days"],
+                "due": ["252 Days"],
+                "late": ["253 Days"],
+                "max": ["253 Days"]
+            },
+            "alerts": [
+                {
+                    "window": "due",
+                    "offset": ["247 Days"],
+                    "interval": ["1 Day"],
+                    "count": "5"
+                },
+                {
+                    "window": "late",
+                    "offset": ["252 Days"],
+                    "interval": ["1 Day"],
+                    "count": "1"
+                }         
+            ]
+        },
+        {
+            "name": "ANC NBNF",
+            "scheduleWindows": {
+                "earliest": ["261 Days"],
+                "due": ["262 Days"],
+                "late": ["263 Days"],
+                "max": ["263 Days"]
+            },
+            "alerts": [
+                {
+                    "window": "due",
+                    "offset": ["261 Days"],
+                    "interval": ["1 Day"],
+                    "count": "1"
+                },
+                {
+                    "window": "late",
+                    "offset": ["262 Days"],
+                    "interval": ["1 Day"],
+                    "count": "1"
+                }              
+            ]
+        }       
+    ]
+}
