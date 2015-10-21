@@ -220,6 +220,137 @@ public class AllConstants {
     	public static final String FWANC1DNGRSIGN ="FWANC1DNGRSIGN";
     	public static final String FWDISPLAYTEXT6 ="FWDISPLAYTEXT6";
     	public static final String FWDISPLAYTEXT7 ="FWDISPLAYTEXT7";
+    	public static final String FWDISPLAYTEXT8 ="FWDISPLAYTEXT8";
+    	public static final String FWDISPLAYTEXT9 ="FWDISPLAYTEXT9";
+    	public static final String FWDISPLAYTEXT10 ="FWDISPLAYTEXT10";
+    	public static final String FWDISPLAYTEXT11 ="FWDISPLAYTEXT11";
+    	public static final String FWBPC1LOCOFDEL ="FWBPC1LOCOFDEL";
+    	public static final String FWBPC1DISPLAYTEXT1 ="FWBPC1DISPLAYTEXT1";
+    	public static final String FWBPC1DISPLAYTEXT2 ="FWBPC1DISPLAYTEXT2";
+    	public static final String FWBPC1DISPLAYTEXT3 ="FWBPC1DISPLAYTEXT3";
+    	public static final String FWBPC1ASSTLAB ="FWBPC1ASSTLAB";
+    	public static final String FWBPC1DISPLAYTEXT4 ="FWBPC1DISPLAYTEXT4";
+    	public static final String FWBPC1DISPLAYTEXT5 ="FWBPC1DISPLAYTEXT5";
+    	public static final String FWBPC1TRNSPRT ="FWBPC1TRNSPRT";
+    	public static final String FWBPC1DISPLAYTEXT6 ="FWBPC1DISPLAYTEXT6";
+    	public static final String FWBPC1DISPLAYTEXT7 ="FWBPC1DISPLAYTEXT7";
+    	public static final String FWBPC1BLDGRP ="FWBPC1BLDGRP";
+    	public static final String FWBPC1DISPLAYTEXT8 ="FWBPC1DISPLAYTEXT8";
+    	public static final String FWBPC1DISPLAYTEXT9 ="FWBPC1DISPLAYTEXT9";
+    	public static final String FWBPC1BLDDNR ="FWBPC1BLDDNR";
+    	public static final String FWBPC1DISPLAYTEXT10 ="FWBPC1DISPLAYTEXT10";
+    	public static final String FWBPC1DISPLAYTEXT11 ="FWBPC1DISPLAYTEXT11";
+    	public static final String FWBPC1FINARGMT ="FWBPC1FINARGMT";
+    	public static final String FWBPC1DISPLAYTEXT12 ="FWBPC1DISPLAYTEXT12";
+    	public static final String FWBPC1DISPLAYTEXT13 ="FWBPC1DISPLAYTEXT13";
+    	
+    }
+    
+    public static class ANCVisitTwoFields
+    {
+    	public static final String FWANC2DATE ="FWANC2DATE";
+    	public static final String FWANC2REMSTS ="FWANC2REMSTS";
+    	public static final String FWANC2INT ="FWANC2INT";
+    	public static final String FWANC2KNWPRVDR ="FWANC2KNWPRVDR";
+    	public static final String FWANC2PREGCOND ="FWANC2PREGCOND";
+    	public static final String FWANC2PROB ="FWANC2PROB";
+    	public static final String FWANC2DNGRSIGN ="FWANC2DNGRSIGN";
+    	public static final String FWBPC2LOCOFDEL ="FWBPC2LOCOFDEL";
+    	public static final String FWBPC2DISPLAYTEXT1 ="FWBPC2DISPLAYTEXT1";
+    	public static final String FWBPC2DISPLAYTEXT2 ="FWBPC2DISPLAYTEXT2";
+    	public static final String FWBPC2DISPLAYTEXT3 ="FWBPC2DISPLAYTEXT3";
+    	public static final String FWBPC2ASSTLAB ="FWBPC2ASSTLAB";
+    	public static final String FWBPC2DISPLAYTEXT4 ="FWBPC2DISPLAYTEXT4";
+    	public static final String FWBPC2DISPLAYTEXT5 ="FWBPC2DISPLAYTEXT5";
+    	public static final String FWBPC2TRNSPRT ="FWBPC2TRNSPRT";
+    	public static final String FWBPC2DISPLAYTEXT6 ="FWBPC2DISPLAYTEXT6";
+    	public static final String FWBPC2DISPLAYTEXT7 ="FWBPC2DISPLAYTEXT7";
+    	public static final String FWBPC2BLDGRP ="FWBPC2BLDGRP";
+    	public static final String FWBPC2DISPLAYTEXT8 ="FWBPC2DISPLAYTEXT8";
+    	public static final String FWBPC2DISPLAYTEXT9 ="FWBPC2DISPLAYTEXT9";
+    	public static final String FWBPC2BLDDNR ="FWBPC2BLDDNR";
+    	public static final String FWBPC2DISPLAYTEXT10 ="FWBPC2DISPLAYTEXT10";
+    	public static final String FWBPC2DISPLAYTEXT11 ="FWBPC2DISPLAYTEXT11";
+    	public static final String FWBPC2FINARGMT ="FWBPC2FINARGMT";
+    	public static final String FWBPC2DISPLAYTEXT12 ="FWBPC2DISPLAYTEXT12";
+    	public static final String FWBPC2DISPLAYTEXT13 ="FWBPC2DISPLAYTEXT13";
+    	
+    }
+    
+    public static class ANCVisitThreeFields
+    {
+    	public static final String FWANC3DATE ="FWANC3DATE";
+    	public static final String FWANC3REMSTS ="FWANC3REMSTS";
+    	public static final String FWANC3INT ="FWANC3INT";
+    	public static final String FWANC3KNWPRVDR ="FWANC3KNWPRVDR";
+    	public static final String FWANC3PREGCOND ="FWANC3PREGCOND";
+    	public static final String FWANC3PROB ="FWANC3PROB";
+    	public static final String FWANC3DNGRSIGN ="FWANC3DNGRSIGN";
+    	public static final String FWBPC3LOCOFDEL ="FWBPC3LOCOFDEL";
+    	public static final String FWBPC3DISPLAYTEXT1 ="FWBPC3DISPLAYTEXT1";
+    	public static final String FWBPC3DISPLAYTEXT2 ="FWBPC3DISPLAYTEXT2";
+    	public static final String FWBPC3DISPLAYTEXT3 ="FWBPC3DISPLAYTEXT3";
+    	public static final String FWBPC3ASSTLAB ="FWBPC3ASSTLAB";
+    	public static final String FWBPC3DISPLAYTEXT4 ="FWBPC3DISPLAYTEXT4";
+    	public static final String FWBPC3DISPLAYTEXT5 ="FWBPC3DISPLAYTEXT5";
+    	public static final String FWBPC3TRNSPRT ="FWBPC3TRNSPRT";
+    	public static final String FWBPC3DISPLAYTEXT6 ="FWBPC3DISPLAYTEXT6";
+    	public static final String FWBPC3DISPLAYTEXT7 ="FWBPC3DISPLAYTEXT7";
+    	public static final String FWBPC3BLDGRP ="FWBPC3BLDGRP";
+    	public static final String FWBPC3DISPLAYTEXT8 ="FWBPC3DISPLAYTEXT8";
+    	public static final String FWBPC3DISPLAYTEXT9 ="FWBPC3DISPLAYTEXT9";
+    	public static final String FWBPC3BLDDNR ="FWBPC3BLDDNR";
+    	public static final String FWBPC3DISPLAYTEXT10 ="FWBPC3DISPLAYTEXT10";
+    	public static final String FWBPC3DISPLAYTEXT11 ="FWBPC3DISPLAYTEXT11";
+    	public static final String FWBPC3FINARGMT ="FWBPC3FINARGMT";
+    	public static final String FWBPC3DISPLAYTEXT12 ="FWBPC3DISPLAYTEXT12";
+    	public static final String FWBPC3DISPLAYTEXT13 ="FWBPC3DISPLAYTEXT13";
+    
+    }
+    
+    public static class ANCVisitFourFields
+    {
+    	public static final String FWANC4DATE ="FWANC4DATE";
+    	public static final String FWANC4REMSTS ="FWANC4REMSTS";
+    	public static final String FWANC4INT ="FWANC4INT";
+    	public static final String FWANC4KNWPRVDR ="FWANC4KNWPRVDR";
+    	public static final String FWANC4PREGCOND ="FWANC4PREGCOND";
+    	public static final String FWANC4PROB ="FWANC4PROB";
+    	public static final String FWANC4DNGRSIGN ="FWANC4DNGRSIGN";
+    	public static final String FWBPC4LOCOFDEL ="FWBPC4LOCOFDEL";
+    	public static final String FWBPC4DISPLAYTEXT1 ="FWBPC4DISPLAYTEXT1";
+    	public static final String FWBPC4DISPLAYTEXT2 ="FWBPC4DISPLAYTEXT2";
+    	public static final String FWBPC4DISPLAYTEXT3 ="FWBPC4DISPLAYTEXT3";
+    	public static final String FWBPC4ASSTLAB ="FWBPC4ASSTLAB";
+    	public static final String FWBPC4DISPLAYTEXT4 ="FWBPC4DISPLAYTEXT4";
+    	public static final String FWBPC4DISPLAYTEXT5 ="FWBPC4DISPLAYTEXT5";
+    	public static final String FWBPC4TRNSPRT ="FWBPC4TRNSPRT";
+    	public static final String FWBPC4DISPLAYTEXT6 ="FWBPC4DISPLAYTEXT6";
+    	public static final String FWBPC4DISPLAYTEXT7 ="FWBPC4DISPLAYTEXT7";
+    	public static final String FWBPC4BLDGRP ="FWBPC4BLDGRP";
+    	public static final String FWBPC4DISPLAYTEXT8 ="FWBPC4DISPLAYTEXT8";
+    	public static final String FWBPC4DISPLAYTEXT9 ="FWBPC4DISPLAYTEXT9";
+    	public static final String FWBPC4BLDDNR ="FWBPC4BLDDNR";
+    	public static final String FWBPC4DISPLAYTEXT10 ="FWBPC4DISPLAYTEXT10";
+    	public static final String FWBPC4DISPLAYTEXT11 ="FWBPC4DISPLAYTEXT11";
+    	public static final String FWBPC4FINARGMT ="FWBPC4FINARGMT";
+    	public static final String FWBPC4DISPLAYTEXT12 ="FWBPC4DISPLAYTEXT12";
+    	public static final String FWBPC4DISPLAYTEXT13 ="FWBPC4DISPLAYTEXT13";
+    
+    }
+    
+    public static class BnfFollowUpVisitFields
+    {
+    	public static final String FWBNFDATE ="FWBNFDATE";
+    	public static final String FWBNFSTS ="FWBNFSTS";
+    	public static final String FWDISPLAYTEXT1 ="FWDISPLAYTEXT1";
+    	public static final String FWBNFWOMVITSTS ="FWBNFWOMVITSTS";
+    	public static final String FWBNFDTOO ="FWBNFDTOO";
+    	public static final String FWBNFLB ="FWBNFLB";
+    	public static final String FWBNFGEN ="FWBNFGEN";
+    	public static final String FWBNFCHLDVITSTS ="FWBNFCHLDVITSTS";
+    	public static final String FWBNFSMSRSN ="FWBNFSMSRSN";
+    
     }
     
     public static class ECRegistrationFields {
