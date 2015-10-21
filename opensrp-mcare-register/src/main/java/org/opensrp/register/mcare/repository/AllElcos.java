@@ -14,10 +14,11 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class AllElcos extends MotechBaseRepository<Elco>{
+public class AllElcos extends MotechBaseRepository<Elco> {
 
 	@Autowired
-	public AllElcos(@Qualifier(AllConstants.OPENSRP_DATABASE_CONNECTOR) CouchDbConnector db) {
+	public AllElcos(
+			@Qualifier(AllConstants.OPENSRP_DATABASE_CONNECTOR) CouchDbConnector db) {
 		super(Elco.class, db);
 	}
 
@@ -29,13 +30,16 @@ public class AllElcos extends MotechBaseRepository<Elco>{
 		}
 		return elcos.get(0);
 	}
-	
-	 @View(name = "all_open_elcos_for_provider",
-	            map = "function(doc) { if (doc.type === 'Elco' && doc.PROVIDERID) { emit(doc.PROVIDERID); } }")
-	    public List<Elco> allOpenELCOsForProvider(String providerId) {
-	        return db.queryView(createQuery("all_open_elcos_for_provider")
-	                .key(providerId)
-	                .includeDocs(true), Elco.class);
-	    }
+
+	public boolean exists(String caseId) {
+		return findByCaseId(caseId) != null;
+	}
+
+	@View(name = "all_open_elcos_for_provider", map = "function(doc) { if (doc.type === 'Elco' && doc.PROVIDERID) { emit(doc.PROVIDERID); } }")
+	public List<Elco> allOpenELCOsForProvider(String providerId) {
+		return db.queryView(
+				createQuery("all_open_elcos_for_provider").key(providerId)
+						.includeDocs(true), Elco.class);
+	}
 
 }

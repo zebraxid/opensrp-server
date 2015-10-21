@@ -2,7 +2,7 @@ package org.opensrp.dto;
 
 public enum BeneficiaryType {
     child("child"),
-    mother("mother"),
+    mother("mcaremother"),
     ec("ec"),
     elco("elco"),
     household("household");

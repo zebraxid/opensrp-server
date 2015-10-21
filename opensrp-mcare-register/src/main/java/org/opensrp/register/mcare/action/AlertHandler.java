@@ -83,6 +83,22 @@ public class AlertHandler {
 				anyOf(earliest.toString(), due.toString(), late.toString(),
 						max.toString()), alertCreation).addExtraData(
 				"beneficiaryType", "elco");
+		
+		scheduler.addHookedEvent(
+				motherSchedules(),
+				any(),
+				anyOf(earliest.toString(), due.toString(), late.toString(),
+						max.toString()), alertCreation).addExtraData(
+				"beneficiaryType", "mcaremother");
+		
+		scheduler.addHookedEvent(
+				childSchedules(),
+				any(),
+				anyOf(earliest.toString(), due.toString(), late.toString(),
+						max.toString()), alertCreation).addExtraData(
+				"beneficiaryType", "child");
+
+
 
 	}
 

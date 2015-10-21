@@ -1,11 +1,15 @@
 package org.opensrp.connector.openmrs.service;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.httpclient.HttpVersion;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -15,6 +19,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.ContentBody;
 import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.CoreProtocolPNames;
 import org.apache.http.util.EntityUtils;
@@ -26,8 +31,10 @@ import org.opensrp.api.domain.BaseEntity;
 import org.opensrp.api.domain.Client;
 import org.opensrp.connector.HttpUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.mysql.jdbc.StringUtils;
 
@@ -232,25 +239,41 @@ public class PatientService extends OpenmrsService{
 		return new JSONObject(HttpUtil.post(getURL()+"/"+PATIENT_URL, "", p.toString(), OPENMRS_USER, OPENMRS_PWD).body());
 	}
 	
-	public void postFile() throws ClientProtocolException, IOException
+	public void uploadFile(String patientIdentifier, String fileCategory, MultipartFile multipartFile) throws ClientProtocolException, IOException
 	{
 		    HttpClient httpclient = new DefaultHttpClient();
-		    httpclient.getParams().setParameter(CoreProtocolPNames.PROTOCOL_VERSION, HttpVersion.HTTP_1_1);
+		   // httpclient.getParams().setParameter(CoreProtocolPNames.PROTOCOL_VERSION, HttpVersion.HTTP_1_1);
 
-		    HttpPost httppost = new HttpPost("http://localhost:9000/upload");
-		    File file = new File("C:\\Users\\joao\\Pictures\\bla.jpg");
+		    HttpPost httppost = new HttpPost("http://46.101.51.199:8080/openmrs/ws/rest/v1/patientimage/uploadimage");
+		    httppost.setHeader("Accept", "multipart/form-data");
+		    
+		    File convFile = new File("/home/julkar/nain/image.jpeg");
+		  /*  convFile.createNewFile(); 
+		    FileOutputStream fos = new FileOutputStream(convFile); 
+		    fos.write(multipartFile.getBytes());
+		    fos.close(); */
+		    
+		    
 
 		    MultipartEntity mpEntity = new MultipartEntity();
-		    ContentBody cbFile = new FileBody(file, "image/jpeg");
-		    mpEntity.addPart("userfile", cbFile);
+		    ContentBody patientidentifier = new StringBody(patientIdentifier);
+		    ContentBody category = new StringBody(fileCategory);
+		    ContentBody file = new FileBody(convFile, "image/jpeg");
+		    
+		    mpEntity.addPart("patientidentifier", patientidentifier);
+		    mpEntity.addPart("category", category);
+		    mpEntity.addPart("file", file);
 
-
+	        
+	        String url = "http://46.101.51.199:8080/openmrs/ws/rest/v1/patientimage/uploadimage";
+	        
+	        HttpUtil.makeConnection(url, "", HttpMethod.POST, true, OPENMRS_USER, OPENMRS_PWD);
+	        
 		    httppost.setEntity(mpEntity);
 		    System.out.println("executing request " + httppost.getRequestLine());
 		    HttpResponse response = httpclient.execute(httppost);
 		    HttpEntity resEntity = response.getEntity();
 
-		    System.out.println(response.getStatusLine());
 		    if (resEntity != null) {
 		      System.out.println(EntityUtils.toString(resEntity));
 		    }

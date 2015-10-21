@@ -37,6 +37,7 @@ public class OpenSRPScheduleConstants {
         public static final String SCHEDULE_ANC_2 = "ANC 2";
         public static final String SCHEDULE_ANC_3 = "ANC 3";
         public static final String SCHEDULE_ANC_4 = "ANC 4";
+        public static final String SCHEDULE_BNF = "BNF";
         public static final String SCHEDULE_EDD = "Expected Date Of Delivery";
         public static final String SCHEDULE_LAB = "Lab Reminders";
         public static final String SCHEDULE_TT_1 = "TT 1";
@@ -79,4 +80,5 @@ public class OpenSRPScheduleConstants {
     public static class ELCOSchedulesConstants {
     	public static final String ELCO_SCHEDULE_PSRF = "ELCO PSRF";
     }
+   
 }

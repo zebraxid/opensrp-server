@@ -1,3 +1,6 @@
+/**
+ * @author julkar nain 
+ */
 package org.opensrp.register.mcare.service.handler;
 
 import java.util.Map;
@@ -21,12 +24,28 @@ public class HandlerMapper implements IHandlerMapper {
 	public HandlerMapper(  
 			AllFormSubmissions formSubmissionsRepository,
 			HHRegistrationHandler hhRegistrationHandler,
-			ELCOHandler elcoHandler,
-			PSRFHandler psrfHandler)
+			ELCOHandler elcoHandler,PSRFHandler psrfHandler,
+			ANCVisitOneHandler ancVisitOneHandler,
+			ANCVisitTwoHandler ancVisitTwoHandler,
+			ANCVisitThreeHandler ancVisitThreeHandler,
+			ANCVisitFourHandler ancVisitFourHandler,
+			BNFHandler bnfHandler,
+			PNCVisitOneHandler pncVisitOneHandler,
+			PNCVisitTwoHandler pncVisitTwoHandler,
+			PNCVisitThreeHandler pncVisitThreeHandler
+			)
 	{
 		handlerMap = EasyMap.create(HH_REGISTRATION, (FormSubmissionHandler) hhRegistrationHandler)
 				     .put(ELCO_REGISTRATION, elcoHandler)
 				     .put(PSRF_FORM, psrfHandler)
+				     .put(ANC_REMINDER_VISIT_1, ancVisitOneHandler)
+				     .put(ANC_REMINDER_VISIT_2, ancVisitTwoHandler)
+				     .put(ANC_REMINDER_VISIT_3, ancVisitThreeHandler)
+				     .put(ANC_REMINDER_VISIT_4, ancVisitFourHandler)
+				     .put(BNF_FORM, bnfHandler)
+				     .put(PNC_REMINDER_VISIT_1, pncVisitOneHandler)
+				     .put(PNC_REMINDER_VISIT_2, pncVisitTwoHandler)
+				     .put(PNC_REMINDER_VISIT_3, pncVisitThreeHandler)
                      .map();
 	}
 

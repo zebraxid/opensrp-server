@@ -22,6 +22,14 @@ public class AllConstants {
     	public static final String HH_REGISTRATION = "new_household_registration";
     	public static final String ELCO_REGISTRATION = "census_enrollment_form";
     	public static final String PSRF_FORM = "psrf_form";
+    	public static final String ANC_REMINDER_VISIT_1 = "anc_reminder_visit_1";
+    	public static final String ANC_REMINDER_VISIT_2 = "anc_reminder_visit_2";
+    	public static final String ANC_REMINDER_VISIT_3 = "anc_reminder_visit_3";
+    	public static final String ANC_REMINDER_VISIT_4 = "anc_reminder_visit_4";
+    	public static final String BNF_FORM = "bnf_form";
+    	public static final String PNC_REMINDER_VISIT_1 = "pnc_reminder_visit_1";
+    	public static final String PNC_REMINDER_VISIT_2 = "pnc_reminder_visit_2";
+    	public static final String PNC_REMINDER_VISIT_3 = "pnc_reminder_visit_3";
     	
     	
         public static final String ENTITY_ID = "entityId";
@@ -102,6 +110,7 @@ public class AllConstants {
     	public static final String ELCO_REGISTRATION_SUB_FORM_NAME_CENSUS = "elco_registration_ce";
     	public static final String LOCATION_NAME = "location_name";
     	public static final String REFERENCE_DATE = "today";
+    	public static final String MOTHER_REFERENCE_DATE = "FWPSRLMP";
     	public static final String START_DATE = "start";
     	public static final String END_DATE = "end";
     	public static final String FW_WOMAGE = "FWWOMAGE";
@@ -190,6 +199,29 @@ public class AllConstants {
     	
     }
     
+    public static class ANCVisitOneFields
+    {
+    	public static final String FWANC1DATE ="FWANC1DATE";
+    	public static final String FWCONFIRMATION ="FWCONFIRMATION";
+    	public static final String FWGESTATIONALAGE ="FWGESTATIONALAGE";
+    	public static final String FWEDD ="FWEDD";
+    	public static final String FWANC1REMSTS ="FWANC1REMSTS";
+    	public static final String FWANC1INT ="FWANC1INT";
+    	public static final String DISPLAYTEXT2 ="DISPLAYTEXT2";
+    	public static final String FWANC1KNWPRVDR ="FWANC1KNWPRVDR";
+    	public static final String DISPLAYTEXT3 ="DISPLAYTEXT3";
+    	public static final String FDPSRANM ="FDPSRANM";
+    	public static final String FDPSRHBP ="FDPSRHBP";
+    	public static final String FDPSRDBT ="FDPSRDBT";
+    	public static final String FDPSRTHY ="FDPSRTHY";
+    	public static final String DISPLAYTEXT4 ="DISPLAYTEXT4";
+    	public static final String FWANC1PROB ="FWANC1PROB";
+    	public static final String FWDISPLAYTEXT5 ="FWDISPLAYTEXT5";
+    	public static final String FWANC1DNGRSIGN ="FWANC1DNGRSIGN";
+    	public static final String FWDISPLAYTEXT6 ="FWDISPLAYTEXT6";
+    	public static final String FWDISPLAYTEXT7 ="FWDISPLAYTEXT7";
+    }
+    
     public static class ECRegistrationFields {
         public static final String CASTE = "caste";
         public static final String RELIGION = "religion";
@@ -255,6 +287,7 @@ public class AllConstants {
 
     public static class ANCFormFields {
         public static final String MOTHER_ID = "motherId";
+        public static final String MCARE_MOTHER_ID = "id";
         public static final String REGISTRATION_DATE = "registrationDate";
         public static final String ANC_VISIT_DATE_FIELD = "ancVisitDate";
         public static final String ANC_VISIT_NUMBER_FIELD = "ancVisitNumber";
