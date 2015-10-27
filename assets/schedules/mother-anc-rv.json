@@ -1,21 +1,21 @@
 {
-    "name": "ANC RV",
+    "name": "Ante Natal Care Reminder Visit",
     "absolute": true,
     "milestones": [
         {
-            "name": "ANC RV1",
+            "name": "ANCRV 1",
             "scheduleWindows": {
-                "earliest": ["51 Days"],
-                "due": ["56 Days"],
-                "late": ["163 Days"],
+                "earliest": ["0 Days"],
+                "due": ["51 Days"],
+                "late": ["56 Days"],
                 "max": ["163 Days"]
             },
             "alerts": [
             	{
                     "window": "earliest",
-                    "offset": ["0 Days"],
+                    "offset": ["50 Days"],
                     "interval": ["1 Day"],
-                    "count": "51"
+                    "count": "50"
                 },
                 {
                     "window": "due",
@@ -39,11 +39,10 @@
             ]
         },
         {
-            "name": "ANC RV2",
+            "name": "ANCRV 2",
             "scheduleWindows": {
-                "earliest": ["163 Days"],
-                "due": ["168 Days"],
-                "late": ["219 Days"],
+                "due": ["163 Days"],
+                "late": ["168 Days"],
                 "max": ["219 Days"]
             },
             "alerts": [           
@@ -58,15 +57,20 @@
                     "offset": ["168 Days"],
                     "interval": ["1 Day"],
                     "count": "51"
-                }              
+                },
+                 {
+                    "window": "max",
+                    "offset": ["219 Days"],
+                    "interval": ["1 Day"],
+                    "count": "1"
+                }                            
             ]
         },
         {
-            "name": "ANC RV3",
+            "name": "ANCRV 3",
             "scheduleWindows": {
-                "earliest": ["219 Days"],
-                "due": ["224 Days"],
-                "late": ["247 Days"],
+                "due": ["219 Days"],
+                "late": ["224 Days"],
                 "max": ["247 Days"]
             },
             "alerts": [            	
@@ -81,15 +85,20 @@
                     "offset": ["224 Days"],
                     "interval": ["1 Day"],
                     "count": "23"
-                }            
+                },
+                {
+                    "window": "max",
+                    "offset": ["247 Days"],
+                    "interval": ["1 Day"],
+                    "count": "1"
+                }                 
             ]
         },
         {
-            "name": "ANC RV4",
+            "name": "ANCRV 4",
             "scheduleWindows": {
-                "earliest": ["247 Days"],
-                "due": ["252 Days"],
-                "late": ["253 Days"],
+                "due": ["247 Days"],
+                "late": ["252 Days"],
                 "max": ["253 Days"]
             },
             "alerts": [
@@ -106,29 +115,6 @@
                     "count": "1"
                 }         
             ]
-        },
-        {
-            "name": "ANC NBNF",
-            "scheduleWindows": {
-                "earliest": ["261 Days"],
-                "due": ["262 Days"],
-                "late": ["263 Days"],
-                "max": ["263 Days"]
-            },
-            "alerts": [
-                {
-                    "window": "due",
-                    "offset": ["261 Days"],
-                    "interval": ["1 Day"],
-                    "count": "1"
-                },
-                {
-                    "window": "late",
-                    "offset": ["262 Days"],
-                    "interval": ["1 Day"],
-                    "count": "1"
-                }              
-            ]
-        }       
+        }
     ]
 }
