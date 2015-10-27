@@ -1,6 +1,6 @@
 <model>
     <instance>
-        <ANC_Reminder_Visit_3 encounter_type="ANC Reminder Visit 3" id="ANCReminderVisit3" version="201509141221">
+        <ANC_Reminder_Visit_3 encounter_type="ANC Reminder Visit 3" id="ANCReminderVisit3" version="201510211257">
           <formhub>
             <uuid/>
           </formhub>
@@ -25,7 +25,7 @@
           <FWEDD/>
           <FWANC3REMSTS openmrs_entity="concept" openmrs_entity_id="161641AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
           <FWANC3INT/>
-          <generated_note_name_25/>
+          <DISPLAYTEXT2/>
           <FWANC3KNWPRVDR/>
           <DISPLAYTEXT3/>
           <FWANC3PREGCOND openmrs_entity="concept" openmrs_entity_id="160079AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>

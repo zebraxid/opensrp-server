@@ -89,6 +89,10 @@
         "bind": "/model/instance/ANC_Reminder_Visit_3/FWANC3INT"
       },
       {
+        "name": "DISPLAYTEXT2",
+        "bind": "/model/instance/ANC_Reminder_Visit_3/DISPLAYTEXT2"
+      },
+      {
         "name": "generated_note_name_25",
         "bind": "/model/instance/ANC_Reminder_Visit_3/generated_note_name_25"
       },
