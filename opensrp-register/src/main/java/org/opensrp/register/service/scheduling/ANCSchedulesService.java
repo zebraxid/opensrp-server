@@ -130,9 +130,11 @@ public class ANCSchedulesService {
 
         if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(14).toPeriod().minusDays(1))) {
             milestone = SCHEDULE_ANC_1;
-        } else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(28).toPeriod().minusDays(1))) {
+        } else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(28).toPeriod().minusDays(1)))
+        {
             milestone = SCHEDULE_ANC_2;
-        } else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(36).toPeriod().minusDays(1))) {
+        } else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(36).toPeriod().minusDays(1)))
+        {
             milestone = SCHEDULE_ANC_3;
         } else {
             milestone = SCHEDULE_ANC_4;

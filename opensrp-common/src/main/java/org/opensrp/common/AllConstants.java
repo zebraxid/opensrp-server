@@ -156,6 +156,7 @@ public class AllConstants {
         public static final String EDD = "edd";
         public static final String HEIGHT = "height";
         public static final String BLOOD_GROUP = "bloodGroup";
+        public static final String HPHT_DATE = "tanggalHPHT";
     }
 
     public static class ANCFormFields {

@@ -65,7 +65,7 @@ public class ANCServiceTest {
                 .withEntityId("ec id 1")
                 .addFormField("motherId", "Mother 1")
                 .addFormField("thayiCardNumber", "thayi 1")
-                .addFormField("referenceDate", lmp.toString())
+                .addFormField("tanggalHPHT", lmp.toString())
                 .addFormField("someKey", "someValue")
                 .build();
 
@@ -110,7 +110,7 @@ public class ANCServiceTest {
                 .withANMId("anm id 1")
                 .withEntityId("ec id 1")
                 .addFormField("motherId", "Mother 1")
-                .addFormField("referenceDate", lmp.toString())
+                .addFormField("tanggalHPHT", lmp.toString())
                 .addFormField("someKey", "someValue")
                 .build();
         Mother mother = new Mother("Mother 1", "ec id 1", "thayi 1").withLMP(lmp);

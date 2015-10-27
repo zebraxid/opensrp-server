@@ -29,6 +29,7 @@ import static org.opensrp.common.AllConstants.ANCVisitFormFields.*;
 import static org.opensrp.common.AllConstants.BOOLEAN_FALSE_VALUE;
 import static org.opensrp.common.AllConstants.BOOLEAN_TRUE_VALUE;
 import static org.opensrp.common.AllConstants.CommonFormFields.REFERENCE_DATE;
+import static org.opensrp.common.AllConstants.ANCRegistrationFormFields.HPHT_DATE;
 import static org.opensrp.common.AllConstants.CommonFormFields.SUBMISSION_DATE_FIELD_NAME;
 import static org.opensrp.common.AllConstants.EntityCloseFormFields.CLOSE_REASON_FIELD_NAME;
 import static org.opensrp.common.AllConstants.HbTestFormFields.*;
@@ -72,7 +73,7 @@ public class ANCService {
         Mother mother = allMothers.findByCaseId(motherId);
         allMothers.update(mother.withAnm(submission.anmId()));
 
-        ancSchedulesService.enrollMother(motherId, parse(submission.getField(REFERENCE_DATE)));
+        ancSchedulesService.enrollMother(motherId, parse(submission.getField(HPHT_DATE)));
 
 //        List<String> reportFields = reportFieldsDefinition.get(submission.formName());
 //        reportingService.registerANC(new SafeMap(submission.getFields(reportFields)));
