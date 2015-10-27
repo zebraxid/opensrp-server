@@ -36,13 +36,15 @@ public class ANCService {
 	private AllElcos allElcos;
 	private AllMothers allMothers;
 	private ANCSchedulesService ancSchedulesService;
+	private PNCService pncService;
 
 	@Autowired
 	public ANCService(AllElcos allElcos, AllMothers allMothers,
-			ANCSchedulesService ancSchedulesService) {
+			ANCSchedulesService ancSchedulesService, PNCService pncService) {
 		this.allElcos = allElcos;
 		this.allMothers = allMothers;
 		this.ancSchedulesService = ancSchedulesService;
+		this.pncService = pncService;
 	}
 
 	public void registerANC(FormSubmission submission) {
@@ -317,8 +319,21 @@ public class ANCService {
 		mother.withBNFVisit(bnfVisit);
 		
 		allMothers.update(mother);
+		
+		if(submission.getField(FWBNFSTS).equalsIgnoreCase(STS_LB) || submission.getField(FWBNFSTS).equalsIgnoreCase(STS_SB))
+		{
+			pncService.deliveryOutcome(submission);
+		}
+		else 
+		{
+			
+		}
 	}
 
+	public void pregnancyVerificationForm(FormSubmission submission)
+	{
+		
+	}
 	public void ancClose(String entityId) {
 		
 		Mother mother = allMothers.findByCaseId(entityId);

@@ -111,6 +111,7 @@ public class AllConstants {
     	public static final String LOCATION_NAME = "location_name";
     	public static final String REFERENCE_DATE = "today";
     	public static final String MOTHER_REFERENCE_DATE = "FWPSRLMP";
+    	public static final String PNC_REFERENCE_DATE = "FWEDD";
     	public static final String START_DATE = "start";
     	public static final String END_DATE = "end";
     	public static final String FW_WOMAGE = "FWWOMAGE";
@@ -350,6 +351,10 @@ public class AllConstants {
     	public static final String FWBNFGEN ="FWBNFGEN";
     	public static final String FWBNFCHLDVITSTS ="FWBNFCHLDVITSTS";
     	public static final String FWBNFSMSRSN ="FWBNFSMSRSN";
+    	public static final String STS_LB ="3";
+    	public static final String STS_SB ="4";
+    	public static final String STS_WD ="9";
+    	
     
     }
     

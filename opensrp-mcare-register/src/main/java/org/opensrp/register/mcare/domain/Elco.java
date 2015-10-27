@@ -33,6 +33,8 @@ public class Elco extends MotechBaseDataObject {
 	@JsonProperty
 	private String END;
 	@JsonProperty
+    private String isClosed;
+	@JsonProperty
 	private String GOBHHID;
 	@JsonProperty
 	private String JiVitAHHID;
@@ -402,7 +404,10 @@ public class Elco extends MotechBaseDataObject {
 		}
 		return PSRFDETAILS;
 	}
-
+	 public Elco setIsClosed(boolean isClosed) {
+	        this.isClosed = Boolean.toString(isClosed);
+	        return this;
+	    }
 	@Override
 	public boolean equals(Object o) {
 		return EqualsBuilder.reflectionEquals(this, o, "id", "revision");
