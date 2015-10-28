@@ -1,5 +1,8 @@
 package org.opensrp.connector.openmrs.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -61,7 +64,20 @@ public class OpenmrsUserService extends OpenmrsService{
 		u.getBaseEntity().addAttribute("_PERSON_UUID", p.getString("uuid"));
 		return u;
 	}
-	
+	public List<String> getAllUsers() throws JSONException {
+		HttpResponse op = HttpUtil.get(HttpUtil.removeEndingSlash(OPENMRS_BASE_URL)+"/"+USER_URL, "", OPENMRS_USER, OPENMRS_PWD);
+		JSONArray res = new JSONObject(op.body()).getJSONArray("results");
+		if(res.length() == 0){
+			return null;
+		}
+		List<String> users = new ArrayList<>();
+		
+		for(int i=0; i<res.length();i++)
+		{
+			users.add(res.getJSONObject(i).getString("display"));
+		}
+		return users;
+	}
 	public JSONObject getPersonByUser(String username) throws JSONException {
 		HttpResponse op = HttpUtil.get(HttpUtil.removeEndingSlash(OPENMRS_BASE_URL)+"/"+USER_URL, "v=full&username="+username, OPENMRS_USER, OPENMRS_PWD);
 		JSONArray res = new JSONObject(op.body()).getJSONArray("results");
