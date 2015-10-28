@@ -354,8 +354,47 @@ public class AllConstants {
     	public static final String STS_LB ="3";
     	public static final String STS_SB ="4";
     	public static final String STS_WD ="9";
-    	
+    	    
+    }
     
+    public static class PNCVisitOneFields
+    {
+    	public static final String FWPNC1DATE ="FWPNC1DATE";
+    	public static final String FWPNC1REMSTS ="FWPNC1REMSTS";
+    	public static final String FWPNC1INT ="FWPNC1INT";
+    	public static final String FWPNC1KNWPRVDR ="FWPNC1KNWPRVDR";
+    	public static final String FWPNC1FVR ="FWPNC1FVR";
+    	public static final String FWPNC1TEMP ="FWPNC1TEMP";
+    	public static final String FWPNC1DNGRSIGN ="FWPNC1DNGRSIGN";
+    	public static final String FWPNC1DELTYPE ="FWPNC1DELTYPE";
+    	public static final String FWPNC1DELCOMP ="FWPNC1DELCOMP";
+    	
+    }
+    
+    public static class PNCVisitTwoFields
+    {
+    	public static final String FWPNC2DATE ="FWPNC2DATE";
+    	public static final String FWPNC2REMSTS ="FWPNC2REMSTS";
+    	public static final String FWPNC2INT ="FWPNC2INT";
+    	public static final String FWPNC2KNWPRVDR ="FWPNC2KNWPRVDR";
+    	public static final String FWPNC2FVR ="FWPNC2FVR";
+    	public static final String FWPNC2TEMP ="FWPNC2TEMP";
+    	public static final String FWPNC2DNGRSIGN ="FWPNC2DNGRSIGN";
+    	public static final String FWPNC2DELCOMP ="FWPNC2DELCOMP";
+    	
+    }
+    
+    public static class PNCVisitThreeFields
+    {
+    	public static final String FWPNC3DATE ="FWPNC3DATE";
+    	public static final String FWPNC3REMSTS ="FWPNC3REMSTS";
+    	public static final String FWPNC3INT ="FWPNC3INT";
+    	public static final String FWPNC3KNWPRVDR ="FWPNC3KNWPRVDR";
+    	public static final String FWPNC3FVR ="FWPNC3FVR";
+    	public static final String FWPNC3TEMP ="FWPNC3TEMP";
+    	public static final String FWPNC3DNGRSIGN ="FWPNC3DNGRSIGN";
+    	public static final String FWPNC3DELCOMP ="FWPNC3DELCOMP";
+    	
     }
     
     public static class ECRegistrationFields {

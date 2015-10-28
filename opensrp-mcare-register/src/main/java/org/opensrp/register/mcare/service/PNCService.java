@@ -10,6 +10,13 @@ import static org.opensrp.common.AllConstants.BnfFollowUpVisitFields.FWBNFSTS;
 import static org.opensrp.common.AllConstants.BnfFollowUpVisitFields.STS_WD;
 import static org.opensrp.common.AllConstants.BnfFollowUpVisitFields.STS_LB;
 import static org.opensrp.common.AllConstants.BnfFollowUpVisitFields.STS_SB;
+import static org.opensrp.common.AllConstants.ANCVisitOneFields.FWCONFIRMATION;
+import static org.opensrp.common.AllConstants.PNCVisitOneFields.*;
+import static org.opensrp.common.AllConstants.PNCVisitTwoFields.*;
+import static org.opensrp.common.AllConstants.PNCVisitThreeFields.*;
+import static org.opensrp.common.util.EasyMap.create;
+
+import java.util.Map;
 
 import org.joda.time.LocalDate;
 import org.opensrp.form.domain.FormSubmission;
@@ -70,6 +77,7 @@ public class PNCService {
 			pncSchedulesService.enrollPNCRVForMother(submission.entityId(), LocalDate.parse(submission.getField(FWBNFDTOO)));
 		}
 	}
+	
 	public void pncVisitOne(FormSubmission submission) {
 		
 		Mother mother = allMothers.findByCaseId(submission.entityId());
@@ -80,6 +88,20 @@ public class PNCService {
 					submission.entityId()));
 			return;
 		}
+		
+		Map<String, String> pncVisitOne = create(FWPNC1DATE, submission.getField(FWPNC1DATE))
+				.put(FWCONFIRMATION, submission.getField(FWCONFIRMATION))
+				.put(FWPNC1REMSTS, submission.getField(FWPNC1REMSTS))
+				.put(FWPNC1INT, submission.getField(FWPNC1INT))
+				.put(FWPNC1KNWPRVDR, submission.getField(FWPNC1KNWPRVDR))
+				.put(FWPNC1FVR, submission.getField(FWPNC1FVR))
+				.put(FWPNC1TEMP, submission.getField(FWPNC1TEMP))
+				.put(FWPNC1DNGRSIGN, submission.getField(FWPNC1DNGRSIGN))
+				.put(FWPNC1DELTYPE, submission.getField(FWPNC1DELTYPE))
+				.put(FWPNC1DELCOMP, submission.getField(FWPNC1DELCOMP)).map();	
+
+		mother.withPNCVisitOne(pncVisitOne);
+		
 		allMothers.update(mother);
 	}
 
@@ -92,6 +114,18 @@ public class PNCService {
 					submission.entityId()));
 			return;
 		}
+		
+		Map<String, String> pncVisitTwo = create(FWPNC2DATE, submission.getField(FWPNC2DATE))
+				.put(FWCONFIRMATION, submission.getField(FWCONFIRMATION))
+				.put(FWPNC2REMSTS, submission.getField(FWPNC2REMSTS))
+				.put(FWPNC2INT, submission.getField(FWPNC2INT))
+				.put(FWPNC2KNWPRVDR, submission.getField(FWPNC2KNWPRVDR))
+				.put(FWPNC2FVR, submission.getField(FWPNC2FVR))
+				.put(FWPNC2TEMP, submission.getField(FWPNC2TEMP))
+				.put(FWPNC2DNGRSIGN, submission.getField(FWPNC2DNGRSIGN))
+				.put(FWPNC2DELCOMP, submission.getField(FWPNC2DELCOMP)).map();	
+
+		mother.withPNCVisitTwo(pncVisitTwo);
 		
 		allMothers.update(mother);
 
@@ -107,9 +141,22 @@ public class PNCService {
 					submission.entityId()));
 			return;
 		}
+		
+		Map<String, String> pncVisitThree = create(FWPNC3DATE, submission.getField(FWPNC3DATE))
+				.put(FWCONFIRMATION, submission.getField(FWCONFIRMATION))
+				.put(FWPNC3REMSTS, submission.getField(FWPNC3REMSTS))
+				.put(FWPNC3INT, submission.getField(FWPNC3INT))
+				.put(FWPNC3KNWPRVDR, submission.getField(FWPNC3KNWPRVDR))
+				.put(FWPNC3FVR, submission.getField(FWPNC3FVR))
+				.put(FWPNC3TEMP, submission.getField(FWPNC3TEMP))
+				.put(FWPNC3DNGRSIGN, submission.getField(FWPNC3DNGRSIGN))
+				.put(FWPNC3DELCOMP, submission.getField(FWPNC3DELCOMP)).map();	
+
+		mother.withPNCVisitThree(pncVisitThree);
 
 		allMothers.update(mother);
 	}
+	
 	private void closeMother(Mother mother) {
 		
 		mother.setIsClosed(true);

@@ -73,7 +73,7 @@ public class AlertCreationAction implements HookedEvent {
 		}
 		else if(mother.equals(beneficiaryType))
 		{
-			Mother mother = allMothers.findByCASEID(caseID);
+			Mother mother = allMothers.findByCaseId(caseID);
 			
 			if (mother != null) {
 				instanceId= mother.INSTANCEID();
