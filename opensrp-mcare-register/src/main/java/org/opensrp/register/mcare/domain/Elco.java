@@ -1,3 +1,6 @@
+/**
+ * @author julkar nain 
+ */
 package org.opensrp.register.mcare.domain;
 
 import java.util.ArrayList;
@@ -29,6 +32,8 @@ public class Elco extends MotechBaseDataObject {
 	private String START;
 	@JsonProperty
 	private String END;
+	@JsonProperty
+    private String isClosed;
 	@JsonProperty
 	private String GOBHHID;
 	@JsonProperty
@@ -417,7 +422,10 @@ public class Elco extends MotechBaseDataObject {
 		}
 		return PSRFDETAILS;
 	}
-
+	 public Elco setIsClosed(boolean isClosed) {
+	        this.isClosed = Boolean.toString(isClosed);
+	        return this;
+	    }
 	@Override
 	public boolean equals(Object o) {
 		return EqualsBuilder.reflectionEquals(this, o, "id", "revision");

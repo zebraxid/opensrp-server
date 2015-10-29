@@ -79,7 +79,7 @@ public class HttpUtil {
         }
     }
     
-    static HttpURLConnection makeConnection(String url, String payload, HttpMethod requestMethod, boolean useBasicAuth, String username, String password) throws IOException {
+    public static HttpURLConnection makeConnection(String url, String payload, HttpMethod requestMethod, boolean useBasicAuth, String username, String password) throws IOException {
     	String charset = "UTF-8";
 
         if(url.endsWith("/")){

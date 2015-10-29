@@ -29,39 +29,42 @@ public class AllMothers extends MotechBaseRepository<Mother> {
 	}
 
 	@GenerateView
-	public Mother findByCASEID(String caseId) {
-		List<Mother> mothers = queryView("by_cASEID", caseId);
+	public Mother findByCaseId(String caseId) {
+		List<Mother> mothers = queryView("by_caseId", caseId);
 		if (mothers == null || mothers.isEmpty()) {
 			return null;
 		}
 		return mothers.get(0);
 	}
-/*
-	@View(name = "all_households", map = "function(doc) { if (doc.type === 'HouseHold') { emit(doc.PROVIDERID, doc.CASEID); } }")
-	public List<HouseHold> findAllHouseHolds() {
-		return db.queryView(createQuery("all_households").includeDocs(true),
-				HouseHold.class);
+
+	public void close(String caseId) {
+		Mother mother = findByCaseId(caseId);
+		update(mother.setIsClosed(true));
 	}
-
-	@View(name = "all_open_hhs_for_provider", map = "function(doc) { if (doc.type === 'HouseHold' && doc.PROVIDERID) { emit(doc.PROVIDERID); } }")
-	public List<HouseHold> allOpenHHsForProvider(String providerId) {
-		return db.queryView(
-				createQuery("all_open_hhs_for_provider").key(providerId)
-						.includeDocs(true), HouseHold.class);
-	}
-
-	@View(name = "all_hhs_prev_7_days", map = "function(doc) { if (doc.type === 'HouseHold' && doc.PROVIDERID && doc.TODAY) { emit(doc.PROVIDERID, doc.TODAY); } }")
-	public List<HouseHold> allHHsVisited7Days(String providerId) {
-
-		LocalDate today = LocalDate.now();
-		
-		List<HouseHold> houseHolds = db.queryView(
-				createQuery("all_hhs_prev_7_days")
-						.startKey(today.minusDays(100))
-						.endKey(today)
-						//.key(providerId)
-						.includeDocs(true), HouseHold.class);
-
-		return houseHolds;
-	}*/
+	/*
+	 * @View(name = "all_households", map =
+	 * "function(doc) { if (doc.type === 'HouseHold') { emit(doc.PROVIDERID, doc.CASEID); } }"
+	 * ) public List<HouseHold> findAllHouseHolds() { return
+	 * db.queryView(createQuery("all_households").includeDocs(true),
+	 * HouseHold.class); }
+	 * 
+	 * @View(name = "all_open_hhs_for_provider", map =
+	 * "function(doc) { if (doc.type === 'HouseHold' && doc.PROVIDERID) { emit(doc.PROVIDERID); } }"
+	 * ) public List<HouseHold> allOpenHHsForProvider(String providerId) {
+	 * return db.queryView(
+	 * createQuery("all_open_hhs_for_provider").key(providerId)
+	 * .includeDocs(true), HouseHold.class); }
+	 * 
+	 * @View(name = "all_hhs_prev_7_days", map =
+	 * "function(doc) { if (doc.type === 'HouseHold' && doc.PROVIDERID && doc.TODAY) { emit(doc.PROVIDERID, doc.TODAY); } }"
+	 * ) public List<HouseHold> allHHsVisited7Days(String providerId) {
+	 * 
+	 * LocalDate today = LocalDate.now();
+	 * 
+	 * List<HouseHold> houseHolds = db.queryView(
+	 * createQuery("all_hhs_prev_7_days") .startKey(today.minusDays(100))
+	 * .endKey(today) //.key(providerId) .includeDocs(true), HouseHold.class);
+	 * 
+	 * return houseHolds; }
+	 */
 }

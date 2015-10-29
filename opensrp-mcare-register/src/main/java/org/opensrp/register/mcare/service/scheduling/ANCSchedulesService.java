@@ -1,3 +1,6 @@
+/**
+ * @author julkar nain 
+ */
 package org.opensrp.register.mcare.service.scheduling;
 
 import static java.text.MessageFormat.format;
@@ -6,6 +9,7 @@ import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherSchedule
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_ANC_2;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_ANC_3;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_ANC_4;
+import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_BNF;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_DELIVERY_PLAN;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_EDD;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_HB_TEST_1;
@@ -43,20 +47,32 @@ public class ANCSchedulesService {
         enrollIntoCorrectMilestoneOfANCCare(caseId, referenceDateForSchedule);
     }
     private void enrollIntoCorrectMilestoneOfANCCare(String entityId, LocalDate referenceDateForSchedule) {
-        String milestone;
+        String milestone=null;
 
-        if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(14).toPeriod().minusDays(1))) {
+        if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(8).toPeriod().minusDays(5))) {
             milestone = SCHEDULE_ANC_1;
-        } else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(28).toPeriod().minusDays(1))) {
+        } else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(24).toPeriod().minusDays(5))) {
             milestone = SCHEDULE_ANC_2;
-        } else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(36).toPeriod().minusDays(1))) {
+        } else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(32).toPeriod().minusDays(5))) {
             milestone = SCHEDULE_ANC_3;
-        } else {
+        } else if(DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(36).toPeriod().minusDays(5))) {
             milestone = SCHEDULE_ANC_4;
+        } else if(DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(37).toPeriod().plusDays(2))) {
+        	milestone = SCHEDULE_BNF;
+        } else{
+        	
         }
 
         logger.info(format("Enrolling ANC with Entity id:{0} to ANC schedule, milestone: {1}.", entityId, milestone));
         scheduler.enrollIntoSchedule(entityId, SCHEDULE_ANC, milestone, referenceDateForSchedule.toString());
+    }
+    public void unEnrollFromAllSchedules(String entityId) {
+        scheduler.unEnrollFromAllSchedules(entityId);
+    }
+
+    private void unEnrollFromSchedule(String entityId, String anmId, String scheduleName) {
+        logger.info(format("Un-enrolling ANC with Entity id:{0} from schedule: {1}", entityId, scheduleName));
+        scheduler.unEnrollFromSchedule(entityId, anmId, scheduleName);
     }
 
 }

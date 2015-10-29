@@ -1,0 +1,27 @@
+{
+    "name": "Birth Notification Pregnancy Status Follow Up",
+    "absolute": true,
+    "milestones": [
+        {
+            "name": "Birth Notification Pregnancy Status Follow Up",
+            "scheduleWindows": {
+                "due": ["0 Days"],
+                "late": ["273 Days"]
+            },
+            "alerts": [
+                {
+                    "window": "due",
+                    "offset": ["0 Days"],
+                    "interval": ["1 Day"],
+                    "count": "1"
+                },
+                {
+                    "window": "late",
+                    "offset": ["273 Days"],
+                    "interval": ["1 Day"],
+                    "count": "1"
+                }              
+            ]
+        }  
+    ]
+}
