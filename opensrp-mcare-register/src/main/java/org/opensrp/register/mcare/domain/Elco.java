@@ -48,9 +48,13 @@ public class Elco extends MotechBaseDataObject {
 	@JsonProperty
 	private String FWWOMRETYPENID;
 	@JsonProperty
+	private String FWWOMRETYPENID_CONCEPT;
+	@JsonProperty
 	private String FWWOMBID;
 	@JsonProperty
 	private String FWWOMRETYPEBID;
+	@JsonProperty
+	private String FWWOMRETYPEBID_CONCEPT;
 	@JsonProperty
 	private String FWHUSNAME;
 	@JsonProperty
@@ -115,7 +119,7 @@ public class Elco extends MotechBaseDataObject {
 		this.PROVIDERID = PROVIDERID;
 		return this;
 	}
-	public Elco withLOCATIONID(String LOCAoTIONID) {
+	public Elco withLOCATIONID(String LOCATIONID) {
 		this.LOCATIONID = LOCATIONID;
 		return this;
 	}
@@ -170,12 +174,20 @@ public class Elco extends MotechBaseDataObject {
 		this.FWWOMRETYPENID = FWWOMRETYPENID;
 		return this;
 	}
+	public Elco withFWWOMRETYPENID_CONCEPT(String FWWOMRETYPENID_CONCEPT) {
+		this.FWWOMRETYPENID_CONCEPT = FWWOMRETYPENID_CONCEPT;
+		return this;
+	}
 	public Elco withFWWOMBID(String FWWOMBID) {
 		this.FWWOMBID = FWWOMBID;
 		return this;
 	}
 	public Elco withFWWOMRETYPEBID(String FWWOMRETYPEBID) {
 		this.FWWOMRETYPEBID = FWWOMRETYPEBID;
+		return this;
+	}
+	public Elco withFWWOMRETYPEBID_CONCEPT(String FWWOMRETYPEBID_CONCEPT) {
+		this.FWWOMRETYPEBID_CONCEPT = FWWOMRETYPEBID_CONCEPT;
 		return this;
 	}
 	public Elco withFWHUSNAME(String FWHUSNAME) {
@@ -315,11 +327,17 @@ public class Elco extends MotechBaseDataObject {
 	public String FWWOMRETYPENID() {
 		return FWWOMRETYPENID;
 	}
+	public String FWWOMRETYPENID_CONCEPT() {
+		return FWWOMRETYPENID_CONCEPT;
+	}
 	public String FWWOMBID() {
 		return FWWOMBID;
 	}
 	public String FWWOMRETYPEBID() {
 		return FWWOMRETYPEBID;
+	}
+	public String FWWOMRETYPEBID_CONCEPT() {
+		return FWWOMRETYPEBID_CONCEPT;
 	}
 	public String FWHUSNAME() {
 		return FWHUSNAME;
