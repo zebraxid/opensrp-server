@@ -28,6 +28,7 @@ import org.opensrp.register.mcare.service.scheduling.ChildSchedulesService;
 import org.opensrp.register.mcare.service.scheduling.PNCSchedulesService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -40,6 +41,7 @@ public class PNCService {
 	private PNCSchedulesService pncSchedulesService;
 	private ChildSchedulesService childSchedulesService;
 	
+	@Autowired
 	public PNCService(AllElcos allElcos, AllMothers allMothers, PNCSchedulesService pncSchedulesService, ChildSchedulesService childSchedulesService)
 	{
 		this.allElcos = allElcos;
