@@ -62,12 +62,13 @@ public class AllUniqueIdRepository {
         }
         ANM anm = (ANM)obj.get(0);
         uid.setAnm(anm);
-        // get highest last id and add 1000
-        List ids = dataAccessTemplate.findByNamedQuery(UniqueId.FIND_HIGHEST_UNIQUE_ID);
+        // get highest last id and add 100
+        List ids = dataAccessTemplate.findByNamedQueryAndNamedParam(UniqueId.FIND_UNIQUE_ID_BY_ANM_IDENTIFIER,
+                new String[]{"anmIdentifier"}, new Object[]{anmIdentifier});
         if(ids == null || ids.isEmpty()) {
             return false;
         }
-        UniqueId uniqueId = (UniqueId)ids.get(0);
+        UniqueId uniqueId = (UniqueId)ids.get(ids.size()-1);
         uid.setLastValue(uniqueId.getLastValue()+100);
 
         try {
