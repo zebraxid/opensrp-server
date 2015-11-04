@@ -51,7 +51,7 @@
             <FWNHWOMHUSLIV openmrs_entity="concept" openmrs_entity_id="162994AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
             <FWNHWOMHUSALV openmrs_entity="concept" openmrs_entity_id="5561AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
             <FWNHWOMHUSSTR openmrs_entity="concept" openmrs_entity_id="162959AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
-            <FWELIGIBLE openmrs_entity="concept" openmrs_entity_id="162699AAAAAAAAAAAAAAAAAAAAAAAAAA"/>
+            <FWELIGIBLE/>
             <eligible>
               <FWWOMANYID/>
               <FWWOMNID/>
