@@ -46,7 +46,7 @@
               <FWPSRPRSB openmrs_entity="concept" openmrs_entity_id="162587AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
               <FWPSRPRMC openmrs_entity="concept" openmrs_entity_id="162971AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
               <FWPSRPREGTWYRS openmrs_entity="concept" openmrs_entity_id="162943AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
-              <FWPSRPRVPREGCOMP openmrs_entity="concept" openmrs_entity_id="162594AAAAAAAAAAAAAAAAAAAAAAAAAA"/>
+              <FWPSRPRVPREGCOMP/>
               <FWPSRPRCHECKS openmrs_entity="concept" openmrs_entity_id="162957AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
               <risk_group openmrs_entity="concept" openmrs_entity_id="160079AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA">
                 <yn_dk_label/>

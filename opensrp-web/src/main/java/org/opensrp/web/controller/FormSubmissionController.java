@@ -203,32 +203,23 @@ public class FormSubmissionController {
     {
     	return new ResponseEntity<>(new Gson().toJson(hhService.getEntityIdBybrnId(brnIdList)),OK);
     }
-    
-   /* @RequestMapping(method = GET, value = "/user-location")
+
+    @RequestMapping(method = GET, value = "/user-location")
     @ResponseBody
     public ResponseEntity<String> getUserByLocation(@RequestParam("location-name") String locationName)
     {
-    	JSONObject userObject=null;
+    	JSONObject usersAssignedToLocation=null;
+    	String userName  = "";
     	try {
-    		userObject =  openmrsUserService.getTeamMemberByLocation(locationName);
+    		usersAssignedToLocation =  openmrsUserService.getTeamMemberByLocation(locationName);   		
+    		userName = usersAssignedToLocation.getJSONArray("results").getJSONObject(0).getJSONObject("user").getString("username");
     		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return new ResponseEntity<>(new Gson().toJson(userObject),OK);
+		return new ResponseEntity<>(userName, OK);
     }
     
-    @RequestMapping(method = GET, value = "/user-locationtest")
-    @ResponseBody
-    public ResponseEntity<HttpStatus> getUserByLocationtest(@RequestParam("location-name") String locationName)
-    {
-    	
-    	System.out.println("\n LocationTest : "+ openmrsUserService.getTeamMemberByLocationTest(locationName) + "\n");
-    	
-    	return new ResponseEntity<>(OK);
-    }
-    
-*/  
     @RequestMapping(headers = {"Accept=application/json"}, method = GET, value = "/multimedia-file")
     @ResponseBody
     public List<MultimediaDTO> getFiles(@RequestParam("anm-id") String providerId) {

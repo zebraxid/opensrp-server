@@ -39,7 +39,7 @@
             <FWCWOMHUSLIV openmrs_entity="concept" openmrs_entity_id="162994AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
             <FWCWOMHUSALV openmrs_entity="concept" openmrs_entity_id="5561AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
             <FWCWOMHUSSTR openmrs_entity="concept" openmrs_entity_id="162959AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
-            <FWELIGIBLE openmrs_entity="concept" openmrs_entity_id="162699AAAAAAAAAAAAAAAAAAAAAAAAAA"/>
+            <FWELIGIBLE/>
             <eligible>
               <FWWOMANYID/>
               <FWWOMNID/>
