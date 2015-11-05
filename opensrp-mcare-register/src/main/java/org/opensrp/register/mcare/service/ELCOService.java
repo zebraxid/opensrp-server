@@ -70,7 +70,7 @@ public class ELCOService {
 
 		if (submission.formName().equalsIgnoreCase(ELCO_REGISTRATION)) {
 
-			HouseHold houseHold = allHouseHolds.findByCASEID(submission
+			HouseHold houseHold = allHouseHolds.findByCaseId(submission
 					.entityId());
 
 			if (houseHold == null) {

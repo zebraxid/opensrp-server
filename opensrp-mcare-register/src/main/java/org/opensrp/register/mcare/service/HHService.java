@@ -45,7 +45,7 @@ public class HHService {
 
 	public void registerHouseHold(FormSubmission submission) {
 
-		HouseHold houseHold = allHouseHolds.findByCASEID(submission.entityId());
+		HouseHold houseHold = allHouseHolds.findByCaseId(submission.entityId());
 
 		if (houseHold == null) {
 			logger.warn(format(

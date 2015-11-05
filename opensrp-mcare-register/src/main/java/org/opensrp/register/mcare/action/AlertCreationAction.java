@@ -55,7 +55,7 @@ public class AlertCreationAction implements HookedEvent {
 		DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd");
 		
 		if (household.equals(beneficiaryType)) {
-			HouseHold houseHold = allHouseHolds.findByCASEID(caseID);
+			HouseHold houseHold = allHouseHolds.findByCaseId(caseID);
 			if (houseHold != null) {
 				instanceId= houseHold.INSTANCEID();
 				providerId = houseHold.PROVIDERID();
