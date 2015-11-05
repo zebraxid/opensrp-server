@@ -29,7 +29,7 @@ public class AllHouseHolds extends MotechBaseRepository<HouseHold> {
 
 	@GenerateView
 	public HouseHold findByCASEID(String caseId) {
-		List<HouseHold> houseHolds = queryView("by_cASEID", caseId);
+		List<HouseHold> houseHolds = queryView("by_caseId", caseId);
 		if (houseHolds == null || houseHolds.isEmpty()) {
 			return null;
 		}

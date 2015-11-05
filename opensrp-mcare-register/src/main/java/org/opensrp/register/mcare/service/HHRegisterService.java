@@ -30,7 +30,7 @@ public class HHRegisterService {
         
         for (HouseHold hh : hhs) {
         	HHRegisterEntry hhRegisterEntry = new HHRegisterEntry()
-        		.withCASEID(hh.CASEID()) 
+        		.withCASEID(hh.caseId()) 
         		.withINSTANCEID(hh.INSTANCEID())
         		.withPROVIDERID(hh.PROVIDERID())
         		//.withLOCATIONID(hh.LOCATIONID())

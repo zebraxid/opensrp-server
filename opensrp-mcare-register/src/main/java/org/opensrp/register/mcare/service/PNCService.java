@@ -165,7 +165,7 @@ public class PNCService {
 		pncSchedulesService.unEnrollFromSchedules(mother.caseId());
 		
 		Elco elco = allElcos.findByCaseId(mother.relationalid());
-        logger.info("Closing EC case along with PNC case. Ec Id: " + elco.CASEID());
+        logger.info("Closing EC case along with PNC case. Ec Id: " + elco.caseId());
         elco.setIsClosed(true);
         allElcos.update(elco);
 	}

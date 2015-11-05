@@ -15,7 +15,7 @@ import org.motechproject.model.MotechBaseDataObject;
 @TypeDiscriminator("doc.type === 'HouseHold'")
 public class HouseHold extends MotechBaseDataObject {
 	@JsonProperty
-	private String CASEID;
+	private String caseId;
 	@JsonProperty
 	private String INSTANCEID;
 	@JsonProperty
@@ -80,8 +80,8 @@ public class HouseHold extends MotechBaseDataObject {
 		this.ELCODETAILS = new ArrayList<>();
 	}
 	
-	public HouseHold withCASEID(String CASEID) {
-		this.CASEID = CASEID;
+	public HouseHold withCASEID(String caseId) {
+		this.caseId = caseId;
 		return this;
 	}
 
@@ -231,8 +231,8 @@ public class HouseHold extends MotechBaseDataObject {
         return this;
     }
 
-	public String CASEID() {
-		return CASEID;
+	public String caseId() {
+		return caseId;
 	}
 
 	public String INSTANCEID() {
@@ -350,8 +350,8 @@ public class HouseHold extends MotechBaseDataObject {
 		return ELCODETAILS;
 	}
 
-	private String getCASEID() {
-		return CASEID;
+	private String getCaseId() {
+		return caseId;
 	}
 
 	public Map<String, String> details() {

@@ -3,7 +3,7 @@
     "absolute": true,
     "milestones": [
         {
-            "name": "ANCRV 1",
+            "name": "ancrv_1",
             "scheduleWindows": {
                 "earliest": ["0 Days"],
                 "due": ["51 Days"],
@@ -39,7 +39,7 @@
             ]
         },
         {
-            "name": "ANCRV 2",
+            "name": "ancrv_2",
             "scheduleWindows": {
                 "due": ["163 Days"],
                 "late": ["168 Days"],
@@ -67,7 +67,7 @@
             ]
         },
         {
-            "name": "ANCRV 3",
+            "name": "ancrv_3",
             "scheduleWindows": {
                 "due": ["219 Days"],
                 "late": ["224 Days"],
@@ -95,7 +95,7 @@
             ]
         },
         {
-            "name": "ANCRV 4",
+            "name": "ancrv_4",
             "scheduleWindows": {
                 "due": ["247 Days"],
                 "late": ["252 Days"],

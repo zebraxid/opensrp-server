@@ -59,7 +59,7 @@ public class PatientTest extends TestResourceLoader{
 	@Test
 	public void shouldUploadFile() throws IOException
 	{
-		 File file = new File("/home/julkar/nain/image.jpeg");
+		 File file = new File("/home/user/Documents/image.jpeg");
 		 DiskFileItem fileItem = new DiskFileItem("file", "image/jpeg", false, file.getName(), (int) file.length() , file.getParentFile());
 		 fileItem.getOutputStream();
 		 

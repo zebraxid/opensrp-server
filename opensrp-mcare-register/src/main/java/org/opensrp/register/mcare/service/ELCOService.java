@@ -38,14 +38,16 @@ public class ELCOService {
 	private AllElcos allEcos;
 	private HHSchedulesService hhSchedulesService;
 	private ELCOScheduleService elcoScheduleService;
+	private ANCService ancService;
 
 	@Autowired
 	public ELCOService(AllHouseHolds allHouseHolds, AllElcos allEcos, HHSchedulesService hhSchedulesService,
-			ELCOScheduleService elcoScheduleService) {
+			ELCOScheduleService elcoScheduleService,ANCService ancService) {
 		this.allHouseHolds = allHouseHolds;
 		this.allEcos = allEcos;
 		this.hhSchedulesService = hhSchedulesService;
 		this.elcoScheduleService = elcoScheduleService;
+		this.ancService = ancService;
 	}
 
 	public void registerELCO(FormSubmission submission) {
@@ -187,5 +189,10 @@ public class ELCOService {
 			
 			elcoScheduleService.enrollIntoMilestoneOfPSRF(submission.entityId(),
 					submission.getField(REFERENCE_DATE));
+			
+			if(submission.getField(FW_PSRPREGSTS).equals("1"))
+			{
+				ancService.registerANC(submission);
+			}
 	}
 }

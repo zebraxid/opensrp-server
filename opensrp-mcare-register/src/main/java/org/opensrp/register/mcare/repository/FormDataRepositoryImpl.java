@@ -35,7 +35,7 @@ public class FormDataRepositoryImpl extends FormDataRepository{
     private static final String ID = "id";
     private static final String DETAILS = "details";
     private static final String DOCUMENT_TYPE = "type";
-    private static final String ID_FIELD_ON_ENTITY = "CASEID";
+    private static final String ID_FIELD_ON_ENTITY = "caseId";
     private static final String TODAY_FIELD_ON_ENTITY = "TODAY";
     private static final String LOCATIONID_FIELD_ON_ENTITY = "LOCATIONID";
     private static final String START_FIELD_ON_ENTITY = "START";
@@ -44,7 +44,7 @@ public class FormDataRepositoryImpl extends FormDataRepository{
     private static final String LOCATIONID = "existing_location";
     private static final String START = "start";
     private static final String END = "end";
-    private static final String CASE_ID_VIEW_NAME = "by_cASEID";
+    private static final String CASE_ID_VIEW_NAME = "by_caseId";
     private Map<String, Field[]> fieldSetMap;
     private CouchDbConnector db;
     private Map<String, String> designDocMap;

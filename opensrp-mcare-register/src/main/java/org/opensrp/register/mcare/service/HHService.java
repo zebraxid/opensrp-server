@@ -139,7 +139,7 @@ public class HHService {
 		   for ( Map<String, String> elco : household.ELCODETAILS()) 
 		   {
 			   if(brnIdList.contains(elco.get("FWWOMBID")))
-				   return household.CASEID();
+				   return household.caseId();
 		   }
 	   }
 	   return null;

@@ -29,7 +29,7 @@ public class ELCORegisterService {
         List<Elco> elcos = allElcos.allOpenELCOsForProvider(providerId);
         for (Elco ec : elcos) {
             ELCORegisterEntry ecRegisterEntry = new ELCORegisterEntry()
-            		.withCASEID(ec.CASEID())
+            		.withCASEID(ec.caseId())
             		.withINSTANCEID(ec.INSTANCEID())
             		.withPROVIDERID(ec.PROVIDERID())
             		.withLOCATIONID(ec.LOCATIONID())

@@ -40,10 +40,10 @@ public class OpenSRPScheduleConstants {
         public static final String SCHEDULE_ANC = "Ante Natal Care Reminder Visit";
         public static final String SCHEDULE_PNC = "Post Natal Care Reminder Visit";
         public static final String SCHEDULE_ANC_MILESTONE_PREFIX = "ANC";
-        public static final String SCHEDULE_ANC_1 = "ANC 1";
-        public static final String SCHEDULE_ANC_2 = "ANC 2";
-        public static final String SCHEDULE_ANC_3 = "ANC 3";
-        public static final String SCHEDULE_ANC_4 = "ANC 4";
+        public static final String SCHEDULE_ANC_1 = "ancrv_1";
+        public static final String SCHEDULE_ANC_2 = "ancrv_2";
+        public static final String SCHEDULE_ANC_3 = "ancrv_3";
+        public static final String SCHEDULE_ANC_4 = "ancrv_4";
         public static final String SCHEDULE_BNF = "BNF";
         public static final String SCHEDULE_PNCRV_1 = "PNCRV 1";
         public static final String SCHEDULE_PNCRV_2 = "PNCRV 2";

@@ -57,8 +57,6 @@ public class ANCSchedulesService {
             milestone = SCHEDULE_ANC_3;
         } else if(DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(36).toPeriod().minusDays(5))) {
             milestone = SCHEDULE_ANC_4;
-        } else if(DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(37).toPeriod().plusDays(2))) {
-        	milestone = SCHEDULE_BNF;
         } else{
         	
         }

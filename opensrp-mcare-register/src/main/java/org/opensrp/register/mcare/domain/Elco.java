@@ -19,7 +19,7 @@ import org.motechproject.model.MotechBaseDataObject;
 public class Elco extends MotechBaseDataObject {
 
 	@JsonProperty
-	private String CASEID;
+	private String caseId;
 	@JsonProperty
 	private String INSTANCEID;
 	@JsonProperty
@@ -110,8 +110,8 @@ public class Elco extends MotechBaseDataObject {
 
 	}
 
-	public Elco withCASEID(String CASEID) {
-		this.CASEID = CASEID;
+	public Elco withCASEID(String caseId) {
+		this.caseId = caseId;
 		return this;
 	}
 	
@@ -283,8 +283,8 @@ public class Elco extends MotechBaseDataObject {
 		this.PSRFDETAILS = PSRFDETAILS;
 		return this;
 	}
-	public String CASEID() {
-		return CASEID;
+	public String caseId() {
+		return caseId;
 	}
 	public String INSTANCEID()
 	{
@@ -404,8 +404,8 @@ public class Elco extends MotechBaseDataObject {
 	public String FWWOMGPS() {
 		return FWWOMGPS;
 	}
-	 private String getCASEID() {
-	        return CASEID;
+	 private String getCaseId() {
+	        return caseId;
 	 }
 	 
 	 public Map<String, String> details() {
