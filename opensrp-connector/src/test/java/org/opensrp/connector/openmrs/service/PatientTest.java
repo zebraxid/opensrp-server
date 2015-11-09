@@ -59,13 +59,13 @@ public class PatientTest extends TestResourceLoader{
 	@Test
 	public void shouldUploadFile() throws IOException
 	{
-		 File file = new File("/home/user/Documents/image.jpeg");
+		/* File file = new File("/home/user/Documents/image.jpeg");
 		 DiskFileItem fileItem = new DiskFileItem("file", "image/jpeg", false, file.getName(), (int) file.length() , file.getParentFile());
 		 fileItem.getOutputStream();
 		 
 		 FileInputStream input = new FileInputStream(file);
 		 MultipartFile multipartFile = new MockMultipartFile("file",
-		            file.getName(), "image/jpeg", IOUtils.toByteArray(input));
+		            file.getName(), "image/jpeg", IOUtils.toByteArray(input));*/
 		 
 		// MultipartFile multipartFile = new CommonsMultipartFile(fileItem);
 		// Multimedia multimedia =   multimediaRepository.findByCaseId("4237d267-d438-49f2-9422-8968t555447c");
