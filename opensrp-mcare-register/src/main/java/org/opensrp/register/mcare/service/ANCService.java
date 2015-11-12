@@ -52,7 +52,7 @@ public class ANCService {
 		String motherId = submission
 				.getField(AllConstants.ANCFormFields.MCARE_MOTHER_ID);
 
-		Mother mother = allMothers.findByCaseId(submission.entityId());
+		Mother mother = allMothers.findByCaseId(motherId);
 
 		if (!allElcos.exists(submission.entityId())) {
 			logger.warn(format(
@@ -61,17 +61,12 @@ public class ANCService {
 			return;
 		}
 
-		SubFormData subFormData = null;
-
-		subFormData = submission
-				.getSubFormByName(ELCO_REGISTRATION_SUB_FORM_NAME);
-
 		mother.withPROVIDERID(submission.anmId());
 		mother.withINSTANCEID(submission.instanceId());
 		mother.withTODAY(submission.getField(MOTHER_REFERENCE_DATE));
 		allMothers.update(mother);
 
-		ancSchedulesService.enrollMother(submission.entityId(),
+		ancSchedulesService.enrollMother(motherId,
 				LocalDate.parse(submission.getField(MOTHER_REFERENCE_DATE)));
 	}
 

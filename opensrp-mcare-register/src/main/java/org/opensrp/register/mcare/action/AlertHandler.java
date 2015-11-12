@@ -117,10 +117,7 @@ public class AlertHandler {
 	}
 
 	private Matcher motherSchedules() {
-		return anyOf(SCHEDULE_ANC, SCHEDULE_TT_1, SCHEDULE_TT_2,
-				SCHEDULE_IFA_1, SCHEDULE_IFA_2, SCHEDULE_IFA_3, SCHEDULE_LAB,
-				SCHEDULE_EDD, SCHEDULE_HB_TEST_1, SCHEDULE_HB_TEST_2,
-				SCHEDULE_HB_FOLLOWUP_TEST, SCHEDULE_DELIVERY_PLAN);
+		return anyOf(SCHEDULE_ANC);
 	}
 
 	private Matcher ecSchedules() {
