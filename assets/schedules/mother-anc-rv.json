@@ -5,17 +5,17 @@
         {
             "name": "ancrv_1",
             "scheduleWindows": {
-                "earliest": ["0 Days"],
-                "due": ["51 Days"],
-                "late": ["56 Days"],
-                "max": ["163 Days"]
+                "earliest": ["51 Days"],
+                "due": ["56 Days"],
+                "late": ["163 Days"],
+                "max": ["164 Days"]
             },
             "alerts": [
             	{
                     "window": "earliest",
-                    "offset": ["50 Days"],
+                    "offset": ["0 Days"],
                     "interval": ["1 Day"],
-                    "count": "50"
+                    "count": "51"
                 },
                 {
                     "window": "due",
@@ -41,14 +41,14 @@
         {
             "name": "ancrv_2",
             "scheduleWindows": {
-                "due": ["163 Days"],
+                "due": ["164 Days"],
                 "late": ["168 Days"],
                 "max": ["219 Days"]
             },
             "alerts": [           
                 {
                     "window": "due",
-                    "offset": ["163 Days"],
+                    "offset": ["0 Days"],
                     "interval": ["1 Day"],
                     "count": "5"
                 },

@@ -110,7 +110,7 @@ public class Mother extends MotechBaseDataObject {
 		this.END = END;
 		return this;
 	}
-	public Mother withRelationalId(String relationalid) {
+	public Mother withRelationalid(String relationalid) {
 		this.relationalid = relationalid;
 		return this;
 	}
@@ -183,7 +183,7 @@ public class Mother extends MotechBaseDataObject {
 		return caseId;
 	}
 
-	public String getRelationalId() {
+	public String getRelationalid() {
 		return relationalid;
 	}
 

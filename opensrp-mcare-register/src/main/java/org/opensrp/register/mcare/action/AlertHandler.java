@@ -89,7 +89,7 @@ public class AlertHandler {
 				any(),
 				anyOf(earliest.toString(), due.toString(), late.toString(),
 						max.toString()), alertCreation).addExtraData(
-				"beneficiaryType", "mcaremother");
+				"beneficiaryType", "mother");
 		
 		scheduler.addHookedEvent(
 				childSchedules(),
@@ -117,7 +117,10 @@ public class AlertHandler {
 	}
 
 	private Matcher motherSchedules() {
-		return anyOf(SCHEDULE_ANC);
+		return anyOf(SCHEDULE_ANC, SCHEDULE_TT_1, SCHEDULE_TT_2,
+				SCHEDULE_IFA_1, SCHEDULE_IFA_2, SCHEDULE_IFA_3, SCHEDULE_LAB,
+				SCHEDULE_EDD, SCHEDULE_HB_TEST_1, SCHEDULE_HB_TEST_2,
+				SCHEDULE_HB_FOLLOWUP_TEST, SCHEDULE_DELIVERY_PLAN);
 	}
 
 	private Matcher ecSchedules() {

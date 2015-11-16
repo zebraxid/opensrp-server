@@ -41,9 +41,9 @@ public class ANCSchedulesService {
 	}
 
     public void enrollMother(String caseId, LocalDate referenceDateForSchedule) {
-        for (String schedule : NON_ANC_SCHEDULES) {
+        /*for (String schedule : NON_ANC_SCHEDULES) {
         	scheduler.enrollIntoSchedule(caseId, schedule, referenceDateForSchedule);
-        }
+        }*/
         enrollIntoCorrectMilestoneOfANCCare(caseId, referenceDateForSchedule);
     }
     private void enrollIntoCorrectMilestoneOfANCCare(String entityId, LocalDate referenceDateForSchedule) {
