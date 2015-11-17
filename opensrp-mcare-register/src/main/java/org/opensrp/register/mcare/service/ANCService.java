@@ -288,43 +288,6 @@ public class ANCService {
 		allMothers.update(mother);
 	}
 
-	public void bnfFollowUpVisit(FormSubmission submission) {
-		Mother mother = allMothers.findByCaseId(submission.entityId());
-
-		if (mother == null) {
-			logger.warn(format(
-					"Failed to handle BNF as there is no Mother enroll with ID: {0}",
-					submission.entityId()));
-			return;
-		}
-		
-		Map<String, String> bnfVisit = create(FWBNFDATE, submission.getField(FWBNFDATE))
-											.put(FWCONFIRMATION, submission.getField(FWCONFIRMATION))
-											.put(FWGESTATIONALAGE, submission.getField(FWGESTATIONALAGE))
-											.put(FWEDD, submission.getField(FWEDD))
-											.put(FWBNFSTS, submission.getField(FWBNFSTS))
-											.put(FWDISPLAYTEXT1, submission.getField(FWDISPLAYTEXT1))
-											.put(FWBNFWOMVITSTS, submission.getField(FWBNFWOMVITSTS))
-											.put(FWBNFDTOO, submission.getField(FWBNFDTOO))
-											.put(FWBNFLB, submission.getField(FWBNFLB))
-											.put(FWBNFGEN, submission.getField(FWBNFGEN))
-											.put(FWBNFCHLDVITSTS, submission.getField(FWBNFCHLDVITSTS))
-											.put(FWBNFSMSRSN, submission.getField(FWBNFSMSRSN)).map();
-			
-		mother.withBNFVisit(bnfVisit);
-		
-		allMothers.update(mother);
-		
-		if(submission.getField(FWBNFSTS).equalsIgnoreCase(STS_LB) || submission.getField(FWBNFSTS).equalsIgnoreCase(STS_SB))
-		{
-			pncService.deliveryOutcome(submission);
-		}
-		else 
-		{
-			
-		}
-	}
-
 	public void pregnancyVerificationForm(FormSubmission submission)
 	{
 		

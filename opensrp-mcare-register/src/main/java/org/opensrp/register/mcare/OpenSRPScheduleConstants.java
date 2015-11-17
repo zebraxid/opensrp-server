@@ -44,7 +44,7 @@ public class OpenSRPScheduleConstants {
         public static final String SCHEDULE_ANC_2 = "ancrv_2";
         public static final String SCHEDULE_ANC_3 = "ancrv_3";
         public static final String SCHEDULE_ANC_4 = "ancrv_4";
-        public static final String SCHEDULE_BNF = "BNF";
+        public static final String SCHEDULE_BNF = "Birth Notification Pregnancy Status Follow Up";
         public static final String SCHEDULE_PNCRV_1 = "PNCRV 1";
         public static final String SCHEDULE_PNCRV_2 = "PNCRV 2";
         public static final String SCHEDULE_PNCRV_3 = "PNCRV 3";

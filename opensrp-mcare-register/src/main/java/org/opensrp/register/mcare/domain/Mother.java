@@ -39,6 +39,8 @@ public class Mother extends MotechBaseDataObject {
 	@JsonProperty
 	private String TODAY;
 	@JsonProperty
+	private String FWPSRLMP;
+	@JsonProperty
 	private String START;
 	@JsonProperty
 	private String END;
@@ -96,8 +98,13 @@ public class Mother extends MotechBaseDataObject {
 		return this;
 	}
 
-	public Mother withTODAY(String lmp) {
-		this.TODAY = lmp;
+	public Mother withTODAY(String TODAY) {
+		this.TODAY = TODAY;
+		return this;
+	}
+
+	public Mother withFWPSRLMP(String FWPSRLMP) {
+		this.FWPSRLMP = FWPSRLMP;
 		return this;
 	}
 

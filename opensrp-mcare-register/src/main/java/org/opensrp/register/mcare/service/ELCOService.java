@@ -39,15 +39,17 @@ public class ELCOService {
 	private HHSchedulesService hhSchedulesService;
 	private ELCOScheduleService elcoScheduleService;
 	private ANCService ancService;
+	private BNFService bnfService;
 
 	@Autowired
 	public ELCOService(AllHouseHolds allHouseHolds, AllElcos allEcos, HHSchedulesService hhSchedulesService,
-			ELCOScheduleService elcoScheduleService,ANCService ancService) {
+			ELCOScheduleService elcoScheduleService,ANCService ancService, BNFService bnfService) {
 		this.allHouseHolds = allHouseHolds;
 		this.allEcos = allEcos;
 		this.hhSchedulesService = hhSchedulesService;
 		this.elcoScheduleService = elcoScheduleService;
 		this.ancService = ancService;
+		this.bnfService = bnfService;
 	}
 
 	public void registerELCO(FormSubmission submission) {
@@ -193,6 +195,7 @@ public class ELCOService {
 			if(submission.getField(FW_PSRPREGSTS).equals("1"))
 			{
 				ancService.registerANC(submission);
+				bnfService.registerBNF(submission);
 			}
 	}
 }
