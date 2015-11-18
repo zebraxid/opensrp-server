@@ -1,9 +1,9 @@
 {
-    "name": "Birth Notification Pregnancy Status Follow Up",
+    "name": "BirthNotificationPregnancyStatusFollowUp",
     "absolute": true,
     "milestones": [
         {
-            "name": "Birth Notification Pregnancy Status Follow Up",
+            "name": "BirthNotificationPregnancyStatusFollowUp",
             "scheduleWindows": {
                 "due": ["9 Days"],
                 "late": ["365 Days"],

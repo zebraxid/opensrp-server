@@ -25,6 +25,8 @@ import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ECSchedulesCon
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ECSchedulesConstants.EC_SCHEDULE_MALE_STERILIZATION_FOLLOWUP;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ECSchedulesConstants.EC_SCHEDULE_OCP_REFILL;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_ANC;
+import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_BNF;
+import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_PNC;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_AUTO_CLOSE_PNC;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_DELIVERY_PLAN;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_EDD;
@@ -117,7 +119,7 @@ public class AlertHandler {
 	}
 
 	private Matcher motherSchedules() {
-		return anyOf(SCHEDULE_ANC, SCHEDULE_TT_1, SCHEDULE_TT_2,
+		return anyOf(SCHEDULE_ANC, SCHEDULE_BNF, SCHEDULE_PNC, SCHEDULE_TT_1, SCHEDULE_TT_2,
 				SCHEDULE_IFA_1, SCHEDULE_IFA_2, SCHEDULE_IFA_3, SCHEDULE_LAB,
 				SCHEDULE_EDD, SCHEDULE_HB_TEST_1, SCHEDULE_HB_TEST_2,
 				SCHEDULE_HB_FOLLOWUP_TEST, SCHEDULE_DELIVERY_PLAN);

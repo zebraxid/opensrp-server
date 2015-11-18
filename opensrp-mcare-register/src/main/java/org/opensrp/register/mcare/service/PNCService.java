@@ -73,7 +73,7 @@ public class PNCService {
 			logger.info("Generating schedule for Child when Child is Live Birth. Mother Id: " + mother.caseId());
 			childSchedulesService.enrollENCCForChild(submission.entityId(), LocalDate.parse(submission.getField(FWBNFDTOO)));
 		}
-		if(submission.getField(FWBNFSTS).equals(STS_SB))
+		else if(submission.getField(FWBNFSTS).equals(STS_SB))
 		{
 			logger.info("Generating schedule for Mother when Child is Still Birth. Mother Id: " + mother.caseId());
 			pncSchedulesService.enrollPNCRVForMother(submission.entityId(), LocalDate.parse(submission.getField(FWBNFDTOO)));

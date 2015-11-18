@@ -47,10 +47,12 @@ public class BNFService {
 	private PNCService pncService;
 	
 	@Autowired
-	public BNFService(AllElcos allElcos, AllMothers allMothers)
+	public BNFService(AllElcos allElcos, AllMothers allMothers, BNFSchedulesService bnfSchedulesService, PNCService pncService)
 	{
 		this.allElcos = allElcos;
 		this.allMothers = allMothers;
+		this.bnfSchedulesService = bnfSchedulesService;
+		this.pncService = pncService;
 	}
 	
 	public void registerBNF(FormSubmission submission)
@@ -73,9 +75,11 @@ public class BNFService {
 		allMothers.update(mother);
 		
 		bnfSchedulesService.enrollBNF(motherId, LocalDate.parse(submission.getField(REFERENCE_DATE)));
+		//pncService.deliveryOutcome(submission);
 		
 	}
 	public void bnfFollowUpVisit(FormSubmission submission) {
+		
 		Mother mother = allMothers.findByCaseId(submission.entityId());
 
 		if (mother == null) {
