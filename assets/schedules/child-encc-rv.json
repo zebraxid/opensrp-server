@@ -1,12 +1,12 @@
 {
-    "name": "Post Natal Care Reminder Visit",
+    "name": "Essential Newborn Care Checklist",
     "absolute": true,
     "milestones": [
         {
-            "name": "pncrv_1",
+            "name": "enccv_1",
             "scheduleWindows": {
                 "due": ["0 Days"],
-                "late": ["1 Days"],
+                "late": ["1 Day"],
                 "max": ["2 Days"]
             },
             "alerts": [
@@ -32,7 +32,7 @@
             ]
         },
         {
-            "name": "pncrv_2",
+            "name": "enccv_2",
             "scheduleWindows": {
                 "due": ["2 Days"],
                 "late": ["3 Days"],
@@ -60,7 +60,7 @@
             ]
         },
         {
-            "name": "pncrv_3",
+            "name": "enccv_3",
             "scheduleWindows": {
                 "due": ["6 Days"],
                 "late": ["8 Days"],

@@ -3,7 +3,9 @@
  */
 package org.opensrp.register.mcare.domain;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -59,7 +61,7 @@ public class Mother extends MotechBaseDataObject {
 	@JsonProperty
 	private Map<String, String> ancVisitFour;
 	@JsonProperty
-	private Map<String, String> bnfVisit;
+	private List<Map<String, String>> bnfVisitDetails;
 	@JsonProperty
 	private Map<String, String> pncVisitOne;
 	@JsonProperty
@@ -74,7 +76,6 @@ public class Mother extends MotechBaseDataObject {
 		this.ancVisitTwo = new HashMap<>();
 		this.ancVisitThree = new HashMap<>();
 		this.ancVisitFour = new HashMap<>();
-		this.bnfVisit = new HashMap<>();
 		this.setIsClosed(false);
 	}
 	
@@ -138,8 +139,8 @@ public class Mother extends MotechBaseDataObject {
         this.ancVisitFour = new HashMap<>(ancVisitFour);
         return this;
     }
-	public Mother withBNFVisit(Map<String, String> bnfVisit) {
-        this.bnfVisit = new HashMap<>(bnfVisit);
+	public Mother withBNFVisitDetails(List<Map<String, String>> bnfVisitDetails) {
+        this.bnfVisitDetails = bnfVisitDetails;
         return this;
     }
 	public Mother withPNCVisitOne(Map<String, String> pncVisitOne) {
@@ -213,8 +214,11 @@ public class Mother extends MotechBaseDataObject {
 	public Map<String, String> ancVisitFour() {
 		return ancVisitFour;
 	}
-	public Map<String, String> bnfVisit() {
-		return bnfVisit;
+	public List<Map<String, String>> bnfVisitDetails() {
+		if (bnfVisitDetails == null) {
+			bnfVisitDetails = new ArrayList<>();
+		}
+		return bnfVisitDetails;
 	}
 	public Map<String, String> pncVisitOne() {
 		return pncVisitOne;

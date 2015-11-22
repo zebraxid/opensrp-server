@@ -101,8 +101,10 @@ public class BNFService {
 											.put(FWBNFGEN, submission.getField(FWBNFGEN))
 											.put(FWBNFCHLDVITSTS, submission.getField(FWBNFCHLDVITSTS))
 											.put(FWBNFSMSRSN, submission.getField(FWBNFSMSRSN)).map();
+		
+		mother.withTODAY(submission.getField(REFERENCE_DATE));
 			
-		mother.withBNFVisit(bnfVisit);
+		mother.bnfVisitDetails().add(bnfVisit);
 		
 		allMothers.update(mother);
 		

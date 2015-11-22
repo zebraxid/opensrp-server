@@ -39,9 +39,7 @@ public class PNCSchedulesService {
 	}
 
     public void enrollPNCRVForMother(String caseId, LocalDate referenceDateForSchedule) {
-        for (String schedule : NON_ANC_SCHEDULES) {
-        	scheduler.enrollIntoSchedule(caseId, schedule, referenceDateForSchedule);
-        }
+       
         enrollIntoCorrectMilestoneOfPNCRVCare(caseId, referenceDateForSchedule);
     }
     private void enrollIntoCorrectMilestoneOfPNCRVCare(String entityId, LocalDate referenceDateForSchedule) {

@@ -26,7 +26,7 @@ public class AllConstants {
     	public static final String ANC_REMINDER_VISIT_2 = "anc_reminder_visit_2";
     	public static final String ANC_REMINDER_VISIT_3 = "anc_reminder_visit_3";
     	public static final String ANC_REMINDER_VISIT_4 = "anc_reminder_visit_4";
-    	public static final String BNF_FORM = "bnf_form";
+    	public static final String BNF_FORM = "birthnotificationpregnancystatusfollowup";
     	public static final String PNC_REMINDER_VISIT_1 = "pnc_reminder_visit_1";
     	public static final String PNC_REMINDER_VISIT_2 = "pnc_reminder_visit_2";
     	public static final String PNC_REMINDER_VISIT_3 = "pnc_reminder_visit_3";

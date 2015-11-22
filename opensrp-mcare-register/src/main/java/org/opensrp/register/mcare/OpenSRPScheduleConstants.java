@@ -30,9 +30,9 @@ public class OpenSRPScheduleConstants {
         public static final String CHILD_SCHEDULE_PENTAVALENT_3 = "PENTAVALENT 3";
         
         public static final String SCHEDULE_ENCC = "Essential Newborn Care Checklist";
-        public static final String SCHEDULE_ENCC_1 = "ENCC 1";
-        public static final String SCHEDULE_ENCC_2 = "ENCC 2";
-        public static final String SCHEDULE_ENCC_3 = "ENCC 3";
+        public static final String SCHEDULE_ENCC_1 = "enccv_1";
+        public static final String SCHEDULE_ENCC_2 = "enccv_2";
+        public static final String SCHEDULE_ENCC_3 = "enccv_3";
         
     }
 

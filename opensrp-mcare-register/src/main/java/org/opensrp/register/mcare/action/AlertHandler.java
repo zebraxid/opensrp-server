@@ -5,6 +5,7 @@ import static org.motechproject.scheduletracking.api.domain.WindowName.earliest;
 import static org.motechproject.scheduletracking.api.domain.WindowName.late;
 import static org.motechproject.scheduletracking.api.domain.WindowName.max;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ChildScheduleConstants.CHILD_SCHEDULE_BCG;
+import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ChildScheduleConstants.SCHEDULE_ENCC;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ChildScheduleConstants.CHILD_SCHEDULE_DPT_BOOSTER1;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ChildScheduleConstants.CHILD_SCHEDULE_DPT_BOOSTER2;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ChildScheduleConstants.CHILD_SCHEDULE_MEASLES;
@@ -105,7 +106,7 @@ public class AlertHandler {
 	}
 
 	private Matcher childSchedules() {
-		return anyOf(CHILD_SCHEDULE_BCG,
+		return anyOf(CHILD_SCHEDULE_BCG,SCHEDULE_ENCC,
 
 		CHILD_SCHEDULE_DPT_BOOSTER1, CHILD_SCHEDULE_DPT_BOOSTER2,
 
