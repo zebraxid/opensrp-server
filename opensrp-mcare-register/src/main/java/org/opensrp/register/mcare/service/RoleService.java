@@ -21,12 +21,21 @@ public class RoleService {
 		this.allRoles = allRoles;
 	}
 	
-	public void addRole(RoleDTO roleDTO)
+	public String addRole(RoleDTO roleDTO)
 	{
-		Role role = new Role();
-		role.withUserName(roleDTO.getUserName());
-		role.withRoleName(roleDTO.getRoleName());
-		
-		allRoles.add(role);
+		Role roleByUserName = allRoles.findByUserName(roleDTO.getUserName());
+		if (roleByUserName == null) {
+			try{
+				Role role = new Role();
+				role.withUserName(roleDTO.getUserName());
+				role.withRoleName(roleDTO.getRoleName());				
+				allRoles.add(role);
+				return "1";
+			}catch(Exception e){
+				return "0";
+			}
+		}else{
+			return "2";
+		}
 	}
 }

@@ -6,6 +6,8 @@ import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
+import java.util.ArrayList;
+
 import org.json.JSONException;
 import org.opensrp.connector.openmrs.service.OpenmrsUserService;
 import org.opensrp.dto.AclDTO;
@@ -46,15 +48,15 @@ public class AclController {
 	}
 
 	@RequestMapping(headers = { "Accept=application/json" }, method = POST, value = "/add-role")
-	public ResponseEntity<HttpStatus> addRole(@RequestBody RoleDTO roleDTO) {
-		roleService.addRole(roleDTO);
-		return new ResponseEntity<>(CREATED);
+	public ResponseEntity<String> addRole(@RequestBody RoleDTO roleDTO) {
+		String message = roleService.addRole(roleDTO);
+		return new ResponseEntity<>(message,OK);
 	}
 
 	@RequestMapping(headers = { "Accept=application/json" }, method = POST, value = "/add-acl")
-	public ResponseEntity<HttpStatus> addAcl(@RequestBody AclDTO aclDTO) {
-		aclService.addAcl(aclDTO);
-		return new ResponseEntity<>(CREATED);
+	public ResponseEntity<String> addAcl(@RequestBody AclDTO aclDTO) {
+		String message = aclService.addAcl(aclDTO);		
+		return new ResponseEntity<>(message,OK);
 	}
 
 	@RequestMapping(method = GET, value = "/all-user-name")
@@ -68,5 +70,10 @@ public class AclController {
 	@ResponseBody
 	public AclDTO getRoleAndAccessTokens(@RequestParam String userName) {
 		return aclService.getRoleAndAccessTokens(userName);
+	}
+	@RequestMapping(method = GET, value = "/all-roles")
+	@ResponseBody
+	public ArrayList<AclDTO> getRoles() {
+		return (ArrayList<AclDTO>) aclService.getRoles();
 	}
 }

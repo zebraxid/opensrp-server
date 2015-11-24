@@ -1,5 +1,8 @@
 package org.opensrp.register.mcare.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.opensrp.dto.AclDTO;
 import org.opensrp.register.mcare.domain.Acl;
 import org.opensrp.register.mcare.domain.Role;
@@ -25,12 +28,22 @@ public class AclService {
 		this.allAcls = allAcls;
 	}
 	
-	public void addAcl(AclDTO aclDTO)
-	{
-		Acl acl = new Acl();
-		acl.withRoleName(aclDTO.getRoleName());
-		acl.withAccessTokens(aclDTO.getAccessTokens());
-		allAcls.add(acl);
+	public String addAcl(AclDTO aclDTO)	{
+		
+		Acl acls = allAcls.findByRoleName(aclDTO.getRoleName());
+		if (acls == null) {
+			try{
+				Acl acl = new Acl();
+				acl.withRoleName(aclDTO.getRoleName());
+				acl.withAccessTokens(aclDTO.getAccessTokens());
+				allAcls.add(acl);
+				return "1";
+			}catch(Exception e){
+				return "0";
+			}
+		}else{
+			return "2";
+		}
 	}
 	
 	public AclDTO getRoleAndAccessTokens(String userName)
@@ -43,5 +56,16 @@ public class AclService {
 						.withAccessTokens(acl.getAccessTokens());
 		
 		return aclDTO;
+	}
+	public ArrayList<AclDTO> getRoles(){
+		List<Acl> acls = allAcls.roles();		
+		ArrayList<AclDTO> aclList = new ArrayList<AclDTO>();
+		for (Acl acl : acls) {
+			AclDTO aclDTO = new AclDTO()
+			.withRoleName(acl.getRoleName())
+			.withAccessTokens(acl.getAccessTokens());
+			aclList.add(aclDTO);			
+		}		
+		return aclList;
 	}
 }

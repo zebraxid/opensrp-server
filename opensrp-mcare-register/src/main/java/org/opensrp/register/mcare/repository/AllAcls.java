@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.ektorp.CouchDbConnector;
 import org.ektorp.support.GenerateView;
+import org.ektorp.support.View;
 import org.motechproject.dao.MotechBaseRepository;
 import org.opensrp.common.AllConstants;
 import org.opensrp.register.mcare.domain.Acl;
@@ -26,4 +27,12 @@ public class AllAcls  extends MotechBaseRepository<Acl>{
 		}
 		return acls.get(0);
 	}
+	
+	@View(name = "all_role", map = "function(doc) { if (doc.type === 'Acl') { emit(doc.roleName); } }")
+	public List<Acl> roles() {
+		return db.queryView(
+				createQuery("all_role")
+						.includeDocs(true), Acl.class);
+	}
+	
 }
