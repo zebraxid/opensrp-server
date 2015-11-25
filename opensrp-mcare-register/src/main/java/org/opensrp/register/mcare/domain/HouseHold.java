@@ -53,6 +53,8 @@ public class HouseHold extends MotechBaseDataObject {
 	@JsonProperty
 	private String FWNHHHGPS;
 	@JsonProperty
+	private String form_name;
+	@JsonProperty
 	private String FWHOHFNAME;
 	@JsonProperty
 	private String FWHOHLNAME;
@@ -132,6 +134,11 @@ public class HouseHold extends MotechBaseDataObject {
 
 	public HouseHold withFWNHHHGPS(String FWNHHHGPS) {
 		this.FWNHHHGPS = FWNHHHGPS;
+		return this;
+	}
+	
+	public HouseHold withform_name(String form_name) {
+		this.form_name = form_name;
 		return this;
 	}
 
@@ -274,6 +281,10 @@ public class HouseHold extends MotechBaseDataObject {
 
 	public String FWNHHHGPS() {
 		return FWNHHHGPS;
+	}
+	
+	public String form_name() {
+		return form_name;
 	}
 
 	public String FWCOUNTRY() {

@@ -47,6 +47,7 @@ public class HHRegisterService {
                 .withFWSUBUNIT(hh.FWSUBUNIT())
                 .withFWMAUZA_PARA(hh.FWMAUZA_PARA())
         		.withFWNHHHGPS(hh.FWNHHHGPS())
+        		.withform_name(hh.form_name())
         		.withFWHOHFNAME(hh.FWHOHFNAME())
         		.withFWHOHLNAME(hh.FWHOHLNAME())
         		.withFWHOHBIRTHDATE(hh.FWHOHBIRTHDATE())
