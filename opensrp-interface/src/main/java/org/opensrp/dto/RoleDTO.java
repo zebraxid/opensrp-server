@@ -11,20 +11,38 @@ public class RoleDTO {
 	private String userName;
 	@JsonProperty
 	private String roleName;
+	@JsonProperty
+	private String roleId;
 
-	public RoleDTO(String userName, String roleName) {
+	public RoleDTO(String userName, String roleName,String roleId) {
 		this.userName = userName;
 		this.roleName = roleName;
+		this.roleId = roleId;
 	}
 
 	public RoleDTO() {
 
+	}
+	public RoleDTO withRoleName(String roleName){
+		this.roleName = roleName;
+		return this;
+	}
+	public RoleDTO withUserName(String userName){
+		this.userName = userName;
+		return this;
+	}
+	public RoleDTO withRoleId(String roleId){
+		this.roleId = roleId;
+		return this;
 	}
 	public String getUserName() {
 		return userName;
 	}
 	public String getRoleName() {
 		return roleName;
+	}
+	public String getRoleId() {
+		return roleId;
 	}
 	
 	@Override
