@@ -13,6 +13,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.google.gson.Gson;
+
 @Service
 public class AclService {
 
@@ -28,8 +30,7 @@ public class AclService {
 		this.allAcls = allAcls;
 	}
 	
-	public String addAcl(AclDTO aclDTO)	{
-		
+	public String addAcl(AclDTO aclDTO)	{		
 		Acl acls = allAcls.findByRoleName(aclDTO.getRoleName());
 		if (acls == null) {
 			try{
@@ -45,6 +46,23 @@ public class AclService {
 			return "2";
 		}
 	}
+	public String editAcl(AclDTO aclDTO) {		
+		Acl acls = allAcls.get(aclDTO.getRoleId());
+		String json = new Gson().toJson(acls);
+        System.out.println("MMMMMMMMMMMYYYYYYYYYYYYYY::"+json);
+		try{
+			Acl acl = new Acl();
+			acl.withRoleName(aclDTO.getRoleName());
+			acl.setId(aclDTO.getRoleId());
+			acl.setRevision(acls.getRevision());
+			acl.withAccessTokens(aclDTO.getAccessTokens());
+			allAcls.update(acl);
+			return "1";
+		}catch(Exception e){
+			return "0";
+		}
+		
+	}
 	
 	public AclDTO getRoleAndAccessTokens(String userName)
 	{
@@ -53,19 +71,29 @@ public class AclService {
 		
 		AclDTO aclDTO = new AclDTO()
 						.withRoleName(acl.getRoleName())
+						.withRoleId(acl.getId())
 						.withAccessTokens(acl.getAccessTokens());
 		
 		return aclDTO;
 	}
-	public ArrayList<AclDTO> getRoles(){
-		List<Acl> acls = allAcls.roles();		
+	public ArrayList<AclDTO> getRolesAndAccessTokens(){
+		List<Acl> acls = allAcls.roles();		//Acl ac = allAcls.get("");
 		ArrayList<AclDTO> aclList = new ArrayList<AclDTO>();
 		for (Acl acl : acls) {
 			AclDTO aclDTO = new AclDTO()
 			.withRoleName(acl.getRoleName())
-			.withAccessTokens(acl.getAccessTokens());
+			.withRoleId(acl.getId())
+			.withAccessTokens(acl.getAccessTokens());			
 			aclList.add(aclDTO);			
 		}		
 		return aclList;
+	}
+	public AclDTO getRoleAndAccessTokensByName(String roleId){
+		Acl acl = allAcls.get(roleId);		
+		AclDTO aclDTO = new AclDTO()
+		 .withRoleName(acl.getRoleName())
+		 .withRoleId(acl.getId())
+		 .withAccessTokens(acl.getAccessTokens());
+		return aclDTO;
 	}
 }

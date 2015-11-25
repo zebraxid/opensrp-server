@@ -47,7 +47,7 @@ public class AclController {
 		this.openmrsUserService = openmrsUserService;
 	}
 
-	@RequestMapping(headers = { "Accept=application/json" }, method = POST, value = "/add-role")
+	@RequestMapping(headers = { "Accept=application/json" }, method = POST, value = "/assing-user-to-role")
 	public ResponseEntity<String> addRole(@RequestBody RoleDTO roleDTO) {
 		String message = roleService.addRole(roleDTO);
 		return new ResponseEntity<>(message,OK);
@@ -56,6 +56,11 @@ public class AclController {
 	@RequestMapping(headers = { "Accept=application/json" }, method = POST, value = "/add-acl")
 	public ResponseEntity<String> addAcl(@RequestBody AclDTO aclDTO) {
 		String message = aclService.addAcl(aclDTO);		
+		return new ResponseEntity<>(message,OK);
+	}
+	@RequestMapping(headers = { "Accept=application/json" }, method = POST, value = "/edit-acl")
+	public ResponseEntity<String> editAcl(@RequestBody AclDTO aclDTO) {
+		String message = aclService.editAcl(aclDTO);		
 		return new ResponseEntity<>(message,OK);
 	}
 
@@ -71,9 +76,21 @@ public class AclController {
 	public AclDTO getRoleAndAccessTokens(@RequestParam String userName) {
 		return aclService.getRoleAndAccessTokens(userName);
 	}
-	@RequestMapping(method = GET, value = "/all-roles")
+	
+	@RequestMapping(method = GET, value = "/role-access-tokens-by-name")
 	@ResponseBody
-	public ArrayList<AclDTO> getRoles() {
-		return (ArrayList<AclDTO>) aclService.getRoles();
+	public AclDTO getRoleAndAccessTokensByRoleName(@RequestParam String roleName) {
+		return aclService.getRoleAndAccessTokensByName(roleName);
+	}
+	
+	@RequestMapping(method = GET, value = "/all-roles-access-tokens")
+	@ResponseBody
+	public ArrayList<AclDTO> getRolesAndAccessTokens() {
+		return (ArrayList<AclDTO>) aclService.getRolesAndAccessTokens();
+	}
+	@RequestMapping(method = GET, value = "/all-roles-with-user")
+	@ResponseBody
+	public ArrayList<RoleDTO> getRolesAndUser() {
+		return (ArrayList<RoleDTO>) roleService.getRolesAndUser();
 	}
 }
