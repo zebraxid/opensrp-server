@@ -48,8 +48,7 @@ public class AclService {
 	}
 	public String editAcl(AclDTO aclDTO) {		
 		Acl acls = allAcls.get(aclDTO.getRoleId());
-		String json = new Gson().toJson(acls);
-        System.out.println("MMMMMMMMMMMYYYYYYYYYYYYYY::"+json);
+		
 		try{
 			Acl acl = new Acl();
 			acl.withRoleName(aclDTO.getRoleName());

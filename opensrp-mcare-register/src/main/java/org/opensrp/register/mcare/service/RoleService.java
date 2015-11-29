@@ -13,6 +13,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.google.gson.Gson;
+
 @Service
 public class RoleService {
 
@@ -42,6 +44,22 @@ public class RoleService {
 		}else{
 			return "2";
 		}
+	}
+	
+	public String editRole(RoleDTO roleDTO) {		
+		Role roles = allRoles.get(roleDTO.getRoleId());		
+		try{
+			Role role = new Role();
+			role.withRoleName(roleDTO.getRoleName());
+			role.setId(roleDTO.getRoleId());
+			role.setRevision(roles.getRevision());			
+			role.withUserName(roleDTO.getUserName());
+			allRoles.update(role);
+			return "1";
+		}catch(Exception e){
+			return "0";
+		}
+		
 	}
 	public ArrayList<RoleDTO> getRolesAndUser(){
 		List<Role> roles = allRoles.roles();		

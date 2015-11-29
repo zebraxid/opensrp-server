@@ -52,6 +52,12 @@ public class AclController {
 		String message = roleService.addRole(roleDTO);
 		return new ResponseEntity<>(message,OK);
 	}
+	
+	@RequestMapping(headers = { "Accept=application/json" }, method = POST, value = "/edit-assing-user-to-role")
+	public ResponseEntity<String> editRole(@RequestBody RoleDTO roleDTO) {
+		String message = roleService.editRole(roleDTO);
+		return new ResponseEntity<>(message,OK);
+	}
 
 	@RequestMapping(headers = { "Accept=application/json" }, method = POST, value = "/add-acl")
 	public ResponseEntity<String> addAcl(@RequestBody AclDTO aclDTO) {
