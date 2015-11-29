@@ -78,13 +78,20 @@ public class HHService {
 		for (Map<String, String> elcoFields : subFormData.instances()) {
 
 			Map<String, String> elco = create(ID, elcoFields.get(ID))
-					.put(FW_PROVIDERID, elcoFields.get(FW_PROVIDERID))
-					.put(FW_LOCATIONID, elcoFields.get(FW_LOCATIONID))
-					.put(FW_TODAY, elcoFields.get(FW_TODAY))
-					.put(START_DATE, elcoFields.get(START_DATE))
-					.put(END_DATE, elcoFields.get(END_DATE))
+					.put(FW_TODAY, submission.getField(REFERENCE_DATE))
+					.put(START_DATE, submission.getField(START_DATE))
+					.put(END_DATE, submission.getField(END_DATE))
 					.put(FW_GOBHHID, elcoFields.get(FW_GOBHHID))
 					.put(FW_JiVitAHHID, elcoFields.get(FW_JiVitAHHID))
+					.put(FW_CENDATE, submission.getField(FW_CENDATE))
+					.put(FW_CENSTAT, submission.getField(FW_CENSTAT))
+					.put(ELCO, submission.getField(ELCO))
+					.put(WomanREGDATE, elcoFields.get(WomanREGDATE))
+					.put(FW_NHWOMSTRMEN, elcoFields.get(FW_NHWOMSTRMEN))
+					.put(FW_NHWOMHUSALV, elcoFields.get(FW_NHWOMHUSALV))
+					.put(FW_NHWOMHUSSTR, elcoFields.get(FW_NHWOMHUSSTR))
+					.put(FW_NHWOMHUSLIV, elcoFields.get(FW_NHWOMHUSLIV))
+					.put(form_name, submission.getField(form_name))
 					.put(FW_WOMFNAME, elcoFields.get(FW_WOMFNAME))
 					.put(FW_WOMLNAME, elcoFields.get(FW_WOMLNAME))
 					.put(FW_WOMANYID, elcoFields.get(FW_WOMANYID))
@@ -101,7 +108,7 @@ public class HHService {
 					.put(FW_NHWOMHUSALV, elcoFields.get(FW_NHWOMHUSALV))
 					.put(FW_NHWOMHUSSTR, elcoFields.get(FW_NHWOMHUSSTR))
 					.put(FW_NHWOMHUSLIV, elcoFields.get(FW_NHWOMHUSLIV))
-					.put(FW_ELIGIBLE, elcoFields.get(FW_ELIGIBLE))
+					.put(FW_ELIGIBLE, elcoFields.get(FW_ELIGIBLE))			
 					.put(FW_WOMCOUNTRY, elcoFields.get(FW_WOMCOUNTRY))
 					.put(FW_WOMDIVISION, elcoFields.get(FW_WOMDIVISION))
 					.put(FW_WOMDISTRICT, elcoFields.get(FW_WOMDISTRICT))
@@ -112,7 +119,8 @@ public class HHService {
 					.put(FW_WOMMAUZA_PARA, elcoFields.get(FW_WOMMAUZA_PARA))
 					.put(FW_WOMGOBHHID, elcoFields.get(FW_WOMGOBHHID))
 					.put(FW_WOMGPS, elcoFields.get(FW_WOMGPS)).map();
-			
+ 
+					
 			houseHold.ELCODETAILS().add(elco);
 			
 			/*
