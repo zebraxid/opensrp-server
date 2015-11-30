@@ -8,7 +8,6 @@ import java.util.Map;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.codehaus.jackson.annotate.JsonProperty;
 
 public class ELCORegisterEntry {
 	
@@ -26,9 +25,25 @@ public class ELCORegisterEntry {
 	
 	private String END;
 	
+	private String WomanREGDATE;
+	
+	private String FWNHWOMSTRMEN;
+
+	private String FWNHWOMHUSALV;
+
+	private String FWNHWOMHUSLIV;
+
+	private String FWNHWOMHUSSTR;
+	
 	private String GOBHHID;
 	
 	private String JiVitAHHID;
+	
+	private String existing_ELCO;
+
+	private String new_ELCO;
+	
+	private String ELCO;
 	
 	private String FWCENDATE;
 	
@@ -92,6 +107,8 @@ public class ELCORegisterEntry {
 	
 	private String FWWOMGPS;
 	
+	private String form_name;
+	
 	private Map<String, String> details;
 	
 	private List<Map<String, String>> PSRFDETAILS;
@@ -128,13 +145,46 @@ public class ELCORegisterEntry {
 		this.END = END;
 		return this;
 	}
+	public ELCORegisterEntry withWomanREGDATE(String WomanREGDATE) {
+		this.WomanREGDATE = WomanREGDATE;
+		return this;
+	}
+	public ELCORegisterEntry withFWNHWOMSTRMEN(String FWNHWOMSTRMEN) {
+		this.FWNHWOMSTRMEN = FWNHWOMSTRMEN;
+		return this;
+	}
+	public ELCORegisterEntry withFWNHWOMHUSALV(String FWNHWOMHUSALV) {
+		this.FWNHWOMHUSALV = FWNHWOMHUSALV;
+		return this;
+	}
+	public ELCORegisterEntry withFWNHWOMHUSLIV(String FWNHWOMHUSLIV) {
+		this.FWNHWOMHUSLIV = FWNHWOMHUSLIV;
+		return this;
+	}
+	public ELCORegisterEntry withFWNHWOMHUSSTR(String FWNHWOMHUSSTR) {
+		this.FWNHWOMHUSSTR = FWNHWOMHUSSTR;
+		return this;
+	}
 	public ELCORegisterEntry withGOBHHID(String GOBHHID) {
 		this.GOBHHID = GOBHHID;
 		return this;
 	}
-
 	public ELCORegisterEntry withJiVitAHHID(String JiVitAHHID) {
 		this.JiVitAHHID = JiVitAHHID;
+		return this;
+	}	
+	public ELCORegisterEntry withexisting_ELCO(String existing_ELCO) {
+		this.existing_ELCO = existing_ELCO;
+		return this;
+	}
+	
+	public ELCORegisterEntry withnew_ELCO(String new_ELCO) {
+		this.new_ELCO = new_ELCO;
+		return this;
+	}
+	
+	public ELCORegisterEntry withELCO(String ELCO) {
+		this.ELCO = ELCO;
 		return this;
 	}
 
@@ -263,6 +313,10 @@ public class ELCORegisterEntry {
 		this.FWWOMGPS = FWWOMGPS;
 		return this;
 	}
+	public ELCORegisterEntry withform_name(String form_name) {
+		this.form_name = form_name;
+		return this;
+	}
 	public ELCORegisterEntry withDetails(Map<String, String> details) {
         this.details = new HashMap<>(details);
         return this;
@@ -293,11 +347,35 @@ public class ELCORegisterEntry {
 	public String END() {
 		return  END;
 	}
+	public String WomanREGDATE() {
+		return  WomanREGDATE;
+	}
+	public String FWNHWOMSTRMEN() {
+		return  FWNHWOMSTRMEN;
+	}
+	public String FWNHWOMHUSALV() {
+		return  FWNHWOMHUSALV;
+	}
+	public String FWNHWOMHUSLIV() {
+		return  FWNHWOMHUSLIV;
+	}
+	public String FWNHWOMHUSSTR() {
+		return  FWNHWOMHUSSTR;
+	}
 	public String GOBHHID() {
 		return GOBHHID;
 	}
 	public String JiVitAHHID() {
 		return JiVitAHHID;
+	}
+	public String existing_ELCO() {
+		return existing_ELCO;
+	}
+	public String new_ELCO() {
+		return new_ELCO;
+	}
+	public String ELCO() {
+		return ELCO;
 	}
 	public String FWCENDATE() {
 		return FWCENDATE;
@@ -391,6 +469,9 @@ public class ELCORegisterEntry {
 	}
 	public String FWWOMGPS() {
 		return FWWOMGPS;
+	}
+	public String form_name() {
+		return form_name;
 	}
 	 private String getCASEID() {
 	        return CASEID;

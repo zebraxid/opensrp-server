@@ -133,11 +133,19 @@ public class AllConstants {
     {
     	public static final String FW_PROVIDERID ="PROVIDERID";
     	public static final String FW_LOCATIONID ="LOCATIONID";
+    	public static final String relationalid ="relationalid";
     	public static final String FW_TODAY ="TODAY";
     	public static final String START_DATE = "start";
     	public static final String END_DATE = "end";
     	public static final String FW_GOBHHID ="GOBHHID";
     	public static final String FW_JiVitAHHID ="JiVitAHHID";
+    	public static final String existing_ELCO ="existing_ELCO";
+    	public static final String new_ELCO ="new_ELCO";
+    	public static final String ELCO ="ELCO";
+    	public static final String WomanREGDATE ="WomanREGDATE";
+    	public static final String form_name ="form_name";
+    	public static final String FW_CENDATE ="FWCENDATE";
+    	public static final String FW_CENSTAT ="FWCENSTAT";
     	public static final String FW_WOMFNAME = "FWWOMFNAME";
     	public static final String FW_WOMLNAME = "FWWOMLNAME";
     	public static final String FW_WOMANYID = "FWWOMANYID";
@@ -197,6 +205,11 @@ public class AllConstants {
     	public static final String FW_PSRMUAC ="FWPSRMUAC";	
     	public static final String FW_PSRPHONE ="FWPSRPHONE";
     	public static final String FW_PSRPHONENUM ="FWPSRPHONENUM";	
+    	public static final String FW_VG = "FWVG";
+    	public static final String FW_HRP = "FWHRP";
+    	public static final String FW_HR_PSR = "FWHR_PSR";
+    	public static final String FW_FLAGVALUE = "FWFLAGVALUE";
+    	public static final String FW_SORTVALUE = "FWSORTVALUE"; 
     	
     }
     
