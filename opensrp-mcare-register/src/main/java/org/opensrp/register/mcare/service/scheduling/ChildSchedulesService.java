@@ -32,11 +32,11 @@ public class ChildSchedulesService {
 	    private void enrollIntoCorrectMilestoneOfENCCCare(String entityId, LocalDate referenceDateForSchedule) {
 	        String milestone=null;
 
-	        if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Days.ZERO.toPeriod())) {
+	        if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Days.ONE.toPeriod())) {
 	            milestone = SCHEDULE_ENCC_1;
-	        } else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Days.TWO.toPeriod())) {
+	        } else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Days.FIVE.toPeriod())) {
 	            milestone = SCHEDULE_ENCC_2;
-	        } else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Days.SIX.toPeriod())) {
+	        } else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Days.SIX.toPeriod().plusDays(2))) {
 	            milestone = SCHEDULE_ENCC_3;
 	        } else{
 	        	

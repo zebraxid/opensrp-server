@@ -58,21 +58,7 @@ public class AlertHandler {
 	@Autowired
 	public AlertHandler(TaskSchedulerService scheduler,
 			@Qualifier("AlertCreationAction") HookedEvent alertCreation) {
-		/*
-		 * scheduler.addHookedEvent(eq(SCHEDULE_ANC), any(), eq(max.toString()),
-		 * forceFulfill); scheduler.addHookedEvent(eq(SCHEDULE_LAB), any(),
-		 * eq(max.toString()), forceFulfill);
-		 * scheduler.addHookedEvent(eq(SCHEDULE_AUTO_CLOSE_PNC), any(), any(),
-		 * autoClosePNCAction); scheduler.addHookedEvent(motherSchedules(),
-		 * any(), anyOf(earliest.toString(), due.toString(), late.toString()),
-		 * alertCreation).addExtraData("beneficiaryType", "mother");
-		 * scheduler.addHookedEvent(childSchedules(), any(),
-		 * anyOf(earliest.toString(), due.toString(), late.toString(),
-		 * max.toString()), alertCreation).addExtraData("beneficiaryType",
-		 * "child"); scheduler.addHookedEvent(ecSchedules(), any(),
-		 * anyOf(earliest.toString(), due.toString(), late.toString()),
-		 * alertCreation).addExtraData("beneficiaryType", "ec");
-		 */
+	
 		scheduler.addHookedEvent(
 				hhSchedules(),
 				any(),

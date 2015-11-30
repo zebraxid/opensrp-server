@@ -16,6 +16,7 @@ import org.ektorp.CouchDbConnector;
 import org.ektorp.ViewQuery;
 import org.ektorp.ViewResult;
 import org.opensrp.common.AllConstants;
+import org.opensrp.register.mcare.domain.Child;
 import org.opensrp.register.mcare.domain.Elco;
 import org.opensrp.register.mcare.domain.HouseHold;
 import org.opensrp.register.mcare.domain.Mother;
@@ -64,9 +65,11 @@ public class FormDataRepositoryImpl extends FormDataRepository{
         designDocMap.put(AllConstants.FormEntityTypes.HOUSE_HOLD_TYPE, "HouseHold");
         designDocMap.put(AllConstants.FormEntityTypes.ELCO_TYPE, "Elco");
         designDocMap.put(AllConstants.FormEntityTypes.MCARE_MOTHER_TYPE, "Mother");
+        designDocMap.put(AllConstants.FormEntityTypes.CHILD_TYPE, "Child");
         fieldSetMap.put(AllConstants.FormEntityTypes.HOUSE_HOLD_TYPE, HouseHold.class.getDeclaredFields());
         fieldSetMap.put(AllConstants.FormEntityTypes.ELCO_TYPE, Elco.class.getDeclaredFields());
         fieldSetMap.put(AllConstants.FormEntityTypes.MCARE_MOTHER_TYPE, Mother.class.getDeclaredFields());
+        fieldSetMap.put(AllConstants.FormEntityTypes.CHILD_TYPE, Child.class.getDeclaredFields());
     }
 
     public String saveEntity(String entityType, String fields) {
