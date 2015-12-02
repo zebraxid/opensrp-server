@@ -26,7 +26,7 @@ public class ELCORegisterService {
 	public ELCORegister getELCORegisterForProvider(String providerId)
 	{
 		ArrayList<ELCORegisterEntry> elcoRegisterEntries = new ArrayList<>();
-        List<Elco> elcos = allElcos.allOpenELCOsForProvider(providerId);
+        List<Elco> elcos = allElcos.allOpenELCOs();
         for (Elco ec : elcos) {
             ELCORegisterEntry ecRegisterEntry = new ELCORegisterEntry()
             		.withCASEID(ec.caseId())
