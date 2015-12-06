@@ -175,6 +175,9 @@ public class Mother extends MotechBaseDataObject {
 	public String TODAY() {
 		return TODAY;
 	}
+	public String FWPSRLMP() {
+		return FWPSRLMP;
+	}	
 	public String START() {
 		return START;
 	}
