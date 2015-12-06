@@ -62,6 +62,7 @@ public class ELCORegisterService {
             		.withFWGENDER(ec.FWGENDER())
             		.withFWWOMAGE(ec.FWWOMAGE())
             		.withFWELIGIBLE(ec.FWELIGIBLE())
+            		.withFWELIGIBLE2(ec.FWELIGIBLE2())
             		.withFWWOMCOUNTRY(ec.FWWOMCOUNTRY())
                     .withFWWOMDIVISION(ec.FWWOMDIVISION())
                     .withFWWOMDISTRICT(ec.FWWOMDISTRICT())
