@@ -24,7 +24,7 @@ public class ANCRegisterService {
 	public ANCRegister getANCRegisterForProvider(String providerId)
 	{
 		ArrayList<ANCRegisterEntry> ancRegisterEntries = new ArrayList<>();
-        List<Mother> mothers = allMothers.allOpenMothersForProvider(providerId);
+        List<Mother> mothers = allMothers.allOpenMothers();
         for (Mother anc : mothers) {
         	ANCRegisterEntry ancRegisterEntry = new ANCRegisterEntry()
         	.withCaseId(anc.caseId())
