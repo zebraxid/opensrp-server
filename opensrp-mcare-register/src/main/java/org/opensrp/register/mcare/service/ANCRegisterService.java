@@ -8,7 +8,9 @@ import org.opensrp.register.mcare.ANCRegisterEntry;
 import org.opensrp.register.mcare.domain.Mother;
 import org.opensrp.register.mcare.repository.AllMothers;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class ANCRegisterService {
 
 	private final AllMothers allMothers;

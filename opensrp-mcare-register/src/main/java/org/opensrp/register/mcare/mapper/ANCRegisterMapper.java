@@ -10,9 +10,11 @@ import org.opensrp.register.mcare.ANCRegister;
 import org.opensrp.register.mcare.ANCRegisterEntry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import ch.lambdaj.function.convert.Converter;
 
+@Component
 public class ANCRegisterMapper {
 
 	private static Logger logger = LoggerFactory.getLogger(ANCRegisterMapper.class.toString());
