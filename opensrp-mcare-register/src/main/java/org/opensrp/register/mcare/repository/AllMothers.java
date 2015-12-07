@@ -45,6 +45,12 @@ public class AllMothers extends MotechBaseRepository<Mother> {
 				createQuery("all_open_mothers_for_provider").key(providerId)
 						.includeDocs(true), Mother.class);
 	}
+	@View(name = "all_open_mothers_for_provider", map = "function(doc) { if (doc.type === 'Mother' && doc.PROVIDERID) { emit(doc.PROVIDERID); } }")
+	public List<Mother> allOpenMothers() {
+		return db.queryView(
+				createQuery("all_open_mothers_for_provider")
+						.includeDocs(true), Mother.class);
+	}
 	
 	/*
 	 * @View(name = "all_households", map =
