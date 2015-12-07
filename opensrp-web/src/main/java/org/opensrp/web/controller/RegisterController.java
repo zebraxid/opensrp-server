@@ -119,11 +119,9 @@ public class RegisterController {
     @RequestMapping(method = RequestMethod.GET, value = "/registers/anc")
     @ResponseBody
     public ResponseEntity<ANC_RegisterDTO> ancRegister(@RequestParam("anm-id") String anmIdentifier) {
-        ANCRegister ancRegister = ancRegisterService.getANCRegisterForProvider(anmIdentifier);
-        String json = new Gson().toJson(ancRegister);
-        System.out.println("MMMMMMMMMMMYYYYYYYYYYYYYY::"+json);
+        ANCRegister ancRegister = ancRegisterService.getANCRegisterForProvider(anmIdentifier);        
         return new ResponseEntity<>(ancRegisterMapper.mapToDTO(ancRegister), HttpStatus.OK);
-       // return null;
+      
     }
 /*
     @RequestMapping(method = GET, value = "/registers/child")
