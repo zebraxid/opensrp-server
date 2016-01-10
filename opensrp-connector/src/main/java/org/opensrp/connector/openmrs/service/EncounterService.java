@@ -55,12 +55,36 @@ public class EncounterService extends OpenmrsService{
 		JSONObject enc = new JSONObject();
 		
 		JSONObject pr = userService.getPersonByUser(e.getProviderId());
-		
+		JSONObject patientExist = patientService.getPatientByIdentifier(OPENMRS_DATE.format(e.getEventDate()));
+		if (patientExist != null){
+			System.out.println("Person or Patient already existis inside openmrs with identifier:" + OPENMRS_DATE.format(e.getEventDate()));
+			return patientExist;
+		}
 		enc.put("encounterDatetime", OPENMRS_DATE.format(e.getEventDate()));
 		// patient must be existing in OpenMRS before it submits an encounter. if it doesnot it would throw NPE
+		patientExist = patientService.getPatientByIdentifier(pt.getString("uuid"));
+		if (patientExist != null){
+			System.out.println("Person or Patient already existis inside openmrs with identifier:" + pt.getString("uuid"));
+			return patientExist;
+		}
 		enc.put("patient", pt.getString("uuid"));
+		patientExist = patientService.getPatientByIdentifier(e.getEventType());
+		if (patientExist != null){
+			System.out.println("Person or Patient already existis inside openmrs with identifier:" + e.getEventType());
+			return patientExist;
+		}
 		enc.put("encounterType", e.getEventType());
+		patientExist = patientService.getPatientByIdentifier(e.getLocationId());
+		if (patientExist != null){
+			System.out.println("Person or Patient already existis inside openmrs with identifier:" + e.getLocationId());
+			return patientExist;
+		}
 		enc.put("location", e.getLocationId());
+		patientExist = patientService.getPatientByIdentifier(pr.getString("uuid"));
+		if (patientExist != null){
+			System.out.println("Person or Patient already existis inside openmrs with identifier:" + pr.getString("uuid"));
+			return patientExist;
+		}
 		enc.put("provider", pr.getString("uuid"));
 
 		List<Obs> ol = e.getObs();
@@ -100,7 +124,7 @@ public class EncounterService extends OpenmrsService{
 			obar.put(obo);
 		}
 		enc.put("obs", obar);
-		
+		System.out.println("Going to create Encounter: " + enc.toString());
 		HttpResponse op = HttpUtil.post(HttpUtil.removeEndingSlash(OPENMRS_BASE_URL)+"/"+ENCOUNTER_URL, "", enc.toString(), OPENMRS_USER, OPENMRS_PWD);
 		return new JSONObject(op.body());
 	}
