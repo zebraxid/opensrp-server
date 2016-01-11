@@ -164,18 +164,22 @@ public class PatientService extends OpenmrsService{
 		if(CollectionUtils.isEmpty(adl)){
 			return null;
 		}
+
+		//System.out.println("Addresses : " + org.apache.commons.lang.StringUtils.join(adl, ","));
+		
 		JSONArray jaar = new JSONArray();
 		for (Address ad : adl) {
 			JSONObject jao = new JSONObject();
 			if(ad.getAddressFields() != null){
 				jao.put("address1", ad.getAddressFieldMatchingRegex("(?i)(ADDRESS1|HOUSE_NUMBER|HOUSE|HOUSE_NO|UNIT|UNIT_NUMBER|UNIT_NO)"));
-				jao.put("address2", ad.getAddressField("(?i)(ADDRESS2|STREET|STREET_NUMBER|STREET_NO|LANE)"));
-				jao.put("address3", ad.getAddressField("(?i)(ADDRESS3|SECTOR|AREA)"));
-				jao.put("address4", ad.getAddressField("(?i)(ADDRESS4|SUB_DISTRICT|MUNICIPALITY|TOWN|LOCALITY|REGION)"));
-				jao.put("countyDistrict", ad.getAddressField("(?i)(county_district|countyDistrict|COUNTY|DISTRICT)"));
-				jao.put("cityVillage", ad.getAddressField("(?i)(cityVillage|city_village|CITY|VILLAGE)"));
+				jao.put("address2", ad.getAddressFieldMatchingRegex("(?i)(ADDRESS2|STREET|STREET_NUMBER|STREET_NO|LANE)"));
+				jao.put("address3", ad.getAddressFieldMatchingRegex("(?i)(ADDRESS3|SECTOR|AREA)"));
+				jao.put("address4", ad.getAddressFieldMatchingRegex("(?i)(ADDRESS4|SUB_DISTRICT|MUNICIPALITY|TOWN|LOCALITY|REGION)"));
+				jao.put("address5", ad.getAddressFieldMatchingRegex("(?i)(ADDRESS5)"));
+				jao.put("countyDistrict", ad.getAddressFieldMatchingRegex("(?i)(county_district|countyDistrict|COUNTY|DISTRICT)"));
+				jao.put("cityVillage", ad.getAddressFieldMatchingRegex("(?i)(cityVillage|city_village|CITY|VILLAGE)"));
 
-				String ad5V = "";
+				/*String ad5V = "";
 				for (Entry<String, String> af : ad.getAddressFields().entrySet()) {
 					if(!af.getKey().matches("(?i)(ADDRESS1|HOUSE_NUMBER|HOUSE|HOUSE_NO|UNIT|UNIT_NUMBER|UNIT_NO|"
 							+ "ADDRESS2|STREET|STREET_NUMBER|STREET_NO|LANE|"
@@ -188,7 +192,7 @@ public class PatientService extends OpenmrsService{
 				}
 				if(!StringUtils.isEmptyOrWhitespaceOnly(ad5V)){
 					jao.put("address5", ad5V);
-				}
+				}*/
 				
 			}
 			jao.put("address6", ad.getAddressType());

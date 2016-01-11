@@ -53,39 +53,20 @@ public class EncounterService extends OpenmrsService{
 	public JSONObject createEncounter(Event e) throws JSONException{
 		JSONObject pt = patientService.getPatientByIdentifier(e.getBaseEntityId());
 		JSONObject enc = new JSONObject();
-		
 		JSONObject pr = userService.getPersonByUser(e.getProviderId());
-		JSONObject patientExist = patientService.getPatientByIdentifier(OPENMRS_DATE.format(e.getEventDate()));
-		if (patientExist != null){
-			System.out.println("Person or Patient already existis inside openmrs with identifier:" + OPENMRS_DATE.format(e.getEventDate()));
-			return patientExist;
-		}
+		
 		enc.put("encounterDatetime", OPENMRS_DATE.format(e.getEventDate()));
 		// patient must be existing in OpenMRS before it submits an encounter. if it doesnot it would throw NPE
-		patientExist = patientService.getPatientByIdentifier(pt.getString("uuid"));
-		if (patientExist != null){
-			System.out.println("Person or Patient already existis inside openmrs with identifier:" + pt.getString("uuid"));
-			return patientExist;
-		}
-		enc.put("patient", pt.getString("uuid"));
-		patientExist = patientService.getPatientByIdentifier(e.getEventType());
-		if (patientExist != null){
-			System.out.println("Person or Patient already existis inside openmrs with identifier:" + e.getEventType());
-			return patientExist;
-		}
+		if (pr.getString("uuid").isEmpty() || pr.getString("uuid")==null)
+			System.out.println("Person or Patient does not exist or empty inside openmrs with identifier: " + pr.getString("uuid"));
+		else 
+			enc.put("patient", pt.getString("uuid"));
 		enc.put("encounterType", e.getEventType());
-		patientExist = patientService.getPatientByIdentifier(e.getLocationId());
-		if (patientExist != null){
-			System.out.println("Person or Patient already existis inside openmrs with identifier:" + e.getLocationId());
-			return patientExist;
-		}
 		enc.put("location", e.getLocationId());
-		patientExist = patientService.getPatientByIdentifier(pr.getString("uuid"));
-		if (patientExist != null){
-			System.out.println("Person or Patient already existis inside openmrs with identifier:" + pr.getString("uuid"));
-			return patientExist;
-		}
-		enc.put("provider", pr.getString("uuid"));
+		if (pr.getString("uuid").isEmpty() || pr.getString("uuid")==null)
+			System.out.println("Person or Patient does not exist or empty inside openmrs with identifier: " + pr.getString("uuid"));
+		else 
+			enc.put("provider", pr.getString("uuid"));
 
 		List<Obs> ol = e.getObs();
 		Map<String, JSONObject> p = new HashMap<>();
