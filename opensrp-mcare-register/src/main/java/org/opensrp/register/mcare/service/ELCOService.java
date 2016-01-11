@@ -212,11 +212,12 @@ public class ELCOService {
 			elcoScheduleService.enrollIntoMilestoneOfPSRF(submission.entityId(),
 					submission.getField(REFERENCE_DATE));
 			
-			if(submission.getField(FW_PSRPREGSTS).equals("1"))
-			{
-				ancService.registerANC(submission);
-				bnfService.registerBNF(submission);
-			}
+			if(!submission.getField(FW_PSRPREGSTS).isEmpty() && submission.getField(FW_PSRPREGSTS) != null)
+			    if(submission.getField(FW_PSRPREGSTS).equals("1"))
+				{
+					ancService.registerANC(submission);
+					bnfService.registerBNF(submission);
+				}
 		
 	}
 }
