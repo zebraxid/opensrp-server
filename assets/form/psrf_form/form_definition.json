@@ -4,10 +4,10 @@
     "default_bind_path": "/model/instance/PregnancySurveillanceAndRegistrationForm",
     "bind_type": "elco",
     "fields": [
-       {
-            "name": "id",
-            "shouldLoadValue": true
-          },
+	  {
+        "name": "id",
+        "shouldLoadValue": true
+	  },
       {
         "name": "FWWOMMAUZA_PARA",
         "bind": "/model/instance/PregnancySurveillanceAndRegistrationForm/existing_mauzapara",
@@ -91,7 +91,7 @@
       },
       {
         "name": "FWELIGIBLE",
-        "bind": "/model/instance/PregnancySurveillanceAndRegistrationForm/FWNOTELIGIBLE"
+        "bind": "/model/instance/PregnancySurveillanceAndRegistrationForm/FWELIGIBLE"
       },
       {
         "name": "ELCO",
@@ -140,6 +140,11 @@
       {
         "name": "display_notpregnote",
         "bind": "/model/instance/PregnancySurveillanceAndRegistrationForm/psrf_met/display_notpregnote"
+      },
+      {
+        "name": "id",
+        "shouldLoadValue": true,
+        "source": "elco.mcaremother.id"
       },
       {
         "name": "mother_mauza",
