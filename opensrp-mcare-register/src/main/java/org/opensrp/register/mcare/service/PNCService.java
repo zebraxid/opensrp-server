@@ -178,6 +178,7 @@ public class PNCService {
 	private void closeMother(Mother mother) {
 
 		mother.setIsClosed(true);
+		allMothers.update(mother);
 		pncSchedulesService.unEnrollFromSchedules(mother.caseId());
 
 		Elco elco = allElcos.findByCaseId(mother.relationalid());
