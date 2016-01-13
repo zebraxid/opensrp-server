@@ -1,15 +1,16 @@
 package org.opensrp.register.mcare.action;
 
+import static org.opensrp.dto.BeneficiaryType.child;
 import static org.opensrp.dto.BeneficiaryType.elco;
 import static org.opensrp.dto.BeneficiaryType.household;
 import static org.opensrp.dto.BeneficiaryType.mother;
-import static org.opensrp.dto.BeneficiaryType.child;
 
 import java.util.Map;
 
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.opensrp.common.AllConstants.ELCOSchedulesConstantsImediate;
 import org.opensrp.dto.BeneficiaryType;
 import org.opensrp.register.mcare.domain.Elco;
 import org.opensrp.register.mcare.domain.HouseHold;
@@ -23,7 +24,6 @@ import org.opensrp.scheduler.MilestoneEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
-
 @Component
 @Qualifier("AlertCreationAction")
 public class AlertCreationAction implements HookedEvent {
@@ -97,7 +97,7 @@ public class AlertCreationAction implements HookedEvent {
 					+ beneficiaryType + " is of unknown type");
 		}
 
-		scheduler.alertFor(event.windowName(), beneficiaryType, caseID, instanceId, providerId, event.scheduleName(), event.milestoneName(),
+		scheduler.alertFor(event.windowName(), beneficiaryType, caseID, instanceId, providerId, event.scheduleName().replace(ELCOSchedulesConstantsImediate.IMD_ELCO_SCHEDULE_PSRF, "ELCO PSRF"), event.milestoneName().replace(ELCOSchedulesConstantsImediate.IMD_ELCO_SCHEDULE_PSRF, "ELCO PSRF"),
 				startOfEarliestWindow, event.startOfDueWindow(),
 				event.startOfLateWindow(), event.startOfMaxWindow());
 	}

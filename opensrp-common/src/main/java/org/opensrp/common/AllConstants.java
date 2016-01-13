@@ -834,5 +834,9 @@ public class AllConstants {
         public static final String ACCESS_CONTROL_ALLOW_ORIGIN_HEADER = "Access-Control-Allow-Origin";
         public static final String WWW_AUTHENTICATE_HEADER = "www-authenticate";
     }
+    
+    public static class ELCOSchedulesConstantsImediate {
+    	public static final String IMD_ELCO_SCHEDULE_PSRF = "IMEDIATE ELCO PSRF";
+    }
 }
 

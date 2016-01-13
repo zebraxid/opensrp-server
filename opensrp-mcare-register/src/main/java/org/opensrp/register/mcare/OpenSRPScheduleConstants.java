@@ -90,5 +90,8 @@ public class OpenSRPScheduleConstants {
     public static class ELCOSchedulesConstants {
     	public static final String ELCO_SCHEDULE_PSRF = "ELCO PSRF";
     }
+    public static class ELCOSchedulesConstantsImediate {
+    	public static final String IMD_ELCO_SCHEDULE_PSRF = "IMEDIATE ELCO PSRF";
+    }
    
 }
