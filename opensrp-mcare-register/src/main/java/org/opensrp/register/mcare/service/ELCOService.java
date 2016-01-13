@@ -7,6 +7,7 @@ package org.opensrp.register.mcare.service;
 import static java.text.MessageFormat.format;
 import static org.opensrp.common.AllConstants.CommonFormFields.ID;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.ELCO_REGISTRATION_SUB_FORM_NAME;
+import static org.opensrp.common.AllConstants.HHRegistrationFields.FW_UPAZILLA;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.REFERENCE_DATE;
 import static org.opensrp.common.AllConstants.PSRFFields.*;
 
@@ -62,7 +63,8 @@ public class ELCOService {
 			Elco elco = allEcos.findByCaseId(elcoFields.get(ID))
 					.withINSTANCEID(submission.instanceId())
 					.withPROVIDERID(submission.anmId())
-					.withTODAY(submission.getField(REFERENCE_DATE));
+					.withTODAY(submission.getField(REFERENCE_DATE))
+					.withFWWOMUPAZILLA(elcoFields.get(FW_WOMUPAZILLA).replace("+", " "));
 			
 			allEcos.update(elco);
 
@@ -87,6 +89,7 @@ public class ELCOService {
 			houseHold.withPROVIDERID(submission.anmId());
 			houseHold.withINSTANCEID(submission.instanceId());
 			houseHold.withTODAY(submission.getField(REFERENCE_DATE));
+			houseHold.withFWUPAZILLA(submission.getField(FW_UPAZILLA).replace("+", " "));
 			allHouseHolds.update(houseHold);
 			
 			hhSchedulesService.enrollIntoMilestoneOfCensus(submission.entityId(),
@@ -138,7 +141,7 @@ public class ELCOService {
 					.put(FW_WOMCOUNTRY, elcoFields.get(FW_WOMCOUNTRY))
 					.put(FW_WOMDIVISION, elcoFields.get(FW_WOMDIVISION))
 					.put(FW_WOMDISTRICT, elcoFields.get(FW_WOMDISTRICT))
-					.put(FW_WOMUPAZILLA, elcoFields.get(FW_WOMUPAZILLA))
+					.put(FW_WOMUPAZILLA, elcoFields.get(FW_WOMUPAZILLA).replace("+", " "))
 					.put(FW_WOMUNION, elcoFields.get(FW_WOMUNION))
 					.put(FW_WOMWARD, elcoFields.get(FW_WOMWARD))
 					.put(FW_WOMSUBUNIT, elcoFields.get(FW_WOMSUBUNIT))

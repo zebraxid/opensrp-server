@@ -126,6 +126,7 @@ public class AllConstants {
     	public static final String FW_HUSNAME = "FWHUSNAME";
     	public static final String FW_ELIGIBLE = "FWELIGIBLE";
     	public static final String FW_DISPLAY_AGE = "FWDISPLAYAGE";
+    	public static final String FW_UPAZILLA = "FWUPAZILLA";
     	
     }
     
