@@ -31,7 +31,10 @@ public class MultimediaService {
 	public String saveMultimediaFile(MultimediaDTO multimediaDTO, MultipartFile file) {
 		
 		boolean uploadStatus = uploadFile(multimediaDTO, file);
-
+		
+		String dirPath[] = multimediaDirPath.split("/", 3);
+		multimediaDirPath = dirPath[2];
+		
 		if (uploadStatus) {
 			try {
 				logger.info("Image path : " + multimediaDirPath);
@@ -61,8 +64,8 @@ public class MultimediaService {
 		//String baseMultimediaDirPath = "../assets/multimedia";
 		//String baseMultimediaDirPath = this.getClass().getResource("/multimedia").getPath();
 		
-		 String baseDirPath = System.getProperty("user.home");
-		 multimediaDirPath =  baseDirPath + multimediaDirName;
+		 /*String baseDirPath = System.getProperty("user.home");
+		 multimediaDirPath =  baseDirPath + multimediaDirName;*/
 		 
 		if (!multimediaFile.isEmpty()) {
 			try {
