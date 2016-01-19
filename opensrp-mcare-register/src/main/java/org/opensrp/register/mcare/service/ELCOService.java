@@ -69,7 +69,7 @@ public class ELCOService {
 			allEcos.update(elco);
 
 			elcoScheduleService.imediateEnrollIntoMilestoneOfPSRF(elcoFields.get(ID),
-					submission.getField(REFERENCE_DATE),submission.anmId());
+					submission.getField(REFERENCE_DATE),submission.anmId(),submission.instanceId());
 		}
 
 		if (submission.formName().equalsIgnoreCase(ELCO_REGISTRATION)) {

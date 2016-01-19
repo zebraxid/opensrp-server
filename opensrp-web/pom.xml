@@ -171,11 +171,11 @@
             <artifactId>opensrp-register-mcare</artifactId>
             <version>${release.version}</version>
         </dependency>
-        <dependency>
+        <!-- <dependency>
             <groupId>org.opensrp</groupId>
             <artifactId>opensrp-connector</artifactId>
             <version>${release.version}</version>
-        </dependency>
+        </dependency> -->
         <dependency>
 			<groupId>com.jayway.restassured</groupId>
 			<artifactId>spring-mock-mvc</artifactId>

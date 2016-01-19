@@ -23,7 +23,7 @@ import static org.mockito.MockitoAnnotations.initMocks;
 
 import org.opensrp.dto.ActionData;
 import org.opensrp.scheduler.Action;
-import org.opensrp.scheduler.ReportAction;
+import org.opensrp.scheduler.ScheduleLog;
 import org.opensrp.scheduler.repository.AllReportActions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -44,16 +44,16 @@ public class AllReportActionsIntegrationTest {
 	@Test
 	public void shouldFindAllSchedulesForVisits()  throws Exception{
 
-		 ReportAction firstReportAction = new ReportAction("CASEID-1","INSTANCEID-1", "ANM-1", alert());
+		 ScheduleLog firstReportAction = new ScheduleLog("CASEID-1","INSTANCEID-1", "ANM-1", alert());
 		 allReportActions.addAlert(firstReportAction);
 		 
-		 ReportAction secondReportAction = new ReportAction("CASEID-1","INSTANCEID-1", "ANM-1", alert());
+		 ScheduleLog secondReportAction = new ScheduleLog("CASEID-1","INSTANCEID-1", "ANM-1", alert());
 		 allReportActions.addAlert(secondReportAction);
 	
-		 ReportAction thirdReportAction = new ReportAction("CASEID-1","INSTANCEID-2", "ANM-1", alert());
+		 ScheduleLog thirdReportAction = new ScheduleLog("CASEID-1","INSTANCEID-2", "ANM-1", alert());
 		 allReportActions.addAlert(thirdReportAction);
 		 
-		 Map<String, ReportAction> schedulesMap = new HashMap<String,ReportAction>();
+		 Map<String, ScheduleLog> schedulesMap = new HashMap<String,ScheduleLog>();
 		 schedulesMap.put("INSTANCEID-1", firstReportAction);
 		 schedulesMap.put("INSTANCEID-2", thirdReportAction);
 	 

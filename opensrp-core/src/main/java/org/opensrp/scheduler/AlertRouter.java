@@ -41,14 +41,14 @@ public class AlertRouter {
         logger.info("Handling motech event : " + realEvent);
         MilestoneEvent event = new MilestoneEvent(realEvent);
         if(event.scheduleName().equalsIgnoreCase(ELCOSchedulesConstantsImediate.IMD_ELCO_SCHEDULE_PSRF)){
-    		event.scheduleName().contentEquals("ELCO PSRF");
-    		event.milestoneName().contentEquals("ELCO PSRF");
+    		event.scheduleName().contentEquals(ELCOSchedulesConstantsImediate.ELCO_SCHEDULE_PSRF);
+    		event.milestoneName().contentEquals(ELCOSchedulesConstantsImediate.ELCO_SCHEDULE_PSRF);
     	}
         
         for (Route route : routes) {
         	
-        	 if (route.isSatisfiedBy(event.scheduleName().replace(ELCOSchedulesConstantsImediate.IMD_ELCO_SCHEDULE_PSRF, "ELCO PSRF"), event.milestoneName().replace(ELCOSchedulesConstantsImediate.IMD_ELCO_SCHEDULE_PSRF, "ELCO PSRF"), event.windowName())) {
-                 System.out.println("Schedule name from alertRoute Loop :"+event.scheduleName().replace("IMD ELCO PSRF", "ELCO PSRF"));
+        	 if (route.isSatisfiedBy(event.scheduleName().replace(ELCOSchedulesConstantsImediate.IMD_ELCO_SCHEDULE_PSRF, ELCOSchedulesConstantsImediate.ELCO_SCHEDULE_PSRF), event.milestoneName().replace(ELCOSchedulesConstantsImediate.IMD_ELCO_SCHEDULE_PSRF, "ELCO PSRF"), event.windowName())) {
+                 System.out.println("Schedule name from alertRoute Loop :"+event.scheduleName().replace("IMD ELCO PSRF", ELCOSchedulesConstantsImediate.ELCO_SCHEDULE_PSRF));
              	route.invokeAction(event);
                  return;
              }

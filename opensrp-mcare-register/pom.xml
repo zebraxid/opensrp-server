@@ -16,6 +16,7 @@
   <properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<main.basedir>${project.basedir}/..</main.basedir>
+		<release.version>0.1-SNAPSHOT</release.version>
 	</properties>
 	
   <build>
@@ -64,6 +65,11 @@
 			<artifactId>opensrp-core</artifactId>
 			<version>0.1-SNAPSHOT</version>
 		</dependency>
+		<dependency>
+            <groupId>org.opensrp</groupId>
+            <artifactId>opensrp-connector</artifactId>
+            <version>${release.version}</version>
+        </dependency>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>

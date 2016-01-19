@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 @Repository
-class AllEnrollmentWrapper extends AllEnrollments{
+public class AllEnrollmentWrapper extends AllEnrollments{
 	@Autowired
     private AllSchedules allSchedules;
 	
@@ -41,4 +41,11 @@ class AllEnrollmentWrapper extends AllEnrollments{
 	        enrollment.setSchedule(allSchedules.getByName(enrollment.getScheduleName()));
 	        return enrollment;
 	    }
+	    
+	    private static final String FUNCTION_DOC_EMIT_DOC_EXTERNALID_AND_SCHEDULENAME = "function(doc) { if(doc.type === 'Enrollment') emit([doc.externalId,doc.scheduleName], doc._id);}";
+	    @View(name = "by_externalId_scheduleName", map = FUNCTION_DOC_EMIT_DOC_EXTERNALID_AND_SCHEDULENAME)
+	    public List<Enrollment> findByEnrollmentByExternalIdAndScheduleName(String externalId, String ScheduleName) {
+	        List<Enrollment> enrollments = queryView("by_externalId_scheduleName", ComplexKey.of(externalId, ScheduleName));
+	        return populateWithSchedule(enrollments);
+	    } 
 }

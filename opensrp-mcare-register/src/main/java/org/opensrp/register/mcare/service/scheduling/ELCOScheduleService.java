@@ -12,15 +12,20 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.motechproject.scheduletracking.api.domain.Enrollment;
+import org.motechproject.scheduletracking.api.service.EnrollmentRecord;
+import org.motechproject.scheduletracking.api.service.EnrollmentsQuery;
 import org.motechproject.scheduletracking.api.service.ScheduleTrackingService;
 import org.opensrp.common.AllConstants.ELCOSchedulesConstantsImediate;
 import org.opensrp.dto.ActionData;
 import org.opensrp.dto.AlertStatus;
+import org.opensrp.dto.BeneficiaryType;
 import org.opensrp.scheduler.Action;
 import org.opensrp.scheduler.HealthSchedulerService;
 import org.opensrp.scheduler.repository.AllActions;
@@ -29,6 +34,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
 @Service
 public class ELCOScheduleService {
 	
@@ -36,13 +42,16 @@ public class ELCOScheduleService {
 	private final ScheduleTrackingService scheduleTrackingService;
 	private HealthSchedulerService scheduler;
 	private AllActions allActions;
+	private ScheduleLogService scheduleLogService;
 	
 	@Autowired
-	public ELCOScheduleService(HealthSchedulerService scheduler,ScheduleTrackingService scheduleTrackingService,AllActions allActions)
+	public ELCOScheduleService(HealthSchedulerService scheduler,ScheduleTrackingService scheduleTrackingService,AllActions allActions,ScheduleLogService scheduleLogService)
 	{
 		this.scheduler = scheduler;
 		this.scheduleTrackingService = scheduleTrackingService;
 		this.allActions = allActions;
+		this.scheduleLogService = scheduleLogService;
+		
 	}
 	
 	public void enrollIntoMilestoneOfPSRF(String caseId, String date)
@@ -89,7 +98,7 @@ public class ELCOScheduleService {
 		}	   
 		return todayDate;
 	}
-	public void imediateEnrollIntoMilestoneOfPSRF(String caseId, String date,String provider)
+	public void imediateEnrollIntoMilestoneOfPSRF(String caseId, String date,String provider,String instanceId)
 	{
 	    logger.info(format("Enrolling Elco into PSRF schedule. Id: {0}", caseId));	  
 	    scheduler.enrollIntoSchedule(caseId, ELCOSchedulesConstantsImediate.IMD_ELCO_SCHEDULE_PSRF, date);	 
@@ -99,10 +108,13 @@ public class ELCOScheduleService {
 	    String scheduleName = scheduleTrackingService.search(new EnrollmentsQuery().havingExternalId(caseId)).get(0).getScheduleName();
 	    String visitCode = scheduleTrackingService.search(new EnrollmentsQuery().havingExternalId(caseId)).get(0).getScheduleName();
 	    logger.info("visitCode : "+visitCode);*/
+	   
 	    DateTime expiryDate = new DateTime(getDateTime());
 	    DateTime startDate = new DateTime();	
 	    allActions.addOrUpdateAlert(new Action(caseId, provider, ActionData.createAlert(elco, ELCO_SCHEDULE_PSRF, ELCO_SCHEDULE_PSRF, AlertStatus.upcoming, startDate, expiryDate)));
-	   
+	    String trackId = null;
+	    //String trackId = scheduleLogService.saveEnrollDataToOpenMRSTrack();
+	    scheduleLogService.saveScheduleLog(BeneficiaryType.elco, caseId, instanceId, provider, ELCO_SCHEDULE_PSRF, ELCO_SCHEDULE_PSRF, AlertStatus.upcoming, startDate, expiryDate, ELCOSchedulesConstantsImediate.IMD_ELCO_SCHEDULE_PSRF);
 	}
 	
 }

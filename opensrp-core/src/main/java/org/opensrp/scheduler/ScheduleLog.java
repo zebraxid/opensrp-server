@@ -11,11 +11,16 @@ import org.joda.time.DateTime;
 import org.motechproject.model.MotechBaseDataObject;
 import org.motechproject.util.DateUtil;
 import org.opensrp.dto.ActionData;
+import org.opensrp.dto.AlertStatus;
 
 
-@TypeDiscriminator("doc.type === 'ReportAction'")
-public class ReportAction extends MotechBaseDataObject  {
+@TypeDiscriminator("doc.type === 'ScheduleLog'")
+public class ScheduleLog extends MotechBaseDataObject  {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	@JsonProperty
     private String anmIdentifier;
     @JsonProperty
@@ -23,9 +28,21 @@ public class ReportAction extends MotechBaseDataObject  {
     @JsonProperty
     private String instanceId;
     @JsonProperty
+    private String trackId;
+    @JsonProperty
     private Map<String, String> data;
     @JsonProperty
     private String actionTarget;
+    @JsonProperty
+    private AlertStatus currentWindow;
+    @JsonProperty
+    private String scheduleName;
+    @JsonProperty
+    private DateTime scheduleCloseDate;
+    @JsonProperty
+    private DateTime currentWindowStartDate;
+    @JsonProperty
+    private DateTime currentWindowEndDate;
     @JsonProperty
     private String actionType;
     @JsonProperty
@@ -39,10 +56,10 @@ public class ReportAction extends MotechBaseDataObject  {
     
     
 
-    private ReportAction() {
+    private ScheduleLog() {
     }
 
-    public ReportAction(String caseId, String instanceId, String anmIdentifier, ActionData actionData) {
+    public ScheduleLog(String caseId, String instanceId, String anmIdentifier, ActionData actionData) {
         this.anmIdentifier = anmIdentifier;
         this.caseID = caseId;
         this.instanceId = instanceId;
@@ -53,6 +70,28 @@ public class ReportAction extends MotechBaseDataObject  {
         this.scheduleGenerateDate = DateUtil.now();
         this.details = actionData.details();
         this.isActionActive = true;
+        
+        
+    }
+
+    public ScheduleLog(String caseId, String instanceId, String anmIdentifier, ActionData actionData,String trackId,AlertStatus currentWindow,DateTime scheduleCloseDate,DateTime currentWindowStartDate,DateTime currentWindowEndDate,String scheduleName) {
+        this.anmIdentifier = anmIdentifier;
+        this.caseID = caseId;
+        this.instanceId = instanceId;
+        this.data = actionData.data();
+        this.actionTarget = actionData.target();
+        this.actionType = actionData.type();
+        this.timeStamp = DateUtil.now().getMillis();
+        this.scheduleGenerateDate = DateUtil.now();
+        this.details = actionData.details();
+        this.isActionActive = true;
+        this.trackId = trackId;
+        this.currentWindow = currentWindow;
+        this.scheduleCloseDate = scheduleCloseDate;
+        this.currentWindowStartDate = currentWindowStartDate;
+        this.currentWindowEndDate = currentWindowEndDate;
+        this.scheduleName = scheduleName;
+        
     }
 
     public String anmIdentifier() {
@@ -66,7 +105,12 @@ public class ReportAction extends MotechBaseDataObject  {
     public String instanceId() {
         return instanceId;
     }
-
+    public String trackId() {
+        return trackId;
+    }
+    public String scheduleName() {
+        return scheduleName;
+    }
     
     public Map<String, String> data() {
         return data;
@@ -79,6 +123,18 @@ public class ReportAction extends MotechBaseDataObject  {
     public long timestamp() {
         return timeStamp;
     }
+    public AlertStatus currentWindow() {
+        return currentWindow;
+    }
+    public DateTime scheduleCloseDate() {
+        return scheduleCloseDate;
+    }
+    public DateTime currentWindowStartDate() {
+        return currentWindowStartDate;
+    }
+    public DateTime currentWindowEndDate() {
+        return currentWindowEndDate;
+    }
     public DateTime scheduleGenerateDate() {
         return scheduleGenerateDate;
     }
@@ -86,7 +142,7 @@ public class ReportAction extends MotechBaseDataObject  {
         return actionTarget;
     }
 
-    public ReportAction markAsInActive() {
+    public ScheduleLog markAsInActive() {
         this.isActionActive = false;
         return this;
     }
@@ -99,10 +155,28 @@ public class ReportAction extends MotechBaseDataObject  {
         return details;
     }
 
-    private String getCaseID() {
+    public String getCaseID() {
         return caseID;
     }
+    public String getTrackId() {
+        return trackId;
+    }
+    public String getScheduleName() {
+        return scheduleName;
+    }
 
+    public AlertStatus getCurrentWindow() {
+        return currentWindow;
+    }
+    public DateTime getScheduleCloseDate() {
+        return scheduleCloseDate;
+    }
+    public DateTime getCurrentWindowStartDate() {
+        return currentWindowStartDate;
+    }
+    public DateTime getCurrentWindowEndDate() {
+        return currentWindowEndDate;
+    }
     public String getActionTarget() {
         return actionTarget;
     }
