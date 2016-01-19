@@ -97,10 +97,10 @@ public class EncounterService extends OpenmrsService{
 		for (String ok : p.keySet()) {
 			JSONObject obo = p.get(ok);
 			
-			List<JSONObject> cob = pc.get(ok);
+			/*List<JSONObject> cob = pc.get(ok);
 			if(cob != null && cob.size() > 0) {
 				obo.put("groupMembers", new JSONArray(cob));
-			}
+			}*/
 			
 			obar.put(obo);
 		}

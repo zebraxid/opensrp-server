@@ -213,15 +213,17 @@ public class ELCOService {
 			allEcos.update(elco);
 			
 			elcoScheduleService.enrollIntoMilestoneOfPSRF(submission.entityId(),
-					submission.getField(REFERENCE_DATE));
+                    submission.getField(REFERENCE_DATE));
 			
 			if(!submission.getField(FW_PSRPREGSTS).isEmpty() && submission.getField(FW_PSRPREGSTS) != null)
-			    if(submission.getField(FW_PSRPREGSTS).equals("1"))
-				{
-					ancService.registerANC(submission);
-					bnfService.registerBNF(submission);
-				}
-		
+				if(submission.getField(FW_PSRPREGSTS).equals("1"))
+	            {
+	                ancService.registerANC(submission);
+	                bnfService.registerBNF(submission);
+	                elco.setIsClosed(true);
+	        		allEcos.update(elco);
+	                elcoScheduleService.unEnrollFromScheduleOfPSRF(submission.entityId(), submission.anmId(), "");
+	            }                                           			
 	}
 }
 

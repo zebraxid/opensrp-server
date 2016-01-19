@@ -5,8 +5,8 @@
         {
             "name": "FW CENSUS",
             "scheduleWindows": {
-                "earliest": ["84 Days"],
-                "due": ["112 Days"],
+                "earliest": ["56 Days"],
+                "due": ["84 Days"],
                 "late": ["143 Weeks"],
                 "max": ["144 Weeks"]
             },
@@ -15,19 +15,19 @@
                     "window": "earliest",
                     "offset": ["0 Days"],
                     "interval": ["1 Day"],
-                    "count": "84"
+                    "count": "56"
                 },
                 {
                     "window": "due",
-                    "offset": ["84 Days"],
+                    "offset": ["56 Days"],
                     "interval": ["1 Day"],
                     "count": "28"
                 },
                 {
                     "window": "late",
-                    "offset": ["112 Days"],
+                    "offset": ["84 Days"],
                     "interval": ["1 Day"],
-                    "count": "889"
+                    "count": "917"
                 },
                 {
                     "window": "max",

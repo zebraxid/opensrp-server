@@ -6,6 +6,7 @@ package org.opensrp.register.mcare.service.scheduling;
 import static java.text.MessageFormat.format;
 import static org.opensrp.dto.BeneficiaryType.elco;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ELCOSchedulesConstants.ELCO_SCHEDULE_PSRF;
+import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ELCOSchedulesConstantsImediate.IMD_ELCO_SCHEDULE_PSRF;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -51,6 +52,16 @@ public class ELCOScheduleService {
 	    
 		scheduler.enrollIntoSchedule(caseId, ELCO_SCHEDULE_PSRF, date);
 	}
+	
+	public void unEnrollFromScheduleOfPSRF(String caseId, String providerId, String scheduleName)
+    {
+        logger.info(format("Unenrolling Elco from PSRF schedule. Id: {0}", caseId));
+        
+        scheduler.unEnrollFromSchedule(caseId, providerId, ELCO_SCHEDULE_PSRF);
+        
+        scheduler.unEnrollFromScheduleimediate(caseId, providerId, IMD_ELCO_SCHEDULE_PSRF);
+    }
+	
 	private  Date getDateTime(){		
 		InputStream input = ELCOScheduleService.class.getClassLoader().getResourceAsStream("imdediate-elco-psrf.json");
 		String result = "";
@@ -89,6 +100,7 @@ public class ELCOScheduleService {
 		}	   
 		return todayDate;
 	}
+	
 	public void imediateEnrollIntoMilestoneOfPSRF(String caseId, String date,String provider)
 	{
 	    logger.info(format("Enrolling Elco into PSRF schedule. Id: {0}", caseId));	  

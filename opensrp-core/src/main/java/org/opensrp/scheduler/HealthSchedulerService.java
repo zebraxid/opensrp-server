@@ -58,6 +58,11 @@ public class HealthSchedulerService {
         actionService.markAlertAsInactive(providerId, entityId, scheduleName);
     }
 	
+	public void unEnrollFromScheduleimediate(String entityId, String providerId, String scheduleName) {
+		scheduleService.unenroll(entityId, scheduleName);
+        //actionService.markAlertAsInactive(providerId, entityId, scheduleName);
+    }
+	
 	public void unEnrollAndCloseSchedule(String entityId, String providerId, String scheduleName, LocalDate completionDate) {
 		scheduleService.unenroll(entityId, scheduleName);
         actionService.markAlertAsClosed(providerId, entityId, scheduleName, completionDate.toString());
