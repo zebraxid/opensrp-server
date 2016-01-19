@@ -42,7 +42,7 @@ public class ScheduleLogService extends OpenmrsService{
 	
 	
 	public void saveScheduleLog(BeneficiaryType beneficiaryType, String caseID, String instanceId, String anmIdentifier, String scheduleName, String visitCode, AlertStatus alertStatus, DateTime startDate, DateTime expiryDate,String immediateScheduleName){
-		List<Enrollment> el = allEnrollments.findByEnrollmentByExternalIdAndScheduleName(caseID,immediateScheduleName);
+		List<Enrollment> el =this.findEnrollmentByCaseIdAndScheduleName(caseID,immediateScheduleName);
 		String trackId = "";		
 		for (Enrollment e : el){
 			//trackId = this.saveEnrollDataToOpenMRSTrack(e);
@@ -53,7 +53,11 @@ public class ScheduleLogService extends OpenmrsService{
 		DateTime scheduleCloseDate = null;
 		reportActionService.alertForReporting(beneficiaryType, caseID, instanceId, anmIdentifier, scheduleName, visitCode, alertStatus, startDate, expiryDate,scheduleCloseDate,trackId);
 		
-	}	
+	}
+	
+	public  List<Enrollment> findEnrollmentByCaseIdAndScheduleName(String caseID,String scheduleName ){
+		return  allEnrollments.findByEnrollmentByExternalIdAndScheduleName(caseID,scheduleName);
+	}
 	
 	public String saveEnrollDataToOpenMRSTrack(Enrollment e){
 		JSONObject t = new JSONObject();

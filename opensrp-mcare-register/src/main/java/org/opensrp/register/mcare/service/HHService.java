@@ -69,7 +69,7 @@ public class HHService {
 		allHouseHolds.update(houseHold);
 
 		hhSchedulesService.enrollIntoMilestoneOfCensus(submission.entityId(),
-				submission.getField(REFERENCE_DATE));
+				submission.getField(REFERENCE_DATE),submission.anmId(),submission.instanceId());
 		
 		elcoService.registerELCO(submission);
 	}
