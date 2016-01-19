@@ -157,7 +157,7 @@ public class FormSubmissionController {
 	    				}	
 	    				//HOW(0)
 	    				e = openmrsConnector.getEventFromFormSubmission(formSubmission);
-	    				System.out.println("Creates and encounter for household head /***********************************************************************/ ");
+	    				System.out.println("Creates encounter for client id: " + e.getBaseEntityId());
 	    				System.out.println(encounterService.createEncounter(e)); 
 	            	}
 	            	else { //Hn
