@@ -213,6 +213,7 @@ public class AllConstants {
     	public static final String FW_FLAGVALUE = "FWFLAGVALUE";
     	public static final String FW_SORTVALUE = "FWSORTVALUE"; 
     	public static final String FWNOTELIGIBLE = "FWNOTELIGIBLE";
+    	public static final String current_formStatus = "current_formStatus";
     	
     }
     
