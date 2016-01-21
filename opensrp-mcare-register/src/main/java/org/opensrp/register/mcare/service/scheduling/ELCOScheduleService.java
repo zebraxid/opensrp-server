@@ -7,6 +7,7 @@ import static java.text.MessageFormat.format;
 import static org.opensrp.dto.BeneficiaryType.elco;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ELCOSchedulesConstants.ELCO_SCHEDULE_PSRF;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ELCOSchedulesConstantsImediate.IMD_ELCO_SCHEDULE_PSRF;
+import static org.opensrp.register.mcare.OpenSRPScheduleConstants.DateTimeDuration.duration;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -60,8 +61,10 @@ public class ELCOScheduleService {
 	    logger.info(format("Enrolling Elco into PSRF schedule. Id: {0}", caseId));
 	    
 		scheduler.enrollIntoSchedule(caseId, ELCO_SCHEDULE_PSRF, date);
-		List<Enrollment> e = scheduleLogService.findEnrollmentByCaseIdAndScheduleName(caseId, ELCO_SCHEDULE_PSRF);
-		scheduleLogService.saveScheduleLog(BeneficiaryType.elco, caseId, instanceId, provider, ELCO_SCHEDULE_PSRF, ELCO_SCHEDULE_PSRF, AlertStatus.upcoming, e.get(0).getStartOfSchedule(), e.get(0).getEnrolledOn(),ELCO_SCHEDULE_PSRF);
+		DateTime expiryDate = new DateTime().plusHours(28);
+		DateTime startDate = new DateTime();
+		allActions.addOrUpdateAlert(new Action(caseId, provider, ActionData.createAlert(elco, ELCO_SCHEDULE_PSRF, ELCO_SCHEDULE_PSRF, AlertStatus.upcoming, new DateTime(),  new DateTime().plusHours(duration))));
+		scheduleLogService.saveScheduleLog(BeneficiaryType.elco, caseId, instanceId, provider, ELCO_SCHEDULE_PSRF, ELCO_SCHEDULE_PSRF, AlertStatus.upcoming, new DateTime(),  new DateTime().plusHours(duration),ELCO_SCHEDULE_PSRF);
 	}
 	
 	public void unEnrollFromScheduleOfPSRF(String caseId, String providerId, String scheduleName)
@@ -121,13 +124,10 @@ public class ELCOScheduleService {
 	    String caseID = scheduleTrackingService.search(new EnrollmentsQuery().havingExternalId(caseId)).get(0).getExternalId();
 	    String scheduleName = scheduleTrackingService.search(new EnrollmentsQuery().havingExternalId(caseId)).get(0).getScheduleName();
 	    String visitCode = scheduleTrackingService.search(new EnrollmentsQuery().havingExternalId(caseId)).get(0).getScheduleName();
-	    logger.info("visitCode : "+visitCode);*/
+	    logger.info("visitCode : "+visitCode);*/ 
 	   
-	    DateTime expiryDate = new DateTime(getDateTime());
-	    DateTime startDate = new DateTime();
-	    List<Enrollment> e = scheduleLogService.findEnrollmentByCaseIdAndScheduleName(caseId, IMD_ELCO_SCHEDULE_PSRF);
-	    allActions.addOrUpdateAlert(new Action(caseId, provider, ActionData.createAlert(elco, ELCO_SCHEDULE_PSRF, ELCO_SCHEDULE_PSRF, AlertStatus.upcoming, e.get(0).getStartOfSchedule(), e.get(0).getEnrolledOn())));	    
-	    scheduleLogService.saveScheduleLog(BeneficiaryType.elco, caseId, instanceId, provider, ELCO_SCHEDULE_PSRF, ELCO_SCHEDULE_PSRF, AlertStatus.upcoming, e.get(0).getStartOfSchedule(), e.get(0).getEnrolledOn(), ELCOSchedulesConstantsImediate.IMD_ELCO_SCHEDULE_PSRF);
+	    allActions.addOrUpdateAlert(new Action(caseId, provider, ActionData.createAlert(elco, ELCO_SCHEDULE_PSRF, ELCO_SCHEDULE_PSRF, AlertStatus.upcoming, new DateTime(), new DateTime().plusHours(duration))));	    
+	    scheduleLogService.saveScheduleLog(BeneficiaryType.elco, caseId, instanceId, provider, ELCO_SCHEDULE_PSRF, ELCO_SCHEDULE_PSRF, AlertStatus.upcoming, new DateTime(), new DateTime().plusHours(duration), ELCOSchedulesConstantsImediate.IMD_ELCO_SCHEDULE_PSRF);
 	}
 	
 }

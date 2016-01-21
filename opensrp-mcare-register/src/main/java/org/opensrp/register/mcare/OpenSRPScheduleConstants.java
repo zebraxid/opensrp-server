@@ -93,5 +93,8 @@ public class OpenSRPScheduleConstants {
     public static class ELCOSchedulesConstantsImediate {
     	public static final String IMD_ELCO_SCHEDULE_PSRF = "IMEDIATE ELCO PSRF";
     }
+    public static class DateTimeDuration{
+    	public static final Integer duration = 48;
+    }
    
 }

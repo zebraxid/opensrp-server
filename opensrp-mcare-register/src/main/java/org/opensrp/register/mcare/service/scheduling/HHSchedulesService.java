@@ -1,14 +1,21 @@
 package org.opensrp.register.mcare.service.scheduling;
 
 import static java.text.MessageFormat.format;
-import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ELCOSchedulesConstants.ELCO_SCHEDULE_PSRF;
+import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ELCOSchedulesConstantsImediate.IMD_ELCO_SCHEDULE_PSRF;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.HHSchedulesConstants.HH_SCHEDULE_CENSUS;
+import static org.opensrp.register.mcare.OpenSRPScheduleConstants.DateTimeDuration.duration;
 
 import java.util.List;
 
+import org.joda.time.DateTime;
 import org.motechproject.scheduletracking.api.domain.Enrollment;
+import org.motechproject.scheduletracking.api.service.EnrollmentRecord;
+import org.motechproject.scheduletracking.api.service.EnrollmentsQuery;
+import org.motechproject.scheduletracking.api.service.ScheduleTrackingService;
+import org.opensrp.dto.ActionData;
 import org.opensrp.dto.AlertStatus;
 import org.opensrp.dto.BeneficiaryType;
+import org.opensrp.scheduler.Action;
 import org.opensrp.scheduler.HealthSchedulerService;
 import org.opensrp.scheduler.repository.AllActions;
 import org.slf4j.Logger;
@@ -24,21 +31,22 @@ public class HHSchedulesService {
 	private HealthSchedulerService scheduler;
 	private ScheduleLogService scheduleLogService;
 	private AllActions allActions;
+	private ScheduleTrackingService scheduleTrackingService;
 	
 	@Autowired
-	public HHSchedulesService(HealthSchedulerService scheduler,AllActions allActions,ScheduleLogService scheduleLogService)
+	public HHSchedulesService(HealthSchedulerService scheduler,AllActions allActions,ScheduleLogService scheduleLogService,ScheduleTrackingService scheduleTrackingService)
 	{
 		this.scheduler = scheduler;
 		this.allActions = allActions;
 		this.scheduleLogService = scheduleLogService;
+		this.scheduleTrackingService = scheduleTrackingService;
 	}
 
 	public void enrollIntoMilestoneOfCensus(String entityId, String date,String provider,String instanceId)
 	{
-	    logger.info(format("Enrolling household into Census schedule. Id: {0}", entityId));
-	    
-		scheduler.enrollIntoSchedule(entityId, HH_SCHEDULE_CENSUS, date);
-		List<Enrollment> e = scheduleLogService.findEnrollmentByCaseIdAndScheduleName(entityId, ELCO_SCHEDULE_PSRF);
-		scheduleLogService.saveScheduleLog(BeneficiaryType.elco, entityId, instanceId, provider, ELCO_SCHEDULE_PSRF, ELCO_SCHEDULE_PSRF, AlertStatus.upcoming, e.get(0).getStartOfSchedule(), e.get(0).getEnrolledOn(),ELCO_SCHEDULE_PSRF);
+	    logger.info(format("Enrolling household into Census schedule. Id: {0}", entityId));	    
+		scheduler.enrollIntoSchedule(entityId, HH_SCHEDULE_CENSUS, date);		
+		allActions.addOrUpdateAlert(new Action(entityId, provider, ActionData.createAlert(BeneficiaryType.household, HH_SCHEDULE_CENSUS, HH_SCHEDULE_CENSUS, AlertStatus.normal, new DateTime(), new DateTime().plusHours(duration))));
+		scheduleLogService.saveScheduleLog(BeneficiaryType.household, entityId, instanceId, provider, HH_SCHEDULE_CENSUS, HH_SCHEDULE_CENSUS, AlertStatus.normal, new DateTime(), new DateTime().plusHours(duration),HH_SCHEDULE_CENSUS);
 	}
 }
