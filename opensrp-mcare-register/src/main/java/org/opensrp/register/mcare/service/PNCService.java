@@ -81,7 +81,7 @@ public class PNCService {
 			logger.info("Closing EC case. Ec Id: "+ elco.caseId());
 			elco.setIsClosed(false);
 			allElcos.update(elco);
-			elcoSchedulesService.imediateEnrollIntoMilestoneOfPSRF(elco.caseId(), elco.TODAY(), elco.PROVIDERID());
+			elcoSchedulesService.imediateEnrollIntoMilestoneOfPSRF(elco.caseId(), elco.TODAY(), elco.PROVIDERID(),elco.INSTANCEID());
 
 			if (submission.getField(FWBNFSTS).equals(STS_WD)) {
 				logger.info("Closing Mother as the mother died during delivery. Mother Id: "
