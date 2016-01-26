@@ -73,6 +73,8 @@ public class HouseHold extends MotechBaseDataObject {
 	@JsonProperty
 	private String external_user_ID;
 	@JsonProperty
+	private String current_formStatus;
+	@JsonProperty
 	private List<Map<String, String>> ELCODETAILS;
 	@JsonProperty
 	private Map<String, String> details;
@@ -227,7 +229,12 @@ public class HouseHold extends MotechBaseDataObject {
 		this.external_user_ID = external_user_ID;
 		return this;
 	}
-
+	
+	public HouseHold withcurrent_formStatus(String current_formStatus) {
+		this.current_formStatus = current_formStatus;
+		return this;
+	}
+	
 	public HouseHold withELCODETAILS(List<Map<String, String>> ELCODETAILS) {
 		this.ELCODETAILS = ELCODETAILS;
 		return this;
@@ -352,6 +359,10 @@ public class HouseHold extends MotechBaseDataObject {
 
 	public String external_user_ID() {
 		return external_user_ID;
+	}
+	
+	public String current_formStatus() {
+		return current_formStatus;
 	}
 
 	public List<Map<String, String>> ELCODETAILS() {

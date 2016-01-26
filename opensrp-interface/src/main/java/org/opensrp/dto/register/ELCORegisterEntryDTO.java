@@ -28,13 +28,13 @@ public class ELCORegisterEntryDTO {
 	@JsonProperty
 	private String WomanREGDATE;
 	@JsonProperty
-	private String FWNHWOMSTRMEN;
+	private String FWCWOMSTRMEN;
 	@JsonProperty
-	private String FWNHWOMHUSALV;
+	private String FWCWOMHUSALV;
 	@JsonProperty
-	private String FWNHWOMHUSLIV;
+	private String FWCWOMHUSLIV;
 	@JsonProperty
-	private String FWNHWOMHUSSTR;
+	private String FWCWOMHUSSTR;
 	@JsonProperty
 	private String GOBHHID;
 	@JsonProperty
@@ -153,20 +153,20 @@ public class ELCORegisterEntryDTO {
 		this.WomanREGDATE = WomanREGDATE;
 		return this;
 	}
-	public ELCORegisterEntryDTO withFWNHWOMSTRMEN(String FWNHWOMSTRMEN) {
-		this.FWNHWOMSTRMEN = FWNHWOMSTRMEN;
+	public ELCORegisterEntryDTO withFWCWOMSTRMEN(String FWCWOMSTRMEN) {
+		this.FWCWOMSTRMEN = FWCWOMSTRMEN;
 		return this;
 	}
-	public ELCORegisterEntryDTO withFWNHWOMHUSALV(String FWNHWOMHUSALV) {
-		this.FWNHWOMHUSALV = FWNHWOMHUSALV;
+	public ELCORegisterEntryDTO withFWCWOMHUSALV(String FWCWOMHUSALV) {
+		this.FWCWOMHUSALV = FWCWOMHUSALV;
 		return this;
 	}
-	public ELCORegisterEntryDTO withFWNHWOMHUSLIV(String FWNHWOMHUSLIV) {
-		this.FWNHWOMHUSLIV = FWNHWOMHUSLIV;
+	public ELCORegisterEntryDTO withFWCWOMHUSLIV(String FWCWOMHUSLIV) {
+		this.FWCWOMHUSLIV = FWCWOMHUSLIV;
 		return this;
 	}
-	public ELCORegisterEntryDTO withFWNHWOMHUSSTR(String FWNHWOMHUSSTR) {
-		this.FWNHWOMHUSSTR = FWNHWOMHUSSTR;
+	public ELCORegisterEntryDTO withFWCWOMHUSSTR(String FWCWOMHUSSTR) {
+		this.FWCWOMHUSSTR = FWCWOMHUSSTR;
 		return this;
 	}
 	public ELCORegisterEntryDTO withGOBHHID(String GOBHHID) {

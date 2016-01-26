@@ -27,13 +27,13 @@ public class ELCORegisterEntry {
 	
 	private String WomanREGDATE;
 	
-	private String FWNHWOMSTRMEN;
+	private String FWCWOMSTRMEN;
 
-	private String FWNHWOMHUSALV;
+	private String FWCWOMHUSALV;
 
-	private String FWNHWOMHUSLIV;
+	private String FWCWOMHUSLIV;
 
-	private String FWNHWOMHUSSTR;
+	private String FWCWOMHUSSTR;
 	
 	private String GOBHHID;
 	
@@ -151,20 +151,20 @@ public class ELCORegisterEntry {
 		this.WomanREGDATE = WomanREGDATE;
 		return this;
 	}
-	public ELCORegisterEntry withFWNHWOMSTRMEN(String FWNHWOMSTRMEN) {
-		this.FWNHWOMSTRMEN = FWNHWOMSTRMEN;
+	public ELCORegisterEntry withFWCWOMSTRMEN(String FWCWOMSTRMEN) {
+		this.FWCWOMSTRMEN = FWCWOMSTRMEN;
 		return this;
 	}
-	public ELCORegisterEntry withFWNHWOMHUSALV(String FWNHWOMHUSALV) {
-		this.FWNHWOMHUSALV = FWNHWOMHUSALV;
+	public ELCORegisterEntry withFWCWOMHUSALV(String FWCWOMHUSALV) {
+		this.FWCWOMHUSALV = FWCWOMHUSALV;
 		return this;
 	}
-	public ELCORegisterEntry withFWNHWOMHUSLIV(String FWNHWOMHUSLIV) {
-		this.FWNHWOMHUSLIV = FWNHWOMHUSLIV;
+	public ELCORegisterEntry withFWCWOMHUSLIV(String FWCWOMHUSLIV) {
+		this.FWCWOMHUSLIV = FWCWOMHUSLIV;
 		return this;
 	}
-	public ELCORegisterEntry withFWNHWOMHUSSTR(String FWNHWOMHUSSTR) {
-		this.FWNHWOMHUSSTR = FWNHWOMHUSSTR;
+	public ELCORegisterEntry withFWCWOMHUSSTR(String FWCWOMHUSSTR) {
+		this.FWCWOMHUSSTR = FWCWOMHUSSTR;
 		return this;
 	}
 	public ELCORegisterEntry withGOBHHID(String GOBHHID) {
@@ -356,17 +356,17 @@ public class ELCORegisterEntry {
 	public String WomanREGDATE() {
 		return  WomanREGDATE;
 	}
-	public String FWNHWOMSTRMEN() {
-		return  FWNHWOMSTRMEN;
+	public String FWCWOMSTRMEN() {
+		return  FWCWOMSTRMEN;
 	}
-	public String FWNHWOMHUSALV() {
-		return  FWNHWOMHUSALV;
+	public String FWCWOMHUSALV() {
+		return  FWCWOMHUSALV;
 	}
-	public String FWNHWOMHUSLIV() {
-		return  FWNHWOMHUSLIV;
+	public String FWCWOMHUSLIV() {
+		return  FWCWOMHUSLIV;
 	}
-	public String FWNHWOMHUSSTR() {
-		return  FWNHWOMHUSSTR;
+	public String FWCWOMHUSSTR() {
+		return  FWCWOMHUSSTR;
 	}
 	public String GOBHHID() {
 		return GOBHHID;
