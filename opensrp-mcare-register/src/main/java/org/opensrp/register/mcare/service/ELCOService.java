@@ -115,10 +115,10 @@ public class ELCOService {
 					.put(new_ELCO, submission.getField(new_ELCO))
 					.put(ELCO, submission.getField(ELCO))
 					.put(WomanREGDATE, elcoFields.get(WomanREGDATE))
-					.put(FW_NHWOMSTRMEN, elcoFields.get(FW_NHWOMSTRMEN))
-					.put(FW_NHWOMHUSALV, elcoFields.get(FW_NHWOMHUSALV))
-					.put(FW_NHWOMHUSSTR, elcoFields.get(FW_NHWOMHUSSTR))
-					.put(FW_NHWOMHUSLIV, elcoFields.get(FW_NHWOMHUSLIV))
+					.put(FW_CWOMSTRMEN, elcoFields.get(FW_CWOMSTRMEN))
+					.put(FW_CWOMHUSALV, elcoFields.get(FW_CWOMHUSALV))
+					.put(FW_CWOMHUSSTR, elcoFields.get(FW_CWOMHUSSTR))
+					.put(FW_CWOMHUSLIV, elcoFields.get(FW_CWOMHUSLIV))
 					.put(form_name, submission.getField(form_name))
 					.put(FW_WOMFNAME, elcoFields.get(FW_WOMFNAME))
 					.put(FW_WOMLNAME, elcoFields.get(FW_WOMLNAME))
@@ -132,10 +132,10 @@ public class ELCOService {
 					.put(FW_BIRTHDATE, elcoFields.get(FW_BIRTHDATE))
 					.put(FW_WOMAGE, elcoFields.get(FW_WOMAGE))
 					.put(FW_DISPLAY_AGE, elcoFields.get(FW_DISPLAY_AGE))
-					.put(FW_NHWOMSTRMEN, elcoFields.get(FW_NHWOMSTRMEN))
-					.put(FW_NHWOMHUSALV, elcoFields.get(FW_NHWOMHUSALV))
-					.put(FW_NHWOMHUSSTR, elcoFields.get(FW_NHWOMHUSSTR))
-					.put(FW_NHWOMHUSLIV, elcoFields.get(FW_NHWOMHUSLIV))
+					.put(FW_CWOMSTRMEN, elcoFields.get(FW_CWOMSTRMEN))
+					.put(FW_CWOMHUSALV, elcoFields.get(FW_CWOMHUSALV))
+					.put(FW_CWOMHUSSTR, elcoFields.get(FW_CWOMHUSSTR))
+					.put(FW_CWOMHUSLIV, elcoFields.get(FW_CWOMHUSLIV))
 					.put(FW_ELIGIBLE, elcoFields.get(FW_ELIGIBLE))
 					.put(FW_ELIGIBLE2, elcoFields.get(FW_ELIGIBLE2))
 					.put(FW_WOMCOUNTRY, elcoFields.get(FW_WOMCOUNTRY))
@@ -204,6 +204,7 @@ public class ELCOService {
 					.put(FWNOTELIGIBLE, submission.getField(FWNOTELIGIBLE))
 					.put(ELCO, submission.getField(ELCO))
 					.put(FW_ELIGIBLE, submission.getField(FW_ELIGIBLE))
+					.put(current_formStatus, submission.getField(current_formStatus))
 					.map();
 			
 			elco.PSRFDETAILS().add(psrf);	
@@ -215,9 +216,9 @@ public class ELCOService {
 			elcoScheduleService.enrollIntoMilestoneOfPSRF(submission.entityId(),
                     submission.getField(REFERENCE_DATE));
 			
-			if(!submission.getField(FW_PSRPREGSTS).isEmpty() && submission.getField(FW_PSRPREGSTS) != null)
-				if(submission.getField(FW_PSRPREGSTS).equals("1"))
-	            {
+			if(submission.getField(FW_PSRPREGSTS) != null)        
+                if(submission.getField(FW_PSRPREGSTS).equals("1"))
+                {
 	                ancService.registerANC(submission);
 	                bnfService.registerBNF(submission);
 	                elco.setIsClosed(true);

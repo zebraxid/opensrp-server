@@ -18,6 +18,7 @@ import static org.opensrp.common.AllConstants.BnfFollowUpVisitFields.FWBNFWOMVIT
 import static org.opensrp.common.AllConstants.BnfFollowUpVisitFields.FWDISPLAYTEXT1;
 import static org.opensrp.common.AllConstants.BnfFollowUpVisitFields.STS_WD;
 import static org.opensrp.common.AllConstants.BnfFollowUpVisitFields.STS_LB;
+import static org.opensrp.common.AllConstants.BnfFollowUpVisitFields.STS_SB;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.REFERENCE_DATE;
 import static org.opensrp.common.util.EasyMap.create;
 
@@ -106,10 +107,10 @@ public class BNFService {
 		mother.bnfVisitDetails().add(bnfVisit);
 		
 		allMothers.update(mother);
-		
-		if(submission.getField(FWBNFSTS).equalsIgnoreCase(STS_LB) && submission.getField(FWBNFSTS).equalsIgnoreCase(STS_WD))
-		{
-			pncService.deliveryOutcome(submission);
+
+		if(submission.getField(FWBNFSTS).equalsIgnoreCase(STS_LB) || submission.getField(FWBNFSTS).equalsIgnoreCase(STS_SB))
+		{ 
+			pncService.deliveryOutcome(submission); 
 		}
 		
 	}

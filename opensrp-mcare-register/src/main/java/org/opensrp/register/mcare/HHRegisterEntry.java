@@ -8,6 +8,8 @@ import java.util.Map;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.codehaus.jackson.annotate.JsonProperty;
+import org.opensrp.register.mcare.domain.HouseHold;
 
 public class HHRegisterEntry {
 
@@ -68,6 +70,8 @@ public class HHRegisterEntry {
 	private String user_type;
 
 	private String external_user_ID;
+	
+	private String current_formStatus;
 	
 	private List<Map<String, String>> ELCODETAILS;
 	
@@ -222,6 +226,11 @@ public class HHRegisterEntry {
 		this.external_user_ID = external_user_ID;
 		return this;
 	}
+	
+	public HHRegisterEntry withcurrent_formStatus(String current_formStatus) {
+		this.current_formStatus = current_formStatus;
+		return this;
+	}
 
 	public HHRegisterEntry withELCODETAILS(List<Map<String, String>> ELCODETAILS) {
 		this.ELCODETAILS = ELCODETAILS;
@@ -347,6 +356,10 @@ public class HHRegisterEntry {
 
 	public String external_user_ID() {
 		return external_user_ID;
+	}
+	
+	public String current_formStatus() {
+		return current_formStatus;
 	}
 
 	public List<Map<String, String>> ELCODETAILS() {

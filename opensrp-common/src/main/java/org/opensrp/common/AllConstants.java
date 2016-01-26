@@ -159,10 +159,10 @@ public class AllConstants {
     	public static final String FW_GENDER = "FWGENDER";
     	public static final String FW_WOMAGE = "FWWOMAGE";
     	public static final String FW_DISPLAY_AGE = "display_age";
-    	public static final String FW_NHWOMSTRMEN = "FWNHWOMSTRMEN";
-    	public static final String FW_NHWOMHUSALV = "FWNHWOMHUSALV";
-    	public static final String FW_NHWOMHUSSTR = "FWNHWOMHUSSTR";
-    	public static final String FW_NHWOMHUSLIV = "FWNHWOMHUSLIV";
+    	public static final String FW_CWOMSTRMEN = "FWCWOMSTRMEN";
+    	public static final String FW_CWOMHUSALV = "FWCWOMHUSALV";
+    	public static final String FW_CWOMHUSSTR = "FWCWOMHUSSTR";
+    	public static final String FW_CWOMHUSLIV = "FWCWOMHUSLIV";
     	public static final String FW_ELIGIBLE = "FWELIGIBLE";
     	public static final String FW_ELIGIBLE2 = "FWELIGIBLE2";
     	public static final String FW_WOMCOUNTRY ="FWWOMCOUNTRY";

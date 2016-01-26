@@ -42,10 +42,10 @@ public class ELCORegisterService {
             		.withnew_ELCO(ec.new_ELCO())
             		.withELCO(ec.ELCO())
             		.withWomanREGDATE(ec.WomanREGDATE())
-            		.withFWNHWOMHUSALV(ec.FWNHWOMHUSALV())
-            		.withFWNHWOMHUSLIV(ec.FWNHWOMHUSLIV())
-            		.withFWNHWOMHUSSTR(ec.FWNHWOMHUSSTR())
-            		.withFWNHWOMSTRMEN(ec.FWNHWOMSTRMEN())
+            		.withFWCWOMHUSALV(ec.FWCWOMHUSALV())
+            		.withFWCWOMHUSLIV(ec.FWCWOMHUSLIV())
+            		.withFWCWOMHUSSTR(ec.FWCWOMHUSSTR())
+            		.withFWCWOMSTRMEN(ec.FWCWOMSTRMEN())
             		.withFWCENDATE(ec.FWCENDATE())
             		.withFWCENSTAT(ec.FWCENSTAT())
             		.withFWWOMFNAME(ec.FWWOMFNAME())
@@ -79,10 +79,10 @@ public class ELCORegisterService {
             		.withSTART(ec.getDetail(START_DATE))
             		.withEND(ec.getDetail(END_DATE))
             		.withFWDISPLAYAGE(ec.getDetail(FW_DISPLAY_AGE))
-            		.withFWWOMSTRMEN(ec.getDetail(FW_NHWOMSTRMEN))
-            		.withFWWOMHUSSTR(ec.getDetail(FW_NHWOMHUSSTR))
-            		.withFWWOMHUSALV(ec.getDetail(FW_NHWOMHUSALV))
-            		.withFWWOMHUSLIV(ec.getDetail(FW_NHWOMHUSLIV));     
+            		.withFWWOMSTRMEN(ec.getDetail(FW_CWOMSTRMEN))
+            		.withFWWOMHUSSTR(ec.getDetail(FW_CWOMHUSSTR))
+            		.withFWWOMHUSALV(ec.getDetail(FW_CWOMHUSALV))
+            		.withFWWOMHUSLIV(ec.getDetail(FW_CWOMHUSLIV));     
             
             elcoRegisterEntries.add(ecRegisterEntry);
         }

@@ -10,6 +10,8 @@ import static org.opensrp.common.AllConstants.BnfFollowUpVisitFields.FWBNFSTS;
 import static org.opensrp.common.AllConstants.BnfFollowUpVisitFields.STS_WD;
 import static org.opensrp.common.AllConstants.BnfFollowUpVisitFields.STS_LB;
 import static org.opensrp.common.AllConstants.BnfFollowUpVisitFields.STS_SB;
+import static org.opensrp.common.AllConstants.CommonFormFields.ID;
+import static org.opensrp.common.AllConstants.HHRegistrationFields.REFERENCE_DATE;
 import static org.opensrp.common.AllConstants.ANCVisitOneFields.FWCONFIRMATION;
 import static org.opensrp.common.AllConstants.PNCVisitOneFields.*;
 import static org.opensrp.common.AllConstants.PNCVisitTwoFields.*;
@@ -27,6 +29,7 @@ import org.opensrp.register.mcare.domain.Elco;
 import org.opensrp.register.mcare.domain.Mother;
 import org.opensrp.register.mcare.repository.AllElcos;
 import org.opensrp.register.mcare.repository.AllMothers;
+import org.opensrp.register.mcare.service.scheduling.ELCOScheduleService;
 import org.opensrp.register.mcare.service.scheduling.ChildSchedulesService;
 import org.opensrp.register.mcare.service.scheduling.PNCSchedulesService;
 import org.slf4j.Logger;
@@ -41,15 +44,15 @@ public class PNCService {
 			.toString());
 	private AllElcos allElcos;
 	private AllMothers allMothers;
+	private ELCOScheduleService elcoSchedulesService;
 	private PNCSchedulesService pncSchedulesService;
 	private ChildSchedulesService childSchedulesService;
 
 	@Autowired
-	public PNCService(AllElcos allElcos, AllMothers allMothers,
-			PNCSchedulesService pncSchedulesService,
-			ChildSchedulesService childSchedulesService) {
+	public PNCService(AllElcos allElcos, AllMothers allMothers, ELCOScheduleService elcoSchedulesService, PNCSchedulesService pncSchedulesService, ChildSchedulesService childSchedulesService) {
 		this.allElcos = allElcos;
 		this.allMothers = allMothers;
+		this.elcoSchedulesService = elcoSchedulesService;
 		this.pncSchedulesService = pncSchedulesService;
 		this.childSchedulesService = childSchedulesService;
 	}
@@ -73,6 +76,12 @@ public class PNCService {
 						submission.entityId()));
 				return;
 			}
+			
+			Elco elco = allElcos.findByCaseId(mother.relationalid());
+			logger.info("Closing EC case. Ec Id: "+ elco.caseId());
+			elco.setIsClosed(false);
+			allElcos.update(elco);
+			elcoSchedulesService.imediateEnrollIntoMilestoneOfPSRF(elco.caseId(), elco.TODAY(), elco.PROVIDERID());
 
 			if (submission.getField(FWBNFSTS).equals(STS_WD)) {
 				logger.info("Closing Mother as the mother died during delivery. Mother Id: "
