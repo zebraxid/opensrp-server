@@ -70,6 +70,8 @@ public class HHRegisterEntryDTO {
 	@JsonProperty
 	private String external_user_ID;
 	@JsonProperty
+	private String current_formStatus;
+	@JsonProperty
 	private List<Map<String, String>> ELCODETAILS;
 	@JsonProperty
 	private Map<String, String> details;
@@ -222,6 +224,11 @@ public class HHRegisterEntryDTO {
 
 	public HHRegisterEntryDTO withexternal_user_ID(String external_user_ID) {
 		this.external_user_ID = external_user_ID;
+		return this;
+	}
+	
+	public HHRegisterEntryDTO withcurrent_formStatus(String current_formStatus) {
+		this.current_formStatus = current_formStatus;
 		return this;
 	}
 

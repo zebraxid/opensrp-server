@@ -35,13 +35,13 @@ public class Elco extends MotechBaseDataObject {
 	@JsonProperty
 	private String WomanREGDATE;
 	@JsonProperty
-	private String FWNHWOMSTRMEN;
+	private String FWCWOMSTRMEN;
 	@JsonProperty
-	private String FWNHWOMHUSALV;
+	private String FWCWOMHUSALV;
 	@JsonProperty
-	private String FWNHWOMHUSLIV;
+	private String FWCWOMHUSLIV;
 	@JsonProperty
-	private String FWNHWOMHUSSTR;
+	private String FWCWOMHUSSTR;
 	@JsonProperty
     private String isClosed;
 	@JsonProperty
@@ -164,20 +164,20 @@ public class Elco extends MotechBaseDataObject {
 		this.WomanREGDATE = WomanREGDATE;
 		return this;
 	}
-	public Elco withFWNHWOMSTRMEN(String FWNHWOMSTRMEN) {
-		this.FWNHWOMSTRMEN = FWNHWOMSTRMEN;
+	public Elco withFWCWOMSTRMEN(String FWCWOMSTRMEN) {
+		this.FWCWOMSTRMEN = FWCWOMSTRMEN;
 		return this;
 	}
-	public Elco withFWNHWOMHUSALV(String FWNHWOMHUSALV) {
-		this.FWNHWOMHUSALV = FWNHWOMHUSALV;
+	public Elco withFWCWOMHUSALV(String FWCWOMHUSALV) {
+		this.FWCWOMHUSALV = FWCWOMHUSALV;
 		return this;
 	}
-	public Elco withFWNHWOMHUSLIV(String FWNHWOMHUSLIV) {
-		this.FWNHWOMHUSLIV = FWNHWOMHUSLIV;
+	public Elco withFWCWOMHUSLIV(String FWCWOMHUSLIV) {
+		this.FWCWOMHUSLIV = FWCWOMHUSLIV;
 		return this;
 	}
-	public Elco withFWNHWOMHUSSTR(String FWNHWOMHUSSTR) {
-		this.FWNHWOMHUSSTR = FWNHWOMHUSSTR;
+	public Elco withFWCWOMHUSSTR(String FWCWOMHUSSTR) {
+		this.FWCWOMHUSSTR = FWCWOMHUSSTR;
 		return this;
 	}
 	public Elco withGOBHHID(String GOBHHID) {
@@ -365,17 +365,17 @@ public class Elco extends MotechBaseDataObject {
 	public String WomanREGDATE() {
 		return  WomanREGDATE;
 	}
-	public String FWNHWOMSTRMEN() {
-		return  FWNHWOMSTRMEN;
+	public String FWCWOMSTRMEN() {
+		return  FWCWOMSTRMEN;
 	}
-	public String FWNHWOMHUSALV() {
-		return  FWNHWOMHUSALV;
+	public String FWCWOMHUSALV() {
+		return  FWCWOMHUSALV;
 	}
-	public String FWNHWOMHUSLIV() {
-		return  FWNHWOMHUSLIV;
+	public String FWCWOMHUSLIV() {
+		return  FWCWOMHUSLIV;
 	}
-	public String FWNHWOMHUSSTR() {
-		return  FWNHWOMHUSSTR;
+	public String FWCWOMHUSSTR() {
+		return  FWCWOMHUSSTR;
 	}
 	public String GOBHHID() {
 		return GOBHHID;

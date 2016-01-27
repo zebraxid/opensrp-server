@@ -57,6 +57,7 @@ public class HHRegisterService {
         		.withELCO(hh.ELCO())
         		.withuser_type(hh.user_type())
         		.withexternal_user_ID(hh.external_user_ID())
+        		.withcurrent_formStatus(hh.current_formStatus())
         		.withELCODETAILS(hh.ELCODETAILS())
         		.withDetails(hh.details())
         		.withLOCATIONID(hh.getDetail(LOCATION_NAME))
