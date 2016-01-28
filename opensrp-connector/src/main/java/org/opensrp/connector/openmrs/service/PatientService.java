@@ -272,7 +272,7 @@ public class PatientService extends OpenmrsService{
 	     //String requestURL =  "http://46.101.51.199:8080/openmrs/ws/rest/v1/patientimage/uploadimage";
 		
 		 try {
-			    File convFile = new File(multimedia.getFilePath());
+			    File convFile = new File("/opt"+multimedia.getFilePath());
 	            MultipartUtility multipart = new MultipartUtility(getURL()+"/"+PATIENT_IMAGE_URL, OPENMRS_USER, OPENMRS_PWD);
 	             
 	           // multipart.addHeaderField("User-Agent", "CodeJava");

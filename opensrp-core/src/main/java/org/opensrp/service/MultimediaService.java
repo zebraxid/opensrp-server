@@ -19,21 +19,21 @@ public class MultimediaService {
 			.toString());
 
 	private final MultimediaRepository multimediaRepository;
-	private String multimediaDirName;
+	//private String multimediaDirName;
 	private String multimediaDirPath;
 
 	@Autowired
 	public MultimediaService(MultimediaRepository multimediaRepository, @Value("#{opensrp['multimedia.directory.name']}") String multimediaDirName) {
 		this.multimediaRepository = multimediaRepository;
-		this.multimediaDirName = multimediaDirName;
+		this.multimediaDirPath = multimediaDirName;
 	}
 
 	public String saveMultimediaFile(MultimediaDTO multimediaDTO, MultipartFile file) {
 		
 		boolean uploadStatus = uploadFile(multimediaDTO, file);
-		
-		String dirPath[] = multimediaDirPath.split("/", 3);
-		multimediaDirPath = dirPath[2];
+         
+		String[] multimediaDirPathSplit =  multimediaDirPath.split("/", 3);
+		String multimediaDirPathDB = File.separator + multimediaDirPathSplit[2];
 		
 		if (uploadStatus) {
 			try {
@@ -43,7 +43,7 @@ public class MultimediaService {
 						.withCaseId(multimediaDTO.caseId())
 						.withProviderId(multimediaDTO.providerId())
 						.withContentType(multimediaDTO.contentType())
-						.withFilePath(multimediaDirPath)
+						.withFilePath(multimediaDirPathDB)
 						.withFileCategory(multimediaDTO.fileCategory());
 
 				multimediaRepository.add(multimediaFile);
@@ -61,11 +61,6 @@ public class MultimediaService {
 
 	public boolean uploadFile(MultimediaDTO multimediaDTO,
 			MultipartFile multimediaFile) {
-		//String baseMultimediaDirPath = "../assets/multimedia";
-		//String baseMultimediaDirPath = this.getClass().getResource("/multimedia").getPath();
-		
-		 /*String baseDirPath = System.getProperty("user.home");
-		 multimediaDirPath =  baseDirPath + multimediaDirName;*/
 		 
 		if (!multimediaFile.isEmpty()) {
 			try {
