@@ -106,11 +106,12 @@ public class ScheduleLogService extends OpenmrsService{
 	
 	public void closeSchedule(String caseId,String instanceId,long timestamp,String name){
 		ScheduleLog  schedule = allReportActions.findByTimestampIdByCaseIdByname(timestamp,caseId,name);
-		System.out.println("name:"+name+"Instance:"+instanceId+"EntityId:"+caseId);;
+		
         schedule.setRevision(schedule.getRevision());
         schedule.scheduleCloseDate(new DateTime());
         schedule.closeById(instanceId);
-        schedule.getIsActionActive(true);
+        schedule.setIsActionActive(false);
+        System.out.println(""+schedule.toString());
         allReportActions.update(schedule);
 		
 	}

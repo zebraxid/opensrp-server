@@ -101,13 +101,17 @@ public class HealthSchedulerService {
 		
 		if(WindowName.max.toString().equals(windowName) && (!elco.equals(beneficiaryType) || !household.equals(beneficiaryType))){
 			actionService.alertForBeneficiary(beneficiaryType, entityId, instanceId, providerId, schedule, milestone, expired, startOfMaxWindow, startOfMaxWindow.plusDays(1));
+			
 		} else if (WindowName.late.toString().equals(windowName)) {
             actionService.alertForBeneficiary(beneficiaryType, entityId, instanceId, providerId, schedule, milestone, urgent, startOfLateWindow, startOfMaxWindow);
-        } else if (WindowName.due.toString().equals(windowName)) {
+            
+		} else if (WindowName.due.toString().equals(windowName)) {
             actionService.alertForBeneficiary(beneficiaryType, entityId, instanceId, providerId, schedule, milestone, upcoming, startOfDueWindow, startOfLateWindow);
-        } else if( WindowName.earliest.toString().equals(windowName)){
+           
+		} else if( WindowName.earliest.toString().equals(windowName)){
             actionService.alertForBeneficiary(beneficiaryType, entityId, instanceId, providerId, schedule, milestone, normal, startOfEarliestWindow, startOfDueWindow);
-        }
+            
+		}
 	}
 	
 	public void alertFor(BeneficiaryType beneficiaryType, String entityId, String instanceId, String providerId, String schedule, 

@@ -35,8 +35,10 @@ public class ReportActionService {
 	public void updateScheduleLog(BeneficiaryType beneficiaryType, String caseID, String instanceId, String anmIdentifier, String scheduleName, String visitCode, AlertStatus alertStatus, DateTime startDate, DateTime expiryDate, DateTime currentWindowCloseDate,String trackId,long BTS,long timestamp){
 		
 		ScheduleLog  schedule = allReportActions.findByTimestampIdByCaseIdByname(BTS,caseID,scheduleName);
-		   if(schedule != null){
-			   
+		
+		   
+		if(schedule != null){
+			
 			   if(!schedule.getCurrentWindow().equals(alertStatus)){				   
 			    	Map<String, String > mapData = new HashMap<>();
 			    	mapData.put("beneficiaryType", beneficiaryType.value());

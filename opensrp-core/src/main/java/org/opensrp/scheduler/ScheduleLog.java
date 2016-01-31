@@ -53,7 +53,9 @@ public class ScheduleLog extends MotechBaseDataObject  {
     private String actionType;
     @JsonProperty
     private Boolean isActionActive;
-    @JsonProperty
+    
+
+	@JsonProperty
     private DateTime scheduleGenerateDate;
     @JsonProperty
     private long timeStamp;
@@ -90,7 +92,7 @@ public class ScheduleLog extends MotechBaseDataObject  {
         this.timeStamp = timeStamp;
         this.scheduleGenerateDate = DateUtil.now();
         this.details = actionData.details();
-        this.isActionActive = true;
+        //this.isActionActive = true;
         this.trackId = trackId;
         this.currentWindow = currentWindow;
         this.scheduleCloseDate = scheduleCloseDate;
@@ -100,6 +102,13 @@ public class ScheduleLog extends MotechBaseDataObject  {
         
     }
 
+    public Boolean getIsActionActive() {
+		return isActionActive;
+	}
+
+	public void setIsActionActive(Boolean isActionActive) {
+		this.isActionActive = isActionActive;
+	}
     public String anmIdentifier() {
         return anmIdentifier;
     }

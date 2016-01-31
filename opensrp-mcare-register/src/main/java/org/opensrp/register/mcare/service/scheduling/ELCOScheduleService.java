@@ -134,13 +134,6 @@ public class ELCOScheduleService {
 	{
 	    logger.info(format("Enrolling Elco into PSRF schedule. Id: {0}", caseId));	  
 	    scheduler.enrollIntoSchedule(caseId, ELCOSchedulesConstantsImediate.IMD_ELCO_SCHEDULE_PSRF, date);	 
-	    /*
-	    logger.info("Schedule Tracking Service get query result : "+scheduleTrackingService.search(new EnrollmentsQuery().havingExternalId(caseId)).get(0).getExternalId());
-	    String caseID = scheduleTrackingService.search(new EnrollmentsQuery().havingExternalId(caseId)).get(0).getExternalId();
-	    String scheduleName = scheduleTrackingService.search(new EnrollmentsQuery().havingExternalId(caseId)).get(0).getScheduleName();
-	    String visitCode = scheduleTrackingService.search(new EnrollmentsQuery().havingExternalId(caseId)).get(0).getScheduleName();
-	    logger.info("visitCode : "+visitCode);*/ 
-	   
 	    allActions.addOrUpdateAlert(new Action(caseId, provider, ActionData.createAlert(elco, ELCO_SCHEDULE_PSRF, ELCO_SCHEDULE_PSRF, AlertStatus.upcoming, new DateTime(), new DateTime().plusHours(duration))));	    
 	    List<Action> existingAlerts = allActions.findAlertByANMIdEntityIdScheduleName(provider, caseId, ELCO_SCHEDULE_PSRF);
 		if(existingAlerts.size() > 0){ 

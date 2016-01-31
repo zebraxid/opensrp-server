@@ -108,6 +108,7 @@ public class AlertCreationAction implements HookedEvent {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}*/
+		
 		scheduler.alertFor(event.windowName(), beneficiaryType, caseID, instanceId, providerId, event.scheduleName().replace(ELCOSchedulesConstantsImediate.IMD_ELCO_SCHEDULE_PSRF, ELCOSchedulesConstants.ELCO_SCHEDULE_PSRF), event.milestoneName().replace(ELCOSchedulesConstantsImediate.IMD_ELCO_SCHEDULE_PSRF, ELCOSchedulesConstants.ELCO_SCHEDULE_PSRF),
 				startOfEarliestWindow, event.startOfDueWindow(),
 				event.startOfLateWindow(), event.startOfMaxWindow());
