@@ -19,16 +19,19 @@ public class MultimediaService {
 			.toString());
 
 	private final MultimediaRepository multimediaRepository;
-	//private String multimediaDirName;
+	private String multimediaDirName;
 	private String multimediaDirPath;
 
 	@Autowired
 	public MultimediaService(MultimediaRepository multimediaRepository, @Value("#{opensrp['multimedia.directory.name']}") String multimediaDirName) {
 		this.multimediaRepository = multimediaRepository;
+		this.multimediaDirName = multimediaDirName;
 		this.multimediaDirPath = multimediaDirName;
 	}
 
 	public String saveMultimediaFile(MultimediaDTO multimediaDTO, MultipartFile file) {
+		
+		multimediaDirPath = multimediaDirName;
 		
 		boolean uploadStatus = uploadFile(multimediaDTO, file);
          
@@ -39,14 +42,23 @@ public class MultimediaService {
 			try {
 				logger.info("Image path : " + multimediaDirPath);
 				
+				
 				Multimedia multimediaFile = new Multimedia()
 						.withCaseId(multimediaDTO.caseId())
 						.withProviderId(multimediaDTO.providerId())
 						.withContentType(multimediaDTO.contentType())
 						.withFilePath(multimediaDirPathDB)
 						.withFileCategory(multimediaDTO.fileCategory());
-
-				multimediaRepository.add(multimediaFile);
+				
+				List<Multimedia> existsMultimediaList =  multimediaRepository.findByCaseIdAndFileCategory(multimediaDTO.caseId(), multimediaDTO.fileCategory());
+				
+                if(existsMultimediaList.size()>0)
+                {
+            	    for (Multimedia existsMultimedia : existsMultimediaList)
+            	    multimediaRepository.safeRemove(existsMultimedia);
+                }
+				
+                multimediaRepository.add(multimediaFile);
 
 				return "success";
 
@@ -73,35 +85,35 @@ public class MultimediaService {
 					String videoDirPath = multimediaDirPath += "videos";
 					makeMultimediaDir(videoDirPath);
 					multimediaDirPath += File.separator
-							+ multimediaDTO.caseId() + ".mp4";
+							+ multimediaDTO.caseId() + "-" + multimediaDTO.fileCategory() + ".mp4";
 					break;
 
 				case "image/jpeg":
 					String jpgImgDirPath = multimediaDirPath += "images";
 					makeMultimediaDir(jpgImgDirPath);
 					multimediaDirPath += File.separator
-							+ multimediaDTO.caseId() + ".jpg";
+							+ multimediaDTO.caseId() + "-" + multimediaDTO.fileCategory() + ".jpg";
 					break;
 
 				case "image/gif":
 					String gifImgDirPath = multimediaDirPath += "images";
 					makeMultimediaDir(gifImgDirPath);
 					multimediaDirPath += File.separator
-							+ multimediaDTO.caseId() + ".gif";
+							+ multimediaDTO.caseId() + "-" + multimediaDTO.fileCategory() + ".gif";
 					break;
 
 				case "image/png":
 					String pngImgDirPath = multimediaDirPath += "images";
 					makeMultimediaDir(pngImgDirPath);
 					multimediaDirPath += File.separator
-							+ multimediaDTO.caseId() + ".png";
+							+ multimediaDTO.caseId() + "-" + multimediaDTO.fileCategory() + ".png";
 					break;
 
 				default:
 					String defaultDirPath = multimediaDirPath += "images";
 					makeMultimediaDir(defaultDirPath);
 					multimediaDirPath += File.separator
-							+ multimediaDTO.caseId() + ".jpg";
+							+ multimediaDTO.caseId() + "-" + multimediaDTO.fileCategory() + ".jpg";
 					break;
 
 				}

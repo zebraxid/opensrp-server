@@ -3,6 +3,8 @@ package org.opensrp.repository;
 import java.util.List;
 
 import org.ektorp.CouchDbConnector;
+import org.ektorp.ViewQuery;
+import org.ektorp.ViewResult;
 import org.ektorp.support.GenerateView;
 import org.ektorp.support.View;
 import org.motechproject.dao.MotechBaseRepository;
@@ -34,6 +36,22 @@ public class MultimediaRepository extends MotechBaseRepository<Multimedia> {
 	public List<Multimedia> all(String providerId) {
 		return db.queryView(createQuery("all_multimedia_files").key(providerId)
 				.includeDocs(true), Multimedia.class);
+	}
+	
+	@View(name="find_by_caseId_fileCategory", map="function(doc) { if (doc.type === 'Multimedia' && doc.providerId) { emit(doc.providerId, doc.caseId, doc.fileCategory, doc); } }")
+	public List<Multimedia> findByCaseIdAndFileCategory(String entityId, String fileCategory)
+	{
+		/*return db.queryView(createQuery("find_by_caseId_fileCategory").key(new String[]{entityId,fileCategory})
+				.includeDocs(true), Multimedia.class);*/
+		
+		 ViewQuery query = createQuery("find_by_caseId_fileCategory")
+	                .designDocId(stdDesignDocumentId)
+	                .key(new String[]{entityId,fileCategory});
+		 
+		 ViewResult r = db.queryView(query);
+		 
+	     return  db.queryView(query, Multimedia.class);
+	     //   return r.getRows().get(0).getValueAsInt();
 	}
 
 }
