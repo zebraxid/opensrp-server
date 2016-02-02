@@ -21,6 +21,9 @@ import static org.opensrp.register.mcare.OpenSRPScheduleConstants.DateTimeDurati
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ELCOSchedulesConstants.ELCO_SCHEDULE_PSRF;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.HHSchedulesConstants.HH_SCHEDULE_CENSUS;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.joda.time.DateTime;
@@ -55,13 +58,13 @@ public class ANCSchedulesService {
 		this.scheduleLogService = scheduleLogService;
 	}
 
-    public void enrollMother(String caseId, LocalDate referenceDateForSchedule,String provider,String instanceId) {
+    public void enrollMother(String caseId, LocalDate referenceDateForSchedule,String provider,String instanceId,String startDate) {
         /*for (String schedule : NON_ANC_SCHEDULES) {
         	scheduler.enrollIntoSchedule(caseId, schedule, referenceDateForSchedule);
         }*/
-        enrollIntoCorrectMilestoneOfANCCare(caseId, referenceDateForSchedule,provider,instanceId);
+        enrollIntoCorrectMilestoneOfANCCare(caseId, referenceDateForSchedule,provider,instanceId,startDate);
     }
-    private void enrollIntoCorrectMilestoneOfANCCare(String entityId, LocalDate referenceDateForSchedule,String provider,String instanceId) {
+    private void enrollIntoCorrectMilestoneOfANCCare(String entityId, LocalDate referenceDateForSchedule,String provider,String instanceId,String startDate) {
         String milestone=null;
 
         if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(8).toPeriod().minusDays(0))) {
@@ -76,17 +79,28 @@ public class ANCSchedulesService {
         	
         }
 
+        Date date = null;
+        
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+			date = df.parse(startDate);
+			
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        DateTime start = new DateTime(date);
         logger.info(format("Enrolling ANC with Entity id:{0} to ANC schedule, milestone: {1}.", entityId, milestone));
         scheduler.enrollIntoSchedule(entityId, SCHEDULE_ANC, milestone, referenceDateForSchedule.toString());
         List<Action> beforeNewActions = allActions.findAlertByANMIdEntityIdScheduleName(provider, entityId, SCHEDULE_ANC);
 		if(beforeNewActions.size() > 0){ 
 		scheduleLogService.closeSchedule(entityId,instanceId,beforeNewActions.get(0).timestamp(),SCHEDULE_ANC);
 		}
-		allActions.addOrUpdateAlert(new Action(entityId, provider, ActionData.createAlert(BeneficiaryType.mother, SCHEDULE_ANC, milestone, AlertStatus.upcoming, new DateTime(),  new DateTime().plusHours(duration))));
+		allActions.addOrUpdateAlert(new Action(entityId, provider, ActionData.createAlert(BeneficiaryType.mother, SCHEDULE_ANC, milestone, AlertStatus.upcoming, start,  new DateTime().plusHours(duration))));
 		logger.info(format("create psrf from psrf to psrf..", entityId));
 		List<Action> afterNewActions = allActions.findAlertByANMIdEntityIdScheduleName(provider, entityId, SCHEDULE_ANC);
 		if(afterNewActions.size() > 0){ 
-			scheduleLogService.saveScheduleLog(BeneficiaryType.mother, entityId, instanceId, provider, SCHEDULE_ANC, milestone, AlertStatus.upcoming, new DateTime(),  new DateTime().plusHours(duration),SCHEDULE_ANC,afterNewActions.get(0).timestamp());
+			scheduleLogService.saveScheduleLog(BeneficiaryType.mother, entityId, instanceId, provider, SCHEDULE_ANC, milestone, AlertStatus.upcoming, start,  new DateTime().plusHours(duration),SCHEDULE_ANC,afterNewActions.get(0).timestamp());
 	
 		}
     }
