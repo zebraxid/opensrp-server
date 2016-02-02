@@ -8,6 +8,8 @@ import java.util.Map;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.codehaus.jackson.annotate.JsonProperty;
+import org.opensrp.dto.register.ANC_RegisterEntryDTO;
 
 public class ANCRegisterEntry {
 
@@ -19,11 +21,23 @@ public class ANCRegisterEntry {
 	
 	private String LOCATIONID;
 	
+	private String anc1_current_formStatus;
+
+	private String ANC2_current_formStatus;
+
+	private String ANC3_current_formStatus;
+
+	private String ANC4_current_formStatus;
+	
+	//private String current_formStatus;
+	
 	private String GOBHHID;
 	
 	private String JiVitAHHID;
 	
 	private String FWWOMFNAME;
+	
+	private String FWHUSNAME;
 	
 	private String FWWOMNID;
 	
@@ -74,6 +88,37 @@ public class ANCRegisterEntry {
 		this.INSTANCEID = INSTANCEID;
 		return this;
 	}
+	
+	public ANCRegisterEntry withanc1_current_formStatus(String anc1_current_formStatus) {
+		this.anc1_current_formStatus = anc1_current_formStatus;
+		return this;
+	}
+
+	public ANCRegisterEntry withANC2_current_formStatus(String ANC2_current_formStatus) {
+		this.ANC2_current_formStatus = ANC2_current_formStatus;
+		return this;
+	}
+
+	public ANCRegisterEntry withANC3_current_formStatus(String ANC3_current_formStatus) {
+		this.ANC3_current_formStatus = ANC3_current_formStatus;
+		return this;
+	}
+
+	public ANCRegisterEntry withANC4_current_formStatus(String ANC4_current_formStatus) {
+		this.ANC4_current_formStatus = ANC4_current_formStatus;
+		return this;
+	}
+	
+	/*public ANCRegisterEntry withcurrent_formStatus(String current_formStatus) {
+		this.current_formStatus = current_formStatus;
+		return this;
+	}*/
+
+	public ANCRegisterEntry withFWHUSNAME(String FWHUSNAME) {
+		this.FWHUSNAME = FWHUSNAME;
+		return this;
+	}
+	
 	public ANCRegisterEntry withGOBHHID(String GOBHHID) {
 		this.GOBHHID = GOBHHID;
 		return this;
@@ -173,6 +218,30 @@ public class ANCRegisterEntry {
 
 	public String LOCATIONID() {
 		return LOCATIONID;
+	}
+	
+	public String anc1_current_formStatus() {
+		return anc1_current_formStatus;
+	}
+
+	public String ANC2_current_formStatus() {
+		return ANC2_current_formStatus;
+	}
+
+	public String ANC3_current_formStatus() {
+		return ANC3_current_formStatus;
+	}
+
+	public String ANC4_current_formStatus() {
+		return ANC4_current_formStatus;
+	}
+	
+	/*public String current_formStatus() {
+		return current_formStatus;
+	}*/
+
+	public String FWHUSNAME() {
+		return FWHUSNAME;
 	}
 	
 	public String GOBHHID() {

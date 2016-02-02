@@ -20,11 +20,23 @@ public class ANC_RegisterEntryDTO {
 	@JsonProperty
 	private String LOCATIONID;
 	@JsonProperty
+	private String anc1_current_formStatus;
+	@JsonProperty
+	private String ANC2_current_formStatus;
+	@JsonProperty
+	private String ANC3_current_formStatus;
+	@JsonProperty
+	private String ANC4_current_formStatus;
+	/*@JsonProperty
+	private String current_formStatus;*/
+	@JsonProperty
 	private String GOBHHID;
 	@JsonProperty
 	private String JiVitAHHID;
 	@JsonProperty
 	private String FWWOMFNAME;
+	@JsonProperty
+	private String FWHUSNAME;
 	@JsonProperty
 	private String FWWOMNID;
 	@JsonProperty
@@ -85,6 +97,37 @@ public class ANC_RegisterEntryDTO {
 		this.LOCATIONID = LOCATIONID;
 		return this;
 	}
+	
+	public ANC_RegisterEntryDTO withanc1_current_formStatus(String anc1_current_formStatus) {
+		this.anc1_current_formStatus = anc1_current_formStatus;
+		return this;
+	}
+
+	public ANC_RegisterEntryDTO withANC2_current_formStatus(String ANC2_current_formStatus) {
+		this.ANC2_current_formStatus = ANC2_current_formStatus;
+		return this;
+	}
+
+	public ANC_RegisterEntryDTO withANC3_current_formStatus(String ANC3_current_formStatus) {
+		this.ANC3_current_formStatus = ANC3_current_formStatus;
+		return this;
+	}
+
+	public ANC_RegisterEntryDTO withANC4_current_formStatus(String ANC4_current_formStatus) {
+		this.ANC4_current_formStatus = ANC4_current_formStatus;
+		return this;
+	}
+	
+	/*public ANC_RegisterEntryDTO withcurrent_formStatus(String current_formStatus) {
+		this.current_formStatus = current_formStatus;
+		return this;
+	}*/
+
+	public ANC_RegisterEntryDTO withFWHUSNAME(String FWHUSNAME) {
+		this.FWHUSNAME = FWHUSNAME;
+		return this;
+	}
+	
 	public ANC_RegisterEntryDTO withGOBHHID(String GOBHHID) {
 		this.GOBHHID = GOBHHID;
 		return this;
