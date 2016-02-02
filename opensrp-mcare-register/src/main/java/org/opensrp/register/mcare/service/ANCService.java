@@ -67,7 +67,7 @@ public class ANCService {
 		allMothers.update(mother);
 
 		ancSchedulesService.enrollMother(motherId,
-				LocalDate.parse(submission.getField(MOTHER_REFERENCE_DATE)));
+				LocalDate.parse(submission.getField(MOTHER_REFERENCE_DATE)),submission.anmId(),submission.instanceId());
 	}
 
 	public void ancVisitOne(FormSubmission submission) {
