@@ -27,11 +27,23 @@ public class Mother extends MotechBaseDataObject {
 	@JsonProperty
 	private String LOCATIONID;
 	@JsonProperty
+	private String anc1_current_formStatus;
+	@JsonProperty
+	private String ANC2_current_formStatus;
+	@JsonProperty
+	private String ANC3_current_formStatus;
+	@JsonProperty
+	private String ANC4_current_formStatus;
+	/*@JsonProperty
+	private String current_formStatus;*/
+	@JsonProperty
 	private String GOBHHID;
 	@JsonProperty
 	private String JiVitAHHID;
 	@JsonProperty
 	private String FWWOMFNAME;
+	@JsonProperty
+	private String FWHUSNAME;
 	@JsonProperty
 	private String FWWOMNID;
 	@JsonProperty
@@ -98,6 +110,37 @@ public class Mother extends MotechBaseDataObject {
 		this.LOCATIONID = LOCATIONID;
 		return this;
 	}
+	
+	public Mother withanc1_current_formStatus(String anc1_current_formStatus) {
+		this.anc1_current_formStatus = anc1_current_formStatus;
+		return this;
+	}
+
+	public Mother withANC2_current_formStatus(String ANC2_current_formStatus) {
+		this.ANC2_current_formStatus = ANC2_current_formStatus;
+		return this;
+	}
+
+	public Mother withANC3_current_formStatus(String ANC3_current_formStatus) {
+		this.ANC3_current_formStatus = ANC3_current_formStatus;
+		return this;
+	}
+
+	public Mother withANC4_current_formStatus(String ANC4_current_formStatus) {
+		this.ANC4_current_formStatus = ANC4_current_formStatus;
+		return this;
+	}
+
+	/*public Mother withcurrent_formStatus(String current_formStatus) {
+		this.current_formStatus = current_formStatus;
+		return this;
+	}*/
+
+	public Mother withFWHUSNAME(String FWHUSNAME) {
+		this.FWHUSNAME = FWHUSNAME;
+		return this;
+	}
+
 	public Mother withGOBHHID(String GOBHHID) {
 		this.GOBHHID = GOBHHID;
 		return this;
@@ -197,6 +240,29 @@ public class Mother extends MotechBaseDataObject {
 
 	public String LOCATIONID() {
 		return LOCATIONID;
+	}
+	public String anc1_current_formStatus() {
+		return anc1_current_formStatus;
+	}
+
+	public String ANC2_current_formStatus() {
+		return ANC2_current_formStatus;
+	}
+
+	public String ANC3_current_formStatus() {
+		return ANC3_current_formStatus;
+	}
+
+	public String ANC4_current_formStatus() {
+		return ANC4_current_formStatus;
+	}
+
+	/*public String current_formStatus() {
+		return current_formStatus;
+	}*/
+
+	public String FWHUSNAME() {
+		return FWHUSNAME;
 	}
 	public String GOBHHID() {
 		return GOBHHID;
