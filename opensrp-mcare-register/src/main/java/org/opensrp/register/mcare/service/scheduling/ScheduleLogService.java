@@ -29,6 +29,8 @@ import org.opensrp.scheduler.repository.AllActions;
 import org.opensrp.scheduler.repository.AllReportActions;
 import org.opensrp.scheduler.service.AllEnrollmentWrapper;
 import org.opensrp.scheduler.service.ReportActionService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 @Service
@@ -37,7 +39,7 @@ public class ScheduleLogService extends OpenmrsService{
 	private static final String TRACK_MILESTONE_URL = "ws/rest/v1/scheduletracker/trackmilestone";
 	private static final String SCHEDULE_URL = "ws/rest/v1/scheduletracker/schedule";
 	private static final String MILESTONE_URL = "ws/rest/v1/scheduletracker/milestone";
-	
+	private static Logger logger = LoggerFactory.getLogger(ScheduleLogService.class.toString());
 	private ReportActionService reportActionService;
 	private final AllEnrollmentWrapper allEnrollments;
 	private AllReportActions allReportActions;
@@ -63,8 +65,11 @@ public class ScheduleLogService extends OpenmrsService{
 		if(trackId.equalsIgnoreCase("")){
 			trackId = "";
 		}		
-		
-		reportActionService.alertForReporting(beneficiaryType, caseID, instanceId, anmIdentifier, scheduleName, visitCode, alertStatus, startDate, expiryDate,null,trackId,timeStamp);
+		try{
+			reportActionService.alertForReporting(beneficiaryType, caseID, instanceId, anmIdentifier, scheduleName, visitCode, alertStatus, startDate, expiryDate,null,trackId,timeStamp);
+		}catch(Exception e){
+			logger.info("ScheduleLog Does not save.");
+		}
 		/*try {
 			this.saveActionDataToOpenMrsMilestoneTrack(caseID, instanceId, anmIdentifier, scheduleName);
 		} catch (ParseException e1) {
@@ -110,9 +115,12 @@ public class ScheduleLogService extends OpenmrsService{
         schedule.setRevision(schedule.getRevision());
         schedule.scheduleCloseDate(new DateTime());
         schedule.closeById(instanceId);
-        schedule.setIsActionActive(false);
-        System.out.println(""+schedule.toString());
-        allReportActions.update(schedule);
+        schedule.setIsActionActive(false);        
+        try{
+        	allReportActions.update(schedule);
+        }catch(Exception e){
+        	logger.info("Data not found.");
+        }
 		
 	}
 	public void saveActionDataToOpenMrsMilestoneTrack(String entityId, String instanceId,

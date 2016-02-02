@@ -67,7 +67,7 @@ public class ANCService {
 		allMothers.update(mother);
 
 		ancSchedulesService.enrollMother(motherId,
-				LocalDate.parse(submission.getField(MOTHER_REFERENCE_DATE)),submission.anmId(),submission.instanceId());
+				LocalDate.parse(submission.getField(MOTHER_REFERENCE_DATE)),submission.anmId(),submission.instanceId(),submission.getField("FWPSRLMP"));
 	}
 
 	public void ancVisitOne(FormSubmission submission) {
