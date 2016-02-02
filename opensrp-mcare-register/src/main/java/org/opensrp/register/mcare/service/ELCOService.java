@@ -73,17 +73,20 @@ public class ELCOService {
 				.getSubFormByName(ELCO_REGISTRATION_SUB_FORM_NAME);
 
 		for (Map<String, String> elcoFields : subFormData.instances()) {
-
+			
 			Elco elco = allEcos.findByCaseId(elcoFields.get(ID))
 					.withINSTANCEID(submission.instanceId())
 					.withPROVIDERID(submission.anmId())
 					.withTODAY(submission.getField(REFERENCE_DATE))
 					.withFWWOMUPAZILLA(elcoFields.get(FW_WOMUPAZILLA).replace("+", " "));
 			
-			allEcos.update(elco);
-
-			elcoScheduleService.imediateEnrollIntoMilestoneOfPSRF(elcoFields.get(ID),
+			if(elcoFields.containsKey("FWWOMFNAME")){	
+				if(!elcoFields.get(FW_WOMFNAME).equalsIgnoreCase("") || elcoFields.get(FW_WOMFNAME)!= null){
+					allEcos.update(elco);
+					elcoScheduleService.imediateEnrollIntoMilestoneOfPSRF(elcoFields.get(ID),
 					submission.getField(REFERENCE_DATE),submission.anmId(),submission.instanceId());
+				}
+			}
 		}
 
 		if (submission.formName().equalsIgnoreCase(ELCO_REGISTRATION)) {
@@ -164,7 +167,12 @@ public class ELCOService {
 					.put(FW_WOMGOBHHID, elcoFields.get(FW_WOMGOBHHID))
 					.put(FW_WOMGPS, elcoFields.get(FW_WOMGPS)).map();
 			
-			houseHold.ELCODETAILS().add(elco);
+			if(elcoFields.containsKey("FWWOMFNAME")){
+				if(!elcoFields.get(FW_WOMFNAME).equalsIgnoreCase("") || elcoFields.get(FW_WOMFNAME)!= null){
+					houseHold.ELCODETAILS().add(elco);
+				}
+			}
+			
 
 		}	
 	}
@@ -230,20 +238,25 @@ public class ELCOService {
 			
 			
 			if(submission.getField(FW_PSRPREGSTS) != null && submission.getField(FW_PSRPREGSTS).equals("1") ){        
-                    ancService.registerANC(submission);
-	                bnfService.registerBNF(submission);
-	                elco.setIsClosed(true);
-	        		allEcos.update(elco);
-	                elcoScheduleService.unEnrollFromScheduleOfPSRF(submission.entityId(), submission.anmId(), "");
-	                List<Action> beforeNewActions = allActions.findAlertByANMIdEntityIdScheduleName(submission.anmId(), submission.entityId(), ELCO_SCHEDULE_PSRF);
-	        		if(beforeNewActions.size() > 0){ 
-	        			scheduleLogService.closeSchedule(submission.entityId(),submission.instanceId(),beforeNewActions.get(0).timestamp(),ELCO_SCHEDULE_PSRF);
-	        		}
-	                //scheduleLogService.closeSchedule(submission.entityId(),submission.instanceId(),ELCO_SCHEDULE_PSRF);
+				ancService.registerANC(submission);
+	            bnfService.registerBNF(submission);
+	            elco.setIsClosed(true);
+	        	allEcos.update(elco);
+	            elcoScheduleService.unEnrollFromScheduleOfPSRF(submission.entityId(), submission.anmId(), "");
+	            List<Action> beforeNewActions = allActions.findAlertByANMIdEntityIdScheduleName(submission.anmId(), submission.entityId(), ELCO_SCHEDULE_PSRF);
+	        	if(beforeNewActions.size() > 0){ 
+	        		scheduleLogService.closeSchedule(submission.entityId(),submission.instanceId(),beforeNewActions.get(0).timestamp(),ELCO_SCHEDULE_PSRF);
+	        	}	
+			}else if(submission.getField(FW_PSRSTS).equalsIgnoreCase("02") || (submission.getField(FW_PSRSTS).equalsIgnoreCase("01")  && !submission.getField(FW_PSRPREGSTS).equals("1"))){
+				elcoScheduleService.enrollIntoMilestoneOfPSRF(submission.entityId(),
+	            submission.getField(REFERENCE_DATE),submission.anmId(),submission.instanceId());
 			}else{
+				elcoScheduleService.unEnrollFromScheduleOfPSRF(submission.entityId(), submission.anmId(), "");
+				List<Action> beforeNewActions = allActions.findAlertByANMIdEntityIdScheduleName(submission.anmId(), submission.entityId(), ELCO_SCHEDULE_PSRF);
+				if(beforeNewActions.size() > 0){ 
+					scheduleLogService.closeSchedule(submission.entityId(),submission.instanceId(),beforeNewActions.get(0).timestamp(),ELCO_SCHEDULE_PSRF);
+				}
 				
-	            	elcoScheduleService.enrollIntoMilestoneOfPSRF(submission.entityId(),
-	                        submission.getField(REFERENCE_DATE),submission.anmId(),submission.instanceId());
 			}
 	}
 }

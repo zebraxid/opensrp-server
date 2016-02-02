@@ -5,7 +5,6 @@ import static org.opensrp.dto.BeneficiaryType.elco;
 import static org.opensrp.dto.BeneficiaryType.household;
 import static org.opensrp.dto.BeneficiaryType.mother;
 
-import java.text.ParseException;
 import java.util.Map;
 
 import org.joda.time.DateTime;
@@ -24,6 +23,8 @@ import org.opensrp.register.mcare.service.scheduling.ScheduleLogService;
 import org.opensrp.scheduler.HealthSchedulerService;
 import org.opensrp.scheduler.HookedEvent;
 import org.opensrp.scheduler.MilestoneEvent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -35,7 +36,7 @@ public class AlertCreationAction implements HookedEvent {
 	private AllElcos allElcos;
 	private AllMothers allMothers;
 	private ScheduleLogService scheduleLogService;
-
+	private static Logger logger = LoggerFactory.getLogger(AlertCreationAction.class.toString());
 	@Autowired
 	public AlertCreationAction(HealthSchedulerService scheduler,
 			AllHouseHolds allHouseHolds, AllElcos allElcos,
@@ -108,7 +109,11 @@ public class AlertCreationAction implements HookedEvent {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}*/
-		
+		logger.info("TOday: "+new DateTime());
+		logger.info("caseID: "+caseID);
+		logger.info("instanceId: "+instanceId);
+		logger.info(" event.windowName():"+event.windowName());
+		logger.info(" Name:"+event.scheduleName().replace(ELCOSchedulesConstantsImediate.IMD_ELCO_SCHEDULE_PSRF, ELCOSchedulesConstants.ELCO_SCHEDULE_PSRF));
 		scheduler.alertFor(event.windowName(), beneficiaryType, caseID, instanceId, providerId, event.scheduleName().replace(ELCOSchedulesConstantsImediate.IMD_ELCO_SCHEDULE_PSRF, ELCOSchedulesConstants.ELCO_SCHEDULE_PSRF), event.milestoneName().replace(ELCOSchedulesConstantsImediate.IMD_ELCO_SCHEDULE_PSRF, ELCOSchedulesConstants.ELCO_SCHEDULE_PSRF),
 				startOfEarliestWindow, event.startOfDueWindow(),
 				event.startOfLateWindow(), event.startOfMaxWindow());
