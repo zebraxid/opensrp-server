@@ -95,6 +95,10 @@ public class OpenSRPScheduleConstants {
     }
     public static class DateTimeDuration{
     	public static final Integer duration = 1344;
+    	public static final Integer anc1 = 50;
+    	public static final Integer anc2 = 2568;
+    	public static final Integer anc3 = 1224;
+    	public static final Integer anc4 = 552;
     }
    
 }

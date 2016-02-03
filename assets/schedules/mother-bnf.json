@@ -6,27 +6,27 @@
             "name": "BirthNotificationPregnancyStatusFollowUp",
             "scheduleWindows": {
                 "due": ["9 Days"],
-                "late": ["365 Days"],
-                "max": ["366 Days"]
+                "late": ["261 Days"],
+                "max": ["361 Days"]
             },
             "alerts": [
                 {
                     "window": "due",
                     "offset": ["0 Days"],
                     "interval": ["1 Day"],
-                    "count": "7"
+                    "count": "9"
                 },
                 {
                     "window": "late",
                     "offset": ["9 Days"],
                     "interval": ["1 Day"],
-                    "count": "356"
+                    "count": "252"
                 },
                  {
                     "window": "max",
-                    "offset": ["365 Days"],
+                    "offset": ["261 Days"],
                     "interval": ["1 Day"],
-                    "count": "1"
+                    "count": "100"
                 }                            
             ]
         }  

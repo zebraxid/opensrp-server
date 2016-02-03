@@ -17,7 +17,7 @@ import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherSchedule
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_IFA_1;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_LAB;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_TT_1;
-import static org.opensrp.register.mcare.OpenSRPScheduleConstants.DateTimeDuration.duration;
+import static org.opensrp.register.mcare.OpenSRPScheduleConstants.DateTimeDuration;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ELCOSchedulesConstants.ELCO_SCHEDULE_PSRF;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.HHSchedulesConstants.HH_SCHEDULE_CENSUS;
 
@@ -66,15 +66,23 @@ public class ANCSchedulesService {
     }
     private void enrollIntoCorrectMilestoneOfANCCare(String entityId, LocalDate referenceDateForSchedule,String provider,String instanceId,String startDate) {
         String milestone=null;
-
-        if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(8).toPeriod().minusDays(0))) {
+        Integer duration = 0;
+        DateTime ancStartDate = null;
+        DateTime ancExpireDate = null;
+        if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(24).toPeriod().minusDays(5))) {
             milestone = SCHEDULE_ANC_1;
-        } else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(24).toPeriod().minusDays(0))) {
+            duration = DateTimeDuration.anc1;
+            ancStartDate = new DateTime(referenceDateForSchedule);
+            ancExpireDate = new DateTime(referenceDateForSchedule).plusDays(duration);
+        } else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(32).toPeriod().minusDays(5))) {
             milestone = SCHEDULE_ANC_2;
-        } else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(32).toPeriod().minusDays(0))) {
+            duration = DateTimeDuration.anc2;
+        } else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(36).toPeriod().minusDays(5))) {
             milestone = SCHEDULE_ANC_3;
+            duration = DateTimeDuration.anc3;
         } else if(DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(36).toPeriod().minusDays(0))) {
             milestone = SCHEDULE_ANC_4;
+            duration = DateTimeDuration.anc4;
         } else{
         	
         }
@@ -90,6 +98,7 @@ public class ANCSchedulesService {
 			e.printStackTrace();
 		}
         DateTime start = new DateTime(date);
+        
         logger.info(format("Enrolling ANC with Entity id:{0} to ANC schedule, milestone: {1}.", entityId, milestone));
         scheduler.enrollIntoSchedule(entityId, SCHEDULE_ANC, milestone, referenceDateForSchedule.toString());
         List<Action> beforeNewActions = allActions.findAlertByANMIdEntityIdScheduleName(provider, entityId, SCHEDULE_ANC);

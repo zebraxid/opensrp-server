@@ -102,6 +102,7 @@ public class ANCService {
 		
 		mother.withANCVisitOne(ancVisitOne);
 		allMothers.update(mother);
+		System.out.println("From ANC1");
 	}
 
 	public void ancVisitTwo(FormSubmission submission) {
@@ -133,6 +134,7 @@ public class ANCService {
 		
 		mother.withANCVisitTwo(ancVisitTwo);
 		allMothers.update(mother);
+		System.out.println("From ANC2");
 
 	}
 
@@ -166,6 +168,7 @@ public class ANCService {
 		mother.withANCVisitThree(ancVisitThree);
 
 		allMothers.update(mother);
+		System.out.println("From ANC3");
 	}
 
 	public void ancVisitFour(FormSubmission submission) {
@@ -198,6 +201,7 @@ public class ANCService {
 			
 		mother.withANCVisitFour(ancVisitFour);
 		allMothers.update(mother);
+		System.out.println("From ANC4");
 	}
 
 	public void pregnancyVerificationForm(FormSubmission submission)

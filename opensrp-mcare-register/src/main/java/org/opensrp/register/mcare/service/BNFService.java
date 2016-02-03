@@ -20,6 +20,7 @@ import static org.opensrp.common.AllConstants.BnfFollowUpVisitFields.STS_WD;
 import static org.opensrp.common.AllConstants.BnfFollowUpVisitFields.STS_LB;
 import static org.opensrp.common.AllConstants.BnfFollowUpVisitFields.STS_SB;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.REFERENCE_DATE;
+import static org.opensrp.common.AllConstants.HHRegistrationFields.MOTHER_REFERENCE_DATE;
 import static org.opensrp.common.util.EasyMap.create;
 
 import java.util.Map;
@@ -75,7 +76,7 @@ public class BNFService {
 		mother.withTODAY(submission.getField(REFERENCE_DATE));
 		allMothers.update(mother);
 		
-		bnfSchedulesService.enrollBNF(motherId, LocalDate.parse(submission.getField(REFERENCE_DATE)));
+		bnfSchedulesService.enrollBNF(motherId, LocalDate.parse(submission.getField(MOTHER_REFERENCE_DATE)));
 		
 	}
 	public void bnfFollowUpVisit(FormSubmission submission) {
