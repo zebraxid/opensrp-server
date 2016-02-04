@@ -125,7 +125,7 @@ public class HHService {
  
 			
 			if(elcoFields.containsKey("FWWOMFNAME")){
-				if(!elcoFields.get(FW_WOMFNAME).equalsIgnoreCase("")){
+				if(!elcoFields.get(FW_WOMFNAME).equalsIgnoreCase("") || elcoFields.get(FW_WOMFNAME) != null){
 					
 					houseHold.ELCODETAILS().add(elco);
 				}

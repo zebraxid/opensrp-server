@@ -236,21 +236,21 @@ public class ELCOService {
 			
 			allEcos.update(elco);
 			
-			
+			System.out.println("submission.getField(FW_PSRSTS):"+submission.getField(FW_PSRSTS));
 			if(submission.getField(FW_PSRPREGSTS) != null && submission.getField(FW_PSRPREGSTS).equals("1") ){        
 				ancService.registerANC(submission);
 	            bnfService.registerBNF(submission);
 	            elco.setIsClosed(true);
-	        	allEcos.update(elco);
+	        	allEcos.update(elco);	        	
 	            elcoScheduleService.unEnrollFromScheduleOfPSRF(submission.entityId(), submission.anmId(), "");
 	            List<Action> beforeNewActions = allActions.findAlertByANMIdEntityIdScheduleName(submission.anmId(), submission.entityId(), ELCO_SCHEDULE_PSRF);
 	        	if(beforeNewActions.size() > 0){ 
 	        		scheduleLogService.closeSchedule(submission.entityId(),submission.instanceId(),beforeNewActions.get(0).timestamp(),ELCO_SCHEDULE_PSRF);
 	        	}	
-			}else if(submission.getField(FW_PSRSTS).equalsIgnoreCase("02") || (submission.getField(FW_PSRSTS).equalsIgnoreCase("01")  && !submission.getField(FW_PSRPREGSTS).equals("1"))){
+			}else if(submission.getField(FW_PSRSTS).equalsIgnoreCase("2") || (submission.getField(FW_PSRSTS).equalsIgnoreCase("1")  && !submission.getField(FW_PSRPREGSTS).equals("1"))){
 				elcoScheduleService.enrollIntoMilestoneOfPSRF(submission.entityId(),
 	            submission.getField(REFERENCE_DATE),submission.anmId(),submission.instanceId());
-			}else{
+			}else{				
 				elcoScheduleService.unEnrollFromScheduleOfPSRF(submission.entityId(), submission.anmId(), "");
 				List<Action> beforeNewActions = allActions.findAlertByANMIdEntityIdScheduleName(submission.anmId(), submission.entityId(), ELCO_SCHEDULE_PSRF);
 				if(beforeNewActions.size() > 0){ 
