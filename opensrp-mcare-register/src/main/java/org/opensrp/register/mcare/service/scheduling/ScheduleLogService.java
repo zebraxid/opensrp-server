@@ -61,7 +61,7 @@ public class ScheduleLogService extends OpenmrsService{
 			//trackId = this.saveEnrollDataToOpenMRSTrack(e);
 		}		
 		if(trackId.equalsIgnoreCase("")){
-			trackId = "TR";
+			trackId = "";
 		}		
 		
 		reportActionService.alertForReporting(beneficiaryType, caseID, instanceId, anmIdentifier, scheduleName, visitCode, alertStatus, startDate, expiryDate,null,trackId,timeStamp);

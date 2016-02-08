@@ -114,6 +114,7 @@ public class AlertCreationAction implements HookedEvent {
 		logger.info("instanceId: "+instanceId);
 		logger.info(" event.windowName():"+event.windowName());
 		logger.info(" Name:"+event.scheduleName().replace(ELCOSchedulesConstantsImediate.IMD_ELCO_SCHEDULE_PSRF, ELCOSchedulesConstants.ELCO_SCHEDULE_PSRF));
+		logger.info(" Name:"+event.milestoneName().replace(ELCOSchedulesConstantsImediate.IMD_ELCO_SCHEDULE_PSRF, ELCOSchedulesConstants.ELCO_SCHEDULE_PSRF));
 		scheduler.alertFor(event.windowName(), beneficiaryType, caseID, instanceId, providerId, event.scheduleName().replace(ELCOSchedulesConstantsImediate.IMD_ELCO_SCHEDULE_PSRF, ELCOSchedulesConstants.ELCO_SCHEDULE_PSRF), event.milestoneName().replace(ELCOSchedulesConstantsImediate.IMD_ELCO_SCHEDULE_PSRF, ELCOSchedulesConstants.ELCO_SCHEDULE_PSRF),
 				startOfEarliestWindow, event.startOfDueWindow(),
 				event.startOfLateWindow(), event.startOfMaxWindow());

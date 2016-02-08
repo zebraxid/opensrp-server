@@ -5,9 +5,10 @@ package org.opensrp.register.mcare.service.scheduling;
 
 import static java.text.MessageFormat.format;
 import static org.opensrp.dto.BeneficiaryType.elco;
+import static org.opensrp.register.mcare.OpenSRPScheduleConstants.DateTimeDuration.duration;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ELCOSchedulesConstants.ELCO_SCHEDULE_PSRF;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ELCOSchedulesConstantsImediate.IMD_ELCO_SCHEDULE_PSRF;
-import static org.opensrp.register.mcare.OpenSRPScheduleConstants.DateTimeDuration.duration;
+import static org.opensrp.register.mcare.OpenSRPScheduleConstants.HHSchedulesConstants.HH_SCHEDULE_CENSUS;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -20,9 +21,6 @@ import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.motechproject.scheduletracking.api.domain.Enrollment;
-import org.motechproject.scheduletracking.api.service.EnrollmentRecord;
-import org.motechproject.scheduletracking.api.service.EnrollmentsQuery;
 import org.motechproject.scheduletracking.api.service.ScheduleTrackingService;
 import org.opensrp.common.AllConstants.ELCOSchedulesConstantsImediate;
 import org.opensrp.dto.ActionData;
@@ -77,6 +75,9 @@ public class ELCOScheduleService {
 			scheduleLogService.saveScheduleLog(BeneficiaryType.elco, caseId, instanceId, provider, ELCO_SCHEDULE_PSRF, ELCO_SCHEDULE_PSRF, AlertStatus.normal, new DateTime(),  new DateTime().plusHours(duration),ELCO_SCHEDULE_PSRF,afterNewActions.get(0).timestamp());
 	
 		}
+	}
+	public void unEnrollFromScheduleCensus(String caseId, String providerId, String scheduleName){
+		scheduler.unEnrollFromScheduleCensus(caseId, providerId, HH_SCHEDULE_CENSUS);
 	}
 	
 	public void unEnrollFromScheduleOfPSRF(String caseId, String providerId, String scheduleName)

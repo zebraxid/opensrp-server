@@ -72,6 +72,7 @@ public class ELCOService {
 		SubFormData subFormData = submission
 				.getSubFormByName(ELCO_REGISTRATION_SUB_FORM_NAME);
 
+		
 		for (Map<String, String> elcoFields : subFormData.instances()) {
 			
 			Elco elco = allEcos.findByCaseId(elcoFields.get(ID))
@@ -109,9 +110,12 @@ public class ELCOService {
 			houseHold.withFWUPAZILLA(submission.getField(FW_UPAZILLA).replace("+", " "));
 			allHouseHolds.update(houseHold);
 			
+			if(submission.getField("FWCENSTAT").equalsIgnoreCase("7")){
+				elcoScheduleService.unEnrollFromScheduleCensus(submission.entityId(), submission.anmId(),"");
+			}else{
 			hhSchedulesService.enrollIntoMilestoneOfCensus(submission.entityId(),
 					submission.getField(REFERENCE_DATE),submission.anmId(),submission.instanceId());
-			
+			}
 			 
 		}
 	}
@@ -236,7 +240,7 @@ public class ELCOService {
 			
 			allEcos.update(elco);
 			
-			System.out.println("submission.getField(FW_PSRSTS):"+submission.getField(FW_PSRSTS));
+			
 			if(submission.getField(FW_PSRPREGSTS) != null && submission.getField(FW_PSRPREGSTS).equals("1") ){        
 				ancService.registerANC(submission);
 	            bnfService.registerBNF(submission);
