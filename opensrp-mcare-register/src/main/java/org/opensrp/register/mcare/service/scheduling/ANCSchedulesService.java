@@ -119,6 +119,11 @@ public class ANCSchedulesService {
 	
 		}
     }
+    
+    public void fullfillSchedule(String caseID, String scheduleName, String instanceId, long timestamp){
+    	scheduleLogService.fullfillSchedule(caseID, scheduleName, instanceId, timestamp);
+    }
+    
     public void unEnrollFromAllSchedules(String entityId) {
         scheduler.unEnrollFromAllSchedules(entityId);
     }
@@ -127,7 +132,9 @@ public class ANCSchedulesService {
         logger.info(format("Un-enrolling ANC with Entity id:{0} from schedule: {1}", entityId, scheduleName));
         scheduler.unEnrollFromSchedule(entityId, anmId, scheduleName);
     }
-    
+    public void fullfillMilestone(String entityId, String providerId, String scheduleName,LocalDate completionDate ){
+    	scheduler.fullfillMilestone(entityId, providerId, scheduleName, completionDate);
+    }
     public void enrollANCSchedule(){
     	
     }

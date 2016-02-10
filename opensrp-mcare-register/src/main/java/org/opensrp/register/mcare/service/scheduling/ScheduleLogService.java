@@ -176,4 +176,9 @@ public class ScheduleLogService extends OpenmrsService{
 		}
 		return null;
 	}
+	
+	public void fullfillSchedule(String caseID, String scheduleName, String instanceId,long timestamp){
+		reportActionService.schedulefullfill(caseID, scheduleName, instanceId, timestamp);
+		
+	}
 }

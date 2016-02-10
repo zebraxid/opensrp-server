@@ -52,7 +52,10 @@ public class HealthSchedulerService {
 		scheduleService.fulfillMilestone(entityId, scheduleName, completionDate);
         actionService.markAlertAsClosed(entityId, providerId, scheduleName, completionDate.toString());
 	}
-	
+	public void fullfillMilestone(String entityId, String providerId, String scheduleName, LocalDate completionDate) {
+		scheduleService.fulfillMilestone(entityId, scheduleName, completionDate);
+       
+	}
 	public void unEnrollFromSchedule(String entityId, String providerId, String scheduleName) {
 		scheduleService.unenroll(entityId, scheduleName);
         actionService.markAlertAsInactive(providerId, entityId, scheduleName);

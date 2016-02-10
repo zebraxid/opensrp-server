@@ -12,6 +12,7 @@ import static org.opensrp.common.AllConstants.ANCVisitThreeFields.*;
 import static org.opensrp.common.AllConstants.ANCVisitFourFields.*;
 import static org.opensrp.common.AllConstants.BnfFollowUpVisitFields.*;
 import static org.opensrp.common.util.EasyMap.create;
+import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_ANC;
 
 import java.util.Map;
 
@@ -104,8 +105,10 @@ public class ANCService {
 		
 		mother.withANCVisitOne(ancVisitOne);
 		allMothers.update(mother);
+		ancSchedulesService.fullfillMilestone(submission.entityId(), submission.anmId(), SCHEDULE_ANC, new LocalDate());
 		actionService.markAllAlertsAsInactive(submission.entityId());
-		
+		long timestamp = actionService.getActionTimestamp(submission.anmId(), submission.entityId(), SCHEDULE_ANC);
+		ancSchedulesService.fullfillSchedule(submission.entityId(), SCHEDULE_ANC, submission.instanceId(), timestamp);
 	}
 
 	public void ancVisitTwo(FormSubmission submission) {
@@ -137,7 +140,10 @@ public class ANCService {
 		
 		mother.withANCVisitTwo(ancVisitTwo);
 		allMothers.update(mother);
+		ancSchedulesService.fullfillMilestone(submission.entityId(), submission.anmId(), SCHEDULE_ANC, new LocalDate());
 		actionService.markAllAlertsAsInactive(submission.entityId());
+		long timestamp = actionService.getActionTimestamp(submission.anmId(), submission.entityId(), SCHEDULE_ANC);
+		ancSchedulesService.fullfillSchedule(submission.entityId(), SCHEDULE_ANC, submission.instanceId(), timestamp);
 
 	}
 
@@ -171,7 +177,10 @@ public class ANCService {
 		mother.withANCVisitThree(ancVisitThree);
 
 		allMothers.update(mother);
+		ancSchedulesService.fullfillMilestone(submission.entityId(), submission.anmId(), SCHEDULE_ANC, new LocalDate());
 		actionService.markAllAlertsAsInactive(submission.entityId());
+		long timestamp = actionService.getActionTimestamp(submission.anmId(), submission.entityId(), SCHEDULE_ANC);
+		ancSchedulesService.fullfillSchedule(submission.entityId(), SCHEDULE_ANC, submission.instanceId(), timestamp);
 	}
 
 	public void ancVisitFour(FormSubmission submission) {
@@ -204,7 +213,10 @@ public class ANCService {
 			
 		mother.withANCVisitFour(ancVisitFour);
 		allMothers.update(mother);
-		actionService.markAllAlertsAsInactive(submission.entityId());
+		ancSchedulesService.fullfillMilestone(submission.entityId(), submission.anmId(), SCHEDULE_ANC, new LocalDate());
+		//actionService.markAllAlertsAsInactive(submission.entityId());
+		long timestamp = actionService.getActionTimestamp(submission.anmId(), submission.entityId(), SCHEDULE_ANC);
+		ancSchedulesService.fullfillSchedule(submission.entityId(), SCHEDULE_ANC, submission.instanceId(), timestamp);
 	}
 
 	public void pregnancyVerificationForm(FormSubmission submission)

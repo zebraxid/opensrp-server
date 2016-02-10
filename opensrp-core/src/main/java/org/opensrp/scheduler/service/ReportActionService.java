@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 import org.opensrp.dto.ActionData;
 import org.opensrp.dto.AlertStatus;
 import org.opensrp.dto.BeneficiaryType;
@@ -88,6 +89,17 @@ public void updateScheduleLogMotherType(BeneficiaryType beneficiaryType, String 
     	schedule.timestamp(timestamp);
     	schedule.setVisitCode(visitCode);
     	allReportActions.update(schedule);
+	}
+	
+	public void schedulefullfill(String caseID,String scheduleName,String instanceId,long timestamp){
+		ScheduleLog  schedule = allReportActions.findByTimestampIdByCaseIdByname(timestamp,caseID,scheduleName);		
+		int size = schedule.data().size();
+		schedule.data().get(size-1).put("fullfillmentDate",new LocalDate().toString());		
+		schedule.data().get(size-1).put("fullfuillBySubmission",instanceId);		
+		schedule.setRevision(schedule.getRevision());
+		schedule.timestamp(timestamp);
+		allReportActions.update(schedule);
+		
 	}
 		
 }
