@@ -1,4 +1,3 @@
-
 package org.opensrp.connector;
 
 import java.text.ParseException;
@@ -79,9 +78,20 @@ public class OpenmrsConnector {
 		for (FormField fl : fs.instance().form().fields()) {
 			Map<String, String> att = formAttributeMapper.getAttributesForField(fl.name(), fs);
 			if(!StringUtils.isEmptyOrWhitespaceOnly(fl.value()) && att.size()>0 && att.get("openmrs_entity").equalsIgnoreCase("concept")){
-				String val = formAttributeMapper.getInstanceAttributesForFormFieldAndValue(fl.name(), fl.value(), null, fs);
-				e.addObs(new Obs("concept", att.get("openmrs_entity_id"), 
-						att.get("openmrs_entity_parent"), StringUtils.isEmptyOrWhitespaceOnly(val)?fl.value():val, null, fl.name()));
+            	if (isMultiSelect(fl.value())){
+            		String[] fieldValues = fl.value().split(" ");
+            		String val = "";
+            		for (String fieldVal : fieldValues){
+            			val = formAttributeMapper.getInstanceAttributesForFormFieldAndValue(fl.name(), fieldVal, null, fs);                       
+                        e.addObs(new Obs("concept", att.get("openmrs_entity_id"), 
+                                att.get("openmrs_entity_parent"), StringUtils.isEmptyOrWhitespaceOnly(val)?fieldVal:val, null, fl.name()));
+            		}          		         		
+            	}
+            	else{
+    				String val = formAttributeMapper.getInstanceAttributesForFormFieldAndValue(fl.name(), fl.value(), null, fs);				
+    				e.addObs(new Obs("concept", att.get("openmrs_entity_id"), 
+    						att.get("openmrs_entity_parent"), StringUtils.isEmptyOrWhitespaceOnly(val)?fl.value():val, null, fl.name()));
+            	}				
 			}
 		}
 		return e;
@@ -114,15 +124,47 @@ public class OpenmrsConnector {
 			.withProviderId(fs.anmId())
 			;
 		
-		        for (Entry<String, String> fl : subformInstance.entrySet()) {
-            Map<String, String> att = formAttributeMapper.getAttributesForSubform(subform, fl.getKey(), fs);
-            if(!StringUtils.isEmptyOrWhitespaceOnly(fl.getValue()) && att.size()>0 && att.get("openmrs_entity").equalsIgnoreCase("concept")){
-                String val = formAttributeMapper.getInstanceAttributesForFormFieldAndValue(fl.getKey(), fl.getValue(), subform, fs);
-                e.addObs(new Obs("concept", att.get("openmrs_entity_id"), 
-                        att.get("openmrs_entity_parent"), StringUtils.isEmptyOrWhitespaceOnly(val)?fl.getValue():val, null, fl.getKey()));
-            }
+		  for (Entry<String, String> fl : subformInstance.entrySet()) {
+	            Map<String, String> att = formAttributeMapper.getAttributesForSubform(subform, fl.getKey(), fs);
+	            if(!StringUtils.isEmptyOrWhitespaceOnly(fl.getValue()) && att.size()>0 && att.get("openmrs_entity").equalsIgnoreCase("concept")){
+	            	if (isMultiSelect(fl.getValue())){
+	            		String[] fieldValues = fl.getValue().split(" ");
+	            		String val = "";
+	            		for (String fieldVal : fieldValues){
+	                        val = formAttributeMapper.getInstanceAttributesForFormFieldAndValue(fl.getKey(), fieldVal, subform, fs) + " ";
+	                        //System.out.println("getEventForSubformFields from  MultiSelect >> fileld name: " + fl.getKey()+ " ,field value: " + fieldVal + " ,concept: " + att.get("openmrs_entity_id")+ " ,openmrs value: " + val);               
+	                        e.addObs(new Obs("concept", att.get("openmrs_entity_id"), 
+	                                att.get("openmrs_entity_parent"), StringUtils.isEmptyOrWhitespaceOnly(val)?fieldVal:val, null, fl.getKey()));
+	            		} 
+	            		
+	            		
+	            	}else{
+		                String val = formAttributeMapper.getInstanceAttributesForFormFieldAndValue(fl.getKey(), fl.getValue(), subform, fs);
+		                //System.out.println("getEventForSubformFields >> fileld name: " + fl.getKey()+ " ,field value: " + fl.getValue() + " ,concept: " + att.get("openmrs_entity_id")+ " ,openmrs value: " + val);
+		                e.addObs(new Obs("concept", att.get("openmrs_entity_id"), 
+		                        att.get("openmrs_entity_parent"), StringUtils.isEmptyOrWhitespaceOnly(val)?fl.getValue():val, null, fl.getKey()));
+	            	}
+	            }
         }
 		return e;
+	}
+	private boolean isMultiSelect (String fieldValue){
+		boolean multiSelect = true;
+		String[] fieldValues = fieldValue.split(" ");
+		if (fieldValues.length<=1){
+			multiSelect = false;
+		}
+		else  {
+			for (String fieldVal : fieldValues) {
+				try {
+					Integer.parseInt(fieldVal);
+				} catch (NumberFormatException e) {
+					multiSelect = false;
+					break;
+				}
+			}
+		}		
+		return multiSelect;
 	}
 	
 	/**
@@ -358,7 +400,7 @@ public class OpenmrsConnector {
 	public Map<String, Map<String, Object>> getDependentClientsFromFormSubmission(FormSubmission fs) throws ParseException {
 		Map<String, Map<String, Object>> map = new HashMap<>();
 		if (fs.subForms() == null || fs.subForms().isEmpty()){
-			System.out.println("subform does not exists inside this form" + fs.formName());
+			//System.out.println("subform does not exists inside this form: " + fs.formName());
 			return map;
 		}
 		for (SubFormData sbf : fs.subForms()) {

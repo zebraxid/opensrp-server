@@ -2,9 +2,12 @@ package org.opensrp.connector.openmrs.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
+import org.apache.commons.collections.map.MultiValueMap;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -49,8 +52,8 @@ public class EncounterService extends OpenmrsService{
 	public void setUserService(OpenmrsUserService userService) {
 		this.userService = userService;
 	}
-
-	public JSONObject createEncounter(Event e) throws JSONException{
+	
+/*	public JSONObject createEncounter(Event e) throws JSONException{
 		JSONObject pt = patientService.getPatientByIdentifier(e.getBaseEntityId());
 		JSONObject enc = new JSONObject();
 		JSONObject pr = userService.getPersonByUser(e.getProviderId());
@@ -72,15 +75,19 @@ public class EncounterService extends OpenmrsService{
 		Map<String, JSONObject> p = new HashMap<>();
 		Map<String, List<JSONObject>> pc = new HashMap<>();
 		
-		for (Obs obs : ol) {
+		for (Obs obs : ol) {	
+			
+			System.out.println("observations:" + obs.toString());
 			//if no parent simply make it root obs
 			if(StringUtils.isEmptyOrWhitespaceOnly(obs.getParentCode())){
+				System.out.println( "FieldCode: " + obs.getFieldCode() + ",obs: " + convertObsToJson(obs));
 				p.put(obs.getFieldCode(), convertObsToJson(obs));
 			}
 			else {
 				//find parent obs if not found search and fill or create one
 				JSONObject parentObs = p.get(obs.getParentCode());
 				if(parentObs == null){
+					System.out.println( "parentCode: " + obs.getParentCode() + ",obs: " + convertObsToJson(obs));
 					p.put(obs.getParentCode(), convertObsToJson(getOrCreateParent(ol, obs)));
 				}
 				// find if any other exists with same parent if so add to the list otherwise create new list
@@ -92,7 +99,7 @@ public class EncounterService extends OpenmrsService{
 				pc.put(obs.getParentCode(), obl);
 			}
 		}
-		
+		System.out.println("p: " + p.toString());
 		JSONArray obar = new JSONArray();
 		for (String ok : p.keySet()) {
 			JSONObject obo = p.get(ok);
@@ -104,6 +111,71 @@ public class EncounterService extends OpenmrsService{
 			
 			obar.put(obo);
 		}
+		enc.put("obs", obar);
+		System.out.println("Going to create Encounter: " + enc.toString());
+		HttpResponse op = HttpUtil.post(HttpUtil.removeEndingSlash(OPENMRS_BASE_URL)+"/"+ENCOUNTER_URL, "", enc.toString(), OPENMRS_USER, OPENMRS_PWD);
+		return new JSONObject(op.body());
+	}*/
+
+	public JSONObject createEncounter(Event e) throws JSONException{
+		JSONObject pt = patientService.getPatientByIdentifier(e.getBaseEntityId());
+		JSONObject enc = new JSONObject();
+		JSONObject pr = userService.getPersonByUser(e.getProviderId());
+		
+		enc.put("encounterDatetime", OPENMRS_DATE.format(e.getEventDate()));
+		// patient must be existing in OpenMRS before it submits an encounter. if it doesnot it would throw NPE
+		if (pr.getString("uuid").isEmpty() || pr.getString("uuid")==null)
+			System.out.println("Person or Patient does not exist or empty inside openmrs with identifier: " + pr.getString("uuid"));
+		else 
+			enc.put("patient", pt.getString("uuid"));
+		enc.put("encounterType", e.getEventType());
+		enc.put("location", e.getLocationId());
+		if (pr.getString("uuid").isEmpty() || pr.getString("uuid")==null)
+			System.out.println("Person or Patient does not exist or empty inside openmrs with identifier: " + pr.getString("uuid"));
+		else 
+			enc.put("provider", pr.getString("uuid"));
+
+		List<Obs> ol = e.getObs();
+		Map<String, List<JSONObject>> pc = new HashMap<>();
+		MultiValueMap   obsMap = new MultiValueMap();
+		
+		for (Obs obs : ol) {	
+			//if no parent simply make it root obs
+			if(StringUtils.isEmptyOrWhitespaceOnly(obs.getParentCode())){
+				obsMap.put(obs.getFieldCode(), convertObsToJson(obs));
+			}
+			else {	
+				obsMap.put(obs.getParentCode(), convertObsToJson(getOrCreateParent(ol, obs)));
+				// find if any other exists with same parent if so add to the list otherwise create new list
+				List<JSONObject> obl = pc.get(obs.getParentCode());
+				if(obl == null){
+					obl = new ArrayList<>();
+				}
+				obl.add(convertObsToJson(obs));
+				pc.put(obs.getParentCode(), obl);
+			}
+		}
+		
+		JSONArray obar = new JSONArray();
+		List<JSONObject> list;
+        @SuppressWarnings("unchecked")
+		Set <String> entrySet = obsMap.entrySet();
+        @SuppressWarnings("rawtypes")
+		Iterator it = entrySet.iterator();
+        while (it.hasNext()) {
+            Map.Entry mapEntry = (Map.Entry) it.next();
+            list = (List) obsMap.get(mapEntry.getKey());
+            for (int j = 0; j < list.size(); j++) {  
+            	JSONObject obo = list.get(j);  	
+                List<JSONObject> cob = pc.get(mapEntry.getKey());
+    			if(cob != null && cob.size() > 0) {
+    				obo.put("groupMembers", new JSONArray(cob));
+    			}
+    			obar.put(obo);
+            }
+        }
+        
+        //System.out.println("obar: " + obar.toString());
 		enc.put("obs", obar);
 		System.out.println("Going to create Encounter: " + enc.toString());
 		HttpResponse op = HttpUtil.post(HttpUtil.removeEndingSlash(OPENMRS_BASE_URL)+"/"+ENCOUNTER_URL, "", enc.toString(), OPENMRS_USER, OPENMRS_PWD);
@@ -134,4 +206,14 @@ public class EncounterService extends OpenmrsService{
 		}
 		return new Obs("concept", o.getParentCode(), null, null, null, null);
 	}
+	
+	
+	
+    public JSONObject convertEncounterToOpenmrsJson(String name, String description) throws JSONException {
+		JSONObject a = new JSONObject();
+		a.put("name", name);
+		a.put("description", description);
+		return a;
+	}
+	
 }

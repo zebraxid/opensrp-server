@@ -32,6 +32,14 @@ public class FormAttributeMapperTest extends TestResourceLoader{
         initMocks(this);
         openMRSConceptParser = new FormAttributeMapper(formDirPath);
     }
+	
+    @Test
+    public void shouldParseFormJSONToGetOpenMRSConcepts() throws JsonSyntaxException, JsonIOException, IOException {
+		String field = "start";
+		FormSubmission formSubmission = getFormSubmissionFor("new_house_hold_reg_multi_select");
+		String fieldValue = formSubmission .getField(field);		
+		assertEquals(openMRSConceptParser.getInstanceAttributesForFormFieldAndValue(field, fieldValue, null, formSubmission),null);
+    }
     
     @Test
     public void shouldParseFormJSONToGetOpenMRSConcept() throws JsonSyntaxException, JsonIOException, IOException {

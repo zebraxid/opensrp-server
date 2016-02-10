@@ -1,4 +1,3 @@
-
 package org.opensrp.connector.openmrs.service;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
@@ -51,6 +50,32 @@ public class EncounterTest extends TestResourceLoader{
 	}
 	
 	@Test
+	public void testgetEventForSubformFields() throws JSONException, ParseException, IOException {
+
+		String fieldValue = "113a 1123";
+		boolean multiSelect = true;
+		String[] fieldValues = fieldValue.split(" ");
+		if (fieldValues.length<=1){
+			multiSelect = false;
+		}
+		else  {
+			for (String fieldVal : fieldValues) {
+				try {
+					Integer.parseInt(fieldVal);
+				} catch (NumberFormatException e) {
+					multiSelect = false;
+					break;
+				}
+			}
+		}
+		if (!multiSelect)
+			System.out.println("This is not multi select type!!");
+		else
+			System.out.println("This is multi select type!!");
+
+	}
+	
+	@Test
 	public void testEncounter() throws JSONException, ParseException, IOException {
 		FormSubmission fs = getFormSubmissionFor("basic_reg");
 		
@@ -70,7 +95,7 @@ public class EncounterTest extends TestResourceLoader{
 		assertEquals(e.getLocationId(), "unknown location");
 	}
 	
-	@Ignore @Test
+	@Test
 	public void shouldHandleSubform() throws IOException, ParseException, JSONException{
 		FormSubmission fs = getFormSubmissionFor("new_household_registration", 1);
 
@@ -109,7 +134,7 @@ public class EncounterTest extends TestResourceLoader{
 		}
 	}	
 	
-	@Ignore @Test
+	@Test
 	public void shouldHandleEmptyRepeatGroup() throws IOException, ParseException, JSONException{
 		FormSubmission fs = getFormSubmissionFor("new_household_registration", 5);
 
