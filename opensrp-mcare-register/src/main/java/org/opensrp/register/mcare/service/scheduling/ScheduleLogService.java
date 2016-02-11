@@ -88,6 +88,7 @@ public class ScheduleLogService extends OpenmrsService{
 		}		
 		try{
 			reportActionService.alertForReporting(beneficiaryType, caseID, instanceId, anmIdentifier, scheduleName, visitCode, alertStatus, startDate, expiryDate,null,trackId,timeStamp);
+			logger.info("ScheduleLog created with id case id :"+caseID);
 		}catch(Exception e){
 			logger.info("ScheduleLog Does not save.");
 		}
@@ -139,6 +140,7 @@ public class ScheduleLogService extends OpenmrsService{
         schedule.setIsActionActive(false);        
         try{
         	allReportActions.update(schedule);
+        	logger.info("ScheduleLog close with id case id :"+caseId +" InstanceId: "+instanceId);
         }catch(Exception e){
         	logger.info("Data not found.");
         }
