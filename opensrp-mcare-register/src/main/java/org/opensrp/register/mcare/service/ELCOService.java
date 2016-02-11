@@ -109,7 +109,7 @@ public class ELCOService {
 			houseHold.withTODAY(submission.getField(REFERENCE_DATE));
 			houseHold.withFWUPAZILLA(submission.getField(FW_UPAZILLA).replace("+", " "));
 			allHouseHolds.update(houseHold);
-			logger.info("FWCENSTA : "+submission.getField("FWCENSTAT"));
+			logger.info("Expected value leading non zero and found FWCENSTA : "+submission.getField("FWCENSTAT"));
 			if(submission.getField("FWCENSTAT").equalsIgnoreCase("7")){
 				elcoScheduleService.unEnrollFromScheduleCensus(submission.entityId(), submission.anmId(),"");
 				List<Action> beforeNewActions = allActions.findAlertByANMIdEntityIdScheduleName(submission.anmId(), submission.entityId(), HH_SCHEDULE_CENSUS);
@@ -243,8 +243,8 @@ public class ELCOService {
 			elco.withTODAY(submission.getField(REFERENCE_DATE));
 			
 			allEcos.update(elco);
-			logger.info("submission.getField(FW_PSRSTS): "+submission.getField(FW_PSRSTS));
-			logger.info("submission.getField(FW_PSRPREGSTS): "+submission.getField(FW_PSRPREGSTS));
+			logger.info("Expected value leading zero and found submission.getField(FW_PSRSTS): "+submission.getField(FW_PSRSTS));
+			logger.info("Expected value leading no zero and found submission.getField(FW_PSRPREGSTS): "+submission.getField(FW_PSRPREGSTS));
 			
 			if(submission.getField(FW_PSRPREGSTS) != null && submission.getField(FW_PSRPREGSTS).equalsIgnoreCase("1") && submission.getField(FW_PSRSTS).equals("01") ){        
 				

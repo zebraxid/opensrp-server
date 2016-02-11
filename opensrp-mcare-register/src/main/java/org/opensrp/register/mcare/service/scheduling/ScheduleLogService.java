@@ -132,17 +132,17 @@ public class ScheduleLogService extends OpenmrsService{
 	}
 	
 	public void closeSchedule(String caseId,String instanceId,long timestamp,String name){
-		ScheduleLog  schedule = allReportActions.findByTimestampIdByCaseIdByname(timestamp,caseId,name);
-		
-        schedule.setRevision(schedule.getRevision());
-        schedule.scheduleCloseDate(new DateTime());
-        schedule.closeById(instanceId);
-        schedule.setIsActionActive(false);        
+		        
         try{
+        	ScheduleLog  schedule = allReportActions.findByTimestampIdByCaseIdByname(timestamp,caseId,name);
+    		schedule.setRevision(schedule.getRevision());
+            schedule.scheduleCloseDate(new DateTime());
+            schedule.closeById(instanceId);
+            schedule.setIsActionActive(false);
         	allReportActions.update(schedule);
         	logger.info("ScheduleLog close with id case id :"+caseId +" InstanceId: "+instanceId);
         }catch(Exception e){
-        	logger.info("Data not found.");
+        	logger.info("ScheduleLog Data not found.");
         }
 		
 	}
