@@ -122,8 +122,15 @@ public class EncounterService extends OpenmrsService{
 		JSONObject obo = new JSONObject();
 		obo.put("concept", o.getFieldCode());
 		if(o.getValue() != null && !StringUtils.isEmptyOrWhitespaceOnly(o.getValue().toString())) {
-			obo.put("value", o.getValue());
-		}		
+			
+			if(o.getFieldCode().toString().equalsIgnoreCase("163137AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA") || o.getFieldCode().toString().equalsIgnoreCase("163138AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"))
+				//obo.put("value", OPENMRS_DATETime.format(o.getValue()));
+				obo.put("value", (o.getValue().toString().substring(0, 19)).replace("T", " "));
+				
+			else 
+				obo.put("value", o.getValue());
+		}
+		
 		return obo;
 	}
 	
