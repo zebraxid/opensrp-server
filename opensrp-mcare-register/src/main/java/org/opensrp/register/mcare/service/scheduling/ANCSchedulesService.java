@@ -64,6 +64,15 @@ public class ANCSchedulesService {
         }*/
         enrollIntoCorrectMilestoneOfANCCare(caseId, referenceDateForSchedule,provider,instanceId,startDate);
     }
+    /**
+     * Create ANC Schedule depends on LMP Date
+     * @param entityId form entity Id
+     * @param referenceDateForSchedule LMP Date convert to Local Date
+     * @param provider FW  user name
+     * @param instanceId form instance id
+     * @param startDate LMP Date as String format
+     * 
+     * */
     private void enrollIntoCorrectMilestoneOfANCCare(String entityId, LocalDate referenceDateForSchedule,String provider,String instanceId,String startDate) {
         String milestone=null;        
         DateTime ancStartDate = null;
@@ -110,17 +119,7 @@ public class ANCSchedulesService {
         
         scheduleLogService.scheduleCloseAndSave(entityId, instanceId, provider, SCHEDULE_ANC, milestone, BeneficiaryType.mother, alertStaus, ancStartDate, ancExpireDate);
         
-        /*List<Action> beforeNewActions = allActions.findAlertByANMIdEntityIdScheduleName(provider, entityId, SCHEDULE_ANC);
-		if(beforeNewActions.size() > 0){ 
-		scheduleLogService.closeSchedule(entityId,instanceId,beforeNewActions.get(0).timestamp(),SCHEDULE_ANC);
-		}
-		allActions.addOrUpdateAlert(new Action(entityId, provider, ActionData.createAlert(BeneficiaryType.mother, SCHEDULE_ANC, milestone, alertStaus, ancStartDate,  ancExpireDate)));
-		logger.info(format("create psrf from psrf to psrf..", entityId));
-		List<Action> afterNewActions = allActions.findAlertByANMIdEntityIdScheduleName(provider, entityId, SCHEDULE_ANC);
-		if(afterNewActions.size() > 0){ 
-			scheduleLogService.saveScheduleLog(BeneficiaryType.mother, entityId, instanceId, provider, SCHEDULE_ANC, milestone, alertStaus, ancStartDate, ancExpireDate,SCHEDULE_ANC,afterNewActions.get(0).timestamp());
-	
-		}*/
+        
     }
     
     public void fullfillSchedule(String caseID, String scheduleName, String instanceId, long timestamp){

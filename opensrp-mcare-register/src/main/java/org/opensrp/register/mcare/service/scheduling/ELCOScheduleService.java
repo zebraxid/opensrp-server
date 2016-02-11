@@ -64,7 +64,9 @@ public class ELCOScheduleService {
 		}catch(Exception e){
 			logger.info(format("Failed to UnEnrollFromSchedule PSRF"));
 		}
-		List<Action> beforeNewActions = allActions.findAlertByANMIdEntityIdScheduleName(provider, caseId, ELCO_SCHEDULE_PSRF);
+		
+		scheduleLogService.scheduleCloseAndSave(caseId, instanceId, provider, ELCO_SCHEDULE_PSRF, ELCO_SCHEDULE_PSRF, elco, AlertStatus.normal, new DateTime(), new DateTime().plusHours(duration));
+		/*List<Action> beforeNewActions = allActions.findAlertByANMIdEntityIdScheduleName(provider, caseId, ELCO_SCHEDULE_PSRF);
 		if(beforeNewActions.size() > 0){ 
 		scheduleLogService.closeSchedule(caseId,instanceId,beforeNewActions.get(0).timestamp(),ELCO_SCHEDULE_PSRF);
 		}
@@ -74,7 +76,7 @@ public class ELCOScheduleService {
 		if(afterNewActions.size() > 0){ 
 			scheduleLogService.saveScheduleLog(BeneficiaryType.elco, caseId, instanceId, provider, ELCO_SCHEDULE_PSRF, ELCO_SCHEDULE_PSRF, AlertStatus.normal, new DateTime(),  new DateTime().plusHours(duration),ELCO_SCHEDULE_PSRF,afterNewActions.get(0).timestamp());
 	
-		}
+		}*/
 	}
 	public void unEnrollFromScheduleCensus(String caseId, String providerId, String scheduleName){
 		scheduler.unEnrollFromScheduleCensus(caseId, providerId, HH_SCHEDULE_CENSUS);

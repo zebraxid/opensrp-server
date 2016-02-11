@@ -59,6 +59,23 @@ public class ScheduleLogService extends OpenmrsService{
 		this.userService = userService;
 	}
 	
+	/**
+	 * @author proshanto
+	 * @desc This method save scheduleLog
+	 * @param beneficiaryType Type of Beneficiary
+	 * @param caseID  Beneficiary CaseId
+	 * @param instanceId 
+	 * @param anmIdentifier user name of field worker
+	 * @param  scheduleName 
+	 * @param alertStatus type of current window status
+	 * @param visitCode current milestone name
+	 * @param startDate Schedule start date
+	 * @param expiryDate Schedule expired date
+	 * 
+	 * @return nothing to return
+	 * 
+	 * 
+	 * */
 	
 	public void saveScheduleLog(BeneficiaryType beneficiaryType, String caseID, String instanceId, String anmIdentifier, String scheduleName, String visitCode, AlertStatus alertStatus, DateTime startDate, DateTime expiryDate,String immediateScheduleName,long timeStamp){
 		List<Enrollment> el =this.findEnrollmentByCaseIdAndScheduleName(caseID,immediateScheduleName);
@@ -71,6 +88,7 @@ public class ScheduleLogService extends OpenmrsService{
 		}		
 		try{
 			reportActionService.alertForReporting(beneficiaryType, caseID, instanceId, anmIdentifier, scheduleName, visitCode, alertStatus, startDate, expiryDate,null,trackId,timeStamp);
+			logger.info("ScheduleLog created with id case id :"+caseID);
 		}catch(Exception e){
 			logger.info("ScheduleLog Does not save.");
 		}
@@ -122,6 +140,7 @@ public class ScheduleLogService extends OpenmrsService{
         schedule.setIsActionActive(false);        
         try{
         	allReportActions.update(schedule);
+        	logger.info("ScheduleLog close with id case id :"+caseId +" InstanceId: "+instanceId);
         }catch(Exception e){
         	logger.info("Data not found.");
         }

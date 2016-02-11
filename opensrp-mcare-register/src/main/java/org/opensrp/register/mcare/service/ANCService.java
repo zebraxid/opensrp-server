@@ -66,8 +66,7 @@ public class ANCService {
 		}
 
 		mother.withPROVIDERID(submission.anmId());
-		mother.withINSTANCEID(submission.instanceId());
-		//mother.withTODAY(submission.getField(MOTHER_REFERENCE_DATE));
+		mother.withINSTANCEID(submission.instanceId());		
 		allMothers.update(mother);
 		ancSchedulesService.enrollMother(motherId,
 				LocalDate.parse(submission.getField(MOTHER_REFERENCE_DATE)),submission.anmId(),submission.instanceId(),submission.getField(MOTHER_REFERENCE_DATE));
