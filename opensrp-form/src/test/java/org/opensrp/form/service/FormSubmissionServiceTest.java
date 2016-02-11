@@ -10,6 +10,7 @@ import org.opensrp.dto.form.FormSubmissionDTO;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.form.repository.AllFormSubmissions;
 import org.opensrp.form.service.FormSubmissionService;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.util.List;
 
@@ -26,11 +27,13 @@ public class FormSubmissionServiceTest {
 
     private FormSubmissionService formSubmissionService;
     private long serverVersion;
+    @Value("#{opensrp['mcare2.user.type']}") 
+    private String userType;
 
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        formSubmissionService = new FormSubmissionService(allFormSubmissions);
+        formSubmissionService = new FormSubmissionService(allFormSubmissions,userType);
         LocalDate fakeDate = new LocalDate("2012-01-01");
         org.opensrp.common.util.DateUtil.fakeIt(fakeDate);
         serverVersion = fakeDate.toDateTimeAtStartOfDay().getMillis();
