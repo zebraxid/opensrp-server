@@ -54,14 +54,44 @@ public class AllFormSubmissions extends MotechBaseRepository<FormSubmission> {
         }
         return db.queryView(query, FormSubmission.class);
     }
-
-    @View(
+    
+	@View(
             name = "formSubmission_by_anm_and_server_version",
             map = "function(doc) { if (doc.type === 'FormSubmission') { emit([doc.anmId, doc.serverVersion], null); } }")
     public List<FormSubmission> findByANMIDAndServerVersion(String anmId, long version, Integer batchSize) {
-        ComplexKey startKey = ComplexKey.of(anmId, version + 1);
-        ComplexKey endKey = ComplexKey.of(anmId, Long.MAX_VALUE);
+       
+    	  ComplexKey startKey = ComplexKey.of(anmId, version + 1);
+          ComplexKey endKey = ComplexKey.of(anmId, Long.MAX_VALUE);;
+        
         ViewQuery query = createQuery("formSubmission_by_anm_and_server_version")
+                .startKey(startKey)
+                .endKey(endKey)
+                .includeDocs(true);
+        if (batchSize != null) {
+            query.limit(batchSize);
+        }
+        return db.queryView(query, FormSubmission.class);
+    }
+
+	@View(
+            name = "formSubmission_by_anm_and_usertype_and_server_version",
+            map = "function(doc) { if (doc.type === 'FormSubmission') { emit([doc.anmId, doc.user_type, doc.serverVersion], null); } }")
+    public List<FormSubmission> findByANMIDAndUserTypeAndServerVersion(String anmId, String userType, long version, Integer batchSize) {
+       
+    	  ComplexKey startKey = null;
+          ComplexKey endKey = null;
+        
+            if(userType != null && !userType.isEmpty())
+            {
+            	startKey = ComplexKey.of(anmId, userType, version + 1);
+            	endKey = ComplexKey.of(anmId, userType, Long.MAX_VALUE);
+            }
+            else {
+            	startKey = ComplexKey.of(anmId, version + 1);
+            	endKey = ComplexKey.of(anmId, Long.MAX_VALUE);
+            }
+            
+        ViewQuery query = createQuery("formSubmission_by_anm_and_usertype_and_server_version")
                 .startKey(startKey)
                 .endKey(endKey)
                 .includeDocs(true);

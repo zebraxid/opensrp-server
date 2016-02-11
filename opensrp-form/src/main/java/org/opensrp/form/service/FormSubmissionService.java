@@ -10,6 +10,7 @@ import org.opensrp.form.repository.AllFormSubmissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
@@ -23,10 +24,12 @@ import static java.util.Collections.sort;
 public class FormSubmissionService {
     private static Logger logger = LoggerFactory.getLogger(FormSubmissionService.class.toString());
     private AllFormSubmissions allFormSubmissions;
+    private  String userType;
 
     @Autowired
-    public FormSubmissionService(AllFormSubmissions allFormSubmissions) {
+    public FormSubmissionService(AllFormSubmissions allFormSubmissions, @Value("#{opensrp['mcare2.user.type']}") String userType) {
         this.allFormSubmissions = allFormSubmissions;
+        this.userType = userType;
     }
 
     public List<FormSubmissionDTO> fetch(long formFetchToken) {
@@ -39,7 +42,7 @@ public class FormSubmissionService {
     }
 
     public List<FormSubmission> getNewSubmissionsForANM(String anmIdentifier, Long version, Integer batchSize) {
-        return allFormSubmissions.findByANMIDAndServerVersion(anmIdentifier, version, batchSize);
+        return allFormSubmissions.findByANMIDAndUserTypeAndServerVersion(anmIdentifier,userType, version, batchSize);
     }
 
     public List<FormSubmission> getAllSubmissions(Long version, Integer batchSize) {
