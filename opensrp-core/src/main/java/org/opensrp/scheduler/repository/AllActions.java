@@ -3,6 +3,7 @@ package org.opensrp.scheduler.repository;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.ektorp.BulkDeleteDocument;
 import org.ektorp.ComplexKey;
@@ -12,7 +13,9 @@ import org.ektorp.support.View;
 import org.joda.time.DateTime;
 import org.motechproject.dao.MotechBaseRepository;
 import org.opensrp.common.AllConstants;
+import org.opensrp.dto.ActionData;
 import org.opensrp.scheduler.Action;
+import org.opensrp.scheduler.ScheduleLog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +46,7 @@ public class AllActions extends MotechBaseRepository<Action> {
     public List<Action> findAlertByANMIdEntityIdScheduleName(String anmIdentifier, String caseID, String scheduleName) {
         ComplexKey key = ComplexKey.of(anmIdentifier, caseID, scheduleName);
         return db.queryView(createQuery("action_by_anm_entityId_scheduleName").key(key).includeDocs(true), Action.class);
+        
     }
 
     @View(name = "action_by_caseId_and_schedule_and_time", map = "function(doc) { if (doc.type === 'Action') { emit([doc.caseID, doc.data.scheduleName, doc.timeStamp], null); } }")
@@ -84,10 +88,12 @@ public class AllActions extends MotechBaseRepository<Action> {
 
     public void addOrUpdateAlert(Action alertAction) {
         List<Action> existingAlerts = findAlertByANMIdEntityIdScheduleName(alertAction.anmIdentifier(), alertAction.caseId(), alertAction.data().get("scheduleName"));
+        
         if (existingAlerts.size() > 1) {
             logger.warn(MessageFormat.format("Found more than one alert for the combination of anmId: {0}, entityId: {1} and scheduleName : {2}. Alerts : {3}",
                     alertAction.anmIdentifier(), alertAction.caseId(), alertAction.data().get("scheduleName"), existingAlerts));
         }
+       
         for (Action existingAlert : existingAlerts) {
             safeRemove(existingAlert);
         }

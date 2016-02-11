@@ -48,8 +48,7 @@ public class AlertRouter {
         for (Route route : routes) {
         	
         	 if (route.isSatisfiedBy(event.scheduleName().replace(ELCOSchedulesConstantsImediate.IMD_ELCO_SCHEDULE_PSRF, ELCOSchedulesConstantsImediate.ELCO_SCHEDULE_PSRF), event.milestoneName().replace(ELCOSchedulesConstantsImediate.IMD_ELCO_SCHEDULE_PSRF, "ELCO PSRF"), event.windowName())) {
-                 System.out.println("Schedule name from alertRoute Loop :"+event.scheduleName().replace("IMD ELCO PSRF", ELCOSchedulesConstantsImediate.ELCO_SCHEDULE_PSRF));
-             	route.invokeAction(event);
+                 route.invokeAction(event);
                  return;
              }
         }

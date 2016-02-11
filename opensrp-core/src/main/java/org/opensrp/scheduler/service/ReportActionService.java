@@ -49,10 +49,16 @@ public class ReportActionService {
 			    	schedule.setRevision(schedule.getRevision());
 			    	schedule.currentWindow(alertStatus);
 			    	schedule.currentWindowStartDate(startDate);
-			    	schedule.currentWindowEndDate(expiryDate);
-			    	long millis = Calendar.getInstance().getTimeInMillis();
-			    	schedule.timestamp(millis);
+			    	schedule.currentWindowEndDate(expiryDate);			    	
+			    	schedule.timestamp(Calendar.getInstance().getTimeInMillis());
 			    	allReportActions.update(schedule);
+			   }else{
+				   
+				   schedule.setRevision(schedule.getRevision());				  
+				   schedule.data().get(0).put("expiryDate", expiryDate.toLocalDate().toString());	
+				  
+				   schedule.timestamp(Calendar.getInstance().getTimeInMillis());
+			       allReportActions.update(schedule);
 			   }
 			   
 		   }

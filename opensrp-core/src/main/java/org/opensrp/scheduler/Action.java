@@ -62,7 +62,9 @@ public class Action extends MotechBaseDataObject {
     public String actionType() {
         return actionType;
     }
-
+    public void timestamp(long timeStamp) {
+        this.timeStamp =timeStamp;
+    }
     public long timestamp() {
         return timeStamp;
     }

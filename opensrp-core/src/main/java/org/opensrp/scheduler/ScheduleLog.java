@@ -30,6 +30,8 @@ public class ScheduleLog extends MotechBaseDataObject  {
     @JsonProperty
     private String instanceId;
     @JsonProperty
+    private String closeById;
+    @JsonProperty
     private String trackId;
     @JsonProperty
     private List<Map<String, String>> data;
@@ -121,7 +123,9 @@ public class ScheduleLog extends MotechBaseDataObject  {
     public String actionType() {
         return actionType;
     }
-
+    public void closeById(String timeStamp) {
+        this.closeById =closeById;
+    }
     public void timestamp(long timeStamp) {
         this.timeStamp =timeStamp;
     }
@@ -162,6 +166,9 @@ public class ScheduleLog extends MotechBaseDataObject  {
     }
     public String getTrackId() {
         return trackId;
+    }
+    public String getCloseById(String closeById){
+    	return closeById;
     }
     public String getScheduleName() {
         return scheduleName;
