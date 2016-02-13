@@ -50,8 +50,12 @@ public class ReportActionService {
 					   schedule.timestamp(timestamp);
 				       allReportActions.update(schedule);
 				   }
+				   logger.info("Update ScheduleLog with id: "+caseID + " in elco or household or BNF type ");
+			   }else{
+				   this.alertForReporting(beneficiaryType, caseID, instanceId, anmIdentifier, scheduleName, visitCode, alertStatus, startDate, expiryDate, currentWindowCloseDate, trackId, timestamp);
+				   logger.info("Create ScheduleLog with id: "+caseID + " in elco or household or BNF type ");
 			   }
-			logger.info("Update ScheduleLog with id: "+caseID + " in elco or household or BNF type ");
+			
 		}catch(Exception e){
 			logger.info("From updateScheduleLog:"+ e.getMessage());
 		}
@@ -77,8 +81,12 @@ public void updateScheduleLogMotherType(BeneficiaryType beneficiaryType, String 
 			   }else{
 				   
 			   }
+			   logger.info("Update ScheduleLog with id: "+caseID + " in Mother type");
+		   }else{
+			   this.alertForReporting(beneficiaryType, caseID, instanceId, anmIdentifier, scheduleName, visitCode, alertStatus, startDate, expiryDate, currentWindowCloseDate, trackId, timestamp);
+			   logger.info("Create ScheduleLog with id: "+caseID + " in elco or household or BNF type ");
 		   }
-		logger.info("Update ScheduleLog with id: "+caseID + " in Mother type");
+		
 		}catch(Exception e){
 			logger.info("From updateScheduleLogMotherType:"+ e.getMessage());
 		}
