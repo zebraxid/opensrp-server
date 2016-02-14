@@ -19,6 +19,8 @@ import org.opensrp.dto.ScheduleData;
 
 import org.opensrp.scheduler.ScheduleLog;
 import org.opensrp.scheduler.repository.AllReportActions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,26 +30,39 @@ import com.google.gson.Gson;
 public class ReportActionService {
 	
 	private AllReportActions allReportActions;	
+	private static Logger logger = LoggerFactory.getLogger(ReportActionService.class
+			.toString());
 	@Autowired
 	public ReportActionService(AllReportActions allReportActions)
 	{
 		this.allReportActions = allReportActions;	
 	}
 	public void updateScheduleLog(BeneficiaryType beneficiaryType, String caseID, String instanceId, String anmIdentifier, String scheduleName, String visitCode, AlertStatus alertStatus, DateTime startDate, DateTime expiryDate, DateTime currentWindowCloseDate,String trackId,long BTS,long timestamp){
-		ScheduleLog  schedule = allReportActions.findByTimestampIdByCaseIdByname(BTS,caseID,scheduleName);
-		if(schedule != null){			
-			   if(!schedule.getCurrentWindow().equals(alertStatus) ){				   
-				   this.updateDataScheduleLog(beneficiaryType, caseID, instanceId, anmIdentifier, scheduleName, visitCode, alertStatus, startDate, expiryDate, currentWindowCloseDate, trackId, BTS, timestamp, schedule);
-			   }else{				   
-				   schedule.setRevision(schedule.getRevision());				  
-				   schedule.data().get(0).put("expiryDate", expiryDate.toLocalDate().toString());	
-				   schedule.setVisitCode(visitCode);
-				   schedule.timestamp(timestamp);
-			       allReportActions.update(schedule);
+		try{
+			ScheduleLog  schedule = allReportActions.findByTimestampIdByCaseIdByname(BTS,caseID,scheduleName);
+			if(schedule != null){			
+				   if(!schedule.getCurrentWindow().equals(alertStatus) ){				   
+					   this.updateDataScheduleLog(beneficiaryType, caseID, instanceId, anmIdentifier, scheduleName, visitCode, alertStatus, startDate, expiryDate, currentWindowCloseDate, trackId, BTS, timestamp, schedule);
+				   }else{				   
+					   schedule.setRevision(schedule.getRevision());				  
+					   schedule.data().get(0).put("expiryDate", expiryDate.toLocalDate().toString());	
+					   schedule.setVisitCode(visitCode);
+					   schedule.timestamp(timestamp);
+				       allReportActions.update(schedule);
+				   }
+				   logger.info("Update ScheduleLog with id: "+caseID + " in elco or household or BNF type ");
+			   }else{
+				   this.alertForReporting(beneficiaryType, caseID, instanceId, anmIdentifier, scheduleName, visitCode, alertStatus, startDate, expiryDate, currentWindowCloseDate, trackId, timestamp);
+				   logger.info("Create ScheduleLog with id: "+caseID + " in elco or household or BNF type ");
 			   }
-		   }
+			
+		}catch(Exception e){
+			logger.info("From updateScheduleLog:"+ e.getMessage());
+		}
 	}
 public void updateScheduleLogMotherType(BeneficiaryType beneficiaryType, String caseID, String instanceId, String anmIdentifier, String scheduleName, String visitCode, AlertStatus alertStatus, DateTime startDate, DateTime expiryDate, DateTime currentWindowCloseDate,String trackId,long BTS,long timestamp){
+		
+	try{
 		ScheduleLog  schedule = allReportActions.findByTimestampIdByCaseIdByname(BTS,caseID,scheduleName);
 		if(schedule != null){	
 			System.out.println("schedule.getVisitCode():"+schedule.getVisitCode()+"visitCode:"+visitCode);
@@ -66,7 +81,15 @@ public void updateScheduleLogMotherType(BeneficiaryType beneficiaryType, String 
 			   }else{
 				   
 			   }
+			   logger.info("Update ScheduleLog with id: "+caseID + " in Mother type");
+		   }else{
+			   this.alertForReporting(beneficiaryType, caseID, instanceId, anmIdentifier, scheduleName, visitCode, alertStatus, startDate, expiryDate, currentWindowCloseDate, trackId, timestamp);
+			   logger.info("Create ScheduleLog with id: "+caseID + " in elco or household or BNF type ");
 		   }
+		
+		}catch(Exception e){
+			logger.info("From updateScheduleLogMotherType:"+ e.getMessage());
+		}
 	}
 	public void alertForReporting(BeneficiaryType beneficiaryType, String caseID, String instanceId, String anmIdentifier, String scheduleName, String visitCode, AlertStatus alertStatus, DateTime startDate, DateTime expiryDate, DateTime currentWindowCloseDate,String trackId,long timeStamp)
 	{	  
@@ -92,13 +115,18 @@ public void updateScheduleLogMotherType(BeneficiaryType beneficiaryType, String 
 	}
 	
 	public void schedulefullfill(String caseID,String scheduleName,String instanceId,long timestamp){
-		ScheduleLog  schedule = allReportActions.findByTimestampIdByCaseIdByname(timestamp,caseID,scheduleName);		
-		int size = schedule.data().size();
-		schedule.data().get(size-1).put("fullfillmentDate",new LocalDate().toString());		
-		schedule.data().get(size-1).put("fullfuillBySubmission",instanceId);		
-		schedule.setRevision(schedule.getRevision());
-		schedule.timestamp(timestamp);
-		allReportActions.update(schedule);
+		try{
+			ScheduleLog  schedule = allReportActions.findByTimestampIdByCaseIdByname(timestamp,caseID,scheduleName);		
+			int size = schedule.data().size();
+			schedule.data().get(size-1).put("fullfillmentDate",new LocalDate().toString());		
+			schedule.data().get(size-1).put("fullfuillBySubmission",instanceId);		
+			schedule.setRevision(schedule.getRevision());
+			schedule.timestamp(timestamp);
+			allReportActions.update(schedule);
+			logger.info("Schedule fullfill with id: "+caseID );
+		}catch(Exception e){
+			logger.info("From schedulefullfill:"+e.getMessage());
+		}
 		
 	}
 		

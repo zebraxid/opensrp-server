@@ -106,8 +106,12 @@ public class ANCService {
 		allMothers.update(mother);
 		ancSchedulesService.fullfillMilestone(submission.entityId(), submission.anmId(), SCHEDULE_ANC, new LocalDate());
 		actionService.markAllAlertsAsInactive(submission.entityId());
-		long timestamp = actionService.getActionTimestamp(submission.anmId(), submission.entityId(), SCHEDULE_ANC);
-		ancSchedulesService.fullfillSchedule(submission.entityId(), SCHEDULE_ANC, submission.instanceId(), timestamp);
+		try{
+			long timestamp = actionService.getActionTimestamp(submission.anmId(), submission.entityId(), SCHEDULE_ANC);
+			ancSchedulesService.fullfillSchedule(submission.entityId(), SCHEDULE_ANC, submission.instanceId(), timestamp);
+		}catch(Exception e){
+			logger.info("From ancVisitOne:"+e.getMessage());
+		}
 	}
 
 	public void ancVisitTwo(FormSubmission submission) {
@@ -141,9 +145,13 @@ public class ANCService {
 		allMothers.update(mother);
 		ancSchedulesService.fullfillMilestone(submission.entityId(), submission.anmId(), SCHEDULE_ANC, new LocalDate());
 		actionService.markAllAlertsAsInactive(submission.entityId());
-		long timestamp = actionService.getActionTimestamp(submission.anmId(), submission.entityId(), SCHEDULE_ANC);
-		ancSchedulesService.fullfillSchedule(submission.entityId(), SCHEDULE_ANC, submission.instanceId(), timestamp);
-
+		try{
+			long timestamp = actionService.getActionTimestamp(submission.anmId(), submission.entityId(), SCHEDULE_ANC);
+			ancSchedulesService.fullfillSchedule(submission.entityId(), SCHEDULE_ANC, submission.instanceId(), timestamp);
+		}catch(Exception e){
+			logger.info("From ancVisitTwo:"+e.getMessage());
+		}
+		
 	}
 
 	public void ancVisitThree(FormSubmission submission) {
@@ -178,8 +186,12 @@ public class ANCService {
 		allMothers.update(mother);
 		ancSchedulesService.fullfillMilestone(submission.entityId(), submission.anmId(), SCHEDULE_ANC, new LocalDate());
 		actionService.markAllAlertsAsInactive(submission.entityId());
-		long timestamp = actionService.getActionTimestamp(submission.anmId(), submission.entityId(), SCHEDULE_ANC);
-		ancSchedulesService.fullfillSchedule(submission.entityId(), SCHEDULE_ANC, submission.instanceId(), timestamp);
+		try{
+			long timestamp = actionService.getActionTimestamp(submission.anmId(), submission.entityId(), SCHEDULE_ANC);
+			ancSchedulesService.fullfillSchedule(submission.entityId(), SCHEDULE_ANC, submission.instanceId(), timestamp);
+		}catch(Exception e){
+			logger.info("From ancVisitThree:"+e.getMessage());
+		}
 	}
 
 	public void ancVisitFour(FormSubmission submission) {
@@ -214,8 +226,12 @@ public class ANCService {
 		allMothers.update(mother);
 		ancSchedulesService.fullfillMilestone(submission.entityId(), submission.anmId(), SCHEDULE_ANC, new LocalDate());
 		//actionService.markAllAlertsAsInactive(submission.entityId());
-		long timestamp = actionService.getActionTimestamp(submission.anmId(), submission.entityId(), SCHEDULE_ANC);
-		ancSchedulesService.fullfillSchedule(submission.entityId(), SCHEDULE_ANC, submission.instanceId(), timestamp);
+		try{
+			long timestamp = actionService.getActionTimestamp(submission.anmId(), submission.entityId(), SCHEDULE_ANC);
+			ancSchedulesService.fullfillSchedule(submission.entityId(), SCHEDULE_ANC, submission.instanceId(), timestamp);
+		}catch(Exception e){
+			logger.info("From ancVisitFour:"+e.getMessage());
+		}
 	}
 
 	public void pregnancyVerificationForm(FormSubmission submission)

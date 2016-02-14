@@ -123,7 +123,12 @@ public class ANCSchedulesService {
     }
     
     public void fullfillSchedule(String caseID, String scheduleName, String instanceId, long timestamp){
-    	scheduleLogService.fullfillSchedule(caseID, scheduleName, instanceId, timestamp);
+    	try{
+	    	scheduleLogService.fullfillSchedule(caseID, scheduleName, instanceId, timestamp);
+	    	logger.info("fullfillSchedule a Schedule with id : "+caseID);
+    	}catch(Exception e){
+    		logger.info("Does not fullfill a schedule:"+e.getMessage());
+    	}
     }
     
     public void unEnrollFromAllSchedules(String entityId) {
@@ -135,7 +140,12 @@ public class ANCSchedulesService {
         scheduler.unEnrollFromSchedule(entityId, anmId, scheduleName);
     }
     public void fullfillMilestone(String entityId, String providerId, String scheduleName,LocalDate completionDate ){
-    	scheduler.fullfillMilestone(entityId, providerId, scheduleName, completionDate);
+    	try{
+    		scheduler.fullfillMilestone(entityId, providerId, scheduleName, completionDate);
+    		logger.info("fullfillMilestone with id: :"+entityId);
+    	}catch(Exception e){
+    		logger.info("Does not a fullfillMilestone :"+e.getMessage());
+    	}
     }
     public void enrollANCSchedule(){
     	
