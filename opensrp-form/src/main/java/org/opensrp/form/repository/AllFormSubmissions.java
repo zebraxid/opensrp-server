@@ -61,7 +61,7 @@ public class AllFormSubmissions extends MotechBaseRepository<FormSubmission> {
     public List<FormSubmission> findByANMIDAndServerVersion(String anmId, long version, Integer batchSize) {
        
     	  ComplexKey startKey = ComplexKey.of(anmId, version + 1);
-          ComplexKey endKey = ComplexKey.of(anmId, Long.MAX_VALUE);;
+          ComplexKey endKey = ComplexKey.of(anmId, Long.MAX_VALUE);
         
         ViewQuery query = createQuery("formSubmission_by_anm_and_server_version")
                 .startKey(startKey)
