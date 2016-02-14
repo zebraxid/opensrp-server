@@ -25,6 +25,8 @@ public class FormSubmissionService {
     private static Logger logger = LoggerFactory.getLogger(FormSubmissionService.class.toString());
     private AllFormSubmissions allFormSubmissions;
     private  String userType;
+    private static String USER_TYPE_FWA ="FWA"; 
+    private static String USER_TYPE_FD ="FD"; 
 
     @Autowired
     public FormSubmissionService(AllFormSubmissions allFormSubmissions, @Value("#{opensrp['mcare2.user.type']}") String userType) {
@@ -42,7 +44,11 @@ public class FormSubmissionService {
     }
 
     public List<FormSubmission> getNewSubmissionsForANM(String anmIdentifier, Long version, Integer batchSize) {
-        return allFormSubmissions.findByANMIDAndUserTypeAndServerVersion(anmIdentifier,userType, version, batchSize);
+    	
+    	if(userType.equalsIgnoreCase(USER_TYPE_FWA) || userType.equalsIgnoreCase(USER_TYPE_FD))
+           return allFormSubmissions.findByANMIDAndUserTypeAndServerVersion(anmIdentifier, userType, version, batchSize);
+    	else
+    		return allFormSubmissions.findByANMIDAndServerVersion(anmIdentifier, version, batchSize);
     }
 
     public List<FormSubmission> getAllSubmissions(Long version, Integer batchSize) {
