@@ -75,7 +75,7 @@ public class AllFormSubmissions extends MotechBaseRepository<FormSubmission> {
 
 	@View(
             name = "formSubmission_by_anm_and_usertype_and_server_version",
-            map = "function(doc) { if (doc.type === 'FormSubmission') { emit([doc.anmId, doc.user_type, doc.serverVersion], null); } }")
+            map = "function(doc) {if(doc.formInstance.form.fields.length > 0 && doc.type==='FormSubmission') {for(var field in doc.formInstance.form.fields) {if(doc.formInstance.form.fields[field].name ==='user_type'){emit([doc.anmId,doc.formInstance.form.fields[field].value, doc.serverVersion], null);}}}}")
     public List<FormSubmission> findByANMIDAndUserTypeAndServerVersion(String anmId, String userType, long version, Integer batchSize) {
        
     	  ComplexKey startKey = null;
@@ -86,10 +86,10 @@ public class AllFormSubmissions extends MotechBaseRepository<FormSubmission> {
             	startKey = ComplexKey.of(anmId, userType, version + 1);
             	endKey = ComplexKey.of(anmId, userType, Long.MAX_VALUE);
             }
-            else {
+            /*else {
             	startKey = ComplexKey.of(anmId, version + 1);
             	endKey = ComplexKey.of(anmId, Long.MAX_VALUE);
-            }
+            }*/
             
         ViewQuery query = createQuery("formSubmission_by_anm_and_usertype_and_server_version")
                 .startKey(startKey)
