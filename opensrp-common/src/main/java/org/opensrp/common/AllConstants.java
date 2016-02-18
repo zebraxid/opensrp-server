@@ -370,7 +370,10 @@ public class AllConstants {
     	public static final String FWBNFSMSRSN ="FWBNFSMSRSN";
     	public static final String STS_LB ="3";
     	public static final String STS_SB ="4";
-    	public static final String STS_WD ="9";
+    	public static final String STS_GONE ="7";    	
+    	public static final String STS_WD ="8";
+    	public static final String SCHEDULE_BNF_IME = "ImmediateBirthNotificationPregnancyStatusFollowUp";
+    	 public static final String SCHEDULE_BNF = "BirthNotificationPregnancyStatusFollowUp";
     	    
     }
     
@@ -823,6 +826,7 @@ public class AllConstants {
 
     public static class FormEntityTypes {
         public static final String CHILD_TYPE = "child";
+        public static final String MCARE_CHILD_TYPE = "mcarechild";
         public static final String MOTHER_TYPE = "mother";
         public static final String ELIGIBLE_COUPLE_TYPE = "eligible_couple";
         public static final String MCTS_REPORT_TYPE = "MCTSReport";

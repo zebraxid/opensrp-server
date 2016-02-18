@@ -10,7 +10,9 @@ import org.motechproject.server.event.annotations.MotechListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import org.opensrp.common.AllConstants.BnfFollowUpVisitFields;
 import org.opensrp.common.AllConstants.ELCOSchedulesConstantsImediate;
+import static org.opensrp.common.AllConstants.BnfFollowUpVisitFields.SCHEDULE_BNF_IME;
 
 /**
  * The class that maintains the actions against alerts by {@link ScheduleTrackingService}
@@ -47,12 +49,20 @@ public class AlertRouter {
         
         for (Route route : routes) {
         	
-        	 if (route.isSatisfiedBy(event.scheduleName().replace(ELCOSchedulesConstantsImediate.IMD_ELCO_SCHEDULE_PSRF, ELCOSchedulesConstantsImediate.ELCO_SCHEDULE_PSRF), event.milestoneName().replace(ELCOSchedulesConstantsImediate.IMD_ELCO_SCHEDULE_PSRF, "ELCO PSRF"), event.windowName())) {
+        	 if (route.isSatisfiedBy(parseScheduleName(event.scheduleName()), parseScheduleName(event.milestoneName()), event.windowName())) {
                  route.invokeAction(event);
                  return;
              }
         }
 
         throw new NoRoutesMatchException(event);
+    }
+    public String parseScheduleName(String scheduleName){
+    	if(scheduleName.equalsIgnoreCase(ELCOSchedulesConstantsImediate.IMD_ELCO_SCHEDULE_PSRF)){
+    		return scheduleName.replace(ELCOSchedulesConstantsImediate.IMD_ELCO_SCHEDULE_PSRF, ELCOSchedulesConstantsImediate.ELCO_SCHEDULE_PSRF);
+    	}else{
+    		return scheduleName.replace(SCHEDULE_BNF_IME, BnfFollowUpVisitFields.SCHEDULE_BNF);
+    	}
+    	
     }
 }

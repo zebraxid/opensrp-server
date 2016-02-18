@@ -254,9 +254,10 @@ public class ELCOService {
 			logger.info("Expected value leading no zero and found submission.getField(FW_PSRPREGSTS): "+submission.getField(FW_PSRPREGSTS));
 			
 			if(submission.getField(FW_PSRPREGSTS) != null && submission.getField(FW_PSRPREGSTS).equalsIgnoreCase("1") && submission.getField(FW_PSRSTS).equals("01") ){        
-				
-				ancService.registerANC(submission);
-	            bnfService.registerBNF(submission);
+				//if(submission.getField("user_type").equalsIgnoreCase("FD")){
+					ancService.registerANC(submission);
+		            bnfService.registerBNF(submission);
+				//}
 	            elco.setIsClosed(true);
 	        	allEcos.update(elco);	        	
 	            elcoScheduleService.unEnrollFromScheduleOfPSRF(submission.entityId(), submission.anmId(), "");

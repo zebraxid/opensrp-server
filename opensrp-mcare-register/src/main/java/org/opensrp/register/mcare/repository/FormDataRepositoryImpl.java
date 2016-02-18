@@ -72,10 +72,12 @@ public class FormDataRepositoryImpl extends FormDataRepository{
         designDocMap.put(AllConstants.FormEntityTypes.ELCO_TYPE, "Elco");
         designDocMap.put(AllConstants.FormEntityTypes.MCARE_MOTHER_TYPE, "Mother");
         designDocMap.put(AllConstants.FormEntityTypes.CHILD_TYPE, "Child");
+        designDocMap.put(AllConstants.FormEntityTypes.MCARE_CHILD_TYPE, "Child");
         fieldSetMap.put(AllConstants.FormEntityTypes.HOUSE_HOLD_TYPE, HouseHold.class.getDeclaredFields());
         fieldSetMap.put(AllConstants.FormEntityTypes.ELCO_TYPE, Elco.class.getDeclaredFields());
         fieldSetMap.put(AllConstants.FormEntityTypes.MCARE_MOTHER_TYPE, Mother.class.getDeclaredFields());
         fieldSetMap.put(AllConstants.FormEntityTypes.CHILD_TYPE, Child.class.getDeclaredFields());
+        fieldSetMap.put(AllConstants.FormEntityTypes.MCARE_CHILD_TYPE, Child.class.getDeclaredFields());
     }
 
     public String saveEntity(String entityType, String fields) {

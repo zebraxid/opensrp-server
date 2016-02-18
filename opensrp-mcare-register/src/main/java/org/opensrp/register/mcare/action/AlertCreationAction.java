@@ -1,5 +1,6 @@
 package org.opensrp.register.mcare.action;
 
+import static org.opensrp.common.AllConstants.BnfFollowUpVisitFields.SCHEDULE_BNF_IME;
 import static org.opensrp.dto.BeneficiaryType.child;
 import static org.opensrp.dto.BeneficiaryType.elco;
 import static org.opensrp.dto.BeneficiaryType.household;
@@ -10,6 +11,7 @@ import java.util.Map;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.opensrp.common.AllConstants.BnfFollowUpVisitFields;
 import org.opensrp.common.AllConstants.ELCOSchedulesConstantsImediate;
 import org.opensrp.dto.BeneficiaryType;
 import org.opensrp.register.mcare.OpenSRPScheduleConstants.ELCOSchedulesConstants;
@@ -115,8 +117,17 @@ public class AlertCreationAction implements HookedEvent {
 		logger.info(" event.windowName():"+event.windowName());
 		logger.info(" Name:"+event.scheduleName().replace(ELCOSchedulesConstantsImediate.IMD_ELCO_SCHEDULE_PSRF, ELCOSchedulesConstants.ELCO_SCHEDULE_PSRF));
 		logger.info(" MileStoneName:"+event.milestoneName().replace(ELCOSchedulesConstantsImediate.IMD_ELCO_SCHEDULE_PSRF, ELCOSchedulesConstants.ELCO_SCHEDULE_PSRF));
-		scheduler.alertFor(event.windowName(), beneficiaryType, caseID, instanceId, providerId, event.scheduleName().replace(ELCOSchedulesConstantsImediate.IMD_ELCO_SCHEDULE_PSRF, ELCOSchedulesConstants.ELCO_SCHEDULE_PSRF), event.milestoneName().replace(ELCOSchedulesConstantsImediate.IMD_ELCO_SCHEDULE_PSRF, ELCOSchedulesConstants.ELCO_SCHEDULE_PSRF),
+		scheduler.alertFor(event.windowName(), beneficiaryType, caseID, instanceId, providerId, parseScheduleName(event.scheduleName()), parseScheduleName(event.milestoneName()),
 				startOfEarliestWindow, event.startOfDueWindow(),
 				event.startOfLateWindow(), event.startOfMaxWindow());
 	}
+	
+	public String parseScheduleName(String scheduleName){
+    	if(scheduleName.equalsIgnoreCase(ELCOSchedulesConstantsImediate.IMD_ELCO_SCHEDULE_PSRF)){
+    		return scheduleName.replace(ELCOSchedulesConstantsImediate.IMD_ELCO_SCHEDULE_PSRF, ELCOSchedulesConstantsImediate.ELCO_SCHEDULE_PSRF);
+    	}else{
+    		return scheduleName.replace(SCHEDULE_BNF_IME, BnfFollowUpVisitFields.SCHEDULE_BNF);
+    	}
+    	
+    }
 }

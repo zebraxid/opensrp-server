@@ -19,10 +19,13 @@ import static org.opensrp.common.AllConstants.BnfFollowUpVisitFields.FWDISPLAYTE
 import static org.opensrp.common.AllConstants.BnfFollowUpVisitFields.STS_WD;
 import static org.opensrp.common.AllConstants.BnfFollowUpVisitFields.STS_LB;
 import static org.opensrp.common.AllConstants.BnfFollowUpVisitFields.STS_SB;
+import static org.opensrp.common.AllConstants.BnfFollowUpVisitFields.STS_GONE;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.REFERENCE_DATE;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.MOTHER_REFERENCE_DATE;
 import static org.opensrp.common.util.EasyMap.create;
+import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_BNF;
 
+import java.util.List;
 import java.util.Map;
 
 import org.joda.time.LocalDate;
@@ -33,6 +36,7 @@ import org.opensrp.register.mcare.repository.AllElcos;
 import org.opensrp.register.mcare.repository.AllMothers;
 import org.opensrp.register.mcare.service.scheduling.BNFSchedulesService;
 import org.opensrp.register.mcare.service.scheduling.ScheduleLogService;
+import org.opensrp.scheduler.Action;
 import org.opensrp.scheduler.repository.AllActions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,6 +63,7 @@ public class BNFService {
 		this.allMothers = allMothers;
 		this.bnfSchedulesService = bnfSchedulesService;
 		this.pncService = pncService;
+		this.scheduleLogService = scheduleLogService;
 	}
 	
 	public void registerBNF(FormSubmission submission)
@@ -78,8 +83,7 @@ public class BNFService {
 		mother.withPROVIDERID(submission.anmId());
 		mother.withINSTANCEID(submission.instanceId());
 		mother.withTODAY(submission.getField(REFERENCE_DATE));
-		allMothers.update(mother);
-		
+		allMothers.update(mother);		
 		bnfSchedulesService.enrollBNF(motherId, LocalDate.parse(submission.getField(MOTHER_REFERENCE_DATE)),submission.anmId(),submission.instanceId(),submission.getField(MOTHER_REFERENCE_DATE));
 		
 	}
@@ -112,14 +116,20 @@ public class BNFService {
 		mother.bnfVisitDetails().add(bnfVisit);
 		
 		allMothers.update(mother);
-
+		logger.info("submission.getField(FWBNFSTS):"+submission.getField(FWBNFSTS));
 		if(submission.getField(FWBNFSTS).equalsIgnoreCase(STS_LB) || submission.getField(FWBNFSTS).equalsIgnoreCase(STS_SB))
 		{ 
 			pncService.deliveryOutcome(submission); 
+			bnfSchedulesService.unEnrollBNFSchedule(submission.entityId(), submission.anmId());
+			scheduleLogService.closeScheduleAndScheduleLog( submission.entityId(),submission.instanceId(), SCHEDULE_BNF,submission.anmId());
 			
+		}else if(submission.getField(FWBNFSTS).equalsIgnoreCase(STS_GONE) || submission.getField(FWBNFSTS).equalsIgnoreCase(STS_WD) ){
+			bnfSchedulesService.unEnrollBNFSchedule(submission.entityId(), submission.anmId());
+			pncService.closeMother(mother);
+			scheduleLogService.closeScheduleAndScheduleLog( submission.entityId(),submission.instanceId(), SCHEDULE_BNF,submission.anmId());
 		}else{
-			/*elcoScheduleService.enrollIntoMilestoneOfPSRF(submission.entityId(),
-		            submission.getField(REFERENCE_DATE),submission.anmId(),submission.instanceId())*/
+			bnfSchedulesService.enrollIntoMilestoneOfBNF(submission.entityId(),
+		            submission.getField(REFERENCE_DATE),submission.anmId(),submission.instanceId());
 		}
 		
 	}

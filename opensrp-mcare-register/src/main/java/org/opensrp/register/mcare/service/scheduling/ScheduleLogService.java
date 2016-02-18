@@ -8,8 +8,10 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 import static java.text.MessageFormat.format;
+import static org.opensrp.dto.BeneficiaryType.elco;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.DateTimeDuration.duration;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ELCOSchedulesConstants.ELCO_SCHEDULE_PSRF;
+import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ELCOSchedulesConstantsImediate.IMD_ELCO_SCHEDULE_PSRF;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_ANC;
 
 import org.apache.commons.lang.StringUtils;
@@ -28,6 +30,7 @@ import org.opensrp.dto.AlertStatus;
 import org.opensrp.dto.BeneficiaryType;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.scheduler.Action;
+import org.opensrp.scheduler.HealthSchedulerService;
 import org.opensrp.scheduler.ScheduleLog;
 import org.opensrp.scheduler.repository.AllActions;
 import org.opensrp.scheduler.repository.AllReportActions;
@@ -49,14 +52,16 @@ public class ScheduleLogService extends OpenmrsService{
 	private AllReportActions allReportActions;
 	private AllActions allActions;
 	private OpenmrsUserService userService;
+	private HealthSchedulerService scheduler;
 	
 	@Autowired
-	public ScheduleLogService(ReportActionService reportActionService,AllEnrollmentWrapper allEnrollments,AllReportActions allReportActions,AllActions allActions,OpenmrsUserService userService){
+	public ScheduleLogService(ReportActionService reportActionService,AllEnrollmentWrapper allEnrollments,AllReportActions allReportActions,AllActions allActions,OpenmrsUserService userService,HealthSchedulerService scheduler){
 		this.reportActionService = reportActionService;
 		this.allEnrollments = allEnrollments;
 		this.allReportActions = allReportActions;
 		this.allActions = allActions;
 		this.userService = userService;
+		this.scheduler = scheduler;
 	}
 	
 	/**
@@ -146,6 +151,17 @@ public class ScheduleLogService extends OpenmrsService{
         }
 		
 	}
+	public void closeScheduleAndScheduleLog(String caseId,String instanceId,String scheduleName,String provider){
+		try{
+			List<Action> beforeNewActions = allActions.findAlertByANMIdEntityIdScheduleName(provider, caseId, scheduleName);
+			if(beforeNewActions.size() > 0){ 
+				this.closeSchedule(caseId,instanceId,beforeNewActions.get(0).timestamp(),scheduleName);
+			}
+			
+		}catch(Exception e){
+			 logger.info("From closeScheduleAndScheduleLog:"+e.getMessage());
+		}
+	}
 	public void saveActionDataToOpenMrsMilestoneTrack(String entityId, String instanceId,
 			String providerId, String schedule) throws ParseException{
 		
@@ -205,6 +221,30 @@ public class ScheduleLogService extends OpenmrsService{
 		
 	}
 	
+	public void createImmediateScheduleAndScheduleLog(String caseId, String date,String provider,String instanceId,BeneficiaryType beneficiaryType,String scheduleName,Integer durationInHour){
+		try{
+			allActions.addOrUpdateAlert(new Action(caseId, provider, ActionData.createAlert(beneficiaryType, scheduleName, scheduleName, AlertStatus.upcoming, new DateTime(), new DateTime().plusHours(durationInHour))));	    
+			List<Action> existingAlerts = allActions.findAlertByANMIdEntityIdScheduleName(provider, caseId, scheduleName);
+			if(existingAlerts.size() > 0){ 
+				this.saveScheduleLog(beneficiaryType, caseId, instanceId, provider, scheduleName, scheduleName, AlertStatus.upcoming, new DateTime(), new DateTime().plusHours(durationInHour), "",existingAlerts.get(0).timestamp());
+				logger.info("Create a Schedule Log with id :"+caseId);
+			}
+				
+		}catch(Exception e){
+		    logger.info("From createImmediateScheduleAndScheduleLog:"+e.getMessage());
+		}		
+	}
+	
+	public void createNewScheduleLogandUnenrollImmediateSchedule(String caseId, String date,String provider,String instanceId,String immediateScheduleName,String scheduleName,BeneficiaryType beneficiaryType,Integer durationInHour){
+		try{
+			scheduler.unEnrollFromScheduleimediate(caseId, provider, immediateScheduleName);
+		}catch(Exception e){
+			logger.info(format("Failed to UnEnrollFromSchedule PSRF"));
+		}
+		
+		this.scheduleCloseAndSave(caseId, instanceId, provider, scheduleName, scheduleName, beneficiaryType, AlertStatus.normal, new DateTime(), new DateTime().plusHours(durationInHour));
+		
+	}
 	public void scheduleCloseAndSave(String entityId,String instanceId,String provider,String ScheduleName,String milestoneName,BeneficiaryType beneficiaryType,AlertStatus alertStaus, DateTime startDate, DateTime expiredDate){
 		try{
 			List<Action> beforeNewActions = allActions.findAlertByANMIdEntityIdScheduleName(provider, entityId, ScheduleName);

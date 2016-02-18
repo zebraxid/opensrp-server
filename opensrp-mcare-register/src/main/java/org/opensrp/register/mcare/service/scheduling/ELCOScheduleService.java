@@ -18,6 +18,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -59,29 +60,42 @@ public class ELCOScheduleService {
 	    logger.info(format("Enrolling Elco into PSRF schedule. Id: {0}", caseId));
 	    
 		scheduler.enrollIntoSchedule(caseId, ELCO_SCHEDULE_PSRF, date);
-		try{
+		scheduleLogService.createNewScheduleLogandUnenrollImmediateSchedule(caseId, date, provider, instanceId, IMD_ELCO_SCHEDULE_PSRF, ELCO_SCHEDULE_PSRF, elco, duration);
+		/*try{
 			scheduler.unEnrollFromScheduleimediate(caseId, provider, IMD_ELCO_SCHEDULE_PSRF);
 		}catch(Exception e){
 			logger.info(format("Failed to UnEnrollFromSchedule PSRF"));
 		}
 		
 		scheduleLogService.scheduleCloseAndSave(caseId, instanceId, provider, ELCO_SCHEDULE_PSRF, ELCO_SCHEDULE_PSRF, elco, AlertStatus.normal, new DateTime(), new DateTime().plusHours(duration));
-		
+		*/
 	}
 	public void unEnrollFromScheduleCensus(String caseId, String providerId, String scheduleName){
-		scheduler.unEnrollFromScheduleCensus(caseId, providerId, HH_SCHEDULE_CENSUS);
+		//scheduler.unEnrollFromScheduleCensus(caseId, providerId, HH_SCHEDULE_CENSUS);
+		try{
+			scheduler.fullfillMilestoneAndCloseAlert(caseId, providerId, HH_SCHEDULE_CENSUS, new LocalDate());
+		}catch(Exception e){
+			logger.info(e.getMessage());
+		}
+		
 	}
 	
 	public void unEnrollFromScheduleOfPSRF(String caseId, String providerId, String scheduleName)
     {
         logger.info(format("Unenrolling Elco from PSRF schedule. Id: {0}", caseId));
         try{
-        	scheduler.unEnrollFromSchedule(caseId, providerId, ELCO_SCHEDULE_PSRF);
+        	//scheduler.unEnrollFromSchedule(caseId, providerId, ELCO_SCHEDULE_PSRF);
+        	scheduler.fullfillMilestoneAndCloseAlert(caseId, providerId, ELCO_SCHEDULE_PSRF, new LocalDate());
         }catch(Exception e){
         	logger.info(format("Failed to UnEnrollFromSchedule PSRF"));
         }
+        try{
+        	//scheduler.unEnrollFromScheduleimediate(caseId, providerId, IMD_ELCO_SCHEDULE_PSRF);
+        	scheduler.fullfillMilestoneAndCloseAlert(caseId, providerId, IMD_ELCO_SCHEDULE_PSRF, new LocalDate());
+        }catch(Exception e){
+        	logger.info(e.getMessage());
+        }
         
-        scheduler.unEnrollFromScheduleimediate(caseId, providerId, IMD_ELCO_SCHEDULE_PSRF);
     }
 	
 	private  Date getDateTime(){		
@@ -127,7 +141,8 @@ public class ELCOScheduleService {
 	{
 	    logger.info(format("Enrolling Elco into PSRF schedule. Id: {0}", caseId));	  
 	    scheduler.enrollIntoSchedule(caseId, ELCOSchedulesConstantsImediate.IMD_ELCO_SCHEDULE_PSRF, date);	 
-	    try{
+	    scheduleLogService.createImmediateScheduleAndScheduleLog(caseId, date, provider, instanceId, BeneficiaryType.elco, ELCO_SCHEDULE_PSRF, duration);
+	    /*try{
 		    allActions.addOrUpdateAlert(new Action(caseId, provider, ActionData.createAlert(elco, ELCO_SCHEDULE_PSRF, ELCO_SCHEDULE_PSRF, AlertStatus.upcoming, new DateTime(), new DateTime().plusHours(duration))));	    
 		    List<Action> existingAlerts = allActions.findAlertByANMIdEntityIdScheduleName(provider, caseId, ELCO_SCHEDULE_PSRF);
 			if(existingAlerts.size() > 0){ 
@@ -137,7 +152,7 @@ public class ELCOScheduleService {
 			
 	    }catch(Exception e){
 	    	logger.info("From imediateEnrollIntoMilestoneOfPSRF:"+e.getMessage());
-	    }
+	    }*/
 	}
 	
 }

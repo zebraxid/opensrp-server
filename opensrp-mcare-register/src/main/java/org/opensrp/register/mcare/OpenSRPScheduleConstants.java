@@ -44,7 +44,7 @@ public class OpenSRPScheduleConstants {
         public static final String SCHEDULE_ANC_2 = "ancrv_2";
         public static final String SCHEDULE_ANC_3 = "ancrv_3";
         public static final String SCHEDULE_ANC_4 = "ancrv_4";
-        public static final String SCHEDULE_BNF = "BirthNotificationPregnancyStatusFollowUp";
+        public static final String SCHEDULE_BNF = "BirthNotificationPregnancyStatusFollowUp";       
         public static final String SCHEDULE_PNC_1 = "pncrv_1";
         public static final String SCHEDULE_PNC_2 = "pncrv_2";
         public static final String SCHEDULE_PNC_3 = "pncrv_3";
@@ -94,8 +94,10 @@ public class OpenSRPScheduleConstants {
     	public static final String IMD_ELCO_SCHEDULE_PSRF = "IMEDIATE ELCO PSRF";
     }
     public static class DateTimeDuration{
-    	public static final Integer duration = 1344;
-    	public static final Integer anc1 = 50;
+    	public static final Integer duration = 1344; // hour
+    	public static final Integer bnf_duration = 6264;//hour
+    	public static final Integer bnf_due_duration = 168;//hour
+    	public static final Integer anc1 = 50; // day
     	public static final Integer anc2Start = 163;
     	public static final Integer anc2End = 168;
     	public static final Integer anc3Start = 219;    	

@@ -108,10 +108,12 @@ public class ActionService {
 	 	     reportActionService.updateScheduleLog(beneficiaryType, caseID, instanceId, anmIdentifier, scheduleName, visitCode, alertStatus, startDate, expiryDate, null,null,beforTimeStamp,existingAlert.get(0).timestamp());
 	 	     logger.info("Update schedule with id: "+caseID);
 	    	}else{
-	        	allActions.addOrUpdateAlert(new Action(caseID, anmIdentifier, ActionData.createAlert(beneficiaryType, scheduleName, visitCode, alertStatus, startDate, expiryDate)));
-	        	List<Action> existingAlert = allActions.findAlertByANMIdEntityIdScheduleName(anmIdentifier, caseID, scheduleName);
-		 	    reportActionService.updateScheduleLog(beneficiaryType, caseID, instanceId, anmIdentifier, scheduleName, visitCode, alertStatus, startDate, expiryDate, null,null,0L,existingAlert.get(0).timestamp());
-	        	logger.info("Create schedule with id: "+caseID);
+	    		if(!instanceId.equalsIgnoreCase(null) || !instanceId.isEmpty()){
+		        	allActions.addOrUpdateAlert(new Action(caseID, anmIdentifier, ActionData.createAlert(beneficiaryType, scheduleName, visitCode, alertStatus, startDate, expiryDate)));
+		        	List<Action> existingAlert = allActions.findAlertByANMIdEntityIdScheduleName(anmIdentifier, caseID, scheduleName);
+			 	    reportActionService.updateScheduleLog(beneficiaryType, caseID, instanceId, anmIdentifier, scheduleName, visitCode, alertStatus, startDate, expiryDate, null,null,0L,existingAlert.get(0).timestamp());
+		        	logger.info("Create schedule with id: "+caseID);
+	    		}
 	    	} 
     	}catch(Exception e){
     		logger.info(e.getMessage());
@@ -168,10 +170,12 @@ public class ActionService {
 	 	     reportActionService.updateScheduleLogMotherType(beneficiaryType, caseID, instanceId, anmIdentifier, scheduleName, visitCode, alertStatus, startDate, expiryDate, null,null,beforTimeStamp,existingAlert.get(0).timestamp());
 	 	     logger.info("Update  schedule with id: "+caseID);
 	        }else{
-	        	allActions.addOrUpdateAlert(new Action(caseID, anmIdentifier, ActionData.createAlert(beneficiaryType, scheduleName, visitCode, alertStatus, startDate, expiryDate)));
-	        	List<Action> existingAlert = allActions.findAlertByANMIdEntityIdScheduleName(anmIdentifier, caseID, scheduleName);
-		 	    reportActionService.updateScheduleLogMotherType(beneficiaryType, caseID, instanceId, anmIdentifier, scheduleName, visitCode, alertStatus, startDate, expiryDate, null,null,0L,existingAlert.get(0).timestamp());
-	        	logger.info("Create schedule with id: "+caseID);
+	        	if(!instanceId.equalsIgnoreCase(null) || !instanceId.isEmpty()){
+		        	allActions.addOrUpdateAlert(new Action(caseID, anmIdentifier, ActionData.createAlert(beneficiaryType, scheduleName, visitCode, alertStatus, startDate, expiryDate)));
+		        	List<Action> existingAlert = allActions.findAlertByANMIdEntityIdScheduleName(anmIdentifier, caseID, scheduleName);
+			 	    reportActionService.updateScheduleLogMotherType(beneficiaryType, caseID, instanceId, anmIdentifier, scheduleName, visitCode, alertStatus, startDate, expiryDate, null,null,0L,existingAlert.get(0).timestamp());
+		        	logger.info("Create schedule with id: "+caseID);
+	        	}
 	        } 
     	}catch(Exception e){
     		logger.info(e.getMessage());
