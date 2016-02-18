@@ -91,6 +91,10 @@
         "bind": "/model/instance/BirthNotificationPregnancyStatusFollowUp/FWDISPLAYTEXT1"
       },
       {
+        "name": "Is_PNC",
+        "bind": "/model/instance/BirthNotificationPregnancyStatusFollowUp/Is_PNC"
+      },
+      {
         "name": "FWBNFWOMVITSTS",
         "bind": "/model/instance/BirthNotificationPregnancyStatusFollowUp/outcome_occured/FWBNFWOMVITSTS"
       },
@@ -110,7 +114,7 @@
       {
         "name": "child_registration",
         "bind_type": "mcarechild",
-        "default_bind_path": "/model/instance/BirthNotificationPregnancyStatusFollowUp/outcome_occured/FWBNCHLDVITSTS/",
+        "default_bind_path": "/model/instance/BirthNotificationPregnancyStatusFollowUp/outcome_occured/FWBNCHLDVITSTS",
         "fields": [
           {
             "name": "id",
