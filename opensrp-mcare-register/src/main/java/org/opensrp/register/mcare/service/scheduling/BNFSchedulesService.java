@@ -59,9 +59,13 @@ public class BNFSchedulesService {
         }
 	}
 	public void enrollIntoMilestoneOfBNF(String caseId, String date,String provider,String instanceId){
-		 logger.info(format("Enrolling Mother into BNF schedule. Id: {0}", caseId));
-		 //scheduler.enrollIntoSchedule(caseId, SCHEDULE_BNF, date);
-		 scheduler.fullfillMilestoneAndCloseAlert(caseId, provider, SCHEDULE_BNF, new LocalDate());
+		 logger.info(format("Enrolling Mother into BNF schedule. Id: {0}", caseId));		 
+		 try{
+			 scheduler.fullfillMilestoneAndCloseAlert(caseId, provider, SCHEDULE_BNF, new LocalDate());
+		 }catch(Exception e){
+			 logger.info(format("Failed to COmplete  BNF Schedule:"+ e.getMessage()));
+		 }
+		 scheduler.enrollIntoSchedule(caseId, SCHEDULE_BNF, date);
 		 scheduleLogService.createNewScheduleLogandUnenrollImmediateSchedule(caseId, date, provider, instanceId, SCHEDULE_BNF_IME, SCHEDULE_BNF, BeneficiaryType.mother, DateTimeDuration.bnf_due_duration);
 	}
 	public void immediateEnrollIntoMilestoneOfBNF(String caseId, String date,String provider,String instanceId)	

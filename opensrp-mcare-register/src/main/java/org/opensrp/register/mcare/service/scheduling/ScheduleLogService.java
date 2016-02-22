@@ -16,6 +16,7 @@ import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherSchedule
 
 import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.motechproject.scheduletracking.api.domain.Enrollment;
@@ -237,9 +238,10 @@ public class ScheduleLogService extends OpenmrsService{
 	
 	public void createNewScheduleLogandUnenrollImmediateSchedule(String caseId, String date,String provider,String instanceId,String immediateScheduleName,String scheduleName,BeneficiaryType beneficiaryType,Integer durationInHour){
 		try{
-			scheduler.unEnrollFromScheduleimediate(caseId, provider, immediateScheduleName);
+			//scheduler.unEnrollFromScheduleimediate(caseId, provider, immediateScheduleName);
+			scheduler.fullfillMilestoneAndCloseAlert(caseId, provider, immediateScheduleName, new LocalDate());
 		}catch(Exception e){
-			logger.info(format("Failed to UnEnrollFromSchedule PSRF"));
+			logger.info(format("Failed to COmplete Immediate BNF Schedule:"+ e.getMessage()));
 		}
 		
 		this.scheduleCloseAndSave(caseId, instanceId, provider, scheduleName, scheduleName, beneficiaryType, AlertStatus.normal, new DateTime(), new DateTime().plusHours(durationInHour));

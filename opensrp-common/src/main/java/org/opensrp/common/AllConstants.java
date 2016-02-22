@@ -371,7 +371,7 @@ public class AllConstants {
     	public static final String STS_LB ="3";
     	public static final String STS_SB ="4";
     	public static final String STS_GONE ="7";    	
-    	public static final String STS_WD ="8";
+    	public static final String STS_WD ="9";
     	public static final String SCHEDULE_BNF_IME = "ImmediateBirthNotificationPregnancyStatusFollowUp";
     	 public static final String SCHEDULE_BNF = "BirthNotificationPregnancyStatusFollowUp";
     	    

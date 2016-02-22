@@ -128,6 +128,7 @@ public class BNFService {
 			pncService.closeMother(mother);
 			scheduleLogService.closeScheduleAndScheduleLog( submission.entityId(),submission.instanceId(), SCHEDULE_BNF,submission.anmId());
 		}else{
+			logger.info("Else Condition From BNF");
 			bnfSchedulesService.enrollIntoMilestoneOfBNF(submission.entityId(),
 		            submission.getField(REFERENCE_DATE),submission.anmId(),submission.instanceId());
 		}
