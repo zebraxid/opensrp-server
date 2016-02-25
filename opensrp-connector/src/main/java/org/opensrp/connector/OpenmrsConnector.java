@@ -90,7 +90,7 @@ public class OpenmrsConnector {
             	else{
     				String val = formAttributeMapper.getInstanceAttributesForFormFieldAndValue(fl.name(), fl.value(), null, fs);				
     				e.addObs(new Obs("concept", att.get("openmrs_entity_id"), 
-    						att.get("openmrs_entity_parent"), StringUtils.isEmptyOrWhitespaceOnly(val)?fl.value():val, null, fl.name()));
+    						att.get("openmrs_entity_parent"), StringUtils.isEmptyOrWhitespaceOnly(val)?fl.value():val, null, fl.name()));  				   				
             	}				
 			}
 		}
@@ -348,9 +348,10 @@ public class OpenmrsConnector {
 		String firstName = fs.getField(getFieldName(Person.first_name, fs));
 		String middleName = fs.getField(getFieldName(Person.middle_name, fs));
 		String lastName = fs.getField(getFieldName(Person.last_name, fs));
-		Date birthdate = OpenmrsService.OPENMRS_DATE.parse(fs.getField(getFieldName(Person.birthdate, fs)));
+		String bd = fs.getField(getFieldName(Person.birthdate, fs));
+		Date birthdate = (bd==null || bd.isEmpty())?null:OpenmrsService.OPENMRS_DATE.parse(bd);
 		String dd = fs.getField(getFieldName(Person.deathdate, fs));
-		Date deathdate = dd==null?null:OpenmrsService.OPENMRS_DATE.parse(dd);
+		Date deathdate = (dd==null || dd.isEmpty())?null:OpenmrsService.OPENMRS_DATE.parse(dd);
 		String aproxbd = fs.getField(getFieldName(Person.birthdate_estimated, fs));
 		Boolean birthdateApprox = false;
 		if(!StringUtils.isEmptyOrWhitespaceOnly(aproxbd) && NumberUtils.isNumber(aproxbd)){
@@ -418,9 +419,10 @@ public class OpenmrsConnector {
 					
 					String middleName = sfdata.get(getFieldName(Person.middle_name, sbf.name(), fs));
 					String lastName = sfdata.get(getFieldName(Person.last_name, sbf.name(), fs));
-					Date birthdate = OpenmrsService.OPENMRS_DATE.parse(sfdata.get(getFieldName(Person.birthdate, sbf.name(), fs)));
+					String bd = sfdata.get(getFieldName(Person.birthdate, sbf.name(), fs));
+					Date birthdate = (bd==null || bd.isEmpty())?null:OpenmrsService.OPENMRS_DATE.parse(bd);
 					String dd = sfdata.get(getFieldName(Person.deathdate, sbf.name(), fs));
-					Date deathdate = dd==null?null:OpenmrsService.OPENMRS_DATE.parse(dd);
+					Date deathdate = (dd==null || dd.isEmpty())?null:OpenmrsService.OPENMRS_DATE.parse(dd);
 					String aproxbd = sfdata.get(getFieldName(Person.birthdate_estimated, sbf.name(), fs));
 					Boolean birthdateApprox = false;
 					if(!StringUtils.isEmptyOrWhitespaceOnly(aproxbd) && NumberUtils.isNumber(aproxbd)){

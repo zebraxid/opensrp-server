@@ -74,7 +74,7 @@ public class EncounterService extends OpenmrsService{
 		List<Obs> ol = e.getObs();
 		Map<String, List<JSONObject>> pc = new HashMap<>();
 		MultiValueMap   obsMap = new MultiValueMap();
-		
+				
 		for (Obs obs : ol) {	
 			//if no parent simply make it root obs
 			if(StringUtils.isEmptyOrWhitespaceOnly(obs.getParentCode())){
@@ -122,8 +122,7 @@ public class EncounterService extends OpenmrsService{
 		JSONObject obo = new JSONObject();
 		obo.put("concept", o.getFieldCode());
 		if(o.getValue() != null && !StringUtils.isEmptyOrWhitespaceOnly(o.getValue().toString())) {
-			
-			if(o.getFieldCode().toString().equalsIgnoreCase("163137AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA") || o.getFieldCode().toString().equalsIgnoreCase("163138AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"))
+			if(o.getFieldCode().toString().equalsIgnoreCase("163137AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA") || o.getFieldCode().toString().equalsIgnoreCase("163138AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA") || o.getFieldCode().toString().equalsIgnoreCase("5599AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA") || o.getFieldCode().toString().equalsIgnoreCase("5596AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"))
 				//obo.put("value", OPENMRS_DATETime.format(o.getValue()));
 				obo.put("value", (o.getValue().toString().substring(0, 19)).replace("T", " "));
 				
