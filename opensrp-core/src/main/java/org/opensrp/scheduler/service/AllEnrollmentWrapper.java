@@ -31,6 +31,13 @@ public class AllEnrollmentWrapper extends AllEnrollments{
 	        return populateWithSchedule(enrollments);
 	    }
 	    
+	    private static final String FUNCTION_DOC_EMIT_LAST_UPDATE = "function(doc) { if(doc.type === 'Enrollment') emit(doc.metadata.lastUpdate, doc._id);}";
+	    
+	    @View(name = "by_last_update", map = FUNCTION_DOC_EMIT_LAST_UPDATE)
+	    public List<Enrollment> findByLastUpDate(DateTime start, DateTime end) {
+	        List<Enrollment> enrollments = db.queryView(createQuery("by_last_update").startKey(start).endKey(end).includeDocs(true), Enrollment.class);
+	    	return populateWithSchedule(enrollments);
+	    }
 	    private List<Enrollment> populateWithSchedule(List<Enrollment> enrollments) {
 	        for (Enrollment enrollment : enrollments)
 	            populateSchedule(enrollment);

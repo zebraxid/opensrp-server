@@ -152,4 +152,21 @@ public class EncounterService extends OpenmrsService{
 		return a;
 	}
 	
+    public JSONObject getEncounterType(String encounterType) throws JSONException
+    {
+    	// we have to use this ugly approach because identifier not found throws exception and 
+    	// its hard to find whether it was network error or object not found or server error
+    	JSONArray res = new JSONObject(HttpUtil.get(getURL()+"/"+ENCOUNTER__TYPE_URL, "v=full", 
+    			OPENMRS_USER, OPENMRS_PWD).body()).getJSONArray("results");
+    	for (int i = 0; i < res.length(); i++) {
+			if(res.getJSONObject(i).getString("display").equalsIgnoreCase(encounterType)){
+				return res.getJSONObject(i);
+			}
+		}
+    	return null;
+    }
+    public JSONObject createEncounterType(String name, String description) throws JSONException{
+		JSONObject o = convertEncounterToOpenmrsJson(name, description);
+		return new JSONObject(HttpUtil.post(getURL()+"/"+ENCOUNTER__TYPE_URL, "", o.toString(), OPENMRS_USER, OPENMRS_PWD).body());
+	}
 }

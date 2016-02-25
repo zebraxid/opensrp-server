@@ -7,7 +7,9 @@ import static org.motechproject.scheduletracking.api.domain.EnrollmentStatus.ACT
 import static org.opensrp.common.util.DateUtil.today;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
@@ -83,7 +85,15 @@ public class ScheduleService {
     public List<Enrollment> findEnrollmentByStatusAndEnrollmentDate(String status, DateTime start, DateTime end) {
         return allEnrollments.findByEnrollmentDate(status, start, end);
 	}
-    
+    public List<Enrollment> findEnrollmentByLastUpDate(DateTime start, DateTime end) {
+        return allEnrollments.findByLastUpDate(start, end);
+	}
+    public void updateEnrollmentWithMetadata(String enrollmentId, String key, String value) {
+    	Enrollment e = allEnrollments.get(enrollmentId);
+    	e.getMetadata().put(key, value);
+    	allEnrollments.update(e);
+
+	}
     public List<String> findOpenEnrollmentNames(String entityId) {
     	List<EnrollmentRecord> openEnrollments = findOpenEnrollments(entityId);
     	List<String> openSchedules = new ArrayList<>();
@@ -97,4 +107,17 @@ public class ScheduleService {
     public EnrollmentRecord getEnrollment(String entityId, String scheduleName) {
         return scheduleTrackingService.getEnrollment(entityId, scheduleName);
 	}
+    private Map<String, String> addOrUpdateLastUpdateMetadata(Map<String, String> map) {
+		if(map == null){
+			map = new HashMap<>();
+		}
+		
+		map.put("lastUpdate", new DateTime().toString());
+		return map;
+	}
+    private void updateExistingEnrollmentWithLastUpdateMetadata(String entityId, String scheduleName){
+    	Enrollment enr = allEnrollments.getActiveEnrollment(entityId, scheduleName);
+    	enr.setMetadata(addOrUpdateLastUpdateMetadata(enr.getMetadata()));
+    	allEnrollments.update(enr);
+    }
 }

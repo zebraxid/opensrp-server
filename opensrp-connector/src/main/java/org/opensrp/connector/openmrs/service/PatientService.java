@@ -85,6 +85,7 @@ public class PatientService extends OpenmrsService{
     	JSONArray p = new JSONObject(HttpUtil.get(getURL()
     			+"/"+PATIENT_URL, "v=full&identifier="+identifier, OPENMRS_USER, OPENMRS_PWD).body())
     			.getJSONArray("results");
+
     	return p.length()>0?p.getJSONObject(0):null;
     }
     

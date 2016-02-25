@@ -5,10 +5,15 @@ package org.opensrp.register.mcare.service.scheduling;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static java.text.MessageFormat.format;
+import static org.opensrp.dto.AlertStatus.normal;
 import static org.opensrp.dto.BeneficiaryType.elco;
+import static org.opensrp.dto.BeneficiaryType.mother;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.DateTimeDuration.duration;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ELCOSchedulesConstants.ELCO_SCHEDULE_PSRF;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ELCOSchedulesConstantsImediate.IMD_ELCO_SCHEDULE_PSRF;
@@ -19,10 +24,14 @@ import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.motechproject.model.Time;
 import org.motechproject.scheduletracking.api.domain.Enrollment;
+import org.motechproject.scheduletracking.api.domain.EnrollmentStatus;
 import org.motechproject.scheduletracking.api.domain.MilestoneFulfillment;
+import org.motechproject.scheduletracking.api.domain.Schedule;
 import org.opensrp.common.AllConstants.ELCOSchedulesConstantsImediate;
 import org.opensrp.connector.HttpUtil;
+import org.opensrp.connector.openmrs.constants.OpenmrsConstants;
 import org.opensrp.connector.openmrs.service.OpenmrsSchedulerService;
 import org.opensrp.connector.openmrs.service.OpenmrsService;
 import org.opensrp.connector.openmrs.service.OpenmrsUserService;
@@ -54,15 +63,16 @@ public class ScheduleLogService extends OpenmrsService{
 	private AllActions allActions;
 	private OpenmrsUserService userService;
 	private HealthSchedulerService scheduler;
-	
+	private OpenmrsSchedulerService openmrsSchedulerService;
 	@Autowired
-	public ScheduleLogService(ReportActionService reportActionService,AllEnrollmentWrapper allEnrollments,AllReportActions allReportActions,AllActions allActions,OpenmrsUserService userService,HealthSchedulerService scheduler){
+	public ScheduleLogService(ReportActionService reportActionService,AllEnrollmentWrapper allEnrollments,AllReportActions allReportActions,AllActions allActions,OpenmrsUserService userService,HealthSchedulerService scheduler,OpenmrsSchedulerService openmrsSchedulerService){
 		this.reportActionService = reportActionService;
 		this.allEnrollments = allEnrollments;
 		this.allReportActions = allReportActions;
 		this.allActions = allActions;
 		this.userService = userService;
 		this.scheduler = scheduler;
+		this.openmrsSchedulerService = openmrsSchedulerService;
 	}
 	
 	/**
@@ -84,11 +94,12 @@ public class ScheduleLogService extends OpenmrsService{
 	 * */
 	
 	public void saveScheduleLog(BeneficiaryType beneficiaryType, String caseID, String instanceId, String anmIdentifier, String scheduleName, String visitCode, AlertStatus alertStatus, DateTime startDate, DateTime expiryDate,String immediateScheduleName,long timeStamp){
-		List<Enrollment> el =this.findEnrollmentByCaseIdAndScheduleName(caseID,immediateScheduleName);
+		List<Enrollment> el =this.findEnrollmentByCaseIdAndScheduleName(caseID,scheduleName);
 		String trackId = "";		
 		for (Enrollment e : el){
-			//trackId = this.saveEnrollDataToOpenMRSTrack(e);
-		}		
+			trackId = this.saveEnrollDataToOpenMRSTrack(e);
+		}
+		
 		if(trackId.equalsIgnoreCase("")){
 			trackId = "";
 		}		
@@ -110,33 +121,37 @@ public class ScheduleLogService extends OpenmrsService{
 		return  allEnrollments.findByEnrollmentByExternalIdAndScheduleName(caseID,scheduleName);
 	}
 	
-	public String saveEnrollDataToOpenMRSTrack(Enrollment e){
-		JSONObject t = new JSONObject();
-		String trackuuid = null;
-		try {
-			//t.put("beneficiary", e.getExternalId());
-			t.put("beneficiary", 123456789);
-			t.put("beneficiaryRole", "elco");
-			t.put("schedule", e.getScheduleName().replace(ELCOSchedulesConstantsImediate.IMD_ELCO_SCHEDULE_PSRF,ELCO_SCHEDULE_PSRF));
-			String hr = StringUtils.leftPad(e.getPreferredAlertTime().getHour().toString(),2,"0");
-			String mn = StringUtils.leftPad(e.getPreferredAlertTime().getMinute().toString(),2,"0");
-			t.put("preferredAlertTime", hr+":"+mn+":00");
-			t.put("referenceDate", OPENMRS_DATE.format(e.getStartOfSchedule().toDate()));
-			t.put("referenceDateType", "MANUAL");
-			t.put("dateEnrolled", OPENMRS_DATE.format(e.getEnrolledOn().toDate()));			
-			t.put("currentMilestone", e.getCurrentMilestoneName().replace(ELCOSchedulesConstantsImediate.IMD_ELCO_SCHEDULE_PSRF,ELCO_SCHEDULE_PSRF));
-			t.put("status", e.getStatus().name());
-			System.out.println("OpenMRS sent data:"+t.toString());
-			JSONObject to = new JSONObject(HttpUtil.post(getURL()+"/"+TRACK_URL, "", t.toString(), OPENMRS_USER, OPENMRS_PWD).body());
-			trackuuid = to.getString("uuid");
-		} catch (JSONException e1) {
+	public String saveEnrollDataToOpenMRSTrack(Enrollment el){
+		String id= "af8fcc5d-5463-4eb9-a220-75020a3a25c0";
+		Enrollment e = new Enrollment(id, new Schedule("Boosters"), "REMINDER", 
+				new DateTime(2012, 1, 1, 0, 0), new DateTime(2012, 1, 1, 0, 0), new Time(23,8), EnrollmentStatus.ACTIVE, null);
+		List<Action> alertActions = new ArrayList<Action>();
+		alertActions.add(new Action(id, "admin", alert("Boosters", "REMINDER")));
+		alertActions.add(new Action(id, "admin", ActionData.markAlertAsClosed("REMINDER", "12-12-2015")));
+		try {			
+			JSONObject t = openmrsSchedulerService.createTrack(e, alertActions);
+			e.setStatus(EnrollmentStatus.COMPLETED);
+			Map<String, String> metadata = new HashMap<>();
+			metadata.put(OpenmrsConstants.ENROLLMENT_TRACK_UUID, t.getString("uuid"));
+			e.setMetadata(metadata );
+			openmrsSchedulerService.updateTrack(e, alertActions);
+			logger.info("Openmrs Track Created...::");
+		} catch (JSONException e2) {
 			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			e2.printStackTrace();
+			logger.info("Log:"+e2.toString());
+		} catch (ParseException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+			logger.info("Log:"+e2.toString());
 		}
-		return trackuuid;
+		
+		return "TH";
 		
 	}
-	
+	 private ActionData alert(String schedule, String milestone) {
+	        return ActionData.createAlert(mother, schedule, milestone, normal, DateTime.now(), DateTime.now().plusDays(3));
+	    }
 	public void closeSchedule(String caseId,String instanceId,long timestamp,String name){
 		        
         try{

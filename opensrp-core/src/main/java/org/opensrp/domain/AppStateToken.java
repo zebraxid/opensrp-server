@@ -73,7 +73,9 @@ public class AppStateToken extends MotechBaseDataObject {
 	public String getStringValue() {
 		return value.toString();
 	}
-	
+	public String stringValue() {
+		return value.toString();
+	}
 	public boolean getBooleanValue() {
 		return Boolean.parseBoolean(value.toString());
 	}

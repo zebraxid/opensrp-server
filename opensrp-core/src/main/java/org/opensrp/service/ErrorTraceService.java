@@ -30,6 +30,17 @@ public class ErrorTraceService {
 	public void addError(ErrorTrace entity){
 		allErrorTrace.add(entity);
 	}
+	public void log(String errorType , String documentType, String recordId ,String stackTrace, String retryURL){
+		ErrorTrace error=new ErrorTrace();
+		error.setErrorType(errorType);
+		error.setDocumentType(documentType);
+		error.setRecordId(recordId);
+		error.setStackTrace(stackTrace);
+		error.setRetryUrl(retryURL);
+		error.setDateOccurred(new Date());
+		addError(error);
+		
+	}
 	
 	public void updateError(ErrorTrace entity){
 		allErrorTrace.update(entity);
