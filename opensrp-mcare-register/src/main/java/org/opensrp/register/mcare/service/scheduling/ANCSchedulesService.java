@@ -107,7 +107,10 @@ public class ANCSchedulesService {
         
         logger.info(format("Enrolling ANC with Entity id:{0} to ANC schedule, milestone: {1}.", entityId, milestone));
         scheduler.enrollIntoSchedule(entityId, SCHEDULE_ANC, milestone, referenceDateForSchedule.toString());
-        List<Action> beforeNewActions = allActions.findAlertByANMIdEntityIdScheduleName(provider, entityId, SCHEDULE_ANC);
+        
+        scheduleLogService.scheduleCloseAndSave(entityId, instanceId, provider, SCHEDULE_ANC, milestone, BeneficiaryType.mother, alertStaus, ancStartDate, ancExpireDate);
+        
+        /*List<Action> beforeNewActions = allActions.findAlertByANMIdEntityIdScheduleName(provider, entityId, SCHEDULE_ANC);
 		if(beforeNewActions.size() > 0){ 
 		scheduleLogService.closeSchedule(entityId,instanceId,beforeNewActions.get(0).timestamp(),SCHEDULE_ANC);
 		}
@@ -117,7 +120,7 @@ public class ANCSchedulesService {
 		if(afterNewActions.size() > 0){ 
 			scheduleLogService.saveScheduleLog(BeneficiaryType.mother, entityId, instanceId, provider, SCHEDULE_ANC, milestone, alertStaus, ancStartDate, ancExpireDate,SCHEDULE_ANC,afterNewActions.get(0).timestamp());
 	
-		}
+		}*/
     }
     
     public void fullfillSchedule(String caseID, String scheduleName, String instanceId, long timestamp){

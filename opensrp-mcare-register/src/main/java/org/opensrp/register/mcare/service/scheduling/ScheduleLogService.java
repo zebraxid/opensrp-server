@@ -7,8 +7,11 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
+import static java.text.MessageFormat.format;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.DateTimeDuration.duration;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ELCOSchedulesConstants.ELCO_SCHEDULE_PSRF;
+import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_ANC;
+
 import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 import org.json.JSONException;
@@ -20,6 +23,7 @@ import org.opensrp.connector.HttpUtil;
 import org.opensrp.connector.openmrs.service.OpenmrsSchedulerService;
 import org.opensrp.connector.openmrs.service.OpenmrsService;
 import org.opensrp.connector.openmrs.service.OpenmrsUserService;
+import org.opensrp.dto.ActionData;
 import org.opensrp.dto.AlertStatus;
 import org.opensrp.dto.BeneficiaryType;
 import org.opensrp.form.domain.FormSubmission;
@@ -180,5 +184,19 @@ public class ScheduleLogService extends OpenmrsService{
 	public void fullfillSchedule(String caseID, String scheduleName, String instanceId,long timestamp){
 		reportActionService.schedulefullfill(caseID, scheduleName, instanceId, timestamp);
 		
+	}
+	
+	public void scheduleCloseAndSave(String entityId,String instanceId,String provider,String ScheduleName,String milestoneName,BeneficiaryType beneficiaryType,AlertStatus alertStaus, DateTime startDate, DateTime expiredDate){
+		List<Action> beforeNewActions = allActions.findAlertByANMIdEntityIdScheduleName(provider, entityId, ScheduleName);
+		if(beforeNewActions.size() > 0){ 
+		 this.closeSchedule(entityId,instanceId,beforeNewActions.get(0).timestamp(),ScheduleName);
+		}
+		allActions.addOrUpdateAlert(new Action(entityId, provider, ActionData.createAlert(beneficiaryType, ScheduleName, milestoneName, alertStaus, startDate,  expiredDate)));
+		logger.info(format("create psrf from psrf to psrf..", entityId));
+		List<Action> afterNewActions = allActions.findAlertByANMIdEntityIdScheduleName(provider, entityId, ScheduleName);
+		if(afterNewActions.size() > 0){ 
+			this.saveScheduleLog(beneficiaryType, entityId, instanceId, provider, ScheduleName, milestoneName, alertStaus, startDate, expiredDate,ScheduleName,afterNewActions.get(0).timestamp());
+	
+		}
 	}
 }

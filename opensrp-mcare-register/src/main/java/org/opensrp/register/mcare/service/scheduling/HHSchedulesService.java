@@ -4,6 +4,7 @@ import static java.text.MessageFormat.format;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ELCOSchedulesConstants.ELCO_SCHEDULE_PSRF;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ELCOSchedulesConstantsImediate.IMD_ELCO_SCHEDULE_PSRF;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.HHSchedulesConstants.HH_SCHEDULE_CENSUS;
+import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_ANC;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.DateTimeDuration.duration;
 
 import java.util.List;
@@ -47,7 +48,10 @@ public class HHSchedulesService {
 	{
 	    logger.info(format("Enrolling household into Census schedule. Id: {0}", entityId));	    
 		scheduler.enrollIntoSchedule(entityId, HH_SCHEDULE_CENSUS, date);	
-		List<Action> beforNewActions = allActions.findAlertByANMIdEntityIdScheduleName(provider, entityId, HH_SCHEDULE_CENSUS);
+		
+		scheduleLogService.scheduleCloseAndSave(entityId, instanceId, provider, HH_SCHEDULE_CENSUS, HH_SCHEDULE_CENSUS, BeneficiaryType.household, AlertStatus.normal, new DateTime(),  new DateTime().plusHours(duration));
+		
+		/*List<Action> beforNewActions = allActions.findAlertByANMIdEntityIdScheduleName(provider, entityId, HH_SCHEDULE_CENSUS);
 		if(beforNewActions.size() > 0){			
 			scheduleLogService.closeSchedule(entityId,instanceId,beforNewActions.get(0).timestamp(),HH_SCHEDULE_CENSUS);
 		}
@@ -55,6 +59,6 @@ public class HHSchedulesService {
 		List<Action> afterNewActions = allActions.findAlertByANMIdEntityIdScheduleName(provider, entityId, HH_SCHEDULE_CENSUS);
 		if(afterNewActions.size() > 0){
 			scheduleLogService.saveScheduleLog(BeneficiaryType.household, entityId, instanceId, provider, HH_SCHEDULE_CENSUS, HH_SCHEDULE_CENSUS, AlertStatus.normal, new DateTime(), new DateTime().plusHours(duration),HH_SCHEDULE_CENSUS,afterNewActions.get(0).timestamp());
-		}
+		}*/
 	}
 }

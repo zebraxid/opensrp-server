@@ -32,6 +32,8 @@ import org.opensrp.register.mcare.domain.Mother;
 import org.opensrp.register.mcare.repository.AllElcos;
 import org.opensrp.register.mcare.repository.AllMothers;
 import org.opensrp.register.mcare.service.scheduling.BNFSchedulesService;
+import org.opensrp.register.mcare.service.scheduling.ScheduleLogService;
+import org.opensrp.scheduler.repository.AllActions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,9 +49,11 @@ public class BNFService {
 	private AllMothers allMothers;
 	private BNFSchedulesService bnfSchedulesService;
 	private PNCService pncService;
+	private ScheduleLogService scheduleLogService;
+	private AllActions allActions;
 	
 	@Autowired
-	public BNFService(AllElcos allElcos, AllMothers allMothers, BNFSchedulesService bnfSchedulesService, PNCService pncService)
+	public BNFService(AllElcos allElcos, AllMothers allMothers, BNFSchedulesService bnfSchedulesService, PNCService pncService,ScheduleLogService scheduleLogService,AllActions allActions)
 	{
 		this.allElcos = allElcos;
 		this.allMothers = allMothers;
@@ -76,7 +80,7 @@ public class BNFService {
 		mother.withTODAY(submission.getField(REFERENCE_DATE));
 		allMothers.update(mother);
 		
-		bnfSchedulesService.enrollBNF(motherId, LocalDate.parse(submission.getField(MOTHER_REFERENCE_DATE)));
+		bnfSchedulesService.enrollBNF(motherId, LocalDate.parse(submission.getField(MOTHER_REFERENCE_DATE)),submission.anmId(),submission.instanceId(),submission.getField(MOTHER_REFERENCE_DATE));
 		
 	}
 	public void bnfFollowUpVisit(FormSubmission submission) {
@@ -112,6 +116,10 @@ public class BNFService {
 		if(submission.getField(FWBNFSTS).equalsIgnoreCase(STS_LB) || submission.getField(FWBNFSTS).equalsIgnoreCase(STS_SB))
 		{ 
 			pncService.deliveryOutcome(submission); 
+			
+		}else{
+			/*elcoScheduleService.enrollIntoMilestoneOfPSRF(submission.entityId(),
+		            submission.getField(REFERENCE_DATE),submission.anmId(),submission.instanceId())*/
 		}
 		
 	}
