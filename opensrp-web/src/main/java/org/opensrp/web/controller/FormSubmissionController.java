@@ -20,6 +20,7 @@ import org.opensrp.api.domain.Client;
 import org.opensrp.api.domain.Event;
 import org.opensrp.connector.OpenmrsConnector;
 import org.opensrp.connector.openmrs.constants.OpenmrsHouseHold;
+import org.opensrp.connector.openmrs.constants.OpenmrsConstants.Person;
 import org.opensrp.connector.openmrs.service.EncounterService;
 import org.opensrp.connector.openmrs.service.HouseholdService;
 import org.opensrp.connector.openmrs.service.OpenmrsUserService;
@@ -142,6 +143,8 @@ public class FormSubmissionController {
             	if(openmrsConnector.isOpenmrsForm(formSubmission)){
             		System.out.println("Sending data to openMRS/***********************************************************************/ entityId: " + formSubmission.entityId());
 	            	JSONObject p = patientService.getPatientByIdentifier(formSubmission.entityId());
+	            	String q = formSubmission.getField("GOBHHID");
+	            	System.out.println("GOBHHID : " + q);
 	            	
 	            	if(p != null){	 // HO           		
 	            	    System.out.println("Existing patient found into openMRS /***********************************************************************/ ");

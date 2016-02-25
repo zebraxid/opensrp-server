@@ -131,7 +131,12 @@ public class PatientService extends OpenmrsService{
 	public JSONObject convertBaseEntityToOpenmrsJson(BaseEntity be) throws JSONException {
 		JSONObject per = new JSONObject();
 		per.put("gender", be.getGender());
-		per.put("birthdate", OPENMRS_DATE.format(be.getBirthdate()));
+		if(be.getBirthdate() != null){
+			per.put("birthdate", OPENMRS_DATE.format(be.getBirthdate()));
+		}
+		else{
+			per.put("birthdate", OPENMRS_DATE.format("1900-00-00"));
+		}
 		per.put("birthdateEstimated", be.getBirthdateApprox());
 		if(be.getDeathdate() != null){
 			per.put("deathDate", OPENMRS_DATE.format(be.getDeathdate()));
@@ -297,4 +302,3 @@ public class PatientService extends OpenmrsService{
 	        }
 	}
 }
-

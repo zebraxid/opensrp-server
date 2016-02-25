@@ -103,7 +103,7 @@ public class ANCSchedulesService {
             alertStaus = AlertStatus.upcoming;
             ancStartDate = new DateTime(start).plusDays(DateTimeDuration.anc3Start);
             ancExpireDate = new DateTime(ancStartDate).plusDays(DateTimeDuration.anc3End);
-        } else if(DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(36).toPeriod().minusDays(0))) {
+        } else if(DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(94).toPeriod().minusDays(5))) {
             milestone = SCHEDULE_ANC_4;
             alertStaus = AlertStatus.upcoming;
             ancStartDate = new DateTime(start).plusDays(DateTimeDuration.anc4Start);
