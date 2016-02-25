@@ -349,7 +349,7 @@ public class OpenmrsConnector {
 		String middleName = fs.getField(getFieldName(Person.middle_name, fs));
 		String lastName = fs.getField(getFieldName(Person.last_name, fs));
 		String bd = fs.getField(getFieldName(Person.birthdate, fs));
-		Date birthdate = (bd==null || bd.isEmpty())?null:OpenmrsService.OPENMRS_DATE.parse(bd);
+		Date birthdate = (bd==null || bd.isEmpty())? OpenmrsService.OPENMRS_DATE.parse("1900-00-00"):OpenmrsService.OPENMRS_DATE.parse(bd);
 		String dd = fs.getField(getFieldName(Person.deathdate, fs));
 		Date deathdate = (dd==null || dd.isEmpty())?null:OpenmrsService.OPENMRS_DATE.parse(dd);
 		String aproxbd = fs.getField(getFieldName(Person.birthdate_estimated, fs));
@@ -420,7 +420,7 @@ public class OpenmrsConnector {
 					String middleName = sfdata.get(getFieldName(Person.middle_name, sbf.name(), fs));
 					String lastName = sfdata.get(getFieldName(Person.last_name, sbf.name(), fs));
 					String bd = sfdata.get(getFieldName(Person.birthdate, sbf.name(), fs));
-					Date birthdate = (bd==null || bd.isEmpty())?null:OpenmrsService.OPENMRS_DATE.parse(bd);
+					Date birthdate = (bd==null || bd.isEmpty())? OpenmrsService.OPENMRS_DATE.parse("1900-00-00"):OpenmrsService.OPENMRS_DATE.parse(bd);
 					String dd = sfdata.get(getFieldName(Person.deathdate, sbf.name(), fs));
 					Date deathdate = (dd==null || dd.isEmpty())?null:OpenmrsService.OPENMRS_DATE.parse(dd);
 					String aproxbd = sfdata.get(getFieldName(Person.birthdate_estimated, sbf.name(), fs));
