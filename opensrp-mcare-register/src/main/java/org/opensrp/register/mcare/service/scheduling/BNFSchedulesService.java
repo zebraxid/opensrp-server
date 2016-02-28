@@ -72,7 +72,7 @@ public class BNFSchedulesService {
 	{
 	    logger.info(format("Enrolling Mother into Immediate BNF schedule. Id: {0}", caseId));	  
 	    scheduler.enrollIntoSchedule(caseId, SCHEDULE_BNF_IME, date);
-	    scheduleLogService.createImmediateScheduleAndScheduleLog(caseId, date, provider, instanceId, BeneficiaryType.mother, SCHEDULE_BNF, bnf_duration);
+	    scheduleLogService.createImmediateScheduleAndScheduleLog(caseId, date, provider, instanceId, BeneficiaryType.mother, SCHEDULE_BNF, bnf_duration,SCHEDULE_BNF_IME);
 	   
 	}
 

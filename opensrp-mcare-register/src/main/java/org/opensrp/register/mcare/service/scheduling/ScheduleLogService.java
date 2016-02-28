@@ -3,6 +3,10 @@
  * */
 package org.opensrp.register.mcare.service.scheduling;
 
+import static java.text.MessageFormat.format;
+import static org.opensrp.dto.AlertStatus.normal;
+import static org.opensrp.dto.BeneficiaryType.mother;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -10,16 +14,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static java.text.MessageFormat.format;
-import static org.opensrp.dto.AlertStatus.normal;
-import static org.opensrp.dto.BeneficiaryType.elco;
-import static org.opensrp.dto.BeneficiaryType.mother;
-import static org.opensrp.register.mcare.OpenSRPScheduleConstants.DateTimeDuration.duration;
-import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ELCOSchedulesConstants.ELCO_SCHEDULE_PSRF;
-import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ELCOSchedulesConstantsImediate.IMD_ELCO_SCHEDULE_PSRF;
-import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_ANC;
-
-import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.json.JSONException;
@@ -29,7 +23,6 @@ import org.motechproject.scheduletracking.api.domain.Enrollment;
 import org.motechproject.scheduletracking.api.domain.EnrollmentStatus;
 import org.motechproject.scheduletracking.api.domain.MilestoneFulfillment;
 import org.motechproject.scheduletracking.api.domain.Schedule;
-import org.opensrp.common.AllConstants.ELCOSchedulesConstantsImediate;
 import org.opensrp.connector.HttpUtil;
 import org.opensrp.connector.openmrs.constants.OpenmrsConstants;
 import org.opensrp.connector.openmrs.service.OpenmrsSchedulerService;
@@ -38,7 +31,6 @@ import org.opensrp.connector.openmrs.service.OpenmrsUserService;
 import org.opensrp.dto.ActionData;
 import org.opensrp.dto.AlertStatus;
 import org.opensrp.dto.BeneficiaryType;
-import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.scheduler.Action;
 import org.opensrp.scheduler.HealthSchedulerService;
 import org.opensrp.scheduler.ScheduleLog;
@@ -94,7 +86,12 @@ public class ScheduleLogService extends OpenmrsService{
 	 * */
 	
 	public void saveScheduleLog(BeneficiaryType beneficiaryType, String caseID, String instanceId, String anmIdentifier, String scheduleName, String visitCode, AlertStatus alertStatus, DateTime startDate, DateTime expiryDate,String immediateScheduleName,long timeStamp){
-		List<Enrollment> el =this.findEnrollmentByCaseIdAndScheduleName(caseID,scheduleName);
+		List<Enrollment> el = null;
+		if(!immediateScheduleName.equalsIgnoreCase("")){
+			 el =this.findEnrollmentByCaseIdAndScheduleName(caseID,immediateScheduleName);
+		}else{
+			el =this.findEnrollmentByCaseIdAndScheduleName(caseID,scheduleName);
+		}
 		String trackId = "";		
 		for (Enrollment e : el){
 			trackId = this.saveEnrollDataToOpenMRSTrack(e);
@@ -109,12 +106,7 @@ public class ScheduleLogService extends OpenmrsService{
 		}catch(Exception e){
 			logger.info("ScheduleLog Does not create:"+e.getMessage());
 		}
-		/*try {
-			this.saveActionDataToOpenMrsMilestoneTrack(caseID, instanceId, anmIdentifier, scheduleName);
-		} catch (ParseException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}*/
+		
 	}
 	
 	public  List<Enrollment> findEnrollmentByCaseIdAndScheduleName(String caseID,String scheduleName ){
@@ -127,26 +119,29 @@ public class ScheduleLogService extends OpenmrsService{
 				new DateTime(2012, 1, 1, 0, 0), new DateTime(2012, 1, 1, 0, 0), new Time(23,8), EnrollmentStatus.ACTIVE, null);
 		List<Action> alertActions = new ArrayList<Action>();
 		alertActions.add(new Action(id, "admin", alert("Boosters", "REMINDER")));
-		alertActions.add(new Action(id, "admin", ActionData.markAlertAsClosed("REMINDER", "12-12-2015")));
+		//alertActions.add(new Action(id, "admin", ActionData.markAlertAsClosed("REMINDER", "12-12-2015")));
 		try {			
-			JSONObject t = openmrsSchedulerService.createTrack(e, alertActions);
+			JSONObject t = openmrsSchedulerService.createTrack(el, alertActions);
 			e.setStatus(EnrollmentStatus.COMPLETED);
 			Map<String, String> metadata = new HashMap<>();
 			metadata.put(OpenmrsConstants.ENROLLMENT_TRACK_UUID, t.getString("uuid"));
 			e.setMetadata(metadata );
 			openmrsSchedulerService.updateTrack(e, alertActions);
 			logger.info("Openmrs Track Created...::");
+			return t.getString("uuid");
 		} catch (JSONException e2) {
 			// TODO Auto-generated catch block
 			e2.printStackTrace();
 			logger.info("Log:"+e2.toString());
+			return null;
 		} catch (ParseException e2) {
 			// TODO Auto-generated catch block
 			e2.printStackTrace();
 			logger.info("Log:"+e2.toString());
+			return null;
 		}
 		
-		return "TH";
+		
 		
 	}
 	 private ActionData alert(String schedule, String milestone) {
@@ -237,12 +232,12 @@ public class ScheduleLogService extends OpenmrsService{
 		
 	}
 	
-	public void createImmediateScheduleAndScheduleLog(String caseId, String date,String provider,String instanceId,BeneficiaryType beneficiaryType,String scheduleName,Integer durationInHour){
+	public void createImmediateScheduleAndScheduleLog(String caseId, String date,String provider,String instanceId,BeneficiaryType beneficiaryType,String scheduleName,Integer durationInHour,String ImmediateScheduleName){
 		try{
 			allActions.addOrUpdateAlert(new Action(caseId, provider, ActionData.createAlert(beneficiaryType, scheduleName, scheduleName, AlertStatus.upcoming, new DateTime(), new DateTime().plusHours(durationInHour))));	    
 			List<Action> existingAlerts = allActions.findAlertByANMIdEntityIdScheduleName(provider, caseId, scheduleName);
 			if(existingAlerts.size() > 0){ 
-				this.saveScheduleLog(beneficiaryType, caseId, instanceId, provider, scheduleName, scheduleName, AlertStatus.upcoming, new DateTime(), new DateTime().plusHours(durationInHour), "",existingAlerts.get(0).timestamp());
+				this.saveScheduleLog(beneficiaryType, caseId, instanceId, provider, scheduleName, scheduleName, AlertStatus.upcoming, new DateTime(), new DateTime().plusHours(durationInHour), ImmediateScheduleName,existingAlerts.get(0).timestamp());
 				logger.info("Create a Schedule Log with id :"+caseId);
 			}
 				
