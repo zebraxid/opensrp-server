@@ -134,7 +134,7 @@ public class PatientService extends OpenmrsService{
 			per.put("birthdate", OPENMRS_DATE.format(be.getBirthdate()));
 		}
 		else{
-			per.put("birthdate", OPENMRS_DATE.format("1900-00-00"));
+			per.put("birthdate", OPENMRS_DATE.format("1900-01-01"));
 		}
 		per.put("birthdateEstimated", be.getBirthdateApprox());
 		if(be.getDeathdate() != null){
