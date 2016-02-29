@@ -8,7 +8,6 @@ import static org.opensrp.dto.AlertStatus.normal;
 import static org.opensrp.dto.BeneficiaryType.mother;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,12 +17,8 @@ import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.motechproject.model.Time;
 import org.motechproject.scheduletracking.api.domain.Enrollment;
-import org.motechproject.scheduletracking.api.domain.EnrollmentStatus;
 import org.motechproject.scheduletracking.api.domain.MilestoneFulfillment;
-import org.motechproject.scheduletracking.api.domain.Schedule;
-import org.opensrp.connector.HttpUtil;
 import org.opensrp.connector.openmrs.constants.OpenmrsConstants;
 import org.opensrp.connector.openmrs.service.OpenmrsSchedulerService;
 import org.opensrp.connector.openmrs.service.OpenmrsService;
@@ -42,12 +37,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 @Service
-public class ScheduleLogService extends OpenmrsService{
-	private static final String TRACK_URL = "ws/rest/v1/scheduletracker/track";
-	private static final String TRACK_MILESTONE_URL = "ws/rest/v1/scheduletracker/trackmilestone";
-	private static final String SCHEDULE_URL = "ws/rest/v1/scheduletracker/schedule";
-	private static final String MILESTONE_URL = "ws/rest/v1/scheduletracker/milestone";
+
+public class ScheduleLogService extends OpenmrsService{	
 	private static Logger logger = LoggerFactory.getLogger(ScheduleLogService.class.toString());
 	private ReportActionService reportActionService;
 	private final AllEnrollmentWrapper allEnrollments;
@@ -87,14 +80,17 @@ public class ScheduleLogService extends OpenmrsService{
 	
 	public void saveScheduleLog(BeneficiaryType beneficiaryType, String caseID, String instanceId, String anmIdentifier, String scheduleName, String visitCode, AlertStatus alertStatus, DateTime startDate, DateTime expiryDate,String immediateScheduleName,long timeStamp){
 		List<Enrollment> el = null;
+		List<Action> alertActions = new ArrayList<Action>();
 		if(!immediateScheduleName.equalsIgnoreCase("")){
-			 el =this.findEnrollmentByCaseIdAndScheduleName(caseID,immediateScheduleName);
+			el =this.findEnrollmentByCaseIdAndScheduleName(caseID,immediateScheduleName);			 
+			
 		}else{
 			el =this.findEnrollmentByCaseIdAndScheduleName(caseID,scheduleName);
 		}
 		String trackId = "";		
 		for (Enrollment e : el){
-			trackId = this.saveEnrollDataToOpenMRSTrack(e);
+			alertActions.add(new Action(caseID, anmIdentifier, ActionData.createAlert(beneficiaryType, scheduleName, visitCode, alertStatus, startDate, expiryDate)));
+			trackId = this.saveEnrollDataToOpenMRSTrack(e,alertActions);
 		}
 		
 		if(trackId.equalsIgnoreCase("")){
@@ -113,20 +109,16 @@ public class ScheduleLogService extends OpenmrsService{
 		return  allEnrollments.findByEnrollmentByExternalIdAndScheduleName(caseID,scheduleName);
 	}
 	
-	public String saveEnrollDataToOpenMRSTrack(Enrollment el){
-		String id= "af8fcc5d-5463-4eb9-a220-75020a3a25c0";
-		Enrollment e = new Enrollment(id, new Schedule("Boosters"), "REMINDER", 
-				new DateTime(2012, 1, 1, 0, 0), new DateTime(2012, 1, 1, 0, 0), new Time(23,8), EnrollmentStatus.ACTIVE, null);
-		List<Action> alertActions = new ArrayList<Action>();
-		alertActions.add(new Action(id, "admin", alert("Boosters", "REMINDER")));
-		//alertActions.add(new Action(id, "admin", ActionData.markAlertAsClosed("REMINDER", "12-12-2015")));
+	
+	public String saveEnrollDataToOpenMRSTrack(Enrollment el,List<Action> alertActions){
+	
 		try {			
 			JSONObject t = openmrsSchedulerService.createTrack(el, alertActions);
-			e.setStatus(EnrollmentStatus.COMPLETED);
+			//e.setStatus(EnrollmentStatus.COMPLETED);
 			Map<String, String> metadata = new HashMap<>();
 			metadata.put(OpenmrsConstants.ENROLLMENT_TRACK_UUID, t.getString("uuid"));
-			e.setMetadata(metadata );
-			openmrsSchedulerService.updateTrack(e, alertActions);
+			el.setMetadata(metadata );
+			openmrsSchedulerService.updateTrack(el, alertActions);
 			logger.info("Openmrs Track Created...::");
 			return t.getString("uuid");
 		} catch (JSONException e2) {
@@ -173,40 +165,11 @@ public class ScheduleLogService extends OpenmrsService{
 			 logger.info("From closeScheduleAndScheduleLog:"+e.getMessage());
 		}
 	}
-	public void saveActionDataToOpenMrsMilestoneTrack(String entityId, String instanceId,
-			String providerId, String schedule) throws ParseException{
-		
-		Enrollment e =allEnrollments.findByEnrollmentByExternalIdAndScheduleName(entityId, schedule).get(0) ;
-		ScheduleLog  scheduleLog = allReportActions.findByInstanceIdByCaseIdByname(instanceId,entityId,schedule);
-		List<Action> alertActions = allActions.findAlertByANMIdEntityIdScheduleName(providerId, entityId, schedule);
-		Action close = getClosedAction(scheduleLog.getVisitCode(), alertActions);
-		
-		JSONObject tm = new JSONObject();
-		try {
-			tm.put("track", scheduleLog.trackId());
-			MilestoneFulfillment m = getMilestone(scheduleLog.getVisitCode(), e);
-			tm.put("milestone", scheduleLog.getVisitCode());
-			JSONObject pr = userService.getPersonByUser(providerId);
-			tm.put("alertRecipient", pr.getString("uuid"));
-			tm.put("alertRecipientRole", "PROVIDER");
-			String fdate = m == null?null:OPENMRS_DATE.format(m.getFulfillmentDateTime().toDate());
-			if(fdate == null){
-				fdate = close==null?null:OPENMRS_DATE.format(new SimpleDateFormat("dd-MM-yyyy").parse(close.data().get("completionDate")));
-			}
-			tm.put("fulfillmentDate", fdate);
-			tm.put("status", scheduleLog.getCurrentWindow()+(close==null?"":"-completed"));
-			//TODO tm.put("reasonClosed", ac.data().get(""));
-			tm.put("alertStartDate", scheduleLog.getCurrentWindowStartDate());
-			tm.put("alertExpiryDate", scheduleLog.getCurrentWindowEndDate());
-			//tm.put("isActive", scheduleLog.get);
-			tm.put("actionType", "PROVIDER ALERT");
-			
-			JSONObject tmo = new JSONObject(HttpUtil.post(getURL()+"/"+TRACK_MILESTONE_URL, "", tm.toString(), OPENMRS_USER, OPENMRS_PWD).body());
-		
-		} catch (JSONException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+	
+	public void saveActionDataToOpenMrsMilestoneTrack(List<Action> alertActions, String trackuuid, Enrollment el) throws ParseException{
+		logger.info("Action: "+alertActions.toString()+"trackuuid:"+trackuuid);
+		openmrsSchedulerService.createTrackMilestone(alertActions, trackuuid, el);
+		logger.info("Data sent to Track MileStone ");
 		
 	}
 	private Action getClosedAction(String milestone, List<Action> actions){
@@ -232,6 +195,19 @@ public class ScheduleLogService extends OpenmrsService{
 		
 	}
 	
+	/**
+	 * @desc This method create new  Immediate scheduleLog and Schedule for PSRF & BNF
+	 * @param entityId form entiry id
+	 * @param instanceId form instanceId
+	 * @param provider 
+	 * @param ScheduleName  current ScheduleName
+	 * @param milestoneName current milestoneName
+	 * @param beneficiaryType various beneficiaryType such as elco ,household
+	 * @param alertStaus Schedule alert status
+	 * @param startDate Schedule startDate
+	 * @param expiredDate Schedule expiredDate
+	 * @return nothing
+	 * */
 	public void createImmediateScheduleAndScheduleLog(String caseId, String date,String provider,String instanceId,BeneficiaryType beneficiaryType,String scheduleName,Integer durationInHour,String ImmediateScheduleName){
 		try{
 			allActions.addOrUpdateAlert(new Action(caseId, provider, ActionData.createAlert(beneficiaryType, scheduleName, scheduleName, AlertStatus.upcoming, new DateTime(), new DateTime().plusHours(durationInHour))));	    
@@ -246,6 +222,20 @@ public class ScheduleLogService extends OpenmrsService{
 		}		
 	}
 	
+	/**
+	 * @desc This method create new  scheduleLog and unreroll or complete  Immediate Schedule
+	 * @param entityId form entiry id
+	 * @param instanceId form instanceId
+	 * @param provider 
+	 * @param ScheduleName  current ScheduleName
+	 * @param milestoneName current milestoneName
+	 * @param beneficiaryType various beneficiaryType such as elco ,household
+	 * @param alertStaus Schedule alert status
+	 * @param startDate Schedule startDate
+	 * @param expiredDate Schedule expiredDate
+	 * @return nothing
+	 * */
+	
 	public void createNewScheduleLogandUnenrollImmediateSchedule(String caseId, String date,String provider,String instanceId,String immediateScheduleName,String scheduleName,BeneficiaryType beneficiaryType,Integer durationInHour){
 		try{
 			//scheduler.unEnrollFromScheduleimediate(caseId, provider, immediateScheduleName);
@@ -257,6 +247,20 @@ public class ScheduleLogService extends OpenmrsService{
 		this.scheduleCloseAndSave(caseId, instanceId, provider, scheduleName, scheduleName, beneficiaryType, AlertStatus.normal, new DateTime(), new DateTime().plusHours(durationInHour));
 		
 	}
+	
+	/**
+	 * @desc This method close related previous scheduleLog and create new ScheduleLog 
+	 * @param entityId form entiry id
+	 * @param instanceId form instanceId
+	 * @param provider 
+	 * @param ScheduleName  current ScheduleName
+	 * @param milestoneName current milestoneName
+	 * @param beneficiaryType various beneficiaryType such as elco ,household
+	 * @param alertStaus Schedule alert status
+	 * @param startDate Schedule startDate
+	 * @param expiredDate Schedule expiredDate
+	 * @return nothing
+	 * */
 	public void scheduleCloseAndSave(String entityId,String instanceId,String provider,String ScheduleName,String milestoneName,BeneficiaryType beneficiaryType,AlertStatus alertStaus, DateTime startDate, DateTime expiredDate){
 		try{
 			List<Action> beforeNewActions = allActions.findAlertByANMIdEntityIdScheduleName(provider, entityId, ScheduleName);

@@ -201,7 +201,8 @@ public class OpenmrsSchedulerService extends OpenmrsService{
 			fdate = close==null?null:OPENMRS_DATE.format(new SimpleDateFormat("dd-MM-yyyy").parse(close.data().get("completionDate")));
 		}
 		tm.put("fulfillmentDate", fdate);
-		tm.put("status", ac.data().get("alertStatus")+(close==null?"":"-completed"));
+		//tm.put("status", ac.data().get("alertStatus")+(close==null?"":"-completed"));
+		tm.put("status", e.getStatus().name());
 		//TODO tm.put("reasonClosed", ac.data().get(""));
 		tm.put("alertStartDate", ac.data().get("startDate"));
 		tm.put("alertExpiryDate", ac.data().get("expiryDate"));

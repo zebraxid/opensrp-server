@@ -84,13 +84,13 @@ public class OpenmrsSchedulerServiceTest extends TestResourceLoader{
 				System.out.println("okkk...");
 			}
 			
-			System.out.println("okkk.ff..");
+			/*System.out.println("okkk.ff..");
 			JSONObject t = ss.createTrack(e, alertActions);
 			e.setStatus(EnrollmentStatus.COMPLETED);
 			Map<String, String> metadata = new HashMap<>();
 			metadata.put(OpenmrsConstants.ENROLLMENT_TRACK_UUID, t.getString("uuid"));
 			e.setMetadata(metadata );
-			ss.updateTrack(e, alertActions);
+			ss.updateTrack(e, alertActions);*/
 		//}
 	}
 
