@@ -219,6 +219,7 @@ public class AllConstants {
     
     public static class ANCVisitOneFields
     {
+    	public static final String anc1_current_formStatus="anc1_current_formStatus";
     	public static final String FWANC1DATE ="FWANC1DATE";
     	public static final String FWCONFIRMATION ="FWCONFIRMATION";
     	public static final String FWGESTATIONALAGE ="FWGESTATIONALAGE";
@@ -228,14 +229,13 @@ public class AllConstants {
     	public static final String DISPLAYTEXT2 ="DISPLAYTEXT2";
     	public static final String FWANC1KNWPRVDR ="FWANC1KNWPRVDR";
     	public static final String DISPLAYTEXT3 ="DISPLAYTEXT3";
-    	public static final String FDPSRANM ="FDPSRANM";
-    	public static final String FDPSRHBP ="FDPSRHBP";
-    	public static final String FDPSRDBT ="FDPSRDBT";
-    	public static final String FDPSRTHY ="FDPSRTHY";
+    	public static final String FWANC1ANM ="FWANC1ANM";
+    	public static final String FWANC1HBP ="FWANC1HBP";
+    	public static final String FWANC1DBT ="FWANC1DBT";
+    	public static final String FWANC1THY ="FWANC1THY";
     	public static final String DISPLAYTEXT4 ="DISPLAYTEXT4";
     	public static final String FWANC1PROB ="FWANC1PROB";
     	public static final String FWDISPLAYTEXT5 ="FWDISPLAYTEXT5";
-    	public static final String FWANC1DNGRSIGN ="FWANC1DNGRSIGN";
     	public static final String FWDISPLAYTEXT6 ="FWDISPLAYTEXT6";
     	public static final String FWDISPLAYTEXT7 ="FWDISPLAYTEXT7";
     	public static final String FWDISPLAYTEXT8 ="FWDISPLAYTEXT8";
@@ -261,18 +261,44 @@ public class AllConstants {
     	public static final String FWBPC1FINARGMT ="FWBPC1FINARGMT";
     	public static final String FWBPC1DISPLAYTEXT12 ="FWBPC1DISPLAYTEXT12";
     	public static final String FWBPC1DISPLAYTEXT13 ="FWBPC1DISPLAYTEXT13";
+    	public static final String FWANC1HEAD="FWANC1HEAD";
+
+    	public static final String mauza ="mauza";
+    	public static final String FWVG ="FWVG";
+    	public static final String existing_FWHR_PSR ="existing_FWHR_PSR";
+    	public static final String FWHRP ="FWHRP";
+    	public static final String existing_ELCO ="existing_ELCO";
+    	public static final String FWANC1BLRVIS ="FWANC1BLRVIS";
+    	public static final String FWANC1SWLNG ="FWANC1SWLNG";
+    	public static final String FWANC1CONVL ="FWANC1CONVL";
+    	public static final String FWANC1BLD ="FWANC1BLD";
+    	public static final String FWANC1DS1 ="FWANC1DS1";
+    	public static final String FWANC1DS2 ="FWANC1DS2";
+    	public static final String FWANC1DS3 ="FWANC1DS3";
+    	public static final String FWANC1DS4 ="FWANC1DS4";
+    	public static final String FWANC1DS5 ="FWANC1DS5";
+    	public static final String FWANC1DS6 ="FWANC1DS6";
+    	public static final String FWDANGERVALUE ="FWDANGERVALUE";
+    	public static final String FWNOTELIGIBLE ="FWNOTELIGIBLE";
+    	public static final String ELCO ="ELCO";
+    	public static final String FWHR_ANC1 ="FWHR_ANC1";
+    	public static final String FWFLAGVALUE ="FWFLAGVALUE";
+    	public static final String FWSORTVALUE ="FWSORTVALUE";
+    	public static final String user_type ="user_type";
+    	public static final String external_user_ID ="external_user_ID";
+    	public static final String relationalid ="relationalid";
     	
     }
     
     public static class ANCVisitTwoFields
     {
+    	public static final String ANC2_current_formStatus="ANC2_current_formStatus";
     	public static final String FWANC2DATE ="FWANC2DATE";
     	public static final String FWANC2REMSTS ="FWANC2REMSTS";
     	public static final String FWANC2INT ="FWANC2INT";
     	public static final String FWANC2KNWPRVDR ="FWANC2KNWPRVDR";
     	public static final String FWANC2PREGCOND ="FWANC2PREGCOND";
     	public static final String FWANC2PROB ="FWANC2PROB";
-    	public static final String FWANC2DNGRSIGN ="FWANC2DNGRSIGN";
     	public static final String FWBPC2LOCOFDEL ="FWBPC2LOCOFDEL";
     	public static final String FWBPC2DISPLAYTEXT1 ="FWBPC2DISPLAYTEXT1";
     	public static final String FWBPC2DISPLAYTEXT2 ="FWBPC2DISPLAYTEXT2";
@@ -292,11 +318,29 @@ public class AllConstants {
     	public static final String FWBPC2FINARGMT ="FWBPC2FINARGMT";
     	public static final String FWBPC2DISPLAYTEXT12 ="FWBPC2DISPLAYTEXT12";
     	public static final String FWBPC2DISPLAYTEXT13 ="FWBPC2DISPLAYTEXT13";
+    	public static final String FWHR_ANC2 ="FWHR_ANC2";
+    	
+    	public static final String FWANC2ANM ="FWANC2ANM";
+    	public static final String FWANC2HBP ="FWANC2HBP";
+    	public static final String FWANC2DBT ="FWANC2DBT";
+    	public static final String FWANC2THY ="FWANC2THY";
+    	public static final String FWANC2HEAD ="FWANC2HEAD";
+    	public static final String FWANC2BLRVIS ="FWANC2BLRVIS";
+    	public static final String FWANC2SWLNG ="FWANC2SWLNG";
+    	public static final String FWANC2CONVL ="FWANC2CONVL";
+    	public static final String FWANC2BLD ="FWANC2BLD";
+    	public static final String FWANC2DS1 ="FWANC2DS1";
+    	public static final String FWANC2DS2 ="FWANC2DS2";
+    	public static final String FWANC2DS3 ="FWANC2DS3";
+    	public static final String FWANC2DS4 ="FWANC2DS4";
+    	public static final String FWANC2DS5 ="FWANC2DS5";
+    	public static final String FWANC2DS6 ="FWANC2DS6";
     	
     }
     
     public static class ANCVisitThreeFields
     {
+    	public static final String ANC3_current_formStatus="ANC3_current_formStatus";
     	public static final String FWANC3DATE ="FWANC3DATE";
     	public static final String FWANC3REMSTS ="FWANC3REMSTS";
     	public static final String FWANC3INT ="FWANC3INT";
@@ -323,6 +367,23 @@ public class AllConstants {
     	public static final String FWBPC3FINARGMT ="FWBPC3FINARGMT";
     	public static final String FWBPC3DISPLAYTEXT12 ="FWBPC3DISPLAYTEXT12";
     	public static final String FWBPC3DISPLAYTEXT13 ="FWBPC3DISPLAYTEXT13";
+    	
+    	public static final String FWANC3ANM ="FWANC3ANM";
+    	public static final String FWANC3HBP ="FWANC3HBP";
+    	public static final String FWANC3DBT ="FWANC3DBT";
+    	public static final String FWANC3THY ="FWANC3THY";
+    	public static final String FWANC3HEAD ="FWANC3HEAD";
+    	public static final String FWANC3BLRVIS ="FWANC3BLRVIS";
+    	public static final String FWANC3SWLNG ="FWANC3SWLNG";
+    	public static final String FWANC3CONVL ="FWANC3CONVL";
+    	public static final String FWANC3BLD ="FWANC3BLD";
+    	public static final String FWANC3DS1 ="FWANC3DS1";
+    	public static final String FWANC3DS2 ="FWANC3DS2";
+    	public static final String FWANC3DS3 ="FWANC3DS3";
+    	public static final String FWANC3DS4 ="FWANC3DS4";
+    	public static final String FWANC3DS5 ="FWANC3DS5";
+    	public static final String FWANC3DS6 ="FWANC3DS6";
+    	public static final String FWHR_ANC3 ="FWHR_ANC3";
     
     }
     
@@ -354,6 +415,23 @@ public class AllConstants {
     	public static final String FWBPC4FINARGMT ="FWBPC4FINARGMT";
     	public static final String FWBPC4DISPLAYTEXT12 ="FWBPC4DISPLAYTEXT12";
     	public static final String FWBPC4DISPLAYTEXT13 ="FWBPC4DISPLAYTEXT13";
+    	
+    	public static final String FWANC4ANM ="FWANC4ANM";
+    	public static final String FWANC4HBP ="FWANC4HBP";
+    	public static final String FWANC4DBT ="FWANC4DBT";
+    	public static final String FWANC4THY ="FWANC4THY";
+    	public static final String FWANC4HEAD ="FWANC4HEAD";
+    	public static final String FWANC4BLRVIS ="FWANC4BLRVIS";
+    	public static final String FWANC4SWLNG ="FWANC4SWLNG";
+    	public static final String FWANC4CONVL ="FWANC4CONVL";
+    	public static final String FWANC4BLD ="FWANC4BLD";
+    	public static final String FWANC4DS1 ="FWANC4DS1";
+    	public static final String FWANC4DS2 ="FWANC4DS2";
+    	public static final String FWANC4DS3 ="FWANC4DS3";
+    	public static final String FWANC4DS4 ="FWANC4DS4";
+    	public static final String FWANC4DS5 ="FWANC4DS5";
+    	public static final String FWANC4DS6 ="FWANC4DS6";
+    	public static final String FWHR_ANC4 ="FWHR_ANC4";
     
     }
     
