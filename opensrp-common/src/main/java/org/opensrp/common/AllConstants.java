@@ -265,7 +265,7 @@ public class AllConstants {
 
     	public static final String mauza ="mauza";
     	public static final String FWVG ="FWVG";
-    	public static final String existing_FWHR_PSR ="existing_FWHR_PSR";
+    	public static final String FWHR_PSR ="FWHR_PSR";
     	public static final String FWHRP ="FWHRP";
     	public static final String existing_ELCO ="existing_ELCO";
     	public static final String FWANC1BLRVIS ="FWANC1BLRVIS";
