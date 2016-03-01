@@ -855,5 +855,8 @@ public class AllConstants {
     	public static final String CHILD = "Essential Newborn Care Checklist";
     	
     }
+    public static class OpenmrsTrackUuid {
+    	public static final String ENROLLMENT_TRACK_UUID = "openmrsTrackUuid";
+    }
 }
 
