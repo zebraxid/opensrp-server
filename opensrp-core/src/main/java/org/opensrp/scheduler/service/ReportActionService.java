@@ -11,6 +11,7 @@ import java.util.Map;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.motechproject.scheduletracking.api.domain.Enrollment;
+import static org.opensrp.common.AllConstants.OpenmrsTrackUuid.ENROLLMENT_TRACK_UUID;
 import org.opensrp.dto.ActionData;
 import org.opensrp.dto.AlertStatus;
 import org.opensrp.dto.BeneficiaryType;
@@ -44,11 +45,6 @@ public class ReportActionService {
 	 * */
 	public void updateScheduleLog(BeneficiaryType beneficiaryType, String caseID, String instanceId, String anmIdentifier, String scheduleName, String visitCode, AlertStatus alertStatus, DateTime startDate, DateTime expiryDate, DateTime currentWindowCloseDate,String trackId,long BTS,long timestamp){
 		try{
-			List<Enrollment> el = null;
-	    	el = allEnrollments.findByEnrollmentByExternalIdAndScheduleName(caseID,scheduleName);
-	    	List<Action> alertActions = new ArrayList<Action>();
-	    	alertActions.add(new Action(caseID, anmIdentifier, ActionData.createAlert(beneficiaryType, scheduleName, visitCode, alertStatus, startDate, expiryDate)));
-	    	action.scheduleSaveToOpenMRSMilestone(el.get(0),alertActions );
 			ScheduleLog  schedule = allReportActions.findByTimestampIdByCaseIdByname(BTS,caseID,scheduleName);
 			if(schedule != null){			
 				   if(!schedule.getCurrentWindow().equals(alertStatus) ){				   
@@ -139,9 +135,16 @@ public class ReportActionService {
     	
     	List<Enrollment> el = null;
     	el = allEnrollments.findByEnrollmentByExternalIdAndScheduleName(caseID,scheduleName);
-    	List<Action> alertActions = new ArrayList<Action>();
-    	alertActions.add(new Action(caseID, anmIdentifier, ActionData.createAlert(beneficiaryType, scheduleName, visitCode, alertStatus, startDate, expiryDate)));
-    	action.scheduleSaveToOpenMRSMilestone(el.get(0),alertActions );
+    	
+    	for (Enrollment e : el){
+    		Map<String, String> metadata = new HashMap<>();
+    		metadata.put(ENROLLMENT_TRACK_UUID, schedule.trackId());
+		 	e.setMetadata(metadata );
+	    	List<Action> alertActions = new ArrayList<Action>();
+	    	alertActions.add(new Action(caseID, anmIdentifier, ActionData.createAlert(beneficiaryType, scheduleName, visitCode, alertStatus, startDate, expiryDate)));
+	    	action.scheduleSaveToOpenMRSMilestone(e,alertActions );
+	    	
+    	}
 	}
 	
 	public void schedulefullfill(String caseID,String scheduleName,String instanceId,long timestamp){

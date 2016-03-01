@@ -125,12 +125,12 @@ public class ScheduleLogService extends OpenmrsService{
 			// TODO Auto-generated catch block
 			e2.printStackTrace();
 			logger.info("Log:"+e2.toString());
-			return null;
+			return "";
 		} catch (ParseException e2) {
 			// TODO Auto-generated catch block
 			e2.printStackTrace();
 			logger.info("Log:"+e2.toString());
-			return null;
+			return "";
 		}
 		
 		
@@ -166,12 +166,17 @@ public class ScheduleLogService extends OpenmrsService{
 		}
 	}
 	
-	public void saveActionDataToOpenMrsMilestoneTrack(List<Action> alertActions, String trackuuid, Enrollment el) throws ParseException{
-		logger.info("Action: "+alertActions.toString()+"trackuuid:"+trackuuid);
-		openmrsSchedulerService.createTrackMilestone(alertActions, trackuuid, el);
+	public void saveActionDataToOpenMrsMilestoneTrack( Enrollment el,List<Action> alertActions) throws ParseException{
+		try {
+			openmrsSchedulerService.createTrack(el, alertActions);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		logger.info("Data sent to Track MileStone ");
 		
 	}
+	
 	private Action getClosedAction(String milestone, List<Action> actions){
 		for (Action a : actions) {
 			if(a.data().get("visitCode") != null && a.data().get("visitCode").equalsIgnoreCase(milestone)

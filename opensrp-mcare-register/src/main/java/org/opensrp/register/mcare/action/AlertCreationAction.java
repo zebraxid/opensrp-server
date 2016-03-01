@@ -109,13 +109,8 @@ public class AlertCreationAction implements HookedEvent {
 					+ beneficiaryType + " is of unknown type");
 		}
 
-		/*try {
-			scheduleLogService.saveActionDataToOpenMrsMilestoneTrack(caseID, instanceId, providerId, event.scheduleName().replace(ELCOSchedulesConstantsImediate.IMD_ELCO_SCHEDULE_PSRF, ELCOSchedulesConstants.ELCO_SCHEDULE_PSRF));
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}*/
-		logger.info("TOday: "+new DateTime());
+		
+		
 		logger.info("caseID: "+caseID);
 		logger.info("instanceId: "+instanceId);
 		logger.info(" event.windowName():"+event.windowName());
@@ -136,8 +131,13 @@ public class AlertCreationAction implements HookedEvent {
     }
 
 	@Override
-	public void scheduleSaveToOpenMRSMilestone(Enrollment el,List<Action> alertActions ) {
-		scheduleLogService.saveEnrollDataToOpenMRSTrack(el, alertActions );
+	public void scheduleSaveToOpenMRSMilestone(Enrollment el,List<Action> alertActions ) {		
+		try {
+			scheduleLogService.saveActionDataToOpenMrsMilestoneTrack(el, alertActions);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			logger.info("From scheduleSaveToOpenMRSMilestone :"+e.getMessage());
+		}
 		
 	}
 
