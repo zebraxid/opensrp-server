@@ -82,6 +82,7 @@ public class ANCService {
 			return;
 		}
 		Map<String, String> ancVisitOne = create(FWANC1DATE, submission.getField(FWANC1DATE))
+											.put(anc1_current_formStatus, submission.getField(anc1_current_formStatus))
 											.put(FWCONFIRMATION, submission.getField(FWCONFIRMATION))
 											.put(FWGESTATIONALAGE, submission.getField(FWGESTATIONALAGE))
 											.put(FWEDD, submission.getField(FWEDD))
@@ -148,6 +149,7 @@ public class ANCService {
 			return;
 		}
 		Map<String, String> ancVisitTwo = create(FWANC2DATE, submission.getField(FWANC2DATE))
+											.put(ANC2_current_formStatus, submission.getField(ANC2_current_formStatus))
 											.put(FWCONFIRMATION, submission.getField(FWCONFIRMATION))
 											.put(FWGESTATIONALAGE, submission.getField(FWGESTATIONALAGE))
 											.put(FWEDD, submission.getField(FWEDD))
@@ -216,6 +218,7 @@ public class ANCService {
 			return;
 		}
 		Map<String, String> ancVisitThree = create(FWANC3DATE, submission.getField(FWANC3DATE))
+											.put(ANC3_current_formStatus, submission.getField(ANC3_current_formStatus))
 											.put(FWCONFIRMATION, submission.getField(FWCONFIRMATION))
 											.put(FWGESTATIONALAGE, submission.getField(FWGESTATIONALAGE))
 											.put(FWEDD, submission.getField(FWEDD))
@@ -286,6 +289,7 @@ public class ANCService {
 		}
 		
 		Map<String, String> ancVisitFour = create(FWANC4DATE, submission.getField(FWANC4DATE))
+											.put(ANC4_current_formStatus, submission.getField(ANC4_current_formStatus))
 											.put(FWCONFIRMATION, submission.getField(FWCONFIRMATION))
 											.put(FWGESTATIONALAGE, submission.getField(FWGESTATIONALAGE))
 											.put(FWEDD, submission.getField(FWEDD))

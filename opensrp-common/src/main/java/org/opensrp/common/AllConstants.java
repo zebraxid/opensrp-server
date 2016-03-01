@@ -389,6 +389,7 @@ public class AllConstants {
     
     public static class ANCVisitFourFields
     {
+    	public static final String ANC4_current_formStatus="ANC4_current_formStatus";
     	public static final String FWANC4DATE ="FWANC4DATE";
     	public static final String FWANC4REMSTS ="FWANC4REMSTS";
     	public static final String FWANC4INT ="FWANC4INT";
@@ -451,8 +452,8 @@ public class AllConstants {
     	public static final String STS_GONE ="7";    	
     	public static final String STS_WD ="9";
     	public static final String SCHEDULE_BNF_IME = "ImmediateBirthNotificationPregnancyStatusFollowUp";
-    	 public static final String SCHEDULE_BNF = "BirthNotificationPregnancyStatusFollowUp";
-    	    
+    	public static final String SCHEDULE_BNF = "BirthNotificationPregnancyStatusFollowUp";
+    	public static final String bnf_current_formStatus = "bnf_current_formStatus";     
     }
     
     public static class PNCVisitOneFields
