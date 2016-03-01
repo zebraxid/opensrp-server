@@ -69,7 +69,7 @@ public class OpenmrsSchedulerService extends OpenmrsService{
     	
     }
 	
-    public JSONObject createTrack(Enrollment e, List<Action> alertActions) throws JSONException, ParseException
+    public JSONObject createTrack(Enrollment e, List<Action> alertActions,String motherId) throws JSONException, ParseException
 	{
     	
     	try{
@@ -78,8 +78,10 @@ public class OpenmrsSchedulerService extends OpenmrsService{
 			try{
 				JSONObject po = patientService.getPatientByIdentifier(e.getExternalId());
 				t.put("beneficiary", po.getJSONObject("person").getString("uuid"));
-			}catch(Exception eee){				
-				logger.info("Patient UUID: "+eee.toString());
+			}catch(Exception eee){	
+				JSONObject po = patientService.getPatientByIdentifier(motherId);
+				t.put("beneficiary", po.getJSONObject("person").getString("uuid"));
+				logger.info("Patient UUID: "+po.getJSONObject("person").getString("uuid"));
 			}
 			
 			t.put("beneficiaryRole", alertActions!=null&&alertActions.size()>0?alertActions.get(0).data().get("beneficiaryType"):null);

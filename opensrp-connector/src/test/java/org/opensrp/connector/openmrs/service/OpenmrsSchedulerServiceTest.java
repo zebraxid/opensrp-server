@@ -106,7 +106,7 @@ public class OpenmrsSchedulerServiceTest extends TestResourceLoader{
 			if(p == null){
 				ps.createPatient(new Client(id, "TEST", null, "Name", new DateTime().minusYears(20).toDate(), null, false, false, "MALE"));
 			}
-			JSONObject t = ss.createTrack(e, alertActions);
+			JSONObject t = ss.createTrack(e, alertActions,"");
 			e.setStatus(EnrollmentStatus.COMPLETED);
 			Map<String, String> metadata = new HashMap<>();
 			metadata.put(OpenmrsConstants.ENROLLMENT_TRACK_UUID, t.getString("uuid"));
@@ -128,7 +128,7 @@ public class OpenmrsSchedulerServiceTest extends TestResourceLoader{
 			if(p == null){
 				ps.createPatient(new Client(id, "TEST", null, "Name", new DateTime().minusYears(20).toDate(), null, false, false, "MALE"));
 			}
-			JSONObject t = ss.createTrack(e, alertActions);
+			JSONObject t = ss.createTrack(e, alertActions,"");
 			e.setStatus(EnrollmentStatus.COMPLETED);
 			Map<String, String> metadata = new HashMap<>();
 			metadata.put(OpenmrsConstants.ENROLLMENT_TRACK_UUID, t.getString("uuid"));
@@ -176,7 +176,7 @@ public class OpenmrsSchedulerServiceTest extends TestResourceLoader{
 		List<Action> alertActions = new ArrayList<Action>();
 		alertActions.add(new Action(hhhead.getBaseEntityId(), ev.getProviderId(), alert("FW CENSUS", "FW CENSUS")));
 		if(pushToOpenmrsForTest){
-			JSONObject t = ss.createTrack(e, alertActions);
+			JSONObject t = ss.createTrack(e, alertActions,"");
 			alertActions.add(new Action(hhhead.getBaseEntityId(), ev.getProviderId(), ActionData.markAlertAsClosed("FW CENSUS", "12-12-2015")));
 			e.setStatus(EnrollmentStatus.COMPLETED);
 			Map<String, String> metadata = new HashMap<>();

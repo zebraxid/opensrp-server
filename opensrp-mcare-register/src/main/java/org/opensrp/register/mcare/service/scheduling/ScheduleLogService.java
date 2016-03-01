@@ -26,6 +26,8 @@ import org.opensrp.connector.openmrs.service.OpenmrsUserService;
 import org.opensrp.dto.ActionData;
 import org.opensrp.dto.AlertStatus;
 import org.opensrp.dto.BeneficiaryType;
+import org.opensrp.register.mcare.domain.Mother;
+import org.opensrp.register.mcare.repository.AllMothers;
 import org.opensrp.scheduler.Action;
 import org.opensrp.scheduler.HealthSchedulerService;
 import org.opensrp.scheduler.ScheduleLog;
@@ -49,8 +51,9 @@ public class ScheduleLogService extends OpenmrsService{
 	private OpenmrsUserService userService;
 	private HealthSchedulerService scheduler;
 	private OpenmrsSchedulerService openmrsSchedulerService;
+	private AllMothers allMothers;
 	@Autowired
-	public ScheduleLogService(ReportActionService reportActionService,AllEnrollmentWrapper allEnrollments,AllReportActions allReportActions,AllActions allActions,OpenmrsUserService userService,HealthSchedulerService scheduler,OpenmrsSchedulerService openmrsSchedulerService){
+	public ScheduleLogService(ReportActionService reportActionService,AllEnrollmentWrapper allEnrollments,AllReportActions allReportActions,AllActions allActions,OpenmrsUserService userService,HealthSchedulerService scheduler,OpenmrsSchedulerService openmrsSchedulerService,AllMothers allMothers){
 		this.reportActionService = reportActionService;
 		this.allEnrollments = allEnrollments;
 		this.allReportActions = allReportActions;
@@ -58,6 +61,7 @@ public class ScheduleLogService extends OpenmrsService{
 		this.userService = userService;
 		this.scheduler = scheduler;
 		this.openmrsSchedulerService = openmrsSchedulerService;
+		this.allMothers = allMothers;
 	}
 	
 	/**
@@ -86,11 +90,21 @@ public class ScheduleLogService extends OpenmrsService{
 			
 		}else{
 			el =this.findEnrollmentByCaseIdAndScheduleName(caseID,scheduleName);
+			
 		}
-		String trackId = "";		
+		String trackId = "";
+		String motherId = "";
+		
+		if(mother.equals(beneficiaryType)){
+			Mother mother = allMothers.findByCaseId(caseID);			
+			motherId = mother.getRelationalid();
+		}
+		
+		
 		for (Enrollment e : el){
+			
 			alertActions.add(new Action(caseID, anmIdentifier, ActionData.createAlert(beneficiaryType, scheduleName, visitCode, alertStatus, startDate, expiryDate)));
-			trackId = this.saveEnrollDataToOpenMRSTrack(e,alertActions);
+			trackId = this.saveEnrollDataToOpenMRSTrack(e,alertActions,motherId);
 		}
 		
 		if(trackId.equalsIgnoreCase("")){
@@ -110,10 +124,10 @@ public class ScheduleLogService extends OpenmrsService{
 	}
 	
 	
-	public String saveEnrollDataToOpenMRSTrack(Enrollment el,List<Action> alertActions){
+	public String saveEnrollDataToOpenMRSTrack(Enrollment el,List<Action> alertActions,String motherId){
 	
 		try {			
-			JSONObject t = openmrsSchedulerService.createTrack(el, alertActions);
+			JSONObject t = openmrsSchedulerService.createTrack(el, alertActions,motherId);
 			//e.setStatus(EnrollmentStatus.COMPLETED);
 			Map<String, String> metadata = new HashMap<>();
 			metadata.put(OpenmrsConstants.ENROLLMENT_TRACK_UUID, t.getString("uuid"));
@@ -168,7 +182,7 @@ public class ScheduleLogService extends OpenmrsService{
 	
 	public void saveActionDataToOpenMrsMilestoneTrack( Enrollment el,List<Action> alertActions) throws ParseException{
 		try {
-			openmrsSchedulerService.createTrack(el, alertActions);
+			openmrsSchedulerService.createTrack(el, alertActions,"");
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
