@@ -7,19 +7,10 @@ import static java.text.MessageFormat.format;
 import static org.opensrp.common.AllConstants.ANCVisitOneFields.FWCONFIRMATION;
 import static org.opensrp.common.AllConstants.ANCVisitOneFields.FWEDD;
 import static org.opensrp.common.AllConstants.ANCVisitOneFields.FWGESTATIONALAGE;
-import static org.opensrp.common.AllConstants.BnfFollowUpVisitFields.FWBNFCHLDVITSTS;
-import static org.opensrp.common.AllConstants.BnfFollowUpVisitFields.FWBNFDATE;
-import static org.opensrp.common.AllConstants.BnfFollowUpVisitFields.FWBNFDTOO;
-import static org.opensrp.common.AllConstants.BnfFollowUpVisitFields.FWBNFGEN;
-import static org.opensrp.common.AllConstants.BnfFollowUpVisitFields.FWBNFLB;
-import static org.opensrp.common.AllConstants.BnfFollowUpVisitFields.FWBNFSMSRSN;
-import static org.opensrp.common.AllConstants.BnfFollowUpVisitFields.FWBNFSTS;
-import static org.opensrp.common.AllConstants.BnfFollowUpVisitFields.FWBNFWOMVITSTS;
-import static org.opensrp.common.AllConstants.BnfFollowUpVisitFields.FWDISPLAYTEXT1;
-import static org.opensrp.common.AllConstants.BnfFollowUpVisitFields.STS_WD;
-import static org.opensrp.common.AllConstants.BnfFollowUpVisitFields.STS_LB;
-import static org.opensrp.common.AllConstants.BnfFollowUpVisitFields.STS_SB;
-import static org.opensrp.common.AllConstants.BnfFollowUpVisitFields.STS_GONE;
+import static org.opensrp.common.AllConstants.ANCVisitOneFields.external_user_ID;
+import static org.opensrp.common.AllConstants.ANCVisitOneFields.relationalid;
+import static org.opensrp.common.AllConstants.ANCVisitOneFields.user_type;
+import static org.opensrp.common.AllConstants.BnfFollowUpVisitFields.*;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.REFERENCE_DATE;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.MOTHER_REFERENCE_DATE;
 import static org.opensrp.common.util.EasyMap.create;
@@ -99,6 +90,7 @@ public class BNFService {
 		}
 		
 		Map<String, String> bnfVisit = create(FWBNFDATE, submission.getField(FWBNFDATE))
+											.put(bnf_current_formStatus, submission.getField(bnf_current_formStatus))
 											.put(FWCONFIRMATION, submission.getField(FWCONFIRMATION))
 											.put(FWGESTATIONALAGE, submission.getField(FWGESTATIONALAGE))
 											.put(FWEDD, submission.getField(FWEDD))
@@ -109,7 +101,10 @@ public class BNFService {
 											.put(FWBNFLB, submission.getField(FWBNFLB))
 											.put(FWBNFGEN, submission.getField(FWBNFGEN))
 											.put(FWBNFCHLDVITSTS, submission.getField(FWBNFCHLDVITSTS))
-											.put(FWBNFSMSRSN, submission.getField(FWBNFSMSRSN)).map();
+											.put(FWBNFSMSRSN, submission.getField(FWBNFSMSRSN))
+											.put(user_type, submission.getField(user_type))
+											.put(external_user_ID, submission.getField(external_user_ID))
+											.put(relationalid, submission.getField(relationalid)).map();
 		
 		mother.withTODAY(submission.getField(REFERENCE_DATE));
 			
