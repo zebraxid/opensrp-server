@@ -69,21 +69,23 @@ public class OpenmrsSchedulerService extends OpenmrsService{
     	
     }
 	
-    public JSONObject createTrack(Enrollment e, List<Action> alertActions,String motherId) throws JSONException, ParseException
+    public JSONObject createTrack(Enrollment e, List<Action> alertActions,String motherId) 
 	{
-    	
     	try{
 	    	JSONObject t = new JSONObject();    	
 			
 			try{
 				JSONObject po = patientService.getPatientByIdentifier(e.getExternalId());
 				t.put("beneficiary", po.getJSONObject("person").getString("uuid"));
-			}catch(Exception eee){	
+			}catch(Exception eee){
+				if(!motherId.equalsIgnoreCase("")){
 				JSONObject po = patientService.getPatientByIdentifier(motherId);
 				t.put("beneficiary", po.getJSONObject("person").getString("uuid"));
 				logger.info("Patient UUID: "+po.getJSONObject("person").getString("uuid"));
-			}
-			
+				
+				}
+				logger.info(eee.getMessage());
+			}		
 			t.put("beneficiaryRole", alertActions!=null&&alertActions.size()>0?alertActions.get(0).data().get("beneficiaryType"):null);
 			t.put("schedule", parseScheduleName(e.getScheduleName()));
 			String hr = StringUtils.leftPad(e.getPreferredAlertTime().getHour().toString(),2,"0");
@@ -91,53 +93,46 @@ public class OpenmrsSchedulerService extends OpenmrsService{
 			t.put("preferredAlertTime", hr+":"+mn+":00");
 			t.put("referenceDate", OPENMRS_DATE.format(e.getStartOfSchedule().toDate()));
 			t.put("referenceDateType", "MANUAL");
-			t.put("dateEnrolled", OPENMRS_DATE.format(e.getEnrolledOn().toDate()));
-			
-			/*DateTime earliestStart = e.getStartOfWindowForCurrentMilestone(WindowName.earliest);
-	        DateTime dueStart = e.getStartOfWindowForCurrentMilestone(WindowName.due);
-	        DateTime lateStart = e.getStartOfWindowForCurrentMilestone(WindowName.late);
-	        DateTime maxStart = e.getStartOfWindowForCurrentMilestone(WindowName.max);
-			t.put("earlyStartDate", OPENMRS_DATE.format(earliestStart.toDate()));
-			t.put("dueStartDate", OPENMRS_DATE.format(dueStart.toDate()));
-			t.put("lateStartDate", OPENMRS_DATE.format(lateStart.toDate()));
-			t.put("maxStartDate", OPENMRS_DATE.format(maxStart.toDate()));*/
+			t.put("dateEnrolled", OPENMRS_DATE.format(e.getEnrolledOn().toDate()));		
 			t.put("currentMilestone", parseScheduleName(e.getCurrentMilestoneName()));
 			t.put("status", e.getStatus().name());
 			String trackuuid = null;
 			JSONObject to = null;
 			
-			if(!e.getMetadata().containsKey("openmrsTrackUuid")){
+			if(!e.getMetadata().containsKey("openmrsTrackUuid")){				
 				logger.info("track post json:"+t.toString());
 				to = new JSONObject(HttpUtil.post(getURL()+"/"+TRACK_URL, "", t.toString(), OPENMRS_USER, OPENMRS_PWD).body());
 				trackuuid = to.getString("uuid");
-			}else{
+			}else{				
 				trackuuid = e.getMetadata().get(OpenmrsConstants.ENROLLMENT_TRACK_UUID);
 				logger.info("ENROLLMENT_TRACK_UUID:"+e.getMetadata().get(OpenmrsConstants.ENROLLMENT_TRACK_UUID));
 			}
 			JSONArray tmarr = new JSONArray();
 			for (Action ac : alertActions) {
+				
 				if(ac.actionType().equalsIgnoreCase("createAlert")){
 					JSONObject tm = fromActionToTrackMilestone(false, ac, trackuuid, e, alertActions);
-					
 					JSONObject tmo = new JSONObject(HttpUtil.post(getURL()+"/"+TRACK_MILESTONE_URL, "", tm.toString(), OPENMRS_USER, OPENMRS_PWD).body());
-				
-					tmarr.put(tmo);
+									
 				}
+				
 			}
+			
 			for (MilestoneFulfillment f : e.getFulfillments()) {
 				if(getCreatedAction(f.getMilestoneName(), alertActions) == null){
 					JSONObject tm = fromMilestoneToTrackMilestone(false, f, trackuuid, e, alertActions);
 					
 					JSONObject tmo = new JSONObject(HttpUtil.post(getURL()+"/"+TRACK_MILESTONE_URL, "", tm.toString(), OPENMRS_USER, OPENMRS_PWD).body());
-				
+					
 					tmarr.put(tmo);
 				}
 			}
-	    	
-			to.put("trackMilestones", tmarr);
+			if(tmarr.length()!=0 ){	
+				to.put("trackMilestones", tmarr);
+			}
 			return to;
     	}catch(Exception ep){
-    		logger.info(ep.toString());
+    		logger.info(ep.getMessage());
     		return null;
     	}
 	}
@@ -147,11 +142,13 @@ public class OpenmrsSchedulerService extends OpenmrsService{
     	JSONArray tmarr = new JSONArray();
 			for (Action ac : alertActions) {
 				if(ac.actionType().equalsIgnoreCase("createAlert")){
+					
 					JSONObject tm = fromActionToTrackMilestone(false, ac, trackuuid, e, alertActions);
 					
 					JSONObject tmo = new JSONObject(HttpUtil.post(getURL()+"/"+TRACK_MILESTONE_URL, "", tm.toString(), OPENMRS_USER, OPENMRS_PWD).body());
-				
+					
 					tmarr.put(tmo);
+					
 				}
 			}
     	}catch(Exception ex){

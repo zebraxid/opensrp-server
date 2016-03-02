@@ -74,6 +74,10 @@ public class ReportActionService {
 		
 	try{
 		ScheduleLog  schedule = allReportActions.findByTimestampIdByCaseIdByname(BTS,caseID,scheduleName);
+		List<Enrollment> el = null;
+    	el = allEnrollments.findByEnrollmentByExternalIdAndScheduleName(caseID,scheduleName);
+    	
+    	
 		if(schedule != null){			
 			   if(!schedule.getVisitCode().equalsIgnoreCase(visitCode) ){
 				   this.updateDataScheduleLog(beneficiaryType, caseID, instanceId, anmIdentifier, scheduleName, visitCode, alertStatus, startDate, expiryDate, currentWindowCloseDate, trackId, BTS, timestamp, schedule);

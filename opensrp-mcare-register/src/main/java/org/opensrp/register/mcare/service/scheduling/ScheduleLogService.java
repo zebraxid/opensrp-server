@@ -183,11 +183,12 @@ public class ScheduleLogService extends OpenmrsService{
 	public void saveActionDataToOpenMrsMilestoneTrack( Enrollment el,List<Action> alertActions) throws ParseException{
 		try {
 			openmrsSchedulerService.createTrack(el, alertActions,"");
-		} catch (JSONException e) {
+			logger.info("Data sent to Track MileStone ");
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		logger.info("Data sent to Track MileStone ");
+		
 		
 	}
 	
