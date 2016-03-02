@@ -141,13 +141,13 @@ public class FormSubmissionController {
             });
             for (FormSubmission formSubmission : fsl) {
             	if(openmrsConnector.isOpenmrsForm(formSubmission)){
-            		System.out.println("Sending data to openMRS/***********************************************************************/ entityId: " + formSubmission.entityId());
+            		System.out.println("Sending data to openMRS/***********************************************************************/");
 	            	JSONObject p = patientService.getPatientByIdentifier(formSubmission.entityId());
-	            	String q = formSubmission.getField("GOBHHID");
-	            	System.out.println("GOBHHID : " + q);
+	            	JSONObject r = patientService.getPatientByIdentifier(formSubmission.getField("relationalid"));
+	            	//System.out.println("Existing patient found into openMRS with relationalid : " + q);
 	            	
-	            	if(p != null){	 // HO           		
-	            	    System.out.println("Existing patient found into openMRS /***********************************************************************/ ");
+	            	if(p != null || r != null){	 // HO           		
+	            	    System.out.println("Existing patient found into openMRS with id : " + p==null?formSubmission.getField("relationalid"):formSubmission.entityId() + "/***********************************************************************/");
 	            		Event e;
 	    				Map<String, Map<String, Object>> dep;
 	    				dep = openmrsConnector.getDependentClientsFromFormSubmission(formSubmission);
