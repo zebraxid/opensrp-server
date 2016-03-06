@@ -119,6 +119,7 @@ public class AllConstants {
     	public static final String id = "id";
     	public static final String FW_WOMLNAME = "FWWOMLNAME";
     	public static final String FW_WOMFNAME = "FWWOMFNAME";
+    	public static final String FW_GOBHHID = "FWWOMNID";
     	public static final String FW_JiVitAHHID = "JiVitAHHID";
     	public static final String FW_GENDER = "FWGENDER";
     	public static final String FW_WOMBID = "FWWOMBID";
@@ -467,6 +468,7 @@ public class AllConstants {
     	public static final String FWPNC1DNGRSIGN ="FWPNC1DNGRSIGN";
     	public static final String FWPNC1DELTYPE ="FWPNC1DELTYPE";
     	public static final String FWPNC1DELCOMP ="FWPNC1DELCOMP";
+    	public static final String pnc1_current_formStatus ="pnc1_current_formStatus";
     	
     }
     
@@ -480,6 +482,7 @@ public class AllConstants {
     	public static final String FWPNC2TEMP ="FWPNC2TEMP";
     	public static final String FWPNC2DNGRSIGN ="FWPNC2DNGRSIGN";
     	public static final String FWPNC2DELCOMP ="FWPNC2DELCOMP";
+    	public static final String pnc2_current_formStatus ="pnc2_current_formStatus";
     	
     }
     
@@ -493,6 +496,7 @@ public class AllConstants {
     	public static final String FWPNC3TEMP ="FWPNC3TEMP";
     	public static final String FWPNC3DNGRSIGN ="FWPNC3DNGRSIGN";
     	public static final String FWPNC3DELCOMP ="FWPNC3DELCOMP";
+    	public static final String pnc3_current_formStatus ="pnc3_current_formStatus";
     	
     }
     
@@ -515,6 +519,7 @@ public class AllConstants {
     	public static final String FWENC1DSDIFBRTH ="FWENC1DSDIFBRTH";
     	public static final String FWENC1DSCONVL ="FWENC1DSCONVL";
     	public static final String FWENC1DELCOMP ="FWENC1DELCOMP";
+    	public static final String encc1_current_formStatus ="encc1_current_formStatus";
     	
     }
     
@@ -537,6 +542,7 @@ public class AllConstants {
     	public static final String FWENC2DSDIFBRTH ="FWENC2DSDIFBRTH";
     	public static final String FWENC2DSCONVL ="FWENC2DSCONVL";
     	public static final String FWENC2DELCOMP ="FWENC2DELCOMP";
+    	public static final String encc2_current_formStatus ="encc2_current_formStatus";
     	
     }
     
@@ -559,6 +565,7 @@ public class AllConstants {
     	public static final String FWENC3DSDIFBRTH ="FWENC3DSDIFBRTH";
     	public static final String FWENC3DSCONVL ="FWENC3DSCONVL";
     	public static final String FWENC3DELCOMP ="FWENC3DELCOMP";
+    	public static final String encc3_current_formStatus ="encc3_current_formStatus";
     	
     }
     
