@@ -67,7 +67,7 @@ public class OpenmrsConnector {
 		a .add("encounter_type");
 		String eventType = formAttributeMapper.getUniqueAttributeValue(a , fs).get("encounter_type");
 		Event e = new Event()
-			.withBaseEntityId(fs.entityId())
+			.withBaseEntityId(fs.getField("relationalid")==null?fs.entityId():fs.getField("relationalid"))
 			.withEventDate(OpenmrsService.OPENMRS_DATE.parse(fs.getField(encounterDateField)))
 			.withEventType(eventType)
 			.withLocationId(fs.getField(encounterLocation))
