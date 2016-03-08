@@ -10,6 +10,7 @@ import org.motechproject.scheduler.domain.CronSchedulableJob;
 import org.motechproject.scheduler.domain.MotechEvent;
 import org.motechproject.scheduler.domain.RepeatingSchedulableJob;
 import org.motechproject.scheduler.gateway.OutboundEventGateway;
+import org.opensrp.scheduler.service.ReportActionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -18,12 +19,14 @@ public class TaskSchedulerService {
 	private MotechSchedulerService motechSchedulerService;
 	private OutboundEventGateway gateway;
 	private AlertRouter router;
+	private ReportActionService reportActionService;
    
 	@Autowired
-	public TaskSchedulerService(MotechSchedulerService schedulerService, OutboundEventGateway gateway, AlertRouter router) {
+	public TaskSchedulerService(MotechSchedulerService schedulerService, OutboundEventGateway gateway, AlertRouter router,ReportActionService reportActionService) {
 		this.motechSchedulerService = schedulerService;
 		this.gateway = gateway;
 		this.router = router;
+		this.reportActionService = reportActionService;
 	}
 	
 	public void startJob(RepeatingSchedulableJob job) {
@@ -70,5 +73,10 @@ public class TaskSchedulerService {
 			HookedEvent action, Map<String, String> extraData){
         Route route = new Route(scheduleMatcher, milestoneMatcher, windowMatcher, action, extraData);
         return router.addRoute(route);
+	}
+	
+	public void toReportaAction(HookedEvent action)
+	{
+		reportActionService.setEvent(action);
 	}
 }

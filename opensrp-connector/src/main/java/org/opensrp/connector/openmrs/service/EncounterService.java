@@ -74,7 +74,7 @@ public class EncounterService extends OpenmrsService{
 		List<Obs> ol = e.getObs();
 		Map<String, List<JSONObject>> pc = new HashMap<>();
 		MultiValueMap   obsMap = new MultiValueMap();
-		
+				
 		for (Obs obs : ol) {	
 			//if no parent simply make it root obs
 			if(StringUtils.isEmptyOrWhitespaceOnly(obs.getParentCode())){
@@ -122,8 +122,7 @@ public class EncounterService extends OpenmrsService{
 		JSONObject obo = new JSONObject();
 		obo.put("concept", o.getFieldCode());
 		if(o.getValue() != null && !StringUtils.isEmptyOrWhitespaceOnly(o.getValue().toString())) {
-			
-			if(o.getFieldCode().toString().equalsIgnoreCase("163137AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA") || o.getFieldCode().toString().equalsIgnoreCase("163138AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"))
+			if(o.getFieldCode().toString().equalsIgnoreCase("163137AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA") || o.getFieldCode().toString().equalsIgnoreCase("163138AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA") || o.getFieldCode().toString().equalsIgnoreCase("5599AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA") || o.getFieldCode().toString().equalsIgnoreCase("5596AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"))
 				//obo.put("value", OPENMRS_DATETime.format(o.getValue()));
 				obo.put("value", (o.getValue().toString().substring(0, 19)).replace("T", " "));
 				
@@ -152,4 +151,22 @@ public class EncounterService extends OpenmrsService{
 		return a;
 	}
 	
+
+    public JSONObject getEncounterType(String encounterType) throws JSONException
+    {
+    	// we have to use this ugly approach because identifier not found throws exception and 
+    	// its hard to find whether it was network error or object not found or server error
+    	JSONArray res = new JSONObject(HttpUtil.get(getURL()+"/"+ENCOUNTER__TYPE_URL, "v=full", 
+    			OPENMRS_USER, OPENMRS_PWD).body()).getJSONArray("results");
+    	for (int i = 0; i < res.length(); i++) {
+			if(res.getJSONObject(i).getString("display").equalsIgnoreCase(encounterType)){
+				return res.getJSONObject(i);
+			}
+		}
+    	return null;
+    }
+    public JSONObject createEncounterType(String name, String description) throws JSONException{
+		JSONObject o = convertEncounterToOpenmrsJson(name, description);
+		return new JSONObject(HttpUtil.post(getURL()+"/"+ENCOUNTER__TYPE_URL, "", o.toString(), OPENMRS_USER, OPENMRS_PWD).body());
+	}
 }

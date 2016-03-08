@@ -6,11 +6,14 @@ import static org.opensrp.dto.BeneficiaryType.elco;
 import static org.opensrp.dto.BeneficiaryType.household;
 import static org.opensrp.dto.BeneficiaryType.mother;
 
+import java.text.ParseException;
+import java.util.List;
 import java.util.Map;
 
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.motechproject.scheduletracking.api.domain.Enrollment;
 import org.opensrp.common.AllConstants.BnfFollowUpVisitFields;
 import org.opensrp.common.AllConstants.ELCOSchedulesConstantsImediate;
 import org.opensrp.dto.BeneficiaryType;
@@ -22,6 +25,7 @@ import org.opensrp.register.mcare.repository.AllElcos;
 import org.opensrp.register.mcare.repository.AllHouseHolds;
 import org.opensrp.register.mcare.repository.AllMothers;
 import org.opensrp.register.mcare.service.scheduling.ScheduleLogService;
+import org.opensrp.scheduler.Action;
 import org.opensrp.scheduler.HealthSchedulerService;
 import org.opensrp.scheduler.HookedEvent;
 import org.opensrp.scheduler.MilestoneEvent;
@@ -105,13 +109,8 @@ public class AlertCreationAction implements HookedEvent {
 					+ beneficiaryType + " is of unknown type");
 		}
 
-		/*try {
-			scheduleLogService.saveActionDataToOpenMrsMilestoneTrack(caseID, instanceId, providerId, event.scheduleName().replace(ELCOSchedulesConstantsImediate.IMD_ELCO_SCHEDULE_PSRF, ELCOSchedulesConstants.ELCO_SCHEDULE_PSRF));
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}*/
-		logger.info("TOday: "+new DateTime());
+		
+		
 		logger.info("caseID: "+caseID);
 		logger.info("instanceId: "+instanceId);
 		logger.info(" event.windowName():"+event.windowName());
@@ -130,4 +129,18 @@ public class AlertCreationAction implements HookedEvent {
     	}
     	
     }
+
+	@Override
+	public void scheduleSaveToOpenMRSMilestone(Enrollment el,List<Action> alertActions ) {		
+		try {
+			scheduleLogService.saveActionDataToOpenMrsMilestoneTrack(el, alertActions);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			logger.info("From scheduleSaveToOpenMRSMilestone :"+e.getMessage());
+		}
+		
+	}
+
+	
+
 }

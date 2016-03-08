@@ -141,18 +141,8 @@ public class ELCOScheduleService {
 	{
 	    logger.info(format("Enrolling Elco into PSRF schedule. Id: {0}", caseId));	  
 	    scheduler.enrollIntoSchedule(caseId, ELCOSchedulesConstantsImediate.IMD_ELCO_SCHEDULE_PSRF, date);	 
-	    scheduleLogService.createImmediateScheduleAndScheduleLog(caseId, date, provider, instanceId, BeneficiaryType.elco, ELCO_SCHEDULE_PSRF, duration);
-	    /*try{
-		    allActions.addOrUpdateAlert(new Action(caseId, provider, ActionData.createAlert(elco, ELCO_SCHEDULE_PSRF, ELCO_SCHEDULE_PSRF, AlertStatus.upcoming, new DateTime(), new DateTime().plusHours(duration))));	    
-		    List<Action> existingAlerts = allActions.findAlertByANMIdEntityIdScheduleName(provider, caseId, ELCO_SCHEDULE_PSRF);
-			if(existingAlerts.size() > 0){ 
-				scheduleLogService.saveScheduleLog(BeneficiaryType.elco, caseId, instanceId, provider, ELCO_SCHEDULE_PSRF, ELCO_SCHEDULE_PSRF, AlertStatus.upcoming, new DateTime(), new DateTime().plusHours(duration), ELCOSchedulesConstantsImediate.IMD_ELCO_SCHEDULE_PSRF,existingAlerts.get(0).timestamp());
-				logger.info("Create a Schedule Log with id :"+caseId);
-			}
-			
-	    }catch(Exception e){
-	    	logger.info("From imediateEnrollIntoMilestoneOfPSRF:"+e.getMessage());
-	    }*/
+	    scheduleLogService.createImmediateScheduleAndScheduleLog(caseId, date, provider, instanceId, BeneficiaryType.elco, ELCO_SCHEDULE_PSRF, duration,ELCOSchedulesConstantsImediate.IMD_ELCO_SCHEDULE_PSRF);
+	    
 	}
 	
 }

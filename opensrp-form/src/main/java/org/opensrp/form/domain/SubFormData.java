@@ -34,6 +34,13 @@ public class SubFormData {
     public String name() {
         return name;
     }
+    public String defaultBindPath() {
+        return default_bind_path;
+    }
+    
+    public String bindType() {
+        return bind_type;
+    }
 
     public List<Map<String, String>> instances() {
         return instances;

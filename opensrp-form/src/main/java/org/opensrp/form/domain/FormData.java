@@ -43,6 +43,13 @@ public class FormData {
         }
         return mapOfFieldsByName.get(name);
     }
+    public String bindType() {
+		return bind_type;
+	}
+    
+    public String defaultBindPath() {
+		return default_bind_path;
+	}
 
     private void createFieldMapByName() {
         mapOfFieldsByName = new HashMap<>();

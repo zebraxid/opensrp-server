@@ -48,7 +48,7 @@ import com.github.ldriscoll.ektorplucene.designdocument.annotation.Index;
 public class LuceneHouseHoldRepository extends CouchDbRepositorySupportWithLucene<HouseHold> {
 
 	@Autowired
-	public LuceneHouseHoldRepository(@Qualifier(AllConstants.OPENSRP_FORM_DATABASE_LUCENE_CONNECTOR)LuceneAwareCouchDbConnector db) {
+	public LuceneHouseHoldRepository(@Qualifier(AllConstants.OPENSRP_DATABASE_LUCENE_CONNECTOR)LuceneAwareCouchDbConnector db) {
 		super(HouseHold.class, db);
 		initStandardDesignDocument();
 	}

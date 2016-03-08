@@ -30,6 +30,9 @@ public class FormField {
         return value;
     }
 
+    public String source() {
+        return source;
+    }
     @Override
     public boolean equals(Object o) {
         return EqualsBuilder.reflectionEquals(this, o);

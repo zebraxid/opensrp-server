@@ -1,42 +1,48 @@
+/**
+ * @author proshanto
+ * */
 package org.opensrp.scheduler.service;
 
-import static org.opensrp.common.AllConstants.CommonFormFields.ID;
-import static org.opensrp.common.AllConstants.PSRFFields.FW_PSRDATE;
-import static org.opensrp.common.util.EasyMap.create;
-
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
+import org.motechproject.scheduletracking.api.domain.Enrollment;
+import static org.opensrp.common.AllConstants.OpenmrsTrackUuid.ENROLLMENT_TRACK_UUID;
 import org.opensrp.dto.ActionData;
 import org.opensrp.dto.AlertStatus;
 import org.opensrp.dto.BeneficiaryType;
 import org.opensrp.dto.ScheduleData;
-
+import org.opensrp.scheduler.HookedEvent;
 import org.opensrp.scheduler.ScheduleLog;
+import org.opensrp.scheduler.Action;
 import org.opensrp.scheduler.repository.AllReportActions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.google.gson.Gson;
-
 @Service
 public class ReportActionService {
 	
 	private AllReportActions allReportActions;	
+	private  HookedEvent action;
+	private final AllEnrollmentWrapper allEnrollments;
 	private static Logger logger = LoggerFactory.getLogger(ReportActionService.class
 			.toString());
 	@Autowired
-	public ReportActionService(AllReportActions allReportActions)
+	public ReportActionService(AllReportActions allReportActions,AllEnrollmentWrapper allEnrollments)
 	{
-		this.allReportActions = allReportActions;	
+		this.allReportActions = allReportActions;
+		this.allEnrollments = allEnrollments;
 	}
+	
+	/**
+	 * @desc This method called when motech trigger event and beneficiaryType should be except mother
+	 * */
 	public void updateScheduleLog(BeneficiaryType beneficiaryType, String caseID, String instanceId, String anmIdentifier, String scheduleName, String visitCode, AlertStatus alertStatus, DateTime startDate, DateTime expiryDate, DateTime currentWindowCloseDate,String trackId,long BTS,long timestamp){
 		try{
 			ScheduleLog  schedule = allReportActions.findByTimestampIdByCaseIdByname(BTS,caseID,scheduleName);
@@ -60,12 +66,19 @@ public class ReportActionService {
 			logger.info("From updateScheduleLog:"+ e.getMessage());
 		}
 	}
-public void updateScheduleLogMotherType(BeneficiaryType beneficiaryType, String caseID, String instanceId, String anmIdentifier, String scheduleName, String visitCode, AlertStatus alertStatus, DateTime startDate, DateTime expiryDate, DateTime currentWindowCloseDate,String trackId,long BTS,long timestamp){
+	
+	/**
+	 * @desc This method called when motech trigger event and beneficiaryType should be  mother
+	 * */
+	public void updateScheduleLogMotherType(BeneficiaryType beneficiaryType, String caseID, String instanceId, String anmIdentifier, String scheduleName, String visitCode, AlertStatus alertStatus, DateTime startDate, DateTime expiryDate, DateTime currentWindowCloseDate,String trackId,long BTS,long timestamp){
 		
 	try{
 		ScheduleLog  schedule = allReportActions.findByTimestampIdByCaseIdByname(BTS,caseID,scheduleName);
-		if(schedule != null){	
-			System.out.println("schedule.getVisitCode():"+schedule.getVisitCode()+"visitCode:"+visitCode);
+		List<Enrollment> el = null;
+    	el = allEnrollments.findByEnrollmentByExternalIdAndScheduleName(caseID,scheduleName);
+    	
+    	
+		if(schedule != null){			
 			   if(!schedule.getVisitCode().equalsIgnoreCase(visitCode) ){
 				   this.updateDataScheduleLog(beneficiaryType, caseID, instanceId, anmIdentifier, scheduleName, visitCode, alertStatus, startDate, expiryDate, currentWindowCloseDate, trackId, BTS, timestamp, schedule);
 			   }else if(schedule.getVisitCode().equalsIgnoreCase(visitCode)){				   
@@ -91,11 +104,22 @@ public void updateScheduleLogMotherType(BeneficiaryType beneficiaryType, String 
 			logger.info("From updateScheduleLogMotherType:"+ e.getMessage());
 		}
 	}
+    /**
+     * @desc This method is used to create new scheduleLog when register form submit
+     * */
 	public void alertForReporting(BeneficiaryType beneficiaryType, String caseID, String instanceId, String anmIdentifier, String scheduleName, String visitCode, AlertStatus alertStatus, DateTime startDate, DateTime expiryDate, DateTime currentWindowCloseDate,String trackId,long timeStamp)
 	{	  
 		allReportActions.addAlert(new ScheduleLog(caseID, instanceId, anmIdentifier, ScheduleData.createAlert(beneficiaryType, scheduleName, visitCode, alertStatus, startDate, expiryDate),trackId,alertStatus,currentWindowCloseDate,startDate,expiryDate,scheduleName,timeStamp,visitCode));
 	   
 	}
+	
+	public void setEvent(HookedEvent action){
+		this.action = action;
+	}
+	
+	/**
+	 * @desc update map data
+	 * */
 	public void updateDataScheduleLog(BeneficiaryType beneficiaryType, String caseID, String instanceId, String anmIdentifier, String scheduleName, String visitCode, AlertStatus alertStatus, DateTime startDate, DateTime expiryDate, DateTime currentWindowCloseDate,String trackId,long BTS,long timestamp ,ScheduleLog  schedule){
 		Map<String, String > mapData = new HashMap<>();
 		mapData.put("beneficiaryType", beneficiaryType.value());
@@ -112,6 +136,19 @@ public void updateScheduleLogMotherType(BeneficiaryType beneficiaryType, String 
     	schedule.timestamp(timestamp);
     	schedule.setVisitCode(visitCode);
     	allReportActions.update(schedule);
+    	
+    	List<Enrollment> el = null;
+    	el = allEnrollments.findByEnrollmentByExternalIdAndScheduleName(caseID,scheduleName);
+    	
+    	for (Enrollment e : el){
+    		Map<String, String> metadata = new HashMap<>();
+    		metadata.put(ENROLLMENT_TRACK_UUID, schedule.trackId());
+		 	e.setMetadata(metadata );
+	    	List<Action> alertActions = new ArrayList<Action>();
+	    	alertActions.add(new Action(caseID, anmIdentifier, ActionData.createAlert(beneficiaryType, scheduleName, visitCode, alertStatus, startDate, expiryDate)));
+	    	action.scheduleSaveToOpenMRSMilestone(e,alertActions );
+	    	
+    	}
 	}
 	
 	public void schedulefullfill(String caseID,String scheduleName,String instanceId,long timestamp){
@@ -129,5 +166,6 @@ public void updateScheduleLogMotherType(BeneficiaryType beneficiaryType, String 
 		}
 		
 	}
-		
+	
+	
 }
