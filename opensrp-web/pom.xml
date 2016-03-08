@@ -168,7 +168,7 @@
 	        <id>tomcat-production</id>
 	        <properties>
 	            <tomcat-server>staging</tomcat-server>
-	            <tomcat-url>http://opensrp-staging:8080/manager/text</tomcat-url>
+	            <tomcat-url>http://opensrp-production:8080/manager/text</tomcat-url>
 	        </properties>
 	    </profile>
 	</profiles>
