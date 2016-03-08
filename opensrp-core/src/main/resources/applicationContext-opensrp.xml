@@ -39,5 +39,10 @@
         <constructor-arg value="${couchdb.db.error}"/>
         <constructor-arg ref="couchDbInstance"/>
     </bean>
+    
+    <bean id="opensrpDatabaseLuceneConnector" class="com.github.ldriscoll.ektorplucene.LuceneAwareCouchDbConnector">
+        <constructor-arg value="${couchdb.db.opensrp}"/>
+        <constructor-arg ref="couchDbInstance"/>
+    </bean>
 
 </beans>
