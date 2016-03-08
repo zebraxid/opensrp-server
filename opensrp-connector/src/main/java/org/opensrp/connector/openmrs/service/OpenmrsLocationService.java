@@ -26,6 +26,7 @@ public class OpenmrsLocationService extends OpenmrsService{
 		
 		if(!StringUtils.isEmptyOrWhitespaceOnly(op.body())){
 			return makeLocation(op.body());
+		
 		}
 		return null;
 	}
