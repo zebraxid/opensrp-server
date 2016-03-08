@@ -23,12 +23,12 @@ public class ScheduleRules extends MotechBaseDataObject{
 	@JsonProperty
     private String createdBy;
 	@JsonProperty
-	private List<Map<String, String>> rule;
+	private Rule rule;
 	@JsonProperty
     private DateTime createdDate;
 	
 	public ScheduleRules(String name, String createdBy,
-			List<Map<String, String>> rule) {
+			Rule rule) {
 		super();
 		this.name = name;
 		this.createdBy = createdBy;
@@ -48,10 +48,10 @@ public class ScheduleRules extends MotechBaseDataObject{
 	public void setCreatedBy(String createdBy) {
 		this.createdBy = createdBy;
 	}
-	public List<Map<String, String>> getRule() {
+	public Rule getRule() {
 		return rule;
 	}
-	public void setRule(List<Map<String, String>> rule) {
+	public void setRule(Rule rule) {
 		this.rule = rule;
 	}
 	public static long getSerialversionuid() {
