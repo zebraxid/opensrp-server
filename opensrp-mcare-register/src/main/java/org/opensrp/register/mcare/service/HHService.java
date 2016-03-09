@@ -23,6 +23,8 @@ import org.opensrp.register.mcare.domain.HouseHold;
 import org.opensrp.register.mcare.repository.AllElcos;
 import org.opensrp.register.mcare.repository.AllHouseHolds;
 import org.opensrp.register.mcare.service.scheduling.HHSchedulesService;
+import org.opensrp.register.mcare.service.scheduling.ScheduleLogService;
+import org.opensrp.scheduler.service.ScheduleRuleRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,13 +38,14 @@ public class HHService {
 	private AllHouseHolds allHouseHolds;
 	private ELCOService elcoService;
 	private HHSchedulesService hhSchedulesService;
-
+	private ScheduleLogService scheduleLogService;
 	@Autowired
 	public HHService(AllHouseHolds allHouseHolds, ELCOService elcoService,
-			HHSchedulesService hhSchedulesService) {
+			HHSchedulesService hhSchedulesService,ScheduleLogService scheduleLogService) {
 		this.allHouseHolds = allHouseHolds;
 		this.elcoService = elcoService;
-		this.hhSchedulesService = hhSchedulesService;
+		this.hhSchedulesService = hhSchedulesService;	
+		this.scheduleLogService = scheduleLogService;
 	}
 
 	public void registerHouseHold(FormSubmission submission) {
@@ -124,9 +127,16 @@ public class HHService {
 					.put(FW_WOMGOBHHID, elcoFields.get(FW_WOMGOBHHID))
 					.put(FW_WOMGPS, elcoFields.get(FW_WOMGPS)).map();
  
+			String fieldName = "";
 			
-			if(elcoFields.containsKey("FWWOMFNAME")){
-				if(!elcoFields.get(FW_WOMFNAME).equalsIgnoreCase("") || elcoFields.get(FW_WOMFNAME) != null){
+				if(scheduleLogService.getScheduleRule("HouseHold Form").getRule().get(0).getEndFormName().equalsIgnoreCase("psrf_form")){
+					if(scheduleLogService.getScheduleRule("HouseHold Form").getRule().get(0).getDefination().get(0).getName().equalsIgnoreCase("elco")){
+						fieldName = scheduleLogService.getScheduleRule("HouseHold Form").getRule().get(0).getDefination().get(0).getValue();
+					}
+				}
+			
+			if(elcoFields.containsKey(fieldName)){
+				if(!elcoFields.get(fieldName).equalsIgnoreCase("") || elcoFields.get(fieldName) != null){
 					
 					houseHold.ELCODETAILS().add(elco);
 				}

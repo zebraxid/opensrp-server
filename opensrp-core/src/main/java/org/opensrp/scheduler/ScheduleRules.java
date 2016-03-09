@@ -1,5 +1,6 @@
 package org.opensrp.scheduler;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -11,7 +12,7 @@ import org.ektorp.support.TypeDiscriminator;
 import org.joda.time.DateTime;
 import org.motechproject.model.MotechBaseDataObject;
 
-@TypeDiscriminator("doc.type === 'ScheduleRule'")
+@TypeDiscriminator("doc.type === 'ScheduleRules'")
 public class ScheduleRules extends MotechBaseDataObject{
 
 	/**
@@ -23,16 +24,19 @@ public class ScheduleRules extends MotechBaseDataObject{
 	@JsonProperty
     private String createdBy;
 	@JsonProperty
-	private List<Map<String, String>> rule;
+	private List<Rule>  rule;
 	@JsonProperty
     private DateTime createdDate;
 	
+	public ScheduleRules(){
+	}
 	public ScheduleRules(String name, String createdBy,
-			List<Map<String, String>> rule) {
-		super();
+			List<Rule> rule) {
+		
 		this.name = name;
 		this.createdBy = createdBy;
 		this.rule = rule;
+		this.createdDate = new DateTime();
 		
 	}
 
@@ -48,12 +52,15 @@ public class ScheduleRules extends MotechBaseDataObject{
 	public void setCreatedBy(String createdBy) {
 		this.createdBy = createdBy;
 	}
-	public List<Map<String, String>> getRule() {
+	public  List<Rule> getRule() {
 		return rule;
 	}
-	public void setRule(List<Map<String, String>> rule) {
+	
+	
+	public void setRule(List<Rule> rule) {
 		this.rule = rule;
 	}
+
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}

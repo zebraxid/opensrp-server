@@ -29,16 +29,22 @@ import org.opensrp.dto.BeneficiaryType;
 import org.opensrp.register.mcare.domain.Mother;
 import org.opensrp.register.mcare.repository.AllMothers;
 import org.opensrp.scheduler.Action;
+import org.opensrp.scheduler.Defination;
 import org.opensrp.scheduler.HealthSchedulerService;
+import org.opensrp.scheduler.Rule;
 import org.opensrp.scheduler.ScheduleLog;
+import org.opensrp.scheduler.ScheduleRules;
 import org.opensrp.scheduler.repository.AllActions;
 import org.opensrp.scheduler.repository.AllReportActions;
 import org.opensrp.scheduler.service.AllEnrollmentWrapper;
 import org.opensrp.scheduler.service.ReportActionService;
+import org.opensrp.scheduler.service.ScheduleRuleRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.google.gson.Gson;
 
 @Service
 
@@ -52,8 +58,10 @@ public class ScheduleLogService extends OpenmrsService{
 	private HealthSchedulerService scheduler;
 	private OpenmrsSchedulerService openmrsSchedulerService;
 	private AllMothers allMothers;
+	private ScheduleRuleRepository scheduleRuleRepository;
+	
 	@Autowired
-	public ScheduleLogService(ReportActionService reportActionService,AllEnrollmentWrapper allEnrollments,AllReportActions allReportActions,AllActions allActions,OpenmrsUserService userService,HealthSchedulerService scheduler,OpenmrsSchedulerService openmrsSchedulerService,AllMothers allMothers){
+	public ScheduleLogService(ReportActionService reportActionService,AllEnrollmentWrapper allEnrollments,AllReportActions allReportActions,AllActions allActions,OpenmrsUserService userService,HealthSchedulerService scheduler,OpenmrsSchedulerService openmrsSchedulerService,AllMothers allMothers,ScheduleRuleRepository scheduleRuleRepository){
 		this.reportActionService = reportActionService;
 		this.allEnrollments = allEnrollments;
 		this.allReportActions = allReportActions;
@@ -62,6 +70,7 @@ public class ScheduleLogService extends OpenmrsService{
 		this.scheduler = scheduler;
 		this.openmrsSchedulerService = openmrsSchedulerService;
 		this.allMothers = allMothers;
+		this.scheduleRuleRepository = scheduleRuleRepository;
 	}
 	
 	/**
@@ -112,7 +121,8 @@ public class ScheduleLogService extends OpenmrsService{
 		}		
 		try{
 			reportActionService.alertForReporting(beneficiaryType, caseID, instanceId, anmIdentifier, scheduleName, visitCode, alertStatus, startDate, expiryDate,null,trackId,timeStamp);
-			logger.info("ScheduleLog created with id case id :"+caseID);
+			logger.info("ScheduleLog created with id case id :"+caseID);			
+			
 		}catch(Exception e){
 			logger.info("ScheduleLog Does not create:"+e.getMessage());
 		}
@@ -304,5 +314,9 @@ public class ScheduleLogService extends OpenmrsService{
 		}catch(Exception e){
 			logger.info("From scheduleCloseAndSave for save: "+e.getMessage());
 		}
+	}
+	
+	public ScheduleRules getScheduleRule(String name){
+		return scheduleRuleRepository.findByName(name);		
 	}
 }
