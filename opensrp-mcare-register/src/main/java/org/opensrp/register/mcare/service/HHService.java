@@ -23,6 +23,9 @@ import org.opensrp.register.mcare.domain.HouseHold;
 import org.opensrp.register.mcare.repository.AllElcos;
 import org.opensrp.register.mcare.repository.AllHouseHolds;
 import org.opensrp.register.mcare.service.scheduling.HHSchedulesService;
+import org.opensrp.register.mcare.service.scheduling.ScheduleLogService;
+import org.opensrp.scheduler.ScheduleRules;
+import org.opensrp.scheduler.service.ScheduleRuleRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,13 +39,14 @@ public class HHService {
 	private AllHouseHolds allHouseHolds;
 	private ELCOService elcoService;
 	private HHSchedulesService hhSchedulesService;
-
+	private ScheduleLogService scheduleLogService;
 	@Autowired
 	public HHService(AllHouseHolds allHouseHolds, ELCOService elcoService,
-			HHSchedulesService hhSchedulesService) {
+			HHSchedulesService hhSchedulesService,ScheduleLogService scheduleLogService) {
 		this.allHouseHolds = allHouseHolds;
 		this.elcoService = elcoService;
-		this.hhSchedulesService = hhSchedulesService;
+		this.hhSchedulesService = hhSchedulesService;	
+		this.scheduleLogService = scheduleLogService;
 	}
 
 	public void registerHouseHold(FormSubmission submission) {
@@ -124,11 +128,27 @@ public class HHService {
 					.put(FW_WOMGOBHHID, elcoFields.get(FW_WOMGOBHHID))
 					.put(FW_WOMGPS, elcoFields.get(FW_WOMGPS)).map();
  
-			
-			if(elcoFields.containsKey("FWWOMFNAME")){
-				if(!elcoFields.get(FW_WOMFNAME).equalsIgnoreCase("") || elcoFields.get(FW_WOMFNAME) != null){
+			String fieldName =  scheduleLogService.getScheduleRule("HouseHold Form");
+			/*if(scheduleRule != null){
+				
+				for (int i = 0; i < scheduleRule.getRule().size(); i++) {				
+					if(scheduleRule.getRule().get(i).getEndFormName().equalsIgnoreCase("psrf_form")){
+						for (int j = 0; j < scheduleRule.getRule().get(i).getDefination().size(); j++) {
+							if(scheduleRule.getRule().get(i).getDefination().get(j).getName().equalsIgnoreCase("elco")){
+								fieldName= scheduleRule.getRule().get(i).getDefination().get(j).getValue();
+							}
+						}
+					}
 					
-					houseHold.ELCODETAILS().add(elco);
+				}
+			}*/
+			if(!fieldName.equalsIgnoreCase("")){
+				logger.info("FieldName:"+fieldName);
+				if(elcoFields.containsKey(fieldName)){
+					if(!elcoFields.get(fieldName).equalsIgnoreCase("") || elcoFields.get(fieldName) != null){
+						
+						houseHold.ELCODETAILS().add(elco);
+					}
 				}
 			}
 			
