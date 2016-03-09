@@ -75,12 +75,14 @@ public class HHRegisterEntryDTO {
 	@JsonProperty
 	private List<Map<String, String>> ELCODETAILS;
 	@JsonProperty
+	private List<Map<String, String>> attachments;
+	@JsonProperty
 	private Map<String, String> details;
 	private DateTime received_time;
 
 	public HHRegisterEntryDTO() {
-
 		this.ELCODETAILS = new ArrayList<>();
+		this.attachments = new ArrayList<>();
 	}
 	
 	public HHRegisterEntryDTO withCASEID(String CASEID) {
@@ -238,6 +240,12 @@ public class HHRegisterEntryDTO {
 		this.ELCODETAILS = ELCODETAILS;
 		return this;
 	}
+	
+	public HHRegisterEntryDTO withattachments(List<Map<String, String>> attachments) {
+		this.attachments = attachments;
+		return this;
+	}
+	
 	public HHRegisterEntryDTO withDetails(Map<String, String> details) {
         this.details = new HashMap<>(details);
         return this;
