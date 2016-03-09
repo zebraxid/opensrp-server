@@ -28,27 +28,22 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.github.ldriscoll.ektorplucene.LuceneAwareCouchDbConnector;
 import com.github.ldriscoll.ektorplucene.LuceneResult;
-/*
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath:test-applicationContext-opensrp-rest-services.xml")
+
+//@RunWith(SpringJUnit4ClassRunner.class)
+//@ContextConfiguration("classpath:test-applicationContext-opensrp-rest-services.xml")
 public class LuceneHouseHoldRepositoryTest {
 	
-	//private LuceneAwareCouchDbConnector connector; 
-    //private LuceneHouseHoldRepository repo; 
+	private LuceneAwareCouchDbConnector connector; 
+    private LuceneHouseHoldRepository repo; 
     
-
+/*
 	@Autowired
-	@Qualifier(AllConstants.OPENSRP_FORM_DATABASE_LUCENE_CONNECTOR)
+	@Qualifier(AllConstants.OPENSRP_DATABASE_LUCENE_CONNECTOR)
 	LuceneAwareCouchDbConnector connector;
 
 	@Autowired
-	private LuceneHouseHoldRepository repo;
+	private LuceneHouseHoldRepository repo;*/
 
-	@Before
-	public void setUp() throws Exception {
-		initMocks(this);
-	}
- 
     @Before
     public void setUp() throws IOException { 
         HttpClient httpClient = new StdHttpClient.Builder() 
@@ -107,9 +102,8 @@ public class LuceneHouseHoldRepositoryTest {
     @Test 
     public void testInit() { 
  
-        LuceneResult result = repo.findDocsByProviderAndUpazilla("opensrp", "SUNDARGANJ"); 
+        LuceneResult result = repo.findDocsByProviderAndUpazilla("opensrp", "SUNDARGANJ","FWA"); 
         assertNotNull("Expecting a non null result", result); 
         assertTrue("Should only have one result", result.getRows().size() == 1); 
     } 
 }
-*/
