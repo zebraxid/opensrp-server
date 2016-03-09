@@ -24,6 +24,7 @@ import org.opensrp.register.mcare.repository.AllElcos;
 import org.opensrp.register.mcare.repository.AllHouseHolds;
 import org.opensrp.register.mcare.service.scheduling.HHSchedulesService;
 import org.opensrp.register.mcare.service.scheduling.ScheduleLogService;
+import org.opensrp.scheduler.ScheduleRules;
 import org.opensrp.scheduler.service.ScheduleRuleRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -127,18 +128,27 @@ public class HHService {
 					.put(FW_WOMGOBHHID, elcoFields.get(FW_WOMGOBHHID))
 					.put(FW_WOMGPS, elcoFields.get(FW_WOMGPS)).map();
  
-			String fieldName = "";
-			
-				if(scheduleLogService.getScheduleRule("HouseHold Form").getRule().get(0).getEndFormName().equalsIgnoreCase("psrf_form")){
-					if(scheduleLogService.getScheduleRule("HouseHold Form").getRule().get(0).getDefination().get(0).getName().equalsIgnoreCase("elco")){
-						fieldName = scheduleLogService.getScheduleRule("HouseHold Form").getRule().get(0).getDefination().get(0).getValue();
+			String fieldName =  scheduleLogService.getScheduleRule("HouseHold Form");
+			/*if(scheduleRule != null){
+				
+				for (int i = 0; i < scheduleRule.getRule().size(); i++) {				
+					if(scheduleRule.getRule().get(i).getEndFormName().equalsIgnoreCase("psrf_form")){
+						for (int j = 0; j < scheduleRule.getRule().get(i).getDefination().size(); j++) {
+							if(scheduleRule.getRule().get(i).getDefination().get(j).getName().equalsIgnoreCase("elco")){
+								fieldName= scheduleRule.getRule().get(i).getDefination().get(j).getValue();
+							}
+						}
 					}
-				}
-			
-			if(elcoFields.containsKey(fieldName)){
-				if(!elcoFields.get(fieldName).equalsIgnoreCase("") || elcoFields.get(fieldName) != null){
 					
-					houseHold.ELCODETAILS().add(elco);
+				}
+			}*/
+			if(!fieldName.equalsIgnoreCase("")){
+				logger.info("FieldName:"+fieldName);
+				if(elcoFields.containsKey(fieldName)){
+					if(!elcoFields.get(fieldName).equalsIgnoreCase("") || elcoFields.get(fieldName) != null){
+						
+						houseHold.ELCODETAILS().add(elco);
+					}
 				}
 			}
 			

@@ -316,7 +316,22 @@ public class ScheduleLogService extends OpenmrsService{
 		}
 	}
 	
-	public ScheduleRules getScheduleRule(String name){
-		return scheduleRuleRepository.findByName(name);		
+	public String getScheduleRule(String name){
+		ScheduleRules scheduleRule = scheduleRuleRepository.findByName(name);	
+		String fieldName = "";
+		if(scheduleRule != null){			
+			for (int i = 0; i < scheduleRule.getRule().size(); i++) {				
+				if(scheduleRule.getRule().get(i).getEndFormName().equalsIgnoreCase("psrf_form")){
+					for (int j = 0; j < scheduleRule.getRule().get(i).getDefination().size(); j++) {
+						if(scheduleRule.getRule().get(i).getDefination().get(j).getName().equalsIgnoreCase("elco")){
+							fieldName= scheduleRule.getRule().get(i).getDefination().get(j).getValue();
+						}
+					}
+				}
+				
+			}
+		}
+		
+		return fieldName;
 	}
 }
