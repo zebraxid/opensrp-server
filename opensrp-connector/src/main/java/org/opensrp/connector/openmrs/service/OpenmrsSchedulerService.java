@@ -101,8 +101,13 @@ public class OpenmrsSchedulerService extends OpenmrsService{
 			
 			if(!e.getMetadata().containsKey("openmrsTrackUuid")){				
 				logger.info("track post json:"+t.toString());
-				to = new JSONObject(HttpUtil.post(getURL()+"/"+TRACK_URL, "", t.toString(), OPENMRS_USER, OPENMRS_PWD).body());
-				trackuuid = to.getString("uuid");
+				try{
+					to = new JSONObject(HttpUtil.post(getURL()+"/"+TRACK_URL, "", t.toString(), OPENMRS_USER, OPENMRS_PWD).body());
+					trackuuid = to.getString("uuid");
+				}catch(Exception ex){
+					logger.info(""+ex.toString());
+				}
+				
 			}else{				
 				trackuuid = e.getMetadata().get(OpenmrsConstants.ENROLLMENT_TRACK_UUID);
 				logger.info("ENROLLMENT_TRACK_UUID:"+e.getMetadata().get(OpenmrsConstants.ENROLLMENT_TRACK_UUID));
@@ -112,7 +117,11 @@ public class OpenmrsSchedulerService extends OpenmrsService{
 				
 				if(ac.actionType().equalsIgnoreCase("createAlert")){
 					JSONObject tm = fromActionToTrackMilestone(false, ac, trackuuid, e, alertActions);
+					try{
 					JSONObject tmo = new JSONObject(HttpUtil.post(getURL()+"/"+TRACK_MILESTONE_URL, "", tm.toString(), OPENMRS_USER, OPENMRS_PWD).body());
+					}catch(Exception ext){
+						logger.info(ext.toString());
+					}
 									
 				}
 				
@@ -121,9 +130,12 @@ public class OpenmrsSchedulerService extends OpenmrsService{
 			for (MilestoneFulfillment f : e.getFulfillments()) {
 				if(getCreatedAction(f.getMilestoneName(), alertActions) == null){
 					JSONObject tm = fromMilestoneToTrackMilestone(false, f, trackuuid, e, alertActions);
-					
-					JSONObject tmo = new JSONObject(HttpUtil.post(getURL()+"/"+TRACK_MILESTONE_URL, "", tm.toString(), OPENMRS_USER, OPENMRS_PWD).body());
-					
+					JSONObject tmo = null;
+					try{
+					 tmo = new JSONObject(HttpUtil.post(getURL()+"/"+TRACK_MILESTONE_URL, "", tm.toString(), OPENMRS_USER, OPENMRS_PWD).body());
+					}catch(Exception extm){
+						logger.info(extm.toString());
+					}
 					tmarr.put(tmo);
 				}
 			}

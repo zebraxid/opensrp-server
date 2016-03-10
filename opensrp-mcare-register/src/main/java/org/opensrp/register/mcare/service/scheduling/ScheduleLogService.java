@@ -111,9 +111,12 @@ public class ScheduleLogService extends OpenmrsService{
 		
 		
 		for (Enrollment e : el){
-			
-			alertActions.add(new Action(caseID, anmIdentifier, ActionData.createAlert(beneficiaryType, scheduleName, visitCode, alertStatus, startDate, expiryDate)));
-			trackId = this.saveEnrollDataToOpenMRSTrack(e,alertActions,motherId);
+			try{
+				alertActions.add(new Action(caseID, anmIdentifier, ActionData.createAlert(beneficiaryType, scheduleName, visitCode, alertStatus, startDate, expiryDate)));
+				trackId = this.saveEnrollDataToOpenMRSTrack(e,alertActions,motherId);
+			}catch(Exception ex){
+				logger.info(""+ex.toString());
+			}
 		}
 		
 		if(trackId.equalsIgnoreCase("")){
@@ -316,7 +319,7 @@ public class ScheduleLogService extends OpenmrsService{
 		}
 	}
 	
-	public String getScheduleRule(String name){
+	public String getScheduleRuleForPSRFInHH(String name){
 		ScheduleRules scheduleRule = scheduleRuleRepository.findByName(name);	
 		String fieldName = "";
 		if(scheduleRule != null){			
@@ -324,6 +327,25 @@ public class ScheduleLogService extends OpenmrsService{
 				if(scheduleRule.getRule().get(i).getEndFormName().equalsIgnoreCase("psrf_form")){
 					for (int j = 0; j < scheduleRule.getRule().get(i).getDefination().size(); j++) {
 						if(scheduleRule.getRule().get(i).getDefination().get(j).getName().equalsIgnoreCase("elco")){
+							fieldName= scheduleRule.getRule().get(i).getDefination().get(j).getValue();
+						}
+					}
+				}
+				
+			}
+		}
+		
+		return fieldName;
+	}
+	
+	public String getScheduleRuleForCensus(String name){
+		ScheduleRules scheduleRule = scheduleRuleRepository.findByName(name);	
+		String fieldName = "";
+		if(scheduleRule != null){			
+			for (int i = 0; i < scheduleRule.getRule().size(); i++) {				
+				if(scheduleRule.getRule().get(i).getEndFormName().equalsIgnoreCase("Cencus")){
+					for (int j = 0; j < scheduleRule.getRule().get(i).getDefination().size(); j++) {
+						if(scheduleRule.getRule().get(i).getDefination().get(j).getName().equalsIgnoreCase("submission")){
 							fieldName= scheduleRule.getRule().get(i).getDefination().get(j).getValue();
 						}
 					}
