@@ -111,9 +111,12 @@ public class ScheduleLogService extends OpenmrsService{
 		
 		
 		for (Enrollment e : el){
-			
-			alertActions.add(new Action(caseID, anmIdentifier, ActionData.createAlert(beneficiaryType, scheduleName, visitCode, alertStatus, startDate, expiryDate)));
-			trackId = this.saveEnrollDataToOpenMRSTrack(e,alertActions,motherId);
+			try{
+				alertActions.add(new Action(caseID, anmIdentifier, ActionData.createAlert(beneficiaryType, scheduleName, visitCode, alertStatus, startDate, expiryDate)));
+				trackId = this.saveEnrollDataToOpenMRSTrack(e,alertActions,motherId);
+			}catch(Exception ex){
+				logger.info(""+ex.toString());
+			}
 		}
 		
 		if(trackId.equalsIgnoreCase("")){
