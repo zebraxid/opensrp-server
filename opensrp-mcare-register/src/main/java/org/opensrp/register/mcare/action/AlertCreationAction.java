@@ -21,6 +21,8 @@ import org.opensrp.register.mcare.OpenSRPScheduleConstants.ELCOSchedulesConstant
 import org.opensrp.register.mcare.domain.Elco;
 import org.opensrp.register.mcare.domain.HouseHold;
 import org.opensrp.register.mcare.domain.Mother;
+import org.opensrp.register.mcare.domain.Child;
+import org.opensrp.register.mcare.repository.AllChilds;
 import org.opensrp.register.mcare.repository.AllElcos;
 import org.opensrp.register.mcare.repository.AllHouseHolds;
 import org.opensrp.register.mcare.repository.AllMothers;
@@ -41,16 +43,18 @@ public class AlertCreationAction implements HookedEvent {
 	private AllHouseHolds allHouseHolds;
 	private AllElcos allElcos;
 	private AllMothers allMothers;
+	private AllChilds allChilds;
 	private ScheduleLogService scheduleLogService;
 	private static Logger logger = LoggerFactory.getLogger(AlertCreationAction.class.toString());
 	@Autowired
 	public AlertCreationAction(HealthSchedulerService scheduler,
 			AllHouseHolds allHouseHolds, AllElcos allElcos,
-			AllMothers allMothers,ScheduleLogService scheduleLogService) {
+			AllMothers allMothers, AllChilds allChilds, ScheduleLogService scheduleLogService) {
 		this.scheduler = scheduler;
 		this.allHouseHolds = allHouseHolds;
 		this.allElcos = allElcos;
 		this.allMothers = allMothers;
+		this.allChilds = allChilds;
 		this.scheduleLogService = scheduleLogService;
 	}
 
@@ -96,12 +100,12 @@ public class AlertCreationAction implements HookedEvent {
 		}
 		else if(child.equals(beneficiaryType))
 		{
-			Mother mother = allMothers.findByCaseId(caseID);
+			Child child = allChilds.findByCaseId(caseID);
 
-			if (mother != null) {
-				instanceId= mother.INSTANCEID();
-				providerId = mother.PROVIDERID();
-				startOfEarliestWindow = DateTime.parse(mother.TODAY(),formatter);
+			if (child != null) {
+				instanceId= child.INSTANCEID();
+				providerId = child.PROVIDERID();
+				startOfEarliestWindow = DateTime.parse(child.TODAY(),formatter);
 			}
 		}
 		else {

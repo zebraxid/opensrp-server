@@ -5,17 +5,17 @@
 package org.opensrp.register.mcare.service;
 
 import static java.text.MessageFormat.format;
-import static org.opensrp.common.AllConstants.BnfFollowUpVisitFields.FWBNFDTOO;
-import static org.opensrp.common.AllConstants.BnfFollowUpVisitFields.FWBNFSTS;
-import static org.opensrp.common.AllConstants.BnfFollowUpVisitFields.STS_WD;
-import static org.opensrp.common.AllConstants.BnfFollowUpVisitFields.STS_LB;
-import static org.opensrp.common.AllConstants.BnfFollowUpVisitFields.STS_SB;
+import static org.opensrp.common.AllConstants.BnfFollowUpVisitFields.*;
 import static org.opensrp.common.AllConstants.CommonFormFields.ID;
-import static org.opensrp.common.AllConstants.HHRegistrationFields.REFERENCE_DATE;
-import static org.opensrp.common.AllConstants.ANCVisitOneFields.FWCONFIRMATION;
+import static org.opensrp.common.AllConstants.HHRegistrationFields.*;
+import static org.opensrp.common.AllConstants.ANCVisitOneFields.*;
 import static org.opensrp.common.AllConstants.PNCVisitOneFields.*;
 import static org.opensrp.common.AllConstants.PNCVisitTwoFields.*;
 import static org.opensrp.common.AllConstants.PNCVisitThreeFields.*;
+import static org.opensrp.common.AllConstants.DeliveryOutcomeFields.CHILD_REGISTRATION_SUB_FORM_NAME;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_GOBHHID;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_WOMFNAME;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_WOMUPAZILLA;
 import static org.opensrp.common.util.EasyMap.create;
 
 import java.util.Map;
@@ -25,8 +25,11 @@ import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.opensrp.form.domain.FormSubmission;
+import org.opensrp.form.domain.SubFormData;
 import org.opensrp.register.mcare.domain.Elco;
 import org.opensrp.register.mcare.domain.Mother;
+import org.opensrp.register.mcare.domain.Child;
+import org.opensrp.register.mcare.repository.AllChilds;
 import org.opensrp.register.mcare.repository.AllElcos;
 import org.opensrp.register.mcare.repository.AllMothers;
 import org.opensrp.register.mcare.service.scheduling.ELCOScheduleService;
@@ -44,14 +47,16 @@ public class PNCService {
 			.toString());
 	private AllElcos allElcos;
 	private AllMothers allMothers;
+	private AllChilds allChilds;
 	private ELCOScheduleService elcoSchedulesService;
 	private PNCSchedulesService pncSchedulesService;
 	private ChildSchedulesService childSchedulesService;
 
 	@Autowired
-	public PNCService(AllElcos allElcos, AllMothers allMothers, ELCOScheduleService elcoSchedulesService, PNCSchedulesService pncSchedulesService, ChildSchedulesService childSchedulesService) {
+	public PNCService(AllElcos allElcos, AllMothers allMothers, AllChilds allChilds, ELCOScheduleService elcoSchedulesService, PNCSchedulesService pncSchedulesService, ChildSchedulesService childSchedulesService) {
 		this.allElcos = allElcos;
 		this.allMothers = allMothers;
+		this.allChilds = allChilds;
 		this.elcoSchedulesService = elcoSchedulesService;
 		this.pncSchedulesService = pncSchedulesService;
 		this.childSchedulesService = childSchedulesService;
@@ -67,7 +72,7 @@ public class PNCService {
 		String referenceDate = fmt.print(dateTime);
 
 		if (submission.getField(FWBNFDTOO) != null) {
-			
+						
 			Mother mother = allMothers.findByCaseId(submission.entityId());
 
 			if (mother == null) {
@@ -82,19 +87,39 @@ public class PNCService {
 			elco.setIsClosed(false);
 			allElcos.update(elco);
 			elcoSchedulesService.imediateEnrollIntoMilestoneOfPSRF(elco.caseId(), elco.TODAY(), elco.PROVIDERID(),elco.INSTANCEID());
-
+								
 			if (submission.getField(FWBNFSTS).equals(STS_WD)) {
 				logger.info("Closing Mother as the mother died during delivery. Mother Id: "
 						+ mother.caseId());
 				closeMother(mother);
-			} else if (submission.getField(FWBNFSTS).equals(STS_LB)) {
+			} 
+			else if (submission.getField(FWBNFSTS).equals(STS_LB)) {
 				logger.info("Generating schedule for Mother when Child is Live Birth. Mother Id: "
 						+ mother.caseId());
 				pncSchedulesService.enrollPNCRVForMother(submission.entityId(), LocalDate.parse(referenceDate));
 				logger.info("Generating schedule for Child when Child is Live Birth. Mother Id: "
 						+ mother.caseId());
-				childSchedulesService.enrollENCCForChild(submission.entityId(),  LocalDate.parse(referenceDate));
-			} else if (submission.getField(FWBNFSTS).equals(STS_SB)) {
+								
+				SubFormData subFormData = submission.getSubFormByName(CHILD_REGISTRATION_SUB_FORM_NAME);
+												
+				for (Map<String, String> childFields : subFormData.instances()) {
+					
+					Child child = allChilds.findByCaseId(childFields.get(ID))
+						.withINSTANCEID(submission.instanceId())
+						.withPROVIDERID(submission.anmId())
+						.withTODAY(submission.getField(REFERENCE_DATE))
+						.withSTART(submission.getField(START_DATE))
+						.withEND(submission.getField(END_DATE))
+						.setIsClosed(false);
+
+					allChilds.update(child);
+					childSchedulesService.enrollENCCForChild(childFields.get(ID),  LocalDate.parse(referenceDate));	
+				}
+				
+							
+				
+			} 
+			else if (submission.getField(FWBNFSTS).equals(STS_SB)) {
 				logger.info("Generating schedule for Mother when Child is Still Birth. Mother Id: "
 						+ mother.caseId());
 				pncSchedulesService.enrollPNCRVForMother(submission.entityId(),  LocalDate.parse(referenceDate));
@@ -123,7 +148,23 @@ public class PNCService {
 				.put(FWPNC1TEMP, submission.getField(FWPNC1TEMP))
 				.put(FWPNC1DNGRSIGN, submission.getField(FWPNC1DNGRSIGN))
 				.put(FWPNC1DELTYPE, submission.getField(FWPNC1DELTYPE))
-				.put(FWPNC1DELCOMP, submission.getField(FWPNC1DELCOMP)).map();
+				.put(FWPNC1DELCOMP, submission.getField(FWPNC1DELCOMP))				
+				.put(FW_GOBHHID, submission.getField(FW_GOBHHID))
+				.put(FW_JiVitAHHID, submission.getField(FW_JiVitAHHID))
+				.put(FW_WOMBID, submission.getField(FW_WOMBID))
+				.put(FW_WOMNID, submission.getField(FW_WOMNID))
+				.put(FW_WOMFNAME, submission.getField(FW_WOMFNAME))
+				.put(FW_HUSNAME, submission.getField(FW_HUSNAME))
+				.put(FWBNFDTOO, submission.getField(FWBNFDTOO))
+				.put(FWBNFSTS, submission.getField(FWBNFSTS))
+				.put(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
+				.put(START_DATE, submission.getField(START_DATE))
+				.put(END_DATE, submission.getField(END_DATE))
+				.put(pnc1_current_formStatus, submission.getField(pnc1_current_formStatus))
+				.put(relationalid, submission.getField(relationalid))
+				.put(user_type, submission.getField(user_type))
+				.put(external_user_ID, submission.getField(external_user_ID))
+				.map();
 
 		mother.withPNCVisitOne(pncVisitOne);
 
@@ -149,7 +190,23 @@ public class PNCService {
 				.put(FWPNC2FVR, submission.getField(FWPNC2FVR))
 				.put(FWPNC2TEMP, submission.getField(FWPNC2TEMP))
 				.put(FWPNC2DNGRSIGN, submission.getField(FWPNC2DNGRSIGN))
-				.put(FWPNC2DELCOMP, submission.getField(FWPNC2DELCOMP)).map();
+				.put(FWPNC2DELCOMP, submission.getField(FWPNC2DELCOMP))
+				.put(FW_GOBHHID, submission.getField(FW_GOBHHID))
+				.put(FW_JiVitAHHID, submission.getField(FW_JiVitAHHID))
+				.put(FW_WOMBID, submission.getField(FW_WOMBID))
+				.put(FW_WOMNID, submission.getField(FW_WOMNID))
+				.put(FW_WOMFNAME, submission.getField(FW_WOMFNAME))
+				.put(FW_HUSNAME, submission.getField(FW_HUSNAME))
+				.put(FWBNFDTOO, submission.getField(FWBNFDTOO))
+				.put(FWBNFSTS, submission.getField(FWBNFSTS))
+				.put(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
+				.put(START_DATE, submission.getField(START_DATE))
+				.put(END_DATE, submission.getField(END_DATE))
+				.put(pnc2_current_formStatus, submission.getField(pnc2_current_formStatus))
+				.put(relationalid, submission.getField(relationalid))
+				.put(user_type, submission.getField(user_type))
+				.put(external_user_ID, submission.getField(external_user_ID))
+				.map();
 
 		mother.withPNCVisitTwo(pncVisitTwo);
 
@@ -177,7 +234,23 @@ public class PNCService {
 				.put(FWPNC3FVR, submission.getField(FWPNC3FVR))
 				.put(FWPNC3TEMP, submission.getField(FWPNC3TEMP))
 				.put(FWPNC3DNGRSIGN, submission.getField(FWPNC3DNGRSIGN))
-				.put(FWPNC3DELCOMP, submission.getField(FWPNC3DELCOMP)).map();
+				.put(FWPNC3DELCOMP, submission.getField(FWPNC3DELCOMP))
+				.put(FW_GOBHHID, submission.getField(FW_GOBHHID))
+				.put(FW_JiVitAHHID, submission.getField(FW_JiVitAHHID))
+				.put(FW_WOMBID, submission.getField(FW_WOMBID))
+				.put(FW_WOMNID, submission.getField(FW_WOMNID))
+				.put(FW_WOMFNAME, submission.getField(FW_WOMFNAME))
+				.put(FW_HUSNAME, submission.getField(FW_HUSNAME))
+				.put(FWBNFDTOO, submission.getField(FWBNFDTOO))
+				.put(FWBNFSTS, submission.getField(FWBNFSTS))
+				.put(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
+				.put(START_DATE, submission.getField(START_DATE))
+				.put(END_DATE, submission.getField(END_DATE))
+				.put(pnc3_current_formStatus, submission.getField(pnc3_current_formStatus))
+				.put(relationalid, submission.getField(relationalid))
+				.put(user_type, submission.getField(user_type))
+				.put(external_user_ID, submission.getField(external_user_ID))
+				.map();
 
 		mother.withPNCVisitThree(pncVisitThree);
 

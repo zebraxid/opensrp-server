@@ -7,6 +7,9 @@ import static java.text.MessageFormat.format;
 import static org.opensrp.common.AllConstants.ENCCVisitOneFields.*;
 import static org.opensrp.common.AllConstants.ENCCVisitTwoFields.*;
 import static org.opensrp.common.AllConstants.ENCCVisitThreeFields.*;
+import static org.opensrp.common.AllConstants.HHRegistrationFields.END_DATE;
+import static org.opensrp.common.AllConstants.HHRegistrationFields.REFERENCE_DATE;
+import static org.opensrp.common.AllConstants.HHRegistrationFields.START_DATE;
 import static org.opensrp.common.util.EasyMap.create;
 
 import java.util.Map;
@@ -59,7 +62,11 @@ public class ChildService {
 				.put(FWENC1DSLETH, submission.getField(FWENC1DSLETH))
 				.put(FWENC1DSDIFBRTH, submission.getField(FWENC1DSDIFBRTH))
 				.put(FWENC1DSCONVL, submission.getField(FWENC1DSCONVL))
-				.put(FWENC1DELCOMP, submission.getField(FWENC1DELCOMP)).map();	
+				.put(FWENC1DELCOMP, submission.getField(FWENC1DELCOMP))
+				.put(encc1_current_formStatus, submission.getField(encc1_current_formStatus))
+				.put(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
+				.put(START_DATE, submission.getField(START_DATE))
+				.put(END_DATE, submission.getField(END_DATE)).map();	
 
 		child.withENCCVisitOne(enccOne);
 		
@@ -92,7 +99,11 @@ public class ChildService {
 				.put(FWENC2DSLETH, submission.getField(FWENC2DSLETH))
 				.put(FWENC2DSDIFBRTH, submission.getField(FWENC2DSDIFBRTH))
 				.put(FWENC2DSCONVL, submission.getField(FWENC2DSCONVL))
-				.put(FWENC2DELCOMP, submission.getField(FWENC2DELCOMP)).map();	
+				.put(FWENC2DELCOMP, submission.getField(FWENC2DELCOMP))
+				.put(encc2_current_formStatus, submission.getField(encc2_current_formStatus))
+				.put(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
+				.put(START_DATE, submission.getField(START_DATE))
+				.put(END_DATE, submission.getField(END_DATE)).map();	
 
 		child.withENCCVisitTwo(enccTwo);
 		
@@ -125,7 +136,11 @@ public class ChildService {
 				.put(FWENC3DSLETH, submission.getField(FWENC3DSLETH))
 				.put(FWENC3DSDIFBRTH, submission.getField(FWENC3DSDIFBRTH))
 				.put(FWENC3DSCONVL, submission.getField(FWENC3DSCONVL))
-				.put(FWENC3DELCOMP, submission.getField(FWENC3DELCOMP)).map();	
+				.put(FWENC3DELCOMP, submission.getField(FWENC3DELCOMP))
+				.put(encc3_current_formStatus, submission.getField(encc3_current_formStatus))
+				.put(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
+				.put(START_DATE, submission.getField(START_DATE))
+				.put(END_DATE, submission.getField(END_DATE)).map();	
 
 		child.withENCCVisitThree(enccThree);
 		

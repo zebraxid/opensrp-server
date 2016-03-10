@@ -4,13 +4,13 @@
 package org.opensrp.register.mcare.service;
 
 import static java.text.MessageFormat.format;
-import static org.opensrp.common.AllConstants.HHRegistrationFields.ELCO_REGISTRATION_SUB_FORM_NAME;
-import static org.opensrp.common.AllConstants.HHRegistrationFields.MOTHER_REFERENCE_DATE;
+import static org.opensrp.common.AllConstants.HHRegistrationFields.*;
 import static org.opensrp.common.AllConstants.ANCVisitOneFields.*;
 import static org.opensrp.common.AllConstants.ANCVisitTwoFields.*;
 import static org.opensrp.common.AllConstants.ANCVisitThreeFields.*;
 import static org.opensrp.common.AllConstants.ANCVisitFourFields.*;
 import static org.opensrp.common.AllConstants.BnfFollowUpVisitFields.*;
+
 import static org.opensrp.common.util.EasyMap.create;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_ANC;
 
@@ -125,6 +125,16 @@ public class ANCService {
 											.put(user_type, submission.getField(user_type))
 											.put(external_user_ID, submission.getField(external_user_ID))
 											.put(relationalid, submission.getField(relationalid))
+											.put(FW_GOBHHID, submission.getField(FW_GOBHHID))
+											.put(FW_JiVitAHHID, submission.getField(FW_JiVitAHHID))
+											.put(FW_WOMBID, submission.getField(FW_WOMBID))
+											.put(FW_WOMNID, submission.getField(FW_WOMNID))
+											.put(FW_WOMFNAME, submission.getField(FW_WOMFNAME))
+											.put(FW_HUSNAME, submission.getField(FW_HUSNAME))
+											.put(MOTHER_REFERENCE_DATE, submission.getField(MOTHER_REFERENCE_DATE))
+											.put(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
+											.put(START_DATE, submission.getField(START_DATE))
+											.put(END_DATE, submission.getField(END_DATE))
 											.map();											
 		
 		mother.withANCVisitOne(ancVisitOne);
@@ -193,7 +203,17 @@ public class ANCService {
 											.put(user_type, submission.getField(user_type))
 											.put(external_user_ID, submission.getField(external_user_ID))
 											.put(relationalid, submission.getField(relationalid))
-											.map();	
+											.put(FW_GOBHHID, submission.getField(FW_GOBHHID))
+											.put(FW_JiVitAHHID, submission.getField(FW_JiVitAHHID))
+											.put(FW_WOMBID, submission.getField(FW_WOMBID))
+											.put(FW_WOMNID, submission.getField(FW_WOMNID))
+											.put(FW_WOMFNAME, submission.getField(FW_WOMFNAME))
+											.put(FW_HUSNAME, submission.getField(FW_HUSNAME))
+											.put(MOTHER_REFERENCE_DATE, submission.getField(MOTHER_REFERENCE_DATE))
+											.put(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
+											.put(START_DATE, submission.getField(START_DATE))
+											.put(END_DATE, submission.getField(END_DATE))
+											.map();												
 		
 		mother.withANCVisitTwo(ancVisitTwo);
 		allMothers.update(mother);
@@ -263,7 +283,17 @@ public class ANCService {
 											.put(user_type, submission.getField(user_type))
 											.put(external_user_ID, submission.getField(external_user_ID))
 											.put(relationalid, submission.getField(relationalid))
-											.map();	
+											.put(FW_GOBHHID, submission.getField(FW_GOBHHID))
+											.put(FW_JiVitAHHID, submission.getField(FW_JiVitAHHID))
+											.put(FW_WOMBID, submission.getField(FW_WOMBID))
+											.put(FW_WOMNID, submission.getField(FW_WOMNID))
+											.put(FW_WOMFNAME, submission.getField(FW_WOMFNAME))
+											.put(FW_HUSNAME, submission.getField(FW_HUSNAME))
+											.put(MOTHER_REFERENCE_DATE, submission.getField(MOTHER_REFERENCE_DATE))
+											.put(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
+											.put(START_DATE, submission.getField(START_DATE))
+											.put(END_DATE, submission.getField(END_DATE))
+											.map();											
 		
 		mother.withANCVisitThree(ancVisitThree);
 
@@ -335,7 +365,17 @@ public class ANCService {
 											.put(user_type, submission.getField(user_type))
 											.put(external_user_ID, submission.getField(external_user_ID))
 											.put(relationalid, submission.getField(relationalid))
-											.map();	
+											.put(FW_GOBHHID, submission.getField(FW_GOBHHID))
+											.put(FW_JiVitAHHID, submission.getField(FW_JiVitAHHID))
+											.put(FW_WOMBID, submission.getField(FW_WOMBID))
+											.put(FW_WOMNID, submission.getField(FW_WOMNID))
+											.put(FW_WOMFNAME, submission.getField(FW_WOMFNAME))
+											.put(FW_HUSNAME, submission.getField(FW_HUSNAME))
+											.put(MOTHER_REFERENCE_DATE, submission.getField(MOTHER_REFERENCE_DATE))
+											.put(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
+											.put(START_DATE, submission.getField(START_DATE))
+											.put(END_DATE, submission.getField(END_DATE))
+											.map();												
 			
 		mother.withANCVisitFour(ancVisitFour);
 		allMothers.update(mother);
