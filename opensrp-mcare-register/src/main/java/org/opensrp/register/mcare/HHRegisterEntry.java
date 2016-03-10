@@ -75,11 +75,13 @@ public class HHRegisterEntry {
 	
 	private List<Map<String, String>> ELCODETAILS;
 	
+	private List<Map<String, String>> attachments;
+	
 	private Map<String, String> details;
 	
 	public HHRegisterEntry() {
-
 		this.ELCODETAILS = new ArrayList<>();
+		this.attachments = new ArrayList<>();
 	}
 
 	public HHRegisterEntry withCASEID(String CASEID) {
@@ -237,6 +239,11 @@ public class HHRegisterEntry {
 		return this;
 	}
 	
+	public HHRegisterEntry withattachments(List<Map<String, String>> attachments) {
+		this.attachments = attachments;
+		return this;
+	}
+	
 	public HHRegisterEntry withDetails(Map<String, String> details) {
         this.details = new HashMap<>(details);
         return this;
@@ -367,6 +374,13 @@ public class HHRegisterEntry {
 			ELCODETAILS = new ArrayList<>();
 		}
 		return ELCODETAILS;
+	}
+	
+	public List<Map<String, String>> attachments() {
+		if (attachments == null) {
+			attachments = new ArrayList<>();
+		}
+		return attachments;
 	}
 
 	private String getCASEID() {

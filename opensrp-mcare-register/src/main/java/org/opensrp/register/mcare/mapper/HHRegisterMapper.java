@@ -56,6 +56,7 @@ public class HHRegisterMapper {
                         		.withexternal_user_ID(entry.external_user_ID())
                         		.withcurrent_formStatus(entry.current_formStatus())
                         		.withELCODETAILS(entry.ELCODETAILS())
+                        		.withattachments(entry.attachments())
                         		.withDetails(entry.details())
                         		.withLOCATIONID(entry.LOCATIONID())
                         		.withTODAY(entry.TODAY())

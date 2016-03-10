@@ -78,11 +78,13 @@ public class HouseHold extends MotechBaseDataObject {
 	@JsonProperty
 	private List<Map<String, String>> ELCODETAILS;
 	@JsonProperty
+	private List<Map<String, String>> attachments;
+	@JsonProperty
 	private Map<String, String> details;
 	private String received_time;
 	public HouseHold() {
-
 		this.ELCODETAILS = new ArrayList<>();
+		this.attachments = new ArrayList<>();
 	}
 	
 	public HouseHold withCASEID(String caseId) {
@@ -241,6 +243,11 @@ public class HouseHold extends MotechBaseDataObject {
 		return this;
 	}
 	
+	public HouseHold withattachments(List<Map<String, String>> attachments) {
+		this.attachments = attachments;
+		return this;
+	}
+	
 	public HouseHold withDetails(Map<String, String> details) {
         this.details = new HashMap<>(details);
         return this;
@@ -369,6 +376,7 @@ public class HouseHold extends MotechBaseDataObject {
 	public String received_time(){
 		return received_time;
 	}
+	
 	public String current_formStatus() {
 		return current_formStatus;
 	}
@@ -378,6 +386,13 @@ public class HouseHold extends MotechBaseDataObject {
 			ELCODETAILS = new ArrayList<>();
 		}
 		return ELCODETAILS;
+	}
+	
+	public List<Map<String, String>> attachments() {
+		if (attachments == null) {
+			attachments = new ArrayList<>();
+		}
+		return attachments;
 	}
 
 	private String getCaseId() {

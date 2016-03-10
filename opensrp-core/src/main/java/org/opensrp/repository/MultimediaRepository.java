@@ -2,6 +2,7 @@ package org.opensrp.repository;
 
 import java.util.List;
 
+import org.ektorp.ComplexKey;
 import org.ektorp.CouchDbConnector;
 import org.ektorp.ViewQuery;
 import org.ektorp.ViewResult;
@@ -38,15 +39,17 @@ public class MultimediaRepository extends MotechBaseRepository<Multimedia> {
 				.includeDocs(true), Multimedia.class);
 	}
 	
-	@View(name="find_by_caseId_fileCategory", map="function(doc) { if (doc.type === 'Multimedia' && doc.providerId) { emit(doc.providerId, doc.caseId, doc.fileCategory, doc); } }")
+	@View(name="find_by_caseId_fileCategory", map="function(doc) { if (doc.type === 'Multimedia' && doc.providerId) { emit([doc.caseId, doc.fileCategory], doc); } }")
 	public List<Multimedia> findByCaseIdAndFileCategory(String entityId, String fileCategory)
 	{
 		/*return db.queryView(createQuery("find_by_caseId_fileCategory").key(new String[]{entityId,fileCategory})
 				.includeDocs(true), Multimedia.class);*/
 		
+		ComplexKey complexKey = ComplexKey.of(entityId,fileCategory);
+		
 		 ViewQuery query = createQuery("find_by_caseId_fileCategory")
 	                .designDocId(stdDesignDocumentId)
-	                .key(new String[]{entityId,fileCategory});
+	                .key(complexKey).includeDocs(true);
 		 
 		 ViewResult r = db.queryView(query);
 		 
