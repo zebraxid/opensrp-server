@@ -81,13 +81,27 @@ public class ELCOService {
 					.withTODAY(submission.getField(REFERENCE_DATE))
 					.withFWWOMUPAZILLA(elcoFields.get(FW_WOMUPAZILLA).replace("+", " "));
 			
-			if(elcoFields.containsKey("FWWOMFNAME")){	
-				if(!elcoFields.get(FW_WOMFNAME).equalsIgnoreCase("") || elcoFields.get(FW_WOMFNAME)!= null){
-					allEcos.update(elco);
-					elcoScheduleService.imediateEnrollIntoMilestoneOfPSRF(elcoFields.get(ID),
-					submission.getField(REFERENCE_DATE),submission.anmId(),submission.instanceId());
+			if(elcoFields.containsKey(FW_WOMFNAME)){
+				allEcos.update(elco);
+				logger.info("Elco updated");
+			}else{
+				allEcos.remove(elco);
+				logger.info("Elco removed");
+			}
+			String fieldName =  scheduleLogService.getScheduleRuleForPSRFInHH("HouseHold Form");
+			logger.info("FieldName:"+fieldName);
+			if(!fieldName.equalsIgnoreCase("")){
+				if(elcoFields.containsKey(fieldName)){	
+					if(!elcoFields.get(fieldName).equalsIgnoreCase("") || elcoFields.get(fieldName)!= null){
+						elcoScheduleService.imediateEnrollIntoMilestoneOfPSRF(elcoFields.get(ID),
+						submission.getField(REFERENCE_DATE),submission.anmId(),submission.instanceId());
+					}
+				}else{
+					
+					logger.info("Variable not found which is defined in rule defination for elco");
 				}
 			}
+			
 		}
 
 		if (submission.formName().equalsIgnoreCase(ELCO_REGISTRATION)) {

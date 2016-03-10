@@ -72,9 +72,17 @@ public class HHService {
 		houseHold.withTODAY(submission.getField(REFERENCE_DATE));
 		houseHold.withFWUPAZILLA(submission.getField(FW_UPAZILLA).replace("+", " "));
 		
-		allHouseHolds.update(houseHold);		
-		hhSchedulesService.enrollIntoMilestoneOfCensus(submission.entityId(),
+		allHouseHolds.update(houseHold);
+		
+		String cencusCondition =  scheduleLogService.getScheduleRuleForCensus("HouseHold Form");
+		logger.info("Cencus Condition :"+cencusCondition);
+		if(!cencusCondition.equalsIgnoreCase("") && cencusCondition.equalsIgnoreCase("1")){
+			
+			hhSchedulesService.enrollIntoMilestoneOfCensus(submission.entityId(),
 				submission.getField(REFERENCE_DATE),submission.anmId(),submission.instanceId());
+		}else{
+			logger.info("Rule Defination Not Found for Cencus");
+		}
 		
 		elcoService.registerELCO(submission);
 	}
@@ -128,29 +136,15 @@ public class HHService {
 					.put(FW_WOMGOBHHID, elcoFields.get(FW_WOMGOBHHID))
 					.put(FW_WOMGPS, elcoFields.get(FW_WOMGPS)).map();
  
-			String fieldName =  scheduleLogService.getScheduleRule("HouseHold Form");
-			/*if(scheduleRule != null){
-				
-				for (int i = 0; i < scheduleRule.getRule().size(); i++) {				
-					if(scheduleRule.getRule().get(i).getEndFormName().equalsIgnoreCase("psrf_form")){
-						for (int j = 0; j < scheduleRule.getRule().get(i).getDefination().size(); j++) {
-							if(scheduleRule.getRule().get(i).getDefination().get(j).getName().equalsIgnoreCase("elco")){
-								fieldName= scheduleRule.getRule().get(i).getDefination().get(j).getValue();
-							}
-						}
-					}
-					
-				}
-			}*/
-			if(!fieldName.equalsIgnoreCase("")){
-				logger.info("FieldName:"+fieldName);
-				if(elcoFields.containsKey(fieldName)){
-					if(!elcoFields.get(fieldName).equalsIgnoreCase("") || elcoFields.get(fieldName) != null){
-						
+			
+				if(elcoFields.containsKey(FW_WOMFNAME)){
+					if(!elcoFields.get(FW_WOMFNAME).equalsIgnoreCase("") || elcoFields.get(FW_WOMFNAME) != null){
 						houseHold.ELCODETAILS().add(elco);
 					}
+				}else{
+					logger.info("Variable not found");
 				}
-			}
+			
 			
 			
 			/*
