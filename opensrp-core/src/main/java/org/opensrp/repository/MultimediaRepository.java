@@ -49,7 +49,8 @@ public class MultimediaRepository extends MotechBaseRepository<Multimedia> {
 		
 		 ViewQuery query = createQuery("find_by_caseId_fileCategory")
 	                .designDocId(stdDesignDocumentId)
-	                .key(complexKey).includeDocs(true);
+	                .key(complexKey)
+	                .includeDocs(true);
 		 
 		 ViewResult r = db.queryView(query);
 		 
