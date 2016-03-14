@@ -53,14 +53,14 @@ public class LuceneHouseHoldRepository extends CouchDbRepositorySupportWithLucen
 		initStandardDesignDocument();
 	}
 	
-	 public LuceneResult findDocsByProviderAndUpazilla(String providerId, String upazilla, String userType) { 
+	 public LuceneResult findDocsByProvider(String queryString) { 
         LuceneDesignDocument designDoc = db.get(LuceneDesignDocument.class, stdDesignDocumentId); 
         //assertTrue(designDoc != null); 
        // assertTrue(designDoc.containsIndex("by_provider")); 
         
-        String makeQueryString ="PROVIDERID:"+ providerId + " AND " + "FWUPAZILLA:" + upazilla + " AND " + "user_type:" + userType; //+ " AND TODAY:[\"2016-02-01\"+\"TO\"+\"2016-03-01\"]" ;
+       // String makeQueryString ="PROVIDERID:"+ providerId + " AND " + "FWUPAZILLA:" + upazilla + " AND " + "user_type:" + userType; //+ " AND TODAY:[\"2016-02-01\"+\"TO\"+\"2016-03-01\"]" ;
         LuceneQuery query = new LuceneQuery(designDoc.getId(), "by_provider"); 
-        query.setQuery(makeQueryString); 
+        query.setQuery(queryString); 
         query.setStaleOk(false); 
         return db.queryLucene(query); 
     } 
