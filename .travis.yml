@@ -2,12 +2,16 @@
 language: java
 sudo: false
 addons:
-  postgresql: 9.3
+  - postgresql: 9.3
+  - mysql
 services:
   - couchdb
   - rabbitmq
 before_script:
+      # set postgres password
       - psql -c "ALTER USER postgres WITH PASSWORD 'VA1913wm'" -U postgres
+      # set mysql password 
+      - echo "USE mysql;\nUPDATE user SET password=PASSWORD('VA1913wm') WHERE user='root';\nFLUSH PRIVILEGES;\n" | mysql -u root
 script:
   - javac -version
   - java -version
