@@ -55,7 +55,7 @@ public class ActionService {
     	if(scheduleName.equals(ScheduleNames.BNF) || scheduleName.equals(ScheduleNames.CENCUS) || scheduleName.equals(ScheduleNames.ELCO)){
     		this.ActionUpdateOrCreateForOther(beneficiaryType, caseID, instanceId, anmIdentifier, scheduleName, visitCode, alertStatus, startDate, expiryDate);
     		
-    	}else if(scheduleName.equals(ScheduleNames.ANC) || scheduleName.equals(ScheduleNames.PNC) || scheduleName.equals(ScheduleNames.CHILD)){
+    	}else if(scheduleName.equals(ScheduleNames.ANC) || scheduleName.equals(ScheduleNames.PNC)){
     		this.ActionUpdateOrCreateForMotherType(beneficiaryType, caseID, instanceId, anmIdentifier, scheduleName, visitCode, alertStatus, startDate, expiryDate);
     		
     	}else{

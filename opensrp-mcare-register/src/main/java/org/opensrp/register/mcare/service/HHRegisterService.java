@@ -51,22 +51,7 @@ public class HHRegisterService {
 	    			 hh.attachments().add(att);
         	    }
     		}
-        	
-        	multimediaList = multimediaRepository.findByCaseIdAndFileCategory(hh.caseId(), "nidImage");
-    		
-        	if(multimediaList.size()>0)
-            {
-        	    for (Multimedia multimedia : multimediaList){
-        	    	
-	    			 Map<String, String> att = create("contentType", multimedia.getContentType())
-	    				.put("filePath", multimedia.getFilePath())
-	    				.put("fileCategory", multimedia.getFileCategory())
-	    				.map();       		
-	    	
-	    			 hh.attachments().add(att);
-        	    }
-    		}
-        	
+        	        	       	
       		allHouseHolds.update(hh);	
     		
         	HHRegisterEntry hhRegisterEntry = new HHRegisterEntry()

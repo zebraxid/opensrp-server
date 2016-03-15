@@ -113,10 +113,13 @@ public class ELCORegisterEntry {
 	
 	private Map<String, String> details;
 	
+	private List<Map<String, String>> attachments;
+	
 	private List<Map<String, String>> PSRFDETAILS;
 
 	public ELCORegisterEntry() {
-
+		this.PSRFDETAILS = new ArrayList<>();
+		this.attachments = new ArrayList<>();
 	}
 	
 	public ELCORegisterEntry withCASEID(String CASEID) {
@@ -327,6 +330,10 @@ public class ELCORegisterEntry {
         this.details = new HashMap<>(details);
         return this;
     }
+	public ELCORegisterEntry withattachments(List<Map<String, String>> attachments) {
+		this.attachments = attachments;
+		return this;
+	}
 	public ELCORegisterEntry withPSRFDETAILS(List<Map<String, String>> PSRFDETAILS) {
 		this.PSRFDETAILS = PSRFDETAILS;
 		return this;
@@ -493,7 +500,12 @@ public class ELCORegisterEntry {
 	public String getDetail(String name) {
 		return details.get(name);
 	}
-
+	public List<Map<String, String>> attachments() {
+		if (attachments == null) {
+			attachments = new ArrayList<>();
+		}
+		return attachments;
+	}
 	public List<Map<String, String>> PSRFDETAILS() {
 		if (PSRFDETAILS == null) {
 			PSRFDETAILS = new ArrayList<>();

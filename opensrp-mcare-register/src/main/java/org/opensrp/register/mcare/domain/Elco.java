@@ -122,7 +122,8 @@ public class Elco extends MotechBaseDataObject {
 	private String form_name;
 	@JsonProperty
 	private Map<String, String> details;
-	
+	@JsonProperty
+	private List<Map<String, String>> attachments;
 	@JsonProperty
 	private List<Map<String, String>> PSRFDETAILS;
 
@@ -336,6 +337,10 @@ public class Elco extends MotechBaseDataObject {
         this.details = new HashMap<>(details);
         return this;
     }
+	public Elco withattachments(List<Map<String, String>> attachments) {
+		this.attachments = attachments;
+		return this;
+	}
 	public Elco withPSRFDETAILS(List<Map<String, String>> PSRFDETAILS) {
 		this.PSRFDETAILS = PSRFDETAILS;
 		return this;
@@ -502,17 +507,22 @@ public class Elco extends MotechBaseDataObject {
 	public String getDetail(String name) {
 		return details.get(name);
 	}
-
+	public List<Map<String, String>> attachments() {
+		if (attachments == null) {
+			attachments = new ArrayList<>();
+		}
+		return attachments;
+	}
 	public List<Map<String, String>> PSRFDETAILS() {
 		if (PSRFDETAILS == null) {
 			PSRFDETAILS = new ArrayList<>();
 		}
 		return PSRFDETAILS;
 	}
-	 public Elco setIsClosed(boolean isClosed) {
-	        this.isClosed = Boolean.toString(isClosed);
-	        return this;
-	    }
+    public Elco setIsClosed(boolean isClosed) {
+        this.isClosed = Boolean.toString(isClosed);
+        return this;
+    }
 	@Override
 	public boolean equals(Object o) {
 		return EqualsBuilder.reflectionEquals(this, o, "id", "revision");

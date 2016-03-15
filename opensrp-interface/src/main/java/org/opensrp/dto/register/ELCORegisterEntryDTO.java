@@ -113,7 +113,8 @@ public class ELCORegisterEntryDTO {
 	private String form_name;
 	@JsonProperty
 	private Map<String, String> details;
-	
+	@JsonProperty
+	private List<Map<String, String>> attachments;
 	@JsonProperty
 	private List<Map<String, String>> PSRFDETAILS;
 
@@ -330,7 +331,10 @@ public class ELCORegisterEntryDTO {
 		this.PSRFDETAILS = PSRFDETAILS;
 		return this;
 	}
-
+	public ELCORegisterEntryDTO withattachments(List<Map<String, String>> attachments) {
+		this.attachments = attachments;
+		return this;
+	}
 	@Override
 	public boolean equals(Object o) {
 		return EqualsBuilder.reflectionEquals(this, o, "id", "revision");
