@@ -38,7 +38,7 @@ import org.opensrp.scheduler.repository.AllActions;
 import org.opensrp.scheduler.repository.AllReportActions;
 import org.opensrp.scheduler.service.AllEnrollmentWrapper;
 import org.opensrp.scheduler.service.ReportActionService;
-import org.opensrp.scheduler.service.ScheduleRuleRepository;
+import org.opensrp.scheduler.repository.ScheduleRuleRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

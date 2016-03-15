@@ -1,25 +1,31 @@
 package org.opensrp.schedular.service;
 
+import static junit.framework.Assert.assertEquals;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
+import org.junit.runner.RunWith;
 import org.opensrp.scheduler.Defination;
 import org.opensrp.scheduler.Rule;
-import org.opensrp.scheduler.ScheduleRules;
-import org.opensrp.scheduler.service.ScheduleRuleRepository;
+import org.opensrp.scheduler.repository.AllActions;
+import org.opensrp.scheduler.repository.ScheduleRuleRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.google.gson.Gson;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration("classpath:test-applicationContext-opensrp.xml")
 public class ScheduleLogicServiceTest {
 	
-	@Mock
-	private ScheduleRuleRepository sr;
+	@Autowired
+    AllActions allActions;
+	@Autowired
+	ScheduleRuleRepository scheduleRuleRepository;
 
 	@Before
     public void setUp() throws Exception {
@@ -75,12 +81,15 @@ public class ScheduleLogicServiceTest {
 		//System.out.println(rules.toString());
 		//ScheduleRules s = new ScheduleRules("kkk", "dff", rules);
 		//System.out.println(new Gson().toJson(s));
-		sr.submit(new ScheduleRules("HouseHold Form", "proshanto", rules));
+		//sr.submit(new ScheduleRules("HouseHold Form", "proshanto", rules));
 		
 		/*logger.info("SR:"+sr.allRule().toString());
 		logger.info(sr.allRule().get(0).getRule().get(0).getDefination().get(0).getName());*/
 		
-		System.out.println("SR:"+sr.allRule().toString());
+		
+		//assertEquals(1, sr.allRule().size());
+		 System.out.println(scheduleRuleRepository.toString());
+		assertEquals(3, allActions.findByANMIDAndTimeStamp("proshanto", 0).size());
 		
 		
 	}

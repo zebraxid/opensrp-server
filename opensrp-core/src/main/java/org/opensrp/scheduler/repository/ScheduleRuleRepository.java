@@ -1,21 +1,16 @@
-package org.opensrp.scheduler.service;
+package org.opensrp.scheduler.repository;
 
 import java.util.List;
 
 import org.ektorp.ComplexKey;
 import org.ektorp.CouchDbConnector;
-import org.ektorp.support.GenerateView;
 import org.ektorp.support.View;
 import org.motechproject.dao.MotechBaseRepository;
-import org.motechproject.scheduletracking.api.domain.Enrollment;
 import org.opensrp.common.AllConstants;
 import org.opensrp.scheduler.ScheduleRules;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
-
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 
 
 @Repository
