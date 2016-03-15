@@ -71,6 +71,7 @@ public class ELCORegisterMapper {
                         		.withFWWOMGPS(entry.FWWOMGPS())
                         		.withform_name(entry.form_name())
                         		.withDetails(entry.details())
+                        		.withattachments(entry.attachments())
                         		.withPSRFDETAILS(entry.PSRFDETAILS())
                         		.withSTART(entry.START())
                         		.withEND(entry.END())
