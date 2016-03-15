@@ -31,9 +31,11 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import static org.opensrp.dto.AlertStatus.normal;
 import static org.opensrp.dto.BeneficiaryType.household;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration("classpath:test-applicationContext-opensrp.xml")
 public class AllReportActionsIntegrationTest {
 
-	@Mock
+	@Autowired
 	private AllReportActions allReportActions;
 
 	@Before
@@ -63,6 +65,15 @@ public class AllReportActionsIntegrationTest {
 		 //verify(allReportActions).addAlert(firstReportAction);
 	}
 
+	@Test
+	public void shouldFindByInstanceIdByCaseIdByname(){
+		assertNotNull(allReportActions.findByInstanceIdByCaseIdByname("f0c5a992-ba9e-4204-a6e2-60aeef60f564", "10c4f8a2-7b5a-44a2-9ca3-bbe77f0e31ac", "ELCO PSRF"));
+		
+	}
+	@Test
+	public void shouldNotFindByInstanceIdByCaseIdByname(){		
+		assertNull(allReportActions.findByInstanceIdByCaseIdByname("f0c5a992-ba9f-4204-a6e2-60aeef60f564", "10c4f8a2-7b5a-44a2-9ca3-bbe77f0e31ac", "ELCO PSRF"));
+	}
 	private ActionData alert() {
 		return ActionData.createAlert(household, "FWA CENSUS", "FWA CENSUS", normal, DateTime.now(), DateTime.now().plusDays(3));
 	}

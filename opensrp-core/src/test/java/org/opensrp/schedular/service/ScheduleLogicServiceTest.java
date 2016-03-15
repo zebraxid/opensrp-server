@@ -11,6 +11,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.opensrp.scheduler.Defination;
 import org.opensrp.scheduler.Rule;
+import org.opensrp.scheduler.ScheduleRules;
 import org.opensrp.scheduler.repository.AllActions;
 import org.opensrp.scheduler.repository.ScheduleRuleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +35,7 @@ public class ScheduleLogicServiceTest {
     }
 	
 	@Test
-	public void saveData(){
+	public void shouldSaveData(){
 		
 		//System.out.println(Rule.createRule("sddd","fff"));
 		/*List<Defination> definations1 = new ArrayList<Defination>();
@@ -81,7 +82,9 @@ public class ScheduleLogicServiceTest {
 		//System.out.println(rules.toString());
 		//ScheduleRules s = new ScheduleRules("kkk", "dff", rules);
 		//System.out.println(new Gson().toJson(s));
-		//sr.submit(new ScheduleRules("HouseHold Form", "proshanto", rules));
+		if(!scheduleRuleRepository.findByName("HouseHold Form").getName().equalsIgnoreCase("HouseHold Form")){
+		scheduleRuleRepository.submit(new ScheduleRules("HouseHold Form", "proshanto", rules));
+		}
 		
 		/*logger.info("SR:"+sr.allRule().toString());
 		logger.info(sr.allRule().get(0).getRule().get(0).getDefination().get(0).getName());*/
@@ -89,8 +92,49 @@ public class ScheduleLogicServiceTest {
 		
 		//assertEquals(1, sr.allRule().size());
 		 System.out.println(scheduleRuleRepository.toString());
-		assertEquals(3, allActions.findByANMIDAndTimeStamp("proshanto", 0).size());
 		
 		
+		
+	}
+	@Test
+	public void shouldGetScheduleRuleByName(){
+		assertEquals("HouseHold Form", scheduleRuleRepository.findByName("HouseHold Form").getName());
+		
+	}
+	@Test
+	public void shouldGetScheduleRuleForPSRFInHH(){
+		ScheduleRules scheduleRule = scheduleRuleRepository.findByName("HouseHold Form");	
+		String fieldName = "";
+		if(scheduleRule != null){			
+			for (int i = 0; i < scheduleRule.getRule().size(); i++) {				
+				if(scheduleRule.getRule().get(i).getEndFormName().equalsIgnoreCase("psrf_form")){
+					for (int j = 0; j < scheduleRule.getRule().get(i).getDefination().size(); j++) {
+						if(scheduleRule.getRule().get(i).getDefination().get(j).getName().equalsIgnoreCase("elco")){
+							fieldName= scheduleRule.getRule().get(i).getDefination().get(j).getValue();
+						}
+					}
+				}
+				
+			}
+		}
+		assertEquals("FWWOMFNAME", fieldName);
+	}
+	@Test
+	public void shouldGgetScheduleRuleForCensus(){
+		ScheduleRules scheduleRule = scheduleRuleRepository.findByName("HouseHold Form");	
+		String fieldName = "";
+		if(scheduleRule != null){			
+			for (int i = 0; i < scheduleRule.getRule().size(); i++) {				
+				if(scheduleRule.getRule().get(i).getEndFormName().equalsIgnoreCase("Cencus")){
+					for (int j = 0; j < scheduleRule.getRule().get(i).getDefination().size(); j++) {
+						if(scheduleRule.getRule().get(i).getDefination().get(j).getName().equalsIgnoreCase("submission")){
+							fieldName= scheduleRule.getRule().get(i).getDefination().get(j).getValue();
+						}
+					}
+				}
+				
+			}
+		}
+		assertEquals("1", fieldName);
 	}
 }
