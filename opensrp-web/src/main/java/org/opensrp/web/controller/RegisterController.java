@@ -1,5 +1,8 @@
 package org.opensrp.web.controller;
 
+import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
+
 import org.opensrp.dto.register.ANC_RegisterDTO;
 import org.opensrp.dto.register.ELCORegisterDTO;
 import org.opensrp.dto.register.HHRegisterDTO;
@@ -12,6 +15,7 @@ import org.opensrp.register.mcare.mapper.HHRegisterMapper;
 import org.opensrp.register.mcare.service.ANCRegisterService;
 import org.opensrp.register.mcare.service.ELCORegisterService;
 import org.opensrp.register.mcare.service.HHRegisterService;
+import org.opensrp.register.mcare.service.MultimediaRegisterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,18 +37,20 @@ public class RegisterController {
 	private ELCORegisterMapper ecRegisterMapper;
 	private HHRegisterMapper hhRegisterMapper;
 	private ANCRegisterMapper ancRegisterMapper;
+	private MultimediaRegisterService multimediaRegisterService;
 	
 	@Autowired
 	public RegisterController(ELCORegisterService ecRegisterService,
-			HHRegisterService hhRegisterService,
-			ELCORegisterMapper ecRegisterMapper,
-			HHRegisterMapper hhRegisterMapper,ANCRegisterService ancRegisterService,ANCRegisterMapper ancRegisterMapper) {
+			HHRegisterService hhRegisterService, ELCORegisterMapper ecRegisterMapper,
+			HHRegisterMapper hhRegisterMapper,ANCRegisterService ancRegisterService,
+			ANCRegisterMapper ancRegisterMapper, MultimediaRegisterService multimediaRegisterService) {
 		this.ecRegisterService = ecRegisterService;
 		this.hhRegisterService = hhRegisterService;
 		this.ecRegisterMapper = ecRegisterMapper;
 		this.hhRegisterMapper = hhRegisterMapper;
 		this.ancRegisterService = ancRegisterService;
 		this.ancRegisterMapper = ancRegisterMapper;
+		this.multimediaRegisterService = multimediaRegisterService;
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/registers/hh")
@@ -60,9 +66,7 @@ public class RegisterController {
         ELCORegister ecRegister = ecRegisterService.getELCORegisterForProvider(anmIdentifier);
         return new ResponseEntity<>(ecRegisterMapper.mapToDTO(ecRegister), HttpStatus.OK);
     }
-
-	
-	
+		
   /*  private ANCRegisterService ancRegisterService;
     private PNCRegisterService pncRegisterService;
     private ECRegisterService ecRegisterService;
@@ -122,7 +126,16 @@ public class RegisterController {
         ANCRegister ancRegister = ancRegisterService.getANCRegisterForProvider(anmIdentifier);        
         return new ResponseEntity<>(ancRegisterMapper.mapToDTO(ancRegister), HttpStatus.OK);
       
+    }    
+    
+    @RequestMapping(method = RequestMethod.GET, value = "/getMultimedia")
+    @ResponseBody
+    public ResponseEntity<String>  getMultimedia()
+    {
+    	multimediaRegisterService.getMultimedia();
+    	return new ResponseEntity<>("Welcome", HttpStatus.OK);
     }
+    
 /*
     @RequestMapping(method = GET, value = "/registers/child")
     @ResponseBody

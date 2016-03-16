@@ -123,7 +123,7 @@ public class Elco extends MotechBaseDataObject {
 	@JsonProperty
 	private Map<String, String> details;
 	@JsonProperty
-	private List<Map<String, String>> attachments;
+	private List<Map<String, String>> multimediaAttachments;
 	@JsonProperty
 	private List<Map<String, String>> PSRFDETAILS;
 
@@ -337,8 +337,8 @@ public class Elco extends MotechBaseDataObject {
         this.details = new HashMap<>(details);
         return this;
     }
-	public Elco withattachments(List<Map<String, String>> attachments) {
-		this.attachments = attachments;
+	public Elco withmultimediaAttachments(List<Map<String, String>> multimediaAttachments) {
+		this.multimediaAttachments = multimediaAttachments;
 		return this;
 	}
 	public Elco withPSRFDETAILS(List<Map<String, String>> PSRFDETAILS) {
@@ -507,11 +507,11 @@ public class Elco extends MotechBaseDataObject {
 	public String getDetail(String name) {
 		return details.get(name);
 	}
-	public List<Map<String, String>> attachments() {
-		if (attachments == null) {
-			attachments = new ArrayList<>();
+	public List<Map<String, String>> multimediaAttachments() {
+		if (multimediaAttachments == null) {
+			multimediaAttachments = new ArrayList<>();
 		}
-		return attachments;
+		return multimediaAttachments;
 	}
 	public List<Map<String, String>> PSRFDETAILS() {
 		if (PSRFDETAILS == null) {

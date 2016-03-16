@@ -4,15 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.opensrp.domain.Multimedia;
 import org.opensrp.register.mcare.ELCORegister;
 import org.opensrp.register.mcare.ELCORegisterEntry;
 import org.opensrp.register.mcare.domain.Elco;
 import org.opensrp.register.mcare.repository.AllElcos;
-import org.opensrp.repository.MultimediaRepository;
 
 import static org.opensrp.common.AllConstants.ELCORegistrationFields.*;
-import static org.opensrp.common.util.EasyMap.create;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,13 +18,11 @@ import org.springframework.stereotype.Service;
 public class ELCORegisterService {
 	
 	private final AllElcos allElcos;
-	private MultimediaRepository multimediaRepository;
 	
 	@Autowired
-	public ELCORegisterService(AllElcos allElcos, MultimediaRepository multimediaRepository)
+	public ELCORegisterService(AllElcos allElcos)
 	{
 		this.allElcos = allElcos;
-		this.multimediaRepository = multimediaRepository;
 	}
 
 	public ELCORegister getELCORegisterForProvider(String providerId)
@@ -35,40 +30,7 @@ public class ELCORegisterService {
 		ArrayList<ELCORegisterEntry> elcoRegisterEntries = new ArrayList<>();
         List<Elco> elcos = allElcos.allOpenELCOs();
         
-
         for (Elco ec : elcos) {
-        	
-        	List<Multimedia> multimediaList = multimediaRepository.findByCaseIdAndFileCategory(ec.caseId(), "dp");
-    		
-        	if(multimediaList.size()>0)
-            {
-        	    for (Multimedia multimedia : multimediaList){
-        	    	
-	    			 Map<String, String> att = create("contentType", multimedia.getContentType())
-	    				.put("filePath", multimedia.getFilePath())
-	    				.put("fileCategory", multimedia.getFileCategory())
-	    				.map();       		
-	    	
-	    			 ec.attachments().add(att);
-        	    }
-    		}
-        	
-        	multimediaList = multimediaRepository.findByCaseIdAndFileCategory(ec.caseId(), "nidImage");
-    		
-        	if(multimediaList.size()>0)
-            {
-        	    for (Multimedia multimedia : multimediaList){
-        	    	
-	    			 Map<String, String> att = create("contentType", multimedia.getContentType())
-	    				.put("filePath", multimedia.getFilePath())
-	    				.put("fileCategory", multimedia.getFileCategory())
-	    				.map();       		
-	    	
-	    			 ec.attachments().add(att);
-        	    }
-    		}
-        	
-        	allElcos.update(ec);
         
             ELCORegisterEntry ecRegisterEntry = new ELCORegisterEntry()
             		.withCASEID(ec.caseId())
@@ -117,7 +79,7 @@ public class ELCORegisterService {
                     .withFWWOMGPS(ec.FWWOMGPS())
                     .withform_name(ec.form_name())
             		.withDetails(ec.details())
-            		.withattachments(ec.attachments())
+            		.withmultimediaAttachments(ec.multimediaAttachments())
             		.withPSRFDETAILS(ec.PSRFDETAILS())
             		.withSTART(ec.getDetail(START_DATE))
             		.withEND(ec.getDetail(END_DATE))

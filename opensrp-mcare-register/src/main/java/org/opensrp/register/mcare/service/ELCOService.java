@@ -13,6 +13,7 @@ import static org.opensrp.common.AllConstants.PSRFFields.*;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.HHSchedulesConstants.HH_SCHEDULE_CENSUS;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ELCOSchedulesConstants.ELCO_SCHEDULE_PSRF;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -81,6 +82,15 @@ public class ELCOService {
 					.withTODAY(submission.getField(REFERENCE_DATE))
 					.withFWWOMUPAZILLA(elcoFields.get(FW_WOMUPAZILLA).replace("+", " "));
 			
+			/*Map<String, String> ec = new HashMap<String, String>();
+			ec.put("multimediaAttachments", submission.getField(REFERENCE_DATE));*/
+			
+			/*Map<String, String> ec = create("multimediaAttachments", "Elco")
+					.put("REFERENCE_DATE", submission.getField(REFERENCE_DATE))
+					.map();
+			
+			elco.multimediaAttachments().add(ec);*/
+			
 			if(elcoFields.containsKey(FW_WOMFNAME)){
 				allEcos.update(elco);
 				logger.info("Elco updated");
@@ -88,6 +98,7 @@ public class ELCOService {
 				allEcos.remove(elco);
 				logger.info("Elco removed");
 			}
+			
 			String fieldName =  scheduleLogService.getScheduleRuleForPSRFInHH("HouseHold Form");
 			logger.info("FieldName:"+fieldName);
 			if(!fieldName.equalsIgnoreCase("")){
@@ -122,6 +133,7 @@ public class ELCOService {
 			houseHold.withINSTANCEID(submission.instanceId());
 			houseHold.withTODAY(submission.getField(REFERENCE_DATE));
 			houseHold.withFWUPAZILLA(submission.getField(FW_UPAZILLA).replace("+", " "));
+			
 			allHouseHolds.update(houseHold);
 			logger.info("Expected value leading non zero and found FWCENSTA : "+submission.getField("FWCENSTAT"));
 			if(submission.getField("FWCENSTAT").equalsIgnoreCase("7")){

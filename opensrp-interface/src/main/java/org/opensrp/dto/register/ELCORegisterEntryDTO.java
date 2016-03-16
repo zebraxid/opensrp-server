@@ -114,7 +114,7 @@ public class ELCORegisterEntryDTO {
 	@JsonProperty
 	private Map<String, String> details;
 	@JsonProperty
-	private List<Map<String, String>> attachments;
+	private List<Map<String, String>> multimediaAttachments;
 	@JsonProperty
 	private List<Map<String, String>> PSRFDETAILS;
 
@@ -331,8 +331,8 @@ public class ELCORegisterEntryDTO {
 		this.PSRFDETAILS = PSRFDETAILS;
 		return this;
 	}
-	public ELCORegisterEntryDTO withattachments(List<Map<String, String>> attachments) {
-		this.attachments = attachments;
+	public ELCORegisterEntryDTO withmultimediaAttachments(List<Map<String, String>> multimediaAttachments) {
+		this.multimediaAttachments = multimediaAttachments;
 		return this;
 	}
 	@Override

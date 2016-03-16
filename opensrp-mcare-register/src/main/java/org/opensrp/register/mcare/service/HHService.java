@@ -66,8 +66,17 @@ public class HHService {
 		SubFormData subFormData =null;
 		
 		
-		subFormData = submission.getSubFormByName(ELCO_REGISTRATION_SUB_FORM_NAME);
-
+		subFormData = submission.getSubFormByName(ELCO_REGISTRATION_SUB_FORM_NAME);		
+		
+		/*Map<String, String> hh = new HashMap<String, String>();
+		hh.put("multimedia_attachments", submission.getField(REFERENCE_DATE));*/
+		
+		/*Map<String, String> hh = create("multimedia_attachments", "newHH")
+									.put("REFERENCE_DATE", submission.getField(REFERENCE_DATE))
+									.map();
+		
+		houseHold.multimediaAttachments().add(hh);	*/
+		
 		addELCODetailsToHH(submission, subFormData, houseHold);
 
 		houseHold.withPROVIDERID(submission.anmId());
@@ -75,18 +84,9 @@ public class HHService {
 		houseHold.withTODAY(submission.getField(REFERENCE_DATE));
 		houseHold.withFWUPAZILLA(submission.getField(FW_UPAZILLA).replace("+", " "));
 	
-		/*Map<String, String> hh = new HashMap<String, String>();
-		hh.put("Attachments", submission.getField(REFERENCE_DATE));*/
-		
-		Map<String, String> hh = create("Attachments", "newHH")
-									.put("REFERENCE_DATE", submission.getField(REFERENCE_DATE))
-									.map();
-		
-		houseHold.attachments().add(hh);
-		
 		allHouseHolds.update(houseHold);
 		
-		/*String cencusCondition =  scheduleLogService.getScheduleRuleForCensus("HouseHold Form");
+		String cencusCondition =  scheduleLogService.getScheduleRuleForCensus("HouseHold Form");
 		logger.info("Cencus Condition :"+cencusCondition);
 		if(!cencusCondition.equalsIgnoreCase("") && cencusCondition.equalsIgnoreCase("1")){
 			
@@ -94,7 +94,7 @@ public class HHService {
 				submission.getField(REFERENCE_DATE),submission.anmId(),submission.instanceId());
 		}else{
 			logger.info("Rule Defination Not Found for Cencus");
-		}*/
+		}
 		
 		elcoService.registerELCO(submission);
 	}

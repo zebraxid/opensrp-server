@@ -8,12 +8,7 @@ import org.opensrp.register.mcare.HHRegister;
 import org.opensrp.register.mcare.HHRegisterEntry;
 import org.opensrp.register.mcare.domain.HouseHold;
 import org.opensrp.register.mcare.repository.AllHouseHolds;
-
 import static org.opensrp.common.AllConstants.HHRegistrationFields.*;
-import static org.opensrp.common.util.EasyMap.create;
-
-import org.opensrp.repository.MultimediaRepository;
-import org.opensrp.domain.Multimedia;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,13 +16,11 @@ import org.springframework.stereotype.Service;
 public class HHRegisterService {
 	
 	private final AllHouseHolds allHouseHolds;
-	private MultimediaRepository multimediaRepository;
 	
 	@Autowired
-	public HHRegisterService(AllHouseHolds allHouseHolds, MultimediaRepository multimediaRepository)
+	public HHRegisterService(AllHouseHolds allHouseHolds)
 	{
 		this.allHouseHolds = allHouseHolds;
-		this.multimediaRepository = multimediaRepository;
 	}
 
 	public HHRegister getHHRegisterForProvider(String providerId)
@@ -35,24 +28,7 @@ public class HHRegisterService {
 		ArrayList<HHRegisterEntry> hhRegisterEntries = new ArrayList<>();
         List<HouseHold> hhs = allHouseHolds.findAllHouseHolds();
         
-        for (HouseHold hh : hhs) {
-        	
-        	List<Multimedia> multimediaList = multimediaRepository.findByCaseIdAndFileCategory(hh.caseId(), "dp");
-    		
-        	if(multimediaList.size()>0)
-            {
-        	    for (Multimedia multimedia : multimediaList){
-        	    	
-	    			 Map<String, String> att = create("contentType", multimedia.getContentType())
-	    				.put("filePath", multimedia.getFilePath())
-	    				.put("fileCategory", multimedia.getFileCategory())
-	    				.map();       		
-	    	
-	    			 hh.attachments().add(att);
-        	    }
-    		}
-        	        	       	
-      		allHouseHolds.update(hh);	
+        for (HouseHold hh : hhs) {	
     		
         	HHRegisterEntry hhRegisterEntry = new HHRegisterEntry()
         		.withCASEID(hh.caseId()) 
@@ -84,7 +60,7 @@ public class HHRegisterService {
         		.withexternal_user_ID(hh.external_user_ID())
         		.withcurrent_formStatus(hh.current_formStatus())
         		.withELCODETAILS(hh.ELCODETAILS())
-        		.withattachments(hh.attachments())
+        		.withmultimediaAttachments(hh.multimediaAttachments())
         		.withDetails(hh.details())
         		.withLOCATIONID(hh.getDetail(LOCATION_NAME))
         		.withTODAY(hh.getDetail(REFERENCE_DATE))
