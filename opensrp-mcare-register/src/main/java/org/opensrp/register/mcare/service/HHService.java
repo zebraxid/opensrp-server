@@ -28,7 +28,7 @@ import org.opensrp.register.mcare.repository.AllHouseHolds;
 import org.opensrp.register.mcare.service.scheduling.HHSchedulesService;
 import org.opensrp.register.mcare.service.scheduling.ScheduleLogService;
 import org.opensrp.scheduler.ScheduleRules;
-import org.opensrp.scheduler.service.ScheduleRuleRepository;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
