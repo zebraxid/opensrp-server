@@ -10,9 +10,9 @@ import static org.opensrp.common.AllConstants.ANCVisitTwoFields.*;
 import static org.opensrp.common.AllConstants.ANCVisitThreeFields.*;
 import static org.opensrp.common.AllConstants.ANCVisitFourFields.*;
 import static org.opensrp.common.AllConstants.BnfFollowUpVisitFields.*;
-
 import static org.opensrp.common.util.EasyMap.create;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_ANC;
+import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_BNF;
 
 import java.util.Map;
 
@@ -20,6 +20,7 @@ import org.joda.time.LocalDate;
 import org.opensrp.common.AllConstants;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.form.domain.SubFormData;
+import org.opensrp.register.mcare.domain.Elco;
 import org.opensrp.register.mcare.domain.Mother;
 import org.opensrp.register.mcare.repository.AllElcos;
 import org.opensrp.register.mcare.repository.AllMothers;
@@ -147,6 +148,11 @@ public class ANCService {
 		}catch(Exception e){
 			logger.info("From ancVisitOne:"+e.getMessage());
 		}
+		
+		if(submission.getField(FWANC1REMSTS).equalsIgnoreCase(STS_GONE) || submission.getField(FWANC1REMSTS).equalsIgnoreCase(STS_GO))
+		{ 
+			closeMother(mother);	
+		}
 	}
 
 	public void ancVisitTwo(FormSubmission submission) {
@@ -225,7 +231,11 @@ public class ANCService {
 		}catch(Exception e){
 			logger.info("From ancVisitTwo:"+e.getMessage());
 		}
-		
+
+		if(submission.getField(FWANC2REMSTS).equalsIgnoreCase(STS_GONE) || submission.getField(FWANC2REMSTS).equalsIgnoreCase(STS_GO))
+		{ 
+			closeMother(mother);	
+		}
 	}
 
 	public void ancVisitThree(FormSubmission submission) {
@@ -305,6 +315,11 @@ public class ANCService {
 			ancSchedulesService.fullfillSchedule(submission.entityId(), SCHEDULE_ANC, submission.instanceId(), timestamp);
 		}catch(Exception e){
 			logger.info("From ancVisitThree:"+e.getMessage());
+		}
+		
+		if(submission.getField(FWANC3REMSTS).equalsIgnoreCase(STS_GONE) || submission.getField(FWANC3REMSTS).equalsIgnoreCase(STS_GO))
+		{ 
+			closeMother(mother);	
 		}
 	}
 
@@ -387,6 +402,12 @@ public class ANCService {
 		}catch(Exception e){
 			logger.info("From ancVisitFour:"+e.getMessage());
 		}
+		
+
+		if(submission.getField(FWANC4REMSTS).equalsIgnoreCase(STS_GONE) || submission.getField(FWANC4REMSTS).equalsIgnoreCase(STS_GO))
+		{ 
+			closeMother(mother);	
+		}
 	}
 
 	public void pregnancyVerificationForm(FormSubmission submission)
@@ -406,6 +427,18 @@ public class ANCService {
 		 allMothers.close(entityId);
 		
 		 ancSchedulesService.unEnrollFromAllSchedules(entityId);
+	}
+	
+	public void closeMother(Mother mother) {
+
+		mother.setIsClosed(true);
+		allMothers.update(mother);
+		ancSchedulesService.unEnrollFromAllSchedules(mother.caseId());
+
+		Elco elco = allElcos.findByCaseId(mother.relationalid());
+		logger.info("Closing EC case along with PNC case. Ec Id: "+ elco.caseId());
+		elco.setIsClosed(true);
+		allElcos.update(elco);
 	}
 
 }

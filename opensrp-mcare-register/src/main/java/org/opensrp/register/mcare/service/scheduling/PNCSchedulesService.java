@@ -58,7 +58,7 @@ public class PNCSchedulesService {
         logger.info(format("Enrolling PNC with Entity id:{0} to PNC schedule, milestone: {1}.", entityId, milestone));
         scheduler.enrollIntoSchedule(entityId, SCHEDULE_PNC, milestone, referenceDateForSchedule.toString());
     }
-    public void unEnrollFromSchedules(String entityId) {
+    public void unEnrollFromAllSchedules(String entityId) {
     	scheduler.unEnrollFromAllSchedules(entityId);
     }
 }

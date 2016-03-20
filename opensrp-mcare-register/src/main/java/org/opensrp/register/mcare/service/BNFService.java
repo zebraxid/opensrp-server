@@ -78,6 +78,7 @@ public class BNFService {
 		bnfSchedulesService.enrollBNF(motherId, LocalDate.parse(submission.getField(MOTHER_REFERENCE_DATE)),submission.anmId(),submission.instanceId(),submission.getField(MOTHER_REFERENCE_DATE));
 		
 	}
+	
 	public void bnfFollowUpVisit(FormSubmission submission) {
 		
 		Mother mother = allMothers.findByCaseId(submission.entityId());

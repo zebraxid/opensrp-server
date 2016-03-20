@@ -256,13 +256,26 @@ public class PNCService {
 
 		allMothers.update(mother);
 	}
+	
+	public void pncClose(String entityId) {
+		
+		Mother mother = allMothers.findByCaseId(entityId);
+		
+		 if (mother == null) {
+	            logger.warn("Tried to close case without registered mother for case ID: " + entityId);
+	            return;
+	        }
 
+		 allMothers.close(entityId);
+		
+		 pncSchedulesService.unEnrollFromAllSchedules(entityId);
+	}
 	
 	public void closeMother(Mother mother) {
 
 		mother.setIsClosed(true);
 		allMothers.update(mother);
-		//pncSchedulesService.unEnrollFromSchedules(mother.caseId());
+		pncSchedulesService.unEnrollFromAllSchedules(mother.caseId());
 
 		Elco elco = allElcos.findByCaseId(mother.relationalid());
 		logger.info("Closing EC case along with PNC case. Ec Id: "+ elco.caseId());
