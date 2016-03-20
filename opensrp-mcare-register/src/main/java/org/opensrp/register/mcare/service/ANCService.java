@@ -12,14 +12,12 @@ import static org.opensrp.common.AllConstants.ANCVisitFourFields.*;
 import static org.opensrp.common.AllConstants.BnfFollowUpVisitFields.*;
 import static org.opensrp.common.util.EasyMap.create;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_ANC;
-import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_BNF;
 
 import java.util.Map;
 
 import org.joda.time.LocalDate;
 import org.opensrp.common.AllConstants;
 import org.opensrp.form.domain.FormSubmission;
-import org.opensrp.form.domain.SubFormData;
 import org.opensrp.register.mcare.domain.Elco;
 import org.opensrp.register.mcare.domain.Mother;
 import org.opensrp.register.mcare.repository.AllElcos;
@@ -39,16 +37,14 @@ public class ANCService {
 	private AllElcos allElcos;
 	private AllMothers allMothers;
 	private ANCSchedulesService ancSchedulesService;
-	private PNCService pncService;
 	private ActionService actionService;
 
 	@Autowired
 	public ANCService(AllElcos allElcos, AllMothers allMothers,
-			ANCSchedulesService ancSchedulesService, PNCService pncService,ActionService actionService) {
+			ANCSchedulesService ancSchedulesService, ActionService actionService) {
 		this.allElcos = allElcos;
 		this.allMothers = allMothers;
 		this.ancSchedulesService = ancSchedulesService;
-		this.pncService = pncService;
 		this.actionService = actionService;
 	}
 

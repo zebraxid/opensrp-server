@@ -99,9 +99,19 @@ public class ELCOService {
 				logger.info("Elco removed");
 			}
 			
-
-			elcoScheduleService.imediateEnrollIntoMilestoneOfPSRF(elcoFields.get(ID),
-			submission.getField(REFERENCE_DATE),submission.anmId(),submission.instanceId());
+			String fieldName =  scheduleLogService.getScheduleRuleForPSRFInHH("HouseHold Form");
+			logger.info("FieldName:"+fieldName);
+			if(!fieldName.equalsIgnoreCase("")){
+				if(elcoFields.containsKey(fieldName)){	
+					if(!elcoFields.get(fieldName).equalsIgnoreCase("") || elcoFields.get(fieldName)!= null){
+						elcoScheduleService.imediateEnrollIntoMilestoneOfPSRF(elcoFields.get(ID),
+						submission.getField(REFERENCE_DATE),submission.anmId(),submission.instanceId());
+					}
+				}else{
+					
+					logger.info("Variable not found which is defined in rule defination for elco");
+				}
+			}
 					
 		}
 
