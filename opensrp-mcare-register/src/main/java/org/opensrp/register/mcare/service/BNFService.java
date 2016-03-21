@@ -16,7 +16,6 @@ import static org.opensrp.common.AllConstants.HHRegistrationFields.MOTHER_REFERE
 import static org.opensrp.common.util.EasyMap.create;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_BNF;
 
-import java.util.List;
 import java.util.Map;
 
 import org.joda.time.LocalDate;
@@ -27,8 +26,6 @@ import org.opensrp.register.mcare.repository.AllElcos;
 import org.opensrp.register.mcare.repository.AllMothers;
 import org.opensrp.register.mcare.service.scheduling.BNFSchedulesService;
 import org.opensrp.register.mcare.service.scheduling.ScheduleLogService;
-import org.opensrp.scheduler.Action;
-import org.opensrp.scheduler.repository.AllActions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,10 +42,9 @@ public class BNFService {
 	private BNFSchedulesService bnfSchedulesService;
 	private PNCService pncService;
 	private ScheduleLogService scheduleLogService;
-	private AllActions allActions;
 	
 	@Autowired
-	public BNFService(AllElcos allElcos, AllMothers allMothers, BNFSchedulesService bnfSchedulesService, PNCService pncService,ScheduleLogService scheduleLogService,AllActions allActions)
+	public BNFService(AllElcos allElcos, AllMothers allMothers, BNFSchedulesService bnfSchedulesService, PNCService pncService,ScheduleLogService scheduleLogService)
 	{
 		this.allElcos = allElcos;
 		this.allMothers = allMothers;
@@ -78,6 +74,7 @@ public class BNFService {
 		bnfSchedulesService.enrollBNF(motherId, LocalDate.parse(submission.getField(MOTHER_REFERENCE_DATE)),submission.anmId(),submission.instanceId(),submission.getField(MOTHER_REFERENCE_DATE));
 		
 	}
+	
 	public void bnfFollowUpVisit(FormSubmission submission) {
 		
 		Mother mother = allMothers.findByCaseId(submission.entityId());
