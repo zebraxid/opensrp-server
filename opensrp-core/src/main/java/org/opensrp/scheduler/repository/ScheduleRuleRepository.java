@@ -20,13 +20,13 @@ public class ScheduleRuleRepository extends MotechBaseRepository<ScheduleRules>{
     protected ScheduleRuleRepository(@Qualifier(AllConstants.OPENSRP_SCHEDULE_DATABASE_CONNECTOR) CouchDbConnector db) {
         super(ScheduleRules.class, db);
     }
-	public void submit(ScheduleRules scheduleRules){		
-		try{
-			
-			add(scheduleRules);		
+	public String submit(ScheduleRules scheduleRules){		
+		try{			
+			add(scheduleRules);
+			return "1";
 		}catch(Exception e){
 			e.printStackTrace();
-			
+			return "0";
 		}
 	}
 	@View(name = "all_rule", map = "function(doc) { if (doc.type === 'ScheduleRules') { emit(doc.name); } }")
