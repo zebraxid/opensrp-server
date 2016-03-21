@@ -18,6 +18,8 @@ import org.opensrp.form.service.FormSubmissionConverter;
 import org.opensrp.register.mcare.domain.Acl;
 import org.opensrp.register.mcare.service.AclService;
 import org.opensrp.register.mcare.service.RoleService;
+import org.opensrp.scheduler.ScheduleRules;
+import org.opensrp.scheduler.repository.ScheduleRuleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,14 +39,16 @@ public class AclController {
 
 	private RoleService roleService;
 	private AclService aclService;
-	private OpenmrsUserService openmrsUserService;
+	private OpenmrsUserService openmrsUserService;	
+	private ScheduleRuleRepository scheduleRuleRepository;
 
 	@Autowired
 	public AclController(RoleService roleService, AclService aclService,
-			OpenmrsUserService openmrsUserService) {
+			OpenmrsUserService openmrsUserService,ScheduleRuleRepository scheduleRuleRepository) {
 		this.roleService = roleService;
 		this.aclService = aclService;
-		this.openmrsUserService = openmrsUserService;
+		this.openmrsUserService = openmrsUserService;		
+		this.scheduleRuleRepository = scheduleRuleRepository;
 	}
 
 	@RequestMapping(headers = { "Accept=application/json" }, method = POST, value = "/add-user")
@@ -104,5 +108,11 @@ public class AclController {
 	@ResponseBody
 	public ArrayList<RoleDTO> getRolesAndUser() {
 		return (ArrayList<RoleDTO>) roleService.getRolesAndUser();
+	}
+	
+	@RequestMapping(headers = { "Accept=application/json" }, method = POST, value = "/add-schedule-rule")
+	public ResponseEntity<String> addScheduleRule(@RequestBody ScheduleRules scheduleRules) {
+		String message = scheduleRuleRepository.submit(scheduleRules);
+		return new ResponseEntity<>(message,OK);
 	}
 }
