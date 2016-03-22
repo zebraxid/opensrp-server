@@ -207,12 +207,8 @@ public class ELCOService {
 					.put(FW_WOMMAUZA_PARA, elcoFields.get(FW_WOMMAUZA_PARA))
 					.put(FW_WOMGOBHHID, elcoFields.get(FW_WOMGOBHHID))
 					.put(FW_WOMGPS, elcoFields.get(FW_WOMGPS)).map();
-			
-			if(elcoFields.containsKey("FWWOMFNAME")){
-				if(!elcoFields.get(FW_WOMFNAME).equalsIgnoreCase("") || elcoFields.get(FW_WOMFNAME)!= null){
 					houseHold.ELCODETAILS().add(elco);
-				}
-			}
+				
 			
 
 		}	
