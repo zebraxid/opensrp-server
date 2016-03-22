@@ -68,15 +68,6 @@ public class HHService {
 		
 		subFormData = submission.getSubFormByName(ELCO_REGISTRATION_SUB_FORM_NAME);		
 		
-		/*Map<String, String> hh = new HashMap<String, String>();
-		hh.put("multimedia_attachments", submission.getField(REFERENCE_DATE));*/
-		
-		/*Map<String, String> hh = create("multimedia_attachments", "newHH")
-									.put("REFERENCE_DATE", submission.getField(REFERENCE_DATE))
-									.map();
-		
-		houseHold.multimediaAttachments().add(hh);	*/
-		
 		addELCODetailsToHH(submission, subFormData, houseHold);
 
 		houseHold.withPROVIDERID(submission.anmId());
@@ -149,23 +140,13 @@ public class HHService {
 					.put(FW_WOMGPS, elcoFields.get(FW_WOMGPS)).map();
  
 			
-				if(elcoFields.containsKey(FW_WOMFNAME)){
+				/*if(elcoFields.containsKey(FW_WOMFNAME)){
 					if(!elcoFields.get(FW_WOMFNAME).equalsIgnoreCase("") || elcoFields.get(FW_WOMFNAME) != null){
 						houseHold.ELCODETAILS().add(elco);
-					}
-				}else{
-					logger.info("Variable not found");
-				}
+				  }*/
+				
+				houseHold.ELCODETAILS().add(elco);
 			
-			
-			
-			/*
-			 * Elco elcoRegistry = allEcos.findByCaseId(elcoFields.get(ID))
-			 * .withPROVIDERID(submission.anmId());
-			 * 
-			 * allEcos.update(elcoRegistry);
-			 */
-
 		}
 		
 	}

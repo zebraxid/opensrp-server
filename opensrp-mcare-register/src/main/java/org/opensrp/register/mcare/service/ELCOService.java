@@ -82,15 +82,6 @@ public class ELCOService {
 					.withTODAY(submission.getField(REFERENCE_DATE))
 					.withFWWOMUPAZILLA(elcoFields.get(FW_WOMUPAZILLA).replace("+", " "));
 			
-			/*Map<String, String> ec = new HashMap<String, String>();
-			ec.put("multimediaAttachments", submission.getField(REFERENCE_DATE));*/
-			
-			/*Map<String, String> ec = create("multimediaAttachments", "Elco")
-					.put("REFERENCE_DATE", submission.getField(REFERENCE_DATE))
-					.map();
-			
-			elco.multimediaAttachments().add(ec);*/
-			
 			if(elcoFields.containsKey(FW_WOMFNAME)){
 				allEcos.update(elco);
 				logger.info("Elco updated");
@@ -208,12 +199,13 @@ public class ELCOService {
 					.put(FW_WOMGOBHHID, elcoFields.get(FW_WOMGOBHHID))
 					.put(FW_WOMGPS, elcoFields.get(FW_WOMGPS)).map();
 			
-			if(elcoFields.containsKey("FWWOMFNAME")){
+			/*if(elcoFields.containsKey("FWWOMFNAME")){
 				if(!elcoFields.get(FW_WOMFNAME).equalsIgnoreCase("") || elcoFields.get(FW_WOMFNAME)!= null){
 					houseHold.ELCODETAILS().add(elco);
 				}
-			}
+			}*/
 			
+			houseHold.ELCODETAILS().add(elco);		
 
 		}	
 	}
