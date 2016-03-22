@@ -29,7 +29,7 @@ public class ScheduleRuleRepository extends MotechBaseRepository<ScheduleRules>{
 			return "0";
 		}
 	}
-	@View(name = "all_rule", map = "function(doc) { if (doc.type === 'ScheduleRules') { emit(doc.name); } }")
+	@View(name = "all_rule", map = "function(doc) { if (doc.type === 'ScheduleRules') { emit(doc); } }")
     public List<ScheduleRules> allRule(){
     	return db.queryView(
 				createQuery("all_rule")
