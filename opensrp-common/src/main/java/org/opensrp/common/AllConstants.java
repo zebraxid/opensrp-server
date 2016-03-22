@@ -32,7 +32,9 @@ public class AllConstants {
     	public static final String PNC_REMINDER_VISIT_1 = "pnc_reminder_visit_1";
     	public static final String PNC_REMINDER_VISIT_2 = "pnc_reminder_visit_2";
     	public static final String PNC_REMINDER_VISIT_3 = "pnc_reminder_visit_3";
-    	
+    	public static final String ENCC_REMINDER_VISIT_1 = "encc_visit_1";
+    	public static final String ENCC_REMINDER_VISIT_2 = "encc_visit_2";
+    	public static final String ENCC_REMINDER_VISIT_3 = "encc_visit_3";
     	
         public static final String ENTITY_ID = "entityId";
         public static final String ANM_ID = "anmId";
