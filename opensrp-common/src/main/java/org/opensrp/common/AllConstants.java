@@ -180,6 +180,8 @@ public class AllConstants {
     	public static final String FW_WOMMAUZA_PARA ="FWWOMMAUZA_PARA";
     	public static final String FW_WOMGOBHHID ="FWWOMGOBHHID";
     	public static final String FW_WOMGPS ="FWWOMGPS";
+    	public static final String profileImagePath = "profileImagePath";
+    	public static final String nidImagePath = "nidImagePath";
     	
     }
 

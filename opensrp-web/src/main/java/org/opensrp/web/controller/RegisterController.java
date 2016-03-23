@@ -133,7 +133,7 @@ public class RegisterController {
     public ResponseEntity<String>  getMultimedia()
     {
     	multimediaRegisterService.getMultimedia();
-    	return new ResponseEntity<>("Welcome", HttpStatus.OK);
+    	return new ResponseEntity<>("Welcome to multimedia service", HttpStatus.OK);
     }
     
 /*
