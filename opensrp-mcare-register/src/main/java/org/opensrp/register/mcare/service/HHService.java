@@ -140,12 +140,12 @@ public class HHService {
 					.put(FW_WOMGPS, elcoFields.get(FW_WOMGPS)).map();
  
 			
-				/*if(elcoFields.containsKey(FW_WOMFNAME)){
+				if(elcoFields.containsKey(FW_WOMFNAME)){
 					if(!elcoFields.get(FW_WOMFNAME).equalsIgnoreCase("") || elcoFields.get(FW_WOMFNAME) != null){
 						houseHold.ELCODETAILS().add(elco);
-				  }*/
+				  }
+				}
 				
-				houseHold.ELCODETAILS().add(elco);
 			
 		}
 		
