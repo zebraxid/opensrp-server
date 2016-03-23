@@ -142,12 +142,12 @@ public class HHService {
 					.put(nidImagePath, "").map();
  
 			
-				/*if(elcoFields.containsKey(FW_WOMFNAME)){
+				if(elcoFields.containsKey(FW_WOMFNAME)){
 					if(!elcoFields.get(FW_WOMFNAME).equalsIgnoreCase("") || elcoFields.get(FW_WOMFNAME) != null){
 						houseHold.ELCODETAILS().add(elco);
-				  }*/
+				  }
+				}
 				
-				houseHold.ELCODETAILS().add(elco);
 			
 		}
 		
