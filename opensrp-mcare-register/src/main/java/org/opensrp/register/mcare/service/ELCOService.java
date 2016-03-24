@@ -197,7 +197,9 @@ public class ELCOService {
 					.put(FW_WOMSUBUNIT, elcoFields.get(FW_WOMSUBUNIT))
 					.put(FW_WOMMAUZA_PARA, elcoFields.get(FW_WOMMAUZA_PARA))
 					.put(FW_WOMGOBHHID, elcoFields.get(FW_WOMGOBHHID))
-					.put(FW_WOMGPS, elcoFields.get(FW_WOMGPS)).map();
+					.put(FW_WOMGPS, elcoFields.get(FW_WOMGPS))
+					.put(profileImagePath, "")
+					.put(nidImagePath, "").map();
 			
 			houseHold.ELCODETAILS().add(elco);		
 
