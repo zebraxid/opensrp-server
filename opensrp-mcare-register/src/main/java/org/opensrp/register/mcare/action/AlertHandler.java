@@ -87,7 +87,7 @@ public class AlertHandler {
 						max.toString()), alertCreation).addExtraData(
 				"beneficiaryType", "child");
 
-		scheduler.toReportaAction(alertCreation);
+		scheduler.toReportaAction(alertCreation);		
 
 	}
 

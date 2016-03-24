@@ -9,6 +9,7 @@ import static org.opensrp.common.util.EasyMap.create;
 
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import org.opensrp.domain.Multimedia;
 import org.opensrp.register.mcare.domain.Elco;
@@ -18,6 +19,10 @@ import org.opensrp.register.mcare.repository.AllHouseHolds;
 import org.opensrp.repository.MultimediaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.relationalid;
+import static org.opensrp.common.AllConstants.HHRegistrationFields.id;
+
 
 @Service
 public class MultimediaRegisterService {
@@ -118,5 +123,56 @@ public class MultimediaRegisterService {
 	    	
 	    	allElcos.update(ec);
 		}
+	}
+	
+	public void saveMultimediaFileToRegistry(Multimedia multimediaFile) {
+		HouseHold hh = allHouseHolds.findByCaseId(multimediaFile.getCaseId());
+		if(hh != null){
+			hh.multimediaAttachments().clear();
+    		    	
+			 Map<String, String> att = create("contentType", multimediaFile.getContentType())
+				.put("filePath", multimediaFile.getFilePath())
+				.put("fileCategory", multimediaFile.getFileCategory())
+				.map();       		
+	
+			 hh.multimediaAttachments().add(att);
+			 allHouseHolds.update(hh);
+		}
+		else{
+			Elco elco = allElcos.findByCaseId(multimediaFile.getCaseId());
+			if(elco != null){
+				elco.multimediaAttachments().clear();
+		    	
+				 Map<String, String> att = create("contentType", multimediaFile.getContentType())
+					.put("filePath", multimediaFile.getFilePath())
+					.put("fileCategory", multimediaFile.getFileCategory())
+					.map();       		
+		
+				 elco.multimediaAttachments().add(att);
+				 
+				 allElcos.update(elco);
+				 
+				 HouseHold hd = allHouseHolds.findByCaseId(elco.getDetail(relationalid));
+				 
+				 int i;
+				 for (i = 0; i < hd.ELCODETAILS().size(); i++){
+					 if(multimediaFile.getCaseId().equalsIgnoreCase(hd.ELCODETAILS().get(i).get(id)))
+						 break;
+				 }
+				 
+	     		 if(multimediaFile.getFileCategory().equalsIgnoreCase("dp"))
+	             {
+	     			hd.ELCODETAILS().get(i).put("profileImagePath", multimediaFile.getFilePath());
+	             }
+	     		
+	     		 if(multimediaFile.getFileCategory().equalsIgnoreCase("nidImage"))
+	             {
+	     			hd.ELCODETAILS().get(i).put("nidImagePath", multimediaFile.getFilePath());
+	             }
+	     		 
+	     		 allHouseHolds.update(hd);	     		 
+			}	
+		}
+		System.out.println("Image saved in registry");
 	}
 }
