@@ -36,10 +36,17 @@ public class ScheduleRuleRepository extends MotechBaseRepository<ScheduleRules>{
 						.includeDocs(true), ScheduleRules.class);
     }
 	
-	private static final String FUNCTION_DOC_EMIT_DOC_NAME = "function(doc) { if(doc.type === 'ScheduleRules') emit([doc.name], doc._id);}";
+	private static final String FUNCTION_DOC_EMIT_DOC_NAME = "function(doc) { if(doc.type === 'ScheduleRules') emit(doc._id, doc);}";
     @View(name = "by_Name", map = FUNCTION_DOC_EMIT_DOC_NAME)
     public ScheduleRules findByName(String name) {
        return  queryView("by_Name", ComplexKey.of(name)).get(0);
         
     } 
+    
+    private static final String FUNCTION_DOC_EMIT_DOC_ID= "function(doc) { if(doc.type === 'ScheduleRules') emit(doc._id, doc);}";
+    @View(name = "by_Id", map = FUNCTION_DOC_EMIT_DOC_ID)
+    public ScheduleRules findById(String name) {
+       return  queryView("by_Name", ComplexKey.of(name)).get(0);
+        
+    }
 }
