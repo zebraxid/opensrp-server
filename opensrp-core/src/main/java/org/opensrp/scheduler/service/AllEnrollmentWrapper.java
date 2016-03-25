@@ -49,10 +49,10 @@ public class AllEnrollmentWrapper extends AllEnrollments{
 	        return enrollment;
 	    }
 	    
-	    private static final String FUNCTION_DOC_EMIT_DOC_EXTERNALID_AND_SCHEDULENAME = "function(doc) { if(doc.type === 'Enrollment') emit([doc.externalId,doc.scheduleName], doc._id);}";
+	    private static final String FUNCTION_DOC_EMIT_DOC_EXTERNALID_AND_SCHEDULENAME = "function(doc) { if(doc.type === 'Enrollment') emit([doc.externalId,doc.scheduleName,doc.status], doc._id);}";
 	    @View(name = "by_externalId_scheduleName", map = FUNCTION_DOC_EMIT_DOC_EXTERNALID_AND_SCHEDULENAME)
 	    public List<Enrollment> findByEnrollmentByExternalIdAndScheduleName(String externalId, String ScheduleName) {
-	        List<Enrollment> enrollments = queryView("by_externalId_scheduleName", ComplexKey.of(externalId, ScheduleName));
+	        List<Enrollment> enrollments = queryView("by_externalId_scheduleName", ComplexKey.of(externalId, ScheduleName,"ACTIVE"));
 	        return populateWithSchedule(enrollments);
 	    } 
 }

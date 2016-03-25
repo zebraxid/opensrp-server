@@ -132,6 +132,7 @@ public class OpenmrsSchedulerService extends OpenmrsService{
 			}
 			return to;
     	}catch(Exception ep){
+    		ep.printStackTrace();
     		logger.info(ep.getMessage());
     		return null;
     	}
