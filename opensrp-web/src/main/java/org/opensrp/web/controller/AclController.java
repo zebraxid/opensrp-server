@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 import org.json.JSONException;
 import org.opensrp.connector.openmrs.service.OpenmrsUserService;
+import org.opensrp.domain.ScheduleRuleDTO;
 import org.opensrp.dto.AclDTO;
 import org.opensrp.dto.RoleDTO;
 import org.opensrp.dto.form.FormSubmissionDTO;
@@ -20,6 +21,7 @@ import org.opensrp.register.mcare.service.AclService;
 import org.opensrp.register.mcare.service.RoleService;
 import org.opensrp.scheduler.ScheduleRules;
 import org.opensrp.scheduler.repository.ScheduleRuleRepository;
+import org.opensrp.scheduler.service.ScheduleRuleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,16 +41,18 @@ public class AclController {
 
 	private RoleService roleService;
 	private AclService aclService;
+	private ScheduleRuleService scheduleRuleService;
 	private OpenmrsUserService openmrsUserService;	
 	private ScheduleRuleRepository scheduleRuleRepository;
 
 	@Autowired
 	public AclController(RoleService roleService, AclService aclService,
-			OpenmrsUserService openmrsUserService,ScheduleRuleRepository scheduleRuleRepository) {
+			OpenmrsUserService openmrsUserService,ScheduleRuleRepository scheduleRuleRepository,ScheduleRuleService scheduleRuleService) {
 		this.roleService = roleService;
 		this.aclService = aclService;
 		this.openmrsUserService = openmrsUserService;		
 		this.scheduleRuleRepository = scheduleRuleRepository;
+		this.scheduleRuleService = scheduleRuleService;
 	}
 
 	@RequestMapping(headers = { "Accept=application/json" }, method = POST, value = "/add-user")
@@ -113,6 +117,11 @@ public class AclController {
 	@RequestMapping(headers = { "Accept=application/json" }, method = POST, value = "/add-schedule-rule")
 	public ResponseEntity<String> addScheduleRule(@RequestBody ScheduleRules scheduleRules) {
 		String message = scheduleRuleRepository.submit(scheduleRules);
+		return new ResponseEntity<>(message,OK);
+	}
+	@RequestMapping(headers = { "Accept=application/json" }, method = POST, value = "/edit-schedule-rule")
+	public ResponseEntity<String> editScheduleRule(@RequestBody ScheduleRuleDTO scheduleRulesDTO) {
+		String message = scheduleRuleService.edit(scheduleRulesDTO);
 		return new ResponseEntity<>(message,OK);
 	}
 }
