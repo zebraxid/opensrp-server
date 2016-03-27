@@ -132,6 +132,16 @@ public class AllConstants {
     	public static final String FW_ELIGIBLE = "FWELIGIBLE";
     	public static final String FW_DISPLAY_AGE = "FWDISPLAYAGE";
     	public static final String FW_UPAZILLA = "FWUPAZILLA";
+    	public static final String existing_location = "existing_location";
+    	public static final String existing_Country = "existing_Country";
+    	public static final String existing_Division = "existing_Division";
+    	public static final String existing_District = "existing_District";
+    	public static final String existing_Upazilla = "existing_Upazilla";
+    	public static final String existing_Union = "existing_Union";
+    	public static final String existing_Ward = "existing_Ward";
+    	public static final String existing_Subunit = "existing_Subunit";
+    	public static final String existing_Mauzapara = "existing_Mauzapara";
+    	public static final String received_time = "received_time";
     	
     }
     
@@ -294,6 +304,7 @@ public class AllConstants {
     	public static final String user_type ="user_type";
     	public static final String external_user_ID ="external_user_ID";
     	public static final String relationalid ="relationalid";
+    	public static final String FWWOMVALID = "FWWOMVALID";
     	
     }
     

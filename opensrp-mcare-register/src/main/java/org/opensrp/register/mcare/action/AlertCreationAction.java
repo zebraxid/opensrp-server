@@ -16,6 +16,7 @@ import org.joda.time.format.DateTimeFormatter;
 import org.motechproject.scheduletracking.api.domain.Enrollment;
 import org.opensrp.common.AllConstants.BnfFollowUpVisitFields;
 import org.opensrp.common.AllConstants.ELCOSchedulesConstantsImediate;
+import org.opensrp.domain.Multimedia;
 import org.opensrp.dto.BeneficiaryType;
 import org.opensrp.register.mcare.OpenSRPScheduleConstants.ELCOSchedulesConstants;
 import org.opensrp.register.mcare.domain.Elco;
@@ -26,6 +27,7 @@ import org.opensrp.register.mcare.repository.AllChilds;
 import org.opensrp.register.mcare.repository.AllElcos;
 import org.opensrp.register.mcare.repository.AllHouseHolds;
 import org.opensrp.register.mcare.repository.AllMothers;
+import org.opensrp.register.mcare.service.MultimediaRegisterService;
 import org.opensrp.register.mcare.service.scheduling.ScheduleLogService;
 import org.opensrp.scheduler.Action;
 import org.opensrp.scheduler.HealthSchedulerService;
@@ -45,17 +47,20 @@ public class AlertCreationAction implements HookedEvent {
 	private AllMothers allMothers;
 	private AllChilds allChilds;
 	private ScheduleLogService scheduleLogService;
+	private MultimediaRegisterService multimediaRegisterService;
 	private static Logger logger = LoggerFactory.getLogger(AlertCreationAction.class.toString());
 	@Autowired
 	public AlertCreationAction(HealthSchedulerService scheduler,
 			AllHouseHolds allHouseHolds, AllElcos allElcos,
-			AllMothers allMothers, AllChilds allChilds, ScheduleLogService scheduleLogService) {
+			AllMothers allMothers, AllChilds allChilds,
+			ScheduleLogService scheduleLogService, MultimediaRegisterService multimediaRegisterService) {
 		this.scheduler = scheduler;
 		this.allHouseHolds = allHouseHolds;
 		this.allElcos = allElcos;
 		this.allMothers = allMothers;
 		this.allChilds = allChilds;
 		this.scheduleLogService = scheduleLogService;
+		this.multimediaRegisterService = multimediaRegisterService;
 	}
 
 	@Override
@@ -145,6 +150,9 @@ public class AlertCreationAction implements HookedEvent {
 		
 	}
 
-	
+	@Override
+	public void saveMultimediaToRegistry(Multimedia multimediaFile) {
+		multimediaRegisterService.saveMultimediaFileToRegistry(multimediaFile);
+	}
 
 }

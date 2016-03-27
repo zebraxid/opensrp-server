@@ -6,6 +6,7 @@ import java.util.List;
 import org.opensrp.domain.Multimedia;
 import org.opensrp.dto.form.MultimediaDTO;
 import org.opensrp.repository.MultimediaRepository;
+import org.opensrp.scheduler.HookedEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ public class MultimediaService {
 	private final MultimediaRepository multimediaRepository;
 	private String multimediaDirName;
 	private String multimediaDirPath;
+	private  HookedEvent action;
 
 	@Autowired
 	public MultimediaService(MultimediaRepository multimediaRepository, @Value("#{opensrp['multimedia.directory.name']}") String multimediaDirName) {
@@ -29,6 +31,10 @@ public class MultimediaService {
 		this.multimediaDirPath = multimediaDirName;
 	}
 
+	public void setEvent(HookedEvent action){
+		this.action = action;
+	}
+	
 	public String saveMultimediaFile(MultimediaDTO multimediaDTO, MultipartFile file) {
 		
 		multimediaDirPath = multimediaDirName;
@@ -59,6 +65,7 @@ public class MultimediaService {
                 }
 				
                 multimediaRepository.add(multimediaFile);
+                action.saveMultimediaToRegistry(multimediaFile);
 
 				return "success";
 
@@ -149,4 +156,6 @@ public class MultimediaService {
 	public List<Multimedia> getMultimediaFiles(String providerId) {
 		return multimediaRepository.all(providerId);
 	}
+	
+	
 }

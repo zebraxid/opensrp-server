@@ -11,6 +11,7 @@ import org.motechproject.scheduler.domain.MotechEvent;
 import org.motechproject.scheduler.domain.RepeatingSchedulableJob;
 import org.motechproject.scheduler.gateway.OutboundEventGateway;
 import org.opensrp.scheduler.service.ReportActionService;
+import org.opensrp.service.MultimediaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -20,13 +21,15 @@ public class TaskSchedulerService {
 	private OutboundEventGateway gateway;
 	private AlertRouter router;
 	private ReportActionService reportActionService;
+	private MultimediaService multimediaService;
    
 	@Autowired
-	public TaskSchedulerService(MotechSchedulerService schedulerService, OutboundEventGateway gateway, AlertRouter router,ReportActionService reportActionService) {
+	public TaskSchedulerService(MotechSchedulerService schedulerService, OutboundEventGateway gateway, AlertRouter router, ReportActionService reportActionService, MultimediaService multimediaService) {
 		this.motechSchedulerService = schedulerService;
 		this.gateway = gateway;
 		this.router = router;
 		this.reportActionService = reportActionService;
+		this.multimediaService = multimediaService;
 	}
 	
 	public void startJob(RepeatingSchedulableJob job) {
@@ -78,5 +81,8 @@ public class TaskSchedulerService {
 	public void toReportaAction(HookedEvent action)
 	{
 		reportActionService.setEvent(action);
+		multimediaService.setEvent(action);
 	}
+	
+	
 }
