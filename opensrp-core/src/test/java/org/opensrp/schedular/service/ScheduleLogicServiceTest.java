@@ -35,31 +35,7 @@ public class ScheduleLogicServiceTest {
     }
 	
 	@Test
-	public void shouldSaveData(){
-		
-		//System.out.println(Rule.createRule("sddd","fff"));
-		/*List<Defination> definations1 = new ArrayList<Defination>();
-		List<Defination> definations2 = new ArrayList<Defination>();
-		List<Rule> rules = new ArrayList<Rule>();
-		Defination definition1 = new Defination("Name1", "Value1");
-		Defination definition2 = new Defination("Name2", "Value2");
-		
-		definations1.add(definition1);
-		definations2.add(definition2);
-		
-		Rule rule1 = new Rule(definations1, "Household1", "Cencus1");
-		
-		
-		Rule rule2 = new Rule(definations1, "Household2", "Cencus2");
-		
-		
-		
-		rules.add(rule1);
-		rules.add(rule2);
-		//System.out.println(rules.toString());
-		ScheduleRules s = new ScheduleRules("kkk", "dff", rules);
-		System.out.println(new Gson().toJson(s));
-		sr.submit(new ScheduleRules("kkk", "dff", rules));*/
+	public void shouldSaveData(){		
 		
 		List<Defination> definations1 = new ArrayList<Defination>();
 		List<Defination> definations2 = new ArrayList<Defination>();
@@ -79,16 +55,12 @@ public class ScheduleLogicServiceTest {
 		
 		rules.add(rule1);
 		rules.add(rule2);
-		//System.out.println(rules.toString());
-		//ScheduleRules s = new ScheduleRules("kkk", "dff", rules);
-		//System.out.println(new Gson().toJson(s));
-		if(!scheduleRuleRepository.findByName("HouseHold Form").getName().equalsIgnoreCase("HouseHold Form")){
-		scheduleRuleRepository.submit(new ScheduleRules("HouseHold Form", "proshanto", rules));
+		
+		try{
+			assertEquals("HouseHold Form", scheduleRuleRepository.findByName("HouseHold Form").getName());
+		}catch(Exception e){
+			scheduleRuleRepository.submit(new ScheduleRules("HouseHold Form", "proshanto", rules));
 		}
-		
-		/*logger.info("SR:"+sr.allRule().toString());
-		logger.info(sr.allRule().get(0).getRule().get(0).getDefination().get(0).getName());*/
-		
 		
 		//assertEquals(1, sr.allRule().size());
 		 System.out.println(scheduleRuleRepository.toString());
