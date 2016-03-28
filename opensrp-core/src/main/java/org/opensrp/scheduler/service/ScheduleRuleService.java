@@ -16,19 +16,29 @@ public class ScheduleRuleService {
 		this.scheduleRuleRepository = scheduleRuleRepository;
 	}
 
-	public String edit(ScheduleRuleDTO scheduleRulesDTO){
-		
-		
-		ScheduleRules scheduleRule = scheduleRuleRepository.findByID(scheduleRulesDTO.getRuleID());
-		System.out.println("IDsds:"+scheduleRule.toString());
-		System.out.println("ID:"+scheduleRulesDTO.getRuleID());
-		scheduleRule.setName(scheduleRulesDTO.getName());		
-		scheduleRule.setRule(scheduleRulesDTO.getRule());
-		System.out.println("IDss:"+scheduleRulesDTO);
-		scheduleRule.setRevision(scheduleRule.getRevision());
-		scheduleRuleRepository.update(scheduleRule);
-		return "1";
-		
-		
+	public String submit(ScheduleRules scheduleRules){		
+		try{
+			ScheduleRules scheduleRule = scheduleRuleRepository.findByName(scheduleRules.getName());
+			if(!scheduleRule.getName().equalsIgnoreCase("")){
+				return "2";
+			}else{
+				scheduleRuleRepository.add(scheduleRules);
+				return "1";
+			}
+		}catch(Exception e){			
+			return "0";
+		}
+	}
+	public String edit(ScheduleRuleDTO scheduleRulesDTO){		
+		try{
+			ScheduleRules scheduleRule = scheduleRuleRepository.findByID(scheduleRulesDTO.getRuleID());
+			scheduleRule.setName(scheduleRulesDTO.getName());		
+			scheduleRule.setRule(scheduleRulesDTO.getRule());		
+			scheduleRule.setRevision(scheduleRule.getRevision());
+			scheduleRuleRepository.update(scheduleRule);
+			return "1";
+		}catch(Exception e){
+			return "0";
+		}		
 	}
 }

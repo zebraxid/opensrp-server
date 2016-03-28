@@ -1,7 +1,5 @@
 package org.opensrp.web.controller;
 
-import static ch.lambdaj.collection.LambdaCollections.with;
-import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
@@ -10,20 +8,11 @@ import java.util.ArrayList;
 
 import org.json.JSONException;
 import org.opensrp.connector.openmrs.service.OpenmrsUserService;
-import org.opensrp.domain.ScheduleRuleDTO;
 import org.opensrp.dto.AclDTO;
 import org.opensrp.dto.RoleDTO;
-import org.opensrp.dto.form.FormSubmissionDTO;
-import org.opensrp.form.domain.FormSubmission;
-import org.opensrp.form.service.FormSubmissionConverter;
-import org.opensrp.register.mcare.domain.Acl;
 import org.opensrp.register.mcare.service.AclService;
 import org.opensrp.register.mcare.service.RoleService;
-import org.opensrp.scheduler.ScheduleRules;
-import org.opensrp.scheduler.repository.ScheduleRuleRepository;
-import org.opensrp.scheduler.service.ScheduleRuleService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,28 +20,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import ch.lambdaj.collection.LambdaList;
-import ch.lambdaj.function.convert.Converter;
-
 import com.google.gson.Gson;
 
 @Controller
 public class AclController {
 
 	private RoleService roleService;
-	private AclService aclService;
-	private ScheduleRuleService scheduleRuleService;
-	private OpenmrsUserService openmrsUserService;	
-	private ScheduleRuleRepository scheduleRuleRepository;
+	private AclService aclService;	
+	private OpenmrsUserService openmrsUserService;
 
 	@Autowired
 	public AclController(RoleService roleService, AclService aclService,
-			OpenmrsUserService openmrsUserService,ScheduleRuleRepository scheduleRuleRepository,ScheduleRuleService scheduleRuleService) {
+			OpenmrsUserService openmrsUserService) {
 		this.roleService = roleService;
 		this.aclService = aclService;
 		this.openmrsUserService = openmrsUserService;		
-		this.scheduleRuleRepository = scheduleRuleRepository;
-		this.scheduleRuleService = scheduleRuleService;
+		
 	}
 
 	@RequestMapping(headers = { "Accept=application/json" }, method = POST, value = "/add-user")
@@ -114,14 +97,5 @@ public class AclController {
 		return (ArrayList<RoleDTO>) roleService.getRolesAndUser();
 	}
 	
-	@RequestMapping(headers = { "Accept=application/json" }, method = POST, value = "/add-schedule-rule")
-	public ResponseEntity<String> addScheduleRule(@RequestBody ScheduleRules scheduleRules) {
-		String message = scheduleRuleRepository.submit(scheduleRules);
-		return new ResponseEntity<>(message,OK);
-	}
-	@RequestMapping(headers = { "Accept=application/json" }, method = POST, value = "/edit-schedule-rule")
-	public ResponseEntity<String> editScheduleRule(@RequestBody ScheduleRuleDTO scheduleRulesDTO) {
-		String message = scheduleRuleService.edit(scheduleRulesDTO);
-		return new ResponseEntity<>(message,OK);
-	}
+	
 }
