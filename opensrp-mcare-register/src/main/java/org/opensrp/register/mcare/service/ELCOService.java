@@ -9,10 +9,23 @@ import static org.opensrp.common.AllConstants.CommonFormFields.ID;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.ELCO_REGISTRATION_SUB_FORM_NAME;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.FW_UPAZILLA;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.REFERENCE_DATE;
+import static org.opensrp.common.AllConstants.HHRegistrationFields.existing_Country;
+import static org.opensrp.common.AllConstants.HHRegistrationFields.existing_District;
+import static org.opensrp.common.AllConstants.HHRegistrationFields.existing_Division;
+import static org.opensrp.common.AllConstants.HHRegistrationFields.existing_Mauzapara;
+import static org.opensrp.common.AllConstants.HHRegistrationFields.existing_Subunit;
+import static org.opensrp.common.AllConstants.HHRegistrationFields.existing_Union;
+import static org.opensrp.common.AllConstants.HHRegistrationFields.existing_Upazilla;
+import static org.opensrp.common.AllConstants.HHRegistrationFields.existing_Ward;
+import static org.opensrp.common.AllConstants.HHRegistrationFields.existing_location;
+import static org.opensrp.common.AllConstants.HHRegistrationFields.received_time;
 import static org.opensrp.common.AllConstants.PSRFFields.*;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.HHSchedulesConstants.HH_SCHEDULE_CENSUS;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ELCOSchedulesConstants.ELCO_SCHEDULE_PSRF;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -79,8 +92,10 @@ public class ELCOService {
 			Elco elco = allEcos.findByCaseId(elcoFields.get(ID))
 					.withINSTANCEID(submission.instanceId())
 					.withPROVIDERID(submission.anmId())
-					.withTODAY(submission.getField(REFERENCE_DATE))
+					//.withTODAY(submission.getField(REFERENCE_DATE))
 					.withFWWOMUPAZILLA(elcoFields.get(FW_WOMUPAZILLA).replace("+", " "));
+			
+			addDetailsToElco(submission, subFormData, elco);
 			
 			if(elcoFields.containsKey(FW_WOMFNAME)){
 				allEcos.update(elco);
@@ -103,7 +118,7 @@ public class ELCOService {
 					logger.info("Variable not found which is defined in rule defination for elco");
 				}
 			}
-					
+		
 		}
 
 		if (submission.formName().equalsIgnoreCase(ELCO_REGISTRATION)) {
@@ -122,10 +137,14 @@ public class ELCOService {
 
 			houseHold.withPROVIDERID(submission.anmId());
 			houseHold.withINSTANCEID(submission.instanceId());
-			houseHold.withTODAY(submission.getField(REFERENCE_DATE));
+			//houseHold.withTODAY(submission.getField(REFERENCE_DATE));
 			houseHold.withFWUPAZILLA(submission.getField(FW_UPAZILLA).replace("+", " "));
 			
+			houseHold.details().put(existing_ELCO, submission.getField(existing_ELCO));		
+			houseHold.details().put(new_ELCO, submission.getField(new_ELCO));
+			
 			allHouseHolds.update(houseHold);
+
 			logger.info("Expected value leading non zero and found FWCENSTA : "+submission.getField("FWCENSTAT"));
 			if(submission.getField("FWCENSTAT").equalsIgnoreCase("7")){
 				elcoScheduleService.unEnrollFromScheduleCensus(submission.entityId(), submission.anmId(),"");
@@ -143,9 +162,20 @@ public class ELCOService {
 			}else{
 			hhSchedulesService.enrollIntoMilestoneOfCensus(submission.entityId(),
 					submission.getField(REFERENCE_DATE),submission.anmId(),submission.instanceId());
-			}
-			 
+			}	 
 		}
+	}
+	
+	private void addDetailsToElco(FormSubmission submission,
+			SubFormData subFormData, Elco elco) {
+		
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    	Date today = Calendar.getInstance().getTime();    	
+
+    	elco.details().put(relationalid, subFormData.instances().get(0).get(relationalid));
+    	elco.details().put(FW_DISPLAY_AGE, subFormData.instances().get(0).get(FW_DISPLAY_AGE));	
+    	elco.details().put(REFERENCE_DATE, submission.getField(REFERENCE_DATE));
+    	elco.details().put(received_time,format.format(today).toString());
 	}
 	
 	private void addELCODetailsToHH(FormSubmission submission,

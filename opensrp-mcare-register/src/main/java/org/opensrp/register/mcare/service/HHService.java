@@ -6,14 +6,26 @@ import static org.opensrp.common.AllConstants.Form.ELCO_REGISTRATION;
 import static org.opensrp.common.AllConstants.CommonFormFields.ID;
 import static org.opensrp.common.AllConstants.ELCORegistrationFields.*;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.ELCO_REGISTRATION_SUB_FORM_NAME;
-import static org.opensrp.common.AllConstants.HHRegistrationFields.ELCO_REGISTRATION_SUB_FORM_NAME_CENSUS;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.REFERENCE_DATE;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.FW_UPAZILLA;
+import static org.opensrp.common.AllConstants.HHRegistrationFields.existing_location;
+import static org.opensrp.common.AllConstants.HHRegistrationFields.existing_Country;
+import static org.opensrp.common.AllConstants.HHRegistrationFields.existing_Division;
+import static org.opensrp.common.AllConstants.HHRegistrationFields.existing_District;
+import static org.opensrp.common.AllConstants.HHRegistrationFields.existing_Upazilla;
+import static org.opensrp.common.AllConstants.HHRegistrationFields.existing_Union;
+import static org.opensrp.common.AllConstants.HHRegistrationFields.existing_Ward;
+import static org.opensrp.common.AllConstants.HHRegistrationFields.existing_Subunit;
+import static org.opensrp.common.AllConstants.HHRegistrationFields.existing_Mauzapara;
+import static org.opensrp.common.AllConstants.HHRegistrationFields.received_time;
 import static org.opensrp.common.AllConstants.PSRFFields.FW_CONFIRMATION;
 import static org.opensrp.common.AllConstants.PSRFFields.FW_PSRDATE;
 import static org.opensrp.common.util.EasyMap.create;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,7 +40,6 @@ import org.opensrp.register.mcare.repository.AllHouseHolds;
 import org.opensrp.register.mcare.service.scheduling.HHSchedulesService;
 import org.opensrp.register.mcare.service.scheduling.ScheduleLogService;
 import org.opensrp.scheduler.ScheduleRules;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,15 +79,17 @@ public class HHService {
 		
 		subFormData = submission.getSubFormByName(ELCO_REGISTRATION_SUB_FORM_NAME);		
 		
+		addDetailsToHH(submission, subFormData, houseHold);
+		
 		addELCODetailsToHH(submission, subFormData, houseHold);
 
 		houseHold.withPROVIDERID(submission.anmId());
 		houseHold.withINSTANCEID(submission.instanceId());
-		houseHold.withTODAY(submission.getField(REFERENCE_DATE));
+		//houseHold.withTODAY(submission.getField(REFERENCE_DATE));
 		houseHold.withFWUPAZILLA(submission.getField(FW_UPAZILLA).replace("+", " "));
 	
 		allHouseHolds.update(houseHold);
-		
+			
 		String cencusCondition =  scheduleLogService.getScheduleRuleForCensus("HouseHold Form");
 		logger.info("Cencus Condition :"+cencusCondition);
 		if(!cencusCondition.equalsIgnoreCase("") && cencusCondition.equalsIgnoreCase("1")){
@@ -89,6 +102,28 @@ public class HHService {
 		
 		elcoService.registerELCO(submission);
 	}
+	
+	private void addDetailsToHH(FormSubmission submission,
+			SubFormData subFormData, HouseHold houseHold) {
+			
+						houseHold.details().put(existing_location, submission.getField(existing_location));
+						houseHold.details().put(existing_Country, submission.getField(existing_Country));		
+						houseHold.details().put(existing_Division, submission.getField(existing_Division));
+						houseHold.details().put(existing_District, submission.getField(existing_District));
+						houseHold.details().put(existing_Upazilla, submission.getField(existing_Upazilla));
+						houseHold.details().put(existing_Union, submission.getField(existing_Union));		
+						houseHold.details().put(existing_Ward, submission.getField(existing_Ward));
+						houseHold.details().put(existing_Subunit, submission.getField(existing_Subunit));
+						houseHold.details().put(existing_Mauzapara, submission.getField(existing_Mauzapara));
+						
+						SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				    	Date today = Calendar.getInstance().getTime();    	
+				    	houseHold.details().put(received_time,format.format(today).toString());
+				    	houseHold.details().put(REFERENCE_DATE, submission.getField(REFERENCE_DATE));
+						houseHold.details().put(START_DATE, submission.getField(START_DATE));		
+						houseHold.details().put(END_DATE, submission.getField(END_DATE));
+	}
+
 
 	private void addELCODetailsToHH(FormSubmission submission,
 			SubFormData subFormData, HouseHold houseHold) {
