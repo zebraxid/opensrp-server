@@ -150,7 +150,7 @@ public class AllConstants {
     	public static final String FW_PROVIDERID ="PROVIDERID";
     	public static final String FW_LOCATIONID ="LOCATIONID";
     	public static final String relationalid ="relationalid";
-    	public static final String FW_TODAY ="today";
+    	public static final String FW_TODAY ="TODAY";
     	public static final String START_DATE = "start";
     	public static final String END_DATE = "end";
     	public static final String FW_GOBHHID ="GOBHHID";
