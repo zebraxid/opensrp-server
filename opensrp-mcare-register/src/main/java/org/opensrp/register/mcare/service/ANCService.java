@@ -4,6 +4,8 @@
 package org.opensrp.register.mcare.service;
 
 import static java.text.MessageFormat.format;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_DISPLAY_AGE;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.relationalid;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.*;
 import static org.opensrp.common.AllConstants.ANCVisitOneFields.*;
 import static org.opensrp.common.AllConstants.ANCVisitTwoFields.*;
@@ -13,6 +15,9 @@ import static org.opensrp.common.AllConstants.BnfFollowUpVisitFields.*;
 import static org.opensrp.common.util.EasyMap.create;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_ANC;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Map;
 
 import org.joda.time.LocalDate;
@@ -64,9 +69,28 @@ public class ANCService {
 
 		mother.withPROVIDERID(submission.anmId());
 		mother.withINSTANCEID(submission.instanceId());		
+		
+		addDetailsToMother(submission, mother);
+		
 		allMothers.update(mother);
 		ancSchedulesService.enrollMother(motherId,
 				LocalDate.parse(submission.getField(MOTHER_REFERENCE_DATE)),submission.anmId(),submission.instanceId(),submission.getField(MOTHER_REFERENCE_DATE));
+	}
+	
+	private void addDetailsToMother(FormSubmission submission, Mother mother) {
+		
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    	Date today = Calendar.getInstance().getTime();    	
+
+    	mother.details().put(REFERENCE_DATE, submission.getField(REFERENCE_DATE));
+    	mother.details().put(mother_mauza, submission.getField(mother_mauza));
+    	mother.details().put(mother_valid, submission.getField(mother_valid));	
+    	mother.details().put(FWVG, submission.getField(FWVG));
+    	mother.details().put(FWHRP, submission.getField(FWHRP));
+    	mother.details().put(FWHR_PSR, submission.getField(FWHR_PSR));	
+    	mother.details().put(FWFLAGVALUE, submission.getField(FWFLAGVALUE));
+    	mother.details().put(FWSORTVALUE, submission.getField(FWSORTVALUE));
+    	mother.details().put(received_time,format.format(today).toString());
 	}
 
 	public void ancVisitOne(FormSubmission submission) {

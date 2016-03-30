@@ -123,9 +123,13 @@ public class EncounterService extends OpenmrsService{
 		obo.put("concept", o.getFieldCode());
 		if(o.getValue() != null && !StringUtils.isEmptyOrWhitespaceOnly(o.getValue().toString())) {
 			if(o.getFieldCode().toString().equalsIgnoreCase("163137AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA") || o.getFieldCode().toString().equalsIgnoreCase("163138AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA") || o.getFieldCode().toString().equalsIgnoreCase("5599AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA") || o.getFieldCode().toString().equalsIgnoreCase("5596AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"))
+			{	
 				//obo.put("value", OPENMRS_DATETime.format(o.getValue()));
-				obo.put("value", (o.getValue().toString().substring(0, 19)).replace("T", " "));
-				
+				if (o.getValue().toString().length() >= 19)
+					obo.put("value", (o.getValue().toString().substring(0, 19)).replace("T", " "));
+				else 
+					obo.put("value", o.getValue());
+			}			
 			else 
 				obo.put("value", o.getValue());
 		}

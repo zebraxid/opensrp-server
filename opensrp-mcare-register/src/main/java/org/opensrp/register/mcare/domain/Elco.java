@@ -501,6 +501,8 @@ public class Elco extends MotechBaseDataObject {
 	 }
 	 
 	 public Map<String, String> details() {
+		 if (details == null)
+				this.details = new HashMap<>();
 			return details;
 	 }
 

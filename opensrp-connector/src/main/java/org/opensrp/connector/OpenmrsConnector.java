@@ -410,8 +410,8 @@ public class OpenmrsConnector {
 				for (Map<String, String> sfdata : sbf.instances()) {
 					String firstName = sfdata.get(getFieldName(Person.first_name, sbf.name(), fs));
 					Map<String, String> idents = extractIdentifiers(sfdata, sbf.name(), fs);
-					if(StringUtils.isEmptyOrWhitespaceOnly(firstName)
-							&& idents.size() < 2){//we need to ignore uuid of entity
+					if(StringUtils.isEmptyOrWhitespaceOnly(firstName) && idents.size() < 2 && !sbf.name().equals("child_registration"))
+					{	//we need to ignore uuid of entity
 						// if empty repeat group leave this entry and move to next
 						continue;
 					}
@@ -448,6 +448,19 @@ public class OpenmrsConnector {
 					String gender = sfdata.get(getFieldName(Person.gender, sbf.name(), fs));
 					
 					List<Address> addresses = new ArrayList<>(extractAddressesForSubform(sfdata, sbf.name(), fs).values());
+					
+					if(sbf.name().equals("child_registration"))
+					{
+						 firstName = "child";
+						 middleName = null;
+						 lastName = null;		 
+						 birthdate = OpenmrsService.OPENMRS_DATE.parse("2015-01-01");
+						 deathdate = null;
+						 birthdateApprox = false;
+						 deathdateApprox = false;
+						 gender = sfdata.get("FWBNFGEN");
+						 addresses.add(new Address());
+					}
 					
 					Client c = new Client()
 					.withBaseEntity(new BaseEntity(sfdata.get("id"), firstName, middleName, lastName, birthdate, deathdate, 

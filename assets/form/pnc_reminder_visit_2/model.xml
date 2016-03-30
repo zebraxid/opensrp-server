@@ -22,14 +22,14 @@
             <FWCONFIRMATION/>
             <FWPNC2REMSTS openmrs_entity="concept" openmrs_entity_id="161641AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
             <pnc2group>
-                <FWPNC2INT openmrs_entity_id="163000AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
+                <FWPNC2INT openmrs_entity="concept" openmrs_entity_id="163000AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
                 <DISPLAYTEXT1/>
-                <FWPNC2KNWPRVDR openmrs_entity_id="162998AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
+                <FWPNC2KNWPRVDR openmrs_entity="concept" openmrs_entity_id="162998AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
                 <DISPLAYTEXT3/>
-                <FWPNC2FVR openmrs_entity="concept" openmrs_entity_id="140238AAAAAAAAAAAAAAAAAAAAAAAAAA"/>
+                <FWPNC2FVR openmrs_entity="concept" openmrs_entity_id="140238AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
                 <FWPNC2TEMP openmrs_entity="concept" openmrs_entity_id="5088AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
                 <DISPLAYTEXT_Fever/>
-                <FWPNC2DNGRSIGN openmrs_entity_id="160939AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
+                <FWPNC2DNGRSIGN openmrs_entity="concept" openmrs_entity_id="160939AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
                 <DISPLAYTEXT_HEAD/>
                 <DISPLAYTEXT_BLRVIS/>
                 <DISPLAYTEXT_BRTDIF/>

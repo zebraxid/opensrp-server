@@ -192,7 +192,10 @@ public class Mother extends MotechBaseDataObject {
 		this.relationalid = relationalid;
 		return this;
 	}
-
+	public Mother withDetails(Map<String, String> details) {
+        this.details = new HashMap<>(details);
+        return this;
+    }
 	public Mother withANCVisitOne(Map<String, String> ancVisitOne) {
         this.ancVisitOne = new HashMap<>(ancVisitOne);
         return this;

@@ -1,20 +1,20 @@
 <model>
     <instance>
-        <EssentialNewbornCareChecklist1 encounter_type="Essential Newborn Care 1" id="EssentialNewbornCare1" version="201602080720">
+        <EssentialNewbornCareChecklist1 encounter_type="Child Vital Status" id="EssentialNewbornCare1" version="201602080720">
             <formhub>
                 <uuid/>
             </formhub>
             <version/>
             <changes/>
-            <start/>
-            <end/>
-            <today/>
-            <FWENC1DATE openmrs_entity="concept" openmrs_entity_id="160753AAAAAAAAAAAAAAAAAAAAAAAAAA"/>
+            <start openmrs_entity="encounter" openmrs_entity_id="encounter_start"/>
+            <end openmrs_entity="encounter" openmrs_entity_id="encounter_end"/>
+            <today openmrs_entity="encounter" openmrs_entity_id="encounter_date"/>
+            <FWENC1DATE openmrs_entity="concept" openmrs_entity_id="160753AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
             <FWENC1STS openmrs_entity="concept" openmrs_entity_id="163088AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
             <encc>
                 <behavior>
                     <DISPLAYTEXT1/>
-                    <FWENC1BFINTN openmrs_entity="concept" openmrs_entity_id="5632AAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
+                    <FWENC1BFINTN openmrs_entity="concept" openmrs_entity_id="5632AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
                     <bf_note_no/>
                     <bf_note_yes/>
                     <FWENC1PRLCTL openmrs_entity="concept" openmrs_entity_id="161539AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
@@ -35,23 +35,23 @@
                 </behavior>
                 <danger_signs>
                     <yes_no_label/>
-                    <FWENC1DSFVRCLD openmrs_entity="concept" openmrs_entity_id="1729AAAAAAAAAAAAAAAAAAAAAAAAAAAA" openmrs_entity_parent="141861AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
+                    <FWENC1DSFVRCLD openmrs_entity="concept" openmrs_entity_id="1729AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" openmrs_entity_parent="141861AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
                     <hotcold_note1/>
-                    <FWENC1TEMP openmrs_entity="concept" openmrs_entity_id="5088AAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
+                    <FWENC1TEMP openmrs_entity="concept" openmrs_entity_id="5088AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
                     <note_fever/>
-                    <FWENC1DSFOULUMBS openmrs_entity="concept" openmrs_entity_id="1729AAAAAAAAAAAAAAAAAAAAAAAAAAAA" openmrs_entity_parent="132407AAAAAAAAAAAAAAAAAAAAAAAAAA"/>
+                    <FWENC1DSFOULUMBS openmrs_entity="concept" openmrs_entity_id="1729AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" openmrs_entity_parent="132407AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
                     <swell_note/>
-                    <FWENC1DSLIMBLUE openmrs_entity="concept" openmrs_entity_id="1729AAAAAAAAAAAAAAAAAAAAAAAAAAAA" openmrs_entity_parent="157902AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
+                    <FWENC1DSLIMBLUE openmrs_entity="concept" openmrs_entity_id="1729AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" openmrs_entity_parent="157902AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
                     <blue_note/>
-                    <FWENC1DSSKNYLW openmrs_entity="concept" openmrs_entity_id="1729AAAAAAAAAAAAAAAAAAAAAAAAAAAA" openmrs_entity_parent="115368AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
+                    <FWENC1DSSKNYLW openmrs_entity="concept" openmrs_entity_id="1729AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" openmrs_entity_parent="115368AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
                     <yellow_note/>
-                    <FWENC1DSLETH openmrs_entity="concept" openmrs_entity_id="1729AAAAAAAAAAAAAAAAAAAAAAAAAAAA" openmrs_entity_parent="155329AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
+                    <FWENC1DSLETH openmrs_entity="concept" openmrs_entity_id="1729AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" openmrs_entity_parent="155329AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
                     <leth_note/>
-                    <FWENC1DSDIFBRTH openmrs_entity="concept" openmrs_entity_id="1729AAAAAAAAAAAAAAAAAAAAAAAAAAAA" openmrs_entity_parent="115367AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
+                    <FWENC1DSDIFBRTH openmrs_entity="concept" openmrs_entity_id="1729AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" openmrs_entity_parent="115367AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
                     <rapid_note/>
-                    <FWENC1DSCONVL openmrs_entity="concept" openmrs_entity_id="1729AAAAAAAAAAAAAAAAAAAAAAAAAAAA" openmrs_entity_parent="143388AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
+                    <FWENC1DSCONVL openmrs_entity="concept" openmrs_entity_id="1729AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" openmrs_entity_parent="143388AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
                     <conv_note/>
-                    <FWENC1DELCOMP openmrs_entity="concept" openmrs_entity_id="1729AAAAAAAAAAAAAAAAAAAAAAAAAAAA" openmrs_entity_parent="120216AAAAAAAAAAAAAAAAAAAAAAAAAA"/>
+                    <FWENC1DELCOMP openmrs_entity="concept" openmrs_entity_id="1729AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" openmrs_entity_parent="120216AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
                     <last_note/>
                 </danger_signs>
             </encc>

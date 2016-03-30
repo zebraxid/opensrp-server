@@ -69,7 +69,7 @@ public class BNFService {
 
 		mother.withPROVIDERID(submission.anmId());
 		mother.withINSTANCEID(submission.instanceId());
-		mother.withTODAY(submission.getField(REFERENCE_DATE));
+		//mother.withTODAY(submission.getField(REFERENCE_DATE));
 		allMothers.update(mother);		
 		bnfSchedulesService.enrollBNF(motherId, LocalDate.parse(submission.getField(MOTHER_REFERENCE_DATE)),submission.anmId(),submission.instanceId(),submission.getField(MOTHER_REFERENCE_DATE));
 		
@@ -103,7 +103,7 @@ public class BNFService {
 											.put(external_user_ID, submission.getField(external_user_ID))
 											.put(relationalid, submission.getField(relationalid)).map();
 		
-		mother.withTODAY(submission.getField(REFERENCE_DATE));
+		//mother.withTODAY(submission.getField(REFERENCE_DATE));
 			
 		mother.bnfVisitDetails().add(bnfVisit);
 		

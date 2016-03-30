@@ -3,7 +3,7 @@
     "absolute": true,
     "milestones": [
         {
-            "name": "enccv_1",
+            "name": "enccrv_1",
             "scheduleWindows": {
             	"earliest": ["0 Days"],
                 "due": ["1 Days"],
@@ -27,18 +27,18 @@
                     "window": "max",
                     "offset": ["2 Days"],
                     "interval": ["1 Day"],
-                    "count": "1"
+                    "count": "0"
                 }
                 
             ]
         },
         {
-            "name": "enccv_2",
+            "name": "enccrv_2",
             "scheduleWindows": {
             	"earliest": ["2 Days"],
                 "due": ["3 Days"],
-                "late": ["6 Days"],
-                "max": ["6 Days"]
+                "late": ["5 Days"],
+                "max": ["5 Days"]
             },
             "alerts": [           
                 {
@@ -51,18 +51,18 @@
                     "window": "late",
                     "offset": ["3 Days"],
                     "interval": ["1 Day"],
-                    "count": "3"
+                    "count": "2"
                 },
                  {
                     "window": "max",
-                    "offset": ["6 Days"],
+                    "offset": ["5 Days"],
                     "interval": ["1 Day"],
                     "count": "1"
                 }                            
             ]
         },
         {
-            "name": "enccv_3",
+            "name": "enccrv_3",
             "scheduleWindows": {
             	"earliest": ["6 Days"],
                 "due": ["8 Days"],
@@ -86,7 +86,7 @@
                     "window": "max",
                     "offset": ["9 Days"],
                     "interval": ["1 Day"],
-                    "count": "1"
+                    "count": "0"
                 }                 
             ]
         }

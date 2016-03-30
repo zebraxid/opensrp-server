@@ -30,7 +30,7 @@
                 <FWPNC1FVR openmrs_entity="concept" openmrs_entity_id="140238AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
                 <FWPNC1TEMP openmrs_entity="concept" openmrs_entity_id="5088AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
                 <DISPLAYTEXT_Fever/>
-                <FWPNC1DNGRSIGN openmrs_entity_id="160939AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
+                <FWPNC1DNGRSIGN openmrs_entity="concept" openmrs_entity_id="160939AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
                 <DISPLAYTEXT_HEAD/>
                 <DISPLAYTEXT_BLRVIS/>
                 <DISPLAYTEXT_BRTDIF/>

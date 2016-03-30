@@ -85,7 +85,6 @@ public class HHService {
 
 		houseHold.withPROVIDERID(submission.anmId());
 		houseHold.withINSTANCEID(submission.instanceId());
-		//houseHold.withTODAY(submission.getField(REFERENCE_DATE));
 		houseHold.withFWUPAZILLA(submission.getField(FW_UPAZILLA).replace("+", " "));
 	
 		allHouseHolds.update(houseHold);

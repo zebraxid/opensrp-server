@@ -1,6 +1,6 @@
 <model>
     <instance>
-        <EssentialNewbornCareChecklist2 encounter_type="Essential Newborn Care 2" id="EssentialNewbornCare2" version="201602080720">
+        <EssentialNewbornCareChecklist2 encounter_type="Child Vital Status" id="EssentialNewbornCare2" version="201602080720">
             <formhub>
                 <uuid/>
             </formhub>
@@ -10,11 +10,11 @@
             <start openmrs_entity="encounter" openmrs_entity_id="encounter_start"/>
             <end openmrs_entity="encounter" openmrs_entity_id="encounter_end"/>
             <today openmrs_entity="encounter" openmrs_entity_id="encounter_date"/>
-            <FWENC2DATE openmrs_entity="concept" openmrs_entity_id="160753AAAAAAAAAAAAAAAAAAAAAAAAAA"/>
-            <FWENC2STS openmrs_entity="concept" openmrs_entity_id="161641AAAAAAAAAAAAAAAAAAAAAAAAAA"/>
+            <FWENC2DATE openmrs_entity="concept" openmrs_entity_id="160753AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
+            <FWENC2STS openmrs_entity="concept" openmrs_entity_id="161641AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
             <behavior>
                 <DISPLAYTEXT1/>
-                <FWENC2BFINTN openmrs_entity="concept" openmrs_entity_id="5632AAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
+                <FWENC2BFINTN openmrs_entity="concept" openmrs_entity_id="5632AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
                 <bf_note_no/>
                 <bf_note_yes/>
                 <FWENC2PRLCTL openmrs_entity="concept" openmrs_entity_id="161539AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
@@ -34,21 +34,21 @@
                 <umb_note_yes/>
             </behavior>
             <danger_signs>
-                <FWENC2DSFVRCLD openmrs_entity="concept" openmrs_entity_id="141861AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
+                <FWENC2DSFVRCLD openmrs_entity="concept" openmrs_entity_id="1729AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" openmrs_entity_parent="141861AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
                 <hotcold_note1/>
                 <FWENC2TEMP/>
                 <note_fever/>
-                <FWENC2DSFOULUMBS openmrs_entity="concept" openmrs_entity_id="140318AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
+                <FWENC2DSFOULUMBS openmrs_entity="concept" openmrs_entity_id="1729AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" openmrs_entity_parent="140318AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
                 <swell_note/>
-                <FWENC2DSLIMBLUE openmrs_entity="concept" openmrs_entity_id="157902AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
+                <FWENC2DSLIMBLUE openmrs_entity="concept" openmrs_entity_id="1729AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" openmrs_entity_parent="157902AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
                 <blue_note/>
-                <FWENC2DSSKNYLW openmrs_entity="concept" openmrs_entity_id="115368AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
+                <FWENC2DSSKNYLW openmrs_entity="concept" openmrs_entity_id="1729AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" openmrs_entity_parent="115368AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
                 <yellow_note/>
-                <FWENC2DSLETH openmrs_entity="concept" openmrs_entity_id="155329AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
+                <FWENC2DSLETH openmrs_entity="concept" openmrs_entity_id="1729AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" openmrs_entity_parent="155329AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
                 <leth_note/>
-                <FWENC2DSDIFBRTH openmrs_entity="concept" openmrs_entity_id="115367AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
+                <FWENC2DSDIFBRTH openmrs_entity="concept" openmrs_entity_id="1729AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" openmrs_entity_parent="115367AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
                 <rapid_note/>
-                <FWENC2DSCONVL openmrs_entity="concept" openmrs_entity_id="143388AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
+                <FWENC2DSCONVL openmrs_entity="concept" openmrs_entity_id="1729AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" openmrs_entity_parent="143388AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
                 <conv_note/>
                 <FWENC2DELCOMP/>
                 <last_note/>

@@ -27,8 +27,6 @@ public class Child extends MotechBaseDataObject {
 	@JsonProperty
 	private String END;
 	@JsonProperty
-	private String relationalid;
-	@JsonProperty
     private String isClosed;
 	@JsonProperty
 	private Map<String, String> details;
@@ -46,10 +44,12 @@ public class Child extends MotechBaseDataObject {
 		enccVisitTwo = new HashMap<String, String>();
 		enccVisitThree = new HashMap<String, String>();
 	}
+	
 	public Child withCaseId(String caseId) {
 		this.caseId = caseId;
 		return this;
 	}
+	
 	public Child withINSTANCEID(String INSTANCEID) {
 		this.INSTANCEID = INSTANCEID;
 		return this;
@@ -79,10 +79,10 @@ public class Child extends MotechBaseDataObject {
 		this.END = END;
 		return this;
 	}
-	public Child withRelationalId(String relationalid) {
-		this.relationalid = relationalid;
-		return this;
-	}
+	public Child withDetails(Map<String, String> details) {
+        this.details = new HashMap<>(details);
+        return this;
+    }
 	public Child withENCCVisitOne(Map<String, String> enccVisitOne) {
         this.enccVisitOne = new HashMap<>(enccVisitOne);
         return this;
@@ -125,17 +125,9 @@ public class Child extends MotechBaseDataObject {
 	public String END() {
 		return END;
 	}
-	
-	public String relationalid() {
-		return relationalid;
-	}
 
 	private String getCaseId() {
 		return caseId;
-	}
-
-	public String getRelationalId() {
-		return relationalid;
 	}
 
 	public Map<String, String> details() {

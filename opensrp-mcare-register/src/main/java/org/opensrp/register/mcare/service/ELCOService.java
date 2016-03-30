@@ -92,7 +92,6 @@ public class ELCOService {
 			Elco elco = allEcos.findByCaseId(elcoFields.get(ID))
 					.withINSTANCEID(submission.instanceId())
 					.withPROVIDERID(submission.anmId())
-					//.withTODAY(submission.getField(REFERENCE_DATE))
 					.withFWWOMUPAZILLA(elcoFields.get(FW_WOMUPAZILLA).replace("+", " "));
 			
 			addDetailsToElco(submission, subFormData, elco);
@@ -137,7 +136,6 @@ public class ELCOService {
 
 			houseHold.withPROVIDERID(submission.anmId());
 			houseHold.withINSTANCEID(submission.instanceId());
-			//houseHold.withTODAY(submission.getField(REFERENCE_DATE));
 			houseHold.withFWUPAZILLA(submission.getField(FW_UPAZILLA).replace("+", " "));
 			
 			houseHold.details().put(existing_ELCO, submission.getField(existing_ELCO));		
@@ -175,6 +173,8 @@ public class ELCOService {
     	elco.details().put(relationalid, subFormData.instances().get(0).get(relationalid));
     	elco.details().put(FW_DISPLAY_AGE, subFormData.instances().get(0).get(FW_DISPLAY_AGE));	
     	elco.details().put(REFERENCE_DATE, submission.getField(REFERENCE_DATE));
+    	elco.details().put(START_DATE, submission.getField(START_DATE));		
+    	elco.details().put(END_DATE, submission.getField(END_DATE));
     	elco.details().put(received_time,format.format(today).toString());
 	}
 	

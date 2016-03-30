@@ -279,8 +279,8 @@ public class AllConstants {
     	public static final String FWBPC1DISPLAYTEXT12 ="FWBPC1DISPLAYTEXT12";
     	public static final String FWBPC1DISPLAYTEXT13 ="FWBPC1DISPLAYTEXT13";
     	public static final String FWANC1HEAD="FWANC1HEAD";
-
     	public static final String mauza ="mauza";
+    	public static final String mother_mauza ="mother_mauza";
     	public static final String FWVG ="FWVG";
     	public static final String FWHR_PSR ="FWHR_PSR";
     	public static final String FWHRP ="FWHRP";
@@ -304,7 +304,7 @@ public class AllConstants {
     	public static final String user_type ="user_type";
     	public static final String external_user_ID ="external_user_ID";
     	public static final String relationalid ="relationalid";
-    	public static final String FWWOMVALID = "FWWOMVALID";
+    	public static final String mother_valid = "mother_valid";
     	
     }
     

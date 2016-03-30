@@ -87,7 +87,7 @@
       <FWHR_ANC1 openmrs_entity="concept" openmrs_entity_id="163091AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
       <FWFLAGVALUE openmrs_entity="concept" openmrs_entity_id="163093AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
       <FWSORTVALUE/>
-      <user_type openmrs_entity="concept" openmrs_entity_id="163095AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA">FWA</user_type>
+      <user_type openmrs_entity="concept" openmrs_entity_id="163229AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA">FWA</user_type>
       <external_user_ID openmrs_entity="concept" openmrs_entity_id="163161AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
       <anc1_current_formStatus/>
       <relationalid/>

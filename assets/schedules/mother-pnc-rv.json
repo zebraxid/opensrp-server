@@ -27,7 +27,7 @@
                     "window": "max",
                     "offset": ["2 Days"],
                     "interval": ["1 Day"],
-                    "count": "1"
+                    "count": "0"
                 }
                 
             ]
@@ -57,7 +57,7 @@
                     "window": "max",
                     "offset": ["6 Days"],
                     "interval": ["1 Day"],
-                    "count": "1"
+                    "count": "0"
                 }                            
             ]
         },
@@ -86,7 +86,7 @@
                     "window": "max",
                     "offset": ["9 Days"],
                     "interval": ["1 Day"],
-                    "count": "1"
+                    "count": "0"
                 }                 
             ]
         }

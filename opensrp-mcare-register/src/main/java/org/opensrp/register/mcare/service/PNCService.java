@@ -15,9 +15,11 @@ import static org.opensrp.common.AllConstants.PNCVisitThreeFields.*;
 import static org.opensrp.common.AllConstants.DeliveryOutcomeFields.CHILD_REGISTRATION_SUB_FORM_NAME;
 import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_GOBHHID;
 import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_WOMFNAME;
-import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_WOMUPAZILLA;
 import static org.opensrp.common.util.EasyMap.create;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Map;
 
 import org.joda.time.DateTime;
@@ -111,6 +113,14 @@ public class PNCService {
 						.withSTART(submission.getField(START_DATE))
 						.withEND(submission.getField(END_DATE))
 						.setIsClosed(false);
+					
+					SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			    	Date today = Calendar.getInstance().getTime();    	
+
+			    	child.details().put(relationalid, childFields.get(relationalid));
+			    	child.details().put(FWBNFGEN, childFields.get(FWBNFGEN));
+			    	child.details().put(FWBNFCHLDVITSTS, childFields.get(FWBNFCHLDVITSTS));	
+			    	child.details().put(received_time,format.format(today).toString());
 
 					allChilds.update(child);
 					childSchedulesService.enrollENCCForChild(childFields.get(ID),  LocalDate.parse(referenceDate));	
