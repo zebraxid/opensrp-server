@@ -3,6 +3,7 @@ package org.opensrp.register.mcare.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.opensrp.register.mcare.ANCRegister;
 import org.opensrp.register.mcare.ANCRegisterEntry;
 import org.opensrp.register.mcare.domain.Mother;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ANCRegisterService {
 
 	private final AllMothers allMothers;

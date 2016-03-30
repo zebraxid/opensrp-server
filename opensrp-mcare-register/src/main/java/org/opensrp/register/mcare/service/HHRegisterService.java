@@ -4,15 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.opensrp.register.mcare.HHRegister;
 import org.opensrp.register.mcare.HHRegisterEntry;
 import org.opensrp.register.mcare.domain.HouseHold;
 import org.opensrp.register.mcare.repository.AllHouseHolds;
+
 import static org.opensrp.common.AllConstants.HHRegistrationFields.*;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class HHRegisterService {
 	
 	private final AllHouseHolds allHouseHolds;

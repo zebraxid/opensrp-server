@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.opensrp.register.mcare.ELCORegister;
 import org.opensrp.register.mcare.ELCORegisterEntry;
 import org.opensrp.register.mcare.domain.Elco;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ELCORegisterService {
 	
 	private final AllElcos allElcos;
