@@ -41,6 +41,11 @@ public class AllHouseHolds extends MotechBaseRepository<HouseHold> {
 		return db.queryView(createQuery("all_households").includeDocs(true),
 				HouseHold.class);
 	}
+	@View(name = "get_all_household", map = "function(doc) { if (doc.type === 'HouseHold' && doc.FWNHHHGPS) { emit(doc._id, [doc.FWNHHHGPS.split(' ')[0],doc.FWNHHHGPS.split(' ')[1],doc.ELCO,doc.FWMAUZA_PARA,doc.FWDIVISION,doc.FWDISTRICT,doc.FWUPAZILLA,doc.FWUNION,doc.FWWARD]); } }")
+	public List<HouseHold> AllHouseHolds() {
+		return db.queryView(createQuery("get_all_household").includeDocs(true),
+				HouseHold.class);
+	}
 
 	@View(name = "all_open_hhs_for_provider", map = "function(doc) { if (doc.type === 'HouseHold' && doc.PROVIDERID) { emit(doc.PROVIDERID); } }")
 	public List<HouseHold> allOpenHHsForProvider(String providerId) {
