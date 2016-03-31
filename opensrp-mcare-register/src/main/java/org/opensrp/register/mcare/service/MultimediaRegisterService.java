@@ -38,6 +38,12 @@ public class MultimediaRegisterService {
 		this.multimediaRepository = multimediaRepository;
 	}
 	
+	/**
+	 * The getMultimedia function retrieves Multimedia for all data stored in Elco registry and Household registry
+	 * @param void
+	 * @return void
+	 * @throws No Exception
+	 */
 	public void getMultimedia()
 	{
 		
@@ -125,6 +131,12 @@ public class MultimediaRegisterService {
 		}
 	}
 	
+	/**
+	 * The saveMultimediaFileToRegistry function stores Multimedia file instantly in Elco registry or Household registry
+	 * @param Multimedia
+	 * @return void
+	 * @throws No Exception
+	 */
 	public void saveMultimediaFileToRegistry(Multimedia multimediaFile) {
 		HouseHold hh = allHouseHolds.findByCaseId(multimediaFile.getCaseId());
 		if(hh != null){
