@@ -3,6 +3,9 @@ package org.opensrp.web.controller;
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
+import java.util.List;
+
+import org.opensrp.dto.CountServiceDTO;
 import org.opensrp.dto.register.ANC_RegisterDTO;
 import org.opensrp.dto.register.ELCORegisterDTO;
 import org.opensrp.dto.register.HHRegisterDTO;
@@ -134,6 +137,13 @@ public class RegisterController {
     {
     	multimediaRegisterService.getMultimedia();
     	return new ResponseEntity<>("Welcome to multimedia service", HttpStatus.OK);
+    }
+    
+    @RequestMapping(method = RequestMethod.GET, value = "/registers/household-infosmation")
+    @ResponseBody
+    public ResponseEntity<List<CountServiceDTO>>  getHouseHoldInformation(@RequestParam("anm-id") String provider){
+    	hhRegisterService.getHHCountInformation(provider);
+    	return new ResponseEntity<>(hhRegisterService.getHHCountInformation(provider), HttpStatus.OK);
     }
     
 /*
