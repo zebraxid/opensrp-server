@@ -117,8 +117,7 @@ public class ELCOService {
 					
 					logger.info("Variable not found which is defined in rule defination for elco");
 				}
-			}
-		
+			}	
 		}
 
 		if (submission.formName().equalsIgnoreCase(ELCO_REGISTRATION)) {
