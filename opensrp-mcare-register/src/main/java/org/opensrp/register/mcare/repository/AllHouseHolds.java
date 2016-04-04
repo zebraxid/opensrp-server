@@ -47,7 +47,7 @@ public class AllHouseHolds extends MotechBaseRepository<HouseHold> {
 				HouseHold.class);
 	}
 
-	@View(name = "all_open_hhs_for_provider", map = "function(doc) { if (doc.type === 'HouseHold' && doc.PROVIDERID) { emit(doc._id, [doc.FWELIGIBLE,doc.details.received_time,doc.details.FWPSRPREGSTS,doc._id]); } }")
+	@View(name = "all_open_hhs_for_provider", map = "function(doc) { if (doc.type === 'HouseHold' && doc.PROVIDERID) { emit(doc.PROVIDERID,doc._id ); } }")
 	public List<HouseHold> allOpenHHsForProvider(String providerId) {
 		return db.queryView(
 				createQuery("all_open_hhs_for_provider").key(providerId)

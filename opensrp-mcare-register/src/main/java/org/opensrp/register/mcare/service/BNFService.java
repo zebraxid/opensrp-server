@@ -16,6 +16,9 @@ import static org.opensrp.common.AllConstants.HHRegistrationFields.MOTHER_REFERE
 import static org.opensrp.common.util.EasyMap.create;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_BNF;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Map;
 
 import org.joda.time.LocalDate;
@@ -85,7 +88,8 @@ public class BNFService {
 					submission.entityId()));
 			return;
 		}
-		
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date today = Calendar.getInstance().getTime();
 		Map<String, String> bnfVisit = create(FWBNFDATE, submission.getField(FWBNFDATE))
 											.put(bnf_current_formStatus, submission.getField(bnf_current_formStatus))
 											.put(FWCONFIRMATION, submission.getField(FWCONFIRMATION))
@@ -101,6 +105,7 @@ public class BNFService {
 											.put(FWBNFSMSRSN, submission.getField(FWBNFSMSRSN))
 											.put(user_type, submission.getField(user_type))
 											.put(external_user_ID, submission.getField(external_user_ID))
+											.put("received_time", format.format(today).toString())
 											.put(relationalid, submission.getField(relationalid)).map();
 		
 		//mother.withTODAY(submission.getField(REFERENCE_DATE));
@@ -116,10 +121,12 @@ public class BNFService {
 			scheduleLogService.closeScheduleAndScheduleLog( submission.entityId(),submission.instanceId(), SCHEDULE_BNF,submission.anmId());
 			
 		}else if(submission.getField(FWBNFSTS).equalsIgnoreCase(STS_GONE) || submission.getField(FWBNFSTS).equalsIgnoreCase(STS_WD) ){
+			pncService.deleteBlankChild(submission);
 			bnfSchedulesService.unEnrollBNFSchedule(submission.entityId(), submission.anmId());
 			pncService.closeMother(mother);
 			scheduleLogService.closeScheduleAndScheduleLog( submission.entityId(),submission.instanceId(), SCHEDULE_BNF,submission.anmId());
 		}else{
+			pncService.deleteBlankChild(submission);
 			logger.info("Else Condition From BNF");
 			bnfSchedulesService.enrollIntoMilestoneOfBNF(submission.entityId(),
 		            submission.getField(REFERENCE_DATE),submission.anmId(),submission.instanceId());

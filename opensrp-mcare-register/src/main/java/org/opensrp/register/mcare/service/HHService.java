@@ -53,7 +53,7 @@ public class HHService {
 	private AllHouseHolds allHouseHolds;
 	private ELCOService elcoService;
 	private HHSchedulesService hhSchedulesService;
-	private ScheduleLogService scheduleLogService;
+	private ScheduleLogService scheduleLogService;	 
 	@Autowired
 	public HHService(AllHouseHolds allHouseHolds, ELCOService elcoService,
 			HHSchedulesService hhSchedulesService,ScheduleLogService scheduleLogService) {
@@ -61,8 +61,7 @@ public class HHService {
 		this.elcoService = elcoService;
 		this.hhSchedulesService = hhSchedulesService;	
 		this.scheduleLogService = scheduleLogService;
-	}
-
+	}	
 	public void registerHouseHold(FormSubmission submission) {
 
 		HouseHold houseHold = allHouseHolds.findByCaseId(submission.entityId());
@@ -73,20 +72,18 @@ public class HHService {
 					submission.entityId()));
 			return;
 		}
-		
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		Date today = Calendar.getInstance().getTime();
 		SubFormData subFormData =null;
-		
-		
 		subFormData = submission.getSubFormByName(ELCO_REGISTRATION_SUB_FORM_NAME);		
-		
 		addDetailsToHH(submission, subFormData, houseHold);
 		
 		addELCODetailsToHH(submission, subFormData, houseHold);
-
+		
 		houseHold.withPROVIDERID(submission.anmId());
 		houseHold.withINSTANCEID(submission.instanceId());
 		houseHold.withFWUPAZILLA(submission.getField(FW_UPAZILLA).replace("+", " "));
-	
+		houseHold.withSUBMISSIONDATE(format.format(today).toString());
 		allHouseHolds.update(houseHold);
 			
 		String cencusCondition =  scheduleLogService.getScheduleRuleForCensus("HouseHold Form");
@@ -104,7 +101,8 @@ public class HHService {
 	
 	private void addDetailsToHH(FormSubmission submission,
 			SubFormData subFormData, HouseHold houseHold) {
-			
+						SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+						Date today = Calendar.getInstance().getTime();
 						houseHold.details().put(existing_location, submission.getField(existing_location));
 						houseHold.details().put(existing_Country, submission.getField(existing_Country));		
 						houseHold.details().put(existing_Division, submission.getField(existing_Division));
@@ -114,10 +112,7 @@ public class HHService {
 						houseHold.details().put(existing_Ward, submission.getField(existing_Ward));
 						houseHold.details().put(existing_Subunit, submission.getField(existing_Subunit));
 						houseHold.details().put(existing_Mauzapara, submission.getField(existing_Mauzapara));
-						
-						SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-				    	Date today = Calendar.getInstance().getTime();    	
-				    	houseHold.details().put(received_time,format.format(today).toString());
+						houseHold.details().put(received_time,format.format(today).toString());
 				    	houseHold.details().put(REFERENCE_DATE, submission.getField(REFERENCE_DATE));
 						houseHold.details().put(START_DATE, submission.getField(START_DATE));		
 						houseHold.details().put(END_DATE, submission.getField(END_DATE));
@@ -126,7 +121,8 @@ public class HHService {
 
 	private void addELCODetailsToHH(FormSubmission submission,
 			SubFormData subFormData, HouseHold houseHold) {
-
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date today = Calendar.getInstance().getTime();
 		for (Map<String, String> elcoFields : subFormData.instances()) {
 
 			Map<String, String> elco = create(ID, elcoFields.get(ID))
@@ -173,6 +169,7 @@ public class HHService {
 					.put(FW_WOMGOBHHID, elcoFields.get(FW_WOMGOBHHID))
 					.put(FW_WOMGPS, elcoFields.get(FW_WOMGPS))
 					.put(profileImagePath, "")
+					.put("received_time", format.format(today).toString())
 					.put(nidImagePath, "").map();
  
 			

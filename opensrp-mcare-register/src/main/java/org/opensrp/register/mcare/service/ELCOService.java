@@ -80,18 +80,19 @@ public class ELCOService {
 		this.allActions = allActions;
 		
 	}
-
+	
 	public void registerELCO(FormSubmission submission) {
 		
 		SubFormData subFormData = submission
-				.getSubFormByName(ELCO_REGISTRATION_SUB_FORM_NAME);
-
-		
+				.getSubFormByName(ELCO_REGISTRATION_SUB_FORM_NAME);		
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+    	Date today = Calendar.getInstance().getTime();   
 		for (Map<String, String> elcoFields : subFormData.instances()) {
 			
 			Elco elco = allEcos.findByCaseId(elcoFields.get(ID))
 					.withINSTANCEID(submission.instanceId())
 					.withPROVIDERID(submission.anmId())
+					.withSUBMISSIONDATE(format.format(today).toString())
 					.withFWWOMUPAZILLA(elcoFields.get(FW_WOMUPAZILLA).replace("+", " "));
 			
 			addDetailsToElco(submission, subFormData, elco);
@@ -166,10 +167,8 @@ public class ELCOService {
 	
 	private void addDetailsToElco(FormSubmission submission,
 			SubFormData subFormData, Elco elco) {
-		
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    	Date today = Calendar.getInstance().getTime();    	
-
+		Date today = Calendar.getInstance().getTime();
     	elco.details().put(relationalid, subFormData.instances().get(0).get(relationalid));
     	elco.details().put(FW_DISPLAY_AGE, subFormData.instances().get(0).get(FW_DISPLAY_AGE));	
     	elco.details().put(REFERENCE_DATE, submission.getField(REFERENCE_DATE));
@@ -180,7 +179,9 @@ public class ELCOService {
 	
 	private void addELCODetailsToHH(FormSubmission submission,
 			SubFormData subFormData, HouseHold houseHold) {
-
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date today = Calendar.getInstance().getTime();
+		
 		for (Map<String, String> elcoFields : subFormData.instances()) {
 
 			Map<String, String> elco = create(ID, elcoFields.get(ID))
@@ -229,6 +230,7 @@ public class ELCOService {
 					.put(FW_WOMGOBHHID, elcoFields.get(FW_WOMGOBHHID))
 					.put(FW_WOMGPS, elcoFields.get(FW_WOMGPS))
 					.put(profileImagePath, "")
+					.put("received_time", format.format(today).toString())
 					.put(nidImagePath, "").map();
 			
 			houseHold.ELCODETAILS().add(elco);		
@@ -239,14 +241,15 @@ public class ELCOService {
 	public void addPSRFDetailsToELCO(FormSubmission submission) {
 
 		    Elco elco = allEcos.findByCaseId(submission.entityId());
-		    
+		    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			Date today = Calendar.getInstance().getTime();
 		    if (elco == null) {
 				logger.warn(format(
 						"Failed to handle PSRF form as there is no ELCO registered with ID: {0}",
 						submission.entityId()));
 				return;
 			}
-		 	    		   
+		    	   
 			Map<String, String> psrf = create(FW_PSRDATE, submission.getField(FW_PSRDATE))
 					.put(FW_CONFIRMATION, submission.getField(FW_CONFIRMATION))
 					.put(FW_PSRSTS, submission.getField(FW_PSRSTS))
@@ -287,6 +290,7 @@ public class ELCOService {
 					.put(ELCO, submission.getField(ELCO))
 					.put(FW_ELIGIBLE, submission.getField(FW_ELIGIBLE))
 					.put(current_formStatus, submission.getField(current_formStatus))
+					.put("received_time", format.format(today).toString())
 					.map();
 			
 			elco.PSRFDETAILS().add(psrf);	
@@ -316,9 +320,11 @@ public class ELCOService {
 	           }
 	        	
 			}else if(submission.getField(FW_PSRSTS).equalsIgnoreCase("02") || (submission.getField(FW_PSRSTS).equalsIgnoreCase("01"))){
+				ancService.deleteBlankMother(submission);
 				elcoScheduleService.enrollIntoMilestoneOfPSRF(submission.entityId(),
 	            submission.getField(REFERENCE_DATE),submission.anmId(),submission.instanceId());
-			}else{				
+			}else{	
+				ancService.deleteBlankMother(submission);
 				elcoScheduleService.unEnrollFromScheduleOfPSRF(submission.entityId(), submission.anmId(), "");
 				try{
 					List<Action> beforeNewActions = allActions.findAlertByANMIdEntityIdScheduleName(submission.anmId(), submission.entityId(), ELCO_SCHEDULE_PSRF);

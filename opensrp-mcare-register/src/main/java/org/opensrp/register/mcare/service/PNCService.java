@@ -63,7 +63,7 @@ public class PNCService {
 		this.pncSchedulesService = pncSchedulesService;
 		this.childSchedulesService = childSchedulesService;
 	}
-
+	
 	public void deliveryOutcome(FormSubmission submission) {
 		String pattern = "yyyy-MM-dd";
 		//DateTimeFormatter formatter = DateTimeFormat.forPattern(pattern);
@@ -103,7 +103,8 @@ public class PNCService {
 						+ mother.caseId());
 								
 				SubFormData subFormData = submission.getSubFormByName(CHILD_REGISTRATION_SUB_FORM_NAME);
-												
+				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+				Date today = Calendar.getInstance().getTime();								
 				for (Map<String, String> childFields : subFormData.instances()) {
 					
 					Child child = allChilds.findByCaseId(childFields.get(ID))
@@ -112,11 +113,9 @@ public class PNCService {
 						.withTODAY(submission.getField(REFERENCE_DATE))
 						.withSTART(submission.getField(START_DATE))
 						.withEND(submission.getField(END_DATE))
-						.setIsClosed(false);
+						.withSUBMISSIONDATE(format.format(today).toString())
+						.setIsClosed(false);					
 					
-					SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-			    	Date today = Calendar.getInstance().getTime();    	
-
 			    	child.details().put(relationalid, childFields.get(relationalid));
 			    	child.details().put(FWBNFGEN, childFields.get(FWBNFGEN));
 			    	child.details().put(FWBNFCHLDVITSTS, childFields.get(FWBNFCHLDVITSTS));	
@@ -147,7 +146,8 @@ public class PNCService {
 					submission.entityId()));
 			return;
 		}
-
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date today = Calendar.getInstance().getTime();
 		Map<String, String> pncVisitOne = create(FWPNC1DATE,
 				submission.getField(FWPNC1DATE))
 				.put(FWCONFIRMATION, submission.getField(FWCONFIRMATION))
@@ -174,6 +174,7 @@ public class PNCService {
 				.put(relationalid, submission.getField(relationalid))
 				.put(user_type, submission.getField(user_type))
 				.put(external_user_ID, submission.getField(external_user_ID))
+				.put("received_time", format.format(today).toString())
 				.map();
 
 		mother.withPNCVisitOne(pncVisitOne);
@@ -190,7 +191,8 @@ public class PNCService {
 					submission.entityId()));
 			return;
 		}
-
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date today = Calendar.getInstance().getTime();
 		Map<String, String> pncVisitTwo = create(FWPNC2DATE,
 				submission.getField(FWPNC2DATE))
 				.put(FWCONFIRMATION, submission.getField(FWCONFIRMATION))
@@ -216,6 +218,7 @@ public class PNCService {
 				.put(relationalid, submission.getField(relationalid))
 				.put(user_type, submission.getField(user_type))
 				.put(external_user_ID, submission.getField(external_user_ID))
+				.put("received_time", format.format(today).toString())
 				.map();
 
 		mother.withPNCVisitTwo(pncVisitTwo);
@@ -234,7 +237,8 @@ public class PNCService {
 					submission.entityId()));
 			return;
 		}
-
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date today = Calendar.getInstance().getTime();
 		Map<String, String> pncVisitThree = create(FWPNC3DATE,
 				submission.getField(FWPNC3DATE))
 				.put(FWCONFIRMATION, submission.getField(FWCONFIRMATION))
@@ -260,6 +264,7 @@ public class PNCService {
 				.put(relationalid, submission.getField(relationalid))
 				.put(user_type, submission.getField(user_type))
 				.put(external_user_ID, submission.getField(external_user_ID))
+				.put("received_time", format.format(today).toString())
 				.map();
 
 		mother.withPNCVisitThree(pncVisitThree);
@@ -291,5 +296,14 @@ public class PNCService {
 		logger.info("Closing EC case along with PNC case. Ec Id: "+ elco.caseId());
 		elco.setIsClosed(true);
 		allElcos.update(elco);
+	}
+	
+	public void deleteBlankChild(FormSubmission submission){
+		SubFormData subFormData = submission.getSubFormByName(CHILD_REGISTRATION_SUB_FORM_NAME);
+		for (Map<String, String> childFields : subFormData.instances()) {			
+			Child child = allChilds.findByCaseId(childFields.get(ID));
+			allChilds.remove(child);
+		}
+		
 	}
 }
