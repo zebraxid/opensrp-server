@@ -37,6 +37,7 @@ import org.opensrp.register.mcare.repository.AllMothers;
 import org.opensrp.register.mcare.service.scheduling.ELCOScheduleService;
 import org.opensrp.register.mcare.service.scheduling.ChildSchedulesService;
 import org.opensrp.register.mcare.service.scheduling.PNCSchedulesService;
+import org.opensrp.register.mcare.service.scheduling.ScheduleLogService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,15 +54,17 @@ public class PNCService {
 	private ELCOScheduleService elcoSchedulesService;
 	private PNCSchedulesService pncSchedulesService;
 	private ChildSchedulesService childSchedulesService;
+	private ScheduleLogService scheduleLogService;
 
 	@Autowired
-	public PNCService(AllElcos allElcos, AllMothers allMothers, AllChilds allChilds, ELCOScheduleService elcoSchedulesService, PNCSchedulesService pncSchedulesService, ChildSchedulesService childSchedulesService) {
+	public PNCService(AllElcos allElcos, AllMothers allMothers, AllChilds allChilds, ELCOScheduleService elcoSchedulesService, PNCSchedulesService pncSchedulesService, ChildSchedulesService childSchedulesService,ScheduleLogService scheduleLogService) {
 		this.allElcos = allElcos;
 		this.allMothers = allMothers;
 		this.allChilds = allChilds;
 		this.elcoSchedulesService = elcoSchedulesService;
 		this.pncSchedulesService = pncSchedulesService;
 		this.childSchedulesService = childSchedulesService;
+		this.scheduleLogService = scheduleLogService;
 	}
 	
 	public void deliveryOutcome(FormSubmission submission) {
@@ -104,6 +107,7 @@ public class PNCService {
 								
 				SubFormData subFormData = submission.getSubFormByName(CHILD_REGISTRATION_SUB_FORM_NAME);
 				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+				SimpleDateFormat formats = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 				Date today = Calendar.getInstance().getTime();								
 				for (Map<String, String> childFields : subFormData.instances()) {
 					
@@ -113,13 +117,13 @@ public class PNCService {
 						.withTODAY(submission.getField(REFERENCE_DATE))
 						.withSTART(submission.getField(START_DATE))
 						.withEND(submission.getField(END_DATE))
-						.withSUBMISSIONDATE(format.format(today).toString())
+						.withSUBMISSIONDATE(scheduleLogService.getTimeStampMills())
 						.setIsClosed(false);					
 					
 			    	child.details().put(relationalid, childFields.get(relationalid));
 			    	child.details().put(FWBNFGEN, childFields.get(FWBNFGEN));
 			    	child.details().put(FWBNFCHLDVITSTS, childFields.get(FWBNFCHLDVITSTS));	
-			    	child.details().put(received_time,format.format(today).toString());
+			    	child.details().put(received_time,formats.format(today).toString());
 
 					allChilds.update(child);
 					childSchedulesService.enrollENCCForChild(childFields.get(ID),  LocalDate.parse(referenceDate));	

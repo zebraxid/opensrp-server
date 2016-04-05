@@ -84,15 +84,14 @@ public class ELCOService {
 	public void registerELCO(FormSubmission submission) {
 		
 		SubFormData subFormData = submission
-				.getSubFormByName(ELCO_REGISTRATION_SUB_FORM_NAME);		
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-    	Date today = Calendar.getInstance().getTime();   
+				.getSubFormByName(ELCO_REGISTRATION_SUB_FORM_NAME);	
+		  
 		for (Map<String, String> elcoFields : subFormData.instances()) {
 			
 			Elco elco = allEcos.findByCaseId(elcoFields.get(ID))
 					.withINSTANCEID(submission.instanceId())
 					.withPROVIDERID(submission.anmId())
-					.withSUBMISSIONDATE(format.format(today).toString())
+					.withSUBMISSIONDATE(scheduleLogService.getTimeStampMills())
 					.withFWWOMUPAZILLA(elcoFields.get(FW_WOMUPAZILLA).replace("+", " "));
 			
 			addDetailsToElco(submission, subFormData, elco);

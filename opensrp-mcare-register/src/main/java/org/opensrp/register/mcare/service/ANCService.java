@@ -28,6 +28,7 @@ import org.opensrp.register.mcare.domain.Mother;
 import org.opensrp.register.mcare.repository.AllElcos;
 import org.opensrp.register.mcare.repository.AllMothers;
 import org.opensrp.register.mcare.service.scheduling.ANCSchedulesService;
+import org.opensrp.register.mcare.service.scheduling.ScheduleLogService;
 import org.opensrp.scheduler.service.ActionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,23 +44,22 @@ public class ANCService {
 	private AllMothers allMothers;
 	private ANCSchedulesService ancSchedulesService;
 	private ActionService actionService;
-
+	private ScheduleLogService scheduleLogService;
 	@Autowired
 	public ANCService(AllElcos allElcos, AllMothers allMothers,
-			ANCSchedulesService ancSchedulesService, ActionService actionService) {
+			ANCSchedulesService ancSchedulesService, ActionService actionService,ScheduleLogService scheduleLogService) {
 		this.allElcos = allElcos;
 		this.allMothers = allMothers;
 		this.ancSchedulesService = ancSchedulesService;
 		this.actionService = actionService;
+		this.scheduleLogService = scheduleLogService;
 	}	
 	public void registerANC(FormSubmission submission) {
 
 		String motherId = submission
 				.getField(AllConstants.ANCFormFields.MCARE_MOTHER_ID);
 
-		Mother mother = allMothers.findByCaseId(motherId);
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-		Date today = Calendar.getInstance().getTime();
+		Mother mother = allMothers.findByCaseId(motherId);		
 		if (!allElcos.exists(submission.entityId())) {
 			logger.warn(format(
 					"Found mother without registered eligible couple. Ignoring: {0} for mother with id: {1} for ANM: {2}",
@@ -69,7 +69,7 @@ public class ANCService {
 
 		mother.withPROVIDERID(submission.anmId());
 		mother.withINSTANCEID(submission.instanceId());		
-		mother.withSUBMISSIONDATE(format.format(today).toString());
+		mother.withSUBMISSIONDATE(scheduleLogService.getTimeStampMills());
 		addDetailsToMother(submission, mother);
 		
 		allMothers.update(mother);

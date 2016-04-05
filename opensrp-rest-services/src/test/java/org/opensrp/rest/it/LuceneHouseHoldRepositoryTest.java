@@ -5,6 +5,12 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 import java.io.IOException;
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.UUID;
 
 import org.codehaus.jackson.annotate.JsonProperty;
@@ -100,11 +106,23 @@ public class LuceneHouseHoldRepositoryTest {
     }
     
     @Test 
-    public void testInit() { 
-    	/*String makeQueryString ="PROVIDERID:opensrp" + " AND " + "FWUPAZILLA:SADULLAPUR" + " AND " + "user_type:FWA"+ " AND details.today:[2014-02-01 TO 2016-03-30]" ;
-        LuceneResult result = repo.findDocsByProvider(makeQueryString);
+    public void testInit() throws ParseException { 
+    	//String makeQueryString ="PROVIDERID:proshanto" + " AND " + "FWUPAZILLA:GAIBANDHA SADAR" + " AND " + "user_type:FWA"+ " AND SUBMISSIONDATE:[2014-02-01 TO 2017-03-30]" ;
+    	
+    	DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    	Date today = Calendar.getInstance().getTime();
+    	Date dates = dateFormat.parse(dateFormat.format(today));
+    	Date date = dateFormat.parse("2016-04-5");
+    	long start = date.getTime();
+    	long end = dates.getTime();
+    	System.out.println("ddd:"+start);
+    	String makeQueryString ="PROVIDERID:proshanto" + " AND " + "user_type:FWA"+ " AND SUBMISSIONDATE:["+start+" TO "+end+"]" ;
+    	LuceneResult result = repo.findDocsByProvider(makeQueryString);
+    	System.out.println(result.toString());
         System.out.println(result.getRows().size());
+       
+		
         assertNotNull("Expecting a non null result", result); 
-        assertTrue("Should only have one result", result.getRows().size() >=0); */
+        assertTrue("Should only have one result", result.getRows().size() >=0); 
     } 
 }

@@ -37,7 +37,7 @@ public class Child extends MotechBaseDataObject {
 	@JsonProperty
 	private Map<String, String> enccVisitThree;
 	@JsonProperty
-	private String SUBMISSIONDATE;
+	private long SUBMISSIONDATE;
 	public Child()
 	{
 		details = new HashMap<String, String>();
@@ -96,7 +96,7 @@ public class Child extends MotechBaseDataObject {
         this.enccVisitThree = new HashMap<>(enccVisitThree);
         return this;
     }
-	public Child withSUBMISSIONDATE(String SUBMISSIONDATE){
+	public Child withSUBMISSIONDATE(long SUBMISSIONDATE){
 		this.SUBMISSIONDATE = SUBMISSIONDATE;
 		return this;
 	}
@@ -151,7 +151,7 @@ public class Child extends MotechBaseDataObject {
 	public Map<String, String> enccVisitThree() {
 		return enccVisitThree;
 	}
-	public String SUBMISSIONDATE(){
+	public long SUBMISSIONDATE(){
 		return SUBMISSIONDATE;
 	}	
 	@Override

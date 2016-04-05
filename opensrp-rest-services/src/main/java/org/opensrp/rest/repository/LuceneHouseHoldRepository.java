@@ -41,6 +41,7 @@ import com.github.ldriscoll.ektorplucene.designdocument.annotation.Index;
 	    		" doc.add(rec.FWHOHGENDER,{\"field\":\"FWHOHGENDER\", \"store\":\"yes\"});" +
 	    		" doc.add(rec.user_type,{\"field\":\"user_type\", \"store\":\"yes\"});" + 
 	    		" doc.add(rec.FWUPAZILLA,{\"field\":\"FWUPAZILLA\", \"store\":\"yes\"});" + 
+	    		" doc.add(rec.SUBMISSIONDATE,{\"field\":\"SUBMISSIONDATE\", \"store\":\"yes\"});" + 
 	    		" return doc;" +
 	    		"}")
 })

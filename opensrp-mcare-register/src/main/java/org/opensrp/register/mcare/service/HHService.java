@@ -22,6 +22,7 @@ import static org.opensrp.common.AllConstants.PSRFFields.FW_CONFIRMATION;
 import static org.opensrp.common.AllConstants.PSRFFields.FW_PSRDATE;
 import static org.opensrp.common.util.EasyMap.create;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -72,8 +73,6 @@ public class HHService {
 					submission.entityId()));
 			return;
 		}
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-		Date today = Calendar.getInstance().getTime();
 		SubFormData subFormData =null;
 		subFormData = submission.getSubFormByName(ELCO_REGISTRATION_SUB_FORM_NAME);		
 		addDetailsToHH(submission, subFormData, houseHold);
@@ -83,7 +82,7 @@ public class HHService {
 		houseHold.withPROVIDERID(submission.anmId());
 		houseHold.withINSTANCEID(submission.instanceId());
 		houseHold.withFWUPAZILLA(submission.getField(FW_UPAZILLA).replace("+", " "));
-		houseHold.withSUBMISSIONDATE(format.format(today).toString());
+		houseHold.withSUBMISSIONDATE(scheduleLogService.getTimeStampMills());
 		allHouseHolds.update(houseHold);
 			
 		String cencusCondition =  scheduleLogService.getScheduleRuleForCensus("HouseHold Form");

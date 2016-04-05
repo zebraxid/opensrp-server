@@ -129,7 +129,7 @@ public class Elco extends MotechBaseDataObject {
 	@JsonProperty
 	private List<Map<String, String>> PSRFDETAILS;
 	@JsonProperty
-	private String SUBMISSIONDATE;
+	private long SUBMISSIONDATE;
 	public Elco() {
 
 	}
@@ -348,7 +348,7 @@ public class Elco extends MotechBaseDataObject {
 		this.PSRFDETAILS = PSRFDETAILS;
 		return this;
 	}
-	public Elco withSUBMISSIONDATE(String SUBMISSIONDATE){
+	public Elco withSUBMISSIONDATE(long SUBMISSIONDATE){
 		this.SUBMISSIONDATE = SUBMISSIONDATE;
 		return this;
 	}
@@ -528,7 +528,7 @@ public class Elco extends MotechBaseDataObject {
 		}
 		return PSRFDETAILS;
 	}
-	public String SUBMISSIONDATE(){
+	public long SUBMISSIONDATE(){
 		return SUBMISSIONDATE;
 	}
     public Elco setIsClosed(boolean isClosed) {

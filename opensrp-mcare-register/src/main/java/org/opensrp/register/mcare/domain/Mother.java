@@ -83,7 +83,7 @@ public class Mother extends MotechBaseDataObject {
 	@JsonProperty
 	private Map<String, String> pncVisitThree;
 	@JsonProperty
-	private String SUBMISSIONDATE;
+	private long SUBMISSIONDATE;
 	public Mother() {
 
 		this.details = new HashMap<>();
@@ -231,7 +231,7 @@ public class Mother extends MotechBaseDataObject {
         this.pncVisitThree = new HashMap<>(pncVisitThree);
         return this;
     }
-	public Mother withSUBMISSIONDATE(String SUBMISSIONDATE){
+	public Mother withSUBMISSIONDATE(long SUBMISSIONDATE){
 		this.SUBMISSIONDATE = SUBMISSIONDATE;
 		return this;
 	}
@@ -358,7 +358,7 @@ public class Mother extends MotechBaseDataObject {
         this.isClosed = Boolean.toString(isClosed);
         return this;
     }
-    public String SUBMISSIONDATE(){
+    public long SUBMISSIONDATE(){
 		return SUBMISSIONDATE;
 	}
 	@Override
