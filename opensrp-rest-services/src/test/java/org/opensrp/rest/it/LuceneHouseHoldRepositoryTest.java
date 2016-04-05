@@ -115,7 +115,7 @@ public class LuceneHouseHoldRepositoryTest {
     	Date date = dateFormat.parse("2016-04-5");
     	long start = date.getTime();
     	long end = dates.getTime();
-    	System.out.println("ddd:"+start);
+    	System.out.println("ddd:"+end);
     	String makeQueryString ="PROVIDERID:proshanto" + " AND " + "user_type:FWA"+ " AND SUBMISSIONDATE:["+start+" TO "+end+"]" ;
     	LuceneResult result = repo.findDocsByProvider(makeQueryString);
     	System.out.println(result.toString());
