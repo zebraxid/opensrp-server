@@ -19,6 +19,7 @@ import org.opensrp.register.mcare.service.ANCRegisterService;
 import org.opensrp.register.mcare.service.ELCORegisterService;
 import org.opensrp.register.mcare.service.HHRegisterService;
 import org.opensrp.register.mcare.service.MultimediaRegisterService;
+import org.opensrp.service.DataCountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,12 +42,15 @@ public class RegisterController {
 	private HHRegisterMapper hhRegisterMapper;
 	private ANCRegisterMapper ancRegisterMapper;
 	private MultimediaRegisterService multimediaRegisterService;
-	
+	private DataCountService dataCountService;
+	 
 	@Autowired
 	public RegisterController(ELCORegisterService ecRegisterService,
 			HHRegisterService hhRegisterService, ELCORegisterMapper ecRegisterMapper,
 			HHRegisterMapper hhRegisterMapper,ANCRegisterService ancRegisterService,
-			ANCRegisterMapper ancRegisterMapper, MultimediaRegisterService multimediaRegisterService) {
+			ANCRegisterMapper ancRegisterMapper, 
+			MultimediaRegisterService multimediaRegisterService,
+			DataCountService dataCountService) {
 		this.ecRegisterService = ecRegisterService;
 		this.hhRegisterService = hhRegisterService;
 		this.ecRegisterMapper = ecRegisterMapper;
@@ -54,6 +58,7 @@ public class RegisterController {
 		this.ancRegisterService = ancRegisterService;
 		this.ancRegisterMapper = ancRegisterMapper;
 		this.multimediaRegisterService = multimediaRegisterService;
+		this.dataCountService = dataCountService;
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/registers/hh")
@@ -141,9 +146,10 @@ public class RegisterController {
     
     @RequestMapping(method = RequestMethod.GET, value = "/registers/household-infosmation")
     @ResponseBody
-    public ResponseEntity<List<CountServiceDTO>>  getHouseHoldInformation(@RequestParam("anm-id") String provider){
-    	hhRegisterService.getHHCountInformation(provider);
-    	return new ResponseEntity<>(hhRegisterService.getHHCountInformation(provider), HttpStatus.OK);
+    public ResponseEntity<List<CountServiceDTO>>  getHouseHoldInformation(@RequestParam("anm-id") String provider,@RequestParam("start-month") String startMonth,@RequestParam("end-month") String endMonth,
+    		@RequestParam("start-week") String startWeek,@RequestParam("end-week") String endtWeek){
+    	dataCountService.getHHCountInformation(provider,startMonth,endMonth,startWeek,endtWeek);
+    	return new ResponseEntity<>(dataCountService.getHHCountInformation(provider,startMonth,endMonth,startWeek,endtWeek), HttpStatus.OK);
     }
     
 /*

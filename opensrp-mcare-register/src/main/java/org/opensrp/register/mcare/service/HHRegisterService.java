@@ -90,15 +90,6 @@ public class HHRegisterService {
         	hhRegisterEntries.add(hhRegisterEntry);
         }
         return new HHRegister(hhRegisterEntries);
-	}
+	}	
 	
-	public List<CountServiceDTO> getHHCountInformation(String provider){
-		List<CountServiceDTO> commonServiceDTOs = new ArrayList<CountServiceDTO>();
-		CountServiceDTO commonServiceDTO = new CountServiceDTO();
-		commonServiceDTO.householdTotalCount = allHouseHolds.allOpenHHsForProvider(provider).size();
-		logger.info(allHouseHolds.allOpenHHsForProvider(provider).toString());
-		commonServiceDTOs.add(commonServiceDTO);
-		return commonServiceDTOs;
-		
-	}
 }

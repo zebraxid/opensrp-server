@@ -9,27 +9,27 @@ public class CountServiceDTO {
 	@JsonProperty
 	public int householdTotalCount;
 	@JsonProperty
-	private int householdTodayCount;
+	public int householdTodayCount;
 	@JsonProperty
-	private int householdThisWeekCount;
+	public int householdThisWeekCount;
 	@JsonProperty
-	private int householdThisMonthCount;
+	public int householdThisMonthCount;
 	@JsonProperty
-	private int elcoTotalCount;
+	public int elcoTotalCount;
 	@JsonProperty
-	private int elcoTodayCount;
+	public int elcoTodayCount;
 	@JsonProperty
-	private int elcoThisWeekCount;
+	public int elcoThisWeekCount;
 	@JsonProperty
-	private int elcoThisMonthCount;
+	public int elcoThisMonthCount;
 	@JsonProperty
-	private int pwTotalCount;
+	public int pwTotalCount;
 	@JsonProperty
-	private int pwTodayCount;
+	public int pwTodayCount;
 	@JsonProperty
-	private int pwThisWeekCount;
+	public int pwThisWeekCount;
 	@JsonProperty
-	private int pwThisMonthCount;
+	public int pwThisMonthCount;
 	
 	public CountServiceDTO(){
 		
