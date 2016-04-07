@@ -69,7 +69,7 @@ public class AclService {
 	{
 		Role role = allRoles.findByUserName(userName);
 		if(role != null){
-			Acl acl = allAcls.findByRoleName(role.getRoleName());
+			Acl acl = allAcls.findByRoleName(role.getName());
 			if(acl != null){
 				AclDTO aclDTO = new AclDTO()
 				.withRoleName(acl.getRoleName())

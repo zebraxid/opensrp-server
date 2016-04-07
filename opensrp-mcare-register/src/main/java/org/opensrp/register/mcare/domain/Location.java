@@ -12,15 +12,21 @@ import org.ektorp.support.TypeDiscriminator;
 import org.motechproject.model.MotechBaseDataObject;
 import org.opensrp.dto.PrivilegeDTO;
 
-@TypeDiscriminator("doc.type === 'Role'")
-public class Role extends MotechBaseDataObject {
+@TypeDiscriminator("doc.type === 'Location'")
+public class Location extends MotechBaseDataObject {
 	
 	@JsonProperty
 	private String name;
 	@JsonProperty
-	private String status;	
+	private String status;
 	@JsonProperty
-	private List<SimplifiedPrivilege> privileges;
+	private String location_code;
+	@JsonProperty
+	private String location_type;
+	@JsonProperty
+	private SimplifiedLocation parent;
+	@JsonProperty
+	private List<SimplifiedLocation> children;	
 	@JsonProperty
 	private Map<String, String> meta;
 	@JsonProperty
@@ -32,22 +38,34 @@ public class Role extends MotechBaseDataObject {
 	@JsonProperty
 	private String updated_by;
 	
-	public Role(){
+	public Location(){
 		this.created_at = new Date().toString();
 		this.updated_at = new Date().toString();
 		this.created_by = "Admin";
 		this.updated_by = null;
 	}
-	public Role withName(String roleName) {
-		this.name = roleName;
+	public Location withName(String name) {
+		this.name = name;
 		return this;
 	}
-	public Role withStatus(String status) {
+	public Location withStatus(String status) {
 		this.status = status;
 		return this;
 	}
-	public Role withPrivileges(List<SimplifiedPrivilege> privileges){
-		this.privileges = privileges;
+	public Location withParent(SimplifiedLocation parent){
+		this.parent = parent;
+		return this;
+	}
+	public Location withChildren(List<SimplifiedLocation> children){
+		this.children = children;
+		return this;
+	}
+	public Location withLocationType(String locationType){
+		this.location_type = locationType;
+		return this;
+	}
+	public Location withLoactionCode(String locationCode){
+		this.location_code = locationCode;
 		return this;
 	}
 	public String getName() {
@@ -56,8 +74,17 @@ public class Role extends MotechBaseDataObject {
 	public String getStatus() {
 		return status;
 	}
-	public List<SimplifiedPrivilege> getPrivileges(){
-		return privileges;
+	public String getLocationType(){
+		return location_type;
+	}
+	public String getLocationCode(){
+		return location_code;
+	}
+	public SimplifiedLocation getParent(){
+		return parent;
+	}
+	public List<SimplifiedLocation> getChildren(){
+		return children;
 	}
 
 	@Override

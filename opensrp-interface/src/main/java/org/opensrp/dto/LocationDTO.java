@@ -7,24 +7,21 @@ import org.codehaus.jackson.annotate.JsonProperty;
 
 public class LocationDTO {
     @JsonProperty
-    private String sub_center;
+    private String name;
     @JsonProperty
-    private String phc;
-    @JsonProperty
-    private String taluka;
-    @JsonProperty
-    private String district;
-    @JsonProperty
-    private String state;
+    private String id;
 
-    public LocationDTO(String sub_center, String phc, String taluka, String district, String state) {
-        this.state = state;
-        this.district = district;
-        this.taluka = taluka;
-        this.phc = phc;
-        this.sub_center = sub_center;
+    public LocationDTO() {
+	
+	}
+    
+    public String getName(){
+    	return name;
     }
-
+    public String getId(){
+    	return id;
+    }
+    
     @Override
     public boolean equals(Object o) {
         return EqualsBuilder.reflectionEquals(this, o);
