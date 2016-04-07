@@ -144,12 +144,12 @@ public class RegisterController {
     	return new ResponseEntity<>("Welcome to multimedia service", HttpStatus.OK);
     }
     
-    @RequestMapping(method = RequestMethod.GET, value = "/registers/household-infosmation")
+    @RequestMapping(method = RequestMethod.GET, value = "/registers/data-count")
     @ResponseBody
     public ResponseEntity<List<CountServiceDTO>>  getHouseHoldInformation(@RequestParam("anm-id") String provider,@RequestParam("start-month") String startMonth,@RequestParam("end-month") String endMonth,
-    		@RequestParam("start-week") String startWeek,@RequestParam("end-week") String endtWeek){
-    	dataCountService.getHHCountInformation(provider,startMonth,endMonth,startWeek,endtWeek);
-    	return new ResponseEntity<>(dataCountService.getHHCountInformation(provider,startMonth,endMonth,startWeek,endtWeek), HttpStatus.OK);
+    		@RequestParam("start-week") String startWeek,@RequestParam("end-week") String endtWeek,@RequestParam("type") String type){
+    	dataCountService.getHHCountInformation(provider,startMonth,endMonth,startWeek,endtWeek,type);
+    	return new ResponseEntity<>(dataCountService.getHHCountInformation(provider,startMonth,endMonth,startWeek,endtWeek,type), HttpStatus.OK);
     }
     
 /*

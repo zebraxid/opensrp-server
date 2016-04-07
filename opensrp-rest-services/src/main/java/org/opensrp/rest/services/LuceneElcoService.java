@@ -23,6 +23,11 @@ public class LuceneElcoService {
 		this.convertDateStringToTimestampMills = convertDateStringToTimestampMills;
 	}
 	
+	/**
+	 * This method return Elco count as today, this month or this week
+	 * @param start this may be start date of a month or week
+	 * @param end   this may be end date of a month or week
+	 * */
 	public int getElcoCount(String start,String end){
 		if(start.equalsIgnoreCase("")){
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");

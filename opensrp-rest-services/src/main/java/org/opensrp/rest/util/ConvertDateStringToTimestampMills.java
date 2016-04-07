@@ -1,3 +1,6 @@
+/**
+ * @author proshanto
+ * */
 package org.opensrp.rest.util;
 
 import java.text.DateFormat;
@@ -9,6 +12,11 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ConvertDateStringToTimestampMills {
+	
+	/***
+	 * This Method return converted  value of a day as long format
+	 * @param date converted date value as "yyyy-MM-dd" format
+	 * */
 	public long convertDateToTimestampMills(String date){
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");   	
     	Date day= null;

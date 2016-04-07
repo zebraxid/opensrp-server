@@ -7,30 +7,30 @@ import org.codehaus.jackson.annotate.JsonProperty;
 
 public class CountServiceDTO {
 	@JsonProperty
-	public int householdTotalCount;
+	private int householdTotalCount;
 	@JsonProperty
-	public int householdTodayCount;
+	private int householdTodayCount;
 	@JsonProperty
-	public int householdThisWeekCount;
+	private int householdThisWeekCount;
 	@JsonProperty
-	public int householdThisMonthCount;
+	private int householdThisMonthCount;
 	@JsonProperty
-	public int elcoTotalCount;
+	private int elcoTotalCount;
 	@JsonProperty
-	public int elcoTodayCount;
+	private int elcoTodayCount;
 	@JsonProperty
-	public int elcoThisWeekCount;
+	private int elcoThisWeekCount;
 	@JsonProperty
-	public int elcoThisMonthCount;
+	private int elcoThisMonthCount;
 	@JsonProperty
-	public int pwTotalCount;
+	private int pwTotalCount;
 	@JsonProperty
-	public int pwTodayCount;
+	private int pwTodayCount;
 	@JsonProperty
-	public int pwThisWeekCount;
+	private int pwThisWeekCount;
 	@JsonProperty
-	public int pwThisMonthCount;
-	
+	private int pwThisMonthCount;	
+
 	public CountServiceDTO(){
 		
 	}
@@ -52,6 +52,103 @@ public class CountServiceDTO {
 		this.pwTotalCount = pwTotalCount;
 		this.pwTodayCount = pwTodayCount;
 		this.pwThisWeekCount = pwThisWeekCount;
+		this.pwThisMonthCount = pwThisMonthCount;
+		
+	}
+	
+	public int getHouseholdTotalCount() {
+		return householdTotalCount;
+	}
+
+	public void setHouseholdTotalCount(int householdTotalCount) {
+		this.householdTotalCount = householdTotalCount;
+	}
+
+	public int getHouseholdTodayCount() {
+		return householdTodayCount;
+	}
+
+	public void setHouseholdTodayCount(int householdTodayCount) {
+		this.householdTodayCount = householdTodayCount;
+	}
+
+	public int getHouseholdThisWeekCount() {
+		return householdThisWeekCount;
+	}
+
+	public void setHouseholdThisWeekCount(int householdThisWeekCount) {
+		this.householdThisWeekCount = householdThisWeekCount;
+	}
+
+	public int getHouseholdThisMonthCount() {
+		return householdThisMonthCount;
+	}
+
+	public void setHouseholdThisMonthCount(int householdThisMonthCount) {
+		this.householdThisMonthCount = householdThisMonthCount;
+	}
+
+	public int getElcoTotalCount() {
+		return elcoTotalCount;
+	}
+
+	public void setElcoTotalCount(int elcoTotalCount) {
+		this.elcoTotalCount = elcoTotalCount;
+	}
+
+	public int getElcoTodayCount() {
+		return elcoTodayCount;
+	}
+
+	public void setElcoTodayCount(int elcoTodayCount) {
+		this.elcoTodayCount = elcoTodayCount;
+	}
+
+	public int getElcoThisWeekCount() {
+		return elcoThisWeekCount;
+	}
+
+	public void setElcoThisWeekCount(int elcoThisWeekCount) {
+		this.elcoThisWeekCount = elcoThisWeekCount;
+	}
+
+	public int getElcoThisMonthCount() {
+		return elcoThisMonthCount;
+	}
+
+	public void setElcoThisMonthCount(int elcoThisMonthCount) {
+		this.elcoThisMonthCount = elcoThisMonthCount;
+	}
+
+	public int getPwTotalCount() {
+		return pwTotalCount;
+	}
+
+	public void setPwTotalCount(int pwTotalCount) {
+		this.pwTotalCount = pwTotalCount;
+	}
+
+	public int getPwTodayCount() {
+		return pwTodayCount;
+	}
+
+	public void setPwTodayCount(int pwTodayCount) {
+		this.pwTodayCount = pwTodayCount;
+	}
+
+	public int getPwThisWeekCount() {
+		return pwThisWeekCount;
+	}
+
+	public void setPwThisWeekCount(int pwThisWeekCount) {
+		this.pwThisWeekCount = pwThisWeekCount;
+	}
+
+	public int getPwThisMonthCount() {
+		return pwThisMonthCount;
+	}
+
+	public void setPwThisMonthCount(int pwThisMonthCount) {
 		this.pwThisMonthCount = pwThisMonthCount;
 	}
 

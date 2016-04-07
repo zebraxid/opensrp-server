@@ -1,3 +1,6 @@
+/***
+ * @author proshanto
+ * */
 package org.opensrp.service;
 
 import java.util.ArrayList;
@@ -7,8 +10,10 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.opensrp.dto.CountServiceDTO;
 import org.opensrp.register.mcare.repository.AllElcos;
 import org.opensrp.register.mcare.repository.AllHouseHolds;
+import org.opensrp.register.mcare.repository.AllMothers;
 import org.opensrp.rest.services.LuceneElcoService;
 import org.opensrp.rest.services.LuceneHouseHoldService;
+import org.opensrp.rest.services.LuceneMotherService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,31 +27,72 @@ public class DataCountService {
 	private final AllElcos allElcos;
 	private LuceneHouseHoldService luceneHouseHoldService;
 	private LuceneElcoService luceneElcoService;
+	private LuceneMotherService luceneMotherService;
+	private AllMothers allMothers;
 	@Autowired
 	public DataCountService(AllHouseHolds allHouseHolds,LuceneHouseHoldService luceneHouseHoldService,
-			LuceneElcoService luceneElcoService,AllElcos allElcos){
+			LuceneElcoService luceneElcoService,AllElcos allElcos,AllMothers allMothers,LuceneMotherService luceneMotherService){
 		this.allHouseHolds = allHouseHolds;
 		this.luceneHouseHoldService = luceneHouseHoldService;
 		this.luceneElcoService = luceneElcoService;
 		this.allElcos = allElcos;
+		this.allMothers = allMothers;
+		this.luceneMotherService = luceneMotherService;
 	}
-	public List<CountServiceDTO> getHHCountInformation(String provider,String startMonth,String endMonth,String startWeek,String endWeek){
+	/**
+	 * This method return count data of registers.
+	 * @param provider    who sent data
+	 * @param startMonth  means start date of a month
+	 * @param endMonth    means end day of a month
+	 * @param startWeek   means start day of a week
+	 * @param endWeek     means end day of a week
+	 * */
+	public List<CountServiceDTO> getHHCountInformation(String provider,String startMonth,String endMonth,String startWeek,String endWeek,String type){
 		List<CountServiceDTO> commonServiceDTOs = new ArrayList<CountServiceDTO>();
+		
 		CountServiceDTO commonServiceDTO = new CountServiceDTO();
-		commonServiceDTO.householdTotalCount = allHouseHolds.findAllHouseHolds().size();
-		commonServiceDTO.householdTodayCount = luceneHouseHoldService.getHouseholdCount("","");
-		commonServiceDTO.householdThisMonthCount = luceneHouseHoldService.getHouseholdCount(startMonth, endMonth);
-		commonServiceDTO.householdThisWeekCount = luceneHouseHoldService.getHouseholdCount(startWeek, endWeek);
-		commonServiceDTO.elcoTotalCount = allElcos.allOpenELCOs().size();
-		commonServiceDTO.elcoThisMonthCount = luceneElcoService.getElcoCount(startMonth, endMonth);
-		commonServiceDTO.elcoThisWeekCount = luceneElcoService.getElcoCount(startMonth, endMonth);
-		commonServiceDTO.elcoTodayCount = luceneElcoService.getElcoCount("", "");
-		logger.info(allHouseHolds.allOpenHHsForProvider(provider).toString());
-		//commonServiceDTO.
-		//commonServiceDTO. //= luceneHouseHoldService.getHouseholdCount();
+		if(type.equalsIgnoreCase("all")){
+			this.getHouseholdCount(provider, startMonth, endMonth, startWeek, endWeek, commonServiceDTO);
+			this.getElcoCount(provider, startMonth, endMonth, startWeek, endWeek, commonServiceDTO);
+			this.getMotherCount(provider, startMonth, endMonth, startWeek, endWeek, commonServiceDTO);
+					
+		}else if(type.equalsIgnoreCase("household")){
+			this.getHouseholdCount(provider, startMonth, endMonth, startWeek, endWeek, commonServiceDTO);
+			
+		}else if(type.equalsIgnoreCase("elco")){
+			this.getElcoCount(provider, startMonth, endMonth, startWeek, endWeek, commonServiceDTO);
+			
+		}else if(type.equalsIgnoreCase("mother")){
+			this.getMotherCount(provider, startMonth, endMonth, startWeek, endWeek, commonServiceDTO);
+			
+		}else{
+			
+		}		
 		commonServiceDTOs.add(commonServiceDTO);
 		return commonServiceDTOs;
 		
+	}
+	
+	private CountServiceDTO getHouseholdCount(String provider,String startMonth,String endMonth,String startWeek,String endWeek,CountServiceDTO commonServiceDTO){
+		commonServiceDTO.setHouseholdTotalCount(allHouseHolds.findAllHouseHolds().size()) ;
+		commonServiceDTO.setHouseholdTodayCount(luceneHouseHoldService.getHouseholdCount("",""));
+		commonServiceDTO.setHouseholdThisMonthCount(luceneHouseHoldService.getHouseholdCount(startMonth, endMonth));
+		commonServiceDTO.setHouseholdThisWeekCount(luceneHouseHoldService.getHouseholdCount(startWeek, endWeek));
+		return commonServiceDTO;
+	}
+	private CountServiceDTO getElcoCount(String provider,String startMonth,String endMonth,String startWeek,String endWeek,CountServiceDTO commonServiceDTO){
+		commonServiceDTO.setElcoTotalCount(allElcos.allOpenELCOs().size());
+		commonServiceDTO.setElcoThisMonthCount(luceneElcoService.getElcoCount(startMonth, endMonth));
+		commonServiceDTO.setElcoThisWeekCount(luceneElcoService.getElcoCount(startMonth, endMonth));
+		commonServiceDTO.setElcoTodayCount(luceneElcoService.getElcoCount("", ""));
+		return commonServiceDTO;
+	}
+	private CountServiceDTO getMotherCount(String provider,String startMonth,String endMonth,String startWeek,String endWeek,CountServiceDTO commonServiceDTO){
+		commonServiceDTO.setPwTotalCount(allMothers.allOpenMothers().size());
+		commonServiceDTO.setPwThisMonthCount(luceneMotherService.getMotherCount(startMonth, endMonth));
+		commonServiceDTO.setPwThisWeekCount(luceneMotherService.getMotherCount(startMonth, endMonth));
+		commonServiceDTO.setPwTodayCount(luceneMotherService.getMotherCount("", ""));
+		return commonServiceDTO;
 	}
 
 }

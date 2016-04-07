@@ -80,7 +80,11 @@ public class LuceneHouseHoldService {
 		return new HHRegisterDTO(hhRegisterEntryDTOList);
 	}
 
-	
+	/**
+	 * This method return Household count as today, this month or this week
+	 * @param start this may be start date of a month or week
+	 * @param end   this may be end date of a month or week
+	 * */
 	public int getHouseholdCount(String start,String end){
 		if(start.equalsIgnoreCase("")){
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");

@@ -1,3 +1,6 @@
+/**
+ * @author proshanto
+ * */
 package org.opensrp.rest.services;
 
 import java.text.DateFormat;
@@ -21,7 +24,11 @@ public class LuceneMotherService {
 		this.luceneMotherRepository = luceneMotherRepository;
 		this.convertDateStringToTimestampMills = convertDateStringToTimestampMills;
 	}
-	
+	/**
+	 * This method return Mother count as today, this month or this week
+	 * @param start this may be start date of a month or week
+	 * @param end   this may be end date of a month or week
+	 * */
 	public int getMotherCount(String start,String end){
 		if(start.equalsIgnoreCase("")){
 			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
