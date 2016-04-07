@@ -8,7 +8,10 @@ import static org.opensrp.dto.AlertStatus.normal;
 import static org.opensrp.dto.BeneficiaryType.mother;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -355,5 +358,18 @@ public class ScheduleLogService extends OpenmrsService{
 		}
 		
 		return fieldName;
+	}
+	
+	public long getTimeStampMills(){
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");		
+		Date today = Calendar.getInstance().getTime();
+    	Date date = null;
+		try {
+			date = format.parse(format.format(today));
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			logger.info(""+e.getMessage());
+		}		
+		return date.getTime();
 	}
 }

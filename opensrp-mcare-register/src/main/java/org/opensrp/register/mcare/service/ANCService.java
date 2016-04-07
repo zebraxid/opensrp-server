@@ -28,6 +28,7 @@ import org.opensrp.register.mcare.domain.Mother;
 import org.opensrp.register.mcare.repository.AllElcos;
 import org.opensrp.register.mcare.repository.AllMothers;
 import org.opensrp.register.mcare.service.scheduling.ANCSchedulesService;
+import org.opensrp.register.mcare.service.scheduling.ScheduleLogService;
 import org.opensrp.scheduler.service.ActionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,23 +44,22 @@ public class ANCService {
 	private AllMothers allMothers;
 	private ANCSchedulesService ancSchedulesService;
 	private ActionService actionService;
-
+	private ScheduleLogService scheduleLogService;
 	@Autowired
 	public ANCService(AllElcos allElcos, AllMothers allMothers,
-			ANCSchedulesService ancSchedulesService, ActionService actionService) {
+			ANCSchedulesService ancSchedulesService, ActionService actionService,ScheduleLogService scheduleLogService) {
 		this.allElcos = allElcos;
 		this.allMothers = allMothers;
 		this.ancSchedulesService = ancSchedulesService;
 		this.actionService = actionService;
-	}
-
+		this.scheduleLogService = scheduleLogService;
+	}	
 	public void registerANC(FormSubmission submission) {
 
 		String motherId = submission
 				.getField(AllConstants.ANCFormFields.MCARE_MOTHER_ID);
 
-		Mother mother = allMothers.findByCaseId(motherId);
-
+		Mother mother = allMothers.findByCaseId(motherId);		
 		if (!allElcos.exists(submission.entityId())) {
 			logger.warn(format(
 					"Found mother without registered eligible couple. Ignoring: {0} for mother with id: {1} for ANM: {2}",
@@ -69,7 +69,7 @@ public class ANCService {
 
 		mother.withPROVIDERID(submission.anmId());
 		mother.withINSTANCEID(submission.instanceId());		
-		
+		mother.withSUBMISSIONDATE(scheduleLogService.getTimeStampMills());
 		addDetailsToMother(submission, mother);
 		
 		allMothers.update(mother);
@@ -102,6 +102,8 @@ public class ANCService {
 					submission.entityId()));
 			return;
 		}
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date today = Calendar.getInstance().getTime();
 		Map<String, String> ancVisitOne = create(FWANC1DATE, submission.getField(FWANC1DATE))
 											.put(anc1_current_formStatus, submission.getField(anc1_current_formStatus))
 											.put(FWCONFIRMATION, submission.getField(FWCONFIRMATION))
@@ -156,6 +158,7 @@ public class ANCService {
 											.put(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
 											.put(START_DATE, submission.getField(START_DATE))
 											.put(END_DATE, submission.getField(END_DATE))
+											.put("received_time", format.format(today).toString())
 											.map();											
 		
 		mother.withANCVisitOne(ancVisitOne);
@@ -184,6 +187,8 @@ public class ANCService {
 					submission.entityId()));
 			return;
 		}
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date today = Calendar.getInstance().getTime();
 		Map<String, String> ancVisitTwo = create(FWANC2DATE, submission.getField(FWANC2DATE))
 											.put(ANC2_current_formStatus, submission.getField(ANC2_current_formStatus))
 											.put(FWCONFIRMATION, submission.getField(FWCONFIRMATION))
@@ -239,6 +244,7 @@ public class ANCService {
 											.put(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
 											.put(START_DATE, submission.getField(START_DATE))
 											.put(END_DATE, submission.getField(END_DATE))
+											.put("received_time", format.format(today).toString())
 											.map();												
 		
 		mother.withANCVisitTwo(ancVisitTwo);
@@ -267,6 +273,8 @@ public class ANCService {
 					submission.entityId()));
 			return;
 		}
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date today = Calendar.getInstance().getTime();
 		Map<String, String> ancVisitThree = create(FWANC3DATE, submission.getField(FWANC3DATE))
 											.put(ANC3_current_formStatus, submission.getField(ANC3_current_formStatus))
 											.put(FWCONFIRMATION, submission.getField(FWCONFIRMATION))
@@ -323,6 +331,7 @@ public class ANCService {
 											.put(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
 											.put(START_DATE, submission.getField(START_DATE))
 											.put(END_DATE, submission.getField(END_DATE))
+											.put("received_time", format.format(today).toString())
 											.map();											
 		
 		mother.withANCVisitThree(ancVisitThree);
@@ -352,7 +361,8 @@ public class ANCService {
 					submission.entityId()));
 			return;
 		}
-		
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date today = Calendar.getInstance().getTime();
 		Map<String, String> ancVisitFour = create(FWANC4DATE, submission.getField(FWANC4DATE))
 											.put(ANC4_current_formStatus, submission.getField(ANC4_current_formStatus))
 											.put(FWCONFIRMATION, submission.getField(FWCONFIRMATION))
@@ -410,6 +420,7 @@ public class ANCService {
 											.put(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
 											.put(START_DATE, submission.getField(START_DATE))
 											.put(END_DATE, submission.getField(END_DATE))
+											.put("received_time", format.format(today).toString())
 											.map();												
 			
 		mother.withANCVisitFour(ancVisitFour);
@@ -461,4 +472,14 @@ public class ANCService {
 		allElcos.update(elco);
 	}
 
+	public void deleteBlankMother(FormSubmission submission){
+		try{
+			String motherId = submission
+					.getField(AllConstants.ANCFormFields.MCARE_MOTHER_ID);
+			Mother mother = allMothers.findByCaseId(motherId);
+			allMothers.remove(mother);
+		}catch(Exception e){
+			logger.info("Unable to delete mother :"+e.getMessage());
+		}
+	}
 }

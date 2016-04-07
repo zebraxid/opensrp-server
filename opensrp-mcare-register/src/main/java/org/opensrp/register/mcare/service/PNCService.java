@@ -37,6 +37,7 @@ import org.opensrp.register.mcare.repository.AllMothers;
 import org.opensrp.register.mcare.service.scheduling.ELCOScheduleService;
 import org.opensrp.register.mcare.service.scheduling.ChildSchedulesService;
 import org.opensrp.register.mcare.service.scheduling.PNCSchedulesService;
+import org.opensrp.register.mcare.service.scheduling.ScheduleLogService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,17 +54,19 @@ public class PNCService {
 	private ELCOScheduleService elcoSchedulesService;
 	private PNCSchedulesService pncSchedulesService;
 	private ChildSchedulesService childSchedulesService;
+	private ScheduleLogService scheduleLogService;
 
 	@Autowired
-	public PNCService(AllElcos allElcos, AllMothers allMothers, AllChilds allChilds, ELCOScheduleService elcoSchedulesService, PNCSchedulesService pncSchedulesService, ChildSchedulesService childSchedulesService) {
+	public PNCService(AllElcos allElcos, AllMothers allMothers, AllChilds allChilds, ELCOScheduleService elcoSchedulesService, PNCSchedulesService pncSchedulesService, ChildSchedulesService childSchedulesService,ScheduleLogService scheduleLogService) {
 		this.allElcos = allElcos;
 		this.allMothers = allMothers;
 		this.allChilds = allChilds;
 		this.elcoSchedulesService = elcoSchedulesService;
 		this.pncSchedulesService = pncSchedulesService;
 		this.childSchedulesService = childSchedulesService;
+		this.scheduleLogService = scheduleLogService;
 	}
-
+	
 	public void deliveryOutcome(FormSubmission submission) {
 		String pattern = "yyyy-MM-dd";
 		//DateTimeFormatter formatter = DateTimeFormat.forPattern(pattern);
@@ -103,7 +106,9 @@ public class PNCService {
 						+ mother.caseId());
 								
 				SubFormData subFormData = submission.getSubFormByName(CHILD_REGISTRATION_SUB_FORM_NAME);
-												
+				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+				SimpleDateFormat formats = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				Date today = Calendar.getInstance().getTime();								
 				for (Map<String, String> childFields : subFormData.instances()) {
 					
 					Child child = allChilds.findByCaseId(childFields.get(ID))
@@ -112,15 +117,13 @@ public class PNCService {
 						.withTODAY(submission.getField(REFERENCE_DATE))
 						.withSTART(submission.getField(START_DATE))
 						.withEND(submission.getField(END_DATE))
-						.setIsClosed(false);
+						.withSUBMISSIONDATE(scheduleLogService.getTimeStampMills())
+						.setIsClosed(false);					
 					
-					SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-			    	Date today = Calendar.getInstance().getTime();    	
-
 			    	child.details().put(relationalid, childFields.get(relationalid));
 			    	child.details().put(FWBNFGEN, childFields.get(FWBNFGEN));
 			    	child.details().put(FWBNFCHLDVITSTS, childFields.get(FWBNFCHLDVITSTS));	
-			    	child.details().put(received_time,format.format(today).toString());
+			    	child.details().put(received_time,formats.format(today).toString());
 
 					allChilds.update(child);
 					childSchedulesService.enrollENCCForChild(childFields.get(ID),  LocalDate.parse(referenceDate));	
@@ -147,7 +150,8 @@ public class PNCService {
 					submission.entityId()));
 			return;
 		}
-
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date today = Calendar.getInstance().getTime();
 		Map<String, String> pncVisitOne = create(FWPNC1DATE,
 				submission.getField(FWPNC1DATE))
 				.put(FWCONFIRMATION, submission.getField(FWCONFIRMATION))
@@ -174,6 +178,7 @@ public class PNCService {
 				.put(relationalid, submission.getField(relationalid))
 				.put(user_type, submission.getField(user_type))
 				.put(external_user_ID, submission.getField(external_user_ID))
+				.put("received_time", format.format(today).toString())
 				.map();
 
 		mother.withPNCVisitOne(pncVisitOne);
@@ -190,7 +195,8 @@ public class PNCService {
 					submission.entityId()));
 			return;
 		}
-
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date today = Calendar.getInstance().getTime();
 		Map<String, String> pncVisitTwo = create(FWPNC2DATE,
 				submission.getField(FWPNC2DATE))
 				.put(FWCONFIRMATION, submission.getField(FWCONFIRMATION))
@@ -216,6 +222,7 @@ public class PNCService {
 				.put(relationalid, submission.getField(relationalid))
 				.put(user_type, submission.getField(user_type))
 				.put(external_user_ID, submission.getField(external_user_ID))
+				.put("received_time", format.format(today).toString())
 				.map();
 
 		mother.withPNCVisitTwo(pncVisitTwo);
@@ -234,7 +241,8 @@ public class PNCService {
 					submission.entityId()));
 			return;
 		}
-
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date today = Calendar.getInstance().getTime();
 		Map<String, String> pncVisitThree = create(FWPNC3DATE,
 				submission.getField(FWPNC3DATE))
 				.put(FWCONFIRMATION, submission.getField(FWCONFIRMATION))
@@ -260,6 +268,7 @@ public class PNCService {
 				.put(relationalid, submission.getField(relationalid))
 				.put(user_type, submission.getField(user_type))
 				.put(external_user_ID, submission.getField(external_user_ID))
+				.put("received_time", format.format(today).toString())
 				.map();
 
 		mother.withPNCVisitThree(pncVisitThree);
@@ -291,5 +300,14 @@ public class PNCService {
 		logger.info("Closing EC case along with PNC case. Ec Id: "+ elco.caseId());
 		elco.setIsClosed(true);
 		allElcos.update(elco);
+	}
+	
+	public void deleteBlankChild(FormSubmission submission){
+		SubFormData subFormData = submission.getSubFormByName(CHILD_REGISTRATION_SUB_FORM_NAME);
+		for (Map<String, String> childFields : subFormData.instances()) {			
+			Child child = allChilds.findByCaseId(childFields.get(ID));
+			allChilds.remove(child);
+		}
+		
 	}
 }

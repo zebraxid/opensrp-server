@@ -36,7 +36,8 @@ public class Child extends MotechBaseDataObject {
 	private Map<String, String> enccVisitTwo;
 	@JsonProperty
 	private Map<String, String> enccVisitThree;
-	
+	@JsonProperty
+	private long SUBMISSIONDATE;
 	public Child()
 	{
 		details = new HashMap<String, String>();
@@ -95,6 +96,10 @@ public class Child extends MotechBaseDataObject {
         this.enccVisitThree = new HashMap<>(enccVisitThree);
         return this;
     }
+	public Child withSUBMISSIONDATE(long SUBMISSIONDATE){
+		this.SUBMISSIONDATE = SUBMISSIONDATE;
+		return this;
+	}
 	public Child setIsClosed(boolean isClosed) {
         this.isClosed = Boolean.toString(isClosed);
         return this;
@@ -146,7 +151,9 @@ public class Child extends MotechBaseDataObject {
 	public Map<String, String> enccVisitThree() {
 		return enccVisitThree;
 	}
-
+	public long SUBMISSIONDATE(){
+		return SUBMISSIONDATE;
+	}	
 	@Override
 	public boolean equals(Object o) {
 		return EqualsBuilder.reflectionEquals(this, o, "id", "revision");

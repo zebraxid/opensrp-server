@@ -82,7 +82,8 @@ public class Mother extends MotechBaseDataObject {
 	private Map<String, String> pncVisitTwo;
 	@JsonProperty
 	private Map<String, String> pncVisitThree;
-	
+	@JsonProperty
+	private long SUBMISSIONDATE;
 	public Mother() {
 
 		this.details = new HashMap<>();
@@ -230,7 +231,10 @@ public class Mother extends MotechBaseDataObject {
         this.pncVisitThree = new HashMap<>(pncVisitThree);
         return this;
     }
-
+	public Mother withSUBMISSIONDATE(long SUBMISSIONDATE){
+		this.SUBMISSIONDATE = SUBMISSIONDATE;
+		return this;
+	}
 	public String caseId() {
 		return caseId;
 	}
@@ -354,6 +358,9 @@ public class Mother extends MotechBaseDataObject {
         this.isClosed = Boolean.toString(isClosed);
         return this;
     }
+    public long SUBMISSIONDATE(){
+		return SUBMISSIONDATE;
+	}
 	@Override
 	public boolean equals(Object o) {
 		return EqualsBuilder.reflectionEquals(this, o, "id", "revision");

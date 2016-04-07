@@ -77,12 +77,12 @@ public class OpenmrsSchedulerServiceTest extends TestResourceLoader{
 		alertActions.add(new Action(id, "admin", ActionData.markAlertAsClosed("REMINDER", "12-12-2015")));
 		System.out.println("pushToOpenmrsForTest:"+pushToOpenmrsForTest);
 		//if(pushToOpenmrsForTest){
-			JSONObject p = ps.getPatientByIdentifier(id);
-			System.out.println("okkk..."+p.toString());
-			if(p == null){
+			//JSONObject p = ps.getPatientByIdentifier(id);
+			//System.out.println("okkk..."+p.toString());
+			//if(p == null){
 				//ps.createPatient(new Client(id, "TESTPRO", null, "Name", new DateTime().minusYears(20).toDate(), null, false, false, "MALE"));
 				System.out.println("okkk...");
-			}
+			//}
 			
 			/*System.out.println("okkk.ff..");
 			JSONObject t = ss.createTrack(e, alertActions);

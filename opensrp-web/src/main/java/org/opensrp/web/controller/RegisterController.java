@@ -3,6 +3,9 @@ package org.opensrp.web.controller;
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
+import java.util.List;
+
+import org.opensrp.dto.CountServiceDTO;
 import org.opensrp.dto.register.ANC_RegisterDTO;
 import org.opensrp.dto.register.ELCORegisterDTO;
 import org.opensrp.dto.register.HHRegisterDTO;
@@ -16,6 +19,7 @@ import org.opensrp.register.mcare.service.ANCRegisterService;
 import org.opensrp.register.mcare.service.ELCORegisterService;
 import org.opensrp.register.mcare.service.HHRegisterService;
 import org.opensrp.register.mcare.service.MultimediaRegisterService;
+import org.opensrp.service.DataCountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,12 +42,15 @@ public class RegisterController {
 	private HHRegisterMapper hhRegisterMapper;
 	private ANCRegisterMapper ancRegisterMapper;
 	private MultimediaRegisterService multimediaRegisterService;
-	
+	private DataCountService dataCountService;
+	 
 	@Autowired
 	public RegisterController(ELCORegisterService ecRegisterService,
 			HHRegisterService hhRegisterService, ELCORegisterMapper ecRegisterMapper,
 			HHRegisterMapper hhRegisterMapper,ANCRegisterService ancRegisterService,
-			ANCRegisterMapper ancRegisterMapper, MultimediaRegisterService multimediaRegisterService) {
+			ANCRegisterMapper ancRegisterMapper, 
+			MultimediaRegisterService multimediaRegisterService,
+			DataCountService dataCountService) {
 		this.ecRegisterService = ecRegisterService;
 		this.hhRegisterService = hhRegisterService;
 		this.ecRegisterMapper = ecRegisterMapper;
@@ -51,6 +58,7 @@ public class RegisterController {
 		this.ancRegisterService = ancRegisterService;
 		this.ancRegisterMapper = ancRegisterMapper;
 		this.multimediaRegisterService = multimediaRegisterService;
+		this.dataCountService = dataCountService;
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/registers/hh")
@@ -134,6 +142,14 @@ public class RegisterController {
     {
     	multimediaRegisterService.getMultimedia();
     	return new ResponseEntity<>("Welcome to multimedia service", HttpStatus.OK);
+    }
+    
+    @RequestMapping(method = RequestMethod.GET, value = "/registers/data-count")
+    @ResponseBody
+    public ResponseEntity<List<CountServiceDTO>>  getHouseHoldInformation(@RequestParam("anm-id") String provider,@RequestParam("start-month") String startMonth,@RequestParam("end-month") String endMonth,
+    		@RequestParam("start-week") String startWeek,@RequestParam("end-week") String endtWeek,@RequestParam("type") String type){
+    	dataCountService.getHHCountInformation(provider,startMonth,endMonth,startWeek,endtWeek,type);
+    	return new ResponseEntity<>(dataCountService.getHHCountInformation(provider,startMonth,endMonth,startWeek,endtWeek,type), HttpStatus.OK);
     }
     
 /*

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import org.opensrp.dto.CountServiceDTO;
 import org.opensrp.register.mcare.HHRegister;
 import org.opensrp.register.mcare.HHRegisterEntry;
 import org.opensrp.register.mcare.domain.HouseHold;
@@ -12,6 +13,8 @@ import org.opensrp.register.mcare.repository.AllHouseHolds;
 
 import static org.opensrp.common.AllConstants.HHRegistrationFields.*;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +22,7 @@ import org.springframework.stereotype.Service;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class HHRegisterService {
 	
+	private static Logger logger = LoggerFactory.getLogger(HHRegisterService.class);
 	private final AllHouseHolds allHouseHolds;
 	
 	@Autowired
@@ -86,5 +90,6 @@ public class HHRegisterService {
         	hhRegisterEntries.add(hhRegisterEntry);
         }
         return new HHRegister(hhRegisterEntries);
-	}
+	}	
+	
 }

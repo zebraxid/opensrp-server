@@ -128,7 +128,8 @@ public class Elco extends MotechBaseDataObject {
 	private List<Map<String, String>> multimediaAttachments;
 	@JsonProperty
 	private List<Map<String, String>> PSRFDETAILS;
-
+	@JsonProperty
+	private long SUBMISSIONDATE;
 	public Elco() {
 
 	}
@@ -347,6 +348,10 @@ public class Elco extends MotechBaseDataObject {
 		this.PSRFDETAILS = PSRFDETAILS;
 		return this;
 	}
+	public Elco withSUBMISSIONDATE(long SUBMISSIONDATE){
+		this.SUBMISSIONDATE = SUBMISSIONDATE;
+		return this;
+	}
 	public String caseId() {
 		return caseId;
 	}
@@ -522,6 +527,9 @@ public class Elco extends MotechBaseDataObject {
 			PSRFDETAILS = new ArrayList<>();
 		}
 		return PSRFDETAILS;
+	}
+	public long SUBMISSIONDATE(){
+		return SUBMISSIONDATE;
 	}
     public Elco setIsClosed(boolean isClosed) {
         this.isClosed = Boolean.toString(isClosed);

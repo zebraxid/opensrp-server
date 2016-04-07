@@ -1,6 +1,7 @@
 package org.opensrp.register.mcare.domain;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -83,7 +84,8 @@ public class HouseHold extends MotechBaseDataObject {
 	private List<Map<String, String>> multimediaAttachments;
 	@JsonProperty
 	private Map<String, String> details;
-	private String received_time;
+	@JsonProperty
+	private long SUBMISSIONDATE;
 	
 	public HouseHold() {
 		this.ELCODETAILS = new ArrayList<>();
@@ -256,8 +258,8 @@ public class HouseHold extends MotechBaseDataObject {
         return this;
     }
 
-	public HouseHold withReceivedTime(String received_time){
-		this.received_time = received_time;
+	public HouseHold withSUBMISSIONDATE(long SUBMISSIONDATE){
+		this.SUBMISSIONDATE = SUBMISSIONDATE;
 		return this;
 	}
 	public String caseId() {
@@ -376,8 +378,8 @@ public class HouseHold extends MotechBaseDataObject {
 		return external_user_ID;
 	}
 	
-	public String received_time(){
-		return received_time;
+	public long SUBMISSIONDATE(){
+		return SUBMISSIONDATE;
 	}
 	
 	public String current_formStatus() {
