@@ -4,6 +4,8 @@
 package org.opensrp.register.mcare.service.scheduling;
 
 import java.util.List;
+
+import static org.opensrp.register.mcare.OpenSRPScheduleConstants.DateTimeDuration.duration;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ELCOSchedulesConstants.ELCO_SCHEDULE_PSRF;
 import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
@@ -51,7 +53,7 @@ public class ScheduleLogService extends OpenmrsService{
 			trackId = "TR";
 		}		
 		DateTime scheduleCloseDate = null;
-		reportActionService.alertForReporting(beneficiaryType, caseID, instanceId, anmIdentifier, scheduleName, visitCode, alertStatus, startDate, expiryDate,scheduleCloseDate,trackId);
+		reportActionService.alertForReporting(beneficiaryType, caseID, instanceId, anmIdentifier, scheduleName, visitCode, alertStatus, startDate, expiryDate,new DateTime().plusHours(duration),trackId);
 		
 	}
 	

@@ -1,5 +1,6 @@
 package org.opensrp.scheduler;
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -12,6 +13,7 @@ import org.motechproject.model.MotechBaseDataObject;
 import org.motechproject.util.DateUtil;
 import org.opensrp.dto.ActionData;
 import org.opensrp.dto.AlertStatus;
+import org.opensrp.dto.ScheduleData;
 
 
 @TypeDiscriminator("doc.type === 'ScheduleLog'")
@@ -30,7 +32,7 @@ public class ScheduleLog extends MotechBaseDataObject  {
     @JsonProperty
     private String trackId;
     @JsonProperty
-    private Map<String, String> data;
+    private List<Map<String, String>> data;
     @JsonProperty
     private String actionTarget;
     @JsonProperty
@@ -56,14 +58,14 @@ public class ScheduleLog extends MotechBaseDataObject  {
     
     
 
-    private ScheduleLog() {
+    public ScheduleLog() {
     }
 
-    public ScheduleLog(String caseId, String instanceId, String anmIdentifier, ActionData actionData) {
+    public ScheduleLog(String caseId, String instanceId, String anmIdentifier, ScheduleData actionData) {
         this.anmIdentifier = anmIdentifier;
         this.caseID = caseId;
         this.instanceId = instanceId;
-        this.data = actionData.data();
+        this.data =  actionData.data();
         this.actionTarget = actionData.target();
         this.actionType = actionData.type();
         this.timeStamp = DateUtil.now().getMillis();
@@ -74,11 +76,11 @@ public class ScheduleLog extends MotechBaseDataObject  {
         
     }
 
-    public ScheduleLog(String caseId, String instanceId, String anmIdentifier, ActionData actionData,String trackId,AlertStatus currentWindow,DateTime scheduleCloseDate,DateTime currentWindowStartDate,DateTime currentWindowEndDate,String scheduleName) {
+    public ScheduleLog(String caseId, String instanceId, String anmIdentifier, ScheduleData actionData,String trackId,AlertStatus currentWindow,DateTime scheduleCloseDate,DateTime currentWindowStartDate,DateTime currentWindowEndDate,String scheduleName) {
         this.anmIdentifier = anmIdentifier;
         this.caseID = caseId;
         this.instanceId = instanceId;
-        this.data = actionData.data();
+        this.data =  actionData.data();
         this.actionTarget = actionData.target();
         this.actionType = actionData.type();
         this.timeStamp = DateUtil.now().getMillis();
@@ -112,7 +114,7 @@ public class ScheduleLog extends MotechBaseDataObject  {
         return scheduleName;
     }
     
-    public Map<String, String> data() {
+    public List<Map<String, String>> data() {
         return data;
     }
 
@@ -120,22 +122,22 @@ public class ScheduleLog extends MotechBaseDataObject  {
         return actionType;
     }
 
-    public long timestamp() {
-        return timeStamp;
+    public void timestamp(long timeStamp) {
+        this.timeStamp =timeStamp;
     }
-    public AlertStatus currentWindow() {
-        return currentWindow;
+    public void currentWindow(AlertStatus currentWindow) {
+        this.currentWindow = currentWindow;
     }
-    public DateTime scheduleCloseDate() {
-        return scheduleCloseDate;
+    public void scheduleCloseDate(DateTime scheduleCloseDate) {
+        this.scheduleCloseDate = scheduleCloseDate;
     }
-    public DateTime currentWindowStartDate() {
-        return currentWindowStartDate;
+    public void currentWindowStartDate(DateTime currentWindowStartDate) {
+        this.currentWindowStartDate = currentWindowStartDate;
     }
-    public DateTime currentWindowEndDate() {
-        return currentWindowEndDate;
+    public void currentWindowEndDate(DateTime currentWindowEndDate) {
+        this.currentWindowEndDate = currentWindowEndDate;
     }
-    public DateTime scheduleGenerateDate() {
+    public DateTime scheduleGenerateDate(DateTime scheduleGenerateDate) {
         return scheduleGenerateDate;
     }
     public String target() {

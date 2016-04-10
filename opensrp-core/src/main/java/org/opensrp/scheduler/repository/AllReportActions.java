@@ -1,12 +1,9 @@
 package org.opensrp.scheduler.repository;
 
-import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.opensrp.dto.AlertStatus;
-import org.opensrp.dto.BeneficiaryType;
 import org.ektorp.ComplexKey;
 import org.ektorp.CouchDbConnector;
 import org.ektorp.ViewResult;
@@ -17,14 +14,15 @@ import org.joda.time.LocalDate;
 import org.motechproject.dao.MotechBaseRepository;
 import org.opensrp.common.AllConstants;
 import org.opensrp.dto.ActionData;
+import org.opensrp.dto.AlertStatus;
+import org.opensrp.dto.BeneficiaryType;
+import org.opensrp.dto.ScheduleData;
 import org.opensrp.scheduler.ScheduleLog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
-import static org.opensrp.dto.AlertStatus.normal;
-import static org.opensrp.dto.BeneficiaryType.elco;
 
 @Repository
 public class AllReportActions extends MotechBaseRepository<ScheduleLog> {
@@ -64,7 +62,7 @@ public class AllReportActions extends MotechBaseRepository<ScheduleLog> {
 			 if(!schedulesMap.containsKey(row.getKey()))
 			 {
 				 
-				 ActionData actionData = ActionData.createAlert(
+				 ScheduleData actionData = ScheduleData.createAlert(
 						 				 BeneficiaryType.from(row.getValueAsNode().findValue("data").get("beneficiaryType").asText()),
 										 row.getValueAsNode().findValue("data").get("scheduleName").toString(),
 										 row.getValueAsNode().findValue("data").get("visitCode").toString(),
@@ -80,6 +78,15 @@ public class AllReportActions extends MotechBaseRepository<ScheduleLog> {
 		 return schedulesMap;
 	}
 	
-	
+	private static final String FUNCTION_DOC_EMIT_DOC_CASEID = "function(doc) { if(doc.type === 'ScheduleLog') emit([doc.caseID], doc.instanceId);}";
+	@View(name = "by_case_id", map = FUNCTION_DOC_EMIT_DOC_CASEID)
+    public ScheduleLog findByInstanceId(String caseId) {
+        List<ScheduleLog> scheduleLog = queryView("by_case_id", ComplexKey.of(caseId));
+        if (scheduleLog == null || scheduleLog.isEmpty()) {
+			return null;
+		}
+		return scheduleLog.get(0);        
+    }
+    
 
 }

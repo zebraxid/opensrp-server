@@ -41,7 +41,7 @@ public class ActionService {
         }
     	allActions.addOrUpdateAlert(new Action(caseID, anmIdentifier, ActionData.createAlert(beneficiaryType, scheduleName, visitCode, alertStatus, startDate, expiryDate)));
     	DateTime scheduleCloseDate = null;
-    	reportActionService.alertForReporting(beneficiaryType, caseID, instanceId, anmIdentifier, scheduleName, visitCode, alertStatus, startDate, expiryDate, scheduleCloseDate,null);
+    	reportActionService.updateScheduleLog(beneficiaryType, caseID, instanceId, anmIdentifier, scheduleName, visitCode, alertStatus, startDate, expiryDate, scheduleCloseDate,null);
     }
 
     public void markAllAlertsAsInactive(String entityId) {

@@ -235,7 +235,6 @@ public class FormSubmissionController {
     }
     @RequestMapping(headers = {"Accept=multipart/form-data"}, method = POST, value = "/multimedia-file")
     public ResponseEntity<String> uploadFiles(@RequestParam("anm-id") String providerId, @RequestParam("entity-id") String entityId,@RequestParam("content-type") String contentType, @RequestParam("file-category") String fileCategory, @RequestParam("file") MultipartFile file) throws ClientProtocolException, IOException {
-    	
     	MultimediaDTO multimediaDTO = new MultimediaDTO(entityId, providerId, contentType, null, fileCategory);
     	String status = multimediaService.saveMultimediaFile(multimediaDTO, file);
     	
