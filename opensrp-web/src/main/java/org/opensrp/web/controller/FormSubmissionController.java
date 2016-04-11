@@ -144,7 +144,7 @@ public class FormSubmissionController {
             		System.out.println("Sending data to openMRS/***********************************************************************/");
 	            	JSONObject p = patientService.getPatientByIdentifier(formSubmission.entityId());
 	            	JSONObject r = patientService.getPatientByIdentifier(formSubmission.getField("relationalid"));
-	            	//System.out.println("Existing patient found into openMRS with relationalid : " + q);
+	            	//System.out.println("Existing patient found into openMRS with relationalid : " + q);        
 	            	
 	            	if(p != null || r != null){	 // HO           		
 	            	    System.out.println("Existing patient found into openMRS with id : " + p==null?formSubmission.getField("relationalid"):formSubmission.entityId() + "/***********************************************************************/");
