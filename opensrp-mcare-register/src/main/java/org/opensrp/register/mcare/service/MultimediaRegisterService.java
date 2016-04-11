@@ -12,9 +12,7 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import org.opensrp.domain.Multimedia;
-import org.opensrp.register.mcare.domain.Elco;
 import org.opensrp.register.mcare.domain.HouseHold;
-import org.opensrp.register.mcare.repository.AllElcos;
 import org.opensrp.register.mcare.repository.AllHouseHolds;
 import org.opensrp.repository.MultimediaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,14 +25,12 @@ import static org.opensrp.common.AllConstants.HHRegistrationFields.id;
 @Service
 public class MultimediaRegisterService {
 	private final AllHouseHolds allHouseHolds;
-	private final AllElcos allElcos;
 	private MultimediaRepository multimediaRepository;
 	
 	@Autowired
-	public MultimediaRegisterService(AllHouseHolds allHouseHolds, AllElcos allElcos, MultimediaRepository multimediaRepository)
+	public MultimediaRegisterService(AllHouseHolds allHouseHolds, MultimediaRepository multimediaRepository)
 	{
 		this.allHouseHolds = allHouseHolds;
-		this.allElcos = allElcos;
 		this.multimediaRepository = multimediaRepository;
 	}
 	
@@ -91,7 +87,7 @@ public class MultimediaRegisterService {
       		allHouseHolds.update(hh);
         }
         
-		List<Elco> elcos = allElcos.allOpenELCOs();
+		/*List<Elco> elcos = allElcos.allOpenELCOs();
 
 		for (Elco ec : elcos) {
 	    	
@@ -128,7 +124,7 @@ public class MultimediaRegisterService {
 			}
 	    	
 	    	allElcos.update(ec);
-		}
+		}*/
 	}
 	
 	/**
@@ -150,7 +146,7 @@ public class MultimediaRegisterService {
 			 hh.multimediaAttachments().add(att);
 			 allHouseHolds.update(hh);
 		}
-		else{
+		else{/*
 			Elco elco = allElcos.findByCaseId(multimediaFile.getCaseId());
 			if(elco != null){
 				elco.multimediaAttachments().clear();
@@ -184,7 +180,7 @@ public class MultimediaRegisterService {
 	     		 
 	     		 allHouseHolds.update(hd);	     		 
 			}	
-		}
+		*/}
 		System.out.println("Image saved in registry");
 	}
 }

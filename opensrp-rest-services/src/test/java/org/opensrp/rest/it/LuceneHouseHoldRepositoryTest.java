@@ -1,4 +1,4 @@
-package org.opensrp.rest.it;
+/*package org.opensrp.rest.it;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -48,13 +48,13 @@ public class LuceneHouseHoldRepositoryTest {
 	private LuceneAwareCouchDbConnector connector; 
     private LuceneHouseHoldRepository repo; 
     
-/*
+
 	@Autowired
 	@Qualifier(AllConstants.OPENSRP_DATABASE_LUCENE_CONNECTOR)
 	LuceneAwareCouchDbConnector connector;
 
 	@Autowired
-	private LuceneHouseHoldRepository repo;*/
+	private LuceneHouseHoldRepository repo;
 
     @Before
     public void setUp() throws IOException { 
@@ -154,3 +154,4 @@ public class LuceneHouseHoldRepositoryTest {
         assertTrue("Should only have one result", result.getRows().size() >=0); 
     } 
 }
+*/

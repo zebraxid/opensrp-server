@@ -4,7 +4,6 @@
 package org.opensrp.register.mcare.service;
 
 import static java.text.MessageFormat.format;
-import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_DISPLAY_AGE;
 import static org.opensrp.common.AllConstants.ELCORegistrationFields.relationalid;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.*;
 import static org.opensrp.common.AllConstants.ANCVisitOneFields.*;
@@ -23,9 +22,8 @@ import java.util.Map;
 import org.joda.time.LocalDate;
 import org.opensrp.common.AllConstants;
 import org.opensrp.form.domain.FormSubmission;
-import org.opensrp.register.mcare.domain.Elco;
 import org.opensrp.register.mcare.domain.Mother;
-import org.opensrp.register.mcare.repository.AllElcos;
+import org.opensrp.register.mcare.repository.AllHouseHolds;
 import org.opensrp.register.mcare.repository.AllMothers;
 import org.opensrp.register.mcare.service.scheduling.ANCSchedulesService;
 import org.opensrp.register.mcare.service.scheduling.ScheduleLogService;
@@ -40,15 +38,15 @@ public class ANCService {
 
 	private static Logger logger = LoggerFactory.getLogger(ANCService.class
 			.toString());
-	private AllElcos allElcos;
+	private AllHouseHolds allHouseHolds;
 	private AllMothers allMothers;
 	private ANCSchedulesService ancSchedulesService;
 	private ActionService actionService;
 	private ScheduleLogService scheduleLogService;
 	@Autowired
-	public ANCService(AllElcos allElcos, AllMothers allMothers,
+	public ANCService(AllHouseHolds allHouseHolds, AllMothers allMothers,
 			ANCSchedulesService ancSchedulesService, ActionService actionService,ScheduleLogService scheduleLogService) {
-		this.allElcos = allElcos;
+		this.allHouseHolds = allHouseHolds;
 		this.allMothers = allMothers;
 		this.ancSchedulesService = ancSchedulesService;
 		this.actionService = actionService;
@@ -60,7 +58,7 @@ public class ANCService {
 				.getField(AllConstants.ANCFormFields.MCARE_MOTHER_ID);
 
 		Mother mother = allMothers.findByCaseId(motherId);		
-		if (!allElcos.exists(submission.entityId())) {
+		if (!allHouseHolds.exists(submission.entityId())) {
 			logger.warn(format(
 					"Found mother without registered eligible couple. Ignoring: {0} for mother with id: {1} for ANM: {2}",
 					submission.entityId(), motherId, submission.anmId()));
@@ -461,15 +459,10 @@ public class ANCService {
 	}
 	
 	public void closeMother(Mother mother) {
-
 		mother.setIsClosed(true);
 		allMothers.update(mother);
 		ancSchedulesService.unEnrollFromAllSchedules(mother.caseId());
 
-		Elco elco = allElcos.findByCaseId(mother.relationalid());
-		logger.info("Closing EC case along with PNC case. Ec Id: "+ elco.caseId());
-		elco.setIsClosed(true);
-		allElcos.update(elco);
 	}
 
 	public void deleteBlankMother(FormSubmission submission){

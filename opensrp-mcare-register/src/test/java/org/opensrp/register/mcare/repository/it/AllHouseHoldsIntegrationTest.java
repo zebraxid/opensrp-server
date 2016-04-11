@@ -1,17 +1,8 @@
 package org.opensrp.register.mcare.repository.it;
 
-import static java.util.Arrays.asList;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.opensrp.common.util.EasyMap.create;
-
-import java.util.List;
-
 import org.junit.Before;
-import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.opensrp.register.mcare.domain.HouseHold;
-import org.opensrp.register.mcare.repository.AllElcos;
+import org.opensrp.register.mcare.repository.AllMothers;
 import org.opensrp.register.mcare.repository.AllHouseHolds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -24,12 +15,12 @@ public class AllHouseHoldsIntegrationTest {
 	@Autowired
     private AllHouseHolds allHouseHolds;
 	@Autowired
-    private AllElcos allElcos;
+    private AllMothers allMothers;
 	
     @Before
     public void setUp() throws Exception {
     	allHouseHolds.removeAll();
-    	allElcos.removeAll();
+    	allMothers.removeAll();
     }
     
   /*  @Test

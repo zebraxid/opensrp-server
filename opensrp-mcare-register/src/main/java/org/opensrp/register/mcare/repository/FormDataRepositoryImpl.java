@@ -4,7 +4,6 @@ import static java.text.MessageFormat.format;
 import static java.util.UUID.randomUUID;
 
 import java.lang.reflect.Field;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -19,14 +18,11 @@ import org.codehaus.jackson.node.ObjectNode;
 import org.ektorp.CouchDbConnector;
 import org.ektorp.ViewQuery;
 import org.ektorp.ViewResult;
-import org.joda.time.DateTime;
 import org.opensrp.common.AllConstants;
 import org.opensrp.register.mcare.domain.Child;
-import org.opensrp.register.mcare.domain.Elco;
 import org.opensrp.register.mcare.domain.HouseHold;
 import org.opensrp.register.mcare.domain.Mother;
 import org.opensrp.repository.FormDataRepository;
-import org.opensrp.service.formSubmission.ZiggyService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,19 +65,17 @@ public class FormDataRepositoryImpl extends FormDataRepository{
         fieldSetMap = new HashMap<>();
         
         designDocMap.put(AllConstants.FormEntityTypes.HOUSE_HOLD_TYPE, "HouseHold");
-        designDocMap.put(AllConstants.FormEntityTypes.ELCO_TYPE, "Elco");
         designDocMap.put(AllConstants.FormEntityTypes.MCARE_MOTHER_TYPE, "Mother");
         designDocMap.put(AllConstants.FormEntityTypes.CHILD_TYPE, "Child");
         designDocMap.put(AllConstants.FormEntityTypes.MCARE_CHILD_TYPE, "Child");
         fieldSetMap.put(AllConstants.FormEntityTypes.HOUSE_HOLD_TYPE, HouseHold.class.getDeclaredFields());
-        fieldSetMap.put(AllConstants.FormEntityTypes.ELCO_TYPE, Elco.class.getDeclaredFields());
         fieldSetMap.put(AllConstants.FormEntityTypes.MCARE_MOTHER_TYPE, Mother.class.getDeclaredFields());
         fieldSetMap.put(AllConstants.FormEntityTypes.CHILD_TYPE, Child.class.getDeclaredFields());
         fieldSetMap.put(AllConstants.FormEntityTypes.MCARE_CHILD_TYPE, Child.class.getDeclaredFields());
     }
 
     public String saveEntity(String entityType, String fields) {
-    	if(!entityType.equalsIgnoreCase("HouseHold") && !entityType.equalsIgnoreCase("Elco")
+    	if(!entityType.equalsIgnoreCase("HouseHold")
     			&& !entityType.equalsIgnoreCase("Mother") && !entityType.equalsIgnoreCase("mcareMother")
     			&& !entityType.equalsIgnoreCase("Child")  && !entityType.equalsIgnoreCase("mcareChild"))
 	    {

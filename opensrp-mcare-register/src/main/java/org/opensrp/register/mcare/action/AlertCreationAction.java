@@ -19,12 +19,10 @@ import org.opensrp.common.AllConstants.ELCOSchedulesConstantsImediate;
 import org.opensrp.domain.Multimedia;
 import org.opensrp.dto.BeneficiaryType;
 import org.opensrp.register.mcare.OpenSRPScheduleConstants.ELCOSchedulesConstants;
-import org.opensrp.register.mcare.domain.Elco;
 import org.opensrp.register.mcare.domain.HouseHold;
 import org.opensrp.register.mcare.domain.Mother;
 import org.opensrp.register.mcare.domain.Child;
 import org.opensrp.register.mcare.repository.AllChilds;
-import org.opensrp.register.mcare.repository.AllElcos;
 import org.opensrp.register.mcare.repository.AllHouseHolds;
 import org.opensrp.register.mcare.repository.AllMothers;
 import org.opensrp.register.mcare.service.MultimediaRegisterService;
@@ -43,7 +41,6 @@ import org.springframework.stereotype.Component;
 public class AlertCreationAction implements HookedEvent {
 	private HealthSchedulerService scheduler;
 	private AllHouseHolds allHouseHolds;
-	private AllElcos allElcos;
 	private AllMothers allMothers;
 	private AllChilds allChilds;
 	private ScheduleLogService scheduleLogService;
@@ -51,12 +48,11 @@ public class AlertCreationAction implements HookedEvent {
 	private static Logger logger = LoggerFactory.getLogger(AlertCreationAction.class.toString());
 	@Autowired
 	public AlertCreationAction(HealthSchedulerService scheduler,
-			AllHouseHolds allHouseHolds, AllElcos allElcos,
+			AllHouseHolds allHouseHolds, 
 			AllMothers allMothers, AllChilds allChilds,
 			ScheduleLogService scheduleLogService, MultimediaRegisterService multimediaRegisterService) {
 		this.scheduler = scheduler;
 		this.allHouseHolds = allHouseHolds;
-		this.allElcos = allElcos;
 		this.allMothers = allMothers;
 		this.allChilds = allChilds;
 		this.scheduleLogService = scheduleLogService;
@@ -82,15 +78,6 @@ public class AlertCreationAction implements HookedEvent {
 				instanceId= houseHold.INSTANCEID();
 				providerId = houseHold.PROVIDERID();
 				startOfEarliestWindow = DateTime.parse(houseHold.TODAY(),formatter);
-			}
-		} else if (elco.equals(beneficiaryType)) {
-			
-			Elco elco = allElcos.findByCaseId(caseID);
-			
-			if (elco != null) {
-				instanceId= elco.INSTANCEID();
-				providerId = elco.PROVIDERID();
-				startOfEarliestWindow = DateTime.parse(elco.TODAY(),formatter);
 			}
 		}
 		else if(mother.equals(beneficiaryType))

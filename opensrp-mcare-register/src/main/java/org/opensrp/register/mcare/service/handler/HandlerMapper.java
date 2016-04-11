@@ -24,7 +24,6 @@ public class HandlerMapper implements IHandlerMapper {
 	public HandlerMapper(  
 			AllFormSubmissions formSubmissionsRepository,
 			HHRegistrationHandler hhRegistrationHandler,
-			ELCOHandler elcoHandler,PSRFHandler psrfHandler,
 			ANCVisitOneHandler ancVisitOneHandler,
 			ANCVisitTwoHandler ancVisitTwoHandler,
 			ANCVisitThreeHandler ancVisitThreeHandler,
@@ -39,8 +38,6 @@ public class HandlerMapper implements IHandlerMapper {
 			)
 	{
 		handlerMap = EasyMap.create(HH_REGISTRATION, (FormSubmissionHandler) hhRegistrationHandler)
-				     .put(ELCO_REGISTRATION, elcoHandler)
-				     .put(PSRF_FORM, psrfHandler)
 				     .put(ANC_REMINDER_VISIT_1, ancVisitOneHandler)
 				     .put(ANC_REMINDER_VISIT_2, ancVisitTwoHandler)
 				     .put(ANC_REMINDER_VISIT_3, ancVisitThreeHandler)

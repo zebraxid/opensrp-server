@@ -1,7 +1,6 @@
 package org.opensrp.register.mcare.service.handler;
 
 import org.opensrp.form.domain.FormSubmission;
-import org.opensrp.register.mcare.service.ELCOService;
 import org.opensrp.register.mcare.service.HHService;
 import org.opensrp.service.formSubmission.handler.FormSubmissionHandler;
 import org.springframework.beans.factory.annotation.Autowired;

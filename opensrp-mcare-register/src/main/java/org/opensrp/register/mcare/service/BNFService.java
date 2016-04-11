@@ -25,7 +25,6 @@ import org.joda.time.LocalDate;
 import org.opensrp.common.AllConstants;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.register.mcare.domain.Mother;
-import org.opensrp.register.mcare.repository.AllElcos;
 import org.opensrp.register.mcare.repository.AllMothers;
 import org.opensrp.register.mcare.service.scheduling.BNFSchedulesService;
 import org.opensrp.register.mcare.service.scheduling.ScheduleLogService;
@@ -40,16 +39,14 @@ public class BNFService {
 	private static Logger logger = LoggerFactory.getLogger(BNFService.class
 			.toString());
 	
-	private AllElcos allElcos;
 	private AllMothers allMothers;
 	private BNFSchedulesService bnfSchedulesService;
 	private PNCService pncService;
 	private ScheduleLogService scheduleLogService;
 	
 	@Autowired
-	public BNFService(AllElcos allElcos, AllMothers allMothers, BNFSchedulesService bnfSchedulesService, PNCService pncService,ScheduleLogService scheduleLogService)
+	public BNFService(AllMothers allMothers, BNFSchedulesService bnfSchedulesService, PNCService pncService,ScheduleLogService scheduleLogService)
 	{
-		this.allElcos = allElcos;
 		this.allMothers = allMothers;
 		this.bnfSchedulesService = bnfSchedulesService;
 		this.pncService = pncService;
@@ -62,13 +59,6 @@ public class BNFService {
 				.getField(AllConstants.ANCFormFields.MCARE_MOTHER_ID);
 		
 		Mother mother = allMothers.findByCaseId(motherId);
-		
-		if (!allElcos.exists(submission.entityId())) {
-			logger.warn(format(
-					"Found mother without registered eligible couple. Ignoring: {0} for mother with id: {1} for ANM: {2}",
-					submission.entityId(), motherId, submission.anmId()));
-			return;
-		}
 
 		mother.withPROVIDERID(submission.anmId());
 		mother.withINSTANCEID(submission.instanceId());

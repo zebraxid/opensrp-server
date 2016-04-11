@@ -1,8 +1,6 @@
 package org.opensrp.register.mcare.service;
 
 import static java.text.MessageFormat.format;
-import static org.opensrp.common.AllConstants.Form.HH_REGISTRATION;
-import static org.opensrp.common.AllConstants.Form.ELCO_REGISTRATION;
 import static org.opensrp.common.AllConstants.CommonFormFields.ID;
 import static org.opensrp.common.AllConstants.ELCORegistrationFields.*;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.ELCO_REGISTRATION_SUB_FORM_NAME;
@@ -18,29 +16,22 @@ import static org.opensrp.common.AllConstants.HHRegistrationFields.existing_Ward
 import static org.opensrp.common.AllConstants.HHRegistrationFields.existing_Subunit;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.existing_Mauzapara;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.received_time;
-import static org.opensrp.common.AllConstants.PSRFFields.FW_CONFIRMATION;
-import static org.opensrp.common.AllConstants.PSRFFields.FW_PSRDATE;
 import static org.opensrp.common.util.EasyMap.create;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.joda.time.DateTime;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.form.domain.SubFormData;
-import org.opensrp.register.mcare.domain.Elco;
+import org.opensrp.register.mcare.domain.Mother;
 import org.opensrp.register.mcare.domain.HouseHold;
-import org.opensrp.register.mcare.repository.AllElcos;
+import org.opensrp.register.mcare.repository.AllMothers;
 import org.opensrp.register.mcare.repository.AllHouseHolds;
 import org.opensrp.register.mcare.service.scheduling.HHSchedulesService;
 import org.opensrp.register.mcare.service.scheduling.ScheduleLogService;
-import org.opensrp.scheduler.ScheduleRules;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,14 +43,14 @@ public class HHService {
 	private static Logger logger = LoggerFactory.getLogger(HHService.class
 			.toString());
 	private AllHouseHolds allHouseHolds;
-	private ELCOService elcoService;
+	private ANCService ancService;
 	private HHSchedulesService hhSchedulesService;
 	private ScheduleLogService scheduleLogService;	 
 	@Autowired
-	public HHService(AllHouseHolds allHouseHolds, ELCOService elcoService,
+	public HHService(AllHouseHolds allHouseHolds, ANCService ancService,
 			HHSchedulesService hhSchedulesService,ScheduleLogService scheduleLogService) {
 		this.allHouseHolds = allHouseHolds;
-		this.elcoService = elcoService;
+		this.ancService = ancService;
 		this.hhSchedulesService = hhSchedulesService;	
 		this.scheduleLogService = scheduleLogService;
 	}	
@@ -95,7 +86,7 @@ public class HHService {
 			logger.info("Rule Defination Not Found for Cencus");
 		}
 		
-		elcoService.registerELCO(submission);
+		ancService.registerANC(submission);
 	}
 	
 	private void addDetailsToHH(FormSubmission submission,

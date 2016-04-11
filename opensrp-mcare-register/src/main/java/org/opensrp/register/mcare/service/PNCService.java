@@ -28,13 +28,10 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.form.domain.SubFormData;
-import org.opensrp.register.mcare.domain.Elco;
 import org.opensrp.register.mcare.domain.Mother;
 import org.opensrp.register.mcare.domain.Child;
 import org.opensrp.register.mcare.repository.AllChilds;
-import org.opensrp.register.mcare.repository.AllElcos;
 import org.opensrp.register.mcare.repository.AllMothers;
-import org.opensrp.register.mcare.service.scheduling.ELCOScheduleService;
 import org.opensrp.register.mcare.service.scheduling.ChildSchedulesService;
 import org.opensrp.register.mcare.service.scheduling.PNCSchedulesService;
 import org.opensrp.register.mcare.service.scheduling.ScheduleLogService;
@@ -48,20 +45,16 @@ public class PNCService {
 
 	private static Logger logger = LoggerFactory.getLogger(ANCService.class
 			.toString());
-	private AllElcos allElcos;
 	private AllMothers allMothers;
 	private AllChilds allChilds;
-	private ELCOScheduleService elcoSchedulesService;
 	private PNCSchedulesService pncSchedulesService;
 	private ChildSchedulesService childSchedulesService;
 	private ScheduleLogService scheduleLogService;
 
 	@Autowired
-	public PNCService(AllElcos allElcos, AllMothers allMothers, AllChilds allChilds, ELCOScheduleService elcoSchedulesService, PNCSchedulesService pncSchedulesService, ChildSchedulesService childSchedulesService,ScheduleLogService scheduleLogService) {
-		this.allElcos = allElcos;
+	public PNCService(AllMothers allMothers, AllChilds allChilds, PNCSchedulesService pncSchedulesService, ChildSchedulesService childSchedulesService,ScheduleLogService scheduleLogService) {
 		this.allMothers = allMothers;
 		this.allChilds = allChilds;
-		this.elcoSchedulesService = elcoSchedulesService;
 		this.pncSchedulesService = pncSchedulesService;
 		this.childSchedulesService = childSchedulesService;
 		this.scheduleLogService = scheduleLogService;
@@ -86,12 +79,6 @@ public class PNCService {
 						submission.entityId()));
 				return;
 			}
-			
-			Elco elco = allElcos.findByCaseId(mother.relationalid());
-			logger.info("Closing EC case. Ec Id: "+ elco.caseId());
-			elco.setIsClosed(false);
-			allElcos.update(elco);
-			elcoSchedulesService.imediateEnrollIntoMilestoneOfPSRF(elco.caseId(), elco.TODAY(), elco.PROVIDERID(),elco.INSTANCEID());
 								
 			if (submission.getField(FWBNFSTS).equals(STS_WD)) {
 				logger.info("Closing Mother as the mother died during delivery. Mother Id: "
@@ -291,15 +278,9 @@ public class PNCService {
 	}
 	
 	public void closeMother(Mother mother) {
-
 		mother.setIsClosed(true);
 		allMothers.update(mother);
 		pncSchedulesService.unEnrollFromAllSchedules(mother.caseId());
-
-		Elco elco = allElcos.findByCaseId(mother.relationalid());
-		logger.info("Closing EC case along with PNC case. Ec Id: "+ elco.caseId());
-		elco.setIsClosed(true);
-		allElcos.update(elco);
 	}
 	
 	public void deleteBlankChild(FormSubmission submission){

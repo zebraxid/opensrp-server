@@ -7,16 +7,12 @@ import java.util.List;
 
 import org.opensrp.dto.CountServiceDTO;
 import org.opensrp.dto.register.ANC_RegisterDTO;
-import org.opensrp.dto.register.ELCORegisterDTO;
 import org.opensrp.dto.register.HHRegisterDTO;
 import org.opensrp.register.mcare.ANCRegister;
-import org.opensrp.register.mcare.ELCORegister;
 import org.opensrp.register.mcare.HHRegister;
 import org.opensrp.register.mcare.mapper.ANCRegisterMapper;
-import org.opensrp.register.mcare.mapper.ELCORegisterMapper;
 import org.opensrp.register.mcare.mapper.HHRegisterMapper;
 import org.opensrp.register.mcare.service.ANCRegisterService;
-import org.opensrp.register.mcare.service.ELCORegisterService;
 import org.opensrp.register.mcare.service.HHRegisterService;
 import org.opensrp.register.mcare.service.MultimediaRegisterService;
 import org.opensrp.service.DataCountService;
@@ -35,25 +31,21 @@ import com.google.gson.Gson;
 public class RegisterController {
 
 	private static final RequestMethod[] GET = null;
-	private ELCORegisterService ecRegisterService;
 	private HHRegisterService hhRegisterService;
 	private ANCRegisterService ancRegisterService;
-	private ELCORegisterMapper ecRegisterMapper;
 	private HHRegisterMapper hhRegisterMapper;
 	private ANCRegisterMapper ancRegisterMapper;
 	private MultimediaRegisterService multimediaRegisterService;
 	private DataCountService dataCountService;
 	 
 	@Autowired
-	public RegisterController(ELCORegisterService ecRegisterService,
-			HHRegisterService hhRegisterService, ELCORegisterMapper ecRegisterMapper,
-			HHRegisterMapper hhRegisterMapper,ANCRegisterService ancRegisterService,
+	public RegisterController(HHRegisterService hhRegisterService, 
+			HHRegisterMapper hhRegisterMapper,
+			ANCRegisterService ancRegisterService,
 			ANCRegisterMapper ancRegisterMapper, 
 			MultimediaRegisterService multimediaRegisterService,
 			DataCountService dataCountService) {
-		this.ecRegisterService = ecRegisterService;
 		this.hhRegisterService = hhRegisterService;
-		this.ecRegisterMapper = ecRegisterMapper;
 		this.hhRegisterMapper = hhRegisterMapper;
 		this.ancRegisterService = ancRegisterService;
 		this.ancRegisterMapper = ancRegisterMapper;
@@ -66,13 +58,6 @@ public class RegisterController {
     public ResponseEntity<HHRegisterDTO> hhRegister(@RequestParam("anm-id") String anmIdentifier) {
         HHRegister hhRegister = hhRegisterService.getHHRegisterForProvider(anmIdentifier);
         return new ResponseEntity<>(hhRegisterMapper.mapToDTO(hhRegister), HttpStatus.OK);
-    }
-
-    @RequestMapping(method = RequestMethod.GET, value = "/registers/ec")
-    @ResponseBody
-    public ResponseEntity<ELCORegisterDTO> ecRegister(@RequestParam("anm-id") String anmIdentifier) {
-        ELCORegister ecRegister = ecRegisterService.getELCORegisterForProvider(anmIdentifier);
-        return new ResponseEntity<>(ecRegisterMapper.mapToDTO(ecRegister), HttpStatus.OK);
     }
 		
   /*  private ANCRegisterService ancRegisterService;

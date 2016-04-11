@@ -5,7 +5,6 @@ import static org.opensrp.common.AllConstants.FormEntityTypes.HOUSE_HOLD_TYPE;
 
 import org.opensrp.common.domain.Location;
 import org.opensrp.register.mcare.domain.HouseHold;
-import org.opensrp.register.mcare.repository.AllElcos;
 import org.opensrp.register.mcare.repository.AllHouseHolds;
 import org.opensrp.service.reporting.ILocationLoader;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,12 +13,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class LocationLoader implements ILocationLoader {
 	private AllHouseHolds allHouseHolds;
-	private AllElcos allElcos;
 
     @Autowired
-    public LocationLoader(AllHouseHolds allHouseHolds, AllElcos allElcos) {
+    public LocationLoader(AllHouseHolds allHouseHolds) {
         this.allHouseHolds = allHouseHolds;
-        this.allElcos = allElcos;
     }
 
     @Override

@@ -1,4 +1,4 @@
-package org.opensrp.rest.it;
+/*package org.opensrp.rest.it;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -74,3 +74,4 @@ public class LuceneMotherRepositoryTest {
     } 
 
 }
+*/

@@ -35,6 +35,10 @@ public class AllHouseHolds extends MotechBaseRepository<HouseHold> {
 		}
 		return houseHolds.get(0);
 	}
+	
+	public boolean exists(String caseId) {
+		return findByCaseId(caseId) != null;
+	}
 
 	@View(name = "all_households", map = "function(doc) { if (doc.type === 'HouseHold') { emit(doc.PROVIDERID, doc.caseId); } }")
 	public List<HouseHold> findAllHouseHolds() {
