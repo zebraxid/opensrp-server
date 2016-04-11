@@ -21,6 +21,7 @@ import org.ektorp.ViewResult;
 import org.opensrp.common.AllConstants;
 import org.opensrp.register.mcare.domain.Child;
 import org.opensrp.register.mcare.domain.HouseHold;
+import org.opensrp.register.mcare.domain.Members;
 import org.opensrp.register.mcare.domain.Mother;
 import org.opensrp.repository.FormDataRepository;
 import org.slf4j.Logger;
@@ -66,19 +67,15 @@ public class FormDataRepositoryImpl extends FormDataRepository{
         
         designDocMap.put(AllConstants.FormEntityTypes.HOUSE_HOLD_TYPE, "HouseHold");
         designDocMap.put(AllConstants.FormEntityTypes.MCARE_MOTHER_TYPE, "Mother");
-        designDocMap.put(AllConstants.FormEntityTypes.CHILD_TYPE, "Child");
         designDocMap.put(AllConstants.FormEntityTypes.MCARE_CHILD_TYPE, "Child");
+        designDocMap.put(AllConstants.FormEntityTypes.MEMBER_TYPE, "Members");        
         fieldSetMap.put(AllConstants.FormEntityTypes.HOUSE_HOLD_TYPE, HouseHold.class.getDeclaredFields());
         fieldSetMap.put(AllConstants.FormEntityTypes.MCARE_MOTHER_TYPE, Mother.class.getDeclaredFields());
-        fieldSetMap.put(AllConstants.FormEntityTypes.CHILD_TYPE, Child.class.getDeclaredFields());
         fieldSetMap.put(AllConstants.FormEntityTypes.MCARE_CHILD_TYPE, Child.class.getDeclaredFields());
+        fieldSetMap.put(AllConstants.FormEntityTypes.MEMBER_TYPE, Members.class.getDeclaredFields());
     }
 
     public String saveEntity(String entityType, String fields) {
-    	if(!entityType.equalsIgnoreCase("HouseHold")
-    			&& !entityType.equalsIgnoreCase("Mother") && !entityType.equalsIgnoreCase("mcareMother")
-    			&& !entityType.equalsIgnoreCase("Child")  && !entityType.equalsIgnoreCase("mcareChild"))
-	    {
 	        Map<String, String> updatedFieldsMap = getStringMapFromJSON(fields);
 	        String entityId = updatedFieldsMap.get(ID);
 	        String docEntityType = designDocMap.get(entityType);
@@ -125,56 +122,6 @@ public class FormDataRepositoryImpl extends FormDataRepository{
 	        db.update(entity);
 	        logger.info(format("Update form successful, with params: {0}.",entityType ));
 	        return entityId;
-	    }
-    	else{
-            Map<String, String> updatedFieldsMap = getStringMapFromJSON(fields);
-            String entityId = updatedFieldsMap.get(ID);
-            String docEntityType = designDocMap.get(entityType);
-
-            List<ViewResult.Row> viewQueryResult = getDBViewQueryResult(entityId, docEntityType);
-
-            ObjectNode entity;
-           // ObjectNode details;
-            if (viewQueryResult.size() != 0) {
-                JsonNode document = viewQueryResult.get(0).getDocAsNode();
-                entity = (ObjectNode) document;
-                //details = (ObjectNode) document.get(DETAILS);
-            } else {
-                entity = new ObjectNode(JsonNodeFactory.instance);
-                //details = new ObjectNode(JsonNodeFactory.instance);
-                entity.put("_id", randomUUID().toString());
-                entity.put(DOCUMENT_TYPE, docEntityType);
-            }
-
-            List<String> fieldList = getFieldsList(entityType);
-            for (String fieldName : updatedFieldsMap.keySet()) {
-            	
-                if (fieldList.contains(fieldName)) {
-                    entity.put(fieldName, updatedFieldsMap.get(fieldName));
-                } else if (fieldName.equals(ID)) {
-                    entity.put(ID_FIELD_ON_ENTITY, updatedFieldsMap.get(fieldName));
-                }else if (fieldName.equals(TODAY)) {
-                    entity.put(TODAY_FIELD_ON_ENTITY, updatedFieldsMap.get(fieldName));
-                }else if (fieldName.equals(LOCATIONID)) {
-                    entity.put(LOCATIONID_FIELD_ON_ENTITY, updatedFieldsMap.get(fieldName));
-                }else if (fieldName.equals(START)) {
-                    entity.put(START_FIELD_ON_ENTITY, updatedFieldsMap.get(fieldName));
-                }else if (fieldName.equals(END)) {
-                    entity.put(END_FIELD_ON_ENTITY, updatedFieldsMap.get(fieldName));
-                }
-                else {
-                    //details.put(fieldName, updatedFieldsMap.get(fieldName));
-                }
-            }
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        	Date today = Calendar.getInstance().getTime();    	
-            //details.put(RECEIVEDTIME,format.format(today).toString());
-            //if(!entityType.equalsIgnoreCase("HouseHold") && !entityType.equalsIgnoreCase("Elco"))
-            	//entity.put(DETAILS, details);
-            db.update(entity);
-            logger.info(format("Update form successful, with params: {0}.",entityType ));
-            return entityId;
-    	}
     }
 
     private List<ViewResult.Row> getDBViewQueryResult(String id, String docEntityType) {

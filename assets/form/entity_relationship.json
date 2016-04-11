@@ -1,27 +1,19 @@
 [
   {
     "parent": "household",
-    "child": "elco",
+    "child": "members",
     "field": "wife",
     "kind": "one_to_many",
     "from": "household.id",
-    "to": "elco.relationalid"
+    "to": "members.relationalid"
   },
   {
     "parent": "elco",
-    "child": "mcaremother",
+    "child": "child",
     "field": "child",
     "kind": "one_to_many",
     "from": "elco.id",
-    "to": "mcaremother.relationalid"
-  },
-  {
-    "parent": "mcaremother",
-    "child": "mcarechild",
-    "field": "child",
-    "kind": "one_to_many",
-    "from": "mcaremother.id",
-    "to": "mcarechild.relationalid"
+    "to": "child.motherCaseId"
   },
   {
     "parent": "eligible_couple",

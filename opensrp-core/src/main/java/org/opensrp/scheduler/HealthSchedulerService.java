@@ -5,7 +5,7 @@ import static org.opensrp.dto.AlertStatus.upcoming;
 import static org.opensrp.dto.AlertStatus.urgent;
 import static org.opensrp.dto.AlertStatus.expired;
 import static org.opensrp.dto.BeneficiaryType.household;
-import static org.opensrp.dto.BeneficiaryType.elco;
+import static org.opensrp.dto.BeneficiaryType.members;
 
 import java.util.List;
 
@@ -107,7 +107,7 @@ public class HealthSchedulerService {
 			String providerId, String schedule, String milestone, DateTime  startOfEarliestWindow,
 			DateTime startOfDueWindow, DateTime startOfLateWindow, DateTime startOfMaxWindow) {
 		
-		if(WindowName.max.toString().equals(windowName) && (!elco.equals(beneficiaryType) || !household.equals(beneficiaryType))){
+		if(WindowName.max.toString().equals(windowName) && (!members.equals(beneficiaryType) || !household.equals(beneficiaryType))){
 			actionService.alertForBeneficiary(beneficiaryType, entityId, instanceId, providerId, schedule, milestone, expired, startOfMaxWindow, startOfMaxWindow.plusDays(1));
 			
 		} else if (WindowName.late.toString().equals(windowName)) {

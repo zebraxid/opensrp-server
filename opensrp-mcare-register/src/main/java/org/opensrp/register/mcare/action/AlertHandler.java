@@ -67,11 +67,11 @@ public class AlertHandler {
 				"beneficiaryType", "household");
 
 		scheduler.addHookedEvent(
-				elcoSchedules(),
+				membersSchedules(),
 				any(),
 				anyOf(earliest.toString(), due.toString(), late.toString(),
 						max.toString()), alertCreation).addExtraData(
-				"beneficiaryType", "elco");
+				"beneficiaryType", "members");
 		
 		scheduler.addHookedEvent(
 				motherSchedules(),
@@ -125,7 +125,7 @@ public class AlertHandler {
 		return anyOf(HH_SCHEDULE_CENSUS);
 
 	}
-	private Matcher elcoSchedules() {
+	private Matcher membersSchedules() {
 		return anyOf(ELCO_SCHEDULE_PSRF);
 	}
 

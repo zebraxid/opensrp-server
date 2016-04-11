@@ -1,6 +1,5 @@
 package org.opensrp.register.mcare.service.reporting;
 
-import static org.opensrp.common.AllConstants.FormEntityTypes.ELCO_TYPE;
 import static org.opensrp.common.AllConstants.FormEntityTypes.HOUSE_HOLD_TYPE;
 
 import org.opensrp.common.domain.Location;
@@ -23,18 +22,11 @@ public class LocationLoader implements ILocationLoader {
     public Location loadLocationFor(String bindType, String caseId) {
         if (bindType.equalsIgnoreCase(HOUSE_HOLD_TYPE))
             return loadLocationForHouseHold(caseId);
-        if (bindType.equalsIgnoreCase(ELCO_TYPE))
-            return loadLocationForElco(caseId);
        
         return null;
     }
     
     private Location loadLocationForHouseHold(String caseId) {
-        HouseHold houseHold = allHouseHolds.findByCaseId(caseId);
-        //return couple.location();
-        return new Location(houseHold.LOCATIONID(), houseHold.LOCATIONID(), houseHold.LOCATIONID());
-    }
-    private Location loadLocationForElco(String caseId) {
         HouseHold houseHold = allHouseHolds.findByCaseId(caseId);
         //return couple.location();
         return new Location(houseHold.LOCATIONID(), houseHold.LOCATIONID(), houseHold.LOCATIONID());

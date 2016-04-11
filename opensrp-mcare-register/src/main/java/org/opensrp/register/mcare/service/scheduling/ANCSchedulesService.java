@@ -4,7 +4,7 @@
 package org.opensrp.register.mcare.service.scheduling;
 
 import static java.text.MessageFormat.format;
-import static org.opensrp.dto.BeneficiaryType.elco;
+import static org.opensrp.dto.BeneficiaryType.members;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_ANC;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_ANC_1;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_ANC_2;

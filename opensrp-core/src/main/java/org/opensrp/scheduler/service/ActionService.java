@@ -2,7 +2,7 @@ package org.opensrp.scheduler.service;
 
 import static org.opensrp.dto.BeneficiaryType.child;
 import static org.opensrp.dto.BeneficiaryType.ec;
-import static org.opensrp.dto.BeneficiaryType.elco;
+import static org.opensrp.dto.BeneficiaryType.members;
 import static org.opensrp.dto.BeneficiaryType.household;
 import static org.opensrp.dto.BeneficiaryType.mother;
 
@@ -49,10 +49,10 @@ public class ActionService {
 		return allActions.findByCaseIdScheduleAndTimeStamp(caseId, schedule, start, end);
 	}
     public void alertForBeneficiary(BeneficiaryType beneficiaryType, String caseID, String instanceId,  String anmIdentifier, String scheduleName, String visitCode, AlertStatus alertStatus, DateTime startDate, DateTime expiryDate) {
-    	if (!(mother.equals(beneficiaryType)||child.equals(beneficiaryType)||ec.equals(beneficiaryType)||household.equals(beneficiaryType) || elco.equals(beneficiaryType))) {
+    	if (!(mother.equals(beneficiaryType)||child.equals(beneficiaryType)||ec.equals(beneficiaryType)||household.equals(beneficiaryType) || members.equals(beneficiaryType))) {
             throw new IllegalArgumentException("Beneficiary Type : " + beneficiaryType + " is of unknown type");
         }
-    	if(scheduleName.equals(ScheduleNames.BNF) || scheduleName.equals(ScheduleNames.CENCUS) || scheduleName.equals(ScheduleNames.ELCO)){
+    	if(scheduleName.equals(ScheduleNames.BNF) || scheduleName.equals(ScheduleNames.CENCUS) || scheduleName.equals(ScheduleNames.MEMBERS)){
     		this.ActionUpdateOrCreateForOther(beneficiaryType, caseID, instanceId, anmIdentifier, scheduleName, visitCode, alertStatus, startDate, expiryDate);
     		
     	}else if(scheduleName.equals(ScheduleNames.ANC) || scheduleName.equals(ScheduleNames.PNC) || scheduleName.equals(ScheduleNames.CHILD)){

@@ -151,8 +151,6 @@ public class AllConstants {
     	public static final String FW_LOCATIONID ="LOCATIONID";
     	public static final String relationalid ="relationalid";
     	public static final String FW_TODAY ="TODAY";
-    	public static final String START_DATE = "start";
-    	public static final String END_DATE = "end";
     	public static final String FW_GOBHHID ="GOBHHID";
     	public static final String FW_JiVitAHHID ="JiVitAHHID";
     	public static final String existing_ELCO ="existing_ELCO";
@@ -936,7 +934,7 @@ public class AllConstants {
         public static final String MCTS_REPORT_TYPE = "MCTSReport";
         
         public static final String HOUSE_HOLD_TYPE = "household";
-        public static final String ELCO_TYPE = "elco";
+        public static final String MEMBER_TYPE = "members";
         public static final String MCARE_MOTHER_TYPE = "mcaremother";
     }
 
@@ -951,7 +949,7 @@ public class AllConstants {
     }
     
     public static class ScheduleNames{
-    	public static final String ELCO = "ELCO PSRF";
+    	public static final String MEMBERS = "Members PSRF";
     	public static final String BNF = "BirthNotificationPregnancyStatusFollowUp";
     	public static final String CENCUS = "FW CENSUS";
     	public static final String ANC = "Ante Natal Care Reminder Visit";

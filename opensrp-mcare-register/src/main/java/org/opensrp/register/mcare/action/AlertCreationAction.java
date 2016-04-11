@@ -2,7 +2,7 @@ package org.opensrp.register.mcare.action;
 
 import static org.opensrp.common.AllConstants.BnfFollowUpVisitFields.SCHEDULE_BNF_IME;
 import static org.opensrp.dto.BeneficiaryType.child;
-import static org.opensrp.dto.BeneficiaryType.elco;
+import static org.opensrp.dto.BeneficiaryType.members;
 import static org.opensrp.dto.BeneficiaryType.household;
 import static org.opensrp.dto.BeneficiaryType.mother;
 
@@ -78,6 +78,16 @@ public class AlertCreationAction implements HookedEvent {
 				instanceId= houseHold.INSTANCEID();
 				providerId = houseHold.PROVIDERID();
 				startOfEarliestWindow = DateTime.parse(houseHold.TODAY(),formatter);
+			}
+		}
+		else if(mother.equals(beneficiaryType))
+		{
+			Mother mother = allMothers.findByCaseId(caseID);
+			
+			if (mother != null) {
+				instanceId= mother.INSTANCEID();
+				providerId = mother.PROVIDERID();
+				startOfEarliestWindow = DateTime.parse(mother.TODAY(),formatter);
 			}
 		}
 		else if(mother.equals(beneficiaryType))

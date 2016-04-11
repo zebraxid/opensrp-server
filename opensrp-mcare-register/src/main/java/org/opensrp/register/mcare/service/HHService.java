@@ -5,6 +5,8 @@ import static org.opensrp.common.AllConstants.CommonFormFields.ID;
 import static org.opensrp.common.AllConstants.ELCORegistrationFields.*;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.ELCO_REGISTRATION_SUB_FORM_NAME;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.REFERENCE_DATE;
+import static org.opensrp.common.AllConstants.HHRegistrationFields.START_DATE;
+import static org.opensrp.common.AllConstants.HHRegistrationFields.END_DATE;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.FW_UPAZILLA;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.existing_location;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.existing_Country;
@@ -16,6 +18,7 @@ import static org.opensrp.common.AllConstants.HHRegistrationFields.existing_Ward
 import static org.opensrp.common.AllConstants.HHRegistrationFields.existing_Subunit;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.existing_Mauzapara;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.received_time;
+
 import static org.opensrp.common.util.EasyMap.create;
 
 import java.text.SimpleDateFormat;
@@ -26,9 +29,7 @@ import java.util.Map;
 
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.form.domain.SubFormData;
-import org.opensrp.register.mcare.domain.Mother;
 import org.opensrp.register.mcare.domain.HouseHold;
-import org.opensrp.register.mcare.repository.AllMothers;
 import org.opensrp.register.mcare.repository.AllHouseHolds;
 import org.opensrp.register.mcare.service.scheduling.HHSchedulesService;
 import org.opensrp.register.mcare.service.scheduling.ScheduleLogService;
