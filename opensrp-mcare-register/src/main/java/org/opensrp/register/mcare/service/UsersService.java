@@ -29,23 +29,43 @@ public class UsersService {
 
 	private static Logger logger = LoggerFactory.getLogger(UsersService.class);
 	private AllUser allUsers;
+	private RoleService roleService;
 	
 	@Autowired
-	public UsersService(AllUser allUsers)
+	public UsersService(AllUser allUsers, RoleService roleService)
 	{
 		this.allUsers = allUsers;
+		this.roleService = roleService;
+	}
+	public List<String> getPrivilegesOfAUser(String userName){
+		User userByUserName = allUsers.findUserByUserName(userName);
+		if(userByUserName == null && userByUserName.getRoles() == null && userByUserName.getRoles().size() < 1)
+			return null;
+		else{
+			List<String> privileges = new ArrayList<String>();
+			for(int i = 0; i< userByUserName.getRoles().size(); i++){
+				logger.info("entered for role - " + userByUserName.getRoles().get(i).getName());
+				List<String> roleSpecificPrivileges = roleService.getPrivilegesOfASpecificRole(userByUserName.getRoles().get(i).getId());
+				if(roleSpecificPrivileges != null){
+					for(int j = 0; j<roleSpecificPrivileges.size(); j++){
+						privileges.add(roleSpecificPrivileges.get(j));
+					}
+				}
+			}
+			logger.info("privilege list constructed");
+			return privileges;
+		}
 	}
 	
 	public String addUser(UserDTO userDTO)
 	{		
 		logger.info("inside UserService.addUser");
-		User userByUserName = allUsers.findUserByUserName(userDTO.getName());
+		User userByUserName = allUsers.findUserByUserName(userDTO.getUserName());
 		if (userByUserName == null) {
 			logger.info("No Such User with given userName Found");
 			try{
 				User user = new User();
 				//role.withUserName(roleDTO.getUserName());
-				user.withName(userDTO.getName());
 				user.withStatus(userDTO.getStatus());
 				user.withGivenName(userDTO.getGivenName());
 				user.withFamilyName(userDTO.getFamilyName());
@@ -65,20 +85,22 @@ public class UsersService {
 				SimplifiedUser parent= null;  
 				if(parentDTO != null){
 					parent = new SimplifiedUser();
-					parent.withUserName(parentDTO.getUserName());
+					parent.withUsername(parentDTO.getUserName());
 					parent.withId(parentDTO.getId());
 					user.withParent(parent);
-				}
+					logger.info("parent added in user.");
+				}				
 				List<SimplifiedUser> children = null;
 				if(childrenDTOs != null && childrenDTOs.size() > 0){
 					children = new ArrayList<SimplifiedUser>();
 					for(int i =0 ; i < childrenDTOs.size(); i++){
 						SimplifiedUser tempUser = new SimplifiedUser();
-						tempUser.withUserName(childrenDTOs.get(i).getUserName());
+						tempUser.withUsername(childrenDTOs.get(i).getUserName());
 						tempUser.withId(childrenDTOs.get(i).getId());
 						children.add(tempUser);
 					}
 					user.withChildren(children);
+					logger.info("children added in user.");
 				}
 				List<SimplifiedRole> roles =  null;
 				if(roleDTOs != null && roleDTOs.size() > 0){
@@ -90,6 +112,7 @@ public class UsersService {
 						roles.add(tempRole);
 					}
 					user.withRoles(roles);
+					logger.info("roles added in user.");
 				}
 				List<SimplifiedLocation> locations = null;
 				if(locationDTOs != null && locationDTOs.size() > 0){
@@ -99,8 +122,10 @@ public class UsersService {
 						tempLocation.withName(locationDTOs.get(i).getName());
 						tempLocation.withId(locationDTOs.get(i).getId());
 						locations.add(tempLocation);
+						//logger.info("location name - " + tempLocation.getName() + " - " + tempLocation.getId());
 					}
 					user.withLocation(locations);
+					logger.info("loactions added in user.");
 				}
 				allUsers.add(user);
 				return "1";

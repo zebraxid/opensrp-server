@@ -6,7 +6,9 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 import java.awt.peer.LightweightPeer;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -85,7 +87,34 @@ public class AclController {
 	@RequestMapping(method = GET, value = "/role-access-tokens")
 	@ResponseBody
 	public AclDTO getRoleAndAccessTokens(@RequestParam String userName) {
-		return aclService.getRoleAndAccessTokens(userName);
+		AclDTO tempDTO = new AclDTO();
+		tempDTO.withRoleName("Admin");
+		tempDTO.withRoleId("2ba3698706c7527a7a4b78546d011f1c");
+		tempDTO.withStatus("Active");
+		Map<String, String> tokens = new HashMap<String, String>();
+		tokens.put("0", "Household");
+		tokens.put("1", "Household Details");
+		tokens.put("2", "Elco");
+		tokens.put("3", "Elco Details");
+		tokens.put("4", "PW");
+		tokens.put("5", "PW Details");
+		tokens.put("6", "Data Export");
+		tokens.put("7", "User List");
+		tokens.put("8", "User Assign");
+		tokens.put("9", "User Assign Edit");
+		tokens.put("10", "Role Edit");
+		tokens.put("11", "Add Role");
+		tokens.put("12", "Acl");
+		tempDTO.withAccessTokens(tokens);
+		//return aclService.getRoleAndAccessTokens(userName);
+		return tempDTO;
+	}
+	
+	// new one
+	@RequestMapping(method = GET, value = "/role-access-token")
+	@ResponseBody
+	public List<String> getPrivileges(@RequestParam String userName) {
+		return userService.getPrivilegesOfAUser(userName);
 	}
 	
 	@RequestMapping(method = GET, value = "/role-access-tokens-by-name")

@@ -15,21 +15,21 @@ import org.opensrp.dto.PrivilegeDTO;
 @TypeDiscriminator("doc.type === 'Role'")
 public class Role extends MotechBaseDataObject {
 	
-	@JsonProperty
+	@JsonProperty("name")
 	private String name;
-	@JsonProperty
+	@JsonProperty("status")
 	private String status;	
-	@JsonProperty
+	@JsonProperty("privileges")
 	private List<SimplifiedPrivilege> privileges;
-	@JsonProperty
+	@JsonProperty("meta")
 	private Map<String, String> meta;
-	@JsonProperty
+	@JsonProperty("created_at")
 	private String created_at;
-	@JsonProperty
+	@JsonProperty("updated_at")
 	private String updated_at;
-	@JsonProperty
+	@JsonProperty("created_by")
 	private String created_by;
-	@JsonProperty
+	@JsonProperty("updated_by")
 	private String updated_by;
 	
 	public Role(){
@@ -38,24 +38,30 @@ public class Role extends MotechBaseDataObject {
 		this.created_by = "Admin";
 		this.updated_by = null;
 	}
+	@JsonProperty("name")
 	public Role withName(String roleName) {
 		this.name = roleName;
 		return this;
 	}
+	@JsonProperty("status")
 	public Role withStatus(String status) {
 		this.status = status;
 		return this;
 	}
+	@JsonProperty("privileges")
 	public Role withPrivileges(List<SimplifiedPrivilege> privileges){
 		this.privileges = privileges;
 		return this;
 	}
+	@JsonProperty("name")
 	public String getName() {
 		return name;
 	}
+	@JsonProperty("status")
 	public String getStatus() {
 		return status;
 	}
+	@JsonProperty("privileges")
 	public List<SimplifiedPrivilege> getPrivileges(){
 		return privileges;
 	}

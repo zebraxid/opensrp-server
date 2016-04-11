@@ -95,6 +95,20 @@ public class RoleService {
 		}		
 	}
 	
+	public List<String> getPrivilegesOfASpecificRole(String roleID) {		
+		Role role = allRoles.get(roleID);  // null checking isn't done here, should be done rigorously on client-side
+		
+		if(role != null && role.getPrivileges().size() > 0){
+			List<String> privileges = new ArrayList<String>();
+			for(int i = 0 ; i < role.getPrivileges().size() ; i++){
+				logger.info(role.getPrivileges().get(i).getName() + " added in list");
+				privileges.add(role.getPrivileges().get(i).getName());
+			}
+			return privileges;
+		}
+		return null;		
+	}
+	
 	public ArrayList<RoleDTO> getRolesAndUser(){
 		List<Role> roles = allRoles.roles();		
 		ArrayList<RoleDTO> roleList = new ArrayList<RoleDTO>();

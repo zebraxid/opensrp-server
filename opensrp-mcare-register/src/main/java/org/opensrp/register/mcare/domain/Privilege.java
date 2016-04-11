@@ -14,53 +14,46 @@ import org.motechproject.model.MotechBaseDataObject;
 @TypeDiscriminator("doc.type === 'Privilege'")
 public class Privilege extends MotechBaseDataObject {
 	
-	@JsonProperty
+	@JsonProperty("name")
 	private String name;
-	@JsonProperty
+	@JsonProperty("status")
 	private String status;
-	@JsonProperty
+	@JsonProperty("meta")
 	private Map<String, String> meta;
-	@JsonProperty
+	@JsonProperty("created_at")
 	private String created_at;
-	@JsonProperty
+	@JsonProperty("updated_at")
 	private String updated_at;
-	@JsonProperty
+	@JsonProperty("created_by")
 	private String created_by;
-	@JsonProperty
+	@JsonProperty("updated_by")
 	private String updated_by;
 
 	public Privilege()
 	{
-		//accessTokens = new HashMap<String, String>();
 		this.created_at = new Date().toString();
 		this.updated_at = new Date().toString();
 		this.created_by = "Admin";
 		this.updated_by = null;
 	}
+	@JsonProperty("name")
 	public Privilege withName(String privilegeName) {
 		this.name = privilegeName;
 		return this;
 	}
+	@JsonProperty("status")
 	public Privilege withStatus(String status) {
 		this.status = status;
 		return this;
 	}
-	
-	public Privilege withAccessTokens(Map<String, String> accessTokens) {
-        //this.accessTokens = new HashMap<>(accessTokens);
-        return this;
-    }
-	
+	@JsonProperty("name")
 	public String getName() {
 		return name;
 	}
+	@JsonProperty("status")
 	public String getStatus() {
 		return status;
 	}
-
-	/*public Map<String, String> getAccessTokens() {
-		return accessTokens;
-	}*/
 	
 	@Override
 	public boolean equals(Object o) {

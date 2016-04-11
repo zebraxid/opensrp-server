@@ -15,45 +15,43 @@ import org.opensrp.dto.PrivilegeDTO;
 @TypeDiscriminator("doc.type === 'User'")
 public class User extends MotechBaseDataObject {
 	
-	@JsonProperty
-	private String name;
-	@JsonProperty
+	@JsonProperty("status")
 	private String status;
-	@JsonProperty
+	@JsonProperty("given_name")
 	private String given_name;
-	@JsonProperty
+	@JsonProperty("middle_name")
 	private String middle_name;
-	@JsonProperty
+	@JsonProperty("family_name")
 	private String family_name;
-	@JsonProperty
+	@JsonProperty("contact_number")
 	private String contact_number;
-	@JsonProperty
+	@JsonProperty("personal_address")
 	private String personal_address;
-	@JsonProperty
+	@JsonProperty("email")
 	private String email;
-	@JsonProperty
+	@JsonProperty("password")
 	private String password;
-	@JsonProperty
+	@JsonProperty("user_name")
 	private String user_name;
-	@JsonProperty
+	@JsonProperty("gender")
 	private String gender;
-	@JsonProperty
+	@JsonProperty("parent")
 	private SimplifiedUser parent;
-	@JsonProperty
+	@JsonProperty("children")
 	private List<SimplifiedUser> children;	
-	@JsonProperty
+	@JsonProperty("roles")
 	private List<SimplifiedRole> roles;
-	@JsonProperty
-	private List<SimplifiedLocation> locations;	
-	@JsonProperty
+	@JsonProperty("location")
+	private List<SimplifiedLocation> location;	
+	@JsonProperty("meta")
 	private Map<String, String> meta;
-	@JsonProperty
+	@JsonProperty("created_at")
 	private String created_at;
-	@JsonProperty
+	@JsonProperty("updated_at")
 	private String updated_at;
-	@JsonProperty
+	@JsonProperty("created_by")
 	private String created_by;
-	@JsonProperty
+	@JsonProperty("updated_by")
 	private String updated_by;
 	
 	public User(){
@@ -62,110 +60,131 @@ public class User extends MotechBaseDataObject {
 		this.created_by = "Admin";
 		this.updated_by = null;
 	}
-	public User withName(String roleName) {
-		this.name = roleName;
-		return this;
-	}
+	@JsonProperty("status")
 	public User withStatus(String status) {
 		this.status = status;
 		return this;
 	}
+	@JsonProperty("given_name")
 	public User withGivenName(String givenName) {
 		this.given_name = givenName;
 		return this;
 	}
+	@JsonProperty("middle_name")
 	public User withMiddleName(String middleName) {
 		this.middle_name = middleName;
 		return this;
 	}
+	@JsonProperty("family_name")
 	public User withFamilyName(String familyName) {
 		this.family_name = familyName;
 		return this;
 	}
+	@JsonProperty("contact_number")
 	public User withContactNumber(String contactNumber) {
 		this.contact_number = contactNumber;
 		return this;
 	}
+	@JsonProperty("personal_address")
 	public User withPersonalAddress(String personalAddress) {
 		this.personal_address = personalAddress;
 		return this;
 	}
+	@JsonProperty("password")
 	public User withPassword(String password) {
 		this.password = password;
 		return this;
 	}
+	@JsonProperty("email")
 	public User withEmail(String email) {
 		this.email = email;
 		return this;
 	}
+	@JsonProperty("gender")
 	public User withGender(String gender) {
 		this.gender = gender;
 		return this;
 	}
+	@JsonProperty("parent")
 	public User withParent(SimplifiedUser parent) {
 		this.parent = parent;
 		return this;
 	}
+	@JsonProperty("children")
 	public User withChildren(List<SimplifiedUser> children) {
 		this.children = children;
 		return this;
 	}
+	@JsonProperty("roles")
 	public User withRoles(List<SimplifiedRole> roles) {
 		this.roles = roles;
 		return this;
 	}
+	@JsonProperty("user_name")
 	public User withUserName(String userName) {
 		this.user_name = userName;
 		return this;
 	}
-	public User withLocation(List<SimplifiedLocation> locaitons) {
-		this.locations = locations;
+	@JsonProperty("location")
+	public User withLocation(List<SimplifiedLocation> locations) {
+		this.location = locations;
 		return this;
 	}
-	public String getName() {
-		return name;
-	}
+	@JsonProperty("status")
 	public String getStatus() {
 		return status;
 	}
+	@JsonProperty("given_name")
 	public String getGivenName() {
 		return given_name;
 	}
+	@JsonProperty("middle_name")
 	public String getMiddleName() {
 		return middle_name;
 	}
+	@JsonProperty("family_name")
 	public String getFamilyName() {
 		return family_name;
 	}
+	@JsonProperty("contact_number")
 	public String getContactNumber() {
 		return contact_number;
 	}
+	@JsonProperty("personal_address")
 	public String getPersonalAddress() {
 		return personal_address;
 	}
+	@JsonProperty("password")
 	public String getPassword() {
 		return password;
 	}
+	@JsonProperty("email")
 	public String getEmail() {
 		return email;
 	}
+	@JsonProperty("gender")
 	public String getGender() {
 		return gender;
 	}
+	@JsonProperty("parent")
 	public SimplifiedUser getParent() {
 		return parent;
 	}
+	@JsonProperty("children")
 	public List<SimplifiedUser> getChildren() {
 		return children;
 	}
+	@JsonProperty("roles")
 	public List<SimplifiedRole> getRoles() {
 		return roles;
 	}
+	@JsonProperty("user_name")
 	public String withUserName() {
 		return user_name;
 	}
+	@JsonProperty("location")
 	public List<SimplifiedLocation> getLocation(){
-		return locations;
+		return location;
 	}
 
 	@Override

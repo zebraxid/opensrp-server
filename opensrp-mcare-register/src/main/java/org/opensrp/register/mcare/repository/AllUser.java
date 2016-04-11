@@ -25,11 +25,11 @@ public class AllUser  extends MotechBaseRepository<User>{
 		super(User.class, db);
 	}
 	
-	@View(name = "user_by_user_name", map = "function(doc) { if (doc.type === 'User' && doc.user_name) { emit(doc.user_name); } }")
+	@View(name = "by_user_name", map = "function(doc) { if (doc.type === 'User' && doc.user_name) { emit(doc.user_name); } }")
 	public User findUserByUserName(String username) {
 		logger.info("inside AllUsers.findUserByUserName()");
 		List<User> users = db.queryView(
-				createQuery("user_by_user_name").key(username)
+				createQuery("by_user_name").key(username)
 						.includeDocs(true), User.class);
 		if (users == null || users.isEmpty()) {
 			return null;
