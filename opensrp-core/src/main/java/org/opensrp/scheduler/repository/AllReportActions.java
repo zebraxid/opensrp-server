@@ -71,7 +71,7 @@ public class AllReportActions extends MotechBaseRepository<ScheduleLog> {
 										 DateTime.parse(row.getValueAsNode().findValue("data").get("expiryDate").asText())
 						 				);
 				 
-				 schedulesMap.put(row.getKey(), new ScheduleLog(row.getValueAsNode().findValue("caseID").toString(), row.getValueAsNode().findValue("instanceId").toString(),row.getValueAsNode().findValue("anmIdentifier").toString(), actionData,row.getValueAsNode().findValue("caseID").asLong()));
+				 //schedulesMap.put(row.getKey(), new ScheduleLog(row.getValueAsNode().findValue("caseID").toString(), row.getValueAsNode().findValue("instanceId").toString(),row.getValueAsNode().findValue("anmIdentifier").toString(), actionData,row.getValueAsNode().findValue("caseID").asLong()));
 			 }
 		 }
 				

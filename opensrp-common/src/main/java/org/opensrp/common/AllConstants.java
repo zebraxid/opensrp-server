@@ -841,5 +841,15 @@ public class AllConstants {
     	public static final String IMD_ELCO_SCHEDULE_PSRF = "IMEDIATE ELCO PSRF";
     	public static final String ELCO_SCHEDULE_PSRF = "ELCO PSRF";
     }
+    
+    public static class ScheduleNames{
+    	public static final String ELCO = "ELCO PSRF";
+    	public static final String BNF = "BirthNotificationPregnancyStatusFollowUp";
+    	public static final String CENCUS = "FW CENSUS";
+    	public static final String ANC = "Ante Natal Care Reminder Visit";
+    	public static final String PNC = "Post Natal Care Reminder Visit";
+    	public static final String CHILD = "Essential Newborn Care Checklist";
+    	
+    }
 }
 

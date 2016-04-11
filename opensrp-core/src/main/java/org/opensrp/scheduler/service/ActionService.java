@@ -18,6 +18,7 @@ import org.opensrp.scheduler.Action;
 import org.opensrp.scheduler.repository.AllActions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.opensrp.common.AllConstants.ScheduleNames;
 
 @Service
 public class ActionService {
@@ -41,10 +42,10 @@ public class ActionService {
     	if (!(mother.equals(beneficiaryType)||child.equals(beneficiaryType)||ec.equals(beneficiaryType)||household.equals(beneficiaryType) || elco.equals(beneficiaryType))) {
             throw new IllegalArgumentException("Beneficiary Type : " + beneficiaryType + " is of unknown type");
         }
-    	if(household.equals(beneficiaryType) || elco.equals(beneficiaryType) || ec.equals(beneficiaryType) || child.equals(beneficiaryType)){
-    		this.ActionUpdateOrCreateForCensusPsrfBnf(beneficiaryType, caseID, instanceId, anmIdentifier, scheduleName, visitCode, alertStatus, startDate, expiryDate);
-    	}else if(mother.equals(beneficiaryType)){
-    		this.ActionUpdateOrCreateForAncPnc(beneficiaryType, caseID, instanceId, anmIdentifier, scheduleName, visitCode, alertStatus, startDate, expiryDate);
+    	if(scheduleName.equals(ScheduleNames.BNF) || scheduleName.equals(ScheduleNames.CENCUS) || scheduleName.equals(ScheduleNames.ELCO)){
+    		this.ActionUpdateOrCreateForOther(beneficiaryType, caseID, instanceId, anmIdentifier, scheduleName, visitCode, alertStatus, startDate, expiryDate);
+    	}else if(scheduleName.equals(ScheduleNames.ANC) || scheduleName.equals(ScheduleNames.PNC)){
+    		this.ActionUpdateOrCreateForMotherType(beneficiaryType, caseID, instanceId, anmIdentifier, scheduleName, visitCode, alertStatus, startDate, expiryDate);
     	}else{
     		
     	}
@@ -74,7 +75,7 @@ public class ActionService {
     public void deleteReportActions() {
         allActions.deleteAllByTarget("report");
     }
-    public void ActionUpdateOrCreateForAncPnc(BeneficiaryType beneficiaryType, String caseID, String instanceId,  String anmIdentifier, String scheduleName, String visitCode, AlertStatus alertStatus, DateTime startDate, DateTime expiryDate){
+    public void ActionUpdateOrCreateForOther(BeneficiaryType beneficiaryType, String caseID, String instanceId,  String anmIdentifier, String scheduleName, String visitCode, AlertStatus alertStatus, DateTime startDate, DateTime expiryDate){
     	List<Action> existingAlerts = allActions.findAlertByANMIdEntityIdScheduleName(anmIdentifier, caseID, scheduleName);
     	if(existingAlerts.size() > 0){ 
     		long beforTimeStamp = existingAlerts.get(0).timestamp();
@@ -97,15 +98,17 @@ public class ActionService {
         	allActions.addOrUpdateAlert(new Action(caseID, anmIdentifier, ActionData.createAlert(beneficiaryType, scheduleName, visitCode, alertStatus, startDate, expiryDate)));
         }    	
     }
-    public void ActionUpdateOrCreateForCensusPsrfBnf(BeneficiaryType beneficiaryType, String caseID, String instanceId,  String anmIdentifier, String scheduleName, String visitCode, AlertStatus alertStatus, DateTime startDate, DateTime expiryDate){
+    
+    public void ActionUpdateOrCreateForMotherType(BeneficiaryType beneficiaryType, String caseID, String instanceId,  String anmIdentifier, String scheduleName, String visitCode, AlertStatus alertStatus, DateTime startDate, DateTime expiryDate){
     	List<Action> existingAlerts = allActions.findAlertByANMIdEntityIdScheduleName(anmIdentifier, caseID, scheduleName);
     	if(existingAlerts.size() > 0){ 
     		long beforTimeStamp = existingAlerts.get(0).timestamp();
-        	Map<String,String> data =existingAlerts.get(0).data(); 	      
- 	      if(!data.get(visitCode).equalsIgnoreCase(visitCode)){ 	    	  
+        	Map<String,String> data =existingAlerts.get(0).data();
+        	System.out.println("visitCode: "+visitCode+"data.get(visitCode): "+data.get("visitCode"));
+ 	      if(!data.get("visitCode").equalsIgnoreCase(visitCode)){ 	    	  
  	    	  this.updateDataForAction(beneficiaryType, caseID, instanceId, anmIdentifier, scheduleName, visitCode, alertStatus, startDate, expiryDate, existingAlerts);
  	    	  
- 	      }else if(data.get(visitCode).equalsIgnoreCase(visitCode)){
+ 	      }else if(data.get("visitCode").equalsIgnoreCase(visitCode)){
  	    	  if(!data.get("alertStatus").equals(alertStatus)){
  	    		 this.updateDataForAction(beneficiaryType, caseID, instanceId, anmIdentifier, scheduleName, visitCode, alertStatus, startDate, expiryDate, existingAlerts);
  	    	  }else{
@@ -118,6 +121,8 @@ public class ActionService {
 	 	    	 Action action = existingAlerts.get(0); 	    	 	    	 
 	 	    	 allActions.update(action);
  	    	  }
+ 	      }else{
+ 	    	  
  	      }
  	      
  	     List<Action> existingAlert = allActions.findAlertByANMIdEntityIdScheduleName(anmIdentifier, caseID, scheduleName);

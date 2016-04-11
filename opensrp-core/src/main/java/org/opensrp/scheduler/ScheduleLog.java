@@ -67,7 +67,7 @@ public class ScheduleLog extends MotechBaseDataObject  {
     public ScheduleLog() {
     }
 
-    public ScheduleLog(String caseId, String instanceId, String anmIdentifier, ScheduleData actionData,long timeStamp) {
+    public ScheduleLog(String caseId, String instanceId, String anmIdentifier, ScheduleData actionData,long timeStamp,String visitCode) {
         this.anmIdentifier = anmIdentifier;
         this.caseID = caseId;
         this.instanceId = instanceId;
@@ -78,11 +78,12 @@ public class ScheduleLog extends MotechBaseDataObject  {
         this.scheduleGenerateDate = DateUtil.now();
         this.details = actionData.details();
         this.isActionActive = true;
+        this.visitCode = visitCode;
         
         
     }
 
-    public ScheduleLog(String caseId, String instanceId, String anmIdentifier, ScheduleData actionData,String trackId,AlertStatus currentWindow,DateTime scheduleCloseDate,DateTime currentWindowStartDate,DateTime currentWindowEndDate,String scheduleName,long timeStamp) {
+    public ScheduleLog(String caseId, String instanceId, String anmIdentifier, ScheduleData actionData,String trackId,AlertStatus currentWindow,DateTime scheduleCloseDate,DateTime currentWindowStartDate,DateTime currentWindowEndDate,String scheduleName,long timeStamp,String visitCode) {
         this.anmIdentifier = anmIdentifier;
         this.caseID = caseId;
         this.instanceId = instanceId;
@@ -99,6 +100,7 @@ public class ScheduleLog extends MotechBaseDataObject  {
         this.currentWindowStartDate = currentWindowStartDate;
         this.currentWindowEndDate = currentWindowEndDate;
         this.scheduleName = scheduleName;
+        this.visitCode = visitCode;
         
     }
 
