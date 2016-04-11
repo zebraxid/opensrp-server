@@ -87,11 +87,11 @@ public class OpenSRPScheduleConstants {
     public static class HHSchedulesConstants {
     	public static final String HH_SCHEDULE_CENSUS = "FW CENSUS";
     }
-    public static class ELCOSchedulesConstants {
-    	public static final String ELCO_SCHEDULE_PSRF = "ELCO PSRF";
+    public static class MembersSchedulesConstants {
+    	public static final String Members_SCHEDULE = "Members";
     }
-    public static class ELCOSchedulesConstantsImediate {
-    	public static final String IMD_ELCO_SCHEDULE_PSRF = "IMEDIATE ELCO PSRF";
+    public static class MembersSchedulesConstantsImediate {
+    	public static final String IMD_Members_SCHEDULE = "IMEDIATE Members";
     }
     public static class DateTimeDuration{
     	public static final Integer duration = 1344; // hour

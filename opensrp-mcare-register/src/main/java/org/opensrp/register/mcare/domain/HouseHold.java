@@ -33,53 +33,55 @@ public class HouseHold extends MotechBaseDataObject {
 	@JsonProperty
 	private String END;
 	@JsonProperty
-	private String FWNHREGDATE;
+	private String Date_Of_Reg;
 	@JsonProperty
-	private String FWGOBHHID; 
+	private String GOB_HHID; 
 	@JsonProperty
-	private String FWJIVHHID;
+	private String HoH_HID;
 	@JsonProperty
-	private String FWCOUNTRY;
+	private String COUNTRY;
 	@JsonProperty
-	private String FWDIVISION;
+	private String DIVISION;
 	@JsonProperty
-	private String FWDISTRICT;
+	private String DISTRICT;
 	@JsonProperty
-	private String FWUPAZILLA;
+	private String UPAZILLA;
 	@JsonProperty
-	private String FWUNION;
+	private String UNION;
 	@JsonProperty
-	private String FWWARD;
+	private String WARD;
 	@JsonProperty
-	private String FWSUBUNIT;
+	private String HHID;
 	@JsonProperty
-	private String FWMAUZA_PARA;
+	private String HoH_Reg_No;
 	@JsonProperty
-	private String FWNHHHGPS;
+	private String GPS;
 	@JsonProperty
-	private String form_name;
+	private String HoH_FName;
 	@JsonProperty
-	private String FWHOHFNAME;
+	private String HoH_DoB;
 	@JsonProperty
-	private String FWHOHLNAME;
+	private String HoH_Lname;
 	@JsonProperty
-	private String FWHOHBIRTHDATE; 
+	private String HoH_Age; 
 	@JsonProperty
-	private String FWHOHGENDER;
+	private String HoH_Gender;
 	@JsonProperty
-	private String FWNHHMBRNUM;
+	private String HoH_Unique_ID;
 	@JsonProperty
-	private String FWNHHMWRA;
+	private String HoH_NID;
 	@JsonProperty
-	private String ELCO;
+	private String HoH_BRID;
 	@JsonProperty
-	private String user_type;
+	private String HoH_Mobile_No;
 	@JsonProperty
-	private String external_user_ID;
+	private String HoH_Education;
 	@JsonProperty
-	private String current_formStatus;
+	private String HoH_Occupation;
 	@JsonProperty
-	private List<Map<String, String>> ELCODETAILS;
+	private String HH_Member_No;
+	@JsonProperty
+	private List<Map<String, String>> MEMBERDETAILS;
 	@JsonProperty
 	private List<Map<String, String>> multimediaAttachments;
 	@JsonProperty
@@ -88,7 +90,7 @@ public class HouseHold extends MotechBaseDataObject {
 	private long SUBMISSIONDATE;
 	
 	public HouseHold() {
-		this.ELCODETAILS = new ArrayList<>();
+		this.MEMBERDETAILS = new ArrayList<>();
 		this.multimediaAttachments = new ArrayList<>();
 	}
 	
@@ -127,124 +129,129 @@ public class HouseHold extends MotechBaseDataObject {
 		return this;
 	}
 
-	public HouseHold withFWNHREGDATE(String FWNHREGDATE) {
-		this.FWNHREGDATE = FWNHREGDATE;
+	public HouseHold withDate_Of_Reg(String Date_Of_Reg) {
+		this.Date_Of_Reg = Date_Of_Reg;
 		return this;
 	}
 
-	public HouseHold withFWGOBHHID(String FWGOBHHID) {
-		this.FWGOBHHID = FWGOBHHID;
+	public HouseHold withGOB_HHID(String GOB_HHID) {
+		this.GOB_HHID = GOB_HHID;
 		return this;
 	}
 
-	public HouseHold withFWJIVHHID(String FWJIVHHID) {
-		this.FWJIVHHID = FWJIVHHID;
+	public HouseHold withHoH_HID(String HoH_HID) {
+		this.HoH_HID = HoH_HID;
 		return this;
 	}
 
-	public HouseHold withFWNHHHGPS(String FWNHHHGPS) {
-		this.FWNHHHGPS = FWNHHHGPS;
+	public HouseHold withGPS(String GPS) {
+		this.GPS = GPS;
 		return this;
 	}
 	
-	public HouseHold withform_name(String form_name) {
-		this.form_name = form_name;
+	public HouseHold withHoH_FName(String HoH_FName) {
+		this.HoH_FName = HoH_FName;
 		return this;
 	}
 
-	public HouseHold withFWCOUNTRY(String FWCOUNTRY) {
-		this.FWCOUNTRY = FWCOUNTRY;
+	public HouseHold withCOUNTRY(String COUNTRY) {
+		this.COUNTRY = COUNTRY;
 		return this;
 	}
 
-	public HouseHold withFWDIVISION(String FWDIVISION) {
-		this.FWDIVISION = FWDIVISION;
+	public HouseHold withDIVISION(String DIVISION) {
+		this.DIVISION = DIVISION;
 		return this;
 	}
 
-	public HouseHold withFWDISTRICT(String FWDISTRICT) {
-		this.FWDISTRICT = FWDISTRICT;
+	public HouseHold withDISTRICT(String DISTRICT) {
+		this.DISTRICT = DISTRICT;
 		return this;
 	}
 
-	public HouseHold withFWUPAZILLA(String FWUPAZILLA) {
-		this.FWUPAZILLA = FWUPAZILLA;
+	public HouseHold withUPAZILLA(String UPAZILLA) {
+		this.UPAZILLA = UPAZILLA;
 		return this;
 	}
 
-	public HouseHold withFWUNION(String FWUNION) {
-		this.FWUNION = FWUNION;
+	public HouseHold withUNION(String UNION) {
+		this.UNION = UNION;
 		return this;
 	}
 
-	public HouseHold withFWWARD(String FWWARD) {
-		this.FWWARD = FWWARD;
+	public HouseHold withWARD(String WARD) {
+		this.WARD = WARD;
 		return this;
 	}
 
-	public HouseHold withFWSUBUNIT(String FWSUBUNIT) {
-		this.FWSUBUNIT = FWSUBUNIT;
+	public HouseHold withHHID(String HHID) {
+		this.HHID = HHID;
 		return this;
 	}
 	
-	public HouseHold withFWMAUZA_PARA(String FWMAUZA_PARA) {
-		this.FWMAUZA_PARA = FWMAUZA_PARA;
+	public HouseHold withHoH_Reg_No(String HoH_Reg_No) {
+		this.HoH_Reg_No = HoH_Reg_No;
 		return this;
 	}
 
-	public HouseHold withFWHOHFNAME(String FWHOHFNAME) {
-		this.FWHOHFNAME = FWHOHFNAME;
+	public HouseHold withHoH_DoB(String HoH_DoB) {
+		this.HoH_DoB = HoH_DoB;
 		return this;
 	}
 
 	
-	public HouseHold withFWHOHLNAME(String FWHOHLNAME) {
-		this.FWHOHLNAME = FWHOHLNAME;
+	public HouseHold withHoH_Lname(String HoH_Lname) {
+		this.HoH_Lname = HoH_Lname;
 		return this;
 	}
 
-	public HouseHold withFWHOHBIRTHDATE(String FWHOHBIRTHDATE) {
-		this.FWHOHBIRTHDATE = FWHOHBIRTHDATE;
+	public HouseHold withHoH_Age(String HoH_Age) {
+		this.HoH_Age = HoH_Age;
 		return this;
 	}
 
-	public HouseHold withFWNHHMBRNUM(String FWNHHMBRNUM) {
-		this.FWNHHMBRNUM = FWNHHMBRNUM;
+	public HouseHold withHoH_Unique_ID(String HoH_Unique_ID) {
+		this.HoH_Unique_ID = HoH_Unique_ID;
 		return this;
 	}
 
-	public HouseHold withFWHOHGENDER(String FWHOHGENDER) {
-		this.FWHOHGENDER = FWHOHGENDER;
+	public HouseHold withHoH_Gender(String HoH_Gender) {
+		this.HoH_Gender = HoH_Gender;
 		return this;
 	}
 	
-	public HouseHold withFWNHHMWRA(String FWNHHMWRA) {
-		this.FWNHHMWRA = FWNHHMWRA;
+	public HouseHold withHoH_NID(String HoH_NID) {
+		this.HoH_NID = HoH_NID;
 		return this;
 	}
 
-	public HouseHold withELCO(String ELCO) {
-		this.ELCO = ELCO;
+	public HouseHold withHoH_BRID(String HoH_BRID) {
+		this.HoH_BRID = HoH_BRID;
 		return this;
 	}
 	
-	public HouseHold withuser_type(String user_type) {
-		this.user_type = user_type;
+	public HouseHold withHoH_Mobile_No(String HoH_Mobile_No) {
+		this.HoH_Mobile_No = HoH_Mobile_No;
 		return this;
 	}
 
-	public HouseHold withexternal_user_ID(String external_user_ID) {
-		this.external_user_ID = external_user_ID;
+	public HouseHold withHoH_Education(String HoH_Education) {
+		this.HoH_Education = HoH_Education;
 		return this;
 	}
 	
-	public HouseHold withcurrent_formStatus(String current_formStatus) {
-		this.current_formStatus = current_formStatus;
+	public HouseHold withHoH_Occupation(String HoH_Occupation) {
+		this.HoH_Occupation = HoH_Occupation;
 		return this;
 	}
 	
-	public HouseHold withELCODETAILS(List<Map<String, String>> ELCODETAILS) {
-		this.ELCODETAILS = ELCODETAILS;
+	public HouseHold withHH_Member_No(String HH_Member_No) {
+		this.HH_Member_No = HH_Member_No;
+		return this;
+	}
+	
+	public HouseHold withMEMBERDETAILS(List<Map<String, String>> MEMBERDETAILS) {
+		this.MEMBERDETAILS = MEMBERDETAILS;
 		return this;
 	}
 	
@@ -291,106 +298,110 @@ public class HouseHold extends MotechBaseDataObject {
 		return END;
 	}
 
-	public String FWNHREGDATE() {
-		return FWNHREGDATE;
+	public String Date_Of_Reg() {
+		return Date_Of_Reg;
 	}
 
-	public String FWGOBHHID() {
-		return FWGOBHHID;
+	public String GOB_HHID() {
+		return GOB_HHID;
 	}
 
-	public String FWJIVHHID() {
-		return FWJIVHHID;
+	public String HoH_HID() {
+		return HoH_HID;
 	}
 
-	public String FWNHHHGPS() {
-		return FWNHHHGPS;
+	public String GPS() {
+		return GPS;
 	}
 	
-	public String form_name() {
-		return form_name;
+	public String HoH_FName() {
+		return HoH_FName;
 	}
 
-	public String FWCOUNTRY() {
-		return FWCOUNTRY;
+	public String COUNTRY() {
+		return COUNTRY;
 	}
 	
-	public String FWDIVISION() {
-		return FWDIVISION;
+	public String DIVISION() {
+		return DIVISION;
 	}
 	
-	public String FWDISTRICT() {
-		return FWDISTRICT;
+	public String DISTRICT() {
+		return DISTRICT;
 	}
 	
-	public String FWUPAZILLA() {
-		return FWUPAZILLA;
+	public String UPAZILLA() {
+		return UPAZILLA;
 	}
 	
-	public String FWUNION() {
-		return FWUNION;
+	public String UNION() {
+		return UNION;
 	}
 	
-	public String FWWARD() {
-		return FWWARD;
+	public String WARD() {
+		return WARD;
 	}
 	
-	public String FWSUBUNIT() {
-		return FWSUBUNIT;
+	public String HHID() {
+		return HHID;
 	}
 	
-	public String FWMAUZA_PARA() {
-		return FWMAUZA_PARA;
+	public String HoH_Reg_No() {
+		return HoH_Reg_No;
 	}
 
-	public String FWHOHFNAME() {
-		return FWHOHFNAME;
+	public String HoH_DoB() {
+		return HoH_DoB;
 	}
-	public String FWHOHLNAME() {
-		return FWHOHLNAME;
-	}
-
-	public String FWHOHBIRTHDATE() {
-		return FWHOHBIRTHDATE;
+	public String HoH_Lname() {
+		return HoH_Lname;
 	}
 
-	public String FWNHHMBRNUM() {
-		return FWNHHMBRNUM;
+	public String HoH_Age() {
+		return HoH_Age;
 	}
 
-	public String FWHOHGENDER() {
-		return FWHOHGENDER;
+	public String HoH_Unique_ID() {
+		return HoH_Unique_ID;
 	}
 
-	public String FWNHHMWRA() {
-		return FWNHHMWRA;
+	public String HoH_Gender() {
+		return HoH_Gender;
 	}
 
-	public String ELCO() {
-		return ELCO;
+	public String HoH_NID() {
+		return HoH_NID;
+	}
+
+	public String HoH_BRID() {
+		return HoH_BRID;
 	}
 	
-	public String user_type() {
-		return user_type;
+	public String HoH_Mobile_No() {
+		return HoH_Mobile_No;
 	}
 
-	public String external_user_ID() {
-		return external_user_ID;
+	public String HoH_Education() {
+		return HoH_Education;
 	}
 	
 	public long SUBMISSIONDATE(){
 		return SUBMISSIONDATE;
 	}
 	
-	public String current_formStatus() {
-		return current_formStatus;
+	public String HoH_Occupation() {
+		return HoH_Occupation;
 	}
 
-	public List<Map<String, String>> ELCODETAILS() {
-		if (ELCODETAILS == null) {
-			ELCODETAILS = new ArrayList<>();
+	public String HH_Member_No() {
+		return HH_Member_No;
+	}
+	
+	public List<Map<String, String>> MEMBERDETAILS() {
+		if (MEMBERDETAILS == null) {
+			MEMBERDETAILS = new ArrayList<>();
 		}
-		return ELCODETAILS;
+		return MEMBERDETAILS;
 	}
 	
 	public List<Map<String, String>> multimediaAttachments() {
@@ -415,13 +426,13 @@ public class HouseHold extends MotechBaseDataObject {
 	}
 	
 	public String getELCODetail(String name) {	
-		/*int size = ELCODETAILS.size();
+		/*int size = MEMBERDETAILS.size();
 		String elems = "";
 		for (int i = 0; i < size; i++)
-			elems = elems + ELCODETAILS.get(i).get(name) + " " ;
+			elems = elems + MEMBERDETAILS.get(i).get(name) + " " ;
 		return elems;	*/	
 
-		return ELCODETAILS.get(0).get(name);
+		return MEMBERDETAILS.get(0).get(name);
 	}
 	
 	@Override

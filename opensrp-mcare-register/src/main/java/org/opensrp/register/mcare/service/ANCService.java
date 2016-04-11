@@ -4,7 +4,7 @@
 package org.opensrp.register.mcare.service;
 
 import static java.text.MessageFormat.format;
-import static org.opensrp.common.AllConstants.ELCORegistrationFields.relationalid;
+import static org.opensrp.common.AllConstants.MEMBERSRegistrationFields.relationalid;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.*;
 import static org.opensrp.common.AllConstants.ANCVisitOneFields.*;
 import static org.opensrp.common.AllConstants.ANCVisitTwoFields.*;

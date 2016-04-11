@@ -13,8 +13,7 @@ import static org.opensrp.common.AllConstants.PNCVisitOneFields.*;
 import static org.opensrp.common.AllConstants.PNCVisitTwoFields.*;
 import static org.opensrp.common.AllConstants.PNCVisitThreeFields.*;
 import static org.opensrp.common.AllConstants.DeliveryOutcomeFields.CHILD_REGISTRATION_SUB_FORM_NAME;
-import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_GOBHHID;
-import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_WOMFNAME;
+import static org.opensrp.common.AllConstants.MEMBERSRegistrationFields.FW_GOBHHID;
 import static org.opensrp.common.util.EasyMap.create;
 
 import java.text.SimpleDateFormat;

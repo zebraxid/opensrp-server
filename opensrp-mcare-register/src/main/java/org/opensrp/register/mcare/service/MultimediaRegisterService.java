@@ -18,7 +18,7 @@ import org.opensrp.repository.MultimediaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import static org.opensrp.common.AllConstants.ELCORegistrationFields.relationalid;
+import static org.opensrp.common.AllConstants.MEMBERSRegistrationFields.relationalid;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.id;
 
 
@@ -45,7 +45,7 @@ public class MultimediaRegisterService {
 		
 		List<HouseHold> hhs = allHouseHolds.findAllHouseHolds();
         
-        for (HouseHold hh : hhs) {
+        for (HouseHold hh : hhs) {/*
         	
     		hh.multimediaAttachments().clear();
         	
@@ -85,7 +85,7 @@ public class MultimediaRegisterService {
         	}
         	        	       	
       		allHouseHolds.update(hh);
-        }
+        */}
         
 		/*List<Elco> elcos = allElcos.allOpenELCOs();
 

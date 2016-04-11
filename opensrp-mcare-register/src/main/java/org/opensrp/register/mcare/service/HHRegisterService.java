@@ -1,3 +1,7 @@
+/**
+ * @author Asifur
+ */
+
 package org.opensrp.register.mcare.service;
 
 import java.util.ArrayList;
@@ -36,7 +40,7 @@ public class HHRegisterService {
 		ArrayList<HHRegisterEntry> hhRegisterEntries = new ArrayList<>();
         List<HouseHold> hhs = allHouseHolds.findAllHouseHolds();
         
-        for (HouseHold hh : hhs) {	
+        for (HouseHold hh : hhs) {/*	
     		
         	HHRegisterEntry hhRegisterEntry = new HHRegisterEntry()
         		.withCASEID(hh.caseId()) 
@@ -74,7 +78,7 @@ public class HHRegisterService {
         		.withTODAY(hh.getDetail(REFERENCE_DATE))
         		.withSTART(hh.getDetail(START_DATE))
         		.withEND(hh.getDetail(END_DATE))
-        		/*.withFWWOMAGE(hh.getELCODetail(FW_WOMAGE))
+        		.withFWWOMAGE(hh.getELCODetail(FW_WOMAGE))
         		.withFWBIRTHDATE(hh.getELCODetail(FW_BIRTHDATE))
         		.withid(hh.getELCODetail(id))
         		.withFWWOMLNAME(hh.getELCODetail(FW_WOMLNAME))
@@ -85,10 +89,10 @@ public class HHRegisterService {
         		.withFWWOMNID(hh.getELCODetail(FW_WOMNID))
         		.withFWHUSNAME(hh.getELCODetail(FW_HUSNAME))
         		.withFWELIGIBLE(hh.getELCODetail(FW_ELIGIBLE))
-        		.withFWDISPLAYAGE(hh.getELCODetail(FW_DISPLAY_AGE))*/;
+        		.withFWDISPLAYAGE(hh.getELCODetail(FW_DISPLAY_AGE));
         	            
         	hhRegisterEntries.add(hhRegisterEntry);
-        }
+        */}
         return new HHRegister(hhRegisterEntries);
 	}	
 	

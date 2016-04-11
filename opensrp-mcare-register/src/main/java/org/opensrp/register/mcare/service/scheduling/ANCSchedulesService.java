@@ -18,7 +18,6 @@ import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherSchedule
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_LAB;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_TT_1;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.DateTimeDuration;
-import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ELCOSchedulesConstants.ELCO_SCHEDULE_PSRF;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.HHSchedulesConstants.HH_SCHEDULE_CENSUS;
 
 import java.text.ParseException;

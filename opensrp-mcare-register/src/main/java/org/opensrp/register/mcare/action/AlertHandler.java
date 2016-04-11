@@ -41,7 +41,7 @@ import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherSchedule
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_TT_1;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_TT_2;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.HHSchedulesConstants.HH_SCHEDULE_CENSUS;
-import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ELCOSchedulesConstants.ELCO_SCHEDULE_PSRF;
+import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MembersSchedulesConstants.Members_SCHEDULE;
 import static org.opensrp.scheduler.Matcher.any;
 import static org.opensrp.scheduler.Matcher.anyOf;
 import static org.opensrp.scheduler.Matcher.eq;
@@ -126,7 +126,7 @@ public class AlertHandler {
 
 	}
 	private Matcher membersSchedules() {
-		return anyOf(ELCO_SCHEDULE_PSRF);
+		return anyOf(Members_SCHEDULE);
 	}
 
 }

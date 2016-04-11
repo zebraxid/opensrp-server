@@ -10,9 +10,6 @@ import org.motechproject.server.event.annotations.MotechListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-import org.opensrp.common.AllConstants.BnfFollowUpVisitFields;
-import org.opensrp.common.AllConstants.ELCOSchedulesConstantsImediate;
-import static org.opensrp.common.AllConstants.BnfFollowUpVisitFields.SCHEDULE_BNF_IME;
 
 /**
  * The class that maintains the actions against alerts by {@link ScheduleTrackingService}
@@ -42,27 +39,14 @@ public class AlertRouter {
     public void handle(MotechEvent realEvent) {
         logger.info("Handling motech event : " + realEvent);
         MilestoneEvent event = new MilestoneEvent(realEvent);
-        if(event.scheduleName().equalsIgnoreCase(ELCOSchedulesConstantsImediate.IMD_ELCO_SCHEDULE_PSRF)){
-    		event.scheduleName().contentEquals(ELCOSchedulesConstantsImediate.ELCO_SCHEDULE_PSRF);
-    		event.milestoneName().contentEquals(ELCOSchedulesConstantsImediate.ELCO_SCHEDULE_PSRF);
-    	}
-        
+
         for (Route route : routes) {
-        	
-        	 if (route.isSatisfiedBy(parseScheduleName(event.scheduleName()), parseScheduleName(event.milestoneName()), event.windowName())) {
-                 route.invokeAction(event);
-                 return;
-             }
+            if (route.isSatisfiedBy(event.scheduleName(), event.milestoneName(), event.windowName())) {
+                route.invokeAction(event);
+                return;
+            }
         }
 
         throw new NoRoutesMatchException(event);
-    }
-    public String parseScheduleName(String scheduleName){
-    	if(scheduleName.equalsIgnoreCase(ELCOSchedulesConstantsImediate.IMD_ELCO_SCHEDULE_PSRF)){
-    		return scheduleName.replace(ELCOSchedulesConstantsImediate.IMD_ELCO_SCHEDULE_PSRF, ELCOSchedulesConstantsImediate.ELCO_SCHEDULE_PSRF);
-    	}else{
-    		return scheduleName.replace(SCHEDULE_BNF_IME, BnfFollowUpVisitFields.SCHEDULE_BNF);
-    	}
-    	
     }
 }

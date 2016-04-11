@@ -22,7 +22,7 @@ public class AllConstants {
 
     public static class Form {
     	public static final String HH_REGISTRATION = "new_household_registration";
-    	public static final String ELCO_REGISTRATION = "census_enrollment_form";
+    	public static final String MEMBERS_REGISTRATION = "census_enrollment_form";
     	public static final String PSRF_FORM = "psrf_form";
     	public static final String ANC_REMINDER_VISIT_1 = "anc_reminder_visit_1";
     	public static final String ANC_REMINDER_VISIT_2 = "anc_reminder_visit_2";
@@ -110,7 +110,7 @@ public class AllConstants {
     
     public static class HHRegistrationFields
     {
-    	public static final String ELCO_REGISTRATION_SUB_FORM_NAME = "elco_registration";
+    	public static final String MEMBERS_REGISTRATION_SUB_FORM_NAME = "member_registration";
     	public static final String ELCO_REGISTRATION_SUB_FORM_NAME_CENSUS = "elco_registration_ce";
     	public static final String LOCATION_NAME = "location_name";
     	public static final String REFERENCE_DATE = "today";
@@ -145,7 +145,7 @@ public class AllConstants {
     	
     }
     
-    public static class ELCORegistrationFields
+    public static class MEMBERSRegistrationFields
     {
     	public static final String FW_PROVIDERID ="PROVIDERID";
     	public static final String FW_LOCATIONID ="LOCATIONID";
@@ -160,36 +160,74 @@ public class AllConstants {
     	public static final String form_name ="form_name";
     	public static final String FW_CENDATE ="FWCENDATE";
     	public static final String FW_CENSTAT ="FWCENSTAT";
-    	public static final String FW_WOMFNAME = "FWWOMFNAME";
-    	public static final String FW_WOMLNAME = "FWWOMLNAME";
+    	public static final String HH_Member = "HH_Member";
     	public static final String FW_WOMANYID = "FWWOMANYID";
-    	public static final String FW_WOMNID = "FWWOMNID";
-    	public static final String FW_WOMRETYPENID = "FWWOMRETYPENID";
-    	public static final String FW_WOMBID = "FWWOMBID";
-    	public static final String FW_WOMRETYPEBID = "FWWOMRETYPEBID";
-    	public static final String FW_HUSNAME = "FWHUSNAME";
-    	public static final String FW_BIRTHDATE = "FWBIRTHDATE";
-    	public static final String FW_GENDER = "FWGENDER";
+    	public static final String BDH = "BDH";
+    	public static final String Member_Fname = "Member_Fname";
+    	public static final String Member_LName = "Member_LName";
+    	public static final String Gender = "Gender";
+    	public static final String DoB = "DoB";
+    	public static final String Age = "Age";
+    	public static final String Type_DoB = "Type_DoB";
     	public static final String FW_WOMAGE = "FWWOMAGE";
-    	public static final String FW_DISPLAY_AGE = "display_age";
-    	public static final String FW_CWOMSTRMEN = "FWCWOMSTRMEN";
-    	public static final String FW_CWOMHUSALV = "FWCWOMHUSALV";
+    	public static final String Display_Age = "Display_Age";
+    	public static final String Child_Vital_Status = "Child_Vital_Status";
+    	public static final String MOTHER_Vaccine_Dates = "MOTHER_Vaccine_Dates";
     	public static final String FW_CWOMHUSSTR = "FWCWOMHUSSTR";
-    	public static final String FW_CWOMHUSLIV = "FWCWOMHUSLIV";
-    	public static final String FW_ELIGIBLE = "FWELIGIBLE";
-    	public static final String FW_ELIGIBLE2 = "FWELIGIBLE2";
-    	public static final String FW_WOMCOUNTRY ="FWWOMCOUNTRY";
-    	public static final String FW_WOMDIVISION ="FWWOMDIVISION";
-    	public static final String FW_WOMDISTRICT ="FWWOMDISTRICT";
-    	public static final String FW_WOMUPAZILLA ="FWWOMUPAZILLA";
-    	public static final String FW_WOMUNION ="FWWOMUNION";
-    	public static final String FW_WOMWARD ="FWWOMWARD";
-    	public static final String FW_WOMSUBUNIT ="FWWOMSUBUNIT";
-    	public static final String FW_WOMMAUZA_PARA ="FWWOMMAUZA_PARA";
-    	public static final String FW_WOMGOBHHID ="FWWOMGOBHHID";
-    	public static final String FW_WOMGPS ="FWWOMGPS";
+    	public static final String Date_of_BCG_OPV_0 = "Date_of_BCG_OPV_0";
+    	public static final String Date_of_OPV_Penta_PCV_1 = "Date_of_OPV_Penta_PCV_1";
+    	public static final String Date_of_OPV_Penta_PCV_2 = "Date_of_OPV_Penta_PCV_2";
+    	public static final String Date_of_OPV_Penta_3_IPV ="Date_of_OPV_Penta_3_IPV";
+    	public static final String Date_of_PCV_3 ="Date_of_PCV_3";
+    	public static final String Date_of_MR ="Date_of_MR";
+    	public static final String Date_of_Measles ="Date_of_Measles";
+    	public static final String Date_BRID ="Date_BRID";
+    	public static final String Child_BRID ="Child_BRID";
+    	public static final String Date_Child_Death ="Date_Child_Death";
+    	public static final String C_Guardian_Type ="C_Guardian_Type";
+    	public static final String C_Guardian_Name_Father ="C_Guardian_Name_Father";
     	public static final String profileImagePath = "profileImagePath";
     	public static final String nidImagePath = "nidImagePath";
+    	public static final String received_time = "received_time";
+    	public static final String Reg_No = "Reg_No";   	
+    	public static final String C_Guardian_Name_Mother = "C_Guardian_Name_Mother";
+    	public static final String C_Guardian_Name_Hus = "C_Guardian_Name_Hus";
+    	public static final String Marital_Status = "Marital_Status";
+    	public static final String Couple_No ="Couple_No";
+    	public static final String LMP ="LMP";
+    	public static final String EDD ="EDD";
+    	public static final String GA ="GA";
+    	public static final String Pregnancy_Status ="Pregnancy_Status";
+    	public static final String Date_of_MR_wom ="Date_of_MR_wom";
+    	public static final String Date_of_TT1 ="Date_of_TT1";
+    	public static final String Date_of_TT2 ="Date_of_TT2";
+    	public static final String Date_of_TT3 ="Date_of_TT3";   	
+    	public static final String Date_of_TT4 ="Date_of_TT4";
+    	public static final String Date_of_TT5 ="Date_of_TT5";
+    	public static final String Unique_ID ="Unique_ID";
+    	public static final String NID ="NID";
+    	public static final String BRID ="BRID";
+    	public static final String HID ="HID";
+    	public static final String Guardian_Type = "Guardian_Type";
+    	public static final String Guardian_Name_Father = "Guardian_Name_Father";
+    	public static final String Guardian_Name_Mother = "Guardian_Name_Mother";
+    	public static final String Guardian_Name_Hus = "Guardian_Name_Hus";   	
+    	public static final String Mobile_No = "Mobile_No";
+    	public static final String Education = "Education";
+    	public static final String Occupation = "Occupation";
+    	public static final String Is_TT ="Is_TT";
+    	public static final String Is_Measles ="Is_Measles";
+    	public static final String Is_FP ="Is_FP";
+    	public static final String Is_NewBorn ="Is_NewBorn";
+    	public static final String Member_COUNTRY ="Member_COUNTRY";
+    	public static final String Member_DIVISION ="Member_DIVISION";
+    	public static final String Member_DISTRICT ="Member_DISTRICT";
+    	public static final String Member_UPAZILLA ="Member_UPAZILLA";
+    	public static final String Member_UNION ="Member_UNION";
+    	public static final String Member_WARD ="Member_WARD";
+    	public static final String Member_GOB_HHID ="Member_GOB_HHID";
+    	public static final String Member_GPS ="Member_GPS";
+    	public static final String FW_PSREVRPREG ="FWPSREVRPREG";
     	
     }
 
@@ -943,9 +981,9 @@ public class AllConstants {
         public static final String WWW_AUTHENTICATE_HEADER = "www-authenticate";
     }
     
-    public static class ELCOSchedulesConstantsImediate {
-    	public static final String IMD_ELCO_SCHEDULE_PSRF = "IMEDIATE ELCO PSRF";
-    	public static final String ELCO_SCHEDULE_PSRF = "ELCO PSRF";
+    public static class MembersSchedulesConstantsImediate {
+    	public static final String IMD_Members_SCHEDULE = "IMEDIATE Members";
+    	public static final String Members_SCHEDULE = "Members";
     }
     
     public static class ScheduleNames{

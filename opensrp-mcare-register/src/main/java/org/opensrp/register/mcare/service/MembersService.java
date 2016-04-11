@@ -6,102 +6,134 @@ package org.opensrp.register.mcare.service;
 
 import static java.text.MessageFormat.format;
 import static org.opensrp.common.AllConstants.CommonFormFields.ID;
-import static org.opensrp.common.AllConstants.MEMBERSRegistrationFields.*;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.MEMBERS_REGISTRATION_SUB_FORM_NAME;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.REFERENCE_DATE;
+import static org.opensrp.common.AllConstants.HHRegistrationFields.received_time;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.START_DATE;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.END_DATE;
-import static org.opensrp.common.AllConstants.HHRegistrationFields.existing_location;
-import static org.opensrp.common.AllConstants.HHRegistrationFields.existing_Country;
-import static org.opensrp.common.AllConstants.HHRegistrationFields.existing_Division;
-import static org.opensrp.common.AllConstants.HHRegistrationFields.existing_District;
-import static org.opensrp.common.AllConstants.HHRegistrationFields.existing_Upazilla;
-import static org.opensrp.common.AllConstants.HHRegistrationFields.existing_Union;
-import static org.opensrp.common.AllConstants.HHRegistrationFields.existing_Ward;
-import static org.opensrp.common.AllConstants.HHRegistrationFields.received_time;
-
-import static org.opensrp.common.util.EasyMap.create;
+import static org.opensrp.register.mcare.OpenSRPScheduleConstants.HHSchedulesConstants.HH_SCHEDULE_CENSUS;
+import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MembersSchedulesConstants.Members_SCHEDULE;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.joda.time.DateTime;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.form.domain.SubFormData;
+import org.opensrp.register.mcare.domain.Members;
 import org.opensrp.register.mcare.domain.HouseHold;
+import org.opensrp.register.mcare.repository.AllMembers;
 import org.opensrp.register.mcare.repository.AllHouseHolds;
+import org.opensrp.register.mcare.service.scheduling.MembersScheduleService;
 import org.opensrp.register.mcare.service.scheduling.HHSchedulesService;
 import org.opensrp.register.mcare.service.scheduling.ScheduleLogService;
+import org.opensrp.scheduler.Action;
+import org.opensrp.scheduler.ScheduleLog;
+import org.opensrp.scheduler.repository.AllActions;
+import org.opensrp.scheduler.repository.AllReportActions;
+import org.opensrp.scheduler.service.ReportActionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import static org.opensrp.common.AllConstants.MEMBERSRegistrationFields.*;
+import static org.opensrp.common.AllConstants.Form.*;
+import static org.opensrp.common.util.EasyMap.create;
+
 @Service
-public class HHService {
-
-	private static Logger logger = LoggerFactory.getLogger(HHService.class
+public class MembersService {
+	private static Logger logger = LoggerFactory.getLogger(MembersService.class
 			.toString());
+
 	private AllHouseHolds allHouseHolds;
-	private MembersService membersService;
+	private AllMembers allMembers;
 	private HHSchedulesService hhSchedulesService;
-	private ScheduleLogService scheduleLogService;	 
+	private MembersScheduleService membersScheduleService;
+	private ANCService ancService;
+	private BNFService bnfService;	
+	private ScheduleLogService scheduleLogService;
+	private AllActions allActions;
 	@Autowired
-	public HHService(AllHouseHolds allHouseHolds, MembersService membersService,
-			HHSchedulesService hhSchedulesService,ScheduleLogService scheduleLogService) {
+	public MembersService(AllHouseHolds allHouseHolds, AllMembers allMembers, HHSchedulesService hhSchedulesService,
+			MembersScheduleService membersScheduleService, ANCService ancService, BNFService bnfService,ScheduleLogService scheduleLogService,AllActions allActions) {
 		this.allHouseHolds = allHouseHolds;
-		this.membersService = membersService;
-		this.hhSchedulesService = hhSchedulesService;	
+		this.allMembers = allMembers;
+		this.hhSchedulesService = hhSchedulesService;
+		this.membersScheduleService = membersScheduleService;
+		this.ancService = ancService;
+		this.bnfService = bnfService;
 		this.scheduleLogService = scheduleLogService;
-	}	
-	public void registerHouseHold(FormSubmission submission) {
-
-		HouseHold houseHold = allHouseHolds.findByCaseId(submission.entityId());
-
-		if (houseHold == null) {
-			logger.warn(format(
-					"Failed to handle Census form as there is no household registered with ID: {0}",
-					submission.entityId()));
-			return;
-		}
-		SubFormData subFormData =null;
-		subFormData = submission.getSubFormByName(MEMBERS_REGISTRATION_SUB_FORM_NAME);		
-		addDetailsToHH(submission, subFormData, houseHold);
+		this.allActions = allActions;
 		
-		addMEMBERDETAILSToHH(submission, subFormData, houseHold);
-		
-		houseHold.withPROVIDERID(submission.anmId());
-		houseHold.withINSTANCEID(submission.instanceId());
-		houseHold.withSUBMISSIONDATE(scheduleLogService.getTimeStampMills());
-		allHouseHolds.update(houseHold);
-			
-		hhSchedulesService.enrollIntoMilestoneOfCensus(submission.entityId(),
-			submission.getField(REFERENCE_DATE),submission.anmId(),submission.instanceId());
-
-		
-		membersService.registerMembers(submission);
 	}
 	
-	private void addDetailsToHH(FormSubmission submission,
-			SubFormData subFormData, HouseHold houseHold) {
-						SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-						Date today = Calendar.getInstance().getTime();
-						houseHold.details().put(existing_location, submission.getField(existing_location));
-						houseHold.details().put(existing_Country, submission.getField(existing_Country));		
-						houseHold.details().put(existing_Division, submission.getField(existing_Division));
-						houseHold.details().put(existing_District, submission.getField(existing_District));
-						houseHold.details().put(existing_Upazilla, submission.getField(existing_Upazilla));
-						houseHold.details().put(existing_Union, submission.getField(existing_Union));		
-						houseHold.details().put(existing_Ward, submission.getField(existing_Ward));
-						houseHold.details().put(received_time,format.format(today).toString());
-				    	houseHold.details().put(REFERENCE_DATE, submission.getField(REFERENCE_DATE));
-						houseHold.details().put(START_DATE, submission.getField(START_DATE));		
-						houseHold.details().put(END_DATE, submission.getField(END_DATE));
+	public void registerMembers(FormSubmission submission) {
+		
+		SubFormData subFormData = submission
+				.getSubFormByName(MEMBERS_REGISTRATION_SUB_FORM_NAME);	
+		  
+		for (Map<String, String> membersFields : subFormData.instances()) {
+			
+			Members members = allMembers.findByCaseId(membersFields.get(ID))
+					.withINSTANCEID(submission.instanceId())
+					.withPROVIDERID(submission.anmId())
+					.withSUBMISSIONDATE(scheduleLogService.getTimeStampMills());
+			
+			addDetailsToMembers(submission, subFormData, members);
+			
+			if(membersFields.containsKey(Reg_No)){
+				allMembers.update(members);
+				logger.info("members updated");
+			}else{
+				allMembers.remove(members);
+				logger.info("members removed");
+			}
+
+			/*membersScheduleService.enrollIntoMilestoneOfPSRF(membersFields.get(ID),
+					submission.getField(REFERENCE_DATE),submission.anmId(),submission.instanceId());*/
+
+		}
+
+		if (submission.formName().equalsIgnoreCase(MEMBERS_REGISTRATION)) {
+
+			HouseHold houseHold = allHouseHolds.findByCaseId(submission
+					.entityId());
+
+			if (houseHold == null) {
+				logger.warn(format(
+						"Failed to handle Census form as there is no household registered with ID: {0}",
+						submission.entityId()));
+				return;
+			}
+			
+			addMEMBERDETAILSToHH(submission, subFormData, houseHold);
+
+			houseHold.withPROVIDERID(submission.anmId());
+			houseHold.withINSTANCEID(submission.instanceId());
+			
+			allHouseHolds.update(houseHold);
+
+			hhSchedulesService.enrollIntoMilestoneOfCensus(submission.entityId(),
+					submission.getField(REFERENCE_DATE),submission.anmId(),submission.instanceId());
+			}	 
 	}
-
-
+	
+	private void addDetailsToMembers(FormSubmission submission,
+			SubFormData subFormData, Members members) {
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date today = Calendar.getInstance().getTime();
+		members.details().put(relationalid, subFormData.instances().get(0).get(relationalid));
+		members.details().put(REFERENCE_DATE, submission.getField(REFERENCE_DATE));
+		members.details().put(START_DATE, submission.getField(START_DATE));		
+		members.details().put(END_DATE, submission.getField(END_DATE));
+		members.details().put(received_time,format.format(today).toString());
+	}
+	
 	private void addMEMBERDETAILSToHH(FormSubmission submission,
 			SubFormData subFormData, HouseHold houseHold) {
 		
@@ -186,24 +218,4 @@ public class HHService {
 		}
 		
 	}
-	
-	public String getEntityIdBybrnId(List<String> brnIdList)
-	{
-	   List<HouseHold> houseHolds =	allHouseHolds.findAllHouseHolds();
-	   
-	   if (houseHolds == null || houseHolds.isEmpty()) {
-           return null;
-       }
-	   
-	   for (HouseHold household : houseHolds)
-	   {
-		   for ( Map<String, String> members : household.MEMBERDETAILS()) 
-		   {
-			   if(brnIdList.contains(members.get("FWWOMBID")))
-				   return household.caseId();
-		   }
-	   }
-	   return null;
-	}
-	
 }
