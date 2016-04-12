@@ -43,6 +43,7 @@ CREATE TABLE report.service_provided (ID SERIAL, service_provider INTEGER NOT NU
   CONSTRAINT FK_SP_DI_ID FOREIGN KEY (indicator) REFERENCES report.dim_indicator (ID),
   CONSTRAINT FK_SP_DD_ID FOREIGN KEY (date_) REFERENCES report.dim_date (ID),
   CONSTRAINT FK_SP_DL_ID FOREIGN KEY (location) REFERENCES report.dim_location (ID));
+
 CREATE SEQUENCE report.unique_id_id_seq
   INCREMENT 1
   MINVALUE 1

@@ -162,7 +162,7 @@ public class AllClientsIntegrationTest {
 			clientService.addClient(c);
 		}
 	}
-	
+	/*
 	@Test
 	public void shouldGetByDynamicView() {
 		addClients();
@@ -178,7 +178,7 @@ public class AllClientsIntegrationTest {
 		l2 = clientService.findByCriteria("fn1", "MALE"   , null, null, null, null, null, null, null, null, null, null, null, null);
 		assertTrue(l2.size() == 1);
 	}
-
+	*/
 	@Test
 	public void shouldFetchClientByIdentifier()
 	{

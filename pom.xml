@@ -19,7 +19,7 @@
 		<!-- <module>opensrp-register</module> -->
 		<module>opensrp-connector</module>
 		<module>opensrp-web</module>
-		<!-- <module>opensrp-reporting</module> -->
+		 <module>opensrp-reporting</module>
 	</modules>
 
 	<properties>
@@ -188,16 +188,16 @@
 						<artifactId>sql-maven-plugin</artifactId>
 						<version>1.5</version>
 						<dependencies>
-							<!-- <dependency>
+							 <dependency>
                                 <groupId>postgresql</groupId>
                                 <artifactId>postgresql</artifactId>
                                 <version>9.1-901.jdbc4</version>
-                            </dependency> -->
-							<dependency>
-								<groupId>mysql</groupId>
-								<artifactId>mysql-connector-java</artifactId>
-								<version>${mysql.connector.version}</version>
-							</dependency>
+                            </dependency>
+							<!--	<dependency>
+                                    <groupId>mysql</groupId>
+                                    <artifactId>mysql-connector-java</artifactId>
+                                    <version>${mysql.connector.version}</version>
+                                </dependency>-->
 						</dependencies>
 
 						<configuration>
