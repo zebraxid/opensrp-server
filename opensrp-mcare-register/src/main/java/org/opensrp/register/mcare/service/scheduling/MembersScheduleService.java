@@ -18,6 +18,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
@@ -55,7 +56,7 @@ public class MembersScheduleService {
 		this.scheduleLogService = scheduleLogService;		
 	}
 	
-	public void enrollWoman(String entityId,String provider,String instWomaneId,FormSubmission submission) {
+	public void enrollWoman(String entityId,String provider,String instWomaneId,Map<String, String> membersFields) {
     
     	String milestone=null;    
     	DateTime start = null;
@@ -66,11 +67,11 @@ public class MembersScheduleService {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         
     	try {
-			date1 = format.parse(submission.getField(Date_of_TT1));	
-			date2 = format.parse(submission.getField(Date_of_TT2));	
-			date3 = format.parse(submission.getField(Date_of_TT3));	
-			date4 = format.parse(submission.getField(Date_of_TT4));	
-			date5 = format.parse(submission.getField(Date_of_TT5));	
+			date1 = format.parse(membersFields.get(Date_of_TT1));	
+			date2 = format.parse(membersFields.get(Date_of_TT2));	
+			date3 = format.parse(membersFields.get(Date_of_TT3));	
+			date4 = format.parse(membersFields.get(Date_of_TT4));	
+			date5 = format.parse(membersFields.get(Date_of_TT5));	
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}

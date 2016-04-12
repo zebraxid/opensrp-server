@@ -93,7 +93,7 @@ public class MembersService {
 			if(membersFields.containsKey(Is_TT)){
 				if(!membersFields.get(Is_TT).equalsIgnoreCase("") || membersFields.get(Is_TT) != null){	
 					if(membersFields.get(Is_TT).equalsIgnoreCase("1"))
-					membersScheduleService.enrollWoman(members.caseId(),submission.anmId(),submission.instanceId(),submission);
+					membersScheduleService.enrollWoman(members.caseId(),submission.anmId(),submission.instanceId(),membersFields);
 				}
 			}
 		}
