@@ -12,7 +12,6 @@ import static org.opensrp.common.AllConstants.HHRegistrationFields.received_time
 import static org.opensrp.common.AllConstants.HHRegistrationFields.START_DATE;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.END_DATE;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.HHSchedulesConstants.HH_SCHEDULE_CENSUS;
-import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MembersSchedulesConstants.Members_SCHEDULE;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -22,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.form.domain.SubFormData;
 import org.opensrp.register.mcare.domain.Members;
@@ -54,19 +54,15 @@ public class MembersService {
 	private AllMembers allMembers;
 	private HHSchedulesService hhSchedulesService;
 	private MembersScheduleService membersScheduleService;
-	private ANCService ancService;
-	private BNFService bnfService;	
 	private ScheduleLogService scheduleLogService;
 	private AllActions allActions;
 	@Autowired
 	public MembersService(AllHouseHolds allHouseHolds, AllMembers allMembers, HHSchedulesService hhSchedulesService,
-			MembersScheduleService membersScheduleService, ANCService ancService, BNFService bnfService,ScheduleLogService scheduleLogService,AllActions allActions) {
+			MembersScheduleService membersScheduleService, ScheduleLogService scheduleLogService, AllActions allActions) {
 		this.allHouseHolds = allHouseHolds;
 		this.allMembers = allMembers;
 		this.hhSchedulesService = hhSchedulesService;
 		this.membersScheduleService = membersScheduleService;
-		this.ancService = ancService;
-		this.bnfService = bnfService;
 		this.scheduleLogService = scheduleLogService;
 		this.allActions = allActions;
 		
@@ -84,7 +80,7 @@ public class MembersService {
 					.withPROVIDERID(submission.anmId())
 					.withSUBMISSIONDATE(scheduleLogService.getTimeStampMills());
 			
-			addDetailsToMembers(submission, subFormData, members);
+			//addDetailsToMembers(submission, subFormData, members);
 			
 			if(membersFields.containsKey(Reg_No)){
 				allMembers.update(members);
@@ -93,10 +89,13 @@ public class MembersService {
 				allMembers.remove(members);
 				logger.info("members removed");
 			}
-
-			/*membersScheduleService.enrollIntoMilestoneOfPSRF(membersFields.get(ID),
-					submission.getField(REFERENCE_DATE),submission.anmId(),submission.instanceId());*/
-
+			
+			if(membersFields.containsKey(Is_TT)){
+				if(!membersFields.get(Is_TT).equalsIgnoreCase("") || membersFields.get(Is_TT) != null){	
+					if(membersFields.get(Is_TT).equalsIgnoreCase("1"))
+					membersScheduleService.enrollWoman(members.caseId(),submission.anmId(),submission.instanceId(),submission);
+				}
+			}
 		}
 
 		if (submission.formName().equalsIgnoreCase(MEMBERS_REGISTRATION)) {
@@ -219,3 +218,4 @@ public class MembersService {
 		
 	}
 }
+

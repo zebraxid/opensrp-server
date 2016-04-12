@@ -87,11 +87,18 @@ public class OpenSRPScheduleConstants {
     public static class HHSchedulesConstants {
     	public static final String HH_SCHEDULE_CENSUS = "FW CENSUS";
     }
-    public static class MembersSchedulesConstants {
-    	public static final String Members_SCHEDULE = "Members";
-    }
-    public static class MembersSchedulesConstantsImediate {
-    	public static final String IMD_Members_SCHEDULE = "IMEDIATE Members";
+    public static class WomanScheduleConstants {
+        public static final String SCHEDULE_Woman = "Woman Vaccination";
+        public static final String SCHEDULE_PNC = "Post Natal Care Reminder Visit";
+        public static final String SCHEDULE_Woman_1 = "TT_1";
+        public static final String SCHEDULE_Woman_2 = "TT_2";
+        public static final String SCHEDULE_Woman_3 = "TT_3";
+        public static final String SCHEDULE_Woman_4 = "TT_4";
+        public static final String SCHEDULE_Woman_5 = "TT_5";
+        public static final String SCHEDULE_BNF = "BirthNotificationPregnancyStatusFollowUp";       
+        public static final String SCHEDULE_PNC_1 = "pncrv_1";
+        public static final String SCHEDULE_PNC_2 = "pncrv_2";
+        public static final String SCHEDULE_PNC_3 = "pncrv_3";
     }
     public static class DateTimeDuration{
     	public static final Integer duration = 1344; // hour
@@ -105,6 +112,16 @@ public class OpenSRPScheduleConstants {
     	public static final Integer anc4Start = 247;
     	public static final Integer anc4End = 252;
     	public static final Integer bnf = 261;
+    	
+    	public static final Integer Woman1Start = 50;
+    	public static final Integer Woman2Start = 163;
+    	public static final Integer Woman2End = 168;
+    	public static final Integer Woman3Start = 219;    	
+    	public static final Integer Woman3End = 224;
+    	public static final Integer Woman4Start = 247;
+    	public static final Integer Woman4End = 252;
+    	public static final Integer Woman5Start = 247;
+    	public static final Integer Woman5End = 252;
     }
    
 }

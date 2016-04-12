@@ -114,6 +114,7 @@ public class AllConstants {
     	public static final String ELCO_REGISTRATION_SUB_FORM_NAME_CENSUS = "elco_registration_ce";
     	public static final String LOCATION_NAME = "location_name";
     	public static final String REFERENCE_DATE = "today";
+    	public static final String Date_Of_Reg = "Date_Of_Reg";
     	public static final String MOTHER_REFERENCE_DATE = "FWPSRLMP";
     	public static final String PNC_REFERENCE_DATE = "FWEDD";
     	public static final String START_DATE = "start";
@@ -999,4 +1000,5 @@ public class AllConstants {
     	public static final String ENROLLMENT_TRACK_UUID = "openmrsTrackUuid";
     }
 }
+
 

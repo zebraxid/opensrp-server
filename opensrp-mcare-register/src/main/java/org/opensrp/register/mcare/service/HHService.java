@@ -11,6 +11,7 @@ import static org.opensrp.common.AllConstants.HHRegistrationFields.MEMBERS_REGIS
 import static org.opensrp.common.AllConstants.HHRegistrationFields.REFERENCE_DATE;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.START_DATE;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.END_DATE;
+import static org.opensrp.common.AllConstants.HHRegistrationFields.Date_Of_Reg;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.existing_location;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.existing_Country;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.existing_Division;
@@ -68,7 +69,7 @@ public class HHService {
 		}
 		SubFormData subFormData =null;
 		subFormData = submission.getSubFormByName(MEMBERS_REGISTRATION_SUB_FORM_NAME);		
-		addDetailsToHH(submission, subFormData, houseHold);
+		//addDetailsToHH(submission, subFormData, houseHold);
 		
 		addMEMBERDETAILSToHH(submission, subFormData, houseHold);
 		
@@ -78,8 +79,7 @@ public class HHService {
 		allHouseHolds.update(houseHold);
 			
 		hhSchedulesService.enrollIntoMilestoneOfCensus(submission.entityId(),
-			submission.getField(REFERENCE_DATE),submission.anmId(),submission.instanceId());
-
+			submission.getField(Date_Of_Reg),submission.anmId(),submission.instanceId());
 		
 		membersService.registerMembers(submission);
 	}
