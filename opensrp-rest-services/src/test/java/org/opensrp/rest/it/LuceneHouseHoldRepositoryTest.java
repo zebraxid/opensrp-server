@@ -145,10 +145,7 @@ public class LuceneHouseHoldRepositoryTest {
     	LuceneResult result = repo.findDocsByProvider(makeQueryString);
     	System.out.println(result.toString());
         System.out.println(result.getRows().size());
-        List<Row> rows = result.getRows();
-        for (Row row : rows) {
-			System.out.println(row.getId());
-		}
+        
 		
         assertNotNull("Expecting a non null result", result); 
         assertTrue("Should only have one result", result.getRows().size() >=0); 
