@@ -8,6 +8,7 @@ import static java.text.MessageFormat.format;
 import static org.opensrp.dto.BeneficiaryType.members;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.DateTimeDuration.duration;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.WomanScheduleConstants.*;
+import static org.opensrp.common.AllConstants.HHRegistrationFields.MOTHER_REFERENCE_DATE;
 import static org.opensrp.common.AllConstants.MEMBERSRegistrationFields.*;
 
 import java.io.BufferedReader;
@@ -83,11 +84,11 @@ public class MembersScheduleService {
         WomanExpireDate = new DateTime(start).plusDays(DateTimeDuration.Woman1Start);
         
         logger.info(format("Enrolling Woman with Entity id:{0} to Woman schedule, milestone: {1}.", entityId, milestone));
-        scheduler.enrollIntoSchedule(entityId, SCHEDULE_Woman, SCHEDULE_Woman_1, date1.toString());
-        scheduler.enrollIntoSchedule(entityId, SCHEDULE_Woman, SCHEDULE_Woman_2, date2.toString());
-        scheduler.enrollIntoSchedule(entityId, SCHEDULE_Woman, SCHEDULE_Woman_3, date3.toString());
-        scheduler.enrollIntoSchedule(entityId, SCHEDULE_Woman, SCHEDULE_Woman_4, date4.toString());
-        scheduler.enrollIntoSchedule(entityId, SCHEDULE_Woman, SCHEDULE_Woman_5, date5.toString());
+        scheduler.enrollIntoSchedule(entityId, SCHEDULE_Woman, SCHEDULE_Woman_1, LocalDate.parse(membersFields.get(Date_of_TT1)).toString());
+        scheduler.enrollIntoSchedule(entityId, SCHEDULE_Woman, SCHEDULE_Woman_2, LocalDate.parse(membersFields.get(Date_of_TT2)).toString());
+        scheduler.enrollIntoSchedule(entityId, SCHEDULE_Woman, SCHEDULE_Woman_3, LocalDate.parse(membersFields.get(Date_of_TT3)).toString());
+        scheduler.enrollIntoSchedule(entityId, SCHEDULE_Woman, SCHEDULE_Woman_4, LocalDate.parse(membersFields.get(Date_of_TT4)).toString());
+        scheduler.enrollIntoSchedule(entityId, SCHEDULE_Woman, SCHEDULE_Woman_5, LocalDate.parse(membersFields.get(Date_of_TT5)).toString());
   
     }
     
