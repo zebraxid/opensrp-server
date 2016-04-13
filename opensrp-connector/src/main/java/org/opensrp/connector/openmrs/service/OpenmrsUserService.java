@@ -11,6 +11,20 @@ import org.opensrp.common.util.HttpResponse;
 import org.opensrp.connector.HttpUtil;
 import org.springframework.stereotype.Service;
 
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.X509Certificate;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
+
+import ch.lambdaj.Lambda;
+import ch.lambdaj.function.convert.Converter;
+
 @Service
 public class OpenmrsUserService extends OpenmrsService{
 
@@ -20,21 +34,30 @@ public class OpenmrsUserService extends OpenmrsService{
 	private static final String TEAM_MEMBER_URL = "ws/rest/v1/teammodule/member";
 	private static final String PROVIDER_URL = "ws/rest/v1/provider";
 	private static final String TEAM_MEMBER_LOCATION_URL = "ws/rest/v1/teammodule/memberLocation";
-	
+	private TurnOffCertificateValidation turnOffCertificateValidation;
     public OpenmrsUserService() { }
 
     public OpenmrsUserService(String openmrsUrl, String user, String password) {
     	super(openmrsUrl, user, password);
+    	
     }
-
+    public OpenmrsUserService(TurnOffCertificateValidation turnOffCertificateValidation) {
+    	this.turnOffCertificateValidation = turnOffCertificateValidation;
+    }
+    
 	public boolean authenticate(String username, String password) throws JSONException {
+		 new TurnOffCertificateValidation().ForHTTPSConnections();
+		//turnOffCertificateValidation.ForHTTPSConnections();
 		HttpResponse op = HttpUtil.get(HttpUtil.removeEndingSlash(OPENMRS_BASE_URL)+"/"+AUTHENTICATION_URL, "", username, password);
-		//System.out.println("Openmrs response msg:" + op.body().toString());
+		System.out.println("Openmrs response msg:" + op.body().toString());
+		System.out.println(username);
 		return new JSONObject(op.body()).getBoolean("authenticated");
 	}
-
+	
 	public User getUser(String username) throws JSONException {
+		 new TurnOffCertificateValidation().ForHTTPSConnections();
 		HttpResponse op = HttpUtil.get(HttpUtil.removeEndingSlash(OPENMRS_BASE_URL)+"/"+USER_URL, "v=full&username="+username, OPENMRS_USER, OPENMRS_PWD);
+		System.out.println("Openmrs response msg1:" + op.body().toString());
 		JSONArray res = new JSONObject(op.body()).getJSONArray("results");
 		if(res.length() == 0){
 			return null;
