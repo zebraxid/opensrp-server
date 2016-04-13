@@ -2,6 +2,36 @@
     "name": "Woman Vaccination",
     "absolute": true,
     "milestones": [
+    	{
+            "name": "measles",
+            "scheduleWindows": {
+            	"earliest": ["0 Days"],
+                "due": ["730 Days"],
+                "late": ["731 Day"],
+                "max": ["732 Days"]
+            },
+            "alerts": [
+                {
+                    "window": "due",
+                    "offset": ["0 Days"],
+                    "interval": ["1 Day"],
+                    "count": "730"
+                },
+                {
+                    "window": "late",
+                    "offset": ["730 Day"],
+                    "interval": ["1 Day"],
+                    "count": "1"
+                },
+                {
+                    "window": "max",
+                    "offset": ["731 Days"],
+                    "interval": ["1 Day"],
+                    "count": "1"
+                }
+                
+            ]
+        },
         {
             "name": "TT_1",
             "scheduleWindows": {

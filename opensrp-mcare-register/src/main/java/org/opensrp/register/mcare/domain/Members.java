@@ -36,8 +36,6 @@ public class Members extends MotechBaseDataObject {
 	private String ANC3_current_formStatus;
 	@JsonProperty
 	private String ANC4_current_formStatus;
-	/*@JsonProperty
-	private String current_formStatus;*/
 	@JsonProperty
 	private String GOBHHID;
 	@JsonProperty
@@ -67,13 +65,17 @@ public class Members extends MotechBaseDataObject {
 	@JsonProperty
 	private Map<String, String> details;
 	@JsonProperty
-	private Map<String, String> ancVisitOne;
+	private Map<String, String> TTVisitOne;
 	@JsonProperty
-	private Map<String, String> ancVisitTwo;
+	private Map<String, String> TTVisitTwo;
 	@JsonProperty
-	private Map<String, String> ancVisitThree;
+	private Map<String, String> TTVisitThree;
 	@JsonProperty
-	private Map<String, String> ancVisitFour;
+	private Map<String, String> TTVisitFour;
+	@JsonProperty
+	private Map<String, String> TTVisitFive;
+	@JsonProperty
+	private Map<String, String> withMeaslesVisit;
 	@JsonProperty
 	private List<Map<String, String>> bnfVisitDetails;
 	@JsonProperty
@@ -87,10 +89,10 @@ public class Members extends MotechBaseDataObject {
 	public Members() {
 
 		this.details = new HashMap<>();
-		this.ancVisitOne = new HashMap<>();
-		this.ancVisitTwo = new HashMap<>();
-		this.ancVisitThree = new HashMap<>();
-		this.ancVisitFour = new HashMap<>();
+		this.TTVisitOne = new HashMap<>();
+		this.TTVisitTwo = new HashMap<>();
+		this.TTVisitThree = new HashMap<>();
+		this.TTVisitFour = new HashMap<>();
 		this.setIsClosed(false);
 	}
 	
@@ -133,11 +135,6 @@ public class Members extends MotechBaseDataObject {
 		this.ANC4_current_formStatus = ANC4_current_formStatus;
 		return this;
 	}
-
-	/*public Members withcurrent_formStatus(String current_formStatus) {
-		this.current_formStatus = current_formStatus;
-		return this;
-	}*/
 
 	public Members withFWHUSNAME(String FWHUSNAME) {
 		this.FWHUSNAME = FWHUSNAME;
@@ -199,20 +196,28 @@ public class Members extends MotechBaseDataObject {
         this.details = new HashMap<>(details);
         return this;
     }
-	public Members withANCVisitOne(Map<String, String> ancVisitOne) {
-        this.ancVisitOne = new HashMap<>(ancVisitOne);
+	public Members withTTVisitOne(Map<String, String> TTVisitOne) {
+        this.TTVisitOne = new HashMap<>(TTVisitOne);
         return this;
     }
-	public Members withANCVisitTwo(Map<String, String> ancVisitTwo) {
-        this.ancVisitTwo = new HashMap<>(ancVisitTwo);
+	public Members withTTVisitTwo(Map<String, String> TTVisitTwo) {
+        this.TTVisitTwo = new HashMap<>(TTVisitTwo);
         return this;
     }
-	public Members withANCVisitThree(Map<String, String> ancVisitThree) {
-        this.ancVisitThree = new HashMap<>(ancVisitThree);
+	public Members withTTVisitThree(Map<String, String> TTVisitThree) {
+        this.TTVisitThree = new HashMap<>(TTVisitThree);
         return this;
     }
-	public Members withANCVisitFour(Map<String, String> ancVisitFour) {
-        this.ancVisitFour = new HashMap<>(ancVisitFour);
+	public Members withTTVisitFour(Map<String, String> TTVisitFour) {
+        this.TTVisitFour = new HashMap<>(TTVisitFour);
+        return this;
+    }
+	public Members withTTVisitFive(Map<String, String> TTVisitFive) {
+        this.TTVisitFive = new HashMap<>(TTVisitFive);
+        return this;
+    }
+	public Members withMeaslesVisit(Map<String, String> withMeaslesVisit) {
+        this.withMeaslesVisit = new HashMap<>(withMeaslesVisit);
         return this;
     }
 	public Members withBNFVisitDetails(List<Map<String, String>> bnfVisitDetails) {
@@ -265,10 +270,6 @@ public class Members extends MotechBaseDataObject {
 	public String ANC4_current_formStatus() {
 		return ANC4_current_formStatus;
 	}
-
-	/*public String current_formStatus() {
-		return current_formStatus;
-	}*/
 
 	public String FWHUSNAME() {
 		return FWHUSNAME;
@@ -327,17 +328,23 @@ public class Members extends MotechBaseDataObject {
 		return details.get(name);
 	}
 	
-	public Map<String, String> ancVisitOne() {
-		return ancVisitOne;
+	public Map<String, String> TTVisitOne() {
+		return TTVisitOne;
 	}
-	public Map<String, String> ancVisitTwo() {
-		return ancVisitTwo;
+	public Map<String, String> TTVisitTwo() {
+		return TTVisitTwo;
 	}
-	public Map<String, String> ancVisitThree() {
-		return ancVisitThree;
+	public Map<String, String> TTVisitThree() {
+		return TTVisitThree;
 	}
-	public Map<String, String> ancVisitFour() {
-		return ancVisitFour;
+	public Map<String, String> TTVisitFour() {
+		return TTVisitFour;
+	}
+	public Map<String, String> TTVisitFive() {
+		return TTVisitFive;
+	}
+	public Map<String, String> withMeaslesVisit() {
+		return withMeaslesVisit;
 	}
 	public List<Map<String, String>> bnfVisitDetails() {
 		if (bnfVisitDetails == null) {

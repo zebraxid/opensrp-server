@@ -51,11 +51,10 @@ public class HHService {
 	private ScheduleLogService scheduleLogService;	 
 	@Autowired
 	public HHService(AllHouseHolds allHouseHolds, MembersService membersService,
-			HHSchedulesService hhSchedulesService,ScheduleLogService scheduleLogService) {
+			HHSchedulesService hhSchedulesService) {
 		this.allHouseHolds = allHouseHolds;
 		this.membersService = membersService;
 		this.hhSchedulesService = hhSchedulesService;	
-		this.scheduleLogService = scheduleLogService;
 	}	
 	public void registerHouseHold(FormSubmission submission) {
 

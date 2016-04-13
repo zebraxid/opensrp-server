@@ -90,6 +90,7 @@ public class OpenSRPScheduleConstants {
     public static class WomanScheduleConstants {
         public static final String SCHEDULE_Woman = "Woman Vaccination";
         public static final String SCHEDULE_PNC = "Post Natal Care Reminder Visit";
+        public static final String SCHEDULE_Woman_Measles = "measles";
         public static final String SCHEDULE_Woman_1 = "TT_1";
         public static final String SCHEDULE_Woman_2 = "TT_2";
         public static final String SCHEDULE_Woman_3 = "TT_3";
