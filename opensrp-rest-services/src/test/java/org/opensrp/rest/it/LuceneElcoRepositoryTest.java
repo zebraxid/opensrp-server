@@ -63,13 +63,13 @@ public class LuceneElcoRepositoryTest {
     	System.out.println("ddd:"+end);
     	System.out.println("ss:"+start);
     	//String makeQueryString ="PROVIDERID:proshanto" + " AND " + "user_type:FWA"+ " AND SUBMISSIONDATE:["+start+" TO "+end+"]" ;
-    	String makeQueryString ="type:Elco" + " AND " + "SUBMISSIONDATE:["+start+" TO "+end+"]" ;
+    	/*String makeQueryString ="type:Elco" + " AND " + "SUBMISSIONDATE:["+start+" TO "+end+"]" ;
     	LuceneResult result = luceneElcoRepository.findDocsByProvider(makeQueryString);
     	System.out.println(result.toString());
         System.out.println(result.getRows().size());
        
 		
         assertNotNull("Expecting a non null result", result); 
-        assertTrue("Should only have one result", result.getRows().size() >=0); 
+        assertTrue("Should only have one result", result.getRows().size() >=0); */
     } 
 }
