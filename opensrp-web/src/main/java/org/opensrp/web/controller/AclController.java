@@ -84,7 +84,7 @@ public class AclController {
 				.getAllUsers()), OK);
 	}
 
-	@RequestMapping(method = GET, value = "/role-access-tokens")
+	/*@RequestMapping(method = GET, value = "/role-access-tokens")
 	@ResponseBody
 	public AclDTO getRoleAndAccessTokens(@RequestParam String userName) {
 		AclDTO tempDTO = new AclDTO();
@@ -108,7 +108,7 @@ public class AclController {
 		tempDTO.withAccessTokens(tokens);
 		//return aclService.getRoleAndAccessTokens(userName);
 		return tempDTO;
-	}
+	}*/
 	
 	// new one
 	@RequestMapping(method = GET, value = "/role-access-token")
@@ -202,9 +202,17 @@ public class AclController {
 	
 	@RequestMapping(headers = { "Accept=application/json" }, method = POST, value = "/add-user")
 	public ResponseEntity<String> addUser(@RequestBody UserDTO userDTO) {
-		logger.info("create request received for role - " + userDTO.getName());
+		logger.info("create request received for user - " + userDTO.getName());
 		
 		String message = userService.addUser(userDTO);		
+		return new ResponseEntity<>(message,OK);
+	}
+	
+	@RequestMapping(headers = { "Accept=application/json" }, method = POST, value = "/edit-user")
+	public ResponseEntity<String> editUser(@RequestBody UserDTO userDTO) {
+		logger.info("update request received for user - " + userDTO.getUserName());
+		
+		String message = userService.editUser(userDTO);		
 		return new ResponseEntity<>(message,OK);
 	}
 }

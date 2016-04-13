@@ -39,7 +39,7 @@ public class UsersService {
 	}
 	public List<String> getPrivilegesOfAUser(String userName){
 		User userByUserName = allUsers.findUserByUserName(userName);
-		if(userByUserName == null && userByUserName.getRoles() == null && userByUserName.getRoles().size() < 1)
+		if(userByUserName == null || userByUserName.getRoles() == null || userByUserName.getRoles().size() < 1)
 			return null;
 		else{
 			List<String> privileges = new ArrayList<String>();
@@ -81,7 +81,7 @@ public class UsersService {
 				List<UserDTO> childrenDTOs = userDTO.getChildren();
 				List<RoleDTO> roleDTOs = userDTO.getRoles();
 				List<LocationDTO> locationDTOs = userDTO.getLocation();
-				//
+				//	
 				SimplifiedUser parent= null;  
 				if(parentDTO != null){
 					parent = new SimplifiedUser();
@@ -138,28 +138,98 @@ public class UsersService {
 		}
 	}
 	
-	/*public String editRole(RoleDTO roleDTO) {		
-		Role roles = allRoles.get(roleDTO.getRoleId() );  // null checking isn't done here, should be done rigorously on client-side
-		
-		if(roles != null){
+	public String editUser(UserDTO userDTO) {		
+		//Role roles = allRoles.get(roleDTO.getRoleId() );  // null checking isn't done here, should be done rigorously on client-side
+		User userByUserName = allUsers.findUserByUserName(userDTO.getUserName() == null ? "" : userDTO.getUserName());
+		if(userByUserName != null){
 			try{
-				Role role = new Role();
-				role.withName(roleDTO.getName());
-				role.setId(roleDTO.getRoleId());
-				role.setRevision(roles.getRevision());			
-				//role.withUserName(roleDTO.getUserName());
-				role.withStatus(roleDTO.getStatus());
-				List<PrivilegeDTO> privilegeDTOs = roleDTO.getPrivileges();
-				List<SimplifiedPrivilege> privileges = new ArrayList<SimplifiedPrivilege>();
-				for(int i = 0; i < privilegeDTOs.size(); i++){					
-					SimplifiedPrivilege tempSimplifiedPrivilege = new SimplifiedPrivilege();
-					tempSimplifiedPrivilege.withName(privilegeDTOs.get(i).getName() == null ? "" : privilegeDTOs.get(i).getName());
-					tempSimplifiedPrivilege.withId(privilegeDTOs.get(i).getId() == null ? "" : privilegeDTOs.get(i).getId());
-					privileges.add(tempSimplifiedPrivilege);
-					logger.info("privilege with name - " +  tempSimplifiedPrivilege.getName() + "added in list");
-				}				
-				role.withPrivileges(privileges);
-				allRoles.update(role);
+				
+				if(userDTO.getStatus() != null){
+					userByUserName.withStatus(userDTO.getStatus());
+				}
+				if(userDTO.getGivenName() != null){
+					userByUserName.withGivenName(userDTO.getGivenName());
+				}
+				if(userDTO.getFamilyName() != null){
+					userByUserName.withFamilyName(userDTO.getFamilyName());
+				}
+				if(userDTO.getMiddleName() != null){
+					userByUserName.withMiddleName(userDTO.getMiddleName());
+				}
+				if(userDTO.getContactNumber() != null){
+					userByUserName.withContactNumber(userDTO.getContactNumber());
+				}
+				if(userDTO.getPersonalAddress() != null){
+					userByUserName.withPersonalAddress(userDTO.getPersonalAddress());
+				}
+				if(userDTO.getEmail() != null){
+					userByUserName.withEmail(userDTO.getEmail());
+				}
+				if(userDTO.getPassword() != null){
+					userByUserName.withPassword(userDTO.getPassword());
+				}
+				if(userDTO.getGender() != null){
+					userByUserName.withGender(userDTO.getGender());
+				}
+				if(userDTO.getParent() != null){
+					UserDTO parentDTO =  userDTO.getParent();					
+					SimplifiedUser parent = null;  
+					if(parentDTO != null){
+						parent = new SimplifiedUser();
+						parent.withUsername(parentDTO.getUserName());
+						parent.withId(parentDTO.getId());
+						userByUserName.withParent(parent);
+						logger.info("parent updated in user.");
+					}					
+				}
+				if(userDTO.getChildren() != null){
+					List<UserDTO> childrenDTOs = userDTO.getChildren();
+					List<SimplifiedUser> children = null;
+					if(childrenDTOs != null && childrenDTOs.size() > 0){
+						children = new ArrayList<SimplifiedUser>();
+						for(int i =0 ; i < childrenDTOs.size(); i++){
+							SimplifiedUser tempUser = new SimplifiedUser();
+							tempUser.withUsername(childrenDTOs.get(i).getUserName());
+							tempUser.withId(childrenDTOs.get(i).getId());
+							children.add(tempUser);
+						}
+						userByUserName.withChildren(children);
+						logger.info("children updated in user.");
+					}
+				}
+				if(userDTO.getRoles() != null){
+					List<RoleDTO> roleDTOs = userDTO.getRoles();
+					List<SimplifiedRole> roles =  null;
+					if(roleDTOs != null && roleDTOs.size() > 0){
+						roles = new ArrayList<SimplifiedRole>();
+						for(int i =0 ; i < roleDTOs.size(); i++){
+							SimplifiedRole tempRole = new SimplifiedRole();
+							tempRole.withName(roleDTOs.get(i).getName());
+							tempRole.withId(roleDTOs.get(i).getRoleId());
+							roles.add(tempRole);
+						}
+						userByUserName.withRoles(roles);
+						logger.info("roles updated in user.");
+					}
+				}
+				if(userDTO.getLocation() != null){
+					List<LocationDTO> locationDTOs = userDTO.getLocation();
+					List<SimplifiedLocation> locations = null;
+					if(locationDTOs != null && locationDTOs.size() > 0){
+						locations = new ArrayList<SimplifiedLocation>();
+						for(int i = 0; i < locationDTOs.size(); i++){
+							SimplifiedLocation tempLocation = new SimplifiedLocation();
+							tempLocation.withName(locationDTOs.get(i).getName());
+							tempLocation.withId(locationDTOs.get(i).getId());
+							locations.add(tempLocation);
+							//logger.info("location name - " + tempLocation.getName() + " - " + tempLocation.getId());
+						}
+						userByUserName.withLocation(locations);
+						logger.info("loactions updated in user.");
+					}
+				}						
+				allUsers.update(userByUserName);			
+				
 				return "1";
 			}catch(Exception e){
 				return "0";
@@ -169,32 +239,4 @@ public class UsersService {
 			return "2";
 		}		
 	}
-	
-	public ArrayList<RoleDTO> getRolesAndUser(){
-		List<Role> roles = allRoles.roles();		
-		ArrayList<RoleDTO> roleList = new ArrayList<RoleDTO>();
-		for (Role role : roles) {
-			RoleDTO roleDTO = new RoleDTO()
-			.withName(role.getName())
-			.withRoleId(role.getId())
-			.withStatus(role.getStatus());
-			//.withUserName(role.getUserName());			
-			roleList.add(roleDTO);			
-		}		
-		return roleList;
-	}
-	
-	public RoleDTO getRoleByName(String roleName){
-		Role role = allRoles.findRoleByName(roleName);
-		if(role != null){
-			RoleDTO roleDTO = new RoleDTO();
-			roleDTO.withName(role.getName());
-			roleDTO.withStatus(role.getStatus());
-			//roleDTO.wi
-			//covert privileges to privilegeDTOs
-			return roleDTO;
-		}
-		else
-			return null;
-	}*/
 }
