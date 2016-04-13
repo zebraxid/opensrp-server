@@ -11,6 +11,7 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.io.IOUtils;
 import org.opensrp.common.util.HttpResponse;
+import org.opensrp.connector.openmrs.service.TurnOffCertificateValidation;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 
@@ -36,7 +37,8 @@ public class HttpUtil {
      * @return
      */
     public static HttpResponse post(String url, String payload, String data, String username,String password) {
-        try {
+        new TurnOffCertificateValidation().ForHTTPSConnections();
+    	try {
         	HttpURLConnection con = makeConnection(url, payload, HttpMethod.POST, true, username, password);
         	con.setDoOutput(true);
         	con.setRequestProperty("Content-Type", "application/json");
@@ -64,7 +66,8 @@ public class HttpUtil {
      * @return
      */
     public static HttpResponse get(String url, String payload, String username, String password) {
-        try {
+    	new TurnOffCertificateValidation().ForHTTPSConnections();
+    	try {
             HttpURLConnection con = makeConnection(url, payload, HttpMethod.GET, true, username, password);
             return new HttpResponse(con.getResponseCode() == HttpStatus.SC_OK, IOUtils.toString(con.getInputStream()));
         } 
