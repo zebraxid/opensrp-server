@@ -1,26 +1,26 @@
 /**
- * @author julkar nain 
+ * @author Asifur
  */
 package org.opensrp.register.mcare.service.handler;
 
 import org.opensrp.form.domain.FormSubmission;
-import org.opensrp.register.mcare.service.PNCService;
+import org.opensrp.register.mcare.service.MembersService;
 import org.opensrp.service.formSubmission.handler.FormSubmissionHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class PNCVisitTwoHandler implements FormSubmissionHandler {
+public class TT2_Handler implements FormSubmissionHandler {
 
-	private PNCService pncService;
+	private MembersService membersService;
 
 	@Autowired
-	public PNCVisitTwoHandler(PNCService pncService) {
-		this.pncService = pncService;
+	public TT2_Handler(MembersService membersService) {
+		this.membersService = membersService;
 	}
 
 	@Override
 	public void handle(FormSubmission submission) {
-		pncService.pncVisitTwo(submission);
+		membersService.TT2_Visit(submission);
 	}
 }

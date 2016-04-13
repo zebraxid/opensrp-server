@@ -29,9 +29,11 @@ public class AllConstants {
     	public static final String ANC_REMINDER_VISIT_3 = "anc_reminder_visit_3";
     	public static final String ANC_REMINDER_VISIT_4 = "anc_reminder_visit_4";
     	public static final String BNF_FORM = "birthnotificationpregnancystatusfollowup";
-    	public static final String PNC_REMINDER_VISIT_1 = "pnc_reminder_visit_1";
-    	public static final String PNC_REMINDER_VISIT_2 = "pnc_reminder_visit_2";
-    	public static final String PNC_REMINDER_VISIT_3 = "pnc_reminder_visit_3";
+    	public static final String TT1_Visit_Handler = "TT1_handler";
+    	public static final String TT2_Visit_Handler = "TT2_handler";
+    	public static final String TT3_Visit_Handler = "TT3_handler";
+    	public static final String TT4_Visit_Handler = "TT4_handler";
+    	public static final String TT5_Visit_Handler = "TT5_handler";
     	public static final String ENCC_REMINDER_VISIT_1 = "encc_visit_1";
     	public static final String ENCC_REMINDER_VISIT_2 = "encc_visit_2";
     	public static final String ENCC_REMINDER_VISIT_3 = "encc_visit_3";
