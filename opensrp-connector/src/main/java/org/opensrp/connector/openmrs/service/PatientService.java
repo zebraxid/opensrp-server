@@ -40,6 +40,7 @@ import org.json.JSONObject;
 import org.opensrp.api.domain.Address;
 import org.opensrp.api.domain.BaseEntity;
 import org.opensrp.api.domain.Client;
+import org.opensrp.connector.BahmniHttpUtils;
 import org.opensrp.connector.HttpUtil;
 import org.opensrp.connector.MultipartUtility;
 import org.opensrp.domain.Multimedia;
@@ -60,6 +61,7 @@ public class PatientService extends OpenmrsService{
    //TODO include everything for patient registration. i.e. person, person name, patient identifier
 	// include get for patient on different params like name, identifier, location, uuid, attribute,etc
 	//person methods should be separate
+	private static final String GEN_ID_URL = "ws/rest/v1/idgen";
 	private static final String PERSON_URL = "ws/rest/v1/person";
 	private static final String PATIENT_URL = "ws/rest/v1/patient";
 	private static final String PATIENT_IMAGE_URL = "ws/rest/v1/patientimage/uploadimage";
@@ -89,6 +91,15 @@ public class PatientService extends OpenmrsService{
     	return p.length()>0?p.getJSONObject(0):null;
     }
     
+    public JSONObject generateID() throws JSONException
+    {
+    	String ids = "GAN";
+  		JSONObject gen = new JSONObject();
+  		gen.put("identifierSourceName",ids);
+  		
+  		return new JSONObject(BahmniHttpUtils.post(getURL()+"/"+GEN_ID_URL, "", gen.toString(), OPENMRS_USER, OPENMRS_PWD).body());
+  		
+    }
     public JSONObject getIdentifierType(String identifierType) throws JSONException
     {
     	// we have to use this ugly approach because identifier not found throws exception and 
@@ -269,7 +280,7 @@ public class PatientService extends OpenmrsService{
 		
 		p.put("identifiers", ids);
 		System.out.println("Going to create patient: " + p.toString());
-		return new JSONObject(HttpUtil.post(getURL()+"/"+PATIENT_URL, "", p.toString(), OPENMRS_USER, OPENMRS_PWD).body());
+		return new JSONObject(BahmniHttpUtils.post(getURL()+"/"+PATIENT_URL, "", p.toString(), OPENMRS_USER, OPENMRS_PWD).body());
 	}
 	
 	public void patientImageUpload(Multimedia multimedia) throws IOException

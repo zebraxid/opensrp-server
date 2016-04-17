@@ -38,7 +38,7 @@ public class BahmniHttpUtils {
 	          con.setRequestProperty("Content-Type", "application/json");
 	          String charset = "UTF-8";
 	          con.setRequestProperty("Accept-Charset", charset);
-	          String encoded = new String(Base64.encodeBase64(("superman:Admin123").getBytes()));
+	          String encoded = new String(Base64.encodeBase64((username+":"+password).getBytes()));
 	          con.setRequestProperty("Authorization", "Basic "+encoded);
 	          con.setRequestMethod(HttpMethod.POST.name());          
 	          con.setFixedLengthStreamingMode(data.toString().getBytes().length);           
@@ -50,13 +50,13 @@ public class BahmniHttpUtils {
 			  if (statusCode != HttpURLConnection.HTTP_OK) {
 			            // throw some exception
 			   } 
-		       BufferedReader    br = new BufferedReader(new InputStreamReader((con.getInputStream())));
+		       BufferedReader br = new BufferedReader(new InputStreamReader((con.getInputStream())));
 		       StringBuilder sb = new StringBuilder();
 		     
 		       while ((output = br.readLine()) != null) {
 		    	   sb.append(output);		        
 		       }
-		       System.out.println(sb.toString());	
+		       //System.out.println(sb.toString());	
 		       return new HttpResponse(con.getResponseCode() == HttpStatus.SC_OK, sb.toString());
 		  	}  catch(FileNotFoundException e){
 	        	return new HttpResponse(true, "");
