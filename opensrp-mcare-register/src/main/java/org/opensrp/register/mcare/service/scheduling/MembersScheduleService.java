@@ -5,37 +5,19 @@
 package org.opensrp.register.mcare.service.scheduling;
 
 import static java.text.MessageFormat.format;
-import static org.opensrp.dto.BeneficiaryType.members;
-import static org.opensrp.register.mcare.OpenSRPScheduleConstants.DateTimeDuration.duration;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.WomanScheduleConstants.*;
-import static org.opensrp.common.AllConstants.HHRegistrationFields.MOTHER_REFERENCE_DATE;
 import static org.opensrp.common.AllConstants.MEMBERSRegistrationFields.*;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
+
 import java.util.Date;
-import java.util.List;
+
 import java.util.Map;
 
-import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
-import org.joda.time.Weeks;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.opensrp.common.util.DateUtil;
-import org.opensrp.dto.ActionData;
-import org.opensrp.dto.AlertStatus;
-import org.opensrp.dto.BeneficiaryType;
-import org.opensrp.form.domain.FormSubmission;
-import org.opensrp.register.mcare.OpenSRPScheduleConstants.DateTimeDuration;
-import org.opensrp.scheduler.Action;
+
 import org.opensrp.scheduler.HealthSchedulerService;
-import org.opensrp.scheduler.repository.AllActions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,59 +28,117 @@ public class MembersScheduleService {
 
 	private static Logger logger = LoggerFactory.getLogger(MembersScheduleService.class.toString());
 	private HealthSchedulerService scheduler;
-	private AllActions allActions;
-	private ScheduleLogService scheduleLogService;
 	
 	@Autowired
-	public MembersScheduleService(HealthSchedulerService scheduler, AllActions allActions, ScheduleLogService scheduleLogService)
+	public MembersScheduleService(HealthSchedulerService scheduler)
 	{
-		this.scheduler = scheduler;
-		this.allActions = allActions;
-		this.scheduleLogService = scheduleLogService;		
+		this.scheduler = scheduler;	
 	}
 	
-	public void enrollWoman(String entityId,String provider,String instWomaneId,Map<String, String> membersFields) {
-    
-    	String milestone=null;    
-    	DateTime start = null;
-        DateTime WomanStartDate = null;
-        DateTime WomanExpireDate = null;
-        AlertStatus alertStaus = null;
-        Date date1 = null, date2 = null, date3 = null, date4 = null, date5 = null;        
+	public void enrollWomanMeaslesVisit(String entityId,String provider,String instWomaneId,LocalDate referenceDateForSchedule) {
+		
+        logger.info(format("Enrolling Woman with Entity id:{0} to Woman schedule Woman Vaccination, milestone: {1}.", entityId, SCHEDULE_Woman_Measles));
+        scheduler.enrollIntoSchedule(entityId, SCHEDULE_Woman, SCHEDULE_Woman_Measles, referenceDateForSchedule.toString());
+    }
+	
+	public void enrollWomanTTVisit(String entityId,String provider,String instWomaneId,Map<String, String> membersFields) {
+
+        Date date1 = null;        
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         
     	try {
-			date1 = format.parse(membersFields.get(Date_of_TT1));	
-			date2 = format.parse(membersFields.get(Date_of_TT2));	
-			date3 = format.parse(membersFields.get(Date_of_TT3));	
-			date4 = format.parse(membersFields.get(Date_of_TT4));	
-			date5 = format.parse(membersFields.get(Date_of_TT5));	
+			date1 = format.parse(membersFields.get(Date_of_TT1));		
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-    	
-    	start = new DateTime(date1);
-        milestone = SCHEDULE_Woman_1;   
-        alertStaus = AlertStatus.upcoming;
-        WomanStartDate = new DateTime(start);
-        WomanExpireDate = new DateTime(start).plusDays(DateTimeDuration.Woman1Start);
         
-        logger.info(format("Enrolling Woman with Entity id:{0} to Woman schedule, milestone: {1}.", entityId, milestone));
+        logger.info(format("Enrolling Woman with Entity id:{0} to Woman schedule Woman Vaccination, milestone: {1}.", entityId, SCHEDULE_Woman_1));
         scheduler.enrollIntoSchedule(entityId, SCHEDULE_Woman, SCHEDULE_Woman_1, LocalDate.parse(membersFields.get(Date_of_TT1)).toString());
-        scheduler.enrollIntoSchedule(entityId, SCHEDULE_Woman, SCHEDULE_Woman_2, LocalDate.parse(membersFields.get(Date_of_TT2)).toString());
-        scheduler.enrollIntoSchedule(entityId, SCHEDULE_Woman, SCHEDULE_Woman_3, LocalDate.parse(membersFields.get(Date_of_TT3)).toString());
-        scheduler.enrollIntoSchedule(entityId, SCHEDULE_Woman, SCHEDULE_Woman_4, LocalDate.parse(membersFields.get(Date_of_TT4)).toString());
-        scheduler.enrollIntoSchedule(entityId, SCHEDULE_Woman, SCHEDULE_Woman_5, LocalDate.parse(membersFields.get(Date_of_TT5)).toString());
   
     }
-    
-    public void fullfillSchedule(String caseID, String scheduleName, String instWomaneId, long timestamp){
-    	try{
-	    	scheduleLogService.fullfillSchedule(caseID, scheduleName, instWomaneId, timestamp);
-	    	logger.info("fullfillSchedule a Schedule with id : "+caseID);
-    	}catch(Exception e){
-    		logger.info("Does not fullfill a schedule:"+e.getMessage());
-    	}
+	
+	public void enrollTTVisit(String entityId,String provider,String instWomaneId, String date) {
+
+        Date date1 = null;        
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        
+    	try {
+			date1 = format.parse(date);		
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+        
+        logger.info(format("Enrolling Woman with Entity id:{0} to Woman schedule Woman Vaccination, milestone: {1}.", entityId, SCHEDULE_Woman_1));
+        scheduler.enrollIntoSchedule(entityId, SCHEDULE_Woman, SCHEDULE_Woman_1, LocalDate.parse(date).toString());
+  
+    }
+	
+	public void enrollTT1_Visit(String entityId,String provider,String instWomaneId,String date) {
+
+        Date date2 = null;    
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        
+    	try {	
+			date2 = format.parse(date);		
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+        
+        logger.info(format("Enrolling Woman with Entity id:{0} to Woman schedule Woman Vaccination, milestone: {1}.", entityId, SCHEDULE_Woman_2));
+        scheduler.enrollIntoSchedule(entityId, SCHEDULE_Woman, SCHEDULE_Woman_2, LocalDate.parse(date).toString());
+  
+    }
+	
+	public void enrollTT2_Visit(String entityId,String provider,String instWomaneId,String date) {
+
+        Date date3 = null;    
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        
+    	try {	
+			date3 = format.parse(date);		
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+        
+        logger.info(format("Enrolling Woman with Entity id:{0} to Woman schedule Woman Vaccination, milestone: {1}.", entityId, SCHEDULE_Woman_3));
+        scheduler.enrollIntoSchedule(entityId, SCHEDULE_Woman, SCHEDULE_Woman_3, LocalDate.parse(date).toString());
+  
+    }
+	
+	public void enrollTT3_Visit(String entityId,String provider,String instWomaneId,String date) {
+
+        Date date4 = null;    
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        
+    	try {	
+			date4 = format.parse(date);		
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+        
+        logger.info(format("Enrolling Woman with Entity id:{0} to Woman schedule Woman Vaccination, milestone: {1}.", entityId, SCHEDULE_Woman_4));
+        scheduler.enrollIntoSchedule(entityId, SCHEDULE_Woman, SCHEDULE_Woman_4, LocalDate.parse(date).toString());
+  
+    }
+	
+	public void enrollTT4_Visit(String entityId,String provider,String instWomaneId,String date) {
+
+        Date date5 = null;    
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        
+    	try {	
+			date5 = format.parse(date);		
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+        
+        logger.info(format("Enrolling Woman with Entity id:{0} to Woman schedule Woman Vaccination, milestone: {1}.", entityId, SCHEDULE_Woman_5));
+        scheduler.enrollIntoSchedule(entityId, SCHEDULE_Woman, SCHEDULE_Woman_5, LocalDate.parse(date).toString());
+  
+    }
+	
+	public void enrollTT5_Visit(String entityId,String provider) {
+        unEnrollFromSchedule(entityId, provider, SCHEDULE_Woman);
     }
     
     public void unEnrollFromAllSchedules(String entityId) {

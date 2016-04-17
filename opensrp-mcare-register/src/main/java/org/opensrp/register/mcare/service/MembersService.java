@@ -6,37 +6,24 @@ package org.opensrp.register.mcare.service;
 
 import static java.text.MessageFormat.format;
 import static org.opensrp.common.AllConstants.CommonFormFields.ID;
-import static org.opensrp.common.AllConstants.HHRegistrationFields.MEMBERS_REGISTRATION_SUB_FORM_NAME;
-import static org.opensrp.common.AllConstants.HHRegistrationFields.REFERENCE_DATE;
-import static org.opensrp.common.AllConstants.HHRegistrationFields.received_time;
-import static org.opensrp.common.AllConstants.HHRegistrationFields.START_DATE;
-import static org.opensrp.common.AllConstants.HHRegistrationFields.END_DATE;
-import static org.opensrp.register.mcare.OpenSRPScheduleConstants.HHSchedulesConstants.HH_SCHEDULE_CENSUS;
+import static org.opensrp.common.AllConstants.TT_VisitFields.*;
+import static org.opensrp.common.AllConstants.HHRegistrationFields.*;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.form.domain.SubFormData;
 import org.opensrp.register.mcare.domain.Members;
 import org.opensrp.register.mcare.domain.HouseHold;
-import org.opensrp.register.mcare.domain.Mother;
 import org.opensrp.register.mcare.repository.AllMembers;
 import org.opensrp.register.mcare.repository.AllHouseHolds;
 import org.opensrp.register.mcare.service.scheduling.MembersScheduleService;
 import org.opensrp.register.mcare.service.scheduling.HHSchedulesService;
 import org.opensrp.register.mcare.service.scheduling.ScheduleLogService;
-import org.opensrp.scheduler.Action;
-import org.opensrp.scheduler.ScheduleLog;
-import org.opensrp.scheduler.repository.AllActions;
-import org.opensrp.scheduler.repository.AllReportActions;
-import org.opensrp.scheduler.service.ReportActionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,16 +43,14 @@ public class MembersService {
 	private HHSchedulesService hhSchedulesService;
 	private MembersScheduleService membersScheduleService;
 	private ScheduleLogService scheduleLogService;
-	private AllActions allActions;
 	@Autowired
 	public MembersService(AllHouseHolds allHouseHolds, AllMembers allMembers, HHSchedulesService hhSchedulesService,
-			MembersScheduleService membersScheduleService, ScheduleLogService scheduleLogService, AllActions allActions) {
+			MembersScheduleService membersScheduleService, ScheduleLogService scheduleLogService) {
 		this.allHouseHolds = allHouseHolds;
 		this.allMembers = allMembers;
 		this.hhSchedulesService = hhSchedulesService;
 		this.membersScheduleService = membersScheduleService;
 		this.scheduleLogService = scheduleLogService;
-		this.allActions = allActions;
 		
 	}
 	
@@ -94,7 +79,15 @@ public class MembersService {
 			if(membersFields.containsKey(Is_TT)){
 				if(!membersFields.get(Is_TT).equalsIgnoreCase("") || membersFields.get(Is_TT) != null){	
 					if(membersFields.get(Is_TT).equalsIgnoreCase("1"))
-					membersScheduleService.enrollWoman(members.caseId(),submission.anmId(),submission.instanceId(),membersFields);
+					membersScheduleService.enrollWomanTTVisit(members.caseId(),submission.anmId(),submission.instanceId(),membersFields);
+				}
+			}
+			
+			if(membersFields.containsKey(Is_Measles)){
+				if(!membersFields.get(Is_Measles).equalsIgnoreCase("") || membersFields.get(Is_Measles) != null){	
+					if(membersFields.get(Is_Measles).equalsIgnoreCase("1"))
+					membersScheduleService.enrollWomanMeaslesVisit(members.caseId(),submission.anmId(),
+							submission.instanceId(),LocalDate.parse(submission.getField(Date_of_Measles)));
 				}
 			}
 		}
@@ -131,7 +124,7 @@ public class MembersService {
 		members.details().put(REFERENCE_DATE, submission.getField(REFERENCE_DATE));
 		members.details().put(START_DATE, submission.getField(START_DATE));		
 		members.details().put(END_DATE, submission.getField(END_DATE));
-		members.details().put(received_time,format.format(today).toString());
+		members.details().put(Received_Time,format.format(today).toString());
 	}
 	
 	private void addMEMBERDETAILSToHH(FormSubmission submission,
@@ -208,7 +201,7 @@ public class MembersService {
 					.put(Member_WARD, membersFields.get(Member_WARD))
 					.put(Member_GOB_HHID, membersFields.get(Member_GOB_HHID))
 					.put(Member_GPS, membersFields.get(Member_GPS))
-					.put(received_time, dateTime.format(today).toString()).map();
+					.put(Received_Time, dateTime.format(today).toString()).map();
 			
 				if(membersFields.containsKey(Reg_No)){
 					if(!membersFields.get(Reg_No).equalsIgnoreCase("") || membersFields.get(Reg_No) != null){
@@ -219,24 +212,136 @@ public class MembersService {
 		
 	}
 	
-	public void TT1_Visit(FormSubmission submission) {
+	public void Measles_Visit(FormSubmission submission) {
+		Members members = allMembers.findByCaseId(submission.entityId());
+		if (members == null) {
+			logger.warn(format(
+					"Failed to handle Measles_Visit as there is no Member enrolled with ID: {0}",
+					submission.entityId()));
+			return;
+		}
 		
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date today = Calendar.getInstance().getTime();
+		Map<String, String> measlesVisit = create(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
+											.put(START_DATE, submission.getField(START_DATE))
+											.put(END_DATE, submission.getField(END_DATE))
+											.put(Received_Time, format.format(today).toString())
+											.map();	
+		
+		members.withMeaslesVisit(measlesVisit);
+		allMembers.update(members);
+		membersScheduleService.enrollTTVisit(members.caseId(),submission.anmId(),submission.instanceId(),members.TODAY());
+	}
+	
+	public void TT1_Visit(FormSubmission submission) {
+		Members members = allMembers.findByCaseId(submission.entityId());
+		if (members == null) {
+			logger.warn(format(
+					"Failed to handle TT1_Visit as there is no Member enrolled with ID: {0}",
+					submission.entityId()));
+			return;
+		}
+		
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date today = Calendar.getInstance().getTime();
+		Map<String, String> TT1_visit = create(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
+											.put(START_DATE, submission.getField(START_DATE))
+											.put(END_DATE, submission.getField(END_DATE))
+											.put(Received_Time, format.format(today).toString())
+											.map();	
+		
+		members.withTTVisitOne(TT1_visit);
+		allMembers.update(members);
+		membersScheduleService.enrollTT1_Visit(members.caseId(),submission.anmId(),submission.instanceId(),members.TODAY());
 	}
 	
 	public void TT2_Visit(FormSubmission submission) {
-			
+		Members members = allMembers.findByCaseId(submission.entityId());	
+		if (members == null) {
+			logger.warn(format(
+					"Failed to handle TT2_Visit as there is no Member enrolled with ID: {0}",
+					submission.entityId()));
+			return;
 		}
+		
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date today = Calendar.getInstance().getTime();
+		Map<String, String> TT2_visit = create(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
+											.put(START_DATE, submission.getField(START_DATE))
+											.put(END_DATE, submission.getField(END_DATE))
+											.put(Received_Time, format.format(today).toString())
+											.map();	
+		
+		members.withTTVisitTwo(TT2_visit);
+		allMembers.update(members);
+		membersScheduleService.enrollTT2_Visit(members.caseId(),submission.anmId(),submission.instanceId(),members.TODAY());
+	}
 	
 	public void TT3_Visit(FormSubmission submission) {
+		Members members = allMembers.findByCaseId(submission.entityId());
+		if (members == null) {
+			logger.warn(format(
+					"Failed to handle TT3_Visit as there is no Member enrolled with ID: {0}",
+					submission.entityId()));
+			return;
+		}
 		
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date today = Calendar.getInstance().getTime();
+		Map<String, String> TT3_visit = create(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
+											.put(START_DATE, submission.getField(START_DATE))
+											.put(END_DATE, submission.getField(END_DATE))
+											.put(Received_Time, format.format(today).toString())
+											.map();	
+		
+		members.withTTVisitOne(TT3_visit);
+		allMembers.update(members);
+		membersScheduleService.enrollTT3_Visit(members.caseId(),submission.anmId(),submission.instanceId(),members.TODAY());
 	}
 	
 	public void TT4_Visit(FormSubmission submission) {
+		Members members = allMembers.findByCaseId(submission.entityId());
+		if (members == null) {
+			logger.warn(format(
+					"Failed to handle TT4_Visit as there is no Member enrolled with ID: {0}",
+					submission.entityId()));
+			return;
+		}
 		
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date today = Calendar.getInstance().getTime();
+		Map<String, String> TT4_visit = create(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
+											.put(START_DATE, submission.getField(START_DATE))
+											.put(END_DATE, submission.getField(END_DATE))
+											.put(Received_Time, format.format(today).toString())
+											.map();	
+		
+		members.withTTVisitOne(TT4_visit);
+		allMembers.update(members);
+		membersScheduleService.enrollTT4_Visit(members.caseId(),submission.anmId(),submission.instanceId(),members.TODAY());
 	}
 	
 	public void TT5_Visit(FormSubmission submission) {
+		Members members = allMembers.findByCaseId(submission.entityId());
+		if (members == null) {
+			logger.warn(format(
+					"Failed to handle TT5_Visit as there is no Member enrolled with ID: {0}",
+					submission.entityId()));
+			return;
+		}
 		
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date today = Calendar.getInstance().getTime();
+		Map<String, String> TT5_visit = create(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
+											.put(START_DATE, submission.getField(START_DATE))
+											.put(END_DATE, submission.getField(END_DATE))
+											.put(Received_Time, format.format(today).toString())
+											.map();	
+		
+		members.withTTVisitFive(TT5_visit);
+		allMembers.update(members);
+		membersScheduleService.enrollTT5_Visit(members.caseId(),submission.anmId());
 	}
 
 }

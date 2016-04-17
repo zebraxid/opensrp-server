@@ -273,6 +273,15 @@ public class AllConstants {
     	
     }
     
+    public static class TT_VisitFields
+    {
+    	public static final String FW_PSRDATE ="FWPSRDATE";
+    	public static final String FW_CONFIRMATION ="FWCONFIRMATION";
+    	public static final String FW_PSRSTS ="FWPSRSTS";
+    	public static final String FW_PSRLMP ="FWPSRLMP";
+    	public static final String Received_Time = "received_time";
+    }
+    
     public static class ANCVisitOneFields
     {
     	public static final String anc1_current_formStatus="anc1_current_formStatus";
