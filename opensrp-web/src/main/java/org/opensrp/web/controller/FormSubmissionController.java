@@ -18,9 +18,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.opensrp.api.domain.Client;
 import org.opensrp.api.domain.Event;
+import org.opensrp.connector.BahmniOpenmrsConnector;
 import org.opensrp.connector.OpenmrsConnector;
 import org.opensrp.connector.openmrs.constants.OpenmrsHouseHold;
 import org.opensrp.connector.openmrs.constants.OpenmrsConstants.Person;
+import org.opensrp.connector.openmrs.service.BahmniPatientService;
 import org.opensrp.connector.openmrs.service.EncounterService;
 import org.opensrp.connector.openmrs.service.HouseholdService;
 import org.opensrp.connector.openmrs.service.OpenmrsUserService;
@@ -62,6 +64,8 @@ public class FormSubmissionController {
     private EncounterService encounterService;
     private OpenmrsConnector openmrsConnector;
     private PatientService patientService;
+    private BahmniOpenmrsConnector bahmniOpenmrsConnector;
+    private BahmniPatientService bahmniPatientService;
     private HouseholdService householdService;
     private HHService hhService;
     private OpenmrsUserService openmrsUserService;
@@ -70,7 +74,7 @@ public class FormSubmissionController {
 
     @Autowired
     public FormSubmissionController(FormSubmissionService formSubmissionService, TaskSchedulerService scheduler,
-    		EncounterService encounterService, OpenmrsConnector openmrsConnector, PatientService patientService, 
+    		EncounterService encounterService, OpenmrsConnector openmrsConnector, PatientService patientService, BahmniOpenmrsConnector bahmniOpenmrsConnector, BahmniPatientService bahmniPatientService, 
     		HouseholdService householdService, MultimediaService multimediaService, OpenmrsUserService openmrsUserService,
     		MultimediaRepository multimediaRepository) {
         this.formSubmissionService = formSubmissionService;
@@ -78,6 +82,8 @@ public class FormSubmissionController {
         
         this.encounterService = encounterService;
         this.openmrsConnector = openmrsConnector;
+        this.bahmniOpenmrsConnector = bahmniOpenmrsConnector;
+        this.bahmniPatientService = bahmniPatientService;
         this.patientService = patientService;
         this.householdService = householdService;
         this.hhService = hhService;
@@ -117,8 +123,8 @@ public class FormSubmissionController {
         });
     }
 
-    @RequestMapping(headers = {"Accept=application/json"}, method = POST, value = "/form-submissions")
-    public ResponseEntity<HttpStatus> submitForms(@RequestBody List<FormSubmissionDTO> formSubmissionsDTO) {
+    @RequestMapping(headers = {"Accept=application/json"}, method = POST, value = "/form-submissions-mcare")
+    public ResponseEntity<HttpStatus> submitFormsForMcare(@RequestBody List<FormSubmissionDTO> formSubmissionsDTO) {
         try {
             if (formSubmissionsDTO.isEmpty()) {
                 return new ResponseEntity<>(BAD_REQUEST);
@@ -141,6 +147,10 @@ public class FormSubmissionController {
             });
             for (FormSubmission formSubmission : fsl) {
             	if(openmrsConnector.isOpenmrsForm(formSubmission)){
+            		System.out.println("Generating ID to openMRS/***********************************************************************/");
+            		JSONObject idGen  = patientService.generateID();
+            		System.out.print(idGen);
+            		
             		System.out.println("Sending data to openMRS/***********************************************************************/");
 	            	JSONObject p = patientService.getPatientByIdentifier(formSubmission.entityId());
 	            	JSONObject r = patientService.getPatientByIdentifier(formSubmission.getField("relationalid"));
@@ -192,6 +202,53 @@ public class FormSubmissionController {
             }
             
             logger.debug(format("Added Form submissions to queue.\nSubmissions: {0}", formSubmissionsDTO));
+        } 
+        catch (Exception e) {
+            logger.error(format("Form submissions processing failed with exception {0}.\nSubmissions: {1}", e, formSubmissionsDTO));
+            return new ResponseEntity<>(INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<>(CREATED);
+    }
+    
+    @RequestMapping(headers = {"Accept=application/json"}, method = POST, value = "/form-submissions")
+    public ResponseEntity<HttpStatus> submitFormsForDGHS(@RequestBody List<FormSubmissionDTO> formSubmissionsDTO) {
+        try {
+            if (formSubmissionsDTO.isEmpty()) {
+                return new ResponseEntity<>(BAD_REQUEST);
+            }
+
+            scheduler.notifyEvent(new SystemEvent<>(OpenSRPEvent.FORM_SUBMISSION, formSubmissionsDTO));
+            
+           try{
+            ////////TODO MAIMOONA : SHOULD BE IN EVENT but event needs to be moved to web so for now kept here
+            String json = new Gson().toJson(formSubmissionsDTO);
+            System.out.println("MMMMMMMMMMMYYYYYYYYYYYYYY::"+json);
+            List<FormSubmissionDTO> formSubmissions = new Gson().fromJson(json, new TypeToken<List<FormSubmissionDTO>>() {
+            }.getType());
+            
+            List<FormSubmission> fsl = with(formSubmissions).convert(new Converter<FormSubmissionDTO, FormSubmission>() {
+                @Override
+                public FormSubmission convert(FormSubmissionDTO submission) {
+                    return FormSubmissionConverter.toFormSubmission(submission);
+                }
+            });
+            for (FormSubmission formSubmission : fsl) {
+            	if(openmrsConnector.isOpenmrsForm(formSubmission)){
+            		System.out.println("Generating ID to openMRS/***********************************************************************/");
+            		String idGen  = bahmniPatientService.generateID();
+            		System.out.print(idGen);
+            		
+            		System.out.println("Patient and Dependent client not exist into Bahmni openmrs /***********************************************************************/ ");
+        			Client c = bahmniOpenmrsConnector.getClientFromFormSubmission(formSubmission);
+        			System.out.println(bahmniPatientService.createPatient(c,idGen));
+            	}
+            }
+           }
+           catch(Exception e){
+           	e.printStackTrace();
+           }
+           
+           logger.debug(format("Added Form submissions to queue.\nSubmissions: {0}", formSubmissionsDTO));
         } 
         catch (Exception e) {
             logger.error(format("Form submissions processing failed with exception {0}.\nSubmissions: {1}", e, formSubmissionsDTO));
