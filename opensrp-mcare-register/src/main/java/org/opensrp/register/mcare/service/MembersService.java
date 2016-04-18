@@ -212,6 +212,69 @@ public class MembersService {
 		
 	}
 	
+	public void general_Visit(FormSubmission submission) {
+		Members members = allMembers.findByCaseId(submission.entityId());
+		if (members == null) {
+			logger.warn(format(
+					"Failed to handle general_Visit as there is no Member enrolled with ID: {0}",
+					submission.entityId()));
+			return;
+		}
+		
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date today = Calendar.getInstance().getTime();
+		Map<String, String> general = create(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
+											.put(START_DATE, submission.getField(START_DATE))
+											.put(END_DATE, submission.getField(END_DATE))
+											.put(Received_Time, format.format(today).toString())
+											.map();	
+		
+		members.withgeneral(general);
+		allMembers.update(members);
+	}
+	
+	public void familyPlanning(FormSubmission submission) {
+		Members members = allMembers.findByCaseId(submission.entityId());
+		if (members == null) {
+			logger.warn(format(
+					"Failed to handle familyPlanning as there is no Member enrolled with ID: {0}",
+					submission.entityId()));
+			return;
+		}
+		
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date today = Calendar.getInstance().getTime();
+		Map<String, String> familyPlanning = create(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
+											.put(START_DATE, submission.getField(START_DATE))
+											.put(END_DATE, submission.getField(END_DATE))
+											.put(Received_Time, format.format(today).toString())
+											.map();	
+		
+		members.withfamilyPlanning(familyPlanning);
+		allMembers.update(members);
+	}
+	
+	public void newBorn(FormSubmission submission) {
+		Members members = allMembers.findByCaseId(submission.entityId());
+		if (members == null) {
+			logger.warn(format(
+					"Failed to handle familyPlanning as there is no Member enrolled with ID: {0}",
+					submission.entityId()));
+			return;
+		}
+		
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date today = Calendar.getInstance().getTime();
+		Map<String, String> newBorn = create(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
+											.put(START_DATE, submission.getField(START_DATE))
+											.put(END_DATE, submission.getField(END_DATE))
+											.put(Received_Time, format.format(today).toString())
+											.map();	
+		
+		members.withnewBorn(newBorn);
+		allMembers.update(members);
+	}
+	
 	public void Measles_Visit(FormSubmission submission) {
 		Members members = allMembers.findByCaseId(submission.entityId());
 		if (members == null) {

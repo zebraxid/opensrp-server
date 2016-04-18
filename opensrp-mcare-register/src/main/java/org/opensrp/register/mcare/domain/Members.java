@@ -29,14 +29,6 @@ public class Members extends MotechBaseDataObject {
 	@JsonProperty
 	private String LOCATIONID;
 	@JsonProperty
-	private String anc1_current_formStatus;
-	@JsonProperty
-	private String ANC2_current_formStatus;
-	@JsonProperty
-	private String ANC3_current_formStatus;
-	@JsonProperty
-	private String ANC4_current_formStatus;
-	@JsonProperty
 	private String GOBHHID;
 	@JsonProperty
 	private String JiVitAHHID;
@@ -53,15 +45,11 @@ public class Members extends MotechBaseDataObject {
 	@JsonProperty
 	private String TODAY;
 	@JsonProperty
-	private String FWPSRLMP;
-	@JsonProperty
 	private String START;
 	@JsonProperty
 	private String END;
 	@JsonProperty
 	private String relationalid;
-	@JsonProperty
-    private String isClosed;
 	@JsonProperty
 	private Map<String, String> details;
 	@JsonProperty
@@ -77,22 +65,25 @@ public class Members extends MotechBaseDataObject {
 	@JsonProperty
 	private Map<String, String> withMeaslesVisit;
 	@JsonProperty
-	private List<Map<String, String>> bnfVisitDetails;
+	private Map<String, String> familyPlanning;
 	@JsonProperty
-	private Map<String, String> pncVisitOne;
+	private Map<String, String> general;
 	@JsonProperty
-	private Map<String, String> pncVisitTwo;
+	private Map<String, String> newBorn;
 	@JsonProperty
-	private Map<String, String> pncVisitThree;
+	private String isClosed;
 	@JsonProperty
 	private long SUBMISSIONDATE;
 	public Members() {
-
 		this.details = new HashMap<>();
-		this.TTVisitOne = new HashMap<>();
+		this.TTVisitOne = new HashMap<>(); 
 		this.TTVisitTwo = new HashMap<>();
 		this.TTVisitThree = new HashMap<>();
 		this.TTVisitFour = new HashMap<>();
+		this.TTVisitFive = new HashMap<>();
+		this.familyPlanning = new HashMap<>();
+		this.general = new HashMap<>();
+		this.newBorn = new HashMap<>();
 		this.setIsClosed(false);
 	}
 	
@@ -113,26 +104,6 @@ public class Members extends MotechBaseDataObject {
 
 	public Members withLOCATIONID(String LOCATIONID) {
 		this.LOCATIONID = LOCATIONID;
-		return this;
-	}
-	
-	public Members withanc1_current_formStatus(String anc1_current_formStatus) {
-		this.anc1_current_formStatus = anc1_current_formStatus;
-		return this;
-	}
-
-	public Members withANC2_current_formStatus(String ANC2_current_formStatus) {
-		this.ANC2_current_formStatus = ANC2_current_formStatus;
-		return this;
-	}
-
-	public Members withANC3_current_formStatus(String ANC3_current_formStatus) {
-		this.ANC3_current_formStatus = ANC3_current_formStatus;
-		return this;
-	}
-
-	public Members withANC4_current_formStatus(String ANC4_current_formStatus) {
-		this.ANC4_current_formStatus = ANC4_current_formStatus;
 		return this;
 	}
 
@@ -165,17 +136,8 @@ public class Members extends MotechBaseDataObject {
 		this.FWWOMAGE = FWWOMAGE;
 		return this;
 	}
-	public Members withIsClosed(String isClosed) {
-		this.isClosed = isClosed;
-		return this;
-	}
 	public Members withTODAY(String TODAY) {
 		this.TODAY = TODAY;
-		return this;
-	}
-
-	public Members withFWPSRLMP(String FWPSRLMP) {
-		this.FWPSRLMP = FWPSRLMP;
 		return this;
 	}
 
@@ -220,20 +182,16 @@ public class Members extends MotechBaseDataObject {
         this.withMeaslesVisit = new HashMap<>(withMeaslesVisit);
         return this;
     }
-	public Members withBNFVisitDetails(List<Map<String, String>> bnfVisitDetails) {
-        this.bnfVisitDetails = bnfVisitDetails;
+	public Members withfamilyPlanning(Map<String, String> familyPlanning) {
+        this.familyPlanning = new HashMap<>(familyPlanning);
         return this;
     }
-	public Members withPNCVisitOne(Map<String, String> pncVisitOne) {
-        this.pncVisitOne = new HashMap<>(pncVisitOne);
+	public Members withgeneral(Map<String, String> general) {
+        this.general = new HashMap<>(general);
         return this;
     }
-	public Members withPNCVisitTwo(Map<String, String> pncVisitTwo) {
-        this.pncVisitTwo = new HashMap<>(pncVisitTwo);
-        return this;
-    }
-	public Members withPNCVisitThree(Map<String, String> pncVisitThree) {
-        this.pncVisitThree = new HashMap<>(pncVisitThree);
+	public Members withnewBorn(Map<String, String> newBorn) {
+        this.newBorn = new HashMap<>(newBorn);
         return this;
     }
 	public Members withSUBMISSIONDATE(long SUBMISSIONDATE){
@@ -254,21 +212,6 @@ public class Members extends MotechBaseDataObject {
 
 	public String LOCATIONID() {
 		return LOCATIONID;
-	}
-	public String anc1_current_formStatus() {
-		return anc1_current_formStatus;
-	}
-
-	public String ANC2_current_formStatus() {
-		return ANC2_current_formStatus;
-	}
-
-	public String ANC3_current_formStatus() {
-		return ANC3_current_formStatus;
-	}
-
-	public String ANC4_current_formStatus() {
-		return ANC4_current_formStatus;
 	}
 
 	public String FWHUSNAME() {
@@ -298,9 +241,6 @@ public class Members extends MotechBaseDataObject {
 	public String TODAY() {
 		return TODAY;
 	}
-	public String FWPSRLMP() {
-		return FWPSRLMP;
-	}	
 	public String START() {
 		return START;
 	}
@@ -346,20 +286,14 @@ public class Members extends MotechBaseDataObject {
 	public Map<String, String> withMeaslesVisit() {
 		return withMeaslesVisit;
 	}
-	public List<Map<String, String>> bnfVisitDetails() {
-		if (bnfVisitDetails == null) {
-			bnfVisitDetails = new ArrayList<>();
-		}
-		return bnfVisitDetails;
+	public Map<String, String> familyPlanning() {
+		return familyPlanning;
 	}
-	public Map<String, String> pncVisitOne() {
-		return pncVisitOne;
+	public Map<String, String> general() {
+		return general;
 	}
-	public Map<String, String> pncVisitTwo() {
-		return pncVisitTwo;
-	}
-	public Map<String, String> pncVisitThree() {
-		return pncVisitThree;
+	public Map<String, String> newBorn() {
+		return newBorn;
 	}
     public Members setIsClosed(boolean isClosed) {
         this.isClosed = Boolean.toString(isClosed);
