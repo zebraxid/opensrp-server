@@ -51,7 +51,7 @@ public class MultimediaRegisterService {
         
         for (HouseHold hh : hhs) {
         	
-    		hh.multimediaAttachments().clear();
+    		//hh.multimediaAttachments().clear();
         	
         	List<Multimedia> multimediaList = multimediaRepository.findByCaseIdAndFileCategory(hh.caseId(), "dp");
     		
@@ -95,7 +95,7 @@ public class MultimediaRegisterService {
 
 		for (Elco ec : elcos) {
 	    	
-    		ec.multimediaAttachments().clear();
+    		//ec.multimediaAttachments().clear();
 	    	
 	    	List<Multimedia> multimediaList1 = multimediaRepository.findByCaseIdAndFileCategory(ec.caseId(), "dp");
 			
@@ -140,7 +140,7 @@ public class MultimediaRegisterService {
 	public void saveMultimediaFileToRegistry(Multimedia multimediaFile) {
 		HouseHold hh = allHouseHolds.findByCaseId(multimediaFile.getCaseId());
 		if(hh != null){
-			hh.multimediaAttachments().clear();
+			//hh.multimediaAttachments().clear();
     		    	
 			 Map<String, String> att = create("contentType", multimediaFile.getContentType())
 				.put("filePath", multimediaFile.getFilePath())
@@ -153,7 +153,7 @@ public class MultimediaRegisterService {
 		else{
 			Elco elco = allElcos.findByCaseId(multimediaFile.getCaseId());
 			if(elco != null){
-				elco.multimediaAttachments().clear();
+				//elco.multimediaAttachments().clear();
 		    	
 				 Map<String, String> att = create("contentType", multimediaFile.getContentType())
 					.put("filePath", multimediaFile.getFilePath())
