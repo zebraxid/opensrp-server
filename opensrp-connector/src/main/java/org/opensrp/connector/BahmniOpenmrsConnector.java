@@ -155,9 +155,14 @@ public class BahmniOpenmrsConnector {
 	 * @throws ParseException
 	 */
 	public Client getClientFromFormSubmission(FormSubmission fs) throws ParseException {
-		String firstName = fs.getField(getFieldName(Person.first_name, fs));
+		
+		String gender = fs.getField(getFieldName(Person.gender, fs));
+		String firstName = gender.equals("1")?"Mr":"Mrs";
+		
+		/*String firstName = fs.getField(getFieldName(Person.first_name, fs));*/
 		String middleName = fs.getField(getFieldName(Person.middle_name, fs));
-		String lastName = fs.getField(getFieldName(Person.last_name, fs));
+		String lastName = fs.getField(getFieldName(Person.first_name, fs));//fs.getField(getFieldName(Person.last_name, fs));
+		
 		String bd = fs.getField(getFieldName(Person.birthdate, fs));
 		Date birthdate = (bd==null || bd.isEmpty())? OpenmrsService.OPENMRS_DATE.parse("1900-01-01"):OpenmrsService.OPENMRS_DATE.parse(bd);
 		String dd = fs.getField(getFieldName(Person.deathdate, fs));
@@ -184,7 +189,7 @@ public class BahmniOpenmrsConnector {
 			}
 			deathdateApprox = dde > 0 ? true:false;
 		}
-		String gender ="F" ;//fs.getField(getFieldName(Person.gender, fs));
+		
 		
 		List<Address> addresses = new ArrayList<>(extractAddresses(fs).values());
 		
