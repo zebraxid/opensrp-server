@@ -72,8 +72,6 @@ public class Members extends MotechBaseDataObject {
 	private Map<String, String> newBorn;
 	@JsonProperty
 	private String isClosed;
-	@JsonProperty
-	private long SUBMISSIONDATE;
 	public Members() {
 		this.details = new HashMap<>();
 		this.TTVisitOne = new HashMap<>(); 
@@ -194,10 +192,6 @@ public class Members extends MotechBaseDataObject {
         this.newBorn = new HashMap<>(newBorn);
         return this;
     }
-	public Members withSUBMISSIONDATE(long SUBMISSIONDATE){
-		this.SUBMISSIONDATE = SUBMISSIONDATE;
-		return this;
-	}
 	public String caseId() {
 		return caseId;
 	}
@@ -299,9 +293,6 @@ public class Members extends MotechBaseDataObject {
         this.isClosed = Boolean.toString(isClosed);
         return this;
     }
-    public long SUBMISSIONDATE(){
-		return SUBMISSIONDATE;
-	}
 	@Override
 	public boolean equals(Object o) {
 		return EqualsBuilder.reflectionEquals(this, o, "id", "revision");

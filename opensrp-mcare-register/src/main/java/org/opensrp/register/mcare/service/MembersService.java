@@ -63,8 +63,7 @@ public class MembersService {
 			
 			Members members = allMembers.findByCaseId(membersFields.get(ID))
 					.withINSTANCEID(submission.instanceId())
-					.withPROVIDERID(submission.anmId())
-					.withSUBMISSIONDATE(scheduleLogService.getTimeStampMills());
+					.withPROVIDERID(submission.anmId());					
 			
 			//addDetailsToMembers(submission, subFormData, members);
 			
