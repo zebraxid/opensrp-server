@@ -250,7 +250,10 @@ public class FormSubmissionController {
 		    			for (Map<String, Object> cm : dep.values()) {
 		    				idGen  = bahmniPatientService.generateID();
 		    				System.out.println(bahmniPatientService.createPatient((Client)cm.get("client"),idGen));	
-		    				//hh.addHHMember((Client)cm.get("client"), (Event)cm.get("event"));
+		    				///hh.addHHMember((Client)cm.get("client"), (Event)cm.get("event"));
+		    				//cm.get("event");
+		    				System.out.println("E:"+(Event)cm.get("event"));
+		    				System.out.println(encounterService.createEncounter((Event)cm.get("event"),idGen));
 		    			}		    			
 		    			//householdService.saveBahmniHH(hh,idGen);
 				    }

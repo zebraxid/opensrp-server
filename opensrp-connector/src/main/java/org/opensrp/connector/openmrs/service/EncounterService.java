@@ -113,7 +113,7 @@ public class EncounterService extends OpenmrsService{
 	        }
 	        
 	       
-			enc.put("obs", obar);
+			//enc.put("obs", obar);
 		}catch(Exception ee){
 			System.out.println(ee.getMessage());
 		}
