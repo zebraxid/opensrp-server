@@ -178,10 +178,10 @@ public class FormSubmissionController {
 						dep = openmrsConnector.getDependentClientsFromFormSubmission(formSubmission);
 						if(dep.size()>0){ //HnW(n)
 							System.out.println("Dependent client exist into formsubmission /***********************************************************************/ ");
-		        			Client hhhClient = openmrsConnector.getClientFromFormSubmission(formSubmission);
+		        			Client hhhClient = openmrsConnector.getClientFromFormSubmission(formSubmission);		        			
 		        			Event hhhEvent = openmrsConnector.getEventFromFormSubmission(formSubmission);
 		        			OpenmrsHouseHold hh = new OpenmrsHouseHold(hhhClient, hhhEvent);
-			    			for (Map<String, Object> cm : dep.values()) {
+			    			for (Map<String, Object> cm : dep.values()) {			    				
 			    				hh.addHHMember((Client)cm.get("client"), (Event)cm.get("event"));
 			    			}		    			
 			    			householdService.saveHH(hh);
@@ -233,14 +233,37 @@ public class FormSubmissionController {
                 }
             });
             for (FormSubmission formSubmission : fsl) {
-            	if(openmrsConnector.isOpenmrsForm(formSubmission)){
-            		System.out.println("Generating ID to openMRS/***********************************************************************/");
+            	if(openmrsConnector.isOpenmrsForm(formSubmission)){            		
             		String idGen  = bahmniPatientService.generateID();
-            		System.out.print(idGen);
+            		System.out.print("Generating ID to openMRS/***********************************************************************:" + idGen);
+            		
+            		Map<String, Map<String, Object>> dep;
+					dep = bahmniOpenmrsConnector.getDependentClientsFromFormSubmission(formSubmission);				
+					if(dep.size()>0){ //HnW(n)
+						System.out.println("Dependent client exist into formsubmission /***********************************************************************/ ");
+						Client hhClient = bahmniOpenmrsConnector.getClientFromFormSubmission(formSubmission);	
+						System.out.println(bahmniPatientService.createPatient(hhClient,idGen));
+	        			//Event hhhEvent = openmrsConnector.getEventFromFormSubmission(formSubmission);
+	        			//OpenmrsHouseHold hh = new OpenmrsHouseHold(hhhClient, hhhEvent);
+		    			for (Map<String, Object> cm : dep.values()) {
+		    				idGen  = bahmniPatientService.generateID();
+		    				System.out.println(bahmniPatientService.createPatient((Client)cm.get("client"),idGen));	
+		    				//hh.addHHMember((Client)cm.get("client"), (Event)cm.get("event"));
+		    			}		    			
+		    			//householdService.saveBahmniHH(hh,idGen);
+				    }
+					else {//HnW(0)
+						/*
+	        			Client c = openmrsConnector.getClientFromFormSubmission(formSubmission);
+	        			System.out.println(patientService.createPatient(c));
+	        			Event e = openmrsConnector.getEventFromFormSubmission(formSubmission);
+		        		System.out.println(encounterService.createEncounter(e));
+						*/	        		
             		
             		System.out.println("Patient and Dependent client not exist into Bahmni openmrs /***********************************************************************/ ");
         			Client c = bahmniOpenmrsConnector.getClientFromFormSubmission(formSubmission);
         			System.out.println(bahmniPatientService.createPatient(c,idGen));
+					}
             	}
             }
            }

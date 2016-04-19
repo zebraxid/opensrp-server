@@ -37,7 +37,7 @@
       <HoH_Education/>
       <HoH_Occupation/>
       <HH_Member_No/>
-      <HH_Member template="">
+      <HH_Member template="" openmrs_entity="person" openmrs_entity_id="New Member Registration">
         <Reg_No/>
         <BDH/>
         <Member_Fname openmrs_entity="person" openmrs_entity_id="first_name"/>

@@ -689,8 +689,8 @@ public class FormAttributeMapper {
 		
     	Node lastNode = null;
     	String formName = formSubmission.formName();
-    	String filePath = this.xmlFilePath+"/"+formName+"/model.xml";
-    	File file = new File(filePath);
+    	String filePath = this.xmlFilePath+"/"+formName+"/model.xml";///home/julkar/opensrp-workspace/opensrp-server/opensrp-web/target/classes/form/new_household_registration/model.xml
+    	File file = new File(filePath);                              ///home/julkar/opensrp-workspace/opensrp-server/opensrp-web/target/classes/form/new_household_registration/form_definition.json
     	try {
     		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder builder = factory.newDocumentBuilder();
