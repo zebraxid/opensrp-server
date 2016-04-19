@@ -86,8 +86,6 @@ public class HouseHold extends MotechBaseDataObject {
 	private List<Map<String, String>> multimediaAttachments;
 	@JsonProperty
 	private Map<String, String> details;
-	@JsonProperty
-	private long SUBMISSIONDATE;
 	
 	public HouseHold() {
 		this.MEMBERDETAILS = new ArrayList<>();
@@ -265,10 +263,6 @@ public class HouseHold extends MotechBaseDataObject {
         return this;
     }
 
-	public HouseHold withSUBMISSIONDATE(long SUBMISSIONDATE){
-		this.SUBMISSIONDATE = SUBMISSIONDATE;
-		return this;
-	}
 	public String caseId() {
 		return caseId;
 	}
@@ -383,10 +377,6 @@ public class HouseHold extends MotechBaseDataObject {
 
 	public String HoH_Education() {
 		return HoH_Education;
-	}
-	
-	public long SUBMISSIONDATE(){
-		return SUBMISSIONDATE;
 	}
 	
 	public String HoH_Occupation() {

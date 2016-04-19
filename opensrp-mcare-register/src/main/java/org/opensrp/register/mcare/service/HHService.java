@@ -74,7 +74,7 @@ public class HHService {
 		
 		houseHold.withPROVIDERID(submission.anmId());
 		houseHold.withINSTANCEID(submission.instanceId());
-		houseHold.withSUBMISSIONDATE(scheduleLogService.getTimeStampMills());
+
 		allHouseHolds.update(houseHold);
 			
 		hhSchedulesService.enrollIntoMilestoneOfCensus(submission.entityId(),
