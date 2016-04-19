@@ -53,8 +53,8 @@ public class EncounterService extends OpenmrsService{
 		this.userService = userService;
 	}
 	
-	public JSONObject createEncounter(Event e) throws JSONException{
-		JSONObject pt = patientService.getPatientByIdentifier(e.getBaseEntityId());
+	public JSONObject createEncounter(Event e,String idGen) throws JSONException{
+		JSONObject pt = patientService.getPatientByIdentifier(idGen);
 		JSONObject enc = new JSONObject();
 		JSONObject pr = userService.getPersonByUser(e.getProviderId());
 		
@@ -71,48 +71,52 @@ public class EncounterService extends OpenmrsService{
 		else 
 			enc.put("provider", pr.getString("uuid"));
 
-		List<Obs> ol = e.getObs();
-		Map<String, List<JSONObject>> pc = new HashMap<>();
-		MultiValueMap   obsMap = new MultiValueMap();
-				
-		for (Obs obs : ol) {	
-			//if no parent simply make it root obs
-			if(StringUtils.isEmptyOrWhitespaceOnly(obs.getParentCode())){
-				obsMap.put(obs.getFieldCode(), convertObsToJson(obs));
-			}
-			else {	
-				obsMap.put(obs.getParentCode(), convertObsToJson(getOrCreateParent(ol, obs)));
-				// find if any other exists with same parent if so add to the list otherwise create new list
-				List<JSONObject> obl = pc.get(obs.getParentCode());
-				if(obl == null){
-					obl = new ArrayList<>();
+		try{
+			List<Obs> ol = e.getObs();
+			Map<String, List<JSONObject>> pc = new HashMap<>();
+			MultiValueMap   obsMap = new MultiValueMap();
+					
+			for (Obs obs : ol) {	
+				//if no parent simply make it root obs
+				if(StringUtils.isEmptyOrWhitespaceOnly(obs.getParentCode())){
+					obsMap.put(obs.getFieldCode(), convertObsToJson(obs));
 				}
-				obl.add(convertObsToJson(obs));
-				pc.put(obs.getParentCode(), obl);
+				else {	
+					obsMap.put(obs.getParentCode(), convertObsToJson(getOrCreateParent(ol, obs)));
+					// find if any other exists with same parent if so add to the list otherwise create new list
+					List<JSONObject> obl = pc.get(obs.getParentCode());
+					if(obl == null){
+						obl = new ArrayList<>();
+					}
+					obl.add(convertObsToJson(obs));
+					pc.put(obs.getParentCode(), obl);
+				}
 			}
+			
+			JSONArray obar = new JSONArray();
+			List<JSONObject> list;
+	        @SuppressWarnings("unchecked")
+			Set <String> entrySet = obsMap.entrySet();
+	        @SuppressWarnings("rawtypes")
+			Iterator it = entrySet.iterator();
+	        while (it.hasNext()) {
+	            Map.Entry mapEntry = (Map.Entry) it.next();
+	            list = (List) obsMap.get(mapEntry.getKey());
+	            for (int j = 0; j < list.size(); j++) {  
+	            	JSONObject obo = list.get(j);  	
+	                List<JSONObject> cob = pc.get(mapEntry.getKey());
+	    			if(cob != null && cob.size() > 0) {
+	    				obo.put("groupMembers", new JSONArray(cob));
+	    			}
+	    			obar.put(obo);
+	            }
+	        }
+	        
+	       
+			enc.put("obs", obar);
+		}catch(Exception ee){
+			System.out.println(ee.getMessage());
 		}
-		
-		JSONArray obar = new JSONArray();
-		List<JSONObject> list;
-        @SuppressWarnings("unchecked")
-		Set <String> entrySet = obsMap.entrySet();
-        @SuppressWarnings("rawtypes")
-		Iterator it = entrySet.iterator();
-        while (it.hasNext()) {
-            Map.Entry mapEntry = (Map.Entry) it.next();
-            list = (List) obsMap.get(mapEntry.getKey());
-            for (int j = 0; j < list.size(); j++) {  
-            	JSONObject obo = list.get(j);  	
-                List<JSONObject> cob = pc.get(mapEntry.getKey());
-    			if(cob != null && cob.size() > 0) {
-    				obo.put("groupMembers", new JSONArray(cob));
-    			}
-    			obar.put(obo);
-            }
-        }
-        
-        //System.out.println("obar: " + obar.toString());
-		enc.put("obs", obar);
 		System.out.println("Going to create Encounter: " + enc.toString());
 		HttpResponse op = HttpUtil.post(HttpUtil.removeEndingSlash(OPENMRS_BASE_URL)+"/"+ENCOUNTER_URL, "", enc.toString(), OPENMRS_USER, OPENMRS_PWD);
 		return new JSONObject(op.body());

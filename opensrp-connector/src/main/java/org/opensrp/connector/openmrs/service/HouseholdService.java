@@ -79,7 +79,7 @@ public class HouseholdService extends OpenmrsService{
 		}
 		
 		JSONObject hhp = patientService.createPatient(household.getHouseholdHead().getClient());
-		JSONObject hhe = encounterService.createEncounter(household.getHouseholdHead().getEvent().get(0));
+		JSONObject hhe = encounterService.createEncounter(household.getHouseholdHead().getEvent().get(0),"");
 		
 		for (HouseholdMember m : household.getMembers()) {
 			if(StringUtils.isEmptyOrWhitespaceOnly(m.getClient().getBaseEntity().getFirstName())
@@ -88,7 +88,7 @@ public class HouseholdService extends OpenmrsService{
 			}
 			else{
 				JSONObject mp = patientService.createPatient(m.getClient());
-				JSONObject me = encounterService.createEncounter(m.getEvent().get(0));
+				JSONObject me = encounterService.createEncounter(m.getEvent().get(0),"");
 				
 				createRelationship(hhp.getString("uuid"), hhrel, mp.getString("uuid"));
 			}
@@ -128,7 +128,7 @@ public class HouseholdService extends OpenmrsService{
 		JSONObject hhheadEx = patientService.getPatientByIdentifier(household.getHouseholdHead().getClient().getBaseEntityId());
 		
 		JSONObject hhp = ignoreExisting&&hhheadEx!=null?hhheadEx:patientService.createPatient(household.getHouseholdHead().getClient());
-		JSONObject hhe = encounterService.createEncounter(household.getHouseholdHead().getEvent().get(0));
+		JSONObject hhe = encounterService.createEncounter(household.getHouseholdHead().getEvent().get(0),"");
 		
 		for (HouseholdMember m : household.getMembers()) {
 			if(StringUtils.isEmptyOrWhitespaceOnly(m.getClient().getBaseEntity().getFirstName())
@@ -139,7 +139,7 @@ public class HouseholdService extends OpenmrsService{
 				JSONObject hhMemEx = patientService.getPatientByIdentifier(m.getClient().getBaseEntityId());
 
 				JSONObject mp = ignoreExisting&&hhMemEx!=null?hhMemEx:patientService.createPatient(m.getClient());
-				JSONObject me = encounterService.createEncounter(m.getEvent().get(0));
+				JSONObject me = encounterService.createEncounter(m.getEvent().get(0),"");
 				
 				createRelationship(hhp.getString("uuid"), hhrel, mp.getString("uuid"));
 			}

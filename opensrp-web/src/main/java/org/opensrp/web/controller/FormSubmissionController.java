@@ -165,13 +165,13 @@ public class FormSubmissionController {
 	    					System.out.println("Dependent client exist into formsubmission /***********************************************************************/ ");
 	    		    		for (Map<String, Object> cm : dep.values()) {
 	    		    				System.out.println(patientService.createPatient((Client)cm.get("client")));
-	    		    				System.out.println(encounterService.createEncounter((Event)cm.get("event")));
+	    		    				System.out.println(encounterService.createEncounter((Event)cm.get("event"),""));
 	    		    		}
 	    				}	
 	    				//HOW(0)
 	    				e = openmrsConnector.getEventFromFormSubmission(formSubmission);
 	    				System.out.println("Creates encounter for client id: " + e.getBaseEntityId());
-	    				System.out.println(encounterService.createEncounter(e)); 
+	    				System.out.println(encounterService.createEncounter(e,"")); 
 	            	}
 	            	else { //Hn
 	            		Map<String, Map<String, Object>> dep;
@@ -191,7 +191,7 @@ public class FormSubmissionController {
 		        			Client c = openmrsConnector.getClientFromFormSubmission(formSubmission);
 		        			System.out.println(patientService.createPatient(c));
 		        			Event e = openmrsConnector.getEventFromFormSubmission(formSubmission);
-			        		System.out.println(encounterService.createEncounter(e));
+			        		System.out.println(encounterService.createEncounter(e,""));
 		        		}
 	            	}
             	}
@@ -243,6 +243,8 @@ public class FormSubmissionController {
 						System.out.println("Dependent client exist into formsubmission /***********************************************************************/ ");
 						Client hhClient = bahmniOpenmrsConnector.getClientFromFormSubmission(formSubmission);	
 						System.out.println(bahmniPatientService.createPatient(hhClient,idGen));
+						Event e = openmrsConnector.getEventFromFormSubmission(formSubmission);
+		        		System.out.println(encounterService.createEncounter(e,idGen));
 	        			//Event hhhEvent = openmrsConnector.getEventFromFormSubmission(formSubmission);
 	        			//OpenmrsHouseHold hh = new OpenmrsHouseHold(hhhClient, hhhEvent);
 		    			for (Map<String, Object> cm : dep.values()) {
@@ -263,6 +265,8 @@ public class FormSubmissionController {
             		System.out.println("Patient and Dependent client not exist into Bahmni openmrs /***********************************************************************/ ");
         			Client c = bahmniOpenmrsConnector.getClientFromFormSubmission(formSubmission);
         			System.out.println(bahmniPatientService.createPatient(c,idGen));
+        			Event e = openmrsConnector.getEventFromFormSubmission(formSubmission);
+	        		System.out.println(encounterService.createEncounter(e,idGen));
 					}
             	}
             }
