@@ -354,6 +354,7 @@ public class BahmniOpenmrsConnector {
 				for (Map<String, String> sfdata : sbf.instances()) {
 					String gender = sfdata.get(getFieldName(Person.gender, sbf.name(), fs));
 					String firstName = gender.equals("1")?"Mr":"Mrs";
+					gender = gender.equals("1")?"M":"F";
 				//	String firstName = sfdata.get(getFieldName(Person.first_name, sbf.name(), fs));
 					Map<String, String> idents = extractIdentifiers(sfdata, sbf.name(), fs);
 					if(StringUtils.isEmptyOrWhitespaceOnly(firstName) && idents.size() < 2 && !sbf.name().equals("child_registration"))
