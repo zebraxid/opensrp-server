@@ -225,6 +225,9 @@ public class MembersService {
 		Map<String, String> general = create(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
 											.put(START_DATE, submission.getField(START_DATE))
 											.put(END_DATE, submission.getField(END_DATE))
+											.put(general_Date_Of_Reg, submission.getField(general_Date_Of_Reg))
+											.put(Patient_Diagnosis, submission.getField(Patient_Diagnosis))
+											.put(Treatment, submission.getField(Treatment))
 											.put(Received_Time, format.format(today).toString())
 											.map();	
 		
@@ -246,6 +249,9 @@ public class MembersService {
 		Map<String, String> familyPlanning = create(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
 											.put(START_DATE, submission.getField(START_DATE))
 											.put(END_DATE, submission.getField(END_DATE))
+											.put(FP_DATE_OF_REG, submission.getField(FP_DATE_OF_REG))
+											.put(FP_USER, submission.getField(FP_USER))
+											.put(FP_Methods, submission.getField(FP_Methods))
 											.put(Received_Time, format.format(today).toString())
 											.map();	
 		
@@ -267,6 +273,9 @@ public class MembersService {
 		Map<String, String> newBorn = create(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
 											.put(START_DATE, submission.getField(START_DATE))
 											.put(END_DATE, submission.getField(END_DATE))
+											.put(new_born_DATE_OF_REG, submission.getField(new_born_DATE_OF_REG))
+											.put(Birth_Weigtht, submission.getField(Birth_Weigtht))
+											.put(Newborn_Care_Received, submission.getField(Newborn_Care_Received))
 											.put(Received_Time, format.format(today).toString())
 											.map();	
 		

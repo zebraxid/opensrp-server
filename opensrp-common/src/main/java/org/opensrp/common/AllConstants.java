@@ -24,10 +24,10 @@ public class AllConstants {
     	public static final String HH_REGISTRATION = "new_household_registration";
     	public static final String MEMBERS_REGISTRATION = "census_enrollment_form";
     	public static final String PSRF_FORM = "psrf_form";
-    	public static final String ANC_REMINDER_VISIT_1 = "anc_reminder_visit_1";
-    	public static final String ANC_REMINDER_VISIT_2 = "anc_reminder_visit_2";
-    	public static final String ANC_REMINDER_VISIT_3 = "anc_reminder_visit_3";
-    	public static final String ANC_REMINDER_VISIT_4 = "anc_reminder_visit_4";
+    	public static final String NewBornHandler = "NewbornInformation";
+    	public static final String GeneralHandler = "GeneralPatient";
+    	public static final String FamilyPlanningHandler = "FamilyPlanning";
+    	public static final String MeaslesHandler = "MeaslesHandler";
     	public static final String BNF_FORM = "birthnotificationpregnancystatusfollowup";
     	public static final String TT1_Visit_Handler = "TT1_handler";
     	public static final String TT2_Visit_Handler = "TT2_handler";
@@ -231,7 +231,15 @@ public class AllConstants {
     	public static final String Member_GOB_HHID ="Member_GOB_HHID";
     	public static final String Member_GPS ="Member_GPS";
     	public static final String FW_PSREVRPREG ="FWPSREVRPREG";
-    	
+    	public static final String general_Date_Of_Reg="general_Date_Of_Reg";
+    	public static final String Patient_Diagnosis="Patient_Diagnosis";
+    	public static final String Treatment="Treatment";
+    	public static final String FP_DATE_OF_REG="FP_DATE_OF_REG";
+    	public static final String FP_USER="FP_USER";
+    	public static final String FP_Methods="FP_Methods";
+    	public static final String new_born_DATE_OF_REG="new_born_DATE_OF_REG";
+    	public static final String Birth_Weigtht="Birth_Weigtht";
+    	public static final String Newborn_Care_Received="Newborn_Care_Received";
     }
 
     public static class PSRFFields

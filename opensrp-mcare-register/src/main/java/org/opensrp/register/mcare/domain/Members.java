@@ -29,19 +29,129 @@ public class Members extends MotechBaseDataObject {
 	@JsonProperty
 	private String LOCATIONID;
 	@JsonProperty
-	private String GOBHHID;
+	private String HH_Member;
 	@JsonProperty
-	private String JiVitAHHID;
+	private String Reg_No;
 	@JsonProperty
-	private String FWWOMFNAME;
+	private String BDH;
 	@JsonProperty
-	private String FWHUSNAME;
+	private String Member_Fname;
 	@JsonProperty
-	private String FWWOMNID;
+	private String Member_LName;
 	@JsonProperty
-	private String FWWOMBID;
+	private String Gender;
 	@JsonProperty
-	private String FWWOMAGE;
+	private String DoB;	
+	@JsonProperty
+	private String Type_DoB;
+	@JsonProperty
+	private String Age; 
+	@JsonProperty
+	private String Display_Age;
+	@JsonProperty
+	private String Child_Vital_Status;
+	@JsonProperty
+	private String MOTHER_Vaccine_Dates;
+	@JsonProperty
+	private String FWCWOMHUSSTR;
+	@JsonProperty
+	private String Date_of_BCG_OPV_0;
+	@JsonProperty
+	private String Date_of_OPV_Penta_PCV_1;
+	@JsonProperty
+	private String Date_of_OPV_Penta_PCV_2;
+	@JsonProperty
+	private String Date_of_OPV_Penta_3_IPV;
+	@JsonProperty
+	private String Date_of_PCV_3;
+	@JsonProperty
+	private String Date_of_MR;
+	@JsonProperty
+	private String Date_of_Measles;
+	@JsonProperty
+	private String Date_BRID;
+	@JsonProperty
+	private String Child_BRID;
+	@JsonProperty
+	private String Date_Child_Death; 
+	@JsonProperty
+	private String C_Guardian_Type;
+	@JsonProperty
+	private String C_Guardian_Name_Father;
+	@JsonProperty
+	private String C_Guardian_Name_Mother;
+	@JsonProperty
+	private String C_Guardian_Name_Hus;
+	@JsonProperty
+	private String Marital_Status;
+	@JsonProperty
+	private String Couple_No;
+	@JsonProperty
+	private String LMP;
+	@JsonProperty
+	private String EDD;
+	@JsonProperty
+	private String GA;
+	@JsonProperty
+	private String Pregnancy_Status; 
+	@JsonProperty
+	private String Date_of_MR_wom;
+	@JsonProperty
+	private String Date_of_TT1;
+	@JsonProperty
+	private String Date_of_TT2;
+	@JsonProperty
+	private String Date_of_TT3;
+	@JsonProperty
+	private String Date_of_TT4;
+	@JsonProperty
+	private String Date_of_TT5;
+	@JsonProperty
+	private String Unique_ID;
+	@JsonProperty
+	private String NID;
+	@JsonProperty
+	private String BRID;
+	@JsonProperty
+	private String HID;
+	@JsonProperty
+	private String Guardian_Type;
+	@JsonProperty
+	private String Guardian_Name_Father;
+	@JsonProperty
+	private String Guardian_Name_Mother;
+	@JsonProperty
+	private String Guardian_Name_Hus; 
+	@JsonProperty
+	private String Mobile_No;
+	@JsonProperty
+	private String Education;
+	@JsonProperty
+	private String Occupation;
+	@JsonProperty
+	private String Is_TT;
+	@JsonProperty
+	private String Is_Measles;
+	@JsonProperty
+	private String Is_FP;
+	@JsonProperty
+	private String Is_NewBorn;
+	@JsonProperty
+	private String Member_COUNTRY;
+	@JsonProperty
+	private String Member_DIVISION;
+	@JsonProperty
+	private String Member_DISTRICT;
+	@JsonProperty
+	private String Member_UPAZILLA;
+	@JsonProperty
+	private String Member_UNION;
+	@JsonProperty
+	private String Member_WARD;
+	@JsonProperty
+	private String Member_GOB_HHID;
+	@JsonProperty
+	private String Member_GPS;	
 	@JsonProperty
 	private String TODAY;
 	@JsonProperty
@@ -105,35 +215,312 @@ public class Members extends MotechBaseDataObject {
 		return this;
 	}
 
-	public Members withFWHUSNAME(String FWHUSNAME) {
-		this.FWHUSNAME = FWHUSNAME;
+	public Members withMember_Fname(String Member_Fname) {
+		this.Member_Fname = Member_Fname;
 		return this;
 	}
 
-	public Members withGOBHHID(String GOBHHID) {
-		this.GOBHHID = GOBHHID;
+	public Members withHH_Member(String HH_Member) {
+		this.HH_Member = HH_Member;
 		return this;
 	}
-	public Members withJiVitAHHID(String JiVitAHHID) {
-		this.JiVitAHHID = JiVitAHHID;
+	public Members withReg_No(String Reg_No) {
+		this.Reg_No = Reg_No;
 		return this;
 	}
-	public Members withJFWWOMFNAME(String FWWOMFNAME) {
-		this.FWWOMFNAME = FWWOMFNAME;
+	public Members withBDH(String BDH) {
+		this.BDH = BDH;
 		return this;
 	}
-	public Members withFWWOMNID(String FWWOMNID) {
-		this.FWWOMNID = FWWOMNID;
+	public Members withMember_LName(String Member_LName) {
+		this.Member_LName = Member_LName;
 		return this;
 	}
-	public Members withFWWOMBID(String FWWOMBID) {
-		this.FWWOMBID = FWWOMBID;
+	public Members withGender(String Gender) {
+		this.Gender = Gender;
 		return this;
 	}
-	public Members withFWWOMAGE(String FWWOMAGE) {
-		this.FWWOMAGE = FWWOMAGE;
+	public Members withDoB(String DoB) {
+		this.DoB = DoB;
 		return this;
 	}
+	
+	public Members withType_DoB(String Type_DoB) {
+		this.Type_DoB = Type_DoB;
+		return this;
+	}
+
+	public Members withAge(String Age) {
+		this.Age = Age;
+		return this;
+	}
+
+	public Members withDisplay_Age(String Display_Age) {
+		this.Display_Age = Display_Age;
+		return this;
+	}
+
+	public Members withDate_of_MR(String Date_of_MR) {
+		this.Date_of_MR = Date_of_MR;
+		return this;
+	}
+	
+	public Members withDate_of_Measles(String Date_of_Measles) {
+		this.Date_of_Measles = Date_of_Measles;
+		return this;
+	}
+
+	public Members withChild_Vital_Status(String Child_Vital_Status) {
+		this.Child_Vital_Status = Child_Vital_Status;
+		return this;
+	}
+
+	public Members withMOTHER_Vaccine_Dates(String MOTHER_Vaccine_Dates) {
+		this.MOTHER_Vaccine_Dates = MOTHER_Vaccine_Dates;
+		return this;
+	}
+
+	public Members withFWCWOMHUSSTR(String FWCWOMHUSSTR) {
+		this.FWCWOMHUSSTR = FWCWOMHUSSTR;
+		return this;
+	}
+
+	public Members withDate_of_BCG_OPV_0(String Date_of_BCG_OPV_0) {
+		this.Date_of_BCG_OPV_0 = Date_of_BCG_OPV_0;
+		return this;
+	}
+
+	public Members withDate_of_OPV_Penta_PCV_1(String Date_of_OPV_Penta_PCV_1) {
+		this.Date_of_OPV_Penta_PCV_1 = Date_of_OPV_Penta_PCV_1;
+		return this;
+	}
+
+	public Members withDate_of_OPV_Penta_PCV_2(String Date_of_OPV_Penta_PCV_2) {
+		this.Date_of_OPV_Penta_PCV_2 = Date_of_OPV_Penta_PCV_2;
+		return this;
+	}
+
+	public Members withDate_of_OPV_Penta_3_IPV(String Date_of_OPV_Penta_3_IPV) {
+		this.Date_of_OPV_Penta_3_IPV = Date_of_OPV_Penta_3_IPV;
+		return this;
+	}
+	
+	public Members withDate_of_PCV_3(String Date_of_PCV_3) {
+		this.Date_of_PCV_3 = Date_of_PCV_3;
+		return this;
+	}
+
+	public Members withDate_BRID(String Date_BRID) {
+		this.Date_BRID = Date_BRID;
+		return this;
+	}
+	
+	public Members withChild_BRID(String Child_BRID) {
+		this.Child_BRID = Child_BRID;
+		return this;
+	}
+
+	public Members withDate_Child_Death(String Date_Child_Death) {
+		this.Date_Child_Death = Date_Child_Death;
+		return this;
+	}
+
+	public Members withC_Guardian_Name_Father(String C_Guardian_Name_Father) {
+		this.C_Guardian_Name_Father = C_Guardian_Name_Father;
+		return this;
+	}
+
+	public Members withC_Guardian_Type(String C_Guardian_Type) {
+		this.C_Guardian_Type = C_Guardian_Type;
+		return this;
+	}
+	
+	public Members withC_Guardian_Name_Mother(String C_Guardian_Name_Mother) {
+		this.C_Guardian_Name_Mother = C_Guardian_Name_Mother;
+		return this;
+	}
+
+	public Members withC_Guardian_Name_Hus(String C_Guardian_Name_Hus) {
+		this.C_Guardian_Name_Hus = C_Guardian_Name_Hus;
+		return this;
+	}
+	
+	public Members withMarital_Status(String Marital_Status) {
+		this.Marital_Status = Marital_Status;
+		return this;
+	}
+
+	public Members withCouple_No(String Couple_No) {
+		this.Couple_No = Couple_No;
+		return this;
+	}
+	
+	public Members withLMP(String LMP) {
+		this.LMP = LMP;
+		return this;
+	}
+	
+	public Members withEDD(String EDD) {
+		this.EDD = EDD;
+		return this;
+	}
+	
+	public Members withGA(String GA) {
+		this.GA = GA;
+		return this;
+	}
+	
+	public Members withPregnancy_Status(String Pregnancy_Status) {
+		this.Pregnancy_Status = Pregnancy_Status;
+		return this;
+	}
+
+	public Members withDate_of_MR_wom(String Date_of_MR_wom) {
+		this.Date_of_MR_wom = Date_of_MR_wom;
+		return this;
+	}
+
+	public Members withHID(String HID) {
+		this.HID = HID;
+		return this;
+	}
+	
+	public Members withGuardian_Type(String Guardian_Type) {
+		this.Guardian_Type = Guardian_Type;
+		return this;
+	}
+
+	public Members withDate_of_TT1(String Date_of_TT1) {
+		this.Date_of_TT1 = Date_of_TT1;
+		return this;
+	}
+
+	public Members withDate_of_TT2(String Date_of_TT2) {
+		this.Date_of_TT2 = Date_of_TT2;
+		return this;
+	}
+
+	public Members withDate_of_TT3(String Date_of_TT3) {
+		this.Date_of_TT3 = Date_of_TT3;
+		return this;
+	}
+
+	public Members withDate_of_TT4(String Date_of_TT4) {
+		this.Date_of_TT4 = Date_of_TT4;
+		return this;
+	}
+
+	public Members withDate_of_TT5(String Date_of_TT5) {
+		this.Date_of_TT5 = Date_of_TT5;
+		return this;
+	}
+
+	public Members withUnique_ID(String Unique_ID) {
+		this.Unique_ID = Unique_ID;
+		return this;
+	}
+
+	public Members withNID(String NID) {
+		this.NID = NID;
+		return this;
+	}
+	
+	public Members withBRID(String BRID) {
+		this.BRID = BRID;
+		return this;
+	}
+
+	public Members withGuardian_Name_Father(String Guardian_Name_Father) {
+		this.Guardian_Name_Father = Guardian_Name_Father;
+		return this;
+	}
+
+	
+	public Members withGuardian_Name_Mother(String Guardian_Name_Mother) {
+		this.Guardian_Name_Mother = Guardian_Name_Mother;
+		return this;
+	}
+
+	public Members withGuardian_Name_Hus(String Guardian_Name_Hus) {
+		this.Guardian_Name_Hus = Guardian_Name_Hus;
+		return this;
+	}
+
+	public Members withEducation(String Education) {
+		this.Education = Education;
+		return this;
+	}
+
+	public Members withMobile_No(String Mobile_No) {
+		this.Mobile_No = Mobile_No;
+		return this;
+	}
+	
+	public Members withOccupation(String Occupation) {
+		this.Occupation = Occupation;
+		return this;
+	}
+
+	public Members withIs_TT(String Is_TT) {
+		this.Is_TT = Is_TT;
+		return this;
+	}
+	
+	public Members withIs_Measles(String Is_Measles) {
+		this.Is_Measles = Is_Measles;
+		return this;
+	}
+
+	public Members withIs_FP(String Is_FP) {
+		this.Is_FP = Is_FP;
+		return this;
+	}
+	
+	public Members withIs_NewBorn(String Is_NewBorn) {
+		this.Is_NewBorn = Is_NewBorn;
+		return this;
+	}
+	
+	public Members withMember_COUNTRY(String Member_COUNTRY) {
+		this.Member_COUNTRY = Member_COUNTRY;
+		return this;
+	}
+	
+	public Members withMember_DIVISION(String Member_DIVISION) {
+		this.Member_DIVISION = Member_DIVISION;
+		return this;
+	}
+	
+	public Members withMember_DISTRICT(String Member_DISTRICT) {
+		this.Member_DISTRICT = Member_DISTRICT;
+		return this;
+	}
+	
+	public Members withMember_UPAZILLA(String Member_UPAZILLA) {
+		this.Member_UPAZILLA = Member_UPAZILLA;
+		return this;
+	}
+	
+	public Members withMember_UNION(String Member_UNION) {
+		this.Member_UNION = Member_UNION;
+		return this;
+	}
+	
+	public Members withMember_WARD(String Member_WARD) {
+		this.Member_WARD = Member_WARD;
+		return this;
+	}
+	
+	public Members withMember_GOB_HHID(String Member_GOB_HHID) {
+		this.Member_GOB_HHID = Member_GOB_HHID;
+		return this;
+	}
+	
+	public Members withMember_GPS(String Member_GPS) {
+		this.Member_GPS = Member_GPS;
+		return this;
+	}
+	
 	public Members withTODAY(String TODAY) {
 		this.TODAY = TODAY;
 		return this;
@@ -208,27 +595,247 @@ public class Members extends MotechBaseDataObject {
 		return LOCATIONID;
 	}
 
-	public String FWHUSNAME() {
-		return FWHUSNAME;
+	public String Member_Fname() {
+		return Member_Fname;
 	}
-	public String GOBHHID() {
-		return GOBHHID;
+	public String HH_Member() {
+		return HH_Member;
 	}
-	public String JiVitAHHID() {
-		return JiVitAHHID;
+	public String Reg_No() {
+		return Reg_No;
 	}
-	public String FWWOMFNAME() {
-		return FWWOMFNAME;
+	public String BDH() {
+		return BDH;
 	}
-	public String FWWOMNID() {
-		return FWWOMNID;
+	public String Member_LName() {
+		return Member_LName;
 	}
-	public String FWWOMBID() {
-		return FWWOMBID;
+	public String Gender() {
+		return Gender;
 	}
-	public String FWWOMAGE() {
-		return FWWOMAGE;
+	public String DoB() {
+		return DoB;
 	}
+
+	public String Type_DoB() {
+		return Type_DoB;
+	}
+
+	public String Age() {
+		return Age;
+	}
+
+	public String Display_Age() {
+		return Display_Age;
+	}
+
+	public String Date_of_MR() {
+		return Date_of_MR;
+	}
+	
+	public String Date_of_Measles() {
+		return Date_of_Measles;
+	}
+
+	public String Child_Vital_Status() {
+		return Child_Vital_Status;
+	}
+	
+	public String MOTHER_Vaccine_Dates() {
+		return MOTHER_Vaccine_Dates;
+	}
+	
+	public String FWCWOMHUSSTR() {
+		return FWCWOMHUSSTR;
+	}
+	
+	public String Date_of_BCG_OPV_0() {
+		return Date_of_BCG_OPV_0;
+	}
+	
+	public String Date_of_OPV_Penta_PCV_1() {
+		return Date_of_OPV_Penta_PCV_1;
+	}
+	
+	public String Date_of_OPV_Penta_PCV_2() {
+		return Date_of_OPV_Penta_PCV_2;
+	}
+	
+	public String Date_of_OPV_Penta_3_IPV() {
+		return Date_of_OPV_Penta_3_IPV;
+	}
+	
+	public String Date_of_PCV_3() {
+		return Date_of_PCV_3;
+	}
+
+	public String Date_BRID() {
+		return Date_BRID;
+	}
+	public String Child_BRID() {
+		return Child_BRID;
+	}
+
+	public String Date_Child_Death() {
+		return Date_Child_Death;
+	}
+
+	public String C_Guardian_Name_Father() {
+		return C_Guardian_Name_Father;
+	}
+
+	public String C_Guardian_Type() {
+		return C_Guardian_Type;
+	}
+
+	public String C_Guardian_Name_Mother() {
+		return C_Guardian_Name_Mother;
+	}
+
+	public String C_Guardian_Name_Hus() {
+		return C_Guardian_Name_Hus;
+	}
+	
+	public String Marital_Status() {
+		return Marital_Status;
+	}
+
+	public String Couple_No() {
+		return Couple_No;
+	}
+	
+	public String LMP() {
+		return LMP;
+	}
+
+	public String EDD() {
+		return EDD;
+	}
+	
+	public String GA() {
+		return GA;
+	}
+	
+	public String Pregnancy_Status() {
+		return Pregnancy_Status;
+	}
+
+	public String Date_of_MR_wom() {
+		return Date_of_MR_wom;
+	}
+
+	public String HID() {
+		return HID;
+	}
+	
+	public String Guardian_Type() {
+		return Guardian_Type;
+	}
+
+	public String Date_of_TT1() {
+		return Date_of_TT1;
+	}
+	
+	public String Date_of_TT2() {
+		return Date_of_TT2;
+	}
+	
+	public String Date_of_TT3() {
+		return Date_of_TT3;
+	}
+	
+	public String Date_of_TT4() {
+		return Date_of_TT4;
+	}
+	
+	public String Date_of_TT5() {
+		return Date_of_TT5;
+	}
+	
+	public String Unique_ID() {
+		return Unique_ID;
+	}
+	
+	public String NID() {
+		return NID;
+	}
+	
+	public String BRID() {
+		return BRID;
+	}
+
+	public String Guardian_Name_Father() {
+		return Guardian_Name_Father;
+	}
+	
+	public String Guardian_Name_Mother() {
+		return Guardian_Name_Mother;
+	}
+
+	public String Guardian_Name_Hus() {
+		return Guardian_Name_Hus;
+	}
+
+	public String Education() {
+		return Education;
+	}
+
+	public String Mobile_No() {
+		return Mobile_No;
+	}
+
+	public String Occupation() {
+		return Occupation;
+	}
+
+	public String Is_TT() {
+		return Is_TT;
+	}
+	
+	public String Is_Measles() {
+		return Is_Measles;
+	}
+
+	public String Is_FP() {
+		return Is_FP;
+	}
+	
+	public String Is_NewBorn() {
+		return Is_NewBorn;
+	}
+
+	public String Member_COUNTRY() {
+		return Member_COUNTRY;
+	}
+	
+	public String Member_DIVISION() {
+		return Member_DIVISION;
+	}
+	
+	public String Member_DISTRICT() {
+		return Member_DISTRICT;
+	}
+	
+	public String Member_UPAZILLA() {
+		return Member_UPAZILLA;
+	}
+	
+	public String Member_UNION() {
+		return Member_UNION;
+	}
+	
+	public String Member_WARD() {
+		return Member_WARD;
+	}
+	
+	public String Member_GOB_HHID() {
+		return Member_GOB_HHID;
+	}
+	
+	public String Member_GPS() {
+		return Member_GPS;
+	}
+
 	public String isClosed() {
 		return isClosed;
 	}

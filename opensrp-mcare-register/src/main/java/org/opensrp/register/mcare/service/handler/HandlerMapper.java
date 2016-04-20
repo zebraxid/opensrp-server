@@ -1,5 +1,5 @@
 /**
- * @author julkar nain 
+ * @author Asifur
  */
 package org.opensrp.register.mcare.service.handler;
 
@@ -24,10 +24,10 @@ public class HandlerMapper implements IHandlerMapper {
 	public HandlerMapper(  
 			AllFormSubmissions formSubmissionsRepository,
 			HHRegistrationHandler hhRegistrationHandler,
-			ANCVisitOneHandler ancVisitOneHandler,
-			ANCVisitTwoHandler ancVisitTwoHandler,
-			ANCVisitThreeHandler ancVisitThreeHandler,
-			ANCVisitFourHandler ancVisitFourHandler,
+			NewBornHandler newBornHandler,
+			GeneralHandler generalHandler,
+			FamilyPlanningHandler familyPlanningHandler,
+			MeaslesHandler measlesHandler,
 			TT1_Handler TT1_Handler,
 			TT2_Handler TT2_Handler,
 			TT3_Handler TT3_Handler,
@@ -39,10 +39,10 @@ public class HandlerMapper implements IHandlerMapper {
 			)
 	{
 		handlerMap = EasyMap.create(HH_REGISTRATION, (FormSubmissionHandler) hhRegistrationHandler)
-				     .put(ANC_REMINDER_VISIT_1, ancVisitOneHandler)
-				     .put(ANC_REMINDER_VISIT_2, ancVisitTwoHandler)
-				     .put(ANC_REMINDER_VISIT_3, ancVisitThreeHandler)
-				     .put(ANC_REMINDER_VISIT_4, ancVisitFourHandler)
+				     .put(NewBornHandler, newBornHandler)
+				     .put(GeneralHandler, generalHandler)
+				     .put(FamilyPlanningHandler, familyPlanningHandler)
+				     .put(MeaslesHandler, measlesHandler)
 				     .put(TT1_Visit_Handler, TT1_Handler)
 				     .put(TT2_Visit_Handler, TT2_Handler)
 				     .put(TT3_Visit_Handler, TT3_Handler)
