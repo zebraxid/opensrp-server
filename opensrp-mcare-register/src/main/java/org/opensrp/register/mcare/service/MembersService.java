@@ -78,15 +78,16 @@ public class MembersService {
 			if(membersFields.containsKey(Is_TT)){
 				if(!membersFields.get(Is_TT).equalsIgnoreCase("") || membersFields.get(Is_TT) != null){	
 					if(membersFields.get(Is_TT).equalsIgnoreCase("1"))
-					membersScheduleService.enrollWomanTTVisit(members.caseId(),submission.anmId(),submission.instanceId(),membersFields);
+					//membersScheduleService.enrollWomanTTVisit(members.caseId(),submission.anmId(),submission.instanceId(),membersFields)
+						;
 				}
 			}
 			
 			if(membersFields.containsKey(Is_Measles)){
 				if(!membersFields.get(Is_Measles).equalsIgnoreCase("") || membersFields.get(Is_Measles) != null){	
 					if(membersFields.get(Is_Measles).equalsIgnoreCase("1"))
-					membersScheduleService.enrollWomanMeaslesVisit(members.caseId(),submission.anmId(),
-							submission.instanceId(),LocalDate.parse(submission.getField(Date_of_Measles)));
+					//membersScheduleService.enrollWomanMeaslesVisit(members.caseId(),submission.anmId(), submission.instanceId(),LocalDate.parse(submission.getField(Date_of_Measles)))
+						;
 				}
 			}
 		}
@@ -413,6 +414,76 @@ public class MembersService {
 		members.withTTVisitFive(TT5_visit);
 		allMembers.update(members);
 		membersScheduleService.enrollTT5_Visit(members.caseId(),submission.anmId());
+	}
+
+	public void PCV1Handler(FormSubmission submission) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void PCV2Handler(FormSubmission submission) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void PENTA3Handler(FormSubmission submission) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void PENTA2Handler(FormSubmission submission) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void PENTA1Handler(FormSubmission submission) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void PCV3Handler(FormSubmission submission) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void OPV3Handler(FormSubmission submission) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void OPV2Handler(FormSubmission submission) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void OPV1Handler(FormSubmission submission) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void OPV0Handler(FormSubmission submission) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void MRHandler(FormSubmission submission) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void Measles2Handler(FormSubmission submission) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void IPVHandler(FormSubmission submission) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void BCGHandler(FormSubmission submission) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

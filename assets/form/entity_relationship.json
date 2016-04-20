@@ -8,14 +8,6 @@
     "to": "members.relationalid"
   },
   {
-    "parent": "elco",
-    "child": "child",
-    "field": "child",
-    "kind": "one_to_many",
-    "from": "elco.id",
-    "to": "child.motherCaseId"
-  },
-  {
     "parent": "eligible_couple",
     "child": "mother",
     "field": "wife",

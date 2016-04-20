@@ -77,7 +77,7 @@ public class AlertCreationAction implements HookedEvent {
 			if (houseHold != null) {
 				instanceId= houseHold.INSTANCEID();
 				providerId = houseHold.PROVIDERID();
-				startOfEarliestWindow = DateTime.parse(houseHold.TODAY(),formatter);
+				startOfEarliestWindow = DateTime.parse(houseHold.Date_Of_Reg(),formatter);
 			}
 		}
 		else if(members.equals(beneficiaryType))
@@ -87,7 +87,7 @@ public class AlertCreationAction implements HookedEvent {
 			if (members != null) {
 				instanceId= members.INSTANCEID();
 				providerId = members.PROVIDERID();
-				startOfEarliestWindow = DateTime.parse(members.TODAY(),formatter);
+				startOfEarliestWindow = DateTime.parse(members.details().get("today"),formatter);
 			}
 		}
 		else if(mother.equals(beneficiaryType))

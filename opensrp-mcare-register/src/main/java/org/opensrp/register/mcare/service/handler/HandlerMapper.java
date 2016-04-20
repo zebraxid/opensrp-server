@@ -32,10 +32,7 @@ public class HandlerMapper implements IHandlerMapper {
 			TT2_Handler TT2_Handler,
 			TT3_Handler TT3_Handler,
 			TT4_Handler TT4_Handler,
-			TT5_Handler TT5_Handler,
-			ENCCVisitOneHandler enccVisitOneHandler,
-			ENCCVisitTwoHandler enccVisitTwoHandler,
-			ENCCVisitThreeHandler enccVisitThreeHandler
+			TT5_Handler TT5_Handler
 			)
 	{
 		handlerMap = EasyMap.create(HH_REGISTRATION, (FormSubmissionHandler) hhRegistrationHandler)
@@ -48,9 +45,6 @@ public class HandlerMapper implements IHandlerMapper {
 				     .put(TT3_Visit_Handler, TT3_Handler)
 				     .put(TT4_Visit_Handler, TT4_Handler)
 				     .put(TT5_Visit_Handler, TT5_Handler)
-				     .put(ENCC_REMINDER_VISIT_1, enccVisitOneHandler)
-				     .put(ENCC_REMINDER_VISIT_2, enccVisitTwoHandler)
-				     .put(ENCC_REMINDER_VISIT_3, enccVisitThreeHandler)
                      .map();
 	}
 
