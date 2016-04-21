@@ -78,7 +78,7 @@ public class MembersService {
 			if(membersFields.containsKey(Is_TT)){
 				if(!membersFields.get(Is_TT).equalsIgnoreCase("") || membersFields.get(Is_TT) != null){	
 					if(membersFields.get(Is_TT).equalsIgnoreCase("1"))
-					//membersScheduleService.enrollWomanTTVisit(members.caseId(),submission.anmId(),submission.instanceId(),membersFields)
+					membersScheduleService.enrollWomanTTVisit(members.caseId(),submission.anmId(),submission.instanceId(),membersFields)
 						;
 				}
 			}
@@ -86,7 +86,7 @@ public class MembersService {
 			if(membersFields.containsKey(Is_Measles)){
 				if(!membersFields.get(Is_Measles).equalsIgnoreCase("") || membersFields.get(Is_Measles) != null){	
 					if(membersFields.get(Is_Measles).equalsIgnoreCase("1"))
-					//membersScheduleService.enrollWomanMeaslesVisit(members.caseId(),submission.anmId(), submission.instanceId(),LocalDate.parse(submission.getField(Date_of_Measles)))
+					membersScheduleService.enrollWomanMeaslesVisit(members.caseId(),submission.anmId(), submission.instanceId(),LocalDate.parse(submission.getField(Date_of_Measles)))
 						;
 				}
 			}
@@ -112,7 +112,7 @@ public class MembersService {
 			allHouseHolds.update(houseHold);
 
 			hhSchedulesService.enrollIntoMilestoneOfCensus(submission.entityId(),
-					submission.getField(REFERENCE_DATE),submission.anmId(),submission.instanceId());
+					submission.getField(Date_Of_Reg),submission.anmId(),submission.instanceId());
 			}	 
 	}
 	
@@ -303,7 +303,7 @@ public class MembersService {
 		
 		members.withMeaslesVisit(measlesVisit);
 		allMembers.update(members);
-		membersScheduleService.enrollTTVisit(members.caseId(),submission.anmId(),submission.instanceId(),members.TODAY());
+		membersScheduleService.enrollTTVisit(members.caseId(),submission.anmId(),submission.instanceId(),members.Date_of_TT1());
 	}
 	
 	public void TT1_Visit(FormSubmission submission) {
@@ -325,7 +325,7 @@ public class MembersService {
 		
 		members.withTTVisitOne(TT1_visit);
 		allMembers.update(members);
-		membersScheduleService.enrollTT1_Visit(members.caseId(),submission.anmId(),submission.instanceId(),members.TODAY());
+		membersScheduleService.enrollTT1_Visit(members.caseId(),submission.anmId(),submission.instanceId(),members.Date_of_TT2());
 	}
 	
 	public void TT2_Visit(FormSubmission submission) {
@@ -347,7 +347,7 @@ public class MembersService {
 		
 		members.withTTVisitTwo(TT2_visit);
 		allMembers.update(members);
-		membersScheduleService.enrollTT2_Visit(members.caseId(),submission.anmId(),submission.instanceId(),members.TODAY());
+		membersScheduleService.enrollTT2_Visit(members.caseId(),submission.anmId(),submission.instanceId(),members.Date_of_TT3());
 	}
 	
 	public void TT3_Visit(FormSubmission submission) {
@@ -369,7 +369,7 @@ public class MembersService {
 		
 		members.withTTVisitOne(TT3_visit);
 		allMembers.update(members);
-		membersScheduleService.enrollTT3_Visit(members.caseId(),submission.anmId(),submission.instanceId(),members.TODAY());
+		membersScheduleService.enrollTT3_Visit(members.caseId(),submission.anmId(),submission.instanceId(),members.Date_of_TT4());
 	}
 	
 	public void TT4_Visit(FormSubmission submission) {
@@ -391,7 +391,7 @@ public class MembersService {
 		
 		members.withTTVisitOne(TT4_visit);
 		allMembers.update(members);
-		membersScheduleService.enrollTT4_Visit(members.caseId(),submission.anmId(),submission.instanceId(),members.TODAY());
+		membersScheduleService.enrollTT4_Visit(members.caseId(),submission.anmId(),submission.instanceId(),members.Date_of_TT5());
 	}
 	
 	public void TT5_Visit(FormSubmission submission) {
