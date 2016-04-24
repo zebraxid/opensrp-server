@@ -6,26 +6,26 @@
             "name": "measles",
             "scheduleWindows": {
             	"earliest": ["0 Days"],
-                "due": ["730 Days"],
-                "late": ["731 Day"],
-                "max": ["732 Days"]
+                "due": ["2000 Days"],
+                "late": ["2001 Day"],
+                "max": ["2002 Days"]
             },
             "alerts": [
                 {
                     "window": "due",
                     "offset": ["0 Days"],
                     "interval": ["1 Day"],
-                    "count": "730"
+                    "count": "2000"
                 },
                 {
                     "window": "late",
-                    "offset": ["730 Day"],
+                    "offset": ["2000 Day"],
                     "interval": ["1 Day"],
                     "count": "1"
                 },
                 {
                     "window": "max",
-                    "offset": ["731 Days"],
+                    "offset": ["2001 Days"],
                     "interval": ["1 Day"],
                     "count": "1"
                 }
@@ -36,26 +36,26 @@
             "name": "TT_1",
             "scheduleWindows": {
             	"earliest": ["0 Days"],
-                "due": ["730 Days"],
-                "late": ["731 Day"],
-                "max": ["732 Days"]
+                "due": ["2000 Days"],
+                "late": ["2001 Day"],
+                "max": ["2002 Days"]
             },
             "alerts": [
                 {
                     "window": "due",
                     "offset": ["0 Days"],
                     "interval": ["1 Day"],
-                    "count": "730"
+                    "count": "2000"
                 },
                 {
                     "window": "late",
-                    "offset": ["730 Day"],
+                    "offset": ["2000 Day"],
                     "interval": ["1 Day"],
                     "count": "1"
                 },
                 {
                     "window": "max",
-                    "offset": ["731 Days"],
+                    "offset": ["2001 Days"],
                     "interval": ["1 Day"],
                     "count": "1"
                 }
@@ -66,26 +66,26 @@
             "name": "TT_2",
             "scheduleWindows": {
             	"earliest": ["0 Days"],
-                "due": ["730 Days"],
-                "late": ["731 Day"],
-                "max": ["732 Days"]
+                "due": ["2000 Days"],
+                "late": ["2001 Day"],
+                "max": ["2002 Days"]
             },
             "alerts": [
                 {
                     "window": "due",
                     "offset": ["0 Days"],
                     "interval": ["1 Day"],
-                    "count": "730"
+                    "count": "2000"
                 },
                 {
                     "window": "late",
-                    "offset": ["730 Day"],
+                    "offset": ["2000 Day"],
                     "interval": ["1 Day"],
                     "count": "1"
                 },
                 {
                     "window": "max",
-                    "offset": ["731 Days"],
+                    "offset": ["2001 Days"],
                     "interval": ["1 Day"],
                     "count": "1"
                 }
@@ -96,26 +96,26 @@
             "name": "TT_3",
             "scheduleWindows": {
             	"earliest": ["0 Days"],
-                "due": ["730 Days"],
-                "late": ["731 Day"],
-                "max": ["732 Days"]
+                "due": ["2000 Days"],
+                "late": ["2001 Day"],
+                "max": ["2002 Days"]
             },
             "alerts": [
                 {
                     "window": "due",
                     "offset": ["0 Days"],
                     "interval": ["1 Day"],
-                    "count": "730"
+                    "count": "2000"
                 },
                 {
                     "window": "late",
-                    "offset": ["730 Day"],
+                    "offset": ["2000 Day"],
                     "interval": ["1 Day"],
                     "count": "1"
                 },
                 {
                     "window": "max",
-                    "offset": ["731 Days"],
+                    "offset": ["2001 Days"],
                     "interval": ["1 Day"],
                     "count": "1"
                 }
@@ -126,26 +126,26 @@
             "name": "TT_4",
             "scheduleWindows": {
             	"earliest": ["0 Days"],
-                "due": ["730 Days"],
-                "late": ["731 Day"],
-                "max": ["732 Days"]
+                "due": ["2000 Days"],
+                "late": ["2001 Day"],
+                "max": ["2002 Days"]
             },
             "alerts": [
                 {
                     "window": "due",
                     "offset": ["0 Days"],
                     "interval": ["1 Day"],
-                    "count": "730"
+                    "count": "2000"
                 },
                 {
                     "window": "late",
-                    "offset": ["730 Day"],
+                    "offset": ["2000 Day"],
                     "interval": ["1 Day"],
                     "count": "1"
                 },
                 {
                     "window": "max",
-                    "offset": ["731 Days"],
+                    "offset": ["2001 Days"],
                     "interval": ["1 Day"],
                     "count": "1"
                 }
@@ -156,26 +156,26 @@
             "name": "TT_5",
             "scheduleWindows": {
             	"earliest": ["0 Days"],
-                "due": ["730 Days"],
-                "late": ["731 Day"],
-                "max": ["732 Days"]
+                "due": ["2000 Days"],
+                "late": ["2001 Day"],
+                "max": ["2002 Days"]
             },
             "alerts": [
                 {
                     "window": "due",
                     "offset": ["0 Days"],
                     "interval": ["1 Day"],
-                    "count": "730"
+                    "count": "2000"
                 },
                 {
                     "window": "late",
-                    "offset": ["730 Day"],
+                    "offset": ["2000 Day"],
                     "interval": ["1 Day"],
                     "count": "1"
                 },
                 {
                     "window": "max",
-                    "offset": ["731 Days"],
+                    "offset": ["2001 Days"],
                     "interval": ["1 Day"],
                     "count": "1"
                 }

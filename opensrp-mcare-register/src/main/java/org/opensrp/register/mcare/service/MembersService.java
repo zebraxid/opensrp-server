@@ -78,16 +78,14 @@ public class MembersService {
 			if(membersFields.containsKey(Is_TT)){
 				if(!membersFields.get(Is_TT).equalsIgnoreCase("") || membersFields.get(Is_TT) != null){	
 					if(membersFields.get(Is_TT).equalsIgnoreCase("1"))
-					membersScheduleService.enrollWomanTTVisit(members.caseId(),submission.anmId(),submission.instanceId(),membersFields)
-						;
+					membersScheduleService.enrollWomanTTVisit(members.caseId(),submission.anmId(),submission.instanceId(),membersFields);
 				}
 			}
 			
 			if(membersFields.containsKey(Is_Measles)){
 				if(!membersFields.get(Is_Measles).equalsIgnoreCase("") || membersFields.get(Is_Measles) != null){	
 					if(membersFields.get(Is_Measles).equalsIgnoreCase("1"))
-					membersScheduleService.enrollWomanMeaslesVisit(members.caseId(),submission.anmId(), submission.instanceId(),LocalDate.parse(submission.getField(Date_of_Measles)))
-						;
+				    membersScheduleService.enrollWomanMeaslesVisit(members.caseId(),submission.anmId(), submission.instanceId(),LocalDate.parse(submission.getField(Date_of_Measles)));
 				}
 			}
 		}
@@ -298,6 +296,8 @@ public class MembersService {
 		Map<String, String> measlesVisit = create(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
 											.put(START_DATE, submission.getField(START_DATE))
 											.put(END_DATE, submission.getField(END_DATE))
+											.put(Has_Vaccinated, submission.getField(Has_Vaccinated))
+											.put(measles_Date_of_Vaccination, submission.getField(measles_Date_of_Vaccination))
 											.put(Received_Time, format.format(today).toString())
 											.map();	
 		
@@ -320,6 +320,8 @@ public class MembersService {
 		Map<String, String> TT1_visit = create(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
 											.put(START_DATE, submission.getField(START_DATE))
 											.put(END_DATE, submission.getField(END_DATE))
+											.put(Has_Vaccinated, submission.getField(Has_Vaccinated))
+											.put(TT1_Date_of_Vaccination, submission.getField(TT1_Date_of_Vaccination))
 											.put(Received_Time, format.format(today).toString())
 											.map();	
 		
@@ -342,6 +344,8 @@ public class MembersService {
 		Map<String, String> TT2_visit = create(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
 											.put(START_DATE, submission.getField(START_DATE))
 											.put(END_DATE, submission.getField(END_DATE))
+											.put(Has_Vaccinated, submission.getField(Has_Vaccinated))
+											.put(TT2_Date_of_Vaccination, submission.getField(TT2_Date_of_Vaccination))
 											.put(Received_Time, format.format(today).toString())
 											.map();	
 		
@@ -364,6 +368,8 @@ public class MembersService {
 		Map<String, String> TT3_visit = create(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
 											.put(START_DATE, submission.getField(START_DATE))
 											.put(END_DATE, submission.getField(END_DATE))
+											.put(Has_Vaccinated, submission.getField(Has_Vaccinated))
+											.put(TT3_Date_of_Vaccination, submission.getField(TT3_Date_of_Vaccination))
 											.put(Received_Time, format.format(today).toString())
 											.map();	
 		
@@ -386,6 +392,8 @@ public class MembersService {
 		Map<String, String> TT4_visit = create(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
 											.put(START_DATE, submission.getField(START_DATE))
 											.put(END_DATE, submission.getField(END_DATE))
+											.put(Has_Vaccinated, submission.getField(Has_Vaccinated))
+											.put(TT4_Date_of_Vaccination, submission.getField(TT4_Date_of_Vaccination))
 											.put(Received_Time, format.format(today).toString())
 											.map();	
 		
@@ -408,6 +416,8 @@ public class MembersService {
 		Map<String, String> TT5_visit = create(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
 											.put(START_DATE, submission.getField(START_DATE))
 											.put(END_DATE, submission.getField(END_DATE))
+											.put(Has_Vaccinated, submission.getField(Has_Vaccinated))
+											.put(TT5_Date_of_Vaccination, submission.getField(TT5_Date_of_Vaccination))
 											.put(Received_Time, format.format(today).toString())
 											.map();	
 		
@@ -417,73 +427,339 @@ public class MembersService {
 	}
 
 	public void PCV1Handler(FormSubmission submission) {
-		// TODO Auto-generated method stub
+		Members members = allMembers.findByCaseId(submission.entityId());
+		if (members == null) {
+			logger.warn(format(
+					"Failed to handle PCV1_Visit as there is no Member enrolled with ID: {0}",
+					submission.entityId()));
+			return;
+		}
 		
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date today = Calendar.getInstance().getTime();
+		Map<String, String> PCV1 = create(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
+											.put(START_DATE, submission.getField(START_DATE))
+											.put(END_DATE, submission.getField(END_DATE))
+											.put(general_Date_Of_Reg, submission.getField(general_Date_Of_Reg))
+											.put(Patient_Diagnosis, submission.getField(Patient_Diagnosis))
+											.put(Treatment, submission.getField(Treatment))
+											.put(Received_Time, format.format(today).toString())
+											.map();	
+		
+		members.withPCV1(PCV1);
+		allMembers.update(members);
 	}
 
 	public void PCV2Handler(FormSubmission submission) {
-		// TODO Auto-generated method stub
+		Members members = allMembers.findByCaseId(submission.entityId());
+		if (members == null) {
+			logger.warn(format(
+					"Failed to handle PCV2_Visit as there is no Member enrolled with ID: {0}",
+					submission.entityId()));
+			return;
+		}
 		
-	}
-
-	public void PENTA3Handler(FormSubmission submission) {
-		// TODO Auto-generated method stub
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date today = Calendar.getInstance().getTime();
+		Map<String, String> PCV2 = create(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
+											.put(START_DATE, submission.getField(START_DATE))
+											.put(END_DATE, submission.getField(END_DATE))
+											.put(general_Date_Of_Reg, submission.getField(general_Date_Of_Reg))
+											.put(Patient_Diagnosis, submission.getField(Patient_Diagnosis))
+											.put(Treatment, submission.getField(Treatment))
+											.put(Received_Time, format.format(today).toString())
+											.map();	
 		
-	}
-
-	public void PENTA2Handler(FormSubmission submission) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void PENTA1Handler(FormSubmission submission) {
-		// TODO Auto-generated method stub
-		
+		members.withPCV2(PCV2);
+		allMembers.update(members);
 	}
 
 	public void PCV3Handler(FormSubmission submission) {
-		// TODO Auto-generated method stub
+		Members members = allMembers.findByCaseId(submission.entityId());
+		if (members == null) {
+			logger.warn(format(
+					"Failed to handle PCV3_Visit as there is no Member enrolled with ID: {0}",
+					submission.entityId()));
+			return;
+		}
 		
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date today = Calendar.getInstance().getTime();
+		Map<String, String> PCV3 = create(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
+											.put(START_DATE, submission.getField(START_DATE))
+											.put(END_DATE, submission.getField(END_DATE))
+											.put(general_Date_Of_Reg, submission.getField(general_Date_Of_Reg))
+											.put(Patient_Diagnosis, submission.getField(Patient_Diagnosis))
+											.put(Treatment, submission.getField(Treatment))
+											.put(Received_Time, format.format(today).toString())
+											.map();	
+		
+		members.withPCV3(PCV3);
+		allMembers.update(members);
+	}
+
+	public void PENTA3Handler(FormSubmission submission) {
+		Members members = allMembers.findByCaseId(submission.entityId());
+		if (members == null) {
+			logger.warn(format(
+					"Failed to handle PENTA3_Visit as there is no Member enrolled with ID: {0}",
+					submission.entityId()));
+			return;
+		}
+		
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date today = Calendar.getInstance().getTime();
+		Map<String, String> PENTA3 = create(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
+											.put(START_DATE, submission.getField(START_DATE))
+											.put(END_DATE, submission.getField(END_DATE))
+											.put(general_Date_Of_Reg, submission.getField(general_Date_Of_Reg))
+											.put(Patient_Diagnosis, submission.getField(Patient_Diagnosis))
+											.put(Treatment, submission.getField(Treatment))
+											.put(Received_Time, format.format(today).toString())
+											.map();	
+		
+		members.withPENTA3(PENTA3);
+		allMembers.update(members);
+	}
+
+	public void PENTA2Handler(FormSubmission submission) {
+		Members members = allMembers.findByCaseId(submission.entityId());
+		if (members == null) {
+			logger.warn(format(
+					"Failed to handle PENTA2_Visit as there is no Member enrolled with ID: {0}",
+					submission.entityId()));
+			return;
+		}
+		
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date today = Calendar.getInstance().getTime();
+		Map<String, String> PENTA2 = create(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
+											.put(START_DATE, submission.getField(START_DATE))
+											.put(END_DATE, submission.getField(END_DATE))
+											.put(general_Date_Of_Reg, submission.getField(general_Date_Of_Reg))
+											.put(Patient_Diagnosis, submission.getField(Patient_Diagnosis))
+											.put(Treatment, submission.getField(Treatment))
+											.put(Received_Time, format.format(today).toString())
+											.map();	
+		
+		members.withPENTA2(PENTA2);
+		allMembers.update(members);
+	}
+
+	public void PENTA1Handler(FormSubmission submission) {
+		Members members = allMembers.findByCaseId(submission.entityId());
+		if (members == null) {
+			logger.warn(format(
+					"Failed to handle PENTA1_Visit as there is no Member enrolled with ID: {0}",
+					submission.entityId()));
+			return;
+		}
+		
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date today = Calendar.getInstance().getTime();
+		Map<String, String> PENTA1 = create(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
+											.put(START_DATE, submission.getField(START_DATE))
+											.put(END_DATE, submission.getField(END_DATE))
+											.put(general_Date_Of_Reg, submission.getField(general_Date_Of_Reg))
+											.put(Patient_Diagnosis, submission.getField(Patient_Diagnosis))
+											.put(Treatment, submission.getField(Treatment))
+											.put(Received_Time, format.format(today).toString())
+											.map();	
+		
+		members.withPENTA1(PENTA1);
+		allMembers.update(members);
 	}
 
 	public void OPV3Handler(FormSubmission submission) {
-		// TODO Auto-generated method stub
+		Members members = allMembers.findByCaseId(submission.entityId());
+		if (members == null) {
+			logger.warn(format(
+					"Failed to handle OPV3_Visit as there is no Member enrolled with ID: {0}",
+					submission.entityId()));
+			return;
+		}
 		
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date today = Calendar.getInstance().getTime();
+		Map<String, String> OPV3 = create(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
+											.put(START_DATE, submission.getField(START_DATE))
+											.put(END_DATE, submission.getField(END_DATE))
+											.put(general_Date_Of_Reg, submission.getField(general_Date_Of_Reg))
+											.put(Patient_Diagnosis, submission.getField(Patient_Diagnosis))
+											.put(Treatment, submission.getField(Treatment))
+											.put(Received_Time, format.format(today).toString())
+											.map();	
+		
+		members.withOPV3(OPV3);
+		allMembers.update(members);
 	}
 
 	public void OPV2Handler(FormSubmission submission) {
-		// TODO Auto-generated method stub
+		Members members = allMembers.findByCaseId(submission.entityId());
+		if (members == null) {
+			logger.warn(format(
+					"Failed to handle OPV2_Visit as there is no Member enrolled with ID: {0}",
+					submission.entityId()));
+			return;
+		}
 		
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date today = Calendar.getInstance().getTime();
+		Map<String, String> OPV2 = create(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
+											.put(START_DATE, submission.getField(START_DATE))
+											.put(END_DATE, submission.getField(END_DATE))
+											.put(general_Date_Of_Reg, submission.getField(general_Date_Of_Reg))
+											.put(Patient_Diagnosis, submission.getField(Patient_Diagnosis))
+											.put(Treatment, submission.getField(Treatment))
+											.put(Received_Time, format.format(today).toString())
+											.map();	
+		
+		members.withOPV2(OPV2);
+		allMembers.update(members);
 	}
 
 	public void OPV1Handler(FormSubmission submission) {
-		// TODO Auto-generated method stub
+		Members members = allMembers.findByCaseId(submission.entityId());
+		if (members == null) {
+			logger.warn(format(
+					"Failed to handle OPV1_Visit as there is no Member enrolled with ID: {0}",
+					submission.entityId()));
+			return;
+		}
 		
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date today = Calendar.getInstance().getTime();
+		Map<String, String> OPV1 = create(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
+											.put(START_DATE, submission.getField(START_DATE))
+											.put(END_DATE, submission.getField(END_DATE))
+											.put(general_Date_Of_Reg, submission.getField(general_Date_Of_Reg))
+											.put(Patient_Diagnosis, submission.getField(Patient_Diagnosis))
+											.put(Treatment, submission.getField(Treatment))
+											.put(Received_Time, format.format(today).toString())
+											.map();	
+		
+		members.withOPV1(OPV1);
+		allMembers.update(members);
 	}
 
 	public void OPV0Handler(FormSubmission submission) {
-		// TODO Auto-generated method stub
+		Members members = allMembers.findByCaseId(submission.entityId());
+		if (members == null) {
+			logger.warn(format(
+					"Failed to handle OPV0_Visit as there is no Member enrolled with ID: {0}",
+					submission.entityId()));
+			return;
+		}
 		
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date today = Calendar.getInstance().getTime();
+		Map<String, String> OPV0 = create(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
+											.put(START_DATE, submission.getField(START_DATE))
+											.put(END_DATE, submission.getField(END_DATE))
+											.put(general_Date_Of_Reg, submission.getField(general_Date_Of_Reg))
+											.put(Patient_Diagnosis, submission.getField(Patient_Diagnosis))
+											.put(Treatment, submission.getField(Treatment))
+											.put(Received_Time, format.format(today).toString())
+											.map();	
+		
+		members.withOPV0(OPV0);
+		allMembers.update(members);
 	}
 
 	public void MRHandler(FormSubmission submission) {
-		// TODO Auto-generated method stub
+		Members members = allMembers.findByCaseId(submission.entityId());
+		if (members == null) {
+			logger.warn(format(
+					"Failed to handle MR_Visit as there is no Member enrolled with ID: {0}",
+					submission.entityId()));
+			return;
+		}
 		
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date today = Calendar.getInstance().getTime();
+		Map<String, String> MR = create(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
+											.put(START_DATE, submission.getField(START_DATE))
+											.put(END_DATE, submission.getField(END_DATE))
+											.put(general_Date_Of_Reg, submission.getField(general_Date_Of_Reg))
+											.put(Patient_Diagnosis, submission.getField(Patient_Diagnosis))
+											.put(Treatment, submission.getField(Treatment))
+											.put(Received_Time, format.format(today).toString())
+											.map();	
+		
+		members.withMR(MR);
+		allMembers.update(members);
 	}
 
 	public void Measles2Handler(FormSubmission submission) {
-		// TODO Auto-generated method stub
+		Members members = allMembers.findByCaseId(submission.entityId());
+		if (members == null) {
+			logger.warn(format(
+					"Failed to handle Measles2_Visit as there is no Member enrolled with ID: {0}",
+					submission.entityId()));
+			return;
+		}
 		
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date today = Calendar.getInstance().getTime();
+		Map<String, String> Measles2 = create(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
+											.put(START_DATE, submission.getField(START_DATE))
+											.put(END_DATE, submission.getField(END_DATE))
+											.put(general_Date_Of_Reg, submission.getField(general_Date_Of_Reg))
+											.put(Patient_Diagnosis, submission.getField(Patient_Diagnosis))
+											.put(Treatment, submission.getField(Treatment))
+											.put(Received_Time, format.format(today).toString())
+											.map();	
+		
+		members.withMeasles2(Measles2);
+		allMembers.update(members);
 	}
 
 	public void IPVHandler(FormSubmission submission) {
-		// TODO Auto-generated method stub
+		Members members = allMembers.findByCaseId(submission.entityId());
+		if (members == null) {
+			logger.warn(format(
+					"Failed to handle IPV_Visit as there is no Member enrolled with ID: {0}",
+					submission.entityId()));
+			return;
+		}
 		
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date today = Calendar.getInstance().getTime();
+		Map<String, String> IPV = create(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
+											.put(START_DATE, submission.getField(START_DATE))
+											.put(END_DATE, submission.getField(END_DATE))
+											.put(general_Date_Of_Reg, submission.getField(general_Date_Of_Reg))
+											.put(Patient_Diagnosis, submission.getField(Patient_Diagnosis))
+											.put(Treatment, submission.getField(Treatment))
+											.put(Received_Time, format.format(today).toString())
+											.map();	
+		
+		members.withIPV(IPV);
+		allMembers.update(members);
 	}
 
 	public void BCGHandler(FormSubmission submission) {
-		// TODO Auto-generated method stub
+		Members members = allMembers.findByCaseId(submission.entityId());
+		if (members == null) {
+			logger.warn(format(
+					"Failed to handle BCG_Visit as there is no Member enrolled with ID: {0}",
+					submission.entityId()));
+			return;
+		}
 		
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date today = Calendar.getInstance().getTime();
+		Map<String, String> BCG = create(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
+											.put(START_DATE, submission.getField(START_DATE))
+											.put(END_DATE, submission.getField(END_DATE))
+											.put(general_Date_Of_Reg, submission.getField(general_Date_Of_Reg))
+											.put(Patient_Diagnosis, submission.getField(Patient_Diagnosis))
+											.put(Treatment, submission.getField(Treatment))
+											.put(Received_Time, format.format(today).toString())
+											.map();	
+		
+		members.withBCG(BCG);
+		allMembers.update(members);
 	}
 
 }

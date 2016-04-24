@@ -173,13 +173,41 @@ public class Members extends MotechBaseDataObject {
 	@JsonProperty
 	private Map<String, String> TTVisitFive;
 	@JsonProperty
-	private Map<String, String> withMeaslesVisit;
+	private Map<String, String> MeaslesVisit;
 	@JsonProperty
 	private Map<String, String> familyPlanning;
 	@JsonProperty
 	private Map<String, String> general;
 	@JsonProperty
 	private Map<String, String> newBorn;
+	@JsonProperty
+	private Map<String, String> PCV1;
+	@JsonProperty
+	private Map<String, String> PCV2;
+	@JsonProperty
+	private Map<String, String> PCV3;
+	@JsonProperty
+	private Map<String, String> PENTA1;
+	@JsonProperty
+	private Map<String, String> PENTA2;
+	@JsonProperty
+	private Map<String, String> PENTA3;
+	@JsonProperty
+	private Map<String, String> OPV0;
+	@JsonProperty
+	private Map<String, String> OPV1;
+	@JsonProperty
+	private Map<String, String> OPV2;
+	@JsonProperty
+	private Map<String, String> OPV3;
+	@JsonProperty
+	private Map<String, String> MR;
+	@JsonProperty
+	private Map<String, String> Measles2;
+	@JsonProperty
+	private Map<String, String> IPV;
+	@JsonProperty
+	private Map<String, String> BCG;
 	@JsonProperty
 	private String isClosed;
 	public Members() {
@@ -192,6 +220,20 @@ public class Members extends MotechBaseDataObject {
 		this.familyPlanning = new HashMap<>();
 		this.general = new HashMap<>();
 		this.newBorn = new HashMap<>();
+		this.general = new HashMap<>();
+		this.general = new HashMap<>();
+		this.general = new HashMap<>();
+		this.general = new HashMap<>();
+		this.general = new HashMap<>();
+		this.general = new HashMap<>();
+		this.general = new HashMap<>();
+		this.general = new HashMap<>();
+		this.general = new HashMap<>();
+		this.general = new HashMap<>();
+		this.general = new HashMap<>();
+		this.general = new HashMap<>();
+		this.general = new HashMap<>();
+		this.general = new HashMap<>();
 		this.setIsClosed(false);
 	}
 	
@@ -563,8 +605,8 @@ public class Members extends MotechBaseDataObject {
         this.TTVisitFive = new HashMap<>(TTVisitFive);
         return this;
     }
-	public Members withMeaslesVisit(Map<String, String> withMeaslesVisit) {
-        this.withMeaslesVisit = new HashMap<>(withMeaslesVisit);
+	public Members withMeaslesVisit(Map<String, String> MeaslesVisit) {
+        this.MeaslesVisit = new HashMap<>(MeaslesVisit);
         return this;
     }
 	public Members withfamilyPlanning(Map<String, String> familyPlanning) {
@@ -577,6 +619,62 @@ public class Members extends MotechBaseDataObject {
     }
 	public Members withnewBorn(Map<String, String> newBorn) {
         this.newBorn = new HashMap<>(newBorn);
+        return this;
+    }
+	public Members withPCV1(Map<String, String> PCV1) {
+        this.PCV1 = new HashMap<>(PCV1);
+        return this;
+    }
+	public Members withPCV2(Map<String, String> PCV2) {
+        this.PCV2 = new HashMap<>(PCV2);
+        return this;
+    }
+	public Members withPCV3(Map<String, String> PCV3) {
+        this.PCV3 = new HashMap<>(PCV3);
+        return this;
+    }
+	public Members withPENTA1(Map<String, String> PENTA1) {
+        this.PENTA1 = new HashMap<>(PENTA1);
+        return this;
+    }
+	public Members withPENTA2(Map<String, String> PENTA2) {
+        this.PENTA2 = new HashMap<>(PENTA2);
+        return this;
+    }
+	public Members withPENTA3(Map<String, String> PENTA3) {
+        this.PENTA3 = new HashMap<>(PENTA3);
+        return this;
+    }
+	public Members withOPV0(Map<String, String> OPV0) {
+        this.OPV0 = new HashMap<>(OPV0);
+        return this;
+    }
+	public Members withOPV1(Map<String, String> OPV1) {
+        this.OPV1 = new HashMap<>(OPV1);
+        return this;
+    }
+	public Members withOPV2(Map<String, String> OPV2) {
+        this.OPV2 = new HashMap<>(OPV2);
+        return this;
+    }
+	public Members withOPV3(Map<String, String> OPV3) {
+        this.OPV3 = new HashMap<>(OPV3);
+        return this;
+    }
+	public Members withMR(Map<String, String> MR) {
+        this.MR = new HashMap<>(MR);
+        return this;
+    }
+	public Members withMeasles2(Map<String, String> Measles2) {
+        this.Measles2 = new HashMap<>(Measles2);
+        return this;
+    }
+	public Members withIPV(Map<String, String> IPV) {
+        this.IPV = new HashMap<>(IPV);
+        return this;
+    }
+	public Members withBCG(Map<String, String> BCG) {
+        this.BCG = new HashMap<>(BCG);
         return this;
     }
 	public String caseId() {
@@ -863,38 +961,129 @@ public class Members extends MotechBaseDataObject {
 	}
 
 	public Map<String, String> details() {
+		if (details == null)
+			this.details = new HashMap<>();
 		return details;
 	}
+	
 	public String getDetail(String name) {
 		return details.get(name);
 	}
 	
 	public Map<String, String> TTVisitOne() {
+		if (TTVisitOne == null)
+			this.TTVisitOne = new HashMap<>();
 		return TTVisitOne;
 	}
 	public Map<String, String> TTVisitTwo() {
+		if (TTVisitTwo == null)
+			this.TTVisitTwo = new HashMap<>();
 		return TTVisitTwo;
 	}
 	public Map<String, String> TTVisitThree() {
+		if (TTVisitThree == null)
+			this.TTVisitThree = new HashMap<>();
 		return TTVisitThree;
 	}
 	public Map<String, String> TTVisitFour() {
+		if (TTVisitFour == null)
+			this.TTVisitFour = new HashMap<>();
 		return TTVisitFour;
 	}
 	public Map<String, String> TTVisitFive() {
+		if (TTVisitFive == null)
+			this.TTVisitFive = new HashMap<>();
 		return TTVisitFive;
 	}
-	public Map<String, String> withMeaslesVisit() {
-		return withMeaslesVisit;
+	public Map<String, String> MeaslesVisit() {
+		if (MeaslesVisit == null)
+			this.MeaslesVisit = new HashMap<>();
+		return MeaslesVisit;
 	}
 	public Map<String, String> familyPlanning() {
+		if (familyPlanning == null)
+			this.familyPlanning = new HashMap<>();
 		return familyPlanning;
 	}
 	public Map<String, String> general() {
+		if (general == null)
+			this.general = new HashMap<>();
 		return general;
 	}
 	public Map<String, String> newBorn() {
+		if (newBorn == null)
+			this.newBorn = new HashMap<>();
 		return newBorn;
+	}
+	public Map<String, String> PCV1() {
+		if (PCV1 == null)
+			this.PCV1 = new HashMap<>();
+		return PCV1;
+	}
+	public Map<String, String> PCV2() {
+		if (PCV2 == null)
+			this.PCV2 = new HashMap<>();
+		return PCV2;
+	}
+	public Map<String, String> PCV3() {
+		if (PCV3 == null)
+			this.PCV3 = new HashMap<>();
+		return PCV3;
+	}
+	public Map<String, String> PENTA1() {
+		if (PENTA1 == null)
+			this.PENTA1 = new HashMap<>();
+		return PENTA1;
+	}
+	public Map<String, String> PENTA2() {
+		if (PENTA2 == null)
+			this.PENTA2 = new HashMap<>();
+		return PENTA2;
+	}
+	public Map<String, String> PENTA3() {
+		if (PENTA3 == null)
+			this.PENTA3 = new HashMap<>();
+		return PENTA3;
+	}
+	public Map<String, String> OPV0() {
+		if (OPV0 == null)
+			this.OPV0 = new HashMap<>();
+		return OPV0;
+	}
+	public Map<String, String> OPV1() {
+		if (OPV1 == null)
+			this.OPV1 = new HashMap<>();
+		return OPV1;
+	}
+	public Map<String, String> OPV2() {
+		if (OPV2 == null)
+			this.OPV2 = new HashMap<>();
+		return OPV2;
+	}
+	public Map<String, String> OPV3() {
+		if (OPV3 == null)
+			this.OPV3 = new HashMap<>();
+		return OPV3;
+	}
+	public Map<String, String> MR() {
+		if (MR == null)
+			this.MR = new HashMap<>();
+		return MR;
+	}
+	public Map<String, String> Measles2() {
+		if (Measles2 == null)
+			this.Measles2 = new HashMap<>();
+		return Measles2;
+	}
+	public Map<String, String> IPV() {
+		if (IPV == null)
+			this.IPV = new HashMap<>();
+		return IPV;
+	}
+	public Map<String, String> BCG() {
+		if (BCG == null)
+			this.BCG = new HashMap<>();
+		return BCG;
 	}
     public Members setIsClosed(boolean isClosed) {
         this.isClosed = Boolean.toString(isClosed);

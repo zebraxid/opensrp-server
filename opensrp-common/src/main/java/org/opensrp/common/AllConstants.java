@@ -254,6 +254,13 @@ public class AllConstants {
     	public static final String new_born_DATE_OF_REG="new_born_DATE_OF_REG";
     	public static final String Birth_Weigtht="Birth_Weigtht";
     	public static final String Newborn_Care_Received="Newborn_Care_Received";
+    	public static final String Has_Vaccinated = "Has_Vaccinated";
+    	public static final String measles_Date_of_Vaccination = "measles_Date_of_Vaccination";
+    	public static final String TT1_Date_of_Vaccination = "TT1_Date_of_Vaccination";
+    	public static final String TT2_Date_of_Vaccination = "TT2_Date_of_Vaccination";
+    	public static final String TT3_Date_of_Vaccination = "TT3_Date_of_Vaccination";
+    	public static final String TT4_Date_of_Vaccination = "TT4_Date_of_Vaccination";
+    	public static final String TT5_Date_of_Vaccination = "TT5_Date_of_Vaccination";
     }
 
     public static class PSRFFields
@@ -1021,7 +1028,7 @@ public class AllConstants {
     }
     
     public static class ScheduleNames{
-    	public static final String MEMBERS = "Members PSRF";
+    	public static final String MEMBERS = "Woman Vaccination";
     	public static final String BNF = "BirthNotificationPregnancyStatusFollowUp";
     	public static final String CENCUS = "FW CENSUS";
     	public static final String ANC = "Ante Natal Care Reminder Visit";
