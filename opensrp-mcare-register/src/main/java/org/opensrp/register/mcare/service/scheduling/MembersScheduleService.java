@@ -35,105 +35,38 @@ public class MembersScheduleService {
 		this.scheduler = scheduler;	
 	}
 	
-	public void enrollWomanMeaslesVisit(String entityId,String provider,String instWomaneId,LocalDate referenceDateForSchedule) {
-		
+	public void enrollWomanMeaslesVisit(String entityId,String provider,String instWomaneId,String date) {       
         logger.info(format("Enrolling Woman with Entity id:{0} to Woman schedule Woman Vaccination, milestone: {1}.", entityId, SCHEDULE_Woman_Measles));
-        scheduler.enrollIntoSchedule(entityId, SCHEDULE_Woman, SCHEDULE_Woman_Measles, referenceDateForSchedule.toString());
+        scheduler.enrollIntoSchedule(entityId, SCHEDULE_Woman, SCHEDULE_Woman_Measles, date);
     }
 	
-	public void enrollWomanTTVisit(String entityId,String provider,String instWomaneId,Map<String, String> membersFields) {
-
-        Date date1 = null;        
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        
-    	try {
-			date1 = format.parse(membersFields.get(Date_of_TT1));		
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-        
+	public void enrollWomanTTVisit(String entityId,String provider,String instWomaneId,String date) {       
         logger.info(format("Enrolling Woman with Entity id:{0} to Woman schedule Woman Vaccination, milestone: {1}.", entityId, SCHEDULE_Woman_1));
-        scheduler.enrollIntoSchedule(entityId, SCHEDULE_Woman, SCHEDULE_Woman_1, LocalDate.parse(membersFields.get(Date_of_TT1)).toString());
+        scheduler.enrollIntoSchedule(entityId, SCHEDULE_Woman, SCHEDULE_Woman_1, date);
   
     }
 	
-	public void enrollTTVisit(String entityId,String provider,String instWomaneId, String date) {
-
-        Date date1 = null;        
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        
-    	try {
-			date1 = format.parse(date);		
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-        
-        logger.info(format("Enrolling Woman with Entity id:{0} to Woman schedule Woman Vaccination, milestone: {1}.", entityId, SCHEDULE_Woman_1));
-        scheduler.enrollIntoSchedule(entityId, SCHEDULE_Woman, SCHEDULE_Woman_1, LocalDate.parse(date).toString());
-  
-    }
-	
-	public void enrollTT1_Visit(String entityId,String provider,String instWomaneId,String date) {
-
-        Date date2 = null;    
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        
-    	try {	
-			date2 = format.parse(date);		
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-        
+	public void enrollTT1_Visit(String entityId,String provider,String instWomaneId,String date) {     
         logger.info(format("Enrolling Woman with Entity id:{0} to Woman schedule Woman Vaccination, milestone: {1}.", entityId, SCHEDULE_Woman_2));
-        scheduler.enrollIntoSchedule(entityId, SCHEDULE_Woman, SCHEDULE_Woman_2, LocalDate.parse(date).toString());
+        scheduler.enrollIntoSchedule(entityId, SCHEDULE_Woman, SCHEDULE_Woman_2, date);
   
     }
 	
 	public void enrollTT2_Visit(String entityId,String provider,String instWomaneId,String date) {
-
-        Date date3 = null;    
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        
-    	try {	
-			date3 = format.parse(date);		
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-        
         logger.info(format("Enrolling Woman with Entity id:{0} to Woman schedule Woman Vaccination, milestone: {1}.", entityId, SCHEDULE_Woman_3));
-        scheduler.enrollIntoSchedule(entityId, SCHEDULE_Woman, SCHEDULE_Woman_3, LocalDate.parse(date).toString());
+        scheduler.enrollIntoSchedule(entityId, SCHEDULE_Woman, SCHEDULE_Woman_3, date);
   
     }
 	
 	public void enrollTT3_Visit(String entityId,String provider,String instWomaneId,String date) {
-
-        Date date4 = null;    
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        
-    	try {	
-			date4 = format.parse(date);		
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-        
         logger.info(format("Enrolling Woman with Entity id:{0} to Woman schedule Woman Vaccination, milestone: {1}.", entityId, SCHEDULE_Woman_4));
-        scheduler.enrollIntoSchedule(entityId, SCHEDULE_Woman, SCHEDULE_Woman_4, LocalDate.parse(date).toString());
+        scheduler.enrollIntoSchedule(entityId, SCHEDULE_Woman, SCHEDULE_Woman_4, date);
   
     }
 	
-	public void enrollTT4_Visit(String entityId,String provider,String instWomaneId,String date) {
-
-        Date date5 = null;    
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        
-    	try {	
-			date5 = format.parse(date);		
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-        
+	public void enrollTT4_Visit(String entityId,String provider,String instWomaneId,String date) {      
         logger.info(format("Enrolling Woman with Entity id:{0} to Woman schedule Woman Vaccination, milestone: {1}.", entityId, SCHEDULE_Woman_5));
-        scheduler.enrollIntoSchedule(entityId, SCHEDULE_Woman, SCHEDULE_Woman_5, LocalDate.parse(date).toString());
+        scheduler.enrollIntoSchedule(entityId, SCHEDULE_Woman, SCHEDULE_Woman_5, date);
   
     }
 	
