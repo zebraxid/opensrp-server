@@ -107,8 +107,8 @@ public class HealthSchedulerService {
 			String providerId, String schedule, String milestone, DateTime  startOfEarliestWindow,
 			DateTime startOfDueWindow, DateTime startOfLateWindow, DateTime startOfMaxWindow) {
 		
-		if(WindowName.max.toString().equals(windowName) && !household.equals(beneficiaryType)){
-			actionService.alertForBeneficiary(beneficiaryType, entityId, instanceId, providerId, schedule, milestone, expired, startOfMaxWindow, startOfMaxWindow.plusDays(1));
+		if(WindowName.max.toString().equals(windowName)){
+			//actionService.alertForBeneficiary(beneficiaryType, entityId, instanceId, providerId, schedule, milestone, expired, startOfMaxWindow, startOfMaxWindow.plusDays(1));
 			
 		} else if (WindowName.late.toString().equals(windowName)) {
             actionService.alertForBeneficiary(beneficiaryType, entityId, instanceId, providerId, schedule, milestone, urgent, startOfLateWindow, startOfMaxWindow);
@@ -117,8 +117,8 @@ public class HealthSchedulerService {
             actionService.alertForBeneficiary(beneficiaryType, entityId, instanceId, providerId, schedule, milestone, upcoming, startOfDueWindow, startOfLateWindow);
            
 		} else if( WindowName.earliest.toString().equals(windowName)){
-            actionService.alertForBeneficiary(beneficiaryType, entityId, instanceId, providerId, schedule, milestone, normal, startOfEarliestWindow, startOfDueWindow);
-            
+            actionService.alertForBeneficiary(beneficiaryType, entityId, instanceId, providerId, schedule, milestone, normal, startOfEarliestWindow, startOfDueWindow);       
+		
 		}
 	}
 	

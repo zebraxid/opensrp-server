@@ -87,13 +87,27 @@ public class OpenSRPScheduleConstants {
     public static class HHSchedulesConstants {
     	public static final String HH_SCHEDULE_CENSUS = "FW CENSUS";
     }
-    public static class WomanScheduleConstants {
+    public static class MemberScheduleConstants {
         public static final String SCHEDULE_Woman_Measles = "Woman measles";
         public static final String SCHEDULE_Woman_1 = "Woman TT_1";
         public static final String SCHEDULE_Woman_2 = "Woman TT_2";
         public static final String SCHEDULE_Woman_3 = "Woman TT_3";
         public static final String SCHEDULE_Woman_4 = "Woman TT_4";
         public static final String SCHEDULE_Woman_5 = "Woman TT_5";
+        public static final String child_vaccination_bcg = "child_vaccination_bcg";
+        public static final String child_vaccination_ipv = "child_vaccination_ipv";
+        public static final String child_vaccination_measles = "child_vaccination_measles";
+        public static final String child_vaccination_mr = "child_vaccination_mr";
+        public static final String child_vaccination_opv0 = "child_vaccination_opv0";        
+        public static final String child_vaccination_opv1 = "child_vaccination_opv1";
+        public static final String child_vaccination_opv2 = "child_vaccination_opv2";
+        public static final String child_vaccination_opv3 = "child_vaccination_opv3";
+        public static final String child_vaccination_pcv1 = "child_vaccination_pcv1";
+        public static final String child_vaccination_pcv2 = "child_vaccination_pcv2";        
+        public static final String child_vaccination_pcv3 = "child_vaccination_pcv3";        
+        public static final String child_vaccination_penta1 = "child_vaccination_penta1";
+        public static final String child_vaccination_penta2 = "child_vaccination_penta2";
+        public static final String child_vaccination_penta3 = "child_vaccination_penta3";
     }
     public static class DateTimeDuration{
     	public static final Integer duration = 1344; // hour

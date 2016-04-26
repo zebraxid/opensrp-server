@@ -8,7 +8,7 @@ import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ChildScheduleC
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ECSchedulesConstants.*;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.*;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.HHSchedulesConstants.HH_SCHEDULE_CENSUS;
-import static org.opensrp.register.mcare.OpenSRPScheduleConstants.WomanScheduleConstants.*;
+import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MemberScheduleConstants.*;
 import static org.opensrp.scheduler.Matcher.any;
 import static org.opensrp.scheduler.Matcher.anyOf;
 import static org.opensrp.scheduler.Matcher.eq;
@@ -93,7 +93,11 @@ public class AlertHandler {
 
 	}
 	private Matcher membersSchedules() {
-		return anyOf(SCHEDULE_Woman_Measles, SCHEDULE_Woman_1, SCHEDULE_Woman_2, SCHEDULE_Woman_3, SCHEDULE_Woman_4, SCHEDULE_Woman_5);
+		return anyOf(SCHEDULE_Woman_Measles, SCHEDULE_Woman_1, SCHEDULE_Woman_2, SCHEDULE_Woman_3, SCHEDULE_Woman_4, SCHEDULE_Woman_5, 
+				child_vaccination_bcg, child_vaccination_ipv, child_vaccination_measles, child_vaccination_mr, 
+				child_vaccination_opv0, child_vaccination_opv1, child_vaccination_opv2, child_vaccination_opv3, 
+				child_vaccination_pcv1, child_vaccination_pcv2, child_vaccination_pcv3, 
+				child_vaccination_penta1, child_vaccination_penta2, child_vaccination_penta3);
 	}
 
 }

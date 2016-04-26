@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.Arrays.asList;
+import static org.opensrp.common.AllConstants.MEMBERSRegistrationFields.ChildVaccination_PCV1_Date_of_Vaccination;
 
 public class AllConstants {
 	public static final String OPENSRP_FORM_DATABASE_CONNECTOR = "opensrpFormDatabaseConnector";
@@ -22,7 +23,7 @@ public class AllConstants {
 
     public static class Form {
     	public static final String HH_REGISTRATION = "new_household_registration";
-    	public static final String MEMBERS_REGISTRATION = "census_enrollment_form";
+    	public static final String MEMBERS_REGISTRATION = "census_enrollment";
     	public static final String PSRF_FORM = "psrf_form";
     	public static final String NewBornHandler = "new_born_information";
     	public static final String GeneralHandler = "general";
@@ -261,6 +262,17 @@ public class AllConstants {
     	public static final String TT3_Date_of_Vaccination = "TT3_Date_of_Vaccination";
     	public static final String TT4_Date_of_Vaccination = "TT4_Date_of_Vaccination";
     	public static final String TT5_Date_of_Vaccination = "TT5_Date_of_Vaccination";
+    	public static final String ChildVaccination_PCV1_Date_of_Vaccination = "ChildVaccination_PCV1_Date_of_Vaccination";    	
+    	public static final String ChildVaccination_PCV2_Date_of_Vaccination = "ChildVaccination_PCV2_Date_of_Vaccination";
+    	public static final String ChildVaccination_PCV3_Date_of_Vaccination = "ChildVaccination_PCV3_Date_of_Vaccination";
+    	public static final String ChildVaccination_OPV3_Date_of_Vaccination = "ChildVaccination_OPV3_Date_of_Vaccination";
+    	public static final String ChildVaccination_OPV2_Date_of_Vaccination = "ChildVaccination_OPV2_Date_of_Vaccination";
+    	public static final String ChildVaccination_OPV1_Date_of_Vaccination = "ChildVaccination_OPV1_Date_of_Vaccination";
+    	public static final String ChildVaccination_OPV0_Date_of_Vaccination = "ChildVaccination_OPV0_Date_of_Vaccination";
+    	public static final String ChildVaccination_MR_Date_of_Vaccination = "ChildVaccination_MR_Date_of_Vaccination";
+    	public static final String ChildVaccination_Measles_Date_of_Vaccination = "ChildVaccination_Measles_Date_of_Vaccination";
+    	public static final String ChildVaccination_IPV_Date_of_Vaccination = "ChildVaccination_IPV_Date_of_Vaccination";
+    	public static final String ChildVaccination_BCG_Date_of_Vaccination = "ChildVaccination_BCG_Date_of_Vaccination";
     }
 
     public static class PSRFFields
@@ -1035,6 +1047,20 @@ public class AllConstants {
         public static final String SCHEDULE_Woman_3 = "Woman TT_3";
         public static final String SCHEDULE_Woman_4 = "Woman TT_4";
         public static final String SCHEDULE_Woman_5 = "Woman TT_5";
+        public static final String child_vaccination_bcg = "child_vaccination_bcg";
+        public static final String child_vaccination_ipv = "child_vaccination_ipv";
+        public static final String child_vaccination_measles = "child_vaccination_measles";
+        public static final String child_vaccination_mr = "child_vaccination_mr";
+        public static final String child_vaccination_opv0 = "child_vaccination_opv0";        
+        public static final String child_vaccination_opv1 = "child_vaccination_opv1";
+        public static final String child_vaccination_opv2 = "child_vaccination_opv2";
+        public static final String child_vaccination_opv3 = "child_vaccination_opv3";
+        public static final String child_vaccination_pcv1 = "child_vaccination_pcv1";
+        public static final String child_vaccination_pcv2 = "child_vaccination_pcv2";        
+        public static final String child_vaccination_pcv3 = "child_vaccination_pcv3";        
+        public static final String child_vaccination_penta1 = "child_vaccination_penta1";
+        public static final String child_vaccination_penta2 = "child_vaccination_penta2";
+        public static final String child_vaccination_penta3 = "child_vaccination_penta3";
         public static final String CHILD = "CHILD";
         public static final String ANC = "ANC";
         public static final String PNC = "PNC";
