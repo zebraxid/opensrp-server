@@ -201,5 +201,10 @@
 			<artifactId>commons-collections</artifactId>
 			<version>3.2.1</version>
 		</dependency>
+		 <dependency>
+			<groupId>org.ict4h</groupId>
+			<artifactId>atomfeed-client</artifactId>
+			<version>1.9.1</version>
+		</dependency>
     </dependencies>
 </project>
