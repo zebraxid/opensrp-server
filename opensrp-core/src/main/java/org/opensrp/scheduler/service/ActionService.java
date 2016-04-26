@@ -52,7 +52,7 @@ public class ActionService {
     	if (!(mother.equals(beneficiaryType)||child.equals(beneficiaryType)||ec.equals(beneficiaryType)||household.equals(beneficiaryType) || members.equals(beneficiaryType))) {
             throw new IllegalArgumentException("Beneficiary Type : " + beneficiaryType + " is of unknown type");
         }
-    	if(scheduleName.equals(ScheduleNames.BNF) || scheduleName.equals(ScheduleNames.CENCUS) || scheduleName.equals(ScheduleNames.MEMBERS)){
+    	if(scheduleName.equals(ScheduleNames.SCHEDULE_Woman_1) || scheduleName.equals(ScheduleNames.SCHEDULE_Woman_2) || scheduleName.equals(ScheduleNames.SCHEDULE_Woman_3) || scheduleName.equals(ScheduleNames.SCHEDULE_Woman_4) || scheduleName.equals(ScheduleNames.SCHEDULE_Woman_5) || scheduleName.equals(ScheduleNames.CENCUS) || scheduleName.equals(ScheduleNames.SCHEDULE_Woman_Measles)){
     		this.ActionUpdateOrCreateForOther(beneficiaryType, caseID, instanceId, anmIdentifier, scheduleName, visitCode, alertStatus, startDate, expiryDate);
     		
     	}else if(scheduleName.equals(ScheduleNames.ANC) || scheduleName.equals(ScheduleNames.PNC) || scheduleName.equals(ScheduleNames.CHILD)){

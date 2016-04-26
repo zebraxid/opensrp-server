@@ -6,14 +6,6 @@ package org.opensrp.register.mcare.service.scheduling;
 
 import static java.text.MessageFormat.format;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.WomanScheduleConstants.*;
-import static org.opensrp.common.AllConstants.MEMBERSRegistrationFields.*;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-
-import java.util.Date;
-
-import java.util.Map;
 
 import org.joda.time.LocalDate;
 
@@ -35,50 +27,46 @@ public class MembersScheduleService {
 		this.scheduler = scheduler;	
 	}
 	
-	public void enrollWomanMeaslesVisit(String entityId,String provider,String instWomaneId,String date) {       
-        logger.info(format("Enrolling Woman with Entity id:{0} to Woman schedule Woman Vaccination, milestone: {1}.", entityId, SCHEDULE_Woman_Measles));
-        scheduler.enrollIntoSchedule(entityId, SCHEDULE_Woman, SCHEDULE_Woman_Measles, date);
+	public void enrollWomanMeaslesVisit(String entityId,String provider,String date) {       
+        logger.info(format("Enrolling Woman with Entity id:{0} to Woman schedule Woman measles, milestone: {1}.", entityId, SCHEDULE_Woman_Measles));
+        scheduler.enrollIntoSchedule(entityId, SCHEDULE_Woman_Measles, date);
     }
 	
-	public void enrollWomanTTVisit(String entityId,String provider,String instWomaneId,String date) {       
-        logger.info(format("Enrolling Woman with Entity id:{0} to Woman schedule Woman Vaccination, milestone: {1}.", entityId, SCHEDULE_Woman_1));
-        scheduler.enrollIntoSchedule(entityId, SCHEDULE_Woman, SCHEDULE_Woman_1, date);
+	public void enrollWomanTTVisit(String entityId,String provider,String date) {       
+        logger.info(format("Enrolling Woman with Entity id:{0} to Woman schedule Woman TT_1, milestone: {1}.", entityId, SCHEDULE_Woman_1));
+        scheduler.enrollIntoSchedule(entityId, SCHEDULE_Woman_1, date);
   
     }
 	
-	public void enrollTT1_Visit(String entityId,String provider,String instWomaneId,String date) {     
-        logger.info(format("Enrolling Woman with Entity id:{0} to Woman schedule Woman Vaccination, milestone: {1}.", entityId, SCHEDULE_Woman_2));
-        scheduler.enrollIntoSchedule(entityId, SCHEDULE_Woman, SCHEDULE_Woman_2, date);
+	public void enrollTT1_Visit(String entityId,String provider,String date) {     
+        logger.info(format("Enrolling Woman with Entity id:{0} to Woman schedule Woman TT_2, milestone: {1}.", entityId, SCHEDULE_Woman_2));
+        scheduler.enrollIntoSchedule(entityId, SCHEDULE_Woman_2, date);
   
     }
 	
-	public void enrollTT2_Visit(String entityId,String provider,String instWomaneId,String date) {
-        logger.info(format("Enrolling Woman with Entity id:{0} to Woman schedule Woman Vaccination, milestone: {1}.", entityId, SCHEDULE_Woman_3));
-        scheduler.enrollIntoSchedule(entityId, SCHEDULE_Woman, SCHEDULE_Woman_3, date);
+	public void enrollTT2_Visit(String entityId,String provider,String date) {
+        logger.info(format("Enrolling Woman with Entity id:{0} to Woman schedule Woman TT_3, milestone: {1}.", entityId, SCHEDULE_Woman_3));
+        scheduler.enrollIntoSchedule(entityId, SCHEDULE_Woman_3, date);
   
     }
 	
-	public void enrollTT3_Visit(String entityId,String provider,String instWomaneId,String date) {
-        logger.info(format("Enrolling Woman with Entity id:{0} to Woman schedule Woman Vaccination, milestone: {1}.", entityId, SCHEDULE_Woman_4));
-        scheduler.enrollIntoSchedule(entityId, SCHEDULE_Woman, SCHEDULE_Woman_4, date);
+	public void enrollTT3_Visit(String entityId,String provider,String date) {
+        logger.info(format("Enrolling Woman with Entity id:{0} to Woman schedule Woman TT_4, milestone: {1}.", entityId, SCHEDULE_Woman_4));
+        scheduler.enrollIntoSchedule(entityId, SCHEDULE_Woman_4, date);
   
     }
 	
-	public void enrollTT4_Visit(String entityId,String provider,String instWomaneId,String date) {      
-        logger.info(format("Enrolling Woman with Entity id:{0} to Woman schedule Woman Vaccination, milestone: {1}.", entityId, SCHEDULE_Woman_5));
-        scheduler.enrollIntoSchedule(entityId, SCHEDULE_Woman, SCHEDULE_Woman_5, date);
+	public void enrollTT4_Visit(String entityId,String provider,String date) {      
+        logger.info(format("Enrolling Woman with Entity id:{0} to Woman schedule Woman TT_5, milestone: {1}.", entityId, SCHEDULE_Woman_5));
+        scheduler.enrollIntoSchedule(entityId, SCHEDULE_Woman_5, date);
   
-    }
-	
-	public void enrollTT5_Visit(String entityId,String provider) {
-        unEnrollFromSchedule(entityId, provider, SCHEDULE_Woman);
     }
     
     public void unEnrollFromAllSchedules(String entityId) {
         scheduler.unEnrollFromAllSchedules(entityId);
     }
 
-    private void unEnrollFromSchedule(String entityId, String anmId, String scheduleName) {
+    public void unEnrollFromSchedule(String entityId, String anmId, String scheduleName) {
         logger.info(format("Un-enrolling Woman with Entity id:{0} from schedule: {1}", entityId, scheduleName));
         scheduler.unEnrollFromSchedule(entityId, anmId, scheduleName);
     }

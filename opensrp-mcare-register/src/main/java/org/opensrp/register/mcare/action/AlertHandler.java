@@ -4,44 +4,11 @@ import static org.motechproject.scheduletracking.api.domain.WindowName.due;
 import static org.motechproject.scheduletracking.api.domain.WindowName.earliest;
 import static org.motechproject.scheduletracking.api.domain.WindowName.late;
 import static org.motechproject.scheduletracking.api.domain.WindowName.max;
-import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ChildScheduleConstants.CHILD_SCHEDULE_BCG;
-import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ChildScheduleConstants.SCHEDULE_ENCC;
-import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ChildScheduleConstants.CHILD_SCHEDULE_DPT_BOOSTER1;
-import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ChildScheduleConstants.CHILD_SCHEDULE_DPT_BOOSTER2;
-import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ChildScheduleConstants.CHILD_SCHEDULE_MEASLES;
-import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ChildScheduleConstants.CHILD_SCHEDULE_MEASLES_BOOSTER;
-import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ChildScheduleConstants.CHILD_SCHEDULE_OPV_0_AND_1;
-import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ChildScheduleConstants.CHILD_SCHEDULE_OPV_2;
-import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ChildScheduleConstants.CHILD_SCHEDULE_OPV_3;
-import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ChildScheduleConstants.CHILD_SCHEDULE_OPV_BOOSTER;
-import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ChildScheduleConstants.CHILD_SCHEDULE_PENTAVALENT_1;
-import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ChildScheduleConstants.CHILD_SCHEDULE_PENTAVALENT_2;
-import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ChildScheduleConstants.CHILD_SCHEDULE_PENTAVALENT_3;
-import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ECSchedulesConstants.EC_SCHEDULE_CONDOM_REFILL;
-import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ECSchedulesConstants.EC_SCHEDULE_DMPA_INJECTABLE_REFILL;
-import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ECSchedulesConstants.EC_SCHEDULE_FEMALE_STERILIZATION_FOLLOWUP;
-import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ECSchedulesConstants.EC_SCHEDULE_FP_FOLLOWUP;
-import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ECSchedulesConstants.EC_SCHEDULE_FP_REFERRAL_FOLLOWUP_MILESTONE;
-import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ECSchedulesConstants.EC_SCHEDULE_IUD_FOLLOWUP;
-import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ECSchedulesConstants.EC_SCHEDULE_MALE_STERILIZATION_FOLLOWUP;
-import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ECSchedulesConstants.EC_SCHEDULE_OCP_REFILL;
-import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_ANC;
-import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_BNF;
-import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_PNC;
-import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_AUTO_CLOSE_PNC;
-import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_DELIVERY_PLAN;
-import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_EDD;
-import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_HB_FOLLOWUP_TEST;
-import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_HB_TEST_1;
-import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_HB_TEST_2;
-import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_IFA_1;
-import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_IFA_2;
-import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_IFA_3;
-import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_LAB;
-import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_TT_1;
-import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_TT_2;
+import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ChildScheduleConstants.*;
+import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ECSchedulesConstants.*;
+import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.*;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.HHSchedulesConstants.HH_SCHEDULE_CENSUS;
-import static org.opensrp.register.mcare.OpenSRPScheduleConstants.WomanScheduleConstants.SCHEDULE_Woman;
+import static org.opensrp.register.mcare.OpenSRPScheduleConstants.WomanScheduleConstants.*;
 import static org.opensrp.scheduler.Matcher.any;
 import static org.opensrp.scheduler.Matcher.anyOf;
 import static org.opensrp.scheduler.Matcher.eq;
@@ -126,7 +93,7 @@ public class AlertHandler {
 
 	}
 	private Matcher membersSchedules() {
-		return anyOf(SCHEDULE_Woman);
+		return anyOf(SCHEDULE_Woman_Measles, SCHEDULE_Woman_1, SCHEDULE_Woman_2, SCHEDULE_Woman_3, SCHEDULE_Woman_4, SCHEDULE_Woman_5);
 	}
 
 }

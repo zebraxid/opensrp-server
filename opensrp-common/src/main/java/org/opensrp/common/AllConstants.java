@@ -1028,13 +1028,16 @@ public class AllConstants {
     }
     
     public static class ScheduleNames{
-    	public static final String MEMBERS = "Woman Vaccination";
-    	public static final String BNF = "BirthNotificationPregnancyStatusFollowUp";
     	public static final String CENCUS = "FW CENSUS";
-    	public static final String ANC = "Ante Natal Care Reminder Visit";
-    	public static final String PNC = "Post Natal Care Reminder Visit";
-    	public static final String CHILD = "Essential Newborn Care Checklist";
-    	
+        public static final String SCHEDULE_Woman_Measles = "Woman measles";
+        public static final String SCHEDULE_Woman_1 = "Woman TT_1";
+        public static final String SCHEDULE_Woman_2 = "Woman TT_2";
+        public static final String SCHEDULE_Woman_3 = "Woman TT_3";
+        public static final String SCHEDULE_Woman_4 = "Woman TT_4";
+        public static final String SCHEDULE_Woman_5 = "Woman TT_5";
+        public static final String CHILD = "CHILD";
+        public static final String ANC = "ANC";
+        public static final String PNC = "PNC";
     }
     public static class OpenmrsTrackUuid {
     	public static final String ENROLLMENT_TRACK_UUID = "openmrsTrackUuid";

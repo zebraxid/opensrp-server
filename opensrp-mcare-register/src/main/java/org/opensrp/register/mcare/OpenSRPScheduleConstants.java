@@ -88,18 +88,12 @@ public class OpenSRPScheduleConstants {
     	public static final String HH_SCHEDULE_CENSUS = "FW CENSUS";
     }
     public static class WomanScheduleConstants {
-        public static final String SCHEDULE_Woman = "Woman Vaccination";
-        public static final String SCHEDULE_PNC = "Post Natal Care Reminder Visit";
-        public static final String SCHEDULE_Woman_Measles = "measles";
-        public static final String SCHEDULE_Woman_1 = "TT_1";
-        public static final String SCHEDULE_Woman_2 = "TT_2";
-        public static final String SCHEDULE_Woman_3 = "TT_3";
-        public static final String SCHEDULE_Woman_4 = "TT_4";
-        public static final String SCHEDULE_Woman_5 = "TT_5";
-        public static final String SCHEDULE_BNF = "BirthNotificationPregnancyStatusFollowUp";       
-        public static final String SCHEDULE_PNC_1 = "pncrv_1";
-        public static final String SCHEDULE_PNC_2 = "pncrv_2";
-        public static final String SCHEDULE_PNC_3 = "pncrv_3";
+        public static final String SCHEDULE_Woman_Measles = "Woman measles";
+        public static final String SCHEDULE_Woman_1 = "Woman TT_1";
+        public static final String SCHEDULE_Woman_2 = "Woman TT_2";
+        public static final String SCHEDULE_Woman_3 = "Woman TT_3";
+        public static final String SCHEDULE_Woman_4 = "Woman TT_4";
+        public static final String SCHEDULE_Woman_5 = "Woman TT_5";
     }
     public static class DateTimeDuration{
     	public static final Integer duration = 1344; // hour
