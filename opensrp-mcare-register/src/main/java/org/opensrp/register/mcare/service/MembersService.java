@@ -128,7 +128,7 @@ public class MembersService {
 		}	 
 	}
 	
-	public void Child_Visit(FormSubmission submission, Members members, Map<String, String> membersFields) {
+	public void Child_Visit(FormSubmission submission, Members members, Map<String, String> membersFields) {/*
 		
 		if (!membersFields.get(Date_of_TT1).equalsIgnoreCase("") && membersFields.get(Date_of_TT1) != null)
 			if(isValidDate(membersFields.get(Date_of_TT1)))
@@ -150,7 +150,7 @@ public class MembersService {
 			if(isValidDate(membersFields.get(Date_of_TT5)))
 				membersScheduleService.enrollTT4_Visit(members.caseId(),submission.anmId(),membersFields.get(Date_of_TT5));
 	
-	}
+	*/}
 	
 	public void TT_Visit(FormSubmission submission, Members members, Map<String, String> membersFields) {
 		
