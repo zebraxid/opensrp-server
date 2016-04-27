@@ -5,31 +5,36 @@
     	{
             "name": "child_vaccination_pcv1",
             "scheduleWindows": {
-            	"earliest": ["0 Days"],
-                "due": ["20000 Days"],
-                "late": ["20001 Day"],
-                "max": ["20002 Days"]
+            	"earliest": ["42 Days"],
+                "due": ["56 Days"],
+                "late": ["690 Days"],
+                "max": ["691 Days"]
             },
             "alerts": [
-                {
-                    "window": "due",
+            	{
+                    "window": "earliest",
                     "offset": ["0 Days"],
                     "interval": ["1 Day"],
-                    "count": "20000"
+                    "count": "42"
+                },
+                {
+                    "window": "due",
+                    "offset": ["42 Days"],
+                    "interval": ["1 Day"],
+                    "count": "14"
                 },
                 {
                     "window": "late",
-                    "offset": ["20000 Day"],
+                    "offset": ["56 Days"],
                     "interval": ["1 Day"],
-                    "count": "1"
+                    "count": "634"
                 },
                 {
                     "window": "max",
-                    "offset": ["20001 Days"],
+                    "offset": ["690 Days"],
                     "interval": ["1 Day"],
                     "count": "1"
-                }
-                
+                }              
             ]
         }
     ]
