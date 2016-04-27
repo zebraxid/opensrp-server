@@ -5,32 +5,37 @@
     	{
             "name": "child_vaccination_mr",
             "scheduleWindows": {
-            	"earliest": ["0 Days"],
-                "due": ["20000 Days"],
-                "late": ["20001 Day"],
-                "max": ["20002 Days"]
+            	"earliest": ["365 Days"],
+                "due": ["395 Days"],
+                "late": ["690 Days"],
+                "max": ["691 Days"]
             },
             "alerts": [
-                {
-                    "window": "due",
+            	{
+                    "window": "earliest",
                     "offset": ["0 Days"],
                     "interval": ["1 Day"],
-                    "count": "20000"
+                    "count": "365"
+                },
+                {
+                    "window": "due",
+                    "offset": ["365 Days"],
+                    "interval": ["1 Day"],
+                    "count": "30"
                 },
                 {
                     "window": "late",
-                    "offset": ["20000 Day"],
+                    "offset": ["395 Days"],
                     "interval": ["1 Day"],
-                    "count": "1"
+                    "count": "295"
                 },
                 {
                     "window": "max",
-                    "offset": ["20001 Days"],
+                    "offset": ["690 Days"],
                     "interval": ["1 Day"],
                     "count": "1"
                 }
-                
             ]
         }
     ]
-}
+}        
