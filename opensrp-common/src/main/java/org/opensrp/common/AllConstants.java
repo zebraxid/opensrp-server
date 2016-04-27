@@ -262,6 +262,9 @@ public class AllConstants {
     	public static final String TT3_Date_of_Vaccination = "TT3_Date_of_Vaccination";
     	public static final String TT4_Date_of_Vaccination = "TT4_Date_of_Vaccination";
     	public static final String TT5_Date_of_Vaccination = "TT5_Date_of_Vaccination";
+    	public static final String ChildVaccination_PENTA1_Date_of_Vaccination = "ChildVaccination_PENTA1_Date_of_Vaccination";    	
+    	public static final String ChildVaccination_PENTA2_Date_of_Vaccination = "ChildVaccination_PENTA2_Date_of_Vaccination";
+    	public static final String ChildVaccination_PENTA3_Date_of_Vaccination = "ChildVaccination_PENTA3_Date_of_Vaccination";
     	public static final String ChildVaccination_PCV1_Date_of_Vaccination = "ChildVaccination_PCV1_Date_of_Vaccination";    	
     	public static final String ChildVaccination_PCV2_Date_of_Vaccination = "ChildVaccination_PCV2_Date_of_Vaccination";
     	public static final String ChildVaccination_PCV3_Date_of_Vaccination = "ChildVaccination_PCV3_Date_of_Vaccination";

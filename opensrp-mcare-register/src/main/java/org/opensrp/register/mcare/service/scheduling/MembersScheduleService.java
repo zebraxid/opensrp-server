@@ -61,6 +61,12 @@ public class MembersScheduleService {
         scheduler.enrollIntoSchedule(entityId, SCHEDULE_Woman_5, date);
   
     }
+	
+	public void enrollChildVisit(String entityId,String provider, String scheduleName, String date) {       
+        logger.info(format("Enrolling Child with Entity id:{0} to schedule & milestone: {1}.", entityId, scheduleName));
+        scheduler.enrollIntoSchedule(entityId, scheduleName, date);
+  
+    }
     
     public void unEnrollFromAllSchedules(String entityId) {
         scheduler.unEnrollFromAllSchedules(entityId);
