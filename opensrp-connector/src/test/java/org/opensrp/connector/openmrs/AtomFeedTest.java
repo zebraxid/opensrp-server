@@ -62,7 +62,7 @@ public class AtomFeedTest extends TestResourceLoader {
 
 		PatientAtomfeed paf = new PatientAtomfeed(new AllMarkersInMemoryImpl(), new AllFailedEventsInMemoryImpl(), openmrsOpenmrsUrl, patientService, cs);
 
-		if(!pushToOpenmrsForTest){
+		if(pushToOpenmrsForTest){
 			paf.processEvents();
 		}
         

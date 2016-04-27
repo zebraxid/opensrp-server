@@ -2,8 +2,8 @@ package org.opensrp.connector.openmrs;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.UUID;
 
+import org.apache.log4j.Logger;
 import org.ict4h.atomfeed.client.AtomFeedProperties;
 import org.ict4h.atomfeed.client.domain.Event;
 import org.ict4h.atomfeed.client.repository.AllFailedEvents;
@@ -14,13 +14,17 @@ import org.ict4h.atomfeed.client.service.AtomFeedClient;
 import org.ict4h.atomfeed.client.service.EventWorker;
 import org.ict4h.atomfeed.transaction.AFTransactionManager;
 import org.ict4h.atomfeed.transaction.AFTransactionWork;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.motechproject.scheduler.domain.MotechEvent;
+import org.motechproject.server.event.annotations.MotechListener;
+import org.opensrp.connector.HttpUtil;
 import org.opensrp.connector.atomfeed.AtomfeedService;
 import org.opensrp.connector.openmrs.constants.OpenmrsConstants;
 import org.opensrp.connector.openmrs.service.OpenmrsService;
 import org.opensrp.connector.openmrs.service.PatientService;
-import org.opensrp.domain.Client;
+import org.opensrp.connector.openmrs.service.TurnOffCertificateValidation;
 import org.opensrp.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -33,10 +37,10 @@ public class PatientAtomfeed extends OpenmrsService implements EventWorker, Atom
 	private AtomFeedProperties atomFeedProperties;
 
 	private AFTransactionManager transactionManager;
-
+    private AtomFeedClientWrapper atomFeedClientWrapper;
 	private WebClient webClient;
 	private AtomFeedClient client;
-
+	private static Logger logger = Logger.getLogger(PatientAtomfeed.class);
 	@Autowired
 	public PatientAtomfeed(AllMarkers allMarkers, AllFailedEvents allFailedEvents, 
 			@Value("#{opensrp['openmrs.url']}") String baseUrl, PatientService patientService, ClientService clientService) throws URISyntaxException {
@@ -58,6 +62,7 @@ public class PatientAtomfeed extends OpenmrsService implements EventWorker, Atom
 	
 		this.patientService = patientService;
 		this.clientService = clientService;
+		this.atomFeedClientWrapper = new AtomFeedClientWrapper(new AllFeeds(webClient), allMarkers, allFailedEvents, atomFeedProperties, transactionManager, uri, this);
 	}
 	
 	private PatientService patientService;
@@ -90,17 +95,28 @@ public class PatientAtomfeed extends OpenmrsService implements EventWorker, Atom
 	@Override
 	public void cleanUp(Event event) {
 		// TODO Auto-generated method stub
-		
+		System.out.println("COntent:"+event.getContent());
+
+    	try {
+			JSONArray p = new JSONObject(HttpUtil.get(getURL()
+					+"/"+event.getContent(), "v=full", OPENMRS_USER, OPENMRS_PWD).body())
+					.getJSONArray("results");
+			logger.info("Patient:"+p.toString());
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.exit(1);
 	}
 
 	@Override
 	public void processEvents() {
-		client.processEvents();
+		atomFeedClientWrapper.processEvents();
 	}
 
 	@Override
 	public void processFailedEvents() {
-		client.processFailedEvents();
+		atomFeedClientWrapper.processFailedEvents();
 	}
 	
 	void setUrl(String url) {
@@ -126,6 +142,12 @@ public class PatientAtomfeed extends OpenmrsService implements EventWorker, Atom
 	public void process(Event event) {
 		// TODO Auto-generated method stub
 		
+	}
+	@MotechListener(subjects = OpenmrsConstants.SCHEDULER_OPENMRS_ATOMFEED_SYNCER_SUBJECT)
+	public void getResponse(MotechEvent event){
+		new TurnOffCertificateValidation().ForHTTPSConnections();
+		System.out.println("Response from Atom");
+		 this.processEvents();
 	}
 	
 }
