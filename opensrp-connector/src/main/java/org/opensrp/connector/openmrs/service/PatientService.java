@@ -312,4 +312,11 @@ public class PatientService extends OpenmrsService{
 	            System.err.println(ex);
 	        }
 	}
+	
+	 public JSONObject getPatientByUuid(String uuid, boolean noRepresentationTag) throws JSONException
+	    {
+	    	return new JSONObject(HttpUtil.get(getURL()
+	    			+"/"+PATIENT_URL+"/"+uuid, noRepresentationTag?"":"v=full", OPENMRS_USER, OPENMRS_PWD).body());
+	    }
+	 
 }
