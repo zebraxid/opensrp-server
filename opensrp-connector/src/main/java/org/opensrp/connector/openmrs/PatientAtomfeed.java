@@ -43,7 +43,10 @@ public class PatientAtomfeed extends OpenmrsService implements EventWorker, Atom
 	private static Logger logger = Logger.getLogger(PatientAtomfeed.class);
 	@Autowired
 	public PatientAtomfeed(AllMarkers allMarkers, AllFailedEvents allFailedEvents, 
-			@Value("#{opensrp['openmrs.url']}") String baseUrl, PatientService patientService, ClientService clientService) throws URISyntaxException {
+			 String baseUrl,String openmrsUserName, String openmrsPassword, PatientService patientService, ClientService clientService) throws URISyntaxException {
+		
+		super(baseUrl, openmrsUserName, openmrsPassword);
+		
 		if(baseUrl != null){
 			OPENMRS_BASE_URL = baseUrl;
 		}
@@ -96,11 +99,11 @@ public class PatientAtomfeed extends OpenmrsService implements EventWorker, Atom
 	public void cleanUp(Event event) {
 		// TODO Auto-generated method stub
 		System.out.println("COntent:"+event.getContent());
-
+       new TurnOffCertificateValidation().ForHTTPSConnections();
+       
     	try {
-			JSONArray p = new JSONObject(HttpUtil.get(getURL()
-					+"/"+event.getContent(), "v=full", OPENMRS_USER, OPENMRS_PWD).body())
-					.getJSONArray("results");
+			JSONObject p = new JSONObject(HttpUtil.get(getURL()
+					+event.getContent().split("/openmrs")[1], "",OPENMRS_USER, OPENMRS_PWD).body());
 			logger.info("Patient:"+p.toString());
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
