@@ -5,7 +5,7 @@
 package org.opensrp.register.mcare.service.scheduling;
 
 import static java.text.MessageFormat.format;
-import static org.opensrp.register.mcare.OpenSRPScheduleConstants.WomanScheduleConstants.*;
+import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MemberScheduleConstants.*;
 
 import org.joda.time.LocalDate;
 

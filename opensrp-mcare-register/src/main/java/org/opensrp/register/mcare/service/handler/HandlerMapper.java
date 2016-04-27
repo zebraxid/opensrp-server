@@ -24,6 +24,7 @@ public class HandlerMapper implements IHandlerMapper {
 	public HandlerMapper(  
 			AllFormSubmissions formSubmissionsRepository,
 			HHRegistrationHandler hhRegistrationHandler,
+			MEMBERSHandler membersHandler,
 			NewBornHandler newBornHandler,
 			GeneralHandler generalHandler,
 			FamilyPlanningHandler familyPlanningHandler,
@@ -50,6 +51,7 @@ public class HandlerMapper implements IHandlerMapper {
 			)
 	{
 		handlerMap = EasyMap.create(HH_REGISTRATION, (FormSubmissionHandler) hhRegistrationHandler)
+					 .put(MEMBERS_REGISTRATION, membersHandler)	
 				     .put(NewBornHandler, newBornHandler)
 				     .put(GeneralHandler, generalHandler)
 				     .put(FamilyPlanningHandler, familyPlanningHandler)

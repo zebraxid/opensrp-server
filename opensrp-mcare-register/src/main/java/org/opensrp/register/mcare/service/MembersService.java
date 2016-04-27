@@ -8,7 +8,7 @@ import static java.text.MessageFormat.format;
 import static org.opensrp.common.AllConstants.CommonFormFields.ID;
 import static org.opensrp.common.AllConstants.TT_VisitFields.*;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.*;
-import static org.opensrp.register.mcare.OpenSRPScheduleConstants.WomanScheduleConstants.*;
+import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MemberScheduleConstants.*;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -95,6 +95,13 @@ public class MembersService {
 					}
 				}
 			}
+			
+			if(membersFields.containsKey(Is_NewBorn))
+				if(!membersFields.get(Is_NewBorn).equalsIgnoreCase("") && membersFields.get(Is_NewBorn) != null)
+					if(membersFields.get(Is_NewBorn).equalsIgnoreCase("1")){
+						Child_Visit(submission, members, membersFields);
+					}
+			
 		}
 
 		if (submission.formName().equalsIgnoreCase(MEMBERS_REGISTRATION)) {
@@ -117,8 +124,32 @@ public class MembersService {
 			allHouseHolds.update(houseHold);
 
 			hhSchedulesService.enrollIntoMilestoneOfCensus(submission.entityId(),
-					submission.getField(Date_Of_Reg),submission.anmId(),submission.instanceId());
-			}	 
+					submission.getField(REFERENCE_DATE),submission.anmId(),submission.instanceId());
+		}	 
+	}
+	
+	public void Child_Visit(FormSubmission submission, Members members, Map<String, String> membersFields) {
+		
+		if (!membersFields.get(Date_of_TT1).equalsIgnoreCase("") && membersFields.get(Date_of_TT1) != null)
+			if(isValidDate(membersFields.get(Date_of_TT1)))
+				membersScheduleService.enrollWomanTTVisit(members.caseId(),submission.anmId(),membersFields.get(Date_of_TT1));
+		
+		if (!membersFields.get(Date_of_TT2).equalsIgnoreCase("") && membersFields.get(Date_of_TT2) != null)
+			if(isValidDate(membersFields.get(Date_of_TT2)))
+				membersScheduleService.enrollTT1_Visit(members.caseId(),submission.anmId(),membersFields.get(Date_of_TT2));
+		
+		if (!membersFields.get(Date_of_TT3).equalsIgnoreCase("") && membersFields.get(Date_of_TT3) != null)
+			if(isValidDate(membersFields.get(Date_of_TT3)))
+				membersScheduleService.enrollTT2_Visit(members.caseId(),submission.anmId(),membersFields.get(Date_of_TT3));
+		
+		if (!membersFields.get(Date_of_TT4).equalsIgnoreCase("") && membersFields.get(Date_of_TT4) != null)
+			if(isValidDate(membersFields.get(Date_of_TT4)))
+				membersScheduleService.enrollTT3_Visit(members.caseId(),submission.anmId(),membersFields.get(Date_of_TT4));
+		
+		if (!membersFields.get(Date_of_TT5).equalsIgnoreCase("") && membersFields.get(Date_of_TT5) != null)
+			if(isValidDate(membersFields.get(Date_of_TT5)))
+				membersScheduleService.enrollTT4_Visit(members.caseId(),submission.anmId(),membersFields.get(Date_of_TT5));
+	
 	}
 	
 	public void TT_Visit(FormSubmission submission, Members members, Map<String, String> membersFields) {
@@ -335,7 +366,9 @@ public class MembersService {
 		members.withMeaslesVisit(measlesVisit);
 		allMembers.update(members);
 		
-		membersScheduleService.unEnrollFromSchedule(members.caseId(),submission.anmId(),SCHEDULE_Woman_Measles);
+		if (!submission.getField(measles_Date_of_Vaccination).equalsIgnoreCase("") && submission.getField(measles_Date_of_Vaccination) != null)
+			if(isValidDate(submission.getField(measles_Date_of_Vaccination)))
+				membersScheduleService.unEnrollFromSchedule(members.caseId(),submission.anmId(),SCHEDULE_Woman_Measles);
 	}
 	
 	public void TT1_Visit(FormSubmission submission) {
@@ -359,8 +392,10 @@ public class MembersService {
 		
 		members.withTTVisitOne(TT1_visit);
 		allMembers.update(members);
-
-		membersScheduleService.unEnrollFromSchedule(members.caseId(),submission.anmId(),SCHEDULE_Woman_1);
+		
+		if (!submission.getField(TT1_Date_of_Vaccination).equalsIgnoreCase("") && submission.getField(TT1_Date_of_Vaccination) != null)
+			if(isValidDate(submission.getField(TT1_Date_of_Vaccination)))
+				membersScheduleService.unEnrollFromSchedule(members.caseId(),submission.anmId(),SCHEDULE_Woman_1);
 	
 	}
 	
@@ -386,7 +421,9 @@ public class MembersService {
 		members.withTTVisitTwo(TT2_visit);
 		allMembers.update(members);		
 		
-		membersScheduleService.unEnrollFromSchedule(members.caseId(),submission.anmId(),SCHEDULE_Woman_2);
+		if (!submission.getField(TT2_Date_of_Vaccination).equalsIgnoreCase("") && submission.getField(TT2_Date_of_Vaccination) != null)
+			if(isValidDate(submission.getField(TT2_Date_of_Vaccination)))
+				membersScheduleService.unEnrollFromSchedule(members.caseId(),submission.anmId(),SCHEDULE_Woman_2);
 	}
 	
 	public void TT3_Visit(FormSubmission submission) {
@@ -411,7 +448,9 @@ public class MembersService {
 		members.withTTVisitOne(TT3_visit);
 		allMembers.update(members);
 		
-		membersScheduleService.unEnrollFromSchedule(members.caseId(),submission.anmId(),SCHEDULE_Woman_3);
+		if (!submission.getField(TT3_Date_of_Vaccination).equalsIgnoreCase("") && submission.getField(TT3_Date_of_Vaccination) != null)
+			if(isValidDate(submission.getField(TT3_Date_of_Vaccination)))
+				membersScheduleService.unEnrollFromSchedule(members.caseId(),submission.anmId(),SCHEDULE_Woman_3);
 	}
 	
 	public void TT4_Visit(FormSubmission submission) {
@@ -436,7 +475,9 @@ public class MembersService {
 		members.withTTVisitOne(TT4_visit);
 		allMembers.update(members);
 		
-		membersScheduleService.unEnrollFromSchedule(members.caseId(),submission.anmId(),SCHEDULE_Woman_4);	
+		if (!submission.getField(TT4_Date_of_Vaccination).equalsIgnoreCase("") && submission.getField(TT4_Date_of_Vaccination) != null)
+			if(isValidDate(submission.getField(TT4_Date_of_Vaccination)))
+				membersScheduleService.unEnrollFromSchedule(members.caseId(),submission.anmId(),SCHEDULE_Woman_4);	
 	}
 	
 	public void TT5_Visit(FormSubmission submission) {
@@ -461,7 +502,9 @@ public class MembersService {
 		members.withTTVisitFive(TT5_visit);
 		allMembers.update(members);
 		
-		membersScheduleService.unEnrollFromSchedule(members.caseId(),submission.anmId(),SCHEDULE_Woman_5);
+		if (!submission.getField(TT5_Date_of_Vaccination).equalsIgnoreCase("") && submission.getField(TT5_Date_of_Vaccination) != null)
+			if(isValidDate(submission.getField(TT5_Date_of_Vaccination)))
+				membersScheduleService.unEnrollFromSchedule(members.caseId(),submission.anmId(),SCHEDULE_Woman_5);
 	}
 
 	public void PCV1Handler(FormSubmission submission) {
@@ -478,9 +521,8 @@ public class MembersService {
 		Map<String, String> PCV1 = create(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
 											.put(START_DATE, submission.getField(START_DATE))
 											.put(END_DATE, submission.getField(END_DATE))
-											.put(general_Date_Of_Reg, submission.getField(general_Date_Of_Reg))
-											.put(Patient_Diagnosis, submission.getField(Patient_Diagnosis))
-											.put(Treatment, submission.getField(Treatment))
+											.put(ChildVaccination_PCV1_Date_of_Vaccination, submission.getField(ChildVaccination_PCV1_Date_of_Vaccination))
+											.put(Has_Vaccinated, submission.getField(Has_Vaccinated))
 											.put(Received_Time, format.format(today).toString())
 											.map();	
 		
@@ -502,9 +544,8 @@ public class MembersService {
 		Map<String, String> PCV2 = create(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
 											.put(START_DATE, submission.getField(START_DATE))
 											.put(END_DATE, submission.getField(END_DATE))
-											.put(general_Date_Of_Reg, submission.getField(general_Date_Of_Reg))
-											.put(Patient_Diagnosis, submission.getField(Patient_Diagnosis))
-											.put(Treatment, submission.getField(Treatment))
+											.put(ChildVaccination_PCV2_Date_of_Vaccination, submission.getField(ChildVaccination_PCV2_Date_of_Vaccination))
+											.put(Has_Vaccinated, submission.getField(Has_Vaccinated))
 											.put(Received_Time, format.format(today).toString())
 											.map();	
 		
@@ -526,9 +567,8 @@ public class MembersService {
 		Map<String, String> PCV3 = create(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
 											.put(START_DATE, submission.getField(START_DATE))
 											.put(END_DATE, submission.getField(END_DATE))
-											.put(general_Date_Of_Reg, submission.getField(general_Date_Of_Reg))
-											.put(Patient_Diagnosis, submission.getField(Patient_Diagnosis))
-											.put(Treatment, submission.getField(Treatment))
+											.put(ChildVaccination_PCV3_Date_of_Vaccination, submission.getField(ChildVaccination_PCV3_Date_of_Vaccination))
+											.put(Has_Vaccinated, submission.getField(Has_Vaccinated))
 											.put(Received_Time, format.format(today).toString())
 											.map();	
 		
@@ -550,9 +590,6 @@ public class MembersService {
 		Map<String, String> PENTA3 = create(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
 											.put(START_DATE, submission.getField(START_DATE))
 											.put(END_DATE, submission.getField(END_DATE))
-											.put(general_Date_Of_Reg, submission.getField(general_Date_Of_Reg))
-											.put(Patient_Diagnosis, submission.getField(Patient_Diagnosis))
-											.put(Treatment, submission.getField(Treatment))
 											.put(Received_Time, format.format(today).toString())
 											.map();	
 		
@@ -574,9 +611,6 @@ public class MembersService {
 		Map<String, String> PENTA2 = create(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
 											.put(START_DATE, submission.getField(START_DATE))
 											.put(END_DATE, submission.getField(END_DATE))
-											.put(general_Date_Of_Reg, submission.getField(general_Date_Of_Reg))
-											.put(Patient_Diagnosis, submission.getField(Patient_Diagnosis))
-											.put(Treatment, submission.getField(Treatment))
 											.put(Received_Time, format.format(today).toString())
 											.map();	
 		
@@ -598,9 +632,6 @@ public class MembersService {
 		Map<String, String> PENTA1 = create(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
 											.put(START_DATE, submission.getField(START_DATE))
 											.put(END_DATE, submission.getField(END_DATE))
-											.put(general_Date_Of_Reg, submission.getField(general_Date_Of_Reg))
-											.put(Patient_Diagnosis, submission.getField(Patient_Diagnosis))
-											.put(Treatment, submission.getField(Treatment))
 											.put(Received_Time, format.format(today).toString())
 											.map();	
 		
@@ -622,9 +653,8 @@ public class MembersService {
 		Map<String, String> OPV3 = create(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
 											.put(START_DATE, submission.getField(START_DATE))
 											.put(END_DATE, submission.getField(END_DATE))
-											.put(general_Date_Of_Reg, submission.getField(general_Date_Of_Reg))
-											.put(Patient_Diagnosis, submission.getField(Patient_Diagnosis))
-											.put(Treatment, submission.getField(Treatment))
+											.put(ChildVaccination_OPV3_Date_of_Vaccination, submission.getField(ChildVaccination_OPV3_Date_of_Vaccination))
+											.put(Has_Vaccinated, submission.getField(Has_Vaccinated))
 											.put(Received_Time, format.format(today).toString())
 											.map();	
 		
@@ -646,9 +676,8 @@ public class MembersService {
 		Map<String, String> OPV2 = create(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
 											.put(START_DATE, submission.getField(START_DATE))
 											.put(END_DATE, submission.getField(END_DATE))
-											.put(general_Date_Of_Reg, submission.getField(general_Date_Of_Reg))
-											.put(Patient_Diagnosis, submission.getField(Patient_Diagnosis))
-											.put(Treatment, submission.getField(Treatment))
+											.put(ChildVaccination_OPV2_Date_of_Vaccination, submission.getField(ChildVaccination_OPV2_Date_of_Vaccination))
+											.put(Has_Vaccinated, submission.getField(Has_Vaccinated))
 											.put(Received_Time, format.format(today).toString())
 											.map();	
 		
@@ -670,9 +699,8 @@ public class MembersService {
 		Map<String, String> OPV1 = create(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
 											.put(START_DATE, submission.getField(START_DATE))
 											.put(END_DATE, submission.getField(END_DATE))
-											.put(general_Date_Of_Reg, submission.getField(general_Date_Of_Reg))
-											.put(Patient_Diagnosis, submission.getField(Patient_Diagnosis))
-											.put(Treatment, submission.getField(Treatment))
+											.put(ChildVaccination_OPV1_Date_of_Vaccination, submission.getField(ChildVaccination_OPV1_Date_of_Vaccination))
+											.put(Has_Vaccinated, submission.getField(Has_Vaccinated))
 											.put(Received_Time, format.format(today).toString())
 											.map();	
 		
@@ -694,9 +722,8 @@ public class MembersService {
 		Map<String, String> OPV0 = create(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
 											.put(START_DATE, submission.getField(START_DATE))
 											.put(END_DATE, submission.getField(END_DATE))
-											.put(general_Date_Of_Reg, submission.getField(general_Date_Of_Reg))
-											.put(Patient_Diagnosis, submission.getField(Patient_Diagnosis))
-											.put(Treatment, submission.getField(Treatment))
+											.put(ChildVaccination_OPV0_Date_of_Vaccination, submission.getField(ChildVaccination_OPV0_Date_of_Vaccination))
+											.put(Has_Vaccinated, submission.getField(Has_Vaccinated))
 											.put(Received_Time, format.format(today).toString())
 											.map();	
 		
@@ -718,9 +745,8 @@ public class MembersService {
 		Map<String, String> MR = create(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
 											.put(START_DATE, submission.getField(START_DATE))
 											.put(END_DATE, submission.getField(END_DATE))
-											.put(general_Date_Of_Reg, submission.getField(general_Date_Of_Reg))
-											.put(Patient_Diagnosis, submission.getField(Patient_Diagnosis))
-											.put(Treatment, submission.getField(Treatment))
+											.put(ChildVaccination_MR_Date_of_Vaccination, submission.getField(ChildVaccination_MR_Date_of_Vaccination))
+											.put(Has_Vaccinated, submission.getField(Has_Vaccinated))
 											.put(Received_Time, format.format(today).toString())
 											.map();	
 		
@@ -742,9 +768,8 @@ public class MembersService {
 		Map<String, String> Measles2 = create(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
 											.put(START_DATE, submission.getField(START_DATE))
 											.put(END_DATE, submission.getField(END_DATE))
-											.put(general_Date_Of_Reg, submission.getField(general_Date_Of_Reg))
-											.put(Patient_Diagnosis, submission.getField(Patient_Diagnosis))
-											.put(Treatment, submission.getField(Treatment))
+											.put(ChildVaccination_Measles_Date_of_Vaccination, submission.getField(ChildVaccination_Measles_Date_of_Vaccination))
+											.put(Has_Vaccinated, submission.getField(Has_Vaccinated))
 											.put(Received_Time, format.format(today).toString())
 											.map();	
 		
@@ -766,9 +791,8 @@ public class MembersService {
 		Map<String, String> IPV = create(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
 											.put(START_DATE, submission.getField(START_DATE))
 											.put(END_DATE, submission.getField(END_DATE))
-											.put(general_Date_Of_Reg, submission.getField(general_Date_Of_Reg))
-											.put(Patient_Diagnosis, submission.getField(Patient_Diagnosis))
-											.put(Treatment, submission.getField(Treatment))
+											.put(ChildVaccination_IPV_Date_of_Vaccination, submission.getField(ChildVaccination_IPV_Date_of_Vaccination))
+											.put(Has_Vaccinated, submission.getField(Has_Vaccinated))
 											.put(Received_Time, format.format(today).toString())
 											.map();	
 		
@@ -790,9 +814,8 @@ public class MembersService {
 		Map<String, String> BCG = create(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
 											.put(START_DATE, submission.getField(START_DATE))
 											.put(END_DATE, submission.getField(END_DATE))
-											.put(general_Date_Of_Reg, submission.getField(general_Date_Of_Reg))
-											.put(Patient_Diagnosis, submission.getField(Patient_Diagnosis))
-											.put(Treatment, submission.getField(Treatment))
+											.put(ChildVaccination_BCG_Date_of_Vaccination, submission.getField(ChildVaccination_BCG_Date_of_Vaccination))
+											.put(Has_Vaccinated, submission.getField(Has_Vaccinated))
 											.put(Received_Time, format.format(today).toString())
 											.map();	
 		
