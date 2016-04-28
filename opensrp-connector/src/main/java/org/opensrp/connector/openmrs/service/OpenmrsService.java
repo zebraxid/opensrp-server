@@ -28,11 +28,13 @@ public abstract class OpenmrsService {
 	
 	public OpenmrsService() {	}
 	
-	public OpenmrsService(String openmrsUrl, String user, String password) {
+	public OpenmrsService(@Value("#{opensrp['openmrs.url']}") String openmrsUrl, @Value("#{opensrp['openmrs.username']}") String user,@Value("#{opensrp['openmrs.password']}") String password) {
     	OPENMRS_BASE_URL = openmrsUrl;
     	OPENMRS_USER = user;
     	OPENMRS_PWD = password;
 	}
+	
+	
 
 	/**
 	 * returns url after trimming ending slash
