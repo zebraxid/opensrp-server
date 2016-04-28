@@ -472,7 +472,11 @@ public class AllConstants {
     	public static final String STS_WD ="9";
     	public static final String SCHEDULE_BNF_IME = "ImmediateBirthNotificationPregnancyStatusFollowUp";
     	public static final String SCHEDULE_BNF = "BirthNotificationPregnancyStatusFollowUp";
-    	public static final String bnf_current_formStatus = "bnf_current_formStatus";     
+    	public static final String bnf_current_formStatus = "bnf_current_formStatus";    
+    	public static final String FWBNFNAMECHECK = "FWBNFNAMECHECK";
+    	public static final String FWBNFNAME = "FWBNFNAME";
+    	public static final String FWBNFCHILDNAME = "FWBNFCHILDNAME";
+    	public static final String FWBNFDOB = "FWBNFDOB";
     }
     
     public static class PNCVisitOneFields

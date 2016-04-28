@@ -124,6 +124,10 @@ public class PNCService {
 			    	child.details().put(FWBNFGEN, childFields.get(FWBNFGEN));
 			    	child.details().put(FWBNFCHLDVITSTS, childFields.get(FWBNFCHLDVITSTS));	
 			    	child.details().put(received_time,formats.format(today).toString());
+			    	child.details().put(FWBNFNAMECHECK, childFields.get(FWBNFNAMECHECK));
+			    	child.details().put(FWBNFNAME, childFields.get(FWBNFNAME));
+			    	child.details().put(FWBNFCHILDNAME, childFields.get(FWBNFCHILDNAME));	
+			    	child.details().put(FWBNFDOB, childFields.get(FWBNFDOB));
 
 					allChilds.update(child);
 					childSchedulesService.enrollENCCForChild(childFields.get(ID),  LocalDate.parse(referenceDate));	

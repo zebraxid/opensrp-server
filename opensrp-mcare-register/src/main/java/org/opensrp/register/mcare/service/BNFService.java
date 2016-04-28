@@ -13,6 +13,7 @@ import static org.opensrp.common.AllConstants.ANCVisitOneFields.user_type;
 import static org.opensrp.common.AllConstants.BnfFollowUpVisitFields.*;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.REFERENCE_DATE;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.MOTHER_REFERENCE_DATE;
+import static org.opensrp.common.AllConstants.HHRegistrationFields.received_time;
 import static org.opensrp.common.util.EasyMap.create;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_BNF;
 
@@ -105,7 +106,7 @@ public class BNFService {
 											.put(FWBNFSMSRSN, submission.getField(FWBNFSMSRSN))
 											.put(user_type, submission.getField(user_type))
 											.put(external_user_ID, submission.getField(external_user_ID))
-											.put("received_time", format.format(today).toString())
+											.put(received_time, format.format(today).toString())
 											.put(relationalid, submission.getField(relationalid)).map();
 		
 		//mother.withTODAY(submission.getField(REFERENCE_DATE));
