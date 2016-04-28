@@ -43,14 +43,20 @@ public class PatientAtomfeed extends OpenmrsService implements EventWorker, Atom
 	private static Logger logger = Logger.getLogger(PatientAtomfeed.class);
 	@Autowired
 	public PatientAtomfeed(AllMarkers allMarkers, AllFailedEvents allFailedEvents, 
-			 String baseUrl,String openmrsUserName, String openmrsPassword, PatientService patientService, ClientService clientService) throws URISyntaxException {
+			@Value("#{opensrp['openmrs.url']}") String baseUrl,@Value("#{opensrp['openmrs.username']}") String openmrsUserName,@Value("#{opensrp['openmrs.password']}") String openmrsPassword,PatientService patientService, ClientService clientService) throws URISyntaxException {
 		
-		super(baseUrl, openmrsUserName, openmrsPassword);
+		//super(baseUrl, openmrsUserName, openmrsPassword);
 		
 		if(baseUrl != null){
 			OPENMRS_BASE_URL = baseUrl;
 		}
 
+		if(openmrsUserName != null){
+			OPENMRS_USER = openmrsUserName;
+		}
+		if(openmrsPassword != null){
+			OPENMRS_PWD = openmrsPassword;
+		}
 		this.atomFeedProperties = new AtomFeedProperties();
 		this.transactionManager = new AFTransactionManager(){
 			@Override
