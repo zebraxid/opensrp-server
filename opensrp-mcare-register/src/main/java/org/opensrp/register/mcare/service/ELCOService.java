@@ -109,9 +109,13 @@ public class ELCOService {
 			houseHold.withTODAY(submission.getField(REFERENCE_DATE));
 			houseHold.withFWUPAZILLA(submission.getField(FW_UPAZILLA).replace("+", " "));
 			allHouseHolds.update(houseHold);
-			
+			logger.info("FWCENSTA : "+submission.getField("FWCENSTAT"));
 			if(submission.getField("FWCENSTAT").equalsIgnoreCase("7")){
 				elcoScheduleService.unEnrollFromScheduleCensus(submission.entityId(), submission.anmId(),"");
+				List<Action> beforeNewActions = allActions.findAlertByANMIdEntityIdScheduleName(submission.anmId(), submission.entityId(), HH_SCHEDULE_CENSUS);
+				if(beforeNewActions.size() > 0){ 
+					scheduleLogService.closeSchedule(submission.entityId(),submission.instanceId(),beforeNewActions.get(0).timestamp(),HH_SCHEDULE_CENSUS);
+				}
 			}else{
 			hhSchedulesService.enrollIntoMilestoneOfCensus(submission.entityId(),
 					submission.getField(REFERENCE_DATE),submission.anmId(),submission.instanceId());
@@ -239,9 +243,11 @@ public class ELCOService {
 			elco.withTODAY(submission.getField(REFERENCE_DATE));
 			
 			allEcos.update(elco);
+			logger.info("submission.getField(FW_PSRSTS): "+submission.getField(FW_PSRSTS));
+			logger.info("submission.getField(FW_PSRPREGSTS): "+submission.getField(FW_PSRPREGSTS));
 			
-			
-			if(submission.getField(FW_PSRPREGSTS) != null && submission.getField(FW_PSRPREGSTS).equals("1") ){        
+			if(submission.getField(FW_PSRPREGSTS).equalsIgnoreCase("1") && submission.getField(FW_PSRSTS).equals("01") ){        
+				
 				ancService.registerANC(submission);
 	            bnfService.registerBNF(submission);
 	            elco.setIsClosed(true);
@@ -251,7 +257,7 @@ public class ELCOService {
 	        	if(beforeNewActions.size() > 0){ 
 	        		scheduleLogService.closeSchedule(submission.entityId(),submission.instanceId(),beforeNewActions.get(0).timestamp(),ELCO_SCHEDULE_PSRF);
 	        	}	
-			}else if(submission.getField(FW_PSRSTS).equalsIgnoreCase("2") || (submission.getField(FW_PSRSTS).equalsIgnoreCase("1"))){
+			}else if(submission.getField(FW_PSRSTS).equalsIgnoreCase("02") || (submission.getField(FW_PSRSTS).equalsIgnoreCase("01"))){
 				elcoScheduleService.enrollIntoMilestoneOfPSRF(submission.entityId(),
 	            submission.getField(REFERENCE_DATE),submission.anmId(),submission.instanceId());
 			}else{				

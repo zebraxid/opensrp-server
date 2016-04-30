@@ -59,6 +59,23 @@ public class ScheduleLogService extends OpenmrsService{
 		this.userService = userService;
 	}
 	
+	/**
+	 * @author proshanto
+	 * @desc This method save scheduleLog
+	 * @param beneficiaryType Type of Beneficiary
+	 * @param caseID  Beneficiary CaseId
+	 * @param instanceId 
+	 * @param anmIdentifier user name of field worker
+	 * @param  scheduleName 
+	 * @param alertStatus type of current window status
+	 * @param visitCode current milestone name
+	 * @param startDate Schedule start date
+	 * @param expiryDate Schedule expired date
+	 * 
+	 * @return nothing to return
+	 * 
+	 * 
+	 * */
 	
 	public void saveScheduleLog(BeneficiaryType beneficiaryType, String caseID, String instanceId, String anmIdentifier, String scheduleName, String visitCode, AlertStatus alertStatus, DateTime startDate, DateTime expiryDate,String immediateScheduleName,long timeStamp){
 		List<Enrollment> el =this.findEnrollmentByCaseIdAndScheduleName(caseID,immediateScheduleName);
