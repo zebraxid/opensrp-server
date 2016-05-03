@@ -372,4 +372,8 @@ public class ScheduleLogService extends OpenmrsService{
 		}		
 		return date.getTime();
 	}
+	
+	public void ancScheduleUnEnroll(String entityId, String  providerId,String scheduleName){
+		scheduler.unEnrollFromSchedule(entityId, providerId, scheduleName);
+	}
 }

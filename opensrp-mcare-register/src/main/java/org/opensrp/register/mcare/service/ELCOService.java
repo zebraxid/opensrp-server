@@ -104,7 +104,8 @@ public class ELCOService {
 				logger.info("Elco removed");
 			}
 			
-			String fieldName =  scheduleLogService.getScheduleRuleForPSRFInHH("HouseHold Form");
+			//String fieldName =  scheduleLogService.getScheduleRuleForPSRFInHH("HouseHold Form");
+			String fieldName ="FWWOMFNAME";
 			logger.info("FieldName:"+fieldName);
 			if(!fieldName.equalsIgnoreCase("")){
 				if(elcoFields.containsKey(fieldName)){	
