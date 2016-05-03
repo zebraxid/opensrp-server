@@ -542,6 +542,7 @@ public class AllConstants {
     	public static final String FWENC1DSCONVL ="FWENC1DSCONVL";
     	public static final String FWENC1DELCOMP ="FWENC1DELCOMP";
     	public static final String encc1_current_formStatus ="encc1_current_formStatus";
+    	public static final String referenceDate = "referenceDate";
     	
     }
     

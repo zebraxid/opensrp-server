@@ -5,7 +5,6 @@ import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ChildScheduleC
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ChildScheduleConstants.SCHEDULE_ENCC_1;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ChildScheduleConstants.SCHEDULE_ENCC_2;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ChildScheduleConstants.SCHEDULE_ENCC_3;
-import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_PNC;
 
 import org.joda.time.Days;
 import org.joda.time.LocalDate;
@@ -43,13 +42,13 @@ public class ChildSchedulesService {
 	        	
 	        }
 
-	        logger.info(format("Enrolling ENCC with Entity id:{0} to ENCC schedule, milestone: {1}.", entityId, milestone));
+	        logger.info(format("Enrolling with Entity id:{0} to ENCC schedule, milestone: {1}.", entityId, milestone));
 	        scheduler.enrollIntoSchedule(entityId, SCHEDULE_ENCC, milestone, referenceDateForSchedule.toString());
 	    }
 	    
-	    public void enrollENCCForMother(String entityId, String sch_name, LocalDate referenceDateForSchedule) {
-	        logger.info(format("Enrolling ENCC with Entity id:{0} to PNC schedule, milestone: {1}.", entityId, sch_name));
-	        scheduler.enrollIntoSchedule(entityId, SCHEDULE_PNC, sch_name, referenceDateForSchedule.toString());
+	    public void enrollENCCVisit(String entityId, String sch_name, LocalDate referenceDateForSchedule) {
+	        logger.info(format("Enrolling with Entity id:{0} to ENCC schedule, milestone: {1}.", entityId, sch_name));
+	        scheduler.enrollIntoSchedule(entityId, SCHEDULE_ENCC, sch_name, referenceDateForSchedule.toString());
 	    }
 	    
 	    public void fullfillMilestone(String entityId, String providerId, String scheduleName,LocalDate completionDate ){
