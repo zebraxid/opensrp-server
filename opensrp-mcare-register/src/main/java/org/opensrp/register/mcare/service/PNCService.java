@@ -15,6 +15,11 @@ import static org.opensrp.common.AllConstants.PNCVisitThreeFields.*;
 import static org.opensrp.common.AllConstants.DeliveryOutcomeFields.CHILD_REGISTRATION_SUB_FORM_NAME;
 import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_GOBHHID;
 import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_WOMFNAME;
+import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_ANC;
+import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_PNC;
+import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_PNC_1;
+import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_PNC_2;
+import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_PNC_3;
 import static org.opensrp.common.util.EasyMap.create;
 
 import java.text.SimpleDateFormat;
@@ -188,6 +193,17 @@ public class PNCService {
 		mother.withPNCVisitOne(pncVisitOne);
 
 		allMothers.update(mother);
+		
+		pncSchedulesService.fullfillMilestone(submission.entityId(), submission.anmId(), SCHEDULE_PNC, new LocalDate());
+		
+		String pattern = "yyyy-MM-dd";
+		//DateTimeFormatter formatter = DateTimeFormat.forPattern(pattern);
+		
+		DateTime dateTime = DateTime.parse(mother.getbnfVisitDetails(FWBNFDTOO));
+		DateTimeFormatter fmt = DateTimeFormat.forPattern(pattern);
+		String referenceDate = fmt.print(dateTime);
+		
+		pncSchedulesService.enrollPNCForMother(submission.entityId(), SCHEDULE_PNC_2, LocalDate.parse(referenceDate));
 	}
 
 	public void pncVisitTwo(FormSubmission submission) {
@@ -233,6 +249,15 @@ public class PNCService {
 
 		allMothers.update(mother);
 
+		pncSchedulesService.fullfillMilestone(submission.entityId(), submission.anmId(), SCHEDULE_PNC, new LocalDate());
+		String pattern = "yyyy-MM-dd";
+		//DateTimeFormatter formatter = DateTimeFormat.forPattern(pattern);
+		
+		DateTime dateTime = DateTime.parse(mother.getbnfVisitDetails(FWBNFDTOO));
+		DateTimeFormatter fmt = DateTimeFormat.forPattern(pattern);
+		String referenceDate = fmt.print(dateTime);
+		
+		pncSchedulesService.enrollPNCForMother(submission.entityId(), SCHEDULE_PNC_3, LocalDate.parse(referenceDate));
 	}
 
 	public void pncVisitThree(FormSubmission submission) {
@@ -278,6 +303,8 @@ public class PNCService {
 		mother.withPNCVisitThree(pncVisitThree);
 
 		allMothers.update(mother);
+		
+		pncSchedulesService.unEnrollFromSchedule(submission.entityId(), submission.anmId(), SCHEDULE_PNC);
 	}
 	
 	public void pncClose(String entityId) {

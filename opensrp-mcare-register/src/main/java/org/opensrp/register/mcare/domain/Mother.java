@@ -345,6 +345,13 @@ public class Mother extends MotechBaseDataObject {
 		}
 		return bnfVisitDetails;
 	}
+	public String getbnfVisitDetails(String name) {
+		if (bnfVisitDetails == null) {
+			bnfVisitDetails = new ArrayList<>();
+			return "";
+		}
+		return bnfVisitDetails.get(0).get(name);
+	}
 	public Map<String, String> pncVisitOne() {
 		return pncVisitOne;
 	}
