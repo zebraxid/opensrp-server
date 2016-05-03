@@ -105,10 +105,13 @@ public class PNCService {
 			else if (submission.getField(FWBNFSTS).equals(STS_LB)) {
 				logger.info("Generating schedule for Mother when Child is Live Birth. Mother Id: "
 						+ mother.caseId());
-				pncSchedulesService.enrollPNCRVForMother(submission.entityId(), LocalDate.parse(referenceDate));
-				logger.info("Generating schedule for Child when Child is Live Birth. Mother Id: "
-						+ mother.caseId());
-								
+				if(submission.getField(FWBNFWOMVITSTS).equalsIgnoreCase("0")){
+					logger.info("Mother died");
+				}else{					
+					pncSchedulesService.enrollPNCRVForMother(submission.entityId(), LocalDate.parse(referenceDate));
+					logger.info("Generating schedule for Child when Child is Live Birth. Mother Id: "
+							+ mother.caseId());
+				}
 				SubFormData subFormData = submission.getSubFormByName(CHILD_REGISTRATION_SUB_FORM_NAME);
 				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 				SimpleDateFormat formats = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -135,7 +138,11 @@ public class PNCService {
 			    	child.details().put("referenceDate", referenceDate);
 
 					allChilds.update(child);
-					childSchedulesService.enrollENCCForChild(childFields.get(ID),  LocalDate.parse(referenceDate));	
+					if(submission.getField(FWBNFCHLDVITSTS).equalsIgnoreCase("0")){
+						logger.info("Child died");
+					}else{
+						childSchedulesService.enrollENCCForChild(childFields.get(ID),  LocalDate.parse(referenceDate));
+					}
 				}
 				
 							
