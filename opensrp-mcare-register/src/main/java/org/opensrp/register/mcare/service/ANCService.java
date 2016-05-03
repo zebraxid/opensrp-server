@@ -183,7 +183,7 @@ public class ANCService {
 		if(submission.getField(FWANC1REMSTS).equalsIgnoreCase(STS_GONE) || submission.getField(FWANC1REMSTS).equalsIgnoreCase(STS_DEAD))
 		{ 
 			closeMother(mother);
-			unEnrollBNFSchedule(submission.entityId(),submission.anmId(),submission.instanceId());
+			unEnrollBNFSchedule(submission.entityId(),submission.anmId(),submission.instanceId(),submission.getField("user_type"));
 		}
 	}
 
@@ -271,7 +271,7 @@ public class ANCService {
 		if(submission.getField(FWANC2REMSTS).equalsIgnoreCase(STS_GONE) || submission.getField(FWANC2REMSTS).equalsIgnoreCase(STS_DEAD))
 		{ 
 			closeMother(mother);
-			unEnrollBNFSchedule(submission.entityId(),submission.anmId(),submission.instanceId());
+			unEnrollBNFSchedule(submission.entityId(),submission.anmId(),submission.instanceId(),submission.getField("user_type"));
 		}
 	}
 
@@ -361,7 +361,7 @@ public class ANCService {
 		if(submission.getField(FWANC3REMSTS).equalsIgnoreCase(STS_GONE) || submission.getField(FWANC3REMSTS).equalsIgnoreCase(STS_DEAD))
 		{ 
 			closeMother(mother);
-			unEnrollBNFSchedule(submission.entityId(),submission.anmId(),submission.instanceId());
+			unEnrollBNFSchedule(submission.entityId(),submission.anmId(),submission.instanceId(),submission.getField("user_type"));
 		}
 	}
 
@@ -451,7 +451,8 @@ public class ANCService {
 		if(submission.getField(FWANC4REMSTS).equalsIgnoreCase(STS_GONE) || submission.getField(FWANC4REMSTS).equalsIgnoreCase(STS_DEAD))
 		{ 
 			closeMother(mother);
-			unEnrollBNFSchedule(submission.entityId(),submission.anmId(),submission.instanceId());
+			
+			unEnrollBNFSchedule(submission.entityId(),submission.anmId(),submission.instanceId(),submission.getField("user_type"));
 		}
 	}
 
@@ -497,10 +498,12 @@ public class ANCService {
 		}
 	}
 	
-	public void unEnrollBNFSchedule(String entityId,String provider,String  instanceId){
-		Mother mother = allMothers.findByCaseId(entityId);
-		bnfSchedulesService.unEnrollBNFSchedule(entityId, provider);
-		pncService.closeMother(mother);
-		scheduleLogService.closeScheduleAndScheduleLog( entityId,instanceId, SCHEDULE_BNF,provider);
+	public void unEnrollBNFSchedule(String entityId,String provider,String  instanceId,String user_type){
+		if(user_type.equalsIgnoreCase("FD")){
+			Mother mother = allMothers.findByCaseId(entityId);
+			bnfSchedulesService.unEnrollBNFSchedule(entityId, provider);
+			pncService.closeMother(mother);
+			scheduleLogService.closeScheduleAndScheduleLog( entityId,instanceId, SCHEDULE_BNF,provider);
+		}
 	}
 }
