@@ -123,7 +123,7 @@ public class BNFService {
 		if(submission.getField(FWBNFSTS).equalsIgnoreCase(STS_LB) || submission.getField(FWBNFSTS).equalsIgnoreCase(STS_SB))
 		{ 
 			pncService.deliveryOutcome(submission); 
-			if(submission.getField("user_type").equalsIgnoreCase("FD")){
+			if(submission.getField("user_type").equalsIgnoreCase("FD") || (submission.getField(FWBNFSTS).equalsIgnoreCase(STS_LB) && submission.getField("user_type").equalsIgnoreCase("FWA"))  ){
 				bnfSchedulesService.unEnrollBNFSchedule(submission.entityId(), submission.anmId());
 				scheduleLogService.closeScheduleAndScheduleLog( submission.entityId(),submission.instanceId(), SCHEDULE_BNF,submission.anmId());
 				

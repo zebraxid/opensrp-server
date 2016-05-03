@@ -137,9 +137,13 @@ public class PNCService {
 				
 			} 
 			else if (submission.getField(FWBNFSTS).equals(STS_SB)) {
-				logger.info("Generating schedule for Mother when Child is Still Birth. Mother Id: "
-						+ mother.caseId());
-				pncSchedulesService.enrollPNCRVForMother(submission.entityId(),  LocalDate.parse(referenceDate));
+				if(submission.getField("user_type").equalsIgnoreCase("FD")){
+					logger.info("Generating schedule for Mother when Child is Still Birth. Mother Id: "
+							+ mother.caseId());
+					pncSchedulesService.enrollPNCRVForMother(submission.entityId(),  LocalDate.parse(referenceDate));
+				}else{
+					logger.info("FWA submit form for Still Birth so nothing happend ");
+				}
 			}
 		}
 	}
