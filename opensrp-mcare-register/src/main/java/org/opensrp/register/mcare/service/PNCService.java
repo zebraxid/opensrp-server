@@ -15,7 +15,6 @@ import static org.opensrp.common.AllConstants.PNCVisitThreeFields.*;
 import static org.opensrp.common.AllConstants.DeliveryOutcomeFields.CHILD_REGISTRATION_SUB_FORM_NAME;
 import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_GOBHHID;
 import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_WOMFNAME;
-import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_ANC;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_PNC;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_PNC_1;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_PNC_2;
@@ -133,6 +132,7 @@ public class PNCService {
 			    	child.details().put(FWBNFNAME, childFields.get(FWBNFNAME));
 			    	child.details().put(FWBNFCHILDNAME, childFields.get(FWBNFCHILDNAME));	
 			    	child.details().put(FWBNFDOB, childFields.get(FWBNFDOB));
+			    	child.details().put(referenceDate, referenceDate);
 
 					allChilds.update(child);
 					childSchedulesService.enrollENCCForChild(childFields.get(ID),  LocalDate.parse(referenceDate));	
@@ -250,6 +250,7 @@ public class PNCService {
 		allMothers.update(mother);
 
 		pncSchedulesService.fullfillMilestone(submission.entityId(), submission.anmId(), SCHEDULE_PNC, new LocalDate());
+		
 		String pattern = "yyyy-MM-dd";
 		//DateTimeFormatter formatter = DateTimeFormat.forPattern(pattern);
 		
