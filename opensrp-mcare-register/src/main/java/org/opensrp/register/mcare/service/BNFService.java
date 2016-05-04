@@ -137,7 +137,7 @@ public class BNFService {
 		logger.info("submission.getField(FWBNFSTS):"+submission.getField(FWBNFSTS));
 		if(submission.getField(FWBNFSTS).equalsIgnoreCase(STS_LB) || submission.getField(FWBNFSTS).equalsIgnoreCase(STS_SB))
 		{ 
-			if(!submission.getField("user_type").equalsIgnoreCase("FD")){
+			if(submission.getField("user_type").equalsIgnoreCase("FD")){
 				pncService.deliveryOutcome(submission); 
 				bnfSchedulesService.unEnrollBNFSchedule(submission.entityId(), submission.anmId());
 				scheduleLogService.closeScheduleAndScheduleLog( submission.entityId(),submission.instanceId(), SCHEDULE_BNF,submission.anmId());
