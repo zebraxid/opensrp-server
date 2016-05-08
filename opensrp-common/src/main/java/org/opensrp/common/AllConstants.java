@@ -231,7 +231,7 @@ public class AllConstants {
     	public static final String FW_SORTVALUE = "FWSORTVALUE"; 
     	public static final String FWNOTELIGIBLE = "FWNOTELIGIBLE";
     	public static final String current_formStatus = "current_formStatus";
-    	
+    	public static final String received_time = "received_time";
     }
     
     public static class ANCVisitOneFields

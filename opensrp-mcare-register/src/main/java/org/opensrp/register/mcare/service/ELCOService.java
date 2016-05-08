@@ -104,7 +104,6 @@ public class ELCOService {
 				logger.info("Elco removed");
 			}
 			
-			//String fieldName =  scheduleLogService.getScheduleRuleForPSRFInHH("HouseHold Form");
 			String fieldName ="FWWOMFNAME";
 			logger.info("FieldName:"+fieldName);
 			if(!fieldName.equalsIgnoreCase("")){
@@ -143,7 +142,7 @@ public class ELCOService {
 			
 			allHouseHolds.update(houseHold);
 
-			logger.info("Expected value leading non zero and found FWCENSTA : "+submission.getField("FWCENSTAT"));
+			logger.info("Expected value leading non zero and found FWCENSTAT : "+submission.getField("FWCENSTAT"));
 			if(submission.getField("FWCENSTAT").equalsIgnoreCase("7")){
 				elcoScheduleService.unEnrollFromScheduleCensus(submission.entityId(), submission.anmId(),"");
 				try{
@@ -289,7 +288,7 @@ public class ELCOService {
 					.put(ELCO, submission.getField(ELCO))
 					.put(FW_ELIGIBLE, submission.getField(FW_ELIGIBLE))
 					.put(current_formStatus, submission.getField(current_formStatus))
-					.put("received_time", format.format(today).toString())
+					.put(received_time, format.format(today).toString())
 					.map();
 			
 			elco.PSRFDETAILS().add(psrf);	
