@@ -88,24 +88,50 @@ public class ANCSchedulesService {
 			e.printStackTrace();
 		}
         DateTime start = new DateTime(date);
-        if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(24).toPeriod().minusDays(4))) {
+        if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(24).toPeriod().minusDays(6))) {
             milestone = SCHEDULE_ANC_1;           
             ancStartDate = new DateTime(start);
-            alertStaus = AlertStatus.normal;
+            
+            if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(8).toPeriod().minusDays(6)))
+                alertStaus = AlertStatus.normal;
+            else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(8).toPeriod().minusDays(1)))
+            	alertStaus = AlertStatus.upcoming;
+            else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(23).toPeriod().minusDays(1)))
+            	alertStaus = AlertStatus.urgent;
+            else alertStaus = AlertStatus.expired;
+
             ancExpireDate = new DateTime(start).plusDays(DateTimeDuration.anc1);
-        } else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(32).toPeriod().minusDays(4))) {
+        } else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(32).toPeriod().minusDays(6))) {
             milestone = SCHEDULE_ANC_2;  
-            alertStaus = AlertStatus.upcoming;
+            
+            if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(24).toPeriod().minusDays(1)))
+                alertStaus = AlertStatus.upcoming;
+            else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(31).toPeriod().minusDays(1)))
+            	alertStaus = AlertStatus.urgent;
+            else alertStaus = AlertStatus.expired;
+          
             ancStartDate = new DateTime(start).plusDays(DateTimeDuration.anc2Start);
             ancExpireDate = new DateTime(ancStartDate).plusDays(DateTimeDuration.anc3End);
-        } else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(36).toPeriod().minusDays(4))) {
+        } else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(36).toPeriod().minusDays(6))) {
             milestone = SCHEDULE_ANC_3; 
-            alertStaus = AlertStatus.upcoming;
+            
+            if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(32).toPeriod().minusDays(1)))
+                alertStaus = AlertStatus.upcoming;
+            else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(35).toPeriod().minusDays(1)))
+            	alertStaus = AlertStatus.urgent;
+            else alertStaus = AlertStatus.expired;
+            
             ancStartDate = new DateTime(start).plusDays(DateTimeDuration.anc3Start);
             ancExpireDate = new DateTime(ancStartDate).plusDays(DateTimeDuration.anc3End);
         } else if(DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(94).toPeriod().minusDays(5))) {
             milestone = SCHEDULE_ANC_4;
-            alertStaus = AlertStatus.upcoming;
+            
+            if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(36).toPeriod().minusDays(1)))
+                alertStaus = AlertStatus.upcoming;
+            else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(93).toPeriod()))
+            	alertStaus = AlertStatus.urgent;
+            else alertStaus = AlertStatus.expired;
+            
             ancStartDate = new DateTime(start).plusDays(DateTimeDuration.anc4Start);
             ancExpireDate = new DateTime(ancStartDate).plusDays(DateTimeDuration.anc4End);
         } else{
