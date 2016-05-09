@@ -88,17 +88,17 @@ public class ANCSchedulesService {
 			e.printStackTrace();
 		}
         DateTime start = new DateTime(date);
-        if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(24).toPeriod().minusDays(5))) {
+        if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(24).toPeriod().minusDays(4))) {
             milestone = SCHEDULE_ANC_1;           
             ancStartDate = new DateTime(start);
             alertStaus = AlertStatus.normal;
             ancExpireDate = new DateTime(start).plusDays(DateTimeDuration.anc1);
-        } else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(32).toPeriod().minusDays(5))) {
+        } else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(32).toPeriod().minusDays(4))) {
             milestone = SCHEDULE_ANC_2;  
             alertStaus = AlertStatus.upcoming;
             ancStartDate = new DateTime(start).plusDays(DateTimeDuration.anc2Start);
             ancExpireDate = new DateTime(ancStartDate).plusDays(DateTimeDuration.anc3End);
-        } else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(36).toPeriod().minusDays(5))) {
+        } else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(36).toPeriod().minusDays(4))) {
             milestone = SCHEDULE_ANC_3; 
             alertStaus = AlertStatus.upcoming;
             ancStartDate = new DateTime(start).plusDays(DateTimeDuration.anc3Start);
@@ -112,8 +112,6 @@ public class ANCSchedulesService {
         	
         }
 
-        
-        
         logger.info(format("Enrolling ANC with Entity id:{0} to ANC schedule, milestone: {1}.", entityId, milestone));
         scheduler.enrollIntoSchedule(entityId, SCHEDULE_ANC, milestone, referenceDateForSchedule.toString());
         
