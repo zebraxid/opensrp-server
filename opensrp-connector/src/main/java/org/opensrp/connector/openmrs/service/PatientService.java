@@ -93,7 +93,7 @@ public class PatientService extends OpenmrsService{
     
     public JSONObject generateID() throws JSONException
     {
-    	String ids = "GAN";
+    	String ids = "BDH";
   		JSONObject gen = new JSONObject();
   		gen.put("identifierSourceName",ids);
   		

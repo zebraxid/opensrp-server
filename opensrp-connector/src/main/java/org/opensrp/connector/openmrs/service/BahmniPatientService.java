@@ -35,7 +35,7 @@ public class BahmniPatientService extends OpenmrsService{
     
     public String generateID() throws JSONException
     {
-    	String ids = "GAN";
+    	String ids = "BDH";
   		JSONObject gen = new JSONObject();
   		gen.put("identifierSourceName",ids);
   		

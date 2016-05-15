@@ -1,29 +1,28 @@
 package org.opensrp.domain;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.ektorp.support.TypeDiscriminator;
-import org.opensrp.api.domain.Location;
+import org.joda.time.DateTime;
 
 @TypeDiscriminator("doc.type == 'Event'")
 public class Event extends BaseDataObject{
 
 	@JsonProperty
-	private String baseEntityId;
+	private String eventId;
 	@JsonProperty
-	private BaseEntity baseEntity;
+	private String baseEntityId;
 	@JsonProperty
 	private String locationId;
 	@JsonProperty
-	private Location location;
-	@JsonProperty
-	private Date eventDate;
+	private DateTime eventDate;
 	@JsonProperty
 	private String eventType;
 	@JsonProperty
@@ -31,21 +30,47 @@ public class Event extends BaseDataObject{
 	@JsonProperty
 	private String providerId;
 	@JsonProperty
-	private Provider provider;
+	private String status;
+	@JsonProperty
+	private Map<String, DateTime> statusHistory;
+	@JsonProperty
+	private String priority;
+	@JsonProperty
+	private List<String>  episodeOfCare;
+	@JsonProperty
+	private List<String> referrals;
+	@JsonProperty
+	private String category;
+	@JsonProperty 
+	private int duration;
+	@JsonProperty
+	private String reason;
 	@JsonProperty
 	private List<Obs> obs;
+	@JsonProperty
+	private String entityType;
+	@JsonProperty
+	private Map<String, String> details;
+	@JsonProperty
+	private long version;
+	@JsonProperty
+	private List<Photo> photos;
 	
-	public Event() {}
+	public Event() {
+		this.version = System.currentTimeMillis();
+	}
 
-	public Event(String eventType, Date eventDate, String formSubmissionId, String providerId, 
-			String baseEntityId, String firstName, String middleName, String lastName, Date birthdate, 
-			Date deathdate, Boolean birthdateApprox, Boolean deathdateApprox, String gender) {
-		this.baseEntity = new BaseEntity(baseEntityId, firstName, middleName, lastName, birthdate, deathdate, birthdateApprox, deathdateApprox, gender, null, null);
+	public Event(String baseEntityId, String eventId, String eventType, DateTime eventDate, String entityType, 
+			String providerId, String locationId, String formSubmissionId) {
 		this.baseEntityId = baseEntityId;
+		this.eventId = eventId;
 		this.eventType = eventType;
 		this.eventDate = eventDate;
-		this.formSubmissionId = formSubmissionId;
+		this.entityType = entityType;
 		this.providerId = providerId;
+		this.locationId = locationId;
+		this.formSubmissionId = formSubmissionId;
+		this.version = System.currentTimeMillis();
 	}
 	
 	public List<Obs> getObs() {
@@ -77,15 +102,6 @@ public class Event extends BaseDataObject{
 		this.baseEntityId = baseEntityId;
 	}
 
-	public BaseEntity getBaseEntity() {
-		return baseEntity;
-	}
-
-	public void setBaseEntity(BaseEntity baseEntity) {
-		this.baseEntity = baseEntity;
-		this.baseEntityId = baseEntity.getId();
-	}
-
 	public String getLocationId() {
 		return locationId;
 	}
@@ -94,19 +110,11 @@ public class Event extends BaseDataObject{
 		this.locationId = locationId;
 	}
 
-	public Location getLocation() {
-		return location;
-	}
-
-	public void setLocation(Location location) {
-		this.location = location;
-	}
-
-	public Date getEventDate() {
+	public DateTime getEventDate() {
 		return eventDate;
 	}
 
-	public void setEventDate(Date eventDate) {
+	public void setEventDate(DateTime eventDate) {
 		this.eventDate = eventDate;
 	}
 
@@ -134,20 +142,45 @@ public class Event extends BaseDataObject{
 		this.providerId = providerId;
 	}
 
-	public Provider getProvider() {
-		return provider;
+	public String getEventId() {
+		return eventId;
 	}
 
-	public void setProvider(Provider provider) {
-		this.provider = provider;
+	public void setEventId(String eventId) {
+		this.eventId = eventId;
 	}
 
-	public Event withBaseEntity(BaseEntity baseEntity) {
-		this.baseEntity = baseEntity;
-		this.baseEntityId = baseEntity.getId();
-		return this;
+	public String getEntityType() {
+		return entityType;
+	}
+
+	public void setEntityType(String entityType) {
+		this.entityType = entityType;
+	}
+
+	public Map<String, String> getDetails() {
+		return details;
+	}
+
+	public void setDetails(Map<String, String> details) {
+		this.details = details;
 	}
 	
+	public void addDetails(String key, String val) {
+		if(details == null){
+			details = new HashMap<>();
+		}
+		details.put(key, val);
+	}
+
+	public long getVersion() {
+		return version;
+	}
+
+	public void setVersion(long version) {
+		this.version = version;
+	}
+
 	public Event withBaseEntityId(String baseEntityId) {
 		this.baseEntityId = baseEntityId;
 		return this;
@@ -158,12 +191,7 @@ public class Event extends BaseDataObject{
 		return this;
 	}
 
-	public Event withLocation(Location location) {
-		this.location = location;
-		return this;
-	}
-
-	public Event withEventDate(Date eventDate) {
+	public Event withEventDate(DateTime eventDate) {
 		this.eventDate = eventDate;
 		return this;
 	}
@@ -183,8 +211,8 @@ public class Event extends BaseDataObject{
 		return this;
 	}
 
-	public Event withProvider(Provider provider) {
-		this.provider = provider;
+	public Event withEntityType(String entityType) {
+		this.entityType = entityType;
 		return this;
 	}
 	

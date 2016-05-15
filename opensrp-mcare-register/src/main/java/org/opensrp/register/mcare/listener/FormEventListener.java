@@ -19,6 +19,7 @@ import org.opensrp.register.mcare.OpenSRPScheduleConstants;
 import org.opensrp.register.mcare.OpenSRPScheduleConstants.OpenSRPEvent;
 import org.opensrp.repository.AllFormExportTokens;
 import org.opensrp.service.formSubmission.FormEntityService;
+import org.opensrp.service.formSubmission.FormSubmissionListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,16 +36,19 @@ public class FormEventListener {
     private FormSubmissionService formSubmissionService;
     private FormEntityService formEntityService;
     private AllFormExportTokens allFormExportTokens;
+    private FormSubmissionListener formSubmissionListener;
     private static final ReentrantLock lock = new ReentrantLock();
 
     @Autowired
-    public FormEventListener(FormSubmissionService formSubmissionService, FormEntityService formEntityService, AllFormExportTokens allFormExportTokens) {
+    public FormEventListener(FormSubmissionService formSubmissionService, FormEntityService formEntityService,
+    		AllFormExportTokens allFormExportTokens,FormSubmissionListener formSubmissionListener) {
         this.formSubmissionService = formSubmissionService;
         this.formEntityService = formEntityService;
         this.allFormExportTokens = allFormExportTokens;
+        this.formSubmissionListener = formSubmissionListener;
     }
 
-    @MotechListener(subjects = OpenSRPEvent.FORM_SUBMISSION)
+   /*@MotechListener(subjects = OpenSRPEvent.FORM_SUBMISSION)
     public void submitForms(MotechEvent event) {
         List<FormSubmissionDTO> formSubmissions = new Gson().fromJson((String) event.getParameters().get("data"), new TypeToken<List<FormSubmissionDTO>>() {
         }.getType());
@@ -60,7 +64,7 @@ public class FormEventListener {
         try {
             logger.info("Fetching Forms subject: " + event.getSubject());
             long version = getVersion();
-
+            
             List<FormSubmissionDTO> formSubmissionDTOs = formSubmissionService.fetch(version);
             if (formSubmissionDTOs.isEmpty()) {
                 logger.info("No new forms found. Export token: " + version);
@@ -76,13 +80,14 @@ public class FormEventListener {
                         }
                     });
             formEntityService.process(formSubmissions);
+            //formSubmissionListener.parseForms(event,version);
         } catch (Exception e) {
             logger.error(MessageFormat.format("{0} occurred while trying to fetch forms. Message: {1} with stack trace {2}",
                     e.toString(), e.getMessage(), getFullStackTrace(e)));
         } finally {
             lock.unlock();
         }
-    }
+    }*/
 
     private long getVersion() {
         List<FormExportToken> exportTokens = allFormExportTokens.getAll();

@@ -1071,6 +1071,53 @@ public class AllConstants {
     public static class OpenmrsTrackUuid {
     	public static final String ENROLLMENT_TRACK_UUID = "openmrsTrackUuid";
     }
+    public static class BaseEntity{
+    	public static final String BASE_ENTITY_ID = "baseEntityId";
+    	public static final String ADDRESS_TYPE = "addressType";
+    	public static final String START_DATE = "startDate";
+    	public static final String END_DATE = "endDate";
+    	public static final String LATITUDE = "latitude";
+    	public static final String LONGITUTE = "longitute";
+    	public static final String GEOPOINT = "geopoint";
+    	public static final String POSTAL_CODE = "postalCode";
+    	public static final String SUB_TOWN = "subTown";
+    	public static final String TOWN = "town";
+    	public static final String SUB_DISTRICT = "subDistrict";
+    	public static final String COUNTY_DISTRICT = "countyDistrict";
+    	public static final String CITY_VILLAGE = "cityVillage";
+    	public static final String STATE_PROVINCE = "stateProvince";
+    	public static final String COUNTRY = "country";
+    	public static final String LAST_UPDATE = "lastEdited";
+    	
+    }
+    public static class Client extends BaseEntity{
+    	public static final String FIRST_NAME = "firstName";
+    	public static final String MIDDLE_NAME = "middleName";
+    	public static final String LAST_NAME = "lastName";
+    	public static final String BIRTH_DATE = "birthdate";
+    	public static final String DEATH_DATE = "deathdate";
+    	public static final String BIRTH_DATE_APPROX = "birthdateApprox";
+    	public static final String DEATH_DATE_APPROX = "deathdateApprox";
+    	public static final String GENDER = "gender";
+    }
+    public static class Event {
+    	public static final String FORM_SUBMISSION_ID = "formSubmissionId";
+    	public static final String EVENT_TYPE = "eventType";
+    	public static final String EVENT_ID = "eventId";
+    	public static final String LOCATION_ID = "locationId";
+    	public static final String EVENT_DATE = "eventDate";
+    	public static final String PROVIDER_ID = "providerId";
+    	public static final String ENTITY_TYPE = "entityType";
+
+    }
+    public static class OpenSRPEvent{
+		public static final String FORM_SUBMISSION = "FORM_SUBMISSION";
+	}
+
+	public enum Config {
+		FORM_ENTITY_PARSER_LAST_SYNCED_FORM_SUBMISSION
+	}
+	public static final String FORM_SCHEDULE_SUBJECT = "FORM-SCHEDULE";
 }
 
 

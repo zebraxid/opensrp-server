@@ -59,16 +59,17 @@ public class FormSubmissionRouter {
 	private FormSubmissionReportService formSubmissionReportService;
 	private IMCTSReportService mctsReportService;
 	private IHandlerMapper handlerMapper;
-
+	private ECHandlerMapper ecHandlerMapper;
 	@Autowired
 	public FormSubmissionRouter(AllFormSubmissions formSubmissionsRepository,
 			FormSubmissionReportService formSubmissionReportService,IMCTSReportService mctsReportService,
-			IHandlerMapper handlerMapper) {
+			IHandlerMapper handlerMapper,ECHandlerMapper ecHandlerMapper) {
 
 		this.formSubmissionsRepository = formSubmissionsRepository;
 		this.formSubmissionReportService = formSubmissionReportService;
 		this.mctsReportService = mctsReportService;
 		this.handlerMapper = handlerMapper;
+		this.ecHandlerMapper = ecHandlerMapper;
 
 	}
 
@@ -95,6 +96,23 @@ public class FormSubmissionRouter {
 					"Handling {0} form submission with instance Id: {1} for entity: {2} failed with exception : {3}",
 					submission.formName(), submission.instanceId(),
 					submission.entityId(), getFullStackTrace(e)));
+			throw e;
+		}
+	}
+	public void route(FormSubmission formSubmission) throws Exception {
+		CustomFormSubmissionHandler handler = ecHandlerMapper.handlerMap().get(formSubmission.formName());// handlerMap.get(submission.formName());
+		if (handler == null) {
+			logger.warn(format("Could not find a handler due to unknown form submission ( {0} ) with instance Id: {1} for entity: {2}",
+				formSubmission.formName(), formSubmission.instanceId(), formSubmission.entityId()));
+			return;
+		}
+		logger.info(format("Handling {0} form submission with instance Id: {1} for entity: {2}",
+				formSubmission.formName(), formSubmission.instanceId(), formSubmission.entityId()));
+		try {
+			handler.handle(formSubmission);
+		} catch (Exception e) {
+			logger.error(format("Handling {0} form submission with instance Id: {1} for entity: {2} failed with exception : {3}",
+					formSubmission.formName(), formSubmission.instanceId(), formSubmission.entityId(), getFullStackTrace(e)));
 			throw e;
 		}
 	}

@@ -56,10 +56,8 @@ public class HHService {
 		this.membersService = membersService;
 		this.hhSchedulesService = hhSchedulesService;	
 	}	
-	public void registerHouseHold(FormSubmission submission) {
-
-		HouseHold houseHold = allHouseHolds.findByCaseId(submission.entityId());
-
+	public void registerHouseHold(FormSubmission submission) {		
+		HouseHold houseHold = allHouseHolds.findByCaseId(submission.entityId());		
 		if (houseHold == null) {
 			logger.warn(format(
 					"Failed to handle Census form as there is no household registered with ID: {0}",

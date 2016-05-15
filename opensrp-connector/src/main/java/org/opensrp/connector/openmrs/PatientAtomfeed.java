@@ -79,13 +79,13 @@ public class PatientAtomfeed extends OpenmrsService implements EventWorker, Atom
 	private ClientService clientService;
 	
 
-	/*@Override
+	@Override
 	public void process(Event event) {
 		System.out.println(event.getContent());
 		try {
 			JSONObject p = patientService.getPatientByUuid(event.getContent().substring(event.getContent().lastIndexOf("/")+1), true);
 			System.out.println(p);//TODO check in couch and if not exists update thrive id on opermrs side
-			Client c = patientService.convertToClient(p);
+			/*Client c = patientService.convertToClient(p);
 			Client existing = clientService.findClient(c);
 			if(existing == null){
 				c.setBaseEntityId(UUID.randomUUID().toString());
@@ -95,18 +95,18 @@ public class PatientAtomfeed extends OpenmrsService implements EventWorker, Atom
 			}
 			else {
 				c = clientService.mergeClient(c);
-			}
+			}*/
 		} catch (JSONException e) {
 			throw new RuntimeException(e);
 		}
-	}*/
+	}
 
 	@Override
 	public void cleanUp(Event event) {
 		// TODO Auto-generated method stub
 		System.out.println("COntent:"+event.getContent());
        new TurnOffCertificateValidation().ForHTTPSConnections();
-       
+      /* this.process(event);
     	try {
 			JSONObject p = new JSONObject(HttpUtil.get(getURL()
 					+event.getContent().split("/openmrs")[1], "",OPENMRS_USER, OPENMRS_PWD).body());
@@ -114,13 +114,13 @@ public class PatientAtomfeed extends OpenmrsService implements EventWorker, Atom
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 		System.exit(1);
 	}
 
 	@Override
 	public void processEvents() {
-		atomFeedClientWrapper.processEvents();
+		client.processEvents();
 	}
 
 	@Override
@@ -147,16 +147,12 @@ public class PatientAtomfeed extends OpenmrsService implements EventWorker, Atom
 		this.clientService = clientService;
 	}
 
-	@Override
-	public void process(Event event) {
-		// TODO Auto-generated method stub
-		
-	}
-	@MotechListener(subjects = OpenmrsConstants.SCHEDULER_OPENMRS_ATOMFEED_SYNCER_SUBJECT)
+	
+	/*@MotechListener(subjects = OpenmrsConstants.SCHEDULER_OPENMRS_ATOMFEED_SYNCER_SUBJECT)
 	public void getResponse(MotechEvent event){
 		new TurnOffCertificateValidation().ForHTTPSConnections();
 		System.out.println("Response from Atom");
 		 this.processEvents();
-	}
+	}*/
 	
 }

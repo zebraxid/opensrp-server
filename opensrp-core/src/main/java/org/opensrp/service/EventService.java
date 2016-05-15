@@ -1,155 +1,137 @@
 package org.opensrp.service;
 
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-import org.opensrp.api.domain.BaseEntity;
-import org.opensrp.api.domain.Client;
-import org.opensrp.api.domain.Event;
-import org.opensrp.api.domain.Obs;
-import org.opensrp.repository.AllBaseEntities;
+import org.joda.time.DateTime;
+import org.opensrp.domain.Event;
 import org.opensrp.repository.AllEvents;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.mysql.jdbc.StringUtils;
 
 @Service
 public class EventService {
 
 	private final AllEvents allEvents;
-	private final  AllBaseEntities allBaseEntities;
 	
 	@Autowired
-	public EventService(AllEvents allEvents, AllBaseEntities allBaseEntities)
+	public EventService(AllEvents allEvents)
 	{
 		this.allEvents = allEvents;
-		this.allBaseEntities = allBaseEntities;
 	}
 	
-	public Event getEventByBaseEntityId(String baseEntityId)
+	public Event getByEventId(String eventId)
 	{
-		org.opensrp.domain.Event event = allEvents.findByBaseEntityId(baseEntityId);
-		org.opensrp.domain.BaseEntity baseEntity = allBaseEntities.findByBaseEntityId(baseEntityId);
+		return allEvents.findByEventId(eventId);
+	}
+	
+	public Event getByBaseEntityAndFormSubmissionId(String baseEntityId, String formSubmissionId)
+	{
+		List<Event> el = allEvents.findByBaseEntityAndFormSubmissionId(baseEntityId, formSubmissionId);
+		if(el.size() > 1){
+			throw new IllegalStateException("Multiple events for baseEntityId and formSubmissionId combination ("+baseEntityId+","+formSubmissionId+")");
+		}
+		if(el.size() == 0){
+			return null;
+		}
+		return el.get(0);
+	}
+	
+	public List<Event> findByBaseEntityId(String baseEntityId) {
+		return allEvents.findByBaseEntityId(baseEntityId);
+	}
+	
+	public List<Event> findByFormSubmissionId(String formSubmissionId){
+		return allEvents.findByFormSubmissionId(formSubmissionId);
+	}
+	
+	public List<Event> findEventsBy(String baseEntityId, DateTime from, DateTime to, String eventType, 
+			String entityType, String providerId, String locationId, DateTime lastEditFrom, DateTime lastEditTo) {
+		return allEvents.findEvents(baseEntityId, from, to, eventType, entityType, providerId, locationId, lastEditFrom, lastEditTo);
+	}
+	
+	public List<Event> findEventsByDynamicQuery(String query) {
+		return allEvents.findEventsByDynamicQuery(query);
+	}
+	
+	public Event addEvent(Event event)
+	{
+		if(!StringUtils.isEmptyOrWhitespaceOnly(event.getEventId()) && getByEventId(event.getEventId()) != null){
+			throw new IllegalArgumentException("An event already exists with given eventId "+event.getEventId()+". Consider updating");
+		}
+		if(getByBaseEntityAndFormSubmissionId(event.getBaseEntityId(), event.getFormSubmissionId()) != null){
+			throw new IllegalArgumentException("An event already exists with given baseEntity and formSubmission combination. Consider updating");
+		}
+
+		event.setDateCreated(new Date());
+		allEvents.add(event);
+		return event;
+	}
+	
+	public void updateEvent(Event updatedEvent)
+	{
+		// If update is on original entity
+		if(updatedEvent.isNew()){
+			throw new IllegalArgumentException("Event to be updated is not an existing and persisting domain object. Update database object instead of new pojo");
+		}
 		
-			BaseEntity apiBaseEntity = new BaseEntity()
-										   .withFirstName(baseEntity.getFirstName())
-										   .withMiddleName(baseEntity.getMiddleName())
-										   .withLastName(baseEntity.getLastName())
-										   .withGender(baseEntity.getGender())
-										   .withBirthdate(baseEntity.getBirthdate(),baseEntity.getBirthdateApprox())
-								 		   .withDeathdate(baseEntity.getDeathdate(), baseEntity.getDeathdateApprox());
-			
-			//#TODO: Have to add User
-			/*org.opensrp.domain.User userCreator  = baseEntity.getCreator().withBaseEntityId(baseEntityId);
-			
-			
-							  apiBaseEntity.withCreator(userCreator);
-							  apiBaseEntity.withEditor(baseEntity.getEditor());
-							  apiBaseEntity.withVoider(baseEntity.getVoider());
-							  apiBaseEntity.withDateCreated(baseEntity.getDateCreated());
-							  apiBaseEntity.withDateEdited(baseEntity.getDateEdited());
-							  apiBaseEntity.withDateVoided(baseEntity.getDateVoided());
-							  apiBaseEntity.withVoided(baseEntity.getVoided());
-							  apiBaseEntity.withVoidReason(baseEntity.getRevision());
-							  
-							  
-							  
-*/			
-			List<org.opensrp.domain.Obs> domainObss = event.getObs();
-			List<Obs> obss = new ArrayList<>();
-			for(org.opensrp.domain.Obs domainObs : domainObss)
-			{
-				Obs obs = new Obs()
-								.withFieldDataType(domainObs.getFieldDataType())
-								.withFieldCode(domainObs.getFieldCode())
-								.withParentCode(domainObs.getParentCode())
-								.withFormSubmissionField(domainObs.getFormSubmissionField())
-								.withValue(domainObs.getValue())
-								.withComments(domainObs.getComments());
+		/*TODO
+		 * if(findEvent(updatedEvent) == null){
+			throw new IllegalArgumentException("No client found with given list of identifiers. Consider adding new!");
+		}*/
+		
+		updatedEvent.setDateEdited(new Date());
 				
-				
-				obss.add(obs);
+		allEvents.update(updatedEvent);					
+	}
+	
+	public Event mergeEvent(Event updatedEvent) 
+	{
+		return null;
+		/*try{
+		Client original = findClient(updatedClient);
+		if(original == null){
+			throw new IllegalArgumentException("No client found with given list of identifiers. Consider adding new!");
+		}
+		
+		Gson gs = new GsonBuilder().registerTypeAdapter(DateTime.class, new DateTimeTypeConverter()).create();
+		JSONObject originalJo = new JSONObject(gs.toJson(original));
+
+		JSONObject updatedJo = new JSONObject(gs.toJson(updatedClient));
+		List<Field> fn = Arrays.asList(Client.class.getDeclaredFields());
+
+		JSONObject mergedJson = new JSONObject();
+		if (originalJo.length() > 0) {
+			mergedJson = new JSONObject(originalJo, JSONObject.getNames(originalJo));
+		}
+		if (updatedJo.length() > 0) {
+			for (Field key : fn) {
+				String jokey = key.getName();
+				if(updatedJo.has(jokey)) mergedJson.put(jokey, updatedJo.get(jokey));
 			}
+		
+			original = gs.fromJson(mergedJson.toString(), Client.class);
 			
-			Event apiEvent = new Event()
-								   .withBaseEntityId(event.getBaseEntityId())
-								   .withBaseEntity(apiBaseEntity)
-								   .withLocationId(event.getLocationId())
-								   .withEventType(event.getEventType())
-								   .withEventDate(event.getEventDate())
-								   .withProviderId(event.getProviderId())
-								   .withFormSubmissionId(event.getFormSubmissionId())
-								   .withObs(obss);
-			
-		//#TODO: Have to add User	
-						/*  apiClient.withCreator(client.getCreator());
-						  apiClient.withEditor(client.getEditor());
-						  apiClient.withVoider(client.getVoider());
-						  apiClient.withDateCreated(client.getDateCreated());
-						  apiClient.withDateEdited(client.getDateEdited());
-						  apiClient.withDateVoided(client.getDateVoided());
-						  apiClient.withVoided(client.getVoided());
-						  apiClient.withVoidReason(client.getRevision());*/
-			
-		return apiEvent;
-	}
-	
-	public void addEvent(Event event)
-	{
-		List<Obs> apiObss = event.getObs();
-		List<org.opensrp.domain.Obs> obss = new ArrayList<>();
-		for(Obs apiObs : apiObss)
-		{
-			org.opensrp.domain.Obs obs = new org.opensrp.domain.Obs()
-											.withFieldDataType(apiObs.getFieldDataType())
-											.withFieldCode(apiObs.getFieldCode())
-											.withParentCode(apiObs.getParentCode())
-											.withFormSubmissionField(apiObs.getFormSubmissionField())
-											.withValue(apiObs.getValue())
-											.withComments(apiObs.getComments());
-			
-			
-			obss.add(obs);
+			for (Address a : updatedClient.getAddresses()) {
+				if(original.getAddress(a.getAddressType()) == null) original.addAddress(a);
+			}
+			for (String k : updatedClient.getIdentifiers().keySet()) {
+				original.addIdentifier(k, updatedClient.getIdentifier(k));
+			}
+			for (String k : updatedClient.getAttributes().keySet()) {
+				original.addAttribute(k, updatedClient.getAttribute(k));
+			}
 		}
-		
-		org.opensrp.domain.Event domainEvent = new org.opensrp.domain.Event()
-													.withBaseEntityId(event.getBaseEntityId())
-													.withLocationId(event.getLocationId())
-													.withEventType(event.getEventType())
-													.withEventDate(event.getEventDate())
-													.withFormSubmissionId(event.getFormSubmissionId())
-													.withProviderId(event.getProviderId())
-													.withObs(obss);
-		
-												allEvents.add(domainEvent);				
-	}
-	
-	public void updateEvent(Event event)
-	{
-		List<Obs> apiObss = event.getObs();
-		List<org.opensrp.domain.Obs> obss = new ArrayList<>();
-		for(Obs apiObs : apiObss)
-		{
-			org.opensrp.domain.Obs obs = new org.opensrp.domain.Obs()
-											.withFieldDataType(apiObs.getFieldDataType())
-											.withFieldCode(apiObs.getFieldCode())
-											.withParentCode(apiObs.getParentCode())
-											.withFormSubmissionField(apiObs.getFormSubmissionField())
-											.withValue(apiObs.getValue())
-											.withComments(apiObs.getComments());
-			
-			
-								obss.add(obs);
+
+		original.setDateEdited(new Date());
+		allClients.update(original);
+		return original;
 		}
-		
-		org.opensrp.domain.Event domainEvent = new org.opensrp.domain.Event()
-													.withBaseEntityId(event.getBaseEntityId())
-													.withLocationId(event.getLocationId())
-													.withEventType(event.getEventType())
-													.withEventDate(event.getEventDate())
-													.withFormSubmissionId(event.getFormSubmissionId())
-													.withProviderId(event.getProviderId())
-													.withObs(obss);
-		
-												allEvents.update(domainEvent);					
+		catch(JSONException e){
+			throw new RuntimeException(e);
+		}*/
 	}
+
 }
