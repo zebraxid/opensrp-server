@@ -125,7 +125,7 @@ public class PatientAtomfeed extends OpenmrsService implements EventWorker, Atom
 
 	@Override
 	public void processFailedEvents() {
-		atomFeedClientWrapper.processFailedEvents();
+		client.processFailedEvents();
 	}
 	
 	void setUrl(String url) {
