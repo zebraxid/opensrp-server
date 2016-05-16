@@ -23,6 +23,7 @@ public class ApplicationStartupListener implements ApplicationListener<ContextRe
     private RepeatingSchedule mctsReportScheduler;
     private RepeatingSchedule openmrsScheduleSyncerScheduler;
     private RepeatingSchedule atomfeedSchedule;
+    private RepeatingSchedule atomfeedSyncEvent;
     
     @Autowired
     public ApplicationStartupListener(TaskSchedulerService scheduler, 
@@ -36,6 +37,7 @@ public class ApplicationStartupListener implements ApplicationListener<ContextRe
        // mctsReportScheduler = new RepeatingSchedule(OpenSRPScheduleConstants.MCTS_REPORT_SCHEDULE_SUBJECT, 10, TimeUnit.MINUTES, mctsPollIntervalInHours, TimeUnit.HOURS);
         //openmrsScheduleSyncerScheduler = new RepeatingSchedule(OpenmrsConstants.SCHEDULER_TRACKER_SYNCER_SUBJECT, 0, TimeUnit.MINUTES, 1, TimeUnit.MINUTES);
         atomfeedSchedule = new RepeatingSchedule(OpenmrsConstants.SCHEDULER_OPENMRS_ATOMFEED_SYNCER_SUBJECT, 0, TimeUnit.MINUTES,formPollInterval, TimeUnit.MINUTES);
+        atomfeedSyncEvent = new RepeatingSchedule(OpenmrsConstants.SCHEDULER_OPENMRS_ATOMFEED_SYNCER_SUBJECT_EVENT, 0, TimeUnit.MINUTES,formPollInterval, TimeUnit.MINUTES);
     }
 
     @Override
@@ -46,6 +48,7 @@ public class ApplicationStartupListener implements ApplicationListener<ContextRe
            // scheduler.startJob(mctsReportScheduler);
             //scheduler.startJob(openmrsScheduleSyncerScheduler);
             scheduler.startJob(atomfeedSchedule);
+            scheduler.startJob(atomfeedSyncEvent);
         	System.out.println("STARTED ALL SCHEDULES");
         }
     }

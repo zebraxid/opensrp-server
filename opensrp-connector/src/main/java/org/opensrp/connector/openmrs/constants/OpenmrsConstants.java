@@ -10,6 +10,7 @@ public class OpenmrsConstants {
 	public static final String SCHEDULER_OPENMRS_ATOMFEED_SYNCER_SUBJECT = "OpenMRS Atomfeed Syncer";
 	public static final String ATOMFEED_URL = "ws/atomfeed";
     public static final String ATOMFEED_DATABASE_CONNECTOR = "atomfeedDatabaseConnector";
+    public static final String SCHEDULER_OPENMRS_ATOMFEED_SYNCER_SUBJECT_EVENT = "OpenMRS Atomfeed Syncer Event";
     
 	public enum ScheduleTrackerConfig {
 		openmrs_syncer_last_timestamp_non_active_enrollment,

@@ -15,10 +15,14 @@ import org.ict4h.atomfeed.transaction.AFTransactionManager;
 import org.ict4h.atomfeed.transaction.AFTransactionWork;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.motechproject.scheduler.domain.MotechEvent;
+import org.motechproject.server.event.annotations.MotechListener;
 import org.opensrp.connector.atomfeed.AtomfeedService;
 import org.opensrp.connector.openmrs.constants.OpenmrsConstants;
+import org.opensrp.connector.openmrs.service.ECEncounterService;
 import org.opensrp.connector.openmrs.service.EncounterService;
 import org.opensrp.connector.openmrs.service.OpenmrsService;
+import org.opensrp.connector.openmrs.service.TurnOffCertificateValidation;
 import org.opensrp.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -33,12 +37,12 @@ public class EncounterAtomfeed extends OpenmrsService implements EventWorker, At
 
 	private WebClient webClient;
 	private AtomFeedClient client;
-	private EncounterService encounterService;
+	private ECEncounterService encounterService;
 	private EventService eventService;
 	
 	@Autowired
 	public EncounterAtomfeed(AllMarkers allMarkers, AllFailedEvents allFailedEvents, 
-			@Value("#{opensrp['openmrs.url']}") String baseUrl, EncounterService encounterService,
+			@Value("#{opensrp['openmrs.url']}") String baseUrl, ECEncounterService encounterService,
 			EventService eventService) throws URISyntaxException {
 		if(baseUrl != null){
 			OPENMRS_BASE_URL = baseUrl;
@@ -60,7 +64,7 @@ public class EncounterAtomfeed extends OpenmrsService implements EventWorker, At
 		this.eventService = eventService;
 	}
 	
-	/*@Override
+	@Override
 	public void process(Event event) {
 		System.out.println(event.getContent());
 		try {
@@ -70,7 +74,7 @@ public class EncounterAtomfeed extends OpenmrsService implements EventWorker, At
 		} catch (JSONException e) {
 			throw new RuntimeException(e);
 		}
-	}*/
+	}
 
 	@Override
 	public void cleanUp(Event event) {
@@ -91,10 +95,11 @@ public class EncounterAtomfeed extends OpenmrsService implements EventWorker, At
 	public void setUrl(String url) {
 		OPENMRS_BASE_URL = url;
 	}
-
-	@Override
-	public void process(Event event) {
-		// TODO Auto-generated method stub
-		
+	@MotechListener(subjects = OpenmrsConstants.SCHEDULER_OPENMRS_ATOMFEED_SYNCER_SUBJECT_EVENT)
+	public void getResponse(MotechEvent event){
+		new TurnOffCertificateValidation().ForHTTPSConnections();
+		System.out.println("Response from Atom");
+		 this.processEvents();
 	}
+	
 }

@@ -29,6 +29,7 @@ public class EventService {
 	
 	public Event getByBaseEntityAndFormSubmissionId(String baseEntityId, String formSubmissionId)
 	{
+		System.out.println("baseEntityId:"+baseEntityId+"formSubmissionId:"+formSubmissionId);
 		List<Event> el = allEvents.findByBaseEntityAndFormSubmissionId(baseEntityId, formSubmissionId);
 		if(el.size() > 1){
 			throw new IllegalStateException("Multiple events for baseEntityId and formSubmissionId combination ("+baseEntityId+","+formSubmissionId+")");

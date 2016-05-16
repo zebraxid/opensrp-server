@@ -34,6 +34,7 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.CoreProtocolPNames;
 import org.apache.http.util.EntityUtils;
 import org.bouncycastle.util.encoders.Base64Encoder;
+import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -318,5 +319,6 @@ public class PatientService extends OpenmrsService{
 	    	return new JSONObject(HttpUtil.get(getURL()
 	    			+"/"+PATIENT_URL+"/"+uuid, noRepresentationTag?"":"v=full", OPENMRS_USER, OPENMRS_PWD).body());
 	    }
+	 
 	 
 }
