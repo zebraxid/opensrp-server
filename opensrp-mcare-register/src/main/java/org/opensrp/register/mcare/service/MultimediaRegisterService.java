@@ -51,7 +51,7 @@ public class MultimediaRegisterService {
         
         for (HouseHold hh : hhs) {
         	
-    		hh.multimediaAttachments().clear();
+    		//hh.multimediaAttachments().clear();
         	
         	List<Multimedia> multimediaList = multimediaRepository.findByCaseIdAndFileCategory(hh.caseId(), "dp");
     		
@@ -95,7 +95,7 @@ public class MultimediaRegisterService {
 
 		for (Elco ec : elcos) {
 	    	
-    		ec.multimediaAttachments().clear();
+    		//ec.multimediaAttachments().clear();
 	    	
 	    	List<Multimedia> multimediaList1 = multimediaRepository.findByCaseIdAndFileCategory(ec.caseId(), "dp");
 			
@@ -149,42 +149,56 @@ public class MultimediaRegisterService {
 	
 			 hh.multimediaAttachments().add(att);
 			 allHouseHolds.update(hh);
+			 
+			System.out.println("Image saved in HH registry");
 		}
 		else{
 			Elco elco = allElcos.findByCaseId(multimediaFile.getCaseId());
 			if(elco != null){
-				elco.multimediaAttachments().clear();
-		    	
-				 Map<String, String> att = create("contentType", multimediaFile.getContentType())
-					.put("filePath", multimediaFile.getFilePath())
-					.put("fileCategory", multimediaFile.getFileCategory())
-					.map();       		
-		
-				 elco.multimediaAttachments().add(att);
+				//elco.multimediaAttachments().clear();
+				
+				int temp=0;
+				while(temp < elco.multimediaAttachments().size())
+				{
+					if(elco.multimediaAttachments().get(temp).get("fileCategory").equalsIgnoreCase(multimediaFile.getFileCategory()))
+						break;
+					temp++;
+				}
+				
+				if(temp == elco.multimediaAttachments().size())
+				{
+					Map<String, String> att = create("contentType", multimediaFile.getContentType())
+						.put("filePath", multimediaFile.getFilePath())
+						.put("fileCategory", multimediaFile.getFileCategory())
+						.map();       		
+			
+					 elco.multimediaAttachments().add(att);
+					 
+					 allElcos.update(elco);
 				 
-				 allElcos.update(elco);
-				 
-				 HouseHold hd = allHouseHolds.findByCaseId(elco.getDetail(relationalid));
-				 
-				 int i;
-				 for (i = 0; i < hd.ELCODETAILS().size(); i++){
-					 if(multimediaFile.getCaseId().equalsIgnoreCase(hd.ELCODETAILS().get(i).get(id)))
-						 break;
-				 }
-				 
-	     		 if(multimediaFile.getFileCategory().equalsIgnoreCase("dp"))
-	             {
-	     			hd.ELCODETAILS().get(i).put("profileImagePath", multimediaFile.getFilePath());
-	             }
-	     		
-	     		 if(multimediaFile.getFileCategory().equalsIgnoreCase("nidImage"))
-	             {
-	     			hd.ELCODETAILS().get(i).put("nidImagePath", multimediaFile.getFilePath());
-	             }
-	     		 
-	     		 allHouseHolds.update(hd);	     		 
+					 HouseHold hd = allHouseHolds.findByCaseId(elco.getDetail(relationalid));
+					 
+					 int i;
+					 for (i = 0; i < hd.ELCODETAILS().size(); i++){
+						 if(multimediaFile.getCaseId().equalsIgnoreCase(hd.ELCODETAILS().get(i).get(id)))
+							 break;
+					 }
+					 
+		     		 if(multimediaFile.getFileCategory().equalsIgnoreCase("dp"))
+		             {
+		     			hd.ELCODETAILS().get(i).put("profileImagePath", multimediaFile.getFilePath());
+		             }
+		     		
+		     		 if(multimediaFile.getFileCategory().equalsIgnoreCase("nidImage"))
+		             {
+		     			hd.ELCODETAILS().get(i).put("nidImagePath", multimediaFile.getFilePath());
+		             }
+		     		 
+		     		 allHouseHolds.update(hd);	 
+		     		 
+		     		 System.out.println("Image saved in EC registry");	     		
+				}
 			}	
 		}
-		System.out.println("Image saved in registry");
 	}
 }

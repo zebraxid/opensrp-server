@@ -231,7 +231,7 @@ public class AllConstants {
     	public static final String FW_SORTVALUE = "FWSORTVALUE"; 
     	public static final String FWNOTELIGIBLE = "FWNOTELIGIBLE";
     	public static final String current_formStatus = "current_formStatus";
-    	
+    	public static final String received_time = "received_time";
     }
     
     public static class ANCVisitOneFields
@@ -468,11 +468,15 @@ public class AllConstants {
     	public static final String STS_LB ="3";
     	public static final String STS_SB ="4";
     	public static final String STS_GONE ="7";
-    	public static final String STS_GO ="8";
+    	public static final String STS_DEAD ="8";
     	public static final String STS_WD ="9";
     	public static final String SCHEDULE_BNF_IME = "ImmediateBirthNotificationPregnancyStatusFollowUp";
     	public static final String SCHEDULE_BNF = "BirthNotificationPregnancyStatusFollowUp";
-    	public static final String bnf_current_formStatus = "bnf_current_formStatus";     
+    	public static final String bnf_current_formStatus = "bnf_current_formStatus";    
+    	public static final String FWBNFNAMECHECK = "FWBNFNAMECHECK";
+    	public static final String FWBNFNAME = "FWBNFNAME";
+    	public static final String FWBNFCHILDNAME = "FWBNFCHILDNAME";
+    	public static final String FWBNFDOB = "FWBNFDOB";
     }
     
     public static class PNCVisitOneFields
@@ -538,6 +542,7 @@ public class AllConstants {
     	public static final String FWENC1DSCONVL ="FWENC1DSCONVL";
     	public static final String FWENC1DELCOMP ="FWENC1DELCOMP";
     	public static final String encc1_current_formStatus ="encc1_current_formStatus";
+    	public static final String referenceDate = "referenceDate";
     	
     }
     

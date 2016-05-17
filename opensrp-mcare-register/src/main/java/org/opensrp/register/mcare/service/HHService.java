@@ -85,15 +85,15 @@ public class HHService {
 		houseHold.withSUBMISSIONDATE(scheduleLogService.getTimeStampMills());
 		allHouseHolds.update(houseHold);
 			
-		String cencusCondition =  scheduleLogService.getScheduleRuleForCensus("HouseHold Form");
-		logger.info("Cencus Condition :"+cencusCondition);
-		if(!cencusCondition.equalsIgnoreCase("") && cencusCondition.equalsIgnoreCase("1")){
+		//String cencusCondition =  scheduleLogService.getScheduleRuleForCensus("HouseHold Form");
+		//logger.info("Cencus Condition :"+cencusCondition);
+		//if(!cencusCondition.equalsIgnoreCase("") && cencusCondition.equalsIgnoreCase("1")){
 			
 			hhSchedulesService.enrollIntoMilestoneOfCensus(submission.entityId(),
 				submission.getField(REFERENCE_DATE),submission.anmId(),submission.instanceId());
-		}else{
-			logger.info("Rule Defination Not Found for Cencus");
-		}
+		//}else{
+			//logger.info("Rule Defination Not Found for Cencus");
+		//}
 		
 		elcoService.registerELCO(submission);
 	}

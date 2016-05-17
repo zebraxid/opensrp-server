@@ -49,7 +49,7 @@ public class OpenmrsUserService extends OpenmrsService{
 		 new TurnOffCertificateValidation().ForHTTPSConnections();
 		//turnOffCertificateValidation.ForHTTPSConnections();
 		HttpResponse op = HttpUtil.get(HttpUtil.removeEndingSlash(OPENMRS_BASE_URL)+"/"+AUTHENTICATION_URL, "", username, password);
-		System.out.println("Openmrs response msg:" + op.body().toString());
+		//System.out.println("Openmrs response msg:" + op.body().toString());
 		System.out.println(username);
 		return new JSONObject(op.body()).getBoolean("authenticated");
 	}
@@ -57,7 +57,7 @@ public class OpenmrsUserService extends OpenmrsService{
 	public User getUser(String username) throws JSONException {
 		 new TurnOffCertificateValidation().ForHTTPSConnections();
 		HttpResponse op = HttpUtil.get(HttpUtil.removeEndingSlash(OPENMRS_BASE_URL)+"/"+USER_URL, "v=full&username="+username, OPENMRS_USER, OPENMRS_PWD);
-		System.out.println("Openmrs response msg1:" + op.body().toString());
+		//System.out.println("Openmrs response msg1:" + op.body().toString());
 		JSONArray res = new JSONObject(op.body()).getJSONArray("results");
 		if(res.length() == 0){
 			return null;

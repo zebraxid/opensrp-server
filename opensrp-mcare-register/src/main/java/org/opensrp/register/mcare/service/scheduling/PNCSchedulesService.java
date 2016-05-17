@@ -58,6 +58,26 @@ public class PNCSchedulesService {
         logger.info(format("Enrolling PNC with Entity id:{0} to PNC schedule, milestone: {1}.", entityId, milestone));
         scheduler.enrollIntoSchedule(entityId, SCHEDULE_PNC, milestone, referenceDateForSchedule.toString());
     }
+    
+    public void enrollPNCForMother(String entityId, String sch_name, LocalDate referenceDateForSchedule) {
+        logger.info(format("Enrolling PNC with Entity id:{0} to PNC schedule, milestone: {1}.", entityId, sch_name));
+        scheduler.enrollIntoSchedule(entityId, SCHEDULE_PNC, sch_name, referenceDateForSchedule.toString());
+    }
+    
+    public void fullfillMilestone(String entityId, String providerId, String scheduleName,LocalDate completionDate ){
+    	try{
+    		scheduler.fullfillMilestone(entityId, providerId, scheduleName, completionDate);
+    		logger.info("fullfillMilestone with id: :"+entityId);
+    	}catch(Exception e){
+    		logger.info("Does not a fullfillMilestone :"+e.getMessage());
+    	}
+    }
+    
+    public void unEnrollFromSchedule(String entityId, String anmId, String scheduleName) {
+        logger.info(format("Un-enrolling PNC with Entity id:{0} from schedule: {1}", entityId, scheduleName));
+        scheduler.unEnrollFromSchedule(entityId, anmId, scheduleName);
+    }
+    
     public void unEnrollFromAllSchedules(String entityId) {
     	scheduler.unEnrollFromAllSchedules(entityId);
     }

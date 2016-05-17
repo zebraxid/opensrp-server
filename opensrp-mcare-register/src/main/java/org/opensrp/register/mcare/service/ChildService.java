@@ -11,15 +11,21 @@ import static org.opensrp.common.AllConstants.HHRegistrationFields.END_DATE;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.REFERENCE_DATE;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.START_DATE;
 import static org.opensrp.common.util.EasyMap.create;
+import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ChildScheduleConstants.*;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
 
+import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.register.mcare.domain.Child;
 import org.opensrp.register.mcare.repository.AllChilds;
+import org.opensrp.register.mcare.service.scheduling.ChildSchedulesService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,11 +38,13 @@ public class ChildService {
 			.toString());
 	
 	private AllChilds allChilds;
+	private ChildSchedulesService childSchedulesService;
 	
 	@Autowired
-	public ChildService(AllChilds allChilds)
+	public ChildService(AllChilds allChilds, ChildSchedulesService childSchedulesService)
 	{
 		this.allChilds = allChilds;
+		this.childSchedulesService = childSchedulesService;
 	}
 	
 	public void enccOne(FormSubmission submission) {
@@ -75,7 +83,11 @@ public class ChildService {
 
 		child.withENCCVisitOne(enccOne);
 		
-		allChilds.update(child);
+		allChilds.update(child);		
+
+		childSchedulesService.fullfillMilestone(submission.entityId(), submission.anmId(), SCHEDULE_ENCC, new LocalDate());
+		
+		childSchedulesService.enrollENCCVisit(submission.entityId(), SCHEDULE_ENCC_2, LocalDate.parse(child.getDetail(referenceDate)));
 	}
 
 	public void enccTwo(FormSubmission submission) {
@@ -115,6 +127,10 @@ public class ChildService {
 		child.withENCCVisitTwo(enccTwo);
 		
 		allChilds.update(child);
+		
+		childSchedulesService.fullfillMilestone(submission.entityId(), submission.anmId(), SCHEDULE_ENCC, new LocalDate());
+				
+		childSchedulesService.enrollENCCVisit(submission.entityId(), SCHEDULE_ENCC_3, LocalDate.parse(child.getDetail(referenceDate)));
 	}
 
 	public void enccThree(FormSubmission submission) {
@@ -154,6 +170,8 @@ public class ChildService {
 		child.withENCCVisitThree(enccThree);
 		
 		allChilds.update(child);
+		
+		childSchedulesService.unEnrollFromSchedule(submission.entityId(), submission.anmId(), SCHEDULE_ENCC);
 	}
 
 }

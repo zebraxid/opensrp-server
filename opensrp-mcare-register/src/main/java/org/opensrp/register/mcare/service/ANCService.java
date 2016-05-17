@@ -14,6 +14,7 @@ import static org.opensrp.common.AllConstants.ANCVisitFourFields.*;
 import static org.opensrp.common.AllConstants.BnfFollowUpVisitFields.*;
 import static org.opensrp.common.util.EasyMap.create;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_ANC;
+import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_BNF;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -28,6 +29,7 @@ import org.opensrp.register.mcare.domain.Mother;
 import org.opensrp.register.mcare.repository.AllElcos;
 import org.opensrp.register.mcare.repository.AllMothers;
 import org.opensrp.register.mcare.service.scheduling.ANCSchedulesService;
+import org.opensrp.register.mcare.service.scheduling.BNFSchedulesService;
 import org.opensrp.register.mcare.service.scheduling.ScheduleLogService;
 import org.opensrp.scheduler.service.ActionService;
 import org.slf4j.Logger;
@@ -45,14 +47,19 @@ public class ANCService {
 	private ANCSchedulesService ancSchedulesService;
 	private ActionService actionService;
 	private ScheduleLogService scheduleLogService;
+	private BNFSchedulesService bnfSchedulesService;
+	private PNCService pncService;
 	@Autowired
 	public ANCService(AllElcos allElcos, AllMothers allMothers,
-			ANCSchedulesService ancSchedulesService, ActionService actionService,ScheduleLogService scheduleLogService) {
+			ANCSchedulesService ancSchedulesService, ActionService actionService,ScheduleLogService scheduleLogService,
+			BNFSchedulesService bnfSchedulesService,PNCService pncService) {
 		this.allElcos = allElcos;
 		this.allMothers = allMothers;
 		this.ancSchedulesService = ancSchedulesService;
 		this.actionService = actionService;
 		this.scheduleLogService = scheduleLogService;
+		this.bnfSchedulesService = bnfSchedulesService;
+		this.pncService = pncService;
 	}	
 	public void registerANC(FormSubmission submission) {
 
@@ -165,16 +172,18 @@ public class ANCService {
 		allMothers.update(mother);
 		ancSchedulesService.fullfillMilestone(submission.entityId(), submission.anmId(), SCHEDULE_ANC, new LocalDate());
 		actionService.markAllAlertsAsInactive(submission.entityId());
+		logger.info("submission.getField(FWANC1REMSTS):"+submission.getField(FWANC1REMSTS));
 		try{
 			long timestamp = actionService.getActionTimestamp(submission.anmId(), submission.entityId(), SCHEDULE_ANC);
 			ancSchedulesService.fullfillSchedule(submission.entityId(), SCHEDULE_ANC, submission.instanceId(), timestamp);
 		}catch(Exception e){
 			logger.info("From ancVisitOne:"+e.getMessage());
 		}
-		
-		if(submission.getField(FWANC1REMSTS).equalsIgnoreCase(STS_GONE) || submission.getField(FWANC1REMSTS).equalsIgnoreCase(STS_GO))
+		logger.info("FWANC1REMSTS:"+submission.getField(FWANC1REMSTS));
+		if(submission.getField(FWANC1REMSTS).equalsIgnoreCase(STS_GONE) || submission.getField(FWANC1REMSTS).equalsIgnoreCase(STS_DEAD))
 		{ 
-			closeMother(mother);	
+			
+			unEnrollBNFSchedule(submission.entityId(),submission.anmId(),submission.instanceId(),submission.getField("user_type"));
 		}
 	}
 
@@ -251,16 +260,18 @@ public class ANCService {
 		allMothers.update(mother);
 		ancSchedulesService.fullfillMilestone(submission.entityId(), submission.anmId(), SCHEDULE_ANC, new LocalDate());
 		actionService.markAllAlertsAsInactive(submission.entityId());
+		logger.info("submission.getField(FWANC1REMSTS):"+submission.getField(FWANC1REMSTS));
 		try{
 			long timestamp = actionService.getActionTimestamp(submission.anmId(), submission.entityId(), SCHEDULE_ANC);
 			ancSchedulesService.fullfillSchedule(submission.entityId(), SCHEDULE_ANC, submission.instanceId(), timestamp);
 		}catch(Exception e){
 			logger.info("From ancVisitTwo:"+e.getMessage());
 		}
-
-		if(submission.getField(FWANC2REMSTS).equalsIgnoreCase(STS_GONE) || submission.getField(FWANC2REMSTS).equalsIgnoreCase(STS_GO))
+		logger.info("FWANC1REMSTS:"+submission.getField(FWANC1REMSTS));
+		if(submission.getField(FWANC2REMSTS).equalsIgnoreCase(STS_GONE) || submission.getField(FWANC2REMSTS).equalsIgnoreCase(STS_DEAD))
 		{ 
-			closeMother(mother);	
+			
+			unEnrollBNFSchedule(submission.entityId(),submission.anmId(),submission.instanceId(),submission.getField("user_type"));
 		}
 	}
 
@@ -339,16 +350,18 @@ public class ANCService {
 		allMothers.update(mother);
 		ancSchedulesService.fullfillMilestone(submission.entityId(), submission.anmId(), SCHEDULE_ANC, new LocalDate());
 		actionService.markAllAlertsAsInactive(submission.entityId());
+		logger.info("submission.getField(FWANC1REMSTS):"+submission.getField(FWANC1REMSTS));
 		try{
 			long timestamp = actionService.getActionTimestamp(submission.anmId(), submission.entityId(), SCHEDULE_ANC);
 			ancSchedulesService.fullfillSchedule(submission.entityId(), SCHEDULE_ANC, submission.instanceId(), timestamp);
 		}catch(Exception e){
 			logger.info("From ancVisitThree:"+e.getMessage());
 		}
-		
-		if(submission.getField(FWANC3REMSTS).equalsIgnoreCase(STS_GONE) || submission.getField(FWANC3REMSTS).equalsIgnoreCase(STS_GO))
+		logger.info("FWANC1REMSTS:"+submission.getField(FWANC1REMSTS));
+		if(submission.getField(FWANC3REMSTS).equalsIgnoreCase(STS_GONE) || submission.getField(FWANC3REMSTS).equalsIgnoreCase(STS_DEAD))
 		{ 
-			closeMother(mother);	
+			
+			unEnrollBNFSchedule(submission.entityId(),submission.anmId(),submission.instanceId(),submission.getField("user_type"));
 		}
 	}
 
@@ -435,9 +448,10 @@ public class ANCService {
 		}
 		
 
-		if(submission.getField(FWANC4REMSTS).equalsIgnoreCase(STS_GONE) || submission.getField(FWANC4REMSTS).equalsIgnoreCase(STS_GO))
+		if(submission.getField(FWANC4REMSTS).equalsIgnoreCase(STS_GONE) || submission.getField(FWANC4REMSTS).equalsIgnoreCase(STS_DEAD))
 		{ 
-			closeMother(mother);	
+						
+			unEnrollBNFSchedule(submission.entityId(),submission.anmId(),submission.instanceId(),submission.getField("user_type"));
 		}
 	}
 
@@ -480,6 +494,19 @@ public class ANCService {
 			allMothers.remove(mother);
 		}catch(Exception e){
 			logger.info("Unable to delete mother :"+e.getMessage());
+		}
+	}
+	
+	public void unEnrollBNFSchedule(String entityId,String provider,String  instanceId,String user_type){
+		logger.info("user_type:"+user_type);
+		if(user_type.equalsIgnoreCase("FD")){
+			Mother mother = allMothers.findByCaseId(entityId);
+			closeMother(mother);
+			bnfSchedulesService.unEnrollBNFSchedule(entityId, provider);
+			pncService.closeMother(mother);
+			scheduleLogService.closeScheduleAndScheduleLog( entityId,instanceId, SCHEDULE_BNF,provider);
+		}else{
+			logger.info("User type :"+user_type);
 		}
 	}
 }

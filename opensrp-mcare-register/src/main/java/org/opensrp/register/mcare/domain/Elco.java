@@ -131,7 +131,8 @@ public class Elco extends MotechBaseDataObject {
 	@JsonProperty
 	private long SUBMISSIONDATE;
 	public Elco() {
-
+		this.PSRFDETAILS = new ArrayList<>();
+		this.multimediaAttachments = new ArrayList<>();
 	}
 
 	public Elco withCASEID(String caseId) {

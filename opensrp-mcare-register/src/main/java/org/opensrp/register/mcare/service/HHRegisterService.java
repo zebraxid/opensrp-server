@@ -89,6 +89,7 @@ public class HHRegisterService {
         	            
         	hhRegisterEntries.add(hhRegisterEntry);
         }
+        logger.info("HHRegister data");
         return new HHRegister(hhRegisterEntries);
 	}	
 	

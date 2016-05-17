@@ -15,6 +15,10 @@ import static org.opensrp.common.AllConstants.PNCVisitThreeFields.*;
 import static org.opensrp.common.AllConstants.DeliveryOutcomeFields.CHILD_REGISTRATION_SUB_FORM_NAME;
 import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_GOBHHID;
 import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_WOMFNAME;
+import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_PNC;
+import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_PNC_1;
+import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_PNC_2;
+import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_PNC_3;
 import static org.opensrp.common.util.EasyMap.create;
 
 import java.text.SimpleDateFormat;
@@ -88,10 +92,13 @@ public class PNCService {
 			}
 			
 			Elco elco = allElcos.findByCaseId(mother.relationalid());
-			logger.info("Closing EC case. Ec Id: "+ elco.caseId());
-			elco.setIsClosed(false);
-			allElcos.update(elco);
-			elcoSchedulesService.imediateEnrollIntoMilestoneOfPSRF(elco.caseId(), elco.TODAY(), elco.PROVIDERID(),elco.INSTANCEID());
+			
+			if (elco != null) {
+				logger.info("Closing EC case. Ec Id: "+ elco.caseId());
+				elco.setIsClosed(false);
+				allElcos.update(elco);
+				elcoSchedulesService.imediateEnrollIntoMilestoneOfPSRF(elco.caseId(), elco.TODAY(), elco.PROVIDERID(),elco.INSTANCEID());
+			}
 								
 			if (submission.getField(FWBNFSTS).equals(STS_WD)) {
 				logger.info("Closing Mother as the mother died during delivery. Mother Id: "
@@ -101,10 +108,14 @@ public class PNCService {
 			else if (submission.getField(FWBNFSTS).equals(STS_LB)) {
 				logger.info("Generating schedule for Mother when Child is Live Birth. Mother Id: "
 						+ mother.caseId());
-				pncSchedulesService.enrollPNCRVForMother(submission.entityId(), LocalDate.parse(referenceDate));
-				logger.info("Generating schedule for Child when Child is Live Birth. Mother Id: "
-						+ mother.caseId());
-								
+				logger.info("FWBNFWOMVITSTS:"+submission.getField(FWBNFWOMVITSTS));
+				if(submission.getField(FWBNFWOMVITSTS).equalsIgnoreCase("0")){
+					logger.info("Mother died");
+				}else{					
+					pncSchedulesService.enrollPNCRVForMother(submission.entityId(), LocalDate.parse(referenceDate));
+					logger.info("Generating schedule for Child when Child is Live Birth. Mother Id: "
+							+ mother.caseId());
+				}
 				SubFormData subFormData = submission.getSubFormByName(CHILD_REGISTRATION_SUB_FORM_NAME);
 				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 				SimpleDateFormat formats = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -124,18 +135,32 @@ public class PNCService {
 			    	child.details().put(FWBNFGEN, childFields.get(FWBNFGEN));
 			    	child.details().put(FWBNFCHLDVITSTS, childFields.get(FWBNFCHLDVITSTS));	
 			    	child.details().put(received_time,formats.format(today).toString());
+			    	child.details().put(FWBNFNAMECHECK, childFields.get(FWBNFNAMECHECK));
+			    	child.details().put(FWBNFNAME, childFields.get(FWBNFNAME));
+			    	child.details().put(FWBNFCHILDNAME, childFields.get(FWBNFCHILDNAME));	
+			    	child.details().put(FWBNFDOB, childFields.get(FWBNFDOB));
+			    	child.details().put("referenceDate", referenceDate);
 
 					allChilds.update(child);
-					childSchedulesService.enrollENCCForChild(childFields.get(ID),  LocalDate.parse(referenceDate));	
+					logger.info("FWBNFCHLDVITSTS:"+childFields.get(FWBNFCHLDVITSTS));
+					if(childFields.get(FWBNFCHLDVITSTS).equalsIgnoreCase("0")){
+						logger.info("Child died");
+					}else{
+						childSchedulesService.enrollENCCForChild(childFields.get(ID),  LocalDate.parse(referenceDate));
+					}
 				}
 				
 							
 				
 			} 
 			else if (submission.getField(FWBNFSTS).equals(STS_SB)) {
-				logger.info("Generating schedule for Mother when Child is Still Birth. Mother Id: "
-						+ mother.caseId());
-				pncSchedulesService.enrollPNCRVForMother(submission.entityId(),  LocalDate.parse(referenceDate));
+				if(submission.getField("user_type").equalsIgnoreCase("FD")){
+					logger.info("Generating schedule for Mother when Child is Still Birth. Mother Id: "
+							+ mother.caseId());
+					pncSchedulesService.enrollPNCRVForMother(submission.entityId(),  LocalDate.parse(referenceDate));
+				}else{
+					logger.info("FWA submit form for Still Birth so nothing happend ");
+				}
 			}
 		}
 	}
@@ -184,6 +209,17 @@ public class PNCService {
 		mother.withPNCVisitOne(pncVisitOne);
 
 		allMothers.update(mother);
+		
+		pncSchedulesService.fullfillMilestone(submission.entityId(), submission.anmId(), SCHEDULE_PNC, new LocalDate());
+		
+		String pattern = "yyyy-MM-dd";
+		//DateTimeFormatter formatter = DateTimeFormat.forPattern(pattern);
+		
+		DateTime dateTime = DateTime.parse(mother.getbnfVisitDetails(FWBNFDTOO));
+		DateTimeFormatter fmt = DateTimeFormat.forPattern(pattern);
+		String referenceDate = fmt.print(dateTime);
+		
+		pncSchedulesService.enrollPNCForMother(submission.entityId(), SCHEDULE_PNC_2, LocalDate.parse(referenceDate));
 	}
 
 	public void pncVisitTwo(FormSubmission submission) {
@@ -229,6 +265,16 @@ public class PNCService {
 
 		allMothers.update(mother);
 
+		pncSchedulesService.fullfillMilestone(submission.entityId(), submission.anmId(), SCHEDULE_PNC, new LocalDate());
+		
+		String pattern = "yyyy-MM-dd";
+		//DateTimeFormatter formatter = DateTimeFormat.forPattern(pattern);
+		
+		DateTime dateTime = DateTime.parse(mother.getbnfVisitDetails(FWBNFDTOO));
+		DateTimeFormatter fmt = DateTimeFormat.forPattern(pattern);
+		String referenceDate = fmt.print(dateTime);
+		
+		pncSchedulesService.enrollPNCForMother(submission.entityId(), SCHEDULE_PNC_3, LocalDate.parse(referenceDate));
 	}
 
 	public void pncVisitThree(FormSubmission submission) {
@@ -274,6 +320,8 @@ public class PNCService {
 		mother.withPNCVisitThree(pncVisitThree);
 
 		allMothers.update(mother);
+		
+		pncSchedulesService.unEnrollFromSchedule(submission.entityId(), submission.anmId(), SCHEDULE_PNC);
 	}
 	
 	public void pncClose(String entityId) {
@@ -297,16 +345,20 @@ public class PNCService {
 		pncSchedulesService.unEnrollFromAllSchedules(mother.caseId());
 
 		Elco elco = allElcos.findByCaseId(mother.relationalid());
-		logger.info("Closing EC case along with PNC case. Ec Id: "+ elco.caseId());
-		elco.setIsClosed(true);
-		allElcos.update(elco);
+		if (elco != null) {
+			logger.info("Closing EC case along with PNC case. Ec Id: "+ elco.caseId());
+			elco.setIsClosed(true);
+			allElcos.update(elco);
+		}
 	}
 	
 	public void deleteBlankChild(FormSubmission submission){
 		SubFormData subFormData = submission.getSubFormByName(CHILD_REGISTRATION_SUB_FORM_NAME);
 		for (Map<String, String> childFields : subFormData.instances()) {			
 			Child child = allChilds.findByCaseId(childFields.get(ID));
-			allChilds.remove(child);
+			if (child != null) {
+				allChilds.remove(child);
+			}
 		}
 		
 	}

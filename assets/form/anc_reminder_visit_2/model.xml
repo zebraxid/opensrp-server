@@ -29,9 +29,9 @@
       <FWGESTATIONALAGE openmrs_entity="concept" openmrs_entity_id="1438AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
       <FWEDD openmrs_entity="concept" openmrs_entity_id="5596AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
       <FWANC2REMSTS openmrs_entity="concept" openmrs_entity_id="163088AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
-      <FWANC2INT openmrs_entity="concept"/>
+      <FWANC2INT openmrs_entity="concept" openmrs_entity_id="163000AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
       <DISPLAYTEXT2/>
-      <FWANC2KNWPRVDR openmrs_entity="concept"/>
+      <FWANC2KNWPRVDR openmrs_entity="concept" openmrs_entity_id="162998AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
       <DISPLAYTEXT3/>
       <risk_group>
         <yn_dk_label/>
