@@ -1,7 +1,9 @@
 package org.opensrp.register.mcare.service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.opensrp.dto.AclDTO;
 import org.opensrp.dto.LocationDTO;
@@ -42,7 +44,7 @@ public class UsersService {
 		if(userByUserName == null || userByUserName.getRoles() == null || userByUserName.getRoles().size() < 1)
 			return null;
 		else{
-			List<String> privileges = new ArrayList<String>();
+			Set<String> privileges = new HashSet<String>();
 			for(int i = 0; i< userByUserName.getRoles().size(); i++){
 				logger.info("entered for role - " + userByUserName.getRoles().get(i).getName());
 				List<String> roleSpecificPrivileges = roleService.getPrivilegesOfASpecificRole(userByUserName.getRoles().get(i).getId());
@@ -53,7 +55,7 @@ public class UsersService {
 				}
 			}
 			logger.info("privilege list constructed");
-			return privileges;
+			return new ArrayList<String>( privileges );
 		}
 	}
 	
@@ -238,5 +240,16 @@ public class UsersService {
 		else{
 			return "2";
 		}		
+	}
+	
+	public String ifUserExists(String userName){
+		User userByUserName = allUsers.findUserByUserName(userName);
+		logger.info("service returned -" + userName);
+		if(userByUserName == null){
+			return "1";
+		}			
+		else{
+			return "2";
+		}			
 	}
 }

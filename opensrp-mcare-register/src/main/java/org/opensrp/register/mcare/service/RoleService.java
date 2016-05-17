@@ -81,7 +81,7 @@ public class RoleService {
 					tempSimplifiedPrivilege.withName(privilegeDTOs.get(i).getName() == null ? "" : privilegeDTOs.get(i).getName());
 					tempSimplifiedPrivilege.withId(privilegeDTOs.get(i).getId() == null ? "" : privilegeDTOs.get(i).getId());
 					privileges.add(tempSimplifiedPrivilege);
-					logger.info("privilege with name - " +  tempSimplifiedPrivilege.getName() + "added in list");
+					logger.info("privilege with name - " +  tempSimplifiedPrivilege.getName() + " added in list");
 				}				
 				role.withPrivileges(privileges);
 				allRoles.update(role);

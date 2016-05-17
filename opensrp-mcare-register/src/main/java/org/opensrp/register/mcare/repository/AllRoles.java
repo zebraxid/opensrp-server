@@ -53,4 +53,16 @@ public class AllRoles  extends MotechBaseRepository<Role>{
 		return roles.get(0);
 	}
 	
+	@View(name = "role_by_id", map = "function(doc) { if (doc.type === 'Role' && doc._id) { emit(doc._id, doc); } }")
+	public Role findRoleById(String id) {
+		logger.info("inside Allroles.findRoleById()");
+		List<Role> roles = db.queryView(
+				createQuery("role_by_id").key(id)
+						.includeDocs(true), Role.class);
+		if (roles == null || roles.isEmpty()) {
+			return null;
+		}
+		return roles.get(0);
+	}
+	
 }
