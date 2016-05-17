@@ -92,10 +92,13 @@ public class PNCService {
 			}
 			
 			Elco elco = allElcos.findByCaseId(mother.relationalid());
-			logger.info("Closing EC case. Ec Id: "+ elco.caseId());
-			elco.setIsClosed(false);
-			allElcos.update(elco);
-			elcoSchedulesService.imediateEnrollIntoMilestoneOfPSRF(elco.caseId(), elco.TODAY(), elco.PROVIDERID(),elco.INSTANCEID());
+			
+			if (elco != null) {
+				logger.info("Closing EC case. Ec Id: "+ elco.caseId());
+				elco.setIsClosed(false);
+				allElcos.update(elco);
+				elcoSchedulesService.imediateEnrollIntoMilestoneOfPSRF(elco.caseId(), elco.TODAY(), elco.PROVIDERID(),elco.INSTANCEID());
+			}
 								
 			if (submission.getField(FWBNFSTS).equals(STS_WD)) {
 				logger.info("Closing Mother as the mother died during delivery. Mother Id: "
@@ -342,16 +345,20 @@ public class PNCService {
 		pncSchedulesService.unEnrollFromAllSchedules(mother.caseId());
 
 		Elco elco = allElcos.findByCaseId(mother.relationalid());
-		logger.info("Closing EC case along with PNC case. Ec Id: "+ elco.caseId());
-		elco.setIsClosed(true);
-		allElcos.update(elco);
+		if (elco != null) {
+			logger.info("Closing EC case along with PNC case. Ec Id: "+ elco.caseId());
+			elco.setIsClosed(true);
+			allElcos.update(elco);
+		}
 	}
 	
 	public void deleteBlankChild(FormSubmission submission){
 		SubFormData subFormData = submission.getSubFormByName(CHILD_REGISTRATION_SUB_FORM_NAME);
 		for (Map<String, String> childFields : subFormData.instances()) {			
 			Child child = allChilds.findByCaseId(childFields.get(ID));
-			allChilds.remove(child);
+			if (child != null) {
+				allChilds.remove(child);
+			}
 		}
 		
 	}
