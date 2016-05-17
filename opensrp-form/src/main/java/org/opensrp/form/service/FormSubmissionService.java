@@ -27,6 +27,7 @@ public class FormSubmissionService {
     private  String userType;
     private static String USER_TYPE_FWA ="FWA"; 
     private static String USER_TYPE_FD ="FD"; 
+    private static String USER_TYPE_BOTH_FWA_AFTER_90 = "BOTH_FWA_AFTER_90";
 
     @Autowired
     public FormSubmissionService(AllFormSubmissions allFormSubmissions, @Value("#{opensrp['mcare2.user.type']}") String userType) {
@@ -47,6 +48,8 @@ public class FormSubmissionService {
     	
     	if(userType.equalsIgnoreCase(USER_TYPE_FWA) || userType.equalsIgnoreCase(USER_TYPE_FD))
            return allFormSubmissions.findByANMIDAndUserTypeAndServerVersion(anmIdentifier, userType, version, batchSize);
+    	else if(userType.equalsIgnoreCase(USER_TYPE_BOTH_FWA_AFTER_90))
+            return allFormSubmissions.findBothUserSubmissionFWAAfter90(anmIdentifier, version, batchSize);
     	else
     		return allFormSubmissions.findByANMIDAndServerVersion(anmIdentifier, version, batchSize);
     }
