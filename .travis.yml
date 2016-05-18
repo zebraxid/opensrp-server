@@ -8,9 +8,6 @@ addons:
     - mysql-server-5.6
     - mysql-client-core-5.6
     - mysql-client-5.6
-addons:
-  - postgresql: 9.3
-  - mysql
 services:
   - couchdb
   - rabbitmq
