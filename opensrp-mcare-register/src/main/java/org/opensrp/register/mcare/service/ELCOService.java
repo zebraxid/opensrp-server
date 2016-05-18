@@ -163,6 +163,68 @@ public class ELCOService {
 		}
 	}
 	
+	public void misCensus(FormSubmission submission) {
+
+		if (submission.formName().equalsIgnoreCase(MISCensus)) {
+
+			Elco elco = allEcos.findByCaseId(submission
+					.entityId());
+
+			if (elco == null) {
+				logger.warn(format(
+						"Failed to handle MISCensus form as there is no elco registered with ID: {0}",
+						submission.entityId()));
+				return;
+			}			
+	    	elco.details().put("MisToday", submission.getField(REFERENCE_DATE));
+	    	elco.details().put("MisStart", submission.getField(START_DATE));		
+	    	elco.details().put("MisEnd", submission.getField(END_DATE));
+	    	elco.details().put("FWMISELCODATE", submission.getField("FWMISELCODATE"));
+	    	elco.details().put("FWCOUPLENUM", submission.getField("FWCOUPLENUM"));
+	    	elco.details().put("FWTETSTAT", submission.getField("FWTETSTAT"));
+	    	elco.details().put("FWMARRYDATE", submission.getField("FWMARRYDATE"));		
+	    	elco.details().put("FWCHILDALIVEB", submission.getField("FWCHILDALIVEB"));
+	    	elco.details().put("FWCHILDALIVEG", submission.getField("FWCHILDALIVEG"));
+	    	
+			allEcos.update(elco);	 
+		}
+	}
+	
+	public void misElco(FormSubmission submission) {
+
+	    Elco elco = allEcos.findByCaseId(submission.entityId());
+	    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date today = Calendar.getInstance().getTime();
+	    if (elco == null) {
+			logger.warn(format(
+					"Failed to handle MIS ELCO form as there is no ELCO registered with ID: {0}",
+					submission.entityId()));
+			return;
+		}
+	    	   
+		Map<String, String> misElco = create(FWMISELCODATE, submission.getField(FWMISELCODATE))
+				.put(START_DATE, submission.getField(START_DATE))
+				.put(END_DATE, submission.getField(END_DATE))
+				.put(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
+				.put(FWPMISBIRTHCTRL, submission.getField(FWPMISBIRTHCTRL))
+				.put(FWMISOPT, submission.getField(FWMISOPT))
+				.put(FWMISOPS, submission.getField(FWMISOPS))
+				.put(FWMISCS, submission.getField(FWMISCS))
+				.put(FWMISINJS, submission.getField(FWMISINJS))			
+				.put(FWMISIUDS, submission.getField(FWMISIUDS))
+				.put(FWMISIMPT, submission.getField(FWMISIMPT))
+				.put(FWMISIMPS, submission.getField(FWMISIMPS))
+				.put(received_time, format.format(today).toString())
+				.map();
+		
+		elco.MISDETAILS().add(misElco);	
+		elco.withTODAY(submission.getField(REFERENCE_DATE));
+		
+		allEcos.update(elco);
+		
+		elcoScheduleService.enrollIntoMilestoneOfMisElco(submission.entityId(), submission.getField(REFERENCE_DATE));
+	}
+	
 	private void addDetailsToElco(FormSubmission submission,
 			SubFormData subFormData, Elco elco) {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -228,7 +290,7 @@ public class ELCOService {
 					.put(FW_WOMGOBHHID, elcoFields.get(FW_WOMGOBHHID))
 					.put(FW_WOMGPS, elcoFields.get(FW_WOMGPS))
 					.put(profileImagePath, "")
-					.put("received_time", format.format(today).toString())
+					.put(received_time, format.format(today).toString())
 					.put(nidImagePath, "").map();
 			
 			houseHold.ELCODETAILS().add(elco);		
@@ -291,8 +353,7 @@ public class ELCOService {
 					.put(received_time, format.format(today).toString())
 					.map();
 			
-			elco.PSRFDETAILS().add(psrf);	
-			
+			elco.PSRFDETAILS().add(psrf);			
 			elco.withTODAY(submission.getField(REFERENCE_DATE));
 			
 			allEcos.update(elco);

@@ -79,6 +79,7 @@ public class HHService {
 		
 		addELCODetailsToHH(submission, subFormData, houseHold);
 		
+		houseHold.withTODAY(submission.getField(REFERENCE_DATE));
 		houseHold.withPROVIDERID(submission.anmId());
 		houseHold.withINSTANCEID(submission.instanceId());
 		houseHold.withFWUPAZILLA(submission.getField(FW_UPAZILLA).replace("+", " "));
