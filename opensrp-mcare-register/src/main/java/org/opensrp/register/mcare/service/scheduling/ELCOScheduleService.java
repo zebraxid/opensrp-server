@@ -61,17 +61,32 @@ public class ELCOScheduleService {
 	    logger.info(format("Enrolling Elco into PSRF schedule. Id: {0}", caseId));
 	    
 		scheduler.enrollIntoSchedule(caseId, ELCO_SCHEDULE_PSRF, date);
-		DateTime expiryDate = new DateTime().plusHours(28);
-		DateTime startDate = new DateTime();
-		allActions.addOrUpdateAlert(new Action(caseId, provider, ActionData.createAlert(elco, ELCO_SCHEDULE_PSRF, ELCO_SCHEDULE_PSRF, AlertStatus.upcoming, new DateTime(),  new DateTime().plusHours(duration))));
-		scheduleLogService.saveScheduleLog(BeneficiaryType.elco, caseId, instanceId, provider, ELCO_SCHEDULE_PSRF, ELCO_SCHEDULE_PSRF, AlertStatus.upcoming, new DateTime(),  new DateTime().plusHours(duration),ELCO_SCHEDULE_PSRF);
+		try{
+			scheduler.unEnrollFromScheduleimediate(caseId, provider, IMD_ELCO_SCHEDULE_PSRF);
+		}catch(Exception e){
+			logger.info(format("Failed to UnEnrollFromSchedule PSRF"));
+		}
+		List<Action> beforeNewActions = allActions.findAlertByANMIdEntityIdScheduleName(provider, caseId, ELCO_SCHEDULE_PSRF);
+		if(beforeNewActions.size() > 0){ 
+		scheduleLogService.closeSchedule(caseId,instanceId,beforeNewActions.get(0).timestamp(),ELCO_SCHEDULE_PSRF);
+		}
+		allActions.addOrUpdateAlert(new Action(caseId, provider, ActionData.createAlert(elco, ELCO_SCHEDULE_PSRF, ELCO_SCHEDULE_PSRF, AlertStatus.normal, new DateTime(),  new DateTime().plusHours(duration))));
+		logger.info(format("create psrf from psrf to psrf..", caseId));
+		List<Action> afterNewActions = allActions.findAlertByANMIdEntityIdScheduleName(provider, caseId, ELCO_SCHEDULE_PSRF);
+		if(afterNewActions.size() > 0){ 
+			scheduleLogService.saveScheduleLog(BeneficiaryType.elco, caseId, instanceId, provider, ELCO_SCHEDULE_PSRF, ELCO_SCHEDULE_PSRF, AlertStatus.normal, new DateTime(),  new DateTime().plusHours(duration),ELCO_SCHEDULE_PSRF,afterNewActions.get(0).timestamp());
+	
+		}
 	}
 	
 	public void unEnrollFromScheduleOfPSRF(String caseId, String providerId, String scheduleName)
     {
         logger.info(format("Unenrolling Elco from PSRF schedule. Id: {0}", caseId));
-        
-        scheduler.unEnrollFromSchedule(caseId, providerId, ELCO_SCHEDULE_PSRF);
+        try{
+        	scheduler.unEnrollFromSchedule(caseId, providerId, ELCO_SCHEDULE_PSRF);
+        }catch(Exception e){
+        	logger.info(format("Failed to UnEnrollFromSchedule PSRF"));
+        }
         
         scheduler.unEnrollFromScheduleimediate(caseId, providerId, IMD_ELCO_SCHEDULE_PSRF);
     }
@@ -127,7 +142,10 @@ public class ELCOScheduleService {
 	    logger.info("visitCode : "+visitCode);*/ 
 	   
 	    allActions.addOrUpdateAlert(new Action(caseId, provider, ActionData.createAlert(elco, ELCO_SCHEDULE_PSRF, ELCO_SCHEDULE_PSRF, AlertStatus.upcoming, new DateTime(), new DateTime().plusHours(duration))));	    
-	    scheduleLogService.saveScheduleLog(BeneficiaryType.elco, caseId, instanceId, provider, ELCO_SCHEDULE_PSRF, ELCO_SCHEDULE_PSRF, AlertStatus.upcoming, new DateTime(), new DateTime().plusHours(duration), ELCOSchedulesConstantsImediate.IMD_ELCO_SCHEDULE_PSRF);
+	    List<Action> existingAlerts = allActions.findAlertByANMIdEntityIdScheduleName(provider, caseId, ELCO_SCHEDULE_PSRF);
+		if(existingAlerts.size() > 0){ 
+			scheduleLogService.saveScheduleLog(BeneficiaryType.elco, caseId, instanceId, provider, ELCO_SCHEDULE_PSRF, ELCO_SCHEDULE_PSRF, AlertStatus.upcoming, new DateTime(), new DateTime().plusHours(duration), ELCOSchedulesConstantsImediate.IMD_ELCO_SCHEDULE_PSRF,existingAlerts.get(0).timestamp());
+		}
 	}
 	
 }

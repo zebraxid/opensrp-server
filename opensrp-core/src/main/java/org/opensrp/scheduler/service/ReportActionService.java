@@ -32,11 +32,11 @@ public class ReportActionService {
 	{
 		this.allReportActions = allReportActions;	
 	}
-	public void updateScheduleLog(BeneficiaryType beneficiaryType, String caseID, String instanceId, String anmIdentifier, String scheduleName, String visitCode, AlertStatus alertStatus, DateTime startDate, DateTime expiryDate, DateTime currentWindowCloseDate,String trackId){
-		System.out.println("beneficiaryType:"+beneficiaryType+"caseID:"+caseID+"instanceId:"+instanceId);
-		ScheduleLog  schedule = allReportActions.findByInstanceIdByCaseIdByname(instanceId,caseID,scheduleName);
+	public void updateScheduleLog(BeneficiaryType beneficiaryType, String caseID, String instanceId, String anmIdentifier, String scheduleName, String visitCode, AlertStatus alertStatus, DateTime startDate, DateTime expiryDate, DateTime currentWindowCloseDate,String trackId,long BTS,long timestamp){
+		
+		ScheduleLog  schedule = allReportActions.findByTimestampIdByCaseIdByname(BTS,caseID,scheduleName);
 		   if(schedule != null){
-			   System.out.println("cwindow:"+schedule.getCurrentWindow()+"this:"+alertStatus.value() + ":"+alertStatus);
+			   
 			   if(!schedule.getCurrentWindow().equals(alertStatus)){				   
 			    	Map<String, String > mapData = new HashMap<>();
 			    	mapData.put("beneficiaryType", beneficiaryType.value());
@@ -50,23 +50,23 @@ public class ReportActionService {
 			    	schedule.currentWindow(alertStatus);
 			    	schedule.currentWindowStartDate(startDate);
 			    	schedule.currentWindowEndDate(expiryDate);			    	
-			    	schedule.timestamp(Calendar.getInstance().getTimeInMillis());
+			    	schedule.timestamp(timestamp);
+			    	schedule.setVisitCode(visitCode);
 			    	allReportActions.update(schedule);
-			   }else{
-				   
+			   }else{				   
 				   schedule.setRevision(schedule.getRevision());				  
 				   schedule.data().get(0).put("expiryDate", expiryDate.toLocalDate().toString());	
-				  
-				   schedule.timestamp(Calendar.getInstance().getTimeInMillis());
+				   schedule.setVisitCode(visitCode);
+				   schedule.timestamp(timestamp);
 			       allReportActions.update(schedule);
 			   }
 			   
 		   }
 	}
-	public void alertForReporting(BeneficiaryType beneficiaryType, String caseID, String instanceId, String anmIdentifier, String scheduleName, String visitCode, AlertStatus alertStatus, DateTime startDate, DateTime expiryDate, DateTime currentWindowCloseDate,String trackId)
+	public void alertForReporting(BeneficiaryType beneficiaryType, String caseID, String instanceId, String anmIdentifier, String scheduleName, String visitCode, AlertStatus alertStatus, DateTime startDate, DateTime expiryDate, DateTime currentWindowCloseDate,String trackId,long timeStamp)
 	{	  
 		
-		 allReportActions.addAlert(new ScheduleLog(caseID, instanceId, anmIdentifier, ScheduleData.createAlert(beneficiaryType, scheduleName, visitCode, alertStatus, startDate, expiryDate),trackId,alertStatus,currentWindowCloseDate,startDate,expiryDate,scheduleName));
+		 allReportActions.addAlert(new ScheduleLog(caseID, instanceId, anmIdentifier, ScheduleData.createAlert(beneficiaryType, scheduleName, visitCode, alertStatus, startDate, expiryDate),trackId,alertStatus,currentWindowCloseDate,startDate,expiryDate,scheduleName,timeStamp));
 	   
 	}
 

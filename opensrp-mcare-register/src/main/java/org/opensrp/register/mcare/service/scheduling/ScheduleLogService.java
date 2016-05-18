@@ -3,6 +3,7 @@
  * */
 package org.opensrp.register.mcare.service.scheduling;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
@@ -24,6 +25,7 @@ import org.opensrp.dto.BeneficiaryType;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.scheduler.Action;
 import org.opensrp.scheduler.ScheduleLog;
+import org.opensrp.scheduler.repository.AllActions;
 import org.opensrp.scheduler.repository.AllReportActions;
 import org.opensrp.scheduler.service.AllEnrollmentWrapper;
 import org.opensrp.scheduler.service.ReportActionService;
@@ -39,16 +41,20 @@ public class ScheduleLogService extends OpenmrsService{
 	private ReportActionService reportActionService;
 	private final AllEnrollmentWrapper allEnrollments;
 	private AllReportActions allReportActions;
+	private AllActions allActions;
+	private OpenmrsUserService userService;
 	
 	@Autowired
-	public ScheduleLogService(ReportActionService reportActionService,AllEnrollmentWrapper allEnrollments,AllReportActions allReportActions){
+	public ScheduleLogService(ReportActionService reportActionService,AllEnrollmentWrapper allEnrollments,AllReportActions allReportActions,AllActions allActions,OpenmrsUserService userService){
 		this.reportActionService = reportActionService;
 		this.allEnrollments = allEnrollments;
 		this.allReportActions = allReportActions;
+		this.allActions = allActions;
+		this.userService = userService;
 	}
 	
 	
-	public void saveScheduleLog(BeneficiaryType beneficiaryType, String caseID, String instanceId, String anmIdentifier, String scheduleName, String visitCode, AlertStatus alertStatus, DateTime startDate, DateTime expiryDate,String immediateScheduleName){
+	public void saveScheduleLog(BeneficiaryType beneficiaryType, String caseID, String instanceId, String anmIdentifier, String scheduleName, String visitCode, AlertStatus alertStatus, DateTime startDate, DateTime expiryDate,String immediateScheduleName,long timeStamp){
 		List<Enrollment> el =this.findEnrollmentByCaseIdAndScheduleName(caseID,immediateScheduleName);
 		String trackId = "";		
 		for (Enrollment e : el){
@@ -57,9 +63,14 @@ public class ScheduleLogService extends OpenmrsService{
 		if(trackId.equalsIgnoreCase("")){
 			trackId = "TR";
 		}		
-		DateTime scheduleCloseDate = null;
-		reportActionService.alertForReporting(beneficiaryType, caseID, instanceId, anmIdentifier, scheduleName, visitCode, alertStatus, startDate, expiryDate,new DateTime().plusHours(duration),trackId);
 		
+		reportActionService.alertForReporting(beneficiaryType, caseID, instanceId, anmIdentifier, scheduleName, visitCode, alertStatus, startDate, expiryDate,null,trackId,timeStamp);
+		/*try {
+			this.saveActionDataToOpenMrsMilestoneTrack(caseID, instanceId, anmIdentifier, scheduleName);
+		} catch (ParseException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}*/
 	}
 	
 	public  List<Enrollment> findEnrollmentByCaseIdAndScheduleName(String caseID,String scheduleName ){
@@ -93,43 +104,51 @@ public class ScheduleLogService extends OpenmrsService{
 		
 	}
 	
-	public void closeSchedule(FormSubmission submission,String instaceId,String name){
-		ScheduleLog  schedule = allReportActions.findByInstanceIdByCaseIdByname(instaceId,submission.entityId(),name);
-		System.out.println("name:"+name+"Instance:"+submission.instanceId()+"EntityId:"+submission.entityId());;
+	public void closeSchedule(String caseId,String instanceId,long timestamp,String name){
+		ScheduleLog  schedule = allReportActions.findByTimestampIdByCaseIdByname(timestamp,caseId,name);
+		System.out.println("name:"+name+"Instance:"+instanceId+"EntityId:"+caseId);;
         schedule.setRevision(schedule.getRevision());
         schedule.scheduleCloseDate(new DateTime());
-        schedule.closeById(submission.instanceId());
-        schedule.getIsActionActive(false);
+        schedule.closeById(instanceId);
+        schedule.getIsActionActive(true);
         allReportActions.update(schedule);
 		
 	}
-	public void saveActionDataToOpenMrsMilestoneTrack(String windowName, BeneficiaryType beneficiaryType, String entityId, String instanceId,
-			String providerId, String schedule, String milestone, DateTime  startOfEarliestWindow,
-			DateTime startOfDueWindow, DateTime startOfLateWindow, DateTime startOfMaxWindow){
-		/*Action close = getClosedAction(ac.data().get("visitCode"), alertActions);
-		JSONObject pr = userService.getPersonByUser(ac.anmIdentifier());*/
+	public void saveActionDataToOpenMrsMilestoneTrack(String entityId, String instanceId,
+			String providerId, String schedule) throws ParseException{
 		
-		/*ScheduleLog  scheduleLog = allReportActions.findByInstanceId(caseID);
+		Enrollment e =allEnrollments.findByEnrollmentByExternalIdAndScheduleName(entityId, schedule).get(0) ;
+		ScheduleLog  scheduleLog = allReportActions.findByInstanceIdByCaseIdByname(instanceId,entityId,schedule);
+		List<Action> alertActions = allActions.findAlertByANMIdEntityIdScheduleName(providerId, entityId, schedule);
+		Action close = getClosedAction(scheduleLog.getVisitCode(), alertActions);
+		
 		JSONObject tm = new JSONObject();
-		tm.put("track", trackuuid);
-		MilestoneFulfillment m = getMilestone(ac.data().get("visitCode"), e);
-		tm.put("milestone", ac.data().get("visitCode"));
-		tm.put("alertRecipient", pr.getString("uuid"));
-		tm.put("alertRecipientRole", "PROVIDER");
-		String fdate = m == null?null:OPENMRS_DATE.format(m.getFulfillmentDateTime().toDate());
-		if(fdate == null){
-			fdate = close==null?null:OPENMRS_DATE.format(new SimpleDateFormat("dd-MM-yyyy").parse(close.data().get("completionDate")));
-		}
-		tm.put("fulfillmentDate", fdate);
-		tm.put("status", ac.data().get("alertStatus")+(close==null?"":"-completed"));
-		//TODO tm.put("reasonClosed", ac.data().get(""));
-		tm.put("alertStartDate", ac.data().get("startDate"));
-		tm.put("alertExpiryDate", ac.data().get("expiryDate"));
-		tm.put("isActive", ac.getIsActionActive());
-		tm.put("actionType", "PROVIDER ALERT");
+		try {
+			tm.put("track", scheduleLog.trackId());
+			MilestoneFulfillment m = getMilestone(scheduleLog.getVisitCode(), e);
+			tm.put("milestone", scheduleLog.getVisitCode());
+			JSONObject pr = userService.getPersonByUser(providerId);
+			tm.put("alertRecipient", pr.getString("uuid"));
+			tm.put("alertRecipientRole", "PROVIDER");
+			String fdate = m == null?null:OPENMRS_DATE.format(m.getFulfillmentDateTime().toDate());
+			if(fdate == null){
+				fdate = close==null?null:OPENMRS_DATE.format(new SimpleDateFormat("dd-MM-yyyy").parse(close.data().get("completionDate")));
+			}
+			tm.put("fulfillmentDate", fdate);
+			tm.put("status", scheduleLog.getCurrentWindow()+(close==null?"":"-completed"));
+			//TODO tm.put("reasonClosed", ac.data().get(""));
+			tm.put("alertStartDate", scheduleLog.getCurrentWindowStartDate());
+			tm.put("alertExpiryDate", scheduleLog.getCurrentWindowEndDate());
+			//tm.put("isActive", scheduleLog.get);
+			tm.put("actionType", "PROVIDER ALERT");
+			
+			JSONObject tmo = new JSONObject(HttpUtil.post(getURL()+"/"+TRACK_MILESTONE_URL, "", tm.toString(), OPENMRS_USER, OPENMRS_PWD).body());
 		
-		JSONObject tmo = new JSONObject(HttpUtil.post(getURL()+"/"+TRACK_MILESTONE_URL, "", tm.toString(), OPENMRS_USER, OPENMRS_PWD).body());*/
-	
+		} catch (JSONException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
 	}
 	private Action getClosedAction(String milestone, List<Action> actions){
 		for (Action a : actions) {

@@ -42,29 +42,39 @@ public class ActionService {
             throw new IllegalArgumentException("Beneficiary Type : " + beneficiaryType + " is of unknown type");
         }
     	List<Action> existingAlerts = allActions.findAlertByANMIdEntityIdScheduleName(anmIdentifier, caseID, scheduleName);
-    	if(existingAlerts != null){
-    		System.out.println("existingAlerts:::"+existingAlerts.toString());
+    	
+    	
+    	if(existingAlerts.size() > 0){ 
+    		long beforTimeStamp = existingAlerts.get(0).timestamp();
         	Map<String,String> data =existingAlerts.get(0).data(); 	      
  	      if(!data.get("alertStatus").equals(alertStatus)){
  	    	  existingAlerts.get(0).setRevision(existingAlerts.get(0).getRevision());
  	    	  existingAlerts.get(0).data().put("alertStatus", alertStatus.toString());
  	    	  existingAlerts.get(0).data().put("expiryDate", expiryDate.toLocalDate().toString());
  	    	  existingAlerts.get(0).data().put("startDate", startDate.toLocalDate().toString());
+ 	    	  existingAlerts.get(0).data().put("visitCode", visitCode);
  	    	  existingAlerts.get(0).timestamp(Calendar.getInstance().getTimeInMillis());
  	    	  Action action = existingAlerts.get(0);
  	    	 allActions.update(action);
  	    	  
  	      }else{
  	    	 existingAlerts.get(0).setRevision(existingAlerts.get(0).getRevision());
- 	    	 existingAlerts.get(0).timestamp(Calendar.getInstance().getTimeInMillis());
+ 	    	 existingAlerts.get(0).timestamp(Calendar.getInstance().getTimeInMillis()); 	    	 
+ 	    	 existingAlerts.get(0).data().put("visitCode", visitCode);
+ 	    	 existingAlerts.get(0).data().put("expiryDate", expiryDate.toLocalDate().toString());
+ 	    	 existingAlerts.get(0).data().put("startDate", startDate.toLocalDate().toString());
  	    	 Action action = existingAlerts.get(0);
+ 	    	 
  	    	 allActions.update(action);
  	      }
+ 	      
+ 	     List<Action> existingAlert = allActions.findAlertByANMIdEntityIdScheduleName(anmIdentifier, caseID, scheduleName);
+ 	     reportActionService.updateScheduleLog(beneficiaryType, caseID, instanceId, anmIdentifier, scheduleName, visitCode, alertStatus, startDate, expiryDate, null,null,beforTimeStamp,existingAlert.get(0).timestamp());
  	       
         }else{
         	allActions.addOrUpdateAlert(new Action(caseID, anmIdentifier, ActionData.createAlert(beneficiaryType, scheduleName, visitCode, alertStatus, startDate, expiryDate)));
         }
-    	reportActionService.updateScheduleLog(beneficiaryType, caseID, instanceId, anmIdentifier, scheduleName, visitCode, alertStatus, startDate, expiryDate, null,null);
+    	
     }
 
     public void markAllAlertsAsInactive(String entityId) {

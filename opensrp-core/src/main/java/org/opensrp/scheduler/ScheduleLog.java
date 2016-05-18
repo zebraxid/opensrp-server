@@ -34,6 +34,8 @@ public class ScheduleLog extends MotechBaseDataObject  {
     @JsonProperty
     private String trackId;
     @JsonProperty
+    private String visitCode;
+    @JsonProperty
     private List<Map<String, String>> data;
     @JsonProperty
     private String actionTarget;
@@ -63,14 +65,14 @@ public class ScheduleLog extends MotechBaseDataObject  {
     public ScheduleLog() {
     }
 
-    public ScheduleLog(String caseId, String instanceId, String anmIdentifier, ScheduleData actionData) {
+    public ScheduleLog(String caseId, String instanceId, String anmIdentifier, ScheduleData actionData,long timeStamp) {
         this.anmIdentifier = anmIdentifier;
         this.caseID = caseId;
         this.instanceId = instanceId;
         this.data =  actionData.data();
         this.actionTarget = actionData.target();
         this.actionType = actionData.type();
-        this.timeStamp = DateUtil.now().getMillis();
+        this.timeStamp = timeStamp;
         this.scheduleGenerateDate = DateUtil.now();
         this.details = actionData.details();
         this.isActionActive = true;
@@ -78,14 +80,14 @@ public class ScheduleLog extends MotechBaseDataObject  {
         
     }
 
-    public ScheduleLog(String caseId, String instanceId, String anmIdentifier, ScheduleData actionData,String trackId,AlertStatus currentWindow,DateTime scheduleCloseDate,DateTime currentWindowStartDate,DateTime currentWindowEndDate,String scheduleName) {
+    public ScheduleLog(String caseId, String instanceId, String anmIdentifier, ScheduleData actionData,String trackId,AlertStatus currentWindow,DateTime scheduleCloseDate,DateTime currentWindowStartDate,DateTime currentWindowEndDate,String scheduleName,long timeStamp) {
         this.anmIdentifier = anmIdentifier;
         this.caseID = caseId;
         this.instanceId = instanceId;
         this.data =  actionData.data();
         this.actionTarget = actionData.target();
         this.actionType = actionData.type();
-        this.timeStamp = DateUtil.now().getMillis();
+        this.timeStamp = timeStamp;
         this.scheduleGenerateDate = DateUtil.now();
         this.details = actionData.details();
         this.isActionActive = true;
@@ -125,6 +127,9 @@ public class ScheduleLog extends MotechBaseDataObject  {
     }
     public void closeById(String closeById) {
         this.closeById =closeById;
+    }
+    public void setVisitCode(String visitCode) {
+        this.visitCode =visitCode;
     }
     public void timestamp(long timeStamp) {
         this.timeStamp =timeStamp;
@@ -166,6 +171,9 @@ public class ScheduleLog extends MotechBaseDataObject  {
     }
     public String getTrackId() {
         return trackId;
+    }
+    public String getVisitCode() {
+        return visitCode;
     }
     public String getCloseById(String closeById){
     	return closeById;

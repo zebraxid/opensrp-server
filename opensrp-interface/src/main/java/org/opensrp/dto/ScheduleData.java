@@ -28,16 +28,7 @@ public class ScheduleData {
     	mapData.put("startDate", startDate.toLocalDate().toString());
     	mapData.put("expiryDate", expiryDate.toLocalDate().toString());
     	data.data.add(mapData);    	
-    	return data;
-    	/*
-    	ScheduleData.data = 
-    	return new ScheduleData("alert", "createAlert")
-                .with("beneficiaryType", beneficiaryType.value())
-                .with("scheduleName", scheduleName)
-                .with("visitCode", visitCode)
-                .with("alertStatus", alertStatus.value())
-                .with("startDate", startDate.toLocalDate().toString())
-                .with("expiryDate", expiryDate.toLocalDate().toString());*/
+    	return data;    	
     }
 
     public static ScheduleData markAlertAsClosed(String visitCode, String completionDate) {

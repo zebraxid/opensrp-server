@@ -71,13 +71,21 @@ public class AllReportActions extends MotechBaseRepository<ScheduleLog> {
 										 DateTime.parse(row.getValueAsNode().findValue("data").get("expiryDate").asText())
 						 				);
 				 
-				 schedulesMap.put(row.getKey(), new ScheduleLog(row.getValueAsNode().findValue("caseID").toString(), row.getValueAsNode().findValue("instanceId").toString(),row.getValueAsNode().findValue("anmIdentifier").toString(), actionData));
+				 schedulesMap.put(row.getKey(), new ScheduleLog(row.getValueAsNode().findValue("caseID").toString(), row.getValueAsNode().findValue("instanceId").toString(),row.getValueAsNode().findValue("anmIdentifier").toString(), actionData,row.getValueAsNode().findValue("caseID").asLong()));
 			 }
 		 }
 				
 		 return schedulesMap;
 	}
-	
+	private static final String FUNCTION_DOC_EMIT_DOC_TIMESTAMP_CASEID_NAME = "function(doc) { if(doc.type === 'ScheduleLog') emit([doc.timeStamp,doc.caseID,doc.scheduleName], doc.caseID);}";
+	@View(name = "by_timestamp_id_bycaseId_by_name", map = FUNCTION_DOC_EMIT_DOC_TIMESTAMP_CASEID_NAME)
+    public ScheduleLog findByTimestampIdByCaseIdByname(long timeStamp,String caseId,String name) {
+        List<ScheduleLog> scheduleLog = queryView("by_timestamp_id_bycaseId_by_name", ComplexKey.of(timeStamp,caseId,name));
+        if (scheduleLog == null || scheduleLog.isEmpty()) {
+			return null;
+		}
+		return scheduleLog.get(0);        
+    }
 	private static final String FUNCTION_DOC_EMIT_DOC_INSTANCEID_CASEID_NAME = "function(doc) { if(doc.type === 'ScheduleLog') emit([doc.instanceId,doc.caseID,doc.scheduleName], doc.caseID);}";
 	@View(name = "by_instance_id_bycaseId_by_name", map = FUNCTION_DOC_EMIT_DOC_INSTANCEID_CASEID_NAME)
     public ScheduleLog findByInstanceIdByCaseIdByname(String instanceId,String caseId,String name) {

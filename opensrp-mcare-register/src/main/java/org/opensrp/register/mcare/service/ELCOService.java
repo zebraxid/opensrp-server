@@ -13,6 +13,7 @@ import static org.opensrp.common.AllConstants.PSRFFields.*;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.HHSchedulesConstants.HH_SCHEDULE_CENSUS;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ELCOSchedulesConstants.ELCO_SCHEDULE_PSRF;
 
+import java.util.List;
 import java.util.Map;
 
 import org.joda.time.DateTime;
@@ -25,7 +26,9 @@ import org.opensrp.register.mcare.repository.AllHouseHolds;
 import org.opensrp.register.mcare.service.scheduling.ELCOScheduleService;
 import org.opensrp.register.mcare.service.scheduling.HHSchedulesService;
 import org.opensrp.register.mcare.service.scheduling.ScheduleLogService;
+import org.opensrp.scheduler.Action;
 import org.opensrp.scheduler.ScheduleLog;
+import org.opensrp.scheduler.repository.AllActions;
 import org.opensrp.scheduler.repository.AllReportActions;
 import org.opensrp.scheduler.service.ReportActionService;
 import org.slf4j.Logger;
@@ -49,10 +52,10 @@ public class ELCOService {
 	private ANCService ancService;
 	private BNFService bnfService;	
 	private ScheduleLogService scheduleLogService;
-
+	private AllActions allActions;
 	@Autowired
 	public ELCOService(AllHouseHolds allHouseHolds, AllElcos allEcos, HHSchedulesService hhSchedulesService,
-			ELCOScheduleService elcoScheduleService,ANCService ancService, BNFService bnfService,ScheduleLogService scheduleLogService) {
+			ELCOScheduleService elcoScheduleService,ANCService ancService, BNFService bnfService,ScheduleLogService scheduleLogService,AllActions allActions) {
 		this.allHouseHolds = allHouseHolds;
 		this.allEcos = allEcos;
 		this.hhSchedulesService = hhSchedulesService;
@@ -60,6 +63,7 @@ public class ELCOService {
 		this.ancService = ancService;
 		this.bnfService = bnfService;
 		this.scheduleLogService = scheduleLogService;
+		this.allActions = allActions;
 		
 	}
 
@@ -104,8 +108,8 @@ public class ELCOService {
 			
 			hhSchedulesService.enrollIntoMilestoneOfCensus(submission.entityId(),
 					submission.getField(REFERENCE_DATE),submission.anmId(),submission.instanceId());
-			 scheduleLogService.closeSchedule(submission,houseHold.INSTANCEID(),HH_SCHEDULE_CENSUS);
 			
+			 
 		}
 	}
 	
@@ -224,19 +228,23 @@ public class ELCOService {
 			
 			allEcos.update(elco);
 			
-			elcoScheduleService.enrollIntoMilestoneOfPSRF(submission.entityId(),
-                    submission.getField(REFERENCE_DATE),submission.anmId(),submission.instanceId());
 			
-			if(submission.getField(FW_PSRPREGSTS) != null)        
-                if(submission.getField(FW_PSRPREGSTS).equals("1"))
-                {
-	                ancService.registerANC(submission);
+			if(submission.getField(FW_PSRPREGSTS) != null && submission.getField(FW_PSRPREGSTS).equals("1") ){        
+                    ancService.registerANC(submission);
 	                bnfService.registerBNF(submission);
 	                elco.setIsClosed(true);
 	        		allEcos.update(elco);
 	                elcoScheduleService.unEnrollFromScheduleOfPSRF(submission.entityId(), submission.anmId(), "");
-	                scheduleLogService.closeSchedule(submission,elco.INSTANCEID(),ELCO_SCHEDULE_PSRF);
-	            }                                           			
+	                List<Action> beforeNewActions = allActions.findAlertByANMIdEntityIdScheduleName(submission.anmId(), submission.entityId(), ELCO_SCHEDULE_PSRF);
+	        		if(beforeNewActions.size() > 0){ 
+	        			scheduleLogService.closeSchedule(submission.entityId(),submission.instanceId(),beforeNewActions.get(0).timestamp(),ELCO_SCHEDULE_PSRF);
+	        		}
+	                //scheduleLogService.closeSchedule(submission.entityId(),submission.instanceId(),ELCO_SCHEDULE_PSRF);
+			}else{
+				
+	            	elcoScheduleService.enrollIntoMilestoneOfPSRF(submission.entityId(),
+	                        submission.getField(REFERENCE_DATE),submission.anmId(),submission.instanceId());
+			}
 	}
 }
 
