@@ -33,7 +33,7 @@
           <FWBNFNAMECHECK/>
           <FWBNFNAME/>
           <FWBNFCHILDNAME openmrs_entity="concept" openmrs_entity_id="1586AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
-          <FWBNFDOB/>
+          <FWBNFDOB openmrs_entity="person" openmrs_entity_id="birthdate"/>
           <add_child/>
         </FWBNCHLDVITSTS>
       </outcome_occured>

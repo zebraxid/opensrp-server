@@ -451,10 +451,10 @@ public class OpenmrsConnector {
 					
 					if(sbf.name().equals("child_registration"))
 					{
-						 firstName = "child";
+						 firstName = sfdata.get("FWBNFCHILDNAME");
 						 middleName = null;
 						 lastName = null;		 
-						 birthdate = OpenmrsService.OPENMRS_DATE.parse("2015-01-01");
+						 birthdate = OpenmrsService.OPENMRS_DATE.parse(sfdata.get("FWBNFDOB"));
 						 deathdate = null;
 						 birthdateApprox = false;
 						 deathdateApprox = false;
