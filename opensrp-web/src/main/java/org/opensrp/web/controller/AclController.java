@@ -142,11 +142,10 @@ public class AclController {
 	
 	@RequestMapping(headers = { "Accept=application/json" }, method = POST, value = "/add-privilege")
 	public ResponseEntity<String> addPrivilege(@RequestBody PrivilegeDTO privilegeDTO) {
-		logger.info("request reached inside /add-privilege");
-		logger.info(privilegeDTO.getName());
+		logger.info("request received for creating privilege with name- " + privilegeDTO.getName());
 		String message = privilegeService.addPrivilege(privilegeDTO);		
 		//return new ResponseEntity<>(message,OK);
-		return new ResponseEntity<>("1",OK);
+		return new ResponseEntity<>(message,OK);
 		//return "1";
 	}
 	
@@ -213,6 +212,14 @@ public class AclController {
 		logger.info("update request received for user - " + userDTO.getUserName());
 		
 		String message = userService.editUser(userDTO);		
+		return new ResponseEntity<>(message,OK);
+	}
+	
+	@RequestMapping( method = GET, value = "/valid-username")
+	@ResponseBody
+	public ResponseEntity<String> isUsernameAvailable(@RequestParam String userName) {
+		logger.info("check if user with name -" + userName + " exists.");
+		String message = userService.ifUserExists(userName);		
 		return new ResponseEntity<>(message,OK);
 	}
 }

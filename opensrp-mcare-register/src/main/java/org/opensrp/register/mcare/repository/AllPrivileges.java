@@ -26,27 +26,39 @@ public class AllPrivileges  extends MotechBaseRepository<Privilege>{
 		super(Privilege.class, db);
 	}
 	
-	@GenerateView
+	/*@GenerateView
 	public Privilege findByName(String name) {
 		List<Privilege> privileges = queryView("by_name", name);
 		if (privileges == null || privileges.isEmpty()) {
 			return null;
 		}
 		return privileges.get(0);
-	}
+	}*/
 	
-	@View(name = "all_privileges", map = "function(doc) { if (doc.type === 'Privilege') { emit(doc.name); } }")
+	@View(name = "all_privileges", map = "function(doc) { if (doc.type === 'Privilege') { emit(doc.name, doc); } }")
 	public List<Privilege> privileges() {
 		return db.queryView(
 				createQuery("all_privileges")
 						.includeDocs(true), Privilege.class);
 	}
 	
-	@View(name = "privilege_by_name", map = "function(doc) { if (doc.type === 'Privilege' && doc.name) { emit(doc.name); } }")
+	@View(name = "privilege_by_name", map = "function(doc) { if (doc.type === 'Privilege' && doc.name) { emit(doc.name, doc); } }")
 	public Privilege privilegeByName(String name) {
 		logger.info("inside repository class.");
 		List<Privilege> privileges = db.queryView(
 				createQuery("privilege_by_name").key(name)
+						.includeDocs(true), Privilege.class);
+		if (privileges == null || privileges.isEmpty()) {
+			return null;
+		}
+		return privileges.get(0);
+	}
+	
+	@View(name = "privilege_by_id", map = "function(doc) { if (doc.type === 'Privilege' && doc._id) { emit(doc._id, doc); } }")
+	public Privilege privilegeById(String id) {
+		logger.info("inside repository class.");
+		List<Privilege> privileges = db.queryView(
+				createQuery("privilege_by_id").key(id)
 						.includeDocs(true), Privilege.class);
 		if (privileges == null || privileges.isEmpty()) {
 			return null;
