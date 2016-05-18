@@ -46,12 +46,21 @@ public class FormSubmissionService {
 
     public List<FormSubmission> getNewSubmissionsForANM(String anmIdentifier, Long version, Integer batchSize) {
     	
-    	if(userType.equalsIgnoreCase(USER_TYPE_FWA) || userType.equalsIgnoreCase(USER_TYPE_FD))
+    	if(userType.equalsIgnoreCase(USER_TYPE_FWA) || userType.equalsIgnoreCase(USER_TYPE_FD)){
            return allFormSubmissions.findByANMIDAndUserTypeAndServerVersion(anmIdentifier, userType, version, batchSize);
-    	else if(userType.equalsIgnoreCase(USER_TYPE_BOTH_FWA_AFTER_90))
-            return allFormSubmissions.findBothUserSubmissionFWAAfter90(anmIdentifier, version, batchSize);
-    	else
+    	}
+    	
+    	else if(userType.equalsIgnoreCase(USER_TYPE_BOTH_FWA_AFTER_90)){
+    		
+    		List<FormSubmission> fs =allFormSubmissions.findBothUserSubmissionFWAAfter90(anmIdentifier, version, batchSize);
+    		String data = fs.toString();
+    		System.out.println("Both User Submission, FWA After 90 data:   " + data);
+            return fs;
+    	}
+    	
+    	else{
     		return allFormSubmissions.findByANMIDAndServerVersion(anmIdentifier, version, batchSize);
+    	}
     }
 
     public List<FormSubmission> getAllSubmissions(Long version, Integer batchSize) {
