@@ -21,8 +21,8 @@ public class TestResourceLoader {
 	protected String openmrsPassword;
 	protected String formDirPath;
 	protected boolean pushToOpenmrsForTest;	
-	protected PatientService patientService;
-	protected EncounterService encounterService;
+	protected ECPatientService patientService;
+	protected ECEncounterService encounterService;
 
 	public TestResourceLoader() throws IOException {
 		Resource resource = new ClassPathResource("/opensrp.properties");
@@ -33,8 +33,8 @@ public class TestResourceLoader {
 		formDirPath = props.getProperty("form.directory.name");
 		String rc = props.getProperty("openmrs.test.make-rest-call");
 		pushToOpenmrsForTest = StringUtils.isEmptyOrWhitespaceOnly(rc)?false:Boolean.parseBoolean(rc);
-		this.patientService = new PatientService(openmrsOpenmrsUrl, openmrsUsername, openmrsPassword);
-		this.encounterService = new EncounterService(openmrsOpenmrsUrl, openmrsUsername, openmrsPassword);
+		this.patientService = new ECPatientService(openmrsOpenmrsUrl, openmrsUsername, openmrsPassword);
+		this.encounterService = new ECEncounterService(openmrsOpenmrsUrl, openmrsUsername, openmrsPassword);
 		this.encounterService.setPatientService(patientService);
 	}
 	

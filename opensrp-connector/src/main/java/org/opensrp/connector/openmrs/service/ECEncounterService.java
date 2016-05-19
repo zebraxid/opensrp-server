@@ -249,42 +249,51 @@ public class ECEncounterService extends OpenmrsService{
 	public Event convertToEvent(JSONObject encounter) throws JSONException{
 		Event e = new Event();
 		JSONObject p = patientService.getPatientByUuid(encounter.getJSONObject("patient").getString("uuid"), false);
-		System.out.println("Patient:"+encounter.getJSONObject("patient").getString("uuid"));
+		
 		Client c = patientService.convertToClient(p);
-		System.out.println("Client:"+c.toString());
+		
 		if(c.getBaseEntityId() == null){
 			throw new IllegalStateException("Client was not registered before adding an Event in OpenSRP");
-		}
+		}		
+		
+		System.out.println( encounter.getString("encounterDatetime"));
 		try{
-		JSONObject creator = encounter.getJSONObject("auditInfo").getJSONObject("creator");
-		e.withBaseEntityId(c.getBaseEntityId())
-			.withCreator(new User(creator.getString("uuid"), creator.getString("display"), null, null))
+			JSONArray creator = encounter.getJSONArray("encounterProviders");
+		e.withBaseEntityId(encounter.getJSONObject("patient").getString("uuid"))
+			.withCreator(new User(creator.getJSONObject(0).getString("uuid"), creator.getJSONObject(0).getString("display"), null, null))
 			.withDateCreated(new Date());
-		e.withEventDate(new DateTime(encounter.getString("encounterDatetime")))
+		e.withEventDate(new DateTime(encounter.getString("encounterDatetime")));
 			//.withEntityType(entityType) //TODO
-		.withEventType(encounter.getJSONObject("encounterType").getString("name"))
+		e.withEventType(encounter.getJSONObject("encounterType").get("display").toString())
 		//.withFormSubmissionId(formSubmissionId)//TODO
-		.withLocationId(encounter.getJSONObject("location").getString("name"))
-		.withProviderId(encounter.getJSONObject("provider").getString("uuid"))
+		.withLocationId(encounter.getJSONObject("location").getString("display"))
+		.withProviderId(creator.getJSONObject(0).getString("display"))
+		.withFormSubmissionId(encounter.getString("uuid"))
 		.withVoided(encounter.getBoolean("voided"));
 		
-		JSONArray ol = encounter.getJSONArray("obs");
-		for (int i = 0; i < ol.length(); i++) {
-			JSONObject o = ol.getJSONObject(i);
-			List<Object> values = new ArrayList<Object>();
-			if(o.optJSONObject("value") != null){
-				values.add(o.getJSONObject("value").getString("uuid"));
+		try{
+			JSONArray ol = encounter.getJSONArray("obs");
+			for (int i = 0; i < ol.length(); i++) {
+				JSONObject o = ol.getJSONObject(i);
+				System.out.println(o.get("display"));
+				/*List<Object> values = new ArrayList<Object>();
+				if(o.optJSONObject("display") != null){
+					values.add(o.getJSONObject("value").getString("uuid"));
+				}
+				else if(o.has("value")){
+					values.add(o.getString("value"));
+				}*/
+				e.addObs(new Obs(null, null, o.get("uuid").toString(), null /*//TODO*/,o.get("display"), null/*comments*/, null/*formSubmissionField*/));
 			}
-			else if(o.has("value")){
-				values.add(o.getString("value"));
-			}
-			e.addObs(new Obs(null, null, o.getJSONObject("concept").getString("uuid"), null /*//TODO*/, values, null/*comments*/, null/*formSubmissionField*/));
-		}
-		
-		}catch(Exception ee){
+			
+		}catch(Exception eee){
 			
 		}
-
+		}catch(Exception ee){
+			
+			
+		}
+		
 		return e;
 	}
 

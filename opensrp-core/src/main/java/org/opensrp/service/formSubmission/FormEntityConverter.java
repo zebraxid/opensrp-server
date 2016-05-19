@@ -81,8 +81,7 @@ public class FormEntityConverter {
 			.withLocationId(fs.getFieldValue(encounterLocation))
 			.withProviderId(fs.providerId())
 			.withEntityType(fs.bindType())
-			.withFormSubmissionId(fs.instanceId());
-		
+			.withFormSubmissionId(fs.instanceId());		
 		for (FormFieldMap fl : fields) {
 			Map<String, String> fat = fl.fieldAttributes();
 			if(!fl.values().isEmpty() && !StringUtils.isEmptyOrWhitespaceOnly(fl.values().get(0))

@@ -69,7 +69,7 @@ public class EncounterAtomfeed extends OpenmrsService implements EventWorker, At
 		System.out.println(event.getContent());
 		try {
 			JSONObject p = encounterService.getEncounterByUuid(event.getContent().substring(event.getContent().lastIndexOf("/")+1), true);
-			System.out.println(p);
+			System.out.println("Encounter:"+p);
 			eventService.addEvent(encounterService.convertToEvent(p));
 		} catch (JSONException e) {
 			throw new RuntimeException(e);

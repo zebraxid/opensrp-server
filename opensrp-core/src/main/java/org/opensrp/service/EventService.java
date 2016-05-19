@@ -59,16 +59,28 @@ public class EventService {
 	
 	public Event addEvent(Event event)
 	{
+		System.out.println("Event:"+event.toString());
 		if(!StringUtils.isEmptyOrWhitespaceOnly(event.getEventId()) && getByEventId(event.getEventId()) != null){
 			throw new IllegalArgumentException("An event already exists with given eventId "+event.getEventId()+". Consider updating");
 		}
 		if(getByBaseEntityAndFormSubmissionId(event.getBaseEntityId(), event.getFormSubmissionId()) != null){
-			throw new IllegalArgumentException("An event already exists with given baseEntity and formSubmission combination. Consider updating");
-		}
+			//throw new IllegalArgumentException("An event already exists with given baseEntity and formSubmission combination. Consider updating");
+			Event e = getByBaseEntityAndFormSubmissionId(event.getBaseEntityId(), event.getFormSubmissionId());
+			e.setRevision(e.getRevision());
+			e.withBaseEntityId(event.getBaseEntityId());
+			e.withCreator(event.getCreator());
+			e.withEntityType(event.getEntityType());
+			e.withLocationId(event.getLocationId());
+			e.withProviderId(event.getProviderId());
+			e.withObs(event.getObs());
+			allEvents.update(e);
+			return e;
+		}else{
 
 		event.setDateCreated(new Date());
 		allEvents.add(event);
 		return event;
+		}
 	}
 	
 	public void updateEvent(Event updatedEvent)
