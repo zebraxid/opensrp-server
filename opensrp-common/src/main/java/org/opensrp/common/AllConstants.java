@@ -35,9 +35,8 @@ public class AllConstants {
     	public static final String ENCC_REMINDER_VISIT_1 = "encc_visit_1";
     	public static final String ENCC_REMINDER_VISIT_2 = "encc_visit_2";
     	public static final String ENCC_REMINDER_VISIT_3 = "encc_visit_3";
-    	public static final String MISCensus = "MIS_Census";
-    	public static final String MISELCO = "MIS_ELCO";
-    	
+    	public static final String MIS_Census = "mis_census";
+    	public static final String MIS_ELCO = "mis_elco";    	
         public static final String ENTITY_ID = "entityId";
         public static final String ANM_ID = "anmId";
         public static final String FORM_NAME = "formName";
@@ -968,7 +967,7 @@ public class AllConstants {
     
     public static class ScheduleNames{
     	public static final String ELCO = "ELCO PSRF";
-    	public static final String MIS_ELCO = "MIS ELCO";
+    	public static final String MIS_ELCO = "mis_elco";
     	public static final String BNF = "BirthNotificationPregnancyStatusFollowUp";
     	public static final String CENCUS = "FW CENSUS";
     	public static final String ANC = "Ante Natal Care Reminder Visit";

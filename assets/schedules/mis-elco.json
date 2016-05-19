@@ -1,9 +1,9 @@
 {
-    "name": "MIS ELCO",
+    "name": "mis_elco",
     "absolute": true,
     "milestones": [
         {
-            "name": "MIS ELCO",
+            "name": "mis_elco",
             "scheduleWindows": {
                 "earliest": ["8 Weeks"],
                 "due": ["10 Weeks"],

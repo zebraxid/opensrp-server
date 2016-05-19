@@ -74,6 +74,7 @@ public class ANCService {
 			return;
 		}
 
+		mother.withTODAY(submission.getField(REFERENCE_DATE));
 		mother.withPROVIDERID(submission.anmId());
 		mother.withINSTANCEID(submission.instanceId());		
 		mother.withSUBMISSIONDATE(scheduleLogService.getTimeStampMills());
@@ -169,6 +170,7 @@ public class ANCService {
 											.map();											
 		
 		mother.withANCVisitOne(ancVisitOne);
+		mother.withTODAY(submission.getField(REFERENCE_DATE));
 		allMothers.update(mother);
 		ancSchedulesService.fullfillMilestone(submission.entityId(), submission.anmId(), SCHEDULE_ANC, new LocalDate());
 		actionService.markAllAlertsAsInactive(submission.entityId());
@@ -257,6 +259,7 @@ public class ANCService {
 											.map();												
 		
 		mother.withANCVisitTwo(ancVisitTwo);
+		mother.withTODAY(submission.getField(REFERENCE_DATE));
 		allMothers.update(mother);
 		ancSchedulesService.fullfillMilestone(submission.entityId(), submission.anmId(), SCHEDULE_ANC, new LocalDate());
 		actionService.markAllAlertsAsInactive(submission.entityId());
@@ -346,7 +349,7 @@ public class ANCService {
 											.map();											
 		
 		mother.withANCVisitThree(ancVisitThree);
-
+		mother.withTODAY(submission.getField(REFERENCE_DATE));
 		allMothers.update(mother);
 		ancSchedulesService.fullfillMilestone(submission.entityId(), submission.anmId(), SCHEDULE_ANC, new LocalDate());
 		actionService.markAllAlertsAsInactive(submission.entityId());
@@ -437,6 +440,7 @@ public class ANCService {
 											.map();												
 			
 		mother.withANCVisitFour(ancVisitFour);
+		mother.withTODAY(submission.getField(REFERENCE_DATE));
 		allMothers.update(mother);
 		ancSchedulesService.fullfillMilestone(submission.entityId(), submission.anmId(), SCHEDULE_ANC, new LocalDate());
 		//actionService.markAllAlertsAsInactive(submission.entityId());

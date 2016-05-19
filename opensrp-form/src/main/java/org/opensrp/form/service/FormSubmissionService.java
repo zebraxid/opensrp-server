@@ -54,7 +54,7 @@ public class FormSubmissionService {
     		
     		List<FormSubmission> fs =allFormSubmissions.findBothUserSubmissionFWAAfter90(anmIdentifier, version, batchSize);
     		String data = fs.toString();
-    		System.out.println("Both User Submission, FWA After 90 data:   " + data);
+    		System.out.println("Both User Submission, FWA After 90 : ");
             return fs;
     	}
     	

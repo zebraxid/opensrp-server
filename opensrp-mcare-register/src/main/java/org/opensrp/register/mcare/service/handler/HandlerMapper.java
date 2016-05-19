@@ -54,8 +54,8 @@ public class HandlerMapper implements IHandlerMapper {
 				     .put(ENCC_REMINDER_VISIT_1, enccVisitOneHandler)
 				     .put(ENCC_REMINDER_VISIT_2, enccVisitTwoHandler)
 				     .put(ENCC_REMINDER_VISIT_3, enccVisitThreeHandler)
-				     .put(MISCensus, misCensusHandler)
-				     .put(MISELCO, misELCOHandler)
+				     .put(MIS_Census, misCensusHandler)
+				     .put(MIS_ELCO, misELCOHandler)
                      .map();
 	}
 

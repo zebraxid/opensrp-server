@@ -165,7 +165,7 @@ public class ELCOService {
 	
 	public void misCensus(FormSubmission submission) {
 
-		if (submission.formName().equalsIgnoreCase(MISCensus)) {
+		if (submission.formName().equalsIgnoreCase(MIS_Census)) {
 
 			Elco elco = allEcos.findByCaseId(submission
 					.entityId());
