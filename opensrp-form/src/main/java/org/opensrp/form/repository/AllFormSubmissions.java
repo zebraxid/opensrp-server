@@ -103,7 +103,7 @@ public class AllFormSubmissions extends MotechBaseRepository<FormSubmission> {
 	
 	@View(
             name = "formSubmission_by_both_user_fwa_after_90",
-            map = "function(doc) { if(doc.formInstance.form.fields.length > 0 && doc.type==='FormSubmission') { for(var field in doc.formInstance.form.fields) { if(doc.formInstance.form.fields[field].name ==='user_type'){ if (doc.formInstance.form.fields[field].value==='FD'){ emit([doc.anmId, doc.serverVersion], null); } else if (doc.formInstance.form.fields[field].value==='FWA' && doc.serverVersion > 1463270400000){ emit([doc.anmId, doc.serverVersion], null); } } } } }")
+            map = "function(doc) { if(doc.formInstance.form.fields.length > 0 && doc.type==='FormSubmission') { for(var field in doc.formInstance.form.fields) { if(doc.formInstance.form.fields[field].name ==='user_type'){ if (doc.formInstance.form.fields[field].value==='FD'){ emit([doc.anmId, doc.serverVersion], null); } else if (doc.formInstance.form.fields[field].value==='FWA' && doc.serverVersion > 1456358400000){ emit([doc.anmId, doc.serverVersion], null); } } } } }")
     public List<FormSubmission> findBothUserSubmissionFWAAfter90(String anmId, long version, Integer batchSize) {
        
     	ComplexKey startKey = ComplexKey.of(anmId, version + 1);
