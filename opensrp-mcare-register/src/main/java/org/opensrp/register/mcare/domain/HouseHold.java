@@ -86,6 +86,8 @@ public class HouseHold extends MotechBaseDataObject {
 	private List<Map<String, String>> multimediaAttachments;
 	@JsonProperty
 	private Map<String, String> details;
+	@JsonProperty
+	private String BAHMNI_ID;
 	
 	public HouseHold() {
 		this.MEMBERDETAILS = new ArrayList<>();
@@ -97,6 +99,10 @@ public class HouseHold extends MotechBaseDataObject {
 		return this;
 	}
 
+	public HouseHold withBAHMNIID(String BAHMNI_ID){
+		this.BAHMNI_ID = BAHMNI_ID;
+		return this;
+	}
 	public HouseHold withINSTANCEID(String INSTANCEID) {
 		this.INSTANCEID = INSTANCEID;
 		return this;
@@ -266,7 +272,9 @@ public class HouseHold extends MotechBaseDataObject {
 	public String caseId() {
 		return caseId;
 	}
-
+	public String BAHMNIID(){
+		return BAHMNI_ID;
+	}
 	public String INSTANCEID() {
 		return INSTANCEID;
 	}

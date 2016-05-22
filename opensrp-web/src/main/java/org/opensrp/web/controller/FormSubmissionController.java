@@ -2,6 +2,7 @@ package org.opensrp.web.controller;
 
 import static ch.lambdaj.collection.LambdaCollections.with;
 import static java.text.MessageFormat.format;
+import static org.opensrp.common.AllConstants.HHRegistrationFields.MEMBERS_REGISTRATION_SUB_FORM_NAME;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
@@ -31,9 +32,12 @@ import org.opensrp.domain.Multimedia;
 import org.opensrp.dto.form.FormSubmissionDTO;
 import org.opensrp.dto.form.MultimediaDTO;
 import org.opensrp.form.domain.FormSubmission;
+import org.opensrp.form.domain.SubFormData;
 import org.opensrp.form.service.FormSubmissionConverter;
 import org.opensrp.form.service.FormSubmissionService;
 import org.opensrp.register.mcare.OpenSRPScheduleConstants.OpenSRPEvent;
+import org.opensrp.register.mcare.domain.BahmniId;
+import org.opensrp.register.mcare.repository.BahmniIdRepository;
 import org.opensrp.register.mcare.service.HHService;
 import org.opensrp.repository.MultimediaRepository;
 import org.opensrp.scheduler.SystemEvent;
@@ -71,12 +75,12 @@ public class FormSubmissionController {
     private OpenmrsUserService openmrsUserService;
     private MultimediaService multimediaService;
     private MultimediaRepository multimediaRepository;
-
+    private BahmniIdRepository bahmniIdRepository;
     @Autowired
     public FormSubmissionController(FormSubmissionService formSubmissionService, TaskSchedulerService scheduler,
     		EncounterService encounterService, OpenmrsConnector openmrsConnector, PatientService patientService, BahmniOpenmrsConnector bahmniOpenmrsConnector, BahmniPatientService bahmniPatientService, 
     		HouseholdService householdService, MultimediaService multimediaService, OpenmrsUserService openmrsUserService,
-    		MultimediaRepository multimediaRepository) {
+    		MultimediaRepository multimediaRepository,BahmniIdRepository bahmniIdRepository) {
         this.formSubmissionService = formSubmissionService;
         this.scheduler = scheduler;
         
@@ -90,6 +94,7 @@ public class FormSubmissionController {
         this.openmrsUserService = openmrsUserService;
         this.multimediaService = multimediaService;
         this.multimediaRepository = multimediaRepository;
+        this.bahmniIdRepository = bahmniIdRepository;
     }
 
     @RequestMapping(method = GET, value = "/form-submissions")
@@ -236,7 +241,7 @@ public class FormSubmissionController {
             	if(openmrsConnector.isOpenmrsForm(formSubmission)){            		
             		String idGen  = bahmniPatientService.generateID();
             		System.out.print("Generating ID to openMRS/***********************************************************************:" + idGen);
-            		
+            		this.createBahmniId(formSubmission.entityId(),idGen);
             		Map<String, Map<String, Object>> dep;
 					dep = bahmniOpenmrsConnector.getDependentClientsFromFormSubmission(formSubmission);				
 					if(dep.size()>0){ //HnW(n)
@@ -247,8 +252,14 @@ public class FormSubmissionController {
 		        		System.out.println(encounterService.createEncounter(e,idGen));
 	        			//Event hhhEvent = openmrsConnector.getEventFromFormSubmission(formSubmission);
 	        			//OpenmrsHouseHold hh = new OpenmrsHouseHold(hhhClient, hhhEvent);
+		        		
 		    			for (Map<String, Object> cm : dep.values()) {
-		    				idGen  = bahmniPatientService.generateID();
+		    				idGen  = bahmniPatientService.generateID();		    				
+		    				
+		    				Client c = (Client)cm.get("client");
+		    				System.out.println("FSI:"+cm.toString());
+		    				System.out.println("FSI:"+c.getBaseEntityId());
+		    				this.createBahmniId(c.getBaseEntityId(),idGen);
 		    				System.out.println(bahmniPatientService.createPatient((Client)cm.get("client"),idGen));	
 		    				///hh.addHHMember((Client)cm.get("client"), (Event)cm.get("event"));
 		    				//cm.get("event");
@@ -334,5 +345,19 @@ public class FormSubmissionController {
     	 patientService.patientImageUpload(multimedia);
     	}
     	 return new ResponseEntity<>(new Gson().toJson(status), OK);
+    }
+    
+    private void createBahmniId(String entityId,String idGen ){
+    	BahmniId bahmniIdgen = new BahmniId();
+		bahmniIdgen.setGenId(idGen);
+		bahmniIdgen.setEntityId(entityId);
+		try{
+			logger.info("Bahmni id creating");
+			bahmniIdRepository.add(bahmniIdgen);
+			logger.info("Bahmni id created");
+		}catch(Exception ee){
+			logger.info(""+ee.getMessage());
+			
+		}
     }
 }

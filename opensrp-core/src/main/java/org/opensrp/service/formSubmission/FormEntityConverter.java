@@ -306,11 +306,12 @@ public class FormEntityConverter {
 		for (FormFieldMap fl : fields) {
 			if(fl.values().size() < 2 && !StringUtils.isEmptyOrWhitespaceOnly(fl.value())){
 				Map<String, String> att = fl.fieldAttributes();
-				if(att.containsKey("openmrs_entity") && att.get("openmrs_entity").equalsIgnoreCase("person_attribute")){
+				if(att.containsKey("openmrs_entity") /*&& att.get("openmrs_entity").equalsIgnoreCase("person_attribute")*/){
 					pattributes.put(att.get("openmrs_entity_id"), fl.value());
 				}
 			}
 		}
+		System.out.println("pattributes:"+pattributes);
 		return pattributes;
 	}
 	
@@ -368,7 +369,7 @@ public class FormEntityConverter {
 		String gender = fs.getFieldValue(getFieldName(Person.gender, fs));
 		
 		List<Address> addresses = new ArrayList<>(extractAddresses(fs).values());
-		
+		System.out.println("FOrm Submission:"+fs.toString());
 		Client c = new Client(fs.entityId())
 				.withFirstName(firstName)
 				.withMiddleName(middleName)
