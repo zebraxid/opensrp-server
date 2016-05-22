@@ -1,4 +1,4 @@
-package org.opensrp.register.mcare.repository;
+package org.opensrp.repository;
 
 import java.util.List;
 
@@ -6,7 +6,8 @@ import org.ektorp.CouchDbConnector;
 import org.ektorp.support.GenerateView;
 import org.motechproject.dao.MotechBaseRepository;
 import org.opensrp.common.AllConstants;
-import org.opensrp.register.mcare.domain.BahmniId;
+import org.opensrp.domain.BahmniId;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
