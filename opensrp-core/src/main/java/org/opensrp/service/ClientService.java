@@ -9,8 +9,10 @@ import org.joda.time.DateTime;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.opensrp.domain.Address;
+import org.opensrp.domain.BahmniId;
 import org.opensrp.domain.Client;
 import org.opensrp.repository.AllClients;
+import org.opensrp.repository.BahmniIdRepository;
 import org.opensrp.util.DateTimeTypeConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,11 +24,12 @@ import com.google.gson.GsonBuilder;
 @Service
 public class ClientService {
 	private final AllClients allClients;
-	
+	private BahmniIdRepository bahmniIdRepository;
 	@Autowired
-	public ClientService(AllClients allClients)
+	public ClientService(AllClients allClients,BahmniIdRepository bahmniIdRepository)
 	{
 		this.allClients = allClients;
+		this.bahmniIdRepository = bahmniIdRepository;
 	}
 	
 	public Client getByBaseEntityId(String baseEntityId)
@@ -81,6 +84,8 @@ public class ClientService {
 			throw new RuntimeException("No baseEntityId");
 		}
 		Client c = findClient(client);
+		BahmniId id = bahmniIdRepository.findByentityId(client.getBaseEntityId());
+		client.addIdentifier("Bahmni Id", id.getGenId());
 		if(c != null){
 			throw new IllegalArgumentException("A client already exists with given list of identifiers. Consider updating data.["+c+"]");
 		}
