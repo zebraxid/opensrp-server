@@ -6,6 +6,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import java.util.List;
 
 import org.opensrp.dto.CountServiceDTO;
+import org.opensrp.dto.CountServiceDTOForChart;
 import org.opensrp.dto.register.ANC_RegisterDTO;
 import org.opensrp.dto.register.ELCORegisterDTO;
 import org.opensrp.dto.register.HHRegisterDTO;
@@ -150,6 +151,24 @@ public class RegisterController {
     		@RequestParam("start-week") String startWeek,@RequestParam("end-week") String endtWeek,@RequestParam("type") String type){
     	dataCountService.getHHCountInformation(provider,startMonth,endMonth,startWeek,endtWeek,type);
     	return new ResponseEntity<>(dataCountService.getHHCountInformation(provider,startMonth,endMonth,startWeek,endtWeek,type), HttpStatus.OK);
+    }
+    
+    @RequestMapping(method = RequestMethod.GET, value = "/registers/hh-data-count")
+    @ResponseBody
+    public ResponseEntity<List<CountServiceDTOForChart>>  getHouseHoldInformationForChart(){
+    	return new ResponseEntity<>(dataCountService.getHHCountInformationForChart(), HttpStatus.OK);
+    }
+    
+    @RequestMapping(method = RequestMethod.GET, value = "/registers/elco-data-count")
+    @ResponseBody
+    public ResponseEntity<List<CountServiceDTOForChart>>  getElcoInformationForChart(){
+    	return new ResponseEntity<>(dataCountService.getHHCountInformationForChart(), HttpStatus.OK);
+    }
+    
+    @RequestMapping(method = RequestMethod.GET, value = "/registers/pw-data-count")
+    @ResponseBody
+    public ResponseEntity<List<CountServiceDTOForChart>>  getPWInformationForChart(){
+    	return new ResponseEntity<>(dataCountService.getHHCountInformationForChart(), HttpStatus.OK);
     }
     
 /*

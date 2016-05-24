@@ -110,7 +110,7 @@ public class LuceneHouseHoldRepositoryTest {
             connector.delete(doc); 
         } 
     }
-    @Test
+    /*@Test
     public void convertDateToTimestampMills(){
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");   	
     	Date day= null;
@@ -126,7 +126,7 @@ public class LuceneHouseHoldRepositoryTest {
     	
 		System.out.println(day.getTime());
 		
-	}
+	}*/
     @Test 
     public void testInit() throws ParseException { 
     	//String makeQueryString ="PROVIDERID:proshanto" + " AND " + "FWUPAZILLA:GAIBANDHA SADAR" + " AND " + "user_type:FWA"+ " AND SUBMISSIONDATE:[2014-02-01 TO 2017-03-30]" ;
@@ -135,17 +135,20 @@ public class LuceneHouseHoldRepositoryTest {
     	DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     	Date today = Calendar.getInstance().getTime();
     	Date dates = dateFormat.parse(dateFormat.format(today));
-    	Date date = dateFormat.parse("2016-04-1");
+    	Date date = dateFormat.parse("2016-05-01");
     	long start = date.getTime();
     	long end = dates.getTime();
     	System.out.println("ddd:"+end);
     	System.out.println("ss:"+start);
     	//String makeQueryString ="PROVIDERID:proshanto" + " AND " + "user_type:FWA"+ " AND SUBMISSIONDATE:["+start+" TO "+end+"]" ;
-    	String makeQueryString ="type:Household" + " AND " + "SUBMISSIONDATE:["+start+" TO "+end+"]" ;
-    	/*LuceneResult result = repo.findDocsByProvider(makeQueryString);
-    	System.out.println(result.toString());
-        System.out.println(result.getRows().size());*/
-        
+    	String makeQueryString ="type:Household AND PROVIDERID:rojina AND SUBMISSIONDATE:1463421600000";
+    	LuceneResult result = repo.findDocsByProvider(makeQueryString);
+    	//System.out.println(result.toString());
+    	System.out.println(result.getRows().size() + " -with specific type");
+    	System.out.println(result.getTotalRows());
+    	/*makeQueryString ="PROVIDERID:rojina AND SUBMISSIONDATE:1463421600000";
+    	result = repo.findDocsByProvider(makeQueryString);
+    	System.out.println(result.getRows().size() + " -without specific type");*/
 		
        /* assertNotNull("Expecting a non null result", result); 
         assertTrue("Should only have one result", result.getRows().size() >=0); */

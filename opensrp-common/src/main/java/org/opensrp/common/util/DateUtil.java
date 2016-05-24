@@ -3,7 +3,11 @@ package org.opensrp.common.util;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.List;
 
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
@@ -36,6 +40,19 @@ public class DateUtil {
 
     private static DateTime toTime(LocalDate referenceDateForSchedule) {
         return referenceDateForSchedule.toDateTime(new LocalTime(0, 0));
+    }
+    /*
+     * @param monthIndex 0 for January then increases accordingly 
+     */
+    public static List<Date> startAndEndDatesOfAllWeeksOfAMonth(int monthIndex){
+    	List<Date> dates = new ArrayList<Date>();
+    	Calendar now = GregorianCalendar.getInstance();
+    	now.set(GregorianCalendar.MONTH, monthIndex);
+    	int numberOfDaysInMonth = now.getActualMaximum(GregorianCalendar.DAY_OF_MONTH);
+    	for(int i = 0; i < 5; i++){
+    		
+    	}
+    	return null;
     }
 
     /**
@@ -77,6 +94,41 @@ public class DateUtil {
 	        e.printStackTrace();
 	    }
 	    return parsed;
+    }
+    
+    public static List<String> getWeekBoundariesForDashboard(){   	
+    	Calendar now = GregorianCalendar.getInstance();   	
+    	
+    	List<String> dates = new ArrayList<String>(); 
+    	for(int monthIndex = 0; monthIndex < 4; monthIndex++){
+    		now = GregorianCalendar.getInstance();
+    		now.add(GregorianCalendar.MONTH, -monthIndex);
+        	now.set(GregorianCalendar.DAY_OF_MONTH, 1);        	
+        	int numOfDaysInMonth = now.getActualMaximum(GregorianCalendar.DAY_OF_MONTH);        	
+        	SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
+        	int numberOfWeeks = (int)Math.ceil( (double)numOfDaysInMonth/7);
+        	System.out.println("current date- " + now.getTime() + " in a month with days- " + numOfDaysInMonth + " number of week- " + numberOfWeeks);
+        	for(int i = 0; i< numberOfWeeks; i++){
+        		int firstDay = i * 7 + 1;
+        		int lastDay;
+        		if(firstDay + 6 <= numOfDaysInMonth){
+        			lastDay = firstDay + 6;
+        		}
+        		else{
+        			lastDay = firstDay + numOfDaysInMonth % 7 -1;
+        		}
+        		now.set(GregorianCalendar.DAY_OF_MONTH, firstDay);
+        		dates.add(dateFormatter.format(now.getTime()));
+        		now.set(GregorianCalendar.DAY_OF_MONTH, lastDay);
+        		dates.add(dateFormatter.format(now.getTime()));   
+        	}
+        	if(numberOfWeeks == 4){
+        		dates.add("");
+        		dates.add("");
+        	}
+    	}
+    	
+    	return dates;
     }
 }
 

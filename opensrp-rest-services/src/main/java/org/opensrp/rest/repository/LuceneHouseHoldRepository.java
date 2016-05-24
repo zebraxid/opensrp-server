@@ -2,9 +2,13 @@ package org.opensrp.rest.repository;
 
 import org.opensrp.common.AllConstants;
 import org.opensrp.register.mcare.domain.HouseHold;
+import org.opensrp.service.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
+
 import com.github.ldriscoll.ektorplucene.CouchDbRepositorySupportWithLucene;
 import com.github.ldriscoll.ektorplucene.LuceneAwareCouchDbConnector;
 import com.github.ldriscoll.ektorplucene.LuceneQuery;
@@ -24,22 +28,11 @@ import com.github.ldriscoll.ektorplucene.designdocument.annotation.Index;
     @Index(
         name = "by_provider",
 	    index = "function(rec) {" +
-	    		" var doc=new Document();" +
-	    		" doc.add(rec.TODAY,{\"field\":\"TODAY\", \"store\":\"yes\"});" +
-	    		" doc.add(rec.FWNHREGDATE,{\"field\":\"FWNHREGDATE\", \"store\":\"yes\"});"+ 
-	    		" doc.add(rec.FWGOBHHID,{\"field\":\"FWGOBHHID\", \"store\":\"yes\"});" + 
-	    		" doc.add(rec.FWJIVHHID,{\"field\":\"FWJIVHHID\", \"store\":\"yes\"});" + 
-	    		" doc.add(rec.FWCOUNTRY,{\"field\":\"FWCOUNTRY\", \"store\":\"yes\"});" + 
+	    		" var doc=new Document();" + 
 	    		" doc.add(rec.FWDIVISION,{\"field\":\"FWDIVISION\", \"store\":\"yes\"}); " +
 	    		" doc.add(rec.FWDISTRICT,{\"field\":\"FWDISTRICT\", \"store\":\"yes\"}); " +
-	    		" doc.add(rec.FWUNION,{\"field\":\"FWUNION\", \"store\":\"yes\"});" +
-	    		" doc.add(rec.FWNHHHGPS,{\"field\":\"FWNHHHGPS\", \"store\":\"yes\"});" +
-	    		" doc.add(rec.form_name,{\"field\":\"form_name\", \"store\":\"yes\"});"+ 
-	    		" doc.add(rec.FWHOHFNAME,{\"field\":\"FWHOHFNAME\", \"store\":\"yes\"});" +
-	    		" doc.add(rec.FWHOHBIRTHDATE,{\"field\":\"FWHOHBIRTHDATE\", \"store\":\"yes\"});"+ 
+	    		" doc.add(rec.FWUNION,{\"field\":\"FWUNION\", \"store\":\"yes\"});" +  
 	    		" doc.add(rec.PROVIDERID,{\"field\":\"PROVIDERID\", \"store\":\"yes\"});" + 
-	    		" doc.add(rec.FWHOHGENDER,{\"field\":\"FWHOHGENDER\", \"store\":\"yes\"});" +
-	    		" doc.add(rec.user_type,{\"field\":\"user_type\", \"store\":\"yes\"});" + 
 	    		" doc.add(rec.FWUPAZILLA,{\"field\":\"FWUPAZILLA\", \"store\":\"yes\"});" + 
 	    		" doc.add(rec.SUBMISSIONDATE,{\"field\":\"SUBMISSIONDATE\", \"store\":\"yes\"});" + 
 	    		" doc.add(rec.type,{\"field\":\"type\", \"store\":\"yes\"});" + 
@@ -48,7 +41,7 @@ import com.github.ldriscoll.ektorplucene.designdocument.annotation.Index;
 })
 @Repository
 public class LuceneHouseHoldRepository extends CouchDbRepositorySupportWithLucene<HouseHold> {
-
+	private static Logger logger = LoggerFactory.getLogger(LuceneHouseHoldRepository.class);
 	@Autowired
 	public LuceneHouseHoldRepository(@Qualifier(AllConstants.OPENSRP_DATABASE_LUCENE_CONNECTOR)LuceneAwareCouchDbConnector db) {
 		super(HouseHold.class, db);
@@ -57,13 +50,10 @@ public class LuceneHouseHoldRepository extends CouchDbRepositorySupportWithLucen
 	
 	 public LuceneResult findDocsByProvider(String queryString) { 
         LuceneDesignDocument designDoc = db.get(LuceneDesignDocument.class, stdDesignDocumentId); 
-        //assertTrue(designDoc != null); 
-       // assertTrue(designDoc.containsIndex("by_provider")); 
-        
-       // String makeQueryString ="PROVIDERID:"+ providerId + " AND " + "FWUPAZILLA:" + upazilla + " AND " + "user_type:" + userType; //+ " AND TODAY:[\"2016-02-01\"+\"TO\"+\"2016-03-01\"]" ;
         LuceneQuery query = new LuceneQuery(designDoc.getId(), "by_provider"); 
         query.setQuery(queryString); 
         query.setStaleOk(false); 
+        logger.info("inside luceneHouseholdRepository.");
         return db.queryLucene(query); 
     } 
 

@@ -17,8 +17,11 @@ import java.util.Map.Entry;
 import org.json.JSONObject;
 import org.opensrp.dto.register.HHRegisterDTO;
 import org.opensrp.dto.register.HHRegisterEntryDTO;
+import org.opensrp.register.mcare.repository.AllPrivileges;
 import org.opensrp.rest.repository.LuceneHouseHoldRepository;
 import org.opensrp.rest.util.ConvertDateStringToTimestampMills;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.MultiValueMap;
@@ -30,11 +33,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.introspect.VisibilityChecker;
 import com.github.ldriscoll.ektorplucene.LuceneResult;
 import com.github.ldriscoll.ektorplucene.LuceneResult.Row;
-
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 
 @Service
 public class LuceneHouseHoldService {
+	private static Logger logger = LoggerFactory.getLogger(AllPrivileges.class);
 
 	private LuceneHouseHoldRepository luceneHouseHoldRepository;
 	private ConvertDateStringToTimestampMills convertDateStringToTimestampMills;
@@ -87,18 +90,28 @@ public class LuceneHouseHoldService {
 	 * */
 	public int getHouseholdCount(String start,String end){
 		if(start.equalsIgnoreCase("")){
-		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-    	Date today = Calendar.getInstance().getTime();    	
-		String makeQueryString ="type:Household" + " AND "+ "SUBMISSIONDATE:["+convertDateStringToTimestampMills.convertDateToTimestampMills(dateFormat.format(today))+" TO "+convertDateStringToTimestampMills.convertDateToTimestampMills(dateFormat.format(today))+"]" ;
-    	LuceneResult result = luceneHouseHoldRepository.findDocsByProvider(makeQueryString);
-		return result.getRows().size();
+			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+	    	Date today = Calendar.getInstance().getTime();    	
+			String makeQueryString ="type:Household" + " AND "+ "SUBMISSIONDATE:["+convertDateStringToTimestampMills.convertDateToTimestampMills(dateFormat.format(today))+" TO "+convertDateStringToTimestampMills.convertDateToTimestampMills(dateFormat.format(today))+"]" ;
+	    	LuceneResult result = luceneHouseHoldRepository.findDocsByProvider(makeQueryString);
+			return result.getRows().size();
 		}else{
 			String makeQueryString ="type:Household" + " AND " + "SUBMISSIONDATE:["+convertDateStringToTimestampMills.convertDateToTimestampMills(start)+" TO "+convertDateStringToTimestampMills.convertDateToTimestampMills(end)+"]" ;
 	    	LuceneResult result = luceneHouseHoldRepository.findDocsByProvider(makeQueryString);
 			return result.getRows().size();
-		}
-		
-		
+		}	
+	}
+	
+	public int getHouseholdCountForChart(String start,String end){
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    	//Date today = Calendar.getInstance().getTime();    	
+		String makeQueryString ="type:Household" + " AND "+ "SUBMISSIONDATE:["+convertDateStringToTimestampMills.convertDateToTimestampMills(start)+" TO "+convertDateStringToTimestampMills.convertDateToTimestampMills(end)+"]" ;
+    	LuceneResult result = luceneHouseHoldRepository.findDocsByProvider(makeQueryString);
+    	int size = result.getRows().size();//getTotalRows();
+    	logger.info("start- " + start + " -end- " + end + " -size- " + size);
+		return size;
+		/*logger.info("here couch lucene will be used.");
+		return 1;*/
 	}
 	private Map<String, String> prepareParameters(MultiValueMap<String, String> queryParameters) {
 
@@ -113,6 +126,10 @@ public class LuceneHouseHoldService {
 
 		return parameters;
 
+	}
+	
+	public void someFunc(){
+		logger.info("simple function call");
 	}
 	
 	
