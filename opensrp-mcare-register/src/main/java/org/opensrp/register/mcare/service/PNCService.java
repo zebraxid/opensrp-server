@@ -96,6 +96,7 @@ public class PNCService {
 			if (elco != null) {
 				logger.info("Closing EC case. Ec Id: "+ elco.caseId());
 				elco.setIsClosed(false);
+				elco.withTODAY(submission.getField(REFERENCE_DATE));
 				allElcos.update(elco);
 				elcoSchedulesService.imediateEnrollIntoMilestoneOfPSRF(elco.caseId(), elco.TODAY(), elco.PROVIDERID(),elco.INSTANCEID());
 			}
@@ -148,10 +149,7 @@ public class PNCService {
 					}else{
 						childSchedulesService.enrollENCCForChild(childFields.get(ID),  LocalDate.parse(referenceDate));
 					}
-				}
-				
-							
-				
+				}									
 			} 
 			else if (submission.getField(FWBNFSTS).equals(STS_SB)) {
 				if(submission.getField("user_type").equalsIgnoreCase("FD")){
@@ -207,7 +205,7 @@ public class PNCService {
 				.map();
 
 		mother.withPNCVisitOne(pncVisitOne);
-
+		mother.withTODAY(submission.getField(REFERENCE_DATE));
 		allMothers.update(mother);
 		
 		pncSchedulesService.fullfillMilestone(submission.entityId(), submission.anmId(), SCHEDULE_PNC, new LocalDate());
@@ -262,7 +260,7 @@ public class PNCService {
 				.map();
 
 		mother.withPNCVisitTwo(pncVisitTwo);
-
+		mother.withTODAY(submission.getField(REFERENCE_DATE));
 		allMothers.update(mother);
 
 		pncSchedulesService.fullfillMilestone(submission.entityId(), submission.anmId(), SCHEDULE_PNC, new LocalDate());
@@ -318,7 +316,7 @@ public class PNCService {
 				.map();
 
 		mother.withPNCVisitThree(pncVisitThree);
-
+		mother.withTODAY(submission.getField(REFERENCE_DATE));
 		allMothers.update(mother);
 		
 		pncSchedulesService.unEnrollFromSchedule(submission.entityId(), submission.anmId(), SCHEDULE_PNC);

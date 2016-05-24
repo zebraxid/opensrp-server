@@ -129,9 +129,12 @@ public class Elco extends MotechBaseDataObject {
 	@JsonProperty
 	private List<Map<String, String>> PSRFDETAILS;
 	@JsonProperty
+	private List<Map<String, String>> MISDETAILS;
+	@JsonProperty
 	private long SUBMISSIONDATE;
 	public Elco() {
 		this.PSRFDETAILS = new ArrayList<>();
+		this.MISDETAILS = new ArrayList<>();
 		this.multimediaAttachments = new ArrayList<>();
 	}
 
@@ -349,6 +352,10 @@ public class Elco extends MotechBaseDataObject {
 		this.PSRFDETAILS = PSRFDETAILS;
 		return this;
 	}
+	public Elco withMISDETAILS(List<Map<String, String>> MISDETAILS) {
+		this.MISDETAILS = MISDETAILS;
+		return this;
+	}
 	public Elco withSUBMISSIONDATE(long SUBMISSIONDATE){
 		this.SUBMISSIONDATE = SUBMISSIONDATE;
 		return this;
@@ -528,6 +535,12 @@ public class Elco extends MotechBaseDataObject {
 			PSRFDETAILS = new ArrayList<>();
 		}
 		return PSRFDETAILS;
+	}
+	public List<Map<String, String>> MISDETAILS() {
+		if (MISDETAILS == null) {
+			MISDETAILS = new ArrayList<>();
+		}
+		return MISDETAILS;
 	}
 	public long SUBMISSIONDATE(){
 		return SUBMISSIONDATE;

@@ -84,9 +84,9 @@ public class BNFService {
 			return;
 		}
 
+		mother.withTODAY(submission.getField(REFERENCE_DATE));
 		mother.withPROVIDERID(submission.anmId());
 		mother.withINSTANCEID(submission.instanceId());
-		//mother.withTODAY(submission.getField(REFERENCE_DATE));
 		allMothers.update(mother);		
 		bnfSchedulesService.enrollBNF(motherId, LocalDate.parse(submission.getField(MOTHER_REFERENCE_DATE)),submission.anmId(),submission.instanceId(),submission.getField(MOTHER_REFERENCE_DATE));
 		
@@ -121,8 +121,6 @@ public class BNFService {
 											.put(received_time, format.format(today).toString())
 											.put(relationalid, submission.getField(relationalid)).map();
 		
-		//mother.withTODAY(submission.getField(REFERENCE_DATE));
-		
 		SubFormData subFormData = submission
 				.getSubFormByName(CHILD_REGISTRATION_SUB_FORM_NAME);	
 		  
@@ -132,8 +130,9 @@ public class BNFService {
 		}
 			
 		mother.bnfVisitDetails().add(bnfVisit);
-		
+		mother.withTODAY(submission.getField(REFERENCE_DATE));
 		allMothers.update(mother);
+		
 		logger.info("submission.getField(FWBNFSTS):"+submission.getField(FWBNFSTS));
 		if(submission.getField(FWBNFSTS).equalsIgnoreCase(STS_LB) || submission.getField(FWBNFSTS).equalsIgnoreCase(STS_SB))
 		{ 

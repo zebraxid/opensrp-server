@@ -6,7 +6,7 @@ package org.opensrp.register.mcare.service.scheduling;
 import static java.text.MessageFormat.format;
 import static org.opensrp.dto.BeneficiaryType.elco;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.DateTimeDuration.duration;
-import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ELCOSchedulesConstants.ELCO_SCHEDULE_PSRF;
+import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ELCOSchedulesConstants.*;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ELCOSchedulesConstantsImediate.IMD_ELCO_SCHEDULE_PSRF;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.HHSchedulesConstants.HH_SCHEDULE_CENSUS;
 
@@ -15,19 +15,14 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
-import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.motechproject.scheduletracking.api.service.ScheduleTrackingService;
 import org.opensrp.common.AllConstants.ELCOSchedulesConstantsImediate;
-import org.opensrp.dto.ActionData;
-import org.opensrp.dto.AlertStatus;
 import org.opensrp.dto.BeneficiaryType;
-import org.opensrp.scheduler.Action;
 import org.opensrp.scheduler.HealthSchedulerService;
 import org.opensrp.scheduler.repository.AllActions;
 import org.slf4j.Logger;
@@ -53,6 +48,13 @@ public class ELCOScheduleService {
 		this.allActions = allActions;
 		this.scheduleLogService = scheduleLogService;
 		
+	}
+	
+	public void enrollIntoMilestoneOfMisElco(String caseId, String date)
+	{
+	    logger.info(format("Enrolling Elco into MisElco schedule. Id: {0}", caseId));
+	    
+		scheduler.enrollIntoSchedule(caseId, MIS_ELCO, date);
 	}
 	
 	public void enrollIntoMilestoneOfPSRF(String caseId, String date,String provider,String instanceId)

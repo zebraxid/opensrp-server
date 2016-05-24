@@ -82,11 +82,10 @@ public class ChildService {
 				.put(END_DATE, submission.getField(END_DATE)).map();	
 
 		child.withENCCVisitOne(enccOne);
-		
+		child.withTODAY(submission.getField(REFERENCE_DATE));
 		allChilds.update(child);		
 
 		childSchedulesService.fullfillMilestone(submission.entityId(), submission.anmId(), SCHEDULE_ENCC, new LocalDate());
-		
 		childSchedulesService.enrollENCCVisit(submission.entityId(), SCHEDULE_ENCC_2, LocalDate.parse(child.getDetail(referenceDate)));
 	}
 
@@ -125,11 +124,10 @@ public class ChildService {
 				.put(END_DATE, submission.getField(END_DATE)).map();	
 
 		child.withENCCVisitTwo(enccTwo);
-		
+		child.withTODAY(submission.getField(REFERENCE_DATE));
 		allChilds.update(child);
 		
-		childSchedulesService.fullfillMilestone(submission.entityId(), submission.anmId(), SCHEDULE_ENCC, new LocalDate());
-				
+		childSchedulesService.fullfillMilestone(submission.entityId(), submission.anmId(), SCHEDULE_ENCC, new LocalDate());	
 		childSchedulesService.enrollENCCVisit(submission.entityId(), SCHEDULE_ENCC_3, LocalDate.parse(child.getDetail(referenceDate)));
 	}
 
@@ -168,9 +166,8 @@ public class ChildService {
 				.put(END_DATE, submission.getField(END_DATE)).map();	
 
 		child.withENCCVisitThree(enccThree);
-		
+		child.withTODAY(submission.getField(REFERENCE_DATE));
 		allChilds.update(child);
-		
 		childSchedulesService.unEnrollFromSchedule(submission.entityId(), submission.anmId(), SCHEDULE_ENCC);
 	}
 

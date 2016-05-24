@@ -35,7 +35,8 @@ public class AllConstants {
     	public static final String ENCC_REMINDER_VISIT_1 = "encc_visit_1";
     	public static final String ENCC_REMINDER_VISIT_2 = "encc_visit_2";
     	public static final String ENCC_REMINDER_VISIT_3 = "encc_visit_3";
-    	
+    	public static final String MIS_Census = "mis_census";
+    	public static final String MIS_ELCO = "mis_elco";    	
         public static final String ENTITY_ID = "entityId";
         public static final String ANM_ID = "anmId";
         public static final String FORM_NAME = "formName";
@@ -232,6 +233,15 @@ public class AllConstants {
     	public static final String FWNOTELIGIBLE = "FWNOTELIGIBLE";
     	public static final String current_formStatus = "current_formStatus";
     	public static final String received_time = "received_time";
+    	public static final String FWMISELCODATE = "FWMISELCODATE";
+    	public static final String FWPMISBIRTHCTRL = "FWPMISBIRTHCTRL";
+    	public static final String FWMISOPT = "FWMISOPT"; 
+    	public static final String FWMISOPS = "FWMISOPS";
+    	public static final String FWMISCS = "FWMISCS";
+    	public static final String FWMISINJS = "FWMISINJS";   
+    	public static final String FWMISIUDS = "FWMISIUDS";
+    	public static final String FWMISIMPT = "FWMISIMPT";  
+    	public static final String FWMISIMPS = "FWMISIMPS";
     }
     
     public static class ANCVisitOneFields
@@ -957,6 +967,7 @@ public class AllConstants {
     
     public static class ScheduleNames{
     	public static final String ELCO = "ELCO PSRF";
+    	public static final String MIS_ELCO = "mis_elco";
     	public static final String BNF = "BirthNotificationPregnancyStatusFollowUp";
     	public static final String CENCUS = "FW CENSUS";
     	public static final String ANC = "Ante Natal Care Reminder Visit";
