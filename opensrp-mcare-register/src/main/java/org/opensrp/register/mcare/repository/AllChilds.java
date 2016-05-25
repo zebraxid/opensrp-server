@@ -9,15 +9,17 @@ import org.opensrp.common.AllConstants;
 import org.opensrp.register.mcare.domain.Child;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class AllChilds extends MotechBaseRepository<Child>{
 	
 	@Autowired
-	public AllChilds(
+	public AllChilds(@Value("#{opensrp['couchdb.atomfeed-db.revision-limit']}") int revisionLimit,
 			@Qualifier(AllConstants.OPENSRP_DATABASE_CONNECTOR) CouchDbConnector db) {
 		super(Child.class, db);
+		this.db.setRevisionLimit(revisionLimit);
 	}
 
 	@GenerateView

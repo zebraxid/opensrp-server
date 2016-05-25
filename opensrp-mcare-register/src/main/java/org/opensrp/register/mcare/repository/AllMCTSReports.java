@@ -9,6 +9,7 @@ import org.joda.time.LocalDate;
 import org.motechproject.dao.MotechBaseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
@@ -18,8 +19,10 @@ import java.util.List;
 public class AllMCTSReports extends MotechBaseRepository<MCTSReport> {
 
     @Autowired
-    public AllMCTSReports(@Qualifier(AllConstants.OPENSRP_MCTS_DATABASE_CONNECTOR) CouchDbConnector db) {
+    public AllMCTSReports(@Value("#{opensrp['couchdb.atomfeed-db.revision-limit']}") int revisionLimit,
+    		@Qualifier(AllConstants.OPENSRP_MCTS_DATABASE_CONNECTOR) CouchDbConnector db) {
         super(MCTSReport.class, db);
+        this.db.setRevisionLimit(revisionLimit);
     }
 
     @GenerateView

@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -20,9 +21,10 @@ public class AllMothers extends MotechBaseRepository<Mother> {
 	private static Logger logger = LoggerFactory.getLogger(AllMothers.class);
 
 	@Autowired
-	public AllMothers(
+	public AllMothers(@Value("#{opensrp['couchdb.atomfeed-db.revision-limit']}") int revisionLimit,
 			@Qualifier(AllConstants.OPENSRP_DATABASE_CONNECTOR) CouchDbConnector db) {
 		super(Mother.class, db);
+		this.db.setRevisionLimit(revisionLimit);
 	}
 
 	@GenerateView
