@@ -1,18 +1,11 @@
 package org.opensrp.web.controller;
 
-import static org.springframework.http.HttpStatus.OK;
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
-
 import java.util.List;
 
 import org.opensrp.dto.CountServiceDTO;
-import org.opensrp.dto.register.ANC_RegisterDTO;
 import org.opensrp.dto.register.HHRegisterDTO;
-import org.opensrp.register.mcare.ANCRegister;
 import org.opensrp.register.mcare.HHRegister;
-import org.opensrp.register.mcare.mapper.ANCRegisterMapper;
 import org.opensrp.register.mcare.mapper.HHRegisterMapper;
-import org.opensrp.register.mcare.service.ANCRegisterService;
 import org.opensrp.register.mcare.service.HHRegisterService;
 import org.opensrp.register.mcare.service.MultimediaRegisterService;
 import org.opensrp.service.DataCountService;
@@ -25,30 +18,21 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.google.gson.Gson;
-
 @Controller
 public class RegisterController {
 
-	private static final RequestMethod[] GET = null;
 	private HHRegisterService hhRegisterService;
-	private ANCRegisterService ancRegisterService;
 	private HHRegisterMapper hhRegisterMapper;
-	private ANCRegisterMapper ancRegisterMapper;
 	private MultimediaRegisterService multimediaRegisterService;
 	private DataCountService dataCountService;
 	 
 	@Autowired
 	public RegisterController(HHRegisterService hhRegisterService, 
 			HHRegisterMapper hhRegisterMapper,
-			ANCRegisterService ancRegisterService,
-			ANCRegisterMapper ancRegisterMapper, 
 			MultimediaRegisterService multimediaRegisterService,
 			DataCountService dataCountService) {
 		this.hhRegisterService = hhRegisterService;
 		this.hhRegisterMapper = hhRegisterMapper;
-		this.ancRegisterService = ancRegisterService;
-		this.ancRegisterMapper = ancRegisterMapper;
 		this.multimediaRegisterService = multimediaRegisterService;
 		this.dataCountService = dataCountService;
 	}
@@ -111,15 +95,7 @@ public class RegisterController {
     public ResponseEntity<ECRegisterDTO> ecRegister(@RequestParam("anm-id") String anmIdentifier) {
         ECRegister ecRegister = ecRegisterService.getRegisterForANM(anmIdentifier);
         return new ResponseEntity<>(ecRegisterMapper.mapToDTO(ecRegister), HttpStatus.OK);
-    }*/
-
-    @RequestMapping(method = RequestMethod.GET, value = "/registers/anc")
-    @ResponseBody
-    public ResponseEntity<ANC_RegisterDTO> ancRegister(@RequestParam("anm-id") String anmIdentifier) {
-        ANCRegister ancRegister = ancRegisterService.getANCRegisterForProvider(anmIdentifier);        
-        return new ResponseEntity<>(ancRegisterMapper.mapToDTO(ancRegister), HttpStatus.OK);
-      
-    }    
+    }*/   
     
     @RequestMapping(method = RequestMethod.GET, value = "/getMultimedia")
     @ResponseBody
