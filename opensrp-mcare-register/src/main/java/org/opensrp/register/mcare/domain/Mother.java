@@ -36,8 +36,6 @@ public class Mother extends MotechBaseDataObject {
 	private String ANC3_current_formStatus;
 	@JsonProperty
 	private String ANC4_current_formStatus;
-	/*@JsonProperty
-	private String current_formStatus;*/
 	@JsonProperty
 	private String GOBHHID;
 	@JsonProperty
@@ -133,11 +131,6 @@ public class Mother extends MotechBaseDataObject {
 		this.ANC4_current_formStatus = ANC4_current_formStatus;
 		return this;
 	}
-
-	/*public Mother withcurrent_formStatus(String current_formStatus) {
-		this.current_formStatus = current_formStatus;
-		return this;
-	}*/
 
 	public Mother withFWHUSNAME(String FWHUSNAME) {
 		this.FWHUSNAME = FWHUSNAME;
@@ -265,10 +258,6 @@ public class Mother extends MotechBaseDataObject {
 	public String ANC4_current_formStatus() {
 		return ANC4_current_formStatus;
 	}
-
-	/*public String current_formStatus() {
-		return current_formStatus;
-	}*/
 
 	public String FWHUSNAME() {
 		return FWHUSNAME;
