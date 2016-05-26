@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -20,9 +21,10 @@ public class AllRoles  extends MotechBaseRepository<Role>{
 	private static Logger logger = LoggerFactory.getLogger(AllRoles.class);
 	
 	@Autowired
-	public AllRoles(
+	public AllRoles(@Value("#{opensrp['couchdb.atomfeed-db.revision-limit']}") int revisionLimit,
 			@Qualifier(AllConstants.OPENSRP_DATABASE_CONNECTOR) CouchDbConnector db) {
 		super(Role.class, db);
+		this.db.setRevisionLimit(revisionLimit);
 	}
 	//@GenerateView
 	public Role findByUserName(String userName) {

@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -24,9 +25,10 @@ public class AllMembers extends MotechBaseRepository<Members> {
 	private static Logger logger = LoggerFactory.getLogger(AllMembers.class);
 
 	@Autowired
-	public AllMembers(
+	public AllMembers(@Value("#{opensrp['couchdb.atomfeed-db.revision-limit']}") int revisionLimit,
 			@Qualifier(AllConstants.OPENSRP_DATABASE_CONNECTOR) CouchDbConnector db) {
 		super(Members.class, db);
+		this.db.setRevisionLimit(revisionLimit);
 	}
 
 	@GenerateView

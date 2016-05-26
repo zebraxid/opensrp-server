@@ -28,6 +28,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 import com.google.gson.Gson;
@@ -56,8 +57,10 @@ public class FormDataRepositoryImpl extends FormDataRepository{
     private static Logger logger = LoggerFactory.getLogger(FormDataRepositoryImpl.class.toString());
 
     @Autowired
-    public FormDataRepositoryImpl(@Qualifier(AllConstants.OPENSRP_DATABASE_CONNECTOR) CouchDbConnector db) {
+    public FormDataRepositoryImpl(@Value("#{opensrp['couchdb.atomfeed-db.revision-limit']}") int revisionLimit,
+    		@Qualifier(AllConstants.OPENSRP_DATABASE_CONNECTOR) CouchDbConnector db) {
         this.db = db;
+        this.db.setRevisionLimit(revisionLimit);
         initMaps();
     }
 
