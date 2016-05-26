@@ -89,7 +89,9 @@ public class PatientAtomfeed extends OpenmrsService implements EventWorker, Atom
 			JSONObject p = patientService.getPatientByUuid(event.getContent().substring(event.getContent().lastIndexOf("/")+1), true);
 			System.out.println(p);//TODO check in couch and if not exists update thrive id on opermrs side
 			Client c = patientService.convertToClient(p);
+			System.out.println("CL");			
 			Client existing = clientService.findClient(c);
+			System.out.println("CL1");
 			if(existing == null){
 				c.setBaseEntityId(UUID.randomUUID().toString());
 				clientService.addClient(c);
@@ -151,11 +153,11 @@ public class PatientAtomfeed extends OpenmrsService implements EventWorker, Atom
 	}
 
 	
-	/*@MotechListener(subjects = OpenmrsConstants.SCHEDULER_OPENMRS_ATOMFEED_SYNCER_SUBJECT)
+	@MotechListener(subjects = OpenmrsConstants.SCHEDULER_OPENMRS_ATOMFEED_SYNCER_SUBJECT)
 	public void getResponse(MotechEvent event){
 		new TurnOffCertificateValidation().ForHTTPSConnections();
 		System.out.println("Response from Atom");
 		 this.processEvents();
-	}*/
+	}
 	
 }

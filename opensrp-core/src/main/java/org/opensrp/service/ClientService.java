@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -23,6 +24,8 @@ import com.google.gson.GsonBuilder;
 
 @Service
 public class ClientService {
+	
+	private static Logger logger = Logger.getLogger(ClientService.class);
 	private final AllClients allClients;
 	private BahmniIdRepository bahmniIdRepository;
 	@Autowired
@@ -84,8 +87,12 @@ public class ClientService {
 			throw new RuntimeException("No baseEntityId");
 		}
 		Client c = findClient(client);
-		BahmniId id = bahmniIdRepository.findByentityId(client.getBaseEntityId());
-		client.addIdentifier("Bahmni Id", id.getGenId());
+		try{
+			BahmniId id = bahmniIdRepository.findByentityId(client.getBaseEntityId());
+			client.addIdentifier("Bahmni Id", id.getGenId());
+		}catch(Exception ee){
+			logger.info("Identifier :"+ee.getMessage());
+		}
 		if(c != null){
 			throw new IllegalArgumentException("A client already exists with given list of identifiers. Consider updating data.["+c+"]");
 		}
@@ -97,13 +104,14 @@ public class ClientService {
 	
 	public Client findClient(Client client){
 		// find by auto assigned entity id
+		System.out.println("getBaseEntityId:"+client.getBaseEntityId());
 		Client c = allClients.findByBaseEntityId(client.getBaseEntityId());
 		if(c != null){
 			return c;
 		}
 		
 		//still not found!! search by generic identifiers
-		
+		System.out.println(client.getIdentifiers().keySet());
 		for (String idt : client.getIdentifiers().keySet()) {
 			List<Client> cl = allClients.findAllByIdentifier(client.getIdentifier(idt));
 			if(cl.size() > 1){
@@ -113,6 +121,7 @@ public class ClientService {
 				return cl.get(0); 
 			}
 		}
+		//System.out.println("Find Client:"+c.toString());
 		return c;
 	}
 	

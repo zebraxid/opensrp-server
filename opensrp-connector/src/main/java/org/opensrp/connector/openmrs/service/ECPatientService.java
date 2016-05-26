@@ -230,15 +230,19 @@ public class ECPatientService extends OpenmrsService {
 	public Client convertToClient(JSONObject patient) throws JSONException {
 		Client c = new Client(null);
 		JSONArray ar = patient.getJSONArray("identifiers");
+		System.out.println("identifiers:"+ar.toString());
 		for (int i = 0; i < ar.length(); i++) {
 			JSONObject ji = ar.getJSONObject(i);
 			if(ji.getJSONObject("identifierType").getString("display").equalsIgnoreCase(OPENSRP_IDENTIFIER_TYPE)){
-				c.setBaseEntityId(ji.getString("identifier"));
-			}
-			else {
+				//c.setBaseEntityId(ji.getString("identifier"));
 				c.addIdentifier(ji.getJSONObject("identifierType").getString("display"), ji.getString("identifier"));
 			}
+			else {
+				//c.addIdentifier(ji.getJSONObject("identifierType").getString("display"), ji.getString("identifier"));
+			}
 		}
+		c.setBaseEntityId(patient.getString("uuid"));
+		System.out.println("UUID:"+c.toString());
 		JSONObject pr = patient.getJSONObject("person");
 		
 		String mn = pr.getJSONObject("preferredName").has("middleName")?pr.getJSONObject("preferredName").getString("middleName"):null;
