@@ -12,15 +12,17 @@ import org.opensrp.register.mcare.domain.HouseHold;
 import org.opensrp.register.mcare.domain.Mother;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class AllElcos extends MotechBaseRepository<Elco> {
 
 	@Autowired
-	public AllElcos(
+	public AllElcos(@Value("#{opensrp['couchdb.atomfeed-db.revision-limit']}") int revisionLimit,
 			@Qualifier(AllConstants.OPENSRP_DATABASE_CONNECTOR) CouchDbConnector db) {
 		super(Elco.class, db);
+		this.db.setRevisionLimit(revisionLimit);
 	}
 
 	@GenerateView

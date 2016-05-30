@@ -31,18 +31,20 @@ public class ApplicationStartupListener implements ApplicationListener<ContextRe
     		) {
         this.scheduler = scheduler;
         formSchedule = new RepeatingSchedule(OpenSRPScheduleConstants.FORM_SCHEDULE_SUBJECT, 0, TimeUnit.MINUTES, formPollInterval, TimeUnit.MINUTES);
-        anmReportScheduler = new RepeatingSchedule(OpenSRPScheduleConstants.ANM_REPORT_SCHEDULE_SUBJECT, 10, TimeUnit.MINUTES, 6, TimeUnit.HOURS);
-        mctsReportScheduler = new RepeatingSchedule(OpenSRPScheduleConstants.MCTS_REPORT_SCHEDULE_SUBJECT, 10, TimeUnit.MINUTES, mctsPollIntervalInHours, TimeUnit.HOURS);
-        openmrsScheduleSyncerScheduler = new RepeatingSchedule(OpenmrsConstants.SCHEDULER_TRACKER_SYNCER_SUBJECT, 0, TimeUnit.MINUTES, 1, TimeUnit.MINUTES);
+        //anmReportScheduler = new RepeatingSchedule(OpenSRPScheduleConstants.ANM_REPORT_SCHEDULE_SUBJECT, 10, TimeUnit.MINUTES, 6, TimeUnit.HOURS);
+        //mctsReportScheduler = new RepeatingSchedule(OpenSRPScheduleConstants.MCTS_REPORT_SCHEDULE_SUBJECT, 10, TimeUnit.MINUTES, mctsPollIntervalInHours, TimeUnit.HOURS);
+        //openmrsScheduleSyncerScheduler = new RepeatingSchedule(OpenmrsConstants.SCHEDULER_TRACKER_SYNCER_SUBJECT, 0, TimeUnit.MINUTES, 1, TimeUnit.MINUTES);
     }
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
         if (APPLICATION_ID.equals(contextRefreshedEvent.getApplicationContext().getId())) {
+        	System.out.println("Starting job formSchedule SUBJECT:" + formSchedule.SUBJECT + " START_DELAY:" + formSchedule.START_DELAY 
+        			+ " REPEAT_INTERVAL:" + formSchedule.REPEAT_INTERVAL+ " START_DELAY_UNIT:" + formSchedule.START_DELAY_UNIT+ " REPEAT_INTERVAL_UNIT:" + formSchedule.REPEAT_INTERVAL_UNIT );
             scheduler.startJob(formSchedule);
-            scheduler.startJob(anmReportScheduler);
-            scheduler.startJob(mctsReportScheduler);
-            scheduler.startJob(openmrsScheduleSyncerScheduler);
+            //scheduler.startJob(anmReportScheduler);
+            //scheduler.startJob(mctsReportScheduler);
+            //scheduler.startJob(openmrsScheduleSyncerScheduler);
         }
     }
 }
