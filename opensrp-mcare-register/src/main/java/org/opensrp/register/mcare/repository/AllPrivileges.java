@@ -22,10 +22,9 @@ public class AllPrivileges  extends MotechBaseRepository<Privilege>{
 	private static Logger logger = LoggerFactory.getLogger(AllPrivileges.class);
 	
 	@Autowired
-	public AllPrivileges(@Value("#{opensrp['couchdb.atomfeed-db.revision-limit']}") int revisionLimit, 
+	public AllPrivileges(
 			@Qualifier(AllConstants.OPENSRP_DATABASE_CONNECTOR) CouchDbConnector db) {
 		super(Privilege.class, db);
-		this.db.setRevisionLimit(revisionLimit);
 	}
 	
 	/*@GenerateView

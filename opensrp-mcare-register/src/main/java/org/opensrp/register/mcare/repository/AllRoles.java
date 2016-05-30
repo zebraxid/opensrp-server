@@ -21,10 +21,9 @@ public class AllRoles  extends MotechBaseRepository<Role>{
 	private static Logger logger = LoggerFactory.getLogger(AllRoles.class);
 	
 	@Autowired
-	public AllRoles(@Value("#{opensrp['couchdb.atomfeed-db.revision-limit']}") int revisionLimit,
+	public AllRoles(
 			@Qualifier(AllConstants.OPENSRP_DATABASE_CONNECTOR) CouchDbConnector db) {
 		super(Role.class, db);
-		this.db.setRevisionLimit(revisionLimit);
 	}
 	//@GenerateView
 	public Role findByUserName(String userName) {

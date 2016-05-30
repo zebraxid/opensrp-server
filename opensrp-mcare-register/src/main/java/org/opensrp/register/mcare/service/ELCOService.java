@@ -179,7 +179,7 @@ public class ELCOService {
 	    	elco.details().put("MisToday", submission.getField(REFERENCE_DATE));
 	    	elco.details().put("MisStart", submission.getField(START_DATE));		
 	    	elco.details().put("MisEnd", submission.getField(END_DATE));
-	    	elco.details().put("FWMISELCODATE", submission.getField("FWMISELCODATE"));
+	    	elco.details().put("FWMISCENSUSDATE", submission.getField("FWMISCENSUSDATE"));
 	    	elco.details().put("FWCOUPLENUM", submission.getField("FWCOUPLENUM"));
 	    	elco.details().put("FWTETSTAT", submission.getField("FWTETSTAT"));
 	    	elco.details().put("FWMARRYDATE", submission.getField("FWMARRYDATE"));		
@@ -256,10 +256,6 @@ public class ELCOService {
 					.put(new_ELCO, submission.getField(new_ELCO))
 					.put(ELCO, submission.getField(ELCO))
 					.put(WomanREGDATE, elcoFields.get(WomanREGDATE))
-					.put(FW_CWOMSTRMEN, elcoFields.get(FW_CWOMSTRMEN))
-					.put(FW_CWOMHUSALV, elcoFields.get(FW_CWOMHUSALV))
-					.put(FW_CWOMHUSSTR, elcoFields.get(FW_CWOMHUSSTR))
-					.put(FW_CWOMHUSLIV, elcoFields.get(FW_CWOMHUSLIV))
 					.put(form_name, submission.getField(form_name))
 					.put(FW_WOMFNAME, elcoFields.get(FW_WOMFNAME))
 					.put(FW_WOMLNAME, elcoFields.get(FW_WOMLNAME))
@@ -274,6 +270,7 @@ public class ELCOService {
 					.put(FW_WOMAGE, elcoFields.get(FW_WOMAGE))
 					.put(FW_DISPLAY_AGE, elcoFields.get(FW_DISPLAY_AGE))
 					.put(FW_CWOMSTRMEN, elcoFields.get(FW_CWOMSTRMEN))
+					.put(FWCWOMSTER, elcoFields.get(FWCWOMSTER))
 					.put(FW_CWOMHUSALV, elcoFields.get(FW_CWOMHUSALV))
 					.put(FW_CWOMHUSSTR, elcoFields.get(FW_CWOMHUSSTR))
 					.put(FW_CWOMHUSLIV, elcoFields.get(FW_CWOMHUSLIV))

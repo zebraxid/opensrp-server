@@ -19,10 +19,9 @@ import org.springframework.stereotype.Repository;
 public class AllElcos extends MotechBaseRepository<Elco> {
 
 	@Autowired
-	public AllElcos(@Value("#{opensrp['couchdb.atomfeed-db.revision-limit']}") int revisionLimit,
+	public AllElcos(
 			@Qualifier(AllConstants.OPENSRP_DATABASE_CONNECTOR) CouchDbConnector db) {
 		super(Elco.class, db);
-		this.db.setRevisionLimit(revisionLimit);
 	}
 
 	@GenerateView

@@ -16,10 +16,9 @@ import org.springframework.stereotype.Repository;
 public class AllChilds extends MotechBaseRepository<Child>{
 	
 	@Autowired
-	public AllChilds(@Value("#{opensrp['couchdb.atomfeed-db.revision-limit']}") int revisionLimit,
+	public AllChilds(
 			@Qualifier(AllConstants.OPENSRP_DATABASE_CONNECTOR) CouchDbConnector db) {
 		super(Child.class, db);
-		this.db.setRevisionLimit(revisionLimit);
 	}
 
 	@GenerateView

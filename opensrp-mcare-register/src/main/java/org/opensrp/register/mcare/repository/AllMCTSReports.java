@@ -19,10 +19,9 @@ import java.util.List;
 public class AllMCTSReports extends MotechBaseRepository<MCTSReport> {
 
     @Autowired
-    public AllMCTSReports(@Value("#{opensrp['couchdb.atomfeed-db.revision-limit']}") int revisionLimit,
+    public AllMCTSReports(
     		@Qualifier(AllConstants.OPENSRP_MCTS_DATABASE_CONNECTOR) CouchDbConnector db) {
         super(MCTSReport.class, db);
-        this.db.setRevisionLimit(revisionLimit);
     }
 
     @GenerateView

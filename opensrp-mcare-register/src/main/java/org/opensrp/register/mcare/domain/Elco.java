@@ -39,6 +39,8 @@ public class Elco extends MotechBaseDataObject {
 	@JsonProperty
 	private String FWCWOMSTRMEN;
 	@JsonProperty
+	private String FWCWOMSTER;
+	@JsonProperty
 	private String FWCWOMHUSALV;
 	@JsonProperty
 	private String FWCWOMHUSLIV;
@@ -174,6 +176,10 @@ public class Elco extends MotechBaseDataObject {
 	}
 	public Elco withFWCWOMSTRMEN(String FWCWOMSTRMEN) {
 		this.FWCWOMSTRMEN = FWCWOMSTRMEN;
+		return this;
+	}
+	public Elco withFWCWOMSTER(String FWCWOMSTER) {
+		this.FWCWOMSTER = FWCWOMSTER;
 		return this;
 	}
 	public Elco withFWCWOMHUSALV(String FWCWOMHUSALV) {
@@ -387,6 +393,9 @@ public class Elco extends MotechBaseDataObject {
 	}
 	public String FWCWOMSTRMEN() {
 		return  FWCWOMSTRMEN;
+	}
+	public String FWCWOMSTER() {
+		return  FWCWOMSTER;
 	}
 	public String FWCWOMHUSALV() {
 		return  FWCWOMHUSALV;
