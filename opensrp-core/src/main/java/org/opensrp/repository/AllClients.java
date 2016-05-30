@@ -14,15 +14,17 @@ import org.opensrp.domain.Client;
 import org.opensrp.domain.Provider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class AllClients extends MotechBaseRepository<Client> {
 
 	@Autowired
-	protected AllClients(
+	protected AllClients(@Value("#{opensrp['couchdb.atomfeed-db.revision-limit']}") int revisionLimit,
 			@Qualifier(AllConstants.OPENSRP_DATABASE_CONNECTOR) CouchDbConnector db) {
 		super(Client.class, db);
+		this.db.setRevisionLimit(revisionLimit);
 	}
 
 	@GenerateView

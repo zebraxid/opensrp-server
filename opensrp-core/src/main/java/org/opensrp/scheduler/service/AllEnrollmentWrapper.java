@@ -11,6 +11,7 @@ import org.motechproject.scheduletracking.api.repository.AllEnrollments;
 import org.motechproject.scheduletracking.api.repository.AllSchedules;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -19,8 +20,10 @@ public class AllEnrollmentWrapper extends AllEnrollments{
     private AllSchedules allSchedules;
 	
 	@Autowired
-	public AllEnrollmentWrapper(@Qualifier("scheduleTrackingDbConnector") CouchDbConnector db) {
+	public AllEnrollmentWrapper(@Value("#{opensrp['couchdb.atomfeed-db.revision-limit']}") int revisionLimit,
+			@Qualifier("scheduleTrackingDbConnector") CouchDbConnector db) {
 		super(db);
+		this.db.setRevisionLimit(revisionLimit);
 	}
 
 	 private static final String FUNCTION_DOC_EMIT_DOC_STATUS_AND_ENROLLED_ON = "function(doc) { if(doc.type === 'Enrollment') emit([doc.status,doc.enrolledOn], doc._id);}";
