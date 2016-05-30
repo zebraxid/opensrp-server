@@ -11,7 +11,6 @@ import org.opensrp.common.AllConstants;
 import org.opensrp.scheduler.ScheduleRules;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 
@@ -19,10 +18,8 @@ import org.springframework.stereotype.Repository;
 public class ScheduleRuleRepository extends MotechBaseRepository<ScheduleRules>{
 	
 	@Autowired
-    protected ScheduleRuleRepository(@Value("#{opensrp['couchdb.atomfeed-db.revision-limit']}") int revisionLimit,
-    		@Qualifier(AllConstants.OPENSRP_SCHEDULE_DATABASE_CONNECTOR) CouchDbConnector db) {
+    protected ScheduleRuleRepository(@Qualifier(AllConstants.OPENSRP_SCHEDULE_DATABASE_CONNECTOR) CouchDbConnector db) {
         super(ScheduleRules.class, db);
-        this.db.setRevisionLimit(revisionLimit);
     }
 	public String submit(ScheduleRules scheduleRules){		
 		try{			

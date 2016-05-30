@@ -12,7 +12,6 @@ import org.opensrp.domain.ErrorTrace;
 import org.opensrp.domain.Provider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -20,12 +19,13 @@ import org.springframework.stereotype.Repository;
  *  Created on May 25, 2015
  */
 @Repository
-public class AllErrorTrace extends MotechBaseRepository<ErrorTrace> {	
+public class AllErrorTrace extends MotechBaseRepository<ErrorTrace> {
+	
+	
 	@Autowired
-	protected AllErrorTrace(@Value("#{opensrp['couchdb.atomfeed-db.revision-limit']}") int revisionLimit,
+	protected AllErrorTrace(
 			@Qualifier(AllConstants.OPENSRP_ERRORTRACE_DATABASE) CouchDbConnector db) {
 		super(ErrorTrace.class, db);
-		this.db.setRevisionLimit(revisionLimit);
 	}
 
 	//@GenerateView
