@@ -176,6 +176,7 @@ public class AllConstants {
     	public static final String FW_WOMAGE = "FWWOMAGE";
     	public static final String FW_DISPLAY_AGE = "display_age";
     	public static final String FW_CWOMSTRMEN = "FWCWOMSTRMEN";
+    	public static final String FWCWOMSTER = "FWCWOMSTER";
     	public static final String FW_CWOMHUSALV = "FWCWOMHUSALV";
     	public static final String FW_CWOMHUSSTR = "FWCWOMHUSSTR";
     	public static final String FW_CWOMHUSLIV = "FWCWOMHUSLIV";

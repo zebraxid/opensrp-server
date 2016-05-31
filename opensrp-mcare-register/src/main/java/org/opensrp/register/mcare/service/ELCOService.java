@@ -179,7 +179,7 @@ public class ELCOService {
 	    	elco.details().put("MisToday", submission.getField(REFERENCE_DATE));
 	    	elco.details().put("MisStart", submission.getField(START_DATE));		
 	    	elco.details().put("MisEnd", submission.getField(END_DATE));
-	    	elco.details().put("FWMISELCODATE", submission.getField("FWMISELCODATE"));
+	    	elco.details().put("FWMISCENSUSDATE", submission.getField("FWMISCENSUSDATE"));
 	    	elco.details().put("FWCOUPLENUM", submission.getField("FWCOUPLENUM"));
 	    	elco.details().put("FWTETSTAT", submission.getField("FWTETSTAT"));
 	    	elco.details().put("FWMARRYDATE", submission.getField("FWMARRYDATE"));		
@@ -256,10 +256,6 @@ public class ELCOService {
 					.put(new_ELCO, submission.getField(new_ELCO))
 					.put(ELCO, submission.getField(ELCO))
 					.put(WomanREGDATE, elcoFields.get(WomanREGDATE))
-					.put(FW_CWOMSTRMEN, elcoFields.get(FW_CWOMSTRMEN))
-					.put(FW_CWOMHUSALV, elcoFields.get(FW_CWOMHUSALV))
-					.put(FW_CWOMHUSSTR, elcoFields.get(FW_CWOMHUSSTR))
-					.put(FW_CWOMHUSLIV, elcoFields.get(FW_CWOMHUSLIV))
 					.put(form_name, submission.getField(form_name))
 					.put(FW_WOMFNAME, elcoFields.get(FW_WOMFNAME))
 					.put(FW_WOMLNAME, elcoFields.get(FW_WOMLNAME))
@@ -274,6 +270,7 @@ public class ELCOService {
 					.put(FW_WOMAGE, elcoFields.get(FW_WOMAGE))
 					.put(FW_DISPLAY_AGE, elcoFields.get(FW_DISPLAY_AGE))
 					.put(FW_CWOMSTRMEN, elcoFields.get(FW_CWOMSTRMEN))
+					.put(FWCWOMSTER, elcoFields.get(FWCWOMSTER))
 					.put(FW_CWOMHUSALV, elcoFields.get(FW_CWOMHUSALV))
 					.put(FW_CWOMHUSSTR, elcoFields.get(FW_CWOMHUSSTR))
 					.put(FW_CWOMHUSLIV, elcoFields.get(FW_CWOMHUSLIV))
@@ -353,14 +350,16 @@ public class ELCOService {
 					.put(received_time, format.format(today).toString())
 					.map();
 			
-			elco.PSRFDETAILS().add(psrf);			
+			elco.PSRFDETAILS().add(psrf);	
+			elco.details().put(FW_PSRPREGSTS, submission.getField(FW_PSRPREGSTS));
 			elco.withTODAY(submission.getField(REFERENCE_DATE));
 			
 			allEcos.update(elco);
 			logger.info("Expected value leading zero and found submission.getField(FW_PSRSTS): "+submission.getField(FW_PSRSTS));
 			logger.info("Expected value leading no zero and found submission.getField(FW_PSRPREGSTS): "+submission.getField(FW_PSRPREGSTS));
 			
-			if(submission.getField(FW_PSRPREGSTS) != null && submission.getField(FW_PSRPREGSTS).equalsIgnoreCase("1") && submission.getField(FW_PSRSTS).equals("01") ){        
+			if(submission.getField(FW_PSRPREGSTS) != null && submission.getField(FW_PSRSTS) != null)
+				if(submission.getField(FW_PSRPREGSTS).equalsIgnoreCase("1") && submission.getField(FW_PSRSTS).equals("01")){        
 				//if(submission.getField("user_type").equalsIgnoreCase("FD")){
 					ancService.registerANC(submission);
 		            bnfService.registerBNF(submission);
@@ -378,7 +377,8 @@ public class ELCOService {
 	        	   logger.info("From addPSRFDetailsToELCO:"+e.getMessage());
 	           }
 	        	
-			}else if(submission.getField(FW_PSRSTS).equalsIgnoreCase("02") || (submission.getField(FW_PSRSTS).equalsIgnoreCase("01"))){
+			}else if(submission.getField(FW_PSRSTS) != null)
+				if(submission.getField(FW_PSRSTS).equalsIgnoreCase("02") || (submission.getField(FW_PSRSTS).equalsIgnoreCase("01"))){
 				ancService.deleteBlankMother(submission);
 				elcoScheduleService.enrollIntoMilestoneOfPSRF(submission.entityId(),
 	            submission.getField(REFERENCE_DATE),submission.anmId(),submission.instanceId());

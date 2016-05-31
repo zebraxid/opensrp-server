@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -21,7 +22,7 @@ public class AllPrivileges  extends MotechBaseRepository<Privilege>{
 	private static Logger logger = LoggerFactory.getLogger(AllPrivileges.class);
 	
 	@Autowired
-	public AllPrivileges( 
+	public AllPrivileges(
 			@Qualifier(AllConstants.OPENSRP_DATABASE_CONNECTOR) CouchDbConnector db) {
 		super(Privilege.class, db);
 	}
