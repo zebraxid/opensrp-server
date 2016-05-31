@@ -9,15 +9,6 @@ import static org.opensrp.common.AllConstants.CommonFormFields.ID;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.ELCO_REGISTRATION_SUB_FORM_NAME;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.FW_UPAZILLA;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.REFERENCE_DATE;
-import static org.opensrp.common.AllConstants.HHRegistrationFields.existing_Country;
-import static org.opensrp.common.AllConstants.HHRegistrationFields.existing_District;
-import static org.opensrp.common.AllConstants.HHRegistrationFields.existing_Division;
-import static org.opensrp.common.AllConstants.HHRegistrationFields.existing_Mauzapara;
-import static org.opensrp.common.AllConstants.HHRegistrationFields.existing_Subunit;
-import static org.opensrp.common.AllConstants.HHRegistrationFields.existing_Union;
-import static org.opensrp.common.AllConstants.HHRegistrationFields.existing_Upazilla;
-import static org.opensrp.common.AllConstants.HHRegistrationFields.existing_Ward;
-import static org.opensrp.common.AllConstants.HHRegistrationFields.existing_location;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.received_time;
 import static org.opensrp.common.AllConstants.PSRFFields.*;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.HHSchedulesConstants.HH_SCHEDULE_CENSUS;
@@ -26,11 +17,9 @@ import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ELCOSchedulesC
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.joda.time.DateTime;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.form.domain.SubFormData;
 import org.opensrp.register.mcare.domain.Elco;
@@ -41,10 +30,7 @@ import org.opensrp.register.mcare.service.scheduling.ELCOScheduleService;
 import org.opensrp.register.mcare.service.scheduling.HHSchedulesService;
 import org.opensrp.register.mcare.service.scheduling.ScheduleLogService;
 import org.opensrp.scheduler.Action;
-import org.opensrp.scheduler.ScheduleLog;
 import org.opensrp.scheduler.repository.AllActions;
-import org.opensrp.scheduler.repository.AllReportActions;
-import org.opensrp.scheduler.service.ReportActionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,6 +77,7 @@ public class ELCOService {
 			Elco elco = allEcos.findByCaseId(elcoFields.get(ID))
 					.withINSTANCEID(submission.instanceId())
 					.withPROVIDERID(submission.anmId())
+					.withTODAY(submission.getField(REFERENCE_DATE))
 					.withSUBMISSIONDATE(scheduleLogService.getTimeStampMills())
 					.withFWWOMUPAZILLA(elcoFields.get(FW_WOMUPAZILLA).replace("+", " "));
 			
@@ -218,7 +205,6 @@ public class ELCOService {
 				.map();
 		
 		elco.MISDETAILS().add(misElco);	
-		elco.withTODAY(submission.getField(REFERENCE_DATE));
 		
 		allEcos.update(elco);
 		
@@ -352,7 +338,6 @@ public class ELCOService {
 			
 			elco.PSRFDETAILS().add(psrf);	
 			elco.details().put(FW_PSRPREGSTS, submission.getField(FW_PSRPREGSTS));
-			elco.withTODAY(submission.getField(REFERENCE_DATE));
 			
 			allEcos.update(elco);
 			logger.info("Expected value leading zero and found submission.getField(FW_PSRSTS): "+submission.getField(FW_PSRSTS));
