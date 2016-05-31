@@ -350,7 +350,8 @@ public class ELCOService {
 					.put(received_time, format.format(today).toString())
 					.map();
 			
-			elco.PSRFDETAILS().add(psrf);			
+			elco.PSRFDETAILS().add(psrf);	
+			elco.details().put(FW_PSRPREGSTS, submission.getField(FW_PSRPREGSTS));
 			elco.withTODAY(submission.getField(REFERENCE_DATE));
 			
 			allEcos.update(elco);
