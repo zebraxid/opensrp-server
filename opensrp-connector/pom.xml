@@ -18,7 +18,7 @@
 		<main.basedir>${project.basedir}/..</main.basedir>
 	</properties>
 	
-	<build>
+	 <build>
 		<finalName>opensrp-connector</finalName>
         <resources>
 			<resource>
@@ -38,7 +38,7 @@
                 <directory>../opensrp-core/src/main/resources</directory>
             </resource>
         </resources>
-        <plugins>
+      <!--  <plugins>
             <plugin>
                 <groupId>org.mortbay.jetty</groupId>
                 <artifactId>jetty-maven-plugin</artifactId>
@@ -96,9 +96,9 @@
                     </execution>
                 </executions>
             </plugin>
-        </plugins>
+        </plugins> -->
     </build>
-
+ 
     <dependencies>
 <!-- <dependency>
     <groupId>org.ihs</groupId>

@@ -37,7 +37,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 
 @Service
 public class LuceneHouseHoldService {
-	private static Logger logger = LoggerFactory.getLogger(AllPrivileges.class);
+	private static Logger logger = LoggerFactory.getLogger(LuceneHouseHoldService.class);
 
 	private LuceneHouseHoldRepository luceneHouseHoldRepository;
 	private ConvertDateStringToTimestampMills convertDateStringToTimestampMills;

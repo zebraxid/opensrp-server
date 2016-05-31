@@ -3,10 +3,12 @@ package org.opensrp.register.mcare.repository;
 import java.util.List;
 
 import org.ektorp.CouchDbConnector;
+import org.ektorp.ViewResult;
 import org.ektorp.support.GenerateView;
 import org.ektorp.support.View;
 import org.motechproject.dao.MotechBaseRepository;
 import org.opensrp.common.AllConstants;
+import org.opensrp.register.mcare.domain.Elco;
 import org.opensrp.register.mcare.domain.Mother;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

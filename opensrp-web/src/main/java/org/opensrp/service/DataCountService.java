@@ -9,7 +9,9 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import org.ektorp.ViewResult;
 import org.opensrp.common.util.DateUtil;
+import org.opensrp.common.util.WeekBoundariesAndTimestamps;
 import org.opensrp.dto.CountServiceDTO;
 import org.opensrp.dto.CountServiceDTOForChart;
 import org.opensrp.register.mcare.repository.AllElcos;
@@ -77,72 +79,143 @@ public class DataCountService {
 		
 	}
 	
-	public List<CountServiceDTOForChart> getHHCountInformationForChart(){
+	public List<CountServiceDTOForChart> getHHCountInformationForChart(String provider, String district, String upazilla, String union){
+		ViewResult hhViewResult;		
+		String key = this.createRawStartKey(provider, district, upazilla, union);
+		if(!provider.equalsIgnoreCase("")){
+			hhViewResult = allHouseHolds.allHHsCreatedLastFourMonthsByProviderAndLocationViewResult(key,key.substring(0, key.length()-1) + ",{}]");
+		}
+		else{
+			hhViewResult = allHouseHolds.allHHsCreatedLastFourMonthsByLocationViewResult(key,key.substring(0, key.length()-1) + ",{}]");
+		}		
+		
 		List<CountServiceDTOForChart> DTOs= new ArrayList<CountServiceDTOForChart>();
 		CountServiceDTOForChart newDTO = new CountServiceDTOForChart();
-		List<String> startAndEndOfWeeks = DateUtil.getWeekBoundariesForDashboard();
-		this.getHouseholdCountForChart(startAndEndOfWeeks, newDTO);
+		newDTO.setCounts(this.covertViewResultToCount(hhViewResult));
 		DTOs.add(newDTO);
 		return DTOs;
 	}
 	
-	/*private CountServiceDTOForChart loadChartDataForAMonth(int beginIndex, int endIndex, CountServiceDTOForChart dto){
-		return dto;
-	}*/
-		
-	private CountServiceDTOForChart getHouseholdCountForChart(List<String> dates, CountServiceDTOForChart dto){
-		//dto.setCurrentMonthWeek1(luceneHouseHoldService.getHouseholdCountForChart("2016-05-01","2016-05-07"));
-		dto.setCurrentMonthWeek1(luceneHouseHoldService.getHouseholdCountForChart(dates.get(0), dates.get(1)));
-		dto.setCurrentMonthWeek2(luceneHouseHoldService.getHouseholdCountForChart(dates.get(2), dates.get(3)));
-		dto.setCurrentMonthWeek3(luceneHouseHoldService.getHouseholdCountForChart(dates.get(4), dates.get(5)));
-		dto.setCurrentMonthWeek4(luceneHouseHoldService.getHouseholdCountForChart(dates.get(6), dates.get(7)));
-		Calendar calendar = GregorianCalendar.getInstance();
-		if(calendar.getActualMaximum(GregorianCalendar.DAY_OF_MONTH) > 28){
-			dto.setCurrentMonthWeek5(luceneHouseHoldService.getHouseholdCountForChart(dates.get(8), dates.get(9)));
+	public List<CountServiceDTOForChart> getElcoCountInformationForChart(String provider, String district, String upazilla, String union){
+		ViewResult elcoViewResult;		
+		String key = this.createRawStartKey(provider, district, upazilla, union);
+		if(!provider.equalsIgnoreCase("")){
+			elcoViewResult = allElcos.allElcosCreatedLastFourMonthsByProviderAndLocationViewResult(key,key.substring(0, key.length()-1) + ",{}]");
 		}
 		else{
-			dto.setCurrentMonthWeek5(0);
-		}
+			elcoViewResult = allElcos.allElcosCreatedLastFourMonthsByLocationViewResult(key,key.substring(0, key.length()-1) + ",{}]");
+		}		
 		
-		dto.setCurrentMonth_1Week1(luceneHouseHoldService.getHouseholdCountForChart(dates.get(10), dates.get(11)));
-		dto.setCurrentMonth_1Week2(luceneHouseHoldService.getHouseholdCountForChart(dates.get(12), dates.get(13)));
-		dto.setCurrentMonth_1Week3(luceneHouseHoldService.getHouseholdCountForChart(dates.get(14), dates.get(15)));
-		dto.setCurrentMonth_1Week4(luceneHouseHoldService.getHouseholdCountForChart(dates.get(16), dates.get(17)));
-		calendar.add(GregorianCalendar.MONTH, -1);
-		if(calendar.getActualMaximum(GregorianCalendar.DAY_OF_MONTH) > 28){
-			dto.setCurrentMonth_1Week5(luceneHouseHoldService.getHouseholdCountForChart(dates.get(18), dates.get(19)));
-		}
-		else{
-			dto.setCurrentMonth_1Week5(0);
-		}
-		
-		dto.setCurrentMonth_2Week1(luceneHouseHoldService.getHouseholdCountForChart(dates.get(20), dates.get(21)));
-		dto.setCurrentMonth_2Week2(luceneHouseHoldService.getHouseholdCountForChart(dates.get(22), dates.get(23)));
-		dto.setCurrentMonth_2Week3(luceneHouseHoldService.getHouseholdCountForChart(dates.get(24), dates.get(25)));
-		dto.setCurrentMonth_2Week4(luceneHouseHoldService.getHouseholdCountForChart(dates.get(26), dates.get(27)));
-		calendar.add(GregorianCalendar.MONTH, -1);
-		if(calendar.getActualMaximum(GregorianCalendar.DAY_OF_MONTH) > 28){
-			dto.setCurrentMonth_2Week5(luceneHouseHoldService.getHouseholdCountForChart(dates.get(28), dates.get(29)));
-		}
-		else{
-			dto.setCurrentMonth_2Week5(0);
-		}
-		
-		dto.setCurrentMonth_3Week1(luceneHouseHoldService.getHouseholdCountForChart(dates.get(30), dates.get(31)));
-		dto.setCurrentMonth_3Week2(luceneHouseHoldService.getHouseholdCountForChart(dates.get(32), dates.get(33)));
-		dto.setCurrentMonth_3Week3(luceneHouseHoldService.getHouseholdCountForChart(dates.get(34), dates.get(35)));
-		dto.setCurrentMonth_3Week4(luceneHouseHoldService.getHouseholdCountForChart(dates.get(36), dates.get(37)));
-		calendar.add(GregorianCalendar.MONTH, -1);
-		if(calendar.getActualMaximum(GregorianCalendar.DAY_OF_MONTH) > 28){
-			dto.setCurrentMonth_3Week5(luceneHouseHoldService.getHouseholdCountForChart(dates.get(38), dates.get(39)));
-		}
-		else{
-			dto.setCurrentMonth_3Week5(35);
-		}
-		
-		return dto;
+		List<CountServiceDTOForChart> DTOs= new ArrayList<CountServiceDTOForChart>();
+		CountServiceDTOForChart newDTO = new CountServiceDTOForChart();
+		newDTO.setCounts(this.covertViewResultToCount(elcoViewResult));
+		DTOs.add(newDTO);
+		return DTOs;
 	}
 	
+	public List<CountServiceDTOForChart> getMotherCountInformationForChart(String provider, String district, String upazilla, String union){
+		ViewResult elcoViewResult;		
+		String key = this.createRawStartKey(provider, district, upazilla, union);
+		if(!provider.equalsIgnoreCase("")){
+			elcoViewResult = allElcos.allMothersCreatedLastFourMonthsByProviderAndLocationViewResult(key,key.substring(0, key.length()-1) + ",{}]");
+		}
+		else{
+			elcoViewResult = allElcos.allMothersCreatedLastFourMonthsByLocationViewResult(key,key.substring(0, key.length()-1) + ",{}]");
+		}		
+		
+		List<CountServiceDTOForChart> DTOs= new ArrayList<CountServiceDTOForChart>();
+		CountServiceDTOForChart newDTO = new CountServiceDTOForChart();
+		newDTO.setCounts(this.covertViewResultToCount(elcoViewResult));
+		DTOs.add(newDTO);
+		return DTOs;
+	}
+	
+	private int[] covertViewResultToCount( ViewResult vr){
+		List<Long> timestamps = new ArrayList<Long>();
+		int count = 0;
+		int[] countsForChart = new int[23];
+		Long todayTimestamp = DateUtil.getTimestampToday();
+		List<Long> weekBoundaries = DateUtil.getCurrentWeekBoundaries();
+		List<Long> montthBoundaries = DateUtil.getMonthBoundaries();
+		WeekBoundariesAndTimestamps boundaries = DateUtil.getWeekBoundariesForDashboard();
+    	int todayCountIndex = 20, weekCountIndex = 21, monthCountIndex = 22;
+    	List<String> startAndEndOfWeeks = boundaries.weekBoundariesAsString;
+    	List<Long> startAndEndOfWeeksAsTimestamp = boundaries.weekBoundariesAsTimeStamp;
+    	
+    	for (ViewResult.Row row : vr.getRows()) {
+    		String stringValue = row.getValue();
+    		count++;
+    		timestamps.add(Long.parseLong(stringValue));
+    	}
+    	System.out.println("number of rows found - " + count);    	
+    	
+    	//this segment will do the counting
+    	for(int i = 0; i < timestamps.size(); i++){
+    		countsForChart[DateUtil.dateInsideWhichWeek(timestamps.get(i), startAndEndOfWeeksAsTimestamp)]++;
+    		if(DateUtil.ifDateInsideAWeek(timestamps.get(i), todayTimestamp, todayTimestamp)){
+    			countsForChart[todayCountIndex]++;
+    		}
+    		if(DateUtil.ifDateInsideAWeek(timestamps.get(i), weekBoundaries.get(0), weekBoundaries.get(1))){
+    			countsForChart[weekCountIndex]++;
+    		}
+    		if(DateUtil.ifDateInsideAWeek(timestamps.get(i), montthBoundaries.get(0), montthBoundaries.get(0))){    			
+    			countsForChart[monthCountIndex]++;
+    		}
+    	}        
+    	int foundCount = 0;
+    	for(int i =0; i<countsForChart.length; i++){
+        	if(countsForChart[i] != 0){
+        		System.out.println("count for weekIndex - " + i + " is " + countsForChart[i]);
+        		foundCount += countsForChart[i]; 
+        	}        	
+        }
+    	System.out.println("foundCount - " + foundCount);
+		return countsForChart;
+	}
+	private String createRawStartKey(String provider, String district, String upazilla, String union){
+		String key = "";
+		if(provider.equalsIgnoreCase("")){
+			if(union.equalsIgnoreCase("")){
+				if(upazilla.equalsIgnoreCase("")){
+					key = "[\"" + district + "\"]";
+				}
+				else{
+					key = "[\"" + district + "\",\"" + upazilla + "\"]";
+				}
+			}
+			else{
+				key = "[\"" + district + "\",\"" + upazilla + "\",\"" + union + "\"]";
+			}
+		}
+		else{
+			if(union.equalsIgnoreCase("")){
+				if(upazilla.equalsIgnoreCase("")){
+					if(district.equalsIgnoreCase("")){
+						key = "[\"" + provider + "\"]";
+					}
+					else{
+						key = "[\"" + provider + "\",\"" + district + "\"]";
+					}
+					
+				}
+				else{
+					key = "[\"" + provider + "\",\"" + district + "\",\"" + upazilla + "\"]";
+				}
+			}
+			else{
+				key = "[\"" + provider + "\",\"" + district + "\",\"" + upazilla + "\",\"" + union + "\"]";
+			}
+		
+		}
+		
+		return key;
+	}
+	
+	
+	private CountServiceDTOForChart getHouseholdCountForChart(CountServiceDTOForChart dto){		
+		return dto;
+	}
+		
 	private CountServiceDTO getHouseholdCount(String provider,String startMonth,String endMonth,String startWeek,String endWeek,CountServiceDTO commonServiceDTO){
 		commonServiceDTO.setHouseholdTotalCount(allHouseHolds.findAllHouseHolds().size()) ;  //this should be improved using count(*) style query
 		commonServiceDTO.setHouseholdTodayCount(luceneHouseHoldService.getHouseholdCount("",""));

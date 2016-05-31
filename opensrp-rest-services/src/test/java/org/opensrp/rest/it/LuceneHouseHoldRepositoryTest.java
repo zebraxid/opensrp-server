@@ -29,6 +29,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.opensrp.common.AllConstants;
 import org.opensrp.dto.register.HHRegisterEntryDTO;
+import org.opensrp.register.mcare.domain.HouseHold;
+import org.opensrp.register.mcare.repository.AllHouseHolds;
 import org.opensrp.repository.AllBaseEntities;
 import org.opensrp.rest.repository.LuceneHouseHoldRepository;
 import org.opensrp.rest.services.LuceneHouseHoldService;
@@ -46,7 +48,8 @@ import com.github.ldriscoll.ektorplucene.LuceneResult.Row;
 public class LuceneHouseHoldRepositoryTest {
 	
 	private LuceneAwareCouchDbConnector connector; 
-    private LuceneHouseHoldRepository repo; 
+    //private LuceneHouseHoldRepository repo;
+	private AllHouseHolds repo;
     
 /*
 	@Autowired
@@ -68,7 +71,8 @@ public class LuceneHouseHoldRepositoryTest {
  
         connector = new LuceneAwareCouchDbConnector("opensrp", instance); 
         connector.createDatabaseIfNotExists(); 
-        repo = new  LuceneHouseHoldRepository(connector); 
+        //repo = new  LuceneHouseHoldRepository(connector);
+        repo = new AllHouseHolds(connector);
         //createDocuments(); 
     } 
  
@@ -127,7 +131,7 @@ public class LuceneHouseHoldRepositoryTest {
 		System.out.println(day.getTime());
 		
 	}*/
-    @Test 
+    /*@Test 
     public void testInit() throws ParseException { 
     	//String makeQueryString ="PROVIDERID:proshanto" + " AND " + "FWUPAZILLA:GAIBANDHA SADAR" + " AND " + "user_type:FWA"+ " AND SUBMISSIONDATE:[2014-02-01 TO 2017-03-30]" ;
     	
@@ -146,11 +150,19 @@ public class LuceneHouseHoldRepositoryTest {
     	//System.out.println(result.toString());
     	System.out.println(result.getRows().size() + " -with specific type");
     	System.out.println(result.getTotalRows());
-    	/*makeQueryString ="PROVIDERID:rojina AND SUBMISSIONDATE:1463421600000";
+    	makeQueryString ="PROVIDERID:rojina AND SUBMISSIONDATE:1463421600000";
     	result = repo.findDocsByProvider(makeQueryString);
-    	System.out.println(result.getRows().size() + " -without specific type");*/
+    	System.out.println(result.getRows().size() + " -without specific type");
 		
-       /* assertNotNull("Expecting a non null result", result); 
-        assertTrue("Should only have one result", result.getRows().size() >=0); */
-    } 
+        assertNotNull("Expecting a non null result", result); 
+        assertTrue("Should only have one result", result.getRows().size() >=0); 
+    } */
+    /*@Test 
+    public void testRawkey() throws ParseException {
+    	List<HouseHold> fetchedHH = repo.allHHsCreatedLastFourMonthsByLocation("[\"Gaibandha\"]", "[\"Gaibandha\",{}]");
+    	System.out.println("Number of fetched rows- " + fetchedHH.size());
+
+    	List<HouseHold> fetchedHHTemp = repo.allHHsCreatedLastFourMonthsByLocation("[\"Gaibandha\",\"GAIBANDHA%20SADAR\"]", "[\"Gaibandha\",\"GAIBANDHA%20SADAR\"{}]");
+    	System.out.println("Number of fetched rows- " + fetchedHHTemp.size());
+    }*/
 }

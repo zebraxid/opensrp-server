@@ -3,6 +3,7 @@ package org.opensrp.web.controller;
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.opensrp.dto.CountServiceDTO;
@@ -155,20 +156,24 @@ public class RegisterController {
     
     @RequestMapping(method = RequestMethod.GET, value = "/registers/hh-data-count")
     @ResponseBody
-    public ResponseEntity<List<CountServiceDTOForChart>>  getHouseHoldInformationForChart(){
-    	return new ResponseEntity<>(dataCountService.getHHCountInformationForChart(), HttpStatus.OK);
+    public ResponseEntity<List<CountServiceDTOForChart>>  getHouseHoldInformationForChart(@RequestParam("provider") String provider, @RequestParam("district") String district,
+    														@RequestParam("upazilla") String upazilla, @RequestParam("union") String union){
+    
+    	return new ResponseEntity<>(dataCountService.getHHCountInformationForChart(provider, district, upazilla, union), HttpStatus.OK);
     }
     
     @RequestMapping(method = RequestMethod.GET, value = "/registers/elco-data-count")
     @ResponseBody
-    public ResponseEntity<List<CountServiceDTOForChart>>  getElcoInformationForChart(){
-    	return new ResponseEntity<>(dataCountService.getHHCountInformationForChart(), HttpStatus.OK);
+    public ResponseEntity<List<CountServiceDTOForChart>>  getElcoInformationForChart(@RequestParam("provider") String provider, @RequestParam("district") String district,
+									@RequestParam("upazilla") String upazilla, @RequestParam("union") String union){
+    	return new ResponseEntity<>(dataCountService.getElcoCountInformationForChart(provider, district, upazilla, union), HttpStatus.OK);
     }
     
     @RequestMapping(method = RequestMethod.GET, value = "/registers/pw-data-count")
     @ResponseBody
-    public ResponseEntity<List<CountServiceDTOForChart>>  getPWInformationForChart(){
-    	return new ResponseEntity<>(dataCountService.getHHCountInformationForChart(), HttpStatus.OK);
+    public ResponseEntity<List<CountServiceDTOForChart>>  getPWInformationForChart(@RequestParam("provider") String provider, @RequestParam("district") String district,
+			@RequestParam("upazilla") String upazilla, @RequestParam("union") String union){
+    	return new ResponseEntity<>(dataCountService.getMotherCountInformationForChart(provider, district, upazilla, union), HttpStatus.OK);
     }
     
 /*

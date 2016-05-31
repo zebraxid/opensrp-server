@@ -3,6 +3,7 @@ package org.opensrp.register.mcare.repository;
 import java.util.List;
 
 import org.ektorp.CouchDbConnector;
+import org.ektorp.ViewResult;
 import org.ektorp.support.GenerateView;
 import org.ektorp.support.View;
 import org.motechproject.dao.MotechBaseRepository;
@@ -51,5 +52,93 @@ public class AllElcos extends MotechBaseRepository<Elco> {
 				createQuery("all_open_elcos_for_provider")
 						.includeDocs(true), Elco.class);
 	}
-
+	
+	@View(name = "created_in_last_4_months_by_provider_and_location", map = "function(doc) { if(doc.type === 'Elco' && doc.SUBMISSIONDATE && doc.PROVIDERID && doc.FWWOMDISTRICT && doc.FWWOMUPAZILLA && doc.FWWOMUNION) { var x = new Date(); var y = new Date(x.getFullYear(), x.getMonth()-3, 0); var time = y.getTime(); if(doc.SUBMISSIONDATE > time){ emit([doc.PROVIDERID,doc.FWWOMDISTRICT,doc.FWWOMUPAZILLA,doc.FWWOMUNION], doc.SUBMISSIONDATE)} } }")
+	public List<Elco> allElcosCreatedLastFourMonthsByProviderAndLocation(String startKey, String endKey){
+		List<Elco> elcos =  db.queryView(
+				createQuery("created_in_last_4_months_by_provider_and_location")
+				.rawStartKey(startKey)
+				.rawEndKey(endKey)
+				.includeDocs(true), Elco.class);
+			
+		return elcos;
+	}
+	
+	@View(name = "created_in_last_4_months_by_location", map = "function(doc) { if(doc.type === 'Elco' && doc.SUBMISSIONDATE && doc.FWWOMDISTRICT && doc.FWWOMUPAZILLA && doc.FWWOMUNION) { var x = new Date(); var y = new Date(x.getFullYear(), x.getMonth()-3, 0); var time = y.getTime(); if(doc.SUBMISSIONDATE > time){ emit([doc.FWWOMDISTRICT,doc.FWWOMUPAZILLA,doc.FWWOMUNION], doc.SUBMISSIONDATE)} } }")
+	public List<Elco> allElcosCreatedLastFourMonthsByLocation(String startKey, String endKey){
+		List<Elco> elcos =  db.queryView(
+				createQuery("created_in_last_4_months_by_location")
+				.rawStartKey(startKey)
+				.rawEndKey(endKey)
+				.includeDocs(true), Elco.class);
+			
+		return elcos;
+	}
+	
+	public ViewResult allElcosCreatedLastFourMonthsByLocationViewResult(String startKey, String endKey){
+		
+		ViewResult vr = db.queryView(
+				createQuery("created_in_last_4_months_by_location")
+				.rawStartKey(startKey)
+				.rawEndKey(endKey)
+				.includeDocs(false));
+		
+		return vr;
+	}
+	
+	public ViewResult allElcosCreatedLastFourMonthsByProviderAndLocationViewResult(String startKey, String endKey){
+		
+		ViewResult vr = db.queryView(
+				createQuery("created_in_last_4_months_by_provider_and_location")
+				.rawStartKey(startKey)
+				.rawEndKey(endKey)
+				.includeDocs(false));
+		
+		return vr;
+	}
+	
+	@View(name = "mother_created_in_last_4_months_by_provider_and_location", map = "function(doc) { if(doc.type === 'Elco' && doc.SUBMISSIONDATE && doc.PROVIDERID && doc.FWWOMDISTRICT && doc.FWWOMUPAZILLA && doc.FWWOMUNION) { var x = new Date(); var y = new Date(x.getFullYear(), x.getMonth()-3, 0); var time = y.getTime(); if(doc.SUBMISSIONDATE > time && doc.PSRFDETAILS != '' && doc.details.FWPSRPREGSTS == 1){ emit([doc.PROVIDERID,doc.FWWOMDISTRICT,doc.FWWOMUPAZILLA,doc.FWWOMUNION], doc.SUBMISSIONDATE)} } }")
+	public List<Elco> allMothersCreatedLastFourMonthsByProviderAndLocation(String startKey, String endKey){
+		List<Elco> elcos =  db.queryView(
+				createQuery("mother_created_in_last_4_months_by_provider_and_location")
+				.rawStartKey(startKey)
+				.rawEndKey(endKey)
+				.includeDocs(true), Elco.class);
+			
+		return elcos;
+	}
+	
+	@View(name = "mother_created_in_last_4_months_by_location", map = "function(doc) { if(doc.type === 'Elco' && doc.SUBMISSIONDATE && doc.FWWOMDISTRICT && doc.FWWOMUPAZILLA && doc.FWWOMUNION) { var x = new Date(); var y = new Date(x.getFullYear(), x.getMonth()-3, 0); var time = y.getTime(); if(doc.SUBMISSIONDATE > time && doc.PSRFDETAILS != '' && doc.details.FWPSRPREGSTS == 1){ emit([doc.FWWOMDISTRICT,doc.FWWOMUPAZILLA,doc.FWWOMUNION], doc.SUBMISSIONDATE)} } }")
+	public List<Elco> allMothersCreatedLastFourMonthsByLocation(String startKey, String endKey){
+		List<Elco> elcos =  db.queryView(
+				createQuery("mother_created_in_last_4_months_by_location")
+				.rawStartKey(startKey)
+				.rawEndKey(endKey)
+				.includeDocs(true), Elco.class);
+			
+		return elcos;
+	}
+	
+	public ViewResult allMothersCreatedLastFourMonthsByLocationViewResult(String startKey, String endKey){
+		
+		ViewResult vr = db.queryView(
+				createQuery("mother_created_in_last_4_months_by_location")
+				.rawStartKey(startKey)
+				.rawEndKey(endKey)
+				.includeDocs(false));
+		
+		return vr;
+	}
+	
+	public ViewResult allMothersCreatedLastFourMonthsByProviderAndLocationViewResult(String startKey, String endKey){
+		
+		ViewResult vr = db.queryView(
+				createQuery("mother_created_in_last_4_months_by_provider_and_location")
+				.rawStartKey(startKey)
+				.rawEndKey(endKey)
+				.includeDocs(false));
+		
+		return vr;
+	}
+	
 }
