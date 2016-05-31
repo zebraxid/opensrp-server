@@ -357,7 +357,8 @@ public class ELCOService {
 			logger.info("Expected value leading zero and found submission.getField(FW_PSRSTS): "+submission.getField(FW_PSRSTS));
 			logger.info("Expected value leading no zero and found submission.getField(FW_PSRPREGSTS): "+submission.getField(FW_PSRPREGSTS));
 			
-			if(submission.getField(FW_PSRPREGSTS) != null && submission.getField(FW_PSRPREGSTS).equalsIgnoreCase("1") && submission.getField(FW_PSRSTS).equals("01") ){        
+			if(submission.getField(FW_PSRPREGSTS) != null && submission.getField(FW_PSRSTS) != null)
+				if(submission.getField(FW_PSRPREGSTS).equalsIgnoreCase("1") && submission.getField(FW_PSRSTS).equals("01")){        
 				//if(submission.getField("user_type").equalsIgnoreCase("FD")){
 					ancService.registerANC(submission);
 		            bnfService.registerBNF(submission);
@@ -375,7 +376,8 @@ public class ELCOService {
 	        	   logger.info("From addPSRFDetailsToELCO:"+e.getMessage());
 	           }
 	        	
-			}else if(submission.getField(FW_PSRSTS).equalsIgnoreCase("02") || (submission.getField(FW_PSRSTS).equalsIgnoreCase("01"))){
+			}else if(submission.getField(FW_PSRSTS) != null)
+				if(submission.getField(FW_PSRSTS).equalsIgnoreCase("02") || (submission.getField(FW_PSRSTS).equalsIgnoreCase("01"))){
 				ancService.deleteBlankMother(submission);
 				elcoScheduleService.enrollIntoMilestoneOfPSRF(submission.entityId(),
 	            submission.getField(REFERENCE_DATE),submission.anmId(),submission.instanceId());
