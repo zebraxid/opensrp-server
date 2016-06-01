@@ -21,10 +21,9 @@ public class AllMothers extends MotechBaseRepository<Mother> {
 	private static Logger logger = LoggerFactory.getLogger(AllMothers.class);
 
 	@Autowired
-	public AllMothers(@Value("#{opensrp['couchdb.atomfeed-db.revision-limit']}") int revisionLimit,
+	public AllMothers(
 			@Qualifier(AllConstants.OPENSRP_DATABASE_CONNECTOR) CouchDbConnector db) {
 		super(Mother.class, db);
-		this.db.setRevisionLimit(revisionLimit);
 	}
 
 	@GenerateView
