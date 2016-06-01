@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
+import java.util.logging.Logger;
 
 import org.joda.time.DateTime;
 import org.json.JSONArray;
@@ -234,17 +235,15 @@ public class ECPatientService extends OpenmrsService {
 		for (int i = 0; i < ar.length(); i++) {
 			JSONObject ji = ar.getJSONObject(i);
 			if(ji.getJSONObject("identifierType").getString("display").equalsIgnoreCase(OPENSRP_IDENTIFIER_TYPE)){
-				//c.setBaseEntityId(ji.getString("identifier"));
+				//c.setBaseEntityId(ji.getString("identifier"));				
 				c.addIdentifier(ji.getJSONObject("identifierType").getString("display"), ji.getString("identifier"));
 			}
 			else {
 				//c.addIdentifier(ji.getJSONObject("identifierType").getString("display"), ji.getString("identifier"));
 			}
 		}
-		c.setBaseEntityId(patient.getString("uuid"));
-		System.out.println("UUID:"+c.toString());
-		JSONObject pr = patient.getJSONObject("person");
-		
+		c.setBaseEntityId(patient.getString("uuid"));		
+		JSONObject pr = patient.getJSONObject("person");		
 		String mn = pr.getJSONObject("preferredName").has("middleName")?pr.getJSONObject("preferredName").getString("middleName"):null;
 		DateTime dd = pr.has("deathDate")&&!pr.getString("deathDate").equalsIgnoreCase("null")?new DateTime(pr.getString("deathDate")):null;
 		c.withFirstName(pr.getJSONObject("preferredName").getString("givenName"))

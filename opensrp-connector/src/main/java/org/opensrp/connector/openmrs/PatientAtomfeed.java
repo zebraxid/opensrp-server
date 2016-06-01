@@ -84,22 +84,22 @@ public class PatientAtomfeed extends OpenmrsService implements EventWorker, Atom
 
 	@Override
 	public void process(Event event) {
-		System.out.println(event.getContent());
+		
 		try {
 			JSONObject p = patientService.getPatientByUuid(event.getContent().substring(event.getContent().lastIndexOf("/")+1), true);
 			System.out.println(p);//TODO check in couch and if not exists update thrive id on opermrs side
 			Client c = patientService.convertToClient(p);
-			System.out.println("CL");			
-			Client existing = clientService.findClient(c);
-			System.out.println("CL1");
+			logger.info("Patient::"+c.toString());
+			Client existing = clientService.findClient(c);			
 			if(existing == null){
-				c.setBaseEntityId(UUID.randomUUID().toString());
+				//c.setBaseEntityId(UUID.randomUUID().toString());
+				logger.info("New Client found");
 				clientService.addClient(c);
-
-				System.out.println(patientService.addThriveId(c.getBaseEntityId(), p));
+				logger.info("New Client found with Baseentity ID:"+c.getBaseEntityId());
 			}
-			else {
+			else {				
 				c = clientService.mergeClient(c);
+				logger.info("Existing Client found with Baseentity ID:"+c.getBaseEntityId());
 			}
 		} catch (JSONException e) {
 			throw new RuntimeException(e);
@@ -107,20 +107,9 @@ public class PatientAtomfeed extends OpenmrsService implements EventWorker, Atom
 	}
 
 	@Override
-	public void cleanUp(Event event) {
-		// TODO Auto-generated method stub
-		System.out.println("COntent:"+event.getContent());
-       new TurnOffCertificateValidation().ForHTTPSConnections();
-      this.process(event);
-    /*	try {
-			JSONObject p = new JSONObject(HttpUtil.get(getURL()
-					+event.getContent().split("/openmrs")[1], "",OPENMRS_USER, OPENMRS_PWD).body());
-			logger.info("Patient:"+p.toString());
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}*/
-		
+	public void cleanUp(Event event) {		
+		new TurnOffCertificateValidation().ForHTTPSConnections();
+		this.process(event);
 	}
 
 	@Override
@@ -151,12 +140,11 @@ public class PatientAtomfeed extends OpenmrsService implements EventWorker, Atom
 	void setClientService(ClientService clientService) {
 		this.clientService = clientService;
 	}
-
 	
 	@MotechListener(subjects = OpenmrsConstants.SCHEDULER_OPENMRS_ATOMFEED_SYNCER_SUBJECT)
 	public void getResponse(MotechEvent event){
 		new TurnOffCertificateValidation().ForHTTPSConnections();
-		System.out.println("Response from Atom");
+		System.out.println("Response from Atom Client");
 		 this.processEvents();
 	}
 	

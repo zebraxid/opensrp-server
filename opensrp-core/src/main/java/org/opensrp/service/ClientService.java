@@ -95,6 +95,7 @@ public class ClientService {
 		}
 		if(c != null){
 			throw new IllegalArgumentException("A client already exists with given list of identifiers. Consider updating data.["+c+"]");
+			
 		}
 		
 		client.setDateCreated(new Date());
@@ -113,15 +114,18 @@ public class ClientService {
 		//still not found!! search by generic identifiers
 		System.out.println(client.getIdentifiers().keySet());
 		for (String idt : client.getIdentifiers().keySet()) {
+			System.out.println("client.getIdentifier(idt):"+client.getIdentifier(idt));
 			List<Client> cl = allClients.findAllByIdentifier(client.getIdentifier(idt));
+			System.out.println("Client String:"+cl.get(0).getId() +"Size:"+cl.size());
 			if(cl.size() > 1){
+				//return cl.get(0); 
 				throw new IllegalArgumentException("Multiple clients with identifier type "+idt+" and ID "+client.getIdentifier(idt)+" exist.");
 			}
 			else if(cl.size() != 0){
 				return cl.get(0); 
 			}
 		}
-		//System.out.println("Find Client:"+c.toString());
+		
 		return c;
 	}
 	
@@ -195,7 +199,7 @@ public class ClientService {
 				original.addAttribute(k, updatedClient.getAttribute(k));
 			}
 		}
-
+		logger.info("Original:"+ original.toString());
 		original.setDateEdited(new Date());
 		allClients.update(original);
 		return original;
