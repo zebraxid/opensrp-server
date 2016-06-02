@@ -111,7 +111,6 @@ public class EncounterService extends OpenmrsService{
             }
         }
         
-        //System.out.println("obar: " + obar.toString());
 		enc.put("obs", obar);
 		System.out.println("Going to create Encounter: " + enc.toString());
 		HttpResponse op = HttpUtil.post(HttpUtil.removeEndingSlash(OPENMRS_BASE_URL)+"/"+ENCOUNTER_URL, "", enc.toString(), OPENMRS_USER, OPENMRS_PWD);
@@ -124,7 +123,6 @@ public class EncounterService extends OpenmrsService{
 		if(o.getValue() != null && !StringUtils.isEmptyOrWhitespaceOnly(o.getValue().toString())) {
 			if(o.getFieldCode().toString().equalsIgnoreCase("163137AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA") || o.getFieldCode().toString().equalsIgnoreCase("163138AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA") || o.getFieldCode().toString().equalsIgnoreCase("5599AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"))
 			{	
-				//obo.put("value", OPENMRS_DATETime.format(o.getValue()));
 				if (o.getValue().toString().length() >= 19)
 					obo.put("value", (o.getValue().toString().substring(0, 19)).replace("T", " "));
 				else 

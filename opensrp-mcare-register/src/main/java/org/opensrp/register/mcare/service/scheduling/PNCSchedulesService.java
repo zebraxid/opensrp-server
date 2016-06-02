@@ -67,9 +67,9 @@ public class PNCSchedulesService {
     public void fullfillMilestone(String entityId, String providerId, String scheduleName,LocalDate completionDate ){
     	try{
     		scheduler.fullfillMilestone(entityId, providerId, scheduleName, completionDate);
-    		logger.info("fullfillMilestone with id: :"+entityId);
+    		logger.info("Fullfill Milestone with id: :"+entityId);
     	}catch(Exception e){
-    		logger.info("Does not a fullfillMilestone :"+e.getMessage());
+    		logger.info("Not a fullfillMilestone :"+e.getMessage());
     	}
     }
     
