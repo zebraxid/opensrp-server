@@ -38,7 +38,7 @@ public class LuceneMotherRepositoryTest {
  
         connector = new LuceneAwareCouchDbConnector("opensrp", instance); 
         connector.createDatabaseIfNotExists(); 
-        luceneMotherRepository = new  LuceneMotherRepository(connector); 
+        luceneMotherRepository = new  LuceneMotherRepository(2, connector); 
         //createDocuments(); 
     } 
  

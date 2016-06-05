@@ -4,6 +4,7 @@ import org.opensrp.common.AllConstants;
 import org.opensrp.register.mcare.domain.Mother;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 import com.github.ldriscoll.ektorplucene.CouchDbRepositorySupportWithLucene;
@@ -30,8 +31,10 @@ import com.github.ldriscoll.ektorplucene.designdocument.annotation.Index;
 @Repository
 public class LuceneMotherRepository extends CouchDbRepositorySupportWithLucene<Mother>{
 	@Autowired
-	public LuceneMotherRepository(@Qualifier(AllConstants.OPENSRP_DATABASE_LUCENE_CONNECTOR)LuceneAwareCouchDbConnector db) {
+	public LuceneMotherRepository(@Value("#{opensrp['couchdb.atomfeed-db.revision-limit']}") int revisionLimit,
+			@Qualifier(AllConstants.OPENSRP_DATABASE_LUCENE_CONNECTOR)LuceneAwareCouchDbConnector db) {
 		super(Mother.class, db);
+		this.db.setRevisionLimit(revisionLimit);
 		initStandardDesignDocument();
 	}
 	public LuceneResult findDocsByProvider(String queryString) { 

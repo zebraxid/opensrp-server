@@ -67,7 +67,7 @@ public class LuceneHouseHoldServiceTest {
  
         connector = new LuceneAwareCouchDbConnector("opensrp", instance); 
         connector.createDatabaseIfNotExists(); 
-        luceneHouseHoldRepository = new  LuceneHouseHoldRepository(connector); 
+        luceneHouseHoldRepository = new  LuceneHouseHoldRepository(2, connector); 
         //createDocuments(); 
         convertDateStringToTimestampMills = new ConvertDateStringToTimestampMills();
         luceneServ = new LuceneHouseHoldService(luceneHouseHoldRepository, convertDateStringToTimestampMills);

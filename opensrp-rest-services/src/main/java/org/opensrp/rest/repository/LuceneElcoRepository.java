@@ -5,6 +5,7 @@ import org.opensrp.register.mcare.domain.Elco;
 import org.opensrp.register.mcare.domain.HouseHold;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 import com.github.ldriscoll.ektorplucene.CouchDbRepositorySupportWithLucene;
@@ -38,8 +39,10 @@ import com.github.ldriscoll.ektorplucene.designdocument.annotation.Index;
 public class LuceneElcoRepository extends CouchDbRepositorySupportWithLucene<Elco>{
 
 	@Autowired
-	public LuceneElcoRepository(@Qualifier(AllConstants.OPENSRP_DATABASE_LUCENE_CONNECTOR)LuceneAwareCouchDbConnector db) {
+	public LuceneElcoRepository(@Value("#{opensrp['couchdb.atomfeed-db.revision-limit']}") int revisionLimit,
+			@Qualifier(AllConstants.OPENSRP_DATABASE_LUCENE_CONNECTOR)LuceneAwareCouchDbConnector db) {
 		super(Elco.class, db);
+		this.db.setRevisionLimit(revisionLimit);
 		initStandardDesignDocument();
 	}
 	public LuceneResult findDocsByProvider(String queryString) { 

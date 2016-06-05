@@ -35,9 +35,10 @@ public class ReferenceDataRepository implements IReferenceDataRepository {
     private Map<String, String> designDocMap;
 
     @Autowired
-    public ReferenceDataRepository(
+    public ReferenceDataRepository(@Value("#{opensrp['couchdb.atomfeed-db.revision-limit']}") int revisionLimit,
     		@Qualifier(AllConstants.OPENSRP_DATABASE_CONNECTOR) CouchDbConnector db) {
         this.db = db;
+        this.db.setRevisionLimit(revisionLimit);
         designDocMap = new HashMap<>();
         //replace with constants
         designDocMap.put(ELIGIBLE_COUPLE_TYPE, "EligibleCouple");

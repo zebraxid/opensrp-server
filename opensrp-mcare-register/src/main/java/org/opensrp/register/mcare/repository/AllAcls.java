@@ -16,9 +16,10 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class AllAcls  extends MotechBaseRepository<Acl>{
 	@Autowired
-	public AllAcls(
+	public AllAcls(@Value("#{opensrp['couchdb.atomfeed-db.revision-limit']}") int revisionLimit,
 			@Qualifier(AllConstants.OPENSRP_DATABASE_CONNECTOR) CouchDbConnector db) {
 		super(Acl.class, db);
+		this.db.setRevisionLimit(revisionLimit);
 	}
 	@GenerateView
 	public Acl findByRoleName(String roleName) {

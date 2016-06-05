@@ -1,6 +1,6 @@
 <model>
   <instance>
-    <MIS_Census encounter_type="MIS_Census" id="MIS_Census" version="201605300448">
+    <MIS_Census encounter_type="MIS CENSUS" id="MIS_Census" version="201605300448">
       <formhub>
         <uuid/>
       </formhub>
@@ -15,8 +15,8 @@
       <FWTETSTAT openmrs_entity="concept" openmrs_entity_id="160701AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
       <FWMARRYDATE openmrs_entity="concept" openmrs_entity_id="163299AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
       <num_children_alive_grp>
-        <FWCHILDALIVEB openmrs_entity="concept" openmrs_entity_id="1825AAAAAAAAAAAAAAAAAAAAAAAAAAAA" openmrs_entity_parent="1534AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
-        <FWCHILDALIVEG openmrs_entity="concept" openmrs_entity_id="1825AAAAAAAAAAAAAAAAAAAAAAAAAAAA" openmrs_entity_parent="1535AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
+        <FWCHILDALIVEB openmrs_entity="concept" openmrs_entity_id="1825AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" openmrs_entity_parent="1534AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
+        <FWCHILDALIVEG openmrs_entity="concept" openmrs_entity_id="1825AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" openmrs_entity_parent="1535AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
       </num_children_alive_grp>
       <meta>
         <instanceID/>
