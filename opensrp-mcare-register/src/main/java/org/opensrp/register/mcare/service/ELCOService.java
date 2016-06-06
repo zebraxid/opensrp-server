@@ -20,6 +20,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.opensrp.common.util.DateUtil;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.form.domain.SubFormData;
 import org.opensrp.register.mcare.domain.Elco;
@@ -78,7 +79,7 @@ public class ELCOService {
 					.withINSTANCEID(submission.instanceId())
 					.withPROVIDERID(submission.anmId())
 					.withTODAY(submission.getField(REFERENCE_DATE))
-					.withSUBMISSIONDATE(scheduleLogService.getTimeStampMills())
+					.withSUBMISSIONDATE(DateUtil.getTimestampToday())
 					.withFWWOMUPAZILLA(elcoFields.get(FW_WOMUPAZILLA).replace("+", " "));
 			
 			addDetailsToElco(submission, subFormData, elco);
