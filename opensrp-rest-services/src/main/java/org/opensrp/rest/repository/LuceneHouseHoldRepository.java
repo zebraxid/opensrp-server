@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 import com.github.ldriscoll.ektorplucene.CouchDbRepositorySupportWithLucene;
@@ -43,8 +44,10 @@ import com.github.ldriscoll.ektorplucene.designdocument.annotation.Index;
 public class LuceneHouseHoldRepository extends CouchDbRepositorySupportWithLucene<HouseHold> {
 	private static Logger logger = LoggerFactory.getLogger(LuceneHouseHoldRepository.class);
 	@Autowired
-	public LuceneHouseHoldRepository(@Qualifier(AllConstants.OPENSRP_DATABASE_LUCENE_CONNECTOR)LuceneAwareCouchDbConnector db) {
+	public LuceneHouseHoldRepository(@Value("#{opensrp['couchdb.atomfeed-db.revision-limit']}") int revisionLimit,
+			@Qualifier(AllConstants.OPENSRP_DATABASE_LUCENE_CONNECTOR)LuceneAwareCouchDbConnector db) {
 		super(HouseHold.class, db);
+		this.db.setRevisionLimit(revisionLimit);
 		initStandardDesignDocument();
 	}
 	

@@ -25,9 +25,10 @@ public class AllHouseHolds extends MotechBaseRepository<HouseHold> {
 	private static Logger logger = LoggerFactory.getLogger(AllHouseHolds.class);
 
 	@Autowired
-	public AllHouseHolds(
+	public AllHouseHolds(@Value("#{opensrp['couchdb.atomfeed-db.revision-limit']}") int revisionLimit,
 			@Qualifier(AllConstants.OPENSRP_DATABASE_CONNECTOR) CouchDbConnector db) {
 		super(HouseHold.class, db);
+		this.db.setRevisionLimit(revisionLimit);
 	}
 
 	@GenerateView

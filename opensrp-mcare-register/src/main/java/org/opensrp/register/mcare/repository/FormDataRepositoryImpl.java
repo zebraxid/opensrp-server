@@ -60,9 +60,10 @@ public class FormDataRepositoryImpl extends FormDataRepository{
     private static Logger logger = LoggerFactory.getLogger(FormDataRepositoryImpl.class.toString());
 
     @Autowired
-    public FormDataRepositoryImpl(
+    public FormDataRepositoryImpl(@Value("#{opensrp['couchdb.atomfeed-db.revision-limit']}") int revisionLimit,
     		@Qualifier(AllConstants.OPENSRP_DATABASE_CONNECTOR) CouchDbConnector db) {
         this.db = db;
+        this.db.setRevisionLimit(revisionLimit);
         initMaps();
     }
 
