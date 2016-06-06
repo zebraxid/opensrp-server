@@ -38,7 +38,7 @@ public class LuceneElcoRepositoryTest {
  
         connector = new LuceneAwareCouchDbConnector("opensrp", instance); 
         connector.createDatabaseIfNotExists(); 
-        luceneElcoRepository = new  LuceneElcoRepository(2, connector); 
+        luceneElcoRepository = new LuceneElcoRepository(2, connector); 
         //createDocuments(); 
     } 
  

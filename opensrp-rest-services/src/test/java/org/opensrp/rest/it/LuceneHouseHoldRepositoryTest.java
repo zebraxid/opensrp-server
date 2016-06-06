@@ -73,7 +73,7 @@ public class LuceneHouseHoldRepositoryTest {
         connector = new LuceneAwareCouchDbConnector("opensrp", instance); 
         connector.createDatabaseIfNotExists(); 
         //repo = new  LuceneHouseHoldRepository(connector);
-        repo = new AllHouseHolds(2, connector);
+        //repo = new AllHouseHolds(2, connector);
         //createDocuments(); 
     } 
  
