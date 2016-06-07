@@ -25,7 +25,6 @@ import org.ektorp.support.OpenCouchDbDocument;
 import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.After;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.opensrp.common.AllConstants;
