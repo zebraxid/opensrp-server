@@ -16,7 +16,6 @@ import org.ektorp.http.StdHttpClient;
 import org.ektorp.impl.StdCouchDbInstance;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.opensrp.rest.repository.LuceneElcoRepository;
 
@@ -50,7 +49,7 @@ public class LuceneElcoRepositoryTest {
         connector = null; 
     } 
     
-    @Ignore@Test 
+    @Test 
     public void testInit() throws ParseException { 
     	//String makeQueryString ="PROVIDERID:proshanto" + " AND " + "FWUPAZILLA:GAIBANDHA SADAR" + " AND " + "user_type:FWA"+ " AND SUBMISSIONDATE:[2014-02-01 TO 2017-03-30]" ;
     	
@@ -82,7 +81,7 @@ public class LuceneElcoRepositoryTest {
     	LuceneResult result = luceneElcoRepository.findDocsByProvider(makeQueryString);
         System.out.println(result.getRows().size() + " -week Count for may");
         System.out.println(result.getTotalRows() + " -week Count for may");
-       
+       //var x = new Date(); var y = new Date(x.getFullYear(), x.getMonth()-3, 1,0,0,0); var time = y.getTime(); console.log(time); console.log(y);
 		
         /*assertNotNull("Expecting a non null result", result); 
         assertTrue("Should only have one result", result.getRows().size() >=0); */

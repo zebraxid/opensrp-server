@@ -91,7 +91,7 @@ public class DataCountService {
 		
 		List<CountServiceDTOForChart> DTOs= new ArrayList<CountServiceDTOForChart>();
 		CountServiceDTOForChart newDTO = new CountServiceDTOForChart();
-		newDTO.setCounts(this.covertViewResultToCount(hhViewResult));
+		newDTO.setCounts(this.coverViewResultToCount(hhViewResult));
 		DTOs.add(newDTO);
 		return DTOs;
 	}
@@ -108,7 +108,7 @@ public class DataCountService {
 		
 		List<CountServiceDTOForChart> DTOs= new ArrayList<CountServiceDTOForChart>();
 		CountServiceDTOForChart newDTO = new CountServiceDTOForChart();
-		newDTO.setCounts(this.covertViewResultToCount(elcoViewResult));
+		newDTO.setCounts(this.coverViewResultToCount(elcoViewResult));
 		DTOs.add(newDTO);
 		return DTOs;
 	}
@@ -125,12 +125,12 @@ public class DataCountService {
 		
 		List<CountServiceDTOForChart> DTOs= new ArrayList<CountServiceDTOForChart>();
 		CountServiceDTOForChart newDTO = new CountServiceDTOForChart();
-		newDTO.setCounts(this.covertViewResultToCount(elcoViewResult));
+		newDTO.setCounts(this.coverViewResultToCount(elcoViewResult));
 		DTOs.add(newDTO);
 		return DTOs;
 	}
 	
-	private int[] covertViewResultToCount( ViewResult vr){
+	private int[] coverViewResultToCount( ViewResult vr){
 		List<Long> timestamps = new ArrayList<Long>();
 		int count = 0;
 		int[] countsForChart = new int[23];

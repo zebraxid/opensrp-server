@@ -25,6 +25,7 @@ import org.ektorp.support.OpenCouchDbDocument;
 import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.After;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.opensrp.common.AllConstants;
@@ -48,8 +49,8 @@ import com.github.ldriscoll.ektorplucene.LuceneResult.Row;
 public class LuceneHouseHoldRepositoryTest {
 	
 	private LuceneAwareCouchDbConnector connector; 
-    //private LuceneHouseHoldRepository repo;
-	private AllHouseHolds repo;
+    private LuceneHouseHoldRepository repo;
+	//private AllHouseHolds repo;
     
 /*
 	@Autowired
@@ -71,7 +72,7 @@ public class LuceneHouseHoldRepositoryTest {
  
         connector = new LuceneAwareCouchDbConnector("opensrp", instance); 
         connector.createDatabaseIfNotExists(); 
-        //repo = new  LuceneHouseHoldRepository(connector);
+        repo = new  LuceneHouseHoldRepository(2, connector);
         //repo = new AllHouseHolds(2, connector);
         //createDocuments(); 
     } 
