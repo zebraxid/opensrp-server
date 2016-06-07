@@ -30,6 +30,7 @@ import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.opensrp.common.util.DateUtil;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.form.domain.SubFormData;
 import org.opensrp.register.mcare.domain.Elco;
@@ -129,7 +130,7 @@ public class PNCService {
 						.withTODAY(submission.getField(REFERENCE_DATE))
 						.withSTART(submission.getField(START_DATE))
 						.withEND(submission.getField(END_DATE))
-						.withSUBMISSIONDATE(scheduleLogService.getTimeStampMills())
+						.withSUBMISSIONDATE(DateUtil.getTimestampToday())
 						.setIsClosed(false);					
 					
 			    	child.details().put(relationalid, childFields.get(relationalid));

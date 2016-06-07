@@ -98,7 +98,7 @@ public class LuceneHouseHoldService {
 		}else{
 			String makeQueryString ="type:Household" + " AND " + "SUBMISSIONDATE:["+convertDateStringToTimestampMills.convertDateToTimestampMills(start)+" TO "+convertDateStringToTimestampMills.convertDateToTimestampMills(end)+"]" ;
 	    	LuceneResult result = luceneHouseHoldRepository.findDocsByProvider(makeQueryString);
-			return result.getRows().size();
+			return result.getTotalRows();//.size();
 		}	
 	}
 	

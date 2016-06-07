@@ -203,20 +203,20 @@ public class DateUtil {
 		return weekBoundaries;
 	}
 	
-	public static Long getTimestampToday(){
-		SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
-		Calendar cal = GregorianCalendar.getInstance();
-		String newDateTemp = dateFormatter.format(cal.getTime());
-		Date todayDate = null;
-		try {
-			todayDate = dateFormatter.parse(newDateTemp);
-			//System.out.println(newDateTemp + " -- " + todayDate.getTime());
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		return todayDate.getTime();
+	public static Long getTimestampToday(){		
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");        
+        Date day = null;        
+        Calendar now = Calendar.getInstance();
+        now.set(Calendar.HOUR_OF_DAY, 0);
+        now.set(Calendar.MINUTE, 0);
+        now.set(Calendar.SECOND, 0);
+        String today = dateFormat.format(now.getTime());
+        try {
+            day = dateFormat.parse(today);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return day.getTime();
 	}
 	
 	public static List<Long> getMonthBoundaries(){
@@ -326,6 +326,9 @@ public class DateUtil {
     	System.out.println("could not find index for - " + timestamp);
     	return -1;
     }
+    
+    
+
 }
 
 interface DateUtility {

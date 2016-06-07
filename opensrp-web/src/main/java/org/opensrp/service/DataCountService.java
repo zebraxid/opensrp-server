@@ -226,14 +226,14 @@ public class DataCountService {
 	private CountServiceDTO getElcoCount(String provider,String startMonth,String endMonth,String startWeek,String endWeek,CountServiceDTO commonServiceDTO){
 		commonServiceDTO.setElcoTotalCount(allElcos.allOpenELCOs().size());
 		commonServiceDTO.setElcoThisMonthCount(luceneElcoService.getElcoCount(startMonth, endMonth));
-		commonServiceDTO.setElcoThisWeekCount(luceneElcoService.getElcoCount(startMonth, endMonth));
+		commonServiceDTO.setElcoThisWeekCount(luceneElcoService.getElcoCount(startWeek, endWeek));
 		commonServiceDTO.setElcoTodayCount(luceneElcoService.getElcoCount("", ""));
 		return commonServiceDTO;
 	}
 	private CountServiceDTO getMotherCount(String provider,String startMonth,String endMonth,String startWeek,String endWeek,CountServiceDTO commonServiceDTO){
 		commonServiceDTO.setPwTotalCount(allMothers.allOpenMothers().size());
 		commonServiceDTO.setPwThisMonthCount(luceneMotherService.getMotherCount(startMonth, endMonth));
-		commonServiceDTO.setPwThisWeekCount(luceneMotherService.getMotherCount(startMonth, endMonth));
+		commonServiceDTO.setPwThisWeekCount(luceneMotherService.getMotherCount(startWeek, endWeek));
 		commonServiceDTO.setPwTodayCount(luceneMotherService.getMotherCount("", ""));
 		return commonServiceDTO;
 	}

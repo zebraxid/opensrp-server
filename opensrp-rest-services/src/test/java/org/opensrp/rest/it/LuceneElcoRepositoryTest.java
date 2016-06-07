@@ -16,6 +16,7 @@ import org.ektorp.http.StdHttpClient;
 import org.ektorp.impl.StdCouchDbInstance;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.opensrp.rest.repository.LuceneElcoRepository;
 
@@ -38,7 +39,7 @@ public class LuceneElcoRepositoryTest {
  
         connector = new LuceneAwareCouchDbConnector("opensrp", instance); 
         connector.createDatabaseIfNotExists(); 
-        luceneElcoRepository = new  LuceneElcoRepository(2, connector); 
+        luceneElcoRepository = new LuceneElcoRepository(2, connector); 
         //createDocuments(); 
     } 
  
@@ -49,7 +50,7 @@ public class LuceneElcoRepositoryTest {
         connector = null; 
     } 
     
-    @Test 
+    @Ignore@Test 
     public void testInit() throws ParseException { 
     	//String makeQueryString ="PROVIDERID:proshanto" + " AND " + "FWUPAZILLA:GAIBANDHA SADAR" + " AND " + "user_type:FWA"+ " AND SUBMISSIONDATE:[2014-02-01 TO 2017-03-30]" ;
     	
@@ -57,19 +58,33 @@ public class LuceneElcoRepositoryTest {
     	DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     	Date today = Calendar.getInstance().getTime();
     	Date dates = dateFormat.parse(dateFormat.format(today));
-    	Date date = dateFormat.parse("2016-04-12");
+    	long end = dates.getTime();  //end has today's date
+    	   	
+    	Date date = dateFormat.parse("2016-05-01");
     	long start = date.getTime();
-    	long end = dates.getTime();
-    	System.out.println("ddd:"+end);
-    	System.out.println("ss:"+start);
-    	//String makeQueryString ="PROVIDERID:proshanto" + " AND " + "user_type:FWA"+ " AND SUBMISSIONDATE:["+start+" TO "+end+"]" ;
-    	/*String makeQueryString ="type:Elco" + " AND " + "SUBMISSIONDATE:["+start+" TO "+end+"]" ;
+    	
+    	System.out.println("today:- "+end);
+    	System.out.println("limit:- "+start);
+    	/*String makeQueryString;// ="type:Elco" + " AND " + "SUBMISSIONDATE:["+start+" TO "+end+"]" ;
+    	makeQueryString ="type:Elco" + " AND " + "SUBMISSIONDATE:["	+ end +" TO " + end +"]" ;
     	LuceneResult result = luceneElcoRepository.findDocsByProvider(makeQueryString);
-    	System.out.println(result.toString());
-        System.out.println(result.getRows().size());
+        System.out.println(result.getTotalRows() + " -today Count for may31");
+        
+        makeQueryString = "type:Elco" + " AND " + "SUBMISSIONDATE:["	+ start +" TO " + end +"]" ;
+        result = luceneElcoRepository.findDocsByProvider(makeQueryString);
+        System.out.println(result.getTotalRows() + " -month Count for may");*/
+        
+        Date weekUpperDate = dateFormat.parse("2016-05-17");
+    	long weekUpperDateTimestamp = weekUpperDate.getTime();
+    	Date weekLowerDate = dateFormat.parse("2016-05-21");
+    	long weekLowerDateTimestamp = weekLowerDate.getTime();
+    	String makeQueryString = "type:Elco" + " AND " + "SUBMISSIONDATE:["	+ weekUpperDateTimestamp +" TO " + weekLowerDateTimestamp +"]" ;
+    	LuceneResult result = luceneElcoRepository.findDocsByProvider(makeQueryString);
+        System.out.println(result.getRows().size() + " -week Count for may");
+        System.out.println(result.getTotalRows() + " -week Count for may");
        
 		
-        assertNotNull("Expecting a non null result", result); 
+        /*assertNotNull("Expecting a non null result", result); 
         assertTrue("Should only have one result", result.getRows().size() >=0); */
     } 
 }

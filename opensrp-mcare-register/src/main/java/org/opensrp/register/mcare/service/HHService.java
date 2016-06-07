@@ -18,13 +18,13 @@ import static org.opensrp.common.AllConstants.HHRegistrationFields.existing_Mauz
 import static org.opensrp.common.AllConstants.HHRegistrationFields.received_time;
 import static org.opensrp.common.util.EasyMap.create;
 
-
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.opensrp.common.util.DateUtil;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.form.domain.SubFormData;
 import org.opensrp.register.mcare.domain.HouseHold;
@@ -73,7 +73,7 @@ public class HHService {
 		houseHold.withPROVIDERID(submission.anmId());
 		houseHold.withINSTANCEID(submission.instanceId());
 		houseHold.withFWUPAZILLA(submission.getField(FW_UPAZILLA).replace("+", " "));
-		houseHold.withSUBMISSIONDATE(scheduleLogService.getTimeStampMills());
+		houseHold.withSUBMISSIONDATE(DateUtil.getTimestampToday());
 		allHouseHolds.update(houseHold);
 			
 		//String cencusCondition =  scheduleLogService.getScheduleRuleForCensus("HouseHold Form");

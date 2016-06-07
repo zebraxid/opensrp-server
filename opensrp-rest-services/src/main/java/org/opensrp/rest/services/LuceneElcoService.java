@@ -34,11 +34,11 @@ public class LuceneElcoService {
     	Date today = Calendar.getInstance().getTime();    	
 		String makeQueryString ="type:Elco" + " AND " + "SUBMISSIONDATE:["+convertDateStringToTimestampMills.convertDateToTimestampMills(dateFormat.format(today))+" TO "+convertDateStringToTimestampMills.convertDateToTimestampMills(dateFormat.format(today))+"]" ;
     	LuceneResult result = luceneElcoRepository.findDocsByProvider(makeQueryString);
-		return result.getRows().size();
+		return result.getTotalRows();//.size();
 		}else{
 			String makeQueryString ="type:Elco" + " AND " + "SUBMISSIONDATE:["+convertDateStringToTimestampMills.convertDateToTimestampMills(start)+" TO "+convertDateStringToTimestampMills.convertDateToTimestampMills(end)+"]" ;
 	    	LuceneResult result = luceneElcoRepository.findDocsByProvider(makeQueryString);
-			return result.getRows().size();
+			return result.getTotalRows();//.size();
 		}
 		
 		

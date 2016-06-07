@@ -23,6 +23,7 @@ import java.util.Map;
 
 import org.joda.time.LocalDate;
 import org.opensrp.common.AllConstants;
+import org.opensrp.common.util.DateUtil;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.register.mcare.domain.Elco;
 import org.opensrp.register.mcare.domain.Mother;
@@ -77,7 +78,7 @@ public class ANCService {
 		mother.withTODAY(submission.getField(REFERENCE_DATE));
 		mother.withPROVIDERID(submission.anmId());
 		mother.withINSTANCEID(submission.instanceId());		
-		mother.withSUBMISSIONDATE(scheduleLogService.getTimeStampMills());
+		mother.withSUBMISSIONDATE(DateUtil.getTimestampToday());
 		addDetailsToMother(submission, mother);
 		
 		allMothers.update(mother);
