@@ -156,7 +156,7 @@ public class HHService {
 					.put(FW_WOMGOBHHID, elcoFields.get(FW_WOMGOBHHID))
 					.put(FW_WOMGPS, elcoFields.get(FW_WOMGPS))
 					.put(profileImagePath, "")
-					.put("received_time", format.format(today).toString())
+					.put(received_time, format.format(today).toString())
 					.put(nidImagePath, "").map();
  
 			

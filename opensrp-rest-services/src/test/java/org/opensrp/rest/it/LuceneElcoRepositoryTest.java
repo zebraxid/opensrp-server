@@ -16,6 +16,7 @@ import org.ektorp.http.StdHttpClient;
 import org.ektorp.impl.StdCouchDbInstance;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.opensrp.rest.repository.LuceneElcoRepository;
 
@@ -49,7 +50,7 @@ public class LuceneElcoRepositoryTest {
         connector = null; 
     } 
     
-    @Test 
+    @Ignore@Test 
     public void testInit() throws ParseException { 
     	//String makeQueryString ="PROVIDERID:proshanto" + " AND " + "FWUPAZILLA:GAIBANDHA SADAR" + " AND " + "user_type:FWA"+ " AND SUBMISSIONDATE:[2014-02-01 TO 2017-03-30]" ;
     	
