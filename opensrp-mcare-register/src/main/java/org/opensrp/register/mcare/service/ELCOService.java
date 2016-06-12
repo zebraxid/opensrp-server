@@ -10,9 +10,12 @@ import static org.opensrp.common.AllConstants.HHRegistrationFields.ELCO_REGISTRA
 import static org.opensrp.common.AllConstants.HHRegistrationFields.FW_UPAZILLA;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.REFERENCE_DATE;
 import static org.opensrp.common.AllConstants.PSRFFields.*;
+import static org.opensrp.register.mcare.OpenSRPScheduleConstants.HHSchedulesConstants.HH_SCHEDULE_CENSUS;
+import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ELCOSchedulesConstants.ELCO_SCHEDULE_PSRF;
 
 import java.util.Map;
 
+import org.joda.time.DateTime;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.form.domain.SubFormData;
 import org.opensrp.register.mcare.domain.Elco;
@@ -21,6 +24,10 @@ import org.opensrp.register.mcare.repository.AllElcos;
 import org.opensrp.register.mcare.repository.AllHouseHolds;
 import org.opensrp.register.mcare.service.scheduling.ELCOScheduleService;
 import org.opensrp.register.mcare.service.scheduling.HHSchedulesService;
+import org.opensrp.register.mcare.service.scheduling.ScheduleLogService;
+import org.opensrp.scheduler.ScheduleLog;
+import org.opensrp.scheduler.repository.AllReportActions;
+import org.opensrp.scheduler.service.ReportActionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,17 +47,20 @@ public class ELCOService {
 	private HHSchedulesService hhSchedulesService;
 	private ELCOScheduleService elcoScheduleService;
 	private ANCService ancService;
-	private BNFService bnfService;
+	private BNFService bnfService;	
+	private ScheduleLogService scheduleLogService;
 
 	@Autowired
 	public ELCOService(AllHouseHolds allHouseHolds, AllElcos allEcos, HHSchedulesService hhSchedulesService,
-			ELCOScheduleService elcoScheduleService,ANCService ancService, BNFService bnfService) {
+			ELCOScheduleService elcoScheduleService,ANCService ancService, BNFService bnfService,ScheduleLogService scheduleLogService) {
 		this.allHouseHolds = allHouseHolds;
 		this.allEcos = allEcos;
 		this.hhSchedulesService = hhSchedulesService;
 		this.elcoScheduleService = elcoScheduleService;
 		this.ancService = ancService;
 		this.bnfService = bnfService;
+		this.scheduleLogService = scheduleLogService;
+		
 	}
 
 	public void registerELCO(FormSubmission submission) {
@@ -94,7 +104,8 @@ public class ELCOService {
 			
 			hhSchedulesService.enrollIntoMilestoneOfCensus(submission.entityId(),
 					submission.getField(REFERENCE_DATE),submission.anmId(),submission.instanceId());
-
+			 scheduleLogService.closeSchedule(submission,houseHold.INSTANCEID(),HH_SCHEDULE_CENSUS);
+			
 		}
 	}
 	
@@ -223,6 +234,7 @@ public class ELCOService {
 	                elco.setIsClosed(true);
 	        		allEcos.update(elco);
 	                elcoScheduleService.unEnrollFromScheduleOfPSRF(submission.entityId(), submission.anmId(), "");
+	                scheduleLogService.closeSchedule(submission,elco.INSTANCEID(),ELCO_SCHEDULE_PSRF);
 	            }                                           			
 	}
 }

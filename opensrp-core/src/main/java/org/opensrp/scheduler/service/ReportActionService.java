@@ -34,7 +34,7 @@ public class ReportActionService {
 	}
 	public void updateScheduleLog(BeneficiaryType beneficiaryType, String caseID, String instanceId, String anmIdentifier, String scheduleName, String visitCode, AlertStatus alertStatus, DateTime startDate, DateTime expiryDate, DateTime currentWindowCloseDate,String trackId){
 		System.out.println("beneficiaryType:"+beneficiaryType+"caseID:"+caseID+"instanceId:"+instanceId);
-		ScheduleLog  schedule = allReportActions.findByInstanceId(caseID);
+		ScheduleLog  schedule = allReportActions.findByInstanceIdByCaseIdByname(instanceId,caseID,scheduleName);
 		   if(schedule != null){
 			   System.out.println("cwindow:"+schedule.getCurrentWindow()+"this:"+alertStatus.value() + ":"+alertStatus);
 			   if(!schedule.getCurrentWindow().equals(alertStatus)){				   

@@ -78,10 +78,10 @@ public class AllReportActions extends MotechBaseRepository<ScheduleLog> {
 		 return schedulesMap;
 	}
 	
-	private static final String FUNCTION_DOC_EMIT_DOC_CASEID = "function(doc) { if(doc.type === 'ScheduleLog') emit([doc.caseID], doc.instanceId);}";
-	@View(name = "by_case_id", map = FUNCTION_DOC_EMIT_DOC_CASEID)
-    public ScheduleLog findByInstanceId(String caseId) {
-        List<ScheduleLog> scheduleLog = queryView("by_case_id", ComplexKey.of(caseId));
+	private static final String FUNCTION_DOC_EMIT_DOC_INSTANCEID_CASEID_NAME = "function(doc) { if(doc.type === 'ScheduleLog') emit([doc.instanceId,doc.caseID,doc.scheduleName], doc.caseID);}";
+	@View(name = "by_instance_id_bycaseId_by_name", map = FUNCTION_DOC_EMIT_DOC_INSTANCEID_CASEID_NAME)
+    public ScheduleLog findByInstanceIdByCaseIdByname(String instanceId,String caseId,String name) {
+        List<ScheduleLog> scheduleLog = queryView("by_instance_id_bycaseId_by_name", ComplexKey.of(instanceId,caseId,name));
         if (scheduleLog == null || scheduleLog.isEmpty()) {
 			return null;
 		}

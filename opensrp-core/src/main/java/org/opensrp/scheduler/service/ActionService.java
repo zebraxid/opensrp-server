@@ -43,6 +43,7 @@ public class ActionService {
         }
     	List<Action> existingAlerts = allActions.findAlertByANMIdEntityIdScheduleName(anmIdentifier, caseID, scheduleName);
     	if(existingAlerts != null){
+    		System.out.println("existingAlerts:::"+existingAlerts.toString());
         	Map<String,String> data =existingAlerts.get(0).data(); 	      
  	      if(!data.get("alertStatus").equals(alertStatus)){
  	    	  existingAlerts.get(0).setRevision(existingAlerts.get(0).getRevision());

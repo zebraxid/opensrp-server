@@ -3,6 +3,7 @@
  * */
 package org.opensrp.register.mcare.service.scheduling;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.DateTimeDuration.duration;
@@ -20,7 +21,10 @@ import org.opensrp.connector.openmrs.service.OpenmrsService;
 import org.opensrp.connector.openmrs.service.OpenmrsUserService;
 import org.opensrp.dto.AlertStatus;
 import org.opensrp.dto.BeneficiaryType;
+import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.scheduler.Action;
+import org.opensrp.scheduler.ScheduleLog;
+import org.opensrp.scheduler.repository.AllReportActions;
 import org.opensrp.scheduler.service.AllEnrollmentWrapper;
 import org.opensrp.scheduler.service.ReportActionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,12 +38,13 @@ public class ScheduleLogService extends OpenmrsService{
 	
 	private ReportActionService reportActionService;
 	private final AllEnrollmentWrapper allEnrollments;
-
+	private AllReportActions allReportActions;
 	
 	@Autowired
-	public ScheduleLogService(ReportActionService reportActionService,AllEnrollmentWrapper allEnrollments){
+	public ScheduleLogService(ReportActionService reportActionService,AllEnrollmentWrapper allEnrollments,AllReportActions allReportActions){
 		this.reportActionService = reportActionService;
 		this.allEnrollments = allEnrollments;
+		this.allReportActions = allReportActions;
 	}
 	
 	
@@ -88,7 +93,44 @@ public class ScheduleLogService extends OpenmrsService{
 		
 	}
 	
+	public void closeSchedule(FormSubmission submission,String instaceId,String name){
+		ScheduleLog  schedule = allReportActions.findByInstanceIdByCaseIdByname(instaceId,submission.entityId(),name);
+		System.out.println("name:"+name+"Instance:"+submission.instanceId()+"EntityId:"+submission.entityId());;
+        schedule.setRevision(schedule.getRevision());
+        schedule.scheduleCloseDate(new DateTime());
+        schedule.closeById(submission.instanceId());
+        schedule.getIsActionActive(false);
+        allReportActions.update(schedule);
+		
+	}
+	public void saveActionDataToOpenMrsMilestoneTrack(String windowName, BeneficiaryType beneficiaryType, String entityId, String instanceId,
+			String providerId, String schedule, String milestone, DateTime  startOfEarliestWindow,
+			DateTime startOfDueWindow, DateTime startOfLateWindow, DateTime startOfMaxWindow){
+		/*Action close = getClosedAction(ac.data().get("visitCode"), alertActions);
+		JSONObject pr = userService.getPersonByUser(ac.anmIdentifier());*/
+		
+		/*ScheduleLog  scheduleLog = allReportActions.findByInstanceId(caseID);
+		JSONObject tm = new JSONObject();
+		tm.put("track", trackuuid);
+		MilestoneFulfillment m = getMilestone(ac.data().get("visitCode"), e);
+		tm.put("milestone", ac.data().get("visitCode"));
+		tm.put("alertRecipient", pr.getString("uuid"));
+		tm.put("alertRecipientRole", "PROVIDER");
+		String fdate = m == null?null:OPENMRS_DATE.format(m.getFulfillmentDateTime().toDate());
+		if(fdate == null){
+			fdate = close==null?null:OPENMRS_DATE.format(new SimpleDateFormat("dd-MM-yyyy").parse(close.data().get("completionDate")));
+		}
+		tm.put("fulfillmentDate", fdate);
+		tm.put("status", ac.data().get("alertStatus")+(close==null?"":"-completed"));
+		//TODO tm.put("reasonClosed", ac.data().get(""));
+		tm.put("alertStartDate", ac.data().get("startDate"));
+		tm.put("alertExpiryDate", ac.data().get("expiryDate"));
+		tm.put("isActive", ac.getIsActionActive());
+		tm.put("actionType", "PROVIDER ALERT");
+		
+		JSONObject tmo = new JSONObject(HttpUtil.post(getURL()+"/"+TRACK_MILESTONE_URL, "", tm.toString(), OPENMRS_USER, OPENMRS_PWD).body());*/
 	
+	}
 	private Action getClosedAction(String milestone, List<Action> actions){
 		for (Action a : actions) {
 			if(a.data().get("visitCode") != null && a.data().get("visitCode").equalsIgnoreCase(milestone)

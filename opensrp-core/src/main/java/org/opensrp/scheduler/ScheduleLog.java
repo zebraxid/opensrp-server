@@ -123,7 +123,7 @@ public class ScheduleLog extends MotechBaseDataObject  {
     public String actionType() {
         return actionType;
     }
-    public void closeById(String timeStamp) {
+    public void closeById(String closeById) {
         this.closeById =closeById;
     }
     public void timestamp(long timeStamp) {
@@ -153,7 +153,7 @@ public class ScheduleLog extends MotechBaseDataObject  {
         return this;
     }
 
-    public Boolean getIsActionActive() {
+    public Boolean getIsActionActive(boolean isActionActive) {
         return isActionActive;
     }
 
