@@ -9,6 +9,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.codehaus.jackson.annotate.JsonProperty;
+import org.joda.time.DateTime;
 
 public class HHRegisterEntryDTO {
 	@JsonProperty
@@ -75,6 +76,7 @@ public class HHRegisterEntryDTO {
 	private List<Map<String, String>> ELCODETAILS;
 	@JsonProperty
 	private Map<String, String> details;
+	private DateTime received_time;
 
 	public HHRegisterEntryDTO() {
 
@@ -241,6 +243,10 @@ public class HHRegisterEntryDTO {
         return this;
     }
 
+	public HHRegisterEntryDTO withReceivedTime(DateTime received_time){
+		this.received_time = received_time;
+		return this;
+	}
 	@Override
 	public boolean equals(Object o) {
 		return EqualsBuilder.reflectionEquals(this, o, "id", "revision");

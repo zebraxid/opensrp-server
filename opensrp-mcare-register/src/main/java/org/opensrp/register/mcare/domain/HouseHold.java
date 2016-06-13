@@ -10,6 +10,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.ektorp.support.TypeDiscriminator;
+import org.joda.time.DateTime;
 import org.motechproject.model.MotechBaseDataObject;
 
 @TypeDiscriminator("doc.type === 'HouseHold'")
@@ -78,7 +79,7 @@ public class HouseHold extends MotechBaseDataObject {
 	private List<Map<String, String>> ELCODETAILS;
 	@JsonProperty
 	private Map<String, String> details;
-
+	private String received_time;
 	public HouseHold() {
 
 		this.ELCODETAILS = new ArrayList<>();
@@ -245,6 +246,10 @@ public class HouseHold extends MotechBaseDataObject {
         return this;
     }
 
+	public HouseHold withReceivedTime(String received_time){
+		this.received_time = received_time;
+		return this;
+	}
 	public String caseId() {
 		return caseId;
 	}
@@ -361,6 +366,9 @@ public class HouseHold extends MotechBaseDataObject {
 		return external_user_ID;
 	}
 	
+	public String received_time(){
+		return received_time;
+	}
 	public String current_formStatus() {
 		return current_formStatus;
 	}

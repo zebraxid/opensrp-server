@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.joda.time.DateTime;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.form.domain.SubFormData;
 import org.opensrp.register.mcare.domain.Elco;
@@ -66,8 +67,8 @@ public class HHService {
 		houseHold.withINSTANCEID(submission.instanceId());
 		houseHold.withTODAY(submission.getField(REFERENCE_DATE));
 		houseHold.withFWUPAZILLA(submission.getField(FW_UPAZILLA).replace("+", " "));
-		allHouseHolds.update(houseHold);
-
+		
+		allHouseHolds.update(houseHold);		
 		hhSchedulesService.enrollIntoMilestoneOfCensus(submission.entityId(),
 				submission.getField(REFERENCE_DATE),submission.anmId(),submission.instanceId());
 		

@@ -4,7 +4,11 @@ import static java.text.MessageFormat.format;
 import static java.util.UUID.randomUUID;
 
 import java.lang.reflect.Field;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +19,7 @@ import org.codehaus.jackson.node.ObjectNode;
 import org.ektorp.CouchDbConnector;
 import org.ektorp.ViewQuery;
 import org.ektorp.ViewResult;
+import org.joda.time.DateTime;
 import org.opensrp.common.AllConstants;
 import org.opensrp.register.mcare.domain.Child;
 import org.opensrp.register.mcare.domain.Elco;
@@ -45,6 +50,7 @@ public class FormDataRepositoryImpl extends FormDataRepository{
     private static final String LOCATIONID = "existing_location";
     private static final String START = "start";
     private static final String END = "end";
+    private static final String RECEIVEDTIME = "received_time";
     private static final String CASE_ID_VIEW_NAME = "by_caseId";
     private Map<String, Field[]> fieldSetMap;
     private CouchDbConnector db;
@@ -112,8 +118,10 @@ public class FormDataRepositoryImpl extends FormDataRepository{
                 details.put(fieldName, updatedFieldsMap.get(fieldName));
             }
         }
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    	Date today = Calendar.getInstance().getTime();    	
+        details.put(RECEIVEDTIME,format.format(today).toString());
         entity.put(DETAILS, details);
-
         db.update(entity);
         logger.info(format("Update form successful, with params: {0}.",entityType ));
         return entityId;
