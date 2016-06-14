@@ -16,6 +16,7 @@ import org.opensrp.domain.Client;
 import org.opensrp.domain.Event;
 import org.opensrp.domain.Obs;
 import org.opensrp.domain.User;
+import org.opensrp.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,11 +29,13 @@ public class ECEncounterService extends OpenmrsService{
 	private static final String ENCOUNTER__TYPE_URL = "ws/rest/v1/encountertype";
 	private ECPatientService patientService;
 	private OpenmrsUserService userService;
+	private ClientService clientService;
 
 	@Autowired
-	public ECEncounterService(ECPatientService patientService, OpenmrsUserService userService) {
+	public ECEncounterService(ECPatientService patientService, OpenmrsUserService userService,ClientService clientService) {
 		this.patientService = patientService;
 		this.userService = userService;
+		this.clientService = clientService;
 	}
 	
 	public ECEncounterService(String openmrsUrl, String user, String password) {
@@ -251,8 +254,14 @@ public class ECEncounterService extends OpenmrsService{
 		JSONObject p = patientService.getPatientByUuid(encounter.getJSONObject("patient").getString("uuid"), false);
 		
 		Client c = patientService.convertToClient(p);
-		
-		if(c.getBaseEntityId() == null){
+		Client client = clientService.findClient(c);
+		String baseEntityId = "";
+		if(client!= null){
+			baseEntityId = client.getBaseEntityId();
+		}else{
+			baseEntityId = c.getBaseEntityId();
+		}
+		if(baseEntityId == null){
 			throw new IllegalStateException("Client was not registered before adding an Event in OpenSRP");
 		}		
 		

@@ -112,7 +112,8 @@ public class ClientService {
 		}
 		
 		//still not found!! search by generic identifiers
-		System.out.println(client.getIdentifiers().keySet());
+		
+		try{
 		for (String idt : client.getIdentifiers().keySet()) {
 			System.out.println("client.getIdentifier(idt):"+client.getIdentifier(idt));
 			List<Client> cl = allClients.findAllByIdentifier(client.getIdentifier(idt));
@@ -124,6 +125,10 @@ public class ClientService {
 			else if(cl.size() != 0){
 				return cl.get(0); 
 			}
+		}
+		}catch(Exception e){
+			logger.info("MM:"+e.getStackTrace());
+			return c;
 		}
 		
 		return c;
