@@ -268,7 +268,7 @@ public class ECEncounterService extends OpenmrsService{
 		System.out.println( encounter.getString("encounterDatetime"));
 		try{
 			JSONArray creator = encounter.getJSONArray("encounterProviders");
-		e.withBaseEntityId(encounter.getJSONObject("patient").getString("uuid"))
+		e.withBaseEntityId(baseEntityId)
 			.withCreator(new User(creator.getJSONObject(0).getString("uuid"), creator.getJSONObject(0).getString("display"), null, null))
 			.withDateCreated(new Date());
 		e.withEventDate(new DateTime(encounter.getString("encounterDatetime")));
