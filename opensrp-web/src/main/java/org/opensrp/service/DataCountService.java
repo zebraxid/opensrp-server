@@ -91,7 +91,7 @@ public class DataCountService {
 		
 		List<CountServiceDTOForChart> DTOs= new ArrayList<CountServiceDTOForChart>();
 		CountServiceDTOForChart newDTO = new CountServiceDTOForChart();
-		newDTO.setCounts(this.coverViewResultToCount(hhViewResult));
+		newDTO.setCounts(this.convertViewResultToCount(hhViewResult));
 		DTOs.add(newDTO);
 		return DTOs;
 	}
@@ -108,7 +108,7 @@ public class DataCountService {
 		
 		List<CountServiceDTOForChart> DTOs= new ArrayList<CountServiceDTOForChart>();
 		CountServiceDTOForChart newDTO = new CountServiceDTOForChart();
-		newDTO.setCounts(this.coverViewResultToCount(elcoViewResult));
+		newDTO.setCounts(this.convertViewResultToCount(elcoViewResult));
 		DTOs.add(newDTO);
 		return DTOs;
 	}
@@ -125,12 +125,20 @@ public class DataCountService {
 		
 		List<CountServiceDTOForChart> DTOs= new ArrayList<CountServiceDTOForChart>();
 		CountServiceDTOForChart newDTO = new CountServiceDTOForChart();
-		newDTO.setCounts(this.coverViewResultToCount(elcoViewResult));
+		newDTO.setCounts(this.convertViewResultToCount(elcoViewResult));
 		DTOs.add(newDTO);
 		return DTOs;
 	}
 	
-	private int[] coverViewResultToCount( ViewResult vr){
+	public int[] getMotherCountInformationForHomePage(){
+		ViewResult elcoViewResult;		
+		String key = this.createRawStartKey("", "Gaibandha", "", "");
+		elcoViewResult = allElcos.allMothersCreatedLastFourMonthsByLocationViewResult(key,key.substring(0, key.length()-1) + ",{}]");			
+		
+		return this.convertViewResultToCount(elcoViewResult);
+	}
+	
+	private int[] convertViewResultToCount( ViewResult vr){
 		List<Long> timestamps = new ArrayList<Long>();
 		int count = 0;
 		int[] countsForChart = new int[23];
@@ -232,9 +240,11 @@ public class DataCountService {
 	}
 	private CountServiceDTO getMotherCount(String provider,String startMonth,String endMonth,String startWeek,String endWeek,CountServiceDTO commonServiceDTO){
 		commonServiceDTO.setPwTotalCount(allMothers.allOpenMothers().size());
-		commonServiceDTO.setPwThisMonthCount(luceneMotherService.getMotherCount(startMonth, endMonth));
-		commonServiceDTO.setPwThisWeekCount(luceneMotherService.getMotherCount(startWeek, endWeek));
-		commonServiceDTO.setPwTodayCount(luceneMotherService.getMotherCount("", ""));
+		int[] countsForChart = new int[23];
+		countsForChart = this.getMotherCountInformationForHomePage();
+		commonServiceDTO.setPwThisMonthCount(countsForChart[15] + countsForChart[16] + countsForChart[17] + countsForChart[18] + countsForChart[19]);//(luceneMotherService.getMotherCount(startMonth, endMonth));
+		commonServiceDTO.setPwThisWeekCount(countsForChart[21]);
+		commonServiceDTO.setPwTodayCount(countsForChart[20]);
 		return commonServiceDTO;
 	}
 

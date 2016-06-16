@@ -34,23 +34,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath:test-applicationContext-opensrp-register-mcare.xml")
+/*@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration("classpath:test-applicationContext-opensrp-register-mcare.xml")*/
 public class AllHouseHoldsIntegrationTest {
 
 	@Autowired
     private AllHouseHolds allHouseHolds;
-	/*@Autowired
-    private AllElcos allElcos;*/
-	//private CouchDbInstance dbInstance;
-	//private StdCouchDbConnector stdCouchDbConnector;
+	@Autowired
+	private AllElcos allElcos;
+	private CouchDbInstance dbInstance;
+	private StdCouchDbConnector stdCouchDbConnector;
 	
     @Before
     public void setUp() throws Exception {
     	//allHouseHolds.removeAll();
     	//allElcos.removeAll();
-       /* HttpClient httpClient = new StdHttpClient.Builder() 
-        .host("localhost") 
+       HttpClient httpClient = new StdHttpClient.Builder() 
+        //.host("localhost") 
+       	.host("192.168.19.55")
         .port(5984) 
         .socketTimeout(1000) 
         .build(); 
@@ -59,8 +60,9 @@ public class AllHouseHoldsIntegrationTest {
 		stdCouchDbConnector = new StdCouchDbConnector("opensrp", dbInstance, new StdObjectMapperFactory());
 		 
 		stdCouchDbConnector.createDatabaseIfNotExists(); 
-		allHouseHolds = new AllHouseHolds(stdCouchDbConnector);*/
-    	initMocks(this);
+		allHouseHolds = new AllHouseHolds(2, stdCouchDbConnector);
+		allElcos = new AllElcos(2, stdCouchDbConnector);
+    	//initMocks(this);
     }
     
   /*  @Test
@@ -129,10 +131,10 @@ public class AllHouseHoldsIntegrationTest {
     }
     
     public String createRawStartKey(String provider, String district, String upazilla, String union){
-		String key = "";
-		if(provider.equals("")){
-			if(union.equals("")){
-				if(upazilla.equals("")){
+    	String key = "";
+		if(provider.equalsIgnoreCase("")){
+			if(union.equalsIgnoreCase("")){
+				if(upazilla.equalsIgnoreCase("")){
 					key = "[\"" + district + "\"]";
 				}
 				else{
@@ -144,61 +146,54 @@ public class AllHouseHoldsIntegrationTest {
 			}
 		}
 		else{
-			key = "[\"" + provider + "\",\"" + district + "\",\"" + upazilla + "\",\"" + union + "\"]";
+			if(union.equalsIgnoreCase("")){
+				if(upazilla.equalsIgnoreCase("")){
+					if(district.equalsIgnoreCase("")){
+						key = "[\"" + provider + "\"]";
+					}
+					else{
+						key = "[\"" + provider + "\",\"" + district + "\"]";
+					}
+					
+				}
+				else{
+					key = "[\"" + provider + "\",\"" + district + "\",\"" + upazilla + "\"]";
+				}
+			}
+			else{
+				key = "[\"" + provider + "\",\"" + district + "\",\"" + upazilla + "\",\"" + union + "\"]";
+			}
+		
 		}
+		
 		return key;
 	}
     
     @Test 
     public void testRawkey() throws Exception {
-    	/*List<HouseHold> fetchedHH = allHouseHolds.allHHsCreatedLastFourMonthsByLocation("[\"Gaibandha\"]", "[\"Gaibandha\",{}]");
-    	System.out.println("Number of fetched rows- " + fetchedHH.size());*/
-    	
-    	/*List<HouseHold> fetchedHHTempNew = allHouseHolds.allHHsCreatedLastFourMonthsByLocationAnother("Gaibandha","GAIBANDHA SADAR", "");
-    	System.out.println("Number of fetched rows- " + fetchedHHTempNew.size());
-    	
-    	List<HouseHold> fetchedHHTemp = allHouseHolds.allHHsCreatedLastFourMonthsByLocation("[\"Gaibandha\",\"GAIBANDHA SADAR\"]", "[\"Gaibandha\",\"GAIBANDHA SADAR\",{}]");
-    	System.out.println("Number of fetched rows- " + fetchedHHTemp.size());*/
-    	
-    	/*WeekBoundariesAndTimestamps boundaries = DateUtil.getWeekBoundariesForDashboard();
-    	
-    	List<String> startAndEndOfWeeks = boundaries.weekBoundariesAsString;//DateUtil.getWeekBoundariesForDashboard();
-    	List<Long> startAndEndOfWeeksAsTimestamp = boundaries.weekBoundariesAsTimeStamp;//DateUtil.getWeekBoundariesForDashboardAsTimestamp();
-    	
-    	int[] countsForChart = new int[20];
-        int count = 0;
-        
-        //this segment below does the rawkey thing
-        ViewResult result = allHouseHolds.allHHsCreatedLastFourMonthsByLocationViewResult("[\"Gaibandha\",\"GAIBANDHA SADAR\"]", "[\"Gaibandha\",\"GAIBANDHA SADAR\",{}]");
-    	List<Long> timestamps = new ArrayList<Long>();
-    	for (ViewResult.Row row : result.getRows()) {
-    		String stringValue = row.getValue();
-    		String stringKey = row.getKey();
-    		System.out.println(stringValue + " -- " + stringKey);
-    		count++;
-    		timestamps.add(Long.parseLong(stringValue));
-    	}
-    	System.out.println("number of rows found - " + count);   	
-    	
-    	//this segment will do the counting
-    	for(int i = 0; i < timestamps.size(); i++){
-    		countsForChart[DateUtil.dateInsideWhichWeek(timestamps.get(i), startAndEndOfWeeksAsTimestamp)]++;
-    	}        
-    	int foundCount = 0;
-    	for(int i =0; i<countsForChart.length; i++){
-        	if(countsForChart[i] != 0){
-        		System.out.println("count for weekIndex - " + i + " is " + countsForChart[i]);
-        		foundCount += countsForChart[i]; 
-        	}        	
-        }
-    	System.out.println("foundCount - " + foundCount);*/
-    	System.out.println(createRawStartKey("aklima","Gaibandha","GAIBANDHA SADAR","LAXMIPUR"));
-    	System.out.println(createRawStartKey("","Gaibandha","GAIBANDHA SADAR","LAXMIPUR"));
-    	System.out.println(createRawStartKey("","Gaibandha","GAIBANDHA SADAR",""));
-    	System.out.println(createRawStartKey("","Gaibandha","",""));
-    	String oka = createRawStartKey("aklima","Gaibandha","GAIBANDHA SADAR","LAXMIPUR");
+    	String oka = createRawStartKey("aklima","","","");//,"Gaibandha","GAIBANDHA SADAR","LAXMIPUR");
     	System.out.println(oka.substring(0, oka.length()-1) + ",{}]");
     	System.out.println("startkey=" + oka + "&endkey=" + oka.substring(0, oka.length()-1) + ",{}]");
+    	
+    	System.out.println(DateUtil.getTimestampToday() + " -- " + new Date(DateUtil.getTimestampToday()).toString());
+    	
+    	ViewResult hhViewResult;		
+		//hhViewResult = allHouseHolds.allHHsCreatedLastFourMonthsByLocationViewResult("[\"Gaibandha\"]", "[\"Gaibandha\",{}]");
+    	hhViewResult = allHouseHolds.allHHsCreatedLastFourMonthsByProviderAndLocationViewResult(oka, oka.substring(0, oka.length()-1) + ",{}]");
+		System.out.println("number of hh with keys " + oka + oka.substring(0, oka.length()-1) + ",{}]" + " " + hhViewResult.getRows().size());
+		
+		for (ViewResult.Row row : hhViewResult.getRows()) {
+			if(DateUtil.ifDateInsideAWeek(Long.parseLong(row.getValue()), DateUtil.getTimestampToday(), DateUtil.getTimestampToday())){
+				System.out.println(row.getId());				
+			}
+		}
+		
+		ViewResult elcoViewResult;		
+		String key = createRawStartKey("", "Gaibandha", "", "");
+		System.out.println(key + " -the startKey");
+		elcoViewResult = allElcos.allMothersCreatedLastFourMonthsByLocationViewResult(key,key.substring(0, key.length()-1) + ",{}]");			
+		System.out.println(elcoViewResult.getRows().size() + " count of mothers from gaibandha" );
+		//return this.coverViewResultToCount(elcoViewResult);
     }
 
 }

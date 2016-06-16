@@ -94,7 +94,7 @@ public class LuceneHouseHoldService {
 	    	Date today = Calendar.getInstance().getTime();    	
 			String makeQueryString ="type:Household" + " AND "+ "SUBMISSIONDATE:["+convertDateStringToTimestampMills.convertDateToTimestampMills(dateFormat.format(today))+" TO "+convertDateStringToTimestampMills.convertDateToTimestampMills(dateFormat.format(today))+"]" ;
 	    	LuceneResult result = luceneHouseHoldRepository.findDocsByProvider(makeQueryString);
-			return result.getRows().size();
+			return result.getTotalRows();
 		}else{
 			String makeQueryString ="type:Household" + " AND " + "SUBMISSIONDATE:["+convertDateStringToTimestampMills.convertDateToTimestampMills(start)+" TO "+convertDateStringToTimestampMills.convertDateToTimestampMills(end)+"]" ;
 	    	LuceneResult result = luceneHouseHoldRepository.findDocsByProvider(makeQueryString);
