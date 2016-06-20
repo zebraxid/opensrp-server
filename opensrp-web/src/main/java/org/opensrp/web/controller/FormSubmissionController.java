@@ -9,6 +9,8 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -46,10 +48,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import ch.lambdaj.function.convert.Converter;
-
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
+import ch.lambdaj.function.convert.Converter;
 
 @Controller
 public class FormSubmissionController {
@@ -82,10 +84,30 @@ public class FormSubmissionController {
     @ResponseBody
     private List<FormSubmissionDTO> getNewSubmissionsForANM(@RequestParam("anm-id") String anmIdentifier,
                                                             @RequestParam("timestamp") Long timeStamp,
+                                                            @RequestParam(value = "locationAnmids", required = false) String locationAnmids,
                                                             @RequestParam(value = "batch-size", required = false)
                                                             Integer batchSize) {
-        List<FormSubmission> newSubmissionsForANM = formSubmissionService
-                .getNewSubmissionsForANM(anmIdentifier, timeStamp, batchSize);
+ // locationAnmids="demo2-demo3-demoedc-demosdidtk";  	
+List<String> anmids= new ArrayList<String>();
+anmids.add(anmIdentifier);
+if(locationAnmids!=null){
+	String[] anmidsArray = locationAnmids.split("-");
+	anmids.addAll(Arrays.asList(anmidsArray));
+}
+    	
+        List<FormSubmission> newSubmissionsForANM = new ArrayList<FormSubmission>();
+        		
+        		for(String identifier: anmids){
+        		
+        			List<FormSubmission> anmFs=formSubmissionService.getNewSubmissionsForANM(identifier, timeStamp, batchSize);
+        			if(anmFs!=null && !anmFs.isEmpty()){
+        				newSubmissionsForANM.addAll(anmFs);
+        			}
+        		}
+        
+        
+        
+        
         return with(newSubmissionsForANM).convert(new Converter<FormSubmission, FormSubmissionDTO>() {
             @Override
             public FormSubmissionDTO convert(FormSubmission submission) {
