@@ -117,7 +117,9 @@ public class ELCORegisterEntryDTO {
 	private List<Map<String, String>> multimediaAttachments;
 	@JsonProperty
 	private List<Map<String, String>> PSRFDETAILS;
-
+	@JsonProperty
+	private List<Map<String, String>> MISDETAILS;
+	
 	public ELCORegisterEntryDTO() {
 
 	}
@@ -329,6 +331,10 @@ public class ELCORegisterEntryDTO {
     }
 	public ELCORegisterEntryDTO withPSRFDETAILS(List<Map<String, String>> PSRFDETAILS) {
 		this.PSRFDETAILS = PSRFDETAILS;
+		return this;
+	}
+	public ELCORegisterEntryDTO withMISDETAILS(List<Map<String, String>> MISDETAILS) {
+		this.MISDETAILS = MISDETAILS;
 		return this;
 	}
 	public ELCORegisterEntryDTO withmultimediaAttachments(List<Map<String, String>> multimediaAttachments) {

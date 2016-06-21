@@ -73,6 +73,7 @@ public class ELCORegisterMapper {
                         		.withDetails(entry.details())
                         		.withmultimediaAttachments(entry.multimediaAttachments())
                         		.withPSRFDETAILS(entry.PSRFDETAILS())
+                        		.withMISDETAILS(entry.MISDETAILS())
                         		.withSTART(entry.START())
                         		.withEND(entry.END())
                         		.withFWDISPLAYAGE(entry.FWDISPLAYAGE())

@@ -87,6 +87,7 @@ public class ELCORegisterService {
             		.withDetails(ec.details())
             		.withmultimediaAttachments(ec.multimediaAttachments())
             		.withPSRFDETAILS(ec.PSRFDETAILS())
+            		.withMISDETAILS(ec.MISDETAILS())
             		.withSTART(ec.getDetail(START_DATE))
             		.withEND(ec.getDetail(END_DATE))
             		.withFWDISPLAYAGE(ec.getDetail(FW_DISPLAY_AGE))

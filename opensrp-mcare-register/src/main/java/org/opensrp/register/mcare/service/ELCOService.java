@@ -195,13 +195,7 @@ public class ELCOService {
 				.put(END_DATE, submission.getField(END_DATE))
 				.put(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
 				.put(FWPMISBIRTHCTRL, submission.getField(FWPMISBIRTHCTRL))
-				.put(FWMISOPT, submission.getField(FWMISOPT))
-				.put(FWMISOPS, submission.getField(FWMISOPS))
-				.put(FWMISCS, submission.getField(FWMISCS))
-				.put(FWMISINJS, submission.getField(FWMISINJS))			
-				.put(FWMISIUDS, submission.getField(FWMISIUDS))
-				.put(FWMISIMPT, submission.getField(FWMISIMPT))
-				.put(FWMISIMPS, submission.getField(FWMISIMPS))
+				.put(FWMISBCSOURCE, submission.getField(FWMISBCSOURCE))
 				.put(received_time, format.format(today).toString())
 				.map();
 		

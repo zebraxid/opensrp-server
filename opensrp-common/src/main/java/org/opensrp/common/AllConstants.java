@@ -236,13 +236,7 @@ public class AllConstants {
     	public static final String received_time = "received_time";
     	public static final String FWMISELCODATE = "FWMISELCODATE";
     	public static final String FWPMISBIRTHCTRL = "FWPMISBIRTHCTRL";
-    	public static final String FWMISOPT = "FWMISOPT"; 
-    	public static final String FWMISOPS = "FWMISOPS";
-    	public static final String FWMISCS = "FWMISCS";
-    	public static final String FWMISINJS = "FWMISINJS";   
-    	public static final String FWMISIUDS = "FWMISIUDS";
-    	public static final String FWMISIMPT = "FWMISIMPT";  
-    	public static final String FWMISIMPS = "FWMISIMPS";
+    	public static final String FWMISBCSOURCE = "FWMISBCSOURCE"; 
     }
     
     public static class ANCVisitOneFields

@@ -116,9 +116,12 @@ public class ELCORegisterEntry {
 	private List<Map<String, String>> multimediaAttachments;
 	
 	private List<Map<String, String>> PSRFDETAILS;
+	
+	private List<Map<String, String>> MISDETAILS;
 
 	public ELCORegisterEntry() {
 		this.PSRFDETAILS = new ArrayList<>();
+		this.MISDETAILS = new ArrayList<>();
 		this.multimediaAttachments = new ArrayList<>();
 	}
 	
@@ -338,6 +341,10 @@ public class ELCORegisterEntry {
 		this.PSRFDETAILS = PSRFDETAILS;
 		return this;
 	}
+	public ELCORegisterEntry withMISDETAILS(List<Map<String, String>> MISDETAILS) {
+		this.MISDETAILS = MISDETAILS;
+		return this;
+	}
 	public String CASEID() {
 		return CASEID;
 	}
@@ -512,7 +519,12 @@ public class ELCORegisterEntry {
 		}
 		return PSRFDETAILS;
 	}
-
+	public List<Map<String, String>> MISDETAILS() {
+		if (MISDETAILS == null) {
+			MISDETAILS = new ArrayList<>();
+		}
+		return MISDETAILS;
+	}
 	@Override
 	public boolean equals(Object o) {
 		return EqualsBuilder.reflectionEquals(this, o, "id", "revision");
