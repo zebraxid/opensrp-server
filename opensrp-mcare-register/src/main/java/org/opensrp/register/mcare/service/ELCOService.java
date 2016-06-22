@@ -173,6 +173,7 @@ public class ELCOService {
 	    	elco.details().put("FWMARRYDATE", submission.getField("FWMARRYDATE"));		
 	    	elco.details().put("FWCHILDALIVEB", submission.getField("FWCHILDALIVEB"));
 	    	elco.details().put("FWCHILDALIVEG", submission.getField("FWCHILDALIVEG"));
+	    	elco.details().put("mis_census_current_formStatus", submission.getField("mis_census_current_formStatus"));
 	    	
 			allEcos.update(elco);	 
 		}
@@ -196,6 +197,7 @@ public class ELCOService {
 				.put(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
 				.put(FWPMISBIRTHCTRL, submission.getField(FWPMISBIRTHCTRL))
 				.put(FWMISBCSOURCE, submission.getField(FWMISBCSOURCE))
+				.put(mis_elco_current_formStatus, submission.getField(mis_elco_current_formStatus))
 				.put(received_time, format.format(today).toString())
 				.map();
 		

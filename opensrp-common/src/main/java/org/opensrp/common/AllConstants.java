@@ -237,6 +237,7 @@ public class AllConstants {
     	public static final String FWMISELCODATE = "FWMISELCODATE";
     	public static final String FWPMISBIRTHCTRL = "FWPMISBIRTHCTRL";
     	public static final String FWMISBCSOURCE = "FWMISBCSOURCE"; 
+    	public static final String mis_elco_current_formStatus = "mis_elco_current_formStatus";
     }
     
     public static class ANCVisitOneFields

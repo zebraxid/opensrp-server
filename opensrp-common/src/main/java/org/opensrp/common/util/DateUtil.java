@@ -38,6 +38,10 @@ public class DateUtil {
     public static boolean isDateWithinGivenPeriodBeforeToday(LocalDate referenceDateForSchedule, Period period) {
         return inRange(toTime(referenceDateForSchedule), toTime(today().minus(period)), toTime(today()));
     }
+    
+    public static boolean isDateWithinGivenRange(LocalDate referenceDateForSchedule,LocalDate startDate,LocalDate endDate) {
+        return inRange(toTime(referenceDateForSchedule), toTime(startDate), toTime(endDate));
+    }
 
     private static DateTime toTime(LocalDate referenceDateForSchedule) {
         return referenceDateForSchedule.toDateTime(new LocalTime(0, 0));
