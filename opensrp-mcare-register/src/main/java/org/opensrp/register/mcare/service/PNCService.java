@@ -31,6 +31,7 @@ import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.opensrp.common.util.DateUtil;
+import org.opensrp.connector.HttpUtil;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.form.domain.SubFormData;
 import org.opensrp.register.mcare.domain.Elco;
@@ -60,6 +61,7 @@ public class PNCService {
 	private PNCSchedulesService pncSchedulesService;
 	private ChildSchedulesService childSchedulesService;
 	private ScheduleLogService scheduleLogService;
+	private static String FEVER_SMS_URL = "http://localhost/healthsms/getsmsfever.php?text=b%2019953219106042305";
 
 	@Autowired
 	public PNCService(AllElcos allElcos, AllMothers allMothers, AllChilds allChilds, ELCOScheduleService elcoSchedulesService, PNCSchedulesService pncSchedulesService, ChildSchedulesService childSchedulesService,ScheduleLogService scheduleLogService) {
@@ -216,9 +218,12 @@ public class PNCService {
 		
 		DateTime dateTime = DateTime.parse(mother.getbnfVisitDetails(FWBNFDTOO));
 		DateTimeFormatter fmt = DateTimeFormat.forPattern(pattern);
-		String referenceDate = fmt.print(dateTime);
-		
+		String referenceDate = fmt.print(dateTime);		
 		pncSchedulesService.enrollPNCForMother(submission.entityId(), SCHEDULE_PNC_2, LocalDate.parse(referenceDate));
+		sendFeverSMS();
+	}
+	private void sendFeverSMS (){
+		HttpUtil.get(FEVER_SMS_URL, "", "", "").body();
 	}
 
 	public void pncVisitTwo(FormSubmission submission) {
