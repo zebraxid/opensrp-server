@@ -65,15 +65,15 @@ public class RegisterController {
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/registers/hh")
     @ResponseBody
-    public ResponseEntity<HHRegisterDTO> hhRegister(@RequestParam("anm-id") String anmIdentifier) {
-        HHRegister hhRegister = hhRegisterService.getHHRegisterForProvider(anmIdentifier);
+    public ResponseEntity<HHRegisterDTO> hhRegister(@RequestParam("start-date") String startdate,@RequestParam("end-date") String enddate) {
+        HHRegister hhRegister = hhRegisterService.getHHRegisterForProvider("HouseHold",startdate,enddate);
         return new ResponseEntity<>(hhRegisterMapper.mapToDTO(hhRegister), HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/registers/ec")
     @ResponseBody
-    public ResponseEntity<ELCORegisterDTO> ecRegister(@RequestParam("anm-id") String anmIdentifier) {
-        ELCORegister ecRegister = ecRegisterService.getELCORegisterForProvider(anmIdentifier);
+    public ResponseEntity<ELCORegisterDTO> ecRegister(@RequestParam("start-date") String startdate,@RequestParam("end-date") String enddate) {
+        ELCORegister ecRegister = ecRegisterService.getELCORegisterForProvider("Elco",startdate,enddate);
         return new ResponseEntity<>(ecRegisterMapper.mapToDTO(ecRegister), HttpStatus.OK);
     }
 		
@@ -81,7 +81,7 @@ public class RegisterController {
     private PNCRegisterService pncRegisterService;
     private ECRegisterService ecRegisterService;
     private ChildRegisterService childRegisterService;
-    private FPRegisterService fpRegisterService;
+    private FPRegisterService fpRegisterService;e
     private ANCRegisterMapper ancRegisterMapper;
     private ECRegisterMapper ecRegisterMapper;
     private ChildRegisterMapper childRegisterMapper;

@@ -16,6 +16,7 @@ import org.opensrp.register.mcare.domain.HouseHold;
 import org.opensrp.register.mcare.repository.AllHouseHolds;
 
 import static org.opensrp.common.AllConstants.HHRegistrationFields.*;
+import static org.opensrp.common.util.DateUtil.getTimestamp;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,10 +36,13 @@ public class HHRegisterService {
 		this.allHouseHolds = allHouseHolds;
 	}
 
-	public HHRegister getHHRegisterForProvider(String providerId)
+	public HHRegister getHHRegisterForProvider(String type, String startKey, String endKey)
 	{
+		long start = getTimestamp(startKey);		
+		long end = getTimestamp(endKey);
+		
 		ArrayList<HHRegisterEntry> hhRegisterEntries = new ArrayList<>();
-        List<HouseHold> hhs = allHouseHolds.findAllHouseHolds();
+        List<HouseHold> hhs = allHouseHolds.allHHsCreatedBetween2Dates(type,start, end);
         
         for (HouseHold hh : hhs) {	
     		
@@ -93,7 +97,6 @@ public class HHRegisterService {
         	            
         	hhRegisterEntries.add(hhRegisterEntry);
         }
-        logger.info("HHRegister data");
         return new HHRegister(hhRegisterEntries);
 	}	
 	

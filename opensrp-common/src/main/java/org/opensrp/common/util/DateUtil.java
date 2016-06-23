@@ -223,6 +223,18 @@ public class DateUtil {
         return day.getTime();
 	}
 	
+	public static Long getTimestamp(String day){		
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");        
+        Date date = null;        
+        //String today = dateFormat.format(day);
+        try {
+            date = dateFormat.parse(day);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date.getTime();
+	}
+	
 	public static List<Long> getMonthBoundaries(){
 		List<Long> monthBoundaries = new ArrayList<Long>();
 		SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");

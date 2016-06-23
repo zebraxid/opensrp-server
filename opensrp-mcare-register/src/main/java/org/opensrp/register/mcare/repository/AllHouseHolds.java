@@ -11,6 +11,7 @@ import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.motechproject.dao.MotechBaseRepository;
 import org.opensrp.common.AllConstants;
+import org.opensrp.register.mcare.domain.Elco;
 import org.opensrp.register.mcare.domain.HouseHold;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -126,5 +127,18 @@ public class AllHouseHolds extends MotechBaseRepository<HouseHold> {
 				.includeDocs(true), HouseHold.class);
 		
 		return households;
+	}
+	
+	@View(name = "created_in_between_2_dates", map = "function(doc) { if(doc.type === 'HouseHold' && doc.type && doc.SUBMISSIONDATE) { emit( [doc.type, doc.SUBMISSIONDATE], null); } }")
+	public List<HouseHold> allHHsCreatedBetween2Dates(String type, long startKey, long endKey){
+		ComplexKey start = ComplexKey.of(type,startKey);
+		ComplexKey end = ComplexKey.of(type,endKey);
+		List<HouseHold> hhs =  db.queryView(
+				createQuery("created_in_between_2_dates")
+				.startKey(start)
+				.endKey(end)
+				.includeDocs(true), HouseHold.class);
+		//System.out.println(hhs.toString());	
+		return hhs;
 	}
 }

@@ -6,7 +6,6 @@ package org.opensrp.register.mcare.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.opensrp.register.mcare.ELCORegister;
@@ -15,6 +14,7 @@ import org.opensrp.register.mcare.domain.Elco;
 import org.opensrp.register.mcare.repository.AllElcos;
 
 import static org.opensrp.common.AllConstants.ELCORegistrationFields.*;
+import static org.opensrp.common.util.DateUtil.getTimestamp;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,13 +31,16 @@ public class ELCORegisterService {
 		this.allElcos = allElcos;
 	}
 
-	public ELCORegister getELCORegisterForProvider(String providerId)
+	public ELCORegister getELCORegisterForProvider(String type, String startKey, String endKey)
 	{
+		long start = getTimestamp(startKey);		
+		long end = getTimestamp(endKey);
+		
 		ArrayList<ELCORegisterEntry> elcoRegisterEntries = new ArrayList<>();
-        List<Elco> elcos = allElcos.allOpenELCOs();
+        List<Elco> elcos = allElcos.allElcosCreatedBetween2Dates(type,start, end);
         
         for (Elco ec : elcos) {
-        
+ 
             ELCORegisterEntry ecRegisterEntry = new ELCORegisterEntry()
             		.withCASEID(ec.caseId())
             		.withINSTANCEID(ec.INSTANCEID())

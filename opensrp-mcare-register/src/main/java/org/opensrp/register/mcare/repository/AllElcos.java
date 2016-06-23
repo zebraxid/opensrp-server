@@ -2,6 +2,7 @@ package org.opensrp.register.mcare.repository;
 
 import java.util.List;
 
+import org.ektorp.ComplexKey;
 import org.ektorp.CouchDbConnector;
 import org.ektorp.ViewResult;
 import org.ektorp.support.GenerateView;
@@ -73,7 +74,20 @@ public class AllElcos extends MotechBaseRepository<Elco> {
 				.rawStartKey(startKey)
 				.rawEndKey(endKey)
 				.includeDocs(true), Elco.class);
-			
+		
+		return elcos;
+	}
+	
+	@View(name = "created_in_between_2_dates", map = "function(doc) { if(doc.type === 'Elco' && doc.type && doc.SUBMISSIONDATE) { emit( [doc.type, doc.SUBMISSIONDATE], null); } }")
+	public List<Elco> allElcosCreatedBetween2Dates(String type, long startKey, long endKey){
+		ComplexKey start = ComplexKey.of(type,startKey);
+		ComplexKey end = ComplexKey.of(type,endKey);
+		List<Elco> elcos =  db.queryView(
+				createQuery("created_in_between_2_dates")
+				.startKey(start)
+				.endKey(end)
+				.includeDocs(true), Elco.class);
+		//System.out.println(elcos.toString());	
 		return elcos;
 	}
 	
