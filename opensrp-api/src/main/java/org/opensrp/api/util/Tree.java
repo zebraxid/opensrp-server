@@ -124,4 +124,10 @@ public class Tree<K,T> {
 	public boolean hasNode(K id) {
 		return getNode(id)!=null;
 	}
+
+	@Override
+	public String toString() {
+		return "Tree [map=" + map + ", parentChildren=" + parentChildren + "]";
+	}
+	
 }
