@@ -115,8 +115,11 @@ public class BahmniPatientService extends OpenmrsService{
 				jao.put("address1", ad.getAddressFieldMatchingRegex("(?i)(ADDRESS1|HOUSE_NUMBER|HOUSE|HOUSE_NO|UNIT|UNIT_NUMBER|UNIT_NO)"));
 				jao.put("address2", ad.getAddressFieldMatchingRegex("(?i)(ADDRESS2|STREET|STREET_NUMBER|STREET_NO|LANE)"));
 				jao.put("address3", ad.getAddressFieldMatchingRegex("(?i)(ADDRESS3|SECTOR|AREA)"));
+				//jao.put("address4", "Unions Of Kaliganj Upazila");
 				jao.put("address4", ad.getAddressFieldMatchingRegex("(?i)(ADDRESS4|SUB_DISTRICT|MUNICIPALITY|TOWN|LOCALITY|REGION)"));
 				jao.put("address5", ad.getAddressFieldMatchingRegex("(?i)(ADDRESS5)"));
+				//jao.put("address5", "Kaliganj");
+				//jao.put("countyDistrict", "Gazipur");
 				jao.put("countyDistrict", ad.getAddressFieldMatchingRegex("(?i)(county_district|countyDistrict|COUNTY|DISTRICT)"));
 				jao.put("cityVillage", ad.getAddressFieldMatchingRegex("(?i)(cityVillage|city_village|CITY|VILLAGE)"));
 
@@ -137,6 +140,7 @@ public class BahmniPatientService extends OpenmrsService{
 				
 			}
 			jao.put("address6", ad.getAddressType());
+			//jao.put("stateProvince", "Dhaka");
 			jao.put("stateProvince", ad.getState());
 			jao.put("country", ad.getCountry());
 			jao.put("postalCode", ad.getPostalCode());
@@ -151,7 +155,7 @@ public class BahmniPatientService extends OpenmrsService{
 			
 			jaar.put(jao);
 		}
-		
+		System.out.println("Address:"+jaar);
 		return jaar;
 	}
     
