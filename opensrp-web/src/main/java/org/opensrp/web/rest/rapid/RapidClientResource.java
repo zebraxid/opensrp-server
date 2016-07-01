@@ -55,6 +55,7 @@ static Map<String, String[]> vs = new HashMap<String, String[]>(){{
 		String gender = req.getParameter("gender");
 		String birthdate = req.getParameter("birthdate");
 		String identifier = req.getParameter("identifier");
+		String phoneNo = req.getParameter("phoneNo")!=null?req.getParameter("phoneNo"):"";
 		
 		if(StringUtils.isEmptyOrWhitespaceOnly(identifier)
 				|| StringUtils.isEmptyOrWhitespaceOnly(firstName)||StringUtils.isEmptyOrWhitespaceOnly(lastName)
@@ -69,6 +70,7 @@ static Map<String, String[]> vs = new HashMap<String, String[]>(){{
 		c.setLastName(lastName);
 		c.setGender(gender);
 		c.setBirthdate(new DateTime(birthdate));
+		c.setPhoneNo(phoneNo);
 		
 		clientService.addClient(c);
 		

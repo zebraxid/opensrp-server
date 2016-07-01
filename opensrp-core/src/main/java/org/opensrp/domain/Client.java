@@ -33,6 +33,8 @@ public class Client extends BaseEntity {
 	@JsonProperty
 	private String gender;
 	@JsonProperty
+	private String phoneNo;
+	@JsonProperty
 	private Map<String, List<String>> relationships;
 
 	protected Client() {
@@ -257,6 +259,14 @@ public class Client extends BaseEntity {
 	@Override
 	public String toString() {
 		return ToStringBuilder.reflectionToString(this);
+	}
+
+	public String getPhoneNo() {
+		return phoneNo;
+	}
+
+	public void setPhoneNo(String phoneNo) {
+		this.phoneNo = phoneNo;
 	}
 
 }
