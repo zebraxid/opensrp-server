@@ -11,12 +11,18 @@ import static org.opensrp.common.AllConstants.ANCVisitOneFields.external_user_ID
 import static org.opensrp.common.AllConstants.ANCVisitOneFields.relationalid;
 import static org.opensrp.common.AllConstants.ANCVisitOneFields.user_type;
 import static org.opensrp.common.AllConstants.BnfFollowUpVisitFields.*;
+import static org.opensrp.common.AllConstants.CommonFormFields.ID;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_WOMFNAME;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_WOMUPAZILLA;
+import static org.opensrp.common.AllConstants.HHRegistrationFields.ELCO_REGISTRATION_SUB_FORM_NAME;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.REFERENCE_DATE;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.MOTHER_REFERENCE_DATE;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.received_time;
+import static org.opensrp.common.AllConstants.DeliveryOutcomeFields.CHILD_REGISTRATION_SUB_FORM_NAME;
 import static org.opensrp.common.util.EasyMap.create;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_BNF;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_ANC;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -25,6 +31,8 @@ import java.util.Map;
 import org.joda.time.LocalDate;
 import org.opensrp.common.AllConstants;
 import org.opensrp.form.domain.FormSubmission;
+import org.opensrp.form.domain.SubFormData;
+import org.opensrp.register.mcare.domain.Elco;
 import org.opensrp.register.mcare.domain.Mother;
 import org.opensrp.register.mcare.repository.AllElcos;
 import org.opensrp.register.mcare.repository.AllMothers;
@@ -94,6 +102,7 @@ public class BNFService {
 					submission.entityId()));
 			return;
 		}
+		
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date today = Calendar.getInstance().getTime();
 		Map<String, String> bnfVisit = create(FWBNFDATE, submission.getField(FWBNFDATE))
@@ -106,8 +115,6 @@ public class BNFService {
 											.put(FWBNFWOMVITSTS, submission.getField(FWBNFWOMVITSTS))
 											.put(FWBNFDTOO, submission.getField(FWBNFDTOO))
 											.put(FWBNFLB, submission.getField(FWBNFLB))
-											.put(FWBNFGEN, submission.getField(FWBNFGEN))
-											.put(FWBNFCHLDVITSTS, submission.getField(FWBNFCHLDVITSTS))
 											.put(FWBNFSMSRSN, submission.getField(FWBNFSMSRSN))
 											.put(user_type, submission.getField(user_type))
 											.put(external_user_ID, submission.getField(external_user_ID))
@@ -115,6 +122,14 @@ public class BNFService {
 											.put(relationalid, submission.getField(relationalid)).map();
 		
 		//mother.withTODAY(submission.getField(REFERENCE_DATE));
+		
+		SubFormData subFormData = submission
+				.getSubFormByName(CHILD_REGISTRATION_SUB_FORM_NAME);	
+		  
+		for (Map<String, String> childFields : subFormData.instances()) {
+			bnfVisit.put(FWBNFGEN, childFields.get(FWBNFGEN));		
+			bnfVisit.put(FWBNFCHLDVITSTS, childFields.get(FWBNFCHLDVITSTS));
+		}
 			
 		mother.bnfVisitDetails().add(bnfVisit);
 		

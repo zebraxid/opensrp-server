@@ -49,7 +49,7 @@ public class OpenmrsUserService extends OpenmrsService{
 		 new TurnOffCertificateValidation().ForHTTPSConnections();
 		//turnOffCertificateValidation.ForHTTPSConnections();
 		HttpResponse op = HttpUtil.get(HttpUtil.removeEndingSlash(OPENMRS_BASE_URL)+"/"+AUTHENTICATION_URL, "", username, password);
-		System.out.println("Openmrs response msg:" + op.body().toString());
+		//System.out.println("Openmrs response msg:" + op.body().toString());
 		System.out.println(username);
 		return new JSONObject(op.body()).getBoolean("authenticated");
 	}
