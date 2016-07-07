@@ -105,6 +105,7 @@ public class PNCService {
 			else if (submission.getField(FWBNFSTS).equals(STS_LB)) {
 				logger.info("Generating schedule for Mother when Child is Live Birth. Mother Id: "
 						+ mother.caseId());
+				logger.info("FWBNFWOMVITSTS:"+submission.getField(FWBNFWOMVITSTS));
 				if(submission.getField(FWBNFWOMVITSTS).equalsIgnoreCase("0")){
 					logger.info("Mother died");
 				}else{					
@@ -138,6 +139,7 @@ public class PNCService {
 			    	child.details().put(referenceDate, referenceDate);
 
 					allChilds.update(child);
+					logger.info("FWBNFCHLDVITSTS:"+childFields.get(FWBNFCHLDVITSTS));
 					if(childFields.get(FWBNFCHLDVITSTS).equalsIgnoreCase("0")){
 						logger.info("Child died");
 					}else{
