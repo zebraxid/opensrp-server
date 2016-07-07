@@ -138,7 +138,7 @@ public class PNCService {
 			    	child.details().put(referenceDate, referenceDate);
 
 					allChilds.update(child);
-					if(submission.getField(FWBNFCHLDVITSTS).equalsIgnoreCase("0")){
+					if(childFields.get(FWBNFCHLDVITSTS).equalsIgnoreCase("0")){
 						logger.info("Child died");
 					}else{
 						childSchedulesService.enrollENCCForChild(childFields.get(ID),  LocalDate.parse(referenceDate));
