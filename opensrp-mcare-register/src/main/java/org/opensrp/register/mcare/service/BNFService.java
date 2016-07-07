@@ -122,8 +122,8 @@ public class BNFService {
 		logger.info("submission.getField(FWBNFSTS):"+submission.getField(FWBNFSTS));
 		if(submission.getField(FWBNFSTS).equalsIgnoreCase(STS_LB) || submission.getField(FWBNFSTS).equalsIgnoreCase(STS_SB))
 		{ 
-			pncService.deliveryOutcome(submission); 
-			if(submission.getField("user_type").equalsIgnoreCase("FD") || (submission.getField(FWBNFSTS).equalsIgnoreCase(STS_LB) && submission.getField("user_type").equalsIgnoreCase("FWA"))  ){
+			if(submission.getField("user_type").equalsIgnoreCase("FD")){
+				pncService.deliveryOutcome(submission); 
 				bnfSchedulesService.unEnrollBNFSchedule(submission.entityId(), submission.anmId());
 				scheduleLogService.closeScheduleAndScheduleLog( submission.entityId(),submission.instanceId(), SCHEDULE_BNF,submission.anmId());
 				
@@ -138,6 +138,10 @@ public class BNFService {
 				}catch(Exception e){
 					logger.info("From ancVisitOne:"+e.getMessage());
 				}
+			}else{
+				logger.info("FWA submit live birth or still birth , so nothing hapened & BNF schedule continue.");
+				bnfSchedulesService.enrollIntoMilestoneOfBNF(submission.entityId(),
+			            submission.getField(REFERENCE_DATE),submission.anmId(),submission.instanceId());
 			}
 			
 		}else if(submission.getField(FWBNFSTS).equalsIgnoreCase(STS_GONE) || submission.getField(FWBNFSTS).equalsIgnoreCase(STS_WD) ){
@@ -159,14 +163,14 @@ public class BNFService {
 				}
 			}else{
 				pncService.deleteBlankChild(submission);
-				logger.info("Else Condition From BNF");
+				logger.info("FWA says mother gone or died , so nothing hapened & BNF schedule continue.");
 				bnfSchedulesService.enrollIntoMilestoneOfBNF(submission.entityId(),
 			            submission.getField(REFERENCE_DATE),submission.anmId(),submission.instanceId());
 			}
 			
 		}else{
 			pncService.deleteBlankChild(submission);
-			logger.info("Else Condition From BNF");
+			logger.info("FWA submit BNF form , so nothing hapened & BNF schedule continue.");
 			bnfSchedulesService.enrollIntoMilestoneOfBNF(submission.entityId(),
 		            submission.getField(REFERENCE_DATE),submission.anmId(),submission.instanceId());
 		}
