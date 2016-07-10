@@ -65,15 +65,29 @@ public class RegisterController {
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/registers/hh")
     @ResponseBody
-    public ResponseEntity<HHRegisterDTO> hhRegister(@RequestParam("start-date") String startdate,@RequestParam("end-date") String enddate) {
-        HHRegister hhRegister = hhRegisterService.getHHRegisterForProvider("HouseHold",startdate,enddate);
+    public ResponseEntity<HHRegisterDTO> hhRegister(@RequestParam("anm-id") String anmIdentifier) {
+        HHRegister hhRegister = hhRegisterService.getHHRegisterForProvider(anmIdentifier);
         return new ResponseEntity<>(hhRegisterMapper.mapToDTO(hhRegister), HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/registers/ec")
     @ResponseBody
-    public ResponseEntity<ELCORegisterDTO> ecRegister(@RequestParam("start-date") String startdate,@RequestParam("end-date") String enddate) {
-        ELCORegister ecRegister = ecRegisterService.getELCORegisterForProvider("Elco",startdate,enddate);
+    public ResponseEntity<ELCORegisterDTO> ecRegister(@RequestParam("anm-id") String anmIdentifier) {
+        ELCORegister ecRegister = ecRegisterService.getELCORegisterForProvider(anmIdentifier);
+        return new ResponseEntity<>(ecRegisterMapper.mapToDTO(ecRegister), HttpStatus.OK);
+    }
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/registers/household")
+    @ResponseBody
+    public ResponseEntity<HHRegisterDTO> householdRegister(@RequestParam("start-date") String startdate,@RequestParam("end-date") String enddate) {
+        HHRegister hhRegister = hhRegisterService.getHHRegister("HouseHold",startdate,enddate);
+        return new ResponseEntity<>(hhRegisterMapper.mapToDTO(hhRegister), HttpStatus.OK);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/registers/elco")
+    @ResponseBody
+    public ResponseEntity<ELCORegisterDTO> elcoRegister(@RequestParam("start-date") String startdate,@RequestParam("end-date") String enddate) {
+        ELCORegister ecRegister = ecRegisterService.getELCORegister("Elco",startdate,enddate);
         return new ResponseEntity<>(ecRegisterMapper.mapToDTO(ecRegister), HttpStatus.OK);
     }
 		
