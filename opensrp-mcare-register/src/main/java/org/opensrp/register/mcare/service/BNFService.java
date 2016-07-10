@@ -123,23 +123,25 @@ public class BNFService {
 		if(submission.getField(FWBNFSTS).equalsIgnoreCase(STS_LB) || submission.getField(FWBNFSTS).equalsIgnoreCase(STS_SB))
 		{ 
 			pncService.deliveryOutcome(submission); 
-			bnfSchedulesService.unEnrollBNFSchedule(submission.entityId(), submission.anmId());
-			scheduleLogService.closeScheduleAndScheduleLog( submission.entityId(),submission.instanceId(), SCHEDULE_BNF,submission.anmId());
-			
-			/**
-			 * Close Corresponding ANC schedule
-			 * */
-			scheduleLogService.ancScheduleUnEnroll(submission.entityId(), submission.anmId(), SCHEDULE_ANC);
-			actionService.markAllAlertsAsInactive(submission.entityId());
-			try{
-				long timestamp = actionService.getActionTimestamp(submission.anmId(), submission.entityId(), SCHEDULE_ANC);
-				ancSchedulesService.fullfillSchedule(submission.entityId(), SCHEDULE_ANC, submission.instanceId(), timestamp);
-			}catch(Exception e){
-				logger.info("From ancVisitOne:"+e.getMessage());
+			if(submission.getField("user_type").equalsIgnoreCase("FD")){
+				bnfSchedulesService.unEnrollBNFSchedule(submission.entityId(), submission.anmId());
+				scheduleLogService.closeScheduleAndScheduleLog( submission.entityId(),submission.instanceId(), SCHEDULE_BNF,submission.anmId());
+				
+				/**
+				 * Close Corresponding ANC schedule
+				 * */
+				scheduleLogService.ancScheduleUnEnroll(submission.entityId(), submission.anmId(), SCHEDULE_ANC);
+				actionService.markAllAlertsAsInactive(submission.entityId());
+				try{
+					long timestamp = actionService.getActionTimestamp(submission.anmId(), submission.entityId(), SCHEDULE_ANC);
+					ancSchedulesService.fullfillSchedule(submission.entityId(), SCHEDULE_ANC, submission.instanceId(), timestamp);
+				}catch(Exception e){
+					logger.info("From ancVisitOne:"+e.getMessage());
+				}
 			}
 			
 		}else if(submission.getField(FWBNFSTS).equalsIgnoreCase(STS_GONE) || submission.getField(FWBNFSTS).equalsIgnoreCase(STS_WD) ){
-			if(!submission.getField("user_type").equalsIgnoreCase("FD")){
+			if(submission.getField("user_type").equalsIgnoreCase("FD")){
 				pncService.deleteBlankChild(submission);
 				bnfSchedulesService.unEnrollBNFSchedule(submission.entityId(), submission.anmId());
 				pncService.closeMother(mother);
