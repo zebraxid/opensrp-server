@@ -7,8 +7,8 @@
             "scheduleWindows": {
             	"earliest": ["0 Days"],
                 "due": ["7 Days"],
-                "late": ["14 Days"],
-                "max": ["15 Days"]
+                "late": ["20000 Days"],
+                "max": ["20001 Days"]
             },
             "alerts": [
                 {
@@ -21,11 +21,11 @@
                     "window": "late",
                     "offset": ["7 Days"],
                     "interval": ["1 Day"],
-                    "count": "7"
+                    "count": "19993"
                 },
                 {
                     "window": "max",
-                    "offset": ["14 Days"],
+                    "offset": ["20000 Days"],
                     "interval": ["1 Day"],
                     "count": "1"
                 }
