@@ -47,14 +47,18 @@ public class OpenmrsLocationService extends OpenmrsService{
 	private Location makeLocation(String locationJson) throws JSONException{
 		JSONObject obj = new JSONObject(locationJson);		
 		Location p = getParent(obj);
+		System.out.println("Address:"+obj.toString());
 		Map<String, String> addressFields = new HashMap<String, String>();
-		addressFields.put("stateProvince", obj.getString("stateProvince"));
-		addressFields.put("countyDistrict", obj.getString("countyDistrict"));
-		addressFields.put("address1", obj.getString("address1"));
-		addressFields.put("address2", obj.getString("address2"));
-		addressFields.put("address3", obj.getString("address3"));		
-		addressFields.put("address4", obj.getString("address4"));
-		addressFields.put("address5", obj.getString("address5"));
+		addressFields.put("Country", obj.getString("country"));
+		addressFields.put("Division", obj.getString("stateProvince"));
+		addressFields.put("District", obj.getString("countyDistrict"));
+		addressFields.put("Upazilla", obj.getString("address5"));
+		addressFields.put("Union", obj.getString("address3"));
+		addressFields.put("Paurasava", obj.getString("address4"));		
+		addressFields.put("HIE_facilities", obj.getString("name"));
+		addressFields.put("Address_line", obj.getString("name"));
+		
+		
 		
 		org.opensrp.api.domain.Address address = new org.opensrp.api.domain.Address(null, null, null, addressFields, null, null, null, null, null);
 		

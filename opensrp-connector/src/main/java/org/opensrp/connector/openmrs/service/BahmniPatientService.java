@@ -76,6 +76,7 @@ public class BahmniPatientService extends OpenmrsService{
 		String ln = be.getLastName()==null?".":be.getLastName();
 		per.put("names", new JSONArray("[{\"givenName\":\""+fn+"\",\"middleName\":\""+mn+"\", \"familyName\":\""+ln+"\"}]"));
 		per.put("attributes", convertAttributesToOpenmrsJson(be.getAttributes()));
+		System.out.println("Address BE: "+be.getAddresses().toString());
 		per.put("addresses", convertAddressesToOpenmrsJson(be.getAddresses()));
 		return per;
 	}
@@ -109,7 +110,9 @@ public class BahmniPatientService extends OpenmrsService{
 		//System.out.println("Addresses : " + org.apache.commons.lang.StringUtils.join(adl, ","));
 		
 		JSONArray jaar = new JSONArray();
+		System.out.println("Address::"+adl.toString());
 		for (Address ad : adl) {
+			System.out.println("Address ADD::"+ad.toString());
 			JSONObject jao = new JSONObject();
 			if(ad.getAddressFields() != null){
 				jao.put("address1", ad.getAddressFieldMatchingRegex("(?i)(ADDRESS1|HOUSE_NUMBER|HOUSE|HOUSE_NO|UNIT|UNIT_NUMBER|UNIT_NO)"));
@@ -117,7 +120,7 @@ public class BahmniPatientService extends OpenmrsService{
 				jao.put("address3", ad.getAddressFieldMatchingRegex("(?i)(ADDRESS3|SECTOR|AREA)"));
 				//jao.put("address4", "Unions Of Kaliganj Upazila");
 				jao.put("address4", ad.getAddressFieldMatchingRegex("(?i)(ADDRESS4|SUB_DISTRICT|MUNICIPALITY|TOWN|LOCALITY|REGION)"));
-				jao.put("address5", ad.getAddressFieldMatchingRegex("(?i)(ADDRESS5)"));
+				jao.put("address5", ad.getAddressFieldMatchingRegex("(?i)(cityVillage|city_village|CITY|VILLAGE)"));
 				//jao.put("address5", "Kaliganj");
 				//jao.put("countyDistrict", "Gazipur");
 				jao.put("countyDistrict", ad.getAddressFieldMatchingRegex("(?i)(county_district|countyDistrict|COUNTY|DISTRICT)"));

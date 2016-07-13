@@ -1,10 +1,8 @@
-
 package org.opensrp.service.formSubmission;
 
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,16 +36,18 @@ import com.mysql.jdbc.StringUtils;
 
 @Service
 public class FormEntityConverter {
-
+	
 	private FormAttributeParser formAttributeParser;
-		
+	
 	@Autowired
 	public FormEntityConverter(FormAttributeParser formAttributeParser) {
 		this.formAttributeParser = formAttributeParser;
 	}
 	
 	/**
-	 * Whether form submission is an openmrs form. The xlsform made openmrs form by mapping to an encounter_type in settings in xlsform.
+	 * Whether form submission is an openmrs form. The xlsform made openmrs form by mapping to an
+	 * encounter_type in settings in xlsform.
+	 * 
 	 * @param fs
 	 * @return
 	 */
@@ -56,8 +56,9 @@ public class FormEntityConverter {
 		return !StringUtils.isEmptyOrWhitespaceOnly(eventType);
 	}
 	
-	/** 
+	/**
 	 * Extract Event from given form submission
+	 * 
 	 * @param fs
 	 * @return
 	 * @throws ParseException
@@ -66,35 +67,40 @@ public class FormEntityConverter {
 		return createEvent(fs.entityId(), fs.formAttributes().get("encounter_type"), fs.fields(), fs);
 	}
 	
-	private Event createEvent(String entityId, String eventType, List<FormFieldMap> fields, FormSubmissionMap fs) throws ParseException {
+	private Event createEvent(String entityId, String eventType, List<FormFieldMap> fields, FormSubmissionMap fs)
+	    throws ParseException {
 		String encounterDateField = getFieldName(Encounter.encounter_date, fs);
 		String encounterLocation = getFieldName(Encounter.location_id, fs);
 		
 		//TODO
 		String encounterStart = getFieldName(Encounter.encounter_start, fs);
 		String encounterEnd = getFieldName(Encounter.encounter_end, fs);
+		DateTime eventDate;
 		
-		Event e = new Event()
-			.withBaseEntityId(entityId)//should be different for main and subform
-			.withEventDate(new DateTime(FormEntityConstants.FORM_DATE.parse(fs.getFieldValue(encounterDateField))))
-			.withEventType(eventType)
-			.withLocationId(fs.getFieldValue(encounterLocation))
-			.withProviderId(fs.providerId())
-			.withEntityType(fs.bindType())
-			.withFormSubmissionId(fs.instanceId());		
+		try {
+			eventDate = new DateTime(FormEntityConstants.FORM_DATE.parse(fs.getFieldValue(encounterDateField)));
+			
+		}
+		catch (Exception ex) {
+			eventDate = new DateTime();
+		}
+		
+		Event e = new Event().withBaseEntityId(entityId)
+		        //should be different for main and subform
+		        .withEventDate(eventDate).withEventType(eventType).withLocationId(fs.getFieldValue(encounterLocation))
+		        .withProviderId(fs.providerId()).withEntityType(fs.bindType()).withFormSubmissionId(fs.instanceId());
 		for (FormFieldMap fl : fields) {
 			Map<String, String> fat = fl.fieldAttributes();
-			if(!fl.values().isEmpty() && !StringUtils.isEmptyOrWhitespaceOnly(fl.values().get(0))
-					&& fat.containsKey("openmrs_entity") 
-					&& fat.get("openmrs_entity").equalsIgnoreCase("concept")){
+			if (!fl.values().isEmpty() && !StringUtils.isEmptyOrWhitespaceOnly(fl.values().get(0))
+			        && fat.containsKey("openmrs_entity") && fat.get("openmrs_entity").equalsIgnoreCase("concept")) {
 				List<Object> vall = new ArrayList<>();
 				for (String vl : fl.values()) {
-					String val = fl.valueCodes(vl)==null?null:fl.valueCodes(vl).get("openmrs_code");
-					val = StringUtils.isEmptyOrWhitespaceOnly(val)?vl:val;
+					String val = fl.valueCodes(vl) == null ? null : fl.valueCodes(vl).get("openmrs_code");
+					val = StringUtils.isEmptyOrWhitespaceOnly(val) ? vl : val;
 					vall.add(val);
 				}
-				Obs o = new Obs("concept", fl.type(), fat.get("openmrs_entity_id"), 
-						fat.get("openmrs_entity_parent"), vall, null, fl.name());
+				Obs o = new Obs("concept", fl.type(), fat.get("openmrs_entity_id"), fat.get("openmrs_entity_parent"), vall,
+				        null, fl.name());
 				o.setEffectiveDatetime(e.getEventDate());
 				e.addObs(o);
 			}
@@ -102,18 +108,19 @@ public class FormEntityConverter {
 		return e;
 	}
 	
-	public Event getEventFromFormSubmission(FormSubmission fs) throws IllegalStateException{
+	public Event getEventFromFormSubmission(FormSubmission fs) throws IllegalStateException {
 		try {
 			return getEventFromFormSubmission(formAttributeParser.createFormSubmissionMap(fs));
-		} catch (JsonIOException | JsonSyntaxException
-				| XPathExpressionException | ParseException
-				| ParserConfigurationException | SAXException | IOException e) {
+		}
+		catch (JsonIOException | JsonSyntaxException | XPathExpressionException | ParseException
+		        | ParserConfigurationException | SAXException | IOException e) {
 			throw new IllegalStateException(e);
 		}
 	}
 	
 	/**
 	 * Extract Event for given subform with given data mapped to specified Encounter Type.
+	 * 
 	 * @param fs
 	 * @param subform
 	 * @param eventType
@@ -121,12 +128,15 @@ public class FormEntityConverter {
 	 * @return
 	 * @throws ParseException
 	 */
-	private Event getEventForSubform(FormSubmissionMap fs, String eventType, SubformMap subformInstance) throws ParseException {
-		return createEvent(subformInstance.entityId(), subformInstance.formAttributes().get("openmrs_entity_id"), subformInstance.fields(), fs);
+	private Event getEventForSubform(FormSubmissionMap fs, String eventType, SubformMap subformInstance)
+	    throws ParseException {
+		return createEvent(subformInstance.entityId(), subformInstance.formAttributes().get("openmrs_entity_id"),
+		    subformInstance.fields(), fs);
 	}
 	
 	/**
 	 * Get field name for specified openmrs entity in given form submission
+	 * 
 	 * @param en
 	 * @param fs
 	 * @return
@@ -137,6 +147,7 @@ public class FormEntityConverter {
 	
 	/**
 	 * Get field name for specified openmrs entity in given form submission for given subform
+	 * 
 	 * @param en
 	 * @param subform
 	 * @param fs
@@ -148,9 +159,9 @@ public class FormEntityConverter {
 	
 	String getFieldName(FormEntity en, List<FormFieldMap> fields) {
 		for (FormFieldMap f : fields) {
-			if(f.fieldAttributes().containsKey("openmrs_entity") && 
-					f.fieldAttributes().get("openmrs_entity").equalsIgnoreCase(en.entity())
-					&& f.fieldAttributes().get("openmrs_entity_id").equalsIgnoreCase(en.entityId())){
+			if (f.fieldAttributes().containsKey("openmrs_entity")
+			        && f.fieldAttributes().get("openmrs_entity").equalsIgnoreCase(en.entity())
+			        && f.fieldAttributes().get("openmrs_entity_id").equalsIgnoreCase(en.entityId())) {
 				return f.name();
 			}
 		}
@@ -159,6 +170,7 @@ public class FormEntityConverter {
 	
 	/**
 	 * Get field name for specified openmrs attribute mappings in given form submission
+	 * 
 	 * @param entity
 	 * @param entityId
 	 * @param entityParentId
@@ -172,12 +184,13 @@ public class FormEntityConverter {
 	String getFieldName(String entity, String entityId, String entityParentId, SubformMap subf) {
 		return getFieldName(entity, entityId, entityParentId, subf.fields());
 	}
+	
 	String getFieldName(String entity, String entityId, String entityParentId, List<FormFieldMap> fields) {
 		for (FormFieldMap f : fields) {
-			if(f.fieldAttributes().containsKey("openmrs_entity") && 
-					f.fieldAttributes().get("openmrs_entity").equalsIgnoreCase(entity)
-					&& f.fieldAttributes().get("openmrs_entity_id").equalsIgnoreCase(entityId)
-					&& f.fieldAttributes().get("openmrs_entity_parent").equalsIgnoreCase(entityParentId)){
+			if (f.fieldAttributes().containsKey("openmrs_entity")
+			        && f.fieldAttributes().get("openmrs_entity").equalsIgnoreCase(entity)
+			        && f.fieldAttributes().get("openmrs_entity_id").equalsIgnoreCase(entityId)
+			        && f.fieldAttributes().get("openmrs_entity_parent").equalsIgnoreCase(entityParentId)) {
 				return f.name();
 			}
 		}
@@ -202,69 +215,56 @@ public class FormEntityConverter {
 	
 	void fillAddressFields(FormFieldMap fl, Map<String, Address> addresses) throws ParseException {
 		Map<String, String> att = fl.fieldAttributes();
-		if(att.containsKey("openmrs_entity") && att.get("openmrs_entity").equalsIgnoreCase("person_address")){
+		if (att.containsKey("openmrs_entity") && att.get("openmrs_entity").equalsIgnoreCase("person_address")) {
 			String addressType = att.get("openmrs_entity_parent");
 			String addressField = att.get("openmrs_entity_id");
 			Address ad = addresses.get(addressType);
-			if(ad == null){
+			if (ad == null) {
 				ad = new Address(addressType, null, null, null, null, null, null, null, null);
 			}
-
-			if(addressField.equalsIgnoreCase("startDate")||addressField.equalsIgnoreCase("start_date")){
+			
+			if (addressField.equalsIgnoreCase("startDate") || addressField.equalsIgnoreCase("start_date")) {
 				ad.setStartDate(DateUtil.parseDate(fl.value()));
-			}
-			else if(addressField.equalsIgnoreCase("endDate")||addressField.equalsIgnoreCase("end_date")){
+			} else if (addressField.equalsIgnoreCase("endDate") || addressField.equalsIgnoreCase("end_date")) {
 				ad.setEndDate(DateUtil.parseDate(fl.value()));
-			}
-			else if(addressField.equalsIgnoreCase("latitude")){
+			} else if (addressField.equalsIgnoreCase("latitude")) {
 				ad.setLatitude(fl.value());
-			}
-			else if(addressField.equalsIgnoreCase("longitute")){
+			} else if (addressField.equalsIgnoreCase("longitute")) {
 				ad.setLongitude(fl.value());
-			}
-			else if(addressField.equalsIgnoreCase("geopoint")){
+			} else if (addressField.equalsIgnoreCase("geopoint")) {
 				// example geopoint 34.044494 -84.695704 4 76 = lat lon alt prec
 				String geopoint = fl.value();
-				if(!StringUtils.isEmptyOrWhitespaceOnly(geopoint)){
+				if (!StringUtils.isEmptyOrWhitespaceOnly(geopoint)) {
 					String[] g = geopoint.split(" ");
 					ad.setLatitude(g[0]);
 					ad.setLongitude(g[1]);
 					ad.setGeopoint(geopoint);
 				}
-			}
-			else if(addressField.equalsIgnoreCase("postal_code")||addressField.equalsIgnoreCase("postalCode")){
+			} else if (addressField.equalsIgnoreCase("postal_code") || addressField.equalsIgnoreCase("postalCode")) {
 				ad.setPostalCode(fl.value());
-			}
-			else if(addressField.equalsIgnoreCase("sub_town") || addressField.equalsIgnoreCase("subTown")){
+			} else if (addressField.equalsIgnoreCase("sub_town") || addressField.equalsIgnoreCase("subTown")) {
 				ad.setSubTown(fl.value());
-			}
-			else if(addressField.equalsIgnoreCase("town")){
+			} else if (addressField.equalsIgnoreCase("town")) {
 				ad.setTown(fl.value());
-			}
-			else if(addressField.equalsIgnoreCase("sub_district") || addressField.equalsIgnoreCase("subDistrict")){
+			} else if (addressField.equalsIgnoreCase("sub_district") || addressField.equalsIgnoreCase("subDistrict")) {
 				ad.setSubDistrict(fl.value());
-			}
-			else if(addressField.equalsIgnoreCase("district") || addressField.equalsIgnoreCase("county")
-					|| addressField.equalsIgnoreCase("county_district") || addressField.equalsIgnoreCase("countyDistrict")){
+			} else if (addressField.equalsIgnoreCase("district") || addressField.equalsIgnoreCase("county")
+			        || addressField.equalsIgnoreCase("county_district") || addressField.equalsIgnoreCase("countyDistrict")) {
 				ad.setCountyDistrict(fl.value());
-			}
-			else if(addressField.equalsIgnoreCase("city") || addressField.equalsIgnoreCase("village")
-					|| addressField.equalsIgnoreCase("cityVillage") || addressField.equalsIgnoreCase("city_village")){
+			} else if (addressField.equalsIgnoreCase("city") || addressField.equalsIgnoreCase("village")
+			        || addressField.equalsIgnoreCase("cityVillage") || addressField.equalsIgnoreCase("city_village")) {
 				ad.setCityVillage(fl.value());
-			}
-			else if(addressField.equalsIgnoreCase("state")||addressField.equalsIgnoreCase("state_province")||addressField.equalsIgnoreCase("stateProvince")){
+			} else if (addressField.equalsIgnoreCase("state") || addressField.equalsIgnoreCase("state_province")
+			        || addressField.equalsIgnoreCase("stateProvince")) {
 				ad.setStateProvince(fl.value());
-			}
-			else if(addressField.equalsIgnoreCase("country")){
+			} else if (addressField.equalsIgnoreCase("country")) {
 				ad.setCountry(fl.value());
-			}
-			else {
+			} else {
 				ad.addAddressField(addressField, fl.value());
 			}
 			addresses.put(addressType, ad);
 		}
 	}
-	
 	
 	Map<String, String> extractIdentifiers(FormSubmissionMap fs) {
 		Map<String, String> pids = new HashMap<>();
@@ -280,10 +280,10 @@ public class FormEntityConverter {
 	
 	void fillIdentifiers(Map<String, String> pids, List<FormFieldMap> fields) {
 		for (FormFieldMap fl : fields) {
-			if(fl.values().size() < 2 && !StringUtils.isEmptyOrWhitespaceOnly(fl.value())){
+			if (fl.values().size() < 2 && !StringUtils.isEmptyOrWhitespaceOnly(fl.value())) {
 				Map<String, String> att = fl.fieldAttributes();
 				
-				if(att.containsKey("openmrs_entity") && att.get("openmrs_entity").equalsIgnoreCase("person_identifier")){
+				if (att.containsKey("openmrs_entity") && att.get("openmrs_entity").equalsIgnoreCase("person_identifier")) {
 					pids.put(att.get("openmrs_entity_id"), fl.value());
 				}
 			}
@@ -304,19 +304,20 @@ public class FormEntityConverter {
 	
 	Map<String, Object> fillAttributes(Map<String, Object> pattributes, List<FormFieldMap> fields) {
 		for (FormFieldMap fl : fields) {
-			if(fl.values().size() < 2 && !StringUtils.isEmptyOrWhitespaceOnly(fl.value())){
+			if (fl.values().size() < 2 && !StringUtils.isEmptyOrWhitespaceOnly(fl.value())) {
 				Map<String, String> att = fl.fieldAttributes();
-				if(att.containsKey("openmrs_entity") /*&& att.get("openmrs_entity").equalsIgnoreCase("person_attribute")*/){
+				if (att.containsKey("openmrs_entity") /*&& att.get("openmrs_entity").equalsIgnoreCase("person_attribute")*/) {
 					pattributes.put(att.get("openmrs_entity_id"), fl.value());
 				}
 			}
 		}
-		System.out.println("pattributes:"+pattributes);
+		System.out.println("pattributes:" + pattributes);
 		return pattributes;
 	}
 	
 	/**
 	 * Extract Client from given form submission
+	 * 
 	 * @param fs
 	 * @return
 	 * @throws ParseException
@@ -326,14 +327,15 @@ public class FormEntityConverter {
 		try {
 			fs = formAttributeParser.createFormSubmissionMap(fsubmission);
 			return createBaseClient(fs);
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			throw new IllegalStateException(e);
 		}
 	}
 	
 	public Client getClientFromFormSubmission(FormSubmissionMap fsubmission) throws Exception {
 		return createBaseClient(fsubmission);
-
+		
 	}
 	
 	public Client createBaseClient(FormSubmissionMap fs) throws ParseException {
@@ -341,46 +343,41 @@ public class FormEntityConverter {
 		String middleName = fs.getFieldValue(getFieldName(Person.middle_name, fs));
 		String lastName = fs.getFieldValue(getFieldName(Person.last_name, fs));
 		String bd = fs.getFieldValue(getFieldName(Person.birthdate, fs));
-		DateTime birthdate = bd==null?null:new DateTime(bd).withTimeAtStartOfDay();
+		DateTime birthdate = bd == null ? null : new DateTime(bd).withTimeAtStartOfDay();
 		String dd = fs.getFieldValue(getFieldName(Person.deathdate, fs));
-		DateTime deathdate = dd==null?null:new DateTime(dd).withTimeAtStartOfDay();
+		DateTime deathdate = dd == null ? null : new DateTime(dd).withTimeAtStartOfDay();
 		String aproxbd = fs.getFieldValue(getFieldName(Person.birthdate_estimated, fs));
 		Boolean birthdateApprox = false;
-		if(!StringUtils.isEmptyOrWhitespaceOnly(aproxbd) && NumberUtils.isNumber(aproxbd)){
+		if (!StringUtils.isEmptyOrWhitespaceOnly(aproxbd) && NumberUtils.isNumber(aproxbd)) {
 			int bde = 0;
 			try {
 				bde = Integer.parseInt(aproxbd);
-			} catch (Exception e) {
+			}
+			catch (Exception e) {
 				e.printStackTrace();
 			}
-			birthdateApprox = bde > 0 ? true:false;
+			birthdateApprox = bde > 0 ? true : false;
 		}
 		String aproxdd = fs.getFieldValue(getFieldName(Person.deathdate_estimated, fs));
 		Boolean deathdateApprox = false;
-		if(!StringUtils.isEmptyOrWhitespaceOnly(aproxdd) && NumberUtils.isNumber(aproxdd)){
+		if (!StringUtils.isEmptyOrWhitespaceOnly(aproxdd) && NumberUtils.isNumber(aproxdd)) {
 			int dde = 0;
 			try {
 				dde = Integer.parseInt(aproxdd);
-			} catch (Exception e) {
+			}
+			catch (Exception e) {
 				e.printStackTrace();
 			}
-			deathdateApprox = dde > 0 ? true:false;
+			deathdateApprox = dde > 0 ? true : false;
 		}
 		String gender = fs.getFieldValue(getFieldName(Person.gender, fs));
 		
 		List<Address> addresses = new ArrayList<>(extractAddresses(fs).values());
-		System.out.println("FOrm Submission:"+fs.toString());
-		Client c = new Client(fs.entityId())
-				.withFirstName(firstName)
-				.withMiddleName(middleName)
-				.withLastName(lastName)
-				.withBirthdate(birthdate, birthdateApprox)
-				.withDeathdate(deathdate, deathdateApprox)
-				.withGender(gender);
+		System.out.println("FOrm Submission:" + fs.toString());
+		Client c = new Client(fs.entityId()).withFirstName(firstName).withMiddleName(middleName).withLastName(lastName)
+		        .withBirthdate(birthdate, birthdateApprox).withDeathdate(deathdate, deathdateApprox).withGender(gender);
 		
-		c.withAddresses(addresses)
-				.withAttributes(extractAttributes(fs))
-				.withIdentifiers(extractIdentifiers(fs));
+		c.withAddresses(addresses).withAttributes(extractAttributes(fs)).withIdentifiers(extractIdentifiers(fs));
 		return c;
 	}
 	
@@ -388,87 +385,85 @@ public class FormEntityConverter {
 		String firstName = subf.getFieldValue(getFieldName(Person.first_name, subf));
 		String gender = subf.getFieldValue(getFieldName(Person.gender, subf));
 		String bb = subf.getFieldValue(getFieldName(Person.birthdate, subf));
-
+		
 		Map<String, String> idents = extractIdentifiers(subf);
-		if(StringUtils.isEmptyOrWhitespaceOnly(firstName)
-				&& StringUtils.isEmptyOrWhitespaceOnly(bb)
-				&& idents.size() < 1 && StringUtils.isEmptyOrWhitespaceOnly(gender)){//we need to ignore uuid of entity
+		if (StringUtils.isEmptyOrWhitespaceOnly(firstName) && StringUtils.isEmptyOrWhitespaceOnly(bb) && idents.size() < 1
+		        && StringUtils.isEmptyOrWhitespaceOnly(gender)) {//we need to ignore uuid of entity
 			// if empty repeat group leave this entry and move to next
 			return null;
 		}
-
+		
 		String middleName = subf.getFieldValue(getFieldName(Person.middle_name, subf));
 		String lastName = subf.getFieldValue(getFieldName(Person.last_name, subf));
 		DateTime birthdate = new DateTime(bb).withTimeAtStartOfDay();
 		String dd = subf.getFieldValue(getFieldName(Person.deathdate, subf));
-		DateTime deathdate = dd==null?null:new DateTime(dd).withTimeAtStartOfDay();
+		DateTime deathdate = dd == null ? null : new DateTime(dd).withTimeAtStartOfDay();
 		String aproxbd = subf.getFieldValue(getFieldName(Person.birthdate_estimated, subf));
 		Boolean birthdateApprox = false;
-		if(!StringUtils.isEmptyOrWhitespaceOnly(aproxbd) && NumberUtils.isNumber(aproxbd)){
+		if (!StringUtils.isEmptyOrWhitespaceOnly(aproxbd) && NumberUtils.isNumber(aproxbd)) {
 			int bde = 0;
 			try {
 				bde = Integer.parseInt(aproxbd);
-			} catch (Exception e) {
+			}
+			catch (Exception e) {
 				e.printStackTrace();
 			}
-			birthdateApprox = bde > 0 ? true:false;
+			birthdateApprox = bde > 0 ? true : false;
 		}
 		String aproxdd = subf.getFieldValue(getFieldName(Person.deathdate_estimated, subf));
 		Boolean deathdateApprox = false;
-		if(!StringUtils.isEmptyOrWhitespaceOnly(aproxdd) && NumberUtils.isNumber(aproxdd)){
+		if (!StringUtils.isEmptyOrWhitespaceOnly(aproxdd) && NumberUtils.isNumber(aproxdd)) {
 			int dde = 0;
 			try {
 				dde = Integer.parseInt(aproxdd);
-			} catch (Exception e) {
+			}
+			catch (Exception e) {
 				e.printStackTrace();
 			}
-			deathdateApprox = dde > 0 ? true:false;
+			deathdateApprox = dde > 0 ? true : false;
 		}
-
+		
 		List<Address> addresses = new ArrayList<>(extractAddressesForSubform(subf).values());
 		
-		Client c = new Client(subf.getFieldValue("id"))
-			.withFirstName(firstName)
-			.withMiddleName(middleName)
-			.withLastName(lastName)
-			.withBirthdate(new DateTime(birthdate), birthdateApprox)
-			.withDeathdate(new DateTime(deathdate), deathdateApprox)
-			.withGender(gender);
+		Client c = new Client(subf.getFieldValue("id")).withFirstName(firstName).withMiddleName(middleName)
+		        .withLastName(lastName).withBirthdate(new DateTime(birthdate), birthdateApprox)
+		        .withDeathdate(new DateTime(deathdate), deathdateApprox).withGender(gender);
 		
-		c.withAddresses(addresses)
-			.withAttributes(extractAttributes(subf))
-			.withIdentifiers(idents);
-
+		c.withAddresses(addresses).withAttributes(extractAttributes(subf)).withIdentifiers(idents);
+		
 		return c;
 	}
+	
 	/**
-	 * Extract Client and Event from given form submission for entities dependent on main beneficiary (excluding main beneficiary). 
-	 * The dependent entities are specified via subforms (repeat groups) in xls forms.
+	 * Extract Client and Event from given form submission for entities dependent on main
+	 * beneficiary (excluding main beneficiary). The dependent entities are specified via subforms
+	 * (repeat groups) in xls forms.
+	 * 
 	 * @param fs
-	 * @return The clients and events Map with id of dependent entity as key. Each entry in Map contains an 
-	 * internal map that holds Client and Event info as "client" and "event" respectively for that 
-	 * dependent entity (whose id is the key of main Map).
-	 * Ex: 
-	 * {222222-55d555-ffffff-232323-ffffff: {client: ClientObjForGivenID, event: EventObjForGivenIDAndForm}},
-	 * {339393-545445-ffdddd-333333-ffffff: {client: ClientObjForGivenID, event: EventObjForGivenIDAndForm}},
-	 * {278383-765766-dddddd-767666-ffffff: {client: ClientObjForGivenID, event: EventObjForGivenIDAndForm}}
+	 * @return The clients and events Map with id of dependent entity as key. Each entry in Map
+	 *         contains an internal map that holds Client and Event info as "client" and "event"
+	 *         respectively for that dependent entity (whose id is the key of main Map). Ex:
+	 *         {222222-55d555-ffffff-232323-ffffff: {client: ClientObjForGivenID, event:
+	 *         EventObjForGivenIDAndForm}}, {339393-545445-ffdddd-333333-ffffff: {client:
+	 *         ClientObjForGivenID, event: EventObjForGivenIDAndForm}},
+	 *         {278383-765766-dddddd-767666-ffffff: {client: ClientObjForGivenID, event:
+	 *         EventObjForGivenIDAndForm}}
 	 * @throws ParseException
 	 */
-	public Map<String, Map<String, Object>> getDependentClientsFromFormSubmission(FormSubmission fsubmission) throws IllegalStateException {
+	public Map<String, Map<String, Object>> getDependentClientsFromFormSubmission(FormSubmission fsubmission)
+	    throws IllegalStateException {
 		FormSubmissionMap fs;
 		try {
 			fs = formAttributeParser.createFormSubmissionMap(fsubmission);
 			Map<String, Map<String, Object>> map = new HashMap<>();
 			for (SubformMap sbf : fs.subforms()) {
 				Map<String, String> att = sbf.formAttributes();
-				if(att.containsKey("openmrs_entity") 
-						&& att.get("openmrs_entity").equalsIgnoreCase("person")
-						){
+				if (att.containsKey("openmrs_entity") && att.get("openmrs_entity").equalsIgnoreCase("person")) {
 					Map<String, Object> cne = new HashMap<>();
-
+					
 					Client subformClient = createSubformClient(sbf);
 					
-					if(subformClient != null){
+					if (subformClient != null) {
 						cne.put("client", subformClient);
 						cne.put("event", getEventForSubform(fs, att.get("openmrs_entity_id"), sbf));
 						
@@ -477,9 +472,9 @@ public class FormEntityConverter {
 				}
 			}
 			return map;
-		} catch (JsonIOException | JsonSyntaxException
-				| XPathExpressionException | ParserConfigurationException
-				| SAXException | IOException | ParseException e) {
+		}
+		catch (JsonIOException | JsonSyntaxException | XPathExpressionException | ParserConfigurationException
+		        | SAXException | IOException | ParseException e) {
 			e.printStackTrace();
 			throw new IllegalStateException(e);
 		}
