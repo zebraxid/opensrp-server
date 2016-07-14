@@ -13,28 +13,26 @@ import com.mysql.jdbc.StringUtils;
 
 @Service
 public class EventService {
-
+	
 	private final AllEvents allEvents;
 	
 	@Autowired
-	public EventService(AllEvents allEvents)
-	{
+	public EventService(AllEvents allEvents) {
 		this.allEvents = allEvents;
 	}
 	
-	public Event getByEventId(String eventId)
-	{
+	public Event getByEventId(String eventId) {
 		return allEvents.findByEventId(eventId);
 	}
 	
-	public Event getByBaseEntityAndFormSubmissionId(String baseEntityId, String formSubmissionId)
-	{
-		System.out.println("baseEntityId:"+baseEntityId+"formSubmissionId:"+formSubmissionId);
+	public Event getByBaseEntityAndFormSubmissionId(String baseEntityId, String formSubmissionId) {
+		System.out.println("baseEntityId:" + baseEntityId + "formSubmissionId:" + formSubmissionId);
 		List<Event> el = allEvents.findByBaseEntityAndFormSubmissionId(baseEntityId, formSubmissionId);
-		if(el.size() > 1){
-			throw new IllegalStateException("Multiple events for baseEntityId and formSubmissionId combination ("+baseEntityId+","+formSubmissionId+")");
+		if (el.size() > 1) {
+			throw new IllegalStateException("Multiple events for baseEntityId and formSubmissionId combination ("
+			        + baseEntityId + "," + formSubmissionId + ")");
 		}
-		if(el.size() == 0){
+		if (el.size() == 0) {
 			return null;
 		}
 		return el.get(0);
@@ -44,64 +42,50 @@ public class EventService {
 		return allEvents.findByBaseEntityId(baseEntityId);
 	}
 	
-	public List<Event> findByFormSubmissionId(String formSubmissionId){
+	public List<Event> findByFormSubmissionId(String formSubmissionId) {
 		return allEvents.findByFormSubmissionId(formSubmissionId);
 	}
 	
-	public List<Event> findEventsBy(String baseEntityId, DateTime from, DateTime to, String eventType, 
-			String entityType, String providerId, String locationId, DateTime lastEditFrom, DateTime lastEditTo) {
-		return allEvents.findEvents(baseEntityId, from, to, eventType, entityType, providerId, locationId, lastEditFrom, lastEditTo);
+	public List<Event> findEventsBy(String baseEntityId, DateTime from, DateTime to, String eventType, String entityType,
+	                                String providerId, String locationId, DateTime lastEditFrom, DateTime lastEditTo) {
+		return allEvents.findEvents(baseEntityId, from, to, eventType, entityType, providerId, locationId, lastEditFrom,
+		    lastEditTo);
 	}
 	
 	public List<Event> findEventsByDynamicQuery(String query) {
 		return allEvents.findEventsByDynamicQuery(query);
 	}
 	
-	public Event addEvent(Event event)
-	{
-		System.out.println("Event:"+event.toString());
-		if(!StringUtils.isEmptyOrWhitespaceOnly(event.getEventId()) && getByEventId(event.getEventId()) != null){
-			throw new IllegalArgumentException("An event already exists with given eventId "+event.getEventId()+". Consider updating");
+	public Event addEvent(Event event) {
+		if (!StringUtils.isEmptyOrWhitespaceOnly(event.getEventId()) && getByEventId(event.getEventId()) != null) {
+			throw new IllegalArgumentException("An event already exists with given eventId " + event.getEventId()
+			        + ". Consider updating");
 		}
-		if(getByBaseEntityAndFormSubmissionId(event.getBaseEntityId(), event.getFormSubmissionId()) != null){
+		if (getByBaseEntityAndFormSubmissionId(event.getBaseEntityId(), event.getFormSubmissionId()) != null) {
 			//throw new IllegalArgumentException("An event already exists with given baseEntity and formSubmission combination. Consider updating");
-			Event e = getByBaseEntityAndFormSubmissionId(event.getBaseEntityId(), event.getFormSubmissionId());
-			e.setRevision(e.getRevision());
-			e.withBaseEntityId(event.getBaseEntityId());
-			e.withCreator(event.getCreator());
-			e.withEntityType(event.getEntityType());
-			e.withLocationId(event.getLocationId());
-			e.withProviderId(event.getProviderId());
-			e.withObs(event.getObs());
-			allEvents.update(e);
-			return e;
-		}else{
-
-		event.setDateCreated(new Date());
-		allEvents.add(event);
-		return event;
+			return updateEvent(event);
+			
+		} else {
+			event.setDateCreated(new Date());
+			allEvents.add(event);
+			return event;
 		}
 	}
 	
-	public void updateEvent(Event updatedEvent)
-	{
-		// If update is on original entity
-		if(updatedEvent.isNew()){
-			throw new IllegalArgumentException("Event to be updated is not an existing and persisting domain object. Update database object instead of new pojo");
-		}
-		
-		/*TODO
-		 * if(findEvent(updatedEvent) == null){
-			throw new IllegalArgumentException("No client found with given list of identifiers. Consider adding new!");
-		}*/
-		
-		updatedEvent.setDateEdited(new Date());
-				
-		allEvents.update(updatedEvent);					
+	public Event updateEvent(Event event) {
+		Event e = getByBaseEntityAndFormSubmissionId(event.getBaseEntityId(), event.getFormSubmissionId());
+		e.setRevision(e.getRevision());
+		e.withBaseEntityId(event.getBaseEntityId());
+		e.withCreator(event.getCreator());
+		e.withEntityType(event.getEntityType());
+		e.withLocationId(event.getLocationId());
+		e.withProviderId(event.getProviderId());
+		e.withObs(event.getObs());
+		allEvents.update(e);
+		return e;
 	}
 	
-	public Event mergeEvent(Event updatedEvent) 
-	{
+	public Event mergeEvent(Event updatedEvent) {
 		return null;
 		/*try{
 		Client original = findClient(updatedClient);
@@ -146,5 +130,5 @@ public class EventService {
 			throw new RuntimeException(e);
 		}*/
 	}
-
+	
 }

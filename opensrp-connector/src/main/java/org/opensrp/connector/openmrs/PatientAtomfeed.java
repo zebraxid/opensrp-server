@@ -34,34 +34,43 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
-public class PatientAtomfeed extends OpenmrsService implements EventWorker, AtomfeedService{
-
+public class PatientAtomfeed extends OpenmrsService implements EventWorker, AtomfeedService {
+	
 	private static final String CATEGORY_URL = "/patient/recent.form";
+	
 	private AtomFeedProperties atomFeedProperties;
-
+	
 	private AFTransactionManager transactionManager;
-    private AtomFeedClientWrapper atomFeedClientWrapper;
+	
+	private AtomFeedClientWrapper atomFeedClientWrapper;
+	
 	private WebClient webClient;
+	
 	private AtomFeedClient client;
+	
 	private static Logger logger = Logger.getLogger(PatientAtomfeed.class);
+	
 	@Autowired
-	public PatientAtomfeed(AllMarkers allMarkers, AllFailedEvents allFailedEvents, 
-			@Value("#{opensrp['openmrs.url']}") String baseUrl,@Value("#{opensrp['openmrs.username']}") String openmrsUserName,@Value("#{opensrp['openmrs.password']}") String openmrsPassword,ECPatientService patientService, ClientService clientService) throws URISyntaxException {
+	public PatientAtomfeed(AllMarkers allMarkers, AllFailedEvents allFailedEvents,
+	    @Value("#{opensrp['openmrs.url']}") String baseUrl, @Value("#{opensrp['openmrs.username']}") String openmrsUserName,
+	    @Value("#{opensrp['openmrs.password']}") String openmrsPassword, ECPatientService patientService,
+	    ClientService clientService) throws URISyntaxException {
 		
 		//super(baseUrl, openmrsUserName, openmrsPassword);
 		
-		if(baseUrl != null){
+		if (baseUrl != null) {
 			OPENMRS_BASE_URL = baseUrl;
 		}
-
-		if(openmrsUserName != null){
+		
+		if (openmrsUserName != null) {
 			OPENMRS_USER = openmrsUserName;
 		}
-		if(openmrsPassword != null){
+		if (openmrsPassword != null) {
 			OPENMRS_PWD = openmrsPassword;
 		}
 		this.atomFeedProperties = new AtomFeedProperties();
-		this.transactionManager = new AFTransactionManager(){
+		this.transactionManager = new AFTransactionManager() {
+			
 			@Override
 			public <T> T executeWithTransaction(AFTransactionWork<T> action) throws RuntimeException {
 				return action.execute();
@@ -69,54 +78,56 @@ public class PatientAtomfeed extends OpenmrsService implements EventWorker, Atom
 		};
 		this.webClient = new WebClient();
 		
-		URI uri = new URI(OPENMRS_BASE_URL+OpenmrsConstants.ATOMFEED_URL+CATEGORY_URL);
-		this.client = new AtomFeedClient(new AllFeeds(webClient), allMarkers, allFailedEvents, atomFeedProperties, transactionManager, uri, this);
-	
+		URI uri = new URI(OPENMRS_BASE_URL + OpenmrsConstants.ATOMFEED_URL + CATEGORY_URL);
+		this.client = new AtomFeedClient(new AllFeeds(webClient), allMarkers, allFailedEvents, atomFeedProperties,
+		        transactionManager, uri, this);
+		
 		this.patientService = patientService;
 		this.clientService = clientService;
-		this.atomFeedClientWrapper = new AtomFeedClientWrapper(new AllFeeds(webClient), allMarkers, allFailedEvents, atomFeedProperties, transactionManager, uri, this);
+		this.atomFeedClientWrapper = new AtomFeedClientWrapper(new AllFeeds(webClient), allMarkers, allFailedEvents,
+		        atomFeedProperties, transactionManager, uri, this);
 	}
 	
 	private ECPatientService patientService;
 	
 	private ClientService clientService;
 	
-
 	@Override
 	public void process(Event event) {
 		
 		try {
-			JSONObject p = patientService.getPatientByUuid(event.getContent().substring(event.getContent().lastIndexOf("/")+1), true);
+			JSONObject p = patientService.getPatientByUuid(
+			    event.getContent().substring(event.getContent().lastIndexOf("/") + 1), true);
 			System.out.println(p);//TODO check in couch and if not exists update thrive id on opermrs side
 			Client c = patientService.convertToClient(p);
-			logger.info("Patient::"+c.toString());
-			Client existing = clientService.findClient(c);			
-			if(existing == null){
+			logger.info("Patient::" + c.toString());
+			Client existing = clientService.findClient(c);
+			if (existing == null) {
 				//c.setBaseEntityId(UUID.randomUUID().toString());
 				logger.info("New Client found");
 				clientService.addClient(c);
-				logger.info("New Client found with Baseentity ID:"+c.getBaseEntityId());
-			}
-			else {				
+				logger.info("New Client found with Baseentity ID:" + c.getBaseEntityId());
+			} else {
 				c = clientService.mergeClient(c);
-				logger.info("Existing Client found with Baseentity ID:"+c.getBaseEntityId());
+				logger.info("Existing Client found with Baseentity ID:" + c.getBaseEntityId());
 			}
-		} catch (JSONException e) {
+		}
+		catch (JSONException e) {
 			throw new RuntimeException(e);
 		}
 	}
-
+	
 	@Override
-	public void cleanUp(Event event) {		
+	public void cleanUp(Event event) {
 		new TurnOffCertificateValidation().ForHTTPSConnections();
 		this.process(event);
 	}
-
+	
 	@Override
 	public void processEvents() {
 		client.processEvents();
 	}
-
+	
 	@Override
 	public void processFailedEvents() {
 		client.processFailedEvents();
@@ -125,6 +136,7 @@ public class PatientAtomfeed extends OpenmrsService implements EventWorker, Atom
 	void setUrl(String url) {
 		OPENMRS_BASE_URL = url;
 	}
+	
 	ECPatientService getPatientService() {
 		return patientService;
 	}
@@ -142,10 +154,10 @@ public class PatientAtomfeed extends OpenmrsService implements EventWorker, Atom
 	}
 	
 	@MotechListener(subjects = OpenmrsConstants.SCHEDULER_OPENMRS_ATOMFEED_SYNCER_SUBJECT)
-	public void getResponse(MotechEvent event){
+	public void getResponse(MotechEvent event) {
 		new TurnOffCertificateValidation().ForHTTPSConnections();
 		System.out.println("Response from Atom Client");
-		 this.processEvents();
+		this.processEvents();
 	}
 	
 }

@@ -139,8 +139,7 @@ public class FormSubmissionProcessor{
 		if(clientService.findClient(c) != null){
 			clientService.mergeClient(c);
 		}
-		else clientService.addClient(c);
-		
+		else clientService.addClient(c);		
 		eventService.addEvent(e);
 		// TODO relationships b/w entities
 			
