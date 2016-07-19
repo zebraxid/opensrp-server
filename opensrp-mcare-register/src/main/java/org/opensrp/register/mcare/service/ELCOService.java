@@ -295,7 +295,7 @@ public class ELCOService {
 					.put(FW_PSRSTS, submission.getField(FW_PSRSTS))
 					.put(FW_PSRLMP, submission.getField(FW_PSRLMP))
 					.put(FW_PSRPREGSTS, submission.getField(FW_PSRPREGSTS))
-					.put(FW_PSRWOMPREGWTD, submission.getField(FW_PSRWOMPREGWTD))
+					.put(FW_PSRPREGWTD, submission.getField(FW_PSRPREGWTD))
 					.put(FW_PSRHUSPREGWTD, submission.getField(FW_PSRHUSPREGWTD))
 					.put(FW_PSREVRPREG, submission.getField(FW_PSREVRPREG))
 					.put(FW_PSRTOTBIRTH, submission.getField(FW_PSRTOTBIRTH))
