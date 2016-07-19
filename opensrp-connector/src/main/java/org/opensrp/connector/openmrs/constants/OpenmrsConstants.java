@@ -7,7 +7,7 @@ public class OpenmrsConstants {
 	public static final String SCHEDULER_TRACKER_SYNCER_SUBJECT = "OpenMRS Scheduler Tracker Syncer";
 	public static final String ENROLLMENT_TRACK_UUID = "openmrsTrackUuid";
 	
-	public static final String SCHEDULER_OPENMRS_ATOMFEED_SYNCER_SUBJECT = "OpenMRS Atomfeed Syncer";
+	public static final String SCHEDULER_OPENMRS_ATOMFEED_SYNCER_SUBJECT_CLIENT = "OpenMRS Atomfeed Syncer";
 	public static final String ATOMFEED_URL = "ws/atomfeed";
     public static final String ATOMFEED_DATABASE_CONNECTOR = "atomfeedDatabaseConnector";
     public static final String SCHEDULER_OPENMRS_ATOMFEED_SYNCER_SUBJECT_EVENT = "OpenMRS Atomfeed Syncer Event";
