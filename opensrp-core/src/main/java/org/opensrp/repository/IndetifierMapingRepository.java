@@ -6,7 +6,7 @@ import org.ektorp.CouchDbConnector;
 import org.ektorp.support.GenerateView;
 import org.motechproject.dao.MotechBaseRepository;
 import org.opensrp.common.AllConstants;
-import org.opensrp.domain.BahmniId;
+import org.opensrp.domain.IdentifierMaping;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,17 +15,17 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class BahmniIdRepository  extends MotechBaseRepository<BahmniId>{
-	private static Logger logger = LoggerFactory.getLogger(BahmniIdRepository.class);
+public class IndetifierMapingRepository  extends MotechBaseRepository<IdentifierMaping>{
+	private static Logger logger = LoggerFactory.getLogger(IndetifierMapingRepository.class);
 	
 	@Autowired
-	public BahmniIdRepository(
+	public IndetifierMapingRepository(
 			@Qualifier(AllConstants.OPENSRP_DATABASE_CONNECTOR) CouchDbConnector db) {
-		super(BahmniId.class, db);
+		super(IdentifierMaping.class, db);
 	}
 	@GenerateView
-	public BahmniId findByentityId(String genId) {
-		List<BahmniId> ids = queryView("by_entityId", genId);
+	public IdentifierMaping findByentityId(String genId) {
+		List<IdentifierMaping> ids = queryView("by_entityId", genId);
 		if (ids == null || ids.isEmpty()) {
 			return null;
 		}

@@ -9,7 +9,7 @@ import org.motechproject.model.MotechBaseDataObject;
 
 
 @TypeDiscriminator("doc.type === 'BahmniId'")
-public class BahmniId extends MotechBaseDataObject {
+public class IdentifierMaping extends MotechBaseDataObject {
 	
 	/**
 	 * 
@@ -19,10 +19,10 @@ public class BahmniId extends MotechBaseDataObject {
 	private String genId;	
 	@JsonProperty
 	private String entityId;	
-	public BahmniId(){
+	public IdentifierMaping(){
 		
 	}
-	public BahmniId(String genId,String entityId){
+	public IdentifierMaping(String genId,String entityId){
 		this.genId = genId;
 		this.entityId = entityId;
 	}
