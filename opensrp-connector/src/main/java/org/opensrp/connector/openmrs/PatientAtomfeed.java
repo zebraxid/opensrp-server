@@ -119,8 +119,8 @@ public class PatientAtomfeed extends OpenmrsService implements EventWorker, Atom
 	
 	@Override
 	public void cleanUp(Event event) {
-		new TurnOffCertificateValidation().ForHTTPSConnections();
-		this.process(event);
+		//new TurnOffCertificateValidation().ForHTTPSConnections();
+		//this.process(event);
 	}
 	
 	@Override
