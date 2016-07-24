@@ -47,6 +47,7 @@ import org.opensrp.register.mcare.service.scheduling.ScheduleLogService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -61,10 +62,15 @@ public class PNCService {
 	private PNCSchedulesService pncSchedulesService;
 	private ChildSchedulesService childSchedulesService;
 	private ScheduleLogService scheduleLogService;
-	private static String FEVER_SMS_URL = "http://localhost/healthsms/getsmsfever.php?text=b%2019953219106042305";
+	private static String FEVER_SMS_URL;
+	private String womanNID = "";
+	private String womanBID = "";
+	private String feverTemp = "";
+	private String identifier = "text=";
 
 	@Autowired
-	public PNCService(AllElcos allElcos, AllMothers allMothers, AllChilds allChilds, ELCOScheduleService elcoSchedulesService, PNCSchedulesService pncSchedulesService, ChildSchedulesService childSchedulesService,ScheduleLogService scheduleLogService) {
+	public PNCService(AllElcos allElcos, AllMothers allMothers, AllChilds allChilds, ELCOScheduleService elcoSchedulesService, PNCSchedulesService pncSchedulesService, ChildSchedulesService childSchedulesService,ScheduleLogService scheduleLogService,
+	                  @Value("#{opensrp['FEVER_SMS_URL']}") String fever_sms_url) {
 		this.allElcos = allElcos;
 		this.allMothers = allMothers;
 		this.allChilds = allChilds;
@@ -72,6 +78,10 @@ public class PNCService {
 		this.pncSchedulesService = pncSchedulesService;
 		this.childSchedulesService = childSchedulesService;
 		this.scheduleLogService = scheduleLogService;
+		this.FEVER_SMS_URL = fever_sms_url;
+	}
+	public PNCService( @Value("#{opensrp['FEVER_SMS_URL']}") String fever_sms_url){
+		this.FEVER_SMS_URL = fever_sms_url;
 	}
 	
 	public void deliveryOutcome(FormSubmission submission) {
@@ -167,9 +177,7 @@ public class PNCService {
 	}
 
 	public void pncVisitOne(FormSubmission submission) {
-
 		Mother mother = allMothers.findByCaseId(submission.entityId());
-
 		if (mother == null) {
 			logger.warn(format(
 					"Failed to handle PNC-1 as there is no Mother enroll with ID: {0}",
@@ -178,6 +186,9 @@ public class PNCService {
 		}
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date today = Calendar.getInstance().getTime();
+		womanBID = submission.getField(FW_WOMBID);
+		womanNID = submission.getField(FW_WOMBID);
+		feverTemp = submission.getField(FWPNC1TEMP);
 		Map<String, String> pncVisitOne = create(FWPNC1DATE,
 				submission.getField(FWPNC1DATE))
 				.put(FWCONFIRMATION, submission.getField(FWCONFIRMATION))
@@ -185,14 +196,14 @@ public class PNCService {
 				.put(FWPNC1INT, submission.getField(FWPNC1INT))
 				.put(FWPNC1KNWPRVDR, submission.getField(FWPNC1KNWPRVDR))
 				.put(FWPNC1FVR, submission.getField(FWPNC1FVR))
-				.put(FWPNC1TEMP, submission.getField(FWPNC1TEMP))
+				.put(FWPNC1TEMP, feverTemp)
 				.put(FWPNC1DNGRSIGN, submission.getField(FWPNC1DNGRSIGN))
 				.put(FWPNC1DELTYPE, submission.getField(FWPNC1DELTYPE))
 				.put(FWPNC1DELCOMP, submission.getField(FWPNC1DELCOMP))				
 				.put(FW_GOBHHID, submission.getField(FW_GOBHHID))
 				.put(FW_JiVitAHHID, submission.getField(FW_JiVitAHHID))
-				.put(FW_WOMBID, submission.getField(FW_WOMBID))
-				.put(FW_WOMNID, submission.getField(FW_WOMNID))
+				.put(FW_WOMBID, womanBID)
+				.put(FW_WOMNID, womanNID)
 				.put(FW_WOMFNAME, submission.getField(FW_WOMFNAME))
 				.put(FW_HUSNAME, submission.getField(FW_HUSNAME))
 				.put(FWBNFDTOO, submission.getField(FWBNFDTOO))
@@ -220,12 +231,16 @@ public class PNCService {
 		DateTimeFormatter fmt = DateTimeFormat.forPattern(pattern);
 		String referenceDate = fmt.print(dateTime);		
 		pncSchedulesService.enrollPNCForMother(submission.entityId(), SCHEDULE_PNC_2, LocalDate.parse(referenceDate));
-		sendFeverSMS();
+		
+		if (Double.parseDouble(feverTemp) >= 100.4) {
+			if (!womanBID.equalsIgnoreCase(""))
+				identifier += "b " + womanBID;
+			else if (!womanNID.equalsIgnoreCase(""))
+				identifier += "n " + womanNID;
+			sendFeverSMS(identifier);
+		}
 	}
-	private void sendFeverSMS (){
-		HttpUtil.get(FEVER_SMS_URL, "", "", "").body();
-	}
-
+	
 	public void pncVisitTwo(FormSubmission submission) {
 		Mother mother = allMothers.findByCaseId(submission.entityId());
 
@@ -237,6 +252,9 @@ public class PNCService {
 		}
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date today = Calendar.getInstance().getTime();
+		womanBID = submission.getField(FW_WOMBID);
+		womanNID = submission.getField(FW_WOMBID);
+		feverTemp = submission.getField(FWPNC2TEMP);
 		Map<String, String> pncVisitTwo = create(FWPNC2DATE,
 				submission.getField(FWPNC2DATE))
 				.put(FWCONFIRMATION, submission.getField(FWCONFIRMATION))
@@ -244,13 +262,13 @@ public class PNCService {
 				.put(FWPNC2INT, submission.getField(FWPNC2INT))
 				.put(FWPNC2KNWPRVDR, submission.getField(FWPNC2KNWPRVDR))
 				.put(FWPNC2FVR, submission.getField(FWPNC2FVR))
-				.put(FWPNC2TEMP, submission.getField(FWPNC2TEMP))
+				.put(FWPNC2TEMP, feverTemp)
 				.put(FWPNC2DNGRSIGN, submission.getField(FWPNC2DNGRSIGN))
 				.put(FWPNC2DELCOMP, submission.getField(FWPNC2DELCOMP))
 				.put(FW_GOBHHID, submission.getField(FW_GOBHHID))
 				.put(FW_JiVitAHHID, submission.getField(FW_JiVitAHHID))
-				.put(FW_WOMBID, submission.getField(FW_WOMBID))
-				.put(FW_WOMNID, submission.getField(FW_WOMNID))
+				.put(FW_WOMBID, womanBID)
+				.put(FW_WOMNID, womanNID)
 				.put(FW_WOMFNAME, submission.getField(FW_WOMFNAME))
 				.put(FW_HUSNAME, submission.getField(FW_HUSNAME))
 				.put(FWBNFDTOO, submission.getField(FWBNFDTOO))
@@ -276,9 +294,16 @@ public class PNCService {
 		
 		DateTime dateTime = DateTime.parse(mother.getbnfVisitDetails(FWBNFDTOO));
 		DateTimeFormatter fmt = DateTimeFormat.forPattern(pattern);
-		String referenceDate = fmt.print(dateTime);
-		
+		String referenceDate = fmt.print(dateTime);		
 		pncSchedulesService.enrollPNCForMother(submission.entityId(), SCHEDULE_PNC_3, LocalDate.parse(referenceDate));
+		
+		if (Double.parseDouble(feverTemp) >= 100.4) {
+			if (!womanBID.equalsIgnoreCase(""))
+				identifier += "b " + womanBID;
+			else if (!womanNID.equalsIgnoreCase(""))
+				identifier += "n " + womanNID;
+			sendFeverSMS(identifier);
+		}
 	}
 
 	public void pncVisitThree(FormSubmission submission) {
@@ -293,6 +318,9 @@ public class PNCService {
 		}
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date today = Calendar.getInstance().getTime();
+		womanBID = submission.getField(FW_WOMBID);
+		womanNID = submission.getField(FW_WOMBID);
+		feverTemp = submission.getField(FWPNC3TEMP);
 		Map<String, String> pncVisitThree = create(FWPNC3DATE,
 				submission.getField(FWPNC3DATE))
 				.put(FWCONFIRMATION, submission.getField(FWCONFIRMATION))
@@ -300,13 +328,13 @@ public class PNCService {
 				.put(FWPNC3INT, submission.getField(FWPNC3INT))
 				.put(FWPNC3KNWPRVDR, submission.getField(FWPNC3KNWPRVDR))
 				.put(FWPNC3FVR, submission.getField(FWPNC3FVR))
-				.put(FWPNC3TEMP, submission.getField(FWPNC3TEMP))
+				.put(FWPNC3TEMP, feverTemp)
 				.put(FWPNC3DNGRSIGN, submission.getField(FWPNC3DNGRSIGN))
 				.put(FWPNC3DELCOMP, submission.getField(FWPNC3DELCOMP))
 				.put(FW_GOBHHID, submission.getField(FW_GOBHHID))
 				.put(FW_JiVitAHHID, submission.getField(FW_JiVitAHHID))
-				.put(FW_WOMBID, submission.getField(FW_WOMBID))
-				.put(FW_WOMNID, submission.getField(FW_WOMNID))
+				.put(FW_WOMBID, womanBID)
+				.put(FW_WOMNID, womanNID)
 				.put(FW_WOMFNAME, submission.getField(FW_WOMFNAME))
 				.put(FW_HUSNAME, submission.getField(FW_HUSNAME))
 				.put(FWBNFDTOO, submission.getField(FWBNFDTOO))
@@ -320,12 +348,18 @@ public class PNCService {
 				.put(external_user_ID, submission.getField(external_user_ID))
 				.put("received_time", format.format(today).toString())
 				.map();
-
 		mother.withPNCVisitThree(pncVisitThree);
 		mother.withTODAY(submission.getField(REFERENCE_DATE));
-		allMothers.update(mother);
-		
+		allMothers.update(mother);		
 		pncSchedulesService.unEnrollFromSchedule(submission.entityId(), submission.anmId(), SCHEDULE_PNC);
+		
+		if (Double.parseDouble(feverTemp) >= 100.4) {
+			if (!womanBID.equalsIgnoreCase(""))
+				identifier += "b " + womanBID;
+			else if (!womanNID.equalsIgnoreCase(""))
+				identifier += "n " + womanNID;
+			sendFeverSMS(identifier);
+		}
 	}
 	
 	public void pncClose(String entityId) {
@@ -366,4 +400,9 @@ public class PNCService {
 		}
 		
 	}
+	public void sendFeverSMS (String identifier){
+		System.out.println("hello" + FEVER_SMS_URL);
+		System.out.println("sending feversms for woman identifier: " + identifier + " ,response:"  + HttpUtil.get(FEVER_SMS_URL, identifier, "", "").body());
+	}
+
 }

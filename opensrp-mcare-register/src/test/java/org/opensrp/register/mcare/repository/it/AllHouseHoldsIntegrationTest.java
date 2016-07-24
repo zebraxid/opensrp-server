@@ -30,6 +30,7 @@ import org.opensrp.common.util.WeekBoundariesAndTimestamps;
 import org.opensrp.register.mcare.domain.HouseHold;
 import org.opensrp.register.mcare.repository.AllElcos;
 import org.opensrp.register.mcare.repository.AllHouseHolds;
+import org.opensrp.register.mcare.service.PNCService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -44,6 +45,8 @@ public class AllHouseHoldsIntegrationTest {
 	private AllElcos allElcos;
 	private CouchDbInstance dbInstance;
 	private StdCouchDbConnector stdCouchDbConnector;
+	@Autowired
+	private PNCService pncservice;
 	
     @Before
     public void setUp() throws Exception {
@@ -195,5 +198,13 @@ public class AllHouseHoldsIntegrationTest {
 		System.out.println(elcoViewResult.getRows().size() + " count of mothers from gaibandha" );
 		//return this.coverViewResultToCount(elcoViewResult);
     }
+    
+    @Test
+    public void testFeverSMS (){
+    	pncservice = new PNCService("http://localhost/healthsms/getsmsfever.php");
+    	pncservice.sendFeverSMS("text=114");
+    	
+    }    
+    
 
 }
