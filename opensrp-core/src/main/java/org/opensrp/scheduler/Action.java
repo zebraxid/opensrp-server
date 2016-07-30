@@ -77,7 +77,10 @@ public class Action extends MotechBaseDataObject {
         this.isActionActive = false;
         return this;
     }
-
+    public Action markAsActive() {
+        this.isActionActive = true;
+        return this;
+    }
     public Boolean getIsActionActive() {
         return isActionActive;
     }
