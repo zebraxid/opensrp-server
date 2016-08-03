@@ -2,7 +2,6 @@ package org.opensrp.web.listener;
 
 import java.util.concurrent.TimeUnit;
 
-import org.opensrp.connector.openmrs.constants.OpenmrsConstants;
 import org.opensrp.register.mcare.OpenSRPScheduleConstants;
 import org.opensrp.scheduler.RepeatingSchedule;
 import org.opensrp.scheduler.TaskSchedulerService;
@@ -42,10 +41,10 @@ public class ApplicationStartupListener implements ApplicationListener<ContextRe
 		// anmReportScheduler = new RepeatingSchedule(OpenSRPScheduleConstants.ANM_REPORT_SCHEDULE_SUBJECT, 10, TimeUnit.MINUTES, 6, TimeUnit.HOURS);
 		// mctsReportScheduler = new RepeatingSchedule(OpenSRPScheduleConstants.MCTS_REPORT_SCHEDULE_SUBJECT, 10, TimeUnit.MINUTES, mctsPollIntervalInHours, TimeUnit.HOURS);
 		//openmrsScheduleSyncerScheduler = new RepeatingSchedule(OpenmrsConstants.SCHEDULER_TRACKER_SYNCER_SUBJECT, 0, TimeUnit.MINUTES, 1, TimeUnit.MINUTES);
-		atomfeedSyncClient = new RepeatingSchedule(OpenmrsConstants.SCHEDULER_OPENMRS_ATOMFEED_SYNCER_SUBJECT_CLIENT, 0,
-		        TimeUnit.MINUTES, formPollInterval, TimeUnit.MINUTES);
-		atomfeedSyncEvent = new RepeatingSchedule(OpenmrsConstants.SCHEDULER_OPENMRS_ATOMFEED_SYNCER_SUBJECT_EVENT, 0,
-		        TimeUnit.MINUTES, formPollInterval, TimeUnit.MINUTES);
+		//atomfeedSyncClient = new RepeatingSchedule(OpenmrsConstants.SCHEDULER_OPENMRS_ATOMFEED_SYNCER_SUBJECT_CLIENT, 0,
+		//        TimeUnit.MINUTES, formPollInterval, TimeUnit.MINUTES);
+		//atomfeedSyncEvent = new RepeatingSchedule(OpenmrsConstants.SCHEDULER_OPENMRS_ATOMFEED_SYNCER_SUBJECT_EVENT, 0,
+		//        TimeUnit.MINUTES, formPollInterval, TimeUnit.MINUTES);
 	}
 	
 	@Override
@@ -55,8 +54,8 @@ public class ApplicationStartupListener implements ApplicationListener<ContextRe
 			//scheduler.startJob(anmReportScheduler);
 			// scheduler.startJob(mctsReportScheduler);
 			//scheduler.startJob(openmrsScheduleSyncerScheduler);
-			scheduler.startJob(atomfeedSyncClient);
-			scheduler.startJob(atomfeedSyncEvent);
+			//scheduler.startJob(atomfeedSyncClient);
+			//scheduler.startJob(atomfeedSyncEvent);
 			System.out.println("STARTED ALL SCHEDULES");
 		}
 	}

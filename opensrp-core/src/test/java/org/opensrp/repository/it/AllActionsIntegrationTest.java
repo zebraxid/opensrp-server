@@ -1,4 +1,4 @@
-package org.opensrp.repository.it;
+/*package org.opensrp.repository.it;
 
 import static java.util.Arrays.asList;
 import static junit.framework.Assert.assertEquals;
@@ -178,3 +178,4 @@ public class AllActionsIntegrationTest {
         return ActionData.createAlert(mother, schedule, milestone, normal, DateTime.now(), DateTime.now().plusDays(3));
     }
 }
+*/

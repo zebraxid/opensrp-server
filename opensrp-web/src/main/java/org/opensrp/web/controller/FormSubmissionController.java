@@ -34,7 +34,7 @@ import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.form.service.FormSubmissionConverter;
 import org.opensrp.form.service.FormSubmissionService;
 import org.opensrp.register.mcare.OpenSRPScheduleConstants.OpenSRPEvent;
-import org.opensrp.register.mcare.service.HHService;
+import org.opensrp.register.mcare.service.ChildService;
 import org.opensrp.repository.IndetifierMapingRepository;
 import org.opensrp.repository.MultimediaRepository;
 import org.opensrp.scheduler.SystemEvent;
@@ -78,7 +78,7 @@ public class FormSubmissionController {
 	
 	private HouseholdService householdService;
 	
-	private HHService hhService;
+	private ChildService childService;
 	
 	private OpenmrsUserService openmrsUserService;
 	
@@ -103,7 +103,7 @@ public class FormSubmissionController {
 		this.bahmniPatientService = bahmniPatientService;
 		this.patientService = patientService;
 		this.householdService = householdService;
-		this.hhService = hhService;
+		this.childService = childService;
 		this.openmrsUserService = openmrsUserService;
 		this.multimediaService = multimediaService;
 		this.multimediaRepository = multimediaRepository;
@@ -203,13 +203,13 @@ public class FormSubmissionController {
 							if (dep.size() > 0) { // HnW(n)
 								System.out
 								        .println("Dependent client exist into formsubmission /***********************************************************************/ ");
-								Client hhhClient = openmrsConnector.getClientFromFormSubmission(formSubmission);
-								Event hhhEvent = openmrsConnector.getEventFromFormSubmission(formSubmission);
-								OpenmrsHouseHold hh = new OpenmrsHouseHold(hhhClient, hhhEvent);
+								Client childhClient = openmrsConnector.getClientFromFormSubmission(formSubmission);
+								Event childhEvent = openmrsConnector.getEventFromFormSubmission(formSubmission);
+								OpenmrsHouseHold child = new OpenmrsHouseHold(childhClient, childhEvent);
 								for (Map<String, Object> cm : dep.values()) {
-									hh.addHHMember((Client) cm.get("client"), (Event) cm.get("event"));
+									child.addHHMember((Client) cm.get("client"), (Event) cm.get("event"));
 								}
-								householdService.saveHH(hh);
+								householdService.saveHH(child);
 							} else {// HnW(0)
 								System.out
 								        .println("Patient and Dependent client not exist into openmrs /***********************************************************************/ ");
@@ -272,14 +272,14 @@ public class FormSubmissionController {
 						if (dep.size() > 0) { // HnW(n)
 							System.out
 							        .println("Dependent client exist into formsubmission /***********************************************************************/ ");
-							Client hhClient = bahmniOpenmrsConnector.getClientFromFormSubmission(formSubmission);
-							System.out.println(bahmniPatientService.createPatient(hhClient, idGen));
+							Client childClient = bahmniOpenmrsConnector.getClientFromFormSubmission(formSubmission);
+							System.out.println(bahmniPatientService.createPatient(childClient, idGen));
 							Event e = openmrsConnector.getEventFromFormSubmission(formSubmission);
 							System.out.println(encounterService.createEncounter(e, idGen));
-							// Event hhhEvent =
+							// Event childhEvent =
 							// openmrsConnector.getEventFromFormSubmission(formSubmission);
-							// OpenmrsHouseHold hh = new
-							// OpenmrsHouseHold(hhhClient, hhhEvent);
+							// OpenmrsHouseHold child = new
+							// OpenmrsHouseHold(childhClient, childhEvent);
 							
 							for (Map<String, Object> cm : dep.values()) {
 								idGen = bahmniPatientService.generateID();
@@ -289,13 +289,13 @@ public class FormSubmissionController {
 								System.out.println("FSI:" + c.getBaseEntityId());
 								this.createIdentifierMaping(c.getBaseEntityId(), idGen);
 								System.out.println(bahmniPatientService.createPatient((Client) cm.get("client"), idGen));
-								// /hh.addHHMember((Client)cm.get("client"),
+								// /child.addchildMember((Client)cm.get("client"),
 								// (Event)cm.get("event"));
 								// cm.get("event");
 								System.out.println("E:" + (Event) cm.get("event"));
 								System.out.println(encounterService.createEncounter((Event) cm.get("event"), idGen));
 							}
-							// householdService.saveBahmniHH(hh,idGen);
+							// householdService.saveBahmnichild(child,idGen);
 						} else {// HnW(0)
 							/*
 							 * Client c =
@@ -336,7 +336,7 @@ public class FormSubmissionController {
 	@RequestMapping(method = GET, value = "/entity-id")
 	@ResponseBody
 	public ResponseEntity<String> getEntityIdForBRN(@RequestParam("brn-id") List<String> brnIdList) {
-		return new ResponseEntity<>(new Gson().toJson(hhService.getEntityIdBybrnId(brnIdList)), OK);
+		return new ResponseEntity<>(new Gson().toJson(childService.getEntityIdBybrnId(brnIdList)), OK);
 	}
 	
 	@RequestMapping(method = GET, value = "/user-location")

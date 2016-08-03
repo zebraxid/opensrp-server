@@ -1,44 +1,16 @@
 package org.opensrp.connector.openmrs;
 
-import static org.mockito.Mockito.*;
-import static org.hamcrest.Matcher.*;
-
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
 
-import org.ict4h.atomfeed.client.AtomFeedProperties;
-import org.ict4h.atomfeed.client.domain.Event;
-import org.ict4h.atomfeed.client.repository.AllFeeds;
-import org.ict4h.atomfeed.client.repository.datasource.WebClient;
-import org.ict4h.atomfeed.client.service.AtomFeedClient;
-import org.ict4h.atomfeed.client.service.EventWorker;
-import org.ict4h.atomfeed.jdbc.AtomFeedJdbcTransactionManager;
-import org.ict4h.atomfeed.transaction.AFTransactionManager;
-import org.ict4h.atomfeed.transaction.AFTransactionWork;
 import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.opensrp.connector.atomfeed.AllFailedEventsInMemoryImpl;
-import org.opensrp.connector.atomfeed.AllMarkersInMemoryImpl;
 import org.opensrp.connector.openmrs.service.TestResourceLoader;
-import org.opensrp.connector.openmrs.service.TurnOffCertificateValidation;
 import org.opensrp.service.ClientService;
 import org.opensrp.service.EventService;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import com.sun.syndication.feed.atom.Entry;
-import com.sun.syndication.feed.atom.Feed;
 
 public class AtomFeedTest extends TestResourceLoader {
-
+	
 	public AtomFeedTest() throws IOException {
 		super();
 	}
@@ -53,9 +25,9 @@ public class AtomFeedTest extends TestResourceLoader {
 	public void setup() {
 		MockitoAnnotations.initMocks(this);
 	}
-
-	@Test @Ignore
-    public void shouldReadEventsCreatedEvents() throws URISyntaxException {
+	
+	/*@Test @Ignore
+	public void shouldReadEventsCreatedEvents() throws URISyntaxException {
 		WebClient wc = Mockito.mock(WebClient.class);
 		new TurnOffCertificateValidation().ForHTTPSConnections();
 		Map<String, String> m = any();
@@ -66,11 +38,11 @@ public class AtomFeedTest extends TestResourceLoader {
 		if(pushToOpenmrsForTest){
 			paf.processEvents();
 		}
-        
+	    
 		EncounterAtomfeed eaf = new EncounterAtomfeed(new AllMarkersInMemoryImpl(), new AllFailedEventsInMemoryImpl(), openmrsOpenmrsUrl, encounterService, es);
 		if(pushToOpenmrsForTest){
 			eaf.processEvents();
 		}
-    }
+	}*/
 	
 }

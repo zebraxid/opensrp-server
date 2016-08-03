@@ -1,8 +1,7 @@
-package org.opensrp.connector.openmrs;
+/*package org.opensrp.connector.openmrs;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.UUID;
 
 import org.apache.log4j.Logger;
 import org.ict4h.atomfeed.client.AtomFeedProperties;
@@ -15,17 +14,14 @@ import org.ict4h.atomfeed.client.service.AtomFeedClient;
 import org.ict4h.atomfeed.client.service.EventWorker;
 import org.ict4h.atomfeed.transaction.AFTransactionManager;
 import org.ict4h.atomfeed.transaction.AFTransactionWork;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.motechproject.scheduler.domain.MotechEvent;
 import org.motechproject.server.event.annotations.MotechListener;
-import org.opensrp.connector.HttpUtil;
 import org.opensrp.connector.atomfeed.AtomfeedService;
 import org.opensrp.connector.openmrs.constants.OpenmrsConstants;
 import org.opensrp.connector.openmrs.service.ECPatientService;
 import org.opensrp.connector.openmrs.service.OpenmrsService;
-import org.opensrp.connector.openmrs.service.PatientService;
 import org.opensrp.connector.openmrs.service.TurnOffCertificateValidation;
 import org.opensrp.domain.Client;
 import org.opensrp.service.ClientService;
@@ -161,3 +157,4 @@ public class PatientAtomfeed extends OpenmrsService implements EventWorker, Atom
 	}
 	
 }
+*/
