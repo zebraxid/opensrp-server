@@ -1,9 +1,20 @@
 package org.opensrp.service.formSubmission;
 
+import static java.text.MessageFormat.format;
+import static org.apache.commons.lang.exception.ExceptionUtils.getFullStackTrace;
+
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.form.repository.AllFormSubmissions;
-import org.opensrp.service.formSubmission.handler.*;
-import org.opensrp.common.util.EasyMap;
+import org.opensrp.service.formSubmission.handler.CustomFormSubmissionHandler;
+import org.opensrp.service.formSubmission.handler.ECHandlerMapper;
+import org.opensrp.service.formSubmission.handler.FormSubmissionHandler;
+import org.opensrp.service.formSubmission.handler.IHandlerMapper;
+import org.opensrp.service.reporting.FormSubmissionReportService;
+import org.opensrp.service.reporting.IMCTSReportService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 /*import org.opensrp.service.reporting.MCTSReportService;
  import org.opensrp.service.formSubmission.handler.ANCCloseHandler;
  import org.opensrp.service.formSubmission.handler.ANCInvestigationsHandler;
@@ -36,83 +47,75 @@ import org.opensrp.common.util.EasyMap;
  import org.opensrp.service.formSubmission.handler.TTHandler;
  import org.opensrp.service.formSubmission.handler.VitaminAHandler;
  */
-import org.opensrp.service.formSubmission.handler.FormSubmissionHandler;
-import org.opensrp.service.reporting.FormSubmissionReportService;
-import org.opensrp.service.reporting.IMCTSReportService;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import java.util.Map;
-
-import static java.text.MessageFormat.format;
-import static org.apache.commons.lang.exception.ExceptionUtils.getFullStackTrace;
-import static org.opensrp.common.AllConstants.Form.*;
 
 @Component
 public class FormSubmissionRouter {
-	private static Logger logger = LoggerFactory
-			.getLogger(FormSubmissionRouter.class.toString());
+	
+	private static Logger logger = LoggerFactory.getLogger(FormSubmissionRouter.class.toString());
+	
 	private AllFormSubmissions formSubmissionsRepository;
+	
 	private FormSubmissionReportService formSubmissionReportService;
+	
 	private IMCTSReportService mctsReportService;
+	
 	private IHandlerMapper handlerMapper;
+	
 	private ECHandlerMapper ecHandlerMapper;
+	
 	@Autowired
 	public FormSubmissionRouter(AllFormSubmissions formSubmissionsRepository,
-			FormSubmissionReportService formSubmissionReportService,IMCTSReportService mctsReportService,
-			IHandlerMapper handlerMapper,ECHandlerMapper ecHandlerMapper) {
-
+	    FormSubmissionReportService formSubmissionReportService, IMCTSReportService mctsReportService,
+	    IHandlerMapper handlerMapper, ECHandlerMapper ecHandlerMapper) {
+		
 		this.formSubmissionsRepository = formSubmissionsRepository;
 		this.formSubmissionReportService = formSubmissionReportService;
 		this.mctsReportService = mctsReportService;
 		this.handlerMapper = handlerMapper;
 		this.ecHandlerMapper = ecHandlerMapper;
-
+		
 	}
-
+	
 	public void route(String instanceId) throws Exception {
-		FormSubmission submission = formSubmissionsRepository
-				.findByInstanceId(instanceId);
-		FormSubmissionHandler handler = handlerMapper.handlerMapper().get(
-				submission.formName());// handlerMap.get(submission.formName());
+		FormSubmission submission = formSubmissionsRepository.findByInstanceId(instanceId);
+		FormSubmissionHandler handler = handlerMapper.handlerMapper().get(submission.formName());
+		// handlerMap.get(submission.formName());
 		if (handler == null) {
-			logger.warn("Could not find a handler due to unknown form submission: "
-					+ submission);
+			logger.warn("Could not find a handler due to unknown form submission: " + submission);
 			return;
 		}
-		logger.info(format(
-				"Handling {0} form submission with instance Id: {1} for entity: {2}",
-				submission.formName(), submission.instanceId(),
-				submission.entityId()));
+		logger.info(format("Handling {0} form submission with instance Id: {1} for entity: {2}", submission.formName(),
+		    submission.instanceId(), submission.entityId()));
 		try {
 			handler.handle(submission);
 			//formSubmissionReportService.reportFor(submission);
 			//mctsReportService.reportFor(submission);
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			logger.error(format(
-					"Handling {0} form submission with instance Id: {1} for entity: {2} failed with exception : {3}",
-					submission.formName(), submission.instanceId(),
-					submission.entityId(), getFullStackTrace(e)));
+			    "Handling {0} form submission with instance Id: {1} for entity: {2} failed with exception : {3}",
+			    submission.formName(), submission.instanceId(), submission.entityId(), getFullStackTrace(e)));
 			throw e;
 		}
 	}
+	
 	public void route(FormSubmission formSubmission) throws Exception {
 		CustomFormSubmissionHandler handler = ecHandlerMapper.handlerMap().get(formSubmission.formName());// handlerMap.get(submission.formName());
 		if (handler == null) {
-			logger.warn(format("Could not find a handler due to unknown form submission ( {0} ) with instance Id: {1} for entity: {2}",
-				formSubmission.formName(), formSubmission.instanceId(), formSubmission.entityId()));
+			logger.warn(format(
+			    "Could not find a handler due to unknown form submission ( {0} ) with instance Id: {1} for entity: {2}",
+			    formSubmission.formName(), formSubmission.instanceId(), formSubmission.entityId()));
 			return;
 		}
-		logger.info(format("Handling {0} form submission with instance Id: {1} for entity: {2}",
-				formSubmission.formName(), formSubmission.instanceId(), formSubmission.entityId()));
+		logger.info(format("Handling {0} form submission with instance Id: {1} for entity: {2}", formSubmission.formName(),
+		    formSubmission.instanceId(), formSubmission.entityId()));
 		try {
 			handler.handle(formSubmission);
-		} catch (Exception e) {
-			logger.error(format("Handling {0} form submission with instance Id: {1} for entity: {2} failed with exception : {3}",
-					formSubmission.formName(), formSubmission.instanceId(), formSubmission.entityId(), getFullStackTrace(e)));
+		}
+		catch (Exception e) {
+			logger.error(format(
+			    "Handling {0} form submission with instance Id: {1} for entity: {2} failed with exception : {3}",
+			    formSubmission.formName(), formSubmission.instanceId(), formSubmission.entityId(), getFullStackTrace(e)));
 			throw e;
 		}
 	}

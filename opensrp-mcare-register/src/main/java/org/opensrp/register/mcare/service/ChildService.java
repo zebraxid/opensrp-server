@@ -7,7 +7,6 @@ package org.opensrp.register.mcare.service;
 import static java.text.MessageFormat.format;
 
 import java.util.List;
-import java.util.Map;
 
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.register.mcare.domain.Child;
@@ -61,10 +60,10 @@ public class ChildService {
 		}
 		
 		for (Child household : childs) {
-			for (Map<String, String> members : household.MEMBERDETAILS()) {
+			/*for (Map<String, String> members : household.MEMBERDETAILS()) {
 				if (brnIdList.contains(members.get("FWWOMBID")))
 					return household.caseId();
-			}
+			}*/
 		}
 		return null;
 	}

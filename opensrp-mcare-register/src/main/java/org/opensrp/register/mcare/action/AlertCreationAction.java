@@ -66,7 +66,7 @@ public class AlertCreationAction implements HookedEvent {
 			if (child != null) {
 				instanceId = child.INSTANCEID();
 				providerId = child.PROVIDERID();
-				startOfEarliestWindow = DateTime.parse(child.Date_Of_Reg(), formatter);
+				startOfEarliestWindow = DateTime.parse(child.TODAY(), formatter);
 			}
 		} else {
 			throw new IllegalArgumentException("Beneficiary Type : " + beneficiaryType + " is of unknown type");

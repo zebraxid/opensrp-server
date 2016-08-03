@@ -39,79 +39,55 @@ public class Child extends MotechBaseDataObject {
 	private String END;
 	
 	@JsonProperty
-	private String Date_Of_Reg;
+	private String child_nid;
 	
 	@JsonProperty
-	private String GOB_HHID;
+	private String name_english;
 	
 	@JsonProperty
-	private String HoH_HID;
+	private String name_bengali;
 	
 	@JsonProperty
-	private String COUNTRY;
+	private String father_nid;
 	
 	@JsonProperty
-	private String DIVISION;
+	private String father_name_english;
 	
 	@JsonProperty
-	private String DISTRICT;
+	private String father_name_bengali;
 	
 	@JsonProperty
-	private String UPAZILLA;
+	private String father_dob;
 	
 	@JsonProperty
-	private String UNION;
+	private String mother_nid;
 	
 	@JsonProperty
-	private String WARD;
+	private String mother_name_english;
 	
 	@JsonProperty
-	private String HHID;
+	private String mother_name_bengali;
 	
 	@JsonProperty
-	private String HoH_Reg_No;
+	private String mother_dob;
 	
 	@JsonProperty
-	private String GPS;
+	private String child_dob;
 	
 	@JsonProperty
-	private String HoH_FName;
+	private String place_of_birth;
 	
 	@JsonProperty
-	private String HoH_DoB;
+	private String nationality;
 	
 	@JsonProperty
-	private String HoH_Lname;
+	private String gender;
 	
 	@JsonProperty
-	private String HoH_Age;
+	private String present_address;
 	
 	@JsonProperty
-	private String HoH_Gender;
-	
-	@JsonProperty
-	private String HoH_Unique_ID;
-	
-	@JsonProperty
-	private String HoH_NID;
-	
-	@JsonProperty
-	private String HoH_BRID;
-	
-	@JsonProperty
-	private String HoH_Mobile_No;
-	
-	@JsonProperty
-	private String HoH_Education;
-	
-	@JsonProperty
-	private String HoH_Occupation;
-	
-	@JsonProperty
-	private String HH_Member_No;
-	
-	@JsonProperty
-	private List<Map<String, String>> MEMBERDETAILS;
+	private String permanent_address;
 	
 	@JsonProperty
 	private List<Map<String, String>> multimediaAttachments;
@@ -123,7 +99,6 @@ public class Child extends MotechBaseDataObject {
 	private String BAHMNI_ID;
 	
 	public Child() {
-		this.MEMBERDETAILS = new ArrayList<>();
 		this.multimediaAttachments = new ArrayList<>();
 	}
 	
@@ -167,128 +142,83 @@ public class Child extends MotechBaseDataObject {
 		return this;
 	}
 	
-	public Child withDate_Of_Reg(String Date_Of_Reg) {
-		this.Date_Of_Reg = Date_Of_Reg;
+	public Child withchild_nid(String child_nid) {
+		this.child_nid = child_nid;
 		return this;
 	}
 	
-	public Child withGOB_HHID(String GOB_HHID) {
-		this.GOB_HHID = GOB_HHID;
+	public Child withname_english(String name_english) {
+		this.name_english = name_english;
 		return this;
 	}
 	
-	public Child withHoH_HID(String HoH_HID) {
-		this.HoH_HID = HoH_HID;
+	public Child withname_bengali(String name_bengali) {
+		this.name_bengali = name_bengali;
 		return this;
 	}
 	
-	public Child withGPS(String GPS) {
-		this.GPS = GPS;
+	public Child withchild_dob(String child_dob) {
+		this.child_dob = child_dob;
 		return this;
 	}
 	
-	public Child withHoH_FName(String HoH_FName) {
-		this.HoH_FName = HoH_FName;
+	public Child withplace_of_birth(String place_of_birth) {
+		this.place_of_birth = place_of_birth;
 		return this;
 	}
 	
-	public Child withCOUNTRY(String COUNTRY) {
-		this.COUNTRY = COUNTRY;
+	public Child withfather_nid(String father_nid) {
+		this.father_nid = father_nid;
 		return this;
 	}
 	
-	public Child withDIVISION(String DIVISION) {
-		this.DIVISION = DIVISION;
+	public Child withfather_name_english(String father_name_english) {
+		this.father_name_english = father_name_english;
 		return this;
 	}
 	
-	public Child withDISTRICT(String DISTRICT) {
-		this.DISTRICT = DISTRICT;
+	public Child withfather_name_bengali(String father_name_bengali) {
+		this.father_name_bengali = father_name_bengali;
 		return this;
 	}
 	
-	public Child withUPAZILLA(String UPAZILLA) {
-		this.UPAZILLA = UPAZILLA;
+	public Child withfather_dob(String father_dob) {
+		this.father_dob = father_dob;
 		return this;
 	}
 	
-	public Child withUNION(String UNION) {
-		this.UNION = UNION;
+	public Child withmother_nid(String mother_nid) {
+		this.mother_nid = mother_nid;
 		return this;
 	}
 	
-	public Child withWARD(String WARD) {
-		this.WARD = WARD;
+	public Child withmother_name_english(String mother_name_english) {
+		this.mother_name_english = mother_name_english;
 		return this;
 	}
 	
-	public Child withHHID(String HHID) {
-		this.HHID = HHID;
+	public Child withmother_name_bengali(String mother_name_bengali) {
+		this.mother_name_bengali = mother_name_bengali;
 		return this;
 	}
 	
-	public Child withHoH_Reg_No(String HoH_Reg_No) {
-		this.HoH_Reg_No = HoH_Reg_No;
+	public Child withmother_dob(String mother_dob) {
+		this.mother_dob = mother_dob;
 		return this;
 	}
 	
-	public Child withHoH_DoB(String HoH_DoB) {
-		this.HoH_DoB = HoH_DoB;
+	public Child withnationality(String nationality) {
+		this.nationality = nationality;
 		return this;
 	}
 	
-	public Child withHoH_Lname(String HoH_Lname) {
-		this.HoH_Lname = HoH_Lname;
+	public Child withgender(String gender) {
+		this.gender = gender;
 		return this;
 	}
 	
-	public Child withHoH_Age(String HoH_Age) {
-		this.HoH_Age = HoH_Age;
-		return this;
-	}
-	
-	public Child withHoH_Unique_ID(String HoH_Unique_ID) {
-		this.HoH_Unique_ID = HoH_Unique_ID;
-		return this;
-	}
-	
-	public Child withHoH_Gender(String HoH_Gender) {
-		this.HoH_Gender = HoH_Gender;
-		return this;
-	}
-	
-	public Child withHoH_NID(String HoH_NID) {
-		this.HoH_NID = HoH_NID;
-		return this;
-	}
-	
-	public Child withHoH_BRID(String HoH_BRID) {
-		this.HoH_BRID = HoH_BRID;
-		return this;
-	}
-	
-	public Child withHoH_Mobile_No(String HoH_Mobile_No) {
-		this.HoH_Mobile_No = HoH_Mobile_No;
-		return this;
-	}
-	
-	public Child withHoH_Education(String HoH_Education) {
-		this.HoH_Education = HoH_Education;
-		return this;
-	}
-	
-	public Child withHoH_Occupation(String HoH_Occupation) {
-		this.HoH_Occupation = HoH_Occupation;
-		return this;
-	}
-	
-	public Child withHH_Member_No(String HH_Member_No) {
-		this.HH_Member_No = HH_Member_No;
-		return this;
-	}
-	
-	public Child withMEMBERDETAILS(List<Map<String, String>> MEMBERDETAILS) {
-		this.MEMBERDETAILS = MEMBERDETAILS;
+	public Child withpresent_address(String present_address) {
+		this.present_address = present_address;
 		return this;
 	}
 	
@@ -335,107 +265,72 @@ public class Child extends MotechBaseDataObject {
 		return END;
 	}
 	
-	public String Date_Of_Reg() {
-		return Date_Of_Reg;
+	public String child_nid() {
+		return child_nid;
 	}
 	
-	public String GOB_HHID() {
-		return GOB_HHID;
+	public String name_english() {
+		return name_english;
 	}
 	
-	public String HoH_HID() {
-		return HoH_HID;
+	public String name_bengali() {
+		return name_bengali;
 	}
 	
-	public String GPS() {
-		return GPS;
+	public String child_dob() {
+		return child_dob;
 	}
 	
-	public String HoH_FName() {
-		return HoH_FName;
+	public String place_of_birth() {
+		return place_of_birth;
 	}
 	
-	public String COUNTRY() {
-		return COUNTRY;
+	public String father_nid() {
+		return father_nid;
 	}
 	
-	public String DIVISION() {
-		return DIVISION;
+	public String father_name_english() {
+		return father_name_english;
 	}
 	
-	public String DISTRICT() {
-		return DISTRICT;
+	public String father_name_bengali() {
+		return father_name_bengali;
 	}
 	
-	public String UPAZILLA() {
-		return UPAZILLA;
+	public String father_dob() {
+		return father_dob;
 	}
 	
-	public String UNION() {
-		return UNION;
+	public String mother_nid() {
+		return mother_nid;
 	}
 	
-	public String WARD() {
-		return WARD;
+	public String mother_name_english() {
+		return mother_name_english;
 	}
 	
-	public String HHID() {
-		return HHID;
+	public String mother_name_bengali() {
+		return mother_name_bengali;
 	}
 	
-	public String HoH_Reg_No() {
-		return HoH_Reg_No;
+	public String mother_dob() {
+		return mother_dob;
 	}
 	
-	public String HoH_DoB() {
-		return HoH_DoB;
+	public String nationality() {
+		return nationality;
 	}
 	
-	public String HoH_Lname() {
-		return HoH_Lname;
+	public String gender() {
+		return gender;
 	}
 	
-	public String HoH_Age() {
-		return HoH_Age;
+	public String present_address() {
+		return present_address;
 	}
 	
-	public String HoH_Unique_ID() {
-		return HoH_Unique_ID;
-	}
-	
-	public String HoH_Gender() {
-		return HoH_Gender;
-	}
-	
-	public String HoH_NID() {
-		return HoH_NID;
-	}
-	
-	public String HoH_BRID() {
-		return HoH_BRID;
-	}
-	
-	public String HoH_Mobile_No() {
-		return HoH_Mobile_No;
-	}
-	
-	public String HoH_Education() {
-		return HoH_Education;
-	}
-	
-	public String HoH_Occupation() {
-		return HoH_Occupation;
-	}
-	
-	public String HH_Member_No() {
-		return HH_Member_No;
-	}
-	
-	public List<Map<String, String>> MEMBERDETAILS() {
-		if (MEMBERDETAILS == null) {
-			MEMBERDETAILS = new ArrayList<>();
-		}
-		return MEMBERDETAILS;
+	public String permanent_address() {
+		return permanent_address;
 	}
 	
 	public List<Map<String, String>> multimediaAttachments() {
@@ -457,16 +352,6 @@ public class Child extends MotechBaseDataObject {
 	
 	public String getDetail(String name) {
 		return details.get(name);
-	}
-	
-	public String getELCODetail(String name) {
-		/*int size = MEMBERDETAILS.size();
-		String elems = "";
-		for (int i = 0; i < size; i++)
-			elems = elems + MEMBERDETAILS.get(i).get(name) + " " ;
-		return elems;	*/
-		
-		return MEMBERDETAILS.get(0).get(name);
 	}
 	
 	@Override
