@@ -39,6 +39,60 @@ public class Child extends MotechBaseDataObject {
 	private String END;
 	
 	@JsonProperty
+	private String existing_Country;
+	
+	@JsonProperty
+	private String existing_Division;
+	
+	@JsonProperty
+	private String existing_District;
+	
+	@JsonProperty
+	private String existing_Upazilla;
+	
+	@JsonProperty
+	private String existing_Paurasava;
+	
+	@JsonProperty
+	private String existing_Union;
+	
+	@JsonProperty
+	private String existing_HIE_facilities;
+	
+	@JsonProperty
+	private String WARD;
+	
+	@JsonProperty
+	private String COUNTRY;
+	
+	@JsonProperty
+	private String DIVISION;
+	
+	@JsonProperty
+	private String DISTRICT;
+	
+	@JsonProperty
+	private String UPAZILLA;
+	
+	@JsonProperty
+	private String PAURASAVA;
+	
+	@JsonProperty
+	private String UNION;
+	
+	@JsonProperty
+	private String ADDRESS_LINE;
+	
+	@JsonProperty
+	private String HIE_FACILITIES;
+	
+	@JsonProperty
+	private String GPS;
+	
+	@JsonProperty
+	private String Date_Of_Reg;
+	
+	@JsonProperty
 	private String child_nid;
 	
 	@JsonProperty
@@ -140,6 +194,78 @@ public class Child extends MotechBaseDataObject {
 	public Child withEND(String END) {
 		this.END = END;
 		return this;
+	}
+	
+	public void setExisting_Country(String existing_Country) {
+		this.existing_Country = existing_Country;
+	}
+	
+	public void setExisting_Division(String existing_Division) {
+		this.existing_Division = existing_Division;
+	}
+	
+	public void setExisting_District(String existing_District) {
+		this.existing_District = existing_District;
+	}
+	
+	public void setExisting_Upazilla(String existing_Upazilla) {
+		this.existing_Upazilla = existing_Upazilla;
+	}
+	
+	public void setExisting_Paurasava(String existing_Paurasava) {
+		this.existing_Paurasava = existing_Paurasava;
+	}
+	
+	public void setExisting_Union(String existing_Union) {
+		this.existing_Union = existing_Union;
+	}
+	
+	public void setExisting_HIE_facilities(String existing_HIE_facilities) {
+		this.existing_HIE_facilities = existing_HIE_facilities;
+	}
+	
+	public void setWARD(String wARD) {
+		WARD = wARD;
+	}
+	
+	public void setCOUNTRY(String cOUNTRY) {
+		COUNTRY = cOUNTRY;
+	}
+	
+	public void setDIVISION(String dIVISION) {
+		DIVISION = dIVISION;
+	}
+	
+	public void setDISTRICT(String dISTRICT) {
+		DISTRICT = dISTRICT;
+	}
+	
+	public void setUPAZILLA(String uPAZILLA) {
+		UPAZILLA = uPAZILLA;
+	}
+	
+	public void setPAURASAVA(String pAURASAVA) {
+		PAURASAVA = pAURASAVA;
+	}
+	
+	public void setUNION(String uNION) {
+		UNION = uNION;
+	}
+	
+	public void setADDRESS_LINE(String aDDRESS_LINE) {
+		ADDRESS_LINE = aDDRESS_LINE;
+	}
+	
+	public void setHIE_FACILITIES(String hIE_FACILITIES) {
+		HIE_FACILITIES = hIE_FACILITIES;
+	}
+	
+	public void setGPS(String gPS) {
+		GPS = gPS;
+	}
+	
+	public void setDate_Of_Reg(String date_Of_Reg) {
+		Date_Of_Reg = date_Of_Reg;
 	}
 	
 	public Child withchild_nid(String child_nid) {
@@ -258,11 +384,82 @@ public class Child extends MotechBaseDataObject {
 	
 	public String START() {
 		return START;
-		
 	}
 	
 	public String END() {
 		return END;
+	}
+	
+	public String getExisting_Country() {
+		return existing_Country;
+	}
+	
+	public String getExisting_Division() {
+		return existing_Division;
+	}
+	
+	public String getExisting_District() {
+		return existing_District;
+	}
+	
+	public String getExisting_Upazilla() {
+		return existing_Upazilla;
+	}
+	
+	public String getExisting_Paurasava() {
+		return existing_Paurasava;
+	}
+	
+	public String getExisting_Union() {
+		return existing_Union;
+	}
+	
+	public String getExisting_HIE_facilities() {
+		return existing_HIE_facilities;
+	}
+	
+	public String getWARD() {
+		return WARD;
+	}
+	
+	public String getCOUNTRY() {
+		return COUNTRY;
+	}
+	
+	public String getDIVISION() {
+		return DIVISION;
+	}
+	
+	public String getDISTRICT() {
+		return DISTRICT;
+	}
+	
+	public String getUPAZILLA() {
+		return UPAZILLA;
+	}
+	
+	public String getPAURASAVA() {
+		return PAURASAVA;
+	}
+	
+	public String getUNION() {
+		return UNION;
+	}
+	
+	public String getADDRESS_LINE() {
+		return ADDRESS_LINE;
+	}
+	
+	public String getHIE_FACILITIES() {
+		return HIE_FACILITIES;
+	}
+	
+	public String getGPS() {
+		return GPS;
+	}
+	
+	public String getDate_Of_Reg() {
+		return Date_Of_Reg;
 	}
 	
 	public String child_nid() {
