@@ -35,8 +35,6 @@ public class HouseHold extends MotechBaseDataObject {
 	@JsonProperty
 	private String Date_Of_Reg;
 	@JsonProperty
-	private String GOB_HHID; 
-	@JsonProperty
 	private String HoH_HID;
 	@JsonProperty
 	private String COUNTRY;
@@ -57,13 +55,15 @@ public class HouseHold extends MotechBaseDataObject {
 	@JsonProperty
 	private String GPS;
 	@JsonProperty
-	private String HoH_FName;
+	private String HoH_Fname;
 	@JsonProperty
-	private String HoH_DoB;
+	private String HoH_birth_date;
+	@JsonProperty
+	private String HoH_birth_date_known;
 	@JsonProperty
 	private String HoH_Lname;
 	@JsonProperty
-	private String HoH_Age; 
+	private String HoH_age; 
 	@JsonProperty
 	private String HoH_Gender;
 	@JsonProperty
@@ -80,6 +80,40 @@ public class HouseHold extends MotechBaseDataObject {
 	private String HoH_Occupation;
 	@JsonProperty
 	private String HH_Member_No;
+	
+	
+	
+	@JsonProperty
+	private String deviceid;
+	@JsonProperty
+	private String subscriberid;
+	@JsonProperty
+	private String simserial;
+	@JsonProperty
+	private String phonenumber;
+	@JsonProperty
+	private String PAURASAVA;
+	@JsonProperty
+	private String ADDRESS_LINE;
+	@JsonProperty
+	private String HIE_FACILITIES; 
+	@JsonProperty
+	private String calc_HoH_age;
+	@JsonProperty
+	private String calc_HoH_dob;
+	@JsonProperty
+	private String calc_HoH_dob_confirm;
+	@JsonProperty
+	private String calc_dob_estimated;
+	@JsonProperty
+	private String calc_HoH_age_confirm;
+	@JsonProperty
+	private String birth_date_note;
+	@JsonProperty
+	private String note_age;
+	
+	
+	
 	@JsonProperty
 	private List<Map<String, String>> MEMBERDETAILS;
 	@JsonProperty
@@ -138,11 +172,6 @@ public class HouseHold extends MotechBaseDataObject {
 		return this;
 	}
 
-	public HouseHold withGOB_HHID(String GOB_HHID) {
-		this.GOB_HHID = GOB_HHID;
-		return this;
-	}
-
 	public HouseHold withHoH_HID(String HoH_HID) {
 		this.HoH_HID = HoH_HID;
 		return this;
@@ -153,8 +182,8 @@ public class HouseHold extends MotechBaseDataObject {
 		return this;
 	}
 	
-	public HouseHold withHoH_FName(String HoH_FName) {
-		this.HoH_FName = HoH_FName;
+	public HouseHold withHoH_Fname(String HoH_Fname) {
+		this.HoH_Fname = HoH_Fname;
 		return this;
 	}
 
@@ -197,9 +226,14 @@ public class HouseHold extends MotechBaseDataObject {
 		this.HoH_Reg_No = HoH_Reg_No;
 		return this;
 	}
+	
+	public HouseHold withHoH_birth_date(String HoH_birth_date) {
+		this.HoH_birth_date = HoH_birth_date;
+		return this;
+	}
 
-	public HouseHold withHoH_DoB(String HoH_DoB) {
-		this.HoH_DoB = HoH_DoB;
+	public HouseHold withHoH_birth_date_known(String HoH_birth_date_known) {
+		this.HoH_birth_date_known = HoH_birth_date_known;
 		return this;
 	}
 
@@ -209,8 +243,8 @@ public class HouseHold extends MotechBaseDataObject {
 		return this;
 	}
 
-	public HouseHold withHoH_Age(String HoH_Age) {
-		this.HoH_Age = HoH_Age;
+	public HouseHold withHoH_age(String HoH_age) {
+		this.HoH_age = HoH_age;
 		return this;
 	}
 
@@ -251,6 +285,77 @@ public class HouseHold extends MotechBaseDataObject {
 	
 	public HouseHold withHH_Member_No(String HH_Member_No) {
 		this.HH_Member_No = HH_Member_No;
+		return this;
+	}
+	
+	public HouseHold withdeviceid(String deviceid){
+		this.deviceid = deviceid;
+		return this;
+	}
+
+	public HouseHold withsubscriberid(String subscriberid){
+		this.subscriberid = subscriberid;
+		return this;
+	}
+
+	public HouseHold withsimserial(String simserial){
+		this.simserial = simserial;
+		return this;
+	}
+
+	public HouseHold withphonenumber(String phonenumber){
+		this.phonenumber = phonenumber;
+		return this;
+	}
+
+	public HouseHold withPAURASAVA(String PAURASAVA){
+		this.PAURASAVA = PAURASAVA;
+		return this;
+	}
+
+	public HouseHold withADDRESS_LINE(String ADDRESS_LINE){
+		this.ADDRESS_LINE = ADDRESS_LINE;
+		return this;
+	}
+
+	public HouseHold withHIE_FACILITIES(String HIE_FACILITIES){
+		this.HIE_FACILITIES = HIE_FACILITIES;
+		return this;
+	}
+
+	public HouseHold withcalc_HoH_age(String calc_HoH_age){
+		this.calc_HoH_age = calc_HoH_age;
+		return this;
+	}
+
+	public HouseHold withcalc_HoH_dob(String calc_HoH_dob){
+		this.calc_HoH_dob = calc_HoH_dob;
+		return this;
+	}
+
+	public HouseHold withcalc_HoH_dob_confirm(String calc_HoH_dob_confirm){
+		this.calc_HoH_dob_confirm = calc_HoH_dob_confirm;
+		return this;
+	}
+
+
+	public HouseHold withcalc_dob_estimated(String calc_dob_estimated){
+		this.calc_dob_estimated = calc_dob_estimated;
+		return this;
+	}
+
+	public HouseHold withcalc_HoH_age_confirm(String calc_HoH_age_confirm){
+		this.calc_HoH_age_confirm = calc_HoH_age_confirm;
+		return this;
+	}
+
+	public HouseHold withbirth_date_note(String birth_date_note){
+		this.birth_date_note = birth_date_note;
+		return this;
+	}
+
+	public HouseHold withnote_age(String note_age){
+		this.note_age  = note_age ;
 		return this;
 	}
 	
@@ -303,11 +408,7 @@ public class HouseHold extends MotechBaseDataObject {
 	public String Date_Of_Reg() {
 		return Date_Of_Reg;
 	}
-
-	public String GOB_HHID() {
-		return GOB_HHID;
-	}
-
+	
 	public String HoH_HID() {
 		return HoH_HID;
 	}
@@ -316,8 +417,8 @@ public class HouseHold extends MotechBaseDataObject {
 		return GPS;
 	}
 	
-	public String HoH_FName() {
-		return HoH_FName;
+	public String HoH_Fname() {
+		return HoH_Fname;
 	}
 
 	public String COUNTRY() {
@@ -352,15 +453,20 @@ public class HouseHold extends MotechBaseDataObject {
 		return HoH_Reg_No;
 	}
 
-	public String HoH_DoB() {
-		return HoH_DoB;
+	public String HoH_birth_date() {
+		return HoH_birth_date;
 	}
+	
+	public String HoH_birth_date_known() {
+		return HoH_birth_date_known;
+	}
+	
 	public String HoH_Lname() {
 		return HoH_Lname;
 	}
 
-	public String HoH_Age() {
-		return HoH_Age;
+	public String HoH_age() {
+		return HoH_age;
 	}
 
 	public String HoH_Unique_ID() {

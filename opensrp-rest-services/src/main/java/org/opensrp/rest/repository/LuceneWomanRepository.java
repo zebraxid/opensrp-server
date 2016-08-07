@@ -1,7 +1,7 @@
 package org.opensrp.rest.repository;
 
 import org.opensrp.common.AllConstants;
-import org.opensrp.register.mcare.domain.Mother;
+import org.opensrp.register.mcare.domain.Woman;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
@@ -28,10 +28,10 @@ import com.github.ldriscoll.ektorplucene.designdocument.annotation.Index;
 })
 
 @Repository
-public class LuceneMotherRepository extends CouchDbRepositorySupportWithLucene<Mother>{
+public class LuceneWomanRepository extends CouchDbRepositorySupportWithLucene<Woman>{
 	@Autowired
-	public LuceneMotherRepository(@Qualifier(AllConstants.OPENSRP_DATABASE_LUCENE_CONNECTOR)LuceneAwareCouchDbConnector db) {
-		super(Mother.class, db);
+	public LuceneWomanRepository(@Qualifier(AllConstants.OPENSRP_DATABASE_LUCENE_CONNECTOR)LuceneAwareCouchDbConnector db) {
+		super(Woman.class, db);
 		initStandardDesignDocument();
 	}
 	public LuceneResult findDocsByProvider(String queryString) { 

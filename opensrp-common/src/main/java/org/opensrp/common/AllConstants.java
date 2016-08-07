@@ -22,8 +22,8 @@ public class AllConstants {
 
 
     public static class Form {
-    	public static final String HH_REGISTRATION = "new_household_registration";
-    	public static final String MEMBERS_REGISTRATION = "census_enrollment";
+    	public static final String HH_REGISTRATION = "HHMemberReg";
+    	public static final String MEMBERS_REGISTRATION = "NewMemberRegistration";
     	public static final String PSRF_FORM = "psrf_form";
     	public static final String NewBornHandler = "new_born_information";
     	public static final String GeneralHandler = "general";
@@ -169,7 +169,7 @@ public class AllConstants {
     	public static final String FW_LOCATIONID ="LOCATIONID";
     	public static final String relationalid ="relationalid";
     	public static final String FW_TODAY ="TODAY";
-    	public static final String FW_GOBHHID ="GOBHHID";
+    	public static final String FW_GOBHHID ="GOBHHID"; 
     	public static final String FW_JiVitAHHID ="JiVitAHHID";
     	public static final String existing_ELCO ="existing_ELCO";
     	public static final String new_ELCO ="new_ELCO";

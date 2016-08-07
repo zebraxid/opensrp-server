@@ -2,7 +2,7 @@ package org.opensrp.register.mcare.repository.it;
 
 import org.junit.Before;
 import org.junit.runner.RunWith;
-import org.opensrp.register.mcare.repository.AllMothers;
+import org.opensrp.register.mcare.repository.AllWoman;
 import org.opensrp.register.mcare.repository.AllHouseHolds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -15,12 +15,12 @@ public class AllHouseHoldsIntegrationTest {
 	@Autowired
     private AllHouseHolds allHouseHolds;
 	@Autowired
-    private AllMothers allMothers;
+    private AllWoman allWoman;
 	
     @Before
     public void setUp() throws Exception {
     	allHouseHolds.removeAll();
-    	allMothers.removeAll();
+    	allWoman.removeAll();
     }
     
   /*  @Test

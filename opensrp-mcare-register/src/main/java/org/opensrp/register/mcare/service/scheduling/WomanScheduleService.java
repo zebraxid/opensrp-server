@@ -16,13 +16,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class MembersScheduleService {
+public class WomanScheduleService {
 
-	private static Logger logger = LoggerFactory.getLogger(MembersScheduleService.class.toString());
+	private static Logger logger = LoggerFactory.getLogger(WomanScheduleService.class.toString());
 	private HealthSchedulerService scheduler;
 	
 	@Autowired
-	public MembersScheduleService(HealthSchedulerService scheduler)
+	public WomanScheduleService(HealthSchedulerService scheduler)
 	{
 		this.scheduler = scheduler;	
 	}

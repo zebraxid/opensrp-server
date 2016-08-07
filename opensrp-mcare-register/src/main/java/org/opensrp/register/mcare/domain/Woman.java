@@ -18,8 +18,8 @@ import org.ektorp.support.TypeDiscriminator;
 import org.motechproject.model.MotechBaseDataObject;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-@TypeDiscriminator("doc.type === 'Members'")
-public class Members extends MotechBaseDataObject {
+@TypeDiscriminator("doc.type === 'Woman'")
+public class Woman extends MotechBaseDataObject {
 	@JsonProperty
 	private String caseId;
 	@JsonProperty
@@ -210,7 +210,7 @@ public class Members extends MotechBaseDataObject {
 	private Map<String, String> BCG;
 	@JsonProperty
 	private String isClosed;
-	public Members() {
+	public Woman() {
 		this.details = new HashMap<>();
 		this.TTVisitOne = new HashMap<>(); 
 		this.TTVisitTwo = new HashMap<>();
@@ -237,443 +237,443 @@ public class Members extends MotechBaseDataObject {
 		this.setIsClosed(false);
 	}
 	
-	public Members withCaseId(String caseId) {
+	public Woman withCaseId(String caseId) {
 		this.caseId = caseId;
 		return this;
 	}
 
-	public Members withINSTANCEID(String INSTANCEID) {
+	public Woman withINSTANCEID(String INSTANCEID) {
 		this.INSTANCEID = INSTANCEID;
 		return this;
 	}
 
-	public Members withPROVIDERID(String PROVIDERID) {
+	public Woman withPROVIDERID(String PROVIDERID) {
 		this.PROVIDERID = PROVIDERID;
 		return this;
 	}
 
-	public Members withLOCATIONID(String LOCATIONID) {
+	public Woman withLOCATIONID(String LOCATIONID) {
 		this.LOCATIONID = LOCATIONID;
 		return this;
 	}
 
-	public Members withMember_Fname(String Member_Fname) {
+	public Woman withMember_Fname(String Member_Fname) {
 		this.Member_Fname = Member_Fname;
 		return this;
 	}
 
-	public Members withHH_Member(String HH_Member) {
+	public Woman withHH_Member(String HH_Member) {
 		this.HH_Member = HH_Member;
 		return this;
 	}
-	public Members withReg_No(String Reg_No) {
+	public Woman withReg_No(String Reg_No) {
 		this.Reg_No = Reg_No;
 		return this;
 	}
-	public Members withBDH(String BDH) {
+	public Woman withBDH(String BDH) {
 		this.BDH = BDH;
 		return this;
 	}
-	public Members withMember_LName(String Member_LName) {
+	public Woman withMember_LName(String Member_LName) {
 		this.Member_LName = Member_LName;
 		return this;
 	}
-	public Members withGender(String Gender) {
+	public Woman withGender(String Gender) {
 		this.Gender = Gender;
 		return this;
 	}
-	public Members withDoB(String DoB) {
+	public Woman withDoB(String DoB) {
 		this.DoB = DoB;
 		return this;
 	}
 	
-	public Members withType_DoB(String Type_DoB) {
+	public Woman withType_DoB(String Type_DoB) {
 		this.Type_DoB = Type_DoB;
 		return this;
 	}
 
-	public Members withAge(String Age) {
+	public Woman withAge(String Age) {
 		this.Age = Age;
 		return this;
 	}
 
-	public Members withDisplay_Age(String Display_Age) {
+	public Woman withDisplay_Age(String Display_Age) {
 		this.Display_Age = Display_Age;
 		return this;
 	}
 
-	public Members withDate_of_MR(String Date_of_MR) {
+	public Woman withDate_of_MR(String Date_of_MR) {
 		this.Date_of_MR = Date_of_MR;
 		return this;
 	}
 	
-	public Members withDate_of_Measles(String Date_of_Measles) {
+	public Woman withDate_of_Measles(String Date_of_Measles) {
 		this.Date_of_Measles = Date_of_Measles;
 		return this;
 	}
 
-	public Members withChild_Vital_Status(String Child_Vital_Status) {
+	public Woman withChild_Vital_Status(String Child_Vital_Status) {
 		this.Child_Vital_Status = Child_Vital_Status;
 		return this;
 	}
 
-	public Members withMOTHER_Vaccine_Dates(String MOTHER_Vaccine_Dates) {
+	public Woman withMOTHER_Vaccine_Dates(String MOTHER_Vaccine_Dates) {
 		this.MOTHER_Vaccine_Dates = MOTHER_Vaccine_Dates;
 		return this;
 	}
 
-	public Members withFWCWOMHUSSTR(String FWCWOMHUSSTR) {
+	public Woman withFWCWOMHUSSTR(String FWCWOMHUSSTR) {
 		this.FWCWOMHUSSTR = FWCWOMHUSSTR;
 		return this;
 	}
 
-	public Members withDate_of_BCG_OPV_0(String Date_of_BCG_OPV_0) {
+	public Woman withDate_of_BCG_OPV_0(String Date_of_BCG_OPV_0) {
 		this.Date_of_BCG_OPV_0 = Date_of_BCG_OPV_0;
 		return this;
 	}
 
-	public Members withDate_of_OPV_Penta_PCV_1(String Date_of_OPV_Penta_PCV_1) {
+	public Woman withDate_of_OPV_Penta_PCV_1(String Date_of_OPV_Penta_PCV_1) {
 		this.Date_of_OPV_Penta_PCV_1 = Date_of_OPV_Penta_PCV_1;
 		return this;
 	}
 
-	public Members withDate_of_OPV_Penta_PCV_2(String Date_of_OPV_Penta_PCV_2) {
+	public Woman withDate_of_OPV_Penta_PCV_2(String Date_of_OPV_Penta_PCV_2) {
 		this.Date_of_OPV_Penta_PCV_2 = Date_of_OPV_Penta_PCV_2;
 		return this;
 	}
 
-	public Members withDate_of_OPV_Penta_3_IPV(String Date_of_OPV_Penta_3_IPV) {
+	public Woman withDate_of_OPV_Penta_3_IPV(String Date_of_OPV_Penta_3_IPV) {
 		this.Date_of_OPV_Penta_3_IPV = Date_of_OPV_Penta_3_IPV;
 		return this;
 	}
 	
-	public Members withDate_of_PCV_3(String Date_of_PCV_3) {
+	public Woman withDate_of_PCV_3(String Date_of_PCV_3) {
 		this.Date_of_PCV_3 = Date_of_PCV_3;
 		return this;
 	}
 
-	public Members withDate_BRID(String Date_BRID) {
+	public Woman withDate_BRID(String Date_BRID) {
 		this.Date_BRID = Date_BRID;
 		return this;
 	}
 	
-	public Members withChild_BRID(String Child_BRID) {
+	public Woman withChild_BRID(String Child_BRID) {
 		this.Child_BRID = Child_BRID;
 		return this;
 	}
 
-	public Members withDate_Child_Death(String Date_Child_Death) {
+	public Woman withDate_Child_Death(String Date_Child_Death) {
 		this.Date_Child_Death = Date_Child_Death;
 		return this;
 	}
 
-	public Members withC_Guardian_Name_Father(String C_Guardian_Name_Father) {
+	public Woman withC_Guardian_Name_Father(String C_Guardian_Name_Father) {
 		this.C_Guardian_Name_Father = C_Guardian_Name_Father;
 		return this;
 	}
 
-	public Members withC_Guardian_Type(String C_Guardian_Type) {
+	public Woman withC_Guardian_Type(String C_Guardian_Type) {
 		this.C_Guardian_Type = C_Guardian_Type;
 		return this;
 	}
 	
-	public Members withC_Guardian_Name_Mother(String C_Guardian_Name_Mother) {
+	public Woman withC_Guardian_Name_Mother(String C_Guardian_Name_Mother) {
 		this.C_Guardian_Name_Mother = C_Guardian_Name_Mother;
 		return this;
 	}
 
-	public Members withC_Guardian_Name_Hus(String C_Guardian_Name_Hus) {
+	public Woman withC_Guardian_Name_Hus(String C_Guardian_Name_Hus) {
 		this.C_Guardian_Name_Hus = C_Guardian_Name_Hus;
 		return this;
 	}
 	
-	public Members withMarital_Status(String Marital_Status) {
+	public Woman withMarital_Status(String Marital_Status) {
 		this.Marital_Status = Marital_Status;
 		return this;
 	}
 
-	public Members withCouple_No(String Couple_No) {
+	public Woman withCouple_No(String Couple_No) {
 		this.Couple_No = Couple_No;
 		return this;
 	}
 	
-	public Members withLMP(String LMP) {
+	public Woman withLMP(String LMP) {
 		this.LMP = LMP;
 		return this;
 	}
 	
-	public Members withEDD(String EDD) {
+	public Woman withEDD(String EDD) {
 		this.EDD = EDD;
 		return this;
 	}
 	
-	public Members withGA(String GA) {
+	public Woman withGA(String GA) {
 		this.GA = GA;
 		return this;
 	}
 	
-	public Members withPregnancy_Status(String Pregnancy_Status) {
+	public Woman withPregnancy_Status(String Pregnancy_Status) {
 		this.Pregnancy_Status = Pregnancy_Status;
 		return this;
 	}
 
-	public Members withDate_of_MR_wom(String Date_of_MR_wom) {
+	public Woman withDate_of_MR_wom(String Date_of_MR_wom) {
 		this.Date_of_MR_wom = Date_of_MR_wom;
 		return this;
 	}
 
-	public Members withHID(String HID) {
+	public Woman withHID(String HID) {
 		this.HID = HID;
 		return this;
 	}
 	
-	public Members withGuardian_Type(String Guardian_Type) {
+	public Woman withGuardian_Type(String Guardian_Type) {
 		this.Guardian_Type = Guardian_Type;
 		return this;
 	}
 
-	public Members withDate_of_TT1(String Date_of_TT1) {
+	public Woman withDate_of_TT1(String Date_of_TT1) {
 		this.Date_of_TT1 = Date_of_TT1;
 		return this;
 	}
 
-	public Members withDate_of_TT2(String Date_of_TT2) {
+	public Woman withDate_of_TT2(String Date_of_TT2) {
 		this.Date_of_TT2 = Date_of_TT2;
 		return this;
 	}
 
-	public Members withDate_of_TT3(String Date_of_TT3) {
+	public Woman withDate_of_TT3(String Date_of_TT3) {
 		this.Date_of_TT3 = Date_of_TT3;
 		return this;
 	}
 
-	public Members withDate_of_TT4(String Date_of_TT4) {
+	public Woman withDate_of_TT4(String Date_of_TT4) {
 		this.Date_of_TT4 = Date_of_TT4;
 		return this;
 	}
 
-	public Members withDate_of_TT5(String Date_of_TT5) {
+	public Woman withDate_of_TT5(String Date_of_TT5) {
 		this.Date_of_TT5 = Date_of_TT5;
 		return this;
 	}
 
-	public Members withUnique_ID(String Unique_ID) {
+	public Woman withUnique_ID(String Unique_ID) {
 		this.Unique_ID = Unique_ID;
 		return this;
 	}
 
-	public Members withNID(String NID) {
+	public Woman withNID(String NID) {
 		this.NID = NID;
 		return this;
 	}
 	
-	public Members withBRID(String BRID) {
+	public Woman withBRID(String BRID) {
 		this.BRID = BRID;
 		return this;
 	}
 
-	public Members withGuardian_Name_Father(String Guardian_Name_Father) {
+	public Woman withGuardian_Name_Father(String Guardian_Name_Father) {
 		this.Guardian_Name_Father = Guardian_Name_Father;
 		return this;
 	}
 
 	
-	public Members withGuardian_Name_Mother(String Guardian_Name_Mother) {
+	public Woman withGuardian_Name_Mother(String Guardian_Name_Mother) {
 		this.Guardian_Name_Mother = Guardian_Name_Mother;
 		return this;
 	}
 
-	public Members withGuardian_Name_Hus(String Guardian_Name_Hus) {
+	public Woman withGuardian_Name_Hus(String Guardian_Name_Hus) {
 		this.Guardian_Name_Hus = Guardian_Name_Hus;
 		return this;
 	}
 
-	public Members withEducation(String Education) {
+	public Woman withEducation(String Education) {
 		this.Education = Education;
 		return this;
 	}
 
-	public Members withMobile_No(String Mobile_No) {
+	public Woman withMobile_No(String Mobile_No) {
 		this.Mobile_No = Mobile_No;
 		return this;
 	}
 	
-	public Members withOccupation(String Occupation) {
+	public Woman withOccupation(String Occupation) {
 		this.Occupation = Occupation;
 		return this;
 	}
 
-	public Members withIs_TT(String Is_TT) {
+	public Woman withIs_TT(String Is_TT) {
 		this.Is_TT = Is_TT;
 		return this;
 	}
 	
-	public Members withIs_Measles(String Is_Measles) {
+	public Woman withIs_Measles(String Is_Measles) {
 		this.Is_Measles = Is_Measles;
 		return this;
 	}
 
-	public Members withIs_FP(String Is_FP) {
+	public Woman withIs_FP(String Is_FP) {
 		this.Is_FP = Is_FP;
 		return this;
 	}
 	
-	public Members withIs_NewBorn(String Is_NewBorn) {
+	public Woman withIs_NewBorn(String Is_NewBorn) {
 		this.Is_NewBorn = Is_NewBorn;
 		return this;
 	}
 	
-	public Members withMember_COUNTRY(String Member_COUNTRY) {
+	public Woman withMember_COUNTRY(String Member_COUNTRY) {
 		this.Member_COUNTRY = Member_COUNTRY;
 		return this;
 	}
 	
-	public Members withMember_DIVISION(String Member_DIVISION) {
+	public Woman withMember_DIVISION(String Member_DIVISION) {
 		this.Member_DIVISION = Member_DIVISION;
 		return this;
 	}
 	
-	public Members withMember_DISTRICT(String Member_DISTRICT) {
+	public Woman withMember_DISTRICT(String Member_DISTRICT) {
 		this.Member_DISTRICT = Member_DISTRICT;
 		return this;
 	}
 	
-	public Members withMember_UPAZILLA(String Member_UPAZILLA) {
+	public Woman withMember_UPAZILLA(String Member_UPAZILLA) {
 		this.Member_UPAZILLA = Member_UPAZILLA;
 		return this;
 	}
 	
-	public Members withMember_UNION(String Member_UNION) {
+	public Woman withMember_UNION(String Member_UNION) {
 		this.Member_UNION = Member_UNION;
 		return this;
 	}
 	
-	public Members withMember_WARD(String Member_WARD) {
+	public Woman withMember_WARD(String Member_WARD) {
 		this.Member_WARD = Member_WARD;
 		return this;
 	}
 	
-	public Members withMember_GOB_HHID(String Member_GOB_HHID) {
+	public Woman withMember_GOB_HHID(String Member_GOB_HHID) {
 		this.Member_GOB_HHID = Member_GOB_HHID;
 		return this;
 	}
 	
-	public Members withMember_GPS(String Member_GPS) {
+	public Woman withMember_GPS(String Member_GPS) {
 		this.Member_GPS = Member_GPS;
 		return this;
 	}
 	
-	public Members withTODAY(String TODAY) {
+	public Woman withTODAY(String TODAY) {
 		this.TODAY = TODAY;
 		return this;
 	}
 
-	public Members withSTART(String START) {
+	public Woman withSTART(String START) {
 		this.START = START;
 		return this;
 	}
 
-	public Members withEND(String END) {
+	public Woman withEND(String END) {
 		this.END = END;
 		return this;
 	}
-	public Members withRelationalid(String relationalid) {
+	public Woman withRelationalid(String relationalid) {
 		this.relationalid = relationalid;
 		return this;
 	}
-	public Members withDetails(Map<String, String> details) {
+	public Woman withDetails(Map<String, String> details) {
         this.details = new HashMap<>(details);
         return this;
     }
-	public Members withTTVisitOne(Map<String, String> TTVisitOne) {
+	public Woman withTTVisitOne(Map<String, String> TTVisitOne) {
         this.TTVisitOne = new HashMap<>(TTVisitOne);
         return this;
     }
-	public Members withTTVisitTwo(Map<String, String> TTVisitTwo) {
+	public Woman withTTVisitTwo(Map<String, String> TTVisitTwo) {
         this.TTVisitTwo = new HashMap<>(TTVisitTwo);
         return this;
     }
-	public Members withTTVisitThree(Map<String, String> TTVisitThree) {
+	public Woman withTTVisitThree(Map<String, String> TTVisitThree) {
         this.TTVisitThree = new HashMap<>(TTVisitThree);
         return this;
     }
-	public Members withTTVisitFour(Map<String, String> TTVisitFour) {
+	public Woman withTTVisitFour(Map<String, String> TTVisitFour) {
         this.TTVisitFour = new HashMap<>(TTVisitFour);
         return this;
     }
-	public Members withTTVisitFive(Map<String, String> TTVisitFive) {
+	public Woman withTTVisitFive(Map<String, String> TTVisitFive) {
         this.TTVisitFive = new HashMap<>(TTVisitFive);
         return this;
     }
-	public Members withMeaslesVisit(Map<String, String> MeaslesVisit) {
+	public Woman withMeaslesVisit(Map<String, String> MeaslesVisit) {
         this.MeaslesVisit = new HashMap<>(MeaslesVisit);
         return this;
     }
-	public Members withfamilyPlanning(Map<String, String> familyPlanning) {
+	public Woman withfamilyPlanning(Map<String, String> familyPlanning) {
         this.familyPlanning = new HashMap<>(familyPlanning);
         return this;
     }
-	public Members withgeneral(Map<String, String> general) {
+	public Woman withgeneral(Map<String, String> general) {
         this.general = new HashMap<>(general);
         return this;
     }
-	public Members withnewBorn(Map<String, String> newBorn) {
+	public Woman withnewBorn(Map<String, String> newBorn) {
         this.newBorn = new HashMap<>(newBorn);
         return this;
     }
-	public Members withPCV1(Map<String, String> PCV1) {
+	public Woman withPCV1(Map<String, String> PCV1) {
         this.PCV1 = new HashMap<>(PCV1);
         return this;
     }
-	public Members withPCV2(Map<String, String> PCV2) {
+	public Woman withPCV2(Map<String, String> PCV2) {
         this.PCV2 = new HashMap<>(PCV2);
         return this;
     }
-	public Members withPCV3(Map<String, String> PCV3) {
+	public Woman withPCV3(Map<String, String> PCV3) {
         this.PCV3 = new HashMap<>(PCV3);
         return this;
     }
-	public Members withPENTA1(Map<String, String> PENTA1) {
+	public Woman withPENTA1(Map<String, String> PENTA1) {
         this.PENTA1 = new HashMap<>(PENTA1);
         return this;
     }
-	public Members withPENTA2(Map<String, String> PENTA2) {
+	public Woman withPENTA2(Map<String, String> PENTA2) {
         this.PENTA2 = new HashMap<>(PENTA2);
         return this;
     }
-	public Members withPENTA3(Map<String, String> PENTA3) {
+	public Woman withPENTA3(Map<String, String> PENTA3) {
         this.PENTA3 = new HashMap<>(PENTA3);
         return this;
     }
-	public Members withOPV0(Map<String, String> OPV0) {
+	public Woman withOPV0(Map<String, String> OPV0) {
         this.OPV0 = new HashMap<>(OPV0);
         return this;
     }
-	public Members withOPV1(Map<String, String> OPV1) {
+	public Woman withOPV1(Map<String, String> OPV1) {
         this.OPV1 = new HashMap<>(OPV1);
         return this;
     }
-	public Members withOPV2(Map<String, String> OPV2) {
+	public Woman withOPV2(Map<String, String> OPV2) {
         this.OPV2 = new HashMap<>(OPV2);
         return this;
     }
-	public Members withOPV3(Map<String, String> OPV3) {
+	public Woman withOPV3(Map<String, String> OPV3) {
         this.OPV3 = new HashMap<>(OPV3);
         return this;
     }
-	public Members withMR(Map<String, String> MR) {
+	public Woman withMR(Map<String, String> MR) {
         this.MR = new HashMap<>(MR);
         return this;
     }
-	public Members withMeasles2(Map<String, String> Measles2) {
+	public Woman withMeasles2(Map<String, String> Measles2) {
         this.Measles2 = new HashMap<>(Measles2);
         return this;
     }
-	public Members withIPV(Map<String, String> IPV) {
+	public Woman withIPV(Map<String, String> IPV) {
         this.IPV = new HashMap<>(IPV);
         return this;
     }
-	public Members withBCG(Map<String, String> BCG) {
+	public Woman withBCG(Map<String, String> BCG) {
         this.BCG = new HashMap<>(BCG);
         return this;
     }
@@ -1085,7 +1085,7 @@ public class Members extends MotechBaseDataObject {
 			this.BCG = new HashMap<>();
 		return BCG;
 	}
-    public Members setIsClosed(boolean isClosed) {
+    public Woman setIsClosed(boolean isClosed) {
         this.isClosed = Boolean.toString(isClosed);
         return this;
     }
