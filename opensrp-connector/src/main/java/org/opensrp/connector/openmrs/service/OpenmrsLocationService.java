@@ -56,7 +56,7 @@ public class OpenmrsLocationService extends OpenmrsService{
 		addressFields.put("Union", obj.getString("address3"));
 		addressFields.put("Paurasava", obj.getString("address4"));		
 		addressFields.put("HIE_facilities", obj.getString("name"));
-		addressFields.put("Address_line", obj.getString("name"));
+		addressFields.put("Address_line", obj.getString("address1"));
 		
 		
 		
