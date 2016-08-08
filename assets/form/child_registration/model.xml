@@ -24,7 +24,7 @@
       <HIE_FACILITIES openmrs_entity="person_address" openmrs_entity_id="address6" openmrs_entity_parent="usual_residence"/>
       <GPS openmrs_entity="person_address" openmrs_entity_id="geopoint" openmrs_entity_parent="usual_residence"/>
       <Date_Of_Reg>yes</Date_Of_Reg>
-      <child_nid openmrs_entity="person_attribute" openmrs_entity_id="nid"/>
+      <child_nid openmrs_entity="person_attribute" openmrs_entity_id="nationalId"/>
       <name_english openmrs_entity="person" openmrs_entity_id="english_name"/>
       <name_bengali openmrs_entity="person" openmrs_entity_id="bengali_name"/>
       <Father_Information>
