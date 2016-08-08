@@ -30,13 +30,13 @@ public class Child extends MotechBaseDataObject {
 	private String LOCATIONID;
 	
 	@JsonProperty
-	private String TODAY;
+	private String today;
 	
 	@JsonProperty
-	private String START;
+	private String start;
 	
 	@JsonProperty
-	private String END;
+	private String end;
 	
 	@JsonProperty
 	private String existing_Country;
@@ -181,18 +181,18 @@ public class Child extends MotechBaseDataObject {
 		return this;
 	}
 	
-	public Child withTODAY(String TODAY) {
-		this.TODAY = TODAY;
+	public Child withtoday(String today) {
+		this.today = today;
 		return this;
 	}
 	
-	public Child withSTART(String START) {
-		this.START = START;
+	public Child withstart(String start) {
+		this.start = start;
 		return this;
 	}
 	
-	public Child withEND(String END) {
-		this.END = END;
+	public Child withend(String end) {
+		this.end = end;
 		return this;
 	}
 	
@@ -378,16 +378,16 @@ public class Child extends MotechBaseDataObject {
 		return LOCATIONID;
 	}
 	
-	public String TODAY() {
-		return TODAY;
+	public String today() {
+		return today;
 	}
 	
-	public String START() {
-		return START;
+	public String start() {
+		return start;
 	}
 	
-	public String END() {
-		return END;
+	public String end() {
+		return end;
 	}
 	
 	public String getExisting_Country() {
