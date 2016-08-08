@@ -1,6 +1,6 @@
 <model>
     <instance>
-        <HHMemberReg encounter_type="HH And Member Registration" id="HHMemberReg" version="201607260712">
+        <NewMemberRegistration encounter_type="New Member Registration" id="NewMemberRegistartion" version="201607260717">
           <formhub>
             <uuid/>
           </formhub>
@@ -11,7 +11,10 @@
           <existing_Upazilla/>
           <existing_Paurasava/>
           <existing_Union/>
+          <existing_Ward/>
           <existing_HIE_facilities/>
+          <existing_Address_line/>
+          <existing_GPS/>
           <start openmrs_entity="concept" openmrs_entity_id="163137AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
           <end openmrs_entity="concept" openmrs_entity_id="163138AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
           <today openmrs_entity="concept" openmrs_entity_id="163286AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
@@ -19,40 +22,8 @@
           <subscriberid openmrs_entity="concept" openmrs_entity_id="163150AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
           <simserial openmrs_entity="concept" openmrs_entity_id="163151AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
           <phonenumber openmrs_entity="concept" openmrs_entity_id="163152AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
-          <WARD openmrs_entity="person_address" openmrs_entity_id="address2" openmrs_entity_parent="usual_residence"/>
-          <COUNTRY openmrs_entity="person_address" openmrs_entity_id="country" openmrs_entity_parent="usual_residence"/>
-          <DIVISION openmrs_entity="person_address" openmrs_entity_id="stateProvince" openmrs_entity_parent="usual_residence"/>
-          <DISTRICT openmrs_entity="person_address" openmrs_entity_id="countyDistrict" openmrs_entity_parent="usual_residence"/>
-          <UPAZILLA openmrs_entity="person_address" openmrs_entity_id="address5" openmrs_entity_parent="usual_residence"/>
-          <PAURASAVA openmrs_entity="person_address" openmrs_entity_id="address4" openmrs_entity_parent="usual_residence"/>
-          <UNION openmrs_entity="person_address" openmrs_entity_id="address3" openmrs_entity_parent="usual_residence"/>
-          <ADDRESS_LINE openmrs_entity="person_address" openmrs_entity_id="address1" openmrs_entity_parent="usual_residence"/>
-          <HIE_FACILITIES openmrs_entity="person_address" openmrs_entity_id="address6" openmrs_entity_parent="usual_residence"/>
-          <GPS openmrs_entity="person_address" openmrs_entity_id="geopoint" openmrs_entity_parent="usual_residence"/>
           <Date_Of_Reg/>
-          <HHID/>
-          <HoH_Reg_No/>
-          <HoH_Fname openmrs_entity="person" openmrs_entity_id="first_name"/>
-          <HoH_Lname openmrs_entity="person" openmrs_entity_id="last_name"/>
-          <HoH_birth_date_known>yes</HoH_birth_date_known>
-          <HoH_birth_date/>
-          <HoH_age/>
-          <calc_HoH_age/>
-          <calc_HoH_dob/>
-          <calc_HoH_dob_confirm openmrs_entity="person" openmrs_entity_id="birthdate"/>
-          <calc_dob_estimated openmrs_entity="person" openmrs_entity_id="birthdate_estimated"/>
-          <calc_HoH_age_confirm openmrs_entity="concept" openmrs_entity_id="154384AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
-          <birth_date_note/>
-          <note_age/>
-          <HoH_Gender openmrs_entity="person" openmrs_entity_id="gender"/>
-          <HoH_Unique_ID/>
-          <HoH_NID/>
-          <HoH_BRID/>
-          <HoH_HID/>
-          <HoH_Mobile_No/>
-          <HoH_Education/>
-          <HoH_Occupation/>
-          <HH_Member_No/>
+          <HH_Address/>
           <HH_Member template="" openmrs_entity="person" openmrs_entity_id="New Member Registration">
             <Member_COUNTRY openmrs_entity="person_address" openmrs_entity_id="country"/>
             <Member_DIVISION openmrs_entity="person_address" openmrs_entity_id="stateProvince"/>
@@ -64,7 +35,6 @@
             <Member_Address_line openmrs_entity="person_address" openmrs_entity_id="address1"/>
             <Member_HIE_facilities openmrs_entity="person_address" openmrs_entity_id="address6"/>
             <Member_GPS openmrs_entity="person_address" openmrs_entity_id="geopoint"/>
-            <HH_Address/>
             <Member_type/>
             <Reg_No/>
             <Member_Fname openmrs_entity="person" openmrs_entity_id="first_name"/>
@@ -219,7 +189,7 @@
           <meta>
             <instanceID/>
           </meta>
-        </HHMemberReg>
+        </NewMemberRegistration>
       </instance>
     <instance id="yes_no">
         <root>

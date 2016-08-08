@@ -18,11 +18,11 @@ import java.util.Map;
 
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.form.domain.SubFormData;
-import org.opensrp.register.mcare.domain.Members;
+import org.opensrp.register.mcare.domain.Woman;
 import org.opensrp.register.mcare.domain.HouseHold;
-import org.opensrp.register.mcare.repository.AllMembers;
+import org.opensrp.register.mcare.repository.AllWoman;
 import org.opensrp.register.mcare.repository.AllHouseHolds;
-import org.opensrp.register.mcare.service.scheduling.MembersScheduleService;
+import org.opensrp.register.mcare.service.scheduling.WomanScheduleService;
 import org.opensrp.register.mcare.service.scheduling.HHSchedulesService;
 import org.opensrp.register.mcare.service.scheduling.ScheduleLogService;
 import org.slf4j.Logger;
@@ -35,44 +35,44 @@ import static org.opensrp.common.AllConstants.Form.*;
 import static org.opensrp.common.util.EasyMap.create;
 
 @Service
-public class MembersService {
-	private static Logger logger = LoggerFactory.getLogger(MembersService.class
+public class WomanService {
+	private static Logger logger = LoggerFactory.getLogger(WomanService.class
 			.toString());
 
 	private AllHouseHolds allHouseHolds;
-	private AllMembers allMembers;
+	private AllWoman allWoman;
 	private HHSchedulesService hhSchedulesService;
-	private MembersScheduleService membersScheduleService;
+	private WomanScheduleService membersScheduleService;
 	private ScheduleLogService scheduleLogService;
 	@Autowired
-	public MembersService(AllHouseHolds allHouseHolds, AllMembers allMembers, HHSchedulesService hhSchedulesService,
-			MembersScheduleService membersScheduleService, ScheduleLogService scheduleLogService) {
+	public WomanService(AllHouseHolds allHouseHolds, AllWoman allWoman, HHSchedulesService hhSchedulesService,
+			WomanScheduleService membersScheduleService, ScheduleLogService scheduleLogService) {
 		this.allHouseHolds = allHouseHolds;
-		this.allMembers = allMembers;
+		this.allWoman = allWoman;
 		this.hhSchedulesService = hhSchedulesService;
 		this.membersScheduleService = membersScheduleService;
 		this.scheduleLogService = scheduleLogService;
 		
 	}
 	
-	public void registerMembers(FormSubmission submission) {
+	public void registerWoman(FormSubmission submission) {
 		
 		SubFormData subFormData = submission
 				.getSubFormByName(MEMBERS_REGISTRATION_SUB_FORM_NAME);	
 		  
 		for (Map<String, String> membersFields : subFormData.instances()) {
 			
-			Members members = allMembers.findByCaseId(membersFields.get(ID))
+			Woman members = allWoman.findByCaseId(membersFields.get(ID))
 					.withINSTANCEID(submission.instanceId())
 					.withPROVIDERID(submission.anmId());					
 			
-			//addDetailsToMembers(submission, subFormData, members);
+			//addDetailsToWoman(submission, subFormData, members);
 			
 			if(membersFields.containsKey(Reg_No)){
-				allMembers.update(members);
+				allWoman.update(members);
 				logger.info("members updated");
 			}else{
-				allMembers.remove(members);
+				allWoman.remove(members);
 				logger.info("members removed");
 			}
 			
@@ -129,7 +129,7 @@ public class MembersService {
 		}	 
 	}
 	
-	public void Child_Visit(FormSubmission submission, Members members, Map<String, String> membersFields) {
+	public void Child_Visit(FormSubmission submission, Woman members, Map<String, String> membersFields) {
 		
 		if (!membersFields.get(Date_of_BCG_OPV_0).equalsIgnoreCase("") && membersFields.get(Date_of_BCG_OPV_0) != null)
 			if(isValidDate(membersFields.get(Date_of_BCG_OPV_0))){
@@ -154,7 +154,7 @@ public class MembersService {
 			
 	}
 	
-	public void TT_Visit(FormSubmission submission, Members members, Map<String, String> membersFields) {
+	public void TT_Visit(FormSubmission submission, Woman members, Map<String, String> membersFields) {
 		
 		if (!membersFields.get(Date_of_TT1).equalsIgnoreCase("") && membersFields.get(Date_of_TT1) != null)
 			if(isValidDate(membersFields.get(Date_of_TT1)))
@@ -178,8 +178,8 @@ public class MembersService {
 	
 	}
 	
-	private void addDetailsToMembers(FormSubmission submission,
-			SubFormData subFormData, Members members) {
+	private void addDetailsToWoman(FormSubmission submission,
+			SubFormData subFormData, Woman members) {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date today = Calendar.getInstance().getTime();
 		members.details().put(relationalid, subFormData.instances().get(0).get(relationalid));
@@ -275,7 +275,7 @@ public class MembersService {
 	}
 	
 	public void general_Visit(FormSubmission submission) {
-		Members members = allMembers.findByCaseId(submission.entityId());
+		Woman members = allWoman.findByCaseId(submission.entityId());
 		if (members == null) {
 			logger.warn(format(
 					"Failed to handle general_Visit as there is no Member enrolled with ID: {0}",
@@ -295,11 +295,11 @@ public class MembersService {
 											.map();	
 		
 		members.withgeneral(general);
-		allMembers.update(members);
+		allWoman.update(members);
 	}
 	
 	public void familyPlanning(FormSubmission submission) {
-		Members members = allMembers.findByCaseId(submission.entityId());
+		Woman members = allWoman.findByCaseId(submission.entityId());
 		if (members == null) {
 			logger.warn(format(
 					"Failed to handle familyPlanning as there is no Member enrolled with ID: {0}",
@@ -319,11 +319,11 @@ public class MembersService {
 											.map();	
 		
 		members.withfamilyPlanning(familyPlanning);
-		allMembers.update(members);
+		allWoman.update(members);
 	}
 	
 	public void newBorn(FormSubmission submission) {
-		Members members = allMembers.findByCaseId(submission.entityId());
+		Woman members = allWoman.findByCaseId(submission.entityId());
 		if (members == null) {
 			logger.warn(format(
 					"Failed to handle familyPlanning as there is no Member enrolled with ID: {0}",
@@ -343,11 +343,11 @@ public class MembersService {
 											.map();	
 		
 		members.withnewBorn(newBorn);
-		allMembers.update(members);
+		allWoman.update(members);
 	}
 	
 	public void Measles_Visit(FormSubmission submission) {
-		Members members = allMembers.findByCaseId(submission.entityId());
+		Woman members = allWoman.findByCaseId(submission.entityId());
 		if (members == null) {
 			logger.warn(format(
 					"Failed to handle Measles_Visit as there is no Member enrolled with ID: {0}",
@@ -366,7 +366,7 @@ public class MembersService {
 											.map();	
 		
 		members.withMeaslesVisit(measlesVisit);
-		allMembers.update(members);
+		allWoman.update(members);
 		
 		if (!submission.getField(measles_Date_of_Vaccination).equalsIgnoreCase("") && submission.getField(measles_Date_of_Vaccination) != null)
 			if(isValidDate(submission.getField(measles_Date_of_Vaccination)))
@@ -374,7 +374,7 @@ public class MembersService {
 	}
 	
 	public void TT1_Visit(FormSubmission submission) {
-		Members members = allMembers.findByCaseId(submission.entityId());
+		Woman members = allWoman.findByCaseId(submission.entityId());
 		if (members == null) {
 			logger.warn(format(
 					"Failed to handle TT1_Visit as there is no Member enrolled with ID: {0}",
@@ -393,7 +393,7 @@ public class MembersService {
 											.map();	
 		
 		members.withTTVisitOne(TT1_visit);
-		allMembers.update(members);
+		allWoman.update(members);
 		
 		if (!submission.getField(TT1_Date_of_Vaccination).equalsIgnoreCase("") && submission.getField(TT1_Date_of_Vaccination) != null)
 			if(isValidDate(submission.getField(TT1_Date_of_Vaccination)))
@@ -402,7 +402,7 @@ public class MembersService {
 	}
 	
 	public void TT2_Visit(FormSubmission submission) {
-		Members members = allMembers.findByCaseId(submission.entityId());	
+		Woman members = allWoman.findByCaseId(submission.entityId());	
 		if (members == null) {
 			logger.warn(format(
 					"Failed to handle TT2_Visit as there is no Member enrolled with ID: {0}",
@@ -421,7 +421,7 @@ public class MembersService {
 											.map();	
 		
 		members.withTTVisitTwo(TT2_visit);
-		allMembers.update(members);		
+		allWoman.update(members);		
 		
 		if (!submission.getField(TT2_Date_of_Vaccination).equalsIgnoreCase("") && submission.getField(TT2_Date_of_Vaccination) != null)
 			if(isValidDate(submission.getField(TT2_Date_of_Vaccination)))
@@ -429,7 +429,7 @@ public class MembersService {
 	}
 	
 	public void TT3_Visit(FormSubmission submission) {
-		Members members = allMembers.findByCaseId(submission.entityId());
+		Woman members = allWoman.findByCaseId(submission.entityId());
 		if (members == null) {
 			logger.warn(format(
 					"Failed to handle TT3_Visit as there is no Member enrolled with ID: {0}",
@@ -448,7 +448,7 @@ public class MembersService {
 											.map();	
 		
 		members.withTTVisitOne(TT3_visit);
-		allMembers.update(members);
+		allWoman.update(members);
 		
 		if (!submission.getField(TT3_Date_of_Vaccination).equalsIgnoreCase("") && submission.getField(TT3_Date_of_Vaccination) != null)
 			if(isValidDate(submission.getField(TT3_Date_of_Vaccination)))
@@ -456,7 +456,7 @@ public class MembersService {
 	}
 	
 	public void TT4_Visit(FormSubmission submission) {
-		Members members = allMembers.findByCaseId(submission.entityId());
+		Woman members = allWoman.findByCaseId(submission.entityId());
 		if (members == null) {
 			logger.warn(format(
 					"Failed to handle TT4_Visit as there is no Member enrolled with ID: {0}",
@@ -475,7 +475,7 @@ public class MembersService {
 											.map();	
 		
 		members.withTTVisitOne(TT4_visit);
-		allMembers.update(members);
+		allWoman.update(members);
 		
 		if (!submission.getField(TT4_Date_of_Vaccination).equalsIgnoreCase("") && submission.getField(TT4_Date_of_Vaccination) != null)
 			if(isValidDate(submission.getField(TT4_Date_of_Vaccination)))
@@ -483,7 +483,7 @@ public class MembersService {
 	}
 	
 	public void TT5_Visit(FormSubmission submission) {
-		Members members = allMembers.findByCaseId(submission.entityId());
+		Woman members = allWoman.findByCaseId(submission.entityId());
 		if (members == null) {
 			logger.warn(format(
 					"Failed to handle TT5_Visit as there is no Member enrolled with ID: {0}",
@@ -502,7 +502,7 @@ public class MembersService {
 											.map();	
 		
 		members.withTTVisitFive(TT5_visit);
-		allMembers.update(members);
+		allWoman.update(members);
 		
 		if (!submission.getField(TT5_Date_of_Vaccination).equalsIgnoreCase("") && submission.getField(TT5_Date_of_Vaccination) != null)
 			if(isValidDate(submission.getField(TT5_Date_of_Vaccination)))
@@ -510,7 +510,7 @@ public class MembersService {
 	}
 
 	public void PCV1Handler(FormSubmission submission) {
-		Members members = allMembers.findByCaseId(submission.entityId());
+		Woman members = allWoman.findByCaseId(submission.entityId());
 		if (members == null) {
 			logger.warn(format(
 					"Failed to handle PCV1_Visit as there is no Member enrolled with ID: {0}",
@@ -529,7 +529,7 @@ public class MembersService {
 											.map();	
 		
 		members.withPCV1(PCV1);
-		allMembers.update(members);
+		allWoman.update(members);
 		
 		if (!submission.getField(ChildVaccination_PCV1_Date_of_Vaccination).equalsIgnoreCase("") && submission.getField(ChildVaccination_PCV1_Date_of_Vaccination) != null)
 			if(isValidDate(submission.getField(ChildVaccination_PCV1_Date_of_Vaccination))){
@@ -539,7 +539,7 @@ public class MembersService {
 	}
 
 	public void PCV2Handler(FormSubmission submission) {
-		Members members = allMembers.findByCaseId(submission.entityId());
+		Woman members = allWoman.findByCaseId(submission.entityId());
 		if (members == null) {
 			logger.warn(format(
 					"Failed to handle PCV2_Visit as there is no Member enrolled with ID: {0}",
@@ -558,7 +558,7 @@ public class MembersService {
 											.map();	
 		
 		members.withPCV2(PCV2);
-		allMembers.update(members);	
+		allWoman.update(members);	
 		
 		if (!submission.getField(ChildVaccination_PCV2_Date_of_Vaccination).equalsIgnoreCase("") && submission.getField(ChildVaccination_PCV2_Date_of_Vaccination) != null)
 			if(isValidDate(submission.getField(ChildVaccination_PCV2_Date_of_Vaccination))){
@@ -568,7 +568,7 @@ public class MembersService {
 	}
 
 	public void PCV3Handler(FormSubmission submission) {
-		Members members = allMembers.findByCaseId(submission.entityId());
+		Woman members = allWoman.findByCaseId(submission.entityId());
 		if (members == null) {
 			logger.warn(format(
 					"Failed to handle PCV3_Visit as there is no Member enrolled with ID: {0}",
@@ -587,7 +587,7 @@ public class MembersService {
 											.map();	
 		
 		members.withPCV3(PCV3);
-		allMembers.update(members);
+		allWoman.update(members);
 		
 		if (!submission.getField(ChildVaccination_PCV3_Date_of_Vaccination).equalsIgnoreCase("") && submission.getField(ChildVaccination_PCV3_Date_of_Vaccination) != null)
 			if(isValidDate(submission.getField(ChildVaccination_PCV3_Date_of_Vaccination))){
@@ -596,7 +596,7 @@ public class MembersService {
 	}
 
 	public void PENTA3Handler(FormSubmission submission) {
-		Members members = allMembers.findByCaseId(submission.entityId());
+		Woman members = allWoman.findByCaseId(submission.entityId());
 		if (members == null) {
 			logger.warn(format(
 					"Failed to handle PENTA3_Visit as there is no Member enrolled with ID: {0}",
@@ -613,7 +613,7 @@ public class MembersService {
 											.map();	
 		
 		members.withPENTA3(PENTA3);
-		allMembers.update(members);
+		allWoman.update(members);
 		
 		if (!submission.getField(ChildVaccination_PENTA3_Date_of_Vaccination).equalsIgnoreCase("") && submission.getField(ChildVaccination_PENTA3_Date_of_Vaccination) != null)
 			if(isValidDate(submission.getField(ChildVaccination_PENTA3_Date_of_Vaccination)))
@@ -621,7 +621,7 @@ public class MembersService {
 	}
 
 	public void PENTA2Handler(FormSubmission submission) {
-		Members members = allMembers.findByCaseId(submission.entityId());
+		Woman members = allWoman.findByCaseId(submission.entityId());
 		if (members == null) {
 			logger.warn(format(
 					"Failed to handle PENTA2_Visit as there is no Member enrolled with ID: {0}",
@@ -638,7 +638,7 @@ public class MembersService {
 											.map();	
 		
 		members.withPENTA2(PENTA2);
-		allMembers.update(members);
+		allWoman.update(members);
 		
 		if (!submission.getField(ChildVaccination_PENTA2_Date_of_Vaccination).equalsIgnoreCase("") && submission.getField(ChildVaccination_PENTA2_Date_of_Vaccination) != null)
 			if(isValidDate(submission.getField(ChildVaccination_PENTA2_Date_of_Vaccination))){
@@ -648,7 +648,7 @@ public class MembersService {
 	}
 
 	public void PENTA1Handler(FormSubmission submission) {
-		Members members = allMembers.findByCaseId(submission.entityId());
+		Woman members = allWoman.findByCaseId(submission.entityId());
 		if (members == null) {
 			logger.warn(format(
 					"Failed to handle PENTA1_Visit as there is no Member enrolled with ID: {0}",
@@ -665,7 +665,7 @@ public class MembersService {
 											.map();	
 		
 		members.withPENTA1(PENTA1);
-		allMembers.update(members);
+		allWoman.update(members);
 		
 		if (!submission.getField(ChildVaccination_PENTA1_Date_of_Vaccination).equalsIgnoreCase("") && submission.getField(ChildVaccination_PENTA1_Date_of_Vaccination) != null)
 			if(isValidDate(submission.getField(ChildVaccination_PENTA1_Date_of_Vaccination))){
@@ -675,7 +675,7 @@ public class MembersService {
 	}
 
 	public void OPV3Handler(FormSubmission submission) {
-		Members members = allMembers.findByCaseId(submission.entityId());
+		Woman members = allWoman.findByCaseId(submission.entityId());
 		if (members == null) {
 			logger.warn(format(
 					"Failed to handle OPV3_Visit as there is no Member enrolled with ID: {0}",
@@ -694,7 +694,7 @@ public class MembersService {
 											.map();	
 		
 		members.withOPV3(OPV3);
-		allMembers.update(members);
+		allWoman.update(members);
 		
 		if (!submission.getField(ChildVaccination_OPV3_Date_of_Vaccination).equalsIgnoreCase("") && submission.getField(ChildVaccination_OPV3_Date_of_Vaccination) != null)
 			if(isValidDate(submission.getField(ChildVaccination_OPV3_Date_of_Vaccination))){
@@ -704,7 +704,7 @@ public class MembersService {
 	}
 
 	public void OPV2Handler(FormSubmission submission) {
-		Members members = allMembers.findByCaseId(submission.entityId());
+		Woman members = allWoman.findByCaseId(submission.entityId());
 		if (members == null) {
 			logger.warn(format(
 					"Failed to handle OPV2_Visit as there is no Member enrolled with ID: {0}",
@@ -723,7 +723,7 @@ public class MembersService {
 											.map();	
 		
 		members.withOPV2(OPV2);
-		allMembers.update(members);
+		allWoman.update(members);
 		
 		if (!submission.getField(ChildVaccination_OPV2_Date_of_Vaccination).equalsIgnoreCase("") && submission.getField(ChildVaccination_OPV2_Date_of_Vaccination) != null)
 			if(isValidDate(submission.getField(ChildVaccination_OPV2_Date_of_Vaccination))){
@@ -733,7 +733,7 @@ public class MembersService {
 	}
 
 	public void OPV1Handler(FormSubmission submission) {
-		Members members = allMembers.findByCaseId(submission.entityId());
+		Woman members = allWoman.findByCaseId(submission.entityId());
 		if (members == null) {
 			logger.warn(format(
 					"Failed to handle OPV1_Visit as there is no Member enrolled with ID: {0}",
@@ -753,7 +753,7 @@ public class MembersService {
 		
 		members.withOPV1(OPV1);
 		
-		allMembers.update(members);
+		allWoman.update(members);
 		
 		if (!submission.getField(ChildVaccination_OPV1_Date_of_Vaccination).equalsIgnoreCase("") && submission.getField(ChildVaccination_OPV1_Date_of_Vaccination) != null)
 			if(isValidDate(submission.getField(ChildVaccination_OPV1_Date_of_Vaccination))){
@@ -763,7 +763,7 @@ public class MembersService {
 	}
 
 	public void OPV0Handler(FormSubmission submission) {
-		Members members = allMembers.findByCaseId(submission.entityId());
+		Woman members = allWoman.findByCaseId(submission.entityId());
 		if (members == null) {
 			logger.warn(format(
 					"Failed to handle OPV0_Visit as there is no Member enrolled with ID: {0}",
@@ -782,7 +782,7 @@ public class MembersService {
 											.map();	
 		
 		members.withOPV0(OPV0);
-		allMembers.update(members);
+		allWoman.update(members);
 
 		if (!submission.getField(ChildVaccination_OPV0_Date_of_Vaccination).equalsIgnoreCase("") && submission.getField(ChildVaccination_OPV0_Date_of_Vaccination) != null)
 			if(isValidDate(submission.getField(ChildVaccination_OPV0_Date_of_Vaccination)))
@@ -790,7 +790,7 @@ public class MembersService {
 	}
 
 	public void MRHandler(FormSubmission submission) {
-		Members members = allMembers.findByCaseId(submission.entityId());
+		Woman members = allWoman.findByCaseId(submission.entityId());
 		if (members == null) {
 			logger.warn(format(
 					"Failed to handle MR_Visit as there is no Member enrolled with ID: {0}",
@@ -809,7 +809,7 @@ public class MembersService {
 											.map();	
 		
 		members.withMR(MR);
-		allMembers.update(members);
+		allWoman.update(members);
 
 		if (!submission.getField(ChildVaccination_MR_Date_of_Vaccination).equalsIgnoreCase("") && submission.getField(ChildVaccination_MR_Date_of_Vaccination) != null)
 			if(isValidDate(submission.getField(ChildVaccination_MR_Date_of_Vaccination)))
@@ -817,7 +817,7 @@ public class MembersService {
 	}
 
 	public void Measles2Handler(FormSubmission submission) {
-		Members members = allMembers.findByCaseId(submission.entityId());
+		Woman members = allWoman.findByCaseId(submission.entityId());
 		if (members == null) {
 			logger.warn(format(
 					"Failed to handle Measles2_Visit as there is no Member enrolled with ID: {0}",
@@ -836,7 +836,7 @@ public class MembersService {
 											.map();	
 		
 		members.withMeasles2(Measles2);
-		allMembers.update(members);
+		allWoman.update(members);
 
 		if (!submission.getField(ChildVaccination_Measles_Date_of_Vaccination).equalsIgnoreCase("") && submission.getField(ChildVaccination_Measles_Date_of_Vaccination) != null)
 			if(isValidDate(submission.getField(ChildVaccination_Measles_Date_of_Vaccination)))
@@ -844,7 +844,7 @@ public class MembersService {
 	}
 
 	public void IPVHandler(FormSubmission submission) {
-		Members members = allMembers.findByCaseId(submission.entityId());
+		Woman members = allWoman.findByCaseId(submission.entityId());
 		if (members == null) {
 			logger.warn(format(
 					"Failed to handle IPV_Visit as there is no Member enrolled with ID: {0}",
@@ -863,7 +863,7 @@ public class MembersService {
 											.map();	
 		
 		members.withIPV(IPV);
-		allMembers.update(members);
+		allWoman.update(members);
 		
 		if (!submission.getField(ChildVaccination_IPV_Date_of_Vaccination).equalsIgnoreCase("") && submission.getField(ChildVaccination_IPV_Date_of_Vaccination) != null)
 			if(isValidDate(submission.getField(ChildVaccination_IPV_Date_of_Vaccination))){
@@ -872,7 +872,7 @@ public class MembersService {
 	}
 
 	public void BCGHandler(FormSubmission submission) {
-		Members members = allMembers.findByCaseId(submission.entityId());
+		Woman members = allWoman.findByCaseId(submission.entityId());
 		if (members == null) {
 			logger.warn(format(
 					"Failed to handle BCG_Visit as there is no Member enrolled with ID: {0}",
@@ -891,7 +891,7 @@ public class MembersService {
 											.map();	
 		
 		members.withBCG(BCG);
-		allMembers.update(members);
+		allWoman.update(members);
 
 		if (!submission.getField(ChildVaccination_BCG_Date_of_Vaccination).equalsIgnoreCase("") && submission.getField(ChildVaccination_BCG_Date_of_Vaccination) != null)
 			if(isValidDate(submission.getField(ChildVaccination_BCG_Date_of_Vaccination)))

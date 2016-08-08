@@ -46,14 +46,14 @@ public class HHService {
 	private static Logger logger = LoggerFactory.getLogger(HHService.class
 			.toString());
 	private AllHouseHolds allHouseHolds;
-	private MembersService membersService;
+	private WomanService womanService;
 	private HHSchedulesService hhSchedulesService;
 	private ScheduleLogService scheduleLogService;	 
 	@Autowired
-	public HHService(AllHouseHolds allHouseHolds, MembersService membersService,
+	public HHService(AllHouseHolds allHouseHolds, WomanService womanService,
 			HHSchedulesService hhSchedulesService) {
 		this.allHouseHolds = allHouseHolds;
-		this.membersService = membersService;
+		this.womanService = womanService;
 		this.hhSchedulesService = hhSchedulesService;	
 	}	
 	public void registerHouseHold(FormSubmission submission) {		
@@ -78,10 +78,10 @@ public class HHService {
 		hhSchedulesService.enrollIntoMilestoneOfCensus(submission.entityId(),
 			submission.getField(Date_Of_Reg),submission.anmId(),submission.instanceId());
 		
-		membersService.registerMembers(submission);
+		womanService.registerWoman(submission);
 	}
 	
-	private void addDetailsToHH(FormSubmission submission,
+	/*private void addDetailsToHH(FormSubmission submission,
 			SubFormData subFormData, HouseHold houseHold) {
 						SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 						Date today = Calendar.getInstance().getTime();
@@ -96,7 +96,7 @@ public class HHService {
 				    	houseHold.details().put(REFERENCE_DATE, submission.getField(REFERENCE_DATE));
 						houseHold.details().put(START_DATE, submission.getField(START_DATE));		
 						houseHold.details().put(END_DATE, submission.getField(END_DATE));
-	}
+	}*/
 
 
 	private void addMEMBERDETAILSToHH(FormSubmission submission,

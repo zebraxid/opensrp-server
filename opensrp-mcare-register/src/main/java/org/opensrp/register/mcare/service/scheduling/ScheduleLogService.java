@@ -29,8 +29,6 @@ import org.opensrp.connector.openmrs.service.OpenmrsUserService;
 import org.opensrp.dto.ActionData;
 import org.opensrp.dto.AlertStatus;
 import org.opensrp.dto.BeneficiaryType;
-import org.opensrp.register.mcare.domain.Mother;
-import org.opensrp.register.mcare.repository.AllMothers;
 import org.opensrp.scheduler.Action;
 import org.opensrp.scheduler.Defination;
 import org.opensrp.scheduler.HealthSchedulerService;
@@ -60,11 +58,10 @@ public class ScheduleLogService extends OpenmrsService{
 	private OpenmrsUserService userService;
 	private HealthSchedulerService scheduler;
 	private OpenmrsSchedulerService openmrsSchedulerService;
-	private AllMothers allMothers;
 	private ScheduleRuleRepository scheduleRuleRepository;
 	
 	@Autowired
-	public ScheduleLogService(ReportActionService reportActionService,AllEnrollmentWrapper allEnrollments,AllReportActions allReportActions,AllActions allActions,OpenmrsUserService userService,HealthSchedulerService scheduler,OpenmrsSchedulerService openmrsSchedulerService,AllMothers allMothers,ScheduleRuleRepository scheduleRuleRepository){
+	public ScheduleLogService(ReportActionService reportActionService,AllEnrollmentWrapper allEnrollments,AllReportActions allReportActions,AllActions allActions,OpenmrsUserService userService,HealthSchedulerService scheduler,OpenmrsSchedulerService openmrsSchedulerService,ScheduleRuleRepository scheduleRuleRepository){
 		this.reportActionService = reportActionService;
 		this.allEnrollments = allEnrollments;
 		this.allReportActions = allReportActions;
@@ -72,7 +69,6 @@ public class ScheduleLogService extends OpenmrsService{
 		this.userService = userService;
 		this.scheduler = scheduler;
 		this.openmrsSchedulerService = openmrsSchedulerService;
-		this.allMothers = allMothers;
 		this.scheduleRuleRepository = scheduleRuleRepository;
 	}
 	
@@ -105,13 +101,7 @@ public class ScheduleLogService extends OpenmrsService{
 			
 		}
 		String trackId = "";
-		String motherId = "";
-		
-		if(mother.equals(beneficiaryType)){
-			Mother mother = allMothers.findByCaseId(caseID);			
-			motherId = mother.getRelationalid();
-		}
-		
+		String motherId = "";		
 		
 		for (Enrollment e : el){
 			try{
