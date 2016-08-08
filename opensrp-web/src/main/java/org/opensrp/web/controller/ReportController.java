@@ -2,8 +2,6 @@ package org.opensrp.web.controller;
 
 import org.json.JSONException;
 import org.opensrp.connector.openmrs.service.OpenmrsReportingService;
-import org.opensrp.dto.register.ChildRegisterDTO;
-import org.opensrp.register.mcare.ChildRegistration;
 import org.opensrp.register.mcare.mapper.ChildRegisterMapper;
 import org.opensrp.register.mcare.service.reporting.ChildReportService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,11 +41,11 @@ public class ReportController {
 		return new ResponseEntity<>(new Gson().toJson(reportService.getReportData(uuid)), HttpStatus.OK);
 	}
 	
-	@RequestMapping(method = RequestMethod.GET, value = "/report/report-child-7-days")
+	/*@RequestMapping(method = RequestMethod.GET, value = "/report/report-child-7-days")
 	public ResponseEntity<ChildRegisterDTO> reportChildForPrev7Days(@RequestParam("provider-id") String providerId) {
 		ChildRegistration childRegister = childReportService.getChildDataVisitedPrev7Days(providerId);
 		return new ResponseEntity<>(childRegisterMapper.mapToDTO(childRegister), HttpStatus.OK);
-	}
+	}*/
 	/*
 	    @RequestMapping(method = RequestMethod.GET, value = "/report/actions")
 	    @ResponseBody

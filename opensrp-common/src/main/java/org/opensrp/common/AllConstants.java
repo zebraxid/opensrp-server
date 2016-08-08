@@ -33,7 +33,7 @@ public class AllConstants {
 	
 	public static class Form {
 		
-		public static final String Child_Registration = "ChildRegistration.xls";
+		public static final String Child_Registration = "child_registration";
 		
 		public static final String MEMBERS_REGISTRATION = "census_enrollment";
 		
@@ -1832,7 +1832,7 @@ public class AllConstants {
 		
 		public static final String MCTS_REPORT_TYPE = "MCTSReport";
 		
-		public static final String Child_TYPE = "child";
+		public static final String Child_TYPE = "crvschild";
 		
 		public static final String MEMBER_TYPE = "members";
 		

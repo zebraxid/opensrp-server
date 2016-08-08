@@ -82,7 +82,7 @@ public class FormDataRepositoryImpl extends FormDataRepository {
 		designDocMap = new HashMap<>();
 		fieldSetMap = new HashMap<>();
 		
-		designDocMap.put(AllConstants.FormEntityTypes.Child_TYPE, "HouseHold");
+		designDocMap.put(AllConstants.FormEntityTypes.Child_TYPE, "Child");
 		fieldSetMap.put(AllConstants.FormEntityTypes.Child_TYPE, Child.class.getDeclaredFields());
 	}
 	

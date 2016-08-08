@@ -1,11 +1,5 @@
 package org.opensrp.register.mcare.service.reporting;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.opensrp.register.mcare.ChildRegistration;
-import org.opensrp.register.mcare.ChildRegistrationEntry;
-import org.opensrp.register.mcare.domain.Child;
 import org.opensrp.register.mcare.repository.AllChilds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,11 +14,11 @@ public class ChildReportService {
 		this.allChilds = allChilds;
 	}
 	
-	public ChildRegistration getChildDataVisitedPrev7Days(String providerId) {
+	/*public ChildRegistration getChildDataVisitedPrev7Days(String providerId) {
 		ArrayList<ChildRegistrationEntry> childRegisterEntries = new ArrayList<>();
 		List<Child> childs = allChilds.allChildsVisited7Days(providerId);
 		
-		for (Child child : childs) {/*
+		for (Child child : childs) {
 		                                ChildRegisterEntry childRegisterEntry = new ChildRegisterEntry()
 		                                .withCASEID(child.caseId())  
 		                                .withPROVIDERID(child.PROVIDERID())
@@ -63,7 +57,7 @@ public class ChildReportService {
 		                                .withFWDISPLAYAGE(child.getELCODetail(FW_DISPLAY_AGE));
 		                                
 		                                childRegisterEntries.add(childRegisterEntry);
-		                                */}
+		                                }
 		return new ChildRegistration(childRegisterEntries);
-	}
+	}*/
 }
