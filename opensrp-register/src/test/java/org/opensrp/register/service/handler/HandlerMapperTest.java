@@ -94,6 +94,22 @@ public class HandlerMapperTest {
 	private PNCDokumentasiHandler pncDokumentasiHandler;
 	@Mock
 	private KartuAnakImmunizationHandler kartuAnakImmunizationHandler;
+	@Mock
+	private VaksinatorHandler vaksinatorHandler;
+	@Mock
+	private VaksinatorHB0Handler vaksinatorHB0Handler;
+	@Mock
+	private VaksinatorBCGHandler vaksinatorBCGHandler;
+	@Mock
+	private VaksinatorHB1Handler vaksinatorHB1Handler;
+	@Mock
+	private VaksinatorHB2Handler vaksinatorHB2Handler;
+	@Mock
+	private VaksinatorHB3Handler vaksinatorHB3Handler;
+	@Mock
+	private VaksinatorCampakHandler vaksinatorCampakHandler;
+	@Mock
+	private VaksinatorAddCampakHandler vaksinatorAddCampakHandler;
 	
 	@Before
 	public void setUp() throws Exception {
@@ -129,13 +145,21 @@ public class HandlerMapperTest {
 	             postpartumFamilyPlanningHandler,
 	             recordECPsHandler,
 	             ecEditHandler,
-				ancInvestigationsHandler,
-				kbHandler,
-				kbFollowUpHandler,
-				kartuIbuHandler,
-				pncDokumentasiHandler,
-				kartuAnakImmunizationHandler,
-				mctsReportService);
+				 ancInvestigationsHandler,
+				 kbHandler,
+				 kbFollowUpHandler,
+				 kartuIbuHandler,
+				 pncDokumentasiHandler,
+				 kartuAnakImmunizationHandler,
+		 		 vaksinatorHandler,
+		 		 vaksinatorHB0Handler,
+		 		 vaksinatorBCGHandler,
+		 		 vaksinatorHB1Handler,
+		 		 vaksinatorHB2Handler,
+		 		 vaksinatorHB3Handler,
+				 vaksinatorCampakHandler,
+				 vaksinatorAddCampakHandler,
+				 mctsReportService);
 	}
 	
 	 @Test
