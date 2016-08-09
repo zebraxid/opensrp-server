@@ -5,7 +5,7 @@ import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
 import static org.opensrp.dto.AlertStatus.normal;
-import static org.opensrp.dto.BeneficiaryType.mother;
+import static org.opensrp.dto.BeneficiaryType.members;
 
 import java.util.List;
 
@@ -171,10 +171,10 @@ public class AllActionsIntegrationTest {
     }
 
     private ActionData alert() {
-        return ActionData.createAlert(mother, "Ante Natal Care - Normal", "ANC 1", normal, DateTime.now(), DateTime.now().plusDays(3));
+        return ActionData.createAlert(members, "Ante Natal Care - Normal", "ANC 1", normal, DateTime.now(), DateTime.now().plusDays(3));
     }
 
     private ActionData alert(String schedule, String milestone) {
-        return ActionData.createAlert(mother, schedule, milestone, normal, DateTime.now(), DateTime.now().plusDays(3));
+        return ActionData.createAlert(members, schedule, milestone, normal, DateTime.now(), DateTime.now().plusDays(3));
     }
 }

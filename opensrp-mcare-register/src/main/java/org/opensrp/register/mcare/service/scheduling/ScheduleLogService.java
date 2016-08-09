@@ -5,7 +5,7 @@ package org.opensrp.register.mcare.service.scheduling;
 
 import static java.text.MessageFormat.format;
 import static org.opensrp.dto.AlertStatus.normal;
-import static org.opensrp.dto.BeneficiaryType.mother;
+import static org.opensrp.dto.BeneficiaryType.members;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -157,7 +157,7 @@ public class ScheduleLogService extends OpenmrsService{
 		
 	}
 	 private ActionData alert(String schedule, String milestone) {
-	        return ActionData.createAlert(mother, schedule, milestone, normal, DateTime.now(), DateTime.now().plusDays(3));
+	        return ActionData.createAlert(members, schedule, milestone, normal, DateTime.now(), DateTime.now().plusDays(3));
 	    }
 	public void closeSchedule(String caseId,String instanceId,long timestamp,String name){
 		        

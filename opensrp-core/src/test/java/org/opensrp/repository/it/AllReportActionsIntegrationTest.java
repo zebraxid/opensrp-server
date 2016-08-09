@@ -2,7 +2,7 @@ package org.opensrp.repository.it;
 
 import static org.junit.Assert.*;
 import static org.opensrp.dto.AlertStatus.normal;
-import static org.opensrp.dto.BeneficiaryType.mother;
+import static org.opensrp.dto.BeneficiaryType.members;
 import static java.util.Arrays.asList;
 
 import java.util.HashMap;

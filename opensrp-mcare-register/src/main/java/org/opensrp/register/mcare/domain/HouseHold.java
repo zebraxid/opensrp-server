@@ -80,9 +80,6 @@ public class HouseHold extends MotechBaseDataObject {
 	private String HoH_Occupation;
 	@JsonProperty
 	private String HH_Member_No;
-	
-	
-	
 	@JsonProperty
 	private String deviceid;
 	@JsonProperty
@@ -111,9 +108,6 @@ public class HouseHold extends MotechBaseDataObject {
 	private String birth_date_note;
 	@JsonProperty
 	private String note_age;
-	
-	
-	
 	@JsonProperty
 	private List<Map<String, String>> MEMBERDETAILS;
 	@JsonProperty
@@ -499,6 +493,62 @@ public class HouseHold extends MotechBaseDataObject {
 
 	public String HH_Member_No() {
 		return HH_Member_No;
+	}
+	
+	public String deviceid() {
+		return deviceid;
+	}
+
+	public String subscriberid() {
+		return subscriberid;
+	}
+
+	public String simserial() {
+		return simserial;
+	}
+
+	public String phonenumber() {
+		return phonenumber;
+	}
+
+	public String PAURASAVA() {
+		return PAURASAVA;
+	}
+
+	public String ADDRESS_LINE() {
+		return ADDRESS_LINE;
+	}
+
+	public String HIE_FACILITIES() {
+		return HIE_FACILITIES;
+	}
+
+	public String calc_HoH_age() {
+		return calc_HoH_age;
+	}
+
+	public String calc_HoH_dob() {
+		return calc_HoH_dob;
+	}
+
+	public String calc_HoH_dob_confirm() {
+		return calc_HoH_dob_confirm;
+	}
+
+	public String calc_dob_estimated() {
+		return calc_dob_estimated;
+	}
+
+	public String calc_HoH_age_confirm() {
+		return calc_HoH_age_confirm;
+	}
+
+	public String birth_date_note() {
+		return birth_date_note;
+	}
+
+	public String note_age() {
+		return note_age;
 	}
 	
 	public List<Map<String, String>> MEMBERDETAILS() {

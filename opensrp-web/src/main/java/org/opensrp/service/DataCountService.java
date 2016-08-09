@@ -9,9 +9,9 @@ import java.util.List;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.opensrp.dto.CountServiceDTO;
 import org.opensrp.register.mcare.repository.AllHouseHolds;
-import org.opensrp.register.mcare.repository.AllWoman;
+import org.opensrp.register.mcare.repository.AllMembers;
 import org.opensrp.rest.services.LuceneHouseHoldService;
-import org.opensrp.rest.services.LuceneWomanService;
+import org.opensrp.rest.services.LuceneMembersService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,15 +23,15 @@ public class DataCountService {
 	private static Logger logger = LoggerFactory.getLogger(DataCountService.class);
 	private final AllHouseHolds allHouseHolds;
 	private LuceneHouseHoldService luceneHouseHoldService;
-	private LuceneWomanService luceneWomanService;
-	private AllWoman allWoman;
+	private LuceneMembersService luceneMembersService;
+	private AllMembers allMembers;
 	@Autowired
 	public DataCountService(AllHouseHolds allHouseHolds,LuceneHouseHoldService luceneHouseHoldService,
-				AllWoman allWoman,LuceneWomanService luceneWomanService){
+				AllMembers allMembers,LuceneMembersService luceneMembersService){
 		this.allHouseHolds = allHouseHolds;
 		this.luceneHouseHoldService = luceneHouseHoldService;
-		this.allWoman = allWoman;
-		this.luceneWomanService = luceneWomanService;
+		this.allMembers = allMembers;
+		this.luceneMembersService = luceneMembersService;
 	}
 	/**
 	 * This method return count data of registers.
@@ -47,13 +47,13 @@ public class DataCountService {
 		CountServiceDTO commonServiceDTO = new CountServiceDTO();
 		if(type.equalsIgnoreCase("all")){
 			this.getHouseholdCount(provider, startMonth, endMonth, startWeek, endWeek, commonServiceDTO);
-			this.getWomanCount(provider, startMonth, endMonth, startWeek, endWeek, commonServiceDTO);
+			this.getMembersCount(provider, startMonth, endMonth, startWeek, endWeek, commonServiceDTO);
 					
 		}else if(type.equalsIgnoreCase("household")){
 			this.getHouseholdCount(provider, startMonth, endMonth, startWeek, endWeek, commonServiceDTO);
 			
 		}else if(type.equalsIgnoreCase("mother")){
-			this.getWomanCount(provider, startMonth, endMonth, startWeek, endWeek, commonServiceDTO);
+			this.getMembersCount(provider, startMonth, endMonth, startWeek, endWeek, commonServiceDTO);
 			
 		}else{
 			
@@ -70,11 +70,11 @@ public class DataCountService {
 		commonServiceDTO.setHouseholdThisWeekCount(luceneHouseHoldService.getHouseholdCount(startWeek, endWeek));
 		return commonServiceDTO;
 	}
-	private CountServiceDTO getWomanCount(String provider,String startMonth,String endMonth,String startWeek,String endWeek,CountServiceDTO commonServiceDTO){
-		commonServiceDTO.setPwTotalCount(allWoman.allOpenWoman().size());
-		commonServiceDTO.setPwThisMonthCount(luceneWomanService.getWomanCount(startMonth, endMonth));
-		commonServiceDTO.setPwThisWeekCount(luceneWomanService.getWomanCount(startMonth, endMonth));
-		commonServiceDTO.setPwTodayCount(luceneWomanService.getWomanCount("", ""));
+	private CountServiceDTO getMembersCount(String provider,String startMonth,String endMonth,String startWeek,String endWeek,CountServiceDTO commonServiceDTO){
+		commonServiceDTO.setPwTotalCount(allMembers.allOpenMembers().size());
+		commonServiceDTO.setPwThisMonthCount(luceneMembersService.getMembersCount(startMonth, endMonth));
+		commonServiceDTO.setPwThisWeekCount(luceneMembersService.getMembersCount(startMonth, endMonth));
+		commonServiceDTO.setPwTodayCount(luceneMembersService.getMembersCount("", ""));
 		return commonServiceDTO;
 	}
 

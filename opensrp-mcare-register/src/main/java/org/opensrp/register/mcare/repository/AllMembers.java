@@ -11,7 +11,7 @@ import org.ektorp.support.GenerateView;
 import org.ektorp.support.View;
 import org.motechproject.dao.MotechBaseRepository;
 import org.opensrp.common.AllConstants;
-import org.opensrp.register.mcare.domain.Woman;
+import org.opensrp.register.mcare.domain.Members;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,20 +20,20 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class AllWoman extends MotechBaseRepository<Woman> {
+public class AllMembers extends MotechBaseRepository<Members> {
 
-	private static Logger logger = LoggerFactory.getLogger(AllWoman.class);
+	private static Logger logger = LoggerFactory.getLogger(AllMembers.class);
 
 	@Autowired
-	public AllWoman(@Value("#{opensrp['couchdb.atomfeed-db.revision-limit']}") int revisionLimit,
+	public AllMembers(@Value("#{opensrp['couchdb.atomfeed-db.revision-limit']}") int revisionLimit,
 			@Qualifier(AllConstants.OPENSRP_DATABASE_CONNECTOR) CouchDbConnector db) {
-		super(Woman.class, db);
+		super(Members.class, db);
 		this.db.setRevisionLimit(revisionLimit);
 	}
 
 	@GenerateView
-	public Woman findByCaseId(String caseId) {
-		List<Woman> members = queryView("by_caseId", caseId);
+	public Members findByCaseId(String caseId) {
+		List<Members> members = queryView("by_caseId", caseId);
 		if (members == null || members.isEmpty()) {
 			return null;
 		}
@@ -41,21 +41,21 @@ public class AllWoman extends MotechBaseRepository<Woman> {
 	}
 
 	public void close(String caseId) {
-		Woman members = findByCaseId(caseId);
+		Members members = findByCaseId(caseId);
 		update(members.setIsClosed(true));
 	}
 	
-	@View(name = "all_open_members_for_provider", map = "function(doc) { if (doc.type === 'Woman' && doc.PROVIDERID) { emit(doc.PROVIDERID); } }")
-	public List<Woman> allOpenWomanForProvider(String providerId) {
+	@View(name = "all_open_members_for_provider", map = "function(doc) { if (doc.type === 'Members' && doc.PROVIDERID) { emit(doc.PROVIDERID); } }")
+	public List<Members> allOpenMembersForProvider(String providerId) {
 		return db.queryView(
 				createQuery("all_open_members_for_provider").key(providerId)
-						.includeDocs(true), Woman.class);
+						.includeDocs(true), Members.class);
 	}
-	@View(name = "all_open_members_for_provider", map = "function(doc) { if (doc.type === 'Woman' && doc.PROVIDERID) { emit(doc.PROVIDERID); } }")
-	public List<Woman> allOpenWoman() {
+	@View(name = "all_open_members_for_provider", map = "function(doc) { if (doc.type === 'Members' && doc.PROVIDERID) { emit(doc.PROVIDERID); } }")
+	public List<Members> allOpenMembers() {
 		return db.queryView(
 				createQuery("all_open_members_for_provider")
-						.includeDocs(true), Woman.class);
+						.includeDocs(true), Members.class);
 	}
 
 

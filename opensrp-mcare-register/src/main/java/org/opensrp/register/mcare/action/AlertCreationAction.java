@@ -1,9 +1,7 @@
 package org.opensrp.register.mcare.action;
 
-import static org.opensrp.dto.BeneficiaryType.child;
 import static org.opensrp.dto.BeneficiaryType.members;
 import static org.opensrp.dto.BeneficiaryType.household;
-import static org.opensrp.dto.BeneficiaryType.mother;
 
 import java.text.ParseException;
 import java.util.List;
@@ -16,11 +14,9 @@ import org.motechproject.scheduletracking.api.domain.Enrollment;
 import org.opensrp.domain.Multimedia;
 import org.opensrp.dto.BeneficiaryType;
 import org.opensrp.register.mcare.domain.HouseHold;
-import org.opensrp.register.mcare.domain.Woman;
-import org.opensrp.register.mcare.domain.Child;
-import org.opensrp.register.mcare.repository.AllChilds;
+import org.opensrp.register.mcare.domain.Members;
 import org.opensrp.register.mcare.repository.AllHouseHolds;
-import org.opensrp.register.mcare.repository.AllWoman;
+import org.opensrp.register.mcare.repository.AllMembers;
 import org.opensrp.register.mcare.service.MultimediaRegisterService;
 import org.opensrp.register.mcare.service.scheduling.ScheduleLogService;
 import org.opensrp.scheduler.Action;
@@ -37,19 +33,17 @@ import org.springframework.stereotype.Component;
 public class AlertCreationAction implements HookedEvent {
 	private HealthSchedulerService scheduler;
 	private AllHouseHolds allHouseHolds;
-	private AllChilds allChilds;
-	private AllWoman allWoman;
+	private AllMembers allMembers;
 	private ScheduleLogService scheduleLogService;
 	private MultimediaRegisterService multimediaRegisterService;
 	private static Logger logger = LoggerFactory.getLogger(AlertCreationAction.class.toString());
 	@Autowired
 	public AlertCreationAction(HealthSchedulerService scheduler,
-			AllHouseHolds allHouseHolds, AllWoman allWoman, AllChilds allChilds,
+			AllHouseHolds allHouseHolds, AllMembers allMembers,
 			ScheduleLogService scheduleLogService, MultimediaRegisterService multimediaRegisterService) {
 		this.scheduler = scheduler;
 		this.allHouseHolds = allHouseHolds;
-		this.allWoman = allWoman;
-		this.allChilds = allChilds;
+		this.allMembers = allMembers;
 		this.scheduleLogService = scheduleLogService;
 		this.multimediaRegisterService = multimediaRegisterService;
 	}
@@ -77,22 +71,12 @@ public class AlertCreationAction implements HookedEvent {
 		}
 		else if(members.equals(beneficiaryType))
 		{
-			Woman members = allWoman.findByCaseId(caseID);
+			Members members = allMembers.findByCaseId(caseID);
 			
 			if (members != null) {
 				instanceId= members.INSTANCEID();
 				providerId = members.PROVIDERID();
 				startOfEarliestWindow = event.startOfEarliestWindow();
-			}
-		}
-		else if(child.equals(beneficiaryType))
-		{
-			Child child = allChilds.findByCaseId(caseID);
-
-			if (child != null) {
-				instanceId= child.INSTANCEID();
-				providerId = child.PROVIDERID();
-				startOfEarliestWindow = DateTime.parse(child.TODAY(),formatter);
 			}
 		}
 		else {

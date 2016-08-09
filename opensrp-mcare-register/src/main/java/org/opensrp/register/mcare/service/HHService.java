@@ -46,11 +46,11 @@ public class HHService {
 	private static Logger logger = LoggerFactory.getLogger(HHService.class
 			.toString());
 	private AllHouseHolds allHouseHolds;
-	private WomanService womanService;
+	private MembersService womanService;
 	private HHSchedulesService hhSchedulesService;
 	private ScheduleLogService scheduleLogService;	 
 	@Autowired
-	public HHService(AllHouseHolds allHouseHolds, WomanService womanService,
+	public HHService(AllHouseHolds allHouseHolds, MembersService womanService,
 			HHSchedulesService hhSchedulesService) {
 		this.allHouseHolds = allHouseHolds;
 		this.womanService = womanService;
@@ -78,7 +78,7 @@ public class HHService {
 		hhSchedulesService.enrollIntoMilestoneOfCensus(submission.entityId(),
 			submission.getField(Date_Of_Reg),submission.anmId(),submission.instanceId());
 		
-		womanService.registerWoman(submission);
+		womanService.registerMembers(submission);
 	}
 	
 	/*private void addDetailsToHH(FormSubmission submission,

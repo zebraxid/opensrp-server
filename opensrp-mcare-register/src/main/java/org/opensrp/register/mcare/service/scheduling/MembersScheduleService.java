@@ -16,48 +16,48 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class WomanScheduleService {
+public class MembersScheduleService {
 
-	private static Logger logger = LoggerFactory.getLogger(WomanScheduleService.class.toString());
+	private static Logger logger = LoggerFactory.getLogger(MembersScheduleService.class.toString());
 	private HealthSchedulerService scheduler;
 	
 	@Autowired
-	public WomanScheduleService(HealthSchedulerService scheduler)
+	public MembersScheduleService(HealthSchedulerService scheduler)
 	{
 		this.scheduler = scheduler;	
 	}
 	
-	public void enrollWomanMeaslesVisit(String entityId,String provider,String date) {       
-        logger.info(format("Enrolling Woman with Entity id:{0} to Woman schedule Woman measles, milestone: {1}.", entityId, SCHEDULE_Woman_Measles));
+	public void enrollMembersMeaslesVisit(String entityId,String provider,String date) {       
+        logger.info(format("Enrolling Members with Entity id:{0} to Members schedule Members measles, milestone: {1}.", entityId, SCHEDULE_Woman_Measles));
         scheduler.enrollIntoSchedule(entityId, SCHEDULE_Woman_Measles, date);
     }
 	
-	public void enrollWomanTTVisit(String entityId,String provider,String date) {       
-        logger.info(format("Enrolling Woman with Entity id:{0} to Woman schedule Woman TT_1, milestone: {1}.", entityId, SCHEDULE_Woman_1));
+	public void enrollMembersTTVisit(String entityId,String provider,String date) {       
+        logger.info(format("Enrolling Members with Entity id:{0} to Members schedule Members TT_1, milestone: {1}.", entityId, SCHEDULE_Woman_1));
         scheduler.enrollIntoSchedule(entityId, SCHEDULE_Woman_1, date);
   
     }
 	
 	public void enrollTT1_Visit(String entityId,String provider,String date) {     
-        logger.info(format("Enrolling Woman with Entity id:{0} to Woman schedule Woman TT_2, milestone: {1}.", entityId, SCHEDULE_Woman_2));
+        logger.info(format("Enrolling Members with Entity id:{0} to Members schedule Members TT_2, milestone: {1}.", entityId, SCHEDULE_Woman_2));
         scheduler.enrollIntoSchedule(entityId, SCHEDULE_Woman_2, date);
   
     }
 	
 	public void enrollTT2_Visit(String entityId,String provider,String date) {
-        logger.info(format("Enrolling Woman with Entity id:{0} to Woman schedule Woman TT_3, milestone: {1}.", entityId, SCHEDULE_Woman_3));
+        logger.info(format("Enrolling Members with Entity id:{0} to Members schedule Members TT_3, milestone: {1}.", entityId, SCHEDULE_Woman_3));
         scheduler.enrollIntoSchedule(entityId, SCHEDULE_Woman_3, date);
   
     }
 	
 	public void enrollTT3_Visit(String entityId,String provider,String date) {
-        logger.info(format("Enrolling Woman with Entity id:{0} to Woman schedule Woman TT_4, milestone: {1}.", entityId, SCHEDULE_Woman_4));
+        logger.info(format("Enrolling Members with Entity id:{0} to Members schedule Members TT_4, milestone: {1}.", entityId, SCHEDULE_Woman_4));
         scheduler.enrollIntoSchedule(entityId, SCHEDULE_Woman_4, date);
   
     }
 	
 	public void enrollTT4_Visit(String entityId,String provider,String date) {      
-        logger.info(format("Enrolling Woman with Entity id:{0} to Woman schedule Woman TT_5, milestone: {1}.", entityId, SCHEDULE_Woman_5));
+        logger.info(format("Enrolling Members with Entity id:{0} to Members schedule Members TT_5, milestone: {1}.", entityId, SCHEDULE_Woman_5));
         scheduler.enrollIntoSchedule(entityId, SCHEDULE_Woman_5, date);
   
     }
@@ -73,7 +73,7 @@ public class WomanScheduleService {
     }
 
     public void unEnrollFromSchedule(String entityId, String anmId, String scheduleName) {
-        logger.info(format("Un-enrolling Woman with Entity id:{0} from schedule: {1}", entityId, scheduleName));
+        logger.info(format("Un-enrolling Members with Entity id:{0} from schedule: {1}", entityId, scheduleName));
         scheduler.unEnrollFromSchedule(entityId, anmId, scheduleName);
     }
     

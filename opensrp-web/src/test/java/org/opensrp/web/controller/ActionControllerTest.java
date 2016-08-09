@@ -14,7 +14,7 @@ import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static org.motechproject.delivery.schedule.util.SameItems.hasSameItemsAs;
 import static org.opensrp.dto.AlertStatus.normal;
-import static org.opensrp.dto.BeneficiaryType.mother;
+import static org.opensrp.dto.BeneficiaryType.members;
 
 import org.opensrp.web.controller.ActionController;
 import org.opensrp.web.controller.ActionConvertor;
@@ -31,7 +31,7 @@ public class ActionControllerTest {
 
     @Test
     public void shouldGiveAlertActionForANMSinceTimeStamp() throws Exception {
-        org.opensrp.scheduler.Action alertAction = new org.opensrp.scheduler.Action("Case X", "ANM 1", ActionData.createAlert(mother, "Ante Natal Care - Normal", "ANC 1", normal, DateTime.now(), DateTime.now().plusDays(3)));
+        org.opensrp.scheduler.Action alertAction = new org.opensrp.scheduler.Action("Case X", "ANM 1", ActionData.createAlert(members, "Ante Natal Care - Normal", "ANC 1", normal, DateTime.now(), DateTime.now().plusDays(3)));
         when(actionService.getNewAlertsForANM("ANM 1", 0L)).thenReturn(asList(alertAction));
 
         Action expectedAlertActionItem = ActionConvertor.from(alertAction);

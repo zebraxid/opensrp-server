@@ -1,10 +1,7 @@
 package org.opensrp.scheduler.service;
 
-import static org.opensrp.dto.BeneficiaryType.child;
-import static org.opensrp.dto.BeneficiaryType.ec;
 import static org.opensrp.dto.BeneficiaryType.members;
 import static org.opensrp.dto.BeneficiaryType.household;
-import static org.opensrp.dto.BeneficiaryType.mother;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
