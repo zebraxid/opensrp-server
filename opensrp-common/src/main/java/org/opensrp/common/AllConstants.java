@@ -65,6 +65,14 @@ public class AllConstants {
         public static final String KARTU_IBU_REGISTRATION ="kartu_ibu_registration";
         public static final String DOKUMENTASI_PERSALINAN ="kartu_pnc_dokumentasi_persalinan";
         public static final String KOHORT_ANAK_IMMUNIZATION = "kohort_bayi_immunization";
+        public static final String REGISTRASI_JURIM = "registrasi_jurim";
+        public static final String HB0_VISIT = "hb0_visit";
+        public static final String BCG_VISIT = "bcg_pol1_visit";
+        public static final String HB1_VISIT = "hb1_pol2_visit";
+        public static final String HB2_VISIT = "dpt_hb2_pol3_visit";
+        public static final String HB3_VISIT = "hb3_pol4_visit";
+        public static final String CAMPAK_VISIT = "campak_visit";
+        public static final String CAMPAK_LANJUTAN_VISIT = "campak_lanjutan_visit";
     }
 
     public static class Report {
