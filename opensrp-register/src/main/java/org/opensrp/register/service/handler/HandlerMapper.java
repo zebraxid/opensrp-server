@@ -58,7 +58,14 @@ public class HandlerMapper implements IHandlerMapper {
             KartuIbuHandler kartuIbuHandler,
             PNCDokumentasiHandler pncDokumentasiHandler,
             KartuAnakImmunizationHandler kartuAnakImmunizationHandler,
-
+            VaksinatorHandler vaksinatorHandler,
+            VaksinatorHB0Handler vaksinatorHB0Handler,
+            VaksinatorBCGHandler vaksinatorBCGHandler,
+            VaksinatorHB1Handler vaksinatorHB1Handler,
+            VaksinatorHB2Handler vaksinatorHB2Handler,
+            VaksinatorHB3Handler vaksinatorHB3Handler,
+            VaksinatorCampakHandler vaksinatorCampakHandler,
+            VaksinatorAddCampakHandler vaksinatorAddCampakHandler,
             MCTSReportService mctsReportService)
 	{
 		
@@ -100,6 +107,14 @@ public class HandlerMapper implements IHandlerMapper {
                 .put(KARTU_IBU_REGISTRATION, kartuIbuHandler)
                 .put(DOKUMENTASI_PERSALINAN, pncDokumentasiHandler)
                 .put(KOHORT_ANAK_IMMUNIZATION, kartuAnakImmunizationHandler)
+                .put(REGISTRASI_JURIM, vaksinatorHandler)
+                .put(HB0_VISIT, vaksinatorHB0Handler)
+                .put(BCG_VISIT, vaksinatorBCGHandler)
+                .put(HB1_VISIT, vaksinatorHB1Handler)
+                .put(HB2_VISIT, vaksinatorHB2Handler)
+                .put(HB3_VISIT, vaksinatorHB3Handler)
+                .put(CAMPAK_VISIT, vaksinatorCampakHandler)
+                .put(CAMPAK_LANJUTAN_VISIT, vaksinatorAddCampakHandler)
                 .map();
 
     }
