@@ -65,39 +65,45 @@ public class ANCSchedulesService {
         enrollIntoCorrectMilestoneOfANCCare(caseId, referenceDateForSchedule,provider,instanceId,startDate);
     }
     private void enrollIntoCorrectMilestoneOfANCCare(String entityId, LocalDate referenceDateForSchedule,String provider,String instanceId,String startDate) {
-        String milestone=null;
-        Integer duration = 0;
+        String milestone=null;        
         DateTime ancStartDate = null;
         DateTime ancExpireDate = null;
-        if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(24).toPeriod().minusDays(5))) {
-            milestone = SCHEDULE_ANC_1;
-            duration = DateTimeDuration.anc1;
-            ancStartDate = new DateTime(referenceDateForSchedule);
-            ancExpireDate = new DateTime(referenceDateForSchedule).plusDays(duration);
-        } else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(32).toPeriod().minusDays(5))) {
-            milestone = SCHEDULE_ANC_2;
-            duration = DateTimeDuration.anc2;
-        } else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(36).toPeriod().minusDays(5))) {
-            milestone = SCHEDULE_ANC_3;
-            duration = DateTimeDuration.anc3;
-        } else if(DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(36).toPeriod().minusDays(0))) {
-            milestone = SCHEDULE_ANC_4;
-            duration = DateTimeDuration.anc4;
-        } else{
-        	
-        }
-
-        Date date = null;
-        
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        AlertStatus alertStaus = null;
+        Date date = null;        
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         try {
-			date = df.parse(startDate);
+			date = format.parse(startDate);
 			
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
         DateTime start = new DateTime(date);
+        if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(24).toPeriod().minusDays(5))) {
+            milestone = SCHEDULE_ANC_1;           
+            ancStartDate = new DateTime(start);
+            alertStaus = AlertStatus.normal;
+            ancExpireDate = new DateTime(start).plusDays(DateTimeDuration.anc1);
+        } else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(32).toPeriod().minusDays(5))) {
+            milestone = SCHEDULE_ANC_2;  
+            alertStaus = AlertStatus.upcoming;
+            ancStartDate = new DateTime(start).plusDays(DateTimeDuration.anc2Start);
+            ancExpireDate = new DateTime(ancStartDate).plusDays(DateTimeDuration.anc3End);
+        } else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(36).toPeriod().minusDays(5))) {
+            milestone = SCHEDULE_ANC_3; 
+            alertStaus = AlertStatus.upcoming;
+            ancStartDate = new DateTime(start).plusDays(DateTimeDuration.anc3Start);
+            ancExpireDate = new DateTime(ancStartDate).plusDays(DateTimeDuration.anc3End);
+        } else if(DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(36).toPeriod().minusDays(0))) {
+            milestone = SCHEDULE_ANC_4;
+            alertStaus = AlertStatus.upcoming;
+            ancStartDate = new DateTime(start).plusDays(DateTimeDuration.anc4Start);
+            ancExpireDate = new DateTime(ancStartDate).plusDays(DateTimeDuration.anc4End);
+        } else{
+        	
+        }
+
+        
         
         logger.info(format("Enrolling ANC with Entity id:{0} to ANC schedule, milestone: {1}.", entityId, milestone));
         scheduler.enrollIntoSchedule(entityId, SCHEDULE_ANC, milestone, referenceDateForSchedule.toString());
@@ -105,11 +111,11 @@ public class ANCSchedulesService {
 		if(beforeNewActions.size() > 0){ 
 		scheduleLogService.closeSchedule(entityId,instanceId,beforeNewActions.get(0).timestamp(),SCHEDULE_ANC);
 		}
-		allActions.addOrUpdateAlert(new Action(entityId, provider, ActionData.createAlert(BeneficiaryType.mother, SCHEDULE_ANC, milestone, AlertStatus.upcoming, start,  new DateTime().plusHours(duration))));
+		allActions.addOrUpdateAlert(new Action(entityId, provider, ActionData.createAlert(BeneficiaryType.mother, SCHEDULE_ANC, milestone, alertStaus, ancStartDate,  ancExpireDate)));
 		logger.info(format("create psrf from psrf to psrf..", entityId));
 		List<Action> afterNewActions = allActions.findAlertByANMIdEntityIdScheduleName(provider, entityId, SCHEDULE_ANC);
 		if(afterNewActions.size() > 0){ 
-			scheduleLogService.saveScheduleLog(BeneficiaryType.mother, entityId, instanceId, provider, SCHEDULE_ANC, milestone, AlertStatus.upcoming, start,  new DateTime().plusHours(duration),SCHEDULE_ANC,afterNewActions.get(0).timestamp());
+			scheduleLogService.saveScheduleLog(BeneficiaryType.mother, entityId, instanceId, provider, SCHEDULE_ANC, milestone, alertStaus, ancStartDate, ancExpireDate,SCHEDULE_ANC,afterNewActions.get(0).timestamp());
 	
 		}
     }
@@ -120,6 +126,10 @@ public class ANCSchedulesService {
     private void unEnrollFromSchedule(String entityId, String anmId, String scheduleName) {
         logger.info(format("Un-enrolling ANC with Entity id:{0} from schedule: {1}", entityId, scheduleName));
         scheduler.unEnrollFromSchedule(entityId, anmId, scheduleName);
+    }
+    
+    public void enrollANCSchedule(){
+    	
     }
 
 }

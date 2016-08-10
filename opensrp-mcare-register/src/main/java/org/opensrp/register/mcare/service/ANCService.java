@@ -23,6 +23,7 @@ import org.opensrp.register.mcare.domain.Mother;
 import org.opensrp.register.mcare.repository.AllElcos;
 import org.opensrp.register.mcare.repository.AllMothers;
 import org.opensrp.register.mcare.service.scheduling.ANCSchedulesService;
+import org.opensrp.scheduler.service.ActionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,14 +38,16 @@ public class ANCService {
 	private AllMothers allMothers;
 	private ANCSchedulesService ancSchedulesService;
 	private PNCService pncService;
+	private ActionService actionService;
 
 	@Autowired
 	public ANCService(AllElcos allElcos, AllMothers allMothers,
-			ANCSchedulesService ancSchedulesService, PNCService pncService) {
+			ANCSchedulesService ancSchedulesService, PNCService pncService,ActionService actionService) {
 		this.allElcos = allElcos;
 		this.allMothers = allMothers;
 		this.ancSchedulesService = ancSchedulesService;
 		this.pncService = pncService;
+		this.actionService = actionService;
 	}
 
 	public void registerANC(FormSubmission submission) {
@@ -65,9 +68,8 @@ public class ANCService {
 		mother.withINSTANCEID(submission.instanceId());
 		//mother.withTODAY(submission.getField(MOTHER_REFERENCE_DATE));
 		allMothers.update(mother);
-
 		ancSchedulesService.enrollMother(motherId,
-				LocalDate.parse(submission.getField(MOTHER_REFERENCE_DATE)),submission.anmId(),submission.instanceId(),submission.getField("FWPSRLMP"));
+				LocalDate.parse(submission.getField(MOTHER_REFERENCE_DATE)),submission.anmId(),submission.instanceId(),submission.getField(MOTHER_REFERENCE_DATE));
 	}
 
 	public void ancVisitOne(FormSubmission submission) {
@@ -102,7 +104,8 @@ public class ANCService {
 		
 		mother.withANCVisitOne(ancVisitOne);
 		allMothers.update(mother);
-		System.out.println("From ANC1");
+		actionService.markAllAlertsAsInactive(submission.entityId());
+		
 	}
 
 	public void ancVisitTwo(FormSubmission submission) {
@@ -134,7 +137,7 @@ public class ANCService {
 		
 		mother.withANCVisitTwo(ancVisitTwo);
 		allMothers.update(mother);
-		System.out.println("From ANC2");
+		actionService.markAllAlertsAsInactive(submission.entityId());
 
 	}
 
@@ -168,7 +171,7 @@ public class ANCService {
 		mother.withANCVisitThree(ancVisitThree);
 
 		allMothers.update(mother);
-		System.out.println("From ANC3");
+		actionService.markAllAlertsAsInactive(submission.entityId());
 	}
 
 	public void ancVisitFour(FormSubmission submission) {
@@ -201,7 +204,7 @@ public class ANCService {
 			
 		mother.withANCVisitFour(ancVisitFour);
 		allMothers.update(mother);
-		System.out.println("From ANC4");
+		actionService.markAllAlertsAsInactive(submission.entityId());
 	}
 
 	public void pregnancyVerificationForm(FormSubmission submission)
