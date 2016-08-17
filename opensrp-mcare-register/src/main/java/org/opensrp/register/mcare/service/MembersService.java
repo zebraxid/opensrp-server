@@ -66,8 +66,6 @@ public class MembersService {
 					.withINSTANCEID(submission.instanceId())
 					.withPROVIDERID(submission.anmId());					
 			
-			//addDetailsToMembers(submission, subFormData, members);
-			
 			if(membersFields.containsKey(Reg_No)){
 				allMembers.update(members);
 				logger.info("members updated");
@@ -76,30 +74,17 @@ public class MembersService {
 				logger.info("members removed");
 			}
 			
-			if(membersFields.containsKey(Is_TT)){
-				if(!membersFields.get(Is_TT).equalsIgnoreCase("") || membersFields.get(Is_TT) != null){	
-					if(membersFields.get(Is_TT).equalsIgnoreCase("1")){
+			if(membersFields.containsKey(Is_woman)){
+				if(!membersFields.get(Is_woman).equalsIgnoreCase("") || membersFields.get(Is_woman) != null){	
+					if(membersFields.get(Is_woman).equalsIgnoreCase("1")){
 						TT_Visit(submission, members, membersFields);
 					}					
 				}
 			}
 			
-			if(membersFields.containsKey(Is_Measles)){
-				if(!membersFields.get(Is_Measles).equalsIgnoreCase("") && membersFields.get(Is_Measles) != null){	
-					if(membersFields.get(Is_Measles).equalsIgnoreCase("1")){
-						if (!membersFields.get(Date_of_Measles).equalsIgnoreCase("") && membersFields.get(Date_of_Measles) != null)
-							if(isValidDate(membersFields.get(Date_of_Measles)))							
-								membersScheduleService.enrollMembersMeaslesVisit(members.caseId(),submission.anmId(),
-										membersFields.get(Date_of_Measles));
-								
-								TT_Visit(submission, members, membersFields);
-					}
-				}
-			}
-			
-			if(membersFields.containsKey(Is_NewBorn))
-				if(!membersFields.get(Is_NewBorn).equalsIgnoreCase("") && membersFields.get(Is_NewBorn) != null)
-					if(membersFields.get(Is_NewBorn).equalsIgnoreCase("1")){
+			if(membersFields.containsKey(Is_child))
+				if(!membersFields.get(Is_child).equalsIgnoreCase("") && membersFields.get(Is_child) != null)
+					if(membersFields.get(Is_child).equalsIgnoreCase("1")){
 						Child_Visit(submission, members, membersFields);
 					}
 			
@@ -156,9 +141,27 @@ public class MembersService {
 	
 	public void TT_Visit(FormSubmission submission, Members members, Map<String, String> membersFields) {
 		
-		if (!membersFields.get(Date_of_TT1).equalsIgnoreCase("") && membersFields.get(Date_of_TT1) != null)
-			if(isValidDate(membersFields.get(Date_of_TT1)))
-				membersScheduleService.enrollMembersTTVisit(members.caseId(),submission.anmId(),membersFields.get(Date_of_TT1));
+		if(membersFields.containsKey(PVF)){
+			if(!membersFields.get(PVF).equalsIgnoreCase("") && membersFields.get(PVF) != null){	
+				if(membersFields.get(PVF).equalsIgnoreCase("1"))
+				{						
+						membersScheduleService.enrollMembersBNFVisit(members.caseId(),submission.anmId(),
+								membersFields.get(lmp));
+				}
+			}
+		}
+		
+		if (!membersFields.get(tt1).equalsIgnoreCase("") && membersFields.get(tt1) != null){
+			if(isValidDate(membersFields.get(final_lmp)))
+				membersScheduleService.enrollMembersTTVisit(members.caseId(),submission.anmId(),membersFields.get(final_lmp));
+		}
+		
+		else{
+			if (!membersFields.get(tt1_retro).equalsIgnoreCase("") && membersFields.get(tt1_retro) != null){
+				if(isValidDate(membersFields.get(final_lmp)))
+					membersScheduleService.enrollMembersTTVisit(members.caseId(),submission.anmId(),membersFields.get(final_lmp));
+			}
+		}
 		
 		if (!membersFields.get(Date_of_TT2).equalsIgnoreCase("") && membersFields.get(Date_of_TT2) != null)
 			if(isValidDate(membersFields.get(Date_of_TT2)))
@@ -178,15 +181,33 @@ public class MembersService {
 	
 	}
 	
-	private void addDetailsToMembers(FormSubmission submission,
-			SubFormData subFormData, Members members) {
+	public void BNF_Visit(FormSubmission submission) {
+		Members members = allMembers.findByCaseId(submission.entityId());
+		if (members == null) {
+			logger.warn(format(
+					"Failed to handle BNF_Visit as there is no Member enrolled with ID: {0}",
+					submission.entityId()));
+			return;
+		}
+		
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date today = Calendar.getInstance().getTime();
-		members.details().put(relationalid, subFormData.instances().get(0).get(relationalid));
-		members.details().put(REFERENCE_DATE, submission.getField(REFERENCE_DATE));
-		members.details().put(START_DATE, submission.getField(START_DATE));		
-		members.details().put(END_DATE, submission.getField(END_DATE));
-		members.details().put(Received_Time,format.format(today).toString());
+		Map<String, String> general = create(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
+											.put(START_DATE, submission.getField(START_DATE))
+											.put(END_DATE, submission.getField(END_DATE))
+											.put(general_Date_Of_Reg, submission.getField(general_Date_Of_Reg))
+											.put(Patient_Diagnosis, submission.getField(Patient_Diagnosis))
+											.put(Treatment, submission.getField(Treatment))
+											.put(Received_Time, format.format(today).toString())
+											.map();	
+		
+		members.withgeneral(general);
+		allMembers.update(members);
+		
+		if (!submission.getField(TT1_Date_of_Vaccination).equalsIgnoreCase("") && submission.getField(TT1_Date_of_Vaccination) != null)
+			if(isValidDate(submission.getField(TT1_Date_of_Vaccination)))
+				membersScheduleService.enrollMembersBNFVisit(members.caseId(),submission.anmId(),
+						submission.getField(TT1_Date_of_Vaccination));
 	}
 	
 	private void addMEMBERDETAILSToHH(FormSubmission submission,
@@ -202,68 +223,160 @@ public class MembersService {
 					.put(END_DATE, submission.getField(END_DATE))
 					.put(HH_Member, membersFields.get(HH_Member))
 					.put(Reg_No, membersFields.get(Reg_No))
-					.put(relationalid, membersFields.get(relationalid))
-					.put(BDH, membersFields.get(BDH))
 					.put(Member_Fname, membersFields.get(Member_Fname))
 					.put(Member_LName, membersFields.get(Member_LName))
 					.put(Gender, membersFields.get(Gender))
-					.put(DoB, membersFields.get(DoB))
-					.put(Type_DoB, membersFields.get(Type_DoB))
-					.put(Age, membersFields.get(Age))
-					.put(Display_Age, membersFields.get(Display_Age))
-					.put(Child_Vital_Status, membersFields.get(Child_Vital_Status))
-					.put(MOTHER_Vaccine_Dates, membersFields.get(MOTHER_Vaccine_Dates))
-					.put(FW_CWOMHUSSTR, membersFields.get(FW_CWOMHUSSTR))
-					.put(Date_of_BCG_OPV_0, membersFields.get(Date_of_BCG_OPV_0))
-					.put(Date_of_OPV_Penta_PCV_1, membersFields.get(Date_of_OPV_Penta_PCV_1))
-					.put(Date_of_OPV_Penta_PCV_2, membersFields.get(Date_of_OPV_Penta_PCV_2))
-					.put(Date_of_OPV_Penta_3_IPV, membersFields.get(Date_of_OPV_Penta_3_IPV))
-					.put(Date_of_PCV_3, membersFields.get(Date_of_PCV_3))
-					.put(Date_of_MR, membersFields.get(Date_of_MR))
-					.put(Date_of_Measles, membersFields.get(Date_of_Measles))
-					.put(Date_BRID, membersFields.get(Date_BRID))
-					.put(Child_BRID, membersFields.get(Child_BRID))
-					.put(Date_Child_Death, membersFields.get(Date_Child_Death))
-					.put(C_Guardian_Type, membersFields.get(C_Guardian_Type))
-					.put(C_Guardian_Name_Father, membersFields.get(C_Guardian_Name_Father))					
-					.put(C_Guardian_Name_Mother, membersFields.get(C_Guardian_Name_Mother))
-					.put(C_Guardian_Name_Hus, membersFields.get(C_Guardian_Name_Hus))
 					.put(Marital_Status, membersFields.get(Marital_Status))
 					.put(Couple_No, membersFields.get(Couple_No))
-					.put(LMP, membersFields.get(LMP))
-					.put(EDD, membersFields.get(EDD))
-					.put(GA, membersFields.get(GA))
-					.put(Pregnancy_Status, membersFields.get(Pregnancy_Status))
-					.put(Date_of_MR_wom, membersFields.get(Date_of_MR_wom))
-					.put(Date_of_TT1, membersFields.get(Date_of_TT1))
-					.put(Date_of_TT2, membersFields.get(Date_of_TT2))
-					.put(Date_of_TT3, membersFields.get(Date_of_TT3))					
-					.put(Date_of_TT4, membersFields.get(Date_of_TT4))
-					.put(Date_of_TT5, membersFields.get(Date_of_TT5))
-					.put(Unique_ID, membersFields.get(Unique_ID))
-					.put(NID, membersFields.get(NID))
-					.put(BRID, membersFields.get(BRID))
-					.put(HID, membersFields.get(HID))					
-					.put(Guardian_Type, membersFields.get(Guardian_Type))
-					.put(Guardian_Name_Father, membersFields.get(Guardian_Name_Father))
-					.put(Guardian_Name_Mother, membersFields.get(Guardian_Name_Mother))
-					.put(Guardian_Name_Hus, membersFields.get(Guardian_Name_Hus))
-					.put(Mobile_No, membersFields.get(Mobile_No))
-					.put(Education, membersFields.get(Education))
-					.put(Occupation, membersFields.get(Occupation))
-					.put(Is_TT, membersFields.get(Is_TT))
-					.put(Is_Measles, membersFields.get(Is_Measles))
-					.put(Is_FP, membersFields.get(Is_FP))
-					.put(Is_NewBorn, membersFields.get(Is_NewBorn))
+					.put(lmp, membersFields.get(lmp))
+					.put(edd, membersFields.get(edd))
 					.put(Member_COUNTRY, membersFields.get(Member_COUNTRY))
 					.put(Member_DIVISION, membersFields.get(Member_DIVISION))
 					.put(Member_DISTRICT, membersFields.get(Member_DISTRICT))
 					.put(Member_UPAZILLA, membersFields.get(Member_UPAZILLA))
+					.put(Member_Paurasava, membersFields.get(Member_Paurasava))
 					.put(Member_UNION, membersFields.get(Member_UNION))
 					.put(Member_WARD, membersFields.get(Member_WARD))
-					.put(Member_GOB_HHID, membersFields.get(Member_GOB_HHID))
+					.put(Member_Address_line, membersFields.get(Member_Address_line))
+					.put(Member_HIE_facilities, membersFields.get(Member_HIE_facilities))
+					.put(HH_Address, membersFields.get(HH_Address))
+					.put(Member_type, membersFields.get(Member_type))
+					.put(Member_Unique_ID, membersFields.get(Member_Unique_ID))
 					.put(Member_GPS, membersFields.get(Member_GPS))
-					.put(Received_Time, dateTime.format(today).toString()).map();
+					.put(Member_NID, membersFields.get(Member_NID))
+					.put(Member_BRID, membersFields.get(Member_BRID))
+					.put(Member_HID, membersFields.get(Member_HID))
+					.put(member_birth_date_known, membersFields.get(member_birth_date_known))
+					.put(member_birth_date, membersFields.get(member_birth_date))
+					.put(age, membersFields.get(age))
+					.put(calc_age, membersFields.get(calc_age))
+					.put(calc_dob, membersFields.get(calc_dob))
+					.put(calc_dob_confirm, membersFields.get(calc_dob_confirm))
+					.put(calc_dob_estimated, membersFields.get(calc_dob_estimated))
+					.put(calc_age_confirm, membersFields.get(calc_age_confirm))
+					.put(birth_date_note, membersFields.get(birth_date_note))
+					.put(note_age, membersFields.get(note_age))
+					.put(Father_name, membersFields.get(Father_name))
+					.put(Husband_name, membersFields.get(Husband_name))
+					.put(WomanInfo, membersFields.get(WomanInfo))
+					.put(pregnant, membersFields.get(pregnant))
+					.put(FP_USER, membersFields.get(FP_USER))
+					.put(FP_Methods, membersFields.get(FP_Methods))
+					.put(edd_lmp, membersFields.get(edd_lmp))
+					.put(ultrasound_date, membersFields.get(ultrasound_date))
+					.put(ultrasound_weeks, membersFields.get(ultrasound_weeks))
+					.put(edd_calc_lmp, membersFields.get(edd_calc_lmp))
+					.put(edd_calc_ultrasound, membersFields.get(edd_calc_ultrasound))
+					.put(edd_calc_lmp_formatted, membersFields.get(edd_calc_lmp_formatted))
+					.put(edd_calc_ultrasound_formatted, membersFields.get(edd_calc_ultrasound_formatted))
+					.put(lmp_calc_edd, membersFields.get(lmp_calc_edd))
+					.put(lmp_calc_ultrasound, membersFields.get(lmp_calc_ultrasound))
+					.put(lmp_calc_edd_formatted, membersFields.get(lmp_calc_edd_formatted))
+					.put(lmp_calc_ultrasound_formatted, membersFields.get(lmp_calc_ultrasound_formatted))
+					.put(final_edd, membersFields.get(final_edd))
+					.put(final_lmp, membersFields.get(final_lmp))
+					.put(ga_edd, membersFields.get(ga_edd))
+					.put(ga_lmp, membersFields.get(ga_lmp))
+					.put(ga_ult, membersFields.get(ga_ult))
+					.put(final_edd_note, membersFields.get(final_edd_note))
+					.put(final_lmp_note, membersFields.get(final_lmp_note))
+					.put(final_ga, membersFields.get(final_ga))
+					.put(final_ga_note, membersFields.get(final_ga_note))
+					.put(vaccines, membersFields.get(vaccines))
+					.put(tt1_retro, membersFields.get(tt1_retro))
+					.put(tt_1_dose, membersFields.get(tt_1_dose))
+					.put(tt2_retro, membersFields.get(tt2_retro))
+					.put(tt_2_dose, membersFields.get(tt_2_dose))
+					.put(tt3_retro, membersFields.get(tt3_retro))
+					.put(tt_3_dose, membersFields.get(tt_3_dose))
+					.put(tt4_retro, membersFields.get(tt4_retro))
+					.put(tt_4_dose, membersFields.get(tt_4_dose))
+					.put(vaccines_2, membersFields.get(vaccines_2))
+					.put(tt1, membersFields.get(tt1))
+					.put(tt_1_dose_today, membersFields.get(tt_1_dose_today))
+					.put(tt2, membersFields.get(tt2))
+					.put(tt_2_dose_today, membersFields.get(tt_2_dose_today))
+					.put(tt3, membersFields.get(tt3))
+					.put(tt_3_dose_today, membersFields.get(tt_3_dose_today))
+					.put(tt4, membersFields.get(tt4))
+					.put(tt_4_dose_today, membersFields.get(tt_4_dose_today))
+					.put(tt5, membersFields.get(tt5))
+					.put(tt_5_dose_today, membersFields.get(tt_5_dose_today))
+					.put(Child_birth_date_known, membersFields.get(Child_birth_date_known))
+					.put(Child_birth_date, membersFields.get(Child_birth_date))
+					.put(Child_age, membersFields.get(Child_age))
+					.put(Child_calc_age, membersFields.get(Child_calc_age))
+					.put(Child_calc_dob, membersFields.get(Child_calc_dob))
+					.put(Child_dob, membersFields.get(Child_dob))
+					.put(Child_dob_estimated, membersFields.get(Child_dob_estimated))
+					.put(Child_age_days, membersFields.get(Child_age_days))
+					.put(Child_birth_date_note, membersFields.get(Child_birth_date_note))
+					.put(Birth_Weigtht, membersFields.get(Birth_Weigtht))
+					.put(Newborn_Care_Received, membersFields.get(Newborn_Care_Received))
+					.put(Child_gender, membersFields.get(Child_gender))
+					.put(Child_mother_name, membersFields.get(Child_mother_name))
+					.put(Child_father_name, membersFields.get(Child_father_name))
+					.put(epi_card_number, membersFields.get(epi_card_number))
+					.put(child_was_suffering_from_a_disease_at_birth, membersFields.get(child_was_suffering_from_a_disease_at_birth))
+					.put(reminders_approval, membersFields.get(reminders_approval))
+					.put(contact_phone_number, membersFields.get(contact_phone_number))
+					.put(child_vaccines, membersFields.get(child_vaccines))
+					.put(bcg_retro, membersFields.get(bcg_retro))
+					.put(opv0_retro, membersFields.get(opv0_retro))
+					.put(opv0_dose, membersFields.get(opv0_dose))
+					.put(pcv1_retro, membersFields.get(pcv1_retro))
+					.put(pcv1_dose, membersFields.get(pcv1_dose))
+					.put(opv1_retro, membersFields.get(opv1_retro))
+					.put(opv1_dose, membersFields.get(opv1_dose))
+					.put(penta1_retro, membersFields.get(penta1_retro))
+					.put(penta1_dose, membersFields.get(penta1_dose))
+					.put(pcv2_retro, membersFields.get(pcv2_retro))
+					.put(pcv2_dose, membersFields.get(pcv2_dose))
+					.put(opv2_retro, membersFields.get(opv2_retro))
+					.put(opv2_dose, membersFields.get(opv2_dose))
+					.put(penta2_retro, membersFields.get(penta2_retro))
+					.put(penta2_dose, membersFields.get(penta2_dose))
+					.put(pcv3_retro, membersFields.get(pcv3_retro))
+					.put(pcv3_dose, membersFields.get(pcv3_dose))
+					.put(opv3_retro, membersFields.get(opv3_retro))
+					.put(opv3_dose, membersFields.get(opv3_dose))
+					.put(penta3_retro, membersFields.get(penta3_retro))
+					.put(penta3_dose, membersFields.get(penta3_dose))
+					.put(ipv_retro, membersFields.get(ipv_retro))
+					.put(measles1_retro, membersFields.get(measles1_retro))
+					.put(measles1_dose, membersFields.get(measles1_dose))
+					.put(measles2_retro, membersFields.get(measles2_retro))
+					.put(measles2_dose, membersFields.get(measles2_dose))
+					.put(bcg, membersFields.get(bcg))
+					.put(opv0, membersFields.get(opv0))
+					.put(opv0_dose_today, membersFields.get(opv0_dose_today))
+					.put(pcv1, membersFields.get(pcv1))
+					.put(pcv1_dose_today, membersFields.get(pcv1_dose_today))
+					.put(opv1, membersFields.get(opv1))
+					.put(opv1_dose_today, membersFields.get(opv1_dose_today))
+					.put(penta1, membersFields.get(penta1))
+					.put(penta1_dose_today, membersFields.get(penta1_dose_today))
+					.put(pcv2, membersFields.get(pcv2))
+					.put(pcv2_dose_today, membersFields.get(pcv2_dose_today))
+					.put(opv2, membersFields.get(opv2))
+					.put(opv2_dose_today, membersFields.get(opv2_dose_today))
+					.put(penta2, membersFields.get(penta2))
+					.put(penta2_dose_today, membersFields.get(penta2_dose_today))
+					.put(pcv3, membersFields.get(pcv3))
+					.put(pcv3_dose_today, membersFields.get(pcv3_dose_today))
+					.put(opv3, membersFields.get(opv3))
+					.put(opv3_dose_today, membersFields.get(opv3_dose_today))
+					.put(penta3, membersFields.get(penta3))
+					.put(penta3_dose_today, membersFields.get(penta3_dose_today))
+					.put(ipv, membersFields.get(ipv))
+					.put(measles1, membersFields.get(measles1))
+					.put(measles1_dose_today, membersFields.get(measles1_dose_today))
+					.put(measles2, membersFields.get(measles2))
+					.put(measles2_dose_today, membersFields.get(measles2_dose_today))
+					.put(Is_woman, membersFields.get(Is_woman))
+					.put(Is_child, membersFields.get(Is_child))
+					.put(PVF, membersFields.get(PVF))
+					.put(received_time, dateTime.format(today).toString()).map();
 			
 				if(membersFields.containsKey(Reg_No)){
 					if(!membersFields.get(Reg_No).equalsIgnoreCase("") || membersFields.get(Reg_No) != null){
@@ -296,81 +409,6 @@ public class MembersService {
 		
 		members.withgeneral(general);
 		allMembers.update(members);
-	}
-	
-	public void familyPlanning(FormSubmission submission) {
-		Members members = allMembers.findByCaseId(submission.entityId());
-		if (members == null) {
-			logger.warn(format(
-					"Failed to handle familyPlanning as there is no Member enrolled with ID: {0}",
-					submission.entityId()));
-			return;
-		}
-		
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		Date today = Calendar.getInstance().getTime();
-		Map<String, String> familyPlanning = create(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
-											.put(START_DATE, submission.getField(START_DATE))
-											.put(END_DATE, submission.getField(END_DATE))
-											.put(FP_DATE_OF_REG, submission.getField(FP_DATE_OF_REG))
-											.put(FP_USER, submission.getField(FP_USER))
-											.put(FP_Methods, submission.getField(FP_Methods))
-											.put(Received_Time, format.format(today).toString())
-											.map();	
-		
-		members.withfamilyPlanning(familyPlanning);
-		allMembers.update(members);
-	}
-	
-	public void newBorn(FormSubmission submission) {
-		Members members = allMembers.findByCaseId(submission.entityId());
-		if (members == null) {
-			logger.warn(format(
-					"Failed to handle familyPlanning as there is no Member enrolled with ID: {0}",
-					submission.entityId()));
-			return;
-		}
-		
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		Date today = Calendar.getInstance().getTime();
-		Map<String, String> newBorn = create(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
-											.put(START_DATE, submission.getField(START_DATE))
-											.put(END_DATE, submission.getField(END_DATE))
-											.put(new_born_DATE_OF_REG, submission.getField(new_born_DATE_OF_REG))
-											.put(Birth_Weigtht, submission.getField(Birth_Weigtht))
-											.put(Newborn_Care_Received, submission.getField(Newborn_Care_Received))
-											.put(Received_Time, format.format(today).toString())
-											.map();	
-		
-		members.withnewBorn(newBorn);
-		allMembers.update(members);
-	}
-	
-	public void Measles_Visit(FormSubmission submission) {
-		Members members = allMembers.findByCaseId(submission.entityId());
-		if (members == null) {
-			logger.warn(format(
-					"Failed to handle Measles_Visit as there is no Member enrolled with ID: {0}",
-					submission.entityId()));
-			return;
-		}
-		
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		Date today = Calendar.getInstance().getTime();
-		Map<String, String> measlesVisit = create(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
-											.put(START_DATE, submission.getField(START_DATE))
-											.put(END_DATE, submission.getField(END_DATE))
-											.put(Has_Vaccinated, submission.getField(Has_Vaccinated))
-											.put(measles_Date_of_Vaccination, submission.getField(measles_Date_of_Vaccination))
-											.put(Received_Time, format.format(today).toString())
-											.map();	
-		
-		members.withMeaslesVisit(measlesVisit);
-		allMembers.update(members);
-		
-		if (!submission.getField(measles_Date_of_Vaccination).equalsIgnoreCase("") && submission.getField(measles_Date_of_Vaccination) != null)
-			if(isValidDate(submission.getField(measles_Date_of_Vaccination)))
-				membersScheduleService.unEnrollFromSchedule(members.caseId(),submission.anmId(),SCHEDULE_Woman_Measles);
 	}
 	
 	public void TT1_Visit(FormSubmission submission) {
@@ -789,31 +827,31 @@ public class MembersService {
 				membersScheduleService.unEnrollFromSchedule(members.caseId(),submission.anmId(),child_vaccination_opv0);
 	}
 
-	public void MRHandler(FormSubmission submission) {
+	public void Measles1_Visit(FormSubmission submission) {
 		Members members = allMembers.findByCaseId(submission.entityId());
 		if (members == null) {
 			logger.warn(format(
-					"Failed to handle MR_Visit as there is no Member enrolled with ID: {0}",
+					"Failed to handle Measles1_Visit as there is no Member enrolled with ID: {0}",
 					submission.entityId()));
 			return;
 		}
 		
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date today = Calendar.getInstance().getTime();
-		Map<String, String> MR = create(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
+		Map<String, String> measlesVisit = create(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
 											.put(START_DATE, submission.getField(START_DATE))
 											.put(END_DATE, submission.getField(END_DATE))
-											.put(ChildVaccination_MR_Date_of_Vaccination, submission.getField(ChildVaccination_MR_Date_of_Vaccination))
 											.put(Has_Vaccinated, submission.getField(Has_Vaccinated))
+											.put(measles_Date_of_Vaccination, submission.getField(measles_Date_of_Vaccination))
 											.put(Received_Time, format.format(today).toString())
 											.map();	
 		
-		members.withMR(MR);
+		members.withMeaslesVisit(measlesVisit);
 		allMembers.update(members);
-
-		if (!submission.getField(ChildVaccination_MR_Date_of_Vaccination).equalsIgnoreCase("") && submission.getField(ChildVaccination_MR_Date_of_Vaccination) != null)
-			if(isValidDate(submission.getField(ChildVaccination_MR_Date_of_Vaccination)))
-				membersScheduleService.unEnrollFromSchedule(members.caseId(),submission.anmId(),child_vaccination_mr);
+		
+		if (!submission.getField(measles_Date_of_Vaccination).equalsIgnoreCase("") && submission.getField(measles_Date_of_Vaccination) != null)
+			if(isValidDate(submission.getField(measles_Date_of_Vaccination)))
+				membersScheduleService.unEnrollFromSchedule(members.caseId(),submission.anmId(),SCHEDULE_Woman_Measles);
 	}
 
 	public void Measles2Handler(FormSubmission submission) {

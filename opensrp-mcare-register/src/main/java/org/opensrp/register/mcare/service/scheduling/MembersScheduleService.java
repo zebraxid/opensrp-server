@@ -27,6 +27,11 @@ public class MembersScheduleService {
 		this.scheduler = scheduler;	
 	}
 	
+	public void enrollMembersBNFVisit(String entityId,String provider,String date) {       
+        logger.info(format("Enrolling Members with Entity id:{0} to Members schedule Members measles, milestone: {1}.", entityId, SCHEDULE_Woman_Measles));
+        scheduler.enrollIntoSchedule(entityId, SCHEDULE_Woman_BNF, date);
+    }
+	
 	public void enrollMembersMeaslesVisit(String entityId,String provider,String date) {       
         logger.info(format("Enrolling Members with Entity id:{0} to Members schedule Members measles, milestone: {1}.", entityId, SCHEDULE_Woman_Measles));
         scheduler.enrollIntoSchedule(entityId, SCHEDULE_Woman_Measles, date);

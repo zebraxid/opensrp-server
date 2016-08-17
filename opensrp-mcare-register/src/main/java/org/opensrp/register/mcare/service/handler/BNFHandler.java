@@ -11,18 +11,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class MRHandler implements FormSubmissionHandler {
+public class BNFHandler implements FormSubmissionHandler {
 
 	private MembersService womanService;
 
 	@Autowired
-	public MRHandler(MembersService womanService) {
+	public BNFHandler(MembersService womanService) {
 		this.womanService = womanService;
 	}
-	
+
 	@Override
 	public void handle(FormSubmission submission) {
-		womanService.MRHandler(submission);	
+		womanService.BNF_Visit(submission);
 	}
-
 }

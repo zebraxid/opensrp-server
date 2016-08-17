@@ -11,17 +11,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class MeaslesHandler implements FormSubmissionHandler {
+public class Measles1Handler implements FormSubmissionHandler {
 	
 	private MembersService womanService;
 
 	@Autowired
-	public MeaslesHandler(MembersService womanService) {
+	public Measles1Handler(MembersService womanService) {
 		this.womanService = womanService;
 	}
 
 	@Override
 	public void handle(FormSubmission submission) {
-		womanService.Measles_Visit(submission);
+		womanService.Measles1_Visit(submission);
 	}
 }

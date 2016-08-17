@@ -88,6 +88,7 @@ public class OpenSRPScheduleConstants {
     	public static final String HH_SCHEDULE_CENSUS = "FW CENSUS";
     }
     public static class MemberScheduleConstants {
+    	public static final String SCHEDULE_Woman_BNF = "Woman_BNF";
         public static final String SCHEDULE_Woman_Measles = "Woman_measles";
         public static final String SCHEDULE_Woman_1 = "Woman_TT1";
         public static final String SCHEDULE_Woman_2 = "Woman_TT2";

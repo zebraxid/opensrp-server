@@ -25,12 +25,12 @@ public class HandlerMapper implements IHandlerMapper {
 			AllFormSubmissions formSubmissionsRepository,
 			HHRegistrationHandler hhRegistrationHandler,
 			MEMBERSHandler membersHandler,
+			BNFHandler BNFHandler,
 			GeneralHandler generalHandler,
-			MeaslesHandler measlesHandler,
+			Measles1Handler measles1Handler,
 			BCGHandler BCGHandler,
 			IPVHandler IPVHandler,
 			Measles2Handler Measles2Handler,
-			MRHandler MRHandler,
 			OPV0Handler OPV0Handler,
 			OPV1Handler OPV1Handler,
 			OPV2Handler OPV2Handler,
@@ -50,12 +50,12 @@ public class HandlerMapper implements IHandlerMapper {
 	{
 		handlerMap = EasyMap.create(HH_REGISTRATION, (FormSubmissionHandler) hhRegistrationHandler)
 					 .put(MEMBERS_REGISTRATION, membersHandler)	
+					 .put(BNF_Handler, BNFHandler)
 				     .put(GeneralHandler, generalHandler)
-				     .put(MeaslesHandler, measlesHandler)
+				     .put(Measles1Handler, measles1Handler)
 				     .put(BCGHandler_, BCGHandler)
 				     .put(IPVHandler_ , IPVHandler)
 				     .put(Measles2Handler_ , Measles2Handler)
-				     .put(MRHandler_ , MRHandler)
 				     .put(OPV0Handler_ , OPV0Handler)
 				     .put(OPV1Handler_ , OPV1Handler)
 				     .put(OPV2Handler_ , OPV2Handler)

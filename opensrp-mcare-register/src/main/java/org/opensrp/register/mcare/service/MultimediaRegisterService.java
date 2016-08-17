@@ -18,7 +18,6 @@ import org.opensrp.repository.MultimediaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import static org.opensrp.common.AllConstants.MEMBERSRegistrationFields.relationalid;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.id;
 
 
