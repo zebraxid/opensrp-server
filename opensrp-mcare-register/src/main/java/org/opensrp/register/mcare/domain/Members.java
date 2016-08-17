@@ -1303,7 +1303,10 @@ public class Members extends MotechBaseDataObject {
 	public String caseId() {
 		return caseId;
 	}
-
+	
+	private String getCaseId() {
+		return caseId;
+	}
 	public String INSTANCEID() {
 		return INSTANCEID;
 	}
@@ -1458,10 +1461,6 @@ public class Members extends MotechBaseDataObject {
 	
 	public String relationalid() {
 		return relationalid;
-	}
-
-	private String CaseId() {
-		return caseId;
 	}
 	
 	public String Member_Address_line() {

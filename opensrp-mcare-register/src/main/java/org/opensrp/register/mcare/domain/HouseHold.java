@@ -371,6 +371,11 @@ public class HouseHold extends MotechBaseDataObject {
 	public String caseId() {
 		return caseId;
 	}
+	
+	private String getCaseId() {
+		return caseId;
+	}
+	
 	public String BAHMNIID(){
 		return BAHMNI_ID;
 	}
@@ -563,10 +568,6 @@ public class HouseHold extends MotechBaseDataObject {
 			multimediaAttachments = new ArrayList<>();
 		}
 		return multimediaAttachments;
-	}
-
-	private String CaseId() {
-		return caseId;
 	}
 
 	public Map<String, String> details() {
