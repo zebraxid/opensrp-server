@@ -63,10 +63,10 @@ public class MembersService {
 		for (Map<String, String> membersFields : subFormData.instances()) {
 			
 			Members members = allMembers.findByCaseId(membersFields.get(ID))
-					.withINSTANCEID(submission.instanceId())
-					.withPROVIDERID(submission.anmId());					
+					.setINSTANCEID(submission.instanceId())
+					.setPROVIDERID(submission.anmId());					
 			
-			if(membersFields.containsKey(Reg_No)){
+			if(membersFields.containsKey(REG_NO)){
 				allMembers.update(members);
 				logger.info("members updated");
 			}else{
@@ -104,8 +104,8 @@ public class MembersService {
 			
 			addMEMBERDETAILSToHH(submission, subFormData, houseHold);
 
-			houseHold.withPROVIDERID(submission.anmId());
-			houseHold.withINSTANCEID(submission.instanceId());
+			houseHold.setPROVIDERID(submission.anmId());
+			houseHold.setINSTANCEID(submission.instanceId());
 			
 			allHouseHolds.update(houseHold);
 
@@ -201,7 +201,7 @@ public class MembersService {
 											.put(Received_Time, format.format(today).toString())
 											.map();	
 		
-		members.withgeneral(general);
+		members.setgeneral(general);
 		allMembers.update(members);
 		
 		if (!submission.getField(TT1_Date_of_Vaccination).equalsIgnoreCase("") && submission.getField(TT1_Date_of_Vaccination) != null)
@@ -221,33 +221,33 @@ public class MembersService {
 					.put(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
 					.put(START_DATE, submission.getField(START_DATE))
 					.put(END_DATE, submission.getField(END_DATE))
-					.put(HH_Member, membersFields.get(HH_Member))
-					.put(Reg_No, membersFields.get(Reg_No))
-					.put(Member_Fname, membersFields.get(Member_Fname))
-					.put(Member_LName, membersFields.get(Member_LName))
+					.put(HH_MEMBER, membersFields.get(HH_MEMBER))
+					.put(REG_NO, membersFields.get(REG_NO))
+					.put(MEMBER_FNAME, membersFields.get(MEMBER_FNAME))
+					.put(MEMBER_LNAME, membersFields.get(MEMBER_LNAME))
 					.put(Gender, membersFields.get(Gender))
 					.put(Marital_Status, membersFields.get(Marital_Status))
 					.put(Couple_No, membersFields.get(Couple_No))
 					.put(lmp, membersFields.get(lmp))
 					.put(edd, membersFields.get(edd))
-					.put(Member_COUNTRY, membersFields.get(Member_COUNTRY))
-					.put(Member_DIVISION, membersFields.get(Member_DIVISION))
-					.put(Member_DISTRICT, membersFields.get(Member_DISTRICT))
-					.put(Member_UPAZILLA, membersFields.get(Member_UPAZILLA))
-					.put(Member_Paurasava, membersFields.get(Member_Paurasava))
-					.put(Member_UNION, membersFields.get(Member_UNION))
-					.put(Member_WARD, membersFields.get(Member_WARD))
-					.put(Member_Address_line, membersFields.get(Member_Address_line))
-					.put(Member_HIE_facilities, membersFields.get(Member_HIE_facilities))
-					.put(HH_Address, membersFields.get(HH_Address))
-					.put(Member_type, membersFields.get(Member_type))
-					.put(Member_Unique_ID, membersFields.get(Member_Unique_ID))
-					.put(Member_GPS, membersFields.get(Member_GPS))
-					.put(Member_NID, membersFields.get(Member_NID))
-					.put(Member_BRID, membersFields.get(Member_BRID))
-					.put(Member_HID, membersFields.get(Member_HID))
-					.put(member_birth_date_known, membersFields.get(member_birth_date_known))
-					.put(member_birth_date, membersFields.get(member_birth_date))
+					.put(MEMBER_COUNTRY, membersFields.get(MEMBER_COUNTRY))
+					.put(MEMBER_DIVISION, membersFields.get(MEMBER_DIVISION))
+					.put(MEMBER_DISTRICT, membersFields.get(MEMBER_DISTRICT))
+					.put(MEMBER_UPAZILLA, membersFields.get(MEMBER_UPAZILLA))
+					.put(MEMBER_PAURASAVA, membersFields.get(MEMBER_PAURASAVA))
+					.put(MEMBER_UNION, membersFields.get(MEMBER_UNION))
+					.put(MEMBER_WARD, membersFields.get(MEMBER_WARD))
+					.put(MEMBER_ADDRESS_LINE, membersFields.get(MEMBER_ADDRESS_LINE))
+					.put(MEMBER_HIE_FACILITIES, membersFields.get(MEMBER_HIE_FACILITIES))
+					.put(HH_ADDRESS, membersFields.get(HH_ADDRESS))
+					.put(MEMBER_TYPE, membersFields.get(MEMBER_TYPE))
+					.put(MEMBER_UNIQUE_ID, membersFields.get(MEMBER_UNIQUE_ID))
+					.put(MEMBER_GPS, membersFields.get(MEMBER_GPS))
+					.put(MEMBER_NID, membersFields.get(MEMBER_NID))
+					.put(MEMBER_BRID, membersFields.get(MEMBER_BRID))
+					.put(MEMBER_HID, membersFields.get(MEMBER_HID))
+					.put(MEMBER_BIRTH_DATE_KNOWN, membersFields.get(MEMBER_BIRTH_DATE_KNOWN))
+					.put(MEMBER_BIRTH_DATE, membersFields.get(MEMBER_BIRTH_DATE))
 					.put(age, membersFields.get(age))
 					.put(calc_age, membersFields.get(calc_age))
 					.put(calc_dob, membersFields.get(calc_dob))
@@ -378,8 +378,8 @@ public class MembersService {
 					.put(PVF, membersFields.get(PVF))
 					.put(received_time, dateTime.format(today).toString()).map();
 			
-				if(membersFields.containsKey(Reg_No)){
-					if(!membersFields.get(Reg_No).equalsIgnoreCase("") || membersFields.get(Reg_No) != null){
+				if(membersFields.containsKey(REG_NO)){
+					if(!membersFields.get(REG_NO).equalsIgnoreCase("") || membersFields.get(REG_NO) != null){
 						houseHold.MEMBERDETAILS().add(members);
 				  }
 				}						
@@ -407,7 +407,7 @@ public class MembersService {
 											.put(Received_Time, format.format(today).toString())
 											.map();	
 		
-		members.withgeneral(general);
+		members.setgeneral(general);
 		allMembers.update(members);
 	}
 	
@@ -430,7 +430,7 @@ public class MembersService {
 											.put(Received_Time, format.format(today).toString())
 											.map();	
 		
-		members.withTTVisitOne(TT1_visit);
+		members.setTTVisitOne(TT1_visit);
 		allMembers.update(members);
 		
 		if (!submission.getField(TT1_Date_of_Vaccination).equalsIgnoreCase("") && submission.getField(TT1_Date_of_Vaccination) != null)
@@ -458,7 +458,7 @@ public class MembersService {
 											.put(Received_Time, format.format(today).toString())
 											.map();	
 		
-		members.withTTVisitTwo(TT2_visit);
+		members.setTTVisitTwo(TT2_visit);
 		allMembers.update(members);		
 		
 		if (!submission.getField(TT2_Date_of_Vaccination).equalsIgnoreCase("") && submission.getField(TT2_Date_of_Vaccination) != null)
@@ -485,7 +485,7 @@ public class MembersService {
 											.put(Received_Time, format.format(today).toString())
 											.map();	
 		
-		members.withTTVisitOne(TT3_visit);
+		members.setTTVisitOne(TT3_visit);
 		allMembers.update(members);
 		
 		if (!submission.getField(TT3_Date_of_Vaccination).equalsIgnoreCase("") && submission.getField(TT3_Date_of_Vaccination) != null)
@@ -512,7 +512,7 @@ public class MembersService {
 											.put(Received_Time, format.format(today).toString())
 											.map();	
 		
-		members.withTTVisitOne(TT4_visit);
+		members.setTTVisitOne(TT4_visit);
 		allMembers.update(members);
 		
 		if (!submission.getField(TT4_Date_of_Vaccination).equalsIgnoreCase("") && submission.getField(TT4_Date_of_Vaccination) != null)
@@ -539,7 +539,7 @@ public class MembersService {
 											.put(Received_Time, format.format(today).toString())
 											.map();	
 		
-		members.withTTVisitFive(TT5_visit);
+		members.setTTVisitFive(TT5_visit);
 		allMembers.update(members);
 		
 		if (!submission.getField(TT5_Date_of_Vaccination).equalsIgnoreCase("") && submission.getField(TT5_Date_of_Vaccination) != null)
@@ -566,7 +566,7 @@ public class MembersService {
 											.put(Received_Time, format.format(today).toString())
 											.map();	
 		
-		members.withPCV1(PCV1);
+		members.setPCV1(PCV1);
 		allMembers.update(members);
 		
 		if (!submission.getField(ChildVaccination_PCV1_Date_of_Vaccination).equalsIgnoreCase("") && submission.getField(ChildVaccination_PCV1_Date_of_Vaccination) != null)
@@ -595,7 +595,7 @@ public class MembersService {
 											.put(Received_Time, format.format(today).toString())
 											.map();	
 		
-		members.withPCV2(PCV2);
+		members.setPCV2(PCV2);
 		allMembers.update(members);	
 		
 		if (!submission.getField(ChildVaccination_PCV2_Date_of_Vaccination).equalsIgnoreCase("") && submission.getField(ChildVaccination_PCV2_Date_of_Vaccination) != null)
@@ -624,7 +624,7 @@ public class MembersService {
 											.put(Received_Time, format.format(today).toString())
 											.map();	
 		
-		members.withPCV3(PCV3);
+		members.setPCV3(PCV3);
 		allMembers.update(members);
 		
 		if (!submission.getField(ChildVaccination_PCV3_Date_of_Vaccination).equalsIgnoreCase("") && submission.getField(ChildVaccination_PCV3_Date_of_Vaccination) != null)
@@ -650,7 +650,7 @@ public class MembersService {
 											.put(Received_Time, format.format(today).toString())
 											.map();	
 		
-		members.withPENTA3(PENTA3);
+		members.setPENTA3(PENTA3);
 		allMembers.update(members);
 		
 		if (!submission.getField(ChildVaccination_PENTA3_Date_of_Vaccination).equalsIgnoreCase("") && submission.getField(ChildVaccination_PENTA3_Date_of_Vaccination) != null)
@@ -675,7 +675,7 @@ public class MembersService {
 											.put(Received_Time, format.format(today).toString())
 											.map();	
 		
-		members.withPENTA2(PENTA2);
+		members.setPENTA2(PENTA2);
 		allMembers.update(members);
 		
 		if (!submission.getField(ChildVaccination_PENTA2_Date_of_Vaccination).equalsIgnoreCase("") && submission.getField(ChildVaccination_PENTA2_Date_of_Vaccination) != null)
@@ -702,7 +702,7 @@ public class MembersService {
 											.put(Received_Time, format.format(today).toString())
 											.map();	
 		
-		members.withPENTA1(PENTA1);
+		members.setPENTA1(PENTA1);
 		allMembers.update(members);
 		
 		if (!submission.getField(ChildVaccination_PENTA1_Date_of_Vaccination).equalsIgnoreCase("") && submission.getField(ChildVaccination_PENTA1_Date_of_Vaccination) != null)
@@ -731,7 +731,7 @@ public class MembersService {
 											.put(Received_Time, format.format(today).toString())
 											.map();	
 		
-		members.withOPV3(OPV3);
+		members.setOPV3(OPV3);
 		allMembers.update(members);
 		
 		if (!submission.getField(ChildVaccination_OPV3_Date_of_Vaccination).equalsIgnoreCase("") && submission.getField(ChildVaccination_OPV3_Date_of_Vaccination) != null)
@@ -760,7 +760,7 @@ public class MembersService {
 											.put(Received_Time, format.format(today).toString())
 											.map();	
 		
-		members.withOPV2(OPV2);
+		members.setOPV2(OPV2);
 		allMembers.update(members);
 		
 		if (!submission.getField(ChildVaccination_OPV2_Date_of_Vaccination).equalsIgnoreCase("") && submission.getField(ChildVaccination_OPV2_Date_of_Vaccination) != null)
@@ -789,7 +789,7 @@ public class MembersService {
 											.put(Received_Time, format.format(today).toString())
 											.map();	
 		
-		members.withOPV1(OPV1);
+		members.setOPV1(OPV1);
 		
 		allMembers.update(members);
 		
@@ -819,7 +819,7 @@ public class MembersService {
 											.put(Received_Time, format.format(today).toString())
 											.map();	
 		
-		members.withOPV0(OPV0);
+		members.setOPV0(OPV0);
 		allMembers.update(members);
 
 		if (!submission.getField(ChildVaccination_OPV0_Date_of_Vaccination).equalsIgnoreCase("") && submission.getField(ChildVaccination_OPV0_Date_of_Vaccination) != null)
@@ -846,7 +846,7 @@ public class MembersService {
 											.put(Received_Time, format.format(today).toString())
 											.map();	
 		
-		members.withMeaslesVisit(measlesVisit);
+		members.setMeaslesVisit(measlesVisit);
 		allMembers.update(members);
 		
 		if (!submission.getField(measles_Date_of_Vaccination).equalsIgnoreCase("") && submission.getField(measles_Date_of_Vaccination) != null)
@@ -873,7 +873,7 @@ public class MembersService {
 											.put(Received_Time, format.format(today).toString())
 											.map();	
 		
-		members.withMeasles2(Measles2);
+		members.setMeasles2(Measles2);
 		allMembers.update(members);
 
 		if (!submission.getField(ChildVaccination_Measles_Date_of_Vaccination).equalsIgnoreCase("") && submission.getField(ChildVaccination_Measles_Date_of_Vaccination) != null)
@@ -900,7 +900,7 @@ public class MembersService {
 											.put(Received_Time, format.format(today).toString())
 											.map();	
 		
-		members.withIPV(IPV);
+		members.setIPV(IPV);
 		allMembers.update(members);
 		
 		if (!submission.getField(ChildVaccination_IPV_Date_of_Vaccination).equalsIgnoreCase("") && submission.getField(ChildVaccination_IPV_Date_of_Vaccination) != null)
@@ -928,7 +928,7 @@ public class MembersService {
 											.put(Received_Time, format.format(today).toString())
 											.map();	
 		
-		members.withBCG(BCG);
+		members.setBCG(BCG);
 		allMembers.update(members);
 
 		if (!submission.getField(ChildVaccination_BCG_Date_of_Vaccination).equalsIgnoreCase("") && submission.getField(ChildVaccination_BCG_Date_of_Vaccination) != null)

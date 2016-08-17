@@ -7,19 +7,7 @@ package org.opensrp.register.mcare.service;
 import static java.text.MessageFormat.format;
 import static org.opensrp.common.AllConstants.CommonFormFields.ID;
 import static org.opensrp.common.AllConstants.MEMBERSRegistrationFields.*;
-import static org.opensrp.common.AllConstants.HHRegistrationFields.MEMBERS_REGISTRATION_SUB_FORM_NAME;
-import static org.opensrp.common.AllConstants.HHRegistrationFields.REFERENCE_DATE;
-import static org.opensrp.common.AllConstants.HHRegistrationFields.START_DATE;
-import static org.opensrp.common.AllConstants.HHRegistrationFields.END_DATE;
-import static org.opensrp.common.AllConstants.HHRegistrationFields.Date_Of_Reg;
-import static org.opensrp.common.AllConstants.HHRegistrationFields.existing_location;
-import static org.opensrp.common.AllConstants.HHRegistrationFields.existing_Country;
-import static org.opensrp.common.AllConstants.HHRegistrationFields.existing_Division;
-import static org.opensrp.common.AllConstants.HHRegistrationFields.existing_District;
-import static org.opensrp.common.AllConstants.HHRegistrationFields.existing_Upazilla;
-import static org.opensrp.common.AllConstants.HHRegistrationFields.existing_Union;
-import static org.opensrp.common.AllConstants.HHRegistrationFields.existing_Ward;
-import static org.opensrp.common.AllConstants.HHRegistrationFields.received_time;
+import static org.opensrp.common.AllConstants.HHRegistrationFields.*;
 
 import static org.opensrp.common.util.EasyMap.create;
 
@@ -69,13 +57,13 @@ public class HHService {
 		
 		addMEMBERDETAILSToHH(submission, subFormData, houseHold);
 		
-		houseHold.withPROVIDERID(submission.anmId());
-		houseHold.withINSTANCEID(submission.instanceId());
+		houseHold.setPROVIDERID(submission.anmId());
+		houseHold.setINSTANCEID(submission.instanceId());
 
 		allHouseHolds.update(houseHold);
 			
 		hhSchedulesService.enrollIntoMilestoneOfCensus(submission.entityId(),
-			submission.getField(Date_Of_Reg),submission.anmId(),submission.instanceId());
+			submission.getField(DATE_OF_REG),submission.anmId(),submission.instanceId());
 		
 		membersService.registerMembers(submission);
 	}
@@ -91,33 +79,33 @@ public class HHService {
 					.put(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
 					.put(START_DATE, submission.getField(START_DATE))
 					.put(END_DATE, submission.getField(END_DATE))
-					.put(HH_Member, membersFields.get(HH_Member))
-					.put(Reg_No, membersFields.get(Reg_No))
-					.put(Member_Fname, membersFields.get(Member_Fname))
-					.put(Member_LName, membersFields.get(Member_LName))
+					.put(HH_MEMBER, membersFields.get(HH_MEMBER))
+					.put(REG_NO, membersFields.get(REG_NO))
+					.put(MEMBER_FNAME, membersFields.get(MEMBER_FNAME))
+					.put(MEMBER_LNAME, membersFields.get(MEMBER_LNAME))
 					.put(Gender, membersFields.get(Gender))
 					.put(Marital_Status, membersFields.get(Marital_Status))
 					.put(Couple_No, membersFields.get(Couple_No))
 					.put(lmp, membersFields.get(lmp))
 					.put(edd, membersFields.get(edd))
-					.put(Member_COUNTRY, membersFields.get(Member_COUNTRY))
-					.put(Member_DIVISION, membersFields.get(Member_DIVISION))
-					.put(Member_DISTRICT, membersFields.get(Member_DISTRICT))
-					.put(Member_UPAZILLA, membersFields.get(Member_UPAZILLA))
-					.put(Member_Paurasava, membersFields.get(Member_Paurasava))
-					.put(Member_UNION, membersFields.get(Member_UNION))
-					.put(Member_WARD, membersFields.get(Member_WARD))
-					.put(Member_Address_line, membersFields.get(Member_Address_line))
-					.put(Member_HIE_facilities, membersFields.get(Member_HIE_facilities))
-					.put(HH_Address, membersFields.get(HH_Address))
-					.put(Member_type, membersFields.get(Member_type))
-					.put(Member_Unique_ID, membersFields.get(Member_Unique_ID))
-					.put(Member_GPS, membersFields.get(Member_GPS))
-					.put(Member_NID, membersFields.get(Member_NID))
-					.put(Member_BRID, membersFields.get(Member_BRID))
-					.put(Member_HID, membersFields.get(Member_HID))
-					.put(member_birth_date_known, membersFields.get(member_birth_date_known))
-					.put(member_birth_date, membersFields.get(member_birth_date))
+					.put(MEMBER_COUNTRY, membersFields.get(MEMBER_COUNTRY))
+					.put(MEMBER_DIVISION, membersFields.get(MEMBER_DIVISION))
+					.put(MEMBER_DISTRICT, membersFields.get(MEMBER_DISTRICT))
+					.put(MEMBER_UPAZILLA, membersFields.get(MEMBER_UPAZILLA))
+					.put(MEMBER_PAURASAVA, membersFields.get(MEMBER_PAURASAVA))
+					.put(MEMBER_UNION, membersFields.get(MEMBER_UNION))
+					.put(MEMBER_WARD, membersFields.get(MEMBER_WARD))
+					.put(MEMBER_ADDRESS_LINE, membersFields.get(MEMBER_ADDRESS_LINE))
+					.put(MEMBER_HIE_FACILITIES, membersFields.get(MEMBER_HIE_FACILITIES))
+					.put(HH_ADDRESS, membersFields.get(HH_ADDRESS))
+					.put(MEMBER_TYPE, membersFields.get(MEMBER_TYPE))
+					.put(MEMBER_UNIQUE_ID, membersFields.get(MEMBER_UNIQUE_ID))
+					.put(MEMBER_GPS, membersFields.get(MEMBER_GPS))
+					.put(MEMBER_NID, membersFields.get(MEMBER_NID))
+					.put(MEMBER_BRID, membersFields.get(MEMBER_BRID))
+					.put(MEMBER_HID, membersFields.get(MEMBER_HID))
+					.put(MEMBER_BIRTH_DATE_KNOWN, membersFields.get(MEMBER_BIRTH_DATE_KNOWN))
+					.put(MEMBER_BIRTH_DATE, membersFields.get(MEMBER_BIRTH_DATE))
 					.put(age, membersFields.get(age))
 					.put(calc_age, membersFields.get(calc_age))
 					.put(calc_dob, membersFields.get(calc_dob))
@@ -248,8 +236,8 @@ public class HHService {
 					.put(PVF, membersFields.get(PVF))
 					.put(received_time, dateTime.format(today).toString()).map();
 			
-				if(membersFields.containsKey(Reg_No)){
-					if(!membersFields.get(Reg_No).equalsIgnoreCase("") || membersFields.get(Reg_No) != null){
+				if(membersFields.containsKey(REG_NO)){
+					if(!membersFields.get(REG_NO).equalsIgnoreCase("") || membersFields.get(REG_NO) != null){
 						houseHold.MEMBERDETAILS().add(members);
 				  }
 				}						

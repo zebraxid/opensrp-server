@@ -452,289 +452,284 @@ public class Members extends MotechBaseDataObject {
 		this.setIsClosed(false);
 	}
 	
-	public Members withCaseId(String caseId) {
+	public Members setCaseId(String caseId) {
 		this.caseId = caseId;
 		return this;
 	}
 
-	public Members withINSTANCEID(String INSTANCEID) {
+	public Members setINSTANCEID(String INSTANCEID) {
 		this.INSTANCEID = INSTANCEID;
 		return this;
 	}
 
-	public Members withPROVIDERID(String PROVIDERID) {
+	public Members setPROVIDERID(String PROVIDERID) {
 		this.PROVIDERID = PROVIDERID;
 		return this;
 	}
 
-	public Members withLOCATIONID(String LOCATIONID) {
+	public Members setLOCATIONID(String LOCATIONID) {
 		this.LOCATIONID = LOCATIONID;
 		return this;
 	}
 
-	public Members withMember_Fname(String Member_Fname) {
+	public Members setMember_Fname(String Member_Fname) {
 		this.Member_Fname = Member_Fname;
 		return this;
 	}
 
-	public Members withHH_Member(String HH_Member) {
+	public Members setHH_Member(String HH_Member) {
 		this.HH_Member = HH_Member;
 		return this;
 	}
-	public Members withReg_No(String Reg_No) {
+	public Members setReg_No(String Reg_No) {
 		this.Reg_No = Reg_No;
 		return this;
 	}
-	public Members withBDH(String BDH) {
+	public Members setBDH(String BDH) {
 		this.BDH = BDH;
 		return this;
 	}
-	public Members withMember_LName(String Member_LName) {
+	public Members setMember_LName(String Member_LName) {
 		this.Member_LName = Member_LName;
 		return this;
 	}
-	public Members withGender(String Gender) {
+	public Members setGender(String Gender) {
 		this.Gender = Gender;
 		return this;
 	}
-	public Members withDoB(String DoB) {
+	public Members setDoB(String DoB) {
 		this.DoB = DoB;
 		return this;
 	}
 	
-	public Members withType_DoB(String Type_DoB) {
+	public Members setType_DoB(String Type_DoB) {
 		this.Type_DoB = Type_DoB;
 		return this;
 	}
 
-	public Members withage(String age) {
+	public Members setage(String age) {
 		this.age = age;
 		return this;
 	}
 	
-	public Members withMarital_Status(String Marital_Status) {
+	public Members setMarital_Status(String Marital_Status) {
 		this.Marital_Status = Marital_Status;
 		return this;
 	}
-
-	public Members withCouple_No(String Couple_No) {
-		this.Couple_No = Couple_No;
-		return this;
-	}
 	
-	public Members withLMP(String LMP) {
+	public Members setLMP(String LMP) {
 		this.LMP = LMP;
 		return this;
 	}
 	
-	public Members withEDD(String EDD) {
+	public Members setEDD(String EDD) {
 		this.EDD = EDD;
 		return this;
 	}
 	
-	public Members withGA(String GA) {
+	public Members setGA(String GA) {
 		this.GA = GA;
 		return this;
 	}
 	
-	public Members withPregnancy_Status(String Pregnancy_Status) {
+	public Members setPregnancy_Status(String Pregnancy_Status) {
 		this.Pregnancy_Status = Pregnancy_Status;
 		return this;
 	}
 
-	public Members withHID(String HID) {
+	public Members setHID(String HID) {
 		this.HID = HID;
 		return this;
 	}
 
-	public Members withUnique_ID(String Unique_ID) {
+	public Members setUnique_ID(String Unique_ID) {
 		this.Unique_ID = Unique_ID;
 		return this;
 	}
 
-	public Members withNID(String NID) {
+	public Members setNID(String NID) {
 		this.NID = NID;
 		return this;
 	}
 	
-	public Members withBRID(String BRID) {
+	public Members setBRID(String BRID) {
 		this.BRID = BRID;
 		return this;
 	}
 	
-	public Members withEducation(String Education) {
+	public Members setEducation(String Education) {
 		this.Education = Education;
 		return this;
 	}
 
-	public Members withOccupation(String Occupation) {
+	public Members setOccupation(String Occupation) {
 		this.Occupation = Occupation;
 		return this;
 	}
 
-	public Members withIs_TT(String Is_TT) {
+	public Members setIs_TT(String Is_TT) {
 		this.Is_TT = Is_TT;
 		return this;
 	}
 	
-	public Members withIs_Measles(String Is_Measles) {
+	public Members setIs_Measles(String Is_Measles) {
 		this.Is_Measles = Is_Measles;
 		return this;
 	}
 
-	public Members withIs_FP(String Is_FP) {
+	public Members setIs_FP(String Is_FP) {
 		this.Is_FP = Is_FP;
 		return this;
 	}
 	
-	public Members withIs_NewBorn(String Is_NewBorn) {
+	public Members setIs_NewBorn(String Is_NewBorn) {
 		this.Is_NewBorn = Is_NewBorn;
 		return this;
 	}
 	
-	public Members withMember_COUNTRY(String Member_COUNTRY) {
+	public Members setMember_COUNTRY(String Member_COUNTRY) {
 		this.Member_COUNTRY = Member_COUNTRY;
 		return this;
 	}
 	
-	public Members withMember_DIVISION(String Member_DIVISION) {
+	public Members setMember_DIVISION(String Member_DIVISION) {
 		this.Member_DIVISION = Member_DIVISION;
 		return this;
 	}
 	
-	public Members withMember_DISTRICT(String Member_DISTRICT) {
+	public Members setMember_DISTRICT(String Member_DISTRICT) {
 		this.Member_DISTRICT = Member_DISTRICT;
 		return this;
 	}
 	
-	public Members withMember_UPAZILLA(String Member_UPAZILLA) {
+	public Members setMember_UPAZILLA(String Member_UPAZILLA) {
 		this.Member_UPAZILLA = Member_UPAZILLA;
 		return this;
 	}
 	
-	public Members withMember_UNION(String Member_UNION) {
+	public Members setMember_UNION(String Member_UNION) {
 		this.Member_UNION = Member_UNION;
 		return this;
 	}
 	
-	public Members withMember_WARD(String Member_WARD) {
+	public Members setMember_WARD(String Member_WARD) {
 		this.Member_WARD = Member_WARD;
 		return this;
 	}
 	
-	public Members withMember_GOB_HHID(String Member_GOB_HHID) {
+	public Members setMember_GOB_HHID(String Member_GOB_HHID) {
 		this.Member_GOB_HHID = Member_GOB_HHID;
 		return this;
 	}
 	
-	public Members withMember_GPS(String Member_GPS) {
+	public Members setMember_GPS(String Member_GPS) {
 		this.Member_GPS = Member_GPS;
 		return this;
 	}
 	
-	public Members withTODAY(String TODAY) {
+	public Members setTODAY(String TODAY) {
 		this.TODAY = TODAY;
 		return this;
 	}
 
-	public Members withSTART(String START) {
+	public Members setSTART(String START) {
 		this.START = START;
 		return this;
 	}
 
-	public Members withEND(String END) {
+	public Members setEND(String END) {
 		this.END = END;
 		return this;
 	}
-	public Members withRelationalid(String relationalid) {
+	public Members setRelationalid(String relationalid) {
 		this.relationalid = relationalid;
 		return this;
 	}
-	public Members withDetails(Map<String, String> details) {
+	public Members setDetails(Map<String, String> details) {
         this.details = new HashMap<>(details);
         return this;
     }
-	public Members withTTVisitOne(Map<String, String> TTVisitOne) {
+	public Members setTTVisitOne(Map<String, String> TTVisitOne) {
         this.TTVisitOne = new HashMap<>(TTVisitOne);
         return this;
     }
-	public Members withTTVisitTwo(Map<String, String> TTVisitTwo) {
+	public Members setTTVisitTwo(Map<String, String> TTVisitTwo) {
         this.TTVisitTwo = new HashMap<>(TTVisitTwo);
         return this;
     }
-	public Members withTTVisitThree(Map<String, String> TTVisitThree) {
+	public Members setTTVisitThree(Map<String, String> TTVisitThree) {
         this.TTVisitThree = new HashMap<>(TTVisitThree);
         return this;
     }
-	public Members withTTVisitFour(Map<String, String> TTVisitFour) {
+	public Members setTTVisitFour(Map<String, String> TTVisitFour) {
         this.TTVisitFour = new HashMap<>(TTVisitFour);
         return this;
     }
-	public Members withTTVisitFive(Map<String, String> TTVisitFive) {
+	public Members setTTVisitFive(Map<String, String> TTVisitFive) {
         this.TTVisitFive = new HashMap<>(TTVisitFive);
         return this;
     }
-	public Members withMeaslesVisit(Map<String, String> MeaslesVisit) {
+	public Members setMeaslesVisit(Map<String, String> MeaslesVisit) {
         this.MeaslesVisit = new HashMap<>(MeaslesVisit);
         return this;
     }
-	public Members withgeneral(Map<String, String> general) {
+	public Members setgeneral(Map<String, String> general) {
         this.general = new HashMap<>(general);
         return this;
     }
-	public Members withPCV1(Map<String, String> PCV1) {
+	public Members setPCV1(Map<String, String> PCV1) {
         this.PCV1 = new HashMap<>(PCV1);
         return this;
     }
-	public Members withPCV2(Map<String, String> PCV2) {
+	public Members setPCV2(Map<String, String> PCV2) {
         this.PCV2 = new HashMap<>(PCV2);
         return this;
     }
-	public Members withPCV3(Map<String, String> PCV3) {
+	public Members setPCV3(Map<String, String> PCV3) {
         this.PCV3 = new HashMap<>(PCV3);
         return this;
     }
-	public Members withPENTA1(Map<String, String> PENTA1) {
+	public Members setPENTA1(Map<String, String> PENTA1) {
         this.PENTA1 = new HashMap<>(PENTA1);
         return this;
     }
-	public Members withPENTA2(Map<String, String> PENTA2) {
+	public Members setPENTA2(Map<String, String> PENTA2) {
         this.PENTA2 = new HashMap<>(PENTA2);
         return this;
     }
-	public Members withPENTA3(Map<String, String> PENTA3) {
+	public Members setPENTA3(Map<String, String> PENTA3) {
         this.PENTA3 = new HashMap<>(PENTA3);
         return this;
     }
-	public Members withOPV0(Map<String, String> OPV0) {
+	public Members setOPV0(Map<String, String> OPV0) {
         this.OPV0 = new HashMap<>(OPV0);
         return this;
     }
-	public Members withOPV1(Map<String, String> OPV1) {
+	public Members setOPV1(Map<String, String> OPV1) {
         this.OPV1 = new HashMap<>(OPV1);
         return this;
     }
-	public Members withOPV2(Map<String, String> OPV2) {
+	public Members setOPV2(Map<String, String> OPV2) {
         this.OPV2 = new HashMap<>(OPV2);
         return this;
     }
-	public Members withOPV3(Map<String, String> OPV3) {
+	public Members setOPV3(Map<String, String> OPV3) {
         this.OPV3 = new HashMap<>(OPV3);
         return this;
     }
-	public Members withMR(Map<String, String> MR) {
+	public Members setMR(Map<String, String> MR) {
         this.MR = new HashMap<>(MR);
         return this;
     }
-	public Members withMeasles2(Map<String, String> Measles2) {
+	public Members setMeasles2(Map<String, String> Measles2) {
         this.Measles2 = new HashMap<>(Measles2);
         return this;
     }
-	public Members withIPV(Map<String, String> IPV) {
+	public Members setIPV(Map<String, String> IPV) {
         this.IPV = new HashMap<>(IPV);
         return this;
     }
-	public Members withBCG(Map<String, String> BCG) {
+	public Members setBCG(Map<String, String> BCG) {
         this.BCG = new HashMap<>(BCG);
         return this;
     }
@@ -752,10 +747,6 @@ public class Members extends MotechBaseDataObject {
 	}
 	public Members setMember_type(String member_type) {
 		Member_type = member_type;
-		return this;
-	}
-	public Members setReg_No(String reg_No) {
-		Reg_No = reg_No;
 		return this;
 	}
 	public Members setMember_Unique_ID(String member_Unique_ID) {
@@ -1469,438 +1460,429 @@ public class Members extends MotechBaseDataObject {
 		return relationalid;
 	}
 
-	private String getCaseId() {
+	private String CaseId() {
 		return caseId;
 	}
 	
-	public String getMember_Address_line() {
+	public String Member_Address_line() {
 		return Member_Address_line;
 	}
-	public String getMember_HIE_facilities() {
+	public String Member_HIE_facilities() {
 		return Member_HIE_facilities;
 	}
-	public String getHH_Address() {
+	public String HH_Address() {
 		return HH_Address;
 	}
-	public String getMember_type() {
+	public String Member_type() {
 		return Member_type;
 	}
-	public String getReg_No() {
-		return Reg_No;
-	}
-	public String getMember_Unique_ID() {
+	public String Member_Unique_ID() {
 		return Member_Unique_ID;
 	}
-	public String getMember_NID() {
+	public String Member_NID() {
 		return Member_NID;
 	}
-	public String getMember_BRID() {
+	public String Member_BRID() {
 		return Member_BRID;
 	}
-	public String getMember_HID() {
+	public String Member_HID() {
 		return Member_HID;
 	}
-	public String getMember_birth_date_known() {
+	public String Member_birth_date_known() {
 		return member_birth_date_known;
 	}
-	public String getMember_birth_date() {
+	public String Member_birth_date() {
 		return member_birth_date;
 	}
-	public String getAge() {
+	public String Age() {
 		return age;
 	}
-	public String getCalc_age() {
+	public String Calc_age() {
 		return calc_age;
 	}
-	public String getCalc_dob() {
+	public String Calc_dob() {
 		return calc_dob;
 	}
-	public String getCalc_dob_confirm() {
+	public String Calc_dob_confirm() {
 		return calc_dob_confirm;
 	}
-	public String getCalc_dob_estimated() {
+	public String Calc_dob_estimated() {
 		return calc_dob_estimated;
 	}
-	public String getCalc_age_confirm() {
+	public String Calc_age_confirm() {
 		return calc_age_confirm;
 	}
-	public String getBirth_date_note() {
+	public String Birth_date_note() {
 		return birth_date_note;
 	}
-	public String getNote_age() {
+	public String Note_age() {
 		return note_age;
 	}
-	public String getFather_name() {
+	public String Father_name() {
 		return Father_name;
 	}
-	public String getHusband_name() {
+	public String Husband_name() {
 		return Husband_name;
 	}
-	public String getCouple_No() {
-		return Couple_No;
-	}
-	public String getWomanInfo() {
+	public String WomanInfo() {
 		return WomanInfo;
 	}
-	public String getPregnant() {
+	public String Pregnant() {
 		return pregnant;
 	}
-	public String getFP_USER() {
+	public String FP_USER() {
 		return FP_USER;
 	}
-	public String getFP_Methods() {
+	public String FP_Methods() {
 		return FP_Methods;
 	}
-	public String getEdd_lmp() {
+	public String Edd_lmp() {
 		return edd_lmp;
 	}
-	public String getEdd() {
+	public String Edd() {
 		return edd;
 	}
-	public String getLmp() {
+	public String Lmp() {
 		return lmp;
 	}
-	public String getUltrasound_date() {
+	public String Ultrasound_date() {
 		return ultrasound_date;
 	}
-	public String getUltrasound_weeks() {
+	public String Ultrasound_weeks() {
 		return ultrasound_weeks;
 	}
-	public String getEdd_calc_lmp() {
+	public String Edd_calc_lmp() {
 		return edd_calc_lmp;
 	}
-	public String getEdd_calc_ultrasound() {
+	public String Edd_calc_ultrasound() {
 		return edd_calc_ultrasound;
 	}
-	public String getEdd_calc_lmp_formatted() {
+	public String Edd_calc_lmp_formatted() {
 		return edd_calc_lmp_formatted;
 	}
-	public String getEdd_calc_ultrasound_formatted() {
+	public String Edd_calc_ultrasound_formatted() {
 		return edd_calc_ultrasound_formatted;
 	}
-	public String getLmp_calc_edd() {
+	public String Lmp_calc_edd() {
 		return lmp_calc_edd;
 	}
-	public String getLmp_calc_ultrasound() {
+	public String Lmp_calc_ultrasound() {
 		return lmp_calc_ultrasound;
 	}
-	public String getLmp_calc_edd_formatted() {
+	public String Lmp_calc_edd_formatted() {
 		return lmp_calc_edd_formatted;
 	}
-	public String getLmp_calc_ultrasound_formatted() {
+	public String Lmp_calc_ultrasound_formatted() {
 		return lmp_calc_ultrasound_formatted;
 	}
-	public String getFinal_edd() {
+	public String Final_edd() {
 		return final_edd;
 	}
-	public String getFinal_lmp() {
+	public String Final_lmp() {
 		return final_lmp;
 	}
-	public String getGa_edd() {
+	public String Ga_edd() {
 		return ga_edd;
 	}
-	public String getGa_lmp() {
+	public String Ga_lmp() {
 		return ga_lmp;
 	}
-	public String getGa_ult() {
+	public String Ga_ult() {
 		return ga_ult;
 	}
-	public String getFinal_edd_note() {
+	public String Final_edd_note() {
 		return final_edd_note;
 	}
-	public String getFinal_lmp_note() {
+	public String Final_lmp_note() {
 		return final_lmp_note;
 	}
-	public String getFinal_ga() {
+	public String Final_ga() {
 		return final_ga;
 	}
-	public String getFinal_ga_note() {
+	public String Final_ga_note() {
 		return final_ga_note;
 	}
-	public String getVaccines() {
+	public String Vaccines() {
 		return vaccines;
 	}
-	public String getTt1_retro() {
+	public String Tt1_retro() {
 		return tt1_retro;
 	}
-	public String getTt_1_dose() {
+	public String Tt_1_dose() {
 		return tt_1_dose;
 	}
-	public String getTt2_retro() {
+	public String Tt2_retro() {
 		return tt2_retro;
 	}
-	public String getTt_2_dose() {
+	public String Tt_2_dose() {
 		return tt_2_dose;
 	}
-	public String getTt3_retro() {
+	public String Tt3_retro() {
 		return tt3_retro;
 	}
-	public String getTt_3_dose() {
+	public String Tt_3_dose() {
 		return tt_3_dose;
 	}
-	public String getTt4_retro() {
+	public String Tt4_retro() {
 		return tt4_retro;
 	}
-	public String getTt_4_dose() {
+	public String Tt_4_dose() {
 		return tt_4_dose;
 	}
-	public String getVaccines_2() {
+	public String Vaccines_2() {
 		return vaccines_2;
 	}
-	public String getTt1() {
+	public String Tt1() {
 		return tt1;
 	}
-	public String getTt_1_dose_today() {
+	public String Tt_1_dose_today() {
 		return tt_1_dose_today;
 	}
-	public String getTt2() {
+	public String Tt2() {
 		return tt2;
 	}
-	public String getTt_2_dose_today() {
+	public String Tt_2_dose_today() {
 		return tt_2_dose_today;
 	}
-	public String getTt3() {
+	public String Tt3() {
 		return tt3;
 	}
-	public String getTt_3_dose_today() {
+	public String Tt_3_dose_today() {
 		return tt_3_dose_today;
 	}
-	public String getTt4() {
+	public String Tt4() {
 		return tt4;
 	}
-	public String getTt_4_dose_today() {
+	public String Tt_4_dose_today() {
 		return tt_4_dose_today;
 	}
-	public String getTt5() {
+	public String Tt5() {
 		return tt5;
 	}
-	public String getTt_5_dose_today() {
+	public String Tt_5_dose_today() {
 		return tt_5_dose_today;
 	}
-	public String getChild_birth_date_known() {
+	public String Child_birth_date_known() {
 		return Child_birth_date_known;
 	}
-	public String getChild_birth_date() {
+	public String Child_birth_date() {
 		return Child_birth_date;
 	}
-	public String getChild_age() {
+	public String Child_age() {
 		return Child_age;
 	}
-	public String getChild_calc_age() {
+	public String Child_calc_age() {
 		return Child_calc_age;
 	}
-	public String getChild_calc_dob() {
+	public String Child_calc_dob() {
 		return Child_calc_dob;
 	}
-	public String getChild_dob() {
+	public String Child_dob() {
 		return Child_dob;
 	}
-	public String getChild_dob_estimated() {
+	public String Child_dob_estimated() {
 		return Child_dob_estimated;
 	}
-	public String getChild_age_days() {
+	public String Child_age_days() {
 		return Child_age_days;
 	}
-	public String getChild_birth_date_note() {
+	public String Child_birth_date_note() {
 		return Child_birth_date_note;
 	}
-	public String getBirth_Weigtht() {
+	public String Birth_Weigtht() {
 		return Birth_Weigtht;
 	}
-	public String getNewborn_Care_Received() {
+	public String Newborn_Care_Received() {
 		return Newborn_Care_Received;
 	}
-	public String getChild_gender() {
+	public String Child_gender() {
 		return Child_gender;
 	}
-	public String getChild_mother_name() {
+	public String Child_mother_name() {
 		return Child_mother_name;
 	}
-	public String getChild_father_name() {
+	public String Child_father_name() {
 		return Child_father_name;
 	}
-	public String getEpi_card_number() {
+	public String Epi_card_number() {
 		return epi_card_number;
 	}
-	public String getChild_was_suffering_from_a_disease_at_birth() {
+	public String Child_was_suffering_from_a_disease_at_birth() {
 		return child_was_suffering_from_a_disease_at_birth;
 	}
-	public String getReminders_approval() {
+	public String Reminders_approval() {
 		return reminders_approval;
 	}
-	public String getContact_phone_number() {
+	public String Contact_phone_number() {
 		return contact_phone_number;
 	}
-	public String getChild_vaccines() {
+	public String Child_vaccines() {
 		return child_vaccines;
 	}
-	public String getBcg_retro() {
+	public String Bcg_retro() {
 		return bcg_retro;
 	}
-	public String getOpv0_retro() {
+	public String Opv0_retro() {
 		return opv0_retro;
 	}
-	public String getOpv0_dose() {
+	public String Opv0_dose() {
 		return opv0_dose;
 	}
-	public String getPcv1_retro() {
+	public String Pcv1_retro() {
 		return pcv1_retro;
 	}
-	public String getPcv1_dose() {
+	public String Pcv1_dose() {
 		return pcv1_dose;
 	}
-	public String getOpv1_retro() {
+	public String Opv1_retro() {
 		return opv1_retro;
 	}
-	public String getOpv1_dose() {
+	public String Opv1_dose() {
 		return opv1_dose;
 	}
-	public String getPenta1_retro() {
+	public String Penta1_retro() {
 		return penta1_retro;
 	}
-	public String getPenta1_dose() {
+	public String Penta1_dose() {
 		return penta1_dose;
 	}
-	public String getPcv2_retro() {
+	public String Pcv2_retro() {
 		return pcv2_retro;
 	}
-	public String getPcv2_dose() {
+	public String Pcv2_dose() {
 		return pcv2_dose;
 	}
-	public String getOpv2_retro() {
+	public String Opv2_retro() {
 		return opv2_retro;
 	}
-	public String getOpv2_dose() {
+	public String Opv2_dose() {
 		return opv2_dose;
 	}
-	public String getPenta2_retro() {
+	public String Penta2_retro() {
 		return penta2_retro;
 	}
-	public String getPenta2_dose() {
+	public String Penta2_dose() {
 		return penta2_dose;
 	}
-	public String getPcv3_retro() {
+	public String Pcv3_retro() {
 		return pcv3_retro;
 	}
-	public String getPcv3_dose() {
+	public String Pcv3_dose() {
 		return pcv3_dose;
 	}
-	public String getOpv3_retro() {
+	public String Opv3_retro() {
 		return opv3_retro;
 	}
-	public String getOpv3_dose() {
+	public String Opv3_dose() {
 		return opv3_dose;
 	}
-	public String getPenta3_retro() {
+	public String Penta3_retro() {
 		return penta3_retro;
 	}
-	public String getPenta3_dose() {
+	public String Penta3_dose() {
 		return penta3_dose;
 	}
-	public String getIpv_retro() {
+	public String Ipv_retro() {
 		return ipv_retro;
 	}
-	public String getMeasles1_retro() {
+	public String Measles1_retro() {
 		return measles1_retro;
 	}
-	public String getMeasles1_dose() {
+	public String Measles1_dose() {
 		return measles1_dose;
 	}
-	public String getMeasles2_retro() {
+	public String Measles2_retro() {
 		return measles2_retro;
 	}
-	public String getMeasles2_dose() {
+	public String Measles2_dose() {
 		return measles2_dose;
 	}
-	public String getBcg() {
+	public String Bcg() {
 		return bcg;
 	}
-	public String getOpv0() {
+	public String Opv0() {
 		return opv0;
 	}
-	public String getOpv0_dose_today() {
+	public String Opv0_dose_today() {
 		return opv0_dose_today;
 	}
-	public String getPcv1() {
+	public String Pcv1() {
 		return pcv1;
 	}
-	public String getPcv1_dose_today() {
+	public String Pcv1_dose_today() {
 		return pcv1_dose_today;
 	}
-	public String getOpv1() {
+	public String Opv1() {
 		return opv1;
 	}
-	public String getOpv1_dose_today() {
+	public String Opv1_dose_today() {
 		return opv1_dose_today;
 	}
-	public String getPenta1() {
+	public String Penta1() {
 		return penta1;
 	}
-	public String getPenta1_dose_today() {
+	public String Penta1_dose_today() {
 		return penta1_dose_today;
 	}
-	public String getPcv2() {
+	public String Pcv2() {
 		return pcv2;
 	}
-	public String getPcv2_dose_today() {
+	public String Pcv2_dose_today() {
 		return pcv2_dose_today;
 	}
-	public String getOpv2() {
+	public String Opv2() {
 		return opv2;
 	}
-	public String getOpv2_dose_today() {
+	public String Opv2_dose_today() {
 		return opv2_dose_today;
 	}
-	public String getPenta2() {
+	public String Penta2() {
 		return penta2;
 	}
-	public String getPenta2_dose_today() {
+	public String Penta2_dose_today() {
 		return penta2_dose_today;
 	}
-	public String getPcv3() {
+	public String Pcv3() {
 		return pcv3;
 	}
-	public String getPcv3_dose_today() {
+	public String Pcv3_dose_today() {
 		return pcv3_dose_today;
 	}
-	public String getOpv3() {
+	public String Opv3() {
 		return opv3;
 	}
-	public String getOpv3_dose_today() {
+	public String Opv3_dose_today() {
 		return opv3_dose_today;
 	}
-	public String getPenta3() {
+	public String Penta3() {
 		return penta3;
 	}
-	public String getPenta3_dose_today() {
+	public String Penta3_dose_today() {
 		return penta3_dose_today;
 	}
-	public String getIpv() {
+	public String Ipv() {
 		return ipv;
 	}
-	public String getMeasles1() {
+	public String Measles1() {
 		return measles1;
 	}
-	public String getMeasles1_dose_today() {
+	public String Measles1_dose_today() {
 		return measles1_dose_today;
 	}
-	public String getMeasles2() {
-		return measles2;
-	}
-	public String getMeasles2_dose_today() {
+	public String Measles2_dose_today() {
 		return measles2_dose_today;
 	}
-	public String getIs_woman() {
+	public String Is_woman() {
 		return Is_woman;
 	}
-	public String getIs_child() {
+	public String Is_child() {
 		return Is_child;
 	}
-	public String getPVF() {
+	public String PVF() {
 		return PVF;
 	}
 
-	public String getRelationalid() {
+	public String Relationalid() {
 		return relationalid;
 	}
 
@@ -1910,7 +1892,7 @@ public class Members extends MotechBaseDataObject {
 		return details;
 	}
 	
-	public String getDetail(String name) {
+	public String Detail(String name) {
 		return details.get(name);
 	}
 	

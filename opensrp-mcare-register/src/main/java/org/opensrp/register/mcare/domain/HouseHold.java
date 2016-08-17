@@ -122,248 +122,248 @@ public class HouseHold extends MotechBaseDataObject {
 		this.multimediaAttachments = new ArrayList<>();
 	}
 	
-	public HouseHold withCASEID(String caseId) {
+	public HouseHold setCASEID(String caseId) {
 		this.caseId = caseId;
 		return this;
 	}
 
-	public HouseHold withBAHMNIID(String BAHMNI_ID){
+	public HouseHold setBAHMNIID(String BAHMNI_ID){
 		this.BAHMNI_ID = BAHMNI_ID;
 		return this;
 	}
-	public HouseHold withINSTANCEID(String INSTANCEID) {
+	public HouseHold setINSTANCEID(String INSTANCEID) {
 		this.INSTANCEID = INSTANCEID;
 		return this;
 	}
 
-	public HouseHold withPROVIDERID(String PROVIDERID) {
+	public HouseHold setPROVIDERID(String PROVIDERID) {
 		this.PROVIDERID = PROVIDERID;
 		return this;
 	}
 
-	public HouseHold withLOCATIONID(String LOCATIONID) {
+	public HouseHold setLOCATIONID(String LOCATIONID) {
 		this.LOCATIONID = LOCATIONID;
 		return this;
 	}
 
-	public HouseHold withTODAY(String TODAY) {
+	public HouseHold setTODAY(String TODAY) {
 		this.TODAY = TODAY;
 		return this;
 	}
 
-	public HouseHold withSTART(String START) {
+	public HouseHold setSTART(String START) {
 		this.START = START;
 		return this;
 	}
 
-	public HouseHold withEND(String END) {
+	public HouseHold setEND(String END) {
 		this.END = END;
 		return this;
 	}
 
-	public HouseHold withDate_Of_Reg(String Date_Of_Reg) {
+	public HouseHold setDate_Of_Reg(String Date_Of_Reg) {
 		this.Date_Of_Reg = Date_Of_Reg;
 		return this;
 	}
 
-	public HouseHold withHoH_HID(String HoH_HID) {
+	public HouseHold setHoH_HID(String HoH_HID) {
 		this.HoH_HID = HoH_HID;
 		return this;
 	}
 
-	public HouseHold withGPS(String GPS) {
+	public HouseHold setGPS(String GPS) {
 		this.GPS = GPS;
 		return this;
 	}
 	
-	public HouseHold withHoH_Fname(String HoH_Fname) {
+	public HouseHold setHoH_Fname(String HoH_Fname) {
 		this.HoH_Fname = HoH_Fname;
 		return this;
 	}
 
-	public HouseHold withCOUNTRY(String COUNTRY) {
+	public HouseHold setCOUNTRY(String COUNTRY) {
 		this.COUNTRY = COUNTRY;
 		return this;
 	}
 
-	public HouseHold withDIVISION(String DIVISION) {
+	public HouseHold setDIVISION(String DIVISION) {
 		this.DIVISION = DIVISION;
 		return this;
 	}
 
-	public HouseHold withDISTRICT(String DISTRICT) {
+	public HouseHold setDISTRICT(String DISTRICT) {
 		this.DISTRICT = DISTRICT;
 		return this;
 	}
 
-	public HouseHold withUPAZILLA(String UPAZILLA) {
+	public HouseHold setUPAZILLA(String UPAZILLA) {
 		this.UPAZILLA = UPAZILLA;
 		return this;
 	}
 
-	public HouseHold withUNION(String UNION) {
+	public HouseHold setUNION(String UNION) {
 		this.UNION = UNION;
 		return this;
 	}
 
-	public HouseHold withWARD(String WARD) {
+	public HouseHold setWARD(String WARD) {
 		this.WARD = WARD;
 		return this;
 	}
 
-	public HouseHold withHHID(String HHID) {
+	public HouseHold setHHID(String HHID) {
 		this.HHID = HHID;
 		return this;
 	}
 	
-	public HouseHold withHoH_Reg_No(String HoH_Reg_No) {
+	public HouseHold setHoH_Reg_No(String HoH_Reg_No) {
 		this.HoH_Reg_No = HoH_Reg_No;
 		return this;
 	}
 	
-	public HouseHold withHoH_birth_date(String HoH_birth_date) {
+	public HouseHold setHoH_birth_date(String HoH_birth_date) {
 		this.HoH_birth_date = HoH_birth_date;
 		return this;
 	}
 
-	public HouseHold withHoH_birth_date_known(String HoH_birth_date_known) {
+	public HouseHold setHoH_birth_date_known(String HoH_birth_date_known) {
 		this.HoH_birth_date_known = HoH_birth_date_known;
 		return this;
 	}
 
 	
-	public HouseHold withHoH_Lname(String HoH_Lname) {
+	public HouseHold setHoH_Lname(String HoH_Lname) {
 		this.HoH_Lname = HoH_Lname;
 		return this;
 	}
 
-	public HouseHold withHoH_age(String HoH_age) {
+	public HouseHold setHoH_age(String HoH_age) {
 		this.HoH_age = HoH_age;
 		return this;
 	}
 
-	public HouseHold withHoH_Unique_ID(String HoH_Unique_ID) {
+	public HouseHold setHoH_Unique_ID(String HoH_Unique_ID) {
 		this.HoH_Unique_ID = HoH_Unique_ID;
 		return this;
 	}
 
-	public HouseHold withHoH_Gender(String HoH_Gender) {
+	public HouseHold setHoH_Gender(String HoH_Gender) {
 		this.HoH_Gender = HoH_Gender;
 		return this;
 	}
 	
-	public HouseHold withHoH_NID(String HoH_NID) {
+	public HouseHold setHoH_NID(String HoH_NID) {
 		this.HoH_NID = HoH_NID;
 		return this;
 	}
 
-	public HouseHold withHoH_BRID(String HoH_BRID) {
+	public HouseHold setHoH_BRID(String HoH_BRID) {
 		this.HoH_BRID = HoH_BRID;
 		return this;
 	}
 	
-	public HouseHold withHoH_Mobile_No(String HoH_Mobile_No) {
+	public HouseHold setHoH_Mobile_No(String HoH_Mobile_No) {
 		this.HoH_Mobile_No = HoH_Mobile_No;
 		return this;
 	}
 
-	public HouseHold withHoH_Education(String HoH_Education) {
+	public HouseHold setHoH_Education(String HoH_Education) {
 		this.HoH_Education = HoH_Education;
 		return this;
 	}
 	
-	public HouseHold withHoH_Occupation(String HoH_Occupation) {
+	public HouseHold setHoH_Occupation(String HoH_Occupation) {
 		this.HoH_Occupation = HoH_Occupation;
 		return this;
 	}
 	
-	public HouseHold withHH_Member_No(String HH_Member_No) {
+	public HouseHold setHH_Member_No(String HH_Member_No) {
 		this.HH_Member_No = HH_Member_No;
 		return this;
 	}
 	
-	public HouseHold withdeviceid(String deviceid){
+	public HouseHold setdeviceid(String deviceid){
 		this.deviceid = deviceid;
 		return this;
 	}
 
-	public HouseHold withsubscriberid(String subscriberid){
+	public HouseHold setsubscriberid(String subscriberid){
 		this.subscriberid = subscriberid;
 		return this;
 	}
 
-	public HouseHold withsimserial(String simserial){
+	public HouseHold setsimserial(String simserial){
 		this.simserial = simserial;
 		return this;
 	}
 
-	public HouseHold withphonenumber(String phonenumber){
+	public HouseHold setphonenumber(String phonenumber){
 		this.phonenumber = phonenumber;
 		return this;
 	}
 
-	public HouseHold withPAURASAVA(String PAURASAVA){
+	public HouseHold setPAURASAVA(String PAURASAVA){
 		this.PAURASAVA = PAURASAVA;
 		return this;
 	}
 
-	public HouseHold withADDRESS_LINE(String ADDRESS_LINE){
+	public HouseHold setADDRESS_LINE(String ADDRESS_LINE){
 		this.ADDRESS_LINE = ADDRESS_LINE;
 		return this;
 	}
 
-	public HouseHold withHIE_FACILITIES(String HIE_FACILITIES){
+	public HouseHold setHIE_FACILITIES(String HIE_FACILITIES){
 		this.HIE_FACILITIES = HIE_FACILITIES;
 		return this;
 	}
 
-	public HouseHold withcalc_HoH_age(String calc_HoH_age){
+	public HouseHold setcalc_HoH_age(String calc_HoH_age){
 		this.calc_HoH_age = calc_HoH_age;
 		return this;
 	}
 
-	public HouseHold withcalc_HoH_dob(String calc_HoH_dob){
+	public HouseHold setcalc_HoH_dob(String calc_HoH_dob){
 		this.calc_HoH_dob = calc_HoH_dob;
 		return this;
 	}
 
-	public HouseHold withcalc_HoH_dob_confirm(String calc_HoH_dob_confirm){
+	public HouseHold setcalc_HoH_dob_confirm(String calc_HoH_dob_confirm){
 		this.calc_HoH_dob_confirm = calc_HoH_dob_confirm;
 		return this;
 	}
 
 
-	public HouseHold withcalc_dob_estimated(String calc_dob_estimated){
+	public HouseHold setcalc_dob_estimated(String calc_dob_estimated){
 		this.calc_dob_estimated = calc_dob_estimated;
 		return this;
 	}
 
-	public HouseHold withcalc_HoH_age_confirm(String calc_HoH_age_confirm){
+	public HouseHold setcalc_HoH_age_confirm(String calc_HoH_age_confirm){
 		this.calc_HoH_age_confirm = calc_HoH_age_confirm;
 		return this;
 	}
 
-	public HouseHold withbirth_date_note(String birth_date_note){
+	public HouseHold setbirth_date_note(String birth_date_note){
 		this.birth_date_note = birth_date_note;
 		return this;
 	}
 
-	public HouseHold withnote_age(String note_age){
+	public HouseHold setnote_age(String note_age){
 		this.note_age  = note_age ;
 		return this;
 	}
 	
-	public HouseHold withMEMBERDETAILS(List<Map<String, String>> MEMBERDETAILS) {
+	public HouseHold setMEMBERDETAILS(List<Map<String, String>> MEMBERDETAILS) {
 		this.MEMBERDETAILS = MEMBERDETAILS;
 		return this;
 	}
 	
-	public HouseHold withmultimediaAttachments(List<Map<String, String>> multimediaAttachments) {
+	public HouseHold setmultimediaAttachments(List<Map<String, String>> multimediaAttachments) {
 		this.multimediaAttachments = multimediaAttachments;
 		return this;
 	}
 	
-	public HouseHold withDetails(Map<String, String> details) {
+	public HouseHold setDetails(Map<String, String> details) {
         this.details = new HashMap<>(details);
         return this;
     }
@@ -565,7 +565,7 @@ public class HouseHold extends MotechBaseDataObject {
 		return multimediaAttachments;
 	}
 
-	private String getCaseId() {
+	private String CaseId() {
 		return caseId;
 	}
 
@@ -575,7 +575,7 @@ public class HouseHold extends MotechBaseDataObject {
 		return details;
 	}
 
-	public String getDetail(String name) {
+	public String Detail(String name) {
 		return details.get(name);
 	}
 	

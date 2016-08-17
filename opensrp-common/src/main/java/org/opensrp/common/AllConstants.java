@@ -130,18 +130,18 @@ public class AllConstants {
     	public static final String ELCO_REGISTRATION_SUB_FORM_NAME_CENSUS = "elco_registration_ce";
     	public static final String LOCATION_NAME = "location_name";
     	public static final String REFERENCE_DATE = "today";
-    	public static final String Date_Of_Reg = "Date_Of_Reg";
+    	public static final String DATE_OF_REG = "Date_Of_Reg";
     	public static final String MOTHER_REFERENCE_DATE = "FWPSRLMP";
     	public static final String PNC_REFERENCE_DATE = "FWEDD";
     	public static final String START_DATE = "start";
     	public static final String END_DATE = "end";
     	public static final String FW_WOMAGE = "FWWOMAGE";
     	public static final String FW_BIRTHDATE = "FWBIRTHDATE";
-    	public static final String id = "id";
+    	public static final String ID = "id";
     	public static final String FW_WOMLNAME = "FWWOMLNAME";
     	public static final String FW_WOMFNAME = "FWWOMFNAME";
     	public static final String FW_GOBHHID = "FWWOMNID";
-    	public static final String FW_JiVitAHHID = "JiVitAHHID";
+    	public static final String FW_JIVITAHHID = "JiVitAHHID";
     	public static final String FW_GENDER = "FWGENDER";
     	public static final String FW_WOMBID = "FWWOMBID";
     	public static final String FW_WOMNID = "FWWOMNID";
@@ -149,43 +149,43 @@ public class AllConstants {
     	public static final String FW_ELIGIBLE = "FWELIGIBLE";
     	public static final String FW_DISPLAY_AGE = "FWDISPLAYAGE";
     	public static final String FW_UPAZILLA = "FWUPAZILLA";
-    	public static final String existing_location = "existing_location";
-    	public static final String existing_Country = "existing_Country";
-    	public static final String existing_Division = "existing_Division";
-    	public static final String existing_District = "existing_District";
-    	public static final String existing_Upazilla = "existing_Upazilla";
-    	public static final String existing_Union = "existing_Union";
-    	public static final String existing_Ward = "existing_Ward";
-    	public static final String existing_Subunit = "existing_Subunit";
-    	public static final String existing_Mauzapara = "existing_Mauzapara";
+    	public static final String EXISTING_LOCATION = "existing_location";
+    	public static final String EXISTING_COUNTRY = "existing_Country";
+    	public static final String EXISTING_DIVISION = "existing_Division";
+    	public static final String EXISTING_DISTRICT = "existing_District";
+    	public static final String EXISTING_UPAZILLA = "existing_Upazilla";
+    	public static final String EXISTING_UNION = "existing_Union";
+    	public static final String EXISTING_WARD = "existing_Ward";
+    	public static final String EXISTING_SUBUNIT = "existing_Subunit";
+    	public static final String EXISTING_MAUZAPARA = "existing_Mauzapara";
     	public static final String received_time = "received_time";
     	
     }
     
     public static class MEMBERSRegistrationFields
     {
-        	public static final String HH_Member ="HH_Member";
-        	public static final String Member_COUNTRY ="Member_COUNTRY";
-        	public static final String Member_DIVISION ="Member_DIVISION";
-        	public static final String Member_DISTRICT ="Member_DISTRICT";
-        	public static final String Member_UPAZILLA ="Member_UPAZILLA";
-        	public static final String Member_Paurasava ="Member_Paurasava";
-        	public static final String Member_UNION ="Member_UNION";
-        	public static final String Member_WARD ="Member_WARD";
-        	public static final String Member_Address_line ="Member_Address_line";
-        	public static final String Member_HIE_facilities ="Member_HIE_facilities";
-        	public static final String Member_GPS ="Member_GPS";
-        	public static final String HH_Address ="HH_Address";
-        	public static final String Member_type ="Member_type";
-        	public static final String Reg_No ="Reg_No";
-        	public static final String Member_Fname ="Member_Fname";
-        	public static final String Member_LName ="Member_LName";
-        	public static final String Member_Unique_ID ="Member_Unique_ID";
-        	public static final String Member_NID ="Member_NID";
-        	public static final String Member_BRID ="Member_BRID";
-        	public static final String Member_HID ="Member_HID";
-        	public static final String member_birth_date_known="member_birth_date_known";
-        	public static final String member_birth_date ="member_birth_date";
+        	public static final String HH_MEMBER ="HH_Member";
+        	public static final String MEMBER_COUNTRY ="Member_COUNTRY";
+        	public static final String MEMBER_DIVISION ="Member_DIVISION";
+        	public static final String MEMBER_DISTRICT ="Member_DISTRICT";
+        	public static final String MEMBER_UPAZILLA ="Member_UPAZILLA";
+        	public static final String MEMBER_PAURASAVA ="Member_Paurasava";
+        	public static final String MEMBER_UNION ="Member_UNION";
+        	public static final String MEMBER_WARD ="Member_WARD";
+        	public static final String MEMBER_ADDRESS_LINE ="Member_Address_line";
+        	public static final String MEMBER_HIE_FACILITIES ="Member_HIE_facilities";
+        	public static final String MEMBER_GPS ="Member_GPS";
+        	public static final String HH_ADDRESS ="HH_Address";
+        	public static final String MEMBER_TYPE ="Member_type";
+        	public static final String REG_NO ="Reg_No";
+        	public static final String MEMBER_FNAME ="Member_Fname";
+        	public static final String MEMBER_LNAME ="Member_LName";
+        	public static final String MEMBER_UNIQUE_ID ="Member_Unique_ID";
+        	public static final String MEMBER_NID ="Member_NID";
+        	public static final String MEMBER_BRID ="Member_BRID";
+        	public static final String MEMBER_HID ="Member_HID";
+        	public static final String MEMBER_BIRTH_DATE_KNOWN="member_birth_date_known";
+        	public static final String MEMBER_BIRTH_DATE ="member_birth_date";
         	public static final String age ="age";
         	public static final String calc_age ="calc_age";
         	public static final String calc_dob="calc_dob";
@@ -319,8 +319,6 @@ public class AllConstants {
 	    	public static final String Is_woman ="Is_woman";
 	    	public static final String Is_child ="Is_child";
 	    	public static final String PVF ="PVF";
-	    	
-	    	
 	    	public static final String FW_PROVIDERID ="PROVIDERID";
 	    	public static final String FW_LOCATIONID ="LOCATIONID";
 	    	public static final String relationalid ="relationalid";
