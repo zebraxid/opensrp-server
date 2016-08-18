@@ -162,7 +162,7 @@ public class BahmniOpenmrsConnector {
 	public Client getClientFromFormSubmission(FormSubmission fs) throws ParseException {
 		
 		String gender = fs.getField(getFieldName(Person.gender, fs));
-		String firstName = gender.equals("1")?"Mr":"Mrs";
+		String firstName = fs.getField("name_english");
 		 gender = gender.equals("1")?"M":"F";
 		
 		/*String firstName = fs.getField(getFieldName(Person.first_name, fs));*/
