@@ -194,6 +194,11 @@
 			<artifactId>opensrp-rest-services</artifactId>
 			<version>${release.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.opensrp.dashboard</groupId>
+			<artifactId>opensrp-dashboard</artifactId>
+			<version>${release.version}</version>
+		</dependency>
 		<!-- <dependency> <groupId>org.opensrp</groupId> <artifactId>opensrp-connector</artifactId> 
 			<version>${release.version}</version> </dependency> -->
 		<dependency>
