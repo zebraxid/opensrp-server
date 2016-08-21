@@ -21,7 +21,7 @@ public class AllConstants {
 
 
     public static class Form {
-    	public static final String HH_REGISTRATION = "HHMemberReg";
+    	public static final String HH_REGISTRATION = "new_household_registration";
     	public static final String MEMBERS_REGISTRATION = "NewMemberRegistration";
     	public static final String BNF_Handler = "BNFHandler";
     	public static final String PSRF_FORM = "psrf_form";
@@ -258,7 +258,14 @@ public class AllConstants {
 	    	public static final String Newborn_Care_Received ="Newborn_Care_Received";
 	    	public static final String Child_gender ="Child_gender";
 	    	public static final String Child_mother_name ="Child_mother_name";
-	    	public static final String Child_father_name ="Child_father_name";
+	    	public static final String Child_father_name ="Child_father_name";	    	
+	    	public static final String Child_guardian_id ="Child_guardian_id";
+	    	public static final String Child_Mother_NID ="Child_Mother_NID";
+	    	public static final String Child_Mother_BRID ="Child_Mother_BRID";
+	    	public static final String Child_Father_NID ="Child_Father_NID";
+	    	public static final String Child_Father_BRID ="Child_Father_BRID";
+	    	public static final String Child_Other_Guardian_NID ="Child_Other_Guardian_NID";
+	    	public static final String Child_Other_Guardian_BRID ="Child_Other_Guardian_BRID";	    	
 	    	public static final String epi_card_number ="epi_card_number";
 	    	public static final String child_was_suffering_from_a_disease_at_birth ="child_was_suffering_from_a_disease_at_birth";
 	    	public static final String reminders_approval ="reminders_approval";
