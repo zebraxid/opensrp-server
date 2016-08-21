@@ -22,6 +22,8 @@
 		<!-- <module>opensrp-reporting</module> -->
    		<module>opensrp-rest-services</module>    
     	<module>opensrp-dashboard</module>
+    	<module>opensrp-camp</module>
+    	
 	</modules>
 
 	<properties>

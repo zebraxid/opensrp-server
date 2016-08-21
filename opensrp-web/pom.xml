@@ -199,6 +199,11 @@
 			<artifactId>opensrp-dashboard</artifactId>
 			<version>${release.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.opensrp.camp</groupId>
+			<artifactId>opensrp-camp</artifactId>
+			<version>${release.version}</version>
+		</dependency>
 		<!-- <dependency> <groupId>org.opensrp</groupId> <artifactId>opensrp-connector</artifactId> 
 			<version>${release.version}</version> </dependency> -->
 		<dependency>
