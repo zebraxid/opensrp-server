@@ -261,6 +261,20 @@ public class Members extends MotechBaseDataObject {
 	@JsonProperty
 	private String Child_father_name;
 	@JsonProperty
+	private String Child_guardian_id;
+	@JsonProperty
+	private String Child_Mother_NID;
+	@JsonProperty
+	private String Child_Mother_BRID;
+	@JsonProperty
+	private String Child_Father_NID;
+	@JsonProperty
+	private String Child_Father_BRID;
+	@JsonProperty
+	private String Child_Other_Guardian_NID;
+	@JsonProperty
+	private String Child_Other_Guardian_BRID;
+	@JsonProperty
 	private String epi_card_number;
 	@JsonProperty
 	private String child_was_suffering_from_a_disease_at_birth;
@@ -1059,6 +1073,27 @@ public class Members extends MotechBaseDataObject {
 		Child_father_name = child_father_name;
 		return this;
 	}
+	public void setChild_guardian_id(String child_guardian_id) {
+		Child_guardian_id = child_guardian_id;
+	}
+	public void setChild_Mother_NID(String child_Mother_NID) {
+		Child_Mother_NID = child_Mother_NID;
+	}
+	public void setChild_Mother_BRID(String child_Mother_BRID) {
+		Child_Mother_BRID = child_Mother_BRID;
+	}
+	public void setChild_Father_NID(String child_Father_NID) {
+		Child_Father_NID = child_Father_NID;
+	}
+	public void setChild_Father_BRID(String child_Father_BRID) {
+		Child_Father_BRID = child_Father_BRID;
+	}
+	public void setChild_Other_Guardian_NID(String child_Other_Guardian_NID) {
+		Child_Other_Guardian_NID = child_Other_Guardian_NID;
+	}
+	public void setChild_Other_Guardian_BRID(String child_Other_Guardian_BRID) {
+		Child_Other_Guardian_BRID = child_Other_Guardian_BRID;
+	}
 	public Members setEpi_card_number(String epi_card_number) {
 		this.epi_card_number = epi_card_number;
 		return this;
@@ -1702,6 +1737,33 @@ public class Members extends MotechBaseDataObject {
 	}
 	public String Child_father_name() {
 		return Child_father_name;
+	}
+	public String Child_guardian_id() {
+		return Child_guardian_id;
+	}
+
+	public String Child_Mother_NID() {
+		return Child_Mother_NID;
+	}
+
+	public String Child_Mother_BRID() {
+		return Child_Mother_BRID;
+	}
+
+	public String Child_Father_NID() {
+		return Child_Father_NID;
+	}
+
+	public String Child_Father_BRID() {
+		return Child_Father_BRID;
+	}
+
+	public String Child_Other_Guardian_NID() {
+		return Child_Other_Guardian_NID;
+	}
+
+	public String Child_Other_Guardian_BRID() {
+		return Child_Other_Guardian_BRID;
 	}
 	public String Epi_card_number() {
 		return epi_card_number;
