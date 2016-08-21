@@ -5,28 +5,22 @@ import java.util.List;
 
 import org.opensrp.dto.AclDTO;
 import org.opensrp.register.mcare.domain.Acl;
-import org.opensrp.register.mcare.domain.Role;
 import org.opensrp.register.mcare.repository.AllAcls;
-import org.opensrp.register.mcare.repository.AllRoles;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.google.gson.Gson;
 
 @Service
 public class AclService {
 
 	private static Logger logger = LoggerFactory.getLogger(AclService.class
 			.toString());
-	private AllRoles allRoles;
 	private AllAcls allAcls;
 	
 	@Autowired
-	public AclService(AllRoles allRoles, AllAcls allAcls)
+	public AclService(AllAcls allAcls)
 	{
-		this.allRoles = allRoles;
 		this.allAcls = allAcls;
 	}
 	
@@ -65,26 +59,6 @@ public class AclService {
 		
 	}
 	
-	public AclDTO getRoleAndAccessTokens(String userName)
-	{
-		Role role = allRoles.findByUserName(userName);
-		if(role != null){
-			Acl acl = allAcls.findByRoleName(role.getName());
-			if(acl != null){
-				AclDTO aclDTO = new AclDTO()
-				.withRoleName(acl.getRoleName())
-				.withRoleId(acl.getId())
-				.withStatus(acl.getStatus())
-				.withAccessTokens(acl.getAccessTokens());
-			return aclDTO;				
-			}else{
-				return null;
-			}
-			
-		}else{
-			return null;
-		}
-	}
 	public ArrayList<AclDTO> getRolesAndAccessTokens(){
 		List<Acl> acls = allAcls.roles();		//Acl ac = allAcls.get("");
 		ArrayList<AclDTO> aclList = new ArrayList<AclDTO>();
