@@ -1,12 +1,12 @@
-package org.opensrp.repository;
+package org.opensrp.camp.repository;
 
 import java.util.List;
 
 import org.ektorp.CouchDbConnector;
 import org.ektorp.support.View;
 import org.motechproject.dao.MotechBaseRepository;
+import org.opensrp.camp.dao.Camp;
 import org.opensrp.common.AllConstants;
-import org.opensrp.dao.Camp;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,12 +38,12 @@ public class CampRepository extends MotechBaseRepository<Camp> {
 	}
 	
 	@View(name = "by_id", map = "function(doc) { if (doc.type === 'Camp' && doc._id) { emit(doc._id, doc); } }")
-	public Camp findUserById(String userId) {
-		List<Camp> camp = db.queryView(createQuery("by_id").key(userId).includeDocs(true), Camp.class);
+	public List<Camp> findById(String id) {
+		List<Camp> camp = db.queryView(createQuery("by_id").key(id).includeDocs(true), Camp.class);
 		if (camp == null || camp.isEmpty()) {
 			return null;
 		}
-		return camp.get(0);
+		return camp;
 	}
 	
 }

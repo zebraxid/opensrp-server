@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.json.JSONException;
+import org.opensrp.camp.service.App;
 import org.opensrp.connector.openmrs.service.OpenmrsUserService;
 import org.opensrp.dashboard.dto.PrivilegeDTO;
 import org.opensrp.dashboard.dto.RoleDTO;
@@ -15,7 +16,6 @@ import org.opensrp.dashboard.dto.UserDTO;
 import org.opensrp.dashboard.service.PrivilegeService;
 import org.opensrp.dashboard.service.RoleService;
 import org.opensrp.dashboard.service.UsersService;
-import org.opensrp.service.App;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -144,10 +144,4 @@ public class AclController {
 		return new ResponseEntity<>(message, OK);
 	}
 	
-	@RequestMapping(method = GET, value = "/msg")
-	@ResponseBody
-	public ResponseEntity<String> mess(@RequestParam String apps) {
-		String message = app.getApp(apps);
-		return new ResponseEntity<>(message, OK);
-	}
 }

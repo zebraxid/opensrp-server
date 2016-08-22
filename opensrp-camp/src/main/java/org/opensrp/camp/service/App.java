@@ -1,4 +1,4 @@
-package org.opensrp.service;
+package org.opensrp.camp.service;
 
 import org.springframework.stereotype.Service;
 
