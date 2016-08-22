@@ -19,6 +19,7 @@ import org.springframework.security.authentication.encoding.PasswordEncoder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.crypto.codec.Base64;
 import org.springframework.stereotype.Component;
 
 import ch.lambdaj.Lambda;
@@ -107,10 +108,16 @@ public class DrishtiAuthenticationProvider implements AuthenticationProvider {
     public boolean checkIfDashboardUser(String userName, String password){
     	//System.out.println("checking for user exists only in opensrp");
     	org.opensrp.dashboard.domain.User userForDashboard = dashboardUser.findUserByUserName(userName);
+    	//System.out.println("user input password- " + password);
     	
-    	if(userForDashboard != null && password.equals(userForDashboard.getPassword())){
-    		System.out.println("Dashboard User found.");
-    		return true;
+    	if(userForDashboard != null ){
+    		byte[] decodedBytes = Base64.decode(userForDashboard.getPassword().getBytes());
+    		String decodedPassword = new String(decodedBytes);
+    		//System.out.println("decoded password- " + decodedPassword);
+    		if(decodedPassword.equals(password)){
+    			System.out.println("Dashboard User found.- " + userName);
+    			return true;
+    		}    			    		
     	}
     	//System.out.println("Dashboard User not found.");
     	return false;

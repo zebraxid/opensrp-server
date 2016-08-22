@@ -17,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.security.crypto.codec.Base64;
 
 @Service
 public class UsersService {
@@ -69,7 +70,8 @@ public class UsersService {
 				user.withContactNumber(userDTO.getContactNumber());
 				user.withPersonalAddress(userDTO.getPersonalAddress());
 				user.withEmail(userDTO.getEmail());
-				user.withPassword(userDTO.getPassword());
+				String encodedPassword = new String(Base64.encode(userDTO.getPassword().getBytes()));
+				user.withPassword(encodedPassword);
 				user.withUserName(userDTO.getUserName());
 				user.withGender(userDTO.getGender());
 				//parent, children, roles, locations
@@ -163,7 +165,8 @@ public class UsersService {
 					userByUserName.withEmail(userDTO.getEmail());
 				}
 				if (userDTO.getPassword() != null) {
-					userByUserName.withPassword(userDTO.getPassword());
+					String encodedPassword = new String(Base64.encode(userDTO.getPassword().getBytes()));
+					userByUserName.withPassword(encodedPassword);
 				}
 				if (userDTO.getGender() != null) {
 					userByUserName.withGender(userDTO.getGender());
