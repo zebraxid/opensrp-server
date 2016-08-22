@@ -2,35 +2,40 @@
     "name": "Woman TT_3",
     "absolute": true,
     "milestones": [
-        {
+    	{
             "name": "Woman TT_3",
             "scheduleWindows": {
-            	"earliest": ["0 Days"],
-                "due": ["20000 Days"],
-                "late": ["20001 Days"],
-                "max": ["20002 Days"]
+            	"earliest": ["182 Days"],
+                "due": ["196 Days"],
+                "late": ["20196 Days"],
+                "max": ["20197 Days"]
             },
             "alerts": [
+            	{
+                    "window": "earliest",
+                    "offset": ["175 Days"],
+                    "interval": ["1 Day"],
+                    "count": "7"
+                },
                 {
                     "window": "due",
-                    "offset": ["0 Days"],
+                    "offset": ["182 Days"],
+                    "interval": ["1 Day"],
+                    "count": "14"
+                },
+                {
+                    "window": "late",
+                    "offset": ["196 Days"],
                     "interval": ["1 Day"],
                     "count": "20000"
                 },
                 {
-                    "window": "late",
-                    "offset": ["20000 Days"],
-                    "interval": ["1 Day"],
-                    "count": "1"
-                },
-                {
                     "window": "max",
-                    "offset": ["20001 Days"],
+                    "offset": ["20196 Days"],
                     "interval": ["1 Day"],
                     "count": "1"
                 }
-                
             ]
         }
     ]
-}
+}      

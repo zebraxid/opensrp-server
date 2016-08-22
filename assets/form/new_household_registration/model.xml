@@ -14,7 +14,7 @@
           <existing_HIE_facilities/>
           <start openmrs_entity="encounter" openmrs_entity_id="encounter_start"/>
           <end openmrs_entity="Concept" openmrs_entity_id="cdec172a-9535-4d21-98a5-72a668b9b22c"/>
-          <today openmrs_entity="Concept" openmrs_entity_id="97c07f6c-4422-4087-9d0f-556f52e98cf2"/>
+          <today openmrs_entity="encounter" openmrs_entity_id="encounter_date"/>
           <deviceid openmrs_entity="Concept" openmrs_entity_id="97c07f6c-4422-4087-9d0f-556f52e98cf2"/>
           <subscriberid openmrs_entity="Concept" openmrs_entity_id="2bd5dab3-ac21-4561-ac51-f0e54a0332c7"/>
           <simserial openmrs_entity="Concept" openmrs_entity_id="6d1902a2-4f6c-4a7a-a1ae-496ff748c2e1"/>
