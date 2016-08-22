@@ -27,19 +27,21 @@ public class CampRepository extends MotechBaseRepository<Camp> {
 	}
 	
 	@View(name = "by_session_name", map = "function(doc) { if (doc.type === 'Camp' && doc.session_name) { emit(doc.session_name, doc); } }")
-	public Camp findBySessionName(String session_name) {
+	public List<Camp> findBySessionName(String session_name) {
 		
 		List<Camp> camps = db.queryView(createQuery("by_session_name").key(session_name).includeDocs(true), Camp.class);
 		if (camps == null || camps.isEmpty()) {
 			
 			return null;
 		}
-		return camps.get(0);
+		return camps;
 	}
 	
 	@View(name = "by_id", map = "function(doc) { if (doc.type === 'Camp' && doc._id) { emit(doc._id, doc); } }")
 	public List<Camp> findById(String id) {
+		logger.info("Cammmm:"+id);
 		List<Camp> camp = db.queryView(createQuery("by_id").key(id).includeDocs(true), Camp.class);
+		logger.info("Cammmm:"+camp);
 		if (camp == null || camp.isEmpty()) {
 			return null;
 		}

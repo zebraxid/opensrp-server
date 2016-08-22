@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.json.JSONException;
-import org.opensrp.camp.service.App;
 import org.opensrp.connector.openmrs.service.OpenmrsUserService;
 import org.opensrp.dashboard.dto.PrivilegeDTO;
 import org.opensrp.dashboard.dto.RoleDTO;
@@ -39,14 +38,7 @@ public class AclController {
 	
 	private UsersService userService;
 	
-	private App app;
-	
 	private static Logger logger = LoggerFactory.getLogger(AclController.class);
-	
-	@Autowired
-	public void setApp(App app) {
-		this.app = app;
-	}
 	
 	@Autowired
 	public AclController(RoleService roleService, OpenmrsUserService openmrsUserService, PrivilegeService privilegeService,

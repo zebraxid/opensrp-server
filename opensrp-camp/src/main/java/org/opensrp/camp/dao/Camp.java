@@ -54,7 +54,7 @@ public class Camp extends MotechBaseDataObject {
 	private String created;
 	@JsonProperty("user")
 	private String user;	
-	@DocumentReferences(cascade = CascadeType.ALL,fetch = FetchType.LAZY, descendingSortOrder = true, orderBy = "date", backReference = "session_id")
+	@DocumentReferences(fetch = FetchType.LAZY, descendingSortOrder = true, orderBy = "date", backReference = "session_id")
 	private Set<CampDate> camp_dates;
 	
     public Set<CampDate> getCampDates() {

@@ -39,6 +39,7 @@ public class CampController {
 	@RequestMapping(method = GET, value = "/camp")
 	@ResponseBody
 	public ResponseEntity<String> getCamp(@RequestParam String id) {
+		logger.info("CAm::::" + campService);
 		campService.getCampById(id);
 		return new ResponseEntity<>("dddd", OK);
 	}
@@ -53,7 +54,7 @@ public class CampController {
 	@RequestMapping(headers = { "Accept=application/json" }, method = POST, value = "/add-camp")
 	public ResponseEntity<String> addCamp(@RequestBody CampDTO campDTO) {
 		logger.info("create request received for role - " + campDTO.getSession_name());
-		String message = campService.add(campDTO);//privilegeService.addPrivilege(privilegeDTO);		
+		String message = campService.add(campDTO);
 		return new ResponseEntity<>(message, OK);
 	}
 }
