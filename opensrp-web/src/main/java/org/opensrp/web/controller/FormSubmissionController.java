@@ -274,7 +274,7 @@ public class FormSubmissionController {
 							        .println("Dependent client exist into formsubmission /***********************************************************************/ ");
 							Client hhClient = bahmniOpenmrsConnector.getClientFromFormSubmission(formSubmission);
 							System.out.println(bahmniPatientService.createPatient(hhClient, idGen));
-							Event e = openmrsConnector.getEventFromFormSubmission(formSubmission);
+							Event e = bahmniOpenmrsConnector.getEventFromFormSubmission(formSubmission);
 							System.out.println(encounterService.createEncounter(e, idGen));
 							// Event hhhEvent =
 							// openmrsConnector.getEventFromFormSubmission(formSubmission);
@@ -313,7 +313,7 @@ public class FormSubmissionController {
 							        .println("Patient and Dependent client not exist into Bahmni openmrs /***********************************************************************/ ");
 							Client c = bahmniOpenmrsConnector.getClientFromFormSubmission(formSubmission);
 							System.out.println(bahmniPatientService.createPatient(c, idGen));
-							Event e = openmrsConnector.getEventFromFormSubmission(formSubmission);
+							Event e = bahmniOpenmrsConnector.getEventFromFormSubmission(formSubmission);
 							System.out.println(encounterService.createEncounter(e, idGen));
 						}
 					}

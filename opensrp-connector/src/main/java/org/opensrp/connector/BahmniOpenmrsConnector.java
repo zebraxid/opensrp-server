@@ -1,7 +1,10 @@
 package org.opensrp.connector;
 
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -268,9 +271,23 @@ public class BahmniOpenmrsConnector {
 		 * @throws ParseException
 		 */
 		private Event getEventForSubform(FormSubmission fs, String subform, String eventType, Map<String, String> subformInstance) throws ParseException {
-			String encounterDateField = getFieldName(Encounter.encounter_date, fs);
-			String encounterLocation = getFieldName(Encounter.location_id, fs);
+			String encounterDateField = getFieldName(Encounter.encounter_date, fs);	
+			Date date = new Date();
+			String modifiedDate = new String();
+			if(encounterDateField != null && !encounterDateField.isEmpty())
+				date=OpenmrsService.OPENMRS_DATE.parse(fs.getField(encounterDateField));
+			else{
+				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+				Date today = Calendar.getInstance().getTime();
+				modifiedDate=format.format(today).toString();
+				//System.out.println("modifiedDate: " + date);
+				date = format.parse(modifiedDate);
+				//System.out.println("date: " + date);
+			}
 			
+			//System.out.println("Date: " + date);			
+			//date = new SimpleDateFormat("yyyy-MM-dd").parse("2016-08-21");
+			String encounterLocation = getFieldName(Encounter.location_id, fs);			
 			//TODO
 			String encounterStart = getFieldName(Encounter.encounter_start, fs);
 			String encounterEnd = getFieldName(Encounter.encounter_end, fs);
@@ -279,7 +296,7 @@ public class BahmniOpenmrsConnector {
 			a .add("encounter_type");
 			Event e = new Event()
 				.withBaseEntityId(subformInstance.get("id"))
-				.withEventDate(OpenmrsService.OPENMRS_DATE.parse(fs.getField(encounterDateField)))
+				.withEventDate(date)
 				.withEventType(eventType)
 				.withLocationId(fs.getField(encounterLocation))
 				.withProviderId(fs.anmId())
@@ -351,23 +368,18 @@ public class BahmniOpenmrsConnector {
 		for (SubFormData sbf : fs.subForms()) {
 			Map<String, String> att = formAttributeMapper.getAttributesForSubform(sbf.name(), fs);
 			if(att.size() > 0 && att.get("openmrs_entity").equalsIgnoreCase("person")){
-				for (Map<String, String> sfdata : sbf.instances()) {
-					String gender = sfdata.get(getFieldName(Person.gender, sbf.name(), fs));
-					String firstName = gender.equals("1")?"Mr":"Mrs";
-					gender = gender.equals("1")?"M":"F";
-				//	String firstName = sfdata.get(getFieldName(Person.first_name, sbf.name(), fs));
+				for (Map<String, String> sfdata : sbf.instances()) {					
 					Map<String, String> idents = extractIdentifiers(sfdata, sbf.name(), fs);
-					if(StringUtils.isEmptyOrWhitespaceOnly(firstName) && idents.size() < 2 && !sbf.name().equals("child_registration"))
-					{	//we need to ignore uuid of entity
-						// if empty repeat group leave this entry and move to next
-						continue;
-					}
 					Map<String, Object> cne = new HashMap<>();
-					
+					String gender = sfdata.get(getFieldName(Person.gender, sbf.name(), fs));
+					//String firstName = gender.equals("1")?"Mr":"Mrs";
+					String firstName = sfdata.get(getFieldName(Person.first_name, sbf.name(), fs));
+					if(gender != null)	gender = gender.equals("1")?"M":"F";
+					//String firstName = sfdata.get(getFieldName(Person.first_name, sbf.name(), fs));									
 					String middleName = sfdata.get(getFieldName(Person.middle_name, sbf.name(), fs));
 					String lastName = sfdata.get(getFieldName(Person.first_name, sbf.name(), fs)); //sfdata.get(getFieldName(Person.last_name, sbf.name(), fs));
 					String bd = sfdata.get(getFieldName(Person.birthdate, sbf.name(), fs));
-					Date birthdate = (bd==null || bd.isEmpty())? OpenmrsService.OPENMRS_DATE.parse("1900-01-01"):OpenmrsService.OPENMRS_DATE.parse(bd);
+					Date birthdate = (bd==null || bd.isEmpty() || bd.equalsIgnoreCase("Invalid Date"))? OpenmrsService.OPENMRS_DATE.parse("1900-01-01"):OpenmrsService.OPENMRS_DATE.parse(bd);
 					String dd = sfdata.get(getFieldName(Person.deathdate, sbf.name(), fs));
 					Date deathdate = (dd==null || dd.isEmpty())?null:OpenmrsService.OPENMRS_DATE.parse(dd);
 					String aproxbd = sfdata.get(getFieldName(Person.birthdate_estimated, sbf.name(), fs));
@@ -430,7 +442,22 @@ public class BahmniOpenmrsConnector {
 	 * @throws ParseException
 	 */
 	public Event getEventFromFormSubmission(FormSubmission fs) throws ParseException {
-		String encounterDateField = getFieldName(Encounter.encounter_date, fs);
+		String encounterDateField = getFieldName(Encounter.encounter_date, fs);	
+		Date date = new Date();
+		String modifiedDate = new String();
+		if(encounterDateField != null && !encounterDateField.isEmpty())
+			date=OpenmrsService.OPENMRS_DATE.parse(fs.getField(encounterDateField));
+		else{
+			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+			Date today = Calendar.getInstance().getTime();
+			modifiedDate=format.format(today).toString();
+			//System.out.println("modifiedDate: " + date);
+			date = format.parse(modifiedDate);
+			//System.out.println("date: " + date);
+		}
+		
+		//System.out.println("Date: " + date);		
+		//date = new SimpleDateFormat("yyyy-MM-dd").parse("2016-08-21");
 		String encounterLocation = getFieldName(Encounter.location_id, fs);
 		
 		//TODO
@@ -442,7 +469,7 @@ public class BahmniOpenmrsConnector {
 		String eventType = formAttributeMapper.getUniqueAttributeValue(a , fs).get("encounter_type");
 		Event e = new Event()
 			.withBaseEntityId(fs.getField("relationalid")==null?fs.entityId():fs.getField("relationalid"))
-			.withEventDate(OpenmrsService.OPENMRS_DATE.parse(fs.getField(encounterDateField)))
+			.withEventDate(date)
 			.withEventType(eventType)
 			.withLocationId(fs.getField(encounterLocation))
 			.withProviderId(fs.anmId())

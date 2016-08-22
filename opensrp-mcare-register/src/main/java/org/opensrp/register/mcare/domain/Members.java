@@ -51,10 +51,6 @@ public class Members extends MotechBaseDataObject {
 	@JsonProperty
 	private String Couple_No;
 	@JsonProperty
-	private String LMP;
-	@JsonProperty
-	private String EDD;
-	@JsonProperty
 	private String GA;
 	@JsonProperty
 	private String Pregnancy_Status; 
@@ -531,13 +527,8 @@ public class Members extends MotechBaseDataObject {
 		return this;
 	}
 	
-	public Members setLMP(String LMP) {
-		this.LMP = LMP;
-		return this;
-	}
-	
-	public Members setEDD(String EDD) {
-		this.EDD = EDD;
+	public Members setedd(String edd) {
+		this.edd = edd;
 		return this;
 	}
 	
@@ -787,10 +778,6 @@ public class Members extends MotechBaseDataObject {
 		this.member_birth_date = member_birth_date;
 		return this;
 	}
-	public Members setAge(String age) {
-		this.age = age;
-		return this;
-	}
 	public Members setCalc_age(String calc_age) {
 		this.calc_age = calc_age;
 		return this;
@@ -849,10 +836,6 @@ public class Members extends MotechBaseDataObject {
 	}
 	public Members setEdd_lmp(String edd_lmp) {
 		this.edd_lmp = edd_lmp;
-		return this;
-	}
-	public Members setEdd(String edd) {
-		this.edd = edd;
 		return this;
 	}
 	public Members setLmp(String lmp) {
@@ -1391,15 +1374,7 @@ public class Members extends MotechBaseDataObject {
 	public String Couple_No() {
 		return Couple_No;
 	}
-	
-	public String LMP() {
-		return LMP;
-	}
 
-	public String EDD() {
-		return EDD;
-	}
-	
 	public String GA() {
 		return GA;
 	}

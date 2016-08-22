@@ -6,26 +6,26 @@
             "name": "Woman TT_1",
             "scheduleWindows": {
             	"earliest": ["0 Days"],
-                "due": ["20000 Days"],
-                "late": ["20001 Days"],
-                "max": ["20002 Days"]
+                "due": ["84 Days"],
+                "late": ["20084 Days"],
+                "max": ["20085 Days"]
             },
             "alerts": [
                 {
                     "window": "due",
                     "offset": ["0 Days"],
                     "interval": ["1 Day"],
-                    "count": "20000"
+                    "count": "84"
                 },
                 {
                     "window": "late",
-                    "offset": ["20000 Days"],
+                    "offset": ["84 Days"],
                     "interval": ["1 Day"],
-                    "count": "1"
+                    "count": "20000"
                 },
                 {
                     "window": "max",
-                    "offset": ["20001 Days"],
+                    "offset": ["20084 Days"],
                     "interval": ["1 Day"],
                     "count": "1"
                 }
