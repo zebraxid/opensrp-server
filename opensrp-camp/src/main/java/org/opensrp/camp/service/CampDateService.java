@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 import com.google.gson.Gson;
 
 @Service
-public class CampDateService implements CampInterface<CampDateDTO> {
+public class CampDateService {
 	
 	private static Logger logger = LoggerFactory.getLogger(CampDateService.class);
 	
@@ -39,34 +39,11 @@ public class CampDateService implements CampInterface<CampDateDTO> {
 		logger.info("Camp : " + jsonCartList.toString());
 		return campDates;
 		
-	}
+	}	
 	
-	@Override
-	public String add(CampDateDTO object) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	@Override
-	public List<CampDateDTO> getAll() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	@Override
-	public String delete(String id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	@Override
-	public CampDateDTO findById(String id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 	public CampDate addCampDate(CampDateDTO campDateDTO,Camp camp){
 		CampDate campDate = new CampDate();
-		campDate.setDate(campDateDTO.getDate());
+		campDate.setSession_date(campDateDTO.getSession_date());
 		campDate.setSession_id(camp.getId());
 		campDate.setContact(camp.getContact());
 		campDate.setUsername(camp.getUsername());
@@ -75,10 +52,5 @@ public class CampDateService implements CampInterface<CampDateDTO> {
 		
 	}
 
-	@Override
-    public String edit(CampDateDTO onject) {
-	    // TODO Auto-generated method stub
-	    return null;
-    }
 	
 }

@@ -40,15 +40,8 @@ public class CampController {
 	@ResponseBody
 	public ResponseEntity<String> getCamp(@RequestParam String id) {
 		logger.info("CAm::::" + campService);
-		campService.getCampById(id);
-		return new ResponseEntity<>("dddd", OK);
-	}
-	
-	@RequestMapping(method = GET, value = "/campDate")
-	@ResponseBody
-	public ResponseEntity<String> getCampDate(@RequestParam String id) {
-		campDateService.getCampDateBySessionId(id);
-		return new ResponseEntity<>("dddd", OK);
+		String jsonString = campService.getCampById(id);
+		return new ResponseEntity<>(jsonString, OK);
 	}
 	
 	@RequestMapping(headers = { "Accept=application/json" }, method = POST, value = "/add-camp")

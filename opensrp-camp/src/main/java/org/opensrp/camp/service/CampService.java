@@ -46,13 +46,13 @@ public class CampService implements CampInterface<CampDTO> {
 		this.campRepository = campRepository;
 	}
 	
-	public List<Camp> getCampById(String id) {
+	public String getCampById(String id) {
 		logger.info("campRepository: "+campRepository);
 		List<Camp> campDates =  campRepository.findById(id);
 		Gson gson = new Gson();		
 		String jsonCartList = gson.toJson(campDates);		
 		logger.info("Camp : " + jsonCartList.toString());
-		return campDates;
+		return jsonCartList.toString();
 	}
 	
 	@Override
