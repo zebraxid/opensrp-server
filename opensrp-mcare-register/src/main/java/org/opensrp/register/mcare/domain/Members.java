@@ -281,7 +281,7 @@ public class Members extends MotechBaseDataObject {
 	@JsonProperty
 	private String child_vaccines;
 	@JsonProperty
-	private String bcg_retro;
+	private String BCGVisitretro;
 	@JsonProperty
 	private String opv0_retro;
 	@JsonProperty
@@ -405,35 +405,35 @@ public class Members extends MotechBaseDataObject {
 	@JsonProperty
 	private Map<String, String> MeaslesVisit;
 	@JsonProperty
-	private Map<String, String> general;
+	private Map<String, String> generalVisit;
 	@JsonProperty
-	private Map<String, String> PCV1;
+	private Map<String, String> PCV1Visit;
 	@JsonProperty
-	private Map<String, String> PCV2;
+	private Map<String, String> PCV2Visit;
 	@JsonProperty
-	private Map<String, String> PCV3;
+	private Map<String, String> PCV3Visit;
 	@JsonProperty
-	private Map<String, String> PENTA1;
+	private Map<String, String> PENTA1Visit;
 	@JsonProperty
-	private Map<String, String> PENTA2;
+	private Map<String, String> PENTA2Visit;
 	@JsonProperty
-	private Map<String, String> PENTA3;
+	private Map<String, String> PENTA3Visit;
 	@JsonProperty
-	private Map<String, String> OPV0;
+	private Map<String, String> OPV0Visit;
 	@JsonProperty
-	private Map<String, String> OPV1;
+	private Map<String, String> OPV1Visit;
 	@JsonProperty
-	private Map<String, String> OPV2;
+	private Map<String, String> OPV2Visit;
 	@JsonProperty
-	private Map<String, String> OPV3;
+	private Map<String, String> OPV3Visit;
 	@JsonProperty
-	private Map<String, String> MR;
+	private Map<String, String> MRVisit;
 	@JsonProperty
-	private Map<String, String> Measles2;
+	private Map<String, String> Measles2Visit;
 	@JsonProperty
-	private Map<String, String> IPV;
+	private Map<String, String> IPVVisit;
 	@JsonProperty
-	private Map<String, String> BCG;
+	private Map<String, String> BCGVisit;
 	@JsonProperty
 	private String isClosed;
 	public Members() {
@@ -444,21 +444,21 @@ public class Members extends MotechBaseDataObject {
 		this.TTVisitFour = new HashMap<>();
 		this.TTVisitFive = new HashMap<>();
 		this.MeaslesVisit = new HashMap<>();
-		this.general = new HashMap<>();
-		this.PCV1 = new HashMap<>();
-		this.PCV2 = new HashMap<>();
-		this.PCV3 = new HashMap<>();
-		this.PENTA1 = new HashMap<>();
-		this.PENTA2 = new HashMap<>();
-		this.PENTA3 = new HashMap<>();
-		this.OPV0 = new HashMap<>();
-		this.OPV1 = new HashMap<>();
-		this.OPV2 = new HashMap<>();
-		this.OPV3 = new HashMap<>();
-		this.MR = new HashMap<>();
-		this.Measles2 = new HashMap<>();
-		this.IPV = new HashMap<>();
-		this.BCG = new HashMap<>();
+		this.generalVisit = new HashMap<>();
+		this.PCV1Visit = new HashMap<>();
+		this.PCV2Visit = new HashMap<>();
+		this.PCV3Visit = new HashMap<>();
+		this.PENTA1Visit = new HashMap<>();
+		this.PENTA2Visit = new HashMap<>();
+		this.PENTA3Visit = new HashMap<>();
+		this.OPV0Visit = new HashMap<>();
+		this.OPV1Visit = new HashMap<>();
+		this.OPV2Visit = new HashMap<>();
+		this.OPV3Visit = new HashMap<>();
+		this.MRVisit = new HashMap<>();
+		this.Measles2Visit = new HashMap<>();
+		this.IPVVisit = new HashMap<>();
+		this.BCGVisit = new HashMap<>();
 		this.setIsClosed(false);
 	}
 	
@@ -678,64 +678,64 @@ public class Members extends MotechBaseDataObject {
         this.MeaslesVisit = new HashMap<>(MeaslesVisit);
         return this;
     }
-	public Members setgeneral(Map<String, String> general) {
-        this.general = new HashMap<>(general);
+	public Members setgeneralVisit(Map<String, String> generalVisit) {
+        this.generalVisit = new HashMap<>(generalVisit);
         return this;
     }
-	public Members setPCV1(Map<String, String> PCV1) {
-        this.PCV1 = new HashMap<>(PCV1);
+	public Members setPCV1Visit(Map<String, String> PCV1Visit) {
+        this.PCV1Visit = new HashMap<>(PCV1Visit);
         return this;
     }
-	public Members setPCV2(Map<String, String> PCV2) {
-        this.PCV2 = new HashMap<>(PCV2);
+	public Members setPCV2Visit(Map<String, String> PCV2Visit) {
+        this.PCV2Visit = new HashMap<>(PCV2Visit);
         return this;
     }
-	public Members setPCV3(Map<String, String> PCV3) {
-        this.PCV3 = new HashMap<>(PCV3);
+	public Members setPCV3Visit(Map<String, String> PCV3Visit) {
+        this.PCV3Visit = new HashMap<>(PCV3Visit);
         return this;
     }
-	public Members setPENTA1(Map<String, String> PENTA1) {
-        this.PENTA1 = new HashMap<>(PENTA1);
+	public Members setPENTA1Visit(Map<String, String> PENTA1Visit) {
+        this.PENTA1Visit = new HashMap<>(PENTA1Visit);
         return this;
     }
-	public Members setPENTA2(Map<String, String> PENTA2) {
-        this.PENTA2 = new HashMap<>(PENTA2);
+	public Members setPENTA2Visit(Map<String, String> PENTA2Visit) {
+        this.PENTA2Visit = new HashMap<>(PENTA2Visit);
         return this;
     }
-	public Members setPENTA3(Map<String, String> PENTA3) {
-        this.PENTA3 = new HashMap<>(PENTA3);
+	public Members setPENTA3Visit(Map<String, String> PENTA3Visit) {
+        this.PENTA3Visit = new HashMap<>(PENTA3Visit);
         return this;
     }
-	public Members setOPV0(Map<String, String> OPV0) {
-        this.OPV0 = new HashMap<>(OPV0);
+	public Members setOPV0Visit(Map<String, String> OPV0Visit) {
+        this.OPV0Visit = new HashMap<>(OPV0Visit);
         return this;
     }
-	public Members setOPV1(Map<String, String> OPV1) {
-        this.OPV1 = new HashMap<>(OPV1);
+	public Members setOPV1Visit(Map<String, String> OPV1Visit) {
+        this.OPV1Visit = new HashMap<>(OPV1Visit);
         return this;
     }
-	public Members setOPV2(Map<String, String> OPV2) {
-        this.OPV2 = new HashMap<>(OPV2);
+	public Members setOPV2Visit(Map<String, String> OPV2Visit) {
+        this.OPV2Visit = new HashMap<>(OPV2Visit);
         return this;
     }
-	public Members setOPV3(Map<String, String> OPV3) {
-        this.OPV3 = new HashMap<>(OPV3);
+	public Members setOPV3Visit(Map<String, String> OPV3Visit) {
+        this.OPV3Visit = new HashMap<>(OPV3Visit);
         return this;
     }
-	public Members setMR(Map<String, String> MR) {
-        this.MR = new HashMap<>(MR);
+	public Members setMRVisit(Map<String, String> MRVisit) {
+        this.MRVisit = new HashMap<>(MRVisit);
         return this;
     }
-	public Members setMeasles2(Map<String, String> Measles2) {
-        this.Measles2 = new HashMap<>(Measles2);
+	public Members setMeasles2Visit(Map<String, String> Measles2Visit) {
+        this.Measles2Visit = new HashMap<>(Measles2Visit);
         return this;
     }
-	public Members setIPV(Map<String, String> IPV) {
-        this.IPV = new HashMap<>(IPV);
+	public Members setIPVVisit(Map<String, String> IPVVisit) {
+        this.IPVVisit = new HashMap<>(IPVVisit);
         return this;
     }
-	public Members setBCG(Map<String, String> BCG) {
-        this.BCG = new HashMap<>(BCG);
+	public Members setBCGVisit(Map<String, String> BCGVisit) {
+        this.BCGVisit = new HashMap<>(BCGVisit);
         return this;
     }
 	public Members setMember_Address_line(String member_Address_line) {
@@ -1098,8 +1098,8 @@ public class Members extends MotechBaseDataObject {
 		this.child_vaccines = child_vaccines;
 		return this;
 	}
-	public Members setBcg_retro(String bcg_retro) {
-		this.bcg_retro = bcg_retro;
+	public Members setBCGVisitretro(String BCGVisitretro) {
+		this.BCGVisitretro = BCGVisitretro;
 		return this;
 	}
 	public Members setOpv0_retro(String opv0_retro) {
@@ -1194,15 +1194,15 @@ public class Members extends MotechBaseDataObject {
 		this.measles1_dose = measles1_dose;
 		return this;
 	}
-	public Members setMeasles2_retro(String measles2_retro) {
+	public Members setMeasles2Visit_retro(String measles2_retro) {
 		this.measles2_retro = measles2_retro;
 		return this;
 	}
-	public Members setMeasles2_dose(String measles2_dose) {
+	public Members setMeasles2Visit_dose(String measles2_dose) {
 		this.measles2_dose = measles2_dose;
 		return this;
 	}
-	public Members setBcg(String bcg) {
+	public Members setbcg(String bcg) {
 		this.bcg = bcg;
 		return this;
 	}
@@ -1298,11 +1298,11 @@ public class Members extends MotechBaseDataObject {
 		this.measles1_dose_today = measles1_dose_today;
 		return this;
 	}
-	public Members setMeasles2(String measles2) {
+	public Members setMeasles2Visit(String measles2) {
 		this.measles2 = measles2;
 		return this;
 	}
-	public Members setMeasles2_dose_today(String measles2_dose_today) {
+	public Members setMeasles2Visit_dose_today(String measles2_dose_today) {
 		this.measles2_dose_today = measles2_dose_today;
 		return this;
 	}
@@ -1755,8 +1755,8 @@ public class Members extends MotechBaseDataObject {
 	public String Child_vaccines() {
 		return child_vaccines;
 	}
-	public String Bcg_retro() {
-		return bcg_retro;
+	public String BCGVisitretro() {
+		return BCGVisitretro;
 	}
 	public String Opv0_retro() {
 		return opv0_retro;
@@ -1827,10 +1827,10 @@ public class Members extends MotechBaseDataObject {
 	public String Measles1_dose() {
 		return measles1_dose;
 	}
-	public String Measles2_retro() {
+	public String Measles2Visit_retro() {
 		return measles2_retro;
 	}
-	public String Measles2_dose() {
+	public String Measles2Visit_dose() {
 		return measles2_dose;
 	}
 	public String Bcg() {
@@ -1905,7 +1905,7 @@ public class Members extends MotechBaseDataObject {
 	public String Measles1_dose_today() {
 		return measles1_dose_today;
 	}
-	public String Measles2_dose_today() {
+	public String Measles2Visit_dose_today() {
 		return measles2_dose_today;
 	}
 	public String Is_woman() {
@@ -1962,80 +1962,80 @@ public class Members extends MotechBaseDataObject {
 			this.MeaslesVisit = new HashMap<>();
 		return MeaslesVisit;
 	}
-	public Map<String, String> general() {
-		if (general == null)
-			this.general = new HashMap<>();
-		return general;
+	public Map<String, String> generalVisit() {
+		if (generalVisit == null)
+			this.generalVisit = new HashMap<>();
+		return generalVisit;
 	}
-	public Map<String, String> PCV1() {
-		if (PCV1 == null)
-			this.PCV1 = new HashMap<>();
-		return PCV1;
+	public Map<String, String> PCV1Visit() {
+		if (PCV1Visit == null)
+			this.PCV1Visit = new HashMap<>();
+		return PCV1Visit;
 	}
-	public Map<String, String> PCV2() {
-		if (PCV2 == null)
-			this.PCV2 = new HashMap<>();
-		return PCV2;
+	public Map<String, String> PCV2Visit() {
+		if (PCV2Visit == null)
+			this.PCV2Visit = new HashMap<>();
+		return PCV2Visit;
 	}
-	public Map<String, String> PCV3() {
-		if (PCV3 == null)
-			this.PCV3 = new HashMap<>();
-		return PCV3;
+	public Map<String, String> PCV3Visit() {
+		if (PCV3Visit == null)
+			this.PCV3Visit = new HashMap<>();
+		return PCV3Visit;
 	}
-	public Map<String, String> PENTA1() {
-		if (PENTA1 == null)
-			this.PENTA1 = new HashMap<>();
-		return PENTA1;
+	public Map<String, String> PENTA1Visit() {
+		if (PENTA1Visit == null)
+			this.PENTA1Visit = new HashMap<>();
+		return PENTA1Visit;
 	}
-	public Map<String, String> PENTA2() {
-		if (PENTA2 == null)
-			this.PENTA2 = new HashMap<>();
-		return PENTA2;
+	public Map<String, String> PENTA2Visit() {
+		if (PENTA2Visit == null)
+			this.PENTA2Visit = new HashMap<>();
+		return PENTA2Visit;
 	}
-	public Map<String, String> PENTA3() {
-		if (PENTA3 == null)
-			this.PENTA3 = new HashMap<>();
-		return PENTA3;
+	public Map<String, String> PENTA3Visit() {
+		if (PENTA3Visit == null)
+			this.PENTA3Visit = new HashMap<>();
+		return PENTA3Visit;
 	}
-	public Map<String, String> OPV0() {
-		if (OPV0 == null)
-			this.OPV0 = new HashMap<>();
-		return OPV0;
+	public Map<String, String> OPV0Visit() {
+		if (OPV0Visit == null)
+			this.OPV0Visit = new HashMap<>();
+		return OPV0Visit;
 	}
-	public Map<String, String> OPV1() {
-		if (OPV1 == null)
-			this.OPV1 = new HashMap<>();
-		return OPV1;
+	public Map<String, String> OPV1Visit() {
+		if (OPV1Visit == null)
+			this.OPV1Visit = new HashMap<>();
+		return OPV1Visit;
 	}
-	public Map<String, String> OPV2() {
-		if (OPV2 == null)
-			this.OPV2 = new HashMap<>();
-		return OPV2;
+	public Map<String, String> OPV2Visit() {
+		if (OPV2Visit == null)
+			this.OPV2Visit = new HashMap<>();
+		return OPV2Visit;
 	}
-	public Map<String, String> OPV3() {
-		if (OPV3 == null)
-			this.OPV3 = new HashMap<>();
-		return OPV3;
+	public Map<String, String> OPV3Visit() {
+		if (OPV3Visit == null)
+			this.OPV3Visit = new HashMap<>();
+		return OPV3Visit;
 	}
-	public Map<String, String> MR() {
-		if (MR == null)
-			this.MR = new HashMap<>();
-		return MR;
+	public Map<String, String> MRVisit() {
+		if (MRVisit == null)
+			this.MRVisit = new HashMap<>();
+		return MRVisit;
 	}
-	public Map<String, String> Measles2() {
-		if (Measles2 == null)
-			this.Measles2 = new HashMap<>();
-		return Measles2;
+	public Map<String, String> Measles2Visit() {
+		if (Measles2Visit == null)
+			this.Measles2Visit = new HashMap<>();
+		return Measles2Visit;
 	}
-	public Map<String, String> IPV() {
-		if (IPV == null)
-			this.IPV = new HashMap<>();
-		return IPV;
+	public Map<String, String> IPVVisit() {
+		if (IPVVisit == null)
+			this.IPVVisit = new HashMap<>();
+		return IPVVisit;
 	}
-	public Map<String, String> BCG() {
-		if (BCG == null)
-			this.BCG = new HashMap<>();
-		return BCG;
+	public Map<String, String> BCGVisit() {
+		if (BCGVisit == null)
+			this.BCGVisit = new HashMap<>();
+		return BCGVisit;
 	}
     public Members setIsClosed(boolean isClosed) {
         this.isClosed = Boolean.toString(isClosed);

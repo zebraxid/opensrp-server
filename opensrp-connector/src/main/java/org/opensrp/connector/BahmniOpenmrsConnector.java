@@ -162,8 +162,7 @@ public class BahmniOpenmrsConnector {
 	 * @return
 	 * @throws ParseException
 	 */
-	public Client getClientFromFormSubmission(FormSubmission fs) throws ParseException {
-		
+	public Client getClientFromFormSubmission(FormSubmission fs) throws ParseException {		
 		String gender = fs.getField(getFieldName(Person.gender, fs));
 		String firstName = gender.equals("1")?"Mr":"Mrs";
 		 gender = gender.equals("1")?"M":"F";
@@ -372,14 +371,15 @@ public class BahmniOpenmrsConnector {
 					Map<String, String> idents = extractIdentifiers(sfdata, sbf.name(), fs);
 					Map<String, Object> cne = new HashMap<>();
 					String gender = sfdata.get(getFieldName(Person.gender, sbf.name(), fs));
+					if((gender == null || gender.isEmpty()) && sbf.name().equalsIgnoreCase("member_registration")) gender = sfdata.get("Child_gender");
+					gender = gender.equals("1")?"M":"F";
 					//String firstName = gender.equals("1")?"Mr":"Mrs";
-					String firstName = sfdata.get(getFieldName(Person.first_name, sbf.name(), fs));
-					if(gender != null)	gender = gender.equals("1")?"M":"F";
-					//String firstName = sfdata.get(getFieldName(Person.first_name, sbf.name(), fs));									
+					String firstName = sfdata.get(getFieldName(Person.first_name, sbf.name(), fs));								
 					String middleName = sfdata.get(getFieldName(Person.middle_name, sbf.name(), fs));
 					String lastName = sfdata.get(getFieldName(Person.first_name, sbf.name(), fs)); //sfdata.get(getFieldName(Person.last_name, sbf.name(), fs));
 					String bd = sfdata.get(getFieldName(Person.birthdate, sbf.name(), fs));
 					Date birthdate = (bd==null || bd.isEmpty() || bd.equalsIgnoreCase("Invalid Date"))? OpenmrsService.OPENMRS_DATE.parse("1900-01-01"):OpenmrsService.OPENMRS_DATE.parse(bd);
+					if(new SimpleDateFormat("yyyy-MM-dd").format(birthdate).toString().equalsIgnoreCase("1900-01-01") && sbf.name().equalsIgnoreCase("member_registration")) birthdate = OpenmrsService.OPENMRS_DATE.parse(sfdata.get("Child_dob"));
 					String dd = sfdata.get(getFieldName(Person.deathdate, sbf.name(), fs));
 					Date deathdate = (dd==null || dd.isEmpty())?null:OpenmrsService.OPENMRS_DATE.parse(dd);
 					String aproxbd = sfdata.get(getFieldName(Person.birthdate_estimated, sbf.name(), fs));

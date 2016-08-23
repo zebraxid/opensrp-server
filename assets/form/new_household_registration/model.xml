@@ -83,7 +83,7 @@
             <calc_age_confirm/>
             <birth_date_note/>
             <note_age/>
-            <Gender openmrs_entity="person" openmrs_entity_id="gender"/>
+            <Gender/>
             <Father_name openmrs_entity="person_attribute" openmrs_entity_id="fatherName"/>
             <Husband_name openmrs_entity="person_attribute" openmrs_entity_id="spouseName"/>
             <epi_card_number openmrs_entity="person_attribute" openmrs_entity_id="EPI Card Number"/>

@@ -285,8 +285,8 @@ public class FormSubmissionController {
 								idGen = bahmniPatientService.generateID();
 								
 								Client c = (Client) cm.get("client");
-								System.out.println("FSI:" + cm.toString());
-								System.out.println("FSI:" + c.getBaseEntityId());
+								//System.out.println("FSI:" + cm.toString());
+								//System.out.println("FSI:" + c.getBaseEntityId());
 								this.createIdentifierMaping(c.getBaseEntityId(), idGen);
 								System.out.println(bahmniPatientService.createPatient((Client) cm.get("client"), idGen));
 								// /hh.addHHMember((Client)cm.get("client"),

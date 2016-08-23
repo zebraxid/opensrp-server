@@ -484,10 +484,9 @@ public class FormAttributeMapper {
 				for (int j = 0; j < nodeChAr.size(); j++) {
 					JsonObject option = nodeChAr.get(j).getAsJsonObject();
 					
-					System.out.println("\n\n\nif value: " +option.get("name").getAsString().equalsIgnoreCase(fieldVal));
+					/*System.out.println("name: " +option.toString());
 					JsonObject s= option.get("instance").getAsJsonObject();
-					System.out.println("Json Object: " + s.toString());
-					System.out.println("openmrs_code: " + s.get("openmrs_code").getAsString() + "\n\n\n");
+					System.out.println("Json Object: " + s.toString());*/
 					
 					if(option.get("name").getAsString().equalsIgnoreCase(fieldVal)){
 						return option.get("instance").getAsJsonObject().get("openmrs_code").getAsString();
