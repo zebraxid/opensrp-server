@@ -1,5 +1,8 @@
 package org.opensrp.camp.service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.opensrp.camp.dao.Camp;
@@ -41,13 +44,16 @@ public class CampDateService {
 		
 	}	
 	
-	public CampDate addCampDate(CampDateDTO campDateDTO,Camp camp){
+	public CampDate CampDateDTO2CampDate(CampDateDTO campDateDTO,Camp camp) throws ParseException{
 		CampDate campDate = new CampDate();
 		campDate.setSession_date(campDateDTO.getSession_date());
 		campDate.setSession_id(camp.getId());
 		campDate.setContact(camp.getContact());
-		campDate.setUsername(camp.getUsername());
+		campDate.setUsername(camp.getHealth_assistant());
 		campDate.setStatus(campDateDTO.getStatus());
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Date date = sdf.parse(campDateDTO.getSession_date().toString());
+		campDate.setTimestamp(date.getTime());
 		return campDate;
 		
 	}

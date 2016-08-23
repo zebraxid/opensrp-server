@@ -1,5 +1,7 @@
 package org.opensrp.camp.dao;
 
+import java.util.Date;
+
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.ektorp.support.TypeDiscriminator;
 import org.motechproject.model.MotechBaseDataObject;
@@ -26,18 +28,21 @@ public class CampDate extends MotechBaseDataObject {
 	
 	@JsonProperty("contact")
 	private String contact;
+	@JsonProperty("timestamp")
+	private long timestamp;
 	
 	public CampDate() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public CampDate(String session_date, String session_id, String status, String username, String contact) {
-	    super();
+	public CampDate(String session_date, String session_id, String status, String username, String contact, long timestamp) {
+	    
 	    this.session_date = session_date;
 	    this.session_id = session_id;
 	    this.status = status;
 	    this.username = username;
 	    this.contact = contact;
+	    this.timestamp = timestamp;
     }
 
 	
@@ -90,10 +95,20 @@ public class CampDate extends MotechBaseDataObject {
     	this.contact = contact;
     }
 
+	
+    public long getTimestamp() {
+    	return timestamp;
+    }
+
+	
+    public void setTimestamp(long timestamp) {
+    	this.timestamp = timestamp;
+    }
+
 	@Override
     public String toString() {
 	    return "CampDate [session_date=" + session_date + ", session_id=" + session_id + ", status=" + status
-	            + ", username=" + username + ", contact=" + contact + "]";
+	            + ", username=" + username + ", contact=" + contact + ", timestamp=" + timestamp + "]";
     }
 
 	@Override
@@ -104,6 +119,7 @@ public class CampDate extends MotechBaseDataObject {
 	    result = prime * result + ((session_date == null) ? 0 : session_date.hashCode());
 	    result = prime * result + ((session_id == null) ? 0 : session_id.hashCode());
 	    result = prime * result + ((status == null) ? 0 : status.hashCode());
+	    result = prime * result + (int) (timestamp ^ (timestamp >>> 32));
 	    result = prime * result + ((username == null) ? 0 : username.hashCode());
 	    return result;
     }
@@ -137,6 +153,8 @@ public class CampDate extends MotechBaseDataObject {
 			    return false;
 	    } else if (!status.equals(other.status))
 		    return false;
+	    if (timestamp != other.timestamp)
+		    return false;
 	    if (username == null) {
 		    if (other.username != null)
 			    return false;
@@ -144,9 +162,5 @@ public class CampDate extends MotechBaseDataObject {
 		    return false;
 	    return true;
     }
-	
-	
-  
-	
-	
+    
 }

@@ -4,6 +4,7 @@ import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
+import org.json.JSONException;
 import org.opensrp.camp.dto.CampDTO;
 import org.opensrp.camp.service.CampDateService;
 import org.opensrp.camp.service.CampService;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.google.gson.Gson;
 
 @Controller
 public class CampController {
@@ -44,10 +47,21 @@ public class CampController {
 		return new ResponseEntity<>(jsonString, OK);
 	}
 	
+	@RequestMapping(method = GET, value = "/all-camp")
+	@ResponseBody
+	public ResponseEntity<String> getAllUserName() throws JSONException {
+		return new ResponseEntity<>(new Gson().toJson(campService.getAll()), OK);
+	}
+	
 	@RequestMapping(headers = { "Accept=application/json" }, method = POST, value = "/add-camp")
 	public ResponseEntity<String> addCamp(@RequestBody CampDTO campDTO) {
-		logger.info("create request received for role - " + campDTO.getSession_name());
 		String message = campService.add(campDTO);
+		return new ResponseEntity<>(message, OK);
+	}
+	
+	@RequestMapping(headers = { "Accept=application/json" }, method = POST, value = "/edit-camp")
+	public ResponseEntity<String> editCamp(@RequestBody CampDTO campDTO) {
+		String message = campService.edit(campDTO);
 		return new ResponseEntity<>(message, OK);
 	}
 }

@@ -8,15 +8,18 @@ public class CampDateDTO {
 	private String session_date;	
 	@JsonProperty("status")
 	private String status;
+	@JsonProperty("timestamp")
+	private long timestamp;
 	
 	public CampDateDTO() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public CampDateDTO(String session_date, String status) {
+	public CampDateDTO(String session_date, String status, long timestamp) {
 	    super();
 	    this.session_date = session_date;
 	    this.status = status;
+	    this.timestamp = timestamp;
     }
 
 	
@@ -39,9 +42,19 @@ public class CampDateDTO {
     	this.status = status;
     }
 
+	
+    public long getTimestamp() {
+    	return timestamp;
+    }
+
+	
+    public void setTimestamp(long timestamp) {
+    	this.timestamp = timestamp;
+    }
+
 	@Override
     public String toString() {
-	    return "CampDateDTO [session_date=" + session_date + ", status=" + status + "]";
+	    return "CampDateDTO [session_date=" + session_date + ", status=" + status + ", timestamp=" + timestamp + "]";
     }
 
 	@Override
@@ -50,6 +63,7 @@ public class CampDateDTO {
 	    int result = 1;
 	    result = prime * result + ((session_date == null) ? 0 : session_date.hashCode());
 	    result = prime * result + ((status == null) ? 0 : status.hashCode());
+	    result = prime * result + (int) (timestamp ^ (timestamp >>> 32));
 	    return result;
     }
 
@@ -72,11 +86,9 @@ public class CampDateDTO {
 			    return false;
 	    } else if (!status.equals(other.status))
 		    return false;
+	    if (timestamp != other.timestamp)
+		    return false;
 	    return true;
     }
-	
-
-
-	
 	
 }

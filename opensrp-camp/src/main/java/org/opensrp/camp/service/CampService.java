@@ -1,10 +1,9 @@
 package org.opensrp.camp.service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
-
-import javax.xml.ws.Action;
 
 import org.opensrp.camp.dao.Camp;
 import org.opensrp.camp.dao.CampDate;
@@ -25,17 +24,21 @@ public class CampService implements CampInterface<CampDTO> {
 	
 	private static Logger logger = LoggerFactory.getLogger(CampService.class);
 	
-	private CampRepository campRepository;	
+	private CampRepository campRepository;
+	
 	private CampDateRepository campDateRepository;
+	
 	private CampDateService campDateService;
+	
 	public CampService() {
 		
 	}
+	
 	@Autowired
-    public void setCampDateService(CampDateService campDateService) {
-    	this.campDateService = campDateService;
-    }
-
+	public void setCampDateService(CampDateService campDateService) {
+		this.campDateService = campDateService;
+	}
+	
 	@Autowired
 	public void setCampDateRepository(CampDateRepository campDateRepository) {
 		this.campDateRepository = campDateRepository;
@@ -47,37 +50,61 @@ public class CampService implements CampInterface<CampDTO> {
 	}
 	
 	public String getCampById(String id) {
-		logger.info("campRepository: "+campRepository);
-		List<Camp> campDates =  campRepository.findById(id);
-		Gson gson = new Gson();		
-		String jsonCartList = gson.toJson(campDates);		
+		logger.info("campRepository: " + campRepository);
+		Camp campDates = campRepository.findById(id);
+		Gson gson = new Gson();
+		String jsonCartList = gson.toJson(campDates);
 		logger.info("Camp : " + jsonCartList.toString());
 		return jsonCartList.toString();
 	}
 	
 	@Override
-	public String add(CampDTO campDTO) {		
-		Camp camp = addCamp(campDTO);
-		List<CampDateDTO> campDateDTOs = (List<CampDateDTO>) campDTO.getCamp_dates();		
-		try {
-			campRepository.add(camp);
-			if (camp.getId() != null) {
-				for (CampDateDTO campDateDTO : campDateDTOs) {
-					CampDate campDate = campDateService.addCampDate(campDateDTO, camp);					
-					campDateRepository.add(campDate);
+	public String add(CampDTO campDTO) {
+		String msg = "";
+		Camp camp = campDTO2Camp(campDTO);
+		Camp findCamp = campRepository.findBySessionName(campDTO.getSession_name(), campDTO.getHealth_assistant());
+		if (findCamp == null) {
+			List<CampDateDTO> campDateDTOs = (List<CampDateDTO>) campDTO.getCamp_dates();
+			try {
+				campRepository.add(camp);
+				if (camp.getId() != null) {
+					for (CampDateDTO campDateDTO : campDateDTOs) {
+						CampDate campDate = campDateService.CampDateDTO2CampDate(campDateDTO, camp);
+						campDateRepository.add(campDate);
+					}
 				}
 			}
+			catch (Exception e) {
+				logger.debug("Message: " + e);
+			}
+			msg = camp.getSession_name();
+		} else {
+			msg = "1";
 		}
-		catch (Exception e) {
-			logger.debug("Message: " + e);
-		}		
-		return camp.getId();
+		return msg;
 	}
 	
 	@Override
 	public List<CampDTO> getAll() {
-		// TODO Auto-generated method stub
-		return null;
+		List<Camp> camps = campRepository.getAll();
+		List<CampDTO> campDTOs = new ArrayList<CampDTO>();
+		for (Camp camp : camps) {
+			CampDTO campDTO = new CampDTO();
+			campDTO = camp2CampDTO(camp, campDTO);
+			Set<CampDate> campDates = (Set<CampDate>) camp.getCamp_dates();
+			List<CampDateDTO> campDateDTOs = new ArrayList<CampDateDTO>();
+			for (CampDate campDate : campDates) {
+				CampDateDTO campDateDTO = new CampDateDTO();
+				campDateDTO.setSession_date(campDate.getSession_date());
+				campDateDTO.setStatus(campDate.getStatus());
+				campDateDTO.setTimestamp(campDate.getTimestamp());
+				campDateDTOs.add(campDateDTO);
+			}
+			campDTO.setCamp_dates(campDateDTOs);
+			campDTOs.add(campDTO);
+		}
+		
+		return campDTOs;
 	}
 	
 	@Override
@@ -88,13 +115,33 @@ public class CampService implements CampInterface<CampDTO> {
 	
 	@Override
 	public CampDTO findById(String id) {
-		// TODO Auto-generated method stub
 		return null;
+		// TODO Auto-generated method stub
+		
 	}
 	
-	public Camp addCamp(CampDTO campDTO){
+	private CampDTO camp2CampDTO(Camp camp, CampDTO campDTO) {
+		campDTO.setContact(camp.getContact());
+		campDTO.setCreated(camp.getCreated());
+		campDTO.setCreated(camp.getCreated());
+		campDTO.setSession_id(camp.getId());
+		campDTO.setSession_location(camp.getSession_location());
+		campDTO.setSession_name(camp.getSession_name());
+		campDTO.setTotal_adolescent(camp.getTotal_adolescent());
+		campDTO.setTotal_child0(camp.getTotal_child0());
+		campDTO.setTotal_child1(camp.getTotal_child1());
+		campDTO.setTotal_child2(camp.getTotal_child2());
+		campDTO.setTotal_hh(camp.getTotal_hh());
+		campDTO.setTotal_population(camp.getTotal_population());
+		campDTO.setTotal_women(camp.getTotal_women());
+		campDTO.setUser(camp.getUser());
+		campDTO.setHealth_assistant(camp.getHealth_assistant());
+		return campDTO;
+	}
+	
+	private Camp campDTO2Camp(CampDTO campDTO) {
 		Camp camp = new Camp();
-		camp.setUsername(campDTO.getUsername());
+		camp.setHealth_assistant(campDTO.getHealth_assistant());
 		camp.setSession_name(campDTO.getSession_name());
 		camp.setSession_location(campDTO.getSession_location());
 		camp.setContact(campDTO.getContact());
@@ -107,12 +154,34 @@ public class CampService implements CampInterface<CampDTO> {
 		camp.setUser(campDTO.getUser());
 		camp.setTotal_women(campDTO.getTotal_women());
 		camp.setTotal_population(campDTO.getTotal_population());
-		return camp;		
+		return camp;
 	}
+	
 	@Override
-    public String edit(CampDTO onject) {
-	    // TODO Auto-generated method stub
-	    return null;
-    }
+	public String edit(CampDTO campDTO) {
+		// TODO Auto-generated method stub
+		Camp campById = campRepository.findById(campDTO.getSession_id());
+		if (campById != null) {
+			Camp camp = campDTO2Camp(campDTO);
+			camp.setRevision(campById.getRevision());
+			camp.setId(campById.getId());
+			try {
+				campRepository.update(camp);
+				campDateRepository.removeAll("session_id", camp.getId());
+				List<CampDateDTO> campDateDTOs = (List<CampDateDTO>) campDTO.getCamp_dates();
+				for (CampDateDTO campDateDTO : campDateDTOs) {
+					CampDate campDate = campDateService.CampDateDTO2CampDate(campDateDTO, camp);
+					campDateRepository.add(campDate);
+				}
+				
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+			return camp.toString();
+		}
+		return null;
+		
+	}
 	
 }
