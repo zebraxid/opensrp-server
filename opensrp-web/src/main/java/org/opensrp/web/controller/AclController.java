@@ -15,7 +15,6 @@ import org.opensrp.dashboard.dto.UserDTO;
 import org.opensrp.dashboard.service.PrivilegeService;
 import org.opensrp.dashboard.service.RoleService;
 import org.opensrp.dashboard.service.UsersService;
-import org.opensrp.service.App;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,14 +38,7 @@ public class AclController {
 	
 	private UsersService userService;
 	
-	private App app;
-	
 	private static Logger logger = LoggerFactory.getLogger(AclController.class);
-	
-	@Autowired
-	public void setApp(App app) {
-		this.app = app;
-	}
 	
 	@Autowired
 	public AclController(RoleService roleService, OpenmrsUserService openmrsUserService, PrivilegeService privilegeService,
@@ -144,10 +136,4 @@ public class AclController {
 		return new ResponseEntity<>(message, OK);
 	}
 	
-	@RequestMapping(method = GET, value = "/msg")
-	@ResponseBody
-	public ResponseEntity<String> mess(@RequestParam String apps) {
-		String message = app.getApp(apps);
-		return new ResponseEntity<>(message, OK);
-	}
 }
