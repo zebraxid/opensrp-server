@@ -23,8 +23,8 @@ public class CampDate extends MotechBaseDataObject {
 	@JsonProperty("status")
 	private String status;
 	
-	@JsonProperty("username")
-	private String username;
+	@JsonProperty("health_assistant")
+	private String health_assistant;
 	
 	@JsonProperty("contact")
 	private String contact;
@@ -35,12 +35,13 @@ public class CampDate extends MotechBaseDataObject {
 		// TODO Auto-generated constructor stub
 	}
 
-	public CampDate(String session_date, String session_id, String status, String username, String contact, long timestamp) {
-	    
+	public CampDate(String session_date, String session_id, String status, String health_assistant, String contact,
+        long timestamp) {
+	    super();
 	    this.session_date = session_date;
 	    this.session_id = session_id;
 	    this.status = status;
-	    this.username = username;
+	    this.health_assistant = health_assistant;
 	    this.contact = contact;
 	    this.timestamp = timestamp;
     }
@@ -51,18 +52,8 @@ public class CampDate extends MotechBaseDataObject {
     }
 
 	
-    public void setSession_date(String session_date) {
-    	this.session_date = session_date;
-    }
-
-	
     public String getSession_id() {
     	return session_id;
-    }
-
-	
-    public void setSession_id(String session_id) {
-    	this.session_id = session_id;
     }
 
 	
@@ -71,18 +62,8 @@ public class CampDate extends MotechBaseDataObject {
     }
 
 	
-    public void setStatus(String status) {
-    	this.status = status;
-    }
-
-	
-    public String getUsername() {
-    	return username;
-    }
-
-	
-    public void setUsername(String username) {
-    	this.username = username;
+    public String getHealth_assistant() {
+    	return health_assistant;
     }
 
 	
@@ -91,13 +72,33 @@ public class CampDate extends MotechBaseDataObject {
     }
 
 	
-    public void setContact(String contact) {
-    	this.contact = contact;
+    public long getTimestamp() {
+    	return timestamp;
     }
 
 	
-    public long getTimestamp() {
-    	return timestamp;
+    public void setSession_date(String session_date) {
+    	this.session_date = session_date;
+    }
+
+	
+    public void setSession_id(String session_id) {
+    	this.session_id = session_id;
+    }
+
+	
+    public void setStatus(String status) {
+    	this.status = status;
+    }
+
+	
+    public void setHealth_assistant(String health_assistant) {
+    	this.health_assistant = health_assistant;
+    }
+
+	
+    public void setContact(String contact) {
+    	this.contact = contact;
     }
 
 	
@@ -108,7 +109,7 @@ public class CampDate extends MotechBaseDataObject {
 	@Override
     public String toString() {
 	    return "CampDate [session_date=" + session_date + ", session_id=" + session_id + ", status=" + status
-	            + ", username=" + username + ", contact=" + contact + ", timestamp=" + timestamp + "]";
+	            + ", health_assistant=" + health_assistant + ", contact=" + contact + ", timestamp=" + timestamp + "]";
     }
 
 	@Override
@@ -116,11 +117,11 @@ public class CampDate extends MotechBaseDataObject {
 	    final int prime = 31;
 	    int result = 1;
 	    result = prime * result + ((contact == null) ? 0 : contact.hashCode());
+	    result = prime * result + ((health_assistant == null) ? 0 : health_assistant.hashCode());
 	    result = prime * result + ((session_date == null) ? 0 : session_date.hashCode());
 	    result = prime * result + ((session_id == null) ? 0 : session_id.hashCode());
 	    result = prime * result + ((status == null) ? 0 : status.hashCode());
 	    result = prime * result + (int) (timestamp ^ (timestamp >>> 32));
-	    result = prime * result + ((username == null) ? 0 : username.hashCode());
 	    return result;
     }
 
@@ -137,6 +138,11 @@ public class CampDate extends MotechBaseDataObject {
 		    if (other.contact != null)
 			    return false;
 	    } else if (!contact.equals(other.contact))
+		    return false;
+	    if (health_assistant == null) {
+		    if (other.health_assistant != null)
+			    return false;
+	    } else if (!health_assistant.equals(other.health_assistant))
 		    return false;
 	    if (session_date == null) {
 		    if (other.session_date != null)
@@ -155,12 +161,9 @@ public class CampDate extends MotechBaseDataObject {
 		    return false;
 	    if (timestamp != other.timestamp)
 		    return false;
-	    if (username == null) {
-		    if (other.username != null)
-			    return false;
-	    } else if (!username.equals(other.username))
-		    return false;
 	    return true;
     }
+	
+	
     
 }

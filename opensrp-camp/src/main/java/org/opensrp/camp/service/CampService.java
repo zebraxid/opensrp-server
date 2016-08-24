@@ -122,8 +122,8 @@ public class CampService implements CampInterface<CampDTO> {
 	
 	private CampDTO camp2CampDTO(Camp camp, CampDTO campDTO) {
 		campDTO.setContact(camp.getContact());
-		campDTO.setCreated(camp.getCreated());
-		campDTO.setCreated(camp.getCreated());
+		campDTO.setCreated_at(camp.getCreated_at());
+		campDTO.setCreated_by(camp.getCreated_by());
 		campDTO.setSession_id(camp.getId());
 		campDTO.setSession_location(camp.getSession_location());
 		campDTO.setSession_name(camp.getSession_name());
@@ -133,8 +133,7 @@ public class CampService implements CampInterface<CampDTO> {
 		campDTO.setTotal_child2(camp.getTotal_child2());
 		campDTO.setTotal_hh(camp.getTotal_hh());
 		campDTO.setTotal_population(camp.getTotal_population());
-		campDTO.setTotal_women(camp.getTotal_women());
-		campDTO.setUser(camp.getUser());
+		campDTO.setTotal_women(camp.getTotal_women());		
 		campDTO.setHealth_assistant(camp.getHealth_assistant());
 		return campDTO;
 	}
@@ -145,13 +144,13 @@ public class CampService implements CampInterface<CampDTO> {
 		camp.setSession_name(campDTO.getSession_name());
 		camp.setSession_location(campDTO.getSession_location());
 		camp.setContact(campDTO.getContact());
-		camp.setCreated(new Date().toString());
+		camp.setCreated_at(campDTO.getCreated_at());
 		camp.setTotal_adolescent(campDTO.getTotal_adolescent());
 		camp.setTotal_child0(campDTO.getTotal_child0());
 		camp.setTotal_child1(campDTO.getTotal_child1());
 		camp.setTotal_child2(campDTO.getTotal_child2());
 		camp.setTotal_hh(campDTO.getTotal_hh());
-		camp.setUser(campDTO.getUser());
+		camp.setCreated_by(campDTO.getCreated_by());
 		camp.setTotal_women(campDTO.getTotal_women());
 		camp.setTotal_population(campDTO.getTotal_population());
 		return camp;
@@ -172,8 +171,7 @@ public class CampService implements CampInterface<CampDTO> {
 				for (CampDateDTO campDateDTO : campDateDTOs) {
 					CampDate campDate = campDateService.CampDateDTO2CampDate(campDateDTO, camp);
 					campDateRepository.add(campDate);
-				}
-				
+				}				
 			}
 			catch (Exception e) {
 				e.printStackTrace();

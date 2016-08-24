@@ -49,13 +49,12 @@ public class CampDateService {
 		campDate.setSession_date(campDateDTO.getSession_date());
 		campDate.setSession_id(camp.getId());
 		campDate.setContact(camp.getContact());
-		campDate.setUsername(camp.getHealth_assistant());
+		campDate.setHealth_assistant(camp.getHealth_assistant());
 		campDate.setStatus(campDateDTO.getStatus());
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		Date date = sdf.parse(campDateDTO.getSession_date().toString());
 		campDate.setTimestamp(date.getTime());
-		return campDate;
-		
+		return campDate;		
 	}
 
 	

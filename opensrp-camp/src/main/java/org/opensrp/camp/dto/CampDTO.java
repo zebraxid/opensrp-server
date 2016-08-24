@@ -40,10 +40,10 @@ public class CampDTO {
 	private String health_assistant;	
 	@JsonProperty("contact")
 	private String contact;
-	@JsonProperty("created")
-	private String created;
-	@JsonProperty("user")
-	private String user;
+	@JsonProperty("created_at")
+	private String created_at;
+	@JsonProperty("created_by")
+	private String created_by;
 	
 	@JsonProperty("camp_dates")
 	private List<CampDateDTO> camp_dates;
@@ -54,7 +54,7 @@ public class CampDTO {
 
 	public CampDTO(String session_id, String session_name, String session_location, String total_hh,
         String total_population, String total_adolescent, String total_women, String total_child0, String total_child1,
-        String total_child2, String health_assistant, String contact, String created, String user,
+        String total_child2, String health_assistant, String contact, String created_at, String created_by,
         List<CampDateDTO> camp_dates) {
 	    super();
 	    this.session_id = session_id;
@@ -69,126 +69,156 @@ public class CampDTO {
 	    this.total_child2 = total_child2;
 	    this.health_assistant = health_assistant;
 	    this.contact = contact;
-	    this.created = created;
-	    this.user = user;
+	    this.created_at = created_at;
+	    this.created_by = created_by;
 	    this.camp_dates = camp_dates;
     }
+
 	
     public String getSession_id() {
     	return session_id;
     }
-	
-    public void setSession_id(String session_id) {
-    	this.session_id = session_id;
-    }
+
 	
     public String getSession_name() {
     	return session_name;
     }
-	
-    public void setSession_name(String session_name) {
-    	this.session_name = session_name;
-    }
+
 	
     public String getSession_location() {
     	return session_location;
     }
-	
-    public void setSession_location(String session_location) {
-    	this.session_location = session_location;
-    }
+
 	
     public String getTotal_hh() {
     	return total_hh;
     }
-	
-    public void setTotal_hh(String total_hh) {
-    	this.total_hh = total_hh;
-    }
+
 	
     public String getTotal_population() {
     	return total_population;
     }
-	
-    public void setTotal_population(String total_population) {
-    	this.total_population = total_population;
-    }
+
 	
     public String getTotal_adolescent() {
     	return total_adolescent;
     }
-	
-    public void setTotal_adolescent(String total_adolescent) {
-    	this.total_adolescent = total_adolescent;
-    }
+
 	
     public String getTotal_women() {
     	return total_women;
     }
-	
-    public void setTotal_women(String total_women) {
-    	this.total_women = total_women;
-    }
+
 	
     public String getTotal_child0() {
     	return total_child0;
     }
-	
-    public void setTotal_child0(String total_child0) {
-    	this.total_child0 = total_child0;
-    }
+
 	
     public String getTotal_child1() {
     	return total_child1;
     }
-	
-    public void setTotal_child1(String total_child1) {
-    	this.total_child1 = total_child1;
-    }
+
 	
     public String getTotal_child2() {
     	return total_child2;
     }
-	
-    public void setTotal_child2(String total_child2) {
-    	this.total_child2 = total_child2;
-    }
+
 	
     public String getHealth_assistant() {
     	return health_assistant;
     }
-	
-    public void setHealth_assistant(String health_assistant) {
-    	this.health_assistant = health_assistant;
-    }
+
 	
     public String getContact() {
     	return contact;
     }
+
 	
-    public void setContact(String contact) {
-    	this.contact = contact;
+    public String getCreated_at() {
+    	return created_at;
     }
+
 	
-    public String getCreated() {
-    	return created;
+    public String getCreated_by() {
+    	return created_by;
     }
-	
-    public void setCreated(String created) {
-    	this.created = created;
-    }
-	
-    public String getUser() {
-    	return user;
-    }
-	
-    public void setUser(String user) {
-    	this.user = user;
-    }
+
 	
     public List<CampDateDTO> getCamp_dates() {
     	return camp_dates;
     }
+
+	
+    public void setSession_id(String session_id) {
+    	this.session_id = session_id;
+    }
+
+	
+    public void setSession_name(String session_name) {
+    	this.session_name = session_name;
+    }
+
+	
+    public void setSession_location(String session_location) {
+    	this.session_location = session_location;
+    }
+
+	
+    public void setTotal_hh(String total_hh) {
+    	this.total_hh = total_hh;
+    }
+
+	
+    public void setTotal_population(String total_population) {
+    	this.total_population = total_population;
+    }
+
+	
+    public void setTotal_adolescent(String total_adolescent) {
+    	this.total_adolescent = total_adolescent;
+    }
+
+	
+    public void setTotal_women(String total_women) {
+    	this.total_women = total_women;
+    }
+
+	
+    public void setTotal_child0(String total_child0) {
+    	this.total_child0 = total_child0;
+    }
+
+	
+    public void setTotal_child1(String total_child1) {
+    	this.total_child1 = total_child1;
+    }
+
+	
+    public void setTotal_child2(String total_child2) {
+    	this.total_child2 = total_child2;
+    }
+
+	
+    public void setHealth_assistant(String health_assistant) {
+    	this.health_assistant = health_assistant;
+    }
+
+	
+    public void setContact(String contact) {
+    	this.contact = contact;
+    }
+
+	
+    public void setCreated_at(String created_at) {
+    	this.created_at = created_at;
+    }
+
+	
+    public void setCreated_by(String created_by) {
+    	this.created_by = created_by;
+    }
+
 	
     public void setCamp_dates(List<CampDateDTO> camp_dates) {
     	this.camp_dates = camp_dates;
@@ -200,8 +230,8 @@ public class CampDTO {
 	            + session_location + ", total_hh=" + total_hh + ", total_population=" + total_population
 	            + ", total_adolescent=" + total_adolescent + ", total_women=" + total_women + ", total_child0="
 	            + total_child0 + ", total_child1=" + total_child1 + ", total_child2=" + total_child2 + ", health_assistant="
-	            + health_assistant + ", contact=" + contact + ", created=" + created + ", user=" + user + ", camp_dates="
-	            + camp_dates + "]";
+	            + health_assistant + ", contact=" + contact + ", created_at=" + created_at + ", created_by=" + created_by
+	            + ", camp_dates=" + camp_dates + "]";
     }
 
 	@Override
@@ -210,7 +240,8 @@ public class CampDTO {
 	    int result = 1;
 	    result = prime * result + ((camp_dates == null) ? 0 : camp_dates.hashCode());
 	    result = prime * result + ((contact == null) ? 0 : contact.hashCode());
-	    result = prime * result + ((created == null) ? 0 : created.hashCode());
+	    result = prime * result + ((created_at == null) ? 0 : created_at.hashCode());
+	    result = prime * result + ((created_by == null) ? 0 : created_by.hashCode());
 	    result = prime * result + ((health_assistant == null) ? 0 : health_assistant.hashCode());
 	    result = prime * result + ((session_id == null) ? 0 : session_id.hashCode());
 	    result = prime * result + ((session_location == null) ? 0 : session_location.hashCode());
@@ -222,7 +253,6 @@ public class CampDTO {
 	    result = prime * result + ((total_hh == null) ? 0 : total_hh.hashCode());
 	    result = prime * result + ((total_population == null) ? 0 : total_population.hashCode());
 	    result = prime * result + ((total_women == null) ? 0 : total_women.hashCode());
-	    result = prime * result + ((user == null) ? 0 : user.hashCode());
 	    return result;
     }
 
@@ -245,10 +275,15 @@ public class CampDTO {
 			    return false;
 	    } else if (!contact.equals(other.contact))
 		    return false;
-	    if (created == null) {
-		    if (other.created != null)
+	    if (created_at == null) {
+		    if (other.created_at != null)
 			    return false;
-	    } else if (!created.equals(other.created))
+	    } else if (!created_at.equals(other.created_at))
+		    return false;
+	    if (created_by == null) {
+		    if (other.created_by != null)
+			    return false;
+	    } else if (!created_by.equals(other.created_by))
 		    return false;
 	    if (health_assistant == null) {
 		    if (other.health_assistant != null)
@@ -305,13 +340,10 @@ public class CampDTO {
 			    return false;
 	    } else if (!total_women.equals(other.total_women))
 		    return false;
-	    if (user == null) {
-		    if (other.user != null)
-			    return false;
-	    } else if (!user.equals(other.user))
-		    return false;
 	    return true;
     }
+	
+	
 	
 	
 }
