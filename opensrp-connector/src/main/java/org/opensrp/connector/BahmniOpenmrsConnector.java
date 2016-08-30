@@ -408,7 +408,7 @@ public class BahmniOpenmrsConnector {
 					
 					List<Address> addresses = new ArrayList<>(extractAddressesForSubform(sfdata, sbf.name(), fs).values());
 					
-					if(sbf.name().equals("child_registration"))
+					/*if(sbf.name().equals("child_registration"))
 					{
 						 firstName = "child";
 						 middleName = null;
@@ -419,7 +419,7 @@ public class BahmniOpenmrsConnector {
 						 deathdateApprox = false;
 						 gender = sfdata.get("FWBNFGEN");
 						 addresses.add(new Address());
-					}
+					}*/
 					
 					Client c = new Client()
 					.withBaseEntity(new BaseEntity(sfdata.get("id"), firstName, middleName, lastName, birthdate, deathdate, 
