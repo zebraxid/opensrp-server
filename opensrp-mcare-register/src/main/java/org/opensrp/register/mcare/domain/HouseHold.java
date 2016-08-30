@@ -49,6 +49,8 @@ public class HouseHold extends MotechBaseDataObject {
 	@JsonProperty
 	private String WARD;
 	@JsonProperty
+	private String Block_no;
+	@JsonProperty
 	private String HHID;
 	@JsonProperty
 	private String HoH_Reg_No;
@@ -109,6 +111,16 @@ public class HouseHold extends MotechBaseDataObject {
 	@JsonProperty
 	private String note_age;
 	@JsonProperty
+	private String HH_current_form_status;
+	@JsonProperty
+	private String Is_woman;
+	@JsonProperty
+	private String Is_child;
+	@JsonProperty
+	private String Is_preg_outcome;
+	@JsonProperty
+	private List<Map<String, String>> Birth_Outcome;
+	@JsonProperty
 	private List<Map<String, String>> MEMBERDETAILS;
 	@JsonProperty
 	private List<Map<String, String>> multimediaAttachments;
@@ -120,6 +132,7 @@ public class HouseHold extends MotechBaseDataObject {
 	public HouseHold() {
 		this.MEMBERDETAILS = new ArrayList<>();
 		this.multimediaAttachments = new ArrayList<>();
+		this.Birth_Outcome = new ArrayList<>();
 	}
 	
 	public HouseHold setCASEID(String caseId) {
@@ -211,6 +224,11 @@ public class HouseHold extends MotechBaseDataObject {
 		return this;
 	}
 
+	public HouseHold setBlock_no(String Block_no) {
+		this.Block_no = Block_no;
+		return this;
+	}
+	
 	public HouseHold setHHID(String HHID) {
 		this.HHID = HHID;
 		return this;
@@ -353,6 +371,24 @@ public class HouseHold extends MotechBaseDataObject {
 		return this;
 	}
 	
+	public HouseHold setHH_current_form_status(String hh_current_form_status) {
+		HH_current_form_status = hh_current_form_status;
+		return this;
+	}
+	
+	public HouseHold setIs_woman(String is_woman) {
+		Is_woman = is_woman;
+		return this;
+	}
+	public HouseHold setIs_child(String is_child) {
+		Is_child = is_child;
+		return this;
+	}
+	public HouseHold setIs_preg_outcome(String is_preg_outcome) {
+		Is_preg_outcome = is_preg_outcome;
+		return this;
+	}	
+	
 	public HouseHold setMEMBERDETAILS(List<Map<String, String>> MEMBERDETAILS) {
 		this.MEMBERDETAILS = MEMBERDETAILS;
 		return this;
@@ -365,6 +401,11 @@ public class HouseHold extends MotechBaseDataObject {
 	
 	public HouseHold setDetails(Map<String, String> details) {
         this.details = new HashMap<>(details);
+        return this;
+    }
+	
+    public HouseHold setBirth_Outcome(List<Map<String, String>> Birth_Outcome) {
+        this.Birth_Outcome = Birth_Outcome;
         return this;
     }
 
@@ -442,6 +483,10 @@ public class HouseHold extends MotechBaseDataObject {
 	
 	public String WARD() {
 		return WARD;
+	}
+	
+	public String Block_no() {
+		return Block_no;
 	}
 	
 	public String HHID() {
@@ -554,6 +599,28 @@ public class HouseHold extends MotechBaseDataObject {
 
 	public String note_age() {
 		return note_age;
+	}
+	
+	public String HH_current_form_status() {
+		return HH_current_form_status;
+	}
+	
+	public String Is_woman() {
+		return Is_woman;
+	}
+	
+	public String Is_child() {
+		return Is_child;
+	}
+	
+	public String Is_preg_outcome() {
+		return Is_preg_outcome;
+	}
+	
+	public List<Map<String, String>> Birth_Outcome() {
+		if (Birth_Outcome == null)
+			this.Birth_Outcome = new ArrayList<>();
+		return Birth_Outcome;
 	}
 	
 	public List<Map<String, String>> MEMBERDETAILS() {

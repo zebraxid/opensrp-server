@@ -27,4 +27,5 @@ public class HHSchedulesService {
 	    logger.info(format("Enrolling household into Census schedule. Id: {0}", entityId));	    
 		scheduler.enrollIntoSchedule(entityId, HH_SCHEDULE_CENSUS, date);	
 	}
+	
 }

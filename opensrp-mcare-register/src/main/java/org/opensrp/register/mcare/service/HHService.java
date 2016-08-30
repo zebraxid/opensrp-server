@@ -7,9 +7,10 @@ package org.opensrp.register.mcare.service;
 import static java.text.MessageFormat.format;
 import static org.opensrp.common.AllConstants.CommonFormFields.ID;
 import static org.opensrp.common.AllConstants.MEMBERSRegistrationFields.*;
+import static org.opensrp.common.AllConstants.TT_VisitFields.Received_Time;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.*;
-
 import static org.opensrp.common.util.EasyMap.create;
+import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MemberScheduleConstants.child_vaccination_bcg;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -20,6 +21,7 @@ import java.util.Map;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.form.domain.SubFormData;
 import org.opensrp.register.mcare.domain.HouseHold;
+import org.opensrp.register.mcare.domain.Members;
 import org.opensrp.register.mcare.repository.AllHouseHolds;
 import org.opensrp.register.mcare.service.scheduling.HHSchedulesService;
 import org.opensrp.register.mcare.service.scheduling.ScheduleLogService;
@@ -248,8 +250,7 @@ public class HHService {
 						houseHold.MEMBERDETAILS().add(members);
 				  }
 				}						
-		}
-		
+		}		
 	}
 	
 	public String getEntityIdBybrnId(List<String> brnIdList)

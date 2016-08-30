@@ -383,13 +383,7 @@ public class Members extends MotechBaseDataObject {
 	@JsonProperty
 	private String measles2;
 	@JsonProperty
-	private String measles2_dose_today;
-	@JsonProperty
-	private String Is_woman;
-	@JsonProperty
-	private String Is_child;
-	@JsonProperty
-	private String PVF;
+	private String measles2_dose_today;	
 	@JsonProperty
 	private Map<String, String> details;
 	@JsonProperty
@@ -435,6 +429,8 @@ public class Members extends MotechBaseDataObject {
 	@JsonProperty
 	private Map<String, String> BCGVisit;
 	@JsonProperty
+	private Map<String, String> BNFVisit;
+	@JsonProperty
 	private String isClosed;
 	public Members() {
 		this.details = new HashMap<>();
@@ -459,6 +455,7 @@ public class Members extends MotechBaseDataObject {
 		this.Measles2Visit = new HashMap<>();
 		this.IPVVisit = new HashMap<>();
 		this.BCGVisit = new HashMap<>();
+		this.BNFVisit = new HashMap<>();
 		this.setIsClosed(false);
 	}
 	
@@ -736,6 +733,10 @@ public class Members extends MotechBaseDataObject {
     }
 	public Members setBCGVisit(Map<String, String> BCGVisit) {
         this.BCGVisit = new HashMap<>(BCGVisit);
+        return this;
+    }
+    public Members setBNFVisit(Map<String, String> BNFVisit) {
+        this.BNFVisit = new HashMap<>(BNFVisit);
         return this;
     }
 	public Members setMember_Address_line(String member_Address_line) {
@@ -1306,18 +1307,7 @@ public class Members extends MotechBaseDataObject {
 		this.measles2_dose_today = measles2_dose_today;
 		return this;
 	}
-	public Members setIs_woman(String is_woman) {
-		Is_woman = is_woman;
-		return this;
-	}
-	public Members setIs_child(String is_child) {
-		Is_child = is_child;
-		return this;
-	}
-	public Members setPVF(String pVF) {
-		PVF = pVF;
-		return this;
-	}
+	
 	public String caseId() {
 		return caseId;
 	}
@@ -1908,16 +1898,6 @@ public class Members extends MotechBaseDataObject {
 	public String Measles2Visit_dose_today() {
 		return measles2_dose_today;
 	}
-	public String Is_woman() {
-		return Is_woman;
-	}
-	public String Is_child() {
-		return Is_child;
-	}
-	public String PVF() {
-		return PVF;
-	}
-
 	public String Relationalid() {
 		return relationalid;
 	}
@@ -2036,6 +2016,11 @@ public class Members extends MotechBaseDataObject {
 		if (BCGVisit == null)
 			this.BCGVisit = new HashMap<>();
 		return BCGVisit;
+	}
+	public Map<String, String> BNFVisit() {
+		if (BNFVisit == null)
+			this.BNFVisit = new HashMap<>();
+		return BNFVisit;
 	}
     public Members setIsClosed(boolean isClosed) {
         this.isClosed = Boolean.toString(isClosed);

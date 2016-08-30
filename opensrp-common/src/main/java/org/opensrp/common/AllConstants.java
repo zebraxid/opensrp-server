@@ -23,7 +23,8 @@ public class AllConstants {
     public static class Form {
     	public static final String HH_REGISTRATION = "new_household_registration";
     	public static final String MEMBERS_REGISTRATION = "NewMemberRegistration";
-    	public static final String BNF_Handler = "BNFHandler";
+    	public static final String BNF_Handler = "pregnancy_status_birth_notification";
+    	public static final String BirthOutcome_Handler = "birthoutcome";
     	public static final String PSRF_FORM = "psrf_form";
     	public static final String NewBornHandler = "new_born_information";
     	public static final String GeneralHandler = "general";
@@ -216,6 +217,7 @@ public class AllConstants {
         	public static final String lmp_calc_ultrasound ="lmp_calc_ultrasound";
         	public static final String lmp_calc_edd_formatted ="lmp_calc_edd_formatted";
         	public static final String lmp_calc_ultrasound_formatted ="lmp_calc_ultrasound_formatted";
+        	public static final String Visit_status = "Visit_status";
         	public static final String final_edd ="final_edd";
         	public static final String final_lmp ="final_lmp";
         	public static final String ga_edd ="ga_edd";
