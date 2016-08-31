@@ -59,11 +59,14 @@ public class DHIS2Connector {
 	 * @throws ParseException
 	 * @throws JSONException 
 	 */
-	public JSONObject getEventFromFormSubmission(FormSubmission fs) throws ParseException, JSONException {
+	public JSONObject getEventFromFormSubmission(FormSubmission fs,Client c) throws ParseException, JSONException {
 		JSONObject personObj =	new JSONObject();
 		JSONArray attributeArray =	new JSONArray();
-		System.out.println("DHIS2");
+		//System.out.println("DHIS2"+c.getBaseEntity().getGender());
+		String gender = c.getBaseEntity().getGender();
+		
 		for (FormField fl : fs.instance().form().fields()) {
+			System.out.println("Field NAme:"+fl.toString());
 			Map<String, String> att = formAttributeMapper.getAttributesForField(fl.name(), fs);
 			System.out.println("ATTT:"+att.toString());
 			if(!StringUtils.isEmptyOrWhitespaceOnly(fl.value()) && att.size()>0 && att.get("dhis_attribute") != null && att.get("dhis_attribute").equalsIgnoreCase("attribute")){
@@ -79,20 +82,22 @@ public class DHIS2Connector {
             	else{
             		
     				String val = formAttributeMapper.getInstanceAttributesForFormFieldAndValue(fl.name(), fl.value(), null, fs);				
+    				System.out.println("Value:"+val);
     				/*e.addObs(new Obs("concept", att.get("openmrs_entity_id"), 
     						att.get("openmrs_entity_parent"), StringUtils.isEmptyOrWhitespaceOnly(val)?fl.value():val, null, fl.name()));*/
     				String vall = "";
     				vall = StringUtils.isEmptyOrWhitespaceOnly(val)?fl.value():val;
-    				System.out.println("AAAAAAA:"+att.get("dhis_attribute"));
-    				System.out.println("AAAAAAA:"+att.get("dhis_attribute_id"));
-    				System.out.println("VVVVV:"+vall);
-    				//if(!att.get("dhis_attribute_id").equalsIgnoreCase("Q31J4kz6nGS")){    					
     				
-    				JSONObject attrValueObj = new JSONObject();    				
-    				attrValueObj.put(att.get("dhis_attribute"), att.get("dhis_attribute_id"));
-    				
-    				attrValueObj.put("value", vall);
-    				attributeArray.put(attrValueObj);
+    				JSONObject attrValueObj = new JSONObject(); 
+    				/*if(att.get("dhis_attribute_id").equalsIgnoreCase("Q31J4kz6nGS")){   				
+	    				attrValueObj.put(att.get("dhis_attribute"), att.get("dhis_attribute_id"));
+	    				System.err.println(" fl.value():"+ fl.value());
+	    				attrValueObj.put("value", gender);
+	    				attributeArray.put(attrValueObj);
+    				}else{*/
+    					attrValueObj.put(att.get("dhis_attribute"), att.get("dhis_attribute_id"));
+	    				attrValueObj.put("value",  fl.value());
+	    				attributeArray.put(attrValueObj);
     				//}
             	}				
 			}
@@ -101,8 +106,8 @@ public class DHIS2Connector {
 		JSONObject enrollmentsObj = new JSONObject();
 		enrollmentsObj.put("orgUnit", "Na2vHKtaYKL");
 		enrollmentsObj.put("program", "s30nfZ1BCVE");
-		enrollmentsObj.put("enrollmentDate", "2016-08-31");
-		enrollmentsObj.put("incidentDate", "2016-08-31");
+		enrollmentsObj.put("enrollmentDate", DateUtil.getTodayAsString());
+		enrollmentsObj.put("incidentDate", DateUtil.getTodayAsString());
 		enrollments.put(enrollmentsObj);
 		
 		personObj.put("attributes", attributeArray);

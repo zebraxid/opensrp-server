@@ -331,7 +331,7 @@ public class FormSubmissionController {
 							System.out.println(bahmniPatientService.createPatient(c, idGen));
 							Event e = openmrsConnector.getEventFromFormSubmission(formSubmission);
 							System.out.println("Event:   "+e.toString());
-							JSONObject payloadJsonObj = dhis2Connector.getEventFromFormSubmission(formSubmission);
+							JSONObject payloadJsonObj = dhis2Connector.getEventFromFormSubmission(formSubmission,c);
 							System.out.println("Load:"+payloadJsonObj.toString());
 							JSONObject jb = dHIS2Service.trackCapture(payloadJsonObj);
 							System.out.println("Output:"+jb.toString());
