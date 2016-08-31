@@ -278,8 +278,8 @@ public class FormSubmissionController {
 				});
 				for (FormSubmission formSubmission : fsl) {
 					if (openmrsConnector.isOpenmrsForm(formSubmission)) {
-						//String idGen = bahmniPatientService.generateID();
-						String idGen = null ;
+						String idGen = bahmniPatientService.generateID();
+						
 						System.out
 						        .print("Generating ID to openMRS/***********************************************************************:"
 						                + idGen);
