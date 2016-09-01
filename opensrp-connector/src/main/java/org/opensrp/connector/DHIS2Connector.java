@@ -66,9 +66,9 @@ public class DHIS2Connector {
 		String gender = c.getBaseEntity().getGender();
 		
 		for (FormField fl : fs.instance().form().fields()) {
-			System.out.println("Field NAme:"+fl.toString());
+			//System.out.println("Field NAme:"+fl.toString());
 			Map<String, String> att = formAttributeMapper.getAttributesForField(fl.name(), fs);
-			System.out.println("ATTT:"+att.toString());
+			//System.out.println("ATTT:"+att.toString());
 			if(!StringUtils.isEmptyOrWhitespaceOnly(fl.value()) && att.size()>0 && att.get("dhis_attribute") != null && att.get("dhis_attribute").equalsIgnoreCase("attribute")){
             	if (isMultiSelect(fl.value())){
             		String[] fieldValues = fl.value().split(" ");
@@ -82,7 +82,7 @@ public class DHIS2Connector {
             	else{
             		
     				String val = formAttributeMapper.getInstanceAttributesForFormFieldAndValue(fl.name(), fl.value(), null, fs);				
-    				System.out.println("Value:"+val);
+    				//System.out.println("Value:"+val);
     				/*e.addObs(new Obs("concept", att.get("openmrs_entity_id"), 
     						att.get("openmrs_entity_parent"), StringUtils.isEmptyOrWhitespaceOnly(val)?fl.value():val, null, fl.name()));*/
     				String vall = "";
