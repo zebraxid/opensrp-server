@@ -3,6 +3,7 @@ package org.opensrp.common.util;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import org.joda.time.DateTime;
@@ -57,7 +58,10 @@ public class DateUtil {
 		
     	return yyyyMMddTHHmmssSSSZ.parse(date);
     }
-    
+    public static String getTodayAsString(){
+    	Calendar now = Calendar.getInstance();	    
+	   return  yyyyMMdd.format(now.getTime());
+    }
     public static LocalDate tryParse(String value, LocalDate defaultValue) {
         try {
             return LocalDate.parse(value);
