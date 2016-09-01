@@ -126,7 +126,7 @@ public class BahmniPatientService extends OpenmrsService {
 				//jao.put("address4", "Unions Of Kaliganj Upazila");
 				jao.put("address4",
 				    ad.getAddressFieldMatchingRegex("(?i)(ADDRESS4|SUB_DISTRICT|MUNICIPALITY|TOWN|LOCALITY|REGION)"));
-				jao.put("address5", ad.getAddressFieldMatchingRegex("(?i)(cityVillage|city_village|CITY|VILLAGE)"));
+				jao.put("address5", ad.getAddressFieldMatchingRegex("(?i)(cityVillage|ADDRESS5|city_village|CITY|VILLAGE)"));
 				//jao.put("address5", "Kaliganj");
 				//jao.put("countyDistrict", "Gazipur");
 				jao.put("countyDistrict",
