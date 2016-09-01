@@ -160,12 +160,11 @@ public class BahmniOpenmrsConnector {
 	public Client getClientFromFormSubmission(FormSubmission fs) throws ParseException {
 		
 		String gender = fs.getField(getFieldName(Person.gender, fs));
-		//String firstName = fs.getField("name_english");
 		gender = gender.equals("1") ? "M" : "F";
 		
 		String firstName = fs.getField(getFieldName(Person.first_name, fs));
 		String middleName = fs.getField(getFieldName(Person.middle_name, fs));
-		String lastName = fs.getField(getFieldName(Person.last_name, fs));//fs.getField(getFieldName(Person.last_name, fs));
+		String lastName = fs.getField(getFieldName(Person.last_name, fs));
 		
 		String bd = fs.getField(getFieldName(Person.birthdate, fs));
 		Date birthdate = (bd == null || bd.isEmpty()) ? OpenmrsService.OPENMRS_DATE.parse("1900-01-01")
@@ -367,7 +366,7 @@ public class BahmniOpenmrsConnector {
 					Map<String, Object> cne = new HashMap<>();
 					
 					String middleName = sfdata.get(getFieldName(Person.middle_name, sbf.name(), fs));
-					String lastName = sfdata.get(getFieldName(Person.last_name, sbf.name(), fs)); //sfdata.get(getFieldName(Person.last_name, sbf.name(), fs));
+					String lastName = sfdata.get(getFieldName(Person.last_name, sbf.name(), fs));
 					String bd = sfdata.get(getFieldName(Person.birthdate, sbf.name(), fs));
 					Date birthdate = (bd == null || bd.isEmpty()) ? OpenmrsService.OPENMRS_DATE.parse("1900-01-01")
 					        : OpenmrsService.OPENMRS_DATE.parse(bd);
@@ -399,18 +398,6 @@ public class BahmniOpenmrsConnector {
 					}
 					
 					List<Address> addresses = new ArrayList<>(extractAddressesForSubform(sfdata, sbf.name(), fs).values());
-					
-					if (sbf.name().equals("child_registration")) {
-						firstName = "child";
-						middleName = null;
-						lastName = null;
-						birthdate = OpenmrsService.OPENMRS_DATE.parse("2015-01-01");
-						deathdate = null;
-						birthdateApprox = false;
-						deathdateApprox = false;
-						gender = sfdata.get("FWBNFGEN");
-						addresses.add(new Address());
-					}
 					
 					Client c = new Client().withBaseEntity(
 					    new BaseEntity(sfdata.get("id"), firstName, middleName, lastName, birthdate, deathdate,

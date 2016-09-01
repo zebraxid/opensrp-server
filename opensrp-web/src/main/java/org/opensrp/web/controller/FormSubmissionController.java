@@ -75,6 +75,7 @@ public class FormSubmissionController {
 	private PatientService patientService;
 	
 	private BahmniOpenmrsConnector bahmniOpenmrsConnector;
+	
 	private DHIS2Connector dhis2Connector;
 	
 	private BahmniPatientService bahmniPatientService;
@@ -90,6 +91,7 @@ public class FormSubmissionController {
 	private MultimediaRepository multimediaRepository;
 	
 	private IndetifierMapingRepository bahmniIdRepository;
+	
 	private DHIS2Service dHIS2Service;
 	
 	@Autowired
@@ -115,16 +117,15 @@ public class FormSubmissionController {
 	}
 	
 	@Autowired
-    public void setdHIS2Service(DHIS2Service dHIS2Service) {
-    	this.dHIS2Service = dHIS2Service;
-    }
-
+	public void setdHIS2Service(DHIS2Service dHIS2Service) {
+		this.dHIS2Service = dHIS2Service;
+	}
+	
 	@Autowired
-    public void setDhis2Connector(DHIS2Connector dhis2Connector) {
-    	this.dhis2Connector = dhis2Connector;
-    }
-
-
+	public void setDhis2Connector(DHIS2Connector dhis2Connector) {
+		this.dhis2Connector = dhis2Connector;
+	}
+	
 	@RequestMapping(method = GET, value = "/form-submissions")
 	@ResponseBody
 	private List<FormSubmissionDTO> getNewSubmissionsForANM(@RequestParam("anm-id") String anmIdentifier,
@@ -326,16 +327,17 @@ public class FormSubmissionController {
 							 * .createEncounter(e));
 							 */
 							
-							System.out.println("Patient and Dependent client not exist into Bahmni openmrs /***********************************************************************/ ");
+							System.out
+							        .println("Patient and Dependent client not exist into Bahmni openmrs /***********************************************************************/ ");
 							Client c = bahmniOpenmrsConnector.getClientFromFormSubmission(formSubmission);
 							System.out.println(bahmniPatientService.createPatient(c, idGen));
 							Event e = openmrsConnector.getEventFromFormSubmission(formSubmission);
-							System.out.println("Event:   "+e.toString());
-							JSONObject payloadJsonObj = dhis2Connector.getEventFromFormSubmission(formSubmission,c);
-							System.out.println("Load:"+payloadJsonObj.toString());
-							JSONObject jb = dHIS2Service.trackCapture(payloadJsonObj);
-							System.out.println("Output:"+jb.toString());
 							System.out.println(encounterService.createEncounter(e, idGen));
+							System.out.println("Event:   " + e.toString());
+							JSONObject payloadJsonObj = dhis2Connector.getEventFromFormSubmission(formSubmission, c);
+							System.out.println("Load:" + payloadJsonObj.toString());
+							JSONObject jb = dHIS2Service.trackCapture(payloadJsonObj);
+							System.out.println("Output:" + jb.toString());
 						}
 					}
 				}
