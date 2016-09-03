@@ -10,43 +10,53 @@
       },
       {
         "name": "existing_location",
-        "bind": "/model/instance/NewMemberRegistration/existing_location"
+        "bind": "/model/instance/NewMemberRegistration/existing_location",
+        "shouldLoadValue": true
       },
       {
         "name": "existing_Country",
-        "bind": "/model/instance/NewMemberRegistration/existing_Country"
+        "bind": "/model/instance/NewMemberRegistration/existing_Country",
+        "shouldLoadValue": true
       },
       {
         "name": "existing_Division",
-        "bind": "/model/instance/NewMemberRegistration/existing_Division"
+        "bind": "/model/instance/NewMemberRegistration/existing_Division",
+        "shouldLoadValue": true
       },
       {
         "name": "existing_District",
-        "bind": "/model/instance/NewMemberRegistration/existing_District"
+        "bind": "/model/instance/NewMemberRegistration/existing_District",
+        "shouldLoadValue": true
       },
       {
         "name": "existing_Upazilla",
-        "bind": "/model/instance/NewMemberRegistration/existing_Upazilla"
+        "bind": "/model/instance/NewMemberRegistration/existing_Upazilla",
+        "shouldLoadValue": true
       },
       {
         "name": "existing_Paurasava",
-        "bind": "/model/instance/NewMemberRegistration/existing_Paurasava"
+        "bind": "/model/instance/NewMemberRegistration/existing_Paurasava",
+        "shouldLoadValue": true
       },
       {
         "name": "existing_Union",
-        "bind": "/model/instance/NewMemberRegistration/existing_Union"
+        "bind": "/model/instance/NewMemberRegistration/existing_Union",
+        "shouldLoadValue": true
+      },
+      {
+        "name": "WARD",
+        "bind": "/model/instance/NewMemberRegistration/existing_Ward",
+        "shouldLoadValue": true
+      },
+      {
+        "name": "BLOCK",
+        "bind": "/model/instance/NewMemberRegistration/existing_Block",
+        "shouldLoadValue": true
       },
       {
         "name": "existing_HIE_facilities",
-        "bind": "/model/instance/NewMemberRegistration/existing_HIE_facilities"
-      },
-      {
-        "name": "existing_Address_line",
-        "bind": "/model/instance/NewMemberRegistration/existing_Address_line"
-      },
-      {
-        "name": "existing_GPS",
-        "bind": "/model/instance/NewMemberRegistration/existing_GPS"
+        "bind": "/model/instance/NewMemberRegistration/existing_HIE_facilities",
+        "shouldLoadValue": true
       },
       {
         "name": "start",
@@ -62,28 +72,32 @@
       },
       {
         "name": "deviceid",
-        "bind": "/model/instance/NewMemberRegistration/deviceid"
+        "bind": "/model/instance/NewMemberRegistration/deviceid",
+        "shouldLoadValue": true
       },
       {
         "name": "subscriberid",
-        "bind": "/model/instance/NewMemberRegistration/subscriberid"
+        "bind": "/model/instance/NewMemberRegistration/subscriberid",
+        "shouldLoadValue": true
       },
       {
         "name": "simserial",
-        "bind": "/model/instance/NewMemberRegistration/simserial"
+        "bind": "/model/instance/NewMemberRegistration/simserial",
+        "shouldLoadValue": true
       },
       {
         "name": "phonenumber",
-        "bind": "/model/instance/NewMemberRegistration/phonenumber"
-      },      
+        "bind": "/model/instance/NewMemberRegistration/phonenumber",
+        "shouldLoadValue": true
+      },        
       {
         "name": "Date_Of_Reg",
         "bind": "/model/instance/NewMemberRegistration/Date_Of_Reg"
-      },      
+      },        
       {
         "name": "HH_Address",
         "bind": "/model/instance/NewMemberRegistration/HH_Address"
-      }
+      }        
     ],
     "sub_forms": [
       {
@@ -92,8 +106,8 @@
         "default_bind_path": "/model/instance/NewMemberRegistration/HH_Member",
         "fields": [
           {
-            "name": "HH_Member",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/HH_Member"
+            "name": "id",
+            "shouldLoadValue": true
           },
           {
             "name": "Member_COUNTRY",
@@ -122,6 +136,10 @@
           {
             "name": "Member_WARD",
             "bind": "/model/instance/NewMemberRegistration/HH_Member/Member_WARD"
+          },
+          {
+            "name": "Member_BLOCK",
+            "bind": "/model/instance/NewMemberRegistration/HH_Member/Member_BLOCK"
           },
           {
             "name": "Member_Address_line",
@@ -476,6 +494,34 @@
             "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/Child_father_name"
           },
           {
+            "name": "Child_guardian_id",
+            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/Child_guardian_id"
+          },
+          {
+            "name": "Child_Mother_NID",
+            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/Child_Mother_NID"
+          },
+          {
+            "name": "Child_Mother_BRID",
+            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/Child_Mother_BRID"
+          },
+          {
+            "name": "Child_Father_NID",
+            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/Child_Father_NID"
+          },
+          {
+            "name": "Child_Father_BRID",
+            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/Child_Father_BRID"
+          },
+          {
+            "name": "Child_Other_Guardian_NID",
+            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/Child_Other_Guardian_NID"
+          },
+          {
+            "name": "Child_Other_Guardian_BRID",
+            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/Child_Other_Guardian_BRID"
+          },
+          {
             "name": "epi_card_number",
             "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/epi_card_number"
           },
@@ -712,8 +758,8 @@
             "bind": "/model/instance/NewMemberRegistration/HH_Member/Is_child"
           },
           {
-            "name": "PVF",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/PVF"
+            "name": "Is_preg_outcome",
+            "bind": "/model/instance/NewMemberRegistration/HH_Member/Is_preg_outcome"
           }
         ]
       }
