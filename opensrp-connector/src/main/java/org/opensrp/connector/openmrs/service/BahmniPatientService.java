@@ -53,8 +53,8 @@ public class BahmniPatientService extends OpenmrsService{
     public JSONObject createPerson(BaseEntity be) throws JSONException{
 		JSONObject per = convertBaseEntityToOpenmrsJson(be);
 		System.out.println("Going to create person: " + per.toString());
-		return per;
-		//return new JSONObject(BahmniHttpUtils.post(getURL()+"/"+PERSON_URL, "", per.toString(), OPENMRS_USER, OPENMRS_PWD).body());
+		//return per;
+		return new JSONObject(BahmniHttpUtils.post(getURL()+"/"+PERSON_URL, "", per.toString(), OPENMRS_USER, OPENMRS_PWD).body());
 	}
     
     public JSONObject convertBaseEntityToOpenmrsJson(BaseEntity be) throws JSONException {
@@ -73,7 +73,7 @@ public class BahmniPatientService extends OpenmrsService{
 		
 		String fn = be.getFirstName();
 		String mn = be.getMiddleName()==null?"":be.getMiddleName();
-		String ln = be.getLastName()==null?".":be.getLastName();
+		String ln = (be.getLastName() == null || be.getLastName().equalsIgnoreCase(".")) ? "BD" : be.getLastName();
 		per.put("names", new JSONArray("[{\"givenName\":\""+fn+"\",\"middleName\":\""+mn+"\", \"familyName\":\""+ln+"\"}]"));
 		per.put("attributes", convertAttributesToOpenmrsJson(be.getAttributes()));
 		System.out.println("Address BE: "+be.getAddresses().toString());
@@ -120,7 +120,7 @@ public class BahmniPatientService extends OpenmrsService{
 				jao.put("address3", ad.getAddressFieldMatchingRegex("(?i)(ADDRESS3|SECTOR|AREA)"));
 				//jao.put("address4", "Unions Of Kaliganj Upazila");
 				jao.put("address4", ad.getAddressFieldMatchingRegex("(?i)(ADDRESS4|SUB_DISTRICT|MUNICIPALITY|TOWN|LOCALITY|REGION)"));
-				jao.put("address5", ad.getAddressFieldMatchingRegex("(?i)(cityVillage|city_village|CITY|VILLAGE)"));
+				jao.put("address5", ad.getAddressFieldMatchingRegex("(?i)(ADDRESS5|cityVillage|city_village|CITY|VILLAGE)"));
 				//jao.put("address5", "Kaliganj");
 				//jao.put("countyDistrict", "Gazipur");
 				jao.put("countyDistrict", ad.getAddressFieldMatchingRegex("(?i)(county_district|countyDistrict|COUNTY|DISTRICT)"));

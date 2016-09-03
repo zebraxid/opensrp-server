@@ -91,6 +91,8 @@ public class Members extends MotechBaseDataObject {
 	@JsonProperty
 	private String Member_GPS;	
 	@JsonProperty
+	private String Member_BLOCK;
+	@JsonProperty
 	private String TODAY;
 	@JsonProperty
 	private String START;
@@ -626,6 +628,11 @@ public class Members extends MotechBaseDataObject {
 	
 	public Members setMember_GPS(String Member_GPS) {
 		this.Member_GPS = Member_GPS;
+		return this;
+	}
+	
+	public Members setMember_BLOCK(String Member_BLOCK) {
+		this.Member_BLOCK = Member_BLOCK;
 		return this;
 	}
 	
@@ -1299,7 +1306,7 @@ public class Members extends MotechBaseDataObject {
 		this.measles1_dose_today = measles1_dose_today;
 		return this;
 	}
-	public Members setMeasles2Visit(String measles2) {
+	public Members set_Measles2_Visit(String measles2) {
 		this.measles2 = measles2;
 		return this;
 	}
@@ -1439,18 +1446,24 @@ public class Members extends MotechBaseDataObject {
 	
 	public String Member_GOB_HHID() {
 		return Member_GOB_HHID;
-	}
+	}	
 	
 	public String Member_GPS() {
 		return Member_GPS;
-	}
-
+	}	
+	
+	public String Member_BLOCK() {
+		return Member_BLOCK;
+	}	
+	
 	public String isClosed() {
 		return isClosed;
 	}
+	
 	public String TODAY() {
 		return TODAY;
 	}
+	
 	public String START() {
 		return START;
 	}

@@ -164,12 +164,12 @@ public class BahmniOpenmrsConnector {
 	 */
 	public Client getClientFromFormSubmission(FormSubmission fs) throws ParseException {		
 		String gender = fs.getField(getFieldName(Person.gender, fs));
-		String firstName = gender.equals("1")?"Mr":"Mrs";
-		 gender = gender.equals("1")?"M":"F";
+		/*String firstName = gender.equals("1")?"Mr":"Mrs";
+		 gender = gender.equals("1")?"M":"F";*/
 		
-		/*String firstName = fs.getField(getFieldName(Person.first_name, fs));*/
+		String firstName = fs.getField(getFieldName(Person.first_name, fs));
 		String middleName = fs.getField(getFieldName(Person.middle_name, fs));
-		String lastName = fs.getField(getFieldName(Person.first_name, fs));//fs.getField(getFieldName(Person.last_name, fs));
+		String lastName = fs.getField(getFieldName(Person.last_name, fs));
 		
 		String bd = fs.getField(getFieldName(Person.birthdate, fs));
 		Date birthdate = (bd==null || bd.isEmpty())? OpenmrsService.OPENMRS_DATE.parse("1900-01-01"):OpenmrsService.OPENMRS_DATE.parse(bd);
@@ -279,9 +279,7 @@ public class BahmniOpenmrsConnector {
 				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 				Date today = Calendar.getInstance().getTime();
 				modifiedDate=format.format(today).toString();
-				//System.out.println("modifiedDate: " + date);
 				date = format.parse(modifiedDate);
-				//System.out.println("date: " + date);
 			}
 			
 			//System.out.println("Date: " + date);			
@@ -376,7 +374,7 @@ public class BahmniOpenmrsConnector {
 					//String firstName = gender.equals("1")?"Mr":"Mrs";
 					String firstName = sfdata.get(getFieldName(Person.first_name, sbf.name(), fs));								
 					String middleName = sfdata.get(getFieldName(Person.middle_name, sbf.name(), fs));
-					String lastName = sfdata.get(getFieldName(Person.first_name, sbf.name(), fs)); //sfdata.get(getFieldName(Person.last_name, sbf.name(), fs));
+					String lastName = sfdata.get(getFieldName(Person.last_name, sbf.name(), fs));
 					String bd = sfdata.get(getFieldName(Person.birthdate, sbf.name(), fs));
 					Date birthdate = (bd==null || bd.isEmpty() || bd.equalsIgnoreCase("Invalid Date"))? OpenmrsService.OPENMRS_DATE.parse("1900-01-01"):OpenmrsService.OPENMRS_DATE.parse(bd);
 					if(new SimpleDateFormat("yyyy-MM-dd").format(birthdate).toString().equalsIgnoreCase("1900-01-01") && sbf.name().equalsIgnoreCase("member_registration")) birthdate = OpenmrsService.OPENMRS_DATE.parse(sfdata.get("Child_dob"));
@@ -403,24 +401,9 @@ public class BahmniOpenmrsConnector {
 							e.printStackTrace();
 						}
 						deathdateApprox = dde > 0 ? true:false;
-					}
+					}					
 					
-					
-					List<Address> addresses = new ArrayList<>(extractAddressesForSubform(sfdata, sbf.name(), fs).values());
-					
-					/*if(sbf.name().equals("child_registration"))
-					{
-						 firstName = "child";
-						 middleName = null;
-						 lastName = null;		 
-						 birthdate = OpenmrsService.OPENMRS_DATE.parse("2015-01-01");
-						 deathdate = null;
-						 birthdateApprox = false;
-						 deathdateApprox = false;
-						 gender = sfdata.get("FWBNFGEN");
-						 addresses.add(new Address());
-					}*/
-					
+					List<Address> addresses = new ArrayList<>(extractAddressesForSubform(sfdata, sbf.name(), fs).values());					
 					Client c = new Client()
 					.withBaseEntity(new BaseEntity(sfdata.get("id"), firstName, middleName, lastName, birthdate, deathdate, 
 							birthdateApprox, deathdateApprox, gender, addresses, extractAttributes(sfdata, sbf.name(), fs)))
@@ -451,9 +434,7 @@ public class BahmniOpenmrsConnector {
 			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 			Date today = Calendar.getInstance().getTime();
 			modifiedDate=format.format(today).toString();
-			//System.out.println("modifiedDate: " + date);
 			date = format.parse(modifiedDate);
-			//System.out.println("date: " + date);
 		}
 		
 		//System.out.println("Date: " + date);		

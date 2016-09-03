@@ -49,6 +49,8 @@ public class HouseHold extends MotechBaseDataObject {
 	@JsonProperty
 	private String WARD;
 	@JsonProperty
+	private String BLOCK;
+	@JsonProperty
 	private String Block_no;
 	@JsonProperty
 	private String HHID;
@@ -228,7 +230,10 @@ public class HouseHold extends MotechBaseDataObject {
 		this.Block_no = Block_no;
 		return this;
 	}
-	
+	public HouseHold setBLOCK(String BLOCK) {
+		this.BLOCK = BLOCK;
+		return this;
+	}	
 	public HouseHold setHHID(String HHID) {
 		this.HHID = HHID;
 		return this;
@@ -487,6 +492,10 @@ public class HouseHold extends MotechBaseDataObject {
 	
 	public String Block_no() {
 		return Block_no;
+	}
+	
+	public String BLOCK() {
+		return BLOCK;
 	}
 	
 	public String HHID() {

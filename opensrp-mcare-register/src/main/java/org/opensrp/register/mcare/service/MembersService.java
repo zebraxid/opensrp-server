@@ -87,8 +87,7 @@ public class MembersService {
 				if(!membersFields.get(Is_child).equalsIgnoreCase("") && membersFields.get(Is_child) != null)
 					if(membersFields.get(Is_child).equalsIgnoreCase("1")){
 						Child_Visit(submission, members, membersFields);
-					}
-			
+					}			
 		}
 
 		if (submission.formName().equalsIgnoreCase(MEMBERS_REGISTRATION)) {
@@ -282,9 +281,20 @@ public class MembersService {
 		Map<String, String> bnf = create(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
 											.put(START_DATE, submission.getField(START_DATE))
 											.put(END_DATE, submission.getField(END_DATE))
-											.put(general_Date_Of_Reg, submission.getField(general_Date_Of_Reg))
-											.put(Patient_Diagnosis, submission.getField(Patient_Diagnosis))
-											.put(Treatment, submission.getField(Treatment))
+											.put(existing_woman_name, submission.getField(existing_woman_name))
+											.put(existing_husband_name, submission.getField(existing_husband_name))
+											.put(existing_block_no, submission.getField(existing_block_no))											
+											.put(existing_lmp, submission.getField(existing_lmp))
+											.put(existing_location, submission.getField(existing_location))
+											.put(Date_of_interview, submission.getField(Date_of_interview))
+											.put(Confirm_info, submission.getField(Confirm_info))
+											.put(Visit_status, submission.getField(Visit_status))											
+											.put(Gestational_age, submission.getField(Gestational_age))
+											.put(EDD, submission.getField(EDD))
+											.put(Woman_vital_status, submission.getField(Woman_vital_status))
+											.put(DOO, submission.getField(DOO))
+											.put(Number_live_birth, submission.getField(Number_live_birth))
+											.put(pregsts_bnf_current_formStatus, submission.getField(pregsts_bnf_current_formStatus))
 											.put(Received_Time, format.format(today).toString())
 											.map();	
 		
