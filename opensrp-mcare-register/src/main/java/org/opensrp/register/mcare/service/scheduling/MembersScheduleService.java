@@ -6,9 +6,10 @@ package org.opensrp.register.mcare.service.scheduling;
 
 import static java.text.MessageFormat.format;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MemberScheduleConstants.*;
+import static org.opensrp.register.mcare.OpenSRPScheduleConstants.DateTimeDuration.duration;
 
 import org.joda.time.LocalDate;
-
+import org.opensrp.dto.BeneficiaryType;
 import org.opensrp.scheduler.HealthSchedulerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,17 +21,27 @@ public class MembersScheduleService {
 
 	private static Logger logger = LoggerFactory.getLogger(MembersScheduleService.class.toString());
 	private HealthSchedulerService scheduler;
+	private ScheduleLogService scheduleLogService;
 	
 	@Autowired
-	public MembersScheduleService(HealthSchedulerService scheduler)
+	public MembersScheduleService(HealthSchedulerService scheduler,ScheduleLogService scheduleLogService)
 	{
 		this.scheduler = scheduler;	
+		this.scheduleLogService = scheduleLogService;
 	}
 	
-	public void enrollMembersBNFVisit(String entityId,String provider,String date) {       
-        logger.info(format("Enrolling Members with Entity id:{0} to Members schedule BNFVisit, milestone: {1}.", entityId, SCHEDULE_Woman_BNF));
-        scheduler.enrollIntoSchedule(entityId, SCHEDULE_Woman_BNF, date);
+	public void enrollimmediateMembersBNFVisit(String entityId,String provider,String date,String instanceId) {       
+        logger.info(format("Enrolling Members with Entity id:{0} to Members schedule immediate BNFVisit, milestone: {1}.", entityId, IMD_SCHEDULE_Woman_BNF));
+        scheduler.enrollIntoSchedule(entityId, IMD_SCHEDULE_Woman_BNF, date);
+        scheduleLogService.createImmediateScheduleAndScheduleLog(entityId, date, provider, instanceId, BeneficiaryType.members, SCHEDULE_Woman_BNF, duration,IMD_SCHEDULE_Woman_BNF);
     }
+	
+	public void enrollMembersBNFVisit(String caseId,String provider,String date,String instanceId) {
+		logger.info(format("Enrolling Elco into PSRF schedule. Id: {0}", caseId));
+	    
+		scheduler.enrollIntoSchedule(caseId, SCHEDULE_Woman_BNF, date);
+		scheduleLogService.createNewScheduleLogandUnenrollImmediateSchedule(caseId, date, provider, instanceId, IMD_SCHEDULE_Woman_BNF, SCHEDULE_Woman_BNF, BeneficiaryType.members, duration);
+	}
 	
 	public void enrollMembersMeaslesVisit(String entityId,String provider,String date) {       
         logger.info(format("Enrolling Members with Entity id:{0} to Members schedule Members measles, milestone: {1}.", entityId, SCHEDULE_Woman_Measles));

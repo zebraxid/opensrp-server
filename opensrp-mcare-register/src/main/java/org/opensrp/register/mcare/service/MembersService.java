@@ -146,8 +146,7 @@ public class MembersService {
 				if(membersFields.get(PVF).equalsIgnoreCase("1"))
 				{
 					if(isValidDate(membersFields.get(final_edd)))
-						membersScheduleService.enrollMembersBNFVisit(members.caseId(),submission.anmId(),
-								membersFields.get(final_edd));
+						membersScheduleService.enrollimmediateMembersBNFVisit(members.caseId(),submission.anmId(),membersFields.get(final_edd),submission.instanceId());
 				}
 			}
 		}
@@ -312,19 +311,18 @@ public class MembersService {
 
 		if (!submission.getField(Visit_status).equalsIgnoreCase("") && submission.getField(Visit_status) != null)
 			if(submission.getField(Visit_status).equalsIgnoreCase("0")){
-				membersScheduleService.fullfillMilestone(members.caseId(),submission.anmId(),SCHEDULE_Woman_BNF,ddd);
-				membersScheduleService.enrollMembersBNFVisit(members.caseId(),submission.anmId(),
-						submission.getField(REFERENCE_DATE));
+				//membersScheduleService.fullfillMilestone(members.caseId(),submission.anmId(),SCHEDULE_Woman_BNF,ddd);
+				membersScheduleService.enrollMembersBNFVisit(members.caseId(),submission.anmId(),submission.getField(REFERENCE_DATE),submission.instanceId());
 			}
 		
 			else if(submission.getField(Visit_status).equalsIgnoreCase("1")){
 					if (!submission.getField(final_edd).equalsIgnoreCase("") && submission.getField(final_edd) != null)
 						if(isValidDate(submission.getField(final_edd)))
-							membersScheduleService.enrollMembersBNFVisit(members.caseId(),submission.anmId(),
-									submission.getField(final_edd));
+							membersScheduleService.enrollMembersBNFVisit(members.caseId(),submission.anmId(),submission.getField(final_edd),submission.instanceId());
 			}
 		
-			else membersScheduleService.fullfillMilestone(members.caseId(),submission.anmId(),SCHEDULE_Woman_BNF,ddd);		
+			else //membersScheduleService.fullfillMilestone(members.caseId(),submission.anmId(),SCHEDULE_Woman_BNF,ddd)
+				;		
 		
 	}
 	

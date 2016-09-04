@@ -385,6 +385,12 @@ public class Members extends MotechBaseDataObject {
 	@JsonProperty
 	private String measles2;
 	@JsonProperty
+	private String Is_woman; 
+	@JsonProperty
+	private String Is_child; 
+	@JsonProperty
+	private String Member_Paurasava;
+	@JsonProperty
 	private String measles2_dose_today;	
 	@JsonProperty
 	private Map<String, String> details;
@@ -1306,10 +1312,23 @@ public class Members extends MotechBaseDataObject {
 		this.measles1_dose_today = measles1_dose_today;
 		return this;
 	}
+	public Members setIs_woman(String Is_woman) {
+		this.Is_woman = Is_woman;
+		return this;
+	}
+	public Members setIs_child(String Is_child) {
+		this.Is_child = Is_child;
+		return this;
+	}
+	public Members setMember_Paurasava(String Member_Paurasava) {
+		this.Member_Paurasava = Member_Paurasava;
+		return this;
+	}
 	public Members set_Measles2_Visit(String measles2) {
 		this.measles2 = measles2;
 		return this;
 	}
+	
 	public Members setMeasles2Visit_dose_today(String measles2_dose_today) {
 		this.measles2_dose_today = measles2_dose_today;
 		return this;
@@ -1901,7 +1920,16 @@ public class Members extends MotechBaseDataObject {
 	}
 	public String Ipv() {
 		return ipv;
+	}	
+	public String Is_woman() {
+		return Is_woman;
 	}
+	public String Is_child() {
+		return Is_child;
+	}
+	public String Member_Paurasava() {
+		return Member_Paurasava;
+	}	
 	public String Measles1() {
 		return measles1;
 	}
