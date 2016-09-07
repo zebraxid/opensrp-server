@@ -22,6 +22,7 @@ import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
+import org.apache.commons.lang.StringUtils;
 import org.opensrp.form.domain.FormField;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.form.domain.SubFormData;
@@ -42,7 +43,6 @@ import com.google.gson.JsonIOException;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
-import com.mysql.jdbc.StringUtils;
 
 /**
  * The class is the bridge that allows parsing and mapping of formSubmission fields with 
@@ -76,7 +76,7 @@ public class FormAttributeParser {
 			Map<String, String> fieldAttributes = bindPath==null?new HashMap<String, String>():getAttributesForBindPath(bindPath, modelXml);
 			
 			boolean ismultiselect = bindPath==null?false:isMultiselect(bindPath, jsonForm);
-			if(!StringUtils.isEmptyOrWhitespaceOnly(fsf.value())){
+			if(!StringUtils.isBlank(fsf.value())){
 			if(ismultiselect){
 				String[] vals = fsf.value().split(" ");
 				Map<String, Map<String, String>> valCods = new HashMap<>();
@@ -539,7 +539,7 @@ public class FormAttributeParser {
 	public Map<String, String> getInstanceAttributesForFormFieldAndValue(String fieldName, String fieldVal, String subform, String formName, JsonObject formDefinition, JsonObject jsonForm) throws JsonSyntaxException, IOException
 	{		
 		String bindPath = null;
-		if(StringUtils.isEmptyOrWhitespaceOnly(subform)){
+		if(StringUtils.isBlank(subform)){
 			bindPath = getPropertyBindFromFormDefinition(fieldName, formName, formDefinition);
 		}
 		else {
@@ -552,7 +552,7 @@ public class FormAttributeParser {
 	public Map<String, String> getInstanceAttributesForFormFieldAndValue(String fieldName, String fieldVal, String subform, FormSubmission fs) throws JsonSyntaxException, IOException
 	{		
 		String bindPath = null;
-		if(StringUtils.isEmptyOrWhitespaceOnly(subform)){
+		if(StringUtils.isBlank(subform)){
 			bindPath = getPropertyBindFromFormDefinition(fieldName, fs.formName(), getFormDefinitionData(fs.formName()));
 		}
 		else {

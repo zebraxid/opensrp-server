@@ -1,6 +1,8 @@
 package org.opensrp.domain;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.ektorp.support.TypeDiscriminator;
@@ -9,7 +11,7 @@ import org.motechproject.model.MotechBaseDataObject;
 /**
  * @author muhammad.ahmed@ihsinformatics.com Created on May 25, 2015
  */
-@TypeDiscriminator("doc.type == 'Error'")
+@TypeDiscriminator("doc.type == 'ErrorTrace'")
 public class ErrorTrace extends MotechBaseDataObject {
 
 	/*
@@ -36,7 +38,8 @@ public class ErrorTrace extends MotechBaseDataObject {
 	private String documentType;
 	@JsonProperty
 	private String retryUrl;
-
+	@JsonProperty
+	private Map<String, String> details;
 	// dateoccured , dateclosed , errortype =name, documenttype , submiturl
 	
 	public ErrorTrace() {
@@ -110,7 +113,21 @@ public class ErrorTrace extends MotechBaseDataObject {
 		this.retryUrl = retryUrl;
 	}
 
+	public Map<String, String> getDetails() {
+		return details;
+	}
 
+	public void setDetails(Map<String, String> details) {
+		this.details = details;
+	}
+	
+	public void addDetails(String key, String val) {
+		if(details == null){
+			details = new HashMap<>();
+		}
+		details.put(key, val);
+	}
+	
 	public String getRecordId() {
 
 		return recordId;

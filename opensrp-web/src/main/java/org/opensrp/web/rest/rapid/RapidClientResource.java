@@ -14,6 +14,9 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
+
+
+
 import org.apache.commons.codec.binary.Base64;
 import org.joda.time.DateTime;
 import org.joda.time.Weeks;
@@ -341,7 +344,7 @@ static Map<String, String[]> vs = new HashMap<String, String[]>(){{
 
 	            if (basic.equalsIgnoreCase("Basic")) {
 	                try {
-	                    String credentials = new String(Base64.decodeBase64(st.nextToken()), "UTF-8");
+	                    String credentials = new String(Base64.decodeBase64(st.nextToken().getBytes()), "UTF-8");
 	                    System.out.println("Credentials: " + credentials);
 	                    int p = credentials.indexOf(":");
 	                    if (p != -1) {
