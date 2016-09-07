@@ -1,7 +1,6 @@
-package org.opensrp.repository.it;
+package org.opensrp.web.it;
 
 import static org.mockito.MockitoAnnotations.initMocks;
-import static org.junit.Assert.*;
 
 import java.util.Date;
 import java.util.Random;
@@ -17,12 +16,11 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath:test-applicationContext-opensrp.xml")
+@ContextConfiguration("classpath:spring/applicationContext-opensrp-web.xml")
 public class AllErrorTraceIntegrationTest {
 
 	@Autowired
 	private AllErrorTrace allErrorTrace;
-	
 	@Before
 	public void setUp() throws Exception {
 		initMocks(this);
@@ -32,29 +30,23 @@ public class AllErrorTraceIntegrationTest {
 	@Test
 	public void shouldAddError()throws Exception
 	{
-		//ErrorTrace error=new ErrorTrace(new Date(), "Error Testing" , "not availalbe","this is an Testing Error", "unsolved");
-		Random ran=new Random();
-		try
-		{
+		Random ran = new Random();
+		try{
 			throw new RuntimeException("My Test Msg");
 		}
 		catch(Exception e){
-			for(int i=0;i<15;i++)
-			{
-		ErrorTrace error=new ErrorTrace();
-		error.setErrorType("error loggging test");
-		error.setDate(new Date());
-		error.setStackTrace("Complete Stack Trace :");
-		error.setStatus("unsolved");
-		error.setDocumentType("Test Document");
-		error.setRecordId(String.valueOf(ran.nextInt(100000)+ran.nextInt(1002)));
-		allErrorTrace.add(error);
-		
-			}
-			assertTrue(allErrorTrace.findErrorsByStatus("unsolved").size() == 15);
-			assertTrue(allErrorTrace.findErrorsByStatus("solved").size() <15);
+			ErrorTrace error=new ErrorTrace();
+			error.setErrorType("todays eror trace");
+			error.setDate(new Date());
+			error.setStackTrace(e.toString());
+			error.setStatus("unsolved");
+			error.setDocumentType("Simple document");
+			error.setRecordId(String.valueOf(ran.nextInt(100000)+ran.nextInt(1002)));
+			allErrorTrace.add(error);
 				
-			}
+		}
+		//ErrorTrace error=new ErrorTrace(new Date(), "Error Testing" , "not availalbe","this is an Testing Error", "unsolved");
+		
 	}
 	
 	

@@ -15,6 +15,7 @@ import static org.opensrp.web.rest.RestUtils.getDateFilter;
 import static org.opensrp.web.rest.RestUtils.getStringFilter;
 
 import org.joda.time.DateTime;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -49,7 +50,7 @@ public class ClientResourceTest {
 	@Autowired
 	private ClientResource cr;
 	
-	@Test
+	@Ignore @Test
 	public void testClientSearch() throws Exception {
 		  MockHttpServletRequest mockRequest = new MockHttpServletRequest();
 		  //  mockRequest.setContentType(MediaType.APPLICATION_JSON.toString());

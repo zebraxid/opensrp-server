@@ -39,13 +39,13 @@
 		<div class="col-md-3">
 			<ul class="nav nav-stacked nav-tabs">
 				<li >
-					<a href="/errorhandler/errortrace" >All Errors</a>
+					<a href="/errorhandler/errortrace?status=''" >All Errors</a>
 				</li>
 				<li class="active">
-					<a href="/errorhandler/solvederrors" >Solved Errors</a>
+					<a href="/errorhandler/solvederrors?status='solved'" >Solved Errors</a>
 				</li>
-				<li  >
-					<a href="/errorhandler/unsolvederrors">Unsolved Errors</a>
+				<li>
+					<a href="/errorhandler/unsolvederrors?status='unsolved'">Unsolved Errors</a>
 				</li>
 				<li class="dropdown pull-right">
 					 <a href="#" data-toggle="dropdown" class="dropdown-toggle">Options<strong class="caret"></strong></a>
