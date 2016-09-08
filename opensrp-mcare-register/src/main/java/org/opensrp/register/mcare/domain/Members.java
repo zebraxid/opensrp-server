@@ -389,6 +389,8 @@ public class Members extends MotechBaseDataObject {
 	@JsonProperty
 	private String Is_child; 
 	@JsonProperty
+	private String Is_preg_outcome;
+	@JsonProperty
 	private String Member_Paurasava;
 	@JsonProperty
 	private String measles2_dose_today;	
@@ -1320,6 +1322,10 @@ public class Members extends MotechBaseDataObject {
 		this.Is_child = Is_child;
 		return this;
 	}
+	public Members setIs_preg_outcomed(String Is_preg_outcome) {
+		this.Is_preg_outcome = Is_preg_outcome;
+		return this;
+	}
 	public Members setMember_Paurasava(String Member_Paurasava) {
 		this.Member_Paurasava = Member_Paurasava;
 		return this;
@@ -1926,6 +1932,9 @@ public class Members extends MotechBaseDataObject {
 	}
 	public String Is_child() {
 		return Is_child;
+	}
+	public String Is_preg_outcome() {
+		return Is_preg_outcome;
 	}
 	public String Member_Paurasava() {
 		return Member_Paurasava;

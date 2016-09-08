@@ -267,7 +267,7 @@ public class ScheduleLogService extends OpenmrsService{
 			//scheduler.unEnrollFromScheduleimediate(caseId, provider, immediateScheduleName);
 			scheduler.fullfillMilestoneAndCloseAlert(caseId, provider, immediateScheduleName, new LocalDate());
 		}catch(Exception e){
-			logger.info(format("Failed to COmplete Immediate BNF Schedule:"+ e.getMessage()));
+			logger.info(format("Failed to Complete Immediate BNF Schedule:"+ e.getMessage()));
 		}
 		
 		this.scheduleCloseAndSave(caseId, instanceId, provider, scheduleName, scheduleName, beneficiaryType, AlertStatus.normal, new DateTime(), new DateTime().plusHours(durationInHour));

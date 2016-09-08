@@ -6,26 +6,26 @@
             "name": "child_vaccination_bcg",
             "scheduleWindows": {
             	"earliest": ["0 Days"],
-                "due": ["7 Days"],
-                "late": ["20000 Days"],
-                "max": ["20001 Days"]
+                "due": ["28 Days"],
+                "late": ["365 Days"],
+                "max": ["366 Days"]
             },
             "alerts": [
                 {
                     "window": "due",
                     "offset": ["0 Days"],
                     "interval": ["1 Day"],
-                    "count": "7"
+                    "count": "28"
                 },
                 {
                     "window": "late",
-                    "offset": ["7 Days"],
+                    "offset": ["28 Days"],
                     "interval": ["1 Day"],
-                    "count": "19993"
+                    "count": "337"
                 },
                 {
                     "window": "max",
-                    "offset": ["20000 Days"],
+                    "offset": ["365 Days"],
                     "interval": ["1 Day"],
                     "count": "1"
                 }

@@ -217,6 +217,7 @@ public class AllConstants {
         	public static final String lmp_calc_ultrasound ="lmp_calc_ultrasound";
         	public static final String lmp_calc_edd_formatted ="lmp_calc_edd_formatted";
         	public static final String lmp_calc_ultrasound_formatted ="lmp_calc_ultrasound_formatted";
+        	public static final String Is_preg_outcome ="Is_preg_outcome";
         	public static final String Visit_status = "Visit_status";
         	public static final String final_edd ="final_edd";
         	public static final String final_lmp ="final_lmp";
@@ -1199,6 +1200,8 @@ public class AllConstants {
     
     public static class ScheduleNames{
     	public static final String CENCUS = "FW CENSUS";
+    	public static final String SCHEDULE_Woman_BNF = "Woman_BNF";
+    	public static final String IMD_SCHEDULE_Woman_BNF = "IMEDIATE_Woman_BNF";
         public static final String SCHEDULE_Woman_Measles = "Woman_measles";
         public static final String SCHEDULE_Woman_1 = "Woman_TT1";
         public static final String SCHEDULE_Woman_2 = "Woman_TT2";
