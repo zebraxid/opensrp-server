@@ -20,6 +20,11 @@ public class FormInstance {
     public FormInstance(FormData form) {
         this.form = form;
     }
+    
+    public FormInstance(FormData form, String version) {
+        this.form = form;
+        this.form_data_definition_version = version;
+    }
 
     public FormData form() {
         return form;
