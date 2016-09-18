@@ -88,6 +88,50 @@
             "shouldLoadValue": true
           },
           {
+            "name": "Member_COUNTRY",
+            "bind": "/model/instance/BirthOutcome/Child_Registration/Member_COUNTRY"
+          },
+          {
+            "name": "Member_DIVISION",
+            "bind": "/model/instance/BirthOutcome/Child_Registration/Member_DIVISION"
+          },
+          {
+            "name": "Member_DISTRICT",
+            "bind": "/model/instance/BirthOutcome/Child_Registration/Member_DISTRICT"
+          },
+          {
+            "name": "Member_UPAZILLA",
+            "bind": "/model/instance/BirthOutcome/Child_Registration/Member_UPAZILLA"
+          },
+          {
+            "name": "Member_Paurasava",
+            "bind": "/model/instance/BirthOutcome/Child_Registration/Member_Paurasava"
+          },
+          {
+            "name": "Member_UNION",
+            "bind": "/model/instance/BirthOutcome/Child_Registration/Member_UNION"
+          },
+          {
+            "name": "Member_WARD",
+            "bind": "/model/instance/BirthOutcome/Child_Registration/Member_WARD"
+          },
+          {
+            "name": "Member_BLOCK",
+            "bind": "/model/instance/BirthOutcome/Child_Registration/Member_BLOCK"
+          },
+          {
+            "name": "Member_Address_line",
+            "bind": "/model/instance/BirthOutcome/Child_Registration/Member_Address_line"
+          },
+          {
+            "name": "Member_HIE_facilities",
+            "bind": "/model/instance/BirthOutcome/Child_Registration/Member_HIE_facilities"
+          },
+          {
+            "name": "HH_Address",
+            "bind": "/model/instance/BirthOutcome/Child_Registration/HH_Address"
+          },
+          {
             "name": "Reg_No",
             "bind": "/model/instance/BirthOutcome/Child_Registration/Reg_No"
           },

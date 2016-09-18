@@ -22,7 +22,7 @@ public class AllConstants {
 
     public static class Form {
     	public static final String HH_REGISTRATION = "new_household_registration";
-    	public static final String MEMBERS_REGISTRATION = "NewMemberRegistration";
+    	public static final String MEMBERS_REGISTRATION = "census_enrollment";
     	public static final String BNF_Handler = "pregnancy_status_birth_notification";
     	public static final String BirthOutcome_Handler = "birthoutcome";
     	public static final String PSRF_FORM = "psrf_form";
@@ -44,15 +44,10 @@ public class AllConstants {
     	public static final String PENTA2Handler_ = "PENTA2Handler";
     	public static final String PENTA3Handler_ = "PENTA3Handler";  	
     	public static final String BNF_FORM = "birthnotificationpregnancystatusfollowup";
-    	public static final String TT1_Visit_Handler = "woman_vaccination_tt";
-    	public static final String TT2_Visit_Handler = "woman_vaccination_tt2";
-    	public static final String TT3_Visit_Handler = "woman_vaccination_tt3";
-    	public static final String TT4_Visit_Handler = "woman_vaccination_tt4";
-    	public static final String TT5_Visit_Handler = "woman_vaccination_tt5";
+    	public static final String TT_Visit_Handler = "woman_tt_form";
     	public static final String ENCC_REMINDER_VISIT_1 = "encc_visit_1";
     	public static final String ENCC_REMINDER_VISIT_2 = "encc_visit_2";
-    	public static final String ENCC_REMINDER_VISIT_3 = "encc_visit_3";
-    	
+    	public static final String ENCC_REMINDER_VISIT_3 = "encc_visit_3";    	
         public static final String ENTITY_ID = "entityId";
         public static final String ANM_ID = "anmId";
         public static final String FORM_NAME = "formName";

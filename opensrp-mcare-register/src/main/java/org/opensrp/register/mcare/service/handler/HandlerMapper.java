@@ -64,7 +64,7 @@ public class HandlerMapper implements IHandlerMapper {
 				     .put(PENTA1Handler_ , PENTA1Handler)
 				     .put(PENTA2Handler_ , PENTA2Handler)
 				     .put(PENTA3Handler_ , PENTA3Handler)
-				     .put(TT1_Visit_Handler, TT1_Handler)
+				     .put(TT_Visit_Handler, TT1_Handler)
                      .map();
 	}
 
