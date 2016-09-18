@@ -141,6 +141,7 @@ public class MembersService {
 			}
 		
 		
+		
 		if(membersFields.containsKey(Child_age))
 		if(!membersFields.get(Child_age).equalsIgnoreCase("") && membersFields.get(Child_age) != null)
 			if(Integer.parseInt(membersFields.get(Child_age))<5 && membersFields.containsKey(opv0)){
@@ -160,6 +161,7 @@ public class MembersService {
 							membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_opv0,membersFields.get(Child_dob));
 						}
 			}
+				
 		
 			
 		if(membersFields.containsKey(Child_age))
@@ -171,8 +173,6 @@ public class MembersService {
 				if(membersFields.get(opv1).equalsIgnoreCase("") || membersFields.get(opv1) == null)
 					if(isValidDate(membersFields.get(opv0))){
 						membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_opv1,membersFields.get(opv0));
-						//membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_penta1,membersFields.get(opv0));
-						//membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_pcv1,membersFields.get(opv0));
 					}
 				}
 				
@@ -180,8 +180,6 @@ public class MembersService {
 					if(membersFields.get(opv1_retro).equalsIgnoreCase("") || membersFields.get(opv1_retro) == null)
 						if(isValidDate(membersFields.get(opv0))){
 							membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_opv1,membersFields.get(opv0));
-							//membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_penta1,membersFields.get(opv0));
-							//membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_pcv1,membersFields.get(opv0));
 						}
 					}
 			}
@@ -196,8 +194,6 @@ public class MembersService {
 					if(membersFields.get(opv1).equalsIgnoreCase("") || membersFields.get(opv1) == null)
 						if(isValidDate(membersFields.get(opv0_retro))){
 							membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_opv1,membersFields.get(opv0_retro));
-							//membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_penta1,membersFields.get(opv0_retro));
-							//membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_pcv1,membersFields.get(opv0_retro));
 						}
 					}
 					
@@ -205,11 +201,95 @@ public class MembersService {
 						if(membersFields.get(opv1_retro).equalsIgnoreCase("") || membersFields.get(opv1_retro) == null)
 							if(isValidDate(membersFields.get(opv0_retro))){
 								membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_opv1,membersFields.get(opv0_retro));
-								//membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_penta1,membersFields.get(opv0_retro));
-								//membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_pcv1,membersFields.get(opv0_retro));
 							}
 						}
 				}
+		
+		
+		
+		if(membersFields.containsKey(Child_age))
+			if(!membersFields.get(Child_age).equalsIgnoreCase("") && membersFields.get(Child_age) != null)
+			if(Integer.parseInt(membersFields.get(Child_age))<5) 
+				if (membersFields.containsKey(opv1))
+				if (!membersFields.get(opv1).equalsIgnoreCase("") && membersFields.get(opv1) != null){
+					if(membersFields.containsKey(opv2)){
+					if(membersFields.get(opv2).equalsIgnoreCase("") || membersFields.get(opv2) == null)
+						if(isValidDate(membersFields.get(opv1))){
+							membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_opv2,membersFields.get(opv1));
+						}
+					}
+					
+					else if(membersFields.containsKey(opv2_retro)){
+						if(membersFields.get(opv2_retro).equalsIgnoreCase("") || membersFields.get(opv2_retro) == null)
+							if(isValidDate(membersFields.get(opv1))){
+								membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_opv2,membersFields.get(opv1));
+							}
+						}
+				}
+			
+				
+			if(membersFields.containsKey(Child_age))
+				if(!membersFields.get(Child_age).equalsIgnoreCase("") && membersFields.get(Child_age) != null)
+				if(Integer.parseInt(membersFields.get(Child_age))<5) 
+					if (membersFields.containsKey(opv1_retro))
+					if (!membersFields.get(opv1_retro).equalsIgnoreCase("") && membersFields.get(opv1_retro) != null){
+						if(membersFields.containsKey(opv2)){
+						if(membersFields.get(opv2).equalsIgnoreCase("") || membersFields.get(opv2) == null)
+							if(isValidDate(membersFields.get(opv1_retro))){
+								membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_opv2,membersFields.get(opv1_retro));
+							}
+						}
+						
+						else if(membersFields.containsKey(opv2_retro)){
+							if(membersFields.get(opv2_retro).equalsIgnoreCase("") || membersFields.get(opv2_retro) == null)
+								if(isValidDate(membersFields.get(opv1_retro))){
+									membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_opv2,membersFields.get(opv1_retro));
+								}
+							}
+					}
+			
+			
+		if(membersFields.containsKey(Child_age))
+			if(!membersFields.get(Child_age).equalsIgnoreCase("") && membersFields.get(Child_age) != null)
+			if(Integer.parseInt(membersFields.get(Child_age))<5) 
+				if (membersFields.containsKey(opv2))
+				if (!membersFields.get(opv2).equalsIgnoreCase("") && membersFields.get(opv2) != null){
+					if(membersFields.containsKey(opv3)){
+					if(membersFields.get(opv3).equalsIgnoreCase("") || membersFields.get(opv3) == null)
+						if(isValidDate(membersFields.get(opv2))){
+							membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_opv3,membersFields.get(opv2));
+						}
+					}
+					
+					else if(membersFields.containsKey(opv3_retro)){
+						if(membersFields.get(opv3_retro).equalsIgnoreCase("") || membersFields.get(opv3_retro) == null)
+							if(isValidDate(membersFields.get(opv2))){
+								membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_opv3,membersFields.get(opv2));
+							}
+						}
+				}
+			
+				
+			if(membersFields.containsKey(Child_age))
+				if(!membersFields.get(Child_age).equalsIgnoreCase("") && membersFields.get(Child_age) != null)
+				if(Integer.parseInt(membersFields.get(Child_age))<5) 
+					if (membersFields.containsKey(opv2_retro))
+					if (!membersFields.get(opv2_retro).equalsIgnoreCase("") && membersFields.get(opv2_retro) != null){
+						if(membersFields.containsKey(opv3)){
+						if(membersFields.get(opv3).equalsIgnoreCase("") || membersFields.get(opv3) == null)
+							if(isValidDate(membersFields.get(opv2_retro))){
+								membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_opv3,membersFields.get(opv2_retro));
+							}
+						}
+						
+						else if(membersFields.containsKey(opv3_retro)){
+							if(membersFields.get(opv3_retro).equalsIgnoreCase("") || membersFields.get(opv3_retro) == null)
+								if(isValidDate(membersFields.get(opv2_retro))){
+									membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_opv3,membersFields.get(opv2_retro));
+								}
+							}
+					}
+			
 		
 				
 		if(membersFields.containsKey(Date_of_MR))
@@ -913,7 +993,11 @@ public class MembersService {
 					membersScheduleService.enrollMembersTTVisit(members.caseId(),submission.anmId(),submission.getField(final_lmp));
 			}
 		}
-	
+		
+		TT2_Visit(submission);
+		TT3_Visit(submission);
+		TT4_Visit(submission);
+		TT5_Visit(submission);
 	}
 	
 	public void TT2_Visit(FormSubmission submission) {
@@ -1307,7 +1391,8 @@ public class MembersService {
 		
 		if (!submission.getField(ChildVaccination_OPV1_Date_of_Vaccination).equalsIgnoreCase("") && submission.getField(ChildVaccination_OPV1_Date_of_Vaccination) != null)
 			if(isValidDate(submission.getField(ChildVaccination_OPV1_Date_of_Vaccination))){
-				membersScheduleService.unEnrollFromSchedule(members.caseId(),submission.anmId(),child_vaccination_opv1);				
+				membersScheduleService.unEnrollFromSchedule(members.caseId(),submission.anmId(),child_vaccination_opv1);
+				membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_opv2,submission.getField(ChildVaccination_OPV1_Date_of_Vaccination));
 			}
 	}
 
@@ -1336,6 +1421,7 @@ public class MembersService {
 		if (!submission.getField(ChildVaccination_OPV0_Date_of_Vaccination).equalsIgnoreCase("") && submission.getField(ChildVaccination_OPV0_Date_of_Vaccination) != null)
 			if(isValidDate(submission.getField(ChildVaccination_OPV0_Date_of_Vaccination)))
 				membersScheduleService.unEnrollFromSchedule(members.caseId(),submission.anmId(),child_vaccination_opv0);
+		membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_opv1,submission.getField(ChildVaccination_OPV0_Date_of_Vaccination));
 	}
 
 	public void Measles1_Visit(FormSubmission submission) {

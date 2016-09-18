@@ -84,12 +84,12 @@ public class EncounterAtomfeed extends OpenmrsService implements EventWorker, At
 
 	@Override
 	public void processEvents() {
-		//client.processEvents();
+		client.processEvents();
 	}
 
 	@Override
 	public void processFailedEvents() {
-		//client.processFailedEvents();
+		client.processFailedEvents();
 	}
 	
 	public void setUrl(String url) {

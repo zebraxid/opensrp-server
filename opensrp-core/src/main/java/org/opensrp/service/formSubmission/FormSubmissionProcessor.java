@@ -57,10 +57,10 @@ public class FormSubmissionProcessor{
     	if(submission.bindType().equalsIgnoreCase("stock")) return;
     	
     	// parse and into client and event model
-    	/*logger.info("Creating model entities");
+    	logger.info("Creating model entities");
     	makeModelEntities(submission);
     	logger.info("Handling xls configured schedules");
-    	handleSchedules(submission);*/
+    	handleSchedules(submission);
     	if(!ziggyService.isZiggyCompliant(submission.bindType())){
     		logger.info("Ziggy active");
     		passToZiggy(submission);

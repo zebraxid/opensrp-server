@@ -172,7 +172,7 @@ public class BahmniOpenmrsConnector {
 		String lastName = fs.getField(getFieldName(Person.last_name, fs));
 		
 		String bd = fs.getField(getFieldName(Person.birthdate, fs));
-		Date birthdate = (bd==null || bd.isEmpty())? OpenmrsService.OPENMRS_DATE.parse("1900-01-01"):OpenmrsService.OPENMRS_DATE.parse(bd);
+		Date birthdate = (bd==null || bd.isEmpty() || bd.equalsIgnoreCase("Invalid Date"))? OpenmrsService.OPENMRS_DATE.parse("1900-01-01"):OpenmrsService.OPENMRS_DATE.parse(bd);
 		String dd = fs.getField(getFieldName(Person.deathdate, fs));
 		Date deathdate = (dd==null || dd.isEmpty())?null:OpenmrsService.OPENMRS_DATE.parse(dd);
 		String aproxbd = fs.getField(getFieldName(Person.birthdate_estimated, fs));

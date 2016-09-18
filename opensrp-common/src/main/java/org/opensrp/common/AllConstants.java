@@ -44,7 +44,7 @@ public class AllConstants {
     	public static final String PENTA2Handler_ = "PENTA2Handler";
     	public static final String PENTA3Handler_ = "PENTA3Handler";  	
     	public static final String BNF_FORM = "birthnotificationpregnancystatusfollowup";
-    	public static final String TT1_Visit_Handler = "woman_vaccination_tt1";
+    	public static final String TT1_Visit_Handler = "woman_vaccination_tt";
     	public static final String TT2_Visit_Handler = "woman_vaccination_tt2";
     	public static final String TT3_Visit_Handler = "woman_vaccination_tt3";
     	public static final String TT4_Visit_Handler = "woman_vaccination_tt4";

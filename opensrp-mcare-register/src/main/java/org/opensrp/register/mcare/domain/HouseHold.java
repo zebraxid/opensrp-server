@@ -115,12 +115,6 @@ public class HouseHold extends MotechBaseDataObject {
 	@JsonProperty
 	private String HH_current_form_status;
 	@JsonProperty
-	private String Is_woman;
-	@JsonProperty
-	private String Is_child;
-	@JsonProperty
-	private String Is_preg_outcome;
-	@JsonProperty
 	private List<Map<String, String>> Birth_Outcome;
 	@JsonProperty
 	private List<Map<String, String>> MEMBERDETAILS;
@@ -381,19 +375,6 @@ public class HouseHold extends MotechBaseDataObject {
 		return this;
 	}
 	
-	public HouseHold setIs_woman(String is_woman) {
-		Is_woman = is_woman;
-		return this;
-	}
-	public HouseHold setIs_child(String is_child) {
-		Is_child = is_child;
-		return this;
-	}
-	public HouseHold setIs_preg_outcome(String is_preg_outcome) {
-		Is_preg_outcome = is_preg_outcome;
-		return this;
-	}	
-	
 	public HouseHold setMEMBERDETAILS(List<Map<String, String>> MEMBERDETAILS) {
 		this.MEMBERDETAILS = MEMBERDETAILS;
 		return this;
@@ -612,18 +593,6 @@ public class HouseHold extends MotechBaseDataObject {
 	
 	public String HH_current_form_status() {
 		return HH_current_form_status;
-	}
-	
-	public String Is_woman() {
-		return Is_woman;
-	}
-	
-	public String Is_child() {
-		return Is_child;
-	}
-	
-	public String Is_preg_outcome() {
-		return Is_preg_outcome;
 	}
 	
 	public List<Map<String, String>> Birth_Outcome() {
