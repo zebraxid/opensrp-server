@@ -61,9 +61,9 @@ public class FormSubmissionProcessor {
 		
 		// parse and into client and event model
 		//logger.info("Creating model entities");
-		//makeModelEntities(submission);
+		makeModelEntities(submission);
 		//logger.info("Handling xls configured schedules");
-		//handleSchedules(submission);
+		handleSchedules(submission);
 		if (!ziggyService.isZiggyCompliant(submission.bindType())) {
 			logger.info("Ziggy active");
 			passToZiggy(submission);

@@ -35,7 +35,7 @@ public class Client extends BaseEntity {
 	@JsonProperty
 	private Map<String, List<String>> relationships;
 
-	protected Client() {
+	public Client() {
 		
 	}
 

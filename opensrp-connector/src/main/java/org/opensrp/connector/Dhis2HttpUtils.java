@@ -19,9 +19,9 @@ import org.springframework.stereotype.Component;
 import com.mysql.jdbc.StringUtils;
 
 @Component
-public class DHIS2HttpUtils {
+public class Dhis2HttpUtils {
 	
-	public DHIS2HttpUtils(){
+	public Dhis2HttpUtils(){
 		
 	}
 	

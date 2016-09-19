@@ -11,7 +11,7 @@ import org.opensrp.api.domain.Address;
 import org.opensrp.api.domain.BaseEntity;
 import org.opensrp.api.domain.Client;
 import org.opensrp.connector.BahmniHttpUtils;
-import org.opensrp.connector.DHIS2HttpUtils;
+import org.opensrp.connector.Dhis2HttpUtils;
 import org.opensrp.connector.HttpUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -34,7 +34,7 @@ public class DHIS2Service extends OpenmrsService {
 	
 	public JSONObject trackCapture(JSONObject payloadJsonObj) throws JSONException {
 		
-		return new JSONObject(DHIS2HttpUtils.post( DHIS2URL, "", payloadJsonObj.toString(),
+		return new JSONObject(Dhis2HttpUtils.post( DHIS2URL, "", payloadJsonObj.toString(),
 		    "dghs", "Dghs@123").body());
 		
 	

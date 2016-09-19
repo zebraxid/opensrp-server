@@ -19,7 +19,7 @@ import org.json.JSONObject;
 import org.opensrp.api.domain.Client;
 import org.opensrp.api.domain.Event;
 import org.opensrp.connector.BahmniOpenmrsConnector;
-import org.opensrp.connector.DHIS2Connector;
+import org.opensrp.connector.Dhis2Connector;
 import org.opensrp.connector.OpenmrsConnector;
 import org.opensrp.connector.openmrs.constants.OpenmrsHouseHold;
 import org.opensrp.connector.openmrs.service.BahmniPatientService;
@@ -76,7 +76,7 @@ public class FormSubmissionController {
 	
 	private BahmniOpenmrsConnector bahmniOpenmrsConnector;
 	
-	private DHIS2Connector dhis2Connector;
+	private Dhis2Connector dhis2Connector;
 	
 	private BahmniPatientService bahmniPatientService;
 	
@@ -122,7 +122,7 @@ public class FormSubmissionController {
 	}
 	
 	@Autowired
-	public void setDhis2Connector(DHIS2Connector dhis2Connector) {
+	public void setDhis2Connector(Dhis2Connector dhis2Connector) {
 		this.dhis2Connector = dhis2Connector;
 	}
 	

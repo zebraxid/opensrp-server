@@ -31,12 +31,12 @@ import org.springframework.stereotype.Service;
 import com.mysql.jdbc.StringUtils;
 
 @Service
-public class DHIS2Connector {
+public class Dhis2Connector {
 
 	private FormAttributeMapper formAttributeMapper;
 		
 	@Autowired
-	public DHIS2Connector(FormAttributeMapper formAttributeMapper) {
+	public Dhis2Connector(FormAttributeMapper formAttributeMapper) {
 		this.formAttributeMapper = formAttributeMapper;
 	}
 	

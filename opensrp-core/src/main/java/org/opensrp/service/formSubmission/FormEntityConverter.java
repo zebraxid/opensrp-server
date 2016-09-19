@@ -16,6 +16,7 @@ import org.opensrp.common.FormEntityConstants;
 import org.opensrp.common.FormEntityConstants.Encounter;
 import org.opensrp.common.FormEntityConstants.FormEntity;
 import org.opensrp.common.FormEntityConstants.Person;
+import  org.opensrp.common.AllConstants;
 import org.opensrp.common.util.DateUtil;
 import org.opensrp.domain.Address;
 import org.opensrp.domain.Client;
@@ -348,6 +349,7 @@ public class FormEntityConverter {
 		DateTime deathdate = dd == null ? null : new DateTime(dd).withTimeAtStartOfDay();
 		String aproxbd = fs.getFieldValue(getFieldName(Person.birthdate_estimated, fs));
 		Boolean birthdateApprox = false;
+	
 		if (!StringUtils.isEmptyOrWhitespaceOnly(aproxbd) && NumberUtils.isNumber(aproxbd)) {
 			int bde = 0;
 			try {
@@ -378,6 +380,7 @@ public class FormEntityConverter {
 		        .withBirthdate(birthdate, birthdateApprox).withDeathdate(deathdate, deathdateApprox).withGender(gender);
 		
 		c.withAddresses(addresses).withAttributes(extractAttributes(fs)).withIdentifiers(extractIdentifiers(fs));
+		c.addIdentifier(AllConstants.BRISEVENTID, "aaaa-4frr-drr-dfrr-dfr");
 		return c;
 	}
 	
