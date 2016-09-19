@@ -213,7 +213,7 @@ public class AllConstants {
         	public static final String lmp_calc_edd_formatted ="lmp_calc_edd_formatted";
         	public static final String lmp_calc_ultrasound_formatted ="lmp_calc_ultrasound_formatted";
         	public static final String Is_preg_outcome ="Is_preg_outcome";
-        	public static final String Visit_status = "Visit_status";
+        	public static final String Child_vital_status = "Child_vital_status";
         	public static final String final_edd ="final_edd";
         	public static final String final_lmp ="final_lmp";
         	public static final String ga_edd ="ga_edd";

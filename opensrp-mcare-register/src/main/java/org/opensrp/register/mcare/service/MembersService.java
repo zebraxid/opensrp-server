@@ -317,9 +317,9 @@ public class MembersService {
 						}
 					}
 		
-		if(membersFields.containsKey(Visit_status))
-			if(!membersFields.get(Visit_status).equalsIgnoreCase("") && membersFields.get(Visit_status) != null)
-				if(membersFields.get(Visit_status).equalsIgnoreCase("3"))
+		if(membersFields.containsKey(Child_vital_status))
+			if(!membersFields.get(Child_vital_status).equalsIgnoreCase("") && membersFields.get(Child_vital_status) != null)
+				if(membersFields.get(Child_vital_status).equalsIgnoreCase("3"))
 					membersScheduleService.unEnrollAndCloseSchedule(
 							members.caseId(),submission.anmId(),IMD_SCHEDULE_Woman_BNF,LocalDate.parse(submission.getField(REFERENCE_DATE)));
 					
@@ -481,7 +481,7 @@ public class MembersService {
 											.put(existing_location, submission.getField(existing_location))
 											.put(Date_of_interview, submission.getField(Date_of_interview))
 											.put(Confirm_info, submission.getField(Confirm_info))
-											.put(Visit_status, submission.getField(Visit_status))											
+											.put(Child_vital_status, submission.getField(Child_vital_status))											
 											.put(Gestational_age, submission.getField(Gestational_age))
 											.put(EDD, submission.getField(EDD))
 											.put(Woman_vital_status, submission.getField(Woman_vital_status))
@@ -503,14 +503,14 @@ public class MembersService {
 		}  
 		LocalDate ddd = new LocalDate(day);
 		
-		if (!submission.getField(Visit_status).equalsIgnoreCase("") && submission.getField(Visit_status) != null){	
-			if(submission.getField(Visit_status).equalsIgnoreCase("1")){
+		if (!submission.getField(Child_vital_status).equalsIgnoreCase("") && submission.getField(Child_vital_status) != null){	
+			if(submission.getField(Child_vital_status).equalsIgnoreCase("1")){
 				if (!submission.getField(EDD).equalsIgnoreCase("") && submission.getField(EDD) != null)
 					if(isValidDate(submission.getField(EDD)))
 						membersScheduleService.enrollMembersBNFVisit(members.caseId(),submission.anmId(),submission.getField(EDD),submission.instanceId());
 			}
 				
-			else if(submission.getField(Visit_status).equalsIgnoreCase("3")){
+			else if(submission.getField(Child_vital_status).equalsIgnoreCase("3")){
 				membersScheduleService.unEnrollAndCloseSchedule(members.caseId(),submission.anmId(),SCHEDULE_Woman_BNF,LocalDate.parse(submission.getField(REFERENCE_DATE)));
 			}
 		}
