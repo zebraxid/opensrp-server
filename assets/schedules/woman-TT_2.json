@@ -1,9 +1,9 @@
 {
-    "name": "Woman TT_2",
+    "name": "Woman TT2",
     "absolute": true,
     "milestones": [
     	{
-            "name": "Woman TT_2",
+            "name": "Woman TT2",
             "scheduleWindows": {
             	"earliest": ["28 Days"],
                 "due": ["42 Days"],
@@ -13,9 +13,9 @@
             "alerts": [
             	{
                     "window": "earliest",
-                    "offset": ["21 Days"],
+                    "offset": ["0 Days"],
                     "interval": ["1 Day"],
-                    "count": "7"
+                    "count": "28"
                 },
                 {
                     "window": "due",
