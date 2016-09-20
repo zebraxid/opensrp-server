@@ -67,8 +67,10 @@ public class HttpUtil {
      */
     public static HttpResponse get(String url, String payload, String username, String password) {
     	new TurnOffCertificateValidation().ForHTTPSConnections();
+
     	try {
             HttpURLConnection con = makeConnection(url, payload, HttpMethod.GET, true, username, password);
+            
             return new HttpResponse(con.getResponseCode() == HttpStatus.SC_OK, IOUtils.toString(con.getInputStream()));
         } 
         catch(FileNotFoundException e){
@@ -92,7 +94,7 @@ public class HttpUtil {
     	URL urlo = new URL(url);
 		HttpURLConnection conn = (HttpURLConnection) urlo.openConnection();
 		conn.setRequestProperty("Accept-Charset", charset);//Trojanhorse30
-		
+		System.err.println("URL:"+url);
 		if(useBasicAuth){
 			String encoded = new String(Base64.encodeBase64((username+":"+password).getBytes()));
 	        conn.setRequestProperty("Authorization", "Basic "+encoded);

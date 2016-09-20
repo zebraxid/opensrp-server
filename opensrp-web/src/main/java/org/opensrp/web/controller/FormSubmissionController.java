@@ -19,6 +19,7 @@ import org.json.JSONObject;
 import org.opensrp.api.domain.Client;
 import org.opensrp.api.domain.Event;
 import org.opensrp.connector.BahmniOpenmrsConnector;
+import org.opensrp.connector.BrisConnector;
 import org.opensrp.connector.Dhis2Connector;
 import org.opensrp.connector.OpenmrsConnector;
 import org.opensrp.connector.openmrs.constants.OpenmrsHouseHold;
@@ -93,6 +94,7 @@ public class FormSubmissionController {
 	private IndetifierMapingRepository bahmniIdRepository;
 	
 	private DHIS2Service dHIS2Service;
+	private BrisConnector brisConnector;
 	
 	@Autowired
 	public FormSubmissionController(FormSubmissionService formSubmissionService, TaskSchedulerService scheduler,
@@ -126,6 +128,11 @@ public class FormSubmissionController {
 		this.dhis2Connector = dhis2Connector;
 	}
 	
+	@Autowired
+    public void setBrisConnector(BrisConnector brisConnector) {
+    	this.brisConnector = brisConnector;
+    }
+
 	@RequestMapping(method = GET, value = "/form-submissions")
 	@ResponseBody
 	private List<FormSubmissionDTO> getNewSubmissionsForANM(@RequestParam("anm-id") String anmIdentifier,
@@ -155,103 +162,7 @@ public class FormSubmissionController {
 			}
 		});
 	}
-	
-	@RequestMapping(headers = { "Accept=application/json" }, method = POST, value = "/form-submissions-mcare")
-	public ResponseEntity<HttpStatus> submitFormsForMcare(@RequestBody List<FormSubmissionDTO> formSubmissionsDTO) {
-		try {
-			if (formSubmissionsDTO.isEmpty()) {
-				return new ResponseEntity<>(BAD_REQUEST);
-			}
-			
-			scheduler.notifyEvent(new SystemEvent<>(OpenSRPEvent.FORM_SUBMISSION, formSubmissionsDTO));
-			
-			try {
-				// //////TODO MAIMOONA : SHOULD BE IN EVENT but event needs to
-				// be moved to web so for now kept here
-				String json = new Gson().toJson(formSubmissionsDTO);
-				System.out.println("MMMMMMMMMMMYYYYYYYYYYYYYY::" + json);
-				List<FormSubmissionDTO> formSubmissions = new Gson().fromJson(json,
-				    new TypeToken<List<FormSubmissionDTO>>() {}.getType());
-				
-				List<FormSubmission> fsl = with(formSubmissions).convert(new Converter<FormSubmissionDTO, FormSubmission>() {
-					
-					@Override
-					public FormSubmission convert(FormSubmissionDTO submission) {
-						return FormSubmissionConverter.toFormSubmission(submission);
-					}
-				});
-				for (FormSubmission formSubmission : fsl) {
-					if (openmrsConnector.isOpenmrsForm(formSubmission)) {
-						System.out
-						        .println("Generating ID to openMRS/***********************************************************************/");
-						JSONObject idGen = patientService.generateID();
-						System.out.print(idGen);
-						
-						System.out
-						        .println("Sending data to openMRS/***********************************************************************/");
-						JSONObject p = patientService.getPatientByIdentifier(formSubmission.entityId());
-						JSONObject r = patientService.getPatientByIdentifier(formSubmission.getField("relationalid"));
-						// System.out.println("Existing patient found into openMRS with relationalid : "
-						// + q);
-						
-						if (p != null || r != null) { // HO
-							System.out.println("Existing patient found into openMRS with id : " + p == null ? formSubmission
-							        .getField("relationalid") : formSubmission.entityId()
-							        + "/***********************************************************************/");
-							Event e;
-							Map<String, Map<String, Object>> dep;
-							dep = openmrsConnector.getDependentClientsFromFormSubmission(formSubmission);
-							if (dep.size() > 0) { // HOW(n)
-								System.out
-								        .println("Dependent client exist into formsubmission /***********************************************************************/ ");
-								for (Map<String, Object> cm : dep.values()) {
-									System.out.println(patientService.createPatient((Client) cm.get("client")));
-									System.out.println(encounterService.createEncounter((Event) cm.get("event"), ""));
-								}
-							}
-							// HOW(0)
-							e = openmrsConnector.getEventFromFormSubmission(formSubmission);
-							System.out.println("Creates encounter for client id: " + e.getBaseEntityId());
-							System.out.println(encounterService.createEncounter(e, ""));
-						} else { // Hn
-							Map<String, Map<String, Object>> dep;
-							dep = openmrsConnector.getDependentClientsFromFormSubmission(formSubmission);
-							if (dep.size() > 0) { // HnW(n)
-								System.out
-								        .println("Dependent client exist into formsubmission /***********************************************************************/ ");
-								Client childhClient = openmrsConnector.getClientFromFormSubmission(formSubmission);
-								Event childhEvent = openmrsConnector.getEventFromFormSubmission(formSubmission);
-								OpenmrsHouseHold child = new OpenmrsHouseHold(childhClient, childhEvent);
-								for (Map<String, Object> cm : dep.values()) {
-									child.addHHMember((Client) cm.get("client"), (Event) cm.get("event"));
-								}
-								householdService.saveHH(child);
-							} else {// HnW(0)
-								System.out
-								        .println("Patient and Dependent client not exist into openmrs /***********************************************************************/ ");
-								Client c = openmrsConnector.getClientFromFormSubmission(formSubmission);
-								System.out.println(patientService.createPatient(c));
-								Event e = openmrsConnector.getEventFromFormSubmission(formSubmission);
-								
-								System.out.println(encounterService.createEncounter(e, ""));
-							}
-						}
-					}
-				}
-			}
-			catch (Exception e) {
-				e.printStackTrace();
-			}
-			
-			logger.debug(format("Added Form submissions to queue.\nSubmissions: {0}", formSubmissionsDTO));
-		}
-		catch (Exception e) {
-			logger.error(format("Form submissions processing failed with exception {0}.\nSubmissions: {1}", e,
-			    formSubmissionsDTO));
-			return new ResponseEntity<>(INTERNAL_SERVER_ERROR);
-		}
-		return new ResponseEntity<>(CREATED);
-	}
+		
 	
 	@RequestMapping(headers = { "Accept=application/json" }, method = POST, value = "/form-submissions")
 	public ResponseEntity<HttpStatus> submitFormsForDGHS(@RequestBody List<FormSubmissionDTO> formSubmissionsDTO) {
@@ -330,14 +241,17 @@ public class FormSubmissionController {
 							System.out
 							        .println("Patient and Dependent client not exist into Bahmni openmrs /***********************************************************************/ ");
 							Client c = bahmniOpenmrsConnector.getClientFromFormSubmission(formSubmission);
-							System.out.println(bahmniPatientService.createPatient(c, idGen));
+							//System.out.println(bahmniPatientService.createPatient(c, idGen));
 							Event e = openmrsConnector.getEventFromFormSubmission(formSubmission);
-							System.out.println(encounterService.createEncounter(e, idGen));
+							//System.out.println(encounterService.createEncounter(e, idGen));
 							System.out.println("Event:   " + e.toString());
 							JSONObject payloadJsonObj = dhis2Connector.getEventFromFormSubmission(formSubmission, c);
 							System.out.println("Load:" + payloadJsonObj.toString());
-							JSONObject jb = dHIS2Service.trackCapture(payloadJsonObj);
-							System.out.println("Output:" + jb.toString());
+							//JSONObject jb = dHIS2Service.trackCapture(payloadJsonObj);
+							//System.out.println("Output:" + jb.toString());
+							
+							brisConnector.getEventFromFormSubmission(formSubmission, c);
+							
 						}
 					}
 				}
