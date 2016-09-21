@@ -2,6 +2,7 @@ package org.opensrp.web.rest.api;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
+import org.json.JSONException;
 import org.opensrp.dto.PrivilegeDTO;
 import org.opensrp.rest.api.service.CrvsApiService;
 import org.slf4j.Logger;
@@ -25,7 +26,7 @@ public class BrisApiController {
 
 	@RequestMapping(method = GET, value = "api/crvsuuid")
 	@ResponseBody
-	public String crvsUuid(@RequestParam String birsEventId, @RequestParam String birthRegistrationId) {
+	public String crvsUuid(@RequestParam String birsEventId, @RequestParam String birthRegistrationId) throws JSONException {
 		logger.info("requeset reached with - " + birthRegistrationId );
 		return crvsApiService.getEntityId(birsEventId, birthRegistrationId);
 		

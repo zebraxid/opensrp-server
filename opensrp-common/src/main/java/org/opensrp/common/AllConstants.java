@@ -1993,4 +1993,6 @@ public class AllConstants {
 	
 	public static final String FORM_SCHEDULE_SUBJECT = "FORM-SCHEDULE";
 	public static final String BRISEVENTID = "brisEventId";
+
+	public static final String BIRTHREGISTRATIONID = "birthRegistrationId";
 }

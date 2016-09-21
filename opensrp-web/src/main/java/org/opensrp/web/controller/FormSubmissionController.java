@@ -250,7 +250,7 @@ public class FormSubmissionController {
 							//JSONObject jb = dHIS2Service.trackCapture(payloadJsonObj);
 							//System.out.println("Output:" + jb.toString());
 							
-							brisConnector.getEventFromFormSubmission(formSubmission, c);
+							//brisConnector.getEventFromFormSubmission(formSubmission, c);
 							
 						}
 					}

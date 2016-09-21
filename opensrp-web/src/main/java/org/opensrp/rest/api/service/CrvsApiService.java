@@ -1,5 +1,6 @@
 package org.opensrp.rest.api.service;
 
+import org.json.JSONException;
 import org.opensrp.domain.Client;
 import org.opensrp.service.ClientService;
 import  org.opensrp.common.AllConstants;
@@ -16,12 +17,13 @@ public class CrvsApiService {
     	this.clientService = clientService;
     }
 
-	public String getEntityId(String birsEventId, String birthRegistrationId){
+	public String getEntityId(String brisEventId, String birthRegistrationId) throws JSONException{
 		Client client = new Client();
-		client.addIdentifier(AllConstants.BRISEVENTID, birsEventId);
-		
-		Client cl = clientService.findClient(client);
-		return cl.getBaseEntityId();
+		client.addIdentifier(AllConstants.BRISEVENTID, brisEventId);		
+		Client originalClient = clientService.findClient(client);		
+		originalClient.addIdentifier(AllConstants.BIRTHREGISTRATIONID, birthRegistrationId);
+		clientService.updateClient(originalClient);
+		return originalClient.getBaseEntityId();
 		
 	}
 	

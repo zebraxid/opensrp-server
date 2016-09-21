@@ -1,14 +1,23 @@
 package org.opensrp.service.formSubmission;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.text.ParseException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.codec.binary.Base64;
 import org.joda.time.LocalDate;
 import org.json.JSONException;
+import org.opensrp.common.AllConstants;
 import org.opensrp.domain.Client;
 import org.opensrp.domain.Event;
+import org.opensrp.form.domain.FormField;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.form.domain.SubFormData;
 import org.opensrp.scheduler.HealthSchedulerService;
@@ -20,6 +29,7 @@ import org.opensrp.util.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
@@ -41,6 +51,7 @@ public class FormSubmissionProcessor {
 	private EventService eventService;
 	
 	private HealthSchedulerService scheduleService;
+	private static final String BRIS_URL = "http://192.168.22.55/rest/index.php";
 	
 	@Autowired
 	public FormSubmissionProcessor(ZiggyService ziggyService, FormSubmissionRouter formSubmissionRouter,
@@ -130,7 +141,7 @@ public class FormSubmissionProcessor {
 		return null;
 	}
 	
-	private void makeModelEntities(FormSubmission submission) throws JSONException {
+	private void makeModelEntities(FormSubmission submission) throws JSONException, ParseException, IOException {
 		Client c = formEntityConverter.getClientFromFormSubmission(submission);
 		Event e = formEntityConverter.getEventFromFormSubmission(submission);
 		Map<String, Map<String, Object>> dep = formEntityConverter.getDependentClientsFromFormSubmission(submission);
@@ -139,6 +150,8 @@ public class FormSubmissionProcessor {
 			clientService.mergeClient(c);
 		} else
 			clientService.addClient(c);
+		
+		updateClientWithBrisEventId(submission, c);
 		eventService.addEvent(e);
 		// TODO relationships b/w entities
 		
@@ -155,4 +168,59 @@ public class FormSubmissionProcessor {
 		ziggyService.saveForm(params, new Gson().toJson(submission.instance()));
 	}
 	
+	public void updateClientWithBrisEventId(FormSubmission fs, Client c) throws ParseException, JSONException, IOException {
+		List<FormField> formfileds = fs.instance().form().fields();
+		//System.err.println(formfileds.get(29).value());
+		String NewBornsUid = formfileds.get(0).value();
+		String facilityId = formfileds.get(8).value();
+		String DOB = formfileds.get(34).value();
+		String FathersNID = formfileds.get(26).value();
+		String FathersName = formfileds.get(27).value();
+		String FathersDOB = formfileds.get(29).value();
+		String MothersNID = formfileds.get(30).value();
+		String MothersName = formfileds.get(31).value();
+		String MothersDOB = formfileds.get(33).value();
+		String urlParameters = "facilityId=" + facilityId + "&NewBornsUid=" + NewBornsUid + "&DOB=" + DOB + "&FathersNID="
+		        + FathersNID + "&FathersName=" + FathersName + "&FathersDOB=" + FathersDOB + "&MothersNID=" + MothersNID
+		        + "&MothersName=" + MothersName + "&MothersDOB=" + MothersDOB;
+		
+		/*JSONArray p = new JSONObject(HttpUtil.get(BRIS_URL, urlParameters,
+		    "", "").body()).getJSONArray("results");*/
+		String url = BRIS_URL;
+		String charset = "UTF-8";
+		String payload = "";
+		String username = "sohel";
+		String password = "Sohel@123";
+		if (url.endsWith("/")) {
+			url = url.substring(0, url.lastIndexOf("/"));
+		}
+		url = (url + (StringUtils.isEmptyOrWhitespaceOnly(payload) ? "" : ("?" + payload))).replaceAll(" ", "%20");
+		URL urlo = new URL(url);
+		HttpURLConnection conn = (HttpURLConnection) urlo.openConnection();
+		conn.setRequestProperty("Accept-Charset", charset);//Trojanhorse30
+		boolean useBasicAuth = false;
+		
+		if (useBasicAuth) {
+			String encoded = new String(Base64.encodeBase64((username + ":" + password).getBytes()));
+			conn.setRequestProperty("Authorization", "Basic " + encoded);
+		}
+		conn.setRequestMethod(HttpMethod.GET.name());
+		BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
+		StringBuilder sb = new StringBuilder();
+		String output;
+		while ((output = br.readLine()) != null) {
+			sb.append(output);
+		}
+		System.err.println("Output:  "+sb);
+		System.out.println("Param:" + urlParameters);
+		Client originalClient = clientService.findClient(c);
+		originalClient.addIdentifier(AllConstants.BRISEVENTID, sb.toString());
+		try {
+			clientService.updateClient(originalClient);
+		}
+		catch (Exception e) {
+			System.out.println(e.getClass() + " : " + e.getMessage());
+		}
+		
+	}
 }
