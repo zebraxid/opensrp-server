@@ -1,9 +1,9 @@
 {
-    "name": "Woman TT4",
+    "name": "Woman_TT4",
     "absolute": true,
     "milestones": [
     	{
-            "name": "Woman TT4",
+            "name": "Woman_TT4",
             "scheduleWindows": {
             	"earliest": ["364 Days"],
                 "due": ["378 Days"],
