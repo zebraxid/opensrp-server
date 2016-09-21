@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.ParseException;
 import java.util.HashMap;
@@ -184,11 +183,10 @@ public class FormSubmissionProcessor {
 		        + FathersNID + "&FathersName=" + FathersName + "&FathersDOB=" + FathersDOB + "&MothersNID=" + MothersNID
 		        + "&MothersName=" + MothersName + "&MothersDOB=" + MothersDOB;
 		
-		/*JSONArray p = new JSONObject(HttpUtil.get(BRIS_URL, urlParameters,
-		    "", "").body()).getJSONArray("results");*/
+		
 		String url = BRIS_URL;
 		String charset = "UTF-8";
-		String payload = "";
+		String payload = urlParameters;
 		String username = "sohel";
 		String password = "Sohel@123";
 		if (url.endsWith("/")) {
@@ -197,7 +195,7 @@ public class FormSubmissionProcessor {
 		url = (url + (StringUtils.isEmptyOrWhitespaceOnly(payload) ? "" : ("?" + payload))).replaceAll(" ", "%20");
 		URL urlo = new URL(url);
 		HttpURLConnection conn = (HttpURLConnection) urlo.openConnection();
-		conn.setRequestProperty("Accept-Charset", charset);//Trojanhorse30
+		conn.setRequestProperty("Accept-Charset", charset);
 		boolean useBasicAuth = false;
 		
 		if (useBasicAuth) {
@@ -211,8 +209,7 @@ public class FormSubmissionProcessor {
 		while ((output = br.readLine()) != null) {
 			sb.append(output);
 		}
-		System.err.println("Output:  "+sb);
-		System.out.println("Param:" + urlParameters);
+		
 		Client originalClient = clientService.findClient(c);
 		originalClient.addIdentifier(AllConstants.BRISEVENTID, sb.toString());
 		try {
