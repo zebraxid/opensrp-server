@@ -73,13 +73,15 @@ public class CampService implements CampInterface<CampDTO> {
 						campDateRepository.add(campDate);
 					}
 				}
+				msg = "1";
 			}
 			catch (Exception e) {
 				logger.debug("Message: " + e);
+				msg = "3";
 			}
-			msg = camp.getSession_name();
+			
 		} else {
-			msg = "1";
+			msg = "2";
 		}
 		return msg;
 	}
