@@ -82,6 +82,7 @@ static Map<String, String[]> vs = new HashMap<String, String[]>(){{
 		String gender = req.getParameter("gender");
 		String birthdate = req.getParameter("birthdate");
 		String identifier = req.getParameter("identifier");
+		String phoneNo = req.getParameter("phoneNo")!=null?req.getParameter("phoneNo"):"";
 		
 		if(StringUtils.isEmptyOrWhitespaceOnly(identifier)
 				|| StringUtils.isEmptyOrWhitespaceOnly(firstName)||StringUtils.isEmptyOrWhitespaceOnly(lastName)
@@ -96,6 +97,7 @@ static Map<String, String[]> vs = new HashMap<String, String[]>(){{
 		c.setLastName(lastName);
 		c.setGender(gender);
 		c.setBirthdate(new DateTime(birthdate));
+		c.setPhoneNo(phoneNo);
 		
 		clientService.addClient(c);
 		
@@ -157,6 +159,8 @@ static Map<String, String[]> vs = new HashMap<String, String[]>(){{
 		}
 		return vaccineCard;
 	}
+	
+	// backup method which only update openmrs
 	@RequestMapping(value="/uvo", method=RequestMethod.POST)
 	@ResponseBody
 	public Map<String, String> updateVaccineO(HttpServletRequest req){
@@ -185,7 +189,7 @@ static Map<String, String[]> vs = new HashMap<String, String[]>(){{
 				return resp;
 			}
 			
-			Event e = new Event(c.getBaseEntityId(), "Immunization", new DateTime(), 
+			Event e = new Event(c.getBaseEntityId(), UUID.randomUUID().toString(), "Immunization", new DateTime(), 
 					"testentity", "demotest", location, System.currentTimeMillis()+"");
 			List<Object> values = new ArrayList<>();
 			values.add(date);
