@@ -61,6 +61,7 @@ public class HHService {
 		
 		houseHold.setPROVIDERID(submission.anmId());
 		houseHold.setINSTANCEID(submission.instanceId());
+		houseHold.setTODAY(submission.getField(REFERENCE_DATE));	
 
 		allHouseHolds.update(houseHold);
 			
@@ -161,7 +162,12 @@ public class HHService {
 					.put(tt4, membersFields.get(tt4))
 					.put(tt_4_dose_today, membersFields.get(tt_4_dose_today))
 					.put(tt5, membersFields.get(tt5))
-					.put(tt_5_dose_today, membersFields.get(tt_5_dose_today))
+					.put(tt_5_dose_today, membersFields.get(tt_5_dose_today))					
+					.put(tt1_final, membersFields.get(tt1_final))
+					.put(tt2_final, membersFields.get(tt2_final))
+					.put(tt3_final, membersFields.get(tt3_final))
+					.put(tt4_final, membersFields.get(tt4_final))
+					.put(tt5_final, membersFields.get(tt5_final))					
 					.put(Child_birth_date_known, membersFields.get(Child_birth_date_known))
 					.put(Child_birth_date, membersFields.get(Child_birth_date))
 					.put(Child_age, membersFields.get(Child_age))

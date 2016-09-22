@@ -395,6 +395,16 @@ public class Members extends MotechBaseDataObject {
 	@JsonProperty
 	private String measles2_dose_today;	
 	@JsonProperty
+	private String tt1_final;
+	@JsonProperty
+	private String tt2_final;
+	@JsonProperty
+	private String tt3_final;
+	@JsonProperty
+	private String tt4_final;
+	@JsonProperty
+	private String tt5_final;
+	@JsonProperty
 	private Map<String, String> details;
 	@JsonProperty
 	private Map<String, String> TTVisitOne;
@@ -1340,6 +1350,26 @@ public class Members extends MotechBaseDataObject {
 		return this;
 	}
 	
+	public void setTt1_final(String tt1_final) {
+		this.tt1_final = tt1_final;
+	}
+
+	public void setTt2_final(String tt2_final) {
+		this.tt2_final = tt2_final;
+	}
+
+	public void setTt3_final(String tt3_final) {
+		this.tt3_final = tt3_final;
+	}
+
+	public void setTt4_final(String tt4_final) {
+		this.tt4_final = tt4_final;
+	}
+
+	public void setTt5_final(String tt5_final) {
+		this.tt5_final = tt5_final;
+	}
+	
 	public String caseId() {
 		return caseId;
 	}
@@ -1951,7 +1981,21 @@ public class Members extends MotechBaseDataObject {
 	public String Relationalid() {
 		return relationalid;
 	}
-
+	public String Tt1_final() {
+		return tt1_final;
+	}
+	public String Tt2_final() {
+		return tt2_final;
+	}
+	public String Tt3_final() {
+		return tt3_final;
+	}
+	public String Tt4_final() {
+		return tt4_final;
+	}
+	public String Tt5_final() {
+		return tt5_final;
+	}	
 	public Map<String, String> details() {
 		if (details == null)
 			this.details = new HashMap<>();
