@@ -25,11 +25,6 @@ public class FormInstance {
         this.form = form;
         this.form_data_definition_version = version;
     }
-
-    public FormInstance(FormData form, String form_data_definition_version) {
-        this.form = form;
-        this.form_data_definition_version = form_data_definition_version;
-    }
     
     public FormData form() {
         return form;
