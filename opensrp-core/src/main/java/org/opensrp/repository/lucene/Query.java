@@ -25,8 +25,8 @@ public class Query{
 			addToQuery(name+":"+value+" ");
 			return this;
 		}
-		public Query like(String name, String value) {
-			addToQuery(name+":["+value+" TO "+value+"zz] ");
+		public Query like(String field, String value) {
+			addToQuery(field+":\""+value+"\"");
 			return this;
 		}
 		public Query eq(String name, DateTime value){

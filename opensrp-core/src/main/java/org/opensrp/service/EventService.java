@@ -26,6 +26,7 @@ import com.google.gson.GsonBuilder;
 public class EventService {
 	
 	private final AllEvents allEvents;
+	
 	@Autowired
 	LuceneEventRepository lcr;
 	
@@ -223,9 +224,9 @@ public class EventService {
 		List<Event> events = allEvents.findByClientAndConceptAndDate(baseEntityId, concept, conceptValue, dateFrom, dateTo);
 		return events;
 	}
-	public List<Event> findByEventTypeAndDate(String baseEntityId, String eventType,
-                                              String dateFrom, String dateTo) {
-	List<Event> events = lcr.getByCriteria(baseEntityId, new DateTime(dateFrom), new DateTime(dateTo),eventType);
-	return events;
-}
+	
+	public List<Event> findByEventTypeAndDate(String baseEntityId, String eventType, DateTime dateFrom, DateTime dateTo) {
+		List<Event> events = lcr.getByCriteria(baseEntityId, dateFrom, dateTo, eventType);
+		return events;
+	}
 }
