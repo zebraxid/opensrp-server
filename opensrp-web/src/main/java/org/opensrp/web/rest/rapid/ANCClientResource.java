@@ -17,16 +17,21 @@ import org.joda.time.DateTime;
 import org.joda.time.Weeks;
 import org.opensrp.domain.Client;
 import org.opensrp.domain.Event;
+import org.opensrp.domain.Obs;
 import org.opensrp.service.ClientService;
 import org.opensrp.service.EventService;
 import org.opensrp.util.Utils;
 import org.opensrp.web.controller.ANMLocationController;
+import org.opensrp.web.rest.RestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.mysql.jdbc.StringUtils;
 
 @Controller
 @RequestMapping("/rest/rapid/client")
@@ -46,7 +51,11 @@ public class ANCClientResource {
 	
 	private static final String ANC_LMP_CONCEPT = "1427AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
 	
-	private static final int PREGNANCY_PERIOD=280;
+	private static final int PREGNANCY_PERIOD = 259;//37 weeks
+	
+	private static final String DEFAULT_FIELDTYPE = "concept";
+	
+	private static final String DEFAULT_FIELD_DATA_TYPE = "text";
 	
 	private static Logger logger = LoggerFactory.getLogger(ANMLocationController.class.toString());
 	
@@ -115,6 +124,136 @@ public class ANCClientResource {
 		return m;
 	}
 	
+	@RequestMapping(value = "/ancvisit", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, String> updateAncVisit(HttpServletRequest req) {
+		Map<String, String> resp = new HashMap<>();
+		String id = req.getParameter("clientId");
+		String location = req.getParameter("location");
+		String date = req.getParameter("date");
+		String ancvisit = req.getParameter("anc");
+		String systolicbp = req.getParameter("sbp");
+		String diastolicbp = req.getParameter("dbp");
+		String temperature = req.getParameter("temp");
+		String pulserate = req.getParameter("pulse");
+		String weight = req.getParameter("weight");
+		String pallor = req.getParameter("pallor");
+		String swelling = req.getParameter("swelling");
+		String bleeding = req.getParameter("bleeding");
+		String jaundice = req.getParameter("jaundice");
+		String fits = req.getParameter("fits");
+		String eventType = "";
+		
+		try {
+			if (StringUtils.isEmptyOrWhitespaceOnly(ancvisit)) {
+				resp.put("ERROR", "ANC visit MUST be specified.");
+				return resp;
+			}
+			if (StringUtils.isEmptyOrWhitespaceOnly(date)) {
+				resp.put("ERROR", "date MUST be specified.");
+				return resp;
+			}
+			if (StringUtils.isEmptyOrWhitespaceOnly(id)) {
+				resp.put("ERROR", "clientId MUST be specified.");
+				return resp;
+			}
+			Client c = clientService.find(id);
+			if (c == null) {
+				resp.put("ERROR", "ID Not found");
+				return resp;
+			}
+			eventType = RestUtils.ANCVISIT.getValue(ancvisit);
+			String entityType = RestUtils.ENTITYTYPES.MCAREMOTHER.toString().toLowerCase();
+			Event e = new Event(c.getBaseEntityId(), eventType, new DateTime(), entityType, "demo1", location,
+			        System.currentTimeMillis() + "");
+			List<Object> values = new ArrayList<>();
+			
+			if (StringUtils.isEmptyOrWhitespaceOnly(systolicbp)) {
+				values.clear();
+				values.add(systolicbp);
+				e.addObs(new Obs(DEFAULT_FIELDTYPE, DEFAULT_FIELD_DATA_TYPE,
+				        RestUtils.CONCEPTS.valueOf(RestUtils.CONCEPTS.SYSTOLIC.toString()).toString(), null, values, "",
+				        null));
+			}
+			if (StringUtils.isEmptyOrWhitespaceOnly(diastolicbp)) {
+				values.clear();
+				values.add(diastolicbp);
+				e.addObs(new Obs(DEFAULT_FIELDTYPE, DEFAULT_FIELD_DATA_TYPE,
+				        RestUtils.CONCEPTS.valueOf(RestUtils.CONCEPTS.DIASTOLIC.toString()).toString(), null, values, "",
+				        null));
+			}
+			if (StringUtils.isEmptyOrWhitespaceOnly(temperature)) {
+				values.clear();
+				values.add(temperature);
+				e.addObs(new Obs(DEFAULT_FIELDTYPE, DEFAULT_FIELD_DATA_TYPE,
+				        RestUtils.CONCEPTS.valueOf(RestUtils.CONCEPTS.TEMPERATURE.toString()).toString(), null, values, "",
+				        null));
+			}
+			if (StringUtils.isEmptyOrWhitespaceOnly(pulserate)) {
+				values.clear();
+				values.add(pulserate);
+				e.addObs(new Obs(DEFAULT_FIELDTYPE, DEFAULT_FIELD_DATA_TYPE,
+				        RestUtils.CONCEPTS.valueOf(RestUtils.CONCEPTS.PULSE.toString()).toString(), null, values, "", null));
+			}
+			if (StringUtils.isEmptyOrWhitespaceOnly(weight)) {
+				values.clear();
+				values.add(weight);
+				e.addObs(new Obs(DEFAULT_FIELDTYPE, DEFAULT_FIELD_DATA_TYPE,
+				        RestUtils.CONCEPTS.valueOf(RestUtils.CONCEPTS.WEIGHT.toString()).toString(), null, values, "",
+				        null));
+			}
+			//TODO QUESTION/ANSWER CONCEPT
+			if (StringUtils.isEmptyOrWhitespaceOnly(pallor)) {
+				values.clear();
+				values.add(pallor);
+				e.addObs(new Obs(DEFAULT_FIELDTYPE, DEFAULT_FIELD_DATA_TYPE,
+				        RestUtils.CONCEPTS.valueOf(RestUtils.CONCEPTS.PALLOR.toString()).toString(), null, values, "",
+				        null));
+			}
+			//TODO QUESTION/ANSWER CONCEPT
+			if (StringUtils.isEmptyOrWhitespaceOnly(swelling)) {
+				values.clear();
+				values.add(swelling);
+				e.addObs(new Obs(DEFAULT_FIELDTYPE, DEFAULT_FIELD_DATA_TYPE,
+				        RestUtils.CONCEPTS.valueOf(RestUtils.CONCEPTS.SWELLING.toString()).toString(), null, values, "",
+				        null));
+			}
+			//TODO QUESTION/ANSWER CONCEPT
+			if (StringUtils.isEmptyOrWhitespaceOnly(bleeding)) {
+				values.clear();
+				values.add(bleeding);
+				e.addObs(new Obs(DEFAULT_FIELDTYPE, DEFAULT_FIELD_DATA_TYPE,
+				        RestUtils.CONCEPTS.valueOf(RestUtils.CONCEPTS.BATHCANALBLEEDING.toString()).toString(), null, values,
+				        "", null));
+			}
+			//TODO QUESTION/ANSWER CONCEPT
+			if (StringUtils.isEmptyOrWhitespaceOnly(jaundice)) {
+				values.clear();
+				values.add(jaundice);
+				e.addObs(new Obs(DEFAULT_FIELDTYPE, DEFAULT_FIELD_DATA_TYPE,
+				        RestUtils.CONCEPTS.valueOf(RestUtils.CONCEPTS.JAUNDICE.toString()).toString(), null, values, "",
+				        null));
+			}
+			//TODO QUESTION/ANSWER CONCEPT
+			if (StringUtils.isEmptyOrWhitespaceOnly(fits)) {
+				values.clear();
+				values.add(fits);
+				e.addObs(new Obs(DEFAULT_FIELDTYPE, DEFAULT_FIELD_DATA_TYPE,
+				        RestUtils.CONCEPTS.valueOf(RestUtils.CONCEPTS.CONVULSIONS.toString()).toString(), null, values, "",
+				        null));
+			}
+			
+			eventService.addEvent(e);
+			resp.put("success", Boolean.toString(true));
+			return resp;
+		}
+		catch (Exception e) {
+			logger.error("", e);
+			resp.put("ERROR", "Unable to complete request");
+			return resp;
+		}
+	}
+	
 	/**
 	 * Get anc visits dates and due dates for the upcoming visits
 	 * 
@@ -126,7 +265,7 @@ public class ANCClientResource {
 		Map<String, String> ancVisits = new HashMap<String, String>();
 		if (ancEvents != null && !ancEvents.isEmpty()) {
 			for (Event event : ancEvents) {
-				String visit = ANCVISIT.get(event.getEventType()).toString();
+				String visit = RestUtils.ANCVISIT.get(event.getEventType()).toString();
 				if (!ancVisits.containsKey(visit)) {
 					ancVisits.put(visit, dateFormat.format(event.getEventDate().toDate()));
 				}
@@ -135,10 +274,10 @@ public class ANCClientResource {
 		// if size is 4 means all the visits have been done else find out the
 		// due dates
 		if (ancVisits.size() < 4) {
-			for (String visitName : ANCVISIT.names()) {
+			for (String visitName : RestUtils.ANCVISIT.names()) {
 				if (!ancVisits.containsKey(visitName)) {
 					// anc visit missing or not done, get due date based on lmp
-					int days = ANCVISITDUEDAY.get(visitName);
+					int days = RestUtils.ANCVISITDUEDAY.get(visitName);
 					Calendar cal = Calendar.getInstance();
 					cal.setTime(lmp);
 					cal.add(Calendar.DATE, days);
@@ -153,71 +292,6 @@ public class ANCClientResource {
 		}
 		
 		return ancVisits;
-	}
-	
-	enum ANCVISIT {
-		ANC1("ANC Reminder Visit 1"), ANC2("ANC Reminder Visit 2"), ANC3("ANC Reminder Visit 3"), ANC4(
-		        "ANC Reminder Visit 4");
-		
-		String value;
-		
-		private ANCVISIT(String s) {
-			value = s;
-		}
-		
-		public String getAncVisitValue() {
-			return value;
-		}
-		
-		private static final Map<String, ANCVISIT> lookup = new HashMap<String, ANCVISIT>();
-		static {
-			// Create reverse lookup hash map
-			for (ANCVISIT d : ANCVISIT.values())
-				lookup.put(d.getAncVisitValue(), d);
-		}
-		
-		public static ANCVISIT get(String value) {
-			// the reverse lookup by simply getting
-			// the value from the lookup HashMap.
-			return lookup.get(value);
-		}
-		
-		public static List<String> names() {
-			
-			List<String> list = new ArrayList<String>();
-			for (ANCVISIT s : ANCVISIT.values()) {
-				list.add(s.name());
-			}
-			
-			return list;
-		}
-	}
-	
-	enum ANCVISITDUEDAY {
-		ANC1(56), ANC2(168), ANC3(224), ANC4(252);
-		
-		int value;
-		
-		private ANCVISITDUEDAY(int days) {
-			value = days;
-		}
-		
-		public int getAncVisitDueDayValue() {
-			return value;
-		}
-		
-		private static final Map<String, Integer> lookup = new HashMap<String, Integer>();
-		static {
-			// Create reverse lookup hash map
-			for (ANCVISITDUEDAY d : ANCVISITDUEDAY.values())
-				lookup.put(d.toString(), d.getAncVisitDueDayValue());
-		}
-		
-		public static int get(String key) {
-			// the reverse lookup by simply getting
-			// the value from the lookup HashMap.
-			return lookup.get(key);
-		}
 	}
 	
 	private Date getLmp(Event event) throws Exception {
