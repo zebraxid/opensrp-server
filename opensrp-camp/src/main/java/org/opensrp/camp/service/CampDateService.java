@@ -86,7 +86,7 @@ public class CampDateService implements CampInterface<CampDate>{
 	@Override
     public CampDate findById(String id) {
 	    // TODO Auto-generated method stub
-	    return null;
+	    return campDateRepository.findById(id);
     }
 
 	
