@@ -52,6 +52,11 @@ public class CampController {
 	public ResponseEntity<String> getAllUserName() throws JSONException {
 		return new ResponseEntity<>(new Gson().toJson(campService.getAll()), OK);
 	}
+	@RequestMapping(method = GET, value = "/all-camp-date")
+	@ResponseBody
+	public ResponseEntity<String> getAllCamp() throws JSONException {
+		return new ResponseEntity<>(new Gson().toJson(campDateService.getAll()), OK);
+	}
 	
 	@RequestMapping(headers = { "Accept=application/json" }, method = POST, value = "/add-camp")
 	public ResponseEntity<String> addCamp(@RequestBody CampDTO campDTO) {
