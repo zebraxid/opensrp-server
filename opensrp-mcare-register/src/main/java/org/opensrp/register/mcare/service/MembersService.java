@@ -67,7 +67,8 @@ public class MembersService {
 			
 			Members members = allMembers.findByCaseId(membersFields.get(ID))
 					.setINSTANCEID(submission.instanceId())
-					.setPROVIDERID(submission.anmId());					
+					.setPROVIDERID(submission.anmId())
+					.setTODAY(submission.getField(REFERENCE_DATE));					
 			
 			if(membersFields.containsKey(REG_NO)){
 				allMembers.update(members);
@@ -304,8 +305,8 @@ public class MembersService {
 				membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_measles,membersFields.get(Date_of_Measles));
 	}
 	
-	public void TT_Visit(FormSubmission submission, Members members, Map<String, String> membersFields) {
-		
+	
+	public void TT_Visit(FormSubmission submission, Members members, Map<String, String> membersFields) {		
 		if(membersFields.containsKey(Is_preg_outcome))
 			if(!membersFields.get(Is_preg_outcome).equalsIgnoreCase("") && membersFields.get(Is_preg_outcome) != null)
 				if(membersFields.get(Is_preg_outcome).equalsIgnoreCase("1"))
@@ -324,141 +325,72 @@ public class MembersService {
 							members.caseId(),submission.anmId(),IMD_SCHEDULE_Woman_BNF,LocalDate.parse(submission.getField(REFERENCE_DATE)));
 					
 		
-		if (membersFields.containsKey(tt1)){
-		if (membersFields.get(tt1).equalsIgnoreCase("") || membersFields.get(tt1) == null)
-			if (membersFields.containsKey(final_lmp))
-			if(isValidDate(membersFields.get(final_lmp)))
-				membersScheduleService.enrollMembersTTVisit(members.caseId(),submission.anmId(),membersFields.get(final_lmp));
-		}
+
+		if (membersFields.containsKey(final_lmp)){
+		if(isValidDate(membersFields.get(final_lmp)))
+			membersScheduleService.enrollMembersTTVisit(members.caseId(),submission.anmId(),membersFields.get(final_lmp));
+		}		
 		
-		else if (membersFields.containsKey(tt1_retro)){			
-			if (membersFields.get(tt1_retro).equalsIgnoreCase("") || membersFields.get(tt1_retro) == null)
-				if (membersFields.containsKey(final_lmp))
-				if(isValidDate(membersFields.get(final_lmp)))
-					membersScheduleService.enrollMembersTTVisit(members.caseId(),submission.anmId(),membersFields.get(final_lmp));
-		}
 		
 		
 		if (membersFields.containsKey(tt1)){
-		if (!membersFields.get(tt1).equalsIgnoreCase("") && membersFields.get(tt1) != null)
-			if (membersFields.containsKey(tt2)){
-			if (membersFields.get(tt2).equalsIgnoreCase("") || membersFields.get(tt2) == null)
-				if(isValidDate(membersFields.get(tt1)))
-					membersScheduleService.enrollTT1_Visit(members.caseId(),submission.anmId(),membersFields.get(tt1));
-			}	
-			else if (membersFields.containsKey(tt2_retro)){	
-				if (membersFields.get(tt2_retro).equalsIgnoreCase("") || membersFields.get(tt2_retro) == null)
-					if(isValidDate(membersFields.get(tt1)))
-						membersScheduleService.enrollTT1_Visit(members.caseId(),submission.anmId(),membersFields.get(tt1));
-			}
-		}
+			if (!membersFields.get(tt1).equalsIgnoreCase("") && membersFields.get(tt1) != null)
+			if(isValidDate(membersFields.get(tt1)))
+				membersScheduleService.enrollTT1_Visit(members.caseId(),submission.anmId(),membersFields.get(tt1));
+		}	
 		
 		else if (membersFields.containsKey(tt1_retro)){
 			if (!membersFields.get(tt1_retro).equalsIgnoreCase("") && membersFields.get(tt1_retro) != null)
-				if (membersFields.containsKey(tt2)){
-				if (membersFields.get(tt2).equalsIgnoreCase("") || membersFields.get(tt2) == null){
-					if(isValidDate(membersFields.get(tt1_retro)))
-						membersScheduleService.enrollTT1_Visit(members.caseId(),submission.anmId(),membersFields.get(tt1_retro));
-				}	
-				else if (membersFields.containsKey(tt2_retro)){	
-					if (membersFields.get(tt2_retro).equalsIgnoreCase("") || membersFields.get(tt2_retro) == null)
-						if(isValidDate(membersFields.get(tt1_retro)))
-							membersScheduleService.enrollTT1_Visit(members.caseId(),submission.anmId(),membersFields.get(tt1_retro));
-				}
-			}
+			if(isValidDate(membersFields.get(tt1_retro)))
+				membersScheduleService.enrollTT1_Visit(members.caseId(),submission.anmId(),membersFields.get(tt1_retro));				
 		}	
 		
 		
+		
 		if (membersFields.containsKey(tt2)){	
-		if (!membersFields.get(tt2).equalsIgnoreCase("") && membersFields.get(tt2) != null)
-			if (membersFields.containsKey(tt3)){
-			if (membersFields.get(tt3).equalsIgnoreCase("") || membersFields.get(tt3) == null)
-				if(isValidDate(membersFields.get(tt2)))
-					membersScheduleService.enrollTT2_Visit(members.caseId(),submission.anmId(),membersFields.get(tt2));
-			}	
-			else if (membersFields.containsKey(tt3_retro)){
-				if (membersFields.get(tt3_retro).equalsIgnoreCase("") || membersFields.get(tt3_retro) == null)
-					if(isValidDate(membersFields.get(tt2)))
-						membersScheduleService.enrollTT2_Visit(members.caseId(),submission.anmId(),membersFields.get(tt2));
-			}
+			if (!membersFields.get(tt2).equalsIgnoreCase("") && membersFields.get(tt2) != null)
+			if(isValidDate(membersFields.get(tt2)))
+					membersScheduleService.enrollTT2_Visit(members.caseId(),submission.anmId(),membersFields.get(tt2));			
 		}
 		
 		else if (membersFields.containsKey(tt2_retro)){
 			if (!membersFields.get(tt2_retro).equalsIgnoreCase("") && membersFields.get(tt2_retro) != null){
-				if (membersFields.containsKey(tt3)){
-				if (membersFields.get(tt3).equalsIgnoreCase("") || membersFields.get(tt3) == null)
 					if(isValidDate(membersFields.get(tt2_retro)))
 						membersScheduleService.enrollTT2_Visit(members.caseId(),submission.anmId(),membersFields.get(tt2_retro));
-				}	
-				else if (membersFields.containsKey(tt3_retro)){
-					if (membersFields.get(tt3_retro).equalsIgnoreCase("") || membersFields.get(tt3_retro) == null)
-						if(isValidDate(membersFields.get(tt2_retro)))
-							membersScheduleService.enrollTT2_Visit(members.caseId(),submission.anmId(),membersFields.get(tt2_retro));
-				}
 			}
 		}	
+		
 
 		
 		if (membersFields.containsKey(tt3)){
-		if (!membersFields.get(tt3).equalsIgnoreCase("") && membersFields.get(tt3) != null)
-			if (membersFields.containsKey(tt4)){
-			if (membersFields.get(tt4).equalsIgnoreCase("") || membersFields.get(tt4) == null)
-				if(isValidDate(membersFields.get(tt3)))
-					membersScheduleService.enrollTT3_Visit(members.caseId(),submission.anmId(),membersFields.get(tt3));
-			}	
-			else if (membersFields.containsKey(tt4_retro)){
-				if (membersFields.get(tt4_retro).equalsIgnoreCase("") || membersFields.get(tt4_retro) == null)
-					if(isValidDate(membersFields.get(tt3)))
-						membersScheduleService.enrollTT3_Visit(members.caseId(),submission.anmId(),membersFields.get(tt3));
-			}
+			if (!membersFields.get(tt3).equalsIgnoreCase("") && membersFields.get(tt3) != null)
+			if(isValidDate(membersFields.get(tt3)))
+				membersScheduleService.enrollTT3_Visit(members.caseId(),submission.anmId(),membersFields.get(tt3));
 		}
 		
 		else if (membersFields.containsKey(tt3_retro)){
 			if (!membersFields.get(tt3_retro).equalsIgnoreCase("") && membersFields.get(tt3_retro) != null){
-				if (membersFields.containsKey(tt4)){
-				if (membersFields.get(tt4).equalsIgnoreCase("") || membersFields.get(tt4) == null)
-					if(isValidDate(membersFields.get(tt3_retro)))
-						membersScheduleService.enrollTT3_Visit(members.caseId(),submission.anmId(),membersFields.get(tt3_retro));
-				}	
-				else if (membersFields.containsKey(tt4_retro)){
-					if (membersFields.get(tt4_retro).equalsIgnoreCase("") || membersFields.get(tt4_retro) == null)
-						if(isValidDate(membersFields.get(tt3_retro)))
-							membersScheduleService.enrollTT3_Visit(members.caseId(),submission.anmId(),membersFields.get(tt3_retro));
-				}
+			if(isValidDate(membersFields.get(tt3_retro)))
+				membersScheduleService.enrollTT3_Visit(members.caseId(),submission.anmId(),membersFields.get(tt3_retro));
 			}
 		}
+		
 		
 		
 		if (membersFields.containsKey(tt4)){
-		if (!membersFields.get(tt4).equalsIgnoreCase("") && membersFields.get(tt4) != null)
-			if (membersFields.containsKey(tt5)){
-			if (membersFields.get(tt5).equalsIgnoreCase("") || membersFields.get(tt5) == null)
-				if(isValidDate(membersFields.get(tt4)))
-					membersScheduleService.enrollTT4_Visit(members.caseId(),submission.anmId(),membersFields.get(tt4));
-			}	
-			else if (membersFields.containsKey(tt5_retro)){
-				if (membersFields.get(tt5_retro).equalsIgnoreCase("") || membersFields.get(tt5_retro) == null)
-					if(isValidDate(membersFields.get(tt4)))
-						membersScheduleService.enrollTT4_Visit(members.caseId(),submission.anmId(),membersFields.get(tt4));
-			}
+			if (!membersFields.get(tt4).equalsIgnoreCase("") && membersFields.get(tt4) != null)
+			if(isValidDate(membersFields.get(tt4)))
+				membersScheduleService.enrollTT4_Visit(members.caseId(),submission.anmId(),membersFields.get(tt4));
 		}
 		
 		else if (membersFields.containsKey(tt4_retro)){
-			if (!membersFields.get(tt4_retro).equalsIgnoreCase("") && membersFields.get(tt4_retro) != null){
-				if (membersFields.containsKey(tt5)){
-				if (membersFields.get(tt5).equalsIgnoreCase("") || membersFields.get(tt5) == null)
-					if(isValidDate(membersFields.get(tt4_retro)))
-						membersScheduleService.enrollTT4_Visit(members.caseId(),submission.anmId(),membersFields.get(tt4_retro));
-				}	
-				else if (membersFields.containsKey(tt5_retro)){
-					if (membersFields.get(tt5_retro).equalsIgnoreCase("") || membersFields.get(tt5_retro) == null)
-						if(isValidDate(membersFields.get(tt4_retro)))
-							membersScheduleService.enrollTT4_Visit(members.caseId(),submission.anmId(),membersFields.get(tt4_retro));
-				}
+			if (!membersFields.get(tt4_retro).equalsIgnoreCase("") && membersFields.get(tt4_retro) != null){				
+			if(isValidDate(membersFields.get(tt4_retro)))
+					membersScheduleService.enrollTT4_Visit(members.caseId(),submission.anmId(),membersFields.get(tt4_retro));				
 			}
-		}
-	
+		}	
 	}
+	
 	
 	public void BNF_Visit(FormSubmission submission) {
 		Members members = allMembers.findByCaseId(submission.entityId());
@@ -488,6 +420,7 @@ public class MembersService {
 											.put(DOO, submission.getField(DOO))
 											.put(Number_live_birth, submission.getField(Number_live_birth))
 											.put(pregsts_bnf_current_formStatus, submission.getField(pregsts_bnf_current_formStatus))
+											.put(outcome_active, submission.getField(outcome_active))
 											.put(Received_Time, format.format(today).toString())
 											.map();	
 		
@@ -608,6 +541,11 @@ public class MembersService {
 					.put(tt_4_dose_today, membersFields.get(tt_4_dose_today))
 					.put(tt5, membersFields.get(tt5))
 					.put(tt_5_dose_today, membersFields.get(tt_5_dose_today))
+					.put(tt1_final, membersFields.get(tt1_final))
+					.put(tt2_final, membersFields.get(tt2_final))
+					.put(tt3_final, membersFields.get(tt3_final))
+					.put(tt4_final, membersFields.get(tt4_final))
+					.put(tt5_final, membersFields.get(tt5_final))	
 					.put(Child_birth_date_known, membersFields.get(Child_birth_date_known))
 					.put(Child_birth_date, membersFields.get(Child_birth_date))
 					.put(Child_age, membersFields.get(Child_age))
@@ -708,7 +646,8 @@ public class MembersService {
 			
 			Members members = allMembers.findByCaseId(membersFields.get(ID))
 					.setINSTANCEID(submission.instanceId())
-					.setPROVIDERID(submission.anmId());					
+					.setPROVIDERID(submission.anmId())
+					.setTODAY(submission.getField(REFERENCE_DATE));					
 			
 			if(membersFields.containsKey(REG_NO)){
 				allMembers.update(members);
@@ -845,6 +784,11 @@ public class MembersService {
 					.put(tt_4_dose_today, membersFields.get(tt_4_dose_today))
 					.put(tt5, membersFields.get(tt5))
 					.put(tt_5_dose_today, membersFields.get(tt_5_dose_today))
+					.put(tt1_final, membersFields.get(tt1_final))
+					.put(tt2_final, membersFields.get(tt2_final))
+					.put(tt3_final, membersFields.get(tt3_final))
+					.put(tt4_final, membersFields.get(tt4_final))
+					.put(tt5_final, membersFields.get(tt5_final))	
 					.put(Child_birth_date_known, membersFields.get(Child_birth_date_known))
 					.put(Child_birth_date, membersFields.get(Child_birth_date))
 					.put(Child_age, membersFields.get(Child_age))
@@ -926,6 +870,9 @@ public class MembersService {
 					.put(Is_woman, membersFields.get(Is_woman))
 					.put(Is_child, membersFields.get(Is_child))
 					.put(PVF, membersFields.get(PVF))
+					.put(outcome_current_formStatus, membersFields.get(outcome_current_formStatus))
+					.put(Interview_date, membersFields.get(Interview_date))
+					.put(current_woman_id, membersFields.get(current_woman_id))
 					.put(received_time, dateTime.format(today).toString()).map();
 			
 				if(membersFields.containsKey(REG_NO)){
@@ -980,18 +927,10 @@ public class MembersService {
 											.map();	
 		
 		members.setTTVisitOne(TT1_visit);
-		allMembers.update(members);
-		
-		if (submission.getField(tt1).equalsIgnoreCase("") && submission.getField(tt1) == null){
-			if(isValidDate(submission.getField(final_lmp)))
-				membersScheduleService.enrollMembersTTVisit(members.caseId(),submission.anmId(),submission.getField(final_lmp));
-		}
-		
-		else{
-			if (submission.getField(tt1_retro).equalsIgnoreCase("") && submission.getField(tt1_retro) == null){
-				if(isValidDate(submission.getField(final_lmp)))
-					membersScheduleService.enrollMembersTTVisit(members.caseId(),submission.anmId(),submission.getField(final_lmp));
-			}
+		allMembers.update(members);		
+
+		if(isValidDate(submission.getField(final_lmp))){
+			membersScheduleService.enrollMembersTTVisit(members.caseId(),submission.anmId(),submission.getField(final_lmp));
 		}
 		
 		TT2_Visit(submission);
@@ -1021,19 +960,11 @@ public class MembersService {
 		
 		members.setTTVisitTwo(TT2_visit);
 		allMembers.update(members);			
-		
-		if (submission.getField(tt2).equalsIgnoreCase("") || submission.getField(tt2) == null){
-			if(isValidDate(submission.getField(tt1)))
-				membersScheduleService.enrollTT1_Visit(members.caseId(),submission.anmId(),submission.getField(tt1));
-			else if(isValidDate(submission.getField(tt1_retro)))
-				membersScheduleService.enrollTT1_Visit(members.caseId(),submission.anmId(),submission.getField(tt1_retro));
-		}	
-		else if (submission.getField(tt2_retro).equalsIgnoreCase("") || submission.getField(tt2_retro) == null){
-				if(isValidDate(submission.getField(tt1)))
-					membersScheduleService.enrollTT1_Visit(members.caseId(),submission.anmId(),submission.getField(tt1));
-				else if(isValidDate(submission.getField(tt1_retro)))
-					membersScheduleService.enrollTT1_Visit(members.caseId(),submission.anmId(),submission.getField(tt1_retro));
-		}		
+
+		if(isValidDate(submission.getField(tt1)))
+			membersScheduleService.enrollTT1_Visit(members.caseId(),submission.anmId(),submission.getField(tt1));
+		else if(isValidDate(submission.getField(tt1_retro)))
+			membersScheduleService.enrollTT1_Visit(members.caseId(),submission.anmId(),submission.getField(tt1_retro));		
 	}
 	
 	public void TT3_Visit(FormSubmission submission) {
@@ -1058,18 +989,11 @@ public class MembersService {
 		members.setTTVisitOne(TT3_visit);
 		allMembers.update(members);
 		
-		if (submission.getField(tt3).equalsIgnoreCase("") || submission.getField(tt3) == null){
-			if(isValidDate(submission.getField(tt2)))
-				membersScheduleService.enrollTT2_Visit(members.caseId(),submission.anmId(),submission.getField(tt2));
-			else if(isValidDate(submission.getField(tt2_retro)))
-				membersScheduleService.enrollTT2_Visit(members.caseId(),submission.anmId(),submission.getField(tt2_retro));
-		}	
-		else if (submission.getField(tt3_retro).equalsIgnoreCase("") || submission.getField(tt3_retro) == null){
-				if(isValidDate(submission.getField(tt2)))
-					membersScheduleService.enrollTT2_Visit(members.caseId(),submission.anmId(),submission.getField(tt2));
-				else if(isValidDate(submission.getField(tt2_retro)))
-					membersScheduleService.enrollTT2_Visit(members.caseId(),submission.anmId(),submission.getField(tt2_retro));
-		}	
+		if(isValidDate(submission.getField(tt2)))
+			membersScheduleService.enrollTT2_Visit(members.caseId(),submission.anmId(),submission.getField(tt2));
+		else if(isValidDate(submission.getField(tt2_retro)))
+			membersScheduleService.enrollTT2_Visit(members.caseId(),submission.anmId(),submission.getField(tt2_retro));
+		
 	}
 	
 	public void TT4_Visit(FormSubmission submission) {
@@ -1092,20 +1016,13 @@ public class MembersService {
 											.map();	
 		
 		members.setTTVisitOne(TT4_visit);
-		allMembers.update(members);
+		allMembers.update(members);		
 		
-		if (submission.getField(tt4).equalsIgnoreCase("") || submission.getField(tt4) == null){
-			if(isValidDate(submission.getField(tt3)))
-				membersScheduleService.enrollTT3_Visit(members.caseId(),submission.anmId(),submission.getField(tt3));
-			else if(isValidDate(submission.getField(tt3_retro)))
-				membersScheduleService.enrollTT3_Visit(members.caseId(),submission.anmId(),submission.getField(tt3_retro));
-		}	
-		else if (submission.getField(tt4_retro).equalsIgnoreCase("") || submission.getField(tt4_retro) == null){
-				if(isValidDate(submission.getField(tt3)))
-					membersScheduleService.enrollTT3_Visit(members.caseId(),submission.anmId(),submission.getField(tt3));
-				else if(isValidDate(submission.getField(tt3_retro)))
-					membersScheduleService.enrollTT3_Visit(members.caseId(),submission.anmId(),submission.getField(tt3_retro));
-		}	
+		if(isValidDate(submission.getField(tt3)))
+			membersScheduleService.enrollTT3_Visit(members.caseId(),submission.anmId(),submission.getField(tt3));
+		else if(isValidDate(submission.getField(tt3_retro)))
+			membersScheduleService.enrollTT3_Visit(members.caseId(),submission.anmId(),submission.getField(tt3_retro));
+			
 	}
 	
 	public void TT5_Visit(FormSubmission submission) {
@@ -1128,20 +1045,13 @@ public class MembersService {
 											.map();	
 		
 		members.setTTVisitFive(TT5_visit);
-		allMembers.update(members);
+		allMembers.update(members);		
 		
-		if (submission.getField(tt5).equalsIgnoreCase("") || submission.getField(tt5) == null){
-			if(isValidDate(submission.getField(tt4)))
-				membersScheduleService.enrollTT4_Visit(members.caseId(),submission.anmId(),submission.getField(tt4));
-			else if(isValidDate(submission.getField(tt4_retro)))
-				membersScheduleService.enrollTT4_Visit(members.caseId(),submission.anmId(),submission.getField(tt4_retro));
-		}	
-		else if (submission.getField(tt5_retro).equalsIgnoreCase("") || submission.getField(tt5_retro) == null){
-				if(isValidDate(submission.getField(tt4)))
-					membersScheduleService.enrollTT4_Visit(members.caseId(),submission.anmId(),submission.getField(tt4));
-				else if(isValidDate(submission.getField(tt4_retro)))
-					membersScheduleService.enrollTT4_Visit(members.caseId(),submission.anmId(),submission.getField(tt4_retro));
-		}	
+		if(isValidDate(submission.getField(tt4)))
+			membersScheduleService.enrollTT4_Visit(members.caseId(),submission.anmId(),submission.getField(tt4));
+		else if(isValidDate(submission.getField(tt4_retro)))
+			membersScheduleService.enrollTT4_Visit(members.caseId(),submission.anmId(),submission.getField(tt4_retro));
+		
 	}
 
 	public void PCV1Handler(FormSubmission submission) {

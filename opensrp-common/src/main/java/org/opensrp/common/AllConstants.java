@@ -244,6 +244,11 @@ public class AllConstants {
 	    	public static final String tt5 ="tt5";
 	    	public static final String tt5_retro ="tt5_retro";
 	    	public static final String tt_5_dose_today ="tt_5_dose_today";
+	    	public static final String tt1_final="tt1_final";
+	    	public static final String tt2_final="tt2_final";
+	    	public static final String tt3_final="tt3_final"; 
+	    	public static final String tt4_final="tt4_final"; 
+	    	public static final String tt5_final="tt5_final"; 
 	    	public static final String Child_birth_date_known ="Child_birth_date_known";
 	    	public static final String Child_birth_date ="Child_birth_date";
 	    	public static final String Child_age ="Child_age";
@@ -325,6 +330,9 @@ public class AllConstants {
 	    	public static final String Is_woman ="Is_woman";
 	    	public static final String Is_child ="Is_child";
 	    	public static final String PVF ="PVF";
+	    	public static final String outcome_current_formStatus ="outcome_current_formStatus";
+	    	public static final String Interview_date= "Interview_date";
+	    	public static final String current_woman_id ="current_woman_id";
 	    	public static final String FW_PROVIDERID ="PROVIDERID";
 	    	public static final String FW_LOCATIONID ="LOCATIONID";
 	    	public static final String relationalid ="relationalid";
@@ -402,7 +410,8 @@ public class AllConstants {
 	    	public static final String Date_of_interview ="Date_of_interview";
 	    	public static final String Confirm_info ="Confirm_info";
 	    	public static final String Number_live_birth ="Number_live_birth";
-	    	public static final String pregsts_bnf_current_formStatus ="pregsts_bnf_current_formStatus";  	    	
+	    	public static final String pregsts_bnf_current_formStatus ="pregsts_bnf_current_formStatus";  
+	    	public static final String outcome_active ="outcome_active";
 	    	public static final String Treatment="Treatment";
 	    	public static final String FP_DATE_OF_REG="FP_DATE_OF_REG";
 	    	public static final String new_born_DATE_OF_REG="new_born_DATE_OF_REG";
