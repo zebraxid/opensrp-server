@@ -3,7 +3,6 @@ package org.opensrp.web.rest.rapid;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -13,12 +12,12 @@ import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 
 import org.joda.time.DateTime;
+import org.opensrp.common.FormEntityConstants;
 import org.opensrp.domain.Client;
 import org.opensrp.domain.Event;
 import org.opensrp.domain.Obs;
 import org.opensrp.service.ClientService;
 import org.opensrp.service.EventService;
-import org.opensrp.util.Utils;
 import org.opensrp.web.controller.ANMLocationController;
 import org.opensrp.web.rest.RestUtils;
 import org.slf4j.Logger;
@@ -59,20 +58,20 @@ public class BNFClientResource {
 		Map<String, String> resp = new HashMap<>();
 		String id = req.getParameter("clientId");
 		String location = req.getParameter("location");
-		String doo = req.getParameter("date-of-outcome");
+		String doo = req.getParameter("doo");
 		String outcome = req.getParameter("outcome");
 		
 		try {
 			if (StringUtils.isEmptyOrWhitespaceOnly(outcome)) {
-				resp.put("ERROR", "ANC visit MUST be specified.");
+				resp.put("ERROR", "Outcome MUST be specified.");
 				return resp;
 			}
 			if (StringUtils.isEmptyOrWhitespaceOnly(doo)) {
-				resp.put("ERROR", "date MUST be specified.");
+				resp.put("ERROR", "Date of outcome MUST be specified.");
 				return resp;
 			}
 			if (StringUtils.isEmptyOrWhitespaceOnly(id)) {
-				resp.put("ERROR", "clientId MUST be specified.");
+				resp.put("ERROR", "Mother ID MUST be specified.");
 				return resp;
 			}
 			Client c = clientService.find(id);
@@ -81,26 +80,38 @@ public class BNFClientResource {
 				return resp;
 			}
 			String entityType = RestUtils.ENTITYTYPES.MCAREMOTHER.toString().toLowerCase();
-			Event e = new Event(c.getBaseEntityId(), PREGNANCY_OUTCOME_EVENT, new DateTime(), entityType, "demo1", location,
+			Event event = new Event(c.getBaseEntityId(), PREGNANCY_OUTCOME_EVENT, new DateTime(), entityType, "demo1", location,
 			        System.currentTimeMillis() + "");
+			event.setDateCreated(new DateTime());
 			List<Object> values = new ArrayList<>();
 			
-			if (StringUtils.isEmptyOrWhitespaceOnly(doo)) {
+			if (!StringUtils.isEmptyOrWhitespaceOnly(doo)) {
 				values.clear();
-				values.add(doo);
-				e.addObs(new Obs(DEFAULT_FIELDTYPE, DEFAULT_FIELD_DATA_TYPE,
-				        RestUtils.CONCEPTS.valueOf(RestUtils.CONCEPTS.DATEOFCONFINEMENT.toString()).toString(), null, values, "",
-				        null));
+				//27-09-2016 13:01 dd-MM-yyyy HH:mm
+				Date outcomeDate=RestUtils.SDTF.parse(doo);
+				values.add(new DateTime(outcomeDate));
+				event.addObs(new Obs(DEFAULT_FIELDTYPE, DEFAULT_FIELD_DATA_TYPE,
+				       RestUtils.CONCEPTS.get(RestUtils.CONCEPTS.DATEOFCONFINEMENT.toString()).toString(), null, values,
+				        "Aleena"+FormEntityConstants.FORM_DATE.format(new Date()), null));
 			}
-			if (StringUtils.isEmptyOrWhitespaceOnly(outcome)) {
+			if (!StringUtils.isEmptyOrWhitespaceOnly(outcome)) {
 				values.clear();
-				//TODO values.add(diastolicbp);
-				e.addObs(new Obs(DEFAULT_FIELDTYPE, DEFAULT_FIELD_DATA_TYPE,
-				        RestUtils.CONCEPTS.valueOf(RestUtils.CONCEPTS.DIASTOLIC.toString()).toString(), null, values, "",
+				if (outcome.equalsIgnoreCase("livebirth") || outcome.equalsIgnoreCase("/livebirth")) {
+					values.add(RestUtils.CONCEPTS.get(RestUtils.CONCEPTS.LIVEBIRTH.toString()).toString());
+				} else if (outcome.equalsIgnoreCase("stillbirth") || outcome.equalsIgnoreCase("/stillbirth")) {
+					values.add(RestUtils.CONCEPTS.get(RestUtils.CONCEPTS.STILLBIRTH.toString()).toString());
+				} else if (outcome.equalsIgnoreCase("miscarriage")|| outcome.equalsIgnoreCase("/miscarriage")) {
+					values.add(RestUtils.CONCEPTS.get(RestUtils.CONCEPTS.MISCARRIAGE.toString()).toString());
+				} else if (outcome.equalsIgnoreCase("abortion") || outcome.equalsIgnoreCase("/abortion")) {
+					values.add(RestUtils.CONCEPTS.get(RestUtils.CONCEPTS.ABORTION.toString()).toString());
+				}
+				
+				event.addObs(new Obs(DEFAULT_FIELDTYPE, DEFAULT_FIELD_DATA_TYPE,
+				       RestUtils.CONCEPTS.get(RestUtils.CONCEPTS.BNFSTATUS.toString()).toString(), null, values, "",
 				        null));
 			}
 			
-			eventService.addEvent(e);
+			eventService.addEvent(event);
 			resp.put("success", Boolean.toString(true));
 			return resp;
 		}
@@ -144,47 +155,46 @@ public class BNFClientResource {
 			//Create child client doc
 			Client child = new Client(UUID.randomUUID().toString());
 			child.setDateCreated(new DateTime());
-			Map<String, List<String>> relationships= new HashMap<String, List<String>>();
-			List<String> relationalIds= new ArrayList<String>();
+			Map<String, List<String>> relationships = new HashMap<String, List<String>>();
+			List<String> relationalIds = new ArrayList<String>();
 			relationalIds.add(mother.getBaseEntityId());
-			relationships.put("moter", relationalIds);
+			relationships.put("mother", relationalIds);
 			child.setRelationships(relationships);
 			if (doo != null) {
-				child.setBirthdate(new DateTime(doo));
+				Date outcomeDate=RestUtils.SDTF.parse(doo);
+				child.setBirthdate(new DateTime(outcomeDate));
 			}
 			child.setGender(gender);
-			child=clientService.addClient(child);
+			child = clientService.addClient(child);
 			
-			Event e = new Event(child.getBaseEntityId(), CHILD_VITAL_STATUS_EVENT, new DateTime(), entityType, "demo1", location,
-			        System.currentTimeMillis() + "");
+			Event e = new Event(child.getBaseEntityId(), CHILD_VITAL_STATUS_EVENT, new DateTime(), entityType, "demo1",
+			        location, System.currentTimeMillis() + "");
 			List<Object> values = new ArrayList<>();
 			
-			if (StringUtils.isEmptyOrWhitespaceOnly(childname)) {
+			if (!StringUtils.isEmptyOrWhitespaceOnly(childname)) {
 				values.clear();
 				values.add(childname);
 				e.addObs(new Obs(DEFAULT_FIELDTYPE, DEFAULT_FIELD_DATA_TYPE,
-				        RestUtils.CONCEPTS.valueOf(RestUtils.CONCEPTS.CHILDNAME.toString()).toString(), null, values, "",
+				       RestUtils.CONCEPTS.get(RestUtils.CONCEPTS.CHILDNAME.toString()).toString(), null, values, "",
 				        null));
 			}
-			if (StringUtils.isEmptyOrWhitespaceOnly(gender)) {
+			if (!StringUtils.isEmptyOrWhitespaceOnly(gender)) {
 				
-				if (gender.equalsIgnoreCase("1") || gender.equalsIgnoreCase("female")) {
-					gender = RestUtils.CONCEPTS.valueOf(RestUtils.CONCEPTS.FEMALEGENDER.toString()).toString();
-				} else if (gender.equalsIgnoreCase("2") || gender.equalsIgnoreCase("male")) {
-					gender = RestUtils.CONCEPTS.valueOf(RestUtils.CONCEPTS.MALEGENDER.toString()).toString();
-					
+				if (gender.equalsIgnoreCase("1") || gender.equalsIgnoreCase("female")||gender.equalsIgnoreCase("/female")) {
+					gender =RestUtils.CONCEPTS.get(RestUtils.CONCEPTS.FEMALEGENDER.toString()).toString();
+				} else if (gender.equalsIgnoreCase("2") || gender.equalsIgnoreCase("male")|| gender.equalsIgnoreCase("/male")) {
+					gender =RestUtils.CONCEPTS.get(RestUtils.CONCEPTS.MALEGENDER.toString()).toString();
 				} else {
-					gender = RestUtils.CONCEPTS.valueOf(RestUtils.CONCEPTS.UNKNOWNGENDER.toString()).toString();
+					gender =RestUtils.CONCEPTS.get(RestUtils.CONCEPTS.UNKNOWN.toString()).toString();
 					
 				}
 				
 				values.clear();
 				values.add(gender);
 				e.addObs(new Obs(DEFAULT_FIELDTYPE, DEFAULT_FIELD_DATA_TYPE,
-				        RestUtils.CONCEPTS.valueOf(RestUtils.CONCEPTS.CHILDGENDER.toString()).toString(), null, values, "",
+				       RestUtils.CONCEPTS.get(RestUtils.CONCEPTS.CHILDGENDER.toString()).toString(), null, values, "",
 				        null));
 			}
-			
 			
 			eventService.addEvent(e);
 			resp.put("success", Boolean.toString(true));

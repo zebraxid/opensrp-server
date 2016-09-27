@@ -225,7 +225,7 @@ public class EventService {
 		return events;
 	}
 	
-	public List<Event> findByEventTypeAndDate(String baseEntityId, String eventType, DateTime dateFrom, DateTime dateTo) {
+	public List<Event> findByEventTypeAndEventDate(String baseEntityId, String eventType, DateTime dateFrom, DateTime dateTo) {
 		List<Event> events = lcr.getByCriteria(baseEntityId, dateFrom, dateTo, eventType);
 		return events;
 	}

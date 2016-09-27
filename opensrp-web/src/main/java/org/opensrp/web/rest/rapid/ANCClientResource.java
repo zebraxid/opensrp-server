@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.joda.time.DateTime;
 import org.joda.time.Weeks;
+import org.joda.time.Years;
+import org.opensrp.common.FormEntityConstants;
 import org.opensrp.domain.Client;
 import org.opensrp.domain.Event;
 import org.opensrp.domain.Obs;
@@ -45,9 +47,9 @@ public class ANCClientResource {
 	
 	DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 	
-	private static final String ANC_CONCEPT = "162942AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+	private static final String SELF_REPORTED_PREGNANCY_CONCEPT = "162942AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
 	
-	private static final String ANC_CONCEPT_VALUE = "1065AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+	private static final String SELF_REPORTED_PREGNANCY_CONCEPT_VALUE = "1065AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
 	
 	private static final String ANC_LMP_CONCEPT = "1427AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
 	
@@ -85,11 +87,11 @@ public class ANCClientResource {
 			Date dateFrom = cal.getTime();
 			String strDateFrom = dateFormat.format(dateFrom);
 			
-			List<Event> events = eventService.findByClientAndConceptAndDate(client.getBaseEntityId(), ANC_CONCEPT,
-			    ANC_CONCEPT_VALUE, strDateFrom, strDateTo);
+			List<Event> events = eventService.findByClientAndConceptAndDate(client.getBaseEntityId(), SELF_REPORTED_PREGNANCY_CONCEPT,
+				SELF_REPORTED_PREGNANCY_CONCEPT_VALUE, strDateFrom, strDateTo);
 			if (events != null && !events.isEmpty()) {
 				Date lmp = getLmp(events.get(0));
-				List<Event> ancEvents = eventService.findByEventTypeAndDate(client.getBaseEntityId(), "ANC Reminder Visit",
+				List<Event> ancEvents = eventService.findByEventTypeAndEventDate(client.getBaseEntityId(), "ANC Reminder Visit",
 				    new DateTime(dateFrom), new DateTime(dateTo));
 				// sort the events in descending order to only get the latest
 				Collections.sort(ancEvents, new Comparator<Event>() {
@@ -104,18 +106,23 @@ public class ANCClientResource {
 				
 				m.put("ancCard", createAncCard(lmp, ancEvents));
 				int age = Weeks.weeksBetween(new DateTime(lmp), DateTime.now()).getWeeks();
-				m.put("ga", age);
+				m.put("ga", age +" Wks");
 				cal.clear();
 				cal.setTime(lmp);
 				cal.add(Calendar.DATE, PREGNANCY_PERIOD);
 				m.put("edd", dateFormat.format(cal.getTime()));
 				
+			} else {
+				// Woman not pregnant
+				m.put("found", false);
+				m.put("ERROR", "Woman found but not pregnant :)");
+				return m;
 			}
 			
 			m.put("found", true);
 			m.put("client", client);
-			int age = Weeks.weeksBetween(client.getBirthdate(), DateTime.now()).getWeeks();
-			m.put("age", age);
+			int age = Years.yearsBetween(client.getBirthdate(), DateTime.now()).getYears();
+			m.put("age", age + " yrs");
 			
 		}
 		catch (Exception e) {
@@ -164,86 +171,109 @@ public class ANCClientResource {
 			}
 			eventType = RestUtils.ANCVISIT.getValue(ancvisit);
 			String entityType = RestUtils.ENTITYTYPES.MCAREMOTHER.toString().toLowerCase();
-			Event e = new Event(c.getBaseEntityId(), eventType, new DateTime(), entityType, "demo1", location,
-			        System.currentTimeMillis() + "");
+			Event event = new Event(c.getBaseEntityId(), eventType, new DateTime(), entityType, "demo1", location,
+			        "Aleena"+FormEntityConstants.FORM_DATE.format(new Date()));
+			event.setDateCreated(new DateTime());
 			List<Object> values = new ArrayList<>();
 			
-			if (StringUtils.isEmptyOrWhitespaceOnly(systolicbp)) {
+			if (!StringUtils.isEmptyOrWhitespaceOnly(systolicbp)) {
 				values.clear();
 				values.add(systolicbp);
-				e.addObs(new Obs(DEFAULT_FIELDTYPE, DEFAULT_FIELD_DATA_TYPE,
-				        RestUtils.CONCEPTS.valueOf(RestUtils.CONCEPTS.SYSTOLIC.toString()).toString(), null, values, "",
+				event.addObs(new Obs(DEFAULT_FIELDTYPE, DEFAULT_FIELD_DATA_TYPE,
+				        RestUtils.CONCEPTS.get(RestUtils.CONCEPTS.SYSTOLIC.toString()).toString(), null, values, "",
 				        null));
 			}
-			if (StringUtils.isEmptyOrWhitespaceOnly(diastolicbp)) {
+			if (!StringUtils.isEmptyOrWhitespaceOnly(diastolicbp)) {
 				values.clear();
 				values.add(diastolicbp);
-				e.addObs(new Obs(DEFAULT_FIELDTYPE, DEFAULT_FIELD_DATA_TYPE,
-				        RestUtils.CONCEPTS.valueOf(RestUtils.CONCEPTS.DIASTOLIC.toString()).toString(), null, values, "",
+				event.addObs(new Obs(DEFAULT_FIELDTYPE, DEFAULT_FIELD_DATA_TYPE,
+				       RestUtils.CONCEPTS.get(RestUtils.CONCEPTS.DIASTOLIC.toString()).toString(), null, values, "",
 				        null));
 			}
-			if (StringUtils.isEmptyOrWhitespaceOnly(temperature)) {
+			if (!StringUtils.isEmptyOrWhitespaceOnly(temperature)) {
 				values.clear();
 				values.add(temperature);
-				e.addObs(new Obs(DEFAULT_FIELDTYPE, DEFAULT_FIELD_DATA_TYPE,
-				        RestUtils.CONCEPTS.valueOf(RestUtils.CONCEPTS.TEMPERATURE.toString()).toString(), null, values, "",
+				event.addObs(new Obs(DEFAULT_FIELDTYPE, DEFAULT_FIELD_DATA_TYPE,
+				       RestUtils.CONCEPTS.get(RestUtils.CONCEPTS.TEMPERATURE.toString()).toString(), null, values, "",
 				        null));
 			}
-			if (StringUtils.isEmptyOrWhitespaceOnly(pulserate)) {
+			if (!StringUtils.isEmptyOrWhitespaceOnly(pulserate)) {
 				values.clear();
 				values.add(pulserate);
-				e.addObs(new Obs(DEFAULT_FIELDTYPE, DEFAULT_FIELD_DATA_TYPE,
-				        RestUtils.CONCEPTS.valueOf(RestUtils.CONCEPTS.PULSE.toString()).toString(), null, values, "", null));
+				event.addObs(new Obs(DEFAULT_FIELDTYPE, DEFAULT_FIELD_DATA_TYPE,
+				       RestUtils.CONCEPTS.get(RestUtils.CONCEPTS.PULSE.toString()).toString(), null, values, "", null));
 			}
-			if (StringUtils.isEmptyOrWhitespaceOnly(weight)) {
+			if (!StringUtils.isEmptyOrWhitespaceOnly(weight)) {
 				values.clear();
 				values.add(weight);
-				e.addObs(new Obs(DEFAULT_FIELDTYPE, DEFAULT_FIELD_DATA_TYPE,
-				        RestUtils.CONCEPTS.valueOf(RestUtils.CONCEPTS.WEIGHT.toString()).toString(), null, values, "",
-				        null));
-			}
-			//TODO QUESTION/ANSWER CONCEPT
-			if (StringUtils.isEmptyOrWhitespaceOnly(pallor)) {
-				values.clear();
-				values.add(pallor);
-				e.addObs(new Obs(DEFAULT_FIELDTYPE, DEFAULT_FIELD_DATA_TYPE,
-				        RestUtils.CONCEPTS.valueOf(RestUtils.CONCEPTS.PALLOR.toString()).toString(), null, values, "",
-				        null));
-			}
-			//TODO QUESTION/ANSWER CONCEPT
-			if (StringUtils.isEmptyOrWhitespaceOnly(swelling)) {
-				values.clear();
-				values.add(swelling);
-				e.addObs(new Obs(DEFAULT_FIELDTYPE, DEFAULT_FIELD_DATA_TYPE,
-				        RestUtils.CONCEPTS.valueOf(RestUtils.CONCEPTS.SWELLING.toString()).toString(), null, values, "",
-				        null));
-			}
-			//TODO QUESTION/ANSWER CONCEPT
-			if (StringUtils.isEmptyOrWhitespaceOnly(bleeding)) {
-				values.clear();
-				values.add(bleeding);
-				e.addObs(new Obs(DEFAULT_FIELDTYPE, DEFAULT_FIELD_DATA_TYPE,
-				        RestUtils.CONCEPTS.valueOf(RestUtils.CONCEPTS.BATHCANALBLEEDING.toString()).toString(), null, values,
-				        "", null));
-			}
-			//TODO QUESTION/ANSWER CONCEPT
-			if (StringUtils.isEmptyOrWhitespaceOnly(jaundice)) {
-				values.clear();
-				values.add(jaundice);
-				e.addObs(new Obs(DEFAULT_FIELDTYPE, DEFAULT_FIELD_DATA_TYPE,
-				        RestUtils.CONCEPTS.valueOf(RestUtils.CONCEPTS.JAUNDICE.toString()).toString(), null, values, "",
-				        null));
-			}
-			//TODO QUESTION/ANSWER CONCEPT
-			if (StringUtils.isEmptyOrWhitespaceOnly(fits)) {
-				values.clear();
-				values.add(fits);
-				e.addObs(new Obs(DEFAULT_FIELDTYPE, DEFAULT_FIELD_DATA_TYPE,
-				        RestUtils.CONCEPTS.valueOf(RestUtils.CONCEPTS.CONVULSIONS.toString()).toString(), null, values, "",
+				event.addObs(new Obs(DEFAULT_FIELDTYPE, DEFAULT_FIELD_DATA_TYPE,
+				       RestUtils.CONCEPTS.get(RestUtils.CONCEPTS.WEIGHT.toString()).toString(), null, values, "",
 				        null));
 			}
 			
-			eventService.addEvent(e);
+			if (!StringUtils.isEmptyOrWhitespaceOnly(pallor)) {
+				values.clear();
+				if (pallor.equalsIgnoreCase("1")) {
+					pallor =RestUtils.CONCEPTS.get(RestUtils.CONCEPTS.YES.toString()).toString();
+				} else if (pallor.equalsIgnoreCase("0")) {
+					pallor =RestUtils.CONCEPTS.get(RestUtils.CONCEPTS.NO.toString()).toString();
+				}
+				values.add(pallor);
+				event.addObs(new Obs(DEFAULT_FIELDTYPE, DEFAULT_FIELD_DATA_TYPE,
+				       RestUtils.CONCEPTS.get(RestUtils.CONCEPTS.PALLOR.toString()).toString(), null, values, "",
+				        null));
+			}
+			if (!StringUtils.isEmptyOrWhitespaceOnly(swelling)) {
+				if (swelling.equalsIgnoreCase("1")) {
+					swelling =RestUtils.CONCEPTS.get(RestUtils.CONCEPTS.YES.toString()).toString();
+				} else if (swelling.equalsIgnoreCase("0")) {
+					swelling =RestUtils.CONCEPTS.get(RestUtils.CONCEPTS.NO.toString()).toString();
+				}
+				values.add(swelling);
+				event.addObs(new Obs(DEFAULT_FIELDTYPE, DEFAULT_FIELD_DATA_TYPE,
+				       RestUtils.CONCEPTS.get(RestUtils.CONCEPTS.SWELLING.toString()).toString(), null, values, "",
+				        null));
+			}
+			
+			if (!StringUtils.isEmptyOrWhitespaceOnly(bleeding)) {
+				values.clear();
+				if (bleeding.equalsIgnoreCase("1")) {
+					bleeding =RestUtils.CONCEPTS.get(RestUtils.CONCEPTS.YES.toString()).toString();
+				} else if (bleeding.equalsIgnoreCase("0")) {
+					bleeding =RestUtils.CONCEPTS.get(RestUtils.CONCEPTS.NO.toString()).toString();
+				}
+				values.add(bleeding);
+				event.addObs(new Obs(DEFAULT_FIELDTYPE, DEFAULT_FIELD_DATA_TYPE,
+				       RestUtils.CONCEPTS.get(RestUtils.CONCEPTS.BATHCANALBLEEDING.toString()).toString(), null, values,
+				        "", null));
+			}
+			
+			if (!StringUtils.isEmptyOrWhitespaceOnly(jaundice)) {
+				values.clear();
+				if (jaundice.equalsIgnoreCase("1")) {
+					jaundice =RestUtils.CONCEPTS.get(RestUtils.CONCEPTS.YES.toString()).toString();
+				} else if (jaundice.equalsIgnoreCase("0")) {
+					jaundice =RestUtils.CONCEPTS.get(RestUtils.CONCEPTS.NO.toString()).toString();
+				}
+				values.add(jaundice);
+				event.addObs(new Obs(DEFAULT_FIELDTYPE, DEFAULT_FIELD_DATA_TYPE,
+				       RestUtils.CONCEPTS.get(RestUtils.CONCEPTS.JAUNDICE.toString()).toString(), null, values, "",
+				        null));
+			}
+			if (!StringUtils.isEmptyOrWhitespaceOnly(fits)) {
+				values.clear();
+				if (fits.equalsIgnoreCase("1")) {
+					fits =RestUtils.CONCEPTS.get(RestUtils.CONCEPTS.YES.toString()).toString();
+				} else if (fits.equalsIgnoreCase("0")) {
+					fits =RestUtils.CONCEPTS.get(RestUtils.CONCEPTS.NO.toString()).toString();
+				}
+				values.add(fits);
+				event.addObs(new Obs(DEFAULT_FIELDTYPE, DEFAULT_FIELD_DATA_TYPE,
+				       RestUtils.CONCEPTS.get(RestUtils.CONCEPTS.CONVULSIONS.toString()).toString(), null, values, "",
+				        null));
+			}
+			
+			eventService.addEvent(event);
 			resp.put("success", Boolean.toString(true));
 			return resp;
 		}
