@@ -81,9 +81,10 @@ public class BNFClientResource {
 			}
 			String entityType = RestUtils.ENTITYTYPES.MCAREMOTHER.toString().toLowerCase();
 			Event event = new Event(c.getBaseEntityId(), PREGNANCY_OUTCOME_EVENT, new DateTime(), entityType, "demo1", location,
-			        System.currentTimeMillis() + "");
+				"Aleena"+FormEntityConstants.FORM_DATE.format(new Date()));
 			event.setDateCreated(new DateTime());
 			List<Object> values = new ArrayList<>();
+			List<Object> humanReadableValues= new ArrayList<>();
 			
 			if (!StringUtils.isEmptyOrWhitespaceOnly(doo)) {
 				values.clear();
@@ -92,22 +93,27 @@ public class BNFClientResource {
 				values.add(new DateTime(outcomeDate));
 				event.addObs(new Obs(DEFAULT_FIELDTYPE, DEFAULT_FIELD_DATA_TYPE,
 				       RestUtils.CONCEPTS.get(RestUtils.CONCEPTS.DATEOFCONFINEMENT.toString()).toString(), null, values,
-				        "Aleena"+FormEntityConstants.FORM_DATE.format(new Date()), null));
+				        "", null));
 			}
 			if (!StringUtils.isEmptyOrWhitespaceOnly(outcome)) {
 				values.clear();
+				humanReadableValues.clear();
 				if (outcome.equalsIgnoreCase("livebirth") || outcome.equalsIgnoreCase("/livebirth")) {
 					values.add(RestUtils.CONCEPTS.get(RestUtils.CONCEPTS.LIVEBIRTH.toString()).toString());
+					humanReadableValues.add(3);
 				} else if (outcome.equalsIgnoreCase("stillbirth") || outcome.equalsIgnoreCase("/stillbirth")) {
 					values.add(RestUtils.CONCEPTS.get(RestUtils.CONCEPTS.STILLBIRTH.toString()).toString());
+					humanReadableValues.add(4);
 				} else if (outcome.equalsIgnoreCase("miscarriage")|| outcome.equalsIgnoreCase("/miscarriage")) {
 					values.add(RestUtils.CONCEPTS.get(RestUtils.CONCEPTS.MISCARRIAGE.toString()).toString());
+					humanReadableValues.add(4);
 				} else if (outcome.equalsIgnoreCase("abortion") || outcome.equalsIgnoreCase("/abortion")) {
 					values.add(RestUtils.CONCEPTS.get(RestUtils.CONCEPTS.ABORTION.toString()).toString());
+					humanReadableValues.add(4);
 				}
 				
 				event.addObs(new Obs(DEFAULT_FIELDTYPE, DEFAULT_FIELD_DATA_TYPE,
-				       RestUtils.CONCEPTS.get(RestUtils.CONCEPTS.BNFSTATUS.toString()).toString(), null, values, "",
+				       RestUtils.CONCEPTS.get(RestUtils.CONCEPTS.BNFSTATUS.toString()).toString(), null, values,humanReadableValues, "",
 				        null));
 			}
 			
@@ -164,26 +170,30 @@ public class BNFClientResource {
 				Date outcomeDate=RestUtils.SDTF.parse(doo);
 				child.setBirthdate(new DateTime(outcomeDate));
 			}
-			child.setGender(gender);
-			child = clientService.addClient(child);
 			
-			Event e = new Event(child.getBaseEntityId(), CHILD_VITAL_STATUS_EVENT, new DateTime(), entityType, "demo1",
-			        location, System.currentTimeMillis() + "");
+			
+			Event event = new Event(child.getBaseEntityId(), CHILD_VITAL_STATUS_EVENT, new DateTime(), entityType, "demo1",
+			        location, "Aleena"+FormEntityConstants.FORM_DATE.format(new Date()));
 			List<Object> values = new ArrayList<>();
-			
+			List<Object> humanReadableValues=new ArrayList<Object>();
 			if (!StringUtils.isEmptyOrWhitespaceOnly(childname)) {
 				values.clear();
 				values.add(childname);
-				e.addObs(new Obs(DEFAULT_FIELDTYPE, DEFAULT_FIELD_DATA_TYPE,
+				child.setFirstName(childname);
+				event.addObs(new Obs(DEFAULT_FIELDTYPE, DEFAULT_FIELD_DATA_TYPE,
 				       RestUtils.CONCEPTS.get(RestUtils.CONCEPTS.CHILDNAME.toString()).toString(), null, values, "",
-				        null));
+				        "FWBNFCHILDNAME"));
 			}
 			if (!StringUtils.isEmptyOrWhitespaceOnly(gender)) {
 				
 				if (gender.equalsIgnoreCase("1") || gender.equalsIgnoreCase("female")||gender.equalsIgnoreCase("/female")) {
 					gender =RestUtils.CONCEPTS.get(RestUtils.CONCEPTS.FEMALEGENDER.toString()).toString();
+					humanReadableValues.add(2);
+					child.setGender("1");
 				} else if (gender.equalsIgnoreCase("2") || gender.equalsIgnoreCase("male")|| gender.equalsIgnoreCase("/male")) {
 					gender =RestUtils.CONCEPTS.get(RestUtils.CONCEPTS.MALEGENDER.toString()).toString();
+					child.setGender("2");
+					humanReadableValues.add(1);
 				} else {
 					gender =RestUtils.CONCEPTS.get(RestUtils.CONCEPTS.UNKNOWN.toString()).toString();
 					
@@ -191,12 +201,12 @@ public class BNFClientResource {
 				
 				values.clear();
 				values.add(gender);
-				e.addObs(new Obs(DEFAULT_FIELDTYPE, DEFAULT_FIELD_DATA_TYPE,
-				       RestUtils.CONCEPTS.get(RestUtils.CONCEPTS.CHILDGENDER.toString()).toString(), null, values, "",
+				event.addObs(new Obs(DEFAULT_FIELDTYPE, DEFAULT_FIELD_DATA_TYPE,
+				       RestUtils.CONCEPTS.get(RestUtils.CONCEPTS.CHILDGENDER.toString()).toString(), null, values,humanReadableValues, "",
 				        null));
 			}
-			
-			eventService.addEvent(e);
+			child = clientService.addClient(child);
+			eventService.addEvent(event);
 			resp.put("success", Boolean.toString(true));
 			return resp;
 		}
