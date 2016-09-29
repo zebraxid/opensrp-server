@@ -246,4 +246,11 @@ public class UsersService {
 			return "2";
 		}
 	}
+	
+	public List<User> getUserByRole(String role){		
+		 List<User> users = allUsers.findAllByRole(role);
+		return users;
+		 
+		
+	}
 }

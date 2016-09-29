@@ -136,4 +136,10 @@ public class AclController {
 		return new ResponseEntity<>(message, OK);
 	}
 	
+	@RequestMapping(method = GET, value = "/user-by-role")
+	@ResponseBody
+	public ResponseEntity<String> getUserByRole(@RequestParam String role) {		
+		return new ResponseEntity<>(new Gson().toJson(userService.getUserByRole(role)), OK);
+	}
+	
 }
