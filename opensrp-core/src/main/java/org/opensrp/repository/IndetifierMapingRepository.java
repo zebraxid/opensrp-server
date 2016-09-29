@@ -32,6 +32,15 @@ public class IndetifierMapingRepository  extends MotechBaseRepository<Identifier
 		return ids.get(0);
 		
 	}
+	/*@GenerateView
+	public IdentifierMaping findBybahmniId(String bahmniId) {
+		List<IdentifierMaping> ids = queryView("by_bahmniId", bahmniId);
+		if (ids == null || ids.isEmpty()) {
+			return null;
+		}
+		return ids.get(0);
+		
+	}*/
 	
 	
 	
