@@ -78,21 +78,19 @@ public class MembersService {
 				logger.info("members removed");
 			}
 			
-			if(membersFields.containsKey(Is_woman)){
-				if(!membersFields.get(Is_woman).equalsIgnoreCase("") || membersFields.get(Is_woman) != null){	
-					if(membersFields.get(Is_woman).equalsIgnoreCase("1")){
-						TT_Visit(submission, members, membersFields);
-					}					
-				}
-			}
+			if(membersFields.containsKey(Is_woman))
+			if(!membersFields.get(Is_woman).equalsIgnoreCase("") || membersFields.get(Is_woman) != null)	
+				if(membersFields.get(Is_woman).equalsIgnoreCase("1")){
+					TT_Visit(submission, members, membersFields);
+				}					
+				
 			
-			else if(membersFields.containsKey(Is_child)){
-				if(!membersFields.get(Is_child).equalsIgnoreCase("") && membersFields.get(Is_child) != null)
-					if(membersFields.get(Is_child).equalsIgnoreCase("1")){
-						Child_Visit(submission, members, membersFields);
-					}	
-			}
-		}
+			if(membersFields.containsKey(Is_child))
+			if(!membersFields.get(Is_child).equalsIgnoreCase("") && membersFields.get(Is_child) != null)
+				if(membersFields.get(Is_child).equalsIgnoreCase("1"))
+					Child_Visit(submission, members, membersFields);
+				}	
+			
 
 		if (submission.formName().equalsIgnoreCase(MEMBERS_REGISTRATION)) {
 
@@ -119,190 +117,455 @@ public class MembersService {
 	}
 	
 	public void Child_Visit(FormSubmission submission, Members members, Map<String, String> membersFields) {
-		if(membersFields.containsKey(Child_age))
+		
+		if(membersFields.containsKey(Child_age)){
 		if(!membersFields.get(Child_age).equalsIgnoreCase("") && membersFields.get(Child_age) != null)
-			if(membersFields.get(Child_age).equalsIgnoreCase("0") && membersFields.containsKey(bcg)){
-				if(membersFields.get(bcg).equalsIgnoreCase("") || membersFields.get(bcg) == null)
-					if(membersFields.containsKey(Child_dob))
-					if (!membersFields.get(Child_dob).equalsIgnoreCase("") && membersFields.get(Child_dob) != null)
-						if(isValidDate(membersFields.get(Child_dob))){
-							membersScheduleService.enrollChildVisit(
-									members.caseId(),submission.anmId(),child_vaccination_bcg,membersFields.get(Child_dob));							
-						}
+		if(membersFields.get(Child_age).equalsIgnoreCase("0"))
+			if(membersFields.containsKey(Child_dob))
+			if (!membersFields.get(Child_dob).equalsIgnoreCase("") && membersFields.get(Child_dob) != null)
+			if(isValidDate(membersFields.get(Child_dob))){
+				membersScheduleService.enrollChildVisit(
+						members.caseId(),submission.anmId(),child_vaccination_bcg,membersFields.get(Child_dob));							
 			}
-		
-			else if (membersFields.get(Child_age).equalsIgnoreCase("0") && membersFields.containsKey(bcg_retro)){			
-				if (membersFields.get(bcg_retro).equalsIgnoreCase("") || membersFields.get(bcg_retro) == null)
-					if(membersFields.containsKey(Child_dob))
-					if (!membersFields.get(Child_dob).equalsIgnoreCase("") && membersFields.get(Child_dob) != null)
-						if(isValidDate(membersFields.get(Child_dob))){
-							membersScheduleService.enrollChildVisit(
-									members.caseId(),submission.anmId(),child_vaccination_bcg,membersFields.get(Child_dob));								
-						}
-			}
+		}
+
 		
 		
-		
-		if(membersFields.containsKey(Child_age))
+		if(membersFields.containsKey(Child_age)){
 		if(!membersFields.get(Child_age).equalsIgnoreCase("") && membersFields.get(Child_age) != null)
-			if(Integer.parseInt(membersFields.get(Child_age))<5 && membersFields.containsKey(opv0)){
-				if(membersFields.get(opv0).equalsIgnoreCase("") || membersFields.get(opv0) == null)
-					if(membersFields.containsKey(Child_dob))
-					if (!membersFields.get(Child_dob).equalsIgnoreCase("") && membersFields.get(Child_dob) != null)
-						if(isValidDate(membersFields.get(Child_dob))){												
-							membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_opv0,membersFields.get(Child_dob));
-						}
+		if(Integer.parseInt(membersFields.get(Child_age))<5)				
+			if(membersFields.containsKey(Child_dob))
+			if (!membersFields.get(Child_dob).equalsIgnoreCase("") && membersFields.get(Child_dob) != null)
+			if(isValidDate(membersFields.get(Child_dob))){												
+				membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_opv0,membersFields.get(Child_dob));
 			}
-		
-			else if (Integer.parseInt(membersFields.get(Child_age))<5 && membersFields.containsKey(opv0_retro)){			
-				if (membersFields.get(opv0_retro).equalsIgnoreCase("") || membersFields.get(opv0_retro) == null)
-					if(membersFields.containsKey(Child_dob))
-					if (!membersFields.get(Child_dob).equalsIgnoreCase("") && membersFields.get(Child_dob) != null)
-						if(isValidDate(membersFields.get(Child_dob))){								
-							membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_opv0,membersFields.get(Child_dob));
-						}
-			}
+		}
 				
 		
 			
 		if(membersFields.containsKey(Child_age))
 		if(!membersFields.get(Child_age).equalsIgnoreCase("") && membersFields.get(Child_age) != null)
-		if(Integer.parseInt(membersFields.get(Child_age))<5) 
-			if (membersFields.containsKey(opv0))
-			if (!membersFields.get(opv0).equalsIgnoreCase("") && membersFields.get(opv0) != null){
-				if(membersFields.containsKey(opv1)){
-				if(membersFields.get(opv1).equalsIgnoreCase("") || membersFields.get(opv1) == null)
-					if(isValidDate(membersFields.get(opv0))){
-						membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_opv1,membersFields.get(opv0));
-					}
-				}
-				
-				else if(membersFields.containsKey(opv1_retro)){
-					if(membersFields.get(opv1_retro).equalsIgnoreCase("") || membersFields.get(opv1_retro) == null)
-						if(isValidDate(membersFields.get(opv0))){
-							membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_opv1,membersFields.get(opv0));
-						}
-					}
+		if(Integer.parseInt(membersFields.get(Child_age))<5){
+			if(membersFields.containsKey(opv1))
+			if(membersFields.get(opv1).equalsIgnoreCase("") || membersFields.get(opv1) == null)
+			if(isValidDate(membersFields.get(opv0))){
+				membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_opv1,membersFields.get(opv0));
+			}				
+			
+			else if (membersFields.containsKey(opv0_retro))
+			if (!membersFields.get(opv0_retro).equalsIgnoreCase("") && membersFields.get(opv0_retro) != null)
+			if(isValidDate(membersFields.get(opv0_retro))){
+				membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_opv1,membersFields.get(opv0_retro));
 			}
-		
-			
-		if(membersFields.containsKey(Child_age))
-			if(!membersFields.get(Child_age).equalsIgnoreCase("") && membersFields.get(Child_age) != null)
-			if(Integer.parseInt(membersFields.get(Child_age))<5) 
-				if (membersFields.containsKey(opv0_retro))
-				if (!membersFields.get(opv0_retro).equalsIgnoreCase("") && membersFields.get(opv0_retro) != null){
-					if(membersFields.containsKey(opv1)){
-					if(membersFields.get(opv1).equalsIgnoreCase("") || membersFields.get(opv1) == null)
-						if(isValidDate(membersFields.get(opv0_retro))){
-							membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_opv1,membersFields.get(opv0_retro));
-						}
-					}
-					
-					else if(membersFields.containsKey(opv1_retro)){
-						if(membersFields.get(opv1_retro).equalsIgnoreCase("") || membersFields.get(opv1_retro) == null)
-							if(isValidDate(membersFields.get(opv0_retro))){
-								membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_opv1,membersFields.get(opv0_retro));
-							}
-						}
-				}
+		}
 		
 		
 		
 		if(membersFields.containsKey(Child_age))
-			if(!membersFields.get(Child_age).equalsIgnoreCase("") && membersFields.get(Child_age) != null)
-			if(Integer.parseInt(membersFields.get(Child_age))<5) 
-				if (membersFields.containsKey(opv1))
-				if (!membersFields.get(opv1).equalsIgnoreCase("") && membersFields.get(opv1) != null){
-					if(membersFields.containsKey(opv2)){
-					if(membersFields.get(opv2).equalsIgnoreCase("") || membersFields.get(opv2) == null)
-						if(isValidDate(membersFields.get(opv1))){
-							membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_opv2,membersFields.get(opv1));
-						}
-					}
-					
-					else if(membersFields.containsKey(opv2_retro)){
-						if(membersFields.get(opv2_retro).equalsIgnoreCase("") || membersFields.get(opv2_retro) == null)
-							if(isValidDate(membersFields.get(opv1))){
-								membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_opv2,membersFields.get(opv1));
-							}
-						}
-				}
+		if(!membersFields.get(Child_age).equalsIgnoreCase("") && membersFields.get(Child_age) != null)
+		if(Integer.parseInt(membersFields.get(Child_age))<5){
+			if (membersFields.containsKey(opv1))
+			if (!membersFields.get(opv1).equalsIgnoreCase("") && membersFields.get(opv1) != null)
+			if(isValidDate(membersFields.get(opv1))){
+				membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_opv2,membersFields.get(opv1));
+			}
 			
-				
-			if(membersFields.containsKey(Child_age))
-				if(!membersFields.get(Child_age).equalsIgnoreCase("") && membersFields.get(Child_age) != null)
-				if(Integer.parseInt(membersFields.get(Child_age))<5) 
-					if (membersFields.containsKey(opv1_retro))
-					if (!membersFields.get(opv1_retro).equalsIgnoreCase("") && membersFields.get(opv1_retro) != null){
-						if(membersFields.containsKey(opv2)){
-						if(membersFields.get(opv2).equalsIgnoreCase("") || membersFields.get(opv2) == null)
-							if(isValidDate(membersFields.get(opv1_retro))){
-								membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_opv2,membersFields.get(opv1_retro));
-							}
-						}
-						
-						else if(membersFields.containsKey(opv2_retro)){
-							if(membersFields.get(opv2_retro).equalsIgnoreCase("") || membersFields.get(opv2_retro) == null)
-								if(isValidDate(membersFields.get(opv1_retro))){
-									membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_opv2,membersFields.get(opv1_retro));
-								}
-							}
-					}
-			
-			
+			if (membersFields.containsKey(opv1_retro))
+			if (!membersFields.get(opv1_retro).equalsIgnoreCase("") && membersFields.get(opv1_retro) != null)
+			if(isValidDate(membersFields.get(opv1_retro))){
+				membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_opv2,membersFields.get(opv1_retro));
+			}					
+		}
+		
+		
+		
 		if(membersFields.containsKey(Child_age))
-			if(!membersFields.get(Child_age).equalsIgnoreCase("") && membersFields.get(Child_age) != null)
-			if(Integer.parseInt(membersFields.get(Child_age))<5) 
-				if (membersFields.containsKey(opv2))
-				if (!membersFields.get(opv2).equalsIgnoreCase("") && membersFields.get(opv2) != null){
-					if(membersFields.containsKey(opv3)){
-					if(membersFields.get(opv3).equalsIgnoreCase("") || membersFields.get(opv3) == null)
-						if(isValidDate(membersFields.get(opv2))){
-							membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_opv3,membersFields.get(opv2));
-						}
-					}
-					
-					else if(membersFields.containsKey(opv3_retro)){
-						if(membersFields.get(opv3_retro).equalsIgnoreCase("") || membersFields.get(opv3_retro) == null)
-							if(isValidDate(membersFields.get(opv2))){
-								membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_opv3,membersFields.get(opv2));
-							}
-						}
-				}
+		if(!membersFields.get(Child_age).equalsIgnoreCase("") && membersFields.get(Child_age) != null)
+		if(Integer.parseInt(membersFields.get(Child_age))<5){
+			if (membersFields.containsKey(opv2))
+			if (!membersFields.get(opv2).equalsIgnoreCase("") && membersFields.get(opv2) != null)
+			if(isValidDate(membersFields.get(opv2))){
+				membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_opv3,membersFields.get(opv2));
+			}
 			
-				
-			if(membersFields.containsKey(Child_age))
-				if(!membersFields.get(Child_age).equalsIgnoreCase("") && membersFields.get(Child_age) != null)
-				if(Integer.parseInt(membersFields.get(Child_age))<5) 
-					if (membersFields.containsKey(opv2_retro))
-					if (!membersFields.get(opv2_retro).equalsIgnoreCase("") && membersFields.get(opv2_retro) != null){
-						if(membersFields.containsKey(opv3)){
-						if(membersFields.get(opv3).equalsIgnoreCase("") || membersFields.get(opv3) == null)
-							if(isValidDate(membersFields.get(opv2_retro))){
-								membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_opv3,membersFields.get(opv2_retro));
-							}
-						}
-						
-						else if(membersFields.containsKey(opv3_retro)){
-							if(membersFields.get(opv3_retro).equalsIgnoreCase("") || membersFields.get(opv3_retro) == null)
-								if(isValidDate(membersFields.get(opv2_retro))){
-									membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_opv3,membersFields.get(opv2_retro));
-								}
-							}
-					}
+			if (membersFields.containsKey(opv2_retro))
+			if (!membersFields.get(opv2_retro).equalsIgnoreCase("") && membersFields.get(opv2_retro) != null)
+			if(isValidDate(membersFields.get(opv2_retro))){
+				membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_opv3,membersFields.get(opv2_retro));
+			}					
+		}
+		
+		
+		
+		if(membersFields.containsKey(Child_age)){
+		if(!membersFields.get(Child_age).equalsIgnoreCase("") && membersFields.get(Child_age) != null)
+		if(Integer.parseInt(membersFields.get(Child_age))<1)				
+			if(membersFields.containsKey(Child_dob))
+			if (!membersFields.get(Child_dob).equalsIgnoreCase("") && membersFields.get(Child_dob) != null)
+			if(isValidDate(membersFields.get(Child_dob))){												
+				membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_penta1,membersFields.get(Child_dob));
+			}
+		}
+		
+		
+		
+		if(membersFields.containsKey(Child_age))
+		if(!membersFields.get(Child_age).equalsIgnoreCase("") && membersFields.get(Child_age) != null)
+		if(Integer.parseInt(membersFields.get(Child_age))<1){
+			if (membersFields.containsKey(penta1))
+			if (!membersFields.get(penta1).equalsIgnoreCase("") && membersFields.get(penta1) != null)
+			if(isValidDate(membersFields.get(penta1))){
+				membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_penta2,membersFields.get(penta1));
+			}
 			
+			if (membersFields.containsKey(penta1_retro))
+			if (!membersFields.get(penta1_retro).equalsIgnoreCase("") && membersFields.get(penta1_retro) != null)
+			if(isValidDate(membersFields.get(penta1_retro))){
+				membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_penta2,membersFields.get(penta1_retro));
+			}					
+		}
 		
+		
+		
+		if(membersFields.containsKey(Child_age))
+		if(!membersFields.get(Child_age).equalsIgnoreCase("") && membersFields.get(Child_age) != null)
+		if(Integer.parseInt(membersFields.get(Child_age))<1){
+			if (membersFields.containsKey(penta2))
+			if (!membersFields.get(penta2).equalsIgnoreCase("") && membersFields.get(penta2) != null)
+			if(isValidDate(membersFields.get(penta2))){
+				membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_penta3,membersFields.get(penta2));
+			}
+			
+			if (membersFields.containsKey(penta2_retro))
+			if (!membersFields.get(penta2_retro).equalsIgnoreCase("") && membersFields.get(penta2_retro) != null)
+			if(isValidDate(membersFields.get(penta2_retro))){
+				membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_penta3,membersFields.get(penta2_retro));
+			}					
+		}
+		
+		
+		
+		if(membersFields.containsKey(Child_age)){
+		if(!membersFields.get(Child_age).equalsIgnoreCase("") && membersFields.get(Child_age) != null)
+		if(Integer.parseInt(membersFields.get(Child_age))<5)				
+			if(membersFields.containsKey(Child_dob))
+			if (!membersFields.get(Child_dob).equalsIgnoreCase("") && membersFields.get(Child_dob) != null)
+			if(isValidDate(membersFields.get(Child_dob))){												
+				membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_pcv1,membersFields.get(Child_dob));
+			}
+		}
+		
+		
+		
+		if(membersFields.containsKey(Child_age))
+		if(!membersFields.get(Child_age).equalsIgnoreCase("") && membersFields.get(Child_age) != null)
+		if(Integer.parseInt(membersFields.get(Child_age))<5){
+			if (membersFields.containsKey(pcv1))
+			if (!membersFields.get(pcv1).equalsIgnoreCase("") && membersFields.get(pcv1) != null)
+			if(isValidDate(membersFields.get(pcv1))){
+				membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_pcv2,membersFields.get(pcv1));
+			}
+			
+			if (membersFields.containsKey(pcv1_retro))
+			if (!membersFields.get(pcv1_retro).equalsIgnoreCase("") && membersFields.get(pcv1_retro) != null)
+			if(isValidDate(membersFields.get(pcv1_retro))){
+				membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_pcv2,membersFields.get(pcv1_retro));
+			}					
+		}
+		
+		
+		
+		if(membersFields.containsKey(Child_age))
+		if(!membersFields.get(Child_age).equalsIgnoreCase("") && membersFields.get(Child_age) != null)
+		if(Integer.parseInt(membersFields.get(Child_age))<5){
+			if (membersFields.containsKey(pcv2))
+			if (!membersFields.get(penta2).equalsIgnoreCase("") && membersFields.get(pcv2) != null)
+			if(isValidDate(membersFields.get(pcv2))){
+				membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_pcv3,membersFields.get(pcv2));
+			}
+			
+			if (membersFields.containsKey(pcv2_retro))
+			if (!membersFields.get(pcv2_retro).equalsIgnoreCase("") && membersFields.get(pcv2_retro) != null)
+			if(isValidDate(membersFields.get(pcv2_retro))){
+				membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_pcv3,membersFields.get(pcv2_retro));
+			}					
+		}
+		
+		
+		
+		if(membersFields.containsKey(Child_age)){
+		if(!membersFields.get(Child_age).equalsIgnoreCase("") && membersFields.get(Child_age) != null)
+		if(Integer.parseInt(membersFields.get(Child_age))<5)				
+			if(membersFields.containsKey(Child_dob))
+			if (!membersFields.get(Child_dob).equalsIgnoreCase("") && membersFields.get(Child_dob) != null)
+			if(isValidDate(membersFields.get(Child_dob))){												
+				membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_measles1,membersFields.get(Child_dob));
+			}
+		}
+		
+		
+		
+		if(membersFields.containsKey(Child_age))
+		if(!membersFields.get(Child_age).equalsIgnoreCase("") && membersFields.get(Child_age) != null)
+		if(Integer.parseInt(membersFields.get(Child_age))<5){
+			if (membersFields.containsKey(measles1))
+			if (!membersFields.get(measles1).equalsIgnoreCase("") && membersFields.get(measles1) != null)
+			if(isValidDate(membersFields.get(measles1))){
+				membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_measles2,membersFields.get(measles1));
+			}
+			
+			if (membersFields.containsKey(measles1_retro))
+			if (!membersFields.get(measles1_retro).equalsIgnoreCase("") && membersFields.get(measles1_retro) != null)
+			if(isValidDate(membersFields.get(measles1_retro))){
+				membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_measles2,membersFields.get(measles1_retro));
+			}					
+		}
+		
+		
+		
+		if(membersFields.containsKey(Child_age))
+		if(!membersFields.get(Child_age).equalsIgnoreCase("") && membersFields.get(Child_age) != null)
+		if(Integer.parseInt(membersFields.get(Child_age))<15){
+			if (membersFields.containsKey(opv2))
+			if (!membersFields.get(opv2).equalsIgnoreCase("") && membersFields.get(opv2) != null)
+			if(isValidDate(membersFields.get(opv2))){
+				membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_ipv,membersFields.get(opv2));
+			}
+			
+			if (membersFields.containsKey(opv2_retro))
+			if (!membersFields.get(opv2_retro).equalsIgnoreCase("") && membersFields.get(opv2_retro) != null)
+			if(isValidDate(membersFields.get(opv2_retro))){
+				membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_ipv,membersFields.get(opv2_retro));
+			}					
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		if(membersFields.containsKey(Child_age_days)){
+		if(!membersFields.get(Child_age_days).equalsIgnoreCase("") && membersFields.get(Child_age_days) != null)
+		if(Integer.parseInt(membersFields.get(Child_age_days))<=365)
+			if(membersFields.containsKey(Child_dob))
+			if (!membersFields.get(Child_dob).equalsIgnoreCase("") && membersFields.get(Child_dob) != null)
+			if(isValidDate(membersFields.get(Child_dob))){
+				membersScheduleService.enrollChildVisit(
+						members.caseId(),submission.anmId(),child_vaccination_bcg,membersFields.get(Child_dob));							
+			}
+		}
+
+		
+		
+		if(membersFields.containsKey(Child_age_days)){
+		if(!membersFields.get(Child_age_days).equalsIgnoreCase("") && membersFields.get(Child_age_days) != null)
+		if(Integer.parseInt(membersFields.get(Child_age_days))<=1825)				
+			if(membersFields.containsKey(Child_dob))
+			if (!membersFields.get(Child_dob).equalsIgnoreCase("") && membersFields.get(Child_dob) != null)
+			if(isValidDate(membersFields.get(Child_dob))){												
+				membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_opv0,membersFields.get(Child_dob));
+			}
+		}
 				
-		if(membersFields.containsKey(Date_of_MR))
-		if (!membersFields.get(Date_of_MR).equalsIgnoreCase("") && membersFields.get(Date_of_MR) != null)
-			if(isValidDate(membersFields.get(Date_of_MR)))
-				membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_mr,membersFields.get(Date_of_MR));
+		
+			
+		if(membersFields.containsKey(Child_age_days))
+		if(!membersFields.get(Child_age_days).equalsIgnoreCase("") && membersFields.get(Child_age_days) != null)
+		if(Integer.parseInt(membersFields.get(Child_age_days))<=1825){
+			if(membersFields.containsKey(opv1))
+			if(membersFields.get(opv1).equalsIgnoreCase("") || membersFields.get(opv1) == null)
+			if(isValidDate(membersFields.get(opv0))){
+				membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_opv1,membersFields.get(opv0));
+			}				
+			
+			else if (membersFields.containsKey(opv0_retro))
+			if (!membersFields.get(opv0_retro).equalsIgnoreCase("") && membersFields.get(opv0_retro) != null)
+			if(isValidDate(membersFields.get(opv0_retro))){
+				membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_opv1,membersFields.get(opv0_retro));
+			}
+		}
 		
 		
-		if(membersFields.containsKey(Date_of_Measles))
-		if (!membersFields.get(Date_of_Measles).equalsIgnoreCase("") && membersFields.get(Date_of_Measles) != null)
-			if(isValidDate(membersFields.get(Date_of_Measles)))
-				membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_measles,membersFields.get(Date_of_Measles));
+		
+		if(membersFields.containsKey(Child_age_days))
+		if(!membersFields.get(Child_age_days).equalsIgnoreCase("") && membersFields.get(Child_age_days) != null)
+		if(Integer.parseInt(membersFields.get(Child_age_days))<=1825){
+			if (membersFields.containsKey(opv1))
+			if (!membersFields.get(opv1).equalsIgnoreCase("") && membersFields.get(opv1) != null)
+			if(isValidDate(membersFields.get(opv1))){
+				membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_opv2,membersFields.get(opv1));
+			}
+			
+			else if (membersFields.containsKey(opv1_retro))
+			if (!membersFields.get(opv1_retro).equalsIgnoreCase("") && membersFields.get(opv1_retro) != null)
+			if(isValidDate(membersFields.get(opv1_retro))){
+				membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_opv2,membersFields.get(opv1_retro));
+			}					
+		}
+		
+		
+		
+		if(membersFields.containsKey(Child_age_days))
+		if(!membersFields.get(Child_age_days).equalsIgnoreCase("") && membersFields.get(Child_age_days) != null)
+		if(Integer.parseInt(membersFields.get(Child_age_days))<=1825){
+			if (membersFields.containsKey(opv2))
+			if (!membersFields.get(opv2).equalsIgnoreCase("") && membersFields.get(opv2) != null)
+			if(isValidDate(membersFields.get(opv2))){
+				membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_opv3,membersFields.get(opv2));
+			}
+			
+			else if (membersFields.containsKey(opv2_retro))
+			if (!membersFields.get(opv2_retro).equalsIgnoreCase("") && membersFields.get(opv2_retro) != null)
+			if(isValidDate(membersFields.get(opv2_retro))){
+				membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_opv3,membersFields.get(opv2_retro));
+			}					
+		}
+		
+		
+		
+		if(membersFields.containsKey(Child_age_days)){
+		if(!membersFields.get(Child_age_days).equalsIgnoreCase("") && membersFields.get(Child_age_days) != null)
+		if(Integer.parseInt(membersFields.get(Child_age_days))<=365)				
+			if(membersFields.containsKey(Child_dob))
+			if (!membersFields.get(Child_dob).equalsIgnoreCase("") && membersFields.get(Child_dob) != null)
+			if(isValidDate(membersFields.get(Child_dob))){												
+				membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_penta1,membersFields.get(Child_dob));
+			}
+		}
+		
+		
+		
+		if(membersFields.containsKey(Child_age_days))
+		if(!membersFields.get(Child_age_days).equalsIgnoreCase("") && membersFields.get(Child_age_days) != null)
+		if(Integer.parseInt(membersFields.get(Child_age_days))<=365){
+			if (membersFields.containsKey(penta1))
+			if (!membersFields.get(penta1).equalsIgnoreCase("") && membersFields.get(penta1) != null)
+			if(isValidDate(membersFields.get(penta1))){
+				membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_penta2,membersFields.get(penta1));
+			}
+			
+			else if (membersFields.containsKey(penta1_retro))
+			if (!membersFields.get(penta1_retro).equalsIgnoreCase("") && membersFields.get(penta1_retro) != null)
+			if(isValidDate(membersFields.get(penta1_retro))){
+				membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_penta2,membersFields.get(penta1_retro));
+			}					
+		}
+		
+		
+		
+		if(membersFields.containsKey(Child_age_days))
+		if(!membersFields.get(Child_age_days).equalsIgnoreCase("") && membersFields.get(Child_age_days) != null)
+		if(Integer.parseInt(membersFields.get(Child_age_days))<=365){
+			if (membersFields.containsKey(penta2))
+			if (!membersFields.get(penta2).equalsIgnoreCase("") && membersFields.get(penta2) != null)
+			if(isValidDate(membersFields.get(penta2))){
+				membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_penta3,membersFields.get(penta2));
+			}
+			
+			else if (membersFields.containsKey(penta2_retro))
+			if (!membersFields.get(penta2_retro).equalsIgnoreCase("") && membersFields.get(penta2_retro) != null)
+			if(isValidDate(membersFields.get(penta2_retro))){
+				membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_penta3,membersFields.get(penta2_retro));
+			}					
+		}
+		
+		
+		
+		if(membersFields.containsKey(Child_age_days)){
+		if(!membersFields.get(Child_age_days).equalsIgnoreCase("") && membersFields.get(Child_age_days) != null)
+		if(Integer.parseInt(membersFields.get(Child_age_days))<=1825)				
+			if(membersFields.containsKey(Child_dob))
+			if (!membersFields.get(Child_dob).equalsIgnoreCase("") && membersFields.get(Child_dob) != null)
+			if(isValidDate(membersFields.get(Child_dob))){												
+				membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_pcv1,membersFields.get(Child_dob));
+			}
+		}
+		
+		
+		
+		if(membersFields.containsKey(Child_age_days))
+		if(!membersFields.get(Child_age_days).equalsIgnoreCase("") && membersFields.get(Child_age_days) != null)
+		if(Integer.parseInt(membersFields.get(Child_age_days))<=1825){
+			if (membersFields.containsKey(pcv1))
+			if (!membersFields.get(pcv1).equalsIgnoreCase("") && membersFields.get(pcv1) != null)
+			if(isValidDate(membersFields.get(pcv1))){
+				membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_pcv2,membersFields.get(pcv1));
+			}
+			
+			else if (membersFields.containsKey(pcv1_retro))
+			if (!membersFields.get(pcv1_retro).equalsIgnoreCase("") && membersFields.get(pcv1_retro) != null)
+			if(isValidDate(membersFields.get(pcv1_retro))){
+				membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_pcv2,membersFields.get(pcv1_retro));
+			}					
+		}
+		
+		
+		
+		if(membersFields.containsKey(Child_age_days))
+		if(!membersFields.get(Child_age_days).equalsIgnoreCase("") && membersFields.get(Child_age_days) != null)
+		if(Integer.parseInt(membersFields.get(Child_age_days))<=1825){
+			if (membersFields.containsKey(pcv2))
+			if (!membersFields.get(pcv2).equalsIgnoreCase("") && membersFields.get(pcv2) != null)
+			if(isValidDate(membersFields.get(pcv2))){
+				membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_pcv3,membersFields.get(pcv2));
+			}
+			
+			else if (membersFields.containsKey(pcv2_retro))
+			if (!membersFields.get(pcv2_retro).equalsIgnoreCase("") && membersFields.get(pcv2_retro) != null)
+			if(isValidDate(membersFields.get(pcv2_retro))){
+				membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_pcv3,membersFields.get(pcv2_retro));
+			}					
+		}
+		
+		
+		
+		if(membersFields.containsKey(Child_age_days)){
+		if(!membersFields.get(Child_age_days).equalsIgnoreCase("") && membersFields.get(Child_age_days) != null)
+		if(Integer.parseInt(membersFields.get(Child_age_days))<=1825)				
+			if(membersFields.containsKey(Child_dob))
+			if (!membersFields.get(Child_dob).equalsIgnoreCase("") && membersFields.get(Child_dob) != null)
+			if(isValidDate(membersFields.get(Child_dob))){												
+				membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_measles1,membersFields.get(Child_dob));
+			}
+		}
+		
+		
+		
+		if(membersFields.containsKey(Child_age_days))
+		if(!membersFields.get(Child_age_days).equalsIgnoreCase("") && membersFields.get(Child_age_days) != null)
+		if(Integer.parseInt(membersFields.get(Child_age_days))<=1825){
+			if (membersFields.containsKey(measles1))
+			if (!membersFields.get(measles1).equalsIgnoreCase("") && membersFields.get(measles1) != null)
+			if(isValidDate(membersFields.get(measles1))){
+				membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_measles2,membersFields.get(measles1));
+			}
+			
+			else if (membersFields.containsKey(measles1_retro))
+			if (!membersFields.get(measles1_retro).equalsIgnoreCase("") && membersFields.get(measles1_retro) != null)
+			if(isValidDate(membersFields.get(measles1_retro))){
+				membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_measles2,membersFields.get(measles1_retro));
+			}					
+		}
+		
+		
+		
+		if(membersFields.containsKey(Child_age_days))
+		if(!membersFields.get(Child_age_days).equalsIgnoreCase("") && membersFields.get(Child_age_days) != null)
+		if(Integer.parseInt(membersFields.get(Child_age_days))<=5475){
+			if (membersFields.containsKey(opv2))
+			if (!membersFields.get(opv2).equalsIgnoreCase("") && membersFields.get(opv2) != null)
+			if(isValidDate(membersFields.get(opv2))){
+				membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_ipv,membersFields.get(opv2));
+			}
+			
+			else if (membersFields.containsKey(opv2_retro))
+			if (!membersFields.get(opv2_retro).equalsIgnoreCase("") && membersFields.get(opv2_retro) != null)
+			if(isValidDate(membersFields.get(opv2_retro))){
+				membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_ipv,membersFields.get(opv2_retro));
+			}					
+		}	
 	}
 	
 	
@@ -318,9 +581,9 @@ public class MembersService {
 						}
 					}
 		
-		if(membersFields.containsKey(Child_vital_status))
-			if(!membersFields.get(Child_vital_status).equalsIgnoreCase("") && membersFields.get(Child_vital_status) != null)
-				if(membersFields.get(Child_vital_status).equalsIgnoreCase("3"))
+		if(membersFields.containsKey(Marital_status))
+			if(!membersFields.get(Marital_status).equalsIgnoreCase("") && membersFields.get(Marital_status) != null)
+				if(membersFields.get(Marital_status).equalsIgnoreCase("3"))
 					membersScheduleService.unEnrollAndCloseSchedule(
 							members.caseId(),submission.anmId(),IMD_SCHEDULE_Woman_BNF,LocalDate.parse(submission.getField(REFERENCE_DATE)));
 					
@@ -412,8 +675,7 @@ public class MembersService {
 											.put(existing_lmp, submission.getField(existing_lmp))
 											.put(existing_location, submission.getField(existing_location))
 											.put(Date_of_interview, submission.getField(Date_of_interview))
-											.put(Confirm_info, submission.getField(Confirm_info))
-											.put(Child_vital_status, submission.getField(Child_vital_status))											
+											.put(Confirm_info, submission.getField(Confirm_info))											
 											.put(Gestational_age, submission.getField(Gestational_age))
 											.put(EDD, submission.getField(EDD))
 											.put(Woman_vital_status, submission.getField(Woman_vital_status))
@@ -436,14 +698,14 @@ public class MembersService {
 		}  
 		LocalDate ddd = new LocalDate(day);
 		
-		if (!submission.getField(Child_vital_status).equalsIgnoreCase("") && submission.getField(Child_vital_status) != null){	
-			if(submission.getField(Child_vital_status).equalsIgnoreCase("1")){
+		if (!submission.getField(Marital_status).equalsIgnoreCase("") && submission.getField(Marital_status) != null){	
+			if(submission.getField(Marital_status).equalsIgnoreCase("1")){
 				if (!submission.getField(EDD).equalsIgnoreCase("") && submission.getField(EDD) != null)
 					if(isValidDate(submission.getField(EDD)))
 						membersScheduleService.enrollMembersBNFVisit(members.caseId(),submission.anmId(),submission.getField(EDD),submission.instanceId());
 			}
 				
-			else if(submission.getField(Child_vital_status).equalsIgnoreCase("3")){
+			else if(submission.getField(Marital_status).equalsIgnoreCase("3")){
 				membersScheduleService.unEnrollAndCloseSchedule(members.caseId(),submission.anmId(),SCHEDULE_Woman_BNF,LocalDate.parse(submission.getField(REFERENCE_DATE)));
 			}
 		}
@@ -460,12 +722,11 @@ public class MembersService {
 					.put(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
 					.put(START_DATE, submission.getField(START_DATE))
 					.put(END_DATE, submission.getField(END_DATE))
-					.put(HH_MEMBER, membersFields.get(HH_MEMBER))
 					.put(REG_NO, membersFields.get(REG_NO))
 					.put(MEMBER_FNAME, membersFields.get(MEMBER_FNAME))
 					.put(MEMBER_LNAME, membersFields.get(MEMBER_LNAME))
 					.put(Gender, membersFields.get(Gender))
-					.put(Marital_Status, membersFields.get(Marital_Status))
+					.put(Marital_status, membersFields.get(Marital_status))
 					.put(Couple_No, membersFields.get(Couple_No))
 					.put(lmp, membersFields.get(lmp))
 					.put(edd, membersFields.get(edd))
@@ -478,6 +739,7 @@ public class MembersService {
 					.put(MEMBER_WARD, membersFields.get(MEMBER_WARD))
 					.put(MEMBER_ADDRESS_LINE, membersFields.get(MEMBER_ADDRESS_LINE))
 					.put(MEMBER_HIE_FACILITIES, membersFields.get(MEMBER_HIE_FACILITIES))
+					.put(Member_BLOCK, submission.getField(Member_BLOCK))
 					.put(HH_ADDRESS, membersFields.get(HH_ADDRESS))
 					.put(MEMBER_TYPE, membersFields.get(MEMBER_TYPE))
 					.put(MEMBER_UNIQUE_ID, membersFields.get(MEMBER_UNIQUE_ID))
@@ -546,6 +808,8 @@ public class MembersService {
 					.put(tt3_final, membersFields.get(tt3_final))
 					.put(tt4_final, membersFields.get(tt4_final))
 					.put(tt5_final, membersFields.get(tt5_final))	
+					.put(child_vaccines_2, membersFields.get(child_vaccines_2))
+					.put(Member_Reg_Date, membersFields.get(Member_Reg_Date))
 					.put(Child_birth_date_known, membersFields.get(Child_birth_date_known))
 					.put(Child_birth_date, membersFields.get(Child_birth_date))
 					.put(Child_age, membersFields.get(Child_age))
@@ -626,7 +890,20 @@ public class MembersService {
 					.put(measles2_dose_today, membersFields.get(measles2_dose_today))
 					.put(Is_woman, membersFields.get(Is_woman))
 					.put(Is_child, membersFields.get(Is_child))
-					.put(PVF, membersFields.get(PVF))
+					.put(final_bcg, membersFields.get(final_bcg))
+					.put(final_opv0, membersFields.get(final_opv0))
+					.put(final_pcv1, membersFields.get(final_pcv1))
+					.put(final_opv1, membersFields.get(final_opv1))
+					.put(final_penta1, membersFields.get(final_penta1))
+					.put(final_pcv2, membersFields.get(final_pcv2))
+					.put(final_opv2, membersFields.get(final_opv2))
+					.put(final_penta2, membersFields.get(final_penta2))
+					.put(final_pcv3, membersFields.get(final_pcv3))
+					.put(final_opv3, membersFields.get(final_opv3))
+					.put(final_penta3, membersFields.get(final_penta3))
+					.put(final_ipv, membersFields.get(final_ipv))
+					.put(final_measles1, membersFields.get(final_measles1))
+					.put(final_measles2, membersFields.get(final_measles2))
 					.put(received_time, dateTime.format(today).toString()).map();
 			
 				if(membersFields.containsKey(REG_NO)){
@@ -700,18 +977,11 @@ public class MembersService {
 		for (Map<String, String> membersFields : subFormData.instances()) {
 
 			Map<String, String> birth_Outcome = create(ID, membersFields.get(ID))
+					.put(relationalid, submission.getField(relationalid))
 					.put(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
 					.put(START_DATE, submission.getField(START_DATE))
 					.put(END_DATE, submission.getField(END_DATE))
-					.put(HH_MEMBER, membersFields.get(HH_MEMBER))
 					.put(REG_NO, membersFields.get(REG_NO))
-					.put(MEMBER_FNAME, membersFields.get(MEMBER_FNAME))
-					.put(MEMBER_LNAME, membersFields.get(MEMBER_LNAME))
-					.put(Gender, membersFields.get(Gender))
-					.put(Marital_Status, membersFields.get(Marital_Status))
-					.put(Couple_No, membersFields.get(Couple_No))
-					.put(lmp, membersFields.get(lmp))
-					.put(edd, membersFields.get(edd))
 					.put(MEMBER_COUNTRY, membersFields.get(MEMBER_COUNTRY))
 					.put(MEMBER_DIVISION, membersFields.get(MEMBER_DIVISION))
 					.put(MEMBER_DISTRICT, membersFields.get(MEMBER_DISTRICT))
@@ -721,79 +991,16 @@ public class MembersService {
 					.put(MEMBER_WARD, membersFields.get(MEMBER_WARD))
 					.put(MEMBER_ADDRESS_LINE, membersFields.get(MEMBER_ADDRESS_LINE))
 					.put(MEMBER_HIE_FACILITIES, membersFields.get(MEMBER_HIE_FACILITIES))
-					.put(HH_ADDRESS, membersFields.get(HH_ADDRESS))
-					.put(MEMBER_TYPE, membersFields.get(MEMBER_TYPE))
-					.put(MEMBER_UNIQUE_ID, membersFields.get(MEMBER_UNIQUE_ID))
-					.put(MEMBER_GPS, membersFields.get(MEMBER_GPS))
-					.put(MEMBER_NID, membersFields.get(MEMBER_NID))
-					.put(MEMBER_BRID, membersFields.get(MEMBER_BRID))
-					.put(MEMBER_HID, membersFields.get(MEMBER_HID))
-					.put(MEMBER_BIRTH_DATE_KNOWN, membersFields.get(MEMBER_BIRTH_DATE_KNOWN))
-					.put(MEMBER_BIRTH_DATE, membersFields.get(MEMBER_BIRTH_DATE))
-					.put(age, membersFields.get(age))
-					.put(calc_age, membersFields.get(calc_age))
-					.put(calc_dob, membersFields.get(calc_dob))
-					.put(calc_dob_confirm, membersFields.get(calc_dob_confirm))
-					.put(calc_dob_estimated, membersFields.get(calc_dob_estimated))
-					.put(calc_age_confirm, membersFields.get(calc_age_confirm))
-					.put(birth_date_note, membersFields.get(birth_date_note))
-					.put(note_age, membersFields.get(note_age))
-					.put(Father_name, membersFields.get(Father_name))
-					.put(Husband_name, membersFields.get(Husband_name))
-					.put(WomanInfo, membersFields.get(WomanInfo))
-					.put(pregnant, membersFields.get(pregnant))
-					.put(FP_USER, membersFields.get(FP_USER))
-					.put(FP_Methods, membersFields.get(FP_Methods))
-					.put(edd_lmp, membersFields.get(edd_lmp))
-					.put(ultrasound_date, membersFields.get(ultrasound_date))
-					.put(ultrasound_weeks, membersFields.get(ultrasound_weeks))
-					.put(edd_calc_lmp, membersFields.get(edd_calc_lmp))
-					.put(edd_calc_ultrasound, membersFields.get(edd_calc_ultrasound))
-					.put(edd_calc_lmp_formatted, membersFields.get(edd_calc_lmp_formatted))
-					.put(edd_calc_ultrasound_formatted, membersFields.get(edd_calc_ultrasound_formatted))
-					.put(lmp_calc_edd, membersFields.get(lmp_calc_edd))
-					.put(lmp_calc_ultrasound, membersFields.get(lmp_calc_ultrasound))
-					.put(lmp_calc_edd_formatted, membersFields.get(lmp_calc_edd_formatted))
-					.put(lmp_calc_ultrasound_formatted, membersFields.get(lmp_calc_ultrasound_formatted))
-					.put(final_edd, membersFields.get(final_edd))
-					.put(final_lmp, membersFields.get(final_lmp))
-					.put(ga_edd, membersFields.get(ga_edd))
-					.put(ga_lmp, membersFields.get(ga_lmp))
-					.put(ga_ult, membersFields.get(ga_ult))
-					.put(final_edd_note, membersFields.get(final_edd_note))
-					.put(final_lmp_note, membersFields.get(final_lmp_note))
-					.put(final_ga, membersFields.get(final_ga))
-					.put(final_ga_note, membersFields.get(final_ga_note))
-					.put(vaccines, membersFields.get(vaccines))
-					.put(tt1_retro, membersFields.get(tt1_retro))
-					.put(tt_1_dose, membersFields.get(tt_1_dose))
-					.put(tt2_retro, membersFields.get(tt2_retro))
-					.put(tt_2_dose, membersFields.get(tt_2_dose))
-					.put(tt3_retro, membersFields.get(tt3_retro))
-					.put(tt_3_dose, membersFields.get(tt_3_dose))
-					.put(tt4_retro, membersFields.get(tt4_retro))
-					.put(tt_4_dose, membersFields.get(tt_4_dose))
-					.put(vaccines_2, membersFields.get(vaccines_2))
-					.put(tt1, membersFields.get(tt1))
-					.put(tt_1_dose_today, membersFields.get(tt_1_dose_today))
-					.put(tt2, membersFields.get(tt2))
-					.put(tt_2_dose_today, membersFields.get(tt_2_dose_today))
-					.put(tt3, membersFields.get(tt3))
-					.put(tt_3_dose_today, membersFields.get(tt_3_dose_today))
-					.put(tt4, membersFields.get(tt4))
-					.put(tt_4_dose_today, membersFields.get(tt_4_dose_today))
-					.put(tt5, membersFields.get(tt5))
-					.put(tt_5_dose_today, membersFields.get(tt_5_dose_today))
-					.put(tt1_final, membersFields.get(tt1_final))
-					.put(tt2_final, membersFields.get(tt2_final))
-					.put(tt3_final, membersFields.get(tt3_final))
-					.put(tt4_final, membersFields.get(tt4_final))
-					.put(tt5_final, membersFields.get(tt5_final))	
-					.put(Child_birth_date_known, membersFields.get(Child_birth_date_known))
-					.put(Child_birth_date, membersFields.get(Child_birth_date))
-					.put(Child_age, membersFields.get(Child_age))
-					.put(Child_calc_age, membersFields.get(Child_calc_age))
-					.put(Child_calc_dob, membersFields.get(Child_calc_dob))
+					.put(Member_Reg_Date, membersFields.get(Member_Reg_Date))
+					.put(Member_BLOCK, submission.getField(Member_BLOCK))
+					.put(HH_ADDRESS, membersFields.get(HH_ADDRESS))					
+					.put(Child_vital_status, membersFields.get(Child_vital_status))
+					.put(Child_name_check, membersFields.get(Child_name_check))
+					.put(Child_name, membersFields.get(Child_name))
+					.put(Child_last_name, membersFields.get(Child_last_name))
+					.put(Member_Fname, membersFields.get(Member_Fname))
+					.put(child_vaccines_2, membersFields.get(child_vaccines_2))
+					.put(add_child, membersFields.get(add_child))					
 					.put(Child_dob, membersFields.get(Child_dob))
 					.put(Child_dob_estimated, membersFields.get(Child_dob_estimated))
 					.put(Child_age_days, membersFields.get(Child_age_days))
@@ -867,12 +1074,21 @@ public class MembersService {
 					.put(measles1_dose_today, membersFields.get(measles1_dose_today))
 					.put(measles2, membersFields.get(measles2))
 					.put(measles2_dose_today, membersFields.get(measles2_dose_today))
-					.put(Is_woman, membersFields.get(Is_woman))
+					.put(final_bcg, membersFields.get(final_bcg))
+					.put(final_opv0, membersFields.get(final_opv0))
+					.put(final_pcv1, membersFields.get(final_pcv1))
+					.put(final_opv1, membersFields.get(final_opv1))
+					.put(final_penta1, membersFields.get(final_penta1))
+					.put(final_pcv2, membersFields.get(final_pcv2))
+					.put(final_opv2, membersFields.get(final_opv2))
+					.put(final_penta2, membersFields.get(final_penta2))
+					.put(final_pcv3, membersFields.get(final_pcv3))
+					.put(final_opv3, membersFields.get(final_opv3))
+					.put(final_penta3, membersFields.get(final_penta3))
+					.put(final_ipv, membersFields.get(final_ipv))
+					.put(final_measles1, membersFields.get(final_measles1))
+					.put(final_measles2, membersFields.get(final_measles2))
 					.put(Is_child, membersFields.get(Is_child))
-					.put(PVF, membersFields.get(PVF))
-					.put(outcome_current_formStatus, membersFields.get(outcome_current_formStatus))
-					.put(Interview_date, membersFields.get(Interview_date))
-					.put(current_woman_id, membersFields.get(current_woman_id))
 					.put(received_time, dateTime.format(today).toString()).map();
 			
 				if(membersFields.containsKey(REG_NO)){
@@ -1053,6 +1269,390 @@ public class MembersService {
 			membersScheduleService.enrollTT4_Visit(members.caseId(),submission.anmId(),submission.getField(tt4_retro));
 		
 	}
+	
+	
+	public void child_vaccineHandler(FormSubmission submission) {
+		Members members = allMembers.findByCaseId(submission.entityId());
+		if (members == null) {
+			logger.warn(format(
+					"Failed to handle child_vaccine as there is no Member enrolled with ID: {0}",
+					submission.entityId()));
+			return;
+		}
+		
+		SimpleDateFormat dateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date today = Calendar.getInstance().getTime();
+
+		Map<String, String> vaccine = create(ID, submission.getField(ID))
+.put(REFERENCE_DATE, 
+		submission.getField(REFERENCE_DATE))
+.put(START_DATE, 
+		submission.getField(START_DATE))
+.put(END_DATE, 
+		submission.getField(END_DATE))
+.put(Member_Fname
+	    	, submission.getField(Member_Fname))
+.put(Child_mother_name
+	    	, submission.getField(Child_mother_name))
+.put(Child_gender
+	    	, submission.getField(Child_gender))
+.put(Child_dob
+	    	, submission.getField(Child_dob))
+.put(Date_Of_Reg
+	    	, submission.getField(Date_Of_Reg))
+.put(MEMBER_COUNTRY   
+			, submission.getField(MEMBER_COUNTRY))
+.put(MEMBER_DIVISION
+	    	, submission.getField(MEMBER_DIVISION))
+.put(MEMBER_DISTRICT
+	    	, submission.getField(MEMBER_DISTRICT))
+.put(MEMBER_UPAZILLA
+	    	, submission.getField(MEMBER_UPAZILLA))
+.put(MEMBER_PAURASAVA
+	    	, submission.getField(MEMBER_PAURASAVA))
+.put(MEMBER_UNION
+	    	, submission.getField(MEMBER_UNION))
+.put(MEMBER_WARD
+	    	, submission.getField(MEMBER_WARD))
+.put(Member_BLOCK
+	    	, submission.getField(Member_BLOCK))
+.put(MEMBER_HIE_FACILITIES
+	    	, submission.getField(MEMBER_HIE_FACILITIES))
+.put(MEMBER_ADDRESS_LINE
+	    	, submission.getField(MEMBER_ADDRESS_LINE))
+.put(MEMBER_GPS
+	    	, submission.getField(MEMBER_GPS))
+.put(existing_epi_card_number
+	    	, submission.getField(existing_epi_card_number))
+.put(child_was_suffering_from_a_disease_at_birth
+	    	, submission.getField(child_was_suffering_from_a_disease_at_birth))
+.put(contact_phone_number
+	    	, submission.getField(contact_phone_number))
+.put(e_bcg
+	    	, submission.getField(e_bcg))
+.put(e_opv0
+	    	, submission.getField(e_opv0))
+.put(e_penta2
+	    	, submission.getField(e_penta2))
+.put(e_penta1
+	    	, submission.getField(e_penta1))
+.put(e_penta3
+	    	, submission.getField(e_penta3))
+.put(e_opv1
+	    	, submission.getField(e_opv1))
+.put(e_opv2
+	    	, submission.getField(e_opv2))
+.put(e_opv3
+	    	, submission.getField(e_opv3))
+.put(e_pcv1
+	    	, submission.getField(e_pcv1))
+.put(e_pcv2
+	    	, submission.getField(e_pcv2)) 
+.put(e_pcv3
+	    	, submission.getField(e_pcv3))
+.put(e_ipv
+	    	, submission.getField(e_ipv))
+.put(e_measles1
+	    	, submission.getField(e_measles1))
+.put(e_measles2
+	    	, submission.getField(e_measles2))
+.put(provider_id
+	    	, submission.getField(provider_id))
+.put(provider_location_id
+	    	, submission.getField(provider_location_id))
+.put(provider_location_name
+	    	, submission.getField(provider_location_name))
+.put(provider_location_note
+	    	, submission.getField(provider_location_note))
+.put(existing_client_reg_date_note
+	    	, submission.getField(existing_client_reg_date_note))
+.put(epi_card_number_note
+	    	, submission.getField(epi_card_number_note))
+.put(first_name_note
+	    	, submission.getField(first_name_note))
+.put(child_age
+	    	, submission.getField(child_age))
+.put(calc_dob_note
+	    	, submission.getField(calc_dob_note))
+.put(gender_note
+	    	, submission.getField(gender_note))
+.put(mother_name_note
+	    	, submission.getField(mother_name_note))
+.put(address
+	    	, submission.getField(address))
+.put(address_change
+	    	, submission.getField(address_change))
+.put(address1
+	    	, submission.getField(address1))
+.put(landmark
+	    	, submission.getField(landmark))
+.put(center_gps
+	    	, submission.getField(center_gps))
+.put(child_was_suffering_from_a_disease_at_birth_note
+	    	, submission.getField(child_was_suffering_from_a_disease_at_birth_note))
+.put(side_effects
+	    	, submission.getField(side_effects))
+.put(six_weeks
+	    	, submission.getField(six_weeks))
+.put(ten_weeks
+	    	, submission.getField(ten_weeks))
+.put(forteen_weeks
+	    	, submission.getField(forteen_weeks))
+.put(nine_months
+	    	, submission.getField(nine_months))
+.put(fifteen_months
+	    	, submission.getField(fifteen_months))
+.put(bcg_note
+	    	, submission.getField(bcg_note))
+.put(opv0_note
+	    	, submission.getField(opv0_note))
+.put(opv1_note
+	    	, submission.getField(opv1_note))
+.put(pcv1_note
+	    	, submission.getField(pcv1_note))
+.put(penta1_note
+	    	, submission.getField(penta1_note))
+.put(opv2_note
+	    	, submission.getField(opv2_note))
+.put(pcv2_note
+	    	, submission.getField(pcv2_note))
+.put(penta2_note
+	    	, submission.getField(penta2_note))
+.put(opv3_note
+	    	, submission.getField(opv3_note))
+.put(pcv3_note
+	    	, submission.getField(pcv3_note))
+.put(penta3_note
+	    	, submission.getField(penta3_note))
+.put(ipv_note
+	    	, submission.getField(ipv_note))
+.put(measles1_note
+	    	, submission.getField(ipv_note))
+.put(measles2_note
+	    	, submission.getField(measles2_note))
+.put(vaccination_date
+	    	, submission.getField(vaccination_date))
+.put(final_bcg
+	    	, submission.getField(final_bcg))
+.put(final_opv0
+	    	, submission.getField(final_opv0))
+.put(final_pcv1
+	    	, submission.getField(final_pcv1))
+.put(final_opv1
+	    	, submission.getField(final_opv1))
+.put(final_penta1
+	    	, submission.getField(final_penta1))
+.put(final_pcv2
+	    	, submission.getField(final_pcv2))
+.put(final_opv2
+	    	, submission.getField(final_opv2))
+.put(final_penta2
+	    	, submission.getField(final_penta2))
+.put(final_pcv3
+	    	, submission.getField(final_pcv3))
+.put(final_opv3
+	    	, submission.getField(final_opv3))
+.put(final_penta3
+	    	, submission.getField(final_penta3))
+.put(final_ipv
+	    	, submission.getField(final_ipv))
+.put(final_measles1
+	    	, submission.getField(final_measles1))
+.put(final_measles2
+	    	, submission.getField(final_measles2))
+.put(received_time, 
+		dateTime.format(today).toString()).map();			
+
+				members.child_vaccine().add(vaccine);
+				
+				allMembers.update(members);
+				
+				if(!submission.getField(child_age).equalsIgnoreCase("") && submission.getField(child_age) != null)
+					if(Integer.parseInt(submission.getField(child_age))<1){
+						if (!submission.getField(Child_dob).equalsIgnoreCase("") && submission.getField(Child_dob) != null)
+						if(isValidDate(submission.getField(Child_dob))){
+							membersScheduleService.enrollChildVisit(
+									members.caseId(),submission.anmId(),child_vaccination_bcg,submission.getField(Child_dob));							
+						}
+					}
+
+					
+					
+					if(!submission.getField(child_age).equalsIgnoreCase("") && submission.getField(child_age) != null)
+					if(Integer.parseInt(submission.getField(child_age))<5){
+						if (!submission.getField(Child_dob).equalsIgnoreCase("") && submission.getField(Child_dob) != null)
+						if(isValidDate(submission.getField(Child_dob))){												
+							membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_opv0,submission.getField(Child_dob));
+						}
+					}
+							
+					
+						
+					if(!submission.getField(child_age).equalsIgnoreCase("") && submission.getField(child_age) != null)
+					if(Integer.parseInt(submission.getField(child_age))<5){
+						if(submission.getField(opv1).equalsIgnoreCase("") || submission.getField(opv1) == null)
+						if(isValidDate(submission.getField(opv0))){
+							membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_opv1,submission.getField(opv0));
+						}				
+						
+						else if (!submission.getField(opv0_retro).equalsIgnoreCase("") && submission.getField(opv0_retro) != null)
+						if(isValidDate(submission.getField(opv0_retro))){
+							membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_opv1,submission.getField(opv0_retro));
+						}
+					}
+					
+					
+					
+					if(!submission.getField(child_age).equalsIgnoreCase("") && submission.getField(child_age) != null)
+					if(Integer.parseInt(submission.getField(child_age))<5){
+						if (!submission.getField(opv1).equalsIgnoreCase("") && submission.getField(opv1) != null)
+						if(isValidDate(submission.getField(opv1))){
+							membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_opv2,submission.getField(opv1));
+						}
+						
+						else if (!submission.getField(opv1_retro).equalsIgnoreCase("") && submission.getField(opv1_retro) != null)
+						if(isValidDate(submission.getField(opv1_retro))){
+							membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_opv2,submission.getField(opv1_retro));
+						}					
+					}
+					
+					
+
+					if(!submission.getField(child_age).equalsIgnoreCase("") && submission.getField(child_age) != null)
+					if(Integer.parseInt(submission.getField(child_age))<5){
+						if (!submission.getField(opv2).equalsIgnoreCase("") && submission.getField(opv2) != null)
+						if(isValidDate(submission.getField(opv2))){
+							membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_opv3,submission.getField(opv2));
+						}
+
+						else if (!submission.getField(opv2_retro).equalsIgnoreCase("") && submission.getField(opv2_retro) != null)
+						if(isValidDate(submission.getField(opv2_retro))){
+							membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_opv3,submission.getField(opv2_retro));
+						}					
+					}
+					
+					
+					
+					if(!submission.getField(child_age).equalsIgnoreCase("") && submission.getField(child_age) != null)
+					if(Integer.parseInt(submission.getField(child_age))<1){
+						if (!submission.getField(Child_dob).equalsIgnoreCase("") && submission.getField(Child_dob) != null)
+						if(isValidDate(submission.getField(Child_dob))){												
+							membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_penta1,submission.getField(Child_dob));
+						}
+					}
+					
+					
+					
+					if(!submission.getField(child_age).equalsIgnoreCase("") && submission.getField(child_age) != null)
+					if(Integer.parseInt(submission.getField(child_age))<1){
+						if (!submission.getField(penta1).equalsIgnoreCase("") && submission.getField(penta1) != null)
+						if(isValidDate(submission.getField(penta1))){
+							membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_penta2,submission.getField(penta1));
+						}
+						
+						else if (!submission.getField(penta1_retro).equalsIgnoreCase("") && submission.getField(penta1_retro) != null)
+						if(isValidDate(submission.getField(penta1_retro))){
+							membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_penta2,submission.getField(penta1_retro));
+						}					
+					}
+					
+					
+					
+					if(!submission.getField(child_age).equalsIgnoreCase("") && submission.getField(child_age) != null)
+					if(Integer.parseInt(submission.getField(child_age))<1){
+						if (!submission.getField(penta2).equalsIgnoreCase("") && submission.getField(penta2) != null)
+						if(isValidDate(submission.getField(penta2))){
+							membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_penta3,submission.getField(penta2));
+						}
+						
+						else if (!submission.getField(penta2_retro).equalsIgnoreCase("") && submission.getField(penta2_retro) != null)
+						if(isValidDate(submission.getField(penta2_retro))){
+							membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_penta3,submission.getField(penta2_retro));
+						}					
+					}
+					
+					
+					
+					if(!submission.getField(child_age).equalsIgnoreCase("") && submission.getField(child_age) != null)
+					if(Integer.parseInt(submission.getField(child_age))<5){
+						if (!submission.getField(Child_dob).equalsIgnoreCase("") && submission.getField(Child_dob) != null)
+						if(isValidDate(submission.getField(Child_dob))){												
+							membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_pcv1,submission.getField(Child_dob));
+						}
+					}
+					
+					
+					
+					if(!submission.getField(child_age).equalsIgnoreCase("") && submission.getField(child_age) != null)
+					if(Integer.parseInt(submission.getField(child_age))<5){
+						if (!submission.getField(pcv1).equalsIgnoreCase("") && submission.getField(pcv1) != null)
+						if(isValidDate(submission.getField(pcv1))){
+							membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_pcv2,submission.getField(pcv1));
+						}
+						
+						else if (!submission.getField(pcv1_retro).equalsIgnoreCase("") && submission.getField(pcv1_retro) != null)
+						if(isValidDate(submission.getField(pcv1_retro))){
+							membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_pcv2,submission.getField(pcv1_retro));
+						}					
+					}
+					
+					
+					
+					if(!submission.getField(child_age).equalsIgnoreCase("") && submission.getField(child_age) != null)
+					if(Integer.parseInt(submission.getField(child_age))<5){
+						if (!submission.getField(penta2).equalsIgnoreCase("") && submission.getField(pcv2) != null)
+						if(isValidDate(submission.getField(pcv2))){
+							membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_pcv3,submission.getField(pcv2));
+						}
+						
+						else if (!submission.getField(pcv2_retro).equalsIgnoreCase("") && submission.getField(pcv2_retro) != null)
+						if(isValidDate(submission.getField(pcv2_retro))){
+							membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_pcv3,submission.getField(pcv2_retro));
+						}					
+					}
+					
+					
+					
+					if(!submission.getField(child_age).equalsIgnoreCase("") && submission.getField(child_age) != null)
+					if(Integer.parseInt(submission.getField(child_age))<5){			
+						if (!submission.getField(Child_dob).equalsIgnoreCase("") && submission.getField(Child_dob) != null)
+						if(isValidDate(submission.getField(Child_dob))){												
+							membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_measles1,submission.getField(Child_dob));
+						}
+					}
+					
+					
+					
+					if(!submission.getField(child_age).equalsIgnoreCase("") && submission.getField(child_age) != null)
+					if(Integer.parseInt(submission.getField(child_age))<5){
+						if (!submission.getField(measles1).equalsIgnoreCase("") && submission.getField(measles1) != null)
+						if(isValidDate(submission.getField(measles1))){
+							membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_measles2,submission.getField(measles1));
+						}
+						
+						else if (!submission.getField(measles1_retro).equalsIgnoreCase("") && submission.getField(measles1_retro) != null)
+						if(isValidDate(submission.getField(measles1_retro))){
+							membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_measles2,submission.getField(measles1_retro));
+						}					
+					}
+					
+					
+
+					if(!submission.getField(child_age).equalsIgnoreCase("") && submission.getField(child_age) != null)
+					if(Integer.parseInt(submission.getField(child_age))<15){
+						if (!submission.getField(opv2).equalsIgnoreCase("") && submission.getField(opv2) != null)
+						if(isValidDate(submission.getField(opv2))){
+							membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_ipv,submission.getField(opv2));
+						}
+						
+						else if (!submission.getField(opv2_retro).equalsIgnoreCase("") && submission.getField(opv2_retro) != null)
+						if(isValidDate(submission.getField(opv2_retro))){
+							membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),child_vaccination_ipv,submission.getField(opv2_retro));
+						}					
+					}								
+										
+	}
+	
 
 	public void PCV1Handler(FormSubmission submission) {
 		Members members = allMembers.findByCaseId(submission.entityId());
@@ -1353,7 +1953,7 @@ public class MembersService {
 											.put(Received_Time, format.format(today).toString())
 											.map();	
 		
-		members.setMeaslesVisit(measlesVisit);
+		members.setMeasles1Visit(measlesVisit);
 		allMembers.update(members);
 		
 		if (!submission.getField(measles_Date_of_Vaccination).equalsIgnoreCase("") && submission.getField(measles_Date_of_Vaccination) != null)
@@ -1385,7 +1985,7 @@ public class MembersService {
 
 		if (!submission.getField(ChildVaccination_Measles_Date_of_Vaccination).equalsIgnoreCase("") && submission.getField(ChildVaccination_Measles_Date_of_Vaccination) != null)
 			if(isValidDate(submission.getField(ChildVaccination_Measles_Date_of_Vaccination)))
-				membersScheduleService.unEnrollFromSchedule(members.caseId(),submission.anmId(),child_vaccination_measles);
+				membersScheduleService.unEnrollFromSchedule(members.caseId(),submission.anmId(),child_vaccination_measles2);
 	}
 
 	public void IPVHandler(FormSubmission submission) {

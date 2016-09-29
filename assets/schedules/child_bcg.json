@@ -1,9 +1,9 @@
 {
-    "name": "child_vaccination_bcg",
+    "name": "child_bcg",
     "absolute": true,
     "milestones": [
     	{
-            "name": "child_vaccination_bcg",
+            "name": "child_bcg",
             "scheduleWindows": {
             	"earliest": ["0 Days"],
                 "due": ["28 Days"],

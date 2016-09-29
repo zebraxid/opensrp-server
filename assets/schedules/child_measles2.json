@@ -1,41 +1,41 @@
 {
-    "name": "child_vaccination_penta1",
+    "name": "child_measles2",
     "absolute": true,
     "milestones": [
     	{
-            "name": "child_vaccination_penta1",
+            "name": "child_measles2",
             "scheduleWindows": {
-            	"earliest": ["42 Days"],
-                "due": ["56 Days"],
-                "late": ["690 Days"],
-                "max": ["691 Days"]
+            	"earliest": ["182 Days"],
+                "due": ["427 Days"],
+                "late": ["1825 Days"],
+                "max": ["1826 Days"]
             },
             "alerts": [
             	{
                     "window": "earliest",
                     "offset": ["0 Days"],
                     "interval": ["1 Day"],
-                    "count": "42"
+                    "count": "182"
                 },
                 {
                     "window": "due",
-                    "offset": ["42 Days"],
+                    "offset": ["182 Days"],
                     "interval": ["1 Day"],
-                    "count": "14"
+                    "count": "245"
                 },
                 {
                     "window": "late",
-                    "offset": ["56 Days"],
+                    "offset": ["427 Days"],
                     "interval": ["1 Day"],
-                    "count": "634"
+                    "count": "1398"
                 },
                 {
                     "window": "max",
-                    "offset": ["690 Days"],
+                    "offset": ["1825 Days"],
                     "interval": ["1 Day"],
                     "count": "1"
-                }                
+                }
             ]
         }
     ]
-}
+}        
