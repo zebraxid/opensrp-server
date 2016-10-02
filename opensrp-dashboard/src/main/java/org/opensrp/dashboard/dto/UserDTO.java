@@ -56,7 +56,7 @@ public class UserDTO {
 	private List<RoleDTO> roles;
 	
 	@JsonProperty
-	private List<LocationDTO> location;
+	private List<DashboardLocationDTO> location;
 	
 	@JsonProperty
 	private Map<String, String> meta;
@@ -158,7 +158,7 @@ public class UserDTO {
 		return user_name;
 	}
 	
-	public List<LocationDTO> getLocation() {
+	public List<DashboardLocationDTO> getLocation() {
 		return location;
 	}
 	

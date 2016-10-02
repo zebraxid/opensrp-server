@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.opensrp.dashboard.dto.LocationDTO;
+import org.opensrp.dashboard.dto.DashboardLocationDTO;
 import org.opensrp.dashboard.dto.RoleDTO;
 import org.opensrp.dashboard.dto.UserDTO;
 import org.opensrp.dashboard.dto.SimplifiedLocation;
@@ -17,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.security.crypto.codec.Base64;
 
 @Service
 public class UsersService {
@@ -69,14 +70,15 @@ public class UsersService {
 				user.withContactNumber(userDTO.getContactNumber());
 				user.withPersonalAddress(userDTO.getPersonalAddress());
 				user.withEmail(userDTO.getEmail());
-				user.withPassword(userDTO.getPassword());
+				String encodedPassword = new String(Base64.encode(userDTO.getPassword().getBytes()));
+				user.withPassword(encodedPassword);
 				user.withUserName(userDTO.getUserName());
 				user.withGender(userDTO.getGender());
 				//parent, children, roles, locations
 				UserDTO parentDTO = userDTO.getParent();
 				List<UserDTO> childrenDTOs = userDTO.getChildren();
 				List<RoleDTO> roleDTOs = userDTO.getRoles();
-				List<LocationDTO> locationDTOs = userDTO.getLocation();
+				List<DashboardLocationDTO> locationDTOs = userDTO.getLocation();
 				//	
 				SimplifiedUser parent = null;
 				if (parentDTO != null) {
@@ -163,7 +165,8 @@ public class UsersService {
 					userByUserName.withEmail(userDTO.getEmail());
 				}
 				if (userDTO.getPassword() != null) {
-					userByUserName.withPassword(userDTO.getPassword());
+					String encodedPassword = new String(Base64.encode(userDTO.getPassword().getBytes()));
+					userByUserName.withPassword(encodedPassword);
 				}
 				if (userDTO.getGender() != null) {
 					userByUserName.withGender(userDTO.getGender());
@@ -210,7 +213,7 @@ public class UsersService {
 					}
 				}
 				if (userDTO.getLocation() != null) {
-					List<LocationDTO> locationDTOs = userDTO.getLocation();
+					List<DashboardLocationDTO> locationDTOs = userDTO.getLocation();
 					List<SimplifiedLocation> locations = null;
 					if (locationDTOs != null && locationDTOs.size() > 0) {
 						locations = new ArrayList<SimplifiedLocation>();
@@ -245,12 +248,5 @@ public class UsersService {
 		} else {
 			return "2";
 		}
-	}
-	
-	public List<User> getUserByRole(String role){		
-		 List<User> users = allUsers.findAllByRole(role);
-		return users;
-		 
-		
 	}
 }
