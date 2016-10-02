@@ -94,7 +94,7 @@ public class AlertHandler {
 	}
 	private Matcher membersSchedules() {
 		return anyOf(SCHEDULE_Woman_Measles, SCHEDULE_Woman_1, SCHEDULE_Woman_2, SCHEDULE_Woman_3, SCHEDULE_Woman_4, SCHEDULE_Woman_5, 
-				child_vaccination_bcg, child_vaccination_ipv, child_vaccination_measles, child_vaccination_mr, 
+				child_vaccination_bcg, child_vaccination_ipv, child_vaccination_measles1, child_vaccination_measles2, 
 				child_vaccination_opv0, child_vaccination_opv1, child_vaccination_opv2, child_vaccination_opv3, 
 				child_vaccination_pcv1, child_vaccination_pcv2, child_vaccination_pcv3, 
 				child_vaccination_penta1, child_vaccination_penta2, child_vaccination_penta3);

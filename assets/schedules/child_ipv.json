@@ -1,12 +1,12 @@
 {
-    "name": "child_vaccination_measles2",
+    "name": "child_ipv",
     "absolute": true,
     "milestones": [
     	{
-            "name": "child_vaccination_measles2",
+            "name": "child_ipv",
             "scheduleWindows": {
-            	"earliest": ["182 Days"],
-                "due": ["427 Days"],
+            	"earliest": ["28 Days"],
+                "due": ["42 Days"],
                 "late": ["1825 Days"],
                 "max": ["1826 Days"]
             },
@@ -15,19 +15,19 @@
                     "window": "earliest",
                     "offset": ["0 Days"],
                     "interval": ["1 Day"],
-                    "count": "182"
+                    "count": "28"
                 },
                 {
                     "window": "due",
-                    "offset": ["182 Days"],
+                    "offset": ["28 Days"],
                     "interval": ["1 Day"],
-                    "count": "245"
+                    "count": "14"
                 },
                 {
                     "window": "late",
-                    "offset": ["427 Days"],
+                    "offset": ["42 Days"],
                     "interval": ["1 Day"],
-                    "count": "1398"
+                    "count": "1783"
                 },
                 {
                     "window": "max",

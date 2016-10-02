@@ -262,59 +262,84 @@ public class FormSubmissionController {
 				});
 				for (FormSubmission formSubmission : fsl) {
 					if (openmrsConnector.isOpenmrsForm(formSubmission)) {
-						String idGen = bahmniPatientService.generateID();
-						System.out
-						        .print("Generating ID to openMRS/***********************************************************************:"
-						                + idGen);
-						this.createIdentifierMaping(formSubmission.entityId(), idGen);
-						Map<String, Map<String, Object>> dep;
-						dep = bahmniOpenmrsConnector.getDependentClientsFromFormSubmission(formSubmission);
-						if (dep.size() > 0) { // HnW(n)
-							System.out
-							        .println("Dependent client exist into formsubmission /***********************************************************************/ ");
-							Client hhClient = bahmniOpenmrsConnector.getClientFromFormSubmission(formSubmission);
-							System.out.println(bahmniPatientService.createPatient(hhClient, idGen));
-							Event e = bahmniOpenmrsConnector.getEventFromFormSubmission(formSubmission);
-							System.out.println(encounterService.createEncounter(e, idGen));
-							// Event hhhEvent =
-							// openmrsConnector.getEventFromFormSubmission(formSubmission);
-							// OpenmrsHouseHold hh = new
-							// OpenmrsHouseHold(hhhClient, hhhEvent);
-							
-							for (Map<String, Object> cm : dep.values()) {
-								idGen = bahmniPatientService.generateID();
-								
-								Client c = (Client) cm.get("client");
-								//System.out.println("FSI:" + cm.toString());
-								//System.out.println("FSI:" + c.getBaseEntityId());
-								this.createIdentifierMaping(c.getBaseEntityId(), idGen);
-								System.out.println(bahmniPatientService.createPatient((Client) cm.get("client"), idGen));
-								// /hh.addHHMember((Client)cm.get("client"),
-								// (Event)cm.get("event"));
-								// cm.get("event");
-								System.out.println("E:" + (Event) cm.get("event"));
-								System.out.println(encounterService.createEncounter((Event) cm.get("event"), idGen));
+						
+						String p = getBahmniId(formSubmission.entityId());
+						
+						if (p != null) { // HO
+							System.out.println("Existing patient found into openMRS with id : " + p 
+							        + "/***********************************************************************/");
+							Event e;							
+							Map<String, Map<String, Object>> dep;
+							dep = bahmniOpenmrsConnector.getDependentClientsFromFormSubmission(formSubmission);
+							if (dep.size() > 0) { // HOW(n)								
+								System.out
+								        .println("Dependent client exist into formsubmission /***********************************************************************/ ");
+								for (Map<String, Object> cm : dep.values()) {
+									System.out.println(bahmniPatientService.createPatient((Client) cm.get("client"), p));
+									System.out.println(encounterService.createEncounter((Event) cm.get("event"), p));
+								}
 							}
-							// householdService.saveBahmniHH(hh,idGen);
-						} else {// HnW(0)
-							/*
-							 * Client c =
-							 * openmrsConnector.getClientFromFormSubmission
-							 * (formSubmission);
-							 * System.out.println(patientService
-							 * .createPatient(c)); Event e =
-							 * openmrsConnector.getEventFromFormSubmission
-							 * (formSubmission);
-							 * System.out.println(encounterService
-							 * .createEncounter(e));
-							 */
-							
+							// HOW(0)
+							e = bahmniOpenmrsConnector.getEventFromFormSubmission(formSubmission);
+							System.out.println("Creates encounter for client id: " + e.getBaseEntityId());
+							System.out.println(encounterService.createEncounter(e, p));
+						}
+						
+						else {
+							String idGen = bahmniPatientService.generateID();
 							System.out
-							        .println("Patient and Dependent client not exist into Bahmni openmrs /***********************************************************************/ ");
-							Client c = bahmniOpenmrsConnector.getClientFromFormSubmission(formSubmission);
-							System.out.println(bahmniPatientService.createPatient(c, idGen));
-							Event e = bahmniOpenmrsConnector.getEventFromFormSubmission(formSubmission);
-							System.out.println(encounterService.createEncounter(e, idGen));
+							        .print("Generating ID to openMRS/***********************************************************************:"
+							                + idGen);
+							this.createIdentifierMaping(formSubmission.entityId(), idGen);
+							Map<String, Map<String, Object>> dep;
+							dep = bahmniOpenmrsConnector.getDependentClientsFromFormSubmission(formSubmission);
+							if (dep.size() > 0) { // HnW(n)
+								System.out
+								        .println("Dependent client exist into formsubmission /***********************************************************************/ ");
+								Client hhClient = bahmniOpenmrsConnector.getClientFromFormSubmission(formSubmission);
+								System.out.println(bahmniPatientService.createPatient(hhClient, idGen));
+								Event e = bahmniOpenmrsConnector.getEventFromFormSubmission(formSubmission);
+								System.out.println(encounterService.createEncounter(e, idGen));
+								// Event hhhEvent =
+								// openmrsConnector.getEventFromFormSubmission(formSubmission);
+								// OpenmrsHouseHold hh = new
+								// OpenmrsHouseHold(hhhClient, hhhEvent);
+								
+								for (Map<String, Object> cm : dep.values()) {
+									idGen = bahmniPatientService.generateID();
+									
+									Client c = (Client) cm.get("client");
+									//System.out.println("FSI:" + cm.toString());
+									//System.out.println("FSI:" + c.getBaseEntityId());
+									this.createIdentifierMaping(c.getBaseEntityId(), idGen);
+									System.out.println(bahmniPatientService.createPatient((Client) cm.get("client"), idGen));
+									// /hh.addHHMember((Client)cm.get("client"),
+									// (Event)cm.get("event"));
+									// cm.get("event");
+									System.out.println("E:" + (Event) cm.get("event"));
+									System.out.println(encounterService.createEncounter((Event) cm.get("event"), idGen));
+								}
+								// householdService.saveBahmniHH(hh,idGen);
+							} else {// HnW(0)
+								/*
+								 * Client c =
+								 * openmrsConnector.getClientFromFormSubmission
+								 * (formSubmission);
+								 * System.out.println(patientService
+								 * .createPatient(c)); Event e =
+								 * openmrsConnector.getEventFromFormSubmission
+								 * (formSubmission);
+								 * System.out.println(encounterService
+								 * .createEncounter(e));
+								 */
+								
+								System.out
+								        .println("Patient and Dependent client not exist into Bahmni openmrs /***********************************************************************/ ");
+								Client c = bahmniOpenmrsConnector.getClientFromFormSubmission(formSubmission);
+								System.out.println(bahmniPatientService.createPatient(c, idGen));
+								Event e = bahmniOpenmrsConnector.getEventFromFormSubmission(formSubmission);
+								System.out.println(encounterService.createEncounter(e, idGen));
+							}
 						}
 					}
 				}
@@ -402,5 +427,17 @@ public class FormSubmissionController {
 			logger.info("" + ee.getMessage());
 			
 		}
+	}
+	
+	private String getBahmniId(String entityId) {
+		try {
+			IdentifierMaping id = bahmniIdRepository.findByentityId(entityId);
+			return id.getGenId();
+		}
+		catch (Exception ee) {
+			logger.info("Bahmni id finding : " + ee.getMessage());
+		}
+		
+		return "BDH202455";
 	}
 }

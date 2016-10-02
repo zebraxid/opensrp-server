@@ -28,6 +28,7 @@ public class AllConstants {
     	public static final String PSRF_FORM = "psrf_form";
     	public static final String NewBornHandler = "new_born_information";
     	public static final String GeneralHandler = "general";
+    	public static final String Child_vaccine_followup_Handler = "child_vaccine_followup";
     	public static final String FamilyPlanningHandler = "family_planning";
     	public static final String Measles1Handler = "Measles1Handler";
     	public static final String BCGHandler_ = "BCGHandler";
@@ -45,6 +46,7 @@ public class AllConstants {
     	public static final String PENTA3Handler_ = "PENTA3Handler";  	
     	public static final String BNF_FORM = "birthnotificationpregnancystatusfollowup";
     	public static final String TT_Visit_Handler = "woman_tt_form";
+    	public static final String child_vaccine_followup_Handler = "child_vaccine_followup";
     	public static final String ENCC_REMINDER_VISIT_1 = "encc_visit_1";
     	public static final String ENCC_REMINDER_VISIT_2 = "encc_visit_2";
     	public static final String ENCC_REMINDER_VISIT_3 = "encc_visit_3";    	
@@ -160,7 +162,6 @@ public class AllConstants {
     
     public static class MEMBERSRegistrationFields
     {
-        	public static final String HH_MEMBER ="HH_Member";
         	public static final String MEMBER_COUNTRY ="Member_COUNTRY";
         	public static final String MEMBER_DIVISION ="Member_DIVISION";
         	public static final String MEMBER_DISTRICT ="Member_DISTRICT";
@@ -170,8 +171,16 @@ public class AllConstants {
         	public static final String MEMBER_WARD ="Member_WARD";
         	public static final String MEMBER_ADDRESS_LINE ="Member_Address_line";
         	public static final String MEMBER_HIE_FACILITIES ="Member_HIE_facilities";
+        	public static final String Member_BLOCK ="Member_BLOCK";
         	public static final String MEMBER_GPS ="Member_GPS";
         	public static final String HH_ADDRESS ="HH_Address";
+        	public static final String Child_vital_status = "Child_vital_status";
+        	public static final String Child_name_check = "Child_name_check";
+        	public static final String Child_name = "Child_name";
+        	public static final String Child_last_name = "Child_last_name";
+        	public static final String Member_Fname = "Member_Fname";
+        	public static final String child_vaccines_2 = "child_vaccines_2";
+        	public static final String add_child = "add_child";
         	public static final String MEMBER_TYPE ="Member_type";
         	public static final String REG_NO ="Reg_No";
         	public static final String MEMBER_FNAME ="Member_Fname";
@@ -182,6 +191,7 @@ public class AllConstants {
         	public static final String MEMBER_HID ="Member_HID";
         	public static final String MEMBER_BIRTH_DATE_KNOWN="member_birth_date_known";
         	public static final String MEMBER_BIRTH_DATE ="member_birth_date";
+        	public static final String Member_Reg_Date ="Member_Reg_Date";
         	public static final String age ="age";
         	public static final String calc_age ="calc_age";
         	public static final String calc_dob="calc_dob";
@@ -193,7 +203,7 @@ public class AllConstants {
         	public static final String Gender ="Gender";
         	public static final String Father_name ="Father_name";
         	public static final String Husband_name ="Husband_name";
-        	public static final String Marital_Status ="Marital_Status";
+        	public static final String Marital_status ="Marital_status";
         	public static final String Couple_No ="Couple_No";
         	public static final String WomanInfo ="WomanInfo";
         	public static final String pregnant ="pregnant";
@@ -213,7 +223,6 @@ public class AllConstants {
         	public static final String lmp_calc_edd_formatted ="lmp_calc_edd_formatted";
         	public static final String lmp_calc_ultrasound_formatted ="lmp_calc_ultrasound_formatted";
         	public static final String Is_preg_outcome ="Is_preg_outcome";
-        	public static final String Child_vital_status = "Child_vital_status";
         	public static final String final_edd ="final_edd";
         	public static final String final_lmp ="final_lmp";
         	public static final String ga_edd ="ga_edd";
@@ -242,7 +251,6 @@ public class AllConstants {
 	    	public static final String tt4 ="tt4";
 	    	public static final String tt_4_dose_today ="tt_4_dose_today";
 	    	public static final String tt5 ="tt5";
-	    	public static final String tt5_retro ="tt5_retro";
 	    	public static final String tt_5_dose_today ="tt_5_dose_today";
 	    	public static final String tt1_final="tt1_final";
 	    	public static final String tt2_final="tt2_final";
@@ -435,7 +443,174 @@ public class AllConstants {
 	    	public static final String ChildVaccination_MR_Date_of_Vaccination = "ChildVaccination_MR_Date_of_Vaccination";
 	    	public static final String ChildVaccination_Measles_Date_of_Vaccination = "ChildVaccination_Measles_Date_of_Vaccination";
 	    	public static final String ChildVaccination_IPV_Date_of_Vaccination = "ChildVaccination_IPV_Date_of_Vaccination";
-	    	public static final String ChildVaccination_BCG_Date_of_Vaccination = "ChildVaccination_BCG_Date_of_Vaccination";
+	    	public static final String ChildVaccination_BCG_Date_of_Vaccination = "ChildVaccination_BCG_Date_of_Vaccination";	    	
+	    	
+	    	public static final String existing_first_name
+	    	="existing_first_name";
+	    	public static final String existing_mother_name
+	    	="existing_mother_name";
+	    	public static final String existing_gender
+	    	="existing_gender";
+	    	public static final String existing_birth_date
+	    	="existing_birth_date";
+	    	public static final String Date_Of_Reg
+	    	="Date_Of_Reg";
+	    	public static final String existing_Country   
+	    	= "existing_Country";
+	    	public static final String existing_Division
+	    	="existing_Division";
+	    	public static final String existing_District
+	    	="existing_District";
+	    	public static final String existing_Upazilla
+	    	="existing_Upazilla";
+	    	public static final String existing_Paurasava
+	    	="existing_Paurasava";
+	    	public static final String existing_Union
+	    	="existing_Union";
+	    	public static final String existing_Ward
+	    	="existing_Ward";
+	    	public static final String existing_Block
+	    	="existing_Block";
+	    	public static final String existing_HIE_facilities
+	    	="existing_HIE_facilities";
+	    	public static final String existing_Address_line
+	    	="existing_Address_line";
+	    	public static final String existing_GPS
+	    	="existing_GPS";
+	    	public static final String existing_epi_card_number
+	    	="existing_epi_card_number";	    	
+	    	public static final String e_bcg
+	    	="e_bcg";
+	    	public static final String e_opv0
+	    	="e_opv0";
+	    	public static final String e_penta2
+	    	="e_penta2";
+	    	public static final String e_penta1
+	    	="e_penta1";
+	    	public static final String e_penta3
+	    	="e_penta3";
+	    	public static final String e_opv1
+	    	="e_opv1";
+	    	public static final String e_opv2
+	    	="e_opv2";
+	    	public static final String e_opv3
+	    	="e_opv3";
+	    	public static final String e_pcv1
+	    	="e_pcv1";
+	    	public static final String e_pcv2
+	    	="e_pcv2"; 
+	    	public static final String e_pcv3
+	    	="e_pcv3";
+	    	public static final String e_ipv
+	    	="e_ipv";
+	    	public static final String e_measles1
+	    	="e_measles1";
+	    	public static final String e_measles2
+	    	="e_measles2";
+	    	public static final String provider_id
+	    	="provider_id";
+	    	public static final String provider_location_id
+	    	="provider_location_id";
+	    	public static final String provider_location_name
+	    	="provider_location_name";
+	    	public static final String provider_location_note
+	    	="provider_location_note";
+	    	public static final String existing_client_reg_date_note
+	    	="existing_client_reg_date_note";
+	    	public static final String epi_card_number_note
+	    	="epi_card_number_note";
+	    	public static final String first_name_note
+	    	="first_name_note";
+	    	public static final String child_age
+	    	="child_age";
+	    	public static final String calc_dob_note
+	    	="calc_dob_note";
+	    	public static final String gender_note
+	    	="gender_note";
+	    	public static final String mother_name_note
+	    	="mother_name_note";
+	    	public static final String address
+	    	="address";
+	    	public static final String address_change
+	    	="address_change";
+	    	public static final String address1
+	    	="address1";
+	    	public static final String landmark
+	    	="landmark";
+	    	public static final String center_gps
+	    	="center_gps";
+	    	public static final String child_was_suffering_from_a_disease_at_birth_note
+	    	="child_was_suffering_from_a_disease_at_birth_note";
+	    	public static final String side_effects
+	    	="side_effects";
+	    	public static final String six_weeks
+	    	="six_weeks";
+	    	public static final String ten_weeks
+	    	="ten_weeks";
+	    	public static final String forteen_weeks
+	    	="forteen_weeks";
+	    	public static final String nine_months
+	    	="nine_months";
+	    	public static final String fifteen_months
+	    	="fifteen_months";
+	    	public static final String bcg_note
+	    	="bcg_note";
+	    	public static final String opv0_note
+	    	="opv0_note";
+	    	public static final String opv1_note
+	    	="opv1_note";
+	    	public static final String pcv1_note
+	    	="pcv1_note";
+	    	public static final String penta1_note
+	    	="penta1_note";
+	    	public static final String opv2_note
+	    	="opv2_note";
+	    	public static final String pcv2_note
+	    	="pcv2_note";
+	    	public static final String penta2_note
+	    	="penta2_note";
+	    	public static final String opv3_note
+	    	="opv3_note";
+	    	public static final String pcv3_note
+	    	="pcv3_note";
+	    	public static final String penta3_note
+	    	="penta3_note";
+	    	public static final String ipv_note
+	    	="ipv_note";
+	    	public static final String measles1_note
+	    	="ipv_note";
+	    	public static final String measles2_note
+	    	="measles2_note";
+	    	public static final String vaccination_date
+	    	="vaccination_date";
+	    	public static final String final_bcg
+	    	="final_bcg";
+	    	public static final String final_opv0
+	    	="final_opv0";
+	    	public static final String final_pcv1
+	    	="final_pcv1";
+	    	public static final String final_opv1
+	    	="final_opv1";
+	    	public static final String final_penta1
+	    	="final_penta1";
+	    	public static final String final_pcv2
+	    	="final_pcv2";
+	    	public static final String final_opv2
+	    	="final_opv2";
+	    	public static final String final_penta2
+	    	="final_penta2";
+	    	public static final String final_pcv3
+	    	="final_pcv3";
+	    	public static final String final_opv3
+	    	="final_opv3";
+	    	public static final String final_penta3
+	    	="final_penta3";
+	    	public static final String final_ipv
+	    	="final_ipv";
+	    	public static final String final_measles1
+	    	="final_measles1";
+	    	public static final String final_measles2
+	    	="final_measles2";
     }
 
     public static class PSRFFields
@@ -971,6 +1146,7 @@ public class AllConstants {
     public static class CommonFormFields {
         public static final String SUBMISSION_DATE_FIELD_NAME = "submissionDate";
         public static final String ID = "id";
+        public static final String relationalid = "relationalid";
         public static final String SERVICE_PROVIDED_PLACE = "serviceProvidedPlace";
         public static final String SERVICE_PROVIDED_DATE = "serviceProvidedDate";
         public static final String SUB_CENTER_SERVICE_PROVIDED_PLACE_VALUE = "sub_center";

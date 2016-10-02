@@ -42,7 +42,8 @@ public class HandlerMapper implements IHandlerMapper {
 			PENTA1Handler PENTA1Handler,
 			PENTA2Handler PENTA2Handler,
 			PENTA3Handler PENTA3Handler,
-			TT1_Handler TT1_Handler
+			TT1_Handler TT1_Handler,
+			child_vaccine_followup_Handler child_vaccine_followup_Handler
 			)
 	{
 		handlerMap = EasyMap.create(HH_REGISTRATION, (FormSubmissionHandler) hhRegistrationHandler)
@@ -65,6 +66,7 @@ public class HandlerMapper implements IHandlerMapper {
 				     .put(PENTA2Handler_ , PENTA2Handler)
 				     .put(PENTA3Handler_ , PENTA3Handler)
 				     .put(TT_Visit_Handler, TT1_Handler)
+				     .put(Child_vaccine_followup_Handler, child_vaccine_followup_Handler)
                      .map();
 	}
 

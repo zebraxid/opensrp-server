@@ -98,8 +98,8 @@ public class OpenSRPScheduleConstants {
         public static final String SCHEDULE_Woman_5 = "Woman_TT5";
         public static final String child_vaccination_bcg = "child_bcg";
         public static final String child_vaccination_ipv = "child_ipv";
-        public static final String child_vaccination_measles = "child_measles";
-        public static final String child_vaccination_mr = "child_mr";
+        public static final String child_vaccination_measles1 = "child_measles1";
+        public static final String child_vaccination_measles2 = "child_measles2";
         public static final String child_vaccination_opv0 = "child_opv0";        
         public static final String child_vaccination_opv1 = "child_opv1";
         public static final String child_vaccination_opv2 = "child_opv2";

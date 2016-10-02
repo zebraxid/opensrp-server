@@ -1,14 +1,14 @@
 {
-    "name": "child_vaccination_pcv3",
+    "name": "child_penta2",
     "absolute": true,
     "milestones": [
     	{
-            "name": "child_vaccination_pcv3",
+            "name": "child_penta2",
             "scheduleWindows": {
             	"earliest": ["28 Days"],
                 "due": ["42 Days"],
-                "late": ["690 Days"],
-                "max": ["691 Days"]
+                "late": ["365 Days"],
+                "max": ["366 Days"]
             },
             "alerts": [
             	{
@@ -27,11 +27,11 @@
                     "window": "late",
                     "offset": ["42 Days"],
                     "interval": ["1 Day"],
-                    "count": "648"
+                    "count": "323"
                 },
                 {
                     "window": "max",
-                    "offset": ["690 Days"],
+                    "offset": ["365 Days"],
                     "interval": ["1 Day"],
                     "count": "1"
                 }

@@ -29,381 +29,555 @@ public class Members extends MotechBaseDataObject {
 	@JsonProperty
 	private String LOCATIONID;
 	@JsonProperty
-	private String HH_Member;
-	@JsonProperty
-	private String Reg_No;
-	@JsonProperty
-	private String BDH;
-	@JsonProperty
-	private String Member_Fname;
-	@JsonProperty
-	private String Member_LName;
-	@JsonProperty
-	private String Gender;
-	@JsonProperty
-	private String DoB;	
-	@JsonProperty
-	private String Type_DoB;
-	@JsonProperty
-	private String age; 
-	@JsonProperty
-	private String Marital_Status;
-	@JsonProperty
-	private String Couple_No;
-	@JsonProperty
-	private String GA;
-	@JsonProperty
-	private String Pregnancy_Status; 
-	@JsonProperty
-	private String Unique_ID;
-	@JsonProperty
-	private String NID;
-	@JsonProperty
-	private String BRID;
-	@JsonProperty
-	private String HID;
-	@JsonProperty
-	private String Education;
-	@JsonProperty
-	private String Occupation;
-	@JsonProperty
-	private String Is_TT;
-	@JsonProperty
-	private String Is_Measles;
-	@JsonProperty
-	private String Is_FP;
-	@JsonProperty
-	private String Is_NewBorn;
-	@JsonProperty
-	private String Member_COUNTRY;
-	@JsonProperty
-	private String Member_DIVISION;
-	@JsonProperty
-	private String Member_DISTRICT;
-	@JsonProperty
-	private String Member_UPAZILLA;
-	@JsonProperty
-	private String Member_UNION;
-	@JsonProperty
-	private String Member_WARD;
-	@JsonProperty
-	private String Member_GOB_HHID;
-	@JsonProperty
-	private String Member_GPS;	
-	@JsonProperty
-	private String Member_BLOCK;
-	@JsonProperty
 	private String TODAY;
 	@JsonProperty
-	private String START;
+	private String Member_COUNTRY
+;
 	@JsonProperty
-	private String END;
+	private String Member_DIVISION
+;
 	@JsonProperty
-	private String relationalid;
+	private String Member_DISTRICT
+;
 	@JsonProperty
-	private String Member_Address_line;
+	private String Member_UPAZILLA
+;
 	@JsonProperty
-	private String Member_HIE_facilities;
+	private String Member_Paurasava
+;
 	@JsonProperty
-	private String HH_Address;
+	private String Member_UNION
+;
 	@JsonProperty
-	private String Member_type;
+	private String Member_WARD
+;
 	@JsonProperty
-	private String Member_Unique_ID;
+	private String Member_BLOCK
+;
 	@JsonProperty
-	private String Member_NID;
+	private String Member_Address_line
+;
 	@JsonProperty
-	private String Member_BRID;
+	private String Member_HIE_facilities
+;
 	@JsonProperty
-	private String Member_HID;
+	private String Member_GPS
+;
 	@JsonProperty
-	private String member_birth_date_known;
+	private String HH_Address
+;
 	@JsonProperty
-	private String member_birth_date;
+	private String Member_type
+;
 	@JsonProperty
-	private String calc_age;
+	private String Reg_No
+;
 	@JsonProperty
-	private String calc_dob;
+	private String Member_Fname
+;
 	@JsonProperty
-	private String calc_dob_confirm;
+	private String Member_LName
+;
 	@JsonProperty
-	private String calc_dob_estimated;
+	private String Member_Unique_ID
+;
 	@JsonProperty
-	private String calc_age_confirm;
+	private String Member_NID
+;
 	@JsonProperty
-	private String birth_date_note;
+	private String Member_BRID
+;
 	@JsonProperty
-	private String note_age;
+	private String Member_HID
+;
 	@JsonProperty
-	private String Father_name;
+	private String member_birth_date_known
+;
 	@JsonProperty
-	private String Husband_name;
+	private String member_birth_date
+;
 	@JsonProperty
-	private String WomanInfo;
+	private String age
+;
 	@JsonProperty
-	private String pregnant;
+	private String calc_age
+;
 	@JsonProperty
-	private String FP_USER;
+	private String calc_dob
+;
 	@JsonProperty
-	private String FP_Methods;
+	private String calc_dob_confirm
+;
 	@JsonProperty
-	private String edd_lmp;
+	private String calc_dob_estimated
+;
 	@JsonProperty
-	private String edd;
+	private String calc_age_confirm
+;
 	@JsonProperty
-	private String lmp;
+	private String birth_date_note
+;
 	@JsonProperty
-	private String ultrasound_date;
+	private String note_age
+;
 	@JsonProperty
-	private String ultrasound_weeks;
+	private String Gender
+;
 	@JsonProperty
-	private String edd_calc_lmp;
+	private String Father_name
+;
 	@JsonProperty
-	private String edd_calc_ultrasound;
+	private String Husband_name
+;
 	@JsonProperty
-	private String edd_calc_lmp_formatted;
+	private String epi_card_number
+;
 	@JsonProperty
-	private String edd_calc_ultrasound_formatted;
+	private String Marital_status
+;
 	@JsonProperty
-	private String lmp_calc_edd;
+	private String Couple_No
+;
 	@JsonProperty
-	private String lmp_calc_ultrasound;
+	private String WomanInfo
+;
 	@JsonProperty
-	private String lmp_calc_edd_formatted;
+	private String pregnant
+;
 	@JsonProperty
-	private String lmp_calc_ultrasound_formatted;
+	private String FP_USER
+;
 	@JsonProperty
-	private String final_edd;
+	private String FP_Methods
+;
 	@JsonProperty
-	private String final_lmp;
+	private String edd_lmp
+;
 	@JsonProperty
-	private String ga_edd;
+	private String edd
+;
 	@JsonProperty
-	private String ga_lmp;
+	private String lmp
+;
 	@JsonProperty
-	private String ga_ult;
+	private String ultrasound_date
+;
 	@JsonProperty
-	private String final_edd_note;
+	private String ultrasound_weeks
+;
 	@JsonProperty
-	private String final_lmp_note;
+	private String edd_calc_lmp
+;
 	@JsonProperty
-	private String final_ga;
+	private String edd_calc_ultrasound
+;
 	@JsonProperty
-	private String final_ga_note;
+	private String edd_calc_lmp_formatted
+;
 	@JsonProperty
-	private String vaccines;
+	private String edd_calc_ultrasound_formatted
+;
 	@JsonProperty
-	private String tt1_retro;
+	private String lmp_calc_edd
+;
 	@JsonProperty
-	private String tt_1_dose;
+	private String lmp_calc_ultrasound
+;
 	@JsonProperty
-	private String tt2_retro;
+	private String lmp_calc_edd_formatted
+;
 	@JsonProperty
-	private String tt_2_dose;
+	private String lmp_calc_ultrasound_formatted
+;
 	@JsonProperty
-	private String tt3_retro;
+	private String final_edd
+;
 	@JsonProperty
-	private String tt_3_dose;
+	private String final_lmp
+;
 	@JsonProperty
-	private String tt4_retro;
+	private String ga_edd
+;
 	@JsonProperty
-	private String tt_4_dose;
+	private String ga_lmp
+;
 	@JsonProperty
-	private String vaccines_2;
+	private String ga_ult
+;
 	@JsonProperty
-	private String tt1;
+	private String final_edd_note
+;
 	@JsonProperty
-	private String tt_1_dose_today;
+	private String final_lmp_note
+;
 	@JsonProperty
-	private String tt2;
+	private String final_ga
+;
 	@JsonProperty
-	private String tt_2_dose_today;
+	private String final_ga_note
+;
 	@JsonProperty
-	private String tt3;
+	private String vaccines
+;
 	@JsonProperty
-	private String tt_3_dose_today;
+	private String tt1_retro
+;
 	@JsonProperty
-	private String tt4;
+	private String tt_1_dose
+;
 	@JsonProperty
-	private String tt_4_dose_today;
+	private String tt2_retro
+;
 	@JsonProperty
-	private String tt5;
+	private String tt_2_dose
+;
 	@JsonProperty
-	private String tt_5_dose_today;
+	private String tt3_retro
+;
 	@JsonProperty
-	private String Child_birth_date_known;
+	private String tt_3_dose
+;
 	@JsonProperty
-	private String Child_birth_date;
+	private String tt4_retro
+;
 	@JsonProperty
-	private String Child_age;
+	private String tt_4_dose
+;
 	@JsonProperty
-	private String Child_calc_age;
+	private String vaccines_2
+;
 	@JsonProperty
-	private String Child_calc_dob;
+	private String tt1
+;
 	@JsonProperty
-	private String Child_dob;
+	private String tt_1_dose_today
+;
 	@JsonProperty
-	private String Child_dob_estimated;
+	private String tt2
+;
 	@JsonProperty
-	private String Child_age_days;
+	private String tt_2_dose_today
+;
 	@JsonProperty
-	private String Child_birth_date_note;
+	private String tt3
+;
 	@JsonProperty
-	private String Birth_Weigtht;
+	private String tt_3_dose_today
+;
 	@JsonProperty
-	private String Newborn_Care_Received;
+	private String tt4
+;
 	@JsonProperty
-	private String Child_gender;
+	private String tt_4_dose_today
+;
 	@JsonProperty
-	private String Child_mother_name;
+	private String tt5
+;
 	@JsonProperty
-	private String Child_father_name;
+	private String tt_5_dose_today
+;
 	@JsonProperty
-	private String Child_guardian_id;
+	private String tt1_final
+;
 	@JsonProperty
-	private String Child_Mother_NID;
+	private String tt2_final
+;
 	@JsonProperty
-	private String Child_Mother_BRID;
+	private String tt3_final
+;
 	@JsonProperty
-	private String Child_Father_NID;
+	private String tt4_final
+;
 	@JsonProperty
-	private String Child_Father_BRID;
+	private String tt5_final
+;
 	@JsonProperty
-	private String Child_Other_Guardian_NID;
+	private String Child_birth_date_known
+;
 	@JsonProperty
-	private String Child_Other_Guardian_BRID;
+	private String Child_birth_date
+;
 	@JsonProperty
-	private String epi_card_number;
+	private String Child_age
+;
 	@JsonProperty
-	private String child_was_suffering_from_a_disease_at_birth;
+	private String Child_calc_age
+;
 	@JsonProperty
-	private String reminders_approval;
+	private String Child_calc_dob
+;
 	@JsonProperty
-	private String contact_phone_number;
+	private String Child_dob
+;
 	@JsonProperty
-	private String child_vaccines;
+	private String Child_dob_estimated
+;
 	@JsonProperty
-	private String BCGVisitretro;
+	private String Child_age_days
+;
 	@JsonProperty
-	private String opv0_retro;
+	private String Child_birth_date_note
+;
 	@JsonProperty
-	private String opv0_dose;
+	private String Birth_Weigtht
+;
 	@JsonProperty
-	private String pcv1_retro;
+	private String Newborn_Care_Received
+;
 	@JsonProperty
-	private String pcv1_dose;
+	private String Child_gender
+;
 	@JsonProperty
-	private String opv1_retro;
+	private String Child_mother_name
+;
 	@JsonProperty
-	private String opv1_dose;
+	private String Child_father_name
+;
 	@JsonProperty
-	private String penta1_retro;
+	private String Child_guardian_id
+;
 	@JsonProperty
-	private String penta1_dose;
+	private String Child_Mother_NID
+;
 	@JsonProperty
-	private String pcv2_retro;
+	private String Child_Mother_BRID
+;
 	@JsonProperty
-	private String pcv2_dose;
+	private String Child_Father_NID
+;
 	@JsonProperty
-	private String opv2_retro;
+	private String Child_Father_BRID
+;
 	@JsonProperty
-	private String opv2_dose;
+	private String Child_Other_Guardian_NID
+;
 	@JsonProperty
-	private String penta2_retro;
+	private String Child_Other_Guardian_BRID
+;
 	@JsonProperty
-	private String penta2_dose;
+	private String child_was_suffering_from_a_disease_at_birth
+;
 	@JsonProperty
-	private String pcv3_retro;
+	private String reminders_approval
+;
 	@JsonProperty
-	private String pcv3_dose;
+	private String contact_phone_number
+;
 	@JsonProperty
-	private String opv3_retro;
+	private String child_vaccines
+;
 	@JsonProperty
-	private String opv3_dose;
+	private String bcg_retro
+;
 	@JsonProperty
-	private String penta3_retro;
+	private String opv0_retro
+;
 	@JsonProperty
-	private String penta3_dose;
+	private String opv0_dose
+;
 	@JsonProperty
-	private String ipv_retro;
+	private String pcv1_retro
+;
 	@JsonProperty
-	private String measles1_retro;
+	private String pcv1_dose
+;
 	@JsonProperty
-	private String measles1_dose;
+	private String opv1_retro
+;
 	@JsonProperty
-	private String measles2_retro;
+	private String opv1_dose
+;
 	@JsonProperty
-	private String measles2_dose;
+	private String penta1_retro
+;
 	@JsonProperty
-	private String bcg;
+	private String penta1_dose
+;
 	@JsonProperty
-	private String opv0;
+	private String pcv2_retro
+;
 	@JsonProperty
-	private String opv0_dose_today;
+	private String pcv2_dose
+;
 	@JsonProperty
-	private String pcv1;
+	private String opv2_retro
+;
 	@JsonProperty
-	private String pcv1_dose_today;
+	private String opv2_dose
+;
 	@JsonProperty
-	private String opv1;
+	private String penta2_retro
+;
 	@JsonProperty
-	private String opv1_dose_today;
+	private String penta2_dose
+;
 	@JsonProperty
-	private String penta1;
+	private String pcv3_retro
+;
 	@JsonProperty
-	private String penta1_dose_today;
+	private String pcv3_dose
+;
 	@JsonProperty
-	private String pcv2;
+	private String opv3_retro
+;
 	@JsonProperty
-	private String pcv2_dose_today;
+	private String opv3_dose
+;
 	@JsonProperty
-	private String opv2;
+	private String penta3_retro
+;
 	@JsonProperty
-	private String opv2_dose_today;
+	private String penta3_dose
+;
 	@JsonProperty
-	private String penta2;
+	private String ipv_retro
+;
 	@JsonProperty
-	private String penta2_dose_today;
+	private String measles1_retro
+;
 	@JsonProperty
-	private String pcv3;
+	private String measles1_dose
+;
 	@JsonProperty
-	private String pcv3_dose_today;
+	private String measles2_retro
+;
 	@JsonProperty
-	private String opv3;
+	private String measles2_dose
+;
 	@JsonProperty
-	private String opv3_dose_today;
+	private String bcg
+;
 	@JsonProperty
-	private String penta3;
+	private String opv0
+;
 	@JsonProperty
-	private String penta3_dose_today;
+	private String opv0_dose_today
+;
 	@JsonProperty
-	private String ipv;
+	private String pcv1
+;
 	@JsonProperty
-	private String measles1;
+	private String pcv1_dose_today
+;
 	@JsonProperty
-	private String measles1_dose_today;
+	private String opv1
+;
 	@JsonProperty
-	private String measles2;
+	private String opv1_dose_today
+;
 	@JsonProperty
-	private String Is_woman; 
+	private String penta1
+;
 	@JsonProperty
-	private String Is_child; 
+	private String penta1_dose_today
+;
+	@JsonProperty
+	private String pcv2
+;
+	@JsonProperty
+	private String pcv2_dose_today
+;
+	@JsonProperty
+	private String opv2
+;
+	@JsonProperty
+	private String opv2_dose_today
+;
+	@JsonProperty
+	private String penta2
+;
+	@JsonProperty
+	private String penta2_dose_today
+;
+	@JsonProperty
+	private String pcv3
+;
+	@JsonProperty
+	private String pcv3_dose_today
+;
+	@JsonProperty
+	private String opv3
+;
+	@JsonProperty
+	private String opv3_dose_today
+;
+	@JsonProperty
+	private String penta3
+;
+	@JsonProperty
+	private String penta3_dose_today
+;
+	@JsonProperty
+	private String ipv
+;
+	@JsonProperty
+	private String measles1
+;
+	@JsonProperty
+	private String measles1_dose_today
+;
+	@JsonProperty
+	private String measles2
+;
+	@JsonProperty
+	private String measles2_dose_today
+;
+	@JsonProperty
+	private String final_bcg
+;
+	@JsonProperty
+	private String final_opv0
+;
+	@JsonProperty
+	private String final_pcv1
+;
+	@JsonProperty
+	private String final_opv1
+;
+	@JsonProperty
+	private String final_penta1
+;
+	@JsonProperty
+	private String final_pcv2
+;
+	@JsonProperty
+	private String final_opv2
+;
+	@JsonProperty
+	private String final_penta2
+;
+	@JsonProperty
+	private String final_pcv3
+;
+	@JsonProperty
+	private String final_opv3
+;
+	@JsonProperty
+	private String final_penta3
+;
+	@JsonProperty
+	private String final_ipv
+;
+	@JsonProperty
+	private String final_measles1
+;
+	@JsonProperty
+	private String final_measles2
+;
+	@JsonProperty
+	private String Member_Reg_Date
+;
+	@JsonProperty
+	private String child_vaccines_2
+;
+	@JsonProperty
+	private String Is_woman
+;
+	@JsonProperty
+	private String Is_child
+;
 	@JsonProperty
 	private String Is_preg_outcome;
-	@JsonProperty
-	private String Member_Paurasava;
-	@JsonProperty
-	private String measles2_dose_today;	
-	@JsonProperty
-	private String tt1_final;
-	@JsonProperty
-	private String tt2_final;
-	@JsonProperty
-	private String tt3_final;
-	@JsonProperty
-	private String tt4_final;
-	@JsonProperty
-	private String tt5_final;
 	@JsonProperty
 	private Map<String, String> details;
 	@JsonProperty
@@ -417,7 +591,7 @@ public class Members extends MotechBaseDataObject {
 	@JsonProperty
 	private Map<String, String> TTVisitFive;
 	@JsonProperty
-	private Map<String, String> MeaslesVisit;
+	private Map<String, String> Measles1Visit;
 	@JsonProperty
 	private Map<String, String> generalVisit;
 	@JsonProperty
@@ -449,6 +623,8 @@ public class Members extends MotechBaseDataObject {
 	@JsonProperty
 	private Map<String, String> BCGVisit;
 	@JsonProperty
+	private List<Map<String, String>> child_vaccine;
+	@JsonProperty
 	private Map<String, String> BNFVisit;
 	@JsonProperty
 	private String isClosed;
@@ -459,7 +635,7 @@ public class Members extends MotechBaseDataObject {
 		this.TTVisitThree = new HashMap<>();
 		this.TTVisitFour = new HashMap<>();
 		this.TTVisitFive = new HashMap<>();
-		this.MeaslesVisit = new HashMap<>();
+		this.Measles1Visit = new HashMap<>();
 		this.generalVisit = new HashMap<>();
 		this.PCV1Visit = new HashMap<>();
 		this.PCV2Visit = new HashMap<>();
@@ -476,6 +652,7 @@ public class Members extends MotechBaseDataObject {
 		this.IPVVisit = new HashMap<>();
 		this.BCGVisit = new HashMap<>();
 		this.BNFVisit = new HashMap<>();
+		this.child_vaccine = new ArrayList<>();
 		this.setIsClosed(false);
 	}
 	
@@ -498,22 +675,19 @@ public class Members extends MotechBaseDataObject {
 		this.LOCATIONID = LOCATIONID;
 		return this;
 	}
+	
+	public Members setTODAY(String TODAY) {
+		this.TODAY = TODAY;
+		return this;
+	}
 
 	public Members setMember_Fname(String Member_Fname) {
 		this.Member_Fname = Member_Fname;
 		return this;
 	}
 
-	public Members setHH_Member(String HH_Member) {
-		this.HH_Member = HH_Member;
-		return this;
-	}
 	public Members setReg_No(String Reg_No) {
 		this.Reg_No = Reg_No;
-		return this;
-	}
-	public Members setBDH(String BDH) {
-		this.BDH = BDH;
 		return this;
 	}
 	public Members setMember_LName(String Member_LName) {
@@ -524,88 +698,19 @@ public class Members extends MotechBaseDataObject {
 		this.Gender = Gender;
 		return this;
 	}
-	public Members setDoB(String DoB) {
-		this.DoB = DoB;
-		return this;
-	}
-	
-	public Members setType_DoB(String Type_DoB) {
-		this.Type_DoB = Type_DoB;
-		return this;
-	}
 
 	public Members setage(String age) {
 		this.age = age;
 		return this;
 	}
 	
-	public Members setMarital_Status(String Marital_Status) {
-		this.Marital_Status = Marital_Status;
+	public Members setMarital_status(String Marital_status) {
+		this.Marital_status = Marital_status;
 		return this;
 	}
 	
 	public Members setedd(String edd) {
 		this.edd = edd;
-		return this;
-	}
-	
-	public Members setGA(String GA) {
-		this.GA = GA;
-		return this;
-	}
-	
-	public Members setPregnancy_Status(String Pregnancy_Status) {
-		this.Pregnancy_Status = Pregnancy_Status;
-		return this;
-	}
-
-	public Members setHID(String HID) {
-		this.HID = HID;
-		return this;
-	}
-
-	public Members setUnique_ID(String Unique_ID) {
-		this.Unique_ID = Unique_ID;
-		return this;
-	}
-
-	public Members setNID(String NID) {
-		this.NID = NID;
-		return this;
-	}
-	
-	public Members setBRID(String BRID) {
-		this.BRID = BRID;
-		return this;
-	}
-	
-	public Members setEducation(String Education) {
-		this.Education = Education;
-		return this;
-	}
-
-	public Members setOccupation(String Occupation) {
-		this.Occupation = Occupation;
-		return this;
-	}
-
-	public Members setIs_TT(String Is_TT) {
-		this.Is_TT = Is_TT;
-		return this;
-	}
-	
-	public Members setIs_Measles(String Is_Measles) {
-		this.Is_Measles = Is_Measles;
-		return this;
-	}
-
-	public Members setIs_FP(String Is_FP) {
-		this.Is_FP = Is_FP;
-		return this;
-	}
-	
-	public Members setIs_NewBorn(String Is_NewBorn) {
-		this.Is_NewBorn = Is_NewBorn;
 		return this;
 	}
 	
@@ -639,11 +744,6 @@ public class Members extends MotechBaseDataObject {
 		return this;
 	}
 	
-	public Members setMember_GOB_HHID(String Member_GOB_HHID) {
-		this.Member_GOB_HHID = Member_GOB_HHID;
-		return this;
-	}
-	
 	public Members setMember_GPS(String Member_GPS) {
 		this.Member_GPS = Member_GPS;
 		return this;
@@ -654,24 +754,6 @@ public class Members extends MotechBaseDataObject {
 		return this;
 	}
 	
-	public Members setTODAY(String TODAY) {
-		this.TODAY = TODAY;
-		return this;
-	}
-
-	public Members setSTART(String START) {
-		this.START = START;
-		return this;
-	}
-
-	public Members setEND(String END) {
-		this.END = END;
-		return this;
-	}
-	public Members setRelationalid(String relationalid) {
-		this.relationalid = relationalid;
-		return this;
-	}
 	public Members setDetails(Map<String, String> details) {
         this.details = new HashMap<>(details);
         return this;
@@ -696,8 +778,8 @@ public class Members extends MotechBaseDataObject {
         this.TTVisitFive = new HashMap<>(TTVisitFive);
         return this;
     }
-	public Members setMeaslesVisit(Map<String, String> MeaslesVisit) {
-        this.MeaslesVisit = new HashMap<>(MeaslesVisit);
+	public Members setMeasles1Visit(Map<String, String> Measles1Visit) {
+        this.Measles1Visit = new HashMap<>(Measles1Visit);
         return this;
     }
 	public Members setgeneralVisit(Map<String, String> generalVisit) {
@@ -764,6 +846,10 @@ public class Members extends MotechBaseDataObject {
         this.BNFVisit = new HashMap<>(BNFVisit);
         return this;
     }
+    public Members setchild_vaccine(List<Map<String, String>> child_vaccine) {
+		this.child_vaccine = child_vaccine;
+		return this;
+	}
 	public Members setMember_Address_line(String member_Address_line) {
 		Member_Address_line = member_Address_line;
 		return this;
@@ -1124,10 +1210,6 @@ public class Members extends MotechBaseDataObject {
 		this.child_vaccines = child_vaccines;
 		return this;
 	}
-	public Members setBCGVisitretro(String BCGVisitretro) {
-		this.BCGVisitretro = BCGVisitretro;
-		return this;
-	}
 	public Members setOpv0_retro(String opv0_retro) {
 		this.opv0_retro = opv0_retro;
 		return this;
@@ -1369,7 +1451,68 @@ public class Members extends MotechBaseDataObject {
 	public void setTt5_final(String tt5_final) {
 		this.tt5_final = tt5_final;
 	}
-	
+
+	public void setFinal_bcg(String final_bcg) {
+		this.final_bcg = final_bcg;
+	}
+
+	public void setFinal_opv0(String final_opv0) {
+		this.final_opv0 = final_opv0;
+	}
+
+	public void setFinal_pcv1(String final_pcv1) {
+		this.final_pcv1 = final_pcv1;
+	}
+
+	public void setFinal_opv1(String final_opv1) {
+		this.final_opv1 = final_opv1;
+	}
+
+	public void setFinal_penta1(String final_penta1) {
+		this.final_penta1 = final_penta1;
+	}
+
+	public void setFinal_pcv2(String final_pcv2) {
+		this.final_pcv2 = final_pcv2;
+	}
+
+	public void setFinal_opv2(String final_opv2) {
+		this.final_opv2 = final_opv2;
+	}
+
+	public void setFinal_penta2(String final_penta2) {
+		this.final_penta2 = final_penta2;
+	}
+
+	public void setFinal_pcv3(String final_pcv3) {
+		this.final_pcv3 = final_pcv3;
+	}
+
+	public void setFinal_opv3(String final_opv3) {
+		this.final_opv3 = final_opv3;
+	}
+
+	public void setFinal_penta3(String final_penta3) {
+		this.final_penta3 = final_penta3;
+	}
+
+	public void setFinal_ipv(String final_ipv) {
+		this.final_ipv = final_ipv;
+	}
+
+	public void setFinal_measles1(String final_measles1) {
+		this.final_measles1 = final_measles1;
+	}
+
+	public void setFinal_measles2(String final_measles2) {
+		this.final_measles2 = final_measles2;
+	}
+	public void setMember_Reg_Date(String Member_Reg_Date) {
+		this.Member_Reg_Date = Member_Reg_Date;
+	}
+	public void setchild_vaccines_2(String child_vaccines_2) {
+		this.child_vaccines_2 = child_vaccines_2;
+	}
 	public String caseId() {
 		return caseId;
 	}
@@ -1388,18 +1531,16 @@ public class Members extends MotechBaseDataObject {
 	public String LOCATIONID() {
 		return LOCATIONID;
 	}
+	
+	public String TODAY() {
+		return TODAY;
+	}
 
 	public String Member_Fname() {
 		return Member_Fname;
 	}
-	public String HH_Member() {
-		return HH_Member;
-	}
 	public String Reg_No() {
 		return Reg_No;
-	}
-	public String BDH() {
-		return BDH;
 	}
 	public String Member_LName() {
 		return Member_LName;
@@ -1407,72 +1548,17 @@ public class Members extends MotechBaseDataObject {
 	public String Gender() {
 		return Gender;
 	}
-	public String DoB() {
-		return DoB;
-	}
-
-	public String Type_DoB() {
-		return Type_DoB;
-	}
 
 	public String age() {
 		return age;
 	}
 	
-	public String Marital_Status() {
-		return Marital_Status;
+	public String Marital_status() {
+		return Marital_status;
 	}
 
 	public String Couple_No() {
 		return Couple_No;
-	}
-
-	public String GA() {
-		return GA;
-	}
-	
-	public String Pregnancy_Status() {
-		return Pregnancy_Status;
-	}
-	
-	public String HID() {
-		return HID;
-	}
-	
-	public String Unique_ID() {
-		return Unique_ID;
-	}
-	
-	public String NID() {
-		return NID;
-	}
-	
-	public String BRID() {
-		return BRID;
-	}
-
-	public String Education() {
-		return Education;
-	}
-
-	public String Occupation() {
-		return Occupation;
-	}
-
-	public String Is_TT() {
-		return Is_TT;
-	}
-	
-	public String Is_Measles() {
-		return Is_Measles;
-	}
-
-	public String Is_FP() {
-		return Is_FP;
-	}
-	
-	public String Is_NewBorn() {
-		return Is_NewBorn;
 	}
 
 	public String Member_COUNTRY() {
@@ -1499,10 +1585,6 @@ public class Members extends MotechBaseDataObject {
 		return Member_WARD;
 	}
 	
-	public String Member_GOB_HHID() {
-		return Member_GOB_HHID;
-	}	
-	
 	public String Member_GPS() {
 		return Member_GPS;
 	}	
@@ -1513,22 +1595,6 @@ public class Members extends MotechBaseDataObject {
 	
 	public String isClosed() {
 		return isClosed;
-	}
-	
-	public String TODAY() {
-		return TODAY;
-	}
-	
-	public String START() {
-		return START;
-	}
-
-	public String END() {
-		return END;
-	}
-	
-	public String relationalid() {
-		return relationalid;
 	}
 	
 	public String Member_Address_line() {
@@ -1813,9 +1879,6 @@ public class Members extends MotechBaseDataObject {
 	public String Child_vaccines() {
 		return child_vaccines;
 	}
-	public String BCGVisitretro() {
-		return BCGVisitretro;
-	}
 	public String Opv0_retro() {
 		return opv0_retro;
 	}
@@ -1978,9 +2041,6 @@ public class Members extends MotechBaseDataObject {
 	public String Measles2Visit_dose_today() {
 		return measles2_dose_today;
 	}
-	public String Relationalid() {
-		return relationalid;
-	}
 	public String Tt1_final() {
 		return tt1_final;
 	}
@@ -1996,6 +2056,70 @@ public class Members extends MotechBaseDataObject {
 	public String Tt5_final() {
 		return tt5_final;
 	}	
+	public String Final_bcg() {
+		return final_bcg;
+	}
+
+	public String Final_opv0() {
+		return final_opv0;
+	}
+
+	public String Final_pcv1() {
+		return final_pcv1;
+	}
+
+	public String Final_opv1() {
+		return final_opv1;
+	}
+
+	public String Final_penta1() {
+		return final_penta1;
+	}
+
+	public String Final_pcv2() {
+		return final_pcv2;
+	}
+
+	public String Final_opv2() {
+		return final_opv2;
+	}
+
+	public String Final_penta2() {
+		return final_penta2;
+	}
+
+	public String Final_pcv3() {
+		return final_pcv3;
+	}
+
+	public String Final_opv3() {
+		return final_opv3;
+	}
+
+	public String Final_penta3() {
+		return final_penta3;
+	}
+
+	public String Final_ipv() {
+		return final_ipv;
+	}
+
+	public String Final_measles1() {
+		return final_measles1;
+	}
+
+	public String Final_measles2() {
+		return final_measles2;
+	}
+	
+	public String Member_Reg_Date() {
+		return Member_Reg_Date;
+	}
+	
+	public String child_vaccines_2() {
+		return child_vaccines_2;
+	}
+	
 	public Map<String, String> details() {
 		if (details == null)
 			this.details = new HashMap<>();
@@ -2031,10 +2155,10 @@ public class Members extends MotechBaseDataObject {
 			this.TTVisitFive = new HashMap<>();
 		return TTVisitFive;
 	}
-	public Map<String, String> MeaslesVisit() {
-		if (MeaslesVisit == null)
-			this.MeaslesVisit = new HashMap<>();
-		return MeaslesVisit;
+	public Map<String, String> Measles1Visit() {
+		if (Measles1Visit == null)
+			this.Measles1Visit = new HashMap<>();
+		return Measles1Visit;
 	}
 	public Map<String, String> generalVisit() {
 		if (generalVisit == null)
@@ -2115,6 +2239,12 @@ public class Members extends MotechBaseDataObject {
 		if (BNFVisit == null)
 			this.BNFVisit = new HashMap<>();
 		return BNFVisit;
+	}
+	public List<Map<String, String>> child_vaccine() {
+		if (child_vaccine == null) {
+			child_vaccine = new ArrayList<>();
+		}
+		return child_vaccine;
 	}
     public Members setIsClosed(boolean isClosed) {
         this.isClosed = Boolean.toString(isClosed);
