@@ -438,6 +438,6 @@ public class FormSubmissionController {
 			logger.info("Bahmni id finding : " + ee.getMessage());
 		}
 		
-		return "BDH202455";
+		return null;
 	}
 }
