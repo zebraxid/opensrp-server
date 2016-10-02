@@ -69,7 +69,7 @@ public class CampService implements CampInterface<CampDTO> {
 				campRepository.add(camp);
 				if (camp.getId() != null) {
 					for (CampDateDTO campDateDTO : campDateDTOs) {
-						CampDate campDate = campDateService.CampDateDTO2CampDate(campDateDTO, camp);
+						CampDate campDate = campDateService.CampDateDTO2CampDate(campDateDTO, camp,campDTO);
 						campDateRepository.add(campDate);
 					}
 				}
@@ -171,16 +171,16 @@ public class CampService implements CampInterface<CampDTO> {
 				campDateRepository.removeAll("session_id", camp.getId());
 				List<CampDateDTO> campDateDTOs = (List<CampDateDTO>) campDTO.getCamp_dates();
 				for (CampDateDTO campDateDTO : campDateDTOs) {
-					CampDate campDate = campDateService.CampDateDTO2CampDate(campDateDTO, camp);
+					CampDate campDate = campDateService.CampDateDTO2CampDate(campDateDTO, camp,campDTO);
 					campDateRepository.add(campDate);
 				}				
 			}
 			catch (Exception e) {
-				e.printStackTrace();
+				return "2";
 			}
-			return camp.toString();
+			
 		}
-		return null;
+		return "1";
 		
 	}
 	

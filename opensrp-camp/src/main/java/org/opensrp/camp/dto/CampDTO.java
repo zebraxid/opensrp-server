@@ -45,6 +45,16 @@ public class CampDTO {
 	@JsonProperty("created_by")
 	private String created_by;
 	
+	
+	@JsonProperty("thana")
+	private String thana;
+	@JsonProperty("union")
+	private String union;
+	@JsonProperty("ward")
+	private String ward;
+	@JsonProperty("unit")
+	private String unit;
+	
 	@JsonProperty("camp_dates")
 	private List<CampDateDTO> camp_dates;
 	
@@ -52,30 +62,65 @@ public class CampDTO {
 		// TODO Auto-generated constructor stub
 	}
 
-	public CampDTO(String session_id, String session_name, String session_location, String total_hh,
-        String total_population, String total_adolescent, String total_women, String total_child0, String total_child1,
-        String total_child2, String health_assistant, String contact, String created_at, String created_by,
-        List<CampDateDTO> camp_dates) {
-	    super();
-	    this.session_id = session_id;
-	    this.session_name = session_name;
-	    this.session_location = session_location;
-	    this.total_hh = total_hh;
-	    this.total_population = total_population;
-	    this.total_adolescent = total_adolescent;
-	    this.total_women = total_women;
-	    this.total_child0 = total_child0;
-	    this.total_child1 = total_child1;
-	    this.total_child2 = total_child2;
-	    this.health_assistant = health_assistant;
-	    this.contact = contact;
-	    this.created_at = created_at;
-	    this.created_by = created_by;
-	    this.camp_dates = camp_dates;
+	
+	
+    
+    public String getThana() {
+    	return thana;
     }
 
+
+
 	
-    public String getSession_id() {
+    public String getUnion() {
+    	return union;
+    }
+
+
+
+	
+    public String getWard() {
+    	return ward;
+    }
+
+
+
+	
+    public String getUnit() {
+    	return unit;
+    }
+
+
+
+	
+    public void setThana(String thana) {
+    	this.thana = thana;
+    }
+
+
+
+	
+    public void setUnion(String union) {
+    	this.union = union;
+    }
+
+
+
+	
+    public void setWard(String ward) {
+    	this.ward = ward;
+    }
+
+
+
+	
+    public void setUnit(String unit) {
+    	this.unit = unit;
+    }
+
+
+
+	public String getSession_id() {
     	return session_id;
     }
 

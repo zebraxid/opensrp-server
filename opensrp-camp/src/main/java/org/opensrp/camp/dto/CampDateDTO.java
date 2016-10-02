@@ -14,22 +14,40 @@ public class CampDateDTO {
 	private String status;
 	@JsonProperty("timestamp")
 	private long timestamp;
+	@JsonProperty("thana")
+	private String thana;
+	@JsonProperty("union")
+	private String union;
+	@JsonProperty("ward")
+	private String ward;
+	@JsonProperty("unit")
+	private String unit;
 	
 	public CampDateDTO() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public CampDateDTO(String session_date, String session_location, String session_name, String status, long timestamp) {
+	
+
+	
+    public CampDateDTO(String session_date, String session_location, String session_name, String status, long timestamp,
+        String thana, String union, String ward, String unit) {
 	    super();
 	    this.session_date = session_date;
 	    this.session_location = session_location;
 	    this.session_name = session_name;
 	    this.status = status;
 	    this.timestamp = timestamp;
+	    this.thana = thana;
+	    this.union = union;
+	    this.ward = ward;
+	    this.unit = unit;
     }
 
-	
-    public String getSession_date() {
+
+
+
+	public String getSession_date() {
     	return session_date;
     }
 
@@ -76,6 +94,70 @@ public class CampDateDTO {
 	
     public void setTimestamp(long timestamp) {
     	this.timestamp = timestamp;
+    }
+
+
+
+
+	
+    public String getThana() {
+    	return thana;
+    }
+
+
+
+
+	
+    public String getUnion() {
+    	return union;
+    }
+
+
+
+
+	
+    public String getWard() {
+    	return ward;
+    }
+
+
+
+
+	
+    public String getUnit() {
+    	return unit;
+    }
+
+
+
+
+	
+    public void setThana(String thana) {
+    	this.thana = thana;
+    }
+
+
+
+
+	
+    public void setUnion(String union) {
+    	this.union = union;
+    }
+
+
+
+
+	
+    public void setWard(String ward) {
+    	this.ward = ward;
+    }
+
+
+
+
+	
+    public void setUnit(String unit) {
+    	this.unit = unit;
     }
 	
 	

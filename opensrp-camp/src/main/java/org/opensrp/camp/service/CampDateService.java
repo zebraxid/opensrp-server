@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.opensrp.camp.dao.Camp;
 import org.opensrp.camp.dao.CampDate;
+import org.opensrp.camp.dto.CampDTO;
 import org.opensrp.camp.dto.CampDateDTO;
 import org.opensrp.camp.interfaces.CampInterface;
 import org.opensrp.camp.repository.CampDateRepository;
@@ -44,7 +45,7 @@ public class CampDateService implements CampInterface<CampDate>{
 		
 	}	
 	
-	public CampDate CampDateDTO2CampDate(CampDateDTO campDateDTO,Camp camp) throws ParseException{
+	public CampDate CampDateDTO2CampDate(CampDateDTO campDateDTO,Camp camp,CampDTO campDTO) throws ParseException{
 		CampDate campDate = new CampDate();
 		campDate.setSession_date(campDateDTO.getSession_date());
 		campDate.setSession_id(camp.getId());
@@ -53,6 +54,12 @@ public class CampDateService implements CampInterface<CampDate>{
 		campDate.setSession_location(camp.getSession_location());
 		campDate.setHealth_assistant(camp.getHealth_assistant());
 		campDate.setStatus(campDateDTO.getStatus());
+		
+		campDate.setThana(campDTO.getThana());
+		campDate.setUnion(campDTO.getUnion());
+		campDate.setWard(campDTO.getWard());
+		campDate.setUnit(campDTO.getUnit());
+		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		Date date = sdf.parse(campDateDTO.getSession_date().toString());
 		campDate.setTimestamp(date.getTime());

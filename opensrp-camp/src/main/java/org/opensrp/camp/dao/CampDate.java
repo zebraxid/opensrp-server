@@ -29,6 +29,14 @@ public class CampDate extends MotechBaseDataObject {
 	
 	@JsonProperty("health_assistant")
 	private String health_assistant;
+	@JsonProperty("thana")
+	private String thana;
+	@JsonProperty("union")
+	private String union;
+	@JsonProperty("ward")
+	private String ward;
+	@JsonProperty("unit")
+	private String unit;
 	
 	@JsonProperty("contact")
 	private String contact;
@@ -39,8 +47,11 @@ public class CampDate extends MotechBaseDataObject {
 		// TODO Auto-generated constructor stub
 	}
 
-	public CampDate(String session_date, String session_id, String session_location, String session_name, String status,
-        String health_assistant, String contact, long timestamp) {
+	
+
+	
+    public CampDate(String session_date, String session_id, String session_location, String session_name, String status,
+        String health_assistant, String thana, String union, String ward, String unit, String contact, long timestamp) {
 	    super();
 	    this.session_date = session_date;
 	    this.session_id = session_id;
@@ -48,12 +59,18 @@ public class CampDate extends MotechBaseDataObject {
 	    this.session_name = session_name;
 	    this.status = status;
 	    this.health_assistant = health_assistant;
+	    this.thana = thana;
+	    this.union = union;
+	    this.ward = ward;
+	    this.unit = unit;
 	    this.contact = contact;
 	    this.timestamp = timestamp;
     }
 
-	
-    public String getSession_date() {
+
+
+
+	public String getSession_date() {
     	return session_date;
     }
 
@@ -130,6 +147,70 @@ public class CampDate extends MotechBaseDataObject {
 	
     public void setTimestamp(long timestamp) {
     	this.timestamp = timestamp;
+    }
+
+
+
+
+	
+    public String getThana() {
+    	return thana;
+    }
+
+
+
+
+	
+    public String getUnion() {
+    	return union;
+    }
+
+
+
+
+	
+    public String getWard() {
+    	return ward;
+    }
+
+
+
+
+	
+    public String getUnit() {
+    	return unit;
+    }
+
+
+
+
+	
+    public void setThana(String thana) {
+    	this.thana = thana;
+    }
+
+
+
+
+	
+    public void setUnion(String union) {
+    	this.union = union;
+    }
+
+
+
+
+	
+    public void setWard(String ward) {
+    	this.ward = ward;
+    }
+
+
+
+
+	
+    public void setUnit(String unit) {
+    	this.unit = unit;
     }
 	
 	

@@ -7,6 +7,7 @@ import org.ektorp.support.View;
 import org.motechproject.dao.MotechBaseRepository;
 import org.opensrp.common.AllConstants;
 import org.opensrp.dashboard.domain.User;
+import org.opensrp.domain.Client;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +45,10 @@ public class AllUser extends MotechBaseRepository<User> {
 			return null;
 		}
 		return users.get(0);
+	}
+	@View(name = "all_users_by_role", map = "function(doc) {if (doc.type === 'User'){for(var key in doc.roles){for(var k in doc.roles[key]){emit(doc.roles[key][k]);}}}}")
+	public List<User> findAllByRole(String role) {
+		return db.queryView(createQuery("all_users_by_role").key(role).includeDocs(true), User.class);
 	}
 	
 }
