@@ -7,7 +7,9 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Map;
+import java.util.logging.Logger;
 
+import org.opensrp.domain.RelationShip;
 import org.hamcrest.Matchers;
 import org.joda.time.DateTime;
 import org.json.JSONException;
@@ -22,15 +24,17 @@ import org.opensrp.connector.openmrs.constants.OpenmrsHouseHold;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.form.service.FormAttributeParser;
 import org.opensrp.service.formSubmission.FormEntityConverter;
+import org.springframework.web.filter.Log4jNestedDiagnosticContextFilter;
 
 import com.google.gson.JsonIOException;
+import com.mysql.jdbc.log.Log;
 
 
 public class EncounterTest extends TestResourceLoader{
 	public EncounterTest() throws IOException {
 		super();
 	}
-	
+	private final Logger log = Logger.getLogger(getClass().getSimpleName());
 	EncounterService s;
 	FormEntityConverter oc;
 	PatientService ps;
@@ -49,15 +53,15 @@ public class EncounterTest extends TestResourceLoader{
 		hhs = new HouseholdService(openmrsOpenmrsUrl, openmrsUsername, openmrsPassword);
 		hhs.setPatientService(ps);
 		hhs.setEncounterService(s);
-		FormAttributeParser fam = new FormAttributeParser(formDirPath);
+		final FormAttributeParser fam = new FormAttributeParser(formDirPath);
 		oc = new FormEntityConverter(fam);
 	}
 	
 	@Test
 	public void testEncounter() throws JSONException, ParseException, IOException {
-		FormSubmission fs = getFormSubmissionFor("basic_reg");
+		final FormSubmission fs = getFormSubmissionFor("basic_reg");
 		
-		Client c = oc.getClientFromFormSubmission(fs);
+		final Client c = oc.getClientFromFormSubmission(fs);
 		assertEquals(c.getBaseEntityId(), "b716d938-1aea-40ae-a081-9ddddddcccc9");
 		assertEquals(c.getFirstName(), "test woman_name");
 		assertEquals(c.getGender(), "FEMALE");
@@ -67,28 +71,57 @@ public class EncounterTest extends TestResourceLoader{
 		assertEquals(c.getAddresses().get(3).getAddressType(), "deathplace");
 		assertTrue(c.getAttributes().isEmpty());
 		
-		Event e = oc.getEventFromFormSubmission(fs);
+		final Event e = oc.getEventFromFormSubmission(fs);
 		assertEquals(e.getEventType(), "patient_register");
 		assertEquals(e.getEventDate(), new DateTime(new DateTime("2015-02-01")));
 		assertEquals(e.getLocationId(), "unknown location");
 		
 		if(pushToOpenmrsForTest){
+			
+			System.out.println(ps.getPatientByIdentifier(c.getBaseEntityId()));
 			JSONObject p = ps.getPatientByIdentifier(c.getBaseEntityId());
 			if(p == null){
 				p = ps.createPatient(c);
 			}
-			JSONObject en = s.createEncounter(e);
+			final JSONObject en = s.createEncounter(e);
 			System.out.println(en);
 		}
 	}
 	
 	@Test
-	public void testGroupedEncounter() throws JSONException, ParseException, IOException {
-		FormSubmission fs = getFormSubmissionFor("repeatform");
+	public void relationshipTest() throws JSONException, ParseException, IOException {
+		final FormSubmission fs = getFormSubmissionFor("new_member_registration");
+		final Client c = oc.getClientFromFormSubmission(fs);
+		System.out.print(c);
+		if(pushToOpenmrsForTest){
+			System.out.println(ps.getPatientByIdentifier(c.getBaseEntityId()));
+			JSONObject p = ps.getPatientByIdentifier(c.getBaseEntityId());
+			if(p == null){
+				p = ps.createPatient(c);
+			}
+		final JSONObject relationShipJSON=hhs.getRelationshipType(c.getRelationships().get(0).getRelationship());
+		final String relationShipUUID=relationShipJSON.getString("uuid");
+		JSONObject o=hhs.getRelationship(p.getString("uuid"),c.getRelationships().get(0).getRelationship(),c.getRelationships().get(0).getPerson_b());
+		System.out.println("Before If: "+ o);
+		if(o==null)
+		{
+			o= hhs.createRelationship(p.getString("uuid"), relationShipUUID,c.getRelationships().get(0).getPerson_b());
+			System.out.println("JsonObject: "+ o);	
+			return;
+		}
+		System.out.println("RelationShip UUID: "+ o.getString("uuid"));
 		
-		Client c = oc.getClientFromFormSubmission(fs);
+		}
+	}
+	
+	
+	@Test
+	public void testGroupedEncounter() throws JSONException, ParseException, IOException {
+		final FormSubmission fs = getFormSubmissionFor("repeatform");
+		
+		final Client c = oc.getClientFromFormSubmission(fs);
 //TODO		
-		Event e = oc.getEventFromFormSubmission(fs);
+		final Event e = oc.getEventFromFormSubmission(fs);
 //TODO
 		/*if(true){
 			JSONObject p = ps.getPatientByIdentifier(c.getBaseEntityId());
@@ -102,9 +135,9 @@ public class EncounterTest extends TestResourceLoader{
 	
 	@Test
 	public void shouldHandleSubform() throws IOException, ParseException, JSONException{
-		FormSubmission fs = getFormSubmissionFor("new_household_registration", 1);
+		final FormSubmission fs = getFormSubmissionFor("new_household_registration", 1);
 
-		Client c = oc.getClientFromFormSubmission(fs);
+		final Client c = oc.getClientFromFormSubmission(fs);
 		assertEquals(c.getBaseEntityId(), "a3f2abf4-2699-4761-819a-cea739224164");
 		assertEquals(c.getFirstName(), "test");
 		assertEquals(c.getGender(), "male");
@@ -114,7 +147,7 @@ public class EncounterTest extends TestResourceLoader{
 		assertEquals(c.getIdentifiers().get("GOB HHID"), "1234");
 		assertEquals(c.getIdentifiers().get("JiVitA HHID"), "1234");
 		
-		Event e = oc.getEventFromFormSubmission(fs);
+		final Event e = oc.getEventFromFormSubmission(fs);
 		assertEquals(e.getBaseEntityId(), "a3f2abf4-2699-4761-819a-cea739224164");
 		assertEquals(e.getEventDate(), new DateTime(new DateTime("2015-05-07")));
 		assertEquals(e.getLocationId(), "KUPTALA");
@@ -127,11 +160,12 @@ public class EncounterTest extends TestResourceLoader{
 		assertEquals(e.getObs().get(1).getFieldCode(), "5611AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 		assertEquals(e.getObs().get(1).getFormSubmissionField(), "FWNHHMBRNUM");
 		assertEquals(e.getObs().get(1).getValue(), "2");
-				
-		Map<String, Map<String, Object>> dc = oc.getDependentClientsFromFormSubmission(fs);
-		for (String id : dc.keySet()) {
-			Client cl = (Client) dc.get(id).get("client");
-			Event ev = (Event) dc.get(id).get("event");
+		
+		final Map<String, Map<String, Object>> dc = oc.getDependentClientsFromFormSubmission(fs);
+		final int i=0;
+		for (final String id : dc.keySet()) {
+			final Client cl = (Client) dc.get(id).get("client");
+			final Event ev = (Event) dc.get(id).get("event");
 			assertEquals(cl.getBaseEntityId(), id);
 			assertEquals(ev.getBaseEntityId(), id);
 		}
@@ -139,9 +173,9 @@ public class EncounterTest extends TestResourceLoader{
 	
 	@Test
 	public void shouldHandleEmptyRepeatGroup() throws IOException, ParseException, JSONException{
-		FormSubmission fs = getFormSubmissionFor("new_household_registration", 5);
+		final FormSubmission fs = getFormSubmissionFor("new_household_registration", 5);
 
-		Client c = oc.getClientFromFormSubmission(fs);
+		final Client c = oc.getClientFromFormSubmission(fs);
 		assertEquals(c.getBaseEntityId(), "a3f2abf4-2699-4761-819a-cea739224164");
 		assertEquals(c.getFirstName(), "test");
 		assertEquals(c.getGender(), "male");
@@ -151,7 +185,7 @@ public class EncounterTest extends TestResourceLoader{
 		assertEquals(c.getIdentifiers().get("GOB HHID"), "1234");
 		assertEquals(c.getIdentifiers().get("JiVitA HHID"), "1234");
 		
-		Event e = oc.getEventFromFormSubmission(fs);
+		final Event e = oc.getEventFromFormSubmission(fs);
 		assertEquals(e.getBaseEntityId(), "a3f2abf4-2699-4761-819a-cea739224164");
 		assertEquals(e.getEventDate(), new DateTime(new DateTime("2015-05-07")));
 		assertEquals(e.getLocationId(), "KUPTALA");
@@ -165,21 +199,21 @@ public class EncounterTest extends TestResourceLoader{
 		assertEquals(e.getObs().get(1).getFormSubmissionField(), "FWNHHMBRNUM");
 		assertEquals(e.getObs().get(1).getValue(), "2");
 				
-		Map<String, Map<String, Object>> dc = oc.getDependentClientsFromFormSubmission(fs);
+		final Map<String, Map<String, Object>> dc = oc.getDependentClientsFromFormSubmission(fs);
 		assertTrue(dc.isEmpty());
 	}	
 	
 	@Test
 	public void shouldGetBirthdateNotEstimatedForMainAndApproxForRepeatGroup() throws IOException, ParseException, JSONException{
-		FormSubmission fs = getFormSubmissionFor("new_household_registration", 7);
+		final FormSubmission fs = getFormSubmissionFor("new_household_registration", 7);
 
-		Client c = oc.getClientFromFormSubmission(fs);
+		final Client c = oc.getClientFromFormSubmission(fs);
 		assertEquals(c.getBirthdate(), new DateTime("1900-01-01"));
 		assertTrue(c.getBirthdateApprox());
 		
-		Map<String, Map<String, Object>> dc = oc.getDependentClientsFromFormSubmission(fs);
-		for (String id : dc.keySet()) {
-			Client cl = (Client) dc.get(id).get("client");
+		final Map<String, Map<String, Object>> dc = oc.getDependentClientsFromFormSubmission(fs);
+		for (final String id : dc.keySet()) {
+			final Client cl = (Client) dc.get(id).get("client");
 			assertEquals(cl.getBirthdate(), new DateTime("2000-05-07"));
 			assertFalse(cl.getBirthdateApprox());
 		}
@@ -187,32 +221,33 @@ public class EncounterTest extends TestResourceLoader{
 	
 	@Test
 	public void shouldGetBirthdateNotEstimatedForMainAndRepeatGroupIfNotSpecified() throws IOException, ParseException, JSONException{
-		FormSubmission fs = getFormSubmissionFor("new_household_registration", 8);
+		final FormSubmission fs = getFormSubmissionFor("new_household_registration", 8);
 
-		Client c = oc.getClientFromFormSubmission(fs);
+		final Client c = oc.getClientFromFormSubmission(fs);
 		assertEquals(c.getBirthdate(), new DateTime("1900-01-01"));
 		assertFalse(c.getBirthdateApprox());
 		
-		Map<String, Map<String, Object>> dc = oc.getDependentClientsFromFormSubmission(fs);
-		for (String id : dc.keySet()) {
-			Client cl = (Client) dc.get(id).get("client");
+		final Map<String, Map<String, Object>> dc = oc.getDependentClientsFromFormSubmission(fs);
+		for (final String id : dc.keySet()) {
+			final Client cl = (Client) dc.get(id).get("client");
 			assertEquals(cl.getBirthdate(), new DateTime("2000-05-07"));
 			assertFalse(cl.getBirthdateApprox());
 		}
 	}	
 	
+	
 	@SuppressWarnings("unchecked")
 	@Test
 	public void shouldGetDataSpecifiedInGroupInsideSubform() throws IOException, ParseException, JSONException{
-		FormSubmission fs = getFormSubmissionFor("new_household_registration_with_grouped_subform_data", 1);
+		final FormSubmission fs = getFormSubmissionFor("new_household_registration_with_grouped_subform_data", 1);
 
-		Client c = oc.getClientFromFormSubmission(fs);
+		final Client c = oc.getClientFromFormSubmission(fs);
 		assertEquals(c.getBirthdate(), new DateTime("1900-01-01"));
 		assertFalse(c.getBirthdateApprox());
 		assertThat(c.getAttributes(), Matchers.<String, Object>hasEntry(equalTo("GoB_HHID"), equalTo((Object)"2322")));
 		assertThat(c.getAttributes(), Matchers.<String, Object>hasEntry(equalTo("JiVitA_HHID"), equalTo((Object)"9889")));
 		
-		Event e = oc.getEventFromFormSubmission(fs);
+		final Event e = oc.getEventFromFormSubmission(fs);
 		assertEquals(e.getBaseEntityId(), c.getBaseEntityId());
 		assertEquals(e.getEventType(), "New Household Registration");
 		assertEquals(e.getEventDate(), new DateTime(new SimpleDateFormat("yyyy-M-dd").parse("2015-10-11")));
@@ -224,9 +259,9 @@ public class EncounterTest extends TestResourceLoader{
 				Matchers.<Obs>hasProperty("formSubmissionField",equalTo("FWNHHMBRNUM"))
 				)));
 		
-		Map<String, Map<String, Object>> dc = oc.getDependentClientsFromFormSubmission(fs);
-		for (String id : dc.keySet()) {
-			Client cl = (Client) dc.get(id).get("client");
+		final Map<String, Map<String, Object>> dc = oc.getDependentClientsFromFormSubmission(fs);
+		for (final String id : dc.keySet()) {
+			final Client cl = (Client) dc.get(id).get("client");
 			assertEquals(cl.getBirthdate(), new DateTime("1988-10-08"));
 			assertFalse(cl.getBirthdateApprox());
 			assertEquals(cl.getFirstName(), "jackfruit");
@@ -238,7 +273,7 @@ public class EncounterTest extends TestResourceLoader{
 			assertThat(cl.getAttributes(), Matchers.<String, Object>hasEntry(equalTo("GoB_HHID"), equalTo((Object)"2322")));
 			assertThat(cl.getAttributes(), Matchers.<String, Object>hasEntry(equalTo("JiVitA_HHID"), equalTo((Object)"9889")));
 		
-			Event ev = (Event) dc.get(id).get("event");
+			final Event ev = (Event) dc.get(id).get("event");
 			assertEquals(ev.getBaseEntityId(), cl.getBaseEntityId());
 			assertEquals(ev.getEventType(), "New Woman Registration");
 			assertEquals(ev.getEventDate(), new DateTime(new SimpleDateFormat("yyyy-M-dd").parse("2015-10-11")));
@@ -257,8 +292,8 @@ public class EncounterTest extends TestResourceLoader{
 		}
 		
 		if(pushToOpenmrsForTest){
-			OpenmrsHouseHold hh = new OpenmrsHouseHold(c, e);
-			for (Map<String, Object> cm : dc.values()) {
+			final OpenmrsHouseHold hh = new OpenmrsHouseHold(c, e);
+			for (final Map<String, Object> cm : dc.values()) {
 				hh.addHHMember((Client)cm.get("client"), (Event)cm.get("event"));
 			}
 			
@@ -266,18 +301,19 @@ public class EncounterTest extends TestResourceLoader{
 		}
 	}
 	
+	
 	@SuppressWarnings("unchecked")
 	@Test
 	public void shouldGetDataSpecifiedInMultiselect() throws IOException, ParseException, JSONException{
-		FormSubmission fs = getFormSubmissionFor("new_household_registration_with_grouped_subform_data", 1);
+		final FormSubmission fs = getFormSubmissionFor("new_household_registration_with_grouped_subform_data", 1);
 
-		Client c = oc.getClientFromFormSubmission(fs);
-		Event e = oc.getEventFromFormSubmission(fs);
+		final Client c = oc.getClientFromFormSubmission(fs);
+		final Event e = oc.getEventFromFormSubmission(fs);
 		
-		Map<String, Map<String, Object>> dc = oc.getDependentClientsFromFormSubmission(fs);
-		for (String id : dc.keySet()) {
-			Client cl = (Client) dc.get(id).get("client");
-			Event ev = (Event) dc.get(id).get("event");
+		final Map<String, Map<String, Object>> dc = oc.getDependentClientsFromFormSubmission(fs);
+		for (final String id : dc.keySet()) {
+			final Client cl = (Client) dc.get(id).get("client");
+			final Event ev = (Event) dc.get(id).get("event");
 			
 			assertThat(ev.getObs(), Matchers.<Obs>hasItem(Matchers.<Obs>allOf(
 					Matchers.<Obs>hasProperty("fieldCode",equalTo("163087AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")),
@@ -289,8 +325,8 @@ public class EncounterTest extends TestResourceLoader{
 		}
 		
 		if(pushToOpenmrsForTest){
-			OpenmrsHouseHold hh = new OpenmrsHouseHold(c, e);
-			for (Map<String, Object> cm : dc.values()) {
+			final OpenmrsHouseHold hh = new OpenmrsHouseHold(c, e);
+			for (final Map<String, Object> cm : dc.values()) {
 				hh.addHHMember((Client)cm.get("client"), (Event)cm.get("event"));
 			}
 			
@@ -298,12 +334,13 @@ public class EncounterTest extends TestResourceLoader{
 		}
 	}
 	
+	
 	@Test
 	public void parentChildObsTest() throws JsonIOException, IOException, JSONException {
-		FormSubmission fs = getFormSubmissionFor("psrf_form");
+		final FormSubmission fs = getFormSubmissionFor("psrf_form");
 		
-		Client c = oc.getClientFromFormSubmission(fs);
-		Event e = (Event) oc.getEventFromFormSubmission(fs);
+		final Client c = oc.getClientFromFormSubmission(fs);
+		final Event e = (Event) oc.getEventFromFormSubmission(fs);
 		
 		if(pushToOpenmrsForTest){
 			
@@ -316,12 +353,13 @@ public class EncounterTest extends TestResourceLoader{
 
 	}
 	
+	
 	@SuppressWarnings("unchecked")
 	@Test
 	public void shouldHandleTTEnrollmentform() throws IOException, ParseException, JSONException{
-		FormSubmission fs = getFormSubmissionFor("woman_enrollment");
+		final FormSubmission fs = getFormSubmissionFor("woman_enrollment");
 
-		Client c = oc.getClientFromFormSubmission(fs);
+		final Client c = oc.getClientFromFormSubmission(fs);
 		assertEquals(c.getBaseEntityId(), "69995674-bb29-4985-967a-fec8d372a475");
 		assertEquals(c.getFirstName(), "barsaat");
 		assertEquals(c.getGender(), "female");
@@ -335,7 +373,7 @@ public class EncounterTest extends TestResourceLoader{
 		assertEquals(c.getIdentifiers().get("Program Client ID"), "14608844");
 		assertEquals(c.getAttributes().get("EPI Card Number"), "20160003");
 
-		Event e = oc.getEventFromFormSubmission(fs);
+		final Event e = oc.getEventFromFormSubmission(fs);
 		assertEquals(e.getBaseEntityId(), "69995674-bb29-4985-967a-fec8d372a475");
 		assertEquals(e.getEventDate(), new DateTime(new DateTime("2016-04-05")));
 		assertEquals(e.getLocationId(), "Homeopathic Center");
@@ -382,12 +420,13 @@ public class EncounterTest extends TestResourceLoader{
 
 	}
 	
+	
 	@SuppressWarnings("unchecked")
 	@Test
 	public void shouldHandleChildVaccinationEnrollmentform() throws IOException, ParseException, JSONException{
-		FormSubmission fs = getFormSubmissionFor("child_enrollment");
+		final FormSubmission fs = getFormSubmissionFor("child_enrollment");
 
-		Client c = oc.getClientFromFormSubmission(fs);
+		final Client c = oc.getClientFromFormSubmission(fs);
 		assertEquals(c.getBaseEntityId(), "ad653225-6bed-48d3-8e5d-741d3d50d61a");
 		assertEquals(c.getFirstName(), "aase");
 		assertEquals(c.getLastName(), "zeest");
@@ -402,7 +441,7 @@ public class EncounterTest extends TestResourceLoader{
 		assertEquals(c.getIdentifiers().get("Program Client ID"), "98120722");
 		assertEquals(c.getAttributes().get("EPI Card Number"), "20160009");
 
-		Event e = oc.getEventFromFormSubmission(fs);
+		final Event e = oc.getEventFromFormSubmission(fs);
 		assertEquals(e.getBaseEntityId(), "ad653225-6bed-48d3-8e5d-741d3d50d61a");
 		assertEquals(e.getEventDate(), new DateTime(new DateTime("2016-03-05")));
 		assertEquals(e.getLocationId(), "Homeopathic Center");
