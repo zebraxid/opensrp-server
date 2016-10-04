@@ -6,7 +6,6 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 import org.json.JSONException;
 import org.opensrp.camp.dto.CampDTO;
-import org.opensrp.camp.dto.SearchDTO;
 import org.opensrp.camp.service.CampDateService;
 import org.opensrp.camp.service.CampService;
 import org.slf4j.Logger;
