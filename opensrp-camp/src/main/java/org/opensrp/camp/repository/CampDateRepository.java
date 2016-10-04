@@ -60,5 +60,56 @@ public class CampDateRepository extends MotechBaseRepository<CampDate> {
 							.includeDocs(true), CampDate.class);
 			
 		}
+	@View(name = "search", map = "function(doc) { if (doc.type === 'CampDate') { emit([doc.thana,doc.union,doc.ward,doc.unit,doc.health_assistant], doc); } }")
+	public List<CampDate> search(String thana,String union,String ward,String unit,String healthAssistant) {
+		Object thanaObj;
+		Object unionObj;
+		Object wardObj;
+		Object unitObj;
+		Object healthAssistantObj;
+		
+		if(thana==""){
+			 thanaObj = ComplexKey.emptyObject();
+		}else{
+			thanaObj = thana;
+		}
+		
+		if(union == ""){
+			unionObj = ComplexKey.emptyObject();
+		}else{
+			unionObj = union;
+		}
+		
+		if(ward ==""){
+			wardObj = ComplexKey.emptyObject();
+		}else{
+			wardObj = ward;
+		}
+		
+		if(unit ==""){
+			unitObj = ComplexKey.emptyObject();
+		}else{
+			unitObj = unit;
+		}
+		
+		if(healthAssistant ==""){
+			System.err.println("healthAssistant:"+healthAssistant);
+			healthAssistantObj = ComplexKey.emptyObject();
+		}else{
+			healthAssistantObj = healthAssistant;
+			System.out.println("healthAssistant:"+healthAssistant);
+		}
+		
+		
+		ComplexKey startkey = ComplexKey.of(thana, union,ward,unit,healthAssistant);
+		ComplexKey endkey = ComplexKey.of(thanaObj, unionObj,wardObj,unitObj,healthAssistantObj);
+		
+		List<CampDate> camps = db.queryView(createQuery("search")
+			.startKey(startkey)	
+			.endKey(endkey)
+			.includeDocs(true), CampDate.class);
+		System.out.println(camps.toString());
+		return camps;
+	}
 	
 }

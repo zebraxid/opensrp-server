@@ -95,6 +95,10 @@ public class CampDateService implements CampInterface<CampDate>{
 	    // TODO Auto-generated method stub
 	    return campDateRepository.findById(id);
     }
+	
+	public List<CampDate> search(String thana,String union,String ward,String unit,String healthAssistant ){
+		return campDateRepository.search(thana, union, ward, unit, healthAssistant);
+	}
 
 	
 }

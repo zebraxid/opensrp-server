@@ -6,6 +6,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 import org.json.JSONException;
 import org.opensrp.camp.dto.CampDTO;
+import org.opensrp.camp.dto.SearchDTO;
 import org.opensrp.camp.service.CampDateService;
 import org.opensrp.camp.service.CampService;
 import org.slf4j.Logger;
@@ -70,9 +71,10 @@ public class CampController {
 		return new ResponseEntity<>(message, OK);
 	}
 	
-	@RequestMapping(headers = { "Accept=application/json" }, method = POST, value = "/edit-camp")
-	public ResponseEntity<String> editCamp(@RequestBody CampDTO campDTO) {
-		String message = campService.edit(campDTO);
-		return new ResponseEntity<>(message, OK);
+	@RequestMapping(headers = { "Accept=application/json" }, method = GET, value = "/camp/search")
+	@ResponseBody
+	public ResponseEntity<String> search(@RequestParam String thana,@RequestParam String union,
+		@RequestParam String ward,@RequestParam String unit,@RequestParam String healthAssistant) {		
+		return new ResponseEntity<>(new Gson().toJson(campDateService.search(thana,union,ward,unit,healthAssistant)), OK);
 	}
 }
