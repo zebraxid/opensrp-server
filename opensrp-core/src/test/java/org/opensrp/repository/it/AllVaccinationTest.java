@@ -12,6 +12,7 @@ import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.opensrp.common.util.DateTimeUtil;
 import org.opensrp.dto.AlertStatus;
 import org.opensrp.dto.BeneficiaryType;
 import org.opensrp.repository.AllVaccine;
@@ -27,6 +28,7 @@ public class AllVaccinationTest {
 	
 	@Autowired
 	private ActionService actionService;
+	
 	
 	@Autowired
 	private AllActions allActions;
@@ -55,6 +57,10 @@ public class AllVaccinationTest {
 	public void saveVacccineTest(){
 		ActionService actionService =new ActionService(allActions, null, null,allVaccine);
 		actionService.ActionUpdateOrCreateForOther(BeneficiaryType.members, "03166dfc-69d9-4d8b-b0fa-57acd0cc1869", "03166dfc-69d9-4d8b-b0fa-57acd0cc1866", "sohel", "TT5", "Woman_BNF", AlertStatus.upcoming, new DateTime(),new DateTime());
+		
+	}
+	@Test
+	public void shouldGeTodaysCamp(){
 		
 	}
 	
