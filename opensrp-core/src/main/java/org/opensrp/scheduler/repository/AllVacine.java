@@ -11,7 +11,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public class AllVacine extends MotechBaseRepository<Vaccine> {
 	
 	private static Logger logger = LoggerFactory.getLogger(AllVacine.class.toString());
@@ -22,8 +24,8 @@ public class AllVacine extends MotechBaseRepository<Vaccine> {
 	}
 	
 	@GenerateView
-	private List<Vaccine> findByCaseID(String caseId) {
-		return queryView("by_caseID", caseId);
+	private List<Vaccine> findByClientId(String caseId) {
+		return queryView("by_clientId", caseId);
 	}
 	
 }
