@@ -1,6 +1,6 @@
 <model>
   <instance>
-    <FWNewHH encounter_type="New Household Registration" id="FWNewHH" version="201605291323">
+    <FWNewHH encounter_type="New Household Registration" id="FWNewHH" version="201609201016">
       <formhub>
         <uuid/>
       </formhub>
@@ -49,7 +49,7 @@
         <FWWOMAGE openmrs_entity="concept" openmrs_entity_id="1532AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
         <display_age/>
         <FWCWOMSTRMEN openmrs_entity="concept" openmrs_entity_id="160600AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
-        <FWCWOMSTER openmrs_entity="concept" openmrs_entity_id="163006AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
+        <FWCWOMSTER openmrs_entity_id="163006AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
         <FWCWOMHUSLIV openmrs_entity="concept" openmrs_entity_id="162994AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
         <FWCWOMHUSALV openmrs_entity="concept" openmrs_entity_id="5561AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
         <FWCWOMHUSSTR openmrs_entity="concept" openmrs_entity_id="162959AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
