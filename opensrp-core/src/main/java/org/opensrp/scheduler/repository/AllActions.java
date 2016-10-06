@@ -58,7 +58,7 @@ public class AllActions extends MotechBaseRepository<Action> {
     public List<Action> listOfEligibleClientForVaccine(String provider,String vaccineName){
     	ComplexKey startkey = ComplexKey.of(provider,vaccineName);
     	List<Action> actions = db.queryView(createQuery("list_of_eligible_client_for_vaccine")
-			.startKey(startkey)	
+			.key(startkey)	
 			//.endKey(endkey)
 			.includeDocs(true), Action.class);
 		return actions;
