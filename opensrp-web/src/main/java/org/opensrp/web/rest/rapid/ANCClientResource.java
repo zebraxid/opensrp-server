@@ -3,6 +3,7 @@ package org.opensrp.web.rest.rapid;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
@@ -63,6 +64,7 @@ public class ANCClientResource {
 	private static final String DEFAULT_FIELDTYPE = "concept";
 	
 	private static final String DEFAULT_FIELD_DATA_TYPE = "text";
+	private static final String DUE = "due";
 	
 	private static Logger logger = LoggerFactory.getLogger(ANMLocationController.class.toString());
 	
@@ -143,21 +145,22 @@ public class ANCClientResource {
 		String id = req.getParameter("clientId");
 		String location = req.getParameter("location");
 		String date = req.getParameter("date");
-		String ancvisit = req.getParameter("anc");
+		String ancVisit = req.getParameter("anc");
 		String systolicbp = req.getParameter("sbp");
 		String diastolicbp = req.getParameter("dbp");
 		String temperature = req.getParameter("temp");
 		String pulserate = req.getParameter("pulse");
 		String weight = req.getParameter("weight");
-		String pallor = req.getParameter("pallor");
-		String swelling = req.getParameter("swelling");
-		String bleeding = req.getParameter("bleeding");
-		String jaundice = req.getParameter("jaundice");
-		String fits = req.getParameter("fits");
+		String rsymptoms = req.getParameter("rsymptoms");
+		//		String pallor = req.getParameter("pallor");
+		//		String swelling = req.getParameter("swelling");
+		//		String bleeding = req.getParameter("bleeding");
+		//		String jaundice = req.getParameter("jaundice");
+		//		String fits = req.getParameter("fits");
 		String eventType = "";
 		
 		try {
-			if (StringUtils.isEmptyOrWhitespaceOnly(ancvisit)) {
+			if (StringUtils.isEmptyOrWhitespaceOnly(ancVisit)) {
 				resp.put("ERROR", "ANC visit MUST be specified.");
 				return resp;
 			}
@@ -174,35 +177,24 @@ public class ANCClientResource {
 				resp.put("ERROR", "ID Not found");
 				return resp;
 			}
-			eventType = RestUtils.ANCVISIT.getValue(ancvisit);
+			
 			String entityType = RestUtils.ENTITYTYPES.MCAREMOTHER.toString().toLowerCase();
-			Event event = new Event(client.getBaseEntityId(), eventType, new DateTime(), entityType, "demo1", location,
+			Event event = new Event(client.getBaseEntityId(), null, new DateTime(), entityType, "demo1", location,
 			        "Aleena" + FormEntityConstants.FORM_DATE.format(new Date()));
 			event.setDateCreated(new DateTime());
 			List<Object> values = new ArrayList<>();
-			values.add(FormEntityConstants.FORM_DATE.format(new Date()));
-			//FWANC1DATE
-			if (ancvisit.equalsIgnoreCase("anc1")) {
-				
-				event.addObs(new Obs(DEFAULT_FIELDTYPE, DEFAULT_FIELD_DATA_TYPE,
-				        RestUtils.CONCEPTS.get(RestUtils.CONCEPTS.ANCDATE.toString()).toString(), null, values, "",
-				        "FWANC1DATE"));
-			} else if (ancvisit.equalsIgnoreCase("anc2")) {
-				event.addObs(new Obs(DEFAULT_FIELDTYPE, DEFAULT_FIELD_DATA_TYPE,
-				        RestUtils.CONCEPTS.get(RestUtils.CONCEPTS.ANCDATE.toString()).toString(), null, values, "",
-				        "FWANC2DATE"));
-				
-			} else if (ancvisit.equalsIgnoreCase("anc3")) {
-				event.addObs(new Obs(DEFAULT_FIELDTYPE, DEFAULT_FIELD_DATA_TYPE,
-				        RestUtils.CONCEPTS.get(RestUtils.CONCEPTS.ANCDATE.toString()).toString(), null, values, "",
-				        "FWANC3DATE"));
-				
-			} else if (ancvisit.equalsIgnoreCase("anc4")) {
-				event.addObs(new Obs(DEFAULT_FIELDTYPE, DEFAULT_FIELD_DATA_TYPE,
-				        RestUtils.CONCEPTS.get(RestUtils.CONCEPTS.ANCDATE.toString()).toString(), null, values, "",
-				        "FWANC4DATE"));
-			}
 			
+			ancVisit = addAncVisit(event, ancVisit);
+			eventType = RestUtils.ANCVISIT.getValue(ancVisit);
+			event.setEventType(eventType);
+			
+			List<String> riskSymptoms = new ArrayList<String>();
+			if (!StringUtils.isEmptyOrWhitespaceOnly(rsymptoms)) {
+				rsymptoms=rsymptoms.startsWith("/")?rsymptoms.replaceAll("/", ""):rsymptoms.trim();
+				String[] risksymptomsArray = rsymptoms.split(" ");
+				riskSymptoms.addAll(Arrays.asList(risksymptomsArray));
+				addRiskSymptoms(event, riskSymptoms);
+			}
 			if (!StringUtils.isEmptyOrWhitespaceOnly(systolicbp)) {
 				values.clear();
 				values.add(systolicbp);
@@ -235,70 +227,11 @@ public class ANCClientResource {
 				        RestUtils.CONCEPTS.get(RestUtils.CONCEPTS.WEIGHT.toString()).toString(), null, values, "", null));
 			}
 			
-			if (!StringUtils.isEmptyOrWhitespaceOnly(pallor)) {
-				values.clear();
-				if (pallor.equalsIgnoreCase("1")) {
-					pallor = RestUtils.CONCEPTS.get(RestUtils.CONCEPTS.YES.toString()).toString();
-				} else if (pallor.equalsIgnoreCase("0")) {
-					pallor = RestUtils.CONCEPTS.get(RestUtils.CONCEPTS.NO.toString()).toString();
-				}
-				values.add(pallor);
-				event.addObs(new Obs(DEFAULT_FIELDTYPE, DEFAULT_FIELD_DATA_TYPE,
-				        RestUtils.CONCEPTS.get(RestUtils.CONCEPTS.PALLOR.toString()).toString(), null, values, "", null));
-			}
-			if (!StringUtils.isEmptyOrWhitespaceOnly(swelling)) {
-				if (swelling.equalsIgnoreCase("1")) {
-					swelling = RestUtils.CONCEPTS.get(RestUtils.CONCEPTS.YES.toString()).toString();
-				} else if (swelling.equalsIgnoreCase("0")) {
-					swelling = RestUtils.CONCEPTS.get(RestUtils.CONCEPTS.NO.toString()).toString();
-				}
-				values.add(swelling);
-				event.addObs(new Obs(DEFAULT_FIELDTYPE, DEFAULT_FIELD_DATA_TYPE,
-				        RestUtils.CONCEPTS.get(RestUtils.CONCEPTS.SWELLING.toString()).toString(), null, values, "", null));
-			}
-			
-			if (!StringUtils.isEmptyOrWhitespaceOnly(bleeding)) {
-				values.clear();
-				if (bleeding.equalsIgnoreCase("1")) {
-					bleeding = RestUtils.CONCEPTS.get(RestUtils.CONCEPTS.YES.toString()).toString();
-				} else if (bleeding.equalsIgnoreCase("0")) {
-					bleeding = RestUtils.CONCEPTS.get(RestUtils.CONCEPTS.NO.toString()).toString();
-				}
-				values.add(bleeding);
-				event.addObs(new Obs(DEFAULT_FIELDTYPE, DEFAULT_FIELD_DATA_TYPE,
-				        RestUtils.CONCEPTS.get(RestUtils.CONCEPTS.BATHCANALBLEEDING.toString()).toString(), null, values, "",
-				        null));
-			}
-			
-			if (!StringUtils.isEmptyOrWhitespaceOnly(jaundice)) {
-				values.clear();
-				if (jaundice.equalsIgnoreCase("1")) {
-					jaundice = RestUtils.CONCEPTS.get(RestUtils.CONCEPTS.YES.toString()).toString();
-				} else if (jaundice.equalsIgnoreCase("0")) {
-					jaundice = RestUtils.CONCEPTS.get(RestUtils.CONCEPTS.NO.toString()).toString();
-				}
-				values.add(jaundice);
-				event.addObs(new Obs(DEFAULT_FIELDTYPE, DEFAULT_FIELD_DATA_TYPE,
-				        RestUtils.CONCEPTS.get(RestUtils.CONCEPTS.JAUNDICE.toString()).toString(), null, values, "", null));
-			}
-			if (!StringUtils.isEmptyOrWhitespaceOnly(fits)) {
-				values.clear();
-				if (fits.equalsIgnoreCase("1")) {
-					fits = RestUtils.CONCEPTS.get(RestUtils.CONCEPTS.YES.toString()).toString();
-				} else if (fits.equalsIgnoreCase("0")) {
-					fits = RestUtils.CONCEPTS.get(RestUtils.CONCEPTS.NO.toString()).toString();
-				}
-				values.add(fits);
-				event.addObs(new Obs(DEFAULT_FIELDTYPE, DEFAULT_FIELD_DATA_TYPE,
-				        RestUtils.CONCEPTS.get(RestUtils.CONCEPTS.CONVULSIONS.toString()).toString(), null, values, "",
-				        null));
-			}
-			
 			eventService.addEvent(event);
 			//create an action for the visit to reflect in the client android app since the app relies on actions
 			//status has been set to upcoming for simplicity purposes since client for now checks for the fwanc*date and the status to display the alerts colors
 			actionService.alertForBeneficiary("elco", client.getBaseEntityId(), "demo1", "Ante Natal Care Reminder Visit",
-			    RestUtils.ANCMILESTONE.get(ancvisit), AlertStatus.complete, new DateTime(), new DateTime());
+			    RestUtils.ANCMILESTONE.get(ancVisit), AlertStatus.complete, new DateTime(), new DateTime());
 			
 			resp.put("success", Boolean.toString(true));
 			return resp;
@@ -310,6 +243,104 @@ public class ANCClientResource {
 			resp.put("ERROR", "Unable to complete request");
 			return resp;
 		}
+	}
+	
+	private String addAncVisit(Event event, String ancVisit) {
+		//this should be the way to go for all rapidpro variables
+		if (ancVisit.startsWith("/")) {
+			ancVisit = ancVisit.replace("/", "");
+		}
+		List<String> values = new ArrayList<String>();
+		values.add(FormEntityConstants.FORM_DATE.format(new Date()));
+		//FWANC1DATE
+		if (ancVisit.equalsIgnoreCase("1") || ancVisit.equalsIgnoreCase("anc1")) {
+			
+			event.addObs(new Obs(DEFAULT_FIELDTYPE, DEFAULT_FIELD_DATA_TYPE,
+			        RestUtils.CONCEPTS.get(RestUtils.CONCEPTS.ANCDATE.toString()).toString(), null, values, "",
+			        "FWANC1DATE"));
+			ancVisit = "anc1";
+		} else if (ancVisit.equalsIgnoreCase("2") || ancVisit.equalsIgnoreCase("anc2")
+		        || ancVisit.equalsIgnoreCase("/anc2")) {
+			event.addObs(new Obs(DEFAULT_FIELDTYPE, DEFAULT_FIELD_DATA_TYPE,
+			        RestUtils.CONCEPTS.get(RestUtils.CONCEPTS.ANCDATE.toString()).toString(), null, values, "",
+			        "FWANC2DATE"));
+			ancVisit = "anc2";
+		} else if (ancVisit.equalsIgnoreCase("3") || ancVisit.equalsIgnoreCase("anc3")
+		        || ancVisit.equalsIgnoreCase("/anc3")) {
+			event.addObs(new Obs(DEFAULT_FIELDTYPE, DEFAULT_FIELD_DATA_TYPE,
+			        RestUtils.CONCEPTS.get(RestUtils.CONCEPTS.ANCDATE.toString()).toString(), null, values, "",
+			        "FWANC3DATE"));
+			ancVisit = "anc3";
+		} else if (ancVisit.equalsIgnoreCase("4") || ancVisit.equalsIgnoreCase("anc4")
+		        || ancVisit.equalsIgnoreCase("/anc4")) {
+			event.addObs(new Obs(DEFAULT_FIELDTYPE, DEFAULT_FIELD_DATA_TYPE,
+			        RestUtils.CONCEPTS.get(RestUtils.CONCEPTS.ANCDATE.toString()).toString(), null, values, "",
+			        "FWANC4DATE"));
+			ancVisit = "anc4";
+		}
+		// return a normalized value in a way other methods would process without having to involve so many ifs
+		return ancVisit;
+	}
+	
+	private void addRiskSymptoms(Event event, List<String> riskSymptoms) {
+		List<String> values = new ArrayList<String>();
+		String pallor;
+		if (riskSymptoms.contains(RestUtils.ANCRISKSYMPTOMS.get(RestUtils.ANCRISKSYMPTOMS.PALLOR.toString()).toString())) {
+			pallor = RestUtils.CONCEPTS.get(RestUtils.CONCEPTS.YES.toString()).toString();
+		} else {
+			pallor = RestUtils.CONCEPTS.get(RestUtils.CONCEPTS.NO.toString()).toString();
+		}
+		
+		values.clear();
+		values.add(pallor);
+		event.addObs(new Obs(DEFAULT_FIELDTYPE, DEFAULT_FIELD_DATA_TYPE,
+		        RestUtils.CONCEPTS.get(RestUtils.CONCEPTS.PALLOR.toString()).toString(), null, values, "", null));
+		
+		String swelling;
+		
+		if (riskSymptoms.contains(RestUtils.ANCRISKSYMPTOMS.get(RestUtils.ANCRISKSYMPTOMS.SWELLING.toString()).toString())) {
+			swelling = RestUtils.CONCEPTS.get(RestUtils.CONCEPTS.YES.toString()).toString();
+		} else {
+			swelling = RestUtils.CONCEPTS.get(RestUtils.CONCEPTS.NO.toString()).toString();
+		}
+		values.clear();
+		values.add(swelling);
+		event.addObs(new Obs(DEFAULT_FIELDTYPE, DEFAULT_FIELD_DATA_TYPE,
+		        RestUtils.CONCEPTS.get(RestUtils.CONCEPTS.SWELLING.toString()).toString(), null, values, "", null));
+		
+		String bleeding;
+		if (riskSymptoms.contains(RestUtils.ANCRISKSYMPTOMS.get(RestUtils.ANCRISKSYMPTOMS.BLEEDING.toString()).toString())) {
+			bleeding = RestUtils.CONCEPTS.get(RestUtils.CONCEPTS.YES.toString()).toString();
+		} else {
+			bleeding = RestUtils.CONCEPTS.get(RestUtils.CONCEPTS.NO.toString()).toString();
+		}
+		values.clear();
+		values.add(bleeding);
+		event.addObs(new Obs(DEFAULT_FIELDTYPE, DEFAULT_FIELD_DATA_TYPE,
+		        RestUtils.CONCEPTS.get(RestUtils.CONCEPTS.BATHCANALBLEEDING.toString()).toString(), null, values, "", null));
+		
+		String jaundice;
+		if (riskSymptoms.contains(RestUtils.ANCRISKSYMPTOMS.get(RestUtils.ANCRISKSYMPTOMS.JAUNDICE.toString()).toString())) {
+			jaundice = RestUtils.CONCEPTS.get(RestUtils.CONCEPTS.YES.toString()).toString();
+		} else {
+			jaundice = RestUtils.CONCEPTS.get(RestUtils.CONCEPTS.NO.toString()).toString();
+		}
+		values.clear();
+		values.add(jaundice);
+		event.addObs(new Obs(DEFAULT_FIELDTYPE, DEFAULT_FIELD_DATA_TYPE,
+		        RestUtils.CONCEPTS.get(RestUtils.CONCEPTS.JAUNDICE.toString()).toString(), null, values, "", null));
+		
+		String fits;
+		if (riskSymptoms.contains(RestUtils.ANCRISKSYMPTOMS.get(RestUtils.ANCRISKSYMPTOMS.FITS.toString()).toString())) {
+			fits = RestUtils.CONCEPTS.get(RestUtils.CONCEPTS.YES.toString()).toString();
+		} else {
+			fits = RestUtils.CONCEPTS.get(RestUtils.CONCEPTS.NO.toString()).toString();
+		}
+		
+		values.clear();
+		values.add(fits);
+		event.addObs(new Obs(DEFAULT_FIELDTYPE, DEFAULT_FIELD_DATA_TYPE,
+		        RestUtils.CONCEPTS.get(RestUtils.CONCEPTS.CONVULSIONS.toString()).toString(), null, values, "", null));
 	}
 	
 	/**
@@ -330,7 +361,7 @@ public class ANCClientResource {
 			}
 		}
 		// if size is 4 means all the visits have been done else find out the
-		// due dates
+		// due dates for the rest of the visits
 		if (ancVisits.size() < 4) {
 			for (String visitName : RestUtils.ANCVISIT.names()) {
 				if (!ancVisits.containsKey(visitName)) {
@@ -340,9 +371,16 @@ public class ANCClientResource {
 					cal.setTime(lmp);
 					cal.add(Calendar.DATE, days);
 					if (cal.getTime().before(new Date())) {
-						ancVisits.put(visitName, "due");
+						ancVisits.put(visitName, DUE);
 					} else {
-						ancVisits.put(visitName, dateFormat.format(cal.getTime()));
+						// if none is due so far make the current one due
+						if(!ancVisits.containsValue(DUE)){
+							ancVisits.put(visitName,DUE);
+						}else{
+							//dateFormat.format(cal.getTime())
+							ancVisits.put(visitName,"NA" );
+						}
+						
 					}
 					
 				}

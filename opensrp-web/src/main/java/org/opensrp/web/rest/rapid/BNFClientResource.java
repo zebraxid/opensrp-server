@@ -98,16 +98,16 @@ public class BNFClientResource {
 			if (!StringUtils.isEmptyOrWhitespaceOnly(outcome)) {
 				values.clear();
 				humanReadableValues.clear();
-				if (outcome.equalsIgnoreCase("livebirth") || outcome.equalsIgnoreCase("/livebirth")) {
+				if (outcome.equalsIgnoreCase("1") ||outcome.equalsIgnoreCase("livebirth") || outcome.equalsIgnoreCase("/livebirth")) {
 					values.add(RestUtils.CONCEPTS.get(RestUtils.CONCEPTS.LIVEBIRTH.toString()).toString());
 					humanReadableValues.add(3);
-				} else if (outcome.equalsIgnoreCase("stillbirth") || outcome.equalsIgnoreCase("/stillbirth")) {
+				} else if (outcome.equalsIgnoreCase("2") ||outcome.equalsIgnoreCase("stillbirth") || outcome.equalsIgnoreCase("/stillbirth")) {
 					values.add(RestUtils.CONCEPTS.get(RestUtils.CONCEPTS.STILLBIRTH.toString()).toString());
 					humanReadableValues.add(4);
-				} else if (outcome.equalsIgnoreCase("miscarriage")|| outcome.equalsIgnoreCase("/miscarriage")) {
+				} else if (outcome.equalsIgnoreCase("3") ||outcome.equalsIgnoreCase("miscarriage")|| outcome.equalsIgnoreCase("/miscarriage")) {
 					values.add(RestUtils.CONCEPTS.get(RestUtils.CONCEPTS.MISCARRIAGE.toString()).toString());
 					humanReadableValues.add(4);
-				} else if (outcome.equalsIgnoreCase("abortion") || outcome.equalsIgnoreCase("/abortion")) {
+				} else if (outcome.equalsIgnoreCase("4") ||outcome.equalsIgnoreCase("abortion") || outcome.equalsIgnoreCase("/abortion")) {
 					values.add(RestUtils.CONCEPTS.get(RestUtils.CONCEPTS.ABORTION.toString()).toString());
 					humanReadableValues.add(4);
 				}

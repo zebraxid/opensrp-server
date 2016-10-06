@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Objects;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -224,6 +223,30 @@ public class RestUtils {
 			// Create reverse lookup hash map
 			for (ANCMILESTONE d : ANCMILESTONE.values())
 				lookup.put(d.toString().toLowerCase(), d.getMilestoneValue());
+		}
+		public static String get(String key) {
+			// the reverse lookup by simply getting
+			// the value from the lookup HashMap.
+			return lookup.get(key.toLowerCase());
+		}
+	}
+	public enum ANCRISKSYMPTOMS {
+		PALLOR("1"), SWELLING("2"), BLEEDING("3"), JAUNDICE("4"),FITS("5");
+
+	    private String value;
+
+	    private ANCRISKSYMPTOMS(String value) {
+	        this.value = value;
+	    }
+
+	    public String geRiskSymptomsValue() {
+			return value;
+		}
+		private static final Map<String, String> lookup = new HashMap<String, String>();
+		static {
+			// Create reverse lookup hash map
+			for (ANCRISKSYMPTOMS d : ANCRISKSYMPTOMS.values())
+				lookup.put(d.toString().toLowerCase(), d.geRiskSymptomsValue());
 		}
 		public static String get(String key) {
 			// the reverse lookup by simply getting
