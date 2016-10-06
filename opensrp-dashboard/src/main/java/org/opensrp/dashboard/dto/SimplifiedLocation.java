@@ -1,37 +1,43 @@
-package org.opensrp.register.mcare.domain;
+package org.opensrp.dashboard.dto;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 
-public class SimplifiedPrivilege {	
+public class SimplifiedLocation {
+	
 	@JsonProperty("name")
 	private String name;
+	
 	@JsonProperty("id")
 	private String id;
-
-	public SimplifiedPrivilege(String name, String id)
-	{
+	
+	public SimplifiedLocation(String name, String id) {
 		this.name = name;
 		this.id = id;
 	}
-	public SimplifiedPrivilege(){
+	
+	public SimplifiedLocation() {
 		
 	}
+	
 	@JsonProperty("name")
-	public SimplifiedPrivilege withName(String name) {
+	public SimplifiedLocation withName(String name) {
 		this.name = name;
 		return this;
 	}
+	
 	@JsonProperty("id")
-	public SimplifiedPrivilege withId(String id){
+	public SimplifiedLocation withId(String id) {
 		this.id = id;
 		return this;
 	}
+	
 	@JsonProperty("name")
-	public String getName(){
+	public String getName() {
 		return this.name;
 	}
+	
 	@JsonProperty("id")
-	public String getId(){
+	public String getId() {
 		return this.id;
 	}
 }

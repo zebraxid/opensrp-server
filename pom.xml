@@ -21,6 +21,7 @@
 		<module>opensrp-mcare-register</module>
 		<!-- <module>opensrp-reporting</module> -->
     <module>opensrp-rest-services</module>
+	<module>opensrp-dashboard</module>
   </modules>
 
 	<properties>

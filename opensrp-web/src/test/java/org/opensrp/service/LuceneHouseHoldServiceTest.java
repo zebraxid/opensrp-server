@@ -32,7 +32,6 @@ import org.junit.runner.RunWith;
 import org.opensrp.common.AllConstants;
 import org.opensrp.common.util.DateUtil;
 import org.opensrp.dto.register.HHRegisterEntryDTO;
-import org.opensrp.register.mcare.repository.AllPrivileges;
 import org.opensrp.repository.AllBaseEntities;
 import org.opensrp.rest.repository.LuceneHouseHoldRepository;
 import org.opensrp.rest.services.LuceneHouseHoldService;

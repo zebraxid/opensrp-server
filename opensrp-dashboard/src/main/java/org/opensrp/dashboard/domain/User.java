@@ -1,4 +1,4 @@
-package org.opensrp.register.mcare.domain;
+package org.opensrp.dashboard.domain;
 
 import java.util.Date;
 import java.util.List;
@@ -10,11 +10,17 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.ektorp.support.TypeDiscriminator;
 import org.motechproject.model.MotechBaseDataObject;
-import org.opensrp.dto.PrivilegeDTO;
+import org.opensrp.dashboard.dto.SimplifiedLocation;
+import org.opensrp.dashboard.dto.SimplifiedRole;
+import org.opensrp.dashboard.dto.SimplifiedUser;
 
 @TypeDiscriminator("doc.type === 'User'")
 public class User extends MotechBaseDataObject {
 	
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 	@JsonProperty("status")
 	private String status;
 	@JsonProperty("given_name")

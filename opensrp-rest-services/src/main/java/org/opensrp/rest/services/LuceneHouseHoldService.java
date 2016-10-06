@@ -17,7 +17,6 @@ import java.util.Map.Entry;
 import org.json.JSONObject;
 import org.opensrp.dto.register.HHRegisterDTO;
 import org.opensrp.dto.register.HHRegisterEntryDTO;
-import org.opensrp.register.mcare.repository.AllPrivileges;
 import org.opensrp.rest.repository.LuceneHouseHoldRepository;
 import org.opensrp.rest.util.ConvertDateStringToTimestampMills;
 import org.slf4j.Logger;
