@@ -55,9 +55,20 @@ import static org.opensrp.common.AllConstants.Form.MIS_Census;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.ELCO_REGISTRATION_SUB_FORM_NAME;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.FW_UPAZILLA;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.REFERENCE_DATE;
+import static org.opensrp.common.AllConstants.HHRegistrationFields.existing_location;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.received_time;
 import static org.opensrp.common.AllConstants.PSRFFields.FWMISBCSOURCE;
+import static org.opensrp.common.AllConstants.PSRFFields.FWMISCONDGIVENDATE;
+import static org.opensrp.common.AllConstants.PSRFFields.FWMISCONDGIVENNO;
 import static org.opensrp.common.AllConstants.PSRFFields.FWMISELCODATE;
+import static org.opensrp.common.AllConstants.PSRFFields.FWMISIMPT;
+import static org.opensrp.common.AllConstants.PSRFFields.FWMISINJGIVENDATE;
+import static org.opensrp.common.AllConstants.PSRFFields.FWMISINJNEXTDATE;
+import static org.opensrp.common.AllConstants.PSRFFields.FWMISINJNEXTDATECALC;
+import static org.opensrp.common.AllConstants.PSRFFields.FWMISOPT;
+import static org.opensrp.common.AllConstants.PSRFFields.FWMISPILLGIVENDATE;
+import static org.opensrp.common.AllConstants.PSRFFields.FWMISPILLGIVENNO;
+import static org.opensrp.common.AllConstants.PSRFFields.FWMISPMDATE;
 import static org.opensrp.common.AllConstants.PSRFFields.FWNOTELIGIBLE;
 import static org.opensrp.common.AllConstants.PSRFFields.FWPMISBIRTHCTRL;
 import static org.opensrp.common.AllConstants.PSRFFields.FW_CONFIRMATION;
@@ -245,6 +256,19 @@ public class ELCOService {
 			elco.details().put("FWMARRYDATE", submission.getField("FWMARRYDATE"));
 			elco.details().put("FWCHILDALIVEB", submission.getField("FWCHILDALIVEB"));
 			elco.details().put("FWCHILDALIVEG", submission.getField("FWCHILDALIVEG"));
+			elco.details().put("ELCO", submission.getField("ELCO"));
+			elco.details().put("GOBHHID", submission.getField("GOBHHID"));
+			elco.details().put("JiVitAHHID", submission.getField("JiVitAHHID"));
+			elco.details().put("FWCOUNTRY", submission.getField("FWCOUNTRY"));
+			elco.details().put("FWDIVISION", submission.getField("FWDIVISION"));
+			elco.details().put("FWDISTRICT", submission.getField("FWDISTRICT"));
+			elco.details().put("FWUPAZILLA", submission.getField("FWUPAZILLA"));
+			elco.details().put("FWUNION", submission.getField("FWUNION"));
+			elco.details().put("FWWARD", submission.getField("FWWARD"));
+			elco.details().put("FWSUBUNIT", submission.getField("FWSUBUNIT"));
+			elco.details().put("FWMAUZA_PARA", submission.getField("FWMAUZA_PARA"));
+			elco.details().put("FWNHHHGPS", submission.getField("FWNHHHGPS"));
+			elco.details().put("FWMISCENTTDOSE", submission.getField("FWMISCENTTDOSE"));
 			elco.details().put("mis_census_current_formStatus", submission.getField("mis_census_current_formStatus"));
 
 			allEcos.update(elco);
@@ -264,7 +288,17 @@ public class ELCOService {
 		Map<String, String> misElco = create(FWMISELCODATE, submission.getField(FWMISELCODATE)).put(START_DATE, submission.getField(START_DATE))
 				.put(END_DATE, submission.getField(END_DATE)).put(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
 				.put(FWPMISBIRTHCTRL, submission.getField(FWPMISBIRTHCTRL)).put(FWMISBCSOURCE, submission.getField(FWMISBCSOURCE))
-				.put(mis_elco_current_formStatus, submission.getField(mis_elco_current_formStatus)).put(received_time, format.format(today).toString()).map();
+				.put(FW_WOMMAUZA_PARA, submission.getField(FW_WOMMAUZA_PARA)).put(FW_GOBHHID, submission.getField(FW_GOBHHID))
+				.put(FW_JiVitAHHID, submission.getField(FW_JiVitAHHID)).put(FW_WOMFNAME, submission.getField(FW_WOMFNAME))
+				.put(FW_HUSNAME, submission.getField(FW_HUSNAME)).put(FW_WOMNID, submission.getField(FW_WOMNID)).put(FW_WOMBID, submission.getField(FW_WOMBID))
+				.put(FW_WOMAGE, submission.getField(FW_WOMAGE)).put(ELCO, submission.getField(ELCO))
+				.put(existing_location, submission.getField(existing_location)).put(FWMISINJGIVENDATE, submission.getField(FWMISINJGIVENDATE))
+				.put(FWMISINJNEXTDATECALC, submission.getField(FWMISINJNEXTDATECALC)).put(FWMISINJNEXTDATE, submission.getField(FWMISINJNEXTDATE))
+				.put(FWMISPMDATE, submission.getField(FWMISPMDATE)).put(FWMISPILLGIVENNO, submission.getField(FWMISPILLGIVENNO))
+				.put(FWMISPILLGIVENDATE, submission.getField(FWMISPILLGIVENDATE)).put(FWMISCONDGIVENNO, submission.getField(FWMISCONDGIVENNO))
+				.put(FWMISCONDGIVENDATE, submission.getField(FWMISCONDGIVENDATE)).put(FWMISOPT, submission.getField(FWMISOPT))
+				.put(FWMISIMPT, submission.getField(FWMISIMPT)).put(mis_elco_current_formStatus, submission.getField(mis_elco_current_formStatus))
+				.put(received_time, format.format(today).toString()).map();
 
 		elco.MISDETAILS().add(misElco);
 

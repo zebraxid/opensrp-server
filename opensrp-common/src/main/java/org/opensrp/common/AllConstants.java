@@ -122,7 +122,7 @@ public class AllConstants {
 		public static final String id = "id";
 		public static final String FW_WOMLNAME = "FWWOMLNAME";
 		public static final String FW_WOMFNAME = "FWWOMFNAME";
-		public static final String FW_GOBHHID = "FWWOMNID";
+		public static final String FW_GOBHHID = "GOBHHID";
 		public static final String FW_JiVitAHHID = "JiVitAHHID";
 		public static final String FW_GENDER = "FWGENDER";
 		public static final String FW_WOMBID = "FWWOMBID";
@@ -233,6 +233,16 @@ public class AllConstants {
 		public static final String FWMISELCODATE = "FWMISELCODATE";
 		public static final String FWPMISBIRTHCTRL = "FWPMISBIRTHCTRL";
 		public static final String FWMISBCSOURCE = "FWMISBCSOURCE";
+		public static final String FWMISINJGIVENDATE = "FWMISINJGIVENDATE";
+		public static final String FWMISINJNEXTDATECALC = "FWMISINJNEXTDATECALC";
+		public static final String FWMISINJNEXTDATE = "FWMISINJNEXTDATE";
+		public static final String FWMISPMDATE = "FWMISPMDATE";
+		public static final String FWMISPILLGIVENNO = "FWMISPILLGIVENNO";
+		public static final String FWMISPILLGIVENDATE = "FWMISPILLGIVENDATE";
+		public static final String FWMISCONDGIVENNO = "FWMISCONDGIVENNO";
+		public static final String FWMISCONDGIVENDATE = "FWMISCONDGIVENDATE";
+		public static final String FWMISOPT = "FWMISOPT";
+		public static final String FWMISIMPT = "FWMISIMPT";
 		public static final String mis_elco_current_formStatus = "mis_elco_current_formStatus";
 	}
 
