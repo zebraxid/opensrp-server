@@ -70,6 +70,12 @@ public class CampController {
 		return new ResponseEntity<>(message, OK);
 	}
 	
+	@RequestMapping(headers = { "Accept=application/json" }, method = POST, value = "/edit-camp")
+	public ResponseEntity<String> editCamp(@RequestBody CampDTO campDTO) {
+		String message = campService.edit(campDTO);
+		return new ResponseEntity<>(message, OK);
+	}
+	
 	@RequestMapping(headers = { "Accept=application/json" }, method = GET, value = "/camp/search")
 	@ResponseBody
 	public ResponseEntity<String> search(@RequestParam String thana,@RequestParam String union,
