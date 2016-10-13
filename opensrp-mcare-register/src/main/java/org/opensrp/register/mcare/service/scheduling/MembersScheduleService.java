@@ -37,8 +37,7 @@ public class MembersScheduleService {
     }
 	
 	public void enrollMembersBNFVisit(String caseId,String provider,String date,String instanceId) {
-		logger.info(format("Enrolling Elco into PSRF schedule. Id: {0}", caseId));
-	    
+		logger.info(format("Enrolling Elco into PSRF schedule. Id: {0}", caseId));	    
 		scheduler.enrollIntoSchedule(caseId, SCHEDULE_Woman_BNF, date);
 		scheduleLogService.createNewScheduleLogandUnenrollImmediateSchedule(caseId, date, provider, instanceId, IMD_SCHEDULE_Woman_BNF, SCHEDULE_Woman_BNF, BeneficiaryType.members, duration);
 	}
@@ -83,6 +82,30 @@ public class MembersScheduleService {
         scheduler.enrollIntoSchedule(entityId, scheduleName, date);
   
     }
+	
+	public void enrollimmediateChildBcg(String entityId,String provider,String date,String instanceId) {       
+        logger.info(format("Enrolling Members with Entity id:{0} to Members schedule immediate child_bcg, milestone: {1}.", entityId, IMD_child_bcg));
+        scheduler.enrollIntoSchedule(entityId, IMD_child_bcg, date);
+        scheduleLogService.createImmediateScheduleAndScheduleLog(entityId, date, provider, instanceId, BeneficiaryType.members, child_vaccination_bcg, duration, IMD_child_bcg);
+    }
+	
+	public void enrollChildBcgVisit(String caseId,String provider,String date,String instanceId) {
+		logger.info(format("Enrolling Child into Bcg schedule. Id: {0}", caseId));	    
+		scheduler.enrollIntoSchedule(caseId, child_vaccination_bcg, date);
+		scheduleLogService.createNewScheduleLogandUnenrollImmediateSchedule(caseId, date, provider, instanceId, IMD_child_bcg, child_vaccination_bcg, BeneficiaryType.members, duration);
+	}
+	
+	public void enrollimmediateChildOpv0(String entityId,String provider,String date,String instanceId) {       
+        logger.info(format("Enrolling Members with Entity id:{0} to Members schedule immediate child_opv0, milestone: {1}.", entityId, IMD_child_opv0));
+        scheduler.enrollIntoSchedule(entityId, IMD_child_opv0, date);
+        scheduleLogService.createImmediateScheduleAndScheduleLog(entityId, date, provider, instanceId, BeneficiaryType.members, child_vaccination_opv0, duration, IMD_child_opv0);
+    }
+	
+	public void enrollChildOpv0Visit(String caseId,String provider,String date,String instanceId) {
+		logger.info(format("Enrolling child into opv0 schedule. Id: {0}", caseId));	    
+		scheduler.enrollIntoSchedule(caseId, child_vaccination_opv0, date);
+		scheduleLogService.createNewScheduleLogandUnenrollImmediateSchedule(caseId, date, provider, instanceId, IMD_child_opv0, child_vaccination_opv0, BeneficiaryType.members, duration);
+	}
     
     public void unEnrollFromAllSchedules(String entityId) {
         scheduler.unEnrollFromAllSchedules(entityId);

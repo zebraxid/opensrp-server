@@ -76,7 +76,7 @@ public class AlertCreationAction implements HookedEvent {
 			if (members != null) {
 				instanceId= members.INSTANCEID();
 				providerId = members.PROVIDERID();
-				startOfEarliestWindow = DateTime.parse(members.TODAY(),formatter);
+				startOfEarliestWindow = event.startOfEarliestWindow();
 			}
 		}
 		else {

@@ -130,9 +130,6 @@ public class Members extends MotechBaseDataObject {
 	private String Husband_name
 ;
 	@JsonProperty
-	private String epi_card_number
-;
-	@JsonProperty
 	private String Marital_status
 ;
 	@JsonProperty
@@ -1189,10 +1186,6 @@ public class Members extends MotechBaseDataObject {
 	public void setChild_Other_Guardian_BRID(String child_Other_Guardian_BRID) {
 		Child_Other_Guardian_BRID = child_Other_Guardian_BRID;
 	}
-	public Members setEpi_card_number(String epi_card_number) {
-		this.epi_card_number = epi_card_number;
-		return this;
-	}
 	public Members setChild_was_suffering_from_a_disease_at_birth(
 			String child_was_suffering_from_a_disease_at_birth) {
 		this.child_was_suffering_from_a_disease_at_birth = child_was_suffering_from_a_disease_at_birth;
@@ -1863,9 +1856,6 @@ public class Members extends MotechBaseDataObject {
 
 	public String Child_Other_Guardian_BRID() {
 		return Child_Other_Guardian_BRID;
-	}
-	public String Epi_card_number() {
-		return epi_card_number;
 	}
 	public String Child_was_suffering_from_a_disease_at_birth() {
 		return child_was_suffering_from_a_disease_at_birth;
