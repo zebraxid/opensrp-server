@@ -62,6 +62,7 @@ public class LuceneEventRepository extends CouchDbRepositorySupportWithLucene<Ev
 		}
 		
 		if (StringUtils.isEmptyOrWhitespaceOnly(qf.query())) {
+			
 			throw new RuntimeException("Atleast one search filter must be specified");
 		}
 		query.setQuery(qf.query());

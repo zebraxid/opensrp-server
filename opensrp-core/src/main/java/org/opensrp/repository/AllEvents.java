@@ -5,7 +5,6 @@ import java.util.List;
 import org.ektorp.ComplexKey;
 import org.ektorp.CouchDbConnector;
 import org.ektorp.UpdateConflictException;
-import org.ektorp.ViewQuery;
 import org.ektorp.support.GenerateView;
 import org.ektorp.support.View;
 import org.ektorp.util.Assert;
@@ -13,9 +12,7 @@ import org.ektorp.util.Documents;
 import org.joda.time.DateTime;
 import org.motechproject.dao.MotechBaseRepository;
 import org.opensrp.common.AllConstants;
-import org.opensrp.domain.Client;
 import org.opensrp.domain.Event;
-import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.repository.lucene.LuceneEventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -101,7 +98,8 @@ public class AllEvents extends MotechBaseRepository<Event> {
 		targetDb.create(event);
 	}
 	
-	@View(name = "events_by_version", map = "function(doc) { if (doc.type === 'Event') { emit([doc.version], null); } }")
+
+	@View(name = "events_by_version", map = "function(doc) { if (doc.type === 'Event') { emit([doc.serverVersion], null); } }")
 	public List<Event> findByServerVersion(long serverVersion) {
 		ComplexKey startKey = ComplexKey.of(serverVersion + 1);
 		ComplexKey endKey = ComplexKey.of(Long.MAX_VALUE);
@@ -109,6 +107,7 @@ public class AllEvents extends MotechBaseRepository<Event> {
 		    Event.class);
 	}
 	
+
 	/**
 	 * Find an event based on a concept and between a range of date created dates
 	 * 
@@ -127,6 +126,11 @@ public class AllEvents extends MotechBaseRepository<Event> {
 		    createQuery("event_by_concept_and_date_created").startKey(startKey).endKey(endKey).includeDocs(true),
 		    Event.class);
 		return events;
+	}
+	@View(name = "events_by_empty_server_version", map = "function(doc) { if (doc.type == 'Client' && !doc.serverVersion) { emit(doc._id, doc); } }")
+	public List<Event> findByEmptyServerVersion() {
+		return db.queryView(createQuery("events_by_empty_server_version").limit(200).includeDocs(true), Event.class);
+
 	}
 	
 	/**

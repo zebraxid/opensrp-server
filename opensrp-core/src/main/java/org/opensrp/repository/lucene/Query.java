@@ -37,6 +37,10 @@ public class Query{
 			addToQuery(name+"<date>:["+from.toString("yyyy-MM-dd'T'HH:mm:ss")+" TO "+to.toString("yyyy-MM-dd'T'HH:mm:ss")+"] ");
 			return this;
 		}
+		public Query between(String field,Object start, Object to){
+			addToQuery(field+":["+start +" TO "+ to+"]");
+			return this;
+		}
 		private void addToQuery(String q){
 			if(!StringUtils.isEmptyOrWhitespaceOnly(query)){
 				query += filterType.name()+" "+q;

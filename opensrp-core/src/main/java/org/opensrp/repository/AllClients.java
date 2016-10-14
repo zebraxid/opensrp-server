@@ -2,7 +2,6 @@ package org.opensrp.repository;
 
 import java.util.List;
 
-import org.apache.poi.ss.formula.functions.T;
 import org.ektorp.ComplexKey;
 import org.ektorp.CouchDbConnector;
 import org.ektorp.support.GenerateView;
@@ -13,8 +12,8 @@ import org.joda.time.DateTime;
 import org.motechproject.dao.MotechBaseRepository;
 import org.opensrp.common.AllConstants;
 import org.opensrp.domain.Client;
+import org.opensrp.domain.Event;
 import org.opensrp.repository.lucene.LuceneClientRepository;
-import org.opensrp.scheduler.Alert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
@@ -121,6 +120,7 @@ public class AllClients extends MotechBaseRepository<Client> {
 			String  subDistrict, String town, String subTown, DateTime lastEditFrom, DateTime lastEditTo) {
 		return lcr.getByCriteria(null, null, null, null, null, null, null, null, addressType, country, stateProvince, cityVillage, countyDistrict, subDistrict, town, subTown, lastEditFrom, lastEditTo);
 	}
+	
 	/**
 	 * Query view from the specified db
 	 * @param targetDb
@@ -142,5 +142,21 @@ public class AllClients extends MotechBaseRepository<Client> {
 	public void add(CouchDbConnector targetDb,Client client) {
 		Assert.isTrue(Documents.isNew(client), "entity must be new");
 		targetDb.create(client);
+	}
+	/**
+	 * Get all clients without a server version
+	 * 
+	 * @return
+	 */
+	@View(name = "clients_by_empty_server_version", map = "function(doc) { if ( doc.type == 'Client' && !doc.serverVersion) { emit(doc._id, doc); } }")
+	public List<Client> findByEmptyServerVersion() {
+		return db.queryView(createQuery("clients_by_empty_server_version").limit(200).includeDocs(true), Client.class);
+	}
+	@View(name = "events_by_version", map = "function(doc) { if (doc.type === 'Client') { emit([doc.serverVersion], null); } }")
+	public List<Client> findByServerVersion(long serverVersion) {
+		ComplexKey startKey = ComplexKey.of(serverVersion + 1);
+		ComplexKey endKey = ComplexKey.of(System.currentTimeMillis());
+		return db.queryView(createQuery("events_by_version").startKey(startKey).endKey(endKey).includeDocs(true),
+		    Client.class);
 	}
 }

@@ -2,7 +2,6 @@ package org.opensrp.service;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 import org.ektorp.CouchDbConnector;
@@ -14,8 +13,6 @@ import org.opensrp.domain.Obs;
 import org.opensrp.repository.AllEvents;
 import org.opensrp.repository.lucene.LuceneEventRepository;
 import org.opensrp.util.DateTimeTypeConverter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,15 +22,10 @@ import com.google.gson.GsonBuilder;
 @Service
 public class EventService {
 	
-	private final AllEvents allEvents;
-	
+	@Autowired
+	private  AllEvents allEvents;
 	@Autowired
 	LuceneEventRepository lcr;
-	
-	@Autowired
-	public EventService(AllEvents allEvents) {
-		this.allEvents = allEvents;
-	}
 	
 	public List<Event> findAllByIdentifier(String identifier) {
 		return allEvents.findAllByIdentifier(identifier);
@@ -94,8 +86,6 @@ public class EventService {
 	public List<Event> findEventsByDynamicQuery(String query) {
 		return allEvents.findEventsByDynamicQuery(query);
 	}
-	
-	private static Logger logger = LoggerFactory.getLogger(EventService.class.toString());
 	
 	public Event find(String uniqueId) {
 		List<Event> el = allEvents.findAllByIdentifier(uniqueId);
@@ -225,8 +215,14 @@ public class EventService {
 		return events;
 	}
 	
-	public List<Event> findByEventTypeAndEventDate(String baseEntityId, String eventType, DateTime dateFrom, DateTime dateTo) {
+	public List<Event> findByEventTypeAndEventDate(String baseEntityId, String eventType, DateTime dateFrom,
+	                                               DateTime dateTo) {
 		List<Event> events = lcr.getByCriteria(baseEntityId, dateFrom, dateTo, eventType);
 		return events;
+	}
+	
+	public List<Event> findByServerVersion(long serverVersion) {
+		return allEvents.findByServerVersion(serverVersion);
+		
 	}
 }
