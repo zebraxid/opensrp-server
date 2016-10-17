@@ -27,7 +27,7 @@ public class AllActions extends MotechBaseRepository<Action> {
     private static Logger logger = LoggerFactory.getLogger(AllActions.class.toString());
 
     @Autowired
-    protected AllActions(@Qualifier(AllConstants.OPENSRP_DATABASE_CONNECTOR) CouchDbConnector db) {
+    public AllActions(@Qualifier(AllConstants.OPENSRP_DATABASE_CONNECTOR) CouchDbConnector db) {
         super(Action.class, db);
     }
 
@@ -44,7 +44,8 @@ public class AllActions extends MotechBaseRepository<Action> {
                     "emit([doc.anmIdentifier, doc.caseID, doc.data.scheduleName], null)} " +
                     "}")
     public List<Action> findAlertByANMIdEntityIdScheduleName(String anmIdentifier, String caseID, String scheduleName) {
-        ComplexKey key = ComplexKey.of(anmIdentifier, caseID, scheduleName);
+    	
+    	ComplexKey key = ComplexKey.of(anmIdentifier, caseID, scheduleName);
         return db.queryView(createQuery("action_by_anm_entityId_scheduleName").key(key).includeDocs(true), Action.class);
         
     }

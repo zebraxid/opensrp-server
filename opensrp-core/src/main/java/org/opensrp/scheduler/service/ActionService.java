@@ -14,9 +14,11 @@ import java.util.concurrent.TimeUnit;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.opensrp.common.AllConstants.ScheduleNames;
+import org.opensrp.domain.Vaccine;
 import org.opensrp.dto.ActionData;
 import org.opensrp.dto.AlertStatus;
 import org.opensrp.dto.BeneficiaryType;
+import org.opensrp.repository.AllVaccine;
 import org.opensrp.scheduler.Action;
 import org.opensrp.scheduler.repository.AllActions;
 import org.slf4j.Logger;
@@ -29,16 +31,19 @@ public class ActionService {
     private AllActions allActions;
     private ReportActionService reportActionService;
     private final ScheduleService scheduleService;
+    private AllVaccine allVaccine;
     private static Logger logger = LoggerFactory.getLogger(ActionService.class
-			.toString());
+			.toString());    
+    
     @Autowired
-    public ActionService(AllActions allActions, ReportActionService reportActionService,ScheduleService scheduleService) {
+    public ActionService(AllActions allActions, ReportActionService reportActionService,ScheduleService scheduleService,AllVaccine allVaccine) {
         this.allActions = allActions;
         this.reportActionService = reportActionService;
         this.scheduleService = scheduleService;
-    }
+        this.allVaccine = allVaccine;
+    }    
 
-    public List<Action> getNewAlertsForANM(String anmIdentifier, long timeStamp) {
+	public List<Action> getNewAlertsForANM(String anmIdentifier, long timeStamp) {
         return allActions.findByANMIDAndTimeStamp(anmIdentifier, timeStamp);
     }
 
@@ -83,34 +88,52 @@ public class ActionService {
     }
     public void ActionUpdateOrCreateForOther(BeneficiaryType beneficiaryType, String caseID, String instanceId,  String anmIdentifier, String scheduleName, String visitCode, AlertStatus alertStatus, DateTime startDate, DateTime expiryDate){
     	try{
+    		
 	    	List<Action> existingAlerts = allActions.findAlertByANMIdEntityIdScheduleName(anmIdentifier, caseID, scheduleName);
+	    	
 	    	if(existingAlerts.size() > 0){ 
 	    		long beforTimeStamp = existingAlerts.get(0).timestamp();
 	        	Map<String,String> data =existingAlerts.get(0).data(); 	      
-	 	      if(!data.get("alertStatus").equals(alertStatus)){
-	 	    	 this.updateDataForAction(beneficiaryType, caseID, instanceId, anmIdentifier, scheduleName, visitCode, alertStatus, startDate, expiryDate, existingAlerts);
-	 	      }else{
-	 	    	 existingAlerts.get(0).setRevision(existingAlerts.get(0).getRevision());
-	 	    	 existingAlerts.get(0).timestamp(Calendar.getInstance().getTimeInMillis()); 	    	 
-	 	    	 existingAlerts.get(0).data().put("visitCode", visitCode);
-	 	    	 existingAlerts.get(0).data().put("expiryDate", expiryDate.toLocalDate().toString());
-	 	    	 existingAlerts.get(0).data().put("startDate", startDate.toLocalDate().toString());
-	 	    	 Action action = existingAlerts.get(0); 	    	 
-	 	    	 allActions.update(action);
-	 	      } 	      
-	 	     List<Action> existingAlert = allActions.findAlertByANMIdEntityIdScheduleName(anmIdentifier, caseID, scheduleName);
-	 	     reportActionService.updateScheduleLog(beneficiaryType, caseID, instanceId, anmIdentifier, scheduleName, visitCode, alertStatus, startDate, expiryDate, null,null,beforTimeStamp,existingAlert.get(0).timestamp());
-	 	     logger.info("Update schedule with id: "+caseID);
+		 	     if(!data.get("alertStatus").equals(alertStatus)){
+		 	    	 this.updateDataForAction(beneficiaryType, caseID, instanceId, anmIdentifier, scheduleName, visitCode, alertStatus, startDate, expiryDate, existingAlerts);
+		 	      }else{
+		 	    	 existingAlerts.get(0).setRevision(existingAlerts.get(0).getRevision());
+		 	    	 existingAlerts.get(0).timestamp(Calendar.getInstance().getTimeInMillis()); 	    	 
+		 	    	 existingAlerts.get(0).data().put("visitCode", visitCode);
+		 	    	 existingAlerts.get(0).data().put("expiryDate", expiryDate.toLocalDate().toString());
+		 	    	 existingAlerts.get(0).data().put("startDate", startDate.toLocalDate().toString());
+		 	    	 Action action = existingAlerts.get(0); 	    	 
+		 	    	 allActions.update(action);
+		 	    	
+		 	      } 	      
+		 	     List<Action> existingAlert = allActions.findAlertByANMIdEntityIdScheduleName(anmIdentifier, caseID, scheduleName);
+		 	     reportActionService.updateScheduleLog(beneficiaryType, caseID, instanceId, anmIdentifier, scheduleName, visitCode, alertStatus, startDate, expiryDate, null,null,beforTimeStamp,existingAlert.get(0).timestamp());
+		 	     logger.info("Update schedule with id: "+caseID);
+		 	    Vaccine vaccine = new Vaccine(anmIdentifier, caseID, existingAlert.get(0).getId(), beneficiaryType.name(), scheduleName, startDate, expiryDate, "0", "0", new Date(), new DateTime());
+		 	     allVaccine.save(vaccine);
 	    	}else{
+	    		
 	    		if(!instanceId.equalsIgnoreCase(null) || !instanceId.isEmpty()){
+	    			
 		        	allActions.addOrUpdateAlert(new Action(caseID, anmIdentifier, ActionData.createAlert(beneficiaryType, scheduleName, visitCode, alertStatus, startDate, expiryDate)));
+		        	
 		        	List<Action> existingAlert = allActions.findAlertByANMIdEntityIdScheduleName(anmIdentifier, caseID, scheduleName);
-			 	    reportActionService.updateScheduleLog(beneficiaryType, caseID, instanceId, anmIdentifier, scheduleName, visitCode, alertStatus, startDate, expiryDate, null,null,0L,existingAlert.get(0).timestamp());
+		        	try{
+		        	Vaccine vaccine = new Vaccine(anmIdentifier, caseID, existingAlert.get(0).getId(), beneficiaryType.name(), scheduleName, startDate, expiryDate, "0", "0", new Date(), new DateTime());
+		        	System.err.println("fff:"+vaccine.toString());
+		        	System.err.println(allVaccine);
+		        	allVaccine.save(vaccine);
+		        	}catch(Exception e){
+		        		System.err.println("test...");
+		        		e.printStackTrace();
+		        	}
+		        	
+		        	reportActionService.updateScheduleLog(beneficiaryType, caseID, instanceId, anmIdentifier, scheduleName, visitCode, alertStatus, startDate, expiryDate, null,null,0L,existingAlert.get(0).timestamp());
 		        	logger.info("Create schedule with id: "+caseID);
 	    		}
 	    	} 
     	}catch(Exception e){
-    		logger.info(e.getMessage());
+    		logger.info(e.toString());
     		
     	}
     	

@@ -1,7 +1,10 @@
 package org.opensrp.domain;
 
+import java.util.Date;
+
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.ektorp.support.TypeDiscriminator;
+import org.joda.time.DateTime;
 import org.motechproject.model.MotechBaseDataObject;
 
 
@@ -23,21 +26,24 @@ public class Vaccine extends MotechBaseDataObject{
 	    @JsonProperty
 	    private String vaccineName;
 	    @JsonProperty
-	    private String scheduleDate;
+	    private DateTime scheduleDate;
 	    @JsonProperty
-	    private String expiredDate;
+	    private DateTime expiredDate;
 	    @JsonProperty
 	    private String status;
 	    @JsonProperty
 	    private String missedCount;
 	    @JsonProperty
-	    private String createdDate;
+	    private Date createdDate;
 	    @JsonProperty
-	    private String executionDate;
+	    private DateTime executionDate;
+	    public Vaccine(){
+	    	
+	    }
 		public Vaccine(String health_assistant, String clientId, String actionId, String beneficiaryType,
-            String vaccineName, String scheduleDate, String expiredDate, String status, String missedCount,
-            String createdDate, String executionDate) {
-	        super();
+            String vaccineName, DateTime scheduleDate, DateTime expiredDate, String status, String missedCount,
+            Date createdDate, DateTime executionDate) {
+	        
 	        this.health_assistant = health_assistant;
 	        this.clientId = clientId;
 	        this.actionId = actionId;
@@ -71,11 +77,11 @@ public class Vaccine extends MotechBaseDataObject{
         	return vaccineName;
         }
 		
-        public String getScheduleDate() {
+        public DateTime getScheduleDate() {
         	return scheduleDate;
         }
 		
-        public String getExpiredDate() {
+        public DateTime getExpiredDate() {
         	return expiredDate;
         }
 		
@@ -87,11 +93,11 @@ public class Vaccine extends MotechBaseDataObject{
         	return missedCount;
         }
 		
-        public String getCreatedDate() {
+        public Date getCreatedDate() {
         	return createdDate;
         }
 		
-        public String getExecutionDate() {
+        public DateTime getExecutionDate() {
         	return executionDate;
         }
 		
@@ -115,11 +121,11 @@ public class Vaccine extends MotechBaseDataObject{
         	this.vaccineName = vaccineName;
         }
 		
-        public void setScheduleDate(String scheduleDate) {
+        public void setScheduleDate(DateTime scheduleDate) {
         	this.scheduleDate = scheduleDate;
         }
 		
-        public void setExpiredDate(String expiredDate) {
+        public void setExpiredDate(DateTime expiredDate) {
         	this.expiredDate = expiredDate;
         }
 		
@@ -131,106 +137,14 @@ public class Vaccine extends MotechBaseDataObject{
         	this.missedCount = missedCount;
         }
 		
-        public void setCreatedDate(String createdDate) {
+        public void setCreatedDate(Date createdDate) {
         	this.createdDate = createdDate;
         }
 		
-        public void setExecutionDate(String executionDate) {
+        public void setExecutionDate(DateTime executionDate) {
         	this.executionDate = executionDate;
         }
-
-		@Override
-        public int hashCode() {
-	        final int prime = 31;
-	        int result = 1;
-	        result = prime * result + ((actionId == null) ? 0 : actionId.hashCode());
-	        result = prime * result + ((beneficiaryType == null) ? 0 : beneficiaryType.hashCode());
-	        result = prime * result + ((clientId == null) ? 0 : clientId.hashCode());
-	        result = prime * result + ((createdDate == null) ? 0 : createdDate.hashCode());
-	        result = prime * result + ((executionDate == null) ? 0 : executionDate.hashCode());
-	        result = prime * result + ((expiredDate == null) ? 0 : expiredDate.hashCode());
-	        result = prime * result + ((health_assistant == null) ? 0 : health_assistant.hashCode());
-	        result = prime * result + ((missedCount == null) ? 0 : missedCount.hashCode());
-	        result = prime * result + ((scheduleDate == null) ? 0 : scheduleDate.hashCode());
-	        result = prime * result + ((status == null) ? 0 : status.hashCode());
-	        result = prime * result + ((vaccineName == null) ? 0 : vaccineName.hashCode());
-	        return result;
-        }
-
-		@Override
-        public boolean equals(Object obj) {
-	        if (this == obj)
-		        return true;
-	        if (obj == null)
-		        return false;
-	        if (getClass() != obj.getClass())
-		        return false;
-	        Vaccine other = (Vaccine) obj;
-	        if (actionId == null) {
-		        if (other.actionId != null)
-			        return false;
-	        } else if (!actionId.equals(other.actionId))
-		        return false;
-	        if (beneficiaryType == null) {
-		        if (other.beneficiaryType != null)
-			        return false;
-	        } else if (!beneficiaryType.equals(other.beneficiaryType))
-		        return false;
-	        if (clientId == null) {
-		        if (other.clientId != null)
-			        return false;
-	        } else if (!clientId.equals(other.clientId))
-		        return false;
-	        if (createdDate == null) {
-		        if (other.createdDate != null)
-			        return false;
-	        } else if (!createdDate.equals(other.createdDate))
-		        return false;
-	        if (executionDate == null) {
-		        if (other.executionDate != null)
-			        return false;
-	        } else if (!executionDate.equals(other.executionDate))
-		        return false;
-	        if (expiredDate == null) {
-		        if (other.expiredDate != null)
-			        return false;
-	        } else if (!expiredDate.equals(other.expiredDate))
-		        return false;
-	        if (health_assistant == null) {
-		        if (other.health_assistant != null)
-			        return false;
-	        } else if (!health_assistant.equals(other.health_assistant))
-		        return false;
-	        if (missedCount == null) {
-		        if (other.missedCount != null)
-			        return false;
-	        } else if (!missedCount.equals(other.missedCount))
-		        return false;
-	        if (scheduleDate == null) {
-		        if (other.scheduleDate != null)
-			        return false;
-	        } else if (!scheduleDate.equals(other.scheduleDate))
-		        return false;
-	        if (status == null) {
-		        if (other.status != null)
-			        return false;
-	        } else if (!status.equals(other.status))
-		        return false;
-	        if (vaccineName == null) {
-		        if (other.vaccineName != null)
-			        return false;
-	        } else if (!vaccineName.equals(other.vaccineName))
-		        return false;
-	        return true;
-        }
-
-		@Override
-        public String toString() {
-	        return "Vaccine [health_assistant=" + health_assistant + ", clientId=" + clientId + ", actionId=" + actionId
-	                + ", beneficiaryType=" + beneficiaryType + ", vaccineName=" + vaccineName + ", scheduleDate="
-	                + scheduleDate + ", expiredDate=" + expiredDate + ", status=" + status + ", missedCount=" + missedCount
-	                + ", createdDate=" + createdDate + ", executionDate=" + executionDate + "]";
-        }
+		
 	    
 	
 }

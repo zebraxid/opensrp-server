@@ -41,7 +41,7 @@ public class AlertRouter {
         MilestoneEvent event = new MilestoneEvent(realEvent);
 
         for (Route route : routes) {
-            if (route.isSatisfiedBy(event.scheduleName(), event.milestoneName(), event.windowName())) {
+            if (route.isSatisfiedBy(event.scheduleName(), event.milestoneName(), event.windowName())) {            	
                 route.invokeAction(event);
                 return;
             }

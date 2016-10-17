@@ -83,7 +83,7 @@ public class EncounterTest extends TestResourceLoader{
 
 	}
 	
-	@Test
+	@Ignore@Test
 	public void testEncounter() throws JSONException, ParseException, IOException {
 		FormSubmission fs = getFormSubmissionFor("basic_reg");
 		
