@@ -1,12 +1,13 @@
-package org.opensrp.camp.repository;
+package org.opensrp.repository;
 
 import java.util.List;
 
 import org.ektorp.CouchDbConnector;
 import org.ektorp.support.GenerateView;
 import org.motechproject.dao.MotechBaseRepository;
-import org.opensrp.camp.dao.Vaccine;
+
 import org.opensrp.common.AllConstants;
+import org.opensrp.domain.Vaccine;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

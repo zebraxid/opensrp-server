@@ -1,4 +1,4 @@
-package org.opensrp.camp.dao;
+package org.opensrp.domain;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.ektorp.support.TypeDiscriminator;
