@@ -10,6 +10,7 @@ import org.motechproject.server.event.annotations.MotechListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import org.opensrp.common.AllConstants.ScheduleNames;
 
 /**
  * The class that maintains the actions against alerts by {@link ScheduleTrackingService}
@@ -41,12 +42,26 @@ public class AlertRouter {
         MilestoneEvent event = new MilestoneEvent(realEvent);
 
         for (Route route : routes) {
-            if (route.isSatisfiedBy(event.scheduleName(), event.milestoneName(), event.windowName())) {
-                route.invokeAction(event);
-                return;
-            }
+        	
+        	 if (route.isSatisfiedBy(parseScheduleName(event.scheduleName()), parseScheduleName(event.milestoneName()), event.windowName())) {
+                 route.invokeAction(event);
+                 return;
+             }
         }
 
         throw new NoRoutesMatchException(event);
+    }
+
+    public String parseScheduleName(String scheduleName){
+    	if(scheduleName.equalsIgnoreCase(ScheduleNames.IMD_SCHEDULE_Woman_BNF)){
+    		return scheduleName.replace(ScheduleNames.IMD_SCHEDULE_Woman_BNF, ScheduleNames.SCHEDULE_Woman_BNF);
+    	}
+    	else if(scheduleName.equalsIgnoreCase(ScheduleNames.IMD_child_bcg)){
+    		return scheduleName.replace(ScheduleNames.IMD_child_bcg, ScheduleNames.child_vaccination_bcg);
+    	}
+    	else if(scheduleName.equalsIgnoreCase(ScheduleNames.IMD_child_opv0)){
+    		return scheduleName.replace(ScheduleNames.IMD_child_opv0, ScheduleNames.child_vaccination_opv0);
+    	}
+    	else return scheduleName;    	
     }
 }
