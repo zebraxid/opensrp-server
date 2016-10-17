@@ -203,6 +203,7 @@ public class AllConstants {
         	public static final String Gender ="Gender";
         	public static final String Father_name ="Father_name";
         	public static final String Husband_name ="Husband_name";
+        	public static final String Visit_status ="Visit_status";
         	public static final String Marital_status ="Marital_status";
         	public static final String Couple_No ="Couple_No";
         	public static final String WomanInfo ="WomanInfo";
@@ -257,6 +258,11 @@ public class AllConstants {
 	    	public static final String tt3_final="tt3_final"; 
 	    	public static final String tt4_final="tt4_final"; 
 	    	public static final String tt5_final="tt5_final"; 
+	    	public static final String e_tt1="e_tt1";
+	    	public static final String e_tt2="e_tt2";
+	    	public static final String e_tt3="e_tt3"; 
+	    	public static final String e_tt4="e_tt4"; 
+	    	public static final String e_tt5="e_tt5"; 
 	    	public static final String Child_birth_date_known ="Child_birth_date_known";
 	    	public static final String Child_birth_date ="Child_birth_date";
 	    	public static final String Child_age ="Child_age";
@@ -1381,7 +1387,7 @@ public class AllConstants {
     public static class ScheduleNames{
     	public static final String CENCUS = "FW CENSUS";
     	public static final String SCHEDULE_Woman_BNF = "Woman_BNF";
-    	public static final String IMD_SCHEDULE_Woman_BNF = "IMEDIATE_Woman_BNF";
+    	public static final String IMD_SCHEDULE_Woman_BNF = "IMD_Woman_BNF";
         public static final String SCHEDULE_Woman_Measles = "Woman_measles";
         public static final String SCHEDULE_Woman_1 = "Woman_TT1";
         public static final String SCHEDULE_Woman_2 = "Woman_TT2";
@@ -1389,10 +1395,12 @@ public class AllConstants {
         public static final String SCHEDULE_Woman_4 = "Woman_TT4";
         public static final String SCHEDULE_Woman_5 = "Woman_TT5";
         public static final String child_vaccination_bcg = "child_bcg";
+    	public static final String IMD_child_bcg = "IMD_child_bcg";
         public static final String child_vaccination_ipv = "child_ipv";
-        public static final String child_vaccination_measles = "child_measles";
-        public static final String child_vaccination_mr = "child_mr";
-        public static final String child_vaccination_opv0 = "child_opv0";        
+        public static final String child_vaccination_measles1 = "child_measles1";
+        public static final String child_vaccination_measles2 = "child_measles2";
+        public static final String child_vaccination_opv0 = "child_opv0";  
+    	public static final String IMD_child_opv0 = "IMD_child_opv0";
         public static final String child_vaccination_opv1 = "child_opv1";
         public static final String child_vaccination_opv2 = "child_opv2";
         public static final String child_vaccination_opv3 = "child_opv3";
@@ -1401,7 +1409,7 @@ public class AllConstants {
         public static final String child_vaccination_pcv3 = "child_pcv3";        
         public static final String child_vaccination_penta1 = "child_penta1";
         public static final String child_vaccination_penta2 = "child_penta2";
-        public static final String child_vaccination_penta3 = "child_penta3";
+        public static final String child_vaccination_penta3 = "child_penta3";    
         public static final String CHILD = "CHILD";
         public static final String ANC = "ANC";
         public static final String PNC = "PNC";

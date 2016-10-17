@@ -63,9 +63,10 @@ public class UserServiceTest {
     	
     	//System.out.println(); 
     	
-    	User user = allUsers.findUserByUserName("sohel");
+    	/*User user = allUsers.findUserByUserName("sohel");
 		assertNotNull(user);
-		System.out.println(user.getPassword());
+		System.out.println(user.getPassword());*/
+    	
 		/*decodedPass = Base64.decode(user.getPassword().getBytes());
 		System.out.println(new String(decodedPass));*/
 		/*user.withPassword(encodedString);

@@ -8,7 +8,7 @@ import org.ektorp.support.TypeDiscriminator;
 import org.motechproject.model.MotechBaseDataObject;
 
 
-@TypeDiscriminator("doc.type === 'BahmniId'")
+@TypeDiscriminator("doc.type === 'IdentifierMaping'")
 public class IdentifierMaping extends MotechBaseDataObject {
 	
 	/**

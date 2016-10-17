@@ -89,7 +89,7 @@ public class OpenSRPScheduleConstants {
     }
     public static class MemberScheduleConstants {
     	public static final String SCHEDULE_Woman_BNF = "Woman_BNF";
-    	public static final String IMD_SCHEDULE_Woman_BNF = "IMEDIATE_Woman_BNF";
+    	public static final String IMD_SCHEDULE_Woman_BNF = "IMD_Woman_BNF";
         public static final String SCHEDULE_Woman_Measles = "Woman_measles";
         public static final String SCHEDULE_Woman_1 = "Woman_TT1";
         public static final String SCHEDULE_Woman_2 = "Woman_TT2";
@@ -97,10 +97,12 @@ public class OpenSRPScheduleConstants {
         public static final String SCHEDULE_Woman_4 = "Woman_TT4";
         public static final String SCHEDULE_Woman_5 = "Woman_TT5";
         public static final String child_vaccination_bcg = "child_bcg";
+    	public static final String IMD_child_bcg = "IMD_child_bcg";
         public static final String child_vaccination_ipv = "child_ipv";
         public static final String child_vaccination_measles1 = "child_measles1";
         public static final String child_vaccination_measles2 = "child_measles2";
-        public static final String child_vaccination_opv0 = "child_opv0";        
+        public static final String child_vaccination_opv0 = "child_opv0";  
+    	public static final String IMD_child_opv0 = "IMD_child_opv0";
         public static final String child_vaccination_opv1 = "child_opv1";
         public static final String child_vaccination_opv2 = "child_opv2";
         public static final String child_vaccination_opv3 = "child_opv3";

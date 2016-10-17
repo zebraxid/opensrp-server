@@ -112,10 +112,10 @@ public class EncounterTest extends TestResourceLoader{
 		enc.put("obs", content.trim());
 		System.out.println(enc.toString());
 
-		HttpResponse op = HttpUtil.post(
+		/*HttpResponse op = HttpUtil.post(
 				HttpUtil.removeEndingSlash("https://192.168.19.44/openmrs/")+"/"+"ws/rest/v1/encounter", "", enc.toString(), "sohel", "Sohel@123");
 		
-		System.out.println(op.body());
+		System.out.println(op.body());*/
 
 	}
 	

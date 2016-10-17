@@ -29,7 +29,7 @@ public class IndetifierMapingRepository  extends MotechBaseRepository<Identifier
 		if (ids == null || ids.isEmpty()) {
 			return null;
 		}
-		return null;
+		return ids.get(0);
 		
 	}
 	/*@GenerateView

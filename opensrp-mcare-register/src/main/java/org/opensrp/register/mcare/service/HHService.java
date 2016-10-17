@@ -66,7 +66,7 @@ public class HHService {
 		allHouseHolds.update(houseHold);
 			
 		hhSchedulesService.enrollIntoMilestoneOfCensus(submission.entityId(),
-			submission.getField(DATE_OF_REG),submission.anmId(),submission.instanceId());
+			submission.getField(REFERENCE_DATE),submission.anmId(),submission.instanceId());
 		
 		membersService.registerMembers(submission);
 	}
@@ -191,7 +191,6 @@ public class HHService {
 					.put(Child_Father_BRID, membersFields.get(Child_Father_BRID))
 					.put(Child_Other_Guardian_NID, membersFields.get(Child_Other_Guardian_NID))
 					.put(Child_Other_Guardian_BRID, membersFields.get(Child_Other_Guardian_BRID))	
-					.put(epi_card_number, membersFields.get(epi_card_number))
 					.put(child_was_suffering_from_a_disease_at_birth, membersFields.get(child_was_suffering_from_a_disease_at_birth))
 					.put(reminders_approval, membersFields.get(reminders_approval))
 					.put(contact_phone_number, membersFields.get(contact_phone_number))
