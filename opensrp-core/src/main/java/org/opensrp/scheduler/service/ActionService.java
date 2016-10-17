@@ -57,7 +57,7 @@ public class ActionService {
     	else if(scheduleName.equals(ScheduleNames.ANC) || scheduleName.equals(ScheduleNames.PNC) || scheduleName.equals(ScheduleNames.CHILD)){
     		this.ActionUpdateOrCreateForMotherType(beneficiaryType, caseID, instanceId, anmIdentifier, scheduleName, visitCode, alertStatus, startDate, expiryDate);   		
     	}
-    	else{
+    	else{    		
     		this.ActionUpdateOrCreateForOther(beneficiaryType, caseID, instanceId, anmIdentifier, scheduleName, visitCode, alertStatus, startDate, expiryDate);
     	}
     	
@@ -88,9 +88,9 @@ public class ActionService {
     }
     public void ActionUpdateOrCreateForOther(BeneficiaryType beneficiaryType, String caseID, String instanceId,  String anmIdentifier, String scheduleName, String visitCode, AlertStatus alertStatus, DateTime startDate, DateTime expiryDate){
     	try{
-    		
+    		System.err.println("frommm");
 	    	List<Action> existingAlerts = allActions.findAlertByANMIdEntityIdScheduleName(anmIdentifier, caseID, scheduleName);
-	    	
+	    	System.err.println("frommmvvvv");
 	    	if(existingAlerts.size() > 0){ 
 	    		long beforTimeStamp = existingAlerts.get(0).timestamp();
 	        	Map<String,String> data =existingAlerts.get(0).data(); 	      
@@ -133,7 +133,7 @@ public class ActionService {
 	    		}
 	    	} 
     	}catch(Exception e){
-    		logger.info(e.toString());
+    		e.printStackTrace();
     		
     	}
     	
