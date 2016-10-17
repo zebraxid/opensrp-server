@@ -424,7 +424,6 @@ public class HouseHold extends MotechBaseDataObject {
 
 	public String START() {
 		return START;
-
 	}
 
 	public String END() {

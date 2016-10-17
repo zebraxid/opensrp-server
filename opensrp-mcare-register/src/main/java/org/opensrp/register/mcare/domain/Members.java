@@ -31,6 +31,10 @@ public class Members extends MotechBaseDataObject {
 	@JsonProperty
 	private String TODAY;
 	@JsonProperty
+	private String START;
+	@JsonProperty
+	private String END;
+	@JsonProperty
 	private String Member_COUNTRY
 ;
 	@JsonProperty
@@ -675,6 +679,16 @@ public class Members extends MotechBaseDataObject {
 	
 	public Members setTODAY(String TODAY) {
 		this.TODAY = TODAY;
+		return this;
+	}
+	
+	public Members setSTART(String START) {
+		this.START = START;
+		return this;
+	}
+
+	public Members setEND(String END) {
+		this.END = END;
 		return this;
 	}
 
@@ -1529,6 +1543,14 @@ public class Members extends MotechBaseDataObject {
 		return TODAY;
 	}
 
+	public String START() {
+		return START;
+	}
+
+	public String END() {
+		return END;
+	}
+	
 	public String Member_Fname() {
 		return Member_Fname;
 	}
