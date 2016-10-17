@@ -421,6 +421,7 @@ public class AllConstants {
 	    	public static final String Gestational_age ="Gestational_age";   	
 	    	public static final String Woman_vital_status ="Woman_vital_status";
 	    	public static final String DOO ="DOO";	    	
+	    	public static final String Display_text ="Display_text";
 	    	public static final String Date_of_interview ="Date_of_interview";
 	    	public static final String Confirm_info ="Confirm_info";
 	    	public static final String Number_live_birth ="Number_live_birth";
