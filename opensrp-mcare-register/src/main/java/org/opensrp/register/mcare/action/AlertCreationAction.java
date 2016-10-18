@@ -11,6 +11,7 @@ import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.motechproject.scheduletracking.api.domain.Enrollment;
+import org.opensrp.common.AllConstants.ScheduleNames;
 import org.opensrp.domain.Multimedia;
 import org.opensrp.dto.BeneficiaryType;
 import org.opensrp.register.mcare.domain.HouseHold;
@@ -84,9 +85,22 @@ public class AlertCreationAction implements HookedEvent {
 					+ beneficiaryType + " is of unknown type");
 		}
 
-		scheduler.alertFor(event.windowName(), beneficiaryType, caseID, instanceId, providerId, event.scheduleName(), event.milestoneName(),
+		scheduler.alertFor(event.windowName(), beneficiaryType, caseID, instanceId, providerId, parseScheduleName(event.scheduleName()), parseScheduleName(event.milestoneName()),
 				startOfEarliestWindow, event.startOfDueWindow(), event.startOfLateWindow(), event.startOfMaxWindow());
 	}
+	
+	public String parseScheduleName(String scheduleName){
+    	if(scheduleName.equalsIgnoreCase(ScheduleNames.IMD_SCHEDULE_Woman_BNF)){
+    		return scheduleName.replace(ScheduleNames.IMD_SCHEDULE_Woman_BNF, ScheduleNames.SCHEDULE_Woman_BNF);
+    	}
+    	else if(scheduleName.equalsIgnoreCase(ScheduleNames.IMD_child_bcg)){
+    		return scheduleName.replace(ScheduleNames.IMD_child_bcg, ScheduleNames.child_vaccination_bcg);
+    	}
+    	else if(scheduleName.equalsIgnoreCase(ScheduleNames.IMD_child_opv0)){
+    		return scheduleName.replace(ScheduleNames.IMD_child_opv0, ScheduleNames.child_vaccination_opv0);
+    	}
+    	else return scheduleName;    	
+    }
 
 	@Override
 	public void scheduleSaveToOpenMRSMilestone(Enrollment el,List<Action> alertActions ) {		
