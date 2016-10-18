@@ -271,6 +271,7 @@ public class AllConstants {
 	    	public static final String Child_dob ="Child_dob";
 	    	public static final String Child_dob_estimated ="Child_dob_estimated";
 	    	public static final String Child_age_days ="Child_age_days";
+	    	public static final String child_age_days ="child_age_days";
 	    	public static final String Child_birth_date_note ="Child_birth_date_note";
 	    	public static final String Birth_Weigtht ="Birth_Weigtht";
 	    	public static final String Newborn_Care_Received ="Newborn_Care_Received";
@@ -460,8 +461,6 @@ public class AllConstants {
 	    	="existing_gender";
 	    	public static final String existing_birth_date
 	    	="existing_birth_date";
-	    	public static final String Date_Of_Reg
-	    	="Date_Of_Reg";
 	    	public static final String existing_Country   
 	    	= "existing_Country";
 	    	public static final String existing_Division
