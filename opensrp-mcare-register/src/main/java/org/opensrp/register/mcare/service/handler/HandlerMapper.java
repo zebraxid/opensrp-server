@@ -28,7 +28,7 @@ public class HandlerMapper implements IHandlerMapper {
 			BNFHandler BNFHandler,
 			Birth_OutcomeHandler Birth_OutcomeHandler,
 			GeneralHandler generalHandler,
-			TT1_Handler TT1_Handler,
+			TTform_Handler TTform_Handler,
 			child_vaccine_followup_Handler child_vaccine_followup_Handler
 			)
 	{
@@ -37,7 +37,7 @@ public class HandlerMapper implements IHandlerMapper {
 					 .put(BNF_Handler, BNFHandler)
 					 .put(BirthOutcome_Handler, Birth_OutcomeHandler)
 				     .put(GeneralHandler, generalHandler)
-				     .put(TT_Visit_Handler, TT1_Handler)
+				     .put(TT_Visit_Handler, TTform_Handler)
 				     .put(Child_vaccine_followup_Handler, child_vaccine_followup_Handler)
                      .map();
 	}

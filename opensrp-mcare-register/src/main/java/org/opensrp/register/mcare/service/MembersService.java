@@ -1409,7 +1409,7 @@ public class MembersService {
 		allMembers.update(members);
 	}
 	
-	public void TT1_Visit(FormSubmission submission) {
+	public void TTform_Visit(FormSubmission submission) {	
 		Members members = allMembers.findByCaseId(submission.entityId());
 		if (members == null) {
 			logger.warn(format(
@@ -1420,6 +1420,7 @@ public class MembersService {
 		
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date today = Calendar.getInstance().getTime();
+		
 		Map<String, String> TT1_visit = create(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
 											.put(START_DATE, submission.getField(START_DATE))
 											.put(END_DATE, submission.getField(END_DATE))
@@ -1429,9 +1430,50 @@ public class MembersService {
 											.map();	
 		
 		members.setTTVisitOne(TT1_visit);
-		allMembers.update(members);		
+		
+		Map<String, String> TT2_visit = create(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
+				.put(START_DATE, submission.getField(START_DATE))
+				.put(END_DATE, submission.getField(END_DATE))
+				.put(Has_Vaccinated, submission.getField(Has_Vaccinated))
+				.put(TT2_Date_of_Vaccination, submission.getField(TT2_Date_of_Vaccination))
+				.put(Received_Time, format.format(today).toString())
+				.map();	
 
+		members.setTTVisitTwo(TT2_visit);
+		
+		Map<String, String> TT3_visit = create(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
+				.put(START_DATE, submission.getField(START_DATE))
+				.put(END_DATE, submission.getField(END_DATE))
+				.put(Has_Vaccinated, submission.getField(Has_Vaccinated))
+				.put(TT3_Date_of_Vaccination, submission.getField(TT3_Date_of_Vaccination))
+				.put(Received_Time, format.format(today).toString())
+				.map();	
 
+		members.setTTVisitThree(TT3_visit);
+		
+		Map<String, String> TT4_visit = create(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
+				.put(START_DATE, submission.getField(START_DATE))
+				.put(END_DATE, submission.getField(END_DATE))
+				.put(Has_Vaccinated, submission.getField(Has_Vaccinated))
+				.put(TT4_Date_of_Vaccination, submission.getField(TT4_Date_of_Vaccination))
+				.put(Received_Time, format.format(today).toString())
+				.map();	
+
+		members.setTTVisitFour(TT4_visit);
+		
+		Map<String, String> TT5_visit = create(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
+				.put(START_DATE, submission.getField(START_DATE))
+				.put(END_DATE, submission.getField(END_DATE))
+				.put(Has_Vaccinated, submission.getField(Has_Vaccinated))
+				.put(TT5_Date_of_Vaccination, submission.getField(TT5_Date_of_Vaccination))
+				.put(Received_Time, format.format(today).toString())
+				.map();	
+
+		members.setTTVisitFive(TT5_visit);		
+		
+		allMembers.update(members);	
+		
+	
 		if ((submission.getField(tt1) == null || submission.getField(tt1).equalsIgnoreCase("")) && (submission.getField(e_tt1) == null || submission.getField(e_tt1).equalsIgnoreCase("")) && (submission.getField(tt1_retro) == null || submission.getField(tt1_retro).equalsIgnoreCase(""))){
 		if (submission.getField(final_lmp) != null && !submission.getField(final_lmp).equalsIgnoreCase(""))
 		if(isValidDate(submission.getField(final_lmp)))
@@ -1441,36 +1483,8 @@ public class MembersService {
 		if (submission.getField(tt1_final) != null && !submission.getField(tt1_final).equalsIgnoreCase(""))
 			membersScheduleService.unEnrollAndCloseSchedule(
 					members.caseId(),submission.anmId(),SCHEDULE_Woman_1,LocalDate.parse(submission.getField(REFERENCE_DATE)));
-		
 
-		
-		TT2_Visit(submission);
-		TT3_Visit(submission);
-		TT4_Visit(submission);
-		TT5_Visit(submission);
-	}
-	
-	public void TT2_Visit(FormSubmission submission) {
-		Members members = allMembers.findByCaseId(submission.entityId());	
-		if (members == null) {
-			logger.warn(format(
-					"Failed to handle TT2_Visit as there is no Member enrolled with ID: {0}",
-					submission.entityId()));
-			return;
-		}
-		
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		Date today = Calendar.getInstance().getTime();
-		Map<String, String> TT2_visit = create(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
-											.put(START_DATE, submission.getField(START_DATE))
-											.put(END_DATE, submission.getField(END_DATE))
-											.put(Has_Vaccinated, submission.getField(Has_Vaccinated))
-											.put(TT2_Date_of_Vaccination, submission.getField(TT2_Date_of_Vaccination))
-											.put(Received_Time, format.format(today).toString())
-											.map();	
-		
-		members.setTTVisitTwo(TT2_visit);
-		allMembers.update(members);			
+				
 
 		if ((submission.getField(tt2) == null || submission.getField(tt2).equalsIgnoreCase("")) && (submission.getField(e_tt2) == null || submission.getField(e_tt2).equalsIgnoreCase("")) && (submission.getField(tt2_retro) == null || submission.getField(tt2_retro).equalsIgnoreCase(""))){		
 			if (submission.getField(tt1) != null && !submission.getField(tt1).equalsIgnoreCase("")){
@@ -1490,29 +1504,8 @@ public class MembersService {
 		if (submission.getField(tt2_final) != null && !submission.getField(tt2_final).equalsIgnoreCase(""))
 			membersScheduleService.unEnrollAndCloseSchedule(
 					members.caseId(),submission.anmId(),SCHEDULE_Woman_2,LocalDate.parse(submission.getField(REFERENCE_DATE)));
-	}
-	
-	public void TT3_Visit(FormSubmission submission) {
-		Members members = allMembers.findByCaseId(submission.entityId());
-		if (members == null) {
-			logger.warn(format(
-					"Failed to handle TT3_Visit as there is no Member enrolled with ID: {0}",
-					submission.entityId()));
-			return;
-		}
-		
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		Date today = Calendar.getInstance().getTime();
-		Map<String, String> TT3_visit = create(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
-											.put(START_DATE, submission.getField(START_DATE))
-											.put(END_DATE, submission.getField(END_DATE))
-											.put(Has_Vaccinated, submission.getField(Has_Vaccinated))
-											.put(TT3_Date_of_Vaccination, submission.getField(TT3_Date_of_Vaccination))
-											.put(Received_Time, format.format(today).toString())
-											.map();	
-		
-		members.setTTVisitThree(TT3_visit);
-		allMembers.update(members);
+
+
 		
 		if ((submission.getField(tt3) == null || submission.getField(tt3).equalsIgnoreCase("")) && (submission.getField(e_tt3) == null || submission.getField(e_tt3).equalsIgnoreCase("")) && (submission.getField(tt3_retro) == null || submission.getField(tt3_retro).equalsIgnoreCase(""))){	
 			if (submission.getField(tt2) != null && !submission.getField(tt2).equalsIgnoreCase("")){
@@ -1532,29 +1525,8 @@ public class MembersService {
 		if (submission.getField(tt3_final) != null && !submission.getField(tt3_final).equalsIgnoreCase(""))
 			membersScheduleService.unEnrollAndCloseSchedule(
 					members.caseId(),submission.anmId(),SCHEDULE_Woman_3,LocalDate.parse(submission.getField(REFERENCE_DATE)));
-	}
 	
-	public void TT4_Visit(FormSubmission submission) {
-		Members members = allMembers.findByCaseId(submission.entityId());
-		if (members == null) {
-			logger.warn(format(
-					"Failed to handle TT4_Visit as there is no Member enrolled with ID: {0}",
-					submission.entityId()));
-			return;
-		}
-		
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		Date today = Calendar.getInstance().getTime();
-		Map<String, String> TT4_visit = create(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
-											.put(START_DATE, submission.getField(START_DATE))
-											.put(END_DATE, submission.getField(END_DATE))
-											.put(Has_Vaccinated, submission.getField(Has_Vaccinated))
-											.put(TT4_Date_of_Vaccination, submission.getField(TT4_Date_of_Vaccination))
-											.put(Received_Time, format.format(today).toString())
-											.map();	
-		
-		members.setTTVisitFour(TT4_visit);
-		allMembers.update(members);		
+	
 		
 		if ((submission.getField(tt4) == null || submission.getField(tt4).equalsIgnoreCase("")) && (submission.getField(e_tt4) == null || submission.getField(e_tt4).equalsIgnoreCase("")) && (submission.getField(tt4_retro) == null || submission.getField(tt4_retro).equalsIgnoreCase(""))){	
 			if (submission.getField(tt3) != null && !submission.getField(tt3).equalsIgnoreCase("")){
@@ -1574,29 +1546,8 @@ public class MembersService {
 		if (submission.getField(tt4_final) != null && !submission.getField(tt4_final).equalsIgnoreCase(""))
 			membersScheduleService.unEnrollAndCloseSchedule(
 					members.caseId(),submission.anmId(),SCHEDULE_Woman_4,LocalDate.parse(submission.getField(REFERENCE_DATE)));
-	}
 	
-	public void TT5_Visit(FormSubmission submission) {
-		Members members = allMembers.findByCaseId(submission.entityId());
-		if (members == null) {
-			logger.warn(format(
-					"Failed to handle TT5_Visit as there is no Member enrolled with ID: {0}",
-					submission.entityId()));
-			return;
-		}
-		
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		Date today = Calendar.getInstance().getTime();
-		Map<String, String> TT5_visit = create(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
-											.put(START_DATE, submission.getField(START_DATE))
-											.put(END_DATE, submission.getField(END_DATE))
-											.put(Has_Vaccinated, submission.getField(Has_Vaccinated))
-											.put(TT5_Date_of_Vaccination, submission.getField(TT5_Date_of_Vaccination))
-											.put(Received_Time, format.format(today).toString())
-											.map();	
-		
-		members.setTTVisitFive(TT5_visit);
-		allMembers.update(members);		
+
 		
 		if ((submission.getField(tt5) == null || submission.getField(tt5).equalsIgnoreCase("")) && (submission.getField(e_tt5) == null || submission.getField(e_tt5).equalsIgnoreCase(""))){		
 			if (submission.getField(tt4) != null && !submission.getField(tt4).equalsIgnoreCase("")){
