@@ -109,7 +109,7 @@ public class ActionService {
 		 	      } 	      
 		 	     List<Action> existingAlert = allActions.findAlertByANMIdEntityIdScheduleName(anmIdentifier, caseID, scheduleName);
 		 	    try{
-	        		Vaccine vaccine = new Vaccine(anmIdentifier, caseID, existingAlert.get(0).getId(), beneficiaryType.name(), scheduleName, startDate, expiryDate, "0", "0", new Date(), new DateTime());		        	
+	        		Vaccine vaccine = new Vaccine(anmIdentifier, caseID, existingAlert.get(0).getId(), beneficiaryType.name(), scheduleName, startDate.toLocalDate().toString(), expiryDate.toLocalDate().toString(), false, 0, new Date(), new DateTime());		        	
 	        		allVaccine.save(vaccine);
 	        	}catch(Exception e){		        		
 	        		e.printStackTrace();
@@ -125,7 +125,7 @@ public class ActionService {
 		        	
 		        	List<Action> existingAlert = allActions.findAlertByANMIdEntityIdScheduleName(anmIdentifier, caseID, scheduleName);
 		        	try{
-		        		Vaccine vaccine = new Vaccine(anmIdentifier, caseID, existingAlert.get(0).getId(), beneficiaryType.name(), scheduleName, startDate, expiryDate, "0", "0", new Date(), new DateTime());		        	
+		        		Vaccine vaccine = new Vaccine(anmIdentifier, caseID, existingAlert.get(0).getId(), beneficiaryType.name(), scheduleName, startDate.toLocalDate().toString(), expiryDate.toLocalDate().toString(), false, 0, new Date(), new DateTime());		        	
 		        		allVaccine.save(vaccine);
 		        	}catch(Exception e){		        		
 		        		e.printStackTrace();

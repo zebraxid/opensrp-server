@@ -14,11 +14,11 @@
 	<bean id="campJob" class="org.opensrp.web.listener.CampListener"></bean>
 	<bean id="vaccinationJob" class="org.opensrp.web.listener.VaccinationListener"></bean>
 	<task:scheduled-tasks scheduler="campDeclareScheduler">
-        <task:scheduled ref="campJob" method="campDeclareListener" cron="0 0 15 * * ?" />
+        <task:scheduled ref="campJob" method="campAnnouncementListener" cron="0 0 18 * * ?" />
     </task:scheduled-tasks>
     
     <task:scheduled-tasks scheduler="campStartScheduler">
-        <task:scheduled ref="campJob" method="campStartListener" cron="0 0 15 * * ?" />
+        <task:scheduled ref="campJob" method="campRemainderListener" cron="0 0 18 * * ?" />
     </task:scheduled-tasks>
     
     <task:scheduled-tasks scheduler="vaccinationScheduler">

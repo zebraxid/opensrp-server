@@ -53,7 +53,7 @@ public class CampDateRepository extends MotechBaseRepository<CampDate> {
 		return camp.get(0);
 	}
 	
-	@View(name = "by_TimeStamp", map = "function(doc) { if (doc.type === 'CampDate' && doc._id) { emit(doc.timestamp, doc); } }")
+	@View(name = "by_TimeStamp", map = "function(doc) { if (doc.type === 'CampDate' && doc._id && doc.status=='Active') { emit(doc.timestamp, doc); } }")
 	public List<CampDate> findByTimeStamp(long date) {		
 		List<CampDate> camp = db.queryView(createQuery("by_TimeStamp").key(date).includeDocs(true), CampDate.class);
 		if (camp == null || camp.isEmpty()) {
