@@ -88,9 +88,9 @@ public class ActionService {
     }
     public void ActionUpdateOrCreateForOther(BeneficiaryType beneficiaryType, String caseID, String instanceId,  String anmIdentifier, String scheduleName, String visitCode, AlertStatus alertStatus, DateTime startDate, DateTime expiryDate){
     	try{
-    		System.err.println("frommm");
+    		System.err.println("Schedule:"+anmIdentifier + " - "+ caseID+" -- "+ scheduleName);
 	    	List<Action> existingAlerts = allActions.findAlertByANMIdEntityIdScheduleName(anmIdentifier, caseID, scheduleName);
-	    	System.err.println("frommmvvvv");
+	    	System.err.println("Schedule:"+existingAlerts.toString());
 	    	if(existingAlerts.size() > 0){ 
 	    		long beforTimeStamp = existingAlerts.get(0).timestamp();
 	        	Map<String,String> data =existingAlerts.get(0).data(); 	      
@@ -102,15 +102,21 @@ public class ActionService {
 		 	    	 existingAlerts.get(0).data().put("visitCode", visitCode);
 		 	    	 existingAlerts.get(0).data().put("expiryDate", expiryDate.toLocalDate().toString());
 		 	    	 existingAlerts.get(0).data().put("startDate", startDate.toLocalDate().toString());
+		 	    	 existingAlerts.get(0).timestamp(Calendar.getInstance().getTimeInMillis());
 		 	    	 Action action = existingAlerts.get(0); 	    	 
 		 	    	 allActions.update(action);
 		 	    	
 		 	      } 	      
 		 	     List<Action> existingAlert = allActions.findAlertByANMIdEntityIdScheduleName(anmIdentifier, caseID, scheduleName);
+		 	    try{
+	        		Vaccine vaccine = new Vaccine(anmIdentifier, caseID, existingAlert.get(0).getId(), beneficiaryType.name(), scheduleName, startDate, expiryDate, "0", "0", new Date(), new DateTime());		        	
+	        		allVaccine.save(vaccine);
+	        	}catch(Exception e){		        		
+	        		e.printStackTrace();
+	        	}
 		 	     reportActionService.updateScheduleLog(beneficiaryType, caseID, instanceId, anmIdentifier, scheduleName, visitCode, alertStatus, startDate, expiryDate, null,null,beforTimeStamp,existingAlert.get(0).timestamp());
-		 	     logger.info("Update schedule with id: "+caseID);
-		 	    Vaccine vaccine = new Vaccine(anmIdentifier, caseID, existingAlert.get(0).getId(), beneficiaryType.name(), scheduleName, startDate, expiryDate, "0", "0", new Date(), new DateTime());
-		 	     allVaccine.save(vaccine);
+		 	     logger.info("Update schedule with id: "+scheduleName);
+		 	     
 	    	}else{
 	    		
 	    		if(!instanceId.equalsIgnoreCase(null) || !instanceId.isEmpty()){
@@ -119,17 +125,13 @@ public class ActionService {
 		        	
 		        	List<Action> existingAlert = allActions.findAlertByANMIdEntityIdScheduleName(anmIdentifier, caseID, scheduleName);
 		        	try{
-		        	Vaccine vaccine = new Vaccine(anmIdentifier, caseID, existingAlert.get(0).getId(), beneficiaryType.name(), scheduleName, startDate, expiryDate, "0", "0", new Date(), new DateTime());
-		        	System.err.println("fff:"+vaccine.toString());
-		        	System.err.println(allVaccine);
-		        	allVaccine.save(vaccine);
-		        	}catch(Exception e){
-		        		System.err.println("test...");
+		        		Vaccine vaccine = new Vaccine(anmIdentifier, caseID, existingAlert.get(0).getId(), beneficiaryType.name(), scheduleName, startDate, expiryDate, "0", "0", new Date(), new DateTime());		        	
+		        		allVaccine.save(vaccine);
+		        	}catch(Exception e){		        		
 		        		e.printStackTrace();
-		        	}
-		        	
+		        	}		        	
 		        	reportActionService.updateScheduleLog(beneficiaryType, caseID, instanceId, anmIdentifier, scheduleName, visitCode, alertStatus, startDate, expiryDate, null,null,0L,existingAlert.get(0).timestamp());
-		        	logger.info("Create schedule with id: "+caseID);
+		        	logger.info("Create schedule with id: "+scheduleName);
 	    		}
 	    	} 
     	}catch(Exception e){
