@@ -26,13 +26,13 @@ public class Vaccine extends MotechBaseDataObject{
 	    @JsonProperty
 	    private String vaccineName;
 	    @JsonProperty
-	    private DateTime scheduleDate;
+	    private String scheduleDate;
 	    @JsonProperty
-	    private DateTime expiredDate;
+	    private String expiredDate;
 	    @JsonProperty
-	    private String status;
+	    private boolean status;
 	    @JsonProperty
-	    private String missedCount;
+	    private int missedCount;
 	    @JsonProperty
 	    private Date createdDate;
 	    @JsonProperty
@@ -41,9 +41,9 @@ public class Vaccine extends MotechBaseDataObject{
 	    	
 	    }
 		public Vaccine(String health_assistant, String clientId, String actionId, String beneficiaryType,
-            String vaccineName, DateTime scheduleDate, DateTime expiredDate, String status, String missedCount,
+            String vaccineName, String scheduleDate, String expiredDate, boolean status, int missedCount,
             Date createdDate, DateTime executionDate) {
-	        
+	        super();
 	        this.health_assistant = health_assistant;
 	        this.clientId = clientId;
 	        this.actionId = actionId;
@@ -77,19 +77,19 @@ public class Vaccine extends MotechBaseDataObject{
         	return vaccineName;
         }
 		
-        public DateTime getScheduleDate() {
+        public String getScheduleDate() {
         	return scheduleDate;
         }
 		
-        public DateTime getExpiredDate() {
+        public String getExpiredDate() {
         	return expiredDate;
         }
 		
-        public String getStatus() {
+        public boolean getStatus() {
         	return status;
         }
 		
-        public String getMissedCount() {
+        public int getMissedCount() {
         	return missedCount;
         }
 		
@@ -121,19 +121,19 @@ public class Vaccine extends MotechBaseDataObject{
         	this.vaccineName = vaccineName;
         }
 		
-        public void setScheduleDate(DateTime scheduleDate) {
+        public void setScheduleDate(String scheduleDate) {
         	this.scheduleDate = scheduleDate;
         }
 		
-        public void setExpiredDate(DateTime expiredDate) {
+        public void setExpiredDate(String expiredDate) {
         	this.expiredDate = expiredDate;
         }
 		
-        public void setStatus(String status) {
+        public void setStatus(boolean status) {
         	this.status = status;
         }
 		
-        public void setMissedCount(String missedCount) {
+        public void setMissedCount(int missedCount) {
         	this.missedCount = missedCount;
         }
 		
