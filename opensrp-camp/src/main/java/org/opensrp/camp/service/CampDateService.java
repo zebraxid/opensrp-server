@@ -78,6 +78,7 @@ public class CampDateService implements CampInterface<CampDate>{
 	@Override
     public String edit(CampDate object) {
 	    // TODO Auto-generated method stub
+		campDateRepository.update(object);
 	    return null;
     }
 

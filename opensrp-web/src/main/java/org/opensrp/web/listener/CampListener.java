@@ -2,6 +2,7 @@ package org.opensrp.web.listener;
 
 import java.util.List;
 
+import org.json.JSONException;
 import org.opensrp.camp.dao.CampDate;
 import org.opensrp.camp.service.CampDateService;
 import org.opensrp.register.mcare.domain.HouseHold;
@@ -71,7 +72,7 @@ public class CampListener {
 		}
 	}
 	
-	 private void sentMessageToClient(MessageFactory messageFactory,List<CampDate> campDates){
+	 private void sentMessageToClient(MessageFactory messageFactory,List<CampDate> campDates) throws JSONException{
 		String message ;
 		System.err.println("messageFactory:"+messageFactory);
 		if(campDates != null){
