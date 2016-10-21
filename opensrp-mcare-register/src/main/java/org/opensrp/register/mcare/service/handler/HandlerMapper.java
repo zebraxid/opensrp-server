@@ -28,20 +28,6 @@ public class HandlerMapper implements IHandlerMapper {
 			BNFHandler BNFHandler,
 			Birth_OutcomeHandler Birth_OutcomeHandler,
 			GeneralHandler generalHandler,
-			Measles1Handler measles1Handler,
-			BCGHandler BCGHandler,
-			IPVHandler IPVHandler,
-			Measles2Handler Measles2Handler,
-			OPV0Handler OPV0Handler,
-			OPV1Handler OPV1Handler,
-			OPV2Handler OPV2Handler,
-			OPV3Handler OPV3Handler,
-			PCV1Handler PCV1Handler,
-			PCV2Handler PCV2Handler,
-			PCV3Handler PCV3Handler,
-			PENTA1Handler PENTA1Handler,
-			PENTA2Handler PENTA2Handler,
-			PENTA3Handler PENTA3Handler,
 			TT1_Handler TT1_Handler,
 			child_vaccine_followup_Handler child_vaccine_followup_Handler
 			)
@@ -51,20 +37,6 @@ public class HandlerMapper implements IHandlerMapper {
 					 .put(BNF_Handler, BNFHandler)
 					 .put(BirthOutcome_Handler, Birth_OutcomeHandler)
 				     .put(GeneralHandler, generalHandler)
-				     .put(Measles1Handler, measles1Handler)
-				     .put(BCGHandler_, BCGHandler)
-				     .put(IPVHandler_ , IPVHandler)
-				     .put(Measles2Handler_ , Measles2Handler)
-				     .put(OPV0Handler_ , OPV0Handler)
-				     .put(OPV1Handler_ , OPV1Handler)
-				     .put(OPV2Handler_ , OPV2Handler)
-				     .put(OPV3Handler_ , OPV3Handler)
-				     .put(PCV1Handler_ , PCV1Handler)
-				     .put(PCV2Handler_ , PCV2Handler)
-				     .put(PCV3Handler_ , PCV3Handler)
-				     .put(PENTA1Handler_ , PENTA1Handler)
-				     .put(PENTA2Handler_ , PENTA2Handler)
-				     .put(PENTA3Handler_ , PENTA3Handler)
 				     .put(TT_Visit_Handler, TT1_Handler)
 				     .put(Child_vaccine_followup_Handler, child_vaccine_followup_Handler)
                      .map();
