@@ -15,6 +15,8 @@ import java.util.Map;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.motechproject.scheduler.domain.MotechEvent;
+import org.motechproject.scheduler.gateway.OutboundEventGateway;
 import org.opensrp.common.AllConstants;
 import org.opensrp.connector.openmrs.constants.OpenmrsHouseHold;
 import org.opensrp.connector.openmrs.service.EncounterService;
@@ -110,7 +112,9 @@ public class FormSubmissionController {
     }
     
  
-
+   // @Autowired
+   // private OutboundEventGateway outboundEventGateway;
+    
     @RequestMapping(headers = {"Accept=application/json"}, method = POST, value = "/form-submissions")
     public ResponseEntity<HttpStatus> submitForms(@RequestBody List<FormSubmissionDTO> formSubmissionsDTO) {
         try {
@@ -119,6 +123,9 @@ public class FormSubmissionController {
             }
 
             scheduler.notifyEvent(new SystemEvent<>(AllConstants.OpenSRPEvent.FORM_SUBMISSION, formSubmissionsDTO));
+            MotechEvent formProcessorEvent= new MotechEvent(AllConstants.FORM_SCHEDULE_SUBJECT);
+            //FIXME This fixes aleena issue https://github.com/OpenSRP/opensrp-client/issues/280
+			scheduler.notifyEvent(formProcessorEvent);
             
             try{
           
