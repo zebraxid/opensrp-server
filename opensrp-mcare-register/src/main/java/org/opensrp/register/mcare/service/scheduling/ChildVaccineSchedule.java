@@ -14,6 +14,7 @@ import org.joda.time.LocalDate;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.register.mcare.domain.Members;
 import org.opensrp.register.mcare.service.MembersService;
+import org.opensrp.register.mcare.service.VaccinationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,12 +25,20 @@ public class ChildVaccineSchedule {
 	
 	private static Logger logger = LoggerFactory.getLogger(MembersService.class.toString());
 	private MembersScheduleService membersScheduleService;
+	private VaccinationService vaccinationService;
 	
 	@Autowired
 	public ChildVaccineSchedule(MembersScheduleService membersScheduleService) {
 		this.membersScheduleService = membersScheduleService;		
 	}
 	
+	
+	@Autowired
+    public void setVaccinationService(VaccinationService vaccinationService) {
+    	this.vaccinationService = vaccinationService;
+    }
+
+
 	public void immediateChildVaccine(FormSubmission submission, Members members, Map<String, String> membersFields, String scheduleName, String immediateScheduleName, String refDate, String age, String age_days, String cond, int agenum, int days) {
 		
 		if (membersFields.containsKey(cond))
@@ -62,6 +71,7 @@ public class ChildVaccineSchedule {
 		if (membersFields.get(cond) != null && !membersFields.get(cond).equalsIgnoreCase("")){
 			membersScheduleService.unEnrollAndCloseSchedule(
 					members.caseId(),submission.anmId(),immediateScheduleName,LocalDate.parse(submission.getField(REFERENCE_DATE)));
+			vaccinationService.updateVaccineStatus(members.caseId(), scheduleName);
 		}		
 	}
 	
@@ -86,9 +96,11 @@ public class ChildVaccineSchedule {
 			}
 		}
 		
-		if (submission.getField(cond) != null && !submission.getField(cond).equalsIgnoreCase(""))
+		if (submission.getField(cond) != null && !submission.getField(cond).equalsIgnoreCase("")){
 			membersScheduleService.unEnrollAndCloseSchedule(
-					members.caseId(),submission.anmId(),scheduleName,LocalDate.parse(submission.getField(REFERENCE_DATE)));		
+					members.caseId(),submission.anmId(),scheduleName,LocalDate.parse(submission.getField(REFERENCE_DATE)));	
+			vaccinationService.updateVaccineStatus(members.caseId(), scheduleName);
+		}
 	}
 	
 	public void ChildVaccine(FormSubmission submission, Members members, Map<String, String> membersFields, String scheduleName, String refDate, String age, String age_days, String cond, int agenum, int days) {
@@ -123,6 +135,7 @@ public class ChildVaccineSchedule {
 		if (membersFields.get(cond) != null && !membersFields.get(cond).equalsIgnoreCase("")){
 			membersScheduleService.unEnrollAndCloseSchedule(
 					members.caseId(),submission.anmId(),scheduleName,LocalDate.parse(submission.getField(REFERENCE_DATE)));
+			vaccinationService.updateVaccineStatus(members.caseId(), scheduleName);
 		}
 	}
 	
@@ -146,9 +159,11 @@ public class ChildVaccineSchedule {
 			}				
 		}
 		
-		if (submission.getField(cond) != null && !submission.getField(cond).equalsIgnoreCase(""))
+		if (submission.getField(cond) != null && !submission.getField(cond).equalsIgnoreCase("")){
 			membersScheduleService.unEnrollAndCloseSchedule(
 					members.caseId(),submission.anmId(),scheduleName,LocalDate.parse(submission.getField(REFERENCE_DATE)));
+			vaccinationService.updateVaccineStatus(members.caseId(), scheduleName);
+		}
 		
 		
 	}
