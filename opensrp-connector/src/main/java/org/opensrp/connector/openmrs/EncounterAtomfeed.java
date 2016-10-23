@@ -95,11 +95,11 @@ public class EncounterAtomfeed extends OpenmrsService implements EventWorker, At
 	public void setUrl(String url) {
 		OPENMRS_BASE_URL = url;
 	}
-	@MotechListener(subjects = OpenmrsConstants.SCHEDULER_OPENMRS_ATOMFEED_SYNCER_SUBJECT_EVENT)
+	/*@MotechListener(subjects = OpenmrsConstants.SCHEDULER_OPENMRS_ATOMFEED_SYNCER_SUBJECT_EVENT)
 	public void getResponse(MotechEvent event){
 		new TurnOffCertificateValidation().ForHTTPSConnections();
 		System.out.println("Response from Atom");
 		 this.processEvents();
-	}
+	}*/
 	
 }
