@@ -69,8 +69,8 @@ public class ChildVaccineSchedule {
 
 		if (membersFields.containsKey(cond))
 		if (membersFields.get(cond) != null && !membersFields.get(cond).equalsIgnoreCase("")){
-			membersScheduleService.unEnrollAndCloseSchedule(
-					members.caseId(),submission.anmId(),immediateScheduleName,LocalDate.parse(submission.getField(REFERENCE_DATE)));
+			membersScheduleService.unEnrollAndCloseImmediateSchedule(
+					members.caseId(),submission.anmId(),scheduleName,immediateScheduleName,LocalDate.parse(submission.getField(REFERENCE_DATE)));
 			vaccinationService.updateVaccineStatus(members.caseId(), scheduleName);
 		}		
 	}
@@ -97,8 +97,8 @@ public class ChildVaccineSchedule {
 		}
 		
 		if (submission.getField(cond) != null && !submission.getField(cond).equalsIgnoreCase("")){
-			membersScheduleService.unEnrollAndCloseSchedule(
-					members.caseId(),submission.anmId(),scheduleName,LocalDate.parse(submission.getField(REFERENCE_DATE)));	
+			membersScheduleService.unEnrollAndCloseImmediateSchedule(
+					members.caseId(),submission.anmId(),scheduleName,immediateScheduleName,LocalDate.parse(submission.getField(REFERENCE_DATE)));	
 			vaccinationService.updateVaccineStatus(members.caseId(), scheduleName);
 		}
 	}
