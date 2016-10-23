@@ -68,6 +68,11 @@ public class MembersScheduleService {
         scheduler.unEnrollAndCloseSchedule(entityId, anmId, scheduleName, completionDate);
     }
     
+    public void unEnrollAndCloseImmediateSchedule(String entityId, String anmId, String scheduleName,String ImmediateScheduleName, LocalDate completionDate) {
+        logger.info(format("Un-enrolling Members with Entity id:{0} from schedule: {1}", entityId, scheduleName));
+        scheduler.unEnrollAndCloseImmediateSchedule(entityId, anmId, scheduleName, ImmediateScheduleName, completionDate);
+    }
+    
     public void fullfillMilestone(String entityId, String providerId, String scheduleName,LocalDate completionDate ){
     	try{
     		scheduler.fullfillMilestone(entityId, providerId, scheduleName, completionDate);

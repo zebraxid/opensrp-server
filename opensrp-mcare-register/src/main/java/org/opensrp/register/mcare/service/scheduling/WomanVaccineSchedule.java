@@ -57,8 +57,8 @@ public class WomanVaccineSchedule {
 		if(membersFields.containsKey(cond2))
 			if(!membersFields.get(cond2).equalsIgnoreCase("") && membersFields.get(cond2) != null)
 			if(membersFields.get(cond2).equalsIgnoreCase("3")){
-				membersScheduleService.unEnrollAndCloseSchedule(
-					members.caseId(),submission.anmId(),immediateScheduleName,LocalDate.parse(submission.getField(REFERENCE_DATE)));
+				membersScheduleService.unEnrollAndCloseImmediateSchedule(
+					members.caseId(),submission.anmId(),scheduleName,immediateScheduleName,LocalDate.parse(submission.getField(REFERENCE_DATE)));
 				vaccinationService.updateVaccineStatus(members.caseId(), scheduleName);
 			}
 		

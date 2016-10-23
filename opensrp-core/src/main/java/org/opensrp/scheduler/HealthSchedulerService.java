@@ -92,8 +92,7 @@ public class HealthSchedulerService {
 	public void unEnrollFromScheduleCensus(String entityId, String providerId, String scheduleName) {
 		scheduleService.unenroll(entityId, scheduleName);
         //actionService.markAlertAsInactive(providerId, entityId, scheduleName);
-    }
-	
+    }	
 	public void unEnrollFromSchedule(String entityId, String providerId, String scheduleName, String formSubmissionId) {
 		scheduleService.unenroll(entityId, scheduleName, formSubmissionId);
         actionService.markAlertAsInactive(providerId, entityId, scheduleName);
@@ -101,8 +100,11 @@ public class HealthSchedulerService {
 	public void unEnrollAndCloseSchedule(String entityId, String providerId, String scheduleName, LocalDate completionDate) {
 		scheduleService.unenroll(entityId, scheduleName);
         actionService.markAlertAsClosed(providerId, entityId, scheduleName, completionDate.toString());
-    }
-	
+    }	
+	public void unEnrollAndCloseImmediateSchedule(String entityId, String providerId, String scheduleName, String ImmediateScheduleName, LocalDate completionDate) {
+		scheduleService.unenroll(entityId, ImmediateScheduleName);
+        actionService.markAlertAsClosed(providerId, entityId, scheduleName, completionDate.toString());
+    }	
 	public void unEnrollFromAllSchedules(String entityId) {
         List<String> activeSchedules = scheduleService.findOpenEnrollmentNames(entityId);
 
