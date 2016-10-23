@@ -451,8 +451,8 @@ public class AllConstants {
 	    	public static final String ChildVaccination_MR_Date_of_Vaccination = "ChildVaccination_MR_Date_of_Vaccination";
 	    	public static final String ChildVaccination_Measles_Date_of_Vaccination = "ChildVaccination_Measles_Date_of_Vaccination";
 	    	public static final String ChildVaccination_IPV_Date_of_Vaccination = "ChildVaccination_IPV_Date_of_Vaccination";
-	    	public static final String ChildVaccination_BCG_Date_of_Vaccination = "ChildVaccination_BCG_Date_of_Vaccination";	    	
-	    	
+	    	public static final String ChildVaccination_BCG_Date_of_Vaccination = "ChildVaccination_BCG_Date_of_Vaccination";		
+	
 	    	public static final String existing_first_name
 	    	="existing_first_name";
 	    	public static final String existing_mother_name
@@ -617,6 +617,28 @@ public class AllConstants {
 	    	="final_measles1";
 	    	public static final String final_measles2
 	    	="final_measles2";
+	    	public static final String address_note
+	    	="address_note";
+	    	public static final String 	existing_contact_phone_number	="	existing_contact_phone_number	";
+	    	public static final String 	father_name_note	="	father_name_note	";
+	    	public static final String 	husband_name	="	husband_name	";
+	    	public static final String 	husband_name_note	="	husband_name_note	";
+	    	public static final String 	Marital_Status	="	Marital_Status	";
+	    	public static final String 	marriage	="	marriage	";
+	    	public static final String 	Member_Address_line	="	Member_Address_line	";
+	    	public static final String 	Member_COUNTRY	="	Member_COUNTRY	";
+	    	public static final String 	Member_DISTRICT	="	Member_DISTRICT	";
+	    	public static final String 	Member_DIVISION	="	Member_DIVISION	";
+	    	public static final String 	Member_GPS	="	Member_GPS	";
+	    	public static final String 	Member_HIE_facilities	="	Member_HIE_facilities	";
+	    	public static final String 	Member_Paurasava	="	Member_Paurasava	";
+	    	public static final String 	Member_UNION	="	Member_UNION	";
+	    	public static final String 	Member_UPAZILLA	="	Member_UPAZILLA	";
+	    	public static final String 	Member_WARD	="	Member_WARD	";
+	    	public static final String 	tt1_note	="	tt1_note	";
+	    	public static final String 	tt2_note	="	tt2_note	";
+	    	public static final String 	tt3_note	="	tt3_note	";
+	    	public static final String 	tt4_note	="	tt4_note	";
     }
 
     public static class PSRFFields

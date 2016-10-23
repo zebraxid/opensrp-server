@@ -644,7 +644,7 @@ public class MembersService {
 		Members members = allMembers.findByCaseId(submission.entityId());
 		if (members == null) {
 			logger.warn(format(
-					"Failed to handle TT1_Visit as there is no Member enrolled with ID: {0}",
+					"Failed to handle TT_Visit as there is no Member enrolled with ID: {0}",
 					submission.entityId()));
 			return;
 		}
@@ -652,55 +652,109 @@ public class MembersService {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date today = Calendar.getInstance().getTime();
 		
-		Map<String, String> TT1_visit = create(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
-											.put(START_DATE, submission.getField(START_DATE))
-											.put(END_DATE, submission.getField(END_DATE))
-											.put(Has_Vaccinated, submission.getField(Has_Vaccinated))
-											.put(TT1_Date_of_Vaccination, submission.getField(TT1_Date_of_Vaccination))
-											.put(Received_Time, format.format(today).toString())
-											.map();	
+		Map<String, String> TT_visit = create(ID, submission.getField(ID))
+.put(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
+.put(START_DATE, submission.getField(START_DATE))
+.put(END_DATE, submission.getField(END_DATE))											
+.put(address_change	,submission.getField(address_change	))
+.put(address_note	,submission.getField(address_note	))
+.put(address1	,submission.getField(address1	))
+.put(birth_date_note	,submission.getField(birth_date_note	))
+.put(calc_age_confirm	,submission.getField(calc_age_confirm	))
+.put(calc_dob_confirm	,submission.getField(calc_dob_confirm	))
+.put(center_gps	,submission.getField(center_gps	))
+.put(contact_phone_number	,submission.getField(contact_phone_number	))
+.put(e_tt1	,submission.getField(e_tt1	))
+.put(e_tt2	,submission.getField(e_tt2	))
+.put(e_tt3	,submission.getField(e_tt3	))
+.put(e_tt4	,submission.getField(e_tt4	))
+.put(e_tt5	,submission.getField(e_tt5	))
+.put(edd	,submission.getField(edd	))
+.put(edd_calc_lmp	,submission.getField(edd_calc_lmp	))
+.put(edd_calc_lmp_formatted	,submission.getField(edd_calc_lmp_formatted	))
+.put(edd_calc_ultrasound	,submission.getField(edd_calc_ultrasound	))
+.put(edd_calc_ultrasound_formatted	,submission.getField(edd_calc_ultrasound_formatted	))
+.put(edd_lmp	,submission.getField(edd_lmp	))
+.put(epi_card_number	,submission.getField(epi_card_number	))
+.put(epi_card_number_note	,submission.getField(epi_card_number_note	))
+.put(existing_contact_phone_number	,submission.getField(existing_contact_phone_number	))
+.put(existing_location	,submission.getField(existing_location	))
+.put(Father_name	,submission.getField(Father_name	))
+.put(father_name_note	,submission.getField(father_name_note	))
+.put(final_edd	,submission.getField(final_edd	))
+.put(final_edd_note	,submission.getField(final_edd_note	))
+.put(final_ga	,submission.getField(final_ga	))
+.put(final_ga_note	,submission.getField(final_ga_note	))
+.put(final_lmp	,submission.getField(final_lmp	))
+.put(final_lmp_note	,submission.getField(final_lmp_note	))
+.put(first_name_note	,submission.getField(first_name_note	))
+.put(ga_edd	,submission.getField(ga_edd	))
+.put(ga_lmp	,submission.getField(ga_lmp	))
+.put(ga_ult	,submission.getField(ga_ult	))
+.put(Husband_name	,submission.getField(Husband_name	))
+.put(husband_name	,submission.getField(husband_name	))
+.put(husband_name_note	,submission.getField(husband_name_note	))
+.put(landmark	,submission.getField(landmark	))
+.put(lmp	,submission.getField(lmp	))
+.put(lmp_calc_edd	,submission.getField(lmp_calc_edd	))
+.put(lmp_calc_edd_formatted	,submission.getField(lmp_calc_edd_formatted	))
+.put(lmp_calc_ultrasound	,submission.getField(lmp_calc_ultrasound	))
+.put(lmp_calc_ultrasound_formatted	,submission.getField(lmp_calc_ultrasound_formatted	))
+.put(Marital_Status	,submission.getField(Marital_Status	))
+.put(marriage	,submission.getField(marriage	))
+.put(Member_Address_line	,submission.getField(Member_Address_line	))
+.put(Member_BLOCK	,submission.getField(Member_BLOCK	))
+.put(Member_COUNTRY	,submission.getField(Member_COUNTRY	))
+.put(Member_DISTRICT	,submission.getField(Member_DISTRICT	))
+.put(Member_DIVISION	,submission.getField(Member_DIVISION	))
+.put(Member_Fname	,submission.getField(Member_Fname	))
+.put(Member_GPS	,submission.getField(Member_GPS	))
+.put(Member_HIE_facilities	,submission.getField(Member_HIE_facilities	))
+.put(Member_Paurasava	,submission.getField(Member_Paurasava	))
+.put(Member_UNION	,submission.getField(Member_UNION	))
+.put(Member_UPAZILLA	,submission.getField(Member_UPAZILLA	))
+.put(Member_WARD	,submission.getField(Member_WARD	))
+.put(pregnant	,submission.getField(pregnant	))
+.put(pregnant	,submission.getField(pregnant	))
+.put(provider_id	,submission.getField(provider_id	))
+.put(provider_location_id	,submission.getField(provider_location_id	))
+.put(provider_location_name	,submission.getField(provider_location_name	))
+.put(provider_location_note	,submission.getField(provider_location_note	))
+.put(tt_1_dose	,submission.getField(tt_1_dose	))
+.put(tt_1_dose_today	,submission.getField(tt_1_dose_today	))
+.put(tt_2_dose	,submission.getField(tt_2_dose	))
+.put(tt_2_dose_today	,submission.getField(tt_2_dose_today	))
+.put(tt_3_dose	,submission.getField(tt_3_dose	))
+.put(tt_3_dose_today	,submission.getField(tt_3_dose_today	))
+.put(tt_4_dose	,submission.getField(tt_4_dose	))
+.put(tt_4_dose_today	,submission.getField(tt_4_dose_today	))
+.put(tt_5_dose_today	,submission.getField(tt_5_dose_today	))
+.put(tt1	,submission.getField(tt1	))
+.put(tt1_final	,submission.getField(tt1_final	))
+.put(tt1_note	,submission.getField(tt1_note	))
+.put(tt1_retro	,submission.getField(tt1_retro	))
+.put(tt2	,submission.getField(tt2	))
+.put(tt2_final	,submission.getField(tt2_final	))
+.put(tt2_note	,submission.getField(tt2_note	))
+.put(tt2_retro	,submission.getField(tt2_retro	))
+.put(tt3	,submission.getField(tt3	))
+.put(tt3_final	,submission.getField(tt3_final	))
+.put(tt3_note	,submission.getField(tt3_note	))
+.put(tt3_retro	,submission.getField(tt3_retro	))
+.put(tt4	,submission.getField(tt4	))
+.put(tt4_final	,submission.getField(tt4_final	))
+.put(tt4_note	,submission.getField(tt4_note	))
+.put(tt4_retro	,submission.getField(tt4_retro	))
+.put(tt5	,submission.getField(tt5	))
+.put(tt5_final	,submission.getField(tt5_final	))
+.put(ultrasound_date	,submission.getField(ultrasound_date	))
+.put(ultrasound_weeks	,submission.getField(ultrasound_weeks	))
+.put(vaccines	,submission.getField(vaccines	))
+.put(vaccines_2	,submission.getField(vaccines_2	))
+.put(Received_Time, format.format(today).toString())
+.map();	
 		
-		members.setTTVisitOne(TT1_visit);
-		
-		Map<String, String> TT2_visit = create(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
-				.put(START_DATE, submission.getField(START_DATE))
-				.put(END_DATE, submission.getField(END_DATE))
-				.put(Has_Vaccinated, submission.getField(Has_Vaccinated))
-				.put(TT2_Date_of_Vaccination, submission.getField(TT2_Date_of_Vaccination))
-				.put(Received_Time, format.format(today).toString())
-				.map();	
-
-		members.setTTVisitTwo(TT2_visit);
-		
-		Map<String, String> TT3_visit = create(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
-				.put(START_DATE, submission.getField(START_DATE))
-				.put(END_DATE, submission.getField(END_DATE))
-				.put(Has_Vaccinated, submission.getField(Has_Vaccinated))
-				.put(TT3_Date_of_Vaccination, submission.getField(TT3_Date_of_Vaccination))
-				.put(Received_Time, format.format(today).toString())
-				.map();	
-
-		members.setTTVisitThree(TT3_visit);
-		
-		Map<String, String> TT4_visit = create(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
-				.put(START_DATE, submission.getField(START_DATE))
-				.put(END_DATE, submission.getField(END_DATE))
-				.put(Has_Vaccinated, submission.getField(Has_Vaccinated))
-				.put(TT4_Date_of_Vaccination, submission.getField(TT4_Date_of_Vaccination))
-				.put(Received_Time, format.format(today).toString())
-				.map();	
-
-		members.setTTVisitFour(TT4_visit);
-		
-		Map<String, String> TT5_visit = create(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
-				.put(START_DATE, submission.getField(START_DATE))
-				.put(END_DATE, submission.getField(END_DATE))
-				.put(Has_Vaccinated, submission.getField(Has_Vaccinated))
-				.put(TT5_Date_of_Vaccination, submission.getField(TT5_Date_of_Vaccination))
-				.put(Received_Time, format.format(today).toString())
-				.map();	
-
-		members.setTTVisitFive(TT5_visit);		
+		members.setTTVisit(TT_visit);		
 		
 		allMembers.update(members);	
 		
@@ -915,46 +969,46 @@ public class MembersService {
 				allMembers.update(members);
 				
 				childVaccineSchedule.AfterimmediateChildVisit(submission, members,  
-						child_vaccination_bcg, IMD_child_bcg, Child_dob, Child_age, Child_age_days, final_bcg, 1, 365);
+						child_vaccination_bcg, IMD_child_bcg, Child_dob, child_age, child_age_days, final_bcg, 1, 365);
 				
 				childVaccineSchedule.AfterimmediateChildVisit(submission, members,  
-						child_vaccination_opv0, IMD_child_opv0, Child_dob, Child_age, Child_age_days, final_opv0, 5, 1825);
+						child_vaccination_opv0, IMD_child_opv0, Child_dob, child_age, child_age_days, final_opv0, 5, 1825);
 				
 				childVaccineSchedule.ChildFollowupVaccine(submission, members, 
-						child_vaccination_opv1, final_opv0, Child_age, Child_age_days, final_opv1, 5, 1825);
+						child_vaccination_opv1, final_opv0, child_age, child_age_days, final_opv1, 5, 1825);
 				
 				childVaccineSchedule.ChildFollowupVaccine(submission, members, 
-						child_vaccination_opv2, final_opv1, Child_age, Child_age_days, final_opv2, 5, 1825);
+						child_vaccination_opv2, final_opv1, child_age, child_age_days, final_opv2, 5, 1825);
 				
 				childVaccineSchedule.ChildFollowupVaccine(submission, members, 
-						child_vaccination_opv3, final_opv2, Child_age, Child_age_days, final_opv3, 5, 1825);
+						child_vaccination_opv3, final_opv2, child_age, child_age_days, final_opv3, 5, 1825);
 				
 				childVaccineSchedule.ChildFollowupVaccine(submission, members, 
-						child_vaccination_penta1, Child_dob, Child_age, Child_age_days, final_penta1, 1, 365);
+						child_vaccination_penta1, Child_dob, child_age, child_age_days, final_penta1, 1, 365);
 				
 				childVaccineSchedule.ChildFollowupVaccine(submission, members, 
-						child_vaccination_penta2, final_penta1, Child_age, Child_age_days, final_penta2, 1, 365);
+						child_vaccination_penta2, final_penta1, child_age, child_age_days, final_penta2, 1, 365);
 				
 				childVaccineSchedule.ChildFollowupVaccine(submission, members, 
-						child_vaccination_penta3, final_penta2, Child_age, Child_age_days, final_penta3, 1, 365);
+						child_vaccination_penta3, final_penta2, child_age, child_age_days, final_penta3, 1, 365);
 				
 				childVaccineSchedule.ChildFollowupVaccine(submission, members, 
-						child_vaccination_pcv1, Child_dob, Child_age, Child_age_days, final_pcv1, 5, 1825);
+						child_vaccination_pcv1, Child_dob, child_age, child_age_days, final_pcv1, 5, 1825);
 				
 				childVaccineSchedule.ChildFollowupVaccine(submission, members, 
-						child_vaccination_pcv2, final_pcv1, Child_age, Child_age_days, final_pcv2, 5, 1825);
+						child_vaccination_pcv2, final_pcv1, child_age, child_age_days, final_pcv2, 5, 1825);
 				
 				childVaccineSchedule.ChildFollowupVaccine(submission, members, 
-						child_vaccination_pcv3, final_pcv2, Child_age, Child_age_days, final_pcv3, 5, 1825);
+						child_vaccination_pcv3, final_pcv2, child_age, child_age_days, final_pcv3, 5, 1825);
 				
 				childVaccineSchedule.ChildFollowupVaccine(submission, members, 
-						child_vaccination_measles1, Child_dob, Child_age, Child_age_days, final_measles1, 5, 1825);
+						child_vaccination_measles1, Child_dob, child_age, child_age_days, final_measles1, 5, 1825);
 				
 				childVaccineSchedule.ChildFollowupVaccine(submission, members, 
-						child_vaccination_measles2, final_measles1, Child_age, Child_age_days, final_measles2, 5, 1825);
+						child_vaccination_measles2, final_measles1, child_age, child_age_days, final_measles2, 5, 1825);
 				
 				childVaccineSchedule.ChildFollowupVaccine(submission, members, 
-						child_vaccination_ipv, final_opv2, Child_age, Child_age_days, final_ipv, 15, 5475);				
+						child_vaccination_ipv, final_opv2, child_age, child_age_days, final_ipv, 15, 5475);				
 	}
 	
 	public boolean isValidDate(String dateString) {
