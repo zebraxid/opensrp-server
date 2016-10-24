@@ -185,7 +185,7 @@ public class User extends MotechBaseDataObject {
 		return roles;
 	}
 	@JsonProperty("user_name")
-	public String withUserName() {
+	public String getUserName() {
 		return user_name;
 	}
 	@JsonProperty("location")

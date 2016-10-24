@@ -9,13 +9,20 @@ import org.ektorp.impl.StdCouchDbConnector;
 import org.ektorp.impl.StdCouchDbInstance;
 import org.ektorp.impl.StdObjectMapperFactory;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.opensrp.dashboard.domain.Privilege;
 import org.opensrp.dashboard.domain.Role;
 import org.opensrp.dashboard.domain.User;
+import org.opensrp.dashboard.repository.AllDashboardLocations;
+import org.opensrp.dashboard.repository.AllLocationTags;
 import org.opensrp.dashboard.repository.AllPrivileges;
 import org.opensrp.dashboard.repository.AllRoles;
 import org.opensrp.dashboard.repository.AllUser;
+import org.opensrp.dashboard.service.DashboardLocationService;
+import org.opensrp.dashboard.service.RoleService;
+import org.opensrp.dashboard.service.UsersService;
+import org.opensrp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.codec.Base64;
 
@@ -27,8 +34,16 @@ public class UserServiceTest {
 	@Autowired  
 	private AllUser allUsers;
 	private AllRoles allRoles;
+	private AllDashboardLocations allDashboardLocations;
+	private AllLocationTags allLocationTags;
 	private CouchDbInstance dbInstance;
 	private StdCouchDbConnector stdCouchDbConnector;
+	
+	@Autowired
+	private UsersService userService;
+	
+	@Autowired
+	private RoleService roleService;
 	
     @Before
     public void setUp() throws Exception {
@@ -45,10 +60,15 @@ public class UserServiceTest {
 		stdCouchDbConnector.createDatabaseIfNotExists();
 		allUsers = new AllUser(2, stdCouchDbConnector);
 		allRoles = new AllRoles(2, stdCouchDbConnector);
+		allDashboardLocations =  new AllDashboardLocations(2, stdCouchDbConnector);
+		allLocationTags = new AllLocationTags(2, stdCouchDbConnector);
+		roleService  = new RoleService(allRoles);
+		
     	//initMocks(this);
+		userService = new UsersService(allUsers, roleService, allDashboardLocations, allLocationTags);
     }   
 
-    @Test 
+    @Ignore@Test 
     public void testUserService() throws Exception {
     	/*String pass = "Pass45";
     	byte[] encodedPass = Base64.encode(pass.getBytes());
@@ -63,10 +83,14 @@ public class UserServiceTest {
     	
     	//System.out.println(); 
     	
-    	/*User user = allUsers.findUserByUserName("sohel");
+    	/*User user = allUsers.findUserByUserName("demosrp1");
 		assertNotNull(user);
 		System.out.println(user.getPassword());*/
-    	
+		System.out.println(allUsers.findUsersByLocation("12b0f9fc6457e2f58950e582f90251ce").size());
+		
+		System.out.println(userService.getLeafUsersByLocation("1e84829ef6153b9b8f05089b28020ae7").size());
+		// test the code
+		//System.out.println(userService.getLeafUsersByLocation("8e8fa8966b1e39997011f42f6400a59d").size());
 		/*decodedPass = Base64.decode(user.getPassword().getBytes());
 		System.out.println(new String(decodedPass));*/
 		/*user.withPassword(encodedString);
