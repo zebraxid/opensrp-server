@@ -1,35 +1,29 @@
 package org.opensrp.web.controller;
 
 import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
-import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
 
-import java.awt.peer.LightweightPeer;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.json.JSONException;
 import org.opensrp.connector.openmrs.service.OpenmrsUserService;
-
-import org.opensrp.dashboard.domain.DashboardLocation;
-import org.opensrp.dashboard.domain.LocationTag;
 import org.opensrp.dashboard.dto.DashboardLocationDTO;
+import org.opensrp.dashboard.dto.DashboardLocationInfoDTO;
 import org.opensrp.dashboard.dto.LocationTagDTO;
 import org.opensrp.dashboard.dto.PrivilegeDTO;
 import org.opensrp.dashboard.dto.RoleDTO;
+import org.opensrp.dashboard.dto.SimplifiedUser;
 import org.opensrp.dashboard.dto.UserDTO;
-
-import org.opensrp.service.LocationService;
 import org.opensrp.dashboard.service.DashboardLocationService;
 import org.opensrp.dashboard.service.LocationTagService;
 import org.opensrp.dashboard.service.PrivilegeService;
 import org.opensrp.dashboard.service.RoleService;
 import org.opensrp.dashboard.service.UsersService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -44,7 +38,6 @@ import com.google.gson.Gson;
 public class AclController {
 
 	private RoleService roleService;
-		
 	private OpenmrsUserService openmrsUserService;
 	private PrivilegeService privilegeService;
 	private UsersService userService;
@@ -53,12 +46,10 @@ public class AclController {
 	private static Logger logger = LoggerFactory.getLogger(AclController.class);
 
 	@Autowired
-	public AclController(RoleService roleService, 
-			OpenmrsUserService openmrsUserService, PrivilegeService privilegeService,
+	public AclController(RoleService roleService, OpenmrsUserService openmrsUserService, PrivilegeService privilegeService,
 			UsersService userService, DashboardLocationService dashboardLocationService,
 			LocationTagService locationTagService) {
 		this.roleService = roleService;
-		
 		this.openmrsUserService = openmrsUserService;		
 		this.privilegeService = privilegeService;
 		this.userService = userService;
@@ -66,7 +57,63 @@ public class AclController {
 		this.locationTagService = locationTagService;
 	}
 
+	/*@RequestMapping(headers = { "Accept=application/json" }, method = POST, value = "/add-user")
+	public ResponseEntity<String> addRole(@RequestBody RoleDTO roleDTO) {
+		String message = roleService.addRole(roleDTO);
+		return new ResponseEntity<>(message,OK);
+	}*/
 	
+	/*@RequestMapping(headers = { "Accept=application/json" }, method = POST, value = "/edit-user")
+	public ResponseEntity<String> editRole(@RequestBody RoleDTO roleDTO) {
+		String message = roleService.editRole(roleDTO);
+		return new ResponseEntity<>(message,OK);
+	}*/
+
+	@RequestMapping(method = GET, value = "/all-user-name")
+	@ResponseBody
+	public ResponseEntity<String> getAllUserName() throws JSONException {
+		return new ResponseEntity<>(new Gson().toJson(openmrsUserService
+				.getAllUsers()), OK);
+	}
+
+	/*@RequestMapping(method = GET, value = "/role-access-tokens")
+	@ResponseBody
+	public AclDTO getRoleAndAccessTokens(@RequestParam String userName) {
+		AclDTO tempDTO = new AclDTO();
+		tempDTO.withRoleName("Admin");
+		tempDTO.withRoleId("2ba3698706c7527a7a4b78546d011f1c");
+		tempDTO.withStatus("Active");
+		Map<String, String> tokens = new HashMap<String, String>();
+		tokens.put("0", "Household");
+		tokens.put("1", "Household Details");
+		tokens.put("2", "Elco");
+		tokens.put("3", "Elco Details");
+		tokens.put("4", "PW");
+		tokens.put("5", "PW Details");
+		tokens.put("6", "Data Export");
+		tokens.put("7", "User List");
+		tokens.put("8", "User Assign");
+		tokens.put("9", "User Assign Edit");
+		tokens.put("10", "Role Edit");
+		tokens.put("11", "Add Role");
+		tokens.put("12", "Acl");
+		tempDTO.withAccessTokens(tokens);
+		//return aclService.getRoleAndAccessTokens(userName);
+		return tempDTO;
+	}*/
+	
+	// new one
+	@RequestMapping(method = GET, value = "/role-access-token")
+	@ResponseBody
+	public List<String> getPrivileges(@RequestParam String userName) {
+		return userService.getPrivilegesOfAUser(userName);
+	}
+	
+	@RequestMapping(method = GET, value = "/get-all-roles")
+	@ResponseBody
+	public ArrayList<RoleDTO> getAllRoles() {
+		return (ArrayList<RoleDTO>) roleService.getAllRoles();
+	}
 	
 	@RequestMapping(headers = { "Accept=application/json" }, method = POST, value = "/add-privilege")
 	public ResponseEntity<String> addPrivilege(@RequestBody PrivilegeDTO privilegeDTO) {
@@ -141,6 +188,18 @@ public class AclController {
 		
 		String message = userService.editUser(userDTO);		
 		return new ResponseEntity<>(message,OK);
+	}
+	
+	@RequestMapping(method = GET, value = "/get-all-users")
+	@ResponseBody
+	public ArrayList<SimplifiedUser> getAllUsers() {
+		return (ArrayList<SimplifiedUser>) userService.getAllUsers();
+	}
+	
+	@RequestMapping(method = GET, value = "/get-user-by-name")
+	@ResponseBody
+	public UserDTO getUserByName(String userName) {
+		return (UserDTO) userService.getUserByName(userName);
 	}
 	
 	@RequestMapping( method = GET, value = "/valid-username")
@@ -222,6 +281,7 @@ public class AclController {
 		return allLocationTags;
 	}
 	
+	// maybe of no use
 	@RequestMapping( method = GET, value = "/get-locations-by-parent-and-tag")
 	@ResponseBody
 	public List<DashboardLocationDTO> getDashboardLocationsByParentAndTag(@RequestParam String parentLocationId, @RequestParam String tagId) {
@@ -231,11 +291,64 @@ public class AclController {
 		return locations;
 	}
 	
+	@RequestMapping( method = GET, value = "/get-locations-by-tag")
+	@ResponseBody
+	public List<DashboardLocationDTO> getDashboardLocationsByTag(@RequestParam String tagId) {
+		logger.info("fetch request for locations with tag- " + tagId);
+		List<DashboardLocationDTO> locations = dashboardLocationService.getDashboardLocationsByTag(tagId);
+		//return new ResponseEntity<>(childrenLocations,OK);
+		return locations;
+	}
+	
+	@RequestMapping( method = GET, value = "/get-location-by-id")
+	@ResponseBody
+	public DashboardLocationDTO getDashboardLocationById(@RequestParam String locationId) {
+		logger.info("fetch request for location with id- " + locationId);
+		DashboardLocationDTO locationById = dashboardLocationService.getDashboardLocationById(locationId);
+		//return new ResponseEntity<>(childrenLocations,OK);
+		return locationById;
+	}
+	
 	@RequestMapping( method = GET, value = "/get-children-locations-of-root")
 	@ResponseBody
 	public List<DashboardLocationDTO> getChildrenLocationsOfRoot() {
 		List<DashboardLocationDTO> locations = dashboardLocationService.getChildrenLocationsOfRoot();
 		//return new ResponseEntity<>(childrenLocations,OK);
 		return locations;
+	}
+	
+	@RequestMapping( method = GET, value = "/get-location-info")
+	@ResponseBody
+	public DashboardLocationInfoDTO getDashboardLocationInfo(@RequestParam String locationId) {
+		logger.info("fetch request for location with id- " + locationId);
+		DashboardLocationInfoDTO locationInfoById = dashboardLocationService.getDashboardLocationInfo(locationId);
+		//return new ResponseEntity<>(childrenLocations,OK);
+		return locationInfoById;
+	}
+	
+	@RequestMapping( method = GET, value = "/get-data-senders-by-location")
+	@ResponseBody
+	public List<SimplifiedUser> getLeafUsersByLocation(@RequestParam String locationId) {
+		logger.info("fetch request for leaf users for location with id- " + locationId);
+		List<SimplifiedUser> users = userService.getLeafUsersByLocation(locationId);
+		//return new ResponseEntity<>(childrenLocations,OK);
+		return users;
+	}
+	
+	@RequestMapping( method = GET, value = "/get-data-senders-by-user")
+	@ResponseBody
+	public List<SimplifiedUser> getLeafUsersByUser(@RequestParam String userName) {
+		logger.info("fetch request for leaf users for user with id- " + userName);
+		List<SimplifiedUser> users = userService.getLeafUsersByUser(userName);
+		//return new ResponseEntity<>(childrenLocations,OK);
+		return users;
+	}
+	
+	@RequestMapping(headers = { "Accept=application/json" }, method = POST, value = "/assign-location-to-user")
+	public ResponseEntity<String> assignLocationToUser(@RequestBody UserDTO userDTO) {
+		logger.info("request for assigning location to user - " + userDTO.getName());
+		
+		String message = userService.assignLocation(userDTO);		
+		return new ResponseEntity<>(message,OK);
 	}
 }

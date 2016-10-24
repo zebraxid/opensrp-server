@@ -11,6 +11,7 @@ import org.ektorp.impl.StdCouchDbConnector;
 import org.ektorp.impl.StdCouchDbInstance;
 import org.ektorp.impl.StdObjectMapperFactory;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.opensrp.dashboard.domain.Privilege;
 import org.opensrp.dashboard.domain.Role;
@@ -49,7 +50,7 @@ public class RoleServiceTest {
     	//initMocks(this);
     }
 
-    @Test 
+    @Ignore@Test 
     public void testPrivilegeService() throws Exception {
 		Privilege testPrivilege = allPrivileges.privilegeByName("testPrivilege");
 		assertNull(testPrivilege);
@@ -68,7 +69,7 @@ public class RoleServiceTest {
 		assertNull(testPrivilege);
     }
     
-    @Test 
+    @Ignore@Test 
     public void ifAllRolesIsReturningNull() throws Exception {
 		//allRoles.getAll();
     	List<Role> roles = allRoles.getAll();

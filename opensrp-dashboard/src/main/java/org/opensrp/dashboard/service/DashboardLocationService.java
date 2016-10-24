@@ -5,7 +5,9 @@ import java.util.List;
 
 import org.ektorp.DocumentNotFoundException;
 import org.opensrp.dashboard.dto.DashboardLocationDTO;
+import org.opensrp.dashboard.dto.DashboardLocationInfoDTO;
 import org.opensrp.dashboard.dto.PrivilegeDTO;
+import org.opensrp.dashboard.dto.SimplifiedUser;
 import org.opensrp.dashboard.domain.DashboardLocation;
 import org.opensrp.dashboard.domain.LocationTag;
 import org.opensrp.dashboard.domain.Privilege;
@@ -38,21 +40,57 @@ public class DashboardLocationService {
 		}
 		DashboardLocation parentDashboardLocation = null;
 		LocationTag locationTagOfNewLocation = null;
+		LocationTag locationTagForUnit = null;
 		try{
 			parentDashboardLocation = allDashboardLocations.get(locationDTO.getParentId());
 			locationTagOfNewLocation = allLocationTags.get(locationDTO.getTagId());
 		}catch(DocumentNotFoundException e){
 			return "3";  // "3" stands for parentNotFound
-		}	 
+		}	
 		
 		if(locationTagOfNewLocation != null && parentDashboardLocation != null && 
 				locationTagOfNewLocation.getParentTagId().equals(parentDashboardLocation.getTagId())){
-			DashboardLocation newDashboardLocation = new DashboardLocation();
-			newDashboardLocation.withName(locationDTO.getName());
-			newDashboardLocation.withParentName(locationDTO.getParentName());
-			newDashboardLocation.withParentId(locationDTO.getParentId());
-			newDashboardLocation.withTagId(locationDTO.getTagId());
-			allDashboardLocations.add(newDashboardLocation);
+			
+			//for every ward 8 units will be created by default 
+			if(locationTagOfNewLocation.getName().equals("Ward")){
+				String[] unitNames = {"Unit One", "Unit Two", "Unit Three", "Unit Four", "Unit Five", "Unit Six", "Unit Seven", "Unit Eight"};
+				try{
+					locationTagForUnit = allLocationTags.findLocationTagByName("Unit");
+				}catch(DocumentNotFoundException e){
+					return "3";  // "3" stands for parentNotFound
+				}
+				
+				if(locationTagForUnit != null){
+					DashboardLocation newDashboardLocation = new DashboardLocation();
+					newDashboardLocation.withName(locationDTO.getName());
+					newDashboardLocation.withParentName(locationDTO.getParentName());
+					newDashboardLocation.withParentId(locationDTO.getParentId());
+					newDashboardLocation.withTagId(locationDTO.getTagId());
+					allDashboardLocations.add(newDashboardLocation);
+					
+					for(int i = 0; i < unitNames.length; i++){
+						DashboardLocation newUnit = new DashboardLocation();
+						newUnit.withName(unitNames[i]);
+						newUnit.withParentName(locationDTO.getName());
+						newUnit.withParentId(newDashboardLocation.getId());
+						newUnit.withTagId(locationTagForUnit.getId());
+						allDashboardLocations.add(newUnit);
+					}
+				}
+				else{
+					return "2";
+				}
+				
+			}
+			else{
+				DashboardLocation newDashboardLocation = new DashboardLocation();
+				newDashboardLocation.withName(locationDTO.getName());
+				newDashboardLocation.withParentName(locationDTO.getParentName());
+				newDashboardLocation.withParentId(locationDTO.getParentId());
+				newDashboardLocation.withTagId(locationDTO.getTagId());
+				allDashboardLocations.add(newDashboardLocation);
+			}
+			
 			return "1";
 		}
 		else{
@@ -161,6 +199,89 @@ public class DashboardLocationService {
 		return locationDTOsByParentAndTag;
 	}
 	
+	public List<DashboardLocationDTO> getDashboardLocationsByTag(String tagId){
+		List<DashboardLocation> locationsByTag = allDashboardLocations.findLocationsByTag(tagId);
+		List<DashboardLocationDTO> locationDTOsByTag = new ArrayList<DashboardLocationDTO>();
+		
+		if(locationsByTag != null){
+			for(int i =0; i < locationsByTag.size(); i++){
+				DashboardLocationDTO newDashboardLocationDTO = new DashboardLocationDTO();
+				newDashboardLocationDTO.withId(locationsByTag.get(i).getId());
+				newDashboardLocationDTO.withName(locationsByTag.get(i).getName());
+				newDashboardLocationDTO.withTagId(locationsByTag.get(i).getTagId());
+				locationDTOsByTag.add(newDashboardLocationDTO);
+			}			
+		}
+		
+		return locationDTOsByTag;
+	}
+	
+	public DashboardLocationDTO getDashboardLocationById(String locationId){
+		DashboardLocation locationById = allDashboardLocations.get(locationId);
+		DashboardLocationDTO locationByIdDTO = new DashboardLocationDTO();
+		
+		if(locationById != null){
+			locationByIdDTO.withId(locationById.getId());
+			locationByIdDTO.withName(locationById.getName());
+			locationByIdDTO.withTagId(locationById.getTagId());
+			locationByIdDTO.withParentname(locationById.getParentName());
+			locationByIdDTO.withParentId(locationById.getParentId());
+		}
+		
+		return locationByIdDTO;
+	}	
+	
+	public DashboardLocationInfoDTO getDashboardLocationInfo(String locationId){
+		DashboardLocation locationById = allDashboardLocations.get(locationId);
+		DashboardLocationInfoDTO locationInfoDTO = new DashboardLocationInfoDTO();	
+		
+		if(locationById != null && locationById.getParentId() != null && locationById.getParentId().length() > 1 
+				&& locationById.getTagId() != null){			
+			String currentTag = allLocationTags.get(locationById.getTagId()).getName();
+			locationInfoDTO.setTagName(currentTag);
+			String currentParentId = null;
+			
+			List<DashboardLocationDTO> ownSiblings = convertLocationToDTOList(allDashboardLocations.findChildrenLocations(locationById.getParentId())) ;
+			locationInfoDTO.setOwnSiblings(ownSiblings);
+			
+			if(currentTag.equals("Division")){
+				DashboardLocation currentParent = allDashboardLocations.get(currentParentId);
+				DashboardLocationDTO currentParentDTO = null;
+				
+				if(currentParent != null){
+					currentParentDTO = convertLocationToDTO(currentParent);
+					
+					locationInfoDTO = locationInfoDTO.setMember(currentTag, currentParentDTO, null);						
+				}
+			}
+			else{
+				while(!currentTag.equals("Division")){
+					currentParentId = locationById.getParentId();
+					DashboardLocation currentParent = allDashboardLocations.get(currentParentId);
+					DashboardLocationDTO currentParentDTO = null;
+					List<DashboardLocation> parentSiblings = null;
+					List<DashboardLocationDTO> parentSiblingsDTOs = null;
+					if(currentParent != null){
+						currentParentDTO = convertLocationToDTO(currentParent);
+						parentSiblings = allDashboardLocations.findChildrenLocations(currentParent.getParentId());
+						parentSiblingsDTOs = convertLocationToDTOList(parentSiblings);
+						
+						locationInfoDTO = locationInfoDTO.setMember(currentTag, currentParentDTO, parentSiblingsDTOs);				
+						
+						currentTag = allLocationTags.get(currentParent.getTagId()).getName();
+						locationById = currentParent;						
+					}
+					else{
+						break;
+					}
+				}
+			}
+			
+		}
+		
+		return locationInfoDTO;
+	}
+	
 	public List<DashboardLocationDTO> getChildrenLocationsOfRoot(){
 		DashboardLocation rootLocation = allDashboardLocations.findDashboardLocationByName("Bangladesh");
 		List<DashboardLocation> childrenOfRoot = allDashboardLocations.findChildrenLocations(rootLocation.getId());
@@ -172,6 +293,8 @@ public class DashboardLocationService {
 				newDashboardLocationDTO.withId(childrenOfRoot.get(i).getId());
 				newDashboardLocationDTO.withName(childrenOfRoot.get(i).getName());
 				newDashboardLocationDTO.withTagId(childrenOfRoot.get(i).getTagId());
+				newDashboardLocationDTO.withParentId(childrenOfRoot.get(i).getParentId());
+				newDashboardLocationDTO.withParentname(childrenOfRoot.get(i).getParentName());
 				locationDTOs.add(newDashboardLocationDTO);
 			}			
 		}
@@ -205,5 +328,39 @@ public class DashboardLocationService {
 	
 	public String ifLocationColliding(){
 		return "";
+	}
+	
+	public DashboardLocationDTO convertLocationToDTO(DashboardLocation location){
+		DashboardLocationDTO locationDTO = new DashboardLocationDTO();
+		if(location == null)
+			return null;
+		locationDTO.withId(location.getId());
+		locationDTO.withName(location.getName());
+		locationDTO.withTagId(location.getTagId());
+		locationDTO.withParentId(location.getParentId());
+		locationDTO.withParentname(location.getParentName());
+		
+		return locationDTO;
+	}
+	
+	public List<DashboardLocationDTO> convertLocationToDTOList(List<DashboardLocation> location){
+		List<DashboardLocationDTO> locationDTO = new  ArrayList<DashboardLocationDTO>();
+		DashboardLocationDTO singleLocationDTO = null;
+		if(location == null)
+			return null;
+		
+		for(int i = 0; i < location.size(); i++){
+			singleLocationDTO = new DashboardLocationDTO();
+			singleLocationDTO.withId(location.get(i).getId());
+			singleLocationDTO.withName(location.get(i).getName());
+			singleLocationDTO.withTagId(location.get(i).getTagId());
+			singleLocationDTO.withParentId(location.get(i).getParentId());
+			singleLocationDTO.withParentname(location.get(i).getParentName());
+			
+			locationDTO.add(singleLocationDTO);
+		}
+		
+		
+		return locationDTO;
 	}
 }

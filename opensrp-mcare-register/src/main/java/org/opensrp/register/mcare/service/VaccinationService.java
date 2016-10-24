@@ -5,7 +5,7 @@ package org.opensrp.register.mcare.service;
 
 import java.util.Date;
 import java.util.List;
-
+import org.opensrp.common.AllConstants;
 import org.joda.time.DateTime;
 import org.opensrp.domain.Vaccine;
 import org.opensrp.repository.AllVaccine;
@@ -42,15 +42,19 @@ public class VaccinationService {
     public void saveVaccine(String anmIdentifier,String caseID,String scheduleName){
     	List<Action> existingAlert = allActions.findAlertByANMIdEntityIdScheduleName(anmIdentifier, caseID, scheduleName);
 	 	try{
-     		Vaccine vaccine = new Vaccine(existingAlert.get(0).anmIdentifier(), existingAlert.get(0).caseId(), existingAlert.get(0).getId(), 
-     			existingAlert.get(0).data().get("beneficiaryType"), existingAlert.get(0).data().get("scheduleName"),  existingAlert.get(0).data().get("startDate"), existingAlert.get(0).data().get("expiryDate"), false, 0, new Date(), new DateTime());		        	
-     		allVaccine.save(vaccine);
+	 		if(!scheduleName.equalsIgnoreCase(AllConstants.ScheduleNames.CENCUS) || !scheduleName.equalsIgnoreCase(AllConstants.ScheduleNames.SCHEDULE_Woman_BNF)){
+	     		Vaccine vaccine = new Vaccine(existingAlert.get(0).anmIdentifier(), existingAlert.get(0).caseId(), existingAlert.get(0).getId(), 
+	     			existingAlert.get(0).data().get("beneficiaryType"), existingAlert.get(0).data().get("scheduleName"),  existingAlert.get(0).data().get("startDate"), existingAlert.get(0).data().get("expiryDate"), false, 0, new Date(), new DateTime());		        	
+	     		allVaccine.save(vaccine);
+	 		}
      	}catch(Exception e){		        		
      		e.printStackTrace();
      	}
     }
 	public void updateVaccineStatus( String caseId, String vaccineName) {	    
     	try{
+    		System.err.println(caseId);
+    		System.err.println(vaccineName);
     		Vaccine existingVaccine = allVaccine.getVaccine(caseId,vaccineName);    		
     		existingVaccine.setStatus(true);
     		existingVaccine.setExecutionDate(new DateTime());

@@ -106,14 +106,17 @@ public class RoleService {
 		return null;
 	}
 	
-	public ArrayList<RoleDTO> getRolesAndUser() {
-		List<Role> roles = allRoles.roles();
+	public ArrayList<RoleDTO> getAllRoles() {
+		List<Role> roles = allRoles.getAll();
 		ArrayList<RoleDTO> roleList = new ArrayList<RoleDTO>();
-		for (Role role : roles) {
-			RoleDTO roleDTO = new RoleDTO().withName(role.getName()).withRoleId(role.getId()).withStatus(role.getStatus());
-			//.withUserName(role.getUserName());			
-			roleList.add(roleDTO);
+		if(roles != null){
+			for (Role role : roles) {
+				RoleDTO roleDTO = new RoleDTO().withName(role.getName()).withRoleId(role.getId()).withStatus(role.getStatus());
+				//.withUserName(role.getUserName());			
+				roleList.add(roleDTO);
+			}
 		}
+		
 		return roleList;
 	}
 	

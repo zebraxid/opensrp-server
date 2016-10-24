@@ -2,7 +2,10 @@ package dashboard.test;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 import org.ektorp.CouchDbInstance;
 import org.ektorp.http.HttpClient;
@@ -17,7 +20,10 @@ import org.opensrp.dashboard.domain.DashboardLocation;
 import org.opensrp.dashboard.domain.LocationTag;
 import org.opensrp.dashboard.domain.Privilege;
 import org.opensrp.dashboard.dto.DashboardLocationDTO;
+import org.opensrp.dashboard.dto.DashboardLocationInfoDTO;
 import org.opensrp.dashboard.dto.LocationTagDTO;
+import org.opensrp.dashboard.dto.SimplifiedLocation;
+import org.opensrp.dashboard.dto.UserDTO;
 import org.opensrp.dashboard.repository.AllDashboardLocations;
 import org.opensrp.dashboard.repository.AllLocationTags;
 import org.opensrp.dashboard.repository.AllPrivileges;
@@ -59,7 +65,7 @@ public class DashboardLocationServiceTest {
 		locationTagService  = new LocationTagService(allLocationTags);
     }
 
-    @Ignore@Test 
+   @Ignore @Test 
     public void testDashboardLocationService() throws Exception {
     	/*
     	 * Code for creating Country 
@@ -112,6 +118,51 @@ public class DashboardLocationServiceTest {
 		System.out.println(idForUpazillaTag);
 		System.out.println(allDashboardLocations.findLocationsByTag(idForUpazillaTag).size());
 		
+		/*DashboardLocation newDashboardLocation = new DashboardLocation();
+		newDashboardLocation.withName("kola");
+		newDashboardLocation.withParentName("Khulna");
+		newDashboardLocation.withParentId("71fff7052d0e1c392b2b448813008e48");
+		newDashboardLocation.withTagId("1e84829ef6153b9b8f05089b28051142");
+		allDashboardLocations.add(newDashboardLocation);
+		
+		System.out.println(newDashboardLocation.getId());*/
+		
+		/*DashboardLocationDTO sampleWard = new DashboardLocationDTO();
+		sampleWard.withName("Sample Ward");
+		sampleWard.withParentId("71fff7052d0e1c392b2b4488130087fa");
+		sampleWard.withParentname("Union_Upa_Gazi");
+		sampleWard.withTagId("8e8fa8966b1e39997011f42f64009e97");
+		
+		dashboardLocationService.addDashboardLocation(sampleWard);
+		
+		String store = sampleWard.getId();
+		*/
+		//dashboardLocationService.deleteDashboardLocation("12b0f9fc6457e2f58950e582f9011260");
+		
+		UserDTO withNoLocation = new UserDTO();
+		withNoLocation.withName("passTest");
+		List<SimplifiedLocation> locations = new ArrayList<SimplifiedLocation>();
+		withNoLocation.withLocation(locations);
+		System.out.println(withNoLocation.getLocation());
+	
+		System.out.println("-- " + dashboardLocationService.getDashboardLocationsByTag("8e8fa8966b1e39997011f42f64008c41").size());
+		DashboardLocationInfoDTO allInfo = dashboardLocationService.getDashboardLocationInfo("71fff7052d0e1c392b2b4488130087fa");
+		if(allInfo.getParentDistrict() != null){
+			System.out.println(allInfo.getParentDistrict().getName());
+		}
+		
+		Queue<String> strings = new LinkedList<String>();
+		strings.add("first");
+		strings = append(strings, "second");
+		System.out.println(strings.size());
+		
+		//type: "DashboardLocation", name: "Jhenaidah", tagId: "1e84829ef6153b9b8f05089b28051142", parentName: "Khulna", parentId: "71fff7052d0e1c392b2b448813008e48"
+		
+    }
+    
+    public Queue<String> append(Queue<String> in, String str){
+    	in.add(str);
+    	return in;
     }
     
     /*@Test 

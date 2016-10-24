@@ -45,7 +45,7 @@ public class LocationTagServiceTest {
         .build(); 
 		dbInstance = new StdCouchDbInstance(httpClient); 
 		
-		stdCouchDbConnector = new StdCouchDbConnector("opensrp", dbInstance, new StdObjectMapperFactory());
+		stdCouchDbConnector = new StdCouchDbConnector("opensrp_testdb", dbInstance, new StdObjectMapperFactory());
 		 
 		stdCouchDbConnector.createDatabaseIfNotExists();
 		allLocationTags = new AllLocationTags(2, stdCouchDbConnector);
