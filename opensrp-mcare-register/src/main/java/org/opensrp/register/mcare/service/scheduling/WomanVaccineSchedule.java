@@ -40,10 +40,10 @@ public class WomanVaccineSchedule {
 	public void immediateWomanVaccine(FormSubmission submission, Members members, Map<String, String> membersFields, String scheduleName, String immediateScheduleName, String refDate, String cond1, String cond2) {
 		
 		if(membersFields.containsKey(cond1))
-		if(!membersFields.get(cond1).equalsIgnoreCase("") && membersFields.get(cond1) != null)
+		if(membersFields.get(cond1) != null && !membersFields.get(cond1).equalsIgnoreCase(""))
 		if(membersFields.get(cond1).equalsIgnoreCase("1")){
 			if(membersFields.containsKey(refDate)){
-			if(!membersFields.get(refDate).equalsIgnoreCase("") && membersFields.get(refDate) != null)
+			if(membersFields.get(refDate) != null && !membersFields.get(refDate).equalsIgnoreCase(""))
 			if(isValidDate(membersFields.get(refDate)))
 				membersScheduleService.enrollimmediateMembersVisit(
 					members.caseId(),submission.anmId(),membersFields.get(refDate),submission.instanceId(),scheduleName,immediateScheduleName);
@@ -55,10 +55,10 @@ public class WomanVaccineSchedule {
 			}
 		
 		if(membersFields.containsKey(cond2))
-			if(!membersFields.get(cond2).equalsIgnoreCase("") && membersFields.get(cond2) != null)
+			if(membersFields.get(cond2) != null && !membersFields.get(cond2).equalsIgnoreCase(""))
 			if(membersFields.get(cond2).equalsIgnoreCase("3")){
-				membersScheduleService.unEnrollAndCloseImmediateSchedule(
-					members.caseId(),submission.anmId(),scheduleName,immediateScheduleName,LocalDate.parse(submission.getField(REFERENCE_DATE)));
+				membersScheduleService.unEnrollFromImmediateSchedule(
+					members.caseId(),submission.anmId(),scheduleName,immediateScheduleName);
 				vaccinationService.updateVaccineStatus(members.caseId(), scheduleName);
 			}
 		
@@ -81,8 +81,8 @@ public class WomanVaccineSchedule {
 		
 		if (membersFields.containsKey(cond))
 		if (membersFields.get(cond) != null && !membersFields.get(cond).equalsIgnoreCase("")){
-			membersScheduleService.unEnrollAndCloseSchedule(
-					members.caseId(),submission.anmId(),scheduleName,LocalDate.parse(submission.getField(REFERENCE_DATE)));
+			membersScheduleService.unEnrollFromSchedule(
+					members.caseId(),submission.anmId(),scheduleName);
 			vaccinationService.updateVaccineStatus(members.caseId(), scheduleName);
 		}		
 	}
@@ -96,8 +96,8 @@ public class WomanVaccineSchedule {
 		}
 		
 		if (submission.getField(cond) != null && !submission.getField(cond).equalsIgnoreCase("")){
-			membersScheduleService.unEnrollAndCloseSchedule(
-					members.caseId(),submission.anmId(),scheduleName,LocalDate.parse(submission.getField(REFERENCE_DATE)));	
+			membersScheduleService.unEnrollFromSchedule(
+					members.caseId(),submission.anmId(),scheduleName);	
 			vaccinationService.updateVaccineStatus(members.caseId(), scheduleName);
 		}
 		

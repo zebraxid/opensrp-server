@@ -44,10 +44,10 @@ public class ChildVaccineSchedule {
 		if (membersFields.containsKey(cond))
 		if (membersFields.get(cond) == null || membersFields.get(cond).equalsIgnoreCase("")){
 		if(membersFields.containsKey(age))
-		if(!membersFields.get(age).equalsIgnoreCase("") && membersFields.get(age) != null)
+		if(membersFields.get(age) != null && !membersFields.get(age).equalsIgnoreCase(""))
 		if(Integer.parseInt(membersFields.get(age))<agenum){
 			if(membersFields.containsKey(refDate))
-			if (!membersFields.get(refDate).equalsIgnoreCase("") && membersFields.get(refDate) != null)
+			if (membersFields.get(refDate) != null && !membersFields.get(refDate).equalsIgnoreCase(""))
 			if(isValidDate(membersFields.get(refDate)))
 				membersScheduleService.enrollimmediateMembersVisit(
 					members.caseId(),submission.anmId(),membersFields.get(refDate),submission.instanceId(),scheduleName,immediateScheduleName);							
@@ -57,10 +57,10 @@ public class ChildVaccineSchedule {
 		if (membersFields.containsKey(cond))
 			if (membersFields.get(cond) == null || membersFields.get(cond).equalsIgnoreCase("")){
 			if(membersFields.containsKey(age_days))
-				if(!membersFields.get(age_days).equalsIgnoreCase("") && membersFields.get(age_days) != null)
+				if(membersFields.get(age_days) != null && !membersFields.get(age_days).equalsIgnoreCase(""))
 				if(Integer.parseInt(membersFields.get(age_days))<=days){
 				if(membersFields.containsKey(refDate))
-				if (!membersFields.get(refDate).equalsIgnoreCase("") && membersFields.get(refDate) != null)
+				if (membersFields.get(refDate) != null && !membersFields.get(refDate).equalsIgnoreCase(""))
 				if(isValidDate(membersFields.get(refDate)))
 					membersScheduleService.enrollimmediateMembersVisit(
 						members.caseId(),submission.anmId(),membersFields.get(refDate),submission.instanceId(),scheduleName,immediateScheduleName);							
@@ -69,17 +69,17 @@ public class ChildVaccineSchedule {
 
 		if (membersFields.containsKey(cond))
 		if (membersFields.get(cond) != null && !membersFields.get(cond).equalsIgnoreCase("")){
-			membersScheduleService.unEnrollAndCloseImmediateSchedule(
-					members.caseId(),submission.anmId(),scheduleName,immediateScheduleName,LocalDate.parse(submission.getField(REFERENCE_DATE)));
+			membersScheduleService.unEnrollFromImmediateSchedule(
+					members.caseId(),submission.anmId(),scheduleName,immediateScheduleName);
 			vaccinationService.updateVaccineStatus(members.caseId(), scheduleName);
 		}		
 	}
 	
 	public void AfterimmediateChildVisit(FormSubmission submission, Members members, String scheduleName, String immediateScheduleName, String refDate, String age, String age_days, String cond, int agenum, int days){
 		if (submission.getField(cond) == null || submission.getField(cond).equalsIgnoreCase("")){
-		if(!submission.getField(age).equalsIgnoreCase("") && submission.getField(age) != null)
+		if(submission.getField(age) != null && !submission.getField(age).equalsIgnoreCase(""))
 		if(Integer.parseInt(submission.getField(age))<1)
-			if (!submission.getField(refDate).equalsIgnoreCase("") && submission.getField(refDate) != null)
+			if (submission.getField(refDate) != null && !submission.getField(refDate).equalsIgnoreCase(""))
 			if(isValidDate(submission.getField(refDate))){
 				membersScheduleService.enrollAfterimmediateVisit(
 						members.caseId(),submission.anmId(),submission.getField(refDate),submission.instanceId(),scheduleName,immediateScheduleName);							
@@ -87,9 +87,9 @@ public class ChildVaccineSchedule {
 		}
 		
 		if (submission.getField(cond) == null || submission.getField(cond).equalsIgnoreCase("")){
-		if(!submission.getField(age_days).equalsIgnoreCase("") && submission.getField(age_days) != null)
+		if(submission.getField(age_days) != null && !submission.getField(age_days).equalsIgnoreCase(""))
 			if(Integer.parseInt(submission.getField(age_days))<=agenum)
-			if (!submission.getField(refDate).equalsIgnoreCase("") && submission.getField(refDate) != null)
+			if (submission.getField(refDate) != null && !submission.getField(refDate).equalsIgnoreCase(""))
 			if(isValidDate(submission.getField(refDate))){
 				membersScheduleService.enrollAfterimmediateVisit(
 						members.caseId(),submission.anmId(),submission.getField(refDate),submission.instanceId(),scheduleName,immediateScheduleName);							
@@ -97,8 +97,8 @@ public class ChildVaccineSchedule {
 		}
 		
 		if (submission.getField(cond) != null && !submission.getField(cond).equalsIgnoreCase("")){
-			membersScheduleService.unEnrollAndCloseImmediateSchedule(
-					members.caseId(),submission.anmId(),scheduleName,immediateScheduleName,LocalDate.parse(submission.getField(REFERENCE_DATE)));	
+			membersScheduleService.unEnrollFromImmediateSchedule(
+					members.caseId(),submission.anmId(),scheduleName,immediateScheduleName);	
 			vaccinationService.updateVaccineStatus(members.caseId(), scheduleName);
 		}
 	}
@@ -108,10 +108,10 @@ public class ChildVaccineSchedule {
 		if (membersFields.containsKey(cond))
 		if (membersFields.get(cond) == null || membersFields.get(cond).equalsIgnoreCase("")){
 		if(membersFields.containsKey(age))
-		if(!membersFields.get(age).equalsIgnoreCase("") && membersFields.get(age) != null)
+		if(membersFields.get(age) != null && !membersFields.get(age).equalsIgnoreCase(""))
 		if(Integer.parseInt(membersFields.get(age))<agenum){
 			if(membersFields.containsKey(refDate))
-			if (!membersFields.get(refDate).equalsIgnoreCase("") && membersFields.get(refDate) != null)
+			if (membersFields.get(refDate) != null && !membersFields.get(refDate).equalsIgnoreCase(""))
 			if(isValidDate(membersFields.get(refDate)))
 				membersScheduleService.enrollChildVisit(
 					members.caseId(),submission.anmId(),scheduleName,membersFields.get(refDate));							
@@ -121,10 +121,10 @@ public class ChildVaccineSchedule {
 		if (membersFields.containsKey(cond))
 		if (membersFields.get(cond) == null || membersFields.get(cond).equalsIgnoreCase("")){
 		if(membersFields.containsKey(age_days))
-			if(!membersFields.get(age_days).equalsIgnoreCase("") && membersFields.get(age_days) != null)
+			if(membersFields.get(age_days) != null && !membersFields.get(age_days).equalsIgnoreCase(""))
 			if(Integer.parseInt(membersFields.get(age_days))<=days){
 			if(membersFields.containsKey(refDate))
-			if (!membersFields.get(refDate).equalsIgnoreCase("") && membersFields.get(refDate) != null)
+			if (membersFields.get(refDate) != null && !membersFields.get(refDate).equalsIgnoreCase(""))
 			if(isValidDate(membersFields.get(refDate)))
 				membersScheduleService.enrollChildVisit(
 					members.caseId(),submission.anmId(),scheduleName,membersFields.get(refDate));							
@@ -133,8 +133,8 @@ public class ChildVaccineSchedule {
 
 		if (membersFields.containsKey(cond))
 		if (membersFields.get(cond) != null && !membersFields.get(cond).equalsIgnoreCase("")){
-			membersScheduleService.unEnrollAndCloseSchedule(
-					members.caseId(),submission.anmId(),scheduleName,LocalDate.parse(submission.getField(REFERENCE_DATE)));
+			membersScheduleService.unEnrollFromSchedule(
+					members.caseId(),submission.anmId(),scheduleName);
 			vaccinationService.updateVaccineStatus(members.caseId(), scheduleName);
 		}
 	}
@@ -142,26 +142,26 @@ public class ChildVaccineSchedule {
 	public void ChildFollowupVaccine(FormSubmission submission, Members members, String scheduleName, String refDate, String age, String age_days, String cond, int agenum, int days) {
 	
 		if (submission.getField(cond) == null || submission.getField(cond).equalsIgnoreCase("")){
-		if(!submission.getField(age).equalsIgnoreCase("") && submission.getField(age) != null)
+		if(submission.getField(age) != null && !submission.getField(age).equalsIgnoreCase(""))
 		if(Integer.parseInt(submission.getField(age))<5)
-			if (!submission.getField(refDate).equalsIgnoreCase("") && submission.getField(refDate) != null)
+			if (submission.getField(refDate) != null && !submission.getField(refDate).equalsIgnoreCase(""))
 			if(isValidDate(submission.getField(refDate))){
 				membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),scheduleName,submission.getField(refDate));
 			}				
 		}
 		
 		if (submission.getField(cond) == null || submission.getField(cond).equalsIgnoreCase("")){
-		if(!submission.getField(age_days).equalsIgnoreCase("") && submission.getField(age_days) != null)
+		if(submission.getField(age_days) != null && !submission.getField(age_days).equalsIgnoreCase(""))
 			if(Integer.parseInt(submission.getField(age_days))<=agenum)
-			if (!submission.getField(refDate).equalsIgnoreCase("") && submission.getField(refDate) != null)
+			if (submission.getField(refDate) != null && !submission.getField(refDate).equalsIgnoreCase(""))
 			if(isValidDate(submission.getField(refDate))){
 				membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),scheduleName,submission.getField(refDate));
 			}				
 		}
 		
 		if (submission.getField(cond) != null && !submission.getField(cond).equalsIgnoreCase("")){
-			membersScheduleService.unEnrollAndCloseSchedule(
-					members.caseId(),submission.anmId(),scheduleName,LocalDate.parse(submission.getField(REFERENCE_DATE)));
+			membersScheduleService.unEnrollFromSchedule(
+					members.caseId(),submission.anmId(),scheduleName);
 			vaccinationService.updateVaccineStatus(members.caseId(), scheduleName);
 		}
 		
