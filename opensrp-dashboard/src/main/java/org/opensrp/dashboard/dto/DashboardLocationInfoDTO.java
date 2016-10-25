@@ -12,7 +12,7 @@ public class DashboardLocationInfoDTO {
 	private String tagName;
 	
 	@JsonProperty
-	private List<DashboardLocationDTO> ownSiblings;
+	private List<DashboardLocationDTO> ownSiblings;  // refers to all the children of the parent of this location
 	
 	@JsonProperty
 	private DashboardLocationDTO parentWard;

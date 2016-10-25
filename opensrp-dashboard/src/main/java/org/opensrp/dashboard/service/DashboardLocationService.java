@@ -6,8 +6,10 @@ import java.util.List;
 import org.ektorp.DocumentNotFoundException;
 import org.opensrp.dashboard.dto.DashboardLocationDTO;
 import org.opensrp.dashboard.dto.DashboardLocationInfoDTO;
+import org.opensrp.dashboard.dto.DashboardLocationInfoDTONew;
 import org.opensrp.dashboard.dto.PrivilegeDTO;
 import org.opensrp.dashboard.dto.SimplifiedUser;
+import org.opensrp.dashboard.dto.UnitDashboardLocationInfo;
 import org.opensrp.dashboard.domain.DashboardLocation;
 import org.opensrp.dashboard.domain.LocationTag;
 import org.opensrp.dashboard.domain.Privilege;
@@ -229,6 +231,47 @@ public class DashboardLocationService {
 		}
 		
 		return locationByIdDTO;
+	}
+	
+	public DashboardLocationInfoDTONew getDashboardLocationInfoNew(String locationId){
+		DashboardLocationInfoDTONew info = new DashboardLocationInfoDTONew();
+		DashboardLocation locationById = allDashboardLocations.get(locationId);
+		DashboardLocationDTO parentLocation = null;
+		
+		if(locationById != null && locationById.getParentId() != null && locationById.getParentId().length() > 1 
+				&& locationById.getTagId() != null){			
+			String currentTag = allLocationTags.get(locationById.getTagId()).getName();
+			info.setTagName(currentTag);
+			
+			while(!currentTag.equals("Country")){
+				UnitDashboardLocationInfo unitLocation = new UnitDashboardLocationInfo();
+				unitLocation.setTagName(currentTag);
+				unitLocation.setCurrentSelection(convertLocationToDTO(locationById));
+				List<DashboardLocationDTO> ownSiblings = null;
+				try{
+					ownSiblings = convertLocationToDTOList(allDashboardLocations.findChildrenLocations(locationById.getParentId())) ;
+					parentLocation = convertLocationToDTO(allDashboardLocations.get(locationById.getParentId()));
+				}catch(DocumentNotFoundException e){
+					return null;
+				}
+				unitLocation.setOwnSiblings(ownSiblings);
+				unitLocation.setParentSelection(parentLocation);
+				info.setLocations(unitLocation);
+				
+				try{
+					locationById = allDashboardLocations.get(locationById.getParentId());
+				}catch(DocumentNotFoundException e){
+					return null;
+				}
+				
+				currentTag = allLocationTags.get(locationById.getTagId()).getName();				
+			}		
+		}
+		else{
+			return null;
+		}
+		
+		return info;
 	}	
 	
 	public DashboardLocationInfoDTO getDashboardLocationInfo(String locationId){

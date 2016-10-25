@@ -7,6 +7,7 @@ import java.util.List;
 import org.json.JSONException;
 import org.opensrp.api.domain.User;
 import org.opensrp.connector.openmrs.service.OpenmrsUserService;
+import org.opensrp.dashboard.repository.AllUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,8 @@ import org.springframework.security.authentication.encoding.PasswordEncoder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.crypto.codec.Base64;
+import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import ch.lambdaj.Lambda;
@@ -33,39 +36,45 @@ public class DrishtiAuthenticationProvider implements AuthenticationProvider {
     //private AllOpenSRPUsers allOpenSRPUsers;
     private PasswordEncoder passwordEncoder;
     private OpenmrsUserService openmrsUserService;
+    private AllUser dashboardUser;
 
 
     @Autowired
-    public DrishtiAuthenticationProvider(OpenmrsUserService openmrsUserService, @Qualifier("shaPasswordEncoder") PasswordEncoder passwordEncoder) {
+    public DrishtiAuthenticationProvider(AllUser dashboardUser, OpenmrsUserService openmrsUserService, @Qualifier("shaPasswordEncoder") PasswordEncoder passwordEncoder) {
         this.openmrsUserService = openmrsUserService;
         this.passwordEncoder = passwordEncoder;
+        this.dashboardUser = dashboardUser;
     }
-
+        
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        User user = getDrishtiUser(authentication);
-        if (user == null) {
-            throw new BadCredentialsException(USER_NOT_FOUND);
-        }
-
-        String credentials = (String) authentication.getCredentials();
-        //String hashedCredentials = passwordEncoder.encodePassword(credentials, user.getSalt());
-        System.out.println("Username :" + user.getUsername());
-        System.out.println("Password :" + credentials);
-        try {
-			if (!openmrsUserService.authenticate(user.getUsername(), credentials)) {
-			    throw new BadCredentialsException(USER_NOT_FOUND);
+    	User user = null;
+    	String credentials = null;
+    	Boolean userExistsInCouch = checkIfDashboardUser(authentication.getName(), (String) authentication.getCredentials());
+    	Boolean ifOpenmrsUser = false;
+    	try {        	
+			if (openmrsUserService.authenticate(authentication.getName(), (String) authentication.getCredentials())) {
+				ifOpenmrsUser = true;
 			}
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-
-        /*if (!user.isActive()) {
-            throw new BadCredentialsException(USER_NOT_ACTIVATED);
-        }*/
+    	if(ifOpenmrsUser){
+    		user = getDrishtiUser(authentication);
+			credentials = (String) authentication.getCredentials();
+    	}
+    	else{
+    		if(userExistsInCouch){
+    			user = getDrishtiUserForDashboard();
+        		credentials = "Sohel@123";
+    		}
+    		else{
+    			throw new BadCredentialsException(USER_NOT_FOUND);
+    		}
+    	}    	
         return new UsernamePasswordAuthenticationToken(authentication.getName(), credentials, getRolesAsAuthorities(user));
     }
-
+        
     @Override
     public boolean supports(Class<?> authentication) {
         return UsernamePasswordAuthenticationToken.class.isAssignableFrom(authentication)
@@ -85,6 +94,42 @@ public class DrishtiAuthenticationProvider implements AuthenticationProvider {
         User user;
         try {
             user = openmrsUserService.getUser((String) authentication.getPrincipal());
+        } catch (Exception e) {
+        	System.out.println("inside exception of DrishtiAuthenticationProvider.getDrishtiUser()");
+            logger.error(format("{0}. Exception: {1}", INTERNAL_ERROR, e));
+            throw new BadCredentialsException(INTERNAL_ERROR);
+        }
+        return user;
+    }
+    
+
+    public boolean checkIfDashboardUser(String userName, String password){
+    	//System.out.println("checking for user exists only in opensrp");
+    	org.opensrp.dashboard.domain.User userForDashboard = dashboardUser.findUserByUserName(userName);
+    	//System.out.println("user input password- " + password);
+    	
+    	if(userForDashboard != null ){
+    		StandardPasswordEncoder encoder = new StandardPasswordEncoder();
+    		/*byte[] decodedBytes = Base64.decode(userForDashboard.getPassword().getBytes());
+    		String decodedPassword = new String(decodedBytes);
+    		//System.out.println("decoded password- " + decodedPassword);
+    		if(decodedPassword.equals(password)){
+    			System.out.println("Dashboard User found.- " + userName);
+    			return true;
+    		}*/    			    		
+    		if(encoder.matches(password, userForDashboard.getPassword())){
+    			System.out.println("Dashboard User found.- " + userName);
+    			return true;
+    		}
+    	}
+    	//System.out.println("Dashboard User not found.");
+    	return false;
+    }
+    
+    public User getDrishtiUserForDashboard(){
+    	User user;
+        try {
+            user = openmrsUserService.getUser("sohel");
         } catch (Exception e) {
             logger.error(format("{0}. Exception: {1}", INTERNAL_ERROR, e));
             throw new BadCredentialsException(INTERNAL_ERROR);

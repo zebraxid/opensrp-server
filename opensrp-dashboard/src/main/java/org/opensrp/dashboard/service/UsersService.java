@@ -25,6 +25,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.codec.Base64;
+import org.springframework.security.crypto.password.StandardPasswordEncoder;
 
 @Service
 public class UsersService {
@@ -81,8 +82,9 @@ public class UsersService {
 				user.withContactNumber(userDTO.getContactNumber());
 				user.withPersonalAddress(userDTO.getPersonalAddress());
 				user.withEmail(userDTO.getEmail());
-				String encodedPassword = new String(Base64.encode(userDTO.getPassword().getBytes()));
-				user.withPassword(encodedPassword);
+				StandardPasswordEncoder encoder = new StandardPasswordEncoder();
+				//String encodedPassword = encoder.encode(userDTO.getPassword()); //new String(Base64.encode(userDTO.getPassword().getBytes()));
+				user.withPassword(encoder.encode(userDTO.getPassword()));
 				user.withUserName(userDTO.getUserName());
 				user.withGender(userDTO.getGender());
 				//parent, children, roles, locations
@@ -152,8 +154,9 @@ public class UsersService {
 					userByUserName.withEmail(userDTO.getEmail());
 				}
 				if (userDTO.getPassword() != null) {
-					String encodedPassword = new String(Base64.encode(userDTO.getPassword().getBytes()));
-					userByUserName.withPassword(encodedPassword);
+					StandardPasswordEncoder encoder = new StandardPasswordEncoder();
+					//String encodedPassword = new String(Base64.encode(userDTO.getPassword().getBytes()));
+					userByUserName.withPassword(encoder.encode(userDTO.getPassword()));
 				}
 				if (userDTO.getGender() != null) {
 					userByUserName.withGender(userDTO.getGender());
@@ -307,6 +310,20 @@ public class UsersService {
 	public List<SimplifiedUser> getAllUsers(){
 		List<SimplifiedUser> allUsersDTO = new ArrayList<SimplifiedUser>();
 		List<User> allUser = allUsers.getAll();
+		if(allUser != null){
+			for(int i = 0 ; i < allUser.size(); i++){
+				SimplifiedUser userDTO = new SimplifiedUser();
+				userDTO.withUsername(allUser.get(i).getUserName()); 
+				userDTO.withId(allUser.get(i).getId());
+				allUsersDTO.add(userDTO);
+			}
+		}
+		return allUsersDTO;
+	}
+	
+	public List<SimplifiedUser> getUsersByRole(String roleId){
+		List<SimplifiedUser> allUsersDTO = new ArrayList<SimplifiedUser>();
+		List<User> allUser = allUsers.findUsersByRole(roleId);
 		if(allUser != null){
 			for(int i = 0 ; i < allUser.size(); i++){
 				SimplifiedUser userDTO = new SimplifiedUser();

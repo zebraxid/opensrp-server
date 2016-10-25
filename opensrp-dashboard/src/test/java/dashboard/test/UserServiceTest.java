@@ -2,6 +2,8 @@ package dashboard.test;
 
 import static org.junit.Assert.*;
 
+import java.util.List;
+
 import org.ektorp.CouchDbInstance;
 import org.ektorp.http.HttpClient;
 import org.ektorp.http.StdHttpClient;
@@ -25,6 +27,7 @@ import org.opensrp.dashboard.service.UsersService;
 import org.opensrp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.codec.Base64;
+import org.springframework.security.crypto.password.StandardPasswordEncoder;
 
 
 /*@RunWith(SpringJUnit4ClassRunner.class)
@@ -81,14 +84,28 @@ public class UserServiceTest {
     	System.out.println(decodedString);*/
     	
     	
-    	//System.out.println(); 
-    	
-    	/*User user = allUsers.findUserByUserName("demosrp1");
+    	//System.out.println();
+    	StandardPasswordEncoder encoder = new StandardPasswordEncoder();
+    	/*List<User> allUserss = allUsers.getAll();
+    	for(User u : allUserss){
+    		u.withPassword(encoder.encode("Pass123"));
+    		allUsers.update(u);
+    	}*/
+    	/*User user = allUsers.findUserByUserName("asifur");
 		assertNotNull(user);
 		System.out.println(user.getPassword());*/
-		System.out.println(allUsers.findUsersByLocation("12b0f9fc6457e2f58950e582f90251ce").size());
 		
-		System.out.println(userService.getLeafUsersByLocation("1e84829ef6153b9b8f05089b28020ae7").size());
+		//user.withPassword(encoder.encode("Pass123"));
+		//allUsers.update(user);
+		List<User> users = allUsers.findUsersByRole("bdb62a9f4198352123d4581c4f0095f8");
+		for(int i = 0; i < users.size(); i++){
+			System.out.println(users.get(i).getUserName());
+		}
+		
+		
+		//System.out.println(allUsers.findUsersByLocation("12b0f9fc6457e2f58950e582f90251ce").size());
+		
+		//System.out.println(userService.getLeafUsersByLocation("1e84829ef6153b9b8f05089b28020ae7").size());
 		// test the code
 		//System.out.println(userService.getLeafUsersByLocation("8e8fa8966b1e39997011f42f6400a59d").size());
 		/*decodedPass = Base64.decode(user.getPassword().getBytes());

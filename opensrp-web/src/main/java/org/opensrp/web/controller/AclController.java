@@ -12,6 +12,7 @@ import org.json.JSONException;
 import org.opensrp.connector.openmrs.service.OpenmrsUserService;
 import org.opensrp.dashboard.dto.DashboardLocationDTO;
 import org.opensrp.dashboard.dto.DashboardLocationInfoDTO;
+import org.opensrp.dashboard.dto.DashboardLocationInfoDTONew;
 import org.opensrp.dashboard.dto.LocationTagDTO;
 import org.opensrp.dashboard.dto.PrivilegeDTO;
 import org.opensrp.dashboard.dto.RoleDTO;
@@ -196,6 +197,12 @@ public class AclController {
 		return (ArrayList<SimplifiedUser>) userService.getAllUsers();
 	}
 	
+	@RequestMapping(method = GET, value = "/get-users-by-role")
+	@ResponseBody
+	public ArrayList<SimplifiedUser> getUsersByRole(String roleId) {
+		return (ArrayList<SimplifiedUser>) userService.getUsersByRole(roleId);
+	}
+	
 	@RequestMapping(method = GET, value = "/get-user-by-name")
 	@ResponseBody
 	public UserDTO getUserByName(String userName) {
@@ -322,6 +329,15 @@ public class AclController {
 	public DashboardLocationInfoDTO getDashboardLocationInfo(@RequestParam String locationId) {
 		logger.info("fetch request for location with id- " + locationId);
 		DashboardLocationInfoDTO locationInfoById = dashboardLocationService.getDashboardLocationInfo(locationId);
+		//return new ResponseEntity<>(childrenLocations,OK);
+		return locationInfoById;
+	}
+	
+	@RequestMapping( method = GET, value = "/get-location-info-new")
+	@ResponseBody
+	public DashboardLocationInfoDTONew getDashboardLocationInfoNew(@RequestParam String locationId) {
+		logger.info("fetch request for location with id- " + locationId);
+		DashboardLocationInfoDTONew locationInfoById = dashboardLocationService.getDashboardLocationInfoNew(locationId);
 		//return new ResponseEntity<>(childrenLocations,OK);
 		return locationInfoById;
 	}
