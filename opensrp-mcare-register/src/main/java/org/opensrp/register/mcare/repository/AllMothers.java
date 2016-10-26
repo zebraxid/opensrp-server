@@ -2,13 +2,12 @@ package org.opensrp.register.mcare.repository;
 
 import java.util.List;
 
+import org.ektorp.ComplexKey;
 import org.ektorp.CouchDbConnector;
-import org.ektorp.ViewResult;
 import org.ektorp.support.GenerateView;
 import org.ektorp.support.View;
 import org.motechproject.dao.MotechBaseRepository;
 import org.opensrp.common.AllConstants;
-import org.opensrp.register.mcare.domain.Elco;
 import org.opensrp.register.mcare.domain.Mother;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,20 +41,25 @@ public class AllMothers extends MotechBaseRepository<Mother> {
 		Mother mother = findByCaseId(caseId);
 		update(mother.setIsClosed(true));
 	}
-	
+
 	@View(name = "all_open_mothers_for_provider", map = "function(doc) { if (doc.type === 'Mother' && doc.PROVIDERID) { emit(doc.PROVIDERID); } }")
 	public List<Mother> allOpenMothersForProvider(String providerId) {
-		return db.queryView(
-				createQuery("all_open_mothers_for_provider").key(providerId)
-						.includeDocs(true), Mother.class);
+		return db.queryView(createQuery("all_open_mothers_for_provider").key(providerId).includeDocs(true), Mother.class);
 	}
+
 	@View(name = "all_open_mothers_for_provider", map = "function(doc) { if (doc.type === 'Mother' && doc.PROVIDERID) { emit(doc.PROVIDERID); } }")
 	public List<Mother> allOpenMothers() {
-		return db.queryView(
-				createQuery("all_open_mothers_for_provider")
-						.includeDocs(true), Mother.class);
+		return db.queryView(createQuery("all_open_mothers_for_provider").includeDocs(true), Mother.class);
 	}
-	
+
+	@View(name = "created_in_between_2_dates", map = "function(doc) { if(doc.type === 'Mother' && doc.type && doc.SUBMISSIONDATE) { emit( [doc.type, doc.SUBMISSIONDATE], null); } }")
+	public List<Mother> allMothersCreatedBetween2Dates(String type, long startKey, long endKey) {
+		ComplexKey start = ComplexKey.of(type, startKey);
+		ComplexKey end = ComplexKey.of(type, endKey);
+		List<Mother> mothers = db.queryView(createQuery("created_in_between_2_dates").startKey(start).endKey(end).includeDocs(true), Mother.class);
+		return mothers;
+	}
+
 	/*
 	 * @View(name = "all_households", map =
 	 * "function(doc) { if (doc.type === 'HouseHold') { emit(doc.PROVIDERID, doc.CASEID); } }"

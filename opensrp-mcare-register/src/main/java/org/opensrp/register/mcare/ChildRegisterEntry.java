@@ -1,4 +1,4 @@
-package org.opensrp.register.mcare.domain;
+package org.opensrp.register.mcare;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -6,128 +6,124 @@ import java.util.Map;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.codehaus.jackson.annotate.JsonProperty;
-import org.ektorp.support.TypeDiscriminator;
-import org.motechproject.model.MotechBaseDataObject;
 
-@TypeDiscriminator("doc.type === 'Child'")
-public class Child extends MotechBaseDataObject {
-	@JsonProperty
+public class ChildRegisterEntry {
+
 	private String caseId;
-	@JsonProperty
+
 	private String INSTANCEID;
-	@JsonProperty
+
 	private String LOCATIONID;
-	@JsonProperty
+
 	private String PROVIDERID;
-	@JsonProperty
+
 	private String TODAY;
-	@JsonProperty
+
 	private String START;
-	@JsonProperty
+
 	private String END;
-	@JsonProperty
+
 	private String encc1_current_form_status;
-	@JsonProperty
+
 	private String encc2_current_form_status;
-	@JsonProperty
+
 	private String encc3_current_form_status;
-	@JsonProperty
+
 	private String isClosed;
-	@JsonProperty
+
 	private Map<String, String> details;
-	@JsonProperty
+
 	private Map<String, String> enccVisitOne;
-	@JsonProperty
+
 	private Map<String, String> enccVisitTwo;
-	@JsonProperty
+
 	private Map<String, String> enccVisitThree;
-	@JsonProperty
+
 	private long SUBMISSIONDATE;
 
-	public Child() {
+	public ChildRegisterEntry() {
 		details = new HashMap<String, String>();
 		enccVisitOne = new HashMap<String, String>();
 		enccVisitTwo = new HashMap<String, String>();
 		enccVisitThree = new HashMap<String, String>();
 	}
 
-	public Child withCaseId(String caseId) {
+	public ChildRegisterEntry withCaseId(String caseId) {
 		this.caseId = caseId;
 		return this;
 	}
 
-	public Child withINSTANCEID(String INSTANCEID) {
+	public ChildRegisterEntry withINSTANCEID(String INSTANCEID) {
 		this.INSTANCEID = INSTANCEID;
 		return this;
 	}
 
-	public Child withPROVIDERID(String PROVIDERID) {
+	public ChildRegisterEntry withPROVIDERID(String PROVIDERID) {
 		this.PROVIDERID = PROVIDERID;
 		return this;
 	}
 
-	public Child withLOCATIONID(String LOCATIONID) {
+	public ChildRegisterEntry withLOCATIONID(String LOCATIONID) {
 		this.LOCATIONID = LOCATIONID;
 		return this;
 	}
 
-	public Child withTODAY(String lmp) {
+	public ChildRegisterEntry withTODAY(String lmp) {
 		this.TODAY = lmp;
 		return this;
 	}
 
-	public Child withSTART(String START) {
+	public ChildRegisterEntry withSTART(String START) {
 		this.START = START;
 		return this;
 	}
 
-	public Child withEND(String END) {
+	public ChildRegisterEntry withEND(String END) {
 		this.END = END;
 		return this;
 	}
 
-	public Child withDetails(Map<String, String> details) {
+	public ChildRegisterEntry withDetails(Map<String, String> details) {
 		this.details = new HashMap<>(details);
 		return this;
 	}
 
-	public Child withENCCVisitOne(Map<String, String> enccVisitOne) {
+	public ChildRegisterEntry withENCCVisitOne(Map<String, String> enccVisitOne) {
 		this.enccVisitOne = new HashMap<>(enccVisitOne);
 		return this;
 	}
 
-	public Child withENCCVisitTwo(Map<String, String> enccVisitTwo) {
+	public ChildRegisterEntry withENCCVisitTwo(Map<String, String> enccVisitTwo) {
 		this.enccVisitTwo = new HashMap<>(enccVisitTwo);
 		return this;
 	}
 
-	public Child withENCCVisitThree(Map<String, String> enccVisitThree) {
+	public ChildRegisterEntry withENCCVisitThree(Map<String, String> enccVisitThree) {
 		this.enccVisitThree = new HashMap<>(enccVisitThree);
 		return this;
 	}
 
-	public Child setEncc1_current_form_status(String encc1_current_form_status) {
+	public ChildRegisterEntry setEncc1_current_form_status(String encc1_current_form_status) {
 		this.encc1_current_form_status = encc1_current_form_status;
 		return this;
 	}
 
-	public Child setEncc2_current_form_status(String encc2_current_form_status) {
+	public ChildRegisterEntry setEncc2_current_form_status(String encc2_current_form_status) {
 		this.encc2_current_form_status = encc2_current_form_status;
 		return this;
 	}
 
-	public Child setEncc3_current_form_status(String encc3_current_form_status) {
+	public ChildRegisterEntry setEncc3_current_form_status(String encc3_current_form_status) {
 		this.encc3_current_form_status = encc3_current_form_status;
 		return this;
 	}
 
-	public Child withSUBMISSIONDATE(long SUBMISSIONDATE) {
+	public ChildRegisterEntry withSUBMISSIONDATE(long SUBMISSIONDATE) {
 		this.SUBMISSIONDATE = SUBMISSIONDATE;
 		return this;
 	}
 
-	public Child setIsClosed(boolean isClosed) {
+	public ChildRegisterEntry setIsClosed(boolean isClosed) {
 		this.isClosed = Boolean.toString(isClosed);
 		return this;
 	}
