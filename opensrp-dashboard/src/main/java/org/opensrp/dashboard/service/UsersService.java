@@ -321,6 +321,22 @@ public class UsersService {
 		return allUsersDTO;
 	}
 	
+	public List<UserDTO> getAllUsersWithRoles(){
+		List<UserDTO> allUsersDTO = new ArrayList<UserDTO>();
+		List<User> allUser = allUsers.getAll();
+		if(allUser != null){
+			for(int i = 0 ; i < allUser.size(); i++){
+				UserDTO userDTO = new UserDTO();
+				userDTO.withUserName(allUser.get(i).getUserName()); 
+				userDTO.withId(allUser.get(i).getId());
+				userDTO.withRoles(allUser.get(i).getRoles());
+				userDTO.withStatus(allUser.get(i).getStatus());
+				allUsersDTO.add(userDTO);
+			}
+		}
+		return allUsersDTO;
+	}
+	
 	public List<SimplifiedUser> getUsersByRole(String roleId){
 		List<SimplifiedUser> allUsersDTO = new ArrayList<SimplifiedUser>();
 		List<User> allUser = allUsers.findUsersByRole(roleId);

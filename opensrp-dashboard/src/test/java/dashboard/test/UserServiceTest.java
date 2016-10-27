@@ -71,7 +71,7 @@ public class UserServiceTest {
 		userService = new UsersService(allUsers, roleService, allDashboardLocations, allLocationTags);
     }   
 
-    @Ignore@Test 
+    @Ignore @Test 
     public void testUserService() throws Exception {
     	/*String pass = "Pass45";
     	byte[] encodedPass = Base64.encode(pass.getBytes());

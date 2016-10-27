@@ -43,7 +43,7 @@ public class PrivilegeServiceTest {
     	//initMocks(this);
     }
 
-    @Ignore@Test 
+    @Ignore @Test 
     public void testPrivilegeService() throws Exception {
 		Privilege testPrivilege = allPrivileges.privilegeByName("testPrivilege");
 		assertNull(testPrivilege);

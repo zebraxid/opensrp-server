@@ -288,6 +288,7 @@ public class DashboardLocationService {
 			locationInfoDTO.setOwnSiblings(ownSiblings);
 			
 			if(currentTag.equals("Division")){
+				currentParentId = locationById.getParentId();
 				DashboardLocation currentParent = allDashboardLocations.get(currentParentId);
 				DashboardLocationDTO currentParentDTO = null;
 				

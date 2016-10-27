@@ -52,7 +52,7 @@ public class LocationTagServiceTest {
 		locationTagService = new LocationTagService(allLocationTags);
     }
 
-    @Ignore@Test 
+    @Ignore @Test 
     public void testLocationTagService() throws Exception {
     	/*LocationTag tag = new LocationTag();
     	tag.withName("Country").withParentTagId("");

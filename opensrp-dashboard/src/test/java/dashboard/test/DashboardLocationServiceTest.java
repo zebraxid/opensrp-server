@@ -65,7 +65,7 @@ public class DashboardLocationServiceTest {
 		locationTagService  = new LocationTagService(allLocationTags);
     }
 
-    @Ignore@Test 
+   @Ignore @Test 
     public void testDashboardLocationService() throws Exception {
     	/*
     	 * Code for creating Country 

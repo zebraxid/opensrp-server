@@ -1,15 +1,22 @@
 package org.opensrp.web.controller;
 
 import static org.springframework.http.HttpStatus.OK;
-import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
+import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
 
+import java.awt.peer.LightweightPeer;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.json.JSONException;
 import org.opensrp.connector.openmrs.service.OpenmrsUserService;
+import org.opensrp.dashboard.domain.DashboardLocation;
+import org.opensrp.dashboard.domain.LocationTag;
 import org.opensrp.dashboard.dto.DashboardLocationDTO;
 import org.opensrp.dashboard.dto.DashboardLocationInfoDTO;
 import org.opensrp.dashboard.dto.DashboardLocationInfoDTONew;
@@ -18,13 +25,12 @@ import org.opensrp.dashboard.dto.PrivilegeDTO;
 import org.opensrp.dashboard.dto.RoleDTO;
 import org.opensrp.dashboard.dto.SimplifiedUser;
 import org.opensrp.dashboard.dto.UserDTO;
+import org.opensrp.service.LocationService;
 import org.opensrp.dashboard.service.DashboardLocationService;
 import org.opensrp.dashboard.service.LocationTagService;
 import org.opensrp.dashboard.service.PrivilegeService;
 import org.opensrp.dashboard.service.RoleService;
 import org.opensrp.dashboard.service.UsersService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -195,6 +201,12 @@ public class AclController {
 	@ResponseBody
 	public ArrayList<SimplifiedUser> getAllUsers() {
 		return (ArrayList<SimplifiedUser>) userService.getAllUsers();
+	}
+	
+	@RequestMapping(method = GET, value = "/get-all-users-with-role")
+	@ResponseBody
+	public ArrayList<UserDTO> getAllUsersWithRoles() {
+		return (ArrayList<UserDTO>) userService.getAllUsersWithRoles();
 	}
 	
 	@RequestMapping(method = GET, value = "/get-users-by-role")

@@ -50,7 +50,7 @@ public class RoleServiceTest {
     	//initMocks(this);
     }
 
-    @Ignore@Test 
+    @Ignore @Test  
     public void testPrivilegeService() throws Exception {
 		Privilege testPrivilege = allPrivileges.privilegeByName("testPrivilege");
 		assertNull(testPrivilege);
@@ -69,7 +69,7 @@ public class RoleServiceTest {
 		assertNull(testPrivilege);
     }
     
-    @Ignore@Test 
+    @Ignore @Test 
     public void ifAllRolesIsReturningNull() throws Exception {
 		//allRoles.getAll();
     	List<Role> roles = allRoles.getAll();
