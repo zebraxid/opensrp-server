@@ -61,7 +61,8 @@ public class CampDateService implements CampInterface<CampDate>{
 		campDate.setThana(campDTO.getThana());
 		campDate.setUnion(campDTO.getUnion());
 		campDate.setWard(campDTO.getWard());
-		campDate.setUnit(campDTO.getUnit());
+		campDate.setUnit(campDTO.getUnit());		
+		campDate.setDeleted(campDateDTO.isDeleted());
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		Date date = sdf.parse(campDateDTO.getSession_date().toString());
@@ -103,8 +104,8 @@ public class CampDateService implements CampInterface<CampDate>{
 	public List<CampDate> search(String thana,String union,String ward,String unit,String healthAssistant ){
 		return campDateRepository.search(thana, union, ward, unit, healthAssistant);
 	}
-	public List<CampDate> findCampByToday(){		
-		return campDateRepository.findByTimeStamp(DateTimeUtil.getTimeStampTodatDay());	
+	public List<CampDate> findCampByToday(String HA){		
+		return campDateRepository.findByTimeStampByHealthAssistant(DateTimeUtil.getTimeStampTodatDay(),HA);	
 		
 	}
 	public List<CampDate> findByTimeStamp(){		
@@ -124,5 +125,10 @@ public class CampDateService implements CampInterface<CampDate>{
 		}		
 		return day.getTime();
 	}
+
+	public List<CampDate> findCampByTodayForVaccinationListener() {
+	    // TODO Auto-generated method stub
+		return campDateRepository.findByTimeStamp(DateTimeUtil.getTimeStampTodatDay());
+    }
 	
 }

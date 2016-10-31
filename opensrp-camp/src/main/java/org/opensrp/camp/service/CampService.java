@@ -12,6 +12,7 @@ import org.opensrp.camp.dto.CampDateDTO;
 import org.opensrp.camp.interfaces.CampInterface;
 import org.opensrp.camp.repository.CampDateRepository;
 import org.opensrp.camp.repository.CampRepository;
+import org.opensrp.common.AllConstants.ScheduleNames;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +49,33 @@ public class CampService implements CampInterface<CampDTO> {
 	public void setCampRepository(CampRepository campRepository) {
 		this.campRepository = campRepository;
 	}
-	
+	public String campNameList(){
+		List<String> camp = new ArrayList<>();
+		camp.add(ScheduleNames.SCHEDULE_Woman_Measles);
+		camp.add(ScheduleNames.SCHEDULE_Woman_1);
+		camp.add(ScheduleNames.SCHEDULE_Woman_2);
+		camp.add(ScheduleNames.SCHEDULE_Woman_3);
+		camp.add(ScheduleNames.SCHEDULE_Woman_4);
+		camp.add(ScheduleNames.SCHEDULE_Woman_5);
+		camp.add(ScheduleNames.child_vaccination_bcg);
+		camp.add(ScheduleNames.child_vaccination_ipv);
+		camp.add(ScheduleNames.child_vaccination_measles1);
+		camp.add(ScheduleNames.child_vaccination_measles2);
+		camp.add(ScheduleNames.child_vaccination_opv0);
+		camp.add(ScheduleNames.child_vaccination_opv1);
+		camp.add(ScheduleNames.child_vaccination_opv2);
+		camp.add(ScheduleNames.child_vaccination_opv3);
+		camp.add(ScheduleNames.child_vaccination_pcv1);
+		camp.add(ScheduleNames.child_vaccination_pcv2);
+		camp.add(ScheduleNames.child_vaccination_pcv3);
+		camp.add(ScheduleNames.child_vaccination_penta1);
+		camp.add(ScheduleNames.child_vaccination_penta2);
+		camp.add(ScheduleNames.child_vaccination_penta3);
+		Gson gson = new Gson();
+		String campString = gson.toJson(camp);
+		return campString;
+		
+	}
 	public String getCampById(String id) {
 		logger.info("campRepository: " + campRepository);
 		Camp campDates = campRepository.findById(id);

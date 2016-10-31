@@ -54,7 +54,7 @@ public class AllActions extends MotechBaseRepository<Action> {
         return db.queryView(createQuery("action_by_caseId_and_schedule_and_time").startKey(startKey).endKey(endKey).includeDocs(true), Action.class);
     }
     @View(name = "list_of_eligible_client_for_vaccine", 
-    		map = "function(doc) {if (doc.type === 'Action'  && doc.data.alertStatus !='earlier' && doc.isActionActive ==1){emit([doc.anmIdentifier,doc.data.scheduleName], doc);}}")
+    		map = "function(doc) {if (doc.type === 'Action'  && doc.data.alertStatus !='earlier' && doc.data.alertStatus !='expired' && doc.isActionActive ==1){emit([doc.anmIdentifier,doc.data.scheduleName], doc);}}")
     public List<Action> listOfEligibleClientForVaccine(String provider,String vaccineName){
     	ComplexKey startkey = ComplexKey.of(provider,vaccineName);
     	List<Action> actions = db.queryView(createQuery("list_of_eligible_client_for_vaccine")

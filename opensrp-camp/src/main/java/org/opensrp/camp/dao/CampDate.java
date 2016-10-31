@@ -42,6 +42,8 @@ public class CampDate extends MotechBaseDataObject {
 	private String contact;
 	@JsonProperty("timestamp")
 	private long timestamp;
+	@JsonProperty("deleted")
+	private boolean deleted;
 	
 	public CampDate() {
 		// TODO Auto-generated constructor stub
@@ -51,7 +53,8 @@ public class CampDate extends MotechBaseDataObject {
 
 	
     public CampDate(String session_date, String session_id, String session_location, String session_name, String status,
-        String health_assistant, String thana, String union, String ward, String unit, String contact, long timestamp) {
+        String health_assistant, String thana, String union, String ward, String unit, String contact,
+        long timestamp,boolean deleted) {
 	    super();
 	    this.session_date = session_date;
 	    this.session_id = session_id;
@@ -65,6 +68,7 @@ public class CampDate extends MotechBaseDataObject {
 	    this.unit = unit;
 	    this.contact = contact;
 	    this.timestamp = timestamp;
+	    this.deleted = deleted;
     }
 
 
@@ -212,9 +216,24 @@ public class CampDate extends MotechBaseDataObject {
     public void setUnit(String unit) {
     	this.unit = unit;
     }
+
+
+
+
 	
+    public boolean isDeleted() {
+    	return deleted;
+    }
+
+
+
+
 	
-	
-	
+    public void setDeleted(boolean deleted) {
+    	this.deleted = deleted;
+    }
+
+
+
     
 }
