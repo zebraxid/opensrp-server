@@ -67,12 +67,12 @@ public class ChildVaccineSchedule {
 				}
 			}
 
-		if (membersFields.containsKey(cond))
+		/*if (membersFields.containsKey(cond))
 		if (membersFields.get(cond) != null && !membersFields.get(cond).equalsIgnoreCase("")){
 			membersScheduleService.unEnrollFromImmediateSchedule(
 					members.caseId(),submission.anmId(),scheduleName,immediateScheduleName);
 			vaccinationService.updateVaccineStatus(members.caseId(), scheduleName);
-		}		
+		}*/		
 	}
 	
 	public void AfterimmediateChildVisit(FormSubmission submission, Members members, String scheduleName, String immediateScheduleName, String refDate, String age, String age_days, String cond, int agenum, int days){
@@ -131,12 +131,12 @@ public class ChildVaccineSchedule {
 			}
 		}
 
-		if (membersFields.containsKey(cond))
+		/*if (membersFields.containsKey(cond))
 		if (membersFields.get(cond) != null && !membersFields.get(cond).equalsIgnoreCase("")){
 			membersScheduleService.unEnrollFromSchedule(
 					members.caseId(),submission.anmId(),scheduleName);
 			vaccinationService.updateVaccineStatus(members.caseId(), scheduleName);
-		}
+		}*/
 	}
 	
 	public void ChildFollowupVaccine(FormSubmission submission, Members members, String scheduleName, String refDate, String age, String age_days, String cond, int agenum, int days) {

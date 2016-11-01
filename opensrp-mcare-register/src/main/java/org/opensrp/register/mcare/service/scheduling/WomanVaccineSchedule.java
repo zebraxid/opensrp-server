@@ -54,13 +54,13 @@ public class WomanVaccineSchedule {
 			}
 			}
 		
-		if(membersFields.containsKey(cond2))
+		/*if(membersFields.containsKey(cond2))
 			if(membersFields.get(cond2) != null && !membersFields.get(cond2).equalsIgnoreCase(""))
 			if(membersFields.get(cond2).equalsIgnoreCase("3")){
 				membersScheduleService.unEnrollFromImmediateSchedule(
 					members.caseId(),submission.anmId(),scheduleName,immediateScheduleName);
 				vaccinationService.updateVaccineStatus(members.caseId(), scheduleName);
-			}
+			}*/
 		
 	}
 	
@@ -79,12 +79,12 @@ public class WomanVaccineSchedule {
 			membersScheduleService.enrollWomanTTVisit(members.caseId(),submission.anmId(),membersFields.get(refDate),scheduleName);
 		}
 		
-		if (membersFields.containsKey(cond))
+		/*if (membersFields.containsKey(cond))
 		if (membersFields.get(cond) != null && !membersFields.get(cond).equalsIgnoreCase("")){
 			membersScheduleService.unEnrollFromSchedule(
 					members.caseId(),submission.anmId(),scheduleName);
 			vaccinationService.updateVaccineStatus(members.caseId(), scheduleName);
-		}		
+		}*/		
 	}
 	
 	public void WomanFollowupVaccine(FormSubmission submission, Members members, String scheduleName, String refDate, String cond) {
