@@ -5,6 +5,8 @@ package org.opensrp.register.mcare.service;
 
 import java.util.Date;
 import java.util.List;
+
+import org.motechproject.util.DateUtil;
 import org.opensrp.common.AllConstants;
 import org.joda.time.DateTime;
 import org.opensrp.domain.Vaccine;
@@ -42,9 +44,11 @@ public class VaccinationService {
     public void saveVaccine(String anmIdentifier,String caseID,String scheduleName){
     	List<Action> existingAlert = allActions.findAlertByANMIdEntityIdScheduleName(anmIdentifier, caseID, scheduleName);
 	 	try{
-	 		if(!scheduleName.equalsIgnoreCase(AllConstants.ScheduleNames.CENCUS) || !scheduleName.equalsIgnoreCase(AllConstants.ScheduleNames.SCHEDULE_Woman_BNF)){
+	 		if(scheduleName.equalsIgnoreCase(AllConstants.ScheduleNames.CENCUS)) {
+	 		}else if(scheduleName.equalsIgnoreCase(AllConstants.ScheduleNames.SCHEDULE_Woman_BNF)){
+	 		}else{
 	     		Vaccine vaccine = new Vaccine(existingAlert.get(0).anmIdentifier(), existingAlert.get(0).caseId(), existingAlert.get(0).getId(), 
-	     			existingAlert.get(0).data().get("beneficiaryType"), existingAlert.get(0).data().get("scheduleName"),  existingAlert.get(0).data().get("startDate"), existingAlert.get(0).data().get("expiryDate"), false, 0, new Date(), new DateTime());		        	
+	     			existingAlert.get(0).data().get("beneficiaryType"), existingAlert.get(0).data().get("scheduleName"),  existingAlert.get(0).data().get("startDate"), existingAlert.get(0).data().get("expiryDate"), false, 0, new Date(), new DateTime(),DateUtil.now().getMillis());		        	
 	     		allVaccine.save(vaccine);
 	 		}
      	}catch(Exception e){		        		
@@ -72,6 +76,7 @@ public class VaccinationService {
     		existingVaccine.setMissedCount(missedCount);    		
     		existingVaccine.setId(existingVaccine.getId());
     		existingVaccine.setRevision(existingVaccine.getRevision());
+    		existingVaccine.setTimeStamp(DateUtil.now().getMillis());
     		allVaccine.update(existingVaccine);
     	}catch(Exception e){		        		
     		e.printStackTrace();

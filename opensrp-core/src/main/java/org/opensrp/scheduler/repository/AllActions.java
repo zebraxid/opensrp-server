@@ -53,17 +53,41 @@ public class AllActions extends MotechBaseRepository<Action> {
         ComplexKey endKey = ComplexKey.of(caseId, schedule, end.getMillis());
         return db.queryView(createQuery("action_by_caseId_and_schedule_and_time").startKey(startKey).endKey(endKey).includeDocs(true), Action.class);
     }
-    @View(name = "list_of_eligible_client_for_vaccine", 
-    		map = "function(doc) {if (doc.type === 'Action'  && doc.data.alertStatus !='earlier' && doc.isActionActive ==1){emit([doc.anmIdentifier,doc.data.scheduleName], doc);}}")
+    
+    @View(name = "list_of_eligible_client_for_vaccine_by_provider", 
+    		map = "function(doc) {if (doc.type === 'Action'  && doc.data.alertStatus !='earlier' && doc.data.alertStatus !='expired' && doc.isActionActive ==1){emit([doc.anmIdentifier], doc);}}")
+    public List<Action> listOfEligibleClientForVaccines(String provider){
+    	ComplexKey startkey = ComplexKey.of(provider);
+    	List<Action> actions = db.queryView(createQuery("list_of_eligible_client_for_vaccine_by_provider")
+			.key(startkey)				
+			.includeDocs(true), Action.class);
+		return actions;
+    	
+    }
+    
+    @View(name = "list_of_eligible_client_by_schedule", 
+    		map = "function(doc) {if (doc.type === 'Action'  && doc.data.alertStatus !='earlier' && doc.data.alertStatus !='expired' && doc.isActionActive ==1){emit([doc.anmIdentifier,doc.data.scheduleName], doc);}}")
     public List<Action> listOfEligibleClientForVaccine(String provider,String vaccineName){
     	ComplexKey startkey = ComplexKey.of(provider,vaccineName);
-    	List<Action> actions = db.queryView(createQuery("list_of_eligible_client_for_vaccine")
+    	List<Action> actions = db.queryView(createQuery("list_of_eligible_client_by_schedule")
 			.key(startkey)	
 			//.endKey(endkey)
 			.includeDocs(true), Action.class);
 		return actions;
     	
     }
+    @View(name = "list_of_eligible_client_for_vaccine_todays", 
+    		map = "function(doc) {if (doc.type === 'Action'  && doc.data.alertStatus !='earlier' && doc.data.alertStatus !='expired' && doc.isActionActive ==1){emit([doc.anmIdentifier,doc.data.scheduleName], doc);}}")
+    public List<Action> listOfEligibleClientForVaccineTodaysChild(String provider,String vaccineName){
+    	ComplexKey startkey = ComplexKey.of(provider,vaccineName);
+    	List<Action> actions = db.queryView(createQuery("list_of_eligible_client_for_vaccine_todays")
+			.key(startkey)			
+			.includeDocs(true), Action.class);
+		return actions;
+    	
+    }
+   
+    
     public void deleteAllByTarget(String target) {
         deleteAll(findByActionTarget(target));
     }

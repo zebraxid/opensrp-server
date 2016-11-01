@@ -61,6 +61,15 @@ public class CampDateRepository extends MotechBaseRepository<CampDate> {
 		}
 		return camp;
 	}
+	@View(name = "by_TimeStamp_Health_Assistant", map = "function(doc) { if (doc.type === 'CampDate' && doc._id && doc.status=='Active') { emit([doc.timestamp,doc.health_assistant], doc); } }")
+	public List<CampDate> findByTimeStampByHealthAssistant(long date,String HealthAssistant) {
+		ComplexKey ckey = ComplexKey.of(date, HealthAssistant);
+		List<CampDate> camp = db.queryView(createQuery("by_TimeStamp_Health_Assistant").key(ckey).includeDocs(true), CampDate.class);
+		if (camp == null || camp.isEmpty()) {
+			return null;
+		}
+		return camp;
+	}
 	
 	@View(name = "all_camp_with_username", map = "function(doc) { if (doc.type === 'CampDate' && doc.username) { emit(doc._id,doc); } }")
 		public List<CampDate> getAllCamp() {

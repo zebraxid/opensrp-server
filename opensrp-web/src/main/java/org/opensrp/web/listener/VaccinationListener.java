@@ -40,7 +40,7 @@ public class VaccinationListener {
 
 	public void vaccinationListener() {	
 		logger.info("vaccinationListener called");
-		List<CampDate> campDates =campDateService.findCampByToday();
+		List<CampDate> campDates =campDateService.findCampByTodayForVaccinationListener();
 		if(campDates !=null){
 			for (CampDate campDate : campDates) {
 				List<Action> actions = allActions.listOfEligibleClientForVaccine(campDate.getHealth_assistant(),campDate.getSession_name());
@@ -50,7 +50,7 @@ public class VaccinationListener {
 						campDate.setStatus("Completed");
 						campDate.setId(campDate.getId());
 						campDate.setRevision(campDate.getRevision());
-						campDateService.edit(campDate);
+						//campDateService.edit(campDate);
 					}catch(Exception e){
 						e.printStackTrace();
 					}

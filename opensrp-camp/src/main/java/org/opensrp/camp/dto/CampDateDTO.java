@@ -22,7 +22,8 @@ public class CampDateDTO {
 	private String ward;
 	@JsonProperty("unit")
 	private String unit;
-	
+	@JsonProperty("deleted")
+	private boolean deleted;
 	public CampDateDTO() {
 		// TODO Auto-generated constructor stub
 	}
@@ -31,7 +32,7 @@ public class CampDateDTO {
 
 	
     public CampDateDTO(String session_date, String session_location, String session_name, String status, long timestamp,
-        String thana, String union, String ward, String unit) {
+        String thana, String union, String ward, String unit,boolean deleted) {
 	    super();
 	    this.session_date = session_date;
 	    this.session_location = session_location;
@@ -42,6 +43,7 @@ public class CampDateDTO {
 	    this.union = union;
 	    this.ward = ward;
 	    this.unit = unit;
+	    this.deleted = deleted;
     }
 
 
@@ -161,7 +163,17 @@ public class CampDateDTO {
     }
 	
 	
-   
+    public boolean isDeleted() {
+    	return deleted;
+    }
+
+
+
+
+	
+    public void setDeleted(boolean deleted) {
+    	this.deleted = deleted;
+    }
 	
 	
 	

@@ -49,11 +49,11 @@ public class CampListener {
     	this.campDateService = campDateService;
     }
 	
-	public void campAnnouncementListener() {
+	public void campAnnouncementListener(String HA) {
 		MessageFactory messageFactory = null;
 		messageFactory = MessageFactory.getMessageFactory("Ann");
 		try{
-			List<CampDate> campDates =campDateService.findCampByToday();			
+			List<CampDate> campDates =campDateService.findCampByToday(HA);			
 			sentMessageToClient(messageFactory,campDates);
 		}catch(Exception e){
 			e.printStackTrace();
@@ -89,7 +89,12 @@ public class CampListener {
 					}					
 					messageService.sentMessage(message, member.Member_Fname(), houseHold.HoH_Mobile_No(),campDate.getSession_location());
 	            }
+				campDate.setDeleted(false);
+				campDate.setId(campDate.getId());
+				campDate.setRevision(campDate.getRevision());
+				campDateService.edit(campDate);
 	        }
+			
 		}else{
 			
 		}
