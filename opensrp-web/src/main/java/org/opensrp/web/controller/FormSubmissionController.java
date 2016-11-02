@@ -241,16 +241,16 @@ public class FormSubmissionController {
 							System.out
 							        .println("Patient and Dependent client not exist into Bahmni openmrs /***********************************************************************/ ");
 							Client c = bahmniOpenmrsConnector.getClientFromFormSubmission(formSubmission);
-							//System.out.println(bahmniPatientService.createPatient(c, idGen));
+							System.out.println(bahmniPatientService.createPatient(c, idGen));
 							Event e = openmrsConnector.getEventFromFormSubmission(formSubmission);
-							//System.out.println(encounterService.createEncounter(e, idGen));
+							System.out.println(encounterService.createEncounter(e, idGen));
 							System.out.println("Event:   " + e.toString());
 							JSONObject payloadJsonObj = dhis2Connector.getEventFromFormSubmission(formSubmission, c);
 							System.out.println("Load:" + payloadJsonObj.toString());
-							//JSONObject jb = dHIS2Service.trackCapture(payloadJsonObj);
+							JSONObject jb = dHIS2Service.trackCapture(payloadJsonObj);
 							//System.out.println("Output:" + jb.toString());
 							
-							//brisConnector.getEventFromFormSubmission(formSubmission, c);
+							brisConnector.getEventFromFormSubmission(formSubmission, c);
 							
 						}
 					}

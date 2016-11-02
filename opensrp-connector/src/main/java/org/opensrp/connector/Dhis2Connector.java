@@ -82,23 +82,13 @@ public class Dhis2Connector {
             	else{
             		
     				String val = formAttributeMapper.getInstanceAttributesForFormFieldAndValue(fl.name(), fl.value(), null, fs);				
-    				//System.out.println("Value:"+val);
-    				/*e.addObs(new Obs("concept", att.get("openmrs_entity_id"), 
-    						att.get("openmrs_entity_parent"), StringUtils.isEmptyOrWhitespaceOnly(val)?fl.value():val, null, fl.name()));*/
     				String vall = "";
     				vall = StringUtils.isEmptyOrWhitespaceOnly(val)?fl.value():val;
+    				JSONObject attrValueObj = new JSONObject();
+    				attrValueObj.put(att.get("dhis_attribute"), att.get("dhis_attribute_id"));
+	    			attrValueObj.put("value",  fl.value());
+	    			attributeArray.put(attrValueObj);
     				
-    				JSONObject attrValueObj = new JSONObject(); 
-    				/*if(att.get("dhis_attribute_id").equalsIgnoreCase("Q31J4kz6nGS")){   				
-	    				attrValueObj.put(att.get("dhis_attribute"), att.get("dhis_attribute_id"));
-	    				System.err.println(" fl.value():"+ fl.value());
-	    				attrValueObj.put("value", gender);
-	    				attributeArray.put(attrValueObj);
-    				}else{*/
-    					attrValueObj.put(att.get("dhis_attribute"), att.get("dhis_attribute_id"));
-	    				attrValueObj.put("value",  fl.value());
-	    				attributeArray.put(attrValueObj);
-    				//}
             	}				
 			}
 		}
