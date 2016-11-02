@@ -28,8 +28,8 @@
       <FWMISCENTTDOSE openmrs_entity="concept" openmrs_entity_id="160055AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
       <FWMARRYDATE openmrs_entity="concept" openmrs_entity_id="163299AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
       <num_children_alive_grp>
-        <FWCHILDALIVEB openmrs_entity="concept" openmrs_entity_id="1825AAAAAAAAAAAAAAAAAAAAAAAAAAAA" openmrs_entity_parent="1534AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
-        <FWCHILDALIVEG openmrs_entity="concept" openmrs_entity_id="1825AAAAAAAAAAAAAAAAAAAAAAAAAAAA" openmrs_entity_parent="1535AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
+        <FWCHILDALIVEB openmrs_entity="concept" openmrs_entity_id="1825AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" openmrs_entity_parent="1534AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
+        <FWCHILDALIVEG openmrs_entity="concept" openmrs_entity_id="1825AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" openmrs_entity_parent="1535AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
       </num_children_alive_grp>
       <meta>
         <instanceID/>
