@@ -1,3 +1,6 @@
+/**
+ * @author Asifur
+ */
 package org.opensrp.register.mcare.domain;
 
 import java.util.HashMap;
