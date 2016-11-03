@@ -67,12 +67,15 @@ public class HHService {
 		subFormData = submission.getSubFormByName(ELCO_REGISTRATION_SUB_FORM_NAME);		
 		addDetailsToHH(submission, subFormData, houseHold);
 		
+		String UPAZILLA = submission.getField(FW_UPAZILLA);
+		if(UPAZILLA!=null && UPAZILLA.contains("+")) UPAZILLA.replace("+", " ");	
+		
 		addELCODetailsToHH(submission, subFormData, houseHold);
 		
 		houseHold.withTODAY(submission.getField(REFERENCE_DATE));
 		houseHold.withPROVIDERID(submission.anmId());
 		houseHold.withINSTANCEID(submission.instanceId());
-		houseHold.withFWUPAZILLA(submission.getField(FW_UPAZILLA).replace("+", " "));
+		houseHold.withFWUPAZILLA(UPAZILLA);
 		houseHold.withSUBMISSIONDATE(DateUtil.getTimestampToday());
 		allHouseHolds.update(houseHold);
 			
@@ -112,9 +115,12 @@ public class HHService {
 	private void addELCODetailsToHH(FormSubmission submission,
 			SubFormData subFormData, HouseHold houseHold) {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		Date today = Calendar.getInstance().getTime();
-		for (Map<String, String> elcoFields : subFormData.instances()) {
-
+		Date today = Calendar.getInstance().getTime();		
+		
+		for (Map<String, String> elcoFields : subFormData.instances()) {			
+			String UPAZILA = elcoFields.get(FW_WOMUPAZILLA);
+			if(UPAZILA!=null && UPAZILA.contains("+")) UPAZILA.replace("+", " ");
+			
 			Map<String, String> elco = create(ID, elcoFields.get(ID))
 					.put(FW_TODAY, submission.getField(REFERENCE_DATE))
 					.put(START_DATE, submission.getField(START_DATE))
@@ -148,7 +154,7 @@ public class HHService {
 					.put(FW_WOMCOUNTRY, elcoFields.get(FW_WOMCOUNTRY))
 					.put(FW_WOMDIVISION, elcoFields.get(FW_WOMDIVISION))
 					.put(FW_WOMDISTRICT, elcoFields.get(FW_WOMDISTRICT))
-					.put(FW_WOMUPAZILLA, elcoFields.get(FW_WOMUPAZILLA).replace("+", " "))
+					.put(FW_WOMUPAZILLA, UPAZILA)
 					.put(FW_WOMUNION, elcoFields.get(FW_WOMUNION))
 					.put(FW_WOMWARD, elcoFields.get(FW_WOMWARD))
 					.put(FW_WOMSUBUNIT, elcoFields.get(FW_WOMSUBUNIT))

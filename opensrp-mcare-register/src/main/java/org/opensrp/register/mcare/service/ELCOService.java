@@ -164,10 +164,13 @@ public class ELCOService {
 		SubFormData subFormData = submission.getSubFormByName(ELCO_REGISTRATION_SUB_FORM_NAME);
 
 		for (Map<String, String> elcoFields : subFormData.instances()) {
+			
+			String UPAZILA = elcoFields.get(FW_WOMUPAZILLA);
+			if(UPAZILA!=null && UPAZILA.contains("+")) UPAZILA.replace("+", " ");
 
 			Elco elco = allEcos.findByCaseId(elcoFields.get(ID)).withINSTANCEID(submission.instanceId()).withPROVIDERID(submission.anmId())
 					.withTODAY(submission.getField(REFERENCE_DATE)).withSUBMISSIONDATE(DateUtil.getTimestampToday())
-					.withFWWOMUPAZILLA(elcoFields.get(FW_WOMUPAZILLA).replace("+", " "));
+					.withFWWOMUPAZILLA(UPAZILA);
 
 			addDetailsToElco(submission, subFormData, elco);
 
@@ -202,12 +205,15 @@ public class ELCOService {
 				logger.warn(format("Failed to handle Census form as there is no household registered with ID: {0}", submission.entityId()));
 				return;
 			}
+			
+			String UPAZILLA = submission.getField(FW_UPAZILLA);
+			if(UPAZILLA!=null && UPAZILLA.contains("+")) UPAZILLA.replace("+", " ");	
 
 			addELCODetailsToHH(submission, subFormData, houseHold);
 
 			houseHold.withPROVIDERID(submission.anmId());
 			houseHold.withINSTANCEID(submission.instanceId());
-			houseHold.withFWUPAZILLA(submission.getField(FW_UPAZILLA).replace("+", " "));
+			houseHold.withFWUPAZILLA(UPAZILLA);
 
 			houseHold.details().put(existing_ELCO, submission.getField(existing_ELCO));
 			houseHold.details().put(new_ELCO, submission.getField(new_ELCO));
@@ -322,7 +328,9 @@ public class ELCOService {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date today = Calendar.getInstance().getTime();
 
-		for (Map<String, String> elcoFields : subFormData.instances()) {
+		for (Map<String, String> elcoFields : subFormData.instances()) {			
+			String UPAZLA = elcoFields.get(FW_WOMUPAZILLA);
+			if(UPAZLA!=null && UPAZLA.contains("+")) UPAZLA.replace("+", " ");
 
 			Map<String, String> elco = create(ID, elcoFields.get(ID)).put(FW_TODAY, submission.getField(REFERENCE_DATE))
 					.put(START_DATE, submission.getField(START_DATE)).put(END_DATE, submission.getField(END_DATE)).put(FW_GOBHHID, elcoFields.get(FW_GOBHHID))
@@ -339,7 +347,7 @@ public class ELCOService {
 					.put(FW_CWOMHUSSTR, elcoFields.get(FW_CWOMHUSSTR)).put(FW_CWOMHUSLIV, elcoFields.get(FW_CWOMHUSLIV))
 					.put(FW_ELIGIBLE, elcoFields.get(FW_ELIGIBLE)).put(FW_ELIGIBLE2, elcoFields.get(FW_ELIGIBLE2))
 					.put(FW_WOMCOUNTRY, elcoFields.get(FW_WOMCOUNTRY)).put(FW_WOMDIVISION, elcoFields.get(FW_WOMDIVISION))
-					.put(FW_WOMDISTRICT, elcoFields.get(FW_WOMDISTRICT)).put(FW_WOMUPAZILLA, elcoFields.get(FW_WOMUPAZILLA).replace("+", " "))
+					.put(FW_WOMDISTRICT, elcoFields.get(FW_WOMDISTRICT)).put(FW_WOMUPAZILLA, UPAZLA)
 					.put(FW_WOMUNION, elcoFields.get(FW_WOMUNION)).put(FW_WOMWARD, elcoFields.get(FW_WOMWARD))
 					.put(FW_WOMSUBUNIT, elcoFields.get(FW_WOMSUBUNIT)).put(FW_WOMMAUZA_PARA, elcoFields.get(FW_WOMMAUZA_PARA))
 					.put(FW_WOMGOBHHID, elcoFields.get(FW_WOMGOBHHID)).put(FW_WOMGPS, elcoFields.get(FW_WOMGPS)).put(profileImagePath, "")
