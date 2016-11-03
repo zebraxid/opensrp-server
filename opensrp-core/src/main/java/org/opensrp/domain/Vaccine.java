@@ -37,12 +37,14 @@ public class Vaccine extends MotechBaseDataObject{
 	    private Date createdDate;
 	    @JsonProperty
 	    private DateTime executionDate;
+	    @JsonProperty
+	    private long timeStamp; 
 	    public Vaccine(){
 	    	
 	    }
 		public Vaccine(String health_assistant, String clientId, String actionId, String beneficiaryType,
             String vaccineName, String scheduleDate, String expiredDate, boolean status, int missedCount,
-            Date createdDate, DateTime executionDate) {
+            Date createdDate, DateTime executionDate,long timeStamp) {
 	        super();
 	        this.health_assistant = health_assistant;
 	        this.clientId = clientId;
@@ -55,6 +57,7 @@ public class Vaccine extends MotechBaseDataObject{
 	        this.missedCount = missedCount;
 	        this.createdDate = createdDate;
 	        this.executionDate = executionDate;
+	        this.timeStamp = timeStamp;
         }
 		
         public String getHealth_assistant() {
@@ -145,6 +148,15 @@ public class Vaccine extends MotechBaseDataObject{
         	this.executionDate = executionDate;
         }
 		
+        public long getTimeStamp() {
+        	return timeStamp;
+        }
+		
+        public void setTimeStamp(long timeStamp) {
+        	this.timeStamp = timeStamp;
+        }
+		
+        
 	    
 	
 }

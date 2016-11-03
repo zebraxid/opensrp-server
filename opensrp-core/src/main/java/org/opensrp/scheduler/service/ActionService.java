@@ -13,6 +13,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
+import org.motechproject.util.DateUtil;
 import org.opensrp.common.AllConstants;
 import org.opensrp.common.AllConstants.ScheduleNames;
 import org.opensrp.domain.Vaccine;
@@ -110,8 +111,11 @@ public class ActionService {
 		 	      } 	      
 		 	     List<Action> existingAlert = allActions.findAlertByANMIdEntityIdScheduleName(anmIdentifier, caseID, scheduleName);
 		 	    try{
-		 	    	if(!scheduleName.equalsIgnoreCase(AllConstants.ScheduleNames.CENCUS) || !scheduleName.equalsIgnoreCase(AllConstants.ScheduleNames.SCHEDULE_Woman_BNF)){
-		        		Vaccine vaccine = new Vaccine(anmIdentifier, caseID, existingAlert.get(0).getId(), beneficiaryType.name(), scheduleName, startDate.toLocalDate().toString(), expiryDate.toLocalDate().toString(), false, 0, new Date(), new DateTime());		        	
+		 	    	if(scheduleName.equalsIgnoreCase(AllConstants.ScheduleNames.CENCUS)){		 	    		
+		 	    	}else if(scheduleName.equalsIgnoreCase(AllConstants.ScheduleNames.SCHEDULE_Woman_BNF)){		 	    		
+		 	    	}else{
+		 	    		System.err.println("scheduleName:"+scheduleName);
+		 	    		Vaccine vaccine = new Vaccine(anmIdentifier, caseID, existingAlert.get(0).getId(), beneficiaryType.name(), scheduleName, startDate.toLocalDate().toString(), expiryDate.toLocalDate().toString(), false, 0, new Date(), new DateTime(),DateUtil.now().getMillis());		        	
 		        		allVaccine.save(vaccine);
 		 	    	}
 	        	}catch(Exception e){		        		
@@ -128,10 +132,13 @@ public class ActionService {
 		        	
 		        	List<Action> existingAlert = allActions.findAlertByANMIdEntityIdScheduleName(anmIdentifier, caseID, scheduleName);
 		        	try{
-		        		if(!scheduleName.equalsIgnoreCase(AllConstants.ScheduleNames.CENCUS) || !scheduleName.equalsIgnoreCase(AllConstants.ScheduleNames.SCHEDULE_Woman_BNF)){
-			        		Vaccine vaccine = new Vaccine(anmIdentifier, caseID, existingAlert.get(0).getId(), beneficiaryType.name(), scheduleName, startDate.toLocalDate().toString(), expiryDate.toLocalDate().toString(), false, 0, new Date(), new DateTime());		        	
+		        		if(scheduleName.equalsIgnoreCase(AllConstants.ScheduleNames.CENCUS)){		 	    		
+			 	    	}else if(scheduleName.equalsIgnoreCase(AllConstants.ScheduleNames.SCHEDULE_Woman_BNF)){		 	    		
+			 	    	}else{
+			 	    		System.err.println("scheduleName:"+scheduleName);
+			 	    		Vaccine vaccine = new Vaccine(anmIdentifier, caseID, existingAlert.get(0).getId(), beneficiaryType.name(), scheduleName, startDate.toLocalDate().toString(), expiryDate.toLocalDate().toString(), false, 0, new Date(), new DateTime(),DateUtil.now().getMillis());		        	
 			        		allVaccine.save(vaccine);
-		        		}
+			 	    	}
 		        	}catch(Exception e){		        		
 		        		e.printStackTrace();
 		        	}		        	

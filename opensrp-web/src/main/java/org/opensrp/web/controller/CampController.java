@@ -8,6 +8,8 @@ import org.json.JSONException;
 import org.opensrp.camp.dto.CampDTO;
 import org.opensrp.camp.service.CampDateService;
 import org.opensrp.camp.service.CampService;
+import org.opensrp.service.ClientListForCamp;
+import org.opensrp.web.listener.CampListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +29,8 @@ public class CampController {
 	
 	private CampDateService campDateService;
 	
+	private CampListener campListener;
+	private ClientListForCamp clientListForCamp;
 	private static Logger logger = LoggerFactory.getLogger(CampController.class);
 	
 	@Autowired
@@ -35,15 +39,31 @@ public class CampController {
 	}
 	
 	@Autowired
+    public void setClientListForCamp(ClientListForCamp clientListForCamp) {
+    	this.clientListForCamp = clientListForCamp;
+    }
+	@Autowired
 	public void setCampService(CampService campService) {
 		this.campService = campService;
-	}
-	
+	}	
+	@Autowired
+    public void setCampListener(CampListener campListener) {
+    	this.campListener = campListener;
+    }
+
 	@RequestMapping(method = GET, value = "/camp")
 	@ResponseBody
 	public ResponseEntity<String> getCamp(@RequestParam String id) {
 		logger.info("CAm::::" + campService);
 		String jsonString = campService.getCampById(id);
+		return new ResponseEntity<>(jsonString, OK);
+	}
+	
+	@RequestMapping(method = GET, value = "/camp-name")
+	@ResponseBody
+	public ResponseEntity<String> getCampName() {
+		
+		String jsonString = campService.campNameList();
 		return new ResponseEntity<>(jsonString, OK);
 	}
 	
@@ -81,5 +101,24 @@ public class CampController {
 	public ResponseEntity<String> search(@RequestParam String thana,@RequestParam String union,
 		@RequestParam String ward,@RequestParam String unit,@RequestParam String healthAssistant) {		
 		return new ResponseEntity<>(new Gson().toJson(campDateService.search(thana,union,ward,unit,healthAssistant)), OK);
+	}
+	
+	@RequestMapping(method = GET, value = "/camp-announcement")
+	@ResponseBody
+	public ResponseEntity<String> campAnnouncement(@RequestParam String anmIdentifier) {
+		campListener.campAnnouncementListener(anmIdentifier);
+		return new ResponseEntity<>("", OK);
+	}
+	@RequestMapping(method = GET, value = "/todays-client")
+	@ResponseBody
+	public ResponseEntity<String> todaysClient(@RequestParam String anmIdentifier) {
+		
+		return new ResponseEntity<>(new Gson().toJson(clientListForCamp.todaysClientList(anmIdentifier)), OK);
+	}
+	@RequestMapping(method = GET, value = "/client-list")
+	@ResponseBody
+	public ResponseEntity<String> clientList(@RequestParam String anmIdentifier,@RequestParam long timeStamp){
+
+		return new ResponseEntity<>(new Gson().toJson(clientListForCamp.clientList(anmIdentifier, timeStamp)), OK);
 	}
 }

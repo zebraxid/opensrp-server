@@ -6,9 +6,11 @@ import org.ektorp.ComplexKey;
 import org.ektorp.CouchDbConnector;
 import org.ektorp.support.GenerateView;
 import org.ektorp.support.View;
+import org.joda.time.DateTime;
 import org.motechproject.dao.MotechBaseRepository;
 import org.opensrp.common.AllConstants;
 import org.opensrp.domain.Vaccine;
+import org.opensrp.scheduler.Action;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +45,18 @@ public class AllVaccine extends MotechBaseRepository<Vaccine> {
 		return vaccine.get(0);
 		
 	}
+	
+	@View(name = "action_by_caseId_and_schedule_and_time", map = "function(doc) { if (doc.type === 'Vaccine' && doc.clientId) { emit([doc.clientId, doc.vaccineName, doc.timeStamp], null); } }")
+	public Vaccine findByCaseIdScheduleAndTimeStamp(String caseId, String schedule, long timeStamp) {
+	    ComplexKey startKey = ComplexKey.of(caseId, schedule, timeStamp + 1);	   
+	    ComplexKey endKey = ComplexKey.of(caseId, schedule, Long.MAX_VALUE);
+	    List<Vaccine> vaccine = db.queryView(createQuery("action_by_caseId_and_schedule_and_time").startKey(startKey).endKey(endKey).includeDocs(true), Vaccine.class);
+	    if (vaccine == null || vaccine.isEmpty()) {			
+			return null;
+		}
+		return vaccine.get(0);
+	}
+	 
 	public void save(Vaccine vaccine) {
 		System.err.println("dd");
 		Vaccine existingVaccine = getVaccine(vaccine.getClientId(),vaccine.getVaccineName());
