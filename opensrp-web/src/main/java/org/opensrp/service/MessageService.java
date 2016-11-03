@@ -21,6 +21,7 @@ public class MessageService {
 	public String sentMessage(String message,String clientName,String mobile,String location) throws JSONException{		
 		JSONObject data = new JSONObject();		
 		List<String> list = new ArrayList<String>();
+		System.err.println("MEssage sent to: "+this.getMobileNumber(mobile));
 		list.add("tel:"+this.getMobileNumber(mobile));		
 		data.put("text",message);
 		data.put("urns",list);		

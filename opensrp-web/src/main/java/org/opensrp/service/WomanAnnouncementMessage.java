@@ -9,7 +9,7 @@ public class WomanAnnouncementMessage implements Message {
 	@Override
     public String message(Members member, CampDate campDate) {
 		String message = " APNAR ELAKAR TIKADAN KENDRO EKHON KHOLA ASE " +
-				member.Child_mother_name() +
+				member.Member_Fname() +
 				"  TIKA DEYAR JONNO ASUN" ;
 				
 		return message;

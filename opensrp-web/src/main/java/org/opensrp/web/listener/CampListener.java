@@ -82,7 +82,7 @@ public class CampListener {
 				for (Action action : actions) {					
 					Members member = allMembers.findByCaseId(action.caseId());					
 					HouseHold houseHold = allHouseHolds.findByCaseId(member.details().get("relationalid"));										
-					if(member.Is_child().equalsIgnoreCase("0")){
+					if(member.Is_child().equalsIgnoreCase("1")){
 						message = messageFactory.getMessageType("Child").message(member, campDate);
 					}else{
 						message =messageFactory.getMessageType("Woman").message(member, campDate);
