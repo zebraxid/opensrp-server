@@ -32,6 +32,7 @@ abstract class BaseScheduleHandler implements EventsHandler {
 	private static final String JSON_KEY_EVENT = "event";
 	
 	private static final String JSON_KEY_VALUE = "value";
+	
 	private static final String JSON_KEY_VALUES = "values";
 	
 	private static final String JSON_KEY_MILESTONE = "milestone";
@@ -160,8 +161,8 @@ abstract class BaseScheduleHandler implements EventsHandler {
 			Date date = new Date(Long.valueOf(value.toString()));
 			dateStr = dateFormat.format(date);
 		} else if (value.toString().contains("T")) {//sometimes the ref date is the format 2016-08-20T17:45:00.000+03:00
-			int substrIndex=value.toString().indexOf("T");
-			dateStr=value.toString().substring(0,substrIndex);
+			int substrIndex = value.toString().indexOf("T");
+			dateStr = value.toString().substring(0, substrIndex);
 		} else {
 			dateStr = value.toString();
 			
@@ -229,7 +230,7 @@ abstract class BaseScheduleHandler implements EventsHandler {
 					}
 				} else if (key.equalsIgnoreCase(JSON_KEY_FIELD)) { //not a concept so get the value from the main doc e.g eventDate
 					String fieldValue = eventJson.has(value) ? eventJson.getString(value) : "";
-				//	String fieldValue = eventJson.has(fieldName) ? eventJson.getString(fieldName) : "";
+					//	String fieldValue = eventJson.has(fieldName) ? eventJson.getString(fieldName) : "";
 					if (fieldValue.equalsIgnoreCase(scheduleValue)
 					        || (!fieldValue.isEmpty() && scheduleValue.equalsIgnoreCase(JSON_KEY_NOTEMPTY))) {
 						result = true;
@@ -275,17 +276,24 @@ abstract class BaseScheduleHandler implements EventsHandler {
 		return obs;
 	}
 	
-	private String getConceptValue(JSONObject object) throws JSONException{
-		String value="";
-		if(object.has(JSON_KEY_VALUE)){
-			value=object.getString(JSON_KEY_VALUE);
-		}else if(object.has(JSON_KEY_VALUES)){
-			JSONArray array=object.getJSONArray(JSON_KEY_VALUES);
-			value= array.length()>0?array.getString(0):"";
+	protected String getConceptValue(Event event, String concept) {
+		JSONObject eventJson = eventToJson(event);
+		Map<String, Object> concepts = getEventObs(eventJson);
+		return concepts.containsKey(concept) ? concepts.get(concept).toString() : "";
+	}
+	
+	private String getConceptValue(JSONObject object) throws JSONException {
+		String value = "";
+		if (object.has(JSON_KEY_VALUE)) {
+			value = object.getString(JSON_KEY_VALUE);
+		} else if (object.has(JSON_KEY_VALUES)) {
+			JSONArray array = object.getJSONArray(JSON_KEY_VALUES);
+			value = array.length() > 0 ? array.getString(0) : "";
 		}
 		
 		return value;
 	}
+	
 	/**
 	 * Convert event pojo to a jsonobject
 	 * 

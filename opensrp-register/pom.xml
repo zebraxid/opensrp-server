@@ -17,18 +17,19 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<main.basedir>${project.basedir}/..</main.basedir>
+		<release.version>0.1-SNAPSHOT</release.version>
 	</properties>
 	<build>
 		<resources>
-            <resource>
-                <directory>src/main/resources/lists</directory>
-                <targetPath>org/opensrp/register/thrivepk</targetPath>
-            </resource>
-            <resource>
-                <directory>../opensrp-core/src/main/resources/ziggy</directory>
-                <targetPath>ziggy</targetPath>
-            </resource>
-        </resources>
+			<resource>
+				<directory>src/main/resources/lists</directory>
+				<targetPath>org/opensrp/register/thrivepk</targetPath>
+			</resource>
+			<resource>
+				<directory>../opensrp-core/src/main/resources/ziggy</directory>
+				<targetPath>ziggy</targetPath>
+			</resource>
+		</resources>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -93,6 +94,11 @@
 			<artifactId>motech-testing-utils</artifactId>
 			<version>${motech.version}</version>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.opensrp</groupId>
+			<artifactId>opensrp-connector</artifactId>
+			<version>${release.version}</version>
 		</dependency>
 
 	</dependencies>

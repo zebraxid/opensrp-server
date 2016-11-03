@@ -127,7 +127,8 @@ public class AllEvents extends MotechBaseRepository<Event> {
 		    Event.class);
 		return events;
 	}
-	@View(name = "events_by_empty_server_version", map = "function(doc) { if (doc.type == 'Client' && !doc.serverVersion) { emit(doc._id, doc); } }")
+
+	@View(name = "events_by_empty_server_version", map = "function(doc) { if (doc.type == 'Event' && !doc.serverVersion) { emit(doc._id, doc); } }")
 	public List<Event> findByEmptyServerVersion() {
 		return db.queryView(createQuery("events_by_empty_server_version").limit(200).includeDocs(true), Event.class);
 
