@@ -22,7 +22,6 @@ import org.opensrp.connector.BahmniOpenmrsConnector;
 import org.opensrp.connector.BrisConnector;
 import org.opensrp.connector.Dhis2Connector;
 import org.opensrp.connector.OpenmrsConnector;
-import org.opensrp.connector.openmrs.constants.OpenmrsHouseHold;
 import org.opensrp.connector.openmrs.service.BahmniPatientService;
 import org.opensrp.connector.openmrs.service.DHIS2Service;
 import org.opensrp.connector.openmrs.service.EncounterService;
@@ -94,6 +93,7 @@ public class FormSubmissionController {
 	private IndetifierMapingRepository bahmniIdRepository;
 	
 	private DHIS2Service dHIS2Service;
+	
 	private BrisConnector brisConnector;
 	
 	@Autowired
@@ -129,10 +129,10 @@ public class FormSubmissionController {
 	}
 	
 	@Autowired
-    public void setBrisConnector(BrisConnector brisConnector) {
-    	this.brisConnector = brisConnector;
-    }
-
+	public void setBrisConnector(BrisConnector brisConnector) {
+		this.brisConnector = brisConnector;
+	}
+	
 	@RequestMapping(method = GET, value = "/form-submissions")
 	@ResponseBody
 	private List<FormSubmissionDTO> getNewSubmissionsForANM(@RequestParam("anm-id") String anmIdentifier,
@@ -162,7 +162,6 @@ public class FormSubmissionController {
 			}
 		});
 	}
-		
 	
 	@RequestMapping(headers = { "Accept=application/json" }, method = POST, value = "/form-submissions")
 	public ResponseEntity<HttpStatus> submitFormsForDGHS(@RequestBody List<FormSubmissionDTO> formSubmissionsDTO) {
@@ -316,6 +315,7 @@ public class FormSubmissionController {
 	                                          @RequestParam("file-category") String fileCategory,
 	                                          @RequestParam("file") MultipartFile file) throws ClientProtocolException,
 	    IOException {
+		logger.info("Image upload requesting\n");
 		MultimediaDTO multimediaDTO = new MultimediaDTO(entityId, providerId, contentType, null, fileCategory);
 		String status = multimediaService.saveMultimediaFile(multimediaDTO, file);
 		
