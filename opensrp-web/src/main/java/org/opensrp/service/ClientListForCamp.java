@@ -67,21 +67,25 @@ public class ClientListForCamp {
 	}
 	
 	public List<EligibleClient> clientList(String provider,long timeStamp) {
-		Map<String,Integer> clients = new HashMap<String,Integer>();			
+		Map<String,Vaccine> clients = new HashMap<String,Vaccine>();			
 		List<Action> actions = allActions.listOfEligibleClientForVaccines(provider);
+		
 		for (Action action : actions) {
 			Vaccine existingVaccine = allVaccine.findByCaseIdScheduleAndTimeStamp(action.caseId(),action.data().get("scheduleName"),timeStamp);
-			if(existingVaccine !=null){
-				clients.put(action.caseId(), existingVaccine.getMissedCount());
+			
+			if(existingVaccine !=null){				
+				clients.put(action.caseId(), existingVaccine);
 			}
 		}		
 		List<EligibleClient> client_lists = new ArrayList<>();
 		
-		for (Map.Entry<String, Integer> entry : clients.entrySet())
+		for (Map.Entry<String, Vaccine> entry : clients.entrySet())
 		{
+			
 			EligibleClient client_list = new EligibleClient();
-			client_list.setMissedCount(entry.getValue());
-			client_list.setEntityId(entry.getKey());			
+			client_list.setMissedCount(entry.getValue().getMissedCount());
+			client_list.setEntityId(entry.getKey());
+			client_list.setTimeStamp(entry.getValue().getTimeStamp());
 			client_lists.add(client_list);
 		}
 		return client_lists;
