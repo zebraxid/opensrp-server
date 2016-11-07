@@ -6,7 +6,9 @@ import java.util.Map;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
@@ -53,10 +55,10 @@ public class RapidProServiceImpl implements RapidProService {
 			HttpPost post = new HttpPost();
 			if (text == null || text.isEmpty() || text.length() > 480) {
 				logger.info("RapidPro: Message character limit of 480 exceeded");
-				return "";
+				return "Empty text or text longer than 480 characters not allowed";
 			}
 			String uri = rapidproUrl + "/api/v1/broadcasts.json";
-			setAuthHeader(post, uri);
+			post = setPostAuthHeader(uri, post);
 
 			JSONObject jsonParams = new JSONObject();
 
@@ -75,7 +77,7 @@ public class RapidProServiceImpl implements RapidProService {
 
 			if (!jsonParams.has("urns") && !jsonParams.has("contacts") && !jsonParams.has("groups")) {
 				logger.info("RapidPro: No one to send message to!");
-				return "";
+				return "No recipients specified";
 			}
 
 			jsonParams.put("text", text);
@@ -89,7 +91,7 @@ public class RapidProServiceImpl implements RapidProService {
 			return responseString;
 		} catch (Exception e) {
 			logger.error("", e);
-			return "";
+			return "Exception occurred";
 		}
 	}
 
@@ -104,16 +106,16 @@ public class RapidProServiceImpl implements RapidProService {
 	 * (string array, optional). fields - a hashmap of contact fields you want
 	 * to set or update on this contact (JSON, optional)
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public String createContact(Map<String, Object> fieldValues) {
 		try {
 			HttpPost post = new HttpPost();
 			if (fieldValues == null || fieldValues.isEmpty() || !fieldValues.containsKey("urns")) {
-				return "";
+				return "Field values cannot be empty and must have urns";
 			}
-
 			String uri = rapidproUrl + "/api/v1/contacts.json";
-			setAuthHeader(post, uri);
+			post = setPostAuthHeader(uri, post);
 
 			JSONObject jsonParams = new JSONObject();
 			for (Map.Entry<String, Object> entry : fieldValues.entrySet()) {
@@ -142,23 +144,33 @@ public class RapidProServiceImpl implements RapidProService {
 			return responseString;
 		} catch (Exception e) {
 			logger.error("", e);
-			return "";
+			return "Exception occurred";
 		}
 
 	}
 
-	private void setAuthHeader(HttpPost post, String url) {
+	private HttpPost setPostAuthHeader(String url, HttpPost post) {
 		post.setURI(URI.create(url));
 		// add header Authorization: Token YOUR_API_TOKEN_GOES_HERE
 		post.setHeader("Authorization", " Token " + rapidproToken);
 		post.addHeader("content-type", "application/json");
 		post.addHeader("Accept", "application/json");
+		return post;
+	}
+
+	private HttpDelete setDeleteAuthHeader(String url, HttpDelete delete) {
+		delete.setURI(URI.create(url));
+		// add header Authorization: Token YOUR_API_TOKEN_GOES_HERE
+		delete.setHeader("Authorization", " Token " + rapidproToken);
+		delete.addHeader("content-type", "application/json");
+		delete.addHeader("Accept", "application/json");
+		return delete;
 	}
 
 	@Override
 	public String createGroup(String name) {
 		// FIXME Not currently supported in rapidpro
-		return "";
+		return "Exception occurred";
 	}
 
 	/**
@@ -175,10 +187,11 @@ public class RapidProServiceImpl implements RapidProService {
 		try {
 			HttpPost post = new HttpPost();
 			if (label == null || label.isEmpty()) {
-				return "";
+				return "Field label is required";
 			}
 			String uri = rapidproUrl + "/api/v1/fields.json";
-			setAuthHeader(post, uri);
+
+			post = setPostAuthHeader(uri, post);
 			JSONObject jsonParams = new JSONObject();
 			jsonParams.put("label", label);
 			jsonParams.put("value_type", valueType == null || valueType.isEmpty() ? "T" : valueType);
@@ -192,8 +205,23 @@ public class RapidProServiceImpl implements RapidProService {
 			return responseString;
 		} catch (Exception e) {
 			logger.error("", e);
-			return "";
+			return "Exception occurred";
 		}
 	}
 
+	@Override
+	public int deleteContact(String uuid) {
+		try {
+			HttpDelete delete = new HttpDelete();
+			String uri = rapidproUrl + "/api/v1/contacts.json?uuid=" + uuid;
+			delete = setDeleteAuthHeader(uri, delete);
+			HttpResponse response = client.execute(delete);
+			int status = response.getStatusLine().getStatusCode();
+			return status;
+
+		} catch (Exception e) {
+			logger.error("", e);
+			return HttpStatus.SC_INTERNAL_SERVER_ERROR;
+		}
+	}
 }
