@@ -45,41 +45,135 @@ public class LocationTagServiceTest {
         .build(); 
 		dbInstance = new StdCouchDbInstance(httpClient); 
 		
-		stdCouchDbConnector = new StdCouchDbConnector("opensrp_testdb", dbInstance, new StdObjectMapperFactory());
+		stdCouchDbConnector = new StdCouchDbConnector("opensrp", dbInstance, new StdObjectMapperFactory());
 		 
 		stdCouchDbConnector.createDatabaseIfNotExists();
 		allLocationTags = new AllLocationTags(2, stdCouchDbConnector);
 		locationTagService = new LocationTagService(allLocationTags);
     }
 
-    @Ignore @Test 
+    @Test 
     public void testLocationTagService() throws Exception {
-    	/*LocationTag tag = new LocationTag();
-    	tag.withName("Country").withParentTagId("");
-    	allLocationTags.add(tag);*/
+    	LocationTag fetchedTag = allLocationTags.findLocationTagByName("Country");
     	
-    	/*LocationTag fetchedTag = allLocationTags.findLocationTagByName("Country");
-    	assertNotNull(fetchedTag);*/
+    	if(fetchedTag ==null){
+	    	LocationTag tag = new LocationTag();
+	    	tag.withName("Country").withParentTagId("");
+	    	allLocationTags.add(tag);	    	
+    	}
+    	testAddLocationTagDivision();
+    	testAddLocationTagDistrict();
+    	testAddLocationTagUpazilla();
+    	testAddLocationTagUnion();
+    	testAddLocationTagWard();
+    	testAddLocationTagUnit();
     	
-    	LocationTag countryTag = allLocationTags.get("87ab5c6407741290fe50d6bfbc00c7c7");
-    	assertNotNull(countryTag);
-    	assertEquals("Country", countryTag.getName());
     	
-    	/*
-    	 * delete test, first one is id for which document does not exist
-    	 * assertEquals("2", locationTagService.deleteLocationTag("87ab5c6407741290fe50d6bfbc00d56v"));
-    	assertEquals("1", locationTagService.deleteLocationTag("87ab5c6407741290fe50d6bfbc00d56d"));*/    	    	
+    } 
+    
+   
+    public void testAddLocationTagDivision() throws Exception {
+    	LocationTag fetchedTag = allLocationTags.findLocationTagByName("Country");
+    	LocationTag fetchedTagDivision = allLocationTags.findLocationTagByName("Division");
+    	if(fetchedTagDivision ==null){
+    		System.err.println("dddd"+fetchedTag.getId());
+	    	LocationTag tag = new LocationTag();
+	    	tag.withName("Division").withParentTagId(fetchedTag.getId());
+	    	try{
+	    	allLocationTags.add(tag);
+	    	}catch(Exception e){
+	    		e.printStackTrace();
+	    	}
+	    	
+    	}
     	
-    	/*LocationTagDTO newTag = new LocationTagDTO();
-    	newTag.withName("Division");
-    	newTag.withParentTagId("87ab5c6407741290fe50d6bfbc00c7c7");
     	
-    	locationTagService.addLocationTag(newTag);
+    }
+    
+  
+    public void testAddLocationTagDistrict() throws Exception {
+    	LocationTag fetchedTagDivision = allLocationTags.findLocationTagByName("Division");
+    	LocationTag fetchedTagDistrict = allLocationTags.findLocationTagByName("District");
+    	if(fetchedTagDistrict ==null){    		
+	    	LocationTag tag = new LocationTag();
+	    	tag.withName("District").withParentTagId(fetchedTagDivision.getId());
+	    	try{
+	    	allLocationTags.add(tag);
+	    	}catch(Exception e){
+	    		e.printStackTrace();
+	    	}
+	    	
+    	}
     	
-    	assertNotNull(allLocationTags.findLocationTagByName(newTag.getName()));*/
     	
-    	/*LocationTag division = new LocationTag();
-    	division.withName("Division").withParentTagId(ff.getId());*/    	
+    }
+    
+    
+    
+    public void testAddLocationTagUpazilla() throws Exception {
+    	LocationTag fetchedTagDistrict = allLocationTags.findLocationTagByName("District");
+    	LocationTag fetchedTagUpazilla = allLocationTags.findLocationTagByName("Upazilla");
+    	if(fetchedTagUpazilla ==null){    		
+	    	LocationTag tag = new LocationTag();
+	    	tag.withName("Upazilla").withParentTagId(fetchedTagDistrict.getId());
+	    	try{
+	    	allLocationTags.add(tag);
+	    	}catch(Exception e){
+	    		e.printStackTrace();
+	    	}
+	    	
+    	}
     	
-    }    
+    }
+    
+    
+    public void testAddLocationTagUnion() throws Exception {
+    	LocationTag fetchedTagUpazilla = allLocationTags.findLocationTagByName("Upazilla");
+    	LocationTag fetchedTagUnion = allLocationTags.findLocationTagByName("Union");
+    	if(fetchedTagUnion ==null){    		
+	    	LocationTag tag = new LocationTag();
+	    	tag.withName("Union").withParentTagId(fetchedTagUpazilla.getId());
+	    	try{
+	    	allLocationTags.add(tag);
+	    	}catch(Exception e){
+	    		e.printStackTrace();
+	    	}
+	    	
+    	}
+    	
+    }
+    
+    
+    public void testAddLocationTagWard() throws Exception {
+    	LocationTag fetchedTagUnion = allLocationTags.findLocationTagByName("Union");
+    	LocationTag fetchedTagWard = allLocationTags.findLocationTagByName("Ward");
+    	if(fetchedTagWard ==null){    		
+	    	LocationTag tag = new LocationTag();
+	    	tag.withName("Ward").withParentTagId(fetchedTagUnion.getId());
+	    	try{
+	    	allLocationTags.add(tag);
+	    	}catch(Exception e){
+	    		e.printStackTrace();
+	    	}
+	    	
+    	}
+    	
+    }
+    
+   
+    public void testAddLocationTagUnit() throws Exception {
+    	LocationTag fetchedTagWard = allLocationTags.findLocationTagByName("Ward");
+    	LocationTag fetchedTagUnit = allLocationTags.findLocationTagByName("Unit");
+    	if(fetchedTagUnit ==null){    		
+	    	LocationTag tag = new LocationTag();
+	    	tag.withName("Unit").withParentTagId(fetchedTagWard.getId());
+	    	try{
+	    	allLocationTags.add(tag);
+	    	}catch(Exception e){
+	    		e.printStackTrace();
+	    	}
+	    	
+    	}
+    	
+    }
 }

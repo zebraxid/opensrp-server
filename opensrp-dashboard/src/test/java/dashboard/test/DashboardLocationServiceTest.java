@@ -65,98 +65,23 @@ public class DashboardLocationServiceTest {
 		locationTagService  = new LocationTagService(allLocationTags);
     }
 
-   @Ignore @Test 
+   @Test 
     public void testDashboardLocationService() throws Exception {
-    	/*
-    	 * Code for creating Country 
-    	 * 
-    	 * LocationTag countryTag = allLocationTags.findLocationTagByName("Country");
-		DashboardLocationDTO countryDTO = new DashboardLocationDTO();
-		countryDTO.withName("Bangladesh");
-		countryDTO.withParentname("");
-		countryDTO.withParentId("");
-		countryDTO.withTagId(countryTag.getId());
-		dashboardLocationService.addDashboardLocation(countryDTO);*/
+	   DashboardLocation countryLocation = allDashboardLocations.findDashboardLocationByName("Bangladesh");
+    	LocationTag countryTag = allLocationTags.findLocationTagByName("Country");
+    	
+		if(countryLocation==null){
+    	DashboardLocationDTO countryDTO = new DashboardLocationDTO();
+    	DashboardLocation country = new DashboardLocation();
+    	
+		country.withName("Bangladesh");
 		
-		/*DashboardLocation countryLocation = allDashboardLocations.findDashboardLocationByName("Bangladesh");
-		assertNotNull(countryLocation);
-		
-		LocationTagDTO divisionTag = locationTagService.getLocationTag("Division");
-		assertEquals("Division", divisionTag.getName());
-		
-		DashboardLocationDTO divisionDTO = new DashboardLocationDTO();
-		divisionDTO.withName("Chittagong");
-		divisionDTO.withParentname(countryLocation.getName());
-		divisionDTO.withParentId(countryLocation.getId());
-		//divisionDTO.withTagId(divisionTag.getId());
-		assertEquals("2", dashboardLocationService.addDashboardLocation(divisionDTO));
-		if(divisionDTO.getTagId() == null)
-			System.out.println(divisionDTO.getId());
-		
-		List<DashboardLocationDTO> children = dashboardLocationService.getChildrenLocations(countryLocation.getId());
-		for(int i =0 ; i < children.size(); i++){
-			System.out.println(children.get(i).getName());
-		}		
-		
-		//dashboardLocationService.getChildrenLocations(countryLocation.getId());		
-		
-		assertEquals(2, children.size());*/
-		
-		/*assertEquals(2, allDashboardLocations.findLocationsByParentAndTag("87ab5c6407741290fe50d6bfbc00ec73", "87ab5c6407741290fe50d6bfbc00e0b9").size());
-		List<DashboardLocationDTO> locations = dashboardLocationService.getChildrenLocationsOfRoot();
-		for(int i=0; i< locations.size(); i++){
-			System.out.println(locations.get(i).getName());
-		}*/
-		
-		List<LocationTag> tags = allLocationTags.getAll();
-		String idForUpazillaTag = "";
-		for(LocationTag tag :tags){
-			if(tag.getName().equals("Division")){
-				idForUpazillaTag = tag.getId();
-			}
-		}
-		System.out.println(idForUpazillaTag);
-		System.out.println(allDashboardLocations.findLocationsByTag(idForUpazillaTag).size());
-		
-		/*DashboardLocation newDashboardLocation = new DashboardLocation();
-		newDashboardLocation.withName("kola");
-		newDashboardLocation.withParentName("Khulna");
-		newDashboardLocation.withParentId("71fff7052d0e1c392b2b448813008e48");
-		newDashboardLocation.withTagId("1e84829ef6153b9b8f05089b28051142");
-		allDashboardLocations.add(newDashboardLocation);
-		
-		System.out.println(newDashboardLocation.getId());*/
-		
-		/*DashboardLocationDTO sampleWard = new DashboardLocationDTO();
-		sampleWard.withName("Sample Ward");
-		sampleWard.withParentId("71fff7052d0e1c392b2b4488130087fa");
-		sampleWard.withParentname("Union_Upa_Gazi");
-		sampleWard.withTagId("8e8fa8966b1e39997011f42f64009e97");
-		
-		dashboardLocationService.addDashboardLocation(sampleWard);
-		
-		String store = sampleWard.getId();
-		*/
-		//dashboardLocationService.deleteDashboardLocation("12b0f9fc6457e2f58950e582f9011260");
-		
-		UserDTO withNoLocation = new UserDTO();
-		withNoLocation.withName("passTest");
-		List<SimplifiedLocation> locations = new ArrayList<SimplifiedLocation>();
-		withNoLocation.withLocation(locations);
-		System.out.println(withNoLocation.getLocation());
-	
-		System.out.println("-- " + dashboardLocationService.getDashboardLocationsByTag("8e8fa8966b1e39997011f42f64008c41").size());
-		DashboardLocationInfoDTO allInfo = dashboardLocationService.getDashboardLocationInfo("71fff7052d0e1c392b2b4488130087fa");
-		if(allInfo.getParentDistrict() != null){
-			System.out.println(allInfo.getParentDistrict().getName());
+		country.withParentName("");
+		country.withParentId("");
+		//country.withTagId(countryTag.getId());
+		allDashboardLocations.add(country);
 		}
 		
-		Queue<String> strings = new LinkedList<String>();
-		strings.add("first");
-		strings = append(strings, "second");
-		System.out.println(strings.size());
-		
-		//type: "DashboardLocation", name: "Jhenaidah", tagId: "1e84829ef6153b9b8f05089b28051142", parentName: "Khulna", parentId: "71fff7052d0e1c392b2b448813008e48"
 		
     }
     

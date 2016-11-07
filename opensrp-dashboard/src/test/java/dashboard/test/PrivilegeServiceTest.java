@@ -2,6 +2,7 @@ package dashboard.test;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.ektorp.CouchDbInstance;
@@ -43,25 +44,46 @@ public class PrivilegeServiceTest {
     	//initMocks(this);
     }
 
-    @Ignore @Test 
+    @Test 
     public void testPrivilegeService() throws Exception {
-		Privilege testPrivilege = allPrivileges.privilegeByName("testPrivilege");
-		assertNull(testPrivilege);
 		
-		Privilege privilege = new Privilege();
-		privilege.withName("testPrivilege");
-		privilege.withStatus("testStatus");
-		allPrivileges.add(privilege);
+		List<String> privilegeList = new ArrayList<>();
 		
-		testPrivilege = allPrivileges.privilegeByName("testPrivilege");
-		assertNotNull(testPrivilege);
+		privilegeList.add("Privilege List");
+		privilegeList.add("Add Privilege");
+		privilegeList.add("Edit Privilege");
+		privilegeList.add("Camp List");
+		privilegeList.add("Add Camp");
+		privilegeList.add("Edit Camp");
+		privilegeList.add("View Camp");
 		
-		allPrivileges.remove(testPrivilege);
+		privilegeList.add("Add Role");
+		privilegeList.add("Role List");
+		privilegeList.add("Role Edit");
 		
-		testPrivilege = allPrivileges.privilegeByName("testPrivilege");
-		assertNull(testPrivilege);
-    	/*List<Privilege> getAll = allPrivileges.getAll();
-    	System.out.println(getAll.size() + " --k");*/
+		privilegeList.add("Add User");
+		privilegeList.add("User List");
+		privilegeList.add("Edit User");
+		privilegeList.add("User Location Assign");
+		
+		privilegeList.add("Location List");
+		privilegeList.add("Edit Location");
+		privilegeList.add("Add Location");
+		privilegeList.add("User Location Assign");
+		
+		for (String name : privilegeList) {
+			Privilege privilege = new Privilege();
+			privilege.withName(name);
+			privilege.withStatus("Active");
+			Privilege existingPrivilege = allPrivileges.privilegeByName(name);
+			if(existingPrivilege == null){
+			allPrivileges.add(privilege);
+			}
+			
+        }
+		
+		
+		
     }
     
     /*@Test 
