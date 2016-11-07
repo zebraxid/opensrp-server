@@ -321,7 +321,7 @@ public class FormSubmissionController {
 		
 		if (status.equals("success")) {
 			Multimedia multimedia = multimediaRepository.findByCaseId(entityId);
-			patientService.patientImageUpload(multimedia);
+			patientService.patientImageUpload(multimedia, getBahmniId(multimedia.getCaseId()));
 		}
 		return new ResponseEntity<>(new Gson().toJson(status), OK);
 	}
@@ -339,5 +339,17 @@ public class FormSubmissionController {
 			logger.info("" + ee.getMessage());
 			
 		}
+	}
+	
+	private String getBahmniId(String entityId) {
+		try {
+			IdentifierMaping id = bahmniIdRepository.findByentityId(entityId);
+			return id.getGenId();
+		}
+		catch (Exception ee) {
+			logger.info("Bahmni id finding : " + ee.getMessage());
+		}
+		
+		return null;
 	}
 }

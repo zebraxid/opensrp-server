@@ -263,19 +263,21 @@ public class PatientService extends OpenmrsService {
 		        .post(getURL() + "/" + PATIENT_URL, "", p.toString(), OPENMRS_USER, OPENMRS_PWD).body());
 	}
 	
-	public void patientImageUpload(Multimedia multimedia) throws IOException {
+	public void patientImageUpload(Multimedia multimedia, String bahmniId) throws IOException {
 		
 		//String requestURL =  "http://46.101.51.199:8080/openmrs/ws/rest/v1/patientimage/uploadimage";
 		
 		try {
-			System.out.println("multimedia File Path : " + multimedia.getFilePath());
 			File convFile = new File("/opt" + multimedia.getFilePath());
 			MultipartUtility multipart = new MultipartUtility(getURL() + "/" + PATIENT_IMAGE_URL, OPENMRS_USER, OPENMRS_PWD);
 			
 			// multipart.addHeaderField("User-Agent", "CodeJava");
 			// multipart.addHeaderField("Test-Header", "Header-Value");
 			
-			multipart.addFormField("patientidentifier", multimedia.getCaseId());
+			//multipart.addFormField("patientidentifier", multimedia.getCaseId());
+			multipart.addFormField("patientidentifier", bahmniId);
+			System.out.println("multimedia id : " + bahmniId);
+			
 			multipart.addFormField("category", multimedia.getFileCategory());
 			
 			multipart.addFilePart("file", convFile);
