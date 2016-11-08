@@ -6,11 +6,14 @@ import java.util.List;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.opensrp.connector.RapidProHttpUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
 public class MessageService {
-	
+	private static Logger logger = LoggerFactory.getLogger(MessageService.class
+		.toString());
 	private static final String RAPID_PRO_URL = "https://farmbuddy.org/api/v1/broadcasts.json";
 	private static final String AUTHORIZATION_TOKEN = "a80829d0ef14abdbc154e3766be39c5502e22123";
 	
@@ -21,7 +24,8 @@ public class MessageService {
 	public String sentMessage(String message,String clientName,String mobile,String location) throws JSONException{		
 		JSONObject data = new JSONObject();		
 		List<String> list = new ArrayList<String>();
-		System.err.println("MEssage sent to: "+this.getMobileNumber(mobile));
+		
+		logger.info("MEssage sent to: "+this.getMobileNumber(mobile));
 		list.add("tel:"+this.getMobileNumber(mobile));		
 		data.put("text",message);
 		data.put("urns",list);		

@@ -50,7 +50,7 @@ public class VaccinationListener {
 						campDate.setStatus("Completed");
 						campDate.setId(campDate.getId());
 						campDate.setRevision(campDate.getRevision());
-						//campDateService.edit(campDate);
+						campDateService.edit(campDate);
 					}catch(Exception e){
 						e.printStackTrace();
 					}

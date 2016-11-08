@@ -6,13 +6,15 @@ package org.opensrp.register.mcare.service;
 import java.util.Date;
 import java.util.List;
 
+import org.joda.time.DateTime;
 import org.motechproject.util.DateUtil;
 import org.opensrp.common.AllConstants;
-import org.joda.time.DateTime;
 import org.opensrp.domain.Vaccine;
 import org.opensrp.repository.AllVaccine;
 import org.opensrp.scheduler.Action;
 import org.opensrp.scheduler.repository.AllActions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +22,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class VaccinationService {
 	
+	private static Logger logger = LoggerFactory.getLogger(VaccinationService.class
+		.toString());
 	public VaccinationService(){
 		
 	}
@@ -71,6 +75,7 @@ public class VaccinationService {
     }
 	public void updateVaccineMissedCount(String health_assistant, String caseId, String vaccineName) {	    
     	try{
+    		
     		Vaccine existingVaccine = allVaccine.getVaccine(caseId,vaccineName);
     		int missedCount = existingVaccine.getMissedCount()+1;
     		existingVaccine.setMissedCount(missedCount);    		
@@ -78,6 +83,7 @@ public class VaccinationService {
     		existingVaccine.setRevision(existingVaccine.getRevision());
     		existingVaccine.setTimeStamp(DateUtil.now().getMillis());
     		allVaccine.update(existingVaccine);
+    		logger.info("Vacine updated caseID : "+ caseId +" vaccineName:"+ vaccineName);
     	}catch(Exception e){		        		
     		e.printStackTrace();
     	}
