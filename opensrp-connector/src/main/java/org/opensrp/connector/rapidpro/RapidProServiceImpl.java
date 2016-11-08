@@ -190,7 +190,6 @@ public class RapidProServiceImpl implements RapidProService {
 				return "Field label is required";
 			}
 			String uri = rapidproUrl + "/api/v1/fields.json";
-
 			post = setPostAuthHeader(uri, post);
 			JSONObject jsonParams = new JSONObject();
 			jsonParams.put("label", label);
