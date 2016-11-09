@@ -32,6 +32,11 @@ import com.github.ldriscoll.ektorplucene.designdocument.annotation.Index;
 	    		" doc.add(rec.HoH_Mobile_No,{\"field\":\"HoH_Mobile_No\", \"store\":\"yes\"});" +
 	    		" doc.add(rec.PROVIDERID,{\"field\":\"PROVIDERID\", \"store\":\"yes\"});"+ 
 	    		" doc.add(rec.HoH_Reg_No,{\"field\":\"HoH_Reg_No\", \"store\":\"yes\"});"+ 
+	    		" doc.add(rec.HHID,{\"field\":\"HHID\", \"store\":\"yes\"});"+ 
+	    		" doc.add(rec.hoH_NID,{\"field\":\"hoH_NID\", \"store\":\"yes\"});"+ 
+	    		" doc.add(rec.caseId,{\"field\":\"caseId\", \"store\":\"yes\"});"+ 
+	    		" doc.add(rec.hoH_Lname,{\"field\":\"hoH_Lname\", \"store\":\"yes\"});"+ 
+	    		" doc.add(rec.hoH_BRID,{\"field\":\"hoH_BRID\", \"store\":\"yes\"});"+ 
 	    		" doc.add(rec.HH_Member_No,{\"field\":\"HH_Member_No\", \"store\":\"yes\"});"+ 
 	    		" doc.add(rec.BLOCK,{\"field\":\"BLOCK\", \"store\":\"yes\"});"+ 
 	    		" doc.add(rec.DIVISION,{\"field\":\"DIVISION\", \"store\":\"yes\"});" + 
