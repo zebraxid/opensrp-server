@@ -17,6 +17,8 @@ import java.util.Map.Entry;
 import org.json.JSONObject;
 import org.opensrp.dto.register.HHRegisterDTO;
 import org.opensrp.dto.register.HHRegisterEntryDTO;
+import org.opensrp.dto.register.HouseholdDTO;
+import org.opensrp.dto.register.HouseholdEntryDTO;
 import org.opensrp.rest.repository.LuceneHouseHoldRepository;
 import org.opensrp.rest.util.ConvertDateStringToTimestampMills;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +47,7 @@ public class LuceneHouseHoldService {
 		this.convertDateStringToTimestampMills = convertDateStringToTimestampMills;
 	}
 
-	public HHRegisterDTO findLuceneResult(MultiValueMap<String, String> queryParameters) throws JsonParseException, JsonMappingException,
+	public HouseholdDTO getHousehold(MultiValueMap<String, String> queryParameters) throws JsonParseException, JsonMappingException,
 			IOException {
 		ObjectMapper mapper = new ObjectMapper();
 		// mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
@@ -69,15 +71,15 @@ public class LuceneHouseHoldService {
 		LuceneResult luceneResult = luceneHouseHoldRepository
 				.findDocsByProvider(makeQueryString);
 		List<Row> rows = luceneResult.getRows();
-		List<HHRegisterEntryDTO> hhRegisterEntryDTOList = new ArrayList<HHRegisterEntryDTO>();
+		List<HouseholdEntryDTO> hhRegisterEntryDTOList = new ArrayList<HouseholdEntryDTO>();
 
 		for (Row row : rows) {
 			LinkedHashMap<String, Object> fields = row.getFields();
 			String jsonString = new JSONObject(fields).toString();
 			hhRegisterEntryDTOList.add(mapper.readValue(jsonString.getBytes(),
-					HHRegisterEntryDTO.class));
+				HouseholdEntryDTO.class));
 		}
-		return new HHRegisterDTO(hhRegisterEntryDTOList);
+		return new HouseholdDTO(hhRegisterEntryDTOList);
 	}
 
 	/**

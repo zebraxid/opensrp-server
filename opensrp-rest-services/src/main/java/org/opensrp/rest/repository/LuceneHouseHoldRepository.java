@@ -22,26 +22,25 @@ import com.github.ldriscoll.ektorplucene.designdocument.annotation.Index;
 */
 @FullText({
     @Index(
-        name = "by_provider",
+        name = "houdehold",
 	    index = "function(rec) {" +
 	    		" var doc=new Document();" +
 	    		" doc.add(rec.TODAY,{\"field\":\"TODAY\", \"store\":\"yes\"});" +
-	    		" doc.add(rec.FWNHREGDATE,{\"field\":\"FWNHREGDATE\", \"store\":\"yes\"});"+ 
-	    		" doc.add(rec.FWGOBHHID,{\"field\":\"FWGOBHHID\", \"store\":\"yes\"});" + 
-	    		" doc.add(rec.FWJIVHHID,{\"field\":\"FWJIVHHID\", \"store\":\"yes\"});" + 
-	    		" doc.add(rec.FWCOUNTRY,{\"field\":\"FWCOUNTRY\", \"store\":\"yes\"});" + 
-	    		" doc.add(rec.FWDIVISION,{\"field\":\"FWDIVISION\", \"store\":\"yes\"}); " +
-	    		" doc.add(rec.FWDISTRICT,{\"field\":\"FWDISTRICT\", \"store\":\"yes\"}); " +
-	    		" doc.add(rec.FWUNION,{\"field\":\"FWUNION\", \"store\":\"yes\"});" +
-	    		" doc.add(rec.FWNHHHGPS,{\"field\":\"FWNHHHGPS\", \"store\":\"yes\"});" +
-	    		" doc.add(rec.form_name,{\"field\":\"form_name\", \"store\":\"yes\"});"+ 
-	    		" doc.add(rec.FWHOHFNAME,{\"field\":\"FWHOHFNAME\", \"store\":\"yes\"});" +
-	    		" doc.add(rec.FWHOHBIRTHDATE,{\"field\":\"FWHOHBIRTHDATE\", \"store\":\"yes\"});"+ 
-	    		" doc.add(rec.PROVIDERID,{\"field\":\"PROVIDERID\", \"store\":\"yes\"});" + 
-	    		" doc.add(rec.FWHOHGENDER,{\"field\":\"FWHOHGENDER\", \"store\":\"yes\"});" +
-	    		" doc.add(rec.user_type,{\"field\":\"user_type\", \"store\":\"yes\"});" + 
-	    		" doc.add(rec.FWUPAZILLA,{\"field\":\"FWUPAZILLA\", \"store\":\"yes\"});" + 
-	    		" doc.add(rec.SUBMISSIONDATE,{\"field\":\"SUBMISSIONDATE\", \"store\":\"yes\"});" + 
+	    		" doc.add(rec.INSTANCEID,{\"field\":\"INSTANCEID\", \"store\":\"yes\"});" +
+	    		" doc.add(rec.Date_Of_Reg,{\"field\":\"Date_Of_Reg\", \"store\":\"yes\"});" +
+	    		" doc.add(rec.HoH_birth_date,{\"field\":\"HoH_birth_date\", \"store\":\"yes\"});" +
+	    		" doc.add(rec.HoH_Mobile_No,{\"field\":\"HoH_Mobile_No\", \"store\":\"yes\"});" +
+	    		" doc.add(rec.PROVIDERID,{\"field\":\"PROVIDERID\", \"store\":\"yes\"});"+ 
+	    		" doc.add(rec.HoH_Reg_No,{\"field\":\"HoH_Reg_No\", \"store\":\"yes\"});"+ 
+	    		" doc.add(rec.HH_Member_No,{\"field\":\"HH_Member_No\", \"store\":\"yes\"});"+ 
+	    		" doc.add(rec.BLOCK,{\"field\":\"BLOCK\", \"store\":\"yes\"});"+ 
+	    		" doc.add(rec.DIVISION,{\"field\":\"DIVISION\", \"store\":\"yes\"});" + 
+	    		" doc.add(rec.DISTRICT,{\"field\":\"DISTRICT\", \"store\":\"yes\"});" + 
+	    		" doc.add(rec.UPAZILLA,{\"field\":\"UPAZILLA\", \"store\":\"yes\"});" + 
+	    		" doc.add(rec.UNION,{\"field\":\"UNION\", \"store\":\"yes\"}); " +
+	    		" doc.add(rec.WARD,{\"field\":\"WARD\", \"store\":\"yes\"}); " +
+	    		" doc.add(rec.HoH_Fname,{\"field\":\"HoH_Fname\", \"store\":\"yes\"});" +
+	    		" doc.add(rec.HoH_Gender,{\"field\":\"HoH_Gender\", \"store\":\"yes\"});" +	    		 
 	    		" doc.add(rec.type,{\"field\":\"type\", \"store\":\"yes\"});" + 
 	    		" return doc;" +
 	    		"}")
@@ -61,7 +60,7 @@ public class LuceneHouseHoldRepository extends CouchDbRepositorySupportWithLucen
        // assertTrue(designDoc.containsIndex("by_provider")); 
         
        // String makeQueryString ="PROVIDERID:"+ providerId + " AND " + "FWUPAZILLA:" + upazilla + " AND " + "user_type:" + userType; //+ " AND TODAY:[\"2016-02-01\"+\"TO\"+\"2016-03-01\"]" ;
-        LuceneQuery query = new LuceneQuery(designDoc.getId(), "by_provider"); 
+        LuceneQuery query = new LuceneQuery(designDoc.getId(), "houdehold"); 
         query.setQuery(queryString); 
         query.setStaleOk(false); 
         return db.queryLucene(query); 

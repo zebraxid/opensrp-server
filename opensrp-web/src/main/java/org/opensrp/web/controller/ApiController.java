@@ -5,6 +5,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import java.io.IOException;
 
 import org.opensrp.dto.register.HHRegisterDTO;
+import org.opensrp.dto.register.HouseholdDTO;
 import org.opensrp.rest.services.LuceneHouseHoldService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,11 +30,11 @@ public class ApiController {
 		this.luceneHouseHoldService = luceneHouseHoldService;
 	}
 	
-	@RequestMapping(method = GET, value="/full-text-households")
+	@RequestMapping(method = GET, value="/households")
     @ResponseBody
-	public ResponseEntity<HHRegisterDTO> getFullTextHouseHolds(@RequestParam MultiValueMap<String, String> queryParameters) throws JsonParseException, JsonMappingException, IOException
+	public ResponseEntity<HouseholdDTO> getHouseHolds(@RequestParam MultiValueMap<String, String> queryParameters) throws JsonParseException, JsonMappingException, IOException
 	{
-		 HHRegisterDTO  hhRegisterDTO  = luceneHouseHoldService.findLuceneResult(queryParameters);
+		 HouseholdDTO  hhRegisterDTO  = luceneHouseHoldService.getHousehold(queryParameters);
 		 return new ResponseEntity<>(hhRegisterDTO, HttpStatus.OK);
 	}
 }

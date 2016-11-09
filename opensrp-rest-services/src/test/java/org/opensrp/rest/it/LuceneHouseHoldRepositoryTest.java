@@ -1,41 +1,28 @@
-/*package org.opensrp.rest.it;
+package org.opensrp.rest.it;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.MockitoAnnotations.initMocks;
 
 import java.io.IOException;
-import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.UUID;
 
-import org.codehaus.jackson.annotate.JsonProperty;
-import org.ektorp.CouchDbConnector;
 import org.ektorp.CouchDbInstance;
 import org.ektorp.http.HttpClient;
 import org.ektorp.http.StdHttpClient;
 import org.ektorp.impl.StdCouchDbInstance;
 import org.ektorp.support.OpenCouchDbDocument;
-import org.json.JSONObject;
-import org.junit.Before;
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.opensrp.common.AllConstants;
-import org.opensrp.dto.register.HHRegisterEntryDTO;
-import org.opensrp.repository.AllBaseEntities;
 import org.opensrp.rest.repository.LuceneHouseHoldRepository;
-import org.opensrp.rest.services.LuceneHouseHoldService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.github.ldriscoll.ektorplucene.LuceneAwareCouchDbConnector;
 import com.github.ldriscoll.ektorplucene.LuceneResult;
@@ -45,8 +32,8 @@ import com.github.ldriscoll.ektorplucene.LuceneResult.Row;
 //@ContextConfiguration("classpath:test-applicationContext-opensrp-rest-services.xml")
 public class LuceneHouseHoldRepositoryTest {
 	
-	private LuceneAwareCouchDbConnector connector; 
-    private LuceneHouseHoldRepository repo; 
+	//private LuceneAwareCouchDbConnector connector; 
+   // private LuceneHouseHoldRepository repo; 
     
 
 	@Autowired
@@ -141,17 +128,17 @@ public class LuceneHouseHoldRepositoryTest {
     	System.out.println("ddd:"+end);
     	System.out.println("ss:"+start);
     	//String makeQueryString ="PROVIDERID:proshanto" + " AND " + "user_type:FWA"+ " AND SUBMISSIONDATE:["+start+" TO "+end+"]" ;
-    	String makeQueryString ="type:Household" + " AND " + "SUBMISSIONDATE:["+start+" TO "+end+"]" ;
+    	String makeQueryString ="type:Household" + " AND " + "PROVIDERID:sohel" ;
     	LuceneResult result = repo.findDocsByProvider(makeQueryString);
     	System.out.println(result.toString());
         System.out.println(result.getRows().size());
         List<Row> rows = result.getRows();
+        System.err.println(rows.toString());
         for (Row row : rows) {
-			System.out.println(row.getId());
+			System.out.println(row.getFields().get("TODAY"));
 		}
 		
         assertNotNull("Expecting a non null result", result); 
         assertTrue("Should only have one result", result.getRows().size() >=0); 
     } 
 }
-*/
