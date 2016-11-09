@@ -71,39 +71,42 @@ public class ANCScheduleHandler extends BaseScheduleHandler {
 		        && client.getAttributes().get(RapidProService.RAPIDPRO_GROUPS).toString().equalsIgnoreCase(groupName)) {
 			return;// this mother is already in the pregnant women 
 		}
+		
 		String phoneNo = getConceptValue(event, "159635AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-		String lmp = getConceptValue(event, "1427AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-		Map<String, Object> contact = new HashMap<String, Object>();
-		Map<String, Object> fields = new HashMap<String, Object>();
-		
-		fields.put("lmp", lmp);
-		fields.putAll(createAncCard(lmp));
-		contact.put("name", client.getFirstName());
-		List<String> urns = new ArrayList<String>();
-		List<String> groups = new ArrayList<String>();
-		groups.add(groupName);
-		urns.add("tel:" + phoneNo);
-		contact.put("urns", urns);
-		contact.put("groups", groups);
-		contact.put("fields", fields);
-		String rapidProContact = rapidProService.createContact(contact);
-		JSONObject jsonObject = new JSONObject(rapidProContact);
-		
-		if (jsonObject.has("uuid")) {
+		if (phoneNo != null && !phoneNo.isEmpty()) {
+			String lmp = getConceptValue(event, "1427AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+			Map<String, Object> contact = new HashMap<String, Object>();
+			Map<String, Object> fields = new HashMap<String, Object>();
 			
-			client.getIdentifiers().put(RapidProService.RAPIDPRO_UUID_IDENTIFIER_TYPE, jsonObject.getString("uuid"));
-			JSONArray rapidproGroups = jsonObject.getJSONArray("groups");
-			List<String> list = new ArrayList<String>();
-			for (int i = 0; i < rapidproGroups.length(); i++) {
-				list.add(rapidproGroups.getString(i));
+			fields.put("lmp", lmp);
+			fields.putAll(createAncCard(lmp));
+			contact.put("name", client.getFirstName());
+			List<String> urns = new ArrayList<String>();
+			List<String> groups = new ArrayList<String>();
+			groups.add(groupName);
+			urns.add("tel:" + phoneNo);
+			contact.put("urns", urns);
+			contact.put("groups", groups);
+			contact.put("fields", fields);
+			String rapidProContact = rapidProService.createContact(contact);
+			JSONObject jsonObject = new JSONObject(rapidProContact);
+			
+			if (jsonObject.has("uuid")) {
+				
+				client.getIdentifiers().put(RapidProService.RAPIDPRO_UUID_IDENTIFIER_TYPE, jsonObject.getString("uuid"));
+				JSONArray rapidproGroups = jsonObject.getJSONArray("groups");
+				List<String> list = new ArrayList<String>();
+				for (int i = 0; i < rapidproGroups.length(); i++) {
+					list.add(rapidproGroups.getString(i));
+				}
+				//			if(client.getAttributes().containsKey(RapidProService.RAPIDPRO_GROUPS)){
+				//				list.addAll((Collection<? extends String>) client.getAttributes().get(RapidProService.RAPIDPRO_GROUPS));
+				//			}
+				//FIXME attributes not accepting list as value
+				client.getAttributes().put(RapidProService.RAPIDPRO_GROUPS, list.get(0));
+				
+				clientService.updateClient(client);
 			}
-			//			if(client.getAttributes().containsKey(RapidProService.RAPIDPRO_GROUPS)){
-			//				list.addAll((Collection<? extends String>) client.getAttributes().get(RapidProService.RAPIDPRO_GROUPS));
-			//			}
-			//FIXME attributes not accepting list as value
-			client.getAttributes().put(RapidProService.RAPIDPRO_GROUPS, list.get(0));
-			
-			clientService.updateClient(client);
 		}
 		
 	}
