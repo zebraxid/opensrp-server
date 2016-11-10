@@ -53,6 +53,12 @@ public class ANCRegisterEntry {
 
 	private String mother_valid;
 
+	private String FWWOMUNION;
+
+	private String FWWOMWARD;
+
+	private String FWWOMSUBUNIT;
+
 	private String FWVG;
 
 	private String FWHRP;
@@ -202,13 +208,28 @@ public class ANCRegisterEntry {
 		return this;
 	}
 
-	public ANCRegisterEntry setANCRegisterEntry_mauza(String mother_mauza) {
+	public ANCRegisterEntry setmother_mauza(String mother_mauza) {
 		this.mother_mauza = mother_mauza;
 		return this;
 	}
 
-	public ANCRegisterEntry setANCRegisterEntry_valid(String mother_valid) {
+	public ANCRegisterEntry setmother_valid(String mother_valid) {
 		this.mother_valid = mother_valid;
+		return this;
+	}
+
+	public ANCRegisterEntry setFWWOMUNION(String fWWOMUNION) {
+		this.FWWOMUNION = fWWOMUNION;
+		return this;
+	}
+
+	public ANCRegisterEntry setFWWOMWARD(String fWWOMWARD) {
+		this.FWWOMWARD = fWWOMWARD;
+		return this;
+	}
+
+	public ANCRegisterEntry setFWWOMSUBUNIT(String fWWOMSUBUNIT) {
+		this.FWWOMSUBUNIT = fWWOMSUBUNIT;
 		return this;
 	}
 
@@ -398,11 +419,23 @@ public class ANCRegisterEntry {
 		return mother_wom_age;
 	}
 
-	public String getANCRegisterEntry_mauza() {
+	public String getFWWOMUNION() {
+		return FWWOMUNION;
+	}
+
+	public String getFWWOMWARD() {
+		return FWWOMWARD;
+	}
+
+	public String getFWWOMSUBUNIT() {
+		return FWWOMSUBUNIT;
+	}
+
+	public String getmother_mauza() {
 		return mother_mauza;
 	}
 
-	public String getANCRegisterEntry_valid() {
+	public String getmother_valid() {
 		return mother_valid;
 	}
 
@@ -531,5 +564,4 @@ public class ANCRegisterEntry {
 	public String toString() {
 		return ToStringBuilder.reflectionToString(this);
 	}
-
 }
