@@ -168,6 +168,14 @@ public class RegisterController {
     	return new ResponseEntity<>(dataCountService.getHHCountInformation(provider,startMonth,endMonth,startWeek,endtWeek,type), HttpStatus.OK);
     }
     
+    @RequestMapping(method = RequestMethod.GET, value = "/registers/hh-count")
+    @ResponseBody
+    public ResponseEntity<List<CountServiceDTOForChart>>  getHouseHoldInformation(@RequestParam("provider") String provider, @RequestParam("district") String district,
+    														@RequestParam("upazilla") String upazilla, @RequestParam("union") String union){
+    
+    	return new ResponseEntity<>(dataCountService.getHHCountInformation(), HttpStatus.OK);
+    }
+    
     @RequestMapping(method = RequestMethod.GET, value = "/registers/hh-data-count")
     @ResponseBody
     public ResponseEntity<List<CountServiceDTOForChart>>  getHouseHoldInformationForChart(@RequestParam("provider") String provider, @RequestParam("district") String district,
@@ -176,11 +184,25 @@ public class RegisterController {
     	return new ResponseEntity<>(dataCountService.getHHCountInformationForChart(provider, district, upazilla, union), HttpStatus.OK);
     }
     
+    @RequestMapping(method = RequestMethod.GET, value = "/registers/elco-count")
+    @ResponseBody
+    public ResponseEntity<List<CountServiceDTOForChart>>  getElcoInformation(@RequestParam("provider") String provider, @RequestParam("district") String district,
+									@RequestParam("upazilla") String upazilla, @RequestParam("union") String union){
+    	return new ResponseEntity<>(dataCountService.getElcoCountInformation(), HttpStatus.OK);
+    }
+    
     @RequestMapping(method = RequestMethod.GET, value = "/registers/elco-data-count")
     @ResponseBody
     public ResponseEntity<List<CountServiceDTOForChart>>  getElcoInformationForChart(@RequestParam("provider") String provider, @RequestParam("district") String district,
 									@RequestParam("upazilla") String upazilla, @RequestParam("union") String union){
     	return new ResponseEntity<>(dataCountService.getElcoCountInformationForChart(provider, district, upazilla, union), HttpStatus.OK);
+    }
+    
+    @RequestMapping(method = RequestMethod.GET, value = "/registers/pw-count")
+    @ResponseBody
+    public ResponseEntity<List<CountServiceDTOForChart>>  getPWInformation(@RequestParam("provider") String provider, @RequestParam("district") String district,
+			@RequestParam("upazilla") String upazilla, @RequestParam("union") String union){
+    	return new ResponseEntity<>(dataCountService.getMotherCountInformation(), HttpStatus.OK);
     }
     
     @RequestMapping(method = RequestMethod.GET, value = "/registers/pw-data-count")
