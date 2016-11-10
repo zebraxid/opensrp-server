@@ -14,7 +14,6 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.ektorp.support.TypeDiscriminator;
-import org.joda.time.LocalDate;
 import org.motechproject.model.MotechBaseDataObject;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -29,31 +28,53 @@ public class Mother extends MotechBaseDataObject {
 	@JsonProperty
 	private String LOCATIONID;
 	@JsonProperty
-	private String anc1_current_formStatus;
+	private String anc1_current_form_status;
 	@JsonProperty
-	private String ANC2_current_formStatus;
+	private String anc2_current_form_status;
 	@JsonProperty
-	private String ANC3_current_formStatus;
+	private String anc3_current_form_status;
 	@JsonProperty
-	private String ANC4_current_formStatus;
+	private String anc4_current_form_status;
 	@JsonProperty
-	private String GOBHHID;
+	private String pnc1_current_form_status;
 	@JsonProperty
-	private String JiVitAHHID;
+	private String pnc2_current_form_status;
 	@JsonProperty
-	private String FWWOMFNAME;
+	private String pnc3_current_form_status;
 	@JsonProperty
-	private String FWHUSNAME;
+	private String bnf_current_form_status;
 	@JsonProperty
-	private String FWWOMNID;
+	private String mother_gobhhid;
 	@JsonProperty
-	private String FWWOMBID;
+	private String mother_jivhhid;
 	@JsonProperty
-	private String FWWOMAGE;
+	private String mother_first_name;
+	@JsonProperty
+	private String mother_husname;
+	@JsonProperty
+	private String mother_wom_nid;
+	@JsonProperty
+	private String mother_wom_bid;
+	@JsonProperty
+	private String mother_wom_age;
+	@JsonProperty
+	private String mother_mauza;
+	@JsonProperty
+	private String mother_valid;
+	@JsonProperty
+	private String FWVG;
+	@JsonProperty
+	private String FWHRP;
+	@JsonProperty
+	private String FWHR_PSR;
+	@JsonProperty
+	private String FWFLAGVALUE;
+	@JsonProperty
+	private String FWSORTVALUE;
+	@JsonProperty
+	private String mother_wom_lmp;
 	@JsonProperty
 	private String TODAY;
-	@JsonProperty
-	private String FWPSRLMP;
 	@JsonProperty
 	private String START;
 	@JsonProperty
@@ -61,7 +82,7 @@ public class Mother extends MotechBaseDataObject {
 	@JsonProperty
 	private String relationalid;
 	@JsonProperty
-    private String isClosed;
+	private String isClosed;
 	@JsonProperty
 	private Map<String, String> details;
 	@JsonProperty
@@ -82,16 +103,19 @@ public class Mother extends MotechBaseDataObject {
 	private Map<String, String> pncVisitThree;
 	@JsonProperty
 	private long SUBMISSIONDATE;
-	public Mother() {
 
-		this.details = new HashMap<>();
+	public Mother() {
 		this.ancVisitOne = new HashMap<>();
 		this.ancVisitTwo = new HashMap<>();
 		this.ancVisitThree = new HashMap<>();
 		this.ancVisitFour = new HashMap<>();
+		this.pncVisitOne = new HashMap<>();
+		this.pncVisitTwo = new HashMap<>();
+		this.pncVisitThree = new HashMap<>();
+		this.bnfVisitDetails = new ArrayList<>();
 		this.setIsClosed(false);
 	}
-	
+
 	public Mother withCaseId(String caseId) {
 		this.caseId = caseId;
 		return this;
@@ -111,67 +135,134 @@ public class Mother extends MotechBaseDataObject {
 		this.LOCATIONID = LOCATIONID;
 		return this;
 	}
-	
-	public Mother withanc1_current_formStatus(String anc1_current_formStatus) {
-		this.anc1_current_formStatus = anc1_current_formStatus;
+
+	public Mother withanc1_current_form_status(String anc1_current_form_status) {
+		this.anc1_current_form_status = anc1_current_form_status;
 		return this;
 	}
 
-	public Mother withANC2_current_formStatus(String ANC2_current_formStatus) {
-		this.ANC2_current_formStatus = ANC2_current_formStatus;
+	public Mother withanc2_current_form_status(String anc2_current_form_status) {
+		this.anc2_current_form_status = anc2_current_form_status;
 		return this;
 	}
 
-	public Mother withANC3_current_formStatus(String ANC3_current_formStatus) {
-		this.ANC3_current_formStatus = ANC3_current_formStatus;
+	public Mother withanc3_current_form_status(String anc3_current_form_status) {
+		this.anc3_current_form_status = anc3_current_form_status;
 		return this;
 	}
 
-	public Mother withANC4_current_formStatus(String ANC4_current_formStatus) {
-		this.ANC4_current_formStatus = ANC4_current_formStatus;
-		return this;
-	}
-	
-	public Mother withFWHUSNAME(String FWHUSNAME) {
-		this.FWHUSNAME = FWHUSNAME;
+	public Mother withanc4_current_form_status(String anc4_current_form_status) {
+		this.anc4_current_form_status = anc4_current_form_status;
 		return this;
 	}
 
-	public Mother withGOBHHID(String GOBHHID) {
-		this.GOBHHID = GOBHHID;
+	public Mother setPnc1_current_form_status(String pnc1_current_form_status) {
+		this.pnc1_current_form_status = pnc1_current_form_status;
 		return this;
 	}
-	public Mother withJiVitAHHID(String JiVitAHHID) {
-		this.JiVitAHHID = JiVitAHHID;
+
+	public Mother setPnc2_current_form_status(String pnc2_current_form_status) {
+		this.pnc2_current_form_status = pnc2_current_form_status;
 		return this;
 	}
-	public Mother withJFWWOMFNAME(String FWWOMFNAME) {
-		this.FWWOMFNAME = FWWOMFNAME;
+
+	public Mother setPnc3_current_form_status(String pnc3_current_form_status) {
+		this.pnc3_current_form_status = pnc3_current_form_status;
 		return this;
 	}
-	public Mother withFWWOMNID(String FWWOMNID) {
-		this.FWWOMNID = FWWOMNID;
+
+	public Mother setBnf_current_form_status(String bnf_current_form_status) {
+		this.bnf_current_form_status = bnf_current_form_status;
 		return this;
 	}
-	public Mother withFWWOMBID(String FWWOMBID) {
-		this.FWWOMBID = FWWOMBID;
+
+	public Mother withmother_husname(String mother_husname) {
+		this.mother_husname = mother_husname;
 		return this;
 	}
-	public Mother withFWWOMAGE(String FWWOMAGE) {
-		this.FWWOMAGE = FWWOMAGE;
+
+	public Mother withmother_gobhhid(String mother_gobhhid) {
+		this.mother_gobhhid = mother_gobhhid;
 		return this;
 	}
+
+	public Mother withmother_jivhhid(String mother_jivhhid) {
+		this.mother_jivhhid = mother_jivhhid;
+		return this;
+	}
+
+	public Mother withJmother_first_name(String mother_first_name) {
+		this.mother_first_name = mother_first_name;
+		return this;
+	}
+
+	public Mother withmother_wom_nid(String mother_wom_nid) {
+		this.mother_wom_nid = mother_wom_nid;
+		return this;
+	}
+
+	public Mother withmother_wom_bid(String mother_wom_bid) {
+		this.mother_wom_bid = mother_wom_bid;
+		return this;
+	}
+
+	public Mother withmother_wom_age(String mother_wom_age) {
+		this.mother_wom_age = mother_wom_age;
+		return this;
+	}
+
+	public Mother setMother_mauza(String mother_mauza) {
+		this.mother_mauza = mother_mauza;
+		return this;
+	}
+
+	public Mother setMother_valid(String mother_valid) {
+		this.mother_valid = mother_valid;
+		return this;
+	}
+
+	public Mother setFWVG(String fWVG) {
+		FWVG = fWVG;
+		return this;
+	}
+
+	public Mother setFWHRP(String fWHRP) {
+		FWHRP = fWHRP;
+		return this;
+	}
+
+	public Mother setFWHR_PSR(String fWHR_PSR) {
+		FWHR_PSR = fWHR_PSR;
+		return this;
+	}
+
+	public Mother setFWFLAGVALUE(String fWFLAGVALUE) {
+		FWFLAGVALUE = fWFLAGVALUE;
+		return this;
+	}
+
+	public Mother setFWSORTVALUE(String fWSORTVALUE) {
+		FWSORTVALUE = fWSORTVALUE;
+		return this;
+	}
+
+	public Mother setIsClosed(boolean isClosed) {
+		this.isClosed = Boolean.toString(isClosed);
+		return this;
+	}
+
 	public Mother withIsClosed(String isClosed) {
 		this.isClosed = isClosed;
 		return this;
 	}
+
 	public Mother withTODAY(String TODAY) {
 		this.TODAY = TODAY;
 		return this;
 	}
 
-	public Mother withFWPSRLMP(String FWPSRLMP) {
-		this.FWPSRLMP = FWPSRLMP;
+	public Mother withmother_wom_lmp(String mother_wom_lmp) {
+		this.mother_wom_lmp = mother_wom_lmp;
 		return this;
 	}
 
@@ -184,50 +275,62 @@ public class Mother extends MotechBaseDataObject {
 		this.END = END;
 		return this;
 	}
+
 	public Mother withRelationalid(String relationalid) {
 		this.relationalid = relationalid;
 		return this;
 	}
+
 	public Mother withDetails(Map<String, String> details) {
-        this.details = new HashMap<>(details);
-        return this;
-    }
+		this.details = new HashMap<>(details);
+		return this;
+	}
+
 	public Mother withANCVisitOne(Map<String, String> ancVisitOne) {
-        this.ancVisitOne = new HashMap<>(ancVisitOne);
-        return this;
-    }
+		this.ancVisitOne = new HashMap<>(ancVisitOne);
+		return this;
+	}
+
 	public Mother withANCVisitTwo(Map<String, String> ancVisitTwo) {
-        this.ancVisitTwo = new HashMap<>(ancVisitTwo);
-        return this;
-    }
+		this.ancVisitTwo = new HashMap<>(ancVisitTwo);
+		return this;
+	}
+
 	public Mother withANCVisitThree(Map<String, String> ancVisitThree) {
-        this.ancVisitThree = new HashMap<>(ancVisitThree);
-        return this;
-    }
+		this.ancVisitThree = new HashMap<>(ancVisitThree);
+		return this;
+	}
+
 	public Mother withANCVisitFour(Map<String, String> ancVisitFour) {
-        this.ancVisitFour = new HashMap<>(ancVisitFour);
-        return this;
-    }
+		this.ancVisitFour = new HashMap<>(ancVisitFour);
+		return this;
+	}
+
 	public Mother withBNFVisitDetails(List<Map<String, String>> bnfVisitDetails) {
-        this.bnfVisitDetails = bnfVisitDetails;
-        return this;
-    }
+		this.bnfVisitDetails = bnfVisitDetails;
+		return this;
+	}
+
 	public Mother withPNCVisitOne(Map<String, String> pncVisitOne) {
-        this.pncVisitOne = new HashMap<>(pncVisitOne);
-        return this;
-    }
+		this.pncVisitOne = new HashMap<>(pncVisitOne);
+		return this;
+	}
+
 	public Mother withPNCVisitTwo(Map<String, String> pncVisitTwo) {
-        this.pncVisitTwo = new HashMap<>(pncVisitTwo);
-        return this;
-    }
+		this.pncVisitTwo = new HashMap<>(pncVisitTwo);
+		return this;
+	}
+
 	public Mother withPNCVisitThree(Map<String, String> pncVisitThree) {
-        this.pncVisitThree = new HashMap<>(pncVisitThree);
-        return this;
-    }
-	public Mother withSUBMISSIONDATE(long SUBMISSIONDATE){
+		this.pncVisitThree = new HashMap<>(pncVisitThree);
+		return this;
+	}
+
+	public Mother withSUBMISSIONDATE(long SUBMISSIONDATE) {
 		this.SUBMISSIONDATE = SUBMISSIONDATE;
 		return this;
 	}
+
 	public String caseId() {
 		return caseId;
 	}
@@ -243,51 +346,107 @@ public class Mother extends MotechBaseDataObject {
 	public String LOCATIONID() {
 		return LOCATIONID;
 	}
-	public String anc1_current_formStatus() {
-		return anc1_current_formStatus;
+
+	public String anc1_current_form_status() {
+		return anc1_current_form_status;
 	}
 
-	public String ANC2_current_formStatus() {
-		return ANC2_current_formStatus;
+	public String anc2_current_form_status() {
+		return anc2_current_form_status;
 	}
 
-	public String ANC3_current_formStatus() {
-		return ANC3_current_formStatus;
+	public String anc3_current_form_status() {
+		return anc3_current_form_status;
 	}
 
-	public String ANC4_current_formStatus() {
-		return ANC4_current_formStatus;
+	public String anc4_current_form_status() {
+		return anc4_current_form_status;
 	}
-	public String FWHUSNAME() {
-		return FWHUSNAME;
+
+	public String getPnc1_current_form_status() {
+		return pnc1_current_form_status;
 	}
-	public String GOBHHID() {
-		return GOBHHID;
+
+	public String getPnc2_current_form_status() {
+		return pnc2_current_form_status;
 	}
-	public String JiVitAHHID() {
-		return JiVitAHHID;
+
+	public String getPnc3_current_form_status() {
+		return pnc3_current_form_status;
 	}
-	public String FWWOMFNAME() {
-		return FWWOMFNAME;
+
+	public String getBnf_current_form_status() {
+		return bnf_current_form_status;
 	}
-	public String FWWOMNID() {
-		return FWWOMNID;
+
+	public String mother_husname() {
+		return mother_husname;
 	}
-	public String FWWOMBID() {
-		return FWWOMBID;
+
+	public String mother_gobhhid() {
+		return mother_gobhhid;
 	}
-	public String FWWOMAGE() {
-		return FWWOMAGE;
+
+	public String mother_jivhhid() {
+		return mother_jivhhid;
 	}
+
+	public String mother_first_name() {
+		return mother_first_name;
+	}
+
+	public String mother_wom_nid() {
+		return mother_wom_nid;
+	}
+
+	public String mother_wom_bid() {
+		return mother_wom_bid;
+	}
+
+	public String mother_wom_age() {
+		return mother_wom_age;
+	}
+
+	public String getMother_mauza() {
+		return mother_mauza;
+	}
+
+	public String getMother_valid() {
+		return mother_valid;
+	}
+
+	public String getFWVG() {
+		return FWVG;
+	}
+
+	public String getFWHRP() {
+		return FWHRP;
+	}
+
+	public String getFWHR_PSR() {
+		return FWHR_PSR;
+	}
+
+	public String getFWFLAGVALUE() {
+		return FWFLAGVALUE;
+	}
+
+	public String getFWSORTVALUE() {
+		return FWSORTVALUE;
+	}
+
 	public String isClosed() {
 		return isClosed;
 	}
+
 	public String TODAY() {
 		return TODAY;
 	}
-	public String FWPSRLMP() {
-		return FWPSRLMP;
-	}	
+
+	public String mother_wom_lmp() {
+		return mother_wom_lmp;
+	}
+
 	public String START() {
 		return START;
 	}
@@ -295,7 +454,7 @@ public class Mother extends MotechBaseDataObject {
 	public String END() {
 		return END;
 	}
-	
+
 	public String relationalid() {
 		return relationalid;
 	}
@@ -309,30 +468,40 @@ public class Mother extends MotechBaseDataObject {
 	}
 
 	public Map<String, String> details() {
+		if (details == null)
+			this.details = new HashMap<>();
 		return details;
 	}
+
 	public String getDetail(String name) {
+		if (details == null)
+			this.details = new HashMap<>();
 		return details.get(name);
 	}
-	
+
 	public Map<String, String> ancVisitOne() {
 		return ancVisitOne;
 	}
+
 	public Map<String, String> ancVisitTwo() {
 		return ancVisitTwo;
 	}
+
 	public Map<String, String> ancVisitThree() {
 		return ancVisitThree;
 	}
+
 	public Map<String, String> ancVisitFour() {
 		return ancVisitFour;
 	}
+
 	public List<Map<String, String>> bnfVisitDetails() {
 		if (bnfVisitDetails == null) {
 			bnfVisitDetails = new ArrayList<>();
 		}
 		return bnfVisitDetails;
 	}
+
 	public String getbnfVisitDetails(String name) {
 		if (bnfVisitDetails == null) {
 			bnfVisitDetails = new ArrayList<>();
@@ -340,22 +509,23 @@ public class Mother extends MotechBaseDataObject {
 		}
 		return bnfVisitDetails.get(0).get(name);
 	}
+
 	public Map<String, String> pncVisitOne() {
 		return pncVisitOne;
 	}
+
 	public Map<String, String> pncVisitTwo() {
 		return pncVisitTwo;
 	}
+
 	public Map<String, String> pncVisitThree() {
 		return pncVisitThree;
 	}
-    public Mother setIsClosed(boolean isClosed) {
-        this.isClosed = Boolean.toString(isClosed);
-        return this;
-    }
-    public long SUBMISSIONDATE(){
+
+	public long SUBMISSIONDATE() {
 		return SUBMISSIONDATE;
 	}
+
 	@Override
 	public boolean equals(Object o) {
 		return EqualsBuilder.reflectionEquals(this, o, "id", "revision");

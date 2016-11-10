@@ -1,23 +1,23 @@
 package org.opensrp.web.controller;
 
-import static org.springframework.http.HttpStatus.OK;
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import org.opensrp.dto.CountServiceDTO;
 import org.opensrp.dto.CountServiceDTOForChart;
 import org.opensrp.dto.register.ANC_RegisterDTO;
+import org.opensrp.dto.register.Child_RegisterDTO;
 import org.opensrp.dto.register.ELCORegisterDTO;
 import org.opensrp.dto.register.HHRegisterDTO;
 import org.opensrp.register.mcare.ANCRegister;
+import org.opensrp.register.mcare.ChildRegister;
 import org.opensrp.register.mcare.ELCORegister;
 import org.opensrp.register.mcare.HHRegister;
 import org.opensrp.register.mcare.mapper.ANCRegisterMapper;
+import org.opensrp.register.mcare.mapper.ChildRegisterMapper;
 import org.opensrp.register.mcare.mapper.ELCORegisterMapper;
 import org.opensrp.register.mcare.mapper.HHRegisterMapper;
 import org.opensrp.register.mcare.service.ANCRegisterService;
+import org.opensrp.register.mcare.service.ChildRegisterService;
 import org.opensrp.register.mcare.service.ELCORegisterService;
 import org.opensrp.register.mcare.service.HHRegisterService;
 import org.opensrp.register.mcare.service.MultimediaRegisterService;
@@ -31,27 +31,24 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.google.gson.Gson;
-
 @Controller
 public class RegisterController {
 
-	private static final RequestMethod[] GET = null;
 	private ELCORegisterService ecRegisterService;
 	private HHRegisterService hhRegisterService;
 	private ANCRegisterService ancRegisterService;
+	private ChildRegisterService childRegisterService;
 	private ELCORegisterMapper ecRegisterMapper;
 	private HHRegisterMapper hhRegisterMapper;
 	private ANCRegisterMapper ancRegisterMapper;
+	private ChildRegisterMapper childRegisterMapper;
 	private MultimediaRegisterService multimediaRegisterService;
 	private DataCountService dataCountService;
-	 
+
 	@Autowired
-	public RegisterController(ELCORegisterService ecRegisterService,
-			HHRegisterService hhRegisterService, ELCORegisterMapper ecRegisterMapper,
-			HHRegisterMapper hhRegisterMapper,ANCRegisterService ancRegisterService,
-			ANCRegisterMapper ancRegisterMapper, 
-			MultimediaRegisterService multimediaRegisterService,
+	public RegisterController(ELCORegisterService ecRegisterService, ELCORegisterMapper ecRegisterMapper, HHRegisterService hhRegisterService,
+			HHRegisterMapper hhRegisterMapper, ANCRegisterService ancRegisterService, ANCRegisterMapper ancRegisterMapper,
+			ChildRegisterService childRegisterService, ChildRegisterMapper childRegisterMapper, MultimediaRegisterService multimediaRegisterService,
 			DataCountService dataCountService) {
 		this.ecRegisterService = ecRegisterService;
 		this.hhRegisterService = hhRegisterService;
@@ -59,106 +56,70 @@ public class RegisterController {
 		this.hhRegisterMapper = hhRegisterMapper;
 		this.ancRegisterService = ancRegisterService;
 		this.ancRegisterMapper = ancRegisterMapper;
+		this.childRegisterService = childRegisterService;
+		this.childRegisterMapper = childRegisterMapper;
 		this.multimediaRegisterService = multimediaRegisterService;
 		this.dataCountService = dataCountService;
 	}
-	
+
 	@RequestMapping(method = RequestMethod.GET, value = "/registers/hh")
-    @ResponseBody
-    public ResponseEntity<HHRegisterDTO> hhRegister(@RequestParam("anm-id") String anmIdentifier) {
-        HHRegister hhRegister = hhRegisterService.getHHRegisterForProvider(anmIdentifier);
-        return new ResponseEntity<>(hhRegisterMapper.mapToDTO(hhRegister), HttpStatus.OK);
-    }
+	@ResponseBody
+	public ResponseEntity<HHRegisterDTO> hhRegister(@RequestParam("anm-id") String anmIdentifier) {
+		HHRegister hhRegister = hhRegisterService.getHHRegisterForProvider(anmIdentifier);
+		return new ResponseEntity<>(hhRegisterMapper.mapToDTO(hhRegister), HttpStatus.OK);
+	}
 
-    @RequestMapping(method = RequestMethod.GET, value = "/registers/ec")
-    @ResponseBody
-    public ResponseEntity<ELCORegisterDTO> ecRegister(@RequestParam("anm-id") String anmIdentifier) {
-        ELCORegister ecRegister = ecRegisterService.getELCORegisterForProvider(anmIdentifier);
-        return new ResponseEntity<>(ecRegisterMapper.mapToDTO(ecRegister), HttpStatus.OK);
-    }
-	
+	@RequestMapping(method = RequestMethod.GET, value = "/registers/ec")
+	@ResponseBody
+	public ResponseEntity<ELCORegisterDTO> ecRegister(@RequestParam("anm-id") String anmIdentifier) {
+		ELCORegister ecRegister = ecRegisterService.getELCORegisterForProvider(anmIdentifier);
+		return new ResponseEntity<>(ecRegisterMapper.mapToDTO(ecRegister), HttpStatus.OK);
+	}
+
 	@RequestMapping(method = RequestMethod.GET, value = "/registers/household")
-    @ResponseBody
-    public ResponseEntity<HHRegisterDTO> householdRegister(@RequestParam("start-date") String startdate,@RequestParam("end-date") String enddate) {
-        HHRegister hhRegister = hhRegisterService.getHHRegister("HouseHold",startdate,enddate);
-        return new ResponseEntity<>(hhRegisterMapper.mapToDTO(hhRegister), HttpStatus.OK);
-    }
+	@ResponseBody
+	public ResponseEntity<HHRegisterDTO> householdRegister(@RequestParam("start-date") String startdate, @RequestParam("end-date") String enddate) {
+		HHRegister hhRegister = hhRegisterService.getHHRegister("HouseHold", startdate, enddate);
+		return new ResponseEntity<>(hhRegisterMapper.mapToDTO(hhRegister), HttpStatus.OK);
+	}
 
-    @RequestMapping(method = RequestMethod.GET, value = "/registers/elco")
-    @ResponseBody
-    public ResponseEntity<ELCORegisterDTO> elcoRegister(@RequestParam("start-date") String startdate,@RequestParam("end-date") String enddate) {
-        ELCORegister ecRegister = ecRegisterService.getELCORegister("Elco",startdate,enddate);
-        return new ResponseEntity<>(ecRegisterMapper.mapToDTO(ecRegister), HttpStatus.OK);
-    }
-		
-  /*  private ANCRegisterService ancRegisterService;
-    private PNCRegisterService pncRegisterService;
-    private ECRegisterService ecRegisterService;
-    private ChildRegisterService childRegisterService;
-    private FPRegisterService fpRegisterService;e
-    private ANCRegisterMapper ancRegisterMapper;
-    private ECRegisterMapper ecRegisterMapper;
-    private ChildRegisterMapper childRegisterMapper;
-    private FPRegisterMapper fpRegisterMapper;
-    private PNCRegisterMapper pncRegisterMapper;
+	@RequestMapping(method = RequestMethod.GET, value = "/registers/elco")
+	@ResponseBody
+	public ResponseEntity<ELCORegisterDTO> elcoRegister(@RequestParam("start-date") String startdate, @RequestParam("end-date") String enddate) {
+		ELCORegister ecRegister = ecRegisterService.getELCORegister("Elco", startdate, enddate);
+		return new ResponseEntity<>(ecRegisterMapper.mapToDTO(ecRegister), HttpStatus.OK);
+	}
 
-    @Autowired
-    public RegisterController(ANCRegisterService ancRegisterService,
-                              PNCRegisterService pncRegisterService,
-                              ECRegisterService ecRegisterService,
-                              ChildRegisterService childRegisterService,
-                              FPRegisterService fpRegisterService,
-                              ANCRegisterMapper ancRegisterMapper,
-                              ECRegisterMapper ecRegisterMapper,
-                              ChildRegisterMapper childRegisterMapper,
-                              FPRegisterMapper fpRegisterMapper,
-                              PNCRegisterMapper pncRegisterMapper) {
-        this.ancRegisterService = ancRegisterService;
-        this.ecRegisterService = ecRegisterService;
-        this.pncRegisterService = pncRegisterService;
-        this.childRegisterService = childRegisterService;
-        this.fpRegisterService = fpRegisterService;
-        this.ancRegisterMapper = ancRegisterMapper;
-        this.ecRegisterMapper = ecRegisterMapper;
-        this.childRegisterMapper = childRegisterMapper;
-        this.fpRegisterMapper = fpRegisterMapper;
-        this.pncRegisterMapper = pn@RequestMapping(method = GET, value = "/registers/ec")
-    @ResponseBody
-    public ResponseEntity<ECRegisterDTO> ecRegister(@RequestParam("anm-id") String anmIdentifier) {
-        ECRegister ecRegister = ecRegisterService.getRegisterForANM(anmIdentifier);
-        return new ResponseEntity<>(ecRegisterMapper.mapToDTO(ecRegister), HttpStatus.OK);
-    }
 
-    @RequestMapping(method = GET, value = "/registers/anc")
-    @ResponseBody
-    public ResponseEntity<ANCRegisterDTO> ancRegister(@RequestParam("anm-id") String anmIdentifier) {
-        ANCRegister ancRegister = ancRegisterService.getRegisterForANM(anmIdentifier);
-        return new ResponseEntity<>(ancRegisterMapper.mapToDTO(ancRegister), HttpStatus.OK);
-    }cRegisterMapper;
-    }
+	@RequestMapping(method = RequestMethod.GET, value = "/registers/anc")
+	@ResponseBody
+	public ResponseEntity<ANC_RegisterDTO> ancRegister(@RequestParam("start-date") String startdate, @RequestParam("end-date") String enddate) {
+		ANCRegister ancRegister = ancRegisterService.getANCRegister("Mother", startdate, enddate);
+		return new ResponseEntity<>(ancRegisterMapper.mapToDTO(ancRegister), HttpStatus.OK);
+	}
 
-    @RequestMapping(method = GET, value = "/registers/ec")
-    @ResponseBody
-    public ResponseEntity<ECRegisterDTO> ecRegister(@RequestParam("anm-id") String anmIdentifier) {
-        ECRegister ecRegister = ecRegisterService.getRegisterForANM(anmIdentifier);
-        return new ResponseEntity<>(ecRegisterMapper.mapToDTO(ecRegister), HttpStatus.OK);
-    }*/
+	@RequestMapping(method = RequestMethod.GET, value = "/registers/ancs")
+	@ResponseBody
+	public ResponseEntity<ANC_RegisterDTO> ancsRegister(@RequestParam("anm-id") String anmIdentifier) {
+		ANCRegister ancRegister = ancRegisterService.getANCRegisterForProvider(anmIdentifier);
+		return new ResponseEntity<>(ancRegisterMapper.mapToDTO(ancRegister), HttpStatus.OK);
 
-    @RequestMapping(method = RequestMethod.GET, value = "/registers/anc")
-    @ResponseBody
-    public ResponseEntity<ANC_RegisterDTO> ancRegister(@RequestParam("anm-id") String anmIdentifier) {
-        ANCRegister ancRegister = ancRegisterService.getANCRegisterForProvider(anmIdentifier);        
-        return new ResponseEntity<>(ancRegisterMapper.mapToDTO(ancRegister), HttpStatus.OK);
-      
-    }    
-    
-    @RequestMapping(method = RequestMethod.GET, value = "/getMultimedia")
-    @ResponseBody
-    public ResponseEntity<String>  getMultimedia()
-    {
-    	//multimediaRegisterService.getMultimedia();
-    	return new ResponseEntity<>("Welcome to multimedia service", HttpStatus.OK);
-    }
+	}
+
+	@RequestMapping(method = RequestMethod.GET, value = "/registers/child")
+	@ResponseBody
+	public ResponseEntity<Child_RegisterDTO> childRegister(@RequestParam("start-date") String startdate, @RequestParam("end-date") String enddate) {
+		ChildRegister childRegister = childRegisterService.getChildRegister("Child", startdate, enddate);
+		return new ResponseEntity<>(childRegisterMapper.mapToDTO(childRegister), HttpStatus.OK);
+	}
+
+	@RequestMapping(method = RequestMethod.GET, value = "/registers/childs")
+	@ResponseBody
+	public ResponseEntity<Child_RegisterDTO> childsRegister(@RequestParam("anm-id") String anmIdentifier) {
+		ChildRegister childRegister = childRegisterService.getChildRegisterForProvider(anmIdentifier);
+		return new ResponseEntity<>(childRegisterMapper.mapToDTO(childRegister), HttpStatus.OK);
+
+	}
     
     @RequestMapping(method = RequestMethod.GET, value = "/registers/data-count")
     @ResponseBody
@@ -211,27 +172,89 @@ public class RegisterController {
 			@RequestParam("upazilla") String upazilla, @RequestParam("union") String union){
     	return new ResponseEntity<>(dataCountService.getMotherCountInformationForChart(provider, district, upazilla, union), HttpStatus.OK);
     }
-    
-/*
-    @RequestMapping(method = GET, value = "/registers/child")
-    @ResponseBody
-    public ResponseEntity<ChildRegisterDTO> childRegister(@RequestParam("anm-id") String anmIdentifier) {
-        ChildRegister childRegister = childRegisterService.getRegisterForANM(anmIdentifier);
-        return new ResponseEntity<>(childRegisterMapper.mapToDTO(childRegister), HttpStatus.OK);
-    }
 
-    @RequestMapping(method = GET, value = "/registers/fp")
-    @ResponseBody
-    public ResponseEntity<FPRegisterDTO> fpRegister(@RequestParam("anm-id") String anmIdentifier) {
-        FPRegister fpRegister = fpRegisterService.getRegisterForANM(anmIdentifier);
-        return new ResponseEntity<>(fpRegisterMapper.mapToDTO(fpRegister), HttpStatus.OK);
+	/*
+	 * private ANCRegisterService ancRegisterService; private PNCRegisterService
+	 * pncRegisterService; private ECRegisterService ecRegisterService; private
+	 * ChildRegisterService childRegisterService; private FPRegisterService
+	 * fpRegisterService;e private ANCRegisterMapper ancRegisterMapper; private
+	 * ECRegisterMapper ecRegisterMapper; private ChildRegisterMapper
+	 * childRegisterMapper; private FPRegisterMapper fpRegisterMapper; private
+	 * PNCRegisterMapper pncRegisterMapper;
+	 * 
+	 * @Autowired public RegisterController(ANCRegisterService
+	 * ancRegisterService, PNCRegisterService pncRegisterService,
+	 * ECRegisterService ecRegisterService, ChildRegisterService
+	 * childRegisterService, FPRegisterService fpRegisterService,
+	 * ANCRegisterMapper ancRegisterMapper, ECRegisterMapper ecRegisterMapper,
+	 * ChildRegisterMapper childRegisterMapper, FPRegisterMapper
+	 * fpRegisterMapper, PNCRegisterMapper pncRegisterMapper) {
+	 * this.ancRegisterService = ancRegisterService; this.ecRegisterService =
+	 * ecRegisterService; this.pncRegisterService = pncRegisterService;
+	 * this.childRegisterService = childRegisterService; this.fpRegisterService
+	 * = fpRegisterService; this.ancRegisterMapper = ancRegisterMapper;
+	 * this.ecRegisterMapper = ecRegisterMapper; this.childRegisterMapper =
+	 * childRegisterMapper; this.fpRegisterMapper = fpRegisterMapper;
+	 * this.pncRegisterMapper = pn@RequestMapping(method = GET, value =
+	 * "/registers/ec")
+	 * 
+	 * @ResponseBody public ResponseEntity<ECRegisterDTO>
+	 * ecRegister(@RequestParam("anm-id") String anmIdentifier) { ECRegister
+	 * ecRegister = ecRegisterService.getRegisterForANM(anmIdentifier); return
+	 * new ResponseEntity<>(ecRegisterMapper.mapToDTO(ecRegister),
+	 * HttpStatus.OK); }
+	 * 
+	 * @RequestMapping(method = GET, value = "/registers/anc")
+	 * 
+	 * @ResponseBody public ResponseEntity<ANCRegisterDTO>
+	 * ancRegister(@RequestParam("anm-id") String anmIdentifier) { ANCRegister
+	 * ancRegister = ancRegisterService.getRegisterForANM(anmIdentifier); return
+	 * new ResponseEntity<>(ancRegisterMapper.mapToDTO(ancRegister),
+	 * HttpStatus.OK); }cRegisterMapper; }
+	 * 
+	 * @RequestMapping(method = GET, value = "/registers/ec")
+	 * 
+	 * @ResponseBody public ResponseEntity<ECRegisterDTO>
+	 * ecRegister(@RequestParam("anm-id") String anmIdentifier) { ECRegister
+	 * ecRegister = ecRegisterService.getRegisterForANM(anmIdentifier); return
+	 * new ResponseEntity<>(ecRegisterMapper.mapToDTO(ecRegister),
+	 * HttpStatus.OK); }
+	 */
 
-    }
+	@RequestMapping(method = RequestMethod.GET, value = "/getMultimedia")
+	@ResponseBody
+	public ResponseEntity<String> getMultimedia() {
+		// multimediaRegisterService.getMultimedia();
+		return new ResponseEntity<>("Welcome to multimedia service", HttpStatus.OK);
+	}
 
-    @RequestMapping(method = GET, value = "/registers/pnc")
-    @ResponseBody
-    public ResponseEntity<PNCRegisterDTO> pncRegister(@RequestParam("anm-id") String anmIdentifier) {
-        PNCRegister pncRegister = pncRegisterService.getRegisterForANM(anmIdentifier);
-        return new ResponseEntity<>(pncRegisterMapper.mapToDTO(pncRegister), HttpStatus.OK);
-    }*/
+	/*
+	 * @RequestMapping(method = GET, value = "/registers/child")
+	 * 
+	 * @ResponseBody public ResponseEntity<ChildRegisterDTO>
+	 * childRegister(@RequestParam("anm-id") String anmIdentifier) {
+	 * ChildRegister childRegister =
+	 * childRegisterService.getRegisterForANM(anmIdentifier); return new
+	 * ResponseEntity<>(childRegisterMapper.mapToDTO(childRegister),
+	 * HttpStatus.OK); }
+	 * 
+	 * @RequestMapping(method = GET, value = "/registers/fp")
+	 * 
+	 * @ResponseBody public ResponseEntity<FPRegisterDTO>
+	 * fpRegister(@RequestParam("anm-id") String anmIdentifier) { FPRegister
+	 * fpRegister = fpRegisterService.getRegisterForANM(anmIdentifier); return
+	 * new ResponseEntity<>(fpRegisterMapper.mapToDTO(fpRegister),
+	 * HttpStatus.OK);
+	 * 
+	 * }
+	 * 
+	 * @RequestMapping(method = GET, value = "/registers/pnc")
+	 * 
+	 * @ResponseBody public ResponseEntity<PNCRegisterDTO>
+	 * pncRegister(@RequestParam("anm-id") String anmIdentifier) { PNCRegister
+	 * pncRegister = pncRegisterService.getRegisterForANM(anmIdentifier); return
+	 * new ResponseEntity<>(pncRegisterMapper.mapToDTO(pncRegister),
+	 * HttpStatus.OK); }
+	 */
+
 }

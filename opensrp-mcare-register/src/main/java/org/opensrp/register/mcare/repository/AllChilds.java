@@ -2,8 +2,10 @@ package org.opensrp.register.mcare.repository;
 
 import java.util.List;
 
+import org.ektorp.ComplexKey;
 import org.ektorp.CouchDbConnector;
 import org.ektorp.support.GenerateView;
+import org.ektorp.support.View;
 import org.motechproject.dao.MotechBaseRepository;
 import org.opensrp.common.AllConstants;
 import org.opensrp.register.mcare.domain.Child;
@@ -13,8 +15,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class AllChilds extends MotechBaseRepository<Child>{
-	
+public class AllChilds extends MotechBaseRepository<Child> {
+
 	@Autowired
 	public AllChilds(@Value("#{opensrp['couchdb.atomfeed-db.revision-limit']}") int revisionLimit,
 			@Qualifier(AllConstants.OPENSRP_DATABASE_CONNECTOR) CouchDbConnector db) {
@@ -29,6 +31,19 @@ public class AllChilds extends MotechBaseRepository<Child>{
 			return null;
 		}
 		return childs.get(0);
+	}
+
+	@View(name = "all_open_childs_for_provider", map = "function(doc) { if (doc.type === 'Child' && doc.PROVIDERID) { emit(doc.PROVIDERID); } }")
+	public List<Child> allOpenChilds() {
+		return db.queryView(createQuery("all_open_childs_for_provider").includeDocs(true), Child.class);
+	}
+
+	@View(name = "created_in_between_2_dates", map = "function(doc) { if(doc.type === 'Child' && doc.type && doc.SUBMISSIONDATE) { emit( [doc.type, doc.SUBMISSIONDATE], null); } }")
+	public List<Child> allChildsCreatedBetween2Dates(String type, long startKey, long endKey) {
+		ComplexKey start = ComplexKey.of(type, startKey);
+		ComplexKey end = ComplexKey.of(type, endKey);
+		List<Child> childs = db.queryView(createQuery("created_in_between_2_dates").startKey(start).endKey(end).includeDocs(true), Child.class);
+		return childs;
 	}
 
 	public boolean exists(String caseId) {

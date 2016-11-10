@@ -1,5 +1,6 @@
 package org.opensrp.dto.register;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,7 +11,6 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 public class ANC_RegisterEntryDTO {
-	
 	@JsonProperty
 	private String caseId;
 	@JsonProperty
@@ -20,33 +20,53 @@ public class ANC_RegisterEntryDTO {
 	@JsonProperty
 	private String LOCATIONID;
 	@JsonProperty
-	private String anc1_current_formStatus;
+	private String anc1_current_form_status;
 	@JsonProperty
-	private String ANC2_current_formStatus;
+	private String anc2_current_form_status;
 	@JsonProperty
-	private String ANC3_current_formStatus;
+	private String anc3_current_form_status;
 	@JsonProperty
-	private String ANC4_current_formStatus;
-	/*@JsonProperty
-	private String current_formStatus;*/
+	private String anc4_current_form_status;
 	@JsonProperty
-	private String GOBHHID;
+	private String pnc1_current_form_status;
 	@JsonProperty
-	private String JiVitAHHID;
+	private String pnc2_current_form_status;
 	@JsonProperty
-	private String FWWOMFNAME;
+	private String pnc3_current_form_status;
 	@JsonProperty
-	private String FWHUSNAME;
+	private String bnf_current_form_status;
 	@JsonProperty
-	private String FWWOMNID;
+	private String mother_gobhhid;
 	@JsonProperty
-	private String FWWOMBID;
+	private String mother_jivhhid;
 	@JsonProperty
-	private String FWWOMAGE;
+	private String mother_first_name;
+	@JsonProperty
+	private String mother_husname;
+	@JsonProperty
+	private String mother_wom_nid;
+	@JsonProperty
+	private String mother_wom_bid;
+	@JsonProperty
+	private String mother_wom_age;
+	@JsonProperty
+	private String mother_mauza;
+	@JsonProperty
+	private String mother_valid;
+	@JsonProperty
+	private String FWVG;
+	@JsonProperty
+	private String FWHRP;
+	@JsonProperty
+	private String FWHR_PSR;
+	@JsonProperty
+	private String FWFLAGVALUE;
+	@JsonProperty
+	private String FWSORTVALUE;
+	@JsonProperty
+	private String mother_wom_lmp;
 	@JsonProperty
 	private String TODAY;
-	@JsonProperty
-	private String FWPSRLMP;
 	@JsonProperty
 	private String START;
 	@JsonProperty
@@ -54,7 +74,7 @@ public class ANC_RegisterEntryDTO {
 	@JsonProperty
 	private String relationalid;
 	@JsonProperty
-    private String isClosed;
+	private String isClosed;
 	@JsonProperty
 	private Map<String, String> details;
 	@JsonProperty
@@ -67,17 +87,27 @@ public class ANC_RegisterEntryDTO {
 	private Map<String, String> ancVisitFour;
 	@JsonProperty
 	private List<Map<String, String>> bnfVisitDetails;
-	
-	public ANC_RegisterEntryDTO() {
+	@JsonProperty
+	private Map<String, String> pncVisitOne;
+	@JsonProperty
+	private Map<String, String> pncVisitTwo;
+	@JsonProperty
+	private Map<String, String> pncVisitThree;
+	@JsonProperty
+	private long SUBMISSIONDATE;
 
-		this.details = new HashMap<>();
+	public ANC_RegisterEntryDTO() {
 		this.ancVisitOne = new HashMap<>();
 		this.ancVisitTwo = new HashMap<>();
 		this.ancVisitThree = new HashMap<>();
 		this.ancVisitFour = new HashMap<>();
+		this.pncVisitOne = new HashMap<>();
+		this.pncVisitTwo = new HashMap<>();
+		this.pncVisitThree = new HashMap<>();
+		this.bnfVisitDetails = new ArrayList<>();
 		this.setIsClosed(false);
 	}
-	
+
 	public ANC_RegisterEntryDTO withCaseId(String caseId) {
 		this.caseId = caseId;
 		return this;
@@ -92,80 +122,139 @@ public class ANC_RegisterEntryDTO {
 		this.PROVIDERID = PROVIDERID;
 		return this;
 	}
-	
+
 	public ANC_RegisterEntryDTO withLOCATIONID(String LOCATIONID) {
 		this.LOCATIONID = LOCATIONID;
 		return this;
 	}
-	
-	public ANC_RegisterEntryDTO withanc1_current_formStatus(String anc1_current_formStatus) {
-		this.anc1_current_formStatus = anc1_current_formStatus;
+
+	public ANC_RegisterEntryDTO withanc1_current_form_status(String anc1_current_form_status) {
+		this.anc1_current_form_status = anc1_current_form_status;
 		return this;
 	}
 
-	public ANC_RegisterEntryDTO withANC2_current_formStatus(String ANC2_current_formStatus) {
-		this.ANC2_current_formStatus = ANC2_current_formStatus;
+	public ANC_RegisterEntryDTO withanc2_current_form_status(String anc2_current_form_status) {
+		this.anc2_current_form_status = anc2_current_form_status;
 		return this;
 	}
 
-	public ANC_RegisterEntryDTO withANC3_current_formStatus(String ANC3_current_formStatus) {
-		this.ANC3_current_formStatus = ANC3_current_formStatus;
+	public ANC_RegisterEntryDTO withanc3_current_form_status(String anc3_current_form_status) {
+		this.anc3_current_form_status = anc3_current_form_status;
 		return this;
 	}
 
-	public ANC_RegisterEntryDTO withANC4_current_formStatus(String ANC4_current_formStatus) {
-		this.ANC4_current_formStatus = ANC4_current_formStatus;
-		return this;
-	}
-	
-	/*public ANC_RegisterEntryDTO withcurrent_formStatus(String current_formStatus) {
-		this.current_formStatus = current_formStatus;
-		return this;
-	}*/
-
-	public ANC_RegisterEntryDTO withFWHUSNAME(String FWHUSNAME) {
-		this.FWHUSNAME = FWHUSNAME;
-		return this;
-	}
-	
-	public ANC_RegisterEntryDTO withGOBHHID(String GOBHHID) {
-		this.GOBHHID = GOBHHID;
-		return this;
-	}	
-	public ANC_RegisterEntryDTO withJiVitAHHID(String JiVitAHHID) {
-		this.JiVitAHHID = JiVitAHHID;
-		return this;
-	}
-	public ANC_RegisterEntryDTO withFWWOMFNAME(String FWWOMFNAME) {
-		this.FWWOMFNAME = FWWOMFNAME;
-		return this;
-	}
-	
-	public ANC_RegisterEntryDTO withFWWOMNID(String FWWOMNID) {
-		this.FWWOMNID = FWWOMNID;
+	public ANC_RegisterEntryDTO withanc4_current_form_status(String anc4_current_form_status) {
+		this.anc4_current_form_status = anc4_current_form_status;
 		return this;
 	}
 
-	public ANC_RegisterEntryDTO withFWWOMBID(String FWWOMBID) {
-		this.FWWOMBID = FWWOMBID;
+	public ANC_RegisterEntryDTO setPnc1_current_form_status(String pnc1_current_form_status) {
+		this.pnc1_current_form_status = pnc1_current_form_status;
 		return this;
 	}
-	public ANC_RegisterEntryDTO withFWWOMAGE(String FWWOMAGE) {
-		this.FWWOMAGE = FWWOMAGE;
+
+	public ANC_RegisterEntryDTO setPnc2_current_form_status(String pnc2_current_form_status) {
+		this.pnc2_current_form_status = pnc2_current_form_status;
 		return this;
 	}
+
+	public ANC_RegisterEntryDTO setPnc3_current_form_status(String pnc3_current_form_status) {
+		this.pnc3_current_form_status = pnc3_current_form_status;
+		return this;
+	}
+
+	public ANC_RegisterEntryDTO setBnf_current_form_status(String bnf_current_form_status) {
+		this.bnf_current_form_status = bnf_current_form_status;
+		return this;
+	}
+
+	public ANC_RegisterEntryDTO withmother_husname(String mother_husname) {
+		this.mother_husname = mother_husname;
+		return this;
+	}
+
+	public ANC_RegisterEntryDTO withmother_gobhhid(String mother_gobhhid) {
+		this.mother_gobhhid = mother_gobhhid;
+		return this;
+	}
+
+	public ANC_RegisterEntryDTO withmother_jivhhid(String mother_jivhhid) {
+		this.mother_jivhhid = mother_jivhhid;
+		return this;
+	}
+
+	public ANC_RegisterEntryDTO withJmother_first_name(String mother_first_name) {
+		this.mother_first_name = mother_first_name;
+		return this;
+	}
+
+	public ANC_RegisterEntryDTO withmother_wom_nid(String mother_wom_nid) {
+		this.mother_wom_nid = mother_wom_nid;
+		return this;
+	}
+
+	public ANC_RegisterEntryDTO withmother_wom_bid(String mother_wom_bid) {
+		this.mother_wom_bid = mother_wom_bid;
+		return this;
+	}
+
+	public ANC_RegisterEntryDTO withmother_wom_age(String mother_wom_age) {
+		this.mother_wom_age = mother_wom_age;
+		return this;
+	}
+
+	public ANC_RegisterEntryDTO setANC_RegisterEntryDTO_mauza(String mother_mauza) {
+		this.mother_mauza = mother_mauza;
+		return this;
+	}
+
+	public ANC_RegisterEntryDTO setANC_RegisterEntryDTO_valid(String mother_valid) {
+		this.mother_valid = mother_valid;
+		return this;
+	}
+
+	public ANC_RegisterEntryDTO setFWVG(String fWVG) {
+		FWVG = fWVG;
+		return this;
+	}
+
+	public ANC_RegisterEntryDTO setFWHRP(String fWHRP) {
+		FWHRP = fWHRP;
+		return this;
+	}
+
+	public ANC_RegisterEntryDTO setFWHR_PSR(String fWHR_PSR) {
+		FWHR_PSR = fWHR_PSR;
+		return this;
+	}
+
+	public ANC_RegisterEntryDTO setFWFLAGVALUE(String fWFLAGVALUE) {
+		FWFLAGVALUE = fWFLAGVALUE;
+		return this;
+	}
+
+	public ANC_RegisterEntryDTO setFWSORTVALUE(String fWSORTVALUE) {
+		FWSORTVALUE = fWSORTVALUE;
+		return this;
+	}
+
+	public ANC_RegisterEntryDTO setIsClosed(boolean isClosed) {
+		this.isClosed = Boolean.toString(isClosed);
+		return this;
+	}
+
 	public ANC_RegisterEntryDTO withIsClosed(String isClosed) {
 		this.isClosed = isClosed;
 		return this;
 	}
-	
+
 	public ANC_RegisterEntryDTO withTODAY(String TODAY) {
 		this.TODAY = TODAY;
 		return this;
 	}
 
-	public ANC_RegisterEntryDTO withFWPSRLMP(String FWPSRLMP) {
-		this.FWPSRLMP = FWPSRLMP;
+	public ANC_RegisterEntryDTO withmother_wom_lmp(String mother_wom_lmp) {
+		this.mother_wom_lmp = mother_wom_lmp;
 		return this;
 	}
 
@@ -178,48 +267,75 @@ public class ANC_RegisterEntryDTO {
 		this.END = END;
 		return this;
 	}
+
 	public ANC_RegisterEntryDTO withRelationalid(String relationalid) {
 		this.relationalid = relationalid;
 		return this;
 	}
 
+	public ANC_RegisterEntryDTO withDetails(Map<String, String> details) {
+		this.details = new HashMap<>(details);
+		return this;
+	}
+
 	public ANC_RegisterEntryDTO withANCVisitOne(Map<String, String> ancVisitOne) {
-        this.ancVisitOne = new HashMap<>(ancVisitOne);
-        return this;
-    }
+		this.ancVisitOne = new HashMap<>(ancVisitOne);
+		return this;
+	}
+
 	public ANC_RegisterEntryDTO withANCVisitTwo(Map<String, String> ancVisitTwo) {
-        this.ancVisitTwo = new HashMap<>(ancVisitTwo);
-        return this;
-    }
+		this.ancVisitTwo = new HashMap<>(ancVisitTwo);
+		return this;
+	}
+
 	public ANC_RegisterEntryDTO withANCVisitThree(Map<String, String> ancVisitThree) {
-        this.ancVisitThree = new HashMap<>(ancVisitThree);
-        return this;
-    }
+		this.ancVisitThree = new HashMap<>(ancVisitThree);
+		return this;
+	}
+
 	public ANC_RegisterEntryDTO withANCVisitFour(Map<String, String> ancVisitFour) {
-        this.ancVisitFour = new HashMap<>(ancVisitFour);
-        return this;
-    }
+		this.ancVisitFour = new HashMap<>(ancVisitFour);
+		return this;
+	}
+
 	public ANC_RegisterEntryDTO withBNFVisitDetails(List<Map<String, String>> bnfVisitDetails) {
-        this.bnfVisitDetails = bnfVisitDetails;
-        return this;
-    }	
-	
-	public ANC_RegisterEntryDTO setIsClosed(boolean isClosed) {
-        this.isClosed = Boolean.toString(isClosed);
-        return this;
-    }
-	
+		this.bnfVisitDetails = bnfVisitDetails;
+		return this;
+	}
+
+	public ANC_RegisterEntryDTO withPNCVisitOne(Map<String, String> pncVisitOne) {
+		this.pncVisitOne = new HashMap<>(pncVisitOne);
+		return this;
+	}
+
+	public ANC_RegisterEntryDTO withPNCVisitTwo(Map<String, String> pncVisitTwo) {
+		this.pncVisitTwo = new HashMap<>(pncVisitTwo);
+		return this;
+	}
+
+	public ANC_RegisterEntryDTO withPNCVisitThree(Map<String, String> pncVisitThree) {
+		this.pncVisitThree = new HashMap<>(pncVisitThree);
+		return this;
+	}
+
+	public ANC_RegisterEntryDTO withSUBMISSIONDATE(long SUBMISSIONDATE) {
+		this.SUBMISSIONDATE = SUBMISSIONDATE;
+		return this;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		return EqualsBuilder.reflectionEquals(this, o, "id", "revision");
 	}
+
 	@Override
 	public int hashCode() {
 		return HashCodeBuilder.reflectionHashCode(this, "id", "revision");
 	}
+
 	@Override
 	public String toString() {
 		return ToStringBuilder.reflectionToString(this);
 	}
-	
+
 }

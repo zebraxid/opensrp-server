@@ -15,6 +15,7 @@ import static org.opensrp.common.AllConstants.PNCVisitThreeFields.*;
 import static org.opensrp.common.AllConstants.DeliveryOutcomeFields.CHILD_REGISTRATION_SUB_FORM_NAME;
 import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_GOBHHID;
 import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_WOMFNAME;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_LOCATIONID;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_PNC;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_PNC_1;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_PNC_2;
@@ -139,6 +140,7 @@ public class PNCService {
 					Child child = allChilds.findByCaseId(childFields.get(ID))
 						.withINSTANCEID(submission.instanceId())
 						.withPROVIDERID(submission.anmId())
+						.withLOCATIONID(submission.getField(FW_LOCATIONID))
 						.withTODAY(submission.getField(REFERENCE_DATE))
 						.withSTART(submission.getField(START_DATE))
 						.withEND(submission.getField(END_DATE))
