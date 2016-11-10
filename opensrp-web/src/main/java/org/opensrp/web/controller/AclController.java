@@ -23,6 +23,7 @@ import org.opensrp.dashboard.dto.DashboardLocationInfoDTONew;
 import org.opensrp.dashboard.dto.LocationTagDTO;
 import org.opensrp.dashboard.dto.PrivilegeDTO;
 import org.opensrp.dashboard.dto.RoleDTO;
+import org.opensrp.dashboard.dto.SimplifiedRole;
 import org.opensrp.dashboard.dto.SimplifiedUser;
 import org.opensrp.dashboard.dto.UserDTO;
 import org.opensrp.service.LocationService;
@@ -32,6 +33,7 @@ import org.opensrp.dashboard.service.PrivilegeService;
 import org.opensrp.dashboard.service.RoleService;
 import org.opensrp.dashboard.service.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -63,52 +65,12 @@ public class AclController {
 		this.dashboardLocationService = dashboardLocationService;
 		this.locationTagService = locationTagService;
 	}
-
-	/*@RequestMapping(headers = { "Accept=application/json" }, method = POST, value = "/add-user")
-	public ResponseEntity<String> addRole(@RequestBody RoleDTO roleDTO) {
-		String message = roleService.addRole(roleDTO);
-		return new ResponseEntity<>(message,OK);
-	}*/
-	
-	/*@RequestMapping(headers = { "Accept=application/json" }, method = POST, value = "/edit-user")
-	public ResponseEntity<String> editRole(@RequestBody RoleDTO roleDTO) {
-		String message = roleService.editRole(roleDTO);
-		return new ResponseEntity<>(message,OK);
-	}*/
-
 	@RequestMapping(method = GET, value = "/all-user-name")
 	@ResponseBody
 	public ResponseEntity<String> getAllUserName() throws JSONException {
 		return new ResponseEntity<>(new Gson().toJson(openmrsUserService
 				.getAllUsers()), OK);
-	}
-
-	/*@RequestMapping(method = GET, value = "/role-access-tokens")
-	@ResponseBody
-	public AclDTO getRoleAndAccessTokens(@RequestParam String userName) {
-		AclDTO tempDTO = new AclDTO();
-		tempDTO.withRoleName("Admin");
-		tempDTO.withRoleId("2ba3698706c7527a7a4b78546d011f1c");
-		tempDTO.withStatus("Active");
-		Map<String, String> tokens = new HashMap<String, String>();
-		tokens.put("0", "Household");
-		tokens.put("1", "Household Details");
-		tokens.put("2", "Elco");
-		tokens.put("3", "Elco Details");
-		tokens.put("4", "PW");
-		tokens.put("5", "PW Details");
-		tokens.put("6", "Data Export");
-		tokens.put("7", "User List");
-		tokens.put("8", "User Assign");
-		tokens.put("9", "User Assign Edit");
-		tokens.put("10", "Role Edit");
-		tokens.put("11", "Add Role");
-		tokens.put("12", "Acl");
-		tempDTO.withAccessTokens(tokens);
-		//return aclService.getRoleAndAccessTokens(userName);
-		return tempDTO;
-	}*/
-	
+	}	
 	// new one
 	@RequestMapping(method = GET, value = "/role-access-token")
 	@ResponseBody
@@ -219,6 +181,12 @@ public class AclController {
 	@ResponseBody
 	public UserDTO getUserByName(String userName) {
 		return (UserDTO) userService.getUserByName(userName);
+	}
+	
+	@RequestMapping(method = GET, value = "/get-role-by-userName")
+	@ResponseBody
+	public ResponseEntity<String> getUserByUserName(String userName) {		
+		return new ResponseEntity<>(new Gson().toJson(userService.getRoleByUserName(userName)),HttpStatus.OK);
 	}
 	
 	@RequestMapping( method = GET, value = "/valid-username")

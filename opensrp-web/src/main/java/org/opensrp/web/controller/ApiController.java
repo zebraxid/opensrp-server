@@ -30,7 +30,7 @@ public class ApiController {
 		this.luceneHouseHoldService = luceneHouseHoldService;
 	}
 	
-	@RequestMapping(method = GET, value="/households")
+	@RequestMapping(method = GET, value="/households/search")
     @ResponseBody
 	public ResponseEntity<HouseholdDTO> getHouseHolds(@RequestParam MultiValueMap<String, String> queryParameters) throws JsonParseException, JsonMappingException, IOException
 	{

@@ -376,6 +376,17 @@ public class UsersService {
 			return userDTO;
 		}
 	}
+	public List<SimplifiedRole> getRoleByUserName(String userName) {
+		User userByUserName = allUsers.findUserByUserName(userName);
+		UserDTO userDTO =  new UserDTO();		
+		if (userByUserName == null) {			
+			return null;
+		} else {
+			
+			return userByUserName.getRoles();					
+			
+		}
+	}
 	
 	public String ifUserExists(String userName) {
 		User userByUserName = allUsers.findUserByUserName(userName);

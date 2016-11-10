@@ -66,8 +66,7 @@ public class LuceneHouseHoldService {
 				makeQueryString+=" AND ";
 			
 			paramCounter++;
-		}
-		
+		}		
 		LuceneResult luceneResult = luceneHouseHoldRepository
 				.findDocsByProvider(makeQueryString);
 		List<Row> rows = luceneResult.getRows();
