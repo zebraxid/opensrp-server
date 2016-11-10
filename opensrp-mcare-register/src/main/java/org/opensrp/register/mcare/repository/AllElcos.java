@@ -1,5 +1,6 @@
 package org.opensrp.register.mcare.repository;
 
+import java.util.Calendar;
 import java.util.List;
 
 import org.ektorp.ComplexKey;
@@ -78,6 +79,22 @@ public class AllElcos extends MotechBaseRepository<Elco> {
 		return elcos;
 	}
 	
+	@View(name = "created_in_last_4_months", map = "function(doc) { if(doc.type === 'Elco' && doc.SUBMISSIONDATE && doc.PROVIDERID) { emit([doc.PROVIDERID], doc.SUBMISSIONDATE) } }")
+	public List<Elco> allElcosCreatedLastFourMonths(){
+		Calendar cal = Calendar.getInstance();
+		String startKey = Long.toString(cal.getTimeInMillis());
+		cal.add(Calendar.DAY_OF_YEAR, -120);
+		String endKey = Long.toString(cal.getTimeInMillis());
+		
+		List<Elco> elcos =  db.queryView(
+				createQuery("created_in_last_4_months")
+				.rawStartKey(startKey)
+				.rawEndKey(endKey)
+				.includeDocs(true), Elco.class);
+		
+		return elcos;
+	}
+	
 	@View(name = "created_in_between_2_dates", map = "function(doc) { if(doc.type === 'Elco' && doc.type && doc.SUBMISSIONDATE) { emit( [doc.type, doc.SUBMISSIONDATE], null); } }")
 	public List<Elco> allElcosCreatedBetween2Dates(String type, long startKey, long endKey){
 		ComplexKey start = ComplexKey.of(type,startKey);
@@ -87,8 +104,17 @@ public class AllElcos extends MotechBaseRepository<Elco> {
 				.startKey(start)
 				.endKey(end)
 				.includeDocs(true), Elco.class);
-		//System.out.println(elcos.toString());	
+		
 		return elcos;
+	}
+	
+	public ViewResult allElcosCreatedLastFourMonthsViewResult(){
+		
+		ViewResult vr = db.queryView(
+				createQuery("created_in_last_4_months")
+				.includeDocs(false));
+		
+		return vr;
 	}
 	
 	public ViewResult allElcosCreatedLastFourMonthsByLocationViewResult(String startKey, String endKey){
@@ -133,6 +159,31 @@ public class AllElcos extends MotechBaseRepository<Elco> {
 				.includeDocs(true), Elco.class);
 			
 		return elcos;
+	}
+	
+	@View(name = "mother_created_in_last_4_months", map = "function(doc) { if(doc.type === 'Elco' && doc.SUBMISSIONDATE && doc.PROVIDERID && doc.PSRFDETAILS != '' && doc.details.FWPSRPREGSTS == 1) { emit([doc.PROVIDERID], doc.SUBMISSIONDATE)} }")
+	public List<Elco> allMothersCreatedLastFourMonths(){
+		Calendar cal = Calendar.getInstance();
+		String startKey = Long.toString(cal.getTimeInMillis());
+		cal.add(Calendar.DAY_OF_YEAR, -120);
+		String endKey = Long.toString(cal.getTimeInMillis());
+		
+		List<Elco> elcos =  db.queryView(
+				createQuery("mother_created_in_last_4_months")
+				.rawStartKey(startKey)
+				.rawEndKey(endKey)
+				.includeDocs(true), Elco.class);
+			
+		return elcos;
+	}
+	
+	public ViewResult allMothersCreatedLastFourMonthsViewResult(){
+		
+		ViewResult vr = db.queryView(
+				createQuery("mother_created_in_last_4_months")
+				.includeDocs(false));
+		
+		return vr;
 	}
 	
 	public ViewResult allMothersCreatedLastFourMonthsByLocationViewResult(String startKey, String endKey){

@@ -1,5 +1,6 @@
 package org.opensrp.register.mcare.repository;
 
+import java.util.Calendar;
 import java.util.List;
 
 import org.ektorp.ComplexKey;
@@ -72,6 +73,32 @@ public class AllHouseHolds extends MotechBaseRepository<HouseHold> {
 						.includeDocs(true), HouseHold.class);
 
 		return houseHolds;
+	}
+	
+	@View(name = "created_in_last_4_months", map = "function(doc) { if(doc.type === 'HouseHold' && doc.SUBMISSIONDATE && doc.PROVIDERID) { emit([doc.PROVIDERID], doc.SUBMISSIONDATE) } }")
+	public List<HouseHold> allHHsCreatedLastFourMonths(){
+		
+		Calendar cal = Calendar.getInstance();
+		String startKey = Long.toString(cal.getTimeInMillis());
+		cal.add(Calendar.DAY_OF_YEAR, -120);
+		String endKey = Long.toString(cal.getTimeInMillis());
+		
+		List<HouseHold> households =  db.queryView(
+				createQuery("created_in_last_4_months")
+				.rawStartKey(startKey)
+				.rawEndKey(endKey)
+				.includeDocs(true), HouseHold.class);
+		
+		return households;
+	}
+	
+	public ViewResult allHHsCreatedLastFourMonthsViewResult(){
+		
+		ViewResult vr = db.queryView(
+				createQuery("created_in_last_4_months")
+				.includeDocs(false));
+		
+		return vr;
 	}
 	
 	@View(name = "created_in_last_4_months_by_location", map = "function(doc) { if(doc.type === 'HouseHold' && doc.SUBMISSIONDATE && doc.FWDISTRICT && doc.FWUPAZILLA && doc.FWUNION) { var x = new Date(); var y = new Date(x.getFullYear(), x.getMonth()-3, 0); var time = y.getTime(); if(doc.SUBMISSIONDATE > time){ emit([doc.FWDISTRICT,doc.FWUPAZILLA,doc.FWUNION], doc.SUBMISSIONDATE)} } }")

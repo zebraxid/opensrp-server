@@ -79,6 +79,17 @@ public class DataCountService {
 		
 	}
 	
+	public List<CountServiceDTOForChart> getHHCountInformation(){
+		ViewResult hhViewResult;	
+		hhViewResult = allHouseHolds.allHHsCreatedLastFourMonthsViewResult();		
+		
+		List<CountServiceDTOForChart> DTOs= new ArrayList<CountServiceDTOForChart>();
+		CountServiceDTOForChart newDTO = new CountServiceDTOForChart();
+		newDTO.setCounts(this.convertViewResultToCount(hhViewResult));
+		DTOs.add(newDTO);
+		return DTOs;
+	}
+	
 	public List<CountServiceDTOForChart> getHHCountInformationForChart(String provider, String district, String upazilla, String union){
 		ViewResult hhViewResult;		
 		String key = this.createRawStartKey(provider, district, upazilla, union);
@@ -96,6 +107,17 @@ public class DataCountService {
 		return DTOs;
 	}
 	
+	public List<CountServiceDTOForChart> getElcoCountInformation(){
+		ViewResult elcoViewResult;	
+		elcoViewResult = allElcos.allElcosCreatedLastFourMonthsViewResult();		
+		
+		List<CountServiceDTOForChart> DTOs= new ArrayList<CountServiceDTOForChart>();
+		CountServiceDTOForChart newDTO = new CountServiceDTOForChart();
+		newDTO.setCounts(this.convertViewResultToCount(elcoViewResult));
+		DTOs.add(newDTO);
+		return DTOs;
+	}
+	
 	public List<CountServiceDTOForChart> getElcoCountInformationForChart(String provider, String district, String upazilla, String union){
 		ViewResult elcoViewResult;		
 		String key = this.createRawStartKey(provider, district, upazilla, union);
@@ -105,6 +127,18 @@ public class DataCountService {
 		else{
 			elcoViewResult = allElcos.allElcosCreatedLastFourMonthsByLocationViewResult(key,key.substring(0, key.length()-1) + ",{}]");
 		}		
+		
+		List<CountServiceDTOForChart> DTOs= new ArrayList<CountServiceDTOForChart>();
+		CountServiceDTOForChart newDTO = new CountServiceDTOForChart();
+		newDTO.setCounts(this.convertViewResultToCount(elcoViewResult));
+		DTOs.add(newDTO);
+		return DTOs;
+	}
+	
+	public List<CountServiceDTOForChart> getMotherCountInformation(){
+		ViewResult elcoViewResult;		
+
+		elcoViewResult = allElcos.allMothersCreatedLastFourMonthsViewResult();		
 		
 		List<CountServiceDTOForChart> DTOs= new ArrayList<CountServiceDTOForChart>();
 		CountServiceDTOForChart newDTO = new CountServiceDTOForChart();
@@ -133,7 +167,8 @@ public class DataCountService {
 	public int[] getMotherCountInformationForHomePage(){
 		ViewResult elcoViewResult;		
 		String key = this.createRawStartKey("", "Gaibandha", "", "");
-		elcoViewResult = allElcos.allMothersCreatedLastFourMonthsByLocationViewResult(key,key.substring(0, key.length()-1) + ",{}]");			
+		//elcoViewResult = allElcos.allMothersCreatedLastFourMonthsByLocationViewResult(key,key.substring(0, key.length()-1) + ",{}]");		
+		elcoViewResult = allElcos.allMothersCreatedLastFourMonthsViewResult();
 		
 		return this.convertViewResultToCount(elcoViewResult);
 	}
@@ -149,9 +184,9 @@ public class DataCountService {
     	int todayCountIndex = 20, weekCountIndex = 21, monthCountIndex = 22;
     	List<String> startAndEndOfWeeks = boundaries.weekBoundariesAsString;
     	List<Long> startAndEndOfWeeksAsTimestamp = boundaries.weekBoundariesAsTimeStamp;
-    	
+
     	for (ViewResult.Row row : vr.getRows()) {
-    		String stringValue = row.getValue();
+    		String stringValue = row.getValue(); 
     		count++;
     		timestamps.add(Long.parseLong(stringValue));
     	}
