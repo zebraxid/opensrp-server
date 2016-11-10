@@ -24,21 +24,12 @@ public class ChildRegisterMapper {
 				new Converter<ChildRegisterEntry, Child_RegisterEntryDTO>() {
 					@Override
 					public Child_RegisterEntryDTO convert(ChildRegisterEntry entry) {
-						return new Child_RegisterEntryDTO()
-						.withCaseId(entry.caseId())
-						.withTODAY(entry.TODAY())
-						.withSTART(entry.START())
-						.withPROVIDERID(entry.PROVIDERID())
-						.withLOCATIONID(entry.LOCATIONID())
-						.withINSTANCEID(entry.INSTANCEID())
-						.setEncc1_current_form_status(entry.getEncc1_current_form_status())
-						.setEncc2_current_form_status(entry.getEncc2_current_form_status())
-						.setEncc3_current_form_status(entry.getEncc3_current_form_status())
-						.withEND(entry.END())
-						.withDetails(entry.details())
-						.withENCCVisitOne(entry.enccVisitOne())
-						.withENCCVisitTwo(entry.enccVisitTwo())
-						.withENCCVisitThree(entry.enccVisitThree());
+						return new Child_RegisterEntryDTO().withCaseId(entry.caseId()).withTODAY(entry.TODAY()).withSTART(entry.START())
+								.withPROVIDERID(entry.PROVIDERID()).withLOCATIONID(entry.LOCATIONID()).withINSTANCEID(entry.INSTANCEID())
+								.setEncc1_current_form_status(entry.getEncc1_current_form_status())
+								.setEncc2_current_form_status(entry.getEncc2_current_form_status())
+								.setEncc3_current_form_status(entry.getEncc3_current_form_status()).withEND(entry.END()).withDetails(entry.details())
+								.withENCCVisitOne(entry.enccVisitOne()).withENCCVisitTwo(entry.enccVisitTwo()).withENCCVisitThree(entry.enccVisitThree());
 					}
 				});
 

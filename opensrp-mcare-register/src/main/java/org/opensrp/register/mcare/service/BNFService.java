@@ -88,6 +88,9 @@ public class BNFService {
 			return;
 		}
 
+		mother.withTODAY(submission.getField(REFERENCE_DATE));
+		mother.withPROVIDERID(submission.anmId());
+		mother.withINSTANCEID(submission.instanceId());
 		allMothers.update(mother);
 		bnfSchedulesService.enrollBNF(motherId, LocalDate.parse(submission.getField(MOTHER_REFERENCE_DATE)), submission.anmId(), submission.instanceId(),
 				submission.getField(MOTHER_REFERENCE_DATE));

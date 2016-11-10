@@ -1,6 +1,7 @@
 package org.opensrp.register.mcare.domain;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,10 +9,13 @@ import java.util.Map;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.ektorp.support.TypeDiscriminator;
+import org.joda.time.DateTime;
 import org.motechproject.model.MotechBaseDataObject;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 @TypeDiscriminator("doc.type === 'HouseHold'")
 public class HouseHold extends MotechBaseDataObject {
 	@JsonProperty
@@ -31,7 +35,7 @@ public class HouseHold extends MotechBaseDataObject {
 	@JsonProperty
 	private String FWNHREGDATE;
 	@JsonProperty
-	private String FWGOBHHID;
+	private String FWGOBHHID; 
 	@JsonProperty
 	private String FWJIVHHID;
 	@JsonProperty
@@ -59,7 +63,7 @@ public class HouseHold extends MotechBaseDataObject {
 	@JsonProperty
 	private String FWHOHLNAME;
 	@JsonProperty
-	private String FWHOHBIRTHDATE;
+	private String FWHOHBIRTHDATE; 
 	@JsonProperty
 	private String FWHOHGENDER;
 	@JsonProperty
@@ -82,12 +86,12 @@ public class HouseHold extends MotechBaseDataObject {
 	private Map<String, String> details;
 	@JsonProperty
 	private long SUBMISSIONDATE;
-
+	
 	public HouseHold() {
 		this.ELCODETAILS = new ArrayList<>();
 		this.multimediaAttachments = new ArrayList<>();
 	}
-
+	
 	public HouseHold withCASEID(String caseId) {
 		this.caseId = caseId;
 		return this;
@@ -142,7 +146,7 @@ public class HouseHold extends MotechBaseDataObject {
 		this.FWNHHHGPS = FWNHHHGPS;
 		return this;
 	}
-
+	
 	public HouseHold withform_name(String form_name) {
 		this.form_name = form_name;
 		return this;
@@ -182,7 +186,7 @@ public class HouseHold extends MotechBaseDataObject {
 		this.FWSUBUNIT = FWSUBUNIT;
 		return this;
 	}
-
+	
 	public HouseHold withFWMAUZA_PARA(String FWMAUZA_PARA) {
 		this.FWMAUZA_PARA = FWMAUZA_PARA;
 		return this;
@@ -193,6 +197,7 @@ public class HouseHold extends MotechBaseDataObject {
 		return this;
 	}
 
+	
 	public HouseHold withFWHOHLNAME(String FWHOHLNAME) {
 		this.FWHOHLNAME = FWHOHLNAME;
 		return this;
@@ -212,7 +217,7 @@ public class HouseHold extends MotechBaseDataObject {
 		this.FWHOHGENDER = FWHOHGENDER;
 		return this;
 	}
-
+	
 	public HouseHold withFWNHHMWRA(String FWNHHMWRA) {
 		this.FWNHHMWRA = FWNHHMWRA;
 		return this;
@@ -222,7 +227,7 @@ public class HouseHold extends MotechBaseDataObject {
 		this.ELCO = ELCO;
 		return this;
 	}
-
+	
 	public HouseHold withuser_type(String user_type) {
 		this.user_type = user_type;
 		return this;
@@ -232,32 +237,31 @@ public class HouseHold extends MotechBaseDataObject {
 		this.external_user_ID = external_user_ID;
 		return this;
 	}
-
+	
 	public HouseHold withcurrent_formStatus(String current_formStatus) {
 		this.current_formStatus = current_formStatus;
 		return this;
 	}
-
+	
 	public HouseHold withELCODETAILS(List<Map<String, String>> ELCODETAILS) {
 		this.ELCODETAILS = ELCODETAILS;
 		return this;
 	}
-
+	
 	public HouseHold withmultimediaAttachments(List<Map<String, String>> multimediaAttachments) {
 		this.multimediaAttachments = multimediaAttachments;
 		return this;
 	}
-
+	
 	public HouseHold withDetails(Map<String, String> details) {
-		this.details = new HashMap<>(details);
-		return this;
-	}
+        this.details = new HashMap<>(details);
+        return this;
+    }
 
-	public HouseHold withSUBMISSIONDATE(long SUBMISSIONDATE) {
+	public HouseHold withSUBMISSIONDATE(long SUBMISSIONDATE){
 		this.SUBMISSIONDATE = SUBMISSIONDATE;
 		return this;
 	}
-
 	public String caseId() {
 		return caseId;
 	}
@@ -302,7 +306,7 @@ public class HouseHold extends MotechBaseDataObject {
 	public String FWNHHHGPS() {
 		return FWNHHHGPS;
 	}
-
+	
 	public String form_name() {
 		return form_name;
 	}
@@ -310,31 +314,31 @@ public class HouseHold extends MotechBaseDataObject {
 	public String FWCOUNTRY() {
 		return FWCOUNTRY;
 	}
-
+	
 	public String FWDIVISION() {
 		return FWDIVISION;
 	}
-
+	
 	public String FWDISTRICT() {
 		return FWDISTRICT;
 	}
-
+	
 	public String FWUPAZILLA() {
 		return FWUPAZILLA;
 	}
-
+	
 	public String FWUNION() {
 		return FWUNION;
 	}
-
+	
 	public String FWWARD() {
 		return FWWARD;
 	}
-
+	
 	public String FWSUBUNIT() {
 		return FWSUBUNIT;
 	}
-
+	
 	public String FWMAUZA_PARA() {
 		return FWMAUZA_PARA;
 	}
@@ -342,7 +346,6 @@ public class HouseHold extends MotechBaseDataObject {
 	public String FWHOHFNAME() {
 		return FWHOHFNAME;
 	}
-
 	public String FWHOHLNAME() {
 		return FWHOHLNAME;
 	}
@@ -366,7 +369,7 @@ public class HouseHold extends MotechBaseDataObject {
 	public String ELCO() {
 		return ELCO;
 	}
-
+	
 	public String user_type() {
 		return user_type;
 	}
@@ -374,11 +377,11 @@ public class HouseHold extends MotechBaseDataObject {
 	public String external_user_ID() {
 		return external_user_ID;
 	}
-
-	public long SUBMISSIONDATE() {
+	
+	public long SUBMISSIONDATE(){
 		return SUBMISSIONDATE;
 	}
-
+	
 	public String current_formStatus() {
 		return current_formStatus;
 	}
@@ -389,7 +392,7 @@ public class HouseHold extends MotechBaseDataObject {
 		}
 		return ELCODETAILS;
 	}
-
+	
 	public List<Map<String, String>> multimediaAttachments() {
 		if (multimediaAttachments == null) {
 			multimediaAttachments = new ArrayList<>();
@@ -410,17 +413,17 @@ public class HouseHold extends MotechBaseDataObject {
 	public String getDetail(String name) {
 		return details.get(name);
 	}
-
-	public String getELCODetail(String name) {
-		/*
-		 * int size = ELCODETAILS.size(); String elems = ""; for (int i = 0; i <
-		 * size; i++) elems = elems + ELCODETAILS.get(i).get(name) + " " ;
-		 * return elems;
-		 */
+	
+	public String getELCODetail(String name) {	
+		/*int size = ELCODETAILS.size();
+		String elems = "";
+		for (int i = 0; i < size; i++)
+			elems = elems + ELCODETAILS.get(i).get(name) + " " ;
+		return elems;	*/	
 
 		return ELCODETAILS.get(0).get(name);
 	}
-
+	
 	@Override
 	public boolean equals(Object o) {
 		return EqualsBuilder.reflectionEquals(this, o, "id", "revision");
@@ -434,6 +437,6 @@ public class HouseHold extends MotechBaseDataObject {
 	@Override
 	public String toString() {
 		return ToStringBuilder.reflectionToString(this);
-	}
+	}	
 
 }

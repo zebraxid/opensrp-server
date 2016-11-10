@@ -11,10 +11,12 @@ import java.util.Map;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.ektorp.support.TypeDiscriminator;
 import org.motechproject.model.MotechBaseDataObject;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 @TypeDiscriminator("doc.type === 'Mother'")
 public class Mother extends MotechBaseDataObject {
 	@JsonProperty
@@ -59,12 +61,6 @@ public class Mother extends MotechBaseDataObject {
 	private String mother_mauza;
 	@JsonProperty
 	private String mother_valid;
-	@JsonProperty
-	private String FWWOMUNION;
-	@JsonProperty
-	private String FWWOMWARD;
-	@JsonProperty
-	private String FWWOMSUBUNIT;
 	@JsonProperty
 	private String FWVG;
 	@JsonProperty
@@ -222,21 +218,6 @@ public class Mother extends MotechBaseDataObject {
 
 	public Mother setMother_valid(String mother_valid) {
 		this.mother_valid = mother_valid;
-		return this;
-	}
-
-	public Mother setFWWOMUNION(String fWWOMUNION) {
-		this.FWWOMUNION = fWWOMUNION;
-		return this;
-	}
-
-	public Mother setFWWOMWARD(String fWWOMWARD) {
-		this.FWWOMWARD = fWWOMWARD;
-		return this;
-	}
-
-	public Mother setFWWOMSUBUNIT(String fWWOMSUBUNIT) {
-		this.FWWOMSUBUNIT = fWWOMSUBUNIT;
 		return this;
 	}
 
@@ -434,18 +415,6 @@ public class Mother extends MotechBaseDataObject {
 		return mother_valid;
 	}
 
-	public String getFWWOMUNION() {
-		return FWWOMUNION;
-	}
-
-	public String getFWWOMWARD() {
-		return FWWOMWARD;
-	}
-
-	public String getFWWOMSUBUNIT() {
-		return FWWOMSUBUNIT;
-	}
-
 	public String getFWVG() {
 		return FWVG;
 	}
@@ -571,4 +540,5 @@ public class Mother extends MotechBaseDataObject {
 	public String toString() {
 		return ToStringBuilder.reflectionToString(this);
 	}
+
 }
