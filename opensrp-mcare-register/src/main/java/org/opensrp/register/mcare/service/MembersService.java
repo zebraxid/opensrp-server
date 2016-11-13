@@ -71,7 +71,8 @@ public class MembersService {
 			Members members = allMembers.findByCaseId(membersFields.get(ID))
 					.setINSTANCEID(submission.instanceId())
 					.setPROVIDERID(submission.anmId())
-					.setTODAY(submission.getField(REFERENCE_DATE));					
+					.setTODAY(submission.getField(REFERENCE_DATE))
+					.setrelationalid(submission.getField(relationalid));					
 			
 			if(membersFields.containsKey(REG_NO)){
 				allMembers.update(members);
@@ -441,7 +442,8 @@ public class MembersService {
 			Members members = allMembers.findByCaseId(membersFields.get(ID))
 					.setINSTANCEID(submission.instanceId())
 					.setPROVIDERID(submission.anmId())
-					.setTODAY(submission.getField(REFERENCE_DATE));					
+					.setTODAY(submission.getField(REFERENCE_DATE))
+					.setrelationalid(submission.getField(relationalid));					
 			
 			if(membersFields.containsKey(REG_NO)){
 				allMembers.update(members);

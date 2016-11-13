@@ -580,6 +580,8 @@ public class Members extends MotechBaseDataObject {
 	@JsonProperty
 	private String Is_preg_outcome;
 	@JsonProperty
+	private String relationalid;
+	@JsonProperty
 	private Map<String, String> details;
 	@JsonProperty
 	private Map<String, String> TTVisit;
@@ -1292,6 +1294,10 @@ public class Members extends MotechBaseDataObject {
 		this.Is_preg_outcome = Is_preg_outcome;
 		return this;
 	}
+	public Members setrelationalid(String relationalid) {
+		this.relationalid = relationalid;
+		return this;
+	}
 	public Members setMember_Paurasava(String Member_Paurasava) {
 		this.Member_Paurasava = Member_Paurasava;
 		return this;
@@ -1907,6 +1913,9 @@ public class Members extends MotechBaseDataObject {
 	}
 	public String Is_preg_outcome() {
 		return Is_preg_outcome;
+	}
+	public String relationalid() {
+		return relationalid;
 	}
 	public String Member_Paurasava() {
 		return Member_Paurasava;
