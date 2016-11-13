@@ -16,13 +16,31 @@ import com.github.ldriscoll.ektorplucene.designdocument.annotation.Index;
 
 @FullText({
     @Index(
-        name = "mother",
-	    index = "function(rec) {" +
+        name = "member",
+        index = "function(rec) {" +
 	    		" var doc=new Document();" +
 	    		" doc.add(rec.TODAY,{\"field\":\"TODAY\", \"store\":\"yes\"});" +
-	    		" doc.add(rec.isClosed,{\"field\":\"isClosed\", \"store\":\"yes\"});"+ 	    		   		
-	    		" doc.add(rec.SUBMISSIONDATE,{\"field\":\"SUBMISSIONDATE\", \"store\":\"yes\"});" + 
-	    		" doc.add(rec.type,{\"field\":\"type\", \"store\":\"yes\"});" +
+	    		" doc.add(rec.INSTANCEID,{\"field\":\"INSTANCEID\", \"store\":\"yes\"});" +	    		
+	    		" doc.add(rec.PROVIDERID,{\"field\":\"PROVIDERID\", \"store\":\"yes\"});"+ 
+	    		" doc.add(rec.Child_dob,{\"field\":\"Child_dob\", \"store\":\"yes\"});"+ 
+	    		" doc.add(rec.Child_father_name,{\"field\":\"Child_father_name\", \"store\":\"yes\"});"+ 
+	    		" doc.add(rec.Child_mother_name,{\"field\":\"Child_mother_name\", \"store\":\"yes\"});"+ 
+	    		" doc.add(rec.caseId,{\"field\":\"caseId\", \"store\":\"yes\"});"+ 
+	    		" doc.add(rec.Member_LName,{\"field\":\"Member_LName\", \"store\":\"yes\"});"+ 
+	    		" doc.add(rec.Member_Fname,{\"field\":\"Member_Fname\", \"store\":\"yes\"});"+ 
+	    		" doc.add(rec.Member_GPS,{\"field\":\"Member_GPS\", \"store\":\"yes\"});"+ 
+	    		" doc.add(rec.Member_BLOCK,{\"field\":\"Member_BLOCK\", \"store\":\"yes\"});"+ 
+	    		" doc.add(rec.Member_DIVISION,{\"field\":\"Member_DIVISION\", \"store\":\"yes\"});" + 
+	    		" doc.add(rec.Member_DISTRICT,{\"field\":\"Member_DISTRICT\", \"store\":\"yes\"});" + 
+	    		" doc.add(rec.Member_UPAZILLA,{\"field\":\"Member_UPAZILLA\", \"store\":\"yes\"});" + 
+	    		" doc.add(rec.Member_UNION,{\"field\":\"Member_UNION\", \"store\":\"yes\"}); " +
+	    		" doc.add(rec.Member_WARD,{\"field\":\"Member_WARD\", \"store\":\"yes\"}); " +	    		
+	    		" doc.add(rec.Child_gender,{\"field\":\"Child_gender\", \"store\":\"yes\"});" +	 
+	    		" doc.add(rec.Is_woman,{\"field\":\"Is_woman\", \"store\":\"yes\"});" +	
+	    		" doc.add(rec.Is_child,{\"field\":\"Is_child\", \"store\":\"yes\"});" +	
+	    		" doc.add(rec.Husband_name,{\"field\":\"Husband_name\", \"store\":\"yes\"});" +	
+	    		" doc.add(rec.WomanInfo,{\"field\":\"WomanInfo\", \"store\":\"yes\"});" +	
+	    		" doc.add(rec.type,{\"field\":\"type\", \"store\":\"yes\"});" + 
 	    		" return doc;" +
 	    		"}")
 })
@@ -34,9 +52,18 @@ public class LuceneMembersRepository extends CouchDbRepositorySupportWithLucene<
 		super(Members.class, db);
 		initStandardDesignDocument();
 	}
+	public LuceneResult getMember(String queryString) { 
+        LuceneDesignDocument designDoc = db.get(LuceneDesignDocument.class, stdDesignDocumentId);
+        LuceneQuery query = new LuceneQuery(designDoc.getId(), "member"); 
+        query.setQuery(queryString); 
+        query.setStaleOk(false); 
+        return db.queryLucene(query); 
+    } 
+	
 	public LuceneResult findDocsByProvider(String queryString) { 
         LuceneDesignDocument designDoc = db.get(LuceneDesignDocument.class, stdDesignDocumentId);
-        LuceneQuery query = new LuceneQuery(designDoc.getId(), "mother"); 
+        
+        LuceneQuery query = new LuceneQuery(designDoc.getId(), "member"); 
         query.setQuery(queryString); 
         query.setStaleOk(false); 
         return db.queryLucene(query); 

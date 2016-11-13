@@ -6,7 +6,9 @@ import java.io.IOException;
 
 import org.opensrp.dto.register.HHRegisterDTO;
 import org.opensrp.dto.register.HouseholdDTO;
+import org.opensrp.rest.register.DTO.MemeberDTO;
 import org.opensrp.rest.services.LuceneHouseHoldService;
+import org.opensrp.rest.services.LuceneMembersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +25,8 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 public class ApiController {
 
 	private LuceneHouseHoldService luceneHouseHoldService;
-	
+	@Autowired
+	private LuceneMembersService luceneMembersService;
 	@Autowired
 	public ApiController(LuceneHouseHoldService luceneHouseHoldService)
 	{
@@ -35,6 +38,14 @@ public class ApiController {
 	public ResponseEntity<HouseholdDTO> getHouseHolds(@RequestParam MultiValueMap<String, String> queryParameters) throws JsonParseException, JsonMappingException, IOException
 	{
 		 HouseholdDTO  hhRegisterDTO  = luceneHouseHoldService.getHousehold(queryParameters);
+		 return new ResponseEntity<>(hhRegisterDTO, HttpStatus.OK);
+	}
+	
+	@RequestMapping(method = GET, value="/child/search")
+    @ResponseBody
+	public ResponseEntity<MemeberDTO> getChilds(@RequestParam MultiValueMap<String, String> queryParameters) throws JsonParseException, JsonMappingException, IOException
+	{
+		MemeberDTO  hhRegisterDTO  = luceneMembersService.getMember(queryParameters);
 		 return new ResponseEntity<>(hhRegisterDTO, HttpStatus.OK);
 	}
 }

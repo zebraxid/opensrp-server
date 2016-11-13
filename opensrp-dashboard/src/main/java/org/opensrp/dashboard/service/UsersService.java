@@ -382,7 +382,11 @@ public class UsersService {
 		if (userByUserName == null) {			
 			return null;
 		} else {
+			List<SimplifiedRole> roles = userByUserName.getRoles();
 			
+			for (SimplifiedRole simplifiedRole : roles) {
+	            
+            }
 			return userByUserName.getRoles();					
 			
 		}

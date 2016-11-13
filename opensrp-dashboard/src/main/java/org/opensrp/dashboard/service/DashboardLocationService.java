@@ -369,6 +369,29 @@ public class DashboardLocationService {
 		
 		return upazillaDTOs;
 	}
+	public List<DashboardLocationDTO> getLocationByTagName(String tagName){
+		List<LocationTag> tags = allLocationTags.getAll();
+		String idForUpazillaTag = "";
+		for(LocationTag tag :tags){
+			if(tag.getName().equals(tagName)){
+				idForUpazillaTag = tag.getId();
+			}
+		}
+		
+		List<DashboardLocation> upazillas = allDashboardLocations.findLocationsByTag(idForUpazillaTag);
+		List<DashboardLocationDTO> upazillaDTOs = new ArrayList<DashboardLocationDTO>();
+		
+		if(upazillas != null){
+			for(int i =0; i < upazillas.size(); i++){
+				DashboardLocationDTO newDashboardLocationDTO = new DashboardLocationDTO();
+				newDashboardLocationDTO.withId(upazillas.get(i).getId());
+				newDashboardLocationDTO.withName(upazillas.get(i).getName());
+				upazillaDTOs.add(newDashboardLocationDTO);
+			}			
+		}
+		
+		return upazillaDTOs;
+	}
 	
 	public String ifLocationColliding(){
 		return "";

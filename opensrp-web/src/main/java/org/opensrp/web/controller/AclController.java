@@ -261,6 +261,12 @@ public class AclController {
 		return upazillas;
 	}
 	
+	@RequestMapping( method = GET, value = "/get-location-by-tag-name")
+	@ResponseBody
+	public ResponseEntity<String> getLocationByTagName(@RequestParam String tagName) {		
+		return new ResponseEntity<>(new Gson().toJson(dashboardLocationService.getLocationByTagName(tagName)), HttpStatus.OK);
+	}
+	
 	@RequestMapping( method = GET, value = "/get-all-location-tags")
 	@ResponseBody
 	public List<LocationTagDTO> getAllLocationTags() {
