@@ -316,6 +316,13 @@ public class AllConstants {
 		public static final String external_user_ID = "external_user_ID";
 		public static final String relationalid = "relationalid";
 		public static final String mother_valid = "mother_valid";
+		public static final String mother_gobhhid = "mother_gobhhid";
+		public static final String mother_jivhhid = "mother_jivhhid";
+		public static final String mother_wom_nid = "mother_wom_nid";
+		public static final String mother_wom_bid = "mother_wom_bid";
+		public static final String mother_wom_age = "mother_wom_age";
+		public static final String mother_first_name = "mother_first_name";
+		public static final String mother_husname = "mother_husname";
 
 	}
 
