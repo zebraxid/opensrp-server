@@ -2,7 +2,6 @@ package org.opensrp.rest.services;
 
 import java.io.IOException;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -12,19 +11,17 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import org.json.JSONObject;
-import org.opensrp.dto.register.HHRegisterDTO;
-import org.opensrp.dto.register.HHRegisterEntryDTO;
-import org.opensrp.dto.register.HouseholdDTO;
-import org.opensrp.dto.register.HouseholdEntryDTO;
+import org.opensrp.rest.register.DTO.HouseholdDTO;
+import org.opensrp.rest.register.DTO.HouseholdEntryDTO;
 import org.opensrp.rest.repository.LuceneHouseHoldRepository;
 import org.opensrp.rest.util.ConvertDateStringToTimestampMills;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.MultiValueMap;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -33,13 +30,13 @@ import com.fasterxml.jackson.databind.introspect.VisibilityChecker;
 import com.github.ldriscoll.ektorplucene.LuceneResult;
 import com.github.ldriscoll.ektorplucene.LuceneResult.Row;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-
 @Service
 public class LuceneHouseHoldService {
 
 	private LuceneHouseHoldRepository luceneHouseHoldRepository;
 	private ConvertDateStringToTimestampMills convertDateStringToTimestampMills;
+	@Autowired
+	private DynamicQueryString dynamicQueryString;
 	@Autowired
 	public LuceneHouseHoldService(
 			LuceneHouseHoldRepository luceneHouseHoldRepository,ConvertDateStringToTimestampMills convertDateStringToTimestampMills) {
@@ -55,20 +52,9 @@ public class LuceneHouseHoldService {
 		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 		mapper.setVisibilityChecker(VisibilityChecker.Std.defaultInstance()
 				.withFieldVisibility(JsonAutoDetect.Visibility.ANY));
-		Map<String, String> preparedParameters = prepareParameters(queryParameters);
-		String makeQueryString = "";
-		int paramCounter = 1;
-		for(Entry<String, String> entry : preparedParameters.entrySet())
-		{
-			makeQueryString+=entry.getKey()+":"+entry.getValue();
 			
-			if(preparedParameters.size()>paramCounter)
-				makeQueryString+=" AND ";
-			
-			paramCounter++;
-		}		
 		LuceneResult luceneResult = luceneHouseHoldRepository
-				.findDocsByProvider(makeQueryString);
+				.findDocsByProvider(dynamicQueryString.makeDynamicQueryAsString(queryParameters));
 		List<Row> rows = luceneResult.getRows();
 		List<HouseholdEntryDTO> hhRegisterEntryDTOList = new ArrayList<HouseholdEntryDTO>();
 

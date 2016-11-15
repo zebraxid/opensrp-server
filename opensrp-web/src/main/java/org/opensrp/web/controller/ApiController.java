@@ -5,7 +5,8 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import java.io.IOException;
 
 import org.opensrp.dto.register.HHRegisterDTO;
-import org.opensrp.dto.register.HouseholdDTO;
+
+import org.opensrp.rest.register.DTO.HouseholdDTO;
 import org.opensrp.rest.register.DTO.MemeberDTO;
 import org.opensrp.rest.services.LuceneHouseHoldService;
 import org.opensrp.rest.services.LuceneMembersService;
