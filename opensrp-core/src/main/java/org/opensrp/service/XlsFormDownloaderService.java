@@ -12,6 +12,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.codehaus.jackson.JsonProcessingException;
+import org.joda.time.DateTime;
 import org.opensrp.util.FileCreator;
 import org.opensrp.util.JsonParser;
 import org.opensrp.util.NetClientGet;
@@ -45,32 +46,57 @@ public class XlsFormDownloaderService {
 	}
 
 	public static void main(String[] args) {
-//		try {
-//			new XlsFormDownloaderService().downloadFormFiles("D:\\opensrpVaccinatorWkspc\\forms", 
-//					"maimoonak", "opensrp", JustForFun.Form, "child_vaccination_enrollment", "135187");
-			//-------------------------			
-//			new XlsFormDownloaderService().downloadFormFiles("D:\\opensrpVaccinatorWkspc\\forms", 
-//					"maimoonak", "opensrp", JustForFun.Form, "child_vaccination_followup", "135199");
-			//---------------------------
-//			new XlsFormDownloaderService().downloadFormFiles("D:\\opensrpVaccinatorWkspc\\forms", 
-//					"maimoonak", "opensrp", JustForFun.Form, "woman_tt_enrollement_form", "135200");
-			//----------------------------
-//			new XlsFormDownloaderService().downloadFormFiles("D:\\opensrpVaccinatorWkspc\\forms", 
-//					"maimoonak", "opensrp", JustForFun.Form, "woman_tt_followup_form", "135203");
-//			
-			/*new XlsFormDownloaderService().downloadFormFiles("D:\\opensrpVaccinatorWkspc\\forms", 
-					"maimoonak", "opensrp", JustForFun.Form, "vaccine_stock_position", "115142");
+		try {
+
+			/*System.out.println(DateTime.now().getWeekOfWeekyear());
+			new XlsFormDownloaderService().downloadFormFiles("D:\\opensrpVaccinatorWkspc\\forms", 
+					"maimoonak", "opensrp", JustForFun.Form, "crvs_verbal_autopsy", "156735");
+			
+			new XlsFormDownloaderService().downloadFormFiles("D:\\opensrpVaccinatorWkspc\\forms", 
+					"maimoonak", "opensrp", JustForFun.Form, "crvs_death_notification", "156734");
+			
+			new XlsFormDownloaderService().downloadFormFiles("D:\\opensrpVaccinatorWkspc\\forms", 
+					"maimoonak", "opensrp", JustForFun.Form, "crvs_birth_notification", "156733");
+			
+			new XlsFormDownloaderService().downloadFormFiles("D:\\opensrpVaccinatorWkspc\\forms", 
+					"maimoonak", "opensrp", JustForFun.Form, "crvs_pregnancy_notification", "156721");
+			
+			new XlsFormDownloaderService().downloadFormFiles("D:\\opensrpVaccinatorWkspc\\forms", 
+					"maimoonak", "opensrp", JustForFun.Form, "new_member_registration", "148264");
 			
 			
 			new XlsFormDownloaderService().downloadFormFiles("D:\\opensrpVaccinatorWkspc\\forms", 
+					"maimoonak", "opensrp", JustForFun.Form, "family_registration_form", "148263");
+			*/
+			/*new XlsFormDownloaderService().downloadFormFiles("D:\\opensrpVaccinatorWkspc\\forms", 
+					"maimoonak", "opensrp", JustForFun.Form, "vaccine_stock_position", "151804");
+*/			
+
+			
+			/*new XlsFormDownloaderService().downloadFormFiles("D:\\opensrpVaccinatorWkspc\\forms", 
+					"maimoonak", "opensrp", JustForFun.Form, "child_vaccination_enrollment", "135187");
+			//-------------------------			
+			new XlsFormDownloaderService().downloadFormFiles("D:\\opensrpVaccinatorWkspc\\forms", 
+					"maimoonak", "opensrp", JustForFun.Form, "child_vaccination_followup", "135199");
+			//---------------------------
+			new XlsFormDownloaderService().downloadFormFiles("D:\\opensrpVaccinatorWkspc\\forms", 
+					"maimoonak", "opensrp", JustForFun.Form, "woman_tt_enrollement_form", "135200");
+			//----------------------------
+			new XlsFormDownloaderService().downloadFormFiles("D:\\opensrpVaccinatorWkspc\\forms", 
+					"maimoonak", "opensrp", JustForFun.Form, "woman_tt_followup_form", "135203");
+			
+			*/
+			
+			
+			/*new XlsFormDownloaderService().downloadFormFiles("D:\\opensrpVaccinatorWkspc\\forms", 
 					"maimoonak", "opensrp", JustForFun.Form, "offsite_child_vaccination_followup", "115138");
 			
 			
 			new XlsFormDownloaderService().downloadFormFiles("D:\\opensrpVaccinatorWkspc\\forms", 
 					"maimoonak", "opensrp", JustForFun.Form, "offsite_woman_followup_form", "115135");*/
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public String formatXML(String input)
