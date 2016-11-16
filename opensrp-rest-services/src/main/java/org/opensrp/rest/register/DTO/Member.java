@@ -41,6 +41,8 @@ public class Member {
 	private String WomanInfo;
 	@JsonProperty
 	private String Reg_No;
+	@JsonProperty
+	private String calc_dob;
 	@Override
 	public boolean equals(Object o) {
 		return EqualsBuilder.reflectionEquals(this, o, "id", "revision");

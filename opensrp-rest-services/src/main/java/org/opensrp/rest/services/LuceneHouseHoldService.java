@@ -60,6 +60,7 @@ public class LuceneHouseHoldService {
 
 		for (Row row : rows) {
 			LinkedHashMap<String, Object> fields = row.getFields();
+			System.err.println(fields.toString());
 			String jsonString = new JSONObject(fields).toString();
 			hhRegisterEntryDTOList.add(mapper.readValue(jsonString.getBytes(),
 				HouseholdEntryDTO.class));

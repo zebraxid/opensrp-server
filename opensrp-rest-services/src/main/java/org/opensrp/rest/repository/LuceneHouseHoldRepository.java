@@ -50,6 +50,7 @@ import com.github.ldriscoll.ektorplucene.designdocument.annotation.Index;
 	    		" return doc;" +
 	    		"}")
 })
+
 @Repository
 public class LuceneHouseHoldRepository extends CouchDbRepositorySupportWithLucene<HouseHold> {
 

@@ -41,6 +41,7 @@ import com.github.ldriscoll.ektorplucene.designdocument.annotation.Index;
 	    		" doc.add(rec.Husband_name,{\"field\":\"Husband_name\", \"store\":\"yes\"});" +	
 	    		" doc.add(rec.WomanInfo,{\"field\":\"WomanInfo\", \"store\":\"yes\"});" +	
 	    		" doc.add(rec.Reg_No,{\"field\":\"Reg_No\", \"store\":\"yes\"});" +	
+	    		" doc.add(rec.calc_dob,{\"field\":\"calc_dob\", \"store\":\"yes\"});" +	
 	    		" doc.add(rec.type,{\"field\":\"type\", \"store\":\"yes\"});" + 
 	    		" return doc;" +
 	    		"}")

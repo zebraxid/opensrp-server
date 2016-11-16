@@ -42,7 +42,7 @@ public class ApiController {
 		 return new ResponseEntity<>(hhRegisterDTO, HttpStatus.OK);
 	}
 	
-	@RequestMapping(method = GET, value="/child/search")
+	@RequestMapping(method = GET, value="/member/search")
     @ResponseBody
 	public ResponseEntity<MemeberDTO> getChilds(@RequestParam MultiValueMap<String, String> queryParameters) throws JsonParseException, JsonMappingException, IOException
 	{
