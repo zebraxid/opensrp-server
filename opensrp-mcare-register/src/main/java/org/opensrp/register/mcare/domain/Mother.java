@@ -62,6 +62,12 @@ public class Mother extends MotechBaseDataObject {
 	@JsonProperty
 	private String mother_valid;
 	@JsonProperty
+	private String FWWOMUNION;
+	@JsonProperty
+	private String FWWOMWARD;
+	@JsonProperty
+	private String FWWOMSUBUNIT;
+	@JsonProperty
 	private String FWVG;
 	@JsonProperty
 	private String FWHRP;
@@ -218,6 +224,21 @@ public class Mother extends MotechBaseDataObject {
 
 	public Mother setMother_valid(String mother_valid) {
 		this.mother_valid = mother_valid;
+		return this;
+	}
+
+	public Mother setFWWOMUNION(String fWWOMUNION) {
+		this.FWWOMUNION = fWWOMUNION;
+		return this;
+	}
+
+	public Mother setFWWOMWARD(String fWWOMWARD) {
+		this.FWWOMWARD = fWWOMWARD;
+		return this;
+	}
+
+	public Mother setFWWOMSUBUNIT(String fWWOMSUBUNIT) {
+		this.FWWOMSUBUNIT = fWWOMSUBUNIT;
 		return this;
 	}
 
@@ -415,6 +436,18 @@ public class Mother extends MotechBaseDataObject {
 		return mother_valid;
 	}
 
+	public String getFWWOMUNION() {
+		return FWWOMUNION;
+	}
+
+	public String getFWWOMWARD() {
+		return FWWOMWARD;
+	}
+
+	public String getFWWOMSUBUNIT() {
+		return FWWOMSUBUNIT;
+	}
+
 	public String getFWVG() {
 		return FWVG;
 	}
@@ -540,5 +573,4 @@ public class Mother extends MotechBaseDataObject {
 	public String toString() {
 		return ToStringBuilder.reflectionToString(this);
 	}
-
 }
