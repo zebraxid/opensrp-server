@@ -54,6 +54,12 @@ public class ANC_RegisterEntryDTO {
 	@JsonProperty
 	private String mother_valid;
 	@JsonProperty
+	private String FWWOMUNION;
+	@JsonProperty
+	private String FWWOMWARD;
+	@JsonProperty
+	private String FWWOMSUBUNIT;
+	@JsonProperty
 	private String FWVG;
 	@JsonProperty
 	private String FWHRP;
@@ -203,12 +209,27 @@ public class ANC_RegisterEntryDTO {
 		return this;
 	}
 
-	public ANC_RegisterEntryDTO setANC_RegisterEntryDTO_mauza(String mother_mauza) {
+	public ANC_RegisterEntryDTO setFWWOMUNION(String fWWOMUNION) {
+		this.FWWOMUNION = fWWOMUNION;
+		return this;
+	}
+
+	public ANC_RegisterEntryDTO setFWWOMWARD(String fWWOMWARD) {
+		this.FWWOMWARD = fWWOMWARD;
+		return this;
+	}
+
+	public ANC_RegisterEntryDTO setFWWOMSUBUNIT(String fWWOMSUBUNIT) {
+		this.FWWOMSUBUNIT = fWWOMSUBUNIT;
+		return this;
+	}
+
+	public ANC_RegisterEntryDTO setmother_mauza(String mother_mauza) {
 		this.mother_mauza = mother_mauza;
 		return this;
 	}
 
-	public ANC_RegisterEntryDTO setANC_RegisterEntryDTO_valid(String mother_valid) {
+	public ANC_RegisterEntryDTO setmother_valid(String mother_valid) {
 		this.mother_valid = mother_valid;
 		return this;
 	}
@@ -337,5 +358,4 @@ public class ANC_RegisterEntryDTO {
 	public String toString() {
 		return ToStringBuilder.reflectionToString(this);
 	}
-
 }

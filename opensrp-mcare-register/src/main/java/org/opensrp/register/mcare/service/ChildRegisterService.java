@@ -29,11 +29,20 @@ public class ChildRegisterService {
 		List<Child> childs = allChilds.allOpenChilds();
 
 		for (Child child : childs) {
-			ChildRegisterEntry childRegisterEntry = new ChildRegisterEntry().withCaseId(child.caseId()).withTODAY(child.TODAY()).withSTART(child.START())
-					.withPROVIDERID(child.PROVIDERID()).withLOCATIONID(child.LOCATIONID()).withINSTANCEID(child.INSTANCEID())
-					.setEncc1_current_form_status(child.getEncc1_current_form_status()).setEncc2_current_form_status(child.getEncc2_current_form_status())
-					.setEncc3_current_form_status(child.getEncc3_current_form_status()).withEND(child.END()).withDetails(child.details())
-					.withENCCVisitOne(child.enccVisitOne()).withENCCVisitTwo(child.enccVisitTwo()).withENCCVisitThree(child.enccVisitThree());
+			ChildRegisterEntry childRegisterEntry = new ChildRegisterEntry()
+			.withCaseId(child.caseId())
+			.withTODAY(child.TODAY())
+			.withSTART(child.START())
+			.withPROVIDERID(child.PROVIDERID())
+			.withLOCATIONID(child.LOCATIONID())
+			.withINSTANCEID(child.INSTANCEID())
+			.setEncc1_current_form_status(child.getEncc1_current_form_status())
+			.setEncc2_current_form_status(child.getEncc2_current_form_status())
+			.setEncc3_current_form_status(child.getEncc3_current_form_status())
+			.withEND(child.END()).withDetails(child.details())
+			.withENCCVisitOne(child.enccVisitOne())
+			.withENCCVisitTwo(child.enccVisitTwo())
+			.withENCCVisitThree(child.enccVisitThree());
 
 			childRegisterEntries.add(childRegisterEntry);
 		}
@@ -48,11 +57,20 @@ public class ChildRegisterService {
 		List<Child> childs = allChilds.allChildsCreatedBetween2Dates(type, start, end);
 
 		for (Child child : childs) {
-			ChildRegisterEntry childRegisterEntry = new ChildRegisterEntry().withCaseId(child.caseId()).withTODAY(child.TODAY()).withSTART(child.START())
-					.withPROVIDERID(child.PROVIDERID()).withLOCATIONID(child.LOCATIONID()).withINSTANCEID(child.INSTANCEID())
-					.setEncc1_current_form_status(child.getEncc1_current_form_status()).setEncc2_current_form_status(child.getEncc2_current_form_status())
-					.setEncc3_current_form_status(child.getEncc3_current_form_status()).withEND(child.END()).withDetails(child.details())
-					.withENCCVisitOne(child.enccVisitOne()).withENCCVisitTwo(child.enccVisitTwo()).withENCCVisitThree(child.enccVisitThree());
+			ChildRegisterEntry childRegisterEntry = new ChildRegisterEntry()
+			.withCaseId(child.caseId())
+			.withTODAY(child.TODAY())
+			.withSTART(child.START())
+			.withPROVIDERID(child.PROVIDERID())
+			.withLOCATIONID(child.LOCATIONID())
+			.withINSTANCEID(child.INSTANCEID())
+			.setEncc1_current_form_status(child.getEncc1_current_form_status())
+			.setEncc2_current_form_status(child.getEncc2_current_form_status())
+			.setEncc3_current_form_status(child.getEncc3_current_form_status())
+			.withEND(child.END()).withDetails(child.details())
+			.withENCCVisitOne(child.enccVisitOne())
+			.withENCCVisitTwo(child.enccVisitTwo())
+			.withENCCVisitThree(child.enccVisitThree());
 
 			childRegisterEntries.add(childRegisterEntry);
 		}
