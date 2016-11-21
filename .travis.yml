@@ -3,6 +3,7 @@ sudo: false
 services:
   - couchdb
   - mysql
+  - redis-server
 install: echo "skip" # or anything that returns 0 status
 before_script:
   - echo "USE mysql;\nUPDATE user SET password=PASSWORD('VA1913wm') WHERE user='root';\nFLUSH PRIVILEGES;\n" | mysql -u root
