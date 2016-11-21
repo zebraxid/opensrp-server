@@ -75,7 +75,7 @@ public class AllHouseHolds extends MotechBaseRepository<HouseHold> {
 		return houseHolds;
 	}
 	
-	@View(name = "created_in_last_4_months", map = "function(doc) { if(doc.type === 'HouseHold' && doc.SUBMISSIONDATE && doc.PROVIDERID) { emit([doc.PROVIDERID], doc.SUBMISSIONDATE) } }")
+	@View(name = "created_in_last_4_months", map = "function(doc) { if(doc.type === 'HouseHold' && doc.SUBMISSIONDATE && doc.caseId) { emit([doc.caseId], doc.SUBMISSIONDATE) } }")
 	public List<HouseHold> allHHsCreatedLastFourMonths(){
 		
 		Calendar cal = Calendar.getInstance();

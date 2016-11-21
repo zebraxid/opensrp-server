@@ -44,6 +44,11 @@ public class AllElcos extends MotechBaseRepository<Elco> {
 		Elco elco = findByCaseId(caseId);
 		update(elco.setIsClosed(true));
 	}
+	@View(name = "all_elcos", map = "function(doc) { if (doc.type === 'Elco') { emit(doc.PROVIDERID, doc.caseId); } }")
+	public List<Elco> findAllELCOs() {
+		return db.queryView(createQuery("all_elcos").includeDocs(true),
+				Elco.class);
+	}
 	@View(name = "all_open_elcos_for_provider", map = "function(doc) { if (doc.type === 'Elco' && doc.PROVIDERID) { emit(doc.PROVIDERID); } }")
 	public List<Elco> allOpenELCOsForProvider(String providerId) {
 		return db.queryView(
@@ -79,7 +84,7 @@ public class AllElcos extends MotechBaseRepository<Elco> {
 		return elcos;
 	}
 	
-	@View(name = "created_in_last_4_months", map = "function(doc) { if(doc.type === 'Elco' && doc.SUBMISSIONDATE && doc.PROVIDERID) { emit([doc.PROVIDERID], doc.SUBMISSIONDATE) } }")
+	@View(name = "created_in_last_4_months", map = "function(doc) { if(doc.type === 'Elco' && doc.SUBMISSIONDATE && doc.caseId) { emit([doc.caseId], doc.SUBMISSIONDATE) } }")
 	public List<Elco> allElcosCreatedLastFourMonths(){
 		Calendar cal = Calendar.getInstance();
 		String startKey = Long.toString(cal.getTimeInMillis());

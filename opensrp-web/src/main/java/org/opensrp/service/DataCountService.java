@@ -267,7 +267,7 @@ public class DataCountService {
 		return commonServiceDTO;
 	}
 	private CountServiceDTO getElcoCount(String provider,String startMonth,String endMonth,String startWeek,String endWeek,CountServiceDTO commonServiceDTO){
-		commonServiceDTO.setElcoTotalCount(allElcos.allOpenELCOs().size());
+		commonServiceDTO.setElcoTotalCount(allElcos.findAllELCOs().size());
 		commonServiceDTO.setElcoThisMonthCount(luceneElcoService.getElcoCount(startMonth, endMonth));
 		commonServiceDTO.setElcoThisWeekCount(luceneElcoService.getElcoCount(startWeek, endWeek));
 		commonServiceDTO.setElcoTodayCount(luceneElcoService.getElcoCount("", ""));
