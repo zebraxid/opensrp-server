@@ -88,9 +88,10 @@ public class AllActions extends MotechBaseRepository<Action> {
             logger.warn(MessageFormat.format("Found more than one alert for the combination of providerId: {0}, entityId: {1} and scheduleName : {2}. Alerts : {3}",
                     alertAction.providerId(), alertAction.baseEntityId(), alertAction.data().get("scheduleName"), existingAlerts));
         }
-        for (Action existingAlert : existingAlerts) {
-            safeRemove(existingAlert);
-        }
+        //TODO Alerts not showing in EC
+//        for (Action existingAlert : existingAlerts) {
+//           // safeRemove(existingAlert);
+//        }
         add(alertAction);
     }
 

@@ -1,9 +1,11 @@
 package org.opensrp.web.rest.rapid;
 
 import java.io.UnsupportedEncodingException;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -61,7 +63,7 @@ static Map<String, String[]> vs = new HashMap<String, String[]>(){{
 	put("60", new String[]{"measles2"});
 
 }}	;
-
+DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 	@Autowired
 	public RapidClientResource(ClientService clientService, EventService eventService, 
 			AllFormSubmissions allFormSubmission, FormEntityConverter fec, PatientService ps, EncounterService es) {
@@ -82,6 +84,7 @@ static Map<String, String[]> vs = new HashMap<String, String[]>(){{
 		String gender = req.getParameter("gender");
 		String birthdate = req.getParameter("birthdate");
 		String identifier = req.getParameter("identifier");
+		String phoneNo = req.getParameter("phoneNo")!=null?req.getParameter("phoneNo"):"";
 		
 		if(StringUtils.isEmptyOrWhitespaceOnly(identifier)
 				|| StringUtils.isEmptyOrWhitespaceOnly(firstName)||StringUtils.isEmptyOrWhitespaceOnly(lastName)
@@ -96,6 +99,7 @@ static Map<String, String[]> vs = new HashMap<String, String[]>(){{
 		c.setLastName(lastName);
 		c.setGender(gender);
 		c.setBirthdate(new DateTime(birthdate));
+		c.setPhoneNo(phoneNo);
 		
 		clientService.addClient(c);
 		
@@ -157,6 +161,8 @@ static Map<String, String[]> vs = new HashMap<String, String[]>(){{
 		}
 		return vaccineCard;
 	}
+	
+	// backup method which only update openmrs
 	@RequestMapping(value="/uvo", method=RequestMethod.POST)
 	@ResponseBody
 	public Map<String, String> updateVaccineO(HttpServletRequest req){
@@ -184,8 +190,7 @@ static Map<String, String[]> vs = new HashMap<String, String[]>(){{
 				resp.put("ERROR", "ID Not found");
 				return resp;
 			}
-			
-			Event e = new Event(c.getBaseEntityId(), "Immunization", new DateTime(), 
+			Event e = new Event(c.getBaseEntityId(),"Immunization",new DateTime(),   
 					"testentity", "demotest", location, System.currentTimeMillis()+"");
 			List<Object> values = new ArrayList<>();
 			values.add(date);
@@ -304,6 +309,7 @@ static Map<String, String[]> vs = new HashMap<String, String[]>(){{
 		m.put("receivedVaccines", receivedVacines);
 		return m;
 	}
+
 	
 	private void addField(List<FormField> fields, String name, String value, String bindType) {
 		fields.add(new FormField(name, value, bindType+"."+name));

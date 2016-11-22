@@ -98,6 +98,7 @@ public class AllEvents extends MotechBaseRepository<Event> {
 		targetDb.create(event);
 	}
 	
+
 	@View(name = "events_by_version", map = "function(doc) { if (doc.type === 'Event') { emit([doc.serverVersion], null); } }")
 	public List<Event> findByServerVersion(long serverVersion) {
 		ComplexKey startKey = ComplexKey.of(serverVersion + 1);
@@ -106,6 +107,7 @@ public class AllEvents extends MotechBaseRepository<Event> {
 		    Event.class);
 	}
 	
+
 	/**
 	 * Find an event based on a concept and between a range of date created dates
 	 * 
@@ -125,9 +127,28 @@ public class AllEvents extends MotechBaseRepository<Event> {
 		    Event.class);
 		return events;
 	}
+
 	@View(name = "events_by_empty_server_version", map = "function(doc) { if (doc.type == 'Event' && !doc.serverVersion) { emit(doc._id, doc); } }")
 	public List<Event> findByEmptyServerVersion() {
 		return db.queryView(createQuery("events_by_empty_server_version").limit(200).includeDocs(true), Event.class);
+
 	}
 	
+	/**
+	 * Find an event based on event type and between a range of date created dates
+	 * 
+	 * @param eventType
+	 * @param dateFrom
+	 * @param dateTo
+	 * @return
+	 */
+	@View(name = "event_by_event_type_and_date_created", map = "function(doc) {if (doc.type === 'Event' && doc.obs) {for (var obs in doc.obs) {emit([doc.baseEntityId,doc.eventType.indexOf(key),doc.dateCreated.substring(0, 10)],null);}}}")
+	public List<Event> findByEventTypeAndDate(String baseEntityId, String eventType, String dateFrom, String dateTo) {
+		ComplexKey startKey = ComplexKey.of(baseEntityId, eventType, dateFrom);
+		ComplexKey endKey = ComplexKey.of(baseEntityId, eventType, dateTo);
+		List<Event> events = db.queryView(
+		    createQuery("event_by_event_type_and_date_created").startKey(startKey).endKey(endKey).includeDocs(true),
+		    Event.class);
+		return events;
+	}
 }

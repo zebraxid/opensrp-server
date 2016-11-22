@@ -68,8 +68,7 @@ public class ClientService {
 	
 	public List<Client> findByCriteria(String nameLike, String gender, DateTime birthdateFrom, DateTime birthdateTo,
 	                                   DateTime deathdateFrom, DateTime deathdateTo, String attributeType,
-	                                   String attributeValue, DateTime lastEditFrom, DateTime lastEditTo,
-	                                   Long serverVersion) {
+	                                   String attributeValue, DateTime lastEditFrom, DateTime lastEditTo) {
 		return allClients.findByCriteria(nameLike, gender, birthdateFrom, birthdateTo, deathdateFrom, deathdateTo,
 		    attributeType, attributeValue, null, null, null, null, null, null, null, null, lastEditFrom, lastEditTo);
 	}
