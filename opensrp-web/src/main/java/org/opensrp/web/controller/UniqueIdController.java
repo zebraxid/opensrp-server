@@ -1,10 +1,13 @@
 package org.opensrp.web.controller;
 
-import com.google.gson.Gson;
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
+
+import java.text.MessageFormat;
+
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.opensrp.common.util.HttpAgent;
 import org.opensrp.common.util.HttpResponse;
-
 import org.opensrp.dto.LastIdDTO;
 import org.opensrp.dto.UniqueIdDTO;
 import org.slf4j.Logger;
@@ -14,16 +17,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.text.MessageFormat;
-import java.util.List;
-
-import static ch.lambdaj.collection.LambdaCollections.with;
-import static org.opensrp.web.HttpHeaderFactory.allowOrigin;
-import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
-import static org.springframework.web.bind.annotation.RequestMethod.POST;
+import com.google.gson.Gson;
 
 
 @Controller
