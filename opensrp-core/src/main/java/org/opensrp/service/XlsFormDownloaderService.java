@@ -55,8 +55,8 @@ public class XlsFormDownloaderService {
 
 	public static void main(String[] args) {
 		try {
-			new XlsFormDownloaderService().downloadFormFiles("D:\\forms", 
-					"shakeeb_raza", "shakeeb_raza", "star2326", "woman_tt_enrollement_test_form", "151942");
+			
+			new XlsFormDownloaderService().downloadFormFiles("D:\\naveed", "shakeeb_raza", "shakeeb_raza", "star2326", "daily_treatment_monitoring", "162327");
 			//-------------------------			
 		/*	new XlsFormDownloaderService().downloadFormFiles("D:\\opensrpVaccinatorWkspc\\forms", 
 					"maimoonak", "opensrp", JustForFun.Form, "child_vaccination_followup", "135199");
@@ -145,6 +145,7 @@ public class XlsFormDownloaderService {
 	public boolean downloadFormFiles(String directory,String username ,String formPath, String password,String formId, String formPk) throws IOException{
 		
 		String xmlData=netClientGet.convertToString("", formPath, formId);
+		System.out.print(xmlData);
 		String modelData=netClientGet.getModel(xmlData);
 		String formData=fileCreator.prettyFormat(netClientGet.getForm(xmlData));
 		
