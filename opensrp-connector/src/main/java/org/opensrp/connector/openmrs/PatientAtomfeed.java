@@ -3,7 +3,9 @@ package org.opensrp.connector.openmrs;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.UUID;
+import java.util.logging.Logger;
 
+import org.apache.commons.lang3.StringUtils;
 import org.ict4h.atomfeed.client.AtomFeedProperties;
 import org.ict4h.atomfeed.client.domain.Event;
 import org.ict4h.atomfeed.client.repository.AllFailedEvents;
@@ -27,15 +29,17 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
-public class PatientAtomfeed extends OpenmrsService implements EventWorker, AtomfeedService{
-
-	private static final String CATEGORY_URL = "/patient/recent.form";
+public class PatientAtomfeed extends OpenmrsService implements EventWorker, AtomfeedService
+{
+	private Logger log = Logger.getLogger(getClass().getSimpleName());
+	private static final String CATEGORY_URL = "/OpenSRP_Patient/recent.form";
+	
 	private AtomFeedProperties atomFeedProperties;
-
 	private AFTransactionManager transactionManager;
-
-	private WebClient webClient;
 	private AtomFeedClient client;
+
+	private PatientService patientService;
+	private ClientService clientService;
 
 	@Autowired
 	public PatientAtomfeed(AllMarkers allMarkers, AllFailedEvents allFailedEvents, 
@@ -51,7 +55,7 @@ public class PatientAtomfeed extends OpenmrsService implements EventWorker, Atom
 				return action.execute();
 			}
 		};
-		this.webClient = new WebClient();
+		WebClient webClient = new WebClient();
 		
 		URI uri = new URI(OPENMRS_BASE_URL+OpenmrsConstants.ATOMFEED_URL+CATEGORY_URL);
 		this.client = new AtomFeedClient(new AllFeeds(webClient), allMarkers, allFailedEvents, atomFeedProperties, transactionManager, uri, this);
@@ -60,27 +64,33 @@ public class PatientAtomfeed extends OpenmrsService implements EventWorker, Atom
 		this.clientService = clientService;
 	}
 	
-	private PatientService patientService;
-	
-	private ClientService clientService;
-	
-
 	@Override
 	public void process(Event event) {
-		System.out.println(event.getContent());
+		log.info("Processing item : "+event.getContent());
 		try {
-			JSONObject p = patientService.getPatientByUuid(event.getContent().substring(event.getContent().lastIndexOf("/")+1), true);
-			System.out.println(p);//TODO check in couch and if not exists update thrive id on opermrs side
+			String content = event.getContent().substring(event.getContent().lastIndexOf("/")+1);
+			JSONObject p = patientService.getPatientByUuid(content, true);
+			if(p == null){
+				throw new RuntimeException("Patient uuid specified in atomfeed content ("+content+") did not return any patient.");
+			}
 			Client c = patientService.convertToClient(p);
 			Client existing = clientService.findClient(c);
 			if(existing == null){
 				c.setBaseEntityId(UUID.randomUUID().toString());
 				clientService.addClient(c);
 
-				System.out.println(patientService.addThriveId(c.getBaseEntityId(), p));
+				JSONObject newId = patientService.addThriveId(c.getBaseEntityId(), p);
+				log.info("New Client -> Posted Thrive ID back to OpenMRS : "+newId);
 			}
 			else {
-				c = clientService.mergeClient(c);
+				String srpIdInOpenmrs = c.getBaseEntityId();
+				Client cmerged = clientService.mergeClient(c);
+				//TODO what if in any case thrive id is assigned to some other patient 
+				if(StringUtils.isBlank(srpIdInOpenmrs) || !srpIdInOpenmrs.equalsIgnoreCase(cmerged.getBaseEntityId())){
+					// if openmrs doesnot have openSRP UID or have a different UID then update
+					JSONObject newId = patientService.addThriveId(cmerged.getBaseEntityId(), p);
+					log.info("Existing Client missing Valid SRP UID -> Posted Thrive ID back to OpenMRS : "+newId);
+				}
 			}
 		} catch (JSONException e) {
 			throw new RuntimeException(e);
@@ -95,6 +105,7 @@ public class PatientAtomfeed extends OpenmrsService implements EventWorker, Atom
 
 	@Override
 	public void processEvents() {
+		Logger.getLogger(getClass().getName()).info("Processing PatientAtomfeeds");
 		client.processEvents();
 	}
 

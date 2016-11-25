@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;
 
+import org.joda.time.DateTime;
 import org.motechproject.scheduler.domain.MotechEvent;
 import org.motechproject.server.event.annotations.MotechListener;
 import org.opensrp.common.AllConstants;
@@ -79,13 +80,15 @@ public class FormSubmissionListener {
             	try{
 	            	logger.info(format("Invoking save for form with instance Id: {0} and for entity Id: {1}", submission.instanceId(), submission.entityId()));
 	
-	            	fsp.processFormSubmission(submission);
+	            	if(submission.getField("no_client_event") == null || submission.getField("no_client_event").contains("false")){
+		            	fsp.processFormSubmission(submission);
+	            	}
 	            	
 	            	configService.updateAppStateToken(AllConstants.Config.FORM_ENTITY_PARSER_LAST_SYNCED_FORM_SUBMISSION, submission.serverVersion());
             	}
             	catch(Exception e){
             		e.printStackTrace();
-            		errorTraceService.addError(new ErrorTrace(new Date(), "FormSubmissionProcessor", this.getClass().getName(), e.getStackTrace().toString(), "unsolved", FormSubmission.class.getName()));
+            		errorTraceService.addError(new ErrorTrace(DateTime.now(), "FormSubmissionProcessor", this.getClass().getName(), e.getStackTrace().toString(), "unsolved", FormSubmission.class.getName()));
             	}
             }
         } catch (Exception e) {

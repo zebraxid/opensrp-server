@@ -35,7 +35,7 @@ public class AllEventsIntegrationTest {
 
 	private void addEvents() {
 		for (int i = 0; i < 20; i++) {
-			Event e = new Event("entityid"+i, "event"+i+100, "Immunization", new DateTime(), 
+			Event e = new Event("entityid"+i, "Immunization", new DateTime(), 
 					"testentity", "demotest", "location"+i, "formSubmission"+i+100);
 			e.addObs(new Obs("concept", "txt", "1025AAAAAAAAAAAAAAAA", null, "2015-01-01" , "comments test"+i, "bcg"));
 			e.addObs(new Obs("concept", "txt", "1026AAAAAAAAAAAAAAAA", null, "2015-01-01" , "comments test"+i, "penta1"));
@@ -52,6 +52,6 @@ public class AllEventsIntegrationTest {
 	@Test
 	public void test(){
 		addEvents();
-		assertTrue(eventService.getByBaseEntityAndFormSubmissionId("11338235", "formSubmission21")!=null);
+		assertTrue(eventService.getByBaseEntityAndFormSubmissionId("entityid0", "formSubmission0100")!=null);
 	}
 }

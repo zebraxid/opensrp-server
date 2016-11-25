@@ -20,10 +20,12 @@ public class ApplicationStartupListener implements ApplicationListener<ContextRe
     private TaskSchedulerService scheduler;
     
     private RepeatingSchedule formSchedule;
+    private RepeatingSchedule eventsSchedule;
     //private RepeatingSchedule anmReportScheduler;
     //private RepeatingSchedule mctsReportScheduler;
     private RepeatingSchedule openmrsScheduleSyncerScheduler;
     private RepeatingSchedule atomfeedSchedule;
+    private RepeatingSchedule encounterSchedule;
     
     @Autowired
     public ApplicationStartupListener(TaskSchedulerService scheduler, 
@@ -34,8 +36,11 @@ public class ApplicationStartupListener implements ApplicationListener<ContextRe
         formSchedule = new RepeatingSchedule(AllConstants.FORM_SCHEDULE_SUBJECT, 2, TimeUnit.MINUTES, formPollInterval, TimeUnit.MINUTES);
         //anmReportScheduler = new RepeatingSchedule(DrishtiScheduleConstants.ANM_REPORT_SCHEDULE_SUBJECT, 10, TimeUnit.MINUTES, 6, TimeUnit.HOURS);
         //mctsReportScheduler = new RepeatingSchedule(DrishtiScheduleConstants.MCTS_REPORT_SCHEDULE_SUBJECT, 10, TimeUnit.MINUTES, mctsPollIntervalInHours, TimeUnit.HOURS);
-        openmrsScheduleSyncerScheduler = new RepeatingSchedule(OpenmrsConstants.SCHEDULER_TRACKER_SYNCER_SUBJECT, 2, TimeUnit.MINUTES, openmrsSchSyncerMin, TimeUnit.MINUTES);
-        atomfeedSchedule = new RepeatingSchedule(OpenmrsConstants.SCHEDULER_TRACKER_SYNCER_SUBJECT, 5, TimeUnit.MINUTES, 1, TimeUnit.MINUTES);
+        eventsSchedule = new RepeatingSchedule(AllConstants.EVENTS_SCHEDULE_SUBJECT, 2, TimeUnit.MINUTES, formPollInterval, TimeUnit.MINUTES);
+
+        // TODO openmrsScheduleSyncerScheduler = new RepeatingSchedule(OpenmrsConstants.SCHEDULER_TRACKER_SYNCER_SUBJECT, 2, TimeUnit.MINUTES, openmrsSchSyncerMin, TimeUnit.MINUTES);
+        atomfeedSchedule = new RepeatingSchedule(OpenmrsConstants.SCHEDULER_OPENMRS_ATOMFEED_SYNCER_SUBJECT, 5, TimeUnit.MINUTES, 1, TimeUnit.MINUTES);
+        encounterSchedule = new RepeatingSchedule(OpenmrsConstants.SCHEDULER_OPENMRS_DATA_PUSH_SUBJECT, 5, TimeUnit.MINUTES, 1, TimeUnit.MINUTES);
     }
 
     @Override
@@ -43,10 +48,13 @@ public class ApplicationStartupListener implements ApplicationListener<ContextRe
     	System.out.println(contextRefreshedEvent.getApplicationContext().getId());
         if (contextRefreshedEvent.getApplicationContext().getId().endsWith(APPLICATION_ID)) {
             scheduler.startJob(formSchedule);
+            scheduler.startJob(eventsSchedule);
             //scheduler.startJob(anmReportScheduler);
             //scheduler.startJob(mctsReportScheduler);
-            scheduler.startJob(openmrsScheduleSyncerScheduler);
+           // scheduler.startJob(openmrsScheduleSyncerScheduler);
             scheduler.startJob(atomfeedSchedule);
+            scheduler.startJob(encounterSchedule);
+            
         	System.out.println("STARTED ALL SCHEDULES");
         }
     }

@@ -108,6 +108,18 @@ public class AllClientsIntegrationTest {
 		clientService.mergeClient(cu);
 	}
 	
+	@Test
+	public void shouldSearchByLastUpdatedDate() throws JSONException {//TODO
+		DateTime start = DateTime.now();
+		
+		addClients();
+		
+		DateTime end = DateTime.now();
+		
+		List<Client> cll = clientService.findByCriteria(null, null, null, null, null, null, null, null, start, end, null);
+		assertEquals(10, cll.size());
+	}
+	
 	public static void main(String[] args) {
 		System.out.println(new DateTime("2016-01-23").toString("MMMM (yyyy)"));
 	}
@@ -139,11 +151,12 @@ public class AllClientsIntegrationTest {
 
 		
 		Logger.getLogger("FileLogger").info("Going for First search by Lucene");
-		List<Client> l = clientService.findByCriteria("first", "MALE", new DateTime(), null, null, null, "ethnicity", "eth3", null, null);
+		List<Client> l = clientService.findByCriteria("first", "MALE", new DateTime(), null, null, null, "ethnicity", "eth3", null, null, null);
 		Logger.getLogger("FileLogger").info("Completed First search of size "+l.size()+" by Lucene");
 		
 		Logger.getLogger("FileLogger").info("Going for 2nd search by Lucene");
-		l = clientService.findByCriteria("first", "MALE", new DateTime(), null, null, null, "ethnicity", "eth3", null, null);
+		l = clientService.findByCriteria("first", "MALE", new DateTime(), null, null, null, "ethnicity", "eth3", null, null, null);
+
 		Logger.getLogger("FileLogger").info("Completed 2nd search of size "+l.size()+" by Lucene");
 	}
 	
@@ -184,6 +197,7 @@ public class AllClientsIntegrationTest {
 	}
 	/*
 	@Test
+	@Ignore //FIXME
 	public void shouldGetByDynamicView() {
 		addClients();
 		List<Client> l2 = clientService.findByCriteria(null, "MALE", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
@@ -209,7 +223,7 @@ public class AllClientsIntegrationTest {
 			.withLastName("C last n")
 			.withMiddleName("C middle n")
 			.withGender(Gender.MALE);
-		c.withAddress(new Address("birthplace", new Date(System.currentTimeMillis()-1000*60*60*24*2), new Date(), null, "lat", "lon", "75210", "Sindh", "Pakistan"));
+		c.withAddress(new Address("birthplace", new DateTime(System.currentTimeMillis()-1000*60*60*24*2), DateTime.now(), null, "lat", "lon", "75210", "Sindh", "Pakistan"));
 		c.withAttribute("ETHNICITY", "Mughal");
 		c.withIdentifier("Program ID", "01001222");
 		
@@ -241,7 +255,7 @@ public class AllClientsIntegrationTest {
 			.withLastName("C last n")
 			.withMiddleName("C middle n")
 			.withGender(Gender.MALE);
-		c.withAddress(new Address("birthplace", new Date(System.currentTimeMillis()-1000*60*60*24*2), new Date(), null, "lat", "lon", "75210", "Sindh", "Pakistan"));
+		c.withAddress(new Address("birthplace", new DateTime(System.currentTimeMillis()-1000*60*60*24*2), DateTime.now(), null, "lat", "lon", "75210", "Sindh", "Pakistan"));
 		c.withAttribute("ETHNICITY", "Mughal");
 		c.withIdentifier("Program ID", "01001222");
 		

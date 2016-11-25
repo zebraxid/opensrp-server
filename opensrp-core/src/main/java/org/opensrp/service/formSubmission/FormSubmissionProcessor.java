@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.ektorp.CouchDbConnector;
 import org.joda.time.LocalDate;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -52,7 +53,7 @@ public class FormSubmissionProcessor{
 		this.eventService = eventService;
     }
 
-    public void processFormSubmission(FormSubmission submission) throws Exception {
+    public void processFormSubmission(FormSubmission submission) throws Exception { 	
     	// parse and into client and event model
     	logger.info("Creating model entities");
     	makeModelEntities(submission);
@@ -127,7 +128,10 @@ public class FormSubmissionProcessor{
 		return null;
 	}
 	
-	private void makeModelEntities(FormSubmission submission) throws JSONException {
+	public void makeModelEntities(FormSubmission submission) throws JSONException {
+		if(submission.getInstanceId().equalsIgnoreCase("b7dfb183-97a9-4bd1-8f1c-d85f88189d6a")){
+			logger.debug(""+submission.getInstanceId());
+		}
     	Client c = formEntityConverter.getClientFromFormSubmission(submission);
 		Event e = formEntityConverter.getEventFromFormSubmission(submission);
 		Map<String, Map<String, Object>> dep = formEntityConverter.getDependentClientsFromFormSubmission(submission);
@@ -145,6 +149,32 @@ public class FormSubmissionProcessor{
 			Event evin = (Event)cm.get("event");
 			clientService.addClient(cin);
 			eventService.addEvent(evin);
+		}
+	}
+	/**
+	 * Break down form submission and save it to a target db
+	 * @param targetDb
+	 * @param submission
+	 * @throws JSONException
+	 */
+	public void makeModelEntities(CouchDbConnector targetDb,FormSubmission submission) throws JSONException {
+    	Client c = formEntityConverter.getClientFromFormSubmission(submission);
+		Event e = formEntityConverter.getEventFromFormSubmission(submission);
+		Map<String, Map<String, Object>> dep = formEntityConverter.getDependentClientsFromFormSubmission(submission);
+
+		if(clientService.findClient(targetDb,c) != null){
+			clientService.mergeClient(c);
+		}
+		else clientService.addClient(targetDb,c);
+		
+		eventService.addEvent(targetDb,e);
+		// TODO relationships b/w entities
+			
+		for (Map<String, Object> cm : dep.values()) {
+			Client cin = (Client)cm.get("client");
+			Event evin = (Event)cm.get("event");
+			clientService.addClient(targetDb,cin);
+			eventService.addEvent(targetDb,evin);
 		}
 	}
     

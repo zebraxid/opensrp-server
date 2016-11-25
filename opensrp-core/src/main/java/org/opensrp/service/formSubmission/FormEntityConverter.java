@@ -89,13 +89,20 @@ public class FormEntityConverter {
 					&& fat.containsKey("openmrs_entity") 
 					&& fat.get("openmrs_entity").equalsIgnoreCase("concept")){
 				List<Object> vall = new ArrayList<>();
+				List<Object> humanReadableValues = new ArrayList<>();
 				for (String vl : fl.values()) {
 					String val = fl.valueCodes(vl)==null?null:fl.valueCodes(vl).get("openmrs_code");
 					val = StringUtils.isEmptyOrWhitespaceOnly(val)?vl:val;
 					vall.add(val);
+					if (fl.valueCodes(vl) != null && fl.valueCodes(vl).get("openmrs_code") != null) {// this value is in concept id form
+                        String hval = fl.getValues() == null ? null : fl.getValues().get(0);
+                        humanReadableValues.add(hval);
+                    }
 				}
-				e.addObs(new Obs("concept", fl.type(), fat.get("openmrs_entity_id"), 
-						fat.get("openmrs_entity_parent"), vall, null, fl.name()));
+				Obs o = new Obs("concept", fl.type(), fat.get("openmrs_entity_id"), 
+						fat.get("openmrs_entity_parent"), vall,humanReadableValues, null, fl.name());
+				o.setEffectiveDatetime(e.getEventDate());
+				e.addObs(o);
 			}
 		}
 		return e;
@@ -397,7 +404,7 @@ public class FormEntityConverter {
 
 		String middleName = subf.getFieldValue(getFieldName(Person.middle_name, subf));
 		String lastName = subf.getFieldValue(getFieldName(Person.last_name, subf));
-		DateTime birthdate = new DateTime(bb).withTimeAtStartOfDay();
+		DateTime birthdate =(bb!=null&& bb.isEmpty())?null:new DateTime(bb).withTimeAtStartOfDay();
 		String dd = subf.getFieldValue(getFieldName(Person.deathdate, subf));
 		DateTime deathdate = dd==null?null:new DateTime(dd).withTimeAtStartOfDay();
 		String aproxbd = subf.getFieldValue(getFieldName(Person.birthdate_estimated, subf));
