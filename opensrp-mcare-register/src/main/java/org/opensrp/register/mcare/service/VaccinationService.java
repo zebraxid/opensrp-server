@@ -68,6 +68,7 @@ public class VaccinationService {
     		existingVaccine.setExecutionDate(new DateTime());
     		existingVaccine.setId(existingVaccine.getId());
     		existingVaccine.setRevision(existingVaccine.getRevision());
+    		existingVaccine.setTimeStamp(DateUtil.now().getMillis());
     		allVaccine.update(existingVaccine);
     	}catch(Exception e){		        		
     		e.printStackTrace();

@@ -10,8 +10,10 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.opensrp.dto.CountServiceDTO;
 import org.opensrp.register.mcare.repository.AllHouseHolds;
 import org.opensrp.register.mcare.repository.AllMembers;
+import org.opensrp.repository.AllVaccine;
 import org.opensrp.rest.services.LuceneHouseHoldService;
 import org.opensrp.rest.services.LuceneMembersService;
+import org.opensrp.rest.services.LuceneVaccineService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,16 +24,21 @@ import org.springframework.stereotype.Service;
 public class DataCountService {
 	private static Logger logger = LoggerFactory.getLogger(DataCountService.class);
 	private final AllHouseHolds allHouseHolds;
+	private AllVaccine allVaccine;
 	private LuceneHouseHoldService luceneHouseHoldService;
 	private LuceneMembersService luceneMembersService;
+	private LuceneVaccineService luceneVaccineService;
 	private AllMembers allMembers;
 	@Autowired
 	public DataCountService(AllHouseHolds allHouseHolds,LuceneHouseHoldService luceneHouseHoldService,
-				AllMembers allMembers,LuceneMembersService luceneMembersService){
+				AllMembers allMembers,LuceneMembersService luceneMembersService,
+				AllVaccine allVaccine,LuceneVaccineService luceneVaccineService){
 		this.allHouseHolds = allHouseHolds;
 		this.luceneHouseHoldService = luceneHouseHoldService;
 		this.allMembers = allMembers;
 		this.luceneMembersService = luceneMembersService;
+		this.allVaccine = allVaccine;
+		this.luceneVaccineService = luceneVaccineService;
 	}
 	/**
 	 * This method return count data of registers.
@@ -63,6 +70,19 @@ public class DataCountService {
 		
 	}
 	
+	public List<CountServiceDTO> getVaccineCountInformation(String type,String startMonth,String endMonth){
+		List<CountServiceDTO> commonServiceDTOs = new ArrayList<CountServiceDTO>();
+		
+		CountServiceDTO commonServiceDTO = new CountServiceDTO();
+		
+		this.getVaccineCount(type, startMonth, endMonth, commonServiceDTO);
+				
+		commonServiceDTOs.add(commonServiceDTO);
+		return commonServiceDTOs;
+		
+	}
+	
+	
 	private CountServiceDTO getHouseholdCount(String provider,String startMonth,String endMonth,String startWeek,String endWeek,CountServiceDTO commonServiceDTO){
 		commonServiceDTO.setHouseholdTotalCount(allHouseHolds.findAllHouseHolds().size()) ;
 		commonServiceDTO.setHouseholdTodayCount(luceneHouseHoldService.getHouseholdCount("",""));
@@ -75,6 +95,10 @@ public class DataCountService {
 		commonServiceDTO.setPwThisMonthCount(luceneMembersService.getMembersCount(startMonth, endMonth));
 		commonServiceDTO.setPwThisWeekCount(luceneMembersService.getMembersCount(startMonth, endMonth));
 		commonServiceDTO.setPwTodayCount(luceneMembersService.getMembersCount("", ""));
+		return commonServiceDTO;
+	}
+	private CountServiceDTO getVaccineCount(String type,String startMonth,String endMonth,CountServiceDTO commonServiceDTO){
+		commonServiceDTO.setVaccineThisMonthCount(luceneVaccineService.getVaccineCount(type,startMonth, endMonth));
 		return commonServiceDTO;
 	}
 

@@ -29,7 +29,9 @@ public class CountServiceDTO {
 	@JsonProperty
 	private int pwThisWeekCount;
 	@JsonProperty
-	private int pwThisMonthCount;	
+	private int pwThisMonthCount;
+	@JsonProperty
+	private int vaccineThisMonthCount;
 
 	public CountServiceDTO(){
 		
@@ -39,7 +41,7 @@ public class CountServiceDTO {
 			int householdThisWeekCount, int householdThisMonthCount,
 			int elcoTotalCount, int elcoTodayCount, int elcoThisWeekCount,
 			int elcoThisMonthCount, int pwTotalCount, int pwTodayCount,
-			int pwThisWeekCount, int pwThisMonthCount) {
+			int pwThisWeekCount, int pwThisMonthCount, int vaccineThisMonthCount) {
 		super();
 		this.householdTotalCount = householdTotalCount;
 		this.householdTodayCount = householdTodayCount;
@@ -53,7 +55,7 @@ public class CountServiceDTO {
 		this.pwTodayCount = pwTodayCount;
 		this.pwThisWeekCount = pwThisWeekCount;
 		this.pwThisMonthCount = pwThisMonthCount;
-		
+		this.vaccineThisMonthCount = vaccineThisMonthCount;
 	}
 	
 	public int getHouseholdTotalCount() {
@@ -150,6 +152,14 @@ public class CountServiceDTO {
 
 	public void setPwThisMonthCount(int pwThisMonthCount) {
 		this.pwThisMonthCount = pwThisMonthCount;
+	}
+	
+	public int getVaccineThisMonthCount() {
+		return vaccineThisMonthCount;
+	}
+
+	public void setVaccineThisMonthCount(int vaccineThisMonthCount) {
+		this.vaccineThisMonthCount = vaccineThisMonthCount;
 	}
 
 	@Override
