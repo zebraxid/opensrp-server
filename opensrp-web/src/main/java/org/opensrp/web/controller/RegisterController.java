@@ -113,6 +113,12 @@ public class RegisterController {
     	return new ResponseEntity<>(dataCountService.getHHCountInformation(provider,startMonth,endMonth,startWeek,endtWeek,type), HttpStatus.OK);
     }
     
+    @RequestMapping(method = RequestMethod.GET, value = "/registers/vaccine-count")
+    @ResponseBody
+    public ResponseEntity<List<CountServiceDTO>>  getVaccineInformation(@RequestParam("type") String type,@RequestParam("start-month") String startMonth,@RequestParam("end-month") String endMonth){
+    	return new ResponseEntity<>(dataCountService.getVaccineCountInformation(type,startMonth,endMonth), HttpStatus.OK);
+    }
+    
 /*
     @RequestMapping(method = GET, value = "/registers/child")
     @ResponseBody
