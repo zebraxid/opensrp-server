@@ -18,6 +18,7 @@ import org.ektorp.impl.StdCouchDbInstance;
 import org.ektorp.support.OpenCouchDbDocument;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.opensrp.common.AllConstants;
 import org.opensrp.rest.repository.LuceneHouseHoldRepository;
@@ -114,7 +115,7 @@ public class LuceneHouseHoldRepositoryTest {
 		System.out.println(day.getTime());
 		
 	}
-    @Test 
+    @Ignore@Test 
     public void testInit() throws ParseException { 
     	//String makeQueryString ="PROVIDERID:proshanto" + " AND " + "FWUPAZILLA:GAIBANDHA SADAR" + " AND " + "user_type:FWA"+ " AND SUBMISSIONDATE:[2014-02-01 TO 2017-03-30]" ;
     	
