@@ -200,6 +200,7 @@ public class PNCService {
 					child.details().put(FWBNFNAME, childFields.get(FWBNFNAME));
 					child.details().put(FWBNFCHILDNAME, childFields.get(FWBNFCHILDNAME));
 					child.details().put(FWBNFDOB, childFields.get(FWBNFDOB));
+					child.details().put(external_user_ID, childFields.get(external_user_ID));
 					child.details().put("referenceDate", referenceDate);
 
 					allChilds.update(child);
