@@ -56,7 +56,7 @@ public class Dhis2HttpUtils {
 		       while ((output = br.readLine()) != null) {
 		    	   sb.append(output);		        
 		       }
-		       //System.out.println(sb.toString());	
+		       System.out.println(sb.toString());	
 		       return new HttpResponse(con.getResponseCode() == HttpStatus.SC_OK, sb.toString());
 		  	}  catch(FileNotFoundException e){
 	        	return new HttpResponse(true, "");

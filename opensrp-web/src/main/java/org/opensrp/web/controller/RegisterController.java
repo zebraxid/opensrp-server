@@ -2,7 +2,9 @@ package org.opensrp.web.controller;
 
 import java.util.List;
 
+import org.json.JSONException;
 import org.opensrp.dto.CountServiceDTO;
+import org.opensrp.dto.VaccineCountDTO;
 import org.opensrp.dto.register.HHRegisterDTO;
 import org.opensrp.register.mcare.HHRegister;
 import org.opensrp.register.mcare.mapper.HHRegisterMapper;
@@ -115,7 +117,7 @@ public class RegisterController {
     
     @RequestMapping(method = RequestMethod.GET, value = "/registers/vaccine-count")
     @ResponseBody
-    public ResponseEntity<List<CountServiceDTO>>  getVaccineInformation(@RequestParam("type") String type,@RequestParam("start-month") String startMonth,@RequestParam("end-month") String endMonth){
+    public ResponseEntity<List<VaccineCountDTO>>  getVaccineInformation(@RequestParam("type") String type,@RequestParam("start-month") String startMonth,@RequestParam("end-month") String endMonth) throws JSONException{
     	return new ResponseEntity<>(dataCountService.getVaccineCountInformation(type,startMonth,endMonth), HttpStatus.OK);
     }
     
