@@ -3,13 +3,17 @@
  * */
 package org.opensrp.service;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.opensrp.common.util.HttpResponse;
 import org.opensrp.connector.Dhis2HttpUtils;
 import org.opensrp.dto.CountServiceDTO;
 import org.opensrp.dto.VaccineCountDTO;
@@ -88,7 +92,7 @@ public class DataCountService {
 		
 		/////////////////////////////////////////////////////////////////////	
 			
-		JSONObject vaccineCountObj =	new JSONObject();
+		/*JSONObject vaccineCountObj =	new JSONObject();
 		JSONArray vaccineCountArray =	new JSONArray();		
 		
 		JSONObject vaccineAttrObj1 = new JSONObject();
@@ -149,14 +153,149 @@ public class DataCountService {
 		vaccineCountArray.put(vaccineAttrObj8);
 		vaccineCountObj.put("dataValues", vaccineCountArray);	
 		
-		System.out.println(vaccineCountObj.toString());		
+		System.out.println(vaccineCountObj.toString());*/		
+		
+		JSONObject vaccineCountObj =	new JSONObject();
+		
+		JSONArray vaccineCountArray =	new JSONArray();
+		
+		Date date = new Date();
+		String modifiedDate= new SimpleDateFormat("yyyy-MM-dd").format(date);
+		
+		Calendar now = Calendar.getInstance();
+		int year = now.get(Calendar.YEAR);
+		int month = now.get(Calendar.MONTH);
+		String periodTime =  Integer.toString(year)+Integer.toString(month);
+		
+		JSONObject vaccineAttrObj1 = new JSONObject();
+		vaccineAttrObj1.put("dataElement", "nbQTnNFs1I8");//Bcg given (0-11m)
+		vaccineAttrObj1.put("value", commonServiceDTO.getChild_bcgCount());
+		
+		JSONObject vaccineAttrObj2 = new JSONObject();
+		vaccineAttrObj2.put("dataElement", "Na5rrDNtwOW");//Penta 1given (0-11m)
+		vaccineAttrObj2.put("value", commonServiceDTO.getChild_penta1Count());
+		
+		JSONObject vaccineAttrObj3 = new JSONObject();
+		vaccineAttrObj3.put("dataElement", "zGQIRoCQIcK");//Penta 2 given (0-11m)
+		vaccineAttrObj3.put("value", commonServiceDTO.getChild_penta2Count());
+		
+		JSONObject vaccineAttrObj4 = new JSONObject();
+		vaccineAttrObj4.put("dataElement", "cOP5mAREs38");//Penta 3 given (0-11m)
+		vaccineAttrObj4.put("value", commonServiceDTO.getChild_penta3Count());
+		
+		JSONObject vaccineAttrObj5 = new JSONObject();
+		vaccineAttrObj5.put("dataElement", "TzbgFs3CSyp");//OPV 0 given (0-11m)
+		vaccineAttrObj5.put("value", commonServiceDTO.getChild_opv0Count());
+		
+		JSONObject vaccineAttrObj6 = new JSONObject();
+		vaccineAttrObj6.put("dataElement", "eYJ3MgWzghH");//OPV 1 given (0-11m)
+		vaccineAttrObj6.put("value", commonServiceDTO.getChild_opv1Count());
+		
+		JSONObject vaccineAttrObj7 = new JSONObject();
+		vaccineAttrObj7.put("dataElement", "YkajaYobus9");//OPV 2 given (0-11m)
+		vaccineAttrObj7.put("value", commonServiceDTO.getChild_opv2Count());
+		
+		JSONObject vaccineAttrObj8 = new JSONObject();
+		vaccineAttrObj8.put("dataElement", "AFIo5tpZjyr");//OPV 3 given (0-11m)
+		vaccineAttrObj8.put("value", commonServiceDTO.getChild_opv3Count());
+		
+		vaccineCountArray.put(vaccineAttrObj1);
+        vaccineCountArray.put(vaccineAttrObj2);
+		vaccineCountArray.put(vaccineAttrObj3);
+		vaccineCountArray.put(vaccineAttrObj4);
+		vaccineCountArray.put(vaccineAttrObj5);
+		vaccineCountArray.put(vaccineAttrObj6);
+		vaccineCountArray.put(vaccineAttrObj7);
+		vaccineCountArray.put(vaccineAttrObj8);
+		
+		vaccineCountObj.put("dataSet", "pEaVGTvSsQn");
+		vaccineCountObj.put("completeData", modifiedDate);
+		vaccineCountObj.put("period", periodTime);
+		vaccineCountObj.put("orgUnit", "SkiBAS3qNA6");
+		vaccineCountObj.put("dataValues", vaccineCountArray);
+		
+		System.out.println(vaccineCountObj.toString());
+		
+		dhis2HttpUtils.post(url, "", vaccineCountObj.toString(), "mpower", "mPower4321");
 		
 		//////////////////////////////////////////////////////////////////////
 		
 		commonServiceDTOs.add(commonServiceDTO);
-		dhis2HttpUtils.post(url, "", vaccineCountObj.toString(), "mpower", "mPower4321");
 		return commonServiceDTOs;
 		
+	}
+	
+	
+	public HttpResponse getVaccineCount(String type,String startMonth,String endMonth) throws JSONException{
+		
+		VaccineCountDTO commonServiceDTO = new VaccineCountDTO();
+		
+		this.getVaccineCount(type, startMonth, endMonth, commonServiceDTO);
+		
+		JSONObject vaccineCountObj =	new JSONObject();
+		
+		JSONArray vaccineCountArray =	new JSONArray();
+		
+		Date date = new Date();
+		String modifiedDate= new SimpleDateFormat("yyyy-MM-dd").format(date);
+		
+		Calendar now = Calendar.getInstance();
+		int year = now.get(Calendar.YEAR);
+		int month = now.get(Calendar.MONTH);
+		String periodTime =  Integer.toString(year)+Integer.toString(month);
+		
+		JSONObject vaccineAttrObj1 = new JSONObject();
+		vaccineAttrObj1.put("dataElement", "nbQTnNFs1I8");//Bcg given (0-11m)
+		vaccineAttrObj1.put("value", commonServiceDTO.getChild_bcgCount());
+		
+		JSONObject vaccineAttrObj2 = new JSONObject();
+		vaccineAttrObj2.put("dataElement", "Na5rrDNtwOW");//Penta 1given (0-11m)
+		vaccineAttrObj2.put("value", commonServiceDTO.getChild_penta1Count());
+		
+		JSONObject vaccineAttrObj3 = new JSONObject();
+		vaccineAttrObj3.put("dataElement", "zGQIRoCQIcK");//Penta 2 given (0-11m)
+		vaccineAttrObj3.put("value", commonServiceDTO.getChild_penta2Count());
+		
+		JSONObject vaccineAttrObj4 = new JSONObject();
+		vaccineAttrObj4.put("dataElement", "cOP5mAREs38");//Penta 3 given (0-11m)
+		vaccineAttrObj4.put("value", commonServiceDTO.getChild_penta3Count());
+		
+		JSONObject vaccineAttrObj5 = new JSONObject();
+		vaccineAttrObj5.put("dataElement", "TzbgFs3CSyp");//OPV 0 given (0-11m)
+		vaccineAttrObj5.put("value", commonServiceDTO.getChild_opv0Count());
+		
+		JSONObject vaccineAttrObj6 = new JSONObject();
+		vaccineAttrObj6.put("dataElement", "eYJ3MgWzghH");//OPV 1 given (0-11m)
+		vaccineAttrObj6.put("value", commonServiceDTO.getChild_opv1Count());
+		
+		JSONObject vaccineAttrObj7 = new JSONObject();
+		vaccineAttrObj7.put("dataElement", "YkajaYobus9");//OPV 2 given (0-11m)
+		vaccineAttrObj7.put("value", commonServiceDTO.getChild_opv2Count());
+		
+		JSONObject vaccineAttrObj8 = new JSONObject();
+		vaccineAttrObj8.put("dataElement", "AFIo5tpZjyr");//OPV 3 given (0-11m)
+		vaccineAttrObj8.put("value", commonServiceDTO.getChild_opv3Count());
+		
+		vaccineCountArray.put(vaccineAttrObj1);
+        vaccineCountArray.put(vaccineAttrObj2);
+		vaccineCountArray.put(vaccineAttrObj3);
+		vaccineCountArray.put(vaccineAttrObj4);
+		vaccineCountArray.put(vaccineAttrObj5);
+		vaccineCountArray.put(vaccineAttrObj6);
+		vaccineCountArray.put(vaccineAttrObj7);
+		vaccineCountArray.put(vaccineAttrObj8);
+		
+		vaccineCountObj.put("dataSet", "pEaVGTvSsQn");
+		vaccineCountObj.put("completeData", modifiedDate);
+		vaccineCountObj.put("period", periodTime);
+		vaccineCountObj.put("orgUnit", "SkiBAS3qNA6");
+		vaccineCountObj.put("dataValues", vaccineCountArray);
+		
+		System.out.println(vaccineCountObj.toString());
+		
+		HttpResponse result = dhis2HttpUtils.post(url, "", vaccineCountObj.toString(), "mpower", "mPower4321");
+		
+		return result;	
 	}
 	
 	
