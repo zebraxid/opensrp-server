@@ -1,7 +1,7 @@
 {
   "form_data_definition_version": "1",
   "form": {
-    "default_bind_path": "/model/instance/NewMemberRegistration",
+    "default_bind_path": "/model/instance/CensusNewMemberRegistration",
     "bind_type": "household",
     "fields": [
       {
@@ -9,101 +9,119 @@
         "shouldLoadValue": true
       },
       {
+        "name": "version",
+        "bind": "/model/instance/CensusNewMemberRegistration/version"
+      },
+      {
+        "name": "changes",
+        "bind": "/model/instance/CensusNewMemberRegistration/changes"
+      },
+      {
         "name": "existing_location",
-        "bind": "/model/instance/NewMemberRegistration/existing_location",
-        "shouldLoadValue": true
+        "bind": "/model/instance/CensusNewMemberRegistration/existing_location"
+      },
+      {
+        "name": "Today",
+        "bind": "/model/instance/CensusNewMemberRegistration/Today"
+      },
+      {
+        "name": "Start",
+        "bind": "/model/instance/CensusNewMemberRegistration/Start"
+      },
+      {
+        "name": "End",
+        "bind": "/model/instance/CensusNewMemberRegistration/End"
+      },
+      {
+        "name": "existing_ELCO",
+        "bind": "/model/instance/CensusNewMemberRegistration/existing_ELCO"
+      },
+      {
+        "name": "existing_GoB_HHID",
+        "bind": "/model/instance/CensusNewMemberRegistration/existing_GoB_HHID"
       },
       {
         "name": "existing_Country",
-        "bind": "/model/instance/NewMemberRegistration/existing_Country",
-        "shouldLoadValue": true
+        "bind": "/model/instance/CensusNewMemberRegistration/existing_Country"
       },
       {
         "name": "existing_Division",
-        "bind": "/model/instance/NewMemberRegistration/existing_Division",
-        "shouldLoadValue": true
+        "bind": "/model/instance/CensusNewMemberRegistration/existing_Division"
       },
       {
         "name": "existing_District",
-        "bind": "/model/instance/NewMemberRegistration/existing_District",
-        "shouldLoadValue": true
+        "bind": "/model/instance/CensusNewMemberRegistration/existing_District"
       },
       {
         "name": "existing_Upazilla",
-        "bind": "/model/instance/NewMemberRegistration/existing_Upazilla",
-        "shouldLoadValue": true
-      },
-      {
-        "name": "existing_Paurasava",
-        "bind": "/model/instance/NewMemberRegistration/existing_Paurasava",
-        "shouldLoadValue": true
+        "bind": "/model/instance/CensusNewMemberRegistration/existing_Upazilla"
       },
       {
         "name": "existing_Union",
-        "bind": "/model/instance/NewMemberRegistration/existing_Union",
-        "shouldLoadValue": true
+        "bind": "/model/instance/CensusNewMemberRegistration/existing_Union"
       },
       {
-        "name": "WARD",
-        "bind": "/model/instance/NewMemberRegistration/existing_Ward",
-        "shouldLoadValue": true
+        "name": "existing_Ward",
+        "bind": "/model/instance/CensusNewMemberRegistration/existing_Ward"
       },
       {
-        "name": "BLOCK",
-        "bind": "/model/instance/NewMemberRegistration/existing_Block",
-        "shouldLoadValue": true
+        "name": "existing_Subunit",
+        "bind": "/model/instance/CensusNewMemberRegistration/existing_Subunit"
       },
       {
-        "name": "existing_HIE_facilities",
-        "bind": "/model/instance/NewMemberRegistration/existing_HIE_facilities",
-        "shouldLoadValue": true
+        "name": "existing_Mauzapara",
+        "bind": "/model/instance/CensusNewMemberRegistration/existing_Mauzapara"
       },
       {
-        "name": "start",
-        "bind": "/model/instance/NewMemberRegistration/start"
+        "name": "existing_GPS",
+        "bind": "/model/instance/CensusNewMemberRegistration/existing_GPS"
       },
       {
-        "name": "end",
-        "bind": "/model/instance/NewMemberRegistration/end"
+        "name": "existing_Village_Name",
+        "bind": "/model/instance/CensusNewMemberRegistration/existing_Village_Name"
       },
       {
-        "name": "today",
-        "bind": "/model/instance/NewMemberRegistration/today"
+        "name": "Form_Name",
+        "bind": "/model/instance/CensusNewMemberRegistration/Form_Name"
       },
       {
-        "name": "deviceid",
-        "bind": "/model/instance/NewMemberRegistration/deviceid",
-        "shouldLoadValue": true
+        "name": "Census_Date",
+        "bind": "/model/instance/CensusNewMemberRegistration/Census_Date"
       },
       {
-        "name": "subscriberid",
-        "bind": "/model/instance/NewMemberRegistration/subscriberid",
-        "shouldLoadValue": true
+        "name": "Visit_Status",
+        "bind": "/model/instance/CensusNewMemberRegistration/Visit_Status"
       },
       {
-        "name": "simserial",
-        "bind": "/model/instance/NewMemberRegistration/simserial",
-        "shouldLoadValue": true
+        "name": "new_ELCO",
+        "bind": "/model/instance/CensusNewMemberRegistration/new_ELCO"
       },
       {
-        "name": "phonenumber",
-        "bind": "/model/instance/NewMemberRegistration/phonenumber",
-        "shouldLoadValue": true
-      },        
+        "name": "ELCO",
+        "bind": "/model/instance/CensusNewMemberRegistration/ELCO"
+      },
       {
-        "name": "Date_Of_Reg",
-        "bind": "/model/instance/NewMemberRegistration/Date_Of_Reg"
-      },        
+        "name": "Child",
+        "bind": "/model/instance/CensusNewMemberRegistration/Child"
+      },
       {
-        "name": "HH_Address",
-        "bind": "/model/instance/NewMemberRegistration/HH_Address"
-      }        
+        "name": "Adolescent",
+        "bind": "/model/instance/CensusNewMemberRegistration/Adolescent"
+      },
+      {
+        "name": "HH_Status",
+        "bind": "/model/instance/CensusNewMemberRegistration/HH_Status"
+      },
+      {
+        "name": "current_formStatus",
+        "bind": "/model/instance/CensusNewMemberRegistration/current_formStatus"
+      }
     ],
     "sub_forms": [
       {
         "name": "member_registration",
         "bind_type": "members",
-        "default_bind_path": "/model/instance/NewMemberRegistration/HH_Member",
+        "default_bind_path": "/model/instance/CensusNewMemberRegistration/HH_Member",
         "fields": [
           {
             "name": "id"
@@ -112,736 +130,264 @@
             "name": "relationalid"
           },
           {
-            "name": "Member_COUNTRY",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/Member_COUNTRY"
-          },
-          {
-            "name": "Member_DIVISION",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/Member_DIVISION"
-          },
-          {
-            "name": "Member_DISTRICT",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/Member_DISTRICT"
-          },
-          {
-            "name": "Member_UPAZILLA",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/Member_UPAZILLA"
-          },
-          {
-            "name": "Member_Paurasava",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/Member_Paurasava"
-          },
-          {
-            "name": "Member_UNION",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/Member_UNION"
-          },
-          {
-            "name": "Member_WARD",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/Member_WARD"
-          },
-          {
-            "name": "Member_BLOCK",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/Member_BLOCK"
-          },
-          {
-            "name": "Member_Address_line",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/Member_Address_line"
-          },
-          {
-            "name": "Member_HIE_facilities",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/Member_HIE_facilities"
+            "name": "Member_GoB_HHID",
+            "bind": "/model/instance/CensusNewMemberRegistration/HH_Member/Member_GoB_HHID"
           },
           {
             "name": "Member_Reg_Date",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/Member_Reg_Date"
+            "bind": "/model/instance/CensusNewMemberRegistration/HH_Member/Member_Reg_Date"
           },
           {
-            "name": "Member_GPS",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/Member_GPS"
+            "name": "Mem_F_Name",
+            "bind": "/model/instance/CensusNewMemberRegistration/HH_Member/Mem_F_Name"
           },
           {
-            "name": "HH_Address",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/HH_Address"
+            "name": "Mem_L_Name",
+            "bind": "/model/instance/CensusNewMemberRegistration/HH_Member/Mem_L_Name"
           },
           {
-            "name": "Member_type",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/Member_type"
+            "name": "Member_Birth_Date_Known",
+            "bind": "/model/instance/CensusNewMemberRegistration/HH_Member/Member_Birth_Date_Known"
           },
           {
-            "name": "Reg_No",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/Reg_No"
+            "name": "Member_Birth_Date",
+            "bind": "/model/instance/CensusNewMemberRegistration/HH_Member/Member_Birth_Date"
           },
           {
-            "name": "Member_Fname",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/Member_Fname"
+            "name": "Member_Age",
+            "bind": "/model/instance/CensusNewMemberRegistration/HH_Member/Member_Age"
           },
           {
-            "name": "Member_LName",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/Member_LName"
+            "name": "Calc_Age",
+            "bind": "/model/instance/CensusNewMemberRegistration/HH_Member/Calc_Age"
           },
           {
-            "name": "Member_Unique_ID",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/Member_Unique_ID"
+            "name": "Calc_Dob",
+            "bind": "/model/instance/CensusNewMemberRegistration/HH_Member/Calc_Dob"
           },
           {
-            "name": "Member_NID",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/Member_NID"
+            "name": "Calc_Dob_Confirm",
+            "bind": "/model/instance/CensusNewMemberRegistration/HH_Member/Calc_Dob_Confirm"
           },
           {
-            "name": "Member_BRID",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/Member_BRID"
+            "name": "Calc_Age_Confirm",
+            "bind": "/model/instance/CensusNewMemberRegistration/HH_Member/Calc_Age_Confirm"
           },
           {
-            "name": "Member_HID",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/Member_HID"
+            "name": "Birth_Date_Note",
+            "bind": "/model/instance/CensusNewMemberRegistration/HH_Member/Birth_Date_Note"
           },
           {
-            "name": "member_birth_date_known",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/member_birth_date_known"
+            "name": "Note_age",
+            "bind": "/model/instance/CensusNewMemberRegistration/HH_Member/Note_age"
           },
           {
-            "name": "member_birth_date",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/member_birth_date"
+            "name": "Member_Gender",
+            "bind": "/model/instance/CensusNewMemberRegistration/HH_Member/Member_Gender"
           },
           {
-            "name": "age",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/age"
+            "name": "Mem_ID_Type",
+            "bind": "/model/instance/CensusNewMemberRegistration/HH_Member/Mem_ID_Type"
           },
           {
-            "name": "calc_age",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/calc_age"
+            "name": "Mem_NID",
+            "bind": "/model/instance/CensusNewMemberRegistration/HH_Member/Mem_NID"
           },
           {
-            "name": "calc_dob",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/calc_dob"
+            "name": "Retype_Mem_NID",
+            "bind": "/model/instance/CensusNewMemberRegistration/HH_Member/Retype_Mem_NID"
           },
           {
-            "name": "calc_dob_confirm",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/calc_dob_confirm"
+            "name": "Mem_NID_Concept",
+            "bind": "/model/instance/CensusNewMemberRegistration/HH_Member/Mem_NID_Concept"
           },
           {
-            "name": "calc_dob_estimated",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/calc_dob_estimated"
+            "name": "Mem_BRID",
+            "bind": "/model/instance/CensusNewMemberRegistration/HH_Member/Mem_BRID"
           },
           {
-            "name": "calc_age_confirm",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/calc_age_confirm"
+            "name": "Retype_Mem_BRID",
+            "bind": "/model/instance/CensusNewMemberRegistration/HH_Member/Retype_Mem_BRID"
           },
           {
-            "name": "birth_date_note",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/birth_date_note"
+            "name": "Mem_BRID_Concept",
+            "bind": "/model/instance/CensusNewMemberRegistration/HH_Member/Mem_BRID_Concept"
           },
           {
-            "name": "note_age",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/note_age"
+            "name": "Mem_Mobile_Number",
+            "bind": "/model/instance/CensusNewMemberRegistration/HH_Member/Mem_Mobile_Number"
           },
           {
-            "name": "Gender",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/Gender"
-          },
-          {
-            "name": "Father_name",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/Father_name"
-          },
-          {
-            "name": "Husband_name",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/Husband_name"
-          },
-          {
-            "name": "epi_card_number",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/epi_card_number"
-          },
-          {
-            "name": "contact_phone_number",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/contact_phone_number"
-          },
-          {
-            "name": "Marital_status",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/Marital_status"
+            "name": "Mem_Marital_Status",
+            "bind": "/model/instance/CensusNewMemberRegistration/HH_Member/Mem_Marital_Status"
           },
           {
             "name": "Couple_No",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/Couple_No"
+            "bind": "/model/instance/CensusNewMemberRegistration/HH_Member/Couple_No"
           },
           {
-            "name": "WomanInfo",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/WomanInfo"
+            "name": "Spouse_Name",
+            "bind": "/model/instance/CensusNewMemberRegistration/HH_Member/Spouse_Name"
           },
           {
-            "name": "pregnant",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/WomanInfo/pregnant"
+            "name": "Wom_Menstruating",
+            "bind": "/model/instance/CensusNewMemberRegistration/HH_Member/Wom_Menstruating"
           },
           {
-            "name": "FP_USER",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/WomanInfo/FP_USER"
+            "name": "Wom_Sterilized",
+            "bind": "/model/instance/CensusNewMemberRegistration/HH_Member/Wom_Sterilized"
           },
           {
-            "name": "FP_Methods",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/WomanInfo/FP_Methods"
+            "name": "Wom_Hus_Live",
+            "bind": "/model/instance/CensusNewMemberRegistration/HH_Member/Wom_Hus_Live"
           },
           {
-            "name": "edd_lmp",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/WomanInfo/edd_lmp"
+            "name": "Wom_Hus_Alive",
+            "bind": "/model/instance/CensusNewMemberRegistration/HH_Member/Wom_Hus_Alive"
           },
           {
-            "name": "edd",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/WomanInfo/edd"
+            "name": "Wom_Hus_Sterilized",
+            "bind": "/model/instance/CensusNewMemberRegistration/HH_Member/Wom_Hus_Sterilized"
           },
           {
-            "name": "lmp",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/WomanInfo/lmp"
+            "name": "Eligible",
+            "bind": "/model/instance/CensusNewMemberRegistration/HH_Member/Eligible"
           },
           {
-            "name": "ultrasound_date",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/WomanInfo/ultrasound_date"
+            "name": "Eligible2",
+            "bind": "/model/instance/CensusNewMemberRegistration/HH_Member/Eligible2"
           },
           {
-            "name": "ultrasound_weeks",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/WomanInfo/ultrasound_weeks"
+            "name": "ELCO",
+            "bind": "/model/instance/CensusNewMemberRegistration/HH_Member/ELCO"
           },
           {
-            "name": "edd_calc_lmp",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/WomanInfo/edd_calc_lmp"
+            "name": "ELCO_Note",
+            "bind": "/model/instance/CensusNewMemberRegistration/HH_Member/ELCO/ELCO_Note"
           },
           {
-            "name": "edd_calc_ultrasound",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/WomanInfo/edd_calc_ultrasound"
+            "name": "Mem_Country",
+            "bind": "/model/instance/CensusNewMemberRegistration/HH_Member/ELCO/Mem_Country"
           },
           {
-            "name": "edd_calc_lmp_formatted",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/WomanInfo/edd_calc_lmp_formatted"
+            "name": "Mem_Division",
+            "bind": "/model/instance/CensusNewMemberRegistration/HH_Member/ELCO/Mem_Division"
           },
           {
-            "name": "edd_calc_ultrasound_formatted",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/WomanInfo/edd_calc_ultrasound_formatted"
+            "name": "Mem_District",
+            "bind": "/model/instance/CensusNewMemberRegistration/HH_Member/ELCO/Mem_District"
           },
           {
-            "name": "lmp_calc_edd",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/WomanInfo/lmp_calc_edd"
+            "name": "Mem_Upazilla",
+            "bind": "/model/instance/CensusNewMemberRegistration/HH_Member/ELCO/Mem_Upazilla"
           },
           {
-            "name": "lmp_calc_ultrasound",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/WomanInfo/lmp_calc_ultrasound"
+            "name": "Mem_Union",
+            "bind": "/model/instance/CensusNewMemberRegistration/HH_Member/ELCO/Mem_Union"
           },
           {
-            "name": "lmp_calc_edd_formatted",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/WomanInfo/lmp_calc_edd_formatted"
+            "name": "Mem_Ward",
+            "bind": "/model/instance/CensusNewMemberRegistration/HH_Member/ELCO/Mem_Ward"
           },
           {
-            "name": "lmp_calc_ultrasound_formatted",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/WomanInfo/lmp_calc_ultrasound_formatted"
+            "name": "Mem_Subunit",
+            "bind": "/model/instance/CensusNewMemberRegistration/HH_Member/ELCO/Mem_Subunit"
           },
           {
-            "name": "final_edd",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/WomanInfo/final_edd"
+            "name": "Mem_Mauzapara",
+            "bind": "/model/instance/CensusNewMemberRegistration/HH_Member/ELCO/Mem_Mauzapara"
           },
           {
-            "name": "final_lmp",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/WomanInfo/final_lmp"
+            "name": "Mem_Village_Name",
+            "bind": "/model/instance/CensusNewMemberRegistration/HH_Member/ELCO/Mem_Village_Name"
           },
           {
-            "name": "ga_edd",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/WomanInfo/ga_edd"
+            "name": "Mem_GPS",
+            "bind": "/model/instance/CensusNewMemberRegistration/HH_Member/ELCO/Mem_GPS"
           },
           {
-            "name": "ga_lmp",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/WomanInfo/ga_lmp"
+            "name": "ELCO_ID_Type",
+            "bind": "/model/instance/CensusNewMemberRegistration/HH_Member/ELCO/ELCO_ID_Type"
           },
           {
-            "name": "ga_ult",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/WomanInfo/ga_ult"
+            "name": "ELCO_NID",
+            "bind": "/model/instance/CensusNewMemberRegistration/HH_Member/ELCO/ELCO_NID"
           },
           {
-            "name": "final_edd_note",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/WomanInfo/final_edd_note"
+            "name": "ELCO_NID_Concept",
+            "bind": "/model/instance/CensusNewMemberRegistration/HH_Member/ELCO/ELCO_NID_Concept"
           },
           {
-            "name": "final_lmp_note",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/WomanInfo/final_lmp_note"
+            "name": "ELCO_BRID",
+            "bind": "/model/instance/CensusNewMemberRegistration/HH_Member/ELCO/ELCO_BRID"
           },
           {
-            "name": "final_ga",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/WomanInfo/final_ga"
+            "name": "ELCO_BRID_Concept",
+            "bind": "/model/instance/CensusNewMemberRegistration/HH_Member/ELCO/ELCO_BRID_Concept"
           },
           {
-            "name": "final_ga_note",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/WomanInfo/final_ga_note"
+            "name": "ELCO_Mobile_Number",
+            "bind": "/model/instance/CensusNewMemberRegistration/HH_Member/ELCO/ELCO_Mobile_Number"
           },
           {
-            "name": "vaccines",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/WomanInfo/vaccines"
+            "name": "Member_Detail",
+            "bind": "/model/instance/CensusNewMemberRegistration/HH_Member/Member_Detail"
           },
           {
-            "name": "tt1_retro",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/WomanInfo/tt1_retro"
+            "name": "Permanent_Address",
+            "bind": "/model/instance/CensusNewMemberRegistration/HH_Member/Member_Detail/Permanent_Address"
           },
           {
-            "name": "tt_1_dose",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/WomanInfo/tt_1_dose"
+            "name": "Updated_Dist",
+            "bind": "/model/instance/CensusNewMemberRegistration/HH_Member/Member_Detail/Updated_Dist"
           },
           {
-            "name": "tt2_retro",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/WomanInfo/tt2_retro"
+            "name": "Updated_Union",
+            "bind": "/model/instance/CensusNewMemberRegistration/HH_Member/Member_Detail/Updated_Union"
           },
           {
-            "name": "tt_2_dose",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/WomanInfo/tt_2_dose"
+            "name": "Updated_Vill",
+            "bind": "/model/instance/CensusNewMemberRegistration/HH_Member/Member_Detail/Updated_Vill"
           },
           {
-            "name": "tt3_retro",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/WomanInfo/tt3_retro"
+            "name": "Final_Dist",
+            "bind": "/model/instance/CensusNewMemberRegistration/HH_Member/Member_Detail/Final_Dist"
           },
           {
-            "name": "tt_3_dose",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/WomanInfo/tt_3_dose"
+            "name": "Final_Union",
+            "bind": "/model/instance/CensusNewMemberRegistration/HH_Member/Member_Detail/Final_Union"
           },
           {
-            "name": "tt4_retro",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/WomanInfo/tt4_retro"
+            "name": "Final_Vill",
+            "bind": "/model/instance/CensusNewMemberRegistration/HH_Member/Member_Detail/Final_Vill"
           },
           {
-            "name": "tt_4_dose",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/WomanInfo/tt_4_dose"
+            "name": "Relation_HoH",
+            "bind": "/model/instance/CensusNewMemberRegistration/HH_Member/Member_Detail/Relation_HoH"
           },
           {
-            "name": "vaccines_2",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/WomanInfo/vaccines_2"
+            "name": "Place_Of_Birth",
+            "bind": "/model/instance/CensusNewMemberRegistration/HH_Member/Member_Detail/Place_Of_Birth"
           },
           {
-            "name": "tt1",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/WomanInfo/tt1"
+            "name": "Education",
+            "bind": "/model/instance/CensusNewMemberRegistration/HH_Member/Member_Detail/Education"
           },
           {
-            "name": "tt_1_dose_today",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/WomanInfo/tt_1_dose_today"
+            "name": "Religion",
+            "bind": "/model/instance/CensusNewMemberRegistration/HH_Member/Member_Detail/Religion"
           },
           {
-            "name": "tt2",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/WomanInfo/tt2"
+            "name": "BD_Citizen",
+            "bind": "/model/instance/CensusNewMemberRegistration/HH_Member/Member_Detail/BD_Citizen"
           },
           {
-            "name": "tt_2_dose_today",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/WomanInfo/tt_2_dose_today"
+            "name": "Occupation",
+            "bind": "/model/instance/CensusNewMemberRegistration/HH_Member/Member_Detail/Occupation"
           },
           {
-            "name": "tt3",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/WomanInfo/tt3"
-          },
-          {
-            "name": "tt_3_dose_today",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/WomanInfo/tt_3_dose_today"
-          },
-          {
-            "name": "tt4",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/WomanInfo/tt4"
-          },
-          {
-            "name": "tt_4_dose_today",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/WomanInfo/tt_4_dose_today"
-          },
-          {
-            "name": "tt5",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/WomanInfo/tt5"
-          },
-          {
-            "name": "tt_5_dose_today",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/WomanInfo/tt_5_dose_today"
-          },
-          {
-            "name": "tt1_final",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/WomanInfo/tt1_final"
-          },
-          {
-            "name": "tt2_final",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/WomanInfo/tt2_final"
-          },
-          {
-            "name": "tt3_final",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/WomanInfo/tt3_final"
-          },
-          {
-            "name": "tt4_final",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/WomanInfo/tt4_final"
-          },
-          {
-            "name": "tt5_final",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/WomanInfo/tt5_final"
-          },
-          {
-            "name": "Child_birth_date_known",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/Child_birth_date_known"
-          },
-          {
-            "name": "Child_birth_date",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/Child_birth_date"
-          },
-          {
-            "name": "Child_age",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/Child_age"
-          },
-          {
-            "name": "Child_calc_age",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/Child_calc_age"
-          },
-          {
-            "name": "Child_calc_dob",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/Child_calc_dob"
-          },
-          {
-            "name": "Child_dob",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/Child_dob"
-          },
-          {
-            "name": "Child_dob_estimated",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/Child_dob_estimated"
-          },
-          {
-            "name": "Child_age_days",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/Child_age_days"
-          },
-          {
-            "name": "Child_birth_date_note",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/Child_birth_date_note"
-          },
-          {
-            "name": "Birth_Weigtht",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/Birth_Weigtht"
-          },
-          {
-            "name": "Newborn_Care_Received",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/Newborn_Care_Received"
-          },
-          {
-            "name": "Child_gender",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/Child_gender"
-          },
-          {
-            "name": "Child_mother_name",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/Child_mother_name"
-          },
-          {
-            "name": "Child_father_name",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/Child_father_name"
-          },
-          {
-            "name": "Child_guardian_id",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/Child_guardian_id"
-          },
-          {
-            "name": "Child_Mother_NID",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/Child_Mother_NID"
-          },
-          {
-            "name": "Child_Mother_BRID",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/Child_Mother_BRID"
-          },
-          {
-            "name": "Child_Father_NID",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/Child_Father_NID"
-          },
-          {
-            "name": "Child_Father_BRID",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/Child_Father_BRID"
-          },
-          {
-            "name": "Child_Other_Guardian_NID",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/Child_Other_Guardian_NID"
-          },
-          {
-            "name": "Child_Other_Guardian_BRID",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/Child_Other_Guardian_BRID"
-          },
-          {
-            "name": "child_was_suffering_from_a_disease_at_birth",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/child_was_suffering_from_a_disease_at_birth"
-          },
-          {
-            "name": "reminders_approval",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/reminders_approval"
-          },
-          {
-            "name": "child_vaccines",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/child_vaccines"
-          },
-          {
-            "name": "bcg_retro",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/child_vaccines_group/bcg_retro"
-          },
-          {
-            "name": "opv0_retro",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/child_vaccines_group/opv0_retro"
-          },
-          {
-            "name": "opv0_dose",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/child_vaccines_group/opv0_dose"
-          },
-          {
-            "name": "pcv1_retro",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/child_vaccines_group/pcv1_retro"
-          },
-          {
-            "name": "pcv1_dose",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/child_vaccines_group/pcv1_dose"
-          },
-          {
-            "name": "opv1_retro",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/child_vaccines_group/opv1_retro"
-          },
-          {
-            "name": "opv1_dose",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/child_vaccines_group/opv1_dose"
-          },
-          {
-            "name": "penta1_retro",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/child_vaccines_group/penta1_retro"
-          },
-          {
-            "name": "penta1_dose",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/child_vaccines_group/penta1_dose"
-          },
-          {
-            "name": "pcv2_retro",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/child_vaccines_group/pcv2_retro"
-          },
-          {
-            "name": "pcv2_dose",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/child_vaccines_group/pcv2_dose"
-          },
-          {
-            "name": "opv2_retro",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/child_vaccines_group/opv2_retro"
-          },
-          {
-            "name": "opv2_dose",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/child_vaccines_group/opv2_dose"
-          },
-          {
-            "name": "penta2_retro",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/child_vaccines_group/penta2_retro"
-          },
-          {
-            "name": "penta2_dose",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/child_vaccines_group/penta2_dose"
-          },
-          {
-            "name": "pcv3_retro",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/child_vaccines_group/pcv3_retro"
-          },
-          {
-            "name": "pcv3_dose",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/child_vaccines_group/pcv3_dose"
-          },
-          {
-            "name": "opv3_retro",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/child_vaccines_group/opv3_retro"
-          },
-          {
-            "name": "opv3_dose",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/child_vaccines_group/opv3_dose"
-          },
-          {
-            "name": "penta3_retro",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/child_vaccines_group/penta3_retro"
-          },
-          {
-            "name": "penta3_dose",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/child_vaccines_group/penta3_dose"
-          },
-          {
-            "name": "ipv_retro",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/child_vaccines_group/ipv_retro"
-          },
-          {
-            "name": "measles1_retro",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/child_vaccines_group/measles1_retro"
-          },
-          {
-            "name": "measles1_dose",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/child_vaccines_group/measles1_dose"
-          },
-          {
-            "name": "measles2_retro",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/child_vaccines_group/measles2_retro"
-          },
-          {
-            "name": "measles2_dose",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/child_vaccines_group/measles2_dose"
-          },
-          {
-            "name": "child_vaccines_2",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/child_vaccines_2"
-          },
-          {
-            "name": "bcg",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/bcg"
-          },
-          {
-            "name": "opv0",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/opv0"
-          },
-          {
-            "name": "opv0_dose_today",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/opv0_dose_today"
-          },
-          {
-            "name": "pcv1",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/pcv1"
-          },
-          {
-            "name": "pcv1_dose_today",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/pcv1_dose_today"
-          },
-          {
-            "name": "opv1",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/opv1"
-          },
-          {
-            "name": "opv1_dose_today",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/opv1_dose_today"
-          },
-          {
-            "name": "penta1",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/penta1"
-          },
-          {
-            "name": "penta1_dose_today",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/penta1_dose_today"
-          },
-          {
-            "name": "pcv2",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/pcv2"
-          },
-          {
-            "name": "pcv2_dose_today",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/pcv2_dose_today"
-          },
-          {
-            "name": "opv2",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/opv2"
-          },
-          {
-            "name": "opv2_dose_today",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/opv2_dose_today"
-          },
-          {
-            "name": "penta2",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/penta2"
-          },
-          {
-            "name": "penta2_dose_today",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/penta2_dose_today"
-          },
-          {
-            "name": "pcv3",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/pcv3"
-          },
-          {
-            "name": "pcv3_dose_today",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/pcv3_dose_today"
-          },
-          {
-            "name": "opv3",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/opv3"
-          },
-          {
-            "name": "opv3_dose_today",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/opv3_dose_today"
-          },
-          {
-            "name": "penta3",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/penta3"
-          },
-          {
-            "name": "penta3_dose_today",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/penta3_dose_today"
-          },
-          {
-            "name": "ipv",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/ipv"
-          },
-          {
-            "name": "measles1",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/measles1"
-          },
-          {
-            "name": "measles1_dose_today",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/measles1_dose_today"
-          },
-          {
-            "name": "measles2",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/measles2"
-          },
-          {
-            "name": "measles2_dose_today",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/measles2_dose_today"
-          },
-          {
-            "name": "final_bcg",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/final_bcg"
-          },
-          {
-            "name": "final_opv0",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/final_opv0"
-          },
-          {
-            "name": "final_pcv1",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/final_pcv1"
-          },
-          {
-            "name": "final_opv1",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/final_opv1"
-          },
-          {
-            "name": "final_penta1",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/final_penta1"
-          },
-          {
-            "name": "final_pcv2",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/final_pcv2"
-          },
-          {
-            "name": "final_opv2",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/final_opv2"
-          },
-          {
-            "name": "final_penta2",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/final_penta2"
-          },
-          {
-            "name": "final_pcv3",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/final_pcv3"
-          },
-          {
-            "name": "final_opv3",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/final_opv3"
-          },
-          {
-            "name": "final_penta3",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/final_penta3"
-          },
-          {
-            "name": "final_ipv",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/final_ipv"
-          },
-          {
-            "name": "final_measles1",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/final_measles1"
-          },
-          {
-            "name": "final_measles2",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/ChildInfo/final_measles2"
-          },
-          {
-            "name": "Is_woman",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/Is_woman"
-          },
-          {
-            "name": "Is_child",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/Is_child"
-          },
-          {
-            "name": "Is_preg_outcome",
-            "bind": "/model/instance/NewMemberRegistration/HH_Member/Is_preg_outcome"
+            "name": "add_member",
+            "bind": "/model/instance/CensusNewMemberRegistration/HH_Member/add_member"
           }
         ]
       }

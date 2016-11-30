@@ -67,7 +67,7 @@ public class AlertCreationAction implements HookedEvent {
 			if (houseHold != null) {
 				instanceId= houseHold.INSTANCEID();
 				providerId = houseHold.PROVIDERID();
-				startOfEarliestWindow = DateTime.parse(houseHold.TODAY(),formatter);
+				startOfEarliestWindow = DateTime.parse(houseHold.getToday(),formatter);
 			}
 		}
 		else if(members.equals(beneficiaryType))

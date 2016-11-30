@@ -26,94 +26,168 @@ public class HouseHold extends MotechBaseDataObject {
 	private String PROVIDERID;
 	@JsonProperty
 	private String LOCATIONID;
-	@JsonProperty
-	private String TODAY;
-	@JsonProperty
-	private String START;
-	@JsonProperty
-	private String END;
-	@JsonProperty
-	private String Date_Of_Reg;
-	@JsonProperty
-	private String HoH_HID;
-	@JsonProperty
-	private String COUNTRY;
-	@JsonProperty
-	private String DIVISION;
-	@JsonProperty
-	private String DISTRICT;
-	@JsonProperty
-	private String UPAZILLA;
-	@JsonProperty
-	private String UNION;
-	@JsonProperty
-	private String WARD;
-	@JsonProperty
-	private String BLOCK;
-	@JsonProperty
-	private String Block_no;
-	@JsonProperty
-	private String HHID;
-	@JsonProperty
-	private String HoH_Reg_No;
-	@JsonProperty
-	private String GPS;
-	@JsonProperty
-	private String HoH_Fname;
-	@JsonProperty
-	private String HoH_birth_date;
-	@JsonProperty
-	private String HoH_birth_date_known;
-	@JsonProperty
-	private String HoH_Lname;
-	@JsonProperty
-	private String HoH_age; 
-	@JsonProperty
-	private String HoH_Gender;
-	@JsonProperty
-	private String HoH_Unique_ID;
-	@JsonProperty
-	private String HoH_NID;
-	@JsonProperty
-	private String HoH_BRID;
-	@JsonProperty
-	private String HoH_Mobile_No;
-	@JsonProperty
-	private String HoH_Education;
-	@JsonProperty
-	private String HoH_Occupation;
-	@JsonProperty
-	private String HH_Member_No;
-	@JsonProperty
-	private String deviceid;
-	@JsonProperty
-	private String subscriberid;
-	@JsonProperty
-	private String simserial;
-	@JsonProperty
-	private String phonenumber;
-	@JsonProperty
-	private String PAURASAVA;
-	@JsonProperty
-	private String ADDRESS_LINE;
-	@JsonProperty
-	private String HIE_FACILITIES; 
-	@JsonProperty
-	private String calc_HoH_age;
-	@JsonProperty
-	private String calc_HoH_dob;
-	@JsonProperty
-	private String calc_HoH_dob_confirm;
-	@JsonProperty
-	private String calc_dob_estimated;
-	@JsonProperty
-	private String calc_HoH_age_confirm;
-	@JsonProperty
-	private String birth_date_note;
-	@JsonProperty
-	private String note_age;
-	@JsonProperty
-	private String HH_current_form_status;
+	@JsonProperty 
+	private String Version
+	; 
+	@JsonProperty 
+	private String Changes
+	; 
+	@JsonProperty 
+	private String existing_location
+	; 
+	@JsonProperty 
+	private String existing_Country
+	; 
+	@JsonProperty 
+	private String existing_Division
+	; 
+	@JsonProperty 
+	private String existing_District
+	; 
+	@JsonProperty 
+	private String existing_Upazilla
+	; 
+	@JsonProperty 
+	private String existing_Union
+	; 
+	@JsonProperty 
+	private String existing_Ward
+	; 
+	@JsonProperty 
+	private String existing_Subunit
+	; 
+	@JsonProperty 
+	private String existing_Mauzapara
+	; 
+	@JsonProperty 
+	private String Form_Name
+	; 
+	@JsonProperty 
+	private String Today
+	; 
+	@JsonProperty 
+	private String Start
+	; 
+	@JsonProperty 
+	private String End
+	; 
+	@JsonProperty 
+	private String Reg_Date
+	; 
+	@JsonProperty 
+	private String Village_Name
+	; 
+	@JsonProperty 
+	private String GoB_HHID
+	; 
+	@JsonProperty 
+	private String No_Of_Couples
+	; 
+	@JsonProperty 
+	private String Country
+	; 
+	@JsonProperty 
+	private String Division
+	; 
+	@JsonProperty 
+	private String District
+	; 
+	@JsonProperty 
+	private String Upazilla
+	; 
+	@JsonProperty 
+	private String Union
+	; 
+	@JsonProperty 
+	private String Ward
+	; 
+	@JsonProperty 
+	private String Subunit
+	; 
+	@JsonProperty 
+	private String Mauzapara
+	; 
+	@JsonProperty 
+	private String GPS
+	; 
+	@JsonProperty 
+	private String HoH_F_Name
+	; 
+	@JsonProperty 
+	private String HoH_L_Name
+	; 
+	@JsonProperty 
+	private String HoH_Birth_Date
+	; 
+	@JsonProperty 
+	private String HoH_Gender
+	; 
+	@JsonProperty 
+	private String HoH_Birth_Date_Known
+	; 
+	@JsonProperty 
+	private String HoH_Age
+	; 
+	@JsonProperty 
+	private String Calc_HoH_Age
+	; 
+	@JsonProperty 
+	private String Calc_HoH_Dob
+	; 
+	@JsonProperty 
+	private String Calc_HoH_Dob_Confirm
+	; 
+	@JsonProperty 
+	private String Calc_HoH_Age_Confirm
+	; 
+	@JsonProperty 
+	private String HoH_Birth_Date_Note
+	; 
+	@JsonProperty 
+	private String HoH_Note_age
+	; 
+	@JsonProperty 
+	private String HoH_ID_Type
+	; 
+	@JsonProperty 
+	private String HoH_NID
+	; 
+	@JsonProperty 
+	private String Retype_HoH_NID
+	; 
+	@JsonProperty 
+	private String HoH_NID_Concept
+	; 
+	@JsonProperty 
+	private String HoH_BRID
+	; 
+	@JsonProperty 
+	private String Retype_HoH_BRID
+	; 
+	@JsonProperty 
+	private String HoH_BRID_Concept
+	; 
+	@JsonProperty 
+	private String HoH_Mobile_number
+	; 
+	@JsonProperty 
+	private String Member_Number
+	; 
+	@JsonProperty 
+	private String MWRA
+	; 
+	@JsonProperty 
+	private String Final_ELCO
+	; 
+	@JsonProperty 
+	private String Child
+	; 
+	@JsonProperty 
+	private String Adolescent
+	; 
+	@JsonProperty 
+	private String HH_Status
+	;
 	@JsonProperty
 	private List<Map<String, String>> Birth_Outcome;
 	@JsonProperty
@@ -155,225 +229,275 @@ public class HouseHold extends MotechBaseDataObject {
 		return this;
 	}
 
-	public HouseHold setTODAY(String TODAY) {
-		this.TODAY = TODAY;
-		return this;
+	public HouseHold setVersion(String version) {
+		this.Version = version;
+	return this;
 	}
 
-	public HouseHold setSTART(String START) {
-		this.START = START;
-		return this;
+	public HouseHold setChanges(String changes) {
+		this.Changes = changes;
+	return this;
 	}
 
-	public HouseHold setEND(String END) {
-		this.END = END;
-		return this;
+	public HouseHold setExisting_location(String existing_location) {
+		this.existing_location = existing_location;
+	return this;
 	}
 
-	public HouseHold setDate_Of_Reg(String Date_Of_Reg) {
-		this.Date_Of_Reg = Date_Of_Reg;
-		return this;
+	public HouseHold setExisting_Country(String existing_Country) {
+		this.existing_Country = existing_Country;
+	return this;
 	}
 
-	public HouseHold setHoH_HID(String HoH_HID) {
-		this.HoH_HID = HoH_HID;
-		return this;
+	public HouseHold setExisting_Division(String existing_Division) {
+		this.existing_Division = existing_Division;
+	return this;
 	}
 
-	public HouseHold setGPS(String GPS) {
-		this.GPS = GPS;
-		return this;
-	}
-	
-	public HouseHold setHoH_Fname(String HoH_Fname) {
-		this.HoH_Fname = HoH_Fname;
-		return this;
+	public HouseHold setExisting_District(String existing_District) {
+		this.existing_District = existing_District;
+	return this;
 	}
 
-	public HouseHold setCOUNTRY(String COUNTRY) {
-		this.COUNTRY = COUNTRY;
-		return this;
+	public HouseHold setExisting_Upazilla(String existing_Upazilla) {
+		this.existing_Upazilla = existing_Upazilla;
+	return this;
 	}
 
-	public HouseHold setDIVISION(String DIVISION) {
-		this.DIVISION = DIVISION;
-		return this;
+	public HouseHold setExisting_Union(String existing_Union) {
+		this.existing_Union = existing_Union;
+	return this;
 	}
 
-	public HouseHold setDISTRICT(String DISTRICT) {
-		this.DISTRICT = DISTRICT;
-		return this;
+	public HouseHold setExisting_Ward(String existing_Ward) {
+		this.existing_Ward = existing_Ward;
+	return this;
 	}
 
-	public HouseHold setUPAZILLA(String UPAZILLA) {
-		this.UPAZILLA = UPAZILLA;
-		return this;
+	public HouseHold setExisting_Subunit(String existing_Subunit) {
+		this.existing_Subunit = existing_Subunit;
+	return this;
 	}
 
-	public HouseHold setUNION(String UNION) {
-		this.UNION = UNION;
-		return this;
+	public HouseHold setExisting_Mauzapara(String existing_Mauzapara) {
+		this.existing_Mauzapara = existing_Mauzapara;
+	return this;
 	}
 
-	public HouseHold setWARD(String WARD) {
-		this.WARD = WARD;
-		return this;
+	public HouseHold setForm_Name(String form_Name) {
+		this.Form_Name = form_Name;
+	return this;
 	}
 
-	public HouseHold setBlock_no(String Block_no) {
-		this.Block_no = Block_no;
-		return this;
+	public HouseHold setToday(String today) {
+		this.Today = today;
+	return this;
 	}
-	public HouseHold setBLOCK(String BLOCK) {
-		this.BLOCK = BLOCK;
-		return this;
+
+	public HouseHold setStart(String start) {
+		this.Start = start;
+	return this;
+	}
+
+	public HouseHold setEnd(String end) {
+		this.End = end;
+	return this;
+	}
+
+	public HouseHold setReg_Date(String reg_Date) {
+		this.Reg_Date = reg_Date;
+	return this;
+	}
+
+	public HouseHold setVillage_Name(String village_Name) {
+		this.Village_Name = village_Name;
+	return this;
+	}
+
+	public HouseHold setGoB_HHID(String goB_HHID) {
+		this.GoB_HHID = goB_HHID;
+	return this;
+	}
+
+	public HouseHold setNo_Of_Couples(String no_Of_Couples) {
+		this.No_Of_Couples = no_Of_Couples;
+	return this;
+	}
+
+	public HouseHold setCountry(String country) {
+		this.Country = country;
+	return this;
+	}
+
+	public HouseHold setDivision(String division) {
+		this.Division = division;
+	return this;
+	}
+
+	public HouseHold setDistrict(String district) {
+		this.District = district;
+	return this;
+	}
+
+	public HouseHold setUpazilla(String upazilla) {
+		this.Upazilla = upazilla;
+	return this;
+	}
+
+	public HouseHold setUnion(String union) {
+		this.Union = union;
+	return this;
+	}
+
+	public HouseHold setWard(String ward) {
+		this.Ward = ward;
+	return this;
+	}
+
+	public HouseHold setSubunit(String subunit) {
+		this.Subunit = subunit;
+	return this;
+	}
+
+	public HouseHold setMauzapara(String mauzapara) {
+		this.Mauzapara = mauzapara;
+	return this;
+	}
+
+	public HouseHold setGPS(String gPS) {
+		this.GPS = gPS;
+	return this;
+	}
+
+	public HouseHold setHoH_F_Name(String hoH_F_Name) {
+		this.HoH_F_Name = hoH_F_Name;
+	return this;
+	}
+
+	public HouseHold setHoH_L_Name(String hoH_L_Name) {
+		this.HoH_L_Name = hoH_L_Name;
+	return this;
+	}
+
+	public HouseHold setHoH_Birth_Date(String hoH_Birth_Date) {
+		this.HoH_Birth_Date = hoH_Birth_Date;
+	return this;
+	}
+
+	public HouseHold setHoH_Gender(String hoH_Gender) {
+		this.HoH_Gender = hoH_Gender;
+	return this;
+	}
+
+	public HouseHold setHoH_Birth_Date_Known(String hoH_Birth_Date_Known) {
+		this.HoH_Birth_Date_Known = hoH_Birth_Date_Known;
+	return this;
+	}
+
+	public HouseHold setHoH_Age(String hoH_Age) {
+		this.HoH_Age = hoH_Age;
+	return this;
+	}
+
+	public HouseHold setCalc_HoH_Age(String calc_HoH_Age) {
+		this.Calc_HoH_Age = calc_HoH_Age;
+	return this;
+	}
+
+	public HouseHold setCalc_HoH_Dob(String calc_HoH_Dob) {
+		this.Calc_HoH_Dob = calc_HoH_Dob;
+	return this;
+	}
+
+	public HouseHold setCalc_HoH_Dob_Confirm(String calc_HoH_Dob_Confirm) {
+		this.Calc_HoH_Dob_Confirm = calc_HoH_Dob_Confirm;
+	return this;
+	}
+
+	public HouseHold setCalc_HoH_Age_Confirm(String calc_HoH_Age_Confirm) {
+		this.Calc_HoH_Age_Confirm = calc_HoH_Age_Confirm;
+	return this;
+	}
+
+	public HouseHold setHoH_Birth_Date_Note(String hoH_Birth_Date_Note) {
+		this.HoH_Birth_Date_Note = hoH_Birth_Date_Note;
+	return this;
+	}
+
+	public HouseHold setHoH_Note_age(String hoH_Note_age) {
+		this.HoH_Note_age = hoH_Note_age;
+	return this;
+	}
+
+	public HouseHold setHoH_ID_Type(String hoH_ID_Type) {
+		this.HoH_ID_Type = hoH_ID_Type;
+	return this;
+	}
+
+	public HouseHold setHoH_NID(String hoH_NID) {
+		this.HoH_NID = hoH_NID;
+	return this;
+	}
+
+	public HouseHold setRetype_HoH_NID(String retype_HoH_NID) {
+		this.Retype_HoH_NID = retype_HoH_NID;
+	return this;
+	}
+
+	public HouseHold setHoH_NID_Concept(String hoH_NID_Concept) {
+		this.HoH_NID_Concept = hoH_NID_Concept;
+	return this;
+	}
+
+	public HouseHold setHoH_BRID(String hoH_BRID) {
+		this.HoH_BRID = hoH_BRID;
+	return this;
+	}
+
+	public HouseHold setRetype_HoH_BRID(String retype_HoH_BRID) {
+		this.Retype_HoH_BRID = retype_HoH_BRID;
+	return this;
+	}
+
+	public HouseHold setHoH_BRID_Concept(String hoH_BRID_Concept) {
+		this.HoH_BRID_Concept = hoH_BRID_Concept;
+	return this;
+	}
+
+	public HouseHold setHoH_Mobile_number(String hoH_Mobile_number) {
+		this.HoH_Mobile_number = hoH_Mobile_number;
+	return this;
+	}
+
+	public HouseHold setMember_Number(String member_Number) {
+		this.Member_Number = member_Number;
+	return this;
+	}
+
+	public HouseHold setMWRA(String mWRA) {
+		this.MWRA = mWRA;
+	return this;
+	}
+
+	public HouseHold setFinal_ELCO(String final_ELCO) {
+		this.Final_ELCO = final_ELCO;
+	return this;
+	}
+
+	public HouseHold setChild(String child) {
+		this.Child = child;
+	return this;
+	}
+
+	public HouseHold setAdolescent(String adolescent) {
+		this.Adolescent = adolescent;
+	return this;
+	}
+
+	public HouseHold setHH_Status(String hH_Status) {
+		this.HH_Status = hH_Status;
+	return this;
 	}	
-	public HouseHold setHHID(String HHID) {
-		this.HHID = HHID;
-		return this;
-	}
-	
-	public HouseHold setHoH_Reg_No(String HoH_Reg_No) {
-		this.HoH_Reg_No = HoH_Reg_No;
-		return this;
-	}
-	
-	public HouseHold setHoH_birth_date(String HoH_birth_date) {
-		this.HoH_birth_date = HoH_birth_date;
-		return this;
-	}
-
-	public HouseHold setHoH_birth_date_known(String HoH_birth_date_known) {
-		this.HoH_birth_date_known = HoH_birth_date_known;
-		return this;
-	}
-
-	
-	public HouseHold setHoH_Lname(String HoH_Lname) {
-		this.HoH_Lname = HoH_Lname;
-		return this;
-	}
-
-	public HouseHold setHoH_age(String HoH_age) {
-		this.HoH_age = HoH_age;
-		return this;
-	}
-
-	public HouseHold setHoH_Unique_ID(String HoH_Unique_ID) {
-		this.HoH_Unique_ID = HoH_Unique_ID;
-		return this;
-	}
-
-	public HouseHold setHoH_Gender(String HoH_Gender) {
-		this.HoH_Gender = HoH_Gender;
-		return this;
-	}
-	
-	public HouseHold setHoH_NID(String HoH_NID) {
-		this.HoH_NID = HoH_NID;
-		return this;
-	}
-
-	public HouseHold setHoH_BRID(String HoH_BRID) {
-		this.HoH_BRID = HoH_BRID;
-		return this;
-	}
-	
-	public HouseHold setHoH_Mobile_No(String HoH_Mobile_No) {
-		this.HoH_Mobile_No = HoH_Mobile_No;
-		return this;
-	}
-
-	public HouseHold setHoH_Education(String HoH_Education) {
-		this.HoH_Education = HoH_Education;
-		return this;
-	}
-	
-	public HouseHold setHoH_Occupation(String HoH_Occupation) {
-		this.HoH_Occupation = HoH_Occupation;
-		return this;
-	}
-	
-	public HouseHold setHH_Member_No(String HH_Member_No) {
-		this.HH_Member_No = HH_Member_No;
-		return this;
-	}
-	
-	public HouseHold setdeviceid(String deviceid){
-		this.deviceid = deviceid;
-		return this;
-	}
-
-	public HouseHold setsubscriberid(String subscriberid){
-		this.subscriberid = subscriberid;
-		return this;
-	}
-
-	public HouseHold setsimserial(String simserial){
-		this.simserial = simserial;
-		return this;
-	}
-
-	public HouseHold setphonenumber(String phonenumber){
-		this.phonenumber = phonenumber;
-		return this;
-	}
-
-	public HouseHold setPAURASAVA(String PAURASAVA){
-		this.PAURASAVA = PAURASAVA;
-		return this;
-	}
-
-	public HouseHold setADDRESS_LINE(String ADDRESS_LINE){
-		this.ADDRESS_LINE = ADDRESS_LINE;
-		return this;
-	}
-
-	public HouseHold setHIE_FACILITIES(String HIE_FACILITIES){
-		this.HIE_FACILITIES = HIE_FACILITIES;
-		return this;
-	}
-
-	public HouseHold setcalc_HoH_age(String calc_HoH_age){
-		this.calc_HoH_age = calc_HoH_age;
-		return this;
-	}
-
-	public HouseHold setcalc_HoH_dob(String calc_HoH_dob){
-		this.calc_HoH_dob = calc_HoH_dob;
-		return this;
-	}
-
-	public HouseHold setcalc_HoH_dob_confirm(String calc_HoH_dob_confirm){
-		this.calc_HoH_dob_confirm = calc_HoH_dob_confirm;
-		return this;
-	}
-
-
-	public HouseHold setcalc_dob_estimated(String calc_dob_estimated){
-		this.calc_dob_estimated = calc_dob_estimated;
-		return this;
-	}
-
-	public HouseHold setcalc_HoH_age_confirm(String calc_HoH_age_confirm){
-		this.calc_HoH_age_confirm = calc_HoH_age_confirm;
-		return this;
-	}
-
-	public HouseHold setbirth_date_note(String birth_date_note){
-		this.birth_date_note = birth_date_note;
-		return this;
-	}
-
-	public HouseHold setnote_age(String note_age){
-		this.note_age  = note_age ;
-		return this;
-	}
-	
-	public HouseHold setHH_current_form_status(String hh_current_form_status) {
-		HH_current_form_status = hh_current_form_status;
-		return this;
-	}
 	
 	public HouseHold setMEMBERDETAILS(List<Map<String, String>> MEMBERDETAILS) {
 		this.MEMBERDETAILS = MEMBERDETAILS;
@@ -399,10 +523,6 @@ public class HouseHold extends MotechBaseDataObject {
 		return caseId;
 	}
 	
-	private String getCaseId() {
-		return caseId;
-	}
-	
 	public String BAHMNIID(){
 		return BAHMNI_ID;
 	}
@@ -418,181 +538,221 @@ public class HouseHold extends MotechBaseDataObject {
 		return LOCATIONID;
 	}
 
-	public String TODAY() {
-		return TODAY;
+	public String getVersion() {
+		return Version;
 	}
 
-	public String START() {
-		return START;
+	public String getChanges() {
+		return Changes;
 	}
 
-	public String END() {
-		return END;
+	public String getExisting_location() {
+		return existing_location;
 	}
 
-	public String Date_Of_Reg() {
-		return Date_Of_Reg;
-	}
-	
-	public String HoH_HID() {
-		return HoH_HID;
+	public String getExisting_Country() {
+		return existing_Country;
 	}
 
-	public String GPS() {
+	public String getExisting_Division() {
+		return existing_Division;
+	}
+
+	public String getExisting_District() {
+		return existing_District;
+	}
+
+	public String getExisting_Upazilla() {
+		return existing_Upazilla;
+	}
+
+	public String getExisting_Union() {
+		return existing_Union;
+	}
+
+	public String getExisting_Ward() {
+		return existing_Ward;
+	}
+
+	public String getExisting_Subunit() {
+		return existing_Subunit;
+	}
+
+	public String getExisting_Mauzapara() {
+		return existing_Mauzapara;
+	}
+
+	public String getForm_Name() {
+		return Form_Name;
+	}
+
+	public String getToday() {
+		return Today;
+	}
+
+	public String getStart() {
+		return Start;
+	}
+
+	public String getEnd() {
+		return End;
+	}
+
+	public String getReg_Date() {
+		return Reg_Date;
+	}
+
+	public String getVillage_Name() {
+		return Village_Name;
+	}
+
+	public String getGoB_HHID() {
+		return GoB_HHID;
+	}
+
+	public String getNo_Of_Couples() {
+		return No_Of_Couples;
+	}
+
+	public String getCountry() {
+		return Country;
+	}
+
+	public String getDivision() {
+		return Division;
+	}
+
+	public String getDistrict() {
+		return District;
+	}
+
+	public String getUpazilla() {
+		return Upazilla;
+	}
+
+	public String getUnion() {
+		return Union;
+	}
+
+	public String getWard() {
+		return Ward;
+	}
+
+	public String getSubunit() {
+		return Subunit;
+	}
+
+	public String getMauzapara() {
+		return Mauzapara;
+	}
+
+	public String getGPS() {
 		return GPS;
 	}
-	
-	public String HoH_Fname() {
-		return HoH_Fname;
+
+	public String getHoH_F_Name() {
+		return HoH_F_Name;
 	}
 
-	public String COUNTRY() {
-		return COUNTRY;
-	}
-	
-	public String DIVISION() {
-		return DIVISION;
-	}
-	
-	public String DISTRICT() {
-		return DISTRICT;
-	}
-	
-	public String UPAZILLA() {
-		return UPAZILLA;
-	}
-	
-	public String UNION() {
-		return UNION;
-	}
-	
-	public String WARD() {
-		return WARD;
-	}
-	
-	public String Block_no() {
-		return Block_no;
-	}
-	
-	public String BLOCK() {
-		return BLOCK;
-	}
-	
-	public String HHID() {
-		return HHID;
-	}
-	
-	public String HoH_Reg_No() {
-		return HoH_Reg_No;
+	public String getHoH_L_Name() {
+		return HoH_L_Name;
 	}
 
-	public String HoH_birth_date() {
-		return HoH_birth_date;
-	}
-	
-	public String HoH_birth_date_known() {
-		return HoH_birth_date_known;
-	}
-	
-	public String HoH_Lname() {
-		return HoH_Lname;
+	public String getHoH_Birth_Date() {
+		return HoH_Birth_Date;
 	}
 
-	public String HoH_age() {
-		return HoH_age;
-	}
-
-	public String HoH_Unique_ID() {
-		return HoH_Unique_ID;
-	}
-
-	public String HoH_Gender() {
+	public String getHoH_Gender() {
 		return HoH_Gender;
 	}
 
-	public String HoH_NID() {
+	public String getHoH_Birth_Date_Known() {
+		return HoH_Birth_Date_Known;
+	}
+
+	public String getHoH_Age() {
+		return HoH_Age;
+	}
+
+	public String getCalc_HoH_Age() {
+		return Calc_HoH_Age;
+	}
+
+	public String getCalc_HoH_Dob() {
+		return Calc_HoH_Dob;
+	}
+
+	public String getCalc_HoH_Dob_Confirm() {
+		return Calc_HoH_Dob_Confirm;
+	}
+
+	public String getCalc_HoH_Age_Confirm() {
+		return Calc_HoH_Age_Confirm;
+	}
+
+	public String getHoH_Birth_Date_Note() {
+		return HoH_Birth_Date_Note;
+	}
+
+	public String getHoH_Note_age() {
+		return HoH_Note_age;
+	}
+
+	public String getHoH_ID_Type() {
+		return HoH_ID_Type;
+	}
+
+	public String getHoH_NID() {
 		return HoH_NID;
 	}
 
-	public String HoH_BRID() {
+	public String getRetype_HoH_NID() {
+		return Retype_HoH_NID;
+	}
+
+	public String getHoH_NID_Concept() {
+		return HoH_NID_Concept;
+	}
+
+	public String getHoH_BRID() {
 		return HoH_BRID;
 	}
-	
-	public String HoH_Mobile_No() {
-		return HoH_Mobile_No;
+
+	public String getRetype_HoH_BRID() {
+		return Retype_HoH_BRID;
 	}
 
-	public String HoH_Education() {
-		return HoH_Education;
-	}
-	
-	public String HoH_Occupation() {
-		return HoH_Occupation;
+	public String getHoH_BRID_Concept() {
+		return HoH_BRID_Concept;
 	}
 
-	public String HH_Member_No() {
-		return HH_Member_No;
-	}
-	
-	public String deviceid() {
-		return deviceid;
+	public String getHoH_Mobile_number() {
+		return HoH_Mobile_number;
 	}
 
-	public String subscriberid() {
-		return subscriberid;
+	public String getMember_Number() {
+		return Member_Number;
 	}
 
-	public String simserial() {
-		return simserial;
+	public String getMWRA() {
+		return MWRA;
 	}
 
-	public String phonenumber() {
-		return phonenumber;
+	public String getFinal_ELCO() {
+		return Final_ELCO;
 	}
 
-	public String PAURASAVA() {
-		return PAURASAVA;
+	public String getChild() {
+		return Child;
 	}
 
-	public String ADDRESS_LINE() {
-		return ADDRESS_LINE;
+	public String getAdolescent() {
+		return Adolescent;
 	}
 
-	public String HIE_FACILITIES() {
-		return HIE_FACILITIES;
-	}
-
-	public String calc_HoH_age() {
-		return calc_HoH_age;
-	}
-
-	public String calc_HoH_dob() {
-		return calc_HoH_dob;
-	}
-
-	public String calc_HoH_dob_confirm() {
-		return calc_HoH_dob_confirm;
-	}
-
-	public String calc_dob_estimated() {
-		return calc_dob_estimated;
-	}
-
-	public String calc_HoH_age_confirm() {
-		return calc_HoH_age_confirm;
-	}
-
-	public String birth_date_note() {
-		return birth_date_note;
-	}
-
-	public String note_age() {
-		return note_age;
-	}
-	
-	public String HH_current_form_status() {
-		return HH_current_form_status;
-	}
+	public String getHH_Status() {
+		return HH_Status;
+	}	
 	
 	public List<Map<String, String>> Birth_Outcome() {
 		if (Birth_Outcome == null)
@@ -624,7 +784,7 @@ public class HouseHold extends MotechBaseDataObject {
 		return details.get(name);
 	}
 	
-	public String getELCODetail(String name) {	
+	public String getMEMBERDetail(String name) {	
 		/*int size = MEMBERDETAILS.size();
 		String elems = "";
 		for (int i = 0; i < size; i++)

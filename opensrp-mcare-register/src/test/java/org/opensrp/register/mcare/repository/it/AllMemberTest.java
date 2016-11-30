@@ -44,9 +44,9 @@ public class AllMemberTest {
 	public void shouldGetMemberByCaseId(){
 		Members member = allMembers.findByCaseId("f34aa45d-6e89-445c-a894-22176b3c71ce");		
 	    System.err.println(member.details().get("relationalid"));
-	    System.err.println(member.Member_Fname());
+	    System.err.println(member.getMem_F_Name());
         HouseHold houseHold = allHouseHolds.findByCaseId(member.details().get("relationalid"));
-        System.err.println(houseHold.HoH_Mobile_No());
+        System.err.println(houseHold.getHoH_Mobile_number());
 		
 	}
 	

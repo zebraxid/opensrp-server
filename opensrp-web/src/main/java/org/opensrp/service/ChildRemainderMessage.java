@@ -9,7 +9,7 @@ public class ChildRemainderMessage implements Message {
 	@Override
     public String message(Members member, CampDate campDate) {
 	    // TODO Auto-generated method stub
-		String message = member.Child_mother_name() +
+		String message = member.getMem_F_Name() +
 				"  ER BACHCHAKE TIKA DEYAR SOMOY HOYESE. " +
 				campDate.getSession_date() +
 				"  TARIKHE BACHCHAKE " +

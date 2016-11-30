@@ -82,12 +82,12 @@ public class CampListener {
 				for (Action action : actions) {					
 					Members member = allMembers.findByCaseId(action.caseId());					
 					HouseHold houseHold = allHouseHolds.findByCaseId(member.details().get("relationalid"));										
-					if(member.Is_child().equalsIgnoreCase("1")){
+					/*if(member.Is_child().equalsIgnoreCase("1")){
 						message = messageFactory.getMessageType("Child").message(member, campDate);
 					}else{
 						message =messageFactory.getMessageType("Woman").message(member, campDate);
-					}					
-					messageService.sentMessage(message, member.Member_Fname(), houseHold.HoH_Mobile_No(),campDate.getSession_location());
+					}*/					
+					messageService.sentMessage("", member.getMem_F_Name(), houseHold.getHoH_Mobile_number(),campDate.getSession_location());
 	            }
 				campDate.setDeleted(false);
 				campDate.setId(campDate.getId());

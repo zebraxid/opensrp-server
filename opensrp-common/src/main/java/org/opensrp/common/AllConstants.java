@@ -21,7 +21,7 @@ public class AllConstants {
 
 
     public static class Form {
-    	public static final String HH_REGISTRATION = "new_household_registration";
+    	public static final String HH_REGISTRATION = "newHH";
     	public static final String MEMBERS_REGISTRATION = "census_enrollment";
     	public static final String BNF_Handler = "pregnancy_status_birth_notification";
     	public static final String BirthOutcome_Handler = "birthoutcome";
@@ -127,12 +127,12 @@ public class AllConstants {
     	public static final String MEMBERS_REGISTRATION_SUB_FORM_NAME = "member_registration";
     	public static final String ELCO_REGISTRATION_SUB_FORM_NAME_CENSUS = "elco_registration_ce";
     	public static final String LOCATION_NAME = "location_name";
-    	public static final String REFERENCE_DATE = "today";
+    	public static final String REFERENCE_DATE = "Today";
     	public static final String DATE_OF_REG = "Date_Of_Reg";
     	public static final String MOTHER_REFERENCE_DATE = "FWPSRLMP";
     	public static final String PNC_REFERENCE_DATE = "FWEDD";
-    	public static final String START_DATE = "start";
-    	public static final String END_DATE = "end";
+    	public static final String START_DATE = "Start";
+    	public static final String END_DATE = "End";
     	public static final String FW_WOMAGE = "FWWOMAGE";
     	public static final String FW_BIRTHDATE = "FWBIRTHDATE";
     	public static final String ID = "id";
@@ -157,6 +157,76 @@ public class AllConstants {
     	public static final String EXISTING_SUBUNIT = "existing_Subunit";
     	public static final String EXISTING_MAUZAPARA = "existing_Mauzapara";
     	public static final String received_time = "received_time";
+    	
+    	public static final String 	 caseId	 = "	 caseId	";
+    	public static final String 	 INSTANCEID	 = "	 INSTANCEID	";
+    	public static final String 	 PROVIDERID	 = "	 PROVIDERID	";
+    	public static final String 	 LOCATIONID	 = "	 LOCATIONID	";
+    	public static final String 	 Today	 = "	 Today	";
+    	public static final String 	 Start	 = "	 Start	";
+    	public static final String 	 End	 = "	 End	";
+    	public static final String 	 Member_GoB_HHID	 = "	 Member_GoB_HHID	";
+    	public static final String 	 Mem_F_Name	 = "	 Mem_F_Name	";
+    	public static final String 	 Mem_L_Name	 = "	 Mem_L_Name	";
+    	public static final String 	 Member_Birth_Date_Known	 = "	 Member_Birth_Date_Known	";
+    	public static final String 	 Member_Birth_Date	 = "	 Member_Birth_Date	";
+    	public static final String 	 Member_Age	 = "	 Member_Age	";
+    	public static final String 	 Calc_Age	 = "	 Calc_Age	";
+    	public static final String 	 Calc_Dob	 = "	 Calc_Dob	";
+    	public static final String 	 Calc_Dob_Confirm	 = "	 Calc_Dob_Confirm	";
+    	public static final String 	 Calc_Age_Confirm	 = "	 Calc_Age_Confirm	";
+    	public static final String 	 Birth_Date_Note	 = "	 Birth_Date_Note	";
+    	public static final String 	 Note_age	 = "	 Note_age	";
+    	public static final String 	 Member_Gender	 = "	 Member_Gender	";
+    	public static final String 	 Mem_ID_Type	 = "	 Mem_ID_Type	";
+    	public static final String 	 Mem_NID	 = "	 Mem_NID	";
+    	public static final String 	 Retype_Mem_NID	 = "	 Retype_Mem_NID	";
+    	public static final String 	 Mem_NID_Concept	 = "	 Mem_NID_Concept	";
+    	public static final String 	 Mem_BRID	 = "	 Mem_BRID	";
+    	public static final String 	 Retype_Mem_BRID	 = "	 Retype_Mem_BRID	";
+    	public static final String 	 Mem_BRID_Concept	 = "	 Mem_BRID_Concept	";
+    	public static final String 	 Mem_Mobile_Number	 = "	 Mem_Mobile_Number	";
+    	public static final String 	 Mem_Marital_Status	 = "	 Mem_Marital_Status	";
+    	public static final String 	 Spouse_Name	 = "	 Spouse_Name	";
+    	public static final String 	 Wom_Menstruating	 = "	 Wom_Menstruating	";
+    	public static final String 	 Wom_Sterilized	 = "	 Wom_Sterilized	";
+    	public static final String 	 Wom_Hus_Live	 = "	 Wom_Hus_Live	";
+    	public static final String 	 Wom_Hus_Alive	 = "	 Wom_Hus_Alive	";
+    	public static final String 	 Wom_Hus_Sterilized	 = "	 Wom_Hus_Sterilized	";
+    	public static final String 	 Eligible	 = "	 Eligible	";
+    	public static final String 	 Eligible2	 = "	 Eligible2	";
+    	public static final String 	 ELCO_Note	 = "	 ELCO_Note	";
+    	public static final String 	 Mem_Country	 = "	 Mem_Country	";
+    	public static final String 	 Mem_Division	 = "	 Mem_Division	";
+    	public static final String 	 Mem_District	 = "	 Mem_District	";
+    	public static final String 	 Mem_Upazilla	 = "	 Mem_Upazilla	";
+    	public static final String 	 Mem_Union	 = "	 Mem_Union	";
+    	public static final String 	 Mem_Ward	 = "	 Mem_Ward	";
+    	public static final String 	 Mem_Subunit	 = "	 Mem_Subunit	";
+    	public static final String 	 Mem_Mauzapara	 = "	 Mem_Mauzapara	";
+    	public static final String 	 Mem_Village_Name	 = "	 Mem_Village_Name	";
+    	public static final String 	 Mem_GPS	 = "	 Mem_GPS	";
+    	public static final String 	 ELCO_ID_Type	 = "	 ELCO_ID_Type	";
+    	public static final String 	 ELCO_NID	 = "	 ELCO_NID	";
+    	public static final String 	 ELCO_NID_Concept	 = "	 ELCO_NID_Concept	";
+    	public static final String 	 ELCO_BRID	 = "	 ELCO_BRID	";
+    	public static final String 	 ELCO_BRID_Concept	 = "	 ELCO_BRID_Concept	";
+    	public static final String 	 ELCO_Mobile_Number	 = "	 ELCO_Mobile_Number	";
+    	public static final String 	 Member_Detail	 = "	 Member_Detail	";
+    	public static final String 	 Permanent_Address	 = "	 Permanent_Address	";
+    	public static final String 	 Updated_Dist	 = "	 Updated_Dist	";
+    	public static final String 	 Updated_Union	 = "	 Updated_Union	";
+    	public static final String 	 Updated_Vill	 = "	 Updated_Vill	";
+    	public static final String 	 Final_Dist	 = "	 Final_Dist	";
+    	public static final String 	 Final_Union	 = "	 Final_Union	";
+    	public static final String 	 Final_Vill	 = "	 Final_Vill	";
+    	public static final String 	 Relation_HoH	 = "	 Relation_HoH	";
+    	public static final String 	 Place_Of_Birth	 = "	 Place_Of_Birth	";
+    	public static final String 	 Religion	 = "	 Religion	";
+    	public static final String 	 BD_Citizen	 = "	 BD_Citizen	";
+    	public static final String 	 add_member	 = "	 add_member	";
+    	public static final String 	 isClosed	 = "	 isClosed	";
+
     	
     }
     
