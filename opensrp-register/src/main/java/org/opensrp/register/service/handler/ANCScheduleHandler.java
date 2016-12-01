@@ -2,7 +2,6 @@ package org.opensrp.register.service.handler;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,11 +9,11 @@ import java.util.Map;
 import org.joda.time.LocalDate;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.opensrp.connector.rapidpro.RapidProService;
 import org.opensrp.domain.Client;
 import org.opensrp.domain.Event;
 import org.opensrp.register.service.scheduling.AnteNatalCareSchedulesService;
 import org.opensrp.service.ClientService;
+import org.opensrp.service.RapidProService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

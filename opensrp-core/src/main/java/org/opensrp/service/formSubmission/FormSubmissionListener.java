@@ -5,9 +5,11 @@ import static java.util.Collections.sort;
 import static org.apache.commons.lang.exception.ExceptionUtils.getFullStackTrace;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.locks.ReentrantLock;
 
 import org.joda.time.DateTime;
@@ -21,6 +23,7 @@ import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.form.service.FormSubmissionService;
 import org.opensrp.service.ConfigService;
 import org.opensrp.service.ErrorTraceService;
+import org.opensrp.service.RapidProService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +40,8 @@ public class FormSubmissionListener {
     private ConfigService configService;
     private FormSubmissionProcessor fsp;
     private ErrorTraceService errorTraceService;
+    @Autowired
+    RapidProService rapidProService;
 
     @Autowired
     public FormSubmissionListener(FormSubmissionService formSubmissionService, FormSubmissionProcessor fsp,
@@ -80,9 +85,10 @@ public class FormSubmissionListener {
             	try{
 	            	logger.info(format("Invoking save for form with instance Id: {0} and for entity Id: {1}", submission.instanceId(), submission.entityId()));
 	
-	            	if(submission.getField("no_client_event") == null || submission.getField("no_client_event").contains("false")){
-		            	fsp.processFormSubmission(submission);
-	            	}
+//	            	if(submission.getField("no_client_event") == null || submission.getField("no_client_event").contains("false")){
+//		            	fsp.processFormSubmission(submission);
+//	            	}
+	            	enrollContactToJilindeCampaign(submission);
 	            	
 	            	configService.updateAppStateToken(AllConstants.Config.FORM_ENTITY_PARSER_LAST_SYNCED_FORM_SUBMISSION, submission.serverVersion());
             	}
@@ -98,7 +104,27 @@ public class FormSubmissionListener {
             lock.unlock();
         }
     }
-
+    
+   private void enrollContactToJilindeCampaign(FormSubmission formSubmission){
+	Map<String, Object> contact = new HashMap<String, Object>();
+	List<String> urns = new ArrayList<String>();
+	List<String> groups = new ArrayList<String>();
+	Map<String, Object> fields = new HashMap<String, Object>();
+	
+	if(formSubmission.formName().toLowerCase().contains("enrollment_form")){
+		String name=formSubmission.instance().form().getField("name");
+		String phoneNo=formSubmission.instance().form().getField("phone_no");
+		String enrollmentDate=formSubmission.instance().form().getField("enrollment_date");
+		fields.put("jilinde-enrollment-date", enrollmentDate);
+		contact.put("name", name);
+		groups.add("Jilinde");
+		urns.add("tel:"+phoneNo);
+		contact.put("urns", urns);
+		contact.put("groups", groups);
+		contact.put("fields", fields);
+		rapidProService.createContact(contact);
+	}
+  }
     private long getVersion() {
         AppStateToken token = configService.getAppStateTokenByName(AllConstants.Config.FORM_ENTITY_PARSER_LAST_SYNCED_FORM_SUBMISSION);
         return token==null?0L:token.longValue();

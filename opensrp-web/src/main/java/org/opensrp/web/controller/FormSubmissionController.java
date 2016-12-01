@@ -136,7 +136,7 @@ public class FormSubmissionController {
             });
 	            for (FormSubmission formSubmission : fsl) {
 	            	try{
-	            		addFormToOpenMRS(formSubmission);
+	            		//addFormToOpenMRS(formSubmission);
 	            	}
 	            	catch(Exception e){
 	            		e.printStackTrace();
