@@ -311,9 +311,23 @@ public class Members extends MotechBaseDataObject {
 	@JsonProperty
 	private Map<String, String> details;
 	@JsonProperty
-	private Map<String, String> TTVisit;
+	private Map<String, String> ANCVisit1;
 	@JsonProperty
-	private Map<String, String> generalVisit;
+	private Map<String, String> ANCVisit2;
+	@JsonProperty
+	private Map<String, String> ANCVisit3;
+	@JsonProperty
+	private Map<String, String> ANCVisit4;
+	@JsonProperty
+	private Map<String, String> PNCVisit1;
+	@JsonProperty
+	private Map<String, String> PNCVisit2;
+	@JsonProperty
+	private Map<String, String> PNCVisit3;
+	@JsonProperty
+	private Map<String, String> PNCVisit4;
+	@JsonProperty
+	private List<Map<String, String>> Elco_Followup;
 	@JsonProperty
 	private List<Map<String, String>> child_vaccine;
 	@JsonProperty
@@ -322,8 +336,15 @@ public class Members extends MotechBaseDataObject {
 	private String isClosed;
 	public Members() {
 				this.details = new HashMap<>();
-				this.TTVisit = new HashMap<>();
-				this.generalVisit = new HashMap<>();
+				this.ANCVisit1 = new HashMap<>();
+				this.ANCVisit2 = new HashMap<>();
+				this.ANCVisit3 = new HashMap<>();
+				this.ANCVisit4 = new HashMap<>();
+				this.PNCVisit1 = new HashMap<>();
+				this.PNCVisit2 = new HashMap<>();
+				this.PNCVisit3 = new HashMap<>();
+				this.PNCVisit4 = new HashMap<>();
+				this.Elco_Followup = new ArrayList<>();
 				this.BNFVisit = new HashMap<>();
 				this.child_vaccine = new ArrayList<>();
 				this.setIsClosed(false);
@@ -353,12 +374,40 @@ public class Members extends MotechBaseDataObject {
         this.details = new HashMap<>(details);
         return this;
     }
-	public Members setgeneralVisit(Map<String, String> generalVisit) {
-        this.generalVisit = new HashMap<>(generalVisit);
+	public Members setElco_Followup(List<Map<String, String>> Elco_Followup) {
+        this.Elco_Followup = Elco_Followup;
         return this;
     }
-    public Members setTTVisit(Map<String, String> TTVisit) {
-        this.TTVisit = new HashMap<>(TTVisit);
+	public Members setANCVisit1(Map<String, String> ANCVisit1) {
+        this.ANCVisit1 = new HashMap<>(ANCVisit1);
+        return this;
+    }
+    public Members setANCVisit2(Map<String, String> ANCVisit2) {
+        this.ANCVisit2 = new HashMap<>(ANCVisit2);
+        return this;
+    }
+    public Members setANCVisit3(Map<String, String> ANCVisit3) {
+        this.ANCVisit3 = new HashMap<>(ANCVisit3);
+        return this;
+    }
+    public Members setANCVisit4(Map<String, String> ANCVisit4) {
+        this.ANCVisit4 = new HashMap<>(ANCVisit4);
+        return this;
+    }
+    public Members setPNCVisit1(Map<String, String> PNCVisit1) {
+        this.PNCVisit1 = new HashMap<>(PNCVisit1);
+        return this;
+    }
+    public Members setPNCVisit2(Map<String, String> PNCVisit2) {
+        this.PNCVisit2 = new HashMap<>(PNCVisit2);
+        return this;
+    }
+    public Members setPNCVisit3(Map<String, String> PNCVisit3) {
+        this.PNCVisit3 = new HashMap<>(PNCVisit3);
+        return this;
+    }
+    public Members setPNCVisit4(Map<String, String> PNCVisit4) {
+        this.PNCVisit4 = new HashMap<>(PNCVisit4);
         return this;
     }
     public Members setBNFVisit(Map<String, String> BNFVisit) {
@@ -366,7 +415,7 @@ public class Members extends MotechBaseDataObject {
         return this;
     }
     public Members setchild_vaccine(List<Map<String, String>> child_vaccine) {
-				this.child_vaccine = child_vaccine;
+		this.child_vaccine = child_vaccine;
 		return this;
 	}
     
@@ -376,8 +425,8 @@ public class Members extends MotechBaseDataObject {
     }
     
     public Members setRelationalid(String relationalid) {
-			this.relationalid = relationalid;
-			return this;
+		this.relationalid = relationalid;
+		return this;
 	}
 
 	public Members setMember_GoB_HHID(String member_GoB_HHID) {
@@ -724,6 +773,10 @@ public class Members extends MotechBaseDataObject {
 		return caseId;
 	}
 	
+	private String getCaseId() {
+		return caseId;
+	}
+	
 	public String INSTANCEID() {
 		return INSTANCEID;
 	}
@@ -746,15 +799,50 @@ public class Members extends MotechBaseDataObject {
 		return details.get(name);
 	}
 
-	public Map<String, String> generalVisit() {
-		if (generalVisit == null)
-			this.generalVisit = new HashMap<>();
-		return generalVisit;
+	public List<Map<String, String>> Elco_Followup() {
+		if (Elco_Followup == null)
+			this.Elco_Followup = new ArrayList<>();
+		return Elco_Followup;
 	}
-	public Map<String, String> TTVisit() {
-		if (TTVisit == null)
-			this.TTVisit = new HashMap<>();
-		return TTVisit;
+	public Map<String, String> ANCVisit1() {
+		if (ANCVisit1 == null)
+			this.ANCVisit1 = new HashMap<>();
+		return ANCVisit1;
+	}
+	public Map<String, String> ANCVisit2() {
+		if (ANCVisit2 == null)
+			this.ANCVisit2 = new HashMap<>();
+		return ANCVisit2;
+	}
+	public Map<String, String> ANCVisit3() {
+		if (ANCVisit3 == null)
+			this.ANCVisit3 = new HashMap<>();
+		return ANCVisit3;
+	}
+	public Map<String, String> ANCVisit4() {
+		if (ANCVisit4 == null)
+			this.ANCVisit4 = new HashMap<>();
+		return ANCVisit4;
+	}
+	public Map<String, String> PNCVisit1() {
+		if (PNCVisit1 == null)
+			this.PNCVisit1 = new HashMap<>();
+		return PNCVisit1;
+	}
+	public Map<String, String> PNCVisit2() {
+		if (PNCVisit2 == null)
+			this.PNCVisit2 = new HashMap<>();
+		return PNCVisit2;
+	}
+	public Map<String, String> PNCVisit3() {
+		if (PNCVisit3 == null)
+			this.PNCVisit3 = new HashMap<>();
+		return PNCVisit3;
+	}
+	public Map<String, String> PNCVisit4() {
+		if (PNCVisit4 == null)
+			this.PNCVisit4 = new HashMap<>();
+		return PNCVisit4;
 	}
 	public Map<String, String> BNFVisit() {
 		if (BNFVisit == null)

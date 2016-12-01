@@ -38,7 +38,15 @@ public class ChildVaccineSchedule {
     	this.vaccinationService = vaccinationService;
     }
 
+	public void immediateVaccine(FormSubmission submission, Members members, String scheduleName, String refDate) {
 
+		if(submission.getField(refDate) != null && !submission.getField(refDate).equalsIgnoreCase(""))
+		if(isValidDate(submission.getField(refDate))){
+			membersScheduleService.enrollimmediateMembersVisit(
+				members.caseId(),submission.anmId(),submission.getField(refDate),submission.instanceId(),scheduleName,scheduleName);
+		}		
+	}
+	
 	public void immediateChildVaccine(FormSubmission submission, Members members, Map<String, String> membersFields, String scheduleName, String immediateScheduleName, String refDate, String age, String age_days, String cond, int agenum, int days) {
 		
 		if (membersFields.containsKey(cond))

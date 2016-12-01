@@ -1,35 +1,34 @@
 {
-    "name": "Woman_BNF",
+    "name": "ImmediateBirthNotificationPregnancyStatusFollowUp",
     "absolute": true,
     "milestones": [
-    	{
-            "name": "Woman_BNF",
+        {
+            "name": "ImmediateBirthNotificationPregnancyStatusFollowUp",
             "scheduleWindows": {
-            	"earliest": ["0 Days"],
-                "due": ["20000 Days"],
-                "late": ["20001 Days"],
-                "max": ["20002 Days"]
+                "due": ["2 Days"],
+                "late": ["1002 Days"],
+                "max": ["1003 Days"]
             },
             "alerts": [
                 {
                     "window": "due",
                     "offset": ["0 Days"],
                     "interval": ["1 Day"],
-                    "count": "20000"
+                    "count": "2"
                 },
                 {
                     "window": "late",
-                    "offset": ["20000 Days"],
+                    "offset": ["2 Days"],
                     "interval": ["1 Day"],
-                    "count": "1"
+                    "count": "1000"
                 },
-                {
+                 {
                     "window": "max",
-                    "offset": ["20001 Days"],
+                    "offset": ["1002 Days"],
                     "interval": ["1 Day"],
                     "count": "1"
-                }                
+                }                            
             ]
-        }
+        }  
     ]
 }

@@ -519,7 +519,11 @@ public class HouseHold extends MotechBaseDataObject {
         return this;
     }
 
-	public String caseId() {
+    public String caseId() {
+		return caseId;
+	}
+	
+	private String getCaseId() {
 		return caseId;
 	}
 	

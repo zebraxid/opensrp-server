@@ -26,19 +26,33 @@ public class HandlerMapper implements IHandlerMapper {
 			HHRegistrationHandler hhRegistrationHandler,
 			MEMBERSHandler membersHandler,
 			BNFHandler BNFHandler,
-			Birth_OutcomeHandler Birth_OutcomeHandler,
-			GeneralHandler generalHandler,
-			TTform_Handler TTform_Handler,
-			child_vaccine_followup_Handler child_vaccine_followup_Handler
+			Child_FollowupHandler child_FollowupHandler,
+			ANCVisit1Handler aNCVisit1Handler,
+			ANCVisit2Handler aNCVisit2Handler,
+			ANCVisit3Handler aNCVisit3Handler,
+			ANCVisit4Handler aNCVisit4Handler,
+			Elco_FollowupHandler elco_FollowupHandler,
+			Elco_RegisterHandler elco_RegisterHandler,
+			PNCVisit1Handler pNCVisit1Handler,
+			PNCVisit2Handler pNCVisit2Handler,
+			PNCVisit3Handler pNCVisit3Handler,
+			PNCVisit4Handler pNCVisit4Handler
 			)
 	{
 		handlerMap = EasyMap.create(HH_REGISTRATION, (FormSubmissionHandler) hhRegistrationHandler)
 					 .put(MEMBERS_REGISTRATION, membersHandler)	
 					 .put(BNF_Handler, BNFHandler)
-					 .put(BirthOutcome_Handler, Birth_OutcomeHandler)
-				     .put(GeneralHandler, generalHandler)
-				     .put(TT_Visit_Handler, TTform_Handler)
-				     .put(Child_vaccine_followup_Handler, child_vaccine_followup_Handler)
+				     .put(Child_FollowupHandler, child_FollowupHandler)
+				     .put(ANCVisit1Handler, aNCVisit1Handler)
+				     .put(ANCVisit2Handler, aNCVisit2Handler)
+				     .put(ANCVisit3Handler, aNCVisit3Handler)
+				     .put(ANCVisit4Handler, aNCVisit4Handler)
+				     .put(Elco_FollowupHandler, elco_FollowupHandler)
+				     .put(Elco_RegisterHandler, elco_RegisterHandler)
+				     .put(PNCVisit1Handler, pNCVisit1Handler)
+				     .put(PNCVisit2Handler, pNCVisit2Handler)
+				     .put(PNCVisit3Handler, pNCVisit3Handler)
+				     .put(PNCVisit4Handler, pNCVisit4Handler)
                      .map();
 	}
 

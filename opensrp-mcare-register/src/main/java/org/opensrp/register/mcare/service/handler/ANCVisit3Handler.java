@@ -1,26 +1,27 @@
 /**
  * @author Asifur
  */
+
 package org.opensrp.register.mcare.service.handler;
 
 import org.opensrp.form.domain.FormSubmission;
-import org.opensrp.register.mcare.service.MembersService;
+import org.opensrp.register.mcare.service.MembersFollowupService;
 import org.opensrp.service.formSubmission.handler.FormSubmissionHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class TTform_Handler implements FormSubmissionHandler {
+public class ANCVisit3Handler implements FormSubmissionHandler {
 
-	private MembersService womanService;
+	private MembersFollowupService womanService;
 
 	@Autowired
-	public TTform_Handler(MembersService womanService) {
+	public ANCVisit3Handler(MembersFollowupService womanService) {
 		this.womanService = womanService;
 	}
 
 	@Override
 	public void handle(FormSubmission submission) {
-		womanService.TTform_Visit(submission);
+		womanService.ANCVisit3(submission);
 	}
 }

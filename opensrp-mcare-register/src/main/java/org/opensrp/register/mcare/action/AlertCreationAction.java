@@ -93,8 +93,8 @@ public class AlertCreationAction implements HookedEvent {
     	if(scheduleName.equalsIgnoreCase(ScheduleNames.IMD_SCHEDULE_Woman_BNF)){
     		return scheduleName.replace(ScheduleNames.IMD_SCHEDULE_Woman_BNF, ScheduleNames.SCHEDULE_Woman_BNF);
     	}
-    	else if(scheduleName.equalsIgnoreCase(ScheduleNames.IMD_child_bcg)){
-    		return scheduleName.replace(ScheduleNames.IMD_child_bcg, ScheduleNames.child_vaccination_bcg);
+    	else if(scheduleName.equalsIgnoreCase(ScheduleNames.IMD_ELCO_SCHEDULE_PSRF)){
+    		return scheduleName.replace(ScheduleNames.IMD_ELCO_SCHEDULE_PSRF, ScheduleNames.ELCO_SCHEDULE_PSRF);
     	}
     	else if(scheduleName.equalsIgnoreCase(ScheduleNames.IMD_child_opv0)){
     		return scheduleName.replace(ScheduleNames.IMD_child_opv0, ScheduleNames.child_vaccination_opv0);

@@ -113,6 +113,7 @@ public class ActionService {
 		 	    try{
 		 	    	if(scheduleName.equalsIgnoreCase(AllConstants.ScheduleNames.CENCUS)){		 	    		
 		 	    	}else if(scheduleName.equalsIgnoreCase(AllConstants.ScheduleNames.SCHEDULE_Woman_BNF)){		 	    		
+		 	    	}else if(scheduleName.equalsIgnoreCase(AllConstants.ScheduleNames.ELCO_SCHEDULE_PSRF)){		 	    		
 		 	    	}else{
 		 	    		System.err.println("scheduleName:"+scheduleName);
 		 	    		Vaccine vaccine = new Vaccine(anmIdentifier, caseID, existingAlert.get(0).getId(), beneficiaryType.name(), scheduleName, startDate.toLocalDate().toString(), expiryDate.toLocalDate().toString(), false, 0, new Date(), new DateTime(),DateUtil.now().getMillis());		        	
@@ -134,6 +135,7 @@ public class ActionService {
 		        	try{
 		        		if(scheduleName.equalsIgnoreCase(AllConstants.ScheduleNames.CENCUS)){		 	    		
 			 	    	}else if(scheduleName.equalsIgnoreCase(AllConstants.ScheduleNames.SCHEDULE_Woman_BNF)){		 	    		
+			 	    	}else if(scheduleName.equalsIgnoreCase(AllConstants.ScheduleNames.ELCO_SCHEDULE_PSRF)){		 	    		
 			 	    	}else{
 			 	    		System.err.println("scheduleName:"+scheduleName);
 			 	    		Vaccine vaccine = new Vaccine(anmIdentifier, caseID, existingAlert.get(0).getId(), beneficiaryType.name(), scheduleName, startDate.toLocalDate().toString(), expiryDate.toLocalDate().toString(), false, 0, new Date(), new DateTime(),DateUtil.now().getMillis());		        	

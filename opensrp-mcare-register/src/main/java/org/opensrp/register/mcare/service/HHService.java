@@ -6,11 +6,9 @@ package org.opensrp.register.mcare.service;
 
 import static java.text.MessageFormat.format;
 import static org.opensrp.common.AllConstants.CommonFormFields.ID;
-import static org.opensrp.common.AllConstants.MEMBERSRegistrationFields.*;
-import static org.opensrp.common.AllConstants.TT_VisitFields.Received_Time;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.*;
+import static org.opensrp.common.AllConstants.MEMBERSRegistrationFields.*;
 import static org.opensrp.common.util.EasyMap.create;
-import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MemberScheduleConstants.child_vaccination_bcg;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

@@ -36,23 +36,43 @@ public class WomanVaccineSchedule {
     public void setVaccinationService(VaccinationService vaccinationService) {
     	this.vaccinationService = vaccinationService;
     }
+	
+	public void immediateVaccine(FormSubmission submission, Members members, String scheduleName, String immediateScheduleName, String refDate, String cond1, String cond2) {
+		
+		if(submission.getField(cond1) != null && !submission.getField(cond1).equalsIgnoreCase(""))
+		if(submission.getField(cond1).equalsIgnoreCase("1")){
+			if(submission.getField(refDate) != null && !submission.getField(refDate).equalsIgnoreCase(""))
+			if(isValidDate(submission.getField(refDate)))
+				membersScheduleService.enrollimmediateMembersVisit(
+					members.caseId(),submission.anmId(),submission.getField(refDate),submission.instanceId(),scheduleName,immediateScheduleName);
+			}
+			else if(isValidDate(submission.getField(REFERENCE_DATE))){
+				membersScheduleService.enrollimmediateMembersVisit(
+					members.caseId(),submission.anmId(),submission.getField(REFERENCE_DATE),submission.instanceId(),scheduleName,immediateScheduleName);
+			}
+		
+		/*if(membersFields.containsKey(cond2))
+			if(membersFields.get(cond2) != null && !membersFields.get(cond2).equalsIgnoreCase(""))
+			if(membersFields.get(cond2).equalsIgnoreCase("3")){
+				membersScheduleService.unEnrollFromImmediateSchedule(
+					members.caseId(),submission.anmId(),scheduleName,immediateScheduleName);
+				vaccinationService.updateVaccineStatus(members.caseId(), scheduleName);
+			}*/
+		
+	}
 
 	public void immediateWomanVaccine(FormSubmission submission, Members members, Map<String, String> membersFields, String scheduleName, String immediateScheduleName, String refDate, String cond1, String cond2) {
 		
 		if(membersFields.containsKey(cond1))
 		if(membersFields.get(cond1) != null && !membersFields.get(cond1).equalsIgnoreCase(""))
 		if(membersFields.get(cond1).equalsIgnoreCase("1")){
-			if(membersFields.containsKey(refDate)){
+			if(membersFields.containsKey(refDate))
 			if(membersFields.get(refDate) != null && !membersFields.get(refDate).equalsIgnoreCase(""))
-			if(isValidDate(membersFields.get(refDate)))
+			if(isValidDate(membersFields.get(refDate))){
 				membersScheduleService.enrollimmediateMembersVisit(
 					members.caseId(),submission.anmId(),membersFields.get(refDate),submission.instanceId(),scheduleName,immediateScheduleName);
 			}
-			else if(isValidDate(submission.getField(REFERENCE_DATE))){
-				membersScheduleService.enrollimmediateMembersVisit(
-					members.caseId(),submission.anmId(),submission.getField(REFERENCE_DATE),submission.instanceId(),scheduleName,immediateScheduleName);
-			}
-			}
+		}
 		
 		/*if(membersFields.containsKey(cond2))
 			if(membersFields.get(cond2) != null && !membersFields.get(cond2).equalsIgnoreCase(""))

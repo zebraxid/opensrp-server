@@ -146,7 +146,7 @@ public class HealthSchedulerService {
 			String providerId, String schedule, String milestone, DateTime  startOfEarliestWindow,
 			DateTime startOfDueWindow, DateTime startOfLateWindow, DateTime startOfMaxWindow) {
 		
-		if(WindowName.max.toString().equals(windowName)){
+		if(WindowName.max.toString().equals(windowName) && !household.equals(beneficiaryType)){
 			actionService.alertForBeneficiary(beneficiaryType, entityId, instanceId, providerId, schedule, milestone, expired, startOfMaxWindow, startOfMaxWindow.plusDays(1));
 			
 		} else if (WindowName.late.toString().equals(windowName)) {

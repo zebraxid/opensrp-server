@@ -5,24 +5,23 @@
 package org.opensrp.register.mcare.service.handler;
 
 import org.opensrp.form.domain.FormSubmission;
-import org.opensrp.register.mcare.service.MembersService;
+import org.opensrp.register.mcare.service.MembersFollowupService;
 import org.opensrp.service.formSubmission.handler.FormSubmissionHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class Birth_OutcomeHandler implements FormSubmissionHandler {
+public class PNCVisit2Handler implements FormSubmissionHandler {
 
-	private MembersService womanService;
+	private MembersFollowupService womanService;
 
 	@Autowired
-	public Birth_OutcomeHandler(MembersService womanService) {
+	public PNCVisit2Handler(MembersFollowupService womanService) {
 		this.womanService = womanService;
 	}
-	
+
 	@Override
 	public void handle(FormSubmission submission) {
-		womanService.Birth_OutcomeHandler(submission);	
+		womanService.PNCVisit2(submission);
 	}
-
 }

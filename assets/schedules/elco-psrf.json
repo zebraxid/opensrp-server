@@ -1,41 +1,42 @@
 {
-    "name": "Woman_TT5",
+    "name": "ELCO PSRF",
     "absolute": true,
     "milestones": [
-    	{
-            "name": "Woman_TT5",
+        {
+            "name": "ELCO PSRF",
             "scheduleWindows": {
-            	"earliest": ["364 Days"],
-                "due": ["378 Days"],
-                "late": ["20378 Days"],
-                "max": ["20379 Days"]
+                "earliest": ["8 Weeks"],
+                "due": ["10 Weeks"],
+                "late": ["243 Weeks"],
+                "max": ["244 Weeks"]
             },
             "alerts": [
             	{
                     "window": "earliest",
-                    "offset": ["0 Days"],
+                    "offset": ["0 Weeks"],
                     "interval": ["1 Day"],
-                    "count": "364"
+                    "count": "56"
                 },
                 {
                     "window": "due",
-                    "offset": ["364 Days"],
+                    "offset": ["8 Weeks"],
                     "interval": ["1 Day"],
                     "count": "14"
                 },
                 {
                     "window": "late",
-                    "offset": ["378 Days"],
+                    "offset": ["10 Weeks"],
                     "interval": ["1 Day"],
-                    "count": "20000"
+                    "count": "1631"
                 },
                 {
                     "window": "max",
-                    "offset": ["20378 Days"],
+                    "offset": ["243 Weeks"],
                     "interval": ["1 Day"],
-                    "count": "1"
+                    "count": "7"
                 }
+                
             ]
         }
     ]
-}      
+}

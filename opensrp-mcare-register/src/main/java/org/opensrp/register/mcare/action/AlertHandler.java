@@ -93,7 +93,7 @@ public class AlertHandler {
 
 	}
 	private Matcher membersSchedules() {
-		return anyOf(SCHEDULE_Woman_BNF, IMD_SCHEDULE_Woman_BNF, SCHEDULE_Woman_Measles, 
+		return anyOf(ELCO_SCHEDULE_PSRF, IMD_ELCO_SCHEDULE_PSRF, SCHEDULE_Woman_BNF, IMD_SCHEDULE_Woman_BNF, SCHEDULE_Woman_Measles, 
 				SCHEDULE_Woman_1, SCHEDULE_Woman_2, SCHEDULE_Woman_3, 
 				SCHEDULE_Woman_4, SCHEDULE_Woman_5, child_vaccination_bcg, 
 				IMD_child_bcg, child_vaccination_ipv, child_vaccination_measles1, 
