@@ -3,103 +3,83 @@
 					"handler": "ANCScheduleHandler",
 					"events": [
 						{
-							"types": ["Pregnancy Surveillance and Registration"],
+							"types": ["Tambah ANC"],
 							"pass_logic": "AND",
 							"enrollment_fields": [
 								{
-									"concept": "162942AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-									"value":"1065AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+									"concept": "45AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value":"703AAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
 								}
 							],
 							"milestone": "ANC 1",
 							"reference_date_fields": [
 				                {
-				                  "concept": "1427AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+				                  "concept": "1427AAAAAAAAAAAAAAAAAAAAAAAAAAAA",
 				                  "value": "NOT_EMPTY"
 				                }
 				             ],
 							"action": "enroll"
-						},
-						{
-							"types": ["ANC Reminder Visit 1"],
+						},{
+							"types": ["Kunjungan ANC"],
 							"pass_logic": "AND",
 							"fulfillment_date_fields": [
 								{
-									"field": "eventDate",
+									"concept": "160753AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
 									"value": "NOT_EMPTY"
 								}
 							],
-							"milestone": "ANC 1",
 							"action": "fulfill"
-						}
-					]
-	
-},
-{
-					"name": "Ante Natal Care Reminder Visit",
-					"handler": "ANCScheduleHandler",
-					"events": [
-							{
-							"types": ["ANC Reminder Visit 2"],
+						},{
+							"types": ["Kunjungan ANC"],
 							"pass_logic": "AND",
-							"fulfillment_date_fields": [
+							"enrollment_fields": [
 								{
-									"field": "eventDate",
-									"value": "NOT_EMPTY"
+									"concept": "1425AAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value":"1"
 								}
 							],
 							"milestone": "ANC 2",
-							"action": "fulfill"
-						}
-					]
-	
-},
-{
-					"name": "Ante Natal Care Reminder Visit",
-					"handler": "ANCScheduleHandler",
-					"events": [
-						{
-							"types": ["ANC Reminder Visit 3"],
+							"reference_date_fields": [
+				                {
+				                  "concept": "160753AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+				                  "value": "NOT_EMPTY"
+				                }
+				             ],
+							"action": "enroll"
+						},{
+							"types": ["Kunjungan ANC"],
 							"pass_logic": "AND",
-							"fulfillment_date_fields": [
+							"enrollment_fields": [
 								{
-									"field": "eventDate",
-									"value": "NOT_EMPTY"
+									"concept": "1425AAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value":"2"
 								}
 							],
 							"milestone": "ANC 3",
-							"action": "fulfill"
-						}
-					]
-	
-},
-{
-					"name": "Ante Natal Care Reminder Visit",
-					"handler": "ANCScheduleHandler",
-					"events": [
-							{
-							"types": ["ANC Reminder Visit 4"],
+							"reference_date_fields": [
+				                {
+				                  "concept": "160753AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+				                  "value": "NOT_EMPTY"
+				                }
+				             ],
+							"action": "enroll"
+						},{
+							"types": ["Kunjungan ANC"],
 							"pass_logic": "AND",
-							"fulfillment_date_fields": [
+							"enrollment_fields": [
 								{
-									"field": "eventDate",
-									"value": "NOT_EMPTY"
+									"concept": "1425AAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value":"3"
 								}
 							],
 							"milestone": "ANC 4",
-							"action": "fulfill"
-						},
-						{
-							"types": ["Birth Notification Followup form"],
-							"pass_logic": "AND",
-							"fulfillment_date_fields": [
-								{
-									"field": "eventDate",
-									"value": "NOT_EMPTY"
-								}
-							],
-							"milestone": "ALL",
-							"action": "unenroll"
+							"reference_date_fields": [
+				                {
+				                  "concept": "160753AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+				                  "value": "NOT_EMPTY"
+				                }
+				             ],
+							"action": "enroll"
 						}
 					]
 	

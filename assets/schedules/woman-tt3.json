@@ -7,8 +7,8 @@
             "scheduleWindows": {
                 "earliest": ["26 Weeks"],
                 "due": ["28 Weeks"],
-                "late": ["34 Years"],
-                "max": ["34 Year", "1 Day"]                
+                "late": ["1 Year"],
+                "max": ["1 Year", "1 Day"]                
             },
             "alerts": [
                 {

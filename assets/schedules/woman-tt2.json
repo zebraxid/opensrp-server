@@ -3,12 +3,12 @@
     "absolute": true,
     "milestones": [
         {
-            "name": "tt2",
+            "name": "TT 2",
             "scheduleWindows": {
                 "earliest": ["4 Weeks"],
                 "due": ["6 Weeks"],
-                "late": ["35 Year"],
-                "max": ["35 Year", "1 Day"]
+                "late": ["1 Year"],
+                "max": ["1 Year", "1 Day"]
             },
             "alerts": [
                 {
