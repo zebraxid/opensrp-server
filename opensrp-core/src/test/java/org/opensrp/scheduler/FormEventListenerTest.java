@@ -13,6 +13,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.motechproject.scheduler.domain.MotechEvent;
@@ -63,6 +64,7 @@ public class FormEventListenerTest {
     }
 
     @Test
+    @Ignore //not needed for now since in the ref app we're not processing fs, instead only adding contacts to jilinde group in rapidpro
     public void shouldFetchFormSubmissionsFromSubmissionService() throws Exception {
     	FormSubmission fs1 = new FormSubmission("anm id 1", "instance id 1", "form name", "entity id 1", "1.0", 0L, new FormInstance(new FormData("test","def/bindpath", new ArrayList<FormField>(), null))),
         fs2 = new FormSubmission("anm id 2", "instance id 2", "form name", "entity id 2", "1.0", 0L, new FormInstance(new FormData("test","def/bindpath", new ArrayList<FormField>(), null)));
