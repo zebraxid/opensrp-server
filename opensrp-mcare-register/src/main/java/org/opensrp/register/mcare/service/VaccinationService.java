@@ -70,6 +70,7 @@ public class VaccinationService {
     		existingVaccine.setRevision(existingVaccine.getRevision());
     		existingVaccine.setTimeStamp(DateUtil.now().getMillis());
     		allVaccine.update(existingVaccine);
+    		logger.info("Vacine updated for status caseID : "+ caseId +" vaccineName:"+ vaccineName);
     	}catch(Exception e){		        		
     		e.printStackTrace();
     	}
@@ -84,7 +85,7 @@ public class VaccinationService {
     		existingVaccine.setRevision(existingVaccine.getRevision());
     		existingVaccine.setTimeStamp(DateUtil.now().getMillis());
     		allVaccine.update(existingVaccine);
-    		logger.info("Vacine updated caseID : "+ caseId +" vaccineName:"+ vaccineName);
+    		logger.info("Vacine updated for misedCount caseID : "+ caseId +" vaccineName:"+ vaccineName);
     	}catch(Exception e){		        		
     		e.printStackTrace();
     	}
