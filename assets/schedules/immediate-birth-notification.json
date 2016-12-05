@@ -1,37 +1,30 @@
 {
-    "name": "BirthNotificationPregnancyStatusFollowUp",
+    "name": "IMD_Birth_Notification",
     "absolute": true,
     "milestones": [
         {
-            "name": "BirthNotificationPregnancyStatusFollowUp",
+            "name": "IMD_Birth_Notification",
             "scheduleWindows": {
-            	"earliest": ["7 Days"],
-                "due": ["9 Days"],
-                "late": ["1009 Days"],
-                "max": ["1010 Days"]
+                "due": ["2 Days"],
+                "late": ["1002 Days"],
+                "max": ["1003 Days"]
             },
             "alerts": [
-            	{
-                    "window": "earliest",
-                    "offset": ["0 Days"],
-                    "interval": ["1 Day"],
-                    "count": "7"
-                },
                 {
                     "window": "due",
-                    "offset": ["7 Days"],
+                    "offset": ["0 Days"],
                     "interval": ["1 Day"],
                     "count": "2"
                 },
                 {
                     "window": "late",
-                    "offset": ["9 Days"],
+                    "offset": ["2 Days"],
                     "interval": ["1 Day"],
                     "count": "1000"
                 },
                  {
                     "window": "max",
-                    "offset": ["1009 Days"],
+                    "offset": ["1002 Days"],
                     "interval": ["1 Day"],
                     "count": "1"
                 }                            

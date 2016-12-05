@@ -3,6 +3,7 @@ package org.opensrp.register.mcare.service;
 import static java.text.MessageFormat.format;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.*;
 import static org.opensrp.common.AllConstants.MEMBERSRegistrationFields.*;
+import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MemberScheduleConstants.*;
 import static org.opensrp.common.AllConstants.TT_VisitFields.Received_Time;
 import static org.opensrp.common.util.EasyMap.create;
 
@@ -12,6 +13,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
 
+import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.register.mcare.domain.Members;
 import org.opensrp.register.mcare.repository.AllHouseHolds;
@@ -21,6 +26,7 @@ import org.opensrp.register.mcare.service.scheduling.HHSchedulesService;
 import org.opensrp.register.mcare.service.scheduling.MembersScheduleService;
 import org.opensrp.register.mcare.service.scheduling.ScheduleLogService;
 import org.opensrp.register.mcare.service.scheduling.WomanVaccineSchedule;
+import org.opensrp.scheduler.service.ActionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,16 +39,18 @@ public class MembersFollowupService {
 
 	private AllHouseHolds allHouseHolds;
 	private AllMembers allMembers;
+	private ActionService actionService;
 	private HHSchedulesService hhSchedulesService;
 	private MembersScheduleService membersScheduleService;
 	private ScheduleLogService scheduleLogService;
 	private ChildVaccineSchedule childVaccineSchedule;
 	private WomanVaccineSchedule womanVaccineSchedule;
 	@Autowired
-	public MembersFollowupService(AllHouseHolds allHouseHolds, AllMembers allMembers, HHSchedulesService hhSchedulesService, MembersScheduleService membersScheduleService, 
+	public MembersFollowupService(AllHouseHolds allHouseHolds, AllMembers allMembers, ActionService actionService, HHSchedulesService hhSchedulesService, MembersScheduleService membersScheduleService, 
 			ScheduleLogService scheduleLogService, ChildVaccineSchedule childVaccineSchedule, WomanVaccineSchedule womanVaccineSchedule) {
 		this.allHouseHolds = allHouseHolds;
 		this.allMembers = allMembers;
+		this.actionService = actionService;
 		this.hhSchedulesService = hhSchedulesService;
 		this.membersScheduleService = membersScheduleService;
 		this.scheduleLogService = scheduleLogService;
@@ -444,6 +452,15 @@ public class MembersFollowupService {
 		
 		members.setANCVisit1(ANCVisit1);
 		allMembers.update(members);
+		
+		membersScheduleService.fullfillMilestone(submission.entityId(), submission.anmId(), SCHEDULE_ANC, new LocalDate());
+		//actionService.markAllAlertsAsInactive(submission.entityId());
+		try {
+			long timestamp = actionService.getActionTimestamp(submission.anmId(), submission.entityId(), SCHEDULE_ANC);
+			membersScheduleService.fullfillSchedule(submission.entityId(), SCHEDULE_ANC, submission.instanceId(), timestamp);
+		} catch (Exception e) {
+			logger.info("From ancVisitTwo:" + e.getMessage());
+		}
 	}
 	
 	public void ANCVisit2(FormSubmission submission) {
@@ -525,6 +542,15 @@ public class MembersFollowupService {
 		
 		members.setANCVisit2(ANCVisit2);
 		allMembers.update(members);
+		
+		membersScheduleService.fullfillMilestone(submission.entityId(), submission.anmId(), SCHEDULE_ANC, new LocalDate());
+		//actionService.markAllAlertsAsInactive(submission.entityId());
+		try {
+			long timestamp = actionService.getActionTimestamp(submission.anmId(), submission.entityId(), SCHEDULE_ANC);
+			membersScheduleService.fullfillSchedule(submission.entityId(), SCHEDULE_ANC, submission.instanceId(), timestamp);
+		} catch (Exception e) {
+			logger.info("From ancVisitTwo:" + e.getMessage());
+		}
 	}
 	
 	public void ANCVisit3(FormSubmission submission) {
@@ -609,6 +635,15 @@ public class MembersFollowupService {
 		
 		members.setANCVisit3(ANCVisit3);
 		allMembers.update(members);
+		
+		membersScheduleService.fullfillMilestone(submission.entityId(), submission.anmId(), SCHEDULE_ANC, new LocalDate());
+		//actionService.markAllAlertsAsInactive(submission.entityId());
+		try {
+			long timestamp = actionService.getActionTimestamp(submission.anmId(), submission.entityId(), SCHEDULE_ANC);
+			membersScheduleService.fullfillSchedule(submission.entityId(), SCHEDULE_ANC, submission.instanceId(), timestamp);
+		} catch (Exception e) {
+			logger.info("From ancVisitTwo:" + e.getMessage());
+		}
 	}
 	
 	public void ANCVisit4(FormSubmission submission) {
@@ -691,6 +726,15 @@ public class MembersFollowupService {
 		
 		members.setANCVisit4(ANCVisit4);
 		allMembers.update(members);
+		
+		membersScheduleService.fullfillMilestone(submission.entityId(), submission.anmId(), SCHEDULE_ANC, new LocalDate());
+		//actionService.markAllAlertsAsInactive(submission.entityId());
+		try {
+			long timestamp = actionService.getActionTimestamp(submission.anmId(), submission.entityId(), SCHEDULE_ANC);
+			membersScheduleService.fullfillSchedule(submission.entityId(), SCHEDULE_ANC, submission.instanceId(), timestamp);
+		} catch (Exception e) {
+			logger.info("From ancVisitTwo:" + e.getMessage());
+		}
 	}
 	
 	public boolean isValidDate(String dateString) {

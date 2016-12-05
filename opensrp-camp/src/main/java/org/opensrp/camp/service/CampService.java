@@ -51,26 +51,17 @@ public class CampService implements CampInterface<CampDTO> {
 	}
 	public String campNameList(){
 		List<String> camp = new ArrayList<>();
-		camp.add(ScheduleNames.SCHEDULE_Woman_Measles);
-		camp.add(ScheduleNames.SCHEDULE_Woman_1);
-		camp.add(ScheduleNames.SCHEDULE_Woman_2);
-		camp.add(ScheduleNames.SCHEDULE_Woman_3);
-		camp.add(ScheduleNames.SCHEDULE_Woman_4);
-		camp.add(ScheduleNames.SCHEDULE_Woman_5);
 		camp.add(ScheduleNames.child_vaccination_bcg);
-		camp.add(ScheduleNames.child_vaccination_ipv);
-		camp.add(ScheduleNames.child_vaccination_measles1);
-		camp.add(ScheduleNames.child_vaccination_measles2);
-		camp.add(ScheduleNames.child_vaccination_opv0);
-		camp.add(ScheduleNames.child_vaccination_opv1);
-		camp.add(ScheduleNames.child_vaccination_opv2);
-		camp.add(ScheduleNames.child_vaccination_opv3);
-		camp.add(ScheduleNames.child_vaccination_pcv1);
-		camp.add(ScheduleNames.child_vaccination_pcv2);
-		camp.add(ScheduleNames.child_vaccination_pcv3);
-		camp.add(ScheduleNames.child_vaccination_penta1);
-		camp.add(ScheduleNames.child_vaccination_penta2);
-		camp.add(ScheduleNames.child_vaccination_penta3);
+		camp.add(ScheduleNames.SCHEDULE_ANC);
+		camp.add(ScheduleNames.SCHEDULE_PNC);
+		camp.add(ScheduleNames.SCHEDULE_ANC_1);
+		camp.add(ScheduleNames.SCHEDULE_ANC_2);
+		camp.add(ScheduleNames.SCHEDULE_ANC_3);
+		camp.add(ScheduleNames.SCHEDULE_ANC_4);
+		camp.add(ScheduleNames.SCHEDULE_PNC_1);
+		camp.add(ScheduleNames.SCHEDULE_PNC_2);
+		camp.add(ScheduleNames.SCHEDULE_PNC_3);
+		camp.add(ScheduleNames.SCHEDULE_PNC_4);
 		Gson gson = new Gson();
 		String campString = gson.toJson(camp);
 		return campString;

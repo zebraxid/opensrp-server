@@ -8,7 +8,9 @@ import static java.text.MessageFormat.format;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MemberScheduleConstants.*;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.DateTimeDuration.duration;
 
+import org.joda.time.Days;
 import org.joda.time.LocalDate;
+import org.opensrp.common.util.DateUtil;
 import org.opensrp.dto.BeneficiaryType;
 import org.opensrp.scheduler.HealthSchedulerService;
 import org.slf4j.Logger;
@@ -29,6 +31,30 @@ public class MembersScheduleService {
 		this.scheduler = scheduler;	
 		this.scheduleLogService = scheduleLogService;
 	}
+	
+	public void enrollIntoCorrectMilestoneOfANCRVCare(String entityId, LocalDate referenceDateForSchedule) {
+        String milestone=null;
+
+        if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Days.ZERO.toPeriod().plusDays(168))) {
+            milestone = SCHEDULE_ANC_1;
+        } else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Days.ZERO.toPeriod().plusDays(224))) {
+            milestone = SCHEDULE_ANC_2;
+        } else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Days.ZERO.toPeriod().plusDays(252))) {
+            milestone = SCHEDULE_ANC_3;
+        } else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Days.ZERO.toPeriod().plusDays(960))) {
+            milestone = SCHEDULE_ANC_4;
+        } else{
+        	
+        }
+
+        logger.info(format("Enrolling ANC with Entity id:{0} to ANC schedule, milestone: {1}.", entityId, milestone));
+        scheduler.enrollIntoSchedule(entityId, SCHEDULE_ANC, milestone, referenceDateForSchedule.toString());
+    }
+	
+	public void enrollANCForMother(String entityId, String sch_name, LocalDate referenceDateForSchedule) {
+        logger.info(format("Enrolling ANC with Entity id:{0} to ANC schedule, milestone: {1}.", entityId, sch_name));
+        scheduler.enrollIntoSchedule(entityId, SCHEDULE_ANC, sch_name, referenceDateForSchedule.toString());
+    }
 	
 	public void enrollimmediateMembersVisit(String entityId,String provider,String date,String instanceId,String scheduleName,String ImmediateScheduleName) {       
         logger.info(format("Enrolling Members with Entity id:{0} to Members schedule immediate BNFVisit, milestone: {1}.", entityId, ImmediateScheduleName));
@@ -84,6 +110,15 @@ public class MembersScheduleService {
     		logger.info("fullfillMilestone with id: :"+entityId);
     	}catch(Exception e){
     		logger.info("Does not a fullfillMilestone :"+e.getMessage());
+    	}
+    }
+    
+    public void fullfillSchedule(String caseID, String scheduleName, String instanceId, long timestamp){
+    	try{
+	    	scheduleLogService.fullfillSchedule(caseID, scheduleName, instanceId, timestamp);
+	    	logger.info("fullfillSchedule a Schedule with id : "+caseID);
+    	}catch(Exception e){
+    		logger.info("Does not fullfill a schedule:"+e.getMessage());
     	}
     }
 

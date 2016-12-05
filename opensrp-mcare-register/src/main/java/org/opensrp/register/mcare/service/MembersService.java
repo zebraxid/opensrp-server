@@ -273,6 +273,7 @@ public class MembersService {
 			} catch (Exception e) {
 				logger.info("From Elco_Followup: " + e.getMessage());
 			}
+			membersScheduleService.enrollIntoCorrectMilestoneOfANCRVCare(submission.entityId(), LocalDate.parse(LMP));
 		}
 		
 		womanVaccineSchedule.immediateVaccine(submission, members, SCHEDULE_Woman_BNF, IMD_SCHEDULE_Woman_BNF, Calc_EDD, Preg_Status, "");
@@ -374,31 +375,32 @@ public class MembersService {
 		allMembers.update(members);
 		
 		if (submission.getField(Visit_status) != null && !submission.getField(Visit_status).equalsIgnoreCase("")){	
-		if(submission.getField(Visit_status).equalsIgnoreCase("1")){
-			if (submission.getField(Today) != null && !submission.getField(Today).equalsIgnoreCase(""))
-			if(isValidDate(submission.getField(Today)))
-				membersScheduleService.enrollAfterimmediateVisit(members.caseId(),submission.anmId(),submission.getField(Today),submission.instanceId(),SCHEDULE_Woman_BNF,IMD_SCHEDULE_Woman_BNF);
-		}
-			
-		else if(submission.getField(Visit_status).equalsIgnoreCase("3") || submission.getField(Visit_status).equalsIgnoreCase("4")){
-			membersScheduleService.unEnrollAndCloseSchedule(members.caseId(),submission.anmId(),
-					SCHEDULE_Woman_BNF,LocalDate.parse(submission.getField(Today)));
-			membersScheduleService.unEnrollAndCloseSchedule(members.caseId(),submission.anmId(),
-					IMD_SCHEDULE_Woman_BNF,LocalDate.parse(submission.getField(Today)));
-			try {
-				List<Action> beforeNewActions = allActions.findAlertByANMIdEntityIdScheduleName(submission.anmId(), submission.entityId(),
-						SCHEDULE_Woman_BNF);
-				if (beforeNewActions.size() > 0) {
-					scheduleLogService.closeSchedule(submission.entityId(), submission.instanceId(), beforeNewActions.get(0).timestamp(),
+			if(submission.getField(Visit_status).equalsIgnoreCase("1")){
+				if (submission.getField(Today) != null && !submission.getField(Today).equalsIgnoreCase(""))
+				if(isValidDate(submission.getField(Today)))
+					membersScheduleService.enrollAfterimmediateVisit(members.caseId(),submission.anmId(),submission.getField(Today),submission.instanceId(),SCHEDULE_Woman_BNF,IMD_SCHEDULE_Woman_BNF);
+			}
+				
+			else if(submission.getField(Visit_status).equalsIgnoreCase("3") || submission.getField(Visit_status).equalsIgnoreCase("4") || submission.getField(Visit_status).equalsIgnoreCase("8")){
+				membersScheduleService.unEnrollAndCloseSchedule(members.caseId(),submission.anmId(),
+						SCHEDULE_Woman_BNF,LocalDate.parse(submission.getField(Today)));
+				membersScheduleService.unEnrollAndCloseSchedule(members.caseId(),submission.anmId(),
+						IMD_SCHEDULE_Woman_BNF,LocalDate.parse(submission.getField(Today)));
+				try {
+					List<Action> beforeNewActions = allActions.findAlertByANMIdEntityIdScheduleName(submission.anmId(), submission.entityId(),
 							SCHEDULE_Woman_BNF);
-				}
-
-			} catch (Exception e) {
-				logger.info("From BNF_Visit: " + e.getMessage());
-			}	
-			
-			childVaccineSchedule.immediateVaccine(submission, members, child_vaccination_bcg, existing_Member_Birth_Date);
-		}
+					if (beforeNewActions.size() > 0) {
+						scheduleLogService.closeSchedule(submission.entityId(), submission.instanceId(), beforeNewActions.get(0).timestamp(),
+								SCHEDULE_Woman_BNF);
+					}
+		
+				} catch (Exception e) {
+					logger.info("From BNF_Visit: " + e.getMessage());
+				}	
+				childVaccineSchedule.immediateVaccine(submission, members, child_vaccination_bcg, existing_Member_Birth_Date);
+				membersScheduleService.unEnrollAndCloseSchedule(members.caseId(),submission.anmId(),
+						SCHEDULE_ANC,LocalDate.parse(submission.getField(Today)));
+			}
 		}
 	}
 	

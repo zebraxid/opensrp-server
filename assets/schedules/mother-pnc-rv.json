@@ -37,8 +37,8 @@
             "scheduleWindows": {
             	"earliest": ["2 Days"],
                 "due": ["3 Days"],
-                "late": ["6 Days"],
-                "max": ["6 Days"]
+                "late": ["7 Days"],
+                "max": ["7 Days"]
             },
             "alerts": [           
                 {
@@ -51,11 +51,11 @@
                     "window": "late",
                     "offset": ["3 Days"],
                     "interval": ["1 Day"],
-                    "count": "3"
+                    "count": "4"
                 },
                  {
                     "window": "max",
-                    "offset": ["6 Days"],
+                    "offset": ["7 Days"],
                     "interval": ["1 Day"],
                     "count": "0"
                 }                            
@@ -64,29 +64,64 @@
         {
             "name": "pncrv_3",
             "scheduleWindows": {
-            	"earliest": ["6 Days"],
-                "due": ["8 Days"],
-                "late": ["9 Days"],
-                "max": ["9 Days"]
+            	"earliest": ["7 Days"],
+                "due": ["9 Days"],
+                "late": ["15 Days"],
+                "max": ["15 Days"]
             },
             "alerts": [            	
                 {
                     "window": "due",
-                    "offset": ["6 Days"],
+                    "offset": ["7 Days"],
                     "interval": ["1 Day"],
                     "count": "2"
                 },
                 {
                     "window": "late",
-                    "offset": ["8 Days"],
+                    "offset": ["9 Days"],
                     "interval": ["1 Day"],
-                    "count": "1"
+                    "count": "6"
                 },
                 {
                     "window": "max",
-                    "offset": ["9 Days"],
+                    "offset": ["15 Days"],
                     "interval": ["1 Day"],
                     "count": "0"
+                }                 
+            ]
+        },
+        {
+            "name": "pncrv_4",
+            "scheduleWindows": {
+            	"earliest": ["42 Days"],
+                "due": ["45 Days"],
+                "late": ["49 Days"],
+                "max": ["50 Days"]
+            },
+            "alerts": [            	
+                {
+                    "window": "earliest",
+                    "offset": ["15 Days"],
+                    "interval": ["1 Day"],
+                    "count": "27"
+                },
+                {
+                    "window": "due",
+                    "offset": ["42 Days"],
+                    "interval": ["1 Day"],
+                    "count": "3"
+                },
+                {
+                    "window": "late",
+                    "offset": ["45 Days"],
+                    "interval": ["1 Day"],
+                    "count": "4"
+                },
+                {
+                    "window": "max",
+                    "offset": [49 Days"],
+                    "interval": ["1 Day"],
+                    "count": "1"
                 }                 
             ]
         }

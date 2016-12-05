@@ -1,9 +1,9 @@
 {
-    "name": "child_bcg",
+    "name": "Child_Registration",
     "absolute": true,
     "milestones": [
         {
-            "name": "child_bcg",
+            "name": "Child_Registration",
             "scheduleWindows": {
             	"earliest": ["0 Days"],
                 "due": ["2000 Days"],

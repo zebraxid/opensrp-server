@@ -58,9 +58,6 @@ public class AlertRouter {
     	else if(scheduleName.equalsIgnoreCase(ScheduleNames.IMD_ELCO_SCHEDULE_PSRF)){
     		return scheduleName.replace(ScheduleNames.IMD_ELCO_SCHEDULE_PSRF, ScheduleNames.ELCO_SCHEDULE_PSRF);
     	}
-    	else if(scheduleName.equalsIgnoreCase(ScheduleNames.IMD_child_opv0)){
-    		return scheduleName.replace(ScheduleNames.IMD_child_opv0, ScheduleNames.child_vaccination_opv0);
-    	}
     	else return scheduleName;    	
     }
 }

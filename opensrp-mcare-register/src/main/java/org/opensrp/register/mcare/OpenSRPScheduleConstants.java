@@ -90,30 +90,20 @@ public class OpenSRPScheduleConstants {
     public static class MemberScheduleConstants {
     	public static final String ELCO_SCHEDULE_PSRF = "ELCO PSRF";
     	public static final String IMD_ELCO_SCHEDULE_PSRF = "IMEDIATE ELCO PSRF";
-    	public static final String SCHEDULE_Woman_BNF = "Woman_BNF";
-    	public static final String IMD_SCHEDULE_Woman_BNF = "IMD_Woman_BNF";
-        public static final String SCHEDULE_Woman_Measles = "Woman_measles";
-        public static final String SCHEDULE_Woman_1 = "Woman_TT1";
-        public static final String SCHEDULE_Woman_2 = "Woman_TT2";
-        public static final String SCHEDULE_Woman_3 = "Woman_TT3";
-        public static final String SCHEDULE_Woman_4 = "Woman_TT4";
-        public static final String SCHEDULE_Woman_5 = "Woman_TT5";
-        public static final String child_vaccination_bcg = "child_bcg";
-    	public static final String IMD_child_bcg = "IMD_child_bcg";
-        public static final String child_vaccination_ipv = "child_ipv";
-        public static final String child_vaccination_measles1 = "child_measles1";
-        public static final String child_vaccination_measles2 = "child_measles2";
-        public static final String child_vaccination_opv0 = "child_opv0";  
-    	public static final String IMD_child_opv0 = "IMD_child_opv0";
-        public static final String child_vaccination_opv1 = "child_opv1";
-        public static final String child_vaccination_opv2 = "child_opv2";
-        public static final String child_vaccination_opv3 = "child_opv3";
-        public static final String child_vaccination_pcv1 = "child_pcv1";
-        public static final String child_vaccination_pcv2 = "child_pcv2";        
-        public static final String child_vaccination_pcv3 = "child_pcv3";        
-        public static final String child_vaccination_penta1 = "child_penta1";
-        public static final String child_vaccination_penta2 = "child_penta2";
-        public static final String child_vaccination_penta3 = "child_penta3";
+    	public static final String SCHEDULE_Woman_BNF = "Birth_Notification";
+    	public static final String IMD_SCHEDULE_Woman_BNF = "IMD_Birth_Notification";
+        public static final String child_vaccination_bcg = "Child_Registration";
+    	public static final String IMD_child_bcg = "IMD_Child_Registration";
+        public static final String SCHEDULE_ANC = "Ante Natal Care Reminder Visit";
+        public static final String SCHEDULE_PNC = "Post Natal Care Reminder Visit";
+        public static final String SCHEDULE_ANC_1 = "ancrv_1";
+        public static final String SCHEDULE_ANC_2 = "ancrv_2";
+        public static final String SCHEDULE_ANC_3 = "ancrv_3";
+        public static final String SCHEDULE_ANC_4 = "ancrv_4";    
+        public static final String SCHEDULE_PNC_1 = "pncrv_1";
+        public static final String SCHEDULE_PNC_2 = "pncrv_2";
+        public static final String SCHEDULE_PNC_3 = "pncrv_3";
+        public static final String SCHEDULE_PNC_4 = "pncrv_4";   
     }
     public static class DateTimeDuration{
     	public static final Integer duration = 1344; // hour
