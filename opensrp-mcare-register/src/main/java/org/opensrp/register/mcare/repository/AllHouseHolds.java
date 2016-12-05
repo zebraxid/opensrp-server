@@ -1,8 +1,11 @@
 package org.opensrp.register.mcare.repository;
 
+import java.util.Calendar;
 import java.util.List;
 
+import org.ektorp.ComplexKey;
 import org.ektorp.CouchDbConnector;
+import org.ektorp.ViewResult;
 import org.ektorp.support.GenerateView;
 import org.ektorp.support.View;
 import org.joda.time.DateTime;
@@ -73,5 +76,89 @@ public class AllHouseHolds extends MotechBaseRepository<HouseHold> {
 						.includeDocs(true), HouseHold.class);
 
 		return houseHolds;
+	}
+	
+	@View(name = "created_in_last_4_months_by_provider_and_location", map = "function(doc) { if(doc.type === 'HouseHold' && doc.SUBMISSIONDATE && doc.PROVIDERID && doc.FWDISTRICT && doc.FWUPAZILLA && doc.FWUNION) { var x = new Date(); var y = new Date(x.getFullYear(), x.getMonth()-3, 0); var time = y.getTime(); if(doc.SUBMISSIONDATE > time){ emit([doc.PROVIDERID,doc.FWDISTRICT,doc.FWUPAZILLA,doc.FWUNION], doc.SUBMISSIONDATE)} } }")
+	public List<HouseHold> allHHsCreatedLastFourMonthsByProviderAndLocation(String startKey, String endKey){
+		List<HouseHold> households =  db.queryView(
+				createQuery("created_in_last_4_months_by_provider_and_location")
+				.rawStartKey(startKey)
+				.rawEndKey(endKey)
+				.includeDocs(true), HouseHold.class);
+			
+		return households;
+	}
+	
+	public ViewResult allHHsCreatedLastFourMonthsByProviderAndLocationViewResult(String startKey, String endKey){
+		
+		ViewResult vr = db.queryView(
+				createQuery("created_in_last_4_months_by_provider_and_location")
+				.rawStartKey(startKey)
+				.rawEndKey(endKey)
+				.includeDocs(false));
+		
+		return vr;
+	}
+	
+	@View(name = "created_in_last_4_months", map = "function(doc) { if(doc.type === 'HouseHold' && doc.SUBMISSIONDATE && doc.caseId) { emit([doc.caseId], doc.SUBMISSIONDATE) } }")
+	public List<HouseHold> allHHsCreatedLastFourMonths(){
+		
+		Calendar cal = Calendar.getInstance();
+		String startKey = Long.toString(cal.getTimeInMillis());
+		cal.add(Calendar.DAY_OF_YEAR, -120);
+		String endKey = Long.toString(cal.getTimeInMillis());
+		
+		List<HouseHold> households =  db.queryView(
+				createQuery("created_in_last_4_months")
+				.rawStartKey(startKey)
+				.rawEndKey(endKey)
+				.includeDocs(true), HouseHold.class);
+		
+		return households;
+	}
+	
+	public ViewResult allHHsCreatedLastFourMonthsViewResult(){
+		
+		ViewResult vr = db.queryView(
+				createQuery("created_in_last_4_months")
+				.includeDocs(false));
+		
+		return vr;
+	}
+	
+	@View(name = "created_in_last_4_months_by_location", map = "function(doc) { if(doc.type === 'HouseHold' && doc.SUBMISSIONDATE && doc.FWDISTRICT && doc.FWUPAZILLA && doc.FWUNION) { var x = new Date(); var y = new Date(x.getFullYear(), x.getMonth()-3, 0); var time = y.getTime(); if(doc.SUBMISSIONDATE > time){ emit([doc.FWDISTRICT,doc.FWUPAZILLA,doc.FWUNION], doc.SUBMISSIONDATE)} } }")
+	public List<HouseHold> allHHsCreatedLastFourMonthsByLocation(String startKey, String endKey){
+		//ComplexKey startKey = ComplexKey.of(District, Upazilla, Union);
+		List<HouseHold> households =  db.queryView(
+				createQuery("created_in_last_4_months_by_location")
+				.rawStartKey(startKey)
+				.rawEndKey(endKey)
+				.includeDocs(true), HouseHold.class);
+		
+		return households;
+	}
+	
+	public ViewResult allHHsCreatedLastFourMonthsByLocationViewResult(String startKey, String endKey){
+		
+		ViewResult vr = db.queryView(
+				createQuery("created_in_last_4_months_by_location")
+				.rawStartKey(startKey)
+				.rawEndKey(endKey)
+				.includeDocs(false));
+		
+		return vr;
+	}
+	
+	@View(name = "created_in_between_2_dates", map = "function(doc) { if(doc.type === 'HouseHold' && doc.type && doc.SUBMISSIONDATE) { emit( [doc.type, doc.SUBMISSIONDATE], null); } }")
+	public List<HouseHold> allHHsCreatedBetween2Dates(String type, long startKey, long endKey){
+		ComplexKey start = ComplexKey.of(type,startKey);
+		ComplexKey end = ComplexKey.of(type,endKey);
+		List<HouseHold> hhs =  db.queryView(
+				createQuery("created_in_between_2_dates")
+				.startKey(start)
+				.endKey(end)
+				.includeDocs(true), HouseHold.class);
+		//System.out.println(hhs.toString());	
+		return hhs;
 	}
 }

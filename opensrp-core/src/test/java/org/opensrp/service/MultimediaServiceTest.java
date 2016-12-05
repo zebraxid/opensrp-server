@@ -11,7 +11,6 @@ import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -48,7 +47,7 @@ public class MultimediaServiceTest {
 		multimediaService = new MultimediaService(multimediaRepository, multimediaDirPath);
 	}
 	
-	@Ignore @Test
+	@Test
 	public void shouldDoIt()
 	{
 		

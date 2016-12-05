@@ -2,8 +2,6 @@ package dashboard.test;
 
 import static org.junit.Assert.*;
 
-import java.util.List;
-
 import org.ektorp.CouchDbInstance;
 import org.ektorp.http.HttpClient;
 import org.ektorp.http.StdHttpClient;
@@ -11,12 +9,9 @@ import org.ektorp.impl.StdCouchDbConnector;
 import org.ektorp.impl.StdCouchDbInstance;
 import org.ektorp.impl.StdObjectMapperFactory;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.opensrp.dashboard.domain.Privilege;
-import org.opensrp.dashboard.domain.Role;
 import org.opensrp.dashboard.repository.AllPrivileges;
-import org.opensrp.dashboard.repository.AllRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -25,8 +20,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration("classpath:test-applicationContext-opensrp-register-mcare.xml")*/
 public class RoleServiceTest {
  
-	@Autowired  
-	private AllRoles allRoles;
 	@Autowired  
 	private AllPrivileges allPrivileges;
 	private CouchDbInstance dbInstance;
@@ -46,11 +39,10 @@ public class RoleServiceTest {
 		 
 		stdCouchDbConnector.createDatabaseIfNotExists();
 		allPrivileges = new AllPrivileges(2, stdCouchDbConnector);
-		allRoles = new AllRoles(2, stdCouchDbConnector);
     	//initMocks(this);
     }
 
-    @Ignore @Test  
+    @Test 
     public void testPrivilegeService() throws Exception {
 		Privilege testPrivilege = allPrivileges.privilegeByName("testPrivilege");
 		assertNull(testPrivilege);
@@ -67,13 +59,6 @@ public class RoleServiceTest {
 		
 		testPrivilege = allPrivileges.privilegeByName("testPrivilege");
 		assertNull(testPrivilege);
-    }
-    
-    @Ignore @Test 
-    public void ifAllRolesIsReturningNull() throws Exception {
-		//allRoles.getAll();
-    	List<Role> roles = allRoles.getAll();
-    	System.out.println("number of existing roles- " + roles.size());
     }
     
     /*@Test 

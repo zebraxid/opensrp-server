@@ -21,11 +21,9 @@ import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.register.mcare.domain.Members;
 import org.opensrp.register.mcare.repository.AllHouseHolds;
 import org.opensrp.register.mcare.repository.AllMembers;
-import org.opensrp.register.mcare.service.scheduling.ChildVaccineSchedule;
 import org.opensrp.register.mcare.service.scheduling.HHSchedulesService;
 import org.opensrp.register.mcare.service.scheduling.MembersScheduleService;
 import org.opensrp.register.mcare.service.scheduling.ScheduleLogService;
-import org.opensrp.register.mcare.service.scheduling.WomanVaccineSchedule;
 import org.opensrp.scheduler.service.ActionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,19 +41,15 @@ public class MembersFollowupService {
 	private HHSchedulesService hhSchedulesService;
 	private MembersScheduleService membersScheduleService;
 	private ScheduleLogService scheduleLogService;
-	private ChildVaccineSchedule childVaccineSchedule;
-	private WomanVaccineSchedule womanVaccineSchedule;
 	@Autowired
-	public MembersFollowupService(AllHouseHolds allHouseHolds, AllMembers allMembers, ActionService actionService, HHSchedulesService hhSchedulesService, MembersScheduleService membersScheduleService, 
-			ScheduleLogService scheduleLogService, ChildVaccineSchedule childVaccineSchedule, WomanVaccineSchedule womanVaccineSchedule) {
+	public MembersFollowupService(AllHouseHolds allHouseHolds, AllMembers allMembers, ActionService actionService, 
+			HHSchedulesService hhSchedulesService, MembersScheduleService membersScheduleService, 
+			ScheduleLogService scheduleLogService) {
 		this.allHouseHolds = allHouseHolds;
 		this.allMembers = allMembers;
 		this.actionService = actionService;
 		this.hhSchedulesService = hhSchedulesService;
 		this.membersScheduleService = membersScheduleService;
-		this.scheduleLogService = scheduleLogService;
-		this.childVaccineSchedule = childVaccineSchedule;
-		this.womanVaccineSchedule = womanVaccineSchedule;
 	}
 	
 	public void PNCVisit1(FormSubmission submission) {
@@ -136,6 +130,16 @@ public class MembersFollowupService {
 		
 		members.setPNCVisit1(PNCVisit1);
 		allMembers.update(members);
+		
+		membersScheduleService.fullfillMilestone(submission.entityId(), submission.anmId(), SCHEDULE_PNC, new LocalDate());
+
+		String pattern = "yyyy-MM-dd";
+		// DateTimeFormatter formatter = DateTimeFormat.forPattern(pattern);
+
+		DateTime dateTime = DateTime.parse(submission.getField(today));
+		DateTimeFormatter fmt = DateTimeFormat.forPattern(pattern);
+		String referenceDate = fmt.print(dateTime);
+		membersScheduleService.enrollPNCForMother(submission.entityId(), SCHEDULE_PNC_2, LocalDate.parse(referenceDate));
 	}
 	
 	public void PNCVisit2(FormSubmission submission) {
@@ -214,6 +218,16 @@ public class MembersFollowupService {
 		
 		members.setPNCVisit2(PNCVisit2);
 		allMembers.update(members);
+		
+		membersScheduleService.fullfillMilestone(submission.entityId(), submission.anmId(), SCHEDULE_PNC, new LocalDate());
+
+		String pattern = "yyyy-MM-dd";
+		// DateTimeFormatter formatter = DateTimeFormat.forPattern(pattern);
+
+		DateTime dateTime = DateTime.parse(submission.getField(today));
+		DateTimeFormatter fmt = DateTimeFormat.forPattern(pattern);
+		String referenceDate = fmt.print(dateTime);
+		membersScheduleService.enrollPNCForMother(submission.entityId(), SCHEDULE_PNC_3, LocalDate.parse(referenceDate));
 	}
 	
 	public void PNCVisit3(FormSubmission submission) {
@@ -292,6 +306,16 @@ public class MembersFollowupService {
 		
 		members.setPNCVisit3(PNCVisit3);
 		allMembers.update(members);
+		
+		membersScheduleService.fullfillMilestone(submission.entityId(), submission.anmId(), SCHEDULE_PNC, new LocalDate());
+
+		String pattern = "yyyy-MM-dd";
+		// DateTimeFormatter formatter = DateTimeFormat.forPattern(pattern);
+
+		DateTime dateTime = DateTime.parse(submission.getField(today));
+		DateTimeFormatter fmt = DateTimeFormat.forPattern(pattern);
+		String referenceDate = fmt.print(dateTime);
+		membersScheduleService.enrollPNCForMother(submission.entityId(), SCHEDULE_PNC_4, LocalDate.parse(referenceDate));
 	}
 	
 	public void PNCVisit4(FormSubmission submission) {
@@ -370,6 +394,8 @@ public class MembersFollowupService {
 		
 		members.setPNCVisit4(PNCVisit4);
 		allMembers.update(members);
+		
+		membersScheduleService.unEnrollFromSchedule(submission.entityId(), submission.anmId(), SCHEDULE_PNC);
 	}
 	
 	

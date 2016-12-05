@@ -46,21 +46,4 @@ public class AllUser extends MotechBaseRepository<User> {
 		return users.get(0);
 	}
 	
-	@View(name = "by_location", map = "function(doc) { if (doc.type === 'User' && doc.location) { for(var key in doc.location){ emit(doc.location[key].id); } } }")
-	public List<User> findUsersByLocation(String locationId) {
-		List<User> users = db.queryView(createQuery("by_location").key(locationId).includeDocs(true), User.class);
-		if (users == null || users.isEmpty()) {
-			return null;
-		}
-		return users;
-	}
-	
-	@View(name = "by_role", map = "function(doc) { if (doc.type === 'User' && doc.roles) { for(var key in doc.roles){ emit(doc.roles[key].id); } } }")
-	public List<User> findUsersByRole(String roleId) {
-		List<User> users = db.queryView(createQuery("by_role").key(roleId).includeDocs(true), User.class);
-		if (users == null || users.isEmpty()) {
-			return null;
-		}
-		return users;
-	}
 }

@@ -1,7 +1,7 @@
 package org.opensrp.scheduler.service;
 
-import static org.opensrp.dto.BeneficiaryType.members;
 import static org.opensrp.dto.BeneficiaryType.household;
+import static org.opensrp.dto.BeneficiaryType.members;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -13,14 +13,10 @@ import java.util.concurrent.TimeUnit;
 
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
-import org.motechproject.util.DateUtil;
-import org.opensrp.common.AllConstants;
 import org.opensrp.common.AllConstants.ScheduleNames;
-import org.opensrp.domain.Vaccine;
 import org.opensrp.dto.ActionData;
 import org.opensrp.dto.AlertStatus;
 import org.opensrp.dto.BeneficiaryType;
-import org.opensrp.repository.AllVaccine;
 import org.opensrp.scheduler.Action;
 import org.opensrp.scheduler.repository.AllActions;
 import org.slf4j.Logger;
@@ -33,19 +29,16 @@ public class ActionService {
     private AllActions allActions;
     private ReportActionService reportActionService;
     private final ScheduleService scheduleService;
-    private AllVaccine allVaccine;
     private static Logger logger = LoggerFactory.getLogger(ActionService.class
-			.toString());    
-    
+			.toString());
     @Autowired
-    public ActionService(AllActions allActions, ReportActionService reportActionService,ScheduleService scheduleService,AllVaccine allVaccine) {
+    public ActionService(AllActions allActions, ReportActionService reportActionService,ScheduleService scheduleService) {
         this.allActions = allActions;
         this.reportActionService = reportActionService;
         this.scheduleService = scheduleService;
-        this.allVaccine = allVaccine;
-    }    
+    }
 
-	public List<Action> getNewAlertsForANM(String anmIdentifier, long timeStamp) {
+    public List<Action> getNewAlertsForANM(String anmIdentifier, long timeStamp) {
         return allActions.findByANMIDAndTimeStamp(anmIdentifier, timeStamp);
     }
 
@@ -53,14 +46,18 @@ public class ActionService {
 		return allActions.findByCaseIdScheduleAndTimeStamp(caseId, schedule, start, end);
 	}
     public void alertForBeneficiary(BeneficiaryType beneficiaryType, String caseID, String instanceId,  String anmIdentifier, String scheduleName, String visitCode, AlertStatus alertStatus, DateTime startDate, DateTime expiryDate) {
-    	if (!(household.equals(beneficiaryType) || members.equals(beneficiaryType))) {
+    	if (!(members.equals(beneficiaryType)||household.equals(beneficiaryType))) {
             throw new IllegalArgumentException("Beneficiary Type : " + beneficiaryType + " is of unknown type");
         }
-    	else if(scheduleName.equals(ScheduleNames.ANC) || scheduleName.equals(ScheduleNames.PNC) || scheduleName.equals(ScheduleNames.CHILD)){
-    		this.ActionUpdateOrCreateForMotherType(beneficiaryType, caseID, instanceId, anmIdentifier, scheduleName, visitCode, alertStatus, startDate, expiryDate);   		
-    	}
-    	else{    		
+    	if(scheduleName.equals(ScheduleNames.SCHEDULE_Woman_BNF) || scheduleName.equals(ScheduleNames.CENCUS) || 
+    			scheduleName.equals(ScheduleNames.ELCO_SCHEDULE_PSRF) || scheduleName.equals(ScheduleNames.child_vaccination_bcg)){
     		this.ActionUpdateOrCreateForOther(beneficiaryType, caseID, instanceId, anmIdentifier, scheduleName, visitCode, alertStatus, startDate, expiryDate);
+    		
+    	}else if(scheduleName.equals(ScheduleNames.SCHEDULE_ANC) || scheduleName.equals(ScheduleNames.SCHEDULE_PNC)){
+    		this.ActionUpdateOrCreateForMotherType(beneficiaryType, caseID, instanceId, anmIdentifier, scheduleName, visitCode, alertStatus, startDate, expiryDate);
+    		
+    	}else{
+    		
     	}
     	
     }
@@ -90,66 +87,34 @@ public class ActionService {
     }
     public void ActionUpdateOrCreateForOther(BeneficiaryType beneficiaryType, String caseID, String instanceId,  String anmIdentifier, String scheduleName, String visitCode, AlertStatus alertStatus, DateTime startDate, DateTime expiryDate){
     	try{
-    		System.err.println("Schedule:"+anmIdentifier + " - "+ caseID+" -- "+ scheduleName);
 	    	List<Action> existingAlerts = allActions.findAlertByANMIdEntityIdScheduleName(anmIdentifier, caseID, scheduleName);
-	    	System.err.println("Schedule:"+existingAlerts.toString());
 	    	if(existingAlerts.size() > 0){ 
 	    		long beforTimeStamp = existingAlerts.get(0).timestamp();
 	        	Map<String,String> data =existingAlerts.get(0).data(); 	      
-		 	     if(!data.get("alertStatus").equals(alertStatus)){
-		 	    	 this.updateDataForAction(beneficiaryType, caseID, instanceId, anmIdentifier, scheduleName, visitCode, alertStatus, startDate, expiryDate, existingAlerts);
-		 	      }else{
-		 	    	 existingAlerts.get(0).setRevision(existingAlerts.get(0).getRevision());
-		 	    	 existingAlerts.get(0).timestamp(Calendar.getInstance().getTimeInMillis()); 	    	 
-		 	    	 existingAlerts.get(0).data().put("visitCode", visitCode);
-		 	    	 existingAlerts.get(0).data().put("expiryDate", expiryDate.toLocalDate().toString());
-		 	    	 existingAlerts.get(0).data().put("startDate", startDate.toLocalDate().toString());
-		 	    	 existingAlerts.get(0).timestamp(Calendar.getInstance().getTimeInMillis());
-		 	    	 Action action = existingAlerts.get(0); 	    	 
-		 	    	 allActions.update(action);
-		 	    	
-		 	      } 	      
-		 	     List<Action> existingAlert = allActions.findAlertByANMIdEntityIdScheduleName(anmIdentifier, caseID, scheduleName);
-		 	    try{
-		 	    	if(scheduleName.equalsIgnoreCase(AllConstants.ScheduleNames.CENCUS)){		 	    		
-		 	    	}else if(scheduleName.equalsIgnoreCase(AllConstants.ScheduleNames.SCHEDULE_Woman_BNF)){		 	    		
-		 	    	}else if(scheduleName.equalsIgnoreCase(AllConstants.ScheduleNames.ELCO_SCHEDULE_PSRF)){		 	    		
-		 	    	}else{
-		 	    		System.err.println("scheduleName:"+scheduleName);
-		 	    		Vaccine vaccine = new Vaccine(anmIdentifier, caseID, existingAlert.get(0).getId(), beneficiaryType.name(), scheduleName, startDate.toLocalDate().toString(), expiryDate.toLocalDate().toString(), false, 0, new Date(), new DateTime(),DateUtil.now().getMillis());		        	
-		        		allVaccine.save(vaccine);
-		 	    	}
-	        	}catch(Exception e){		        		
-	        		e.printStackTrace();
-	        	}
-		 	     reportActionService.updateScheduleLog(beneficiaryType, caseID, instanceId, anmIdentifier, scheduleName, visitCode, alertStatus, startDate, expiryDate, null,null,beforTimeStamp,existingAlert.get(0).timestamp());
-		 	     logger.info("Update schedule with id: "+scheduleName);
-		 	     
+	 	      if(!data.get("alertStatus").equals(alertStatus)){
+	 	    	 this.updateDataForAction(beneficiaryType, caseID, instanceId, anmIdentifier, scheduleName, visitCode, alertStatus, startDate, expiryDate, existingAlerts);
+	 	      }else{
+	 	    	 existingAlerts.get(0).setRevision(existingAlerts.get(0).getRevision());
+	 	    	 existingAlerts.get(0).timestamp(Calendar.getInstance().getTimeInMillis()); 	    	 
+	 	    	 existingAlerts.get(0).data().put("visitCode", visitCode);
+	 	    	 existingAlerts.get(0).data().put("expiryDate", expiryDate.toLocalDate().toString());
+	 	    	 existingAlerts.get(0).data().put("startDate", startDate.toLocalDate().toString());
+	 	    	 Action action = existingAlerts.get(0); 	    	 
+	 	    	 allActions.update(action);
+	 	      } 	      
+	 	     List<Action> existingAlert = allActions.findAlertByANMIdEntityIdScheduleName(anmIdentifier, caseID, scheduleName);
+	 	     reportActionService.updateScheduleLog(beneficiaryType, caseID, instanceId, anmIdentifier, scheduleName, visitCode, alertStatus, startDate, expiryDate, null,null,beforTimeStamp,existingAlert.get(0).timestamp());
+	 	     logger.info("Update schedule with id: "+caseID);
 	    	}else{
-	    		
 	    		if(!instanceId.equalsIgnoreCase(null) || !instanceId.isEmpty()){
-	    			
 		        	allActions.addOrUpdateAlert(new Action(caseID, anmIdentifier, ActionData.createAlert(beneficiaryType, scheduleName, visitCode, alertStatus, startDate, expiryDate)));
-		        	
 		        	List<Action> existingAlert = allActions.findAlertByANMIdEntityIdScheduleName(anmIdentifier, caseID, scheduleName);
-		        	try{
-		        		if(scheduleName.equalsIgnoreCase(AllConstants.ScheduleNames.CENCUS)){		 	    		
-			 	    	}else if(scheduleName.equalsIgnoreCase(AllConstants.ScheduleNames.SCHEDULE_Woman_BNF)){		 	    		
-			 	    	}else if(scheduleName.equalsIgnoreCase(AllConstants.ScheduleNames.ELCO_SCHEDULE_PSRF)){		 	    		
-			 	    	}else{
-			 	    		System.err.println("scheduleName:"+scheduleName);
-			 	    		Vaccine vaccine = new Vaccine(anmIdentifier, caseID, existingAlert.get(0).getId(), beneficiaryType.name(), scheduleName, startDate.toLocalDate().toString(), expiryDate.toLocalDate().toString(), false, 0, new Date(), new DateTime(),DateUtil.now().getMillis());		        	
-			        		allVaccine.save(vaccine);
-			 	    	}
-		        	}catch(Exception e){		        		
-		        		e.printStackTrace();
-		        	}		        	
-		        	reportActionService.updateScheduleLog(beneficiaryType, caseID, instanceId, anmIdentifier, scheduleName, visitCode, alertStatus, startDate, expiryDate, null,null,0L,existingAlert.get(0).timestamp());
-		        	logger.info("Create schedule with id: "+scheduleName);
+			 	    reportActionService.updateScheduleLog(beneficiaryType, caseID, instanceId, anmIdentifier, scheduleName, visitCode, alertStatus, startDate, expiryDate, null,null,0L,existingAlert.get(0).timestamp());
+		        	logger.info("Create schedule with id: "+caseID);
 	    		}
 	    	} 
     	}catch(Exception e){
-    		e.printStackTrace();
+    		logger.info(e.getMessage());
     		
     	}
     	

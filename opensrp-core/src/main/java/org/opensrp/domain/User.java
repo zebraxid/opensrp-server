@@ -1,7 +1,9 @@
 package org.opensrp.domain;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -9,9 +11,11 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.ektorp.support.TypeDiscriminator;
+import org.opensrp.api.constants.Gender;
 
 @TypeDiscriminator("doc.type == 'User'")
-public class User extends BaseEntity {
+public class User extends BaseDataObject {
+
 	@JsonProperty
 	private String username;
 	@JsonProperty
@@ -24,33 +28,51 @@ public class User extends BaseEntity {
 	private List<String> roles;
 	@JsonProperty
 	private List<String> permissions;
+	@JsonProperty
+	private String baseEntityId;
+	@JsonProperty
+	private BaseEntity baseEntity;
 	
-	protected User(){
-		
+	
+	public User() {	}
+
+	public User(String baseEntityId, String username, String password, String salt, 
+			String firstName, String middleName, String lastName, 
+			Date birthdate, Boolean birthdateApprox, String gender) {
+		this.baseEntity = new BaseEntity(baseEntityId, firstName, middleName, lastName, birthdate, null, birthdateApprox, null, gender, null, null);
+		this.baseEntityId = baseEntityId;
+		this.username = username;
+		this.password = password;
+		this.salt = salt;
 	}
 	
-	public User(String baseEntityId) {
-		super(baseEntityId);
+	public User(String baseEntityId, String username, String password, String salt, 
+			String firstName, String middleName, String lastName,
+			Date birthdate, Date deathdate, Boolean birthdateApprox,
+			Boolean deathdateApprox, Gender gender, List<Address> addresses,
+			Map<String, Object> attributes) {
+		this.baseEntity = new BaseEntity(baseEntityId, firstName, middleName, lastName, birthdate, deathdate, birthdateApprox,
+				deathdateApprox, gender, addresses, attributes);
+		this.baseEntityId = baseEntityId;
+		this.username = username;
+		this.password = password;
+		this.salt = salt;
 	}
 
-	public User(String baseEntityId, String username, String password, String salt) {
-		super(baseEntityId);
+	public User(String baseEntityId, String username, String password, String salt, List<String> roles, 
+			List<String> permissions, String firstName, String middleName, String lastName,
+			Date birthdate, Date deathdate, Boolean birthdateApprox, Boolean deathdateApprox, String gender, 
+			List<Address> addresses, Map<String, Object> attributes) {
+		this.baseEntity = new BaseEntity(baseEntityId, firstName, middleName, lastName, birthdate, deathdate, birthdateApprox,
+				deathdateApprox, gender, addresses, attributes);
+		this.baseEntityId = baseEntityId;
 		this.username = username;
 		this.password = password;
 		this.salt = salt;
-	}
-	
-	public User(String baseEntityId, String username, String password, String salt, String status,
-			List<String> roles, List<String> permissions) {
-		super(baseEntityId);
-		this.username = username;
-		this.password = password;
-		this.salt = salt;
-		this.status = status;
 		this.roles = roles;
 		this.permissions = permissions;
 	}
-	
+
 	public String getUsername() {
 		return username;
 	}
@@ -119,7 +141,7 @@ public class User extends BaseEntity {
 	}
 	@JsonIgnore
 	public boolean isDefaultAdmin() {
-		if((username.equalsIgnoreCase("admin") || username.equalsIgnoreCase("administrator")) 
+		if((baseEntity.getFirstName().equalsIgnoreCase("admin") || baseEntity.getFirstName().equalsIgnoreCase("administrator")) 
 				&& (hasRole("admin") || hasRole("administrator"))){
 			return true;
 		}
@@ -166,6 +188,34 @@ public class User extends BaseEntity {
 			}
 		}
 		return false;
+	}
+	
+	public String getBaseEntityId() {
+		return baseEntityId;
+	}
+	
+	public void setBaseEntityId(String baseEntityId) {
+		this.baseEntityId = baseEntityId;
+	}
+
+	public BaseEntity getBaseEntity() {
+		return baseEntity;
+	}
+
+	public void setBaseEntity(BaseEntity baseEntity) {
+		this.baseEntity = baseEntity;
+		this.baseEntityId = baseEntity.getId();
+	}
+
+	public User withBaseEntity(BaseEntity baseEntity) {
+		this.baseEntity = baseEntity;
+		this.baseEntityId = baseEntity.getId();
+		return this;
+	}
+	
+	public User withBaseEntityId(String baseEntityId) {
+		this.baseEntityId = baseEntityId;
+		return this;
 	}
 
 	public User withUsername(String username) {

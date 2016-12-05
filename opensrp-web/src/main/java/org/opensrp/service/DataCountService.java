@@ -3,25 +3,23 @@
  * */
 package org.opensrp.service;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.opensrp.connector.Dhis2HttpUtils;
+import org.ektorp.ViewResult;
+import org.opensrp.common.util.DateUtil;
+import org.opensrp.common.util.WeekBoundariesAndTimestamps;
 import org.opensrp.dto.CountServiceDTO;
-import org.opensrp.dto.VaccineCountDTO;
+import org.opensrp.dto.CountServiceDTOForChart;
+import org.opensrp.register.mcare.repository.AllElcos;
 import org.opensrp.register.mcare.repository.AllHouseHolds;
-import org.opensrp.register.mcare.repository.AllMembers;
-import org.opensrp.repository.AllVaccine;
+import org.opensrp.register.mcare.repository.AllMothers;
+import org.opensrp.rest.services.LuceneElcoService;
 import org.opensrp.rest.services.LuceneHouseHoldService;
-import org.opensrp.rest.services.LuceneMembersService;
-import org.opensrp.rest.services.LuceneVaccineService;
+import org.opensrp.rest.services.LuceneMotherService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,26 +30,21 @@ import org.springframework.stereotype.Service;
 public class DataCountService {
 	private static Logger logger = LoggerFactory.getLogger(DataCountService.class);
 	private final AllHouseHolds allHouseHolds;
-	private AllVaccine allVaccine;
+	private final AllElcos allElcos;
 	private LuceneHouseHoldService luceneHouseHoldService;
-	private LuceneMembersService luceneMembersService;
-	private LuceneVaccineService luceneVaccineService;
-	private AllMembers allMembers;
-	private final String url = "http://103.247.238.74:8081/dhis22/api/dataValueSets";
-	@Autowired
-	private Dhis2HttpUtils dhis2HttpUtils;
+	private LuceneElcoService luceneElcoService;
+	private LuceneMotherService luceneMotherService;
+	private AllMothers allMothers;
 	@Autowired
 	public DataCountService(AllHouseHolds allHouseHolds,LuceneHouseHoldService luceneHouseHoldService,
-				AllMembers allMembers,LuceneMembersService luceneMembersService,
-				AllVaccine allVaccine,LuceneVaccineService luceneVaccineService){
+			LuceneElcoService luceneElcoService,AllElcos allElcos,AllMothers allMothers,LuceneMotherService luceneMotherService){
 		this.allHouseHolds = allHouseHolds;
 		this.luceneHouseHoldService = luceneHouseHoldService;
-		this.allMembers = allMembers;
-		this.luceneMembersService = luceneMembersService;
-		this.allVaccine = allVaccine;
-		this.luceneVaccineService = luceneVaccineService;
+		this.luceneElcoService = luceneElcoService;
+		this.allElcos = allElcos;
+		this.allMothers = allMothers;
+		this.luceneMotherService = luceneMotherService;
 	}
-	
 	/**
 	 * This method return count data of registers.
 	 * @param provider    who sent data
@@ -66,13 +59,17 @@ public class DataCountService {
 		CountServiceDTO commonServiceDTO = new CountServiceDTO();
 		if(type.equalsIgnoreCase("all")){
 			this.getHouseholdCount(provider, startMonth, endMonth, startWeek, endWeek, commonServiceDTO);
-			this.getMembersCount(provider, startMonth, endMonth, startWeek, endWeek, commonServiceDTO);
+			this.getElcoCount(provider, startMonth, endMonth, startWeek, endWeek, commonServiceDTO);
+			this.getMotherCount(provider, startMonth, endMonth, startWeek, endWeek, commonServiceDTO);
 					
 		}else if(type.equalsIgnoreCase("household")){
 			this.getHouseholdCount(provider, startMonth, endMonth, startWeek, endWeek, commonServiceDTO);
 			
+		}else if(type.equalsIgnoreCase("elco")){
+			this.getElcoCount(provider, startMonth, endMonth, startWeek, endWeek, commonServiceDTO);
+			
 		}else if(type.equalsIgnoreCase("mother")){
-			this.getMembersCount(provider, startMonth, endMonth, startWeek, endWeek, commonServiceDTO);
+			this.getMotherCount(provider, startMonth, endMonth, startWeek, endWeek, commonServiceDTO);
 			
 		}else{
 			
@@ -82,184 +79,207 @@ public class DataCountService {
 		
 	}
 	
-	public List<VaccineCountDTO> getVaccineCountInformation(String type,String startMonth,String endMonth) throws JSONException{
-		List<VaccineCountDTO> commonServiceDTOs = new ArrayList<VaccineCountDTO>();
+	public List<CountServiceDTOForChart> getHHCountInformation(){
+		ViewResult hhViewResult;	
+		hhViewResult = allHouseHolds.allHHsCreatedLastFourMonthsViewResult();		
 		
-		VaccineCountDTO commonServiceDTO = new VaccineCountDTO();
+		List<CountServiceDTOForChart> DTOs= new ArrayList<CountServiceDTOForChart>();
+		CountServiceDTOForChart newDTO = new CountServiceDTOForChart();
+		newDTO.setCounts(this.convertViewResultToCount(hhViewResult));
+		DTOs.add(newDTO);
+		return DTOs;
+	}
+	
+	public List<CountServiceDTOForChart> getHHCountInformationForChart(String provider, String district, String upazilla, String union){
+		ViewResult hhViewResult;		
+		String key = this.createRawStartKey(provider, district, upazilla, union);
+		if(!provider.equalsIgnoreCase("")){
+			hhViewResult = allHouseHolds.allHHsCreatedLastFourMonthsByProviderAndLocationViewResult(key,key.substring(0, key.length()-1) + ",{}]");
+		}
+		else{
+			hhViewResult = allHouseHolds.allHHsCreatedLastFourMonthsByLocationViewResult(key,key.substring(0, key.length()-1) + ",{}]");
+		}		
 		
-		this.getVaccineCount(type, startMonth, endMonth, commonServiceDTO);
+		List<CountServiceDTOForChart> DTOs= new ArrayList<CountServiceDTOForChart>();
+		CountServiceDTOForChart newDTO = new CountServiceDTOForChart();
+		newDTO.setCounts(this.convertViewResultToCount(hhViewResult));
+		DTOs.add(newDTO);
+		return DTOs;
+	}
+	
+	public List<CountServiceDTOForChart> getElcoCountInformation(){
+		ViewResult elcoViewResult;	
+		elcoViewResult = allElcos.allElcosCreatedLastFourMonthsViewResult();		
 		
-		/////////////////////////////////////////////////////////////////////	
-			
-		/*JSONObject vaccineCountObj =	new JSONObject();
-		JSONArray vaccineCountArray =	new JSONArray();		
+		List<CountServiceDTOForChart> DTOs= new ArrayList<CountServiceDTOForChart>();
+		CountServiceDTOForChart newDTO = new CountServiceDTOForChart();
+		newDTO.setCounts(this.convertViewResultToCount(elcoViewResult));
+		DTOs.add(newDTO);
+		return DTOs;
+	}
+	
+	public List<CountServiceDTOForChart> getElcoCountInformationForChart(String provider, String district, String upazilla, String union){
+		ViewResult elcoViewResult;		
+		String key = this.createRawStartKey(provider, district, upazilla, union);
+		if(!provider.equalsIgnoreCase("")){
+			elcoViewResult = allElcos.allElcosCreatedLastFourMonthsByProviderAndLocationViewResult(key,key.substring(0, key.length()-1) + ",{}]");
+		}
+		else{
+			elcoViewResult = allElcos.allElcosCreatedLastFourMonthsByLocationViewResult(key,key.substring(0, key.length()-1) + ",{}]");
+		}		
 		
-		JSONObject vaccineAttrObj1 = new JSONObject();
-		vaccineAttrObj1.put("dataElement", "nbQTnNFs1I8");//Bcg given (0-11m)
-		vaccineAttrObj1.put("period", "201610");
-		vaccineAttrObj1.put("orgUnit", "SkiBAS3qNA6");
-		vaccineAttrObj1.put("value", commonServiceDTO.getChild_bcgCount());
+		List<CountServiceDTOForChart> DTOs= new ArrayList<CountServiceDTOForChart>();
+		CountServiceDTOForChart newDTO = new CountServiceDTOForChart();
+		newDTO.setCounts(this.convertViewResultToCount(elcoViewResult));
+		DTOs.add(newDTO);
+		return DTOs;
+	}
+	
+	public List<CountServiceDTOForChart> getMotherCountInformation(){
+		ViewResult elcoViewResult;		
+
+		elcoViewResult = allElcos.allMothersCreatedLastFourMonthsViewResult();		
 		
-		JSONObject vaccineAttrObj2 = new JSONObject();
-		vaccineAttrObj2.put("dataElement", "Na5rrDNtwOW");//Penta 1given (0-11m)
-		vaccineAttrObj2.put("period", "201610");
-		vaccineAttrObj2.put("orgUnit", "SkiBAS3qNA6");
-		vaccineAttrObj2.put("value", commonServiceDTO.getChild_penta1Count());
+		List<CountServiceDTOForChart> DTOs= new ArrayList<CountServiceDTOForChart>();
+		CountServiceDTOForChart newDTO = new CountServiceDTOForChart();
+		newDTO.setCounts(this.convertViewResultToCount(elcoViewResult));
+		DTOs.add(newDTO);
+		return DTOs;
+	}
+	
+	public List<CountServiceDTOForChart> getMotherCountInformationForChart(String provider, String district, String upazilla, String union){
+		ViewResult elcoViewResult;		
+		String key = this.createRawStartKey(provider, district, upazilla, union);
+		if(!provider.equalsIgnoreCase("")){
+			elcoViewResult = allElcos.allMothersCreatedLastFourMonthsByProviderAndLocationViewResult(key,key.substring(0, key.length()-1) + ",{}]");
+		}
+		else{
+			elcoViewResult = allElcos.allMothersCreatedLastFourMonthsByLocationViewResult(key,key.substring(0, key.length()-1) + ",{}]");
+		}		
 		
-		JSONObject vaccineAttrObj3 = new JSONObject();
-		vaccineAttrObj3.put("dataElement", "zGQIRoCQIcK");//Penta 2 given (0-11m)
-		vaccineAttrObj3.put("period", "201610");
-		vaccineAttrObj3.put("orgUnit", "SkiBAS3qNA6");
-		vaccineAttrObj3.put("value", commonServiceDTO.getChild_penta2Count());
+		List<CountServiceDTOForChart> DTOs= new ArrayList<CountServiceDTOForChart>();
+		CountServiceDTOForChart newDTO = new CountServiceDTOForChart();
+		newDTO.setCounts(this.convertViewResultToCount(elcoViewResult));
+		DTOs.add(newDTO);
+		return DTOs;
+	}
+	
+	public int[] getMotherCountInformationForHomePage(){
+		ViewResult elcoViewResult;		
+		String key = this.createRawStartKey("", "Gaibandha", "", "");
+		//elcoViewResult = allElcos.allMothersCreatedLastFourMonthsByLocationViewResult(key,key.substring(0, key.length()-1) + ",{}]");		
+		elcoViewResult = allElcos.allMothersCreatedLastFourMonthsViewResult();
 		
-		JSONObject vaccineAttrObj4 = new JSONObject();
-		vaccineAttrObj4.put("dataElement", "cOP5mAREs38");//Penta 3 given (0-11m)
-		vaccineAttrObj4.put("period", "201610");
-		vaccineAttrObj4.put("orgUnit", "SkiBAS3qNA6");
-		vaccineAttrObj4.put("value", commonServiceDTO.getChild_penta3Count());
+		return this.convertViewResultToCount(elcoViewResult);
+	}
+	
+	private int[] convertViewResultToCount( ViewResult vr){
+		List<Long> timestamps = new ArrayList<Long>();
+		int count = 0;
+		int[] countsForChart = new int[23];
+		Long todayTimestamp = DateUtil.getTimestampToday();
+		List<Long> weekBoundaries = DateUtil.getCurrentWeekBoundaries();
+		List<Long> montthBoundaries = DateUtil.getMonthBoundaries();
+		WeekBoundariesAndTimestamps boundaries = DateUtil.getWeekBoundariesForDashboard();
+    	int todayCountIndex = 20, weekCountIndex = 21, monthCountIndex = 22;
+    	List<String> startAndEndOfWeeks = boundaries.weekBoundariesAsString;
+    	List<Long> startAndEndOfWeeksAsTimestamp = boundaries.weekBoundariesAsTimeStamp;
+
+    	for (ViewResult.Row row : vr.getRows()) {
+    		String stringValue = row.getValue(); 
+    		count++;
+    		timestamps.add(Long.parseLong(stringValue));
+    	}
+    	System.out.println("number of rows found - " + count);    	
+    	
+    	//this segment will do the counting
+    	for(int i = 0; i < timestamps.size(); i++){
+    		countsForChart[DateUtil.dateInsideWhichWeek(timestamps.get(i), startAndEndOfWeeksAsTimestamp)]++;
+    		if(DateUtil.ifDateInsideAWeek(timestamps.get(i), todayTimestamp, todayTimestamp)){
+    			countsForChart[todayCountIndex]++;
+    		}
+    		if(DateUtil.ifDateInsideAWeek(timestamps.get(i), weekBoundaries.get(0), weekBoundaries.get(1))){
+    			countsForChart[weekCountIndex]++;
+    		}
+    		if(DateUtil.ifDateInsideAWeek(timestamps.get(i), montthBoundaries.get(0), montthBoundaries.get(0))){    			
+    			countsForChart[monthCountIndex]++;
+    		}
+    	}        
+    	int foundCount = 0;
+    	for(int i =0; i<countsForChart.length; i++){
+        	if(countsForChart[i] != 0){
+        		System.out.println("count for weekIndex - " + i + " is " + countsForChart[i]);
+        		foundCount += countsForChart[i]; 
+        	}        	
+        }
+    	System.out.println("foundCount - " + foundCount);
+		return countsForChart;
+	}
+	private String createRawStartKey(String provider, String district, String upazilla, String union){
+		String key = "";
+		if(provider.equalsIgnoreCase("")){
+			if(union.equalsIgnoreCase("")){
+				if(upazilla.equalsIgnoreCase("")){
+					key = "[\"" + district + "\"]";
+				}
+				else{
+					key = "[\"" + district + "\",\"" + upazilla + "\"]";
+				}
+			}
+			else{
+				key = "[\"" + district + "\",\"" + upazilla + "\",\"" + union + "\"]";
+			}
+		}
+		else{
+			if(union.equalsIgnoreCase("")){
+				if(upazilla.equalsIgnoreCase("")){
+					if(district.equalsIgnoreCase("")){
+						key = "[\"" + provider + "\"]";
+					}
+					else{
+						key = "[\"" + provider + "\",\"" + district + "\"]";
+					}
+					
+				}
+				else{
+					key = "[\"" + provider + "\",\"" + district + "\",\"" + upazilla + "\"]";
+				}
+			}
+			else{
+				key = "[\"" + provider + "\",\"" + district + "\",\"" + upazilla + "\",\"" + union + "\"]";
+			}
 		
-		JSONObject vaccineAttrObj5 = new JSONObject();
-		vaccineAttrObj5.put("dataElement", "TzbgFs3CSyp");//OPV 0 given (0-11m)
-		vaccineAttrObj5.put("period", "201610");
-		vaccineAttrObj5.put("orgUnit", "SkiBAS3qNA6");
-		vaccineAttrObj5.put("value", commonServiceDTO.getChild_opv0Count());
+		}
 		
-		JSONObject vaccineAttrObj6 = new JSONObject();
-		vaccineAttrObj6.put("dataElement", "eYJ3MgWzghH");//OPV 1 given (0-11m)
-		vaccineAttrObj6.put("period", "201610");
-		vaccineAttrObj6.put("orgUnit", "SkiBAS3qNA6");	
-		vaccineAttrObj6.put("value", commonServiceDTO.getChild_opv1Count());
-		
-		JSONObject vaccineAttrObj7 = new JSONObject();
-		vaccineAttrObj7.put("dataElement", "YkajaYobus9");//OPV 2 given (0-11m)
-		vaccineAttrObj7.put("period", "201610");
-		vaccineAttrObj7.put("orgUnit", "SkiBAS3qNA6");
-		vaccineAttrObj7.put("value", commonServiceDTO.getChild_opv2Count());
-		
-		JSONObject vaccineAttrObj8 = new JSONObject();
-		vaccineAttrObj8.put("dataElement", "AFIo5tpZjyr");//OPV 3 given (0-11m)
-		vaccineAttrObj8.put("period", "201610");
-		vaccineAttrObj8.put("orgUnit", "SkiBAS3qNA6");
-		vaccineAttrObj8.put("value", commonServiceDTO.getChild_opv3Count());
-		
-		vaccineCountArray.put(vaccineAttrObj1);
-        vaccineCountArray.put(vaccineAttrObj2);
-		vaccineCountArray.put(vaccineAttrObj3);
-		vaccineCountArray.put(vaccineAttrObj4);
-		vaccineCountArray.put(vaccineAttrObj5);
-		vaccineCountArray.put(vaccineAttrObj6);
-		vaccineCountArray.put(vaccineAttrObj7);
-		vaccineCountArray.put(vaccineAttrObj8);
-		vaccineCountObj.put("dataValues", vaccineCountArray);	
-		
-		System.out.println(vaccineCountObj.toString());*/		
-		
-		JSONObject vaccineCountObj =	new JSONObject();
-		
-		JSONArray vaccineCountArray =	new JSONArray();
-		
-		Date date = new Date();
-		String modifiedDate= new SimpleDateFormat("yyyy-MM-dd").format(date);
-		
-		Calendar now = Calendar.getInstance();
-		int year = now.get(Calendar.YEAR);
-		int month = now.get(Calendar.MONTH);
-		String periodTime =  Integer.toString(year)+Integer.toString(month);
-		
-		JSONObject vaccineAttrObj1 = new JSONObject();
-		vaccineAttrObj1.put("dataElement", "nbQTnNFs1I8");//Bcg given (0-11m)
-		vaccineAttrObj1.put("value", commonServiceDTO.getChild_bcgCount());
-		
-		JSONObject vaccineAttrObj2 = new JSONObject();
-		vaccineAttrObj2.put("dataElement", "Na5rrDNtwOW");//Penta 1given (0-11m)
-		vaccineAttrObj2.put("value", commonServiceDTO.getChild_penta1Count());
-		
-		JSONObject vaccineAttrObj3 = new JSONObject();
-		vaccineAttrObj3.put("dataElement", "zGQIRoCQIcK");//Penta 2 given (0-11m)
-		vaccineAttrObj3.put("value", commonServiceDTO.getChild_penta2Count());
-		
-		JSONObject vaccineAttrObj4 = new JSONObject();
-		vaccineAttrObj4.put("dataElement", "cOP5mAREs38");//Penta 3 given (0-11m)
-		vaccineAttrObj4.put("value", commonServiceDTO.getChild_penta3Count());
-		
-		JSONObject vaccineAttrObj5 = new JSONObject();
-		vaccineAttrObj5.put("dataElement", "TzbgFs3CSyp");//OPV 0 given (0-11m)
-		vaccineAttrObj5.put("value", commonServiceDTO.getChild_opv0Count());
-		
-		JSONObject vaccineAttrObj6 = new JSONObject();
-		vaccineAttrObj6.put("dataElement", "eYJ3MgWzghH");//OPV 1 given (0-11m)
-		vaccineAttrObj6.put("value", commonServiceDTO.getChild_opv1Count());
-		
-		JSONObject vaccineAttrObj7 = new JSONObject();
-		vaccineAttrObj7.put("dataElement", "YkajaYobus9");//OPV 2 given (0-11m)
-		vaccineAttrObj7.put("value", commonServiceDTO.getChild_opv2Count());
-		
-		JSONObject vaccineAttrObj8 = new JSONObject();
-		vaccineAttrObj8.put("dataElement", "AFIo5tpZjyr");//OPV 3 given (0-11m)
-		vaccineAttrObj8.put("value", commonServiceDTO.getChild_opv3Count());
-		
-		vaccineCountArray.put(vaccineAttrObj1);
-        vaccineCountArray.put(vaccineAttrObj2);
-		vaccineCountArray.put(vaccineAttrObj3);
-		vaccineCountArray.put(vaccineAttrObj4);
-		vaccineCountArray.put(vaccineAttrObj5);
-		vaccineCountArray.put(vaccineAttrObj6);
-		vaccineCountArray.put(vaccineAttrObj7);
-		vaccineCountArray.put(vaccineAttrObj8);
-		
-		vaccineCountObj.put("dataSet", "pEaVGTvSsQn");
-		vaccineCountObj.put("completeData", modifiedDate);
-		vaccineCountObj.put("period", periodTime);
-		vaccineCountObj.put("orgUnit", "SkiBAS3qNA6");
-		vaccineCountObj.put("dataValues", vaccineCountArray);
-		
-		System.out.println(vaccineCountObj.toString());
-		
-		dhis2HttpUtils.post(url, "", vaccineCountObj.toString(), "mpower", "mPower4321");
-		
-		//////////////////////////////////////////////////////////////////////
-		
-		commonServiceDTOs.add(commonServiceDTO);
-		return commonServiceDTOs;
-		
+		return key;
 	}
 	
 	
+	private CountServiceDTOForChart getHouseholdCountForChart(CountServiceDTOForChart dto){		
+		return dto;
+	}
+		
 	private CountServiceDTO getHouseholdCount(String provider,String startMonth,String endMonth,String startWeek,String endWeek,CountServiceDTO commonServiceDTO){
-		commonServiceDTO.setHouseholdTotalCount(allHouseHolds.findAllHouseHolds().size()) ;
+		commonServiceDTO.setHouseholdTotalCount(allHouseHolds.findAllHouseHolds().size()) ;  //this should be improved using count(*) style query
 		commonServiceDTO.setHouseholdTodayCount(luceneHouseHoldService.getHouseholdCount("",""));
 		commonServiceDTO.setHouseholdThisMonthCount(luceneHouseHoldService.getHouseholdCount(startMonth, endMonth));
 		commonServiceDTO.setHouseholdThisWeekCount(luceneHouseHoldService.getHouseholdCount(startWeek, endWeek));
 		return commonServiceDTO;
 	}
-	private CountServiceDTO getMembersCount(String provider,String startMonth,String endMonth,String startWeek,String endWeek,CountServiceDTO commonServiceDTO){
-		commonServiceDTO.setPwTotalCount(allMembers.allOpenMembers().size());
-		commonServiceDTO.setPwThisMonthCount(luceneMembersService.getMembersCount(startMonth, endMonth));
-		commonServiceDTO.setPwThisWeekCount(luceneMembersService.getMembersCount(startMonth, endMonth));
-		commonServiceDTO.setPwTodayCount(luceneMembersService.getMembersCount("", ""));
+	private CountServiceDTO getElcoCount(String provider,String startMonth,String endMonth,String startWeek,String endWeek,CountServiceDTO commonServiceDTO){
+		commonServiceDTO.setElcoTotalCount(allElcos.findAllELCOs().size());
+		commonServiceDTO.setElcoThisMonthCount(luceneElcoService.getElcoCount(startMonth, endMonth));
+		commonServiceDTO.setElcoThisWeekCount(luceneElcoService.getElcoCount(startWeek, endWeek));
+		commonServiceDTO.setElcoTodayCount(luceneElcoService.getElcoCount("", ""));
 		return commonServiceDTO;
 	}
-	private VaccineCountDTO getVaccineCount(String type,String startMonth,String endMonth,VaccineCountDTO commonServiceDTO){
-		commonServiceDTO.setWoman_measlesCount(luceneVaccineService.getVaccineCount("Woman_measles",startMonth, endMonth));
-		commonServiceDTO.setWoman_TT1Count(luceneVaccineService.getVaccineCount("Woman_TT1",startMonth, endMonth));
-		commonServiceDTO.setWoman_TT2Count(luceneVaccineService.getVaccineCount("Woman_TT2",startMonth, endMonth));
-		commonServiceDTO.setWoman_TT3Count(luceneVaccineService.getVaccineCount("Woman_TT3",startMonth, endMonth));
-		commonServiceDTO.setWoman_TT4Count(luceneVaccineService.getVaccineCount("Woman_TT4",startMonth, endMonth));
-		commonServiceDTO.setWoman_TT5Count(luceneVaccineService.getVaccineCount("Woman_TT5",startMonth, endMonth));
-		commonServiceDTO.setChild_bcgCount(luceneVaccineService.getVaccineCount("child_bcg",startMonth, endMonth));
-		commonServiceDTO.setChild_ipvCount(luceneVaccineService.getVaccineCount("child_ipv",startMonth, endMonth));
-		commonServiceDTO.setChild_measles1Count(luceneVaccineService.getVaccineCount("child_measles1",startMonth, endMonth));
-		commonServiceDTO.setChild_measles2Count(luceneVaccineService.getVaccineCount("child_measles2",startMonth, endMonth));
-		commonServiceDTO.setChild_opv0Count(luceneVaccineService.getVaccineCount("child_opv0",startMonth, endMonth));
-		commonServiceDTO.setChild_opv1Count(luceneVaccineService.getVaccineCount("child_opv1",startMonth, endMonth));
-		commonServiceDTO.setChild_opv2Count(luceneVaccineService.getVaccineCount("child_opv2",startMonth, endMonth));
-		commonServiceDTO.setChild_opv3Count(luceneVaccineService.getVaccineCount("child_opv3",startMonth, endMonth));
-		commonServiceDTO.setChild_pcv1Count(luceneVaccineService.getVaccineCount("child_pcv1",startMonth, endMonth));
-		commonServiceDTO.setChild_pcv2Count(luceneVaccineService.getVaccineCount("child_pcv2",startMonth, endMonth));
-		commonServiceDTO.setChild_pcv3Count(luceneVaccineService.getVaccineCount("child_pcv3",startMonth, endMonth));
-		commonServiceDTO.setChild_penta1Count(luceneVaccineService.getVaccineCount("child_penta1",startMonth, endMonth));
-		commonServiceDTO.setChild_penta2Count(luceneVaccineService.getVaccineCount("child_penta2",startMonth, endMonth));
-		commonServiceDTO.setChild_penta3Count(luceneVaccineService.getVaccineCount("child_penta3",startMonth, endMonth));
+	private CountServiceDTO getMotherCount(String provider,String startMonth,String endMonth,String startWeek,String endWeek,CountServiceDTO commonServiceDTO){
+		commonServiceDTO.setPwTotalCount(allMothers.allOpenMothers().size());
+		int[] countsForChart = new int[23];
+		countsForChart = this.getMotherCountInformationForHomePage();
+		commonServiceDTO.setPwThisMonthCount(countsForChart[15] + countsForChart[16] + countsForChart[17] + countsForChart[18] + countsForChart[19]);//(luceneMotherService.getMotherCount(startMonth, endMonth));
+		commonServiceDTO.setPwThisWeekCount(countsForChart[21]);
+		commonServiceDTO.setPwTodayCount(countsForChart[20]);
 		return commonServiceDTO;
 	}
 

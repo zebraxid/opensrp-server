@@ -1698,6 +1698,11 @@ public class AllConstants {
         public static final String WWW_AUTHENTICATE_HEADER = "www-authenticate";
     }
     
+    public static class ELCOSchedulesConstantsImediate {
+		public static final String IMD_ELCO_SCHEDULE_PSRF = "IMEDIATE ELCO PSRF";
+		public static final String ELCO_SCHEDULE_PSRF = "ELCO PSRF";
+	}
+    
     public static class MembersSchedulesConstantsImediate {
     	public static final String IMD_Members_SCHEDULE = "IMEDIATE Members";
     	public static final String Members_SCHEDULE = "Members";
@@ -1721,9 +1726,6 @@ public class AllConstants {
         public static final String SCHEDULE_PNC_2 = "pncrv_2";
         public static final String SCHEDULE_PNC_3 = "pncrv_3";
         public static final String SCHEDULE_PNC_4 = "pncrv_4";  
-        public static final String CHILD = "CHILD";
-        public static final String ANC = "ANC";
-        public static final String PNC = "PNC";
     }
     public static class OpenmrsTrackUuid {
     	public static final String ENROLLMENT_TRACK_UUID = "openmrsTrackUuid";
@@ -1777,5 +1779,4 @@ public class AllConstants {
 	public static final String FORM_SCHEDULE_SUBJECT = "FORM-SCHEDULE";
 	
 	}
-
 

@@ -7,12 +7,16 @@ import org.opensrp.dto.register.HHRegisterDTO;
 import org.opensrp.dto.register.HHRegisterEntryDTO;
 import org.opensrp.register.mcare.HHRegisterEntry;
 import org.opensrp.register.mcare.HHRegister;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import ch.lambdaj.function.convert.Converter;
 
 @Component
 public class HHRegisterMapper {
+
+	private static Logger logger = LoggerFactory.getLogger(ELCORegisterMapper.class.toString());
 	
 	public HHRegisterDTO mapToDTO(HHRegister hhRegister)
 	{

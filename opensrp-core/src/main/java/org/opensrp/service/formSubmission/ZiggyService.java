@@ -1,7 +1,6 @@
 package org.opensrp.service.formSubmission;
 
 import org.opensrp.repository.FormDataRepository;
-import org.opensrp.service.formSubmission.ziggy.ZiggyDataHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,20 +31,15 @@ public class ZiggyService {
     private FormSubmissionRouter formSubmissionRouter;
     private Object ziggyFormController;
     private Invocable invocable;
-    private ZiggyDataHandler ziggyDataHandler;
+
     @Autowired
-    public ZiggyService(ZiggyFileLoader ziggyFileLoader,FormDataRepository dataRepository,FormSubmissionRouter formSubmissionRouter,
-    		ZiggyDataHandler ziggyDataHandler) throws Exception {
+    public ZiggyService(ZiggyFileLoader ziggyFileLoader,FormDataRepository dataRepository,FormSubmissionRouter formSubmissionRouter) throws Exception {
         this.ziggyFileLoader = ziggyFileLoader;
         this.dataRepository = dataRepository;
         this.formSubmissionRouter = formSubmissionRouter;
-        this.ziggyDataHandler = ziggyDataHandler;
         initRhino();
     }
 
-    public boolean isZiggyCompliant(String entityType) {
-		return ziggyDataHandler.isZiggyCompliant(entityType);
-	}
     public void saveForm(String params, String formInstance) {
         try {
             invocable.invokeMethod(ziggyFormController, SAVE_METHOD_NAME, params, formInstance);

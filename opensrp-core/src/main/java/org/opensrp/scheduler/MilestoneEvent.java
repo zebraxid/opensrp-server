@@ -31,10 +31,6 @@ public class MilestoneEvent {
     public String externalId() {
         return event.getParameters().get(EventDataKeys.EXTERNAL_ID).toString();
     }
-    
-    public DateTime startOfEarliestWindow() {
-        return alert().getEarliestDateTime();
-    }
 
     public DateTime startOfDueWindow() {
         return alert().getDueDateTime();

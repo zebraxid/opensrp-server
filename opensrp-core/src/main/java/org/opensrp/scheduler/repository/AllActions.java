@@ -3,6 +3,7 @@ package org.opensrp.scheduler.repository;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.ektorp.BulkDeleteDocument;
 import org.ektorp.ComplexKey;
@@ -12,7 +13,9 @@ import org.ektorp.support.View;
 import org.joda.time.DateTime;
 import org.motechproject.dao.MotechBaseRepository;
 import org.opensrp.common.AllConstants;
+import org.opensrp.dto.ActionData;
 import org.opensrp.scheduler.Action;
+import org.opensrp.scheduler.ScheduleLog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +27,7 @@ public class AllActions extends MotechBaseRepository<Action> {
     private static Logger logger = LoggerFactory.getLogger(AllActions.class.toString());
 
     @Autowired
-    public AllActions(@Qualifier(AllConstants.OPENSRP_DATABASE_CONNECTOR) CouchDbConnector db) {
+    protected AllActions(@Qualifier(AllConstants.OPENSRP_DATABASE_CONNECTOR) CouchDbConnector db) {
         super(Action.class, db);
     }
 
@@ -41,8 +44,7 @@ public class AllActions extends MotechBaseRepository<Action> {
                     "emit([doc.anmIdentifier, doc.caseID, doc.data.scheduleName], null)} " +
                     "}")
     public List<Action> findAlertByANMIdEntityIdScheduleName(String anmIdentifier, String caseID, String scheduleName) {
-    	
-    	ComplexKey key = ComplexKey.of(anmIdentifier, caseID, scheduleName);
+        ComplexKey key = ComplexKey.of(anmIdentifier, caseID, scheduleName);
         return db.queryView(createQuery("action_by_anm_entityId_scheduleName").key(key).includeDocs(true), Action.class);
         
     }
@@ -53,40 +55,6 @@ public class AllActions extends MotechBaseRepository<Action> {
         ComplexKey endKey = ComplexKey.of(caseId, schedule, end.getMillis());
         return db.queryView(createQuery("action_by_caseId_and_schedule_and_time").startKey(startKey).endKey(endKey).includeDocs(true), Action.class);
     }
-    
-    @View(name = "list_of_eligible_client_for_vaccine_by_provider", 
-    		map = "function(doc) {if (doc.type === 'Action'  && doc.data.alertStatus !='earlier' && doc.data.alertStatus !='expired' && doc.isActionActive ==1){emit([doc.anmIdentifier], doc);}}")
-    public List<Action> listOfEligibleClientForVaccines(String provider){
-    	ComplexKey startkey = ComplexKey.of(provider);
-    	List<Action> actions = db.queryView(createQuery("list_of_eligible_client_for_vaccine_by_provider")
-			.key(startkey)				
-			.includeDocs(true), Action.class);
-		return actions;
-    	
-    }
-    
-    @View(name = "list_of_eligible_client_by_schedule", 
-    		map = "function(doc) {if (doc.type === 'Action'  && doc.data.alertStatus !='earlier' && doc.data.alertStatus !='expired' && doc.isActionActive ==1){emit([doc.anmIdentifier,doc.data.scheduleName], doc);}}")
-    public List<Action> listOfEligibleClientForVaccine(String provider,String vaccineName){
-    	ComplexKey startkey = ComplexKey.of(provider,vaccineName);
-    	List<Action> actions = db.queryView(createQuery("list_of_eligible_client_by_schedule")
-			.key(startkey)	
-			//.endKey(endkey)
-			.includeDocs(true), Action.class);
-		return actions;
-    	
-    }
-    @View(name = "list_of_eligible_client_for_vaccine_todays", 
-    		map = "function(doc) {if (doc.type === 'Action'  && doc.data.alertStatus !='earlier' && doc.data.alertStatus !='expired' && doc.isActionActive ==1){emit([doc.anmIdentifier,doc.data.scheduleName], doc);}}")
-    public List<Action> listOfEligibleClientForVaccineTodaysChild(String provider,String vaccineName){
-    	ComplexKey startkey = ComplexKey.of(provider,vaccineName);
-    	List<Action> actions = db.queryView(createQuery("list_of_eligible_client_for_vaccine_todays")
-			.key(startkey)			
-			.includeDocs(true), Action.class);
-		return actions;
-    	
-    }
-   
     
     public void deleteAllByTarget(String target) {
         deleteAll(findByActionTarget(target));

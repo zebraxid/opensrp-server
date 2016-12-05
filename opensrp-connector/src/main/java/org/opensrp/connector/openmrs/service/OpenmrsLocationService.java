@@ -1,9 +1,5 @@
 package org.opensrp.connector.openmrs.service;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.apache.poi.ss.formula.functions.Address;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -43,33 +39,15 @@ public class OpenmrsLocationService extends OpenmrsService{
 		return null;
 	}
 	
-	
 	private Location makeLocation(String locationJson) throws JSONException{
-		JSONObject obj = new JSONObject(locationJson);		
+		JSONObject obj = new JSONObject(locationJson);
 		Location p = getParent(obj);
-		System.out.println("Address:"+obj.toString());
-		Map<String, String> addressFields = new HashMap<String, String>();
-		addressFields.put("Country", obj.getString("country"));
-		addressFields.put("Division", obj.getString("stateProvince"));
-		addressFields.put("District", obj.getString("countyDistrict"));
-		addressFields.put("Upazilla", obj.getString("address5"));
-		addressFields.put("Union", obj.getString("address3"));
-		addressFields.put("Paurasava", obj.getString("address4"));		
-		addressFields.put("HIE_facilities", obj.getString("name"));
-		addressFields.put("Address_line", obj.getString("address1"));
-		
-		
-		
-		org.opensrp.api.domain.Address address = new org.opensrp.api.domain.Address(null, null, null, addressFields, null, null, null, null, null);
-		
 		Location l = new Location(obj.getString("uuid"), obj.getString("name"), 
-				address, null, p , null, null);
+				null, null, p , null, null);
 		JSONArray t = obj.getJSONArray("tags");
 		
 		for (int i = 0; i < t.length(); i++) {
-			if(t.getJSONObject(i).getString("display").equalsIgnoreCase("HIE Facilities")){
-				l.addTag(t.getJSONObject(i).getString("display").replace(" ", "_"));
-			}
+			l.addTag(t.getJSONObject(i).getString("display"));
 		}
 		
 		JSONArray a = obj.getJSONArray("attributes");
@@ -102,9 +80,11 @@ public class OpenmrsLocationService extends OpenmrsService{
 	}
 	
 	public LocationTree getLocationTreeOf(String locationIdOrName) throws JSONException {
-		LocationTree ltr = new LocationTree();		
+		LocationTree ltr = new LocationTree();
+		
 		fillTreeWithHierarchy(ltr, locationIdOrName);
-		fillTreeWithUpperHierarchy(ltr, locationIdOrName);		
+		fillTreeWithUpperHierarchy(ltr, locationIdOrName);
+		
 		return ltr;
 	}
 	
@@ -124,12 +104,16 @@ public class OpenmrsLocationService extends OpenmrsService{
 	
 	private String fillTreeWithHierarchy(LocationTree ltr, String locationIdOrName) throws JSONException{
 		HttpResponse op = HttpUtil.get(HttpUtil.removeEndingSlash(OPENMRS_BASE_URL)+"/"+LOCATION_URL+"/"+(locationIdOrName.replaceAll(" ", "%20")), "v=full", OPENMRS_USER, OPENMRS_PWD);
-		JSONObject lo = new JSONObject(op.body());		
+
+		JSONObject lo = new JSONObject(op.body());
 		Location l = makeLocation(op.body());
-		ltr.addLocation(l);		
+		ltr.addLocation(l);
+		
 		if(lo.has("childLocations")){
-			JSONArray lch = lo.getJSONArray("childLocations");	
-			for (int i = 0; i < lch.length(); i++) {	
+			JSONArray lch = lo.getJSONArray("childLocations");
+	
+			for (int i = 0; i < lch.length(); i++) {
+	
 				JSONObject cj = lch.getJSONObject(i);
 				fillTreeWithHierarchy(ltr, cj.getString("uuid"));
 			}
@@ -139,8 +123,10 @@ public class OpenmrsLocationService extends OpenmrsService{
 
 	private void fillTreeWithUpperHierarchy(LocationTree ltr, String locationId) throws JSONException{
 		HttpResponse op = HttpUtil.get(HttpUtil.removeEndingSlash(OPENMRS_BASE_URL)+"/"+LOCATION_URL+"/"+(locationId.replaceAll(" ", "%20")), "v=full", OPENMRS_USER, OPENMRS_PWD);
-		Location l = makeLocation(op.body());		
-		ltr.addLocation(l);		
+
+		Location l = makeLocation(op.body());
+		ltr.addLocation(l);
+		
 		if(l.getParentLocation() != null){
 			fillTreeWithUpperHierarchy(ltr, l.getParentLocation().getLocationId());
 		}

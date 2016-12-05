@@ -5,11 +5,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import java.io.IOException;
 
 import org.opensrp.dto.register.HHRegisterDTO;
-
-import org.opensrp.rest.register.DTO.HouseholdDTO;
-import org.opensrp.rest.register.DTO.MemeberDTO;
 import org.opensrp.rest.services.LuceneHouseHoldService;
-import org.opensrp.rest.services.LuceneMembersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,27 +22,18 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 public class ApiController {
 
 	private LuceneHouseHoldService luceneHouseHoldService;
-	@Autowired
-	private LuceneMembersService luceneMembersService;
+	
 	@Autowired
 	public ApiController(LuceneHouseHoldService luceneHouseHoldService)
 	{
 		this.luceneHouseHoldService = luceneHouseHoldService;
 	}
 	
-	@RequestMapping(method = GET, value="/households/search")
+	@RequestMapping(method = GET, value="/full-text-households")
     @ResponseBody
-	public ResponseEntity<HouseholdDTO> getHouseHolds(@RequestParam MultiValueMap<String, String> queryParameters) throws JsonParseException, JsonMappingException, IOException
+	public ResponseEntity<HHRegisterDTO> getFullTextHouseHolds(@RequestParam MultiValueMap<String, String> queryParameters) throws JsonParseException, JsonMappingException, IOException
 	{
-		 HouseholdDTO  hhRegisterDTO  = luceneHouseHoldService.getHousehold(queryParameters);
-		 return new ResponseEntity<>(hhRegisterDTO, HttpStatus.OK);
-	}
-	
-	@RequestMapping(method = GET, value="/member/search")
-    @ResponseBody
-	public ResponseEntity<MemeberDTO> getChilds(@RequestParam MultiValueMap<String, String> queryParameters) throws JsonParseException, JsonMappingException, IOException
-	{
-		MemeberDTO  hhRegisterDTO  = luceneMembersService.getMember(queryParameters);
+		 HHRegisterDTO  hhRegisterDTO  = luceneHouseHoldService.findLuceneResult(queryParameters);
 		 return new ResponseEntity<>(hhRegisterDTO, HttpStatus.OK);
 	}
 }

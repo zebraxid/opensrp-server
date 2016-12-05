@@ -1,4 +1,4 @@
-/*package org.opensrp.schedular.service;
+package org.opensrp.schedular.service;
 
 import static junit.framework.Assert.assertEquals;
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -110,4 +110,3 @@ public class ScheduleLogicServiceTest {
 		assertEquals("1", fieldName);
 	}
 }
-*/

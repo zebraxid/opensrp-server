@@ -2,7 +2,6 @@ package org.opensrp.repository;
 
 import java.util.List;
 
-import org.ektorp.ComplexKey;
 import org.ektorp.CouchDbConnector;
 import org.ektorp.support.GenerateView;
 import org.ektorp.support.View;
@@ -47,15 +46,5 @@ public class AllBaseEntities extends MotechBaseRepository<BaseEntity> {
 	public List<BaseEntity> findByBaseEntityIds(List<String> Ids) {
 		return db.queryView(createQuery("all_entities_by_IDs").keys(Ids)
 				.includeDocs(true), BaseEntity.class);
-	}
-	@View(name = "all_entities_by_identifier", map = "function(doc) {if (doc.baseEntityId && doc.identifiers) {for(var key in doc.identifiers) {emit(doc.identifiers[key]);}}}")
-	public List<BaseEntity> findAllByIdentifier(String identifier) {
-		return db.queryView(createQuery("all_entities_by_identifier").key(identifier).includeDocs(true), BaseEntity.class);
-	}
-
-	@View(name = "all_entities_by_identifier_of_type", map = "function(doc) {if (doc.baseEntityId && doc.identifiers) {for(var key in doc.identifiers) {emit([key, doc.identifiers[key]]);}}}")
-	public List<BaseEntity> findAllByIdentifier(String identifierType, String identifier) {
-		ComplexKey ckey = ComplexKey.of(identifierType, identifier);
-		return queryView("all_entities_by_identifier_of_type", ckey);
 	}
 }

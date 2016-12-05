@@ -56,10 +56,4 @@ public class LocationTree {
 	public Map<String, TreeNode<String, Location>> getLocationsHierarchy() {
 		return locationsHierarchy.getTree();
 	}
-
-	@Override
-	public String toString() {
-		return "LocationTree [locationsHierarchy=" + locationsHierarchy + "]";
-	}
-	
 }

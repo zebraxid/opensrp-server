@@ -1,249 +1,125 @@
 package org.opensrp.domain;
 
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.ektorp.support.TypeDiscriminator;
-import org.joda.time.DateTime;
-import org.opensrp.common.Gender;
+import org.opensrp.api.constants.Gender;
 
 @TypeDiscriminator("doc.type == 'Client'")
-public class Client extends BaseEntity {
+public class Client extends BaseDataObject {
+	
 	@JsonProperty
-	private String firstName;
+	private Map<String, String> identifiers;
 	@JsonProperty
-	private String middleName;
-	@JsonProperty
-	private String lastName;
-	@JsonProperty
-	private DateTime birthdate;
-	@JsonProperty
-	private DateTime deathdate;
-	@JsonProperty
-	private Boolean birthdateApprox;
-	@JsonProperty
-	private Boolean deathdateApprox;
-	@JsonProperty
-	private String gender;
-	@JsonProperty
-	private Map<String, List<String>> relationships;
+	private String baseEntityId;
+	private BaseEntity baseEntity;
 
-	protected Client() {
-		
-	}
-
-	public Client(String baseEntityId) {
-		super(baseEntityId);
+	public Client() {}
+	
+	public Client(String baseEntityId, String firstName, String middleName, String lastName, Date birthdate, 
+			Date deathdate, Boolean birthdateApprox, Boolean deathdateApprox, String gender) {
+		this.baseEntity = new BaseEntity(baseEntityId, firstName, middleName, lastName, birthdate, deathdate, birthdateApprox, deathdateApprox, gender, null, null);
+		this.baseEntityId = baseEntityId;
 	}
 	
-	public Client(String baseEntityId, String firstName, String middleName, String lastName, DateTime birthdate, 
-			DateTime deathdate, Boolean birthdateApprox, Boolean deathdateApprox, String gender) {
-		super(baseEntityId);
-		this.firstName = firstName;
-		this.middleName = middleName;
-		this.lastName = lastName;
-		this.birthdate = birthdate;
-		this.deathdate = deathdate;
-		this.birthdateApprox = birthdateApprox;
-		this.deathdateApprox = deathdateApprox;
-		this.gender = gender;
-	}
-	
-	public Client(String baseEntityId, String firstName, String middleName, String lastName, DateTime birthdate, 
-			DateTime deathdate, Boolean birthdateApprox, Boolean deathdateApprox, String gender, 
+	public Client(String baseEntityId, String firstName, String middleName, String lastName, Date birthdate, 
+			Date deathdate, Boolean birthdateApprox, Boolean deathdateApprox, String gender, 
 			String identifierType, String identifier) {
-		super(baseEntityId);
-		this.firstName = firstName;
-		this.middleName = middleName;
-		this.lastName = lastName;
-		this.birthdate = birthdate;
-		this.deathdate = deathdate;
-		this.birthdateApprox = birthdateApprox;
-		this.deathdateApprox = deathdateApprox;
-		this.gender = gender;
-		addIdentifier(identifierType, identifier);
+		this.baseEntity = new BaseEntity(baseEntityId, firstName, middleName, lastName, birthdate, deathdate, birthdateApprox, deathdateApprox, gender, null, null);
+		this.baseEntityId = baseEntityId;
+		this.identifiers = new HashMap<>();
+		this.identifiers.put(identifierType, identifier);
 	}
 	
-	public Client(String baseEntityId, String firstName, String middleName, String lastName, DateTime birthdate, DateTime deathdate, 
+	public Client(String baseEntityId, String firstName, String middleName, String lastName, Date birthdate, Date deathdate, 
 			Boolean birthdateApprox, Boolean deathdateApprox, String gender, List<Address> addresses,
 			Map<String, String> identifiers, Map<String, Object> attributes) {
-		super(baseEntityId);
-		this.firstName = firstName;
-		this.middleName = middleName;
-		this.lastName = lastName;
-		this.birthdate = birthdate;
-		this.deathdate = deathdate;
-		this.birthdateApprox = birthdateApprox;
-		this.deathdateApprox = deathdateApprox;
-		this.gender = gender;
-		setIdentifiers(identifiers);
-		setAddresses(addresses);
-		setAttributes(attributes);
+		this.baseEntity = new BaseEntity(baseEntityId, firstName, middleName, lastName, birthdate, deathdate, birthdateApprox, deathdateApprox, gender, addresses, attributes);
+		this.baseEntityId = baseEntityId;
+		this.identifiers = identifiers;
+	}
+	public Client(String baseEntityId, String firstName, String middleName, String lastName, Date birthdate, Date deathdate, 
+			Boolean birthdateApprox, Boolean deathdateApprox, Gender gender, List<Address> addresses,
+			Map<String, String> identifiers, Map<String, Object> attributes) {
+		this.baseEntity = new BaseEntity(baseEntityId, firstName, middleName, lastName, birthdate, deathdate, birthdateApprox, deathdateApprox, gender, addresses, attributes);
+		this.baseEntityId = baseEntityId;
+		this.identifiers = identifiers;
+	}
+
+	public Map<String, String> getIdentifiers() {
+		return identifiers;
 	}
 	
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public String getMiddleName() {
-		return middleName;
-	}
-
-	public void setMiddleName(String middleName) {
-		this.middleName = middleName;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-
-	public DateTime getBirthdate() {
-		return birthdate;
-	}
-
-	public void setBirthdate(DateTime birthdate) {
-		this.birthdate = birthdate;
-	}
-
-	public DateTime getDeathdate() {
-		return deathdate;
-	}
-
-	public void setDeathdate(DateTime deathdate) {
-		this.deathdate = deathdate;
-	}
-
-	public Boolean getBirthdateApprox() {
-		return birthdateApprox;
-	}
-
-	public void setBirthdateApprox(Boolean birthdateApprox) {
-		this.birthdateApprox = birthdateApprox;
-	}
-
-	public Boolean getDeathdateApprox() {
-		return deathdateApprox;
-	}
-
-	public void setDeathdateApprox(Boolean deathdateApprox) {
-		this.deathdateApprox = deathdateApprox;
-	}
-
-	public String getGender() {
-		return gender;
-	}
-
-	public void setGender(String gender) {
-		this.gender = gender;
-	}
-
-	public Map<String, List<String>> getRelationships() {
-		return relationships;
-	}
-
-	public void setRelationships(Map<String, List<String>> relationships) {
-		this.relationships = relationships;
+	public void setIdentifiers(Map<String, String> identifiers) {
+		this.identifiers = identifiers;
 	}
 	
-	public Client withFirstName(String firstName) {
-		this.firstName = firstName;
-		return this;
+	public void addIdentifier(String identifierType, String identifier) {
+		if(identifiers == null){
+			identifiers = new HashMap<>();
+		}
+		
+		identifiers.put(identifierType, identifier);
+	}
+	
+	public void removeIdentifier(String identifierType) {
+		identifiers.remove(identifierType);
+	}
+	
+	public String getBaseEntityId() {
+		return baseEntityId;
+	}
+	
+	public void setBaseEntityId(String baseEntityId) {
+		this.baseEntityId = baseEntityId;
 	}
 
-	public Client withMiddleName(String middleName) {
-		this.middleName = middleName;
-		return this;
+	public BaseEntity getBaseEntity() {
+		return baseEntity;
 	}
 
-	public Client withLastName(String lastName) {
-		this.lastName = lastName;
-		return this;
+	public void setBaseEntity(BaseEntity baseEntity) {
+		this.baseEntity = baseEntity;
+		this.baseEntityId = baseEntity.getId();
 	}
 
-	public Client withName(String firstName, String middleName,
-			String lastName) {
-		this.firstName = firstName;
-		this.middleName = middleName;
-		this.lastName = lastName;
+	public Client withBaseEntity(BaseEntity baseEntity) {
+		this.baseEntity = baseEntity;
+		this.baseEntityId = baseEntity.getId();
 		return this;
 	}
-
-	public Client withBirthdate(DateTime birthdate, Boolean isApproximate) {
-		this.birthdate = birthdate;
-		this.birthdateApprox = isApproximate;
-		return this;
-	}
-
-	public Client withDeathdate(DateTime deathdate, Boolean isApproximate) {
-		this.deathdate = deathdate;
-		this.deathdateApprox = isApproximate;
-		return this;
-	}
-
-	public Client withGender(String gender) {
-		this.gender = gender;
-		return this;
-	}
-
-	public Client withGender(Gender gender) {
-		this.gender = gender.name();
+	
+	public Client withBaseEntityId(String baseEntityId) {
+		this.baseEntityId = baseEntityId;
 		return this;
 	}
 
 	/**
-	 * Overrides the existing data
+	 * WARNING: Overrides all existing identifiers
+	 * @param identifiers
+	 * @return
 	 */
-	public Client withRelationships(Map<String, List<String>> relationships) {
-		this.relationships = relationships;
+	public Client withIdentifiers(Map<String, String> identifiers) {
+		this.identifiers = identifiers;
 		return this;
 	}
 	
-	public List<String> findRelatives(String relationshipType) {
-		if(relationships == null){
-			relationships = new HashMap<>();
+	public Client withIdentifier(String identifierType, String identifier) {
+		if(identifiers == null){
+			identifiers = new HashMap<>();
 		}
-		
-		return relationships.get(relationshipType);
-	}
-	
-	public void addRelationship(String relationType, String relativeEntityId) {
-		if(relationships == null){
-			relationships = new HashMap<>();
-		}
-		
-		List<String> relatives = findRelatives(relationType);
-		if(relatives == null){
-			relatives = new ArrayList<>();
-		}
-		relatives.add(relativeEntityId);
-		relationships.put(relationType, relatives);
-	}
-	
-	public List<String> getRelationships(String relativeEntityId) {
-		List<String> relations = new ArrayList<String>();
-		for (Entry<String, List<String>> rl : relationships.entrySet()) {
-			if(rl.getValue().toString().equalsIgnoreCase(relativeEntityId)){
-				relations.add(rl.getKey());
-			}
-		}
-		return relations;
+		identifiers.put(identifierType, identifier);
+		return this;
 	}
 
+	
 	@Override
 	public boolean equals(Object o) {
 		return EqualsBuilder.reflectionEquals(this, o, "id", "revision");

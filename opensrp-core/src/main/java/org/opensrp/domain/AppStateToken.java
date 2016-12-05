@@ -5,12 +5,16 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.ektorp.support.TypeDiscriminator;
-import org.joda.time.LocalDate;
 import org.motechproject.model.MotechBaseDataObject;
 
 @TypeDiscriminator("doc.type === 'AppStateToken'")
 public class AppStateToken extends MotechBaseDataObject {
-    @JsonProperty
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	@JsonProperty
     private String name;
     
     @JsonProperty
@@ -50,31 +54,29 @@ public class AppStateToken extends MotechBaseDataObject {
 		return value;
 	}
 	
-	public long longValue() {
+	public long getLongValue() {
 		return Long.parseLong(value.toString());
 	}
 	
-	public int intValue() {
+	public int getIntValue() {
 		return Integer.parseInt(value.toString());
 	}
 	
-	public float floatValue() {
+	public float getFloatValue() {
 		return Float.parseFloat(value.toString());
 	}
 	
-	public double doubleValue() {
+	public double getDoubleValue() {
 		return Double.parseDouble(value.toString());
 	}
 	
+	public String getStringValue() {
+		return value.toString();
+	}
 	public String stringValue() {
 		return value.toString();
 	}
-	
-	public LocalDate datetimeValue() {
-		return LocalDate.parse(value.toString());
-	}
-	
-	public boolean booleanValue() {
+	public boolean getBooleanValue() {
 		return Boolean.parseBoolean(value.toString());
 	}
 	

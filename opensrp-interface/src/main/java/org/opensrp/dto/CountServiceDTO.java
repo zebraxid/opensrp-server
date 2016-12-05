@@ -29,7 +29,7 @@ public class CountServiceDTO {
 	@JsonProperty
 	private int pwThisWeekCount;
 	@JsonProperty
-	private int pwThisMonthCount;
+	private int pwThisMonthCount;	
 
 	public CountServiceDTO(){
 		
@@ -53,6 +53,7 @@ public class CountServiceDTO {
 		this.pwTodayCount = pwTodayCount;
 		this.pwThisWeekCount = pwThisWeekCount;
 		this.pwThisMonthCount = pwThisMonthCount;
+		
 	}
 	
 	public int getHouseholdTotalCount() {

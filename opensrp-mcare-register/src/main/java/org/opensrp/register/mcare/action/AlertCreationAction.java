@@ -1,7 +1,8 @@
 package org.opensrp.register.mcare.action;
 
-import static org.opensrp.dto.BeneficiaryType.members;
+import static org.opensrp.common.AllConstants.BnfFollowUpVisitFields.SCHEDULE_BNF_IME;
 import static org.opensrp.dto.BeneficiaryType.household;
+import static org.opensrp.dto.BeneficiaryType.members;
 
 import java.text.ParseException;
 import java.util.List;
@@ -11,11 +12,13 @@ import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.motechproject.scheduletracking.api.domain.Enrollment;
+import org.opensrp.common.AllConstants.BnfFollowUpVisitFields;
+import org.opensrp.common.AllConstants.ELCOSchedulesConstantsImediate;
 import org.opensrp.common.AllConstants.ScheduleNames;
 import org.opensrp.domain.Multimedia;
 import org.opensrp.dto.BeneficiaryType;
-import org.opensrp.register.mcare.domain.HouseHold;
 import org.opensrp.register.mcare.domain.Members;
+import org.opensrp.register.mcare.domain.HouseHold;
 import org.opensrp.register.mcare.repository.AllHouseHolds;
 import org.opensrp.register.mcare.repository.AllMembers;
 import org.opensrp.register.mcare.service.MultimediaRegisterService;
@@ -40,7 +43,7 @@ public class AlertCreationAction implements HookedEvent {
 	private static Logger logger = LoggerFactory.getLogger(AlertCreationAction.class.toString());
 	@Autowired
 	public AlertCreationAction(HealthSchedulerService scheduler,
-			AllHouseHolds allHouseHolds, AllMembers allMembers,
+			AllHouseHolds allHouseHolds, AllMembers allMembers, 
 			ScheduleLogService scheduleLogService, MultimediaRegisterService multimediaRegisterService) {
 		this.scheduler = scheduler;
 		this.allHouseHolds = allHouseHolds;
@@ -69,15 +72,14 @@ public class AlertCreationAction implements HookedEvent {
 				providerId = houseHold.PROVIDERID();
 				startOfEarliestWindow = DateTime.parse(houseHold.getToday(),formatter);
 			}
-		}
-		else if(members.equals(beneficiaryType))
-		{
+		} else if (members.equals(beneficiaryType)) {
+			
 			Members members = allMembers.findByCaseId(caseID);
 			
 			if (members != null) {
 				instanceId= members.INSTANCEID();
 				providerId = members.PROVIDERID();
-				startOfEarliestWindow = event.startOfEarliestWindow();
+				startOfEarliestWindow = DateTime.parse(members.getToday(),formatter);
 			}
 		}
 		else {
@@ -90,13 +92,14 @@ public class AlertCreationAction implements HookedEvent {
 	}
 	
 	public String parseScheduleName(String scheduleName){
-    	if(scheduleName.equalsIgnoreCase(ScheduleNames.IMD_SCHEDULE_Woman_BNF)){
+		if(scheduleName.equalsIgnoreCase(ScheduleNames.IMD_SCHEDULE_Woman_BNF)){
     		return scheduleName.replace(ScheduleNames.IMD_SCHEDULE_Woman_BNF, ScheduleNames.SCHEDULE_Woman_BNF);
     	}
     	else if(scheduleName.equalsIgnoreCase(ScheduleNames.IMD_ELCO_SCHEDULE_PSRF)){
     		return scheduleName.replace(ScheduleNames.IMD_ELCO_SCHEDULE_PSRF, ScheduleNames.ELCO_SCHEDULE_PSRF);
     	}
-    	else return scheduleName;    	
+    	else return scheduleName;    
+    	
     }
 
 	@Override

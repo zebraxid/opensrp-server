@@ -2,29 +2,21 @@ package org.opensrp.connector.openmrs.service;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
-import java.util.Scanner;
 
 import org.hamcrest.Matchers;
-import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.opensrp.api.domain.Client;
 import org.opensrp.api.domain.Event;
 import org.opensrp.api.domain.Obs;
-import org.opensrp.common.util.HttpResponse;
 import org.opensrp.connector.FormAttributeMapper;
-import org.opensrp.connector.HttpUtil;
 import org.opensrp.connector.OpenmrsConnector;
 import org.opensrp.connector.openmrs.constants.OpenmrsHouseHold;
 import org.opensrp.form.domain.FormSubmission;
@@ -83,7 +75,7 @@ public class EncounterTest extends TestResourceLoader{
 
 	}
 	
-	@Ignore@Test
+	@Test
 	public void testEncounter() throws JSONException, ParseException, IOException {
 		FormSubmission fs = getFormSubmissionFor("basic_reg");
 		
@@ -101,22 +93,6 @@ public class EncounterTest extends TestResourceLoader{
 		assertEquals(e.getEventType(), "patient_register");
 		assertEquals(e.getEventDate(), sd.parse("2015-02-01"));
 		assertEquals(e.getLocationId(), "unknown location");
-		
-		String content = new String(Files.readAllBytes(Paths.get("/home/user/workspace-DG/opensrp-server/opensrp-connector/src/test/resources/file.txt")));
-		System.out.println(content);
-		JSONObject enc = new JSONObject();		
-		enc.put("encounterDatetime", "2016-10-04");
-		enc.put("patient", "692432e8-18f1-465b-a856-41124c1a05d9");
-		enc.put("encounterType", "Child Vaccination Followup");
-		enc.put("provider", "3df2304f-2151-4cff-87f1-41eab55eafbb");
-		enc.put("obs", content.trim());
-		System.out.println(enc.toString());
-
-		/*HttpResponse op = HttpUtil.post(
-				HttpUtil.removeEndingSlash("https://192.168.19.44/openmrs/")+"/"+"ws/rest/v1/encounter", "", enc.toString(), "sohel", "Sohel@123");
-		
-		System.out.println(op.body());*/
-
 	}
 	
 	@Test

@@ -21,6 +21,7 @@ import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.form.domain.SubFormData;
 import org.opensrp.scheduler.Action;
 import org.opensrp.scheduler.repository.AllActions;
+import org.opensrp.scheduler.service.ActionService;
 import org.opensrp.register.mcare.domain.Members;
 import org.opensrp.register.mcare.domain.HouseHold;
 import org.opensrp.register.mcare.repository.AllMembers;
@@ -28,8 +29,6 @@ import org.opensrp.register.mcare.repository.AllHouseHolds;
 import org.opensrp.register.mcare.service.scheduling.MembersScheduleService;
 import org.opensrp.register.mcare.service.scheduling.HHSchedulesService;
 import org.opensrp.register.mcare.service.scheduling.ScheduleLogService;
-import org.opensrp.register.mcare.service.scheduling.ChildVaccineSchedule;
-import org.opensrp.register.mcare.service.scheduling.WomanVaccineSchedule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,20 +48,18 @@ public class MembersService {
 	private HHSchedulesService hhSchedulesService;
 	private MembersScheduleService membersScheduleService;
 	private ScheduleLogService scheduleLogService;
-	private ChildVaccineSchedule childVaccineSchedule;
-	private WomanVaccineSchedule womanVaccineSchedule;
+	private ActionService actionService;
 	private AllActions allActions;
 	@Autowired
 	public MembersService(AllHouseHolds allHouseHolds, AllMembers allMembers, HHSchedulesService hhSchedulesService, MembersScheduleService membersScheduleService, 
-			ScheduleLogService scheduleLogService, ChildVaccineSchedule childVaccineSchedule, WomanVaccineSchedule womanVaccineSchedule, AllActions allActions) {
+			ScheduleLogService scheduleLogService, AllActions allActions, ActionService actionService) {
 		this.allHouseHolds = allHouseHolds;
 		this.allMembers = allMembers;
 		this.hhSchedulesService = hhSchedulesService;
 		this.membersScheduleService = membersScheduleService;
 		this.scheduleLogService = scheduleLogService;
-		this.childVaccineSchedule = childVaccineSchedule;
-		this.womanVaccineSchedule = womanVaccineSchedule;
 		this.allActions = allActions;
+		this.actionService = actionService;
 	}
 	
 	public void registerMembers(FormSubmission submission) {
@@ -86,12 +83,33 @@ public class MembersService {
 				logger.info("members removed");
 			}
 
-			womanVaccineSchedule.immediateWomanVaccine(submission, members, membersFields, ELCO_SCHEDULE_PSRF, 
-					IMD_ELCO_SCHEDULE_PSRF, submission.getField(REFERENCE_DATE), "Eligible", "");
+			//womanVaccineSchedule.immediate_Vaccine(submission, members, membersFields, ELCO_SCHEDULE_PSRF, 
+			//		IMD_ELCO_SCHEDULE_PSRF, submission.getField(REFERENCE_DATE), "Eligible");
 			
-			womanVaccineSchedule.immediateWomanVaccine(submission, members, membersFields, child_vaccination_bcg, 
-					child_vaccination_bcg, submission.getField(REFERENCE_DATE), "Child", "");
+			String fieldName = "Eligible";
+			if (!fieldName.equalsIgnoreCase("")) {
+				if (membersFields.containsKey(fieldName)) {
+					if (membersFields.get(fieldName)!= null || !membersFields.get(fieldName).equalsIgnoreCase("")) {
+						if(submission.getField(fieldName).equalsIgnoreCase("1")){
+							membersScheduleService.imediateEnrollIntoMilestoneOfPSRF(
+								membersFields.get(ID), submission.getField(REFERENCE_DATE), submission.anmId(), submission.instanceId());
+						}
+					} 
+				}
+			}
+			
+			//womanVaccineSchedule.Vaccine(submission, members, membersFields, child_vaccination_bcg, submission.getField(REFERENCE_DATE), "Child");
 
+			if(membersFields.containsKey("Child"))
+			if(membersFields.get("Child") != null && !membersFields.get("Child").equalsIgnoreCase(""))
+			if(membersFields.get("Child").equalsIgnoreCase("1")){
+				if(membersFields.containsKey(submission.getField(REFERENCE_DATE)))
+				if(membersFields.get(submission.getField(REFERENCE_DATE)) != null && !membersFields.get(submission.getField(REFERENCE_DATE)).equalsIgnoreCase(""))
+				if(isValidDate(membersFields.get(submission.getField(REFERENCE_DATE)))){
+					membersScheduleService.enrollIntoSchedule(
+						members.caseId(),submission.getField(REFERENCE_DATE),child_vaccination_bcg);
+				}
+			}
 		}	
 			
 
@@ -248,17 +266,23 @@ public class MembersService {
   
 		if (submission.getField(ELCO_Status) != null && submission.getField(ELCO_Status).equalsIgnoreCase("2")) 
 		{
-			membersScheduleService.enrollAfterimmediateVisit(submission.entityId(),submission.anmId(),submission.getField(today),
-				submission.instanceId(),ELCO_SCHEDULE_PSRF,IMD_ELCO_SCHEDULE_PSRF);
+			//membersScheduleService.enrollAfterimmediateVisit(submission.entityId(),submission.anmId(),submission.getField(today),
+			//	submission.instanceId(),ELCO_SCHEDULE_PSRF,IMD_ELCO_SCHEDULE_PSRF);
+			
+			membersScheduleService.enrollIntoMilestoneOfPSRF(submission.entityId(), submission.getField(today), submission.anmId(),
+					submission.instanceId());
 		} 
 		else if (submission.getField(Preg_Status) != null && 
 				(submission.getField(Preg_Status).equalsIgnoreCase("0") || submission.getField(Preg_Status).equalsIgnoreCase("9")))
 		{
-			membersScheduleService.enrollAfterimmediateVisit(submission.entityId(),submission.anmId(),submission.getField(today),
-					submission.instanceId(),ELCO_SCHEDULE_PSRF,IMD_ELCO_SCHEDULE_PSRF);
+			//membersScheduleService.enrollAfterimmediateVisit(submission.entityId(),submission.anmId(),submission.getField(today),
+			//		submission.instanceId(),ELCO_SCHEDULE_PSRF,IMD_ELCO_SCHEDULE_PSRF);
+			
+			membersScheduleService.enrollIntoMilestoneOfPSRF(submission.entityId(), submission.getField(today), submission.anmId(),
+					submission.instanceId());
 		}
 		else{
-			membersScheduleService.unEnrollAndCloseSchedule(members.caseId(),submission.anmId(),
+			/*membersScheduleService.unEnrollAndCloseSchedule(members.caseId(),submission.anmId(),
 					ELCO_SCHEDULE_PSRF,LocalDate.parse(submission.getField(today)));
 			membersScheduleService.unEnrollAndCloseSchedule(members.caseId(),submission.anmId(),
 					IMD_ELCO_SCHEDULE_PSRF,LocalDate.parse(submission.getField(today)));
@@ -272,11 +296,35 @@ public class MembersService {
 
 			} catch (Exception e) {
 				logger.info("From Elco_Followup: " + e.getMessage());
+			}*/
+			
+			membersScheduleService.unEnrollFromScheduleOfPSRF(submission.entityId(), submission.anmId(), "");
+			try {
+				List<Action> beforeNewActions = allActions.findAlertByANMIdEntityIdScheduleName(submission.anmId(), submission.entityId(),
+						ELCO_SCHEDULE_PSRF);
+				if (beforeNewActions.size() > 0) {
+					scheduleLogService.closeSchedule(submission.entityId(), submission.instanceId(), beforeNewActions.get(0).timestamp(),
+							ELCO_SCHEDULE_PSRF);
+				}
+
+			} catch (Exception e) {
+				logger.info("From Elco_Followup: " + e.getMessage());
 			}
+			
 			membersScheduleService.enrollIntoCorrectMilestoneOfANCRVCare(submission.entityId(), LocalDate.parse(LMP));
 		}
 		
-		womanVaccineSchedule.immediateVaccine(submission, members, SCHEDULE_Woman_BNF, IMD_SCHEDULE_Woman_BNF, Calc_EDD, Preg_Status, "");
+		//womanVaccineSchedule.immediateVaccine(submission, members, SCHEDULE_Woman_BNF, IMD_SCHEDULE_Woman_BNF, Calc_EDD, Preg_Status);
+		
+		String fieldName = "Preg_Status";
+		if (!fieldName.equalsIgnoreCase("")) {
+			if(submission.getField(fieldName) != null && !submission.getField(fieldName).equalsIgnoreCase("")){
+				if(submission.getField(fieldName).equalsIgnoreCase("1")){
+					membersScheduleService.imediateEnrollIntoMilestoneOfBNF(
+							submission.getField(ID), submission.getField(Calc_EDD), submission.anmId(), submission.instanceId());
+				}
+			} 
+		}
 
 	}
 	
@@ -374,33 +422,80 @@ public class MembersService {
 		members.setBNFVisit(bnf);
 		allMembers.update(members);
 		
-		if (submission.getField(Visit_status) != null && !submission.getField(Visit_status).equalsIgnoreCase("")){	
-			if(submission.getField(Visit_status).equalsIgnoreCase("1")){
-				if (submission.getField(Today) != null && !submission.getField(Today).equalsIgnoreCase(""))
-				if(isValidDate(submission.getField(Today)))
-					membersScheduleService.enrollAfterimmediateVisit(members.caseId(),submission.anmId(),submission.getField(Today),submission.instanceId(),SCHEDULE_Woman_BNF,IMD_SCHEDULE_Woman_BNF);
-			}
-				
-			else if(submission.getField(Visit_status).equalsIgnoreCase("3") || submission.getField(Visit_status).equalsIgnoreCase("4") || submission.getField(Visit_status).equalsIgnoreCase("8")){
-				membersScheduleService.unEnrollAndCloseSchedule(members.caseId(),submission.anmId(),
-						SCHEDULE_Woman_BNF,LocalDate.parse(submission.getField(Today)));
-				membersScheduleService.unEnrollAndCloseSchedule(members.caseId(),submission.anmId(),
-						IMD_SCHEDULE_Woman_BNF,LocalDate.parse(submission.getField(Today)));
-				try {
-					List<Action> beforeNewActions = allActions.findAlertByANMIdEntityIdScheduleName(submission.anmId(), submission.entityId(),
-							SCHEDULE_Woman_BNF);
-					if (beforeNewActions.size() > 0) {
-						scheduleLogService.closeSchedule(submission.entityId(), submission.instanceId(), beforeNewActions.get(0).timestamp(),
-								SCHEDULE_Woman_BNF);
-					}
+		/*if (submission.getField(Visit_status) != null && !submission.getField(Visit_status).equalsIgnoreCase("")){	
+		if(submission.getField(Visit_status).equalsIgnoreCase("1")){
+		if (submission.getField(Today) != null && !submission.getField(Today).equalsIgnoreCase(""))
+		if(isValidDate(submission.getField(Today)))
+			membersScheduleService.enrollAfterimmediateVisit(members.caseId(),submission.anmId(),submission.getField(Today),
+					submission.instanceId(),SCHEDULE_Woman_BNF,IMD_SCHEDULE_Woman_BNF);	
+		}
+		}*/
 		
-				} catch (Exception e) {
-					logger.info("From BNF_Visit: " + e.getMessage());
-				}	
-				childVaccineSchedule.immediateVaccine(submission, members, child_vaccination_bcg, existing_Member_Birth_Date);
-				membersScheduleService.unEnrollAndCloseSchedule(members.caseId(),submission.anmId(),
-						SCHEDULE_ANC,LocalDate.parse(submission.getField(Today)));
+		if (submission.getField(Visit_status) != null && !submission.getField(Visit_status).equalsIgnoreCase("")){	
+		if(submission.getField(Visit_status).equalsIgnoreCase("1")){
+			membersScheduleService.enrollIntoMilestoneOfBNF(submission.entityId(), submission.getField(Today), submission.anmId(),
+				submission.instanceId());
+		}
+		}
+		
+		
+				
+		else if(submission.getField(Visit_status).equalsIgnoreCase("3") || submission.getField(Visit_status).equalsIgnoreCase("4") || 
+				submission.getField(Visit_status).equalsIgnoreCase("8")){
+			/*membersScheduleService.unEnrollAndCloseSchedule(members.caseId(),submission.anmId(),
+					SCHEDULE_Woman_BNF,LocalDate.parse(submission.getField(Today)));
+			membersScheduleService.unEnrollAndCloseSchedule(members.caseId(),submission.anmId(),
+					IMD_SCHEDULE_Woman_BNF,LocalDate.parse(submission.getField(Today)));
+			try {
+				List<Action> beforeNewActions = allActions.findAlertByANMIdEntityIdScheduleName(submission.anmId(), submission.entityId(),
+						SCHEDULE_Woman_BNF);
+				if (beforeNewActions.size() > 0) {
+					scheduleLogService.closeSchedule(submission.entityId(), submission.instanceId(), beforeNewActions.get(0).timestamp(),
+							SCHEDULE_Woman_BNF);
+				}
+	
+			} catch (Exception e) {
+				logger.info("From BNF_Visit: " + e.getMessage());
+			}*/	
+			
+			membersScheduleService.unEnrollFromScheduleOfBNF(submission.entityId(), submission.anmId(), "");
+			try {
+				List<Action> beforeNewActions = allActions.findAlertByANMIdEntityIdScheduleName(submission.anmId(), submission.entityId(),
+						SCHEDULE_Woman_BNF);
+				if (beforeNewActions.size() > 0) {
+					scheduleLogService.closeSchedule(submission.entityId(), submission.instanceId(), beforeNewActions.get(0).timestamp(),
+							SCHEDULE_Woman_BNF);
+				}
+
+			} catch (Exception e) {
+				logger.info("From BNF_Visit: " + e.getMessage());
+			}			
+			
+			/*if(submission.getField(existing_Member_Birth_Date) != null && !submission.getField(existing_Member_Birth_Date).equalsIgnoreCase(""))
+			if(isValidDate(submission.getField(existing_Member_Birth_Date))){
+				membersScheduleService.enrollimmediateMembersVisit(
+					members.caseId(),submission.anmId(),submission.getField(existing_Member_Birth_Date),submission.instanceId(),child_vaccination_bcg,child_vaccination_bcg);
+			}*/
+			
+			if(submission.getField(existing_Member_Birth_Date) != null && !submission.getField(existing_Member_Birth_Date).equalsIgnoreCase(""))
+			if(isValidDate(submission.getField(existing_Member_Birth_Date))){
+					membersScheduleService.imediateEnrollIntoMilestoneOfchild_vaccination(
+							submission.entityId(), submission.getField(existing_Member_Birth_Date), submission.anmId(), submission.instanceId());
 			}
+			
+			//membersScheduleService.unEnrollAndCloseSchedule(members.caseId(),submission.anmId(),
+			//		SCHEDULE_ANC,LocalDate.parse(submission.getField(Today)));
+			
+			scheduleLogService.ancScheduleUnEnroll(submission.entityId(), submission.anmId(), SCHEDULE_ANC);
+			actionService.markAllAlertsAsInactive(submission.entityId());
+			try {
+				long timestamp = actionService.getActionTimestamp(submission.anmId(), submission.entityId(), SCHEDULE_ANC);
+				membersScheduleService.fullfillSchedule(submission.entityId(), SCHEDULE_ANC, submission.instanceId(), timestamp);
+			} catch (Exception e) {
+				logger.info("From BNF_Visit:" + e.getMessage());
+			}
+			
+			membersScheduleService.enrollIntoCorrectMilestoneOfPNCRVCare(submission.entityId(), LocalDate.parse(DOO));
 		}
 	}
 	

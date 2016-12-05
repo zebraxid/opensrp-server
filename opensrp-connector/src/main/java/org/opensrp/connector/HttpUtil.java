@@ -37,7 +37,7 @@ public class HttpUtil {
      * @return
      */
     public static HttpResponse post(String url, String payload, String data, String username,String password) {
-        new TurnOffCertificateValidation().ForHTTPSConnections();
+    	new TurnOffCertificateValidation().ForHTTPSConnections();
     	try {
         	HttpURLConnection con = makeConnection(url, payload, HttpMethod.POST, true, username, password);
         	con.setDoOutput(true);
@@ -67,7 +67,7 @@ public class HttpUtil {
      */
     public static HttpResponse get(String url, String payload, String username, String password) {
     	new TurnOffCertificateValidation().ForHTTPSConnections();
-    	try {
+        try {
             HttpURLConnection con = makeConnection(url, payload, HttpMethod.GET, true, username, password);
             return new HttpResponse(con.getResponseCode() == HttpStatus.SC_OK, IOUtils.toString(con.getInputStream()));
         } 

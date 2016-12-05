@@ -100,4 +100,29 @@ public class AllFormSubmissions extends MotechBaseRepository<FormSubmission> {
         }
         return db.queryView(query, FormSubmission.class);
     }
+	
+	@View(
+            name = "formSubmission_by_both_user_fwa_after_90",
+            map = "function(doc) { if(doc.formInstance.form.fields.length > 0 && doc.type==='FormSubmission') { for(var field in doc.formInstance.form.fields) { if(doc.formInstance.form.fields[field].name ==='user_type'){ if (doc.formInstance.form.fields[field].value==='FD'){ emit([doc.anmId, doc.serverVersion], null); } else if (doc.formInstance.form.fields[field].value==='FWA' && doc.serverVersion > 1456358400000){ emit([doc.anmId, doc.serverVersion], null); } } } } }")
+    public List<FormSubmission> findBothUserSubmissionFWAAfter90(String anmId, long version, Integer batchSize) {
+       
+    	ComplexKey startKey = ComplexKey.of(anmId, version + 1);
+        ComplexKey endKey = ComplexKey.of(anmId, Long.MAX_VALUE);
+        
+        ViewQuery query = createQuery("formSubmission_by_both_user_fwa_after_90")
+                .startKey(startKey)
+                .endKey(endKey)
+                .includeDocs(true);
+        if (batchSize != null) {
+            query.limit(batchSize);
+        }
+        return db.queryView(query, FormSubmission.class);
+        
+		/*ViewQuery query = createQuery("formSubmission_by_both_user_fwa_after_90").includeDocs(true);
+		
+		if (batchSize != null) {
+            query.limit(batchSize);
+        }
+        return db.queryView(query, FormSubmission.class);*/
+    }
 }

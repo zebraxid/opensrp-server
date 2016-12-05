@@ -483,11 +483,6 @@ public class FormAttributeMapper {
 				JsonArray nodeChAr = node.getAsJsonObject().get("children").getAsJsonArray();
 				for (int j = 0; j < nodeChAr.size(); j++) {
 					JsonObject option = nodeChAr.get(j).getAsJsonObject();
-					
-					/*System.out.println("name: " +option.toString());
-					JsonObject s= option.get("instance").getAsJsonObject();
-					System.out.println("Json Object: " + s.toString());*/
-					
 					if(option.get("name").getAsString().equalsIgnoreCase(fieldVal)){
 						return option.get("instance").getAsJsonObject().get("openmrs_code").getAsString();
 					}
@@ -694,8 +689,8 @@ public class FormAttributeMapper {
 		
     	Node lastNode = null;
     	String formName = formSubmission.formName();
-    	String filePath = this.xmlFilePath+"/"+formName+"/model.xml";///home/julkar/opensrp-workspace/opensrp-server/opensrp-web/target/classes/form/new_household_registration/model.xml
-    	File file = new File(filePath);                              ///home/julkar/opensrp-workspace/opensrp-server/opensrp-web/target/classes/form/new_household_registration/form_definition.json
+    	String filePath = this.xmlFilePath+"/"+formName+"/model.xml";
+    	File file = new File(filePath);
     	try {
     		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder builder = factory.newDocumentBuilder();

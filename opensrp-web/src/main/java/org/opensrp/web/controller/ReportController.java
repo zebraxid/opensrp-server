@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.opensrp.register.mcare.mapper.ELCORegisterMapper;
 import org.opensrp.register.mcare.mapper.HHRegisterMapper;
 
 
@@ -30,6 +31,7 @@ public class ReportController {
 
 	private OpenmrsReportingService reportService;
 	private HHReportService hhReportService;
+	private ELCORegisterMapper ecRegisterMapper;
 	private HHRegisterMapper hhRegisterMapper;
 	
 	
@@ -37,9 +39,11 @@ public class ReportController {
 	public ReportController(
 			OpenmrsReportingService reportService,
 			HHReportService hhReportService,
+			ELCORegisterMapper ecRegisterMapper,
 			HHRegisterMapper hhRegisterMapper) {
 		this.reportService = reportService;
 		this.hhReportService = hhReportService;
+		this.ecRegisterMapper = ecRegisterMapper;
 		this.hhRegisterMapper = hhRegisterMapper;
 	}
 	

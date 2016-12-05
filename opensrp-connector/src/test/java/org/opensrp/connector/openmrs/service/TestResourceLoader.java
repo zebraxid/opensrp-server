@@ -20,9 +20,7 @@ public class TestResourceLoader {
 	protected String openmrsUsername;
 	protected String openmrsPassword;
 	protected String formDirPath;
-	protected boolean pushToOpenmrsForTest;	
-	protected ECPatientService patientService;
-	protected ECEncounterService encounterService;
+	protected boolean pushToOpenmrsForTest;
 
 	public TestResourceLoader() throws IOException {
 		Resource resource = new ClassPathResource("/opensrp.properties");
@@ -33,9 +31,6 @@ public class TestResourceLoader {
 		formDirPath = props.getProperty("form.directory.name");
 		String rc = props.getProperty("openmrs.test.make-rest-call");
 		pushToOpenmrsForTest = StringUtils.isEmptyOrWhitespaceOnly(rc)?false:Boolean.parseBoolean(rc);
-		this.patientService = new ECPatientService(openmrsOpenmrsUrl, openmrsUsername, openmrsPassword);
-		this.encounterService = new ECEncounterService(openmrsOpenmrsUrl, openmrsUsername, openmrsPassword);
-		this.encounterService.setPatientService(patientService);
 	}
 	
 	protected FormSubmission getFormSubmissionFor(String formName, Integer number) throws JsonIOException, IOException{

@@ -47,16 +47,16 @@ public class UserDTO {
 	private String gender;
 	
 	@JsonProperty
-	private SimplifiedUser parent;
+	private UserDTO parent;
 	
 	@JsonProperty
-	private List<SimplifiedUser> children;
+	private List<UserDTO> children;
 	
 	@JsonProperty
-	private List<SimplifiedRole> roles;
+	private List<RoleDTO> roles;
 	
 	@JsonProperty
-	private List<SimplifiedLocation> location;
+	private List<LocationDTO> location;
 	
 	@JsonProperty
 	private Map<String, String> meta;
@@ -83,11 +83,6 @@ public class UserDTO {
 		
 	}
 	
-	public UserDTO withLocation(List<SimplifiedLocation> locations) {
-		this.location = locations;
-		return this;
-	}
-	
 	public UserDTO withName(String roleName) {
 		this.name = roleName;
 		return this;
@@ -100,66 +95,6 @@ public class UserDTO {
 	
 	public UserDTO withStatus(String status) {
 		this.status = status;
-		return this;
-	}
-	
-	public UserDTO withUserName(String userName){
-		this.user_name = userName;
-		return this;
-	}
-	
-	public UserDTO withGivenName(String givenName){
-		this.given_name = givenName;
-		return this;
-	}
-	
-	public UserDTO withMiddleName(String middleName){
-		this.middle_name = middleName;
-		return this;
-	}
-	
-	public UserDTO withFamilyName(String familyName){
-		this.family_name = familyName;
-		return this;
-	}
-	
-	public UserDTO withContactNumber(String contactNumber){
-		this.contact_number = contactNumber;
-		return this;
-	}
-		
-	public UserDTO withEmail(String email){
-		this.email = email;
-		return this;
-	}
-	
-	public UserDTO withPersonalAddress(String address){
-		this.personal_address = address;
-		return this;
-	}
-	
-	public UserDTO withGender(String gender){
-		this.gender = gender;
-		return this;
-	}
-	
-	public UserDTO withParent(SimplifiedUser parent){
-		this.parent = parent;
-		return this;
-	}
-	
-	public UserDTO withChildren(List<SimplifiedUser> children){
-		this.children = children;
-		return this;
-	}
-	
-	public UserDTO withRoles(List<SimplifiedRole> roles){
-		this.roles = roles;
-		return this;
-	}
-	
-	public UserDTO withId(String userId){
-		this.id = userId;
 		return this;
 	}
 	
@@ -207,15 +142,15 @@ public class UserDTO {
 		return gender;
 	}
 	
-	public SimplifiedUser getParent() {
+	public UserDTO getParent() {
 		return parent;
 	}
 	
-	public List<SimplifiedUser> getChildren() {
+	public List<UserDTO> getChildren() {
 		return children;
 	}
 	
-	public List<SimplifiedRole> getRoles() {
+	public List<RoleDTO> getRoles() {
 		return roles;
 	}
 	
@@ -223,7 +158,7 @@ public class UserDTO {
 		return user_name;
 	}
 	
-	public List<SimplifiedLocation> getLocation() {
+	public List<LocationDTO> getLocation() {
 		return location;
 	}
 	

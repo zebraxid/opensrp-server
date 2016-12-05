@@ -41,8 +41,6 @@ public class AllRoles extends MotechBaseRepository<Role> {
 		/*return db.queryView(
 				createQuery("all_user_with_role")
 						.includeDocs(true), Role.class);*/
-		
-		//this is what making trouble with /all-roles-with-user
 		return null;
 	}
 	

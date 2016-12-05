@@ -20,7 +20,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.codec.Base64;
-import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import ch.lambdaj.Lambda;
@@ -50,28 +49,32 @@ public class DrishtiAuthenticationProvider implements AuthenticationProvider {
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
     	User user = null;
     	String credentials = null;
-    	Boolean userExistsInCouch = checkIfDashboardUser(authentication.getName(), (String) authentication.getCredentials());
-    	Boolean ifOpenmrsUser = false;
-    	try {        	
-			if (openmrsUserService.authenticate(authentication.getName(), (String) authentication.getCredentials())) {
-				ifOpenmrsUser = true;
+    	if(checkIfDashboardUser(authentication.getName(), (String) authentication.getCredentials())){
+    		user = getDrishtiUserForDashboard();
+    		credentials = "Sohel@123";
+    	}
+    	else{
+    		user = getDrishtiUser(authentication);
+    		credentials = (String) authentication.getCredentials();
+    	}
+        
+        if (user == null ) {
+            throw new BadCredentialsException(USER_NOT_FOUND);
+        }
+        
+        //String hashedCredentials = passwordEncoder.encodePassword(credentials, user.getSalt());
+        //System.out.println("the current credential - " + credentials);
+        try {        	
+			if (!openmrsUserService.authenticate(user.getUsername(), credentials)) {
+			    throw new BadCredentialsException(USER_NOT_FOUND);
 			}
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-    	if(ifOpenmrsUser){
-    		user = getDrishtiUser(authentication);
-			credentials = (String) authentication.getCredentials();
-    	}
-    	else{
-    		if(userExistsInCouch){
-    			user = getDrishtiUserForDashboard();
-        		credentials = "Sohel@123";
-    		}
-    		else{
-    			throw new BadCredentialsException(USER_NOT_FOUND);
-    		}
-    	}    	
+
+        /*if (!user.isActive()) {
+            throw new BadCredentialsException(USER_NOT_ACTIVATED);
+        }*/
         return new UsernamePasswordAuthenticationToken(authentication.getName(), credentials, getRolesAsAuthorities(user));
     }
         
@@ -95,7 +98,6 @@ public class DrishtiAuthenticationProvider implements AuthenticationProvider {
         try {
             user = openmrsUserService.getUser((String) authentication.getPrincipal());
         } catch (Exception e) {
-        	System.out.println("inside exception of DrishtiAuthenticationProvider.getDrishtiUser()");
             logger.error(format("{0}. Exception: {1}", INTERNAL_ERROR, e));
             throw new BadCredentialsException(INTERNAL_ERROR);
         }
@@ -109,18 +111,13 @@ public class DrishtiAuthenticationProvider implements AuthenticationProvider {
     	//System.out.println("user input password- " + password);
     	
     	if(userForDashboard != null ){
-    		StandardPasswordEncoder encoder = new StandardPasswordEncoder();
-    		/*byte[] decodedBytes = Base64.decode(userForDashboard.getPassword().getBytes());
+    		byte[] decodedBytes = Base64.decode(userForDashboard.getPassword().getBytes());
     		String decodedPassword = new String(decodedBytes);
     		//System.out.println("decoded password- " + decodedPassword);
     		if(decodedPassword.equals(password)){
     			System.out.println("Dashboard User found.- " + userName);
     			return true;
-    		}*/    			    		
-    		if(encoder.matches(password, userForDashboard.getPassword())){
-    			System.out.println("Dashboard User found.- " + userName);
-    			return true;
-    		}
+    		}    			    		
     	}
     	//System.out.println("Dashboard User not found.");
     	return false;

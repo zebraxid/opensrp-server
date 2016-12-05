@@ -1,5 +1,7 @@
 package org.opensrp.connector.openmrs.service;
 
+import static org.opensrp.common.AllConstants.BnfFollowUpVisitFields.SCHEDULE_BNF_IME;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -11,6 +13,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.motechproject.scheduletracking.api.domain.Enrollment;
 import org.motechproject.scheduletracking.api.domain.MilestoneFulfillment;
+import org.opensrp.common.AllConstants.BnfFollowUpVisitFields;
+import org.opensrp.common.AllConstants.ELCOSchedulesConstantsImediate;
 import org.opensrp.connector.HttpUtil;
 import org.opensrp.connector.openmrs.constants.OpenmrsConstants;
 import org.opensrp.scheduler.Action;
@@ -56,6 +60,14 @@ public class OpenmrsSchedulerService extends OpenmrsService{
     public OpenmrsSchedulerService(String openmrsUrl, String user, String password) {
     	super(openmrsUrl, user, password);
     }
+    public String parseScheduleName(String scheduleName){
+    	if(scheduleName.equalsIgnoreCase(ELCOSchedulesConstantsImediate.IMD_ELCO_SCHEDULE_PSRF)){
+    		return scheduleName.replace(ELCOSchedulesConstantsImediate.IMD_ELCO_SCHEDULE_PSRF, ELCOSchedulesConstantsImediate.ELCO_SCHEDULE_PSRF);
+    	}else{
+    		return scheduleName.replace(SCHEDULE_BNF_IME, BnfFollowUpVisitFields.SCHEDULE_BNF);
+    	}
+    	
+    }
 	
     public JSONObject createTrack(Enrollment e, List<Action> alertActions,String motherId) 
 	{
@@ -75,14 +87,14 @@ public class OpenmrsSchedulerService extends OpenmrsService{
 				logger.info(eee.getMessage());
 			}		
 			t.put("beneficiaryRole", alertActions!=null&&alertActions.size()>0?alertActions.get(0).data().get("beneficiaryType"):null);
-			t.put("schedule", e.getScheduleName());
+			t.put("schedule", parseScheduleName(e.getScheduleName()));
 			String hr = StringUtils.leftPad(e.getPreferredAlertTime().getHour().toString(),2,"0");
 			String mn = StringUtils.leftPad(e.getPreferredAlertTime().getMinute().toString(),2,"0");
 			t.put("preferredAlertTime", hr+":"+mn+":00");
 			t.put("referenceDate", OPENMRS_DATE.format(e.getStartOfSchedule().toDate()));
 			t.put("referenceDateType", "MANUAL");
 			t.put("dateEnrolled", OPENMRS_DATE.format(e.getEnrolledOn().toDate()));		
-			t.put("currentMilestone", e.getCurrentMilestoneName());
+			t.put("currentMilestone", parseScheduleName(e.getCurrentMilestoneName()));
 			t.put("status", e.getStatus().name());
 			String trackuuid = null;
 			JSONObject to = null;
@@ -164,7 +176,7 @@ public class OpenmrsSchedulerService extends OpenmrsService{
 		String hr = StringUtils.leftPad(e.getPreferredAlertTime().getHour().toString(),2,"0");
 		String mn = StringUtils.leftPad(e.getPreferredAlertTime().getMinute().toString(),2,"0");
 		t.put("preferredAlertTime", hr+":"+mn+":00");
-		t.put("currentMilestone", e.getCurrentMilestoneName());
+		t.put("currentMilestone", parseScheduleName(e.getCurrentMilestoneName()));
 		t.put("status", e.getStatus().name());
 		
 		JSONObject to = new JSONObject(HttpUtil.post(getURL()+"/"+TRACK_URL+"/"+e.getMetadata().get(OpenmrsConstants.ENROLLMENT_TRACK_UUID), "", t.toString(), OPENMRS_USER, OPENMRS_PWD).body());
@@ -206,7 +218,7 @@ public class OpenmrsSchedulerService extends OpenmrsService{
 		if(!isUpdate){
 			JSONObject pr = userService.getPersonByUser(ac.anmIdentifier());
 			tm.put("track", trackUuid);
-			tm.put("milestone", milestone);
+			tm.put("milestone", parseScheduleName(milestone) );
 			tm.put("alertRecipient", pr.getString("uuid"));
 			tm.put("alertRecipientRole", "PROVIDER");
 		}
