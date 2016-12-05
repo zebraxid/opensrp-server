@@ -119,7 +119,7 @@
                 },
                 {
                     "window": "max",
-                    "offset": [49 Days"],
+                    "offset": ["49 Days"],
                     "interval": ["1 Day"],
                     "count": "1"
                 }                 
