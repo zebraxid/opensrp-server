@@ -1,4 +1,4 @@
-package org.opensrp.connector.schedule;
+/*package org.opensrp.connector.schedule;
 
 import java.text.ParseException;
 import java.util.List;
@@ -84,3 +84,4 @@ public class OpenmrsSyncerListener {
     	}
 	}
 }
+*/
