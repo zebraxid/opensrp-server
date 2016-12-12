@@ -1,0 +1,41 @@
+{
+    "name": "Injectables",
+    "absolute": true,
+    "milestones": [
+        {
+            "name": "Injectables",
+            "scheduleWindows": {
+            	"earliest": ["90 Days"],
+                "due": ["100 Days"],
+                "late": ["1000 Days"],
+                "max": ["1001 Days"]
+            },
+            "alerts": [
+            	{
+                    "window": "earliest",
+                    "offset": ["0 Days"],
+                    "interval": ["1 Day"],
+                    "count": "90"
+                },
+                {
+                    "window": "due",
+                    "offset": ["90 Days"],
+                    "interval": ["1 Day"],
+                    "count": "10"
+                },
+                {
+                    "window": "late",
+                    "offset": ["100 Days"],
+                    "interval": ["1 Day"],
+                    "count": "900"
+                },
+                 {
+                    "window": "max",
+                    "offset": ["1000 Days"],
+                    "interval": ["1 Day"],
+                    "count": "1"
+                }                            
+            ]
+        }  
+    ]
+}

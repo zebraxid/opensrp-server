@@ -92,8 +92,9 @@ public class OpenSRPScheduleConstants {
     	public static final String IMD_ELCO_SCHEDULE_PSRF = "IMEDIATE ELCO PSRF";
     	public static final String SCHEDULE_Woman_BNF = "Birth_Notification";
     	public static final String IMD_SCHEDULE_Woman_BNF = "IMD_Birth_Notification";
-        public static final String child_vaccination_bcg = "Child_Registration";
-    	public static final String IMD_child_bcg = "IMD_Child_Registration";
+    	public static final String child_reg = "Child_Registraton";
+        public static final String child_bcg = "Child_05yr";
+    	public static final String IMD_child_bcg = "IMD_Child_05yr";
         public static final String SCHEDULE_ANC = "Ante Natal Care Reminder Visit";
         public static final String SCHEDULE_PNC = "Post Natal Care Reminder Visit";
         public static final String SCHEDULE_ANC_1 = "ancrv_1";

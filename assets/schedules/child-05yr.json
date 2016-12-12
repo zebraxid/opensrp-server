@@ -1,0 +1,41 @@
+{
+    "name": "Child_05yr",
+    "absolute": true,
+    "milestones": [
+        {
+            "name": "Child_05yr",
+            "scheduleWindows": {
+            	"earliest": ["7 Days"],
+                "due": ["15 Days"],
+                "late": ["1015 Days"],
+                "max": ["1016 Days"]
+            },
+            "alerts": [
+            	{
+                    "window": "earliest",
+                    "offset": ["0 Days"],
+                    "interval": ["1 Day"],
+                    "count": "7"
+                },
+                {
+                    "window": "due",
+                    "offset": ["7 Days"],
+                    "interval": ["1 Day"],
+                    "count": "8"
+                },
+                {
+                    "window": "late",
+                    "offset": ["15 Days"],
+                    "interval": ["1 Day"],
+                    "count": "1000"
+                },
+                 {
+                    "window": "max",
+                    "offset": ["1015 Days"],
+                    "interval": ["1 Day"],
+                    "count": "1"
+                }                            
+            ]
+        }  
+    ]
+}

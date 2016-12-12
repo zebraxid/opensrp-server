@@ -29,6 +29,7 @@ public class AllConstants {
     	public static final String NewBornHandler = "new_born_information";
     	public static final String GeneralHandler = "general";
     	public static final String Child_FollowupHandler = "childregistration";
+    	public static final String Child_05yrHandler = "Child_0-5yr";
     	public static final String Elco_FollowupHandler = "elco_followup";
     	public static final String Elco_RegisterHandler = "elco_register";
     	public static final String BCGHandler_ = "BCGHandler";
@@ -41,7 +42,11 @@ public class AllConstants {
     	public static final String PNCVisit1Handler = "pnc_visit1";
     	public static final String PNCVisit2Handler = "pnc_visit2";
     	public static final String PNCVisit3Handler = "pnc_visit3";
-    	public static final String PNCVisit4Handler = "pnc_visit4";  	
+    	public static final String PNCVisit4Handler = "pnc_visit4";      	
+    	public static final String InjectablesHandler = "injectables";  
+    	public static final String AdolescentHealthHandler = "adolescent_health";  
+    	public static final String NutritionHandler = "nutrition_handler";  
+    	public static final String DeathRegHandler = "death_reg";      	
     	public static final String BNF_FORM = "birthnotificationpregnancystatusfollowup";
     	public static final String TT_Visit_Handler = "woman_tt_form";
     	public static final String child_vaccine_followup_Handler = "child_vaccine_followup";
@@ -1714,8 +1719,9 @@ public class AllConstants {
     	public static final String IMD_ELCO_SCHEDULE_PSRF = "IMEDIATE ELCO PSRF";
     	public static final String SCHEDULE_Woman_BNF = "Birth_Notification";
     	public static final String IMD_SCHEDULE_Woman_BNF = "IMD_Birth_Notification";
-        public static final String child_vaccination_bcg = "Child_Registration";
-    	public static final String IMD_child_bcg = "IMD_Child_Registration";
+    	public static final String child_reg = "Child_Registraton";
+        public static final String child_bcg = "Child_05yr";
+    	public static final String IMD_child_bcg = "IMD_Child_05yr";
         public static final String SCHEDULE_ANC = "Ante Natal Care Reminder Visit";
         public static final String SCHEDULE_PNC = "Post Natal Care Reminder Visit";
         public static final String SCHEDULE_ANC_1 = "ancrv_1";
@@ -1725,7 +1731,7 @@ public class AllConstants {
         public static final String SCHEDULE_PNC_1 = "pncrv_1";
         public static final String SCHEDULE_PNC_2 = "pncrv_2";
         public static final String SCHEDULE_PNC_3 = "pncrv_3";
-        public static final String SCHEDULE_PNC_4 = "pncrv_4";  
+        public static final String SCHEDULE_PNC_4 = "pncrv_4";   
     }
     public static class OpenmrsTrackUuid {
     	public static final String ENROLLMENT_TRACK_UUID = "openmrsTrackUuid";

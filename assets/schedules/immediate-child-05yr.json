@@ -1,31 +1,31 @@
 {
-    "name": "Child_Registration",
+    "name": "IMD_Child_05yr",
     "absolute": true,
     "milestones": [
         {
-            "name": "Child_Registration",
+            "name": "IMD_Child_05yr",
             "scheduleWindows": {
             	"earliest": ["0 Days"],
-                "due": ["2000 Days"],
-                "late": ["2001 Day"],
-                "max": ["2002 Days"]
+                "due": ["15 Days"],
+                "late": ["2015 Day"],
+                "max": ["2016 Days"]
             },
             "alerts": [
                 {
                     "window": "due",
                     "offset": ["0 Days"],
                     "interval": ["1 Day"],
-                    "count": "2000"
+                    "count": "15"
                 },
                 {
                     "window": "late",
-                    "offset": ["2000 Day"],
+                    "offset": ["15 Day"],
                     "interval": ["1 Day"],
-                    "count": "1"
+                    "count": "2000"
                 },
                 {
                     "window": "max",
-                    "offset": ["2001 Days"],
+                    "offset": ["2015 Days"],
                     "interval": ["1 Day"],
                     "count": "1"
                 }

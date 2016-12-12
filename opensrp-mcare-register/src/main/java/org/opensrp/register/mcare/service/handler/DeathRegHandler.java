@@ -5,24 +5,24 @@
 package org.opensrp.register.mcare.service.handler;
 
 import org.opensrp.form.domain.FormSubmission;
-import org.opensrp.register.mcare.service.MembersService;
+import org.opensrp.register.mcare.service.MembersPaybackService;
 import org.opensrp.service.formSubmission.handler.FormSubmissionHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class Child_FollowupHandler implements FormSubmissionHandler {
+public class DeathRegHandler implements FormSubmissionHandler {
 
-	private MembersService womanService;
+	private MembersPaybackService womanService;
 
 	@Autowired
-	public Child_FollowupHandler(MembersService womanService) {
+	public DeathRegHandler(MembersPaybackService womanService) {
 		this.womanService = womanService;
 	}
 	
 	@Override
 	public void handle(FormSubmission submission) {
-		womanService.childRegistratonHandler(submission);	
+		womanService.DeathRegHandler(submission);	
 	}
 
 }

@@ -11,18 +11,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class Child_FollowupHandler implements FormSubmissionHandler {
+public class Child_05yrHandler implements FormSubmissionHandler {
 
-	private MembersService womanService;
+			private MembersService womanService;
 
-	@Autowired
-	public Child_FollowupHandler(MembersService womanService) {
-		this.womanService = womanService;
-	}
-	
-	@Override
-	public void handle(FormSubmission submission) {
-		womanService.childRegistratonHandler(submission);	
-	}
+			@Autowired
+			public Child_05yrHandler(MembersService womanService) {
+				this.womanService = womanService;
+			}
+			
+			@Override
+			public void handle(FormSubmission submission) {
+				womanService.child_05yrHandler(submission);	
+			}
 
 }

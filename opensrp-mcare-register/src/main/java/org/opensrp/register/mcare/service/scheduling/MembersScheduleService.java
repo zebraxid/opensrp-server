@@ -67,6 +67,14 @@ public class MembersScheduleService {
 		scheduleLogService.createNewScheduleLogandUnenrollImmediateSchedule(caseId, date, provider, instanceId, IMD_SCHEDULE_Woman_BNF, SCHEDULE_Woman_BNF, members, duration);
 	}
 	
+	public void enrollIntoMilestoneOfChild_vaccination(String caseId, String date,String provider,String instanceId)
+	{
+	    logger.info(format("Enrolling Elco into child_bcg schedule. Id: {0}", caseId));
+	    
+		scheduler.enrollIntoSchedule(caseId, child_bcg, date);
+		scheduleLogService.createNewScheduleLogandUnenrollImmediateSchedule(caseId, date, provider, instanceId, IMD_child_bcg, child_bcg, members, duration);
+	}
+	
 	public void unEnrollFromScheduleCensus(String caseId, String providerId, String scheduleName){
 		//scheduler.unEnrollFromScheduleCensus(caseId, providerId, HH_SCHEDULE_CENSUS);
 		try{
@@ -107,6 +115,24 @@ public class MembersScheduleService {
         try{
         	//scheduler.unEnrollFromScheduleimediate(caseId, providerId, IMD_ELCO_SCHEDULE_BNF);
         	scheduler.fullfillMilestoneAndCloseAlert(caseId, providerId, IMD_SCHEDULE_Woman_BNF, new LocalDate());
+        }catch(Exception e){
+        	logger.info(e.getMessage());
+        }
+        
+    }
+	
+	public void unEnrollFromScheduleOfChild_vaccination(String caseId, String providerId, String scheduleName)
+    {
+        logger.info(format("Unenrolling from child_bcg schedule. Id: {0}", caseId));
+        try{
+        	//scheduler.unEnrollFromSchedule(caseId, providerId, child_bcg);
+        	scheduler.fullfillMilestoneAndCloseAlert(caseId, providerId, child_bcg, new LocalDate());
+        }catch(Exception e){
+        	logger.info(format("Failed to UnEnrollFromSchedule child_bcg"));
+        }
+        try{
+        	//scheduler.unEnrollFromScheduleimediate(caseId, providerId, IMD_child_bcg);
+        	scheduler.fullfillMilestoneAndCloseAlert(caseId, providerId, IMD_child_bcg, new LocalDate());
         }catch(Exception e){
         	logger.info(e.getMessage());
         }
@@ -177,11 +203,11 @@ public class MembersScheduleService {
 	    
 	}
 	
-	public void imediateEnrollIntoMilestoneOfchild_vaccination(String caseId, String date,String provider,String instanceId)	
+	public void imediateEnrollIntoMilestoneOfChild_vaccination(String caseId, String date,String provider,String instanceId)	
 	{
 	    logger.info(format("Enrolling Elco into child_vaccination schedule. Id: {0}", caseId));	  
-	    scheduler.enrollIntoSchedule(caseId, ScheduleNames.child_vaccination_bcg, date);	 
-	    scheduleLogService.createImmediateScheduleAndScheduleLog(caseId, date, provider, instanceId, BeneficiaryType.members, child_vaccination_bcg, duration,ScheduleNames.child_vaccination_bcg);
+	    scheduler.enrollIntoSchedule(caseId, ScheduleNames.IMD_child_bcg, date);	 
+	    scheduleLogService.createImmediateScheduleAndScheduleLog(caseId, date, provider, instanceId, BeneficiaryType.members, child_bcg, duration,ScheduleNames.IMD_child_bcg);
 	    
 	}
 	
@@ -254,7 +280,7 @@ public class MembersScheduleService {
 	 }
 	 
 	 public void unEnrollFromSchedule(String entityId, String anmId, String scheduleName) {
-        logger.info(format("Un-enrolling PNC with Entity id:{0} from schedule: {1}", entityId, scheduleName));
+        logger.info(format("Un-enrolling with Entity id:{0} from schedule: {1}", entityId, scheduleName));
         scheduler.unEnrollFromSchedule(entityId, anmId, scheduleName);
      }
 }

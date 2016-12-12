@@ -1,0 +1,36 @@
+{
+    "name": "DeathReg",
+    "absolute": true,
+    "milestones": [
+        {
+            "name": "DeathReg",
+            "scheduleWindows": {                
+                "due": ["242 Weeks"],
+                "late": ["243 Weeks"],
+                "max": ["244 Weeks"]
+            },
+            "alerts": [
+            	
+                {
+                    "window": "due",
+                    "offset": ["0 Weeks"],
+                    "interval": ["1 Day"],
+                    "count": "1694"
+                },
+                {
+                    "window": "late",
+                    "offset": ["242 Weeks"],
+                    "interval": ["1 Day"],
+                    "count": "7"
+                },
+                {
+                    "window": "max",
+                    "offset": ["243 Weeks"],
+                    "interval": ["1 Day"],
+                    "count": "7"
+                }
+                
+            ]
+        }
+    ]
+}

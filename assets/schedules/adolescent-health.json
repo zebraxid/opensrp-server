@@ -1,0 +1,41 @@
+{
+    "name": "Adolescent_Health",
+    "absolute": true,
+    "milestones": [
+        {
+            "name": "Adolescent_Health",
+            "scheduleWindows": {
+            	"earliest": ["7 Days"],
+                "due": ["31 Days"],
+                "late": ["1031 Days"],
+                "max": ["1032 Days"]
+            },
+            "alerts": [
+            	{
+                    "window": "earliest",
+                    "offset": ["0 Days"],
+                    "interval": ["1 Day"],
+                    "count": "7"
+                },
+                {
+                    "window": "due",
+                    "offset": ["7 Days"],
+                    "interval": ["1 Day"],
+                    "count": "24"
+                },
+                {
+                    "window": "late",
+                    "offset": ["31 Days"],
+                    "interval": ["1 Day"],
+                    "count": "1000"
+                },
+                 {
+                    "window": "max",
+                    "offset": ["1031 Days"],
+                    "interval": ["1 Day"],
+                    "count": "1"
+                }                            
+            ]
+        }  
+    ]
+}

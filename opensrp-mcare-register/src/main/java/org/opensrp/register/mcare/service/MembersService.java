@@ -98,7 +98,7 @@ public class MembersService {
 				}
 			}
 			
-			//womanVaccineSchedule.Vaccine(submission, members, membersFields, child_vaccination_bcg, submission.getField(REFERENCE_DATE), "Child");
+			//womanVaccineSchedule.Vaccine(submission, members, membersFields, child_bcg, submission.getField(REFERENCE_DATE), "Child");
 
 			if(membersFields.containsKey("Child"))
 			if(membersFields.get("Child") != null && !membersFields.get("Child").equalsIgnoreCase(""))
@@ -106,8 +106,8 @@ public class MembersService {
 				if(membersFields.containsKey(submission.getField(REFERENCE_DATE)))
 				if(membersFields.get(submission.getField(REFERENCE_DATE)) != null && !membersFields.get(submission.getField(REFERENCE_DATE)).equalsIgnoreCase(""))
 				if(isValidDate(membersFields.get(submission.getField(REFERENCE_DATE)))){
-					membersScheduleService.enrollIntoSchedule(
-						members.caseId(),submission.getField(REFERENCE_DATE),child_vaccination_bcg);
+					membersScheduleService.imediateEnrollIntoMilestoneOfChild_vaccination(
+						members.caseId(),submission.getField(REFERENCE_DATE), submission.anmId(), submission.instanceId());
 				}
 			}
 		}	
@@ -432,16 +432,28 @@ public class MembersService {
 		}*/
 		
 		if (submission.getField(Visit_status) != null && !submission.getField(Visit_status).equalsIgnoreCase("")){	
-		if(submission.getField(Visit_status).equalsIgnoreCase("1")){
+		if(submission.getField(Visit_status).equalsIgnoreCase("1") || submission.getField(Visit_status).equalsIgnoreCase("2")){
 			membersScheduleService.enrollIntoMilestoneOfBNF(submission.entityId(), submission.getField(Today), submission.anmId(),
 				submission.instanceId());
-		}
+		}	
+					
+		else if(submission.getField(Visit_status).equalsIgnoreCase("3") || submission.getField(Visit_status).equalsIgnoreCase("4")
+				|| submission.getField(Visit_status).equalsIgnoreCase("8")|| submission.getField(Visit_status).equalsIgnoreCase("10")){	
+			//membersScheduleService.unEnrollAndCloseSchedule(members.caseId(),submission.anmId(),
+			//		SCHEDULE_ANC,LocalDate.parse(submission.getField(Today)));
+			
+			scheduleLogService.ancScheduleUnEnroll(submission.entityId(), submission.anmId(), SCHEDULE_ANC);
+			actionService.markAllAlertsAsInactive(submission.entityId());
+			try {
+				long timestamp = actionService.getActionTimestamp(submission.anmId(), submission.entityId(), SCHEDULE_ANC);
+				membersScheduleService.fullfillSchedule(submission.entityId(), SCHEDULE_ANC, submission.instanceId(), timestamp);
+			} catch (Exception e) {
+				logger.info("From BNF_Visit:" + e.getMessage());
+			}
 		}
 		
-		
-				
-		else if(submission.getField(Visit_status).equalsIgnoreCase("3") || submission.getField(Visit_status).equalsIgnoreCase("4") || 
-				submission.getField(Visit_status).equalsIgnoreCase("8")){
+		else if(submission.getField(Visit_status).equalsIgnoreCase("4")
+				|| submission.getField(Visit_status).equalsIgnoreCase("8")|| submission.getField(Visit_status).equalsIgnoreCase("10")){
 			/*membersScheduleService.unEnrollAndCloseSchedule(members.caseId(),submission.anmId(),
 					SCHEDULE_Woman_BNF,LocalDate.parse(submission.getField(Today)));
 			membersScheduleService.unEnrollAndCloseSchedule(members.caseId(),submission.anmId(),
@@ -469,34 +481,37 @@ public class MembersService {
 
 			} catch (Exception e) {
 				logger.info("From BNF_Visit: " + e.getMessage());
-			}			
-			
+			}
+						
+			membersScheduleService.unEnrollFromSchedule(submission.entityId(), submission.anmId(), child_reg);
+		}
+		}
+		
+		if(submission.getField(Is_PNC).equalsIgnoreCase("1")){
+			membersScheduleService.enrollIntoCorrectMilestoneOfPNCRVCare(submission.entityId(), LocalDate.parse(DOO));
+		}
+		
+		if (submission.getField(Visit_status) != null && !submission.getField(Visit_status).equalsIgnoreCase(""))
+		if(submission.getField(Visit_status).equalsIgnoreCase("1")){		
 			/*if(submission.getField(existing_Member_Birth_Date) != null && !submission.getField(existing_Member_Birth_Date).equalsIgnoreCase(""))
 			if(isValidDate(submission.getField(existing_Member_Birth_Date))){
 				membersScheduleService.enrollimmediateMembersVisit(
-					members.caseId(),submission.anmId(),submission.getField(existing_Member_Birth_Date),submission.instanceId(),child_vaccination_bcg,child_vaccination_bcg);
+					members.caseId(),submission.anmId(),submission.getField(existing_Member_Birth_Date),submission.instanceId(),child_bcg,child_bcg);
 			}*/
 			
-			if(submission.getField(existing_Member_Birth_Date) != null && !submission.getField(existing_Member_Birth_Date).equalsIgnoreCase(""))
-			if(isValidDate(submission.getField(existing_Member_Birth_Date))){
-					membersScheduleService.imediateEnrollIntoMilestoneOfchild_vaccination(
-							submission.entityId(), submission.getField(existing_Member_Birth_Date), submission.anmId(), submission.instanceId());
+			if(submission.getField(Today) != null && !submission.getField(Today).equalsIgnoreCase(""))
+			if(isValidDate(submission.getField(Today))){
+					membersScheduleService.imediateEnrollIntoMilestoneOfChild_vaccination(
+							submission.entityId(), submission.getField(Today), submission.anmId(), submission.instanceId());
 			}
 			
-			//membersScheduleService.unEnrollAndCloseSchedule(members.caseId(),submission.anmId(),
-			//		SCHEDULE_ANC,LocalDate.parse(submission.getField(Today)));
-			
-			scheduleLogService.ancScheduleUnEnroll(submission.entityId(), submission.anmId(), SCHEDULE_ANC);
-			actionService.markAllAlertsAsInactive(submission.entityId());
-			try {
-				long timestamp = actionService.getActionTimestamp(submission.anmId(), submission.entityId(), SCHEDULE_ANC);
-				membersScheduleService.fullfillSchedule(submission.entityId(), SCHEDULE_ANC, submission.instanceId(), timestamp);
-			} catch (Exception e) {
-				logger.info("From BNF_Visit:" + e.getMessage());
+			if(submission.getField(Today) != null && !submission.getField(Today).equalsIgnoreCase(""))
+			if(isValidDate(submission.getField(Today))){
+					membersScheduleService.enrollIntoSchedule(
+							submission.entityId(), submission.getField(Today), child_reg);
 			}
-			
-			membersScheduleService.enrollIntoCorrectMilestoneOfPNCRVCare(submission.entityId(), LocalDate.parse(DOO));
 		}
+		
 	}
 	
 	private void addMEMBERDETAILSToHH(FormSubmission submission,
@@ -594,11 +609,112 @@ public class MembersService {
 		}		
 	}	
 	
-	public void child_vaccineHandler(FormSubmission submission) {
+	public void childRegistratonHandler(FormSubmission submission) {		
+		
+		SubFormData subFormData = submission
+				.getSubFormByName(MEMBERS_REGISTRATION_SUB_FORM_NAME);	
+		  
+		for (Map<String, String> membersFields : subFormData.instances()) {
+			
+			Members members = allMembers.findByCaseId(membersFields.get(ID))
+					.setINSTANCEID(submission.instanceId())
+					.setPROVIDERID(submission.anmId())
+					.setToday(submission.getField(REFERENCE_DATE))
+					.setRelationalid(submission.getField(relationalid));					
+			
+			if(membersFields.containsKey(Mem_F_Name)){
+				allMembers.update(members);
+				logger.info("members updated");
+			}else{
+				allMembers.remove(members);
+				logger.info("members removed");
+			}
+
+			//womanVaccineSchedule.Vaccine(submission, members, membersFields, child_bcg, submission.getField(REFERENCE_DATE), "Child");
+
+			if(membersFields.containsKey(submission.getField(REFERENCE_DATE)))
+			if(membersFields.get(submission.getField(REFERENCE_DATE)) != null && !membersFields.get(submission.getField(REFERENCE_DATE)).equalsIgnoreCase(""))
+			if(isValidDate(membersFields.get(submission.getField(REFERENCE_DATE)))){
+				membersScheduleService.imediateEnrollIntoMilestoneOfChild_vaccination(
+					members.caseId(),submission.getField(REFERENCE_DATE), submission.anmId(), submission.instanceId());
+			}
+		}
+		
+		HouseHold houseHold = allHouseHolds.findByCaseId(submission
+				.entityId());
+
+		if (houseHold == null) {
+			logger.warn(format(
+					"Failed to handle Child Registraton form as there is no household registered with ID: {0}",
+					submission.entityId()));
+			return;
+		}
+		
+		addchildRegistratonToHH(submission, subFormData, houseHold);
+		
+		allHouseHolds.update(houseHold);		
+				
+		membersScheduleService.unEnrollFromSchedule(submission.entityId(), submission.anmId(), child_reg);
+	}
+	
+	private void addchildRegistratonToHH(FormSubmission submission,
+			SubFormData subFormData, HouseHold houseHold) {
+		
+		SimpleDateFormat dateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date today = Calendar.getInstance().getTime();
+		for (Map<String, String> membersFields : subFormData.instances()) {
+
+			Map<String, String> birth_Outcome = create(ID, membersFields.get(ID))
+					.put(relationalid, submission.getField(relationalid))
+					.put(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
+					.put(START_DATE, submission.getField(START_DATE))
+					.put(END_DATE, submission.getField(END_DATE))
+					.put(add_child, submission.getField(add_child))
+					.put(Calc_Age, submission.getField(Calc_Age))
+					.put(Child_Father, submission.getField(Child_Father))
+					.put(Child_Mother, submission.getField(Child_Mother))
+					.put(Child_Name, submission.getField(Child_Name))
+					.put(Child_Vital_Status, submission.getField(Child_Vital_Status))
+					.put(Child_Weight, submission.getField(Child_Weight))
+					.put(Mem_BRID, submission.getField(Mem_BRID))
+					.put(Mem_BRID_Concept, submission.getField(Mem_BRID_Concept))
+					.put(Mem_Country, submission.getField(Mem_Country))
+					.put(Mem_District, submission.getField(Mem_District))
+					.put(Mem_Division, submission.getField(Mem_Division))
+					.put(Mem_F_Name, submission.getField(Mem_F_Name))
+					.put(Mem_GPS, submission.getField(Mem_GPS))
+					.put(Mem_L_Name, submission.getField(Mem_L_Name))
+					.put(Mem_Mauzapara, submission.getField(Mem_Mauzapara))
+					.put(Mem_Mobile_Number, submission.getField(Mem_Mobile_Number))
+					.put(Mem_Subunit, submission.getField(Mem_Subunit))
+					.put(Mem_Union, submission.getField(Mem_Union))
+					.put(Mem_Upazilla, submission.getField(Mem_Upazilla))
+					.put(Mem_Village_Name, submission.getField(Mem_Village_Name))
+					.put(Mem_Ward, submission.getField(Mem_Ward))
+					.put(Member_Age, submission.getField(Member_Age))
+					.put(Member_Birth_Date, submission.getField(Member_Birth_Date))
+					.put(Member_Gender, submission.getField(Member_Gender))
+					.put(Member_GoB_HHID, submission.getField(Member_GoB_HHID))
+					.put(Member_Reg_Date, submission.getField(Member_Reg_Date))
+					.put(Name_Check, submission.getField(Name_Check))
+					.put(Premature_Birth, submission.getField(Premature_Birth))
+					.put(Reg_Newborn, submission.getField(Reg_Newborn))
+					.put(Retype_Mem_BRID, submission.getField(Retype_Mem_BRID))
+					.put(received_time, dateTime.format(today).toString()).map();
+			
+				if(membersFields.containsKey(Member_GoB_HHID)){
+					if(!membersFields.get(Member_GoB_HHID).equalsIgnoreCase("") || membersFields.get(Member_GoB_HHID) != null){
+						houseHold.Birth_Outcome().add(birth_Outcome);
+				  }
+				}						
+		}		
+	}
+	
+	public void child_05yrHandler(FormSubmission submission) {
 		Members members = allMembers.findByCaseId(submission.entityId());
 		if (members == null) {
 			logger.warn(format(
-					"Failed to handle child_vaccine as there is no Member enrolled with ID: {0}",
+					"Failed to handle child_05yr as there is no Member enrolled with ID: {0}",
 					submission.entityId()));
 			return;
 		}
@@ -664,19 +780,29 @@ public class MembersService {
 				
 				allMembers.update(members);
 				
-				membersScheduleService.unEnrollAndCloseSchedule(members.caseId(),submission.anmId(),
-						child_vaccination_bcg,LocalDate.parse(submission.getField(today)));
+			if (submission.getField(Visit_Status) != null && !submission.getField(Visit_Status).equalsIgnoreCase("")){	
+				if(submission.getField(Visit_Status).equalsIgnoreCase("3") || submission.getField(Visit_Status).equalsIgnoreCase("2")){					
+				membersScheduleService.enrollIntoMilestoneOfChild_vaccination(submission.entityId(), submission.getField(today), submission.anmId(),
+						submission.instanceId());				
+				}
+			}
+					
+			if (submission.getField(Visit_Status) != null && !submission.getField(Visit_Status).equalsIgnoreCase("")){	
+			if(submission.getField(Visit_Status).equalsIgnoreCase("8") || submission.getField(Visit_Status).equalsIgnoreCase("10")){					
+				membersScheduleService.unEnrollFromScheduleOfChild_vaccination(submission.entityId(), submission.anmId(), "");
 				try {
 					List<Action> beforeNewActions = allActions.findAlertByANMIdEntityIdScheduleName(submission.anmId(), submission.entityId(),
-							child_vaccination_bcg);
+							child_bcg);
 					if (beforeNewActions.size() > 0) {
 						scheduleLogService.closeSchedule(submission.entityId(), submission.instanceId(), beforeNewActions.get(0).timestamp(),
-								child_vaccination_bcg);
+								child_bcg);
 					}
 
 				} catch (Exception e) {
-					logger.info("From child_vaccineHandler: " + e.getMessage());
-				}				
+					logger.info("From child_05yr Handler: " + e.getMessage());
+				}	
+			}
+			}
 	}
 	
 	public boolean isValidDate(String dateString) {

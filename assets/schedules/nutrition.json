@@ -1,0 +1,36 @@
+{
+    "name": "Nutrition",
+    "absolute": true,
+    "milestones": [
+        {
+            "name": "Nutrition",
+            "scheduleWindows": {                
+                "due": ["4 Weeks"],
+                "late": ["243 Weeks"],
+                "max": ["244 Weeks"]
+            },
+            "alerts": [
+            	
+                {
+                    "window": "due",
+                    "offset": ["0 Weeks"],
+                    "interval": ["1 Day"],
+                    "count": "28"
+                },
+                {
+                    "window": "late",
+                    "offset": ["4 Weeks"],
+                    "interval": ["1 Day"],
+                    "count": "1673"
+                },
+                {
+                    "window": "max",
+                    "offset": ["243 Weeks"],
+                    "interval": ["1 Day"],
+                    "count": "7"
+                }
+                
+            ]
+        }
+    ]
+}

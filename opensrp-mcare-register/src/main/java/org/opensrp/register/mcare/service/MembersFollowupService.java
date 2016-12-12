@@ -1,3 +1,7 @@
+/**
+ * @author Asifur
+ */
+
 package org.opensrp.register.mcare.service;
 
 import static java.text.MessageFormat.format;
@@ -19,9 +23,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.register.mcare.domain.Members;
-import org.opensrp.register.mcare.repository.AllHouseHolds;
 import org.opensrp.register.mcare.repository.AllMembers;
-import org.opensrp.register.mcare.service.scheduling.HHSchedulesService;
 import org.opensrp.register.mcare.service.scheduling.MembersScheduleService;
 import org.opensrp.register.mcare.service.scheduling.ScheduleLogService;
 import org.opensrp.scheduler.service.ActionService;
@@ -35,20 +37,15 @@ public class MembersFollowupService {
 	private static Logger logger = LoggerFactory.getLogger(MembersService.class
 			.toString());
 
-	private AllHouseHolds allHouseHolds;
 	private AllMembers allMembers;
 	private ActionService actionService;
-	private HHSchedulesService hhSchedulesService;
 	private MembersScheduleService membersScheduleService;
 	private ScheduleLogService scheduleLogService;
 	@Autowired
-	public MembersFollowupService(AllHouseHolds allHouseHolds, AllMembers allMembers, ActionService actionService, 
-			HHSchedulesService hhSchedulesService, MembersScheduleService membersScheduleService, 
-			ScheduleLogService scheduleLogService) {
-		this.allHouseHolds = allHouseHolds;
+	public MembersFollowupService(AllMembers allMembers, ActionService actionService, 
+			MembersScheduleService membersScheduleService, ScheduleLogService scheduleLogService) {
 		this.allMembers = allMembers;
 		this.actionService = actionService;
-		this.hhSchedulesService = hhSchedulesService;
 		this.membersScheduleService = membersScheduleService;
 	}
 	

@@ -47,7 +47,7 @@ public class AlertHandler {
 	}
 	private Matcher membersSchedules() {
 		return anyOf(ELCO_SCHEDULE_PSRF, IMD_ELCO_SCHEDULE_PSRF, SCHEDULE_Woman_BNF, IMD_SCHEDULE_Woman_BNF, 
-				child_vaccination_bcg, IMD_child_bcg, SCHEDULE_ANC, SCHEDULE_PNC);
+				child_bcg, IMD_child_bcg, SCHEDULE_ANC, SCHEDULE_PNC);
 	}
 
 }
