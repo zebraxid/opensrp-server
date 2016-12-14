@@ -1731,7 +1731,11 @@ public class AllConstants {
         public static final String SCHEDULE_PNC_1 = "pncrv_1";
         public static final String SCHEDULE_PNC_2 = "pncrv_2";
         public static final String SCHEDULE_PNC_3 = "pncrv_3";
-        public static final String SCHEDULE_PNC_4 = "pncrv_4";   
+        public static final String SCHEDULE_PNC_4 = "pncrv_4";         
+        public static final String Adolescent_Health = "Adolescent_Health";
+        public static final String Injectables = "Injectables";
+        public static final String Nutrition = "Nutrition";
+        public static final String Death_Reg = "Death_Reg"; 
     }
     public static class OpenmrsTrackUuid {
     	public static final String ENROLLMENT_TRACK_UUID = "openmrsTrackUuid";

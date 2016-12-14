@@ -1,0 +1,34 @@
+{
+    "name": "IMD_Adolescent_Health",
+    "absolute": true,
+    "milestones": [
+        {
+            "name": "IMD_Adolescent_Health",
+            "scheduleWindows": {
+                "due": ["31 Days"],
+                "late": ["1031 Days"],
+                "max": ["1032 Days"]
+            },
+            "alerts": [
+                {
+                    "window": "due",
+                    "offset": ["0 Days"],
+                    "interval": ["1 Day"],
+                    "count": "31"
+                },
+                {
+                    "window": "late",
+                    "offset": ["31 Days"],
+                    "interval": ["1 Day"],
+                    "count": "1000"
+                },
+                 {
+                    "window": "max",
+                    "offset": ["1031 Days"],
+                    "interval": ["1 Day"],
+                    "count": "1"
+                }                            
+            ]
+        }  
+    ]
+}

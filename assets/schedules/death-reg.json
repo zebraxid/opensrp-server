@@ -1,9 +1,9 @@
 {
-    "name": "DeathReg",
+    "name": "Death_Reg",
     "absolute": true,
     "milestones": [
         {
-            "name": "DeathReg",
+            "name": "Death_Reg",
             "scheduleWindows": {                
                 "due": ["242 Weeks"],
                 "late": ["243 Weeks"],
