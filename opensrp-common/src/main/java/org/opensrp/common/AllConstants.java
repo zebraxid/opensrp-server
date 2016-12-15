@@ -463,7 +463,35 @@ public class AllConstants {
     	public static final String pnc1_current_formStatus = "pnc1_current_formStatus";
     	public static final String PNC2_current_formStatus = "PNC2_current_formStatus";
     	public static final String PNC3_current_formStatus = "PNC3_current_formStatus";
-    	public static final String PNC4_current_formStatus = "PNC4_current_formStatus";
+    	public static final String PNC4_current_formStatus = "PNC4_current_formStatus";    	
+    	public static final String existing_Mem_NID = "existing_Mem_NID";
+    	public static final String existing_Injection_Date = "existing_Injection_Date";
+    	public static final String existing_Dose_No = "existing_Dose_No";
+    	public static final String Woman_Met = "Woman_Met";
+    	public static final String Previoud_Dose_Inject = "Previoud_Dose_Inject";
+    	public static final String Side_Effects = "Side_Effects";
+    	public static final String Note_SE1 = "Note_SE1";
+    	public static final String Note_SE2 = "Note_SE2";
+    	public static final String Note_SE3 = "Note_SE3";
+    	public static final String Note_SE4 = "Note_SE4";
+    	public static final String Todays_Dose_No = "Todays_Dose_No";
+    	public static final String Dose_No = "Dose_No";
+    	public static final String Is_Due = "Is_Due";
+    	public static final String injectable_current_formStatus = "injectable_current_formStatus";
+    	public static final String Councelling = "Councelling";    	
+    	public static final String existing_Member_Gender = "existing_Member_Gender";
+    	public static final String Date_Death = "Date_Death";
+    	public static final String Gender_Deceased = "Gender_Deceased";
+    	public static final String Deceased_Age_Group = "Deceased_Age_Group";
+    	public static final String Deceased_Age = "Deceased_Age";
+    	public static final String Reason_Death = "Reason_Death";    	
+    	public static final String existing_Calc_Dob_Confirm = "existing_Calc_Dob_Confirm";
+    	public static final String Mother_Nutrition = "Mother_Nutrition";
+    	public static final String Distrinuted_Nutrition = "Distrinuted_Nutrition";
+    	public static final String IFA_Tablets = "IFA_Tablets";
+    	public static final String VitA_Minarals = "VitA_Minarals";
+    	public static final String Child_Nutrition = "Child_Nutrition";
+    	public static final String Supplementary_Food = "Supplementary_Food";
     }
     
     public static class MEMBERSRegistrationFields

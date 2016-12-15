@@ -327,11 +327,19 @@ public class Members extends MotechBaseDataObject {
 	@JsonProperty
 	private Map<String, String> PNCVisit4;
 	@JsonProperty
+	private Map<String, String> DeathReg;
+	@JsonProperty
 	private List<Map<String, String>> Elco_Followup;
 	@JsonProperty
 	private List<Map<String, String>> child_vaccine;
 	@JsonProperty
 	private List<Map<String, String>> BNFVisit;
+	@JsonProperty
+	private List<Map<String, String>> Injectables;
+	@JsonProperty
+	private List<Map<String, String>> Adolescent;
+	@JsonProperty
+	private List<Map<String, String>> Nutrition;
 	@JsonProperty
 	private String isClosed;
 	public Members() {
@@ -344,9 +352,13 @@ public class Members extends MotechBaseDataObject {
 				this.PNCVisit2 = new HashMap<>();
 				this.PNCVisit3 = new HashMap<>();
 				this.PNCVisit4 = new HashMap<>();
+				this.DeathReg = new HashMap<>();
 				this.Elco_Followup = new ArrayList<>();
 				this.BNFVisit = new ArrayList<>();
 				this.child_vaccine = new ArrayList<>();
+				this.Injectables = new ArrayList<>();
+				this.Adolescent = new ArrayList<>();
+				this.Nutrition = new ArrayList<>();
 				this.setIsClosed(false);
 	}
 	
@@ -376,6 +388,18 @@ public class Members extends MotechBaseDataObject {
     }
 	public Members setElco_Followup(List<Map<String, String>> Elco_Followup) {
         this.Elco_Followup = Elco_Followup;
+        return this;
+    }
+	public Members setInjectables(List<Map<String, String>> Injectables) {
+        this.Injectables = Injectables;
+        return this;
+    }
+	public Members setAdolescent(List<Map<String, String>> Adolescent) {
+        this.Adolescent = Adolescent;
+        return this;
+    }
+	public Members setNutrition(List<Map<String, String>> Nutrition) {
+        this.Nutrition = Nutrition;
         return this;
     }
 	public Members setANCVisit1(Map<String, String> ANCVisit1) {
@@ -408,6 +432,10 @@ public class Members extends MotechBaseDataObject {
     }
     public Members setPNCVisit4(Map<String, String> PNCVisit4) {
         this.PNCVisit4 = new HashMap<>(PNCVisit4);
+        return this;
+    }
+    public Members setDeathReg(Map<String, String> DeathReg) {
+        this.DeathReg = new HashMap<>(DeathReg);
         return this;
     }
     public Members setBNFVisit(List<Map<String, String>> BNFVisit) {
@@ -844,6 +872,11 @@ public class Members extends MotechBaseDataObject {
 			this.PNCVisit4 = new HashMap<>();
 		return PNCVisit4;
 	}
+	public Map<String, String> DeathReg() {
+		if (DeathReg == null)
+			this.DeathReg = new HashMap<>();
+		return DeathReg;
+	}
 	public List<Map<String, String>> BNFVisit() {
 		if (BNFVisit == null)
 			this.BNFVisit = new ArrayList<>();
@@ -851,9 +884,27 @@ public class Members extends MotechBaseDataObject {
 	}
 	public List<Map<String, String>> child_vaccine() {
 		if (child_vaccine == null) {
-			child_vaccine = new ArrayList<>();
+			this.child_vaccine = new ArrayList<>();
 		}
 		return child_vaccine;
+	}
+	public List<Map<String, String>> Injectables() {
+		if (Injectables == null) {
+			this.Injectables = new ArrayList<>();
+		}
+		return Injectables;
+	}
+	public List<Map<String, String>> Adolescent() {
+		if (Adolescent == null) {
+			this.Adolescent = new ArrayList<>();
+		}
+		return Adolescent;
+	}
+	public List<Map<String, String>> Nutrition() {
+		if (Nutrition == null) {
+			this.Nutrition = new ArrayList<>();
+		}
+		return Nutrition;
 	}
 
 	public String getRelationalid() {

@@ -63,7 +63,6 @@ public class MembersFollowupService {
 		Map<String, String> PNCVisit1 = create(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
 									.put(START_DATE, submission.getField(START_DATE))
 									.put(END_DATE, submission.getField(END_DATE))
-									.put(name, submission.getField(name))
 									.put(version, submission.getField(version))
 									.put(changes, submission.getField(changes))
 									.put(existing_GoB_HHID, submission.getField(existing_GoB_HHID))
@@ -152,8 +151,7 @@ public class MembersFollowupService {
 		Date day = Calendar.getInstance().getTime();
 		Map<String, String> PNCVisit2 = create(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
 									.put(START_DATE, submission.getField(START_DATE))
-									.put(END_DATE, submission.getField(END_DATE))
-									.put(name, submission.getField(name))
+									.put(END_DATE, submission.getField(END_DATE))									
 									.put(version, submission.getField(version))
 									.put(changes, submission.getField(changes))
 									.put(existing_GoB_HHID, submission.getField(existing_GoB_HHID))
@@ -240,8 +238,7 @@ public class MembersFollowupService {
 		Date day = Calendar.getInstance().getTime();
 		Map<String, String> PNCVisit3 = create(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
 									.put(START_DATE, submission.getField(START_DATE))
-									.put(END_DATE, submission.getField(END_DATE))
-									.put(name, submission.getField(name))
+									.put(END_DATE, submission.getField(END_DATE))									
 									.put(version, submission.getField(version))
 									.put(changes, submission.getField(changes))
 									.put(existing_GoB_HHID, submission.getField(existing_GoB_HHID))
@@ -328,8 +325,7 @@ public class MembersFollowupService {
 		Date day = Calendar.getInstance().getTime();
 		Map<String, String> PNCVisit4 = create(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
 									.put(START_DATE, submission.getField(START_DATE))
-									.put(END_DATE, submission.getField(END_DATE))
-									.put(name, submission.getField(name))
+									.put(END_DATE, submission.getField(END_DATE))									
 									.put(version, submission.getField(version))
 									.put(changes, submission.getField(changes))
 									.put(existing_GoB_HHID, submission.getField(existing_GoB_HHID))
@@ -409,8 +405,7 @@ public class MembersFollowupService {
 		Date day = Calendar.getInstance().getTime();
 		Map<String, String> ANCVisit1 = create(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
 									.put(START_DATE, submission.getField(START_DATE))
-									.put(END_DATE, submission.getField(END_DATE))
-									.put(name, submission.getField(name))
+									.put(END_DATE, submission.getField(END_DATE))									
 									.put(version, submission.getField(version))
 									.put(changes, submission.getField(changes))
 									.put(existing_GoB_HHID, submission.getField(existing_GoB_HHID))
@@ -499,8 +494,7 @@ public class MembersFollowupService {
 		Date day = Calendar.getInstance().getTime();
 		Map<String, String> ANCVisit2 = create(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
 									.put(START_DATE, submission.getField(START_DATE))
-									.put(END_DATE, submission.getField(END_DATE))
-									.put(name, submission.getField(name))
+									.put(END_DATE, submission.getField(END_DATE))								
 									.put(version, submission.getField(version))
 									.put(changes, submission.getField(changes))
 									.put(existing_GoB_HHID, submission.getField(existing_GoB_HHID))
@@ -589,8 +583,7 @@ public class MembersFollowupService {
 		Date day = Calendar.getInstance().getTime();
 		Map<String, String> ANCVisit3 = create(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
 									.put(START_DATE, submission.getField(START_DATE))
-									.put(END_DATE, submission.getField(END_DATE))
-									.put(name, submission.getField(name))
+									.put(END_DATE, submission.getField(END_DATE))									
 									.put(version, submission.getField(version))
 									.put(changes, submission.getField(changes))
 									.put(existing_GoB_HHID, submission.getField(existing_GoB_HHID))
@@ -682,8 +675,7 @@ public class MembersFollowupService {
 		Date day = Calendar.getInstance().getTime();
 		Map<String, String> ANCVisit4 = create(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
 									.put(START_DATE, submission.getField(START_DATE))
-									.put(END_DATE, submission.getField(END_DATE))
-									.put(name, submission.getField(name))
+									.put(END_DATE, submission.getField(END_DATE))									
 									.put(version, submission.getField(version))
 									.put(changes, submission.getField(changes))
 									.put(existing_GoB_HHID, submission.getField(existing_GoB_HHID))
