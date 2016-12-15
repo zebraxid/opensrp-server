@@ -452,7 +452,8 @@ public class AllConstants {
 	    	public static final String ChildVaccination_Measles_Date_of_Vaccination = "ChildVaccination_Measles_Date_of_Vaccination";
 	    	public static final String ChildVaccination_IPV_Date_of_Vaccination = "ChildVaccination_IPV_Date_of_Vaccination";
 	    	public static final String ChildVaccination_BCG_Date_of_Vaccination = "ChildVaccination_BCG_Date_of_Vaccination";		
-	
+	    	public static final String child_vaccines1_2 = "child_vaccines1_2";
+	    	public static final String child_vaccines1 = "child_vaccines1";
 	    	public static final String existing_first_name
 	    	="existing_first_name";
 	    	public static final String existing_mother_name
@@ -619,6 +620,7 @@ public class AllConstants {
 	    	="final_measles2";
 	    	public static final String address_note
 	    	="address_note";
+	    	public static final String Is_Reg_Today = "Is_Reg_Today";
 	    	public static final String 	existing_contact_phone_number	="existing_contact_phone_number";
 	    	public static final String 	father_name_note	="father_name_note";
 	    	public static final String 	husband_name	="husband_name";
@@ -639,6 +641,8 @@ public class AllConstants {
 	    	public static final String 	tt2_note	="tt2_note";
 	    	public static final String 	tt3_note	="tt3_note";
 	    	public static final String 	tt4_note	="tt4_note";
+	    	public static final String vaccines1 = "vaccines1";
+	    	public static final String vaccines1_2 = "vaccines1_2";
     }
 
     public static class PSRFFields

@@ -4,6 +4,8 @@
 
 package org.opensrp.register.mcare.domain;
 
+import static org.opensrp.common.AllConstants.MEMBERSRegistrationFields.Is_Reg_Today;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -570,6 +572,9 @@ public class Members extends MotechBaseDataObject {
 ;
 	@JsonProperty
 	private String child_vaccines_2
+;
+	@JsonProperty
+	private String 	Is_Reg_Today
 ;
 	@JsonProperty
 	private String Is_woman
@@ -1393,6 +1398,10 @@ public class Members extends MotechBaseDataObject {
 	public void setchild_vaccines_2(String child_vaccines_2) {
 		this.child_vaccines_2 = child_vaccines_2;
 	}
+	
+	public void setIs_Reg_Today(String Is_Reg_Today) {
+		this.Is_Reg_Today = Is_Reg_Today;
+	}
 	public String caseId() {
 		return caseId;
 	}
@@ -2008,6 +2017,9 @@ public class Members extends MotechBaseDataObject {
 		return child_vaccines_2;
 	}
 	
+	public String Is_Reg_Today() {
+		return Is_Reg_Today;
+	}
 	public Map<String, String> details() {
 		if (details == null)
 			this.details = new HashMap<>();

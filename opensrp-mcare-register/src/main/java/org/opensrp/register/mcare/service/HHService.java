@@ -263,6 +263,7 @@ public class HHService {
 					.put(final_ipv, membersFields.get(final_ipv))
 					.put(final_measles1, membersFields.get(final_measles1))
 					.put(final_measles2, membersFields.get(final_measles2))
+					.put(Is_Reg_Today, membersFields.get(Is_Reg_Today))
 					.put(received_time, dateTime.format(today).toString()).map();
 			
 				if(membersFields.containsKey(REG_NO)){
