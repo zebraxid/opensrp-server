@@ -14,6 +14,11 @@
         "shouldLoadValue": true
       },
       {
+        "name": "Is_Reg_Today",
+        "bind": "/model/instance/Child_Vaccination_Followup/existing_Is_Reg_Today",
+        "shouldLoadValue": true
+      },
+      {
         "name": "Child_mother_name",
         "bind": "/model/instance/Child_Vaccination_Followup/existing_mother_name",
         "shouldLoadValue": true
@@ -333,8 +338,16 @@
         "bind": "/model/instance/Child_Vaccination_Followup/measles2_note"
       },
       {
-        "name": "vaccines",
-        "bind": "/model/instance/Child_Vaccination_Followup/vaccines"
+        "name": "child_vaccines",
+        "bind": "/model/instance/Child_Vaccination_Followup/child_vaccines"
+      },
+      {
+        "name": "child_vaccines1",
+        "bind": "/model/instance/Child_Vaccination_Followup/child_vaccines1"
+      },
+      {
+        "name": "child_vaccines1_2",
+        "bind": "/model/instance/Child_Vaccination_Followup/child_vaccines1_2"
       },
       {
         "name": "bcg_retro",
@@ -441,8 +454,8 @@
         "bind": "/model/instance/Child_Vaccination_Followup/vaccines_group/measles2_dose"
       },
       {
-        "name": "vaccines_2",
-        "bind": "/model/instance/Child_Vaccination_Followup/vaccines_2"
+        "name": "child_vaccines_2",
+        "bind": "/model/instance/Child_Vaccination_Followup/child_vaccines_2"
       },
       {
         "name": "vaccination_date",

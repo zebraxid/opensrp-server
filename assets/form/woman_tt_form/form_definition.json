@@ -9,6 +9,11 @@
         "shouldLoadValue": true
       },
       {
+        "name": "Is_Reg_Today",
+        "bind": "/model/instance/Woman_TT_Followup_Form/existing_Is_Reg_Today",
+        "shouldLoadValue": true
+      },
+      {
         "name": "existing_location",
         "bind": "/model/instance/Woman_TT_Followup_Form/existing_location"
       },
@@ -327,6 +332,14 @@
       {
         "name": "vaccines",
         "bind": "/model/instance/Woman_TT_Followup_Form/vaccines"
+      },
+      {
+        "name": "vaccines1",
+        "bind": "/model/instance/Woman_TT_Followup_Form/vaccines1"
+      },
+      {
+        "name": "vaccines1_2",
+        "bind": "/model/instance/Woman_TT_Followup_Form/vaccines1_2"
       },
       {
         "name": "tt1_retro",
