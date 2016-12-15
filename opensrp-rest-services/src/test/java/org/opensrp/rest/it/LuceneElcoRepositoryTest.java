@@ -1,4 +1,4 @@
-package org.opensrp.rest.it;
+/*package org.opensrp.rest.it;
 
 import java.io.IOException;
 import java.text.DateFormat;
@@ -67,7 +67,7 @@ public class LuceneElcoRepositoryTest {
 		// "FWUPAZILLA:GAIBANDHA SADAR" + " AND " + "user_type:FWA"+
 		// " AND SUBMISSIONDATE:[2014-02-01 TO 2017-03-30]" ;
 
-		/*
+		
 		 * DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd"); Date
 		 * today = Calendar.getInstance().getTime(); Date day= null; try { day =
 		 * dateFormat.parse(dateFormat.format(today)); } catch (ParseException
@@ -75,17 +75,17 @@ public class LuceneElcoRepositoryTest {
 		 * System.out.println("timestamp with previous way- " + day.getTime());
 		 * System.out.println("timestamp with new way- " +
 		 * DateUtil.getTimestampToday());
-		 */
+		 
 		System.out.println("this.convertDateToTimestampMills(\"2016-06-08\") - " + this.convertDateToTimestampMills("2016-06-08"));
 		System.out.println("this.convertDateToTimestampMills(\"2016-06-14\") - " + this.convertDateToTimestampMills("2016-06-14"));
 		System.out.println("this.convertDateToTimestampMills(\"2016-06-15\") - " + this.convertDateToTimestampMills("2016-06-15"));
 		System.out.println("this.convertDateToTimestampMills(\"2016-06-21\") - " + this.convertDateToTimestampMills("2016-06-21"));
 
-		/*
+		
 		 * String makeQueryString ="type:Household" + " AND "+
 		 * "SUBMISSIONDATE:["+this.convertDateToTimestampMills("2016-06-08")+
 		 * " TO "+this.convertDateToTimestampMills("2016-06-14")+"]" ;
-		 */
+		 
 		String makeQueryString = "type:Household" + " AND " + "SUBMISSIONDATE:[1465840800000 TO 1465840800000]";
 
 		LuceneResult result = luceneElcoRepository.findDocsByProvider(makeQueryString);
@@ -98,7 +98,7 @@ public class LuceneElcoRepositoryTest {
 					+ " -and referring to- " + new Date(boundaries.weekBoundariesAsTimeStamp.get(i)).toString());
 		}
 
-		/*
+		
 		 * makeQueryString ="type:Household" + " AND "+
 		 * "SUBMISSIONDATE:["+this.convertDateToTimestampMills("2016-06-15")+
 		 * " TO "+this.convertDateToTimestampMills("2016-06-15")+"]" ;
@@ -108,9 +108,9 @@ public class LuceneElcoRepositoryTest {
 		 * " -count with getRows().size() for today");
 		 * System.out.println(result.getTotalRows() +
 		 * " -count with getTotalRows() for today");
-		 */
+		 
 
-		/*
+		
 		 * Date today = Calendar.getInstance().getTime(); Date dates =
 		 * dateFormat.parse(dateFormat.format(today)); long end =
 		 * dates.getTime(); //end has today's date
@@ -120,8 +120,8 @@ public class LuceneElcoRepositoryTest {
 		 * 
 		 * System.out.println("today:- "+end);
 		 * System.out.println("limit:- "+start);
-		 */
-		/*
+		 
+		
 		 * String makeQueryString;// ="type:Elco" + " AND " +
 		 * "SUBMISSIONDATE:["+start+" TO "+end+"]" ; makeQueryString
 		 * ="type:Elco" + " AND " + "SUBMISSIONDATE:[" + end +" TO " + end +"]"
@@ -134,9 +134,9 @@ public class LuceneElcoRepositoryTest {
 		 * +" TO " + end +"]" ; result =
 		 * luceneElcoRepository.findDocsByProvider(makeQueryString);
 		 * System.out.println(result.getTotalRows() + " -month Count for may");
-		 */
+		 
 
-		/*
+		
 		 * Date weekUpperDate = dateFormat.parse("2016-05-17"); long
 		 * weekUpperDateTimestamp = weekUpperDate.getTime(); Date weekLowerDate
 		 * = dateFormat.parse("2016-05-21"); long weekLowerDateTimestamp =
@@ -146,15 +146,15 @@ public class LuceneElcoRepositoryTest {
 		 * luceneElcoRepository.findDocsByProvider(makeQueryString);
 		 * System.out.println(result.getRows().size() + " -week Count for may");
 		 * System.out.println(result.getTotalRows() + " -week Count for may");
-		 */
+		 
 
 		// var x = new Date(); var y = new Date(x.getFullYear(), x.getMonth()-3,
 		// 1,0,0,0); var time = y.getTime(); console.log(time); console.log(y);
 
-		/*
+		
 		 * assertNotNull("Expecting a non null result", result);
 		 * assertTrue("Should only have one result", result.getRows().size()
 		 * >=0);
-		 */
+		 
 	}
-}
+}*/

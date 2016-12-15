@@ -1,4 +1,4 @@
-package dashboard.test;
+/*package dashboard.test;
 
 import static org.junit.Assert.*;
 
@@ -16,8 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-/*@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath:test-applicationContext-opensrp-register-mcare.xml")*/
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration("classpath:test-applicationContext-opensrp-register-mcare.xml")
 public class RoleServiceTest {
  
 	@Autowired  
@@ -61,11 +61,12 @@ public class RoleServiceTest {
 		assertNull(testPrivilege);
     }
     
-    /*@Test 
+    @Test 
     public void check() throws Exception {		
 		Privilege privilege = new Privilege();
 		privilege.withName("testPrivilege");
 		privilege.withStatus("testStatus");
 		allPrivileges.add(privilege);	
-    }*/
+    }
 }
+*/
