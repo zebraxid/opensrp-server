@@ -331,7 +331,7 @@ public class Members extends MotechBaseDataObject {
 	@JsonProperty
 	private List<Map<String, String>> child_vaccine;
 	@JsonProperty
-	private Map<String, String> BNFVisit;
+	private List<Map<String, String>> BNFVisit;
 	@JsonProperty
 	private String isClosed;
 	public Members() {
@@ -345,7 +345,7 @@ public class Members extends MotechBaseDataObject {
 				this.PNCVisit3 = new HashMap<>();
 				this.PNCVisit4 = new HashMap<>();
 				this.Elco_Followup = new ArrayList<>();
-				this.BNFVisit = new HashMap<>();
+				this.BNFVisit = new ArrayList<>();
 				this.child_vaccine = new ArrayList<>();
 				this.setIsClosed(false);
 	}
@@ -410,8 +410,8 @@ public class Members extends MotechBaseDataObject {
         this.PNCVisit4 = new HashMap<>(PNCVisit4);
         return this;
     }
-    public Members setBNFVisit(Map<String, String> BNFVisit) {
-        this.BNFVisit = new HashMap<>(BNFVisit);
+    public Members setBNFVisit(List<Map<String, String>> BNFVisit) {
+        this.BNFVisit = BNFVisit;
         return this;
     }
     public Members setchild_vaccine(List<Map<String, String>> child_vaccine) {
@@ -844,9 +844,9 @@ public class Members extends MotechBaseDataObject {
 			this.PNCVisit4 = new HashMap<>();
 		return PNCVisit4;
 	}
-	public Map<String, String> BNFVisit() {
+	public List<Map<String, String>> BNFVisit() {
 		if (BNFVisit == null)
-			this.BNFVisit = new HashMap<>();
+			this.BNFVisit = new ArrayList<>();
 		return BNFVisit;
 	}
 	public List<Map<String, String>> child_vaccine() {

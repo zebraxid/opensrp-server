@@ -1733,6 +1733,7 @@ public class AllConstants {
         public static final String SCHEDULE_PNC_3 = "pncrv_3";
         public static final String SCHEDULE_PNC_4 = "pncrv_4";         
         public static final String Adolescent_Health = "Adolescent_Health";
+        public static final String IMD_Adolescent_Health = "IMD_Adolescent_Health";
         public static final String Injectables = "Injectables";
         public static final String Nutrition = "Nutrition";
         public static final String Death_Reg = "Death_Reg"; 

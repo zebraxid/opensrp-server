@@ -14,6 +14,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import org.joda.time.Days;
 import org.joda.time.LocalDate;
@@ -75,6 +76,14 @@ public class MembersScheduleService {
 		scheduleLogService.createNewScheduleLogandUnenrollImmediateSchedule(caseId, date, provider, instanceId, IMD_child_bcg, child_bcg, members, duration);
 	}
 	
+	public void enrollIntoMilestoneOfAdolescent(String caseId, String date,String provider,String instanceId)
+	{
+	    logger.info(format("Enrolling Elco into Adolescent_Health schedule. Id: {0}", caseId));
+	    
+		scheduler.enrollIntoSchedule(caseId, Adolescent_Health, date);
+		scheduleLogService.createNewScheduleLogandUnenrollImmediateSchedule(caseId, date, provider, instanceId, IMD_Adolescent_Health, Adolescent_Health, members, duration);
+	}
+	
 	public void unEnrollFromScheduleCensus(String caseId, String providerId, String scheduleName){
 		//scheduler.unEnrollFromScheduleCensus(caseId, providerId, HH_SCHEDULE_CENSUS);
 		try{
@@ -97,6 +106,22 @@ public class MembersScheduleService {
         try{
         	//scheduler.unEnrollFromScheduleimediate(caseId, providerId, IMD_ELCO_SCHEDULE_PSRF);
         	scheduler.fullfillMilestoneAndCloseAlert(caseId, providerId, IMD_ELCO_SCHEDULE_PSRF, new LocalDate());
+        }catch(Exception e){
+        	logger.info(e.getMessage());
+        }
+        
+    }
+	
+	public void unEnrollFromScheduleOfAdolescent(String caseId, String providerId, String scheduleName)
+    {
+        logger.info(format("Unenrolling Elco from Adolescent schedule. Id: {0}", caseId));
+        try{
+        	scheduler.fullfillMilestoneAndCloseAlert(caseId, providerId, Adolescent_Health, new LocalDate());
+        }catch(Exception e){
+        	logger.info(format("Failed to UnEnrollFromSchedule Adolescent"));
+        }
+        try{
+        	scheduler.fullfillMilestoneAndCloseAlert(caseId, providerId, IMD_Adolescent_Health, new LocalDate());
         }catch(Exception e){
         	logger.info(e.getMessage());
         }
@@ -211,6 +236,14 @@ public class MembersScheduleService {
 	    
 	}
 	
+	public void imediateEnrollIntoMilestoneOfAdolescent(String caseId, String date,String provider,String instanceId)	
+	{
+	    logger.info(format("Enrolling Elco into Adolescent_Health schedule. Id: {0}", caseId));	  
+	    scheduler.enrollIntoSchedule(caseId, ScheduleNames.IMD_Adolescent_Health, date);	 
+	    scheduleLogService.createImmediateScheduleAndScheduleLog(caseId, date, provider, instanceId, BeneficiaryType.members, Adolescent_Health, duration,ScheduleNames.IMD_Adolescent_Health);
+	    
+	}
+	
 	public void enrollIntoSchedule(String entityId, String date,String scheduleName){
 	    logger.info(format("Enrolling into {1} schedule. Id: {0}", scheduleName, entityId));	    
 		scheduler.enrollIntoSchedule(entityId, scheduleName, date);	
@@ -283,4 +316,11 @@ public class MembersScheduleService {
         logger.info(format("Un-enrolling with Entity id:{0} from schedule: {1}", entityId, scheduleName));
         scheduler.unEnrollFromSchedule(entityId, anmId, scheduleName);
      }
+	 
+	 public void unEnrollFromAllSchedules(String entityId) {
+		 
+		logger.info(format("Un-enrolling with Entity id:{0} from all schedules", entityId));
+	    scheduler.unEnrollFromAllSchedules(entityId);
+	        
+	 }
 }

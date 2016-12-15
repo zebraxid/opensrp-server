@@ -14,17 +14,16 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
-import org.joda.time.DateTime;
-import org.joda.time.LocalDate;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.register.mcare.domain.Members;
 import org.opensrp.register.mcare.repository.AllMembers;
 import org.opensrp.register.mcare.service.scheduling.MembersScheduleService;
 import org.opensrp.register.mcare.service.scheduling.ScheduleLogService;
+import org.opensrp.scheduler.Action;
+import org.opensrp.scheduler.repository.AllActions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,10 +37,13 @@ public class MembersPaybackService {
 	private AllMembers allMembers;
 	private MembersScheduleService membersScheduleService;
 	private ScheduleLogService scheduleLogService;
+	private AllActions allActions;
+	
 	@Autowired
 	public MembersPaybackService(AllMembers allMembers, MembersScheduleService membersScheduleService, 
-			ScheduleLogService scheduleLogService) {
+			ScheduleLogService scheduleLogService, AllActions allActions) {
 		this.allMembers = allMembers;
+		this.allActions = allActions;
 		this.membersScheduleService = membersScheduleService;
 	}
 	
@@ -49,7 +51,7 @@ public class MembersPaybackService {
 		Members members = allMembers.findByCaseId(submission.entityId());
 		if (members == null) {
 			logger.warn(format(
-					"Failed to handle PNCVisit1 as there is no Member enrolled with ID: {0}",
+					"Failed to handle Injectables as there is no Member enrolled with ID: {0}",
 					submission.entityId()));
 			return;
 		}
@@ -124,22 +126,27 @@ public class MembersPaybackService {
 		members.setPNCVisit1(PNCVisit1);
 		allMembers.update(members);
 		
-		membersScheduleService.fullfillMilestone(submission.entityId(), submission.anmId(), SCHEDULE_PNC, new LocalDate());
-
-		String pattern = "yyyy-MM-dd";
-		// DateTimeFormatter formatter = DateTimeFormat.forPattern(pattern);
-
-		DateTime dateTime = DateTime.parse(submission.getField(today));
-		DateTimeFormatter fmt = DateTimeFormat.forPattern(pattern);
-		String referenceDate = fmt.print(dateTime);
-		membersScheduleService.enrollPNCForMother(submission.entityId(), SCHEDULE_PNC_2, LocalDate.parse(referenceDate));
+		if (submission.getField(Visit_Status) != null && !submission.getField(Visit_Status).equalsIgnoreCase(""))
+		if(submission.getField(Visit_Status).equalsIgnoreCase("2") || submission.getField(Visit_Status).equalsIgnoreCase("6")){
+			membersScheduleService.enrollIntoSchedule(submission.entityId(), submission.getField(Today), Injectables);
+		}
+		
+		if (submission.getField(Visit_Status) != null && !submission.getField(Visit_Status).equalsIgnoreCase(""))
+		if(submission.getField(Visit_Status).equalsIgnoreCase("8")){
+			membersScheduleService.unEnrollFromSchedule(submission.entityId(), submission.anmId(), Injectables);
+		}
+		
+		if (submission.getField(Visit_Status) != null && !submission.getField(Visit_Status).equalsIgnoreCase(""))
+			if(submission.getField(Visit_Status).equalsIgnoreCase("10")){
+				membersScheduleService.unEnrollFromAllSchedules(submission.entityId());
+			}
 	}
 	
 	public void AdolescentHealthHandler(FormSubmission submission) {
 		Members members = allMembers.findByCaseId(submission.entityId());
 		if (members == null) {
 			logger.warn(format(
-					"Failed to handle PNCVisit1 as there is no Member enrolled with ID: {0}",
+					"Failed to handle Adolescent Health as there is no Member enrolled with ID: {0}",
 					submission.entityId()));
 			return;
 		}
@@ -214,15 +221,31 @@ public class MembersPaybackService {
 		members.setPNCVisit1(PNCVisit1);
 		allMembers.update(members);
 		
-		membersScheduleService.fullfillMilestone(submission.entityId(), submission.anmId(), SCHEDULE_PNC, new LocalDate());
+		if (submission.getField(Visit_Status) != null && 
+				(submission.getField(Visit_Status).equalsIgnoreCase("8")))
+		{			
+			membersScheduleService.unEnrollFromScheduleOfAdolescent(submission.entityId(), submission.anmId(), "");
+			try {
+				List<Action> beforeNewActions = allActions.findAlertByANMIdEntityIdScheduleName(submission.anmId(), submission.entityId(),
+						Adolescent_Health);
+				if (beforeNewActions.size() > 0) {
+					scheduleLogService.closeSchedule(submission.entityId(), submission.instanceId(), beforeNewActions.get(0).timestamp(),
+							Adolescent_Health);
+				}
 
-		String pattern = "yyyy-MM-dd";
-		// DateTimeFormatter formatter = DateTimeFormat.forPattern(pattern);
-
-		DateTime dateTime = DateTime.parse(submission.getField(today));
-		DateTimeFormatter fmt = DateTimeFormat.forPattern(pattern);
-		String referenceDate = fmt.print(dateTime);
-		membersScheduleService.enrollPNCForMother(submission.entityId(), SCHEDULE_PNC_2, LocalDate.parse(referenceDate));
+			} catch (Exception e) {
+				logger.info("From Adolescent_Health: " + e.getMessage());
+			}			
+		}
+		else{			
+			membersScheduleService.enrollIntoMilestoneOfAdolescent(submission.entityId(), submission.getField(today), submission.anmId(),
+					submission.instanceId());			
+		}
+		
+		if (submission.getField(Visit_Status) != null && !submission.getField(Visit_Status).equalsIgnoreCase(""))
+			if(submission.getField(Visit_Status).equalsIgnoreCase("10")){
+				membersScheduleService.unEnrollFromAllSchedules(submission.entityId());
+			}
 	}
 	
 	public void DeathRegHandler(FormSubmission submission) {
@@ -304,15 +327,7 @@ public class MembersPaybackService {
 		members.setPNCVisit1(PNCVisit1);
 		allMembers.update(members);
 		
-		membersScheduleService.fullfillMilestone(submission.entityId(), submission.anmId(), SCHEDULE_PNC, new LocalDate());
-
-		String pattern = "yyyy-MM-dd";
-		// DateTimeFormatter formatter = DateTimeFormat.forPattern(pattern);
-
-		DateTime dateTime = DateTime.parse(submission.getField(today));
-		DateTimeFormatter fmt = DateTimeFormat.forPattern(pattern);
-		String referenceDate = fmt.print(dateTime);
-		membersScheduleService.enrollPNCForMother(submission.entityId(), SCHEDULE_PNC_2, LocalDate.parse(referenceDate));
+		membersScheduleService.unEnrollFromAllSchedules(submission.entityId());
 	}
 	
 	public void NutritionHandler(FormSubmission submission) {
@@ -394,15 +409,12 @@ public class MembersPaybackService {
 		members.setPNCVisit1(PNCVisit1);
 		allMembers.update(members);
 		
-		membersScheduleService.fullfillMilestone(submission.entityId(), submission.anmId(), SCHEDULE_PNC, new LocalDate());
-
-		String pattern = "yyyy-MM-dd";
-		// DateTimeFormatter formatter = DateTimeFormat.forPattern(pattern);
-
-		DateTime dateTime = DateTime.parse(submission.getField(today));
-		DateTimeFormatter fmt = DateTimeFormat.forPattern(pattern);
-		String referenceDate = fmt.print(dateTime);
-		membersScheduleService.enrollPNCForMother(submission.entityId(), SCHEDULE_PNC_2, LocalDate.parse(referenceDate));
+		membersScheduleService.unEnrollFromSchedule(submission.entityId(), submission.anmId(), Nutrition);
+		
+		if (submission.getField(Visit_Status) != null && !submission.getField(Visit_Status).equalsIgnoreCase(""))
+			if(submission.getField(Visit_Status).equalsIgnoreCase("10")){
+				membersScheduleService.unEnrollFromAllSchedules(submission.entityId());
+			}
 	}
 		
 	public boolean isValidDate(String dateString) {

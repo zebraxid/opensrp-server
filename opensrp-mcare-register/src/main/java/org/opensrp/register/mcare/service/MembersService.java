@@ -90,7 +90,7 @@ public class MembersService {
 			if (!fieldName.equalsIgnoreCase("")) {
 				if (membersFields.containsKey(fieldName)) {
 					if (membersFields.get(fieldName)!= null || !membersFields.get(fieldName).equalsIgnoreCase("")) {
-						if(submission.getField(fieldName).equalsIgnoreCase("1")){
+						if(membersFields.get(fieldName).equalsIgnoreCase("1")){
 							membersScheduleService.imediateEnrollIntoMilestoneOfPSRF(
 								membersFields.get(ID), submission.getField(REFERENCE_DATE), submission.anmId(), submission.instanceId());
 						}
@@ -100,13 +100,23 @@ public class MembersService {
 			
 			//womanVaccineSchedule.Vaccine(submission, members, membersFields, child_bcg, submission.getField(REFERENCE_DATE), "Child");
 
-			if(membersFields.containsKey("Child"))
-			if(membersFields.get("Child") != null && !membersFields.get("Child").equalsIgnoreCase(""))
-			if(membersFields.get("Child").equalsIgnoreCase("1")){
-				if(membersFields.containsKey(submission.getField(REFERENCE_DATE)))
-				if(membersFields.get(submission.getField(REFERENCE_DATE)) != null && !membersFields.get(submission.getField(REFERENCE_DATE)).equalsIgnoreCase(""))
-				if(isValidDate(membersFields.get(submission.getField(REFERENCE_DATE)))){
+			if(submission.getField("Child") != null && !submission.getField("Child").equalsIgnoreCase(""))
+			if(submission.getField("Child").equalsIgnoreCase("1")){
+				if(submission.getField(REFERENCE_DATE) != null && !submission.getField(REFERENCE_DATE).equalsIgnoreCase(""))
+				if(isValidDate(submission.getField(REFERENCE_DATE))){
 					membersScheduleService.imediateEnrollIntoMilestoneOfChild_vaccination(
+						members.caseId(),submission.getField(REFERENCE_DATE), submission.anmId(), submission.instanceId());
+					
+					membersScheduleService.enrollIntoSchedule(submission.entityId(), submission.getField(today), Nutrition);
+				}
+			}
+			
+			
+			if(submission.getField("Adolescent") != null && !submission.getField("Adolescent").equalsIgnoreCase(""))
+			if(submission.getField("Adolescent").equalsIgnoreCase("1")){
+				if(submission.getField(REFERENCE_DATE) != null && !submission.getField(REFERENCE_DATE).equalsIgnoreCase(""))
+				if(isValidDate(submission.getField(REFERENCE_DATE))){
+					membersScheduleService.imediateEnrollIntoMilestoneOfAdolescent(
 						members.caseId(),submission.getField(REFERENCE_DATE), submission.anmId(), submission.instanceId());
 				}
 			}
@@ -325,7 +335,35 @@ public class MembersService {
 				}
 			} 
 		}
-
+		
+		if (submission.getField(Is_Eligible_Injectables) != null && !submission.getField(Is_Eligible_Injectables).equalsIgnoreCase(""))
+		if(submission.getField(Is_Eligible_Injectables).equalsIgnoreCase("1")){
+			membersScheduleService.enrollIntoSchedule(submission.entityId(), submission.getField(today), Injectables);
+		}
+		
+		if(submission.getField(fieldName) != null && !submission.getField(fieldName).equalsIgnoreCase("")){
+		if(submission.getField(fieldName).equalsIgnoreCase("1") || 
+				submission.getField(fieldName).equalsIgnoreCase("2") || submission.getField(fieldName).equalsIgnoreCase("3")){			
+				membersScheduleService.unEnrollFromSchedule(submission.entityId(), submission.anmId(), Injectables);
+			}
+		} 
+		
+		if(submission.getField(Eligible_Injectables) != null && !submission.getField(Eligible_Injectables).equalsIgnoreCase("")){
+			if(submission.getField(Eligible_Injectables).equalsIgnoreCase("0")){			
+				membersScheduleService.unEnrollFromSchedule(submission.entityId(), submission.anmId(), Injectables);
+			}
+		} 
+		
+		if(submission.getField(Select_FP_Method) != null && !submission.getField(Select_FP_Method).equalsIgnoreCase("")){
+			if(!submission.getField(Select_FP_Method).equalsIgnoreCase("3")){			
+				membersScheduleService.unEnrollFromSchedule(submission.entityId(), submission.anmId(), Injectables);
+			}
+		} 
+		
+		if (submission.getField(Visit_Status) != null && !submission.getField(Visit_Status).equalsIgnoreCase(""))
+			if(submission.getField(Visit_Status).equalsIgnoreCase("10")){
+				membersScheduleService.unEnrollFromAllSchedules(submission.entityId());
+			}
 	}
 	
 	
@@ -419,7 +457,7 @@ public class MembersService {
 								.put(Received_Time, format.format(day).toString())
 								.map();	
 		
-		members.setBNFVisit(bnf);
+		members.BNFVisit().add(bnf);
 		allMembers.update(members);
 		
 		/*if (submission.getField(Visit_status) != null && !submission.getField(Visit_status).equalsIgnoreCase("")){	
@@ -438,7 +476,7 @@ public class MembersService {
 		}	
 					
 		else if(submission.getField(Visit_status).equalsIgnoreCase("3") || submission.getField(Visit_status).equalsIgnoreCase("4")
-				|| submission.getField(Visit_status).equalsIgnoreCase("8")|| submission.getField(Visit_status).equalsIgnoreCase("10")){	
+				|| submission.getField(Visit_status).equalsIgnoreCase("8")){	
 			//membersScheduleService.unEnrollAndCloseSchedule(members.caseId(),submission.anmId(),
 			//		SCHEDULE_ANC,LocalDate.parse(submission.getField(Today)));
 			
@@ -452,8 +490,7 @@ public class MembersService {
 			}
 		}
 		
-		else if(submission.getField(Visit_status).equalsIgnoreCase("4")
-				|| submission.getField(Visit_status).equalsIgnoreCase("8")|| submission.getField(Visit_status).equalsIgnoreCase("10")){
+		else if(submission.getField(Visit_status).equalsIgnoreCase("4") || submission.getField(Visit_status).equalsIgnoreCase("8")){
 			/*membersScheduleService.unEnrollAndCloseSchedule(members.caseId(),submission.anmId(),
 					SCHEDULE_Woman_BNF,LocalDate.parse(submission.getField(Today)));
 			membersScheduleService.unEnrollAndCloseSchedule(members.caseId(),submission.anmId(),
@@ -512,6 +549,17 @@ public class MembersService {
 			}
 		}
 		
+		if (submission.getField("Calc_Age_Newmom") != null && !submission.getField("Calc_Age_Newmom").equalsIgnoreCase("")){	
+		if(Integer.parseInt(submission.getField("Calc_Age_Newmom")) <= 3){
+			membersScheduleService.enrollIntoSchedule(submission.entityId(), submission.getField(Today), Nutrition);
+		}	
+		}
+		
+		if (submission.getField(Visit_Status) != null && !submission.getField(Visit_Status).equalsIgnoreCase(""))
+			if(submission.getField(Visit_Status).equalsIgnoreCase("10")){
+				membersScheduleService.unEnrollFromAllSchedules(submission.entityId());
+			}
+		
 	}
 	
 	private void addMEMBERDETAILSToHH(FormSubmission submission,
@@ -525,80 +573,76 @@ public class MembersService {
 					.put(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
 					.put(START_DATE, submission.getField(START_DATE))
 					.put(END_DATE, submission.getField(END_DATE))
-					.put(caseId , submission.getField(caseId))
 					.put(INSTANCEID	, submission.getField(INSTANCEID))
 					.put(PROVIDERID	, submission.getField(PROVIDERID))
 					.put(LOCATIONID	, submission.getField(LOCATIONID))
-					.put(Today	, submission.getField(Today))
-					.put(Start	, submission.getField(Start))
-					.put(End	, submission.getField(End))
-					.put(relationalid	, submission.getField(relationalid))
-					.put(Member_GoB_HHID	, submission.getField(Member_GoB_HHID))
-					.put(Member_Reg_Date	, submission.getField(Member_Reg_Date))
-					.put(Mem_F_Name	, submission.getField(Mem_F_Name))
-					.put(Mem_L_Name	, submission.getField(Mem_L_Name))
-					.put(Member_Birth_Date_Known	, submission.getField(Member_Birth_Date_Known))
-					.put(Member_Birth_Date	, submission.getField(Member_Birth_Date))
-					.put(Member_Age	, submission.getField(Member_Age))
-					.put(Calc_Age	, submission.getField(Calc_Age))
-					.put(Calc_Dob	, submission.getField(Calc_Dob))
-					.put(Calc_Dob_Confirm	, submission.getField(Calc_Dob_Confirm))
-					.put(Calc_Age_Confirm	, submission.getField(Calc_Age_Confirm))
-					.put(Birth_Date_Note	, submission.getField(Birth_Date_Note))
-					.put(Note_age	, submission.getField(Note_age))
-					.put(Member_Gender	, submission.getField(Member_Gender))
-					.put(Mem_ID_Type	, submission.getField(Mem_ID_Type))
-					.put(Mem_NID	, submission.getField(Mem_NID))
-					.put(Retype_Mem_NID	, submission.getField(Retype_Mem_NID))
-					.put(Mem_NID_Concept	, submission.getField(Mem_NID_Concept))
-					.put(Mem_BRID	, submission.getField(Mem_BRID))
-					.put(Retype_Mem_BRID	, submission.getField(Retype_Mem_BRID))
-					.put(Mem_BRID_Concept	, submission.getField(Mem_BRID_Concept))
-					.put(Mem_Mobile_Number	, submission.getField(Mem_Mobile_Number))
-					.put(Mem_Marital_Status	, submission.getField(Mem_Marital_Status))
-					.put(Couple_No	, submission.getField(Couple_No))
-					.put(Spouse_Name	, submission.getField(Spouse_Name))
-					.put(Wom_Menstruating	, submission.getField(Wom_Menstruating))
-					.put(Wom_Sterilized	, submission.getField(Wom_Sterilized))
-					.put(Wom_Hus_Live	, submission.getField(Wom_Hus_Live))
-					.put(Wom_Hus_Alive	, submission.getField(Wom_Hus_Alive))
-					.put(Wom_Hus_Sterilized	, submission.getField(Wom_Hus_Sterilized))
-					.put(Eligible	, submission.getField(Eligible))
-					.put(Eligible2	, submission.getField(Eligible2))
-					.put(ELCO	, submission.getField(ELCO))
-					.put(ELCO_Note	, submission.getField(ELCO_Note))
-					.put(Mem_Country	, submission.getField(Mem_Country))
-					.put(Mem_Division	, submission.getField(Mem_Division))
-					.put(Mem_District	, submission.getField(Mem_District))
-					.put(Mem_Upazilla	, submission.getField(Mem_Upazilla))
-					.put(Mem_Union	, submission.getField(Mem_Union))
-					.put(Mem_Ward	, submission.getField(Mem_Ward))
-					.put(Mem_Subunit	, submission.getField(Mem_Subunit))
-					.put(Mem_Mauzapara	, submission.getField(Mem_Mauzapara))
-					.put(Mem_Village_Name	, submission.getField(Mem_Village_Name))
-					.put(Mem_GPS	, submission.getField(Mem_GPS))
-					.put(ELCO_ID_Type	, submission.getField(ELCO_ID_Type))
-					.put(ELCO_NID	, submission.getField(ELCO_NID))
-					.put(ELCO_NID_Concept	, submission.getField(ELCO_NID_Concept))
-					.put(ELCO_BRID	, submission.getField(ELCO_BRID))
-					.put(ELCO_BRID_Concept	, submission.getField(ELCO_BRID_Concept))
-					.put(ELCO_Mobile_Number	, submission.getField(ELCO_Mobile_Number))
-					.put(Member_Detail	, submission.getField(Member_Detail))
-					.put(Permanent_Address	, submission.getField(Permanent_Address))
-					.put(Updated_Dist	, submission.getField(Updated_Dist))
-					.put(Updated_Union	, submission.getField(Updated_Union))
-					.put(Updated_Vill	, submission.getField(Updated_Vill))
-					.put(Final_Dist	, submission.getField(Final_Dist))
-					.put(Final_Union	, submission.getField(Final_Union))
-					.put(Final_Vill	, submission.getField(Final_Vill))
-					.put(Relation_HoH	, submission.getField(Relation_HoH))
-					.put(Place_Of_Birth	, submission.getField(Place_Of_Birth))
-					.put(Education	, submission.getField(Education))
-					.put(Religion	, submission.getField(Religion))
-					.put(BD_Citizen	, submission.getField(BD_Citizen))
-					.put(Occupation	, submission.getField(Occupation))
-					.put(add_member	, submission.getField(add_member))
-					.put(isClosed	, submission.getField(isClosed))
+					.put(relationalid	, membersFields.get(relationalid))
+					.put(Member_GoB_HHID	, membersFields.get(Member_GoB_HHID))
+					.put(Member_Reg_Date	, membersFields.get(Member_Reg_Date))
+					.put(Mem_F_Name	, membersFields.get(Mem_F_Name))
+					.put(Mem_L_Name	, membersFields.get(Mem_L_Name))
+					.put(Member_Birth_Date_Known	, membersFields.get(Member_Birth_Date_Known))
+					.put(Member_Birth_Date	, membersFields.get(Member_Birth_Date))
+					.put(Member_Age	, membersFields.get(Member_Age))
+					.put(Calc_Age	, membersFields.get(Calc_Age))
+					.put(Calc_Dob	, membersFields.get(Calc_Dob))
+					.put(Calc_Dob_Confirm	, membersFields.get(Calc_Dob_Confirm))
+					.put(Calc_Age_Confirm	, membersFields.get(Calc_Age_Confirm))
+					.put(Birth_Date_Note	, membersFields.get(Birth_Date_Note))
+					.put(Note_age	, membersFields.get(Note_age))
+					.put(Member_Gender	, membersFields.get(Member_Gender))
+					.put(Mem_ID_Type	, membersFields.get(Mem_ID_Type))
+					.put(Mem_NID	, membersFields.get(Mem_NID))
+					.put(Retype_Mem_NID	, membersFields.get(Retype_Mem_NID))
+					.put(Mem_NID_Concept	, membersFields.get(Mem_NID_Concept))
+					.put(Mem_BRID	, membersFields.get(Mem_BRID))
+					.put(Retype_Mem_BRID	, membersFields.get(Retype_Mem_BRID))
+					.put(Mem_BRID_Concept	, membersFields.get(Mem_BRID_Concept))
+					.put(Mem_Mobile_Number	, membersFields.get(Mem_Mobile_Number))
+					.put(Mem_Marital_Status	, membersFields.get(Mem_Marital_Status))
+					.put(Couple_No	, membersFields.get(Couple_No))
+					.put(Spouse_Name	, membersFields.get(Spouse_Name))
+					.put(Wom_Menstruating	, membersFields.get(Wom_Menstruating))
+					.put(Wom_Sterilized	, membersFields.get(Wom_Sterilized))
+					.put(Wom_Hus_Live	, membersFields.get(Wom_Hus_Live))
+					.put(Wom_Hus_Alive	, membersFields.get(Wom_Hus_Alive))
+					.put(Wom_Hus_Sterilized	, membersFields.get(Wom_Hus_Sterilized))
+					.put(Eligible	, membersFields.get(Eligible))
+					.put(Eligible2	, membersFields.get(Eligible2))
+					.put(ELCO	, membersFields.get(ELCO))
+					.put(ELCO_Note	, membersFields.get(ELCO_Note))
+					.put(Mem_Country	, membersFields.get(Mem_Country))
+					.put(Mem_Division	, membersFields.get(Mem_Division))
+					.put(Mem_District	, membersFields.get(Mem_District))
+					.put(Mem_Upazilla	, membersFields.get(Mem_Upazilla))
+					.put(Mem_Union	, membersFields.get(Mem_Union))
+					.put(Mem_Ward	, membersFields.get(Mem_Ward))
+					.put(Mem_Subunit	, membersFields.get(Mem_Subunit))
+					.put(Mem_Mauzapara	, membersFields.get(Mem_Mauzapara))
+					.put(Mem_Village_Name	, membersFields.get(Mem_Village_Name))
+					.put(Mem_GPS	, membersFields.get(Mem_GPS))
+					.put(ELCO_ID_Type	, membersFields.get(ELCO_ID_Type))
+					.put(ELCO_NID	, membersFields.get(ELCO_NID))
+					.put(ELCO_NID_Concept	, membersFields.get(ELCO_NID_Concept))
+					.put(ELCO_BRID	, membersFields.get(ELCO_BRID))
+					.put(ELCO_BRID_Concept	, membersFields.get(ELCO_BRID_Concept))
+					.put(ELCO_Mobile_Number	, membersFields.get(ELCO_Mobile_Number))
+					.put(Member_Detail	, membersFields.get(Member_Detail))
+					.put(Permanent_Address	, membersFields.get(Permanent_Address))
+					.put(Updated_Dist	, membersFields.get(Updated_Dist))
+					.put(Updated_Union	, membersFields.get(Updated_Union))
+					.put(Updated_Vill	, membersFields.get(Updated_Vill))
+					.put(Final_Dist	, membersFields.get(Final_Dist))
+					.put(Final_Union	, membersFields.get(Final_Union))
+					.put(Final_Vill	, membersFields.get(Final_Vill))
+					.put(Relation_HoH	, membersFields.get(Relation_HoH))
+					.put(Place_Of_Birth	, membersFields.get(Place_Of_Birth))
+					.put(Education	, membersFields.get(Education))
+					.put(Religion	, membersFields.get(Religion))
+					.put(BD_Citizen	, membersFields.get(BD_Citizen))
+					.put(Occupation	, membersFields.get(Occupation))
+					.put(add_member	, membersFields.get(add_member))
+					.put(isClosed	, membersFields.get(isClosed))
 					.put(received_time, dateTime.format(today).toString()).map();
 			
 				if(membersFields.containsKey(Mem_F_Name)){
@@ -632,9 +676,8 @@ public class MembersService {
 
 			//womanVaccineSchedule.Vaccine(submission, members, membersFields, child_bcg, submission.getField(REFERENCE_DATE), "Child");
 
-			if(membersFields.containsKey(submission.getField(REFERENCE_DATE)))
-			if(membersFields.get(submission.getField(REFERENCE_DATE)) != null && !membersFields.get(submission.getField(REFERENCE_DATE)).equalsIgnoreCase(""))
-			if(isValidDate(membersFields.get(submission.getField(REFERENCE_DATE)))){
+			if(submission.getField(REFERENCE_DATE) != null && !submission.getField(REFERENCE_DATE).equalsIgnoreCase(""))
+			if(isValidDate(submission.getField(REFERENCE_DATE))){
 				membersScheduleService.imediateEnrollIntoMilestoneOfChild_vaccination(
 					members.caseId(),submission.getField(REFERENCE_DATE), submission.anmId(), submission.instanceId());
 			}
@@ -664,43 +707,43 @@ public class MembersService {
 		Date today = Calendar.getInstance().getTime();
 		for (Map<String, String> membersFields : subFormData.instances()) {
 
-			Map<String, String> birth_Outcome = create(ID, membersFields.get(ID))
-					.put(relationalid, submission.getField(relationalid))
-					.put(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
-					.put(START_DATE, submission.getField(START_DATE))
-					.put(END_DATE, submission.getField(END_DATE))
-					.put(add_child, submission.getField(add_child))
-					.put(Calc_Age, submission.getField(Calc_Age))
-					.put(Child_Father, submission.getField(Child_Father))
-					.put(Child_Mother, submission.getField(Child_Mother))
-					.put(Child_Name, submission.getField(Child_Name))
-					.put(Child_Vital_Status, submission.getField(Child_Vital_Status))
-					.put(Child_Weight, submission.getField(Child_Weight))
-					.put(Mem_BRID, submission.getField(Mem_BRID))
-					.put(Mem_BRID_Concept, submission.getField(Mem_BRID_Concept))
-					.put(Mem_Country, submission.getField(Mem_Country))
-					.put(Mem_District, submission.getField(Mem_District))
-					.put(Mem_Division, submission.getField(Mem_Division))
-					.put(Mem_F_Name, submission.getField(Mem_F_Name))
-					.put(Mem_GPS, submission.getField(Mem_GPS))
-					.put(Mem_L_Name, submission.getField(Mem_L_Name))
-					.put(Mem_Mauzapara, submission.getField(Mem_Mauzapara))
-					.put(Mem_Mobile_Number, submission.getField(Mem_Mobile_Number))
-					.put(Mem_Subunit, submission.getField(Mem_Subunit))
-					.put(Mem_Union, submission.getField(Mem_Union))
-					.put(Mem_Upazilla, submission.getField(Mem_Upazilla))
-					.put(Mem_Village_Name, submission.getField(Mem_Village_Name))
-					.put(Mem_Ward, submission.getField(Mem_Ward))
-					.put(Member_Age, submission.getField(Member_Age))
-					.put(Member_Birth_Date, submission.getField(Member_Birth_Date))
-					.put(Member_Gender, submission.getField(Member_Gender))
-					.put(Member_GoB_HHID, submission.getField(Member_GoB_HHID))
-					.put(Member_Reg_Date, submission.getField(Member_Reg_Date))
-					.put(Name_Check, submission.getField(Name_Check))
-					.put(Premature_Birth, submission.getField(Premature_Birth))
-					.put(Reg_Newborn, submission.getField(Reg_Newborn))
-					.put(Retype_Mem_BRID, submission.getField(Retype_Mem_BRID))
-					.put(received_time, dateTime.format(today).toString()).map();
+		Map<String, String> birth_Outcome = create(ID, membersFields.get(ID))
+				.put(relationalid, membersFields.get(relationalid))
+				.put(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
+				.put(START_DATE, submission.getField(START_DATE))
+				.put(END_DATE, submission.getField(END_DATE))
+				.put(add_child, membersFields.get(add_child))
+				.put(Calc_Age, membersFields.get(Calc_Age))
+				.put(Child_Father, membersFields.get(Child_Father))
+				.put(Child_Mother, membersFields.get(Child_Mother))
+				.put(Child_Name, membersFields.get(Child_Name))
+				.put(Child_Vital_Status, membersFields.get(Child_Vital_Status))
+				.put(Child_Weight, membersFields.get(Child_Weight))
+				.put(Mem_BRID, membersFields.get(Mem_BRID))
+				.put(Mem_BRID_Concept, membersFields.get(Mem_BRID_Concept))
+				.put(Mem_Country, membersFields.get(Mem_Country))
+				.put(Mem_District, membersFields.get(Mem_District))
+				.put(Mem_Division, membersFields.get(Mem_Division))
+				.put(Mem_F_Name, membersFields.get(Mem_F_Name))
+				.put(Mem_GPS, membersFields.get(Mem_GPS))
+				.put(Mem_L_Name, membersFields.get(Mem_L_Name))
+				.put(Mem_Mauzapara, membersFields.get(Mem_Mauzapara))
+				.put(Mem_Mobile_Number, membersFields.get(Mem_Mobile_Number))
+				.put(Mem_Subunit, membersFields.get(Mem_Subunit))
+				.put(Mem_Union, membersFields.get(Mem_Union))
+				.put(Mem_Upazilla, membersFields.get(Mem_Upazilla))
+				.put(Mem_Village_Name, membersFields.get(Mem_Village_Name))
+				.put(Mem_Ward, membersFields.get(Mem_Ward))
+				.put(Member_Age, membersFields.get(Member_Age))
+				.put(Member_Birth_Date, membersFields.get(Member_Birth_Date))
+				.put(Member_Gender, membersFields.get(Member_Gender))
+				.put(Member_GoB_HHID, membersFields.get(Member_GoB_HHID))
+				.put(Member_Reg_Date, membersFields.get(Member_Reg_Date))
+				.put(Name_Check, membersFields.get(Name_Check))
+				.put(Premature_Birth, membersFields.get(Premature_Birth))
+				.put(Reg_Newborn, membersFields.get(Reg_Newborn))
+				.put(Retype_Mem_BRID, membersFields.get(Retype_Mem_BRID))
+				.put(received_time, dateTime.format(today).toString()).map();
 			
 				if(membersFields.containsKey(Member_GoB_HHID)){
 					if(!membersFields.get(Member_GoB_HHID).equalsIgnoreCase("") || membersFields.get(Member_GoB_HHID) != null){
@@ -788,7 +831,7 @@ public class MembersService {
 			}
 					
 			if (submission.getField(Visit_Status) != null && !submission.getField(Visit_Status).equalsIgnoreCase("")){	
-			if(submission.getField(Visit_Status).equalsIgnoreCase("8") || submission.getField(Visit_Status).equalsIgnoreCase("10")){					
+			if(submission.getField(Visit_Status).equalsIgnoreCase("8")){					
 				membersScheduleService.unEnrollFromScheduleOfChild_vaccination(submission.entityId(), submission.anmId(), "");
 				try {
 					List<Action> beforeNewActions = allActions.findAlertByANMIdEntityIdScheduleName(submission.anmId(), submission.entityId(),
@@ -803,6 +846,11 @@ public class MembersService {
 				}	
 			}
 			}
+			
+			if (submission.getField(Visit_Status) != null && !submission.getField(Visit_Status).equalsIgnoreCase(""))
+				if(submission.getField(Visit_Status).equalsIgnoreCase("10")){
+					membersScheduleService.unEnrollFromAllSchedules(submission.entityId());
+				}
 	}
 	
 	public boolean isValidDate(String dateString) {

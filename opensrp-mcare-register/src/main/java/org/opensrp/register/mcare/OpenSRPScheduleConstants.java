@@ -88,6 +88,7 @@ public class OpenSRPScheduleConstants {
     	public static final String HH_SCHEDULE_CENSUS = "FW CENSUS";
     }
     public static class MemberScheduleConstants {
+    	public static final String CENCUS = "FW CENSUS";
     	public static final String ELCO_SCHEDULE_PSRF = "ELCO PSRF";
     	public static final String IMD_ELCO_SCHEDULE_PSRF = "IMEDIATE ELCO PSRF";
     	public static final String SCHEDULE_Woman_BNF = "Birth_Notification";
@@ -106,6 +107,7 @@ public class OpenSRPScheduleConstants {
         public static final String SCHEDULE_PNC_3 = "pncrv_3";
         public static final String SCHEDULE_PNC_4 = "pncrv_4";         
         public static final String Adolescent_Health = "Adolescent_Health";
+        public static final String IMD_Adolescent_Health = "IMD_Adolescent_Health";
         public static final String Injectables = "Injectables";
         public static final String Nutrition = "Nutrition";
         public static final String Death_Reg = "Death_Reg";   
