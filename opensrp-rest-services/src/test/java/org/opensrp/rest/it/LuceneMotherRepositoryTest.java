@@ -1,4 +1,4 @@
-/*package org.opensrp.rest.it;
+package org.opensrp.rest.it;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -63,15 +63,14 @@ public class LuceneMotherRepositoryTest {
     	System.out.println("ddd:"+end);
     	System.out.println("ss:"+start);
     	//String makeQueryString ="PROVIDERID:proshanto" + " AND " + "user_type:FWA"+ " AND SUBMISSIONDATE:["+start+" TO "+end+"]" ;
-    	String makeQueryString ="isClosed:true"+ " AND " + "type:Mother" + " AND " + "SUBMISSIONDATE:["+start+" TO "+end+"]" ;
+    	/*String makeQueryString ="isClosed:true"+ " AND " + "type:Mother" + " AND " + "SUBMISSIONDATE:["+start+" TO "+end+"]" ;
     	LuceneResult result = luceneMotherRepository.findDocsByProvider(makeQueryString);
     	System.out.println(result.toString());
         System.out.println(result.getRows().size());
        
 		
         assertNotNull("Expecting a non null result", result); 
-        assertTrue("Should only have one result", result.getRows().size() >=0); 
+        assertTrue("Should only have one result", result.getRows().size() >=0); */
     } 
 
 }
-*/

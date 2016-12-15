@@ -1,4 +1,4 @@
-/*package org.opensrp.register.mcare.repository.it;
+package org.opensrp.register.mcare.repository.it;
 
 import static java.util.Arrays.asList;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -34,8 +34,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath:test-applicationContext-opensrp-register-mcare.xml")
+/*@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration("classpath:test-applicationContext-opensrp-register-mcare.xml")*/
 public class AllHouseHoldsIntegrationTest {
 
 	@Autowired
@@ -65,7 +65,7 @@ public class AllHouseHoldsIntegrationTest {
     	//initMocks(this);
     }
     
-    @Test
+  /*  @Test
     public void shouldRegisterEligibleCouple() throws Exception {
     	HouseHold houseHold = new HouseHold().withFWHOHNAME("HouseHold-1").withPROVIDERID("Provider-I");
 
@@ -74,7 +74,7 @@ public class AllHouseHoldsIntegrationTest {
         List<HouseHold> allHouseHoldsInDB = allHouseHolds.getAll();
         assertThat(allHouseHoldsInDB, is(asList(houseHold)));
         assertThat(allHouseHoldsInDB.get(0).FWHOHNAME(), is("HouseHold-1"));
-    }
+    }*/
     
     //@Test
     public void dateUtil_WeekBoundariesAndTimestamps_test(){
@@ -197,4 +197,3 @@ public class AllHouseHoldsIntegrationTest {
     }
 
 }
-*/
