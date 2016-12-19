@@ -25,7 +25,8 @@ public class BahmniPatientService extends OpenmrsService{
 	private static final String PERSON_ATTRIBUTE_TYPE_URL = "ws/rest/v1/personattributetype";
 	
 	private static final String OPENSRP_IDENTIFIER_TYPE = "OpenSRP Thrive UID";
-	private static final String BAHMNI_IDENTIFIER_TYPE = "Bahmni Id";
+	//private static final String BAHMNI_IDENTIFIER_TYPE = "Bahmni Id";
+	private static final String BAHMNI_IDENTIFIER_TYPE = "Patient Identifier";
 	
 	public BahmniPatientService() { }
 
@@ -115,16 +116,18 @@ public class BahmniPatientService extends OpenmrsService{
 			System.out.println("Address ADD::"+ad.toString());
 			JSONObject jao = new JSONObject();
 			if(ad.getAddressFields() != null){
-				jao.put("address1", ad.getAddressFieldMatchingRegex("(?i)(ADDRESS1|HOUSE_NUMBER|HOUSE|HOUSE_NO|UNIT|UNIT_NUMBER|UNIT_NO)"));
-				jao.put("address2", ad.getAddressFieldMatchingRegex("(?i)(ADDRESS2|STREET|STREET_NUMBER|STREET_NO|LANE)"));
-				jao.put("address3", ad.getAddressFieldMatchingRegex("(?i)(ADDRESS3|SECTOR|AREA)"));
+				jao.put("address1", ad.getAddressFieldMatchingRegex("(?i)(ADDRESS1|ADDRESS_LINE|HOUSE_NUMBER|HOUSE|HOUSE_NO|UNIT|UNIT_NUMBER|UNIT_NO)"));
+				jao.put("address2", ad.getAddressFieldMatchingRegex("(?i)(ADDRESS2|WARD|STREET|STREET_NUMBER|STREET_NO|LANE)"));
+				jao.put("address3", ad.getAddressFieldMatchingRegex("(?i)(ADDRESS3|UNION|SECTOR|AREA)"));
 				//jao.put("address4", "Unions Of Kaliganj Upazila");
-				jao.put("address4", ad.getAddressFieldMatchingRegex("(?i)(ADDRESS4|SUB_DISTRICT|MUNICIPALITY|TOWN|LOCALITY|REGION)"));
-				jao.put("address5", ad.getAddressFieldMatchingRegex("(?i)(ADDRESS5|cityVillage|city_village|CITY|VILLAGE)"));
+				jao.put("address4", ad.getAddressFieldMatchingRegex("(?i)(ADDRESS4|PAURASAVA|SUB_DISTRICT|MUNICIPALITY|TOWN|LOCALITY|REGION)"));
+				jao.put("address5", ad.getAddressFieldMatchingRegex("(?i)(ADDRESS5|UPAZILLA|cityVillage|city_village|CITY|VILLAGE)"));
 				//jao.put("address5", "Kaliganj");
 				//jao.put("countyDistrict", "Gazipur");
 				jao.put("countyDistrict", ad.getAddressFieldMatchingRegex("(?i)(county_district|countyDistrict|COUNTY|DISTRICT)"));
 				jao.put("cityVillage", ad.getAddressFieldMatchingRegex("(?i)(cityVillage|city_village|CITY|VILLAGE)"));
+				//jao.put("stateProvince", ad.getAddressFieldMatchingRegex("(?i)(DIVISION|DISTRICT)"));
+				//jao.put("country", ad.getAddressFieldMatchingRegex("(?i)(COUNTRY)"));
 
 				/*String ad5V = "";
 				for (Entry<String, String> af : ad.getAddressFields().entrySet()) {
