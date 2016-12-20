@@ -18,8 +18,11 @@ import static org.opensrp.common.AllConstants.Client.MIDDLE_NAME;
 import java.io.IOException;
 import java.util.List;
 
+import org.ektorp.ComplexKey;
+import org.ektorp.support.View;
 import org.joda.time.DateTime;
 import org.opensrp.domain.Client;
+import org.opensrp.domain.Vaccine;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -143,5 +146,16 @@ public class LuceneClientRepository extends CouchDbRepositorySupportWithLucene<C
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		} 
+	}
+	
+	@View(name = "healthId_by_provider_and_timestamp", map = "function(doc) { if (doc.type === 'Client' && doc.baseEntityId) { emit([doc.providerId, doc.timeStamp], null); } }")
+	public List<Client> getclient(String providerId, long timeStamp) {
+	    ComplexKey startKey = ComplexKey.of(providerId, timeStamp + 1);	   
+	    ComplexKey endKey = ComplexKey.of(providerId, Long.MAX_VALUE);
+	    List<Client> clients = db.queryView(createQuery("healthId_by_provider_and_timestamp").startKey(startKey).endKey(endKey).includeDocs(true), Client.class);
+	    if (clients == null || clients.isEmpty()) {			
+			return null;
+		}
+		return clients;
 	}
 }

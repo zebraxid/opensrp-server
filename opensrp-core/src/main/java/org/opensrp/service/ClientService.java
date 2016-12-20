@@ -214,6 +214,7 @@ public class ClientService {
 			}
 			logger.info("Original:" + original.toString());
 			original.setDateEdited(new Date());
+			original.setTimeStamp(org.motechproject.util.DateUtil.now().getMillis());
 			allClients.update(original);
 			return original;
 		}

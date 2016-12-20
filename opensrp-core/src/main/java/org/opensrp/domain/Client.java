@@ -34,7 +34,10 @@ public class Client extends BaseEntity {
 	private String gender;
 	@JsonProperty
 	private Map<String, List<String>> relationships;
-
+	@JsonProperty
+	private long timeStamp;
+	@JsonProperty
+	private String providerId;
 	protected Client() {
 		
 	}
@@ -243,6 +246,26 @@ public class Client extends BaseEntity {
 		}
 		return relations;
 	}
+
+	
+    
+    
+    public String getProviderId() {
+    	return providerId;
+    }
+
+	
+    public void setProviderId(String providerId) {
+    	this.providerId = providerId;
+    }
+
+	public void setTimeStamp(long timeStamp) {
+    	this.timeStamp = timeStamp;
+    }
+
+	public long getTimeStamp() {
+    	return timeStamp;
+    }
 
 	@Override
 	public boolean equals(Object o) {

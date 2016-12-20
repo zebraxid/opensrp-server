@@ -37,7 +37,8 @@ public class FormEntityConstants {
 		birthdate_estimated,
 		dead,
 		deathdate,
-		deathdate_estimated;
+		deathdate_estimated,
+		anmId;
 		
 		public String entity(){return "person";}
 		public String entityId(){return this.name();}

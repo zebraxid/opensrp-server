@@ -340,6 +340,8 @@ public class FormEntityConverter {
 	
 	public Client createBaseClient(FormSubmissionMap fs) throws ParseException {
 		String firstName = fs.getFieldValue(getFieldName(Person.first_name, fs));
+		
+		
 		String middleName = fs.getFieldValue(getFieldName(Person.middle_name, fs));
 		String lastName = fs.getFieldValue(getFieldName(Person.last_name, fs));
 		String bd = fs.getFieldValue(getFieldName(Person.birthdate, fs));
@@ -376,7 +378,13 @@ public class FormEntityConverter {
 		System.out.println("FOrm Submission:" + fs.toString());
 		Client c = new Client(fs.entityId()).withFirstName(firstName).withMiddleName(middleName).withLastName(lastName)
 		        .withBirthdate(birthdate, birthdateApprox).withDeathdate(deathdate, deathdateApprox).withGender(gender);
-		
+		c.setTimeStamp(org.motechproject.util.DateUtil.now().getMillis());
+		try{
+			String providerId = fs.getFieldValue(getFieldName(Person.anmId, fs));
+			c.setProviderId(providerId);
+		}catch(Exception e){
+			System.out.println(" ANMID :"+e.getMessage());
+		}
 		c.withAddresses(addresses).withAttributes(extractAttributes(fs)).withIdentifiers(extractIdentifiers(fs));
 		return c;
 	}
