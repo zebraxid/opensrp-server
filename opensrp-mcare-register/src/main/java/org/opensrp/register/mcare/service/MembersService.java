@@ -8,6 +8,7 @@ import static java.text.MessageFormat.format;
 import static org.opensrp.common.AllConstants.CommonFormFields.ID;
 import static org.opensrp.common.AllConstants.TT_VisitFields.*;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.*;
+import static org.opensrp.common.AllConstants.MEMBERSRegistrationFields.*;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MemberScheduleConstants.*;
 
 import java.text.ParseException;
@@ -609,6 +610,9 @@ public class MembersService {
 					.put(final_measles1, membersFields.get(final_measles1))
 					.put(final_measles2, membersFields.get(final_measles2))
 					.put(Is_child, membersFields.get(Is_child))
+					.put(MEMBER_UNIQUE_ID, membersFields.get(MEMBER_UNIQUE_ID))
+					.put(MEMBER_BRID, membersFields.get(MEMBER_BRID))
+					.put(MEMBER_HID, membersFields.get(MEMBER_HID))
 					.put(Is_Reg_Today, membersFields.get(Is_Reg_Today))
 					.put(received_time, dateTime.format(today).toString()).map();
 			
@@ -758,6 +762,7 @@ public class MembersService {
 				.put(Is_Reg_Today	,submission.getField(Is_Reg_Today))
 				.put(vaccines1	,submission.getField(vaccines1))
 				.put(vaccines1_2	,submission.getField(vaccines1_2))
+				.put(Is_Reg_Today, submission.getField(Is_Reg_Today))
 				.put(Received_Time, format.format(today).toString())
 				.map();	
 		
@@ -978,6 +983,8 @@ public class MembersService {
 	    	, submission.getField(child_vaccines1_2))
 .put(child_vaccines_2
 	    	, submission.getField(child_vaccines_2))
+.put(Is_Reg_Today
+		    , submission.getField(Is_Reg_Today))
 .put(received_time, 
 		dateTime.format(today).toString()).map();			
 		
