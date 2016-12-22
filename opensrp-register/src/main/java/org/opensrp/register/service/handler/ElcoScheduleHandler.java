@@ -19,7 +19,7 @@ public class ElcoScheduleHandler extends BaseScheduleHandler {
 	public static final String MIS_ELCO = "mis_elco";
 	
 	@Override
-	public void handle(Event event, JSONObject scheduleConfigEvent) {
+	public void handle(Event event, JSONObject scheduleConfigEvent,String scheduleName) {
 		try {
 			
 			if (evaluateEvent(event, scheduleConfigEvent)) {

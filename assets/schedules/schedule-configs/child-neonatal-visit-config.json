@@ -1,9 +1,9 @@
 {
-					"name": "Post Natal Care Reminder Visit",
-					"handler": "PNCScheduleHandler",
+					"name": "NEONATAL VISIT 1",
+					"handler": "NeoNatalScheduleHandler",
 					"events": [
 						{
-							"types": ["Dokumentasi Persalinan"],
+							"types": ["Kunjungan neonatal"],
 							"pass_logic": "AND",
 							"enrollment_fields": [
 								{
@@ -11,7 +11,7 @@
 									"value": "[160753AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA,163509AAAAAAAAAAAAAAAAAAAAAAAAAA,160753AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA,163509AAAAAAAAAAAAAAAAAAAAAAAAAA]" 
 								}
 							],
-							"milestone": "pncrv_1",
+							"milestone": "NEONATAL VISIT 1",
 							"reference_date_fields": [
 				                {
 				                  "concept": "5599AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
@@ -21,31 +21,31 @@
 							"action": "enroll"
 						},
 						{
+							"types": ["Kunjungan neonatal"],
+							"pass_logic": "AND",
+							"fulfillment_date_fields": [
+								{
+									"field": "eventDate",
+									"value": "NOT_EMPTY"
+								}
+							],
+							"milestone": "NEONATAL VISIT 1",
+							"action": "fulfill"
+						}
+					]
+	
+},
+{
+					"name": "Post Natal Care Reminder Visit",
+					"handler": "PNCScheduleHandler",
+					"events": [
+						{
 							"types": ["PNC Reminder Visit 1"],
 							"pass_logic": "AND",
-							"fulfillment_date_fields": [
-								{
-									"concept": "159893AAAAAAAAAAAAAAAAAAAAAAAAAA",
-									"value": "1"
-								}
-							],
-							"milestone": "pncrv_1",
-							"action": "fulfill"
-						}
-					]
-	
-},
-{
-					"name": "Post Natal Care Reminder Visit",
-					"handler": "PNCScheduleHandler",
-					"events": [
-						{
-							"types": ["Kunjungan PNC"],
-							"pass_logic": "AND",
 							"enrollment_fields": [
 								{
-									"concept": "159893AAAAAAAAAAAAAAAAAAAAAAAAAA",
-									"value": "1" 
+									"concept": "163088AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "1571AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" 
 								}
 							],
 							"milestone": "pncrv_2",
@@ -58,7 +58,7 @@
 							"action": "enroll"
 						},
 						{
-							"types": ["Kunjungan PNC"],
+							"types": ["PNC Reminder Visit 2"],
 							"pass_logic": "AND",
 							"fulfillment_date_fields": [
 								{
@@ -77,12 +77,12 @@
 					"handler": "PNCScheduleHandler",
 					"events": [
 						{
-							"types": ["Kunjungan PNC"],
+							"types": ["PNC Reminder Visit 2"],
 							"pass_logic": "AND",
 							"enrollment_fields": [
 								{
-									"concept": "159893AAAAAAAAAAAAAAAAAAAAAAAAAA",
-									"value": "2" 
+									"concept": "163088AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+									"value": "1571AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" 
 								}
 							],
 							"milestone": "pncrv_3",
@@ -95,44 +95,7 @@
 							"action": "enroll"
 						},
 						{
-							"types": ["Kunjungan PNC"],
-							"pass_logic": "AND",
-							"fulfillment_date_fields": [
-								{
-									"field": "eventDate",
-									"value": "NOT_EMPTY"
-								}
-							],
-							"milestone": "pncrv_3",
-							"action": "fulfill"
-						}
-					]
-	
-},
-{
-					"name": "Post Natal Care Reminder Visit",
-					"handler": "PNCScheduleHandler",
-					"events": [
-						{
-							"types": ["Kunjungan PNC"],
-							"pass_logic": "AND",
-							"enrollment_fields": [
-								{
-									"concept": "159893AAAAAAAAAAAAAAAAAAAAAAAAAA",
-									"value": "3" 
-								}
-							],
-							"milestone": "pncrv_4",
-							"reference_date_fields": [
-				                {
-				                  "field": "eventDate",
-								  "value": "NOT_EMPTY"
-				                }
-				             ],
-							"action": "enroll"
-						},
-						{
-							"types": ["Kunjungan PNC"],
+							"types": ["PNC Reminder Visit 3"],
 							"pass_logic": "AND",
 							"fulfillment_date_fields": [
 								{

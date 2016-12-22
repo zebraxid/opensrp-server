@@ -38,6 +38,8 @@ public class EventsRouter {
 	// private static final String JSON_KEY_SCHEDULES = "schedules";
 	private static final String JSON_KEY_HANDLER = "handler";
 	
+	private static final String JSON_KEY_SCHEDULE_NAME = "name";
+	
 	private static final String JSON_KEY_TYPES = "types";
 	
 	private static final String JSON_KEY_EVENTS = "events";
@@ -63,8 +65,9 @@ public class EventsRouter {
 				for (int i = 0; i < schedulesJsonObject.length(); i++) {
 					JSONObject scheduleJsonObject = schedulesJsonObject.getJSONObject(i);
 					String handler = scheduleJsonObject.getString(JSON_KEY_HANDLER);
+					String scheduleName = scheduleJsonObject.getString(JSON_KEY_SCHEDULE_NAME);
 					JSONArray eventsJsonArray = scheduleJsonObject.getJSONArray(JSON_KEY_EVENTS);
-					processScheduleConfigEvents(eventsJsonArray, handler);
+					processScheduleConfigEvents(eventsJsonArray, handler,scheduleName);
 					
 				}
 				
@@ -84,8 +87,9 @@ public class EventsRouter {
 	 * @param handler
 	 * @throws JSONException
 	 */
-	private void processScheduleConfigEvents(JSONArray eventsJsonArray, String handler) throws JSONException {
+	private void processScheduleConfigEvents(JSONArray eventsJsonArray, String handler,String scheduleName) throws JSONException {
 		//iterate through the events in the scheduleconfigs to see if the current event (the one passed to this route method) has a schedule handler
+		handler="IndoScheduleHandler";
 		for (int j = 0; j < eventsJsonArray.length(); j++) {
 			JSONObject scheduleConfigEvent = eventsJsonArray.getJSONObject(j);
 			JSONArray eventTypesJsonArray = scheduleConfigEvent.getJSONArray(JSON_KEY_TYPES);
@@ -93,7 +97,7 @@ public class EventsRouter {
 			
 			if (eventsList.contains(event.getEventType())) {
 				if (handlerMapper.handlerMap().get(handler) != null) {
-					handlerMapper.handlerMap().get(handler).handle(event, scheduleConfigEvent);
+					handlerMapper.handlerMap().get(handler).handle(event, scheduleConfigEvent,scheduleName);
 				}
 				
 			}

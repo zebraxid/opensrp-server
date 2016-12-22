@@ -15,7 +15,7 @@ public class PNCScheduleHandler extends BaseScheduleHandler {
 	private PNCSchedulesService pncSchedulesService;
 	private static final String scheduleName="Post Natal Care Reminder Visit";
 	@Override
-	public void handle(Event event, JSONObject scheduleConfigEvent) {
+	public void handle(Event event, JSONObject scheduleConfigEvent,String scheduleName) {
 		try {
 			
 			if (evaluateEvent(event, scheduleConfigEvent)) {

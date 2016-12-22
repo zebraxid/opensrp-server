@@ -15,7 +15,7 @@ public class ANCScheduleHandler extends BaseScheduleHandler {
 	private AnteNatalCareSchedulesService ancScheduleService;
 	private static final String scheduleName="Ante Natal Care Reminder Visit";
 	@Override
-	public void handle(Event event, JSONObject scheduleConfigEvent) {
+	public void handle(Event event, JSONObject scheduleConfigEvent,String scheduleName) {
 		try {
 			
 			if (evaluateEvent(event, scheduleConfigEvent)) {

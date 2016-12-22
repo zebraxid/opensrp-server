@@ -15,7 +15,7 @@ public class BNFScheduleHandler extends BaseScheduleHandler {
 	private BNFSchedulesService bnfSchedulesService;
 	private static final String scheduleName="BirthNotificationPregnancyStatusFollowUp";
 	@Override
-	public void handle(Event event, JSONObject scheduleConfigEvent) {
+	public void handle(Event event, JSONObject scheduleConfigEvent,String scheduleName) {
 		try {
 			
 			if (evaluateEvent(event, scheduleConfigEvent)) {

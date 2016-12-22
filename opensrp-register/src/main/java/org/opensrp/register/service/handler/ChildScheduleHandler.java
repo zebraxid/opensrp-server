@@ -26,7 +26,7 @@ public class ChildScheduleHandler extends BaseScheduleHandler {
 	private static final String scheduleName="Essential Newborn Care Checklist";
 	
 	@Override
-	public void handle(Event event, JSONObject scheduleConfigEvent) {
+	public void handle(Event event, JSONObject scheduleConfigEvent,String scheduleName) {
 		try {
 			
 			if (evaluateEvent(event, scheduleConfigEvent)) {

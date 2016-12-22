@@ -35,8 +35,8 @@
         "pass_logic": "AND",
         "enrollment_fields": [
           {
-            "concept": "1425AAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-            "value": "1"
+            "concept": "163522AAAAAAAAAAAAAAAAAAAAAAAAAA",
+            "value": "161537AAAAAAAAAAAAAAAAAAAAAAAAAA"
           }
         ],
         "milestone": "TT 2",
@@ -61,8 +61,8 @@
         "pass_logic": "AND",
         "enrollment_fields": [
           {
-            "concept": "1425AAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-            "value": "2"
+            "concept": "163522AAAAAAAAAAAAAAAAAAAAAAAAAA",
+            "value": "161538AAAAAAAAAAAAAAAAAAAAAAAAAA"
           }
         ],
         "milestone": "TT 3",
@@ -87,8 +87,8 @@
         "pass_logic": "AND",
         "enrollment_fields": [
           {
-            "concept": "1425AAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-            "value": "3"
+            "concept": "163522AAAAAAAAAAAAAAAAAAAAAAAAAA",
+            "value": "163491AAAAAAAAAAAAAAAAAAAAAAAAAA"
           }
         ],
         "milestone": "TT 4",
@@ -113,8 +113,8 @@
         "pass_logic": "AND",
         "enrollment_fields": [
           {
-            "concept": "1425AAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-            "value": "3"
+            "concept": "163522AAAAAAAAAAAAAAAAAAAAAAAAAA",
+            "value": "163492AAAAAAAAAAAAAAAAAAAAAAAAAA"
           }
         ],
         "milestone": "TT 5",
