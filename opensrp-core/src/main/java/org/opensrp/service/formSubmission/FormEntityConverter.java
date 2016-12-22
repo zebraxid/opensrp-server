@@ -380,7 +380,7 @@ public class FormEntityConverter {
 		        .withBirthdate(birthdate, birthdateApprox).withDeathdate(deathdate, deathdateApprox).withGender(gender);
 		c.setTimeStamp(org.motechproject.util.DateUtil.now().getMillis());
 		try{
-			String providerId = fs.getFieldValue(getFieldName(Person.anmId, fs));
+			String providerId = fs.getField("anmId").toString();
 			c.setProviderId(providerId);
 		}catch(Exception e){
 			System.out.println(" ANMID :"+e.getMessage());
