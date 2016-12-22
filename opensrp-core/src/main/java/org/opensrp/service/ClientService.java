@@ -89,6 +89,7 @@ public class ClientService {
 	}
 	
 	public Client addClient(Client client) {
+		System.out.println("Client :" + client.toString());
 		if (client.getBaseEntityId() == null) {
 			throw new RuntimeException("No baseEntityId");
 		}
@@ -99,8 +100,10 @@ public class ClientService {
 			
 		}
 		try {
+			System.out.println("Client BaseEntityId:" + client.getBaseEntityId());
 			IdentifierMaping id = bahmniIdRepository.findByentityId(client.getBaseEntityId());
 			client.addIdentifier("Bahmni Id", id.getGenId());
+			//client.addIdentifier("Patient Identifier", id.getGenId());
 		}
 		catch (Exception ee) {
 			logger.info("Identifier :" + ee.getMessage());
@@ -201,9 +204,11 @@ public class ClientService {
 				
 				original = gs.fromJson(mergedJson.toString(), Client.class);
 				
-				for (Address a : updatedClient.getAddresses()) {
-					if (original.getAddress(a.getAddressType()) == null)
-						original.addAddress(a);
+				logger.info("Updated Client Addresses:" + updatedClient.getAddresses().toString());
+				for (Address a : updatedClient.getAddresses()) {				
+					logger.info("a getAddressType:" + a.getAddressType().toString());
+					/*if (original.getAddress(a.getAddressType()) == null)
+						original.addAddress(a);*/
 				}
 				for (String k : updatedClient.getIdentifiers().keySet()) {
 					original.addIdentifier(k, updatedClient.getIdentifier(k));

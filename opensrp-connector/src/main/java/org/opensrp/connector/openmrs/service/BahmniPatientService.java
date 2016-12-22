@@ -25,8 +25,8 @@ public class BahmniPatientService extends OpenmrsService{
 	private static final String PERSON_ATTRIBUTE_TYPE_URL = "ws/rest/v1/personattributetype";
 	
 	private static final String OPENSRP_IDENTIFIER_TYPE = "OpenSRP Thrive UID";
-	//private static final String BAHMNI_IDENTIFIER_TYPE = "Bahmni Id";
-	private static final String BAHMNI_IDENTIFIER_TYPE = "Patient Identifier";
+	private static final String BAHMNI_IDENTIFIER_TYPE = "Bahmni Id";
+	//private static final String BAHMNI_IDENTIFIER_TYPE = "Patient Identifier";
 	
 	public BahmniPatientService() { }
 
@@ -116,7 +116,8 @@ public class BahmniPatientService extends OpenmrsService{
 			System.out.println("Address ADD::"+ad.toString());
 			JSONObject jao = new JSONObject();
 			if(ad.getAddressFields() != null){
-				jao.put("address1", ad.getAddressFieldMatchingRegex("(?i)(ADDRESS1|ADDRESS_LINE|HOUSE_NUMBER|HOUSE|HOUSE_NO|UNIT|UNIT_NUMBER|UNIT_NO)"));
+				jao.put("address1", "dhaka");
+				//jao.put("address1", ad.getAddressFieldMatchingRegex("(?i)(ADDRESS1|ADDRESS_LINE|HOUSE_NUMBER|HOUSE|HOUSE_NO|UNIT|UNIT_NUMBER|UNIT_NO)"));
 				jao.put("address2", ad.getAddressFieldMatchingRegex("(?i)(ADDRESS2|WARD|STREET|STREET_NUMBER|STREET_NO|LANE)"));
 				jao.put("address3", ad.getAddressFieldMatchingRegex("(?i)(ADDRESS3|UNION|SECTOR|AREA)"));
 				//jao.put("address4", "Unions Of Kaliganj Upazila");

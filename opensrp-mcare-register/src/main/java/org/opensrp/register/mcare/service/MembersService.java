@@ -73,7 +73,7 @@ public class MembersService {
 					.setINSTANCEID(submission.instanceId())
 					.setPROVIDERID(submission.anmId())
 					.setTODAY(submission.getField(REFERENCE_DATE))
-					.setrelationalid(submission.getField(relationalid));					
+					.setrelationalid(membersFields.get(relationalid));					
 			
 			if(membersFields.containsKey(REG_NO)){
 				allMembers.update(members);
@@ -445,7 +445,7 @@ public class MembersService {
 					.setINSTANCEID(submission.instanceId())
 					.setPROVIDERID(submission.anmId())
 					.setTODAY(submission.getField(REFERENCE_DATE))
-					.setrelationalid(submission.getField(relationalid));					
+					.setrelationalid(membersFields.get(relationalid));					
 			
 			if(membersFields.containsKey(REG_NO)){
 				allMembers.update(members);
@@ -498,7 +498,7 @@ public class MembersService {
 		for (Map<String, String> membersFields : subFormData.instances()) {
 
 			Map<String, String> birth_Outcome = create(ID, membersFields.get(ID))
-					.put(relationalid, submission.getField(relationalid))
+					.put(relationalid, membersFields.get(relationalid))
 					.put(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
 					.put(START_DATE, submission.getField(START_DATE))
 					.put(END_DATE, submission.getField(END_DATE))

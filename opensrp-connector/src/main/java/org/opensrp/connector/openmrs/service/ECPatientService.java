@@ -29,6 +29,7 @@ public class ECPatientService extends OpenmrsService {
 	
 	//private static final String OPENSRP_IDENTIFIER_TYPE = "OpenSRP Thrive UID";
 	private static final String OPENSRP_IDENTIFIER_TYPE = "Bahmni Id";
+	//private static final String OPENSRP_IDENTIFIER_TYPE = "Patient Identifier";
 	
 	public ECPatientService() { }
 

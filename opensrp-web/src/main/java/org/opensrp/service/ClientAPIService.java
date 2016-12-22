@@ -23,7 +23,13 @@ public class ClientAPIService {
 		for (Client client : clients) {			
 			HealthId health_id = new HealthId();
 			health_id.setEntityId(client.getBaseEntityId());
-			health_id.setHealthId(client.getAttributes().get("phoneNumber").toString());
+			try {
+				health_id.setHealthId(client.getAttributes().get("healthId").toString());
+            } catch (Exception Ex) {
+            	health_id.setHealthId("");
+                System.out.println(Ex);
+            }
+			
 			health_id.setTimeStamp(client.getTimeStamp());
 			healthIds.add(health_id);
         }

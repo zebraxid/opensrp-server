@@ -230,7 +230,23 @@ public class DataCountService {
 		
 		VaccineCountDTO commonServiceDTO = new VaccineCountDTO();
 		
-		this.getVaccineCount(type, startMonth, endMonth, commonServiceDTO);
+		Calendar c = Calendar.getInstance();   // this takes current date
+	    c.set(Calendar.DAY_OF_MONTH,
+                c.getActualMinimum(Calendar.DAY_OF_MONTH));
+	     
+	    String startMon= new SimpleDateFormat("yyyy-MM-dd").format(c.getTime());
+	    System.out.println("startMon: " + startMon);
+	    c.set(Calendar.DAY_OF_MONTH,
+                c.getActualMaximum(Calendar.DAY_OF_MONTH));
+	    
+	    String endMon= new SimpleDateFormat("yyyy-MM-dd").format(c.getTime());
+	    System.out.println("endMon: " + endMon); 
+	    
+	    System.out.println("startMonth: " + startMonth);
+	    System.out.println("endMonth: " + endMonth);
+	    
+		//this.getVaccineCount(type, startMonth, endMonth, commonServiceDTO);
+	    this.getVaccineCount(type, startMon, endMon, commonServiceDTO);
 		
 		JSONObject vaccineCountObj =	new JSONObject();
 		

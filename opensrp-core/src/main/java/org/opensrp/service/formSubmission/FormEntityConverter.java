@@ -380,7 +380,7 @@ public class FormEntityConverter {
 		        .withBirthdate(birthdate, birthdateApprox).withDeathdate(deathdate, deathdateApprox).withGender(gender);
 		c.setTimeStamp(org.motechproject.util.DateUtil.now().getMillis());
 		try{
-			String providerId = fs.getField("anmId").toString();
+			String providerId = fs.providerId();
 			c.setProviderId(providerId);
 		}catch(Exception e){
 			System.out.println(" ANMID :"+e.getMessage());
@@ -389,7 +389,7 @@ public class FormEntityConverter {
 		return c;
 	}
 	
-	public Client createSubformClient(SubformMap subf) throws ParseException {
+	public Client createSubformClient(SubformMap subf, String providerId) throws ParseException {
 		String firstName = subf.getFieldValue(getFieldName(Person.first_name, subf));
 		String gender = subf.getFieldValue(getFieldName(Person.gender, subf));
 		String bb = subf.getFieldValue(getFieldName(Person.birthdate, subf));
@@ -436,7 +436,8 @@ public class FormEntityConverter {
 		Client c = new Client(subf.getFieldValue("id")).withFirstName(firstName).withMiddleName(middleName)
 		        .withLastName(lastName).withBirthdate(new DateTime(birthdate), birthdateApprox)
 		        .withDeathdate(new DateTime(deathdate), deathdateApprox).withGender(gender);
-		
+		c.setTimeStamp(org.motechproject.util.DateUtil.now().getMillis());
+		c.setProviderId(providerId);
 		c.withAddresses(addresses).withAttributes(extractAttributes(subf)).withIdentifiers(idents);
 		
 		return c;
@@ -469,7 +470,7 @@ public class FormEntityConverter {
 				if (att.containsKey("openmrs_entity") && att.get("openmrs_entity").equalsIgnoreCase("person")) {
 					Map<String, Object> cne = new HashMap<>();
 					
-					Client subformClient = createSubformClient(sbf);
+					Client subformClient = createSubformClient(sbf, fs.providerId());
 					
 					if (subformClient != null) {
 						cne.put("client", subformClient);

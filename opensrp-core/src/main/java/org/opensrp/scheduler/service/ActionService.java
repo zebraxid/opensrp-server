@@ -120,14 +120,12 @@ public class ActionService {
 		 	    	}
 	        	}catch(Exception e){		        		
 	        		e.printStackTrace();
-	        	}
+	        	}if(instanceId != null  && !instanceId.isEmpty()){
 		 	     reportActionService.updateScheduleLog(beneficiaryType, caseID, instanceId, anmIdentifier, scheduleName, visitCode, alertStatus, startDate, expiryDate, null,null,beforTimeStamp,existingAlert.get(0).timestamp());
 		 	     logger.info("Update schedule with id: "+scheduleName);
+	        	}
 		 	     
 	    	}else{
-	    		
-	    		if(!instanceId.equalsIgnoreCase(null) || !instanceId.isEmpty()){
-	    			
 		        	allActions.addOrUpdateAlert(new Action(caseID, anmIdentifier, ActionData.createAlert(beneficiaryType, scheduleName, visitCode, alertStatus, startDate, expiryDate)));
 		        	
 		        	List<Action> existingAlert = allActions.findAlertByANMIdEntityIdScheduleName(anmIdentifier, caseID, scheduleName);
@@ -141,7 +139,8 @@ public class ActionService {
 			 	    	}
 		        	}catch(Exception e){		        		
 		        		e.printStackTrace();
-		        	}		        	
+		        	}	
+		        	if(instanceId != null  && !instanceId.isEmpty()){
 		        	reportActionService.updateScheduleLog(beneficiaryType, caseID, instanceId, anmIdentifier, scheduleName, visitCode, alertStatus, startDate, expiryDate, null,null,0L,existingAlert.get(0).timestamp());
 		        	logger.info("Create schedule with id: "+scheduleName);
 	    		}

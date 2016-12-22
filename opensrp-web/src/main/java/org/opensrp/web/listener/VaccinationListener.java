@@ -7,9 +7,11 @@ import org.opensrp.camp.service.CampDateService;
 import org.opensrp.register.mcare.service.VaccinationService;
 import org.opensrp.scheduler.Action;
 import org.opensrp.scheduler.repository.AllActions;
+import org.opensrp.service.DataCountService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +22,8 @@ public class VaccinationListener {
 	private CampDateService campDateService;
 	private VaccinationService vaccinationService;
 	private AllActions allActions;
-	
+	@Autowired
+	private DataCountService dataCountService;
 	
 	
 	@Autowired
@@ -58,6 +61,16 @@ public class VaccinationListener {
 	        }
 		}
 		
+	}
+	
+	public void vaccinationCounter() {	
+		logger.info("vaccinationCounter called");
+		
+		try{
+			dataCountService.getVaccineCount("all","2016-10-01","2016-10-31");
+		}catch(Exception e){
+			e.printStackTrace();
+		}	
 	}
 	
 }
