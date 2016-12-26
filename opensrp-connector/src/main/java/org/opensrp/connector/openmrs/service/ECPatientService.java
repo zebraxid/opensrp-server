@@ -7,6 +7,8 @@ import java.util.Map.Entry;
 import java.util.UUID;
 import java.util.logging.Logger;
 
+import static org.opensrp.common.AllConstants.OPENSRP_IDENTIFIER;
+
 import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,8 +30,6 @@ public class ECPatientService extends OpenmrsService {
 	private static final String PATIENT_IDENTIFIER_TYPE_URL = "ws/rest/v1/patientidentifiertype";
 	
 	//private static final String OPENSRP_IDENTIFIER_TYPE = "OpenSRP Thrive UID";
-	private static final String OPENSRP_IDENTIFIER_TYPE = "Bahmni Id";
-	//private static final String OPENSRP_IDENTIFIER_TYPE = "Patient Identifier";
 	
 	public ECPatientService() { }
 
@@ -198,9 +198,9 @@ public class ECPatientService extends OpenmrsService {
 		}}
 		
 		JSONObject jio = new JSONObject();
-		JSONObject ido = getIdentifierType(OPENSRP_IDENTIFIER_TYPE);
+		JSONObject ido = getIdentifierType(OPENSRP_IDENTIFIER);
 		if(ido == null){
-			ido = createIdentifierType(OPENSRP_IDENTIFIER_TYPE, OPENSRP_IDENTIFIER_TYPE+" - FOR THRIVE OPENSRP");
+			ido = createIdentifierType(OPENSRP_IDENTIFIER, OPENSRP_IDENTIFIER+" - FOR THRIVE OPENSRP");
 		}
 		jio.put("identifierType", ido.getString("uuid"));
 		jio.put("identifier", c.getBaseEntityId());
@@ -217,9 +217,9 @@ public class ECPatientService extends OpenmrsService {
 	public JSONObject addThriveId(String baseEntityId, JSONObject patient) throws JSONException
 	{
 		JSONObject jio = new JSONObject();
-		JSONObject ido = getIdentifierType(OPENSRP_IDENTIFIER_TYPE);
+		JSONObject ido = getIdentifierType(OPENSRP_IDENTIFIER);
 		if(ido == null){
-			ido = createIdentifierType(OPENSRP_IDENTIFIER_TYPE, OPENSRP_IDENTIFIER_TYPE+" - FOR THRIVE OPENSRP");
+			ido = createIdentifierType(OPENSRP_IDENTIFIER, OPENSRP_IDENTIFIER+" - FOR THRIVE OPENSRP");
 		}
 		jio.put("identifierType", ido.getString("uuid"));
 		jio.put("identifier", baseEntityId);
@@ -235,7 +235,7 @@ public class ECPatientService extends OpenmrsService {
 		System.out.println("identifiers:"+ar.toString());
 		for (int i = 0; i < ar.length(); i++) {
 			JSONObject ji = ar.getJSONObject(i);
-			if(ji.getJSONObject("identifierType").getString("display").equalsIgnoreCase(OPENSRP_IDENTIFIER_TYPE)){
+			if(ji.getJSONObject("identifierType").getString("display").equalsIgnoreCase(OPENSRP_IDENTIFIER)){
 				//c.setBaseEntityId(ji.getString("identifier"));				
 				c.addIdentifier(ji.getJSONObject("identifierType").getString("display"), ji.getString("identifier"));
 			}

@@ -209,7 +209,8 @@
       },
       {
         "name": "contact_phone_number",
-        "bind": "/model/instance/Woman_TT_Followup_Form/contact_phone_number"
+        "bind": "/model/instance/Woman_TT_Followup_Form/contact_phone_number",
+        "shouldLoadValue": true
       },
       {
         "name": "marriage",

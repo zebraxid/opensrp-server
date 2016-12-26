@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import static org.opensrp.common.AllConstants.OPENSRP_IDENTIFIER;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,8 +27,6 @@ public class BahmniPatientService extends OpenmrsService{
 	private static final String PERSON_ATTRIBUTE_TYPE_URL = "ws/rest/v1/personattributetype";
 	
 	private static final String OPENSRP_IDENTIFIER_TYPE = "OpenSRP Thrive UID";
-	private static final String BAHMNI_IDENTIFIER_TYPE = "Bahmni Id";
-	//private static final String BAHMNI_IDENTIFIER_TYPE = "Patient Identifier";
 	
 	public BahmniPatientService() { }
 
@@ -234,7 +234,7 @@ public class BahmniPatientService extends OpenmrsService{
 		}
 		
 		JSONObject identifierTypeObj = new JSONObject();
-		identifierTypeObj.put("name",BAHMNI_IDENTIFIER_TYPE);
+		identifierTypeObj.put("name",OPENSRP_IDENTIFIER);
 		
 		jio.put("identifierType", identifierTypeObj);
 		jio.put("identifier", idGen);

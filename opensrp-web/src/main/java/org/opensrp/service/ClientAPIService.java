@@ -27,7 +27,7 @@ public class ClientAPIService {
 				health_id.setHealthId(client.getAttributes().get("healthId").toString());
             } catch (Exception Ex) {
             	health_id.setHealthId("");
-                System.out.println(Ex);
+                //System.out.println(Ex);
             }
 			
 			health_id.setTimeStamp(client.getTimeStamp());

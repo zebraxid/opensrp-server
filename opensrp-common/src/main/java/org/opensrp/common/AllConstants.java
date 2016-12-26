@@ -1491,6 +1491,9 @@ public class AllConstants {
 	}
 	public static final String FORM_SCHEDULE_SUBJECT = "FORM-SCHEDULE";
 	
+	public static final String OPENSRP_IDENTIFIER = "Bahmni Id";
+	//public static final String OPENSRP_IDENTIFIER_TYPE = "Patient Identifier";
+	
 	}
 
 

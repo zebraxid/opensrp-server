@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import static org.opensrp.common.AllConstants.OPENSRP_IDENTIFIER;
+
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.json.JSONException;
@@ -102,7 +104,7 @@ public class ClientService {
 		try {
 			System.out.println("Client BaseEntityId:" + client.getBaseEntityId());
 			IdentifierMaping id = bahmniIdRepository.findByentityId(client.getBaseEntityId());
-			client.addIdentifier("Bahmni Id", id.getGenId());
+			client.addIdentifier(OPENSRP_IDENTIFIER, id.getGenId());
 			//client.addIdentifier("Patient Identifier", id.getGenId());
 		}
 		catch (Exception ee) {
