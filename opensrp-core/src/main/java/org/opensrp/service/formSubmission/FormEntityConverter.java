@@ -3,6 +3,7 @@ package org.opensrp.service.formSubmission;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -345,7 +346,15 @@ public class FormEntityConverter {
 		String middleName = fs.getFieldValue(getFieldName(Person.middle_name, fs));
 		String lastName = fs.getFieldValue(getFieldName(Person.last_name, fs));
 		String bd = fs.getFieldValue(getFieldName(Person.birthdate, fs));
-		DateTime birthdate = bd == null ? null : new DateTime(bd).withTimeAtStartOfDay();
+		//DateTime birthdate = bd == null ? null : new DateTime(bd).withTimeAtStartOfDay();
+		
+		DateTime birthdate = new DateTime();
+		try {
+			birthdate = (bd==null || bd.isEmpty() || bd.equalsIgnoreCase("Invalid Date"))? null:new DateTime(bd).withTimeAtStartOfDay();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 		String dd = fs.getFieldValue(getFieldName(Person.deathdate, fs));
 		DateTime deathdate = dd == null ? null : new DateTime(dd).withTimeAtStartOfDay();
 		String aproxbd = fs.getFieldValue(getFieldName(Person.birthdate_estimated, fs));
@@ -403,7 +412,15 @@ public class FormEntityConverter {
 		
 		String middleName = subf.getFieldValue(getFieldName(Person.middle_name, subf));
 		String lastName = subf.getFieldValue(getFieldName(Person.last_name, subf));
-		DateTime birthdate = new DateTime(bb).withTimeAtStartOfDay();
+		//DateTime birthdate = new DateTime(bb).withTimeAtStartOfDay();
+		
+		DateTime birthdate = new DateTime();
+		try {
+			birthdate = (bb==null || bb.isEmpty() || bb.equalsIgnoreCase("Invalid Date"))? null:new DateTime(bb).withTimeAtStartOfDay();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 		String dd = subf.getFieldValue(getFieldName(Person.deathdate, subf));
 		DateTime deathdate = dd == null ? null : new DateTime(dd).withTimeAtStartOfDay();
 		String aproxbd = subf.getFieldValue(getFieldName(Person.birthdate_estimated, subf));
