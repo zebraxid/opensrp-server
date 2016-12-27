@@ -142,6 +142,7 @@ public class FormSubmissionController {
 	
 	@RequestMapping(headers = { "Accept=application/json" }, method = POST, value = "/form-submissions")
 	public ResponseEntity<HttpStatus> submitFormsForDGHS(@RequestBody List<FormSubmissionDTO> formSubmissionsDTO) {
+		boolean flag = false;
 		try {
 			if (formSubmissionsDTO.isEmpty()) {
 				return new ResponseEntity<>(BAD_REQUEST);
@@ -251,15 +252,20 @@ public class FormSubmissionController {
 			catch (Exception e) {
 				e.printStackTrace();
 			}
-			scheduler.notifyEvent(new SystemEvent<>(OpenSRPEvent.FORM_SUBMISSION, formSubmissionsDTO));
 			logger.debug(format("Added Form submissions to queue.\nSubmissions: {0}", formSubmissionsDTO));
 		}
 		catch (Exception e) {
 			logger.error(format("Form submissions processing failed with exception {0}.\nSubmissions: {1}", e,
 			    formSubmissionsDTO));
-			return new ResponseEntity<>(INTERNAL_SERVER_ERROR);
+			flag = true;
 		}
-		return new ResponseEntity<>(CREATED);
+		
+		scheduler.notifyEvent(new SystemEvent<>(OpenSRPEvent.FORM_SUBMISSION, formSubmissionsDTO));
+		
+		if(flag)
+			return new ResponseEntity<>(INTERNAL_SERVER_ERROR);
+		else
+			return new ResponseEntity<>(CREATED);
 	}
 	
 	@RequestMapping(method = GET, value = "/entity-id")
