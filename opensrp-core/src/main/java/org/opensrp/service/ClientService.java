@@ -108,7 +108,7 @@ public class ClientService {
 			//client.addIdentifier("Patient Identifier", id.getGenId());
 		}
 		catch (Exception ee) {
-			logger.info("Identifier :" + ee.getMessage());
+			logger.info("Identifier :" + ee);
 		}
 		client.setDateCreated(new Date());
 		allClients.add(client);
@@ -208,7 +208,6 @@ public class ClientService {
 				
 				logger.info("Updated Client Addresses:" + updatedClient.getAddresses().toString());
 				for (Address a : updatedClient.getAddresses()) {				
-					logger.info("a getAddressType:" + a.getAddressType().toString());
 					/*if (original.getAddress(a.getAddressType()) == null)
 						original.addAddress(a);*/
 				}

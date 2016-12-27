@@ -35,8 +35,6 @@ public class HouseHold extends MotechBaseDataObject {
 	@JsonProperty
 	private String Date_Of_Reg;
 	@JsonProperty
-	private String HoH_HID;
-	@JsonProperty
 	private String COUNTRY;
 	@JsonProperty
 	private String DIVISION;
@@ -172,11 +170,6 @@ public class HouseHold extends MotechBaseDataObject {
 
 	public HouseHold setDate_Of_Reg(String Date_Of_Reg) {
 		this.Date_Of_Reg = Date_Of_Reg;
-		return this;
-	}
-
-	public HouseHold setHoH_HID(String HoH_HID) {
-		this.HoH_HID = HoH_HID;
 		return this;
 	}
 
@@ -432,10 +425,6 @@ public class HouseHold extends MotechBaseDataObject {
 
 	public String Date_Of_Reg() {
 		return Date_Of_Reg;
-	}
-	
-	public String HoH_HID() {
-		return HoH_HID;
 	}
 
 	public String GPS() {

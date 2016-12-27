@@ -266,7 +266,6 @@ public class MembersService {
 					.put(MEMBER_GPS, membersFields.get(MEMBER_GPS))
 					.put(MEMBER_NID, membersFields.get(MEMBER_NID))
 					.put(MEMBER_BRID, membersFields.get(MEMBER_BRID))
-					.put(MEMBER_HID, membersFields.get(MEMBER_HID))
 					.put(MEMBER_BIRTH_DATE_KNOWN, membersFields.get(MEMBER_BIRTH_DATE_KNOWN))
 					.put(MEMBER_BIRTH_DATE, membersFields.get(MEMBER_BIRTH_DATE))
 					.put(age, membersFields.get(age))
@@ -612,7 +611,6 @@ public class MembersService {
 					.put(Is_child, membersFields.get(Is_child))
 					.put(MEMBER_UNIQUE_ID, membersFields.get(MEMBER_UNIQUE_ID))
 					.put(MEMBER_BRID, membersFields.get(MEMBER_BRID))
-					.put(MEMBER_HID, membersFields.get(MEMBER_HID))
 					.put(Is_Reg_Today, membersFields.get(Is_Reg_Today))
 					.put(received_time, dateTime.format(today).toString()).map();
 			

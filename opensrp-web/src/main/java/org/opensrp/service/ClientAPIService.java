@@ -20,6 +20,10 @@ public class ClientAPIService {
 		List<HealthId> healthIds = new ArrayList<>();
 		List<Client> clients = luceneClientRepository.getclient(providerId, timeStamp);
 		
+		if (clients == null || clients.isEmpty()) {			
+			return null;
+		}
+		
 		for (Client client : clients) {			
 			HealthId health_id = new HealthId();
 			health_id.setEntityId(client.getBaseEntityId());
