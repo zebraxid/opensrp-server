@@ -706,7 +706,7 @@ public class MembersService {
 				.put(lmp_calc_edd_formatted	,submission.getField(lmp_calc_edd_formatted))
 				.put(lmp_calc_ultrasound	,submission.getField(lmp_calc_ultrasound))
 				.put(lmp_calc_ultrasound_formatted	,submission.getField(lmp_calc_ultrasound_formatted))
-				.put(Marital_Status	,submission.getField(Marital_Status))
+				.put(Marital_status	,submission.getField(Marital_status))
 				.put(marriage	,submission.getField(marriage))
 				.put(Member_Address_line	,submission.getField(Member_Address_line))
 				.put(Member_BLOCK	,submission.getField(Member_BLOCK))
@@ -1035,7 +1035,10 @@ public class MembersService {
 	
 	public boolean isValidDate(String dateString) {
 	    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-	    try {
+	    if(dateString == null || dateString.isEmpty()){
+	    	return false;
+	    }
+	    try {    	
 	        df.parse(dateString);
 	        return true;
 	    } catch (ParseException e) {

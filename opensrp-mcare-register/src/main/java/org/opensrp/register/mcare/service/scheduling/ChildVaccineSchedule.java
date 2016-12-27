@@ -170,13 +170,15 @@ public class ChildVaccineSchedule {
 	
 	public boolean isValidDate(String dateString) {
 	    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-	    try {
+	    if(dateString == null || dateString.isEmpty()){
+	    	return false;
+	    }
+	    try {    	
 	        df.parse(dateString);
 	        return true;
 	    } catch (ParseException e) {
 	        return false;
 	    }
 	}
-	
 
 }

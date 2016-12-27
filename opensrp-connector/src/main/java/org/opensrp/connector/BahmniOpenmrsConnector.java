@@ -376,8 +376,17 @@ public class BahmniOpenmrsConnector {
 					String middleName = sfdata.get(getFieldName(Person.middle_name, sbf.name(), fs));
 					String lastName = sfdata.get(getFieldName(Person.last_name, sbf.name(), fs));
 					String bd = sfdata.get(getFieldName(Person.birthdate, sbf.name(), fs));
-					Date birthdate = (bd==null || bd.isEmpty() || bd.equalsIgnoreCase("Invalid Date"))? OpenmrsService.OPENMRS_DATE.parse("1900-01-01"):OpenmrsService.OPENMRS_DATE.parse(bd);
-					if(new SimpleDateFormat("yyyy-MM-dd").format(birthdate).toString().equalsIgnoreCase("1900-01-01") && sbf.name().equalsIgnoreCase("member_registration")) birthdate = OpenmrsService.OPENMRS_DATE.parse(sfdata.get("Child_dob"));
+					/*Date birthdate = (bd==null || bd.isEmpty() || bd.equalsIgnoreCase("Invalid Date"))? OpenmrsService.OPENMRS_DATE.parse("1900-01-01"):OpenmrsService.OPENMRS_DATE.parse(bd);
+					if(new SimpleDateFormat("yyyy-MM-dd").format(birthdate).toString().equalsIgnoreCase("1900-01-01") && sbf.name().equalsIgnoreCase("member_registration")) birthdate = OpenmrsService.OPENMRS_DATE.parse(sfdata.get("Child_dob"));*/
+					
+					Date birthdate = new Date();
+					try {
+						birthdate = (bd==null || bd.isEmpty() || bd.equalsIgnoreCase("Invalid Date"))? 
+							OpenmrsService.OPENMRS_DATE.parse("1900-01-01"):OpenmrsService.OPENMRS_DATE.parse(bd);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}					
+					
 					String dd = sfdata.get(getFieldName(Person.deathdate, sbf.name(), fs));
 					Date deathdate = (dd==null || dd.isEmpty())?null:OpenmrsService.OPENMRS_DATE.parse(dd);
 					String aproxbd = sfdata.get(getFieldName(Person.birthdate_estimated, sbf.name(), fs));

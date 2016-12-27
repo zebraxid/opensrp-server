@@ -63,29 +63,32 @@ public class VaccinationService {
     	try{
     		System.err.println(caseId);
     		System.err.println(vaccineName);
-    		Vaccine existingVaccine = allVaccine.getVaccine(caseId,vaccineName);    		
-    		existingVaccine.setStatus(true);
-    		existingVaccine.setExecutionDate(new DateTime());
-    		existingVaccine.setId(existingVaccine.getId());
-    		existingVaccine.setRevision(existingVaccine.getRevision());
-    		existingVaccine.setTimeStamp(DateUtil.now().getMillis());
-    		allVaccine.update(existingVaccine);
-    		logger.info("Vacine updated for status caseID : "+ caseId +" vaccineName:"+ vaccineName);
+    		Vaccine existingVaccine = allVaccine.getVaccine(caseId,vaccineName);    
+    		if(existingVaccine != null){
+	    		existingVaccine.setStatus(true);
+	    		existingVaccine.setExecutionDate(new DateTime());
+	    		existingVaccine.setId(existingVaccine.getId());
+	    		existingVaccine.setRevision(existingVaccine.getRevision());
+	    		existingVaccine.setTimeStamp(DateUtil.now().getMillis());
+	    		allVaccine.update(existingVaccine);
+	    		logger.info("Vacine updated for status caseID : "+ caseId +" vaccineName:"+ vaccineName);
+    		}
     	}catch(Exception e){		        		
     		e.printStackTrace();
     	}
     }
 	public void updateVaccineMissedCount(String health_assistant, String caseId, String vaccineName) {	    
     	try{
-    		
     		Vaccine existingVaccine = allVaccine.getVaccine(caseId,vaccineName);
-    		int missedCount = existingVaccine.getMissedCount()+1;
-    		existingVaccine.setMissedCount(missedCount);    		
-    		existingVaccine.setId(existingVaccine.getId());
-    		existingVaccine.setRevision(existingVaccine.getRevision());
-    		existingVaccine.setTimeStamp(DateUtil.now().getMillis());
-    		allVaccine.update(existingVaccine);
-    		logger.info("Vacine updated for misedCount caseID : "+ caseId +" vaccineName:"+ vaccineName);
+    		if(existingVaccine != null){
+	    		int missedCount = existingVaccine.getMissedCount()+1;
+	    		existingVaccine.setMissedCount(missedCount);    		
+	    		existingVaccine.setId(existingVaccine.getId());
+	    		existingVaccine.setRevision(existingVaccine.getRevision());
+	    		existingVaccine.setTimeStamp(DateUtil.now().getMillis());
+	    		allVaccine.update(existingVaccine);
+	    		logger.info("Vacine updated for misedCount caseID : "+ caseId +" vaccineName:"+ vaccineName);
+    		}
     	}catch(Exception e){		        		
     		e.printStackTrace();
     	}

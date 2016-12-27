@@ -147,7 +147,7 @@ public class FormSubmissionController {
 				return new ResponseEntity<>(BAD_REQUEST);
 			}
 			
-			scheduler.notifyEvent(new SystemEvent<>(OpenSRPEvent.FORM_SUBMISSION, formSubmissionsDTO));
+			//scheduler.notifyEvent(new SystemEvent<>(OpenSRPEvent.FORM_SUBMISSION, formSubmissionsDTO));
 			
 			try {
 				// //////TODO MAIMOONA : SHOULD BE IN EVENT but event needs to
@@ -251,7 +251,7 @@ public class FormSubmissionController {
 			catch (Exception e) {
 				e.printStackTrace();
 			}
-			
+			scheduler.notifyEvent(new SystemEvent<>(OpenSRPEvent.FORM_SUBMISSION, formSubmissionsDTO));
 			logger.debug(format("Added Form submissions to queue.\nSubmissions: {0}", formSubmissionsDTO));
 		}
 		catch (Exception e) {

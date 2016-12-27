@@ -625,7 +625,6 @@ public class AllConstants {
 	    	public static final String 	father_name_note	="father_name_note";
 	    	public static final String 	husband_name	="husband_name";
 	    	public static final String 	husband_name_note	="husband_name_note";
-	    	public static final String 	Marital_Status	="Marital_Status";
 	    	public static final String 	marriage	="marriage";
 	    	public static final String 	Member_Address_line	="Member_Address_line";
 	    	public static final String 	Member_COUNTRY	="Member_COUNTRY";
