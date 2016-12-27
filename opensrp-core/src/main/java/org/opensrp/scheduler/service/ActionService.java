@@ -129,17 +129,19 @@ public class ActionService {
 		        	allActions.addOrUpdateAlert(new Action(caseID, anmIdentifier, ActionData.createAlert(beneficiaryType, scheduleName, visitCode, alertStatus, startDate, expiryDate)));
 		        	
 		        	List<Action> existingAlert = allActions.findAlertByANMIdEntityIdScheduleName(anmIdentifier, caseID, scheduleName);
-		        	try{
-		        		if(scheduleName.equalsIgnoreCase(AllConstants.ScheduleNames.CENCUS)){		 	    		
-			 	    	}else if(scheduleName.equalsIgnoreCase(AllConstants.ScheduleNames.SCHEDULE_Woman_BNF)){		 	    		
-			 	    	}else{
-			 	    		System.err.println("scheduleName:"+scheduleName);
-			 	    		Vaccine vaccine = new Vaccine(anmIdentifier, caseID, existingAlert.get(0).getId(), beneficiaryType.name(), scheduleName, startDate.toLocalDate().toString(), expiryDate.toLocalDate().toString(), false, 0, new Date(), new DateTime(),DateUtil.now().getMillis());		        	
-			        		allVaccine.save(vaccine);
-			 	    	}
-		        	}catch(Exception e){		        		
-		        		e.printStackTrace();
-		        	}	
+		        	if(existingAlert.size() > 0){ 
+			        	try{
+			        		if(scheduleName.equalsIgnoreCase(AllConstants.ScheduleNames.CENCUS)){		 	    		
+				 	    	}else if(scheduleName.equalsIgnoreCase(AllConstants.ScheduleNames.SCHEDULE_Woman_BNF)){		 	    		
+				 	    	}else{
+				 	    		System.err.println("scheduleName:"+scheduleName);
+				 	    		Vaccine vaccine = new Vaccine(anmIdentifier, caseID, existingAlert.get(0).getId(), beneficiaryType.name(), scheduleName, startDate.toLocalDate().toString(), expiryDate.toLocalDate().toString(), false, 0, new Date(), new DateTime(),DateUtil.now().getMillis());		        	
+				        		allVaccine.save(vaccine);
+				 	    	}
+			        	}catch(Exception e){		        		
+			        		e.printStackTrace();
+			        	}
+		        	}
 		        	if(instanceId != null  && !instanceId.isEmpty()){
 		        	reportActionService.updateScheduleLog(beneficiaryType, caseID, instanceId, anmIdentifier, scheduleName, visitCode, alertStatus, startDate, expiryDate, null,null,0L,existingAlert.get(0).timestamp());
 		        	logger.info("Create schedule with id: "+scheduleName);
