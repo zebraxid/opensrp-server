@@ -42,10 +42,10 @@ public class ApplicationStartupListener implements ApplicationListener<ContextRe
 		// anmReportScheduler = new RepeatingSchedule(OpenSRPScheduleConstants.ANM_REPORT_SCHEDULE_SUBJECT, 10, TimeUnit.MINUTES, 6, TimeUnit.HOURS);
 		// mctsReportScheduler = new RepeatingSchedule(OpenSRPScheduleConstants.MCTS_REPORT_SCHEDULE_SUBJECT, 10, TimeUnit.MINUTES, mctsPollIntervalInHours, TimeUnit.HOURS);
 		//openmrsScheduleSyncerScheduler = new RepeatingSchedule(OpenmrsConstants.SCHEDULER_TRACKER_SYNCER_SUBJECT, 0, TimeUnit.MINUTES, 1, TimeUnit.MINUTES);
-		atomfeedSyncClient = new RepeatingSchedule(OpenmrsConstants.SCHEDULER_OPENMRS_ATOMFEED_SYNCER_SUBJECT_CLIENT, 30,
-		        TimeUnit.MINUTES, 10, TimeUnit.MINUTES);
-		atomfeedSyncEvent = new RepeatingSchedule(OpenmrsConstants.SCHEDULER_OPENMRS_ATOMFEED_SYNCER_SUBJECT_EVENT, 30,
-		        TimeUnit.MINUTES, 10, TimeUnit.MINUTES);
+		atomfeedSyncClient = new RepeatingSchedule(OpenmrsConstants.SCHEDULER_OPENMRS_ATOMFEED_SYNCER_SUBJECT_CLIENT, 0,
+		        TimeUnit.MINUTES, 5, TimeUnit.MINUTES);
+		atomfeedSyncEvent = new RepeatingSchedule(OpenmrsConstants.SCHEDULER_OPENMRS_ATOMFEED_SYNCER_SUBJECT_EVENT, 0,
+		        TimeUnit.MINUTES, 5, TimeUnit.MINUTES);
 	}
 	
 	@Override
