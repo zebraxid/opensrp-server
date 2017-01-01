@@ -175,8 +175,7 @@ public class MembersPaybackService {
 		members.Adolescent().add(Adolescent);
 		allMembers.update(members);
 		
-		if (submission.getField(Visit_Status) != null && 
-				(submission.getField(Visit_Status).equalsIgnoreCase("8")))
+		if (submission.getField(Visit_Status) != null && (submission.getField(Visit_Status).equalsIgnoreCase("8")))
 		{			
 			membersScheduleService.unEnrollFromScheduleOfAdolescent(submission.entityId(), submission.anmId(), "");
 			try {
@@ -191,7 +190,10 @@ public class MembersPaybackService {
 				logger.info("From Adolescent_Health: " + e.getMessage());
 			}			
 		}
-		else{			
+		
+		if (submission.getField(Visit_Status) != null && 
+				(submission.getField(Visit_Status).equalsIgnoreCase("2") || submission.getField(Visit_Status).equalsIgnoreCase("3")))
+		{		
 			membersScheduleService.enrollIntoMilestoneOfAdolescent(submission.entityId(), submission.getField(today), submission.anmId(),
 					submission.instanceId());			
 		}

@@ -338,7 +338,7 @@ public class MembersService {
 		
 		if (submission.getField(Is_Eligible_Injectables) != null && !submission.getField(Is_Eligible_Injectables).equalsIgnoreCase(""))
 		if(submission.getField(Is_Eligible_Injectables).equalsIgnoreCase("1")){
-			membersScheduleService.enrollIntoSchedule(submission.entityId(), submission.getField(today), Injectables);
+			membersScheduleService.enrollIntoSchedule(submission.entityId(), submission.getField(Format_Injection_Date), Injectables);
 		}
 		
 		if(submission.getField(fieldName) != null && !submission.getField(fieldName).equalsIgnoreCase("")){
@@ -359,6 +359,22 @@ public class MembersService {
 				membersScheduleService.unEnrollFromSchedule(submission.entityId(), submission.anmId(), Injectables);
 			}
 		} 
+		
+		if (submission.getField(Visit_Status) != null && !submission.getField(Visit_Status).equalsIgnoreCase("")){
+		if(submission.getField(Visit_Status).equalsIgnoreCase("3") || submission.getField(Visit_Status).equalsIgnoreCase("8"))
+			membersScheduleService.unEnrollFromScheduleOfBNF(submission.entityId(), submission.anmId(), "");
+			try {
+				List<Action> beforeNewActions = allActions.findAlertByANMIdEntityIdScheduleName(submission.anmId(), submission.entityId(),
+						SCHEDULE_Woman_BNF);
+				if (beforeNewActions.size() > 0) {
+					scheduleLogService.closeSchedule(submission.entityId(), submission.instanceId(), beforeNewActions.get(0).timestamp(),
+							SCHEDULE_Woman_BNF);
+				}
+
+			} catch (Exception e) {
+				logger.info("From BNF_Visit: " + e.getMessage());
+			}
+		}
 		
 		if (submission.getField(Visit_Status) != null && !submission.getField(Visit_Status).equalsIgnoreCase(""))
 			if(submission.getField(Visit_Status).equalsIgnoreCase("10")){
@@ -470,7 +486,8 @@ public class MembersService {
 		}*/
 		
 		if (submission.getField(Visit_status) != null && !submission.getField(Visit_status).equalsIgnoreCase("")){	
-		if(submission.getField(Visit_status).equalsIgnoreCase("1") || submission.getField(Visit_status).equalsIgnoreCase("2")){
+		if(submission.getField(Visit_status).equalsIgnoreCase("1") || submission.getField(Visit_status).equalsIgnoreCase("2")
+				 || submission.getField(Visit_status).equalsIgnoreCase("6")){
 			membersScheduleService.enrollIntoMilestoneOfBNF(submission.entityId(), submission.getField(Today), submission.anmId(),
 				submission.instanceId());
 		}	
@@ -528,25 +545,26 @@ public class MembersService {
 			membersScheduleService.enrollIntoCorrectMilestoneOfPNCRVCare(submission.entityId(), LocalDate.parse(DOO));
 		}
 		
-		if (submission.getField(Visit_status) != null && !submission.getField(Visit_status).equalsIgnoreCase(""))
-		if(submission.getField(Visit_status).equalsIgnoreCase("1")){		
+		if (submission.getField(Visit_status) != null && !submission.getField(Visit_status).equalsIgnoreCase("")){
+		if(submission.getField(Visit_status).equalsIgnoreCase("3")){
 			/*if(submission.getField(existing_Member_Birth_Date) != null && !submission.getField(existing_Member_Birth_Date).equalsIgnoreCase(""))
 			if(isValidDate(submission.getField(existing_Member_Birth_Date))){
 				membersScheduleService.enrollimmediateMembersVisit(
 					members.caseId(),submission.anmId(),submission.getField(existing_Member_Birth_Date),submission.instanceId(),child_bcg,child_bcg);
 			}*/
 			
-			if(submission.getField(Today) != null && !submission.getField(Today).equalsIgnoreCase(""))
-			if(isValidDate(submission.getField(Today))){
+			if(submission.getField(Today) != null && !submission.getField(Today).equalsIgnoreCase("")){
+			if(isValidDate(submission.getField(Today)))
 					membersScheduleService.imediateEnrollIntoMilestoneOfChild_vaccination(
 							submission.entityId(), submission.getField(Today), submission.anmId(), submission.instanceId());
 			}
 			
-			if(submission.getField(Today) != null && !submission.getField(Today).equalsIgnoreCase(""))
-			if(isValidDate(submission.getField(Today))){
+			if(submission.getField(Today) != null && !submission.getField(Today).equalsIgnoreCase("")){
+			if(isValidDate(submission.getField(Today)))
 					membersScheduleService.enrollIntoSchedule(
 							submission.entityId(), submission.getField(Today), child_reg);
 			}
+		}
 		}
 		
 		if (submission.getField("Calc_Age_Newmom") != null && !submission.getField("Calc_Age_Newmom").equalsIgnoreCase("")){	
