@@ -212,14 +212,6 @@
         "bind": "/model/instance/NewHH/Final_ELCO"
       },
       {
-        "name": "Child",
-        "bind": "/model/instance/NewHH/Child"
-      },
-      {
-        "name": "Adolescent",
-        "bind": "/model/instance/NewHH/Adolescent"
-      },
-      {
         "name": "HH_Status",
         "bind": "/model/instance/NewHH/HH_Status"
       }
@@ -335,6 +327,14 @@
           {
             "name": "Spouse_Name",
             "bind": "/model/instance/NewHH/HH_Member/Spouse_Name"
+          },
+          {
+            "name": "Child_Father",
+            "bind": "/model/instance/NewHH/HH_Member/Child_Father"
+          },
+          {
+            "name": "Child_Mother",
+            "bind": "/model/instance/NewHH/HH_Member/Child_Mother"
           },
           {
             "name": "Wom_Menstruating",
@@ -491,6 +491,18 @@
           {
             "name": "Occupation",
             "bind": "/model/instance/NewHH/HH_Member/Member_Detail/Occupation"
+          },
+          {
+            "name": "Child",
+            "bind": "/model/instance/NewHH/HH_Member/Child"
+          },
+          {
+            "name": "Adolescent",
+            "bind": "/model/instance/NewHH/HH_Member/Adolescent"
+          },
+          {
+            "name": "Nutrition",
+            "bind": "/model/instance/NewHH/HH_Member/Nutrition"
           },
           {
             "name": "add_member",

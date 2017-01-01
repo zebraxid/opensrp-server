@@ -37,48 +37,59 @@
         "bind": "/model/instance/CensusNewMemberRegistration/existing_ELCO"
       },
       {
-        "name": "existing_GoB_HHID",
-        "bind": "/model/instance/CensusNewMemberRegistration/existing_GoB_HHID"
+        "name": "GoB_HHID",
+        "bind": "/model/instance/CensusNewMemberRegistration/existing_GoB_HHID",
+        "shouldLoadValue": true
       },
       {
         "name": "existing_Country",
-        "bind": "/model/instance/CensusNewMemberRegistration/existing_Country"
+        "bind": "/model/instance/CensusNewMemberRegistration/existing_Country",
+        "shouldLoadValue": true
       },
       {
         "name": "existing_Division",
-        "bind": "/model/instance/CensusNewMemberRegistration/existing_Division"
+        "bind": "/model/instance/CensusNewMemberRegistration/existing_Division",
+        "shouldLoadValue": true
       },
       {
         "name": "existing_District",
-        "bind": "/model/instance/CensusNewMemberRegistration/existing_District"
+        "bind": "/model/instance/CensusNewMemberRegistration/existing_District",
+        "shouldLoadValue": true
       },
       {
         "name": "existing_Upazilla",
-        "bind": "/model/instance/CensusNewMemberRegistration/existing_Upazilla"
+        "bind": "/model/instance/CensusNewMemberRegistration/existing_Upazilla",
+        "shouldLoadValue": true
       },
       {
         "name": "existing_Union",
-        "bind": "/model/instance/CensusNewMemberRegistration/existing_Union"
+        "bind": "/model/instance/CensusNewMemberRegistration/existing_Union",
+        "shouldLoadValue": true
       },
       {
         "name": "existing_Ward",
-        "bind": "/model/instance/CensusNewMemberRegistration/existing_Ward"
+        "bind": "/model/instance/CensusNewMemberRegistration/existing_Ward",
+        "shouldLoadValue": true
       },
       {
         "name": "existing_Subunit",
-        "bind": "/model/instance/CensusNewMemberRegistration/existing_Subunit"
+        "bind": "/model/instance/CensusNewMemberRegistration/existing_Subunit",
+        "shouldLoadValue": true
       },
       {
         "name": "existing_Mauzapara",
-        "bind": "/model/instance/CensusNewMemberRegistration/existing_Mauzapara"
+        "bind": "/model/instance/CensusNewMemberRegistration/existing_Mauzapara",
+        "shouldLoadValue": true
       },
       {
-        "name": "existing_GPS",
-        "bind": "/model/instance/CensusNewMemberRegistration/existing_GPS"
+        "name": "GPS",
+        "bind": "/model/instance/CensusNewMemberRegistration/existing_GPS",
+        "shouldLoadValue": true
       },
       {
-        "name": "existing_Village_Name",
-        "bind": "/model/instance/CensusNewMemberRegistration/existing_Village_Name"
+        "name": "Village_Name",
+        "bind": "/model/instance/CensusNewMemberRegistration/existing_Village_Name",
+        "shouldLoadValue": true
       },
       {
         "name": "Form_Name",
@@ -93,20 +104,8 @@
         "bind": "/model/instance/CensusNewMemberRegistration/Visit_Status"
       },
       {
-        "name": "new_ELCO",
-        "bind": "/model/instance/CensusNewMemberRegistration/new_ELCO"
-      },
-      {
         "name": "ELCO",
         "bind": "/model/instance/CensusNewMemberRegistration/ELCO"
-      },
-      {
-        "name": "Child",
-        "bind": "/model/instance/CensusNewMemberRegistration/Child"
-      },
-      {
-        "name": "Adolescent",
-        "bind": "/model/instance/CensusNewMemberRegistration/Adolescent"
       },
       {
         "name": "HH_Status",
@@ -228,6 +227,14 @@
           {
             "name": "Spouse_Name",
             "bind": "/model/instance/CensusNewMemberRegistration/HH_Member/Spouse_Name"
+          },
+          {
+            "name": "Child_Father",
+            "bind": "/model/instance/CensusNewMemberRegistration/HH_Member/Child_Father"
+          },
+          {
+            "name": "Child_Mother",
+            "bind": "/model/instance/CensusNewMemberRegistration/HH_Member/Child_Mother"
           },
           {
             "name": "Wom_Menstruating",
@@ -384,6 +391,22 @@
           {
             "name": "Occupation",
             "bind": "/model/instance/CensusNewMemberRegistration/HH_Member/Member_Detail/Occupation"
+          },
+          {
+            "name": "new_ELCO",
+            "bind": "/model/instance/CensusNewMemberRegistration/HH_Member/new_ELCO"
+          },
+          {
+            "name": "Child",
+            "bind": "/model/instance/CensusNewMemberRegistration/HH_Member/Child"
+          },
+          {
+            "name": "Adolescent",
+            "bind": "/model/instance/CensusNewMemberRegistration/HH_Member/Adolescent"
+          },
+          {
+            "name": "Nutrition",
+            "bind": "/model/instance/CensusNewMemberRegistration/HH_Member/Nutrition"
           },
           {
             "name": "add_member",
