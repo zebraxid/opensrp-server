@@ -16,4 +16,10 @@
         <constructor-arg value="${couchdb.db.form}"/>
         <constructor-arg ref="couchDbInstance"/>
     </bean>
+        
+    <bean id="opensrpFormDatabaseLuceneConnector" class="com.github.ldriscoll.ektorplucene.LuceneAwareCouchDbConnector">
+        <constructor-arg value="${couchdb.db.form}"/>
+        <constructor-arg ref="couchDbInstance"/>
+    </bean>
+    
 </beans>

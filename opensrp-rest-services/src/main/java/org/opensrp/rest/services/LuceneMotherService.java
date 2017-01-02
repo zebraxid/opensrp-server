@@ -40,9 +40,27 @@ public class LuceneMotherService {
 			String makeQueryString ="isClosed:false" + " AND " + "type:Mother" + " AND " + "SUBMISSIONDATE:["+convertDateStringToTimestampMills.convertDateToTimestampMills(start)+" TO "+convertDateStringToTimestampMills.convertDateToTimestampMills(end)+"]" ;
 	    	LuceneResult result = luceneMotherRepository.findDocsByProvider(makeQueryString);
 			return result.getRows().size();
-		}
-		
-		
+		}		
+	}
+	
+	public int getMotherCount(String start,String end,String provider){
+		if(start.equalsIgnoreCase("")){
+			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+	    	Date today = Calendar.getInstance().getTime();    	
+			String makeQueryString ="isClosed:false" + " AND " + "type:Mother" + " AND " + "PROVIDERID:" + provider + " AND " + "SUBMISSIONDATE:["+convertDateStringToTimestampMills.convertDateToTimestampMills(dateFormat.format(today))+" TO "+convertDateStringToTimestampMills.convertDateToTimestampMills(dateFormat.format(today))+"]" ;
+	    	LuceneResult result = luceneMotherRepository.findDocsByProvider(makeQueryString);
+			return result.getRows().size();
+		}else{
+			String makeQueryString ="isClosed:false" + " AND " + "type:Mother" + " AND " + "PROVIDERID:" + provider + " AND " + "SUBMISSIONDATE:["+convertDateStringToTimestampMills.convertDateToTimestampMills(start)+" TO "+convertDateStringToTimestampMills.convertDateToTimestampMills(end)+"]" ;
+	    	LuceneResult result = luceneMotherRepository.findDocsByProvider(makeQueryString);
+			return result.getRows().size();
+		}		
+	}
+	
+	public int getMotherCount(String anmId){
+			String makeQueryString ="isClosed:false" + " AND " + "type:Mother" + " AND " + "PROVIDERID:" + anmId ;
+	    	LuceneResult result = luceneMotherRepository.findDocsByProvider(makeQueryString);
+			return result.getRows().size();		
 	}
 
 }

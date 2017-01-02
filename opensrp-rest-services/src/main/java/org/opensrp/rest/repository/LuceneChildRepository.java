@@ -5,7 +5,7 @@
 package org.opensrp.rest.repository;
 
 import org.opensrp.common.AllConstants;
-import org.opensrp.register.mcare.domain.Mother;
+import org.opensrp.register.mcare.domain.Child;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,7 +21,7 @@ import com.github.ldriscoll.ektorplucene.designdocument.annotation.Index;
 
 @FullText({
     @Index(
-        name = "mother",
+        name = "child",
 	    index = "function(rec) {" +
 	    		" var doc=new Document();" +
 	    		" doc.add(rec.TODAY,{\"field\":\"TODAY\", \"store\":\"yes\"});" +
@@ -34,20 +34,21 @@ import com.github.ldriscoll.ektorplucene.designdocument.annotation.Index;
 })
 
 @Repository
-public class LuceneMotherRepository extends CouchDbRepositorySupportWithLucene<Mother>{
+public class LuceneChildRepository extends CouchDbRepositorySupportWithLucene<Child>{
 	@Autowired
-	public LuceneMotherRepository(@Value("#{opensrp['couchdb.atomfeed-db.revision-limit']}") int revisionLimit,
+	public LuceneChildRepository(@Value("#{opensrp['couchdb.atomfeed-db.revision-limit']}") int revisionLimit,
 			@Qualifier(AllConstants.OPENSRP_DATABASE_LUCENE_CONNECTOR)LuceneAwareCouchDbConnector db) {
-		super(Mother.class, db);
+		super(Child.class, db);
 		this.db.setRevisionLimit(revisionLimit);
 		initStandardDesignDocument();
 	}
 	public LuceneResult findDocsByProvider(String queryString) { 
         LuceneDesignDocument designDoc = db.get(LuceneDesignDocument.class, stdDesignDocumentId);
-        LuceneQuery query = new LuceneQuery(designDoc.getId(), "mother"); 
+        LuceneQuery query = new LuceneQuery(designDoc.getId(), "child"); 
         query.setQuery(queryString); 
         query.setStaleOk(false); 
         return db.queryLucene(query); 
     } 
+
 
 }

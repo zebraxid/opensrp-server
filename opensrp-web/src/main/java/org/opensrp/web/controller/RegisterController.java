@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.opensrp.dto.CountServiceDTO;
 import org.opensrp.dto.CountServiceDTOForChart;
+import org.opensrp.dto.FormCountDTO;
 import org.opensrp.dto.register.ANC_RegisterDTO;
 import org.opensrp.dto.register.Child_RegisterDTO;
 import org.opensrp.dto.register.ELCORegisterDTO;
@@ -127,6 +128,12 @@ public class RegisterController {
     		@RequestParam("start-week") String startWeek,@RequestParam("end-week") String endtWeek,@RequestParam("type") String type){
     	dataCountService.getHHCountInformation(provider,startMonth,endMonth,startWeek,endtWeek,type);
     	return new ResponseEntity<>(dataCountService.getHHCountInformation(provider,startMonth,endMonth,startWeek,endtWeek,type), HttpStatus.OK);
+    }
+    
+    @RequestMapping(method = RequestMethod.GET, value = "/registers/form-count")
+    @ResponseBody
+    public ResponseEntity<FormCountDTO>  getFormCountInformation(@RequestParam("anm-id") String provider){
+    	return new ResponseEntity<>(dataCountService.getFormCount(provider), HttpStatus.OK);
     }
     
     @RequestMapping(method = RequestMethod.GET, value = "/registers/hh-count")

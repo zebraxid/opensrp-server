@@ -1,3 +1,8 @@
+/**
+ * The ChildRegisterService class implements Child registry. 
+ * @author Asifur
+ */
+
 package org.opensrp.register.mcare.service;
 
 import static org.opensrp.common.util.DateUtil.getTimestamp;
