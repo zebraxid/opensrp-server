@@ -330,7 +330,7 @@ public class DataCountService {
                 c.getActualMaximum(Calendar.DAY_OF_MONTH));
 	    
 	    String week4End= new SimpleDateFormat("yyyy-MM-dd").format(c.getTime());
-	    System.out.println("week4Start: " + week4End);
+	    System.out.println("week4End: " + week4End);
 		
 		/*System.out.println("Total "+luceneFormService.getFormCount("","",provider,formName));
 		System.out.println("ThisMonth "+luceneFormService.getFormCount(week1Start, week4End, provider, formName));
