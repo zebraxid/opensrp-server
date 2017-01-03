@@ -18,6 +18,7 @@ import java.util.Date;
 import java.util.Map;
 
 import org.joda.time.LocalDate;
+import org.motechproject.scheduletracking.api.domain.Enrollment;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.form.domain.SubFormData;
 import org.opensrp.register.mcare.domain.Members;
@@ -767,6 +768,17 @@ public class MembersService {
 		members.setTTVisit(TT_visit);		
 		
 		allMembers.update(members);	
+		
+		if ((submission.getField(tt1_final) == null || submission.getField(tt1_final).equalsIgnoreCase("")) &&
+			(submission.getField(tt2_final) == null || submission.getField(tt2_final).equalsIgnoreCase("")) &&
+			(submission.getField(tt3_final) == null || submission.getField(tt3_final).equalsIgnoreCase("")) &&
+			(submission.getField(tt4_final) == null || submission.getField(tt4_final).equalsIgnoreCase("")) &&
+			(submission.getField(tt5_final) == null || submission.getField(tt5_final).equalsIgnoreCase("")) &&
+			(submission.getField(final_lmp) == null || submission.getField(final_lmp).equalsIgnoreCase(""))
+			)
+		{
+			womanVaccineSchedule.WomanFirstVaccine(submission, members,  SCHEDULE_Woman_1, REFERENCE_DATE, "");
+		}
 		
 		womanVaccineSchedule.WomanFollowupVaccine(submission, members,  SCHEDULE_Woman_1, final_lmp, tt1_final);
 

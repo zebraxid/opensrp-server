@@ -8,9 +8,11 @@ import static org.opensrp.common.AllConstants.HHRegistrationFields.REFERENCE_DAT
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.Map;
 
 import org.joda.time.LocalDate;
+import org.motechproject.scheduletracking.api.domain.Enrollment;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.register.mcare.domain.Members;
 import org.opensrp.register.mcare.service.MembersService;
@@ -19,6 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.motechproject.scheduletracking.api.repository.AllEnrollments;
 
 @Service
 public class WomanVaccineSchedule {
@@ -26,10 +29,12 @@ public class WomanVaccineSchedule {
 	private static Logger logger = LoggerFactory.getLogger(MembersService.class.toString());
 	private MembersScheduleService membersScheduleService;
 	private VaccinationService vaccinationService;
+	private AllEnrollments allEnrollments;
 	
 	@Autowired
-	public WomanVaccineSchedule(MembersScheduleService membersScheduleService) {
+	public WomanVaccineSchedule(MembersScheduleService membersScheduleService, AllEnrollments allEnrollments) {
 		this.membersScheduleService = membersScheduleService;	
+		this.allEnrollments = allEnrollments;
 	}
 	
 	@Autowired
@@ -101,6 +106,17 @@ public class WomanVaccineSchedule {
 			vaccinationService.updateVaccineStatus(members.caseId(), scheduleName);
 		}
 		
+	}
+	
+	public void WomanFirstVaccine(FormSubmission submission, Members members, String scheduleName, String refDate, String cond) {		
+		List<Enrollment> activeEnrollment = allEnrollments.findByExternalId(members.caseId());
+        if (activeEnrollment == null || activeEnrollment.isEmpty()){
+        	if (submission.getField(cond) == null || submission.getField(cond).equalsIgnoreCase("")){
+    		if (submission.getField(refDate) != null && !submission.getField(refDate).equalsIgnoreCase(""))
+    		if(isValidDate(submission.getField(refDate)))
+    			membersScheduleService.enrollWomanTTVisit(members.caseId(),submission.anmId(),submission.getField(refDate),scheduleName);
+    		}
+        }		
 	}
 	
 	public boolean isValidDate(String dateString) {
