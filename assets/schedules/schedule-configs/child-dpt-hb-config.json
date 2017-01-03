@@ -1,0 +1,41 @@
+{
+	"name": "DPT HB1",
+	"handler": "IndoScheduleHandler",
+	"events": [
+		{
+			"types": [
+				"Child Registration"
+			],
+			"pass_logic": "AND",
+			"enrollment_fields": [
+				{
+					"concept": "1586AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+					"value": "NOT_EMPTY"
+				}
+			],
+			"milestone": "dpt_hb1",
+			"reference_date_fields": [
+				{
+					"type": "client",
+					"field": "birthdate"
+				}
+			],
+			"action": "enroll"
+		},
+		{
+			"types": [
+				"Imunisasi Bayi"
+			],
+			"pass_logic": "AND",
+			"fulfillment_date_fields": [
+				{
+					"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+					"formSubmissionField": "dpt_hb1",
+					"value": "NOT_EMPTY"
+				}
+			],
+			"milestone": "dpt_hb1",
+			"action": "fulfill"
+		}
+	]
+}
