@@ -7,7 +7,7 @@
       "scheduleWindows": {
         "earliest": ["0 Day"],
         "due": ["3 Days"],
-        "late": ["8 Weeks"],
+        "late": ["8 Days"],
         "max": ["4 Weeks", "1 Day"]
       },
       "alerts": [
