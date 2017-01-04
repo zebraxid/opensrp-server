@@ -1,5 +1,5 @@
 {
-	"name": "BCG",
+	"name": "HBO",
 	"handler": "IndoScheduleHandler",
 	"events": [
 		{
@@ -13,7 +13,7 @@
 					"value": "NOT_EMPTY"
 				}
 			],
-			"milestone": "bcg",
+			"milestone": "hb0",
 			"reference_date_fields": [
 				{
 					"type": "Client",
@@ -29,11 +29,11 @@
 			"pass_logic": "AND",
 			"fulfillment_date_fields": [
 				{
-					"formSubmissionField": "bcg",
+					"formSubmissionField": "hb0",
 					"value": "NOT_EMPTY"
 				}
 			],
-			"milestone": "bcg",
+			"milestone": "hb0",
 			"action": "fulfill"
 		}
 	]
