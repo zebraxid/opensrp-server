@@ -4,7 +4,7 @@
 package org.opensrp.rest.repository;
 
 import org.opensrp.common.AllConstants;
-import org.opensrp.form.domain.FormSubmission;
+import org.opensrp.scheduler.ScheduleLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,30 +20,33 @@ import com.github.ldriscoll.ektorplucene.designdocument.annotation.Index;
 
 @FullText({
     @Index(
-        name = "formSubmission",
+        name = "scheduleLog",
 	    index = "function(rec) {" +
 	    		" var doc=new Document();" +
-	    		" doc.add(rec.anmId,{\"field\":\"anmId\", \"store\":\"yes\"});" +
-	    		" doc.add(rec.formName,{\"field\":\"formName\", \"store\":\"yes\"});"+ 	    		   		
-	    		" doc.add(rec.serverVersion,{\"field\":\"serverVersion\", \"store\":\"yes\"});" + 
-	    		" doc.add(rec.instanceId,{\"field\":\"instanceId\", \"store\":\"yes\"});" +
+	    		" doc.add(rec.anmIdentifier,{\"field\":\"anmIdentifier\", \"store\":\"yes\"});" +
+	    		" doc.add(rec.caseID,{\"field\":\"caseID\", \"store\":\"yes\"});"+ 	    		   		
+	    		" doc.add(rec.visitCode,{\"field\":\"visitCode\", \"store\":\"yes\"});" + 
+	    		" doc.add(rec.currentWindow,{\"field\":\"currentWindow\", \"store\":\"yes\"});" + 
+	    		" doc.add(rec.scheduleName,{\"field\":\"scheduleName\", \"store\":\"yes\"});" +
+	    		" doc.add(rec.isActionActive,{\"field\":\"isActionActive\", \"store\":\"yes\"});" +
+	    		" doc.add(rec.timeStamp,{\"field\":\"timeStamp\", \"store\":\"yes\"});" +
 	    		" doc.add(rec.type,{\"field\":\"type\", \"store\":\"yes\"});" + 
 	    		" return doc;" +
 	    		"}")
 })
 
 @Repository
-public class LuceneFormRepository extends CouchDbRepositorySupportWithLucene<FormSubmission>{
+public class LuceneScheduleRepository extends CouchDbRepositorySupportWithLucene<ScheduleLog>{
 	@Autowired
-	public LuceneFormRepository(@Value("#{opensrp['couchdb.atomfeed-db.revision-limit']}") int revisionLimit,
-			@Qualifier(AllConstants.OPENSRP_Form_DATABASE_LUCENE_CONNECTOR)LuceneAwareCouchDbConnector db) {
-		super(FormSubmission.class, db);
+	public LuceneScheduleRepository(@Value("#{opensrp['couchdb.atomfeed-db.revision-limit']}") int revisionLimit,
+			@Qualifier(AllConstants.OPENSRP_DATABASE_LUCENE_CONNECTOR)LuceneAwareCouchDbConnector db) {
+		super(ScheduleLog.class, db);
 		this.db.setRevisionLimit(revisionLimit);
 		initStandardDesignDocument();
 	}
 	public LuceneResult findDocsByProvider(String queryString) { 
         LuceneDesignDocument designDoc = db.get(LuceneDesignDocument.class, stdDesignDocumentId);
-        LuceneQuery query = new LuceneQuery(designDoc.getId(), "formSubmission"); 
+        LuceneQuery query = new LuceneQuery(designDoc.getId(), "scheduleLog"); 
         query.setQuery(queryString); 
         query.setStaleOk(false); 
         return db.queryLucene(query); 
