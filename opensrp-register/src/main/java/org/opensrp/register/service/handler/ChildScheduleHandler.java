@@ -20,9 +20,6 @@ public class ChildScheduleHandler extends BaseScheduleHandler {
 	@Autowired
 	private ENCCSchedulesService enccSchedulesService;
 	
-	@Autowired
-	ClientService clientService;
-	
 	private static final String scheduleName="Essential Newborn Care Checklist";
 	
 	@Override

@@ -16,7 +16,7 @@
 			"milestone": "opv0",
 			"reference_date_fields": [
 				{
-					"type": "client",
+					"type": "Client",
 					"field": "birthdate"
 				}
 			],
@@ -29,7 +29,6 @@
 			"pass_logic": "AND",
 			"fulfillment_date_fields": [
 				{
-					"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
 					"formSubmissionField": "polio1",
 					"value": "NOT_EMPTY"
 				}
@@ -50,7 +49,6 @@
 			"pass_logic": "AND",
 			"enrollment_fields": [
 				{
-					"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
 					"formSubmissionField": "polio1",
 					"value": "NOT_EMPTY"
 				}
@@ -58,7 +56,6 @@
 			"milestone": "opv1",
 			"reference_date_fields": [
 				{
-					"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
 					"formSubmissionField": "polio1",
 					"value": "NOT_EMPTY"
 				}
@@ -72,7 +69,6 @@
 			"pass_logic": "AND",
 			"fulfillment_date_fields": [
 				{
-					"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
 					"formSubmissionField": "polio2",
 					"value": "NOT_EMPTY"
 				}
@@ -93,7 +89,6 @@
 			"pass_logic": "AND",
 			"enrollment_fields": [
 				{
-					"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
 					"formSubmissionField": "polio2",
 					"value": "NOT_EMPTY"
 				}
@@ -101,7 +96,6 @@
 			"milestone": "opv2",
 			"reference_date_fields": [
 				{
-					"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
 					"formSubmissionField": "polio2",
 					"value": "NOT_EMPTY"
 				}
@@ -115,7 +109,6 @@
 			"pass_logic": "AND",
 			"fulfillment_date_fields": [
 				{
-					"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
 					"formSubmissionField": "polio3",
 					"value": "NOT_EMPTY"
 				}
@@ -136,7 +129,6 @@
 			"pass_logic": "AND",
 			"enrollment_fields": [
 				{
-					"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
 					"formSubmissionField": "polio3",
 					"value": "NOT_EMPTY"
 				}
@@ -144,8 +136,7 @@
 			"milestone": "opv3",
 			"reference_date_fields": [
 				{
-					"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-					"formSubmissionField": "polio3",
+|					"formSubmissionField": "polio3",
 					"value": "NOT_EMPTY"
 				}
 			],
@@ -158,7 +149,6 @@
 			"pass_logic": "AND",
 			"fulfillment_date_fields": [
 				{
-					"concept": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
 					"formSubmissionField": "polio4",
 					"value": "NOT_EMPTY"
 				}
