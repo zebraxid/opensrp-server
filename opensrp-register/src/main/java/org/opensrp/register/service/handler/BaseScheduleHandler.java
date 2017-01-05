@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -240,14 +241,26 @@ abstract class BaseScheduleHandler implements EventsHandler {
 			for (Map.Entry<String, Object> entry : scheduleFields.entrySet()) {
 				String key = entry.getKey();//"concept"
 				String value = entry.getValue().toString();//"concept value"
-				String scheduleValue = scheduleFields.get(JSON_KEY_VALUE).toString();//"value- either not_empty or a concept mapping"
+				String strScheduleValue = scheduleFields.get(JSON_KEY_VALUE).toString();//"value- either not_empty or a concept mapping"
+				List<String> scheduleValues= new ArrayList<String>();
+				//to be improved- convert the value from the value key in the scheduleconfig to a list 
+				if(strScheduleValue.startsWith("[")){
+					//value has multiple values, convert to jsonarray
+					strScheduleValue=strScheduleValue.replaceAll("\\[", "");
+					strScheduleValue=strScheduleValue.replaceAll("\\]", "");
+					String[] array= strScheduleValue.split(",");
+					scheduleValues=Arrays.asList(array);
+
+				}else{
+					scheduleValues.add(strScheduleValue);
+				}
 				if (key.equalsIgnoreCase(JSON_KEY_CONCEPT)) {
 					//it's a concept search it in the event's obs
 					//key="fieldCode";
 					if (obs.containsKey(value)) {//check if the concept mapping exists in the obs
-						if (obs.get(value).toString().equalsIgnoreCase(scheduleValue)
+						if (scheduleValues.contains(obs.get(value).toString())
 						        || (!obs.get(value).toString().isEmpty()
-						                && scheduleValue.equalsIgnoreCase(JSON_KEY_NOTEMPTY))) {
+						                && scheduleValues.contains(JSON_KEY_NOTEMPTY))) {
 							result = true;
 							//passlogic AND means that all the fields must have the specified values in the schedule configs else just return when the first value is true
 							if (!passLogic.equalsIgnoreCase("AND"))
@@ -257,8 +270,8 @@ abstract class BaseScheduleHandler implements EventsHandler {
 				} else if (key.equalsIgnoreCase(JSON_KEY_FIELD)) { //not a concept so get the value from the main doc e.g eventDate
 					String fieldValue = eventJson.has(value) ? eventJson.getString(value) : "";
 				//	String fieldValue = eventJson.has(fieldName) ? eventJson.getString(fieldName) : "";
-					if (fieldValue.equalsIgnoreCase(scheduleValue)
-					        || (!fieldValue.isEmpty() && scheduleValue.equalsIgnoreCase(JSON_KEY_NOTEMPTY))) {
+					if (scheduleValues.contains(fieldValue)
+					        || (!fieldValue.isEmpty() && scheduleValues.contains(JSON_KEY_NOTEMPTY))) {
 						result = true;
 						//passlogic AND means that all the fields must have the specified values in the schedule configs else just return when the first value is true
 						if (!passLogic.equalsIgnoreCase("AND"))
@@ -267,9 +280,9 @@ abstract class BaseScheduleHandler implements EventsHandler {
 					
 				} else if(key.equalsIgnoreCase(JSON_KEY_FORMSUBMISSIONFIELD)){
 					if (obsByFormSubmissionField.containsKey(value)) {//check if the concept mapping exists in the obs
-						if (obsByFormSubmissionField.get(value).toString().equalsIgnoreCase(scheduleValue)
+						if (scheduleValues.contains(obsByFormSubmissionField.get(value).toString())
 						        || (!obsByFormSubmissionField.get(value).toString().isEmpty()
-						                && scheduleValue.equalsIgnoreCase(JSON_KEY_NOTEMPTY))) {
+						                && scheduleValues.contains(JSON_KEY_NOTEMPTY))) {
 							result = true;
 							//passlogic AND means that all the fields must have the specified values in the schedule configs else just return when the first value is true
 							if (!passLogic.equalsIgnoreCase("AND"))

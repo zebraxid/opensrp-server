@@ -1,10 +1,9 @@
  {
-    "name": "TT 1",
-    "handler": "TTScheduleHandler",
+    "name": "KB Injection Depoprovera",
     "events": [
       {
         "types": [
-          "Tambah ANC"
+          "Tambah KB","Kohort Pelayanan KB"
         ],
         "pass_logic": "AND",
         "enrollment_fields": [
@@ -13,7 +12,7 @@
             "value": "703AAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
           }
         ],
-        "milestone": "TT 1",
+        "milestone": "KB Injection Depoprovera",
         "reference_date_fields": [
           {
             "concept": "1427AAAAAAAAAAAAAAAAAAAAAAAAAAAA",

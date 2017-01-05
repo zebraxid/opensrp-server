@@ -8,14 +8,14 @@
 							"enrollment_fields": [
 								{
 									"concept": "163511AAAAAAAAAAAAAAAAAAAAAAAAAA",
-									"value": "[160753AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA,163509AAAAAAAAAAAAAAAAAAAAAAAAAA,160753AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA,163509AAAAAAAAAAAAAAAAAAAAAAAAAA]" 
+									"value": "[163505AAAAAAAAAAAAAAAAAAAAAAAAAA,163506AAAAAAAAAAAAAAAAAAAAAAAAAA,163507AAAAAAAAAAAAAAAAAAAAAAAAAA,163508AAAAAAAAAAAAAAAAAAAAAAAAAA]" 
 								}
 							],
 							"milestone": "pncrv_1",
 							"reference_date_fields": [
 				                {
-				                  "concept": "5599AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-				                  "value": "NOT_EMPTY"
+				                  "field": "eventDate",
+								  "value": "NOT_EMPTY"
 				                }
 				             ],
 							"action": "enroll"

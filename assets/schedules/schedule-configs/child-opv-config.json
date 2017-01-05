@@ -136,7 +136,7 @@
 			"milestone": "opv3",
 			"reference_date_fields": [
 				{
-|					"formSubmissionField": "polio3",
+					"formSubmissionField": "polio3",
 					"value": "NOT_EMPTY"
 				}
 			],
