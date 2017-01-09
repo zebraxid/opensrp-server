@@ -3,6 +3,13 @@
  */
 package org.opensrp.rest.repository;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import org.codehaus.jackson.map.ObjectMapper;
+import org.json.JSONObject;
 import org.opensrp.common.AllConstants;
 import org.opensrp.scheduler.ScheduleLog;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +21,7 @@ import com.github.ldriscoll.ektorplucene.CouchDbRepositorySupportWithLucene;
 import com.github.ldriscoll.ektorplucene.LuceneAwareCouchDbConnector;
 import com.github.ldriscoll.ektorplucene.LuceneQuery;
 import com.github.ldriscoll.ektorplucene.LuceneResult;
+import com.github.ldriscoll.ektorplucene.LuceneResult.Row;
 import com.github.ldriscoll.ektorplucene.designdocument.LuceneDesignDocument;
 import com.github.ldriscoll.ektorplucene.designdocument.annotation.FullText;
 import com.github.ldriscoll.ektorplucene.designdocument.annotation.Index;
@@ -28,7 +36,6 @@ import com.github.ldriscoll.ektorplucene.designdocument.annotation.Index;
 	    		" doc.add(rec.visitCode,{\"field\":\"visitCode\", \"store\":\"yes\"});" + 
 	    		" doc.add(rec.currentWindow,{\"field\":\"currentWindow\", \"store\":\"yes\"});" + 
 	    		" doc.add(rec.scheduleName,{\"field\":\"scheduleName\", \"store\":\"yes\"});" +
-	    		" doc.add(rec.isActionActive,{\"field\":\"isActionActive\", \"store\":\"yes\"});" +
 	    		" doc.add(rec.timeStamp,{\"field\":\"timeStamp\", \"store\":\"yes\"});" +
 	    		" doc.add(rec.type,{\"field\":\"type\", \"store\":\"yes\"});" + 
 	    		" return doc;" +
@@ -51,4 +58,57 @@ public class LuceneScheduleRepository extends CouchDbRepositorySupportWithLucene
         query.setStaleOk(false); 
         return db.queryLucene(query); 
     } 
+	
+	public LuceneResult getByCriteria(long start,long end,String anmIdentifier,String scheduleName) {
+		// create a simple query against the view/search function that we've created
+		
+		Query qf = new Query(FilterType.AND);
+		if(anmIdentifier!= null && !anmIdentifier.isEmpty() && !anmIdentifier.equalsIgnoreCase("")){
+			qf.eq("anmIdentifier", anmIdentifier);
+		}
+		if(scheduleName!= null && !scheduleName.isEmpty() && !scheduleName.equalsIgnoreCase("")){
+			qf.eq("scheduleName", scheduleName);
+		}
+		/*if(visitCode!= null && !visitCode.isEmpty() && !visitCode.equalsIgnoreCase("")){
+			qf.eq("visitCode", visitCode);
+		}
+		
+		if(start!=0 && end!=0){
+			qf.betwen("timeStamp", start, end);
+		}*/
+		
+		if(qf.query() == null || qf.query().isEmpty()){
+			throw new RuntimeException("Atleast one search filter must be specified");
+		}
+			
+		/*LuceneDesignDocument designDoc = db.get(LuceneDesignDocument.class, stdDesignDocumentId);
+        LuceneQuery query = new LuceneQuery(designDoc.getId(), "by_all_criteria");*/ 
+		
+		LuceneQuery query = new LuceneQuery("ScheduleLog", "by_all_criteria");
+		
+		System.out.println("Query: "+qf.query());
+		
+        query.setQuery(qf.query()); 
+        query.setStaleOk(false); 
+        query.setIncludeDocs(true);
+        
+        LuceneResult result = db.queryLucene(query);
+        List<ScheduleLog> ol = new ArrayList<>();
+		for (Row r : result.getRows()) {
+			HashMap<String, Object> doc = r.getDoc();
+			
+			ScheduleLog ro = null;
+			try {
+				ro = new ObjectMapper().readValue(new JSONObject(doc).toString(), type);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			ol.add(ro);
+		}
+		
+		System.out.println("LuceneResult: "+ol);
+	        
+        return db.queryLucene(query); 
+	}
 }

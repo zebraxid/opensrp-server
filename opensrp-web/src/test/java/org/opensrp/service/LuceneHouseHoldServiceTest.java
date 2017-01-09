@@ -72,7 +72,7 @@ public class LuceneHouseHoldServiceTest {
         luceneServ = new LuceneHouseHoldService(luceneHouseHoldRepository, convertDateStringToTimestampMills);
     } 
     
-    @Ignore @Test 
+    @Test 
     public void testCount() throws ParseException {    	
     	//luceneServ.someFunc();
     	DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -80,6 +80,7 @@ public class LuceneHouseHoldServiceTest {
     	Date end = dateFormat.parse("2016-05-31");
     	System.out.println(start.getTime() + " -- " + end.getTime());
     	System.out.println(luceneServ.getHouseholdCountForChart("2016-05-01", "2016-05-31") + " -hh count from 1st to 31st May");
+    	System.out.println(luceneServ.getHouseholdCount("2016-05-01", "2016-12-31") + " -hh count from DB");
     	
     	/*List<String> startAndEndOfWeeks = DateUtil.getWeekBoundariesForDashboard();
     	

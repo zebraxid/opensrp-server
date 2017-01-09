@@ -36,5 +36,16 @@ public class LuceneScheduleService {
 			return result.getRows().size();
 		}	
 	}
+	
+	public int getSchedulCount(String start,String end,String anmId,String scheduleName){	
+		if(start!= null && !start.isEmpty() && !start.equalsIgnoreCase("") && end!= null && !end.isEmpty() && !end.equalsIgnoreCase("")){
+			LuceneResult result = luceneScheduleRepository.getByCriteria(convertDateStringToTimestampMills.convertDateToTimestampMills(start),convertDateStringToTimestampMills.convertDateToTimestampMills(end),anmId,scheduleName);
+			return result.getRows().size();	
+		}
+		else{
+			LuceneResult result = luceneScheduleRepository.getByCriteria(0,0,anmId,scheduleName);
+			return result.getRows().size();	
+		}
+	}
 
 }
