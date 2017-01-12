@@ -67,14 +67,23 @@ public class MembersService {
 		
 		SubFormData subFormData = submission
 				.getSubFormByName(MEMBERS_REGISTRATION_SUB_FORM_NAME);	
-		  
+			  
 		for (Map<String, String> membersFields : subFormData.instances()) {
+			
+			String relational_id = null;
+			
+			if (membersFields.containsKey(relationalid) && membersFields.get(relationalid) != null && !membersFields.get(relationalid).isEmpty()){
+				relational_id = membersFields.get(relationalid);
+			}
+			else
+				relational_id = submission.entityId();
+				
 			
 			Members members = allMembers.findByCaseId(membersFields.get(ID))
 					.setINSTANCEID(submission.instanceId())
 					.setPROVIDERID(submission.anmId())
 					.setTODAY(submission.getField(REFERENCE_DATE))
-					.setrelationalid(membersFields.get(relationalid));					
+					.setrelationalid(relational_id);					
 			
 			if(membersFields.containsKey(REG_NO)){
 				allMembers.update(members);
@@ -441,11 +450,20 @@ public class MembersService {
 		  
 		for (Map<String, String> membersFields : subFormData.instances()) {
 			
+			String relational_id = null;
+			
+			if (membersFields.containsKey(relationalid))
+			if (membersFields.get(relationalid) != null && !membersFields.get(relationalid).isEmpty()){
+				relational_id = membersFields.get(relationalid);
+			}
+			else
+				relational_id = submission.entityId();
+			
 			Members members = allMembers.findByCaseId(membersFields.get(ID))
 					.setINSTANCEID(submission.instanceId())
 					.setPROVIDERID(submission.anmId())
 					.setTODAY(submission.getField(REFERENCE_DATE))
-					.setrelationalid(membersFields.get(relationalid));					
+					.setrelationalid(relational_id);					
 			
 			if(membersFields.containsKey(REG_NO)){
 				allMembers.update(members);

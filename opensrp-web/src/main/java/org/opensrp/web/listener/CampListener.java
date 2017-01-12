@@ -73,7 +73,7 @@ public class CampListener {
 	}
 	
 	 private void sentMessageToClient(MessageFactory messageFactory,List<CampDate> campDates) throws JSONException{
-		String message ;
+		String message;
 		System.err.println("messageFactory:"+messageFactory);
 		if(campDates != null){
 			for (CampDate campDate : campDates) {
@@ -81,13 +81,18 @@ public class CampListener {
 				
 				for (Action action : actions) {					
 					Members member = allMembers.findByCaseId(action.caseId());					
-					HouseHold houseHold = allHouseHolds.findByCaseId(member.details().get("relationalid"));										
+					HouseHold houseHold = allHouseHolds.findByCaseId(member.relationalid());										
 					if(member.Is_child().equalsIgnoreCase("1")){
 						message = messageFactory.getMessageType("Child").message(member, campDate);
-					}else{
-						message =messageFactory.getMessageType("Woman").message(member, campDate);
-					}					
-					messageService.sentMessage(message, member.Member_Fname(), houseHold.HoH_Mobile_No(),campDate.getSession_location());
+						messageService.sentMessage(message, member.Member_Fname(), houseHold.HoH_Mobile_No(),campDate.getSession_location());
+					}else if(member.Is_woman().equalsIgnoreCase("1")) {
+						message = messageFactory.getMessageType("Woman").message(member, campDate);
+						messageService.sentMessage(message, member.Member_Fname(), houseHold.HoH_Mobile_No(),campDate.getSession_location());
+					}		
+					else{
+					
+					}
+					
 	            }
 				campDate.setDeleted(false);
 				campDate.setId(campDate.getId());
