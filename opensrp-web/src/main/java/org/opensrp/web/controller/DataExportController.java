@@ -39,5 +39,11 @@ public class DataExportController {
 		dataExportService.exports(response,formName,start_date,end_date,user);		
 		return  new ResponseEntity<>(new Gson().toJson(dataExportService.getExportsByUser(user)), HttpStatus.OK);
 	}
+	@RequestMapping(value="/all-export")
+    @ResponseBody
+	public ResponseEntity<String> AllDataExport(@RequestParam String user){	
+			
+		return  new ResponseEntity<>(new Gson().toJson(dataExportService.getExportsByUser(user)), HttpStatus.OK);
+	}
 	
 }
