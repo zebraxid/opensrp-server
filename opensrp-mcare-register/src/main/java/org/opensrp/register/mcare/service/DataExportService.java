@@ -2,10 +2,7 @@ package org.opensrp.register.mcare.service;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -44,7 +41,8 @@ public class DataExportService{
 		
 		export.setTimeStamp(System.currentTimeMillis());
 		allExports.add(export);
-		createCSV( response,formName,start_date,end_date,reportName);	
+		createCSV( response,formName,start_date,end_date,reportName);
+		
 		return reportName;
 	}
 	public List<Exports> getExportsByUser(String user){

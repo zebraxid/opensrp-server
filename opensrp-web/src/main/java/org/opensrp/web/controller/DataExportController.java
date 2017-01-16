@@ -33,37 +33,11 @@ public class DataExportController {
 	}
 	@RequestMapping(value="/export")
     @ResponseBody
-	public ResponseEntity<String> getFullTextHouseHolds(@RequestParam String formName,@RequestParam String start_date,@RequestParam String end_date,@RequestParam String user,HttpServletResponse response) 
+	public ResponseEntity<String> dataExport(@RequestParam String formName,@RequestParam String start_date,@RequestParam String end_date,@RequestParam String user,HttpServletResponse response) 
 	{
 		System.out.println("formName: "+formName);
 		dataExportService.exports(response,formName,start_date,end_date,user);		
 		return  new ResponseEntity<>(new Gson().toJson(dataExportService.getExportsByUser(user)), HttpStatus.OK);
 	}
-	@RequestMapping(value = "/downloadCSV")
-	public void downloadCSV(@RequestParam String formName,HttpServletResponse response) throws IOException {		
-		System.out.println("Path:..............:"+multimediaDirPath);
-		System.out.println("Path:..............:"+formName);
-		response.setContentType("text/csv");
-		String reportName = "Report_" + System.currentTimeMillis() + ".csv";
-		response.setHeader("Content-disposition",
-				"attachment; " + "filename=" + reportName);
-		
-		FileWriter writer = new FileWriter(multimediaDirPath +"/public/" + reportName);
-		writer.append("Agent ID");
-		writer.append(',');
-		writer.append("Date");
-		writer.append('\n');
-		
-		writer.append("One");
-		writer.append(',');
-		writer.append("Two");
-		writer.append('\n');
-		
-		writer.flush();
-		writer.close();
-		
-		
- 
-	}
- 
+	
 }
