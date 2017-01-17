@@ -75,6 +75,11 @@ public class DataExportService{
 		}
 		
 	}
+	public void deleteExport(String id) {
+		Exports export = allExports.getExportsById(id);
+		allExports.delete(export);
+		
+	}
 	
 
 }
