@@ -31,7 +31,7 @@ public class AllExports  extends MotechBaseRepository<Exports>{
 	
 	@View(name = "by_user", map = "function(doc) { if (doc.type === 'Exports' && doc._id) { emit(doc.user, doc); } }")
 	public List<Exports> getExportsByUser(String session_id) {
-		List<Exports> exports = db.queryView(createQuery("by_user").key(session_id).descending(true).includeDocs(true), Exports.class);
+		List<Exports> exports = db.queryView(createQuery("by_user").key(session_id).descending(true).limit(5).includeDocs(true), Exports.class);
 		return exports;
 	}
 	@View(name = "by_id", map = "function(doc) { if (doc.type === 'Exports' && doc._id) { emit(doc._id, doc); } }")
