@@ -72,7 +72,7 @@ public class LuceneHouseHoldServiceTest {
         luceneServ = new LuceneHouseHoldService(luceneHouseHoldRepository, convertDateStringToTimestampMills);
     } 
     
-    @Test 
+    @Ignore@Test 
     public void testCount() throws ParseException {    	
     	//luceneServ.someFunc();
     	DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");

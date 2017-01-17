@@ -38,7 +38,7 @@ public class Query{
 			return this;
 		}
 		public Query betwen(String name, long from, long to){
-			addToQuery(name+":["+from+" TO "+to+"]");
+			addToQuery(name+"<long>:["+from+" TO "+to+"] ");
 			return this;
 		}
 		private void addToQuery(String q){

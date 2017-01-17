@@ -12,16 +12,17 @@ import org.ektorp.http.StdHttpClient;
 import org.ektorp.impl.StdCouchDbInstance;
 import org.junit.Before;
 import org.junit.Test;
-import org.opensrp.rest.repository.LuceneFormRepository;
-import org.opensrp.rest.services.LuceneFormService;
+import org.opensrp.rest.repository.LuceneScheduleRepository;
+import org.opensrp.rest.services.LuceneScheduleService;
 import org.opensrp.rest.util.ConvertDateStringToTimestampMills;
 
 import com.github.ldriscoll.ektorplucene.LuceneAwareCouchDbConnector;
 
-public class LuceneFormServiceTest {
+public class LuceneScheduleServiceTest {
+
 	
-    private LuceneFormService luceneServ; 
-    private LuceneFormRepository luceneFormRepository;
+    private LuceneScheduleService luceneServ; 
+    private LuceneScheduleRepository luceneScheduleRepository;
     private ConvertDateStringToTimestampMills convertDateStringToTimestampMills;
     private LuceneAwareCouchDbConnector connector; 
  
@@ -38,21 +39,18 @@ public class LuceneFormServiceTest {
  
         connector = new LuceneAwareCouchDbConnector("opensrp", instance); 
         connector.createDatabaseIfNotExists(); 
-        luceneFormRepository = new  LuceneFormRepository(2, connector); 
+        luceneScheduleRepository = new  LuceneScheduleRepository(2, connector); 
         //createDocuments(); 
         convertDateStringToTimestampMills = new ConvertDateStringToTimestampMills();
-        luceneServ = new LuceneFormService(luceneFormRepository, convertDateStringToTimestampMills);
+        luceneServ = new LuceneScheduleService(luceneScheduleRepository, convertDateStringToTimestampMills);
     } 
     
     @Test 
     public void testCount() throws ParseException {    	
-    	//luceneServ.someFunc();
-    	DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-    	Date start = dateFormat.parse("2016-05-01");
-    	Date end = dateFormat.parse("2016-12-31");
-    	System.out.println(start.getTime() + " -- " + end.getTime());
-    	//System.out.println(luceneServ.getFormCount("", "","amena","new_household_registration") + " -form count from DB");
-    	//System.out.println(luceneServ.getFormCount("2016-05-01", "2016-12-31","amena","new_household_registration") + " -form count from DB");
+    	//System.out.println(luceneServ.getSchedulCount("", "","amena","ELCO PSRF") + " -schedule count1 from DB");
+    	//System.out.println(luceneServ.getSchedulCount("2016-11-01", "2016-12-31","amena","ELCO PSRF") + " -schedule count2 from DB");
+    	//System.out.println(luceneServ.getSchedulCount("2017-01-01", "2017-01-31","amena","ELCO PSRF") + " -schedule count3 from DB");
     } 
+
 
 }

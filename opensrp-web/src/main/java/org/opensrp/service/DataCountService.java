@@ -333,7 +333,7 @@ public class DataCountService {
 	    String week4End= new SimpleDateFormat("yyyy-MM-dd").format(c.getTime());
 	    System.out.println("week4End: " + week4End);
 		
-		/*System.out.println("Total "+luceneFormService.getFormCount("","",provider,formName));
+	    /*System.out.println("Total "+luceneFormService.getFormCount("","",provider,formName));
 		System.out.println("ThisMonth "+luceneFormService.getFormCount(week1Start, week4End, provider, formName));
 		System.out.println("Week1 "+luceneFormService.getFormCount(week1Start, week1End, provider, formName));	
 		System.out.println("Week2 "+luceneFormService.getFormCount(week2Start, week2End, provider, formName));	
@@ -475,30 +475,49 @@ public class DataCountService {
 		formCountDTO.setEnccWeek2Count(enccWeek2Count);
 		formCountDTO.setEnccWeek3Count(enccWeek3Count);
 		formCountDTO.setEnccWeek4Count(enccWeek4Count);
-
 		
 		formCountDTO.setPregnancyTotalCount(luceneMotherService.getMotherCount(provider));
 		formCountDTO.setPregnancyThisMonthCount(luceneMotherService.getMotherCount(week1Start, week4End, provider));
 		formCountDTO.setPregnancyWeek1Count(luceneMotherService.getMotherCount(week1Start, week1End, provider));
 		formCountDTO.setPregnancyWeek2Count(luceneMotherService.getMotherCount(week2Start, week2End, provider));
 		formCountDTO.setPregnancyWeek3Count(luceneMotherService.getMotherCount(week3Start, week3End, provider));
-		formCountDTO.setPregnancyWeek4Count(luceneMotherService.getMotherCount(week4Start, week4End, provider));
+		formCountDTO.setPregnancyWeek4Count(luceneMotherService.getMotherCount(week4Start, week4End, provider));		
+	    
+	    /*formCountDTO.setHouseholdTotalCount(luceneFormService.getFormCount("","",provider,formName)); 
+		formCountDTO.setHouseholdThisMonthCount(luceneFormService.getFormCount("2016-11-01", "2016-11-30", provider, formName));
+		formCountDTO.setHouseholdWeek1Count(luceneFormService.getFormCount("2016-11-01", "2016-11-07", provider, formName));
+		formCountDTO.setHouseholdWeek2Count(luceneFormService.getFormCount("2016-11-08", "2016-11-14", provider, formName));
+		formCountDTO.setHouseholdWeek3Count(luceneFormService.getFormCount("2016-11-15", "2016-11-21", provider, formName));
+		formCountDTO.setHouseholdWeek4Count(luceneFormService.getFormCount("2016-11-22", "2016-11-30", provider, formName));*/
 
+		int schedulePSRFTotalCount = luceneScheduleService.getSchedulCount("","",provider, "ELCO PSRF"); 
+		int schedulePSRFThisMonthCount = luceneScheduleService.getSchedulCount(week1Start, week4End, provider, "ELCO PSRF");
+		int schedulePSRFWeek1Count = luceneScheduleService.getSchedulCount(week1Start, week1End, provider, "ELCO PSRF");
+		int schedulePSRFWeek2Count = luceneScheduleService.getSchedulCount(week2Start, week2End, provider, "ELCO PSRF");
+		int schedulePSRFWeek3Count = luceneScheduleService.getSchedulCount(week3Start, week3End, provider, "ELCO PSRF");
+		int schedulePSRFWeek4Count = luceneScheduleService.getSchedulCount(week4Start, week4End, provider, "ELCO PSRF");
+				
+		int scheduleANCTotalCount = luceneScheduleService.getSchedulCount("","",provider, "Ante Natal Care Reminder Visit"); 
+		int scheduleANCThisMonthCount = luceneScheduleService.getSchedulCount(week1Start, week4End, provider, "Ante Natal Care Reminder Visit");
+		int scheduleANCWeek1Count = luceneScheduleService.getSchedulCount(week1Start, week1End, provider, "Ante Natal Care Reminder Visit");
+		int scheduleANCWeek2Count = luceneScheduleService.getSchedulCount(week2Start, week2End, provider, "Ante Natal Care Reminder Visit");
+		int scheduleANCWeek3Count = luceneScheduleService.getSchedulCount(week3Start, week3End, provider, "Ante Natal Care Reminder Visit");
+		int scheduleANCWeek4Count = luceneScheduleService.getSchedulCount(week4Start, week4End, provider, "Ante Natal Care Reminder Visit");
 		
-		/*int schedulePSRFTotalCount = luceneScheduleService.getScheduleCount("","",provider, "ELCO PSRF"); 
-		int schedulePSRFThisMonthCount = luceneScheduleService.getScheduleCount("2016-01-01", "2017-01-31", provider, "ELCO PSRF");
-		int schedulePSRFWeek1Count = luceneScheduleService.getScheduleCount("2016-09-01", "2016-09-30", provider, "ELCO PSRF");
-		int schedulePSRFWeek2Count = luceneScheduleService.getScheduleCount("2016-10-01", "2016-10-31", provider, "ELCO PSRF");
-		int schedulePSRFWeek3Count = luceneScheduleService.getScheduleCount("2016-11-01", "2016-11-30", provider, "ELCO PSRF");
-		int schedulePSRFWeek4Count = luceneScheduleService.getScheduleCount("2016-12-01", "2016-12-31", provider, "ELCO PSRF");
+		int schedulePNCTotalCount = luceneScheduleService.getSchedulCount("","",provider, "Post Natal Care Reminder Visit"); 
+		int schedulePNCThisMonthCount = luceneScheduleService.getSchedulCount(week1Start, week4End, provider, "Post Natal Care Reminder Visit");
+		int schedulePNCWeek1Count = luceneScheduleService.getSchedulCount(week1Start, week1End, provider, "Post Natal Care Reminder Visit");
+		int schedulePNCWeek2Count = luceneScheduleService.getSchedulCount(week2Start, week2End, provider, "Post Natal Care Reminder Visit");
+		int schedulePNCWeek3Count = luceneScheduleService.getSchedulCount(week3Start, week3End, provider, "Post Natal Care Reminder Visit");
+		int schedulePNCWeek4Count = luceneScheduleService.getSchedulCount(week4Start, week4End, provider, "Post Natal Care Reminder Visit");
 		
-		int scheduleANCTotalCount = luceneScheduleService.getScheduleCount("","",provider, "Ante Natal Care Reminder Visit"); 
-		int scheduleANCThisMonthCount = luceneScheduleService.getScheduleCount("2016-01-01", "2017-01-31", provider, "Ante Natal Care Reminder Visit");
-		int scheduleANCWeek1Count = luceneScheduleService.getScheduleCount("2016-09-01", "2016-09-30", provider, "Ante Natal Care Reminder Visit");
-		int scheduleANCWeek2Count = luceneScheduleService.getScheduleCount("2016-10-01", "2016-10-31", provider, "Ante Natal Care Reminder Visit");
-		int scheduleANCWeek3Count = luceneScheduleService.getScheduleCount("2016-11-01", "2016-11-30", provider, "Ante Natal Care Reminder Visit");
-		int scheduleANCWeek4Count = luceneScheduleService.getScheduleCount("2016-12-01", "2016-12-31", provider, "Ante Natal Care Reminder Visit");
-
+		int scheduleENCCTotalCount = luceneScheduleService.getSchedulCount("","",provider, "Essential Newborn Care Checklist"); 
+		int scheduleENCCThisMonthCount = luceneScheduleService.getSchedulCount(week1Start, week4End, provider, "Essential Newborn Care Checklist");
+		int scheduleENCCWeek1Count = luceneScheduleService.getSchedulCount(week1Start, week1End, provider, "Essential Newborn Care Checklist");
+		int scheduleENCCWeek2Count = luceneScheduleService.getSchedulCount(week2Start, week2End, provider, "Essential Newborn Care Checklist");
+		int scheduleENCCWeek3Count = luceneScheduleService.getSchedulCount(week3Start, week3End, provider, "Essential Newborn Care Checklist");
+		int scheduleENCCWeek4Count = luceneScheduleService.getSchedulCount(week4Start, week4End, provider, "Essential Newborn Care Checklist");
+		
 		System.out.println("Total PSRF "+schedulePSRFTotalCount);
 		System.out.println("ThisMonth "+schedulePSRFThisMonthCount);
 		System.out.println("Week1 "+schedulePSRFWeek1Count);	
@@ -511,36 +530,22 @@ public class DataCountService {
 		System.out.println("Week1 "+scheduleANCWeek1Count);	
 		System.out.println("Week2 "+scheduleANCWeek2Count);	
 		System.out.println("Week3 "+scheduleANCWeek3Count);	
-		System.out.println("Week4 "+scheduleANCWeek4Count);*/
+		System.out.println("Week4 "+scheduleANCWeek4Count);
 		
-		/*int schedulePNCTotalCount = luceneScheduleService.getScheduleCount("","",provider, "Post Natal Care Reminder Visit"); 
-		int schedulePNCThisMonthCount = luceneScheduleService.getScheduleCount(week1Start, week4End, provider, "Post Natal Care Reminder Visit");
-		int schedulePNCWeek1Count = luceneScheduleService.getScheduleCount(week1Start, week1End, provider, "Post Natal Care Reminder Visit");
-		int schedulePNCWeek2Count = luceneScheduleService.getScheduleCount(week2Start, week2End, provider, "Post Natal Care Reminder Visit");
-		int schedulePNCWeek3Count = luceneScheduleService.getScheduleCount(week3Start, week3End, provider, "Post Natal Care Reminder Visit");
-		int schedulePNCWeek4Count = luceneScheduleService.getScheduleCount(week4Start, week4End, provider, "Post Natal Care Reminder Visit");
-		
-		int scheduleENCCTotalCount = luceneScheduleService.getScheduleCount("","",provider, "Essential Newborn Care Checklist"); 
-		int scheduleENCCThisMonthCount = luceneScheduleService.getScheduleCount(week1Start, week4End, provider, "Essential Newborn Care Checklist");
-		int scheduleENCCWeek1Count = luceneScheduleService.getScheduleCount(week1Start, week1End, provider, "Essential Newborn Care Checklist");
-		int scheduleENCCWeek2Count = luceneScheduleService.getScheduleCount(week2Start, week2End, provider, "Essential Newborn Care Checklist");
-		int scheduleENCCWeek3Count = luceneScheduleService.getScheduleCount(week3Start, week3End, provider, "Essential Newborn Care Checklist");
-		int scheduleENCCWeek4Count = luceneScheduleService.getScheduleCount(week4Start, week4End, provider, "Essential Newborn Care Checklist");*/
+		System.out.println("Total PNC "+schedulePNCTotalCount);
+		System.out.println("ThisMonth "+schedulePNCThisMonthCount);
+		System.out.println("Week1 "+schedulePNCWeek1Count);	
+		System.out.println("Week2 "+schedulePNCWeek2Count);	
+		System.out.println("Week3 "+schedulePNCWeek3Count);	
+		System.out.println("Week4 "+schedulePNCWeek4Count);
 
-		/*int schedulANCTotalCount = luceneScheduleService.getSchedulCount("","",provider, "Ante Natal Care Reminder Visit"); 
-		int schedulANCThisMonthCount = luceneScheduleService.getSchedulCount(week1Start, week4End, provider, "Ante Natal Care Reminder Visit");
-		int schedulANCWeek1Count = luceneScheduleService.getSchedulCount(week1Start, week1End, provider, "Ante Natal Care Reminder Visit");
-		int schedulANCWeek2Count = luceneScheduleService.getSchedulCount(week2Start, week2End, provider, "Ante Natal Care Reminder Visit");
-		int schedulANCWeek3Count = luceneScheduleService.getSchedulCount(week3Start, week3End, provider, "Ante Natal Care Reminder Visit");
-		int schedulANCWeek4Count = luceneScheduleService.getSchedulCount(week4Start, week4End, provider, "Ante Natal Care Reminder Visit");*/
+		System.out.println("Total ENCC "+scheduleENCCTotalCount);
+		System.out.println("ThisMonth "+scheduleENCCThisMonthCount);
+		System.out.println("Week1 "+scheduleENCCWeek1Count);	
+		System.out.println("Week2 "+scheduleENCCWeek2Count);	
+		System.out.println("Week3 "+scheduleENCCWeek3Count);	
+		System.out.println("Week4 "+scheduleENCCWeek4Count);		
 		
-		/*int schedulANCTotalCount = luceneScheduleService.getSchedulCount("","",provider, "Ante Natal Care Reminder Visit"); 
-		int schedulANCThisMonthCount = luceneScheduleService.getSchedulCount("2016-01-01", "2017-01-31", provider, "Ante Natal Care Reminder Visit");
-		int schedulANCWeek1Count = luceneScheduleService.getSchedulCount("2016-09-01", "2016-09-30", provider, "Ante Natal Care Reminder Visit");
-		int schedulANCWeek2Count = luceneScheduleService.getSchedulCount("2016-10-01", "2016-10-31", provider, "Ante Natal Care Reminder Visit");
-		int schedulANCWeek3Count = luceneScheduleService.getSchedulCount("2016-11-01", "2016-11-30", provider, "Ante Natal Care Reminder Visit");
-		int schedulANCWeek4Count = luceneScheduleService.getSchedulCount("2016-12-01", "2016-12-31", provider, "Ante Natal Care Reminder Visit");*/
-
 		return formCountDTO;
 	}
 

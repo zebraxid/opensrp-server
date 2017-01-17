@@ -39,7 +39,10 @@ import com.github.ldriscoll.ektorplucene.designdocument.annotation.Index;
 	    		" doc.add(rec.timeStamp,{\"field\":\"timeStamp\", \"store\":\"yes\"});" +
 	    		" doc.add(rec.type,{\"field\":\"type\", \"store\":\"yes\"});" + 
 	    		" return doc;" +
-	    		"}")
+	    		"}"),
+	@Index(
+	        name = "by_all_criteria",
+	        index = "function (doc) { if(doc.type !== 'ScheduleLog') return null;  var docl = new Array(); var ret = new Document(); if(doc.anmIdentifier){    var led = doc.anmIdentifier;    ret.add(led, {'field' : 'anmIdentifier'}); } if(doc.scheduleName){    var ped = doc.scheduleName;    ret.add(ped, {'field' : 'scheduleName'}); } if(doc.timeStamp){    var sed = doc.timeStamp;    ret.add(sed, {'field' : 'timeStamp','type' : 'long'}); } docl.push(ret); return docl; }")
 })
 
 @Repository
@@ -63,19 +66,18 @@ public class LuceneScheduleRepository extends CouchDbRepositorySupportWithLucene
 		// create a simple query against the view/search function that we've created
 		
 		Query qf = new Query(FilterType.AND);
-		if(anmIdentifier!= null && !anmIdentifier.isEmpty() && !anmIdentifier.equalsIgnoreCase("")){
-			qf.eq("anmIdentifier", anmIdentifier);
-		}
-		if(scheduleName!= null && !scheduleName.isEmpty() && !scheduleName.equalsIgnoreCase("")){
-			qf.eq("scheduleName", scheduleName);
-		}
-		/*if(visitCode!= null && !visitCode.isEmpty() && !visitCode.equalsIgnoreCase("")){
-			qf.eq("visitCode", visitCode);
-		}
 		
 		if(start!=0 && end!=0){
 			qf.betwen("timeStamp", start, end);
-		}*/
+		}
+		
+		if(anmIdentifier!= null && !anmIdentifier.isEmpty() && !anmIdentifier.equalsIgnoreCase("")){
+			qf.eq("anmIdentifier", anmIdentifier);
+		}
+		
+		if(scheduleName!= null && !scheduleName.isEmpty() && !scheduleName.equalsIgnoreCase("")){
+			qf.eq("scheduleName", scheduleName);
+		}
 		
 		if(qf.query() == null || qf.query().isEmpty()){
 			throw new RuntimeException("Atleast one search filter must be specified");
