@@ -415,13 +415,13 @@ public class HouseHold extends MotechBaseDataObject {
 	}
 	
 	public String getELCODetail(String name) {	
-		/*int size = ELCODETAILS.size();
+		int size = ELCODETAILS.size();
 		String elems = "";
 		for (int i = 0; i < size; i++)
 			elems = elems + ELCODETAILS.get(i).get(name) + " " ;
-		return elems;	*/	
+		return elems;	
 
-		return ELCODETAILS.get(0).get(name);
+		//return ELCODETAILS.get(0).get(name);
 	}
 	
 	@Override

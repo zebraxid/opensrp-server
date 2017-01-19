@@ -4,8 +4,16 @@
 
 package org.opensrp.rest.repository;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import org.codehaus.jackson.map.ObjectMapper;
+import org.json.JSONObject;
 import org.opensrp.common.AllConstants;
 import org.opensrp.register.mcare.domain.Mother;
+import org.opensrp.scheduler.ScheduleLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,6 +23,7 @@ import com.github.ldriscoll.ektorplucene.CouchDbRepositorySupportWithLucene;
 import com.github.ldriscoll.ektorplucene.LuceneAwareCouchDbConnector;
 import com.github.ldriscoll.ektorplucene.LuceneQuery;
 import com.github.ldriscoll.ektorplucene.LuceneResult;
+import com.github.ldriscoll.ektorplucene.LuceneResult.Row;
 import com.github.ldriscoll.ektorplucene.designdocument.LuceneDesignDocument;
 import com.github.ldriscoll.ektorplucene.designdocument.annotation.FullText;
 import com.github.ldriscoll.ektorplucene.designdocument.annotation.Index;
@@ -47,7 +56,25 @@ public class LuceneMotherRepository extends CouchDbRepositorySupportWithLucene<M
         LuceneQuery query = new LuceneQuery(designDoc.getId(), "mother"); 
         query.setQuery(queryString); 
         query.setStaleOk(false); 
-        return db.queryLucene(query); 
+        
+        LuceneResult result = db.queryLucene(query);
+        
+        List<Mother> ol = new ArrayList<>();
+		for (Row r : result.getRows()) {
+			HashMap<String, Object> doc = r.getDoc();
+			Mother ro = null;
+			try {
+				ro = new ObjectMapper().readValue(new JSONObject(doc).toString(), type);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			ol.add(ro);
+		}	
+		
+		//System.out.println("Lucene Result: "+ol);
+				
+        return result;  
     } 
 
 }

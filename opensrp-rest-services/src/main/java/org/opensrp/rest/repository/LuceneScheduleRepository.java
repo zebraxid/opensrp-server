@@ -6,7 +6,9 @@ package org.opensrp.rest.repository;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.codehaus.jackson.map.ObjectMapper;
 import org.json.JSONObject;
@@ -59,7 +61,25 @@ public class LuceneScheduleRepository extends CouchDbRepositorySupportWithLucene
         LuceneQuery query = new LuceneQuery(designDoc.getId(), "scheduleLog"); 
         query.setQuery(queryString); 
         query.setStaleOk(false); 
-        return db.queryLucene(query); 
+        
+        LuceneResult result = db.queryLucene(query);
+        
+        List<ScheduleLog> ol = new ArrayList<>();
+		for (Row r : result.getRows()) {
+			HashMap<String, Object> doc = r.getDoc();
+			ScheduleLog ro = null;
+			try {
+				ro = new ObjectMapper().readValue(new JSONObject(doc).toString(), type);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			ol.add(ro);
+		}	
+		
+		//System.out.println("LuceneResult: "+ol);
+				
+        return result; 
     } 
 	
 	public LuceneResult getByCriteria(long start,long end,String anmIdentifier,String scheduleName) {
@@ -94,6 +114,8 @@ public class LuceneScheduleRepository extends CouchDbRepositorySupportWithLucene
         query.setStaleOk(false); 
         query.setIncludeDocs(true);
         
+        int count = 0;
+        
         LuceneResult result = db.queryLucene(query);
         List<ScheduleLog> ol = new ArrayList<>();
 		for (Row r : result.getRows()) {
@@ -106,11 +128,19 @@ public class LuceneScheduleRepository extends CouchDbRepositorySupportWithLucene
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			//System.out.println("Lucene Object: "+ro.getDetail("visitCode"));
+			
+			Set<String> tenp = null;
+			for (int i=0; i < ro.data().size(); i++){				
+				tenp.add(ro.data().get(i).get("visitCode"));
+			}
+			//Set uniqueValues = new HashSet(tenp);
+			count+=tenp.size();
 			ol.add(ro);
 		}
-		
-		System.out.println("LuceneResult: "+ol);
+		System.out.println("Lucene count: "+count);
+		//System.out.println("LuceneResult: "+ol);
 	        
-        return db.queryLucene(query); 
+        return result; 
 	}
 }

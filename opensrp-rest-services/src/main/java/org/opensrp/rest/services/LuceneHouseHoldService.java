@@ -101,6 +101,17 @@ public class LuceneHouseHoldService {
 		}	
 	}
 	
+	public int getHouseHoldCount(String start,String end,String anmId){	
+		if(start!= null && !start.isEmpty() && !start.equalsIgnoreCase("") && end!= null && !end.isEmpty() && !end.equalsIgnoreCase("")){
+			LuceneResult result = luceneHouseHoldRepository.getByCriteria(convertDateStringToTimestampMills.convertDateToTimestampMills(start),convertDateStringToTimestampMills.convertDateToTimestampMills(end),anmId);
+			return result.getRows().size();	
+		}
+		else{
+			LuceneResult result = luceneHouseHoldRepository.getByCriteria(0,0,anmId);
+			return result.getRows().size();	
+		}
+	}
+	
 	public int getHouseholdCountForChart(String start,String end){
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     	//Date today = Calendar.getInstance().getTime();    	

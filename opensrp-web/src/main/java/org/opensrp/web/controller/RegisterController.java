@@ -126,7 +126,6 @@ public class RegisterController {
     @ResponseBody
     public ResponseEntity<List<CountServiceDTO>>  getHouseHoldInformation(@RequestParam("anm-id") String provider,@RequestParam("start-month") String startMonth,@RequestParam("end-month") String endMonth,
     		@RequestParam("start-week") String startWeek,@RequestParam("end-week") String endtWeek,@RequestParam("type") String type){
-    	dataCountService.getHHCountInformation(provider,startMonth,endMonth,startWeek,endtWeek,type);
     	return new ResponseEntity<>(dataCountService.getHHCountInformation(provider,startMonth,endMonth,startWeek,endtWeek,type), HttpStatus.OK);
     }
     
@@ -139,16 +138,14 @@ public class RegisterController {
     @RequestMapping(method = RequestMethod.GET, value = "/registers/hh-count")
     @ResponseBody
     public ResponseEntity<List<CountServiceDTOForChart>>  getHouseHoldInformation(@RequestParam("provider") String provider, @RequestParam("district") String district,
-    														@RequestParam("upazilla") String upazilla, @RequestParam("union") String union){
-    
+    														@RequestParam("upazilla") String upazilla, @RequestParam("union") String union){    
     	return new ResponseEntity<>(dataCountService.getHHCountInformation(), HttpStatus.OK);
     }
     
     @RequestMapping(method = RequestMethod.GET, value = "/registers/hh-data-count")
     @ResponseBody
     public ResponseEntity<List<CountServiceDTOForChart>>  getHouseHoldInformationForChart(@RequestParam("provider") String provider, @RequestParam("district") String district,
-    														@RequestParam("upazilla") String upazilla, @RequestParam("union") String union){
-    
+    														@RequestParam("upazilla") String upazilla, @RequestParam("union") String union){    
     	return new ResponseEntity<>(dataCountService.getHHCountInformationForChart(provider, district, upazilla, union), HttpStatus.OK);
     }
     

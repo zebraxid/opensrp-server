@@ -213,4 +213,9 @@ public class AllElcos extends MotechBaseRepository<Elco> {
 		return vr;
 	}
 	
+	@View(name = "elcoCount", map = "function(doc) { if (doc.type === 'Elco') { emit(doc.id); } }",reduce="_count")
+    public int countElcos() {
+        System.out.println("Elco ALL time start:"+System.currentTimeMillis());
+        return db.queryView(createQuery("elcoCount")).getRows().get(0).getValueAsInt();
+    }
 }

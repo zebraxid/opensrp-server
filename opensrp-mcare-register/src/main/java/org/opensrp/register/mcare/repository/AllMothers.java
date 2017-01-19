@@ -60,6 +60,13 @@ public class AllMothers extends MotechBaseRepository<Mother> {
 		return mothers;
 	}
 
+	// map reduce query
+    @View(name = "motherCount", map = "function(doc) { if (doc.type === 'Mother') { emit(doc.id); } }",reduce="_count")
+    public int countMothers() {
+        System.out.println("Mother time start:"+System.currentTimeMillis());
+        return db.queryView(createQuery("motherCount")).getRows().get(0).getValueAsInt();  
+    }
+    
 	/*
 	 * @View(name = "all_households", map =
 	 * "function(doc) { if (doc.type === 'HouseHold') { emit(doc.PROVIDERID, doc.CASEID); } }"

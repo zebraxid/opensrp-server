@@ -17,6 +17,7 @@ import org.opensrp.dto.CountServiceDTO;
 import org.opensrp.dto.FormCountDTO;
 import org.opensrp.dto.CountServiceDTOForChart;
 import org.opensrp.form.repository.AllFormSubmissions;
+import org.opensrp.register.mcare.domain.HouseHold;
 import org.opensrp.register.mcare.repository.AllElcos;
 import org.opensrp.register.mcare.repository.AllHouseHolds;
 import org.opensrp.register.mcare.repository.AllMothers;
@@ -270,21 +271,21 @@ public class DataCountService {
 	}
 		
 	private CountServiceDTO getHouseholdCount(String provider,String startMonth,String endMonth,String startWeek,String endWeek,CountServiceDTO commonServiceDTO){
-		commonServiceDTO.setHouseholdTotalCount(allHouseHolds.findAllHouseHolds().size()) ;  //this should be improved using count(*) style query
+		commonServiceDTO.setHouseholdTotalCount(allHouseHolds.countHouseHolds()) ;  //this should be improved using count(*) style query
 		commonServiceDTO.setHouseholdTodayCount(luceneHouseHoldService.getHouseholdCount("",""));
 		commonServiceDTO.setHouseholdThisMonthCount(luceneHouseHoldService.getHouseholdCount(startMonth, endMonth));
 		commonServiceDTO.setHouseholdThisWeekCount(luceneHouseHoldService.getHouseholdCount(startWeek, endWeek));
 		return commonServiceDTO;
 	}
 	private CountServiceDTO getElcoCount(String provider,String startMonth,String endMonth,String startWeek,String endWeek,CountServiceDTO commonServiceDTO){
-		commonServiceDTO.setElcoTotalCount(allElcos.findAllELCOs().size());
+		commonServiceDTO.setElcoTotalCount(allElcos.countElcos());
 		commonServiceDTO.setElcoThisMonthCount(luceneElcoService.getElcoCount(startMonth, endMonth));
 		commonServiceDTO.setElcoThisWeekCount(luceneElcoService.getElcoCount(startWeek, endWeek));
 		commonServiceDTO.setElcoTodayCount(luceneElcoService.getElcoCount("", ""));
 		return commonServiceDTO;
 	}
 	private CountServiceDTO getMotherCount(String provider,String startMonth,String endMonth,String startWeek,String endWeek,CountServiceDTO commonServiceDTO){
-		commonServiceDTO.setPwTotalCount(allMothers.allOpenMothers().size());
+		commonServiceDTO.setPwTotalCount(allMothers.countMothers());
 		int[] countsForChart = new int[23];
 		countsForChart = this.getMotherCountInformationForHomePage();
 		commonServiceDTO.setPwThisMonthCount(countsForChart[15] + countsForChart[16] + countsForChart[17] + countsForChart[18] + countsForChart[19]);//(luceneMotherService.getMotherCount(startMonth, endMonth));
@@ -332,220 +333,27 @@ public class DataCountService {
 	    
 	    String week4End= new SimpleDateFormat("yyyy-MM-dd").format(c.getTime());
 	    System.out.println("week4End: " + week4End);
-		
-	    /*System.out.println("Total "+luceneFormService.getFormCount("","",provider,formName));
-		System.out.println("ThisMonth "+luceneFormService.getFormCount(week1Start, week4End, provider, formName));
-		System.out.println("Week1 "+luceneFormService.getFormCount(week1Start, week1End, provider, formName));	
-		System.out.println("Week2 "+luceneFormService.getFormCount(week2Start, week2End, provider, formName));	
-		System.out.println("Week3 "+luceneFormService.getFormCount(week3Start, week3End, provider, formName));	
-		System.out.println("Week4 "+luceneFormService.getFormCount(week4Start, week4End, provider, formName));*/	
-		
-		formCountDTO.setHouseholdTotalCount(luceneFormService.getFormCount("","",provider,"new_household_registration")); 
-		formCountDTO.setHouseholdThisMonthCount(luceneFormService.getFormCount(week1Start, week4End, provider, "new_household_registration"));
-		formCountDTO.setHouseholdWeek1Count(luceneFormService.getFormCount(week1Start, week1End, provider, "new_household_registration"));
-		formCountDTO.setHouseholdWeek2Count(luceneFormService.getFormCount(week2Start, week2End, provider, "new_household_registration"));
-		formCountDTO.setHouseholdWeek3Count(luceneFormService.getFormCount(week3Start, week3End, provider, "new_household_registration"));
-		formCountDTO.setHouseholdWeek4Count(luceneFormService.getFormCount(week4Start, week4End, provider, "new_household_registration"));
-		
-		formCountDTO.setPsrfTotalCount(luceneFormService.getFormCount("","",provider, "psrf_form")); 
-		formCountDTO.setPsrfThisMonthCount(luceneFormService.getFormCount(week1Start, week4End, provider, "psrf_form"));
-		formCountDTO.setPsrfWeek1Count(luceneFormService.getFormCount(week1Start, week1End, provider, "psrf_form"));
-		formCountDTO.setPsrfWeek2Count(luceneFormService.getFormCount(week2Start, week2End, provider, "psrf_form"));
-		formCountDTO.setPsrfWeek3Count(luceneFormService.getFormCount(week3Start, week3End, provider, "psrf_form"));
-		formCountDTO.setPsrfWeek4Count(luceneFormService.getFormCount(week4Start, week4End, provider, "psrf_form"));
-		
-		formCountDTO.setCensusTotalCount(luceneFormService.getFormCount("","",provider, "census_enrollment_form")); 
-		formCountDTO.setCensusThisMonthCount(luceneFormService.getFormCount(week1Start, week4End, provider, "census_enrollment_form"));
-		formCountDTO.setCensusWeek1Count(luceneFormService.getFormCount(week1Start, week1End, provider, "census_enrollment_form"));
-		formCountDTO.setCensusWeek2Count(luceneFormService.getFormCount(week2Start, week2End, provider, "census_enrollment_form"));
-		formCountDTO.setCensusWeek3Count(luceneFormService.getFormCount(week3Start, week3End, provider, "census_enrollment_form"));
-		formCountDTO.setCensusWeek4Count(luceneFormService.getFormCount(week4Start, week4End, provider, "census_enrollment_form"));
-		
-		
-		int anc1TotalCount = luceneFormService.getFormCount("","",provider, "anc_reminder_visit_1"); 
-		int anc1ThisMonthCount = luceneFormService.getFormCount(week1Start, week4End, provider, "anc_reminder_visit_1");
-		int anc1Week1Count = luceneFormService.getFormCount(week1Start, week1End, provider, "anc_reminder_visit_1");
-		int anc1Week2Count = luceneFormService.getFormCount(week2Start, week2End, provider, "anc_reminder_visit_1");
-		int anc1Week3Count = luceneFormService.getFormCount(week3Start, week3End, provider, "anc_reminder_visit_1");
-		int anc1Week4Count = luceneFormService.getFormCount(week4Start, week4End, provider, "anc_reminder_visit_1");
-		
-		int anc2TotalCount = luceneFormService.getFormCount("","",provider, "anc_reminder_visit_2"); 
-		int anc2ThisMonthCount = luceneFormService.getFormCount(week1Start, week4End, provider, "anc_reminder_visit_2");
-		int anc2Week1Count = luceneFormService.getFormCount(week1Start, week1End, provider, "anc_reminder_visit_2");
-		int anc2Week2Count = luceneFormService.getFormCount(week2Start, week2End, provider, "anc_reminder_visit_2");
-		int anc2Week3Count = luceneFormService.getFormCount(week3Start, week3End, provider, "anc_reminder_visit_2");
-		int anc2Week4Count = luceneFormService.getFormCount(week4Start, week4End, provider, "anc_reminder_visit_2");
-		
-		int anc3TotalCount = luceneFormService.getFormCount("","",provider, "anc_reminder_visit_3"); 
-		int anc3ThisMonthCount = luceneFormService.getFormCount(week1Start, week4End, provider, "anc_reminder_visit_3");
-		int anc3Week1Count = luceneFormService.getFormCount(week1Start, week1End, provider, "anc_reminder_visit_3");
-		int anc3Week2Count = luceneFormService.getFormCount(week2Start, week2End, provider, "anc_reminder_visit_3");
-		int anc3Week3Count = luceneFormService.getFormCount(week3Start, week3End, provider, "anc_reminder_visit_3");
-		int anc3Week4Count = luceneFormService.getFormCount(week4Start, week4End, provider, "anc_reminder_visit_3");
-		
-		int anc4TotalCount = luceneFormService.getFormCount("","",provider, "anc_reminder_visit_4"); 
-		int anc4ThisMonthCount = luceneFormService.getFormCount(week1Start, week4End, provider, "anc_reminder_visit_4");
-		int anc4Week1Count = luceneFormService.getFormCount(week1Start, week1End, provider, "anc_reminder_visit_4");
-		int anc4Week2Count = luceneFormService.getFormCount(week2Start, week2End, provider, "anc_reminder_visit_4");
-		int anc4Week3Count = luceneFormService.getFormCount(week3Start, week3End, provider, "anc_reminder_visit_4");
-		int anc4Week4Count = luceneFormService.getFormCount(week4Start, week4End, provider, "anc_reminder_visit_4");
-		
-		int ancTotalCount = anc1TotalCount + anc2TotalCount + anc3TotalCount + anc4TotalCount;
-		int ancThisMonthCount = anc1ThisMonthCount + anc2ThisMonthCount + anc3ThisMonthCount + anc4ThisMonthCount;
-		int ancWeek1Count = anc1Week1Count + anc2Week1Count + anc3Week1Count + anc4Week1Count;
-		int ancWeek2Count = anc1Week2Count + anc2Week2Count + anc3Week2Count + anc4Week2Count;
-		int ancWeek3Count = anc1Week3Count + anc2Week3Count + anc3Week3Count + anc4Week3Count;
-		int ancWeek4Count = anc1Week4Count + anc2Week4Count + anc3Week4Count + anc4Week4Count;
-		
-		formCountDTO.setAncTotalCount(ancTotalCount); 
-		formCountDTO.setAncThisMonthCount(ancThisMonthCount);
-		formCountDTO.setAncWeek1Count(ancWeek1Count);
-		formCountDTO.setAncWeek2Count(ancWeek2Count);
-		formCountDTO.setAncWeek3Count(ancWeek3Count);
-		formCountDTO.setAncWeek4Count(ancWeek4Count);
-		
-		
-		int pnc1TotalCount = luceneFormService.getFormCount("","",provider, "pnc_reminder_visit_1"); 
-		int pnc1ThisMonthCount = luceneFormService.getFormCount(week1Start, week4End, provider, "pnc_reminder_visit_1");
-		int pnc1Week1Count = luceneFormService.getFormCount(week1Start, week1End, provider, "pnc_reminder_visit_1");
-		int pnc1Week2Count = luceneFormService.getFormCount(week2Start, week2End, provider, "pnc_reminder_visit_1");
-		int pnc1Week3Count = luceneFormService.getFormCount(week3Start, week3End, provider, "pnc_reminder_visit_1");
-		int pnc1Week4Count = luceneFormService.getFormCount(week4Start, week4End, provider, "pnc_reminder_visit_1");
-		
-		int pnc2TotalCount = luceneFormService.getFormCount("","",provider, "pnc_reminder_visit_2"); 
-		int pnc2ThisMonthCount = luceneFormService.getFormCount(week1Start, week4End, provider, "pnc_reminder_visit_2");
-		int pnc2Week1Count = luceneFormService.getFormCount(week1Start, week1End, provider, "pnc_reminder_visit_2");
-		int pnc2Week2Count = luceneFormService.getFormCount(week2Start, week2End, provider, "pnc_reminder_visit_2");
-		int pnc2Week3Count = luceneFormService.getFormCount(week3Start, week3End, provider, "pnc_reminder_visit_2");
-		int pnc2Week4Count = luceneFormService.getFormCount(week4Start, week4End, provider, "pnc_reminder_visit_2");
-		
-		int pnc3TotalCount = luceneFormService.getFormCount("","",provider, "pnc_reminder_visit_3"); 
-		int pnc3ThisMonthCount = luceneFormService.getFormCount(week1Start, week4End, provider, "pnc_reminder_visit_3");
-		int pnc3Week1Count = luceneFormService.getFormCount(week1Start, week1End, provider, "pnc_reminder_visit_3");
-		int pnc3Week2Count = luceneFormService.getFormCount(week2Start, week2End, provider, "pnc_reminder_visit_3");
-		int pnc3Week3Count = luceneFormService.getFormCount(week3Start, week3End, provider, "pnc_reminder_visit_3");
-		int pnc3Week4Count = luceneFormService.getFormCount(week4Start, week4End, provider, "pnc_reminder_visit_3");
-		
-		int pncTotalCount = pnc1TotalCount + pnc2TotalCount + pnc3TotalCount ;
-		int pncThisMonthCount = pnc1ThisMonthCount + pnc2ThisMonthCount + pnc3ThisMonthCount ;
-		int pncWeek1Count = pnc1Week1Count + pnc2Week1Count + pnc3Week1Count ;
-		int pncWeek2Count = pnc1Week2Count + pnc2Week2Count + pnc3Week2Count ;
-		int pncWeek3Count = pnc1Week3Count + pnc2Week3Count + pnc3Week3Count ;
-		int pncWeek4Count = pnc1Week4Count + pnc2Week4Count + pnc3Week4Count ;
-		
-		formCountDTO.setPncTotalCount(pncTotalCount); 
-		formCountDTO.setPncThisMonthCount(pncThisMonthCount);
-		formCountDTO.setPncWeek1Count(pncWeek1Count);
-		formCountDTO.setPncWeek2Count(pncWeek2Count);
-		formCountDTO.setPncWeek3Count(pncWeek3Count);
-		formCountDTO.setPncWeek4Count(pncWeek4Count);
-		
-		
-		int encc1TotalCount = luceneFormService.getFormCount("","",provider, "encc_visit_1"); 
-		int encc1ThisMonthCount = luceneFormService.getFormCount(week1Start, week4End, provider, "encc_visit_1");
-		int encc1Week1Count = luceneFormService.getFormCount(week1Start, week1End, provider, "encc_visit_1");
-		int encc1Week2Count = luceneFormService.getFormCount(week2Start, week2End, provider, "encc_visit_1");
-		int encc1Week3Count = luceneFormService.getFormCount(week3Start, week3End, provider, "encc_visit_1");
-		int encc1Week4Count = luceneFormService.getFormCount(week4Start, week4End, provider, "encc_visit_1");
-		
-		int encc2TotalCount = luceneFormService.getFormCount("","",provider, "encc_visit_2"); 
-		int encc2ThisMonthCount = luceneFormService.getFormCount(week1Start, week4End, provider, "encc_visit_2");
-		int encc2Week1Count = luceneFormService.getFormCount(week1Start, week1End, provider, "encc_visit_2");
-		int encc2Week2Count = luceneFormService.getFormCount(week2Start, week2End, provider, "encc_visit_2");
-		int encc2Week3Count = luceneFormService.getFormCount(week3Start, week3End, provider, "encc_visit_2");
-		int encc2Week4Count = luceneFormService.getFormCount(week4Start, week4End, provider, "encc_visit_2");
-		
-		int encc3TotalCount = luceneFormService.getFormCount("","",provider, "encc_visit_3"); 
-		int encc3ThisMonthCount = luceneFormService.getFormCount(week1Start, week4End, provider, "encc_visit_3");
-		int encc3Week1Count = luceneFormService.getFormCount(week1Start, week1End, provider, "encc_visit_3");
-		int encc3Week2Count = luceneFormService.getFormCount(week2Start, week2End, provider, "encc_visit_3");
-		int encc3Week3Count = luceneFormService.getFormCount(week3Start, week3End, provider, "encc_visit_3");
-		int encc3Week4Count = luceneFormService.getFormCount(week4Start, week4End, provider, "encc_visit_3");
-		
-		int enccTotalCount = encc1TotalCount + encc2TotalCount + encc3TotalCount ;
-		int enccThisMonthCount = encc1ThisMonthCount + encc2ThisMonthCount + encc3ThisMonthCount ;
-		int enccWeek1Count = encc1Week1Count + encc2Week1Count + encc3Week1Count ;
-		int enccWeek2Count = encc1Week2Count + encc2Week2Count + encc3Week2Count ;
-		int enccWeek3Count = encc1Week3Count + encc2Week3Count + encc3Week3Count ;
-		int enccWeek4Count = encc1Week4Count + encc2Week4Count + encc3Week4Count ;
-		
-		formCountDTO.setEnccTotalCount(enccTotalCount); 
-		formCountDTO.setEnccThisMonthCount(enccThisMonthCount);
-		formCountDTO.setEnccWeek1Count(enccWeek1Count);
-		formCountDTO.setEnccWeek2Count(enccWeek2Count);
-		formCountDTO.setEnccWeek3Count(enccWeek3Count);
-		formCountDTO.setEnccWeek4Count(enccWeek4Count);
-		
-		formCountDTO.setPregnancyTotalCount(luceneMotherService.getMotherCount(provider));
-		formCountDTO.setPregnancyThisMonthCount(luceneMotherService.getMotherCount(week1Start, week4End, provider));
-		formCountDTO.setPregnancyWeek1Count(luceneMotherService.getMotherCount(week1Start, week1End, provider));
-		formCountDTO.setPregnancyWeek2Count(luceneMotherService.getMotherCount(week2Start, week2End, provider));
-		formCountDTO.setPregnancyWeek3Count(luceneMotherService.getMotherCount(week3Start, week3End, provider));
-		formCountDTO.setPregnancyWeek4Count(luceneMotherService.getMotherCount(week4Start, week4End, provider));		
+
 	    
-	    /*formCountDTO.setHouseholdTotalCount(luceneFormService.getFormCount("","",provider,formName)); 
-		formCountDTO.setHouseholdThisMonthCount(luceneFormService.getFormCount("2016-11-01", "2016-11-30", provider, formName));
-		formCountDTO.setHouseholdWeek1Count(luceneFormService.getFormCount("2016-11-01", "2016-11-07", provider, formName));
-		formCountDTO.setHouseholdWeek2Count(luceneFormService.getFormCount("2016-11-08", "2016-11-14", provider, formName));
-		formCountDTO.setHouseholdWeek3Count(luceneFormService.getFormCount("2016-11-15", "2016-11-21", provider, formName));
-		formCountDTO.setHouseholdWeek4Count(luceneFormService.getFormCount("2016-11-22", "2016-11-30", provider, formName));*/
-
-		int schedulePSRFTotalCount = luceneScheduleService.getSchedulCount("","",provider, "ELCO PSRF"); 
-		int schedulePSRFThisMonthCount = luceneScheduleService.getSchedulCount(week1Start, week4End, provider, "ELCO PSRF");
-		int schedulePSRFWeek1Count = luceneScheduleService.getSchedulCount(week1Start, week1End, provider, "ELCO PSRF");
-		int schedulePSRFWeek2Count = luceneScheduleService.getSchedulCount(week2Start, week2End, provider, "ELCO PSRF");
-		int schedulePSRFWeek3Count = luceneScheduleService.getSchedulCount(week3Start, week3End, provider, "ELCO PSRF");
-		int schedulePSRFWeek4Count = luceneScheduleService.getSchedulCount(week4Start, week4End, provider, "ELCO PSRF");
-				
-		int scheduleANCTotalCount = luceneScheduleService.getSchedulCount("","",provider, "Ante Natal Care Reminder Visit"); 
-		int scheduleANCThisMonthCount = luceneScheduleService.getSchedulCount(week1Start, week4End, provider, "Ante Natal Care Reminder Visit");
-		int scheduleANCWeek1Count = luceneScheduleService.getSchedulCount(week1Start, week1End, provider, "Ante Natal Care Reminder Visit");
-		int scheduleANCWeek2Count = luceneScheduleService.getSchedulCount(week2Start, week2End, provider, "Ante Natal Care Reminder Visit");
-		int scheduleANCWeek3Count = luceneScheduleService.getSchedulCount(week3Start, week3End, provider, "Ante Natal Care Reminder Visit");
-		int scheduleANCWeek4Count = luceneScheduleService.getSchedulCount(week4Start, week4End, provider, "Ante Natal Care Reminder Visit");
+	    System.out.println("Before: "+System.currentTimeMillis());
+	    int hhViewResult = allHouseHolds.countHouseHolds();
+		System.out.println("ThisMonth "+ hhViewResult);
+		System.out.println("After: "+System.currentTimeMillis());
 		
-		int schedulePNCTotalCount = luceneScheduleService.getSchedulCount("","",provider, "Post Natal Care Reminder Visit"); 
-		int schedulePNCThisMonthCount = luceneScheduleService.getSchedulCount(week1Start, week4End, provider, "Post Natal Care Reminder Visit");
-		int schedulePNCWeek1Count = luceneScheduleService.getSchedulCount(week1Start, week1End, provider, "Post Natal Care Reminder Visit");
-		int schedulePNCWeek2Count = luceneScheduleService.getSchedulCount(week2Start, week2End, provider, "Post Natal Care Reminder Visit");
-		int schedulePNCWeek3Count = luceneScheduleService.getSchedulCount(week3Start, week3End, provider, "Post Natal Care Reminder Visit");
-		int schedulePNCWeek4Count = luceneScheduleService.getSchedulCount(week4Start, week4End, provider, "Post Natal Care Reminder Visit");
+		System.out.println("Before: "+System.currentTimeMillis());
+	    int elcoViewResult = allElcos.countElcos();
+		System.out.println("ThisMonth "+ elcoViewResult);
+		System.out.println("After: "+System.currentTimeMillis());
 		
-		int scheduleENCCTotalCount = luceneScheduleService.getSchedulCount("","",provider, "Essential Newborn Care Checklist"); 
-		int scheduleENCCThisMonthCount = luceneScheduleService.getSchedulCount(week1Start, week4End, provider, "Essential Newborn Care Checklist");
-		int scheduleENCCWeek1Count = luceneScheduleService.getSchedulCount(week1Start, week1End, provider, "Essential Newborn Care Checklist");
-		int scheduleENCCWeek2Count = luceneScheduleService.getSchedulCount(week2Start, week2End, provider, "Essential Newborn Care Checklist");
-		int scheduleENCCWeek3Count = luceneScheduleService.getSchedulCount(week3Start, week3End, provider, "Essential Newborn Care Checklist");
-		int scheduleENCCWeek4Count = luceneScheduleService.getSchedulCount(week4Start, week4End, provider, "Essential Newborn Care Checklist");
+		System.out.println("Before: "+System.currentTimeMillis());
+	    int motViewResult = allMothers.countMothers();
+		System.out.println("ThisMonth "+ motViewResult);
+		System.out.println("After: "+System.currentTimeMillis());
 		
-		System.out.println("Total PSRF "+schedulePSRFTotalCount);
-		System.out.println("ThisMonth "+schedulePSRFThisMonthCount);
-		System.out.println("Week1 "+schedulePSRFWeek1Count);	
-		System.out.println("Week2 "+schedulePSRFWeek2Count);	
-		System.out.println("Week3 "+schedulePSRFWeek3Count);	
-		System.out.println("Week4 "+schedulePSRFWeek4Count);
-		
-		System.out.println("Total ANC "+scheduleANCTotalCount);
-		System.out.println("ThisMonth "+scheduleANCThisMonthCount);
-		System.out.println("Week1 "+scheduleANCWeek1Count);	
-		System.out.println("Week2 "+scheduleANCWeek2Count);	
-		System.out.println("Week3 "+scheduleANCWeek3Count);	
-		System.out.println("Week4 "+scheduleANCWeek4Count);
-		
-		System.out.println("Total PNC "+schedulePNCTotalCount);
-		System.out.println("ThisMonth "+schedulePNCThisMonthCount);
-		System.out.println("Week1 "+schedulePNCWeek1Count);	
-		System.out.println("Week2 "+schedulePNCWeek2Count);	
-		System.out.println("Week3 "+schedulePNCWeek3Count);	
-		System.out.println("Week4 "+schedulePNCWeek4Count);
-
-		System.out.println("Total ENCC "+scheduleENCCTotalCount);
-		System.out.println("ThisMonth "+scheduleENCCThisMonthCount);
-		System.out.println("Week1 "+scheduleENCCWeek1Count);	
-		System.out.println("Week2 "+scheduleENCCWeek2Count);	
-		System.out.println("Week3 "+scheduleENCCWeek3Count);	
-		System.out.println("Week4 "+scheduleENCCWeek4Count);		
-		
+		System.out.println("Before: "+System.currentTimeMillis());
+		System.out.println("ThisMonth "+luceneHouseHoldService.getHouseHoldCount("2016-11-10", "2016-11-20", provider));
+		System.out.println("After: "+System.currentTimeMillis());
+	    
 		return formCountDTO;
 	}
 

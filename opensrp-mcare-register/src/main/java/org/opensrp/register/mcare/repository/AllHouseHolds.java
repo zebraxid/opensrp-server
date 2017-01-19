@@ -168,4 +168,11 @@ public class AllHouseHolds extends MotechBaseRepository<HouseHold> {
 		//System.out.println(hhs.toString());	
 		return hhs;
 	}
+	
+	// map reduce query
+    @View(name = "householdCount", map = "function(doc) { if (doc.type === 'HouseHold') { emit(doc.id); } }",reduce="_count")
+    public int countHouseHolds() {
+        System.out.println("HouseHold time start:"+System.currentTimeMillis());
+        return db.queryView(createQuery("householdCount")).getRows().get(0).getValueAsInt();
+    }
 }

@@ -4,8 +4,16 @@
 
 package org.opensrp.rest.repository;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import org.codehaus.jackson.map.ObjectMapper;
+import org.json.JSONObject;
 import org.opensrp.common.AllConstants;
 import org.opensrp.register.mcare.domain.HouseHold;
+import org.opensrp.scheduler.ScheduleLog;
 import org.opensrp.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +26,7 @@ import com.github.ldriscoll.ektorplucene.CouchDbRepositorySupportWithLucene;
 import com.github.ldriscoll.ektorplucene.LuceneAwareCouchDbConnector;
 import com.github.ldriscoll.ektorplucene.LuceneQuery;
 import com.github.ldriscoll.ektorplucene.LuceneResult;
+import com.github.ldriscoll.ektorplucene.LuceneResult.Row;
 import com.github.ldriscoll.ektorplucene.designdocument.LuceneDesignDocument;
 import com.github.ldriscoll.ektorplucene.designdocument.annotation.FullText;
 import com.github.ldriscoll.ektorplucene.designdocument.annotation.Index;
@@ -42,8 +51,12 @@ import com.github.ldriscoll.ektorplucene.designdocument.annotation.Index;
 	    		" doc.add(rec.SUBMISSIONDATE,{\"field\":\"SUBMISSIONDATE\", \"store\":\"yes\"});" + 
 	    		" doc.add(rec.type,{\"field\":\"type\", \"store\":\"yes\"});" + 
 	    		" return doc;" +
-	    		"}")
+	    		"}"),
+	@Index(
+        name = "by_all_criteria",
+        index = "function (doc) { if(doc.type !== 'HouseHold') return null;  var docl = new Array(); var ret = new Document(); if(doc.type){    var led = doc.type;    ret.add(led, {'field' : 'type'}); } docl.push(ret); return docl; }")
 })
+
 @Repository
 public class LuceneHouseHoldRepository extends CouchDbRepositorySupportWithLucene<HouseHold> {
 	private static Logger logger = LoggerFactory.getLogger(LuceneHouseHoldRepository.class);
@@ -63,5 +76,60 @@ public class LuceneHouseHoldRepository extends CouchDbRepositorySupportWithLucen
         logger.info("inside luceneHouseholdRepository.");
         return db.queryLucene(query); 
     } 
+	 
+	 public LuceneResult getByCriteria(long start,long end,String anmIdentifier) {
+			// create a simple query against the view/search function that we've created
+			
+			Query qf = new Query(FilterType.AND);
+			
+			/*if(start!=0 && end!=0){
+				qf.betwen("SUBMISSIONDATE", start, end);
+			}
+			
+			if(anmIdentifier!= null && !anmIdentifier.isEmpty() && !anmIdentifier.equalsIgnoreCase("")){
+				qf.eq("PROVIDERID", anmIdentifier);
+			}*/
+			
+			if(anmIdentifier!= null && !anmIdentifier.isEmpty() && !anmIdentifier.equalsIgnoreCase("")){
+				qf.eq("type", "HouseHold");
+			}
+
+			if(qf.query() == null || qf.query().isEmpty()){
+				throw new RuntimeException("Atleast one search filter must be specified");
+			}
+				
+			/*LuceneDesignDocument designDoc = db.get(LuceneDesignDocument.class, stdDesignDocumentId);
+	        LuceneQuery query = new LuceneQuery(designDoc.getId(), "by_all_criteria");*/ 
+			
+			LuceneQuery query = new LuceneQuery("HouseHold", "by_all_criteria");
+			
+			System.out.println("Query: "+qf.query());
+			
+	        query.setQuery(qf.query()); 
+	        query.setStaleOk(false); 
+	        query.setIncludeDocs(true);
+	       
+	        LuceneResult result = db.queryLucene(query);
+	        List<HouseHold> ol = new ArrayList<>();
+			for (Row r : result.getRows()) {
+				HashMap<String, Object> doc = r.getDoc();
+				//System.out.println("Lucene HH doc: "+doc);
+				HouseHold ro = null;
+				try {
+					ro = new ObjectMapper().readValue(new JSONObject(doc).toString(), type);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				//System.out.println("Lucene HH Object: "+ro.getELCODetail("FWWOMFNAME"));
+				
+				ol.add(ro);
+			}
+			
+			//System.out.println("LuceneResult: "+ol);
+		        
+	        return result; 
+		}
 
 }

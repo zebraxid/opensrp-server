@@ -176,6 +176,10 @@ public class ScheduleLog extends MotechBaseDataObject  {
     public Map<String, String> details() {
         return details;
     }
+    
+    public String getDetail(String name) {
+		return details.get(name);
+	}
 
     public String getCaseID() {
         return caseID;
