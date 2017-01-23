@@ -82,7 +82,7 @@ public class LuceneScheduleRepository extends CouchDbRepositorySupportWithLucene
         return result; 
     } 
 	
-	public LuceneResult getByCriteria(long start,long end,String anmIdentifier,String scheduleName) {
+	public LuceneResult getByCrite(long start,long end,String anmIdentifier,String scheduleName) {
 		// create a simple query against the view/search function that we've created
 		
 		Query qf = new Query(FilterType.AND);
@@ -108,16 +108,65 @@ public class LuceneScheduleRepository extends CouchDbRepositorySupportWithLucene
 		
 		LuceneQuery query = new LuceneQuery("ScheduleLog", "by_all_criteria");
 		
-		System.out.println("Query: "+qf.query());
+		//System.out.println("Query: "+qf.query());
 		
         query.setQuery(qf.query()); 
         query.setStaleOk(false); 
         query.setIncludeDocs(true);
         
-        int count = 0;
-        
         LuceneResult result = db.queryLucene(query);
         List<ScheduleLog> ol = new ArrayList<>();
+		for (Row r : result.getRows()) {
+			HashMap<String, Object> doc = r.getDoc();			
+			ScheduleLog ro = null;
+			try {
+				ro = new ObjectMapper().readValue(new JSONObject(doc).toString(), type);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}						
+			ol.add(ro);
+		}	        
+        return result; 
+	}
+	
+	public int getByCriteria(long start,long end,String anmIdentifier,String scheduleName) {
+		// create a simple query against the view/search function that we've created
+		
+		Query qf = new Query(FilterType.AND);
+		
+		if(start!=0 && end!=0){
+			qf.betwen("timeStamp", start, end);
+		}
+		
+		if(anmIdentifier!= null && !anmIdentifier.isEmpty() && !anmIdentifier.equalsIgnoreCase("")){
+			qf.eq("anmIdentifier", anmIdentifier);
+		}
+		
+		if(scheduleName!= null && !scheduleName.isEmpty() && !scheduleName.equalsIgnoreCase("")){
+			qf.eq("scheduleName", scheduleName);
+		}
+		
+		if(qf.query() == null || qf.query().isEmpty()){
+			throw new RuntimeException("Atleast one search filter must be specified");
+		}
+			
+		/*LuceneDesignDocument designDoc = db.get(LuceneDesignDocument.class, stdDesignDocumentId);
+        LuceneQuery query = new LuceneQuery(designDoc.getId(), "by_all_criteria");*/ 
+		
+		LuceneQuery query = new LuceneQuery("ScheduleLog", "by_all_criteria");
+		
+		//System.out.println("Query: "+qf.query());
+		
+        query.setQuery(qf.query()); 
+        query.setStaleOk(false); 
+        query.setIncludeDocs(true);
+        
+        LuceneResult result = db.queryLucene(query);
+        Set<String> tenp = new HashSet<String>();
+        List<String> ninp = new ArrayList<String>();
+        int count = 0;
+        
 		for (Row r : result.getRows()) {
 			HashMap<String, Object> doc = r.getDoc();
 			
@@ -127,20 +176,18 @@ public class LuceneScheduleRepository extends CouchDbRepositorySupportWithLucene
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+			}			
+
+			for (int i=0; i < ro.data().size(); i++){	
+				//System.out.println("Lucene Object: "+ro.data().toString());
+				//System.out.println("Lucene visitCode: "+ro.data().get(i).toString());
+				ninp.add(ro.data().get(i).get("visitCode"));
 			}
-			//System.out.println("Lucene Object: "+ro.getDetail("visitCode"));
-			
-			Set<String> tenp = null;
-			for (int i=0; i < ro.data().size(); i++){				
-				tenp.add(ro.data().get(i).get("visitCode"));
-			}
-			//Set uniqueValues = new HashSet(tenp);
+			//System.out.println("VisitCode: "+ninp.toString());
+			tenp.addAll(ninp);
+			//System.out.println("Lucene count: "+tenp.size());
 			count+=tenp.size();
-			ol.add(ro);
-		}
-		System.out.println("Lucene count: "+count);
-		//System.out.println("LuceneResult: "+ol);
-	        
-        return result; 
+		}	        
+        return count; 
 	}
 }

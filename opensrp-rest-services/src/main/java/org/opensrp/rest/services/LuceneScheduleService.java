@@ -38,13 +38,21 @@ public class LuceneScheduleService {
 	}
 	
 	public int getSchedulCount(String start,String end,String anmId,String scheduleName){	
-		if(start!= null && !start.isEmpty() && !start.equalsIgnoreCase("") && end!= null && !end.isEmpty() && !end.equalsIgnoreCase("")){
-			LuceneResult result = luceneScheduleRepository.getByCriteria(convertDateStringToTimestampMills.convertDateToTimestampMills(start),convertDateStringToTimestampMills.convertDateToTimestampMills(end),anmId,scheduleName);
+		if(scheduleName.equalsIgnoreCase("ELCO PSRF") && start!= null && !start.isEmpty() && !start.equalsIgnoreCase("") && end!= null && !end.isEmpty() && !end.equalsIgnoreCase("")){
+			LuceneResult result = luceneScheduleRepository.getByCrite(convertDateStringToTimestampMills.convertDateToTimestampMills(start),convertDateStringToTimestampMills.convertDateToTimestampMills(end),anmId,scheduleName);
 			return result.getRows().size();	
 		}
-		else{
-			LuceneResult result = luceneScheduleRepository.getByCriteria(0,0,anmId,scheduleName);
+		else if (scheduleName.equalsIgnoreCase("ELCO PSRF")){
+			LuceneResult result = luceneScheduleRepository.getByCrite(0,0,anmId,scheduleName);
 			return result.getRows().size();	
+		}
+		else if(start!= null && !start.isEmpty() && !start.equalsIgnoreCase("") && end!= null && !end.isEmpty() && !end.equalsIgnoreCase("")){
+			int count = luceneScheduleRepository.getByCriteria(convertDateStringToTimestampMills.convertDateToTimestampMills(start),convertDateStringToTimestampMills.convertDateToTimestampMills(end),anmId,scheduleName);
+			return count;	
+		}
+		else {
+			int count = luceneScheduleRepository.getByCriteria(0,0,anmId,scheduleName);
+			return count;	
 		}
 	}
 

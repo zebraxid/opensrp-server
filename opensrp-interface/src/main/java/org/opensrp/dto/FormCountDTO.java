@@ -90,6 +90,20 @@ public class FormCountDTO {
 	private int pregnancyWeek3Count;
 	@JsonProperty
 	private int pregnancyWeek4Count;
+	@JsonProperty
+	private int familyPlanning;
+	@JsonProperty
+	private int newborn;	
+	@JsonProperty
+	private int liveBirth;
+	@JsonProperty
+	private int stillBirth;
+	@JsonProperty
+	private int miscarriage;
+	@JsonProperty
+	private int mortalityAtBirth;
+	@JsonProperty
+	private int mortalityAtDelivery;
 
 	public FormCountDTO(){
 		
@@ -109,7 +123,9 @@ public class FormCountDTO {
 			int enccThisMonthCount, int enccWeek1Count, int enccWeek2Count, 
 			int enccWeek3Count, int enccWeek4Count, int pregnancyTotalCount, 
 			int pregnancyThisMonthCount, int pregnancyWeek1Count, int pregnancyWeek2Count, 
-			int pregnancyWeek3Count, int pregnancyWeek4Count) {
+			int pregnancyWeek3Count, int pregnancyWeek4Count, int familyPlanning, 
+			int newborn, int liveBirth, int stillBirth, int miscarriage,
+			int mortalityAtBirth, int mortalityAtDelivery) {
 		super();
 		this.householdTotalCount = householdTotalCount;
 		this.householdWeek2Count = householdWeek2Count;
@@ -152,7 +168,14 @@ public class FormCountDTO {
 		this.pregnancyWeek2Count = pregnancyWeek2Count;
 		this.pregnancyWeek1Count = pregnancyWeek1Count;
 		this.pregnancyWeek4Count = pregnancyWeek4Count;
-		this.pregnancyWeek3Count = pregnancyWeek3Count;	
+		this.pregnancyWeek3Count = pregnancyWeek3Count;
+		this.familyPlanning = familyPlanning;
+		this.newborn = newborn;
+		this.stillBirth = stillBirth;
+		this.liveBirth = liveBirth;
+		this.miscarriage = miscarriage;
+		this.mortalityAtDelivery = mortalityAtDelivery;
+		this.mortalityAtBirth = mortalityAtBirth;
 	}
 	
 	public int getHouseholdTotalCount() {
@@ -489,6 +512,62 @@ public class FormCountDTO {
 	
 	public void setPregnancyWeek3Count(int pregnancyWeek3Count) {
 		this.pregnancyWeek3Count = pregnancyWeek3Count;
+	}
+	
+	public int getFamilyPlanning() {
+		return familyPlanning;
+	}
+
+	public void setFamilyPlanning(int familyPlanning) {
+		this.familyPlanning = familyPlanning;
+	}
+
+	public int getNewborn() {
+		return newborn;
+	}
+
+	public void setNewborn(int newborn) {
+		this.newborn = newborn;
+	}
+	
+	public int getStillBirth() {
+		return stillBirth;
+	}
+	
+	public void setStillBirth(int stillBirth) {
+		this.stillBirth = stillBirth;
+	}
+	
+	public int getLiveBirth() {
+		return liveBirth;
+	}
+	
+	public void setLiveBirth(int liveBirth) {
+		this.liveBirth = liveBirth;
+	}
+	
+	public int getmiscarriage() {
+		return miscarriage;
+	}
+
+	public void setmiscarriage(int miscarriage) {
+		this.miscarriage = miscarriage;
+	}
+	
+	public int getMortalityAtDelivery() {
+		return mortalityAtDelivery;
+	}
+	
+	public void setMortalityAtDelivery(int mortalityAtDelivery) {
+		this.mortalityAtDelivery = mortalityAtDelivery;
+	}
+	
+	public int getMortalityAtBirth() {
+		return mortalityAtBirth;
+	}
+	
+	public void setMortalityAtBirth(int mortalityAtBirth) {
+		this.mortalityAtBirth = mortalityAtBirth;
 	}
 	
 	@Override

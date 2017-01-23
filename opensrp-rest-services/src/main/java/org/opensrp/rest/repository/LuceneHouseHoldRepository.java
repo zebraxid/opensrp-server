@@ -49,12 +49,13 @@ import com.github.ldriscoll.ektorplucene.designdocument.annotation.Index;
 	    		" doc.add(rec.PROVIDERID,{\"field\":\"PROVIDERID\", \"store\":\"yes\"});" + 
 	    		" doc.add(rec.FWUPAZILLA,{\"field\":\"FWUPAZILLA\", \"store\":\"yes\"});" + 
 	    		" doc.add(rec.SUBMISSIONDATE,{\"field\":\"SUBMISSIONDATE\", \"store\":\"yes\"});" + 
+	    		" doc.add(JSON.stringify(rec.ELCODETAILS),{\"field\":\"ELCODETAILS\", \"store\":\"yes\"});" +
 	    		" doc.add(rec.type,{\"field\":\"type\", \"store\":\"yes\"});" + 
 	    		" return doc;" +
 	    		"}"),
 	@Index(
         name = "by_all_criteria",
-        index = "function (doc) { if(doc.type !== 'HouseHold') return null;  var docl = new Array(); var ret = new Document(); if(doc.type){    var led = doc.type;    ret.add(led, {'field' : 'type'}); } docl.push(ret); return docl; }")
+        index = "function (doc) { if(doc.type !== 'HouseHold') return null;  var docl = new Array(); var ret = new Document(); if(doc.PROVIDERID){    var led = doc.PROVIDERID;    ret.add(led, {'field' : 'PROVIDERID'}); } if(doc.SUBMISSIONDATE){    var sed = doc.SUBMISSIONDATE;    ret.add(sed, {'field' : 'SUBMISSIONDATE','type' : 'long'}); } docl.push(ret); return docl; }")
 })
 
 @Repository
@@ -74,7 +75,23 @@ public class LuceneHouseHoldRepository extends CouchDbRepositorySupportWithLucen
         query.setQuery(queryString); 
         query.setStaleOk(false); 
         logger.info("inside luceneHouseholdRepository.");
-        return db.queryLucene(query); 
+        
+        LuceneResult result = db.queryLucene(query);
+        List<HouseHold> ol = new ArrayList<>();
+		for (Row r : result.getRows()) {
+			HashMap<String, Object> doc = r.getDoc();
+			//System.out.println("Lucene HH doc: "+doc);
+			HouseHold ro = null;
+			try {
+				ro = new ObjectMapper().readValue(new JSONObject(doc).toString(), type);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}			
+			//System.out.println("Lucene HH Object: "+ro.getELCODetail("FWWOMFNAME"));			
+			ol.add(ro);
+		}		
+        return result; 
     } 
 	 
 	 public LuceneResult getByCriteria(long start,long end,String anmIdentifier) {
@@ -82,17 +99,17 @@ public class LuceneHouseHoldRepository extends CouchDbRepositorySupportWithLucen
 			
 			Query qf = new Query(FilterType.AND);
 			
-			/*if(start!=0 && end!=0){
+			if(start!=0 && end!=0){
 				qf.betwen("SUBMISSIONDATE", start, end);
 			}
 			
 			if(anmIdentifier!= null && !anmIdentifier.isEmpty() && !anmIdentifier.equalsIgnoreCase("")){
 				qf.eq("PROVIDERID", anmIdentifier);
-			}*/
-			
-			if(anmIdentifier!= null && !anmIdentifier.isEmpty() && !anmIdentifier.equalsIgnoreCase("")){
-				qf.eq("type", "HouseHold");
 			}
+			
+			/*if(anmIdentifier!= null && !anmIdentifier.isEmpty() && !anmIdentifier.equalsIgnoreCase("")){
+				qf.eq("type", "HouseHold");
+			}*/
 
 			if(qf.query() == null || qf.query().isEmpty()){
 				throw new RuntimeException("Atleast one search filter must be specified");

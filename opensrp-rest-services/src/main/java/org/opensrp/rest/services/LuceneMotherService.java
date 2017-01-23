@@ -7,6 +7,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import org.opensrp.rest.repository.LuceneMotherRepository;
 import org.opensrp.rest.util.ConvertDateStringToTimestampMills;
@@ -55,6 +56,11 @@ public class LuceneMotherService {
 	    	LuceneResult result = luceneMotherRepository.findDocsByProvider(makeQueryString);
 			return result.getRows().size();
 		}		
+	}
+	
+	public List<Integer> getBirth(String anmId){
+		List<Integer> result = luceneMotherRepository.getByCriteria(anmId);
+		return result;		
 	}
 	
 	public int getMotherCount(String anmId){
