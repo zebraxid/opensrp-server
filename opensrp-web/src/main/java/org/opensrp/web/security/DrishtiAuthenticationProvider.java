@@ -2,6 +2,7 @@ package org.opensrp.web.security;
 
 import static java.text.MessageFormat.format;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.json.JSONException;
@@ -52,27 +53,30 @@ public class DrishtiAuthenticationProvider implements AuthenticationProvider {
     	String credentials = null;
     	Boolean userExistsInCouch = checkIfDashboardUser(authentication.getName(), (String) authentication.getCredentials());
     	Boolean ifOpenmrsUser = false;
-    	try {        	
-			if (openmrsUserService.authenticate(authentication.getName(), (String) authentication.getCredentials())) {
-				ifOpenmrsUser = true;
+    	
+    	if(userExistsInCouch){
+    		User users = new User();
+        	List<String> list = new ArrayList<>();
+        	list.add("Authenticated");
+        	users.setUsername("sohel");
+        	users.setRoles(list);
+    		return new UsernamePasswordAuthenticationToken(authentication.getName(), "Sohel@123", getRolesAsAuthorities(users));
+    	}else{
+	    	try {        	
+				if (openmrsUserService.authenticate(authentication.getName(), (String) authentication.getCredentials())) {
+					ifOpenmrsUser = true;
+				}
+			} catch (JSONException e) {
+				e.printStackTrace();
 			}
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-    	if(ifOpenmrsUser){
-    		user = getDrishtiUser(authentication);
-			credentials = (String) authentication.getCredentials();
-    	}
-    	else{
-    		if(userExistsInCouch){
-    			user = getDrishtiUserForDashboard();
-        		credentials = "Sohel@123";
-    		}
-    		else{
-    			throw new BadCredentialsException(USER_NOT_FOUND);
-    		}
-    	}    	
-        return new UsernamePasswordAuthenticationToken(authentication.getName(), credentials, getRolesAsAuthorities(user));
+	    	if(ifOpenmrsUser){
+	    		user = getDrishtiUser(authentication);
+				credentials = (String) authentication.getCredentials();
+	    	}else{
+	    		throw new BadCredentialsException(USER_NOT_FOUND);
+	    	}
+	        return new UsernamePasswordAuthenticationToken(authentication.getName(), credentials, getRolesAsAuthorities(user));
+	    }
     }
         
     @Override
