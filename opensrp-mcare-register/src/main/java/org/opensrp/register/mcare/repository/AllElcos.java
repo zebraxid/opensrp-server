@@ -218,4 +218,40 @@ public class AllElcos extends MotechBaseRepository<Elco> {
         System.out.println("Elco ALL time start:"+System.currentTimeMillis());
         return db.queryView(createQuery("elcoCount")).getRows().get(0).getValueAsInt();
     }
+	
+	@View(name = "created_elco_in_between_2_dates", map = "function(doc) { if(doc.type === 'Elco' && doc.type && doc.SUBMISSIONDATE) { " +
+    		"if(doc.PSRFDETAILS.length>0){for(var key in doc.PSRFDETAILS) { "+
+    		"emit([doc.type, doc.SUBMISSIONDATE], [doc.ELCO,doc.GOBHHID,doc.JiVitAHHID,doc.FWWOMUNION,doc.FWWOMWARD,doc.FWWOMSUBUNIT,doc.FWWOMMAUZA_PARA,doc.FWWOMRETYPENID,doc.FWWOMRETYPEBID,doc.FWWOMAGE,doc.FWWOMFNAME,doc.FWHUSNAME,doc.details.external_user_ID,doc.PROVIDERID,doc.PSRFDETAILS[key].start,doc.PSRFDETAILS[key].end,doc.PSRFDETAILS[key].today,doc.PSRFDETAILS[key].current_formStatus,doc.PSRFDETAILS[key].start,doc.PSRFDETAILS[key].FWPSRDATE,doc.PSRFDETAILS[key].FWPSRSTS,doc.PSRFDETAILS[key].FWPSRLMP,doc.PSRFDETAILS[key].FWPSRPREGSTS,doc.PSRFDETAILS[key].FWPSRHUSPREGWTD,doc.PSRFDETAILS[key].FWPSREVRPREG,doc.PSRFDETAILS[key].FWPSRTOTBIRTH,doc.PSRFDETAILS[key].FWPSRNBDTH,doc.PSRFDETAILS[key].FWPSRPRSB,doc.PSRFDETAILS[key].FWPSRPRMC,doc.PSRFDETAILS[key].FWPSRPREGTWYRS,doc.PSRFDETAILS[key].FWPSRPRVPREGCOMP,doc.PSRFDETAILS[key].FWPSRPRCHECKS,doc.PSRFDETAILS[key].FWPSRANM,doc.PSRFDETAILS[key].FWPSRHBP,doc.PSRFDETAILS[key].FWPSRDBT,doc.PSRFDETAILS[key].FWPSRTHY,doc.PSRFDETAILS[key].FWPSRVDGMEM,doc.PSRFDETAILS[key].FWPSRWOMEDU,doc.PSRFDETAILS[key].FWPSRHHLAT,doc.PSRFDETAILS[key].FWPSRHHRICE,doc.PSRFDETAILS[key].FWPSRPHONE,doc.PSRFDETAILS[key].FWPSRPHONENUM,doc.PSRFDETAILS[key].FWPSRMUAC,doc.PSRFDETAILS[key].FWVG,doc.PSRFDETAILS[key].FWHRP,doc.PSRFDETAILS[key].FWHR_PSR,doc.PSRFDETAILS[key].FWFLAGVALUE,doc.PSRFDETAILS[key].FWSORTVALUE,doc.details.FWPSRPREGWTD,doc.details.received_time,doc.INSTANCEID,doc.caseId,doc.ELCO]); }}" +
+    		"else{ emit([doc.type, doc.SUBMISSIONDATE], [doc.ELCO,doc.GOBHHID,doc.JiVitAHHID,doc.FWWOMUNION,doc.FWWOMWARD,doc.FWWOMSUBUNIT,doc.FWWOMMAUZA_PARA,doc.FWWOMRETYPENID,doc.FWWOMRETYPEBID,doc.FWWOMAGE,doc.FWWOMFNAME,doc.FWHUSNAME,doc.details.external_user_ID,doc.PROVIDERID,doc.details.FWPSRPREGWTD,doc.details.received_time,doc.INSTANCEID,doc.caseId,doc.ELCO]);" +
+    		"}}}")
+    
+	public ViewResult allElcosCreatedBetween2Date(String type, long startKey, long endKey){
+        ComplexKey start = ComplexKey.of(type,startKey);
+        ComplexKey end = ComplexKey.of(type,endKey);
+        ViewResult vr=  db.queryView(
+                createQuery("created_elco_in_between_2_dates")
+                .startKey(start)
+                .endKey(end)
+                .includeDocs(false));
+        //System.out.println(hhs.toString());    
+        return vr;
+        
+    }
+	
+	@View(name = "created_miscensus_in_between_2_dates", map = "function(doc) { if(doc.type === 'Elco' && doc.type && doc.SUBMISSIONDATE) { " +
+    		"emit([doc.type, doc.SUBMISSIONDATE], [doc.ELCO,doc.PROVIDERID,doc.FWWOMMAUZA_PARA,doc.details.MisToday,doc.GOBHHID,doc.JiVitAHHID,doc.FWWOMUNION,doc.FWWOMWARD,doc.FWWOMSUBUNIT,doc.FWWOMMAUZA_PARA,doc.FWWOMRETYPENID,doc.FWWOMRETYPEBID,doc.FWWOMAGE,doc.FWWOMFNAME,doc.FWHUSNAME,doc.details.external_user_ID,doc.PROVIDERID,doc.details.mis_census_current_formStatus,doc.details.MisStart,doc.details.MisStart,doc.details.MisEnd,doc.details.FWMISCENSUSDATE,doc.details.FWCOUPLENUM,doc.details.FWTETSTAT,doc.details.FWMARRYDATE,doc.details.FWCHILDALIVEB,doc.details.FWCHILDALIVEG,doc.details.received_time,doc.INSTANCEID,doc.caseId,doc.ELCO]);" +
+    		"}}")
+    
+	public ViewResult allMisCensusCreatedBetween2Date(String type, long startKey, long endKey){
+        ComplexKey start = ComplexKey.of(type,startKey);
+        ComplexKey end = ComplexKey.of(type,endKey);
+        ViewResult vr=  db.queryView(
+                createQuery("created_miscensus_in_between_2_dates")
+                .startKey(start)
+                .endKey(end)
+                .includeDocs(false));
+        //System.out.println(hhs.toString());    
+        return vr;
+        
+    }
 }
