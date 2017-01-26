@@ -58,7 +58,10 @@ public class DataExportService{
 			createPsrfCSV( response,formName,start_date,end_date,reportName);
 		else if(formName.equalsIgnoreCase("MIS_CENSUS_FORM"))
 			createMisCensusCSV( response,formName,start_date,end_date,reportName);
-		
+		else if(formName.equalsIgnoreCase("MIS_ELCO_FORM"))
+			createMisElcoCSV( response,formName,start_date,end_date,reportName);
+		else
+			;
 		allExports.add(export);
 		
 		return reportName;
@@ -526,9 +529,9 @@ public class DataExportService{
 					}
 					String[] s=ecs.getRows().get(i).getValue().split(",");
 					for(int y=0;y<s.length;y++){
-						System.out.print(s[y]+" ");
+						//System.out.print(s[y]+" ");
 					}
-					System.out.println();
+					//System.out.println();
 					//String jsonArray = vr.getRows().get(i).getValue().trim();
 				    //System.out.println(hhs.getRows().get(i).getValue());
 					for(int y=1;y<=13;y++){
@@ -661,9 +664,9 @@ public class DataExportService{
 						}
 						String[] s=ecs.getRows().get(i).getValue().split(",");
 						for(int y=0;y<s.length;y++){
-							System.out.print(s[y]+" ");
+							//System.out.print(s[y]+" ");
 						}
-						System.out.println();
+						//System.out.println();
 						//String jsonArray = vr.getRows().get(i).getValue().trim();
 					    //System.out.println(hhs.getRows().get(i).getValue());
 						
@@ -716,16 +719,14 @@ public class DataExportService{
 		response.setContentType("text/csv");		
 		response.setHeader("Content-disposition",
 				"attachment; " + "filename=" + reportName);
+
+		ViewResult ecs=allElcos.allMisElcoCreatedBetween2Date("Elco",convertDateToTimestampMills(start_date), convertDateToTimestampMills(end_date));
 		
 		FileWriter writer;
 		try {
 			writer = new FileWriter(multimediaDirPath +"/export/" + reportName);			
 			writer.append("FWA Worker ID"); 
 			writer.append(',');//1     
-			writer.append("Form Status at Submission"); 
-			writer.append(',');//2
-			writer.append("SCHEDULED_DATE"); 
-			writer.append(',');//3 
 			writer.append("FWGOBHHID"); 
 			writer.append(',');//4
 			writer.append("FWJIVHHID"); 
@@ -758,6 +759,10 @@ public class DataExportService{
 			writer.append(',');//18
 			writer.append("end"); 
 			writer.append(',');//19
+			writer.append("Form Status at Submission"); 
+			writer.append(',');//2
+			writer.append("SCHEDULED_DATE"); 
+			writer.append(',');//3 
 			writer.append("FWMISELCODATE"); 
 			writer.append(',');//20
 			writer.append("FWPMISBIRTHCTRL"); 
@@ -771,64 +776,67 @@ public class DataExportService{
 			writer.append("ENTITY ID"); 
 			writer.append('\n'); //25
 			
+			int count =ecs.getSize(); 
+			System.out.println("count: "+count);
+		     for (int i = 0; i <count; i++) {
+					if(ecs.getRows().get(i).getValue().equalsIgnoreCase("")){
+						System.err.println("Error.........................");
+					}
+					String[] s=ecs.getRows().get(i).getValue().split(",");
+					for(int y=0;y<s.length;y++){
+						//System.out.print(s[y]+" ");
+					}
+					//System.out.println();
+					//String jsonArray = vr.getRows().get(i).getValue().trim();
+				    //System.out.println(hhs.getRows().get(i).getValue());
+					//System.out.println(s.length);
+					
+					for(int y=1;y<=14;y++){
+						if(s[y] != null && !s[y].isEmpty() && !s[y].equalsIgnoreCase("")){
+							writer.append(s[y]);
+							writer.append(',');
+						}
+						else {
+							writer.append("");
+							writer.append(',');
+						}
+					}
 
-			writer.append("One");
-			writer.append(',');
-			writer.append("Two");
-			writer.append(',');
-			writer.append("One");
-			writer.append(',');
-			writer.append("Two");
-			writer.append(',');
-			writer.append("One");
-			writer.append(',');
-			writer.append("Two");
-			writer.append(',');
-			writer.append("One");
-			writer.append(',');		 
-			writer.append("Two");
-			writer.append(',');
-			writer.append("One");
-			writer.append(',');
-			writer.append("Two");
-			writer.append(',');
-			writer.append("One");
-			writer.append(',');
-			writer.append("Two");
-			writer.append(',');
-			writer.append("One");
-			writer.append(',');
-			writer.append("Two");
-			writer.append(',');
-			writer.append("One");
-			writer.append(',');
-			writer.append("Two");
-			writer.append(',');
-			writer.append("One");
-			writer.append(',');
-			writer.append("Two");
-			writer.append(',');
-			writer.append("One");
-			writer.append(',');
-			writer.append("Two");
-			writer.append(',');
-			writer.append("One");
-			writer.append(',');
-			writer.append("Two");
-			writer.append(',');
-			writer.append("One");
-			writer.append(',');
-			writer.append("Two");
-			writer.append(',');
-			writer.append("One");
-			writer.append('\n');
-			
-			writer.flush();
-			writer.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}		
+					if(s.length>19){							
+						for(int y=15;y<=25;y++){
+							if(s[y] != null && !s[y].isEmpty() && !s[y].equalsIgnoreCase("")){
+								writer.append(s[y]);
+								writer.append(',');
+							}
+							else {
+								writer.append("");
+								writer.append(',');
+							}
+						}							
+					}
+					else {
+						for(int y=1;y<=8;y++){
+							writer.append("");
+							writer.append(',');
+						}	
+						writer.append(s[15]);
+						writer.append(',');
+						writer.append(s[16]);
+						writer.append(',');
+						writer.append(s[17]);
+					}
+					writer.append('\n');
+		     }
+				
+				writer.flush();
+				writer.close();
+				
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}finally{				
+				System.out.println("Loop time end:"+ System.currentTimeMillis());
+			}		
 	}
 	
 	public void deleteExport(String id) {
