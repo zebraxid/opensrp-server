@@ -168,59 +168,27 @@ public class DataExportService{
 						elco = Integer.parseInt(temp);
 					//String jsonArray = vr.getRows().get(i).getValue().trim();
 				    //System.out.println(hhs.getRows().get(i).getValue());
-					writer.append(s[1]);
-					writer.append(',');
-					writer.append(s[2]);
-					writer.append(',');
-					writer.append(s[3]);
-					writer.append(',');
-					writer.append(s[4]);
-					writer.append(',');
-					writer.append(s[5]);
-					writer.append(',');
-					writer.append(s[6]);
-					writer.append(',');
-					writer.append(s[7]);
-					writer.append(',');
-					writer.append(s[8]);
-					writer.append(',');
-					writer.append(s[9]);
-					writer.append(',');
-					writer.append(s[10]);
-					writer.append(',');
-					writer.append(s[11]);
-					writer.append(',');
-					writer.append(s[12]);
-					writer.append(',');
-					writer.append(s[13]);
-					writer.append(',');
-					writer.append(s[14]);
-					writer.append(',');
-					writer.append(s[15]);
-					writer.append(',');
-					writer.append(s[16]);
+					for(int y=1;y<=16;y++){
+						if(s[y] != null && !s[y].isEmpty() && !s[y].equalsIgnoreCase("")){
+							writer.append(s[y]);
+							writer.append(',');
+						}
+						else {
+							writer.append("");
+							writer.append(',');
+						}
+					}
 					if(elco>0){		
-						writer.append(',');
-						writer.append(s[21]);
-						writer.append(',');
-						writer.append(s[22]);
-						writer.append(',');
-						writer.append(s[23]);
-						writer.append(',');
-						writer.append(s[24]);
-						writer.append(',');
-						writer.append(s[25]);
-						writer.append(',');
-						writer.append(s[26]);
-						writer.append(',');
-						writer.append(s[27]);
-						writer.append(',');
-						writer.append(s[28]);
-						writer.append(',');
-						writer.append(s[29]);
-						writer.append(',');
-						writer.append(s[30]);
-						writer.append(',');
+						for(int y=21;y<=30;y++){
+							if(s[y] != null && !s[y].isEmpty() && !s[y].equalsIgnoreCase("")){
+								writer.append(s[y]);
+								writer.append(',');
+							}
+							else {
+								writer.append("");
+								writer.append(',');
+							}
+						}
 						writer.append(String.valueOf(s[31]));
 						writer.append(',');
 						writer.append(String.valueOf(s[32]));
@@ -257,36 +225,10 @@ public class DataExportService{
 			            }            
 					}
 					else{		
-						writer.append(',');
-						writer.append("");
-						writer.append(',');
-						writer.append("");
-						writer.append(',');
-						writer.append("");
-						writer.append(',');
-						writer.append("");
-						writer.append(',');
-						writer.append("");
-						writer.append(',');
-						writer.append("");
-						writer.append(',');
-						writer.append("");
-						writer.append(',');
-						writer.append("");
-						writer.append(',');
-						writer.append("");
-						writer.append(',');
-						writer.append("");
-						writer.append(',');
-						writer.append("");
-						writer.append(',');
-						writer.append("");
-						writer.append(',');
-						writer.append("");						
-		            	writer.append(',');
-						writer.append("");
-						writer.append(',');
-						writer.append("");           
+						for(int y=1;y<=15;y++){
+							writer.append(',');
+							writer.append("");
+						}           
 					}
 					writer.append(',');
 					writer.append(String.valueOf(elco));
@@ -424,48 +366,18 @@ public class DataExportService{
 					writer.append(',');
 					writer.append(s[5]);
 					writer.append(',');
-					writer.append(s[10]);
-					writer.append(',');
-					writer.append(s[11]);
-					writer.append(',');
-					writer.append(s[12]);
-					writer.append(',');
-					writer.append(s[13]);
-					writer.append(',');
-					writer.append(s[14]);
-					writer.append(',');
-					writer.append(s[15]);
-					writer.append(',');
-					writer.append(s[16]);	
-					writer.append(',');
-					writer.append(s[17]);
-					writer.append(',');
-					writer.append(s[18]);
-					writer.append(',');
-					writer.append(s[19]);
-					writer.append(',');
-					writer.append(s[20]);
-					writer.append(',');
-					writer.append(s[21]);
-					writer.append(',');
-					writer.append(s[22]);
-					writer.append(',');
-					writer.append(s[23]);
-					writer.append(',');
-					writer.append(s[24]);
-					writer.append(',');
-					writer.append(s[25]);
-					writer.append(',');
-					writer.append(s[26]);
-					writer.append(',');
-					writer.append(s[27]);
-					writer.append(',');
-					writer.append(s[28]);
-					writer.append(',');
-					writer.append(s[29]);
-					writer.append(',');
-					writer.append(s[30]);
-					writer.append(',');
+					
+					for(int y=10;y<=30;y++){
+						if(s[y] != null && !s[y].isEmpty() && !s[y].equalsIgnoreCase("")){
+							writer.append(s[y]);
+							writer.append(',');
+						}
+						else {
+							writer.append("");
+							writer.append(',');
+						}
+					}
+					
 					writer.append(String.valueOf(s[31]));
 					writer.append(',');
 					writer.append(String.valueOf(s[32]));
@@ -619,179 +531,34 @@ public class DataExportService{
 					System.out.println();
 					//String jsonArray = vr.getRows().get(i).getValue().trim();
 				    //System.out.println(hhs.getRows().get(i).getValue());
-					writer.append(s[1]);
-					writer.append(',');
-					writer.append(s[2]);
-					writer.append(',');
-					writer.append(s[3]);
-					writer.append(',');
-					writer.append(s[4]);
-					writer.append(',');
-					writer.append(s[5]);
-					writer.append(',');
-					writer.append(s[6]);
-					writer.append(',');
-					writer.append(s[7]);
-					writer.append(',');
-					writer.append(s[8]);
-					writer.append(',');
-					writer.append(s[9]);
-					writer.append(',');
-					writer.append(s[10]);
-					writer.append(',');
-					writer.append(s[11]);
-					writer.append(',');
-					writer.append(s[12]);
-					writer.append(',');
-					writer.append(s[13]);
-					if(s.length>30){
-						writer.append(',');
-						writer.append(s[14]);
-						writer.append(',');
-						writer.append(s[15]);
-						writer.append(',');
-						writer.append(s[16]);
-						writer.append(',');
-						writer.append(s[17]);
-						writer.append(',');
-						writer.append(s[18]);
-						writer.append(',');
-						writer.append(s[19]);
-						writer.append(',');
-						writer.append(s[20]);
-						writer.append(',');
-						writer.append(s[21]);
-						writer.append(',');
-						writer.append(s[22]);
-						writer.append(',');
-						writer.append(s[23]);
-						writer.append(',');				
-						writer.append(s[24]);
-						writer.append(',');
-						writer.append(s[25]);
-						writer.append(',');
-						writer.append(s[26]);
-						writer.append(',');
-						writer.append(s[27]);
-						writer.append(',');
-						writer.append(s[28]);
-						writer.append(',');
-						writer.append(s[29]);
-						writer.append(',');
-						writer.append(s[30]);
-						writer.append(',');
-						writer.append(s[31]);
-						writer.append(',');
-						writer.append(s[32]);
-						writer.append(',');
-						writer.append(s[33]);
-						writer.append(',');
-						writer.append(s[34]);
-						writer.append(',');
-						writer.append(s[35]);
-						writer.append(',');
-						writer.append(s[36]);
-						writer.append(',');
-						writer.append(s[37]);
-						writer.append(',');
-						writer.append(s[38]);
-						writer.append(',');
-						writer.append(s[39]);
-						writer.append(',');
-						writer.append(s[40]);
-						writer.append(',');
-						writer.append(s[41]);
-						writer.append(',');
-						writer.append(s[42]);
-						writer.append(',');
-						writer.append(s[43]);
-						writer.append(',');
-						writer.append(s[44]);
-						writer.append(',');
-						writer.append(s[45]);
-						writer.append(',');
-						writer.append(s[46]);
-						writer.append(',');
-						writer.append(s[47]);
-						writer.append(',');
-						writer.append(s[48]);
-						writer.append(',');
-						writer.append(s[49]);
-						writer.append(',');
-						writer.append(s[50]);
-						writer.append(',');
-						writer.append(s[51]);
+					for(int y=1;y<=13;y++){
+						if(s[y] != null && !s[y].isEmpty() && !s[y].equalsIgnoreCase("")){
+							writer.append(s[y]);
+							writer.append(',');
+						}
+						else {
+							writer.append("");
+							writer.append(',');
+						}
 					}
-					else {
-						writer.append(',');
+					if(s.length>30){
+						for(int y=14;y<=51;y++){
+							if(s[y] != null && !s[y].isEmpty() && !s[y].equalsIgnoreCase("")){
+								writer.append(s[y]);
+								writer.append(',');
+							}
+							else {
+								writer.append("");
+								writer.append(',');
+							}
+						}
 						writer.append("");
-						writer.append(',');
-						writer.append("");
-						writer.append(',');
-						writer.append("");
-						writer.append(',');
-						writer.append("");
-						writer.append(',');
-						writer.append("");
-						writer.append(',');
-						writer.append("");
-						writer.append(',');
-						writer.append("");
-						writer.append(',');
-						writer.append("");
-						writer.append(',');
-						writer.append("");
-						writer.append(',');
-						writer.append("");
-						writer.append(',');
-						writer.append("");
-						writer.append(',');
-						writer.append("");
-						writer.append(',');
-						writer.append("");						
-		            	writer.append(',');
-						writer.append("");
-						writer.append(',');
-						writer.append(""); 
-						writer.append(',');
-						writer.append("");
-						writer.append(',');
-						writer.append("");
-						writer.append(',');
-						writer.append("");
-						writer.append(',');
-						writer.append("");
-						writer.append(',');
-						writer.append("");
-						writer.append(',');
-						writer.append("");
-						writer.append(',');
-						writer.append("");
-						writer.append(',');
-						writer.append("");
-						writer.append(',');
-						writer.append("");
-						writer.append(',');
-						writer.append("");
-						writer.append(',');
-						writer.append("");
-						writer.append(',');
-						writer.append("");
-						writer.append(',');
-						writer.append("");						
-		            	writer.append(',');
-						writer.append("");
-						writer.append(',');
-						writer.append("");
-						writer.append(',');
-						writer.append("");
-						writer.append(',');
-						writer.append("");
-						writer.append(',');
-						writer.append("");
-						writer.append(',');
-						writer.append("");
-						writer.append(',');
+					}
+					else {						
+						for(int y=1;y<=34;y++){
+								writer.append("");
+								writer.append(',');
+						}
 						writer.append(s[14]);
 						writer.append(',');
 						writer.append(s[15]);
@@ -820,7 +587,7 @@ public class DataExportService{
 		response.setHeader("Content-disposition",
 				"attachment; " + "filename=" + reportName);
 
-		ViewResult ecs=allElcos.allElcosCreatedBetween2Date("Elco",convertDateToTimestampMills(start_date), convertDateToTimestampMills(end_date));
+		ViewResult ecs=allElcos.allMisCensusCreatedBetween2Date("Elco",convertDateToTimestampMills(start_date), convertDateToTimestampMills(end_date));
 		
 		FileWriter writer;
 		try {
@@ -912,51 +679,24 @@ public class DataExportService{
 						}
 
 						if(s.length>19){							
-							writer.append(s[19]);
-							writer.append(',');
-							writer.append(s[20]);
-							writer.append(',');
-							writer.append(s[21]);
-							writer.append(',');
-							writer.append(s[22]);
-							writer.append(',');
-							writer.append(s[23]);
-							writer.append(',');				
-							writer.append(s[24]);
-							writer.append(',');
-							writer.append(s[25]);
-							writer.append(',');
-							writer.append(s[26]);
-							writer.append(',');
-							writer.append(s[27]);
-							writer.append(',');
-							writer.append(s[28]);
-							writer.append(',');
-							writer.append(s[29]);
+							for(int y=19;y<=29;y++){
+								if(s[y] != null && !s[y].isEmpty() && !s[y].equalsIgnoreCase("")){
+									writer.append(s[y]);
+									writer.append(',');
+								}
+								else {
+									writer.append("");
+									writer.append(',');
+								}
+							}							
 						}
 						else {
-							writer.append("");
-							writer.append(',');
-							writer.append("");
-							writer.append(',');
-							writer.append("");
-							writer.append(',');
-							writer.append("");
-							writer.append(',');
-							writer.append("");
-							writer.append(',');
-							writer.append("");
-							writer.append(',');
-							writer.append("");
-							writer.append(',');
-							writer.append("");
-							writer.append(',');
-							writer.append("");
-							writer.append(',');
-							writer.append("");
-							writer.append(',');
-							writer.append("");
+							for(int y=1;y<=10;y++){
+								writer.append("");
+								writer.append(',');
+							}							
 						}
+						writer.append("");
 						writer.append('\n');
 			     }
 					
