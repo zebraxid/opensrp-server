@@ -110,7 +110,7 @@
         "bind": "/model/instance/EligibleCoupleRegister/ELCO_Date"
       },
       {
-        "name": "ELCO_Status",
+        "name": "Visit_Status",
         "bind": "/model/instance/EligibleCoupleRegister/ELCO_Status"
       },
       {
@@ -424,6 +424,10 @@
       {
         "name": "Current_Form_Status",
         "bind": "/model/instance/EligibleCoupleRegister/Current_Form_Status"
+      },
+      {
+        "name": "Nutrition",
+        "bind": "/model/instance/EligibleCoupleRegister/Nutrition"
       }
     ]
   }
