@@ -192,9 +192,9 @@ public class DataExportService{
 								writer.append(',');
 							}
 						}
-						writer.append(String.valueOf(s[31]));
+						writer.append(' '+String.valueOf(s[31]));
 						writer.append(',');
-						writer.append(String.valueOf(s[32]));
+						writer.append(' '+String.valueOf(s[32]));
 						writer.append(',');
 						writer.append(s[33]);						
 						
@@ -381,9 +381,9 @@ public class DataExportService{
 						}
 					}
 					
-					writer.append(String.valueOf(s[31]));
+					writer.append(' '+String.valueOf(s[31]));
 					writer.append(',');
-					writer.append(String.valueOf(s[32]));
+					writer.append(' '+String.valueOf(s[32]));
 					writer.append(',');
 					writer.append(s[33]);		
 					writer.append(',');
