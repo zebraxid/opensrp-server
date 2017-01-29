@@ -28,13 +28,13 @@ public class CampDateRepository extends MotechBaseRepository<CampDate> {
 		this.db.setRevisionLimit(revisionLimit);
 	}
 	
-	@View(name = "by_session_id", map = "function(doc) { if (doc.type === 'CampDate' && doc._id) { emit(doc.session_id, doc); } }")
+	@View(name = "by_session_id", map = "function(doc) { if (doc.type === 'CampDate' && doc._id) { emit(doc.session_id, null); } }")
 	public List<CampDate> findBySessionId(String session_id) {
 		List<CampDate> campDates = db.queryView(createQuery("by_session_id").key(session_id).includeDocs(true), CampDate.class);
 		return campDates;
 	}
 	
-	@View(name = "by_session_name_and_health_assistant", map = "function(doc) { if (doc.type === 'CampDate' && doc.health_assistant) { emit([doc.session_name,doc.health_assistant], doc); } }")
+	@View(name = "by_session_name_and_health_assistant", map = "function(doc) { if (doc.type === 'CampDate' && doc.health_assistant) { emit([doc.session_name,doc.health_assistant], null); } }")
 	public CampDate findBySessionName(String session_name,String health_assistant) {	
 		ComplexKey ckey = ComplexKey.of(session_name, health_assistant);
 		List<CampDate> camps = db.queryView(createQuery("by_session_name_and_health_assistant").key(ckey).includeDocs(true), CampDate.class);
@@ -44,7 +44,7 @@ public class CampDateRepository extends MotechBaseRepository<CampDate> {
 		return camps.get(0);
 	}
 	
-	@View(name = "by_id", map = "function(doc) { if (doc.type === 'CampDate' && doc._id) { emit(doc._id, doc); } }")
+	@View(name = "by_id", map = "function(doc) { if (doc.type === 'CampDate' && doc._id) { emit(doc._id, null); } }")
 	public CampDate findById(String id) {		
 		List<CampDate> camp = db.queryView(createQuery("by_id").key(id).includeDocs(true), CampDate.class);
 		if (camp == null || camp.isEmpty()) {
@@ -53,7 +53,7 @@ public class CampDateRepository extends MotechBaseRepository<CampDate> {
 		return camp.get(0);
 	}
 	
-	@View(name = "by_TimeStamp", map = "function(doc) { if (doc.type === 'CampDate' && doc._id && doc.status=='Active') { emit(doc.timestamp, doc); } }")
+	@View(name = "by_TimeStamp", map = "function(doc) { if (doc.type === 'CampDate' && doc._id && doc.status=='Active') { emit(doc.timestamp, null); } }")
 	public List<CampDate> findByTimeStamp(long date) {		
 		List<CampDate> camp = db.queryView(createQuery("by_TimeStamp").key(date).includeDocs(true), CampDate.class);
 		if (camp == null || camp.isEmpty()) {
@@ -61,7 +61,7 @@ public class CampDateRepository extends MotechBaseRepository<CampDate> {
 		}
 		return camp;
 	}
-	@View(name = "by_TimeStamp_Health_Assistant", map = "function(doc) { if (doc.type === 'CampDate' && doc._id && doc.status=='Active') { emit([doc.timestamp,doc.health_assistant], doc); } }")
+	@View(name = "by_TimeStamp_Health_Assistant", map = "function(doc) { if (doc.type === 'CampDate' && doc._id && doc.status=='Active') { emit([doc.timestamp,doc.health_assistant], null); } }")
 	public List<CampDate> findByTimeStampByHealthAssistant(long date,String HealthAssistant) {
 		ComplexKey ckey = ComplexKey.of(date, HealthAssistant);
 		List<CampDate> camp = db.queryView(createQuery("by_TimeStamp_Health_Assistant").key(ckey).includeDocs(true), CampDate.class);
@@ -71,15 +71,15 @@ public class CampDateRepository extends MotechBaseRepository<CampDate> {
 		return camp;
 	}
 	
-	@View(name = "all_camp_with_username", map = "function(doc) { if (doc.type === 'CampDate' && doc.username) { emit(doc._id,doc); } }")
+	@View(name = "all_camp_with_username", map = "function(doc) { if (doc.type === 'CampDate' && doc.username) { emit(doc._id,null); } }")
 		public List<CampDate> getAllCamp() {
 			return db.queryView(
 					createQuery("all_camp_with_user")
 							.includeDocs(true), CampDate.class);
 			
 		}
-	@View(name = "search", map = "function(doc) { if (doc.type === 'CampDate') { emit([doc.thana,doc.union,doc.ward,doc.unit,doc.health_assistant], doc); } }")
-	public List<CampDate> search(String thana,String union,String ward,String unit,String healthAssistant) {
+	@View(name = "search", map = "function(doc) { if (doc.type === 'CampDate') { emit([doc.thana,doc.union,doc.ward,doc.unit,doc.health_assistant], null); } }")
+	public List<CampDate> search(String thana,String union,String ward,String unit,String healthAssistant,int p) {
 		Object thanaObj;
 		Object unionObj;
 		Object wardObj;
@@ -125,6 +125,9 @@ public class CampDateRepository extends MotechBaseRepository<CampDate> {
 		List<CampDate> camps = db.queryView(createQuery("search")
 			.startKey(startkey)	
 			.endKey(endkey)
+			.descending(false)
+			.skip(p)
+			.limit(20)
 			.includeDocs(true), CampDate.class);
 		System.out.println(camps.toString());
 		return camps;

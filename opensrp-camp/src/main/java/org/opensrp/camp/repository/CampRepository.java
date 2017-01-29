@@ -28,7 +28,7 @@ public class CampRepository extends MotechBaseRepository<Camp> {
 		this.db.setRevisionLimit(revisionLimit);
 	}
 	
-	@View(name = "by_session_name_and_health_assistant", map = "function(doc) { if (doc.type === 'Camp' && doc.health_assistant) { emit([doc.session_name,doc.health_assistant], doc); } }")
+	@View(name = "by_session_name_and_health_assistant", map = "function(doc) { if (doc.type === 'Camp' && doc.health_assistant) { emit([doc.session_name,doc.health_assistant], null); } }")
 	public Camp findBySessionName(String session_name,String health_assistant) {	
 		ComplexKey ckey = ComplexKey.of(session_name, health_assistant);
 		List<Camp> camps = db.queryView(createQuery("by_session_name_and_health_assistant").key(ckey).includeDocs(true), Camp.class);
@@ -38,7 +38,7 @@ public class CampRepository extends MotechBaseRepository<Camp> {
 		return camps.get(0);
 	}
 	
-	@View(name = "by_id", map = "function(doc) { if (doc.type === 'Camp' && doc._id) { emit(doc._id, doc); } }")
+	@View(name = "by_id", map = "function(doc) { if (doc.type === 'Camp' && doc._id) { emit(doc._id, null); } }")
 	public Camp findById(String id) {		
 		List<Camp> camp = db.queryView(createQuery("by_id").key(id).includeDocs(true), Camp.class);
 		if (camp == null || camp.isEmpty()) {
@@ -47,7 +47,7 @@ public class CampRepository extends MotechBaseRepository<Camp> {
 		return camp.get(0);
 	}
 	
-	@View(name = "all_camp_with_username", map = "function(doc) { if (doc.type === 'Camp' && doc.username) { emit(doc._id,doc); } }")
+	@View(name = "all_camp_with_username", map = "function(doc) { if (doc.type === 'Camp' && doc.username) { emit(doc._id,null); } }")
 		public List<Camp> getAllCamp() {
 			return db.queryView(
 					createQuery("all_camp_with_user")

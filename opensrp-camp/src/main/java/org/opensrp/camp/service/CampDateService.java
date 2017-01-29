@@ -101,8 +101,9 @@ public class CampDateService implements CampInterface<CampDate>{
 	    return campDateRepository.findById(id);
     }
 	
-	public List<CampDate> search(String thana,String union,String ward,String unit,String healthAssistant ){
-		return campDateRepository.search(thana, union, ward, unit, healthAssistant);
+	public List<CampDate> search(String thana,String union,String ward,String unit,String healthAssistant,int p ){
+		
+		return campDateRepository.search(thana, union, ward, unit, healthAssistant,p);
 	}
 	public List<CampDate> findCampByToday(String HA){		
 		return campDateRepository.findByTimeStampByHealthAssistant(DateTimeUtil.getTimeStampTodatDay(),HA);	

@@ -4,6 +4,9 @@ import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.json.JSONException;
 import org.opensrp.camp.dto.CampDTO;
 import org.opensrp.camp.service.CampDateService;
@@ -100,8 +103,13 @@ public class CampController {
 	@RequestMapping(headers = { "Accept=application/json" }, method = GET, value = "/camp/search")
 	@ResponseBody
 	public ResponseEntity<String> search(@RequestParam String thana,@RequestParam String union,
-		@RequestParam String ward,@RequestParam String unit,@RequestParam String healthAssistant) {		
-		return new ResponseEntity<>(new Gson().toJson(campDateService.search(thana,union,ward,unit,healthAssistant)), HttpStatus.OK);
+		@RequestParam String ward,@RequestParam String unit,@RequestParam String healthAssistant,@RequestParam int p) {		
+		System.out.println(new Gson().toJson(campDateService.search(thana,union,ward,unit,healthAssistant,p)));
+		List<Object> list =new ArrayList<>();
+		list.add(new Gson().toJson(campDateService.search(thana,union,ward,unit,healthAssistant,p)));
+		list.add(120);
+		
+		return new ResponseEntity<>(new Gson().toJson(list), HttpStatus.OK);
 	}
 	
 	@RequestMapping(method = GET, value = "/camp-announcement")
