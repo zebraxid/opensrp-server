@@ -21,293 +21,151 @@ import org.motechproject.model.MotechBaseDataObject;
 @TypeDiscriminator("doc.type === 'Members'")
 public class Members extends MotechBaseDataObject {
 	@JsonProperty
-	private String 
-	caseId;
+	private String caseId;
 	@JsonProperty
-	private String 
-	INSTANCEID
-	;
+	private String INSTANCEID;
 	@JsonProperty
-	private String 
-	PROVIDERID
-	;
+	private String PROVIDERID;
 	@JsonProperty
-	private String 
-	LOCATIONID
-	; 
+	private String LOCATIONID; 
 	@JsonProperty 
-	private String Today
-	; 
+	private String Today; 
 	@JsonProperty 
-	private String Start
-	; 
+	private String Start; 
 	@JsonProperty 
-	private String End
-	;
+	private String End;
 	@JsonProperty 
-	private String 
-	relationalid
-	; 
+	private String relationalid; 
 	@JsonProperty 
-	private String 
-	Member_GoB_HHID
-	; 
+	private String Member_GoB_HHID; 
 	@JsonProperty 
-	private String 
-	Member_Reg_Date
-	; 
+	private String Member_Reg_Date; 
 	@JsonProperty 
-	private String 
-	Mem_F_Name
-	; 
+	private String Mem_F_Name; 
 	@JsonProperty 
-	private String 
-	Mem_L_Name
-	; 
+	private String Mem_L_Name; 
 	@JsonProperty 
-	private String 
-	Member_Birth_Date_Known
-	; 
+	private String Member_Birth_Date_Known; 
 	@JsonProperty 
-	private String 
-	Member_Birth_Date
-	; 
+	private String Member_Birth_Date; 
 	@JsonProperty 
-	private String 
-	Member_Age
-	; 
+	private String Member_Age; 
 	@JsonProperty 
-	private String 
-	Calc_Age
-	; 
+	private String Calc_Age; 
 	@JsonProperty 
-	private String 
-	Calc_Dob
-	; 
+	private String Calc_Dob; 
 	@JsonProperty 
-	private String 
-	Calc_Dob_Confirm
-	; 
+	private String Calc_Dob_Confirm; 
 	@JsonProperty 
-	private String 
-	Calc_Age_Confirm
-	; 
+	private String Calc_Age_Confirm; 
 	@JsonProperty 
-	private String 
-	Birth_Date_Note
-	; 
+	private String Birth_Date_Note; 
 	@JsonProperty 
-	private String 
-	Note_age
-	; 
+	private String Note_age; 
 	@JsonProperty 
-	private String 
-	Member_Gender
-	; 
+	private String Member_Gender; 
 	@JsonProperty 
-	private String 
-	Mem_ID_Type
-	; 
+	private String Mem_ID_Type; 
 	@JsonProperty 
-	private String 
-	Mem_NID
-	; 
+	private String Mem_NID; 
 	@JsonProperty 
-	private String 
-	Retype_Mem_NID
-	; 
+	private String Retype_Mem_NID; 
 	@JsonProperty 
-	private String 
-	Mem_NID_Concept
-	; 
+	private String Mem_NID_Concept; 
 	@JsonProperty 
-	private String 
-	Mem_BRID
-	; 
+	private String Mem_BRID; 
 	@JsonProperty 
-	private String 
-	Retype_Mem_BRID
-	; 
+	private String Retype_Mem_BRID; 
 	@JsonProperty 
-	private String 
-	Mem_BRID_Concept
-	; 
+	private String Mem_BRID_Concept; 
 	@JsonProperty 
-	private String 
-	Mem_Mobile_Number
-	; 
+	private String Mem_Mobile_Number; 
 	@JsonProperty 
-	private String 
-	Mem_Marital_Status
-	; 
+	private String Mem_Marital_Status; 
 	@JsonProperty 
-	private String 
-	Couple_No
-	; 
+	private String Couple_No; 
 	@JsonProperty 
-	private String 
-	Spouse_Name
-	; 
+	private String Spouse_Name; 
 	@JsonProperty 
-	private String 
-	Wom_Menstruating
-	; 
+	private String Wom_Menstruating; 
 	@JsonProperty 
-	private String 
-	Wom_Sterilized
-	; 
+	private String Wom_Sterilized; 
 	@JsonProperty 
-	private String 
-	Wom_Hus_Live
-	; 
+	private String Wom_Hus_Live; 
 	@JsonProperty 
-	private String 
-	Wom_Hus_Alive
-	; 
+	private String Wom_Hus_Alive; 
 	@JsonProperty 
-	private String 
-	Wom_Hus_Sterilized
-	; 
+	private String Wom_Hus_Sterilized; 
 	@JsonProperty 
-	private String 
-	Eligible
-	; 
+	private String Eligible; 
 	@JsonProperty 
-	private String 
-	Eligible2
-	; 
+	private String Eligible2; 
 	@JsonProperty 
-	private String 
-	ELCO
-	; 
+	private String ELCO; 
 	@JsonProperty 
-	private String 
-	ELCO_Note
-	; 
+	private String ELCO_Note; 
 	@JsonProperty 
-	private String 
-	Mem_Country
-	; 
+	private String Mem_Country; 
 	@JsonProperty 
-	private String 
-	Mem_Division
-	; 
+	private String Mem_Division; 
 	@JsonProperty 
-	private String 
-	Mem_District
-	; 
+	private String Mem_District; 
 	@JsonProperty 
-	private String 
-	Mem_Upazilla
-	; 
+	private String Mem_Upazilla; 
 	@JsonProperty 
-	private String 
-	Mem_Union
-	; 
+	private String Mem_Union; 
 	@JsonProperty 
-	private String 
-	Mem_Ward
-	; 
+	private String Mem_Ward; 
 	@JsonProperty 
-	private String 
-	Mem_Subunit
-	; 
+	private String Mem_Subunit; 
 	@JsonProperty 
-	private String 
-	Mem_Mauzapara
-	; 
+	private String Mem_Mauzapara; 
 	@JsonProperty 
-	private String 
-	Mem_Village_Name
-	; 
+	private String Mem_Village_Name; 
 	@JsonProperty 
-	private String 
-	Mem_GPS
-	; 
+	private String Mem_GPS; 
 	@JsonProperty 
-	private String 
-	ELCO_ID_Type
-	; 
+	private String ELCO_ID_Type; 
 	@JsonProperty 
-	private String 
-	ELCO_NID
-	; 
+	private String ELCO_NID; 
 	@JsonProperty 
-	private String 
-	ELCO_NID_Concept
-	; 
+	private String ELCO_NID_Concept; 
 	@JsonProperty 
-	private String 
-	ELCO_BRID
-	; 
+	private String ELCO_BRID; 
 	@JsonProperty 
-	private String 
-	ELCO_BRID_Concept
-	; 
+	private String ELCO_BRID_Concept; 
 	@JsonProperty 
-	private String 
-	ELCO_Mobile_Number
-	; 
+	private String ELCO_Mobile_Number; 
 	@JsonProperty 
-	private String 
-	Member_Detail
-	; 
+	private String Member_Detail; 
 	@JsonProperty 
-	private String 
-	Permanent_Address
-	; 
+	private String Permanent_Address; 
 	@JsonProperty 
-	private String 
-	Updated_Dist
-	; 
+	private String Updated_Dist; 
 	@JsonProperty 
-	private String 
-	Updated_Union
-	; 
+	private String Updated_Union; 
 	@JsonProperty 
-	private String 
-	Updated_Vill
-	; 
+	private String Updated_Vill; 
 	@JsonProperty 
-	private String 
-	Final_Dist
-	; 
+	private String Final_Dist; 
 	@JsonProperty 
-	private String 
-	Final_Union
-	; 
+	private String Final_Union; 
 	@JsonProperty 
-	private String 
-	Final_Vill
-	; 
+	private String Final_Vill; 
 	@JsonProperty 
-	private String 
-	Relation_HoH
-	; 
+	private String Relation_HoH; 
 	@JsonProperty 
-	private String 
-	Place_Of_Birth
-	; 
+	private String Place_Of_Birth; 
 	@JsonProperty 
-	private String 
-	Education
-	; 
+	private String Education; 
 	@JsonProperty 
-	private String 
-	Religion
-	; 
+	private String Religion; 
 	@JsonProperty 
-	private String 
-	BD_Citizen
-	; 
+	private String BD_Citizen; 
 	@JsonProperty 
-	private String 
-	Occupation
-	; 
+	private String Occupation; 
 	@JsonProperty 
-	private String 
-	add_member
-	; 
+	private String add_member; 
 	@JsonProperty
 	private Map<String, String> details;
 	@JsonProperty
@@ -829,7 +687,7 @@ public class Members extends MotechBaseDataObject {
 
 	public List<Map<String, String>> Elco_Followup() {
 		if (Elco_Followup == null)
-			this.Elco_Followup = new ArrayList<>();
+			Elco_Followup = new ArrayList<>();
 		return Elco_Followup;
 	}
 	public Map<String, String> ANCVisit1() {
@@ -879,30 +737,30 @@ public class Members extends MotechBaseDataObject {
 	}
 	public List<Map<String, String>> BNFVisit() {
 		if (BNFVisit == null)
-			this.BNFVisit = new ArrayList<>();
+			BNFVisit = new ArrayList<>();
 		return BNFVisit;
 	}
 	public List<Map<String, String>> child_vaccine() {
 		if (child_vaccine == null) {
-			this.child_vaccine = new ArrayList<>();
+			child_vaccine = new ArrayList<>();
 		}
 		return child_vaccine;
 	}
 	public List<Map<String, String>> Injectables() {
 		if (Injectables == null) {
-			this.Injectables = new ArrayList<>();
+			Injectables = new ArrayList<>();
 		}
 		return Injectables;
 	}
 	public List<Map<String, String>> Adolescent() {
 		if (Adolescent == null) {
-			this.Adolescent = new ArrayList<>();
+			Adolescent = new ArrayList<>();
 		}
 		return Adolescent;
 	}
 	public List<Map<String, String>> Nutrition() {
 		if (Nutrition == null) {
-			this.Nutrition = new ArrayList<>();
+			Nutrition = new ArrayList<>();
 		}
 		return Nutrition;
 	}

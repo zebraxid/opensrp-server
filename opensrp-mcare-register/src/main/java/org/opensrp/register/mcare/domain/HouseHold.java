@@ -27,167 +27,113 @@ public class HouseHold extends MotechBaseDataObject {
 	@JsonProperty
 	private String LOCATIONID;
 	@JsonProperty 
-	private String Version
-	; 
+	private String Version; 
 	@JsonProperty 
-	private String Changes
-	; 
+	private String Changes; 
 	@JsonProperty 
-	private String existing_location
-	; 
+	private String existing_location; 
 	@JsonProperty 
-	private String existing_Country
-	; 
+	private String existing_Country; 
 	@JsonProperty 
-	private String existing_Division
-	; 
+	private String existing_Division; 
 	@JsonProperty 
-	private String existing_District
-	; 
+	private String existing_District; 
 	@JsonProperty 
-	private String existing_Upazilla
-	; 
+	private String existing_Upazilla; 
 	@JsonProperty 
-	private String existing_Union
-	; 
+	private String existing_Union; 
 	@JsonProperty 
-	private String existing_Ward
-	; 
+	private String existing_Ward; 
 	@JsonProperty 
-	private String existing_Subunit
-	; 
+	private String existing_Subunit; 
 	@JsonProperty 
-	private String existing_Mauzapara
-	; 
+	private String existing_Mauzapara; 
 	@JsonProperty 
-	private String Form_Name
-	; 
+	private String Form_Name; 
 	@JsonProperty 
-	private String Today
-	; 
+	private String Today; 
 	@JsonProperty 
-	private String Start
-	; 
+	private String Start; 
 	@JsonProperty 
-	private String End
-	; 
+	private String End; 
 	@JsonProperty 
-	private String Reg_Date
-	; 
+	private String Reg_Date; 
 	@JsonProperty 
-	private String Village_Name
-	; 
+	private String Village_Name; 
 	@JsonProperty 
-	private String GoB_HHID
-	; 
+	private String GoB_HHID; 
 	@JsonProperty 
-	private String No_Of_Couples
-	; 
+	private String No_Of_Couples; 
 	@JsonProperty 
-	private String Country
-	; 
+	private String Country; 
 	@JsonProperty 
-	private String Division
-	; 
+	private String Division; 
 	@JsonProperty 
-	private String District
-	; 
+	private String District; 
 	@JsonProperty 
-	private String Upazilla
-	; 
+	private String Upazilla; 
 	@JsonProperty 
-	private String Union
-	; 
+	private String Union; 
 	@JsonProperty 
-	private String Ward
-	; 
+	private String Ward; 
 	@JsonProperty 
-	private String Subunit
-	; 
+	private String Subunit; 
 	@JsonProperty 
-	private String Mauzapara
-	; 
+	private String Mauzapara; 
 	@JsonProperty 
-	private String GPS
-	; 
+	private String GPS; 
 	@JsonProperty 
-	private String HoH_F_Name
-	; 
+	private String HoH_F_Name; 
 	@JsonProperty 
-	private String HoH_L_Name
-	; 
+	private String HoH_L_Name; 
 	@JsonProperty 
-	private String HoH_Birth_Date
-	; 
+	private String HoH_Birth_Date; 
 	@JsonProperty 
-	private String HoH_Gender
-	; 
+	private String HoH_Gender; 
 	@JsonProperty 
-	private String HoH_Birth_Date_Known
-	; 
+	private String HoH_Birth_Date_Known; 
 	@JsonProperty 
-	private String HoH_Age
-	; 
+	private String HoH_Age; 
 	@JsonProperty 
-	private String Calc_HoH_Age
-	; 
+	private String Calc_HoH_Age; 
 	@JsonProperty 
-	private String Calc_HoH_Dob
-	; 
+	private String Calc_HoH_Dob; 
 	@JsonProperty 
-	private String Calc_HoH_Dob_Confirm
-	; 
+	private String Calc_HoH_Dob_Confirm; 
 	@JsonProperty 
-	private String Calc_HoH_Age_Confirm
-	; 
+	private String Calc_HoH_Age_Confirm; 
 	@JsonProperty 
-	private String HoH_Birth_Date_Note
-	; 
+	private String HoH_Birth_Date_Note; 
 	@JsonProperty 
-	private String HoH_Note_age
-	; 
+	private String HoH_Note_age; 
 	@JsonProperty 
-	private String HoH_ID_Type
-	; 
+	private String HoH_ID_Type; 
 	@JsonProperty 
-	private String HoH_NID
-	; 
+	private String HoH_NID; 
 	@JsonProperty 
-	private String Retype_HoH_NID
-	; 
+	private String Retype_HoH_NID; 
 	@JsonProperty 
-	private String HoH_NID_Concept
-	; 
+	private String HoH_NID_Concept; 
 	@JsonProperty 
-	private String HoH_BRID
-	; 
+	private String HoH_BRID; 
 	@JsonProperty 
-	private String Retype_HoH_BRID
-	; 
+	private String Retype_HoH_BRID; 
 	@JsonProperty 
-	private String HoH_BRID_Concept
-	; 
+	private String HoH_BRID_Concept; 
 	@JsonProperty 
-	private String HoH_Mobile_number
-	; 
+	private String HoH_Mobile_number; 
 	@JsonProperty 
-	private String Member_Number
-	; 
+	private String Member_Number; 
 	@JsonProperty 
-	private String MWRA
-	; 
+	private String MWRA; 
 	@JsonProperty 
-	private String Final_ELCO
-	; 
+	private String Final_ELCO; 
 	@JsonProperty 
-	private String Child
-	; 
+	private String Child; 
 	@JsonProperty 
-	private String Adolescent
-	; 
+	private String Adolescent; 
 	@JsonProperty 
-	private String HH_Status
-	;
+	private String HH_Status;
 	@JsonProperty
 	private List<Map<String, String>> Birth_Outcome;
 	@JsonProperty
