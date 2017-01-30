@@ -86,7 +86,7 @@ public class MembersPaybackService {
 								.put(existing_ELCO_Mobile_Number, submission.getField(existing_ELCO_Mobile_Number))
 								.put(existing_Injection_Date, submission.getField(existing_Injection_Date))
 								.put(existing_Dose_No, submission.getField(existing_Dose_No))
-								.put(Today, submission.getField(Today))
+								.put(injectable_Today, submission.getField(injectable_Today))
 								.put(start, submission.getField(start))
 								.put(end , submission.getField(end ))
 								.put(Visit_Date, submission.getField(Visit_Date))
@@ -116,7 +116,7 @@ public class MembersPaybackService {
 		
 		if (submission.getField(Visit_Status) != null && !submission.getField(Visit_Status).equalsIgnoreCase(""))
 		if(submission.getField(Visit_Status).equalsIgnoreCase("2") || submission.getField(Visit_Status).equalsIgnoreCase("6")){
-			membersScheduleService.enrollIntoSchedule(submission.entityId(), submission.getField(Today), Injectables);
+			membersScheduleService.enrollIntoSchedule(submission.entityId(), submission.getField(injectable_Today), Injectables);
 		}
 		
 		if (submission.getField(Visit_Status) != null && !submission.getField(Visit_Status).equalsIgnoreCase(""))
@@ -160,7 +160,7 @@ public class MembersPaybackService {
 									.put(existing_ELCO_BRID, submission.getField(existing_ELCO_BRID))
 									.put(existing_Mem_BRID, submission.getField(existing_Mem_BRID))
 									.put(existing_Mauzapara, submission.getField(existing_Mauzapara))
-									.put(today, submission.getField(today))
+									.put(adolescent_today, submission.getField(adolescent_today))
 									.put(start, submission.getField(start))
 									.put(end , submission.getField(end))
 									.put(Visit_Date, submission.getField(Visit_Date))
@@ -194,7 +194,7 @@ public class MembersPaybackService {
 		if (submission.getField(Visit_Status) != null && 
 				(submission.getField(Visit_Status).equalsIgnoreCase("2") || submission.getField(Visit_Status).equalsIgnoreCase("3")))
 		{		
-			membersScheduleService.enrollIntoMilestoneOfAdolescent(submission.entityId(), submission.getField(today), submission.anmId(),
+			membersScheduleService.enrollIntoMilestoneOfAdolescent(submission.entityId(), submission.getField(adolescent_today), submission.anmId(),
 					submission.instanceId());			
 		}
 		
@@ -233,7 +233,7 @@ public class MembersPaybackService {
 									.put(existing_ELCO_BRID, submission.getField(existing_ELCO_BRID))
 									.put(existing_Mem_BRID, submission.getField(existing_Mem_BRID))
 									.put(existing_Mauzapara, submission.getField(existing_Mauzapara))
-									.put(today, submission.getField(today))
+									.put(death_today, submission.getField(death_today))
 									.put(start, submission.getField(start))
 									.put(end , submission.getField(end))
 									.put(Visit_Date, submission.getField(Visit_Date))

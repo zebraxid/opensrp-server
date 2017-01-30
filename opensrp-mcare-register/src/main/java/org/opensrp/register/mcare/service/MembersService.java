@@ -186,7 +186,7 @@ public class MembersService {
 									.put(start, submission.getField(start))
 									.put(end, submission.getField(end))
 									.put(ELCO_Date, submission.getField(ELCO_Date))
-									.put(ELCO_Status, submission.getField(ELCO_Status))
+									.put(Visit_Status, submission.getField(Visit_Status))
 									.put(Wom_Met, submission.getField(Wom_Met))
 									.put(Confirm_Info, submission.getField(Confirm_Info))
 									.put(Marriage_Date, submission.getField(Marriage_Date))
@@ -271,10 +271,10 @@ public class MembersService {
 		members.Elco_Followup().add(Elco_Followup);
 		allMembers.update(members);
 		
-		logger.info("Value found submission.getField(ELCO_Status): " + submission.getField(ELCO_Status));
+		logger.info("Value found submission.getField(Visit_Status): " + submission.getField(Visit_Status));
 		logger.info("Value found submission.getField(Preg_Status): " + submission.getField(Preg_Status));
   
-		if (submission.getField(ELCO_Status) != null && submission.getField(ELCO_Status).equalsIgnoreCase("2")) 
+		if (submission.getField(Visit_Status) != null && submission.getField(Visit_Status).equalsIgnoreCase("2")) 
 		{
 			//membersScheduleService.enrollAfterimmediateVisit(submission.entityId(),submission.anmId(),submission.getField(today),
 			//	submission.instanceId(),ELCO_SCHEDULE_PSRF,IMD_ELCO_SCHEDULE_PSRF);
@@ -671,7 +671,7 @@ public class MembersService {
 		}		
 	}	
 	
-	public void childRegistratonHandler(FormSubmission submission) {		
+public void childRegistratonHandler(FormSubmission submission) {		
 		
 		SubFormData subFormData = submission
 				.getSubFormByName(MEMBERS_REGISTRATION_SUB_FORM_NAME);	
@@ -761,6 +761,8 @@ public class MembersService {
 				.put(Premature_Birth, membersFields.get(Premature_Birth))
 				.put(Reg_Newborn, membersFields.get(Reg_Newborn))
 				.put(Retype_Mem_BRID, membersFields.get(Retype_Mem_BRID))
+				.put(mother_relational_ID, membersFields.get(mother_relational_ID))
+				.put(mother_UUID, membersFields.get(mother_UUID))
 				.put(received_time, dateTime.format(today).toString()).map();
 			
 				if(membersFields.containsKey(Member_GoB_HHID)){
@@ -803,7 +805,7 @@ public class MembersService {
 								.put(existing_ELCO_BRID, submission.getField(existing_ELCO_BRID))
 								.put(existing_Mem_BRID, submission.getField(existing_Mem_BRID))
 								.put(existing_Mauzapara, submission.getField(existing_Mauzapara))
-								.put(today, submission.getField(today))
+								.put(child_today, submission.getField(child_today))
 								.put(start, submission.getField(start))
 								.put(end , submission.getField(end ))
 								.put(Visit_Date, submission.getField(Visit_Date))
@@ -843,7 +845,7 @@ public class MembersService {
 				
 			if (submission.getField(Visit_Status) != null && !submission.getField(Visit_Status).equalsIgnoreCase("")){	
 				if(submission.getField(Visit_Status).equalsIgnoreCase("3") || submission.getField(Visit_Status).equalsIgnoreCase("2")){					
-				membersScheduleService.enrollIntoMilestoneOfChild_vaccination(submission.entityId(), submission.getField(today), submission.anmId(),
+				membersScheduleService.enrollIntoMilestoneOfChild_vaccination(submission.entityId(), submission.getField(child_today), submission.anmId(),
 						submission.instanceId());				
 				}
 			}

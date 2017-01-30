@@ -21,7 +21,7 @@ public class AllConstants {
 
 
     public static class Form {
-    	public static final String HH_REGISTRATION = "newHH";
+    	public static final String HH_REGISTRATION = "new_household_registration";
     	public static final String MEMBERS_REGISTRATION = "census_enrollment";
     	public static final String BNF_Handler = "birth_notification";
     	public static final String BirthOutcome_Handler = "birthoutcome";
@@ -29,7 +29,7 @@ public class AllConstants {
     	public static final String NewBornHandler = "new_born_information";
     	public static final String GeneralHandler = "general";
     	public static final String Child_FollowupHandler = "childregistration";
-    	public static final String Child_05yrHandler = "Child_0-5yr";
+    	public static final String Child_05yrHandler = "child_zero_to_five_form";
     	public static final String Elco_FollowupHandler = "elco_followup";
     	public static final String Elco_RegisterHandler = "elco_register";
     	public static final String BCGHandler_ = "BCGHandler";
@@ -43,9 +43,9 @@ public class AllConstants {
     	public static final String PNCVisit2Handler = "pnc_visit2";
     	public static final String PNCVisit3Handler = "pnc_visit3";
     	public static final String PNCVisit4Handler = "pnc_visit4";      	
-    	public static final String InjectablesHandler = "injectables";  
+    	public static final String InjectablesHandler = "injectable";  
     	public static final String AdolescentHealthHandler = "adolescent_health";  
-    	public static final String NutritionHandler = "nutrition_handler";  
+    	public static final String NutritionHandler = "nutrition";  
     	public static final String DeathRegHandler = "death_reg";      	
     	public static final String BNF_FORM = "birthnotificationpregnancystatusfollowup";
     	public static final String TT_Visit_Handler = "woman_tt_form";
@@ -167,6 +167,7 @@ public class AllConstants {
     	public static final String 	 Today	 = "Today";
     	public static final String 	 Start	 = "Start";
     	public static final String 	 End	 = "End";
+    	public static final String 	 injectable_Today = "injectable_Today";
     	public static final String 	 Member_GoB_HHID	 = "Member_GoB_HHID";
     	public static final String 	 Mem_F_Name	 = "Mem_F_Name";
     	public static final String 	 Mem_L_Name	 = "Mem_L_Name";
@@ -186,6 +187,8 @@ public class AllConstants {
     	public static final String 	 Mem_NID_Concept	 = "Mem_NID_Concept";
     	public static final String 	 Mem_BRID	 = "Mem_BRID";
     	public static final String 	 Retype_Mem_BRID	 = "Retype_Mem_BRID";
+    	public static final String 	 mother_relational_ID = "mother_relational_ID"; 
+    	public static final String 	 mother_UUID = "mother_UUID";
     	public static final String 	 Mem_BRID_Concept	 = "Mem_BRID_Concept";
     	public static final String 	 Mem_Mobile_Number	 = "Mem_Mobile_Number";
     	public static final String 	 Mem_Marital_Status	 = "Mem_Marital_Status";
@@ -251,6 +254,9 @@ public class AllConstants {
     	public static final String 	today	 = "today";
     	public static final String 	start	 = "start";
     	public static final String 	end	 = "end";
+    	public static final String 	death_today = "death_today";
+    	public static final String 	child_today = "child_today";
+    	public static final String 	adolescent_today = "adolescent_today";
     	public static final String 	ELCO_Date	 = "ELCO_Date";
     	public static final String 	ELCO_Status	 = "ELCO_Status";
     	public static final String 	Wom_Met	 = "Wom_Met";
