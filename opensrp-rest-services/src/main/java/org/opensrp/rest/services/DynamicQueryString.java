@@ -17,10 +17,12 @@ public class DynamicQueryString {
 		int paramCounter = 1;
 		for(Entry<String, String> entry : preparedParameters.entrySet())
 		{
-			makeQueryString+=entry.getKey()+":"+entry.getValue();
-			
-			if(preparedParameters.size()>paramCounter)
-				makeQueryString+=" AND ";			
+			if(!entry.getKey().equalsIgnoreCase("p")){
+				makeQueryString+=entry.getKey()+":"+entry.getValue();
+				
+				if(preparedParameters.size()>paramCounter)
+					makeQueryString+=" AND ";	
+			}
 			paramCounter++;
 		}	
 		return makeQueryString;

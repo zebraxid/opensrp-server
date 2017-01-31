@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.ektorp.ComplexKey;
 import org.ektorp.CouchDbConnector;
+import org.ektorp.ViewQuery;
 import org.ektorp.support.View;
 import org.motechproject.dao.MotechBaseRepository;
 import org.opensrp.camp.dao.Camp;
@@ -78,20 +79,22 @@ public class CampDateRepository extends MotechBaseRepository<CampDate> {
 							.includeDocs(true), CampDate.class);
 			
 		}
-	@View(name = "search", map = "function(doc) { if (doc.type === 'CampDate') { emit([doc.thana,doc.union,doc.ward,doc.unit,doc.health_assistant], null); } }")
-	public List<CampDate> search(String thana,String union,String ward,String unit,String healthAssistant,int p) {
+	
+	
+	
+	
+	@View(name = "search", map = "function(doc) { if (doc.type === 'CampDate') { emit([doc.thana,doc.union,doc.ward,doc.unit,doc.health_assistant], null); } }",reduce="_count")
+	public int search(String thana,String union,String ward,String unit,String healthAssistant) {
 		Object thanaObj;
 		Object unionObj;
 		Object wardObj;
 		Object unitObj;
-		Object healthAssistantObj;
-		
+		Object healthAssistantObj;		
 		if(thana==""){
 			 thanaObj = ComplexKey.emptyObject();
 		}else{
 			thanaObj = thana;
-		}
-		
+		}		
 		if(union == ""){
 			unionObj = ComplexKey.emptyObject();
 		}else{
@@ -110,26 +113,19 @@ public class CampDateRepository extends MotechBaseRepository<CampDate> {
 			unitObj = unit;
 		}
 		
-		if(healthAssistant ==""){
-			System.err.println("healthAssistant:"+healthAssistant);
+		if(healthAssistant ==""){			
 			healthAssistantObj = ComplexKey.emptyObject();
 		}else{
-			healthAssistantObj = healthAssistant;
-			System.out.println("healthAssistant:"+healthAssistant);
-		}
-		
-		
+			healthAssistantObj = healthAssistant;			
+		}		
 		ComplexKey startkey = ComplexKey.of(thana, union,ward,unit,healthAssistant);
 		ComplexKey endkey = ComplexKey.of(thanaObj, unionObj,wardObj,unitObj,healthAssistantObj);
 		
-		List<CampDate> camps = db.queryView(createQuery("search")
+		int camps = db.queryView(createQuery("search")
 			.startKey(startkey)	
 			.endKey(endkey)
-			.descending(false)
-			.skip(p)
-			.limit(20)
-			.includeDocs(true), CampDate.class);
-		System.out.println(camps.toString());
+			.includeDocs(false)).getRows().get(0).getValueAsInt();
+		
 		return camps;
 	}
 	

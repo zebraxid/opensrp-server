@@ -4,6 +4,7 @@ import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +12,10 @@ import org.json.JSONException;
 import org.opensrp.camp.dto.CampDTO;
 import org.opensrp.camp.service.CampDateService;
 import org.opensrp.camp.service.CampService;
+import org.opensrp.rest.register.DTO.CampDateEntryDTO;
+import org.opensrp.rest.register.DTO.CommonDTO;
+import org.opensrp.rest.register.DTO.HouseholdDTO;
+import org.opensrp.rest.services.LuceneCampDateService;
 import org.opensrp.service.ClientListForCamp;
 import org.opensrp.web.listener.CampListener;
 import org.slf4j.Logger;
@@ -19,11 +24,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.google.gson.Gson;
 
 @Controller
@@ -36,6 +44,9 @@ public class CampController {
 	private CampListener campListener;
 	private ClientListForCamp clientListForCamp;
 	private static Logger logger = LoggerFactory.getLogger(CampController.class);
+	
+	@Autowired
+	private LuceneCampDateService luceneCampDateService;
 	
 	@Autowired
 	public void setCampDateService(CampDateService campDateService) {
@@ -103,13 +114,8 @@ public class CampController {
 	@RequestMapping(headers = { "Accept=application/json" }, method = GET, value = "/camp/search")
 	@ResponseBody
 	public ResponseEntity<String> search(@RequestParam String thana,@RequestParam String union,
-		@RequestParam String ward,@RequestParam String unit,@RequestParam String healthAssistant,@RequestParam int p) {		
-		System.out.println(new Gson().toJson(campDateService.search(thana,union,ward,unit,healthAssistant,p)));
-		List<Object> list =new ArrayList<>();
-		list.add(new Gson().toJson(campDateService.search(thana,union,ward,unit,healthAssistant,p)));
-		list.add(120);
-		
-		return new ResponseEntity<>(new Gson().toJson(list), HttpStatus.OK);
+		@RequestParam String ward,@RequestParam String unit,@RequestParam String healthAssistant,@RequestParam int p) {
+		return new ResponseEntity<>(new Gson().toJson(campDateService.search(thana,union,ward,unit,healthAssistant,p)), HttpStatus.OK);
 	}
 	
 	@RequestMapping(method = GET, value = "/camp-announcement")
@@ -130,4 +136,13 @@ public class CampController {
 
 		return new ResponseEntity<>(new Gson().toJson(clientListForCamp.clientList(anmIdentifier, timeStamp)), HttpStatus.OK);
 	}
+	
+	@RequestMapping(method = GET, value="/camp-date/search")
+    @ResponseBody
+	public ResponseEntity<CommonDTO<CampDateEntryDTO>> getHouseHolds(@RequestParam MultiValueMap<String, String> queryParameters,@RequestParam int p) throws JsonParseException, JsonMappingException, IOException
+	{
+		CommonDTO<CampDateEntryDTO>  campDateDate  = luceneCampDateService.getData(queryParameters,p);
+		 return new ResponseEntity<>(campDateDate, HttpStatus.OK);
+	}
+	
 }
