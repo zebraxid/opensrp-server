@@ -271,21 +271,24 @@ public class DataCountService {
 	}
 		
 	private CountServiceDTO getHouseholdCount(String provider,String startMonth,String endMonth,String startWeek,String endWeek,CountServiceDTO commonServiceDTO){
-		commonServiceDTO.setHouseholdTotalCount(allHouseHolds.findAllHouseHolds().size()) ;  //this should be improved using count(*) style query
+		//commonServiceDTO.setHouseholdTotalCount(allHouseHolds.findAllHouseHolds().size()) ;  //this should be improved using count(*) style query
+		commonServiceDTO.setHouseholdTotalCount(allHouseHolds.countHouseHolds()) ;
 		commonServiceDTO.setHouseholdTodayCount(luceneHouseHoldService.getHouseholdCount("",""));
 		commonServiceDTO.setHouseholdThisMonthCount(luceneHouseHoldService.getHouseholdCount(startMonth, endMonth));
 		commonServiceDTO.setHouseholdThisWeekCount(luceneHouseHoldService.getHouseholdCount(startWeek, endWeek));
 		return commonServiceDTO;
 	}
 	private CountServiceDTO getElcoCount(String provider,String startMonth,String endMonth,String startWeek,String endWeek,CountServiceDTO commonServiceDTO){
-		commonServiceDTO.setElcoTotalCount(allElcos.findAllELCOs().size());
+		//commonServiceDTO.setElcoTotalCount(allElcos.findAllELCOs().size());
+		commonServiceDTO.setElcoTotalCount(allElcos.countElcos());
 		commonServiceDTO.setElcoThisMonthCount(luceneElcoService.getElcoCount(startMonth, endMonth));
 		commonServiceDTO.setElcoThisWeekCount(luceneElcoService.getElcoCount(startWeek, endWeek));
 		commonServiceDTO.setElcoTodayCount(luceneElcoService.getElcoCount("", ""));
 		return commonServiceDTO;
 	}
 	private CountServiceDTO getMotherCount(String provider,String startMonth,String endMonth,String startWeek,String endWeek,CountServiceDTO commonServiceDTO){
-		commonServiceDTO.setPwTotalCount(allMothers.allOpenMothers().size());
+		//commonServiceDTO.setPwTotalCount(allMothers.allOpenMothers().size());
+		commonServiceDTO.setPwTotalCount(allMothers.countMothers());
 		int[] countsForChart = new int[23];
 		countsForChart = this.getMotherCountInformationForHomePage();
 		commonServiceDTO.setPwThisMonthCount(countsForChart[15] + countsForChart[16] + countsForChart[17] + countsForChart[18] + countsForChart[19]);//(luceneMotherService.getMotherCount(startMonth, endMonth));

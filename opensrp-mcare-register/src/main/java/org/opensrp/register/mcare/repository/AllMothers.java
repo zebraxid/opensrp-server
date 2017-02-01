@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.ektorp.ComplexKey;
 import org.ektorp.CouchDbConnector;
+import org.ektorp.ViewResult;
 import org.ektorp.support.GenerateView;
 import org.ektorp.support.View;
 import org.motechproject.dao.MotechBaseRepository;
@@ -63,8 +64,14 @@ public class AllMothers extends MotechBaseRepository<Mother> {
 	// map reduce query
     @View(name = "motherCount", map = "function(doc) { if (doc.type === 'Mother') { emit(doc.id); } }",reduce="_count")
     public int countMothers() {
-        System.out.println("Mother time start:"+System.currentTimeMillis());
-        return db.queryView(createQuery("motherCount")).getRows().get(0).getValueAsInt();  
+        //System.out.println("Mother time start:"+System.currentTimeMillis());
+        //return db.queryView(createQuery("motherCount")).getRows().get(0).getValueAsInt();  
+    	ViewResult result =  db.queryView(createQuery("motherCount")); 
+        int  count = 0;
+        if(!result.getRows().isEmpty()){
+            count = result.getRows().get(0).getValueAsInt();
+        }
+        return count;
     }
     
 	/*

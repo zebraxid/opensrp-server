@@ -172,8 +172,14 @@ public class AllHouseHolds extends MotechBaseRepository<HouseHold> {
 	// map reduce query
     @View(name = "householdCount", map = "function(doc) { if (doc.type === 'HouseHold') { emit(doc.id); } }",reduce="_count")
     public int countHouseHolds() {
-        System.out.println("HouseHold time start:"+System.currentTimeMillis());
-        return db.queryView(createQuery("householdCount")).getRows().get(0).getValueAsInt();
+        //System.out.println("HouseHold time start:"+System.currentTimeMillis());
+        //return db.queryView(createQuery("householdCount")).getRows().get(0).getValueAsInt();
+    	ViewResult result =  db.queryView(createQuery("householdCount")); 
+        int  count = 0;
+        if(!result.getRows().isEmpty()){
+            count = result.getRows().get(0).getValueAsInt();
+        }
+        return count;
     }
     
     @View(name = "created_newhh_in_between_2_dates", map = "function(doc) { if(doc.type === 'HouseHold' && doc.type && doc.SUBMISSIONDATE) { " +

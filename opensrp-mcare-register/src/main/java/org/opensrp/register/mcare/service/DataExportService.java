@@ -228,7 +228,7 @@ public class DataExportService{
 			            }            
 					}
 					else{		
-						for(int y=1;y<=15;y++){
+						for(int y=1;y<=14;y++){
 							writer.append(',');
 							writer.append("");
 						}           
