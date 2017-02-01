@@ -111,11 +111,11 @@ public class CampController {
 		return new ResponseEntity<>(message, HttpStatus.OK);
 	}
 	
-	@RequestMapping(headers = { "Accept=application/json" }, method = GET, value = "/camp/search")
+	@RequestMapping(headers = { "Accept=application/json" }, method = GET, value = "/camp/count")
 	@ResponseBody
 	public ResponseEntity<String> search(@RequestParam String thana,@RequestParam String union,
-		@RequestParam String ward,@RequestParam String unit,@RequestParam String healthAssistant,@RequestParam int p) {
-		return new ResponseEntity<>(new Gson().toJson(campDateService.search(thana,union,ward,unit,healthAssistant,p)), HttpStatus.OK);
+		@RequestParam String ward,@RequestParam String unit,@RequestParam String healthAssistant) {
+		return new ResponseEntity<>(new Gson().toJson(campDateService.search(thana,union,ward,unit,healthAssistant)), HttpStatus.OK);
 	}
 	
 	@RequestMapping(method = GET, value = "/camp-announcement")
@@ -139,9 +139,9 @@ public class CampController {
 	
 	@RequestMapping(method = GET, value="/camp-date/search")
     @ResponseBody
-	public ResponseEntity<CommonDTO<CampDateEntryDTO>> getHouseHolds(@RequestParam MultiValueMap<String, String> queryParameters,@RequestParam int p) throws JsonParseException, JsonMappingException, IOException
+	public ResponseEntity<CommonDTO<CampDateEntryDTO>> getHouseHolds(@RequestParam MultiValueMap<String, String> queryParameters,@RequestParam int p,@RequestParam int limit) throws JsonParseException, JsonMappingException, IOException
 	{
-		CommonDTO<CampDateEntryDTO>  campDateDate  = luceneCampDateService.getData(queryParameters,p);
+		CommonDTO<CampDateEntryDTO>  campDateDate  = luceneCampDateService.getData(queryParameters,p,limit);
 		 return new ResponseEntity<>(campDateDate, HttpStatus.OK);
 	}
 	

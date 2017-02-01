@@ -12,19 +12,25 @@ import org.springframework.util.MultiValueMap;
 public class DynamicQueryString {
 	
 	public String  makeDynamicQueryAsString(MultiValueMap<String, String> queryParameters){
+		if(queryParameters.containsKey("p")){
+			queryParameters.remove("p");
+		}
+		if(queryParameters.containsKey("limit")){
+			queryParameters.remove("limit");
+		}
+		
 		Map<String, String> preparedParameters = prepareParameters(queryParameters);
 		String makeQueryString = "";
-		int paramCounter = 1;
+		int paramCounter = 1;		
 		for(Entry<String, String> entry : preparedParameters.entrySet())
-		{
-			if(!entry.getKey().equalsIgnoreCase("p")){
-				makeQueryString+=entry.getKey()+":"+entry.getValue();
-				
+		{			
+			makeQueryString+=entry.getKey()+":"+entry.getValue();				
 				if(preparedParameters.size()>paramCounter)
 					makeQueryString+=" AND ";	
-			}
+			
 			paramCounter++;
-		}	
+		}
+		System.out.println("makeQueryString:"+makeQueryString);
 		return makeQueryString;
 		
 	}

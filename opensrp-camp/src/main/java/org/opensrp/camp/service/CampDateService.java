@@ -101,7 +101,7 @@ public class CampDateService implements CampInterface<CampDate>{
 	    return campDateRepository.findById(id);
     }
 	
-	public int search(String thana,String union,String ward,String unit,String healthAssistant,int p ){
+	public int search(String thana,String union,String ward,String unit,String healthAssistant ){
 		
 		return campDateRepository.search(thana, union, ward, unit, healthAssistant);
 	}

@@ -1,26 +1,14 @@
 package org.opensrp.rest.services;
 
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.json.JSONObject;
-import org.opensrp.camp.repository.CampDateRepository;
 import org.opensrp.rest.register.DTO.CampDateEntryDTO;
 import org.opensrp.rest.register.DTO.CommonDTO;
-import org.opensrp.rest.register.DTO.VaccineDTO;
-import org.opensrp.rest.register.DTO.VaccineEntryDTO;
 import org.opensrp.rest.repository.LuceneCampDateRepository;
-import org.opensrp.rest.repository.LuceneVaccineRepository;
-import org.opensrp.rest.util.ConvertDateStringToTimestampMills;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.MultiValueMap;
@@ -47,14 +35,14 @@ public class LuceneCampDateService {
 		this.luceneCampDateRepository = luceneCampDateRepository;		
 	}
 
-	public CommonDTO<CampDateEntryDTO> getData(MultiValueMap<String, String> queryParameters,int p) throws JsonParseException, JsonMappingException,
+	public CommonDTO<CampDateEntryDTO> getData(MultiValueMap<String, String> queryParameters,int p,int limit) throws JsonParseException, JsonMappingException,
 			IOException {
 		ObjectMapper mapper = new ObjectMapper();		
 		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 		mapper.setVisibilityChecker(VisibilityChecker.Std.defaultInstance()
 				.withFieldVisibility(JsonAutoDetect.Visibility.ANY));		
 		LuceneResult luceneResult = luceneCampDateRepository
-				.getData(dynamicQueryString.makeDynamicQueryAsString(queryParameters), p);
+				.getData(dynamicQueryString.makeDynamicQueryAsString(queryParameters), p,limit);
 		List<Row> rows = luceneResult.getRows();
 		 
 		List<CampDateEntryDTO> dataList = new ArrayList<CampDateEntryDTO>();

@@ -5,6 +5,8 @@ import java.util.List;
 import org.ektorp.ComplexKey;
 import org.ektorp.CouchDbConnector;
 import org.ektorp.ViewQuery;
+import org.ektorp.ViewResult;
+import org.ektorp.ViewResult.Row;
 import org.ektorp.support.View;
 import org.motechproject.dao.MotechBaseRepository;
 import org.opensrp.camp.dao.Camp;
@@ -73,15 +75,10 @@ public class CampDateRepository extends MotechBaseRepository<CampDate> {
 	}
 	
 	@View(name = "all_camp_with_username", map = "function(doc) { if (doc.type === 'CampDate' && doc.username) { emit(doc._id,null); } }")
-		public List<CampDate> getAllCamp() {
-			return db.queryView(
-					createQuery("all_camp_with_user")
-							.includeDocs(true), CampDate.class);
+	public List<CampDate> getAllCamp() {
+		return db.queryView(createQuery("all_camp_with_user").includeDocs(true), CampDate.class);
 			
-		}
-	
-	
-	
+	}
 	
 	@View(name = "search", map = "function(doc) { if (doc.type === 'CampDate') { emit([doc.thana,doc.union,doc.ward,doc.unit,doc.health_assistant], null); } }",reduce="_count")
 	public int search(String thana,String union,String ward,String unit,String healthAssistant) {
@@ -121,12 +118,17 @@ public class CampDateRepository extends MotechBaseRepository<CampDate> {
 		ComplexKey startkey = ComplexKey.of(thana, union,ward,unit,healthAssistant);
 		ComplexKey endkey = ComplexKey.of(thanaObj, unionObj,wardObj,unitObj,healthAssistantObj);
 		
-		int camps = db.queryView(createQuery("search")
+		ViewResult result =  db.queryView(createQuery("search")
 			.startKey(startkey)	
 			.endKey(endkey)
-			.includeDocs(false)).getRows().get(0).getValueAsInt();
+			.includeDocs(false));
 		
-		return camps;
+		int  count = 0;
+		if(!result.getRows().isEmpty()){
+			count = result.getRows().get(0).getValueAsInt();
+		}
+		return count;
+		
 	}
 	
 }
