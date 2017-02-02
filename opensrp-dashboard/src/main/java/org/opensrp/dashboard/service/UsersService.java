@@ -390,7 +390,7 @@ public class UsersService {
 			return userByUserName.getRoles();					
 			
 		}
-	}
+	}	
 	
 	public String ifUserExists(String userName) {
 		User userByUserName = allUsers.findUserByUserName(userName);

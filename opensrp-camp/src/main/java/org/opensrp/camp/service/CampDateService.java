@@ -39,13 +39,9 @@ public class CampDateService implements CampInterface<CampDate>{
 	
 	public List<CampDate> getCampDateBySessionId(String session_id) {
 		List<CampDate> campDates = campDateRepository.findBySessionId(session_id);
-		Gson gson = new Gson();
-		// convert your list to json
-		String jsonCartList = gson.toJson(campDates);
-		
-		logger.info("Camp : " + jsonCartList.toString());
+		Gson gson = new Gson();		
+		String jsonCartList = gson.toJson(campDates);		
 		return campDates;
-		
 	}	
 	
 	public CampDate CampDateDTO2CampDate(CampDateDTO campDateDTO,Camp camp,CampDTO campDTO) throws ParseException{
@@ -101,9 +97,9 @@ public class CampDateService implements CampInterface<CampDate>{
 	    return campDateRepository.findById(id);
     }
 	
-	public int search(String thana,String union,String ward,String unit,String healthAssistant ){
+	public int getCountCampDateForSearch(String thana,String union,String ward,String unit,String healthAssistant ){
 		
-		return campDateRepository.search(thana, union, ward, unit, healthAssistant);
+		return campDateRepository.findCountCampDateForSearch(thana, union, ward, unit, healthAssistant);
 	}
 	public List<CampDate> findCampByToday(String HA){		
 		return campDateRepository.findByTimeStampByHealthAssistant(DateTimeUtil.getTimeStampTodatDay(),HA);	
@@ -131,5 +127,8 @@ public class CampDateService implements CampInterface<CampDate>{
 	    // TODO Auto-generated method stub
 		return campDateRepository.findByTimeStamp(DateTimeUtil.getTimeStampTodatDay());
     }
+	public int getCountCampByUserNameAndStatus(String user,String status){
+		return campDateRepository.findCountCampByUserNameAndStatus(user,status);
+	}
 	
 }

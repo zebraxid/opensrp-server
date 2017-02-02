@@ -55,7 +55,19 @@ public class LuceneCampDateService {
 		}
 		return new CommonDTO<CampDateEntryDTO>(dataList);
 	}
-
+	public int getDataCount(MultiValueMap<String, String> queryParameters) throws JsonParseException, JsonMappingException,
+		IOException {
+		ObjectMapper mapper = new ObjectMapper();		
+		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+		mapper.setVisibilityChecker(VisibilityChecker.Std.defaultInstance()
+				.withFieldVisibility(JsonAutoDetect.Visibility.ANY));		
+		return luceneCampDateRepository
+				.getDataCount(dynamicQueryString.makeDynamicQueryAsString(queryParameters));
+		
+		
+		
+	}
+	
 	
 	
 }

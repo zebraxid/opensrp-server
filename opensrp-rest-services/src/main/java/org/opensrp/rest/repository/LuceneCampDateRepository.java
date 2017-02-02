@@ -45,8 +45,7 @@ public class LuceneCampDateRepository extends CouchDbRepositorySupportWithLucene
 		initStandardDesignDocument();
 	}
 	
-	public LuceneResult getData(String queryString,int skip,int limit) {
-		System.out.println("Query:"+queryString);
+	public LuceneResult getData(String queryString,int skip,int limit) {		
 		String sortField =  "\\" + "timestamp"; 
         LuceneDesignDocument designDoc = db.get(LuceneDesignDocument.class, stdDesignDocumentId);        
         LuceneQuery query = new LuceneQuery(designDoc.getId(), "camp_date"); 
@@ -56,5 +55,14 @@ public class LuceneCampDateRepository extends CouchDbRepositorySupportWithLucene
         query.setLimit(limit);
         query.setSort(sortField);
         return db.queryLucene(query); 
-    } 
+    }
+
+	public int  getDataCount(String queryString) {		
+        LuceneDesignDocument designDoc = db.get(LuceneDesignDocument.class, stdDesignDocumentId);        
+        LuceneQuery query = new LuceneQuery(designDoc.getId(), "camp_date"); 
+        query.setQuery(queryString); 
+        query.setStaleOk(true);   
+        
+        return db.queryLucene(query).getTotalRows(); 
+	} 
 }

@@ -116,45 +116,32 @@ public class AclController {
 	
 	@RequestMapping(headers = { "Accept=application/json" }, method = POST, value = "/add-role")
 	public ResponseEntity<String> addRole(@RequestBody RoleDTO roleDTO) {
-		logger.info("create request received for role - " + roleDTO.getName());
-		/*List<PrivilegeDTO> privileges = roleDTO.getPrivileges();
-		for(int i = 0 ; i < privileges.size(); i++){
-			logger.info("Privilege name - " + privileges.get(i).getName() + " - id - " + privileges.get(i).getId());
-		}*/
 		String message = roleService.addRole(roleDTO);//privilegeService.addPrivilege(privilegeDTO);		
 		return new ResponseEntity<>(message,OK);
-		//return new ResponseEntity<>("1",OK);
-		//return "1";
+		
 	}
 	
 	@RequestMapping(headers = { "Accept=application/json" }, method = POST, value = "/edit-role")
-	public ResponseEntity<String> editRole(@RequestBody RoleDTO roleDTO) {
-		logger.info("create request received for role - " + roleDTO.getName());
+	public ResponseEntity<String> editRole(@RequestBody RoleDTO roleDTO) {		
 		String message = roleService.editRole(roleDTO);//privilegeService.addPrivilege(privilegeDTO);		
 		return new ResponseEntity<>(message,OK);
-		//return new ResponseEntity<>("1",OK);
-		//return "1";
+		
 	}
 	
 	@RequestMapping(method = GET, value = "role-by-name")
 	@ResponseBody
-	public RoleDTO getRoleByName(@RequestParam String roleName) {
-		logger.info("requeset reached with - " + roleName );
+	public RoleDTO getRoleByName(@RequestParam String roleName) {		
 		return roleService.getRoleByName(roleName);
 	}
 	
 	@RequestMapping(headers = { "Accept=application/json" }, method = POST, value = "/add-user")
 	public ResponseEntity<String> addUser(@RequestBody UserDTO userDTO) {
-		logger.info("create request received for user - " + userDTO.getName());
-		
 		String message = userService.addUser(userDTO);		
 		return new ResponseEntity<>(message,OK);
 	}
 	
 	@RequestMapping(headers = { "Accept=application/json" }, method = POST, value = "/edit-user")
 	public ResponseEntity<String> editUser(@RequestBody UserDTO userDTO) {
-		logger.info("update request received for user - " + userDTO.getUserName());
-		
 		String message = userService.editUser(userDTO);		
 		return new ResponseEntity<>(message,OK);
 	}
@@ -191,8 +178,7 @@ public class AclController {
 	
 	@RequestMapping( method = GET, value = "/valid-username")
 	@ResponseBody
-	public ResponseEntity<String> isUsernameAvailable(@RequestParam String userName) {
-		logger.info("check if user with name -" + userName + " exists.");
+	public ResponseEntity<String> isUsernameAvailable(@RequestParam String userName) {		
 		String message = userService.ifUserExists(userName);		
 		return new ResponseEntity<>(message,OK);
 	}
@@ -207,50 +193,38 @@ public class AclController {
 	
 	@RequestMapping(headers = { "Accept=application/json" }, method = POST, value = "/edit-location-tag")
 	public ResponseEntity<String> editLocationTag(@RequestBody LocationTagDTO locationTagDTO) {
-		logger.info("edit request received for locationTag - " + locationTagDTO.getName());
-		
 		String message = locationTagService.editLocationTag(locationTagDTO);		
 		return new ResponseEntity<>(message,OK);
 	}
 	
 	@RequestMapping( method = DELETE, value = "/delete-location-tag")
 	public ResponseEntity<String> deleteLocationTag(@RequestParam String locationTagId) {
-		logger.info("delete request received for locationTag with Id- " + locationTagId);
-		
 		String message = locationTagService.deleteLocationTag(locationTagId);		
 		return new ResponseEntity<>(message,OK);
 	}
 	
 	@RequestMapping(headers = { "Accept=application/json" }, method = POST, value = "/add-dashboard-location")
 	public ResponseEntity<String> addDashboardLocation(@RequestBody DashboardLocationDTO dashboardLoactionDTO) {
-		logger.info("create request received for dashboardLocation - " + dashboardLoactionDTO.getName() + " with parentId" + dashboardLoactionDTO.getParentId());
-		
 		String message = dashboardLocationService.addDashboardLocation(dashboardLoactionDTO);		
 		return new ResponseEntity<>(message,OK);
 	}
 	
 	@RequestMapping(headers = { "Accept=application/json" }, method = POST, value = "/edit-dashboard-location")
 	public ResponseEntity<String> editDashboardLocation(@RequestBody DashboardLocationDTO dashboardloactionDTO) {
-		logger.info("edit request received for dashboardLocation with id- " + dashboardloactionDTO.getId());
-		
 		String message = dashboardLocationService.editDashboardLocation(dashboardloactionDTO);
 		return new ResponseEntity<>(message,OK);
 	}
 	
 	@RequestMapping( method = DELETE, value = "/delete-dashboard-location")
-	public ResponseEntity<String> deleteDashboardLocation(@RequestParam String dashboardLocationId) {
-		logger.info("delete request received for dashboardLocation with id - " + dashboardLocationId);
-		
+	public ResponseEntity<String> deleteDashboardLocation(@RequestParam String dashboardLocationId) {		
 		String message = dashboardLocationService.deleteDashboardLocation(dashboardLocationId);		
 		return new ResponseEntity<>(message,OK);
 	}
 	
 	@RequestMapping( method = GET, value = "/get-children-locations")
 	@ResponseBody
-	public List<DashboardLocationDTO> getChildrenLocations(@RequestParam String dashboardLocationId) {
-		logger.info("fetch request for children locations of id -" + dashboardLocationId);
+	public List<DashboardLocationDTO> getChildrenLocations(@RequestParam String dashboardLocationId) {		
 		List<DashboardLocationDTO> childrenLocations = dashboardLocationService.getChildrenLocations(dashboardLocationId);
-		//return new ResponseEntity<>(childrenLocations,OK);
 		return childrenLocations;
 	}
 	
@@ -277,79 +251,62 @@ public class AclController {
 	// maybe of no use
 	@RequestMapping( method = GET, value = "/get-locations-by-parent-and-tag")
 	@ResponseBody
-	public List<DashboardLocationDTO> getDashboardLocationsByParentAndTag(@RequestParam String parentLocationId, @RequestParam String tagId) {
-		logger.info("fetch request for locations wiht parent -" + parentLocationId + " and tag- " + tagId);
+	public List<DashboardLocationDTO> getDashboardLocationsByParentAndTag(@RequestParam String parentLocationId, @RequestParam String tagId) {		
 		List<DashboardLocationDTO> locations = dashboardLocationService.getDashboardLocationsByParentAndTag(parentLocationId, tagId);
-		//return new ResponseEntity<>(childrenLocations,OK);
 		return locations;
 	}
 	
 	@RequestMapping( method = GET, value = "/get-locations-by-tag")
 	@ResponseBody
-	public List<DashboardLocationDTO> getDashboardLocationsByTag(@RequestParam String tagId) {
-		logger.info("fetch request for locations with tag- " + tagId);
-		List<DashboardLocationDTO> locations = dashboardLocationService.getDashboardLocationsByTag(tagId);
-		//return new ResponseEntity<>(childrenLocations,OK);
+	public List<DashboardLocationDTO> getDashboardLocationsByTag(@RequestParam String tagId) {		
+		List<DashboardLocationDTO> locations = dashboardLocationService.getDashboardLocationsByTag(tagId);		
 		return locations;
 	}
 	
 	@RequestMapping( method = GET, value = "/get-location-by-id")
 	@ResponseBody
-	public DashboardLocationDTO getDashboardLocationById(@RequestParam String locationId) {
-		logger.info("fetch request for location with id- " + locationId);
-		DashboardLocationDTO locationById = dashboardLocationService.getDashboardLocationById(locationId);
-		//return new ResponseEntity<>(childrenLocations,OK);
+	public DashboardLocationDTO getDashboardLocationById(@RequestParam String locationId) {		
+		DashboardLocationDTO locationById = dashboardLocationService.getDashboardLocationById(locationId);		
 		return locationById;
 	}
 	
 	@RequestMapping( method = GET, value = "/get-children-locations-of-root")
 	@ResponseBody
 	public List<DashboardLocationDTO> getChildrenLocationsOfRoot() {
-		List<DashboardLocationDTO> locations = dashboardLocationService.getChildrenLocationsOfRoot();
-		//return new ResponseEntity<>(childrenLocations,OK);
+		List<DashboardLocationDTO> locations = dashboardLocationService.getChildrenLocationsOfRoot();		
 		return locations;
 	}
 	
 	@RequestMapping( method = GET, value = "/get-location-info")
 	@ResponseBody
-	public DashboardLocationInfoDTO getDashboardLocationInfo(@RequestParam String locationId) {
-		logger.info("fetch request for location with id- " + locationId);
+	public DashboardLocationInfoDTO getDashboardLocationInfo(@RequestParam String locationId) {		
 		DashboardLocationInfoDTO locationInfoById = dashboardLocationService.getDashboardLocationInfo(locationId);
-		//return new ResponseEntity<>(childrenLocations,OK);
 		return locationInfoById;
 	}
 	
 	@RequestMapping( method = GET, value = "/get-location-info-new")
 	@ResponseBody
-	public DashboardLocationInfoDTONew getDashboardLocationInfoNew(@RequestParam String locationId) {
-		logger.info("fetch request for location with id- " + locationId);
+	public DashboardLocationInfoDTONew getDashboardLocationInfoNew(@RequestParam String locationId) {		
 		DashboardLocationInfoDTONew locationInfoById = dashboardLocationService.getDashboardLocationInfoNew(locationId);
-		//return new ResponseEntity<>(childrenLocations,OK);
 		return locationInfoById;
 	}
 	
 	@RequestMapping( method = GET, value = "/get-data-senders-by-location")
 	@ResponseBody
-	public List<SimplifiedUser> getLeafUsersByLocation(@RequestParam String locationId) {
-		logger.info("fetch request for leaf users for location with id- " + locationId);
-		List<SimplifiedUser> users = userService.getLeafUsersByLocation(locationId);
-		//return new ResponseEntity<>(childrenLocations,OK);
+	public List<SimplifiedUser> getLeafUsersByLocation(@RequestParam String locationId) {		
+		List<SimplifiedUser> users = userService.getLeafUsersByLocation(locationId);		
 		return users;
 	}
 	
 	@RequestMapping( method = GET, value = "/get-data-senders-by-user")
 	@ResponseBody
-	public List<SimplifiedUser> getLeafUsersByUser(@RequestParam String userName) {
-		logger.info("fetch request for leaf users for user with id- " + userName);
-		List<SimplifiedUser> users = userService.getLeafUsersByUser(userName);
-		//return new ResponseEntity<>(childrenLocations,OK);
+	public List<SimplifiedUser> getLeafUsersByUser(@RequestParam String userName) {		
+		List<SimplifiedUser> users = userService.getLeafUsersByUser(userName);		
 		return users;
 	}
 	
 	@RequestMapping(headers = { "Accept=application/json" }, method = POST, value = "/assign-location-to-user")
-	public ResponseEntity<String> assignLocationToUser(@RequestBody UserDTO userDTO) {
-		logger.info("request for assigning location to user - " + userDTO.getName());
-		
+	public ResponseEntity<String> assignLocationToUser(@RequestBody UserDTO userDTO) {		
 		String message = userService.assignLocation(userDTO);		
 		return new ResponseEntity<>(message,OK);
 	}
