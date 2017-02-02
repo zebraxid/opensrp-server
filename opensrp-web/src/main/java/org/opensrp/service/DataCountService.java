@@ -191,29 +191,26 @@ public class DataCountService {
 			seperateWeeklyCountDataForRegisterFromViewResult.add(index,0);
 		}
 		WeekBoundariesAndTimestamps boundaries = DateUtil.getWeekBoundariesForDashboard();
-    	List<Long> startAndEndOfWeeksAsTimestamp = boundaries.weekBoundariesAsTimeStamp; 
-    	System.err.println("Timestamp"+startAndEndOfWeeksAsTimestamp.toString());
-    	System.err.println("Today:"+startAndEndOfWeeksAsTimestamp.get(startAndEndOfWeeksAsTimestamp.size()-1));
+    	List<Long> startAndEndOfWeeksAsTimestamp = boundaries.weekBoundariesAsTimeStamp;     	
     	int todaysCount=0;
-    	long todayTimeStamp = startAndEndOfWeeksAsTimestamp.get(startAndEndOfWeeksAsTimestamp.size()-1) ;
-    	System.err.println(todayTimeStamp);
+    	long todayTimeStamp = DateUtil.getTimestampToday() ;    	
     	for (ViewResult.Row row : vr.getRows()) {
     		String stringValue = row.getValue(); 
-    		System.out.println(Long.parseLong(stringValue));
+    		long value = Long.parseLong(stringValue);			
+			if(todayTimeStamp==value){
+				todaysCount++;
+			}
+			
     		try{ 
     			int position = DateUtil.binarySearch(Long.parseLong(stringValue), startAndEndOfWeeksAsTimestamp);
     			Integer existingCount = seperateWeeklyCountDataForRegisterFromViewResult.get(position);
     			seperateWeeklyCountDataForRegisterFromViewResult.set(position, existingCount+1);
-    			long value = Long.parseLong(stringValue);
-    			if(todayTimeStamp==value){
-    				todaysCount++;
-    			}    			
+    			   			
     		}catch(Exception e){
     			e.printStackTrace();
     		}
-    	}
-    	System.err.println("todaysCount:"+todaysCount);
-    	seperateWeeklyCountDataForRegisterFromViewResult.set(20, todaysCount);
+    	}    	
+    	
     	for(int monthIndex = 3; monthIndex >= 0; monthIndex--){
 			int month = DateUtil.getMontNumber(monthIndex);    		
     		if(monthIndex ==3 && month==1 ){
@@ -228,7 +225,7 @@ public class DataCountService {
     			
     		}
     	}
-    	
+    	seperateWeeklyCountDataForRegisterFromViewResult.set(20, todaysCount);
 		return seperateWeeklyCountDataForRegisterFromViewResult;
 	}
 	private String createRawStartKey(String provider, String district, String upazilla, String union){
