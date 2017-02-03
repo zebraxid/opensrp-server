@@ -1,5 +1,7 @@
 package org.opensrp.dto;
 
+import java.util.List;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -7,14 +9,14 @@ import org.codehaus.jackson.annotate.JsonProperty;
 
 public class CountServiceDTOForChart {
 	@JsonProperty
-	private int[] weeklyCountsForChart;
+	private List<Integer>  weeklyCountsForChart;
 
-	public int[] getCounts() {
+	public List<Integer>  getCounts() {
 		return weeklyCountsForChart;
 	}
 
-	public void setCounts(int[] weeklyCountsForChart) {
-		this.weeklyCountsForChart = weeklyCountsForChart;
+	public void setCounts(List<Integer> list) {
+		this.weeklyCountsForChart = list;
 	}
 
 	@Override

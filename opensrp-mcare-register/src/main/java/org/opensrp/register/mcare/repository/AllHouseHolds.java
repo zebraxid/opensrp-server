@@ -1,6 +1,9 @@
 package org.opensrp.register.mcare.repository;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.ektorp.ComplexKey;
@@ -93,31 +96,28 @@ public class AllHouseHolds extends MotechBaseRepository<HouseHold> {
 	}
 	
 	public ViewResult allHHsCreatedLastFourMonthsViewResult(){
-		System.err.println("Start:::"+System.currentTimeMillis());
-		Calendar cal = Calendar.getInstance();
-		
+		Calendar cal = Calendar.getInstance();  
+		SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
 		cal.set(Calendar.HOUR_OF_DAY, 0);
 		cal.set(Calendar.MINUTE, 0);
 		cal.set(Calendar.SECOND, 0);
 		cal.add(Calendar.MONTH, -3);
-		cal.set(Calendar.DAY_OF_MONTH, 1);	
-		ComplexKey start = ComplexKey.of(cal.getTime().getTime());	
-		ComplexKey end = ComplexKey.of(System.currentTimeMillis());	
+		cal.set(Calendar.DAY_OF_MONTH, 1);
+		Long startTime = 0l;
 		try{
-			ViewResult vr = db.queryView(
-					createQuery("count_last_four_month")
-					.startKey(cal.getTime().getTime())
-				    .endKey(System.currentTimeMillis())
-					.includeDocs(false));
-			
-		
-		System.err.println(vr.getTotalRows());
-		System.out.println("End Query:"+System.currentTimeMillis());
-		return vr;
+			startTime = dateFormatter.parse(dateFormatter.format(cal.getTime())).getTime();	
 		}catch(Exception e){
 			e.printStackTrace();
-			return null;
 		}
+		ViewResult vr = db.queryView(
+				createQuery("count_last_four_month")
+				.startKey(startTime)
+				.endKey(System.currentTimeMillis())	
+				//.startKey(1490896800000l)
+				//.endKey(1490896800000l)	
+				.includeDocs(false));
+		return vr;
+		
 	}
 	
 	@View(name = "created_in_last_4_months_by_location", map = "function(doc) { if(doc.type === 'HouseHold' && doc.SUBMISSIONDATE && doc.FWDISTRICT && doc.FWUPAZILLA && doc.FWUNION) { var x = new Date(); var y = new Date(x.getFullYear(), x.getMonth()-3, 0); var time = y.getTime(); if(doc.SUBMISSIONDATE > time){ emit([doc.FWDISTRICT,doc.FWUPAZILLA,doc.FWUNION], doc.SUBMISSIONDATE)} } }")

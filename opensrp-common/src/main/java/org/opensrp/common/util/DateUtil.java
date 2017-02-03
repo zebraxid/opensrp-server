@@ -100,7 +100,17 @@ public class DateUtil {
 	    }
 	    return parsed;
     }
-    
+    @SuppressWarnings("static-access")
+	public static int getMontNumber(int monthIndex){
+    	Calendar cal = Calendar.getInstance();    		
+		cal.set(Calendar.HOUR_OF_DAY, 0);
+		cal.set(Calendar.MINUTE, 0);
+		cal.set(Calendar.SECOND, 0);
+		cal.add(Calendar.MONTH, -monthIndex);
+		cal.set(Calendar.DAY_OF_MONTH, 1);		
+		return cal.get(cal.MONTH);
+		 
+    }
     public static WeekBoundariesAndTimestamps getWeekBoundariesForDashboard(){   	
     	Calendar now = GregorianCalendar.getInstance();   	
     	
@@ -318,7 +328,7 @@ public class DateUtil {
     }
     
     // weekBoundaries should have a size of even number
-    public synchronized static int dateInsideWhichWeek(long timestamp, List<Long> weekBoundaries){
+    public synchronized static int binarySearch(long timestamp, List<Long> weekBoundaries){
     	int max = weekBoundaries.size()/2 - 1, min = 0, mid = (max + min)/2;
     	while(max >= min){
     		

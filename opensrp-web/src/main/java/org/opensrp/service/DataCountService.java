@@ -94,8 +94,7 @@ public class DataCountService {
 	
 	public List<CountServiceDTOForChart> getHHCountInformation(){
 		ViewResult hhViewResult;	
-		hhViewResult = allHouseHolds.allHHsCreatedLastFourMonthsViewResult();		
-		System.err.println("hhViewResult.getRows():"+hhViewResult.getRows());
+		hhViewResult = allHouseHolds.allHHsCreatedLastFourMonthsViewResult();
 		List<CountServiceDTOForChart> DTOs= new ArrayList<CountServiceDTOForChart>();
 		CountServiceDTOForChart newDTO = new CountServiceDTOForChart();
 		newDTO.setCounts(this.convertViewResultToCount(hhViewResult));
@@ -149,10 +148,8 @@ public class DataCountService {
 	}
 	
 	public List<CountServiceDTOForChart> getMotherCountInformation(){
-		ViewResult elcoViewResult;		
-
-		//elcoViewResult = allElcos.allMothersCreatedLastFourMonthsViewResult();		
-		elcoViewResult = allHouseHolds.allHHsCreatedLastFourMonthsViewResult();
+		ViewResult elcoViewResult;
+		elcoViewResult = allElcos.allMothersCreatedLastFourMonthsViewResult();
 		List<CountServiceDTOForChart> DTOs= new ArrayList<CountServiceDTOForChart>();
 		CountServiceDTOForChart newDTO = new CountServiceDTOForChart();
 		newDTO.setCounts(this.convertViewResultToCount(elcoViewResult));
@@ -177,7 +174,7 @@ public class DataCountService {
 		return DTOs;
 	}
 	
-	public int[] getMotherCountInformationForHomePage(){
+	public List<Integer> getMotherCountInformationForHomePage(){
 		ViewResult elcoViewResult;		
 		String key = this.createRawStartKey("", "Gaibandha", "", "");
 		//elcoViewResult = allElcos.allMothersCreatedLastFourMonthsByLocationViewResult(key,key.substring(0, key.length()-1) + ",{}]");		
@@ -188,60 +185,51 @@ public class DataCountService {
 		return this.convertViewResultToCount(elcoViewResult);
 	}
 	
-	private int[] convertViewResultToCount( ViewResult vr){
-		List<Long> timestamps = new ArrayList<Long>();
-		int count = 0;
-		int[] countsForChart = new int[23];
-		Map<String , Integer> map = new HashedMap();
-		
-		Long todayTimestamp = DateUtil.getTimestampToday();
-		List<Long> weekBoundaries = DateUtil.getCurrentWeekBoundaries();		
-		List<Long> montthBoundaries = DateUtil.getMonthBoundaries();
+	private List<Integer> convertViewResultToCount( ViewResult vr){		
+		List<Integer> seperateWeeklyCountDataForRegisterFromViewResult = new ArrayList<>();
+		for (int index = 0; index < 23; index++) {
+			seperateWeeklyCountDataForRegisterFromViewResult.add(index,0);
+		}
 		WeekBoundariesAndTimestamps boundaries = DateUtil.getWeekBoundariesForDashboard();
-    	int todayCountIndex = 20, weekCountIndex = 21, monthCountIndex = 22;
-    	List<String> startAndEndOfWeeks = boundaries.weekBoundariesAsString;
     	List<Long> startAndEndOfWeeksAsTimestamp = boundaries.weekBoundariesAsTimeStamp; 
-    	System.err.println("CNRT:"+vr.getRows().size());
-    	System.err.println("startAndEndOfWeeksAsTimestamp:"+startAndEndOfWeeksAsTimestamp.toString());
+    	System.err.println("Timestamp"+startAndEndOfWeeksAsTimestamp.toString());
+    	System.err.println("Today:"+startAndEndOfWeeksAsTimestamp.get(startAndEndOfWeeksAsTimestamp.size()-1));
+    	int todaysCount=0;
+    	long todayTimeStamp = startAndEndOfWeeksAsTimestamp.get(startAndEndOfWeeksAsTimestamp.size()-1) ;
+    	System.err.println(todayTimeStamp);
     	for (ViewResult.Row row : vr.getRows()) {
     		String stringValue = row.getValue(); 
-    		count++;
-    		
-    		timestamps.add(Long.parseLong(stringValue));
-    	}
-    	
-    	//this segment will do the counting
-    	System.out.println("timestamps.size():"+timestamps.toString());
-    	for(int i = 0; i < timestamps.size(); i++){
-    		//System.err.println("timestamps.get(i):"+timestamps.get(i));
+    		System.out.println(Long.parseLong(stringValue));
     		try{ 
-    			//map.get(DateUtil.dateInsideWhichWeek(timestamps.get(i), startAndEndOfWeeksAsTimestamp))
-    			countsForChart[DateUtil.dateInsideWhichWeek(timestamps.get(i), startAndEndOfWeeksAsTimestamp)]++;
-    			//countsForChart[DateUtil.dateInsideWhichWeek(timestamps.get(i), startAndEndOfWeeksAsTimestamp)]++;
-				
+    			int position = DateUtil.binarySearch(Long.parseLong(stringValue), startAndEndOfWeeksAsTimestamp);
+    			Integer existingCount = seperateWeeklyCountDataForRegisterFromViewResult.get(position);
+    			seperateWeeklyCountDataForRegisterFromViewResult.set(position, existingCount+1);
+    			long value = Long.parseLong(stringValue);
+    			if(todayTimeStamp==value){
+    				todaysCount++;
+    			}    			
     		}catch(Exception e){
+    			e.printStackTrace();
+    		}
+    	}
+    	System.err.println("todaysCount:"+todaysCount);
+    	seperateWeeklyCountDataForRegisterFromViewResult.set(20, todaysCount);
+    	for(int monthIndex = 3; monthIndex >= 0; monthIndex--){
+			int month = DateUtil.getMontNumber(monthIndex);    		
+    		if(monthIndex ==3 && month==1 ){
+    			seperateWeeklyCountDataForRegisterFromViewResult.add(4, 0);    			
+    		}else if(monthIndex ==2 && month==1){
+    			seperateWeeklyCountDataForRegisterFromViewResult.add(9, 0);    			
+    		}else if(monthIndex ==1 && month==1){
+    			seperateWeeklyCountDataForRegisterFromViewResult.add(14, 0);    			
+    		}else if(monthIndex ==0 && month==1){
+    			seperateWeeklyCountDataForRegisterFromViewResult.add(19, 0);    			
+    		}else{
     			
     		}
-    		if(DateUtil.ifDateInsideAWeek(timestamps.get(i), todayTimestamp, todayTimestamp)){
-    			countsForChart[todayCountIndex]++;
-    		}
-    		if(DateUtil.ifDateInsideAWeek(timestamps.get(i), weekBoundaries.get(0), weekBoundaries.get(1))){
-    			countsForChart[weekCountIndex]++;
-    		}
-    		if(DateUtil.ifDateInsideAWeek(timestamps.get(i), montthBoundaries.get(0), montthBoundaries.get(0))){    			
-    			countsForChart[monthCountIndex]++;
-    		}
-    	}        
-    	int foundCount = 0;
-    	for(int i =0; i<countsForChart.length; i++){
-        	if(countsForChart[i] != 0){
-        		System.out.println("count for weekIndex - " + i + " is " + countsForChart[i]);
-        		foundCount += countsForChart[i]; 
-        	}        	
-        }
-    	System.out.println("foundCount - " + foundCount);
-    	System.out.println("End Result:"+System.currentTimeMillis());
-		return countsForChart;
+    	}
+    	
+		return seperateWeeklyCountDataForRegisterFromViewResult;
 	}
 	private String createRawStartKey(String provider, String district, String upazilla, String union){
 		String key = "";
@@ -305,11 +293,11 @@ public class DataCountService {
 	private CountServiceDTO getMotherCount(String provider,String startMonth,String endMonth,String startWeek,String endWeek,CountServiceDTO commonServiceDTO){
 		//commonServiceDTO.setPwTotalCount(allMothers.allOpenMothers().size());
 		commonServiceDTO.setPwTotalCount(allMothers.countMothers());
-		int[] countsForChart = new int[23];
+		List<Integer> countsForChart = new ArrayList<>();
 		countsForChart = this.getMotherCountInformationForHomePage();
-		commonServiceDTO.setPwThisMonthCount(countsForChart[15] + countsForChart[16] + countsForChart[17] + countsForChart[18] + countsForChart[19]);//(luceneMotherService.getMotherCount(startMonth, endMonth));
-		commonServiceDTO.setPwThisWeekCount(countsForChart[21]);
-		commonServiceDTO.setPwTodayCount(countsForChart[20]);
+		commonServiceDTO.setPwThisMonthCount(countsForChart.get(15) + countsForChart.get(16) + countsForChart.get(17) + countsForChart.get(18) + countsForChart.get(19));//(luceneMotherService.getMotherCount(startMonth, endMonth));
+		//commonServiceDTO.setPwThisWeekCount(countsForChart[21]);
+		//commonServiceDTO.setPwTodayCount(countsForChart[20]);
 		return commonServiceDTO;
 	}
 	

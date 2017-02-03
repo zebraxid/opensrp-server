@@ -9,6 +9,7 @@ import static org.opensrp.common.util.EasyMap.create;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
@@ -53,7 +54,7 @@ public class AllHouseHoldsIntegrationTest {
     	//allElcos.removeAll();
        HttpClient httpClient = new StdHttpClient.Builder() 
         //.host("localhost") 
-       	.host("192.168.22.55")
+       	.host("localhost")
         .port(5984) 
         .socketTimeout(1000) 
         .build(); 
@@ -120,7 +121,7 @@ public class AllHouseHoldsIntegrationTest {
         }
         
         for(int i = 0; i < testTimestamps.size(); i++){
-    		countsForChart[DateUtil.dateInsideWhichWeek(testTimestamps.get(i), startAndEndOfWeeksAsTimestamp)]++;
+    		countsForChart[DateUtil.binarySearch(testTimestamps.get(i), startAndEndOfWeeksAsTimestamp)]++;
     	}
         
         for(int i =0; i<countsForChart.length; i++){
@@ -197,19 +198,120 @@ public class AllHouseHoldsIntegrationTest {
 		System.out.println(elcoViewResult.getRows().size() + " count of mothers from gaibandha" );
 		//return this.coverViewResultToCount(elcoViewResult);
     }
-    @Ignore@Test
-    public void hhTest(){
+    @Test
+    public void hhTest() throws ParseException{
     	ViewResult vr = allHouseHolds.allHHsCreatedLastFourMonthsViewResult();
     	
     	System.out.println("data:"+vr.getRows().size());
     	
     }
-    @Test
+   @Ignore@Test
+   public void  getWeekBoundariesForDashboard(){   	
+   	Calendar now = GregorianCalendar.getInstance();   	
+   	
+   	List<String> dates = new ArrayList<String>();
+   	List<Long> dateTimestamps = new ArrayList<Long>();
+   	List<String> tempDates;
+   	List<Long> tempDateTimestamps;
+   	String tempDateStr;
+   	for(int monthIndex = 0; monthIndex < 4; monthIndex++){
+   		now = GregorianCalendar.getInstance();
+   		now.add(GregorianCalendar.MONTH, -monthIndex);
+       	now.set(GregorianCalendar.DAY_OF_MONTH, 1);
+       	now.set(Calendar.HOUR_OF_DAY, -6);
+       	now.set(Calendar.MINUTE, 0);
+       	now.set(Calendar.SECOND, 0);
+       	int numOfDaysInMonth = now.getActualMaximum(GregorianCalendar.DAY_OF_MONTH);        	
+       	SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
+       	int numberOfWeeks = (int)Math.ceil( (double)numOfDaysInMonth/7);
+       	System.out.println("current date- " + now.getTime() + " in a month with days- " + numOfDaysInMonth + " number of week- " + numberOfWeeks);
+       	tempDates = new ArrayList<String>();
+       	tempDateTimestamps = new ArrayList<Long>();
+       	for(int i = 0; i< numberOfWeeks; i++){
+       		int firstDay = i * 7 + 1;
+       		int lastDay;
+       		if(firstDay + 6 <= numOfDaysInMonth){
+       			lastDay = firstDay + 6;
+       		}
+       		else{
+       			lastDay = firstDay + numOfDaysInMonth % 7 -1;
+       		}
+       		
+       		
+
+       		now.set(GregorianCalendar.DAY_OF_MONTH, firstDay);
+       		tempDates.add(dateFormatter.format(now.getTime()));
+       		now.set(GregorianCalendar.DAY_OF_MONTH, lastDay);
+       		tempDates.add(dateFormatter.format(now.getTime()));   
+       		try {
+       			System.err.println("Date : "+firstDay+" : "+ lastDay);
+       			now.set(GregorianCalendar.DAY_OF_MONTH, firstDay+1);
+       			
+           		tempDateStr = dateFormatter.format(now.getTime());	
+           		tempDates.add(tempDateStr);
+           		tempDateTimestamps.add(dateFormatter.parse(tempDateStr).getTime());
+					now.set(GregorianCalendar.DAY_OF_MONTH, lastDay);
+					tempDateStr = dateFormatter.format(now.getTime());	
+           		tempDates.add(tempDateStr);
+           		tempDateTimestamps.add(dateFormatter.parse(tempDateStr).getTime());
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+       	}
+       	/*if(numberOfWeeks == 4){
+       		tempDates.add("");
+       		tempDates.add("");
+       		tempDateTimestamps.add(0l);
+       		tempDateTimestamps.add(0l);
+       	}*/
+       	Collections.reverse(tempDates);        	
+       	dates.addAll(tempDates);
+       	Collections.reverse(tempDateTimestamps);
+       	dateTimestamps.addAll(tempDateTimestamps);
+   	}
+   	Collections.reverse(dates);
+   	Collections.reverse(dateTimestamps);
+   	System.out.println(dateTimestamps.toString());
+   	WeekBoundariesAndTimestamps boundaries = new WeekBoundariesAndTimestamps(dates, dateTimestamps);
+   	
+   	System.out.println(boundaries.toString());
+   }
+    @Ignore@Test
+    public void MonthTest(){
+    	List<Integer> CountForWeaks = new ArrayList<>();
+    	for(int monthIndex = 3; monthIndex >=0; monthIndex--){
+    		Calendar cal = Calendar.getInstance();    		
+    		cal.set(Calendar.HOUR_OF_DAY, 0);
+    		cal.set(Calendar.MINUTE, 0);
+    		cal.set(Calendar.SECOND, 0);
+    		cal.add(Calendar.MONTH, -monthIndex);
+    		cal.set(Calendar.DAY_OF_MONTH, 1);
+    		int month = cal.get(cal.MONTH);
+    		System.out.println(monthIndex+":"+month);
+    		int[] countsForChart = new int[23];
+    		if(monthIndex ==0 && month==1){
+    			countsForChart[5] = 0;
+    		}
+    		
+    	}
+    	for (int i = 0; i < 23; i++) {
+    		CountForWeaks.add(i,0);
+		}
+    	System.err.println(CountForWeaks.toString());
+    	//Integer existingCount = CountForWeaks.get(position);
+    	try{
+    	System.err.println( CountForWeaks.get(0));
+    	}catch(Exception e){
+    		e.printStackTrace();
+    	}
+    }
+    @Ignore@Test
     public void DataCount(){
     	WeekBoundariesAndTimestamps boundaries = DateUtil.getWeekBoundariesForDashboard();
     	
     	List<Long> timestamps = new ArrayList<Long>(); 
-    	/*timestamps.add(1480615200000L);
+    	timestamps.add(1480615200000L);
     	timestamps.add(1480701600000L);
     	timestamps.add(1480788000000L);
     	timestamps.add(1481997600000L);
@@ -236,15 +338,38 @@ public class AllHouseHoldsIntegrationTest {
     	timestamps.add(1486231200000L);
     	timestamps.add(1486317600000L);
     	timestamps.add(1486404000000L);
-    	timestamps.add(1487008800000L);*/
-    	timestamps.add(1487786400000L);
+    	timestamps.add(1487008800000L);
+    	timestamps.add(1490896800000L);
+    	try{
     	List<Long> startAndEndOfWeeksAsTimestamp = boundaries.weekBoundariesAsTimeStamp; 
-    	int[] countsForChart = new int[23];
+    	long todayTimeStamp = startAndEndOfWeeksAsTimestamp.get(startAndEndOfWeeksAsTimestamp.size()-1) ;
+    	System.out.println("pkkkkkkkkk...");
+    	System.err.println(""+todayTimeStamp);
+    	int todaysCount=0;
     	for(int i = 0; i < timestamps.size(); i++){
+    		try{
+    			long data = timestamps.get(i);
+    			System.out.println(todayTimeStamp+" : "+data);
+    			if(todayTimeStamp==data){
+    				todaysCount++;
+    			} 
+    		}catch(Exception e){
+    			e.printStackTrace();
+    		}
     		
-    		countsForChart[dateInsideWhichWeek(timestamps.get(i), startAndEndOfWeeksAsTimestamp)]++;
     	}
-    	System.out.println("data:"+countsForChart.toString());
+    	System.out.println("CNT:"+todaysCount);
+    	}catch(Exception e){
+    		e.printStackTrace();
+    	}
+    	
+    	int[] countsForChart = new int[23];
+    	List<Integer> CountForWeaks = new ArrayList<>();
+    	for (int index = 0; index < 23; index++) {
+    		CountForWeaks.add(index,0);
+		}
+    	
+    	System.out.println("data:"+CountForWeaks.toString());
     }
     
     
@@ -259,20 +384,18 @@ public class AllHouseHoldsIntegrationTest {
     
     // weekBoundaries should have a size of even number
     public static int dateInsideWhichWeek(long timestamp, List<Long> weekBoundaries){
-    	int max = weekBoundaries.size() - 1, min = 0, mid = (max + min)/2;
-    	
+    	int max = weekBoundaries.size()/2 - 1, min = 0, mid = (max + min)/2;
     	while(max >= min){
     		
-    		if(ifDateInsideAWeek(timestamp, weekBoundaries.get(mid), weekBoundaries.get(mid + 1))){
-    			System.out.println(" find index for - " + timestamp);
-    			return mid;
+    		if(ifDateInsideAWeek(timestamp, weekBoundaries.get(2*mid), weekBoundaries.get(2*mid + 1))){
+        		return mid;
         	}
-    		else if(timestamp > weekBoundaries.get(mid + 1)){
+    		else if(timestamp > weekBoundaries.get(2*mid + 1)){
     			min = mid + 1;
     			//max = mid - 1;
     		}
-    		else if(timestamp < weekBoundaries.get(mid )){
-    			max = mid;
+    		else if(timestamp < weekBoundaries.get(2*mid )){
+    			max = mid -1;
     			//min = mid + 1;
     		}
     		mid = (max + min) / 2;
