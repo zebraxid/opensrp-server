@@ -78,7 +78,7 @@ public class DashboardLocationServiceTest {
 		
 		country.withParentName("");
 		country.withParentId("");
-		//country.withTagId(countryTag.getId());
+		country.withTagId(countryTag.getId());
 		allDashboardLocations.add(country);
 		}
 		
@@ -90,11 +90,13 @@ public class DashboardLocationServiceTest {
     	return in;
     }
     
-    /*@Test 
+    @Test 
     public void check() throws Exception {		
-		Privilege privilege = new Privilege();
+		/*Privilege privilege = new Privilege();
 		privilege.withName("testPrivilege");
 		privilege.withStatus("testStatus");
-		allPrivileges.add(privilege);	
-    }*/
+		allPrivileges.add(privilege);	*/
+    	//allDashboardLocations.removeAll();
+    	
+    }
 }

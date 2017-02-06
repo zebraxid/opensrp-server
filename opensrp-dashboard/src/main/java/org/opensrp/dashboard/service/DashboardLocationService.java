@@ -43,8 +43,13 @@ public class DashboardLocationService {
 		DashboardLocation parentDashboardLocation = null;
 		LocationTag locationTagOfNewLocation = null;
 		LocationTag locationTagForUnit = null;
-		try{
-			parentDashboardLocation = allDashboardLocations.get(locationDTO.getParentId());
+		try{			
+			if(locationDTO.getParentId().equalsIgnoreCase("")){
+				 DashboardLocation countryLocation=	allDashboardLocations.findDashboardLocationByName("Bangladesh");
+				 parentDashboardLocation = allDashboardLocations.get(countryLocation.getId());
+			}else{
+				parentDashboardLocation = allDashboardLocations.get(locationDTO.getParentId());
+			}
 			locationTagOfNewLocation = allLocationTags.get(locationDTO.getTagId());
 		}catch(DocumentNotFoundException e){
 			return "3";  // "3" stands for parentNotFound
@@ -55,7 +60,7 @@ public class DashboardLocationService {
 			
 			//for every ward 8 units will be created by default 
 			if(locationTagOfNewLocation.getName().equals("Ward")){
-				String[] unitNames = {"Unit One", "Unit Two", "Unit Three", "Unit Four", "Unit Five", "Unit Six", "Unit Seven", "Unit Eight"};
+				String[] unitNames = {"1-KA", "1-KHA", "2-KA", "2-KHA", "3-KA", "3-KHA", "4-KA", "4-KHA"};
 				try{
 					locationTagForUnit = allLocationTags.findLocationTagByName("Unit");
 				}catch(DocumentNotFoundException e){
@@ -65,11 +70,10 @@ public class DashboardLocationService {
 				if(locationTagForUnit != null){
 					DashboardLocation newDashboardLocation = new DashboardLocation();
 					newDashboardLocation.withName(locationDTO.getName());
-					newDashboardLocation.withParentName(locationDTO.getParentName());
-					newDashboardLocation.withParentId(locationDTO.getParentId());
+					newDashboardLocation.withParentName(parentDashboardLocation.getName());
+					newDashboardLocation.withParentId(parentDashboardLocation.getId());
 					newDashboardLocation.withTagId(locationDTO.getTagId());
-					allDashboardLocations.add(newDashboardLocation);
-					
+					allDashboardLocations.add(newDashboardLocation);					
 					for(int i = 0; i < unitNames.length; i++){
 						DashboardLocation newUnit = new DashboardLocation();
 						newUnit.withName(unitNames[i]);
@@ -84,11 +88,11 @@ public class DashboardLocationService {
 				}
 				
 			}
-			else{
+			else{				
 				DashboardLocation newDashboardLocation = new DashboardLocation();
 				newDashboardLocation.withName(locationDTO.getName());
-				newDashboardLocation.withParentName(locationDTO.getParentName());
-				newDashboardLocation.withParentId(locationDTO.getParentId());
+				newDashboardLocation.withParentName(parentDashboardLocation.getName());
+				newDashboardLocation.withParentId(parentDashboardLocation.getId());
 				newDashboardLocation.withTagId(locationDTO.getTagId());
 				allDashboardLocations.add(newDashboardLocation);
 			}

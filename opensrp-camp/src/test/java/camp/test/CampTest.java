@@ -86,17 +86,6 @@ public class CampTest {
     
    @Ignore @Test
 	public void shouldGeTodaysCamp(){
-		List<CampDate> campDate = campDateRepository.findByTimeStamp(DateTimeUtil.getTimeStampPlusOneDay());
 		
-		for (CampDate campDate2 : campDate) {
-			System.err.println(campDate2.getSession_name());
-			System.err.println(campDate2.getHealth_assistant());
-			System.err.println("All Action:"+allActions.listOfEligibleClientForVaccineTodaysChild(campDate2.getHealth_assistant(),campDate2.getSession_name()).size());
-			//System.err.println("All Action:"+allActions.listOfEligibleClientForVaccine(campDate2.getHealth_assistant(),campDate2.getSession_name()));
-			List<Action> actions = allActions.listOfEligibleClientForVaccineTodaysChild(campDate2.getHealth_assistant(),campDate2.getSession_name());
-			for (Action action : actions) {
-	            
-            }
-        }
 	}
 }
