@@ -310,4 +310,10 @@ public class AclController {
 		String message = userService.assignLocation(userDTO);		
 		return new ResponseEntity<>(message,OK);
 	}
+	
+	@RequestMapping( method = GET, value = "/get-location-name")
+	@ResponseBody
+	public ResponseEntity<String> LocationNameById(@RequestParam String id) {
+		return new ResponseEntity<>(new Gson().toJson(dashboardLocationService.getLocationNameById(id)), HttpStatus.OK);
+	}
 }

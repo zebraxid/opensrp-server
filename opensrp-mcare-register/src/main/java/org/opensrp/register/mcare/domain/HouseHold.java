@@ -122,6 +122,8 @@ public class HouseHold extends MotechBaseDataObject {
 	private Map<String, String> details;
 	@JsonProperty
 	private String BAHMNI_ID;
+	@JsonProperty("timestamp")
+	private long timestamp;
 	
 	public HouseHold() {
 		this.MEMBERDETAILS = new ArrayList<>();
@@ -623,6 +625,14 @@ public class HouseHold extends MotechBaseDataObject {
 		return MEMBERDETAILS.get(0).get(name);
 	}
 	
+	public long getTimestamp() {
+		return timestamp;
+	}
+
+	public void setTimestamp(long timestamp) {
+		this.timestamp = timestamp;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		return EqualsBuilder.reflectionEquals(this, o, "id", "revision");

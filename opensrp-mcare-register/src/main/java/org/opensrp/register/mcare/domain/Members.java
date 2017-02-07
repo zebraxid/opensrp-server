@@ -598,6 +598,8 @@ public class Members extends MotechBaseDataObject {
 	private Map<String, String> BNFVisit;
 	@JsonProperty
 	private String isClosed;
+	@JsonProperty("timestamp")
+	private long timestamp;
 	public Members() {
 		this.details = new HashMap<>();
 		this.TTVisit = new HashMap<>();
@@ -2055,6 +2057,16 @@ public class Members extends MotechBaseDataObject {
         this.isClosed = Boolean.toString(isClosed);
         return this;
     }
+    
+	public long getTimestamp() {
+		return timestamp;
+	}
+
+	public Members setTimestamp(long timestamp) {
+		this.timestamp = timestamp;
+		return this;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		return EqualsBuilder.reflectionEquals(this, o, "id", "revision");

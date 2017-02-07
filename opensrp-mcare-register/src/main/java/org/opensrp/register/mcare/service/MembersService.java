@@ -6,10 +6,38 @@ package org.opensrp.register.mcare.service;
 
 import static java.text.MessageFormat.format;
 import static org.opensrp.common.AllConstants.CommonFormFields.ID;
-import static org.opensrp.common.AllConstants.TT_VisitFields.*;
-import static org.opensrp.common.AllConstants.HHRegistrationFields.*;
+import static org.opensrp.common.AllConstants.Form.MEMBERS_REGISTRATION;
+import static org.opensrp.common.AllConstants.HHRegistrationFields.END_DATE;
+import static org.opensrp.common.AllConstants.HHRegistrationFields.MEMBERS_REGISTRATION_SUB_FORM_NAME;
+import static org.opensrp.common.AllConstants.HHRegistrationFields.REFERENCE_DATE;
+import static org.opensrp.common.AllConstants.HHRegistrationFields.START_DATE;
+import static org.opensrp.common.AllConstants.HHRegistrationFields.received_time;
 import static org.opensrp.common.AllConstants.MEMBERSRegistrationFields.*;
-import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MemberScheduleConstants.*;
+import static org.opensrp.common.AllConstants.TT_VisitFields.Received_Time;
+import static org.opensrp.common.util.EasyMap.create;
+import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MemberScheduleConstants.IMD_SCHEDULE_Woman_BNF;
+import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MemberScheduleConstants.IMD_child_bcg;
+import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MemberScheduleConstants.IMD_child_opv0;
+import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MemberScheduleConstants.SCHEDULE_Woman_1;
+import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MemberScheduleConstants.SCHEDULE_Woman_2;
+import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MemberScheduleConstants.SCHEDULE_Woman_3;
+import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MemberScheduleConstants.SCHEDULE_Woman_4;
+import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MemberScheduleConstants.SCHEDULE_Woman_5;
+import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MemberScheduleConstants.SCHEDULE_Woman_BNF;
+import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MemberScheduleConstants.child_vaccination_bcg;
+import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MemberScheduleConstants.child_vaccination_ipv;
+import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MemberScheduleConstants.child_vaccination_measles1;
+import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MemberScheduleConstants.child_vaccination_measles2;
+import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MemberScheduleConstants.child_vaccination_opv0;
+import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MemberScheduleConstants.child_vaccination_opv1;
+import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MemberScheduleConstants.child_vaccination_opv2;
+import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MemberScheduleConstants.child_vaccination_opv3;
+import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MemberScheduleConstants.child_vaccination_pcv1;
+import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MemberScheduleConstants.child_vaccination_pcv2;
+import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MemberScheduleConstants.child_vaccination_pcv3;
+import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MemberScheduleConstants.child_vaccination_penta1;
+import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MemberScheduleConstants.child_vaccination_penta2;
+import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MemberScheduleConstants.child_vaccination_penta3;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -18,27 +46,22 @@ import java.util.Date;
 import java.util.Map;
 
 import org.joda.time.LocalDate;
-import org.motechproject.scheduletracking.api.domain.Enrollment;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.form.domain.SubFormData;
-import org.opensrp.register.mcare.domain.Members;
 import org.opensrp.register.mcare.domain.HouseHold;
-import org.opensrp.register.mcare.repository.AllMembers;
+import org.opensrp.register.mcare.domain.Members;
 import org.opensrp.register.mcare.repository.AllHouseHolds;
-import org.opensrp.register.mcare.service.scheduling.MembersScheduleService;
-import org.opensrp.register.mcare.service.scheduling.HHSchedulesService;
-import org.opensrp.register.mcare.service.scheduling.ScheduleLogService;
+import org.opensrp.register.mcare.repository.AllMembers;
 import org.opensrp.register.mcare.service.scheduling.ChildVaccineSchedule;
+import org.opensrp.register.mcare.service.scheduling.HHSchedulesService;
+import org.opensrp.register.mcare.service.scheduling.MembersScheduleService;
+import org.opensrp.register.mcare.service.scheduling.ScheduleLogService;
 import org.opensrp.register.mcare.service.scheduling.WomanVaccineSchedule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import static org.opensrp.common.AllConstants.MEMBERSRegistrationFields.*;
-import static org.opensrp.common.AllConstants.Form.*;
-import static org.opensrp.common.util.EasyMap.create;
-
+import org.opensrp.common.util.DateUtil;
 @Service
 public class MembersService {
 	private static Logger logger = LoggerFactory.getLogger(MembersService.class
@@ -82,8 +105,8 @@ public class MembersService {
 			Members members = allMembers.findByCaseId(membersFields.get(ID))
 					.setINSTANCEID(submission.instanceId())
 					.setPROVIDERID(submission.anmId())
-					.setTODAY(submission.getField(REFERENCE_DATE))
-					.setrelationalid(relational_id);					
+					.setTODAY(submission.getField(REFERENCE_DATE))					
+					.setrelationalid(relational_id).setTimestamp(DateUtil.getTimestampToday());					
 			
 			if(membersFields.containsKey(REG_NO)){
 				allMembers.update(members);

@@ -34,14 +34,6 @@ public class ApiController {
 		this.luceneHouseHoldService = luceneHouseHoldService;
 	}
 	
-	@RequestMapping(method = GET, value="/households/search")
-    @ResponseBody
-	public ResponseEntity<HouseholdDTO> getHouseHolds(@RequestParam MultiValueMap<String, String> queryParameters) throws JsonParseException, JsonMappingException, IOException
-	{
-		 HouseholdDTO  hhRegisterDTO  = luceneHouseHoldService.getHousehold(queryParameters);
-		 return new ResponseEntity<>(hhRegisterDTO, HttpStatus.OK);
-	}
-	
 	@RequestMapping(method = GET, value="/member/search")
     @ResponseBody
 	public ResponseEntity<MemeberDTO> getChilds(@RequestParam MultiValueMap<String, String> queryParameters) throws JsonParseException, JsonMappingException, IOException

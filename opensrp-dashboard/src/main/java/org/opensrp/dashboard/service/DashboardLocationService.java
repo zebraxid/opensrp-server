@@ -434,4 +434,8 @@ public class DashboardLocationService {
 		
 		return locationDTO;
 	}
+	
+	public String getLocationNameById(String id){
+		return allDashboardLocations.get(id).getName();
+	}
 }

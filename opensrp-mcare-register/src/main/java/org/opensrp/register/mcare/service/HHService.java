@@ -6,11 +6,13 @@ package org.opensrp.register.mcare.service;
 
 import static java.text.MessageFormat.format;
 import static org.opensrp.common.AllConstants.CommonFormFields.ID;
+import static org.opensrp.common.AllConstants.HHRegistrationFields.END_DATE;
+import static org.opensrp.common.AllConstants.HHRegistrationFields.MEMBERS_REGISTRATION_SUB_FORM_NAME;
+import static org.opensrp.common.AllConstants.HHRegistrationFields.REFERENCE_DATE;
+import static org.opensrp.common.AllConstants.HHRegistrationFields.START_DATE;
+import static org.opensrp.common.AllConstants.HHRegistrationFields.received_time;
 import static org.opensrp.common.AllConstants.MEMBERSRegistrationFields.*;
-import static org.opensrp.common.AllConstants.TT_VisitFields.Received_Time;
-import static org.opensrp.common.AllConstants.HHRegistrationFields.*;
 import static org.opensrp.common.util.EasyMap.create;
-import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MemberScheduleConstants.child_vaccination_bcg;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -18,10 +20,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.opensrp.common.util.DateUtil;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.form.domain.SubFormData;
 import org.opensrp.register.mcare.domain.HouseHold;
-import org.opensrp.register.mcare.domain.Members;
 import org.opensrp.register.mcare.repository.AllHouseHolds;
 import org.opensrp.register.mcare.service.scheduling.HHSchedulesService;
 import org.opensrp.register.mcare.service.scheduling.ScheduleLogService;
@@ -29,7 +31,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 @Service
 public class HHService {
 
@@ -62,7 +63,7 @@ public class HHService {
 		houseHold.setPROVIDERID(submission.anmId());
 		houseHold.setINSTANCEID(submission.instanceId());
 		houseHold.setTODAY(submission.getField(REFERENCE_DATE));	
-
+		houseHold.setTimestamp(DateUtil.getTimestampToday());		
 		allHouseHolds.update(houseHold);
 			
 		hhSchedulesService.enrollIntoMilestoneOfCensus(submission.entityId(),

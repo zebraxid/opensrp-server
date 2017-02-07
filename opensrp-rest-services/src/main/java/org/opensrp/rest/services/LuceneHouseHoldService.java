@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.json.JSONObject;
+import org.opensrp.rest.register.DTO.CommonDTO;
 import org.opensrp.rest.register.DTO.HouseholdDTO;
 import org.opensrp.rest.register.DTO.HouseholdEntryDTO;
 import org.opensrp.rest.repository.LuceneHouseHoldRepository;
@@ -44,30 +45,8 @@ public class LuceneHouseHoldService {
 		this.convertDateStringToTimestampMills = convertDateStringToTimestampMills;
 	}
 
-	public HouseholdDTO getHousehold(MultiValueMap<String, String> queryParameters) throws JsonParseException, JsonMappingException,
-			IOException {
-		ObjectMapper mapper = new ObjectMapper();
-		// mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
-		// false);
-		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-		mapper.setVisibilityChecker(VisibilityChecker.Std.defaultInstance()
-				.withFieldVisibility(JsonAutoDetect.Visibility.ANY));
-			
-		LuceneResult luceneResult = luceneHouseHoldRepository
-				.findDocsByProvider(dynamicQueryString.makeDynamicQueryAsString(queryParameters));
-		List<Row> rows = luceneResult.getRows();
-		List<HouseholdEntryDTO> hhRegisterEntryDTOList = new ArrayList<HouseholdEntryDTO>();
-
-		for (Row row : rows) {
-			LinkedHashMap<String, Object> fields = row.getFields();
-			System.err.println(fields.toString());
-			String jsonString = new JSONObject(fields).toString();
-			hhRegisterEntryDTOList.add(mapper.readValue(jsonString.getBytes(),
-				HouseholdEntryDTO.class));
-		}
-		return new HouseholdDTO(hhRegisterEntryDTOList);
-	}
-
+	
+	
 	/**
 	 * This method return Household count as today, this month or this week
 	 * @param start this may be start date of a month or week
@@ -88,19 +67,39 @@ public class LuceneHouseHoldService {
 		
 		
 	}
-	private Map<String, String> prepareParameters(MultiValueMap<String, String> queryParameters) {
-
-		Map<String, String> parameters = new HashMap<String, String>();
-
-		Iterator<String> it = queryParameters.keySet().iterator();
-
-		while (it.hasNext()) {
-			String theKey = (String) it.next();
-			parameters.put(theKey, queryParameters.getFirst(theKey));
+	
+	
+	
+	public CommonDTO<HouseholdEntryDTO> getData(MultiValueMap<String, String> queryParameters,int p,int limit) throws JsonParseException, JsonMappingException,
+	IOException {
+		ObjectMapper mapper = new ObjectMapper();		
+		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+		mapper.setVisibilityChecker(VisibilityChecker.Std.defaultInstance()
+				.withFieldVisibility(JsonAutoDetect.Visibility.ANY));		
+		LuceneResult luceneResult = luceneHouseHoldRepository
+				.getData(dynamicQueryString.makeDynamicQueryAsString(queryParameters), p,limit);
+		List<Row> rows = luceneResult.getRows();
+		 
+		List<HouseholdEntryDTO> dataList = new ArrayList<HouseholdEntryDTO>();
+		
+		for (Row row : rows) {
+			LinkedHashMap<String, Object> fields = row.getFields();			
+			String jsonString = new JSONObject(fields).toString();
+			dataList.add(mapper.readValue(jsonString.getBytes(),
+					HouseholdEntryDTO.class));
 		}
-
-		return parameters;
-
+		return new CommonDTO<HouseholdEntryDTO>(dataList);
+	}
+	
+	public int getDataCount(MultiValueMap<String, String> queryParameters) throws JsonParseException, JsonMappingException,
+	IOException {
+		ObjectMapper mapper = new ObjectMapper();		
+		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+		mapper.setVisibilityChecker(VisibilityChecker.Std.defaultInstance()
+				.withFieldVisibility(JsonAutoDetect.Visibility.ANY));		
+		return luceneHouseHoldRepository
+				.getDataCount(dynamicQueryString.makeDynamicQueryAsString(queryParameters));
+	
 	}
 	
 	
