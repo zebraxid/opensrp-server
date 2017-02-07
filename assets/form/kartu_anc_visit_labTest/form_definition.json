@@ -1,7 +1,8 @@
 {
-  "form_data_definition_version": "1",
+  "form_data_definition_version": "3",
   "form": {
     "bind_type": "ibu",
+    "ec_bind_type": "ec_ibu",
     "default_bind_path": "/model/instance/kunjungan_anc_reviewed_Lab_test/",
     "fields": [
       {
@@ -12,6 +13,16 @@
         "name": "kiId",
         "shouldLoadValue": true,
         "source": "ibu.kartu_ibu.id"
+      },
+      {
+        "name": "cityVillage",
+        "bind": "/model/instance/kunjungan_anc_reviewed_Lab_test/Village",
+        "shouldLoadValue": true
+      },
+      {
+        "name": "existing_location",
+        "bind": "/model/instance/kunjungan_anc_reviewed_Lab_test/existing_location",
+        "shouldLoadValue": true
       },
       {
         "name": "lokasiPeriksa",
