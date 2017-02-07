@@ -61,8 +61,7 @@ public class VaccinationService {
     }
 	public void updateVaccineStatus( String caseId, String vaccineName) {	    
     	try{
-    		System.err.println(caseId);
-    		System.err.println(vaccineName);
+    		
     		Vaccine existingVaccine = allVaccine.getVaccine(caseId,vaccineName);    
     		if(existingVaccine != null){
 	    		existingVaccine.setStatus(true);

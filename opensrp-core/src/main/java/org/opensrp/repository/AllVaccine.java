@@ -58,7 +58,7 @@ public class AllVaccine extends MotechBaseRepository<Vaccine> {
 	}
 	 
 	public void save(Vaccine vaccine) {
-		System.err.println("dd");
+		
 		Vaccine existingVaccine = getVaccine(vaccine.getClientId(),vaccine.getVaccineName());
 		if(existingVaccine == null){
 			try{
