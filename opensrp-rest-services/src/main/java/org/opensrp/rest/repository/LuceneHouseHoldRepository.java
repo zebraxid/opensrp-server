@@ -45,7 +45,8 @@ import com.github.ldriscoll.ektorplucene.designdocument.annotation.Index;
 	    		" doc.add(rec.UNION,{\"field\":\"UNION\", \"store\":\"yes\"}); " +
 	    		" doc.add(rec.WARD,{\"field\":\"WARD\", \"store\":\"yes\"}); " +
 	    		" doc.add(rec.HoH_Fname,{\"field\":\"HoH_Fname\", \"store\":\"yes\"});" +
-	    		" doc.add(rec.HoH_Gender,{\"field\":\"HoH_Gender\", \"store\":\"yes\"});" +	    		 
+	    		" doc.add(rec.HoH_Gender,{\"field\":\"HoH_Gender\", \"store\":\"yes\"});" +	 
+	    		" doc.add(rec._id,{\"field\":\"id\", \"store\":\"yes\"});" +	
 	    		" doc.add(rec.type,{\"field\":\"type\", \"store\":\"yes\"});" + 
 	    		" return doc;" +
 	    		"}")

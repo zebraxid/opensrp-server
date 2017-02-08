@@ -1,16 +1,9 @@
 package org.opensrp.rest.register.DTO;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
-import org.joda.time.DateTime;
 public class HouseholdEntryDTO {
 	@JsonProperty
 	private String caseId;
@@ -64,7 +57,8 @@ public class HouseholdEntryDTO {
 	private String HoH_Mobile_No;
 	@JsonProperty
 	private String HH_Member_No;
-	
+	@JsonProperty
+	private String id;
 	
 	public HouseholdEntryDTO() {
 		

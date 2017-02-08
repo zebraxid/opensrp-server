@@ -114,5 +114,18 @@ public class RegisterController {
 		return new ResponseEntity<>(new Gson().toJson(luceneHouseHoldService.getDataCount(queryParameters)), HttpStatus.OK);
 	}
 	
+	/**		 
+	 
+	 * @param id is a household id of couchdb auto incremented ID.
+	 * @return household details of a specified @id 	 * 
+	 * @throws IOException 
+	 * @throws JsonMappingException 
+	 * @throws JsonParseException 
+	 * */
+	@RequestMapping(headers = { "Accept=application/json" }, method = GET, value = "/get-household-details")
+	@ResponseBody
+	public ResponseEntity<String> getHouseholdById(@RequestParam String id) throws JsonParseException, JsonMappingException, IOException {
+		return new ResponseEntity<>(new Gson().toJson(hhRegisterService.getHouseholdById(id)), HttpStatus.OK);
+	}
 
 }

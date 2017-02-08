@@ -96,4 +96,11 @@ public class HHRegisterService {
         return new HHRegister(hhRegisterEntries);
 	}	
 	
+	/**
+	 * @param id is a household id of  couchdb auto incremented ID.
+	 * @return household details of a specified @id 
+	 * */
+	public HouseHold getHouseholdById(String id){
+		return allHouseHolds.get(id);
+	}
 }
