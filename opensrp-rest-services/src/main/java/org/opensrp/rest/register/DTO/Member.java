@@ -43,6 +43,8 @@ public class Member {
 	private String Reg_No;
 	@JsonProperty
 	private String calc_dob;
+	@JsonProperty
+	private String id;
 	@Override
 	public boolean equals(Object o) {
 		return EqualsBuilder.reflectionEquals(this, o, "id", "revision");

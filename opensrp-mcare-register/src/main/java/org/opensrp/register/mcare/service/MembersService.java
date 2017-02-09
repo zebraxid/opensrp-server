@@ -1098,5 +1098,13 @@ public class MembersService {
 	        return false;
 	    }
 	}
+	
+	/**
+	 * @param id is a member id of  couchdb auto incremented ID.
+	 * @return member details of a specified @id 
+	 * */
+	public Members getmemberById(String id){
+		return allMembers.get(id);
+	}
 }
 

@@ -13,11 +13,14 @@ import org.opensrp.dto.register.HHRegisterDTO;
 import org.opensrp.register.mcare.HHRegister;
 import org.opensrp.register.mcare.mapper.HHRegisterMapper;
 import org.opensrp.register.mcare.service.HHRegisterService;
+import org.opensrp.register.mcare.service.MembersService;
 import org.opensrp.register.mcare.service.MultimediaRegisterService;
 import org.opensrp.rest.register.DTO.CampDateEntryDTO;
 import org.opensrp.rest.register.DTO.CommonDTO;
 import org.opensrp.rest.register.DTO.HouseholdEntryDTO;
+import org.opensrp.rest.register.DTO.MemberRegisterEntryDTO;
 import org.opensrp.rest.services.LuceneHouseHoldService;
+import org.opensrp.rest.services.LuceneMembersService;
 import org.opensrp.service.DataCountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -42,6 +45,10 @@ public class RegisterController {
 	private DataCountService dataCountService;
 	@Autowired
 	private LuceneHouseHoldService luceneHouseHoldService;
+	@Autowired
+	private LuceneMembersService luceneMembersService;
+	@Autowired
+	private MembersService membersService;
 	@Autowired
 	public RegisterController(HHRegisterService hhRegisterService, 
 			HHRegisterMapper hhRegisterMapper,
@@ -92,14 +99,14 @@ public class RegisterController {
 	 * @param queryParameters is a list of key.
 	 * @param p is a number of page.
 	 * @param limit is a data limit.
-	 * @return all camp dates match with specified key.
+	 * @return all households match with specified key.
 	 * */
 	@RequestMapping(method = GET, value="/household-search")
     @ResponseBody
 	public ResponseEntity<CommonDTO<HouseholdEntryDTO>> getHouseholdByKeys(@RequestParam MultiValueMap<String, String> queryParameters,@RequestParam int p,@RequestParam int limit) throws JsonParseException, JsonMappingException, IOException
 	{
-		CommonDTO<HouseholdEntryDTO>  campDateDate  = luceneHouseHoldService.getData(queryParameters,p,limit);
-		 return new ResponseEntity<>(campDateDate, HttpStatus.OK);
+		CommonDTO<HouseholdEntryDTO>  households  = luceneHouseHoldService.getData(queryParameters,p,limit);
+		 return new ResponseEntity<>(households, HttpStatus.OK);
 	}
 	/**		 
 	 * @param  @param queryParameters is a list of key.
@@ -126,6 +133,47 @@ public class RegisterController {
 	@ResponseBody
 	public ResponseEntity<String> getHouseholdById(@RequestParam String id) throws JsonParseException, JsonMappingException, IOException {
 		return new ResponseEntity<>(new Gson().toJson(hhRegisterService.getHouseholdById(id)), HttpStatus.OK);
+	}
+	
+	
+	/**
+	 * @param queryParameters is a list of key.
+	 * @param p is a number of page.
+	 * @param limit is a data limit.
+	 * @return all members match with specified key.
+	 * */
+	@RequestMapping(method = GET, value="/member-search")
+    @ResponseBody
+	public ResponseEntity<CommonDTO<MemberRegisterEntryDTO>> getMemberByKeys(@RequestParam MultiValueMap<String, String> queryParameters,@RequestParam int p,@RequestParam int limit) throws JsonParseException, JsonMappingException, IOException
+	{
+		CommonDTO<MemberRegisterEntryDTO>  members  = luceneMembersService.getData(queryParameters,p,limit);
+		 return new ResponseEntity<>(members, HttpStatus.OK);
+	}
+	/**		 
+	 * @param  @param queryParameters is a list of key.
+	 * @return total count of members
+	 * @throws IOException 
+	 * @throws JsonMappingException 
+	 * @throws JsonParseException 
+	 * */
+	@RequestMapping(headers = { "Accept=application/json" }, method = GET, value = "/get-member-count-by-keys")
+	@ResponseBody
+	public ResponseEntity<String> getmemberCountByKeys(@RequestParam MultiValueMap<String, String> queryParameters) throws JsonParseException, JsonMappingException, IOException {
+		return new ResponseEntity<>(new Gson().toJson(luceneMembersService.getDataCount(queryParameters)), HttpStatus.OK);
+	}
+	
+	/**		 
+	 
+	 * @param id is a member id of couchdb auto incremented ID.
+	 * @return member details of a specified @id 	 * 
+	 * @throws IOException 
+	 * @throws JsonMappingException 
+	 * @throws JsonParseException 
+	 * */
+	@RequestMapping(headers = { "Accept=application/json" }, method = GET, value = "/get-member-details")
+	@ResponseBody
+	public ResponseEntity<String> getMemberById(@RequestParam String id) throws JsonParseException, JsonMappingException, IOException {
+		return new ResponseEntity<>(new Gson().toJson(membersService.getmemberById(id)), HttpStatus.OK);
 	}
 
 }

@@ -42,6 +42,7 @@ import com.github.ldriscoll.ektorplucene.designdocument.annotation.Index;
 	    		" doc.add(rec.WomanInfo,{\"field\":\"WomanInfo\", \"store\":\"yes\"});" +	
 	    		" doc.add(rec.Reg_No,{\"field\":\"Reg_No\", \"store\":\"yes\"});" +	
 	    		" doc.add(rec.calc_dob,{\"field\":\"calc_dob\", \"store\":\"yes\"});" +	
+	    		" doc.add(rec._id,{\"field\":\"id\", \"store\":\"yes\"});" +
 	    		" doc.add(rec.type,{\"field\":\"type\", \"store\":\"yes\"});" + 
 	    		" return doc;" +
 	    		"}")
@@ -70,5 +71,26 @@ public class LuceneMembersRepository extends CouchDbRepositorySupportWithLucene<
         query.setStaleOk(false); 
         return db.queryLucene(query); 
     } 
+	
+	public LuceneResult getData(String queryString,int skip,int limit) {		
+		String sortField =  "\\" + "id"; 
+        LuceneDesignDocument designDoc = db.get(LuceneDesignDocument.class, stdDesignDocumentId);        
+        LuceneQuery query = new LuceneQuery(designDoc.getId(), "member"); 
+        query.setQuery(queryString); 
+        query.setStaleOk(true);
+        query.setSkip(skip);
+        query.setLimit(limit);
+        query.setSort(sortField);
+        return db.queryLucene(query); 
+   }
+
+ public int  getDataCount(String queryString) {		
+        LuceneDesignDocument designDoc = db.get(LuceneDesignDocument.class, stdDesignDocumentId);        
+        LuceneQuery query = new LuceneQuery(designDoc.getId(), "member"); 
+        query.setQuery(queryString); 
+        query.setStaleOk(true);   
+        
+        return db.queryLucene(query).getTotalRows(); 
+} 
 
 }

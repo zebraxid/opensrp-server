@@ -17,6 +17,7 @@ import java.util.Map.Entry;
 import org.json.JSONObject;
 import org.opensrp.dto.register.HouseholdDTO;
 import org.opensrp.dto.register.HouseholdEntryDTO;
+import org.opensrp.rest.register.DTO.CommonDTO;
 import org.opensrp.rest.register.DTO.MemberRegisterEntryDTO;
 import org.opensrp.rest.register.DTO.MemeberDTO;
 import org.opensrp.rest.repository.LuceneMembersRepository;
@@ -86,6 +87,38 @@ public class LuceneMembersService {
 		}
 		
 		
+	}
+	
+	public CommonDTO<MemberRegisterEntryDTO> getData(MultiValueMap<String, String> queryParameters,int p,int limit) throws JsonParseException, JsonMappingException,
+	IOException {
+		ObjectMapper mapper = new ObjectMapper();		
+		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+		mapper.setVisibilityChecker(VisibilityChecker.Std.defaultInstance()
+				.withFieldVisibility(JsonAutoDetect.Visibility.ANY));		
+		LuceneResult luceneResult = luceneMembersRepository
+				.getData(dynamicQueryString.makeDynamicQueryAsString(queryParameters), p,limit);
+		List<Row> rows = luceneResult.getRows();
+		 
+		List<MemberRegisterEntryDTO> dataList = new ArrayList<MemberRegisterEntryDTO>();
+		
+		for (Row row : rows) {
+			LinkedHashMap<String, Object> fields = row.getFields();			
+			String jsonString = new JSONObject(fields).toString();
+			dataList.add(mapper.readValue(jsonString.getBytes(),
+					MemberRegisterEntryDTO.class));
+		}
+		return new CommonDTO<MemberRegisterEntryDTO>(dataList);
+	}
+	
+	public int getDataCount(MultiValueMap<String, String> queryParameters) throws JsonParseException, JsonMappingException,
+	IOException {
+		ObjectMapper mapper = new ObjectMapper();		
+		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+		mapper.setVisibilityChecker(VisibilityChecker.Std.defaultInstance()
+				.withFieldVisibility(JsonAutoDetect.Visibility.ANY));		
+		return luceneMembersRepository
+				.getDataCount(dynamicQueryString.makeDynamicQueryAsString(queryParameters));
+	
 	}
 
 }
