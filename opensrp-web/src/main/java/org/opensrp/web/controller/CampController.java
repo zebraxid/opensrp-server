@@ -163,7 +163,7 @@ public class CampController {
 	 * @throws JsonMappingException 
 	 * @throws JsonParseException 
 	 * */
-	@RequestMapping(headers = { "Accept=application/json" }, method = GET, value = "/camp-count-by-user-status")
+	@RequestMapping(headers = { "Accept=application/json" }, method = GET, value = "/camp-count-by-keys")
 	@ResponseBody
 	public ResponseEntity<String> getCountCampByUserNameAndStatus(@RequestParam MultiValueMap<String, String> queryParameters) throws JsonParseException, JsonMappingException, IOException {
 		return new ResponseEntity<>(new Gson().toJson(luceneCampDateService.getDataCount(queryParameters)), HttpStatus.OK);
