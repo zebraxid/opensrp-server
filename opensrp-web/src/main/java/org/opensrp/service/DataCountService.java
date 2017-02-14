@@ -226,7 +226,7 @@ public class DataCountService {
 	}
 	
 	
-	public HttpResponse getVaccineCount(String type,String startMonth,String endMonth) throws JSONException{
+	public HttpResponse getVaccineCountForSendingToDHIS2(String type,String startMonth,String endMonth) throws JSONException{
 		
 		VaccineCountDTO commonServiceDTO = new VaccineCountDTO();
 		

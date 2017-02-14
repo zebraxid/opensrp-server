@@ -92,7 +92,7 @@ public class RegisterController {
     @RequestMapping(method = RequestMethod.GET, value = "/registers/vaccine-count")
     @ResponseBody
     public ResponseEntity<HttpResponse> getVaccineInfo(@RequestParam("type") String type,@RequestParam("start-month") String startMonth,@RequestParam("end-month") String endMonth) throws JSONException{
-    	return new ResponseEntity<>(dataCountService.getVaccineCount(type,startMonth,endMonth), HttpStatus.OK);
+    	return new ResponseEntity<>(dataCountService.getVaccineCountForSendingToDHIS2(type,startMonth,endMonth), HttpStatus.OK);
     }
     
     /**

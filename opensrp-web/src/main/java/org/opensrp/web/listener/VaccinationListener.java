@@ -40,8 +40,15 @@ public class VaccinationListener {
     public void setCampDateService(CampDateService campDateService) {
     	this.campDateService = campDateService;
     }
+	/**
+	 * This listener method called in a given time such as 6PM in everyday.
+	 * Update status as Completed all today's camp.
+	 * Update missed count for a vaccination, who is not pesent in the camp.
+	 * 
+	 * 
+	 * */
 
-	public void vaccinationListener() {	
+	public void vaccinationListenerForCampDateUpdateAndVaccineMissedCount() {	
 		logger.info("vaccinationListener called");
 		List<CampDate> campDates =campDateService.findCampByTodayForVaccinationListener();
 		if(campDates !=null){
@@ -63,11 +70,11 @@ public class VaccinationListener {
 		
 	}
 	
-	public void vaccinationCounter() {	
-		logger.info("vaccinationCounter called");
+	public void vaccinationCounterForSendingToDHIS2() {	
+		logger.info("vaccinationCounter called for SendingToDHIS2");
 		
 		try{
-			dataCountService.getVaccineCount("all","2016-10-01","2016-10-31");
+			dataCountService.getVaccineCountForSendingToDHIS2("all","2016-10-01","2016-10-31");
 		}catch(Exception e){
 			e.printStackTrace();
 		}	

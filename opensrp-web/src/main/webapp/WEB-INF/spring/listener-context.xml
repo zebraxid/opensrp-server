@@ -20,8 +20,8 @@
     </task:scheduled-tasks>
     
     <task:scheduled-tasks scheduler="vaccinationScheduler">
-        <task:scheduled ref="vaccinationJob" method="vaccinationListener" cron="0 0 18 * * ?" />
-        <task:scheduled ref="vaccinationJob" method="vaccinationCounter" cron="0 0 16 22 * ?" />
+        <task:scheduled ref="vaccinationJob" method="vaccinationListenerForCampDateUpdateAndVaccineMissedCount" cron="0 0 18 * * ?" />
+        <task:scheduled ref="vaccinationJob" method="vaccinationCounterForSendingToDHIS2" cron="0 0 16 22 * ?" />
     </task:scheduled-tasks>
     
    

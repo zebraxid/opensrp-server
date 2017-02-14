@@ -11,6 +11,11 @@ import org.springframework.util.MultiValueMap;
 @Service
 public class DynamicQueryString {
 	
+	/**
+	 * This methods makes query string for quering in couchdb using couchdb-lucene.
+	 * @param queryParameters is a list of parameters.
+	 * @return query string.
+	 * */
 	public String  makeDynamicQueryAsString(MultiValueMap<String, String> queryParameters){
 		if(queryParameters.containsKey("p")){
 			queryParameters.remove("p");
@@ -30,7 +35,7 @@ public class DynamicQueryString {
 			
 			paramCounter++;
 		}
-		System.out.println("makeQueryString:"+makeQueryString);
+		
 		return makeQueryString;
 		
 	}

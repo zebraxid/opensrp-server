@@ -88,6 +88,7 @@ public class LuceneMembersRepository extends CouchDbRepositorySupportWithLucene<
         LuceneDesignDocument designDoc = db.get(LuceneDesignDocument.class, stdDesignDocumentId);        
         LuceneQuery query = new LuceneQuery(designDoc.getId(), "member"); 
         query.setQuery(queryString); 
+        
         query.setStaleOk(true);   
         
         return db.queryLucene(query).getTotalRows(); 

@@ -68,7 +68,12 @@ public class LuceneHouseHoldService {
 		
 	}
 	
-	
+	/**
+	 * @param queryParameters is a list of parameters.
+	 * @param p page number.
+	 * @param limit number of records to display in a page.
+	 * @return 	Household data list.
+	 * */
 	
 	public CommonDTO<HouseholdEntryDTO> getData(MultiValueMap<String, String> queryParameters,int p,int limit) throws JsonParseException, JsonMappingException,
 	IOException {
@@ -91,6 +96,10 @@ public class LuceneHouseHoldService {
 		return new CommonDTO<HouseholdEntryDTO>(dataList);
 	}
 	
+	/**
+	 * @param queryParameters is a list of parameters.	 
+	 * @return 	Household data count.
+	 * */
 	public int getDataCount(MultiValueMap<String, String> queryParameters) throws JsonParseException, JsonMappingException,
 	IOException {
 		ObjectMapper mapper = new ObjectMapper();		

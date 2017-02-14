@@ -35,6 +35,12 @@ public class LuceneCampDateService {
 		this.luceneCampDateRepository = luceneCampDateRepository;		
 	}
 
+	/**
+	 * @param queryParameters is a list of parameters.
+	 * @param p page number.
+	 * @param limit number of records to display in a page.
+	 * @return 	CampDate data list.
+	 * */
 	public CommonDTO<CampDateEntryDTO> getData(MultiValueMap<String, String> queryParameters,int p,int limit) throws JsonParseException, JsonMappingException,
 			IOException {
 		ObjectMapper mapper = new ObjectMapper();		
@@ -55,6 +61,11 @@ public class LuceneCampDateService {
 		}
 		return new CommonDTO<CampDateEntryDTO>(dataList);
 	}
+	
+	/**
+	 * @param queryParameters is a list of parameters.	 
+	 * @return 	CampDate data count.
+	 * */
 	public int getDataCount(MultiValueMap<String, String> queryParameters) throws JsonParseException, JsonMappingException,
 		IOException {
 		ObjectMapper mapper = new ObjectMapper();		

@@ -89,6 +89,13 @@ public class LuceneMembersService {
 		
 	}
 	
+	/**
+	 * @param queryParameters is a list of parameters.
+	 * @param p page number.
+	 * @param limit number of records to display in a page.
+	 * @return 	Member data list.
+	 * */
+	
 	public CommonDTO<MemberRegisterEntryDTO> getData(MultiValueMap<String, String> queryParameters,int p,int limit) throws JsonParseException, JsonMappingException,
 	IOException {
 		ObjectMapper mapper = new ObjectMapper();		
@@ -110,6 +117,10 @@ public class LuceneMembersService {
 		return new CommonDTO<MemberRegisterEntryDTO>(dataList);
 	}
 	
+	/**
+	 * @param queryParameters is a list of parameters.	 
+	 * @return 	Member data count.
+	 * */
 	public int getDataCount(MultiValueMap<String, String> queryParameters) throws JsonParseException, JsonMappingException,
 	IOException {
 		ObjectMapper mapper = new ObjectMapper();		
