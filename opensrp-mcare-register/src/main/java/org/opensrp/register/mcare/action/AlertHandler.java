@@ -46,8 +46,9 @@ public class AlertHandler {
 
 	}
 	private Matcher membersSchedules() {
-		return anyOf(ELCO_SCHEDULE_PSRF, IMD_ELCO_SCHEDULE_PSRF, SCHEDULE_Woman_BNF, IMD_SCHEDULE_Woman_BNF, 
-				child_bcg, IMD_child_bcg, SCHEDULE_ANC, SCHEDULE_PNC);
+		return anyOf(CENCUS, ELCO_SCHEDULE_PSRF, IMD_ELCO_SCHEDULE_PSRF, SCHEDULE_Woman_BNF, IMD_SCHEDULE_Woman_BNF, child_reg, child_bcg, 
+				IMD_child_bcg, SCHEDULE_ANC, SCHEDULE_PNC, SCHEDULE_ANC_1, SCHEDULE_ANC_2, SCHEDULE_ANC_3, SCHEDULE_ANC_4, SCHEDULE_PNC_1, 
+				SCHEDULE_PNC_2, SCHEDULE_PNC_3, SCHEDULE_PNC_4, Adolescent_Health, IMD_Adolescent_Health, Injectables, Nutrition, Death_Reg);
 	}
 
 }

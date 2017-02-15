@@ -1,7 +1,5 @@
 package org.opensrp.connector.openmrs.service;
 
-import static org.opensrp.common.AllConstants.BnfFollowUpVisitFields.SCHEDULE_BNF_IME;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -13,8 +11,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.motechproject.scheduletracking.api.domain.Enrollment;
 import org.motechproject.scheduletracking.api.domain.MilestoneFulfillment;
-import org.opensrp.common.AllConstants.BnfFollowUpVisitFields;
-import org.opensrp.common.AllConstants.ELCOSchedulesConstantsImediate;
+import org.opensrp.common.AllConstants.ScheduleNames;
 import org.opensrp.connector.HttpUtil;
 import org.opensrp.connector.openmrs.constants.OpenmrsConstants;
 import org.opensrp.scheduler.Action;
@@ -61,12 +58,19 @@ public class OpenmrsSchedulerService extends OpenmrsService{
     	super(openmrsUrl, user, password);
     }
     public String parseScheduleName(String scheduleName){
-    	if(scheduleName.equalsIgnoreCase(ELCOSchedulesConstantsImediate.IMD_ELCO_SCHEDULE_PSRF)){
-    		return scheduleName.replace(ELCOSchedulesConstantsImediate.IMD_ELCO_SCHEDULE_PSRF, ELCOSchedulesConstantsImediate.ELCO_SCHEDULE_PSRF);
-    	}else{
-    		return scheduleName.replace(SCHEDULE_BNF_IME, BnfFollowUpVisitFields.SCHEDULE_BNF);
+    	if(scheduleName.equalsIgnoreCase(ScheduleNames.IMD_ELCO_SCHEDULE_PSRF)){
+    		return scheduleName.replace(ScheduleNames.IMD_ELCO_SCHEDULE_PSRF, ScheduleNames.ELCO_SCHEDULE_PSRF);
     	}
-    	
+    	else if(scheduleName.equalsIgnoreCase(ScheduleNames.IMD_SCHEDULE_Woman_BNF)){
+    		return scheduleName.replace(ScheduleNames.IMD_SCHEDULE_Woman_BNF, ScheduleNames.SCHEDULE_Woman_BNF);
+    	}
+    	else if(scheduleName.equalsIgnoreCase(ScheduleNames.IMD_child_bcg)){
+    		return scheduleName.replace(ScheduleNames.IMD_child_bcg, ScheduleNames.child_bcg);
+    	}
+    	else if(scheduleName.equalsIgnoreCase(ScheduleNames.IMD_Adolescent_Health)){
+    		return scheduleName.replace(ScheduleNames.IMD_Adolescent_Health, ScheduleNames.Adolescent_Health);
+    	}
+    	else return scheduleName;       	
     }
 	
     public JSONObject createTrack(Enrollment e, List<Action> alertActions,String motherId) 

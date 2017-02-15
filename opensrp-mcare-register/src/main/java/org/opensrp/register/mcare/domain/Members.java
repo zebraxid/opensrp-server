@@ -187,17 +187,17 @@ public class Members extends MotechBaseDataObject {
 	@JsonProperty
 	private Map<String, String> DeathReg;
 	@JsonProperty
-	private List<Map<String, String>> Elco_Followup;
+	private List<Map<String, String>> elco_Followup;
 	@JsonProperty
 	private List<Map<String, String>> child_vaccine;
 	@JsonProperty
-	private List<Map<String, String>> BNFVisit;
+	private List<Map<String, String>> bnfVisit;
 	@JsonProperty
-	private List<Map<String, String>> Injectables;
+	private List<Map<String, String>> injecTables;
 	@JsonProperty
-	private List<Map<String, String>> Adolescent;
+	private List<Map<String, String>> adolescent;
 	@JsonProperty
-	private List<Map<String, String>> Nutrition;
+	private List<Map<String, String>> nutrition;
 	@JsonProperty
 	private String isClosed;
 	public Members() {
@@ -211,12 +211,12 @@ public class Members extends MotechBaseDataObject {
 				this.PNCVisit3 = new HashMap<>();
 				this.PNCVisit4 = new HashMap<>();
 				this.DeathReg = new HashMap<>();
-				this.Elco_Followup = new ArrayList<>();
-				this.BNFVisit = new ArrayList<>();
+				this.elco_Followup = new ArrayList<>();
+				this.bnfVisit = new ArrayList<>();
 				this.child_vaccine = new ArrayList<>();
-				this.Injectables = new ArrayList<>();
-				this.Adolescent = new ArrayList<>();
-				this.Nutrition = new ArrayList<>();
+				this.injecTables = new ArrayList<>();
+				this.adolescent = new ArrayList<>();
+				this.nutrition = new ArrayList<>();
 				this.setIsClosed(false);
 	}
 	
@@ -244,20 +244,20 @@ public class Members extends MotechBaseDataObject {
         this.details = new HashMap<>(details);
         return this;
     }
-	public Members setElco_Followup(List<Map<String, String>> Elco_Followup) {
-        this.Elco_Followup = Elco_Followup;
+	public Members setelco_Followup(List<Map<String, String>> elco_Followup) {
+        this.elco_Followup = elco_Followup;
         return this;
     }
-	public Members setInjectables(List<Map<String, String>> Injectables) {
-        this.Injectables = Injectables;
+	public Members setinjecTables(List<Map<String, String>> injecTables) {
+        this.injecTables = injecTables;
         return this;
     }
-	public Members setAdolescent(List<Map<String, String>> Adolescent) {
-        this.Adolescent = Adolescent;
+	public Members setadolescent(List<Map<String, String>> adolescent) {
+        this.adolescent = adolescent;
         return this;
     }
-	public Members setNutrition(List<Map<String, String>> Nutrition) {
-        this.Nutrition = Nutrition;
+	public Members setnutrition(List<Map<String, String>> nutrition) {
+        this.nutrition = nutrition;
         return this;
     }
 	public Members setANCVisit1(Map<String, String> ANCVisit1) {
@@ -296,8 +296,8 @@ public class Members extends MotechBaseDataObject {
         this.DeathReg = new HashMap<>(DeathReg);
         return this;
     }
-    public Members setBNFVisit(List<Map<String, String>> BNFVisit) {
-        this.BNFVisit = BNFVisit;
+    public Members setbnfVisit(List<Map<String, String>> bnfVisit) {
+        this.bnfVisit = bnfVisit;
         return this;
     }
     public Members setchild_vaccine(List<Map<String, String>> child_vaccine) {
@@ -685,10 +685,10 @@ public class Members extends MotechBaseDataObject {
 		return details.get(name);
 	}
 
-	public List<Map<String, String>> Elco_Followup() {
-		if (Elco_Followup == null)
-			Elco_Followup = new ArrayList<>();
-		return Elco_Followup;
+	public List<Map<String, String>> elco_Followup() {
+		if (elco_Followup == null)
+			elco_Followup = new ArrayList<>();
+		return elco_Followup;
 	}
 	public Map<String, String> ANCVisit1() {
 		if (ANCVisit1 == null)
@@ -735,10 +735,10 @@ public class Members extends MotechBaseDataObject {
 			this.DeathReg = new HashMap<>();
 		return DeathReg;
 	}
-	public List<Map<String, String>> BNFVisit() {
-		if (BNFVisit == null)
-			BNFVisit = new ArrayList<>();
-		return BNFVisit;
+	public List<Map<String, String>> bnfVisit() {
+		if (bnfVisit == null)
+			bnfVisit = new ArrayList<>();
+		return bnfVisit;
 	}
 	public List<Map<String, String>> child_vaccine() {
 		if (child_vaccine == null) {
@@ -746,23 +746,23 @@ public class Members extends MotechBaseDataObject {
 		}
 		return child_vaccine;
 	}
-	public List<Map<String, String>> Injectables() {
-		if (Injectables == null) {
-			Injectables = new ArrayList<>();
+	public List<Map<String, String>> injecTables() {
+		if (injecTables == null) {
+			injecTables = new ArrayList<>();
 		}
-		return Injectables;
+		return injecTables;
 	}
-	public List<Map<String, String>> Adolescent() {
-		if (Adolescent == null) {
-			Adolescent = new ArrayList<>();
+	public List<Map<String, String>> adolescent() {
+		if (adolescent == null) {
+			adolescent = new ArrayList<>();
 		}
-		return Adolescent;
+		return adolescent;
 	}
-	public List<Map<String, String>> Nutrition() {
-		if (Nutrition == null) {
-			Nutrition = new ArrayList<>();
+	public List<Map<String, String>> nutrition() {
+		if (nutrition == null) {
+			nutrition = new ArrayList<>();
 		}
-		return Nutrition;
+		return nutrition;
 	}
 
 	public String getRelationalid() {

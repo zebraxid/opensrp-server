@@ -153,6 +153,9 @@ public class MultimediaService {
 			 file.mkdirs();
 			 
     }
+    public Multimedia findByCaseId(String entityId){
+    	return multimediaRepository.findByCaseId(entityId);
+    }
 	public List<Multimedia> getMultimediaFiles(String providerId) {
 		return multimediaRepository.all(providerId);
 	}

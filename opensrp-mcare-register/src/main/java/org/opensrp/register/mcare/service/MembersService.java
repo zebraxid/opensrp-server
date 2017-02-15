@@ -100,25 +100,30 @@ public class MembersService {
 			
 			//womanVaccineSchedule.Vaccine(submission, members, membersFields, child_bcg, submission.getField(REFERENCE_DATE), "Child");
 
-			if(submission.getField("Child") != null && !submission.getField("Child").equalsIgnoreCase(""))
-			if(submission.getField("Child").equalsIgnoreCase("1")){
+			if (membersFields.containsKey("Child")) {
+			if (membersFields.get("Child")!= null || !membersFields.get("Child").equalsIgnoreCase("")) {
+			if(membersFields.get("Child").equalsIgnoreCase("1")) {
 				if(submission.getField(REFERENCE_DATE) != null && !submission.getField(REFERENCE_DATE).equalsIgnoreCase(""))
 				if(isValidDate(submission.getField(REFERENCE_DATE))){
 					membersScheduleService.imediateEnrollIntoMilestoneOfChild_vaccination(
 						members.caseId(),submission.getField(REFERENCE_DATE), submission.anmId(), submission.instanceId());
 					
-					membersScheduleService.enrollIntoSchedule(submission.entityId(), submission.getField(today), Nutrition);
+					membersScheduleService.enrollIntoSchedule(submission.entityId(), submission.getField(REFERENCE_DATE), Nutrition);
 				}
 			}
+			}
+			}
 			
-			
-			if(submission.getField("Adolescent") != null && !submission.getField("Adolescent").equalsIgnoreCase(""))
-			if(submission.getField("Adolescent").equalsIgnoreCase("1")){
+			if (membersFields.containsKey("Adolescent")) {
+			if (membersFields.get("Adolescent")!= null || !membersFields.get("Adolescent").equalsIgnoreCase("")) {
+			if(membersFields.get("Adolescent").equalsIgnoreCase("1")) {
 				if(submission.getField(REFERENCE_DATE) != null && !submission.getField(REFERENCE_DATE).equalsIgnoreCase(""))
 				if(isValidDate(submission.getField(REFERENCE_DATE))){
 					membersScheduleService.imediateEnrollIntoMilestoneOfAdolescent(
 						members.caseId(),submission.getField(REFERENCE_DATE), submission.anmId(), submission.instanceId());
 				}
+			}
+			}
 			}
 		}	
 			
@@ -268,7 +273,7 @@ public class MembersService {
 									.put(Received_Time, format.format(day).toString())
 									.map();	
 		
-		members.Elco_Followup().add(Elco_Followup);
+		members.elco_Followup().add(Elco_Followup);
 		allMembers.update(members);
 		
 		logger.info("Value found submission.getField(Visit_Status): " + submission.getField(Visit_Status));
@@ -321,7 +326,7 @@ public class MembersService {
 				logger.info("From Elco_Followup: " + e.getMessage());
 			}
 			
-			membersScheduleService.enrollIntoCorrectMilestoneOfANCRVCare(submission.entityId(), LocalDate.parse(LMP));
+			membersScheduleService.enrollIntoCorrectMilestoneOfANCRVCare(submission.entityId(), LocalDate.parse(submission.getField(LMP)));
 		}
 		
 		//womanVaccineSchedule.immediateVaccine(submission, members, SCHEDULE_Woman_BNF, IMD_SCHEDULE_Woman_BNF, Calc_EDD, Preg_Status);
@@ -473,7 +478,7 @@ public class MembersService {
 								.put(Received_Time, format.format(day).toString())
 								.map();	
 		
-		members.BNFVisit().add(bnf);
+		members.bnfVisit().add(bnf);
 		allMembers.update(members);
 		
 		/*if (submission.getField(Visit_status) != null && !submission.getField(Visit_status).equalsIgnoreCase("")){	

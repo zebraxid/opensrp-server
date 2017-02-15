@@ -98,6 +98,12 @@ public class AlertCreationAction implements HookedEvent {
     	else if(scheduleName.equalsIgnoreCase(ScheduleNames.IMD_ELCO_SCHEDULE_PSRF)){
     		return scheduleName.replace(ScheduleNames.IMD_ELCO_SCHEDULE_PSRF, ScheduleNames.ELCO_SCHEDULE_PSRF);
     	}
+    	else if(scheduleName.equalsIgnoreCase(ScheduleNames.IMD_child_bcg)){
+    		return scheduleName.replace(ScheduleNames.IMD_child_bcg, ScheduleNames.child_bcg);
+    	}
+    	else if(scheduleName.equalsIgnoreCase(ScheduleNames.IMD_Adolescent_Health)){
+    		return scheduleName.replace(ScheduleNames.IMD_Adolescent_Health, ScheduleNames.Adolescent_Health);
+    	}
     	else return scheduleName;    
     	
     }

@@ -3,6 +3,7 @@ package org.opensrp.scheduler;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.opensrp.common.AllConstants.ScheduleNames;
 import org.motechproject.scheduler.domain.MotechEvent;
 import org.motechproject.scheduletracking.api.events.constants.EventSubjects;
 import org.motechproject.scheduletracking.api.service.ScheduleTrackingService;
@@ -10,9 +11,6 @@ import org.motechproject.server.event.annotations.MotechListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-import org.opensrp.common.AllConstants.BnfFollowUpVisitFields;
-import org.opensrp.common.AllConstants.ELCOSchedulesConstantsImediate;
-import static org.opensrp.common.AllConstants.BnfFollowUpVisitFields.SCHEDULE_BNF_IME;
 
 /**
  * The class that maintains the actions against alerts by {@link ScheduleTrackingService}
@@ -42,10 +40,6 @@ public class AlertRouter {
     public void handle(MotechEvent realEvent) {
         logger.info("Handling motech event : " + realEvent);
         MilestoneEvent event = new MilestoneEvent(realEvent);
-        if(event.scheduleName().equalsIgnoreCase(ELCOSchedulesConstantsImediate.IMD_ELCO_SCHEDULE_PSRF)){
-    		event.scheduleName().contentEquals(ELCOSchedulesConstantsImediate.ELCO_SCHEDULE_PSRF);
-    		event.milestoneName().contentEquals(ELCOSchedulesConstantsImediate.ELCO_SCHEDULE_PSRF);
-    	}
         
         for (Route route : routes) {
         	
@@ -58,11 +52,19 @@ public class AlertRouter {
         throw new NoRoutesMatchException(event);
     }
     public String parseScheduleName(String scheduleName){
-    	if(scheduleName.equalsIgnoreCase(ELCOSchedulesConstantsImediate.IMD_ELCO_SCHEDULE_PSRF)){
-    		return scheduleName.replace(ELCOSchedulesConstantsImediate.IMD_ELCO_SCHEDULE_PSRF, ELCOSchedulesConstantsImediate.ELCO_SCHEDULE_PSRF);
-    	}else{
-    		return scheduleName.replace(SCHEDULE_BNF_IME, BnfFollowUpVisitFields.SCHEDULE_BNF);
+    	if(scheduleName.equalsIgnoreCase(ScheduleNames.IMD_ELCO_SCHEDULE_PSRF)){
+    		return scheduleName.replace(ScheduleNames.IMD_ELCO_SCHEDULE_PSRF, ScheduleNames.ELCO_SCHEDULE_PSRF);
     	}
-    	
+    	else if(scheduleName.equalsIgnoreCase(ScheduleNames.IMD_SCHEDULE_Woman_BNF)){
+    		return scheduleName.replace(ScheduleNames.IMD_SCHEDULE_Woman_BNF, ScheduleNames.SCHEDULE_Woman_BNF);
+    	}
+    	else if(scheduleName.equalsIgnoreCase(ScheduleNames.IMD_child_bcg)){
+    		return scheduleName.replace(ScheduleNames.IMD_child_bcg, ScheduleNames.child_bcg);
+    	}
+    	else if(scheduleName.equalsIgnoreCase(ScheduleNames.IMD_Adolescent_Health)){
+    		return scheduleName.replace(ScheduleNames.IMD_Adolescent_Health, ScheduleNames.Adolescent_Health);
+    	}
+    	else
+    		return scheduleName;
     }
 }

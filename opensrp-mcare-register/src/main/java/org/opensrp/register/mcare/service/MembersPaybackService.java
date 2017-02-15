@@ -111,7 +111,7 @@ public class MembersPaybackService {
 								.put(Received_Time, format.format(day).toString())
 								.map();	
 		
-		members.Injectables().add(Injectable);
+		members.injecTables().add(Injectable);
 		allMembers.update(members);
 		
 		if (submission.getField(Visit_Status) != null && !submission.getField(Visit_Status).equalsIgnoreCase(""))
@@ -172,7 +172,7 @@ public class MembersPaybackService {
 									.put(Received_Time, format.format(day).toString())
 									.map();	
 		
-		members.Adolescent().add(Adolescent);
+		members.adolescent().add(Adolescent);
 		allMembers.update(members);
 		
 		if (submission.getField(Visit_Status) != null && (submission.getField(Visit_Status).equalsIgnoreCase("8")))
@@ -309,7 +309,7 @@ public class MembersPaybackService {
 									.put(Received_Time, format.format(day).toString())
 									.map();	
 		
-		members.Nutrition().add(Nutritions);
+		members.nutrition().add(Nutritions);
 		allMembers.update(members);
 		
 		membersScheduleService.unEnrollFromSchedule(submission.entityId(), submission.anmId(), Nutrition);

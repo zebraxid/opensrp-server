@@ -49,15 +49,12 @@ public class ActionService {
     	if (!(members.equals(beneficiaryType)||household.equals(beneficiaryType))) {
             throw new IllegalArgumentException("Beneficiary Type : " + beneficiaryType + " is of unknown type");
         }
-    	if(scheduleName.equals(ScheduleNames.SCHEDULE_Woman_BNF) || scheduleName.equals(ScheduleNames.CENCUS) || 
-    			scheduleName.equals(ScheduleNames.ELCO_SCHEDULE_PSRF) || scheduleName.equals(ScheduleNames.child_bcg)){
-    		this.ActionUpdateOrCreateForOther(beneficiaryType, caseID, instanceId, anmIdentifier, scheduleName, visitCode, alertStatus, startDate, expiryDate);
-    		
-    	}else if(scheduleName.equals(ScheduleNames.SCHEDULE_ANC) || scheduleName.equals(ScheduleNames.SCHEDULE_PNC)){
+    	else if(scheduleName.equals(ScheduleNames.SCHEDULE_ANC) || scheduleName.equals(ScheduleNames.SCHEDULE_PNC)){
     		this.ActionUpdateOrCreateForMotherType(beneficiaryType, caseID, instanceId, anmIdentifier, scheduleName, visitCode, alertStatus, startDate, expiryDate);
     		
-    	}else{
-    		
+    	}
+    	else{
+    		this.ActionUpdateOrCreateForOther(beneficiaryType, caseID, instanceId, anmIdentifier, scheduleName, visitCode, alertStatus, startDate, expiryDate);
     	}
     	
     }
