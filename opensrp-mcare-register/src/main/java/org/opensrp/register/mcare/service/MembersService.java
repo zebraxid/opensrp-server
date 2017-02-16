@@ -94,18 +94,25 @@ public class MembersService {
 		for (Map<String, String> membersFields : subFormData.instances()) {
 			
 			String relational_id = null;
+			String motherRelationalId = null;
 			
 			if (membersFields.containsKey(relationalid) && membersFields.get(relationalid) != null && !membersFields.get(relationalid).isEmpty()){
 				relational_id = membersFields.get(relationalid);
 			}
 			else
 				relational_id = submission.entityId();
-				
+			
+			if (membersFields.containsKey(mother_relational_id) && membersFields.get(mother_relational_id) != null && !membersFields.get(mother_relational_id).isEmpty()){
+				motherRelationalId = membersFields.get(mother_relational_id);
+			}
+			else
+				motherRelationalId = null;
 			
 			Members members = allMembers.findByCaseId(membersFields.get(ID))
 					.setINSTANCEID(submission.instanceId())
 					.setPROVIDERID(submission.anmId())
-					.setTODAY(submission.getField(REFERENCE_DATE))					
+					.setTODAY(submission.getField(REFERENCE_DATE))
+					.setMotherRelationalId(motherRelationalId)
 					.setrelationalid(relational_id).setTimestamp(DateUtil.getTimestampToday());					
 			
 			if(membersFields.containsKey(REG_NO)){
@@ -474,6 +481,7 @@ public class MembersService {
 		for (Map<String, String> membersFields : subFormData.instances()) {
 			
 			String relational_id = null;
+			String motherRelationalId = null;
 			
 			if (membersFields.containsKey(relationalid))
 			if (membersFields.get(relationalid) != null && !membersFields.get(relationalid).isEmpty()){
@@ -482,9 +490,17 @@ public class MembersService {
 			else
 				relational_id = submission.entityId();
 			
+
+			if (membersFields.containsKey(mother_relational_id) && membersFields.get(mother_relational_id) != null && !membersFields.get(mother_relational_id).isEmpty()){
+				motherRelationalId = membersFields.get(mother_relational_id);
+			}
+			else
+				motherRelationalId = null;
+			
 			Members members = allMembers.findByCaseId(membersFields.get(ID))
 					.setINSTANCEID(submission.instanceId())
 					.setPROVIDERID(submission.anmId())
+					.setMotherRelationalId(motherRelationalId)
 					.setTODAY(submission.getField(REFERENCE_DATE))
 					.setrelationalid(relational_id);					
 			

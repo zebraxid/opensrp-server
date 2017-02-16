@@ -587,6 +587,8 @@ public class Members extends MotechBaseDataObject {
 	@JsonProperty
 	private String relationalid;
 	@JsonProperty
+	private String mother_relational_id;
+	@JsonProperty
 	private Map<String, String> details;
 	@JsonProperty
 	private Map<String, String> TTVisit;
@@ -1305,6 +1307,10 @@ public class Members extends MotechBaseDataObject {
 		this.relationalid = relationalid;
 		return this;
 	}
+	public Members setMotherRelationalId(String motherRelationalId) {
+		this.mother_relational_id = motherRelationalId;
+		return this;
+	}
 	public Members setMember_Paurasava(String Member_Paurasava) {
 		this.Member_Paurasava = Member_Paurasava;
 		return this;
@@ -1927,6 +1933,9 @@ public class Members extends MotechBaseDataObject {
 	}
 	public String relationalid() {
 		return relationalid;
+	}
+	public String motherRelationalId() {
+		return mother_relational_id;
 	}
 	public String Member_Paurasava() {
 		return Member_Paurasava;

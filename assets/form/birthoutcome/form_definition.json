@@ -113,6 +113,10 @@
             "name": "relationalid"
           },
           {
+            "name": "mother_relational_id",
+            "bind": "/model/instance/BirthOutcome/Child_Registration/mother_relational_id"
+          },
+          {
             "name": "Member_COUNTRY",
             "bind": "/model/instance/BirthOutcome/Child_Registration/Member_COUNTRY"
           },

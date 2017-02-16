@@ -351,6 +351,7 @@ public class AllConstants {
 	    	public static final String FW_PROVIDERID ="PROVIDERID";
 	    	public static final String FW_LOCATIONID ="LOCATIONID";
 	    	public static final String relationalid ="relationalid";
+	    	public static final String mother_relational_id ="mother_relational_id";
 	    	public static final String FW_TODAY ="TODAY";
 	    	public static final String FW_GOBHHID ="GOBHHID"; 
 	    	public static final String FW_JiVitAHHID ="JiVitAHHID";
