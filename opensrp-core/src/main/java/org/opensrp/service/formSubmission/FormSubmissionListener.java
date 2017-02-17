@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.joda.time.DateTime;
 import org.motechproject.scheduler.domain.MotechEvent;
 import org.motechproject.server.event.annotations.MotechListener;
@@ -83,13 +84,12 @@ public class FormSubmissionListener {
 	            	if(submission.getField("no_client_event") == null || submission.getField("no_client_event").contains("false")){
 		            	fsp.processFormSubmission(submission);
 	            	}
-	            	
-	            	configService.updateAppStateToken(AllConstants.Config.FORM_ENTITY_PARSER_LAST_SYNCED_FORM_SUBMISSION, submission.serverVersion());
-            	}
+	            }
             	catch(Exception e){
             		e.printStackTrace();
-            		errorTraceService.addError(new ErrorTrace(DateTime.now(), "FormSubmissionProcessor", this.getClass().getName(), e.getStackTrace().toString(), "unsolved", FormSubmission.class.getName()));
+            		errorTraceService.addError(new ErrorTrace(DateTime.now(), "FormSubmissionProcessor", this.getClass().getName(), ExceptionUtils.getStackTrace(e), "unsolved", FormSubmission.class.getName()));
             	}
+            	configService.updateAppStateToken(AllConstants.Config.FORM_ENTITY_PARSER_LAST_SYNCED_FORM_SUBMISSION, submission.serverVersion());
             }
         } catch (Exception e) {
             logger.error(MessageFormat.format("{0} occurred while trying to fetch forms. Message: {1} with stack trace {2}",

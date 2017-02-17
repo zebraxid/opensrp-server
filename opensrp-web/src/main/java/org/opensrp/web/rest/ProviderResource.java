@@ -117,9 +117,8 @@ public class ProviderResource extends RestResource<Provider>{
 	}
 
 	@Override
-	public List<Provider> filter(String query) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Provider> filter(String query, String sort, Integer limit, Integer skip) {
+		throw new UnsupportedOperationException();
 	}
 
 }

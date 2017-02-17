@@ -33,7 +33,7 @@ import com.mysql.jdbc.StringUtils;
 @FullText({
     @Index(
         name = "by_all_criteria",
-        index = "function (doc) {  if(doc.type !== 'Client') return null;  var docl = new Array();  var len = doc.addresses ? doc.addresses.length : 1;  for(var al = 0; al < len; al++) {    var arr1 = ['firstName', 'middleName', 'lastName', 'gender'];    var arr2 = ['addressType', 'country', 'stateProvince', 'cityVillage', 'countyDistrict', 'subDistrict', 'town', 'subTown'];    var ret = new Document();    for(var i in arr1) {      ret.add(doc[arr1[i]], {'field' : arr1[i]});    }    for(var key in doc.attributes) {      ret.add(doc.attributes[key], {'field' : key});    }    if(doc.addresses) {      var ad = doc.addresses[al];      if(ad){        for(var i in arr2) {          ret.add(ad[arr2[i]], {'field' : arr2[i]});        }      }              }    var bd = doc.birthdate.substring(0, 19);    ret.add(bd, {'field' : 'birthdate','type' : 'date'});        var crd = doc.dateCreated.substring(0, 19);    ret.add(crd, {'field' : 'lastEdited','type' : 'date'});        if(doc.dateEdited){    var led = doc.dateEdited.substring(0, 19);    ret.add(led, {'field' : 'lastEdited','type' : 'date'});        }        docl.push(ret);    }  return docl; }")
+        index = "function (doc) {  if(doc.type !== 'Client') return null;  var docl = new Array();  var len = doc.addresses ? doc.addresses.length : 1;  for(var al = 0; al < len; al++) {    var arr1 = ['baseEntityId', 'firstName', 'middleName', 'lastName', 'gender'];    var arr2 = ['addressType', 'country', 'stateProvince', 'cityVillage', 'countyDistrict', 'subDistrict', 'town', 'subTown'];    var ret = new Document();    for(var i in arr1) {      ret.add(doc[arr1[i]], {'field' : arr1[i]});    }    for(var key in doc.attributes) {      ret.add(doc.attributes[key], {'field' : key});    }    if(doc.addresses) {      var ad = doc.addresses[al];      if(ad){        for(var i in arr2) {          ret.add(ad[arr2[i]], {'field' : arr2[i]});        }      }              }    var bd = doc.birthdate.substring(0, 19);    ret.add(bd, {'field' : 'birthdate','type' : 'date'});       var crd = doc.dateCreated.substring(0, 23)+doc.dateCreated.substring(23).replace(':', '');  ret.add(crd, {'field' : 'lastEdited','type' : 'date', 'store': 'yes'});  if(doc.dateEdited){  var led = doc.dateEdited.substring(0, 23)+doc.dateEdited.substring(23).replace(':', '');  ret.add(led, {'field' : 'lastEdited','type' : 'date', 'store': 'yes'});  }       docl.push(ret);    }  return docl; }")
 })
 @Component
 public class LuceneClientRepository extends CouchDbRepositorySupportWithLucene<Client>{
@@ -119,6 +119,7 @@ public class LuceneClientRepository extends CouchDbRepositorySupportWithLucene<C
 		// stale must not be ok, as we've only just loaded the docs
 		query.setStaleOk(false);
 		query.setIncludeDocs(true);
+		query.setSort(LAST_UPDATE);
 
 		try {
 			LuceneResult result = db.queryLucene(query);
@@ -128,7 +129,7 @@ public class LuceneClientRepository extends CouchDbRepositorySupportWithLucene<C
 		} 
 	}
 	
-	public List<Client> getByCriteria(String query) {
+	public List<Client> query(String query, String sort, Integer limit, Integer skip) {
 		// create a simple query against the view/search function that we've created
 		LuceneQuery lq = new LuceneQuery("Client", "by_all_criteria");
 		
@@ -136,6 +137,15 @@ public class LuceneClientRepository extends CouchDbRepositorySupportWithLucene<C
 		// stale must not be ok, as we've only just loaded the docs
 		lq.setStaleOk(false);
 		lq.setIncludeDocs(true);
+		if(org.apache.commons.lang3.StringUtils.isNotBlank(sort)){
+			lq.setSort(sort);
+		}
+		if(limit != null){
+			lq.setLimit(limit);
+		}
+		if(skip != null){
+			lq.setSkip(skip);
+		}
 
 		try {
 			LuceneResult result = db.queryLucene(lq);

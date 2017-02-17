@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.opensrp.service.XlsFormDownloaderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -24,9 +25,13 @@ public class XlsFormDownloaderController {
 	
 	
 	private XlsFormDownloaderService xlsService;
+	private String formDirPath;
+	
+	// TODO refactor and make it available in xlsform instead of this class
 	@Autowired
-	public XlsFormDownloaderController(XlsFormDownloaderService xlsService) {
+	public XlsFormDownloaderController(XlsFormDownloaderService xlsService, @Value("#{opensrp['form.directory.name']}") String formDirPath) {
 		this.xlsService=xlsService;
+		this.formDirPath = formDirPath;
 	}
 	
 	@RequestMapping(method = GET, value = "/index")
@@ -48,7 +53,6 @@ public class XlsFormDownloaderController {
 		String formName=request.getParameter("formName").trim();
 		String formPk=request.getParameter("formPk").trim();
 		String password=request.getParameter("password").trim();
-		System.out.println("Password : "+password);
 		
 //		System.out.println(userName+"   "+formId);
 		//String username=request.getParameter("username");
@@ -57,7 +61,7 @@ public class XlsFormDownloaderController {
 	String formDefinition="" ;
 		boolean check=false;
 		try {
-		check=	xlsService.downloadFormFiles(getPath().trim()+"form", userName, password,formId,formPk, formName);
+		check=	xlsService.downloadFormFiles(getPath().trim()+"form", userName, formPk, password,formName, formId);
 		formDefinition=xlsService.getFormDefinition();
 		
 		//Gson gson = new Gson();
@@ -82,7 +86,10 @@ public class XlsFormDownloaderController {
 		}
 		String msg=check==true?"Files downloaded in directory":"files not downloaded  !";
 		model.put("msg", msg);
-		model.put("definition", formDefinition);
+		model.put("definition", check?formDefinition:"All files were not downloaded, hence no form definition available");
+		if(check){
+			
+		}
 		model.put("check", check);
 		
 		return new ModelAndView("xlsformdownloader", model);

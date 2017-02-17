@@ -4,6 +4,7 @@ package org.opensrp.service.formSubmission;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -85,19 +86,27 @@ public class FormEntityConverter {
 		
 		for (FormFieldMap fl : fields) {
 			Map<String, String> fat = fl.fieldAttributes();
-			if(!fl.values().isEmpty() && !StringUtils.isEmptyOrWhitespaceOnly(fl.values().get(0))
-					&& fat.containsKey("openmrs_entity") 
+			if(!fl.values().isEmpty() && !StringUtils.isEmptyOrWhitespaceOnly(fl.values().get(0))){
+				if(fat.containsKey("openmrs_entity") 
 					&& fat.get("openmrs_entity").equalsIgnoreCase("concept")){
-				List<Object> vall = new ArrayList<>();
-				for (String vl : fl.values()) {
-					String val = fl.valueCodes(vl)==null?null:fl.valueCodes(vl).get("openmrs_code");
-					val = StringUtils.isEmptyOrWhitespaceOnly(val)?vl:val;
-					vall.add(val);
+					List<String> vall = new ArrayList<>();
+					for (String vl : fl.values()) {
+						String val = fl.valueCodes(vl)==null?null:fl.valueCodes(vl).get("openmrs_code");
+						val = StringUtils.isEmptyOrWhitespaceOnly(val)?vl:val;
+						vall.add(val);
+					}
+					Obs o = new Obs("concept", fl.type(), fat.get("openmrs_entity_id"), 
+							fat.get("openmrs_entity_parent"), vall, fl.values(), null, fl.name());
+					//not needed as if it is different from encounter date time then should have value 
+					//o.setEffectiveDatetime(e.getEventDate()); 
+					e.addObs(o);
 				}
-				Obs o = new Obs("concept", fl.type(), fat.get("openmrs_entity_id"), 
-						fat.get("openmrs_entity_parent"), vall, null, fl.name());
-				o.setEffectiveDatetime(e.getEventDate());
-				e.addObs(o);
+				else if(fat.isEmpty()){// should not handle attributes for person/encounter entity type
+					Obs o = new Obs("extra", fl.type(), null, null, fl.values(), null, null, fl.name());
+					//not needed as if it is different from encounter date time then should have value 
+					//o.setEffectiveDatetime(e.getEventDate());
+					e.addObs(o);
+				}
 			}
 		}
 		return e;

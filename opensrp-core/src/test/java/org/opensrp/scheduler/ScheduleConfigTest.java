@@ -161,6 +161,31 @@ public class ScheduleConfigTest {
 	}
 	
 	@Test
+	public void shouldHandleMisingFieldsForValidation() {
+		List<Schedule> sch = schconfig.searchSchedules("child_enrollment", "PENTAVALENT 2", "penta2", ActionType.enroll);
+		assertEquals(1, sch.size());
+		
+		Schedule s = sch.get(0);
+		
+		Map<String, String> flvl = new HashMap<>();
+		flvl.put("pentavalent_2", null);
+		assertTrue(s.passesValidations(flvl));
+		
+		flvl = new HashMap<>();
+		flvl.put("pentavalent_2_retro", "");
+		assertTrue(s.passesValidations(flvl));
+		
+		flvl = new HashMap<>();
+		flvl.put("pentavalent_2", "");
+		flvl.put("pentavalent_2_retro", "");
+		assertTrue(s.passesValidations(flvl));
+		
+		flvl.put("pentavalent_2", "a val");
+		flvl.put("pentavalent_2_retro", "a vale");
+		assertFalse(s.passesValidations(flvl));
+	}
+	
+	@Test
 	public void shouldReturnCorrectResultForApplicableEntity() {
 		List<Schedule> sch = schconfig.searchSchedules("child_enrollment", "PENTAVALENT 2", "penta2", ActionType.enroll);
 		assertEquals(1, sch.size());

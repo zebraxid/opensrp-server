@@ -1,0 +1,54 @@
+<model>
+	<instance>
+		<Daily_Treatment_phonebasedv2.5 id="Daily_TreatmentV25" version="201701050715">
+			<formhub>
+				<uuid />
+			</formhub>
+			<start />
+			<end />
+			<Section_BI>
+				<intro_1 />
+				<GPS_Pt />
+				<RegNo_Pt />
+				<Date_TxStrt />
+			</Section_BI>
+			<Section_DM>
+				<intro_2 />
+				<TxDayNum />
+				<NoOfDrugs_TxRx />
+				<drug_repeat_count />
+				<drug_repeat template="">
+					<TBDrug />
+					<PrescDoseAmount_TBDrug />
+					<DoseUnit_TBDrug />
+					<AdmDoseAmount_TBDrug />
+					<acknowledge_test />
+					<MissedDoseAmount_TBDrug />
+					<MDA_TBDrug_note />
+					<DOTRate_TBDrug />
+					<DOTR_TBDrug_note />
+					<Adm_TBDrug />
+					<Adm_TBDrug_note />
+					<MethodAdm_TBDrug />
+					<MethodAdm_TBDrug_other />
+					<test1 />
+				</drug_repeat>
+				<test2>1</test2>
+				<DOTRx />
+				<DOTRx_note />
+			</Section_DM>
+			<Section_AE>
+				<intro_2 />
+				<AE_DTM />
+				<SAE_DTM />
+				<AdmRefSAE_DTM />
+				<ActionAE_DTM />
+			</Section_AE>
+			<EndTime_DTM />
+			<meta>
+				<instanceID />
+				<instanceName />
+			</meta>
+		</Daily_Treatment_phonebasedv2.5>
+	</instance>
+</model>

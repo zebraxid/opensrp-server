@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.joda.time.DateTime;
+import org.opensrp.domain.Client;
 import org.opensrp.domain.Event;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -21,7 +22,7 @@ import static org.opensrp.common.AllConstants.BaseEntity.*;
 @FullText({
     @Index(
         name = "by_all_criteria",
-        index = "function(doc) {   if(doc.type !== 'Event') return null;   var arr1 = ['baseEntityId','eventType','entityType','providerId','locationId'];   var ret = new Document();   for (var i in arr1){     ret.add(doc[arr1[i]], {'field':arr1[i]});   }   if(doc.eventDate){     var bd=doc.eventDate.substring(0,19);      ret.add(bd, {'field':'eventDate','type':'date'});   }          var crd = doc.dateCreated.substring(0, 19);     ret.add(crd, {'field' : 'lastEdited','type' : 'date'});          if(doc.dateEdited){     var led = doc.dateEdited.substring(0, 19);     ret.add(led, {'field' : 'lastEdited','type' : 'date'});         }        return ret;   }")
+        index = "function(doc) {   if(doc.type !== 'Event') return null;   var arr1 = ['baseEntityId','eventType','entityType','providerId','locationId'];   var ret = new Document();   for (var i in arr1){     ret.add(doc[arr1[i]], {'field':arr1[i]});   }   if(doc.eventDate){     var bd=doc.eventDate.substring(0,19);      ret.add(bd, {'field':'eventDate','type':'date'});   }      var crd = doc.dateCreated.substring(0, 23)+doc.dateCreated.substring(23).replace(':', '');  ret.add(crd, {'field' : 'lastEdited','type' : 'date', 'store': 'yes'});  if(doc.dateEdited){  var led = doc.dateEdited.substring(0, 23)+doc.dateEdited.substring(23).replace(':', '');  ret.add(led, {'field' : 'lastEdited','type' : 'date', 'store': 'yes'});  }      return ret;   }")
 })
 @Component
 public class LuceneEventRepository extends CouchDbRepositorySupportWithLucene<Event>{
@@ -70,6 +71,7 @@ public class LuceneEventRepository extends CouchDbRepositorySupportWithLucene<Ev
 		// stale must not be ok, as we've only just loaded the docs
 		query.setStaleOk(false);
 		query.setIncludeDocs(true);
+		query.setSort(LAST_UPDATE);
 
 		try {
 			LuceneResult result = db.queryLucene(query);
@@ -79,17 +81,26 @@ public class LuceneEventRepository extends CouchDbRepositorySupportWithLucene<Ev
 		} 
 	}
 	
-	public List<Event> getByCriteria(String query) {
+	public List<Event> getByCriteria(String query, String sort, Integer limit, Integer skip) {
 		// create a simple query against the view/search function that we've created
-		LuceneQuery q = new LuceneQuery("Event", "by_all_criteria");
+		LuceneQuery lq = new LuceneQuery("Event", "by_all_criteria");
 		
-		q.setQuery(query);
+		lq.setQuery(query);
 		// stale must not be ok, as we've only just loaded the docs
-		q.setStaleOk(false);
-		q.setIncludeDocs(true);
+		lq.setStaleOk(false);
+		lq.setIncludeDocs(true);
+		if(org.apache.commons.lang3.StringUtils.isNotBlank(sort)){
+			lq.setSort(sort);
+		}
+		if(limit != null){
+			lq.setLimit(limit);
+		}
+		if(skip != null){
+			lq.setSkip(skip);
+		}
 
 		try {
-			LuceneResult result = db.queryLucene(q);
+			LuceneResult result = db.queryLucene(lq);
 			return ldb.asList(result, Event.class);
 		} catch (IOException e) {
 			throw new RuntimeException(e);

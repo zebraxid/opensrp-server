@@ -10,13 +10,13 @@ function(doc) {
       	ret.add(bd, {'field':'eventDate','type':'date'});  
       }  
       
-      var crd = doc.dateCreated.substring(0, 19);
-		ret.add(crd, {'field' : 'lastEdited','type' : 'date'});
+    var crd = doc.dateCreated.substring(0, 23)+doc.dateCreated.substring(23).replace(':', '');
+	ret.add(crd, {'field' : 'lastEdited','type' : 'date', 'store': 'yes'});
 		
-		if(doc.dateEdited){
-		var led = doc.dateEdited.substring(0, 19);
-		ret.add(led, {'field' : 'lastEdited','type' : 'date'});		
-		}
+	if(doc.dateEdited){
+		var led = doc.dateEdited.substring(0, 23)+doc.dateEdited.substring(23).replace(':', '');
+		ret.add(led, {'field' : 'lastEdited','type' : 'date', 'store': 'yes'});
+	}
 		
-       return ret;  
-      }
+    return ret;  
+}

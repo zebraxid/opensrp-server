@@ -1,7 +1,6 @@
 package org.opensrp.connector.openmrs.service;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -227,7 +226,7 @@ public class EncounterService extends OpenmrsService{
 	
 	private JSONArray convertObsToJson(Obs o) throws JSONException{
 		JSONArray arr = new JSONArray();
-		if(o.getValues() == null || o.getValues().size()==0){//must be parent of some obs
+		if(o.getValues(false) == null || o.getValues(false).size()==0){//must be parent of some obs
 			JSONObject obo = new JSONObject();
 			obo.put("concept", o.getFieldCode());
 
@@ -235,7 +234,7 @@ public class EncounterService extends OpenmrsService{
 		}
 		else {
 			//OpenMRS can not handle multivalued obs so add obs with multiple values as two different obs
-			for (Object v : o.getValues()) {
+			for (Object v : o.getValues(false)) {
 				JSONObject obo = new JSONObject();
 				obo.put("concept", o.getFieldCode());
 				obo.put("value", v);
@@ -252,7 +251,7 @@ public class EncounterService extends OpenmrsService{
 				return obs;
 			}
 		}
-		return new Obs("concept", "parent", o.getParentCode(), null, null, null, null);
+		return new Obs("concept", "parent", o.getParentCode(), null, null, null);
 	}
 	// TODO needs review and refactor
 	public Event convertToEvent(JSONObject encounter) throws JSONException{
@@ -285,14 +284,14 @@ public class EncounterService extends OpenmrsService{
 		JSONArray ol = encounter.getJSONArray("obs");
 		for (int i = 0; i < ol.length(); i++) {
 			JSONObject o = ol.getJSONObject(i);
-			List<Object> values = new ArrayList<Object>();
+			List<String> values = new ArrayList<String>();
 			if(o.optJSONObject("value") != null){
 				values.add(o.getJSONObject("value").getString("uuid"));
 			}
 			else if(o.has("value")){
 				values.add(o.getString("value"));
 			}
-			e.addObs(new Obs(null, null, o.getJSONObject("concept").getString("uuid"), null /*//TODO handle parent*/, values, null/*comments*/, null/*formSubmissionField*/));
+			e.addObs(new Obs(null, null, o.getJSONObject("concept").getString("uuid"), null /*//TODO handle parent*/, values, null, null/*comments*/, null/*formSubmissionField*/));
 		}
 		
 		return e;

@@ -1,0 +1,77 @@
+{
+  "form" : {
+    "bind_type" : "suspect",
+    "default_bind_path" : "/model/instance/Daily_Treatment_phonebasedv2.5/",
+    "fields" : [ {
+      "name" : "id",
+      "shouldLoadValue" : true
+    }, {
+      "name" : "start",
+      "bind" : "/model/instance/Daily_Treatment_phonebasedv2.5/start"
+    }, {
+      "name" : "end",
+      "bind" : "/model/instance/Daily_Treatment_phonebasedv2.5/end"
+    }, {
+      "name" : "intro_1",
+      "bind" : "/model/instance/Daily_Treatment_phonebasedv2.5/Section_BI/intro_1"
+    }, {
+      "name" : "GPS_Pt",
+      "bind" : "/model/instance/Daily_Treatment_phonebasedv2.5/Section_BI/GPS_Pt"
+    }, {
+      "name" : "RegNo_Pt",
+      "bind" : "/model/instance/Daily_Treatment_phonebasedv2.5/Section_BI/RegNo_Pt"
+    }, {
+      "name" : "Date_TxStrt",
+      "bind" : "/model/instance/Daily_Treatment_phonebasedv2.5/Section_BI/Date_TxStrt"
+    }, {
+      "name" : "intro_2",
+      "bind" : "/model/instance/Daily_Treatment_phonebasedv2.5/Section_DM/intro_2"
+    }, {
+      "name" : "TxDayNum",
+      "bind" : "/model/instance/Daily_Treatment_phonebasedv2.5/Section_DM/TxDayNum"
+    }, {
+      "name" : "NoOfDrugs_TxRx",
+      "bind" : "/model/instance/Daily_Treatment_phonebasedv2.5/Section_DM/NoOfDrugs_TxRx"
+    }, {
+      "name" : "drug_repeat_count",
+      "bind" : "/model/instance/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat_count"
+    }, {
+      "name" : "drug_repeat",
+      "bind" : "/model/instance/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat"
+    }, {
+      "name" : "test2",
+      "bind" : "/model/instance/Daily_Treatment_phonebasedv2.5/Section_DM/test2"
+    }, {
+      "name" : "DOTRx",
+      "bind" : "/model/instance/Daily_Treatment_phonebasedv2.5/Section_DM/DOTRx"
+    }, {
+      "name" : "DOTRx_note",
+      "bind" : "/model/instance/Daily_Treatment_phonebasedv2.5/Section_DM/DOTRx_note"
+    }, {
+      "name" : "intro_2",
+      "bind" : "/model/instance/Daily_Treatment_phonebasedv2.5/Section_AE/intro_2"
+    }, {
+      "name" : "AE_DTM",
+      "bind" : "/model/instance/Daily_Treatment_phonebasedv2.5/Section_AE/AE_DTM"
+    }, {
+      "name" : "SAE_DTM",
+      "bind" : "/model/instance/Daily_Treatment_phonebasedv2.5/Section_AE/SAE_DTM"
+    }, {
+      "name" : "AdmRefSAE_DTM",
+      "bind" : "/model/instance/Daily_Treatment_phonebasedv2.5/Section_AE/AdmRefSAE_DTM"
+    }, {
+      "name" : "ActionAE_DTM",
+      "bind" : "/model/instance/Daily_Treatment_phonebasedv2.5/Section_AE/ActionAE_DTM"
+    }, {
+      "name" : "EndTime_DTM",
+      "bind" : "/model/instance/Daily_Treatment_phonebasedv2.5/EndTime_DTM"
+    }, {
+      "name" : "instanceID",
+      "bind" : "/model/instance/Daily_Treatment_phonebasedv2.5/meta/instanceID"
+    }, {
+      "name" : "instanceName",
+      "bind" : "/model/instance/Daily_Treatment_phonebasedv2.5/meta/instanceName"
+    } ],
+    "sub_forms" : [ ]
+  }
+}

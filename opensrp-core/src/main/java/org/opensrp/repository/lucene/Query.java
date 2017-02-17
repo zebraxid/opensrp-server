@@ -34,7 +34,7 @@ public class Query{
 			return this;
 		}
 		public Query between(String name, DateTime from, DateTime to){
-			addToQuery(name+"<date>:["+from.toString("yyyy-MM-dd'T'HH:mm:ss")+" TO "+to.toString("yyyy-MM-dd'T'HH:mm:ss")+"] ");
+			addToQuery(name+"<date>:["+from.toString("yyyy-MM-dd'T'HH:mm:ss")+" TO "+to.toString("yyyy-MM-dd'T'HH:mm:ss.SSS")+"] ");
 			return this;
 		}
 		private void addToQuery(String q){

@@ -3,6 +3,8 @@ package org.opensrp.domain;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.joda.time.DateTime;
@@ -18,7 +20,9 @@ public class Obs {
 	@JsonProperty
 	private String parentCode;
 	@JsonProperty
-	private List<Object> values;
+	private List<String> values;
+	@JsonProperty
+    private List<String> humanReadableValues;
 	@JsonProperty
 	private String comments;
 	@JsonProperty
@@ -28,24 +32,32 @@ public class Obs {
 	
 	public Obs() { }
 
+	public Obs(String fieldType, String fieldDataType, String fieldCode, String value, String humanReadableValue, String formSubmissionField) {
+		this.setFieldType(fieldType);
+		this.fieldDataType = fieldDataType;
+		this.fieldCode = fieldCode;
+		addToValueList(value, humanReadableValue);
+		this.formSubmissionField = formSubmissionField;
+	}
+	
 	public Obs(String fieldType, String fieldDataType, String fieldCode, String parentCode,
-			List<Object> values, String comments, String formSubmissionField) {
+			List<String> values, List<String> humanReadableValues, String comments, String formSubmissionField) {
 		this.setFieldType(fieldType);
 		this.fieldDataType = fieldDataType;
 		this.fieldCode = fieldCode;
 		this.parentCode = parentCode;
-		this.values = values;
+		withValues(values, humanReadableValues);
 		this.comments = comments;
 		this.formSubmissionField = formSubmissionField;
 	}
 
 	public Obs(String fieldType, String fieldDataType, String fieldCode, String parentCode,
-			Object value, String comments, String formSubmissionField) {
+			String value, String humanReadableValue, String comments, String formSubmissionField) {
 		this.setFieldType(fieldType);
 		this.fieldDataType = fieldDataType;
 		this.fieldCode = fieldCode;
 		this.parentCode = parentCode;
-		addToValueList(value);
+		addToValueList(value, humanReadableValue);
 		this.comments = comments;
 		this.formSubmissionField = formSubmissionField;
 	}
@@ -83,7 +95,7 @@ public class Obs {
 	}
 
 	@JsonIgnore
-	public Object getValue() {
+	public String getValue(boolean humanized) {
 		if(values.size() > 1){
 			throw new RuntimeException("Multiset values can not be handled like single valued fields. Use function getValues");
 		}
@@ -91,22 +103,53 @@ public class Obs {
 			return null;
 		}
 		
+		if(humanized && humanReadableValues != null && humanReadableValues.size() > 0){
+			return humanReadableValues.get(0);
+		} // otherwise values were same at insertion time
+		
 		return values.get(0);
 	}
 
 	@JsonIgnore
-	public void setValue(Object value) {
-		addToValueList(value);
+	public void setValue(String value, String humanizedValue) {
+		addToValueList(value, humanizedValue);
 	}
 	
-	public List<Object> getValues() {
+	public List<String> getValues(boolean humanized) {
+		if(humanized && humanReadableValues != null && humanReadableValues.size() > 0){
+			return humanReadableValues;
+		} // otherwise values were same at insertion time
+		
 		return values;
 	}
 
-	public void setValues(List<Object> values) {
-		this.values = values;
+	public void setValues(List<String> values, List<String> humanReadableValues) {
+		withValues(values, humanReadableValues);
+	}
+	
+	/**
+	 * Use getValues(boolean humanized) instead
+	 * @return
+	 */
+	public List<String> getValues() {
+		return values;
 	}
 
+	void setValues(List<String> values) {
+		this.values = values;
+	}
+	
+	/**
+	 * Use getValues(boolean humanized) instead
+	 * @return
+	 */
+	public List<String> getHumanReadableValues() {
+		return humanReadableValues;
+	}
+
+	void setHumanReadableValues(List<String> values) {
+		this.humanReadableValues = values;
+	}
 
 	public String getComments() {
 		return comments;
@@ -152,20 +195,30 @@ public class Obs {
 		return this;
 	}
 
-	public Obs withValue(Object value) {
-		return addToValueList(value);
+	public Obs withValue(String value, String humanizedValue) {
+		return addToValueList(value, humanizedValue);
 	}
 	
-	public Obs withValues(List<Object> values) {
+	public Obs withValues(List<String> values, List<String> humanReadableValues) {
 		this.values = values;
+		if(humanReadableValues != null && humanReadableValues.size() > 0 && humanReadableValues.equals(values) == false){
+			this.humanReadableValues = humanReadableValues;
+		}
 		return this;
 	}
 	
-	public Obs addToValueList(Object value) {
+	public Obs addToValueList(String value, String humanizedValue) {
 		if(values == null){
 			values = new ArrayList<>();
 		}
 		values.add(value);
+		
+		if(StringUtils.isNotBlank(humanizedValue) && humanizedValue.equals(value) == false){//only add if both are different
+			if(humanReadableValues == null){
+				humanReadableValues = new ArrayList<>();
+			}
+			humanReadableValues.add(humanizedValue);
+		}
 		return this;
 	}
 
@@ -182,6 +235,10 @@ public class Obs {
 	public Obs withEffectiveDatetime(DateTime effectiveDatetime) {
 		this.effectiveDatetime = effectiveDatetime;
 		return this;
-		
+	}
+	
+	@Override
+	public String toString() {
+		return ToStringBuilder.reflectionToString(this);
 	}
 }

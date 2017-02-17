@@ -71,8 +71,8 @@ public class ClientService {
 		return allClients.findByCriteria(null, null, null, null, null, null, null, null, addressType, country, stateProvince, cityVillage, countyDistrict, subDistrict, town, subTown, lastEditFrom, lastEditTo);
 	}*/
 	
-	public List<Client> findByDynamicQuery(String query) {
-		return allClients.findByDynamicQuery(query);
+	public List<Client> findByDynamicQuery(String query, String sort, Integer limit, Integer skip) {
+		return allClients.findByDynamicQuery(query, sort, limit, skip);
 	}
 	
 	public Client addClient(Client client)

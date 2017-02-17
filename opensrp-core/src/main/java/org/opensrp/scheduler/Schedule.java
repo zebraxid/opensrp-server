@@ -2,6 +2,8 @@ package org.opensrp.scheduler;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -87,12 +89,26 @@ public class Schedule {
 			return true;
 		}
 		
+		HashMap<String, String> map = new HashMap<>(flvl);
+		
 		String xpr = passLogic;
-		for (Entry<String, String> kv : flvl.entrySet()) {
+		for (Entry<String, String> kv : map.entrySet()) {
 			if(kv.getValue() == null){
-				flvl.put(kv.getKey(), "");
+				map.put(kv.getKey(), "");
 			}
 			xpr = xpr.replace("${fs."+kv.getKey()+"}", "input."+kv.getKey());
+		}
+		
+		xpr = xpr.replace("${fs.", "input.");
+		xpr = xpr.replace("}", "");
+		
+		String[] a = xpr.split("\\s");
+		for (String t : a) {
+			if(org.apache.commons.lang3.StringUtils.isNotBlank(t) && t.matches("input\\..*")){
+				if(!map.containsKey(t.replace("input.", ""))){
+					map.put(t.replace("input.", ""), "");
+				}
+			}
 		}
 		
 		Rule r1 = new Rule("R1", xpr, "true", 4, "dynamic.rules");
@@ -100,7 +116,7 @@ public class Schedule {
 		List<Rule> rules = Arrays.asList(r1, r2);
 		try {
 			Engine engine = new Engine(rules, true);
-			String result = engine.getBestOutcome(flvl);
+			String result = engine.getBestOutcome(map);
 			return Boolean.valueOf(result);
 		} catch (DuplicateNameException | CompileException | ParseException e) {
 			e.printStackTrace();

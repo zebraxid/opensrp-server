@@ -1,17 +1,14 @@
 
 package org.opensrp.connector.openmrs.service;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.UUID;
 
 import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.opensrp.common.util.DateUtil;
 import org.opensrp.common.util.HttpUtil;
 import org.opensrp.domain.Address;
 import org.opensrp.domain.Client;
@@ -90,6 +87,19 @@ public class PatientService extends OpenmrsService{
     			"v=full&q="+attributeName, OPENMRS_USER, OPENMRS_PWD).body()).getJSONArray("results");
     	return p.length()>0?p.getJSONObject(0):null;
     }
+    
+    public JSONObject createPersonAttributeType(String name, String format, String description) throws JSONException{
+		JSONObject o = convertPersonAttributeToOpenmrsJson(name, format, description);
+		return new JSONObject(HttpUtil.post(getURL()+"/"+PERSON_ATTRIBUTE_TYPE_URL, "", o.toString(), OPENMRS_USER, OPENMRS_PWD).body());
+	}
+    
+	public JSONObject convertPersonAttributeToOpenmrsJson(String name, String format, String description) throws JSONException {
+		JSONObject a = new JSONObject();
+		a.put("name", name);
+		a.put("format", format);
+		a.put("description", description);
+		return a;
+	}
 	
 	public JSONObject createPerson(Client be) throws JSONException{
 		JSONObject per = convertBaseEntityToOpenmrsJson(be);
@@ -121,7 +131,11 @@ public class PatientService extends OpenmrsService{
 		JSONArray attrs = new JSONArray();
 		for (Entry<String, Object> at : attributes.entrySet()) {
 			JSONObject a = new JSONObject();
-			a.put("attributeType", getPersonAttributeType(at.getKey()).getString("uuid"));
+			JSONObject atty = getPersonAttributeType(at.getKey());
+			if(atty == null){
+				atty = createPersonAttributeType(at.getKey(), "java.lang.String", "Created by OpenSRP during data sync");
+			}
+			a.put("attributeType", atty.getString("uuid"));
 			a.put("value", at.getValue());
 			attrs.put(a);
 		}

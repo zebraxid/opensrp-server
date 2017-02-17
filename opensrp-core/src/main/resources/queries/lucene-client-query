@@ -3,7 +3,7 @@ function (doc) {
 	var docl = new Array();
 	var len = doc.addresses ? doc.addresses.length : 1;
 	for(var al = 0; al < len; al++) {
-		var arr1 = ['firstName', 'middleName', 'lastName', 'gender'];
+		var arr1 = ['baseEntityId', 'firstName', 'middleName', 'lastName', 'gender'];
 		var arr2 = ['addressType', 'country', 'stateProvince', 'cityVillage', 'countyDistrict', 'subDistrict', 'town', 'subTown'];
 		var ret = new Document();
 		for(var i in arr1) {
@@ -24,12 +24,12 @@ function (doc) {
 		var bd = doc.birthdate.substring(0, 19);
 		ret.add(bd, {'field' : 'birthdate','type' : 'date'});
 		
-		var crd = doc.dateCreated.substring(0, 19);
-		ret.add(crd, {'field' : 'lastEdited','type' : 'date'});
+		var crd = doc.dateCreated.substring(0, 23)+doc.dateCreated.substring(23).replace(':', '');
+		ret.add(crd, {'field' : 'lastEdited','type' : 'date', 'store': 'yes'});
 		
 		if(doc.dateEdited){
-		var led = doc.dateEdited.substring(0, 19);
-		ret.add(led, {'field' : 'lastEdited','type' : 'date'});		
+		var led = doc.dateEdited.substring(0, 23)+doc.dateEdited.substring(23).replace(':', '');
+		ret.add(led, {'field' : 'lastEdited','type' : 'date', 'store': 'yes'});
 		}
 		
 		docl.push(ret);  

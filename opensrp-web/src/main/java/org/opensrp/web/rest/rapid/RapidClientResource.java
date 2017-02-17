@@ -8,7 +8,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.StringTokenizer;
 import java.util.UUID;
 
@@ -17,8 +16,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.codec.binary.Base64;
 import org.joda.time.DateTime;
 import org.joda.time.Weeks;
-import org.joda.time.format.DateTimeFormatter;
-import org.joda.time.format.DateTimeFormatterBuilder;
 import org.json.JSONException;
 import org.opensrp.connector.openmrs.service.EncounterService;
 import org.opensrp.connector.openmrs.service.PatientService;
@@ -136,7 +133,7 @@ static Map<String, String[]> vs = new HashMap<String, String[]>(){{
 				System.out.println(o+ " FOUND OBS");
 
 				if(o.getFormSubmissionField().toString().toLowerCase().matches("bcg|penta1|penta2|penta3|measles1|measles2")){
-					receivedVacines.put(o.getFormSubmissionField(), o.getValue().toString());
+					receivedVacines.put(o.getFormSubmissionField(), o.getValue(true).toString());
 				}
 			}
 		}
@@ -187,9 +184,9 @@ static Map<String, String[]> vs = new HashMap<String, String[]>(){{
 			
 			Event e = new Event(c.getBaseEntityId(), "Immunization", new DateTime(), 
 					"testentity", "demotest", location, System.currentTimeMillis()+"");
-			List<Object> values = new ArrayList<>();
+			List<String> values = new ArrayList<>();
 			values.add(date);
-			e.addObs(new Obs("concept", "txt", "1025AAAAAAAAAAAAAAAA", null, values , "", vaccine));
+			e.addObs(new Obs("concept", "txt", "1025AAAAAAAAAAAAAAAA", null, values, values , "", vaccine));
 
 			eventService.addEvent(e);
 			resp.put("SUCCESS", Boolean.toString(true));

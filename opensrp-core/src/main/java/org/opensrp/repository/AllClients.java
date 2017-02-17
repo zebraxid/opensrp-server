@@ -74,8 +74,8 @@ public class AllClients extends MotechBaseRepository<Client> {
 		return lcr.getByCriteria(nameLike, gender, birthdateFrom, birthdateTo, deathdateFrom, deathdateTo, attributeType, attributeValue, addressType, country, stateProvince, cityVillage, countyDistrict, subDistrict, town, subTown, lastEditFrom, lastEditTo);//db.queryView(q.includeDocs(true), Client.class);
 	}
 	
-	public List<Client> findByDynamicQuery(String query) {
-		return lcr.getByCriteria(query);//db.queryView(q.includeDocs(true), Client.class);
+	public List<Client> findByDynamicQuery(String query, String sort, Integer limit, Integer skip) {
+		return lcr.query(query, sort, limit, skip);//db.queryView(q.includeDocs(true), Client.class);
 	}
 	
 	public List<Client> findByCriteria(String nameLike, String gender, DateTime birthdateFrom, DateTime birthdateTo, 

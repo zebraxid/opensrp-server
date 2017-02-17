@@ -72,7 +72,7 @@ public class FormSubmissionResource extends RestResource<FormSubmission>{
 	}
 	
 	@Override
-	public List<FormSubmission> filter(String query) {
+	public List<FormSubmission> filter(String query, String sort, Integer limit, Integer skip) {
 		throw new UnsupportedOperationException();
 	}
 

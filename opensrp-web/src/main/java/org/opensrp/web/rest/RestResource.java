@@ -43,11 +43,14 @@ public abstract class RestResource <T>{
 	
 	@RequestMapping(method=RequestMethod.GET)
 	@ResponseBody
-	private List<T> filterBy(@RequestParam(value="q", required=true) String query){
-		return filter(query);
+	private List<T> filterBy(@RequestParam(value="q", required=true) String query, 
+			@RequestParam(value="sort", required=false) String sort,
+			@RequestParam(value="limit", required=false) Integer limit, 
+			@RequestParam(value="skip", required=false) Integer skip){
+		return filter(query, sort, limit, skip);
 	}
 	
-	public abstract List<T> filter(String query) ;
+	public abstract List<T> filter(String query, String sort, Integer limit, Integer skip) ;
 
 	public abstract List<T> search(HttpServletRequest request) throws ParseException;
 	

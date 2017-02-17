@@ -119,14 +119,6 @@ public class EncounterTest extends TestResourceLoader{
 		assertEquals(e.getEventDate(), new DateTime(new DateTime("2015-05-07")));
 		assertEquals(e.getLocationId(), "KUPTALA");
 		assertEquals(e.getFormSubmissionId(), "88c0e824-10b4-44c2-9429-754b8d823776");
-
-		assertEquals(e.getObs().get(0).getFieldCode(), "160753AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-		assertEquals(e.getObs().get(0).getFormSubmissionField(), "FWNHREGDATE");
-		assertEquals(e.getObs().get(0).getValue(), "2015-05-07");
-
-		assertEquals(e.getObs().get(1).getFieldCode(), "5611AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-		assertEquals(e.getObs().get(1).getFormSubmissionField(), "FWNHHMBRNUM");
-		assertEquals(e.getObs().get(1).getValue(), "2");
 				
 		Map<String, Map<String, Object>> dc = oc.getDependentClientsFromFormSubmission(fs);
 		for (String id : dc.keySet()) {
@@ -156,14 +148,6 @@ public class EncounterTest extends TestResourceLoader{
 		assertEquals(e.getEventDate(), new DateTime(new DateTime("2015-05-07")));
 		assertEquals(e.getLocationId(), "KUPTALA");
 		assertEquals(e.getFormSubmissionId(), "88c0e824-10b4-44c2-9429-754b8d823776");
-
-		assertEquals(e.getObs().get(0).getFieldCode(), "160753AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-		assertEquals(e.getObs().get(0).getFormSubmissionField(), "FWNHREGDATE");
-		assertEquals(e.getObs().get(0).getValue(), "2015-05-07");
-
-		assertEquals(e.getObs().get(1).getFieldCode(), "5611AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-		assertEquals(e.getObs().get(1).getFormSubmissionField(), "FWNHHMBRNUM");
-		assertEquals(e.getObs().get(1).getValue(), "2");
 				
 		Map<String, Map<String, Object>> dc = oc.getDependentClientsFromFormSubmission(fs);
 		assertTrue(dc.isEmpty());
@@ -220,7 +204,7 @@ public class EncounterTest extends TestResourceLoader{
 		
 		assertThat(e.getObs(), Matchers.<Obs>hasItem(Matchers.<Obs>allOf(
 				Matchers.<Obs>hasProperty("fieldCode",equalTo("5611AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")),
-				Matchers.<Obs>hasProperty("value",equalTo("23")),
+				Matchers.<Obs>hasProperty("values", hasItem(equalTo("23"))),
 				Matchers.<Obs>hasProperty("formSubmissionField",equalTo("FWNHHMBRNUM"))
 				)));
 		
@@ -246,7 +230,7 @@ public class EncounterTest extends TestResourceLoader{
 			
 			assertThat(ev.getObs(), Matchers.<Obs>hasItem(Matchers.<Obs>allOf(
 					Matchers.<Obs>hasProperty("fieldCode",equalTo("161135AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")),
-					Matchers.<Obs>hasProperty("value",equalTo("zoom")),
+					Matchers.<Obs>hasProperty("values",hasItem(equalTo("zoom"))),
 					Matchers.<Obs>hasProperty("formSubmissionField",equalTo("FWHUSNAME"))
 					)));
 			assertThat(ev.getObs(), Matchers.<Obs>hasItem(Matchers.<Obs>allOf(
@@ -345,21 +329,11 @@ public class EncounterTest extends TestResourceLoader{
 		assertEquals(e.getProviderId(), "demotest");
 
 		assertThat(e.getObs(), Matchers.<Obs>hasItem(Matchers.<Obs>allOf(
-				Matchers.<Obs>hasProperty("fieldCode",equalTo("154384AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")),
-				Matchers.<Obs>hasProperty("values",hasItems(equalTo("37"))),
-				Matchers.<Obs>hasProperty("formSubmissionField",equalTo("calc_age_confirm")),
-				Matchers.<Obs>hasProperty("fieldType",equalTo("concept")),
-				Matchers.<Obs>hasProperty("fieldDataType",startsWith("calculate")),
-				Matchers.<Obs>hasProperty("effectiveDatetime", equalTo(e.getEventDate()))
-				)));
-		
-		assertThat(e.getObs(), Matchers.<Obs>hasItem(Matchers.<Obs>allOf(
 				Matchers.<Obs>hasProperty("fieldCode",equalTo("163137AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")),
 				Matchers.<Obs>hasProperty("values",hasItems(equalTo("2016-04-05 16:21:32"))),
 				Matchers.<Obs>hasProperty("formSubmissionField",equalTo("start")),
 				Matchers.<Obs>hasProperty("fieldType",equalTo("concept")),
-				Matchers.<Obs>hasProperty("fieldDataType",startsWith("start")),
-				Matchers.<Obs>hasProperty("effectiveDatetime", equalTo(e.getEventDate()))
+				Matchers.<Obs>hasProperty("fieldDataType",startsWith("start"))
 				)));
 		
 		assertThat(e.getObs(), Matchers.<Obs>hasItem(Matchers.<Obs>allOf(
@@ -367,8 +341,15 @@ public class EncounterTest extends TestResourceLoader{
 				Matchers.<Obs>hasProperty("values",hasItems(equalTo("2016-04-05 16:23:59"))),
 				Matchers.<Obs>hasProperty("formSubmissionField",equalTo("end")),
 				Matchers.<Obs>hasProperty("fieldType",equalTo("concept")),
-				Matchers.<Obs>hasProperty("fieldDataType",startsWith("end")),
-				Matchers.<Obs>hasProperty("effectiveDatetime", equalTo(e.getEventDate()))
+				Matchers.<Obs>hasProperty("fieldDataType",startsWith("end"))
+				)));
+		
+		assertThat(e.getObs(), Matchers.<Obs>hasItem(Matchers.<Obs>allOf(
+				Matchers.<Obs>hasProperty("fieldCode",equalTo("154384AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")),
+				Matchers.<Obs>hasProperty("values",hasItems(equalTo("37"))),
+				Matchers.<Obs>hasProperty("formSubmissionField",equalTo("calc_age_confirm")),
+				Matchers.<Obs>hasProperty("fieldType",equalTo("concept")),
+				Matchers.<Obs>hasProperty("fieldDataType",startsWith("calculate"))
 				)));
 		
 		if(pushToOpenmrsForTest){
@@ -416,8 +397,7 @@ public class EncounterTest extends TestResourceLoader{
 				Matchers.<Obs>hasProperty("values",hasItems(equalTo("2"))),
 				Matchers.<Obs>hasProperty("formSubmissionField",equalTo("calc_age_confirm")),
 				Matchers.<Obs>hasProperty("fieldType",equalTo("concept")),
-				Matchers.<Obs>hasProperty("fieldDataType",startsWith("calculate")),
-				Matchers.<Obs>hasProperty("effectiveDatetime", equalTo(e.getEventDate()))
+				Matchers.<Obs>hasProperty("fieldDataType",startsWith("calculate"))
 				)));
 		
 		assertThat(e.getObs(), Matchers.<Obs>hasItem(Matchers.<Obs>allOf(
@@ -425,8 +405,7 @@ public class EncounterTest extends TestResourceLoader{
 				Matchers.<Obs>hasProperty("values",hasItems(equalTo("2016-03-05 23:01:13"))),
 				Matchers.<Obs>hasProperty("formSubmissionField",equalTo("start")),
 				Matchers.<Obs>hasProperty("fieldType",equalTo("concept")),
-				Matchers.<Obs>hasProperty("fieldDataType",startsWith("start")),
-				Matchers.<Obs>hasProperty("effectiveDatetime", equalTo(e.getEventDate()))
+				Matchers.<Obs>hasProperty("fieldDataType",startsWith("start"))
 				)));
 		
 		assertThat(e.getObs(), Matchers.<Obs>hasItem(Matchers.<Obs>allOf(
@@ -434,8 +413,7 @@ public class EncounterTest extends TestResourceLoader{
 				Matchers.<Obs>hasProperty("values",hasItems(equalTo("2016-03-05 23:03:51"))),
 				Matchers.<Obs>hasProperty("formSubmissionField",equalTo("end")),
 				Matchers.<Obs>hasProperty("fieldType",equalTo("concept")),
-				Matchers.<Obs>hasProperty("fieldDataType",startsWith("end")),
-				Matchers.<Obs>hasProperty("effectiveDatetime", equalTo(e.getEventDate()))
+				Matchers.<Obs>hasProperty("fieldDataType",startsWith("end"))
 				)));
 		
 		if(pushToOpenmrsForTest){

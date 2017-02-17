@@ -86,8 +86,8 @@ public class ClientResource extends RestResource<Client>{
 	}
 
 	@Override
-	public List<Client> filter(String query) {
-		return clientService.findByDynamicQuery(query);
+	public List<Client> filter(String query, String sort, Integer limit, Integer skip) {
+		return clientService.findByDynamicQuery(query, sort, limit, skip);
 	}
 
 }

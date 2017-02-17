@@ -1,0 +1,472 @@
+<?xml version="1.0" encoding="UTF-8"?><form autocomplete="off" class="or clearfix" id="Daily_TreatmentV25" novalidate="novalidate">
+  <!--This form was created by transforming a OpenRosa-flavored (X)Form using an XSLT sheet created by Enketo LLC.-->
+  <section class="form-logo"> </section>
+  <h3 id="form-title">Daily_TreatmentV25</h3>
+  <select data-default-lang="en" id="form-languages">
+    <option value="ur">Urdu</option> <option value="Roman Urdu">Roman Urdu</option> <option value="en">English</option> </select>        <section class="or-group " name="/Daily_Treatment_phonebasedv2.5/Section_BI">
+    <h4>
+      <span class="question-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_BI:label" lang="ur">بنیادی معلومات</span>
+      <span class="question-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_BI:label" lang="Roman Urdu">bunyadi maloomat</span>
+      <span class="question-label active" data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_BI:label" lang="en">Basic information</span>
+    </h4>
+    <label class="note non-select ">
+      <span class="question-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_BI/intro_1:label" lang="ur">سیکشن 1: بنیادی معلومات</span>
+      <span class="question-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_BI/intro_1:label" lang="Roman Urdu">section 1 : bunyadi maloomat</span>
+      <span class="question-label active" data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_BI/intro_1:label" lang="en">Section 1: Basic information</span>
+      <input data-type-xml="string" name="/Daily_Treatment_phonebasedv2.5/Section_BI/intro_1" readonly="readonly" type="text"/>
+    </label>
+    <label class="question non-select ">
+      <span class="question-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_BI/GPS_Pt:label" lang="ur">۔ جی پی ایس</span>
+      <span class="question-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_BI/GPS_Pt:label" lang="Roman Urdu">GPS</span>
+      <span class="question-label active" data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_BI/GPS_Pt:label" lang="en">GPS</span>
+      <span class="required">*</span>
+      <input data-type-xml="geopoint" name="/Daily_Treatment_phonebasedv2.5/Section_BI/GPS_Pt" required="required" type="text"/>
+    </label>            </section>
+  <!--end of group -->    <section class="or-group " name="/Daily_Treatment_phonebasedv2.5/Section_DM">
+    <h4>
+      <span class="question-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_DM:label" lang="ur">روزانہ کی نگرانی فارم‬</span>
+      <span class="question-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_DM:label" lang="Roman Urdu">rozana ki nigrani form</span>
+      <span class="question-label active" data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_DM:label" lang="en">Daily Monitoring form</span>
+    </h4>
+    <label class="note non-select ">
+      <span class="question-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_DM/intro_2:label" lang="ur">سیکشن 2: روزانہ کی نگرانی فارم‬</span>
+      <span class="question-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_DM/intro_2:label" lang="Roman Urdu">section 2 : rozana ki nigrani form</span>
+      <span class="question-label active" data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_DM/intro_2:label" lang="en">Section 2: Daily Monitoring form</span>
+      <input data-type-xml="string" name="/Daily_Treatment_phonebasedv2.5/Section_DM/intro_2" readonly="readonly" type="text"/>
+    </label>
+    <label class="question non-select ">
+      <span class="question-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_DM/NoOfDrugs_TxRx:label" lang="ur">-</span>
+      <span class="question-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_DM/NoOfDrugs_TxRx:label" lang="Roman Urdu">-</span>
+      <span class="question-label active" data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_DM/NoOfDrugs_TxRx:label" lang="en">Number of drugs in the regimen</span>
+      <span class="required">*</span>
+      <input data-type-xml="int" name="/Daily_Treatment_phonebasedv2.5/Section_DM/NoOfDrugs_TxRx" required="required" type="number"/>
+    </label>
+    <section class="or-group " name="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat">
+      <h4>
+        <span class="question-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat:label" lang="ur">ٹی بی کے مریض کو ٹی بی کی دوا محدود ناموں کی فہرست Q 2 کے مطابق دی جاۓ</span>
+        <span class="question-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat:label" lang="Roman Urdu">TB ke mareez ko TB ki dawa mehdood naamon ki fehrist Q8 ke mutabiq di jaye</span>
+        <span class="question-label active" data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat:label" lang="en">list of drug names limited to the drugs patient is currently on as per Q 2</span>
+      </h4>
+      <section class="or-repeat " data-repeat-count=" /Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat_count " name="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat">
+        <label class="question or-appearance-minimal ">
+          <span class="question-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/TBDrug:label" lang="ur">3۔ ٹی بی دوا نمبر 1 کا نام ۔</span>
+          <span class="question-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/TBDrug:label" lang="Roman Urdu">3. TB dawa number 1 ka naam</span>
+          <span class="question-label active" data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/TBDrug:label" lang="en">3-Drug name</span>
+          <select data-name="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/TBDrug" data-type-xml="select1" name="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/TBDrug">
+            <option value="">...</option>
+            <option value="Isoniazid (H)">Isoniazid (H)</option>
+            <option value="Ethambutol (E)">Ethambutol (E)</option>
+            <option value="Pyrazinamide (Z)">Pyrazinamide (Z)</option>
+            <option value="Amikacin (Am)">Amikacin (Am)</option>
+            <option value="Kanamycin (Km)">Kanamycin (Km)</option>
+            <option value="Capreomycin (Cm)">Capreomycin (Cm)</option>
+            <option value="Levofloxacin (Lfx)">Levofloxacin (Lfx)</option>
+            <option value="Moxifloxacin (Mfx)">Moxifloxacin (Mfx)</option>
+            <option value="Prothionamide (Pto)">Prothionamide (Pto)</option>
+            <option value="Ethionamide (Eto)">Ethionamide (Eto)</option>
+            <option value="Cycloserine (Cs)">Cycloserine (Cs)</option>
+            <option value="Terizidone (Trd)">Terizidone (Trd)</option>
+            <option value="Para-aminosalicylic acid (PAS)">Para-aminosalicylic acid (PAS)</option>
+            <option value="Para-aminosalicylic acid - sodium (PAS-Na)">Para-aminosalicylic acid - sodium (PAS-Na)</option>
+            <option value="Bedaquiline (Bdq)">Bedaquiline (Bdq)</option>
+            <option value="Delamanid (Dlm)">Delamanid (Dlm)</option>
+            <option value="Linezolid (Lzd)">Linezolid (Lzd)</option>
+            <option value="Clofazimine (Cfz)">Clofazimine (Cfz)</option>
+            <option value="Imipenem/Cilastatin (Imp/Cln)">Imipenem/Cilastatin (Imp/Cln)</option>
+            <option value="Amoxicillin/Clavulanate (Amx/Clv)">Amoxicillin/Clavulanate (Amx/Clv)</option>
+            <option value="Clarythromycin (Clr)">Clarythromycin (Clr)</option>
+            <option value="Meropenem (Mpm)">Meropenem (Mpm)</option>
+          </select>
+          <span class="or-option-translations" style="display:none;">
+            <span data-option-value="Isoniazid (H)" lang="ur">Isoniazid (H)</span>
+            <span data-option-value="Isoniazid (H)" lang="Roman Urdu">Isoniazid (H)</span>
+            <span data-option-value="Isoniazid (H)" lang="en">Isoniazid (H)</span>
+            <span data-option-value="Ethambutol (E)" lang="ur">Ethambutol (E)</span>
+            <span data-option-value="Ethambutol (E)" lang="Roman Urdu">Ethambutol (E)</span>
+            <span data-option-value="Ethambutol (E)" lang="en">Ethambutol (E)</span>
+            <span data-option-value="Pyrazinamide (Z)" lang="ur">Pyrazinamide (Z)</span>
+            <span data-option-value="Pyrazinamide (Z)" lang="Roman Urdu">Pyrazinamide (Z)</span>
+            <span data-option-value="Pyrazinamide (Z)" lang="en">Pyrazinamide (Z)</span>
+            <span data-option-value="Amikacin (Am)" lang="ur">Amikacin (Am)</span>
+            <span data-option-value="Amikacin (Am)" lang="Roman Urdu">Amikacin (Am)</span>
+            <span data-option-value="Amikacin (Am)" lang="en">Amikacin (Am)</span>
+            <span data-option-value="Kanamycin (Km)" lang="ur">Kanamycin (Km)</span>
+            <span data-option-value="Kanamycin (Km)" lang="Roman Urdu">Kanamycin (Km)</span>
+            <span data-option-value="Kanamycin (Km)" lang="en">Kanamycin (Km)</span>
+            <span data-option-value="Capreomycin (Cm)" lang="ur">Capreomycin (Cm)</span>
+            <span data-option-value="Capreomycin (Cm)" lang="Roman Urdu">Capreomycin (Cm)</span>
+            <span data-option-value="Capreomycin (Cm)" lang="en">Capreomycin (Cm)</span>
+            <span data-option-value="Levofloxacin (Lfx)" lang="ur">Levofloxacin (Lfx)</span>
+            <span data-option-value="Levofloxacin (Lfx)" lang="Roman Urdu">Levofloxacin (Lfx)</span>
+            <span data-option-value="Levofloxacin (Lfx)" lang="en">Levofloxacin (Lfx)</span>
+            <span data-option-value="Moxifloxacin (Mfx)" lang="ur">Moxifloxacin (Mfx)</span>
+            <span data-option-value="Moxifloxacin (Mfx)" lang="Roman Urdu">Moxifloxacin (Mfx)</span>
+            <span data-option-value="Moxifloxacin (Mfx)" lang="en">Moxifloxacin (Mfx)</span>
+            <span data-option-value="Prothionamide (Pto)" lang="ur">Prothionamide (Pto)</span>
+            <span data-option-value="Prothionamide (Pto)" lang="Roman Urdu">Prothionamide (Pto)</span>
+            <span data-option-value="Prothionamide (Pto)" lang="en">Prothionamide (Pto)</span>
+            <span data-option-value="Ethionamide (Eto)" lang="ur">Ethionamide (Eto)</span>
+            <span data-option-value="Ethionamide (Eto)" lang="Roman Urdu">Ethionamide (Eto)</span>
+            <span data-option-value="Ethionamide (Eto)" lang="en">Ethionamide (Eto)</span>
+            <span data-option-value="Cycloserine (Cs)" lang="ur">Cycloserine (Cs)</span>
+            <span data-option-value="Cycloserine (Cs)" lang="Roman Urdu">Cycloserine (Cs)</span>
+            <span data-option-value="Cycloserine (Cs)" lang="en">Cycloserine (Cs)</span>
+            <span data-option-value="Terizidone (Trd)" lang="ur">Terizidone (Trd)</span>
+            <span data-option-value="Terizidone (Trd)" lang="Roman Urdu">Terizidone (Trd)</span>
+            <span data-option-value="Terizidone (Trd)" lang="en">Terizidone (Trd)</span>
+            <span data-option-value="Para-aminosalicylic acid (PAS)" lang="ur">Para-aminosalicylic acid (PAS)</span>
+            <span data-option-value="Para-aminosalicylic acid (PAS)" lang="Roman Urdu">Para-aminosalicylic acid (PAS)</span>
+            <span data-option-value="Para-aminosalicylic acid (PAS)" lang="en">Para-aminosalicylic acid (PAS)</span>
+            <span data-option-value="Para-aminosalicylic acid - sodium (PAS-Na)" lang="ur">Para-aminosalicylic acid - sodium (PAS-Na)</span>
+            <span data-option-value="Para-aminosalicylic acid - sodium (PAS-Na)" lang="Roman Urdu">Para-aminosalicylic acid - sodium (PAS-Na)</span>
+            <span data-option-value="Para-aminosalicylic acid - sodium (PAS-Na)" lang="en">Para-aminosalicylic acid - sodium (PAS-Na)</span>
+            <span data-option-value="Bedaquiline (Bdq)" lang="ur">Bedaquiline (Bdq)</span>
+            <span data-option-value="Bedaquiline (Bdq)" lang="Roman Urdu">Bedaquiline (Bdq)</span>
+            <span data-option-value="Bedaquiline (Bdq)" lang="en">Bedaquiline (Bdq)</span>
+            <span data-option-value="Delamanid (Dlm)" lang="ur">Delamanid (Dlm)</span>
+            <span data-option-value="Delamanid (Dlm)" lang="Roman Urdu">Delamanid (Dlm)</span>
+            <span data-option-value="Delamanid (Dlm)" lang="en">Delamanid (Dlm)</span>
+            <span data-option-value="Linezolid (Lzd)" lang="ur">Linezolid (Lzd)</span>
+            <span data-option-value="Linezolid (Lzd)" lang="Roman Urdu">Linezolid (Lzd)</span>
+            <span data-option-value="Linezolid (Lzd)" lang="en">Linezolid (Lzd)</span>
+            <span data-option-value="Clofazimine (Cfz)" lang="ur">Clofazimine (Cfz)</span>
+            <span data-option-value="Clofazimine (Cfz)" lang="Roman Urdu">Clofazimine (Cfz)</span>
+            <span data-option-value="Clofazimine (Cfz)" lang="en">Clofazimine (Cfz)</span>
+            <span data-option-value="Imipenem/Cilastatin (Imp/Cln)" lang="ur">Imipenem/Cilastatin (Imp/Cln)</span>
+            <span data-option-value="Imipenem/Cilastatin (Imp/Cln)" lang="Roman Urdu">Imipenem/Cilastatin (Imp/Cln)</span>
+            <span data-option-value="Imipenem/Cilastatin (Imp/Cln)" lang="en">Imipenem/Cilastatin (Imp/Cln)</span>
+            <span data-option-value="Amoxicillin/Clavulanate (Amx/Clv)" lang="ur">Amoxicillin/Clavulanate (Amx/Clv)</span>
+            <span data-option-value="Amoxicillin/Clavulanate (Amx/Clv)" lang="Roman Urdu">Amoxicillin/Clavulanate (Amx/Clv)</span>
+            <span data-option-value="Amoxicillin/Clavulanate (Amx/Clv)" lang="en">Amoxicillin/Clavulanate (Amx/Clv)</span>
+            <span data-option-value="Clarythromycin (Clr)" lang="ur">Clarythromycin (Clr)</span>
+            <span data-option-value="Clarythromycin (Clr)" lang="Roman Urdu">Clarythromycin (Clr)</span>
+            <span data-option-value="Clarythromycin (Clr)" lang="en">Clarythromycin (Clr)</span>
+            <span data-option-value="Meropenem (Mpm)" lang="ur">Meropenem (Mpm)</span>
+            <span data-option-value="Meropenem (Mpm)" lang="Roman Urdu">Meropenem (Mpm)</span>
+            <span data-option-value="Meropenem (Mpm)" lang="en">Meropenem (Mpm)</span>                </span>
+        </label>
+        <label class="question non-select ">
+          <span class="question-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/PrescDoseAmount_TBDrug:label" lang="ur">3.1۔ نسخہ کے مطابق خوراک ۔- <span class="or-output" data-value=" /Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/TBDrug ">            </span>
+          </span>
+          <span class="question-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/PrescDoseAmount_TBDrug:label" lang="Roman Urdu">3.1 Nuskhey ke mutaabiq <span class="or-output" data-value=" /Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/TBDrug ">            </span> ki khuraak</span>
+          <span class="question-label active" data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/PrescDoseAmount_TBDrug:label" lang="en">3.1-<span class="or-output" data-value=" /Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/TBDrug ">            </span> prescribed dose</span>
+          <span class="required">*</span>
+          <input data-type-xml="decimal" name="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/PrescDoseAmount_TBDrug" required="required" step="any" type="number"/>
+        </label>
+        <fieldset class="question ">
+          <fieldset>
+            <legend>
+              <span class="question-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/DoseUnit_TBDrug:label" lang="ur">3.2۔ نسخہ کے مطابق ٹی بی دوا نمبر 1 کی خوراک کی (یونٹ)۔- <span class="or-output" data-value=" /Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/TBDrug ">            </span>
+              </span>
+              <span class="question-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/DoseUnit_TBDrug:label" lang="Roman Urdu">3.2 Nuskhey ke mutaabiq <span class="or-output" data-value=" /Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/TBDrug ">            </span> ki khuraak ki unit</span>
+              <span class="question-label active" data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/DoseUnit_TBDrug:label" lang="en">3.2-<span class="or-output" data-value=" /Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/TBDrug ">            </span> dose unit</span>
+              <span class="required">*</span>                    </legend>
+            <div class="option-wrapper">
+              <label class="">
+                <input data-name="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/DoseUnit_TBDrug" data-type-xml="select1" name="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/DoseUnit_TBDrug" required="required" type="radio" value="1"/>
+                <span class="option-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/DoseUnit_TBDrug/1:label" lang="ur">1۔) ملی گرام</span>
+                <span class="option-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/DoseUnit_TBDrug/1:label" lang="Roman Urdu">1) mili gram</span>
+                <span class="option-label active" data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/DoseUnit_TBDrug/1:label" lang="en">Mg</span>
+              </label>
+              <label class="">
+                <input data-name="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/DoseUnit_TBDrug" data-type-xml="select1" name="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/DoseUnit_TBDrug" required="required" type="radio" value="2"/>
+                <span class="option-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/DoseUnit_TBDrug/2:label" lang="ur">2۔) گرام</span>
+                <span class="option-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/DoseUnit_TBDrug/2:label" lang="Roman Urdu">2) gram</span>
+                <span class="option-label active" data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/DoseUnit_TBDrug/2:label" lang="en">Grams</span>
+              </label>
+              <label class="">
+                <input data-name="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/DoseUnit_TBDrug" data-type-xml="select1" name="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/DoseUnit_TBDrug" required="required" type="radio" value="3"/>
+                <span class="option-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/DoseUnit_TBDrug/3:label" lang="ur">3۔) گولیاں</span>
+                <span class="option-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/DoseUnit_TBDrug/3:label" lang="Roman Urdu">3) goliyaan</span>
+                <span class="option-label active" data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/DoseUnit_TBDrug/3:label" lang="en">Tablets/capsules</span>
+              </label>
+              <label class="">
+                <input data-name="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/DoseUnit_TBDrug" data-type-xml="select1" name="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/DoseUnit_TBDrug" required="required" type="radio" value="4"/>
+                <span class="option-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/DoseUnit_TBDrug/4:label" lang="ur">4۔) ساشے</span>
+                <span class="option-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/DoseUnit_TBDrug/4:label" lang="Roman Urdu">4) sashay</span>
+                <span class="option-label active" data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/DoseUnit_TBDrug/4:label" lang="en">Sachet</span>
+              </label>
+              <label class="">
+                <input data-name="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/DoseUnit_TBDrug" data-type-xml="select1" name="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/DoseUnit_TBDrug" required="required" type="radio" value="5"/>
+                <span class="option-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/DoseUnit_TBDrug/5:label" lang="ur">5۔)سکوپس</span>
+                <span class="option-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/DoseUnit_TBDrug/5:label" lang="Roman Urdu">5) scoops</span>
+                <span class="option-label active" data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/DoseUnit_TBDrug/5:label" lang="en">Scoops</span>
+              </label>
+              <label class="">
+                <input data-name="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/DoseUnit_TBDrug" data-type-xml="select1" name="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/DoseUnit_TBDrug" required="required" type="radio" value="6"/>
+                <span class="option-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/DoseUnit_TBDrug/6:label" lang="ur">6۔)شیشی</span>
+                <span class="option-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/DoseUnit_TBDrug/6:label" lang="Roman Urdu">6) sheeshe</span>
+                <span class="option-label active" data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/DoseUnit_TBDrug/6:label" lang="en">Vial</span>
+              </label>
+            </div>
+          </fieldset>
+        </fieldset>
+        <label class="question non-select ">
+          <span class="question-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/AdmDoseAmount_TBDrug:label" lang="ur">3.3۔ ٹی بی دوا نمبر 1 کی لی گئی خوراک ۔- <span class="or-output" data-value=" /Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/TBDrug ">            </span>
+          </span>
+          <span class="question-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/AdmDoseAmount_TBDrug:label" lang="Roman Urdu">3.3 <span class="or-output" data-value=" /Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/TBDrug ">            </span> ki li gayee khuraak</span>
+          <span class="question-label active" data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/AdmDoseAmount_TBDrug:label" lang="en">3.3-<span class="or-output" data-value=" /Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/TBDrug ">            </span> Administered dose</span>
+          <span class="required">*</span>
+          <input data-type-xml="decimal" name="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/AdmDoseAmount_TBDrug" required="required" step="any" type="number"/>
+        </label>
+        <fieldset class="question or-branch pre-init ">
+          <fieldset>
+            <legend>
+              <span class="question-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/acknowledge_test:label" lang="ur">زیر انتظام خوراک مقررہ خوراک سے زیادہ ہے</span>
+              <span class="question-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/acknowledge_test:label" lang="Roman Urdu">zar intzamiya khoraq moukara khoraq sa zada hy</span>
+              <span class="question-label active" data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/acknowledge_test:label" lang="en">Administered dose is greater than the prescribed dose</span>
+              <span class="required">*</span>                    </legend>
+            <div class="option-wrapper">
+              <label>
+                <input data-relevant=" /Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/PrescDoseAmount_TBDrug &lt; /Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/AdmDoseAmount_TBDrug " data-type-xml="string" name="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/acknowledge_test" required="required" type="radio" value="OK"/>
+                <span class="option-label active" lang="">OK</span>
+              </label>
+            </div>
+          </fieldset>
+        </fieldset>
+        <label class="note non-select ">
+          <span class="question-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/MDA_TBDrug_note:label" lang="ur">-</span>
+          <span class="question-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/MDA_TBDrug_note:label" lang="Roman Urdu">-</span>
+          <span class="question-label active" data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/MDA_TBDrug_note:label" lang="en">3.4-Drug Missed dose<span class="or-output" data-value=" /Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/MissedDoseAmount_TBDrug ">            </span>
+          </span>
+          <input data-type-xml="string" name="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/MDA_TBDrug_note" readonly="readonly" type="text"/>
+        </label>
+        <label class="note non-select ">
+          <span class="question-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/DOTR_TBDrug_note:label" lang="ur">-</span>
+          <span class="question-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/DOTR_TBDrug_note:label" lang="Roman Urdu">-</span>
+          <span class="question-label active" data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/DOTR_TBDrug_note:label" lang="en">3.5-DOT Rate <span class="or-output" data-value=" /Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/DOTRate_TBDrug ">            </span>
+          </span>
+          <input data-type-xml="string" name="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/DOTR_TBDrug_note" readonly="readonly" type="text"/>
+        </label>
+        <label class="note non-select ">
+          <span class="question-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/Adm_TBDrug_note:label" lang="ur">-</span>
+          <span class="question-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/Adm_TBDrug_note:label" lang="Roman Urdu">-</span>
+          <span class="question-label active" data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/Adm_TBDrug_note:label" lang="en">3.6-<span class="or-output" data-value=" /Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/TBDrug ">            </span> administration<span class="or-output" data-value=" /Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/Adm_TBDrug ">            </span>
+          </span>
+          <input data-type-xml="string" name="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/Adm_TBDrug_note" readonly="readonly" type="text"/>
+        </label>
+        <fieldset class="question ">
+          <fieldset>
+            <legend>
+              <span class="question-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/MethodAdm_TBDrug:label" lang="ur">3.7۔ ٹی بی دوا نمبر 1 کس طریقے سے لی گئی؟- <span class="or-output" data-value=" /Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/TBDrug ">            </span>
+              </span>
+              <span class="question-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/MethodAdm_TBDrug:label" lang="Roman Urdu">3.7 <span class="or-output" data-value=" /Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/TBDrug ">            </span> kis tareeqay se li gayee</span>
+              <span class="question-label active" data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/MethodAdm_TBDrug:label" lang="en">3.7-Treamtent Delivery method for <span class="or-output" data-value=" /Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/TBDrug ">            </span>
+              </span>                    </legend>
+            <div class="option-wrapper">
+              <label class="">
+                <input data-type-xml="select" name="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/MethodAdm_TBDrug" type="checkbox" value="0"/>
+                <span class="option-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/MethodAdm_TBDrug/0:label" lang="ur">0۔) ھسپتال میں داخلے کے دوران (ڈاٹ) کے تحت  دی گئی</span>
+                <span class="option-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/MethodAdm_TBDrug/0:label" lang="Roman Urdu">0) Hospital main daakhlay ke doraan DOT ke tehet di gayee</span>
+                <span class="option-label active" data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/MethodAdm_TBDrug/0:label" lang="en">DOT Inpatient</span>
+              </label>
+              <label class="">
+                <input data-type-xml="select" name="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/MethodAdm_TBDrug" type="checkbox" value="1"/>
+                <span class="option-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/MethodAdm_TBDrug/1:label" lang="ur">1۔) ھسپتال میں معائنے کے وقت (ڈاٹ) کے تحت  دی گئی</span>
+                <span class="option-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/MethodAdm_TBDrug/1:label" lang="Roman Urdu">1) Hospital main muainay ke waqt DOT ke tehet di gayee</span>
+                <span class="option-label active" data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/MethodAdm_TBDrug/1:label" lang="en">DOT Outpatient facility-based</span>
+              </label>
+              <label class="">
+                <input data-type-xml="select" name="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/MethodAdm_TBDrug" type="checkbox" value="2"/>
+                <span class="option-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/MethodAdm_TBDrug/2:label" lang="ur">2۔) مریض کے گھر پہ (ڈاٹ) کے تحت  دی گئی</span>
+                <span class="option-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/MethodAdm_TBDrug/2:label" lang="Roman Urdu">2) Mareez ke ghar pe DOT ke tehet di gayee</span>
+                <span class="option-label active" data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/MethodAdm_TBDrug/2:label" lang="en">DOT Outpatient community-based</span>
+              </label>
+              <label class="">
+                <input data-type-xml="select" name="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/MethodAdm_TBDrug" type="checkbox" value="3"/>
+                <span class="option-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/MethodAdm_TBDrug/3:label" lang="ur">3۔) مریض نے خود  (ایس اے ٹی کے تحت) لی</span>
+                <span class="option-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/MethodAdm_TBDrug/3:label" lang="Roman Urdu">3) Mareez ne khud (SAT ke tehet) li</span>
+                <span class="option-label active" data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/MethodAdm_TBDrug/3:label" lang="en">Self Adminstered Treatment (SAT)</span>
+              </label>
+              <label class="">
+                <input data-type-xml="select" name="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/MethodAdm_TBDrug" type="checkbox" value="4"/>
+                <span class="option-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/MethodAdm_TBDrug/4:label" lang="ur">4۔) کچھ خوراک مریض نے خود (ایس اے ٹی کے تحت) لی، اور کچھ خوراک (ڈاٹ) کے تحت  دی گئی</span>
+                <span class="option-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/MethodAdm_TBDrug/4:label" lang="Roman Urdu">4) Kuch khuraak mareez ne khud (SAT ke tehet) li, aur kuch khuraak DOT ke tehet di gayee</span>
+                <span class="option-label active" data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/MethodAdm_TBDrug/4:label" lang="en">Combination SAT and DOT</span>
+              </label>
+              <label class="">
+                <input data-type-xml="select" name="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/MethodAdm_TBDrug" type="checkbox" value="other"/>
+                <span class="option-label active" lang="">Other</span>
+              </label>
+            </div>
+          </fieldset>
+        </fieldset>
+        <label class="question or-branch pre-init non-select ">
+          <span class="question-label active" lang="">Specify other.</span>
+          <input data-relevant="contains(../MethodAdm_TBDrug, 'other')" data-type-xml="string" name="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/MethodAdm_TBDrug_other" type="text"/>
+        </label>            </section>
+      <!--end of repeat fieldset with name /Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat-->            </section>
+    <!--end of group -->
+    <label class="note non-select ">
+      <span class="question-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_DM/DOTRx_note:label" lang="ur">-</span>
+      <span class="question-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_DM/DOTRx_note:label" lang="Roman Urdu">-</span>
+      <span class="question-label active" data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_DM/DOTRx_note:label" lang="en">It is a <span class="or-output" data-value=" /Daily_Treatment_phonebasedv2.5/Section_DM/DOTRx ">            </span>
+      </span>
+      <input data-type-xml="string" name="/Daily_Treatment_phonebasedv2.5/Section_DM/DOTRx_note" readonly="readonly" type="text"/>
+    </label>            </section>
+  <!--end of group -->    <section class="or-group " name="/Daily_Treatment_phonebasedv2.5/Section_AE">
+    <h4>
+      <span class="question-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_AE:label" lang="ur">منفی واقعات</span>
+      <span class="question-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_AE:label" lang="Roman Urdu">manfi waqeat</span>
+      <span class="question-label active" data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_AE:label" lang="en">Adverse Events</span>
+    </h4>
+    <label class="note non-select ">
+      <span class="question-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_AE/intro_2:label" lang="ur">سیکشن 3: منفی واقعات</span>
+      <span class="question-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_AE/intro_2:label" lang="Roman Urdu">section 3 : manfi waqeat</span>
+      <span class="question-label active" data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_AE/intro_2:label" lang="en">Section 3: Adverse Events</span>
+      <input data-type-xml="string" name="/Daily_Treatment_phonebasedv2.5/Section_AE/intro_2" readonly="readonly" type="text"/>
+    </label>
+    <fieldset class="question ">
+      <fieldset>
+        <legend>
+          <span class="question-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_AE/AE_DTM:label" lang="ur">5۔ آج کے دن مریض کسی نئے (اے ای) کی شکایت کر رہا ہے</span>
+          <span class="question-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_AE/AE_DTM:label" lang="Roman Urdu">5. Aaj ke din mareez kisi nayee AE ki shikayat kar raha hai?</span>
+          <span class="question-label active" data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_AE/AE_DTM:label" lang="en">5-Does the patient have an adverse event?</span>
+          <span class="required">*</span>                    </legend>
+        <div class="option-wrapper">
+          <label class="">
+            <input data-name="/Daily_Treatment_phonebasedv2.5/Section_AE/AE_DTM" data-type-xml="select1" name="/Daily_Treatment_phonebasedv2.5/Section_AE/AE_DTM" required="required" type="radio" value="1"/>
+            <span class="option-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_AE/AE_DTM/1:label" lang="ur">1۔) ہاں</span>
+            <span class="option-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_AE/AE_DTM/1:label" lang="Roman Urdu">1) Haan</span>
+            <span class="option-label active" data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_AE/AE_DTM/1:label" lang="en">Yes</span>
+          </label>
+          <label class="">
+            <input data-name="/Daily_Treatment_phonebasedv2.5/Section_AE/AE_DTM" data-type-xml="select1" name="/Daily_Treatment_phonebasedv2.5/Section_AE/AE_DTM" required="required" type="radio" value="2"/>
+            <span class="option-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_AE/AE_DTM/2:label" lang="ur">2۔) نہیں</span>
+            <span class="option-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_AE/AE_DTM/2:label" lang="Roman Urdu">2) Nahin</span>
+            <span class="option-label active" data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_AE/AE_DTM/2:label" lang="en">No</span>
+          </label>
+        </div>
+      </fieldset>
+    </fieldset>
+    <fieldset class="question or-branch pre-init ">
+      <fieldset>
+        <legend>
+          <span class="question-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_AE/SAE_DTM:label" lang="ur">5.1۔ اگر (اے ای) کی شکایت کر رہا ہے، تو کیا یہ (ایس اے ای)ہے؟</span>
+          <span class="question-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_AE/SAE_DTM:label" lang="Roman Urdu">5.1 Agar AE ki shikayat hai tou kiya yeh SAE hai?</span>
+          <span class="question-label active" data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_AE/SAE_DTM:label" lang="en">5.1-If yes, is this a serious adverse event?</span>                    </legend>
+        <div class="option-wrapper">
+          <label class="">
+            <input data-name="/Daily_Treatment_phonebasedv2.5/Section_AE/SAE_DTM" data-relevant="contains( /Daily_Treatment_phonebasedv2.5/Section_AE/AE_DTM , '1')" data-type-xml="select1" name="/Daily_Treatment_phonebasedv2.5/Section_AE/SAE_DTM" type="radio" value="1"/>
+            <span class="option-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_AE/SAE_DTM/1:label" lang="ur">1۔) ہاں</span>
+            <span class="option-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_AE/SAE_DTM/1:label" lang="Roman Urdu">1) Haan</span>
+            <span class="option-label active" data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_AE/SAE_DTM/1:label" lang="en">Yes</span>
+          </label>
+          <label class="">
+            <input data-name="/Daily_Treatment_phonebasedv2.5/Section_AE/SAE_DTM" data-relevant="contains( /Daily_Treatment_phonebasedv2.5/Section_AE/AE_DTM , '1')" data-type-xml="select1" name="/Daily_Treatment_phonebasedv2.5/Section_AE/SAE_DTM" type="radio" value="2"/>
+            <span class="option-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_AE/SAE_DTM/2:label" lang="ur">2۔) نہیں</span>
+            <span class="option-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_AE/SAE_DTM/2:label" lang="Roman Urdu">2) Nahin</span>
+            <span class="option-label active" data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_AE/SAE_DTM/2:label" lang="en">No</span>
+          </label>
+        </div>
+      </fieldset>
+    </fieldset>
+    <fieldset class="question or-branch pre-init ">
+      <fieldset>
+        <legend>
+          <span class="question-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_AE/AdmRefSAE_DTM:label" lang="ur">5.2۔ اگر یہ (ایس اے ای) ہے تو کیا مریض کو فوری طور پر ھسپتال منتقل کر دیا گیا؟</span>
+          <span class="question-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_AE/AdmRefSAE_DTM:label" lang="Roman Urdu">5.2 Agar yeh SAE hai tou kiya mareez ko fori tor par hospital muntaqil kar diya gaya?</span>
+          <span class="question-label active" data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_AE/AdmRefSAE_DTM:label" lang="en">5.2-If yes, transferred to admission site immediately?</span>                    </legend>
+        <div class="option-wrapper">
+          <label class="">
+            <input data-name="/Daily_Treatment_phonebasedv2.5/Section_AE/AdmRefSAE_DTM" data-relevant="contains( /Daily_Treatment_phonebasedv2.5/Section_AE/AE_DTM , '1') and contains( /Daily_Treatment_phonebasedv2.5/Section_AE/SAE_DTM , '1')" data-type-xml="select1" name="/Daily_Treatment_phonebasedv2.5/Section_AE/AdmRefSAE_DTM" type="radio" value="1"/>
+            <span class="option-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_AE/AdmRefSAE_DTM/1:label" lang="ur">1۔) ہاں</span>
+            <span class="option-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_AE/AdmRefSAE_DTM/1:label" lang="Roman Urdu">1) Haan</span>
+            <span class="option-label active" data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_AE/AdmRefSAE_DTM/1:label" lang="en">Yes</span>
+          </label>
+          <label class="">
+            <input data-name="/Daily_Treatment_phonebasedv2.5/Section_AE/AdmRefSAE_DTM" data-relevant="contains( /Daily_Treatment_phonebasedv2.5/Section_AE/AE_DTM , '1') and contains( /Daily_Treatment_phonebasedv2.5/Section_AE/SAE_DTM , '1')" data-type-xml="select1" name="/Daily_Treatment_phonebasedv2.5/Section_AE/AdmRefSAE_DTM" type="radio" value="2"/>
+            <span class="option-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_AE/AdmRefSAE_DTM/2:label" lang="ur">2۔) نہیں</span>
+            <span class="option-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_AE/AdmRefSAE_DTM/2:label" lang="Roman Urdu">2) Nahin</span>
+            <span class="option-label active" data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_AE/AdmRefSAE_DTM/2:label" lang="en">No</span>
+          </label>
+          <label class="">
+            <input data-name="/Daily_Treatment_phonebasedv2.5/Section_AE/AdmRefSAE_DTM" data-relevant="contains( /Daily_Treatment_phonebasedv2.5/Section_AE/AE_DTM , '1') and contains( /Daily_Treatment_phonebasedv2.5/Section_AE/SAE_DTM , '1')" data-type-xml="select1" name="/Daily_Treatment_phonebasedv2.5/Section_AE/AdmRefSAE_DTM" type="radio" value="3"/>
+            <span class="option-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_AE/AdmRefSAE_DTM/3:label" lang="ur">3۔)  یہاں لاگو نہیں</span>
+            <span class="option-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_AE/AdmRefSAE_DTM/3:label" lang="Roman Urdu">3) Yahaan laagoo nahin</span>
+            <span class="option-label active" data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_AE/AdmRefSAE_DTM/3:label" lang="en">N/A</span>
+          </label>
+        </div>
+      </fieldset>
+    </fieldset>
+    <fieldset class="question or-branch pre-init ">
+      <fieldset>
+        <legend>
+          <span class="question-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_AE/ActionAE_DTM:label" lang="ur">5.3۔ اگر یہ (ایس اے ای) نہیں ہے تو کیا اقدامات لیئے گئے؟</span>
+          <span class="question-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_AE/ActionAE_DTM:label" lang="Roman Urdu">5.3 Agar yeh SAE nahi hai, tou kiya iqdamaat liye gaye?</span>
+          <span class="question-label active" data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_AE/ActionAE_DTM:label" lang="en">5.3-If a non-serious adverse event then:</span>                    </legend>
+        <div class="option-wrapper">
+          <label class="">
+            <input data-name="/Daily_Treatment_phonebasedv2.5/Section_AE/ActionAE_DTM" data-relevant="contains( /Daily_Treatment_phonebasedv2.5/Section_AE/AE_DTM , '1') and contains( /Daily_Treatment_phonebasedv2.5/Section_AE/SAE_DTM , '2')" data-type-xml="select1" name="/Daily_Treatment_phonebasedv2.5/Section_AE/ActionAE_DTM" type="radio" value="1"/>
+            <span class="option-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_AE/ActionAE_DTM/1:label" lang="ur">1۔) اگلے دن طبّی معائنہ کیا جاے گا</span>
+            <span class="option-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_AE/ActionAE_DTM/1:label" lang="Roman Urdu">1) Aglay din tibbi muaina kiya jayega</span>
+            <span class="option-label active" data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_AE/ActionAE_DTM/1:label" lang="en">Follow up next day for clinical review</span>
+          </label>
+          <label class="">
+            <input data-name="/Daily_Treatment_phonebasedv2.5/Section_AE/ActionAE_DTM" data-relevant="contains( /Daily_Treatment_phonebasedv2.5/Section_AE/AE_DTM , '1') and contains( /Daily_Treatment_phonebasedv2.5/Section_AE/SAE_DTM , '2')" data-type-xml="select1" name="/Daily_Treatment_phonebasedv2.5/Section_AE/ActionAE_DTM" type="radio" value="2"/>
+            <span class="option-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_AE/ActionAE_DTM/2:label" lang="ur">2۔) ٹی بی کے ڈاکٹر سے فون پر مشورہ کر کے ضروری ادویات لینے کی ہدایات دے دی گئیں</span>
+            <span class="option-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_AE/ActionAE_DTM/2:label" lang="Roman Urdu">2) TB ke doctor se phone pe mashwara kar ke zaroori adwiyat lene ki hidayat de di</span>
+            <span class="option-label active" data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_AE/ActionAE_DTM/2:label" lang="en">Consult on phone with TB doctor for advise and advise ancillary medications</span>
+          </label>
+          <label class="">
+            <input data-name="/Daily_Treatment_phonebasedv2.5/Section_AE/ActionAE_DTM" data-relevant="contains( /Daily_Treatment_phonebasedv2.5/Section_AE/AE_DTM , '1') and contains( /Daily_Treatment_phonebasedv2.5/Section_AE/SAE_DTM , '2')" data-type-xml="select1" name="/Daily_Treatment_phonebasedv2.5/Section_AE/ActionAE_DTM" type="radio" value="3"/>
+            <span class="option-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_AE/ActionAE_DTM/3:label" lang="ur">3۔) ٹی بی کے ڈاکٹر سے فون پر مشورہ کر کے مریض کو ھسپتال میں داخل کرا دیا</span>
+            <span class="option-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_AE/ActionAE_DTM/3:label" lang="Roman Urdu">3) TB ke doctor se phone pe mashwara kar ke mareez ko hospital main daakhil kara diya</span>
+            <span class="option-label active" data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_AE/ActionAE_DTM/3:label" lang="en">Consult on phone with TB doctor for advise and advise transfer to referral hospital</span>
+          </label>
+          <label class="">
+            <input data-name="/Daily_Treatment_phonebasedv2.5/Section_AE/ActionAE_DTM" data-relevant="contains( /Daily_Treatment_phonebasedv2.5/Section_AE/AE_DTM , '1') and contains( /Daily_Treatment_phonebasedv2.5/Section_AE/SAE_DTM , '2')" data-type-xml="select1" name="/Daily_Treatment_phonebasedv2.5/Section_AE/ActionAE_DTM" type="radio" value="4"/>
+            <span class="option-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_AE/ActionAE_DTM/4:label" lang="ur">3۔) کسی ‌قسم کے فوری اقدامات کی ضرورت نہیں</span>
+            <span class="option-label " data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_AE/ActionAE_DTM/4:label" lang="Roman Urdu">4) Kisi qism ke fori iaqdamat ki zaroorat nahi</span>
+            <span class="option-label active" data-itext-id="/Daily_Treatment_phonebasedv2.5/Section_AE/ActionAE_DTM/4:label" lang="en">No action required</span>
+          </label>
+        </div>
+      </fieldset>
+    </fieldset>            </section>
+  <!--end of group -->  <fieldset id="or-preload-items" style="display:none;">
+    <label class="calculation non-select ">
+      <input data-preload="timestamp" data-preload-params="start" data-type-xml="dateTime" name="/Daily_Treatment_phonebasedv2.5/StartTime_DTM" type="hidden"/>
+    </label>
+    <label class="calculation non-select ">
+      <input data-preload="date" data-preload-params="today" data-type-xml="date" name="/Daily_Treatment_phonebasedv2.5/Date_DTMEnc" type="hidden"/>
+    </label>
+    <label class="calculation non-select ">
+      <input data-preload="timestamp" data-preload-params="end" data-type-xml="dateTime" name="/Daily_Treatment_phonebasedv2.5/EndTime_DTM" type="hidden"/>
+    </label>
+  </fieldset>
+  <fieldset id="or-calculated-items" style="display:none;">
+    <label class="calculation non-select ">
+      <input data-calculate=" /Daily_Treatment_phonebasedv2.5/Date_DTMEnc - /Daily_Treatment_phonebasedv2.5/Section_BI/Date_TxStrt " data-type-xml="string" name="/Daily_Treatment_phonebasedv2.5/Section_DM/TxDayNum" type="hidden"/>
+    </label>
+    <label class="calculation non-select ">
+      <input data-calculate=" /Daily_Treatment_phonebasedv2.5/Section_DM/NoOfDrugs_TxRx " data-type-xml="string" name="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat_count" type="hidden"/>
+    </label>
+    <label class="calculation non-select ">
+      <input data-calculate=" /Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/PrescDoseAmount_TBDrug - /Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/AdmDoseAmount_TBDrug " data-type-xml="string" name="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/MissedDoseAmount_TBDrug" type="hidden"/>
+    </label>
+    <label class="calculation non-select ">
+      <input data-calculate=" /Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/AdmDoseAmount_TBDrug  div  /Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/PrescDoseAmount_TBDrug " data-type-xml="string" name="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/DOTRate_TBDrug" type="hidden"/>
+    </label>
+    <label class="calculation non-select ">
+      <input data-calculate="if( /Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/DOTRate_TBDrug &gt;=1, 'Fully observed prescribed dose', if( /Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/DOTRate_TBDrug =0,'Missed prescribed dose','Incomplete prescribed dose'))" data-type-xml="string" name="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/Adm_TBDrug" type="hidden"/>
+    </label>
+    <label class="calculation non-select ">
+      <input data-calculate="if(( /Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/Adm_TBDrug = 'Fully observed prescribed dose' or  /Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/Adm_TBDrug ='Incomplete prescribed dose'), 1, 0)" data-type-xml="string" name="/Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/test1" type="hidden"/>
+    </label>
+    <label class="calculation non-select ">
+      <input data-calculate="sum( /Daily_Treatment_phonebasedv2.5/Section_DM/drug_repeat/test1 )" data-type-xml="string" name="/Daily_Treatment_phonebasedv2.5/Section_DM/test2" type="hidden"/>
+    </label>
+    <label class="calculation non-select ">
+      <input data-calculate="if( /Daily_Treatment_phonebasedv2.5/Section_DM/test2 = /Daily_Treatment_phonebasedv2.5/Section_DM/NoOfDrugs_TxRx , 'Fully observed Day', if( /Daily_Treatment_phonebasedv2.5/Section_DM/test2 =0,'Missed prescribed day','Incomplete Day'))" data-type-xml="string" name="/Daily_Treatment_phonebasedv2.5/Section_DM/DOTRx" type="hidden"/>
+    </label>
+    <label class="calculation non-select ">
+      <input data-calculate="concat('uuid:', uuid())" data-type-xml="string" name="/Daily_Treatment_phonebasedv2.5/meta/instanceID" type="hidden"/>
+    </label>
+    <label class="calculation non-select ">
+      <input data-calculate="concat('Daily_Treatment',' -25')" data-type-xml="string" name="/Daily_Treatment_phonebasedv2.5/meta/instanceName" type="hidden"/>
+    </label>
+    <label class="calculation non-select ">
+      <input data-calculate="'16b6c3aef93040ae85371eae154fd930'" data-type-xml="string" name="/Daily_Treatment_phonebasedv2.5/formhub/uuid" type="hidden"/>
+    </label>
+  </fieldset>
+</form>

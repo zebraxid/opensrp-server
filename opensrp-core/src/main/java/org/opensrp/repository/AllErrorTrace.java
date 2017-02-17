@@ -25,6 +25,7 @@ public class AllErrorTrace extends MotechBaseRepository<ErrorTrace> {
 	protected AllErrorTrace(
 			@Qualifier(AllConstants.OPENSRP_ERRORTRACE_DATABASE) CouchDbConnector db) {
 		super(ErrorTrace.class, db);
+		db.setRevisionLimit(1);
 	}
 
 	//@GenerateView

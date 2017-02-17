@@ -106,8 +106,9 @@ public class EventResource extends RestResource<Event>{
 	}
 	
 	@Override
-	public List<Event> filter(String query) {
-		return eventService.findEventsByDynamicQuery(query);
+	public List<Event> filter(String query, String sort, Integer limit, Integer skip) {
+		return eventService.findEventsByDynamicQuery(query, sort, limit, skip);
 	}
+
 
 }

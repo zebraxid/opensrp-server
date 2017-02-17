@@ -37,14 +37,14 @@ public class AllEventsIntegrationTest {
 		for (int i = 0; i < 20; i++) {
 			Event e = new Event("entityid"+i, "Immunization", new DateTime(), 
 					"testentity", "demotest", "location"+i, "formSubmission"+i+100);
-			e.addObs(new Obs("concept", "txt", "1025AAAAAAAAAAAAAAAA", null, "2015-01-01" , "comments test"+i, "bcg"));
-			e.addObs(new Obs("concept", "txt", "1026AAAAAAAAAAAAAAAA", null, "2015-01-01" , "comments test"+i, "penta1"));
-			e.addObs(new Obs("concept", "txt", "1027AAAAAAAAAAAAAAAA", null, "2015-01-01" , "comments test"+i, "penta2"));
-			e.addObs(new Obs("concept", "txt", "1028AAAAAAAAAAAAAAAA", null, "2015-01-01" , "comments test"+i, "penta3"));
-			e.addObs(new Obs("concept", "txt", "1029AAAAAAAAAAAAAAAA", null, "2015-01-01" , "comments test"+i, "mealses1"));
-			e.addObs(new Obs("concept", "txt", "1030AAAAAAAAAAAAAAAA", null, "2015-01-01" , "comments test"+i, "measles2"));
-			e.addObs(new Obs("concept", "txt", "1029AAAAAAAAAAAAAAAA", null, "2015-01-01" , "comments test"+i, "tt1"));
-			e.addObs(new Obs("concept", "txt", "1030AAAAAAAAAAAAAAAA", null, "2016-02-01" , "comments test"+i, "tt2"));
+			e.addObs(new Obs("concept", "txt", "1025AAAAAAAAAAAAAAAA", null, "2015-01-01", "2015-01-01" , "comments test"+i, "bcg"));
+			e.addObs(new Obs("concept", "txt", "1026AAAAAAAAAAAAAAAA", null, "2015-01-01", "2015-01-01" , "comments test"+i, "penta1"));
+			e.addObs(new Obs("concept", "txt", "1027AAAAAAAAAAAAAAAA", null, "2015-01-01", "2015-01-01" , "comments test"+i, "penta2"));
+			e.addObs(new Obs("concept", "txt", "1028AAAAAAAAAAAAAAAA", null, "2015-01-01", "2015-01-01" , "comments test"+i, "penta3"));
+			e.addObs(new Obs("concept", "txt", "1029AAAAAAAAAAAAAAAA", null, "2015-01-01", "2015-01-01" , "comments test"+i, "mealses1"));
+			e.addObs(new Obs("concept", "txt", "1030AAAAAAAAAAAAAAAA", null, "2015-01-01", "2015-01-01" , "comments test"+i, "measles2"));
+			e.addObs(new Obs("concept", "txt", "1029AAAAAAAAAAAAAAAA", null, "2015-01-01", "2015-01-01" , "comments test"+i, "tt1"));
+			e.addObs(new Obs("concept", "txt", "1030AAAAAAAAAAAAAAAA", null, "2016-02-01", "2015-01-01" , "comments test"+i, "tt2"));
 			eventService.addEvent(e);
 		}
 	}

@@ -9,7 +9,6 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 import java.text.ParseException;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -21,7 +20,6 @@ import org.opensrp.connector.openmrs.service.EncounterService;
 import org.opensrp.connector.openmrs.service.HouseholdService;
 import org.opensrp.connector.openmrs.service.PatientService;
 import org.opensrp.domain.Client;
-import org.opensrp.domain.ErrorTrace;
 import org.opensrp.domain.Event;
 import org.opensrp.domain.Multimedia;
 import org.opensrp.dto.form.FormSubmissionDTO;
@@ -31,7 +29,6 @@ import org.opensrp.form.service.FormSubmissionConverter;
 import org.opensrp.form.service.FormSubmissionService;
 import org.opensrp.scheduler.SystemEvent;
 import org.opensrp.scheduler.TaskSchedulerService;
-import org.opensrp.service.ErrorTraceService;
 import org.opensrp.service.MultimediaService;
 import org.opensrp.service.formSubmission.FormEntityConverter;
 import org.slf4j.Logger;
@@ -46,10 +43,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import ch.lambdaj.function.convert.Converter;
-
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+
+import ch.lambdaj.function.convert.Converter;
 
 @Controller
 public class FormSubmissionController {
@@ -60,7 +56,6 @@ public class FormSubmissionController {
     private FormEntityConverter formEntityConverter;
     private PatientService patientService;
     private HouseholdService householdService;
-    private ErrorTraceService errorTraceService;
     
     @Autowired //TODO: Julkar Confirm this
     private MultimediaService multimediaService;
@@ -68,10 +63,9 @@ public class FormSubmissionController {
     @Autowired
     public FormSubmissionController(FormSubmissionService formSubmissionService, TaskSchedulerService scheduler,
     		EncounterService encounterService, FormEntityConverter formEntityConverter, PatientService patientService, 
-    		HouseholdService householdService, ErrorTraceService errorTraceService) {
+    		HouseholdService householdService) {
         this.formSubmissionService = formSubmissionService;
         this.scheduler = scheduler;
-        this.errorTraceService=errorTraceService;
         this.encounterService = encounterService;
         this.formEntityConverter = formEntityConverter;
         this.patientService = patientService;
@@ -84,8 +78,10 @@ public class FormSubmissionController {
                                                             @RequestParam("timestamp") Long timeStamp,
                                                             @RequestParam(value = "batch-size", required = false)
                                                             Integer batchSize) {
+    	//TODO hack
         List<FormSubmission> newSubmissionsForANM = formSubmissionService
-                .getNewSubmissionsForANM(anmIdentifier, timeStamp, batchSize);
+        ///        .getAllSubmissions(timeStamp, batchSize);//
+        			.getNewSubmissionsForANM(anmIdentifier, timeStamp, batchSize);
         return with(newSubmissionsForANM).convert(new Converter<FormSubmission, FormSubmissionDTO>() {
             @Override
             public FormSubmissionDTO convert(FormSubmission submission) {
@@ -120,34 +116,6 @@ public class FormSubmissionController {
 
             scheduler.notifyEvent(new SystemEvent<>(AllConstants.OpenSRPEvent.FORM_SUBMISSION, formSubmissionsDTO));
             
-            try{
-          
-            ////////TODO MAIMOONA : SHOULD BE IN EVENT but event needs to be moved to web so for now kept here
-            String json = new Gson().toJson(formSubmissionsDTO);
-            System.out.println("MMMMMMMMMMMYYYYYYYYYYYYYY::"+json);
-            List<FormSubmissionDTO> formSubmissions = new Gson().fromJson(json, new TypeToken<List<FormSubmissionDTO>>() {
-            }.getType());
-            List<FormSubmission> fsl = with(formSubmissions).convert(new Converter<FormSubmissionDTO, FormSubmission>() {
-                @Override
-                public FormSubmission convert(FormSubmissionDTO submission) {
-                    return FormSubmissionConverter.toFormSubmission(submission);
-                }
-            });
-	            for (FormSubmission formSubmission : fsl) {
-	            	try{
-	            		addFormToOpenMRS(formSubmission);
-	            	}
-	            	catch(Exception e){
-	            		e.printStackTrace();
-	            		ErrorTrace errorTrace=new ErrorTrace(new Date(), "Parse Exception", "", e.getStackTrace().toString(), "Unsolved", formSubmission.formName());
-						errorTrace.setRecordId(formSubmission.instanceId());
-						errorTraceService.addError(errorTrace);
-	            	}
-	    		}
-            }
-            catch(Exception e){
-            	e.printStackTrace();
-            }
             logger.debug(format("Added Form submissions to queue.\nSubmissions: {0}", formSubmissionsDTO));
         } catch (Exception e) {
             logger.error(format("Form submissions processing failed with exception {0}.\nSubmissions: {1}", e, formSubmissionsDTO));

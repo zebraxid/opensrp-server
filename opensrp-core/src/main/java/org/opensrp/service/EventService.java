@@ -2,7 +2,6 @@ package org.opensrp.service;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 import org.joda.time.DateTime;
@@ -62,8 +61,8 @@ public class EventService {
 		return allEvents.findEvents(baseEntityId, from, to, eventType, entityType, providerId, locationId, lastEditFrom, lastEditTo);
 	}
 	
-	public List<Event> findEventsByDynamicQuery(String query) {
-		return allEvents.findEventsByDynamicQuery(query);
+	public List<Event> findEventsByDynamicQuery(String query, String sort, Integer limit, Integer skip) {
+		return allEvents.findEventsByDynamicQuery(query, sort, limit, skip);
 	}
 	
 	public Event find(String uniqueId){
@@ -153,7 +152,7 @@ public class EventService {
 					else {
 						original.getObs(null, o.getFieldCode()).setComments(o.getComments());
 						original.getObs(null, o.getFieldCode()).setEffectiveDatetime(o.getEffectiveDatetime());
-						original.getObs(null, o.getFieldCode()).setValue(o.getValues().size() < 2 ? o.getValue(): o.getValues());
+						original.getObs(null, o.getFieldCode()).setValues(o.getValues(false), o.getValues(true));
 					}
 				}
 				for (String k : updatedEvent.getIdentifiers().keySet()) {

@@ -24,10 +24,6 @@ public class PatientTest extends TestResourceLoader{
 	
 	@Before
 	public void setup(){
-		pushToOpenmrsForTest = true;
-		openmrsUsername = "admin";
-		openmrsPassword = "0p3n5rpAdmin";
-		openmrsOpenmrsUrl = "http://46.101.51.199:8080/openmrs";
 		s = new PatientService(openmrsOpenmrsUrl, openmrsUsername, openmrsPassword);
 	}
 	
@@ -51,6 +47,24 @@ public class PatientTest extends TestResourceLoader{
 			//.withIdentifier("Birth Reg Num", "b-8912819"+new Random().nextInt(99))
 			//.withIdentifier("Death Reg Num", "d-ewj-js3u2"+new Random().nextInt(99))
 			;
+		if(pushToOpenmrsForTest){
+			if(s.getPatientByIdentifier(c.getBaseEntityId()) == null)
+			System.out.println(s.createPatient(c));
+		}
+	}
+	
+	@Test
+	public void shouldCreatePersonWithNonExistentAttributes() throws JSONException {
+		//attribs.put("Household ID", "HH112");
+		Client c = new Client(UUID.randomUUID().toString())
+			.withFirstName("FN")
+			.withMiddleName("MN")
+			.withLastName("LN")
+			.withBirthdate(new DateTime(), true)
+			.withDeathdate(new DateTime(), false)
+			.withGender("MALE");
+		
+		c.withAttribute("Test Attribute"+DateTime.now(), "test value");
 		if(pushToOpenmrsForTest){
 			if(s.getPatientByIdentifier(c.getBaseEntityId()) == null)
 			System.out.println(s.createPatient(c));
