@@ -43,14 +43,14 @@ public class RegisterController {
 		return new ResponseEntity<>(hhRegisterMapper.mapToDTO(hhRegister), HttpStatus.OK);
 	}
 
-	@RequestMapping(method = RequestMethod.GET, value = "/registers/household")
+	/*@RequestMapping(method = RequestMethod.GET, value = "/registers/household")
 	@ResponseBody
 	public ResponseEntity<HHRegisterDTO> householdRegister(@RequestParam("start-date") String startdate, @RequestParam("end-date") String enddate) {
 		HHRegister hhRegister = hhRegisterService.getHHRegister("HouseHold", startdate, enddate);
 		return new ResponseEntity<>(hhRegisterMapper.mapToDTO(hhRegister), HttpStatus.OK);
-	}
+	}*/
     
-    @RequestMapping(method = RequestMethod.GET, value = "/registers/data-count")
+    /*@RequestMapping(method = RequestMethod.GET, value = "/registers/data-count")
     @ResponseBody
     public ResponseEntity<List<CountServiceDTO>>  getHouseHoldInformation(@RequestParam("anm-id") String provider,@RequestParam("start-month") String startMonth,@RequestParam("end-month") String endMonth,
     		@RequestParam("start-week") String startWeek,@RequestParam("end-week") String endtWeek,@RequestParam("type") String type){
@@ -93,15 +93,15 @@ public class RegisterController {
     public ResponseEntity<List<CountServiceDTOForChart>>  getPWInformation(@RequestParam("provider") String provider, @RequestParam("district") String district,
 			@RequestParam("upazilla") String upazilla, @RequestParam("union") String union){
     	return new ResponseEntity<>(dataCountService.getMotherCountInformation(), HttpStatus.OK);
-    }
+    }*/
     
-    @RequestMapping(method = RequestMethod.GET, value = "/registers/pw-data-count")
+   /* @RequestMapping(method = RequestMethod.GET, value = "/registers/pw-data-count")
     @ResponseBody
     public ResponseEntity<List<CountServiceDTOForChart>>  getPWInformationForChart(@RequestParam("provider") String provider, @RequestParam("district") String district,
 			@RequestParam("upazilla") String upazilla, @RequestParam("union") String union){
     	return new ResponseEntity<>(dataCountService.getMotherCountInformationForChart(provider, district, upazilla, union), HttpStatus.OK);
     }
-
+*/
 	/*
 	 * private ANCRegisterService ancRegisterService; private PNCRegisterService
 	 * pncRegisterService; private ECRegisterService ecRegisterService; private

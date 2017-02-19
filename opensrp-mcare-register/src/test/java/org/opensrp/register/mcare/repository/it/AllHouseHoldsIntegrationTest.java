@@ -179,20 +179,20 @@ public class AllHouseHoldsIntegrationTest {
     	
     	ViewResult hhViewResult;		
 		//hhViewResult = allHouseHolds.allHHsCreatedLastFourMonthsByLocationViewResult("[\"Gaibandha\"]", "[\"Gaibandha\",{}]");
-    	hhViewResult = allHouseHolds.allHHsCreatedLastFourMonthsByProviderAndLocationViewResult(oka, oka.substring(0, oka.length()-1) + ",{}]");
+    	/*hhViewResult = allHouseHolds.allHHsCreatedLastFourMonthsByProviderAndLocationViewResult(oka, oka.substring(0, oka.length()-1) + ",{}]");
 		System.out.println("number of hh with keys " + oka + oka.substring(0, oka.length()-1) + ",{}]" + " " + hhViewResult.getRows().size());
 		
 		for (ViewResult.Row row : hhViewResult.getRows()) {
 			if(DateUtil.ifDateInsideAWeek(Long.parseLong(row.getValue()), DateUtil.getTimestampToday(), DateUtil.getTimestampToday())){
 				System.out.println(row.getId());				
 			}
-		}
+		}*/
 		
 		ViewResult elcoViewResult;		
 		String key = createRawStartKey("", "Gaibandha", "", "");
 		System.out.println(key + " -the startKey");
-		elcoViewResult = allElcos.allMothersCreatedLastFourMonthsByLocationViewResult(key,key.substring(0, key.length()-1) + ",{}]");			
-		System.out.println(elcoViewResult.getRows().size() + " count of mothers from gaibandha" );
+		/*elcoViewResult = allElcos.allMothersCreatedLastFourMonthsByLocationViewResult(key,key.substring(0, key.length()-1) + ",{}]");			
+		System.out.println(elcoViewResult.getRows().size() + " count of mothers from gaibandha" );*/
 		//return this.coverViewResultToCount(elcoViewResult);
     }
 

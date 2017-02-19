@@ -26,7 +26,7 @@ public class HHReportService {
 		this.allHouseHolds = allHouseHolds;
 	}
 
-	public HHRegister getHHDataVisitedPrev7Days(String providerId)
+	/*public HHRegister getHHDataVisitedPrev7Days(String providerId)
 	{
 		ArrayList<HHRegisterEntry> hhRegisterEntries = new ArrayList<>();
         List<HouseHold> hhs = allHouseHolds.allHHsVisited7Days(providerId);
@@ -36,7 +36,7 @@ public class HHReportService {
         		.withCASEID(hh.caseId())  
         		.withPROVIDERID(hh.PROVIDERID())
         		//.withLOCATIONID(hh.LOCATIONID())
-        		/*.withTODAY(hh.TODAY())
+        		.withTODAY(hh.TODAY())
         		.withFWNHREGDATE(hh.FWNHREGDATE())
         		.withFWGOBHHID(hh.FWGOBHHID())
         		.withFWJIVHHID(hh.FWJIVHHID())
@@ -67,11 +67,11 @@ public class HHReportService {
         		.withFWWOMNID(hh.getELCODetail(FW_WOMNID))
         		.withFWHUSNAME(hh.getELCODetail(FW_HUSNAME))
         		.withFWELIGIBLE(hh.getELCODetail(FW_ELIGIBLE))
-        		.withFWDISPLAYAGE(hh.getELCODetail(FW_DISPLAY_AGE))*/
+        		.withFWDISPLAYAGE(hh.getELCODetail(FW_DISPLAY_AGE))
         		;
         	            
         	hhRegisterEntries.add(hhRegisterEntry);
         }
         return new HHRegister(hhRegisterEntries);
-	}
+	}*/
 }

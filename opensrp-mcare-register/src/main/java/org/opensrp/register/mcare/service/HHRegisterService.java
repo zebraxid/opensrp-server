@@ -99,7 +99,7 @@ public class HHRegisterService {
         return new HHRegister(hhRegisterEntries);
 	}	
 
-	public HHRegister getHHRegister(String type, String startKey, String endKey)
+	/*public HHRegister getHHRegister(String type, String startKey, String endKey)
 	{
 		long start = getTimestamp(startKey);		
 		long end = getTimestamp(endKey);
@@ -114,7 +114,7 @@ public class HHRegisterService {
         		.withINSTANCEID(hh.INSTANCEID())
         		.withPROVIDERID(hh.PROVIDERID())
         		//.withLOCATIONID(hh.LOCATIONID())
-        		/*.withTODAY(hh.TODAY())
+        		.withTODAY(hh.TODAY())
         		.withFWNHREGDATE(hh.FWNHREGDATE())
         		.withFWGOBHHID(hh.FWGOBHHID())
         		.withFWJIVHHID(hh.FWJIVHHID())
@@ -156,12 +156,12 @@ public class HHRegisterService {
         		.withFWWOMNID(hh.getELCODetail(FW_WOMNID))
         		.withFWHUSNAME(hh.getELCODetail(FW_HUSNAME))
         		.withFWELIGIBLE(hh.getELCODetail(FW_ELIGIBLE))
-        		.withFWDISPLAYAGE(hh.getELCODetail(FW_DISPLAY_AGE))*/
+        		.withFWDISPLAYAGE(hh.getELCODetail(FW_DISPLAY_AGE))
         		;
         	            
         	hhRegisterEntries.add(hhRegisterEntry);
         }
         return new HHRegister(hhRegisterEntries);
-	}	
+	}*/	
 	
 }

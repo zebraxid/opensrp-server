@@ -53,7 +53,7 @@ public class DataCountService {
 	 * @param startWeek   means start day of a week
 	 * @param endWeek     means end day of a week
 	 * */
-	public List<CountServiceDTO> getHHCountInformation(String provider,String startMonth,String endMonth,String startWeek,String endWeek,String type){
+	/*public List<CountServiceDTO> getHHCountInformation(String provider,String startMonth,String endMonth,String startWeek,String endWeek,String type){
 		List<CountServiceDTO> commonServiceDTOs = new ArrayList<CountServiceDTO>();
 		
 		CountServiceDTO commonServiceDTO = new CountServiceDTO();
@@ -281,6 +281,6 @@ public class DataCountService {
 		commonServiceDTO.setPwThisWeekCount(countsForChart[21]);
 		commonServiceDTO.setPwTodayCount(countsForChart[20]);
 		return commonServiceDTO;
-	}
+	}*/
 
 }

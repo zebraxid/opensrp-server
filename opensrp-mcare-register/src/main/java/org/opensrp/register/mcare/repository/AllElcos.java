@@ -44,7 +44,7 @@ public class AllElcos extends MotechBaseRepository<Elco> {
 		Elco elco = findByCaseId(caseId);
 		update(elco.setIsClosed(true));
 	}
-	@View(name = "all_elcos", map = "function(doc) { if (doc.type === 'Elco') { emit(doc.PROVIDERID, doc.caseId); } }")
+	/*@View(name = "all_elcos", map = "function(doc) { if (doc.type === 'Elco') { emit(doc.PROVIDERID, doc.caseId); } }")
 	public List<Elco> findAllELCOs() {
 		return db.queryView(createQuery("all_elcos").includeDocs(true),
 				Elco.class);
@@ -211,6 +211,6 @@ public class AllElcos extends MotechBaseRepository<Elco> {
 				.includeDocs(false));
 		
 		return vr;
-	}
+	}*/
 	
 }
