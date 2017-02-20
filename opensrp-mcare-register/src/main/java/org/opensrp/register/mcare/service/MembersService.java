@@ -16,6 +16,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.form.domain.SubFormData;
@@ -490,6 +491,7 @@ public class MembersService {
 		}
 		}*/
 		
+		System.out.println("submission.getField(Visit_status)"+submission.getField(Visit_status));
 		if (submission.getField(Visit_status) != null && !submission.getField(Visit_status).equalsIgnoreCase("")){	
 		if(submission.getField(Visit_status).equalsIgnoreCase("1") || submission.getField(Visit_status).equalsIgnoreCase("2")
 				 || submission.getField(Visit_status).equalsIgnoreCase("6")){
@@ -547,7 +549,9 @@ public class MembersService {
 		}
 		
 		if(submission.getField(Is_PNC).equalsIgnoreCase("1")){
-			membersScheduleService.enrollIntoCorrectMilestoneOfPNCRVCare(submission.entityId(), LocalDate.parse(DOO));
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");			
+			String date = formatter.format(new DateTime(submission.getField(DOO)).toDate());
+			membersScheduleService.enrollIntoCorrectMilestoneOfPNCRVCare(submission.entityId(), LocalDate.parse(date));
 		}
 		
 		if (submission.getField(Visit_status) != null && !submission.getField(Visit_status).equalsIgnoreCase("")){

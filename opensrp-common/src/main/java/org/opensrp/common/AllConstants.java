@@ -543,7 +543,7 @@ public class AllConstants {
         	public static final String Gender ="Gender";
         	public static final String Father_name ="Father_name";
         	public static final String Husband_name ="Husband_name";
-        	public static final String Visit_status ="Visit_status";
+        	public static final String Visit_status ="Visit_Status";
         	public static final String Marital_status ="Marital_status";
         	public static final String Couple_No ="Couple_No";
         	public static final String WomanInfo ="WomanInfo";
