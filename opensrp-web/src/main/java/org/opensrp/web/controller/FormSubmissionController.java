@@ -204,7 +204,7 @@ public class FormSubmissionController {
     	return with(allMultimedias).convert(new Converter<Multimedia, MultimediaDTO>() {
 			@Override
 			public MultimediaDTO convert(Multimedia md) {
-				return new MultimediaDTO(md.getCaseId(), md.getProviderId(), md.getContentType(), md.getFilePath(), md.getFileCategory());
+				return new MultimediaDTO(md.getCaseId(), md.getProviderId(), md.getContentType(), md.getFilePath(), md.getFileCategory(),md.getAttributes());
 			}
 		});
     }
