@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.opensrp.domain.Multimedia;
 import org.opensrp.dto.form.MultimediaDTO;
-import org.opensrp.repository.MultimediaRepository;
 import org.opensrp.service.MultimediaService;
 import org.opensrp.web.security.DrishtiAuthenticationProvider;
 import org.slf4j.Logger;
@@ -29,11 +28,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.google.gson.Gson;
@@ -105,11 +100,11 @@ public class MultimediaController {
 	}
     
     @RequestMapping(headers = {"Accept=multipart/form-data"}, method = POST, value = "/upload")
-    public ResponseEntity<String> uploadFiles(@RequestParam("anm-id") String providerId, @RequestParam("entity-id") String entityId, @RequestParam("file-category") String fileCategory, @RequestParam("file") MultipartFile file) {
+    public ResponseEntity<String> uploadFiles(@RequestParam("anm-id") String providerId, @RequestParam("entity-id") String entityId, @RequestParam("file-category") String fileCategory, @RequestParam("file") MultipartFile file, @RequestParam("face-vector") String faceVector) {
     	
     	String contentType= file.getContentType();
     	
-    	MultimediaDTO multimediaDTO = new MultimediaDTO(entityId, providerId, contentType, null, fileCategory);
+    	MultimediaDTO multimediaDTO = new MultimediaDTO(entityId, providerId, contentType, null, fileCategory).withAttributes("faceVector",faceVector);
     	
     	String status = multimediaService.saveMultimediaFile(multimediaDTO, file);
     	 
