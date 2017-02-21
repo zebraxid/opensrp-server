@@ -5,6 +5,9 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.codehaus.jackson.annotate.JsonProperty;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class MultimediaDTO {
 
 	@JsonProperty
@@ -17,6 +20,8 @@ public class MultimediaDTO {
 	private String filePath;
 	@JsonProperty
 	private String fileCategory;
+	@JsonProperty
+	private Map<String, String> attributes;
 	
 	public MultimediaDTO()
 	{
@@ -28,6 +33,14 @@ public class MultimediaDTO {
 		this.contentType = contentType;
 		this.filePath = filePath;
 		this.fileCategory = fileCategory;
+	}
+	public MultimediaDTO(String caseId, String providerId, String contentType, String filePath,String fileCategory, Map<String, String> attributes) {
+		this.caseId = caseId;
+		this.providerId = providerId;
+		this.contentType = contentType;
+		this.filePath = filePath;
+		this.fileCategory = fileCategory;
+		this.attributes = attributes;
 	}
 
 	public String caseId() {
@@ -49,6 +62,47 @@ public class MultimediaDTO {
 	public String fileCategory() {
 		return this.fileCategory;
 	}
+
+	public Map<String, String> attributes() {
+		return this.attributes;
+	}
+
+	public MultimediaDTO withAttributes(Map<String, String> attributes) {
+		this.attributes = attributes;
+		return this;
+	}
+
+	public MultimediaDTO withAttributes(String name, String value) {
+		if (attributes == null) {
+			attributes = new HashMap<>();
+		}
+		attributes.put(name, value);
+		return this;
+	}
+
+	public Map<String, String> getAttributes() {
+		if (attributes == null) {
+			attributes = new HashMap<>();
+		}
+		return attributes;
+	}
+	public String getAttributes(String name) {
+		return attributes.get(name);
+	}
+	public void setAttributes(String name, String value) {
+		this.attributes = attributes;
+	}
+	public void addAttribute(String name, String value) {
+		if (attributes == null) {
+			attributes = new HashMap<>();
+		}
+
+		attributes.put(name, value);
+	}
+	public void removeAttribute(String name) {
+		attributes.remove(name);
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		return EqualsBuilder.reflectionEquals(this, o);
