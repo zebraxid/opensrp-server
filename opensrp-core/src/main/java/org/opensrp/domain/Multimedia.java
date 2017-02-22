@@ -24,20 +24,22 @@ public class Multimedia extends MotechBaseDataObject {
 	@JsonProperty
 	private String fileCategory;
 	@JsonProperty
+	private String locationId;
+	@JsonProperty
 	private Map<String, String> attributes;
 	
 	
 	public Multimedia() {
 
 	}
-	public Multimedia( String caseId, String providerId, String contentType, String filePath, String fileCategory) {
+	public Multimedia( String caseId, String providerId, String contentType, String filePath, String fileCategory, String locationId) {
 		this.caseId = caseId;
 		this.providerId  = providerId;
 		this.contentType = contentType;
 		this.filePath = filePath;
 		this.fileCategory = fileCategory;
 	}
-	public Multimedia( String caseId, String providerId, String contentType, String filePath, String fileCategory, Map<String, String> attributes) {
+	public Multimedia( String caseId, String providerId, String contentType, String filePath, String fileCategory, String locationId, Map<String, String> attributes) {
 		this.caseId = caseId;
 		this.providerId  = providerId; 
 		this.contentType = contentType;
@@ -70,6 +72,11 @@ public class Multimedia extends MotechBaseDataObject {
 		return this;
 	}
 
+	public Multimedia withLocationId(String locationId) {
+		this.locationId = locationId;
+		return this;
+	}
+
 	public Multimedia withAttributes(Map<String, String> attributes) {
 		this.attributes = attributes;
 		return this;
@@ -95,9 +102,8 @@ public class Multimedia extends MotechBaseDataObject {
 	public String getFilePath() {
 		return filePath;
 	}
-	public String getFileCategory() {
-		return fileCategory;
-	}
+	public String getFileCategory() {return fileCategory; }
+	public String getLocationId() {return locationId; }
 	public Map<String, String> getAttributes() {
 		if (attributes == null) {
 			attributes = new HashMap<>();
@@ -122,6 +128,9 @@ public class Multimedia extends MotechBaseDataObject {
 	}
 	public void setFileCategory(String fileCategory) {
 		this.fileCategory = fileCategory;
+	}
+	public void setLocationId(String locationId) {
+		this.locationId = locationId;
 	}
 	public void setAttributes(String name, String value) {
 		this.attributes = attributes;

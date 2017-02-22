@@ -100,11 +100,11 @@ public class MultimediaController {
 	}
     
     @RequestMapping(headers = {"Accept=multipart/form-data"}, method = POST, value = "/upload")
-    public ResponseEntity<String> uploadFiles(@RequestParam("anm-id") String providerId, @RequestParam("entity-id") String entityId, @RequestParam("file-category") String fileCategory, @RequestParam("file") MultipartFile file, @RequestParam("face-vector") String faceVector) {
+    public ResponseEntity<String> uploadFiles(@RequestParam("anm-id") String providerId, @RequestParam("entity-id") String entityId, @RequestParam("file-category") String fileCategory, @RequestParam("file") MultipartFile file, @RequestParam("face-vector") String faceVector, @RequestParam("locationId") String locationId) {
     	
     	String contentType= file.getContentType();
     	
-    	MultimediaDTO multimediaDTO = new MultimediaDTO(entityId, providerId, contentType, null, fileCategory).withAttributes("faceVector",faceVector);
+    	MultimediaDTO multimediaDTO = new MultimediaDTO(entityId, providerId, contentType, null, fileCategory,locationId).withAttributes("faceVector",faceVector);
     	
     	String status = multimediaService.saveMultimediaFile(multimediaDTO, file);
     	 

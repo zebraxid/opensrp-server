@@ -21,25 +21,29 @@ public class MultimediaDTO {
 	@JsonProperty
 	private String fileCategory;
 	@JsonProperty
+	private String locationId;
+	@JsonProperty
 	private Map<String, String> attributes;
 	
 	public MultimediaDTO()
 	{
 		
 	}
-	public MultimediaDTO(String caseId, String providerId, String contentType, String filePath,String fileCategory) {
+	public MultimediaDTO(String caseId, String providerId, String contentType, String filePath,String fileCategory, String locationId) {
 		this.caseId = caseId;
 		this.providerId = providerId;
 		this.contentType = contentType;
 		this.filePath = filePath;
 		this.fileCategory = fileCategory;
+		this.locationId = locationId;
 	}
-	public MultimediaDTO(String caseId, String providerId, String contentType, String filePath,String fileCategory, Map<String, String> attributes) {
+	public MultimediaDTO(String caseId, String providerId, String contentType, String filePath,String fileCategory, String locationId, Map<String, String> attributes) {
 		this.caseId = caseId;
 		this.providerId = providerId;
 		this.contentType = contentType;
 		this.filePath = filePath;
 		this.fileCategory = fileCategory;
+		this.locationId = locationId;
 		this.attributes = attributes;
 	}
 
@@ -62,6 +66,8 @@ public class MultimediaDTO {
 	public String fileCategory() {
 		return this.fileCategory;
 	}
+
+	public String locationId() { return this.locationId; }
 
 	public Map<String, String> attributes() {
 		return this.attributes;
