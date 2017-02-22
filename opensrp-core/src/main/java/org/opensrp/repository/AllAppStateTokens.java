@@ -16,6 +16,7 @@ public class AllAppStateTokens extends MotechBaseRepository<AppStateToken> {
     @Autowired
     protected AllAppStateTokens(@Qualifier(AllConstants.OPENSRP_DATABASE_CONNECTOR) CouchDbConnector db) {
         super(AppStateToken.class, db);
+        db.setRevisionLimit(1);
     }
     
     @GenerateView

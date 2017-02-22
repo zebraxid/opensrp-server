@@ -9,7 +9,6 @@ import org.ict4h.atomfeed.client.domain.Event;
 import org.ict4h.atomfeed.client.repository.AllFailedEvents;
 import org.ict4h.atomfeed.client.repository.AllFeeds;
 import org.ict4h.atomfeed.client.repository.AllMarkers;
-import org.ict4h.atomfeed.client.repository.datasource.WebClient;
 import org.ict4h.atomfeed.client.service.AtomFeedClient;
 import org.ict4h.atomfeed.client.service.EventWorker;
 import org.ict4h.atomfeed.transaction.AFTransactionManager;
