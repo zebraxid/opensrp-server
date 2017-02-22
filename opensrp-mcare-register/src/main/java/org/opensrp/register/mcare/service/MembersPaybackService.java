@@ -315,7 +315,7 @@ public class MembersPaybackService {
 		membersScheduleService.unEnrollFromSchedule(submission.entityId(), submission.anmId(), Nutrition);
 		
 		if (submission.getField(Visit_Status) != null && !submission.getField(Visit_Status).equalsIgnoreCase(""))
-			if(submission.getField(Visit_Status).equalsIgnoreCase("10")){
+			if(submission.getField(Visit_Status).equalsIgnoreCase("10") || submission.getField(Visit_Status).equalsIgnoreCase("11")){
 				membersScheduleService.unEnrollFromAllSchedules(submission.entityId());
 			}
 	}

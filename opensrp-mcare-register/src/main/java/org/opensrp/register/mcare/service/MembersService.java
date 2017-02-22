@@ -87,6 +87,9 @@ public class MembersService {
 			//womanVaccineSchedule.immediate_Vaccine(submission, members, membersFields, ELCO_SCHEDULE_PSRF, 
 			//		IMD_ELCO_SCHEDULE_PSRF, submission.getField(REFERENCE_DATE), "Eligible");
 			
+			/**
+			 * PSRF shcedule generating code.
+			 * */
 			String fieldName = "Eligible";
 			if (!fieldName.equalsIgnoreCase("")) {
 				if (membersFields.containsKey(fieldName)) {
@@ -101,6 +104,9 @@ public class MembersService {
 			
 			//womanVaccineSchedule.Vaccine(submission, members, membersFields, child_bcg, submission.getField(REFERENCE_DATE), "Child");
 
+			/**
+			 * child Child_05yr schedule generation 
+			 * */
 			if (membersFields.containsKey("Child")) {
 			if (membersFields.get("Child")!= null || !membersFields.get("Child").equalsIgnoreCase("")) {
 			if(membersFields.get("Child").equalsIgnoreCase("1")) {
@@ -109,12 +115,16 @@ public class MembersService {
 					membersScheduleService.imediateEnrollIntoMilestoneOfChild_vaccination(
 						members.caseId(),submission.getField(REFERENCE_DATE), submission.anmId(), submission.instanceId());
 					
-					membersScheduleService.enrollIntoSchedule(submission.entityId(), submission.getField(REFERENCE_DATE), Nutrition);
+					//membersScheduleService.enrollIntoSchedule(submission.entityId(), submission.getField(REFERENCE_DATE), Nutrition);
+					membersScheduleService.immediateEnroll(members.caseId(), submission.getField(REFERENCE_DATE),submission.anmId(),submission.instanceId(), Nutrition);
 				}
 			}
 			}
 			}
 			
+			/**
+			 * Adolescent schedule generation
+			 * */
 			if (membersFields.containsKey("Adolescent")) {
 			if (membersFields.get("Adolescent")!= null || !membersFields.get("Adolescent").equalsIgnoreCase("")) {
 			if(membersFields.get("Adolescent").equalsIgnoreCase("1")) {
@@ -148,7 +158,9 @@ public class MembersService {
 			houseHold.setToday(submission.getField(REFERENCE_DATE));	
 			
 			allHouseHolds.update(houseHold);
-
+			/**
+			 * Cencus schedule generation
+			 * */
 			hhSchedulesService.enrollIntoMilestoneOfCensus(submission.entityId(),
 					submission.getField(REFERENCE_DATE),submission.anmId(),submission.instanceId());
 
@@ -280,39 +292,24 @@ public class MembersService {
 		logger.info("Value found submission.getField(Visit_Status): " + submission.getField(Visit_Status));
 		logger.info("Value found submission.getField(Preg_Status): " + submission.getField(Preg_Status));
   
+		/**
+		 * PSRF schedule generation with  Visit_Status from eclo follow up form
+		 * */
 		if (submission.getField(Visit_Status) != null && submission.getField(Visit_Status).equalsIgnoreCase("2")) 
-		{
-			//membersScheduleService.enrollAfterimmediateVisit(submission.entityId(),submission.anmId(),submission.getField(today),
-			//	submission.instanceId(),ELCO_SCHEDULE_PSRF,IMD_ELCO_SCHEDULE_PSRF);
-			
+		{			
 			membersScheduleService.enrollIntoMilestoneOfPSRF(submission.entityId(), submission.getField(today), submission.anmId(),
 					submission.instanceId());
 		} 
+		/**
+		 * PSRF schedule generation with  Preg_Status  from eclo follow up form
+		 * */
 		else if (submission.getField(Preg_Status) != null && 
 				(submission.getField(Preg_Status).equalsIgnoreCase("0") || submission.getField(Preg_Status).equalsIgnoreCase("9")))
-		{
-			//membersScheduleService.enrollAfterimmediateVisit(submission.entityId(),submission.anmId(),submission.getField(today),
-			//		submission.instanceId(),ELCO_SCHEDULE_PSRF,IMD_ELCO_SCHEDULE_PSRF);
-			
+		{			
 			membersScheduleService.enrollIntoMilestoneOfPSRF(submission.entityId(), submission.getField(today), submission.anmId(),
 					submission.instanceId());
 		}
-		else{
-			/*membersScheduleService.unEnrollAndCloseSchedule(members.caseId(),submission.anmId(),
-					ELCO_SCHEDULE_PSRF,LocalDate.parse(submission.getField(today)));
-			membersScheduleService.unEnrollAndCloseSchedule(members.caseId(),submission.anmId(),
-					IMD_ELCO_SCHEDULE_PSRF,LocalDate.parse(submission.getField(today)));
-			try {
-				List<Action> beforeNewActions = allActions.findAlertByANMIdEntityIdScheduleName(submission.anmId(), submission.entityId(),
-						ELCO_SCHEDULE_PSRF);
-				if (beforeNewActions.size() > 0) {
-					scheduleLogService.closeSchedule(submission.entityId(), submission.instanceId(), beforeNewActions.get(0).timestamp(),
-							ELCO_SCHEDULE_PSRF);
-				}
-
-			} catch (Exception e) {
-				logger.info("From Elco_Followup: " + e.getMessage());
-			}*/
+		else{			
 			
 			membersScheduleService.unEnrollFromScheduleOfPSRF(submission.entityId(), submission.anmId(), "");
 			try {
@@ -331,17 +328,22 @@ public class MembersService {
 		}
 		
 		//womanVaccineSchedule.immediateVaccine(submission, members, SCHEDULE_Woman_BNF, IMD_SCHEDULE_Woman_BNF, Calc_EDD, Preg_Status);
-		
+		/**
+		 * BNF schedule generation from eclo follow up form
+		 * */
 		String fieldName = "Preg_Status";
 		if (!fieldName.equalsIgnoreCase("")) {
 			if(submission.getField(fieldName) != null && !submission.getField(fieldName).equalsIgnoreCase("")){
-				if(submission.getField(fieldName).equalsIgnoreCase("1")){
+				if(submission.getField(fieldName).equalsIgnoreCase("1") || submission.getField(fieldName).equalsIgnoreCase("4")){
 					membersScheduleService.imediateEnrollIntoMilestoneOfBNF(
 							submission.getField(ID), submission.getField(Calc_EDD), submission.anmId(), submission.instanceId());
 				}
 			} 
 		}
 		
+		/**
+		 * Injectables schedule craete and closed condition 
+		 * */
 		if (submission.getField(Is_Eligible_Injectables) != null && !submission.getField(Is_Eligible_Injectables).equalsIgnoreCase(""))
 		if(submission.getField(Is_Eligible_Injectables).equalsIgnoreCase("1")){
 			membersScheduleService.enrollIntoSchedule(submission.entityId(), submission.getField(Format_Injection_Date), Injectables);
@@ -493,13 +495,18 @@ public class MembersService {
 		
 		System.out.println("submission.getField(Visit_status)"+submission.getField(Visit_status));
 		if (submission.getField(Visit_status) != null && !submission.getField(Visit_status).equalsIgnoreCase("")){	
-		if(submission.getField(Visit_status).equalsIgnoreCase("1") || submission.getField(Visit_status).equalsIgnoreCase("2")
+			/**
+			 * generate BNF schedule from BNF form
+			 * */
+			if(submission.getField(Visit_status).equalsIgnoreCase("1") || submission.getField(Visit_status).equalsIgnoreCase("2")
 				 || submission.getField(Visit_status).equalsIgnoreCase("6")){
 			membersScheduleService.enrollIntoMilestoneOfBNF(submission.entityId(), submission.getField(Today), submission.anmId(),
 				submission.instanceId());
-		}	
-					
-		else if(submission.getField(Visit_status).equalsIgnoreCase("3") || submission.getField(Visit_status).equalsIgnoreCase("4")
+			}
+			/**
+			 * unEnroll ANC schedule from BNF form
+			 * */
+			else if(submission.getField(Visit_status).equalsIgnoreCase("3") || submission.getField(Visit_status).equalsIgnoreCase("4")
 				|| submission.getField(Visit_status).equalsIgnoreCase("8")){	
 			//membersScheduleService.unEnrollAndCloseSchedule(members.caseId(),submission.anmId(),
 			//		SCHEDULE_ANC,LocalDate.parse(submission.getField(Today)));
@@ -513,23 +520,10 @@ public class MembersService {
 				logger.info("From BNF_Visit:" + e.getMessage());
 			}
 		}
-		
+		/**
+		 * Closed BNF schedule
+		 * */
 		else if(submission.getField(Visit_status).equalsIgnoreCase("4") || submission.getField(Visit_status).equalsIgnoreCase("8")){
-			/*membersScheduleService.unEnrollAndCloseSchedule(members.caseId(),submission.anmId(),
-					SCHEDULE_Woman_BNF,LocalDate.parse(submission.getField(Today)));
-			membersScheduleService.unEnrollAndCloseSchedule(members.caseId(),submission.anmId(),
-					IMD_SCHEDULE_Woman_BNF,LocalDate.parse(submission.getField(Today)));
-			try {
-				List<Action> beforeNewActions = allActions.findAlertByANMIdEntityIdScheduleName(submission.anmId(), submission.entityId(),
-						SCHEDULE_Woman_BNF);
-				if (beforeNewActions.size() > 0) {
-					scheduleLogService.closeSchedule(submission.entityId(), submission.instanceId(), beforeNewActions.get(0).timestamp(),
-							SCHEDULE_Woman_BNF);
-				}
-	
-			} catch (Exception e) {
-				logger.info("From BNF_Visit: " + e.getMessage());
-			}*/	
 			
 			membersScheduleService.unEnrollFromScheduleOfBNF(submission.entityId(), submission.anmId(), "");
 			try {
@@ -548,19 +542,18 @@ public class MembersService {
 		}
 		}
 		
+		/**
+		 * PNC schedule generation from BNF form
+		 * */
 		if(submission.getField(Is_PNC).equalsIgnoreCase("1")){
 			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");			
 			String date = formatter.format(new DateTime(submission.getField(DOO)).toDate());
 			membersScheduleService.enrollIntoCorrectMilestoneOfPNCRVCare(submission.entityId(), LocalDate.parse(date));
 		}
 		
-		if (submission.getField(Visit_status) != null && !submission.getField(Visit_status).equalsIgnoreCase("")){
+		/*if (submission.getField(Visit_status) != null && !submission.getField(Visit_status).equalsIgnoreCase("")){
 		if(submission.getField(Visit_status).equalsIgnoreCase("3")){
-			/*if(submission.getField(existing_Member_Birth_Date) != null && !submission.getField(existing_Member_Birth_Date).equalsIgnoreCase(""))
-			if(isValidDate(submission.getField(existing_Member_Birth_Date))){
-				membersScheduleService.enrollimmediateMembersVisit(
-					members.caseId(),submission.anmId(),submission.getField(existing_Member_Birth_Date),submission.instanceId(),child_bcg,child_bcg);
-			}*/
+			
 			
 			if(submission.getField(Today) != null && !submission.getField(Today).equalsIgnoreCase("")){
 			if(isValidDate(submission.getField(Today)))
@@ -574,11 +567,15 @@ public class MembersService {
 							submission.entityId(), submission.getField(Today), child_reg);
 			}
 		}
-		}
+		}*/
 		
+		/**
+		 * Nutrition schedule generation from BNF form
+		 * */
 		if (submission.getField("Calc_Age_Newmom") != null && !submission.getField("Calc_Age_Newmom").equalsIgnoreCase("")){	
 		if(Integer.parseInt(submission.getField("Calc_Age_Newmom")) <= 3){
-			membersScheduleService.enrollIntoSchedule(submission.entityId(), submission.getField(Today), Nutrition);
+			//membersScheduleService.enrollIntoSchedule(submission.entityId(), submission.getField(Today), Nutrition);
+			membersScheduleService.immediateEnroll(submission.entityId(), submission.getField(REFERENCE_DATE),submission.anmId(),submission.instanceId(), Nutrition);
 		}	
 		}
 		
@@ -702,11 +699,14 @@ public void childRegistratonHandler(FormSubmission submission) {
 			}
 
 			//womanVaccineSchedule.Vaccine(submission, members, membersFields, child_bcg, submission.getField(REFERENCE_DATE), "Child");
-
+			/**
+			 * 
+			 * */
 			if(submission.getField(REFERENCE_DATE) != null && !submission.getField(REFERENCE_DATE).equalsIgnoreCase(""))
 			if(isValidDate(submission.getField(REFERENCE_DATE))){
 				membersScheduleService.imediateEnrollIntoMilestoneOfChild_vaccination(
 					members.caseId(),submission.getField(REFERENCE_DATE), submission.anmId(), submission.instanceId());
+				membersScheduleService.immediateEnroll(members.caseId(), submission.getField(REFERENCE_DATE),submission.anmId(),submission.instanceId(), Nutrition);
 			}
 		}
 		
@@ -851,7 +851,9 @@ public void childRegistratonHandler(FormSubmission submission) {
 				members.child_vaccine().add(vaccine);
 				
 				allMembers.update(members);
-				
+			/**
+				 * child Child_05yr schedule generation 
+			* */	
 			if (submission.getField(Visit_Status) != null && !submission.getField(Visit_Status).equalsIgnoreCase("")){	
 				if(submission.getField(Visit_Status).equalsIgnoreCase("3") || submission.getField(Visit_Status).equalsIgnoreCase("2")){					
 				membersScheduleService.enrollIntoMilestoneOfChild_vaccination(submission.entityId(), submission.getField(child_today), submission.anmId(),

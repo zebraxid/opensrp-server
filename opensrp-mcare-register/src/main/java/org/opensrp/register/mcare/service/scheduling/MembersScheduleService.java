@@ -6,6 +6,8 @@ package org.opensrp.register.mcare.service.scheduling;
 import static java.text.MessageFormat.format;
 import static org.opensrp.dto.BeneficiaryType.members;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.DateTimeDuration.duration;
+import static org.opensrp.register.mcare.OpenSRPScheduleConstants.DateTimeDuration.nutritionDuration;
+
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MemberScheduleConstants.*;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.HHSchedulesConstants.HH_SCHEDULE_CENSUS;
 
@@ -219,6 +221,15 @@ public class MembersScheduleService {
 	    scheduleLogService.createImmediateScheduleAndScheduleLog(caseId, date, provider, instanceId, BeneficiaryType.members, ELCO_SCHEDULE_PSRF, duration,ScheduleNames.IMD_ELCO_SCHEDULE_PSRF);
 	    
 	}
+	
+	public void immediateEnroll(String caseId, String date,String provider,String instanceId,String scheduleName)	
+	{
+	    logger.info(format("Enrolling  a Nutrition schedule. Id: {0}", caseId));	  
+	    scheduler.enrollIntoSchedule(caseId, scheduleName, date);	 
+	    scheduleLogService.createImmediateScheduleAndScheduleLog(caseId, date, provider, instanceId, BeneficiaryType.members, scheduleName, nutritionDuration,scheduleName);
+	    
+	}
+	
 	
 	public void imediateEnrollIntoMilestoneOfBNF(String caseId, String date,String provider,String instanceId)	
 	{
