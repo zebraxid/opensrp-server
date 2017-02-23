@@ -190,7 +190,7 @@ public class MembersPaybackService {
 				logger.info("From Adolescent_Health: " + e.getMessage());
 			}			
 		}
-		
+		System.out.println("submission.getField(Visit_Status)::  "+submission.getField(Visit_Status));
 		if (submission.getField(Visit_Status) != null && 
 				(submission.getField(Visit_Status).equalsIgnoreCase("2") || submission.getField(Visit_Status).equalsIgnoreCase("3")))
 		{		

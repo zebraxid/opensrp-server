@@ -123,6 +123,15 @@ public class OpenSRPScheduleConstants {
     	public static final Integer anc3End = 224;
     	public static final Integer anc4Start = 247;
     	public static final Integer anc4End = 252;
+    	
+    	public static final Integer pnc1 = 2; // day
+    	public static final Integer pnc2Start = 3;
+    	public static final Integer pnc2End = 7;
+    	public static final Integer pnc3Start = 9;    	
+    	public static final Integer pnc3End = 15;
+    	public static final Integer pnc4Start = 45;
+    	public static final Integer pnc4End = 50;
+    	
     	public static final Integer bnf = 261;
     	public static final Integer nutritionDuration=672; //hour
     	

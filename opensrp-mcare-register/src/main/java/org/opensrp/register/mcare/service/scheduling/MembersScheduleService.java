@@ -14,19 +14,25 @@ import static org.opensrp.register.mcare.OpenSRPScheduleConstants.HHSchedulesCon
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import org.joda.time.DateTime;
 import org.joda.time.Days;
 import org.joda.time.LocalDate;
+import org.joda.time.Weeks;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.motechproject.scheduletracking.api.service.ScheduleTrackingService;
 import org.opensrp.common.AllConstants.ScheduleNames;
 import org.opensrp.common.util.DateUtil;
+import org.opensrp.dto.AlertStatus;
 import org.opensrp.dto.BeneficiaryType;
+import org.opensrp.register.mcare.OpenSRPScheduleConstants.DateTimeDuration;
 import org.opensrp.scheduler.HealthSchedulerService;
 import org.opensrp.scheduler.repository.AllActions;
 import org.slf4j.Logger;
@@ -282,7 +288,7 @@ public class MembersScheduleService {
 	
 	public void enrollIntoCorrectMilestoneOfANCRVCare(String entityId, LocalDate referenceDateForSchedule) {
         String milestone=null;
-
+        System.out.println("Days.ZERO.toPeriod().plusDays(168): "+Days.ZERO.toPeriod().plusDays(168));
         if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Days.ZERO.toPeriod().plusDays(168))) {
             milestone = SCHEDULE_ANC_1;
         } else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Days.ZERO.toPeriod().plusDays(224))) {
@@ -297,6 +303,149 @@ public class MembersScheduleService {
 
         logger.info(format("Enrolling ANC with Entity id:{0} to ANC schedule, milestone: {1}.", entityId, milestone));
         scheduler.enrollIntoSchedule(entityId, SCHEDULE_ANC, milestone, referenceDateForSchedule.toString());
+    }
+	
+	public void enrollIntoCorrectMilestoneOfANCCare(String entityId, LocalDate referenceDateForSchedule,String provider,String instanceId,String startDate) {
+        String milestone=null;        
+        DateTime ancStartDate = null;
+        DateTime ancExpireDate = null;
+        AlertStatus alertStaus = null;
+        Date date = null;        
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+			date = format.parse(startDate);
+			
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        DateTime start = new DateTime(date);
+        if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(24).toPeriod())) {
+            milestone = SCHEDULE_ANC_1;           
+            ancStartDate = new DateTime(start);
+            
+            if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(24).toPeriod().minusDays(2)))
+            	alertStaus = AlertStatus.upcoming;
+            else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(24).toPeriod().minusDays(1)))
+            	alertStaus = AlertStatus.urgent;            
+            else alertStaus = AlertStatus.expired;
+
+            ancExpireDate = new DateTime(start).plusDays(DateTimeDuration.anc1);
+        } else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(32).toPeriod().minusDays(0))) {
+            milestone = SCHEDULE_ANC_2;  
+            
+            if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(32).toPeriod().minusDays(2)))
+                alertStaus = AlertStatus.upcoming;
+            else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(32).toPeriod().minusDays(1)))
+            	alertStaus = AlertStatus.urgent;
+            else alertStaus = AlertStatus.expired;
+          
+            ancStartDate = new DateTime(start).plusDays(DateTimeDuration.anc2Start);
+            ancExpireDate = new DateTime(ancStartDate).plusDays(DateTimeDuration.anc3End);
+        } else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(36).toPeriod().minusDays(0))) {
+            milestone = SCHEDULE_ANC_3; 
+            
+            if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(36).toPeriod().minusDays(2)))
+                alertStaus = AlertStatus.upcoming;
+            else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(36).toPeriod().minusDays(1)))
+            	alertStaus = AlertStatus.urgent;
+            else alertStaus = AlertStatus.expired;
+            
+            ancStartDate = new DateTime(start).plusDays(DateTimeDuration.anc3Start);
+            ancExpireDate = new DateTime(ancStartDate).plusDays(DateTimeDuration.anc3End);
+        } else if(DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(37).toPeriod().minusDays(6))) {
+            milestone = SCHEDULE_ANC_4;
+            
+            if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(38).toPeriod().minusDays(6)))
+                alertStaus = AlertStatus.upcoming;
+            else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(138).toPeriod().minusDays(6)))
+            	alertStaus = AlertStatus.urgent;
+            else alertStaus = AlertStatus.expired;
+            
+            ancStartDate = new DateTime(start).plusDays(DateTimeDuration.anc4Start);
+            ancExpireDate = new DateTime(ancStartDate).plusDays(DateTimeDuration.anc4End);
+        } else{
+        	
+        }
+
+        logger.info(format("Enrolling ANC with Entity id:{0} to ANC schedule, milestone: {1}.", entityId, milestone));
+        scheduler.enrollIntoSchedule(entityId, SCHEDULE_ANC, milestone, referenceDateForSchedule.toString());
+        
+        scheduleLogService.scheduleCloseAndSave(entityId, instanceId, provider, SCHEDULE_ANC, milestone, BeneficiaryType.members, alertStaus, ancStartDate, ancExpireDate);
+        
+        
+    }
+	
+	
+	public void enrollIntoCorrectMilestoneOfPNCCare(String entityId, LocalDate referenceDateForSchedule,String provider,String instanceId,String startDate) {
+        String milestone=null;        
+        DateTime ancStartDate = null;
+        DateTime ancExpireDate = null;
+        AlertStatus alertStaus = null;
+        Date date = null;        
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+			date = format.parse(startDate);
+			
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        DateTime start = new DateTime(date);
+        if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Days.TWO.toPeriod())) {
+            milestone = SCHEDULE_PNC_1;           
+            ancStartDate = new DateTime(start);
+            
+            if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Days.TWO.toPeriod().minusDays(1)))
+            	alertStaus = AlertStatus.upcoming;
+            else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Days.TWO.toPeriod().minusDays(0)))
+            	alertStaus = AlertStatus.urgent;            
+            else alertStaus = AlertStatus.expired;
+
+            ancExpireDate = new DateTime(start).plusDays(DateTimeDuration.pnc1);
+        } else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Days.SEVEN.toPeriod())) {
+            milestone = SCHEDULE_PNC_2;  
+            
+            if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule,Days.SEVEN.toPeriod().minusDays(4)))
+                alertStaus = AlertStatus.upcoming;
+            else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule,Days.SEVEN.toPeriod().minusDays(0)))
+            	alertStaus = AlertStatus.urgent;
+            else alertStaus = AlertStatus.expired;
+          
+            ancStartDate = new DateTime(start).plusDays(DateTimeDuration.pnc2Start);
+            ancExpireDate = new DateTime(ancStartDate).plusDays(DateTimeDuration.pnc3End);
+        } else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(2).toPeriod().plusDays(1))) {
+            milestone = SCHEDULE_PNC_3; 
+            
+            if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(1).toPeriod().plusDays(2)))
+                alertStaus = AlertStatus.upcoming;
+            else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(2).toPeriod().plusDays(1)))
+            	alertStaus = AlertStatus.urgent;
+            else alertStaus = AlertStatus.expired;
+            
+            ancStartDate = new DateTime(start).plusDays(DateTimeDuration.pnc3Start);
+            ancExpireDate = new DateTime(ancStartDate).plusDays(DateTimeDuration.pnc3End);
+        } else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(7).toPeriod().plusDays(1))) {
+            milestone = SCHEDULE_PNC_4;
+            
+            if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(6).toPeriod().plusDays(3)))
+                alertStaus = AlertStatus.upcoming;
+            else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(7).toPeriod()))
+            	alertStaus = AlertStatus.urgent;
+            else alertStaus = AlertStatus.expired;
+            
+            ancStartDate = new DateTime(start).plusDays(DateTimeDuration.pnc4Start);
+            ancExpireDate = new DateTime(ancStartDate).plusDays(DateTimeDuration.pnc4End);
+        } else{
+        	
+        }
+
+        logger.info(format("Enrolling PNC with Entity id:{0} to PNC schedule, milestone: {1}.", entityId, milestone));
+        scheduler.enrollIntoSchedule(entityId, SCHEDULE_PNC, milestone, referenceDateForSchedule.toString());
+        
+        scheduleLogService.scheduleCloseAndSave(entityId, instanceId, provider, SCHEDULE_PNC, milestone, BeneficiaryType.members, alertStaus, ancStartDate, ancExpireDate);
+        
+        
     }
 	
 	public void enrollIntoCorrectMilestoneOfPNCRVCare(String entityId, LocalDate referenceDateForSchedule) {

@@ -127,15 +127,17 @@ public class MembersFollowupService {
 		members.setPNCVisit1(PNCVisit1);
 		allMembers.update(members);
 		
-		membersScheduleService.fullfillMilestone(submission.entityId(), submission.anmId(), SCHEDULE_PNC, new LocalDate());
-
-		String pattern = "yyyy-MM-dd";
-		// DateTimeFormatter formatter = DateTimeFormat.forPattern(pattern);
-
-		DateTime dateTime = DateTime.parse(submission.getField(today));
-		DateTimeFormatter fmt = DateTimeFormat.forPattern(pattern);
-		String referenceDate = fmt.print(dateTime);
-		membersScheduleService.enrollPNCForMother(submission.entityId(), SCHEDULE_PNC_2, LocalDate.parse(referenceDate));
+		if(submission.getField(Visit_status).equalsIgnoreCase("8") || submission.getField(Visit_status).equalsIgnoreCase("10")){
+			membersScheduleService.unEnrollFromSchedule(submission.entityId(), submission.anmId(), SCHEDULE_PNC);		
+		}else{
+			this.PNCSchedule(submission.entityId(), submission.anmId(), submission.getField(today), SCHEDULE_PNC_2);
+			/*membersScheduleService.fullfillMilestone(submission.entityId(), submission.anmId(), SCHEDULE_PNC, new LocalDate());
+			String pattern = "yyyy-MM-dd";
+			DateTime dateTime = DateTime.parse(submission.getField(today));
+			DateTimeFormatter fmt = DateTimeFormat.forPattern(pattern);
+			String referenceDate = fmt.print(dateTime);
+			membersScheduleService.enrollPNCForMother(submission.entityId(), SCHEDULE_PNC_2, LocalDate.parse(referenceDate));*/
+		}
 	}
 	
 	public void PNCVisit2(FormSubmission submission) {
@@ -213,16 +215,17 @@ public class MembersFollowupService {
 		
 		members.setPNCVisit2(PNCVisit2);
 		allMembers.update(members);
-		
-		membersScheduleService.fullfillMilestone(submission.entityId(), submission.anmId(), SCHEDULE_PNC, new LocalDate());
-
-		String pattern = "yyyy-MM-dd";
-		// DateTimeFormatter formatter = DateTimeFormat.forPattern(pattern);
-
-		DateTime dateTime = DateTime.parse(submission.getField(today));
-		DateTimeFormatter fmt = DateTimeFormat.forPattern(pattern);
-		String referenceDate = fmt.print(dateTime);
-		membersScheduleService.enrollPNCForMother(submission.entityId(), SCHEDULE_PNC_3, LocalDate.parse(referenceDate));
+		if(submission.getField(Visit_status).equalsIgnoreCase("8") || submission.getField(Visit_status).equalsIgnoreCase("10")){
+			membersScheduleService.unEnrollFromSchedule(submission.entityId(), submission.anmId(), SCHEDULE_PNC);		
+		}else{
+			this.PNCSchedule(submission.entityId(), submission.anmId(), submission.getField(today), SCHEDULE_PNC_3);
+			/*membersScheduleService.fullfillMilestone(submission.entityId(), submission.anmId(), SCHEDULE_PNC, new LocalDate());
+			String pattern = "yyyy-MM-dd";		
+			DateTime dateTime = DateTime.parse(submission.getField(today));
+			DateTimeFormatter fmt = DateTimeFormat.forPattern(pattern);
+			String referenceDate = fmt.print(dateTime);
+			membersScheduleService.enrollPNCForMother(submission.entityId(), SCHEDULE_PNC_3, LocalDate.parse(referenceDate));*/
+		}
 	}
 	
 	public void PNCVisit3(FormSubmission submission) {
@@ -300,16 +303,17 @@ public class MembersFollowupService {
 		
 		members.setPNCVisit3(PNCVisit3);
 		allMembers.update(members);
-		
-		membersScheduleService.fullfillMilestone(submission.entityId(), submission.anmId(), SCHEDULE_PNC, new LocalDate());
-
-		String pattern = "yyyy-MM-dd";
-		// DateTimeFormatter formatter = DateTimeFormat.forPattern(pattern);
-
-		DateTime dateTime = DateTime.parse(submission.getField(today));
-		DateTimeFormatter fmt = DateTimeFormat.forPattern(pattern);
-		String referenceDate = fmt.print(dateTime);
-		membersScheduleService.enrollPNCForMother(submission.entityId(), SCHEDULE_PNC_4, LocalDate.parse(referenceDate));
+		if(submission.getField(Visit_status).equalsIgnoreCase("8") || submission.getField(Visit_status).equalsIgnoreCase("10")){
+			membersScheduleService.unEnrollFromSchedule(submission.entityId(), submission.anmId(), SCHEDULE_PNC);		
+		}else{
+			this.PNCSchedule(submission.entityId(), submission.anmId(), submission.getField(today), SCHEDULE_PNC_4);
+			/*membersScheduleService.fullfillMilestone(submission.entityId(), submission.anmId(), SCHEDULE_PNC, new LocalDate());
+			String pattern = "yyyy-MM-dd";
+			DateTime dateTime = DateTime.parse(submission.getField(today));
+			DateTimeFormatter fmt = DateTimeFormat.forPattern(pattern);
+			String referenceDate = fmt.print(dateTime);
+			membersScheduleService.enrollPNCForMother(submission.entityId(), SCHEDULE_PNC_4, LocalDate.parse(referenceDate));*/
+		}
 	}
 	
 	public void PNCVisit4(FormSubmission submission) {
@@ -391,6 +395,14 @@ public class MembersFollowupService {
 		membersScheduleService.unEnrollFromSchedule(submission.entityId(), submission.anmId(), SCHEDULE_PNC);
 	}
 	
+	private void PNCSchedule(String entityId,String anmId,String today,String scheduleName ){
+		membersScheduleService.fullfillMilestone(entityId,anmId, SCHEDULE_PNC, new LocalDate());
+		String pattern = "yyyy-MM-dd";
+		DateTime dateTime = DateTime.parse(today);
+		DateTimeFormatter fmt = DateTimeFormat.forPattern(pattern);
+		String referenceDate = fmt.print(dateTime);
+		membersScheduleService.enrollPNCForMother(entityId, scheduleName, LocalDate.parse(referenceDate));
+	}
 	
 	public void ANCVisit1(FormSubmission submission) {
 		Members members = allMembers.findByCaseId(submission.entityId());
@@ -752,6 +764,9 @@ public class MembersFollowupService {
 		}
 	}
 	
+	private void PNCClosed(String entityId,String anmId, String scheduleName ){
+		membersScheduleService.unEnrollFromSchedule(entityId, anmId, scheduleName);
+	}
 	public boolean isValidDate(String dateString) {
 	    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 	    try {

@@ -324,7 +324,12 @@ public class MembersService {
 				logger.info("From Elco_Followup: " + e.getMessage());
 			}
 			
-			membersScheduleService.enrollIntoCorrectMilestoneOfANCRVCare(submission.entityId(), LocalDate.parse(submission.getField(LMP)));
+			try{
+				membersScheduleService.enrollIntoCorrectMilestoneOfANCCare(submission.entityId(), LocalDate.parse(submission.getField(LMP)), submission.anmId(), submission.instanceId(), submission.getField(LMP));
+				//membersScheduleService.enrollIntoCorrectMilestoneOfANCRVCare(submission.entityId(), LocalDate.parse(submission.getField(LMP)));
+			}catch(Exception e){
+				System.out.println("LMP date does not found....");
+			}
 		}
 		
 		//womanVaccineSchedule.immediateVaccine(submission, members, SCHEDULE_Woman_BNF, IMD_SCHEDULE_Woman_BNF, Calc_EDD, Preg_Status);
@@ -507,7 +512,7 @@ public class MembersService {
 			 * unEnroll ANC schedule from BNF form
 			 * */
 			else if(submission.getField(Visit_status).equalsIgnoreCase("3") || submission.getField(Visit_status).equalsIgnoreCase("4")
-				|| submission.getField(Visit_status).equalsIgnoreCase("8")){	
+				|| submission.getField(Visit_status).equalsIgnoreCase("8") ){	
 			//membersScheduleService.unEnrollAndCloseSchedule(members.caseId(),submission.anmId(),
 			//		SCHEDULE_ANC,LocalDate.parse(submission.getField(Today)));
 			
@@ -548,7 +553,10 @@ public class MembersService {
 		if(submission.getField(Is_PNC).equalsIgnoreCase("1")){
 			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");			
 			String date = formatter.format(new DateTime(submission.getField(DOO)).toDate());
-			membersScheduleService.enrollIntoCorrectMilestoneOfPNCRVCare(submission.entityId(), LocalDate.parse(date));
+			membersScheduleService.enrollIntoCorrectMilestoneOfPNCCare(submission.entityId(), LocalDate.parse(date), submission.anmId(), submission.instanceId(), date);
+			membersScheduleService.unEnrollFromScheduleOfBNF(submission.entityId(), submission.anmId(), SCHEDULE_Woman_BNF);
+			membersScheduleService.unEnrollFromScheduleOfBNF(submission.entityId(), submission.anmId(), IMD_SCHEDULE_Woman_BNF);
+			//membersScheduleService.enrollIntoCorrectMilestoneOfPNCRVCare(submission.entityId(), LocalDate.parse(date));
 		}
 		
 		/*if (submission.getField(Visit_status) != null && !submission.getField(Visit_status).equalsIgnoreCase("")){
