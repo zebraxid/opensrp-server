@@ -16,10 +16,11 @@
 		<module>opensrp-form</module>
 		<module>opensrp-core</module>
 		<module>opensrp-interface</module>
-		<module>opensrp-register</module>
+		<!-- <module>opensrp-register</module> -->
 		<module>opensrp-connector</module>
 		<module>opensrp-web</module>
 		<!-- <module>opensrp-reporting</module> -->
+		<!-- <module>opensrp-thrivepk</module> -->
 	</modules>
 
 	<properties>
@@ -101,11 +102,76 @@
 		</repository>
 	</repositories>
 <profiles>
-    <profile>
-        <id>skip-integration-tests</id>
-         <build>
-         	<plugins>
-		      	<plugin>
+   <profile>
+       <id>compile-build-dist</id>
+       <activation>
+          <activeByDefault>true</activeByDefault>
+        </activation>
+        	<build>
+		<!-- <pluginManagement> -->
+			<plugins>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>sql-maven-plugin</artifactId>
+					<version>1.5</version>
+					<dependencies>
+						<!-- <dependency>
+							<groupId>postgresql</groupId>
+							<artifactId>postgresql</artifactId>
+							<version>9.1-901.jdbc4</version>
+						</dependency> -->
+						<dependency>
+							<groupId>mysql</groupId>
+							<artifactId>mysql-connector-java</artifactId>
+							<version>${mysql.connector.version}</version>
+						</dependency>
+					</dependencies>
+
+					<configuration>
+						<driver>${jdbc.driverClassName}</driver>
+						<url>${jdbc.url-wo-db}</url>
+						<username>${jdbc.username}</username>
+						<password>${jdbc.password}</password>
+						<skip>${maven.test.skip}</skip>
+					</configuration>
+
+					<executions>
+					<!-- Database init scripts for DBMS specific configuration -->
+						<execution>
+							<id>drop-create-relational-db</id>
+							<phase>pre-integration-test</phase>
+							<goals>
+								<goal>execute</goal>
+							</goals>
+							<configuration>
+								<url>${jdbc.url-wo-db}</url>
+								<autocommit>true</autocommit>
+								<sqlCommand> 
+								CREATE DATABASE IF NOT EXISTS ${org.quartz.dataSource.motechDS.db};
+								</sqlCommand>
+								<onError>abort</onError>
+							</configuration>
+						</execution>
+						<!-- END: Database init scripts for DBMS specific configuration -->
+						<execution>
+							<id>create-quartz-tables</id>
+							<phase>pre-integration-test</phase>
+							<goals>
+								<goal>execute</goal>
+							</goals>
+							<configuration>
+								<url>${jdbc.url-wo-db}/${org.quartz.dataSource.motechDS.db}</url>
+								<username>${jdbc.username}</username>
+								<password>${jdbc.password}</password>
+								<autocommit>true</autocommit>
+								<srcFiles>
+									<srcFile>../build/sql/tables_quartz_${jdbc.backend}.sql</srcFile>
+								</srcFiles>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-failsafe-plugin</artifactId>
 					<version>2.9</version>
@@ -116,24 +182,23 @@
 								<goal>verify</goal>
 							</goals>
 							<configuration>
+								<skip>${skip-integration-tests}</skip>
 								<argLine>-XX:MaxPermSize=1024M</argLine>
-								<excludes>
-									<exclude>**/it/**</exclude>
-								</excludes>
+								<includes>
+									<include>**/it/**</include>
+								</includes>
 								<redirectTestOutputToFile>true</redirectTestOutputToFile>
 							</configuration>
 						</execution>
 					</executions>
 				</plugin>
 			</plugins>
-		</build>
-    </profile>
+		<!-- </pluginManagement> -->
+	</build>
+   </profile>
    <profile>
-       <id>integration-tests</id>
-       <activation>
-          <activeByDefault>true</activeByDefault>
-        </activation>
-        
+       <id>development-fresh-install</id>
+       <!-- WARNING : DONOT ACTIVATE IT BY DEFAULT... THIS DROPS ALL DBS AND RUNNING ON PRODUCTION RESULTS IN DATA LOSS -->
         	<build>
 		<!-- <pluginManagement> -->
 			<plugins>
@@ -220,8 +285,8 @@
 								<url>${jdbc.url-wo-db}</url>
 								<autocommit>true</autocommit>
 								<sqlCommand> 
-								drop database if exists ${db.quartz};
-								create database ${db.quartz};
+								drop database if exists ${org.quartz.dataSource.motechDS.db};
+								create database ${org.quartz.dataSource.motechDS.db};
 								</sqlCommand>
 								<onError>abort</onError>
 							</configuration>
@@ -234,7 +299,7 @@
 								<goal>execute</goal>
 							</goals>
 							<configuration>
-								<url>${jdbc.url-wo-db}/${db.quartz}</url>
+								<url>${jdbc.url-wo-db}/${org.quartz.dataSource.motechDS.db}</url>
 								<username>${jdbc.username}</username>
 								<password>${jdbc.password}</password>
 								<autocommit>true</autocommit>
@@ -256,6 +321,7 @@
 								<goal>verify</goal>
 							</goals>
 							<configuration>
+								<skip>${skip-integration-tests}</skip>
 								<argLine>-XX:MaxPermSize=1024M</argLine>
 								<includes>
 									<include>**/it/**</include>
@@ -312,6 +378,7 @@
 								<files>
 									<file>${main.basedir}/build/maven.properties</file>
 									<file>${main.basedir}/assets/config/opensrp.properties</file>
+									<file>${main.basedir}/assets/config/quartz.properties</file>
 								</files>
 							</configuration>
 						</execution>
