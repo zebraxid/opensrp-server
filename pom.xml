@@ -126,19 +126,18 @@
 							<version>${mysql.connector.version}</version>
 						</dependency>
 					</dependencies>
-
 					<configuration>
 						<driver>${jdbc.driverClassName}</driver>
 						<url>${jdbc.url-wo-db}</url>
 						<username>${jdbc.username}</username>
 						<password>${jdbc.password}</password>
-						<skip>${maven.test.skip}</skip>
+						<skip>${skip-db-reset}</skip>
 					</configuration>
 
 					<executions>
 					<!-- Database init scripts for DBMS specific configuration -->
 						<execution>
-							<id>drop-create-relational-db</id>
+							<id>create-relational-db</id>
 							<phase>pre-integration-test</phase>
 							<goals>
 								<goal>execute</goal>
@@ -171,27 +170,6 @@
 						</execution>
 					</executions>
 				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-failsafe-plugin</artifactId>
-					<version>2.9</version>
-					<executions>
-						<execution>
-							<goals>
-								<goal>integration-test</goal>
-								<goal>verify</goal>
-							</goals>
-							<configuration>
-								<skip>${skip-integration-tests}</skip>
-								<argLine>-XX:MaxPermSize=1024M</argLine>
-								<includes>
-									<include>**/it/**</include>
-								</includes>
-								<redirectTestOutputToFile>true</redirectTestOutputToFile>
-							</configuration>
-						</execution>
-					</executions>
-				</plugin>
 			</plugins>
 		<!-- </pluginManagement> -->
 	</build>
@@ -205,6 +183,9 @@
 				<plugin>
 					<artifactId>maven-antrun-plugin</artifactId>
 					<version>1.6</version>
+					<configuration>
+						<skip>${skip-db-reset}</skip>
+					</configuration>
 					<executions>
 						<execution>
 							<id>Drop DB Before Unit and Repository Tests</id>
@@ -270,7 +251,7 @@
 						<url>${jdbc.url-wo-db}</url>
 						<username>${jdbc.username}</username>
 						<password>${jdbc.password}</password>
-						<skip>${maven.test.skip}</skip>
+						<skip>${skip-db-reset}</skip>
 					</configuration>
 
 					<executions>
