@@ -14,6 +14,7 @@ import org.opensrp.domain.Event;
 import org.opensrp.repository.lucene.LuceneEventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -21,10 +22,12 @@ public class AllEvents extends MotechBaseRepository<Event>{
 	private LuceneEventRepository ler;
 
 	@Autowired
-	protected AllEvents(@Qualifier(AllConstants.OPENSRP_DATABASE_CONNECTOR) CouchDbConnector db,
+	protected AllEvents(@Value("#{opensrp['couchdb.opensrp-db.revision-limit']}") int revisionLimit, 
+    		@Qualifier(AllConstants.OPENSRP_DATABASE_CONNECTOR) CouchDbConnector db,
 			LuceneEventRepository ler) {
 		super(Event.class, db);
 		this.ler = ler;
+		db.setRevisionLimit(revisionLimit);
 	}
 	
 	@View(name = "all_events_by_identifier", map = "function(doc) {if (doc.type === 'Event') {for(var key in doc.identifiers) {emit(doc.identifiers[key]);}}}")

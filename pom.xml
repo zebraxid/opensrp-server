@@ -104,6 +104,7 @@
 <profiles>
    <profile>
        <id>compile-build-dist</id>
+       <!-- WARNING : KEEP IT ACTIVATED BY DEFAULT... OTHER PROFILE DROPS ALL DBS AND RUNNING WHICH RESULTS IN DROPPING ALL DBs -->
        <activation>
           <activeByDefault>true</activeByDefault>
         </activation>
@@ -145,7 +146,8 @@
 							<configuration>
 								<url>${jdbc.url-wo-db}</url>
 								<autocommit>true</autocommit>
-								<sqlCommand> 
+								<sqlCommand>
+								<!-- DONOT add DROP DB COMMAND as it can drop DB on live server -->
 								CREATE DATABASE IF NOT EXISTS ${org.quartz.dataSource.motechDS.db};
 								</sqlCommand>
 								<onError>abort</onError>
@@ -176,7 +178,9 @@
    </profile>
    <profile>
        <id>development-fresh-install</id>
-       <!-- WARNING : DONOT ACTIVATE IT BY DEFAULT... THIS DROPS ALL DBS AND RUNNING ON PRODUCTION RESULTS IN DATA LOSS -->
+       <!-- WARNING : DONOT ACTIVATE IT BY DEFAULT... 
+       THIS DROPS ALL DBS AND RUNNING IT RESULTS IN DB DROP... 
+       !! DONOT RUN WITH THIS PROFILE ON PRODUCTION -->
         	<build>
 		<!-- <pluginManagement> -->
 			<plugins>
@@ -198,9 +202,9 @@
 										<arg value="-S" />
 										<arg value="-X" />
 										<arg value="DELETE" />
-										<arg value="http://${couchdb.server}:${couchdb.port}/${couchdb.db.opensrp}" />
-										<arg value="http://${couchdb.server}:${couchdb.port}/${couchdb.db.form}" />
-										<arg value="http://${couchdb.server}:${couchdb.port}/${couchdb.db.motech-scheduletracking}" />
+										<arg value="http://${host}:${port}/${couchdb.db.opensrp}" />
+										<arg value="http://${host}:${port}/${couchdb.db.form}" />
+										<arg value="http://${host}:${port}/${couchdb.db.motech-scheduletracking}" />
 									</exec>
 									<echo message="Dropping Couch DBs: END" />
 								</target>
@@ -218,7 +222,7 @@
 									<exec executable="curl">
 										<arg value="-X" />
 										<arg value="PUT" />
-										<arg value="http://${couchdb.server}:${couchdb.port}/${couchdb.db.opensrp}" />
+										<arg value="http://${host}:${port}/${couchdb.db.opensrp}" />
 									</exec>
 									<echo message="CREATED OPENSRP END" />
 								</target>
@@ -360,6 +364,7 @@
 									<file>${main.basedir}/build/maven.properties</file>
 									<file>${main.basedir}/assets/config/opensrp.properties</file>
 									<file>${main.basedir}/assets/config/quartz.properties</file>
+									<file>${main.basedir}/assets/config/couchdb.properties</file>
 								</files>
 							</configuration>
 						</execution>

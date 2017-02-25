@@ -13,6 +13,7 @@ import org.opensrp.domain.Client;
 import org.opensrp.repository.lucene.LuceneClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 import com.mysql.jdbc.StringUtils;
@@ -23,10 +24,12 @@ public class AllClients extends MotechBaseRepository<Client> {
 	private LuceneClientRepository lcr;
 
 	@Autowired
-	protected AllClients(@Qualifier(AllConstants.OPENSRP_DATABASE_CONNECTOR) CouchDbConnector db, 
+	protected AllClients(@Value("#{opensrp['couchdb.opensrp-db.revision-limit']}") int revisionLimit, 
+    		@Qualifier(AllConstants.OPENSRP_DATABASE_CONNECTOR) CouchDbConnector db, 
 			LuceneClientRepository lcr) {
 		super(Client.class, db);
 		this.lcr = lcr;
+		db.setRevisionLimit(revisionLimit);
 	}
 
 	@GenerateView

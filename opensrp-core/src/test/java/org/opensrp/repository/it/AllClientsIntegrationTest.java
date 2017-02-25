@@ -62,17 +62,6 @@ public class AllClientsIntegrationTest {
 		ac.removeAll();
 		System.out.println("Removed");
 		initMocks(this);
-		
-		FileAppender fa = new FileAppender();
-		fa.setName("FileLogger");
-		fa.setFile("d:\\opensrp-logger.log");
-		fa.setLayout(new PatternLayout("%d %-5p [%c{1}] %m%n"));
-		fa.setThreshold(Level.INFO);
-		fa.setAppend(true);
-		fa.activateOptions();
-
-		// add appender to any Logger (here is root)
-		Logger.getRootLogger().addAppender(fa);
 	}
 	
 	private void addClients() {

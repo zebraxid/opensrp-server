@@ -11,14 +11,17 @@ import org.opensrp.common.AllConstants;
 import org.opensrp.domain.BaseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class AllBaseEntities extends MotechBaseRepository<BaseEntity> {
 
 	@Autowired
-	protected AllBaseEntities(@Qualifier(AllConstants.OPENSRP_DATABASE_CONNECTOR) CouchDbConnector db) {
+	protected AllBaseEntities(@Value("#{opensrp['couchdb.opensrp-db.revision-limit']}") int revisionLimit, 
+    		@Qualifier(AllConstants.OPENSRP_DATABASE_CONNECTOR) CouchDbConnector db) {
 		super(BaseEntity.class, db);
+		db.setRevisionLimit(revisionLimit);
 	}
 
 	@GenerateView

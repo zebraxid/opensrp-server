@@ -10,15 +10,17 @@ import org.opensrp.common.AllConstants;
 import org.opensrp.domain.Multimedia;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class MultimediaRepository extends MotechBaseRepository<Multimedia> {
 
 	@Autowired
-	protected MultimediaRepository(
+	protected MultimediaRepository(@Value("#{opensrp['couchdb.opensrp-db.revision-limit']}") int revisionLimit, 
 			@Qualifier(AllConstants.OPENSRP_DATABASE_CONNECTOR) CouchDbConnector db) {
 		super(Multimedia.class, db);
+		db.setRevisionLimit(revisionLimit);
 	}
 
 	@GenerateView

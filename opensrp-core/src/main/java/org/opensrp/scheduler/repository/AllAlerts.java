@@ -22,6 +22,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -29,9 +30,10 @@ public class AllAlerts extends MotechBaseRepository<Alert> {
     private static Logger logger = LoggerFactory.getLogger(AllAlerts.class.toString());
 
     @Autowired
-    protected AllAlerts(@Qualifier(AllConstants.OPENSRP_DATABASE_CONNECTOR) CouchDbConnector db) {
+    protected AllAlerts(@Value("#{opensrp['couchdb.opensrp-db.revision-limit']}") int revisionLimit, 
+    		@Qualifier(AllConstants.OPENSRP_DATABASE_CONNECTOR) CouchDbConnector db) {
         super(Alert.class, db);
-        db.setRevisionLimit(1);
+        db.setRevisionLimit(revisionLimit);
     }
 
     @View(name = "alert_by_provider_and_time", map = "function(doc) { if (doc.type === 'Alert') { emit([doc.providerId, doc.timestamp], null); } }")

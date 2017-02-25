@@ -11,6 +11,7 @@ import org.opensrp.common.AllConstants;
 import org.opensrp.domain.ErrorTrace;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -22,10 +23,10 @@ public class AllErrorTrace extends MotechBaseRepository<ErrorTrace> {
 	
 	
 	@Autowired
-	protected AllErrorTrace(
+	protected AllErrorTrace(@Value("#{opensrp['couchdb.opensrp-db.revision-limit']}") int revisionLimit, 
 			@Qualifier(AllConstants.OPENSRP_ERRORTRACE_DATABASE) CouchDbConnector db) {
 		super(ErrorTrace.class, db);
-		db.setRevisionLimit(1);
+		db.setRevisionLimit(revisionLimit);
 	}
 
 	//@GenerateView

@@ -58,6 +58,7 @@
                 <artifactId>jetty-maven-plugin</artifactId>
                 <version>8.1.16.v20140903</version>
                 <configuration>
+                    <skip>${skipTests}</skip>
                     <systemProperties>
                         <systemProperty>
                             <name>jetty.port</name>
@@ -81,12 +82,12 @@
                         <connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
                             <port>${jetty.port}</port>
                         </connector>
-                        <connector implementation="org.eclipse.jetty.server.ssl.SslSelectChannelConnector">
+                        <!-- <connector implementation="org.eclipse.jetty.server.ssl.SslSelectChannelConnector">
                             <port>8443</port>
                             <keystore>${main.basedir}/assets/security/drishti_server.keystore</keystore>
                             <keyPassword>mouse monitor cube</keyPassword>
                             <password>mouse monitor cube</password>
-                        </connector>
+                        </connector> -->
                     </connectors>
                 </configuration>
                 <executions>
