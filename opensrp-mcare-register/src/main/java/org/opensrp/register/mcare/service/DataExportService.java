@@ -84,6 +84,8 @@ public class DataExportService{
 			writer = new FileWriter(multimediaDirPath +"/export/" + reportName);			
 			 writer.append("FWA WORKER ID"); 
 			 writer.append(',');
+			 writer.append("FD WORKER ID"); 
+			 writer.append(',');  
 		     writer.append("today_newhh_FW"); 
 			 writer.append(',');
 		     writer.append("start_newhh_FW"); 
@@ -113,6 +115,8 @@ public class DataExportService{
 		     writer.append("FWNHHMBRNUMB"); 
 			 writer.append(',');
 		     writer.append("FWNHHMWRA"); 
+			 writer.append(',');
+			 writer.append("ELCO");
 			 writer.append(',');
 		     writer.append("REGDATE"); 
 			 writer.append(',');
@@ -144,36 +148,32 @@ public class DataExportService{
 			 writer.append(','); //30
 		     writer.append("Longitude"); 
 		     writer.append(',');
-		     writer.append("ELCO");
-			 writer.append(',');
+		     
 		     writer.append("RECEIVED TIME AT SERVER"); 
 			 writer.append(',');
-		     writer.append("FD WORKER ID"); 
-			 writer.append(',');       
+		         
 		     writer.append("INSTANCE ID"); 
 			 writer.append(',');
 		     writer.append("ENTITY ID"); 
 		     writer.append('\n'); //36
 		     
-			int count =hhs.getSize(); 
-			System.out.println("count: "+count);
+			int count =hhs.getSize();
 		     for (int i = 0; i <count; i++) {
 					if(hhs.getRows().get(i).getValue().equalsIgnoreCase("")){
 						System.err.println("Error.........................");
 					}
-					String[] s=hhs.getRows().get(i).getValue().split(",");
+					String[] ConvertRowValueStringToArray=hhs.getRows().get(i).getValue().split(",");
 					int elco = 0;
 					
-					String temp = s[0].replace("\"", "").replace("[", "");
-					//System.out.println("Loop val: "+ temp);
+					String ElcoCountAsString = ConvertRowValueStringToArray[0].replace("\"", "").replace("[", "");
 					
-					if(temp != null && !temp.isEmpty() && !temp.equalsIgnoreCase(""))
-						elco = Integer.parseInt(temp);
-					//String jsonArray = vr.getRows().get(i).getValue().trim();
-				    //System.out.println(hhs.getRows().get(i).getValue());
-					for(int y=1;y<=16;y++){
-						if(s[y] != null && !s[y].isEmpty() && !s[y].equalsIgnoreCase("")){
-							writer.append(s[y]);
+					
+					if(ElcoCountAsString != null && !ElcoCountAsString.isEmpty() && !ElcoCountAsString.equalsIgnoreCase(""))
+						elco = Integer.parseInt(ElcoCountAsString);
+					
+					for(int increment=1;increment<=17;increment++){
+						if(ConvertRowValueStringToArray[increment] != null && !ConvertRowValueStringToArray[increment].equalsIgnoreCase("null") && !ConvertRowValueStringToArray[increment].isEmpty() && !ConvertRowValueStringToArray[increment].equalsIgnoreCase("")){
+							writer.append(ConvertRowValueStringToArray[increment]);
 							writer.append(',');
 						}
 						else {
@@ -181,10 +181,16 @@ public class DataExportService{
 							writer.append(',');
 						}
 					}
+					
+					writer.append(Integer.toString(elco));
+					writer.append(',');
+					/**
+					 * Eclo exists condition.
+					 * */
 					if(elco>0){		
-						for(int y=21;y<=30;y++){
-							if(s[y] != null && !s[y].isEmpty() && !s[y].equalsIgnoreCase("")){
-								writer.append(s[y]);
+						for(int increment=21;increment<=30;increment++){
+							if(ConvertRowValueStringToArray[increment] != null && !ConvertRowValueStringToArray[increment].equalsIgnoreCase("null") && !ConvertRowValueStringToArray[increment].isEmpty() && !ConvertRowValueStringToArray[increment].equalsIgnoreCase("")){
+								writer.append(ConvertRowValueStringToArray[increment]);
 								writer.append(',');
 							}
 							else {
@@ -192,28 +198,24 @@ public class DataExportService{
 								writer.append(',');
 							}
 						}
-						writer.append(' '+String.valueOf(s[31]));
-						writer.append(',');
-						writer.append(' '+String.valueOf(s[32]));
-						writer.append(',');
-						writer.append(s[33]);						
 						
-						String gps = s[34];
+						writer.append(' '+String.valueOf(ConvertRowValueStringToArray[31].toString()));
+						writer.append(',');
+						writer.append(' '+String.valueOf(ConvertRowValueStringToArray[32].toString()));
+						writer.append(',');
+						writer.append(ConvertRowValueStringToArray[33]);						
+						/**
+						 * GPS calculation
+						 * */
+						String gps = ConvertRowValueStringToArray[34];
 						if(gps != null && !gps.isEmpty() && !gps.equalsIgnoreCase("")){
 							String[] location = gps.split(" ");   							
-				            if (location.length > 1 ) {
-				            	System.out.println("Location: "+ location[0].replace("\"", "") + " " + location[1]);
+				            if (location.length > 1 ) {				            	
 				            	writer.append(',');
 								writer.append(location[0].replace("\"", ""));								
 								writer.append(',');
 								writer.append(location[1].replace("\"", ""));
-				            }
-				            else if (location.length > 0 ) {
-				            	writer.append(',');
-								writer.append(location[0].replace("\"", ""));
-								writer.append(',');
-								writer.append("");
-				            }
+				            }				            
 				            else{
 				            	writer.append(',');
 								writer.append("");
@@ -227,22 +229,22 @@ public class DataExportService{
 							writer.append("");
 			            }            
 					}
-					else{		
-						for(int y=1;y<=14;y++){
+					else{ /**
+						 * Eclo does not exists condition.
+						 * */		
+						for(int increment=1;increment<=14;increment++){
 							writer.append(',');
 							writer.append("");
 						}           
 					}
+					
+					writer.append(',');					
+					writer.append(ConvertRowValueStringToArray[18]);
+					writer.append(',');					
+									
+					writer.append(ConvertRowValueStringToArray[19]);
 					writer.append(',');
-					writer.append(String.valueOf(elco));
-					writer.append(',');					
-					writer.append(s[17]);
-					writer.append(',');					
-					writer.append(s[18]);
-					writer.append(',');					
-					writer.append(s[19]);
-					writer.append(',');
-					writer.append(s[20]);
+					writer.append(ConvertRowValueStringToArray[20]);
 					writer.append('\n');
 				}
 				
@@ -338,64 +340,55 @@ public class DataExportService{
 			writer.append('\n'); //34
 			
 
-			int count =hhs.getSize(); 
-			System.out.println("count: "+count);
+			int count =hhs.getSize(); 			
 		     for (int i = 0; i <count; i++) {
 					if(hhs.getRows().get(i).getValue().equalsIgnoreCase("")){
 						System.err.println("Error.........................");
 					}
-					String[] s=hhs.getRows().get(i).getValue().split(",");
-					for(int y=0;y<s.length;y++){
-						//System.out.print(s[y]+" ");
-					}
-					//System.out.println();
-					
-					int elco = 0;
-					
-					String temp = s[0].replace("\"", "").replace("[", "");
-					//System.out.println("Loop val: "+ temp);
-					
+					String[] ConvertRowValueStringToArray=hhs.getRows().get(i).getValue().split(",");					
+					int elco = 0;					
+					String temp = ConvertRowValueStringToArray[0].replace("\"", "").replace("[", "");					
 					if(temp != null && !temp.isEmpty() && !temp.equalsIgnoreCase(""))
 						elco = Integer.parseInt(temp);
-					//String jsonArray = vr.getRows().get(i).getValue().trim();
-				    //System.out.println(hhs.getRows().get(i).getValue());					
-					writer.append(s[1]);
+									
+					writer.append(ConvertRowValueStringToArray[1]);//1
 					writer.append(',');
-					writer.append(s[4]);
+					writer.append(ConvertRowValueStringToArray[4]);//2
 					writer.append(',');
-					writer.append(s[3]);
+					writer.append(ConvertRowValueStringToArray[3]);//3
 					writer.append(',');
-					writer.append(s[4]);
+					writer.append(ConvertRowValueStringToArray[4]);//4
 					writer.append(',');
-					writer.append(s[5]);
+					writer.append(ConvertRowValueStringToArray[5]);//5
 					writer.append(',');
 					
-					for(int y=10;y<=30;y++){
-						if(s[y] != null && !s[y].isEmpty() && !s[y].equalsIgnoreCase("")){
-							writer.append(s[y]);
-							writer.append(',');
+					for(int increment=10;increment<=30;increment++){
+						if(ConvertRowValueStringToArray[increment] != null && !ConvertRowValueStringToArray[increment].equalsIgnoreCase("null") && !ConvertRowValueStringToArray[increment].equals("\"NaN\"") && !ConvertRowValueStringToArray[increment].isEmpty() && !ConvertRowValueStringToArray[increment].equalsIgnoreCase("")){
+							writer.append(ConvertRowValueStringToArray[increment]);
+							writer.append(',');							
 						}
-						else {
+						else {							
 							writer.append("");
 							writer.append(',');
 						}
-					}
+					}				
 					
-					writer.append(' '+String.valueOf(s[31]));
+					writer.append(' '+String.valueOf(ConvertRowValueStringToArray[31].toString()));
 					writer.append(',');
-					writer.append(' '+String.valueOf(s[32]));
+					writer.append(' '+String.valueOf(ConvertRowValueStringToArray[32]).toString());
 					writer.append(',');
-					writer.append(s[33]);		
+					
+					writer.append(((ConvertRowValueStringToArray[33].equalsIgnoreCase("null")) ? " " : ConvertRowValueStringToArray[33]));		
 					writer.append(',');
-					writer.append(s[6]);
+					writer.append(ConvertRowValueStringToArray[6]);
 					writer.append(',');					
-					writer.append(s[7]);
+					writer.append(((ConvertRowValueStringToArray[7].equalsIgnoreCase("null")) ? " " : ConvertRowValueStringToArray[7]));
 					writer.append(',');	
-					writer.append(s[2]);
+					writer.append(ConvertRowValueStringToArray[2]);
 					writer.append(',');
-					writer.append(s[8]);
+					writer.append(ConvertRowValueStringToArray[8]);
 					writer.append(',');
-					writer.append(s[9]);
+					writer.append(ConvertRowValueStringToArray[9]);
 					writer.append('\n');
 				}
 			
@@ -521,22 +514,16 @@ public class DataExportService{
 			writer.append("ENTITY ID"); 
 			writer.append('\n'); //51
 			
-			int count =ecs.getSize(); 
-			System.out.println("count: "+count);
+			int count =ecs.getSize();			
 		     for (int i = 0; i <count; i++) {
 					if(ecs.getRows().get(i).getValue().equalsIgnoreCase("")){
 						System.err.println("Error.........................");
 					}
-					String[] s=ecs.getRows().get(i).getValue().split(",");
-					for(int y=0;y<s.length;y++){
-						//System.out.print(s[y]+" ");
-					}
-					//System.out.println();
-					//String jsonArray = vr.getRows().get(i).getValue().trim();
-				    //System.out.println(hhs.getRows().get(i).getValue());
-					for(int y=1;y<=13;y++){
-						if(s[y] != null && !s[y].isEmpty() && !s[y].equalsIgnoreCase("")){
-							writer.append(s[y]);
+					String[] ConvertRowValueStringToArray=ecs.getRows().get(i).getValue().split(",");
+					
+					for(int increment=1;increment<=13;increment++){
+						if(ConvertRowValueStringToArray[increment] != null && !ConvertRowValueStringToArray[increment].equalsIgnoreCase("null") && !ConvertRowValueStringToArray[increment].equals("\"NaN\"") && !ConvertRowValueStringToArray[increment].isEmpty() && !ConvertRowValueStringToArray[increment].equalsIgnoreCase("")){
+							writer.append(ConvertRowValueStringToArray[increment]);
 							writer.append(',');
 						}
 						else {
@@ -544,10 +531,10 @@ public class DataExportService{
 							writer.append(',');
 						}
 					}
-					if(s.length>30){
-						for(int y=14;y<=51;y++){
-							if(s[y] != null && !s[y].isEmpty() && !s[y].equalsIgnoreCase("")){
-								writer.append(s[y]);
+					if(ConvertRowValueStringToArray.length>30){
+						for(int increment=14;increment<=51;increment++){
+							if(ConvertRowValueStringToArray[increment] != null && !ConvertRowValueStringToArray[increment].equalsIgnoreCase("null") && !ConvertRowValueStringToArray[increment].equals("\"NaN\"") && !ConvertRowValueStringToArray[increment].isEmpty() && !ConvertRowValueStringToArray[increment].equalsIgnoreCase("")){
+								writer.append(ConvertRowValueStringToArray[increment]);
 								writer.append(',');
 							}
 							else {
@@ -558,17 +545,17 @@ public class DataExportService{
 						writer.append("");
 					}
 					else {						
-						for(int y=1;y<=34;y++){
+						for(int increment=1;increment<=34;increment++){
 								writer.append("");
 								writer.append(',');
 						}
-						writer.append(s[14]);
+						writer.append(ConvertRowValueStringToArray[14]);
 						writer.append(',');
-						writer.append(s[15]);
+						writer.append(ConvertRowValueStringToArray[15]);
 						writer.append(',');
-						writer.append(s[16]);
+						writer.append(ConvertRowValueStringToArray[16]);
 						writer.append(',');
-						writer.append(s[17]);
+						writer.append(ConvertRowValueStringToArray[17]);
 					}
 					writer.append('\n');
 		     }
@@ -580,7 +567,7 @@ public class DataExportService{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}finally{				
-				System.out.println("Loop time end:"+ System.currentTimeMillis());
+				
 			}		
 	}
 	
