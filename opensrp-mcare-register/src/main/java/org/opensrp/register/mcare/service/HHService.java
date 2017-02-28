@@ -1,7 +1,3 @@
-/**
- * @author Asifur
- */
-
 package org.opensrp.register.mcare.service;
 
 import static java.text.MessageFormat.format;
