@@ -42,7 +42,7 @@ public void test() throws JSONException{
 	response.setHeader("Content-disposition",
 			"attachment; " + "filename=" + reportName);
 
-	ViewResult hhs=allHouseHolds.allHHsCreatedBetween2Date("HouseHold",1451584800000L, 1485799200000L);
+	ViewResult hhs=allHouseHolds.allHHsCreatedBetween2Date("HouseHold",1451584800000L, 1485799200000L,"FWA");
 	
 	FileWriter writer;
 	try {

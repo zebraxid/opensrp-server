@@ -50,6 +50,8 @@ import static org.opensrp.common.AllConstants.ELCORegistrationFields.new_ELCO;
 import static org.opensrp.common.AllConstants.ELCORegistrationFields.nidImagePath;
 import static org.opensrp.common.AllConstants.ELCORegistrationFields.profileImagePath;
 import static org.opensrp.common.AllConstants.ELCORegistrationFields.relationalid;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.user_type;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.external_user_ID;
 import static org.opensrp.common.AllConstants.Form.ELCO_REGISTRATION;
 import static org.opensrp.common.AllConstants.Form.MIS_Census;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.ELCO_REGISTRATION_SUB_FORM_NAME;
@@ -170,6 +172,8 @@ public class ELCOService {
 
 			Elco elco = allEcos.findByCaseId(elcoFields.get(ID)).withINSTANCEID(submission.instanceId()).withPROVIDERID(submission.anmId())
 					.withTODAY(submission.getField(REFERENCE_DATE)).withSUBMISSIONDATE(DateUtil.getTimestampToday())
+					.withexternal_user_ID(submission.getField(external_user_ID))
+					.withuser_type(submission.getField(user_type))
 					.withFWWOMUPAZILLA(UPAZILA);
 
 			addDetailsToElco(submission, subFormData, elco);

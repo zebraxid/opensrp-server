@@ -184,14 +184,14 @@ public class AllHouseHolds extends MotechBaseRepository<HouseHold> {
     
     @View(name = "created_newhh_in_between_2_dates", map = "function(doc) { if(doc.type === 'HouseHold' && doc.type && doc.SUBMISSIONDATE) { " +
     		"if(doc.ELCODETAILS.length>0){for(var key in doc.ELCODETAILS) { if(doc.ELCODETAILS[key].form_name === 'FWNewHH') { "+
-            "emit([doc.type, doc.SUBMISSIONDATE], [doc.ELCO,doc.PROVIDERID,doc.external_user_ID,doc.TODAY,doc.START,doc.END,doc.FWNHREGDATE,doc.FWGOBHHID,doc.FWJIVHHID,doc.FWUNION,doc.FWWARD,doc.FWSUBUNIT,doc.FWMAUZA_PARA,doc.FWHOHFNAME,doc.FWHOHBIRTHDATE,doc.FWHOHGENDER,doc.FWNHHMBRNUM,doc.FWNHHMWRA,doc.details.received_time,doc.INSTANCEID,doc.caseId,doc.ELCODETAILS[key].TODAY,doc.ELCODETAILS[key].FWWOMFNAME,doc.ELCODETAILS[key].FWBIRTHDATE,doc.ELCODETAILS[key].FWWOMAGE,doc.ELCODETAILS[key].FWCWOMSTRMEN,doc.ELCODETAILS[key].FWCWOMHUSLIV,doc.ELCODETAILS[key].FWCWOMHUSALV,doc.ELCODETAILS[key].FWCWOMHUSSTR,doc.ELCODETAILS[key].FWELIGIBLE,doc.ELCODETAILS[key].FWWOMANYID,doc.ELCODETAILS[key].FWWOMNID,doc.ELCODETAILS[key].FWWOMBID,doc.ELCODETAILS[key].FWHUSNAME,doc.ELCODETAILS[key].FWWOMGPS,doc.ELCO]); " +
+            "emit([doc.type, doc.SUBMISSIONDATE,doc.user_type], [doc.ELCO,doc.PROVIDERID,doc.TODAY,doc.START,doc.END,doc.FWNHREGDATE,doc.FWGOBHHID,doc.FWJIVHHID,doc.FWUNION,doc.FWWARD,doc.FWSUBUNIT,doc.FWMAUZA_PARA,doc.FWHOHFNAME,doc.FWHOHBIRTHDATE,doc.FWHOHGENDER,doc.FWNHHMBRNUM,doc.FWNHHMWRA,doc.details.received_time,doc.INSTANCEID,doc.caseId,doc.external_user_ID,doc.ELCODETAILS[key].TODAY,doc.ELCODETAILS[key].FWWOMFNAME,doc.ELCODETAILS[key].FWBIRTHDATE,doc.ELCODETAILS[key].FWWOMAGE,doc.ELCODETAILS[key].FWCWOMSTRMEN,doc.ELCODETAILS[key].FWCWOMHUSLIV,doc.ELCODETAILS[key].FWCWOMHUSALV,doc.ELCODETAILS[key].FWCWOMHUSSTR,doc.ELCODETAILS[key].FWELIGIBLE,doc.ELCODETAILS[key].FWWOMANYID,doc.ELCODETAILS[key].FWWOMNID,doc.ELCODETAILS[key].FWWOMBID,doc.ELCODETAILS[key].FWHUSNAME,doc.ELCODETAILS[key].FWWOMGPS,doc.ELCO]); " +
             "}}}else{ " +            
-            "emit( [doc.type, doc.SUBMISSIONDATE], [doc.ELCO,doc.PROVIDERID,doc.external_user_ID,doc.TODAY,doc.START,doc.END,doc.FWNHREGDATE,doc.FWGOBHHID,doc.FWJIVHHID,doc.FWUNION,doc.FWWARD,doc.FWSUBUNIT,doc.FWMAUZA_PARA,doc.FWHOHFNAME,doc.FWHOHBIRTHDATE,doc.FWHOHGENDER,doc.FWNHHMBRNUM,doc.FWNHHMWRA,doc.details.received_time,doc.INSTANCEID,doc.caseId,doc.ELCO]); " +            
+            "emit( [doc.type, doc.SUBMISSIONDATE,doc.user_type], [doc.ELCO,doc.PROVIDERID,doc.TODAY,doc.START,doc.END,doc.FWNHREGDATE,doc.FWGOBHHID,doc.FWJIVHHID,doc.FWUNION,doc.FWWARD,doc.FWSUBUNIT,doc.FWMAUZA_PARA,doc.FWHOHFNAME,doc.FWHOHBIRTHDATE,doc.FWHOHGENDER,doc.FWNHHMBRNUM,doc.FWNHHMWRA,doc.details.received_time,doc.INSTANCEID,doc.caseId,doc.external_user_ID,doc.ELCO]); " +            
             "}" +
             "} }")
-    public ViewResult allHHsCreatedBetween2Date(String type, long startKey, long endKey){
-        ComplexKey start = ComplexKey.of(type,startKey);
-        ComplexKey end = ComplexKey.of(type,endKey);
+    public ViewResult allHHsCreatedBetween2Date(String type, long startKey, long endKey,String userType){
+        ComplexKey start = ComplexKey.of(type,startKey,userType);
+        ComplexKey end = ComplexKey.of(type,endKey,userType);
         ViewResult vr=  db.queryView(
                 createQuery("created_newhh_in_between_2_dates")
                 .startKey(start)
@@ -204,11 +204,11 @@ public class AllHouseHolds extends MotechBaseRepository<HouseHold> {
     
     @View(name = "created_census_in_between_2_dates", map = "function(doc) { if(doc.type === 'HouseHold' && doc.type && doc.SUBMISSIONDATE) { " +
             "if(doc.ELCODETAILS.length>0){for(var key in doc.ELCODETAILS) { if(doc.ELCODETAILS[key].form_name === 'Census') { "+
-            "emit([doc.type, doc.SUBMISSIONDATE], [doc.ELCO,doc.current_formStatus,doc.PROVIDERID,doc.ELCODETAILS[key].TODAY,doc.ELCODETAILS[key].start,doc.ELCODETAILS[key].end,doc.details.received_time,doc.external_user_ID,doc.INSTANCEID,doc.caseId,doc.ELCODETAILS[key].FWCENDATE,doc.ELCODETAILS[key].FWCENSTAT,doc.ELCODETAILS[key].GOBHHID,doc.ELCODETAILS[key].JiVitAHHID,doc.ELCODETAILS[key].FWWOMUNION,doc.ELCODETAILS[key].FWWOMWARD,doc.ELCODETAILS[key].FWWOMSUBUNIT,doc.ELCODETAILS[key].FWWOMMAUZA_PARA,doc.ELCODETAILS[key].ELCO,doc.ELCODETAILS[key].existing_ELCO,doc.ELCODETAILS[key].new_ELCO,doc.ELCODETAILS[key].FWCENDATE,doc.ELCODETAILS[key].FWWOMFNAME,doc.ELCODETAILS[key].FWBIRTHDATE,doc.ELCODETAILS[key].FWWOMAGE,doc.ELCODETAILS[key].FWCWOMSTRMEN,doc.ELCODETAILS[key].FWCWOMHUSLIV,doc.ELCODETAILS[key].FWCWOMHUSALV,doc.ELCODETAILS[key].FWCWOMHUSSTR,doc.ELCODETAILS[key].FWELIGIBLE,doc.ELCODETAILS[key].FWWOMANYID,doc.ELCODETAILS[key].FWWOMNID,doc.ELCODETAILS[key].FWWOMBID,doc.ELCODETAILS[key].FWHUSNAME,doc.ELCODETAILS[key].FWWOMGPS,doc.ELCO]); " +
+            "emit([doc.type, doc.SUBMISSIONDATE,doc.user_type], [doc.ELCO,doc.current_formStatus,doc.PROVIDERID,doc.ELCODETAILS[key].TODAY,doc.ELCODETAILS[key].start,doc.ELCODETAILS[key].end,doc.details.received_time,doc.external_user_ID,doc.INSTANCEID,doc.caseId,doc.ELCODETAILS[key].FWCENDATE,doc.ELCODETAILS[key].FWCENSTAT,doc.ELCODETAILS[key].GOBHHID,doc.ELCODETAILS[key].JiVitAHHID,doc.ELCODETAILS[key].FWWOMUNION,doc.ELCODETAILS[key].FWWOMWARD,doc.ELCODETAILS[key].FWWOMSUBUNIT,doc.ELCODETAILS[key].FWWOMMAUZA_PARA,doc.ELCODETAILS[key].ELCO,doc.ELCODETAILS[key].existing_ELCO,doc.ELCODETAILS[key].new_ELCO,doc.ELCODETAILS[key].FWCENDATE,doc.ELCODETAILS[key].FWWOMFNAME,doc.ELCODETAILS[key].FWBIRTHDATE,doc.ELCODETAILS[key].FWWOMAGE,doc.ELCODETAILS[key].FWCWOMSTRMEN,doc.ELCODETAILS[key].FWCWOMHUSLIV,doc.ELCODETAILS[key].FWCWOMHUSALV,doc.ELCODETAILS[key].FWCWOMHUSSTR,doc.ELCODETAILS[key].FWELIGIBLE,doc.ELCODETAILS[key].FWWOMANYID,doc.ELCODETAILS[key].FWWOMNID,doc.ELCODETAILS[key].FWWOMBID,doc.ELCODETAILS[key].FWHUSNAME,doc.ELCODETAILS[key].FWWOMGPS,doc.ELCO]); " +
             "}}}}}")
-    public ViewResult allCensusCreatedBetween2Date(String type, long startKey, long endKey){
-        ComplexKey start = ComplexKey.of(type,startKey);
-        ComplexKey end = ComplexKey.of(type,endKey);
+    public ViewResult allCensusCreatedBetween2Date(String type, long startKey, long endKey,String userType){
+        ComplexKey start = ComplexKey.of(type,startKey,userType);
+        ComplexKey end = ComplexKey.of(type,endKey,userType);
         ViewResult vr=  db.queryView(
                 createQuery("created_census_in_between_2_dates")
                 .startKey(start)

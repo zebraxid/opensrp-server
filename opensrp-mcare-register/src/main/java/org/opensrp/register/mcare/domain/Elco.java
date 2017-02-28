@@ -134,6 +134,10 @@ public class Elco extends MotechBaseDataObject {
 	private List<Map<String, String>> MISDETAILS;
 	@JsonProperty
 	private long SUBMISSIONDATE;
+	@JsonProperty
+	private String user_type;
+	@JsonProperty
+	private String external_user_ID;
 
 	public Elco() {
 		this.PSRFDETAILS = new ArrayList<>();
@@ -421,6 +425,23 @@ public class Elco extends MotechBaseDataObject {
 		return this;
 	}
 
+	public Elco withuser_type(String user_type) {
+		this.user_type = user_type;
+		return this;
+	}
+
+	public Elco withexternal_user_ID(String external_user_ID) {
+		this.external_user_ID = external_user_ID;
+		return this;
+	}
+	
+	public String user_type() {
+		return user_type;
+	}
+
+	public String external_user_ID() {
+		return external_user_ID;
+	}
 	public String caseId() {
 		return caseId;
 	}
