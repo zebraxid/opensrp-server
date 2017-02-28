@@ -78,6 +78,7 @@ public class HHService {
 
 			Map<String, String> members = create(ID, membersFields.get(ID))
 					.put(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
+					.put(FORM_NAME, submission.getField(FORM_NAME))
 					.put(START_DATE, submission.getField(START_DATE))
 					.put(END_DATE, submission.getField(END_DATE))
 					.put(INSTANCEID	, submission.getField(INSTANCEID))

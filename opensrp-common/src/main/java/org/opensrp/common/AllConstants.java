@@ -129,6 +129,7 @@ public class AllConstants {
     {
     	public static final String MEMBERS_REGISTRATION_SUB_FORM_NAME = "member_registration";
     	public static final String ELCO_REGISTRATION_SUB_FORM_NAME_CENSUS = "elco_registration_ce";
+    	public static final String FORM_NAME = "Form_Name";
     	public static final String LOCATION_NAME = "location_name";
     	public static final String REFERENCE_DATE = "Today";
     	public static final String DATE_OF_REG = "Date_Of_Reg";
