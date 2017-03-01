@@ -10,6 +10,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 import java.net.URLConnection;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -197,9 +198,13 @@ public class FormSubmissionController {
     }
     @RequestMapping(headers = {"Accept=application/json"}, method = GET, value = "/multimedia-file")
     @ResponseBody
-    public List<MultimediaDTO> getFiles(@RequestParam("anm-id") String providerId) {
-    	
-    	List<Multimedia> allMultimedias = multimediaService.getMultimediaFiles(providerId);
+    public List<MultimediaDTO> getFiles(@RequestParam(value ="anm-id", required = false) String providerId,@RequestParam(value ="locationid", required = false) String locationId) {
+        List<Multimedia> allMultimedias = new ArrayList<Multimedia>();
+        if(locationId!=null){
+            allMultimedias = multimediaService.getMultimediaFilesByLocId(locationId);
+        }else if(providerId!=null){
+            allMultimedias = multimediaService.getMultimediaFiles(providerId);
+        }
     	
     	return with(allMultimedias).convert(new Converter<Multimedia, MultimediaDTO>() {
 			@Override
