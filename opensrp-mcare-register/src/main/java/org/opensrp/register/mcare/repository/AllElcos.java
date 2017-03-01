@@ -243,7 +243,7 @@ public class AllElcos extends MotechBaseRepository<Elco> {
         
     }
 	
-	@View(name = "created_miscensus_in_between_2_dates", map = "function(doc) { if(doc.type === 'Elco' && doc.type && doc.SUBMISSIONDATE) { " +
+	@View(name = "created_miscensus_in_between_2_dates", map = "function(doc) { if(doc.type === 'Elco' && doc.type && doc.SUBMISSIONDATE && doc.details.MisToday && doc.details.MisToday != null && doc.details.MisToday != '' ) { " +
     		"emit([doc.type, doc.SUBMISSIONDATE], [doc.ELCO,doc.PROVIDERID,doc.FWWOMMAUZA_PARA,doc.details.MisToday,doc.GOBHHID,doc.JiVitAHHID,doc.FWWOMUNION,doc.FWWOMWARD,doc.FWWOMSUBUNIT,doc.FWWOMMAUZA_PARA,doc.FWWOMRETYPENID,doc.FWWOMRETYPEBID,doc.FWWOMAGE,doc.FWWOMFNAME,doc.FWHUSNAME,doc.details.external_user_ID,doc.PROVIDERID,doc.details.mis_census_current_formStatus,doc.details.MisStart,doc.details.MisStart,doc.details.MisEnd,doc.details.FWMISCENSUSDATE,doc.details.FWCOUPLENUM,doc.details.FWTETSTAT,doc.details.FWMARRYDATE,doc.details.FWCHILDALIVEB,doc.details.FWCHILDALIVEG,doc.details.received_time,doc.INSTANCEID,doc.caseId,doc.ELCO]);" +
     		"}}")
     
@@ -260,11 +260,10 @@ public class AllElcos extends MotechBaseRepository<Elco> {
         
     }
 
-	@View(name = "created_miselco_in_between_2_dates", map = "function(doc) { if(doc.type === 'Elco' && doc.type && doc.SUBMISSIONDATE) { " +
-    		"if(doc.MISDETAILS.length>0){for(var key in doc.MISDETAILS) { "+
+	@View(name = "created_miselco_in_between_2_dates", map = "function(doc) { if(doc.type === 'Elco' && doc.type && doc.SUBMISSIONDATE && doc.MISDETAILS.length>0) { " +
+    		"for(var key in doc.MISDETAILS) { "+
     		"emit([doc.type, doc.SUBMISSIONDATE], [doc.ELCO,doc.PROVIDERID,doc.GOBHHID,doc.JiVitAHHID,doc.FWWOMUNION,doc.FWWOMWARD,doc.FWWOMSUBUNIT,doc.FWWOMMAUZA_PARA,doc.FWWOMRETYPENID,doc.FWWOMRETYPEBID,doc.FWWOMAGE,doc.FWWOMFNAME,doc.FWHUSNAME,doc.details.external_user_ID,doc.PROVIDERID,doc.MISDETAILS[key].today,doc.MISDETAILS[key].start,doc.MISDETAILS[key].end,doc.MISDETAILS[key].mis_elco_current_formStatus,doc.MISDETAILS[key].start,doc.MISDETAILS[key].FWMISELCODATE,doc.MISDETAILS[key].FWPMISBIRTHCTRL,doc.MISDETAILS[key].FWMISBCSOURCE,doc.details.received_time,doc.INSTANCEID,doc.caseId,doc.ELCO]); }}" +
-    		"else{ emit([doc.type, doc.SUBMISSIONDATE], [doc.ELCO,doc.PROVIDERID,doc.GOBHHID,doc.JiVitAHHID,doc.FWWOMUNION,doc.FWWOMWARD,doc.FWWOMSUBUNIT,doc.FWWOMMAUZA_PARA,doc.FWWOMRETYPENID,doc.FWWOMRETYPEBID,doc.FWWOMAGE,doc.FWWOMFNAME,doc.FWHUSNAME,doc.details.external_user_ID,doc.PROVIDERID,doc.details.received_time,doc.INSTANCEID,doc.caseId,doc.ELCO]);" +
-    		"}}}")
+    		"}")
     
 	public ViewResult allMisElcoCreatedBetween2Date(String type, long startKey, long endKey){
         ComplexKey start = ComplexKey.of(type,startKey);

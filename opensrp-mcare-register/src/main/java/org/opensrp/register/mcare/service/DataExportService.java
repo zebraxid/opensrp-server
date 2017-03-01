@@ -81,7 +81,9 @@ public class DataExportService{
 		
 		FileWriter writer;
 		try {
-			writer = new FileWriter(multimediaDirPath +"/export/" + reportName);			
+			writer = new FileWriter(multimediaDirPath +"/export/" + reportName);
+			writer.append("Serial No."); 
+			writer.append(',');//1 
 			 writer.append("FWA WORKER ID"); 
 			 writer.append(',');			
 		     writer.append("today_newhh_FW"); 
@@ -155,6 +157,8 @@ public class DataExportService{
 					if(hhs.getRows().get(i).getValue().equalsIgnoreCase("")){
 						System.err.println("Error.........................");
 					}
+					writer.append(Integer.toString(i+1));
+					writer.append(',');
 					String[] ConvertRowValueStringToArray=hhs.getRows().get(i).getValue().split(",");
 					int elco = 0;
 					
@@ -274,7 +278,9 @@ public class DataExportService{
 		
 		FileWriter writer;
 		try {
-			writer = new FileWriter(multimediaDirPath +"/export/" + reportName);			
+			writer = new FileWriter(multimediaDirPath +"/export/" + reportName);
+			writer.append("Serial No."); 
+			writer.append(',');//1 
 			writer.append("Form Status at Submission");
 			writer.append(','); //1
 			writer.append("SCHEDULED_DATE_Census_FW");
@@ -346,6 +352,8 @@ public class DataExportService{
 					if(hhs.getRows().get(i).getValue().equalsIgnoreCase("")){
 						System.err.println("Error.........................");
 					}
+					writer.append(Integer.toString(i+1));
+					writer.append(',');
 					String[] ConvertRowValueStringToArray=hhs.getRows().get(i).getValue().split(",");					
 					int elco = 0;					
 					String temp = ConvertRowValueStringToArray[0].replace("\"", "").replace("[", "");					
@@ -424,7 +432,9 @@ public class DataExportService{
 		
 		FileWriter writer;
 		try {
-			writer = new FileWriter(multimediaDirPath +"/export/" + reportName);		
+			writer = new FileWriter(multimediaDirPath +"/export/" + reportName);
+			writer.append("Serial No."); 
+			writer.append(',');//1 
 			writer.append("FWGOBHHID"); 
 			writer.append(',');//4
 			writer.append("FWJIVHHID"); 
@@ -527,6 +537,8 @@ public class DataExportService{
 					if(ecs.getRows().get(i).getValue().equalsIgnoreCase("")){
 						System.err.println("Error.........................");
 					}
+					writer.append(Integer.toString(i+1));
+					writer.append(',');
 					String[] ConvertRowValueStringToArray=ecs.getRows().get(i).getValue().split(",");
 					
 					for(int increment=1;increment<=6;increment++){
@@ -628,7 +640,9 @@ public class DataExportService{
 		
 		FileWriter writer;
 		try {
-			writer = new FileWriter(multimediaDirPath +"/export/" + reportName);			
+			writer = new FileWriter(multimediaDirPath +"/export/" + reportName);
+			writer.append("Serial No."); 
+			writer.append(',');//1 
 			writer.append("FWA Worker ID"); 
 			writer.append(',');//1     
 			writer.append("existing_location"); 
@@ -655,9 +669,7 @@ public class DataExportService{
 			writer.append(',');//12
 			writer.append("first_name"); 
 			writer.append(',');//13
-			writer.append("husname"); 
-			writer.append(',');//14
-			writer.append("FD Worker ID"); 
+			writer.append("husname");			
 			writer.append(',');//15
 			writer.append("FWA Worker ID"); 
 			writer.append(','); //16
@@ -682,19 +694,18 @@ public class DataExportService{
 			writer.append("FWCHILDALIVEG"); 
 			writer.append(',');//27
 			writer.append("RECEIVED_TIME_AT_SERVER"); 
-			writer.append(','); //28       
-			writer.append("INSTANCE ID"); 
-			writer.append(','); //29
-			writer.append("ENTITY ID"); 
+			
 			writer.append('\n'); //30			
 			 int count =ecs.getSize();				
 			     for (int i = 0; i <count; i++) {
 						if(ecs.getRows().get(i).getValue().equalsIgnoreCase("")){
 							System.err.println("Error.........................");
 						}
+						writer.append(Integer.toString(i+1));
+						writer.append(',');
 						String[] ConvertRowValueStringToArray=ecs.getRows().get(i).getValue().split(",");
-						for(int counter=1;counter<=18;counter++){
-							if(ConvertRowValueStringToArray[counter] != null && !ConvertRowValueStringToArray[counter].equals("\"NaN\"") && !ConvertRowValueStringToArray[counter].equals("\"\"") && !ConvertRowValueStringToArray[counter].isEmpty() && !ConvertRowValueStringToArray[counter].equalsIgnoreCase("")){
+						for(int counter=1;counter<=9;counter++){
+							if(ConvertRowValueStringToArray[counter] != null && !ConvertRowValueStringToArray[counter].equalsIgnoreCase("null") && !ConvertRowValueStringToArray[counter].equals("\"NaN\"") && !ConvertRowValueStringToArray[counter].equals("\"\"") && !ConvertRowValueStringToArray[counter].isEmpty() && !ConvertRowValueStringToArray[counter].equalsIgnoreCase("")){
 								writer.append(ConvertRowValueStringToArray[counter]);
 								writer.append(',');
 							}
@@ -703,28 +714,50 @@ public class DataExportService{
 								writer.append(',');
 							}
 						}
-						if(ConvertRowValueStringToArray.length>19){							
-							for(int counter=19;counter<=29;counter++){
-								if(ConvertRowValueStringToArray[counter] != null && !ConvertRowValueStringToArray[counter].equals("\"NaN\"") && !ConvertRowValueStringToArray[counter].equals("\"\"") && !ConvertRowValueStringToArray[counter].isEmpty() && !ConvertRowValueStringToArray[counter].equalsIgnoreCase("")){
-									writer.append(ConvertRowValueStringToArray[counter]);
-									writer.append(',');
-								}
-								else {
-									writer.append("");
-									writer.append(',');
-								}
-							}							
+						
+						/**
+						 * For NID & BRID
+						 * */
+						if(ConvertRowValueStringToArray[10] != null && !ConvertRowValueStringToArray[10].equalsIgnoreCase("null") && !ConvertRowValueStringToArray[10].equals("\"\"") && !ConvertRowValueStringToArray[10].isEmpty() && !ConvertRowValueStringToArray[10].equalsIgnoreCase("")){
+							writer.append(' '+String.valueOf(ConvertRowValueStringToArray[10].toString()));
+							writer.append(',');
+						}else{
+							writer.append("");
+							writer.append(',');
 						}
-						else {
-							for(int counter=1;counter<=10;counter++){
+						if(ConvertRowValueStringToArray[11] != null && !ConvertRowValueStringToArray[11].equalsIgnoreCase("null") && !ConvertRowValueStringToArray[11].equals("\"\"") && !ConvertRowValueStringToArray[11].isEmpty() && !ConvertRowValueStringToArray[11].equalsIgnoreCase("")){
+							writer.append(' '+String.valueOf(ConvertRowValueStringToArray[11]).toString());
+							writer.append(',');
+						}else{
+							writer.append("");
+							writer.append(',');
+						}
+						
+						for(int counter=12;counter<=14;counter++){
+							if(ConvertRowValueStringToArray[counter] != null && !ConvertRowValueStringToArray[counter].equals("\"NaN\"") && !ConvertRowValueStringToArray[counter].equalsIgnoreCase("null") && !ConvertRowValueStringToArray[counter].equals("\"\"") && !ConvertRowValueStringToArray[counter].isEmpty() && !ConvertRowValueStringToArray[counter].equalsIgnoreCase("")){
+								writer.append(ConvertRowValueStringToArray[counter]);
+								writer.append(',');
+							}
+							else {
 								writer.append("");
 								writer.append(',');
-							}							
-						}
-						writer.append("");
+							}
+						}	
+						
+						for(int counter=16;counter<=26;counter++){
+							if(ConvertRowValueStringToArray[counter] != null && !ConvertRowValueStringToArray[counter].equalsIgnoreCase("null") && !ConvertRowValueStringToArray[counter].equals("\"NaN\"") && !ConvertRowValueStringToArray[counter].equals("\"\"") && !ConvertRowValueStringToArray[counter].isEmpty() && !ConvertRowValueStringToArray[counter].equalsIgnoreCase("")){
+								writer.append(ConvertRowValueStringToArray[counter]);
+								writer.append(',');
+							}
+							else {
+								writer.append("");
+								writer.append(',');
+							}
+						}					
+						
+						writer.append(ConvertRowValueStringToArray[27]);
 						writer.append('\n');
-			     }
-					
+			     }					
 					writer.flush();
 					writer.close();
 					
@@ -747,6 +780,8 @@ public class DataExportService{
 		FileWriter writer;
 		try {
 			writer = new FileWriter(multimediaDirPath +"/export/" + reportName);			
+			writer.append("Serial No."); 
+			writer.append(',');//1 
 			writer.append("FWA Worker ID"); 
 			writer.append(',');//1     
 			writer.append("FWGOBHHID"); 
@@ -769,11 +804,7 @@ public class DataExportService{
 			writer.append(',');//12
 			writer.append("first_name"); 
 			writer.append(',');//13
-			writer.append("husname"); 
-			writer.append(',');//14
-			writer.append("FD Worker ID"); 
-			writer.append(',');//15
-			writer.append("FWA Worker ID"); 
+			writer.append("husname");			 
 			writer.append(','); //16
 			writer.append("today"); 
 			writer.append(',');//17
@@ -791,22 +822,21 @@ public class DataExportService{
 			writer.append(',');//21
 			writer.append("FWMISBCSOURCE"); 
 			writer.append(',');//22
-			writer.append("RECEIVED_TIME_AT_SERVER"); 
-			writer.append(','); //23       
-			writer.append("INSTANCE ID"); 
-			writer.append(','); //24
-			writer.append("ENTITY ID"); 
-			writer.append('\n'); //25
+			writer.append("RECEIVED_TIME_AT_SERVER");
+			writer.append('\n'); //22
 			
 			int count =ecs.getSize();			
 		     for (int i = 0; i <count; i++) {
 					if(ecs.getRows().get(i).getValue().equalsIgnoreCase("")){
 						System.err.println("Error.........................");
 					}
-					String[] s=ecs.getRows().get(i).getValue().split(",");					
-					for(int y=1;y<=14;y++){
-						if(s[y] != null && !s[y].isEmpty() && !s[y].equalsIgnoreCase("")){
-							writer.append(s[y]);
+					
+					writer.append(Integer.toString(i+1));
+					writer.append(',');
+					String[] ConvertRowValueStringToArray=ecs.getRows().get(i).getValue().split(",");					
+					for(int counter=1;counter<=7;counter++){
+						if(ConvertRowValueStringToArray[counter] != null && !ConvertRowValueStringToArray[counter].equalsIgnoreCase("null") && !ConvertRowValueStringToArray[counter].equals("\"NaN\"") && !ConvertRowValueStringToArray[counter].equals("\"\"") && !ConvertRowValueStringToArray[counter].isEmpty() && !ConvertRowValueStringToArray[counter].equalsIgnoreCase("")){
+							writer.append(ConvertRowValueStringToArray[counter]);
 							writer.append(',');
 						}
 						else {
@@ -815,29 +845,46 @@ public class DataExportService{
 						}
 					}
 
-					if(s.length>19){							
-						for(int y=15;y<=25;y++){
-							if(s[y] != null && !s[y].isEmpty() && !s[y].equalsIgnoreCase("")){
-								writer.append(s[y]);
-								writer.append(',');
-							}
-							else {
-								writer.append("");
-								writer.append(',');
-							}
-						}							
+					/**
+					 * For NID & BRID
+					 * */
+					if(ConvertRowValueStringToArray[8] != null && !ConvertRowValueStringToArray[8].equalsIgnoreCase("null") && !ConvertRowValueStringToArray[8].equals("\"\"") && !ConvertRowValueStringToArray[8].isEmpty() && !ConvertRowValueStringToArray[8].equalsIgnoreCase("")){
+						writer.append(' '+String.valueOf(ConvertRowValueStringToArray[8].toString()));
+						writer.append(',');
+					}else{
+						writer.append("");
+						writer.append(',');
 					}
-					else {
-						for(int y=1;y<=8;y++){
+					if(ConvertRowValueStringToArray[9] != null && !ConvertRowValueStringToArray[9].equalsIgnoreCase("null") && !ConvertRowValueStringToArray[9].equals("\"\"") && !ConvertRowValueStringToArray[9].isEmpty() && !ConvertRowValueStringToArray[9].equalsIgnoreCase("")){
+						writer.append(' '+String.valueOf(ConvertRowValueStringToArray[9]).toString());
+						writer.append(',');
+					}else{
+						writer.append("");
+						writer.append(',');
+					}
+					
+					for(int counter=10;counter<=12;counter++){
+						if(ConvertRowValueStringToArray[counter] != null && !ConvertRowValueStringToArray[counter].equalsIgnoreCase("null") && !ConvertRowValueStringToArray[counter].equals("\"NaN\"") && !ConvertRowValueStringToArray[counter].equals("\"\"") && !ConvertRowValueStringToArray[counter].isEmpty() && !ConvertRowValueStringToArray[counter].equalsIgnoreCase("")){
+							writer.append(ConvertRowValueStringToArray[counter]);
+							writer.append(',');
+						}
+						else {
 							writer.append("");
 							writer.append(',');
-						}	
-						writer.append(s[15]);
-						writer.append(',');
-						writer.append(s[16]);
-						writer.append(',');
-						writer.append(s[17]);
+						}
 					}
+					for(int counter=15;counter<=22;counter++){
+						if(ConvertRowValueStringToArray[counter] != null && !ConvertRowValueStringToArray[counter].equals("\"NaN\"") && !ConvertRowValueStringToArray[counter].equalsIgnoreCase("null") && !ConvertRowValueStringToArray[counter].equals("\"\"") && !ConvertRowValueStringToArray[counter].isEmpty() && !ConvertRowValueStringToArray[counter].equalsIgnoreCase("")){
+							writer.append(ConvertRowValueStringToArray[counter]);
+							writer.append(',');
+						}
+						else {
+							writer.append("");
+							writer.append(',');
+						}
+					}	
+					
+					writer.append(ConvertRowValueStringToArray[23]);
 					writer.append('\n');
 		     }
 				
