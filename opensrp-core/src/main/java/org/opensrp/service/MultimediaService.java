@@ -117,6 +117,9 @@ public class MultimediaService {
 	public List<Multimedia> getMultimediaFiles(String providerId) {
 		return multimediaRepository.all(providerId);
 	}
+	public List<Multimedia> getMultimediaFilesByLocId(String locationId) {
+		return multimediaRepository.byLocationId(locationId);
+	}
 	public Multimedia findByCaseId(String entityId){
 		return multimediaRepository.findByCaseId(entityId);
 	}

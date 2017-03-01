@@ -36,4 +36,10 @@ public class MultimediaRepository extends MotechBaseRepository<Multimedia> {
 				.includeDocs(true), Multimedia.class);
 	}
 
+	@View(name = "all_multimedia_by_locationId", map = "function(doc) { if (doc.type === 'Multimedia' && doc.locationId) { emit(doc.locationId, doc); } }")
+	public List<Multimedia> byLocationId(String locationId) {
+		return db.queryView(createQuery("all_multimedia_by_locationId").key(locationId)
+				.includeDocs(true), Multimedia.class);
+	}
+
 }

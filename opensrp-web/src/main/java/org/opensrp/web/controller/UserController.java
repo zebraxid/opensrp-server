@@ -82,11 +82,11 @@ public class UserController {
 	        lid = (String) u.getAttribute("Location");
 	        if(StringUtils.isEmptyOrWhitespaceOnly(lid)){
 	            String lids = (String) u.getAttribute("Locations");
-	            
+
 	            if(lids == null){
 	            	throw new RuntimeException("User not mapped on any location. Make sure that user have a person attribute Location or Locations with uuid(s) of valid OpenMRS Location(s) separated by ;;");
 	            }
-	            
+
 	            lid = lids;
 	        }
         }
