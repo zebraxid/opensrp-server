@@ -1,9 +1,11 @@
 package org.opensrp.web.controller;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 import java.io.IOException;
 
+import org.opensrp.dto.FieldValue;
 import org.opensrp.dto.register.HHRegisterDTO;
 import org.opensrp.rest.services.LuceneHouseHoldService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -35,5 +38,16 @@ public class ApiController {
 	{
 		 HHRegisterDTO  hhRegisterDTO  = luceneHouseHoldService.findLuceneResult(queryParameters);
 		 return new ResponseEntity<>(hhRegisterDTO, HttpStatus.OK);
+	}
+	
+	/**
+	 * @param campDTO is a Camp Object with a specific id
+	 * This API for editing camp
+	 * */
+	@RequestMapping(headers = { "Accept=application/json" }, method =POST, value = "/add-update-data-to-existing-field")
+	public ResponseEntity<String> addUpdateDataToExistingField(@RequestBody FieldValue fieldValue) {
+		
+		System.out.println(fieldValue.toString());
+		return new ResponseEntity<>("OKkk", HttpStatus.OK);
 	}
 }

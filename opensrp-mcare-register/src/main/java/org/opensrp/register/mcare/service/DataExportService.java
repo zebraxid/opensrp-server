@@ -269,7 +269,6 @@ public class DataExportService{
 	}
 	
 	public void createCensusCSV(HttpServletResponse response,String formName,String start_date,String end_date,String reportName){
-		System.out.println("Path:..............:"+multimediaDirPath);
 		response.setContentType("text/csv");		
 		response.setHeader("Content-disposition",
 				"attachment; " + "filename=" + reportName);

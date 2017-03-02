@@ -59,6 +59,7 @@ import static org.opensrp.common.AllConstants.HHRegistrationFields.FW_UPAZILLA;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.REFERENCE_DATE;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.existing_location;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.received_time;
+import static org.opensrp.common.AllConstants.HHRegistrationFields.FWPSRDATE;
 import static org.opensrp.common.AllConstants.PSRFFields.FWMISBCSOURCE;
 import static org.opensrp.common.AllConstants.PSRFFields.FWMISCONDGIVENDATE;
 import static org.opensrp.common.AllConstants.PSRFFields.FWMISCONDGIVENNO;
@@ -314,7 +315,7 @@ public class ELCOService {
 
 		allEcos.update(elco);
 
-		elcoScheduleService.enrollIntoMilestoneOfMisElco(submission.entityId(), submission.getField(REFERENCE_DATE));
+		elcoScheduleService.enrollIntoMilestoneOfMisElco(submission.entityId(), submission.getField(FWMISELCODATE));
 	}
 
 	private void addDetailsToElco(FormSubmission submission, SubFormData subFormData, Elco elco) {
@@ -422,7 +423,7 @@ public class ELCOService {
 				}
 			} else if (submission.getField(FW_PSRSTS).equalsIgnoreCase("02") || (submission.getField(FW_PSRSTS).equalsIgnoreCase("01"))) {
 				ancService.deleteBlankMother(submission);
-				elcoScheduleService.enrollIntoMilestoneOfPSRF(submission.entityId(), submission.getField(REFERENCE_DATE), submission.anmId(),
+				elcoScheduleService.enrollIntoMilestoneOfPSRF(submission.entityId(), submission.getField(FWPSRDATE), submission.anmId(),
 						submission.instanceId());
 			} else {
 				ancService.deleteBlankMother(submission);
