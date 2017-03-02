@@ -297,7 +297,7 @@ public class MembersService {
 		 * */
 		if (submission.getField(Visit_Status) != null && submission.getField(Visit_Status).equalsIgnoreCase("2")) 
 		{			
-			membersScheduleService.enrollIntoMilestoneOfPSRF(submission.entityId(), submission.getField(today), submission.anmId(),
+			membersScheduleService.enrollIntoMilestoneOfPSRF(submission.entityId(), submission.getField(ELCO_Date), submission.anmId(),
 					submission.instanceId());
 		} 
 		/**
@@ -306,7 +306,7 @@ public class MembersService {
 		else if (submission.getField(Preg_Status) != null && 
 				(submission.getField(Preg_Status).equalsIgnoreCase("0") || submission.getField(Preg_Status).equalsIgnoreCase("9")))
 		{			
-			membersScheduleService.enrollIntoMilestoneOfPSRF(submission.entityId(), submission.getField(today), submission.anmId(),
+			membersScheduleService.enrollIntoMilestoneOfPSRF(submission.entityId(), submission.getField(ELCO_Date), submission.anmId(),
 					submission.instanceId());
 		}
 		else{			
