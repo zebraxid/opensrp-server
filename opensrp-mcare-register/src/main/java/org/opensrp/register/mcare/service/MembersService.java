@@ -18,6 +18,7 @@ import java.util.Map;
 
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
+import org.opensrp.common.util.DateUtil;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.form.domain.SubFormData;
 import org.opensrp.scheduler.Action;
@@ -74,7 +75,9 @@ public class MembersService {
 					.setINSTANCEID(submission.instanceId())
 					.setPROVIDERID(submission.anmId())
 					.setToday(submission.getField(REFERENCE_DATE))
-					.setRelationalid(submission.getField(relationalid));					
+					.setRelationalid(submission.getField(relationalid))
+					.setTimestamp(DateUtil.getTimestampToday());
+			
 			
 			if(membersFields.containsKey(Mem_F_Name)){
 				allMembers.update(members);
@@ -285,7 +288,7 @@ public class MembersService {
 									.put(Current_Form_Status, submission.getField(Current_Form_Status))
 									.put(Received_Time, format.format(day).toString())
 									.map();	
-		
+		members.setTimestamp(DateUtil.getTimestampToday());
 		members.elco_Followup().add(Elco_Followup);
 		allMembers.update(members);
 		

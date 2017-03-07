@@ -200,6 +200,8 @@ public class Members extends MotechBaseDataObject {
 	private List<Map<String, String>> nutrition;
 	@JsonProperty
 	private String isClosed;
+	@JsonProperty("timestamp")
+	private long timestamp;
 	public Members() {
 				this.details = new HashMap<>();
 				this.ANCVisit1 = new HashMap<>();
@@ -1039,6 +1041,15 @@ public class Members extends MotechBaseDataObject {
 
 	public String getEnd() {
 		return End;
+	}
+
+	public long getTimestamp() {
+		return timestamp;
+	}
+
+	public Members setTimestamp(long timestamp) {
+		this.timestamp = timestamp;
+		return this;
 	}
 
 	@Override

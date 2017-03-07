@@ -144,7 +144,17 @@ public class HouseHold extends MotechBaseDataObject {
 	private Map<String, String> details;
 	@JsonProperty
 	private String BAHMNI_ID;
+	@JsonProperty("timestamp")
+	private long timestamp;
 	
+	public long getTimestamp() {
+		return timestamp;
+	}
+
+	public void setTimestamp(long timestamp) {
+		this.timestamp = timestamp;
+	}
+
 	public HouseHold() {
 		this.MEMBERDETAILS = new ArrayList<>();
 		this.multimediaAttachments = new ArrayList<>();

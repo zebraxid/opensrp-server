@@ -12,6 +12,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.opensrp.common.util.DateUtil;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.form.domain.SubFormData;
 import org.opensrp.register.mcare.domain.HouseHold;
@@ -55,7 +56,8 @@ public class HHService {
 		
 		houseHold.setPROVIDERID(submission.anmId());
 		houseHold.setINSTANCEID(submission.instanceId());
-		houseHold.setToday(submission.getField(REFERENCE_DATE));	
+		houseHold.setToday(submission.getField(REFERENCE_DATE));
+		houseHold.setTimestamp(DateUtil.getTimestampToday());
 
 		allHouseHolds.update(houseHold);
 			
