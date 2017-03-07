@@ -24,6 +24,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
 
+import javax.servlet.http.HttpServletRequest;
+
 
 @Controller
 public class UniqueIdController {
@@ -52,10 +54,10 @@ public class UniqueIdController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/unique-id")
     @ResponseBody
-    public ResponseEntity<UniqueIdDTO> uniqueIdForANM() {
+    public ResponseEntity<UniqueIdDTO> uniqueIdForANM(HttpServletRequest request) {
         HttpResponse response = new HttpResponse(false, null);
         try {
-            String anmIdentifier = userController.currentUser().getUsername();
+            String anmIdentifier = userController.currentUser(request).getUsername();
             response = httpAgent.get(drishtiUniqueIdURL + "?anm-id=" + anmIdentifier);
             UniqueIdDTO dto = new Gson().fromJson(response.body(), UniqueIdDTO.class);
             logger.info("Fetched unique id for ANM: " + anmIdentifier);
@@ -69,10 +71,10 @@ public class UniqueIdController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/last-used-id")
     @ResponseBody
-    public ResponseEntity<LastIdDTO> lastUsedIdForUser() {
+    public ResponseEntity<LastIdDTO> lastUsedIdForUser(HttpServletRequest request) {
         HttpResponse response = new HttpResponse(false, null);
         try {
-            String anmIdentifier = userController.currentUser().getUsername();
+            String anmIdentifier = userController.currentUser(request).getUsername();
             response = httpAgent.get(lastUsedIdURL + "?anm-id=" + anmIdentifier);
             LastIdDTO dto = new Gson().fromJson(response.body(), LastIdDTO.class);
             logger.info("Fetched last used id for ANM: " + anmIdentifier);
@@ -85,10 +87,10 @@ public class UniqueIdController {
     }
 
     @RequestMapping(headers = {"Accept=application/json"}, method = POST, value = "/last-used-id")
-    public ResponseEntity<LastIdDTO> setLastId(@RequestBody LastIdDTO lastId) {
+    public ResponseEntity<LastIdDTO> setLastId(@RequestBody LastIdDTO lastId,HttpServletRequest request) {
         HttpResponse response = new HttpResponse(false, null);
         try {
-            String anmIdentifier = userController.currentUser().getUsername();
+            String anmIdentifier = userController.currentUser(request).getUsername();
             response = httpAgent.post(lastIdUrl + "?anm-id=" + anmIdentifier + "&last-id=" + lastId.getLastUsedId(), "", "application/json");
             LastIdDTO dto = new Gson().fromJson(response.body(), LastIdDTO.class);
             logger.info("Saved last used id for ANM: " + anmIdentifier);
@@ -102,10 +104,10 @@ public class UniqueIdController {
 
     @RequestMapping(method = {RequestMethod.POST, RequestMethod.OPTIONS}, value="/refill-unique-id")
     @ResponseBody
-    public ResponseEntity<UniqueIdDTO> refillUniqueId() {
+    public ResponseEntity<UniqueIdDTO> refillUniqueId(HttpServletRequest request) {
         HttpResponse response = new HttpResponse(false, null);
         try {
-            String anmIdentifier = userController.currentUser().getUsername();
+            String anmIdentifier = userController.currentUser(request).getUsername();
             response = httpAgent.post(refillIdUrl + "?anm-id=" + anmIdentifier, "", "application/json");
             UniqueIdDTO dto = new Gson().fromJson(response.body(), UniqueIdDTO.class);
             logger.info("Refill unique id for ANM: " + anmIdentifier);
