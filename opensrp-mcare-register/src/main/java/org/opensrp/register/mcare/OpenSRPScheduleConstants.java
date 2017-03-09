@@ -9,6 +9,7 @@ public class OpenSRPScheduleConstants {
     public static final String FORM_SCHEDULE_SUBJECT = "FORM-SCHEDULE";
     public static final String MCTS_REPORT_SCHEDULE_SUBJECT = "MCTS-REPORT-SCHEDULE";
     public static final String ANM_REPORT_SCHEDULE_SUBJECT = "DRISHTI-ANM-REPORT-FETCH-SCHEDULE";
+    public static final String DHIS2_DATA_SEND_SCHEDULE_SUBJECT = "DHIS2-DATA-SEND-SCHEDLE-SUBJECT";
 
     public static class ChildScheduleConstants {
         public static final String CHILD_SCHEDULE_BCG = "BCG";

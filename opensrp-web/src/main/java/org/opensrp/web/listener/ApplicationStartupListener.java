@@ -19,6 +19,7 @@ public class ApplicationStartupListener implements ApplicationListener<ContextRe
     private TaskSchedulerService scheduler;
     
     private RepeatingSchedule formSchedule;
+    private RepeatingSchedule dhis2Schedule;
     private RepeatingSchedule anmReportScheduler;
     private RepeatingSchedule mctsReportScheduler;
     private RepeatingSchedule openmrsScheduleSyncerScheduler;
@@ -31,6 +32,7 @@ public class ApplicationStartupListener implements ApplicationListener<ContextRe
     		) {
         this.scheduler = scheduler;
         formSchedule = new RepeatingSchedule(OpenSRPScheduleConstants.FORM_SCHEDULE_SUBJECT, 0, TimeUnit.MINUTES, formPollInterval, TimeUnit.MINUTES);
+        dhis2Schedule = new RepeatingSchedule(OpenSRPScheduleConstants.DHIS2_DATA_SEND_SCHEDULE_SUBJECT, 0, TimeUnit.MINUTES, formPollInterval, TimeUnit.MINUTES);
         //anmReportScheduler = new RepeatingSchedule(OpenSRPScheduleConstants.ANM_REPORT_SCHEDULE_SUBJECT, 10, TimeUnit.MINUTES, 6, TimeUnit.HOURS);
         //mctsReportScheduler = new RepeatingSchedule(OpenSRPScheduleConstants.MCTS_REPORT_SCHEDULE_SUBJECT, 10, TimeUnit.MINUTES, mctsPollIntervalInHours, TimeUnit.HOURS);
         //openmrsScheduleSyncerScheduler = new RepeatingSchedule(OpenmrsConstants.SCHEDULER_TRACKER_SYNCER_SUBJECT, 0, TimeUnit.MINUTES, 1, TimeUnit.MINUTES);
@@ -42,6 +44,7 @@ public class ApplicationStartupListener implements ApplicationListener<ContextRe
         	System.out.println("Starting job formSchedule SUBJECT:" + formSchedule.SUBJECT + " START_DELAY:" + formSchedule.START_DELAY 
         			+ " REPEAT_INTERVAL:" + formSchedule.REPEAT_INTERVAL+ " START_DELAY_UNIT:" + formSchedule.START_DELAY_UNIT+ " REPEAT_INTERVAL_UNIT:" + formSchedule.REPEAT_INTERVAL_UNIT );
             scheduler.startJob(formSchedule);
+            scheduler.startJob(dhis2Schedule);
             //scheduler.startJob(anmReportScheduler);
             //scheduler.startJob(mctsReportScheduler);
             //scheduler.startJob(openmrsScheduleSyncerScheduler);
