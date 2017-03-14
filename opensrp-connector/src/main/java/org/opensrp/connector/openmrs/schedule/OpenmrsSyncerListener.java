@@ -124,11 +124,7 @@ public class OpenmrsSyncerListener {
 			List<Client> cl = clientService.findByServerVersion(start);
 			System.out.println("Clients list size "+cl.size());
 			for (Client c : cl) {
-				try{
-				sentTrackCaptureDataToDHIS2(c);
-				}catch(Exception e){
-					System.out.println("DHIS2 Message:"+e.getMessage());
-				}
+				
 				try{
 					String uuid = c.getIdentifier(PatientService.OPENMRS_UUID_IDENTIFIER_TYPE);
 					
