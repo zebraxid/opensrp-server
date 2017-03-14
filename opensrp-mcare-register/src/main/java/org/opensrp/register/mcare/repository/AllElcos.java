@@ -170,9 +170,12 @@ public class AllElcos extends MotechBaseRepository<Elco> {
 	public List<Elco> allMothersCreatedLastFourMonths(){
 		Calendar cal = Calendar.getInstance();
 		String startKey = Long.toString(cal.getTimeInMillis());
-		cal.add(Calendar.DAY_OF_YEAR, -120);
-		String endKey = Long.toString(cal.getTimeInMillis());
-		
+		cal.set(Calendar.HOUR_OF_DAY, 0);
+		cal.set(Calendar.MINUTE, 0);
+		cal.set(Calendar.SECOND, 0);
+		cal.add(Calendar.MONTH, -3);
+		cal.set(Calendar.DAY_OF_MONTH, 1);
+		String endKey = Long.toString(cal.getTime().getTime());		
 		List<Elco> elcos =  db.queryView(
 				createQuery("mother_created_in_last_4_months")
 				.rawStartKey(startKey)
@@ -183,9 +186,19 @@ public class AllElcos extends MotechBaseRepository<Elco> {
 	}
 	
 	public ViewResult allMothersCreatedLastFourMonthsViewResult(){
+		Calendar cal = Calendar.getInstance();
+		String startKey = Long.toString(cal.getTimeInMillis());
+		cal.set(Calendar.HOUR_OF_DAY, 0);
+		cal.set(Calendar.MINUTE, 0);
+		cal.set(Calendar.SECOND, 0);
+		cal.add(Calendar.MONTH, -3);
 		
+		cal.set(Calendar.DAY_OF_MONTH, 1);
+		String endKey = Long.toString(cal.getTime().getTime());		
 		ViewResult vr = db.queryView(
 				createQuery("mother_created_in_last_4_months")
+				.rawStartKey(startKey)
+				.rawEndKey(endKey)
 				.includeDocs(false));
 		
 		return vr;

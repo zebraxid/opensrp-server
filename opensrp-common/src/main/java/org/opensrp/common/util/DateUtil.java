@@ -128,10 +128,10 @@ public class DateUtil {
         		else{
         			lastDay = firstDay + numOfDaysInMonth % 7 -1;
         		}
-        		/*now.set(GregorianCalendar.DAY_OF_MONTH, firstDay);
+        		now.set(GregorianCalendar.DAY_OF_MONTH, firstDay);
         		tempDates.add(dateFormatter.format(now.getTime()));
         		now.set(GregorianCalendar.DAY_OF_MONTH, lastDay);
-        		tempDates.add(dateFormatter.format(now.getTime()));  */ 
+        		tempDates.add(dateFormatter.format(now.getTime()));   
         		try {
         			now.set(GregorianCalendar.DAY_OF_MONTH, firstDay);
             		tempDateStr = dateFormatter.format(now.getTime());	

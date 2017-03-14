@@ -189,22 +189,23 @@ public class DataCountService {
 		int count = 0;
 		int[] countsForChart = new int[23];
 		Long todayTimestamp = DateUtil.getTimestampToday();
-		List<Long> weekBoundaries = DateUtil.getCurrentWeekBoundaries();
+		List<Long> weekBoundaries = DateUtil.getCurrentWeekBoundaries();		
 		List<Long> montthBoundaries = DateUtil.getMonthBoundaries();
 		WeekBoundariesAndTimestamps boundaries = DateUtil.getWeekBoundariesForDashboard();
     	int todayCountIndex = 20, weekCountIndex = 21, monthCountIndex = 22;
     	List<String> startAndEndOfWeeks = boundaries.weekBoundariesAsString;
-    	List<Long> startAndEndOfWeeksAsTimestamp = boundaries.weekBoundariesAsTimeStamp;
-
+    	List<Long> startAndEndOfWeeksAsTimestamp = boundaries.weekBoundariesAsTimeStamp;    	
     	for (ViewResult.Row row : vr.getRows()) {
     		String stringValue = row.getValue(); 
     		count++;
+    		
     		timestamps.add(Long.parseLong(stringValue));
     	}
-    	System.out.println("number of rows found - " + count);    	
     	
     	//this segment will do the counting
+    	System.out.println("timestamps.size():"+timestamps.toString());
     	for(int i = 0; i < timestamps.size(); i++){
+    		System.err.println("timestamps.get(i):"+timestamps.get(i));
     		countsForChart[DateUtil.dateInsideWhichWeek(timestamps.get(i), startAndEndOfWeeksAsTimestamp)]++;
     		if(DateUtil.ifDateInsideAWeek(timestamps.get(i), todayTimestamp, todayTimestamp)){
     			countsForChart[todayCountIndex]++;

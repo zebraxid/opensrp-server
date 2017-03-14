@@ -16,7 +16,10 @@ import static org.opensrp.common.AllConstants.HHRegistrationFields.existing_Ward
 import static org.opensrp.common.AllConstants.HHRegistrationFields.existing_Subunit;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.existing_Mauzapara;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.received_time;
+import static org.opensrp.common.AllConstants.HHRegistrationFields.FWNHREGDATE;
+
 import static org.opensrp.common.util.EasyMap.create;
+
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -84,7 +87,7 @@ public class HHService {
 		//if(!cencusCondition.equalsIgnoreCase("") && cencusCondition.equalsIgnoreCase("1")){
 			
 			hhSchedulesService.enrollIntoMilestoneOfCensus(submission.entityId(),
-				submission.getField(REFERENCE_DATE),submission.anmId(),submission.instanceId());
+				submission.getField(FWNHREGDATE),submission.anmId(),submission.instanceId());
 		//}else{
 			//logger.info("Rule Defination Not Found for Cencus");
 		//}

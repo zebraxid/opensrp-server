@@ -41,8 +41,8 @@ public class ApiController {
 	}
 	
 	/**
-	 * @param campDTO is a Camp Object with a specific id
-	 * This API for editing camp
+	 * 
+	 * 
 	 * */
 	@RequestMapping(headers = { "Accept=application/json" }, method =POST, value = "/add-update-data-to-existing-field")
 	public ResponseEntity<String> addUpdateDataToExistingField(@RequestBody FieldValue fieldValue) {
