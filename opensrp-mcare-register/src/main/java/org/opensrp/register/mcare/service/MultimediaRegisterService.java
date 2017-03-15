@@ -44,7 +44,7 @@ public class MultimediaRegisterService {
 	 * @return void
 	 * @throws No Exception
 	 */
-	public void getMultimedia()
+	/*public void getMultimedia()
 	{
 		
 		List<HouseHold> hhs = allHouseHolds.findAllHouseHolds();
@@ -129,7 +129,7 @@ public class MultimediaRegisterService {
 	    	
 	    	allElcos.update(ec);
 		}
-	}
+	}*/
 	
 	/**
 	 * The saveMultimediaFileToRegistry function stores Multimedia file instantly in Elco registry or Household registry

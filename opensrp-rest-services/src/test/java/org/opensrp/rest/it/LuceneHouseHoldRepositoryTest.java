@@ -65,7 +65,7 @@ public class LuceneHouseHoldRepositoryTest {
         HttpClient httpClient = new StdHttpClient.Builder() 
                 .host("localhost") 
                 .port(5984) 
-                .socketTimeout(1000) 
+               // .socketTimeout(100000) 
                // .username("testadmin").password("testpass") 
                 .build(); 
         CouchDbInstance instance = new StdCouchDbInstance(httpClient); 
@@ -166,4 +166,14 @@ public class LuceneHouseHoldRepositoryTest {
     	List<HouseHold> fetchedHHTemp = repo.allHHsCreatedLastFourMonthsByLocation("[\"Gaibandha\",\"GAIBANDHA%20SADAR\"]", "[\"Gaibandha\",\"GAIBANDHA%20SADAR\"{}]");
     	System.out.println("Number of fetched rows- " + fetchedHHTemp.size());
     }*/
+    
+    @Test 
+    public void testHouseHoldCount() throws ParseException {
+    	String makeQueryString ="type:Household" ;
+    	System.out.println(System.currentTimeMillis());
+    	System.out.println("COunt:"+repo.hhCount(makeQueryString));
+    	System.err.println(System.currentTimeMillis());
+    }
+    
+   
 }

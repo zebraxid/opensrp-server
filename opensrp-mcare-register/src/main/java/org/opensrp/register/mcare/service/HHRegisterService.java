@@ -36,7 +36,7 @@ public class HHRegisterService {
 		this.allHouseHolds = allHouseHolds;
 	}
 	
-	public HHRegister getHHRegisterForProvider(String providerId)
+	/*public HHRegister getHHRegisterForProvider(String providerId)
 	{
 		ArrayList<HHRegisterEntry> hhRegisterEntries = new ArrayList<>();
         List<HouseHold> hhs = allHouseHolds.findAllHouseHolds();
@@ -79,7 +79,7 @@ public class HHRegisterService {
         		.withTODAY(hh.getDetail(REFERENCE_DATE))
         		.withSTART(hh.getDetail(START_DATE))
         		.withEND(hh.getDetail(END_DATE))
-        		/*.withFWWOMAGE(hh.getELCODetail(FW_WOMAGE))
+        		.withFWWOMAGE(hh.getELCODetail(FW_WOMAGE))
         		.withFWBIRTHDATE(hh.getELCODetail(FW_BIRTHDATE))
         		.withid(hh.getELCODetail(id))
         		.withFWWOMLNAME(hh.getELCODetail(FW_WOMLNAME))
@@ -90,15 +90,15 @@ public class HHRegisterService {
         		.withFWWOMNID(hh.getELCODetail(FW_WOMNID))
         		.withFWHUSNAME(hh.getELCODetail(FW_HUSNAME))
         		.withFWELIGIBLE(hh.getELCODetail(FW_ELIGIBLE))
-        		.withFWDISPLAYAGE(hh.getELCODetail(FW_DISPLAY_AGE))*/;
+        		.withFWDISPLAYAGE(hh.getELCODetail(FW_DISPLAY_AGE));
         	            
         	hhRegisterEntries.add(hhRegisterEntry);
         }
         logger.info("HHRegister data");
         return new HHRegister(hhRegisterEntries);
-	}	
+	}	*/
 
-	public HHRegister getHHRegister(String type, String startKey, String endKey)
+	/*public HHRegister getHHRegister(String type, String startKey, String endKey)
 	{
 		long start = getTimestamp(startKey);		
 		long end = getTimestamp(endKey);
@@ -144,7 +144,7 @@ public class HHRegisterService {
         		.withTODAY(hh.getDetail(REFERENCE_DATE))
         		.withSTART(hh.getDetail(START_DATE))
         		.withEND(hh.getDetail(END_DATE))
-        		/*.withFWWOMAGE(hh.getELCODetail(FW_WOMAGE))
+        		.withFWWOMAGE(hh.getELCODetail(FW_WOMAGE))
         		.withFWBIRTHDATE(hh.getELCODetail(FW_BIRTHDATE))
         		.withid(hh.getELCODetail(id))
         		.withFWWOMLNAME(hh.getELCODetail(FW_WOMLNAME))
@@ -155,11 +155,11 @@ public class HHRegisterService {
         		.withFWWOMNID(hh.getELCODetail(FW_WOMNID))
         		.withFWHUSNAME(hh.getELCODetail(FW_HUSNAME))
         		.withFWELIGIBLE(hh.getELCODetail(FW_ELIGIBLE))
-        		.withFWDISPLAYAGE(hh.getELCODetail(FW_DISPLAY_AGE))*/;
+        		.withFWDISPLAYAGE(hh.getELCODetail(FW_DISPLAY_AGE));
         	            
         	hhRegisterEntries.add(hhRegisterEntry);
         }
         return new HHRegister(hhRegisterEntries);
-	}	
+	}	*/
 	
 }

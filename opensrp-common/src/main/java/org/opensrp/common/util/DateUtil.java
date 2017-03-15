@@ -112,7 +112,10 @@ public class DateUtil {
     	for(int monthIndex = 0; monthIndex < 4; monthIndex++){
     		now = GregorianCalendar.getInstance();
     		now.add(GregorianCalendar.MONTH, -monthIndex);
-        	now.set(GregorianCalendar.DAY_OF_MONTH, 1);        	
+        	now.set(GregorianCalendar.DAY_OF_MONTH, 1);
+        	now.set(Calendar.HOUR_OF_DAY, 0);
+        	now.set(Calendar.MINUTE, 0);
+        	now.set(Calendar.SECOND, 0);
         	int numOfDaysInMonth = now.getActualMaximum(GregorianCalendar.DAY_OF_MONTH);        	
         	SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
         	int numberOfWeeks = (int)Math.ceil( (double)numOfDaysInMonth/7);
@@ -146,12 +149,12 @@ public class DateUtil {
 					e.printStackTrace();
 				}
         	}
-        	if(numberOfWeeks == 4){
+        	/*if(numberOfWeeks == 4){
         		tempDates.add("");
         		tempDates.add("");
         		tempDateTimestamps.add(0l);
         		tempDateTimestamps.add(0l);
-        	}
+        	}*/
         	Collections.reverse(tempDates);        	
         	dates.addAll(tempDates);
         	Collections.reverse(tempDateTimestamps);
@@ -307,8 +310,7 @@ public class DateUtil {
     	
     	return dates;
     }
-    public static boolean ifDateInsideAWeek(long timestamp, long lowerLimit, long upperLimit){
-    	//System.out.println(timestamp + " -- " + lowerLimit + " -- " + upperLimit);
+    public synchronized static boolean ifDateInsideAWeek(long timestamp, long lowerLimit, long upperLimit){
     	if(timestamp >= lowerLimit && timestamp <= upperLimit){
     		return true;
     	}
@@ -316,10 +318,10 @@ public class DateUtil {
     }
     
     // weekBoundaries should have a size of even number
-    public static int dateInsideWhichWeek(long timestamp, List<Long> weekBoundaries){
+    public synchronized static int dateInsideWhichWeek(long timestamp, List<Long> weekBoundaries){
     	int max = weekBoundaries.size()/2 - 1, min = 0, mid = (max + min)/2;
     	while(max >= min){
-    		//System.out.println("max - " + max + " min - " + min + " mid - " + mid);
+    		
     		if(ifDateInsideAWeek(timestamp, weekBoundaries.get(2*mid), weekBoundaries.get(2*mid + 1))){
         		return mid;
         	}
@@ -328,7 +330,7 @@ public class DateUtil {
     			//max = mid - 1;
     		}
     		else if(timestamp < weekBoundaries.get(2*mid )){
-    			max = mid - 1;
+    			max = mid -1;
     			//min = mid + 1;
     		}
     		mid = (max + min) / 2;

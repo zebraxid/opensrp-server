@@ -63,12 +63,12 @@ public class RegisterController {
 		this.dataCountService = dataCountService;
 	}
 
-	@RequestMapping(method = RequestMethod.GET, value = "/registers/hh")
+	/*@RequestMapping(method = RequestMethod.GET, value = "/registers/hh")
 	@ResponseBody
 	public ResponseEntity<HHRegisterDTO> hhRegister(@RequestParam("anm-id") String anmIdentifier) {
 		HHRegister hhRegister = hhRegisterService.getHHRegisterForProvider(anmIdentifier);
 		return new ResponseEntity<>(hhRegisterMapper.mapToDTO(hhRegister), HttpStatus.OK);
-	}
+	}*/
 
 	@RequestMapping(method = RequestMethod.GET, value = "/registers/ec")
 	@ResponseBody
@@ -77,12 +77,12 @@ public class RegisterController {
 		return new ResponseEntity<>(ecRegisterMapper.mapToDTO(ecRegister), HttpStatus.OK);
 	}
 
-	@RequestMapping(method = RequestMethod.GET, value = "/registers/household")
+	/*@RequestMapping(method = RequestMethod.GET, value = "/registers/household")
 	@ResponseBody
 	public ResponseEntity<HHRegisterDTO> householdRegister(@RequestParam("start-date") String startdate, @RequestParam("end-date") String enddate) {
 		HHRegister hhRegister = hhRegisterService.getHHRegister("HouseHold", startdate, enddate);
 		return new ResponseEntity<>(hhRegisterMapper.mapToDTO(hhRegister), HttpStatus.OK);
-	}
+	}*/
 
 	@RequestMapping(method = RequestMethod.GET, value = "/registers/elco")
 	@ResponseBody

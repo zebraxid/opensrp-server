@@ -8,11 +8,8 @@ import org.ektorp.CouchDbConnector;
 import org.ektorp.ViewResult;
 import org.ektorp.support.GenerateView;
 import org.ektorp.support.View;
-import org.joda.time.DateTime;
-import org.joda.time.LocalDate;
 import org.motechproject.dao.MotechBaseRepository;
 import org.opensrp.common.AllConstants;
-import org.opensrp.register.mcare.domain.Elco;
 import org.opensrp.register.mcare.domain.HouseHold;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,20 +44,20 @@ public class AllHouseHolds extends MotechBaseRepository<HouseHold> {
 		return db.queryView(createQuery("all_households").includeDocs(true),
 				HouseHold.class);
 	}
-	@View(name = "get_all_household", map = "function(doc) { if (doc.type === 'HouseHold' && doc.FWNHHHGPS) { emit(doc._id, [doc.FWNHHHGPS.split(' ')[0],doc.FWNHHHGPS.split(' ')[1],doc.ELCO,doc.FWMAUZA_PARA,doc.FWDIVISION,doc.FWDISTRICT,doc.FWUPAZILLA,doc.FWUNION,doc.FWWARD]); } }")
+	/*@View(name = "get_all_household", map = "function(doc) { if (doc.type === 'HouseHold' && doc.FWNHHHGPS) { emit(doc._id, [doc.FWNHHHGPS.split(' ')[0],doc.FWNHHHGPS.split(' ')[1],doc.ELCO,doc.FWMAUZA_PARA,doc.FWDIVISION,doc.FWDISTRICT,doc.FWUPAZILLA,doc.FWUNION,doc.FWWARD]); } }")
 	public List<HouseHold> allHouseHolds() {
 		return db.queryView(createQuery("get_all_household").includeDocs(true),
 				HouseHold.class);
-	}
+	}*/
 
-	@View(name = "all_open_hhs_for_provider", map = "function(doc) { if (doc.type === 'HouseHold' && doc.PROVIDERID) { emit(doc.PROVIDERID,doc._id ); } }")
+	/*@View(name = "all_open_hhs_for_provider", map = "function(doc) { if (doc.type === 'HouseHold' && doc.PROVIDERID) { emit(doc.PROVIDERID,doc._id ); } }")
 	public List<HouseHold> allOpenHHsForProvider(String providerId) {
 		return db.queryView(
 				createQuery("all_open_hhs_for_provider").key(providerId)
 						.includeDocs(true), HouseHold.class);
-	}
+	}*/
 
-	@View(name = "all_hhs_prev_7_days", map = "function(doc) { if (doc.type === 'HouseHold' && doc.PROVIDERID && doc.TODAY) { emit(doc.PROVIDERID, doc.TODAY); } }")
+	/*@View(name = "all_hhs_prev_7_days", map = "function(doc) { if (doc.type === 'HouseHold' && doc.PROVIDERID && doc.TODAY) { emit(doc.PROVIDERID, doc.TODAY); } }")
 	public List<HouseHold> allHHsVisited7Days(String providerId) {
 
 		LocalDate today = LocalDate.now();
@@ -73,37 +70,58 @@ public class AllHouseHolds extends MotechBaseRepository<HouseHold> {
 						.includeDocs(true), HouseHold.class);
 
 		return houseHolds;
-	}
+	}*/
 	
-	@View(name = "created_in_last_4_months", map = "function(doc) { if(doc.type === 'HouseHold' && doc.SUBMISSIONDATE && doc.caseId) { emit([doc.caseId], doc.SUBMISSIONDATE) } }")
+	@View(name = "count_last_four_month", map = "function(doc) { if (doc.type === 'HouseHold' && doc.SUBMISSIONDATE) { emit(doc.SUBMISSIONDATE, doc.SUBMISSIONDATE); } }")
 	public List<HouseHold> allHHsCreatedLastFourMonths(){
 		
 		Calendar cal = Calendar.getInstance();
-		String startKey = Long.toString(cal.getTimeInMillis());
-		cal.add(Calendar.DAY_OF_YEAR, -120);
-		String endKey = Long.toString(cal.getTimeInMillis());
-		
+		cal.set(Calendar.HOUR_OF_DAY, 0);
+		cal.set(Calendar.MINUTE, 0);
+		cal.set(Calendar.SECOND, 0);		
+		cal.add(Calendar.MONTH, -3);
+		cal.set(Calendar.DAY_OF_MONTH, 1);
+		Long startKey = cal.getTime().getTime();		
+		ComplexKey start = ComplexKey.of(startKey);		
 		List<HouseHold> households =  db.queryView(
-				createQuery("created_in_last_4_months")
-				.rawStartKey(startKey)
-				.rawEndKey(endKey)
+				createQuery("count_last_four_month")
+				.startKey(startKey)
+				.endKey(System.currentTimeMillis())
 				.includeDocs(true), HouseHold.class);
-		
+		System.out.println(households.size());
 		return households;
 	}
 	
 	public ViewResult allHHsCreatedLastFourMonthsViewResult(){
+		System.err.println("Start:::"+System.currentTimeMillis());
+		Calendar cal = Calendar.getInstance();
 		
-		ViewResult vr = db.queryView(
-				createQuery("created_in_last_4_months")
-				.includeDocs(false));
+		cal.set(Calendar.HOUR_OF_DAY, 0);
+		cal.set(Calendar.MINUTE, 0);
+		cal.set(Calendar.SECOND, 0);
+		cal.add(Calendar.MONTH, -3);
+		cal.set(Calendar.DAY_OF_MONTH, 1);	
+		ComplexKey start = ComplexKey.of(cal.getTime().getTime());	
+		ComplexKey end = ComplexKey.of(System.currentTimeMillis());	
+		try{
+			ViewResult vr = db.queryView(
+					createQuery("count_last_four_month")
+					.startKey(cal.getTime().getTime())
+				    .endKey(System.currentTimeMillis())
+					.includeDocs(false));
+			
 		
+		System.err.println(vr.getTotalRows());
+		System.out.println("End Query:"+System.currentTimeMillis());
 		return vr;
+		}catch(Exception e){
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 	@View(name = "created_in_last_4_months_by_location", map = "function(doc) { if(doc.type === 'HouseHold' && doc.SUBMISSIONDATE && doc.FWDISTRICT && doc.FWUPAZILLA && doc.FWUNION) { var x = new Date(); var y = new Date(x.getFullYear(), x.getMonth()-3, 0); var time = y.getTime(); if(doc.SUBMISSIONDATE > time){ emit([doc.FWDISTRICT,doc.FWUPAZILLA,doc.FWUNION], doc.SUBMISSIONDATE)} } }")
-	public List<HouseHold> allHHsCreatedLastFourMonthsByLocation(String startKey, String endKey){
-		//ComplexKey startKey = ComplexKey.of(District, Upazilla, Union);
+	public List<HouseHold> allHHsCreatedLastFourMonthsByLocation(String startKey, String endKey){		
 		List<HouseHold> households =  db.queryView(
 				createQuery("created_in_last_4_months_by_location")
 				.rawStartKey(startKey)
@@ -156,7 +174,7 @@ public class AllHouseHolds extends MotechBaseRepository<HouseHold> {
 		return households;
 	}
 	
-	@View(name = "created_in_between_2_dates", map = "function(doc) { if(doc.type === 'HouseHold' && doc.type && doc.SUBMISSIONDATE) { emit( [doc.type, doc.SUBMISSIONDATE], null); } }")
+	/*@View(name = "created_in_between_2_dates", map = "function(doc) { if(doc.type === 'HouseHold' && doc.type && doc.SUBMISSIONDATE) { emit( [doc.type, doc.SUBMISSIONDATE], null); } }")
 	public List<HouseHold> allHHsCreatedBetween2Dates(String type, long startKey, long endKey){
 		ComplexKey start = ComplexKey.of(type,startKey);
 		ComplexKey end = ComplexKey.of(type,endKey);
@@ -167,13 +185,11 @@ public class AllHouseHolds extends MotechBaseRepository<HouseHold> {
 				.includeDocs(true), HouseHold.class);
 		//System.out.println(hhs.toString());	
 		return hhs;
-	}
+	}*/
 	
 	// map reduce query
     @View(name = "householdCount", map = "function(doc) { if (doc.type === 'HouseHold') { emit(doc.id); } }",reduce="_count")
-    public int countHouseHolds() {
-        //System.out.println("HouseHold time start:"+System.currentTimeMillis());
-        //return db.queryView(createQuery("householdCount")).getRows().get(0).getValueAsInt();
+    public int countHouseHolds() {       
     	ViewResult result =  db.queryView(createQuery("householdCount")); 
         int  count = 0;
         if(!result.getRows().isEmpty()){
@@ -196,8 +212,7 @@ public class AllHouseHolds extends MotechBaseRepository<HouseHold> {
                 createQuery("created_newhh_in_between_2_dates")
                 .startKey(start)
                 .endKey(end)
-                .includeDocs(false));
-        //System.out.println(hhs.toString());    
+                .includeDocs(false));           
         return vr;
         
     }
@@ -213,8 +228,7 @@ public class AllHouseHolds extends MotechBaseRepository<HouseHold> {
                 createQuery("created_census_in_between_2_dates")
                 .startKey(start)
                 .endKey(end)
-                .includeDocs(false));
-        //System.out.println(hhs.toString());    
+                .includeDocs(false));        
         return vr;
         
     }

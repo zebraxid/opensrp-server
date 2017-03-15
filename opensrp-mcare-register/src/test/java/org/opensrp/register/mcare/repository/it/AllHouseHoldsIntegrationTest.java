@@ -17,12 +17,14 @@ import java.util.List;
 
 import org.ektorp.CouchDbInstance;
 import org.ektorp.ViewResult;
+import org.ektorp.ViewResult.Row;
 import org.ektorp.http.HttpClient;
 import org.ektorp.http.StdHttpClient;
 import org.ektorp.impl.StdCouchDbConnector;
 import org.ektorp.impl.StdCouchDbInstance;
 import org.ektorp.impl.StdObjectMapperFactory;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.opensrp.common.util.DateUtil;
@@ -51,7 +53,7 @@ public class AllHouseHoldsIntegrationTest {
     	//allElcos.removeAll();
        HttpClient httpClient = new StdHttpClient.Builder() 
         //.host("localhost") 
-       	.host("192.168.19.55")
+       	.host("192.168.22.55")
         .port(5984) 
         .socketTimeout(1000) 
         .build(); 
@@ -169,7 +171,7 @@ public class AllHouseHoldsIntegrationTest {
 		return key;
 	}
     
-    @Test 
+    @Ignore@Test 
     public void testRawkey() throws Exception {
     	String oka = createRawStartKey("aklima","","","");//,"Gaibandha","GAIBANDHA SADAR","LAXMIPUR");
     	System.out.println(oka.substring(0, oka.length()-1) + ",{}]");
@@ -194,6 +196,95 @@ public class AllHouseHoldsIntegrationTest {
 		elcoViewResult = allElcos.allMothersCreatedLastFourMonthsByLocationViewResult(key,key.substring(0, key.length()-1) + ",{}]");			
 		System.out.println(elcoViewResult.getRows().size() + " count of mothers from gaibandha" );
 		//return this.coverViewResultToCount(elcoViewResult);
+    }
+    @Ignore@Test
+    public void hhTest(){
+    	ViewResult vr = allHouseHolds.allHHsCreatedLastFourMonthsViewResult();
+    	
+    	System.out.println("data:"+vr.getRows().size());
+    	
+    }
+    @Test
+    public void DataCount(){
+    	WeekBoundariesAndTimestamps boundaries = DateUtil.getWeekBoundariesForDashboard();
+    	
+    	List<Long> timestamps = new ArrayList<Long>(); 
+    	/*timestamps.add(1480615200000L);
+    	timestamps.add(1480701600000L);
+    	timestamps.add(1480788000000L);
+    	timestamps.add(1481997600000L);
+    	timestamps.add(1482084000000L);
+    	timestamps.add(1482256800000L);
+    	timestamps.add(1482343200000L);
+    	timestamps.add(1482429600000L);
+    	timestamps.add(1482516000000L);
+    	timestamps.add(1482602400000L);
+    	timestamps.add(1482688800000L);
+    	timestamps.add(1482775200000L);
+    	timestamps.add(1482861600000L);  
+    	timestamps.add(1482948000000L);
+    	timestamps.add(1483034400000L);
+    	timestamps.add(1483120800000L);
+    	timestamps.add(1483207200000L);
+    	timestamps.add(1483293600000L);
+    	timestamps.add(1483898400000L);
+    	timestamps.add(1484071200000L);
+    	timestamps.add(1484157600000L);
+    	timestamps.add(1484244000000L);
+    	timestamps.add(1484589600000L);
+    	timestamps.add(1486144800000L);
+    	timestamps.add(1486231200000L);
+    	timestamps.add(1486317600000L);
+    	timestamps.add(1486404000000L);
+    	timestamps.add(1487008800000L);*/
+    	timestamps.add(1487786400000L);
+    	List<Long> startAndEndOfWeeksAsTimestamp = boundaries.weekBoundariesAsTimeStamp; 
+    	int[] countsForChart = new int[23];
+    	for(int i = 0; i < timestamps.size(); i++){
+    		
+    		countsForChart[dateInsideWhichWeek(timestamps.get(i), startAndEndOfWeeksAsTimestamp)]++;
+    	}
+    	System.out.println("data:"+countsForChart.toString());
+    }
+    
+    
+    
+	 public static boolean ifDateInsideAWeek(long timestamp, long lowerLimit, long upperLimit){
+	    	
+	    	if(timestamp >= lowerLimit && timestamp <= upperLimit){
+	    		return true;
+	    	}
+	    	return false;
+	    }
+    
+    // weekBoundaries should have a size of even number
+    public static int dateInsideWhichWeek(long timestamp, List<Long> weekBoundaries){
+    	int max = weekBoundaries.size() - 1, min = 0, mid = (max + min)/2;
+    	
+    	while(max >= min){
+    		
+    		if(ifDateInsideAWeek(timestamp, weekBoundaries.get(mid), weekBoundaries.get(mid + 1))){
+    			System.out.println(" find index for - " + timestamp);
+    			return mid;
+        	}
+    		else if(timestamp > weekBoundaries.get(mid + 1)){
+    			min = mid + 1;
+    			//max = mid - 1;
+    		}
+    		else if(timestamp < weekBoundaries.get(mid )){
+    			max = mid;
+    			//min = mid + 1;
+    		}
+    		mid = (max + min) / 2;
+    	}
+    	
+    	/*for(int i = 0; i < weekBoundaries.size(); i+=2){
+    		if(timestamp >= weekBoundaries.get(i) && timestamp <= weekBoundaries.get(i+1)){
+    			return 1;
+    		}
+    	}*/
+    	//System.out.println("could not find index for - " + timestamp);
+    	return -1;
     }
 
 }

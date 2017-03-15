@@ -57,11 +57,11 @@ public class ReportController {
 		return new ResponseEntity<>(new Gson().toJson(reportService.getReportData(uuid)),HttpStatus.OK);
     }
 	
-	@RequestMapping(method = RequestMethod.GET, value = "/report/report-hh-7-days")
+	/*@RequestMapping(method = RequestMethod.GET, value = "/report/report-hh-7-days")
     public ResponseEntity<HHRegisterDTO> reportHHForPrev7Days(@RequestParam("provider-id") String providerId) {
 		 HHRegister hhRegister = hhReportService.getHHDataVisitedPrev7Days(providerId);
 	     return new ResponseEntity<>(hhRegisterMapper.mapToDTO(hhRegister), HttpStatus.OK);
-    }
+    }*/
 /*
     @RequestMapping(method = RequestMethod.GET, value = "/report/actions")
     @ResponseBody

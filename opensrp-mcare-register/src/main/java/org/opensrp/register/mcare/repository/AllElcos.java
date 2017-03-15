@@ -170,7 +170,7 @@ public class AllElcos extends MotechBaseRepository<Elco> {
 	public List<Elco> allMothersCreatedLastFourMonths(){
 		Calendar cal = Calendar.getInstance();
 		String startKey = Long.toString(cal.getTimeInMillis());
-		cal.set(Calendar.HOUR_OF_DAY, 0);
+		cal.set(Calendar.HOUR_OF_DAY, 6);
 		cal.set(Calendar.MINUTE, 0);
 		cal.set(Calendar.SECOND, 0);
 		cal.add(Calendar.MONTH, -3);
@@ -188,7 +188,7 @@ public class AllElcos extends MotechBaseRepository<Elco> {
 	public ViewResult allMothersCreatedLastFourMonthsViewResult(){
 		Calendar cal = Calendar.getInstance();
 		String startKey = Long.toString(cal.getTimeInMillis());
-		cal.set(Calendar.HOUR_OF_DAY, 0);
+		cal.set(Calendar.HOUR_OF_DAY, 6);
 		cal.set(Calendar.MINUTE, 0);
 		cal.set(Calendar.SECOND, 0);
 		cal.add(Calendar.MONTH, -3);

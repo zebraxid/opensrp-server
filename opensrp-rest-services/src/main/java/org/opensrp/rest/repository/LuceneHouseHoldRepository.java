@@ -44,12 +44,18 @@ import com.github.ldriscoll.ektorplucene.designdocument.annotation.Index;
 	    index = "function(rec) {" +
 	    		" var doc=new Document();" + 
 	    		" doc.add(rec.FWDIVISION,{\"field\":\"FWDIVISION\", \"store\":\"yes\"}); " +
+	    		" doc.add(rec.user_type,{\"field\":\"user_type\", \"store\":\"yes\"}); " +
+	    		" doc.add(rec.FWNHREGDATE,{\"field\":\"FWNHREGDATE\", \"store\":\"yes\"}); " +
+	    		" doc.add(rec.FWHOHFNAME,{\"field\":\"FWHOHFNAME\", \"store\":\"yes\"}); " +
+	    		" doc.add(rec.FWGOBHHID,{\"field\":\"FWGOBHHID\", \"store\":\"yes\"}); " +
+	    		" doc.add(rec.FWCOUNTRY,{\"field\":\"FWCOUNTRY\", \"store\":\"yes\"}); " +
+	    		" doc.add(rec.FWJIVHHID,{\"field\":\"FWJIVHHID\", \"store\":\"yes\"}); " +
+	    		" doc.add(rec.TODAY,{\"field\":\"TODAY\", \"store\":\"yes\"}); " +
 	    		" doc.add(rec.FWDISTRICT,{\"field\":\"FWDISTRICT\", \"store\":\"yes\"}); " +
 	    		" doc.add(rec.FWUNION,{\"field\":\"FWUNION\", \"store\":\"yes\"});" +  
 	    		" doc.add(rec.PROVIDERID,{\"field\":\"PROVIDERID\", \"store\":\"yes\"});" + 
 	    		" doc.add(rec.FWUPAZILLA,{\"field\":\"FWUPAZILLA\", \"store\":\"yes\"});" + 
-	    		" doc.add(rec.SUBMISSIONDATE,{\"field\":\"SUBMISSIONDATE\", \"store\":\"yes\"});" + 
-	    		" doc.add(JSON.stringify(rec.ELCODETAILS),{\"field\":\"ELCODETAILS\", \"store\":\"yes\"});" +
+	    		" doc.add(rec.SUBMISSIONDATE,{\"field\":\"SUBMISSIONDATE\", \"store\":\"yes\"});" + 	    		
 	    		" doc.add(rec.type,{\"field\":\"type\", \"store\":\"yes\"});" + 
 	    		" return doc;" +
 	    		"}"),
@@ -68,6 +74,7 @@ public class LuceneHouseHoldRepository extends CouchDbRepositorySupportWithLucen
 		this.db.setRevisionLimit(revisionLimit);
 		initStandardDesignDocument();
 	}
+	
 	
 	 public LuceneResult findDocsByProvider(String queryString) { 
         LuceneDesignDocument designDoc = db.get(LuceneDesignDocument.class, stdDesignDocumentId); 
@@ -93,6 +100,16 @@ public class LuceneHouseHoldRepository extends CouchDbRepositorySupportWithLucen
 		}		
         return result; 
     } 
+	 
+	 
+	 public int hhCount(String queryString) { 
+	        LuceneDesignDocument designDoc = db.get(LuceneDesignDocument.class, stdDesignDocumentId); 
+	        LuceneQuery query = new LuceneQuery(designDoc.getId(), "by_provider"); 
+	        query.setQuery(queryString); 
+	        query.setStaleOk(false);	       
+	        LuceneResult result = db.queryLucene(query);
+	        return result.getTotalRows(); 
+	    } 
 	 
 	 public LuceneResult getByCriteria(long start,long end,String anmIdentifier) {
 			// create a simple query against the view/search function that we've created

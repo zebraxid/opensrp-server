@@ -8,7 +8,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Map;
 
+import org.apache.commons.collections.map.HashedMap;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.ektorp.ViewResult;
 import org.opensrp.common.util.DateUtil;
@@ -93,7 +95,7 @@ public class DataCountService {
 	public List<CountServiceDTOForChart> getHHCountInformation(){
 		ViewResult hhViewResult;	
 		hhViewResult = allHouseHolds.allHHsCreatedLastFourMonthsViewResult();		
-		
+		System.err.println("hhViewResult.getRows():"+hhViewResult.getRows());
 		List<CountServiceDTOForChart> DTOs= new ArrayList<CountServiceDTOForChart>();
 		CountServiceDTOForChart newDTO = new CountServiceDTOForChart();
 		newDTO.setCounts(this.convertViewResultToCount(hhViewResult));
@@ -149,8 +151,8 @@ public class DataCountService {
 	public List<CountServiceDTOForChart> getMotherCountInformation(){
 		ViewResult elcoViewResult;		
 
-		elcoViewResult = allElcos.allMothersCreatedLastFourMonthsViewResult();		
-		
+		//elcoViewResult = allElcos.allMothersCreatedLastFourMonthsViewResult();		
+		elcoViewResult = allHouseHolds.allHHsCreatedLastFourMonthsViewResult();
 		List<CountServiceDTOForChart> DTOs= new ArrayList<CountServiceDTOForChart>();
 		CountServiceDTOForChart newDTO = new CountServiceDTOForChart();
 		newDTO.setCounts(this.convertViewResultToCount(elcoViewResult));
@@ -179,8 +181,10 @@ public class DataCountService {
 		ViewResult elcoViewResult;		
 		String key = this.createRawStartKey("", "Gaibandha", "", "");
 		//elcoViewResult = allElcos.allMothersCreatedLastFourMonthsByLocationViewResult(key,key.substring(0, key.length()-1) + ",{}]");		
-		elcoViewResult = allElcos.allMothersCreatedLastFourMonthsViewResult();
+		//elcoViewResult = allElcos.allMothersCreatedLastFourMonthsViewResult();
 		
+		elcoViewResult = allHouseHolds.allHHsCreatedLastFourMonthsViewResult();
+		System.err.println(elcoViewResult.toString());
 		return this.convertViewResultToCount(elcoViewResult);
 	}
 	
@@ -188,13 +192,17 @@ public class DataCountService {
 		List<Long> timestamps = new ArrayList<Long>();
 		int count = 0;
 		int[] countsForChart = new int[23];
+		Map<String , Integer> map = new HashedMap();
+		
 		Long todayTimestamp = DateUtil.getTimestampToday();
 		List<Long> weekBoundaries = DateUtil.getCurrentWeekBoundaries();		
 		List<Long> montthBoundaries = DateUtil.getMonthBoundaries();
 		WeekBoundariesAndTimestamps boundaries = DateUtil.getWeekBoundariesForDashboard();
     	int todayCountIndex = 20, weekCountIndex = 21, monthCountIndex = 22;
     	List<String> startAndEndOfWeeks = boundaries.weekBoundariesAsString;
-    	List<Long> startAndEndOfWeeksAsTimestamp = boundaries.weekBoundariesAsTimeStamp;    	
+    	List<Long> startAndEndOfWeeksAsTimestamp = boundaries.weekBoundariesAsTimeStamp; 
+    	System.err.println("CNRT:"+vr.getRows().size());
+    	System.err.println("startAndEndOfWeeksAsTimestamp:"+startAndEndOfWeeksAsTimestamp.toString());
     	for (ViewResult.Row row : vr.getRows()) {
     		String stringValue = row.getValue(); 
     		count++;
@@ -205,8 +213,15 @@ public class DataCountService {
     	//this segment will do the counting
     	System.out.println("timestamps.size():"+timestamps.toString());
     	for(int i = 0; i < timestamps.size(); i++){
-    		System.err.println("timestamps.get(i):"+timestamps.get(i));
-    		countsForChart[DateUtil.dateInsideWhichWeek(timestamps.get(i), startAndEndOfWeeksAsTimestamp)]++;
+    		//System.err.println("timestamps.get(i):"+timestamps.get(i));
+    		try{ 
+    			//map.get(DateUtil.dateInsideWhichWeek(timestamps.get(i), startAndEndOfWeeksAsTimestamp))
+    			countsForChart[DateUtil.dateInsideWhichWeek(timestamps.get(i), startAndEndOfWeeksAsTimestamp)]++;
+    			//countsForChart[DateUtil.dateInsideWhichWeek(timestamps.get(i), startAndEndOfWeeksAsTimestamp)]++;
+				
+    		}catch(Exception e){
+    			
+    		}
     		if(DateUtil.ifDateInsideAWeek(timestamps.get(i), todayTimestamp, todayTimestamp)){
     			countsForChart[todayCountIndex]++;
     		}
@@ -225,6 +240,7 @@ public class DataCountService {
         	}        	
         }
     	System.out.println("foundCount - " + foundCount);
+    	System.out.println("End Result:"+System.currentTimeMillis());
 		return countsForChart;
 	}
 	private String createRawStartKey(String provider, String district, String upazilla, String union){
@@ -272,8 +288,7 @@ public class DataCountService {
 	}
 		
 	private CountServiceDTO getHouseholdCount(String provider,String startMonth,String endMonth,String startWeek,String endWeek,CountServiceDTO commonServiceDTO){
-		//commonServiceDTO.setHouseholdTotalCount(allHouseHolds.findAllHouseHolds().size()) ;  //this should be improved using count(*) style query
-		commonServiceDTO.setHouseholdTotalCount(allHouseHolds.countHouseHolds()) ;
+		commonServiceDTO.setHouseholdTotalCount(allHouseHolds.countHouseHolds()) ;		
 		commonServiceDTO.setHouseholdTodayCount(luceneHouseHoldService.getHouseholdCount("",""));
 		commonServiceDTO.setHouseholdThisMonthCount(luceneHouseHoldService.getHouseholdCount(startMonth, endMonth));
 		commonServiceDTO.setHouseholdThisWeekCount(luceneHouseHoldService.getHouseholdCount(startWeek, endWeek));
