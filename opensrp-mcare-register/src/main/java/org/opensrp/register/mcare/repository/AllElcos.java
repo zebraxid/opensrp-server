@@ -44,23 +44,23 @@ public class AllElcos extends MotechBaseRepository<Elco> {
 		Elco elco = findByCaseId(caseId);
 		update(elco.setIsClosed(true));
 	}
-	@View(name = "all_elcos", map = "function(doc) { if (doc.type === 'Elco') { emit(doc.PROVIDERID, doc.caseId); } }")
+	/*@View(name = "all_elcos", map = "function(doc) { if (doc.type === 'Elco') { emit(doc.PROVIDERID, doc.caseId); } }")
 	public List<Elco> findAllELCOs() {
 		return db.queryView(createQuery("all_elcos").includeDocs(true),
 				Elco.class);
-	}
-	@View(name = "all_open_elcos_for_provider", map = "function(doc) { if (doc.type === 'Elco' && doc.PROVIDERID) { emit(doc.PROVIDERID); } }")
+	}*/
+	/*@View(name = "all_open_elcos_for_provider", map = "function(doc) { if (doc.type === 'Elco' && doc.PROVIDERID) { emit(doc.PROVIDERID); } }")
 	public List<Elco> allOpenELCOsForProvider(String providerId) {
 		return db.queryView(
 				createQuery("all_open_elcos_for_provider").key(providerId)
 						.includeDocs(true), Elco.class);
-	}
-	@View(name = "all_open_elcos_for_provider", map = "function(doc) { if (doc.type === 'Elco' && doc.PROVIDERID) { emit(doc.PROVIDERID); } }")
+	}*/
+	/*@View(name = "all_open_elcos_for_provider", map = "function(doc) { if (doc.type === 'Elco' && doc.PROVIDERID) { emit(doc.PROVIDERID); } }")
 	public List<Elco> allOpenELCOs() {
 		return db.queryView(
 				createQuery("all_open_elcos_for_provider")
 						.includeDocs(true), Elco.class);
-	}
+	}*/
 	
 	@View(name = "created_in_last_4_months_by_provider_and_location", map = "function(doc) { if(doc.type === 'Elco' && doc.SUBMISSIONDATE && doc.PROVIDERID && doc.FWWOMDISTRICT && doc.FWWOMUPAZILLA && doc.FWWOMUNION) { var x = new Date(); var y = new Date(x.getFullYear(), x.getMonth()-3, 0); var time = y.getTime(); if(doc.SUBMISSIONDATE > time){ emit([doc.PROVIDERID,doc.FWWOMDISTRICT,doc.FWWOMUPAZILLA,doc.FWWOMUNION], doc.SUBMISSIONDATE)} } }")
 	public List<Elco> allElcosCreatedLastFourMonthsByProviderAndLocation(String startKey, String endKey){
@@ -84,23 +84,23 @@ public class AllElcos extends MotechBaseRepository<Elco> {
 		return elcos;
 	}
 	
-	@View(name = "created_in_last_4_months", map = "function(doc) { if(doc.type === 'Elco' && doc.SUBMISSIONDATE && doc.caseId) { emit([doc.caseId], doc.SUBMISSIONDATE) } }")
-	public List<Elco> allElcosCreatedLastFourMonths(){
-		Calendar cal = Calendar.getInstance();
-		String startKey = Long.toString(cal.getTimeInMillis());
-		cal.add(Calendar.DAY_OF_YEAR, -120);
-		String endKey = Long.toString(cal.getTimeInMillis());
+	
+	
+	@View(name = "count_last_four_month", map = "function(doc) { if (doc.type === 'Elco' && doc.SUBMISSIONDATE) { emit([doc.SUBMISSIONDATE,doc.details.FWPSRPREGSTS,doc.PSRFDETAILS], doc.SUBMISSIONDATE); } }")
+	public ViewResult ElcoBetweenTwoDatesAsViewResult(Long startTime){
+		Long endTime = System.currentTimeMillis();
+		ComplexKey startkey = ComplexKey.of(1480528800000l, ComplexKey.emptyObject(),ComplexKey.emptyObject());
+		ComplexKey endkey = ComplexKey.of(1483120800000l,ComplexKey.emptyObject(),ComplexKey.emptyObject());
+		ViewResult vr = db.queryView(
+				createQuery("count_last_four_month")
+				.startKey(startkey)
+				.endKey(endkey)
+				.includeDocs(false));
+		return vr;
 		
-		List<Elco> elcos =  db.queryView(
-				createQuery("created_in_last_4_months")
-				.rawStartKey(startKey)
-				.rawEndKey(endKey)
-				.includeDocs(true), Elco.class);
-		
-		return elcos;
 	}
 	
-	@View(name = "created_in_between_2_dates", map = "function(doc) { if(doc.type === 'Elco' && doc.type && doc.SUBMISSIONDATE) { emit( [doc.type, doc.SUBMISSIONDATE], null); } }")
+	/*@View(name = "created_in_between_2_dates", map = "function(doc) { if(doc.type === 'Elco' && doc.type && doc.SUBMISSIONDATE) { emit( [doc.type, doc.SUBMISSIONDATE], null); } }")
 	public List<Elco> allElcosCreatedBetween2Dates(String type, long startKey, long endKey){
 		ComplexKey start = ComplexKey.of(type,startKey);
 		ComplexKey end = ComplexKey.of(type,endKey);
@@ -111,7 +111,7 @@ public class AllElcos extends MotechBaseRepository<Elco> {
 				.includeDocs(true), Elco.class);
 		
 		return elcos;
-	}
+	}*/
 	
 	public ViewResult allElcosCreatedLastFourMonthsViewResult(){
 		
@@ -226,17 +226,7 @@ public class AllElcos extends MotechBaseRepository<Elco> {
 		return vr;
 	}
 	
-	@View(name = "elcoCount", map = "function(doc) { if (doc.type === 'Elco') { emit(doc.id); } }",reduce="_count")
-    public int countElcos() {
-        //System.out.println("Elco ALL time start:"+System.currentTimeMillis());
-        //return db.queryView(createQuery("elcoCount")).getRows().get(0).getValueAsInt();
-		ViewResult result =  db.queryView(createQuery("elcoCount")); 
-        int  count = 0;
-        if(!result.getRows().isEmpty()){
-            count = result.getRows().get(0).getValueAsInt();
-        }
-        return count;
-    }
+	
 	
 	@View(name = "created_elco_in_between_2_dates", map = "function(doc) { if(doc.type === 'Elco' && doc.type && doc.SUBMISSIONDATE) { " +
     		"if(doc.PSRFDETAILS.length>0){for(var key in doc.PSRFDETAILS) { "+

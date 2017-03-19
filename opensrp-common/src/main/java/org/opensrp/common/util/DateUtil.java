@@ -100,6 +100,7 @@ public class DateUtil {
 	    }
 	    return parsed;
     }
+    
     @SuppressWarnings("static-access")
 	public static int getMontNumber(int monthIndex){
     	Calendar cal = Calendar.getInstance();    		
@@ -110,6 +111,29 @@ public class DateUtil {
 		cal.set(Calendar.DAY_OF_MONTH, 1);		
 		return cal.get(cal.MONTH);
 		 
+    }
+    
+    public static int getCurrentMonthCurrentweek(){
+    	Calendar c = Calendar.getInstance();
+		int dayOfTheMonth = c.get(Calendar.DAY_OF_MONTH);		
+		return (int) Math.floor(dayOfTheMonth/7) ;
+    }
+   
+	public static Long getStartTimeStampOfAMonth(int monthIndex){
+    	Calendar cal = Calendar.getInstance();  
+		SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
+		cal.set(Calendar.HOUR_OF_DAY, 0);
+		cal.set(Calendar.MINUTE, 0);
+		cal.set(Calendar.SECOND, 0);
+		cal.add(Calendar.MONTH, -monthIndex);
+		cal.set(Calendar.DAY_OF_MONTH, 1);
+		Long startTime = 0l;
+		try{
+			startTime = dateFormatter.parse(dateFormatter.format(cal.getTime())).getTime();	
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		 return startTime;
     }
     public static WeekBoundariesAndTimestamps getWeekBoundariesForDashboard(){   	
     	Calendar now = GregorianCalendar.getInstance();   	

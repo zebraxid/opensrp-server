@@ -70,12 +70,12 @@ public class RegisterController {
 		return new ResponseEntity<>(hhRegisterMapper.mapToDTO(hhRegister), HttpStatus.OK);
 	}*/
 
-	@RequestMapping(method = RequestMethod.GET, value = "/registers/ec")
+	/*@RequestMapping(method = RequestMethod.GET, value = "/registers/ec")
 	@ResponseBody
 	public ResponseEntity<ELCORegisterDTO> ecRegister(@RequestParam("anm-id") String anmIdentifier) {
 		ELCORegister ecRegister = ecRegisterService.getELCORegisterForProvider(anmIdentifier);
 		return new ResponseEntity<>(ecRegisterMapper.mapToDTO(ecRegister), HttpStatus.OK);
-	}
+	}*/
 
 	/*@RequestMapping(method = RequestMethod.GET, value = "/registers/household")
 	@ResponseBody
@@ -83,13 +83,13 @@ public class RegisterController {
 		HHRegister hhRegister = hhRegisterService.getHHRegister("HouseHold", startdate, enddate);
 		return new ResponseEntity<>(hhRegisterMapper.mapToDTO(hhRegister), HttpStatus.OK);
 	}*/
-
+/*
 	@RequestMapping(method = RequestMethod.GET, value = "/registers/elco")
 	@ResponseBody
 	public ResponseEntity<ELCORegisterDTO> elcoRegister(@RequestParam("start-date") String startdate, @RequestParam("end-date") String enddate) {
 		ELCORegister ecRegister = ecRegisterService.getELCORegister("Elco", startdate, enddate);
 		return new ResponseEntity<>(ecRegisterMapper.mapToDTO(ecRegister), HttpStatus.OK);
-	}
+	}*/
 
 
 	@RequestMapping(method = RequestMethod.GET, value = "/registers/anc")

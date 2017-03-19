@@ -198,12 +198,19 @@ public class AllHouseHoldsIntegrationTest {
 		System.out.println(elcoViewResult.getRows().size() + " count of mothers from gaibandha" );
 		//return this.coverViewResultToCount(elcoViewResult);
     }
-    @Test
+   @Test
     public void hhTest() throws ParseException{
-    	ViewResult vr = allHouseHolds.allHHsCreatedLastFourMonthsViewResult();
-    	
-    	System.out.println("data:"+vr.getRows().size());
-    	
+    	/*ViewResult vr = allHouseHolds.allHHsCreatedLastFourMonthsViewResult();
+    	System.out.println("data Total:"+vr.getTotalRows());
+    	System.out.println("data:"+vr.getRows().size());*/
+	 
+	   System.out.println("Total by All :"+allHouseHolds.getAll().size());
+    	Long startTime =DateUtil.getStartTimeStampOfAMonth(0);
+    	ViewResult vr = allHouseHolds.HouseholdBetweenTwoDatesAsViewResult(startTime);
+    	System.err.println("startTime:"+startTime+ " : "+ vr.getRows().size());
+    	Calendar c = Calendar.getInstance();
+		int dayOfTheMonth = c.get(Calendar.DAY_OF_MONTH);
+		System.out.println("dayOfTheMonth:"+dayOfTheMonth);
     }
    @Ignore@Test
    public void  getWeekBoundariesForDashboard(){   	
@@ -339,12 +346,13 @@ public class AllHouseHoldsIntegrationTest {
     	timestamps.add(1486317600000L);
     	timestamps.add(1486404000000L);
     	timestamps.add(1487008800000L);
-    	timestamps.add(1490896800000L);
+    	timestamps.add(1488218400000L);
     	try{
     	List<Long> startAndEndOfWeeksAsTimestamp = boundaries.weekBoundariesAsTimeStamp; 
+    System.err.println(startAndEndOfWeeksAsTimestamp.toString());
     	long todayTimeStamp = startAndEndOfWeeksAsTimestamp.get(startAndEndOfWeeksAsTimestamp.size()-1) ;
     	System.out.println("pkkkkkkkkk...");
-    	System.err.println(""+todayTimeStamp);
+    	System.err.println("TimeStamp:Today"+todayTimeStamp);
     	int todaysCount=0;
     	for(int i = 0; i < timestamps.size(); i++){
     		try{

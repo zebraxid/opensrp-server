@@ -31,7 +31,7 @@ public class ELCORegisterService {
 		this.allElcos = allElcos;
 	}
 	
-	public ELCORegister getELCORegisterForProvider(String providerId)
+	/*public ELCORegister getELCORegisterForProvider(String providerId)
 	{
 		ArrayList<ELCORegisterEntry> elcoRegisterEntries = new ArrayList<>();
         List<Elco> elcos = allElcos.allOpenELCOs();
@@ -99,9 +99,9 @@ public class ELCORegisterService {
             elcoRegisterEntries.add(ecRegisterEntry);
         }
         return new ELCORegister(elcoRegisterEntries);
-	}
+	}*/
 
-	public ELCORegister getELCORegister(String type, String startKey, String endKey)
+	/*public ELCORegister getELCORegister(String type, String startKey, String endKey)
 	{
 		long start = getTimestamp(startKey);		
 		long end = getTimestamp(endKey);
@@ -172,5 +172,5 @@ public class ELCORegisterService {
             elcoRegisterEntries.add(ecRegisterEntry);
         }
         return new ELCORegister(elcoRegisterEntries);
-	}
+	}*/
 }

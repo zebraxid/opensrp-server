@@ -41,12 +41,12 @@ public class AllHouseHolds extends MotechBaseRepository<HouseHold> {
 		}
 		return houseHolds.get(0);
 	}
-
+/*
 	@View(name = "all_households", map = "function(doc) { if (doc.type === 'HouseHold') { emit(doc.PROVIDERID, doc.caseId); } }")
 	public List<HouseHold> findAllHouseHolds() {
 		return db.queryView(createQuery("all_households").includeDocs(true),
 				HouseHold.class);
-	}
+	}*/
 	/*@View(name = "get_all_household", map = "function(doc) { if (doc.type === 'HouseHold' && doc.FWNHHHGPS) { emit(doc._id, [doc.FWNHHHGPS.split(' ')[0],doc.FWNHHHGPS.split(' ')[1],doc.ELCO,doc.FWMAUZA_PARA,doc.FWDIVISION,doc.FWDISTRICT,doc.FWUPAZILLA,doc.FWUNION,doc.FWWARD]); } }")
 	public List<HouseHold> allHouseHolds() {
 		return db.queryView(createQuery("get_all_household").includeDocs(true),
@@ -91,7 +91,6 @@ public class AllHouseHolds extends MotechBaseRepository<HouseHold> {
 				.startKey(startKey)
 				.endKey(System.currentTimeMillis())
 				.includeDocs(true), HouseHold.class);
-		System.out.println(households.size());
 		return households;
 	}
 	
@@ -109,12 +108,26 @@ public class AllHouseHolds extends MotechBaseRepository<HouseHold> {
 		}catch(Exception e){
 			e.printStackTrace();
 		}
+		System.out.println(startTime);
 		ViewResult vr = db.queryView(
 				createQuery("count_last_four_month")
 				.startKey(startTime)
-				.endKey(System.currentTimeMillis())	
+				.endKey(System.currentTimeMillis())
+				
 				//.startKey(1490896800000l)
 				//.endKey(1490896800000l)	
+				.includeDocs(false));
+		return vr;
+		
+	}
+	
+	public ViewResult HouseholdBetweenTwoDatesAsViewResult(Long startTime){
+		
+		System.out.println(startTime);
+		ViewResult vr = db.queryView(
+				createQuery("count_last_four_month")
+				.startKey(startTime)
+				.endKey(System.currentTimeMillis())
 				.includeDocs(false));
 		return vr;
 		
@@ -187,7 +200,7 @@ public class AllHouseHolds extends MotechBaseRepository<HouseHold> {
 		return hhs;
 	}*/
 	
-	// map reduce query
+	/*// map reduce query
     @View(name = "householdCount", map = "function(doc) { if (doc.type === 'HouseHold') { emit(doc.id); } }",reduce="_count")
     public int countHouseHolds() {       
     	ViewResult result =  db.queryView(createQuery("householdCount")); 
@@ -197,7 +210,7 @@ public class AllHouseHolds extends MotechBaseRepository<HouseHold> {
         }
         return count;
     }
-    
+    */
     @View(name = "created_newhh_in_between_2_dates", map = "function(doc) { if(doc.type === 'HouseHold' && doc.type && doc.SUBMISSIONDATE) { " +
     		"if(doc.ELCODETAILS.length>0){for(var key in doc.ELCODETAILS) { if(doc.ELCODETAILS[key].form_name === 'FWNewHH') { "+
             "emit([doc.type, doc.SUBMISSIONDATE,doc.user_type], [doc.ELCO,doc.PROVIDERID,doc.TODAY,doc.START,doc.END,doc.FWNHREGDATE,doc.FWGOBHHID,doc.FWJIVHHID,doc.FWUNION,doc.FWWARD,doc.FWSUBUNIT,doc.FWMAUZA_PARA,doc.FWHOHFNAME,doc.FWHOHBIRTHDATE,doc.FWHOHGENDER,doc.FWNHHMBRNUM,doc.FWNHHMWRA,doc.details.received_time,doc.INSTANCEID,doc.caseId,doc.external_user_ID,doc.ELCODETAILS[key].TODAY,doc.ELCODETAILS[key].FWWOMFNAME,doc.ELCODETAILS[key].FWBIRTHDATE,doc.ELCODETAILS[key].FWWOMAGE,doc.ELCODETAILS[key].FWCWOMSTRMEN,doc.ELCODETAILS[key].FWCWOMHUSLIV,doc.ELCODETAILS[key].FWCWOMHUSALV,doc.ELCODETAILS[key].FWCWOMHUSSTR,doc.ELCODETAILS[key].FWELIGIBLE,doc.ELCODETAILS[key].FWWOMANYID,doc.ELCODETAILS[key].FWWOMNID,doc.ELCODETAILS[key].FWWOMBID,doc.ELCODETAILS[key].FWHUSNAME,doc.ELCODETAILS[key].FWWOMGPS,doc.ELCO]); " +

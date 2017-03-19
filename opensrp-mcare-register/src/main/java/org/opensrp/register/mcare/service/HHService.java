@@ -182,7 +182,7 @@ public class HHService {
 	
 	public String getEntityIdBybrnId(List<String> brnIdList)
 	{
-	   List<HouseHold> houseHolds =	allHouseHolds.findAllHouseHolds();
+	   List<HouseHold> houseHolds =	allHouseHolds.getAll();
 	   
 	   if (houseHolds == null || houseHolds.isEmpty()) {
            return null;
