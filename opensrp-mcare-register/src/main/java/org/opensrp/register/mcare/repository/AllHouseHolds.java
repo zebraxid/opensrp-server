@@ -75,52 +75,7 @@ public class AllHouseHolds extends MotechBaseRepository<HouseHold> {
 		return houseHolds;
 	}*/
 	
-	@View(name = "count_last_four_month", map = "function(doc) { if (doc.type === 'HouseHold' && doc.SUBMISSIONDATE) { emit(doc.SUBMISSIONDATE, doc.SUBMISSIONDATE); } }")
-	public List<HouseHold> allHHsCreatedLastFourMonths(){
-		
-		Calendar cal = Calendar.getInstance();
-		cal.set(Calendar.HOUR_OF_DAY, 0);
-		cal.set(Calendar.MINUTE, 0);
-		cal.set(Calendar.SECOND, 0);		
-		cal.add(Calendar.MONTH, -3);
-		cal.set(Calendar.DAY_OF_MONTH, 1);
-		Long startKey = cal.getTime().getTime();		
-		ComplexKey start = ComplexKey.of(startKey);		
-		List<HouseHold> households =  db.queryView(
-				createQuery("count_last_four_month")
-				.startKey(startKey)
-				.endKey(System.currentTimeMillis())
-				.includeDocs(true), HouseHold.class);
-		return households;
-	}
-	
-	public ViewResult allHHsCreatedLastFourMonthsViewResult(){
-		Calendar cal = Calendar.getInstance();  
-		SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
-		cal.set(Calendar.HOUR_OF_DAY, 0);
-		cal.set(Calendar.MINUTE, 0);
-		cal.set(Calendar.SECOND, 0);
-		cal.add(Calendar.MONTH, -3);
-		cal.set(Calendar.DAY_OF_MONTH, 1);
-		Long startTime = 0l;
-		try{
-			startTime = dateFormatter.parse(dateFormatter.format(cal.getTime())).getTime();	
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		System.out.println(startTime);
-		ViewResult vr = db.queryView(
-				createQuery("count_last_four_month")
-				.startKey(startTime)
-				.endKey(System.currentTimeMillis())
-				
-				//.startKey(1490896800000l)
-				//.endKey(1490896800000l)	
-				.includeDocs(false));
-		return vr;
-		
-	}
-	
+	@View(name = "count_last_four_month", map = "function(doc) { if (doc.type === 'HouseHold' && doc.SUBMISSIONDATE){ var x = new Date(); var y = new Date(x.getFullYear(), x.getMonth()-3, 0); var time = y.getTime(); if(doc.SUBMISSIONDATE > time) { emit(doc.SUBMISSIONDATE, doc.SUBMISSIONDATE); }}}")
 	public ViewResult HouseholdBetweenTwoDatesAsViewResult(Long startTime){
 		
 		System.out.println(startTime);
@@ -132,7 +87,10 @@ public class AllHouseHolds extends MotechBaseRepository<HouseHold> {
 		return vr;
 		
 	}
-	
+	public int totalHousehold() {       
+	     return db.queryView(createQuery("all")).getRows().get(0).getValueAsInt();
+	}
+	 
 	@View(name = "created_in_last_4_months_by_location", map = "function(doc) { if(doc.type === 'HouseHold' && doc.SUBMISSIONDATE && doc.FWDISTRICT && doc.FWUPAZILLA && doc.FWUNION) { var x = new Date(); var y = new Date(x.getFullYear(), x.getMonth()-3, 0); var time = y.getTime(); if(doc.SUBMISSIONDATE > time){ emit([doc.FWDISTRICT,doc.FWUPAZILLA,doc.FWUNION], doc.SUBMISSIONDATE)} } }")
 	public List<HouseHold> allHHsCreatedLastFourMonthsByLocation(String startKey, String endKey){		
 		List<HouseHold> households =  db.queryView(

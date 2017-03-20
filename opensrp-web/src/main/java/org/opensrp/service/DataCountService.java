@@ -73,26 +73,17 @@ public class DataCountService {
 		if(type.equalsIgnoreCase("all")){
 			this.getHouseholdCountForHomePage(provider, startMonth, endMonth, startWeek, endWeek, commonServiceDTO);
 			this.getElcoCountForHomePage(provider, startMonth, endMonth, startWeek, endWeek, commonServiceDTO);
-			this.getMotherCount(provider, startMonth, endMonth, startWeek, endWeek, commonServiceDTO);
+			this.getMotherCountForHomePage(provider, startMonth, endMonth, startWeek, endWeek, commonServiceDTO);
 					
-		}else if(type.equalsIgnoreCase("household")){
-			this.getHouseholdCountForHomePage(provider, startMonth, endMonth, startWeek, endWeek, commonServiceDTO);
-			
-		}else if(type.equalsIgnoreCase("elco")){
-			this.getElcoCountForHomePage(provider, startMonth, endMonth, startWeek, endWeek, commonServiceDTO);
-			
-		}else if(type.equalsIgnoreCase("mother")){
-			this.getMotherCount(provider, startMonth, endMonth, startWeek, endWeek, commonServiceDTO);
-			
 		}else{
 			
-		}		
+		}
 		commonServiceDTOs.add(commonServiceDTO);
 		return commonServiceDTOs;
 		
 	}
 	
-	public List<CountServiceDTOForChart> getHHCountInformation(){
+	public List<CountServiceDTOForChart> getHHCountInformationForLastFourMonthAsWeekWise(){
 		ViewResult hhViewResult;
 		Long startTime =DateUtil.getStartTimeStampOfAMonth(3);
 		hhViewResult = allHouseHolds.HouseholdBetweenTwoDatesAsViewResult(startTime);
@@ -112,7 +103,6 @@ public class DataCountService {
 		else{
 			hhViewResult = allHouseHolds.allHHsCreatedLastFourMonthsByLocationViewResult(key,key.substring(0, key.length()-1) + ",{}]");
 		}		
-		
 		List<CountServiceDTOForChart> DTOs= new ArrayList<CountServiceDTOForChart>();
 		CountServiceDTOForChart newDTO = new CountServiceDTOForChart();
 		newDTO.setCounts(this.convertViewResultToWeekWiseCount(hhViewResult));
@@ -120,12 +110,10 @@ public class DataCountService {
 		return DTOs;
 	}
 	
-	public List<CountServiceDTOForChart> getElcoCountInformation(){
+	public List<CountServiceDTOForChart> getElcoCountInformationForLastFourMonthAsWeekWise(){
 		ViewResult elcoViewResult;	
-		Long startTime =DateUtil.getStartTimeStampOfAMonth(3);
-		System.err.println("startTime:"+startTime);
-		elcoViewResult = allElcos.ElcoBetweenTwoDatesAsViewResult(startTime);		
-		
+		Long startTime =DateUtil.getStartTimeStampOfAMonth(3);		
+		elcoViewResult = allElcos.elcoBetweenTwoDatesAsViewResult(startTime);		
 		List<CountServiceDTOForChart> DTOs= new ArrayList<CountServiceDTOForChart>();
 		CountServiceDTOForChart newDTO = new CountServiceDTOForChart();
 		newDTO.setCounts(this.convertViewResultToWeekWiseCount(elcoViewResult));
@@ -141,8 +129,7 @@ public class DataCountService {
 		}
 		else{
 			elcoViewResult = allElcos.allElcosCreatedLastFourMonthsByLocationViewResult(key,key.substring(0, key.length()-1) + ",{}]");
-		}		
-		
+		}
 		List<CountServiceDTOForChart> DTOs= new ArrayList<CountServiceDTOForChart>();
 		CountServiceDTOForChart newDTO = new CountServiceDTOForChart();
 		newDTO.setCounts(this.convertViewResultToWeekWiseCount(elcoViewResult));
@@ -150,12 +137,13 @@ public class DataCountService {
 		return DTOs;
 	}
 	
-	public List<CountServiceDTOForChart> getMotherCountInformation(){
-		ViewResult elcoViewResult;
-		elcoViewResult = allElcos.allMothersCreatedLastFourMonthsViewResult();
+	public List<CountServiceDTOForChart> getPregnantWomenCountInformationForLastFourMonthAsWeekWise(){
+		ViewResult pwViewResult;		
+		Long startTime =DateUtil.getStartTimeStampOfAMonth(3);
+		pwViewResult = allElcos.pregnantElcoBetweenTwoDatesAsViewResult(startTime);
 		List<CountServiceDTOForChart> DTOs= new ArrayList<CountServiceDTOForChart>();
 		CountServiceDTOForChart newDTO = new CountServiceDTOForChart();
-		newDTO.setCounts(this.convertViewResultToWeekWiseCount(elcoViewResult));
+		newDTO.setCounts(this.convertViewResultToWeekWiseCount(pwViewResult));
 		DTOs.add(newDTO);
 		return DTOs;
 	}
@@ -168,32 +156,21 @@ public class DataCountService {
 		}
 		else{
 			elcoViewResult = allElcos.allMothersCreatedLastFourMonthsByLocationViewResult(key,key.substring(0, key.length()-1) + ",{}]");
-		}		
-		
+		}
 		List<CountServiceDTOForChart> DTOs= new ArrayList<CountServiceDTOForChart>();
 		CountServiceDTOForChart newDTO = new CountServiceDTOForChart();
 		newDTO.setCounts(this.convertViewResultToWeekWiseCount(elcoViewResult));
 		DTOs.add(newDTO);
 		return DTOs;
 	}
-	
-	public List<Integer> getMotherCountInformationForHomePage(){
-		ViewResult elcoViewResult;		
-		String key = this.createRawStartKey("", "Gaibandha", "", "");
 		
-		elcoViewResult = allHouseHolds.allHHsCreatedLastFourMonthsViewResult();
-		System.err.println(elcoViewResult.toString());
-		return this.convertViewResultToWeekWiseCount(elcoViewResult);
-	}
-	
 	private List<Integer> convertViewResultToWeekWiseCount( ViewResult vr){		
 		List<Integer> seperateWeeklyCountDataForRegisterFromViewResult = new ArrayList<>();
 		for (int index = 0; index < 23; index++) {
 			seperateWeeklyCountDataForRegisterFromViewResult.add(index,0);
 		}
 		WeekBoundariesAndTimestamps boundaries = DateUtil.getWeekBoundariesForDashboard();
-    	List<Long> startAndEndOfWeeksAsTimestamp = boundaries.weekBoundariesAsTimeStamp; 
-    	System.err.println("startAndEndOfWeeksAsTimestamp:"+startAndEndOfWeeksAsTimestamp);
+    	List<Long> startAndEndOfWeeksAsTimestamp = boundaries.weekBoundariesAsTimeStamp;     	
     	int todaysCount=0;
     	long todayTimeStamp = DateUtil.getTimestampToday() ; 
     	long oldTimeStamp=0;
@@ -213,8 +190,7 @@ public class DataCountService {
 	    			position = DateUtil.binarySearch(Long.parseLong(stringValue), startAndEndOfWeeksAsTimestamp);
 	    			Integer existingCount = seperateWeeklyCountDataForRegisterFromViewResult.get(position);
 	    			seperateWeeklyCountDataForRegisterFromViewResult.set(position, existingCount+1);
-    			}
-    			
+    			}    			
     			oldTimeStamp = Long.parseLong(stringValue);
     			oldPosition = position;
     			   			
@@ -278,16 +254,11 @@ public class DataCountService {
 		
 		return key;
 	}
-	
-	
-	private CountServiceDTOForChart getHouseholdCountForChart(CountServiceDTOForChart dto){		
-		return dto;
-	}
 		
 	private CountServiceDTO getHouseholdCountForHomePage(String provider,String startMonth,String endMonth,String startWeek,String endWeek,CountServiceDTO commonServiceDTO){
 		Long startTime =DateUtil.getStartTimeStampOfAMonth(0);
 		ViewResult vr = allHouseHolds.HouseholdBetweenTwoDatesAsViewResult(startTime);
-		commonServiceDTO.setHouseholdTotalCount(vr.getTotalRows()) ;
+		commonServiceDTO.setHouseholdTotalCount(allHouseHolds.totalHousehold()) ;
 		List<Integer> countData = this.convertViewResultToWeekWiseCount(vr);		
 		commonServiceDTO.setHouseholdTodayCount(countData.get(20));	
 		
@@ -297,22 +268,22 @@ public class DataCountService {
 	}
 	private CountServiceDTO getElcoCountForHomePage(String provider,String startMonth,String endMonth,String startWeek,String endWeek,CountServiceDTO commonServiceDTO){
 		Long startTime =DateUtil.getStartTimeStampOfAMonth(0);
-		ViewResult vr = allElcos.ElcoBetweenTwoDatesAsViewResult(startTime);
+		ViewResult vr = allElcos.elcoBetweenTwoDatesAsViewResult(startTime);
 		List<Integer> countData = this.convertViewResultToWeekWiseCount(vr);
-		commonServiceDTO.setElcoTotalCount(vr.getTotalRows());				
+		commonServiceDTO.setElcoTotalCount(allElcos.totalElco());				
 		commonServiceDTO.setElcoThisMonthCount(countData.get(19)+countData.get(18)+countData.get(17)+countData.get(16)+countData.get(15));
 		commonServiceDTO.setElcoThisWeekCount(countData.get(15+DateUtil.getCurrentMonthCurrentweek()));
 		commonServiceDTO.setElcoTodayCount(countData.get(20));
 		return commonServiceDTO;
 	}
-	private CountServiceDTO getMotherCount(String provider,String startMonth,String endMonth,String startWeek,String endWeek,CountServiceDTO commonServiceDTO){
-		//commonServiceDTO.setPwTotalCount(allMothers.allOpenMothers().size());
-		commonServiceDTO.setPwTotalCount(allMothers.countMothers());
-		List<Integer> countsForChart = new ArrayList<>();
-		countsForChart = this.getMotherCountInformationForHomePage();
-		commonServiceDTO.setPwThisMonthCount(countsForChart.get(15) + countsForChart.get(16) + countsForChart.get(17) + countsForChart.get(18) + countsForChart.get(19));//(luceneMotherService.getMotherCount(startMonth, endMonth));
-		//commonServiceDTO.setPwThisWeekCount(countsForChart[21]);
-		//commonServiceDTO.setPwTodayCount(countsForChart[20]);
+	private CountServiceDTO getMotherCountForHomePage(String provider,String startMonth,String endMonth,String startWeek,String endWeek,CountServiceDTO commonServiceDTO){
+		Long startTime =DateUtil.getStartTimeStampOfAMonth(0);
+		ViewResult vr = allElcos.pregnantElcoBetweenTwoDatesAsViewResult(startTime);
+		List<Integer> countData = this.convertViewResultToWeekWiseCount(vr);
+		commonServiceDTO.setPwTotalCount(vr.getTotalRows());
+		commonServiceDTO.setPwThisMonthCount(countData.get(15) + countData.get(16) + countData.get(17) + countData.get(18) + countData.get(19));//(luceneMotherService.getMotherCount(startMonth, endMonth));
+		commonServiceDTO.setPwThisWeekCount(countData.get(15+DateUtil.getCurrentMonthCurrentweek()));
+		commonServiceDTO.setPwTodayCount(countData.get(20));
 		return commonServiceDTO;
 	}
 	

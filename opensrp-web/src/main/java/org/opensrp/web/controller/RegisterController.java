@@ -139,7 +139,7 @@ public class RegisterController {
     @ResponseBody
     public ResponseEntity<List<CountServiceDTOForChart>>  getHouseHoldInformation(@RequestParam("provider") String provider, @RequestParam("district") String district,
     														@RequestParam("upazilla") String upazilla, @RequestParam("union") String union){    
-    	return new ResponseEntity<>(dataCountService.getHHCountInformation(), HttpStatus.OK);
+    	return new ResponseEntity<>(dataCountService.getHHCountInformationForLastFourMonthAsWeekWise(), HttpStatus.OK);
     }
     
     @RequestMapping(method = RequestMethod.GET, value = "/registers/hh-data-count")
@@ -153,7 +153,7 @@ public class RegisterController {
     @ResponseBody
     public ResponseEntity<List<CountServiceDTOForChart>>  getElcoInformation(@RequestParam("provider") String provider, @RequestParam("district") String district,
 									@RequestParam("upazilla") String upazilla, @RequestParam("union") String union){
-    	return new ResponseEntity<>(dataCountService.getElcoCountInformation(), HttpStatus.OK);
+    	return new ResponseEntity<>(dataCountService.getElcoCountInformationForLastFourMonthAsWeekWise(), HttpStatus.OK);
     }
     
     @RequestMapping(method = RequestMethod.GET, value = "/registers/elco-data-count")
@@ -167,7 +167,7 @@ public class RegisterController {
     @ResponseBody
     public ResponseEntity<List<CountServiceDTOForChart>>  getPWInformation(@RequestParam("provider") String provider, @RequestParam("district") String district,
 			@RequestParam("upazilla") String upazilla, @RequestParam("union") String union){
-    	return new ResponseEntity<>(dataCountService.getMotherCountInformation(), HttpStatus.OK);
+    	return new ResponseEntity<>(dataCountService.getPregnantWomenCountInformationForLastFourMonthAsWeekWise(), HttpStatus.OK);
     }
     
     @RequestMapping(method = RequestMethod.GET, value = "/registers/pw-data-count")

@@ -72,15 +72,74 @@ public class AllElcoIntegrationTest {
     	
 	 
 	 
-    	Long startTime =DateUtil.getStartTimeStampOfAMonth(0);
-    	ViewResult vr = allElcos.ElcoBetweenTwoDatesAsViewResult(startTime);
-    	for (ViewResult.Row row : vr.getRows()) {
+    	Long startTime =DateUtil.getStartTimeStampOfAMonth(3);
+    	ViewResult vr = allElcos.pregnantElcoBetweenTwoDatesAsViewResult(startTime);
+    	System.err.println(allElcos.totalElco());
+    	//System.out.println("Start"+allElcos.pregnantElcoBetweenTwoDatesAsViewResult(startTime).size());
+    	//this.convertViewResultToWeekWiseCount(vr);
+    	/*for (ViewResult.Row row : vr.getRows()) {
     		System.err.println("Row:"+Long.parseLong(row.getValue()));
-    	}
-    	System.err.println("startTime:"+startTime+ " : "+ vr.getRows().size());
+    	}*/
+    	//this.convertViewResultToWeekWiseCount(vr);
+    	/*System.err.println("startTime:"+startTime+ " : "+ vr.getRows().size());
     	Calendar c = Calendar.getInstance();
 		int dayOfTheMonth = c.get(Calendar.DAY_OF_MONTH);
-		System.out.println("dayOfTheMonth:"+dayOfTheMonth);
+		System.out.println("dayOfTheMonth:"+dayOfTheMonth);*/
     }
+    
+    private List<Integer> convertViewResultToWeekWiseCount( ViewResult vr){		
+		List<Integer> seperateWeeklyCountDataForRegisterFromViewResult = new ArrayList<>();
+		for (int index = 0; index < 23; index++) {
+			seperateWeeklyCountDataForRegisterFromViewResult.add(index,0);
+		}
+		WeekBoundariesAndTimestamps boundaries = DateUtil.getWeekBoundariesForDashboard();
+    	List<Long> startAndEndOfWeeksAsTimestamp = boundaries.weekBoundariesAsTimeStamp; 
+    	System.err.println("startAndEndOfWeeksAsTimestamp:"+startAndEndOfWeeksAsTimestamp);
+    	int todaysCount=0;
+    	long todayTimeStamp = DateUtil.getTimestampToday() ; 
+    	long oldTimeStamp=0;
+    	int oldPosition=0;
+    	int position = 0;
+    	for (ViewResult.Row row : vr.getRows()) {
+    		String stringValue = row.getValue(); 
+    		long value = Long.parseLong(stringValue);			
+			if(todayTimeStamp==value){
+				todaysCount++;
+			}			
+    		try{ 
+    			/*if(Long.parseLong(stringValue) == oldTimeStamp){
+    				Integer existingCount = seperateWeeklyCountDataForRegisterFromViewResult.get(oldPosition);
+    				seperateWeeklyCountDataForRegisterFromViewResult.set(oldPosition, existingCount+1);
+    			}else{*/
+	    			position = DateUtil.binarySearch(Long.parseLong(stringValue), startAndEndOfWeeksAsTimestamp);
+	    			Integer existingCount = seperateWeeklyCountDataForRegisterFromViewResult.get(position);
+	    			seperateWeeklyCountDataForRegisterFromViewResult.set(position, existingCount+1);
+    			/*}    			
+    			oldTimeStamp = Long.parseLong(stringValue);
+    			oldPosition = position;*/
+    			   			
+    		}catch(Exception e){
+    			e.printStackTrace();
+    		}
+    	}    	
+    	
+    	/*for(int monthIndex = 3; monthIndex >= 0; monthIndex--){
+			int month = DateUtil.getMontNumber(monthIndex);    		
+    		if(monthIndex ==3 && month==1 ){
+    			seperateWeeklyCountDataForRegisterFromViewResult.add(4, 0);    			
+    		}else if(monthIndex ==2 && month==1){
+    			seperateWeeklyCountDataForRegisterFromViewResult.add(9, 0);    			
+    		}else if(monthIndex ==1 && month==1){
+    			seperateWeeklyCountDataForRegisterFromViewResult.add(14, 0);    			
+    		}else if(monthIndex ==0 && month==1){
+    			seperateWeeklyCountDataForRegisterFromViewResult.add(19, 0);    			
+    		}else{
+    			
+    		}
+    	}*/
+    	seperateWeeklyCountDataForRegisterFromViewResult.set(20, todaysCount);
+    	System.out.println(seperateWeeklyCountDataForRegisterFromViewResult.toString());
+		return seperateWeeklyCountDataForRegisterFromViewResult;
+	}
   
 }
