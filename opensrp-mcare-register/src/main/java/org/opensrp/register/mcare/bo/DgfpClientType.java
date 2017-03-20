@@ -1,11 +1,11 @@
 package org.opensrp.register.mcare.bo;
 
-public enum UserType {
+public enum DgfpClientType {
 	HOUSE_HOLD,
 	MEMBERS;
 	
 	
-	public static UserType getUserType(String type) {
+	public static DgfpClientType getUserType(String type) {
 		if(type.equalsIgnoreCase("members")) {
 			return MEMBERS;
 		}else if(type.equalsIgnoreCase("household")) {

@@ -4,7 +4,9 @@ import static org.opensrp.web.HttpHeaderFactory.allowOrigin;
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,7 +19,9 @@ import org.opensrp.api.util.LocationTree;
 import org.opensrp.common.domain.UserDetail;
 import org.opensrp.connector.openmrs.service.OpenmrsLocationService;
 import org.opensrp.connector.openmrs.service.OpenmrsUserService;
+import org.opensrp.register.mcare.bo.DgfpClient;
 import org.opensrp.rest.repository.LuceneHouseHoldRepository;
+import org.opensrp.rest.repository.LuceneMemberRepository;
 import org.opensrp.web.security.DrishtiAuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,6 +36,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.github.ldriscoll.ektorplucene.LuceneResult;
+import com.github.ldriscoll.ektorplucene.LuceneResult.Row;
 import com.google.gson.Gson;
 import com.mysql.jdbc.StringUtils;
 
@@ -42,16 +47,18 @@ public class UserController {
 	private OpenmrsLocationService openmrsLocationService;
 	private OpenmrsUserService openmrsUserService;
 	private LuceneHouseHoldRepository luceneHouseHoldRespository;
+	private LuceneMemberRepository luceneMemberRespository;
 
 	@Autowired
 	public UserController(OpenmrsLocationService openmrsLocationService,
 			OpenmrsUserService openmrsUserService,
 			DrishtiAuthenticationProvider opensrpAuthenticationProvider,
-			 LuceneHouseHoldRepository luceneHouseHoldRespository) {
+			 LuceneHouseHoldRepository luceneHouseHoldRespository, LuceneMemberRepository luceneMemberRespository) {
 		this.openmrsLocationService = openmrsLocationService;
 		this.openmrsUserService = openmrsUserService;
 		this.opensrpAuthenticationProvider = opensrpAuthenticationProvider;
 		this.luceneHouseHoldRespository = luceneHouseHoldRespository;
+		this.luceneMemberRespository = luceneMemberRespository;
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/authenticate-user")
@@ -119,11 +126,32 @@ public class UserController {
 	public ResponseEntity<String> search(
 			@RequestParam("firstName") String firstName,
 			@RequestParam("nid") String nationalId) throws JSONException {
+		List<DgfpClient> dgfpClients = new ArrayList<DgfpClient>();
 		String makeQueryString = "type:household AND First_Name:" + firstName + "* AND NID:" + nationalId;
+		String makeMemberQueryString = "type:Members AND First_Name:" + firstName + "* AND NID:" + nationalId;
 		LuceneResult result = this.luceneHouseHoldRespository.findDocsByName(makeQueryString);
-		System.out.println(new Gson().toJson(result.getRows()));
-		
-		return new ResponseEntity<>(new Gson().toJson(1), OK);
+		LuceneResult memberResult = this.luceneMemberRespository.findDocsByName(makeMemberQueryString);
+		dgfpClients.addAll(this.createUserListFrom(result.getRows()));
+		dgfpClients.addAll(this.createUserListFrom(memberResult.getRows()));
+		System.out.println(new Gson().toJson(dgfpClients));
+		return new ResponseEntity<>(new Gson().toJson(dgfpClients), OK);
+	}
+	
+	private List<DgfpClient> createUserListFrom(List<Row> resultRows) {
+		List<DgfpClient> dgfpClients = new ArrayList<DgfpClient>();
+		for (Row row : resultRows) {
+			String caseId = this.getValue(row, "Case_Id");
+			String firstName = this.getValue(row, "First_Name");
+			String nationalId = this.getValue(row, "NID");
+			String birthId = this.getValue(row, "BR_ID");
+			String type = this.getValue(row, "type");
+			dgfpClients.add(new DgfpClient(caseId, firstName, nationalId, birthId, type));
+		}
+		return dgfpClients;
 	}
 
+	private String getValue(Row row, String key) {
+		return row.getFields().containsKey(key) ? (String) row
+				.getFields().get(key) : "";
+	}
 }
