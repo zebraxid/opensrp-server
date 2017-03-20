@@ -12,7 +12,7 @@ import java.net.URL;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.httpclient.HttpStatus;
 import org.opensrp.common.util.HttpResponse;
-
+import org.opensrp.connector.openmrs.service.TurnOffCertificateValidation;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 

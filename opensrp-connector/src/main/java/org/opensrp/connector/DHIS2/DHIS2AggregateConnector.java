@@ -3,23 +3,16 @@ package org.opensrp.connector.DHIS2;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.junit.Test;
-import org.opensrp.connector.HttpUtil;
-import org.opensrp.domain.Event;
-import org.opensrp.domain.Obs;
 import org.opensrp.repository.AllEvents;
-import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 /*import static org.opensrp.common.AllConstants.DHIS2.*;
 */
 @Service
-@PrepareForTest({ HttpUtil.class })
 public class DHIS2AggregateConnector extends DHIS2Service {
 	
 	@Autowired
@@ -64,7 +57,7 @@ public class DHIS2AggregateConnector extends DHIS2Service {
 	
 	}
 	
-	@Test
+	
 	public void getAggregatedDataCount() throws JSONException{
 			
 		

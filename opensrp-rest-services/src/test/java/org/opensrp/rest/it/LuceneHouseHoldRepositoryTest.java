@@ -60,7 +60,7 @@ public class LuceneHouseHoldRepositoryTest {
 	@Autowired
 	private LuceneHouseHoldRepository repo;*/
 
-    @Before
+   @Before
     public void setUp() throws IOException { 
         HttpClient httpClient = new StdHttpClient.Builder() 
                 .host("localhost") 
@@ -132,7 +132,7 @@ public class LuceneHouseHoldRepositoryTest {
 		System.out.println(day.getTime());
 		
 	}*/
-    /*@Test 
+    @Test 
     public void testInit() throws ParseException { 
     	//String makeQueryString ="PROVIDERID:proshanto" + " AND " + "FWUPAZILLA:GAIBANDHA SADAR" + " AND " + "user_type:FWA"+ " AND SUBMISSIONDATE:[2014-02-01 TO 2017-03-30]" ;
     	
@@ -146,18 +146,18 @@ public class LuceneHouseHoldRepositoryTest {
     	System.out.println("ddd:"+end);
     	System.out.println("ss:"+start);
     	//String makeQueryString ="PROVIDERID:proshanto" + " AND " + "user_type:FWA"+ " AND SUBMISSIONDATE:["+start+" TO "+end+"]" ;
-    	String makeQueryString ="type:Household AND PROVIDERID:rojina AND SUBMISSIONDATE:1463421600000";
-    	LuceneResult result = repo.findDocsByProvider(makeQueryString);
-    	//System.out.println(result.toString());
-    	System.out.println(result.getRows().size() + " -with specific type");
-    	System.out.println(result.getTotalRows());
-    	makeQueryString ="PROVIDERID:rojina AND SUBMISSIONDATE:1463421600000";
-    	result = repo.findDocsByProvider(makeQueryString);
-    	System.out.println(result.getRows().size() + " -without specific type");
-		
-        assertNotNull("Expecting a non null result", result); 
-        assertTrue("Should only have one result", result.getRows().size() >=0); 
-    } */
+ //   	String makeQueryString ="type:Household AND PROVIDERID:rojina AND SUBMISSIONDATE:1463421600000";
+   // 	LuceneResult result = repo.findDocsByProvider(makeQueryString);
+    //	System.out.println(result.toString());
+//    	System.out.println(result.getRows().size() + " -with specific type");
+//    	System.out.println(result.getTotalRows());
+//    	makeQueryString ="PROVIDERID:rojina AND SUBMISSIONDATE:1463421600000";
+//    	result = repo.findDocsByProvider(makeQueryString);
+//    	System.out.println(result.getRows().size() + " -without specific type");
+//		
+//        assertNotNull("Expecting a non null result", result); 
+//        assertTrue("Should only have one result", result.getRows().size() >=0); 
+    } 
     /*@Test 
     public void testRawkey() throws ParseException {
     	List<HouseHold> fetchedHH = repo.allHHsCreatedLastFourMonthsByLocation("[\"Gaibandha\"]", "[\"Gaibandha\",{}]");
@@ -166,4 +166,20 @@ public class LuceneHouseHoldRepositoryTest {
     	List<HouseHold> fetchedHHTemp = repo.allHHsCreatedLastFourMonthsByLocation("[\"Gaibandha\",\"GAIBANDHA%20SADAR\"]", "[\"Gaibandha\",\"GAIBANDHA%20SADAR\"{}]");
     	System.out.println("Number of fetched rows- " + fetchedHHTemp.size());
     }*/
+    
+    @Test
+    public void testNameSearch() throws ParseException {
+    	String makeQueryString = "type:household AND First_Name:ha* AND NID:''" ;
+    	LuceneResult result = repo.findDocsByName(makeQueryString);
+    	System.out.println(result.getTotalRows());
+    	System.out.println(makeQueryString);
+//    	result = repo.findDocsByProvider(makeQueryString);
+//    	System.out.println(result.getTotalRows());
+    	
+    }
 }
+
+/*
+org.ektorp.DbAccessException: 500:Internal Server Error
+URI: /_fti/local/opensrp/_design/HouseHold/by_provider?q=type%3AHousehold+AND+PROVIDERID%3Arojina+AND+SUBMISSIONDATE%3A1463421600000
+*/

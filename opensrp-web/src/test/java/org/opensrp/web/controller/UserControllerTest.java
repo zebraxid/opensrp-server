@@ -19,6 +19,7 @@ import org.opensrp.api.domain.User;
 import org.opensrp.api.util.LocationTree;
 import org.opensrp.connector.openmrs.service.OpenmrsLocationService;
 import org.opensrp.connector.openmrs.service.OpenmrsUserService;
+import org.opensrp.rest.repository.LuceneHouseHoldRepository;
 import org.opensrp.web.security.DrishtiAuthenticationProvider;
 import org.springframework.security.core.Authentication;
 
@@ -41,12 +42,15 @@ public class UserControllerTest extends TestResourceLoader{
 	private DrishtiAuthenticationProvider auth;
 	
 	@Mock
+	private LuceneHouseHoldRepository luceneHouseHoldRepository;
+	
+	@Mock
 	PasswordEncoder au;
 
 	@Before
     public void setUp() throws Exception {
 		initMocks(this);
-        this.controller = new UserController(locationservice, userservice, auth);
+        this.controller = new UserController(locationservice, userservice, auth, luceneHouseHoldRepository);
 	}
 	
 	@Test
