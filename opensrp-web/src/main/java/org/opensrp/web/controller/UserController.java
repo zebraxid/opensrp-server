@@ -124,17 +124,27 @@ public class UserController {
 
 	@RequestMapping(headers = { "Accept=application/json" }, method = GET, value = "/search")
 	public ResponseEntity<String> search(
-			@RequestParam("firstName") String firstName,
-			@RequestParam("nid") String nationalId) throws JSONException {
+			@RequestParam(value = "firstName", required = false) String firstName,
+			@RequestParam(value = "nid", required = false) String nationalId,
+			@RequestParam(value = "birthId", required = false) String birthId) throws JSONException {
 		List<DgfpClient> dgfpClients = new ArrayList<DgfpClient>();
-		String makeQueryString = "type:household AND First_Name:" + firstName + "* AND NID:" + nationalId;
-		String makeMemberQueryString = "type:Members AND First_Name:" + firstName + "* AND NID:" + nationalId;
+		System.out.println("nationalId: " + nationalId);
+		String makeQueryString = "type:household AND First_Name:" + firstName + "* AND NID:" + this.filterParameterForLuceneQuery(nationalId);
+		String makeMemberQueryString = "type:Members AND First_Name:" + firstName + "* AND NID:" + this.filterParameterForLuceneQuery(nationalId);
 		LuceneResult result = this.luceneHouseHoldRespository.findDocsByName(makeQueryString);
 		LuceneResult memberResult = this.luceneMemberRespository.findDocsByName(makeMemberQueryString);
 		dgfpClients.addAll(this.createUserListFrom(result.getRows()));
 		dgfpClients.addAll(this.createUserListFrom(memberResult.getRows()));
 		System.out.println(new Gson().toJson(dgfpClients));
 		return new ResponseEntity<>(new Gson().toJson(dgfpClients), OK);
+	}
+	
+	private String filterParameterForLuceneQuery(String parameter) {
+		if(parameter == null || parameter.isEmpty()){
+			return "\"\"";
+		}else {
+			return parameter;
+		}
 	}
 	
 	private List<DgfpClient> createUserListFrom(List<Row> resultRows) {
