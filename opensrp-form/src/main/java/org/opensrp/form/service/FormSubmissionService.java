@@ -66,6 +66,10 @@ public class FormSubmissionService {
     public List<FormSubmission> getAllSubmissions(Long version, Integer batchSize) {
         return allFormSubmissions.allFormSubmissions(version, batchSize);
     }
+    
+    public List<FormSubmission> getAllSubmissionByEntityId(String entityId) {
+    	return allFormSubmissions.findByEntityId(entityId);
+    }
 
     public void submit(List<FormSubmissionDTO> formSubmissionsDTO) {
         List<FormSubmission> formSubmissions = with(formSubmissionsDTO).convert(new Converter<FormSubmissionDTO, FormSubmission>() {

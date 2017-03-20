@@ -43,8 +43,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -102,6 +104,18 @@ public class FormSubmissionController {
         });
     }
 
+    @RequestMapping(value="/form-submissions/{entityId}",method=RequestMethod.GET)
+    @ResponseBody
+    private List<FormSubmissionDTO> getAllFormSubmissions(@PathVariable String entityId) {
+        List<FormSubmission> allSubmissions = formSubmissionService.getAllSubmissionByEntityId(entityId);
+        return with(allSubmissions).convert(new Converter<FormSubmission, FormSubmissionDTO>() {
+            @Override
+            public FormSubmissionDTO convert(FormSubmission submission) {
+                return FormSubmissionConverter.from(submission);
+            }
+        });
+    }
+    
     @RequestMapping(method = GET, value="/all-form-submissions")
     @ResponseBody
     private List<FormSubmissionDTO> getAllFormSubmissions(@RequestParam("timestamp") Long timeStamp,

@@ -91,4 +91,19 @@ public class AllSubmissionsIntegrationTest {
 
         assertEquals(0, formSubmissions.findByANMIDAndServerVersion("ANM 1", thirdFormSubmission.serverVersion(), null).size());
     }
+    
+    @Test
+    public void shouldFetchAllFormSubmissonsBasedOnEntityId() throws Exception {
+    	long baseTimeStamp = DateUtil.now().getMillis();
+        FormSubmission firstFormSubmission = new FormSubmission("ANM 1", "instance id 1", "form name 1", "entity id 1", 0L, "1", null, baseTimeStamp);
+        formSubmissions.add(firstFormSubmission);
+
+        FormSubmission secondFormSubmission = new FormSubmission("ANM 1", "instance id 2", "form name 1", "entity id 1", 1L, "1", null, baseTimeStamp + 1);
+        formSubmissions.add(secondFormSubmission);
+
+        FormSubmission thirdFormSubmission = new FormSubmission("ANM 1", "instance id 3", "form name 1", "entity id 3", 2L, "1", null, baseTimeStamp + 2);
+        formSubmissions.add(thirdFormSubmission);
+        
+        assertEquals(asList(firstFormSubmission, secondFormSubmission, thirdFormSubmission), formSubmissions.findByEntityId("entity id 1"));
+    }
 }

@@ -125,4 +125,12 @@ public class AllFormSubmissions extends MotechBaseRepository<FormSubmission> {
         }
         return db.queryView(query, FormSubmission.class);*/
     }
+	
+	@View(
+			name = "formSubmission_by_entity_id",
+			map = "function(doc) { if (doc.type === 'FormSubmission') { emit(doc.entityId, null); } }")
+	public List<FormSubmission> findByEntityId(String entityId) {
+		 List<FormSubmission> submissions = queryView("formSubmission_by_entity_id", entityId);
+		 return submissions;
+	}
 }
