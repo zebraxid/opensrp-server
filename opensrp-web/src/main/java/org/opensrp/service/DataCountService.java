@@ -38,22 +38,16 @@ import org.springframework.stereotype.Service;
 public class DataCountService {
 	private static Logger logger = LoggerFactory.getLogger(DataCountService.class);
 	private final AllHouseHolds allHouseHolds;
-	private final AllElcos allElcos;
-	private LuceneHouseHoldService luceneHouseHoldService;
-	private LuceneFormService luceneFormService;
-	private LuceneElcoService luceneElcoService;
+	private final AllElcos allElcos;	
+	private LuceneFormService luceneFormService;	
 	private LuceneMotherService luceneMotherService;
-	private LuceneScheduleService luceneScheduleService;
-	private AllMothers allMothers;
+	private LuceneScheduleService luceneScheduleService;	
 	@Autowired
-	public DataCountService(AllHouseHolds allHouseHolds,LuceneHouseHoldService luceneHouseHoldService, 
-			LuceneFormService luceneFormService,LuceneElcoService luceneElcoService,AllElcos allElcos,
-			AllMothers allMothers,LuceneMotherService luceneMotherService,LuceneScheduleService luceneScheduleService){
+	public DataCountService(AllHouseHolds allHouseHolds,LuceneFormService luceneFormService,AllElcos allElcos,
+			LuceneMotherService luceneMotherService,LuceneScheduleService luceneScheduleService){
 		this.allHouseHolds = allHouseHolds;
-		this.luceneHouseHoldService = luceneHouseHoldService;
-		this.luceneElcoService = luceneElcoService;
-		this.allElcos = allElcos;
-		this.allMothers = allMothers;
+		
+		this.allElcos = allElcos;		
 		this.luceneMotherService = luceneMotherService;
 		this.luceneFormService = luceneFormService;
 		this.luceneScheduleService = luceneScheduleService;

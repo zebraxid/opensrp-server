@@ -70,11 +70,11 @@ public class AllElcoIntegrationTest {
     @Test
     public void hhTest() throws ParseException{
     	
+    	System.err.println(DateUtil.getCurrentMonthCurrentweek());
 	 
-	 
-    	Long startTime =DateUtil.getStartTimeStampOfAMonth(3);
+    	/*Long startTime =DateUtil.getStartTimeStampOfAMonth(3);
     	ViewResult vr = allElcos.pregnantElcoBetweenTwoDatesAsViewResult(startTime);
-    	System.err.println(allElcos.totalElco());
+    	System.err.println(allElcos.totalElco());*/
     	//System.out.println("Start"+allElcos.pregnantElcoBetweenTwoDatesAsViewResult(startTime).size());
     	//this.convertViewResultToWeekWiseCount(vr);
     	/*for (ViewResult.Row row : vr.getRows()) {
@@ -107,23 +107,23 @@ public class AllElcoIntegrationTest {
 				todaysCount++;
 			}			
     		try{ 
-    			/*if(Long.parseLong(stringValue) == oldTimeStamp){
+    			if(Long.parseLong(stringValue) == oldTimeStamp){
     				Integer existingCount = seperateWeeklyCountDataForRegisterFromViewResult.get(oldPosition);
     				seperateWeeklyCountDataForRegisterFromViewResult.set(oldPosition, existingCount+1);
-    			}else{*/
+    			}else{
 	    			position = DateUtil.binarySearch(Long.parseLong(stringValue), startAndEndOfWeeksAsTimestamp);
 	    			Integer existingCount = seperateWeeklyCountDataForRegisterFromViewResult.get(position);
 	    			seperateWeeklyCountDataForRegisterFromViewResult.set(position, existingCount+1);
-    			/*}    			
+    			}    			
     			oldTimeStamp = Long.parseLong(stringValue);
-    			oldPosition = position;*/
+    			oldPosition = position;
     			   			
     		}catch(Exception e){
     			e.printStackTrace();
     		}
     	}    	
     	
-    	/*for(int monthIndex = 3; monthIndex >= 0; monthIndex--){
+    	for(int monthIndex = 3; monthIndex >= 0; monthIndex--){
 			int month = DateUtil.getMontNumber(monthIndex);    		
     		if(monthIndex ==3 && month==1 ){
     			seperateWeeklyCountDataForRegisterFromViewResult.add(4, 0);    			
@@ -136,7 +136,7 @@ public class AllElcoIntegrationTest {
     		}else{
     			
     		}
-    	}*/
+    	}
     	seperateWeeklyCountDataForRegisterFromViewResult.set(20, todaysCount);
     	System.out.println(seperateWeeklyCountDataForRegisterFromViewResult.toString());
 		return seperateWeeklyCountDataForRegisterFromViewResult;

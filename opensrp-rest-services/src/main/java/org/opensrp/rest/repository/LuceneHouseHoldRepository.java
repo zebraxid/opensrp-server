@@ -44,6 +44,7 @@ import com.github.ldriscoll.ektorplucene.designdocument.annotation.Index;
 	    index = "function(rec) {" +
 	    		" var doc=new Document();" + 
 	    		" doc.add(rec.FWDIVISION,{\"field\":\"FWDIVISION\", \"store\":\"yes\"}); " +
+	    		" doc.add(rec.FWHOHGENDER,{\"field\":\"FWHOHGENDER\", \"store\":\"yes\"}); " +
 	    		" doc.add(rec.user_type,{\"field\":\"user_type\", \"store\":\"yes\"}); " +
 	    		" doc.add(rec.FWNHREGDATE,{\"field\":\"FWNHREGDATE\", \"store\":\"yes\"}); " +
 	    		" doc.add(rec.FWHOHFNAME,{\"field\":\"FWHOHFNAME\", \"store\":\"yes\"}); " +

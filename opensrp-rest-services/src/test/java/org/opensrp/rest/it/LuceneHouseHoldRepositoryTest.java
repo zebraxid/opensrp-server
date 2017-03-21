@@ -132,7 +132,7 @@ public class LuceneHouseHoldRepositoryTest {
 		System.out.println(day.getTime());
 		
 	}*/
-    /*@Test 
+    @Test 
     public void testInit() throws ParseException { 
     	//String makeQueryString ="PROVIDERID:proshanto" + " AND " + "FWUPAZILLA:GAIBANDHA SADAR" + " AND " + "user_type:FWA"+ " AND SUBMISSIONDATE:[2014-02-01 TO 2017-03-30]" ;
     	
@@ -157,7 +157,7 @@ public class LuceneHouseHoldRepositoryTest {
 		
         assertNotNull("Expecting a non null result", result); 
         assertTrue("Should only have one result", result.getRows().size() >=0); 
-    } */
+    } 
     /*@Test 
     public void testRawkey() throws ParseException {
     	List<HouseHold> fetchedHH = repo.allHHsCreatedLastFourMonthsByLocation("[\"Gaibandha\"]", "[\"Gaibandha\",{}]");
@@ -167,13 +167,7 @@ public class LuceneHouseHoldRepositoryTest {
     	System.out.println("Number of fetched rows- " + fetchedHHTemp.size());
     }*/
     
-    @Test 
-    public void testHouseHoldCount() throws ParseException {
-    	String makeQueryString ="type:Household" ;
-    	System.out.println(System.currentTimeMillis());
-    	System.out.println("COunt:"+repo.hhCount(makeQueryString));
-    	System.err.println(System.currentTimeMillis());
-    }
+    
     
    
 }

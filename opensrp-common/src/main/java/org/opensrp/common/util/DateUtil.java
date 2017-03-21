@@ -116,7 +116,7 @@ public class DateUtil {
     public static int getCurrentMonthCurrentweek(){
     	Calendar c = Calendar.getInstance();
 		int dayOfTheMonth = c.get(Calendar.DAY_OF_MONTH);		
-		return (int) Math.floor(dayOfTheMonth/7) ;
+		return (int) Math.floor(dayOfTheMonth/7)-1 ;
     }
    
 	public static Long getStartTimeStampOfAMonth(int monthIndex){

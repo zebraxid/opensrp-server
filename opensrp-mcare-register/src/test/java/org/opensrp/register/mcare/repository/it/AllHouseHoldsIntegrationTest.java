@@ -198,20 +198,80 @@ public class AllHouseHoldsIntegrationTest {
 		System.out.println(elcoViewResult.getRows().size() + " count of mothers from gaibandha" );
 		//return this.coverViewResultToCount(elcoViewResult);
     }
-   @Test
+   @Ignore@Test
     public void hhTest() throws ParseException{
     	/*ViewResult vr = allHouseHolds.allHHsCreatedLastFourMonthsViewResult();
     	System.out.println("data Total:"+vr.getTotalRows());
     	System.out.println("data:"+vr.getRows().size());*/
 	 
-	   System.out.println("Total by All :"+allHouseHolds.getAll().size());
-    	Long startTime =DateUtil.getStartTimeStampOfAMonth(0);
+	   //System.out.println("Total by All :"+allHouseHolds.getAll().size());
+	   System.err.println(DateUtil.getCurrentMonthCurrentweek());
+    	Long startTime =DateUtil.getStartTimeStampOfAMonth(3);
     	ViewResult vr = allHouseHolds.HouseholdBetweenTwoDatesAsViewResult(startTime);
     	System.err.println("startTime:"+startTime+ " : "+ vr.getRows().size());
     	Calendar c = Calendar.getInstance();
 		int dayOfTheMonth = c.get(Calendar.DAY_OF_MONTH);
 		System.out.println("dayOfTheMonth:"+dayOfTheMonth);
+		
+		this.convertViewResultToWeekWiseCount(vr);
     }
+   
+   private List<Integer> convertViewResultToWeekWiseCount( ViewResult vr){		
+		List<Integer> seperateWeeklyCountDataForRegisterFromViewResult = new ArrayList<>();
+		for (int index = 0; index < 23; index++) {
+			seperateWeeklyCountDataForRegisterFromViewResult.add(index,0);
+		}
+		WeekBoundariesAndTimestamps boundaries = DateUtil.getWeekBoundariesForDashboard();
+   	List<Long> startAndEndOfWeeksAsTimestamp = boundaries.weekBoundariesAsTimeStamp;
+   	System.err.println(startAndEndOfWeeksAsTimestamp.toString());
+   	int todaysCount=0;
+   	long todayTimeStamp = DateUtil.getTimestampToday() ; 
+   	long oldTimeStamp=0;
+   	int oldPosition=0;
+   	int position = 0;
+   	for (ViewResult.Row row : vr.getRows()) {
+   		String stringValue = row.getValue(); 
+   		long value = Long.parseLong(stringValue);			
+			if(todayTimeStamp==value){
+				todaysCount++;
+			}			
+   		try{ 
+   			if(Long.parseLong(stringValue) == oldTimeStamp){
+   				System.out.println("oldTimeStamp:"+oldTimeStamp +" : " +oldPosition);
+   				Integer existingCount = seperateWeeklyCountDataForRegisterFromViewResult.get(oldPosition);
+   				seperateWeeklyCountDataForRegisterFromViewResult.set(oldPosition, existingCount+1);
+   			}else{
+	    			position = DateUtil.binarySearch(Long.parseLong(stringValue), startAndEndOfWeeksAsTimestamp);
+	    			Integer existingCount = seperateWeeklyCountDataForRegisterFromViewResult.get(position);
+	    			seperateWeeklyCountDataForRegisterFromViewResult.set(position, existingCount+1);
+	    			System.out.println("TimeStamp:"+Long.parseLong(stringValue) +" : " +position);
+   			}    			
+   			oldTimeStamp = Long.parseLong(stringValue);
+   			oldPosition = position;
+   			   			
+   		}catch(Exception e){
+   			e.printStackTrace();
+   		}
+   	}    	
+   	
+   	for(int monthIndex = 3; monthIndex >= 0; monthIndex--){
+			int month = DateUtil.getMontNumber(monthIndex);    		
+   		if(monthIndex ==3 && month==1 ){
+   			seperateWeeklyCountDataForRegisterFromViewResult.add(4, 0);    			
+   		}else if(monthIndex ==2 && month==1){
+   			seperateWeeklyCountDataForRegisterFromViewResult.add(9, 0);    			
+   		}else if(monthIndex ==1 && month==1){
+   			seperateWeeklyCountDataForRegisterFromViewResult.add(14, 0);    			
+   		}else if(monthIndex ==0 && month==1){
+   			seperateWeeklyCountDataForRegisterFromViewResult.add(19, 0);    			
+   		}else{
+   			
+   		}
+   	}
+   	seperateWeeklyCountDataForRegisterFromViewResult.set(20, todaysCount);
+		return seperateWeeklyCountDataForRegisterFromViewResult;
+	}
+   
    @Ignore@Test
    public void  getWeekBoundariesForDashboard(){   	
    	Calendar now = GregorianCalendar.getInstance();   	
