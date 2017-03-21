@@ -1,5 +1,6 @@
 package org.opensrp.web.controller;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.opensrp.dto.CountServiceDTO;
@@ -22,15 +23,24 @@ import org.opensrp.register.mcare.service.ChildRegisterService;
 import org.opensrp.register.mcare.service.ELCORegisterService;
 import org.opensrp.register.mcare.service.HHRegisterService;
 import org.opensrp.register.mcare.service.MultimediaRegisterService;
+import org.opensrp.rest.register.dto.CommonDTO;
+import org.opensrp.rest.register.dto.HouseholdEntryDTO;
+import org.opensrp.rest.services.LuceneHouseHoldService;
 import org.opensrp.service.DataCountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.google.gson.Gson;
+
 
 @Controller
 public class RegisterController {
@@ -46,6 +56,10 @@ public class RegisterController {
 	private MultimediaRegisterService multimediaRegisterService;
 	private DataCountService dataCountService;
 
+	@Autowired
+	private LuceneHouseHoldService luceneHouseHoldService;
+	
+	
 	@Autowired
 	public RegisterController(ELCORegisterService ecRegisterService, ELCORegisterMapper ecRegisterMapper, HHRegisterService hhRegisterService,
 			HHRegisterMapper hhRegisterMapper, ANCRegisterService ancRegisterService, ANCRegisterMapper ancRegisterMapper,
@@ -63,34 +77,7 @@ public class RegisterController {
 		this.dataCountService = dataCountService;
 	}
 
-	/*@RequestMapping(method = RequestMethod.GET, value = "/registers/hh")
-	@ResponseBody
-	public ResponseEntity<HHRegisterDTO> hhRegister(@RequestParam("anm-id") String anmIdentifier) {
-		HHRegister hhRegister = hhRegisterService.getHHRegisterForProvider(anmIdentifier);
-		return new ResponseEntity<>(hhRegisterMapper.mapToDTO(hhRegister), HttpStatus.OK);
-	}*/
-
-	/*@RequestMapping(method = RequestMethod.GET, value = "/registers/ec")
-	@ResponseBody
-	public ResponseEntity<ELCORegisterDTO> ecRegister(@RequestParam("anm-id") String anmIdentifier) {
-		ELCORegister ecRegister = ecRegisterService.getELCORegisterForProvider(anmIdentifier);
-		return new ResponseEntity<>(ecRegisterMapper.mapToDTO(ecRegister), HttpStatus.OK);
-	}*/
-
-	/*@RequestMapping(method = RequestMethod.GET, value = "/registers/household")
-	@ResponseBody
-	public ResponseEntity<HHRegisterDTO> householdRegister(@RequestParam("start-date") String startdate, @RequestParam("end-date") String enddate) {
-		HHRegister hhRegister = hhRegisterService.getHHRegister("HouseHold", startdate, enddate);
-		return new ResponseEntity<>(hhRegisterMapper.mapToDTO(hhRegister), HttpStatus.OK);
-	}*/
-/*
-	@RequestMapping(method = RequestMethod.GET, value = "/registers/elco")
-	@ResponseBody
-	public ResponseEntity<ELCORegisterDTO> elcoRegister(@RequestParam("start-date") String startdate, @RequestParam("end-date") String enddate) {
-		ELCORegister ecRegister = ecRegisterService.getELCORegister("Elco", startdate, enddate);
-		return new ResponseEntity<>(ecRegisterMapper.mapToDTO(ecRegister), HttpStatus.OK);
-	}*/
-
+	
 
 	@RequestMapping(method = RequestMethod.GET, value = "/registers/anc")
 	@ResponseBody
@@ -177,53 +164,7 @@ public class RegisterController {
     	return new ResponseEntity<>(dataCountService.getMotherCountInformationForChart(provider, district, upazilla, union), HttpStatus.OK);
     }
 
-	/*
-	 * private ANCRegisterService ancRegisterService; private PNCRegisterService
-	 * pncRegisterService; private ECRegisterService ecRegisterService; private
-	 * ChildRegisterService childRegisterService; private FPRegisterService
-	 * fpRegisterService;e private ANCRegisterMapper ancRegisterMapper; private
-	 * ECRegisterMapper ecRegisterMapper; private ChildRegisterMapper
-	 * childRegisterMapper; private FPRegisterMapper fpRegisterMapper; private
-	 * PNCRegisterMapper pncRegisterMapper;
-	 * 
-	 * @Autowired public RegisterController(ANCRegisterService
-	 * ancRegisterService, PNCRegisterService pncRegisterService,
-	 * ECRegisterService ecRegisterService, ChildRegisterService
-	 * childRegisterService, FPRegisterService fpRegisterService,
-	 * ANCRegisterMapper ancRegisterMapper, ECRegisterMapper ecRegisterMapper,
-	 * ChildRegisterMapper childRegisterMapper, FPRegisterMapper
-	 * fpRegisterMapper, PNCRegisterMapper pncRegisterMapper) {
-	 * this.ancRegisterService = ancRegisterService; this.ecRegisterService =
-	 * ecRegisterService; this.pncRegisterService = pncRegisterService;
-	 * this.childRegisterService = childRegisterService; this.fpRegisterService
-	 * = fpRegisterService; this.ancRegisterMapper = ancRegisterMapper;
-	 * this.ecRegisterMapper = ecRegisterMapper; this.childRegisterMapper =
-	 * childRegisterMapper; this.fpRegisterMapper = fpRegisterMapper;
-	 * this.pncRegisterMapper = pn@RequestMapping(method = GET, value =
-	 * "/registers/ec")
-	 * 
-	 * @ResponseBody public ResponseEntity<ECRegisterDTO>
-	 * ecRegister(@RequestParam("anm-id") String anmIdentifier) { ECRegister
-	 * ecRegister = ecRegisterService.getRegisterForANM(anmIdentifier); return
-	 * new ResponseEntity<>(ecRegisterMapper.mapToDTO(ecRegister),
-	 * HttpStatus.OK); }
-	 * 
-	 * @RequestMapping(method = GET, value = "/registers/anc")
-	 * 
-	 * @ResponseBody public ResponseEntity<ANCRegisterDTO>
-	 * ancRegister(@RequestParam("anm-id") String anmIdentifier) { ANCRegister
-	 * ancRegister = ancRegisterService.getRegisterForANM(anmIdentifier); return
-	 * new ResponseEntity<>(ancRegisterMapper.mapToDTO(ancRegister),
-	 * HttpStatus.OK); }cRegisterMapper; }
-	 * 
-	 * @RequestMapping(method = GET, value = "/registers/ec")
-	 * 
-	 * @ResponseBody public ResponseEntity<ECRegisterDTO>
-	 * ecRegister(@RequestParam("anm-id") String anmIdentifier) { ECRegister
-	 * ecRegister = ecRegisterService.getRegisterForANM(anmIdentifier); return
-	 * new ResponseEntity<>(ecRegisterMapper.mapToDTO(ecRegister),
-	 * HttpStatus.OK); }
-	 */
+	
 
 	@RequestMapping(method = RequestMethod.GET, value = "/getMultimedia")
 	@ResponseBody
@@ -231,34 +172,46 @@ public class RegisterController {
 		// multimediaRegisterService.getMultimedia();
 		return new ResponseEntity<>("Welcome to multimedia service", HttpStatus.OK);
 	}
+	
 
-	/*
-	 * @RequestMapping(method = GET, value = "/registers/child")
-	 * 
-	 * @ResponseBody public ResponseEntity<ChildRegisterDTO>
-	 * childRegister(@RequestParam("anm-id") String anmIdentifier) {
-	 * ChildRegister childRegister =
-	 * childRegisterService.getRegisterForANM(anmIdentifier); return new
-	 * ResponseEntity<>(childRegisterMapper.mapToDTO(childRegister),
-	 * HttpStatus.OK); }
-	 * 
-	 * @RequestMapping(method = GET, value = "/registers/fp")
-	 * 
-	 * @ResponseBody public ResponseEntity<FPRegisterDTO>
-	 * fpRegister(@RequestParam("anm-id") String anmIdentifier) { FPRegister
-	 * fpRegister = fpRegisterService.getRegisterForANM(anmIdentifier); return
-	 * new ResponseEntity<>(fpRegisterMapper.mapToDTO(fpRegister),
-	 * HttpStatus.OK);
-	 * 
-	 * }
-	 * 
-	 * @RequestMapping(method = GET, value = "/registers/pnc")
-	 * 
-	 * @ResponseBody public ResponseEntity<PNCRegisterDTO>
-	 * pncRegister(@RequestParam("anm-id") String anmIdentifier) { PNCRegister
-	 * pncRegister = pncRegisterService.getRegisterForANM(anmIdentifier); return
-	 * new ResponseEntity<>(pncRegisterMapper.mapToDTO(pncRegister),
-	 * HttpStatus.OK); }
-	 */
-
+	//Search register data
+	 /**
+	  * @param queryParameters is a list of key.
+	  * @param p is a number of page.
+	  * @param limit is a data limit.
+	  * @return all households match with specified key.
+	  * */
+	@RequestMapping(method = RequestMethod.GET, value="/household-search")
+	@ResponseBody
+	public ResponseEntity<CommonDTO<HouseholdEntryDTO>> getHouseholdByKeys(@RequestParam MultiValueMap<String, String> queryParameters,@RequestParam int p,@RequestParam int limit) throws JsonParseException, JsonMappingException, IOException
+	{
+		CommonDTO<HouseholdEntryDTO>  households  = luceneHouseHoldService.getData(queryParameters,p,limit);
+		return new ResponseEntity<>(households, HttpStatus.OK);
+	}
+	/**		 
+	* @param  @param queryParameters is a list of key.
+	* @return total count of households
+	* @throws IOException 
+	* @throws JsonMappingException 
+	* @throws JsonParseException 
+	* */
+	@RequestMapping(headers = { "Accept=application/json" }, method = RequestMethod.GET, value = "/get-household-count-by-keys")
+	@ResponseBody
+	public ResponseEntity<String> getHouseholdCountByKeys(@RequestParam MultiValueMap<String, String> queryParameters) throws JsonParseException, JsonMappingException, IOException {
+		return new ResponseEntity<>(new Gson().toJson(luceneHouseHoldService.getDataCount(queryParameters)), HttpStatus.OK);
+	}
+		
+	/**	 
+	* @param id is a household id of couchdb auto incremented ID.
+	* @return household details of a specified @id 	 * 
+	* @throws IOException 
+	* @throws JsonMappingException 
+	* @throws JsonParseException 
+	* */
+	@RequestMapping(headers = { "Accept=application/json" }, method = RequestMethod.GET, value = "/get-household-details")
+	@ResponseBody
+	public ResponseEntity<String> getHouseholdById(@RequestParam String id) throws JsonParseException, JsonMappingException, IOException {
+		return new ResponseEntity<>(new Gson().toJson(hhRegisterService.getHouseholdById(id)), HttpStatus.OK);
+	}
+	
 }

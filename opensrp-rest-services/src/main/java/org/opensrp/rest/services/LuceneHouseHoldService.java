@@ -2,29 +2,23 @@ package org.opensrp.rest.services;
 
 import java.io.IOException;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import org.json.JSONObject;
-import org.opensrp.dto.register.HHRegisterDTO;
-import org.opensrp.dto.register.HHRegisterEntryDTO;
+import org.opensrp.rest.register.dto.CommonDTO;
+import org.opensrp.rest.register.dto.HouseholdEntryDTO;
 import org.opensrp.rest.repository.LuceneHouseHoldRepository;
 import org.opensrp.rest.util.ConvertDateStringToTimestampMills;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.MultiValueMap;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -32,14 +26,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.introspect.VisibilityChecker;
 import com.github.ldriscoll.ektorplucene.LuceneResult;
 import com.github.ldriscoll.ektorplucene.LuceneResult.Row;
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
 
 @Service
 public class LuceneHouseHoldService {
-	private static Logger logger = LoggerFactory.getLogger(LuceneHouseHoldService.class);
 
 	private LuceneHouseHoldRepository luceneHouseHoldRepository;
 	private ConvertDateStringToTimestampMills convertDateStringToTimestampMills;
+	@Autowired
+	private DynamicQueryString dynamicQueryString;
 	@Autowired
 	public LuceneHouseHoldService(
 			LuceneHouseHoldRepository luceneHouseHoldRepository,ConvertDateStringToTimestampMills convertDateStringToTimestampMills) {
@@ -47,41 +41,8 @@ public class LuceneHouseHoldService {
 		this.convertDateStringToTimestampMills = convertDateStringToTimestampMills;
 	}
 
-	public HHRegisterDTO findLuceneResult(MultiValueMap<String, String> queryParameters) throws JsonParseException, JsonMappingException,
-			IOException {
-		ObjectMapper mapper = new ObjectMapper();
-		// mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
-		// false);
-		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-		mapper.setVisibilityChecker(VisibilityChecker.Std.defaultInstance()
-				.withFieldVisibility(JsonAutoDetect.Visibility.ANY));
-		Map<String, String> preparedParameters = prepareParameters(queryParameters);
-		String makeQueryString = "";
-		int paramCounter = 1;
-		for(Entry<String, String> entry : preparedParameters.entrySet())
-		{
-			makeQueryString+=entry.getKey()+":"+entry.getValue();
-			
-			if(preparedParameters.size()>paramCounter)
-				makeQueryString+=" AND ";
-			
-			paramCounter++;
-		}
-		
-		LuceneResult luceneResult = luceneHouseHoldRepository
-				.findDocsByProvider(makeQueryString);
-		List<Row> rows = luceneResult.getRows();
-		List<HHRegisterEntryDTO> hhRegisterEntryDTOList = new ArrayList<HHRegisterEntryDTO>();
-
-		for (Row row : rows) {
-			LinkedHashMap<String, Object> fields = row.getFields();
-			String jsonString = new JSONObject(fields).toString();
-			hhRegisterEntryDTOList.add(mapper.readValue(jsonString.getBytes(),
-					HHRegisterEntryDTO.class));
-		}
-		return new HHRegisterDTO(hhRegisterEntryDTOList);
-	}
-
+	
+	
 	/**
 	 * This method return Household count as today, this month or this week
 	 * @param start this may be start date of a month or week
@@ -89,59 +50,62 @@ public class LuceneHouseHoldService {
 	 * */
 	public int getHouseholdCount(String start,String end){
 		if(start.equalsIgnoreCase("")){
-			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-	    	Date today = Calendar.getInstance().getTime();    	
-			String makeQueryString ="type:Household" + " AND "+ "SUBMISSIONDATE:["+convertDateStringToTimestampMills.convertDateToTimestampMills(dateFormat.format(today))+" TO "+convertDateStringToTimestampMills.convertDateToTimestampMills(dateFormat.format(today))+"]" ;
-	    	LuceneResult result = luceneHouseHoldRepository.findDocsByProvider(makeQueryString);
-			return result.getTotalRows();
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    	Date today = Calendar.getInstance().getTime();    	
+		String makeQueryString ="type:Household" + " AND "+ "SUBMISSIONDATE:["+convertDateStringToTimestampMills.convertDateToTimestampMills(dateFormat.format(today))+" TO "+convertDateStringToTimestampMills.convertDateToTimestampMills(dateFormat.format(today))+"]" ;
+    	LuceneResult result = luceneHouseHoldRepository.findDocsByProvider(makeQueryString);
+		return result.getRows().size();
 		}else{
 			String makeQueryString ="type:Household" + " AND " + "SUBMISSIONDATE:["+convertDateStringToTimestampMills.convertDateToTimestampMills(start)+" TO "+convertDateStringToTimestampMills.convertDateToTimestampMills(end)+"]" ;
 	    	LuceneResult result = luceneHouseHoldRepository.findDocsByProvider(makeQueryString);
-			return result.getTotalRows();//.size();
-		}	
-	}
-	
-	public int getHouseHoldCount(String start,String end,String anmId){	
-		if(start!= null && !start.isEmpty() && !start.equalsIgnoreCase("") && end!= null && !end.isEmpty() && !end.equalsIgnoreCase("")){
-			LuceneResult result = luceneHouseHoldRepository.getByCriteria(convertDateStringToTimestampMills.convertDateToTimestampMills(start),convertDateStringToTimestampMills.convertDateToTimestampMills(end),anmId);
-			return result.getRows().size();	
+			return result.getRows().size();
 		}
-		else{
-			LuceneResult result = luceneHouseHoldRepository.getByCriteria(0,0,anmId);
-			return result.getRows().size();	
+		
+		
+	}
+	
+	/**
+	 * @param queryParameters is a list of parameters.
+	 * @param p page number.
+	 * @param limit number of records to display in a page.
+	 * @return 	Household data list.
+	 * */
+	
+	public CommonDTO<HouseholdEntryDTO> getData(MultiValueMap<String, String> queryParameters,int p,int limit) throws JsonParseException, JsonMappingException,
+	IOException {
+		ObjectMapper mapper = new ObjectMapper();		
+		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+		mapper.setVisibilityChecker(VisibilityChecker.Std.defaultInstance()
+				.withFieldVisibility(JsonAutoDetect.Visibility.ANY));		
+		LuceneResult luceneResult = luceneHouseHoldRepository
+				.getData(dynamicQueryString.makeDynamicQueryAsString(queryParameters), p,limit);
+		List<Row> rows = luceneResult.getRows();
+		 
+		List<HouseholdEntryDTO> dataList = new ArrayList<HouseholdEntryDTO>();
+		
+		for (Row row : rows) {
+			LinkedHashMap<String, Object> fields = row.getFields();			
+			String jsonString = new JSONObject(fields).toString();
+			dataList.add(mapper.readValue(jsonString.getBytes(),
+					HouseholdEntryDTO.class));
 		}
+		return new CommonDTO<HouseholdEntryDTO>(dataList);
 	}
 	
-	public int getHouseholdCountForChart(String start,String end){
-		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-    	//Date today = Calendar.getInstance().getTime();    	
-		String makeQueryString ="type:Household" + " AND "+ "SUBMISSIONDATE:["+convertDateStringToTimestampMills.convertDateToTimestampMills(start)+" TO "+convertDateStringToTimestampMills.convertDateToTimestampMills(end)+"]" ;
-    	LuceneResult result = luceneHouseHoldRepository.findDocsByProvider(makeQueryString);
-    	int size = result.getRows().size();//getTotalRows();
-    	logger.info("start- " + start + " -end- " + end + " -size- " + size);
-		return size;
-		/*logger.info("here couch lucene will be used.");
-		return 1;*/
-	}
-	private Map<String, String> prepareParameters(MultiValueMap<String, String> queryParameters) {
-
-		Map<String, String> parameters = new HashMap<String, String>();
-
-		Iterator<String> it = queryParameters.keySet().iterator();
-
-		while (it.hasNext()) {
-			String theKey = (String) it.next();
-			parameters.put(theKey, queryParameters.getFirst(theKey));
-		}
-
-		return parameters;
-
-	}
+	/**
+	 * @param queryParameters is a list of parameters.	 
+	 * @return 	Household data count.
+	 * */
+	public int getDataCount(MultiValueMap<String, String> queryParameters) throws JsonParseException, JsonMappingException,
+	IOException {
+		ObjectMapper mapper = new ObjectMapper();		
+		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+		mapper.setVisibilityChecker(VisibilityChecker.Std.defaultInstance()
+				.withFieldVisibility(JsonAutoDetect.Visibility.ANY));		
+		return luceneHouseHoldRepository
+				.getDataCount(dynamicQueryString.makeDynamicQueryAsString(queryParameters));
 	
-	public void someFunc(){
-		logger.info("simple function call");
 	}
-	
 	
 	
 }

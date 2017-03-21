@@ -161,5 +161,7 @@ public class HHRegisterService {
         }
         return new HHRegister(hhRegisterEntries);
 	}	*/
-	
+	public HouseHold getHouseholdById(String id){
+		return allHouseHolds.get(id);
+	}
 }

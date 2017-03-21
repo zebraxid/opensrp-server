@@ -30,14 +30,7 @@ import com.github.ldriscoll.ektorplucene.LuceneResult.Row;
 import com.github.ldriscoll.ektorplucene.designdocument.LuceneDesignDocument;
 import com.github.ldriscoll.ektorplucene.designdocument.annotation.FullText;
 import com.github.ldriscoll.ektorplucene.designdocument.annotation.Index;
-/*index = "function(doc) { " + 
-		"    var res = new Document(); " + 
-		"    res.add(doc.TODAY,{\"field\":\"TODAY\", \"store\":\"yes\"});"+
-		"    res.add(doc.PROVIDERID,{\"field\":\"PROVIDERID\", \"store\":\"yes\"});" +
-		"	 res.add(doc.FWUPAZILLA,{\"field\":\"FWUPAZILLA\", \"store\":\"yes\"});" +
-		"    return res; " + 
-    "}")
-*/
+
 @FullText({
     @Index(
         name = "by_provider",
@@ -56,7 +49,8 @@ import com.github.ldriscoll.ektorplucene.designdocument.annotation.Index;
 	    		" doc.add(rec.FWUNION,{\"field\":\"FWUNION\", \"store\":\"yes\"});" +  
 	    		" doc.add(rec.PROVIDERID,{\"field\":\"PROVIDERID\", \"store\":\"yes\"});" + 
 	    		" doc.add(rec.FWUPAZILLA,{\"field\":\"FWUPAZILLA\", \"store\":\"yes\"});" + 
-	    		" doc.add(rec.SUBMISSIONDATE,{\"field\":\"SUBMISSIONDATE\", \"store\":\"yes\"});" + 	    		
+	    		" doc.add(rec.SUBMISSIONDATE,{\"field\":\"SUBMISSIONDATE\", \"store\":\"yes\"});" + 
+	    		" doc.add(rec._id,{\"field\":\"id\", \"store\":\"yes\"});" +
 	    		" doc.add(rec.type,{\"field\":\"type\", \"store\":\"yes\"});" + 
 	    		" return doc;" +
 	    		"}"),
@@ -78,93 +72,31 @@ public class LuceneHouseHoldRepository extends CouchDbRepositorySupportWithLucen
 	
 	
 	 public LuceneResult findDocsByProvider(String queryString) { 
-        LuceneDesignDocument designDoc = db.get(LuceneDesignDocument.class, stdDesignDocumentId); 
-        LuceneQuery query = new LuceneQuery(designDoc.getId(), "by_provider"); 
-        query.setQuery(queryString); 
-        query.setStaleOk(false); 
-        logger.info("inside luceneHouseholdRepository.");
-        
-        LuceneResult result = db.queryLucene(query);
-        List<HouseHold> ol = new ArrayList<>();
-		for (Row r : result.getRows()) {
-			HashMap<String, Object> doc = r.getDoc();
-			//System.out.println("Lucene HH doc: "+doc);
-			HouseHold ro = null;
-			try {
-				ro = new ObjectMapper().readValue(new JSONObject(doc).toString(), type);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}			
-			//System.out.println("Lucene HH Object: "+ro.getELCODetail("FWWOMFNAME"));			
-			ol.add(ro);
-		}		
-        return result; 
-    } 
-	 
-	 
-	 public int hhCount(String queryString) { 
-	        LuceneDesignDocument designDoc = db.get(LuceneDesignDocument.class, stdDesignDocumentId); 
-	        LuceneQuery query = new LuceneQuery(designDoc.getId(), "by_provider"); 
+	        LuceneDesignDocument designDoc = db.get(LuceneDesignDocument.class, stdDesignDocumentId);
+	        LuceneQuery query = new LuceneQuery(designDoc.getId(), "houdehold"); 
 	        query.setQuery(queryString); 
-	        query.setStaleOk(false);	       
-	        LuceneResult result = db.queryLucene(query);
-	        return result.getTotalRows(); 
-	    } 
-	 
-	 public LuceneResult getByCriteria(long start,long end,String anmIdentifier) {
-			// create a simple query against the view/search function that we've created
-			
-			Query qf = new Query(FilterType.AND);
-			
-			if(start!=0 && end!=0){
-				qf.betwen("SUBMISSIONDATE", start, end);
-			}
-			
-			if(anmIdentifier!= null && !anmIdentifier.isEmpty() && !anmIdentifier.equalsIgnoreCase("")){
-				qf.eq("PROVIDERID", anmIdentifier);
-			}
-			
-			/*if(anmIdentifier!= null && !anmIdentifier.isEmpty() && !anmIdentifier.equalsIgnoreCase("")){
-				qf.eq("type", "HouseHold");
-			}*/
-
-			if(qf.query() == null || qf.query().isEmpty()){
-				throw new RuntimeException("Atleast one search filter must be specified");
-			}
-				
-			/*LuceneDesignDocument designDoc = db.get(LuceneDesignDocument.class, stdDesignDocumentId);
-	        LuceneQuery query = new LuceneQuery(designDoc.getId(), "by_all_criteria");*/ 
-			
-			LuceneQuery query = new LuceneQuery("HouseHold", "by_all_criteria");
-			
-			System.out.println("Query: "+qf.query());
-			
-	        query.setQuery(qf.query()); 
 	        query.setStaleOk(false); 
-	        query.setIncludeDocs(true);
-	       
-	        LuceneResult result = db.queryLucene(query);
-	        List<HouseHold> ol = new ArrayList<>();
-			for (Row r : result.getRows()) {
-				HashMap<String, Object> doc = r.getDoc();
-				//System.out.println("Lucene HH doc: "+doc);
-				HouseHold ro = null;
-				try {
-					ro = new ObjectMapper().readValue(new JSONObject(doc).toString(), type);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
-				//System.out.println("Lucene HH Object: "+ro.getELCODetail("FWWOMFNAME"));
-				
-				ol.add(ro);
-			}
-			
-			//System.out.println("LuceneResult: "+ol);
+	        return db.queryLucene(query); 
+	    } 
+		 public LuceneResult getData(String queryString,int skip,int limit) {		
+				String sortField =  "\\" + "id"; 
+		        LuceneDesignDocument designDoc = db.get(LuceneDesignDocument.class, stdDesignDocumentId);        
+		        LuceneQuery query = new LuceneQuery(designDoc.getId(), "houdehold"); 
+		        query.setQuery(queryString); 
+		        query.setStaleOk(true);
+		        query.setSkip(skip);
+		        query.setLimit(limit);
+		        query.setSort(sortField);
+		        return db.queryLucene(query); 
+		   }
+
+		 public int  getDataCount(String queryString) {		
+		        LuceneDesignDocument designDoc = db.get(LuceneDesignDocument.class, stdDesignDocumentId);        
+		        LuceneQuery query = new LuceneQuery(designDoc.getId(), "houdehold"); 
+		        query.setQuery(queryString); 
+		        query.setStaleOk(true);   
 		        
-	        return result; 
-		}
+		        return db.queryLucene(query).getTotalRows(); 
+		} 
 
 }

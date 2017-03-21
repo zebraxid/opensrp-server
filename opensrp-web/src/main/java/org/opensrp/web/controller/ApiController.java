@@ -32,22 +32,5 @@ public class ApiController {
 		this.luceneHouseHoldService = luceneHouseHoldService;
 	}
 	
-	@RequestMapping(method = GET, value="/full-text-households")
-    @ResponseBody
-	public ResponseEntity<HHRegisterDTO> getFullTextHouseHolds(@RequestParam MultiValueMap<String, String> queryParameters) throws JsonParseException, JsonMappingException, IOException
-	{
-		 HHRegisterDTO  hhRegisterDTO  = luceneHouseHoldService.findLuceneResult(queryParameters);
-		 return new ResponseEntity<>(hhRegisterDTO, HttpStatus.OK);
-	}
 	
-	/**
-	 * 
-	 * 
-	 * */
-	@RequestMapping(headers = { "Accept=application/json" }, method =POST, value = "/add-update-data-to-existing-field")
-	public ResponseEntity<String> addUpdateDataToExistingField(@RequestBody FieldValue fieldValue) {
-		
-		System.out.println(fieldValue.toString());
-		return new ResponseEntity<>("OKkk", HttpStatus.OK);
-	}
 }
