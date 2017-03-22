@@ -135,6 +135,7 @@ public class AllConstants {
 		public static final String FW_DISPLAY_AGE = "FWDISPLAYAGE";
 		public static final String FW_UPAZILLA = "FWUPAZILLA";
 		public static final String FWNHREGDATE = "FWNHREGDATE";
+		public static final String FWCENDATE = "FWCENDATE";
 		public static final String existing_location = "existing_location";
 		public static final String existing_Country = "existing_Country";
 		public static final String existing_Division = "existing_Division";

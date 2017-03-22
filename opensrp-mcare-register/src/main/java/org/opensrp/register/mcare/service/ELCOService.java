@@ -55,6 +55,7 @@ import static org.opensrp.common.AllConstants.ELCORegistrationFields.external_us
 import static org.opensrp.common.AllConstants.Form.ELCO_REGISTRATION;
 import static org.opensrp.common.AllConstants.Form.MIS_Census;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.FWNHREGDATE;
+import static org.opensrp.common.AllConstants.HHRegistrationFields.FWCENDATE;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.ELCO_REGISTRATION_SUB_FORM_NAME;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.FW_UPAZILLA;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.REFERENCE_DATE;
@@ -243,7 +244,7 @@ public class ELCOService {
 				}
 
 			} else {
-				hhSchedulesService.enrollIntoMilestoneOfCensus(submission.entityId(), submission.getField(FWNHREGDATE), submission.anmId(),
+				hhSchedulesService.enrollIntoMilestoneOfCensus(submission.entityId(), submission.getField(FWCENDATE), submission.anmId(),
 						submission.instanceId());
 			}
 		}
