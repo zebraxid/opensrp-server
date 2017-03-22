@@ -4,17 +4,8 @@
 
 package org.opensrp.rest.repository;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
-import org.codehaus.jackson.map.ObjectMapper;
-import org.json.JSONObject;
 import org.opensrp.common.AllConstants;
 import org.opensrp.register.mcare.domain.HouseHold;
-import org.opensrp.scheduler.ScheduleLog;
-import org.opensrp.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,14 +17,13 @@ import com.github.ldriscoll.ektorplucene.CouchDbRepositorySupportWithLucene;
 import com.github.ldriscoll.ektorplucene.LuceneAwareCouchDbConnector;
 import com.github.ldriscoll.ektorplucene.LuceneQuery;
 import com.github.ldriscoll.ektorplucene.LuceneResult;
-import com.github.ldriscoll.ektorplucene.LuceneResult.Row;
 import com.github.ldriscoll.ektorplucene.designdocument.LuceneDesignDocument;
 import com.github.ldriscoll.ektorplucene.designdocument.annotation.FullText;
 import com.github.ldriscoll.ektorplucene.designdocument.annotation.Index;
 
 @FullText({
     @Index(
-        name = "by_provider",
+        name = "houdehold",
 	    index = "function(rec) {" +
 	    		" var doc=new Document();" + 
 	    		" doc.add(rec.FWDIVISION,{\"field\":\"FWDIVISION\", \"store\":\"yes\"}); " +
