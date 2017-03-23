@@ -11,7 +11,7 @@ import java.util.List;
 
 import org.json.JSONObject;
 import org.opensrp.rest.register.dto.CommonDTO;
-import org.opensrp.rest.register.dto.HouseholdEntryDTO;
+import org.opensrp.rest.register.dto.HouseholdDTO;
 import org.opensrp.rest.repository.LuceneHouseHoldRepository;
 import org.opensrp.rest.util.ConvertDateStringToTimestampMills;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,7 +71,7 @@ public class LuceneHouseHoldService {
 	 * @return 	Household data list.
 	 * */
 	
-	public CommonDTO<HouseholdEntryDTO> getData(MultiValueMap<String, String> queryParameters,int p,int limit) throws JsonParseException, JsonMappingException,
+	public CommonDTO<HouseholdDTO> getData(MultiValueMap<String, String> queryParameters,int p,int limit) throws JsonParseException, JsonMappingException,
 	IOException {
 		ObjectMapper mapper = new ObjectMapper();		
 		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
@@ -81,15 +81,15 @@ public class LuceneHouseHoldService {
 				.getData(dynamicQueryString.makeDynamicQueryAsString(queryParameters), p,limit);
 		List<Row> rows = luceneResult.getRows();
 		 
-		List<HouseholdEntryDTO> dataList = new ArrayList<HouseholdEntryDTO>();
+		List<HouseholdDTO> dataList = new ArrayList<HouseholdDTO>();
 		
 		for (Row row : rows) {
 			LinkedHashMap<String, Object> fields = row.getFields();			
 			String jsonString = new JSONObject(fields).toString();
 			dataList.add(mapper.readValue(jsonString.getBytes(),
-					HouseholdEntryDTO.class));
+					HouseholdDTO.class));
 		}
-		return new CommonDTO<HouseholdEntryDTO>(dataList);
+		return new CommonDTO<HouseholdDTO>(dataList);
 	}
 	
 	/**

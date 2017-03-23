@@ -41,6 +41,7 @@ import org.joda.time.LocalDate;
 import org.opensrp.common.AllConstants;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.form.domain.SubFormData;
+import org.opensrp.register.mcare.domain.Elco;
 import org.opensrp.register.mcare.domain.Mother;
 import org.opensrp.register.mcare.repository.AllElcos;
 import org.opensrp.register.mcare.repository.AllMothers;
@@ -180,6 +181,10 @@ public class BNFService {
 					submission.instanceId());
 		}
 
+	}
+	
+	public Mother getElcoById(String id){
+		return allMothers.get(id);
 	}
 
 }

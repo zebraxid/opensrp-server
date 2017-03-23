@@ -1,22 +1,18 @@
 /**
- * @author Asifur
- */
+ * @author proshanto
+ * */
 
 package org.opensrp.rest.repository;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.codehaus.jackson.map.ObjectMapper;
 import org.json.JSONObject;
 import org.opensrp.common.AllConstants;
-import org.opensrp.register.mcare.domain.HouseHold;
 import org.opensrp.register.mcare.domain.Mother;
-import org.opensrp.scheduler.ScheduleLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -37,9 +33,15 @@ import com.github.ldriscoll.ektorplucene.designdocument.annotation.Index;
 	    index = "function(rec) {" +
 	    		" var doc=new Document();" +
 	    		" doc.add(rec.TODAY,{\"field\":\"TODAY\", \"store\":\"yes\"});" +
-	    		" doc.add(rec.isClosed,{\"field\":\"isClosed\", \"store\":\"yes\"});"+ 	    		   		
+	    		" doc.add(rec.mother_first_name,{\"field\":\"mother_first_name\", \"store\":\"yes\"});" +
+	    		" doc.add(rec.mother_husname,{\"field\":\"mother_husname\", \"store\":\"yes\"});" +
+	    		" doc.add(rec.mother_wom_nid,{\"field\":\"mother_wom_nid\", \"store\":\"yes\"});" +
+	    		" doc.add(rec.mother_wom_bid,{\"field\":\"mother_wom_bid\", \"store\":\"yes\"});" +
+	    		" doc.add(rec.mother_wom_age,{\"field\":\"mother_wom_age\", \"store\":\"yes\"});" +
+	    		" doc.add(rec.FWWOMUNION,{\"field\":\"FWWOMUNION\", \"store\":\"yes\"});"+ 	    		   		
 	    		" doc.add(rec.SUBMISSIONDATE,{\"field\":\"SUBMISSIONDATE\", \"store\":\"yes\"});" + 
 	    		" doc.add(rec.PROVIDERID,{\"field\":\"PROVIDERID\", \"store\":\"yes\"});" +
+	    		" doc.add(rec._id,{\"field\":\"id\", \"store\":\"yes\"});" +
 	    		" doc.add(rec.type,{\"field\":\"type\", \"store\":\"yes\"});" +
 	    		" return doc;" +
 	    		"}"),
@@ -62,27 +64,28 @@ public class LuceneMotherRepository extends CouchDbRepositorySupportWithLucene<M
         LuceneQuery query = new LuceneQuery(designDoc.getId(), "mother"); 
         query.setQuery(queryString); 
         query.setStaleOk(false); 
-        
-        LuceneResult result = db.queryLucene(query);
-        
-        List<Mother> ol = new ArrayList<>();
-		for (Row r : result.getRows()) {
-			HashMap<String, Object> doc = r.getDoc();
-			Mother ro = null;
-			try {
-				ro = new ObjectMapper().readValue(new JSONObject(doc).toString(), type);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			ol.add(ro);
-		}	
-		
-		//System.out.println("Lucene Result: "+ol);
-				
-        return result;  
+        return db.queryLucene(query); 
     } 
-	
+	 public LuceneResult getData(String queryString,int skip,int limit) {		
+			String sortField =  "\\" + "id"; 
+	        LuceneDesignDocument designDoc = db.get(LuceneDesignDocument.class, stdDesignDocumentId);        
+	        LuceneQuery query = new LuceneQuery(designDoc.getId(), "mother"); 
+	        query.setQuery(queryString); 
+	        query.setStaleOk(true);
+	        query.setSkip(skip);
+	        query.setLimit(limit);
+	        query.setSort(sortField);
+	        return db.queryLucene(query); 
+	   }
+
+	 public int  getDataCount(String queryString) {		
+	        LuceneDesignDocument designDoc = db.get(LuceneDesignDocument.class, stdDesignDocumentId);        
+	        LuceneQuery query = new LuceneQuery(designDoc.getId(), "mother"); 
+	        query.setQuery(queryString); 
+	        query.setStaleOk(true);   
+	        
+	        return db.queryLucene(query).getTotalRows(); 
+	} 
 	 public List<Integer> getByCriteria(String anmIdentifier) {
 			// create a simple query against the view/search function that we've created
 			
@@ -121,8 +124,7 @@ public class LuceneMotherRepository extends CouchDbRepositorySupportWithLucene<M
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				//System.out.println("Lucene BnfVisitDetails: "+ro.bnfVisitDetails().toString());
-				//System.out.println("Lucene BnfVisitDetails size: "+ro.bnfVisitDetails().size());
+				
 				for (int i=0; i < ro.bnfVisitDetails().size(); i++){	
 					String FWBNFSTS = "", FWBNFCHLDVITSTS = "";
 					try {

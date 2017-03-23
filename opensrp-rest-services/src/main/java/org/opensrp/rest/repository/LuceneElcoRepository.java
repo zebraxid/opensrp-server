@@ -1,12 +1,11 @@
 /**
- * @author Asifur
+ * @author proshanto
  */
 
 package org.opensrp.rest.repository;
 
 import org.opensrp.common.AllConstants;
 import org.opensrp.register.mcare.domain.Elco;
-import org.opensrp.register.mcare.domain.HouseHold;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,14 +25,20 @@ import com.github.ldriscoll.ektorplucene.designdocument.annotation.Index;
 	    index = "function(rec) {" +
 	    		" var doc=new Document();" +
 	    		" doc.add(rec.TODAY,{\"field\":\"TODAY\", \"store\":\"yes\"});" +
+	    		" doc.add(rec.FWWOMDIVISION,{\"field\":\"FWWOMDIVISION\", \"store\":\"yes\"});" +
+	    		" doc.add(rec.FWWOMDISTRICT,{\"field\":\"FWWOMDISTRICT\", \"store\":\"yes\"});" +
+	    		" doc.add(rec.FWWOMUPAZILLA,{\"field\":\"FWWOMUPAZILLA\", \"store\":\"yes\"});" +
+	    		" doc.add(rec.FWWOMUNION,{\"field\":\"FWWOMUNION\", \"store\":\"yes\"});" +
+	    		" doc.add(rec.WomanREGDATE,{\"field\":\"WomanREGDATE\", \"store\":\"yes\"});" +
 	    		" doc.add(rec.FWWOMFNAME,{\"field\":\"FWWOMFNAME\", \"store\":\"yes\"});"+ 
 	    		" doc.add(rec.FWWOMNID,{\"field\":\"FWWOMNID\", \"store\":\"yes\"});" + 
 	    		" doc.add(rec.FWHUSNAME,{\"field\":\"FWHUSNAME\", \"store\":\"yes\"});" + 
 	    		" doc.add(rec.FWWOMBID,{\"field\":\"FWWOMBID\", \"store\":\"yes\"});" + 
-	    		" doc.add(rec.FWWOMRETYPEBID,{\"field\":\"FWWOMRETYPEBID\", \"store\":\"yes\"}); " +
 	    		" doc.add(rec.GOBHHID,{\"field\":\"GOBHHID\", \"store\":\"yes\"}); " +
-	    		" doc.add(rec.JiVitAHHID,{\"field\":\"JiVitAHHID\", \"store\":\"yes\"});" +	    		
+	    		" doc.add(rec.JiVitAHHID,{\"field\":\"JiVitAHHID\", \"store\":\"yes\"});" +	 
+	    		" doc.add(rec.PROVIDERID,{\"field\":\"PROVIDERID\", \"store\":\"yes\"});" +	 
 	    		" doc.add(rec.SUBMISSIONDATE,{\"field\":\"SUBMISSIONDATE\", \"store\":\"yes\"});" + 
+	    		" doc.add(rec._id,{\"field\":\"id\", \"store\":\"yes\"});" + 
 	    		" doc.add(rec.type,{\"field\":\"type\", \"store\":\"yes\"});" +
 	    		" return doc;" +
 	    		"}")
@@ -50,15 +55,31 @@ public class LuceneElcoRepository extends CouchDbRepositorySupportWithLucene<Elc
 		initStandardDesignDocument();
 	}
 	public LuceneResult findDocsByProvider(String queryString) { 
-        LuceneDesignDocument designDoc = db.get(LuceneDesignDocument.class, stdDesignDocumentId); 
-        //assertTrue(designDoc != null); 
-       // assertTrue(designDoc.containsIndex("by_provider")); 
-        
-       // String makeQueryString ="PROVIDERID:"+ providerId + " AND " + "FWUPAZILLA:" + upazilla + " AND " + "user_type:" + userType; //+ " AND TODAY:[\"2016-02-01\"+\"TO\"+\"2016-03-01\"]" ;
+        LuceneDesignDocument designDoc = db.get(LuceneDesignDocument.class, stdDesignDocumentId);
         LuceneQuery query = new LuceneQuery(designDoc.getId(), "elco"); 
         query.setQuery(queryString); 
         query.setStaleOk(false); 
         return db.queryLucene(query); 
     } 
+	 public LuceneResult getData(String queryString,int skip,int limit) {		
+			String sortField =  "\\" + "id"; 
+	        LuceneDesignDocument designDoc = db.get(LuceneDesignDocument.class, stdDesignDocumentId);        
+	        LuceneQuery query = new LuceneQuery(designDoc.getId(), "elco"); 
+	        query.setQuery(queryString); 
+	        query.setStaleOk(true);
+	        query.setSkip(skip);
+	        query.setLimit(limit);
+	        query.setSort(sortField);
+	        return db.queryLucene(query); 
+	   }
+
+	 public int  getDataCount(String queryString) {		
+	        LuceneDesignDocument designDoc = db.get(LuceneDesignDocument.class, stdDesignDocumentId);        
+	        LuceneQuery query = new LuceneQuery(designDoc.getId(), "elco"); 
+	        query.setQuery(queryString); 
+	        query.setStaleOk(true);   
+	        
+	        return db.queryLucene(query).getTotalRows(); 
+	} 
 
 }

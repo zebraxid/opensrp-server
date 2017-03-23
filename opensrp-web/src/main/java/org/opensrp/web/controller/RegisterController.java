@@ -19,13 +19,19 @@ import org.opensrp.register.mcare.mapper.ChildRegisterMapper;
 import org.opensrp.register.mcare.mapper.ELCORegisterMapper;
 import org.opensrp.register.mcare.mapper.HHRegisterMapper;
 import org.opensrp.register.mcare.service.ANCRegisterService;
+import org.opensrp.register.mcare.service.BNFService;
 import org.opensrp.register.mcare.service.ChildRegisterService;
 import org.opensrp.register.mcare.service.ELCORegisterService;
 import org.opensrp.register.mcare.service.HHRegisterService;
 import org.opensrp.register.mcare.service.MultimediaRegisterService;
 import org.opensrp.rest.register.dto.CommonDTO;
-import org.opensrp.rest.register.dto.HouseholdEntryDTO;
+import org.opensrp.rest.register.dto.ElcoDTO;
+import org.opensrp.rest.register.dto.HouseholdDTO;
+import org.opensrp.rest.register.dto.MotherDTO;
+import org.opensrp.rest.repository.LuceneMotherRepository;
+import org.opensrp.rest.services.LuceneElcoService;
 import org.opensrp.rest.services.LuceneHouseHoldService;
+import org.opensrp.rest.services.LuceneMotherService;
 import org.opensrp.service.DataCountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -58,7 +64,12 @@ public class RegisterController {
 
 	@Autowired
 	private LuceneHouseHoldService luceneHouseHoldService;
-	
+	@Autowired
+	private LuceneElcoService luceneElcoService;
+	@Autowired
+	private LuceneMotherService luceneMotherService;
+	@Autowired
+	private BNFService bNFService;
 	
 	@Autowired
 	public RegisterController(ELCORegisterService ecRegisterService, ELCORegisterMapper ecRegisterMapper, HHRegisterService hhRegisterService,
@@ -183,9 +194,9 @@ public class RegisterController {
 	  * */
 	@RequestMapping(method = RequestMethod.GET, value="/household-search")
 	@ResponseBody
-	public ResponseEntity<CommonDTO<HouseholdEntryDTO>> getHouseholdByKeys(@RequestParam MultiValueMap<String, String> queryParameters,@RequestParam int p,@RequestParam int limit) throws JsonParseException, JsonMappingException, IOException
+	public ResponseEntity<CommonDTO<HouseholdDTO>> getHouseholdByKeys(@RequestParam MultiValueMap<String, String> queryParameters,@RequestParam int p,@RequestParam int limit) throws JsonParseException, JsonMappingException, IOException
 	{
-		CommonDTO<HouseholdEntryDTO>  households  = luceneHouseHoldService.getData(queryParameters,p,limit);
+		CommonDTO<HouseholdDTO>  households  = luceneHouseHoldService.getData(queryParameters,p,limit);
 		return new ResponseEntity<>(households, HttpStatus.OK);
 	}
 	/**		 
@@ -212,6 +223,83 @@ public class RegisterController {
 	@ResponseBody
 	public ResponseEntity<String> getHouseholdById(@RequestParam String id) throws JsonParseException, JsonMappingException, IOException {
 		return new ResponseEntity<>(new Gson().toJson(hhRegisterService.getHouseholdById(id)), HttpStatus.OK);
+	}
+	/**
+	  * @param queryParameters is a list of key.
+	  * @param p is a number of page.
+	  * @param limit is a data limit.
+	  * @return all households match with specified key.
+	  * */
+	@RequestMapping(method = RequestMethod.GET, value="/elco-search")
+	@ResponseBody
+	public ResponseEntity<CommonDTO<ElcoDTO>> getElcoByKeys(@RequestParam MultiValueMap<String, String> queryParameters,@RequestParam int p,@RequestParam int limit) throws JsonParseException, JsonMappingException, IOException
+	{
+		CommonDTO<ElcoDTO>  households  = luceneElcoService.getData(queryParameters,p,limit);
+		return new ResponseEntity<>(households, HttpStatus.OK);
+	}
+	/**		 
+	* @param  @param queryParameters is a list of key.
+	* @return total count of households
+	* @throws IOException 
+	* @throws JsonMappingException 
+	* @throws JsonParseException 
+	* */
+	@RequestMapping(headers = { "Accept=application/json" }, method = RequestMethod.GET, value = "/get-elco-count-by-keys")
+	@ResponseBody
+	public ResponseEntity<String> getElcoCountByKeys(@RequestParam MultiValueMap<String, String> queryParameters) throws JsonParseException, JsonMappingException, IOException {
+		return new ResponseEntity<>(new Gson().toJson(luceneElcoService.getDataCount(queryParameters)), HttpStatus.OK);
+	}
+		
+	/**	 
+	* @param id is a household id of couchdb auto incremented ID.
+	* @return household details of a specified @id 	 * 
+	* @throws IOException 
+	* @throws JsonMappingException 
+	* @throws JsonParseException 
+	* */
+	@RequestMapping(headers = { "Accept=application/json" }, method = RequestMethod.GET, value = "/get-elco-details")
+	@ResponseBody
+	public ResponseEntity<String> getElcoById(@RequestParam String id) throws JsonParseException, JsonMappingException, IOException {
+		return new ResponseEntity<>(new Gson().toJson(ecRegisterService.getElcoById(id)), HttpStatus.OK);
+	}
+	
+	/**
+	  * @param queryParameters is a list of key.
+	  * @param p is a number of page.
+	  * @param limit is a data limit.
+	  * @return all mother match with specified key.
+	  * */
+	@RequestMapping(method = RequestMethod.GET, value="/mother-search")
+	@ResponseBody
+	public ResponseEntity<CommonDTO<MotherDTO>> getMotherByKeys(@RequestParam MultiValueMap<String, String> queryParameters,@RequestParam int p,@RequestParam int limit) throws JsonParseException, JsonMappingException, IOException
+	{
+		CommonDTO<MotherDTO> elcos  = luceneMotherService.getData(queryParameters,p,limit);
+		return new ResponseEntity<>(elcos, HttpStatus.OK);
+	}
+	/**		 
+	* @param  @param queryParameters is a list of key.
+	* @return total count of mother
+	* @throws IOException 
+	* @throws JsonMappingException 
+	* @throws JsonParseException 
+	* */
+	@RequestMapping(headers = { "Accept=application/json" }, method = RequestMethod.GET, value = "/get-mother-count-by-keys")
+	@ResponseBody
+	public ResponseEntity<String> getMotherCountByKeys(@RequestParam MultiValueMap<String, String> queryParameters) throws JsonParseException, JsonMappingException, IOException {
+		return new ResponseEntity<>(new Gson().toJson(luceneMotherService.getDataCount(queryParameters)), HttpStatus.OK);
+	}
+		
+	/**	 
+	* @param id is a mother id of couchdb auto incremented ID.
+	* @return mother details of a specified @id 	 * 
+	* @throws IOException 
+	* @throws JsonMappingException 
+	* @throws JsonParseException 
+	* */
+	@RequestMapping(headers = { "Accept=application/json" }, method = RequestMethod.GET, value = "/get-mother-details")
+	@ResponseBody
+	public ResponseEntity<String> getMotherById(@RequestParam String id) throws JsonParseException, JsonMappingException, IOException {
+		return new ResponseEntity<>(new Gson().toJson(bNFService.getElcoById(id)), HttpStatus.OK);
 	}
 	
 }

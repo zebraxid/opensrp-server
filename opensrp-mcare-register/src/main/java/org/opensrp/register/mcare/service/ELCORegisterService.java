@@ -11,6 +11,7 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.opensrp.register.mcare.ELCORegister;
 import org.opensrp.register.mcare.ELCORegisterEntry;
 import org.opensrp.register.mcare.domain.Elco;
+import org.opensrp.register.mcare.domain.HouseHold;
 import org.opensrp.register.mcare.repository.AllElcos;
 
 import static org.opensrp.common.AllConstants.ELCORegistrationFields.*;
@@ -173,4 +174,8 @@ public class ELCORegisterService {
         }
         return new ELCORegister(elcoRegisterEntries);
 	}*/
+	
+	public Elco getElcoById(String id){
+		return allElcos.get(id);
+	}
 }
