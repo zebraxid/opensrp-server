@@ -80,15 +80,16 @@ public class BNFService {
 
 	public void registerBNF(FormSubmission submission) {
 		String motherId = submission.getField(AllConstants.ANCFormFields.MCARE_MOTHER_ID);
-
+		
 		Mother mother = allMothers.findByCaseId(motherId);
-
+		Elco elco = allElcos.findByCaseId(mother.relationalid());
 		if (!allElcos.exists(submission.entityId())) {
 			logger.warn(format("Found mother without registered eligible couple. Ignoring: {0} for mother with id: {1} for ANM: {2}", submission.entityId(),
 					motherId, submission.anmId()));
 			return;
 		}
-
+		mother.withFWWOMDISTRICT(elco.FWWOMDISTRICT());
+		mother.withFWWOMUPAZILLA(elco.FWWOMUPAZILLA());
 		allMothers.update(mother);
 		bnfSchedulesService.enrollBNF(motherId, LocalDate.parse(submission.getField(MOTHER_REFERENCE_DATE)), submission.anmId(), submission.instanceId(),
 				submission.getField(MOTHER_REFERENCE_DATE));

@@ -1,16 +1,9 @@
 package org.opensrp.register.mcare.repository.it;
 
-import static java.util.Arrays.asList;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.mockito.MockitoAnnotations.initMocks;
-import static org.opensrp.common.util.EasyMap.create;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -18,7 +11,6 @@ import java.util.List;
 
 import org.ektorp.CouchDbInstance;
 import org.ektorp.ViewResult;
-import org.ektorp.ViewResult.Row;
 import org.ektorp.http.HttpClient;
 import org.ektorp.http.StdHttpClient;
 import org.ektorp.impl.StdCouchDbConnector;
@@ -27,15 +19,12 @@ import org.ektorp.impl.StdObjectMapperFactory;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.opensrp.common.util.DateUtil;
 import org.opensrp.common.util.WeekBoundariesAndTimestamps;
 import org.opensrp.register.mcare.domain.HouseHold;
 import org.opensrp.register.mcare.repository.AllElcos;
 import org.opensrp.register.mcare.repository.AllHouseHolds;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /*@RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:test-applicationContext-opensrp-register-mcare.xml")*/
@@ -78,7 +67,36 @@ public class AllHouseHoldsIntegrationTest {
         assertThat(allHouseHoldsInDB, is(asList(houseHold)));
         assertThat(allHouseHoldsInDB.get(0).FWHOHNAME(), is("HouseHold-1"));
     }*/
-    
+    @Ignore@Test
+    public void deleteEmptyProviderHouseHoldTest(){
+    	List<HouseHold> households = allHouseHolds.getAll();
+    	System.err.println(households.size());
+    	for (HouseHold household : households) {
+    		
+    		if(household.user_type().equalsIgnoreCase("FD") || household.PROVIDERID()==null || household.PROVIDERID().equalsIgnoreCase("") ){
+        		try{
+        			System.out.println(household.getId());
+        		allHouseHolds.remove(household);
+        		}catch(Exception e){
+        			e.printStackTrace();
+        		}
+        	}
+    		
+    		
+    		
+		}
+    	
+    	/*HouseHold household = allHouseHolds.get("fc2966f0-8e9a-4648-9e09-e07b9dc39aef");
+    	if(household.PROVIDERID()==null){
+    		try{
+    			System.out.println(household.getId());
+    		//allHouseHolds.remove(household);
+    		}catch(Exception e){
+    			e.printStackTrace();
+    		}
+    	}*/
+    	
+    }
     //@Test
     public void dateUtil_WeekBoundariesAndTimestamps_test(){
     	WeekBoundariesAndTimestamps boundaries = DateUtil.getWeekBoundariesForDashboard();

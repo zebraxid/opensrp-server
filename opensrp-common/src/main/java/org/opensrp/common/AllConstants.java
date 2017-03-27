@@ -198,6 +198,7 @@ public class AllConstants {
 		public static final String nidImagePath = "nidImagePath";
 		public static final String user_type = "user_type";
 		public static final String external_user_ID = "external_user_ID";
+		public static final String FWPSRPREGSTS = "FWPSRPREGSTS";
 
 	}
 

@@ -28,14 +28,25 @@ public class DynamicQueryString {
 		String makeQueryString = "";
 		int paramCounter = 1;		
 		for(Entry<String, String> entry : preparedParameters.entrySet())
-		{			
-			makeQueryString+=entry.getKey()+":"+entry.getValue();				
+		{	
+			if(entry.getKey().equalsIgnoreCase("FWHOHFNAME")){
+				String wildcard =  "* AND "; 
+				makeQueryString+=entry.getKey()+":"+entry.getValue()+ wildcard;
+			}else if(entry.getKey().equalsIgnoreCase("FWWOMFNAME")) {
+				String wildcard =  "* AND "; 
+				makeQueryString+=entry.getKey()+":"+entry.getValue()+ wildcard;
+			}
+			else{
+				makeQueryString+=entry.getKey()+":"+entry.getValue();
 				if(preparedParameters.size()>paramCounter)
 					makeQueryString+=" AND ";	
+			}
+			
+			
 			
 			paramCounter++;
 		}
-		
+		System.out.println("makeQueryString:"+makeQueryString);
 		return makeQueryString;
 		
 	}

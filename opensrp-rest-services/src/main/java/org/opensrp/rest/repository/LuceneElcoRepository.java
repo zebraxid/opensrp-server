@@ -26,6 +26,7 @@ import com.github.ldriscoll.ektorplucene.designdocument.annotation.Index;
 	    		" var doc=new Document();" +
 	    		" doc.add(rec.TODAY,{\"field\":\"TODAY\", \"store\":\"yes\"});" +
 	    		" doc.add(rec.FWWOMDIVISION,{\"field\":\"FWWOMDIVISION\", \"store\":\"yes\"});" +
+	    		" doc.add(rec.FWPSRPREGSTS,{\"field\":\"FWPSRPREGSTS\", \"store\":\"yes\"});" +
 	    		" doc.add(rec.FWWOMDISTRICT,{\"field\":\"FWWOMDISTRICT\", \"store\":\"yes\"});" +
 	    		" doc.add(rec.FWWOMUPAZILLA,{\"field\":\"FWWOMUPAZILLA\", \"store\":\"yes\"});" +
 	    		" doc.add(rec.FWWOMUNION,{\"field\":\"FWWOMUNION\", \"store\":\"yes\"});" +

@@ -1,24 +1,13 @@
 package org.opensrp.register.mcare.repository.it;
 
-import static java.util.Arrays.asList;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.mockito.MockitoAnnotations.initMocks;
-import static org.opensrp.common.util.EasyMap.create;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.FWPSRPREGSTS;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.ektorp.CouchDbInstance;
 import org.ektorp.ViewResult;
-import org.ektorp.ViewResult.Row;
 import org.ektorp.http.HttpClient;
 import org.ektorp.http.StdHttpClient;
 import org.ektorp.impl.StdCouchDbConnector;
@@ -27,15 +16,12 @@ import org.ektorp.impl.StdObjectMapperFactory;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.opensrp.common.util.DateUtil;
 import org.opensrp.common.util.WeekBoundariesAndTimestamps;
-import org.opensrp.register.mcare.domain.HouseHold;
+import org.opensrp.register.mcare.domain.Elco;
 import org.opensrp.register.mcare.repository.AllElcos;
 import org.opensrp.register.mcare.repository.AllHouseHolds;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /*@RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:test-applicationContext-opensrp-register-mcare.xml")*/
@@ -141,5 +127,48 @@ public class AllElcoIntegrationTest {
     	System.out.println(seperateWeeklyCountDataForRegisterFromViewResult.toString());
 		return seperateWeeklyCountDataForRegisterFromViewResult;
 	}
+    
+    @Ignore@Test
+    public void PSRFStatusAddedTest(){
+    	List<Elco> elcos = allElcos.getAll();
+    	System.out.println(elcos.size());
+    	for (Elco elco : elcos) {
+    		if(elco.details().containsKey(FWPSRPREGSTS)){
+        		if(elco.details().get("FWPSRPREGSTS") ==null){
+    			
+    				elco.withFWPSRPREGSTS("");
+	    		}else{
+	    			elco.withFWPSRPREGSTS(elco.details().get("FWPSRPREGSTS"));
+	    		}
+        	}else{
+        		elco.withFWPSRPREGSTS("");
+        	}
+        	try{
+        	allElcos.update(elco);
+        	System.err.println("Updated with id :"+elco.getId());
+        	}catch(Exception e){
+        		e.printStackTrace();
+        	}
+		}
+    	
+    	/*Elco elco = allElcos.get("ffff869e-cda4-488e-b3ce-2ac478edfdd9");
+    	if(elco.details().containsKey(FWPSRPREGSTS)){
+    		if(elco.details().get("FWPSRPREGSTS") ==null){
+    			System.out.println("okkkk");
+    			elco.withFWPSRPREGSTS("");
+    		}else{
+    			elco.withFWPSRPREGSTS(elco.details().get("FWPSRPREGSTS"));
+    		}
+    		
+    	}else{
+    		elco.withFWPSRPREGSTS("");
+    	}
+    	try{
+    	allElcos.update(elco);
+    	System.err.println("Updated with id :"+elco.getId());
+    	}catch(Exception e){
+    		e.printStackTrace();
+    	}*/
+    }
   
 }

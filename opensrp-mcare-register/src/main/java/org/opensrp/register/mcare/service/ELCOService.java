@@ -6,62 +6,17 @@ package org.opensrp.register.mcare.service;
 
 import static java.text.MessageFormat.format;
 import static org.opensrp.common.AllConstants.CommonFormFields.ID;
-import static org.opensrp.common.AllConstants.ELCORegistrationFields.ELCO;
-import static org.opensrp.common.AllConstants.ELCORegistrationFields.END_DATE;
-import static org.opensrp.common.AllConstants.ELCORegistrationFields.FWCWOMSTER;
-import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_BIRTHDATE;
-import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_CENDATE;
-import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_CENSTAT;
-import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_CWOMHUSALV;
-import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_CWOMHUSLIV;
-import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_CWOMHUSSTR;
-import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_CWOMSTRMEN;
-import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_DISPLAY_AGE;
-import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_ELIGIBLE;
-import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_ELIGIBLE2;
-import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_GENDER;
-import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_GOBHHID;
-import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_HUSNAME;
-import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_JiVitAHHID;
-import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_TODAY;
-import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_WOMAGE;
-import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_WOMANYID;
-import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_WOMBID;
-import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_WOMCOUNTRY;
-import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_WOMDISTRICT;
-import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_WOMDIVISION;
-import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_WOMFNAME;
-import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_WOMGOBHHID;
-import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_WOMGPS;
-import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_WOMLNAME;
-import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_WOMMAUZA_PARA;
-import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_WOMNID;
-import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_WOMRETYPEBID;
-import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_WOMRETYPENID;
-import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_WOMSUBUNIT;
-import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_WOMUNION;
-import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_WOMUPAZILLA;
-import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_WOMWARD;
-import static org.opensrp.common.AllConstants.ELCORegistrationFields.START_DATE;
-import static org.opensrp.common.AllConstants.ELCORegistrationFields.WomanREGDATE;
-import static org.opensrp.common.AllConstants.ELCORegistrationFields.existing_ELCO;
-import static org.opensrp.common.AllConstants.ELCORegistrationFields.form_name;
-import static org.opensrp.common.AllConstants.ELCORegistrationFields.new_ELCO;
-import static org.opensrp.common.AllConstants.ELCORegistrationFields.nidImagePath;
-import static org.opensrp.common.AllConstants.ELCORegistrationFields.profileImagePath;
-import static org.opensrp.common.AllConstants.ELCORegistrationFields.relationalid;
-import static org.opensrp.common.AllConstants.ELCORegistrationFields.user_type;
-import static org.opensrp.common.AllConstants.ELCORegistrationFields.external_user_ID;
+
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.*;
 import static org.opensrp.common.AllConstants.Form.ELCO_REGISTRATION;
 import static org.opensrp.common.AllConstants.Form.MIS_Census;
-import static org.opensrp.common.AllConstants.HHRegistrationFields.FWNHREGDATE;
-import static org.opensrp.common.AllConstants.HHRegistrationFields.FWCENDATE;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.ELCO_REGISTRATION_SUB_FORM_NAME;
+import static org.opensrp.common.AllConstants.HHRegistrationFields.FWCENDATE;
+import static org.opensrp.common.AllConstants.HHRegistrationFields.FWPSRDATE;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.FW_UPAZILLA;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.REFERENCE_DATE;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.existing_location;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.received_time;
-import static org.opensrp.common.AllConstants.HHRegistrationFields.FWPSRDATE;
 import static org.opensrp.common.AllConstants.PSRFFields.FWMISBCSOURCE;
 import static org.opensrp.common.AllConstants.PSRFFields.FWMISCONDGIVENDATE;
 import static org.opensrp.common.AllConstants.PSRFFields.FWMISCONDGIVENNO;
@@ -172,15 +127,26 @@ public class ELCOService {
 			
 			String UPAZILA = elcoFields.get(FW_WOMUPAZILLA);
 			if(UPAZILA!=null && UPAZILA.contains("+")) UPAZILA.replace("+", " ");
-
+			
 			Elco elco = allEcos.findByCaseId(elcoFields.get(ID)).withINSTANCEID(submission.instanceId()).withPROVIDERID(submission.anmId())
 					.withTODAY(submission.getField(REFERENCE_DATE)).withSUBMISSIONDATE(DateUtil.getTimestampToday())
 					.withexternal_user_ID(submission.getField(external_user_ID))
-					.withuser_type(submission.getField(user_type))
+					.withuser_type(submission.getField(user_type))					
 					.withFWWOMUPAZILLA(UPAZILA);
 
 			addDetailsToElco(submission, subFormData, elco);
-
+			
+			if(elco.details().containsKey(FWPSRPREGSTS)){
+	    		if(elco.details().get("FWPSRPREGSTS") ==null){	    			
+	    			elco.withFWPSRPREGSTS("");
+	    		}else{
+	    			elco.withFWPSRPREGSTS(elco.details().get("FWPSRPREGSTS"));
+	    		}
+	    		
+	    	}else{
+	    		elco.withFWPSRPREGSTS("");
+	    	}
+			
 			if (elcoFields.containsKey(FW_WOMFNAME)) {
 				allEcos.update(elco);
 				logger.info("Elco updated");

@@ -109,6 +109,10 @@ public class Mother extends MotechBaseDataObject {
 	private Map<String, String> pncVisitThree;
 	@JsonProperty
 	private long SUBMISSIONDATE;
+	@JsonProperty
+	private String FWWOMDISTRICT;
+	@JsonProperty
+	private String FWWOMUPAZILLA;
 
 	public Mother() {
 		this.ancVisitOne = new HashMap<>();
@@ -122,6 +126,15 @@ public class Mother extends MotechBaseDataObject {
 		this.setIsClosed(false);
 	}
 
+	public Mother withFWWOMDISTRICT(String FWWOMDISTRICT) {
+		this.FWWOMDISTRICT = FWWOMDISTRICT;
+		return this;
+	}
+	public Mother withFWWOMUPAZILLA(String FWWOMUPAZILLA) {
+		this.FWWOMUPAZILLA = FWWOMUPAZILLA;
+		return this;
+	}
+	
 	public Mother withCaseId(String caseId) {
 		this.caseId = caseId;
 		return this;
@@ -352,6 +365,12 @@ public class Mother extends MotechBaseDataObject {
 		return this;
 	}
 
+	public String FWWOMDISTRICT() {
+		return FWWOMDISTRICT;
+	}
+	public String FWWOMUPAZILLA() {
+		return FWWOMUPAZILLA;
+	}
 	public String caseId() {
 		return caseId;
 	}

@@ -138,6 +138,10 @@ public class Elco extends MotechBaseDataObject {
 	private String user_type;
 	@JsonProperty
 	private String external_user_ID;
+	@JsonProperty
+	private String FWPSRPREGSTS;
+	
+	
 
 	public Elco() {
 		this.PSRFDETAILS = new ArrayList<>();
@@ -434,6 +438,10 @@ public class Elco extends MotechBaseDataObject {
 		this.external_user_ID = external_user_ID;
 		return this;
 	}
+	public Elco withFWPSRPREGSTS(String FWPSRPREGSTS) {
+		this.FWPSRPREGSTS = FWPSRPREGSTS;
+		return this;
+	}
 	
 	public String user_type() {
 		return user_type;
@@ -686,12 +694,14 @@ public class Elco extends MotechBaseDataObject {
 	public long SUBMISSIONDATE() {
 		return SUBMISSIONDATE;
 	}
-
+	
 	public Elco setIsClosed(boolean isClosed) {
 		this.isClosed = Boolean.toString(isClosed);
 		return this;
 	}
-
+	public String FWPSRPREGSTS() {
+		return FWPSRPREGSTS;
+	}
 	@Override
 	public boolean equals(Object o) {
 		return EqualsBuilder.reflectionEquals(this, o, "id", "revision");
