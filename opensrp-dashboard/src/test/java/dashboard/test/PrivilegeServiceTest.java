@@ -40,7 +40,7 @@ public class PrivilegeServiceTest {
     	//initMocks(this);
     }
 
-    @Test 
+  //  @Test 
     public void testPrivilegeService() throws Exception {
 		Privilege testPrivilege = allPrivileges.privilegeByName("testPrivilege");
 		assertNull(testPrivilege);

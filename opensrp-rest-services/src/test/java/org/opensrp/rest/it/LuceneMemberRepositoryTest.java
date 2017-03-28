@@ -43,7 +43,7 @@ public class LuceneMemberRepositoryTest {
         connector = null; 
     } 
 
-    @Test
+    //@Test
     public void testNameSearch() throws ParseException {
     	String makeQueryString = "type:Members AND First_Name:h*" ;
     	LuceneResult result = repo.findDocsByName(makeQueryString);

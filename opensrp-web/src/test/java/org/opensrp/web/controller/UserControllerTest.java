@@ -1,27 +1,27 @@
 package org.opensrp.web.controller;
 
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.when;
+import static org.mockito.MockitoAnnotations.initMocks;
+
 import java.io.IOException;
 
-import org.springframework.security.authentication.encoding.PasswordEncoder;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-
-import static org.mockito.Mock.*;
-import static org.mockito.Mockito.*;
-import static org.mockito.MockitoAnnotations.initMocks;
-
 import org.mockito.Mock;
 import org.opensrp.api.domain.BaseEntity;
 import org.opensrp.api.domain.User;
 import org.opensrp.api.util.LocationTree;
 import org.opensrp.connector.openmrs.service.OpenmrsLocationService;
 import org.opensrp.connector.openmrs.service.OpenmrsUserService;
-import org.opensrp.rest.repository.LuceneHouseHoldRepository;
-import org.opensrp.rest.repository.LuceneMemberRepository;
+import org.opensrp.rest.services.LuceneHouseHoldService;
+import org.opensrp.rest.services.LuceneMemberService;
 import org.opensrp.web.security.DrishtiAuthenticationProvider;
+import org.springframework.security.authentication.encoding.PasswordEncoder;
 import org.springframework.security.core.Authentication;
 
 import com.google.gson.Gson;
@@ -43,10 +43,10 @@ public class UserControllerTest extends TestResourceLoader{
 	private DrishtiAuthenticationProvider auth;
 	
 	@Mock
-	private LuceneHouseHoldRepository luceneHouseHoldRepository;
+	private LuceneHouseHoldService luceneHouseHoldService;
 	
 	@Mock
-	private LuceneMemberRepository luceneMemberRespository;
+	private LuceneMemberService luceneMemberService;
 	
 	@Mock
 	PasswordEncoder au;
@@ -54,7 +54,7 @@ public class UserControllerTest extends TestResourceLoader{
 	@Before
     public void setUp() throws Exception {
 		initMocks(this);
-        this.controller = new UserController(locationservice, userservice, auth, luceneHouseHoldRepository, luceneMemberRespository);
+        this.controller = new UserController(locationservice, userservice, auth, luceneHouseHoldService, luceneMemberService);
 	}
 	
 	@Test

@@ -23,11 +23,21 @@ import com.github.ldriscoll.ektorplucene.designdocument.annotation.Index;
 @FullText({
 	@Index(index = "function(rec){"
 			+ "var doc =  new Document();"
-			+ " doc.add(rec.Mem_F_Name,{\"field\":\"First_Name\", \"store\":\"yes\"}); "
-			+ " doc.add(rec.Mem_NID,{\"field\":\"NID\", \"store\":\"yes\"}); "
-			+ " doc.add(rec.Mem_BRID,{\"field\":\"BR_ID\", \"store\":\"yes\"}); "
-			+ " doc.add(rec.caseId,{\"field\":\"Case_Id\", \"store\":\"yes\"});"
-			+ " doc.add(rec.type,{\"field\":\"type\", \"store\":\"yes\"});"
+			+ " doc.add(rec.Mem_F_Name,{\"field\":\"" +
+			LuceneDgfpClientRepositoryField.CLIENT_FIRST_NAME+
+			"\", \"store\":\"yes\"}); "
+			+ " doc.add(rec.Mem_NID,{\"field\":\"" +
+			LuceneDgfpClientRepositoryField.CLIENT_NATIONAL_ID+
+			"\", \"store\":\"yes\"}); "
+			+ " doc.add(rec.Mem_BRID,{\"field\":\"" +
+			LuceneDgfpClientRepositoryField.CLIENT_BIRTH_ID +
+			"\", \"store\":\"yes\"}); "
+			+ " doc.add(rec.caseId,{\"field\":\"" +
+			LuceneDgfpClientRepositoryField.CLIENT_CASE_ID +
+			"\", \"store\":\"yes\"});"
+			+ " doc.add(rec.type,{\"field\":\"" +
+			LuceneDgfpClientRepositoryField.CLIENT_TYPE +
+			"\" , \"store\":\"yes\"});"
 			+ "return doc;} ", 
 			name = "by_name") })
 

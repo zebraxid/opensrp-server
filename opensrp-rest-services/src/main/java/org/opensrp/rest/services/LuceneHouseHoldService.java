@@ -116,10 +116,12 @@ public class LuceneHouseHoldService {
 	}
 	
 	public List<DgfpClient> getAllHouseHoldClientBasedOn(String firstName, String nationalId, String birthId) {
-		logger.info(format("Couch lucene search based on first name: {0}, National Id: {1}, Birth Id: {2}", firstName, nationalId, birthId));
-		String makeQueryString = "type:household AND First_Name:" + firstName + "* AND NID:" + this.filterParameterForLuceneQuery(nationalId);
+		logger.info(format("Household search based on first name: {0}, National Id: {1}, Birth Id: {2}", firstName, nationalId, birthId));
+		String makeQueryString = "type:household AND First_Name:" + this.filterParameterForLuceneQuery(firstName) 
+				+ "* AND NID:" + this.filterParameterForLuceneQuery(nationalId) + " And BR_ID:" + 
+				this.filterParameterForLuceneQuery(birthId);;
 		LuceneResult result = this.luceneHouseHoldRepository.findDocsByName(makeQueryString);
-		//logger.info(format);
+		logger.info(format("Hosuhold found: {0}", result.getTotalRows()));
 		return this.createUserListFrom(result.getRows());
 	}
 	

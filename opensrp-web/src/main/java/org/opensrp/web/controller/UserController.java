@@ -22,6 +22,8 @@ import org.opensrp.connector.openmrs.service.OpenmrsUserService;
 import org.opensrp.register.mcare.bo.DgfpClient;
 import org.opensrp.rest.repository.LuceneHouseHoldRepository;
 import org.opensrp.rest.repository.LuceneMemberRepository;
+import org.opensrp.rest.services.LuceneHouseHoldService;
+import org.opensrp.rest.services.LuceneMemberService;
 import org.opensrp.web.security.DrishtiAuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -46,19 +48,19 @@ public class UserController {
 	private DrishtiAuthenticationProvider opensrpAuthenticationProvider;
 	private OpenmrsLocationService openmrsLocationService;
 	private OpenmrsUserService openmrsUserService;
-	private LuceneHouseHoldRepository luceneHouseHoldRespository;
-	private LuceneMemberRepository luceneMemberRespository;
+	private LuceneHouseHoldService luceneHouseHoldService;
+	private LuceneMemberService luceneMemberService;
 
 	@Autowired
 	public UserController(OpenmrsLocationService openmrsLocationService,
 			OpenmrsUserService openmrsUserService,
 			DrishtiAuthenticationProvider opensrpAuthenticationProvider,
-			 LuceneHouseHoldRepository luceneHouseHoldRespository, LuceneMemberRepository luceneMemberRespository) {
+			LuceneHouseHoldService luceneHouseHoldService, LuceneMemberService luceneMemberService) {
 		this.openmrsLocationService = openmrsLocationService;
 		this.openmrsUserService = openmrsUserService;
 		this.opensrpAuthenticationProvider = opensrpAuthenticationProvider;
-		this.luceneHouseHoldRespository = luceneHouseHoldRespository;
-		this.luceneMemberRespository = luceneMemberRespository;
+		this.luceneHouseHoldService = luceneHouseHoldService;
+		this.luceneMemberService = luceneMemberService;
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/authenticate-user")
@@ -128,40 +130,10 @@ public class UserController {
 			@RequestParam(value = "nid", required = false) String nationalId,
 			@RequestParam(value = "birthId", required = false) String birthId) throws JSONException {
 		List<DgfpClient> dgfpClients = new ArrayList<DgfpClient>();
-		System.out.println("nationalId: " + nationalId);
-		String makeQueryString = "type:household AND First_Name:" + firstName + "* AND NID:" + this.filterParameterForLuceneQuery(nationalId);
-		String makeMemberQueryString = "type:Members AND First_Name:" + firstName + "* AND NID:" + this.filterParameterForLuceneQuery(nationalId);
-		LuceneResult result = this.luceneHouseHoldRespository.findDocsByName(makeQueryString);
-		LuceneResult memberResult = this.luceneMemberRespository.findDocsByName(makeMemberQueryString);
-		dgfpClients.addAll(this.createUserListFrom(result.getRows()));
-		dgfpClients.addAll(this.createUserListFrom(memberResult.getRows()));
-		System.out.println(new Gson().toJson(dgfpClients));
-		return new ResponseEntity<>(new Gson().toJson(dgfpClients), OK);
-	}
-	
-	private String filterParameterForLuceneQuery(String parameter) {
-		if(parameter == null || parameter.isEmpty()){
-			return "\"\"";
-		}else {
-			return parameter;
-		}
-	}
-	
-	private List<DgfpClient> createUserListFrom(List<Row> resultRows) {
-		List<DgfpClient> dgfpClients = new ArrayList<DgfpClient>();
-		for (Row row : resultRows) {
-			String caseId = this.getValue(row, "Case_Id");
-			String firstName = this.getValue(row, "First_Name");
-			String nationalId = this.getValue(row, "NID");
-			String birthId = this.getValue(row, "BR_ID");
-			String type = this.getValue(row, "type");
-			dgfpClients.add(new DgfpClient(caseId, firstName, nationalId, birthId, type));
-		}
-		return dgfpClients;
-	}
-
-	private String getValue(Row row, String key) {
-		return row.getFields().containsKey(key) ? (String) row
-				.getFields().get(key) : "";
+		dgfpClients.addAll(this.luceneHouseHoldService.getAllHouseHoldClientBasedOn(firstName, nationalId, birthId));
+		dgfpClients.addAll(this.luceneMemberService.getAllHouseHoldClientBasedOn(firstName, nationalId, birthId));
+		Map<String, List<DgfpClient>> responseResult = new HashMap<String, List<DgfpClient>>();
+		responseResult.put("clients", dgfpClients);
+		return new ResponseEntity<>(new Gson().toJson(responseResult), OK);
 	}
 }
