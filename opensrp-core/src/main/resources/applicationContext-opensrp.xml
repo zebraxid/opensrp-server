@@ -21,9 +21,12 @@
     <context:property-placeholder location="classpath*:maven.properties"/>
     
     <util:properties id="opensrp" location="classpath:/opensrp.properties"/>
+   
 
     <context:annotation-config/>
     <context:component-scan base-package="org.opensrp"/>
+    
+  
 
     <bean id="opensrpDatabaseConnector" class="org.ektorp.impl.StdCouchDbConnector">
         <constructor-arg value="${couchdb.db.opensrp}"/>
