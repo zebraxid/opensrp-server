@@ -65,8 +65,8 @@ public class LuceneHouseHoldRepositoryTest {
         HttpClient httpClient = new StdHttpClient.Builder() 
                 .host("localhost") 
                 .port(5984) 
-               // .socketTimeout(100000) 
-               // .username("testadmin").password("testpass") 
+               .socketTimeout(100000) 
+               .username("Admin").password("mPower@1234") 
                 .build(); 
         CouchDbInstance instance = new StdCouchDbInstance(httpClient); 
  

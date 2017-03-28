@@ -33,7 +33,7 @@ public class LuceneScheduleServiceTest {
                 .host("localhost") 
                 .port(5984) 
                 .socketTimeout(1000) 
-               // .username("testadmin").password("testpass") 
+               .username("Admin").password("mPower@1234")  
                 .build(); 
         CouchDbInstance instance = new StdCouchDbInstance(httpClient); 
  
