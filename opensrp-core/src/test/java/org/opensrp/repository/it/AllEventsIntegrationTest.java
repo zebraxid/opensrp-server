@@ -19,7 +19,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath:test-applicationContext-opensrp.xml")
+@ContextConfiguration("classpath:applicationContext-opensrp.xml")
 public class AllEventsIntegrationTest {
 //TODO Detailed testing
 	@Autowired

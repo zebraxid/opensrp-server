@@ -10,6 +10,7 @@ public class OpenmrsConstants {
 	public static final String SCHEDULER_OPENMRS_ATOMFEED_SYNCER_SUBJECT = "OpenMRS Atomfeed Syncer";
 	public static final String ENROLLMENT_TRACK_UUID = "openmrsTrackUuid";
 	public static final String SCHEDULER_OPENMRS_DATA_PUSH_SUBJECT = "OpenMRS Data Pusher";
+	public static final String SCHEDULER_OPENMRS_DATA_PULL_SUBJECT = "OpenMRS Data Puller";
 	
 	public static final String ATOMFEED_URL = "ws/atomfeed";
     public static final String ATOMFEED_DATABASE_CONNECTOR = "atomfeedDatabaseConnector";
@@ -22,6 +23,8 @@ public class OpenmrsConstants {
 		openmrs_syncer_sync_client_by_date_voided,
 		openmrs_syncer_sync_event_by_date_updated,
 		openmrs_syncer_sync_event_by_date_voided,
+		openmrs_syncer_sync_drugs,
+		openmrs_syncer_sync_orders,
 		openmrs_syncer_sync_status,
 		openmrs_syncer_sync_timestamp
 	}

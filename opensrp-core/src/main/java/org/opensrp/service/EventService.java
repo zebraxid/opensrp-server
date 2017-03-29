@@ -31,10 +31,6 @@ public class EventService {
 	public List<Event> findAllByIdentifier(String identifier) {
 		return allEvents.findAllByIdentifier(identifier);
 	}
-
-	public List<Event> findAllByIdentifier(String identifierType, String identifier) {
-		return allEvents.findAllByIdentifier(identifierType, identifier);
-	}
 	
 	public Event getByBaseEntityAndFormSubmissionId(String baseEntityId, String formSubmissionId)
 	{

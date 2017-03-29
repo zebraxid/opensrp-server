@@ -26,7 +26,7 @@ public class AllActions extends MotechBaseRepository<Action> {
 
     @Autowired
     protected AllActions(@Value("#{opensrp['couchdb.opensrp-db.revision-limit']}") int revisionLimit, 
-    		@Qualifier(AllConstants.OPENSRP_DATABASE_CONNECTOR) CouchDbConnector db) {
+    		@Qualifier(AllConstants.ACTION_DATABASE_CONNECTOR) CouchDbConnector db) {
         super(Action.class, db);
         db.setRevisionLimit(revisionLimit);
     }

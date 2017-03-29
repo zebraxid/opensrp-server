@@ -203,28 +203,18 @@
 										<arg value="-X" />
 										<arg value="DELETE" />
 										<arg value="http://${host}:${port}/${couchdb.db.opensrp}" />
+										<arg value="http://${host}:${port}/${couchdb.db.client}" />
+										<arg value="http://${host}:${port}/${couchdb.db.event}" />
+										<arg value="http://${host}:${port}/${couchdb.db.alert}" />
+										<arg value="http://${host}:${port}/${couchdb.db.action}" />
+										<arg value="http://${host}:${port}/${couchdb.db.drugorder}" />
+										<arg value="http://${host}:${port}/${couchdb.db.multimedia}" />
+										<arg value="http://${host}:${port}/${couchdb.db.provider}" />
+										<arg value="http://${host}:${port}/${couchdb.db.location}" />
 										<arg value="http://${host}:${port}/${couchdb.db.form}" />
 										<arg value="http://${host}:${port}/${couchdb.db.motech-scheduletracking}" />
 									</exec>
 									<echo message="Dropping Couch DBs: END" />
-								</target>
-							</configuration>
-							<goals>
-								<goal>run</goal>
-							</goals>
-						</execution>
-						<execution>
-							<id>CREATE DB OPENSRP</id>
-							<phase>pre-integration-test</phase>
-							<configuration>
-								<target>
-									<echo message="CREATING OPENSRP START" />
-									<exec executable="curl">
-										<arg value="-X" />
-										<arg value="PUT" />
-										<arg value="http://${host}:${port}/${couchdb.db.opensrp}" />
-									</exec>
-									<echo message="CREATED OPENSRP END" />
 								</target>
 							</configuration>
 							<goals>

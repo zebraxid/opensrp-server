@@ -5,6 +5,14 @@ package org.opensrp.common;
 public class AllConstants {
 	public static final String OPENSRP_FORM_DATABASE_CONNECTOR = "opensrpFormDatabaseConnector";
     public static final String OPENSRP_DATABASE_CONNECTOR = "opensrpDatabaseConnector";
+    public static final String CLIENT_DATABASE_CONNECTOR = "clientDatabaseConnector";
+    public static final String EVENT_DATABASE_CONNECTOR = "eventDatabaseConnector";
+    public static final String ALERT_DATABASE_CONNECTOR = "alertDatabaseConnector";
+    public static final String ACTION_DATABASE_CONNECTOR = "actionDatabaseConnector";
+    public static final String DRUG_ORDER_DATABASE_CONNECTOR = "drugorderDatabaseConnector";
+    public static final String LOCATION_DATABASE_CONNECTOR = "locationDatabaseConnector";
+    public static final String MULTIMEDIA_DATABASE_CONNECTOR = "multimediaDatabaseConnector";
+    public static final String PROVIDER_DATABASE_CONNECTOR = "providerDatabaseConnector";
     public static final String OPENSRP_MCTS_DATABASE_CONNECTOR = "opensrpMCTSDatabaseConnector";
     public static final String SPACE = " ";
     public static final String BOOLEAN_TRUE_VALUE = "true";
@@ -33,7 +41,21 @@ public class AllConstants {
     	public static final String LAST_UPDATE = "lastEdited";
     	
     }
-    
+    public static class MultimediaData {
+    	public static final String BASEENTITYID="baseEntityId";
+    	public static final String NAME="name";
+    	public static final String PROVIDERID="providerId";
+    	public static final String CONTENTTYPE="contentType";
+    	public static final String FILEPATH="fileType";
+    	public static final String FILECATEGORY="fileCategory";
+    	public static final String UPLOADDATE="uploadDate";
+    	public static final String DESCRIPTION="description";
+    	public static final String FILESIZE="fileSize";
+    	public static final String IMAGE="image";
+    	public static final String PREVIEWIMAGE="previewImage";
+    	public static final String COMMENTS="comments";
+    }
+
     public static class Client extends BaseEntity{
     	public static final String FIRST_NAME = "firstName";
     	public static final String MIDDLE_NAME = "middleName";
@@ -64,6 +86,47 @@ public class AllConstants {
         public static final String CLIENT_VERSION = "clientVersion";
         public static final String SERVER_VERSION = "serverVersion";
     }
+    
+    public static class Drug extends BaseEntity{
+    	public static final String NAME="name";
+    	public static final String NAMEUUID="nameUuid";
+    	public static final String BASENAME="baseName";
+    	public static final String BASENAMEUUID="baseNameUuid";
+    	public static final String CREATOR="creator";
+    	public static final String CREATORUUID="creatorUuid";
+    	public static final String DOSESTRENGHT="doseStrenght";
+    	public static final String ROUTE="route";
+    	public static final String MAXDAILYDOSE="maxDailyDose";
+    	public static final String MINIDAILYDOSE="miniDailyDose";
+    	public static final String DESCRIPTION="Description";
+    	public static final String COMBINATION="combination";
+    }
+    
+    public static class DrugOrder extends BaseEntity{
+    	public static final String orderType="orderType";
+    	public static final String drugName="drugName";
+    	public static final String orderNumber="orderNumber";
+    	public static final String patientUuid="patientUuid";
+    	public static final String drugUuid="drugUuid";
+    	public static final String action="action";
+    	public static final String careSettingUuid="careSettingUuid";
+    	public static final String previousOrder="previousOrder";
+    	public static final String dateActivated="dateActivated";
+    	public static final String dateStopped="dateStopped";
+    	public static final String autoExpireDate="autoExpireDate";
+    	public static final String encounterUuid="encounterUuid";
+    	public static final String ordererUuid="ordererUuid";
+    	public static final String urgency="urgency";
+    	public static final String instructions="urgency";
+    	public static final String orderReason="orderReason";
+    	public static final String dosingType="dosingType";
+    	public static final String dose="dose";
+    	public static final String doseUnitsUuid="doseUnitsUuid";
+    	public static final String descriptions="descriptions";
+    	public static final String drugFrequencyUuid="drugFrequencyUuid";
+    	public static final String quantity="quantity";
+    	}
+    
     public static class HTTP {
         public static final String ACCESS_CONTROL_ALLOW_ORIGIN_HEADER = "Access-Control-Allow-Origin";
         public static final String WWW_AUTHENTICATE_HEADER = "www-authenticate";

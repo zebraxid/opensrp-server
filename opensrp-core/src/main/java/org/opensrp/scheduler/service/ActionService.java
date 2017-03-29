@@ -41,10 +41,6 @@ public class ActionService {
     public List<Action> findByCaseIdScheduleAndTimeStamp(String caseId, String schedule, DateTime start, DateTime end) {
 		return allActions.findByCaseIdScheduleAndTimeStamp(caseId, schedule, start, end);
 	}
-    
-    public List<Alert> findAlertByEntityIdScheduleAndTimeStamp(String entityId, String schedule, DateTime start, DateTime end) {
-		return allAlerts.findByEntityIdTriggerAndTimeStamp(entityId, schedule, start, end);
-	}
 
     public void alertForBeneficiary(String beneficiaryType, String caseID, String anmIdentifier, String scheduleName, String visitCode, AlertStatus alertStatus, DateTime startDate, DateTime expiryDate) {
     	allActions.addOrUpdateAlert(new Action(caseID, anmIdentifier, ActionData.createAlert(beneficiaryType, scheduleName, visitCode, alertStatus, startDate, expiryDate)));

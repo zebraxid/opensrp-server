@@ -12,7 +12,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.codehaus.jackson.JsonProcessingException;
-import org.joda.time.DateTime;
 import org.opensrp.util.FileCreator;
 import org.opensrp.util.JsonParser;
 import org.opensrp.util.NetClientGet;
@@ -24,8 +23,8 @@ import org.w3c.dom.ls.LSSerializer;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import com.sun.org.apache.xml.internal.serialize.OutputFormat;
-import com.sun.org.apache.xml.internal.serialize.XMLSerializer;
+// import com.sun.org.apache.xml.internal.serialize.OutputFormat;
+// import com.sun.org.apache.xml.internal.serialize.XMLSerializer;
 
 
 /**
@@ -133,7 +132,8 @@ public class XlsFormDownloaderService {
     }
 	
 	public String format(String unformattedXml) {
-        try {
+		return unformattedXml;
+        /*try {
             final org.w3c.dom.Document document = parseXmlFile(unformattedXml);
 
             OutputFormat format = new OutputFormat(document);
@@ -147,7 +147,7 @@ public class XlsFormDownloaderService {
             return out.toString();
         } catch (IOException e) {
             throw new RuntimeException(e);
-        }
+        }*/
     }
 
     private org.w3c.dom.Document parseXmlFile(String in) {

@@ -25,7 +25,7 @@ public class AllClients extends MotechBaseRepository<Client> {
 
 	@Autowired
 	protected AllClients(@Value("#{opensrp['couchdb.opensrp-db.revision-limit']}") int revisionLimit, 
-    		@Qualifier(AllConstants.OPENSRP_DATABASE_CONNECTOR) CouchDbConnector db, 
+    		@Qualifier(AllConstants.CLIENT_DATABASE_CONNECTOR) CouchDbConnector db, 
 			LuceneClientRepository lcr) {
 		super(Client.class, db);
 		this.lcr = lcr;
@@ -52,22 +52,11 @@ public class AllClients extends MotechBaseRepository<Client> {
 	public List<Client> findAllByIdentifier(String identifier) {
 		return db.queryView(createQuery("all_clients_by_identifier").key(identifier).includeDocs(true), Client.class);
 	}
-
-	@View(name = "all_clients_by_identifier_of_type", map = "function(doc) {if (doc.type === 'Client') {for(var key in doc.identifiers) {emit([key, doc.identifiers[key]]);}}}")
-	public List<Client> findAllByIdentifier(String identifierType, String identifier) {
-		ComplexKey ckey = ComplexKey.of(identifierType, identifier);
-		return db.queryView(createQuery("all_clients_by_identifier_of_type").key(ckey).includeDocs(true), Client.class);
-	}
 	
 	@View(name = "all_clients_by_attribute_of_type", map = "function(doc) {if (doc.type === 'Client') {for(var key in doc.attributes) {emit([key, doc.attributes[key]]);}}}")
 	public List<Client> findAllByAttribute(String attributeType, String attribute) {
 		ComplexKey ckey = ComplexKey.of(attributeType, attribute);
 		return db.queryView(createQuery("all_clients_by_attribute_of_type").key(ckey).includeDocs(true), Client.class);
-	}
-	
-	@View(name = "all_clients_by_matching_name", map = "function(doc) {if(doc.type === 'Client'){emit(doc.firstName, doc);emit(doc.lastName, doc);}}")
-	public List<Client> findAllByMatchingName(String nameMatches) {
-		return db.queryView(createQuery("all_clients_by_matching_name").startKey(nameMatches).endKey(nameMatches+"z").includeDocs(true), Client.class);
 	}
 	
 	public List<Client> findByCriteria(String nameLike, String gender, DateTime birthdateFrom, DateTime birthdateTo, 

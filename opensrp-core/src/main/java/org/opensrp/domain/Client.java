@@ -1,10 +1,8 @@
 package org.opensrp.domain;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -34,7 +32,7 @@ public class Client extends BaseEntity {
 	@JsonProperty
 	private String gender;
 	@JsonProperty
-	private Map<String, List<String>> relationships;
+	private List<RelationShip> relationships;
 
 	protected Client() {
 		
@@ -167,14 +165,21 @@ public class Client extends BaseEntity {
 		this.gender = gender;
 	}
 
-	public Map<String, List<String>> getRelationships() {
+	public  List<RelationShip> getRelationships() {
+		if(relationships == null){
+			relationships = new ArrayList<>();
+		}
 		return relationships;
 	}
 
-	public void setRelationships(Map<String, List<String>> relationships) {
-		this.relationships = relationships;
+	public void setRelationShip(List<RelationShip> relationship) {
+		this.relationships = relationship;
 	}
-	
+
+	public void addRelationship(RelationShip relationship) {
+		addRelationship(relationship.getRelationship(), relationship.getPerson_b());
+	}
+
 	public Client withFirstName(String firstName) {
 		this.firstName = firstName;
 		return this;
@@ -223,42 +228,71 @@ public class Client extends BaseEntity {
 	/**
 	 * Overrides the existing data
 	 */
-	public Client withRelationships(Map<String, List<String>> relationships) {
-		this.relationships = relationships;
+	public Client withRelation(List<RelationShip> relationShips) {
+		this.relationships = relationShips;
 		return this;
 	}
-	
-	public List<String> findRelatives(String relationshipType) {
+	public Client withRelation(RelationShip relationship) {
 		if(relationships == null){
-			relationships = new HashMap<>();
+			relationships  = new ArrayList<>();
 		}
+		relationships.add(relationship);
+		return this;
+	}
 		
-		return relationships.get(relationshipType);
+	public RelationShip findRelative(String relationshipType, String relativeId) {
+		if(relationships == null){
+			relationships = new ArrayList<>();
+		}
+
+		for (RelationShip relationShip : relationships) {
+			if(relationShip.getRelationship().equalsIgnoreCase(relationshipType)
+					&& relationShip.getPerson_b().equalsIgnoreCase(relativeId)){
+				return relationShip;
+			}
+		}
+		return null;
+	}
+	
+	public List<RelationShip> findRelations(String relativeId) {
+		if(relationships == null){
+			relationships = new ArrayList<>();
+		}
+
+		List<RelationShip> res = new ArrayList<>();
+		for (RelationShip relationShip : relationships) {
+			if(relationShip.getPerson_b().equalsIgnoreCase(relativeId)){
+				res.add(relationShip);
+			}
+		}
+		return res;
+	}
+	
+	public List<RelationShip> findRelatives(String relationShip) {
+		if(relationships == null){
+			relationships = new ArrayList<>();
+		}
+
+		List<RelationShip> res = new ArrayList<>();
+		for (RelationShip rel : relationships) {
+			if(rel.getRelationship().equalsIgnoreCase(relationShip)){
+				res.add(rel);
+			}
+		}
+		return res;
 	}
 	
 	public void addRelationship(String relationType, String relativeEntityId) {
 		if(relationships == null){
-			relationships = new HashMap<>();
+			relationships = new ArrayList<>();
 		}
 		
-		List<String> relatives = findRelatives(relationType);
-		if(relatives == null){
-			relatives = new ArrayList<>();
+		RelationShip relative = findRelative(relationType, relativeEntityId);
+		if(relative == null){
+			relationships.add(new RelationShip(relationType, relativeEntityId, null, null));
 		}
-		relatives.add(relativeEntityId);
-		relationships.put(relationType, relatives);
 	}
 	
-	public List<String> getRelationships(String relativeEntityId) {
-		List<String> relations = new ArrayList<String>();
-		for (Entry<String, List<String>> rl : relationships.entrySet()) {
-			if(rl.getValue().toString().equalsIgnoreCase(relativeEntityId)){
-				relations.add(rl.getKey());
-			}
-		}
-		return relations;
-	}
-
 	@Override
 	public boolean equals(Object o) {
 		return EqualsBuilder.reflectionEquals(this, o, "id", "revision");

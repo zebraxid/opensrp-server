@@ -62,6 +62,10 @@ public class UserController {
         return new ResponseEntity<>(new UserDetail(user.getUsername(), user.getRoles()), allowOrigin(opensrpSiteUrl), OK);
     }
 
+    public JSONObject teamAssociation(String user) throws JSONException {
+    	return openmrsUserService.getTeamMember(opensrpAuthenticationProvider.getDrishtiUser(user).getAttribute("_PERSON_UUID").toString());
+	}
+    
 	@RequestMapping("/security/authenticate")
 	@ResponseBody
 	public ResponseEntity<String> authenticate() throws JSONException {
@@ -69,7 +73,7 @@ public class UserController {
         String lid = "";
         JSONObject tm = null;
         try{
-        	tm = openmrsUserService.getTeamMember(u.getAttribute("_PERSON_UUID").toString());
+        	tm = teamAssociation(u.getUsername());
         	JSONArray locs = tm.getJSONArray("location");
         	for (int i = 0; i < locs.length(); i++) {
 				lid += locs.getJSONObject(i).getString("uuid")+";;";

@@ -82,6 +82,34 @@ public class EncounterTest extends TestResourceLoader{
 		}
 	}
 	
+	
+	@Test
+	public void relationshipTest() throws JSONException, ParseException, IOException {
+		final FormSubmission fs = getFormSubmissionFor("new_member_registration");
+		final Client c = oc.getClientFromFormSubmission(fs);
+		System.out.print(c);
+		if(pushToOpenmrsForTest){
+			System.out.println(ps.getPatientByIdentifier(c.getBaseEntityId()));
+			JSONObject p = ps.getPatientByIdentifier(c.getBaseEntityId());
+			if(p == null){
+				p = ps.createPatient(c);
+			}
+		final JSONObject relationShipJSON=hhs.getRelationshipType(c.getRelationships().get(0).getRelationship());
+		final String relationShipUUID=relationShipJSON.getString("uuid");
+		JSONObject o=hhs.getRelationship(p.getString("uuid"),c.getRelationships().get(0).getRelationship(),c.getRelationships().get(0).getPerson_b());
+		System.out.println("Before If: "+ o);
+		if(o==null)
+		{
+			o= hhs.createRelationship(p.getString("uuid"), relationShipUUID,c.getRelationships().get(0).getPerson_b());
+			System.out.println("JsonObject: "+ o);	
+			return;
+		}
+		System.out.println("RelationShip UUID: "+ o.getString("uuid"));
+		}
+	}
+	
+	
+	@Ignore
 	@Test
 	public void testGroupedEncounter() throws JSONException, ParseException, IOException {
 		FormSubmission fs = getFormSubmissionFor("repeatform");

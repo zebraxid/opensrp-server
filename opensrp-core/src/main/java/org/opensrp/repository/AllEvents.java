@@ -23,7 +23,7 @@ public class AllEvents extends MotechBaseRepository<Event>{
 
 	@Autowired
 	protected AllEvents(@Value("#{opensrp['couchdb.opensrp-db.revision-limit']}") int revisionLimit, 
-    		@Qualifier(AllConstants.OPENSRP_DATABASE_CONNECTOR) CouchDbConnector db,
+    		@Qualifier(AllConstants.EVENT_DATABASE_CONNECTOR) CouchDbConnector db,
 			LuceneEventRepository ler) {
 		super(Event.class, db);
 		this.ler = ler;
@@ -33,12 +33,6 @@ public class AllEvents extends MotechBaseRepository<Event>{
 	@View(name = "all_events_by_identifier", map = "function(doc) {if (doc.type === 'Event') {for(var key in doc.identifiers) {emit(doc.identifiers[key]);}}}")
 	public List<Event> findAllByIdentifier(String identifier) {
 		return db.queryView(createQuery("all_events_by_identifier").key(identifier).includeDocs(true), Event.class);
-	}
-
-	@View(name = "all_events_by_identifier_of_type", map = "function(doc) {if (doc.type === 'Event') {for(var key in doc.identifiers) {emit([key, doc.identifiers[key]]);}}}")
-	public List<Event> findAllByIdentifier(String identifierType, String identifier) {
-		ComplexKey ckey = ComplexKey.of(identifierType, identifier);
-		return db.queryView(createQuery("all_events_by_identifier_of_type").key(ckey).includeDocs(true), Event.class);
 	}
 	
 	@GenerateView

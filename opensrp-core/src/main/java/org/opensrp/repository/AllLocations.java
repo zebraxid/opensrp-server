@@ -18,7 +18,7 @@ public class AllLocations extends MotechBaseRepository<Location> {
 
 	@Autowired
 	protected AllLocations(@Value("#{opensrp['couchdb.opensrp-db.revision-limit']}") int revisionLimit, 
-			@Qualifier(AllConstants.OPENSRP_DATABASE_CONNECTOR) CouchDbConnector db) {
+			@Qualifier(AllConstants.LOCATION_DATABASE_CONNECTOR) CouchDbConnector db) {
 		super(Location.class, db);
 		db.setRevisionLimit(revisionLimit);
 	}

@@ -13,13 +13,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
     <title>Error Handling</title>
-    
 <%--     <script type="text/javascript" src="<c:url value="/resources/src/js/jquery.min.js"/>"></script> --%>
-
-  
-
     <link href="<c:url value="/resources/css/bootstrap.min.css"/>" rel="stylesheet">
     <link href="<c:url value="/resources/css/style.css"/>" rel="stylesheet">
 
@@ -43,13 +38,13 @@
 		<div class="col-md-3">
 		<ul class="nav nav-stacked nav-tabs">
 				<li >
-					<a href="/errorhandler/errortrace" >All Errors</a>
+					<a href="/errorhandler/errortrace?status=''" >All Errors</a>
 				</li>
 				<li >
-					<a href="/errorhandler/solvederrors" >Solved Errors</a>
+					<a href="/errorhandler/errortrace?status='solved'" >Solved Errors</a>
 				</li>
 				<li  >
-					<a href="/errorhandler/unsolvederrors">Unsolved Errors</a>
+					<a href="/errorhandler/errortrace?status='unsolved'">Unsolved Errors</a>
 				</li>
 				<li class="dropdown pull-right">
 					 <a href="#" data-toggle="dropdown" class="dropdown-toggle">Options<strong class="caret"></strong></a>
@@ -80,18 +75,16 @@
     <th>Record Id</th>
     <td>
      <spring:bind path="errorTrace.recordId">
-    
     <form:input type="text" path="errorTrace.recordId" id="recordId" name="recordId" readonly="true" />
     </spring:bind>
     </td>
   </tr>
- 
-	    <tr>
+	<tr>
     <th>Occurred Date</th>
     <td>
      <fmt:formatDate pattern="yyyy-MM-dd" 
-            value="${errorTraceForm.getErrorTrace().dateOccurred}" var="dateString"/>
-             <spring:bind path="errorTrace.dateOccurred">
+     value="${errorTraceForm.getErrorTrace().dateOccurred}" var="dateString"/>
+     <spring:bind path="errorTrace.dateOccurred">
     <form:input type="date" path="errorTrace.dateOccurred" value="${dateString}" id="dateOccurred" name="dateOccurred" readonly="true"  />
    </spring:bind>
     </td>
@@ -106,16 +99,15 @@
     </td>
   </tr>
     <tr>
-    <th>Status</th>
+    <th>
+    Status
+    </th>
     <td>
-
-      <spring:bind path="errorTrace.status">
+	 <spring:bind path="errorTrace.status">
     <form:select path="errorTrace.status" >
                   <c:forEach var="option" items="${errorTraceForm.statusOptions}">
-
                     <form:option value="${option}" label="${option}" />
                   </c:forEach>
-
                 </form:select>
                 </spring:bind>
     </td>

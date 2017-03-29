@@ -23,6 +23,7 @@ public class ApplicationStartupListener implements ApplicationListener<ContextRe
     //private RepeatingSchedule anmReportScheduler;
     //private RepeatingSchedule mctsReportScheduler;
     private RepeatingSchedule openmrsScheduleSyncerScheduler;
+    private RepeatingSchedule openmrsDrugSyncerScheduler;
     private RepeatingSchedule atomfeedSchedule;
     private RepeatingSchedule encounterSchedule;
     
@@ -38,6 +39,7 @@ public class ApplicationStartupListener implements ApplicationListener<ContextRe
         // TODO openmrsScheduleSyncerScheduler = new RepeatingSchedule(OpenmrsConstants.SCHEDULER_TRACKER_SYNCER_SUBJECT, 2, TimeUnit.MINUTES, openmrsSchSyncerMin, TimeUnit.MINUTES);
         atomfeedSchedule = new RepeatingSchedule(OpenmrsConstants.SCHEDULER_OPENMRS_ATOMFEED_SYNCER_SUBJECT, 5, TimeUnit.MINUTES, 1, TimeUnit.MINUTES);
         encounterSchedule = new RepeatingSchedule(OpenmrsConstants.SCHEDULER_OPENMRS_DATA_PUSH_SUBJECT, 5, TimeUnit.MINUTES, 1, TimeUnit.MINUTES);
+        openmrsDrugSyncerScheduler = new RepeatingSchedule(OpenmrsConstants.SCHEDULER_OPENMRS_DATA_PULL_SUBJECT, 5, TimeUnit.MINUTES, 12, TimeUnit.HOURS);
     }
 
     @Override
@@ -50,6 +52,7 @@ public class ApplicationStartupListener implements ApplicationListener<ContextRe
             //TODO scheduler.startJob(openmrsScheduleSyncerScheduler);
             scheduler.startJob(atomfeedSchedule);
             scheduler.startJob(encounterSchedule);
+            scheduler.startJob(openmrsDrugSyncerScheduler);
             
         	System.out.println("STARTED ALL SCHEDULES");
         }

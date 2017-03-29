@@ -3,10 +3,14 @@ package org.opensrp.repository.lucene;
 import java.io.IOException;
 import java.util.List;
 
+import org.ektorp.CouchDbConnector;
+import org.ektorp.impl.StdCouchDbInstance;
 import org.joda.time.DateTime;
+import org.opensrp.common.AllConstants;
 import org.opensrp.domain.Client;
 import org.opensrp.domain.Event;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import com.github.ldriscoll.ektorplucene.CouchDbRepositorySupportWithLucene;
@@ -30,9 +34,10 @@ public class LuceneEventRepository extends CouchDbRepositorySupportWithLucene<Ev
 	private LuceneDbConnector ldb;
 	
 	@Autowired
-	protected LuceneEventRepository(LuceneDbConnector db) {
-		super(Event.class, db);
-		this.ldb = db;
+	protected LuceneEventRepository(@Qualifier(AllConstants.EVENT_DATABASE_CONNECTOR) CouchDbConnector db
+			, StdCouchDbInstance dbinst) throws IOException {
+		super(Event.class, new LuceneDbConnector(db, dbinst));
+		this.ldb = (LuceneDbConnector) super.db;
 		initStandardDesignDocument();
 	}
 	

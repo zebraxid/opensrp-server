@@ -30,7 +30,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.google.gson.Gson;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath:test-applicationContext-opensrp.xml")
+@ContextConfiguration("classpath:applicationContext-opensrp.xml")
 public class ZiggyServiceTest extends TestResourceLoader{
     public ZiggyServiceTest() throws IOException {
 		super();

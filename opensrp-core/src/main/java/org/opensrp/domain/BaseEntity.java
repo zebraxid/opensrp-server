@@ -14,7 +14,6 @@ import org.codehaus.jackson.annotate.JsonProperty;
 import org.ektorp.support.TypeDiscriminator;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-@TypeDiscriminator("doc.baseEntityId && doc.identifiers")
 public class BaseEntity extends BaseDataObject {
 	@JsonProperty
 	private String baseEntityId;

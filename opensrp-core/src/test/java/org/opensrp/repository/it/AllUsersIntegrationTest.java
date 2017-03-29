@@ -8,23 +8,19 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.opensrp.domain.BaseEntity;
 import org.opensrp.domain.User;
-import org.opensrp.repository.AllBaseEntities;
 import org.opensrp.repository.AllUsers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath:test-applicationContext-opensrp.xml")
+@ContextConfiguration("classpath:applicationContext-opensrp.xml")
 public class AllUsersIntegrationTest {
 
 
 	@Autowired
 	private AllUsers allUsers;
-	@Autowired
-	private AllBaseEntities allBaseEntities;
 
 	@Before
 	public void setUp() throws Exception {
@@ -41,8 +37,6 @@ public class AllUsersIntegrationTest {
 		
 		List<String> roles = new ArrayList<>();
 		roles.add("tlp");
-
-		BaseEntity baseEntity = allBaseEntities.findByBaseEntityId("0001");
 		
 		User domainUser = new User("0001")
 					.withUsername("FWA2")

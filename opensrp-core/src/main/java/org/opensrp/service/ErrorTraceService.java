@@ -21,7 +21,6 @@ public class ErrorTraceService {
 	
 	private final AllErrorTrace allErrorTrace;
 	
-	
 	@Autowired
 	public ErrorTraceService(AllErrorTrace allErrorTrace)  {
 		this.allErrorTrace=allErrorTrace;
@@ -51,63 +50,21 @@ public class ErrorTraceService {
 		error.setRetryUrl(retryURL);
 		error.setDateOccurred(DateTime.now());
 		addError(error);
-		
 	}
 	
 	public void updateError(ErrorTrace entity){
 		allErrorTrace.update(entity);
 	}
 	
-	public List<ErrorTrace> getAllErrors() throws DocumentNotFoundException{
-		
-		
-		ArrayList<ErrorTrace> allErrorList= (ArrayList<ErrorTrace>) allErrorTrace.findAllErrors();
-		if(null==allErrorList || allErrorList.isEmpty()){
-			return null;
-			
-		}
-	
-		
-		return allErrorList;
-		
+	public List<ErrorTrace> getAllError() throws DocumentNotFoundException{
+		return allErrorTrace.findAllErrors();
 	}
 	
-	public List<ErrorTrace> getAllSolvedErrors() throws DocumentNotFoundException{
-		
-		
-		ArrayList<ErrorTrace> allErrorList= (ArrayList<ErrorTrace>) allErrorTrace.findAllSolvedErrors();
-		if(null==allErrorList || allErrorList.isEmpty()){
-			return null;
-			
-		}
-	
-		
-		return allErrorList;
-		
+	public List<ErrorTrace> getErrorsByStatus(String errorStatus) throws DocumentNotFoundException{
+		return allErrorTrace.findErrorsByStatus(errorStatus);
 	}
- 
-	public List<ErrorTrace> getAllUnsolvedErrors() throws DocumentNotFoundException{
 		
-		
-		ArrayList<ErrorTrace> allErrorList= (ArrayList<ErrorTrace>) allErrorTrace.findAllUnSolvedErrors();
-		if(null==allErrorList || allErrorList.isEmpty()){
-			return null;
-			
-		}
-	
-		
-		return allErrorList;
-		
-	}
-	
 	public ErrorTrace getError(String id) throws DocumentNotFoundException{
-		
-		return allErrorTrace.findById(id);
-		
-		
+		return allErrorTrace.findById(id);	
 	}
-
-	
-	
-	
 }

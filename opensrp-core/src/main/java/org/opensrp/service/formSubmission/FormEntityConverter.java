@@ -4,8 +4,6 @@ package org.opensrp.service.formSubmission;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +22,7 @@ import org.opensrp.domain.Address;
 import org.opensrp.domain.Client;
 import org.opensrp.domain.Event;
 import org.opensrp.domain.Obs;
+import org.opensrp.domain.RelationShip;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.form.service.FormAttributeParser;
 import org.opensrp.form.service.FormFieldMap;
@@ -135,6 +134,7 @@ public class FormEntityConverter {
 		return createEvent(subformInstance.entityId(), subformInstance.formAttributes().get("openmrs_entity_id"), subformInstance.fields(), fs);
 	}
 	
+	
 	/**
 	 * Get field name for specified openmrs entity in given form submission
 	 * @param en
@@ -157,9 +157,11 @@ public class FormEntityConverter {
 	}
 	
 	String getFieldName(FormEntity en, List<FormFieldMap> fields) {
+		
 		for (FormFieldMap f : fields) {
 			if(f.fieldAttributes().containsKey("openmrs_entity") && 
-					f.fieldAttributes().get("openmrs_entity").equalsIgnoreCase(en.entity())
+					(f.fieldAttributes().get("openmrs_entity").equalsIgnoreCase(en.entity()) || 
+							f.fieldAttributes().get("openmrs_entity").equalsIgnoreCase("person_relationship"))
 					&& f.fieldAttributes().get("openmrs_entity_id").equalsIgnoreCase(en.entityId())){
 				return f.name();
 			}
@@ -202,6 +204,15 @@ public class FormEntityConverter {
 		return paddr;
 	}
 	
+	Map<String, RelationShip> extractRelation(FormSubmissionMap fs) throws ParseException {
+		Map<String, RelationShip> paddr = new HashMap<>();
+		for (FormFieldMap fl : fs.fields()) {
+			fillRelationShipFields(fl, paddr);
+			
+		}
+		return paddr;
+	}
+	
 	Map<String, Address> extractAddressesForSubform(SubformMap subf) throws ParseException {
 		Map<String, Address> paddr = new HashMap<>();
 		for (FormFieldMap fl : subf.fields()) {
@@ -210,6 +221,15 @@ public class FormEntityConverter {
 		return paddr;
 	}
 	
+	void fillRelationShipFields(FormFieldMap fl, Map<String, RelationShip> relatShip) throws ParseException {
+		Map<String, String> att = fl.fieldAttributes();
+		if(att.containsKey("openmrs_entity") && att.get("openmrs_entity").equalsIgnoreCase("person_relationship")){
+			String relationShipType = att.get("openmrs_entity_id");
+			String person_b= fl.value();
+			relatShip.put(relationShipType,new RelationShip(relationShipType, person_b, "", ""));
+		}
+	}
+		
 	void fillAddressFields(FormFieldMap fl, Map<String, Address> addresses) throws ParseException {
 		Map<String, String> att = fl.fieldAttributes();
 		if(att.containsKey("openmrs_entity") && att.get("openmrs_entity").equalsIgnoreCase("person_address")){
@@ -364,6 +384,7 @@ public class FormEntityConverter {
 			}
 			birthdateApprox = bde > 0 ? true:false;
 		}
+		ArrayList<RelationShip> relationShips = new ArrayList<>(extractRelation(fs).values());
 		String aproxdd = fs.getFieldValue(getFieldName(Person.deathdate_estimated, fs));
 		Boolean deathdateApprox = false;
 		if(!StringUtils.isEmptyOrWhitespaceOnly(aproxdd) && NumberUtils.isNumber(aproxdd)){
@@ -385,7 +406,7 @@ public class FormEntityConverter {
 				.withLastName(lastName)
 				.withBirthdate(birthdate, birthdateApprox)
 				.withDeathdate(deathdate, deathdateApprox)
-				.withGender(gender);
+				.withGender(gender).withRelation(relationShips);
 		
 		c.withAddresses(addresses)
 				.withAttributes(extractAttributes(fs))

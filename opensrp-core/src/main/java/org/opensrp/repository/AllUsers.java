@@ -18,7 +18,7 @@ public class AllUsers extends MotechBaseRepository<User> {
 
 	@Autowired
 	protected AllUsers(@Value("#{opensrp['couchdb.opensrp-db.revision-limit']}") int revisionLimit, 
-			@Qualifier(AllConstants.OPENSRP_DATABASE_CONNECTOR) CouchDbConnector db) {
+			@Qualifier(AllConstants.PROVIDER_DATABASE_CONNECTOR) CouchDbConnector db) {
 		super(User.class, db);
 		db.setRevisionLimit(revisionLimit);
 	}

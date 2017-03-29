@@ -10,6 +10,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.opensrp.domain.Address;
 import org.opensrp.domain.Client;
+import org.opensrp.domain.RelationShip;
 import org.opensrp.repository.AllClients;
 import org.opensrp.util.DateTimeTypeConverter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,17 +42,9 @@ public class ClientService {
 	public List<Client> findAllByIdentifier(String identifier) {
 		return allClients.findAllByIdentifier(identifier);
 	}
-
-	public List<Client> findAllByIdentifier(String identifierType, String identifier) {
-		return allClients.findAllByIdentifier(identifierType, identifier);
-	}
 	
 	public List<Client> findAllByAttribute(String attributeType, String attribute) {
 		return allClients.findAllByAttribute(attributeType, attribute);
-	}
-	
-	public List<Client> findAllByMatchingName(String nameMatches) {
-		return allClients.findAllByMatchingName(nameMatches);
 	}
 	
 	public List<Client> findByCriteria(String nameLike, String gender, DateTime birthdateFrom, DateTime birthdateTo, 
@@ -185,6 +178,10 @@ public class ClientService {
 			}
 			for (String k : updatedClient.getAttributes().keySet()) {
 				original.addAttribute(k, updatedClient.getAttribute(k));
+			}
+			
+			for (RelationShip r : updatedClient.getRelationships()) {
+				original.addRelationship(r);
 			}
 		}
 

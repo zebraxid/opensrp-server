@@ -47,7 +47,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath:test-applicationContext-opensrp.xml")
+@ContextConfiguration("classpath:applicationContext-opensrp.xml")
 public class AllClientsIntegrationTest {
 //TODO detailed testign
 	
@@ -227,7 +227,7 @@ public class AllClientsIntegrationTest {
 		assertTrue(ce2.size() == 1);
 		assertEquals("testclient2", ce2.get(0).getBaseEntityId());
 		
-		List<Client> ce3 = clientService.findAllByIdentifier("Program ID", "01001222");
+		List<Client> ce3 = clientService.findAllByIdentifier("01001222");
 		assertTrue(ce3.size() == 1);
 		assertEquals("testclient2", ce3.get(0).getBaseEntityId());
 	}

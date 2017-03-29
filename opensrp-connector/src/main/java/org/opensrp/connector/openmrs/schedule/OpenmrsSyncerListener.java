@@ -1,10 +1,12 @@
 package org.opensrp.connector.openmrs.schedule;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.joda.time.DateTime;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.motechproject.scheduler.domain.MotechEvent;
 import org.motechproject.scheduletracking.api.domain.Enrollment;
@@ -13,10 +15,13 @@ import org.opensrp.connector.openmrs.constants.OpenmrsConstants;
 import org.opensrp.connector.openmrs.constants.OpenmrsConstants.SchedulerConfig;
 import org.opensrp.connector.openmrs.service.EncounterService;
 import org.opensrp.connector.openmrs.service.OpenmrsSchedulerService;
+import org.opensrp.connector.openmrs.service.OpenmrsOrderService;
 import org.opensrp.connector.openmrs.service.PatientService;
 import org.opensrp.domain.AppStateToken;
 import org.opensrp.domain.Client;
+import org.opensrp.domain.Drug;
 import org.opensrp.domain.Event;
+import org.opensrp.repository.AllDrugs;
 import org.opensrp.scheduler.service.ActionService;
 import org.opensrp.scheduler.service.ScheduleService;
 import org.opensrp.service.ClientService;
@@ -38,13 +43,16 @@ public class OpenmrsSyncerListener {
 	private EncounterService encounterService;
 	private EventService eventService;
 	private ClientService clientService;
+	private OpenmrsOrderService openmrsOrderService;
+	private AllDrugs allDrugs;
 	
 	@Autowired
 	public OpenmrsSyncerListener(OpenmrsSchedulerService openmrsSchedulerService, 
 			ScheduleService opensrpScheduleService, ActionService actionService, 
 			ConfigService config, ErrorTraceService errorTraceService,
 			PatientService patientService, EncounterService encounterService,
-			ClientService clientService, EventService eventService) {
+			OpenmrsOrderService openmrsOrderService,
+			ClientService clientService, EventService eventService, AllDrugs allDrugs) {
 		this.openmrsSchedulerService = openmrsSchedulerService;
 		this.opensrpScheduleService = opensrpScheduleService;
 		this.actionService = actionService;
@@ -52,8 +60,10 @@ public class OpenmrsSyncerListener {
 		this.errorTraceService = errorTraceService;
 		this.patientService = patientService;
 		this.encounterService = encounterService;
+		this.openmrsOrderService = openmrsOrderService;
 		this.eventService = eventService;
 		this.clientService = clientService;
+		this.allDrugs = allDrugs;
 		
 		this.config.registerAppStateToken(SchedulerConfig.openmrs_syncer_sync_schedule_tracker_by_last_update_enrollment, 
 				0, "ScheduleTracker token to keep track of enrollment synced with OpenMRS", true);
@@ -69,6 +79,8 @@ public class OpenmrsSyncerListener {
 		
 		this.config.registerAppStateToken(SchedulerConfig.openmrs_syncer_sync_event_by_date_voided, 
 				0, "OpenMRS data pusher token to keep track of voided events synced with OpenMRS", true);
+
+
 	}
 	
     @MotechListener(subjects = OpenmrsConstants.SCHEDULER_TRACKER_SYNCER_SUBJECT)
@@ -176,5 +188,45 @@ public class OpenmrsSyncerListener {
     	catch(Exception ex){
     		ex.printStackTrace();
     	}
+	}
+	
+	@MotechListener(subjects = OpenmrsConstants.SCHEDULER_OPENMRS_DATA_PULL_SUBJECT)
+	public void pullDataFromOpenMRS(MotechEvent event) {
+		try {
+    		System.out.println("RUNNING "+event.getSubject());
+    		JSONArray jdrugList = openmrsOrderService.getAllDrugs();
+    		for (int i = 0; i < jdrugList.length(); i++) {
+    			JSONObject jdrug = jdrugList.getJSONObject(i);
+    			try{
+    				List<Drug> existingL = allDrugs.findAllByCode(jdrug.getString("uuid"));
+					if(existingL.isEmpty()){
+						existingL = allDrugs.findAllByName(jdrug.getString("name"));
+					}
+					
+					Drug existingDrug= null;
+					if(existingL.isEmpty() == false){
+						existingDrug = existingL.get(0);
+					}
+    				Drug fetchedDrug = OpenmrsOrderService.toDrug(jdrug);
+    				if(existingDrug == null){
+    					allDrugs.add(fetchedDrug);
+    				}
+    				else {
+    					DateTime existingEdited = existingDrug.getDateEdited()==null?existingDrug.getDateCreated():existingDrug.getDateEdited();
+    					DateTime fetchedEdited = fetchedDrug.getDateEdited()==null?fetchedDrug.getDateCreated():fetchedDrug.getDateEdited();
+    					if(fetchedEdited.isAfter(existingEdited)){
+    						allDrugs.update(fetchedDrug);
+    					}
+    				}
+    			}
+    			catch(Exception e){
+    				e.printStackTrace();
+					errorTraceService.log("OPENMRS FAILED DRUG PULL", Drug.class.getName(), jdrug.toString(), ExceptionUtils.getStackTrace(e), "");
+    			}
+			}
+		} 
+		catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }

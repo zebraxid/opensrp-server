@@ -1,6 +1,8 @@
 package org.opensrp.domain;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.ektorp.support.TypeDiscriminator;
@@ -10,7 +12,7 @@ import org.motechproject.model.MotechBaseDataObject;
 /**
  * @author muhammad.ahmed@ihsinformatics.com Created on May 25, 2015
  */
-@TypeDiscriminator("doc.type == 'Error'")
+@TypeDiscriminator("doc.type == 'ErrorTrace'")
 public class ErrorTrace extends MotechBaseDataObject {
 
 	/*
@@ -37,7 +39,8 @@ public class ErrorTrace extends MotechBaseDataObject {
 	private String documentType;
 	@JsonProperty
 	private String retryUrl;
-
+	@JsonProperty
+	private Map<String, String> details;
 	// dateoccured , dateclosed , errortype =name, documenttype , submiturl
 	
 	public ErrorTrace() {
@@ -48,9 +51,9 @@ public class ErrorTrace extends MotechBaseDataObject {
 	 * 
 	 * 
 	 */
-	public ErrorTrace(DateTime dateOccurred, String errorType, String occuredAt,
+	public ErrorTrace(DateTime dateTime, String errorType, String occuredAt,
 			String stackTrace, String status, String documentType) {
-		this.dateOccurred = dateOccurred;
+		this.dateOccurred = dateTime;
 		// this.id=id;
 		this.documentType = documentType;
 		this.errorType = errorType;
@@ -111,7 +114,21 @@ public class ErrorTrace extends MotechBaseDataObject {
 		this.retryUrl = retryUrl;
 	}
 
+	public Map<String, String> getDetails() {
+		return details;
+	}
 
+	public void setDetails(Map<String, String> details) {
+		this.details = details;
+	}
+	
+	public void addDetails(String key, String val) {
+		if(details == null){
+			details = new HashMap<>();
+		}
+		details.put(key, val);
+	}
+	
 	public String getRecordId() {
 
 		return recordId;
@@ -129,8 +146,6 @@ public class ErrorTrace extends MotechBaseDataObject {
 	public void setDate(DateTime date) {
 		this.dateOccurred = date;
 	}
-
-	
 
 	public String getOccurredAt() {
 		return occurredAt;

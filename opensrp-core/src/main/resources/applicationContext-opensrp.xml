@@ -29,15 +29,45 @@
         <constructor-arg value="${couchdb.db.opensrp}"/>
         <constructor-arg ref="couchDbInstance"/>
     </bean>
-
+    <bean id="clientDatabaseConnector" class="org.ektorp.impl.StdCouchDbConnector">
+        <constructor-arg value="${couchdb.db.client}"/>
+        <constructor-arg ref="couchDbInstance"/>
+    </bean>
+    <bean id="eventDatabaseConnector" class="org.ektorp.impl.StdCouchDbConnector">
+        <constructor-arg value="${couchdb.db.event}"/>
+        <constructor-arg ref="couchDbInstance"/>
+    </bean>
+    <bean id="alertDatabaseConnector" class="org.ektorp.impl.StdCouchDbConnector">
+        <constructor-arg value="${couchdb.db.alert}"/>
+        <constructor-arg ref="couchDbInstance"/>
+    </bean>
+    <bean id="actionDatabaseConnector" class="org.ektorp.impl.StdCouchDbConnector">
+        <constructor-arg value="${couchdb.db.action}"/>
+        <constructor-arg ref="couchDbInstance"/>
+    </bean>
+    <bean id="drugorderDatabaseConnector" class="org.ektorp.impl.StdCouchDbConnector">
+        <constructor-arg value="${couchdb.db.drugorder}"/>
+        <constructor-arg ref="couchDbInstance"/>
+    </bean>
+    <bean id="locationDatabaseConnector" class="org.ektorp.impl.StdCouchDbConnector">
+        <constructor-arg value="${couchdb.db.location}"/>
+        <constructor-arg ref="couchDbInstance"/>
+    </bean>
+    <bean id="multimediaDatabaseConnector" class="org.ektorp.impl.StdCouchDbConnector">
+        <constructor-arg value="${couchdb.db.multimedia}"/>
+        <constructor-arg ref="couchDbInstance"/>
+    </bean>
+    <bean id="providerDatabaseConnector" class="org.ektorp.impl.StdCouchDbConnector">
+        <constructor-arg value="${couchdb.db.provider}"/>
+        <constructor-arg ref="couchDbInstance"/>
+    </bean>
+    <bean id="opensrpErrorTraceDatabaseConnector" class="org.ektorp.impl.StdCouchDbConnector">
+        <constructor-arg value="${couchdb.db.error}"/>
+        <constructor-arg ref="couchDbInstance"/>
+    </bean>
     <bean id="opensrpMCTSDatabaseConnector" class="org.ektorp.impl.StdCouchDbConnector">
         <constructor-arg value="${couchdb.db.mcts}"/>
         <constructor-arg ref="couchDbInstance"/>
     </bean>
     <bean id="statsdAgent" class="org.motechproject.metrics.impl.LoggingAgentBackendImpl"/>
-  <bean id="opensrpErrorTraceDatabaseConnector" class="org.ektorp.impl.StdCouchDbConnector">
-        <constructor-arg value="${couchdb.db.error}"/>
-        <constructor-arg ref="couchDbInstance"/>
-    </bean>
-
 </beans>
