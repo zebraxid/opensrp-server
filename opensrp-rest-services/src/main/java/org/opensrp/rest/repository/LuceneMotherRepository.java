@@ -38,6 +38,8 @@ import com.github.ldriscoll.ektorplucene.designdocument.annotation.Index;
 	    		" doc.add(rec.mother_wom_nid,{\"field\":\"mother_wom_nid\", \"store\":\"yes\"});" +
 	    		" doc.add(rec.mother_wom_bid,{\"field\":\"mother_wom_bid\", \"store\":\"yes\"});" +
 	    		" doc.add(rec.mother_wom_age,{\"field\":\"mother_wom_age\", \"store\":\"yes\"});" +
+	    		" doc.add(rec.FWWOMUPAZILLA,{\"field\":\"FWWOMUPAZILLA\", \"store\":\"yes\"});"+ 
+	    		" doc.add(rec.FWWOMDISTRICT,{\"field\":\"FWWOMDISTRICT\", \"store\":\"yes\"});"+ 
 	    		" doc.add(rec.FWWOMUNION,{\"field\":\"FWWOMUNION\", \"store\":\"yes\"});"+ 	    		   		
 	    		" doc.add(rec.SUBMISSIONDATE,{\"field\":\"SUBMISSIONDATE\", \"store\":\"yes\"});" + 
 	    		" doc.add(rec.PROVIDERID,{\"field\":\"PROVIDERID\", \"store\":\"yes\"});" +

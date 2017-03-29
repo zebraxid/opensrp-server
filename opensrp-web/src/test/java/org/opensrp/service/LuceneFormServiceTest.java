@@ -11,6 +11,7 @@ import org.ektorp.http.HttpClient;
 import org.ektorp.http.StdHttpClient;
 import org.ektorp.impl.StdCouchDbInstance;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.opensrp.rest.repository.LuceneFormRepository;
 import org.opensrp.rest.services.LuceneFormService;
@@ -44,7 +45,7 @@ public class LuceneFormServiceTest {
         luceneServ = new LuceneFormService(luceneFormRepository, convertDateStringToTimestampMills);
     } 
     
-    @Test 
+   @Ignore @Test 
     public void testCount() throws ParseException {    	
     	//luceneServ.someFunc();
     	DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");

@@ -42,6 +42,7 @@ public class AllElcoIntegrationTest {
         //.host("localhost") 
        	.host("localhost")
         .port(5984) 
+        .username("Admin").password("mPower@1234")
         .socketTimeout(1000) 
         .build(); 
 		dbInstance = new StdCouchDbInstance(httpClient); 
