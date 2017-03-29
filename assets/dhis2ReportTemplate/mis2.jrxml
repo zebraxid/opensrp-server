@@ -1,0 +1,907 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
+<!-- 2017-03-29T18:22:56 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="dgfp" pageWidth="595" pageHeight="1000" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="18da28e8-8b84-4338-9702-bcbbd0dd689f">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<field name="periodid" class="java.lang.String"/>
+	<field name="periodname" class="java.lang.String"/>
+	<field name="periodcode" class="java.lang.String"/>
+	<field name="perioddescription" class="java.lang.String"/>
+	<field name="reporting_month_name" class="java.lang.String"/>
+	<field name="param_organisationunit_name" class="java.lang.String"/>
+	<field name="organisation_unit_is_parent" class="java.lang.String"/>
+	<field name="bcpill absoulate new" class="java.lang.Double"/>
+	<field name="bcpill left new method taken" class="java.lang.Double"/>
+	<field name="bcpill left none taken" class="java.lang.Double"/>
+	<field name="bcpill new" class="java.lang.Double"/>
+	<field name="bcpill unit total" class="java.lang.Double"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="119" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<staticText>
+				<reportElement x="-9" y="-8" width="556" height="108" uuid="3d604468-38cd-4069-a1db-1dcb75415204">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[People's Republic of Bangladesh]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="265" y="67" width="24" height="20" uuid="c2e827c2-f7f4-4185-b659-6a974812054f"/>
+				<textElement textAlignment="Center">
+					<font size="13"/>
+				</textElement>
+				<text><![CDATA[-]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="155" y="24" width="310" height="15" uuid="6c6a24ba-d107-4a3b-ba16-4558ac8e4be4"/>
+				<textElement markup="styled">
+					<font fontName="SansSerif" isBold="true"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[Report on Family Planning, Mother and Child care]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="241" y="42" width="80" height="16" uuid="223fdc41-3667-4613-a41a-07727d443c8b"/>
+				<text><![CDATA[MIS Form-1]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="187" y="6" width="204" height="16" uuid="13b83d68-c2c3-49e7-b275-82d823596514"/>
+				<text><![CDATA[Directorate General of Family Planning]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="-3" y="70" width="80" height="20" uuid="7ad4d731-13e3-4918-98ac-289bdba52b33"/>
+				<text><![CDATA[Zilla]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="82" y="70" width="80" height="20" uuid="fcd42e38-4777-40ea-99f4-67f4de71be6e"/>
+				<text><![CDATA[Upzilla]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="172" y="69" width="80" height="20" uuid="dc0cb8ef-b040-4a20-bb91-cf4e17bfdf77"/>
+				<text><![CDATA[Union]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="269" y="69" width="80" height="20" uuid="577e4e64-2cf2-42cf-9c70-b936dfe875e7"/>
+				<text><![CDATA[Health Worker]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="378" y="71" width="61" height="20" uuid="b6d5bd4a-78ae-4fd7-8fea-dab3afc42a7c"/>
+				<text><![CDATA[Month :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="445" y="70" width="75" height="19" uuid="dca22182-f559-4063-b57e-cb36367f5e72"/>
+				<textFieldExpression><![CDATA[$F{reporting_month_name}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="16" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="60" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<staticText>
+				<reportElement x="-10" y="3" width="85" height="45" uuid="293f126f-97ca-4826-9cb4-79f6c13d9a34"/>
+				<textElement rotation="None">
+					<font fontName="SansSerif" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="75" y="28" width="80" height="20" uuid="46462164-9ad1-49c7-be2f-b02855484a4f"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Birth Controll]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="155" y="28" width="55" height="20" uuid="4d35cfd5-8a9d-4dcd-9cf6-5ee2cb1f640c"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Condom]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="210" y="28" width="55" height="20" uuid="17490cb8-b5e2-4917-9d12-188187523a68"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Injection]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="265" y="28" width="55" height="20" uuid="503e3528-dff5-4673-b9c5-3df4b02de397"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[IUD]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="320" y="28" width="116" height="14" uuid="a47c696d-7585-455e-bf19-49d419115172"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Permanent Method]]></text>
+			</staticText>
+			<line>
+				<reportElement x="-10" y="52" width="554" height="2" uuid="cff03a72-b822-419d-83ae-b434fb61af8f"/>
+			</line>
+			<line>
+				<reportElement x="75" y="27" width="468" height="1" uuid="0c246726-64e1-4e48-96a3-a8d29e3fb55b"/>
+			</line>
+			<staticText>
+				<reportElement x="-8" y="-16" width="170" height="19" uuid="07c8e3fa-2733-4848-b004-e06ba9b2f5bc"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[A) Family Planning Procedure]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="100" y="6" width="276" height="20" uuid="458b3342-8678-4bba-aa9b-797d51c4ba91"/>
+				<textElement textAlignment="Center">
+					<font fontName="DejaVu Sans Mono" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[People have taken Measures]]></text>
+			</staticText>
+			<line>
+				<reportElement x="-10" y="5" width="557" height="1" uuid="6cbe543f-e304-43ff-bd31-6eaa44456193"/>
+			</line>
+			<staticText>
+				<reportElement x="433" y="29" width="55" height="20" uuid="1b57cc42-6e59-4dfe-a590-26bee9669987"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Implant]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="486" y="27" width="55" height="20" uuid="50d98522-0e05-494b-8192-df74b657f00c"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Implant]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="320" y="42" width="55" height="13" uuid="55c06bd6-4d00-46f0-80ca-1c6cda9f28e9"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Man]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="377" y="42" width="55" height="13" uuid="a20b75e0-e462-4ffe-b5a3-9789a8215119"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Woman]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="300" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<textField isBlankWhenNull="true">
+				<reportElement x="97" y="-3" width="55" height="20" uuid="6e8be478-6a92-40a8-840e-90657ff5b9c4"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bcpill absoulate new}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="155" y="2" width="55" height="20" uuid="8e17a745-cf6b-4eb0-ad51-a5e464ed1618"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bcpill left new method taken}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="210" y="2" width="55" height="20" uuid="c7aed12e-32a0-4864-a592-a2ded22a65e1"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bcpill left none taken}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="264" y="-1" width="55" height="20" uuid="51398354-2957-47d4-a201-802f8281f827"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bcpill new}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="320" y="2" width="55" height="20" uuid="744a09ca-da71-4a40-ac7d-e99f9f2c23b4"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bcpill unit total}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="-8" y="1" width="83" height="20" uuid="13802bab-8355-47c5-970d-092225f86553"/>
+				<textElement>
+					<font fontName="DejaVu Sans Mono" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Old"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="-9" y="25" width="84" height="20" uuid="635552f9-5e71-46e5-b42c-90b950a9018f"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["New"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="-7" y="71" width="78" height="20" uuid="27d4a886-ae96-4025-8340-c2b8f888bc01"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Unit Total"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="-8" y="47" width="84" height="20" uuid="d0778b5a-25c8-4710-af4e-ceece56de84b"/>
+				<textElement>
+					<font fontName="FreeMono" size="9"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Current Month Total"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="101" y="24" width="55" height="20" uuid="7b9b9b80-4cab-44ec-a15d-ca3e383c7761"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bcpill absoulate new}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="103" y="47" width="55" height="20" uuid="f076dd31-8037-40f6-91e2-640b45ea3e3d"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bcpill absoulate new}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="103" y="70" width="55" height="20" uuid="9619fdb6-fa7b-4b55-aa6b-53740b20551b"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bcpill absoulate new}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="159" y="116" width="55" height="20" uuid="44f0d2bc-043a-4704-82c9-50b12a4ad637"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bcpill absoulate new}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="163" y="49" width="55" height="20" uuid="25907c9d-d378-4936-ab7b-1597ae76a237"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bcpill absoulate new}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="161" y="26" width="55" height="20" uuid="49b0dd8a-521e-47e3-83ee-3d9b96ebec8f"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bcpill absoulate new}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="209" y="26" width="55" height="20" uuid="c3805814-3551-4995-8417-62a2020a3a33"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bcpill left none taken}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="211" y="47" width="55" height="20" uuid="639908ad-9afa-4a95-a260-f23f64a7ceb2"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bcpill left none taken}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="209" y="71" width="55" height="20" uuid="b70fdf65-3e64-465f-8f3d-bde972a7b163"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bcpill left none taken}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="211" y="-31" width="1" height="184" uuid="b98d0721-23f6-4579-a34f-90a893d34ba4"/>
+			</line>
+			<line>
+				<reportElement x="77" y="-57" width="1" height="210" uuid="87e9d98d-8b9e-47d9-b9d8-5399749d0814"/>
+			</line>
+			<line>
+				<reportElement x="156" y="-31" width="1" height="185" uuid="4dcba49a-eb19-466a-839b-5f7fd9c1c17a"/>
+			</line>
+			<line>
+				<reportElement x="269" y="-34" width="1" height="187" uuid="7d758708-8481-42b9-923b-c086f1d4b677"/>
+			</line>
+			<line>
+				<reportElement x="434" y="-34" width="2" height="187" uuid="af8d5402-b616-4ade-a853-7cdd95caadb5"/>
+			</line>
+			<line>
+				<reportElement x="377" y="-20" width="1" height="173" uuid="34f14c75-bed9-40aa-bbcd-054bc9e57ddb"/>
+			</line>
+			<line>
+				<reportElement x="-9" y="90" width="553" height="1" uuid="1cd9767c-fbc3-4cd4-a937-6b06fa2e9e2f"/>
+			</line>
+			<line>
+				<reportElement x="-10" y="67" width="555" height="1" uuid="0da139b0-0a8b-4101-a828-01d6cf0f8044"/>
+			</line>
+			<line>
+				<reportElement x="-8" y="44" width="551" height="1" uuid="3d51e424-3fc7-4a2a-a801-b6b4b515b26e"/>
+			</line>
+			<line>
+				<reportElement x="-7" y="21" width="550" height="1" uuid="e06e59f4-3293-40e9-8703-92b159037bb6"/>
+			</line>
+			<line>
+				<reportElement x="-8" y="-55" width="1" height="208" uuid="86987cf6-ead3-43ce-baa8-188a056e29cb"/>
+			</line>
+			<textField isBlankWhenNull="true">
+				<reportElement x="265" y="24" width="55" height="20" uuid="5511c1c0-39f9-49a5-a5c2-4507ec3a0bf3"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bcpill new}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="265" y="46" width="55" height="20" uuid="af8d9fbc-1518-4e8a-980d-af938a087228"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bcpill new}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="267" y="70" width="55" height="20" uuid="3b481cfe-c0e2-4bc0-b354-e8fb9ed9732f"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bcpill new}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="322" y="70" width="55" height="20" uuid="4592d6a6-2aa7-44a1-9582-9260d872c15b"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bcpill new}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="323" y="45" width="55" height="20" uuid="239d6842-cb54-4b71-a536-aa5c2f6b9c5a"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bcpill new}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="322" y="22" width="55" height="20" uuid="9169cdce-f985-471a-82e9-6ecdffbac0b1"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bcpill new}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="379" y="23" width="55" height="20" uuid="b5c154b9-7e03-49e2-a59b-74aa35faf9b4"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bcpill new}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="380" y="46" width="55" height="20" uuid="b7bddc8c-eb32-4427-bbdb-6cf63957b935"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bcpill new}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="377" y="3" width="55" height="20" uuid="0500c109-c050-4b8d-94bb-c2d75e418045"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bcpill unit total}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="379" y="71" width="55" height="20" uuid="0d8c1ad7-2cc1-44b2-a7db-212555d358d6"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bcpill new}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="435" y="23" width="55" height="20" uuid="dfeab2ed-7122-41fd-a73d-fdbc5e582980"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bcpill new}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="436" y="46" width="55" height="20" uuid="7911acc5-9c87-42e2-84f0-046a801e8b0f"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bcpill new}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="433" y="3" width="55" height="20" uuid="b2349388-7def-4981-9b54-c01df1bfd603"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bcpill unit total}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="435" y="71" width="55" height="20" uuid="a283f2e7-a6ca-4245-b500-a34d2d72b519"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bcpill new}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="488" y="21" width="55" height="20" uuid="73a7487d-267d-483b-925c-ea65754f2cea"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bcpill new}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="489" y="44" width="55" height="20" uuid="542821bb-d78b-4af9-a788-e441b494962f"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bcpill new}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="486" y="1" width="55" height="20" uuid="80eeda64-dd3f-4105-86b8-cd8533405469"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bcpill unit total}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="488" y="69" width="55" height="20" uuid="a569d364-a686-431c-9f46-5644bfcdae71"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bcpill new}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="489" y="-33" width="1" height="186" uuid="cdd1f123-b021-4452-8aea-1cdf1a34fa51"/>
+			</line>
+			<line>
+				<reportElement x="544" y="-54" width="1" height="207" uuid="76c32c9c-f324-4612-85c1-909297b3c5ac"/>
+			</line>
+			<line>
+				<reportElement x="544" y="-54" width="1" height="207" uuid="76c32c9c-f324-4612-85c1-909297b3c5ac"/>
+			</line>
+			<line>
+				<reportElement x="319" y="-21" width="116" height="1" uuid="f6a4340b-5d7b-4e49-927f-e12f581b2eb2"/>
+			</line>
+			<textField isBlankWhenNull="true">
+				<reportElement x="379" y="95" width="55" height="20" uuid="2e1b9689-9f2f-4806-91b4-e4dbdb4077fe"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bcpill new}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="163" y="96" width="55" height="20" uuid="a240d781-d1aa-4d42-89cf-755af1ae44e8"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bcpill absoulate new}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="267" y="94" width="55" height="20" uuid="761d25de-0b16-4da1-8754-0c62dbd50640"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bcpill new}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="488" y="93" width="55" height="20" uuid="b7f59ad7-9ad6-4642-ab27-3809c3e3f7b0"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bcpill new}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="103" y="94" width="55" height="20" uuid="b96500dc-36ea-41be-a311-d486b499baf1"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bcpill absoulate new}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="-9" y="114" width="553" height="1" uuid="00048c28-389d-4bd8-81fa-0ae84e70831c"/>
+			</line>
+			<textField isBlankWhenNull="true">
+				<reportElement x="435" y="95" width="55" height="20" uuid="eed350bd-fc60-4323-a422-729efd8a2a0b"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bcpill new}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="-7" y="90" width="45" height="23" uuid="5a276f1a-2dc0-43c9-b245-f4a6a66562de"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Left In Current Month"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="322" y="94" width="55" height="20" uuid="197d6c87-f43a-441d-860e-9f5191826256"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bcpill new}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="209" y="95" width="55" height="20" uuid="21169e9e-9d18-48bc-8182-6337c42fec31"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bcpill left none taken}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="38" y="92" width="40" height="11" uuid="165f7813-ce9d-4f4b-9787-55d1d9036b9a"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["None Taken"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="38" y="102" width="40" height="11" uuid="31537fa6-c44a-49e6-9abb-e1a95abc35b8"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Taken Other"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="492" y="115" width="55" height="20" uuid="d7b35ece-ed54-4f39-b1e9-6214684c2766"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bcpill new}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="107" y="116" width="55" height="20" uuid="984251f6-b649-4267-9c9a-c0440099d052"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bcpill absoulate new}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="326" y="116" width="55" height="20" uuid="f701723b-8aba-4667-9407-387a05632bbe"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bcpill new}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="383" y="117" width="55" height="20" uuid="3f8ada74-63de-41ab-b66f-c7977aa6a27b"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bcpill new}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="271" y="116" width="55" height="20" uuid="c3970811-25c3-4e75-95da-2cfba695a611"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bcpill new}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="439" y="117" width="55" height="20" uuid="2eec356f-8df3-42e3-b4f3-683eb315745d"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bcpill new}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="-4" y="116" width="78" height="15" uuid="aa4e5c57-4209-44d8-83fc-2cc3d4f3db9e"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Sent For Method"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="213" y="117" width="55" height="20" uuid="732e4e4e-18f9-46c8-a205-8adfcff334ef"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bcpill left none taken}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="492" y="135" width="55" height="20" uuid="60befe62-8777-47aa-96f8-0153bd09ee60"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bcpill new}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="107" y="136" width="55" height="20" uuid="7f794139-b089-4c07-a6e8-8ba071b668c1"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bcpill absoulate new}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="326" y="136" width="55" height="20" uuid="d59624b4-d057-424e-8931-2fddbde0d465"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bcpill new}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="383" y="137" width="55" height="20" uuid="4dd7701d-51b9-42f8-a34f-1c49bfe11b45"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bcpill new}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="271" y="136" width="55" height="20" uuid="e40ae14d-6539-4678-9343-254d97521122"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bcpill new}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="439" y="137" width="55" height="20" uuid="a68909dd-67c5-4bd8-83bf-ff3e1d8150d9"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bcpill new}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="-3" y="134" width="78" height="20" uuid="0be997ab-deb4-41ce-b0af-81d29b7b6e62"/>
+				<textElement textAlignment="Left" markup="styled">
+					<font size="8"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Sent For Side effect"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="213" y="137" width="55" height="20" uuid="1b401855-cb78-452a-9a82-e78f5b010de4"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bcpill left none taken}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="-6" y="132" width="553" height="1" uuid="8f00c0e0-5224-46bc-b511-59b7fdf284a5"/>
+			</line>
+			<line>
+				<reportElement x="-8" y="153" width="553" height="1" uuid="abdeae9a-eb0c-4042-9927-8bd75a57ea6a"/>
+			</line>
+			<textField isBlankWhenNull="true">
+				<reportElement x="158" y="133" width="55" height="20" uuid="458738a3-fdaa-4e38-bab8-ae73cc85d020"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bcpill absoulate new}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="208" y="188" width="55" height="20" uuid="61a0bb61-440c-437d-8204-3f2df46f4b7e"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bcpill absoulate new}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="208" y="168" width="55" height="20" uuid="d4f6042d-8efc-44da-9879-700cdafb8227"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bcpill absoulate new}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="2" y="169" width="178" height="15" uuid="451e162e-6951-42e0-84c9-600ba822d622"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Current Month Total Eligible Couple"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="2" y="186" width="178" height="20" uuid="5d157fed-c2fb-48f1-a893-03a455a727cd"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Previous Month Total Eligible Couple"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="490" y="186" width="55" height="20" uuid="5776fffe-e92f-4585-b1f7-01caf4c7be96"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bcpill absoulate new}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="490" y="166" width="55" height="20" uuid="c0461b38-e691-4a03-9c5d-1b5c06c90c4b"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bcpill absoulate new}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="286" y="167" width="185" height="15" uuid="95f0e3a8-3cf9-4a68-8061-86fbb4422723"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Total Eligible Couple in Union"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="286" y="184" width="185" height="20" uuid="c21c73ff-591d-476a-94dc-93584a8a8729"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["New Couple in Current Month"]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="-3" y="167" width="553" height="1" uuid="2456f66c-2d0c-41ba-9c3e-7b4c9b3fdda7"/>
+			</line>
+			<line>
+				<reportElement x="-2" y="185" width="553" height="1" uuid="d061f5e0-4d8e-4d61-9345-3d15c2ae8b0c"/>
+			</line>
+			<line>
+				<reportElement x="-4" y="209" width="553" height="1" uuid="923f98a7-9264-424f-a1cd-a9bfc2f66b26"/>
+			</line>
+			<line>
+				<reportElement x="194" y="166" width="1" height="42" uuid="6789041c-df22-4471-857e-f7840cc7e70a"/>
+			</line>
+			<line>
+				<reportElement x="270" y="168" width="1" height="39" uuid="25f537cd-310c-4d6d-9844-dcd2e8534c66"/>
+			</line>
+			<line>
+				<reportElement x="471" y="167" width="1" height="39" uuid="3ad7608c-d0bc-402e-9631-035725862371"/>
+			</line>
+			<line>
+				<reportElement x="550" y="168" width="1" height="39" uuid="9c7bb848-78a7-45d9-bccd-b35a3cd6ad43"/>
+			</line>
+			<line>
+				<reportElement x="-4" y="166" width="1" height="42" uuid="51edf910-ddfe-4c30-846e-02e68880d4d8"/>
+			</line>
+			<line>
+				<reportElement x="-1" y="263" width="553" height="1" uuid="256b2830-e9cd-463b-b353-3f37c1f63aeb"/>
+			</line>
+			<line>
+				<reportElement x="0" y="221" width="553" height="1" uuid="d9f40148-b81a-4eb6-9239-ce9468b6f9c5"/>
+			</line>
+			<line>
+				<reportElement x="146" y="221" width="1" height="42" uuid="a53a0dd9-79dc-477d-8e11-4c8036150242"/>
+			</line>
+			<line>
+				<reportElement x="0" y="222" width="1" height="42" uuid="be8ac2fe-2494-4ac1-b4aa-034b1f0b7cbe"/>
+			</line>
+			<line>
+				<reportElement x="280" y="222" width="1" height="42" uuid="a1f819fd-ae24-4a0d-8f49-f75fec2b7d51"/>
+			</line>
+			<line>
+				<reportElement x="352" y="220" width="1" height="42" uuid="108721a8-18f2-4090-bcc4-980176ec60ce"/>
+			</line>
+			<line>
+				<reportElement x="481" y="222" width="1" height="42" uuid="b138b374-8d9c-4e05-88dc-7291aa4f9fa4"/>
+			</line>
+			<line>
+				<reportElement x="552" y="222" width="1" height="42" uuid="0a34b7d4-c60e-4938-a3e4-906b821fb938"/>
+			</line>
+			<textField isBlankWhenNull="true">
+				<reportElement x="2" y="222" width="144" height="42" uuid="85b2778e-7eb0-43aa-ba6f-01a31aa02b80"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Percentage of Taking FP"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="280" y="232" width="71" height="19" uuid="e04241b2-ee0a-46ea-b633-201f29f1ca3f"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["*100"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="402" y="229" width="55" height="22" uuid="5388f1f0-a93e-4fda-85d2-a15a20ec187f"/>
+				<box padding="0">
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bcpill new}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="360" y="230" width="52" height="23" uuid="c4034cfa-6a9e-41bc-8a91-866f7f7d8519"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["="]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="492" y="230" width="52" height="23" uuid="7fc24513-1cdc-4efd-992b-07dc531c6132"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["%"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="148" y="221" width="133" height="19" uuid="0bec9ccf-9fba-48b8-8b6c-9645531970be"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Total Number of People Taken Method Union"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="146" y="241" width="133" height="22" uuid="5400363d-48f6-480d-bddc-b5a999c9175e"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Total Eligible Couple In Union"]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="146" y="239" width="135" height="1" uuid="331b8071-5a99-4087-b78e-4ef7a07ef409"/>
+			</line>
+			<line>
+				<reportElement x="39" y="103" width="38" height="1" uuid="83c056e7-f99e-4ec8-8714-5ee73ee7df66"/>
+			</line>
+			<line>
+				<reportElement x="38" y="91" width="1" height="22" uuid="e07bb73b-ef27-4892-bb89-4e49d1f0924c"/>
+			</line>
+			<textField isBlankWhenNull="true">
+				<reportElement x="157" y="69" width="55" height="20" uuid="f6fd4649-7c18-4f68-9e64-e9c7d9100a16"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bcpill left none taken}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="322" y="-32" width="2" height="187" uuid="629fd547-a25a-447e-95df-44344b02535c"/>
+			</line>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="22" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="20" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>
