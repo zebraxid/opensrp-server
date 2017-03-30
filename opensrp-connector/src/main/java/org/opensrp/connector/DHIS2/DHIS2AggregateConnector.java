@@ -10,8 +10,7 @@ import org.json.JSONObject;
 import org.opensrp.repository.AllEvents;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-/*import static org.opensrp.common.AllConstants.DHIS2.*;
-*/
+import static org.opensrp.connector.DHIS2.DHIS2Constants.*;
 @Service
 public class DHIS2AggregateConnector extends DHIS2Service {
 	

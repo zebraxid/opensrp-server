@@ -149,17 +149,21 @@ public class AllHouseHolds extends MotechBaseRepository<HouseHold> {
 		
 		return vr;
 	}
-	
-	@View(name = "created_in_between_2_dates", map = "function(doc) { if(doc.type === 'HouseHold' && doc.type && doc.SUBMISSIONDATE) { emit( [doc.type, doc.SUBMISSIONDATE], null); } }")
-	public List<HouseHold> allHHsCreatedBetween2Dates(String type, long startKey, long endKey){
-		ComplexKey start = ComplexKey.of(type,startKey);
-		ComplexKey end = ComplexKey.of(type,endKey);
-		List<HouseHold> hhs =  db.queryView(
-				createQuery("created_in_between_2_dates")
-				.startKey(start)
-				.endKey(end)
-				.includeDocs(true), HouseHold.class);
-		//System.out.println(hhs.toString());	
-		return hhs;
-	}*/
+
+
+    @View(name = "created_in_between_2_dates", map = "function(doc) { if(doc.type === 'HouseHold' && doc.PROVIDERID && doc.timestamp) { emit( [doc.PROVIDERID, doc.timestamp], null); } }")
+    public List<HouseHold> allHHsCreatedBetween2Dates(String proviederId, long startKey, long endKey) {
+        ComplexKey start = ComplexKey.of(proviederId, startKey);
+        ComplexKey end = ComplexKey.of(proviederId, endKey);
+        List<HouseHold> hhs = db.queryView(
+                createQuery("created_in_between_2_dates")
+                        .startKey(start)
+                        .endKey(end)
+                        .includeDocs(true), HouseHold.class);
+        //System.out.println(hhs.toString());
+        return hhs;
+    }
+	*/
+
+
 }

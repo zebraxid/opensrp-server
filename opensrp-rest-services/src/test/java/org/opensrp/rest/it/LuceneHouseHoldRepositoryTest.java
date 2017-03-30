@@ -68,8 +68,8 @@ public class LuceneHouseHoldRepositoryTest {
 	@Before
 	public void setUp() throws IOException {
 		HttpClient httpClient = new StdHttpClient.Builder().host("localhost")
-				.port(5984).socketTimeout(1000)
-				// .username("testadmin").password("testpass")
+				.port(5984).socketTimeout(10000)
+				.username("opensrp").password("opensrp")
 				.build();
 		CouchDbInstance instance = new StdCouchDbInstance(httpClient);
 
@@ -178,7 +178,7 @@ public class LuceneHouseHoldRepositoryTest {
 	 * System.out.println("Number of fetched rows- " + fetchedHHTemp.size()); }
 	 */
 
-	//@Test
+	@Test
 	public void testNameSearch() throws ParseException {
 		String makeQueryString = "type:household AND First_Name:h* AND NID:''";
 		LuceneResult result = repo.findDocsByName(makeQueryString);

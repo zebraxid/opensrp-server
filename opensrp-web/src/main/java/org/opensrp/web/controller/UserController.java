@@ -131,7 +131,7 @@ public class UserController {
 			@RequestParam(value = "birthId", required = false) String birthId) throws JSONException {
 		List<DgfpClient> dgfpClients = new ArrayList<DgfpClient>();
 		dgfpClients.addAll(this.luceneHouseHoldService.getAllHouseHoldClientBasedOn(firstName, nationalId, birthId));
-		dgfpClients.addAll(this.luceneMemberService.getAllHouseHoldClientBasedOn(firstName, nationalId, birthId));
+		//dgfpClients.addAll(this.luceneMemberService.getAllHouseHoldClientBasedOn(firstName, nationalId, birthId));
 		Map<String, List<DgfpClient>> responseResult = new HashMap<String, List<DgfpClient>>();
 		responseResult.put("clients", dgfpClients);
 		return new ResponseEntity<>(new Gson().toJson(responseResult), OK);

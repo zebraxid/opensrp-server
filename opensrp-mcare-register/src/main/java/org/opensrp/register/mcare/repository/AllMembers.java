@@ -4,8 +4,7 @@
 
 package org.opensrp.register.mcare.repository;
 
-import java.util.List;
-
+import org.ektorp.ComplexKey;
 import org.ektorp.CouchDbConnector;
 import org.ektorp.support.GenerateView;
 import org.ektorp.support.View;
@@ -18,6 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public class AllMembers extends MotechBaseRepository<Members> {
@@ -56,6 +57,25 @@ public class AllMembers extends MotechBaseRepository<Members> {
 		return db.queryView(
 				createQuery("all_open_members_for_provider")
 						.includeDocs(true), Members.class);
+	}
+
+	@View(name = "created_in_current_month", map = "function(doc) { " +
+            "var date = new Date(); var currentYear = date.getFullYear(); var currentMonth = date.getMonth();" +
+            "var firstDayOfCurrentMonth = new Date(currentYear, currentMonth, 1);" +
+            "var lastDayOfCurrentMonth = new Date(currentYear, currentMonth + 1, 0);"+
+            "if(doc.type === 'Members' && doc.PROVIDERID && " +
+            "(doc.timestamp>=firstDayOfCurrentMonth.getTime() && doc.timestamp<=lastDayOfCurrentMonth.getTime())) { " +
+            "emit( [doc.PROVIDERID], null); } }"
+    )
+	public List<Members> allMembersCreatedBetweenTwoDateBasedOnProviderId(String providerId) {
+		ComplexKey start = ComplexKey.of(providerId);
+		ComplexKey end = ComplexKey.of(providerId);
+		List<Members> members = db.queryView(
+				createQuery("created_in_current_month")
+						.startKey(start)
+						.endKey(end)
+						.includeDocs(true), Members.class);
+		return members;
 	}
 
 

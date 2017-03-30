@@ -5,6 +5,14 @@ addons:
 services:
   - couchdb
   - rabbitmq
+install:
+  - curl -L https://github.com/rnewson/couchdb-lucene/archive/v1.1.0.tar.gz | tar -xz \
+    && cd couchdb-lucene-1.1.0 \
+    && mvn \
+    && cd target \
+    && unzip couchdb-lucene-1.1.0-dist.zip \
+    && sed -e 's/^host=localhost$/host=0.0.0.0/' -i /couchdb-lucene/conf/couchdb-lucene.ini \
+    && sed -e 's/localhost:5984/127.0.0.1:5984/' -i /opt/couchdb-lucene/conf/couchdb-lucene.ini
 before_script:
       - psql -c "ALTER USER postgres WITH PASSWORD 'password'" -U postgres
       - curl -X PUT http://localhost:5984/_config/admins/opensrp -d '"opensrp"'
