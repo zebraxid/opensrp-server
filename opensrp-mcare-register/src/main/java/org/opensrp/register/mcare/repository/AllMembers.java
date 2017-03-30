@@ -59,6 +59,7 @@ public class AllMembers extends MotechBaseRepository<Members> {
 						.includeDocs(true), Members.class);
 	}
 
+	
 	@View(name = "created_in_current_month", map = "function(doc) { " +
             "var date = new Date(); var currentYear = date.getFullYear(); var currentMonth = date.getMonth();" +
             "var firstDayOfCurrentMonth = new Date(currentYear, currentMonth, 1);" +
