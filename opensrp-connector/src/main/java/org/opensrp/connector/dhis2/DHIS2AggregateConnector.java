@@ -312,8 +312,6 @@ public class DHIS2AggregateConnector extends DHIS2Service {
 		rota_2Object.put("value", rota_2);
 		eventDataValues.put(rota_2Object);
 		
-		
-		
 	   	
 	    JSONObject eventDataSet =	new JSONObject();
 	    eventDataSet.put("dataSet", "fDoHorjO5Sr");
