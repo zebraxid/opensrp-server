@@ -25,13 +25,15 @@ public class Members extends MotechBaseDataObject {
 	@JsonIgnore
 	public static String BIRTH_CONTROL_KEY = "Birth_Control";
 	@JsonIgnore
-	public static String BIRTH_CONTROL_USING_PILL_VALUE = "1";
+	public static String BIRTH_CONTROL_PILL = "1";
 	@JsonIgnore
-	public static String BIRTH_CONTROL_USING_CONDOM_VALUE = "2";
+	public static String BIRTH_CONTROL_INJECTABLE = "3";
+	@JsonIgnore
+	public static String BIRTH_CONTROL_CONDOM = "2";
 	@JsonIgnore
 	public static String BIRTH_CONTROL_NULL_VALUE = "-1";
 	@JsonIgnore
-	public static String BIRTH_CONTROL_NOT_USING_ANY_METHOD_VALUE = "99";
+	public static String BIRTH_CONTROL_NOT_USING_ANY_METHOD = "99";
 	@JsonIgnore
 	public static String USING_FAMILY_PLANNING_KEY = "Using_FP";
 	@JsonIgnore

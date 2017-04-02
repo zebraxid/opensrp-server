@@ -19,9 +19,9 @@ public class MIS1TestData {
         List<Members> members = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
             if (i < 50) {
-                members.add(createMemberWhoUsesBirthControlPill());
+                members.add(createMemberUsingBirthControlValue(Members.BIRTH_CONTROL_PILL));
             } else if (i < 75) {
-                members.add(createMemberUsingCondom());
+                members.add(createMemberUsingBirthControlValue(Members.BIRTH_CONTROL_CONDOM));
             }else {
                 members.add(new Members());
             }
@@ -34,17 +34,17 @@ public class MIS1TestData {
         List<Members> members = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
             if (i < 25) {
-                Members member = createMemberWhoUsesBirthControlPill();
+                Members member = createMemberUsingBirthControlValue(Members.BIRTH_CONTROL_PILL);
                 addRandomNumberOfElcoFollowUp(member);
                 addElcoFollowUpUsingCondom(member);
                 addElcoFollowUpUsingBirthControlPill(member);
                 members.add(member);
             } else if(i<50) {
-                Members member = createMemberWhoUsesBirthControlPill();
+                Members member = createMemberUsingBirthControlValue(Members.BIRTH_CONTROL_PILL);
                 addElcoFollowUpUsingBirthControlPill(member);
                 members.add(member);
             } else if (i < 75) {
-                Members member = createMemberUsingCondom();
+                Members member = createMemberUsingBirthControlValue(Members.BIRTH_CONTROL_CONDOM);
                 addRandomNumberOfElcoFollowUp(member);
                 addElcoFollowUpUsingBirthControlPill(member);
                 addElcoFollowUpUsingCondom(member);
@@ -67,32 +67,29 @@ public class MIS1TestData {
                 addElcoFollowUpUsingCondom(member);
                 members.add(member);
             } else if(i<50) {
-                Members member = createMemberUsingNoBirthControlMethod();
+                Members member = createMemberUsingBirthControlValue(Members.BIRTH_CONTROL_NOT_USING_ANY_METHOD);
                 members.add(member);
             } else if (i < 75) {
-                Members member = createMemberUsingCondom();
+                Members member = createMemberUsingBirthControlValue(Members.BIRTH_CONTROL_CONDOM);
                 addRandomNumberOfElcoFollowUp(member);
                 addElcoFollowUpUsingBirthControlPill(member);
                 addElcoFollowUpUsingCondom(member);
                 members.add(member);
             }else {
-                members.add(new Members());
+                Members member = createMemberUsingBirthControlValue(Members.BIRTH_CONTROL_CONDOM);
+                addRandomNumberOfElcoFollowUp(member);
+                addElcoFollowUpUsingBirthControlPill(member);
+                addElcoFollowUpUsingCondom(member);
+                members.add(member);
             }
         }
 
         return new MIS1TestData(members, 50);
     }
 
-    private static Members createMemberWhoUsesBirthControlPill() {
+    private static Members createMemberUsingBirthControlValue(String birthControlValue) {
         Members member = new Members();
-        Map<String, String> detail = createHashMap(Members.BIRTH_CONTROL_KEY, Members.BIRTH_CONTROL_USING_PILL_VALUE);
-        member.setDetails(detail);
-        return member;
-    }
-
-    private static Members createMemberUsingCondom() {
-        Members member = new Members();
-        Map<String, String> detail = createHashMap(Members.BIRTH_CONTROL_KEY, Members.BIRTH_CONTROL_USING_CONDOM_VALUE);
+        Map<String, String> detail = createHashMap(Members.BIRTH_CONTROL_KEY, birthControlValue);
         member.setDetails(detail);
         return member;
     }
@@ -100,13 +97,6 @@ public class MIS1TestData {
     private static Members createMemberWithOutAnyFamilyPlanning() {
         Members member = new Members();
         Map<String, String> detail = createHashMap(Members.USING_FAMILY_PLANNING_KEY, Members.NOT_USING_FAMILY_PLANNING_VALUE);
-        member.setDetails(detail);
-        return member;
-    }
-
-    private static Members createMemberUsingNoBirthControlMethod() {
-        Members member = new Members();
-        Map<String, String> detail = createHashMap(Members.BIRTH_CONTROL_KEY, Members.BIRTH_CONTROL_NOT_USING_ANY_METHOD_VALUE);
         member.setDetails(detail);
         return member;
     }
@@ -126,12 +116,12 @@ public class MIS1TestData {
 
 
     private static Members addElcoFollowUpUsingBirthControlPill(Members member){
-        Map<String, String> birthControlPillUsages = createHashMap(Members.BIRTH_CONTROL_KEY, Members.BIRTH_CONTROL_USING_PILL_VALUE);
+        Map<String, String> birthControlPillUsages = createHashMap(Members.BIRTH_CONTROL_KEY, Members.BIRTH_CONTROL_PILL);
         return addElcoFollowUp(member, birthControlPillUsages);
     }
 
     private static Members addElcoFollowUpUsingCondom(Members member){
-        Map<String, String> condomUsages = createHashMap(Members.BIRTH_CONTROL_KEY, Members.BIRTH_CONTROL_USING_CONDOM_VALUE);
+        Map<String, String> condomUsages = createHashMap(Members.BIRTH_CONTROL_KEY, Members.BIRTH_CONTROL_CONDOM);
         return addElcoFollowUp(member, condomUsages);
     }
 

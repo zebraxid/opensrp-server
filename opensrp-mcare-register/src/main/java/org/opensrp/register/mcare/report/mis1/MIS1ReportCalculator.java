@@ -18,7 +18,7 @@ public class MIS1ReportCalculator {
         int countBirthPill = 0;
         for (Members member : this.allUpdatedMemberOfCurrentMember) {
             boolean usingBirthControlPillInMemberDetail =
-                    checkMemberFieldValue(member.details(), Members.BIRTH_CONTROL_KEY, Members.BIRTH_CONTROL_USING_PILL_VALUE);
+                    checkMemberFieldValue(member.details(), Members.BIRTH_CONTROL_KEY, Members.BIRTH_CONTROL_PILL);
             if (usingBirthControlPillInMemberDetail) {
                 countBirthPill++;
             }
@@ -31,13 +31,13 @@ public class MIS1ReportCalculator {
 
         for (Members member : this.allUpdatedMemberOfCurrentMember) {
             boolean usingBirthControlPillInMemberDetail =
-                    checkMemberFieldValue(member.details(), Members.BIRTH_CONTROL_KEY, Members.BIRTH_CONTROL_USING_PILL_VALUE);
+                    checkMemberFieldValue(member.details(), Members.BIRTH_CONTROL_KEY, Members.BIRTH_CONTROL_PILL);
             if (usingBirthControlPillInMemberDetail) {
                 Map<String, String> previousMonthElcoFollowUpData = getPreviousMonthElcoFollowUp(member.elco_Followup());
                 if (previousMonthElcoFollowUpData.isEmpty()) {
                     boolean usingBirthControlPillInPreviousElcoFollowUp =
                             checkMemberFieldValue(previousMonthElcoFollowUpData, Members.BIRTH_CONTROL_KEY,
-                                    Members.BIRTH_CONTROL_USING_PILL_VALUE);
+                                    Members.BIRTH_CONTROL_PILL);
                     if (!usingBirthControlPillInPreviousElcoFollowUp) {
                         countBirthPill++;
                     }
@@ -54,7 +54,7 @@ public class MIS1ReportCalculator {
 
         for (Members member : this.allUpdatedMemberOfCurrentMember) {
             boolean notUsingBirthControlMethodInMemberDetail =
-                    checkMemberFieldValue(member.details(), Members.BIRTH_CONTROL_KEY, Members.BIRTH_CONTROL_NOT_USING_ANY_METHOD_VALUE);
+                    checkMemberFieldValue(member.details(), Members.BIRTH_CONTROL_KEY, Members.BIRTH_CONTROL_NOT_USING_ANY_METHOD);
             if (notUsingBirthControlMethodInMemberDetail) {
                 countBirthPill++;
             }
@@ -65,7 +65,7 @@ public class MIS1ReportCalculator {
                 Map<String, String> previousMonthElcoFollowUpData = getPreviousMonthElcoFollowUp(member.elco_Followup());
                 boolean usingBirthControlPillInPreviousElcoFollowUp =
                         checkMemberFieldValue(previousMonthElcoFollowUpData, Members.BIRTH_CONTROL_KEY,
-                                Members.BIRTH_CONTROL_USING_PILL_VALUE);
+                                Members.BIRTH_CONTROL_PILL);
                 if (usingBirthControlPillInPreviousElcoFollowUp) {
                     countBirthPill++;
                 }
