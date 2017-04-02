@@ -5,7 +5,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-public class MIS1ReportTest {
+public class MIS1ReportCalculationTest {
 
     public MIS1TestData mis1TestData;
     public MIS1ReportCalculator mis1ReportCalculator;
