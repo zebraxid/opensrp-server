@@ -12,6 +12,7 @@ import java.util.Map;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.ektorp.support.TypeDiscriminator;
@@ -20,6 +21,16 @@ import org.motechproject.model.MotechBaseDataObject;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @TypeDiscriminator("doc.type === 'Members'")
 public class Members extends MotechBaseDataObject {
+
+	@JsonIgnore
+	public static String BIRTH_CONTROL_KEY = "Birth_Control";
+	@JsonIgnore
+	public static String BIRTH_CONTROL_USING_PILL_VALUE = "1";
+	@JsonIgnore
+	public static String BIRTH_CONTROL_USING_CONDOM_VALUE = "2";
+	@JsonIgnore
+	public static String BIRTH_CONTROL_NULL_VALUE = "-1";
+
 	@JsonProperty
 	private String caseId;
 	@JsonProperty

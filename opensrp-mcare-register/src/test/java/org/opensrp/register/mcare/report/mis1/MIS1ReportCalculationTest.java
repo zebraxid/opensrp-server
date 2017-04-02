@@ -15,7 +15,7 @@ public class MIS1ReportCalculationTest {
     @Test
     public void testTotalCountOfBirthControlPillOfCurrentMonth(){
         this.mis1TestData = MIS1TestData.currentMonthTotalBirthControlPill();
-        this.mis1ReportCalculator = new MIS1ReportCalculator(this.mis1TestData.Members);
+        this.mis1ReportCalculator = new MIS1ReportCalculator(this.mis1TestData.members);
         int totalBirthControlPillUsagesOfCurrentMonth = mis1ReportCalculator.getTotalBirthControlPillOfCurrentMonth();
         assertEquals(totalBirthControlPillUsagesOfCurrentMonth, this.mis1TestData.resultCount);
     }

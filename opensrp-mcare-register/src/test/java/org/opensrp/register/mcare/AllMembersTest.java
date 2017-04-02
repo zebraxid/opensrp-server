@@ -52,7 +52,7 @@ public class AllMembersTest {
     	Members currentMembers = allMembers.findByCaseId("7e33380e-68ae-4f67-ad2e-4ca0d9600f1c");
 		 String json = new Gson().toJson(currentMembers);
 		// System.out.println(currentMembers.size());
-        System.out.println("Members::"+json);
+        System.out.println("members::"+json);
 
     }
     @Test
