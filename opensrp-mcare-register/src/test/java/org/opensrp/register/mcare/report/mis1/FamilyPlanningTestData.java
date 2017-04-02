@@ -5,20 +5,20 @@ import org.opensrp.register.mcare.domain.Members;
 
 import java.util.*;
 
-public class MIS1TestData {
+public class FamilyPlanningTestData {
     public List<Members> members;
     public int resultCount;
 
 
-    public MIS1TestData(List<org.opensrp.register.mcare.domain.Members> members, int resultCount) {
+    public FamilyPlanningTestData(List<org.opensrp.register.mcare.domain.Members> members, int resultCount) {
         this.members = members;
         this.resultCount = resultCount;
     }
 
-    public static MIS1TestData currentMonthTotalBirthControlPill() {
+    public static FamilyPlanningTestData currentMonthTotalBirthControlPill() {
         List<Members> members = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
-            if (i < 50) {
+            if (i < 70) {
                 members.add(createMemberUsingBirthControlValue(Members.BIRTH_CONTROL_PILL));
             } else if (i < 75) {
                 members.add(createMemberUsingBirthControlValue(Members.BIRTH_CONTROL_CONDOM));
@@ -27,44 +27,44 @@ public class MIS1TestData {
             }
         }
 
-        return new MIS1TestData(members, 50);
+        return new FamilyPlanningTestData(members, 70);
     }
 
-    public static MIS1TestData currentMonthNewBirthControlPill() {
+    public static FamilyPlanningTestData currentMonthNewBirthControlPill() {
         List<Members> members = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
             if (i < 25) {
                 Members member = createMemberUsingBirthControlValue(Members.BIRTH_CONTROL_PILL);
                 addRandomNumberOfElcoFollowUp(member);
-                addElcoFollowUpUsingCondom(member);
-                addElcoFollowUpUsingBirthControlPill(member);
+                addElcoFollowUpUsingBirthControlValue(member, Members.BIRTH_CONTROL_CONDOM);
+                addElcoFollowUpUsingBirthControlValue(member, Members.BIRTH_CONTROL_PILL);
                 members.add(member);
-            } else if(i<50) {
+            } else if(i<60) {
                 Members member = createMemberUsingBirthControlValue(Members.BIRTH_CONTROL_PILL);
-                addElcoFollowUpUsingBirthControlPill(member);
+                addElcoFollowUpUsingBirthControlValue(member, Members.BIRTH_CONTROL_PILL);
                 members.add(member);
             } else if (i < 75) {
                 Members member = createMemberUsingBirthControlValue(Members.BIRTH_CONTROL_CONDOM);
                 addRandomNumberOfElcoFollowUp(member);
-                addElcoFollowUpUsingBirthControlPill(member);
-                addElcoFollowUpUsingCondom(member);
+                addElcoFollowUpUsingBirthControlValue(member, Members.BIRTH_CONTROL_PILL);
+                addElcoFollowUpUsingBirthControlValue(member, Members.BIRTH_CONTROL_CONDOM);
                 members.add(member);
             }else {
                 members.add(new Members());
             }
         }
 
-        return new MIS1TestData(members, 50);
+        return new FamilyPlanningTestData(members, 60);
     }
 
-    public static MIS1TestData currentMonthLeftBirthControlPill() {
+    public static FamilyPlanningTestData currentMonthLeftBirthControlPill() {
         List<Members> members = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
             if (i < 25) {
                 Members member = createMemberWithOutAnyFamilyPlanning();
                 addRandomNumberOfElcoFollowUp(member);
-                addElcoFollowUpUsingBirthControlPill(member);
-                addElcoFollowUpUsingCondom(member);
+                addElcoFollowUpUsingBirthControlValue(member, Members.BIRTH_CONTROL_PILL);
+                addElcoFollowUpUsingBirthControlValue(member, Members.BIRTH_CONTROL_NULL_VALUE);
                 members.add(member);
             } else if(i<50) {
                 Members member = createMemberUsingBirthControlValue(Members.BIRTH_CONTROL_NOT_USING_ANY_METHOD);
@@ -72,19 +72,19 @@ public class MIS1TestData {
             } else if (i < 75) {
                 Members member = createMemberUsingBirthControlValue(Members.BIRTH_CONTROL_CONDOM);
                 addRandomNumberOfElcoFollowUp(member);
-                addElcoFollowUpUsingBirthControlPill(member);
-                addElcoFollowUpUsingCondom(member);
+                addElcoFollowUpUsingBirthControlValue(member, Members.BIRTH_CONTROL_PILL);
+                addElcoFollowUpUsingBirthControlValue(member, Members.BIRTH_CONTROL_CONDOM);
                 members.add(member);
             }else {
-                Members member = createMemberUsingBirthControlValue(Members.BIRTH_CONTROL_CONDOM);
+                Members member = createMemberUsingBirthControlValue(Members.BIRTH_CONTROL_INJECTABLE);
                 addRandomNumberOfElcoFollowUp(member);
-                addElcoFollowUpUsingBirthControlPill(member);
-                addElcoFollowUpUsingCondom(member);
+                addElcoFollowUpUsingBirthControlValue(member, Members.BIRTH_CONTROL_PILL);
+                addElcoFollowUpUsingBirthControlValue(member, Members.BIRTH_CONTROL_INJECTABLE);
                 members.add(member);
             }
         }
 
-        return new MIS1TestData(members, 50);
+        return new FamilyPlanningTestData(members, 50);
     }
 
     private static Members createMemberUsingBirthControlValue(String birthControlValue) {
@@ -106,25 +106,20 @@ public class MIS1TestData {
         int randomNum = rand.nextInt((100 - 0) + 1) + 0;
         for(int i=0; i<randomNum; i++) {
             if(i%2 == 0){
-                addElcoFollowUpUsingBirthControlPill(member);
+                addElcoFollowUpUsingBirthControlValue(member, Members.BIRTH_CONTROL_PILL);
             }else {
-                addElcoFollowUpUsingCondom(member);
+                addElcoFollowUpUsingBirthControlValue(member, Members.BIRTH_CONTROL_CONDOM);
             }
         }
         return member;
     }
 
 
-    private static Members addElcoFollowUpUsingBirthControlPill(Members member){
-        Map<String, String> birthControlPillUsages = createHashMap(Members.BIRTH_CONTROL_KEY, Members.BIRTH_CONTROL_PILL);
-        return addElcoFollowUp(member, birthControlPillUsages);
+    private static Members addElcoFollowUpUsingBirthControlValue(Members member, String value){
+        Map<String, String> birthControlUsages = createHashMap(Members.BIRTH_CONTROL_KEY, value);
+        return addElcoFollowUp(member, birthControlUsages);
     }
-
-    private static Members addElcoFollowUpUsingCondom(Members member){
-        Map<String, String> condomUsages = createHashMap(Members.BIRTH_CONTROL_KEY, Members.BIRTH_CONTROL_CONDOM);
-        return addElcoFollowUp(member, condomUsages);
-    }
-
+    
     private static Members addElcoFollowUp(Members member, Map<String, String> detail) {
         List<Map<String, String>> elcoFollowUp = member.elco_Followup();
         elcoFollowUp.add(detail);
