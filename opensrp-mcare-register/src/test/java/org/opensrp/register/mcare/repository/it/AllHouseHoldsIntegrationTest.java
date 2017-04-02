@@ -169,7 +169,7 @@ public class AllHouseHoldsIntegrationTest {
 		return key;
 	}
     
-    @Test 
+   // @Test 
     public void testRawkey() throws Exception {
     	String oka = createRawStartKey("aklima","","","");//,"Gaibandha","GAIBANDHA SADAR","LAXMIPUR");
     	System.out.println(oka.substring(0, oka.length()-1) + ",{}]");
