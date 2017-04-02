@@ -27,4 +27,13 @@ public class MIS1ReportCalculationTest {
         int totalNewBirthControlPillUsagesOfCurrentMonth = mis1ReportCalculator.getCountOfNewBirthControlPillUsagesOfCurrentMonth();
         assertEquals(totalNewBirthControlPillUsagesOfCurrentMonth, this.mis1TestData.resultCount);
     }
+
+    @Test
+    public void testCountOfLeftBirthControlPillUsagesOfCurrentMonth(){
+        this.mis1TestData = MIS1TestData.currentMonthLeftBirthControlPill();
+        this.mis1ReportCalculator = new MIS1ReportCalculator(this.mis1TestData.members);
+        int totalCountOfMembersWhoLeftUsagesOfBirthControlPillOfCurrentMonth =
+                mis1ReportCalculator.getCountOfMembersWhoLeftUsagesOfBirthControlPillInCurrentMonth();
+        assertEquals(totalCountOfMembersWhoLeftUsagesOfBirthControlPillOfCurrentMonth, this.mis1TestData.resultCount);
+    }
 }

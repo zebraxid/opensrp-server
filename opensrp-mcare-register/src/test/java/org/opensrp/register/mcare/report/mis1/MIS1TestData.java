@@ -21,7 +21,7 @@ public class MIS1TestData {
             if (i < 50) {
                 members.add(createMemberWhoUsesBirthControlPill());
             } else if (i < 75) {
-                members.add(createMembersUsingCondom());
+                members.add(createMemberUsingCondom());
             }else {
                 members.add(new Members());
             }
@@ -44,7 +44,33 @@ public class MIS1TestData {
                 addElcoFollowUpUsingBirthControlPill(member);
                 members.add(member);
             } else if (i < 75) {
-                Members member = createMembersUsingCondom();
+                Members member = createMemberUsingCondom();
+                addRandomNumberOfElcoFollowUp(member);
+                addElcoFollowUpUsingBirthControlPill(member);
+                addElcoFollowUpUsingCondom(member);
+                members.add(member);
+            }else {
+                members.add(new Members());
+            }
+        }
+
+        return new MIS1TestData(members, 50);
+    }
+
+    public static MIS1TestData currentMonthLeftBirthControlPill() {
+        List<Members> members = new ArrayList<>();
+        for (int i = 0; i < 100; i++) {
+            if (i < 25) {
+                Members member = createMemberWithOutAnyFamilyPlanning();
+                addRandomNumberOfElcoFollowUp(member);
+                addElcoFollowUpUsingBirthControlPill(member);
+                addElcoFollowUpUsingCondom(member);
+                members.add(member);
+            } else if(i<50) {
+                Members member = createMemberUsingNoBirthControlMethod();
+                members.add(member);
+            } else if (i < 75) {
+                Members member = createMemberUsingCondom();
                 addRandomNumberOfElcoFollowUp(member);
                 addElcoFollowUpUsingBirthControlPill(member);
                 addElcoFollowUpUsingCondom(member);
@@ -64,9 +90,23 @@ public class MIS1TestData {
         return member;
     }
 
-    private static Members createMembersUsingCondom() {
+    private static Members createMemberUsingCondom() {
         Members member = new Members();
         Map<String, String> detail = createHashMap(Members.BIRTH_CONTROL_KEY, Members.BIRTH_CONTROL_USING_CONDOM_VALUE);
+        member.setDetails(detail);
+        return member;
+    }
+
+    private static Members createMemberWithOutAnyFamilyPlanning() {
+        Members member = new Members();
+        Map<String, String> detail = createHashMap(Members.USING_FAMILY_PLANNING_KEY, Members.NOT_USING_FAMILY_PLANNING_VALUE);
+        member.setDetails(detail);
+        return member;
+    }
+
+    private static Members createMemberUsingNoBirthControlMethod() {
+        Members member = new Members();
+        Map<String, String> detail = createHashMap(Members.BIRTH_CONTROL_KEY, Members.BIRTH_CONTROL_NOT_USING_ANY_METHOD_VALUE);
         member.setDetails(detail);
         return member;
     }

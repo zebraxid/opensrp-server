@@ -30,6 +30,14 @@ public class Members extends MotechBaseDataObject {
 	public static String BIRTH_CONTROL_USING_CONDOM_VALUE = "2";
 	@JsonIgnore
 	public static String BIRTH_CONTROL_NULL_VALUE = "-1";
+	@JsonIgnore
+	public static String BIRTH_CONTROL_NOT_USING_ANY_METHOD_VALUE = "99";
+	@JsonIgnore
+	public static String USING_FAMILY_PLANNING_KEY = "Using_FP";
+	@JsonIgnore
+	public static String USING_FAMILY_PLANNING_VALUE = "1";
+	@JsonIgnore
+	public static String NOT_USING_FAMILY_PLANNING_VALUE = "0";
 
 	@JsonProperty
 	private String caseId;
