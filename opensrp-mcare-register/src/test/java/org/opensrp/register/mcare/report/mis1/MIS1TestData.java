@@ -3,9 +3,7 @@ package org.opensrp.register.mcare.report.mis1;
 
 import org.opensrp.register.mcare.domain.Members;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class MIS1TestData {
     public List<Members> members;
@@ -24,19 +22,35 @@ public class MIS1TestData {
                 members.add(createMemberWhoUsesBirthControlPill());
             } else if (i < 75) {
                 members.add(createMembersUsingCondom());
+            }else {
+                members.add(new Members());
             }
         }
 
         return new MIS1TestData(members, 50);
     }
 
-    public static MIS1TestData currentMonthTotalNewBirthControlPill() {
+    public static MIS1TestData currentMonthNewBirthControlPill() {
         List<Members> members = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
-            if (i < 50) {
-                members.add(createMemberWhoUsesBirthControlPill());
+            if (i < 25) {
+                Members member = createMemberWhoUsesBirthControlPill();
+                addRandomNumberOfElcoFollowUp(member);
+                addElcoFollowUpUsingCondom(member);
+                addElcoFollowUpUsingBirthControlPill(member);
+                members.add(member);
+            } else if(i<50) {
+                Members member = createMemberWhoUsesBirthControlPill();
+                addElcoFollowUpUsingBirthControlPill(member);
+                members.add(member);
             } else if (i < 75) {
-                members.add(createMembersUsingCondom());
+                Members member = createMembersUsingCondom();
+                addRandomNumberOfElcoFollowUp(member);
+                addElcoFollowUpUsingBirthControlPill(member);
+                addElcoFollowUpUsingCondom(member);
+                members.add(member);
+            }else {
+                members.add(new Members());
             }
         }
 
@@ -45,17 +59,53 @@ public class MIS1TestData {
 
     private static Members createMemberWhoUsesBirthControlPill() {
         Members member = new Members();
-        HashMap detail = new HashMap();
-        detail.put(Members.BIRTH_CONTROL_KEY, Members.BIRTH_CONTROL_USING_PILL_VALUE);
+        Map<String, String> detail = createHashMap(Members.BIRTH_CONTROL_KEY, Members.BIRTH_CONTROL_USING_PILL_VALUE);
         member.setDetails(detail);
         return member;
     }
 
     private static Members createMembersUsingCondom() {
         Members member = new Members();
-        HashMap detail = new HashMap();
-        detail.put(Members.BIRTH_CONTROL_KEY, Members.BIRTH_CONTROL_USING_CONDOM_VALUE);
+        Map<String, String> detail = createHashMap(Members.BIRTH_CONTROL_KEY, Members.BIRTH_CONTROL_USING_CONDOM_VALUE);
         member.setDetails(detail);
         return member;
     }
+
+    private static Members addRandomNumberOfElcoFollowUp(Members member){
+        Random rand = new Random();
+        int randomNum = rand.nextInt((100 - 0) + 1) + 0;
+        for(int i=0; i<randomNum; i++) {
+            if(i%2 == 0){
+                addElcoFollowUpUsingBirthControlPill(member);
+            }else {
+                addElcoFollowUpUsingCondom(member);
+            }
+        }
+        return member;
+    }
+
+
+    private static Members addElcoFollowUpUsingBirthControlPill(Members member){
+        Map<String, String> birthControlPillUsages = createHashMap(Members.BIRTH_CONTROL_KEY, Members.BIRTH_CONTROL_USING_PILL_VALUE);
+        return addElcoFollowUp(member, birthControlPillUsages);
+    }
+
+    private static Members addElcoFollowUpUsingCondom(Members member){
+        Map<String, String> condomUsages = createHashMap(Members.BIRTH_CONTROL_KEY, Members.BIRTH_CONTROL_USING_CONDOM_VALUE);
+        return addElcoFollowUp(member, condomUsages);
+    }
+
+    private static Members addElcoFollowUp(Members member, Map<String, String> detail) {
+        List<Map<String, String>> elcoFollowUp = member.elco_Followup();
+        elcoFollowUp.add(detail);
+        member.setelco_Followup(elcoFollowUp);
+        return member;
+    }
+
+    private static Map<String, String > createHashMap(String key, String value) {
+        HashMap detail = new HashMap();
+        detail.put(key, value);
+        return detail;
+    }
+
 }
