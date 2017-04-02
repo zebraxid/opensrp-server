@@ -17,6 +17,10 @@ public class MotherDTO {
 	private String mother_wom_bid;
 	@JsonProperty("mother_wom_age")
 	private String mother_wom_age;
+	@JsonProperty("FWWOMDISTRICT")
+	private String FWWOMDISTRICT;
+	@JsonProperty("FWWOMUPAZILLA")
+	private String FWWOMUPAZILLA;
 	@JsonProperty("FWWOMUNION")
 	private String FWWOMUNION;
 	@JsonProperty("PROVIDERID")

@@ -26,23 +26,28 @@ public class DynamicQueryString {
 		
 		Map<String, String> preparedParameters = prepareParameters(queryParameters);
 		String makeQueryString = "";
-		int paramCounter = 1;		
+		int paramCounter = 1;
+		String wildcard = "";
 		for(Entry<String, String> entry : preparedParameters.entrySet())
 		{	
 			if(entry.getKey().equalsIgnoreCase("FWHOHFNAME")){
-				String wildcard =  "* AND "; 
+				if(preparedParameters.size()>paramCounter)					
+					 wildcard =  "* AND "; 
 				makeQueryString+=entry.getKey()+":"+entry.getValue()+ wildcard;
 			}else if(entry.getKey().equalsIgnoreCase("FWWOMFNAME")) {
-				String wildcard =  "* AND "; 
+				if(preparedParameters.size()>paramCounter)					
+					 wildcard =  "* AND "; 
+				makeQueryString+=entry.getKey()+":"+entry.getValue()+ wildcard;
+			}else if(entry.getKey().equalsIgnoreCase("mother_first_name")) {
+				if(preparedParameters.size()>paramCounter)					
+					 wildcard =  "* AND "; 
 				makeQueryString+=entry.getKey()+":"+entry.getValue()+ wildcard;
 			}
 			else{
 				makeQueryString+=entry.getKey()+":"+entry.getValue();
 				if(preparedParameters.size()>paramCounter)
 					makeQueryString+=" AND ";	
-			}
-			
-			
+			}			
 			
 			paramCounter++;
 		}
