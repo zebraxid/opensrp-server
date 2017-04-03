@@ -52,7 +52,7 @@ public class UserServiceTest {
     public void setUp() throws Exception {
        HttpClient httpClient = new StdHttpClient.Builder() 
         .host("localhost") 
-       	//.host("192.168.19.55")
+       	.username("Admin").password("mPower@1234")
         .port(5984) 
         .socketTimeout(1000) 
         .build(); 

@@ -49,6 +49,7 @@ public class LuceneHouseHoldRepositoryTest {
         HttpClient httpClient = new StdHttpClient.Builder() 
                 .host("localhost") 
                 .port(5984) 
+                .username("Admin").password("mPower@1234")
                 .socketTimeout(1000) 
                // .username("testadmin").password("testpass") 
                 .build(); 

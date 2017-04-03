@@ -30,6 +30,7 @@ public class AllMemberTest {
         .host("localhost") 
        	//.host("192.168.19.55")
         .port(5984) 
+        .username("Admin").password("mPower@1234")
         .socketTimeout(1000) 
         .build(); 
 		dbInstance = new StdCouchDbInstance(httpClient); 		
