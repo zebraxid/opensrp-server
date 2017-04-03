@@ -1,10 +1,9 @@
 package org.opensrp.connector.atomfeed;
-import org.ict4h.atomfeed.client.domain.Marker;
-import org.ict4h.atomfeed.client.repository.AllMarkers;
-import org.springframework.stereotype.Repository;
-
 import java.net.URI;
 import java.util.HashMap;
+
+import org.ict4h.atomfeed.client.domain.Marker;
+import org.ict4h.atomfeed.client.repository.AllMarkers;
 
 //@Repository
 public class AllMarkersInMemoryImpl implements AllMarkers {

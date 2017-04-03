@@ -1,12 +1,11 @@
 package org.opensrp.connector.atomfeed;
-import org.ict4h.atomfeed.client.domain.FailedEvent;
-import org.ict4h.atomfeed.client.domain.FailedEventRetryLog;
-import org.ict4h.atomfeed.client.repository.AllFailedEvents;
-import org.springframework.stereotype.Repository;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import org.ict4h.atomfeed.client.domain.FailedEvent;
+import org.ict4h.atomfeed.client.domain.FailedEventRetryLog;
+import org.ict4h.atomfeed.client.repository.AllFailedEvents;
 
 //@Repository
 public class AllFailedEventsInMemoryImpl implements AllFailedEvents {

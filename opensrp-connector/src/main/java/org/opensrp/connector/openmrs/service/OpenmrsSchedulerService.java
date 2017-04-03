@@ -84,18 +84,18 @@ public class OpenmrsSchedulerService extends OpenmrsService{
 		String hr = StringUtils.leftPad(e.getPreferredAlertTime().getHour().toString(),2,"0");
 		String mn = StringUtils.leftPad(e.getPreferredAlertTime().getMinute().toString(),2,"0");
 		t.put("preferredAlertTime", hr+":"+mn+":00");
-		t.put("referenceDate", OPENMRS_DATE.format(e.getStartOfSchedule().toDate()));
+		t.put("referenceDate", e.getStartOfSchedule());
 		t.put("referenceDateType", "MANUAL");
-		t.put("dateEnrolled", OPENMRS_DATE.format(e.getEnrolledOn().toDate()));
+		t.put("dateEnrolled", e.getEnrolledOn());
 		
 		/*DateTime earliestStart = e.getStartOfWindowForCurrentMilestone(WindowName.earliest);
         DateTime dueStart = e.getStartOfWindowForCurrentMilestone(WindowName.due);
         DateTime lateStart = e.getStartOfWindowForCurrentMilestone(WindowName.late);
         DateTime maxStart = e.getStartOfWindowForCurrentMilestone(WindowName.max);
-		t.put("earlyStartDate", OPENMRS_DATE.format(earliestStart.toDate()));
-		t.put("dueStartDate", OPENMRS_DATE.format(dueStart.toDate()));
-		t.put("lateStartDate", OPENMRS_DATE.format(lateStart.toDate()));
-		t.put("maxStartDate", OPENMRS_DATE.format(maxStart.toDate()));*/
+		t.put("earlyStartDate", OPENMRS_DATE.format(earliestStart));
+		t.put("dueStartDate", OPENMRS_DATE.format(dueStart));
+		t.put("lateStartDate", OPENMRS_DATE.format(lateStart));
+		t.put("maxStartDate", OPENMRS_DATE.format(maxStart));*/
 		t.put("currentMilestone", e.getCurrentMilestoneName());
 		t.put("status", e.getStatus().name());
 		
@@ -183,9 +183,9 @@ public class OpenmrsSchedulerService extends OpenmrsService{
 		}
 		Action close = getClosedAction(milestone, alertActions);
 		MilestoneFulfillment m = getMilestone(milestone, e);
-		String fdate = m == null?null:OPENMRS_DATE.format(m.getFulfillmentDateTime().toDate());
+		String fdate = m == null?null:m.getFulfillmentDateTime().toString();
 		if(fdate == null){
-			fdate = close==null?null:OPENMRS_DATE.format(new SimpleDateFormat("dd-MM-yyyy").parse(close.data().get("completionDate")));
+			fdate = close==null?null:close.data().get("completionDate");
 		}
 		tm.put("fulfillmentDate", fdate);
 		tm.put("status", ac.data().get("alertStatus")+(close==null?"":"-completed"));
@@ -208,15 +208,15 @@ public class OpenmrsSchedulerService extends OpenmrsService{
 		}
 
 		Action close = getClosedAction(m.getMilestoneName(), alertActions);
-		String fdate = m == null?null:OPENMRS_DATE.format(m.getFulfillmentDateTime().toDate());
+		String fdate = m == null?null:m.getFulfillmentDateTime().toString();
 		if(fdate == null){
-			fdate = close==null?null:OPENMRS_DATE.format(new SimpleDateFormat("dd-MM-yyyy").parse(close.data().get("completionDate")));
+			fdate = close==null?null:close.data().get("completionDate");
 		}
 		tm.put("fulfillmentDate", fdate);
 		tm.put("status", "FULFILLED");
 		//TODO tm.put("reasonClosed", ac.data().get(""));
-		tm.put("alertStartDate", OPENMRS_DATE.format(new Date(0L)));
-		tm.put("alertExpiryDate", OPENMRS_DATE.format(new Date(0L)));
+		//TODO tm.put("alertStartDate", OPENMRS_DATE.format(new Date(0L)));
+		//TODO tm.put("alertExpiryDate", OPENMRS_DATE.format(new Date(0L)));
 		tm.put("isActive", false);
 		tm.put("actionType", "PROVIDER ALERT MISSING");
 		return tm;

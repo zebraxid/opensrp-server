@@ -1,5 +1,7 @@
 package org.opensrp.connector.openmrs.service;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
 
 import java.io.IOException;
 
@@ -8,9 +10,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.BDDMockito;
-
-import static org.mockito.Mockito.*;
-
 import org.opensrp.common.util.HttpResponse;
 import org.opensrp.common.util.HttpUtil;
 import org.powermock.api.mockito.PowerMockito;

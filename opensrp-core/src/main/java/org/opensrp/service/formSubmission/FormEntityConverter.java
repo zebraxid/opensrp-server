@@ -11,6 +11,7 @@ import java.util.Map;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.joda.time.DateTime;
 import org.opensrp.common.FormEntityConstants;
@@ -34,7 +35,6 @@ import org.xml.sax.SAXException;
 
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
-import com.mysql.jdbc.StringUtils;
 
 @Service
 public class FormEntityConverter {
@@ -53,7 +53,7 @@ public class FormEntityConverter {
 	 */
 	public boolean isOpenmrsForm(FormSubmissionMap fs) {
 		String eventType = fs.formAttributes().get("encounter_type");
-		return !StringUtils.isEmptyOrWhitespaceOnly(eventType);
+		return StringUtils.isNotBlank(eventType);
 	}
 	
 	/** 
@@ -85,13 +85,13 @@ public class FormEntityConverter {
 		
 		for (FormFieldMap fl : fields) {
 			Map<String, String> fat = fl.fieldAttributes();
-			if(!fl.values().isEmpty() && !StringUtils.isEmptyOrWhitespaceOnly(fl.values().get(0))){
+			if(!fl.values().isEmpty() && StringUtils.isNotBlank(fl.values().get(0))){
 				if(fat.containsKey("openmrs_entity") 
 					&& fat.get("openmrs_entity").equalsIgnoreCase("concept")){
 					List<String> vall = new ArrayList<>();
 					for (String vl : fl.values()) {
 						String val = fl.valueCodes(vl)==null?null:fl.valueCodes(vl).get("openmrs_code");
-						val = StringUtils.isEmptyOrWhitespaceOnly(val)?vl:val;
+						val = StringUtils.isBlank(val)?vl:val;
 						vall.add(val);
 					}
 					Obs o = new Obs("concept", fl.type(), fat.get("openmrs_entity_id"), 
@@ -255,7 +255,7 @@ public class FormEntityConverter {
 			else if(addressField.equalsIgnoreCase("geopoint")){
 				// example geopoint 34.044494 -84.695704 4 76 = lat lon alt prec
 				String geopoint = fl.value();
-				if(!StringUtils.isEmptyOrWhitespaceOnly(geopoint)){
+				if(StringUtils.isNotBlank(geopoint)){
 					String[] g = geopoint.split(" ");
 					ad.setLatitude(g[0]);
 					ad.setLongitude(g[1]);
@@ -310,7 +310,7 @@ public class FormEntityConverter {
 	
 	void fillIdentifiers(Map<String, String> pids, List<FormFieldMap> fields) {
 		for (FormFieldMap fl : fields) {
-			if(fl.values().size() < 2 && !StringUtils.isEmptyOrWhitespaceOnly(fl.value())){
+			if(fl.values().size() < 2 && StringUtils.isNotBlank(fl.value())){
 				Map<String, String> att = fl.fieldAttributes();
 				
 				if(att.containsKey("openmrs_entity") && att.get("openmrs_entity").equalsIgnoreCase("person_identifier")){
@@ -334,7 +334,7 @@ public class FormEntityConverter {
 	
 	Map<String, Object> fillAttributes(Map<String, Object> pattributes, List<FormFieldMap> fields) {
 		for (FormFieldMap fl : fields) {
-			if(fl.values().size() < 2 && !StringUtils.isEmptyOrWhitespaceOnly(fl.value())){
+			if(fl.values().size() < 2 && StringUtils.isNotBlank(fl.value())){
 				Map<String, String> att = fl.fieldAttributes();
 				if(att.containsKey("openmrs_entity") && att.get("openmrs_entity").equalsIgnoreCase("person_attribute")){
 					pattributes.put(att.get("openmrs_entity_id"), fl.value());
@@ -360,6 +360,34 @@ public class FormEntityConverter {
 		}
 	}
 	
+	public boolean hasUpdatedClientProperties(FormSubmission fsubmission) {
+		FormSubmissionMap fs;
+		try {
+			fs = formAttributeParser.createFormSubmissionMap(fsubmission);
+		} catch (Exception e) {
+			throw new IllegalStateException(e);
+		}
+		for (FormFieldMap field : fs.fields()) {
+			if(field.values().size() > 0
+					&& field.fieldAttributes().containsKey("openmrs_entity")
+					&& field.fieldAttributes().get("openmrs_entity").toLowerCase().contains("person")){// field has value
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public boolean hasUpdatedClientProperties(SubformMap subform) {
+		for (FormFieldMap field : subform.fields()) {
+			if(field.values().size() > 0
+					&& field.fieldAttributes().containsKey("openmrs_entity")
+					&& field.fieldAttributes().get("openmrs_entity").toLowerCase().contains("person")){// field has value
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public Client getClientFromFormSubmission(FormSubmissionMap fsubmission) throws Exception {
 		return createBaseClient(fsubmission);
 
@@ -375,7 +403,7 @@ public class FormEntityConverter {
 		DateTime deathdate = dd==null?null:new DateTime(dd).withTimeAtStartOfDay();
 		String aproxbd = fs.getFieldValue(getFieldName(Person.birthdate_estimated, fs));
 		Boolean birthdateApprox = false;
-		if(!StringUtils.isEmptyOrWhitespaceOnly(aproxbd) && NumberUtils.isNumber(aproxbd)){
+		if(StringUtils.isNotBlank(aproxbd) && NumberUtils.isNumber(aproxbd)){
 			int bde = 0;
 			try {
 				bde = Integer.parseInt(aproxbd);
@@ -387,7 +415,7 @@ public class FormEntityConverter {
 		ArrayList<RelationShip> relationShips = new ArrayList<>(extractRelation(fs).values());
 		String aproxdd = fs.getFieldValue(getFieldName(Person.deathdate_estimated, fs));
 		Boolean deathdateApprox = false;
-		if(!StringUtils.isEmptyOrWhitespaceOnly(aproxdd) && NumberUtils.isNumber(aproxdd)){
+		if(StringUtils.isNotBlank(aproxdd) && NumberUtils.isNumber(aproxdd)){
 			int dde = 0;
 			try {
 				dde = Integer.parseInt(aproxdd);
@@ -420,9 +448,9 @@ public class FormEntityConverter {
 		String bb = subf.getFieldValue(getFieldName(Person.birthdate, subf));
 
 		Map<String, String> idents = extractIdentifiers(subf);
-		if(StringUtils.isEmptyOrWhitespaceOnly(firstName)
-				&& StringUtils.isEmptyOrWhitespaceOnly(bb)
-				&& idents.size() < 1 && StringUtils.isEmptyOrWhitespaceOnly(gender)){//we need to ignore uuid of entity
+		if(StringUtils.isBlank(firstName)
+				&& StringUtils.isBlank(bb)
+				&& idents.size() < 1 && StringUtils.isBlank(gender)){//we need to ignore uuid of entity
 			// if empty repeat group leave this entry and move to next
 			return null;
 		}
@@ -434,7 +462,7 @@ public class FormEntityConverter {
 		DateTime deathdate = dd==null?null:new DateTime(dd).withTimeAtStartOfDay();
 		String aproxbd = subf.getFieldValue(getFieldName(Person.birthdate_estimated, subf));
 		Boolean birthdateApprox = false;
-		if(!StringUtils.isEmptyOrWhitespaceOnly(aproxbd) && NumberUtils.isNumber(aproxbd)){
+		if(StringUtils.isNotBlank(aproxbd) && NumberUtils.isNumber(aproxbd)){
 			int bde = 0;
 			try {
 				bde = Integer.parseInt(aproxbd);
@@ -445,7 +473,7 @@ public class FormEntityConverter {
 		}
 		String aproxdd = subf.getFieldValue(getFieldName(Person.deathdate_estimated, subf));
 		Boolean deathdateApprox = false;
-		if(!StringUtils.isEmptyOrWhitespaceOnly(aproxdd) && NumberUtils.isNumber(aproxdd)){
+		if(StringUtils.isNotBlank(aproxdd) && NumberUtils.isNumber(aproxdd)){
 			int dde = 0;
 			try {
 				dde = Integer.parseInt(aproxdd);
@@ -487,24 +515,43 @@ public class FormEntityConverter {
 	public Map<String, Map<String, Object>> getDependentClientsFromFormSubmission(FormSubmission fsubmission) throws IllegalStateException {
 		FormSubmissionMap fs;
 		try {
-			fs = formAttributeParser.createFormSubmissionMap(fsubmission);
+			fs = formAttributeParser.createFormSubmissionMap(fsubmission);//TODO repeating parsing of FS; look for ways to avoid this
 			Map<String, Map<String, Object>> map = new HashMap<>();
 			for (SubformMap sbf : fs.subforms()) {
 				Map<String, String> att = sbf.formAttributes();
-				if(att.containsKey("openmrs_entity") 
-						&& att.get("openmrs_entity").equalsIgnoreCase("person")
-						){
-					Map<String, Object> cne = new HashMap<>();
-
-					Client subformClient = createSubformClient(sbf);
-					
-					if(subformClient != null){
-						cne.put("client", subformClient);
-						cne.put("event", getEventForSubform(fs, att.get("openmrs_entity_id"), sbf));
-						
-						map.put(sbf.entityId(), cne);
+				//handle empty repeat group; no value exists except id
+				boolean hasFeildValue = false;
+				for (FormFieldMap f : sbf.fields()) {
+					if(f.getValues().isEmpty() == false && StringUtils.isNotBlank(f.values().get(0))
+							&& f.name().equalsIgnoreCase("id") == false){
+						hasFeildValue = true;
+						break;
 					}
 				}
+				if(hasFeildValue == false){
+					continue; // skip this empty repeat group and goto next
+				}
+				// if subform is for another client the look for flag person where value/details would be for encounter type
+				Map<String, Object> cne = new HashMap<>();
+				if(att.containsKey("openmrs_entity") 
+						&& att.get("openmrs_entity").equalsIgnoreCase("person")){
+
+					if(hasUpdatedClientProperties(sbf)){
+						Client subformClient = createSubformClient(sbf);
+						cne.put("client", subformClient);
+					}
+					cne.put("event", getEventForSubform(fs, att.get("openmrs_entity_id"), sbf));
+				}
+				else if(att.containsKey("openmrs_entity") 
+						&& att.get("openmrs_entity").equalsIgnoreCase("encounter")){
+					// a client property can not be updated via subform so process event only
+					cne.put("event", getEventForSubform(fs, att.get("openmrs_entity_id"), sbf));
+				}
+				// if no client event just continue with 2nd subform
+				if(cne.isEmpty()){
+					continue;
+				}
+				map.put(sbf.entityId(), cne);
 			}
 			return map;
 		} catch (JsonIOException | JsonSyntaxException

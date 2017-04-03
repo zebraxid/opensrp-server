@@ -61,9 +61,6 @@ public class FormLifeCycleTest extends TestResourceLoader{
 	private List<MotechBaseDataObject> docsToRemove = new ArrayList<>();
 
 	@Autowired
-	@Qualifier(AllConstants.OPENSRP_DATABASE_CONNECTOR) 
-	private CouchDbConnector db;
-	@Autowired
 	private FormSubmissionProcessor fsp;
 	@Autowired
 	private ZiggyService ziggyService;

@@ -1,6 +1,7 @@
 
 package org.opensrp.connector.openmrs.service;
 
+import static org.opensrp.connector.JsonUtil.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -109,15 +110,15 @@ public class PatientService extends OpenmrsService{
 	public JSONObject convertBaseEntityToOpenmrsJson(Client be) throws JSONException {
 		JSONObject per = new JSONObject();
 		per.put("gender", be.getGender());
-		per.put("birthdate", OPENMRS_DATE.format(be.getBirthdate().toDate()));
-		per.put("birthdateEstimated", be.getBirthdateApprox());
+		per.put("birthdate", be.getBirthdate());
+		//per.put("birthdateEstimated", be.getBirthdateApprox());
 		if(be.getDeathdate() != null){
-			per.put("deathDate", OPENMRS_DATE.format(be.getDeathdate().toDate()));
+			per.put("deathDate", be.getDeathdate());
 		}
 		
 		String fn = be.getFirstName();
 		String mn = be.getMiddleName()==null?"":be.getMiddleName();
-		String ln = be.getLastName()==null?".":be.getLastName();
+		String ln = be.getLastName()==null||be.getLastName().equalsIgnoreCase(".")?"-":be.getLastName();
 		per.put("names", new JSONArray("[{\"givenName\":\""+fn+"\",\"middleName\":\""+mn+"\", \"familyName\":\""+ln+"\"}]"));
 		per.put("attributes", convertAttributesToOpenmrsJson(be.getAttributes()));
 		per.put("addresses", convertAddressesToOpenmrsJson(be.getAddresses()));
@@ -185,10 +186,10 @@ public class PatientService extends OpenmrsService{
 			jao.put("latitude", ad.getLatitude());
 			jao.put("longitude", ad.getLongitude());
 			if(ad.getStartDate() != null){
-				jao.put("startDate", OPENMRS_DATE.format(ad.getStartDate().toDate()));
+				jao.put("startDate", ad.getStartDate());
 			}
 			if(ad.getEndDate() != null){
-				jao.put("endDate", OPENMRS_DATE.format(ad.getEndDate().toDate()));
+				jao.put("endDate", ad.getEndDate());
 			}
 			
 			jaar.put(jao);
@@ -305,19 +306,20 @@ public class PatientService extends OpenmrsService{
 		
 		JSONObject pr = patient.getJSONObject("person");
 		
-		String mn = pr.getJSONObject("preferredName").has("middleName")?pr.getJSONObject("preferredName").getString("middleName"):null;
-		DateTime dd = pr.has("deathDate")&&!pr.getString("deathDate").equalsIgnoreCase("null")?new DateTime(pr.getString("deathDate")):null;
-		c.withFirstName(pr.getJSONObject("preferredName").getString("givenName"))
-		.withMiddleName(mn)
-		.withLastName(pr.getJSONObject("preferredName").getString("familyName"))
-		.withGender(pr.getString("gender"))
-		.withBirthdate(new DateTime(pr.getString("birthdate")), pr.getBoolean("birthdateEstimated"))
-		.withDeathdate(dd, false);
+		DateTime dd = getDateValue(pr, "deathDate");
+		JSONObject name = pr.getJSONObject("preferredName");
 		
-		if(pr.has("attributes")){
+		c.withFirstName(name.getString("givenName"))
+			.withMiddleName(getValue(name, "middleName"))
+			.withLastName(name.getString("familyName"))
+			.withGender(pr.getString("gender"))
+			.withBirthdate(new DateTime(pr.getString("birthdate")), pr.getBoolean("birthdateEstimated"))
+			.withDeathdate(dd, false);
+		
+		if(pr.optJSONArray("attributes") != null){
 			for (int i = 0; i < pr.getJSONArray("attributes").length(); i++) {
 				JSONObject at = pr.getJSONArray("attributes").getJSONObject(i);
-				if(at.optJSONObject("value") == null){
+				if(getValue(at, "value") != null){
 					c.addAttribute(at.getJSONObject("attributeType").getString("display"), at.getString("value"));
 				}
 				else{
@@ -326,20 +328,20 @@ public class PatientService extends OpenmrsService{
 			}
 		}
 		
-		if(pr.has("addresses")){
+		if(pr.optJSONArray("addresses") != null){
 			for (int i = 0; i < pr.getJSONArray("addresses").length(); i++) {
 				JSONObject ad = pr.getJSONArray("addresses").getJSONObject(i);
-				DateTime startDate = ad.has("startDate")&&!ad.getString("startDate").equalsIgnoreCase("null")?new DateTime(ad.getString("startDate")):null;
-				DateTime endDate = ad.has("startDate")&&!ad.getString("endDate").equalsIgnoreCase("null")?new DateTime(ad.getString("endDate")):null;;
-				Address a = new Address(ad.getString("address6"), startDate, endDate, null, 
-						ad.getString("latitude"), ad.getString("longitude"), ad.getString("postalCode"), 
-						ad.getString("stateProvince"), ad.getString("country"));
+				DateTime startDate = getDateValue(ad, "startDate");
+				DateTime endDate = getDateValue(ad, "startDate");
+				Address a = new Address(getValue(ad, "address6"), startDate, endDate, null, 
+						getValue(ad, "latitude"), getValue(ad, "longitude"), getValue(ad, "postalCode"), 
+						getValue(ad, "stateProvince"), getValue(ad, "country"));
 				//a.setGeopoint(geopoint);
-				a.setSubTown(ad.getString("address2"));//TODO
-				a.setTown(ad.getString("address3"));
-				a.setSubDistrict(ad.getString("address4"));
-				a.setCountyDistrict(ad.getString("countyDistrict"));
-				a.setCityVillage(ad.getString("cityVillage"));
+				a.setSubTown(getValue(ad, "address2"));//TODO
+				a.setTown(getValue(ad, "address3"));
+				a.setSubDistrict(getValue(ad, "address4"));
+				a.setCountyDistrict(getValue(ad, "countyDistrict"));
+				a.setCityVillage(getValue(ad, "cityVillage"));
 				
 				c.addAddress(a);
 			}

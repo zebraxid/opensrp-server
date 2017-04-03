@@ -28,6 +28,8 @@ import org.opensrp.service.formSubmission.ziggy.ZiggyService;
 import org.opensrp.util.ScheduleBuilder;
 import org.opensrp.util.TestResourceLoader;
 
+import com.google.gson.JsonIOException;
+
 public class FormSubmissionProcessorTest extends TestResourceLoader{
 
 	public FormSubmissionProcessorTest() throws IOException {
@@ -64,7 +66,8 @@ public class FormSubmissionProcessorTest extends TestResourceLoader{
 		List<Schedule> schl = new ArrayList<Schedule>();
 		schl.add(new Schedule(ActionType.enroll, new String[]{submission.formName()}, "Boosters", "REMINDER", new String[]{"birthdate"}, "child", ""));
 		when(scheduleService.findAutomatedSchedules(submission.formName())).thenReturn(schl);
-		
+		when(clientService.getByBaseEntityId(any(String.class))).thenReturn(new Client("testid"));
+
 		fsp.processFormSubmission(submission);
 		
 		
@@ -72,9 +75,74 @@ public class FormSubmissionProcessorTest extends TestResourceLoader{
 		for (SubFormData e : submission.subForms()) {
 			totalEntities += e.instances().size();
 		}
-		verify(clientService, times(totalEntities)).addClient(any(Client.class));
+		verify(clientService, times(totalEntities-1)).addClient(any(Client.class));
 		verify(eventService, times(totalEntities)).addEvent(any(Event.class));
 		verify(scheduleService, times(totalEntities-1)).enrollIntoSchedule(any(String.class), 
 				eq("Boosters"), eq("REMINDER"), any(String.class), eq(submission.getInstanceId()));
 	}
+	
+	@Test
+	public void shouldSkipClientCreationAndCreateEventIfNoClientDataUpdated() throws Exception {
+		FormSubmission submission = getFormSubmissionFor("pnc_reg_form", 2);
+		when(clientService.getByBaseEntityId(submission.entityId())).thenReturn(new Client(submission.entityId()));
+		
+		fsp.processFormSubmission(submission);
+		
+		verify(clientService, times(0)).addClient(any(Client.class));
+		verify(clientService, times(0)).mergeClient(any(Client.class));
+		verify(clientService, times(1)).getByBaseEntityId(any(String.class));
+		verify(eventService, times(1)).addEvent(any(Event.class));
+	}
+	
+	@Test(expected=IllegalStateException.class)
+	public void shouldFailIfClientDataUpdatedAndNoClientExists() throws Exception {
+		FormSubmission submission = getFormSubmissionFor("pnc_reg_form", 3);
+		
+		fsp.processFormSubmission(submission);
+		
+		verify(clientService, times(0)).addClient(any(Client.class));
+		verify(clientService, times(1)).mergeClient(any(Client.class));
+		verify(clientService, times(1)).getByBaseEntityId(any(String.class));
+	}
+	
+	@Test
+	public void shouldPassIfClientDataUpdatedAndClientExists() throws Exception {
+		FormSubmission submission = getFormSubmissionFor("pnc_reg_form", 3);
+		when(clientService.getByBaseEntityId(submission.entityId())).thenReturn(new Client(submission.entityId()));
+		when(clientService.findClient(any(Client.class))).thenReturn(new Client(submission.entityId()));
+		when(formEntityConverter.hasUpdatedClientProperties(submission)).thenReturn(true);
+		when(formEntityConverter.getClientFromFormSubmission(submission)).thenReturn(new Client(submission.entityId()));
+		
+		fsp.processFormSubmission(submission);
+		
+		verify(clientService, times(0)).addClient(any(Client.class));
+		verify(clientService, times(1)).mergeClient(any(Client.class));
+		verify(clientService, times(1)).getByBaseEntityId(any(String.class));
+		verify(eventService, times(1)).addEvent(any(Event.class));
+	}
+	
+	@Test
+	public void shouldCreateEventFromRepeatGroupForSameEntity() throws Exception {
+		FormSubmission submission = getFormSubmissionFor("delivery_form");
+		when(clientService.getByBaseEntityId(submission.entityId())).thenReturn(new Client(submission.entityId()));
+		when(clientService.findClient(any(Client.class))).thenReturn(new Client(submission.entityId()));
+		when(formEntityConverter.hasUpdatedClientProperties(submission)).thenReturn(true);
+		when(formEntityConverter.getClientFromFormSubmission(submission)).thenReturn(new Client(submission.entityId()));
+		
+		fsp.processFormSubmission(submission);
+		// only main client would be saved
+		verify(clientService, times(1)).mergeClient(any(Client.class));
+		verify(clientService, times(1)).getByBaseEntityId(any(String.class));
+		verify(eventService, times(1)).addEvent(any(Event.class));
+		
+		verify(clientService, times(1)).getByBaseEntityId(any(String.class));
+		verify(eventService, times(1)).addEvent(any(Event.class));
+		
+		verify(clientService, times(1)).getByBaseEntityId(any(String.class));
+		verify(eventService, times(1)).addEvent(any(Event.class));
+		
+		verify(clientService, times(1)).getByBaseEntityId(any(String.class));
+		verify(eventService, times(1)).addEvent(any(Event.class));
+	}
+	
 }

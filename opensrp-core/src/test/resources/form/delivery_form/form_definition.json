@@ -15,7 +15,6 @@
             },
             {
                 "name": "ethnicity",
-                "shouldLoadValue": true,
                 "bind": "/model/instance/PNC_Registration_EngKan/ethnicity"
             },
             {

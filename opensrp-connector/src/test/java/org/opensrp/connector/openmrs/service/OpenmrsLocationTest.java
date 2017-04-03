@@ -7,7 +7,6 @@ import java.io.IOException;
 import org.json.JSONException;
 import org.junit.Before;
 import org.junit.Test;
-import org.opensrp.api.domain.Location;
 import org.opensrp.api.util.LocationTree;
 
 import com.google.gson.Gson;

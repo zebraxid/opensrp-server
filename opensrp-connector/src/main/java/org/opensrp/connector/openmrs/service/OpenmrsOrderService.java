@@ -1,21 +1,25 @@
 package org.opensrp.connector.openmrs.service;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static org.opensrp.connector.JsonUtil.*;
 
 import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.opensrp.common.util.HttpUtil;
-import org.opensrp.domain.*;
+import org.opensrp.domain.Client;
+import org.opensrp.domain.Drug;
+import org.opensrp.domain.DrugOrder;
+import org.opensrp.domain.User;
 import org.opensrp.repository.AllDrugs;
-import org.opensrp.repository.AllDrugOrders;
 import org.opensrp.service.ClientService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.mysql.jdbc.StringUtils;
 
 
 
@@ -62,37 +66,37 @@ public class OpenmrsOrderService extends OpenmrsService{
 	public static Drug toDrug(JSONObject drug) throws JSONException
 	{
 		String drugUuid = drug.getString("uuid");
-		String drugName = drug.getString("name");
+		String drugName = getValue(drug, "name");
 		
 		String conceptName = null;
 		String conceptUuid = null;
-		if(drug.has("concept")){
+		if(drug.optJSONObject("concept") != null){
 			JSONObject c = drug.getJSONObject("concept");
-			conceptName = c.getString("display");
-			conceptUuid = c.getString("uuid");
+			conceptName = getValue(c, "display");
+			conceptUuid = getValue(c, "uuid");
 		}
 		
 		String dosageForm = null;
 		String dosageFormUuid = null;
-		if(drug.has("dosageForm")){
+		if(drug.optJSONObject("dosageForm") != null){
 			JSONObject dc = drug.getJSONObject("dosageForm");
-			dosageForm = dc.getString("display");
-			dosageFormUuid = dc.getString("uuid");
+			dosageForm = getValue(dc, "display");
+			dosageFormUuid = getValue(dc, "uuid");
 		}
 		
-		String strength = drug.getString("doseStrength");
-		String mini = drug.getString("minimumDailyDose");
-		String max = drug.getString("maximumDailyDose");
-		String description = drug.getString("description");
-		String units = drug.getString("units");
-		String combination = drug.getString("combination");
+		String strength = getValue(drug, "doseStrength");
+		String mini = getValue(drug, "minimumDailyDose");
+		String max = getValue(drug, "maximumDailyDose");
+		String description = getValue(drug, "description");
+		String units = getValue(drug, "units");
+		String combination = getValue(drug, "combination");
 
 		String route = null;
 		String routeUuid = null;
-		if(drug.has("route")){
+		if(drug.optJSONObject("route") != null){
 			JSONObject r = drug.getJSONObject("dosageForm");
-			route = r.getString("display");
-			routeUuid = r.getString("uuid");
+			route = getValue(r, "display");
+			routeUuid = getValue(r, "uuid");
 		}
 		
 		Map<String, String> codes= new HashMap<>();
@@ -106,14 +110,20 @@ public class OpenmrsOrderService extends OpenmrsService{
 			d.setVoided(drug.getBoolean("retired"));
 		}
 
-		if(drug.has("auditInfo")){
+		if(drug.optJSONObject("auditInfo") != null){
 			JSONObject audit = drug.getJSONObject("auditInfo");
-			d.setCreator(new User(audit.getJSONObject("creator").getString("uuid"), 
-					audit.getJSONObject("creator").getString("display"), null, null));
+			
+			if(audit.optJSONObject("creator") != null){
+				d.setCreator(new User(getValue(audit.getJSONObject("creator"), "uuid"), 
+						getValue(audit.getJSONObject("creator"), "display"), null, null));
+			}
 			d.setDateCreated(DateTime.parse(audit.getString("dateCreated")));
-			if(audit.has("dateChanged")){
-				d.setEditor(new User(audit.getJSONObject("changedBy").getString("uuid"), 
-					audit.getJSONObject("changedBy").getString("display"), null, null));
+			
+			if(getValue(audit, "dateChanged") != null){
+				if(audit.optJSONObject("changedBy") != null){
+					d.setEditor(new User(getValue(audit.getJSONObject("changedBy"), "uuid"), 
+							getValue(audit.getJSONObject("changedBy"), "display"), null, null));					
+				}
 				d.setDateEdited(DateTime.parse(audit.getString("dateChanged")));
 			}
 		}
@@ -127,68 +137,88 @@ public class OpenmrsOrderService extends OpenmrsService{
 		codes.put("openmrs_uuid", drugOrder.getString("uuid"));
 		
 		String patientUuid = drugOrder.getJSONObject("patient").getString("uuid");
+		codes.put("openmrs_patient_uuid", patientUuid);
+		
 		List<Client> cl = clientService.findAllByIdentifier(patientUuid);
 		String baseEntityId = cl.size()>0?cl.get(0).getBaseEntityId():null;
 		if(baseEntityId == null){
 			throw new IllegalAccessError("Patient was not found in opensrp while importing drug order "+drugOrder);
 		}
-
-		codes.put("openmrs_patient_uuid", patientUuid);
 		
 		String drugUuid = drugOrder.getJSONObject("drug").getString("uuid");
+		codes.put("openmrs_drug_uuid", drugUuid);
+		
 		List<Drug> drugL = allDrugs.findAllByCode(drugUuid);
 		String drugId = drugL.size()>0?drugL.get(0).getId():null;
 		if(drugId == null){
 			throw new IllegalAccessError("Drug was not found in opensrp while importing drug order "+drugOrder);
 		}
-		codes.put("openmrs_drug_uuid", drugUuid);
 
 		DateTime dateActivated = null;
-		if(drugOrder.has("dateActivated")){
+		if(getValue(drugOrder, "dateActivated") != null){
 			dateActivated = DateTime.parse(drugOrder.getString("dateActivated"));
 		}
 		DateTime autoExpireDate = null;
-		if(drugOrder.has("autoExpireDate")){
+		if(getValue(drugOrder, "autoExpireDate") != null){
 			autoExpireDate = DateTime.parse(drugOrder.getString("autoExpireDate"));
 		}
 		
 		String frequency = null;
-		if(drugOrder.has("frequency")){
-			frequency = drugOrder.getJSONObject("frequency").getString("display");
+		if(drugOrder.optJSONObject("frequency") != null){
+			frequency = getValue(drugOrder.getJSONObject("frequency"), "display");
 		}
 		
-		String quantity = drugOrder.has("quantity")?drugOrder.getString("quantity"):null;
+		String quantity = getValue(drugOrder, "quantity");
 		String quantityUnits = null;
-		if(drugOrder.has("quantityUnits")){
-			quantityUnits = drugOrder.getJSONObject("quantityUnits").getString("display");
+		if(drugOrder.optJSONObject("quantityUnits") != null){
+			quantityUnits = getValue(drugOrder.getJSONObject("quantityUnits"), "display");
 		}
 
-		String orderNumber = drugOrder.getString("orderNumber");
-		String action = drugOrder.getString("action");
-		String urgency = drugOrder.getString("urgency");
-		String instructions = drugOrder.getString("instructions");
+		String orderNumber = getValue(drugOrder, "orderNumber");
+		String action = getValue(drugOrder, "action");
+		String urgency = getValue(drugOrder, "urgency");
+		String instructions = getValue(drugOrder, "instructions");
 		
-		String drugName = drugOrder.getString("display");
-		String dose = drugOrder.getString("dose");
-		String discontinuedBy = drugOrder.has("discontinuedBy")?drugOrder.getString("discontinuedBy"):null;
+		String dose = getValue(drugOrder, "dose");
+		String discontinuedBy = getValue(drugOrder, "discontinuedBy");
+		String discontinuedReason = getValue(drugOrder, "discontinuedReason");
+		
 		DateTime discontinuedDate = null;
-		if(drugOrder.has("discontinuedDate")){
+		if(getValue(drugOrder, "discontinuedDate") != null){
 			discontinuedDate = DateTime.parse(drugOrder.getString("discontinuedDate"));
 		}
-		String discontinuedReason = drugOrder.has("discontinuedReason")?drugOrder.getString("discontinuedReason"):null;
 		
-		String orderReason = drugOrder.getString("orderReason");
-		String orderer = drugOrder.getString("orderer");
+		String orderReason = getValue(drugOrder, "orderReason");
+		String orderer = getValue(drugOrder, "orderer");
 		
 		String route = null;
-		if(drugOrder.has("route")){
+		if(drugOrder.optJSONObject("route") != null){
 			route = drugOrder.getJSONObject("route").getString("display");
 		}
 		
-		DrugOrder drugOrderO = new DrugOrder(baseEntityId, drugOrder.getString("type"), drugId, codes, 
+		DrugOrder drugOrderO = new DrugOrder(baseEntityId, getValue(drugOrder, "type"), drugId, codes, 
 				dateActivated, autoExpireDate, frequency, quantity, quantityUnits, orderNumber, action, 
 				urgency, instructions, dose, null, null, discontinuedBy , discontinuedDate, discontinuedReason, 
 				orderReason, orderer, route, null);
+		
+		if(drugOrder.optJSONObject("auditInfo") != null){
+			JSONObject audit = drugOrder.getJSONObject("auditInfo");
+			
+			if(audit.optJSONObject("creator") != null){
+				drugOrderO.setCreator(new User(getValue(audit.getJSONObject("creator"), "uuid"), 
+						getValue(audit.getJSONObject("creator"), "display"), null, null));
+			}
+			drugOrderO.setDateCreated(DateTime.parse(audit.getString("dateCreated")));
+			
+			if(getValue(audit, "dateChanged") != null){
+				if(audit.optJSONObject("changedBy") != null){
+					drugOrderO.setEditor(new User(getValue(audit.getJSONObject("changedBy"), "uuid"), 
+							getValue(audit.getJSONObject("changedBy"), "display"), null, null));					
+				}
+				drugOrderO.setDateEdited(DateTime.parse(audit.getString("dateChanged")));
+			}
+		}
+		
 		return drugOrderO;
 	}
 }

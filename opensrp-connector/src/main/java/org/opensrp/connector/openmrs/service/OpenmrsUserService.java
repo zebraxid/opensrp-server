@@ -29,32 +29,38 @@ public class OpenmrsUserService extends OpenmrsService{
 
 	public User getUser(String username) throws JSONException {
 		HttpResponse op = HttpUtil.get(HttpUtil.removeEndingSlash(OPENMRS_BASE_URL)+"/"+USER_URL, "v=full&username="+username, OPENMRS_USER, OPENMRS_PWD);
+		
 		JSONArray res = new JSONObject(op.body()).getJSONArray("results");
 		if(res.length() == 0){
 			return null;
 		}
+		
 		JSONObject obj = res.getJSONObject(0);
 		JSONObject p = obj.getJSONObject("person");
 		User u = new User(obj.getString("uuid"), obj.getString("username"), null, null,
-				p.getString("display"), null, null);
+				p.optString("display"), null, null);
 		//Object ploc;
-		JSONArray a = p.getJSONArray("attributes");
+		JSONArray a = p.optJSONArray("attributes");
 		
-		for (int i = 0; i < a.length(); i++) {
-			String ad = a.getJSONObject(i).getString("display");
-			u.addAttribute(ad.substring(0,ad.indexOf("=")-1), ad.substring(ad.indexOf("=")+2));
+		if(a != null){
+			for (int i = 0; i < a.length(); i++) {
+				String ad = a.getJSONObject(i).getString("display");
+				u.addAttribute(ad.substring(0,ad.indexOf("=")-1), ad.substring(ad.indexOf("=")+2));
+			}
 		}
 		
-		JSONArray per = obj.getJSONArray("privileges");
-		
-		for (int i = 0; i < per.length(); i++) {
-			u.addPermission(per.getJSONObject(i).getString("name"));
+		JSONArray per = obj.optJSONArray("privileges");
+		if(per != null){
+			for (int i = 0; i < per.length(); i++) {
+				u.addPermission(per.getJSONObject(i).getString("name"));
+			}
 		}
 		
-		JSONArray rol = obj.getJSONArray("roles");
-		
-		for (int i = 0; i < rol.length(); i++) {
-			u.addRole(rol.getJSONObject(i).getString("name"));
+		JSONArray rol = obj.optJSONArray("roles");
+		if(rol != null){
+			for (int i = 0; i < rol.length(); i++) {
+				u.addRole(rol.getJSONObject(i).getString("name"));
+			}
 		}
 		
 		u.addAttribute("_PERSON_UUID", p.getString("uuid"));

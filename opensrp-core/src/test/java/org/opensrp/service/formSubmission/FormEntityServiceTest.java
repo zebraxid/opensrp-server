@@ -9,6 +9,7 @@ import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 import java.io.IOException;
+import java.util.UUID;
 
 import org.junit.Before;
 import org.junit.Ignore;
@@ -40,14 +41,15 @@ public class FormEntityServiceTest extends TestResourceLoader{
 		super();
 	}
 
+	private FormEntityConverter formEntityConverter;
+	
 	@Mock
     private ZiggyService ziggyService;
     @Mock
     private FormSubmissionRouter formSubmissionRouter;
     @Mock
     private FormSubmissionProcessor fsp;
-    @Mock
-    private FormEntityConverter formEntityConverter;
+    
     @Mock
     private ClientService clientService;
     @Mock
@@ -68,6 +70,7 @@ public class FormEntityServiceTest extends TestResourceLoader{
     
     @Before
     public void setUp() throws Exception {
+    	formEntityConverter = new FormEntityConverter(new FormAttributeParser("/form"));
     	scheduleConfig = new ScheduleConfig("/schedules/schedule-config.xls");
     	scheduleService = new HealthSchedulerService(actionService, schService, scheduleConfig);
         initMocks(this);
@@ -78,20 +81,17 @@ public class FormEntityServiceTest extends TestResourceLoader{
 	@Test
     public void shouldProcessNonZiggySubmission() throws Exception {
         FormSubmission fs = getFormSubmissionFor("new_household_registration", 1);
+		when(clientService.getByBaseEntityId(any(String.class))).thenReturn(new Client(UUID.randomUUID().toString()));
 
         fsp.processFormSubmission(fs);
 
-        InOrder inOrder = inOrder(formEntityConverter, clientService, eventService, schService, ziggyService, formSubmissionRouter);
-        inOrder.verify(formEntityConverter).getClientFromFormSubmission(fs);
-        inOrder.verify(formEntityConverter).getEventFromFormSubmission(fs);
-        inOrder.verify(formEntityConverter).getDependentClientsFromFormSubmission(fs);
+        InOrder inOrder = inOrder(clientService, eventService, schService, ziggyService, formSubmissionRouter);
         inOrder.verify(clientService, atLeastOnce()).addClient(any(Client.class));
         inOrder.verify(eventService, atLeastOnce()).addEvent(any(Event.class));
         inOrder.verify(schService).enroll(fs.entityId(), "FW CENSUS", "FW CENSUS", "2015-05-07", fs.instanceId());
         inOrder.verify(ziggyService).isZiggyCompliant(fs.bindType());
         inOrder.verify(formSubmissionRouter).route(fs);
 
-        verifyNoMoreInteractions(formEntityConverter);
         //verifyNoMoreInteractions(clientService);
         //verifyNoMoreInteractions(eventService);
         //verifyNoMoreInteractions(schService);
@@ -126,15 +126,13 @@ public class FormEntityServiceTest extends TestResourceLoader{
 	@Test
     public void shouldProcessZiggySubmission() throws Exception {
         FormSubmission fs = getFormSubmissionFor("new_household_registration", 1);
+		when(clientService.getByBaseEntityId(any(String.class))).thenReturn(new Client(UUID.randomUUID().toString()));
 
         when(ziggyService.isZiggyCompliant("household")).thenReturn(true);
         
         fsp.processFormSubmission(fs);
 
-        InOrder inOrder = inOrder(formEntityConverter, clientService, eventService, schService, ziggyService, formSubmissionRouter);
-        inOrder.verify(formEntityConverter).getClientFromFormSubmission(fs);
-        inOrder.verify(formEntityConverter).getEventFromFormSubmission(fs);
-        inOrder.verify(formEntityConverter).getDependentClientsFromFormSubmission(fs);
+        InOrder inOrder = inOrder(clientService, eventService, schService, ziggyService, formSubmissionRouter);
         inOrder.verify(clientService, atLeastOnce()).addClient(any(Client.class));
         inOrder.verify(eventService, atLeastOnce()).addEvent(any(Event.class));
         inOrder.verify(schService).enroll(fs.entityId(), "FW CENSUS", "FW CENSUS", "2015-05-07", fs.instanceId());
@@ -142,7 +140,6 @@ public class FormEntityServiceTest extends TestResourceLoader{
         inOrder.verify(ziggyService).saveForm(Utils.getZiggyParams(fs), new Gson().toJson(fs.instance()));
 
         verifyZeroInteractions(formSubmissionRouter);
-        verifyNoMoreInteractions(formEntityConverter);
        // verifyNoMoreInteractions(clientService);
        // verifyNoMoreInteractions(eventService);
        // verifyNoMoreInteractions(schService);

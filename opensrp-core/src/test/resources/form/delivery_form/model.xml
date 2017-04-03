@@ -31,10 +31,8 @@
             <woman_survived openmrs_entity="concept" openmrs_entity_id="100009" openmrs_entity_parent="65435"/>
           </still_birth_group>
           <live_birth_group>
-            <child template="" openmrs_entity="person" openmrs_entity_id="new registration">
-              <sex_child openmrs_entity="person" openmrs_entity_id="gender"/>
-              <sex_child_female/>
-              <sex_child_male/>
+            <delivery template="" openmrs_entity="encounter" openmrs_entity_id="Delivery Outcome">
+              <sex_child openmrs_entity="concept" openmrs_entity_id="23298392"/>
               <birthweight openmrs_entity="concept" openmrs_entity_id="323232"/>
               <child_blood_group openmrs_entity="concept" openmrs_entity_id="232112"/>
               <immunizations_atbirth openmrs_entity="concept" openmrs_entity_id="199277"/>
@@ -50,7 +48,7 @@
               <high_risk_note_child/>
               <is_child_high_risk openmrs_entity="concept" openmrs_entity_id="4342343"/>
               <addl_pnc_visit_message/>
-            </child>
+            </delivery>
             <mother_survived openmrs_entity="concept" openmrs_entity_id="343434"/>
             <breastfeeding_postbirth openmrs_entity="concept" openmrs_entity_id="434343"/>
           </live_birth_group>

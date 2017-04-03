@@ -4,8 +4,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Properties;
 
-import org.opensrp.connector.openmrs.service.EncounterService;
-import org.opensrp.connector.openmrs.service.PatientService;
 import org.opensrp.form.domain.FormSubmission;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.DefaultResourceLoader;

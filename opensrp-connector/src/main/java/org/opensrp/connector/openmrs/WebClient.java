@@ -1,8 +1,6 @@
 package org.opensrp.connector.openmrs;
 
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.net.URI;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
@@ -19,8 +17,6 @@ import javax.net.ssl.X509TrustManager;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.ict4h.atomfeed.client.AtomFeedProperties;
-import org.ict4h.atomfeed.client.exceptions.AtomFeedClientException;
-import org.ict4h.atomfeed.client.repository.datasource.ClientCookies;
 
 public class WebClient extends org.ict4h.atomfeed.client.repository.datasource.WebClient {
     

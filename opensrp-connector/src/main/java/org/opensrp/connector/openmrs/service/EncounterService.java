@@ -11,6 +11,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.opensrp.common.util.HttpResponse;
 import org.opensrp.common.util.HttpUtil;
+import org.opensrp.connector.JsonUtil;
 import org.opensrp.domain.Client;
 import org.opensrp.domain.Event;
 import org.opensrp.domain.Obs;
@@ -30,11 +31,14 @@ public class EncounterService extends OpenmrsService{
 	private PatientService patientService;
 	private OpenmrsUserService userService;
 	private ClientService clientService;
+	private OpenmrsLocationService locationService;
 
 	@Autowired
-	public EncounterService(PatientService patientService, OpenmrsUserService userService, ClientService clientService) {
+	public EncounterService(PatientService patientService, OpenmrsUserService userService, 
+			OpenmrsLocationService locationService, ClientService clientService) {
 		this.patientService = patientService;
 		this.userService = userService;
+		this.locationService = locationService;
 		this.clientService = clientService;
 	}
 	
@@ -79,29 +83,39 @@ public class EncounterService extends OpenmrsService{
     }
 	
     public JSONObject createEncounterType(String name, String description) throws JSONException{
-		JSONObject o = convertEncounterToOpenmrsJson(name, description);
+		JSONObject o = convertEncounterTypeToOpenmrsJson(name, description);
 		return new JSONObject(HttpUtil.post(getURL()+"/"+ENCOUNTER__TYPE_URL, "", o.toString(), OPENMRS_USER, OPENMRS_PWD).body());
 	}
     
-    public JSONObject convertEncounterToOpenmrsJson(String name, String description) throws JSONException {
+    public JSONObject convertEncounterTypeToOpenmrsJson(String name, String description) throws JSONException {
 		JSONObject a = new JSONObject();
 		a.put("name", name);
 		a.put("description", description);
 		return a;
 	}
 	
-	public JSONObject createEncounter(Event e) throws JSONException{
-		JSONObject pt = patientService.getPatientByIdentifier(e.getBaseEntityId());
+    private JSONObject convertToEncounter(Event e) throws JSONException {
+    	JSONObject pt = patientService.getPatientByIdentifier(e.getBaseEntityId());
+    	if(pt == null){
+    		throw new IllegalStateException("No patient found in OpenMRS for event "+e.getId()+" for client "+e.getBaseEntityId());
+    	}
+
+    	JSONObject pr = userService.getPersonByUser(e.getProviderId());
+    	if(pr == null){
+        	pr = userService.getProvider(e.getProviderId());
+        	if(pr == null){
+    		throw new IllegalStateException("Provider "+e.getProviderId()+" not found in OpenMRS for event "+e.getId());
+        	}
+        }
+    	
 		JSONObject enc = new JSONObject();
-		
-		JSONObject pr = userService.getPersonByUser(e.getProviderId());
-		
-		enc.put("encounterDatetime", OPENMRS_DATE.format(e.getEventDate().toDate()));
+		// some dates throw org.joda.time.IllegalInstantException: Cannot parse \"2002-04-07\": 
+		// Illegal instant due to time zone offset transition (Asia/Karachi)
+		// so make it joda datetime
+		enc.put("encounterDatetime", e.getEventDate());
 		// patient must be existing in OpenMRS before it submits an encounter. if it doesnot it would throw NPE
 		enc.put("patient", pt.getString("uuid"));
-		//TODO enc.put("patientUuid", pt.getString("uuid"));
 		enc.put("encounterType", e.getEventType());
-		//TODO enc.put("encounterTypeUuid", e.getEventType());
 		enc.put("location", e.getLocationId());
 		enc.put("provider", pr.getString("uuid"));
 
@@ -149,7 +163,14 @@ public class EncounterService extends OpenmrsService{
 				obar.put(obo);
 			}
 		}
-		enc.put("obs", obar);
+		return enc.put("obs", obar);
+	}
+    
+	public JSONObject createEncounter(Event e) throws JSONException{
+		if(getEncounterType(e.getEventType()) == null){
+			createEncounterType(e.getEventType(), "Created from OpenSRP during sync");
+		}
+		JSONObject enc = convertToEncounter(e);
 		
 		HttpResponse op = HttpUtil.post(HttpUtil.removeEndingSlash(OPENMRS_BASE_URL)+"/"+ENCOUNTER_URL, "", enc.toString(), OPENMRS_USER, OPENMRS_PWD);
 		return new JSONObject(op.body());
@@ -161,69 +182,14 @@ public class EncounterService extends OpenmrsService{
 		}
 		
 		String openmrsuuid = e.getIdentifier(OPENMRS_UUID_IDENTIFIER_TYPE);
-		JSONObject pt = patientService.getPatientByIdentifier(e.getBaseEntityId());//TODO find by any identifier
-		JSONObject enc = new JSONObject();
 		
-		JSONObject pr = userService.getPersonByUser(e.getProviderId());
-		
-		enc.put("encounterDatetime", OPENMRS_DATE.format(e.getEventDate().toDate()));
-		// patient must be existing in OpenMRS before it submits an encounter. if it doesnot it would throw NPE
-		enc.put("patient", pt.getString("uuid"));
-	//TODO	enc.put("patientUuid", pt.getString("uuid"));
-		enc.put("encounterType", e.getEventType());
-		enc.put("location", e.getLocationId());
-		enc.put("provider", pr.getString("uuid"));
-
-		List<Obs> ol = e.getObs();
-		Map<String, JSONArray> p = new HashMap<>();
-		Map<String, JSONArray> pc = new HashMap<>();
-		
-		if(ol != null)
-		for (Obs obs : ol) {
-			if(StringUtils.isEmptyOrWhitespaceOnly(obs.getFieldCode())){//skipping empty obs
-				//if no parent simply make it root obs
-				if(StringUtils.isEmptyOrWhitespaceOnly(obs.getParentCode())){
-					p.put(obs.getFieldCode(), convertObsToJson(obs));
-				}
-				else {
-					//find parent obs if not found search and fill or create one
-					JSONArray parentObs = p.get(obs.getParentCode());
-					if(parentObs == null){
-						p.put(obs.getParentCode(), convertObsToJson(getOrCreateParent(ol, obs)));
-					}
-					// find if any other exists with same parent if so add to the list otherwise create new list
-					JSONArray obl = pc.get(obs.getParentCode());
-					if(obl == null){
-						obl = new JSONArray();
-					}
-					JSONArray addobs = convertObsToJson(obs);
-					for (int i = 0; i < addobs.length(); i++) {
-						obl.put(addobs.getJSONObject(i));
-					}
-					pc.put(obs.getParentCode(), obl);
-				}
-			}
-		}
-		
-		JSONArray obar = new JSONArray();
-		for (String ok : p.keySet()) {
-			for (int i = 0; i < p.get(ok).length(); i++) {
-				JSONObject obo = p.get(ok).getJSONObject(i);
-				
-				JSONArray cob = pc.get(ok);
-				if(cob != null && cob.length() > 0) {
-					obo.put("groupMembers", cob);
-				}
-				
-				obar.put(obo);
-			}
-		}
-		enc.put("obs", obar);
+		JSONObject enc = convertToEncounter(e);
 		
 		HttpResponse op = HttpUtil.post(HttpUtil.removeEndingSlash(OPENMRS_BASE_URL)+"/"+ENCOUNTER_URL+"/"+openmrsuuid, "", enc.toString(), OPENMRS_USER, OPENMRS_PWD);
 		return new JSONObject(op.body());
 	}
 	
+	// empty obs should have been filtered out before
 	private JSONArray convertObsToJson(Obs o) throws JSONException{
 		JSONArray arr = new JSONArray();
 		if(o.getValues(false) == null || o.getValues(false).size()==0){//must be parent of some obs
@@ -237,7 +203,21 @@ public class EncounterService extends OpenmrsService{
 			for (Object v : o.getValues(false)) {
 				JSONObject obo = new JSONObject();
 				obo.put("concept", o.getFieldCode());
-				obo.put("value", v);
+				// check for date and date time obs
+				// if data type is date/datetime/start/end/today then convert dates
+				// ironically openmrs uses java.text date parser for obs value 
+				// which doesnot accept joda format; different from other date formats so different conversion here
+				if(StringUtils.isEmptyOrWhitespaceOnly(o.getFieldDataType()) == false
+						&& o.getFieldDataType().toLowerCase().matches("start|end|datetime")){
+					obo.put("value", v.toString().replace("T", " ").substring(0, 19));
+				}
+				else if(StringUtils.isEmptyOrWhitespaceOnly(o.getFieldDataType()) == false
+						&& o.getFieldDataType().toLowerCase().matches("today|date")){
+					obo.put("value", v.toString().substring(0, 10));
+				}
+				else {
+					obo.put("value", v);					
+				}
 	
 				arr.put(obo);
 			}
@@ -253,22 +233,21 @@ public class EncounterService extends OpenmrsService{
 		}
 		return new Obs("concept", "parent", o.getParentCode(), null, null, null);
 	}
-	// TODO needs review and refactor
+
 	public Event convertToEvent(JSONObject encounter) throws JSONException{
 		if(encounter.has("patient") == false){
 			throw new IllegalStateException("No 'patient' object found in given encounter");
 		}
+		
 		Event e = new Event();
+		
 		String patientUuid = encounter.getJSONObject("patient").getString("uuid");
 		Client c = clientService.find(patientUuid);
 		if(c == null || c.getBaseEntityId() == null){
 			throw new IllegalStateException("Client was not found registered while converting Encounter to an Event in OpenSRP");
 		}
 		
-		JSONObject creator = encounter.getJSONObject("auditInfo").getJSONObject("creator");
-		e.withBaseEntityId(c.getBaseEntityId())
-			.withCreator(new User(creator.getString("uuid"), creator.getString("display"), null, null))
-			.withDateCreated(DateTime.now());
+		e.withBaseEntityId(c.getBaseEntityId());
 		
 		e.withEventDate(new DateTime(encounter.getString("encounterDatetime")))
 			//.withEntityType(entityType) //TODO
@@ -288,7 +267,7 @@ public class EncounterService extends OpenmrsService{
 			if(o.optJSONObject("value") != null){
 				values.add(o.getJSONObject("value").getString("uuid"));
 			}
-			else if(o.has("value")){
+			else if(JsonUtil.getValue(o, "value") != null){
 				values.add(o.getString("value"));
 			}
 			e.addObs(new Obs(null, null, o.getJSONObject("concept").getString("uuid"), null /*//TODO handle parent*/, values, null, null/*comments*/, null/*formSubmissionField*/));

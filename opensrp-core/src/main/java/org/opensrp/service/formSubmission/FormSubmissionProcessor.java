@@ -128,22 +128,39 @@ public class FormSubmissionProcessor{
 	}
 	
 	private void makeModelEntities(FormSubmission submission) throws JSONException {
-    	Client c = formEntityConverter.getClientFromFormSubmission(submission);
-		Event e = formEntityConverter.getEventFromFormSubmission(submission);
-		Map<String, Map<String, Object>> dep = formEntityConverter.getDependentClientsFromFormSubmission(submission);
-
-		if(clientService.findClient(c) != null){
-			clientService.mergeClient(c);
+		// save client only if form submission has updated properties
+		if(formEntityConverter.hasUpdatedClientProperties(submission)){
+			Client c = formEntityConverter.getClientFromFormSubmission(submission);
+			if(clientService.findClient(c) != null){
+				clientService.mergeClient(c);
+			}
+			else clientService.addClient(c);
 		}
-		else clientService.addClient(c);
 		
+		Event e = formEntityConverter.getEventFromFormSubmission(submission);
+		//check whether person exists and user did not miss client properties unintentionally 
+		if(clientService.getByBaseEntityId(e.getBaseEntityId()) == null){
+			throw new IllegalStateException("No client was found in DB with ID "+e.getBaseEntityId()+". Did you forget client mapping in form");
+		}
 		eventService.addEvent(e);
+
 		// TODO relationships b/w entities
+
+		Map<String, Map<String, Object>> dep = formEntityConverter.getDependentClientsFromFormSubmission(submission);
 			
 		for (Map<String, Object> cm : dep.values()) {
 			Client cin = (Client)cm.get("client");
+			if(cin != null){// Only new clients would exist in map
+				if(clientService.findClient(cin) != null){
+					clientService.mergeClient(cin);
+				}
+				else clientService.addClient(cin);
+			}
 			Event evin = (Event)cm.get("event");
-			clientService.addClient(cin);
+			//check whether person exists and user did not miss client properties unintentionally 
+			if(clientService.getByBaseEntityId(evin.getBaseEntityId()) == null){
+				throw new IllegalStateException("No client was found in DB with Subform Client ID "+evin.getBaseEntityId()+". Did you forget client mapping in form");
+			}
 			eventService.addEvent(evin);
 		}
 	}
