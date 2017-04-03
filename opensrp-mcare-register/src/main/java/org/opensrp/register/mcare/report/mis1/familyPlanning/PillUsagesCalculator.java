@@ -33,7 +33,8 @@ public class PillUsagesCalculator extends FamilyPlanningReportCalculator {
                 checkMemberFieldValue(member.details(), Members.BIRTH_CONTROL_KEY, Members.BIRTH_CONTROL_PILL);
         if (usingBirthControlPillInMemberDetail) {
             Map<String, String> previousMonthElcoFollowUpData = getPreviousMonthElcoFollowUp(member.elco_Followup());
-            if (previousMonthElcoFollowUpData.isEmpty()) {
+            boolean firstElcoFollowUP = previousMonthElcoFollowUpData.isEmpty();
+            if (!firstElcoFollowUP) {
                 boolean usingBirthControlPillInPreviousElcoFollowUp =
                         checkMemberFieldValue(previousMonthElcoFollowUpData, Members.BIRTH_CONTROL_KEY,
                                 Members.BIRTH_CONTROL_PILL);
@@ -50,13 +51,9 @@ public class PillUsagesCalculator extends FamilyPlanningReportCalculator {
     private int addToTheCountOfLeftPillUsagesButNoneTaken(Members member){
         boolean notUsingBirthControlMethodInMemberDetail =
                 checkMemberFieldValue(member.details(), Members.BIRTH_CONTROL_KEY, Members.BIRTH_CONTROL_NOT_USING_ANY_METHOD);
-        if (notUsingBirthControlMethodInMemberDetail) {
-            return 1;
-        }
-
-        boolean notUsingFamilyPlanning =
+        boolean notUsingFamilyPlanningInMemberDetail =
                 checkMemberFieldValue(member.details(), Members.USING_FAMILY_PLANNING_KEY, Members.NOT_USING_FAMILY_PLANNING_VALUE);
-        if (notUsingFamilyPlanning) {
+        if (notUsingBirthControlMethodInMemberDetail || notUsingFamilyPlanningInMemberDetail) {
             Map<String, String> previousMonthElcoFollowUpData = getPreviousMonthElcoFollowUp(member.elco_Followup());
             boolean usingBirthControlPillInPreviousElcoFollowUp =
                     checkMemberFieldValue(previousMonthElcoFollowUpData, Members.BIRTH_CONTROL_KEY,

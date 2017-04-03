@@ -5,96 +5,88 @@ import org.opensrp.register.mcare.domain.Members;
 
 import java.util.*;
 
-public class FamilyPlanningTestData {
+public abstract class FamilyPlanningTestData {
     public List<Members> members;
     public int resultCount;
 
-
-    public FamilyPlanningTestData(List<org.opensrp.register.mcare.domain.Members> members, int resultCount) {
+    public FamilyPlanningTestData(List<Members> members, int resultCount) {
         this.members = members;
         this.resultCount = resultCount;
     }
 
-    public static FamilyPlanningTestData currentMonthTotalBirthControlPill() {
+    protected static List<Members> createNewTestData(String validBirthControlMethod, int totalData, int validData){
         List<Members> members = new ArrayList<>();
-        for (int i = 0; i < 100; i++) {
-            if (i < 70) {
-                members.add(createMemberUsingBirthControlValue(Members.BIRTH_CONTROL_PILL));
-            } else if (i < 75) {
-                members.add(createMemberUsingBirthControlValue(Members.BIRTH_CONTROL_CONDOM));
-            }else {
-                members.add(new Members());
-            }
-        }
-
-        return new FamilyPlanningTestData(members, 70);
-    }
-
-    public static FamilyPlanningTestData currentMonthNewBirthControlPill() {
-        List<Members> members = new ArrayList<>();
-        for (int i = 0; i < 100; i++) {
-            if (i < 25) {
-                Members member = createMemberUsingBirthControlValue(Members.BIRTH_CONTROL_PILL);
+        for (int i = 0; i < totalData; i++) {
+            if (i < validData/2) {
+                Members member = createMemberUsingBirthControlValue(validBirthControlMethod);
                 addRandomNumberOfElcoFollowUp(member);
-                addElcoFollowUpUsingBirthControlValue(member, Members.BIRTH_CONTROL_CONDOM);
-                addElcoFollowUpUsingBirthControlValue(member, Members.BIRTH_CONTROL_PILL);
+                addElcoFollowUpUsingBirthControlValue(member, Members.BIRTH_CONTROL_NULL_VALUE);
+                addElcoFollowUpUsingBirthControlValue(member, validBirthControlMethod);
                 members.add(member);
-            } else if(i<60) {
-                Members member = createMemberUsingBirthControlValue(Members.BIRTH_CONTROL_PILL);
-                addElcoFollowUpUsingBirthControlValue(member, Members.BIRTH_CONTROL_PILL);
+            } else if(i<validData) {
+                Members member = createMemberUsingBirthControlValue(validBirthControlMethod);
+                addElcoFollowUpUsingBirthControlValue(member, validBirthControlMethod);
                 members.add(member);
-            } else if (i < 75) {
-                Members member = createMemberUsingBirthControlValue(Members.BIRTH_CONTROL_CONDOM);
+            } else if (i < validData+validData/2) {
+                Members member = createMemberUsingBirthControlValue(Members.BIRTH_CONTROL_NULL_VALUE);
                 addRandomNumberOfElcoFollowUp(member);
-                addElcoFollowUpUsingBirthControlValue(member, Members.BIRTH_CONTROL_PILL);
-                addElcoFollowUpUsingBirthControlValue(member, Members.BIRTH_CONTROL_CONDOM);
-                members.add(member);
-            }else {
-                members.add(new Members());
-            }
-        }
-
-        return new FamilyPlanningTestData(members, 60);
-    }
-
-    public static FamilyPlanningTestData currentMonthLeftBirthControlPill() {
-        List<Members> members = new ArrayList<>();
-        for (int i = 0; i < 100; i++) {
-            if (i < 25) {
-                Members member = createMemberWithOutAnyFamilyPlanning();
-                addRandomNumberOfElcoFollowUp(member);
-                addElcoFollowUpUsingBirthControlValue(member, Members.BIRTH_CONTROL_PILL);
+                addElcoFollowUpUsingBirthControlValue(member, validBirthControlMethod);
                 addElcoFollowUpUsingBirthControlValue(member, Members.BIRTH_CONTROL_NULL_VALUE);
                 members.add(member);
-            } else if(i<50) {
-                Members member = createMemberUsingBirthControlValue(Members.BIRTH_CONTROL_NOT_USING_ANY_METHOD);
-                members.add(member);
-            } else if (i < 75) {
-                Members member = createMemberUsingBirthControlValue(Members.BIRTH_CONTROL_CONDOM);
-                addRandomNumberOfElcoFollowUp(member);
-                addElcoFollowUpUsingBirthControlValue(member, Members.BIRTH_CONTROL_PILL);
-                addElcoFollowUpUsingBirthControlValue(member, Members.BIRTH_CONTROL_CONDOM);
-                members.add(member);
             }else {
-                Members member = createMemberUsingBirthControlValue(Members.BIRTH_CONTROL_INJECTABLE);
-                addRandomNumberOfElcoFollowUp(member);
-                addElcoFollowUpUsingBirthControlValue(member, Members.BIRTH_CONTROL_PILL);
-                addElcoFollowUpUsingBirthControlValue(member, Members.BIRTH_CONTROL_INJECTABLE);
-                members.add(member);
+                members.add(new Members());
             }
         }
+        return members;
+    }
 
-        return new FamilyPlanningTestData(members, 50);
+
+
+    protected static List<Members> createLeftBirthControlMethodTestData(
+            String validBirthControlMethod, String secondBirthControlMethod, String thirdBirthControlMethod,
+            int totalCount, int validCount) {
+        List<Members> members = new ArrayList<>();
+        int halfValidCount = validCount/2;
+        for (int i = 0; i < totalCount; i++) {
+            if (i < halfValidCount) {
+                Members member = createMemberWithOutAnyFamilyPlanning();
+                addRandomNumberOfElcoFollowUp(member);
+                addElcoFollowUpUsingBirthControlValue(member, validBirthControlMethod);
+                addElcoFollowUpUsingBirthControlValue(member, Members.BIRTH_CONTROL_NULL_VALUE);
+                members.add(member);
+            } else if(i<halfValidCount*2) {
+                Members member = createMemberUsingBirthControlValue(Members.BIRTH_CONTROL_NOT_USING_ANY_METHOD);
+                addRandomNumberOfElcoFollowUp(member);
+                addElcoFollowUpUsingBirthControlValue(member, validBirthControlMethod);
+                addElcoFollowUpUsingBirthControlValue(member, Members.BIRTH_CONTROL_NOT_USING_ANY_METHOD);
+                members.add(member);
+            } else if (i < halfValidCount*3) {
+                Members member = createMemberUsingBirthControlValue(secondBirthControlMethod);
+                addRandomNumberOfElcoFollowUp(member);
+                addElcoFollowUpUsingBirthControlValue(member, validBirthControlMethod);
+                addElcoFollowUpUsingBirthControlValue(member, secondBirthControlMethod);
+                members.add(member);
+            }else if (i < halfValidCount*4){
+                Members member = createMemberUsingBirthControlValue(thirdBirthControlMethod);
+                addRandomNumberOfElcoFollowUp(member);
+                addElcoFollowUpUsingBirthControlValue(member, validBirthControlMethod);
+                addElcoFollowUpUsingBirthControlValue(member, thirdBirthControlMethod);
+                members.add(member);
+            }else {
+                members.add(new Members());
+            }
+        }
+        return members;
     }
 
     protected static List<Members> createTotalUsagesData(
-            String validBirthControlMethod, String invalidBirthControlMethod, int totalData, int validData) {
+            String validBirthControlMethod, int totalData, int validData) {
         List<Members> members = new ArrayList<>();
         for (int i = 0; i < totalData; i++) {
             if (i < validData) {
                 members.add(createMemberUsingBirthControlValue(validBirthControlMethod));
             } else if (i < 700) {
-                members.add(createMemberUsingBirthControlValue(invalidBirthControlMethod));
+                members.add(createMemberUsingBirthControlValue(Members.BIRTH_CONTROL_NULL_VALUE));
             }else {
                 members.add(new Members());
             }

@@ -24,4 +24,31 @@ public class CondomUsagesCalculationTest {
         System.out.println(familyPlanningTestData.resultCount);
         assertEquals(totalCondomUsagesOfCurrentMonth, familyPlanningTestData.resultCount);
     }
+
+    @Test
+    public void testNewCountOfCondomUsagesOfCurrentMonth(){
+        this.familyPlanningTestData = CondomUsagesCalculatorTestData.currentMonthNewCondomUsages();
+        this.mis1Report = new MIS1Report(this.familyPlanningTestData.members);
+        int totalNewBirthControlPillUsagesOfCurrentMonth =
+                mis1Report.getFamilyPlanningReport().getCondomUsagesCalculator().newUsages();
+        assertEquals(totalNewBirthControlPillUsagesOfCurrentMonth, this.familyPlanningTestData.resultCount);
+    }
+
+    @Test
+    public void testCountOfLeftCondomUsagesButTakenNoneInCurrentMonth(){
+        this.familyPlanningTestData = CondomUsagesCalculatorTestData.currentMonthLeftCondomUsages();
+        this.mis1Report = new MIS1Report(this.familyPlanningTestData.members);
+        int totalCountOfMembersWhoLeftUsagesOfBirthControlPillOfCurrentMonth =
+                mis1Report.getFamilyPlanningReport().getCondomUsagesCalculator().leftUsagesButTakenNone();
+        assertEquals(totalCountOfMembersWhoLeftUsagesOfBirthControlPillOfCurrentMonth, this.familyPlanningTestData.resultCount);
+    }
+
+    @Test
+    public void testCountOfLeftCondomUsagesButTakenOtherInCurrentMonth(){
+        this.familyPlanningTestData = CondomUsagesCalculatorTestData.currentMonthLeftCondomUsages();
+        this.mis1Report = new MIS1Report(this.familyPlanningTestData.members);
+        int totalCountOfMembersWhoLeftUsagesOfBirthControlPillOfCurrentMonth =
+                mis1Report.getFamilyPlanningReport().getCondomUsagesCalculator().leftUsagesButTakenOther();
+        assertEquals(totalCountOfMembersWhoLeftUsagesOfBirthControlPillOfCurrentMonth, this.familyPlanningTestData.resultCount);
+    }
 }
