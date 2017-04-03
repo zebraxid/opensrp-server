@@ -10,43 +10,43 @@ import static org.junit.Assert.assertEquals;
 public class FamilyPlanningReportCalculationTest {
 
     public FamilyPlanningTestData familyPlanningTestData;
-    public FamilyPlanningReportCalculator familyPlanningReportCalculator;
+    public MIS1Report mis1Report;
 
 
 
     @Test
     public void testTotalCountOfBirthControlPillOfCurrentMonth(){
         this.familyPlanningTestData = FamilyPlanningTestData.currentMonthTotalBirthControlPill();
-        this.familyPlanningReportCalculator = new FamilyPlanningReportCalculator(this.familyPlanningTestData.members);
+        this.mis1Report = new MIS1Report(this.familyPlanningTestData.members);
         int totalBirthControlPillUsagesOfCurrentMonth =
-                familyPlanningReportCalculator.getPillUsagesCalculator().totalUsages();
+                mis1Report.getFamilyPlanningReport().getPillUsagesCalculator().totalUsages();
         assertEquals(totalBirthControlPillUsagesOfCurrentMonth, this.familyPlanningTestData.resultCount);
     }
 
     @Test
     public void testNewCountOfBirthControlPillOfCurrentMonth(){
         this.familyPlanningTestData = FamilyPlanningTestData.currentMonthNewBirthControlPill();
-        this.familyPlanningReportCalculator = new FamilyPlanningReportCalculator(this.familyPlanningTestData.members);
+        this.mis1Report = new MIS1Report(this.familyPlanningTestData.members);
         int totalNewBirthControlPillUsagesOfCurrentMonth =
-                familyPlanningReportCalculator.getPillUsagesCalculator().newUsages();
+                mis1Report.getFamilyPlanningReport().getPillUsagesCalculator().newUsages();
         assertEquals(totalNewBirthControlPillUsagesOfCurrentMonth, this.familyPlanningTestData.resultCount);
     }
 
     @Test
     public void testCountOfLeftBirthControlPillUsagesButTakenNoneInCurrentMonth(){
         this.familyPlanningTestData = FamilyPlanningTestData.currentMonthLeftBirthControlPill();
-        this.familyPlanningReportCalculator = new FamilyPlanningReportCalculator(this.familyPlanningTestData.members);
+        this.mis1Report = new MIS1Report(this.familyPlanningTestData.members);
         int totalCountOfMembersWhoLeftUsagesOfBirthControlPillOfCurrentMonth =
-                familyPlanningReportCalculator.getPillUsagesCalculator().leftUsagesButTakenNone();
+                mis1Report.getFamilyPlanningReport().getPillUsagesCalculator().leftUsagesButTakenNone();
         assertEquals(totalCountOfMembersWhoLeftUsagesOfBirthControlPillOfCurrentMonth, this.familyPlanningTestData.resultCount);
     }
 
     @Test
     public void testCountOfLeftBirthControlPillUsagesButTakenOtherInCurrentMonth(){
         this.familyPlanningTestData = FamilyPlanningTestData.currentMonthLeftBirthControlPill();
-        this.familyPlanningReportCalculator = new FamilyPlanningReportCalculator(this.familyPlanningTestData.members);
+        this.mis1Report = new MIS1Report(this.familyPlanningTestData.members);
         int totalCountOfMembersWhoLeftUsagesOfBirthControlPillOfCurrentMonth =
-                familyPlanningReportCalculator.getPillUsagesCalculator().leftUsagesButTakenOther();
+                mis1Report.getFamilyPlanningReport().getPillUsagesCalculator().leftUsagesButTakenOther();
         assertEquals(totalCountOfMembersWhoLeftUsagesOfBirthControlPillOfCurrentMonth, this.familyPlanningTestData.resultCount);
     }
 }

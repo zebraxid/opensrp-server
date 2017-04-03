@@ -7,11 +7,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-public class FamilyPlanningReportCalculator {
-    private List<Members> allUpdatedMemberOfCurrentMember;
-    private PillUsagesCalculator pillUsagesCalculator;
-    private CondomUsagesCalculator condomUsagesCalculator;
-
+public abstract class FamilyPlanningReportCalculator {
 
     protected int countOfTotalUsages;
     protected int countOfNewUsages;
@@ -25,27 +21,6 @@ public class FamilyPlanningReportCalculator {
         this.countOfLeftUsagesButOtherTaken = 0;
         this.countOfLeftUsagesButNoneTaken =0;
     }
-
-    public FamilyPlanningReportCalculator(List<Members> allUpdatedMemberOfCurrentMember) {
-        this.allUpdatedMemberOfCurrentMember = allUpdatedMemberOfCurrentMember;
-        this.initCalculators();
-        this.calculate();
-
-    }
-
-    public void initCalculators(){
-        this.pillUsagesCalculator = new PillUsagesCalculator();
-        this.condomUsagesCalculator = new CondomUsagesCalculator();
-    }
-
-    public PillUsagesCalculator getPillUsagesCalculator() {
-        return pillUsagesCalculator;
-    }
-
-    public CondomUsagesCalculator getCondomUsagesCalculator() {
-        return condomUsagesCalculator;
-    }
-
 
     public int totalUsages() {
         return this.countOfTotalUsages;
@@ -72,12 +47,6 @@ public class FamilyPlanningReportCalculator {
     }
 
 
-    public void calculate(){
-        for (Members member : this.allUpdatedMemberOfCurrentMember) {
-            pillUsagesCalculator.calculate(member);
-            condomUsagesCalculator.calculate(member);
-        }
-    }
 
 
     protected Map<String, String> getPreviousMonthElcoFollowUp(List<Map<String, String>> allElcoFollowUp) {

@@ -11,15 +11,15 @@ import static org.junit.Assert.assertEquals;
 public class CondomUsagesCalculationTest {
 
     public FamilyPlanningTestData familyPlanningTestData;
-    public FamilyPlanningReportCalculator familyPlanningReportCalculator;
+    public MIS1Report mis1Report;
 
 
     @Test
     public void testTotalCountOfCondomUsagesOfCurrentMonth(){
         familyPlanningTestData = CondomUsagesCalculatorTestData.currentMonthTotalCondomUsages();
-        familyPlanningReportCalculator = new FamilyPlanningReportCalculator(familyPlanningTestData.members);
+        mis1Report = new MIS1Report(familyPlanningTestData.members);
         int totalCondomUsagesOfCurrentMonth =
-                familyPlanningReportCalculator.getCondomUsagesCalculator().totalUsages();
+                mis1Report.getFamilyPlanningReport().getCondomUsagesCalculator().totalUsages();
         System.out.println(totalCondomUsagesOfCurrentMonth);
         System.out.println(familyPlanningTestData.resultCount);
         assertEquals(totalCondomUsagesOfCurrentMonth, familyPlanningTestData.resultCount);
