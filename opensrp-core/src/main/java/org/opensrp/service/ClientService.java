@@ -2,7 +2,6 @@ package org.opensrp.service;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 import org.joda.time.DateTime;
@@ -43,26 +42,17 @@ public class ClientService {
 		return allClients.findAllByIdentifier(identifier);
 	}
 	
-	public List<Client> findAllByAttribute(String attributeType, String attribute) {
-		return allClients.findAllByAttribute(attributeType, attribute);
+	public List<Client> findAllByAttribute(String attributeType, String attribute, DateTime from, DateTime to) {
+		return allClients.findAllByAttribute(attributeType, attribute, from, to);
 	}
 	
-	public List<Client> findByCriteria(String nameLike, String gender, DateTime birthdateFrom, DateTime birthdateTo, 
-			DateTime deathdateFrom, DateTime deathdateTo, String attributeType, String attributeValue, 
-			String addressType, String country, String stateProvince, String cityVillage, String countyDistrict, 
-			String  subDistrict, String town, String subTown, DateTime lastEditFrom, DateTime lastEditTo) {
-		return allClients.findByCriteria(nameLike, gender, birthdateFrom, birthdateTo, deathdateFrom, deathdateTo, attributeType, attributeValue, addressType, country, stateProvince, cityVillage, countyDistrict, subDistrict, town, subTown, lastEditFrom, lastEditTo);//db.queryView(q.includeDocs(true), Client.class);
+	public List<Client> findAllByAddress(String addressType, String addressField, String value, DateTime from, DateTime to) {
+		return allClients.findByAddress(addressType, addressField, value, from, to);
 	}
 	
-	public List<Client> findByCriteria(String nameLike, String gender, DateTime birthdateFrom, DateTime birthdateTo, 
-			DateTime deathdateFrom, DateTime deathdateTo, String attributeType, String attributeValue, DateTime lastEditFrom, DateTime lastEditTo){
-		return allClients.findByCriteria(nameLike, gender, birthdateFrom, birthdateTo, deathdateFrom, deathdateTo, attributeType, attributeValue, null, null, null, null, null, null, null, null, lastEditFrom, lastEditTo);
+	public List<Client> findAllByTimestamp(DateTime from, DateTime to) {
+		return allClients.findByTimestamp(from, to);
 	}
-	
-/*	public List<Client> findByCriteria(String addressType, String country, String stateProvince, String cityVillage, String countyDistrict, 
-			String  subDistrict, String town, String subTown, DateTime lastEditFrom, DateTime lastEditTo) {
-		return allClients.findByCriteria(null, null, null, null, null, null, null, null, addressType, country, stateProvince, cityVillage, countyDistrict, subDistrict, town, subTown, lastEditFrom, lastEditTo);
-	}*/
 	
 	public List<Client> findByDynamicQuery(String query, String sort, Integer limit, Integer skip) {
 		return allClients.findByDynamicQuery(query, sort, limit, skip);

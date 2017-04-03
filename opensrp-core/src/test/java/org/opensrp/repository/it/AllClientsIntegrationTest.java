@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.UUID;
 
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.log4j.FileAppender;
@@ -70,7 +71,10 @@ public class AllClientsIntegrationTest {
 				.withName("fn"+i, "mn"+i, "ln"+i)
 				.withGender("MALE")
 				.withBirthdate(new DateTime(), false);
-			c.withAddress(new Address().withAddressType("usual_residence").withCityVillage("city"+i).withTown("town"+i));
+			c.withAddress(new Address()
+					.withAddressType("usual_residence")
+					.withCityVillage(i%5==0?"Karachi":"Shikarpur")
+					.withTown(i%5==0?"Korangi":"Garhi Yasin"));
 			c.withAttribute("at1", "atval"+i);
 			
 			clientService.addClient(c);
@@ -98,15 +102,30 @@ public class AllClientsIntegrationTest {
 	}
 	
 	@Test
+	public void shouldFetchByAddress() {
+		for (int i = 0; i < 20; i++) {
+			Client c = new Client(UUID.randomUUID().toString())
+					.withFirstName("FN").withLastName("LN").withBirthdate(DateTime.now().minusYears(i), false).withGender("MALE");
+			c.withAddress(new Address()
+				.withAddressType("usual_residence")
+				.withCityVillage("Karachi")
+				.withTown("Korangi"));
+			clientService.addClient(c);
+		}
+		List<Client> result = clientService.findAllByAddress("Usual_residence", "cityVillage", "Karachi", DateTime.now().minusDays(1), DateTime.now());
+		assertEquals(20, result.size());
+		result = clientService.findAllByAddress("usual_residence", "cityVillage", "Shikarpur", DateTime.now().minusDays(1), DateTime.now());
+		assertEquals(0, result.size());
+		
+		result = clientService.findAllByAddress("usual_residence", "town", "Korangi", DateTime.now().minusDays(1), DateTime.now());
+		assertEquals(20, result.size());
+		result = clientService.findAllByAddress("usual_residence", "town", "Zaman Town", DateTime.now().minusDays(1), DateTime.now());
+		assertEquals(0, result.size());
+	}
+	
+	@Test
 	public void shouldSearchByLastUpdatedDate() throws JSONException {//TODO
-		DateTime start = DateTime.now();
-		
-		addClients();
-		
-		DateTime end = DateTime.now();
-		
-		List<Client> cll = clientService.findByCriteria(null, null, null, null, null, null, null, null, start, end);
-		assertEquals(10, cll.size());
+
 	}
 	
 	public static void main(String[] args) {
@@ -137,15 +156,6 @@ public class AllClientsIntegrationTest {
 		Logger.getLogger("FileLogger").info("Going for 2nd search by Couch");
 		clientService.findAllByIdentifier("1234556"+"786");
 		Logger.getLogger("FileLogger").info("Completed 2nd search by Couch");
-
-		
-		Logger.getLogger("FileLogger").info("Going for First search by Lucene");
-		List<Client> l = clientService.findByCriteria("first", "MALE", new DateTime(), null, null, null, "ethnicity", "eth3", null, null);
-		Logger.getLogger("FileLogger").info("Completed First search of size "+l.size()+" by Lucene");
-		
-		Logger.getLogger("FileLogger").info("Going for 2nd search by Lucene");
-		l = clientService.findByCriteria("first", "MALE", new DateTime(), null, null, null, "ethnicity", "eth3", null, null);
-		Logger.getLogger("FileLogger").info("Completed 2nd search of size "+l.size()+" by Lucene");
 	}
 	
 	void addClient(int i, boolean direct, CouchDbConnector db){
@@ -184,22 +194,6 @@ public class AllClientsIntegrationTest {
 		}
 	}
 	
-	@Test
-	public void shouldGetByDynamicView() {
-		addClients();
-		List<Client> l2 = clientService.findByCriteria(null, "MALE", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
-		assertTrue(l2.size() == 10);
-		
-		l2 = clientService.findByCriteria(null, "FEMALE", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
-		assertTrue(l2.size() == 0);
-
-		l2 = clientService.findByCriteria("fn", "MALE", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
-		assertTrue(l2.size() == 10);
-		
-		l2 = clientService.findByCriteria("fn1", "MALE"   , null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
-		assertTrue(l2.size() == 1);
-	}
-
 	@Test
 	public void shouldFetchClientByIdentifier()
 	{
@@ -259,7 +253,7 @@ public class AllClientsIntegrationTest {
 		
 		clientService.addClient(c);
 		
-		List<Client> ce = clientService.findAllByAttribute("ETHNICITY", "Mughal");
+		List<Client> ce = clientService.findAllByAttribute("ETHNICITY", "Mughal", DateTime.now().minusYears(11), DateTime.now());
 		assertTrue(ce.size() == 2);
 		assertThat(ce, Matchers.<Client>hasItem(Matchers.<Client>hasProperty("baseEntityId",equalTo("testclient2"))));
 		assertThat(ce, Matchers.<Client>hasItem(Matchers.<Client>hasProperty("baseEntityId",equalTo("testclient3"))));

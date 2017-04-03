@@ -1,7 +1,7 @@
 package org.opensrp.web.rest;
 
 import static org.opensrp.common.AllConstants.BaseEntity.BASE_ENTITY_ID;
-import static org.opensrp.common.AllConstants.Event.EVENT_TYPE;
+import static org.opensrp.common.AllConstants.Event.*;
 import static org.opensrp.common.AllConstants.Event.PROVIDER_ID;
 import static org.opensrp.web.rest.RestUtils.getStringFilter;
 
@@ -49,8 +49,8 @@ public class FormSubmissionResource extends RestResource<FormSubmission>{
 		p.add(BASE_ENTITY_ID);
 		//p.add(FORM_SUBMISSION_ID);
 		p.add(EVENT_TYPE);
-		//p.add(LOCATION_ID);
-		//p.add(EVENT_DATE);
+		p.add(LOCATION_ID);
+		p.add(EVENT_DATE);
 		p.add(PROVIDER_ID);
 		//p.add(ENTITY_TYPE);
 		return p;
@@ -62,18 +62,8 @@ public class FormSubmissionResource extends RestResource<FormSubmission>{
 	}
 	
 	@Override
-	public List<FormSubmission> search(HttpServletRequest request) throws ParseException {
-		String formName = getStringFilter("formName", request);
-		String entityId = getStringFilter("entityId", request);
-		String version = getStringFilter("version", request);//TODO
-		long v = version==null?0L:Long.parseLong(version);
-		
-		return fsService.findByFormName(formName, v);
-	}
-	
-	@Override
-	public List<FormSubmission> filter(String query, String sort, Integer limit, Integer skip) {
+	public List<FormSubmission> search(HttpServletRequest request, String query, String sort,
+			Integer limit, Integer skip, Boolean fts) {
 		throw new UnsupportedOperationException();
 	}
-
 }

@@ -4,6 +4,8 @@ import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
 
+import org.ektorp.ComplexKey;
+import org.ektorp.support.View;
 import org.joda.time.DateTime;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -32,29 +34,12 @@ public class EventService {
 		return allEvents.findAllByIdentifier(identifier);
 	}
 	
-	public Event getByBaseEntityAndFormSubmissionId(String baseEntityId, String formSubmissionId)
-	{
-		List<Event> el = allEvents.findByBaseEntityAndFormSubmissionId(baseEntityId, formSubmissionId);
-		if(el.size() > 1){
-			throw new IllegalStateException("Multiple events for baseEntityId and formSubmissionId combination ("+baseEntityId+","+formSubmissionId+")");
-		}
-		if(el.size() == 0){
-			return null;
-		}
-		return el.get(0);
-	}
-	
 	public List<Event> findByBaseEntityId(String baseEntityId) {
 		return allEvents.findByBaseEntityId(baseEntityId);
 	}
 	
 	public List<Event> findByFormSubmissionId(String formSubmissionId){
 		return allEvents.findByFormSubmissionId(formSubmissionId);
-	}
-	
-	public List<Event> findEventsBy(String baseEntityId, DateTime from, DateTime to, String eventType, 
-			String entityType, String providerId, String locationId, DateTime lastEditFrom, DateTime lastEditTo) {
-		return allEvents.findEvents(baseEntityId, from, to, eventType, entityType, providerId, locationId, lastEditFrom, lastEditTo);
 	}
 	
 	public List<Event> findEventsByDynamicQuery(String query, String sort, Integer limit, Integer skip) {
@@ -70,6 +55,18 @@ public class EventService {
 			return el.get(0);
 		}
 		return null;
+	}
+	
+	public List<Event> findAllByLocationOrProvider(String locationOrProvider, DateTime from, DateTime to) {
+		return allEvents.findAllByLocationOrProvider(locationOrProvider, from, to);
+	}
+	
+	public List<Event> findAllByEntityOrEventType(String entityOrEventType, DateTime from, DateTime to) {
+		return allEvents.findAllByEntityOrEventType(entityOrEventType, from, to);
+	}
+	
+	public List<Event> findAllByTimestamp(DateTime from, DateTime to) {
+		return allEvents.findByTimestamp(from, to);
 	}
 	
 	public Event find(Event event){		
@@ -90,10 +87,6 @@ public class EventService {
 		Event e = find(event);
 		if(e != null){
 			throw new IllegalArgumentException("An event already exists with given list of identifiers. Consider updating data.["+e+"]");
-		}
-		
-		if(event.getFormSubmissionId() != null && getByBaseEntityAndFormSubmissionId(event.getBaseEntityId(), event.getFormSubmissionId()) != null){
-			throw new IllegalArgumentException("An event already exists with given baseEntity and formSubmission combination. Consider updating");
 		}
 
 		event.setDateCreated(DateTime.now());

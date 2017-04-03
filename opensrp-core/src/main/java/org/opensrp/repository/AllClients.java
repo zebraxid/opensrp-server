@@ -53,30 +53,45 @@ public class AllClients extends MotechBaseRepository<Client> {
 		return db.queryView(createQuery("all_clients_by_identifier").key(identifier).includeDocs(true), Client.class);
 	}
 	
-	@View(name = "all_clients_by_attribute_of_type", map = "function(doc) {if (doc.type === 'Client') {for(var key in doc.attributes) {emit([key, doc.attributes[key]]);}}}")
-	public List<Client> findAllByAttribute(String attributeType, String attribute) {
-		ComplexKey ckey = ComplexKey.of(attributeType, attribute);
-		return db.queryView(createQuery("all_clients_by_attribute_of_type").key(ckey).includeDocs(true), Client.class);
+	@View(name = "all_clients_by_attribute_and_timestamp", map = "function (doc) {  if(doc.type === 'Client'){   "
+			+ " var modified = Date.parse(doc.dateCreated);   "
+			+ " if(doc.dateEdited){ modified = Date.parse(doc.dateEdited); }   "
+			+ " else if(doc.dateVoided && Date.parse(doc.dateVoided) > modified){ modified = Date.parse(doc.dateVoided); }   "
+			+ " for(var att in doc.attributes){ var val = doc.attributes[att];     "
+			+ " emit([att.toLowerCase(), val.toLowerCase(), modified]);   "
+			+ " }  }}")
+	public List<Client> findAllByAttribute(String attributeType, String attribute, DateTime from, DateTime to) {
+		//couchdb does left to right match and also we want sort by timestamp
+		ComplexKey skey = ComplexKey.of(attributeType.toLowerCase(), attribute.toLowerCase(), from.getMillis());
+		ComplexKey ekey = ComplexKey.of(attributeType.toLowerCase(), attribute.toLowerCase(), to.getMillis());
+		return db.queryView(createQuery("all_clients_by_attribute_and_timestamp").startKey(skey).endKey(ekey).includeDocs(true), Client.class);
 	}
 	
-	public List<Client> findByCriteria(String nameLike, String gender, DateTime birthdateFrom, DateTime birthdateTo, 
-			DateTime deathdateFrom, DateTime deathdateTo, String attributeType, String attributeValue, 
-			String addressType, String country, String stateProvince, String cityVillage, String countyDistrict, 
-			String  subDistrict, String town, String subTown, DateTime lastEditFrom, DateTime lastEditTo) {
-		return lcr.getByCriteria(nameLike, gender, birthdateFrom, birthdateTo, deathdateFrom, deathdateTo, attributeType, attributeValue, addressType, country, stateProvince, cityVillage, countyDistrict, subDistrict, town, subTown, lastEditFrom, lastEditTo);//db.queryView(q.includeDocs(true), Client.class);
+	@View(name = "all_clients_by_address_and_timestamp", map = "function (doc) {  if(doc.type === 'Client'){   "
+			+ " var keys = ['subTown','town','subDistrict','countyDistrict','cityVillage','stateProvince','country'];   "
+			+ " var modified = Date.parse(doc.dateCreated);   if(doc.dateEdited){ modified = Date.parse(doc.dateEdited); } else if(doc.dateVoided && Date.parse(doc.dateVoided) > modified){ modified = Date.parse(doc.dateVoided); }   "
+			+ " for(var i in doc.addresses){     var addr = doc.addresses[i];     "
+			+ " for (var j in keys){      var fld = keys[j];      if(addr[fld]){       "
+			+ " emit([addr.addressType.toLowerCase(), fld.toLowerCase(), addr[fld].toLowerCase(), modified]);      "
+			+ " }     }   }  }}")	
+	public List<Client> findByAddress(String addressType, String addressField, String value, DateTime from, DateTime to) {
+		//couchdb does left to right match and also we want sort by timestamp
+		ComplexKey skey = ComplexKey.of(addressType.toLowerCase(), addressField.toLowerCase(), value.toLowerCase(), from.getMillis());
+		ComplexKey ekey = ComplexKey.of(addressType.toLowerCase(), addressField.toLowerCase(), value.toLowerCase(), to.getMillis());
+		return db.queryView(createQuery("all_clients_by_address_and_timestamp").startKey(skey).endKey(ekey).includeDocs(true), Client.class);		
+	}
+	
+	@View(name = "all_clients_by_timestamp", map = "function (doc) {  if(doc.type === 'Client'){   "
+			+ " var modified = Date.parse(doc.dateCreated);   "
+			+ " if(doc.dateEdited){ modified = Date.parse(doc.dateEdited); } "
+			+ " else if(doc.dateVoided && Date.parse(doc.dateVoided) > modified){ modified = Date.parse(doc.dateVoided); }   "
+			+ " emit(modified);"
+			+ " }}")	
+	public List<Client> findByTimestamp(DateTime from, DateTime to) {
+		return db.queryView(createQuery("all_clients_by_timestamp").startKey(from.getMillis()).endKey(to.getMillis()).includeDocs(true), Client.class);		
 	}
 	
 	public List<Client> findByDynamicQuery(String query, String sort, Integer limit, Integer skip) {
 		return lcr.query(query, sort, limit, skip);//db.queryView(q.includeDocs(true), Client.class);
-	}
-	
-	public List<Client> findByCriteria(String nameLike, String gender, DateTime birthdateFrom, DateTime birthdateTo, 
-			DateTime deathdateFrom, DateTime deathdateTo, String attributeType, String attributeValue, DateTime lastEditFrom, DateTime lastEditTo){
-		return lcr.getByCriteria(nameLike, gender, birthdateFrom, birthdateTo, deathdateFrom, deathdateTo, attributeType, attributeValue, null, null, null, null, null, null, null, null, lastEditFrom, lastEditTo);
-	}
-	
-	public List<Client> findByCriteria(String addressType, String country, String stateProvince, String cityVillage, String countyDistrict, 
-			String  subDistrict, String town, String subTown, DateTime lastEditFrom, DateTime lastEditTo) {
-		return lcr.getByCriteria(null, null, null, null, null, null, null, null, addressType, country, stateProvince, cityVillage, countyDistrict, subDistrict, town, subTown, lastEditFrom, lastEditTo);
 	}
 }

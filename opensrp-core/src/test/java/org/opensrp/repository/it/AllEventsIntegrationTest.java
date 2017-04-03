@@ -32,6 +32,11 @@ public class AllEventsIntegrationTest {
 		allEvents.removeAll();
 		initMocks(this);
 	}
+	
+	@Test
+	public void test() {
+		
+	}
 
 	private void addEvents() {
 		for (int i = 0; i < 20; i++) {
@@ -47,11 +52,5 @@ public class AllEventsIntegrationTest {
 			e.addObs(new Obs("concept", "txt", "1030AAAAAAAAAAAAAAAA", null, "2016-02-01", "2015-01-01" , "comments test"+i, "tt2"));
 			eventService.addEvent(e);
 		}
-	}
-	
-	@Test
-	public void test(){
-		addEvents();
-		assertTrue(eventService.getByBaseEntityAndFormSubmissionId("entityid0", "formSubmission0100")!=null);
 	}
 }

@@ -87,9 +87,9 @@ public class ProviderResource extends RestResource<Provider>{
 	}
 	
 	@Override
-	public List<Provider> search(HttpServletRequest request) throws ParseException {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Provider> search(HttpServletRequest request, String query, String sort,
+			Integer limit, Integer skip, Boolean fts) {
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -115,10 +115,4 @@ public class ProviderResource extends RestResource<Provider>{
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	@Override
-	public List<Provider> filter(String query, String sort, Integer limit, Integer skip) {
-		throw new UnsupportedOperationException();
-	}
-
 }

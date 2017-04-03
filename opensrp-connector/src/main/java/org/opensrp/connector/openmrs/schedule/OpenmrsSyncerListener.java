@@ -1,6 +1,5 @@
 package org.opensrp.connector.openmrs.schedule;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 
@@ -14,8 +13,8 @@ import org.motechproject.server.event.annotations.MotechListener;
 import org.opensrp.connector.openmrs.constants.OpenmrsConstants;
 import org.opensrp.connector.openmrs.constants.OpenmrsConstants.SchedulerConfig;
 import org.opensrp.connector.openmrs.service.EncounterService;
-import org.opensrp.connector.openmrs.service.OpenmrsSchedulerService;
 import org.opensrp.connector.openmrs.service.OpenmrsOrderService;
+import org.opensrp.connector.openmrs.service.OpenmrsSchedulerService;
 import org.opensrp.connector.openmrs.service.PatientService;
 import org.opensrp.domain.AppStateToken;
 import org.opensrp.domain.Client;
@@ -128,7 +127,7 @@ public class OpenmrsSyncerListener {
 			
     		System.out.println("START "+start+" , END "+end);
 
-			List<Client> cl = clientService.findByCriteria(null, null, null, null, null, null, null, null, start, end);
+			List<Client> cl = clientService.findAllByTimestamp(start, end);
 			System.out.println("Clients list size "+cl.size());
 			for (Client c : cl) {
 				try{
@@ -167,7 +166,7 @@ public class OpenmrsSyncerListener {
 	    	start = lastsync==null||lastsync.getValue()==null?new DateTime().minusYears(33):new DateTime(lastsync.stringValue());
 			end = new DateTime();
 			
-			List<Event> el = eventService.findEventsBy(null, null, null, null, null, null, null, start, end);
+			List<Event> el = eventService.findAllByTimestamp(start, end);
 			for (Event e : el) {
 				try{
 					String uuid = e.getIdentifier(EncounterService.OPENMRS_UUID_IDENTIFIER_TYPE);
