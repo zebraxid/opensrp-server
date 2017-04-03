@@ -14,12 +14,85 @@ public abstract class FamilyPlanningReportCalculator {
     protected int countOfLeftUsagesButNoneTaken;
     protected int countOfLeftUsagesButOtherTaken;
 
+    private String birthControlMethodToCalculate;
 
-    protected FamilyPlanningReportCalculator(){
+
+    protected FamilyPlanningReportCalculator(String birthControlMethodToCalculate){
+        this.birthControlMethodToCalculate = birthControlMethodToCalculate;
+        this.initCountVariables();
+    };
+
+    public void initCountVariables(){
         this.countOfTotalUsages = 0;
         this.countOfNewUsages = 0;
         this.countOfLeftUsagesButOtherTaken = 0;
         this.countOfLeftUsagesButNoneTaken =0;
+    }
+
+    public void calculate(Members member){
+        this.countOfTotalUsages += addToTheCountOfTotalUsages(member);
+        this.countOfNewUsages += addToTheCountOfNewUsages(member);
+        this.countOfLeftUsagesButNoneTaken += addToTheCountOfLeftUsagesButNoneTaken(member);
+        this.countOfLeftUsagesButOtherTaken += addToTheCountOfLeftUsagesButOtherTaken(member);
+    }
+
+    private int addToTheCountOfTotalUsages(Members member){
+        boolean usingBirthControlPillInMemberDetail =
+                checkMemberFieldValue(member.details(), Members.BIRTH_CONTROL_KEY, birthControlMethodToCalculate);
+        if (usingBirthControlPillInMemberDetail) {
+            return 1;
+        }
+        return 0;
+    }
+
+    private int addToTheCountOfNewUsages(Members member){
+        boolean usingBirthControlPillInMemberDetail =
+                checkMemberFieldValue(member.details(), Members.BIRTH_CONTROL_KEY, birthControlMethodToCalculate);
+        if (usingBirthControlPillInMemberDetail) {
+            Map<String, String> previousMonthElcoFollowUpData = getPreviousMonthElcoFollowUp(member.elco_Followup());
+            boolean firstElcoFollowUP = previousMonthElcoFollowUpData.isEmpty();
+            if (!firstElcoFollowUP) {
+                boolean usingBirthControlPillInPreviousElcoFollowUp =
+                        checkMemberFieldValue(previousMonthElcoFollowUpData, Members.BIRTH_CONTROL_KEY,
+                                birthControlMethodToCalculate);
+                if (!usingBirthControlPillInPreviousElcoFollowUp) {
+                    return 1;
+                }
+            } else {
+                return 1;
+            }
+        }
+        return 0;
+    }
+
+    private int addToTheCountOfLeftUsagesButNoneTaken(Members member){
+        boolean notUsingBirthControlMethodInMemberDetail =
+                checkMemberFieldValue(member.details(), Members.BIRTH_CONTROL_KEY, Members.BIRTH_CONTROL_NOT_USING_ANY_METHOD);
+        boolean notUsingFamilyPlanningInMemberDetail =
+                checkMemberFieldValue(member.details(), Members.USING_FAMILY_PLANNING_KEY, Members.NOT_USING_FAMILY_PLANNING_VALUE);
+        if (notUsingBirthControlMethodInMemberDetail || notUsingFamilyPlanningInMemberDetail) {
+            Map<String, String> previousMonthElcoFollowUpData = getPreviousMonthElcoFollowUp(member.elco_Followup());
+            boolean usingBirthControlPillInPreviousElcoFollowUp =
+                    checkMemberFieldValue(previousMonthElcoFollowUpData, Members.BIRTH_CONTROL_KEY,
+                           birthControlMethodToCalculate);
+            if (usingBirthControlPillInPreviousElcoFollowUp) {
+                return 1;
+            }
+        }
+
+        return 0;
+    }
+
+    private int addToTheCountOfLeftUsagesButOtherTaken(Members member){
+        boolean usingBirthControlPillInMemberDetail =
+                checkMemberFieldValue(member.details(), Members.BIRTH_CONTROL_KEY, birthControlMethodToCalculate);
+        if(!usingBirthControlPillInMemberDetail) {
+            String otherBirthControlValueThanPill = getMemberFieldValueFor(member.details(), Members.BIRTH_CONTROL_KEY);
+            if(checkIfValidBirthControlMethod(otherBirthControlValueThanPill)) {
+                return 1;
+            }
+        }
+        return 0;
     }
 
     public int totalUsages() {
