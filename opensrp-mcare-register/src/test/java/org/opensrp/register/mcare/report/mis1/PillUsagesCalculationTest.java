@@ -4,7 +4,6 @@ package org.opensrp.register.mcare.report.mis1;
 import org.junit.Test;
 import org.opensrp.register.mcare.report.mis1.data.FamilyPlanningTestData;
 import org.opensrp.register.mcare.report.mis1.data.PillUsagesTestData;
-import org.opensrp.register.mcare.report.mis1.familyPlanning.FamilyPlanningReportCalculator;
 
 import static org.junit.Assert.assertEquals;
 
