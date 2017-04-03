@@ -92,6 +92,7 @@ public class AllConstants {
         public static final String VITAMIN_A = "vitamin_a";
         public static final String PPFP = "postpartum_family_planning";
         public static final String RECORD_ECPS = "record_ecps";
+        public static final String STOCK = "stock";
     }
 
     public static class Report {
@@ -1389,15 +1390,13 @@ public class AllConstants {
     }
 
     public static class FormEntityTypes {
-        public static final String CHILD_TYPE = "child";
-        public static final String MCARE_CHILD_TYPE = "mcarechild";
+        public static final String CHILD_TYPE = "child";        
         public static final String MOTHER_TYPE = "mother";
         public static final String ELIGIBLE_COUPLE_TYPE = "eligible_couple";
         public static final String MCTS_REPORT_TYPE = "MCTSReport";
-        
+        public static final String STOCK_TYPE = "stock";
         public static final String HOUSE_HOLD_TYPE = "household";
         public static final String MEMBER_TYPE = "members";
-        public static final String MCARE_MOTHER_TYPE = "mcaremother";
     }
 
     public static class HTTP {

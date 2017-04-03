@@ -21,6 +21,7 @@ import org.ektorp.ViewResult;
 import org.opensrp.common.AllConstants;
 import org.opensrp.register.mcare.domain.HouseHold;
 import org.opensrp.register.mcare.domain.Members;
+import org.opensrp.register.mcare.domain.Stock;
 import org.opensrp.repository.FormDataRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -67,9 +68,11 @@ public class FormDataRepositoryImpl extends FormDataRepository{
         fieldSetMap = new HashMap<>();
         
         designDocMap.put(AllConstants.FormEntityTypes.HOUSE_HOLD_TYPE, "HouseHold");
+        designDocMap.put(AllConstants.FormEntityTypes.STOCK_TYPE, "Stock");
         designDocMap.put(AllConstants.FormEntityTypes.MEMBER_TYPE, "Members");        
         fieldSetMap.put(AllConstants.FormEntityTypes.HOUSE_HOLD_TYPE, HouseHold.class.getDeclaredFields());
         fieldSetMap.put(AllConstants.FormEntityTypes.MEMBER_TYPE, Members.class.getDeclaredFields());
+        fieldSetMap.put(AllConstants.FormEntityTypes.STOCK_TYPE, Stock.class.getDeclaredFields());
     }
 
     public String saveEntity(String entityType, String fields) {
@@ -99,15 +102,7 @@ public class FormDataRepositoryImpl extends FormDataRepository{
 	                entity.put(fieldName, updatedFieldsMap.get(fieldName));
 	            } else if (fieldName.equals(ID)) {
 	                entity.put(ID_FIELD_ON_ENTITY, updatedFieldsMap.get(fieldName));
-	            }/*else if (fieldName.equals(TODAY)) {
-	                entity.put(TODAY_FIELD_ON_ENTITY, updatedFieldsMap.get(fieldName));
-	            }else if (fieldName.equals(LOCATIONID)) {
-	                entity.put(LOCATIONID_FIELD_ON_ENTITY, updatedFieldsMap.get(fieldName));
-	            }else if (fieldName.equals(START)) {
-	                entity.put(START_FIELD_ON_ENTITY, updatedFieldsMap.get(fieldName));
-	            }else if (fieldName.equals(END)) {
-	                entity.put(END_FIELD_ON_ENTITY, updatedFieldsMap.get(fieldName));
-	            }*/
+	            }
 	            else {
 	                details.put(fieldName, updatedFieldsMap.get(fieldName));
 	            }
