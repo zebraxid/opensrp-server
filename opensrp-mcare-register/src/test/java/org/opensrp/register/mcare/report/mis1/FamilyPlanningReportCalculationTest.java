@@ -2,6 +2,7 @@ package org.opensrp.register.mcare.report.mis1;
 
 
 import org.junit.Test;
+import org.opensrp.register.mcare.report.mis1.familyPlanning.FamilyPlanningReportCalculator;
 
 import static org.junit.Assert.assertEquals;
 
@@ -16,7 +17,8 @@ public class FamilyPlanningReportCalculationTest {
     public void testTotalCountOfBirthControlPillOfCurrentMonth(){
         this.familyPlanningTestData = FamilyPlanningTestData.currentMonthTotalBirthControlPill();
         this.familyPlanningReportCalculator = new FamilyPlanningReportCalculator(this.familyPlanningTestData.members);
-        int totalBirthControlPillUsagesOfCurrentMonth = familyPlanningReportCalculator.getCountOfTotalPillUsages();
+        int totalBirthControlPillUsagesOfCurrentMonth =
+                familyPlanningReportCalculator.getPillCalculator().totalUsages();
         assertEquals(totalBirthControlPillUsagesOfCurrentMonth, this.familyPlanningTestData.resultCount);
     }
 
@@ -24,7 +26,8 @@ public class FamilyPlanningReportCalculationTest {
     public void testNewCountOfBirthControlPillOfCurrentMonth(){
         this.familyPlanningTestData = FamilyPlanningTestData.currentMonthNewBirthControlPill();
         this.familyPlanningReportCalculator = new FamilyPlanningReportCalculator(this.familyPlanningTestData.members);
-        int totalNewBirthControlPillUsagesOfCurrentMonth = familyPlanningReportCalculator.getCountOfNewPillUsages();
+        int totalNewBirthControlPillUsagesOfCurrentMonth =
+                familyPlanningReportCalculator.getPillCalculator().newUsages();
         assertEquals(totalNewBirthControlPillUsagesOfCurrentMonth, this.familyPlanningTestData.resultCount);
     }
 
@@ -33,7 +36,7 @@ public class FamilyPlanningReportCalculationTest {
         this.familyPlanningTestData = FamilyPlanningTestData.currentMonthLeftBirthControlPill();
         this.familyPlanningReportCalculator = new FamilyPlanningReportCalculator(this.familyPlanningTestData.members);
         int totalCountOfMembersWhoLeftUsagesOfBirthControlPillOfCurrentMonth =
-                familyPlanningReportCalculator.getCountOfLeftPillUsagesButNoneTaken();
+                familyPlanningReportCalculator.getPillCalculator().leftUsagesButTakenNone();
         assertEquals(totalCountOfMembersWhoLeftUsagesOfBirthControlPillOfCurrentMonth, this.familyPlanningTestData.resultCount);
     }
 
@@ -42,7 +45,7 @@ public class FamilyPlanningReportCalculationTest {
         this.familyPlanningTestData = FamilyPlanningTestData.currentMonthLeftBirthControlPill();
         this.familyPlanningReportCalculator = new FamilyPlanningReportCalculator(this.familyPlanningTestData.members);
         int totalCountOfMembersWhoLeftUsagesOfBirthControlPillOfCurrentMonth =
-                familyPlanningReportCalculator.getCountOfLeftPillUsagesButOtherTaken();
+                familyPlanningReportCalculator.getPillCalculator().leftUsagesButTakenOther();
         assertEquals(totalCountOfMembersWhoLeftUsagesOfBirthControlPillOfCurrentMonth, this.familyPlanningTestData.resultCount);
     }
 }

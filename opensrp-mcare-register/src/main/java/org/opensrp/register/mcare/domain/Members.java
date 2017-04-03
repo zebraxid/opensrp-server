@@ -242,7 +242,7 @@ public class Members extends MotechBaseDataObject {
 				this.nutrition = new ArrayList<>();
 				this.setIsClosed(false);
 	}
-	
+
 	public Members setCaseId(String caseId) {
 				this.caseId = caseId;
 		return this;
