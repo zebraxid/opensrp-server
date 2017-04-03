@@ -578,6 +578,18 @@ public class FormAttributeParser {
 				}
 			}
 		}
+		else if(node != null 
+				&& node.getAsJsonObject().has("type") 
+				&& node.getAsJsonObject().has("itemset") 
+				&& node.get("type").getAsString().startsWith("select")){
+			JsonArray nodeChAr = jsonForm.getAsJsonObject("choices").getAsJsonArray(node.get("itemset").getAsString());
+			for (int j = 0; j < nodeChAr.size(); j++) {
+				JsonObject option = nodeChAr.get(j).getAsJsonObject();
+				if(option.get("name").getAsString().equalsIgnoreCase(fieldVal)){
+					return convertToMap(option.get("instance"));
+				}
+			}
+		}
     	
     	return null;
 	}
@@ -602,7 +614,7 @@ public class FormAttributeParser {
 		String nodeNameToFind = sps[sps.length-1];
 		JsonObject node = getChildrenOfLevel(level, jsonForm, nodeNameToFind);
 		
-		if(node != null && node.getAsJsonObject().has("children") 
+		if(node != null && (node.getAsJsonObject().has("children") || node.getAsJsonObject().has("itemset"))
 				&& node.has("type") 
 				&& (node.get("type").getAsString().startsWith("select all") || node.get("type").getAsString().startsWith("select multiple"))){
 			return true;
