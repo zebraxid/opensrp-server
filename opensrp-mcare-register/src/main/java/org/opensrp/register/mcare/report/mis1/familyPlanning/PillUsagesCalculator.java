@@ -3,55 +3,20 @@ package org.opensrp.register.mcare.report.mis1.familyPlanning;
 
 import org.opensrp.register.mcare.domain.Members;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 
-public class PillCalculator extends FamilyPlanningReportCalculator implements FamilyPlanningReportCalculatorInterface{
+public class PillUsagesCalculator extends FamilyPlanningReportCalculator {
 
-    private int countOfTotalPillUsages;
-    private int countOfNewPillUsages;
-    private int countOfLeftPillUsagesButNoneTaken;
-    private int countOfLeftPillUsagesButOtherTaken;
 
-    public PillCalculator(){
+    public PillUsagesCalculator(){
         super();
-        this.countOfTotalPillUsages = 0;
-        this.countOfNewPillUsages = 0;
-        this.countOfLeftPillUsagesButOtherTaken = 0;
-        this.countOfLeftPillUsagesButNoneTaken =0;
     }
 
     public void calculate(Members member){
-        this.countOfTotalPillUsages += addToTheCountOfTotalPillUsages(member);
-        this.countOfNewPillUsages += addToTheCountOfNewPillUsages(member);
-        this.countOfLeftPillUsagesButNoneTaken += addToTheCountOfLeftPillUsagesButNoneTaken(member);
-        this.countOfLeftPillUsagesButOtherTaken += addToTheCountOfLeftPillUsagesButOtherTaken(member);
-    }
-
-    @Override
-    public int totalUsages() {
-        return this.countOfTotalPillUsages;
-    }
-
-    @Override
-    public int newUsages() {
-        return countOfNewPillUsages;
-    }
-
-    @Override
-    public int unitTotal() {
-        return 0;
-    }
-
-    @Override
-    public int leftUsagesButTakenNone() {
-        return countOfLeftPillUsagesButNoneTaken;
-    }
-
-    @Override
-    public int leftUsagesButTakenOther() {
-        return countOfLeftPillUsagesButOtherTaken;
+        this.countOfTotalUsages += addToTheCountOfTotalPillUsages(member);
+        this.countOfNewUsages += addToTheCountOfNewPillUsages(member);
+        this.countOfLeftUsagesButNoneTaken += addToTheCountOfLeftPillUsagesButNoneTaken(member);
+        this.countOfLeftUsagesButOtherTaken += addToTheCountOfLeftPillUsagesButOtherTaken(member);
     }
 
     private int addToTheCountOfTotalPillUsages(Members member){

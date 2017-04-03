@@ -9,27 +9,73 @@ import java.util.Map;
 
 public class FamilyPlanningReportCalculator {
     private List<Members> allUpdatedMemberOfCurrentMember;
-    private PillCalculator pillCalculator;
+    private PillUsagesCalculator pillUsagesCalculator;
+    private CondomUsagesCalculator condomUsagesCalculator;
+
+
+    protected int countOfTotalUsages;
+    protected int countOfNewUsages;
+    protected int countOfLeftUsagesButNoneTaken;
+    protected int countOfLeftUsagesButOtherTaken;
 
 
     protected FamilyPlanningReportCalculator(){
-
+        this.countOfTotalUsages = 0;
+        this.countOfNewUsages = 0;
+        this.countOfLeftUsagesButOtherTaken = 0;
+        this.countOfLeftUsagesButNoneTaken =0;
     }
 
     public FamilyPlanningReportCalculator(List<Members> allUpdatedMemberOfCurrentMember) {
         this.allUpdatedMemberOfCurrentMember = allUpdatedMemberOfCurrentMember;
-        this.pillCalculator = new PillCalculator();
+        this.initCalculators();
         this.calculate();
 
     }
 
-    public PillCalculator getPillCalculator() {
-        return pillCalculator;
+    public void initCalculators(){
+        this.pillUsagesCalculator = new PillUsagesCalculator();
+        this.condomUsagesCalculator = new CondomUsagesCalculator();
     }
+
+    public PillUsagesCalculator getPillUsagesCalculator() {
+        return pillUsagesCalculator;
+    }
+
+    public CondomUsagesCalculator getCondomUsagesCalculator() {
+        return condomUsagesCalculator;
+    }
+
+
+    public int totalUsages() {
+        return this.countOfTotalUsages;
+    }
+
+
+    public int newUsages() {
+        return countOfNewUsages;
+    }
+
+
+    public int unitTotal() {
+        return 0;
+    }
+
+
+    public int leftUsagesButTakenNone() {
+        return countOfLeftUsagesButNoneTaken;
+    }
+
+
+    public int leftUsagesButTakenOther() {
+        return countOfLeftUsagesButOtherTaken;
+    }
+
 
     public void calculate(){
         for (Members member : this.allUpdatedMemberOfCurrentMember) {
-            pillCalculator.calculate(member);
+            pillUsagesCalculator.calculate(member);
+            condomUsagesCalculator.calculate(member);
         }
     }
 

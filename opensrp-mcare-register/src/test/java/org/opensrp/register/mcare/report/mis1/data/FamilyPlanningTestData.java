@@ -1,4 +1,4 @@
-package org.opensrp.register.mcare.report.mis1;
+package org.opensrp.register.mcare.report.mis1.data;
 
 
 import org.opensrp.register.mcare.domain.Members;
@@ -87,21 +87,37 @@ public class FamilyPlanningTestData {
         return new FamilyPlanningTestData(members, 50);
     }
 
-    private static Members createMemberUsingBirthControlValue(String birthControlValue) {
+    protected static List<Members> createTotalUsagesData(
+            String validBirthControlMethod, String invalidBirthControlMethod, int totalData, int validData) {
+        List<Members> members = new ArrayList<>();
+        for (int i = 0; i < totalData; i++) {
+            if (i < validData) {
+                members.add(createMemberUsingBirthControlValue(validBirthControlMethod));
+            } else if (i < 700) {
+                members.add(createMemberUsingBirthControlValue(invalidBirthControlMethod));
+            }else {
+                members.add(new Members());
+            }
+        }
+
+        return members;
+    }
+
+    protected static Members createMemberUsingBirthControlValue(String birthControlValue) {
         Members member = new Members();
         Map<String, String> detail = createHashMap(Members.BIRTH_CONTROL_KEY, birthControlValue);
         member.setDetails(detail);
         return member;
     }
 
-    private static Members createMemberWithOutAnyFamilyPlanning() {
+    protected static Members createMemberWithOutAnyFamilyPlanning() {
         Members member = new Members();
         Map<String, String> detail = createHashMap(Members.USING_FAMILY_PLANNING_KEY, Members.NOT_USING_FAMILY_PLANNING_VALUE);
         member.setDetails(detail);
         return member;
     }
 
-    private static Members addRandomNumberOfElcoFollowUp(Members member){
+    protected static Members addRandomNumberOfElcoFollowUp(Members member){
         Random rand = new Random();
         int randomNum = rand.nextInt((100 - 0) + 1) + 0;
         for(int i=0; i<randomNum; i++) {
@@ -115,19 +131,19 @@ public class FamilyPlanningTestData {
     }
 
 
-    private static Members addElcoFollowUpUsingBirthControlValue(Members member, String value){
+    protected static Members addElcoFollowUpUsingBirthControlValue(Members member, String value){
         Map<String, String> birthControlUsages = createHashMap(Members.BIRTH_CONTROL_KEY, value);
         return addElcoFollowUp(member, birthControlUsages);
     }
-    
-    private static Members addElcoFollowUp(Members member, Map<String, String> detail) {
+
+    protected static Members addElcoFollowUp(Members member, Map<String, String> detail) {
         List<Map<String, String>> elcoFollowUp = member.elco_Followup();
         elcoFollowUp.add(detail);
         member.setelco_Followup(elcoFollowUp);
         return member;
     }
 
-    private static Map<String, String > createHashMap(String key, String value) {
+    protected static Map<String, String > createHashMap(String key, String value) {
         HashMap detail = new HashMap();
         detail.put(key, value);
         return detail;
