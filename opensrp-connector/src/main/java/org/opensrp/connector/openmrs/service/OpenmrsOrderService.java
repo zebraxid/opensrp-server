@@ -57,9 +57,9 @@ public class OpenmrsOrderService extends OpenmrsService{
 		return res;
     }
 	
-	public JSONObject getDrugOrder(String uuid) throws JSONException
+	public JSONObject getDrugOrder(String uuid, boolean noRepresentationTag) throws JSONException
 	{
-		JSONObject jsonObject=new JSONObject(HttpUtil.get(getURL()+"/"+ORDER_URL+"/"+uuid, "v=full", OPENMRS_USER, OPENMRS_PWD).body());
+		JSONObject jsonObject=new JSONObject(HttpUtil.get(getURL()+"/"+ORDER_URL+"/"+uuid, noRepresentationTag?"":"v=full", OPENMRS_USER, OPENMRS_PWD).body());
 		return jsonObject;
 	}
 	

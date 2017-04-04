@@ -69,7 +69,7 @@ public class DrugOrderAtomfeed extends OpenmrsService implements EventWorker, At
 		log.info("Processing item : "+event.getContent());
 		try {
 			String content = event.getContent().substring(event.getContent().lastIndexOf("/")+1);
-			JSONObject o = orderService.getDrugOrder(content);
+			JSONObject o = orderService.getDrugOrder(content, true);
 			if(o == null){
 				throw new RuntimeException("DrugOrder uuid specified in atomfeed content ("+content+") did not return any drug order.");
 			}
