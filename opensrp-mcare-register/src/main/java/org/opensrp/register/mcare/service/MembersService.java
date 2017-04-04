@@ -7,6 +7,7 @@ package org.opensrp.register.mcare.service;
 import static java.text.MessageFormat.format;
 import static org.opensrp.common.AllConstants.CommonFormFields.ID;
 import static org.opensrp.common.AllConstants.Form.MEMBERS_REGISTRATION;
+import static org.opensrp.common.AllConstants.HHRegistrationFields.DATE_OF_REG;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.END_DATE;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.MEMBERS_REGISTRATION_SUB_FORM_NAME;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.REFERENCE_DATE;
@@ -61,6 +62,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.opensrp.common.util.DateTimeUtil;
 import org.opensrp.common.util.DateUtil;
 @Service
 public class MembersService {
@@ -113,7 +115,10 @@ public class MembersService {
 					.setPROVIDERID(submission.anmId())
 					.setTODAY(submission.getField(REFERENCE_DATE))
 					.setMotherRelationalId(motherRelationalId)
-					.setrelationalid(relational_id).setTimestamp(DateUtil.getTimestampToday());					
+					.setClientVersion(DateTimeUtil.getTimestampOfADate(membersFields.get(Member_Reg_Date)))
+					.setUpdateVersion(DateTimeUtil.getTimestampOfADate(membersFields.get(Member_Reg_Date)))
+					.setrelationalid(relational_id).setServerVersion(DateUtil.getTimestampToday());					
+			
 			
 			if(membersFields.containsKey(REG_NO)){
 				allMembers.update(members);

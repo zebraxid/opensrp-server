@@ -1,9 +1,8 @@
 package org.opensrp.web.controller;
 
 import ch.lambdaj.function.convert.Converter;
-
-import org.opensrp.scheduler.service.ActionService;
 import org.opensrp.dto.Action;
+import org.opensrp.scheduler.service.ActionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static ch.lambdaj.collection.LambdaCollections.with;

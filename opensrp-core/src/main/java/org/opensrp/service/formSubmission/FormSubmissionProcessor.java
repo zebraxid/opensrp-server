@@ -53,8 +53,15 @@ public class FormSubmissionProcessor{
     }
 
     public void processFormSubmission(FormSubmission submission) throws Exception {
-    	// ugly hack TODO
-    	if(submission.bindType().equalsIgnoreCase("stock")) return;
+    	
+    	if(submission.bindType().equalsIgnoreCase("stock")){
+    		if(!ziggyService.isZiggyCompliant(submission.bindType())){
+        		logger.info("Ziggy active");
+        		passToZiggy(submission);
+        		
+        	}
+    		return;
+    	}
     	
     	// parse and into client and event model
     	logger.info("Creating model entities");

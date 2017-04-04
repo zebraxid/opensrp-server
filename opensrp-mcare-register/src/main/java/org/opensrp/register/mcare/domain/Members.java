@@ -600,8 +600,12 @@ public class Members extends MotechBaseDataObject {
 	private Map<String, String> BNFVisit;
 	@JsonProperty
 	private String isClosed;
-	@JsonProperty("timestamp")
-	private long timestamp;
+	@JsonProperty("clientVersion")
+	private long clientVersion;
+	@JsonProperty("updateVersion")
+	private long updateVersion;
+	@JsonProperty("serverVersion")
+	private long serverVersion;
 	public Members() {
 		this.details = new HashMap<>();
 		this.TTVisit = new HashMap<>();
@@ -2067,12 +2071,30 @@ public class Members extends MotechBaseDataObject {
         return this;
     }
     
-	public long getTimestamp() {
-		return timestamp;
+    public long getServerVersion() {
+		return serverVersion;
 	}
 
-	public Members setTimestamp(long timestamp) {
-		this.timestamp = timestamp;
+	public Members setServerVersion(long serverVersion) {
+		this.serverVersion = serverVersion;
+		return this;
+	}
+	
+	public long getClientVersion() {
+		return clientVersion;
+	}
+
+	public Members setClientVersion(long clientVersion) {
+		this.clientVersion = clientVersion;
+		return this;
+	}
+	
+	public long getUpdateVersion() {
+		return updateVersion;
+	}
+
+	public Members setUpdateVersion(long updateVersion) {
+		this.updateVersion = updateVersion;
 		return this;
 	}
 

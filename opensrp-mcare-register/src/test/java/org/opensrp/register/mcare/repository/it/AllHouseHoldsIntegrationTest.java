@@ -1,6 +1,7 @@
 package org.opensrp.register.mcare.repository.it;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.opensrp.register.mcare.repository.AllMembers;
 import org.opensrp.register.mcare.repository.AllHouseHolds;
@@ -8,8 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath:test-applicationContext-opensrp-register-mcare.xml")
+/*@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration("classpath:test-applicationContext-opensrp-register-mcare.xml")*/
 public class AllHouseHoldsIntegrationTest {
 
 	@Autowired
@@ -23,7 +24,7 @@ public class AllHouseHoldsIntegrationTest {
     	allMembers.removeAll();
     }
     
-  /*  @Test
+  /*@Ignore  @Test
     public void shouldRegisterEligibleCouple() throws Exception {
     	HouseHold houseHold = new HouseHold().withFWHOHNAME("HouseHold-1").withPROVIDERID("Provider-I");
 

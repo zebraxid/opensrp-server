@@ -10,8 +10,8 @@
     
     <context:property-placeholder location="classpath*:maven.properties"/>
     
-     <util:properties id="opensrp" location="classpath:/opensrp.properties"/> 
-
+     <util:properties id="opensrp" location="classpath:/opensrp.properties"/>
+    <util:properties id="couchdbProperties" location="classpath:/couchdb.properties"/>
     <context:annotation-config/>
     <context:component-scan base-package="org.opensrp.repository"/>
     <context:component-scan base-package="org.opensrp.register.mcare.repository"/>

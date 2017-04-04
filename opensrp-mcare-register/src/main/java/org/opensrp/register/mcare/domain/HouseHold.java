@@ -18,6 +18,10 @@ import org.motechproject.model.MotechBaseDataObject;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @TypeDiscriminator("doc.type === 'HouseHold'")
 public class HouseHold extends MotechBaseDataObject {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3071809489890213000L;
 	@JsonProperty
 	private String caseId;
 	@JsonProperty
@@ -122,8 +126,12 @@ public class HouseHold extends MotechBaseDataObject {
 	private Map<String, String> details;
 	@JsonProperty
 	private String BAHMNI_ID;
-	@JsonProperty("timestamp")
-	private long timestamp;
+	@JsonProperty("clientVersion")
+	private long clientVersion;
+	@JsonProperty("updateVersion")
+	private long updateVersion;
+	@JsonProperty("serverVersion")
+	private long serverVersion;
 	
 	public HouseHold() {
 		this.MEMBERDETAILS = new ArrayList<>();
@@ -625,12 +633,31 @@ public class HouseHold extends MotechBaseDataObject {
 		return MEMBERDETAILS.get(0).get(name);
 	}
 	
-	public long getTimestamp() {
-		return timestamp;
+	public long getServerVersion() {
+		return serverVersion;
 	}
 
-	public void setTimestamp(long timestamp) {
-		this.timestamp = timestamp;
+	public HouseHold setServerVersion(long serverVersion) {
+		this.serverVersion = serverVersion;
+		return this;
+	}
+	
+	public long getClientVersion() {
+		return clientVersion;
+	}
+
+	public HouseHold setClientVersion(long clientVersion) {
+		this.clientVersion = clientVersion;
+		return this;
+	}
+	
+	public long getUpdateVersion() {
+		return updateVersion;
+	}
+
+	public HouseHold setUpdateVersion(long updateVersion) {
+		this.updateVersion = updateVersion;
+		return this;
 	}
 
 	@Override

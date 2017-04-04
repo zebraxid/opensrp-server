@@ -123,6 +123,9 @@ public class AllConstants {
         public static final String SERVICE_PROVIDER_ANM = "ANM";
     }
     
+    public static class StockFields{
+    	public static final String date = "date";
+    }
     public static class HHRegistrationFields
     {
     	public static final String MEMBERS_REGISTRATION_SUB_FORM_NAME = "member_registration";
