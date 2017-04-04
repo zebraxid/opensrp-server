@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
+<!-- 2017-04-04T18:06:18 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="dgfp" pageWidth="595" pageHeight="1000" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="18da28e8-8b84-4338-9702-bcbbd0dd689f">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<field name="periodid" class="java.lang.String"/>
+	<field name="periodname" class="java.lang.String"/>
+	<field name="periodcode" class="java.lang.String"/>
+	<field name="perioddescription" class="java.lang.String"/>
+	<field name="reporting_month_name" class="java.lang.String"/>
+	<field name="param_organisationunit_name" class="java.lang.String"/>
+	<field name="organisation_unit_is_parent" class="java.lang.String"/>
+	<field name="bcpill absoulate new" class="java.lang.Double"/>
+	<field name="bcpill left new method taken" class="java.lang.Double"/>
+	<field name="bcpill left none taken" class="java.lang.Double"/>
+	<field name="bcpill new" class="java.lang.Double"/>
+	<field name="bcpill unit total" class="java.lang.Double"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="100" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<staticText>
+				<reportElement x="-9" y="-8" width="556" height="108" uuid="3d604468-38cd-4069-a1db-1dcb75415204">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[People's Republic of Bangladesh]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="265" y="67" width="24" height="20" uuid="c2e827c2-f7f4-4185-b659-6a974812054f"/>
+				<textElement textAlignment="Center">
+					<font size="13"/>
+				</textElement>
+				<text><![CDATA[-]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="155" y="24" width="310" height="15" uuid="6c6a24ba-d107-4a3b-ba16-4558ac8e4be4"/>
+				<textElement markup="styled">
+					<font fontName="SansSerif" isBold="true"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[Report on Family Planning, Mother and Child care]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="241" y="42" width="80" height="16" uuid="223fdc41-3667-4613-a41a-07727d443c8b"/>
+				<text><![CDATA[MIS Form-1]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="187" y="6" width="204" height="16" uuid="13b83d68-c2c3-49e7-b275-82d823596514"/>
+				<text><![CDATA[Directorate General of Family Planning]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="-3" y="70" width="80" height="20" uuid="7ad4d731-13e3-4918-98ac-289bdba52b33"/>
+				<text><![CDATA[Zilla]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="82" y="70" width="80" height="20" uuid="fcd42e38-4777-40ea-99f4-67f4de71be6e"/>
+				<text><![CDATA[Upzilla]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="172" y="69" width="80" height="20" uuid="dc0cb8ef-b040-4a20-bb91-cf4e17bfdf77"/>
+				<text><![CDATA[Union]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="269" y="69" width="80" height="20" uuid="577e4e64-2cf2-42cf-9c70-b936dfe875e7"/>
+				<text><![CDATA[Health Worker]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="378" y="71" width="61" height="20" uuid="b6d5bd4a-78ae-4fd7-8fea-dab3afc42a7c"/>
+				<text><![CDATA[Month :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="445" y="70" width="75" height="19" uuid="dca22182-f559-4063-b57e-cb36367f5e72"/>
+				<textFieldExpression><![CDATA[$F{reporting_month_name}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="16" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<staticText>
+				<reportElement x="-8" y="-16" width="170" height="19" uuid="07c8e3fa-2733-4848-b004-e06ba9b2f5bc"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[B) Maternity Care]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="800" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
+			<line>
+				<reportElement x="-1" y="15" width="2" height="556" uuid="193fdc12-0ec5-4250-8cf4-e0ff48f19e25"/>
+			</line>
+			<line>
+				<reportElement x="554" y="12" width="1" height="557" uuid="2c92296e-afda-4d8b-a237-e86d752655c7"/>
+			</line>
+			<line>
+				<reportElement x="-3" y="15" width="558" height="1" uuid="7e328912-f3dc-4d33-9c73-4ddcd165911d"/>
+			</line>
+			<line>
+				<reportElement x="-2" y="280" width="553" height="1" uuid="acd74137-c99f-47fb-9bd3-0ebdc18faddd"/>
+			</line>
+			<line>
+				<reportElement x="-3" y="36" width="555" height="1" uuid="81cb97e8-7cb9-474f-88f4-4edb00efa53b"/>
+			</line>
+			<line>
+				<reportElement x="230" y="53" width="322" height="1" uuid="80dfcbc5-4dfd-400c-919e-e9f523ee1f9e"/>
+			</line>
+			<line>
+				<reportElement x="230" y="70" width="323" height="1" uuid="f354bad8-4853-4905-9085-ff451293797a"/>
+			</line>
+			<line>
+				<reportElement x="-2" y="92" width="555" height="1" uuid="edd93ae0-1829-4580-91b4-3e34fbc77615"/>
+			</line>
+			<line>
+				<reportElement x="-2" y="108" width="555" height="1" uuid="ace51460-e6fa-4609-8aa0-be1babd6fc62"/>
+			</line>
+			<line>
+				<reportElement x="-2" y="123" width="555" height="1" uuid="cdebd6ac-3ee6-4fc0-ad7e-f29b68a67d11"/>
+			</line>
+			<line>
+				<reportElement x="180" y="140" width="373" height="1" uuid="873e1cdb-6244-41af-9464-3ec90a173438"/>
+			</line>
+			<line>
+				<reportElement x="179" y="156" width="376" height="1" uuid="5d9345b3-0979-457d-ac5d-f27e10e53a8e"/>
+			</line>
+			<line>
+				<reportElement x="181" y="170" width="371" height="1" uuid="b533ef09-e2c6-47ef-a7e3-5611bbbd42b1"/>
+			</line>
+			<line>
+				<reportElement x="-2" y="184" width="555" height="1" uuid="a6e61bea-9fdb-46e9-b8fc-b04f4b8c288d"/>
+			</line>
+			<line>
+				<reportElement x="-2" y="202" width="555" height="1" uuid="01778203-2059-458a-ba26-741321f3def1"/>
+			</line>
+			<line>
+				<reportElement x="-2" y="220" width="555" height="1" uuid="e215db21-8ad8-4c68-b76f-8a301b91939c"/>
+			</line>
+			<line>
+				<reportElement x="-1" y="238" width="555" height="1" uuid="a43354ff-ceff-4ffe-bb46-320a6dc3bfc7"/>
+			</line>
+			<line>
+				<reportElement x="-2" y="258" width="555" height="1" uuid="8b4cac0e-6096-4e9a-a0cc-3847f3c494ac"/>
+			</line>
+			<line>
+				<reportElement x="0" y="302" width="555" height="1" uuid="b8503535-819b-4345-b135-69ed85339e68"/>
+			</line>
+			<line>
+				<reportElement x="2" y="324" width="555" height="1" uuid="43098d3a-2274-4e68-b9ec-d6712d54ff8e"/>
+			</line>
+			<line>
+				<reportElement x="0" y="348" width="555" height="1" uuid="a0423d29-6606-4e6e-b64f-88733f492dea"/>
+			</line>
+			<line>
+				<reportElement x="-1" y="373" width="555" height="1" uuid="bad8f62e-d534-481d-a6bf-3ecec67e6934"/>
+			</line>
+			<line>
+				<reportElement x="0" y="400" width="555" height="1" uuid="b58dc05f-a1fb-4b25-b117-2841560631c9"/>
+			</line>
+			<line>
+				<reportElement x="0" y="429" width="555" height="1" uuid="9d886bb6-2a03-4682-9a58-ea1ed3eba401"/>
+			</line>
+			<line>
+				<reportElement x="-2" y="453" width="555" height="1" uuid="55ff63ae-f142-4fae-a7df-d6b158c05117"/>
+			</line>
+			<line>
+				<reportElement x="1" y="473" width="555" height="1" uuid="ed3e8d17-1d7e-44fc-8677-b5e62761dbd7"/>
+			</line>
+			<line>
+				<reportElement x="2" y="498" width="555" height="1" uuid="88d8f1f1-717e-4b89-8cdd-7f2d624eca80"/>
+			</line>
+			<line>
+				<reportElement x="0" y="520" width="555" height="1" uuid="381047c6-412b-4449-a1e2-0052f4ad7a05"/>
+			</line>
+			<line>
+				<reportElement x="0" y="547" width="555" height="1" uuid="1dfe09f2-7b23-4a20-a08d-e99e9b6748cf"/>
+			</line>
+			<line>
+				<reportElement x="1" y="571" width="555" height="1" uuid="a63dab6b-4b07-4975-a94a-b3ab5d2afa43"/>
+			</line>
+			<line>
+				<reportElement x="506" y="15" width="1" height="557" uuid="12ae168b-7f71-44b9-90db-cdd08c2ea91a"/>
+			</line>
+			<line>
+				<reportElement stretchType="ContainerHeight" x="460" y="15" width="1" height="557" uuid="84fff115-ec7f-4b8a-8894-af8f830f1f47"/>
+			</line>
+			<line>
+				<reportElement x="229" y="36" width="1" height="56" uuid="510f6c3c-fca8-4d51-b141-f27c8e6f84af"/>
+			</line>
+			<line>
+				<reportElement x="180" y="123" width="1" height="136" uuid="f4c19d61-f1f8-43d8-b600-f9d45b53886f"/>
+			</line>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+		</band>
+	</summary>
+</jasperReport>

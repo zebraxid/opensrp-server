@@ -1,0 +1,1131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="dpt" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+			<field name="periodid" class="java.lang.String"/>
+		<field name="periodname" class="java.lang.String"/>
+		<field name="periodcode" class="java.lang.String"/>
+		<field name="perioddescription" class="java.lang.String"/>
+		<field name="reporting_month_name" class="java.lang.String"/>
+		<field name="param_organisationunit_name" class="java.lang.String"/>
+		<field name="organisation_unit_is_parent" class="java.lang.String"/>
+		<field name="implant absoulate new" class="java.lang.Double"/>
+		<field name="implant left new method taken" class="java.lang.Double"/>
+		<field name="implant left none taken" class="java.lang.Double"/>
+		<field name="implant new" class="java.lang.Double"/>
+		<field name="implant unit total" class="java.lang.Double"/>
+		<field name="implant old" class="java.lang.Double"/>
+		<field name="iud absoulate new" class="java.lang.Double"/>
+		<field name="iud left new method taken" class="java.lang.Double"/>
+		<field name="iud left none taken" class="java.lang.Double"/>
+		<field name="iud new" class="java.lang.Double"/>
+		<field name="iud unit total" class="java.lang.Double"/>
+		<field name="iud old" class="java.lang.Double"/>
+		<field name="bc_per_f absoulate new" class="java.lang.Double"/>
+		<field name="bc_per_f left new method taken" class="java.lang.Double"/>
+		<field name="bc_per_f left none taken" class="java.lang.Double"/>
+		<field name="bc_per_f new" class="java.lang.Double"/>
+		<field name="bc_per_f unit total" class="java.lang.Double"/>
+		<field name="bc_per_f old" class="java.lang.Double"/>
+		<field name="bc_per_m absoulate new" class="java.lang.Double"/>
+		<field name="bc_per_m left new method taken" class="java.lang.Double"/>
+		<field name="bc_per_m left none taken" class="java.lang.Double"/>
+		<field name="bc_per_m new" class="java.lang.Double"/>
+		<field name="bc_per_m unit total" class="java.lang.Double"/>
+		<field name="bc_per_m old" class="java.lang.Double"/>
+		<field name="bcpill absoulate new" class="java.lang.Double"/>
+		<field name="bcpill left new method taken" class="java.lang.Double"/>
+		<field name="bcpill left none taken" class="java.lang.Double"/>
+		<field name="bcpill new" class="java.lang.Double"/>
+		<field name="bcpill unit total" class="java.lang.Double"/>
+		<field name="bcpill old" class="java.lang.Double"/>
+		<field name="health-facility default" class="java.lang.Double"/>
+		<field name="home_birth default" class="java.lang.Double"/>
+		<field name="total birth register default" class="java.lang.Double"/>
+		<field name="condom absoulate new" class="java.lang.Double"/>
+		<field name="condom left new method taken" class="java.lang.Double"/>
+		<field name="condom left none taken" class="java.lang.Double"/>
+		<field name="condom new" class="java.lang.Double"/>
+		<field name="condom unit total" class="java.lang.Double"/>
+		<field name="condom old" class="java.lang.Double"/>
+		<field name="injectable absoulate new" class="java.lang.Double"/>
+		<field name="injectable left new method taken" class="java.lang.Double"/>
+		<field name="injectable left none taken" class="java.lang.Double"/>
+		<field name="injectable new" class="java.lang.Double"/>
+		<field name="injectable unit total" class="java.lang.Double"/>
+		<field name="injectable old" class="java.lang.Double"/>
+		<field name="elco absoulate new" class="java.lang.Double"/>
+		<field name="elco left new method taken" class="java.lang.Double"/>
+		<field name="elco left none taken" class="java.lang.Double"/>
+		<field name="elco new" class="java.lang.Double"/>
+		<field name="elco unit total" class="java.lang.Double"/>
+		<field name="elco old" class="java.lang.Double"/>
+		<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="326" splitType="Stretch">
+			<staticText>
+				<reportElement x="12" y="15" width="532" height="41" forecolor="#184F73"/>
+				<textElement textAlignment="Center">
+					<font size="24"/>
+				</textElement>
+				<text><![CDATA[family planning]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="12" y="67" width="253" height="20"/>
+				<textElement textAlignment="Right">
+					<font size="13"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{reporting_month_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="289" y="67" width="255" height="20"/>
+				<textElement>
+					<font size="13"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{param_organisationunit_name}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="265" y="67" width="24" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="13"/>
+				</textElement>
+				<text><![CDATA[-]]></text>
+			</staticText>
+			<bar3DChart>
+				<chart evaluationTime="Report">
+					<reportElement x="12" y="114" width="532" height="210"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<categoryDataset>
+					<dataset>
+						<incrementWhenExpression><![CDATA[$F{organisation_unit_is_parent}.equals( "Yes" )]]></incrementWhenExpression>
+					</dataset>
+																																																																																					<categorySeries>
+						<seriesExpression><![CDATA["implant Absoulate new"]]></seriesExpression>
+						<categoryExpression><![CDATA[""]]></categoryExpression>
+						<valueExpression><![CDATA[$F{implant absoulate new}]]></valueExpression>
+					</categorySeries>
+																				<categorySeries>
+						<seriesExpression><![CDATA["implant Left New Method Taken"]]></seriesExpression>
+						<categoryExpression><![CDATA[""]]></categoryExpression>
+						<valueExpression><![CDATA[$F{implant left new method taken}]]></valueExpression>
+					</categorySeries>
+																				<categorySeries>
+						<seriesExpression><![CDATA["implant Left None taken"]]></seriesExpression>
+						<categoryExpression><![CDATA[""]]></categoryExpression>
+						<valueExpression><![CDATA[$F{implant left none taken}]]></valueExpression>
+					</categorySeries>
+																				<categorySeries>
+						<seriesExpression><![CDATA["implant New"]]></seriesExpression>
+						<categoryExpression><![CDATA[""]]></categoryExpression>
+						<valueExpression><![CDATA[$F{implant new}]]></valueExpression>
+					</categorySeries>
+																				<categorySeries>
+						<seriesExpression><![CDATA["implant Unit Total"]]></seriesExpression>
+						<categoryExpression><![CDATA[""]]></categoryExpression>
+						<valueExpression><![CDATA[$F{implant unit total}]]></valueExpression>
+					</categorySeries>
+																				<categorySeries>
+						<seriesExpression><![CDATA["implant old"]]></seriesExpression>
+						<categoryExpression><![CDATA[""]]></categoryExpression>
+						<valueExpression><![CDATA[$F{implant old}]]></valueExpression>
+					</categorySeries>
+																				<categorySeries>
+						<seriesExpression><![CDATA["iud Absoulate new"]]></seriesExpression>
+						<categoryExpression><![CDATA[""]]></categoryExpression>
+						<valueExpression><![CDATA[$F{iud absoulate new}]]></valueExpression>
+					</categorySeries>
+																				<categorySeries>
+						<seriesExpression><![CDATA["iud Left New Method Taken"]]></seriesExpression>
+						<categoryExpression><![CDATA[""]]></categoryExpression>
+						<valueExpression><![CDATA[$F{iud left new method taken}]]></valueExpression>
+					</categorySeries>
+																				<categorySeries>
+						<seriesExpression><![CDATA["iud Left None taken"]]></seriesExpression>
+						<categoryExpression><![CDATA[""]]></categoryExpression>
+						<valueExpression><![CDATA[$F{iud left none taken}]]></valueExpression>
+					</categorySeries>
+																				<categorySeries>
+						<seriesExpression><![CDATA["iud New"]]></seriesExpression>
+						<categoryExpression><![CDATA[""]]></categoryExpression>
+						<valueExpression><![CDATA[$F{iud new}]]></valueExpression>
+					</categorySeries>
+																				<categorySeries>
+						<seriesExpression><![CDATA["iud Unit Total"]]></seriesExpression>
+						<categoryExpression><![CDATA[""]]></categoryExpression>
+						<valueExpression><![CDATA[$F{iud unit total}]]></valueExpression>
+					</categorySeries>
+																				<categorySeries>
+						<seriesExpression><![CDATA["iud old"]]></seriesExpression>
+						<categoryExpression><![CDATA[""]]></categoryExpression>
+						<valueExpression><![CDATA[$F{iud old}]]></valueExpression>
+					</categorySeries>
+																				<categorySeries>
+						<seriesExpression><![CDATA["bc_per_f Absoulate new"]]></seriesExpression>
+						<categoryExpression><![CDATA[""]]></categoryExpression>
+						<valueExpression><![CDATA[$F{bc_per_f absoulate new}]]></valueExpression>
+					</categorySeries>
+																				<categorySeries>
+						<seriesExpression><![CDATA["bc_per_f Left New Method Taken"]]></seriesExpression>
+						<categoryExpression><![CDATA[""]]></categoryExpression>
+						<valueExpression><![CDATA[$F{bc_per_f left new method taken}]]></valueExpression>
+					</categorySeries>
+																				<categorySeries>
+						<seriesExpression><![CDATA["bc_per_f Left None taken"]]></seriesExpression>
+						<categoryExpression><![CDATA[""]]></categoryExpression>
+						<valueExpression><![CDATA[$F{bc_per_f left none taken}]]></valueExpression>
+					</categorySeries>
+																				<categorySeries>
+						<seriesExpression><![CDATA["bc_per_f New"]]></seriesExpression>
+						<categoryExpression><![CDATA[""]]></categoryExpression>
+						<valueExpression><![CDATA[$F{bc_per_f new}]]></valueExpression>
+					</categorySeries>
+																				<categorySeries>
+						<seriesExpression><![CDATA["bc_per_f Unit Total"]]></seriesExpression>
+						<categoryExpression><![CDATA[""]]></categoryExpression>
+						<valueExpression><![CDATA[$F{bc_per_f unit total}]]></valueExpression>
+					</categorySeries>
+																				<categorySeries>
+						<seriesExpression><![CDATA["bc_per_f old"]]></seriesExpression>
+						<categoryExpression><![CDATA[""]]></categoryExpression>
+						<valueExpression><![CDATA[$F{bc_per_f old}]]></valueExpression>
+					</categorySeries>
+																				<categorySeries>
+						<seriesExpression><![CDATA["bc_per_m Absoulate new"]]></seriesExpression>
+						<categoryExpression><![CDATA[""]]></categoryExpression>
+						<valueExpression><![CDATA[$F{bc_per_m absoulate new}]]></valueExpression>
+					</categorySeries>
+																				<categorySeries>
+						<seriesExpression><![CDATA["bc_per_m Left New Method Taken"]]></seriesExpression>
+						<categoryExpression><![CDATA[""]]></categoryExpression>
+						<valueExpression><![CDATA[$F{bc_per_m left new method taken}]]></valueExpression>
+					</categorySeries>
+																				<categorySeries>
+						<seriesExpression><![CDATA["bc_per_m Left None taken"]]></seriesExpression>
+						<categoryExpression><![CDATA[""]]></categoryExpression>
+						<valueExpression><![CDATA[$F{bc_per_m left none taken}]]></valueExpression>
+					</categorySeries>
+																				<categorySeries>
+						<seriesExpression><![CDATA["bc_per_m New"]]></seriesExpression>
+						<categoryExpression><![CDATA[""]]></categoryExpression>
+						<valueExpression><![CDATA[$F{bc_per_m new}]]></valueExpression>
+					</categorySeries>
+																				<categorySeries>
+						<seriesExpression><![CDATA["bc_per_m Unit Total"]]></seriesExpression>
+						<categoryExpression><![CDATA[""]]></categoryExpression>
+						<valueExpression><![CDATA[$F{bc_per_m unit total}]]></valueExpression>
+					</categorySeries>
+																				<categorySeries>
+						<seriesExpression><![CDATA["bc_per_m old"]]></seriesExpression>
+						<categoryExpression><![CDATA[""]]></categoryExpression>
+						<valueExpression><![CDATA[$F{bc_per_m old}]]></valueExpression>
+					</categorySeries>
+																				<categorySeries>
+						<seriesExpression><![CDATA["bcPill Absoulate new"]]></seriesExpression>
+						<categoryExpression><![CDATA[""]]></categoryExpression>
+						<valueExpression><![CDATA[$F{bcpill absoulate new}]]></valueExpression>
+					</categorySeries>
+																				<categorySeries>
+						<seriesExpression><![CDATA["bcPill Left New Method Taken"]]></seriesExpression>
+						<categoryExpression><![CDATA[""]]></categoryExpression>
+						<valueExpression><![CDATA[$F{bcpill left new method taken}]]></valueExpression>
+					</categorySeries>
+																				<categorySeries>
+						<seriesExpression><![CDATA["bcPill Left None taken"]]></seriesExpression>
+						<categoryExpression><![CDATA[""]]></categoryExpression>
+						<valueExpression><![CDATA[$F{bcpill left none taken}]]></valueExpression>
+					</categorySeries>
+																				<categorySeries>
+						<seriesExpression><![CDATA["bcPill New"]]></seriesExpression>
+						<categoryExpression><![CDATA[""]]></categoryExpression>
+						<valueExpression><![CDATA[$F{bcpill new}]]></valueExpression>
+					</categorySeries>
+																				<categorySeries>
+						<seriesExpression><![CDATA["bcPill Unit Total"]]></seriesExpression>
+						<categoryExpression><![CDATA[""]]></categoryExpression>
+						<valueExpression><![CDATA[$F{bcpill unit total}]]></valueExpression>
+					</categorySeries>
+																				<categorySeries>
+						<seriesExpression><![CDATA["bcPill old"]]></seriesExpression>
+						<categoryExpression><![CDATA[""]]></categoryExpression>
+						<valueExpression><![CDATA[$F{bcpill old}]]></valueExpression>
+					</categorySeries>
+																				<categorySeries>
+						<seriesExpression><![CDATA["health-facility default"]]></seriesExpression>
+						<categoryExpression><![CDATA[""]]></categoryExpression>
+						<valueExpression><![CDATA[$F{health-facility default}]]></valueExpression>
+					</categorySeries>
+																				<categorySeries>
+						<seriesExpression><![CDATA["Home_Birth default"]]></seriesExpression>
+						<categoryExpression><![CDATA[""]]></categoryExpression>
+						<valueExpression><![CDATA[$F{home_birth default}]]></valueExpression>
+					</categorySeries>
+																				<categorySeries>
+						<seriesExpression><![CDATA["Total Birth Register default"]]></seriesExpression>
+						<categoryExpression><![CDATA[""]]></categoryExpression>
+						<valueExpression><![CDATA[$F{total birth register default}]]></valueExpression>
+					</categorySeries>
+																				<categorySeries>
+						<seriesExpression><![CDATA["condom Absoulate new"]]></seriesExpression>
+						<categoryExpression><![CDATA[""]]></categoryExpression>
+						<valueExpression><![CDATA[$F{condom absoulate new}]]></valueExpression>
+					</categorySeries>
+																				<categorySeries>
+						<seriesExpression><![CDATA["condom Left New Method Taken"]]></seriesExpression>
+						<categoryExpression><![CDATA[""]]></categoryExpression>
+						<valueExpression><![CDATA[$F{condom left new method taken}]]></valueExpression>
+					</categorySeries>
+																				<categorySeries>
+						<seriesExpression><![CDATA["condom Left None taken"]]></seriesExpression>
+						<categoryExpression><![CDATA[""]]></categoryExpression>
+						<valueExpression><![CDATA[$F{condom left none taken}]]></valueExpression>
+					</categorySeries>
+																				<categorySeries>
+						<seriesExpression><![CDATA["condom New"]]></seriesExpression>
+						<categoryExpression><![CDATA[""]]></categoryExpression>
+						<valueExpression><![CDATA[$F{condom new}]]></valueExpression>
+					</categorySeries>
+																				<categorySeries>
+						<seriesExpression><![CDATA["condom Unit Total"]]></seriesExpression>
+						<categoryExpression><![CDATA[""]]></categoryExpression>
+						<valueExpression><![CDATA[$F{condom unit total}]]></valueExpression>
+					</categorySeries>
+																				<categorySeries>
+						<seriesExpression><![CDATA["condom old"]]></seriesExpression>
+						<categoryExpression><![CDATA[""]]></categoryExpression>
+						<valueExpression><![CDATA[$F{condom old}]]></valueExpression>
+					</categorySeries>
+																				<categorySeries>
+						<seriesExpression><![CDATA["injectable Absoulate new"]]></seriesExpression>
+						<categoryExpression><![CDATA[""]]></categoryExpression>
+						<valueExpression><![CDATA[$F{injectable absoulate new}]]></valueExpression>
+					</categorySeries>
+																				<categorySeries>
+						<seriesExpression><![CDATA["injectable Left New Method Taken"]]></seriesExpression>
+						<categoryExpression><![CDATA[""]]></categoryExpression>
+						<valueExpression><![CDATA[$F{injectable left new method taken}]]></valueExpression>
+					</categorySeries>
+																				<categorySeries>
+						<seriesExpression><![CDATA["injectable Left None taken"]]></seriesExpression>
+						<categoryExpression><![CDATA[""]]></categoryExpression>
+						<valueExpression><![CDATA[$F{injectable left none taken}]]></valueExpression>
+					</categorySeries>
+																				<categorySeries>
+						<seriesExpression><![CDATA["injectable New"]]></seriesExpression>
+						<categoryExpression><![CDATA[""]]></categoryExpression>
+						<valueExpression><![CDATA[$F{injectable new}]]></valueExpression>
+					</categorySeries>
+																				<categorySeries>
+						<seriesExpression><![CDATA["injectable Unit Total"]]></seriesExpression>
+						<categoryExpression><![CDATA[""]]></categoryExpression>
+						<valueExpression><![CDATA[$F{injectable unit total}]]></valueExpression>
+					</categorySeries>
+																				<categorySeries>
+						<seriesExpression><![CDATA["injectable old"]]></seriesExpression>
+						<categoryExpression><![CDATA[""]]></categoryExpression>
+						<valueExpression><![CDATA[$F{injectable old}]]></valueExpression>
+					</categorySeries>
+																				<categorySeries>
+						<seriesExpression><![CDATA["elco Absoulate new"]]></seriesExpression>
+						<categoryExpression><![CDATA[""]]></categoryExpression>
+						<valueExpression><![CDATA[$F{elco absoulate new}]]></valueExpression>
+					</categorySeries>
+																				<categorySeries>
+						<seriesExpression><![CDATA["elco Left New Method Taken"]]></seriesExpression>
+						<categoryExpression><![CDATA[""]]></categoryExpression>
+						<valueExpression><![CDATA[$F{elco left new method taken}]]></valueExpression>
+					</categorySeries>
+																				<categorySeries>
+						<seriesExpression><![CDATA["elco Left None taken"]]></seriesExpression>
+						<categoryExpression><![CDATA[""]]></categoryExpression>
+						<valueExpression><![CDATA[$F{elco left none taken}]]></valueExpression>
+					</categorySeries>
+																				<categorySeries>
+						<seriesExpression><![CDATA["elco New"]]></seriesExpression>
+						<categoryExpression><![CDATA[""]]></categoryExpression>
+						<valueExpression><![CDATA[$F{elco new}]]></valueExpression>
+					</categorySeries>
+																				<categorySeries>
+						<seriesExpression><![CDATA["elco Unit Total"]]></seriesExpression>
+						<categoryExpression><![CDATA[""]]></categoryExpression>
+						<valueExpression><![CDATA[$F{elco unit total}]]></valueExpression>
+					</categorySeries>
+																				<categorySeries>
+						<seriesExpression><![CDATA["elco old"]]></seriesExpression>
+						<categoryExpression><![CDATA[""]]></categoryExpression>
+						<valueExpression><![CDATA[$F{elco old}]]></valueExpression>
+					</categorySeries>
+														</categoryDataset>
+				<bar3DPlot isShowLabels="true">
+					<plot/>
+					<itemLabel color="#000000" backgroundColor="#FFFFFF"/>
+					<categoryAxisFormat>
+						<axisFormat>
+							<labelFont/>
+							<tickLabelFont/>
+						</axisFormat>
+					</categoryAxisFormat>
+					<valueAxisFormat>
+						<axisFormat>
+							<labelFont/>
+							<tickLabelFont/>
+						</axisFormat>
+					</valueAxisFormat>
+				</bar3DPlot>
+			</bar3DChart>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="15" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="51" splitType="Stretch">
+									 			<staticText>
+				<reportElement x="10" y="26" width="110" height="20"/>
+				<textElement >
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Period]]></text>
+			</staticText>
+									 			<staticText>
+				<reportElement x="120" y="26" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[implant Absoulate new]]></text>
+			</staticText>
+									 			<staticText>
+				<reportElement x="175" y="26" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[implant Left New Method Taken]]></text>
+			</staticText>
+									 			<staticText>
+				<reportElement x="230" y="26" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[implant Left None taken]]></text>
+			</staticText>
+									 			<staticText>
+				<reportElement x="285" y="26" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[implant New]]></text>
+			</staticText>
+									 			<staticText>
+				<reportElement x="340" y="26" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[implant Unit Total]]></text>
+			</staticText>
+									 			<staticText>
+				<reportElement x="395" y="26" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[implant old]]></text>
+			</staticText>
+									 			<staticText>
+				<reportElement x="450" y="26" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[iud Absoulate new]]></text>
+			</staticText>
+									 			<staticText>
+				<reportElement x="505" y="26" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[iud Left New Method Taken]]></text>
+			</staticText>
+									 			<staticText>
+				<reportElement x="560" y="26" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[iud Left None taken]]></text>
+			</staticText>
+									 			<staticText>
+				<reportElement x="615" y="26" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[iud New]]></text>
+			</staticText>
+									 			<staticText>
+				<reportElement x="670" y="26" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[iud Unit Total]]></text>
+			</staticText>
+									 			<staticText>
+				<reportElement x="725" y="26" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[iud old]]></text>
+			</staticText>
+									 			<staticText>
+				<reportElement x="780" y="26" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[bc_per_f Absoulate new]]></text>
+			</staticText>
+									 			<staticText>
+				<reportElement x="835" y="26" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[bc_per_f Left New Method Taken]]></text>
+			</staticText>
+									 			<staticText>
+				<reportElement x="890" y="26" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[bc_per_f Left None taken]]></text>
+			</staticText>
+									 			<staticText>
+				<reportElement x="945" y="26" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[bc_per_f New]]></text>
+			</staticText>
+									 			<staticText>
+				<reportElement x="1000" y="26" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[bc_per_f Unit Total]]></text>
+			</staticText>
+									 			<staticText>
+				<reportElement x="1055" y="26" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[bc_per_f old]]></text>
+			</staticText>
+									 			<staticText>
+				<reportElement x="1110" y="26" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[bc_per_m Absoulate new]]></text>
+			</staticText>
+									 			<staticText>
+				<reportElement x="1165" y="26" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[bc_per_m Left New Method Taken]]></text>
+			</staticText>
+									 			<staticText>
+				<reportElement x="1220" y="26" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[bc_per_m Left None taken]]></text>
+			</staticText>
+									 			<staticText>
+				<reportElement x="1275" y="26" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[bc_per_m New]]></text>
+			</staticText>
+									 			<staticText>
+				<reportElement x="1330" y="26" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[bc_per_m Unit Total]]></text>
+			</staticText>
+									 			<staticText>
+				<reportElement x="1385" y="26" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[bc_per_m old]]></text>
+			</staticText>
+									 			<staticText>
+				<reportElement x="1440" y="26" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[bcPill Absoulate new]]></text>
+			</staticText>
+									 			<staticText>
+				<reportElement x="1495" y="26" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[bcPill Left New Method Taken]]></text>
+			</staticText>
+									 			<staticText>
+				<reportElement x="1550" y="26" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[bcPill Left None taken]]></text>
+			</staticText>
+									 			<staticText>
+				<reportElement x="1605" y="26" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[bcPill New]]></text>
+			</staticText>
+									 			<staticText>
+				<reportElement x="1660" y="26" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[bcPill Unit Total]]></text>
+			</staticText>
+									 			<staticText>
+				<reportElement x="1715" y="26" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[bcPill old]]></text>
+			</staticText>
+									 			<staticText>
+				<reportElement x="1770" y="26" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[health-facility default]]></text>
+			</staticText>
+									 			<staticText>
+				<reportElement x="1825" y="26" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Home_Birth default]]></text>
+			</staticText>
+									 			<staticText>
+				<reportElement x="1880" y="26" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total Birth Register default]]></text>
+			</staticText>
+									 			<staticText>
+				<reportElement x="1935" y="26" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[condom Absoulate new]]></text>
+			</staticText>
+									 			<staticText>
+				<reportElement x="1990" y="26" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[condom Left New Method Taken]]></text>
+			</staticText>
+									 			<staticText>
+				<reportElement x="2045" y="26" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[condom Left None taken]]></text>
+			</staticText>
+									 			<staticText>
+				<reportElement x="2100" y="26" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[condom New]]></text>
+			</staticText>
+									 			<staticText>
+				<reportElement x="2155" y="26" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[condom Unit Total]]></text>
+			</staticText>
+									 			<staticText>
+				<reportElement x="2210" y="26" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[condom old]]></text>
+			</staticText>
+									 			<staticText>
+				<reportElement x="2265" y="26" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[injectable Absoulate new]]></text>
+			</staticText>
+									 			<staticText>
+				<reportElement x="2320" y="26" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[injectable Left New Method Taken]]></text>
+			</staticText>
+									 			<staticText>
+				<reportElement x="2375" y="26" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[injectable Left None taken]]></text>
+			</staticText>
+									 			<staticText>
+				<reportElement x="2430" y="26" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[injectable New]]></text>
+			</staticText>
+									 			<staticText>
+				<reportElement x="2485" y="26" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[injectable Unit Total]]></text>
+			</staticText>
+									 			<staticText>
+				<reportElement x="2540" y="26" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[injectable old]]></text>
+			</staticText>
+									 			<staticText>
+				<reportElement x="2595" y="26" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[elco Absoulate new]]></text>
+			</staticText>
+									 			<staticText>
+				<reportElement x="2650" y="26" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[elco Left New Method Taken]]></text>
+			</staticText>
+									 			<staticText>
+				<reportElement x="2705" y="26" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[elco Left None taken]]></text>
+			</staticText>
+									 			<staticText>
+				<reportElement x="2760" y="26" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[elco New]]></text>
+			</staticText>
+									 			<staticText>
+				<reportElement x="2815" y="26" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[elco Unit Total]]></text>
+			</staticText>
+									 			<staticText>
+				<reportElement x="2870" y="26" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[elco old]]></text>
+			</staticText>
+									<line>
+				<reportElement x="10" y="44" width="2925" height="1"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="21" splitType="Stretch">
+									 			<textField isBlankWhenNull="true">
+				<reportElement x="10" y="0" width="110" height="20"/>
+				<textElement >
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{periodname}]]></textFieldExpression>
+			</textField>			
+									 			<textField isBlankWhenNull="true">
+				<reportElement x="120" y="0" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{implant absoulate new}]]></textFieldExpression>
+			</textField>			
+									 			<textField isBlankWhenNull="true">
+				<reportElement x="175" y="0" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{implant left new method taken}]]></textFieldExpression>
+			</textField>			
+									 			<textField isBlankWhenNull="true">
+				<reportElement x="230" y="0" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{implant left none taken}]]></textFieldExpression>
+			</textField>			
+									 			<textField isBlankWhenNull="true">
+				<reportElement x="285" y="0" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{implant new}]]></textFieldExpression>
+			</textField>			
+									 			<textField isBlankWhenNull="true">
+				<reportElement x="340" y="0" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{implant unit total}]]></textFieldExpression>
+			</textField>			
+									 			<textField isBlankWhenNull="true">
+				<reportElement x="395" y="0" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{implant old}]]></textFieldExpression>
+			</textField>			
+									 			<textField isBlankWhenNull="true">
+				<reportElement x="450" y="0" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{iud absoulate new}]]></textFieldExpression>
+			</textField>			
+									 			<textField isBlankWhenNull="true">
+				<reportElement x="505" y="0" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{iud left new method taken}]]></textFieldExpression>
+			</textField>			
+									 			<textField isBlankWhenNull="true">
+				<reportElement x="560" y="0" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{iud left none taken}]]></textFieldExpression>
+			</textField>			
+									 			<textField isBlankWhenNull="true">
+				<reportElement x="615" y="0" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{iud new}]]></textFieldExpression>
+			</textField>			
+									 			<textField isBlankWhenNull="true">
+				<reportElement x="670" y="0" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{iud unit total}]]></textFieldExpression>
+			</textField>			
+									 			<textField isBlankWhenNull="true">
+				<reportElement x="725" y="0" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{iud old}]]></textFieldExpression>
+			</textField>			
+									 			<textField isBlankWhenNull="true">
+				<reportElement x="780" y="0" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{bc_per_f absoulate new}]]></textFieldExpression>
+			</textField>			
+									 			<textField isBlankWhenNull="true">
+				<reportElement x="835" y="0" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{bc_per_f left new method taken}]]></textFieldExpression>
+			</textField>			
+									 			<textField isBlankWhenNull="true">
+				<reportElement x="890" y="0" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{bc_per_f left none taken}]]></textFieldExpression>
+			</textField>			
+									 			<textField isBlankWhenNull="true">
+				<reportElement x="945" y="0" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{bc_per_f new}]]></textFieldExpression>
+			</textField>			
+									 			<textField isBlankWhenNull="true">
+				<reportElement x="1000" y="0" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{bc_per_f unit total}]]></textFieldExpression>
+			</textField>			
+									 			<textField isBlankWhenNull="true">
+				<reportElement x="1055" y="0" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{bc_per_f old}]]></textFieldExpression>
+			</textField>			
+									 			<textField isBlankWhenNull="true">
+				<reportElement x="1110" y="0" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{bc_per_m absoulate new}]]></textFieldExpression>
+			</textField>			
+									 			<textField isBlankWhenNull="true">
+				<reportElement x="1165" y="0" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{bc_per_m left new method taken}]]></textFieldExpression>
+			</textField>			
+									 			<textField isBlankWhenNull="true">
+				<reportElement x="1220" y="0" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{bc_per_m left none taken}]]></textFieldExpression>
+			</textField>			
+									 			<textField isBlankWhenNull="true">
+				<reportElement x="1275" y="0" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{bc_per_m new}]]></textFieldExpression>
+			</textField>			
+									 			<textField isBlankWhenNull="true">
+				<reportElement x="1330" y="0" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{bc_per_m unit total}]]></textFieldExpression>
+			</textField>			
+									 			<textField isBlankWhenNull="true">
+				<reportElement x="1385" y="0" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{bc_per_m old}]]></textFieldExpression>
+			</textField>			
+									 			<textField isBlankWhenNull="true">
+				<reportElement x="1440" y="0" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{bcpill absoulate new}]]></textFieldExpression>
+			</textField>			
+									 			<textField isBlankWhenNull="true">
+				<reportElement x="1495" y="0" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{bcpill left new method taken}]]></textFieldExpression>
+			</textField>			
+									 			<textField isBlankWhenNull="true">
+				<reportElement x="1550" y="0" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{bcpill left none taken}]]></textFieldExpression>
+			</textField>			
+									 			<textField isBlankWhenNull="true">
+				<reportElement x="1605" y="0" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{bcpill new}]]></textFieldExpression>
+			</textField>			
+									 			<textField isBlankWhenNull="true">
+				<reportElement x="1660" y="0" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{bcpill unit total}]]></textFieldExpression>
+			</textField>			
+									 			<textField isBlankWhenNull="true">
+				<reportElement x="1715" y="0" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{bcpill old}]]></textFieldExpression>
+			</textField>			
+									 			<textField isBlankWhenNull="true">
+				<reportElement x="1770" y="0" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{health-facility default}]]></textFieldExpression>
+			</textField>			
+									 			<textField isBlankWhenNull="true">
+				<reportElement x="1825" y="0" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{home_birth default}]]></textFieldExpression>
+			</textField>			
+									 			<textField isBlankWhenNull="true">
+				<reportElement x="1880" y="0" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{total birth register default}]]></textFieldExpression>
+			</textField>			
+									 			<textField isBlankWhenNull="true">
+				<reportElement x="1935" y="0" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{condom absoulate new}]]></textFieldExpression>
+			</textField>			
+									 			<textField isBlankWhenNull="true">
+				<reportElement x="1990" y="0" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{condom left new method taken}]]></textFieldExpression>
+			</textField>			
+									 			<textField isBlankWhenNull="true">
+				<reportElement x="2045" y="0" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{condom left none taken}]]></textFieldExpression>
+			</textField>			
+									 			<textField isBlankWhenNull="true">
+				<reportElement x="2100" y="0" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{condom new}]]></textFieldExpression>
+			</textField>			
+									 			<textField isBlankWhenNull="true">
+				<reportElement x="2155" y="0" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{condom unit total}]]></textFieldExpression>
+			</textField>			
+									 			<textField isBlankWhenNull="true">
+				<reportElement x="2210" y="0" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{condom old}]]></textFieldExpression>
+			</textField>			
+									 			<textField isBlankWhenNull="true">
+				<reportElement x="2265" y="0" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{injectable absoulate new}]]></textFieldExpression>
+			</textField>			
+									 			<textField isBlankWhenNull="true">
+				<reportElement x="2320" y="0" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{injectable left new method taken}]]></textFieldExpression>
+			</textField>			
+									 			<textField isBlankWhenNull="true">
+				<reportElement x="2375" y="0" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{injectable left none taken}]]></textFieldExpression>
+			</textField>			
+									 			<textField isBlankWhenNull="true">
+				<reportElement x="2430" y="0" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{injectable new}]]></textFieldExpression>
+			</textField>			
+									 			<textField isBlankWhenNull="true">
+				<reportElement x="2485" y="0" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{injectable unit total}]]></textFieldExpression>
+			</textField>			
+									 			<textField isBlankWhenNull="true">
+				<reportElement x="2540" y="0" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{injectable old}]]></textFieldExpression>
+			</textField>			
+									 			<textField isBlankWhenNull="true">
+				<reportElement x="2595" y="0" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{elco absoulate new}]]></textFieldExpression>
+			</textField>			
+									 			<textField isBlankWhenNull="true">
+				<reportElement x="2650" y="0" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{elco left new method taken}]]></textFieldExpression>
+			</textField>			
+									 			<textField isBlankWhenNull="true">
+				<reportElement x="2705" y="0" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{elco left none taken}]]></textFieldExpression>
+			</textField>			
+									 			<textField isBlankWhenNull="true">
+				<reportElement x="2760" y="0" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{elco new}]]></textFieldExpression>
+			</textField>			
+									 			<textField isBlankWhenNull="true">
+				<reportElement x="2815" y="0" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{elco unit total}]]></textFieldExpression>
+			</textField>			
+									 			<textField isBlankWhenNull="true">
+				<reportElement x="2870" y="0" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{elco old}]]></textFieldExpression>
+			</textField>			
+								</band>
+	</detail>
+	<columnFooter>
+		<band height="22" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="20" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

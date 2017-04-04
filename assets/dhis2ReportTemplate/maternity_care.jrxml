@@ -1,0 +1,731 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="dpt" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+			<field name="periodid" class="java.lang.String"/>
+		<field name="periodname" class="java.lang.String"/>
+		<field name="periodcode" class="java.lang.String"/>
+		<field name="perioddescription" class="java.lang.String"/>
+		<field name="reporting_month_name" class="java.lang.String"/>
+		<field name="param_organisationunit_name" class="java.lang.String"/>
+		<field name="organisation_unit_is_parent" class="java.lang.String"/>
+		<field name="anc_1 information" class="java.lang.Double"/>
+		<field name="anc_1 service" class="java.lang.Double"/>
+		<field name="anc_2 information" class="java.lang.Double"/>
+		<field name="anc_2 service" class="java.lang.Double"/>
+		<field name="anc_3 information" class="java.lang.Double"/>
+		<field name="anc_3 service" class="java.lang.Double"/>
+		<field name="anc_4 information" class="java.lang.Double"/>
+		<field name="anc_4 service" class="java.lang.Double"/>
+		<field name="delivery at home delivery by trained person" class="java.lang.Double"/>
+		<field name="delivery at home delivery by not trained person" class="java.lang.Double"/>
+		<field name="delivery at hospital or clinic normal" class="java.lang.Double"/>
+		<field name="delivery at hospital or clinic cesarean" class="java.lang.Double"/>
+		<field name="preg new" class="java.lang.Double"/>
+		<field name="preg unit total" class="java.lang.Double"/>
+		<field name="preg old" class="java.lang.Double"/>
+		<field name="pnc1 clild, information" class="java.lang.Double"/>
+		<field name="pnc1 clild, service" class="java.lang.Double"/>
+		<field name="pnc1 mother, information" class="java.lang.Double"/>
+		<field name="pnc1 mother, service" class="java.lang.Double"/>
+		<field name="pnc2 clild, information" class="java.lang.Double"/>
+		<field name="pnc2 clild, service" class="java.lang.Double"/>
+		<field name="pnc2 mother, information" class="java.lang.Double"/>
+		<field name="pnc2 mother, service" class="java.lang.Double"/>
+		<field name="pnc3 clild, information" class="java.lang.Double"/>
+		<field name="pnc3 clild, service" class="java.lang.Double"/>
+		<field name="pnc3 mother, information" class="java.lang.Double"/>
+		<field name="pnc3 mother, service" class="java.lang.Double"/>
+		<field name="pnc4 clild, information" class="java.lang.Double"/>
+		<field name="pnc4 clild, service" class="java.lang.Double"/>
+		<field name="pnc4 mother, information" class="java.lang.Double"/>
+		<field name="pnc4 mother, service" class="java.lang.Double"/>
+		<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="326" splitType="Stretch">
+			<staticText>
+				<reportElement x="12" y="15" width="532" height="41" forecolor="#184F73"/>
+				<textElement textAlignment="Center">
+					<font size="24"/>
+				</textElement>
+				<text><![CDATA[maternity_care]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="12" y="67" width="253" height="20"/>
+				<textElement textAlignment="Right">
+					<font size="13"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{reporting_month_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="289" y="67" width="255" height="20"/>
+				<textElement>
+					<font size="13"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{param_organisationunit_name}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="265" y="67" width="24" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="13"/>
+				</textElement>
+				<text><![CDATA[-]]></text>
+			</staticText>
+			<bar3DChart>
+				<chart evaluationTime="Report">
+					<reportElement x="12" y="114" width="532" height="210"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<categoryDataset>
+					<dataset>
+						<incrementWhenExpression><![CDATA[$F{organisation_unit_is_parent}.equals( "Yes" )]]></incrementWhenExpression>
+					</dataset>
+																																																																																					<categorySeries>
+						<seriesExpression><![CDATA["anc_1 Information"]]></seriesExpression>
+						<categoryExpression><![CDATA[""]]></categoryExpression>
+						<valueExpression><![CDATA[$F{anc_1 information}]]></valueExpression>
+					</categorySeries>
+																				<categorySeries>
+						<seriesExpression><![CDATA["anc_1 Service"]]></seriesExpression>
+						<categoryExpression><![CDATA[""]]></categoryExpression>
+						<valueExpression><![CDATA[$F{anc_1 service}]]></valueExpression>
+					</categorySeries>
+																				<categorySeries>
+						<seriesExpression><![CDATA["anc_2 Information"]]></seriesExpression>
+						<categoryExpression><![CDATA[""]]></categoryExpression>
+						<valueExpression><![CDATA[$F{anc_2 information}]]></valueExpression>
+					</categorySeries>
+																				<categorySeries>
+						<seriesExpression><![CDATA["anc_2 Service"]]></seriesExpression>
+						<categoryExpression><![CDATA[""]]></categoryExpression>
+						<valueExpression><![CDATA[$F{anc_2 service}]]></valueExpression>
+					</categorySeries>
+																				<categorySeries>
+						<seriesExpression><![CDATA["anc_3 Information"]]></seriesExpression>
+						<categoryExpression><![CDATA[""]]></categoryExpression>
+						<valueExpression><![CDATA[$F{anc_3 information}]]></valueExpression>
+					</categorySeries>
+																				<categorySeries>
+						<seriesExpression><![CDATA["anc_3 Service"]]></seriesExpression>
+						<categoryExpression><![CDATA[""]]></categoryExpression>
+						<valueExpression><![CDATA[$F{anc_3 service}]]></valueExpression>
+					</categorySeries>
+																				<categorySeries>
+						<seriesExpression><![CDATA["anc_4 Information"]]></seriesExpression>
+						<categoryExpression><![CDATA[""]]></categoryExpression>
+						<valueExpression><![CDATA[$F{anc_4 information}]]></valueExpression>
+					</categorySeries>
+																				<categorySeries>
+						<seriesExpression><![CDATA["anc_4 Service"]]></seriesExpression>
+						<categoryExpression><![CDATA[""]]></categoryExpression>
+						<valueExpression><![CDATA[$F{anc_4 service}]]></valueExpression>
+					</categorySeries>
+																				<categorySeries>
+						<seriesExpression><![CDATA["delivery at home Delivery By Trained person"]]></seriesExpression>
+						<categoryExpression><![CDATA[""]]></categoryExpression>
+						<valueExpression><![CDATA[$F{delivery at home delivery by trained person}]]></valueExpression>
+					</categorySeries>
+																				<categorySeries>
+						<seriesExpression><![CDATA["delivery at home Delivery By not trained person"]]></seriesExpression>
+						<categoryExpression><![CDATA[""]]></categoryExpression>
+						<valueExpression><![CDATA[$F{delivery at home delivery by not trained person}]]></valueExpression>
+					</categorySeries>
+																				<categorySeries>
+						<seriesExpression><![CDATA["delivery at hospital or clinic Normal"]]></seriesExpression>
+						<categoryExpression><![CDATA[""]]></categoryExpression>
+						<valueExpression><![CDATA[$F{delivery at hospital or clinic normal}]]></valueExpression>
+					</categorySeries>
+																				<categorySeries>
+						<seriesExpression><![CDATA["delivery at hospital or clinic cesarean"]]></seriesExpression>
+						<categoryExpression><![CDATA[""]]></categoryExpression>
+						<valueExpression><![CDATA[$F{delivery at hospital or clinic cesarean}]]></valueExpression>
+					</categorySeries>
+																				<categorySeries>
+						<seriesExpression><![CDATA["preg New"]]></seriesExpression>
+						<categoryExpression><![CDATA[""]]></categoryExpression>
+						<valueExpression><![CDATA[$F{preg new}]]></valueExpression>
+					</categorySeries>
+																				<categorySeries>
+						<seriesExpression><![CDATA["preg Unit Total"]]></seriesExpression>
+						<categoryExpression><![CDATA[""]]></categoryExpression>
+						<valueExpression><![CDATA[$F{preg unit total}]]></valueExpression>
+					</categorySeries>
+																				<categorySeries>
+						<seriesExpression><![CDATA["preg old"]]></seriesExpression>
+						<categoryExpression><![CDATA[""]]></categoryExpression>
+						<valueExpression><![CDATA[$F{preg old}]]></valueExpression>
+					</categorySeries>
+																				<categorySeries>
+						<seriesExpression><![CDATA["pnc1 Clild, Information"]]></seriesExpression>
+						<categoryExpression><![CDATA[""]]></categoryExpression>
+						<valueExpression><![CDATA[$F{pnc1 clild, information}]]></valueExpression>
+					</categorySeries>
+																				<categorySeries>
+						<seriesExpression><![CDATA["pnc1 Clild, Service"]]></seriesExpression>
+						<categoryExpression><![CDATA[""]]></categoryExpression>
+						<valueExpression><![CDATA[$F{pnc1 clild, service}]]></valueExpression>
+					</categorySeries>
+																				<categorySeries>
+						<seriesExpression><![CDATA["pnc1 Mother, Information"]]></seriesExpression>
+						<categoryExpression><![CDATA[""]]></categoryExpression>
+						<valueExpression><![CDATA[$F{pnc1 mother, information}]]></valueExpression>
+					</categorySeries>
+																				<categorySeries>
+						<seriesExpression><![CDATA["pnc1 Mother, Service"]]></seriesExpression>
+						<categoryExpression><![CDATA[""]]></categoryExpression>
+						<valueExpression><![CDATA[$F{pnc1 mother, service}]]></valueExpression>
+					</categorySeries>
+																				<categorySeries>
+						<seriesExpression><![CDATA["pnc2 Clild, Information"]]></seriesExpression>
+						<categoryExpression><![CDATA[""]]></categoryExpression>
+						<valueExpression><![CDATA[$F{pnc2 clild, information}]]></valueExpression>
+					</categorySeries>
+																				<categorySeries>
+						<seriesExpression><![CDATA["pnc2 Clild, Service"]]></seriesExpression>
+						<categoryExpression><![CDATA[""]]></categoryExpression>
+						<valueExpression><![CDATA[$F{pnc2 clild, service}]]></valueExpression>
+					</categorySeries>
+																				<categorySeries>
+						<seriesExpression><![CDATA["pnc2 Mother, Information"]]></seriesExpression>
+						<categoryExpression><![CDATA[""]]></categoryExpression>
+						<valueExpression><![CDATA[$F{pnc2 mother, information}]]></valueExpression>
+					</categorySeries>
+																				<categorySeries>
+						<seriesExpression><![CDATA["pnc2 Mother, Service"]]></seriesExpression>
+						<categoryExpression><![CDATA[""]]></categoryExpression>
+						<valueExpression><![CDATA[$F{pnc2 mother, service}]]></valueExpression>
+					</categorySeries>
+																				<categorySeries>
+						<seriesExpression><![CDATA["pnc3 Clild, Information"]]></seriesExpression>
+						<categoryExpression><![CDATA[""]]></categoryExpression>
+						<valueExpression><![CDATA[$F{pnc3 clild, information}]]></valueExpression>
+					</categorySeries>
+																				<categorySeries>
+						<seriesExpression><![CDATA["pnc3 Clild, Service"]]></seriesExpression>
+						<categoryExpression><![CDATA[""]]></categoryExpression>
+						<valueExpression><![CDATA[$F{pnc3 clild, service}]]></valueExpression>
+					</categorySeries>
+																				<categorySeries>
+						<seriesExpression><![CDATA["pnc3 Mother, Information"]]></seriesExpression>
+						<categoryExpression><![CDATA[""]]></categoryExpression>
+						<valueExpression><![CDATA[$F{pnc3 mother, information}]]></valueExpression>
+					</categorySeries>
+																				<categorySeries>
+						<seriesExpression><![CDATA["pnc3 Mother, Service"]]></seriesExpression>
+						<categoryExpression><![CDATA[""]]></categoryExpression>
+						<valueExpression><![CDATA[$F{pnc3 mother, service}]]></valueExpression>
+					</categorySeries>
+																				<categorySeries>
+						<seriesExpression><![CDATA["pnc4 Clild, Information"]]></seriesExpression>
+						<categoryExpression><![CDATA[""]]></categoryExpression>
+						<valueExpression><![CDATA[$F{pnc4 clild, information}]]></valueExpression>
+					</categorySeries>
+																				<categorySeries>
+						<seriesExpression><![CDATA["pnc4 Clild, Service"]]></seriesExpression>
+						<categoryExpression><![CDATA[""]]></categoryExpression>
+						<valueExpression><![CDATA[$F{pnc4 clild, service}]]></valueExpression>
+					</categorySeries>
+																				<categorySeries>
+						<seriesExpression><![CDATA["pnc4 Mother, Information"]]></seriesExpression>
+						<categoryExpression><![CDATA[""]]></categoryExpression>
+						<valueExpression><![CDATA[$F{pnc4 mother, information}]]></valueExpression>
+					</categorySeries>
+																				<categorySeries>
+						<seriesExpression><![CDATA["pnc4 Mother, Service"]]></seriesExpression>
+						<categoryExpression><![CDATA[""]]></categoryExpression>
+						<valueExpression><![CDATA[$F{pnc4 mother, service}]]></valueExpression>
+					</categorySeries>
+														</categoryDataset>
+				<bar3DPlot isShowLabels="true">
+					<plot/>
+					<itemLabel color="#000000" backgroundColor="#FFFFFF"/>
+					<categoryAxisFormat>
+						<axisFormat>
+							<labelFont/>
+							<tickLabelFont/>
+						</axisFormat>
+					</categoryAxisFormat>
+					<valueAxisFormat>
+						<axisFormat>
+							<labelFont/>
+							<tickLabelFont/>
+						</axisFormat>
+					</valueAxisFormat>
+				</bar3DPlot>
+			</bar3DChart>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="15" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="51" splitType="Stretch">
+									 			<staticText>
+				<reportElement x="10" y="26" width="110" height="20"/>
+				<textElement >
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Period]]></text>
+			</staticText>
+									 			<staticText>
+				<reportElement x="120" y="26" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[anc_1 Information]]></text>
+			</staticText>
+									 			<staticText>
+				<reportElement x="175" y="26" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[anc_1 Service]]></text>
+			</staticText>
+									 			<staticText>
+				<reportElement x="230" y="26" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[anc_2 Information]]></text>
+			</staticText>
+									 			<staticText>
+				<reportElement x="285" y="26" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[anc_2 Service]]></text>
+			</staticText>
+									 			<staticText>
+				<reportElement x="340" y="26" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[anc_3 Information]]></text>
+			</staticText>
+									 			<staticText>
+				<reportElement x="395" y="26" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[anc_3 Service]]></text>
+			</staticText>
+									 			<staticText>
+				<reportElement x="450" y="26" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[anc_4 Information]]></text>
+			</staticText>
+									 			<staticText>
+				<reportElement x="505" y="26" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[anc_4 Service]]></text>
+			</staticText>
+									 			<staticText>
+				<reportElement x="560" y="26" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[delivery at home Delivery By Trained person]]></text>
+			</staticText>
+									 			<staticText>
+				<reportElement x="615" y="26" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[delivery at home Delivery By not trained person]]></text>
+			</staticText>
+									 			<staticText>
+				<reportElement x="670" y="26" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[delivery at hospital or clinic Normal]]></text>
+			</staticText>
+									 			<staticText>
+				<reportElement x="725" y="26" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[delivery at hospital or clinic cesarean]]></text>
+			</staticText>
+									 			<staticText>
+				<reportElement x="780" y="26" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[preg New]]></text>
+			</staticText>
+									 			<staticText>
+				<reportElement x="835" y="26" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[preg Unit Total]]></text>
+			</staticText>
+									 			<staticText>
+				<reportElement x="890" y="26" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[preg old]]></text>
+			</staticText>
+									 			<staticText>
+				<reportElement x="945" y="26" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[pnc1 Clild, Information]]></text>
+			</staticText>
+									 			<staticText>
+				<reportElement x="1000" y="26" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[pnc1 Clild, Service]]></text>
+			</staticText>
+									 			<staticText>
+				<reportElement x="1055" y="26" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[pnc1 Mother, Information]]></text>
+			</staticText>
+									 			<staticText>
+				<reportElement x="1110" y="26" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[pnc1 Mother, Service]]></text>
+			</staticText>
+									 			<staticText>
+				<reportElement x="1165" y="26" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[pnc2 Clild, Information]]></text>
+			</staticText>
+									 			<staticText>
+				<reportElement x="1220" y="26" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[pnc2 Clild, Service]]></text>
+			</staticText>
+									 			<staticText>
+				<reportElement x="1275" y="26" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[pnc2 Mother, Information]]></text>
+			</staticText>
+									 			<staticText>
+				<reportElement x="1330" y="26" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[pnc2 Mother, Service]]></text>
+			</staticText>
+									 			<staticText>
+				<reportElement x="1385" y="26" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[pnc3 Clild, Information]]></text>
+			</staticText>
+									 			<staticText>
+				<reportElement x="1440" y="26" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[pnc3 Clild, Service]]></text>
+			</staticText>
+									 			<staticText>
+				<reportElement x="1495" y="26" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[pnc3 Mother, Information]]></text>
+			</staticText>
+									 			<staticText>
+				<reportElement x="1550" y="26" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[pnc3 Mother, Service]]></text>
+			</staticText>
+									 			<staticText>
+				<reportElement x="1605" y="26" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[pnc4 Clild, Information]]></text>
+			</staticText>
+									 			<staticText>
+				<reportElement x="1660" y="26" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[pnc4 Clild, Service]]></text>
+			</staticText>
+									 			<staticText>
+				<reportElement x="1715" y="26" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[pnc4 Mother, Information]]></text>
+			</staticText>
+									 			<staticText>
+				<reportElement x="1770" y="26" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[pnc4 Mother, Service]]></text>
+			</staticText>
+									<line>
+				<reportElement x="10" y="44" width="1825" height="1"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="21" splitType="Stretch">
+									 			<textField isBlankWhenNull="true">
+				<reportElement x="10" y="0" width="110" height="20"/>
+				<textElement >
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{periodname}]]></textFieldExpression>
+			</textField>			
+									 			<textField isBlankWhenNull="true">
+				<reportElement x="120" y="0" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{anc_1 information}]]></textFieldExpression>
+			</textField>			
+									 			<textField isBlankWhenNull="true">
+				<reportElement x="175" y="0" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{anc_1 service}]]></textFieldExpression>
+			</textField>			
+									 			<textField isBlankWhenNull="true">
+				<reportElement x="230" y="0" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{anc_2 information}]]></textFieldExpression>
+			</textField>			
+									 			<textField isBlankWhenNull="true">
+				<reportElement x="285" y="0" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{anc_2 service}]]></textFieldExpression>
+			</textField>			
+									 			<textField isBlankWhenNull="true">
+				<reportElement x="340" y="0" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{anc_3 information}]]></textFieldExpression>
+			</textField>			
+									 			<textField isBlankWhenNull="true">
+				<reportElement x="395" y="0" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{anc_3 service}]]></textFieldExpression>
+			</textField>			
+									 			<textField isBlankWhenNull="true">
+				<reportElement x="450" y="0" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{anc_4 information}]]></textFieldExpression>
+			</textField>			
+									 			<textField isBlankWhenNull="true">
+				<reportElement x="505" y="0" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{anc_4 service}]]></textFieldExpression>
+			</textField>			
+									 			<textField isBlankWhenNull="true">
+				<reportElement x="560" y="0" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{delivery at home delivery by trained person}]]></textFieldExpression>
+			</textField>			
+									 			<textField isBlankWhenNull="true">
+				<reportElement x="615" y="0" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{delivery at home delivery by not trained person}]]></textFieldExpression>
+			</textField>			
+									 			<textField isBlankWhenNull="true">
+				<reportElement x="670" y="0" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{delivery at hospital or clinic normal}]]></textFieldExpression>
+			</textField>			
+									 			<textField isBlankWhenNull="true">
+				<reportElement x="725" y="0" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{delivery at hospital or clinic cesarean}]]></textFieldExpression>
+			</textField>			
+									 			<textField isBlankWhenNull="true">
+				<reportElement x="780" y="0" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{preg new}]]></textFieldExpression>
+			</textField>			
+									 			<textField isBlankWhenNull="true">
+				<reportElement x="835" y="0" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{preg unit total}]]></textFieldExpression>
+			</textField>			
+									 			<textField isBlankWhenNull="true">
+				<reportElement x="890" y="0" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{preg old}]]></textFieldExpression>
+			</textField>			
+									 			<textField isBlankWhenNull="true">
+				<reportElement x="945" y="0" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{pnc1 clild, information}]]></textFieldExpression>
+			</textField>			
+									 			<textField isBlankWhenNull="true">
+				<reportElement x="1000" y="0" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{pnc1 clild, service}]]></textFieldExpression>
+			</textField>			
+									 			<textField isBlankWhenNull="true">
+				<reportElement x="1055" y="0" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{pnc1 mother, information}]]></textFieldExpression>
+			</textField>			
+									 			<textField isBlankWhenNull="true">
+				<reportElement x="1110" y="0" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{pnc1 mother, service}]]></textFieldExpression>
+			</textField>			
+									 			<textField isBlankWhenNull="true">
+				<reportElement x="1165" y="0" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{pnc2 clild, information}]]></textFieldExpression>
+			</textField>			
+									 			<textField isBlankWhenNull="true">
+				<reportElement x="1220" y="0" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{pnc2 clild, service}]]></textFieldExpression>
+			</textField>			
+									 			<textField isBlankWhenNull="true">
+				<reportElement x="1275" y="0" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{pnc2 mother, information}]]></textFieldExpression>
+			</textField>			
+									 			<textField isBlankWhenNull="true">
+				<reportElement x="1330" y="0" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{pnc2 mother, service}]]></textFieldExpression>
+			</textField>			
+									 			<textField isBlankWhenNull="true">
+				<reportElement x="1385" y="0" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{pnc3 clild, information}]]></textFieldExpression>
+			</textField>			
+									 			<textField isBlankWhenNull="true">
+				<reportElement x="1440" y="0" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{pnc3 clild, service}]]></textFieldExpression>
+			</textField>			
+									 			<textField isBlankWhenNull="true">
+				<reportElement x="1495" y="0" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{pnc3 mother, information}]]></textFieldExpression>
+			</textField>			
+									 			<textField isBlankWhenNull="true">
+				<reportElement x="1550" y="0" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{pnc3 mother, service}]]></textFieldExpression>
+			</textField>			
+									 			<textField isBlankWhenNull="true">
+				<reportElement x="1605" y="0" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{pnc4 clild, information}]]></textFieldExpression>
+			</textField>			
+									 			<textField isBlankWhenNull="true">
+				<reportElement x="1660" y="0" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{pnc4 clild, service}]]></textFieldExpression>
+			</textField>			
+									 			<textField isBlankWhenNull="true">
+				<reportElement x="1715" y="0" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{pnc4 mother, information}]]></textFieldExpression>
+			</textField>			
+									 			<textField isBlankWhenNull="true">
+				<reportElement x="1770" y="0" width="55" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{pnc4 mother, service}]]></textFieldExpression>
+			</textField>			
+								</band>
+	</detail>
+	<columnFooter>
+		<band height="22" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="20" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>
