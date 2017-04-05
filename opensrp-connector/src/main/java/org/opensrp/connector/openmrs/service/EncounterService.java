@@ -102,11 +102,16 @@ public class EncounterService extends OpenmrsService{
 
     	JSONObject pr = userService.getPersonByUser(e.getProviderId());
     	if(pr == null){
-        	pr = userService.getProvider(e.getProviderId());
-        	if(pr == null){
-    		throw new IllegalStateException("Provider "+e.getProviderId()+" not found in OpenMRS for event "+e.getId());
-        	}
+    		try{
+    			pr = userService.getProviderByUuid(e.getProviderId());
+    		}catch(Exception ee){}
         }
+    	if(pr == null){
+        	pr = userService.getProvider(e.getProviderId());
+    	}
+    	if(pr == null){
+    		throw new IllegalStateException("No provider found in OpenMRS for event "+e.getId()+" for provider "+e.getProviderId());
+    	}
     	
 		JSONObject enc = new JSONObject();
 		// some dates throw org.joda.time.IllegalInstantException: Cannot parse \"2002-04-07\": 
@@ -255,8 +260,11 @@ public class EncounterService extends OpenmrsService{
 			//.withFormSubmissionId(formSubmissionId)//TODO
 			.withLocationId(encounter.getJSONObject("location").getString("name"))
 			//TODO manage providers and uuid in couch
-			.withProviderId(encounter.getJSONArray("encounterProviders").getJSONObject(0).getJSONObject("provider").getString("uuid"))
 			.withVoided(encounter.getBoolean("voided"));
+		
+		if(encounter.has("encounterProviders") && encounter.getJSONArray("encounterProviders").length()>0){
+			e.withProviderId(encounter.getJSONArray("encounterProviders").getJSONObject(0).getJSONObject("provider").getString("uuid"));
+		}
 		
 		e.addIdentifier(OPENMRS_UUID_IDENTIFIER_TYPE, encounter.getString("uuid"));
 		

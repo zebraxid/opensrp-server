@@ -212,6 +212,8 @@
 										<arg value="http://${host}:${port}/${couchdb.db.provider}" />
 										<arg value="http://${host}:${port}/${couchdb.db.location}" />
 										<arg value="http://${host}:${port}/${couchdb.db.form}" />
+										<arg value="http://${host}:${port}/${couchdb.db.atomfeed}" />
+										<arg value="http://${host}:${port}/${couchdb.db.activitylog}" />
 										<arg value="http://${host}:${port}/${couchdb.db.motech-scheduletracking}" />
 									</exec>
 									<echo message="Dropping Couch DBs: END" />

@@ -64,6 +64,10 @@
         <constructor-arg value="${couchdb.db.error}"/>
         <constructor-arg ref="couchDbInstance"/>
     </bean>
+    <bean id="activityLogDatabaseConnector" class="org.ektorp.impl.StdCouchDbConnector">
+        <constructor-arg value="${couchdb.db.activitylog}"/>
+        <constructor-arg ref="couchDbInstance"/>
+    </bean>
     <bean id="opensrpMCTSDatabaseConnector" class="org.ektorp.impl.StdCouchDbConnector">
         <constructor-arg value="${couchdb.db.mcts}"/>
         <constructor-arg ref="couchDbInstance"/>

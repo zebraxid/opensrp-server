@@ -9,8 +9,11 @@ import org.ektorp.support.View;
 import org.joda.time.DateTime;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.opensrp.domain.ActivityLog;
+import org.opensrp.domain.Client;
 import org.opensrp.domain.Event;
 import org.opensrp.domain.Obs;
+import org.opensrp.repository.AllActivityLogs;
 import org.opensrp.repository.AllEvents;
 import org.opensrp.util.DateTimeTypeConverter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,11 +26,13 @@ import com.google.gson.GsonBuilder;
 public class EventService {
 
 	private final AllEvents allEvents;
+	private final AllActivityLogs allLogs;
 	
 	@Autowired
-	public EventService(AllEvents allEvents)
+	public EventService(AllEvents allEvents, AllActivityLogs allLogs)
 	{
 		this.allEvents = allEvents;
+		this.allLogs = allLogs;
 	}
 	
 	public List<Event> findAllByIdentifier(String identifier) {
@@ -47,6 +52,10 @@ public class EventService {
 	}
 	
 	public Event find(String uniqueId){
+		if(allEvents.contains(uniqueId)){
+			return allEvents.get(uniqueId);
+		}
+		
 		List<Event> el = allEvents.findAllByIdentifier(uniqueId);
 		if(el.size() > 1){
 			throw new IllegalArgumentException("Multiple events with identifier "+uniqueId+" exist.");
@@ -82,7 +91,7 @@ public class EventService {
 		return null;
 	}
 	
-	public synchronized Event addEvent(Event event)
+	public synchronized Event addEvent(Event event, String activityCategory)
 	{
 		Event e = find(event);
 		if(e != null){
@@ -91,10 +100,13 @@ public class EventService {
 
 		event.setDateCreated(DateTime.now());
 		allEvents.add(event);
+		
+		allLogs.add(new ActivityLog("Event Added from Service", event.getId(), Event.class.getName(), event.getId(), "EVENT_ADD", activityCategory, null, DateTime.now(), null));
+
 		return event;
 	}
 	
-	public void updateEvent(Event updatedEvent)
+	public void updateEvent(Event updatedEvent, String activityCategory)
 	{
 		// If update is on original entity
 		if(updatedEvent.isNew()){
@@ -103,11 +115,13 @@ public class EventService {
 		
 		updatedEvent.setDateEdited(DateTime.now());
 				
+		allLogs.add(new ActivityLog("Event Updated from Service", updatedEvent.getId(), Event.class.getName(), updatedEvent.getId(), "EVENT_EDITED", activityCategory, null, DateTime.now(), null));
+
 		allEvents.update(updatedEvent);					
 	}
 	
 	//TODO Review and add test cases as well
-	public Event mergeEvent(Event updatedEvent) 
+	public Event mergeEvent(Event updatedEvent, String activityCategory) 
 	{
 		try{
 			Event original = find(updatedEvent);
@@ -151,6 +165,9 @@ public class EventService {
 	
 			original.setDateEdited(DateTime.now());
 			allEvents.update(original);
+
+			allLogs.add(new ActivityLog("Event Merged from Service", original.getId(), Event.class.getName(), original.getId(), "EVENT_MERGED", activityCategory, null, DateTime.now(), null));
+
 			return original;
 		}
 		catch(JSONException e){

@@ -9,6 +9,7 @@ import java.util.Map;
 import org.joda.time.LocalDate;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.opensrp.common.AllConstants.ActivityLogConstants;
 import org.opensrp.domain.Client;
 import org.opensrp.domain.Event;
 import org.opensrp.form.domain.FormSubmission;
@@ -132,9 +133,9 @@ public class FormSubmissionProcessor{
 		if(formEntityConverter.hasUpdatedClientProperties(submission)){
 			Client c = formEntityConverter.getClientFromFormSubmission(submission);
 			if(clientService.findClient(c) != null){
-				clientService.mergeClient(c);
+				clientService.mergeClient(c, ActivityLogConstants.OpenSRPClientActionCategory);
 			}
-			else clientService.addClient(c);
+			else clientService.addClient(c, ActivityLogConstants.OpenSRPClientActionCategory);
 		}
 		
 		Event e = formEntityConverter.getEventFromFormSubmission(submission);
@@ -142,7 +143,7 @@ public class FormSubmissionProcessor{
 		if(clientService.getByBaseEntityId(e.getBaseEntityId()) == null){
 			throw new IllegalStateException("No client was found in DB with ID "+e.getBaseEntityId()+". Did you forget client mapping in form");
 		}
-		eventService.addEvent(e);
+		eventService.addEvent(e, ActivityLogConstants.OpenSRPEventActionCategory);
 
 		// TODO relationships b/w entities
 
@@ -152,16 +153,16 @@ public class FormSubmissionProcessor{
 			Client cin = (Client)cm.get("client");
 			if(cin != null){// Only new clients would exist in map
 				if(clientService.findClient(cin) != null){
-					clientService.mergeClient(cin);
+					clientService.mergeClient(cin, ActivityLogConstants.OpenSRPClientActionCategory);
 				}
-				else clientService.addClient(cin);
+				else clientService.addClient(cin, ActivityLogConstants.OpenSRPClientActionCategory);
 			}
 			Event evin = (Event)cm.get("event");
 			//check whether person exists and user did not miss client properties unintentionally 
 			if(clientService.getByBaseEntityId(evin.getBaseEntityId()) == null){
 				throw new IllegalStateException("No client was found in DB with Subform Client ID "+evin.getBaseEntityId()+". Did you forget client mapping in form");
 			}
-			eventService.addEvent(evin);
+			eventService.addEvent(evin, ActivityLogConstants.OpenSRPEventActionCategory);
 		}
 	}
     

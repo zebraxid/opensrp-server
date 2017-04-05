@@ -10,16 +10,19 @@ import org.json.JSONObject;
 import org.motechproject.scheduler.domain.MotechEvent;
 import org.motechproject.scheduletracking.api.domain.Enrollment;
 import org.motechproject.server.event.annotations.MotechListener;
+import org.opensrp.common.AllConstants.ActivityLogConstants;
 import org.opensrp.connector.openmrs.constants.OpenmrsConstants;
 import org.opensrp.connector.openmrs.constants.OpenmrsConstants.SchedulerConfig;
 import org.opensrp.connector.openmrs.service.EncounterService;
 import org.opensrp.connector.openmrs.service.OpenmrsOrderService;
 import org.opensrp.connector.openmrs.service.OpenmrsSchedulerService;
 import org.opensrp.connector.openmrs.service.PatientService;
+import org.opensrp.domain.ActivityLog;
 import org.opensrp.domain.AppStateToken;
 import org.opensrp.domain.Client;
 import org.opensrp.domain.Drug;
 import org.opensrp.domain.Event;
+import org.opensrp.repository.AllActivityLogs;
 import org.opensrp.repository.AllDrugs;
 import org.opensrp.scheduler.service.ActionService;
 import org.opensrp.scheduler.service.ScheduleService;
@@ -44,6 +47,7 @@ public class OpenmrsSyncerListener {
 	private ClientService clientService;
 	private OpenmrsOrderService openmrsOrderService;
 	private AllDrugs allDrugs;
+	private AllActivityLogs allLogs;
 	
 	@Autowired
 	public OpenmrsSyncerListener(OpenmrsSchedulerService openmrsSchedulerService, 
@@ -51,7 +55,8 @@ public class OpenmrsSyncerListener {
 			ConfigService config, ErrorTraceService errorTraceService,
 			PatientService patientService, EncounterService encounterService,
 			OpenmrsOrderService openmrsOrderService,
-			ClientService clientService, EventService eventService, AllDrugs allDrugs) {
+			ClientService clientService, EventService eventService, 
+			AllDrugs allDrugs, AllActivityLogs allLogs) {
 		this.openmrsSchedulerService = openmrsSchedulerService;
 		this.opensrpScheduleService = opensrpScheduleService;
 		this.actionService = actionService;
@@ -63,6 +68,7 @@ public class OpenmrsSyncerListener {
 		this.eventService = eventService;
 		this.clientService = clientService;
 		this.allDrugs = allDrugs;
+		this.allLogs = allLogs;
 		
 		this.config.registerAppStateToken(SchedulerConfig.openmrs_syncer_sync_schedule_tracker_by_last_update_enrollment, 
 				0, "ScheduleTracker token to keep track of enrollment synced with OpenMRS", true);
@@ -70,16 +76,8 @@ public class OpenmrsSyncerListener {
 		this.config.registerAppStateToken(SchedulerConfig.openmrs_syncer_sync_client_by_date_updated, 
 				0, "OpenMRS data pusher token to keep track of new / updated clients synced with OpenMRS", true);
 		
-		this.config.registerAppStateToken(SchedulerConfig.openmrs_syncer_sync_client_by_date_voided, 
-				0, "OpenMRS data pusher token to keep track of voided clients synced with OpenMRS", true);
-		
 		this.config.registerAppStateToken(SchedulerConfig.openmrs_syncer_sync_event_by_date_updated, 
 				0, "OpenMRS data pusher token to keep track of new / updated events synced with OpenMRS", true);
-		
-		this.config.registerAppStateToken(SchedulerConfig.openmrs_syncer_sync_event_by_date_voided, 
-				0, "OpenMRS data pusher token to keep track of voided events synced with OpenMRS", true);
-
-
 	}
 	
     @MotechListener(subjects = OpenmrsConstants.SCHEDULER_TRACKER_SYNCER_SUBJECT)
@@ -127,21 +125,28 @@ public class OpenmrsSyncerListener {
 			
     		System.out.println("START "+start+" , END "+end);
 
-			List<Client> cl = clientService.findAllByTimestamp(start, end);
-			System.out.println("Clients list size "+cl.size());
-			for (Client c : cl) {
+			List<ActivityLog> activities = allLogs.findAllByCategory(ActivityLogConstants.OpenSRPClientActionCategory, start, end);
+			
+			System.out.println("Clients activities list size "+activities.size());
+			
+			for (ActivityLog activity : activities) {
+				Client c = clientService.find(activity.getUniqueIdentifier());
 				try{
 					String uuid = c.getIdentifier(PatientService.OPENMRS_UUID_IDENTIFIER_TYPE);
 					
-	    			if(uuid == null){
+	    			if(uuid == null){//if not synced with openmrs yet find if any other id exists there
 	    				JSONObject p = patientService.getPatientByIdentifier(c.getBaseEntityId());
+	    				
+	    				if(p == null){ //if base entity id not found there check other ids
 	    				for (Entry<String, String> id : c.getIdentifiers().entrySet()) {
 	    					p = patientService.getPatientByIdentifier(id.getValue());
 	    					if(p != null){
 	    						break;
 	    					}
 						}
-	    				if(p != null){
+	    				}
+	    				
+	    				if(p != null){// if found in openmrs get uuid to update rather than creating new patient
 	    					uuid = p.getString("uuid");
 	    				}
 	    			}
@@ -150,7 +155,9 @@ public class OpenmrsSyncerListener {
 	    				patientService.updatePatient(c, uuid);
 	    			}
 	    			else {
-	    				System.out.println(patientService.createPatient(c));
+	    				// ideally we should keep a reference of openmrs uuid here but update is an expensive operation 
+	    				// so leaving it for atomfeed pull incase record is modified on openmrs end
+	    				patientService.createPatient(c);
 	    			}
 				}
 				catch(Exception ex1){
@@ -166,15 +173,18 @@ public class OpenmrsSyncerListener {
 	    	start = lastsync==null||lastsync.getValue()==null?new DateTime().minusYears(33):new DateTime(lastsync.stringValue());
 			end = new DateTime();
 			
-			List<Event> el = eventService.findAllByTimestamp(start, end);
-			for (Event e : el) {
+			List<ActivityLog> eventActiviteis = allLogs.findAllByCategory(ActivityLogConstants.OpenSRPEventActionCategory, start, end);
+			for (ActivityLog eventActivity : eventActiviteis) {
+				Event e = eventService.find(eventActivity.getUniqueIdentifier());
 				try{
 					String uuid = e.getIdentifier(EncounterService.OPENMRS_UUID_IDENTIFIER_TYPE);
 	    			if(uuid != null){
 	    				encounterService.updateEncounter(e);
 	    			}
 	    			else {
-	    				System.out.println(encounterService.createEncounter(e));
+	    				// we can keep a reference to openmrs encounter but update is expensive 
+	    				// so leaving it for atomfeed incase event is updated on openmrs end
+	    				encounterService.createEncounter(e);
 	    			}
 				}
 				catch(Exception ex2){

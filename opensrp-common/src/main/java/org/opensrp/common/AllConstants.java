@@ -14,14 +14,20 @@ public class AllConstants {
     public static final String MULTIMEDIA_DATABASE_CONNECTOR = "multimediaDatabaseConnector";
     public static final String PROVIDER_DATABASE_CONNECTOR = "providerDatabaseConnector";
     public static final String OPENSRP_MCTS_DATABASE_CONNECTOR = "opensrpMCTSDatabaseConnector";
+    public static final String OPENSRP_ERRORTRACE_DATABASE="opensrpErrorTraceDatabaseConnector";
+    public static final String ACTIVITY_LOG_DATABASE="activityLogDatabaseConnector";
     public static final String SPACE = " ";
     public static final String BOOLEAN_TRUE_VALUE = "true";
     public static final String BOOLEAN_FALSE_VALUE = "false";
     public static final String AUTO_CLOSE_PNC_CLOSE_REASON = "Auto Close PNC";
     public static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd";
     public static final String EMPTY_STRING = "";
-    public static final String OPENSRP_ERRORTRACE_DATABASE="opensrpErrorTraceDatabaseConnector";
 
+    public static class ActivityLogConstants {
+		public static final String OpenSRPClientActionCategory = "Client";
+		public static final String OpenSRPEventActionCategory = "Event";
+	}
+    
     public static class BaseEntity{
     	public static final String BASE_ENTITY_ID = "baseEntityId";
     	public static final String ADDRESS_TYPE = "addressType";

@@ -4,6 +4,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.logging.Logger;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.ict4h.atomfeed.client.AtomFeedProperties;
 import org.ict4h.atomfeed.client.domain.Event;
 import org.ict4h.atomfeed.client.repository.AllFailedEvents;
@@ -19,6 +20,8 @@ import org.opensrp.connector.atomfeed.AtomfeedService;
 import org.opensrp.connector.openmrs.constants.OpenmrsConstants;
 import org.opensrp.connector.openmrs.service.EncounterService;
 import org.opensrp.connector.openmrs.service.OpenmrsService;
+import org.opensrp.domain.DrugOrder;
+import org.opensrp.service.ErrorTraceService;
 import org.opensrp.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -37,11 +40,12 @@ public class EncounterAtomfeed extends OpenmrsService implements EventWorker, At
 	private AtomFeedClient client;
 	private EncounterService encounterService;
 	private EventService eventService;
-	
+	private ErrorTraceService errorTraceService;
+
 	@Autowired
 	public EncounterAtomfeed(AllMarkers allMarkers, AllFailedEvents allFailedEvents, 
 			@Value("#{opensrp['openmrs.url']}") String baseUrl, EncounterService encounterService,
-			EventService eventService) throws URISyntaxException {
+			EventService eventService, ErrorTraceService errorTraceService) throws URISyntaxException {
 		if(baseUrl != null){
 			OPENMRS_BASE_URL = baseUrl;
 		}
@@ -60,6 +64,7 @@ public class EncounterAtomfeed extends OpenmrsService implements EventWorker, At
 		
 		this.encounterService = encounterService;
 		this.eventService = eventService;
+		this.errorTraceService = errorTraceService;
 	}
 	
 	@Override
@@ -72,20 +77,20 @@ public class EncounterAtomfeed extends OpenmrsService implements EventWorker, At
 				throw new RuntimeException("Encounter uuid specified in atomfeed content ("+content+") did not return any encounter.");
 			}
 			
-			log.info(e.toString());
+//			log.info(e.toString());
 			
 			org.opensrp.domain.Event enc = encounterService.convertToEvent(e);
 			org.opensrp.domain.Event existing = eventService.find(e.getString("uuid"));
 			if(existing == null){
 				log.info("New Event");
-				eventService.addEvent(enc);
+				eventService.addEvent(enc, "OpenMRS_Event");
 			}
 			else {
 				log.info("Update existing Event");
-				enc = eventService.mergeEvent(enc);
+				enc = eventService.mergeEvent(enc, "OpenMRS_Event");
 			}
 		} catch (JSONException e) {
-			throw new RuntimeException(e);
+			errorTraceService.log("ENCOUNTER ATOMFEED PROCESS FAIL", org.opensrp.domain.Event.class.getName(), event.getContent(), ExceptionUtils.getStackTrace(e), null);
 		}
 	}
 

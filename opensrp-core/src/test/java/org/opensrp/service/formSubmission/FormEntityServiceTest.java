@@ -86,8 +86,8 @@ public class FormEntityServiceTest extends TestResourceLoader{
         fsp.processFormSubmission(fs);
 
         InOrder inOrder = inOrder(clientService, eventService, schService, ziggyService, formSubmissionRouter);
-        inOrder.verify(clientService, atLeastOnce()).addClient(any(Client.class));
-        inOrder.verify(eventService, atLeastOnce()).addEvent(any(Event.class));
+        inOrder.verify(clientService, atLeastOnce()).addClient(any(Client.class), any(String.class));
+        inOrder.verify(eventService, atLeastOnce()).addEvent(any(Event.class), any(String.class));
         inOrder.verify(schService).enroll(fs.entityId(), "FW CENSUS", "FW CENSUS", "2015-05-07", fs.instanceId());
         inOrder.verify(ziggyService).isZiggyCompliant(fs.bindType());
         inOrder.verify(formSubmissionRouter).route(fs);
@@ -109,8 +109,8 @@ public class FormEntityServiceTest extends TestResourceLoader{
         inOrder.verify(formEntityConverter).getClientFromFormSubmission(fs);
         inOrder.verify(formEntityConverter).getEventFromFormSubmission(fs);
         inOrder.verify(formEntityConverter).getDependentClientsFromFormSubmission(fs);
-        inOrder.verify(clientService, atLeastOnce()).addClient(any(Client.class));
-        inOrder.verify(eventService, atLeastOnce()).addEvent(any(Event.class));
+        inOrder.verify(clientService, atLeastOnce()).addClient(any(Client.class), any(String.class));
+        inOrder.verify(eventService, atLeastOnce()).addEvent(any(Event.class), any(String.class));
         inOrder.verify(schService).enroll(fs.entityId(), "TT 4", "tt4", "2017-03-25", fs.instanceId());
         inOrder.verify(ziggyService).isZiggyCompliant(fs.bindType());
         inOrder.verify(formSubmissionRouter).route(fs);
@@ -133,8 +133,8 @@ public class FormEntityServiceTest extends TestResourceLoader{
         fsp.processFormSubmission(fs);
 
         InOrder inOrder = inOrder(clientService, eventService, schService, ziggyService, formSubmissionRouter);
-        inOrder.verify(clientService, atLeastOnce()).addClient(any(Client.class));
-        inOrder.verify(eventService, atLeastOnce()).addEvent(any(Event.class));
+        inOrder.verify(clientService, atLeastOnce()).addClient(any(Client.class), any(String.class));
+        inOrder.verify(eventService, atLeastOnce()).addEvent(any(Event.class), any(String.class));
         inOrder.verify(schService).enroll(fs.entityId(), "FW CENSUS", "FW CENSUS", "2015-05-07", fs.instanceId());
         inOrder.verify(ziggyService).isZiggyCompliant(fs.bindType());
         inOrder.verify(ziggyService).saveForm(Utils.getZiggyParams(fs), new Gson().toJson(fs.instance()));

@@ -34,6 +34,7 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.opensrp.common.AllConstants.ActivityLogConstants;
 import org.opensrp.common.Gender;
 import org.opensrp.domain.Address;
 import org.opensrp.domain.Client;
@@ -77,7 +78,7 @@ public class AllClientsIntegrationTest {
 					.withTown(i%5==0?"Korangi":"Garhi Yasin"));
 			c.withAttribute("at1", "atval"+i);
 			
-			clientService.addClient(c);
+			clientService.addClient(c, ActivityLogConstants.OpenSRPClientActionCategory);
 		}
 	}
 	
@@ -90,7 +91,7 @@ public class AllClientsIntegrationTest {
 		c.withAddress(new Address().withAddressType("usual_residence").withCityVillage("city").withTown("town"));
 		c.withAttribute("at1", "atval1");
 		
-		c = clientService.addClient(c);
+		c = clientService.addClient(c, ActivityLogConstants.OpenSRPClientActionCategory);
 		
 		Client cu = new Client("eid0")
 			.withGender("FEMALE")
@@ -98,7 +99,7 @@ public class AllClientsIntegrationTest {
 		cu.withAddress(new Address().withAddressType("deathplace").withCityVillage("city").withTown("town"));
 		cu.withAttribute("at2", "atval2");
 
-		clientService.mergeClient(cu);
+		clientService.mergeClient(cu, ActivityLogConstants.OpenSRPClientActionCategory);
 	}
 	
 	@Test
@@ -110,7 +111,7 @@ public class AllClientsIntegrationTest {
 				.withAddressType("usual_residence")
 				.withCityVillage("Karachi")
 				.withTown("Korangi"));
-			clientService.addClient(c);
+			clientService.addClient(c, ActivityLogConstants.OpenSRPClientActionCategory);
 		}
 		List<Client> result = clientService.findAllByAddress("Usual_residence", "cityVillage", "Karachi", DateTime.now().minusDays(1), DateTime.now());
 		assertEquals(20, result.size());
@@ -190,7 +191,7 @@ public class AllClientsIntegrationTest {
 			ac.add(c);
 		}
 		else {
-			clientService.addClient(c);
+			clientService.addClient(c, ActivityLogConstants.OpenSRPClientActionCategory);
 		}
 	}
 	
@@ -208,7 +209,7 @@ public class AllClientsIntegrationTest {
 		c.withAttribute("ETHNICITY", "Mughal");
 		c.withIdentifier("Program ID", "01001222");
 		
-		clientService.addClient(c);
+		clientService.addClient(c, ActivityLogConstants.OpenSRPClientActionCategory);
 		
 		Client ce = clientService.getByBaseEntityId("testclient2");
 		assertEquals("testclient2", ce.getBaseEntityId());
@@ -240,7 +241,7 @@ public class AllClientsIntegrationTest {
 		c.withAttribute("ETHNICITY", "Mughal");
 		c.withIdentifier("Program ID", "01001222");
 		
-		clientService.addClient(c);
+		clientService.addClient(c, ActivityLogConstants.OpenSRPClientActionCategory);
 		
 		c = new Client("testclient3")
 		.withBirthdate(new DateTime(), false)
@@ -251,7 +252,7 @@ public class AllClientsIntegrationTest {
 		c.withAttribute("ETHNICITY", "Mughal");
 		c.addIdentifier("Program ID", "01001223");
 		
-		clientService.addClient(c);
+		clientService.addClient(c, ActivityLogConstants.OpenSRPClientActionCategory);
 		
 		List<Client> ce = clientService.findAllByAttribute("ETHNICITY", "Mughal", DateTime.now().minusYears(11), DateTime.now());
 		assertTrue(ce.size() == 2);

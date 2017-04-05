@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.lucene.search.Query;
 import org.joda.time.DateTime;
+import org.opensrp.common.AllConstants.ActivityLogConstants;
 import org.opensrp.domain.Event;
 import org.opensrp.service.ClientService;
 import org.opensrp.service.EventService;
@@ -45,7 +46,7 @@ public class EventResource extends RestResource<Event>{
 	
 	@Override
     public Event create(Event o) {
-		return eventService.addEvent(o);
+		return eventService.addEvent(o, ActivityLogConstants.OpenSRPEventActionCategory);
 	}
 
 	@Override
@@ -63,7 +64,7 @@ public class EventResource extends RestResource<Event>{
 	
 	@Override
 	public Event update(Event entity) {
-		return eventService.mergeEvent(entity);
+		return eventService.mergeEvent(entity, ActivityLogConstants.OpenSRPEventActionCategory);
 	}
 	
 	public static void main(String[] args) {

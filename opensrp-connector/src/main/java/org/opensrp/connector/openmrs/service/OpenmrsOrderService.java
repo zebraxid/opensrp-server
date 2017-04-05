@@ -1,10 +1,10 @@
 package org.opensrp.connector.openmrs.service;
 
+import static org.opensrp.connector.JsonUtil.getValue;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static org.opensrp.connector.JsonUtil.*;
 
 import org.joda.time.DateTime;
 import org.json.JSONArray;
@@ -17,11 +17,8 @@ import org.opensrp.domain.DrugOrder;
 import org.opensrp.domain.User;
 import org.opensrp.repository.AllDrugs;
 import org.opensrp.service.ClientService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.mysql.jdbc.StringUtils;
-
-
 
 @Service
 public class OpenmrsOrderService extends OpenmrsService{
@@ -34,14 +31,11 @@ public class OpenmrsOrderService extends OpenmrsService{
 	private ClientService clientService;
 	private AllDrugs allDrugs;
 	
-	public OpenmrsOrderService() {
-	
-	}
-
 	public OpenmrsOrderService(String openmrsUrl, String user, String password) {
     	super(openmrsUrl, user, password);
 	}
 	
+	@Autowired
 	public OpenmrsOrderService(ClientService clientService, AllDrugs allDrugs) {
 		this.clientService = clientService;
 		this.allDrugs = allDrugs;
@@ -150,6 +144,15 @@ public class OpenmrsOrderService extends OpenmrsService{
 		
 		List<Drug> drugL = allDrugs.findAllByCode(drugUuid);
 		String drugId = drugL.size()>0?drugL.get(0).getId():null;
+		
+		if(drugId == null){
+			Drug drug = toDrug(getDrug(drugUuid));
+			allDrugs.add(drug);
+			
+			drugL = allDrugs.findAllByCode(drugUuid);
+			drugId = drugL.size()>0?drugL.get(0).getId():null;
+		}
+		
 		if(drugId == null){
 			throw new IllegalAccessError("Drug was not found in opensrp while importing drug order "+drugOrder);
 		}

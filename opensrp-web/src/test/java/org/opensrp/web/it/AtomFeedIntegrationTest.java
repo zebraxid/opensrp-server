@@ -38,6 +38,7 @@ import org.opensrp.connector.openmrs.service.EncounterService;
 import org.opensrp.repository.AllClients;
 import org.opensrp.repository.AllEvents;
 import org.opensrp.service.ClientService;
+import org.opensrp.service.ErrorTraceService;
 import org.opensrp.service.EventService;
 import org.opensrp.web.controller.TestResourceLoader;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,6 +72,9 @@ public class AtomFeedIntegrationTest extends TestResourceLoader {
 	@Autowired
 	private AllFailedEventsCouchImpl allFailedEvents;
 	
+	@Autowired
+	private ErrorTraceService errorTraceService;
+	
 	
 	@Before
 	public void setup(){
@@ -84,9 +88,9 @@ public class AtomFeedIntegrationTest extends TestResourceLoader {
 
 	@Test
     public void shouldReadEventsCreatedEvents() throws URISyntaxException {
-		PatientAtomfeed paf = new PatientAtomfeed(allMarkers, allFailedEvents, openmrsOpenmrsUrl, patientService, clientService);
+		PatientAtomfeed paf = new PatientAtomfeed(allMarkers, allFailedEvents, openmrsOpenmrsUrl, patientService, clientService, errorTraceService);
 
-		EncounterAtomfeed eaf = new EncounterAtomfeed(allMarkers, allFailedEvents, openmrsOpenmrsUrl, encounterService, eventService);
+		EncounterAtomfeed eaf = new EncounterAtomfeed(allMarkers, allFailedEvents, openmrsOpenmrsUrl, encounterService, eventService, errorTraceService);
 		if(pushToOpenmrsForTest){
 			paf.processEvents();
 

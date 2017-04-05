@@ -5,6 +5,7 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.ict4h.atomfeed.client.AtomFeedProperties;
 import org.ict4h.atomfeed.client.domain.Event;
 import org.ict4h.atomfeed.client.repository.AllFailedEvents;
@@ -23,6 +24,7 @@ import org.opensrp.connector.openmrs.service.OpenmrsService;
 import org.opensrp.domain.Drug;
 import org.opensrp.domain.DrugOrder;
 import org.opensrp.repository.AllDrugOrders;
+import org.opensrp.service.ErrorTraceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -39,11 +41,13 @@ public class DrugOrderAtomfeed extends OpenmrsService implements EventWorker, At
 
 	private OpenmrsOrderService orderService;
 	private AllDrugOrders allDrugOrders;
+	private ErrorTraceService errorTraceService;
 
 	@Autowired
 	public DrugOrderAtomfeed(AllMarkers allMarkers, AllFailedEvents allFailedEvents, 
 			@Value("#{opensrp['openmrs.url']}") String baseUrl, 
-			OpenmrsOrderService orderService, AllDrugOrders allDrugOrders) throws URISyntaxException {
+			OpenmrsOrderService orderService, AllDrugOrders allDrugOrders, 
+			ErrorTraceService errorTraceService) throws URISyntaxException {
 		if(baseUrl != null){
 			OPENMRS_BASE_URL = baseUrl;
 		}
@@ -62,6 +66,7 @@ public class DrugOrderAtomfeed extends OpenmrsService implements EventWorker, At
 	
 		this.orderService = orderService;
 		this.allDrugOrders = allDrugOrders;
+		this.errorTraceService = errorTraceService;
 	}
 	
 	@Override
@@ -82,13 +87,12 @@ public class DrugOrderAtomfeed extends OpenmrsService implements EventWorker, At
 				allDrugOrders.merge(existingL.get(0).getId(), drugO);
 			}
 		} catch (JSONException e) {
-			throw new RuntimeException(e);
+			errorTraceService.log("DRUG ORDER ATOMFEED PROCESS FAIL", DrugOrder.class.getName(), event.getContent(), ExceptionUtils.getStackTrace(e), null);
 		}
 	}
 
 	@Override
 	public void cleanUp(Event event) {
-		// TODO Auto-generated method stub
 		
 	}
 

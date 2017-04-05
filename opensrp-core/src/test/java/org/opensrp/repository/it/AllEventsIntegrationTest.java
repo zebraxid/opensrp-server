@@ -10,6 +10,7 @@ import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.opensrp.common.AllConstants.ActivityLogConstants;
 import org.opensrp.domain.Event;
 import org.opensrp.domain.Obs;
 import org.opensrp.repository.AllEvents;
@@ -50,7 +51,7 @@ public class AllEventsIntegrationTest {
 			e.addObs(new Obs("concept", "txt", "1030AAAAAAAAAAAAAAAA", null, "2015-01-01", "2015-01-01" , "comments test"+i, "measles2"));
 			e.addObs(new Obs("concept", "txt", "1029AAAAAAAAAAAAAAAA", null, "2015-01-01", "2015-01-01" , "comments test"+i, "tt1"));
 			e.addObs(new Obs("concept", "txt", "1030AAAAAAAAAAAAAAAA", null, "2016-02-01", "2015-01-01" , "comments test"+i, "tt2"));
-			eventService.addEvent(e);
+			eventService.addEvent(e, ActivityLogConstants.OpenSRPEventActionCategory);
 		}
 	}
 }

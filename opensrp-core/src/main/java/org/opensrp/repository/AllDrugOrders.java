@@ -17,6 +17,7 @@ import org.opensrp.domain.DrugOrder;
 import org.opensrp.util.DateTimeTypeConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 import com.google.gson.Gson;
@@ -25,8 +26,10 @@ import com.google.gson.GsonBuilder;
 @Repository
 public class AllDrugOrders extends MotechBaseRepository<DrugOrder> {
 	@Autowired
-	protected AllDrugOrders(@Qualifier(AllConstants.DRUG_ORDER_DATABASE_CONNECTOR) CouchDbConnector db) {
+	protected AllDrugOrders(@Value("#{opensrp['couchdb.opensrp-db.revision-limit']}") int revisionLimit,
+			@Qualifier(AllConstants.DRUG_ORDER_DATABASE_CONNECTOR) CouchDbConnector db) {
 		super(DrugOrder.class, db);
+		db.setRevisionLimit(revisionLimit);
 	}
 
 	@GenerateView

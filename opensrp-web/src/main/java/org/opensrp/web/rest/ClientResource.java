@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.lucene.search.Query;
 import org.bytedeco.javacpp.opencv_core.RefOrVoid.type;
 import org.joda.time.DateTime;
+import org.opensrp.common.AllConstants.ActivityLogConstants;
 import org.opensrp.domain.Client;
 import org.opensrp.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +40,7 @@ public class ClientResource extends RestResource<Client>{
 	
 	@Override
     public Client create(Client o) {
-		return clientService.addClient(o);
+		return clientService.addClient(o, ActivityLogConstants.OpenSRPClientActionCategory);
 	}
 
 	@Override
@@ -54,7 +55,7 @@ public class ClientResource extends RestResource<Client>{
 
 	@Override
 	public Client update(Client entity) {//TODO check if send property and id matches
-		return clientService.mergeClient(entity);//TODO update should only be based on baseEntityId
+		return clientService.mergeClient(entity, ActivityLogConstants.OpenSRPClientActionCategory);//TODO update should only be based on baseEntityId
 	}
 	
 	//TODO lookinto Swagger https://slack-files.com/files-pri-safe/T0EPSEJE9-F0TBD0N77/integratingswagger.pdf?c=1458211183-179d2bfd2e974585c5038fba15a86bf83097810a

@@ -6,6 +6,7 @@ import java.util.UUID;
 import java.util.logging.Logger;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.ict4h.atomfeed.client.AtomFeedProperties;
 import org.ict4h.atomfeed.client.domain.Event;
 import org.ict4h.atomfeed.client.repository.AllFailedEvents;
@@ -22,7 +23,9 @@ import org.opensrp.connector.openmrs.constants.OpenmrsConstants;
 import org.opensrp.connector.openmrs.service.OpenmrsService;
 import org.opensrp.connector.openmrs.service.PatientService;
 import org.opensrp.domain.Client;
+import org.opensrp.domain.DrugOrder;
 import org.opensrp.service.ClientService;
+import org.opensrp.service.ErrorTraceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -39,10 +42,12 @@ public class PatientAtomfeed extends OpenmrsService implements EventWorker, Atom
 
 	private PatientService patientService;
 	private ClientService clientService;
+	private ErrorTraceService errorTraceService;
 
 	@Autowired
 	public PatientAtomfeed(AllMarkers allMarkers, AllFailedEvents allFailedEvents, 
-			@Value("#{opensrp['openmrs.url']}") String baseUrl, PatientService patientService, ClientService clientService) throws URISyntaxException {
+			@Value("#{opensrp['openmrs.url']}") String baseUrl, PatientService patientService, 
+			ClientService clientService, ErrorTraceService errorTraceService) throws URISyntaxException {
 		if(baseUrl != null){
 			OPENMRS_BASE_URL = baseUrl;
 		}
@@ -61,6 +66,7 @@ public class PatientAtomfeed extends OpenmrsService implements EventWorker, Atom
 	
 		this.patientService = patientService;
 		this.clientService = clientService;
+		this.errorTraceService = errorTraceService;
 	}
 	
 	@Override
@@ -76,14 +82,14 @@ public class PatientAtomfeed extends OpenmrsService implements EventWorker, Atom
 			Client existing = clientService.findClient(c);
 			if(existing == null){
 				c.setBaseEntityId(UUID.randomUUID().toString());
-				clientService.addClient(c);
+				clientService.addClient(c, "OpenMRS_Client");
 
 				JSONObject newId = patientService.addThriveId(c.getBaseEntityId(), p);
 				log.info("New Client -> Posted Thrive ID back to OpenMRS : "+newId);
 			}
 			else {
 				String srpIdInOpenmrs = c.getBaseEntityId();
-				Client cmerged = clientService.mergeClient(c);
+				Client cmerged = clientService.mergeClient(c, "OpenMRS_Client");
 				//TODO what if in any case thrive id is assigned to some other patient 
 				if(StringUtils.isBlank(srpIdInOpenmrs) || !srpIdInOpenmrs.equalsIgnoreCase(cmerged.getBaseEntityId())){
 					// if openmrs doesnot have openSRP UID or have a different UID then update
@@ -92,7 +98,7 @@ public class PatientAtomfeed extends OpenmrsService implements EventWorker, Atom
 				}
 			}
 		} catch (JSONException e) {
-			throw new RuntimeException(e);
+			errorTraceService.log("PATIENT ATOMFEED PROCESS FAIL", Client.class.getName(), event.getContent(), ExceptionUtils.getStackTrace(e), null);
 		}
 	}
 

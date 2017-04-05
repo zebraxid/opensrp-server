@@ -17,6 +17,7 @@ import org.apache.commons.codec.binary.Base64;
 import org.joda.time.DateTime;
 import org.joda.time.Weeks;
 import org.json.JSONException;
+import org.opensrp.common.AllConstants.ActivityLogConstants;
 import org.opensrp.connector.openmrs.service.EncounterService;
 import org.opensrp.connector.openmrs.service.PatientService;
 import org.opensrp.domain.Client;
@@ -94,7 +95,7 @@ static Map<String, String[]> vs = new HashMap<String, String[]>(){{
 		c.setGender(gender);
 		c.setBirthdate(new DateTime(birthdate));
 		
-		clientService.addClient(c);
+		clientService.addClient(c, ActivityLogConstants.OpenSRPClientActionCategory);
 		
 		res.put("SUCESS", true);
 		res.put("SUCCESS", true);
@@ -188,7 +189,7 @@ static Map<String, String[]> vs = new HashMap<String, String[]>(){{
 			values.add(date);
 			e.addObs(new Obs("concept", "txt", "1025AAAAAAAAAAAAAAAA", null, values, values , "", vaccine));
 
-			eventService.addEvent(e);
+			eventService.addEvent(e, ActivityLogConstants.OpenSRPEventActionCategory);
 			resp.put("SUCCESS", Boolean.toString(true));
 			return resp;
 		}
@@ -252,7 +253,7 @@ static Map<String, String[]> vs = new HashMap<String, String[]>(){{
 
 			Event e = fec.getEventFromFormSubmission(fs);
 		
-			eventService.addEvent(e);
+			eventService.addEvent(e, ActivityLogConstants.OpenSRPEventActionCategory);
 			
 			try{
 				System.out.println("Creating Encounter");

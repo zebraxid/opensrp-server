@@ -75,8 +75,8 @@ public class FormSubmissionProcessorTest extends TestResourceLoader{
 		for (SubFormData e : submission.subForms()) {
 			totalEntities += e.instances().size();
 		}
-		verify(clientService, times(totalEntities-1)).addClient(any(Client.class));
-		verify(eventService, times(totalEntities)).addEvent(any(Event.class));
+		verify(clientService, times(totalEntities-1)).addClient(any(Client.class), any(String.class));
+		verify(eventService, times(totalEntities)).addEvent(any(Event.class), any(String.class));
 		verify(scheduleService, times(totalEntities-1)).enrollIntoSchedule(any(String.class), 
 				eq("Boosters"), eq("REMINDER"), any(String.class), eq(submission.getInstanceId()));
 	}
@@ -88,10 +88,10 @@ public class FormSubmissionProcessorTest extends TestResourceLoader{
 		
 		fsp.processFormSubmission(submission);
 		
-		verify(clientService, times(0)).addClient(any(Client.class));
-		verify(clientService, times(0)).mergeClient(any(Client.class));
+		verify(clientService, times(0)).addClient(any(Client.class), any(String.class));
+		verify(clientService, times(0)).mergeClient(any(Client.class), any(String.class));
 		verify(clientService, times(1)).getByBaseEntityId(any(String.class));
-		verify(eventService, times(1)).addEvent(any(Event.class));
+		verify(eventService, times(1)).addEvent(any(Event.class), any(String.class));
 	}
 	
 	@Test(expected=IllegalStateException.class)
@@ -100,8 +100,8 @@ public class FormSubmissionProcessorTest extends TestResourceLoader{
 		
 		fsp.processFormSubmission(submission);
 		
-		verify(clientService, times(0)).addClient(any(Client.class));
-		verify(clientService, times(1)).mergeClient(any(Client.class));
+		verify(clientService, times(0)).addClient(any(Client.class), any(String.class));
+		verify(clientService, times(1)).mergeClient(any(Client.class), any(String.class));
 		verify(clientService, times(1)).getByBaseEntityId(any(String.class));
 	}
 	
@@ -115,10 +115,10 @@ public class FormSubmissionProcessorTest extends TestResourceLoader{
 		
 		fsp.processFormSubmission(submission);
 		
-		verify(clientService, times(0)).addClient(any(Client.class));
-		verify(clientService, times(1)).mergeClient(any(Client.class));
+		verify(clientService, times(0)).addClient(any(Client.class), any(String.class));
+		verify(clientService, times(1)).mergeClient(any(Client.class), any(String.class));
 		verify(clientService, times(1)).getByBaseEntityId(any(String.class));
-		verify(eventService, times(1)).addEvent(any(Event.class));
+		verify(eventService, times(1)).addEvent(any(Event.class), any(String.class));
 	}
 	
 	@Test
@@ -131,18 +131,18 @@ public class FormSubmissionProcessorTest extends TestResourceLoader{
 		
 		fsp.processFormSubmission(submission);
 		// only main client would be saved
-		verify(clientService, times(1)).mergeClient(any(Client.class));
+		verify(clientService, times(1)).mergeClient(any(Client.class), any(String.class));
 		verify(clientService, times(1)).getByBaseEntityId(any(String.class));
-		verify(eventService, times(1)).addEvent(any(Event.class));
+		verify(eventService, times(1)).addEvent(any(Event.class), any(String.class));
 		
 		verify(clientService, times(1)).getByBaseEntityId(any(String.class));
-		verify(eventService, times(1)).addEvent(any(Event.class));
+		verify(eventService, times(1)).addEvent(any(Event.class), any(String.class));
 		
 		verify(clientService, times(1)).getByBaseEntityId(any(String.class));
-		verify(eventService, times(1)).addEvent(any(Event.class));
+		verify(eventService, times(1)).addEvent(any(Event.class), any(String.class));
 		
 		verify(clientService, times(1)).getByBaseEntityId(any(String.class));
-		verify(eventService, times(1)).addEvent(any(Event.class));
+		verify(eventService, times(1)).addEvent(any(Event.class), any(String.class));
 	}
 	
 }

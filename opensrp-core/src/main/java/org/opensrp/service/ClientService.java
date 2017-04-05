@@ -7,9 +7,11 @@ import java.util.List;
 import org.joda.time.DateTime;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.opensrp.domain.ActivityLog;
 import org.opensrp.domain.Address;
 import org.opensrp.domain.Client;
 import org.opensrp.domain.RelationShip;
+import org.opensrp.repository.AllActivityLogs;
 import org.opensrp.repository.AllClients;
 import org.opensrp.util.DateTimeTypeConverter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,11 +24,13 @@ import com.google.gson.GsonBuilder;
 @Service
 public class ClientService {
 	private final AllClients allClients;
+	private final AllActivityLogs allLogs;
 	
 	@Autowired
-	public ClientService(AllClients allClients)
+	public ClientService(AllClients allClients, AllActivityLogs allLogs)
 	{
 		this.allClients = allClients;
+		this.allLogs = allLogs;
 	}
 	
 	public Client getByBaseEntityId(String baseEntityId)
@@ -58,7 +62,7 @@ public class ClientService {
 		return allClients.findByDynamicQuery(query, sort, limit, skip);
 	}
 	
-	public Client addClient(Client client)
+	public Client addClient(Client client, String activityCategory)
 	{
 		if(client.getBaseEntityId() == null){
 			throw new RuntimeException("No baseEntityId");
@@ -70,6 +74,9 @@ public class ClientService {
 		
 		client.setDateCreated(DateTime.now());
 		allClients.add(client);
+		
+		allLogs.add(new ActivityLog("Client Added from Service", client.getId(), Client.class.getName(), client.getBaseEntityId(), "CLIENT_ADD", activityCategory, null, DateTime.now(), null));
+		
 		return client;
 	}
 	
@@ -113,7 +120,7 @@ public class ClientService {
 		return c;
 	}
 	
-	public void updateClient(Client updatedClient) throws JSONException
+	public void updateClient(Client updatedClient, String activityCategory) throws JSONException
 	{
 		// If update is on original entity
 		if(updatedClient.isNew()){
@@ -126,9 +133,11 @@ public class ClientService {
 		
 		updatedClient.setDateEdited(DateTime.now());
 		allClients.update(updatedClient);
+		
+		allLogs.add(new ActivityLog("Client Updated from Service", updatedClient.getId(), Client.class.getName(), updatedClient.getBaseEntityId(), "CLIENT_EDITED", activityCategory, null, DateTime.now(), null));
 	}
 	
-	public Client mergeClient(Client updatedClient) 
+	public Client mergeClient(Client updatedClient, String activityCategory) 
 	{
 		try{
 		Client original = findClient(updatedClient);
@@ -177,6 +186,9 @@ public class ClientService {
 
 		original.setDateEdited(DateTime.now());
 		allClients.update(original);
+		
+		allLogs.add(new ActivityLog("Client Merged from Service", original.getId(), Client.class.getName(), original.getBaseEntityId(), "CLIENT_MERGED", activityCategory, null, DateTime.now(), null));
+
 		return original;
 		}
 		catch(JSONException e){

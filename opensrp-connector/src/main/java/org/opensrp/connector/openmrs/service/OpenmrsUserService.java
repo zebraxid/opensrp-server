@@ -93,6 +93,11 @@ public class OpenmrsUserService extends OpenmrsService{
 		return obj;
 	}
 	
+	public JSONObject getProviderByUuid(String uuid) throws JSONException{
+		HttpResponse op = HttpUtil.get(HttpUtil.removeEndingSlash(OPENMRS_BASE_URL)+"/"+PROVIDER_URL+"/"+uuid, "v=full", OPENMRS_USER, OPENMRS_PWD);
+		return new JSONObject(op.body());
+	}
+	
 	public JSONObject createProvider(String existingUsername, String identifier) throws JSONException
 	{
 		JSONObject p = new JSONObject();
