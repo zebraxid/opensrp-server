@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2017-04-06T17:16:32 -->
+<!-- 2017-04-06T17:22:02 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="dgfp" pageWidth="595" pageHeight="5000" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="18da28e8-8b84-4338-9702-bcbbd0dd689f">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
@@ -181,7 +181,7 @@
 				<reportElement x="491" y="701" width="1" height="567" uuid="12ae168b-7f71-44b9-90db-cdd08c2ea91a"/>
 			</line>
 			<line>
-				<reportElement stretchType="ContainerHeight" x="425" y="700" width="1" height="568" uuid="84fff115-ec7f-4b8a-8894-af8f830f1f47"/>
+				<reportElement x="425" y="700" width="1" height="568" uuid="84fff115-ec7f-4b8a-8894-af8f830f1f47"/>
 			</line>
 			<line>
 				<reportElement x="237" y="721" width="1" height="56" uuid="510f6c3c-fca8-4d51-b141-f27c8e6f84af"/>
@@ -239,7 +239,7 @@
 				<text><![CDATA[Total Number of pregnant in Unit]]></text>
 			</staticText>
 			<staticText>
-				<reportElement stretchType="ContainerBottom" x="25" y="835" width="25" height="140" uuid="fece9e94-715f-4acb-9325-e10bdb8c4b96"/>
+				<reportElement x="25" y="835" width="25" height="140" uuid="fece9e94-715f-4acb-9325-e10bdb8c4b96"/>
 				<textElement rotation="Left" markup="none"/>
 				<text><![CDATA[Antnatal Care Information]]></text>
 			</staticText>
@@ -343,7 +343,7 @@ Clinic]]></text>
 				<text><![CDATA[Visit-4(Inside 42-48 days)]]></text>
 			</staticText>
 			<staticText>
-				<reportElement stretchType="ContainerBottom" x="28" y="1079" width="25" height="140" uuid="d03cdcb3-0d36-4435-83e6-260a10554bdd"/>
+				<reportElement x="28" y="1079" width="25" height="140" uuid="d03cdcb3-0d36-4435-83e6-260a10554bdd"/>
 				<textElement rotation="Left" markup="none"/>
 				<text><![CDATA[Postnatal Care Information]]></text>
 			</staticText>
@@ -369,7 +369,7 @@ Clinic]]></text>
 				<text><![CDATA[Information]]></text>
 			</staticText>
 			<line>
-				<reportElement stretchType="ContainerHeight" x="430" y="1376" width="1" height="568" uuid="586fc911-9166-4798-bdda-7501c7054ab3"/>
+				<reportElement x="430" y="1376" width="1" height="568" uuid="586fc911-9166-4798-bdda-7501c7054ab3"/>
 			</line>
 			<staticText>
 				<reportElement x="240" y="1476" width="67" height="16" uuid="1ac19ec6-0372-4bf8-8228-c778cb707690"/>
@@ -390,7 +390,7 @@ Clinic]]></text>
 				<reportElement x="216" y="1397" width="1" height="72" uuid="0b09e739-5b90-41cc-a642-0f56479db294"/>
 			</line>
 			<staticText>
-				<reportElement stretchType="ContainerBottom" x="51" y="1503" width="87" height="30" uuid="c8969b6b-4a33-4739-a71d-acbb7e5b40b1"/>
+				<reportElement x="51" y="1503" width="87" height="30" uuid="c8969b6b-4a33-4739-a71d-acbb7e5b40b1"/>
 				<textElement rotation="None" markup="none"/>
 				<text><![CDATA[Number of women given TT]]></text>
 			</staticText>
@@ -506,7 +506,7 @@ Clinic]]></text>
 				<text><![CDATA[Presence in EPI session]]></text>
 			</staticText>
 			<staticText>
-				<reportElement stretchType="ContainerBottom" x="33" y="1725" width="52" height="140" uuid="d6b597f0-6f1d-4eb7-a5c6-87c41f061c9a"/>
+				<reportElement x="33" y="1725" width="52" height="140" uuid="d6b597f0-6f1d-4eb7-a5c6-87c41f061c9a"/>
 				<textElement rotation="Left" markup="none"/>
 				<text><![CDATA[Adolecence Care(10-19 years) counsiling]]></text>
 			</staticText>
@@ -555,7 +555,7 @@ Clinic]]></text>
 				<reportElement x="20" y="2143" width="553" height="1" uuid="37e75579-461a-4915-a1a3-ff76fd071ab5"/>
 			</line>
 			<line>
-				<reportElement stretchType="ContainerHeight" x="435" y="1988" width="1" height="497" uuid="f88cbcd9-7bec-472c-ae61-6c9ebd44f55d"/>
+				<reportElement x="435" y="1988" width="1" height="497" uuid="f88cbcd9-7bec-472c-ae61-6c9ebd44f55d"/>
 			</line>
 			<staticText>
 				<reportElement x="509" y="1992" width="59" height="13" uuid="843b58c0-eb48-4bb2-bd29-14fd02d8b3c3"/>
@@ -602,7 +602,7 @@ Clinic]]></text>
 				<reportElement x="104" y="2339" width="469" height="1" uuid="c45cc882-316a-4c07-9e1e-799d0902287d"/>
 			</line>
 			<staticText>
-				<reportElement stretchType="ContainerBottom" x="38" y="2209" width="52" height="140" uuid="79a3ceb8-05cf-4aea-a109-acb2012755ce"/>
+				<reportElement x="38" y="2209" width="52" height="140" uuid="79a3ceb8-05cf-4aea-a109-acb2012755ce"/>
 				<textElement rotation="Left" markup="none"/>
 				<text><![CDATA[Number of child(0-18months) recived vaccine]]></text>
 			</staticText>
@@ -737,7 +737,7 @@ Clinic]]></text>
 				<text><![CDATA[Diarrhea]]></text>
 			</staticText>
 			<staticText>
-				<reportElement stretchType="ContainerBottom" x="33" y="2028" width="35" height="111" uuid="b1cdf74f-1a6e-4bd1-b177-09fd236cd100"/>
+				<reportElement x="33" y="2028" width="35" height="111" uuid="b1cdf74f-1a6e-4bd1-b177-09fd236cd100"/>
 				<textElement rotation="Left" markup="none"/>
 				<text><![CDATA[Information of Newborn]]></text>
 			</staticText>
@@ -760,7 +760,7 @@ Clinic]]></text>
 				<reportElement x="25" y="2698" width="553" height="1" uuid="4817d223-5f09-4e8b-9c14-4e62d3707fb8"/>
 			</line>
 			<line>
-				<reportElement stretchType="ContainerHeight" x="441" y="2542" width="1" height="427" uuid="335e243e-0b58-4db3-b736-f33be8fb18a6"/>
+				<reportElement x="441" y="2542" width="1" height="427" uuid="335e243e-0b58-4db3-b736-f33be8fb18a6"/>
 			</line>
 			<staticText>
 				<reportElement x="514" y="2546" width="59" height="13" uuid="ae84535c-1ede-4fd0-a383-e28e47c6ab3f"/>
@@ -801,7 +801,7 @@ Clinic]]></text>
 				<reportElement x="109" y="2893" width="469" height="1" uuid="74e48318-a85b-41f8-aa37-d352e4c5c6c9"/>
 			</line>
 			<staticText>
-				<reportElement stretchType="ContainerBottom" x="43" y="2760" width="52" height="140" uuid="8f8e68b1-c8fc-48a8-b560-17a297c866fa"/>
+				<reportElement x="43" y="2760" width="52" height="140" uuid="8f8e68b1-c8fc-48a8-b560-17a297c866fa"/>
 				<textElement rotation="Left" markup="none"/>
 				<text><![CDATA[Number of death]]></text>
 			</staticText>
@@ -890,7 +890,7 @@ Clinic]]></text>
 				<reportElement x="25" y="2541" width="553" height="1" uuid="3a49ad90-0cc4-4784-a739-2f9152b41206"/>
 			</line>
 			<staticText>
-				<reportElement stretchType="ContainerBottom" x="145" y="2699" width="52" height="128" uuid="9b8b5c9f-4156-4644-8f01-6c3510f21524"/>
+				<reportElement x="145" y="2699" width="52" height="128" uuid="9b8b5c9f-4156-4644-8f01-6c3510f21524"/>
 				<textElement rotation="Left" markup="none"/>
 				<text><![CDATA[Number of dead child less than one year]]></text>
 			</staticText>
@@ -898,7 +898,7 @@ Clinic]]></text>
 				<reportElement x="286" y="3160" width="282" height="1" uuid="776f4fcb-c3f2-4afe-a737-5e34d8ef5764"/>
 			</line>
 			<line>
-				<reportElement stretchType="ContainerHeight" x="468" y="3036" width="1" height="255" uuid="05de50d9-7de7-41f5-a737-fccb9e75fba6"/>
+				<reportElement x="468" y="3036" width="1" height="255" uuid="05de50d9-7de7-41f5-a737-fccb9e75fba6"/>
 			</line>
 			<staticText>
 				<reportElement x="469" y="3034" width="45" height="27" uuid="31e0a3ae-21d2-470b-82ce-f1b3025e867d"/>
