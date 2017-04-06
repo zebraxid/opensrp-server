@@ -1,0 +1,130 @@
+/**
+ * @author proshanto
+ * */
+package org.opensrp.rest.services;
+
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.List;
+
+import org.json.JSONObject;
+import org.opensrp.rest.register.DTO.CommonDTO;
+import org.opensrp.rest.register.DTO.StockEntityDTO;
+import org.opensrp.rest.repository.LuceneStockRepository;
+import org.opensrp.rest.util.ConvertDateStringToTimestampMills;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.util.MultiValueMap;
+
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.introspect.VisibilityChecker;
+import com.github.ldriscoll.ektorplucene.LuceneResult;
+import com.github.ldriscoll.ektorplucene.LuceneResult.Row;
+
+@Service
+public class LuceneStockService {
+	private LuceneStockRepository luceneStockRepository;
+	private ConvertDateStringToTimestampMills convertDateStringToTimestampMills;
+	@Autowired
+	private DynamicQueryString dynamicQueryString;
+	@Autowired
+	public LuceneStockService(LuceneStockRepository luceneStockRepository,ConvertDateStringToTimestampMills convertDateStringToTimestampMills){
+		this.luceneStockRepository = luceneStockRepository;
+		this.convertDateStringToTimestampMills = convertDateStringToTimestampMills;
+	}
+	/**
+	 * This method return Members count as today, this month or this week
+	 * @param start this may be start date of a month or week
+	 * @param end   this may be end date of a month or week
+	 * */
+	
+	public CommonDTO<StockEntityDTO> getMember(MultiValueMap<String, String> queryParameters) throws JsonParseException, JsonMappingException,
+	IOException {
+		ObjectMapper mapper = new ObjectMapper();		
+		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+		mapper.setVisibilityChecker(VisibilityChecker.Std.defaultInstance()
+				.withFieldVisibility(JsonAutoDetect.Visibility.ANY));
+				
+		LuceneResult luceneResult = luceneStockRepository
+				.findDocsByProvider(dynamicQueryString.makeDynamicQueryAsString(queryParameters));
+		List<Row> rows = luceneResult.getRows();
+		List<StockEntityDTO> stocks = new ArrayList<StockEntityDTO>();
+		
+		for (Row row : rows) {
+			LinkedHashMap<String, Object> fields = row.getFields();
+			String jsonString = new JSONObject(fields).toString();
+			stocks.add(mapper.readValue(jsonString.getBytes(),
+					StockEntityDTO.class));
+		}
+		return new CommonDTO<StockEntityDTO>(stocks);
+	}
+	
+	public int getMembersCount(String start,String end){
+		if(start.equalsIgnoreCase("")){
+			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+	    	Date today = Calendar.getInstance().getTime();    	
+			String makeQueryString ="isClosed:false" + " AND " + "type:Members" + " AND " + "SUBMISSIONDATE:["+convertDateStringToTimestampMills.convertDateToTimestampMills(dateFormat.format(today))+" TO "+convertDateStringToTimestampMills.convertDateToTimestampMills(dateFormat.format(today))+"]" ;
+	    	LuceneResult result = luceneStockRepository.findDocsByProvider(makeQueryString);
+			return result.getRows().size();
+		}else{
+			String makeQueryString ="isClosed:false" + " AND " + "type:Members" + " AND " + "SUBMISSIONDATE:["+convertDateStringToTimestampMills.convertDateToTimestampMills(start)+" TO "+convertDateStringToTimestampMills.convertDateToTimestampMills(end)+"]" ;
+	    	LuceneResult result = luceneStockRepository.findDocsByProvider(makeQueryString);
+			return result.getRows().size();
+		}
+		
+		
+	}
+	
+	/**
+	 * @param queryParameters is a list of parameters.
+	 * @param p page number.
+	 * @param limit number of records to display in a page.
+	 * @return 	Member data list.
+	 * */
+	
+	public CommonDTO<StockEntityDTO> getData(MultiValueMap<String, String> queryParameters,int p,int limit) throws JsonParseException, JsonMappingException,
+	IOException {
+		ObjectMapper mapper = new ObjectMapper();		
+		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+		mapper.setVisibilityChecker(VisibilityChecker.Std.defaultInstance()
+				.withFieldVisibility(JsonAutoDetect.Visibility.ANY));		
+		LuceneResult luceneResult = luceneStockRepository
+				.getData(dynamicQueryString.makeDynamicQueryAsString(queryParameters), p,limit);
+		List<Row> rows = luceneResult.getRows();
+		 
+		List<StockEntityDTO> dataList = new ArrayList<StockEntityDTO>();
+		
+		for (Row row : rows) {
+			LinkedHashMap<String, Object> fields = row.getFields();			
+			String jsonString = new JSONObject(fields).toString();
+			dataList.add(mapper.readValue(jsonString.getBytes(),
+					StockEntityDTO.class));
+		}
+		return new CommonDTO<StockEntityDTO>(dataList);
+	}
+	
+	/**
+	 * @param queryParameters is a list of parameters.	 
+	 * @return 	Member data count.
+	 * */
+	public int getDataCount(MultiValueMap<String, String> queryParameters) throws JsonParseException, JsonMappingException,
+	IOException {
+		ObjectMapper mapper = new ObjectMapper();		
+		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+		mapper.setVisibilityChecker(VisibilityChecker.Std.defaultInstance()
+				.withFieldVisibility(JsonAutoDetect.Visibility.ANY));		
+		return luceneStockRepository
+				.getDataCount(dynamicQueryString.makeDynamicQueryAsString(queryParameters));
+	
+	}
+
+}

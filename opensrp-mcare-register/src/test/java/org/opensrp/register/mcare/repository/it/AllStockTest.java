@@ -26,7 +26,7 @@ public class AllStockTest {
 
     private CouchDbInstance dbInstance;
     private StdCouchDbConnector stdCouchDbConnector;
-    OpenmrsUserService openmrsUserService;
+    
 
 	
     @Before
@@ -43,14 +43,9 @@ public class AllStockTest {
         stdCouchDbConnector.createDatabaseIfNotExists();
         allStocks = new AllStocks(2, stdCouchDbConnector);
 
-        openmrsUserService = new OpenmrsUserService("https://103.247.238.26/openmrs/", "sohel", "Sohel@123");
-
+       
     }
-    @Test
-    public void openMRSUserTest() throws JSONException{
-    	User user =openmrsUserService.getUser("sumon");
-    	System.out.println(user);
-    }
+    
     @Test
     public void addStockTest(){
         Stock stock =new Stock();

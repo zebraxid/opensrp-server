@@ -6,8 +6,10 @@ package org.opensrp.register.mcare.repository;
 
 import java.util.List;
 
+import org.ektorp.ComplexKey;
 import org.ektorp.CouchDbConnector;
 import org.ektorp.support.GenerateView;
+import org.ektorp.support.View;
 import org.motechproject.dao.MotechBaseRepository;
 import org.opensrp.common.AllConstants;
 import org.opensrp.register.mcare.domain.Stock;
@@ -40,7 +42,18 @@ public class AllStocks extends MotechBaseRepository<Stock> {
 	}
 
 	
-	
+	@View(name = "stock_by_clientVersion_provider", map = "function(doc) { if(doc.type === 'Stock') { var x = new Date(); var y = new Date(x.getFullYear(), x.getMonth()-3, 0); var time = y.getTime(); if(doc.clientVersion > time){ emit([doc.provider,doc.clientVersion], null)} } }")
+	public List<Stock> allStocksByProviderClientVersion(String provider, String clientVersion){
+		ComplexKey start = ComplexKey.of(provider,clientVersion);
+		ComplexKey end = ComplexKey.of(provider,clientVersion);
+		List<Stock> stocks =  db.queryView(
+				createQuery("stock_by_clientVersion_provider")
+				.startKey(start)
+				.endKey(end)
+				.includeDocs(true), Stock.class);
+		
+		return stocks;
+	}
 
 
 }

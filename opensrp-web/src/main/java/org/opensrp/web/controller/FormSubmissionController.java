@@ -2,6 +2,7 @@ package org.opensrp.web.controller;
 
 import static ch.lambdaj.collection.LambdaCollections.with;
 import static java.text.MessageFormat.format;
+import static org.opensrp.common.AllConstants.Form.STOCK;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
@@ -20,7 +21,6 @@ import org.opensrp.api.domain.Client;
 import org.opensrp.api.domain.Event;
 import org.opensrp.connector.BahmniOpenmrsConnector;
 import org.opensrp.connector.OpenmrsConnector;
-import org.opensrp.connector.openmrs.constants.OpenmrsHouseHold;
 import org.opensrp.connector.openmrs.service.BahmniPatientService;
 import org.opensrp.connector.openmrs.service.EncounterService;
 import org.opensrp.connector.openmrs.service.HouseholdService;
@@ -167,7 +167,10 @@ public class FormSubmissionController {
 				});
 				for (FormSubmission formSubmission : fsl) {
 					if (openmrsConnector.isOpenmrsForm(formSubmission)) {
-						
+						if(formSubmission.formName().equalsIgnoreCase(STOCK)){
+							System.out.println("Stock submission not for openmrs.....");
+							break;
+						}
 						String p = getBahmniId(formSubmission.entityId());
 						
 						if (p != null) { // HO
