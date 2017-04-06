@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2017-04-06T17:37:04 -->
+<!-- 2017-04-06T18:10:08 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="dgfp" pageWidth="595" pageHeight="5000" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="18da28e8-8b84-4338-9702-bcbbd0dd689f">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
@@ -11,11 +11,88 @@
 	<field name="reporting_month_name" class="java.lang.String"/>
 	<field name="param_organisationunit_name" class="java.lang.String"/>
 	<field name="organisation_unit_is_parent" class="java.lang.String"/>
+	<field name="implant absoulate new" class="java.lang.Double"/>
+	<field name="implant left new method taken" class="java.lang.Double"/>
+	<field name="implant left none taken" class="java.lang.Double"/>
+	<field name="implant new" class="java.lang.Double"/>
+	<field name="implant unit total" class="java.lang.Double"/>
+	<field name="implant old" class="java.lang.Double"/>
+	<field name="iud absoulate new" class="java.lang.Double"/>
+	<field name="iud left new method taken" class="java.lang.Double"/>
+	<field name="iud left none taken" class="java.lang.Double"/>
+	<field name="iud new" class="java.lang.Double"/>
+	<field name="iud unit total" class="java.lang.Double"/>
+	<field name="iud old" class="java.lang.Double"/>
+	<field name="bc_per_f absoulate new" class="java.lang.Double"/>
+	<field name="bc_per_f left new method taken" class="java.lang.Double"/>
+	<field name="bc_per_f left none taken" class="java.lang.Double"/>
+	<field name="bc_per_f new" class="java.lang.Double"/>
+	<field name="bc_per_f unit total" class="java.lang.Double"/>
+	<field name="bc_per_f old" class="java.lang.Double"/>
+	<field name="bc_per_m absoulate new" class="java.lang.Double"/>
+	<field name="bc_per_m left new method taken" class="java.lang.Double"/>
+	<field name="bc_per_m left none taken" class="java.lang.Double"/>
+	<field name="bc_per_m new" class="java.lang.Double"/>
+	<field name="bc_per_m unit total" class="java.lang.Double"/>
+	<field name="bc_per_m old" class="java.lang.Double"/>
 	<field name="bcpill absoulate new" class="java.lang.Double"/>
 	<field name="bcpill left new method taken" class="java.lang.Double"/>
 	<field name="bcpill left none taken" class="java.lang.Double"/>
 	<field name="bcpill new" class="java.lang.Double"/>
 	<field name="bcpill unit total" class="java.lang.Double"/>
+	<field name="bcpill old" class="java.lang.Double"/>
+	<field name="health-facility default" class="java.lang.Double"/>
+	<field name="home_birth default" class="java.lang.Double"/>
+	<field name="total birth register default" class="java.lang.Double"/>
+	<field name="condom absoulate new" class="java.lang.Double"/>
+	<field name="condom left new method taken" class="java.lang.Double"/>
+	<field name="condom left none taken" class="java.lang.Double"/>
+	<field name="condom new" class="java.lang.Double"/>
+	<field name="condom unit total" class="java.lang.Double"/>
+	<field name="condom old" class="java.lang.Double"/>
+	<field name="injectable absoulate new" class="java.lang.Double"/>
+	<field name="injectable left new method taken" class="java.lang.Double"/>
+	<field name="injectable left none taken" class="java.lang.Double"/>
+	<field name="injectable new" class="java.lang.Double"/>
+	<field name="injectable unit total" class="java.lang.Double"/>
+	<field name="injectable old" class="java.lang.Double"/>
+	<field name="elco absoulate new" class="java.lang.Double"/>
+	<field name="elco left new method taken" class="java.lang.Double"/>
+	<field name="elco left none taken" class="java.lang.Double"/>
+	<field name="elco new" class="java.lang.Double"/>
+	<field name="elco unit total" class="java.lang.Double"/>
+	<field name="elco old" class="java.lang.Double"/>
+	<field name="anc_1 information" class="java.lang.Double"/>
+	<field name="anc_1 service" class="java.lang.Double"/>
+	<field name="anc_2 information" class="java.lang.Double"/>
+	<field name="anc_2 service" class="java.lang.Double"/>
+	<field name="anc_3 information" class="java.lang.Double"/>
+	<field name="anc_3 service" class="java.lang.Double"/>
+	<field name="anc_4 information" class="java.lang.Double"/>
+	<field name="anc_4 service" class="java.lang.Double"/>
+	<field name="delivery at home delivery by trained person" class="java.lang.Double"/>
+	<field name="delivery at home delivery by not trained person" class="java.lang.Double"/>
+	<field name="delivery at hospital or clinic normal" class="java.lang.Double"/>
+	<field name="delivery at hospital or clinic cesarean" class="java.lang.Double"/>
+	<field name="preg new" class="java.lang.Double"/>
+	<field name="preg unit total" class="java.lang.Double"/>
+	<field name="preg old" class="java.lang.Double"/>
+	<field name="pnc1 clild, information" class="java.lang.Double"/>
+	<field name="pnc1 clild, service" class="java.lang.Double"/>
+	<field name="pnc1 mother, information" class="java.lang.Double"/>
+	<field name="pnc1 mother, service" class="java.lang.Double"/>
+	<field name="pnc2 clild, information" class="java.lang.Double"/>
+	<field name="pnc2 clild, service" class="java.lang.Double"/>
+	<field name="pnc2 mother, information" class="java.lang.Double"/>
+	<field name="pnc2 mother, service" class="java.lang.Double"/>
+	<field name="pnc3 clild, information" class="java.lang.Double"/>
+	<field name="pnc3 clild, service" class="java.lang.Double"/>
+	<field name="pnc3 mother, information" class="java.lang.Double"/>
+	<field name="pnc3 mother, service" class="java.lang.Double"/>
+	<field name="pnc4 clild, information" class="java.lang.Double"/>
+	<field name="pnc4 clild, service" class="java.lang.Double"/>
+	<field name="pnc4 mother, information" class="java.lang.Double"/>
+	<field name="pnc4 mother, service" class="java.lang.Double"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -62,7 +139,7 @@
 			</staticText>
 			<staticText>
 				<reportElement x="172" y="69" width="80" height="20" uuid="dc0cb8ef-b040-4a20-bb91-cf4e17bfdf77"/>
-				<text><![CDATA[Union]]></text>
+				<text><![CDATA[Union: ]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="269" y="69" width="80" height="20" uuid="577e4e64-2cf2-42cf-9c70-b936dfe875e7"/>
@@ -677,11 +754,11 @@ Clinic]]></text>
 				<text><![CDATA[c)Child(0-5) care]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="484" y="1163" width="71" height="19" forecolor="#000000" backcolor="#888888" uuid="d90e4c6f-0e6b-465b-bd4f-91e769e4e153"/>
+				<reportElement mode="Opaque" x="483" y="1164" width="71" height="19" forecolor="#000000" backcolor="#888888" uuid="d90e4c6f-0e6b-465b-bd4f-91e769e4e153"/>
 				<text><![CDATA[]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="415" y="1182" width="70" height="54" forecolor="#000000" backcolor="#888888" uuid="233fcbac-c561-4d3e-9fd0-0241e4110773"/>
+				<reportElement mode="Opaque" x="418" y="1182" width="66" height="54" forecolor="#000000" backcolor="#888888" uuid="233fcbac-c561-4d3e-9fd0-0241e4110773"/>
 				<text><![CDATA[]]></text>
 			</staticText>
 			<staticText>
@@ -697,11 +774,11 @@ Clinic]]></text>
 				<text><![CDATA[]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="417" y="798" width="66" height="94" forecolor="#000000" backcolor="#888888" uuid="1c83397f-c987-4c3b-b336-73566e20e85a"/>
+				<reportElement mode="Opaque" x="418" y="798" width="66" height="94" forecolor="#000000" backcolor="#888888" uuid="1c83397f-c987-4c3b-b336-73566e20e85a"/>
 				<text><![CDATA[]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="417" y="992" width="66" height="25" forecolor="#000000" backcolor="#888888" uuid="f06888e9-6382-47f0-b243-7d02f6af4c8a"/>
+				<reportElement mode="Opaque" x="418" y="991" width="66" height="24" forecolor="#000000" backcolor="#888888" uuid="f06888e9-6382-47f0-b243-7d02f6af4c8a"/>
 				<text><![CDATA[]]></text>
 			</staticText>
 			<line>
@@ -744,7 +821,7 @@ Clinic]]></text>
 				<text><![CDATA[]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="481" y="1960" width="75" height="229" forecolor="#000000" backcolor="#888888" uuid="6b139d81-acec-4fda-b37a-049cd7fb99e9"/>
+				<reportElement mode="Opaque" x="481" y="1958" width="75" height="230" forecolor="#000000" backcolor="#888888" uuid="6b139d81-acec-4fda-b37a-049cd7fb99e9"/>
 				<text><![CDATA[]]></text>
 			</staticText>
 			<line>
@@ -1041,11 +1118,11 @@ Clinic]]></text>
 				<text><![CDATA[Number of children with SAM]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="173" y="3001" width="48" height="66" forecolor="#000000" backcolor="#888888" uuid="0edc115a-9187-44c7-b0ec-7fcd93b1918e"/>
+				<reportElement mode="Opaque" x="173" y="3003" width="48" height="64" forecolor="#000000" backcolor="#888888" uuid="0edc115a-9187-44c7-b0ec-7fcd93b1918e"/>
 				<text><![CDATA[]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="459" y="2902" width="100" height="68" forecolor="#000000" backcolor="#888888" uuid="be4bab90-cabe-4c36-8189-caa5e46e18f2"/>
+				<reportElement mode="Opaque" x="461" y="2902" width="98" height="68" forecolor="#000000" backcolor="#888888" uuid="be4bab90-cabe-4c36-8189-caa5e46e18f2"/>
 				<text><![CDATA[]]></text>
 			</staticText>
 			<staticText>
@@ -2033,13 +2110,27 @@ Acid
 				<textFieldExpression><![CDATA[$F{bcpill left none taken}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement mode="Opaque" x="88" y="356" width="132" height="19" forecolor="#000000" backcolor="#888888" uuid="9216da33-c3df-4019-81b0-6f475b691834"/>
+				<reportElement mode="Opaque" x="86" y="356" width="134" height="19" forecolor="#000000" backcolor="#888888" uuid="9216da33-c3df-4019-81b0-6f475b691834"/>
 				<text><![CDATA[]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="331" y="320" width="111" height="35" forecolor="#000000" backcolor="#888888" uuid="b27a10ba-e3db-45d6-914d-7cee1ed1f167"/>
 				<text><![CDATA[]]></text>
 			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="206" y="69" width="55" height="20" uuid="57805302-8107-43c3-a5f2-ec2aed80b7e4"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{param_organisationunit_name}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="343" y="70" width="40" height="16" uuid="084f96fc-8dcb-4d5d-82ba-d1b24cec883e"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{organisation_unit_is_parent}]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<detail>
