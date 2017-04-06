@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2017-04-04T18:06:18 -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="dgfp" pageWidth="595" pageHeight="1000" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="18da28e8-8b84-4338-9702-bcbbd0dd689f">
+<!-- 2017-04-06T16:01:18 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="dgfp" pageWidth="595" pageHeight="5000" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="18da28e8-8b84-4338-9702-bcbbd0dd689f">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
 	<field name="periodid" class="java.lang.String"/>
 	<field name="periodname" class="java.lang.String"/>
 	<field name="periodcode" class="java.lang.String"/>
@@ -18,95 +19,17 @@
 	<background>
 		<band splitType="Stretch"/>
 	</background>
-	<title>
-		<band height="100" splitType="Stretch">
-			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-			<staticText>
-				<reportElement x="-9" y="-8" width="556" height="108" uuid="3d604468-38cd-4069-a1db-1dcb75415204">
-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-				</reportElement>
-				<textElement textAlignment="Center"/>
-				<text><![CDATA[People's Republic of Bangladesh]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="265" y="67" width="24" height="20" uuid="c2e827c2-f7f4-4185-b659-6a974812054f"/>
-				<textElement textAlignment="Center">
-					<font size="13"/>
-				</textElement>
-				<text><![CDATA[-]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="155" y="24" width="310" height="15" uuid="6c6a24ba-d107-4a3b-ba16-4558ac8e4be4"/>
-				<textElement markup="styled">
-					<font fontName="SansSerif" isBold="true"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<text><![CDATA[Report on Family Planning, Mother and Child care]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="241" y="42" width="80" height="16" uuid="223fdc41-3667-4613-a41a-07727d443c8b"/>
-				<text><![CDATA[MIS Form-1]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="187" y="6" width="204" height="16" uuid="13b83d68-c2c3-49e7-b275-82d823596514"/>
-				<text><![CDATA[Directorate General of Family Planning]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="-3" y="70" width="80" height="20" uuid="7ad4d731-13e3-4918-98ac-289bdba52b33"/>
-				<text><![CDATA[Zilla]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="82" y="70" width="80" height="20" uuid="fcd42e38-4777-40ea-99f4-67f4de71be6e"/>
-				<text><![CDATA[Upzilla]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="172" y="69" width="80" height="20" uuid="dc0cb8ef-b040-4a20-bb91-cf4e17bfdf77"/>
-				<text><![CDATA[Union]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="269" y="69" width="80" height="20" uuid="577e4e64-2cf2-42cf-9c70-b936dfe875e7"/>
-				<text><![CDATA[Health Worker]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="378" y="71" width="61" height="20" uuid="b6d5bd4a-78ae-4fd7-8fea-dab3afc42a7c"/>
-				<text><![CDATA[Month :]]></text>
-			</staticText>
-			<textField>
-				<reportElement x="445" y="70" width="75" height="19" uuid="dca22182-f559-4063-b57e-cb36367f5e72"/>
-				<textFieldExpression><![CDATA[$F{reporting_month_name}]]></textFieldExpression>
-			</textField>
-		</band>
-	</title>
-	<pageHeader>
-		<band height="16" splitType="Stretch"/>
-	</pageHeader>
-	<columnHeader>
-		<band height="20" splitType="Stretch">
-			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-			<staticText>
-				<reportElement x="-8" y="-16" width="170" height="19" uuid="07c8e3fa-2733-4848-b004-e06ba9b2f5bc"/>
-				<textElement>
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[B) Maternity Care]]></text>
-			</staticText>
-		</band>
-	</columnHeader>
 	<detail>
-		<band height="800" splitType="Stretch">
-			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+		<band height="2966" splitType="Stretch">
 			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
 			<line>
-				<reportElement x="-1" y="15" width="2" height="556" uuid="193fdc12-0ec5-4250-8cf4-e0ff48f19e25"/>
+				<reportElement x="0" y="15" width="1" height="567" uuid="193fdc12-0ec5-4250-8cf4-e0ff48f19e25"/>
 			</line>
 			<line>
-				<reportElement x="554" y="12" width="1" height="557" uuid="2c92296e-afda-4d8b-a237-e86d752655c7"/>
+				<reportElement x="554" y="12" width="1" height="570" uuid="2c92296e-afda-4d8b-a237-e86d752655c7"/>
 			</line>
 			<line>
 				<reportElement x="-3" y="15" width="558" height="1" uuid="7e328912-f3dc-4d33-9c73-4ddcd165911d"/>
-			</line>
-			<line>
-				<reportElement x="-2" y="280" width="553" height="1" uuid="acd74137-c99f-47fb-9bd3-0ebdc18faddd"/>
 			</line>
 			<line>
 				<reportElement x="-3" y="36" width="555" height="1" uuid="81cb97e8-7cb9-474f-88f4-4edb00efa53b"/>
@@ -130,74 +53,1134 @@
 				<reportElement x="180" y="140" width="373" height="1" uuid="873e1cdb-6244-41af-9464-3ec90a173438"/>
 			</line>
 			<line>
-				<reportElement x="179" y="156" width="376" height="1" uuid="5d9345b3-0979-457d-ac5d-f27e10e53a8e"/>
+				<reportElement x="179" y="158" width="376" height="1" uuid="5d9345b3-0979-457d-ac5d-f27e10e53a8e"/>
 			</line>
 			<line>
-				<reportElement x="181" y="170" width="371" height="1" uuid="b533ef09-e2c6-47ef-a7e3-5611bbbd42b1"/>
+				<reportElement x="181" y="173" width="371" height="1" uuid="b533ef09-e2c6-47ef-a7e3-5611bbbd42b1"/>
 			</line>
 			<line>
-				<reportElement x="-2" y="184" width="555" height="1" uuid="a6e61bea-9fdb-46e9-b8fc-b04f4b8c288d"/>
+				<reportElement x="102" y="191" width="451" height="1" uuid="a6e61bea-9fdb-46e9-b8fc-b04f4b8c288d"/>
 			</line>
 			<line>
-				<reportElement x="-2" y="202" width="555" height="1" uuid="01778203-2059-458a-ba26-741321f3def1"/>
+				<reportElement x="182" y="210" width="371" height="1" uuid="01778203-2059-458a-ba26-741321f3def1"/>
 			</line>
 			<line>
-				<reportElement x="-2" y="220" width="555" height="1" uuid="e215db21-8ad8-4c68-b76f-8a301b91939c"/>
+				<reportElement x="101" y="230" width="452" height="1" uuid="e215db21-8ad8-4c68-b76f-8a301b91939c"/>
 			</line>
 			<line>
-				<reportElement x="-1" y="238" width="555" height="1" uuid="a43354ff-ceff-4ffe-bb46-320a6dc3bfc7"/>
+				<reportElement x="180" y="250" width="374" height="1" uuid="a43354ff-ceff-4ffe-bb46-320a6dc3bfc7"/>
 			</line>
 			<line>
-				<reportElement x="-2" y="258" width="555" height="1" uuid="8b4cac0e-6096-4e9a-a0cc-3847f3c494ac"/>
+				<reportElement x="101" y="270" width="452" height="1" uuid="8b4cac0e-6096-4e9a-a0cc-3847f3c494ac"/>
 			</line>
 			<line>
-				<reportElement x="0" y="302" width="555" height="1" uuid="b8503535-819b-4345-b135-69ed85339e68"/>
+				<reportElement x="101" y="304" width="454" height="1" uuid="b8503535-819b-4345-b135-69ed85339e68"/>
 			</line>
 			<line>
-				<reportElement x="2" y="324" width="555" height="1" uuid="43098d3a-2274-4e68-b9ec-d6712d54ff8e"/>
+				<reportElement x="102" y="333" width="455" height="1" uuid="43098d3a-2274-4e68-b9ec-d6712d54ff8e"/>
 			</line>
 			<line>
-				<reportElement x="0" y="348" width="555" height="1" uuid="a0423d29-6606-4e6e-b64f-88733f492dea"/>
+				<reportElement x="0" y="364" width="555" height="1" uuid="a0423d29-6606-4e6e-b64f-88733f492dea"/>
 			</line>
 			<line>
-				<reportElement x="-1" y="373" width="555" height="1" uuid="bad8f62e-d534-481d-a6bf-3ecec67e6934"/>
+				<reportElement x="189" y="390" width="365" height="1" uuid="bad8f62e-d534-481d-a6bf-3ecec67e6934"/>
 			</line>
 			<line>
-				<reportElement x="0" y="400" width="555" height="1" uuid="b58dc05f-a1fb-4b25-b117-2841560631c9"/>
+				<reportElement x="189" y="414" width="366" height="1" uuid="b58dc05f-a1fb-4b25-b117-2841560631c9"/>
 			</line>
 			<line>
-				<reportElement x="0" y="429" width="555" height="1" uuid="9d886bb6-2a03-4682-9a58-ea1ed3eba401"/>
+				<reportElement x="188" y="440" width="367" height="1" uuid="9d886bb6-2a03-4682-9a58-ea1ed3eba401"/>
 			</line>
 			<line>
-				<reportElement x="-2" y="453" width="555" height="1" uuid="55ff63ae-f142-4fae-a7df-d6b158c05117"/>
+				<reportElement x="189" y="464" width="364" height="1" uuid="55ff63ae-f142-4fae-a7df-d6b158c05117"/>
 			</line>
 			<line>
-				<reportElement x="1" y="473" width="555" height="1" uuid="ed3e8d17-1d7e-44fc-8677-b5e62761dbd7"/>
+				<reportElement x="101" y="488" width="455" height="1" uuid="ed3e8d17-1d7e-44fc-8677-b5e62761dbd7"/>
 			</line>
 			<line>
-				<reportElement x="2" y="498" width="555" height="1" uuid="88d8f1f1-717e-4b89-8cdd-7f2d624eca80"/>
+				<reportElement x="187" y="513" width="370" height="2" uuid="88d8f1f1-717e-4b89-8cdd-7f2d624eca80"/>
 			</line>
 			<line>
-				<reportElement x="0" y="520" width="555" height="1" uuid="381047c6-412b-4449-a1e2-0052f4ad7a05"/>
+				<reportElement x="189" y="536" width="366" height="1" uuid="381047c6-412b-4449-a1e2-0052f4ad7a05"/>
 			</line>
 			<line>
-				<reportElement x="0" y="547" width="555" height="1" uuid="1dfe09f2-7b23-4a20-a08d-e99e9b6748cf"/>
+				<reportElement x="188" y="557" width="367" height="1" uuid="1dfe09f2-7b23-4a20-a08d-e99e9b6748cf"/>
 			</line>
 			<line>
-				<reportElement x="1" y="571" width="555" height="1" uuid="a63dab6b-4b07-4975-a94a-b3ab5d2afa43"/>
+				<reportElement x="1" y="582" width="555" height="1" uuid="a63dab6b-4b07-4975-a94a-b3ab5d2afa43"/>
 			</line>
 			<line>
-				<reportElement x="506" y="15" width="1" height="557" uuid="12ae168b-7f71-44b9-90db-cdd08c2ea91a"/>
+				<reportElement x="483" y="16" width="1" height="567" uuid="12ae168b-7f71-44b9-90db-cdd08c2ea91a"/>
 			</line>
 			<line>
-				<reportElement stretchType="ContainerHeight" x="460" y="15" width="1" height="557" uuid="84fff115-ec7f-4b8a-8894-af8f830f1f47"/>
+				<reportElement stretchType="ContainerHeight" x="417" y="15" width="1" height="568" uuid="84fff115-ec7f-4b8a-8894-af8f830f1f47"/>
 			</line>
 			<line>
 				<reportElement x="229" y="36" width="1" height="56" uuid="510f6c3c-fca8-4d51-b141-f27c8e6f84af"/>
 			</line>
 			<line>
-				<reportElement x="180" y="123" width="1" height="136" uuid="f4c19d61-f1f8-43d8-b600-f9d45b53886f"/>
+				<reportElement x="181" y="123" width="1" height="147" uuid="f4c19d61-f1f8-43d8-b600-f9d45b53886f"/>
 			</line>
+			<staticText>
+				<reportElement x="-8" y="-16" width="170" height="19" uuid="07c8e3fa-2733-4848-b004-e06ba9b2f5bc"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[B) Maternity Care]]></text>
+			</staticText>
+			<line>
+				<reportElement x="101" y="191" width="1" height="391" uuid="41f24ad2-2ca9-4cb2-a95b-9d2e50f8d3fe"/>
+			</line>
+			<line>
+				<reportElement x="188" y="365" width="1" height="219" uuid="7d319904-8d6d-4747-9dc9-36852bc6b4e8"/>
+			</line>
+			<staticText>
+				<reportElement x="42" y="19" width="113" height="15" uuid="a0b7961f-d3d9-4bfb-a3a3-d04ae6ef5c58"/>
+				<text><![CDATA[Types of Service]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="423" y="19" width="59" height="13" uuid="7a00501c-9ace-417a-9565-a125eff475b2"/>
+				<text><![CDATA[Information]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="491" y="19" width="59" height="13" uuid="0f919fd5-7cc2-4a95-b68a-21e0c13f7c0b"/>
+				<text><![CDATA[Service]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="24" y="48" width="176" height="32" uuid="3c9cb154-4677-43f0-8da6-5a56e9a704f1"/>
+				<text><![CDATA[Number of pregnant Women]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="244" y="38" width="113" height="15" uuid="0b092155-3903-48e0-88e6-c9100f737c4b"/>
+				<text><![CDATA[New]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="245" y="55" width="113" height="15" uuid="77aeb851-5060-4e60-a1d0-ce3aeaa949d6"/>
+				<text><![CDATA[Old]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="244" y="73" width="113" height="15" uuid="88f74db2-4e43-4873-9129-269792d0e324"/>
+				<text><![CDATA[Total]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="29" y="92" width="349" height="16" uuid="f66df6e6-9995-468c-bebc-88c36b4c3d5c"/>
+				<text><![CDATA[Number of pregnant Women In Previous Month]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="28" y="108" width="202" height="16" uuid="8acae292-e4c4-4065-9ca9-84bd0b07b446"/>
+				<text><![CDATA[Total Number of pregnant in Unit]]></text>
+			</staticText>
+			<staticText>
+				<reportElement stretchType="ContainerBottom" x="17" y="150" width="25" height="140" uuid="fece9e94-715f-4acb-9325-e10bdb8c4b96"/>
+				<textElement rotation="Left" markup="none"/>
+				<text><![CDATA[Antnatal Care Information]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="188" y="125" width="202" height="16" uuid="187f0743-4534-4155-84a3-785bd4cf9140"/>
+				<text><![CDATA[Visit-1(inside 4 months)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="190" y="143" width="202" height="16" uuid="770b1633-069c-4ca9-b4e1-a3df423cee33"/>
+				<text><![CDATA[Visit-2(inside 6 month)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="190" y="158" width="202" height="16" uuid="7c97c2cb-9bdf-4a82-996a-ec774dc1e643"/>
+				<text><![CDATA[Visit-3(inside 8 month)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="189" y="174" width="202" height="16" uuid="04fe2f35-c1db-49b4-9e84-2986c96f72b3"/>
+				<text><![CDATA[Visit-4(9th month)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="189" y="192" width="202" height="16" uuid="2ccd4900-549f-45c0-87c6-3e7d2c3b183e"/>
+				<text><![CDATA[By trained person]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="188" y="212" width="202" height="16" uuid="fb1459b6-4220-46bc-9a7a-c2f06881e7f7"/>
+				<text><![CDATA[By untrained person]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="188" y="232" width="202" height="16" uuid="2e6bbaa9-6edf-4976-bca8-8e6ec80db587"/>
+				<text><![CDATA[Normal]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="186" y="252" width="202" height="16" uuid="437cde50-6a89-4f9b-a59a-9ac901a55dee"/>
+				<text><![CDATA[Ceserean]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="109" y="232" width="63" height="36" uuid="5d5a2bf8-7c7e-4bec-9252-757522a33681"/>
+				<text><![CDATA[Hospital/
+Clinic]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="110" y="192" width="63" height="36" uuid="6c1c1b40-a982-4651-805a-387a7fb58fad"/>
+				<text><![CDATA[Home]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="142" y="280" width="202" height="16" uuid="6ef1dc4c-a43c-4541-bac7-2bb57e0952e3"/>
+				<text><![CDATA[Giving Birth]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="137" y="311" width="202" height="16" uuid="ec0e4662-ef54-4751-b592-4ee06b7dc5c4"/>
+				<text><![CDATA[In third step of birth follw AMTSL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="137" y="341" width="202" height="16" uuid="271aca54-26c7-429a-9d18-9ba1b81464d4"/>
+				<text><![CDATA[Misoprotin given insead of Axitocin]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="201" y="368" width="202" height="16" uuid="15a4197c-cb48-493a-9df6-537b3dfb063c"/>
+				<text><![CDATA[Visit-1(24 hours)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="114" y="410" width="41" height="49" uuid="5029ef69-f8ef-40b1-8fd1-2f01dfdd15e6"/>
+				<textElement rotation="Left"/>
+				<text><![CDATA[Mother]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="115" y="500" width="40" height="46" uuid="241ef6e2-46fa-41d6-a1f9-7fbe1db64f2c"/>
+				<textElement rotation="Left"/>
+				<text><![CDATA[Child]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="202" y="393" width="202" height="16" uuid="5db1d5f8-ac6c-47c5-adc8-0a3eac56b7c0"/>
+				<text><![CDATA[Visit(2-3 days)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="201" y="418" width="202" height="16" uuid="7fa799a0-9c61-4908-a334-d351a1ead741"/>
+				<text><![CDATA[Visit-2(7-14 days)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="203" y="445" width="202" height="16" uuid="bfea297d-4d93-41c7-96ee-8777aa3f48f7"/>
+				<text><![CDATA[Visit-4(Inside 42-48 days)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="191" y="468" width="226" height="16" uuid="d02988ea-3f12-4bb8-8d1b-69f9bed2d258"/>
+				<text><![CDATA[Cousiling about family planning after giving birt]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="200" y="493" width="202" height="16" uuid="21a2fac8-2a17-41a7-b10b-d65f366b4393"/>
+				<text><![CDATA[Visit-1(Inside 24 hours)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="200" y="517" width="202" height="16" uuid="3a118a06-8bda-47e7-b3b8-e5644979c5cc"/>
+				<text><![CDATA[Visit-2(Inside 2-3 days)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="200" y="539" width="202" height="16" uuid="80a9e12c-1924-4cd2-b25b-18daf5002d8f"/>
+				<text><![CDATA[Visit-3(Inside 7-14 days)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="199" y="562" width="202" height="16" uuid="dc284763-c9f4-4459-afcc-dca03268948e"/>
+				<text><![CDATA[Visit-4(Inside 42-48 days)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement stretchType="ContainerBottom" x="20" y="394" width="25" height="140" uuid="d03cdcb3-0d36-4435-83e6-260a10554bdd"/>
+				<textElement rotation="Left" markup="none"/>
+				<text><![CDATA[Postnatal Care Information]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="232" y="884" width="45" height="16" uuid="1132e725-d1b7-4f8b-ba0e-fed0c5021365"/>
+				<text><![CDATA[5th]]></text>
+			</staticText>
+			<line>
+				<reportElement x="559" y="688" width="1" height="570" uuid="c6e15b1b-1e7b-4562-a398-e44f6e93230f"/>
+			</line>
+			<line>
+				<reportElement x="137" y="1038" width="1" height="147" uuid="5d10b93c-7687-4e57-8fe2-cc84a2e302f1"/>
+			</line>
+			<staticText>
+				<reportElement x="250" y="731" width="172" height="15" uuid="246e892e-db6a-4efb-9689-7c021ba3b29c"/>
+				<text><![CDATA[Number of complexity at Birth]]></text>
+			</staticText>
+			<line>
+				<reportElement x="6" y="982" width="554" height="1" uuid="808d93f4-5a1b-4af5-99e0-83e29111da18"/>
+			</line>
+			<staticText>
+				<reportElement x="428" y="695" width="59" height="13" uuid="b5ccf3d2-c1a8-4fc4-890e-94852351394b"/>
+				<text><![CDATA[Information]]></text>
+			</staticText>
+			<line>
+				<reportElement stretchType="ContainerHeight" x="422" y="691" width="1" height="568" uuid="586fc911-9166-4798-bdda-7501c7054ab3"/>
+			</line>
+			<staticText>
+				<reportElement x="232" y="791" width="67" height="16" uuid="1ac19ec6-0372-4bf8-8228-c778cb707690"/>
+				<text><![CDATA[1st]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="231" y="811" width="48" height="16" uuid="d3ec5244-ac94-4013-a47f-39c745c6e690"/>
+				<text><![CDATA[2nd]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="305" y="987" width="112" height="16" uuid="e6361e3d-1168-4f38-a77f-4a6c8aad199b"/>
+				<text><![CDATA[Recieved Counsling]]></text>
+			</staticText>
+			<line>
+				<reportElement x="3" y="784" width="555" height="1" uuid="8a540b40-e5c3-4d2f-b125-5d0cfc6de658"/>
+			</line>
+			<line>
+				<reportElement x="208" y="712" width="1" height="72" uuid="0b09e739-5b90-41cc-a642-0f56479db294"/>
+			</line>
+			<staticText>
+				<reportElement stretchType="ContainerBottom" x="43" y="818" width="87" height="30" uuid="c8969b6b-4a33-4739-a71d-acbb7e5b40b1"/>
+				<textElement rotation="None" markup="none"/>
+				<text><![CDATA[Number of women given TT]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="249" y="714" width="169" height="15" uuid="db1b7024-0ab4-48b5-9b23-5d8721243cc9"/>
+				<text><![CDATA[Number of complex pregnency]]></text>
+			</staticText>
+			<line>
+				<reportElement x="209" y="746" width="349" height="1" uuid="23aad792-a33e-4525-867c-13f2e66d887b"/>
+			</line>
+			<line>
+				<reportElement x="488" y="692" width="1" height="567" uuid="abbf80d7-5273-4fec-a1fb-693db0a735c9"/>
+			</line>
+			<staticText>
+				<reportElement x="95" y="724" width="31" height="46" uuid="1d668a36-0461-404f-807c-528d5f1bbbf9"/>
+				<textElement rotation="Left"/>
+				<text><![CDATA[Referred]]></text>
+			</staticText>
+			<line>
+				<reportElement x="179" y="876" width="378" height="1" uuid="a3cd4d20-2cb7-47f3-85a6-55d87b5db698"/>
+			</line>
+			<staticText>
+				<reportElement x="231" y="833" width="50" height="16" uuid="a1c30efd-0ada-4a62-bfc3-0bad3c15c437"/>
+				<text><![CDATA[3rd]]></text>
+			</staticText>
+			<line>
+				<reportElement x="2" y="712" width="555" height="1" uuid="07e659d3-49ed-47d3-8170-1676f2e300c8"/>
+			</line>
+			<staticText>
+				<reportElement x="231" y="855" width="50" height="16" uuid="d007c21a-05ce-4822-a1da-9416a30daf20"/>
+				<text><![CDATA[4th]]></text>
+			</staticText>
+			<line>
+				<reportElement x="178" y="851" width="382" height="1" uuid="e0ac10e0-f566-42ec-8fab-44b075ddd05e"/>
+			</line>
+			<line>
+				<reportElement x="180" y="810" width="378" height="1" uuid="b57ffa93-26d2-43d3-a17a-6631e67c2edf"/>
+			</line>
+			<line>
+				<reportElement x="209" y="731" width="348" height="1" uuid="2fab002c-b735-4728-9931-99bc44ed034b"/>
+			</line>
+			<staticText>
+				<reportElement x="47" y="695" width="113" height="15" uuid="05648a77-d67c-48d3-a9d3-81424dec6935"/>
+				<text><![CDATA[Types of Service]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="496" y="695" width="59" height="13" uuid="c45275be-752e-415f-a7f1-c6961e9a7aef"/>
+				<text><![CDATA[Service]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="74" y="956" width="202" height="16" uuid="4b113bf5-e462-43b0-9190-e74d8a661383"/>
+				<text><![CDATA[Number of Misoprostol pill taker]]></text>
+			</staticText>
+			<line>
+				<reportElement x="6" y="946" width="552" height="1" uuid="276de931-883c-4628-91a6-9a9d2b319456"/>
+			</line>
+			<line>
+				<reportElement x="299" y="1008" width="263" height="1" uuid="e4972d9f-25e7-47d2-be8f-69fb991fada4"/>
+			</line>
+			<line>
+				<reportElement x="2" y="691" width="558" height="1" uuid="41ec44d2-0b65-4732-9027-bac277204966"/>
+			</line>
+			<line>
+				<reportElement x="179" y="830" width="379" height="1" uuid="0f555efd-45b3-4f79-8519-d44444797330"/>
+			</line>
+			<line>
+				<reportElement x="179" y="785" width="1" height="119" uuid="cc8be842-e6c8-41fa-ad47-24b55c22478a"/>
+			</line>
+			<line>
+				<reportElement x="5" y="691" width="1" height="567" uuid="24851eee-838a-4c60-a778-824b20129032"/>
+			</line>
+			<staticText>
+				<reportElement x="211" y="749" width="211" height="15" uuid="d09939d7-f287-4a87-ba32-9a21162436fb"/>
+				<text><![CDATA[Referred eclampsia patient with MgSO4]]></text>
+			</staticText>
+			<line>
+				<reportElement x="209" y="764" width="349" height="1" uuid="555fa0ff-2f0d-4f22-9dcb-0be54b99626a"/>
+			</line>
+			<staticText>
+				<reportElement x="214" y="767" width="203" height="16" uuid="64c045e2-f674-4e24-ae43-7eda6e97bde7"/>
+				<text><![CDATA[Referre nerborn for complexity]]></text>
+			</staticText>
+			<line>
+				<reportElement x="2" y="905" width="556" height="1" uuid="25b82e14-eaab-4a2e-be2f-6c3b95cdb485"/>
+			</line>
+			<staticText>
+				<reportElement x="78" y="1235" width="202" height="16" uuid="aec32773-e047-47f7-a6a1-361cc7674e1a"/>
+				<text><![CDATA[Presence in community clinic]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="88" y="1191" width="202" height="16" uuid="c01331cb-e77e-4de6-ab48-60dc8a1327c8"/>
+				<text><![CDATA[Presence In Satelite Clinic]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="162" y="1158" width="202" height="16" uuid="25759208-9513-45b2-a8d6-702b0419e826"/>
+				<text><![CDATA[Infection of genetelia and Sexually transmitted diseases]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="168" y="1047" width="202" height="16" uuid="a8c469e2-e12a-47c6-abc4-25178a3ab4f0"/>
+				<text><![CDATA[About adolencence]]></text>
+			</staticText>
+			<line>
+				<reportElement x="138" y="1075" width="422" height="1" uuid="b1a95b93-27a9-47b6-a553-5eb5a9bc9335"/>
+			</line>
+			<line>
+				<reportElement x="138" y="1150" width="420" height="1" uuid="53b230a5-dbd8-4ac7-b38a-caa8588dc169"/>
+			</line>
+			<line>
+				<reportElement x="6" y="1258" width="555" height="1" uuid="72a77011-39d3-49ca-9a59-f44fea5f2ea5"/>
+			</line>
+			<staticText>
+				<reportElement x="83" y="1212" width="202" height="16" uuid="cb0aba41-3b41-415b-a588-00f3bd3c8a94"/>
+				<text><![CDATA[Presence in EPI session]]></text>
+			</staticText>
+			<staticText>
+				<reportElement stretchType="ContainerBottom" x="25" y="1040" width="52" height="140" uuid="d6b597f0-6f1d-4eb7-a5c6-87c41f061c9a"/>
+				<textElement rotation="Left" markup="none"/>
+				<text><![CDATA[Adolecence Care(10-19 years) counsiling]]></text>
+			</staticText>
+			<line>
+				<reportElement x="6" y="1231" width="554" height="1" uuid="034e1b6c-4431-4ab2-82d9-beeb1af7893a"/>
+			</line>
+			<line>
+				<reportElement x="6" y="1212" width="554" height="1" uuid="c783d72b-369f-41a2-bbc5-3e046b27aa12"/>
+			</line>
+			<line>
+				<reportElement x="137" y="1118" width="423" height="1" uuid="0445d465-5114-4731-bae9-cefd9dfa0ac1"/>
+			</line>
+			<line>
+				<reportElement x="5" y="1037" width="555" height="1" uuid="ed32f868-d945-493a-9703-c2034ff724fc"/>
+			</line>
+			<staticText>
+				<reportElement x="165" y="1125" width="202" height="16" uuid="ffec238c-5d39-4a21-a052-edaae2cef06b"/>
+				<text><![CDATA[Givining teenage girls Iron and Folic acid]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="162" y="1089" width="202" height="16" uuid="ac21dcba-f60a-47ae-a6bd-2ea6c8b1b438"/>
+				<text><![CDATA[Harmfulness of child marrige and teen mother]]></text>
+			</staticText>
+			<line>
+				<reportElement x="8" y="1187" width="554" height="1" uuid="a00e4eb2-e227-4bc9-b7b2-9c3632151ccc"/>
+			</line>
+			<line>
+				<reportElement x="299" y="982" width="1" height="56" uuid="e71d892d-e285-472c-a7c6-a9aa8f680578"/>
+			</line>
+			<staticText>
+				<reportElement x="310" y="1015" width="112" height="16" uuid="ed3cbceb-14b3-48a4-b2f1-d1d730e188ee"/>
+				<text><![CDATA[Referred]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="76" y="997" width="202" height="16" uuid="29051d17-6a61-4ce6-a99f-74e6ad70e751"/>
+				<text><![CDATA[Information of infertile couple]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="75" y="919" width="202" height="16" uuid="69d9f578-5b8c-4748-92f6-8e639685f08f"/>
+				<text><![CDATA[Number of ECP taker]]></text>
+			</staticText>
+			<line>
+				<reportElement x="565" y="1300" width="1" height="500" uuid="0858d1ca-5378-4aa5-a8fa-414a937758cb"/>
+			</line>
+			<line>
+				<reportElement x="12" y="1458" width="553" height="1" uuid="37e75579-461a-4915-a1a3-ff76fd071ab5"/>
+			</line>
+			<line>
+				<reportElement stretchType="ContainerHeight" x="427" y="1303" width="1" height="497" uuid="f88cbcd9-7bec-472c-ae61-6c9ebd44f55d"/>
+			</line>
+			<staticText>
+				<reportElement x="501" y="1307" width="59" height="13" uuid="843b58c0-eb48-4bb2-bd29-14fd02d8b3c3"/>
+				<text><![CDATA[Service]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="433" y="1307" width="59" height="13" uuid="28449500-9cad-405b-b29d-b7eeabaff260"/>
+				<text><![CDATA[Information]]></text>
+			</staticText>
+			<line>
+				<reportElement x="348" y="1493" width="1" height="59" uuid="8bf9c9fe-f8eb-4b53-935b-1d3d7d18f3d1"/>
+			</line>
+			<line>
+				<reportElement x="7" y="1303" width="558" height="1" uuid="2f4fea63-1cf4-452b-92e8-7e1002ed0ab3"/>
+			</line>
+			<staticText>
+				<reportElement x="278" y="1700" width="139" height="16" uuid="00532247-7f94-49d4-83c7-b917b0ba34fd"/>
+				<text><![CDATA[Very serious disease]]></text>
+			</staticText>
+			<line>
+				<reportElement x="269" y="1552" width="294" height="1" uuid="0c5548aa-76b3-4065-aa19-dca0bb41fba4"/>
+			</line>
+			<line>
+				<reportElement x="95" y="1415" width="468" height="1" uuid="c76a0d05-778b-4a28-84c5-b09570ff7a77"/>
+			</line>
+			<line>
+				<reportElement x="492" y="1304" width="1" height="493" uuid="970c8208-8182-48cd-a6a2-10d3a8fef221"/>
+			</line>
+			<line>
+				<reportElement x="95" y="1359" width="468" height="1" uuid="084ecdca-22b8-4cf4-93b7-001781dc66db"/>
+			</line>
+			<staticText>
+				<reportElement x="145" y="1659" width="202" height="16" uuid="1f00a790-5d74-4197-b58b-d02e42ca0416"/>
+				<text><![CDATA[HUM vaccine]]></text>
+			</staticText>
+			<line>
+				<reportElement x="95" y="1388" width="468" height="2" uuid="da621de7-d05b-4956-80bb-f04464ec55be"/>
+			</line>
+			<staticText>
+				<reportElement x="107" y="1365" width="284" height="16" uuid="41a89434-1a6e-497b-9fb8-3fea3927c842"/>
+				<text><![CDATA[Using 7.1%CholorHexiding after cutting umbilical cord]]></text>
+			</staticText>
+			<line>
+				<reportElement x="96" y="1654" width="469" height="1" uuid="c45cc882-316a-4c07-9e1e-799d0902287d"/>
+			</line>
+			<staticText>
+				<reportElement stretchType="ContainerBottom" x="30" y="1524" width="52" height="140" uuid="79a3ceb8-05cf-4aea-a109-acb2012755ce"/>
+				<textElement rotation="Left" markup="none"/>
+				<text><![CDATA[Number of child(0-18months) recived vaccine]]></text>
+			</staticText>
+			<line>
+				<reportElement x="95" y="1592" width="469" height="1" uuid="c0207ac1-a0de-427f-9287-c1ca3bae4023"/>
+			</line>
+			<line>
+				<reportElement x="96" y="1620" width="471" height="1" uuid="fe7523ba-745c-4519-bc25-4a59a3144346"/>
+			</line>
+			<staticText>
+				<reportElement x="143" y="1467" width="50" height="16" uuid="72fb932a-bf15-4b7a-8e69-53eb503b00b3"/>
+				<text><![CDATA[BCG]]></text>
+			</staticText>
+			<line>
+				<reportElement x="13" y="1688" width="552" height="1" uuid="a5acb0af-d10b-4344-90f4-4d2a1243cb59"/>
+			</line>
+			<staticText>
+				<reportElement x="147" y="1630" width="112" height="16" uuid="7571a8c9-1106-4f54-8a3b-657ecf4d06cc"/>
+				<text><![CDATA[MR & OPV-4]]></text>
+			</staticText>
+			<line>
+				<reportElement x="270" y="1730" width="295" height="1" uuid="503b235e-ba17-4bef-8529-db30e0afa3fe"/>
+			</line>
+			<line>
+				<reportElement x="269" y="1493" width="1" height="99" uuid="9492f965-15b8-43e7-8955-e7d95893affb"/>
+			</line>
+			<staticText>
+				<reportElement x="109" y="1340" width="172" height="15" uuid="068c7f22-601c-48db-80ec-8461a8059066"/>
+				<text><![CDATA[Cleaning wihtin one minute]]></text>
+			</staticText>
+			<line>
+				<reportElement x="349" y="1522" width="217" height="1" uuid="22dc1963-ecc9-4b4e-a67f-565f925fbd4b"/>
+			</line>
+			<staticText>
+				<reportElement x="369" y="1530" width="48" height="16" uuid="b9228c08-477d-42ae-861b-8267ee3fc5bc"/>
+				<text><![CDATA[2]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="282" y="1737" width="142" height="16" uuid="75b35d09-276c-4edb-8e76-8d72c590cb9b"/>
+				<text><![CDATA[Pneumonia]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="52" y="1307" width="113" height="15" uuid="7d32002f-f22e-4c1c-899c-db23208e857b"/>
+				<text><![CDATA[Types of Service]]></text>
+			</staticText>
+			<line>
+				<reportElement x="269" y="1688" width="1" height="111" uuid="c71f4b35-b74a-4b94-a659-b6ff235acad2"/>
+			</line>
+			<staticText>
+				<reportElement x="147" y="1600" width="112" height="16" uuid="93f095e3-9168-4cd5-a398-09e1a52cdff5"/>
+				<text><![CDATA[PCV-3]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="143" y="1516" width="115" height="59" uuid="0119fdc0-247e-4464-89e4-6b26b008e915"/>
+				<text><![CDATA[OPV & Pntavelent(DPT,Hep-B, HIB)]]></text>
+			</staticText>
+			<line>
+				<reportElement x="7" y="1331" width="555" height="1" uuid="9d38d21b-1673-4d15-ad6d-72c76501bf3a"/>
+			</line>
+			<line>
+				<reportElement x="11" y="1303" width="1" height="494" uuid="a3b00b0b-dfaa-41d3-a8d7-01437120d379"/>
+			</line>
+			<staticText>
+				<reportElement x="105" y="1422" width="312" height="29" uuid="45ac0292-c75e-4b99-9a93-9cac348cd96b"/>
+				<text><![CDATA[Number of new born with respiratory disease and use of musk to resuscitate ]]></text>
+			</staticText>
+			<line>
+				<reportElement x="11" y="1798" width="554" height="1" uuid="764218f0-78cb-4e56-8fcd-f659b9504cdb"/>
+			</line>
+			<line>
+				<reportElement x="270" y="1764" width="293" height="1" uuid="fe56c087-7c55-4345-8644-a7537ce02684"/>
+			</line>
+			<staticText>
+				<reportElement x="8" y="1284" width="152" height="16" uuid="41a3bbba-589f-4786-997f-6439af3bd883"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[c)Child(0-5) care]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="489" y="712" width="71" height="19" forecolor="#000000" backcolor="#888888" uuid="d90e4c6f-0e6b-465b-bd4f-91e769e4e153"/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="420" y="731" width="70" height="54" forecolor="#000000" backcolor="#888888" uuid="233fcbac-c561-4d3e-9fd0-0241e4110773"/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="488" y="785" width="72" height="473" forecolor="#000000" backcolor="#888888" uuid="42341204-756e-4f38-afa0-b80746056d58"/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="484" y="35" width="70" height="88" forecolor="#000000" backcolor="#888888" uuid="b4864046-5dc1-42fe-92ed-290e94697f3b"/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="484" y="191" width="70" height="80" forecolor="#000000" backcolor="#888888" uuid="37c2fadd-860e-4805-ad0b-0377fdb475c2"/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="417" y="271" width="66" height="94" forecolor="#000000" backcolor="#888888" uuid="1c83397f-c987-4c3b-b336-73566e20e85a"/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="417" y="465" width="66" height="25" forecolor="#000000" backcolor="#888888" uuid="f06888e9-6382-47f0-b243-7d02f6af4c8a"/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<line>
+				<reportElement x="95" y="1332" width="1" height="355" uuid="ab7316cd-c621-4807-a19f-e8daac62677f"/>
+			</line>
+			<line>
+				<reportElement x="96" y="1493" width="471" height="1" uuid="0e644523-d657-4f0a-a1d7-51e589df1ea5"/>
+			</line>
+			<staticText>
+				<reportElement x="283" y="1505" width="47" height="29" uuid="1dc26f83-2905-4b9d-99e8-24f4e7ee34e7"/>
+				<text><![CDATA[PCV]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="371" y="1497" width="48" height="16" uuid="2c5c9919-1d23-44bd-9b16-30995d1be8de"/>
+				<text><![CDATA[1]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="302" y="1560" width="48" height="16" uuid="23e12a20-f82c-4a4d-b80e-9eb81ccf501d"/>
+				<text><![CDATA[3]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="25" y="1720" width="202" height="16" uuid="5237b4ae-b21a-4dfc-bc07-dc25c555d7bd"/>
+				<text><![CDATA[Number Of Referred child]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="287" y="1774" width="142" height="16" uuid="2672cc2c-8705-440a-afd1-4bf596776b1e"/>
+				<text><![CDATA[Diarrhea]]></text>
+			</staticText>
+			<staticText>
+				<reportElement stretchType="ContainerBottom" x="25" y="1343" width="35" height="111" uuid="b1cdf74f-1a6e-4bd1-b177-09fd236cd100"/>
+				<textElement rotation="Left" markup="none"/>
+				<text><![CDATA[Information of Newborn]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="107" y="1394" width="284" height="16" uuid="f92628cb-d890-4e5c-9962-1b93bbc3e110"/>
+				<text><![CDATA[Feeding breast milk within one hour]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="428" y="1391" width="66" height="69" forecolor="#000000" backcolor="#888888" uuid="3aba959b-a637-4403-b3fd-5c2b2a51c686"/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="492" y="1460" width="75" height="229" forecolor="#000000" backcolor="#888888" uuid="6b139d81-acec-4fda-b37a-049cd7fb99e9"/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<line>
+				<reportElement x="573" y="1854" width="1" height="430" uuid="48e79c10-604d-4acc-9092-7cddf56b9b5c"/>
+			</line>
+			<line>
+				<reportElement x="17" y="2013" width="553" height="1" uuid="4817d223-5f09-4e8b-9c14-4e62d3707fb8"/>
+			</line>
+			<line>
+				<reportElement stretchType="ContainerHeight" x="433" y="1857" width="1" height="427" uuid="335e243e-0b58-4db3-b736-f33be8fb18a6"/>
+			</line>
+			<staticText>
+				<reportElement x="506" y="1861" width="59" height="13" uuid="ae84535c-1ede-4fd0-a383-e28e47c6ab3f"/>
+				<text><![CDATA[Service]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="438" y="1861" width="59" height="13" uuid="bd221abd-0333-419a-90b2-0e54c5b3450a"/>
+				<text><![CDATA[Information]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="152" y="2257" width="139" height="16" uuid="7ea60b59-2943-4054-a1db-8a1ae0c4b0af"/>
+				<text><![CDATA[Total number of deaths]]></text>
+			</staticText>
+			<line>
+				<reportElement x="274" y="2106" width="294" height="1" uuid="898aa763-ffb8-42b0-b951-37b0264481cf"/>
+			</line>
+			<line>
+				<reportElement x="17" y="1976" width="550" height="1" uuid="842b0d26-8d3d-486a-bc84-227ecf2c839d"/>
+			</line>
+			<line>
+				<reportElement x="496" y="1858" width="1" height="427" uuid="faa5ee81-0055-424f-bb05-4669266007cd"/>
+			</line>
+			<line>
+				<reportElement x="19" y="1909" width="551" height="1" uuid="9cbba62a-0d85-49c9-9b7d-c4ba2b348b80"/>
+			</line>
+			<staticText>
+				<reportElement x="150" y="2213" width="202" height="16" uuid="96dd9661-5a9b-4745-b21c-e2d141f942c5"/>
+				<text><![CDATA[Number of other deaths]]></text>
+			</staticText>
+			<line>
+				<reportElement x="16" y="1945" width="555" height="1" uuid="f4c47156-972e-4e8b-97d1-be6243b19483"/>
+			</line>
+			<staticText>
+				<reportElement x="33" y="1919" width="284" height="16" uuid="7f0ad464-9e57-4e1c-8611-2fb2adb41f4e"/>
+				<text><![CDATA[Number of underweight(weight<2.5kg) live birth]]></text>
+			</staticText>
+			<line>
+				<reportElement x="101" y="2208" width="469" height="1" uuid="74e48318-a85b-41f8-aa37-d352e4c5c6c9"/>
+			</line>
+			<staticText>
+				<reportElement stretchType="ContainerBottom" x="35" y="2075" width="52" height="140" uuid="8f8e68b1-c8fc-48a8-b560-17a297c866fa"/>
+				<textElement rotation="Left" markup="none"/>
+				<text><![CDATA[Number of death]]></text>
+			</staticText>
+			<line>
+				<reportElement x="100" y="2146" width="469" height="1" uuid="04703e6e-9d84-4100-af41-4329e4f9e6d5"/>
+			</line>
+			<line>
+				<reportElement x="101" y="2174" width="471" height="1" uuid="b4a43687-0b6e-4aa1-a4e8-8933f39ec9f7"/>
+			</line>
+			<line>
+				<reportElement x="102" y="2243" width="468" height="1" uuid="555986f3-2794-4418-ac4c-288a28d11050"/>
+			</line>
+			<staticText>
+				<reportElement x="152" y="2184" width="186" height="16" uuid="50728e78-a825-4a02-9728-fe909bf2c23a"/>
+				<text><![CDATA[Number of dead mother]]></text>
+			</staticText>
+			<line>
+				<reportElement x="16" y="2284" width="558" height="1" uuid="281f063c-2fde-45cf-8402-a093f526f4da"/>
+			</line>
+			<line>
+				<reportElement x="274" y="2014" width="1" height="131" uuid="51b1e57f-fa3e-408d-a6e7-db87b63f68e6"/>
+			</line>
+			<staticText>
+				<reportElement x="39" y="1892" width="172" height="15" uuid="c4dd0e17-906e-4ad0-9f17-624e8ac7e40c"/>
+				<text><![CDATA[Number of live birth]]></text>
+			</staticText>
+			<line>
+				<reportElement x="274" y="2075" width="222" height="1" uuid="fa41c595-a332-4d1e-a9f8-1d2f2c408522"/>
+			</line>
+			<staticText>
+				<reportElement x="321" y="2083" width="79" height="16" uuid="a8afdec3-2aa6-482d-adff-ec724973bc7c"/>
+				<text><![CDATA[29 - <1year]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="57" y="1861" width="113" height="15" uuid="057286fa-ea6b-446d-b48f-279abdaee124"/>
+				<text><![CDATA[Types of Service]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="152" y="2154" width="162" height="16" uuid="e0552e04-4346-407c-8de8-5ed4304a4544"/>
+				<text><![CDATA[1-<5 years dead child count]]></text>
+			</staticText>
+			<line>
+				<reportElement x="16" y="1857" width="1" height="428" uuid="268c8a74-4a4b-40b1-bd92-36a9346a12fc"/>
+			</line>
+			<staticText>
+				<reportElement x="30" y="1979" width="312" height="29" uuid="de52a0ae-4828-401d-8249-eaf438f432ba"/>
+				<text><![CDATA[Number of still birht]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="13" y="1838" width="152" height="16" uuid="4d859b32-be20-4188-b52a-d48490c6b25b"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[d)Birth-Death:]]></text>
+			</staticText>
+			<line>
+				<reportElement x="101" y="2013" width="1" height="271" uuid="67450817-0813-4b14-979b-1caef4c80c31"/>
+			</line>
+			<line>
+				<reportElement x="274" y="2046" width="298" height="1" uuid="b52c3ca8-8566-4205-ae08-6c91d9bc53b8"/>
+			</line>
+			<staticText>
+				<reportElement x="317" y="2051" width="68" height="22" uuid="c1119c15-39ba-4755-bbda-9ddf9a76c24d"/>
+				<text><![CDATA[8-28 days]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="317" y="2020" width="48" height="16" uuid="3c760e98-04c7-4383-9833-381fab079ab1"/>
+				<text><![CDATA[0-7 days]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="307" y="2114" width="48" height="16" uuid="7014441f-7115-4131-b8b5-6559023c7e2b"/>
+				<text><![CDATA[Total]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="1951" width="284" height="16" uuid="2f36b062-cc39-4159-a9e1-1637b06ec130"/>
+				<text><![CDATA[Number of premature(before 37 weeks) live birth]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="497" y="1886" width="75" height="398" forecolor="#000000" backcolor="#888888" uuid="d96c1bba-1f08-4243-bf65-f89ea9fe797c"/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<line>
+				<reportElement x="17" y="1886" width="553" height="1" uuid="bba7f189-9dcc-4c00-8cce-5f3ebe813fad"/>
+			</line>
+			<line>
+				<reportElement x="17" y="1856" width="553" height="1" uuid="3a49ad90-0cc4-4784-a739-2f9152b41206"/>
+			</line>
+			<staticText>
+				<reportElement stretchType="ContainerBottom" x="137" y="2014" width="52" height="128" uuid="9b8b5c9f-4156-4644-8f01-6c3510f21524"/>
+				<textElement rotation="Left" markup="none"/>
+				<text><![CDATA[Number of dead child less than one year]]></text>
+			</staticText>
+			<line>
+				<reportElement x="278" y="2475" width="282" height="1" uuid="776f4fcb-c3f2-4afe-a737-5e34d8ef5764"/>
+			</line>
+			<line>
+				<reportElement stretchType="ContainerHeight" x="460" y="2351" width="1" height="255" uuid="05de50d9-7de7-41f5-a737-fccb9e75fba6"/>
+			</line>
+			<staticText>
+				<reportElement x="461" y="2349" width="45" height="27" uuid="31e0a3ae-21d2-470b-82ce-f1b3025e867d"/>
+				<text><![CDATA[6-<24 months]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="331" y="2322" width="170" height="21" uuid="59959b2e-8ff5-4ba0-9ccb-e19f85b04de0"/>
+				<text><![CDATA[0-59 month's child]]></text>
+			</staticText>
+			<line>
+				<reportElement x="279" y="2567" width="279" height="1" uuid="80e774ad-d129-48ef-88dc-2dd2d2479e67"/>
+			</line>
+			<line>
+				<reportElement x="278" y="2442" width="279" height="1" uuid="5cd6ab0e-597f-4abd-9c30-30c0b6513207"/>
+			</line>
+			<line>
+				<reportElement x="510" y="2350" width="1" height="256" uuid="1a4541b8-bed4-42c7-b00e-126c7602a667"/>
+			</line>
+			<line>
+				<reportElement x="278" y="2375" width="282" height="1" uuid="5a71e913-b664-4a51-9bfd-bda6f3f8a76a"/>
+			</line>
+			<line>
+				<reportElement x="279" y="2410" width="282" height="1" uuid="a108584e-0f1e-4264-b5b7-ac48c4bdcad4"/>
+			</line>
+			<staticText>
+				<reportElement x="13" y="2378" width="155" height="32" uuid="77cac677-e4f9-4dab-a4be-a7d15cc755d1"/>
+				<text><![CDATA[Counselling on Iron and Folic acid and Extra food]]></text>
+			</staticText>
+			<line>
+				<reportElement x="6" y="2606" width="553" height="1" uuid="8b9ba4e9-6b64-43c1-9c81-bcf764f253fe"/>
+			</line>
+			<staticText>
+				<reportElement x="29" y="2353" width="121" height="15" uuid="0195fe93-c971-4c35-a3cb-074df8f19f4b"/>
+				<text><![CDATA[Types of Services]]></text>
+			</staticText>
+			<line>
+				<reportElement x="7" y="2539" width="549" height="1" uuid="e2008765-0a1e-4ff9-93dd-09703cd33b2a"/>
+			</line>
+			<staticText>
+				<reportElement x="25" y="2324" width="227" height="15" uuid="f8f7010c-eb90-4ca4-9901-9099b3d732e4"/>
+				<text><![CDATA[Pregnan and 0-23 month's baby's mother]]></text>
+			</staticText>
+			<line>
+				<reportElement x="7" y="2318" width="1" height="288" uuid="505e3871-122c-476e-bddf-488cc9be0111"/>
+			</line>
+			<staticText>
+				<reportElement x="15" y="2443" width="142" height="29" uuid="87e6cb53-3cfd-4baa-b0c5-c5977e8dc11d"/>
+				<text><![CDATA[Counselling on breast milk and complementary food ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="2299" width="152" height="16" uuid="bea739f4-93b9-4994-9c09-4a7a8ceb11e7"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[e)Nutrition:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="18" y="2415" width="142" height="16" uuid="5e1fb7ff-d0f7-4112-9ca8-5b7769abcae0"/>
+				<text><![CDATA[Providing Iron and Folic acid]]></text>
+			</staticText>
+			<line>
+				<reportElement x="280" y="2350" width="280" height="1" uuid="4080886f-a995-430d-8016-cf85fdf2c317"/>
+			</line>
+			<line>
+				<reportElement x="7" y="2317" width="553" height="1" uuid="24f8b250-1959-41cd-b91b-924317b2099f"/>
+			</line>
+			<line>
+				<reportElement x="559" y="2315" width="1" height="291" uuid="f5115298-5a47-4ebd-9b0a-4d63f575cc94"/>
+			</line>
+			<line>
+				<reportElement x="406" y="2353" width="1" height="253" uuid="976e6566-0543-4fbc-9684-b7fe2583e41f"/>
+			</line>
+			<line>
+				<reportElement x="278" y="2319" width="1" height="286" uuid="185630d0-bc54-4d8f-ba32-086c7224e7c5"/>
+			</line>
+			<line>
+				<reportElement x="266" y="2319" width="1" height="219" uuid="4d7990de-42e2-4b6c-8098-e0a7f9974acc"/>
+			</line>
+			<line>
+				<reportElement x="7" y="2349" width="258" height="1" uuid="252fbd6d-5680-4986-ad02-8c452fd14cee"/>
+			</line>
+			<line>
+				<reportElement x="220" y="2349" width="1" height="190" uuid="f6d07a0b-6a2e-4182-ae6a-97f8b594d596"/>
+			</line>
+			<line>
+				<reportElement x="173" y="2349" width="1" height="190" uuid="b9e5908e-e72e-4c25-9c9d-5a4ad31802fb"/>
+			</line>
+			<line>
+				<reportElement x="7" y="2375" width="258" height="1" uuid="93d601ee-e1bb-4e94-9ae0-2b70cce1728c"/>
+			</line>
+			<line>
+				<reportElement x="6" y="2410" width="258" height="1" uuid="9afa3bd4-70ce-421a-8140-9aa9098d1e43"/>
+			</line>
+			<line>
+				<reportElement x="7" y="2442" width="258" height="1" uuid="5cc9379d-e65c-4a70-af29-18a0f5653b40"/>
+			</line>
+			<line>
+				<reportElement x="8" y="2475" width="258" height="1" uuid="b7996160-87aa-440b-84dd-269dd06be320"/>
+			</line>
+			<staticText>
+				<reportElement x="173" y="2349" width="48" height="27" uuid="c31fee80-f959-446b-948a-db4717d980d2"/>
+				<text><![CDATA[Pregnant Mother]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="220" y="2350" width="48" height="27" uuid="f0f0c1f6-f285-4fcb-b20a-5946a05eef4d"/>
+				<text><![CDATA[Child' Mother]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="14" y="2483" width="159" height="47" uuid="73ac7788-6961-4c4d-96eb-5473a9dbe0ac"/>
+				<text><![CDATA[counselling on feeding child Multiple micronutrients powder]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="282" y="2356" width="121" height="15" uuid="4535ee30-e06b-4baf-adb4-aa646fba20ea"/>
+				<text><![CDATA[Types of Services]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="409" y="2352" width="45" height="24" uuid="af5402fa-e2c1-4c6a-a72c-96bf8030a6f4"/>
+				<text><![CDATA[0-<6 months]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="513" y="2352" width="45" height="24" uuid="f9fc822a-56d4-427e-9d14-a6ab6e49dcb8"/>
+				<text><![CDATA[24-<60 months]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="281" y="2378" width="125" height="32" uuid="415068b2-1b0d-4bcc-8a76-16dc658c454d"/>
+				<text><![CDATA[Fed milk within 1 hour]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="281" y="2410" width="125" height="32" uuid="784e724a-90dd-4988-82c0-2ccf8fa5e0ab"/>
+				<text><![CDATA[Fed/been feeding milk until 6 months]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="280" y="2442" width="125" height="32" uuid="d6e37c8f-fe30-4890-9a2e-73fcf37f915e"/>
+				<text><![CDATA[Fed/been Feeding complementary food]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="281" y="2476" width="125" height="62" uuid="f1906ea4-bebe-491e-89de-345af31a0f98"/>
+				<text><![CDATA[Got Multiple micronutrients powder]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="280" y="2540" width="125" height="27" uuid="a9beec59-4f77-44a2-ad54-1127e0ba31e9"/>
+				<text><![CDATA[Number of children with MAM]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="281" y="2571" width="125" height="29" uuid="c3e2c9c9-4ba4-4cd6-9d50-c36944da8364"/>
+				<text><![CDATA[Number of children with SAM]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="173" y="2474" width="48" height="66" forecolor="#000000" backcolor="#888888" uuid="0edc115a-9187-44c7-b0ec-7fcd93b1918e"/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="459" y="2375" width="100" height="68" forecolor="#000000" backcolor="#888888" uuid="be4bab90-cabe-4c36-8189-caa5e46e18f2"/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="511" y="2473" width="48" height="66" forecolor="#000000" backcolor="#888888" uuid="289545fd-cc87-4e1e-961e-e43a288edf44"/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="406" y="2442" width="54" height="66" forecolor="#000000" backcolor="#888888" uuid="004a48ec-3702-49ad-9408-0159e3eaed43"/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<line>
+				<reportElement x="-5" y="2692" width="1" height="272" uuid="020d042d-549a-4ca3-b3d7-ef4d5b2d66d8"/>
+			</line>
+			<line>
+				<reportElement x="-5" y="2692" width="555" height="1" uuid="d6b2e99b-a463-4555-8622-74ca82e15928"/>
+			</line>
+			<line>
+				<reportElement x="-4" y="2963" width="553" height="1" uuid="456ce6b9-b117-46d3-846c-c9430e91208f"/>
+			</line>
+			<line>
+				<reportElement x="-5" y="2714" width="227" height="1" uuid="a96f88d2-3c7d-4675-af15-0118c7e087ac"/>
+			</line>
+			<line>
+				<reportElement x="-4" y="2742" width="555" height="1" uuid="ccef80a6-3ec6-4226-b4db-1089c05a9e3e"/>
+			</line>
+			<line>
+				<reportElement x="-4" y="2767" width="555" height="1" uuid="affdedeb-a7eb-4f4e-8e62-dc6c25d6ac74"/>
+			</line>
+			<line>
+				<reportElement x="-4" y="2793" width="555" height="1" uuid="bee9b2fb-60b0-4842-92f3-bb7607949b16"/>
+			</line>
+			<line>
+				<reportElement x="-4" y="2818" width="555" height="1" uuid="cbbee227-4f1d-4774-adb3-5093e37f59a3"/>
+			</line>
+			<line>
+				<reportElement x="93" y="2843" width="456" height="1" uuid="c449ee59-7036-4132-ad53-31021b2a44e2"/>
+			</line>
+			<line>
+				<reportElement x="-4" y="2866" width="555" height="1" uuid="1dea08e8-86e2-46e7-8e8a-f44e78d127f0"/>
+			</line>
+			<line>
+				<reportElement x="-4" y="2891" width="555" height="1" uuid="94b66409-4dc5-4ce1-8b6e-3f8cdbf3f57b"/>
+			</line>
+			<line>
+				<reportElement x="-4" y="2912" width="555" height="1" uuid="74281f46-191e-4d6e-bd83-0fd87b1c7a16"/>
+			</line>
+			<line>
+				<reportElement x="-4" y="2936" width="555" height="1" uuid="6a823d50-8232-4f43-a86f-f75aa31da896"/>
+			</line>
+			<staticText>
+				<reportElement x="-5" y="2662" width="248" height="16" uuid="226e8536-0a37-47e5-a339-3ac36a3d84f1"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[d)Monthly stock and distribution:]]></text>
+			</staticText>
+			<line>
+				<reportElement x="551" y="2691" width="1" height="272" uuid="ff0267f0-442f-4d91-9111-48b7702b1f38"/>
+			</line>
+			<line>
+				<reportElement x="499" y="2694" width="1" height="272" uuid="853fa6dd-8bd3-4ab8-8a5b-926bdb5eee82"/>
+			</line>
+			<line>
+				<reportElement x="450" y="2694" width="1" height="272" uuid="5c287c79-b82f-4058-9efe-e15d53e0757f"/>
+			</line>
+			<line>
+				<reportElement x="405" y="2694" width="1" height="272" uuid="a383dc94-1233-4fdc-9086-4f22a65abb62"/>
+			</line>
+			<line>
+				<reportElement x="317" y="2714" width="1" height="250" uuid="f3ae7a45-b9d2-4689-9377-efe54de5a842"/>
+			</line>
+			<line>
+				<reportElement x="272" y="2694" width="1" height="272" uuid="5a5ccce7-5ada-4139-9e5b-635b55478d7d"/>
+			</line>
+			<line>
+				<reportElement x="222" y="2691" width="1" height="272" uuid="4836da58-d378-4058-a03d-d7e9d70a0b28"/>
+			</line>
+			<line>
+				<reportElement x="178" y="2715" width="1" height="249" uuid="b86b562c-51a0-427d-b153-53692ca37b48"/>
+			</line>
+			<line>
+				<reportElement x="130" y="2692" width="1" height="272" uuid="0e5dc7cd-0ed2-4efe-8527-ad233a45fd38"/>
+			</line>
+			<line>
+				<reportElement x="360" y="2693" width="1" height="272" uuid="594b6a46-2b97-42ea-ba2c-23b091f47378"/>
+			</line>
+			<line>
+				<reportElement x="52" y="2692" width="1" height="49" uuid="7b16792c-8482-4286-9952-b3b6b8695c6b"/>
+			</line>
+			<staticText>
+				<reportElement x="134" y="2692" width="85" height="27" uuid="b51a88ff-09bf-404f-ad8d-5d84e83ed325"/>
+				<text><![CDATA[Eating Pill
+(Chokro)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="2719" width="55" height="21" uuid="f3a11439-d6c8-4e0e-8d6b-41db604f58b6"/>
+				<text><![CDATA[Date]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="131" y="2716" width="47" height="27" uuid="aa508d4e-d83d-41f9-ae3a-e182aac58faa"/>
+				<text><![CDATA[Sukhi]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="181" y="2719" width="41" height="23" uuid="88efaaa5-431d-465e-b8bc-899225984a64"/>
+				<text><![CDATA[Apon]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="2695" width="45" height="21" uuid="c3d182ca-38f1-4cca-b151-e9e9ab0d5fa7"/>
+				<text><![CDATA[Voucher]]></text>
+			</staticText>
+			<line>
+				<reportElement x="273" y="2714" width="88" height="1" uuid="d4fa1820-bf33-4ae8-9959-92827a0675dc"/>
+			</line>
+			<staticText>
+				<reportElement x="225" y="2697" width="52" height="42" uuid="b6967627-b59d-4fc9-a36e-e2aabb16514d"/>
+				<text><![CDATA[Condom
+(Nirapod)
+(piece)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="286" y="2694" width="71" height="19" uuid="c840efdd-6d3d-4246-8307-8e4fe4d7c368"/>
+				<text><![CDATA[Injectable]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="272" y="2717" width="47" height="27" uuid="aee07ab5-95c2-4d0a-9ddf-7ff2e0610db5"/>
+				<text><![CDATA[vial]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="322" y="2717" width="41" height="27" uuid="ff6fd50c-1fb9-4249-9ab1-65b27ec9814b"/>
+				<text><![CDATA[syringe]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="361" y="2695" width="43" height="44" uuid="4f6e422b-bb46-4609-92c7-596deb5ef5a9"/>
+				<text><![CDATA[ECP
+(dose)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="407" y="2696" width="43" height="44" uuid="2db12264-875f-4dc1-8f9c-b5729411c02f"/>
+				<text><![CDATA[Miso-
+prostol
+(dose)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="454" y="2697" width="43" height="44" uuid="09d1189c-dff6-4375-a4ab-c36534d56f6c"/>
+				<text><![CDATA[MNP
+(saset)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="503" y="2691" width="43" height="53" uuid="7ea9edb8-5392-426e-962e-243a21b21b03"/>
+				<text><![CDATA[Iron-
+Folic
+Acid
+(count)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="2745" width="100" height="21" uuid="3eb9ea04-c595-4bcd-a7db-699d2e3ddcc3"/>
+				<text><![CDATA[Previous stock]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="-5" y="2772" width="138" height="21" uuid="85d701e1-7122-40fc-a237-de86de35fe21"/>
+				<text><![CDATA[Recived current month*(+)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="-5" y="2798" width="138" height="21" uuid="f8e0b3f1-4012-4abf-8963-e52c69018372"/>
+				<text><![CDATA[Current Month total]]></text>
+			</staticText>
+			<line>
+				<reportElement x="93" y="2817" width="1" height="49" uuid="30a7e6f9-04c0-422a-a443-4d270698b2e4"/>
+			</line>
+			<staticText>
+				<reportElement x="0" y="2831" width="86" height="21" uuid="1e6b0a3a-ed19-44e8-b1a1-d35a469a2a2c"/>
+				<text><![CDATA[Combine]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="98" y="2824" width="32" height="21" uuid="ba35482a-9716-4e67-871b-61ceab3f2b30"/>
+				<text><![CDATA[(+)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="99" y="2847" width="32" height="21" uuid="8ce86c57-1320-4412-867b-e31e2ca08bc8"/>
+				<text><![CDATA[(-)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="2871" width="86" height="21" uuid="a0a3108d-b4d6-48b7-9f9a-d988d0613c4b"/>
+				<text><![CDATA[Total]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="-1" y="2895" width="130" height="18" uuid="0b626835-49c4-4512-831c-a11e3d65e9c6"/>
+				<text><![CDATA[Cur. month's distribution]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="4" y="2915" width="86" height="21" uuid="6dbe7011-b3fd-4548-adbe-1d392ad06b84"/>
+				<text><![CDATA[Rest]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="2939" width="86" height="21" uuid="f5797f1e-b0fb-4d35-bb46-c355d41dbb52"/>
+				<text><![CDATA[Rest]]></text>
+			</staticText>
 		</band>
 	</detail>
 	<columnFooter>
