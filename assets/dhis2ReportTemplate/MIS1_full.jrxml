@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2017-04-06T18:10:08 -->
+<!-- 2017-04-06T18:30:14 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="dgfp" pageWidth="595" pageHeight="5000" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="18da28e8-8b84-4338-9702-bcbbd0dd689f">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
@@ -1392,18 +1392,18 @@ Acid
 				<textFieldExpression><![CDATA[$F{bcpill absoulate new}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="112" y="276" width="55" height="20" uuid="a8ab1c8a-13ac-42d3-a1aa-06d73f2c9e2f"/>
+				<reportElement x="107" y="276" width="55" height="20" uuid="a8ab1c8a-13ac-42d3-a1aa-06d73f2c9e2f"/>
 				<textElement textAlignment="Center">
 					<font size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{bcpill absoulate new}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{bcpill new}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="112" y="299" width="55" height="20" uuid="3f0ed412-6bbb-42db-937f-e4cc6c747413"/>
 				<textElement textAlignment="Center">
 					<font size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{bcpill absoulate new}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{bcpill unit total}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="172" y="278" width="55" height="20" uuid="497788c4-4268-4cf0-a6fa-c35b179fa413"/>
@@ -1417,14 +1417,14 @@ Acid
 				<textElement textAlignment="Center">
 					<font size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{bcpill absoulate new}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{condom absoulate new}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="218" y="255" width="55" height="20" uuid="62ca88fa-9971-47fa-9267-85f0f4f2586a"/>
 				<textElement textAlignment="Center">
 					<font size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{bcpill left none taken}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{injectable absoulate new}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="220" y="276" width="55" height="20" uuid="3d1bb3b5-530d-493f-93ea-df5e94861ddc"/>
@@ -1475,7 +1475,7 @@ Acid
 				<textElement textAlignment="Center">
 					<font size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{bcpill new}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{iud absoulate new}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="274" y="275" width="55" height="20" uuid="94ce645a-a979-4f8b-9417-6df7ed459720"/>
@@ -1510,14 +1510,14 @@ Acid
 				<textElement textAlignment="Center">
 					<font size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{bcpill new}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{bc_per_m absoulate new}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="388" y="252" width="55" height="20" uuid="0cba529e-205b-4b06-a7fb-bebf02557c05"/>
 				<textElement textAlignment="Center">
 					<font size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{bcpill new}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{bc_per_f absoulate new}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="389" y="275" width="55" height="20" uuid="e84a79a5-d4b4-405b-a849-9f9d2b3d98ed"/>
@@ -1545,7 +1545,7 @@ Acid
 				<textElement textAlignment="Center">
 					<font size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{bcpill new}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{implant absoulate new}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="445" y="275" width="55" height="20" uuid="b4bffee4-695e-47e7-b459-9364800147b8"/>
@@ -1627,7 +1627,7 @@ Acid
 				<textFieldExpression><![CDATA[$F{bcpill new}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="112" y="323" width="55" height="20" uuid="ee224787-79fb-4a81-bf23-dea3307b9ba4"/>
+				<reportElement x="103" y="322" width="55" height="20" uuid="ee224787-79fb-4a81-bf23-dea3307b9ba4"/>
 				<textElement textAlignment="Center">
 					<font size="9"/>
 				</textElement>
@@ -2006,14 +2006,6 @@ Acid
 				<text><![CDATA[]]></text>
 			</staticText>
 			<staticText>
-				<reportElement positionType="FixRelativeToBottom" x="84" y="257" width="80" height="20" uuid="d05c5aa7-8c2a-442d-84f8-cca1b28f0ca6"/>
-				<textElement textAlignment="Center" markup="none">
-					<font fontName="Liberation Sans" size="10" isBold="true"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<text><![CDATA[পিল]]></text>
-			</staticText>
-			<staticText>
 				<reportElement x="165" y="190" width="55" height="20" uuid="877fc4cc-d90f-45cd-a9bc-5b632ff62bdb"/>
 				<textElement textAlignment="Center">
 					<font fontName="Liberation Sans" size="10" isBold="true"/>
@@ -2093,7 +2085,7 @@ Acid
 				<text><![CDATA[Woman]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="96" y="187" width="55" height="20" uuid="5e73b4ba-66e5-44b3-9915-bfa8cdd01856"/>
+				<reportElement x="96" y="187" width="65" height="20" uuid="5e73b4ba-66e5-44b3-9915-bfa8cdd01856"/>
 				<textElement textAlignment="Center">
 					<font fontName="Liberation Sans" size="10" isBold="true"/>
 				</textElement>
@@ -2130,6 +2122,20 @@ Acid
 					<font size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{organisation_unit_is_parent}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="424" y="565" width="55" height="14" uuid="20e28cb8-29fa-428b-b799-4a8281123617"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{preg new}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="424" y="584" width="55" height="14" uuid="7ed2485c-64e2-4b9b-ab66-545adc3194ef"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{preg old}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
