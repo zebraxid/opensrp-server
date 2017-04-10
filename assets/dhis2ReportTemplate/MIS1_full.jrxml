@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2017-04-10T16:38:43 -->
+<!-- 2017-04-10T17:39:45 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="dgfp" pageWidth="595" pageHeight="4000" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="18da28e8-8b84-4338-9702-bcbbd0dd689f">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
@@ -188,22 +188,22 @@
 	<field name="stock pill sukhi, distribution" class="java.lang.Double"/>
 	<field name="stock pill sukhi, previous stock" class="java.lang.Double"/>
 	<field name="stock pill sukhi, recieved" class="java.lang.Double"/>
-	<field name="stock data default" class="java.lang.Double"/>
-	<field name="stock empty cause condom nirapod, empty stock cause" class="java.lang.Double"/>
-	<field name="stock empty cause ecp, empty stock cause" class="java.lang.Double"/>
-	<field name="stock empty cause injectable syringe, empty stock cause" class="java.lang.Double"/>
-	<field name="stock empty cause injectable vial, empty stock cause" class="java.lang.Double"/>
-	<field name="stock empty cause iron and folic acid, empty stock cause" class="java.lang.Double"/>
-	<field name="stock empty cause mnp, empty stock cause" class="java.lang.Double"/>
-	<field name="stock empty cause misoprostol, empty stock cause" class="java.lang.Double"/>
-	<field name="stock empty cause pill sukhi, empty stock cause" class="java.lang.Double"/>
-	<field name="stock empty cause pill apon, empty stock cause" class="java.lang.Double"/>
+	<field name="stock date default" class="java.lang.Double"/>
+	<field name="stock empty cause condom nirapod, empty stock cause" class="java.lang.String"/>
+	<field name="stock empty cause ecp, empty stock cause" class="java.lang.String"/>
+	<field name="stock empty cause injectable syringe, empty stock cause" class="java.lang.String"/>
+	<field name="stock empty cause injectable vial, empty stock cause" class="java.lang.String"/>
+	<field name="stock empty cause iron and folic acid, empty stock cause" class="java.lang.String"/>
+	<field name="stock empty cause mnp, empty stock cause" class="java.lang.String"/>
+	<field name="stock empty cause misoprostol, empty stock cause" class="java.lang.String"/>
+	<field name="stock empty cause pill sukhi, empty stock cause" class="java.lang.String"/>
+	<field name="stock empty cause pill apon, empty stock cause" class="java.lang.String"/>
 	<field name="stock pill apon, combine minus" class="java.lang.Double"/>
 	<field name="stock pill apon, combine plus" class="java.lang.Double"/>
 	<field name="stock pill apon, distribution" class="java.lang.Double"/>
 	<field name="stock pill apon, previous stock" class="java.lang.Double"/>
 	<field name="stock pill apon, recieved" class="java.lang.Double"/>
-	<field name="voucher default" class="java.lang.Double"/>
+	<field name="voucher default" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -3413,6 +3413,20 @@ Acid
 					<font size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{child disease very serious disease}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="51" y="3111" width="45" height="19" uuid="64172af2-f53c-4f9b-8d12-859209c20b51"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{voucher default}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="56" y="3134" width="45" height="19" uuid="0af43d16-0bcc-4d1c-adb2-25438f5bde43"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock pill sukhi, previous stock}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
