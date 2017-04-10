@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2017-04-09T18:54:37 -->
+<!-- 2017-04-10T16:38:43 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="dgfp" pageWidth="595" pageHeight="4000" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="18da28e8-8b84-4338-9702-bcbbd0dd689f">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
@@ -106,6 +106,20 @@
 	<field name="icp" class="java.lang.Double"/>
 	<field name="misoprostol pill taker" class="java.lang.Double"/>
 	<field name="complex pregnency" class="java.lang.Double"/>
+	<field name="child disease diarrhea" class="java.lang.Double"/>
+	<field name="child disease very serious disease" class="java.lang.Double"/>
+	<field name="child disease pneumonia" class="java.lang.Double"/>
+	<field name="child vaccination bcg" class="java.lang.Double"/>
+	<field name="child vaccination hum" class="java.lang.Double"/>
+	<field name="child vaccination opv_3" class="java.lang.Double"/>
+	<field name="child vaccination opv_4" class="java.lang.Double"/>
+	<field name="child vaccination pcv_1" class="java.lang.Double"/>
+	<field name="child vaccination pcv_2" class="java.lang.Double"/>
+	<field name="child vaccination pcv_3" class="java.lang.Double"/>
+	<field name="info of new born clean with in one minute" class="java.lang.Double"/>
+	<field name="info of new born feeding best milk within one hour" class="java.lang.Double"/>
+	<field name="info of new born respiratory disease and use of musk ot resuscitate" class="java.lang.Double"/>
+	<field name="info of new born use of cholrohexiding after cutting umbilical cord" class="java.lang.Double"/>
 	<field name="birth dead" class="java.lang.Double"/>
 	<field name="birth premature" class="java.lang.Double"/>
 	<field name="birth under weight" class="java.lang.Double"/>
@@ -134,6 +148,62 @@
 	<field name="child care(0-59m) have sam, 0-6 months" class="java.lang.Double"/>
 	<field name="child care(0-59m) have sam, 24-60 months" class="java.lang.Double"/>
 	<field name="child care(0-59m) have sam, 6-24 months" class="java.lang.Double"/>
+	<field name="stock condom nirapod, combine minus" class="java.lang.Double"/>
+	<field name="stock condom nirapod, combine plus" class="java.lang.Double"/>
+	<field name="stock condom nirapod, distribution" class="java.lang.Double"/>
+	<field name="stock condom nirapod, previous stock" class="java.lang.Double"/>
+	<field name="stock condom nirapod, recieved" class="java.lang.Double"/>
+	<field name="stock ecp, combine minus" class="java.lang.Double"/>
+	<field name="stock ecp, combine plus" class="java.lang.Double"/>
+	<field name="stock ecp, distribution" class="java.lang.Double"/>
+	<field name="stock ecp, previous stock" class="java.lang.Double"/>
+	<field name="stock ecp, recieved" class="java.lang.Double"/>
+	<field name="stock injectable syringe, combine minus" class="java.lang.Double"/>
+	<field name="stock injectable syringe, combine plus" class="java.lang.Double"/>
+	<field name="stock injectable syringe, distribution" class="java.lang.Double"/>
+	<field name="stock injectable syringe, previous stock" class="java.lang.Double"/>
+	<field name="stock injectable syringe, recieved" class="java.lang.Double"/>
+	<field name="stock injectable vial, combine minus" class="java.lang.Double"/>
+	<field name="stock injectable vial, combine plus" class="java.lang.Double"/>
+	<field name="stock injectable vial, distribution" class="java.lang.Double"/>
+	<field name="stock injectable vial, previous stock" class="java.lang.Double"/>
+	<field name="stock injectable vial, recieved" class="java.lang.Double"/>
+	<field name="stock iron and folic acid, combine minus" class="java.lang.Double"/>
+	<field name="stock iron and folic acid, combine plus" class="java.lang.Double"/>
+	<field name="stock iron and folic acid, distribution" class="java.lang.Double"/>
+	<field name="stock iron and folic acid, previous stock" class="java.lang.Double"/>
+	<field name="stock iron and folic acid, recieved" class="java.lang.Double"/>
+	<field name="stock mnp, combine minus" class="java.lang.Double"/>
+	<field name="stock mnp, combine plus" class="java.lang.Double"/>
+	<field name="stock mnp, distribution" class="java.lang.Double"/>
+	<field name="stock mnp, previous stock" class="java.lang.Double"/>
+	<field name="stock mnp, recieved" class="java.lang.Double"/>
+	<field name="stock misoprostol, combine minus" class="java.lang.Double"/>
+	<field name="stock misoprostol, combine plus" class="java.lang.Double"/>
+	<field name="stock misoprostol, distribution" class="java.lang.Double"/>
+	<field name="stock misoprostol, previous stock" class="java.lang.Double"/>
+	<field name="stock misoprostol, recieved" class="java.lang.Double"/>
+	<field name="stock pill sukhi, combine minus" class="java.lang.Double"/>
+	<field name="stock pill sukhi, combine plus" class="java.lang.Double"/>
+	<field name="stock pill sukhi, distribution" class="java.lang.Double"/>
+	<field name="stock pill sukhi, previous stock" class="java.lang.Double"/>
+	<field name="stock pill sukhi, recieved" class="java.lang.Double"/>
+	<field name="stock data default" class="java.lang.Double"/>
+	<field name="stock empty cause condom nirapod, empty stock cause" class="java.lang.Double"/>
+	<field name="stock empty cause ecp, empty stock cause" class="java.lang.Double"/>
+	<field name="stock empty cause injectable syringe, empty stock cause" class="java.lang.Double"/>
+	<field name="stock empty cause injectable vial, empty stock cause" class="java.lang.Double"/>
+	<field name="stock empty cause iron and folic acid, empty stock cause" class="java.lang.Double"/>
+	<field name="stock empty cause mnp, empty stock cause" class="java.lang.Double"/>
+	<field name="stock empty cause misoprostol, empty stock cause" class="java.lang.Double"/>
+	<field name="stock empty cause pill sukhi, empty stock cause" class="java.lang.Double"/>
+	<field name="stock empty cause pill apon, empty stock cause" class="java.lang.Double"/>
+	<field name="stock pill apon, combine minus" class="java.lang.Double"/>
+	<field name="stock pill apon, combine plus" class="java.lang.Double"/>
+	<field name="stock pill apon, distribution" class="java.lang.Double"/>
+	<field name="stock pill apon, previous stock" class="java.lang.Double"/>
+	<field name="stock pill apon, recieved" class="java.lang.Double"/>
+	<field name="voucher default" class="java.lang.Double"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -219,7 +289,7 @@
 		</band>
 	</title>
 	<detail>
-		<band height="3383" splitType="Stretch">
+		<band height="3384" splitType="Stretch">
 			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
 			<line>
 				<reportElement x="-9" y="434" width="1" height="567" uuid="193fdc12-0ec5-4250-8cf4-e0ff48f19e25"/>
@@ -1278,7 +1348,7 @@ Clinic]]></text>
 (Chokro)]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="-7" y="3136" width="55" height="21" uuid="f3a11439-d6c8-4e0e-8d6b-41db604f58b6"/>
+				<reportElement x="-13" y="3134" width="55" height="21" uuid="f3a11439-d6c8-4e0e-8d6b-41db604f58b6"/>
 				<text><![CDATA[Date]]></text>
 			</staticText>
 			<staticText>
@@ -1357,7 +1427,7 @@ Acid
 				<text><![CDATA[Combine]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="89" y="3241" width="32" height="21" uuid="ba35482a-9716-4e67-871b-61ceab3f2b30"/>
+				<reportElement x="91" y="3242" width="23" height="18" uuid="ba35482a-9716-4e67-871b-61ceab3f2b30"/>
 				<text><![CDATA[(+)]]></text>
 			</staticText>
 			<staticText>
@@ -1377,8 +1447,8 @@ Acid
 				<text><![CDATA[Rest]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="-8" y="3356" width="86" height="21" uuid="f5797f1e-b0fb-4d35-bb46-c355d41dbb52"/>
-				<text><![CDATA[Rest]]></text>
+				<reportElement x="-11" y="3356" width="131" height="27" uuid="f5797f1e-b0fb-4d35-bb46-c355d41dbb52"/>
+				<text><![CDATA[Reason for Empty stock in current month(If)]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
 				<reportElement x="97" y="116" width="55" height="20" uuid="216d9799-edd3-4b83-9c67-2038944f910d"/>
@@ -2523,63 +2593,63 @@ Acid
 				<textElement textAlignment="Center">
 					<font size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{death 0-7 days} + $F{death 8-28 days} + $F{death 29days_lt1 year} + $F{death 1-5 years} + $F{death mother} + $F{death other}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{pregnant and child mohter pregnant mother, about giving iron and folic}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="212" y="2801" width="45" height="19" uuid="51d691d5-54ae-4dd0-b7d1-bca3471b78b8"/>
 				<textElement textAlignment="Center">
 					<font size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{death 0-7 days} + $F{death 8-28 days} + $F{death 29days_lt1 year} + $F{death 1-5 years} + $F{death mother} + $F{death other}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{pregnant and child mohter childs(0-23month) mother, about giving iron and folic}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="214" y="2838" width="45" height="19" uuid="88c4d3ba-8072-4b4f-a1d7-96108d54b545"/>
+				<reportElement x="211" y="2837" width="45" height="19" uuid="88c4d3ba-8072-4b4f-a1d7-96108d54b545"/>
 				<textElement textAlignment="Center">
 					<font size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{death 0-7 days} + $F{death 8-28 days} + $F{death 29days_lt1 year} + $F{death 1-5 years} + $F{death mother} + $F{death other}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{pregnant and child mohter childs(0-23month) mother, provide iron and folic acid}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="160" y="2837" width="45" height="19" uuid="44cca56b-5aea-4ffe-a885-180fa55435db"/>
 				<textElement textAlignment="Center">
 					<font size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{death 0-7 days} + $F{death 8-28 days} + $F{death 29days_lt1 year} + $F{death 1-5 years} + $F{death mother} + $F{death other}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{pregnant and child mohter pregnant mother, provide iron and folic acid}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="165" y="2867" width="45" height="19" uuid="aaa27c40-995d-44e7-ba23-633ff21df4dc"/>
 				<textElement textAlignment="Center">
 					<font size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{death 0-7 days} + $F{death 8-28 days} + $F{death 29days_lt1 year} + $F{death 1-5 years} + $F{death mother} + $F{death other}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{pregnant and child mohter pregnant mother, about breast milk and complementary food}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="213" y="2867" width="45" height="19" uuid="ffb54342-e8a1-4364-ac57-a75f19bf84f1"/>
 				<textElement textAlignment="Center">
 					<font size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{death 0-7 days} + $F{death 8-28 days} + $F{death 29days_lt1 year} + $F{death 1-5 years} + $F{death mother} + $F{death other}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{pregnant and child mohter childs(0-23month) mother, about breast milk and complementary food}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="401" y="2802" width="45" height="19" uuid="c7c54101-c91f-4e36-9117-d4cfe88572c0"/>
 				<textElement textAlignment="Center">
 					<font size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{death 0-7 days} + $F{death 8-28 days} + $F{death 29days_lt1 year} + $F{death 1-5 years} + $F{death mother} + $F{death other}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{child care(0-59m) feeding breast milk within one hour, 0-6 months}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="218" y="2923" width="45" height="19" uuid="955d2e0b-b11b-4a01-bbca-de62375b3a3e"/>
+				<reportElement x="210" y="2916" width="45" height="19" uuid="955d2e0b-b11b-4a01-bbca-de62375b3a3e"/>
 				<textElement textAlignment="Center">
 					<font size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{death 0-7 days} + $F{death 8-28 days} + $F{death 29days_lt1 year} + $F{death 1-5 years} + $F{death mother} + $F{death other}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{pregnant and child mohter childs(0-23month) mother, about feeding child multiple micronutrients powder}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="403" y="2834" width="45" height="19" uuid="319c6edd-384c-49ec-80fd-b7cd4049d505"/>
 				<textElement textAlignment="Center">
 					<font size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{death 0-7 days} + $F{death 8-28 days} + $F{death 29days_lt1 year} + $F{death 1-5 years} + $F{death mother} + $F{death other}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{child care(0-59m) fed breast milk until six month, 0-6 months}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="452" y="2869" width="45" height="19" uuid="d14480a5-cef9-4ec6-9764-a89c18826e78"/>
@@ -2593,7 +2663,7 @@ Acid
 				<textElement textAlignment="Center">
 					<font size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{death 0-7 days} + $F{death 8-28 days} + $F{death 29days_lt1 year} + $F{death 1-5 years} + $F{death mother} + $F{death other}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{child care(0-59m) fedbeen feeding complementary food, 24-60 months}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="453" y="2905" width="45" height="19" uuid="671c7b2a-7b42-4595-bcb2-af8d1e18508a"/>
@@ -2643,6 +2713,706 @@ Acid
 					<font size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{child care(0-59m) have sam, 24-60 months}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="123" y="3163" width="45" height="19" uuid="8a28261e-f2c6-436d-a5ce-92a47ccee472"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock pill sukhi, previous stock}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="125" y="3188" width="45" height="19" uuid="a7c56afb-1d47-4d2c-a861-cdb0848ebcab"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock pill sukhi, recieved}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="125" y="3214" width="45" height="19" uuid="b3233d16-e1df-4868-995a-b421e1a3bb8b"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock pill sukhi, previous stock} + $F{stock pill sukhi, recieved}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="123" y="3239" width="45" height="19" uuid="7c98aa64-0b03-4f1b-b148-ff157d472c98"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock pill sukhi, combine plus}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="123" y="3263" width="45" height="19" uuid="f9e4d557-0d36-4a0f-a21c-dbd46b5efed6"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock pill sukhi, combine minus}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="124" y="3287" width="45" height="19" uuid="c0a67211-86ac-4c13-8291-9a1bfbcb4320"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock pill sukhi, previous stock} + $F{stock pill sukhi, recieved} + $F{stock pill sukhi, combine plus}  - $F{stock pill sukhi, combine minus}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="126" y="3309" width="45" height="19" uuid="3274bb83-8b90-4d9a-b5a2-6d9337f885f1"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock pill sukhi, distribution}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="123" y="3331" width="45" height="19" uuid="bbf5cf67-d806-42d3-b8a9-7691f683632d"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock pill sukhi, previous stock} + $F{stock pill sukhi, recieved} + $F{stock pill sukhi, combine plus}  - $F{stock pill sukhi, combine minus} - $F{stock pill sukhi, distribution}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="124" y="3357" width="45" height="19" uuid="233f9683-da05-4c25-b85a-9d28f9111b6a"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock empty cause pill sukhi, empty stock cause}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="172" y="3162" width="45" height="19" uuid="d00f02d3-997c-45bd-9e10-436adfa7364e"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock pill apon, previous stock}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="174" y="3187" width="45" height="19" uuid="02f526d7-84af-486c-9504-df0daf4a1530"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock pill apon, recieved}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="174" y="3213" width="45" height="19" uuid="3da89900-fc62-48e9-bd65-5cfb8445eb9e"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock pill apon, previous stock} + $F{stock pill apon, recieved}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="172" y="3238" width="45" height="19" uuid="d1669cae-94f7-4cbf-ac28-774d8b479a9d"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock pill apon, combine plus}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="172" y="3262" width="45" height="19" uuid="08ddcac8-fbbf-4ab1-9214-8c5000c798e8"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock pill apon, combine minus}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="173" y="3286" width="45" height="19" uuid="5281ffab-4617-465f-8c44-97a27590ed9e"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock pill apon, previous stock} + $F{stock pill apon, recieved} + $F{stock pill apon, combine plus}  - $F{stock pill apon, combine minus}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="175" y="3308" width="45" height="19" uuid="6ff316db-ef68-4cb1-84a7-a3cd8028e860"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock pill apon, distribution}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="172" y="3330" width="45" height="19" uuid="31b96c54-b28a-413d-a9d9-9073d8204d44"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock pill apon, previous stock} + $F{stock pill apon, recieved} + $F{stock pill apon, combine plus}  - $F{stock pill apon, combine minus} - $F{stock pill apon, distribution}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="173" y="3356" width="45" height="19" uuid="792aad56-d697-4195-a65e-f97c7ac48807"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock empty cause pill apon, empty stock cause}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="213" y="3164" width="45" height="19" uuid="2e706cce-704a-459d-9ce1-72726007879b"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock condom nirapod, previous stock}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="215" y="3189" width="45" height="19" uuid="cd15c14c-5470-4f40-8e0d-5786a5c552c4"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock condom nirapod, recieved}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="215" y="3215" width="45" height="19" uuid="f48e914c-fc86-4b00-9171-42c25b6ed01a"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock condom nirapod, previous stock} + $F{stock condom nirapod, recieved}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="213" y="3240" width="45" height="19" uuid="1d52b8e3-10c3-4521-affc-2d1b9bac91c1"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock condom nirapod, combine plus}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="213" y="3264" width="45" height="19" uuid="820eb9d5-4b27-4798-9cdb-c910af4749df"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock condom nirapod, combine minus}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="214" y="3288" width="45" height="19" uuid="3d7c14d5-f7f7-4cf5-a4d4-55f195995b61"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock condom nirapod, previous stock} + $F{stock condom nirapod, recieved} + $F{stock condom nirapod, combine plus}  - $F{stock condom nirapod, combine minus}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="216" y="3310" width="45" height="19" uuid="3b79008e-b316-427c-9538-b5b8253a8605"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock condom nirapod, distribution}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="213" y="3332" width="45" height="19" uuid="a9458784-4286-4c71-828d-129a5b3d49e2"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock condom nirapod, previous stock} + $F{stock condom nirapod, recieved} + $F{stock condom nirapod, combine plus}  - $F{stock condom nirapod, combine minus} - $F{stock condom nirapod, distribution}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="214" y="3358" width="45" height="19" uuid="68fae68a-d278-426e-a561-fb04d7c39a58"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock empty cause condom nirapod, empty stock cause}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="266" y="3162" width="45" height="19" uuid="54d28fe1-41cb-4866-91a5-ad8538f446d0"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock injectable vial, previous stock}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="268" y="3187" width="45" height="19" uuid="e4932fe2-4203-4f66-a789-9c68a6e74386"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock injectable vial, recieved}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="268" y="3213" width="45" height="19" uuid="47f8d6ab-4b71-463a-8721-78943b62505c"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock injectable vial, previous stock} + $F{stock injectable vial, recieved}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="266" y="3238" width="45" height="19" uuid="86a637d5-c186-44d4-83c1-0a088bfa38b4"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock injectable vial, combine plus}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="266" y="3262" width="45" height="19" uuid="7e41e912-de7a-456d-9f1e-de63f4b4bb56"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock injectable vial, combine minus}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="267" y="3286" width="45" height="19" uuid="be4625fa-a535-447c-ad8f-c9c07fece672"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock injectable vial, previous stock} + $F{stock injectable vial, recieved} + $F{stock injectable vial, combine plus}  - $F{stock injectable vial, combine minus}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="269" y="3308" width="45" height="19" uuid="cf8f68f1-def2-497a-90a4-423d723ffee4"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock injectable vial, distribution}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="266" y="3330" width="45" height="19" uuid="ef10ac94-9131-4ab3-acc9-12d6a813c036"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock injectable vial, previous stock} + $F{stock injectable vial, recieved} + $F{stock injectable vial, combine plus}  - $F{stock injectable vial, combine minus} - $F{stock injectable vial, distribution}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="267" y="3356" width="45" height="19" uuid="d83b6e4e-5b9c-430e-acf0-614ea9f31df9"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock empty cause injectable vial, empty stock cause}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="308" y="3163" width="45" height="19" uuid="f7362661-286c-46f9-bf7e-22695093a372"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock injectable syringe, previous stock}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="310" y="3188" width="45" height="19" uuid="3c7113aa-0297-48ec-bd8e-44f8dc693214"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock injectable syringe, recieved}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="310" y="3214" width="45" height="19" uuid="ad480fa6-1d95-4f5c-8cc3-1db98698f173"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock injectable syringe, previous stock} + $F{stock injectable syringe, recieved}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="308" y="3239" width="45" height="19" uuid="28eb22a2-4990-4998-aeed-81ae20676ffc"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock injectable syringe, combine plus}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="308" y="3263" width="45" height="19" uuid="1892855f-7549-4ba5-9bdc-0a158e852243"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock injectable syringe, combine minus}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="309" y="3287" width="45" height="19" uuid="cf93feb5-ea66-4a40-8337-b861f059df67"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock injectable syringe, previous stock} + $F{stock injectable syringe, recieved} + $F{stock injectable syringe, combine plus}  - $F{stock injectable syringe, combine minus}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="311" y="3309" width="45" height="19" uuid="330644c5-ebed-451d-a420-343cc8069dce"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock injectable syringe, distribution}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="308" y="3331" width="45" height="19" uuid="038f0156-c9b8-47ae-b817-2bc72ec3b541"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock injectable syringe, previous stock} + $F{stock injectable syringe, recieved} + $F{stock injectable syringe, combine plus}  - $F{stock injectable syringe, combine minus} - $F{stock injectable syringe, distribution}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="309" y="3357" width="45" height="19" uuid="2f95cffb-071e-4a79-87e5-b14aae047a56"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock empty cause injectable syringe, empty stock cause}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="353" y="3166" width="45" height="19" uuid="bc897b3f-58d8-4178-9609-faa95d8f9ffa"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock ecp, previous stock}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="355" y="3191" width="45" height="19" uuid="7ef210a2-bbd8-4855-b7ff-4e34c69ad123"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock ecp, recieved}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="355" y="3217" width="45" height="19" uuid="aa72f4e1-2153-4b83-8112-c8de8bb4a036"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock ecp, previous stock} + $F{stock ecp, recieved}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="353" y="3242" width="45" height="19" uuid="95cff6d9-c527-4a87-b032-cfae534036bd"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock ecp, combine plus}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="353" y="3266" width="45" height="19" uuid="29522941-6245-4c95-87f9-44abef8fd7d6"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock ecp, combine minus}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="354" y="3290" width="45" height="19" uuid="50a9c480-90bf-4ee8-b07a-beaa8ff2d6e3"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock ecp, previous stock} + $F{stock ecp, recieved} + $F{stock ecp, combine plus}  - $F{stock ecp, combine minus}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="356" y="3312" width="45" height="19" uuid="b5a5406a-eb6c-4e5f-9705-19b05b0a0879"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock ecp, distribution}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="353" y="3334" width="45" height="19" uuid="ced55ec1-c900-4f13-86a6-c914cfa19090"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock ecp, previous stock} + $F{stock ecp, recieved} + $F{stock ecp, combine plus}  - $F{stock ecp, combine minus} - $F{stock ecp, distribution}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="354" y="3360" width="45" height="19" uuid="5118a505-14b0-4bb9-873d-11a0377fbfba"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock empty cause ecp, empty stock cause}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="400" y="3308" width="45" height="19" uuid="47ea3dc2-e693-4cfe-a07b-12a19db27d34"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock misoprostol, distribution}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="398" y="3286" width="45" height="19" uuid="cfb4b58e-c630-4a3b-b2a6-cb631e6121b4"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock misoprostol, previous stock} + $F{stock misoprostol, recieved} + $F{stock misoprostol, combine plus}  - $F{stock misoprostol, combine minus}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="399" y="3213" width="45" height="19" uuid="c44d3bb6-71c4-4aa8-953e-d5d0f32241f6"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock misoprostol, previous stock} + $F{stock misoprostol, recieved}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="397" y="3238" width="45" height="19" uuid="0fba183a-b98f-49bc-88e0-cf98142127cf"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock misoprostol, combine plus}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="397" y="3330" width="45" height="19" uuid="a2caa72f-cabe-4b1c-8ce3-ce75e0837fed"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock misoprostol, previous stock} + $F{stock misoprostol, recieved} + $F{stock misoprostol, combine plus}  - $F{stock misoprostol, combine minus} - $F{stock misoprostol, distribution}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="397" y="3262" width="45" height="19" uuid="ddd29262-c661-40ce-a70a-c597c7a854b2"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock misoprostol, combine minus}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="397" y="3162" width="45" height="19" uuid="32dd6455-4a55-400d-8084-5c603be5aaf1"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock misoprostol, previous stock}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="399" y="3187" width="45" height="19" uuid="5c980ee9-463f-45f7-adbd-9b5eac3be426"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock misoprostol, recieved}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="398" y="3356" width="45" height="19" uuid="309a61fd-59ad-4676-bc16-f47e21b3c39d"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock empty cause misoprostol, empty stock cause}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="441" y="3163" width="45" height="19" uuid="2405e0a6-8c52-4bfc-8b8c-25c1174e3fce"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock mnp, previous stock}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="443" y="3188" width="45" height="19" uuid="b6839ad6-6b76-48b6-8ca9-efd2b98abc30"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock mnp, recieved}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="443" y="3214" width="45" height="19" uuid="f9cc31f0-bd28-421f-aa40-201b393bd000"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock mnp, previous stock} + $F{stock mnp, recieved}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="441" y="3239" width="45" height="19" uuid="49514b89-4c77-488d-a264-a6542198868c"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock mnp, combine plus}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="441" y="3263" width="45" height="19" uuid="5ed708d2-9c2c-4440-8443-3b99ae3d86f0"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock mnp, combine minus}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="442" y="3287" width="45" height="19" uuid="59f8e7dc-7185-4f14-a154-c46f46274aaa"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock mnp, previous stock} + $F{stock mnp, recieved} + $F{stock mnp, combine plus}  - $F{stock mnp, combine minus}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="444" y="3309" width="45" height="19" uuid="003d5b20-f0fd-4224-8011-3d1e1eab0854"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock mnp, distribution}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="441" y="3331" width="45" height="19" uuid="fb7d6f4f-1d05-4d7e-a609-7bccb7fccbe1"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock mnp, previous stock} + $F{stock mnp, recieved} + $F{stock mnp, combine plus}  - $F{stock mnp, combine minus} - $F{stock mnp, distribution}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="442" y="3357" width="45" height="19" uuid="82f21bc7-1f6a-451b-aa21-67598405c2b6"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock empty cause mnp, empty stock cause}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="495" y="3358" width="45" height="19" uuid="88c7daf5-3a48-4f31-97d6-f20a9da40b0a"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock empty cause iron and folic acid, empty stock cause}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="494" y="3164" width="45" height="19" uuid="ade8d3a1-99bd-4920-af20-5c38a34cc894"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock iron and folic acid, previous stock}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="496" y="3189" width="45" height="19" uuid="e7131509-f738-4355-8071-5e2231bc8366"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock iron and folic acid, recieved}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="496" y="3215" width="45" height="19" uuid="c934306d-e738-4ffd-81fb-d9cf324f882a"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock iron and folic acid, previous stock} + $F{stock iron and folic acid, recieved}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="494" y="3240" width="45" height="19" uuid="132ef248-dd24-4d51-878e-6e47b0f48064"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock iron and folic acid, combine plus}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="494" y="3264" width="45" height="19" uuid="5b8d646a-2b64-47ea-a1d9-686103e25b01"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock iron and folic acid, combine minus}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="495" y="3288" width="45" height="19" uuid="a8b72cd1-1c94-4d3a-a2dd-88ff0ac01755"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock iron and folic acid, previous stock} + $F{stock iron and folic acid, recieved} + $F{stock iron and folic acid, combine plus}  - $F{stock iron and folic acid, combine minus}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="497" y="3310" width="45" height="19" uuid="b7c0aa9f-21be-4807-9477-40b14d5c17d2"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock iron and folic acid, distribution}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="494" y="3332" width="45" height="19" uuid="ae902fc5-2a9e-411c-b5b7-d991a24ca552"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock iron and folic acid, previous stock} + $F{stock iron and folic acid, recieved} + $F{stock iron and folic acid, combine plus}  - $F{stock iron and folic acid, combine minus} - $F{stock iron and folic acid, distribution}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="410" y="1722" width="63" height="28" uuid="605419da-c886-4b75-957f-1c317c318464"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{info of new born clean with in one minute}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="472" y="1723" width="63" height="28" uuid="fe7cbd20-b283-413b-b9cd-052020837723"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{info of new born clean with in one minute}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="480" y="1780" width="63" height="25" uuid="5d4c10a1-ad03-4b9c-adee-5b91e144dadd"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{info of new born feeding best milk within one hour}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="479" y="1751" width="63" height="25" uuid="1fc487f4-3235-45d8-b76d-5a71e5905b14"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{info of new born use of cholrohexiding after cutting umbilical cord}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="410" y="1752" width="63" height="25" uuid="a0ac8424-cf6d-4a83-ab2d-277145d16b4d"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{info of new born use of cholrohexiding after cutting umbilical cord}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="477" y="1812" width="63" height="25" uuid="ba1ab44b-8f75-4949-832f-99209bf587ad"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{info of new born respiratory disease and use of musk ot resuscitate}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="409" y="1854" width="63" height="25" uuid="d5511e35-d4c6-4df5-ada2-4a92d591571e"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{child vaccination bcg}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="410" y="1884" width="63" height="25" uuid="5f9158b1-d28d-46e4-af63-46c269455274"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{child vaccination pcv_1}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="409" y="1914" width="63" height="25" uuid="88e322a0-9655-436d-a8e2-40f4ffe40a97"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{child vaccination pcv_2}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="409" y="1949" width="63" height="25" uuid="182a7c40-ba7b-4eee-8d9f-86c878e6e830"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{child vaccination opv_3}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="409" y="1983" width="63" height="25" uuid="883c946b-9cf0-4340-a8f0-63ec559bf3bb"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{child vaccination pcv_3}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="408" y="2014" width="63" height="25" uuid="e8e80605-ea58-4f35-a65f-47ccc488351c"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{child vaccination opv_4}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="409" y="2048" width="63" height="25" uuid="d2ea0938-0dec-4a1e-b787-070478d79f8d"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{child vaccination hum}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="409" y="2083" width="63" height="25" uuid="b27e4921-2460-4aac-942e-c3a6e2e815ad"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{child disease very serious disease}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="409" y="2122" width="63" height="25" uuid="c4721791-774f-4be1-b51d-ba853e69c1a1"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{child disease pneumonia}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="411" y="2158" width="63" height="25" uuid="5f6c7492-73c3-4843-90fd-1d63a7664640"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{child disease diarrhea}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="478" y="2159" width="63" height="25" uuid="83f5341f-ecb6-4f68-8e57-bc855620c938"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{child disease diarrhea}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="476" y="2123" width="63" height="25" uuid="4d110fe2-8c9a-4138-ae12-ecef2552e95f"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{child disease pneumonia}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="476" y="2084" width="63" height="25" uuid="73a31413-aa10-41e8-89cf-7069a3ad8739"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{child disease very serious disease}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
