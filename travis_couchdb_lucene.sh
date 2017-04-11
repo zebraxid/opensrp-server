@@ -8,6 +8,8 @@ unzip couchdb-lucene-1.1.0-dist.zip
 sed -e 's/^host=localhost$/host=0.0.0.0/' -i couchdb-lucene-1.1.0/conf/couchdb-lucene.ini
 sed -e 's/localhost:5984/127.0.0.1:5984/' -i couchdb-lucene-1.1.0/conf/couchdb-lucene.ini
 
+sudo apt-get install mlocate
+
 couchdb_local_ini_location="$(locate couchdb/local.ini)"
 
 sudo sed -i -e '$a [couchdb]' $couchdb_local_ini_location
