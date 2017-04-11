@@ -67,8 +67,8 @@ public class LuceneHouseHoldRepositoryTest {
 
 	@Before
 	public void setUp() throws IOException {
-		HttpClient httpClient = new StdHttpClient.Builder().host("localhost")
-				.port(5984).socketTimeout(10000)
+		HttpClient httpClient = new StdHttpClient.Builder().host("127.0.0.1")
+				.port(5984).socketTimeout(20000)
 				.username("opensrp").password("opensrp")
 				.build();
 		CouchDbInstance instance = new StdCouchDbInstance(httpClient);
