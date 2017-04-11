@@ -13,7 +13,7 @@ apt-get remove --auto-remove -y maven
 rm -rf /var/lib/apt/lists/*
 sed -e 's/^host=localhost$/host=0.0.0.0/' -i /opt/couchdb-lucene/conf/couchdb-lucene.ini
 sed -e 's/localhost:5984/127.0.0.1:5984/' -i /opt/couchdb-lucene/conf/couchdb-lucene.ini
-chown -R couchdb:couchdb /opt/couchdb-lucene
+
 
 # Link with lucene with couchdb
 sed -i -e '$a [couchdb]' /usr/local/etc/couchdb/local.ini
