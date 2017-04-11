@@ -10,7 +10,8 @@ install:
 before_script:
       - psql -c "ALTER USER postgres WITH PASSWORD 'password'" -U postgres
       - curl -X PUT http://localhost:5984/_config/admins/opensrp -d '"opensrp"'
-      - nohup /home/travis/build/OpenSRP/opensrp-server/couchdb-lucene-1.1.0/target/couchdb-lucene-1.1.0/bin/run > /dev/null 2>&1 &
+      - nohup /home/travis/build/OpenSRP/opensrp-server/couchdb-lucene-1.1.0/target/couchdb-lucene-1.1.0/bin/run > /dev/null 2>&1
+      - sudo service couchdb restart
 script:
   - javac -version
   - java -version
