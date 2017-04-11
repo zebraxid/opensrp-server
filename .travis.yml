@@ -8,9 +8,9 @@ services:
 install:
   - ./travis_couchdb_lucene.sh
 before_script:
-      - sudo service couchdb restart
       - psql -c "ALTER USER postgres WITH PASSWORD 'password'" -U postgres
       - curl -X PUT http://localhost:5984/_config/admins/opensrp -d '"opensrp"'
+      - sudo service couchdb restart
       - nohup /home/travis/build/OpenSRP/opensrp-server/couchdb-lucene-1.1.0/target/couchdb-lucene-1.1.0/bin/run > /dev/null 2>&1
 script:
   - javac -version
