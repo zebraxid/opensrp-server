@@ -1,15 +1,13 @@
 #!/usr/bin/env bash
 set -ev
-cd /usr/src 
-curl -L https://github.com/rnewson/couchdb-lucene/archive/v1.1.0.tar.gz | tar -xz
+sudo su
+cd /usr/src
+curl -L https://github.com/rnewson/couchdb-lucene/archive/v1.1.0.tar.gz | sudo tar -xz
 cd couchdb-lucene-1.1.0
-mvn
+sudo mvn
 cd /usr/src/couchdb-lucene-1.1.0/target
 unzip couchdb-lucene-1.1.0-dist.zip
 mv couchdb-lucene-1.1.0 /opt/couchdb-lucene
-rm -rf /usr/src/couchdb-lucene-*
-apt-get remove --auto-remove -y maven
-rm -rf /var/lib/apt/lists/*
 sed -e 's/^host=localhost$/host=0.0.0.0/' -i /opt/couchdb-lucene/conf/couchdb-lucene.ini
 sed -e 's/localhost:5984/127.0.0.1:5984/' -i /opt/couchdb-lucene/conf/couchdb-lucene.ini
 
