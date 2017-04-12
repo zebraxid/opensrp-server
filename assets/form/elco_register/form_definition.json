@@ -85,13 +85,24 @@
         "shouldLoadValue": true
       },
       {
+        "name": "PW",
+        "bind": "/model/instance/EligibleCoupleRegister/existing_PW",
+        "shouldLoadValue": true
+      },
+      {
         "name": "Final_Vill",
         "bind": "/model/instance/EligibleCoupleRegister/existing_Final_Vill",
         "shouldLoadValue": true
       },
       {
         "name": "existing_location",
-        "bind": "/model/instance/EligibleCoupleRegister/existing_location"
+        "bind": "/model/instance/EligibleCoupleRegister/existing_location",
+        "shouldLoadValue": true
+      },
+      {
+        "name": "TT_Count",
+        "bind": "/model/instance/EligibleCoupleRegister/existing_TT_Count",
+        "shouldLoadValue": true
       },
       {
         "name": "today",
@@ -133,6 +144,52 @@
         "name": "Preg_Status",
         "bind": "/model/instance/EligibleCoupleRegister/Wom_Met/Preg_Status"
       },
+//----------------------------
+      {
+        "name": "Mother_Status",
+        "bind": "/model/instance/EligibleCoupleRegister/Wom_Met/Mother_Status"
+      },
+      {
+        "name": "note",
+        "bind": "/model/instance/EligibleCoupleRegister/Wom_Met/note"
+      },
+      {
+        "name": "Outcome_Occured",
+        "bind": "/model/instance/EligibleCoupleRegister/Wom_Met/Outcome_Occured"
+      },
+      {
+        "name": "Where_Delivered",
+        "bind": "/model/instance/EligibleCoupleRegister/Wom_Met/Outcome_Occured/Where_Delivered"
+      },
+      {
+        "name": "Who_Delivered",
+        "bind": "/model/instance/EligibleCoupleRegister/Wom_Met/Outcome_Occured/Who_Delivered"
+      },
+      {
+        "name": "Delivery_Type",
+        "bind": "/model/instance/EligibleCoupleRegister/Wom_Met/Outcome_Occured/Delivery_Type"
+      },
+      {
+        "name": "Misoprostol_Given",
+        "bind": "/model/instance/EligibleCoupleRegister/Wom_Met/Outcome_Occured/Misoprostol_Given"
+      },
+      {
+        "name": "Misoprostol_Received",
+        "bind": "/model/instance/EligibleCoupleRegister/Wom_Met/Outcome_Occured/Misoprostol_Received"
+      },
+      {
+        "name": "Count_Misorpostol",
+        "bind": "/model/instance/EligibleCoupleRegister/Wom_Met/Outcome_Occured/Count_Misorpostol"
+      },
+      {
+        "name": "DOO",
+        "bind": "/model/instance/EligibleCoupleRegister/Wom_Met/Outcome_Occured/DOO"
+      },
+      {
+        "name": "Num_Live_Birth",
+        "bind": "/model/instance/EligibleCoupleRegister/Wom_Met/Outcome_Occured/Num_Live_Birth"
+      },
+//----------------------------
       {
         "name": "Using_FP",
         "bind": "/model/instance/EligibleCoupleRegister/Wom_Met/Using_FP"
@@ -176,6 +233,10 @@
       {
         "name": "Injection_Date",
         "bind": "/model/instance/EligibleCoupleRegister/Wom_Met/Injection_Date"
+      },
+      {
+        "name": "Dose_No",
+        "bind": "/model/instance/EligibleCoupleRegister/Wom_Met/Dose_No"
       },
       {
         "name": "Format_Injection_Date",
@@ -392,6 +453,10 @@
       {
         "name": "Is_Eligible_Injectables",
         "bind": "/model/instance/EligibleCoupleRegister/Wom_Met/Pregnancy_Reg/Is_Eligible_Injectables"
+      },
+      {
+        "name": "Is_Not_Injectable_Anymore",
+        "bind": "/model/instance/EligibleCoupleRegister/Wom_Met/Pregnancy_Reg/Is_Not_Injectable_Anymore"
       },
       {
         "name": "Married_Life",
