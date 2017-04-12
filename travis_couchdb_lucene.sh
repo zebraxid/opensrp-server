@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -exv
+
 curl -L https://github.com/rnewson/couchdb-lucene/archive/v1.1.0.tar.gz | tar -xz
 cd couchdb-lucene-1.1.0
 mvn
@@ -8,9 +9,11 @@ unzip couchdb-lucene-1.1.0-dist.zip
 sed -e 's/^host=localhost$/host=0.0.0.0/' -i couchdb-lucene-1.1.0/conf/couchdb-lucene.ini
 sed -e 's/localhost:5984/127.0.0.1:5984/' -i couchdb-lucene-1.1.0/conf/couchdb-lucene.ini
 
+#To make locate command work
 sudo updatedb
 
 couchdb_local_ini_location="$(locate couchdb/local.ini)"
+
 
 sudo sed -i -e '$a [couchdb]' $couchdb_local_ini_location
 sudo sed -i -e '$a os_process_timeout=60000 ; increase the timeout from 5 seconds. ' $couchdb_local_ini_location
