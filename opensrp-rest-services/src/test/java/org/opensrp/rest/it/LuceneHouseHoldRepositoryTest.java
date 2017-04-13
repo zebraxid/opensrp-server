@@ -116,7 +116,7 @@ public class LuceneHouseHoldRepositoryTest {
 		System.out.println(day.getTime());
 		
 	}
-    @Ignore@Test 
+    @Test 
     public void testInit() throws ParseException { 
     	//String makeQueryString ="PROVIDERID:proshanto" + " AND " + "FWUPAZILLA:GAIBANDHA SADAR" + " AND " + "user_type:FWA"+ " AND SUBMISSIONDATE:[2014-02-01 TO 2017-03-30]" ;
     	

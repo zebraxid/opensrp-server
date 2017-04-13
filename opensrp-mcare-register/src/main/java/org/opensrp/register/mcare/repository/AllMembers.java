@@ -7,6 +7,7 @@ package org.opensrp.register.mcare.repository;
 import java.util.List;
 
 import org.ektorp.CouchDbConnector;
+import org.ektorp.ViewResult;
 import org.ektorp.support.GenerateView;
 import org.ektorp.support.View;
 import org.motechproject.dao.MotechBaseRepository;
@@ -58,5 +59,65 @@ public class AllMembers extends MotechBaseRepository<Members> {
 						.includeDocs(true), Members.class);
 	}
 
-
+	@View(name = "created_in_last_4_months_by_provider_and_location", map = "function(doc) { if(doc.type === 'Members' && doc.clientVersion && doc.PROVIDERID && doc.Member_DISTRICT && doc.Member_UPAZILLA && doc.Member_UNION) { var x = new Date(); var y = new Date(x.getFullYear(), x.getMonth()-3, 0); var time = y.getTime(); if(doc.clientVersion > time){ emit([doc.PROVIDERID,doc.Member_DISTRICT,doc.Member_UPAZILLA,doc.Member_UNION], doc.clientVersion)} } }")
+	public List<Members> allElcosCreatedLastFourMonthsByProviderAndLocation(String startKey, String endKey){
+		List<Members> elcos =  db.queryView(
+				createQuery("created_in_last_4_months_by_provider_and_location")
+				.rawStartKey(startKey)
+				.rawEndKey(endKey)
+				.includeDocs(true), Members.class);
+			
+		return elcos;
+	}
+	
+	@View(name = "created_in_last_4_months_by_location", map = "function(doc) { if(doc.type === 'Members' && doc.clientVersion && doc.Member_DISTRICT && doc.Member_UPAZILLA && doc.Member_UNION) { var x = new Date(); var y = new Date(x.getFullYear(), x.getMonth()-3, 0); var time = y.getTime(); if(doc.clientVersion > time){ emit([doc.Member_DISTRICT,doc.Member_UPAZILLA,doc.Member_UNION], doc.clientVersion)} } }")
+	public List<Members> allElcosCreatedLastFourMonthsByLocation(String startKey, String endKey){
+		List<Members> elcos =  db.queryView(
+				createQuery("created_in_last_4_months_by_location")
+				.rawStartKey(startKey)
+				.rawEndKey(endKey)
+				.includeDocs(true), Members.class);
+		
+		return elcos;
+	}	
+	
+	@View(name = "elco_count_last_four_month", map = "function(doc) { if (doc.type === 'Members' && doc.clientVersion) { var x = new Date(); var y = new Date(x.getFullYear(), x.getMonth()-3, 0); var time = y.getTime(); if(doc.clientVersion > time ) {emit(doc.clientVersion, doc.clientVersion); }} }")
+	public ViewResult elcoBetweenTwoDatesAsViewResult(Long startTime){
+		Long endTime = System.currentTimeMillis();
+		ViewResult vr = db.queryView(
+				createQuery("elco_count_last_four_month")
+				.startKey(startTime)
+				.endKey(endTime)
+				.includeDocs(false));
+		return vr;
+		
+	}
+	
+	
+	public ViewResult allElcosCreatedLastFourMonthsByLocationViewResult(String startKey, String endKey){
+		
+		ViewResult vr = db.queryView(
+				createQuery("created_in_last_4_months_by_location")
+				.rawStartKey(startKey)
+				.rawEndKey(endKey)
+				.includeDocs(false));
+		
+		return vr;
+	}
+	
+	public ViewResult allElcosCreatedLastFourMonthsByProviderAndLocationViewResult(String startKey, String endKey){
+		
+		ViewResult vr = db.queryView(
+				createQuery("created_in_last_4_months_by_provider_and_location")
+				.rawStartKey(startKey)
+				.rawEndKey(endKey)
+				.includeDocs(false));
+		
+		return vr;
+	}
+	
+	public int totalElco() {       
+	       return db.queryView(createQuery("all")).getRows().get(0).getValueAsInt();
+	    }
+	    
 }

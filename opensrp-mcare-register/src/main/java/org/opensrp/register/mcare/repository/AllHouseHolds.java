@@ -49,19 +49,7 @@ public class AllHouseHolds extends MotechBaseRepository<HouseHold> {
 		return db.queryView(createQuery("all_households").includeDocs(true),
 				HouseHold.class);
 	}
-	/*@View(name = "get_all_household", map = "function(doc) { if (doc.type === 'HouseHold' && doc.FWNHHHGPS) { emit(doc._id, [doc.FWNHHHGPS.split(' ')[0],doc.FWNHHHGPS.split(' ')[1],doc.ELCO,doc.FWMAUZA_PARA,doc.FWDIVISION,doc.FWDISTRICT,doc.FWUPAZILLA,doc.FWUNION,doc.FWWARD]); } }")
-	public List<HouseHold> allHouseHolds() {
-		return db.queryView(createQuery("get_all_household").includeDocs(true),
-				HouseHold.class);
-	}
-
-	@View(name = "all_open_hhs_for_provider", map = "function(doc) { if (doc.type === 'HouseHold' && doc.PROVIDERID) { emit(doc.PROVIDERID,doc._id ); } }")
-	public List<HouseHold> allOpenHHsForProvider(String providerId) {
-		return db.queryView(
-				createQuery("all_open_hhs_for_provider").key(providerId)
-						.includeDocs(true), HouseHold.class);
-	}
-	*/
+	
 	@View(name = "all_hhs_prev_7_days", map = "function(doc) { if (doc.type === 'HouseHold' && doc.PROVIDERID && doc.TODAY) { emit(doc.PROVIDERID, doc.TODAY); } }")
 	public List<HouseHold> allHHsVisited7Days(String providerId) {
 
@@ -113,4 +101,65 @@ public class AllHouseHolds extends MotechBaseRepository<HouseHold> {
         return null;
         
     }
+    
+    @View(name = "count_last_four_month", map = "function(doc) { if (doc.type === 'HouseHold' && doc.clientVersion){ var x = new Date(); var y = new Date(x.getFullYear(), x.getMonth()-3, 0); var time = y.getTime(); if(doc.clientVersion > time) { emit(doc.clientVersion, doc.clientVersion); }}}")
+	public ViewResult HouseholdBetweenTwoDatesAsViewResult(Long startTime){
+		
+		System.out.println(startTime);
+		ViewResult vr = db.queryView(
+				createQuery("count_last_four_month")
+				.startKey(startTime)
+				.endKey(System.currentTimeMillis())
+				.includeDocs(false));
+		return vr;
+		
+	}
+    
+    
+   	@View(name = "created_in_last_4_months_by_location", map = "function(doc) { if(doc.type === 'HouseHold' && doc.clientVersion && doc.DISTRICT && doc.UPAZILLA && doc.UNION) { var x = new Date(); var y = new Date(x.getFullYear(), x.getMonth()-3, 0); var time = y.getTime(); if(doc.clientVersion > time){ emit([doc.DISTRICT,doc.UPAZILLA,doc.UNION], doc.clientVersion)} } }")
+   	public List<HouseHold> allHHsCreatedLastFourMonthsByLocation(String startKey, String endKey){		
+   		List<HouseHold> households =  db.queryView(
+   				createQuery("created_in_last_4_months_by_location")
+   				.rawStartKey(startKey)
+   				.rawEndKey(endKey)
+   				.includeDocs(true), HouseHold.class);
+   		
+   		return households;
+   	}
+   	
+   	@View(name = "created_in_last_4_months_by_provider_and_location", map = "function(doc) { if(doc.type === 'HouseHold' && doc.clientVersion && doc.PROVIDERID && doc.DISTRICT && doc.UPAZILLA && doc.UNION) { var x = new Date(); var y = new Date(x.getFullYear(), x.getMonth()-3, 0); var time = y.getTime(); if(doc.clientVersion > time){ emit([doc.PROVIDERID,doc.DISTRICT,doc.UPAZILLA,doc.UNION], doc.clientVersion)} } }")
+	public List<HouseHold> allHHsCreatedLastFourMonthsByProviderAndLocation(String startKey, String endKey){
+		List<HouseHold> households =  db.queryView(
+				createQuery("created_in_last_4_months_by_provider_and_location")
+				.rawStartKey(startKey)
+				.rawEndKey(endKey)
+				.includeDocs(true), HouseHold.class);
+			
+		return households;
+	}
+   	
+   	public ViewResult allHHsCreatedLastFourMonthsByLocationViewResult(String startKey, String endKey){
+		
+		ViewResult vr = db.queryView(
+				createQuery("created_in_last_4_months_by_location")
+				.rawStartKey(startKey)
+				.rawEndKey(endKey)
+				.includeDocs(false));
+		
+		return vr;
+	}
+    public ViewResult allHHsCreatedLastFourMonthsByProviderAndLocationViewResult(String startKey, String endKey){
+		
+		ViewResult vr = db.queryView(
+				createQuery("created_in_last_4_months_by_provider_and_location")
+				.rawStartKey(startKey)
+				.rawEndKey(endKey)
+				.includeDocs(false));
+		
+		return vr;
+	}
+    
+    public int totalHousehold() {       
+	     return db.queryView(createQuery("all")).getRows().get(0).getValueAsInt();
+	}
 }

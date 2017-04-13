@@ -9,13 +9,13 @@ import org.json.JSONException;
 import org.opensrp.common.util.HttpResponse;
 import org.opensrp.dto.CountServiceDTO;
 import org.opensrp.dto.VaccineCountDTO;
+import org.opensrp.dto.WeeklyDataCount;
 import org.opensrp.dto.register.HHRegisterDTO;
 import org.opensrp.register.mcare.HHRegister;
 import org.opensrp.register.mcare.mapper.HHRegisterMapper;
 import org.opensrp.register.mcare.service.HHRegisterService;
 import org.opensrp.register.mcare.service.MembersService;
 import org.opensrp.register.mcare.service.MultimediaRegisterService;
-import org.opensrp.rest.register.DTO.CampDateEntryDTO;
 import org.opensrp.rest.register.DTO.CommonDTO;
 import org.opensrp.rest.register.DTO.HouseholdEntryDTO;
 import org.opensrp.rest.register.DTO.MemberRegisterEntryDTO;
@@ -75,13 +75,13 @@ public class RegisterController {
     	return new ResponseEntity<>("Welcome to multimedia service", HttpStatus.OK);
     }
     
-    @RequestMapping(method = RequestMethod.GET, value = "/registers/data-count")
+   /* @RequestMapping(method = RequestMethod.GET, value = "/registers/data-count")
     @ResponseBody
     public ResponseEntity<List<CountServiceDTO>>  getHouseHoldInformation(@RequestParam("anm-id") String provider,@RequestParam("start-month") String startMonth,@RequestParam("end-month") String endMonth,
     		@RequestParam("start-week") String startWeek,@RequestParam("end-week") String endtWeek,@RequestParam("type") String type){
     	dataCountService.getHHCountInformation(provider,startMonth,endMonth,startWeek,endtWeek,type);
     	return new ResponseEntity<>(dataCountService.getHHCountInformation(provider,startMonth,endMonth,startWeek,endtWeek,type), HttpStatus.OK);
-    }
+    }*/
     
     @RequestMapping(method = RequestMethod.GET, value = "/registers/vc-count")
     @ResponseBody
@@ -176,4 +176,44 @@ public class RegisterController {
 		return new ResponseEntity<>(new Gson().toJson(membersService.getmemberById(id)), HttpStatus.OK);
 	}
 
+	// Data count start
+	@RequestMapping(method = RequestMethod.GET, value = "/registers/data-count")
+    @ResponseBody
+    public ResponseEntity<List<CountServiceDTO>>  getHouseHoldInformation(@RequestParam("anm-id") String provider,@RequestParam("start-month") String startMonth,@RequestParam("end-month") String endMonth,
+    		@RequestParam("start-week") String startWeek,@RequestParam("end-week") String endtWeek,@RequestParam("type") String type){
+    	return new ResponseEntity<>(dataCountService.getHHCountInformation(provider,startMonth,endMonth,startWeek,endtWeek,type), HttpStatus.OK);
+    }
+    
+   
+    
+    @RequestMapping(method = RequestMethod.GET, value = "/registers/hh-count")
+    @ResponseBody
+    public ResponseEntity<List<WeeklyDataCount>>  getHouseHoldInformation(@RequestParam("provider") String provider, @RequestParam("district") String district,
+    														@RequestParam("upazilla") String upazilla, @RequestParam("union") String union){    
+    	return new ResponseEntity<>(dataCountService.getHHCountInformationForLastFourMonthAsWeekWise(), HttpStatus.OK);
+    }
+    
+    @RequestMapping(method = RequestMethod.GET, value = "/registers/hh-data-count")
+    @ResponseBody
+    public ResponseEntity<List<WeeklyDataCount>>  getHouseHoldInformationForChart(@RequestParam("provider") String provider, @RequestParam("district") String district,
+    														@RequestParam("upazilla") String upazilla, @RequestParam("union") String union){    
+    	return new ResponseEntity<>(dataCountService.getHHCountInformationForChart(provider, district, upazilla, union), HttpStatus.OK);
+    }
+    
+    @RequestMapping(method = RequestMethod.GET, value = "/registers/elco-count")
+    @ResponseBody
+    public ResponseEntity<List<WeeklyDataCount>>  getElcoInformation(@RequestParam("provider") String provider, @RequestParam("district") String district,
+									@RequestParam("upazilla") String upazilla, @RequestParam("union") String union){
+    	return new ResponseEntity<>(dataCountService.getElcoCountInformationForLastFourMonthAsWeekWise(), HttpStatus.OK);
+    }
+    
+    @RequestMapping(method = RequestMethod.GET, value = "/registers/elco-data-count")
+    @ResponseBody
+    public ResponseEntity<List<WeeklyDataCount>>  getElcoInformationForChart(@RequestParam("provider") String provider, @RequestParam("district") String district,
+									@RequestParam("upazilla") String upazilla, @RequestParam("union") String union){
+    	return new ResponseEntity<>(dataCountService.getElcoCountInformationForChart(provider, district, upazilla, union), HttpStatus.OK);
+    }
+    
+    
+    
 }
