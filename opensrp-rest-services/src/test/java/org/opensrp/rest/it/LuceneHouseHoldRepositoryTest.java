@@ -178,7 +178,7 @@ public class LuceneHouseHoldRepositoryTest {
 	 * System.out.println("Number of fetched rows- " + fetchedHHTemp.size()); }
 	 */
 
-	@Test
+	//@Test
 	public void testNameSearch() throws ParseException {
 		String makeQueryString = "type:household AND First_Name:h* AND NID:''";
 		LuceneResult result = repo.findDocsByName(makeQueryString);

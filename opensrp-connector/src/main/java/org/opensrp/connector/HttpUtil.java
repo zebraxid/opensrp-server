@@ -50,9 +50,11 @@ public class HttpUtil {
 		    writer.append(data);
 		    if (writer != null) writer.close();
 
+
             return new HttpResponse(con.getResponseCode() == HttpStatus.SC_OK, IOUtils.toString(con.getInputStream()));
 			
         } catch (Exception e) {
+    	    e.printStackTrace();
             throw new RuntimeException(e);
         }
     }

@@ -69,6 +69,7 @@
         <Calc_Age_Confirm />
         <Birth_Date_Note />
         <Note_age />
+
         <Member_Gender openmrs_entity="person" openmrs_entity_id="gender" />
         <Mem_ID_Type openmrs_entity="concept" openmrs_entity_id="163087AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" />
         <Mem_NID />

@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.google.gson.Gson;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.opensrp.api.domain.Address;
 import org.opensrp.api.domain.BaseEntity;
@@ -404,12 +405,18 @@ public class OpenmrsConnector {
 			//System.out.println("subform does not exists inside this form: " + fs.formName());
 			return map;
 		}
+
 		for (SubFormData sbf : fs.subForms()) {
-			Map<String, String> att = formAttributeMapper.getAttributesForSubform(sbf.name(), fs);
+            Map<String, String> att = formAttributeMapper.getAttributesForSubform(sbf.name(), fs);
 			if(att.size() > 0 && att.get("openmrs_entity").equalsIgnoreCase("person")){
 				for (Map<String, String> sfdata : sbf.instances()) {
 					String firstName = sfdata.get(getFieldName(Person.first_name, sbf.name(), fs));
-					Map<String, String> idents = extractIdentifiers(sfdata, sbf.name(), fs);
+                    System.out.println("Printing form submission:..................................................");
+                    System.out.println(new Gson().toJson(sfdata));
+                    System.out.println(firstName);
+                    System.out.println("Printing form submission:..................................................");
+
+                    Map<String, String> idents = extractIdentifiers(sfdata, sbf.name(), fs);
 					if(StringUtils.isEmptyOrWhitespaceOnly(firstName) && idents.size() < 2 && !sbf.name().equals("child_registration"))
 					{	//we need to ignore uuid of entity
 						// if empty repeat group leave this entry and move to next
