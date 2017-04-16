@@ -60,7 +60,7 @@ public class LuceneElcoRepositoryTest {
 	}
 
 	
-	@Ignore@Test
+	@Test
 	public void testInit() throws ParseException {
 		
 		System.out.println("this.convertDateToTimestampMills(\"2016-06-08\") - " + this.convertDateToTimestampMills("2016-06-08"));
