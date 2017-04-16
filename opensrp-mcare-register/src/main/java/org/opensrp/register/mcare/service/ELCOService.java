@@ -65,6 +65,8 @@ import static org.opensrp.common.AllConstants.PSRFFields.FW_SORTVALUE;
 import static org.opensrp.common.AllConstants.PSRFFields.FW_VG;
 import static org.opensrp.common.AllConstants.PSRFFields.current_formStatus;
 import static org.opensrp.common.AllConstants.PSRFFields.mis_elco_current_formStatus;
+import static org.opensrp.common.AllConstants.UserType.FD;
+
 import static org.opensrp.common.util.EasyMap.create;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ELCOSchedulesConstants.ELCO_SCHEDULE_PSRF;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.HHSchedulesConstants.HH_SCHEDULE_CENSUS;
@@ -195,18 +197,22 @@ public class ELCOService {
 
 			logger.info("Expected value leading non zero and found FWCENSTAT : " + submission.getField("FWCENSTAT"));
 			if (submission.getField("FWCENSTAT").equalsIgnoreCase("7")) {
-				elcoScheduleService.unEnrollFromScheduleCensus(submission.entityId(), submission.anmId(), "");
-				try {
-					List<Action> beforeNewActions = allActions.findAlertByANMIdEntityIdScheduleName(submission.anmId(), submission.entityId(),
-							HH_SCHEDULE_CENSUS);
-					if (beforeNewActions.size() > 0) {
-						scheduleLogService.closeSchedule(submission.entityId(), submission.instanceId(), beforeNewActions.get(0).timestamp(),
+				// user type condition
+				if(submission.getField("user_type").equalsIgnoreCase(FD)){
+					elcoScheduleService.unEnrollFromScheduleCensus(submission.entityId(), submission.anmId(), "");
+					try {
+						List<Action> beforeNewActions = allActions.findAlertByANMIdEntityIdScheduleName(submission.anmId(), submission.entityId(),
 								HH_SCHEDULE_CENSUS);
-						logger.info("Create a Schedule Log with id : " + submission.entityId());
+						if (beforeNewActions.size() > 0) {
+							scheduleLogService.closeSchedule(submission.entityId(), submission.instanceId(), beforeNewActions.get(0).timestamp(),
+									HH_SCHEDULE_CENSUS);
+							logger.info("Create a Schedule Log with id : " + submission.entityId());
+						}
+	
+					} catch (Exception e) {
+						logger.info("From registerELCO: " + e.getMessage());
 					}
-
-				} catch (Exception e) {
-					logger.info("From registerELCO: " + e.getMessage());
+				
 				}
 
 			} else {
@@ -371,41 +377,52 @@ public class ELCOService {
 		if (submission.getField(FW_PSRSTS) != null)
 			if (submission.getField(FW_PSRPREGSTS) != null && submission.getField(FW_PSRPREGSTS).equalsIgnoreCase("1")
 					&& submission.getField(FW_PSRSTS).equals("01")) {
-				// if(submission.getField("user_type").equalsIgnoreCase("FD")){
-				ancService.registerANC(submission);
-				bnfService.registerBNF(submission);
-				// }
-				elco.setIsClosed(true);
-				allEcos.update(elco);
-				elcoScheduleService.unEnrollFromScheduleOfPSRF(submission.entityId(), submission.anmId(), "");
-				try {
-					List<Action> beforeNewActions = allActions.findAlertByANMIdEntityIdScheduleName(submission.anmId(), submission.entityId(),
-							ELCO_SCHEDULE_PSRF);
-					if (beforeNewActions.size() > 0) {
-						scheduleLogService.closeSchedule(submission.entityId(), submission.instanceId(), beforeNewActions.get(0).timestamp(),
+				// user type condition
+				if(submission.getField("user_type").equalsIgnoreCase(FD)){
+					ancService.registerANC(submission);
+					bnfService.registerBNF(submission);
+					
+					elco.setIsClosed(true);
+					allEcos.update(elco);
+					elcoScheduleService.unEnrollFromScheduleOfPSRF(submission.entityId(), submission.anmId(), "");
+					try {
+						List<Action> beforeNewActions = allActions.findAlertByANMIdEntityIdScheduleName(submission.anmId(), submission.entityId(),
 								ELCO_SCHEDULE_PSRF);
+						if (beforeNewActions.size() > 0) {
+							scheduleLogService.closeSchedule(submission.entityId(), submission.instanceId(), beforeNewActions.get(0).timestamp(),
+									ELCO_SCHEDULE_PSRF);
+						}
+	
+					} catch (Exception e) {
+						logger.info("From addPSRFDetailsToELCO:" + e.getMessage());
 					}
-
-				} catch (Exception e) {
-					logger.info("From addPSRFDetailsToELCO:" + e.getMessage());
+				
 				}
+				
 			} else if (submission.getField(FW_PSRSTS).equalsIgnoreCase("02") || (submission.getField(FW_PSRSTS).equalsIgnoreCase("01"))) {
 				ancService.deleteBlankMother(submission);
 				elcoScheduleService.enrollIntoMilestoneOfPSRF(submission.entityId(), submission.getField(FWPSRDATE), submission.anmId(),
 						submission.instanceId());
 			} else {
 				ancService.deleteBlankMother(submission);
-				elcoScheduleService.unEnrollFromScheduleOfPSRF(submission.entityId(), submission.anmId(), "");
-				try {
-					List<Action> beforeNewActions = allActions.findAlertByANMIdEntityIdScheduleName(submission.anmId(), submission.entityId(),
-							ELCO_SCHEDULE_PSRF);
-					if (beforeNewActions.size() > 0) {
-						scheduleLogService.closeSchedule(submission.entityId(), submission.instanceId(), beforeNewActions.get(0).timestamp(),
+				
+				// user type condition
+				if(submission.getField("user_type").equalsIgnoreCase(FD)){					
+				
+					elcoScheduleService.unEnrollFromScheduleOfPSRF(submission.entityId(), submission.anmId(), "");
+					try {
+						List<Action> beforeNewActions = allActions.findAlertByANMIdEntityIdScheduleName(submission.anmId(), submission.entityId(),
 								ELCO_SCHEDULE_PSRF);
+						if (beforeNewActions.size() > 0) {
+							scheduleLogService.closeSchedule(submission.entityId(), submission.instanceId(), beforeNewActions.get(0).timestamp(),
+									ELCO_SCHEDULE_PSRF);
+						}
+					} catch (Exception e) {
+						logger.info("From addPSRFDetailsToELCO:" + e.getMessage());
 					}
-				} catch (Exception e) {
-					logger.info("From addPSRFDetailsToELCO:" + e.getMessage());
+				
 				}
+				
 			}
 	}
 }

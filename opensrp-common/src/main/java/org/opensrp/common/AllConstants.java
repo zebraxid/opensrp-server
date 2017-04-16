@@ -989,4 +989,7 @@ public class AllConstants {
 	public static class OpenmrsTrackUuid {
 		public static final String ENROLLMENT_TRACK_UUID = "openmrsTrackUuid";
 	}
+	public static class UserType {
+		public static final String FD = "FD";
+	}
 }

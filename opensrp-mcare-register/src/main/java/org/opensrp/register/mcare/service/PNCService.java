@@ -64,6 +64,8 @@ import static org.opensrp.common.AllConstants.PNCVisitTwoFields.FWPNC2KNWPRVDR;
 import static org.opensrp.common.AllConstants.PNCVisitTwoFields.FWPNC2REMSTS;
 import static org.opensrp.common.AllConstants.PNCVisitTwoFields.FWPNC2TEMP;
 import static org.opensrp.common.AllConstants.PNCVisitTwoFields.pnc2_current_formStatus;
+import static org.opensrp.common.AllConstants.UserType.FD;
+
 import static org.opensrp.common.util.EasyMap.create;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_PNC;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_PNC_2;
@@ -157,6 +159,7 @@ public class PNCService {
 				elco.setIsClosed(false);
 				elco.withTODAY(submission.getField(REFERENCE_DATE));
 				allElcos.update(elco);
+				
 				elcoSchedulesService.imediateEnrollIntoMilestoneOfPSRF(elco.caseId(), elco.TODAY(), elco.PROVIDERID(), elco.INSTANCEID());
 			}
 
@@ -169,8 +172,11 @@ public class PNCService {
 				if (submission.getField(FWBNFWOMVITSTS).equalsIgnoreCase("0")) {
 					logger.info("Mother died");
 				} else {
-					pncSchedulesService.enrollPNCRVForMother(submission.entityId(), LocalDate.parse(referenceDate));
-					logger.info("Generating schedule for Child when Child is Live Birth. Mother Id: " + mother.caseId());
+					//User type conditions
+					if(submission.getField("user_type").equalsIgnoreCase(FD)){					
+						pncSchedulesService.enrollPNCRVForMother(submission.entityId(), LocalDate.parse(referenceDate));
+						logger.info("Generating schedule for Child when Child is Live Birth. Mother Id: " + mother.caseId());
+					}
 				}
 				SubFormData subFormData = submission.getSubFormByName(CHILD_REGISTRATION_SUB_FORM_NAME);
 				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
@@ -208,11 +214,14 @@ public class PNCService {
 					if (childFields.get(FWBNFCHLDVITSTS).equalsIgnoreCase("0")) {
 						logger.info("Child died");
 					} else {
-						childSchedulesService.enrollENCCForChild(childFields.get(ID), LocalDate.parse(referenceDate));
+						// user type conditions
+						if(submission.getField("user_type").equalsIgnoreCase(FD)){
+							childSchedulesService.enrollENCCForChild(childFields.get(ID), LocalDate.parse(referenceDate));
+						}
 					}
 				}
 			} else if (submission.getField(FWBNFSTS).equals(STS_SB)) {
-				if (submission.getField("user_type").equalsIgnoreCase("FD")) {
+				if (submission.getField("user_type").equalsIgnoreCase(FD)) {
 					logger.info("Generating schedule for Mother when Child is Still Birth. Mother Id: " + mother.caseId());
 					pncSchedulesService.enrollPNCRVForMother(submission.entityId(), LocalDate.parse(referenceDate));
 				} else {
@@ -249,17 +258,13 @@ public class PNCService {
 		mother.withPNCVisitOne(pncVisitOne);
 		mother.withTODAY(submission.getField(REFERENCE_DATE));
 		allMothers.update(mother);
-
 		pncSchedulesService.fullfillMilestone(submission.entityId(), submission.anmId(), SCHEDULE_PNC, new LocalDate());
-
 		String pattern = "yyyy-MM-dd";
-		// DateTimeFormatter formatter = DateTimeFormat.forPattern(pattern);
-
 		DateTime dateTime = DateTime.parse(mother.getbnfVisitDetails(FWBNFDTOO));
 		DateTimeFormatter fmt = DateTimeFormat.forPattern(pattern);
 		String referenceDate = fmt.print(dateTime);
 		pncSchedulesService.enrollPNCForMother(submission.entityId(), SCHEDULE_PNC_2, LocalDate.parse(referenceDate));
-
+		
 		if (Double.parseDouble(feverTemp) >= 100.4) {
 			if (!womanBID.equalsIgnoreCase(""))
 				identifier += "b " + womanBID;
@@ -295,18 +300,15 @@ public class PNCService {
 
 		mother.withPNCVisitTwo(pncVisitTwo);
 		mother.withTODAY(submission.getField(REFERENCE_DATE));
-		allMothers.update(mother);
-
+		allMothers.update(mother);		
 		pncSchedulesService.fullfillMilestone(submission.entityId(), submission.anmId(), SCHEDULE_PNC, new LocalDate());
-
-		String pattern = "yyyy-MM-dd";
-		// DateTimeFormatter formatter = DateTimeFormat.forPattern(pattern);
-
+	
+		String pattern = "yyyy-MM-dd";		
 		DateTime dateTime = DateTime.parse(mother.getbnfVisitDetails(FWBNFDTOO));
 		DateTimeFormatter fmt = DateTimeFormat.forPattern(pattern);
 		String referenceDate = fmt.print(dateTime);
 		pncSchedulesService.enrollPNCForMother(submission.entityId(), SCHEDULE_PNC_3, LocalDate.parse(referenceDate));
-
+		
 		if (Double.parseDouble(feverTemp) >= 100.4) {
 			if (!womanBID.equalsIgnoreCase(""))
 				identifier += "b " + womanBID;
@@ -344,7 +346,7 @@ public class PNCService {
 		mother.withTODAY(submission.getField(REFERENCE_DATE));
 		allMothers.update(mother);
 		pncSchedulesService.unEnrollFromSchedule(submission.entityId(), submission.anmId(), SCHEDULE_PNC);
-
+		
 		if (Double.parseDouble(feverTemp) >= 100.4) {
 			if (!womanBID.equalsIgnoreCase(""))
 				identifier += "b " + womanBID;

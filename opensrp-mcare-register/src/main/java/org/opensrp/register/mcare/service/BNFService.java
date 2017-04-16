@@ -28,6 +28,8 @@ import static org.opensrp.common.AllConstants.DeliveryOutcomeFields.CHILD_REGIST
 import static org.opensrp.common.AllConstants.HHRegistrationFields.MOTHER_REFERENCE_DATE;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.REFERENCE_DATE;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.received_time;
+import static org.opensrp.common.AllConstants.UserType.FD;
+
 import static org.opensrp.common.util.EasyMap.create;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_ANC;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_BNF;
@@ -91,6 +93,7 @@ public class BNFService {
 		mother.withFWWOMDISTRICT(elco.FWWOMDISTRICT());
 		mother.withFWWOMUPAZILLA(elco.FWWOMUPAZILLA());
 		allMothers.update(mother);
+		
 		bnfSchedulesService.enrollBNF(motherId, LocalDate.parse(submission.getField(MOTHER_REFERENCE_DATE)), submission.anmId(), submission.instanceId(),
 				submission.getField(MOTHER_REFERENCE_DATE));
 
@@ -129,7 +132,8 @@ public class BNFService {
 
 		logger.info("submission.getField(FWBNFSTS):" + submission.getField(FWBNFSTS));
 		if (submission.getField(FWBNFSTS).equalsIgnoreCase(STS_LB) || submission.getField(FWBNFSTS).equalsIgnoreCase(STS_SB)) {
-			if (submission.getField("user_type").equalsIgnoreCase("FD")) {
+			if (submission.getField("user_type").equalsIgnoreCase(FD)) {
+				pncService.deliveryOutcome(submission);
 				bnfSchedulesService.unEnrollBNFSchedule(submission.entityId(), submission.anmId());
 				scheduleLogService.closeScheduleAndScheduleLog(submission.entityId(), submission.instanceId(), SCHEDULE_BNF, submission.anmId());
 
@@ -149,10 +153,11 @@ public class BNFService {
 				bnfSchedulesService.enrollIntoMilestoneOfBNF(submission.entityId(), submission.getField(REFERENCE_DATE), submission.anmId(),
 						submission.instanceId());
 			}
-			pncService.deliveryOutcome(submission);
+			
+			//pncService.deliveryOutcome(submission);
 
 		} else if (submission.getField(FWBNFSTS).equalsIgnoreCase(STS_GONE) || submission.getField(FWBNFSTS).equalsIgnoreCase(STS_WD)) {
-			if (submission.getField("user_type").equalsIgnoreCase("FD")) {
+			if (submission.getField("user_type").equalsIgnoreCase(FD)) {
 				pncService.deleteBlankChild(submission);
 				bnfSchedulesService.unEnrollBNFSchedule(submission.entityId(), submission.anmId());
 				pncService.closeMother(mother);

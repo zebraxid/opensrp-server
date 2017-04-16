@@ -10,6 +10,8 @@ import static org.opensrp.common.AllConstants.ENCCVisitThreeFields.*;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.END_DATE;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.REFERENCE_DATE;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.START_DATE;
+import static org.opensrp.common.AllConstants.UserType.FD;
+
 import static org.opensrp.common.util.EasyMap.create;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ChildScheduleConstants.*;
 
@@ -83,10 +85,10 @@ public class ChildService {
 
 		child.withENCCVisitOne(enccOne);
 		child.withTODAY(submission.getField(REFERENCE_DATE));
-		allChilds.update(child);		
-
+		allChilds.update(child);
 		childSchedulesService.fullfillMilestone(submission.entityId(), submission.anmId(), SCHEDULE_ENCC, new LocalDate());
 		childSchedulesService.enrollENCCVisit(submission.entityId(), SCHEDULE_ENCC_2, LocalDate.parse(child.getDetail(referenceDate)));
+		
 	}
 
 	public void enccTwo(FormSubmission submission) {
@@ -125,10 +127,10 @@ public class ChildService {
 
 		child.withENCCVisitTwo(enccTwo);
 		child.withTODAY(submission.getField(REFERENCE_DATE));
-		allChilds.update(child);
-		
+		allChilds.update(child);		
 		childSchedulesService.fullfillMilestone(submission.entityId(), submission.anmId(), SCHEDULE_ENCC, new LocalDate());	
 		childSchedulesService.enrollENCCVisit(submission.entityId(), SCHEDULE_ENCC_3, LocalDate.parse(child.getDetail(referenceDate)));
+		
 	}
 
 	public void enccThree(FormSubmission submission) {
@@ -167,8 +169,9 @@ public class ChildService {
 
 		child.withENCCVisitThree(enccThree);
 		child.withTODAY(submission.getField(REFERENCE_DATE));
-		allChilds.update(child);
+		allChilds.update(child);		
 		childSchedulesService.unEnrollFromSchedule(submission.entityId(), submission.anmId(), SCHEDULE_ENCC);
+		
 	}
 
 }

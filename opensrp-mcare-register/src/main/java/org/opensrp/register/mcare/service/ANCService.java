@@ -219,6 +219,7 @@ public class ANCService {
 		addDetailsToMother(submission, mother);
 
 		allMothers.update(mother);
+		
 		ancSchedulesService.enrollMother(motherId, LocalDate.parse(submission.getField(MOTHER_REFERENCE_DATE)), submission.anmId(), submission.instanceId(),
 				submission.getField(MOTHER_REFERENCE_DATE));
 	}
