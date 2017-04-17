@@ -20,7 +20,7 @@ import static org.opensrp.common.AllConstants.HHRegistrationFields.FWNHREGDATE;
 
 import static org.opensrp.common.util.EasyMap.create;
 
-
+import org.opensrp.common.util.DateTimeUtil;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -80,18 +80,11 @@ public class HHService {
 		houseHold.withINSTANCEID(submission.instanceId());
 		houseHold.withFWUPAZILLA(UPAZILLA);
 		houseHold.withSUBMISSIONDATE(DateUtil.getTimestampToday());
-		allHouseHolds.update(houseHold);
-			
-		//String cencusCondition =  scheduleLogService.getScheduleRuleForCensus("HouseHold Form");
-		//logger.info("Cencus Condition :"+cencusCondition);
-		//if(!cencusCondition.equalsIgnoreCase("") && cencusCondition.equalsIgnoreCase("1")){
-			
-			hhSchedulesService.enrollIntoMilestoneOfCensus(submission.entityId(),
-				submission.getField(FWNHREGDATE),submission.anmId(),submission.instanceId());
-		//}else{
-			//logger.info("Rule Defination Not Found for Cencus");
-		//}
+		houseHold.withClientVersion(DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)));
+		allHouseHolds.update(houseHold);			
 		
+		hhSchedulesService.enrollIntoMilestoneOfCensus(submission.entityId(),
+				submission.getField(FWNHREGDATE),submission.anmId(),submission.instanceId());
 		elcoService.registerELCO(submission);
 	}
 	

@@ -86,6 +86,8 @@ public class HouseHold extends MotechBaseDataObject {
 	private Map<String, String> details;
 	@JsonProperty
 	private long SUBMISSIONDATE;
+	@JsonProperty
+	private long clientVersion;
 	
 	public HouseHold() {
 		this.ELCODETAILS = new ArrayList<>();
@@ -262,6 +264,10 @@ public class HouseHold extends MotechBaseDataObject {
 		this.SUBMISSIONDATE = SUBMISSIONDATE;
 		return this;
 	}
+	public HouseHold withClientVersion(long clientVersion){
+		this.clientVersion = clientVersion;
+		return this;
+	}
 	public String caseId() {
 		return caseId;
 	}
@@ -380,6 +386,9 @@ public class HouseHold extends MotechBaseDataObject {
 	
 	public long SUBMISSIONDATE(){
 		return SUBMISSIONDATE;
+	}
+	public long get(){
+		return clientVersion;
 	}
 	
 	public String current_formStatus() {

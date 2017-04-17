@@ -140,7 +140,8 @@ public class Elco extends MotechBaseDataObject {
 	private String external_user_ID;
 	@JsonProperty
 	private String FWPSRPREGSTS;
-	
+	@JsonProperty
+	private long clientVersion;
 	
 
 	public Elco() {
@@ -428,6 +429,11 @@ public class Elco extends MotechBaseDataObject {
 		this.SUBMISSIONDATE = SUBMISSIONDATE;
 		return this;
 	}
+	
+	public Elco withClientVersion(long clientVersion) {
+		this.clientVersion = clientVersion;
+		return this;
+	}
 
 	public Elco withuser_type(String user_type) {
 		this.user_type = user_type;
@@ -693,6 +699,10 @@ public class Elco extends MotechBaseDataObject {
 
 	public long SUBMISSIONDATE() {
 		return SUBMISSIONDATE;
+	}
+	
+	public long clientVersion() {
+		return clientVersion;
 	}
 	
 	public Elco setIsClosed(boolean isClosed) {

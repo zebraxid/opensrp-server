@@ -49,6 +49,8 @@ public class Child extends MotechBaseDataObject {
 	private Map<String, String> enccVisitThree;
 	@JsonProperty
 	private long SUBMISSIONDATE;
+	@JsonProperty
+	private long clientVersion;
 
 	public Child() {
 		details = new HashMap<String, String>();
@@ -131,6 +133,10 @@ public class Child extends MotechBaseDataObject {
 		this.SUBMISSIONDATE = SUBMISSIONDATE;
 		return this;
 	}
+	public Child withClientVersion(long clientVersion) {
+		this.clientVersion = clientVersion;
+		return this;
+	}
 
 	public Child setIsClosed(boolean isClosed) {
 		this.isClosed = Boolean.toString(isClosed);
@@ -191,6 +197,10 @@ public class Child extends MotechBaseDataObject {
 
 	public long SUBMISSIONDATE() {
 		return SUBMISSIONDATE;
+	}
+	
+	public long clientVersion() {
+		return clientVersion;
 	}
 
 	public String isClosed() {

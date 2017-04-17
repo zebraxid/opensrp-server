@@ -147,6 +147,7 @@ import java.util.Map;
 
 import org.joda.time.LocalDate;
 import org.opensrp.common.AllConstants;
+import org.opensrp.common.util.DateTimeUtil;
 import org.opensrp.common.util.DateUtil;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.register.mcare.domain.Elco;
@@ -200,6 +201,7 @@ public class ANCService {
 		mother.withTODAY(submission.getField(REFERENCE_DATE));
 		mother.withPROVIDERID(submission.anmId());
 		mother.withINSTANCEID(submission.instanceId());
+		mother.withClientVersion(DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)));
 		mother.withSUBMISSIONDATE(DateUtil.getTimestampToday());
 
 		Elco lco = allElcos.findByCaseId(mother.relationalid());
@@ -500,14 +502,14 @@ public class ANCService {
 
 	public void unEnrollBNFSchedule(String entityId, String provider, String instanceId, String user_type) {
 		logger.info("user_type:" + user_type);
-		if (user_type.equalsIgnoreCase("FD")) {
+		//if (user_type.equalsIgnoreCase("FD")) {
 			Mother mother = allMothers.findByCaseId(entityId);
 			closeMother(mother);
 			bnfSchedulesService.unEnrollBNFSchedule(entityId, provider);
 			pncService.closeMother(mother);
 			scheduleLogService.closeScheduleAndScheduleLog(entityId, instanceId, SCHEDULE_BNF, provider);
-		} else {
+		/*} else {
 			logger.info("User type :" + user_type);
-		}
+		}*/
 	}
 }

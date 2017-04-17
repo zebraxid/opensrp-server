@@ -113,7 +113,8 @@ public class Mother extends MotechBaseDataObject {
 	private String FWWOMDISTRICT;
 	@JsonProperty
 	private String FWWOMUPAZILLA;
-
+	@JsonProperty
+	private long clientVersion;
 	public Mother() {
 		this.ancVisitOne = new HashMap<>();
 		this.ancVisitTwo = new HashMap<>();
@@ -364,6 +365,11 @@ public class Mother extends MotechBaseDataObject {
 		this.SUBMISSIONDATE = SUBMISSIONDATE;
 		return this;
 	}
+	
+	public Mother withClientVersion(long clientVersion) {
+		this.clientVersion = clientVersion;
+		return this;
+	}
 
 	public String FWWOMDISTRICT() {
 		return FWWOMDISTRICT;
@@ -577,7 +583,11 @@ public class Mother extends MotechBaseDataObject {
 	public long SUBMISSIONDATE() {
 		return SUBMISSIONDATE;
 	}
-
+	
+	public long clientVersion() {
+		return clientVersion;
+	}
+	
 	@Override
 	public boolean equals(Object o) {
 		return EqualsBuilder.reflectionEquals(this, o, "id", "revision");

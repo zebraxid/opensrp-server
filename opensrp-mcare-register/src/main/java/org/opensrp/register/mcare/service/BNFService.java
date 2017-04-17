@@ -132,7 +132,7 @@ public class BNFService {
 
 		logger.info("submission.getField(FWBNFSTS):" + submission.getField(FWBNFSTS));
 		if (submission.getField(FWBNFSTS).equalsIgnoreCase(STS_LB) || submission.getField(FWBNFSTS).equalsIgnoreCase(STS_SB)) {
-			if (submission.getField("user_type").equalsIgnoreCase(FD)) {
+			//if (submission.getField("user_type").equalsIgnoreCase(FD)) {
 				pncService.deliveryOutcome(submission);
 				bnfSchedulesService.unEnrollBNFSchedule(submission.entityId(), submission.anmId());
 				scheduleLogService.closeScheduleAndScheduleLog(submission.entityId(), submission.instanceId(), SCHEDULE_BNF, submission.anmId());
@@ -148,16 +148,16 @@ public class BNFService {
 				} catch (Exception e) {
 					logger.info("From ancVisitOne:" + e.getMessage());
 				}
-			} else {
+			/*} else {
 				logger.info("FWA submit live birth or still birth , so nothing hapened & BNF schedule continue.");
 				bnfSchedulesService.enrollIntoMilestoneOfBNF(submission.entityId(), submission.getField(REFERENCE_DATE), submission.anmId(),
 						submission.instanceId());
-			}
+			}*/
 			
 			//pncService.deliveryOutcome(submission);
 
 		} else if (submission.getField(FWBNFSTS).equalsIgnoreCase(STS_GONE) || submission.getField(FWBNFSTS).equalsIgnoreCase(STS_WD)) {
-			if (submission.getField("user_type").equalsIgnoreCase(FD)) {
+			//if (submission.getField("user_type").equalsIgnoreCase(FD)) {
 				pncService.deleteBlankChild(submission);
 				bnfSchedulesService.unEnrollBNFSchedule(submission.entityId(), submission.anmId());
 				pncService.closeMother(mother);
@@ -173,12 +173,12 @@ public class BNFService {
 				} catch (Exception e) {
 					logger.info("From ancVisitOne:" + e.getMessage());
 				}
-			} else {
+			/*} else {
 				pncService.deleteBlankChild(submission);
 				logger.info("FWA says mother gone or died , so nothing hapened & BNF schedule continue.");
 				bnfSchedulesService.enrollIntoMilestoneOfBNF(submission.entityId(), submission.getField(REFERENCE_DATE), submission.anmId(),
 						submission.instanceId());
-			}
+			}*/
 
 		} else {
 			pncService.deleteBlankChild(submission);

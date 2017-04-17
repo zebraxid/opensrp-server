@@ -77,6 +77,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.opensrp.common.util.DateTimeUtil;
 import org.opensrp.common.util.DateUtil;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.form.domain.SubFormData;
@@ -131,7 +132,9 @@ public class ELCOService {
 			if(UPAZILA!=null && UPAZILA.contains("+")) UPAZILA.replace("+", " ");
 			
 			Elco elco = allEcos.findByCaseId(elcoFields.get(ID)).withINSTANCEID(submission.instanceId()).withPROVIDERID(submission.anmId())
-					.withTODAY(submission.getField(REFERENCE_DATE)).withSUBMISSIONDATE(DateUtil.getTimestampToday())
+					.withTODAY(submission.getField(REFERENCE_DATE))
+					.withSUBMISSIONDATE(DateUtil.getTimestampToday())
+					.withClientVersion(DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)))
 					.withexternal_user_ID(submission.getField(external_user_ID))
 					.withuser_type(submission.getField(user_type))					
 					.withFWWOMUPAZILLA(UPAZILA);
@@ -198,7 +201,7 @@ public class ELCOService {
 			logger.info("Expected value leading non zero and found FWCENSTAT : " + submission.getField("FWCENSTAT"));
 			if (submission.getField("FWCENSTAT").equalsIgnoreCase("7")) {
 				// user type condition
-				if(submission.getField("user_type").equalsIgnoreCase(FD)){
+				//if(submission.getField("user_type").equalsIgnoreCase(FD)){
 					elcoScheduleService.unEnrollFromScheduleCensus(submission.entityId(), submission.anmId(), "");
 					try {
 						List<Action> beforeNewActions = allActions.findAlertByANMIdEntityIdScheduleName(submission.anmId(), submission.entityId(),
@@ -213,7 +216,7 @@ public class ELCOService {
 						logger.info("From registerELCO: " + e.getMessage());
 					}
 				
-				}
+				//}
 
 			} else {
 				hhSchedulesService.enrollIntoMilestoneOfCensus(submission.entityId(), submission.getField(FWCENDATE), submission.anmId(),
@@ -378,7 +381,7 @@ public class ELCOService {
 			if (submission.getField(FW_PSRPREGSTS) != null && submission.getField(FW_PSRPREGSTS).equalsIgnoreCase("1")
 					&& submission.getField(FW_PSRSTS).equals("01")) {
 				// user type condition
-				if(submission.getField("user_type").equalsIgnoreCase(FD)){
+				//if(submission.getField("user_type").equalsIgnoreCase(FD)){
 					ancService.registerANC(submission);
 					bnfService.registerBNF(submission);
 					
@@ -397,7 +400,7 @@ public class ELCOService {
 						logger.info("From addPSRFDetailsToELCO:" + e.getMessage());
 					}
 				
-				}
+				//}
 				
 			} else if (submission.getField(FW_PSRSTS).equalsIgnoreCase("02") || (submission.getField(FW_PSRSTS).equalsIgnoreCase("01"))) {
 				ancService.deleteBlankMother(submission);
@@ -407,7 +410,7 @@ public class ELCOService {
 				ancService.deleteBlankMother(submission);
 				
 				// user type condition
-				if(submission.getField("user_type").equalsIgnoreCase(FD)){					
+				//if(submission.getField("user_type").equalsIgnoreCase(FD)){					
 				
 					elcoScheduleService.unEnrollFromScheduleOfPSRF(submission.entityId(), submission.anmId(), "");
 					try {
@@ -421,7 +424,7 @@ public class ELCOService {
 						logger.info("From addPSRFDetailsToELCO:" + e.getMessage());
 					}
 				
-				}
+				//}
 				
 			}
 	}

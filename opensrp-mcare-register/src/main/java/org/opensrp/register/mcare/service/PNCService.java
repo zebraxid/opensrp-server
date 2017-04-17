@@ -80,6 +80,7 @@ import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.opensrp.common.util.DateTimeUtil;
 import org.opensrp.common.util.DateUtil;
 import org.opensrp.connector.HttpUtil;
 import org.opensrp.form.domain.FormSubmission;
@@ -173,10 +174,10 @@ public class PNCService {
 					logger.info("Mother died");
 				} else {
 					//User type conditions
-					if(submission.getField("user_type").equalsIgnoreCase(FD)){					
+					//if(submission.getField("user_type").equalsIgnoreCase(FD)){					
 						pncSchedulesService.enrollPNCRVForMother(submission.entityId(), LocalDate.parse(referenceDate));
 						logger.info("Generating schedule for Child when Child is Live Birth. Mother Id: " + mother.caseId());
-					}
+					//}
 				}
 				SubFormData subFormData = submission.getSubFormByName(CHILD_REGISTRATION_SUB_FORM_NAME);
 				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
@@ -186,7 +187,9 @@ public class PNCService {
 
 					Child child = allChilds.findByCaseId(childFields.get(ID)).withINSTANCEID(submission.instanceId()).withPROVIDERID(submission.anmId())
 							.withLOCATIONID(submission.getField(FW_LOCATIONID)).withTODAY(submission.getField(REFERENCE_DATE))
-							.withSTART(submission.getField(START_DATE)).withEND(submission.getField(END_DATE)).withSUBMISSIONDATE(DateUtil.getTimestampToday())
+							.withSTART(submission.getField(START_DATE)).withEND(submission.getField(END_DATE))
+							.withSUBMISSIONDATE(DateUtil.getTimestampToday())
+							.withClientVersion(DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)))
 							.setIsClosed(false);
 
 					child.details().put(relationalid, childFields.get(relationalid));
@@ -215,18 +218,18 @@ public class PNCService {
 						logger.info("Child died");
 					} else {
 						// user type conditions
-						if(submission.getField("user_type").equalsIgnoreCase(FD)){
+						//if(submission.getField("user_type").equalsIgnoreCase(FD)){
 							childSchedulesService.enrollENCCForChild(childFields.get(ID), LocalDate.parse(referenceDate));
-						}
+						//}
 					}
 				}
 			} else if (submission.getField(FWBNFSTS).equals(STS_SB)) {
-				if (submission.getField("user_type").equalsIgnoreCase(FD)) {
+				//if (submission.getField("user_type").equalsIgnoreCase(FD)) {
 					logger.info("Generating schedule for Mother when Child is Still Birth. Mother Id: " + mother.caseId());
 					pncSchedulesService.enrollPNCRVForMother(submission.entityId(), LocalDate.parse(referenceDate));
-				} else {
+				/*} else {
 					logger.info("FWA submit form for Still Birth so nothing happend ");
-				}
+				}*/
 			}
 		}
 	}
