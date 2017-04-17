@@ -1,0 +1,24 @@
+{
+  "obs": [
+    {
+      "concept": "160753AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+      "value": "2017-04-17"
+    },
+    {
+      "concept": "161641AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+      "value": "1434AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    },
+    {
+      "concept": "163137AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+      "value": "2017-04-17 17:44:23"
+    },
+    {
+      "concept": "163138AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+      "value": "2017-04-17 17:44:50"
+    }
+  ],
+  "provider": "99f68f5f-2278-4b1b-bd64-1af3991b1148",
+  "patient": "f31bad6c-bdcf-416c-840b-c3d79f1001a6",
+  "encounterDatetime": "2017-04-17",
+  "encounterType": "Nutrition"
+}

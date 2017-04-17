@@ -125,7 +125,7 @@ public class AllMembersTest {
         //enc.put("obs", obar2);
      JsonNode enc = null;
      try {
-            enc = mapper.readValue(new File("src/test/java/org/opensrp/register/mcare/validElcoFollowUPEncounter.json"), JsonNode.class);
+            enc = mapper.readValue(new File("src/test/java/org/opensrp/register/mcare/PNC2.json"), JsonNode.class);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -136,7 +136,6 @@ public class AllMembersTest {
 }
 
 /*
-
 elco follow up error:
      { "concept": "160055AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
       "value": "4"
@@ -160,3 +159,4 @@ elco follow up error:
       "concept": "1534AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
     },
  */
+

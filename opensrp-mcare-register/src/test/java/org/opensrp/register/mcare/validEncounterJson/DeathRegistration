@@ -1,0 +1,20 @@
+{
+  "obs": [
+    {
+      "concept": "160753AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+      "value": "2017-04-17"
+    },
+    {
+      "concept": "163137AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+      "value": "2017-04-17 17:30:55"
+    },
+    {
+      "concept": "163138AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+      "value": "2017-04-17 17:31:17"
+    }
+  ],
+  "provider": "99f68f5f-2278-4b1b -bd64-1af3991b1148",
+  "patient": "f2fe49ad-c3af-4895-9c25-c21b155938d6",
+  "encounterDatetime": "2017-04-17",
+  "encounterType": "DeathReg"
+}

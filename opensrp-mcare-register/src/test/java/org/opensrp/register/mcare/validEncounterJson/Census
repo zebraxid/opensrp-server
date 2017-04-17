@@ -1,0 +1,24 @@
+{
+  "obs": [
+    {
+      "concept": "160753AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+      "value": "2017-04-17"
+    },
+    {
+      "concept": "162947AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+      "value": "162949AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    },
+    {
+      "concept": "163137AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+      "value": "2017-04-17 17:32:17"
+    },
+    {
+      "concept": "163138AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+      "value": "2017-04-17 17:33:47"
+    }
+  ],
+  "provider": "99f68f5f-2278-4b1b-bd64-1af3991b1148",
+  "patient": "bdb0af0d-e49d-4bf5-97 af-690909179925",
+  "encounterDatetime": "2017-04-17",
+  "encounterType": "Census Visit"
+}

@@ -1,0 +1,16 @@
+{
+  "obs": [
+    {
+      "concept": "163084AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+      "value": "1133557799112"
+    },
+    {
+      "concept": "163087AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+      "value": "1"
+    }
+  ],
+  "provider": "99f68f5f-2278-4b1b-bd64-1af3991b1148",
+  "patient": "aaf2589d-2342-4d95-9e87-088379ffca0e",
+  "encounterDatetime": "2017-0 4-17",
+  "encounterType": "New Member Registration"
+}
