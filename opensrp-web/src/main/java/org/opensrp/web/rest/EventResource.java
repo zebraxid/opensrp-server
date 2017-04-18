@@ -106,7 +106,7 @@ public class EventResource extends RestResource<Event> {
 			List<String> clientIds = new ArrayList<String>();
 			List<Client> clients = new ArrayList<Client>();
 			if (team != null || providerId != null || locationId != null || baseEntityId != null) {
-				for (int i = 0; i <= SYNC_SIZE; i+=limit) {
+				for (int i = limit; i <= SYNC_SIZE; i+=limit) {
 					List<Event> syncEvents = eventService.findEvents(team, providerId, locationId, baseEntityId, lastSyncedServerVersion,
 					    BaseEntity.SERVER_VERSIOIN, "asc", limit);
 					if (syncEvents == null || syncEvents.isEmpty()) {
