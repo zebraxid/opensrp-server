@@ -174,10 +174,10 @@ public class PNCService {
 					logger.info("Mother died");
 				} else {
 					//User type conditions
-					//if(submission.getField("user_type").equalsIgnoreCase(FD)){					
+					if(submission.getField("user_type").equalsIgnoreCase(FD)){					
 						pncSchedulesService.enrollPNCRVForMother(submission.entityId(), LocalDate.parse(referenceDate));
 						logger.info("Generating schedule for Child when Child is Live Birth. Mother Id: " + mother.caseId());
-					//}
+					}
 				}
 				SubFormData subFormData = submission.getSubFormByName(CHILD_REGISTRATION_SUB_FORM_NAME);
 				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
@@ -218,18 +218,18 @@ public class PNCService {
 						logger.info("Child died");
 					} else {
 						// user type conditions
-						//if(submission.getField("user_type").equalsIgnoreCase(FD)){
+						if(submission.getField("user_type").equalsIgnoreCase(FD)){
 							childSchedulesService.enrollENCCForChild(childFields.get(ID), LocalDate.parse(referenceDate));
-						//}
+						}
 					}
 				}
 			} else if (submission.getField(FWBNFSTS).equals(STS_SB)) {
-				//if (submission.getField("user_type").equalsIgnoreCase(FD)) {
+				if (submission.getField("user_type").equalsIgnoreCase(FD)) {
 					logger.info("Generating schedule for Mother when Child is Still Birth. Mother Id: " + mother.caseId());
 					pncSchedulesService.enrollPNCRVForMother(submission.entityId(), LocalDate.parse(referenceDate));
-				/*} else {
+				} else {
 					logger.info("FWA submit form for Still Birth so nothing happend ");
-				}*/
+				}
 			}
 		}
 	}

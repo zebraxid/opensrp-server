@@ -49,7 +49,7 @@ public class PNCSchedulesService {
             milestone = SCHEDULE_PNC_1;
         } else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Days.FIVE.toPeriod())) {
             milestone = SCHEDULE_PNC_2;
-        } else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Days.SIX.toPeriod().plusDays(2))) {
+        } else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Days.SEVEN.toPeriod().plusDays(1))) {
             milestone = SCHEDULE_PNC_3;
         } else{
         	

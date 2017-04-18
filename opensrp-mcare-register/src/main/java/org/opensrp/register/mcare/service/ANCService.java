@@ -502,14 +502,14 @@ public class ANCService {
 
 	public void unEnrollBNFSchedule(String entityId, String provider, String instanceId, String user_type) {
 		logger.info("user_type:" + user_type);
-		//if (user_type.equalsIgnoreCase("FD")) {
+		if (user_type.equalsIgnoreCase("FD")) {
 			Mother mother = allMothers.findByCaseId(entityId);
 			closeMother(mother);
 			bnfSchedulesService.unEnrollBNFSchedule(entityId, provider);
 			pncService.closeMother(mother);
 			scheduleLogService.closeScheduleAndScheduleLog(entityId, instanceId, SCHEDULE_BNF, provider);
-		/*} else {
+		} else {
 			logger.info("User type :" + user_type);
-		}*/
+		}
 	}
 }
