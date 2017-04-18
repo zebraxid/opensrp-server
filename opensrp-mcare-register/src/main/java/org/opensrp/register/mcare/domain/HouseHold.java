@@ -144,24 +144,45 @@ public class HouseHold extends MotechBaseDataObject {
 	private Map<String, String> details;
 	@JsonProperty
 	private String BAHMNI_ID;
-	@JsonProperty("timestamp")
-	private long timestamp;
-	
-	public long getTimestamp() {
-		return timestamp;
-	}
+	@JsonProperty
+	private long serverVersion;
+	@JsonProperty
+    private long clientVersion;
+	@JsonProperty
+    private long updatedTimeStamp;
 
-	public void setTimestamp(long timestamp) {
-		this.timestamp = timestamp;
-	}
 
 	public HouseHold() {
 		this.MEMBERDETAILS = new ArrayList<>();
 		this.multimediaAttachments = new ArrayList<>();
 		this.Birth_Outcome = new ArrayList<>();
 	}
-	
-	public HouseHold setCASEID(String caseId) {
+
+    public long getServerVersion() {
+        return serverVersion;
+    }
+
+    public void setServerVersion(long serverVersion) {
+        this.serverVersion = serverVersion;
+    }
+
+    public long getClientVersion() {
+        return clientVersion;
+    }
+
+    public void setClientVersion(long clientVersion) {
+        this.clientVersion = clientVersion;
+    }
+
+    public long getUpdatedTimeStamp() {
+        return updatedTimeStamp;
+    }
+
+    public void setUpdatedTimeStamp(long updatedTimeStamp) {
+        this.updatedTimeStamp = updatedTimeStamp;
+    }
+
+    public HouseHold setCASEID(String caseId) {
 		this.caseId = caseId;
 		return this;
 	}

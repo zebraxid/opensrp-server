@@ -56,8 +56,10 @@ public class HHService {
 		
 		houseHold.setPROVIDERID(submission.anmId());
 		houseHold.setINSTANCEID(submission.instanceId());
+		houseHold.setClientVersion(submission.clientVersion());
+		houseHold.setServerVersion(submission.serverVersion());
 		houseHold.setToday(submission.getField(REFERENCE_DATE));
-		houseHold.setTimestamp(DateUtil.getTimestampToday());
+		houseHold.setUpdatedTimeStamp(DateUtil.getTimestampToday());
 
 		allHouseHolds.update(houseHold);
 			

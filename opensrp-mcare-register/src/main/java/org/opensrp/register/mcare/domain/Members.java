@@ -221,8 +221,13 @@ public class Members extends MotechBaseDataObject {
 	private List<Map<String, String>> nutrition;
 	@JsonProperty
 	private String isClosed;
-	@JsonProperty("timestamp")
-	private long timestamp;
+	@JsonProperty
+	private long serverVersion;
+	@JsonProperty
+	private long clientVersion;
+	@JsonProperty
+	private long updatedTimeStamp;
+
 	public Members() {
 				this.details = new HashMap<>();
 				this.ANCVisit1 = new HashMap<>();
@@ -1064,16 +1069,34 @@ public class Members extends MotechBaseDataObject {
 		return End;
 	}
 
-	public long getTimestamp() {
-		return timestamp;
-	}
+    public long getServerVersion() {
+        return serverVersion;
+    }
 
-	public Members setTimestamp(long timestamp) {
-		this.timestamp = timestamp;
-		return this;
-	}
+    public Members setServerVersion(long serverVersion) {
+        this.serverVersion = serverVersion;
+        return this;
+    }
 
-	@Override
+    public long getClientVersion() {
+        return clientVersion;
+    }
+
+    public Members setClientVersion(long clientVersion) {
+        this.clientVersion = clientVersion;
+        return this;
+    }
+
+    public long getUpdatedTimeStamp() {
+        return updatedTimeStamp;
+    }
+
+    public Members setUpdatedTimeStamp(long updatedTimeStamp) {
+        this.updatedTimeStamp = updatedTimeStamp;
+        return this;
+    }
+
+    @Override
 	public boolean equals(Object o) {
 		return EqualsBuilder.reflectionEquals(this, o, "id", "revision");
 	}

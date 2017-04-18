@@ -76,8 +76,10 @@ public class MembersService {
 					.setPROVIDERID(submission.anmId())
 					.setToday(submission.getField(REFERENCE_DATE))
 					.setRelationalid(submission.getField(relationalid))
-					.setTimestamp(DateUtil.getTimestampToday());
-			
+					.setUpdatedTimeStamp(DateUtil.getTimestampToday())
+					.setServerVersion(submission.serverVersion())
+					.setClientVersion(submission.clientVersion());
+
 			
 			if(membersFields.containsKey(Mem_F_Name)){
 				allMembers.update(members);
@@ -287,8 +289,9 @@ public class MembersService {
 									.put(PW, submission.getField(PW))
 									.put(Current_Form_Status, submission.getField(Current_Form_Status))
 									.put(Received_Time, format.format(day).toString())
-									.map();	
-		members.setTimestamp(DateUtil.getTimestampToday());
+									.map();
+
+		members.setUpdatedTimeStamp(DateUtil.getTimestampToday());
 		members.elco_Followup().add(Elco_Followup);
 		allMembers.update(members);
 		
@@ -487,8 +490,9 @@ public class MembersService {
 								.put(relationalid, submission.getField(relationalid))
 								.put(bnf_current_formStatus, submission.getField(bnf_current_formStatus))
 								.put(Received_Time, format.format(day).toString())
-								.map();	
-		
+								.map();
+
+        members.setUpdatedTimeStamp(DateUtil.getTimestampToday());
 		members.bnfVisit().add(bnf);
 		allMembers.update(members);
 		
@@ -699,7 +703,10 @@ public void childRegistratonHandler(FormSubmission submission) {
 					.setINSTANCEID(submission.instanceId())
 					.setPROVIDERID(submission.anmId())
 					.setToday(submission.getField(REFERENCE_DATE))
-					.setRelationalid(submission.getField(relationalid));					
+					.setRelationalid(submission.getField(relationalid))
+                    .setServerVersion(submission.serverVersion())
+                    .setClientVersion(submission.clientVersion())
+                    .setUpdatedTimeStamp(DateUtil.getTimestampToday());
 			
 			if(membersFields.containsKey(Mem_F_Name)){
 				allMembers.update(members);
@@ -859,6 +866,7 @@ public void childRegistratonHandler(FormSubmission submission) {
 								.put(child_current_form_status, submission.getField(child_current_form_status))
 								.put(received_time, dateTime.format(day).toString()).map();			
 
+		        members.setUpdatedTimeStamp(DateUtil.getTimestampToday());
 				members.child_vaccine().add(vaccine);
 				
 				allMembers.update(members);
@@ -904,5 +912,6 @@ public void childRegistratonHandler(FormSubmission submission) {
 	        return false;
 	    }
 	}
+
 }
 

@@ -18,6 +18,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.opensrp.common.util.DateUtil;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.register.mcare.domain.Members;
 import org.opensrp.register.mcare.repository.AllMembers;
@@ -109,8 +110,9 @@ public class MembersPaybackService {
 								.put(relationalid, submission.getField(relationalid))
 								.put(injectable_current_formStatus, submission.getField(injectable_current_formStatus))
 								.put(Received_Time, format.format(day).toString())
-								.map();	
-		
+								.map();
+
+        members.setUpdatedTimeStamp(DateUtil.getTimestampToday());
 		members.injecTables().add(Injectable);
 		allMembers.update(members);
 		
@@ -170,8 +172,9 @@ public class MembersPaybackService {
 									.put(Councelling, submission.getField(Councelling))
 									.put(Comment, submission.getField(Comment))
 									.put(Received_Time, format.format(day).toString())
-									.map();	
-		
+									.map();
+
+        members.setUpdatedTimeStamp(DateUtil.getTimestampToday());
 		members.adolescent().add(Adolescent);
 		allMembers.update(members);
 		
@@ -244,8 +247,9 @@ public class MembersPaybackService {
 									.put(Deceased_Age, submission.getField(Deceased_Age))
 									.put(Reason_Death, submission.getField(Reason_Death))
 									.put(Received_Time, format.format(day).toString())
-									.map();	
-		
+									.map();
+
+        members.setUpdatedTimeStamp(DateUtil.getTimestampToday());
 		members.setDeathReg(DeathReg);
 		allMembers.update(members);
 		
@@ -307,8 +311,9 @@ public class MembersPaybackService {
 									.put(Refer, submission.getField(Refer))
 									.put(relationalid, submission.getField(relationalid))
 									.put(Received_Time, format.format(day).toString())
-									.map();	
-		
+									.map();
+
+        members.setUpdatedTimeStamp(DateUtil.getTimestampToday());
 		members.nutrition().add(Nutritions);
 		allMembers.update(members);
 		

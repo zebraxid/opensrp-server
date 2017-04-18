@@ -21,6 +21,7 @@ import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.opensrp.common.util.DateUtil;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.register.mcare.domain.Members;
 import org.opensrp.register.mcare.repository.AllMembers;
@@ -123,7 +124,8 @@ public class MembersFollowupService {
 									.put(pnc1_current_formStatus, submission.getField(pnc1_current_formStatus))
 									.put(Received_Time, format.format(day).toString())
 									.map();	
-		
+
+		members.setUpdatedTimeStamp(DateUtil.getTimestampToday());
 		members.setPNCVisit1(PNCVisit1);
 		allMembers.update(members);
 		
@@ -212,7 +214,8 @@ public class MembersFollowupService {
 									.put(PNC2_current_formStatus, submission.getField(PNC2_current_formStatus))
 									.put(Received_Time, format.format(day).toString())
 									.map();
-		
+
+		members.setUpdatedTimeStamp(DateUtil.getTimestampToday());
 		members.setPNCVisit2(PNCVisit2);
 		allMembers.update(members);
 		if(submission.getField(Visit_status).equalsIgnoreCase("8") || submission.getField(Visit_status).equalsIgnoreCase("10")){
@@ -299,8 +302,9 @@ public class MembersFollowupService {
 									.put(HR, submission.getField(HR))
 									.put(PNC3_current_formStatus, submission.getField(PNC3_current_formStatus))
 									.put(Received_Time, format.format(day).toString())
-									.map();	
-		
+									.map();
+
+		members.setUpdatedTimeStamp(DateUtil.getTimestampToday());
 		members.setPNCVisit3(PNCVisit3);
 		allMembers.update(members);
 		if(submission.getField(Visit_status).equalsIgnoreCase("8") || submission.getField(Visit_status).equalsIgnoreCase("10")){
@@ -387,8 +391,9 @@ public class MembersFollowupService {
 									.put(HR, submission.getField(HR))
 									.put(PNC4_current_formStatus, submission.getField(PNC4_current_formStatus))
 									.put(Received_Time, format.format(day).toString())
-									.map();	
-		
+									.map();
+
+		members.setUpdatedTimeStamp(DateUtil.getTimestampToday());
 		members.setPNCVisit4(PNCVisit4);
 		allMembers.update(members);
 		
@@ -478,8 +483,9 @@ public class MembersFollowupService {
 									.put(anc1_current_formStatus, submission.getField(anc1_current_formStatus))
 									.put(relationalid, submission.getField(relationalid))
 									.put(Received_Time, format.format(day).toString())
-									.map();	
-		
+									.map();
+
+		members.setUpdatedTimeStamp(DateUtil.getTimestampToday());
 		members.setANCVisit1(ANCVisit1);
 		allMembers.update(members);
 		
@@ -567,8 +573,9 @@ public class MembersFollowupService {
 									.put(anc2_current_formStatus, submission.getField(anc2_current_formStatus))
 									.put(relationalid, submission.getField(relationalid))
 									.put(Received_Time, format.format(day).toString())
-									.map();		
-		
+									.map();
+
+		members.setUpdatedTimeStamp(DateUtil.getTimestampToday());
 		members.setANCVisit2(ANCVisit2);
 		allMembers.update(members);
 		
@@ -660,7 +667,8 @@ public class MembersFollowupService {
 									.put(relationalid, submission.getField(relationalid))
 									.put(Received_Time, format.format(day).toString())
 									.map();
-		
+
+		members.setUpdatedTimeStamp(DateUtil.getTimestampToday());
 		members.setANCVisit3(ANCVisit3);
 		allMembers.update(members);
 		
@@ -749,8 +757,9 @@ public class MembersFollowupService {
 									.put(anc4_current_formStatus, submission.getField(anc4_current_formStatus))
 									.put(relationalid, submission.getField(relationalid))
 									.put(Received_Time, format.format(day).toString())
-									.map();	
-		
+									.map();
+
+		members.setUpdatedTimeStamp(DateUtil.getTimestampToday());
 		members.setANCVisit4(ANCVisit4);
 		allMembers.update(members);
 		
