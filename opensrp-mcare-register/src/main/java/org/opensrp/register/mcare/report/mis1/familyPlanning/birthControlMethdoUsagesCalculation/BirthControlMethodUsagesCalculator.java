@@ -67,7 +67,7 @@ public abstract class BirthControlMethodUsagesCalculator {
 
     private int addToTheCountOfTotalUsages(Members member) {
         boolean usingThisBirthControlMethodInMemberDetail =
-                checkMemberFieldValue(member.details(), Members.BIRTH_CONTROL_KEY, birthControlMethodToCalculate);
+                checkValueOfKeyIn(member.details(), Members.BIRTH_CONTROL_KEY, birthControlMethodToCalculate);
         if (usingThisBirthControlMethodInMemberDetail) {
             return 1;
         }
@@ -76,13 +76,13 @@ public abstract class BirthControlMethodUsagesCalculator {
 
     private int addToTheCountOfNewUsages(Members member) {
         boolean usingThisBirthControlMethodInMemberDetail =
-                checkMemberFieldValue(member.details(), Members.BIRTH_CONTROL_KEY, birthControlMethodToCalculate);
+                checkValueOfKeyIn(member.details(), Members.BIRTH_CONTROL_KEY, birthControlMethodToCalculate);
         if (usingThisBirthControlMethodInMemberDetail) {
             Map<String, String> previousMonthElcoFollowUpData = getPreviousMonthElcoFollowUp(member.elco_Followup());
             boolean firstElcoFollowUP = previousMonthElcoFollowUpData.isEmpty();
             if (!firstElcoFollowUP) {
                 boolean usedThisBirthControlMethodInPreviousElcoFollowUp =
-                        checkMemberFieldValue(previousMonthElcoFollowUpData, Members.BIRTH_CONTROL_KEY,
+                        checkValueOfKeyIn(previousMonthElcoFollowUpData, Members.BIRTH_CONTROL_KEY,
                                 birthControlMethodToCalculate);
                 if (!usedThisBirthControlMethodInPreviousElcoFollowUp) {
                     return 1;
@@ -96,13 +96,13 @@ public abstract class BirthControlMethodUsagesCalculator {
 
     private int addToTheCountOfLeftUsagesButNoneTaken(Members member) {
         boolean notUsingAnyBirthControlMethodInMemberDetail =
-                checkMemberFieldValue(member.details(), Members.BIRTH_CONTROL_KEY, Members.BIRTH_CONTROL_NOT_USING_ANY_METHOD);
+                checkValueOfKeyIn(member.details(), Members.BIRTH_CONTROL_KEY, Members.BIRTH_CONTROL_NOT_USING_ANY_METHOD);
         boolean notUsingFamilyPlanningInMemberDetail =
-                checkMemberFieldValue(member.details(), Members.USING_FAMILY_PLANNING_KEY, Members.NOT_USING_FAMILY_PLANNING_VALUE);
+                checkValueOfKeyIn(member.details(), Members.USING_FAMILY_PLANNING_KEY, Members.NOT_USING_FAMILY_PLANNING_VALUE);
         if (notUsingAnyBirthControlMethodInMemberDetail || notUsingFamilyPlanningInMemberDetail) {
             Map<String, String> previousMonthElcoFollowUpData = getPreviousMonthElcoFollowUp(member.elco_Followup());
             boolean usedThisBirthControlMethodInPreviousElcoFollowUp =
-                    checkMemberFieldValue(previousMonthElcoFollowUpData, Members.BIRTH_CONTROL_KEY,
+                    checkValueOfKeyIn(previousMonthElcoFollowUpData, Members.BIRTH_CONTROL_KEY,
                             birthControlMethodToCalculate);
             if (usedThisBirthControlMethodInPreviousElcoFollowUp) {
                 return 1;
@@ -114,14 +114,14 @@ public abstract class BirthControlMethodUsagesCalculator {
 
     private int addToTheCountOfLeftUsagesButOtherTaken(Members member) {
         boolean usingThisBirthControlMethodInMemberDetail =
-                checkMemberFieldValue(member.details(), Members.BIRTH_CONTROL_KEY, birthControlMethodToCalculate);
+                checkValueOfKeyIn(member.details(), Members.BIRTH_CONTROL_KEY, birthControlMethodToCalculate);
         if (!usingThisBirthControlMethodInMemberDetail) {
             Map<String, String> previousMonthElcoFollowUpData = getPreviousMonthElcoFollowUp(member.elco_Followup());
             boolean usedThisBirthControlMethodInPreviousElcoFollowUp =
-                    checkMemberFieldValue(previousMonthElcoFollowUpData, Members.BIRTH_CONTROL_KEY,
+                    checkValueOfKeyIn(previousMonthElcoFollowUpData, Members.BIRTH_CONTROL_KEY,
                             birthControlMethodToCalculate);
             if (usedThisBirthControlMethodInPreviousElcoFollowUp) {
-                String currentBirthControlMethod = getMemberFieldValueFor(member.details(), Members.BIRTH_CONTROL_KEY);
+                String currentBirthControlMethod = getValueBasedOnKeyIn(member.details(), Members.BIRTH_CONTROL_KEY);
                 if (checkIfValidBirthControlMethod(currentBirthControlMethod)) {
                     return 1;
                 }
@@ -138,22 +138,22 @@ public abstract class BirthControlMethodUsagesCalculator {
         }
     }
 
-    private boolean checkMemberFieldValue(Map<String, String> memberData, String birthControlMethod,
-                                          String expectedBirthControlValue) {
-        String birthControlValue = this.getMemberFieldValueFor(memberData, birthControlMethod);
-        return birthControlValue.equalsIgnoreCase(expectedBirthControlValue);
+    private boolean checkValueOfKeyIn(Map<String, String> memberData, String key,
+                                      String expectedValue) {
+        String birthControlValue = this.getValueBasedOnKeyIn(memberData, key);
+        return birthControlValue.equalsIgnoreCase(expectedValue);
     }
 
-    private String getMemberFieldValueFor(Map<String, String> memberData, String birthControlMethod) {
-        if (memberData.containsKey(birthControlMethod)) {
-            return memberData.get(birthControlMethod);
+    private String getValueBasedOnKeyIn(Map<String, String> memberData, String key) {
+        if (memberData.containsKey(key)) {
+            return memberData.get(key);
         } else {
             return Members.BIRTH_CONTROL_NULL_VALUE;
         }
     }
 
-    private boolean checkIfValidBirthControlMethod(String birthControlValue) {
-        return !birthControlValue.equalsIgnoreCase(Members.BIRTH_CONTROL_NULL_VALUE) && !birthControlValue.equalsIgnoreCase(Members.BIRTH_CONTROL_NOT_USING_ANY_METHOD);
+    private boolean checkIfValidBirthControlMethod(String birthControlMethod) {
+        return !birthControlMethod.equalsIgnoreCase(Members.BIRTH_CONTROL_NULL_VALUE) && !birthControlMethod.equalsIgnoreCase(Members.BIRTH_CONTROL_NOT_USING_ANY_METHOD);
     }
 }
 
