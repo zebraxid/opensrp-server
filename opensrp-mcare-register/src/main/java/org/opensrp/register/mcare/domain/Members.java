@@ -18,10 +18,14 @@ import org.codehaus.jackson.annotate.JsonProperty;
 import org.ektorp.support.TypeDiscriminator;
 import org.motechproject.model.MotechBaseDataObject;
 
+import static org.opensrp.common.AllConstants.Form.CLIENT_VERSION;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 @TypeDiscriminator("doc.type === 'Members'")
 public class Members extends MotechBaseDataObject {
 
+    @JsonIgnore
+    public static String CLIENT_VERSION_KEY = CLIENT_VERSION;
 	@JsonIgnore
 	public static String BIRTH_CONTROL_KEY = "Birth_Control";
 	@JsonIgnore
