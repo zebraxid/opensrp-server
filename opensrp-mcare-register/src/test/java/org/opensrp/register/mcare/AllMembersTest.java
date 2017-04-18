@@ -98,7 +98,7 @@ public class AllMembersTest {
         assertFalse(false);
   }
 
-    @Test
+    @Ignore@Test
     public void EncounterTest() throws JSONException {
         ObjectMapper mapper = new ObjectMapper();
        /* JSONObject enc = new JSONObject();

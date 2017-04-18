@@ -7,7 +7,7 @@ import org.opensrp.register.mcare.report.mis1.familyPlanning.FamilyPlanningRepor
 import java.util.List;
 
 public class MIS1Report {
-    private  List<Members> membersList;
+    private List<Members> membersList;
     private FamilyPlanningReport familyPlanningReport;
 
     public MIS1Report(List<Members> membersList) {
@@ -21,7 +21,7 @@ public class MIS1Report {
     }
 
     private void calculateReport() {
-        for(Members member : membersList) {
+        for (Members member : membersList) {
             familyPlanningReport.calculate(member);
         }
     }
