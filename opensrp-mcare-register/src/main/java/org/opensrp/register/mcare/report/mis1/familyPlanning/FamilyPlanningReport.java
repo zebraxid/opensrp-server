@@ -2,9 +2,9 @@ package org.opensrp.register.mcare.report.mis1.familyPlanning;
 
 
 import org.opensrp.register.mcare.domain.Members;
-import org.opensrp.register.mcare.report.mis1.familyPlanning.birthControlMethdos.BirthControlMethodUsagesCalculator;
-import org.opensrp.register.mcare.report.mis1.familyPlanning.birthControlMethdos.CondomMethodUsagesCalculator;
-import org.opensrp.register.mcare.report.mis1.familyPlanning.birthControlMethdos.PillMethodUsagesCalculator;
+import org.opensrp.register.mcare.report.mis1.familyPlanning.birthControlMethdoUsagesCalculation.BirthControlMethodUsagesCalculator;
+import org.opensrp.register.mcare.report.mis1.familyPlanning.birthControlMethdoUsagesCalculation.CondomMethodUsagesCalculator;
+import org.opensrp.register.mcare.report.mis1.familyPlanning.birthControlMethdoUsagesCalculation.PillMethodUsagesCalculator;
 
 public class FamilyPlanningReport {
 

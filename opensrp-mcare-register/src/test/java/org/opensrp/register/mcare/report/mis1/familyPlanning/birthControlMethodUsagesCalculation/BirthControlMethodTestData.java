@@ -1,4 +1,4 @@
-package org.opensrp.register.mcare.report.mis1.familyPlanning.birthControlMethod;
+package org.opensrp.register.mcare.report.mis1.familyPlanning.birthControlMethodUsagesCalculation;
 
 
 import org.opensrp.register.mcare.domain.Members;
@@ -73,9 +73,27 @@ public class BirthControlMethodTestData {
                 addElcoFollowUpUsingBirthControlValue(member, thirdBirthControlMethod);
                 members.add(member);
             }else {
-                members.add(new Members());
+                if(i%2 == 0) {
+                    Members member = createMemberUsingBirthControlValue(thirdBirthControlMethod);
+                    addRandomNumberOfElcoFollowUp(member);
+                    addElcoFollowUpUsingBirthControlValue(member, secondBirthControlMethod);
+                    addElcoFollowUpUsingBirthControlValue(member, thirdBirthControlMethod);
+                    members.add(member);
+                }else{
+                    Members member = createMemberUsingBirthControlValue(Members.BIRTH_CONTROL_NOT_USING_ANY_METHOD);
+                    addRandomNumberOfElcoFollowUp(member);
+                    addElcoFollowUpUsingBirthControlValue(member, secondBirthControlMethod);
+                    addElcoFollowUpUsingBirthControlValue(member,  Members.BIRTH_CONTROL_NOT_USING_ANY_METHOD);
+                    members.add(member);
+                }
+
             }
         }
+        Members member = createMemberUsingBirthControlValue(thirdBirthControlMethod);
+        addElcoFollowUpUsingBirthControlValue(member, thirdBirthControlMethod);
+        members.add(member);
+        member = new Members();
+        members.add(member);
         return members;
     }
 

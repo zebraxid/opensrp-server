@@ -1,4 +1,4 @@
-package org.opensrp.register.mcare.report.mis1.familyPlanning.birthControlMethdos;
+package org.opensrp.register.mcare.report.mis1.familyPlanning.birthControlMethdoUsagesCalculation;
 
 
 import org.opensrp.register.mcare.domain.Members;
@@ -66,25 +66,25 @@ public abstract class BirthControlMethodUsagesCalculator {
 
 
     private int addToTheCountOfTotalUsages(Members member) {
-        boolean usingBirthControlPillInMemberDetail =
+        boolean usingThisBirthControlMethodInMemberDetail =
                 checkMemberFieldValue(member.details(), Members.BIRTH_CONTROL_KEY, birthControlMethodToCalculate);
-        if (usingBirthControlPillInMemberDetail) {
+        if (usingThisBirthControlMethodInMemberDetail) {
             return 1;
         }
         return 0;
     }
 
     private int addToTheCountOfNewUsages(Members member) {
-        boolean usingBirthControlPillInMemberDetail =
+        boolean usingThisBirthControlMethodInMemberDetail =
                 checkMemberFieldValue(member.details(), Members.BIRTH_CONTROL_KEY, birthControlMethodToCalculate);
-        if (usingBirthControlPillInMemberDetail) {
+        if (usingThisBirthControlMethodInMemberDetail) {
             Map<String, String> previousMonthElcoFollowUpData = getPreviousMonthElcoFollowUp(member.elco_Followup());
             boolean firstElcoFollowUP = previousMonthElcoFollowUpData.isEmpty();
             if (!firstElcoFollowUP) {
-                boolean usingBirthControlPillInPreviousElcoFollowUp =
+                boolean usedThisBirthControlMethodInPreviousElcoFollowUp =
                         checkMemberFieldValue(previousMonthElcoFollowUpData, Members.BIRTH_CONTROL_KEY,
                                 birthControlMethodToCalculate);
-                if (!usingBirthControlPillInPreviousElcoFollowUp) {
+                if (!usedThisBirthControlMethodInPreviousElcoFollowUp) {
                     return 1;
                 }
             } else {
@@ -95,16 +95,16 @@ public abstract class BirthControlMethodUsagesCalculator {
     }
 
     private int addToTheCountOfLeftUsagesButNoneTaken(Members member) {
-        boolean notUsingBirthControlMethodInMemberDetail =
+        boolean notUsingAnyBirthControlMethodInMemberDetail =
                 checkMemberFieldValue(member.details(), Members.BIRTH_CONTROL_KEY, Members.BIRTH_CONTROL_NOT_USING_ANY_METHOD);
         boolean notUsingFamilyPlanningInMemberDetail =
                 checkMemberFieldValue(member.details(), Members.USING_FAMILY_PLANNING_KEY, Members.NOT_USING_FAMILY_PLANNING_VALUE);
-        if (notUsingBirthControlMethodInMemberDetail || notUsingFamilyPlanningInMemberDetail) {
+        if (notUsingAnyBirthControlMethodInMemberDetail || notUsingFamilyPlanningInMemberDetail) {
             Map<String, String> previousMonthElcoFollowUpData = getPreviousMonthElcoFollowUp(member.elco_Followup());
-            boolean usingBirthControlPillInPreviousElcoFollowUp =
+            boolean usedThisBirthControlMethodInPreviousElcoFollowUp =
                     checkMemberFieldValue(previousMonthElcoFollowUpData, Members.BIRTH_CONTROL_KEY,
                             birthControlMethodToCalculate);
-            if (usingBirthControlPillInPreviousElcoFollowUp) {
+            if (usedThisBirthControlMethodInPreviousElcoFollowUp) {
                 return 1;
             }
         }
@@ -113,12 +113,18 @@ public abstract class BirthControlMethodUsagesCalculator {
     }
 
     private int addToTheCountOfLeftUsagesButOtherTaken(Members member) {
-        boolean usingBirthControlPillInMemberDetail =
+        boolean usingThisBirthControlMethodInMemberDetail =
                 checkMemberFieldValue(member.details(), Members.BIRTH_CONTROL_KEY, birthControlMethodToCalculate);
-        if (!usingBirthControlPillInMemberDetail) {
-            String otherBirthControlValueThanPill = getMemberFieldValueFor(member.details(), Members.BIRTH_CONTROL_KEY);
-            if (checkIfValidBirthControlMethod(otherBirthControlValueThanPill)) {
-                return 1;
+        if (!usingThisBirthControlMethodInMemberDetail) {
+            Map<String, String> previousMonthElcoFollowUpData = getPreviousMonthElcoFollowUp(member.elco_Followup());
+            boolean usedThisBirthControlMethodInPreviousElcoFollowUp =
+                    checkMemberFieldValue(previousMonthElcoFollowUpData, Members.BIRTH_CONTROL_KEY,
+                            birthControlMethodToCalculate);
+            if (usedThisBirthControlMethodInPreviousElcoFollowUp) {
+                String currentBirthControlMethod = getMemberFieldValueFor(member.details(), Members.BIRTH_CONTROL_KEY);
+                if (checkIfValidBirthControlMethod(currentBirthControlMethod)) {
+                    return 1;
+                }
             }
         }
         return 0;
@@ -147,7 +153,7 @@ public abstract class BirthControlMethodUsagesCalculator {
     }
 
     private boolean checkIfValidBirthControlMethod(String birthControlValue) {
-        return birthControlValue != Members.BIRTH_CONTROL_NULL_VALUE && birthControlValue != Members.BIRTH_CONTROL_NOT_USING_ANY_METHOD;
+        return !birthControlValue.equalsIgnoreCase(Members.BIRTH_CONTROL_NULL_VALUE) && !birthControlValue.equalsIgnoreCase(Members.BIRTH_CONTROL_NOT_USING_ANY_METHOD);
     }
 }
 
