@@ -2,12 +2,15 @@ package org.opensrp.service;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.ektorp.CouchDbConnector;
 import org.joda.time.DateTime;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.opensrp.common.AllConstants.Client;
 import org.opensrp.domain.Event;
 import org.opensrp.domain.Obs;
 import org.opensrp.repository.AllEvents;
@@ -25,9 +28,12 @@ public class EventService {
 	
 	private final AllEvents allEvents;
 	
+	private ClientService clientService;
+	
 	@Autowired
-	public EventService(AllEvents allEvents) {
+	public EventService(AllEvents allEvents, ClientService clientService) {
 		this.allEvents = allEvents;
+		this.clientService = clientService;
 	}
 	
 	public List<Event> findAllByIdentifier(String identifier) {
@@ -86,7 +92,6 @@ public class EventService {
 		    lastEditTo);
 	}
 	
-	
 	public List<Event> findEventsByDynamicQuery(String query) {
 		return allEvents.findEventsByDynamicQuery(query);
 	}
@@ -133,6 +138,7 @@ public class EventService {
 		allEvents.add(event);
 		return event;
 	}
+	
 	
 	public synchronized Event addEvent(CouchDbConnector targetDb, Event event) {
 		//		Event e = find(targetDb,event);
@@ -214,6 +220,7 @@ public class EventService {
 			throw new RuntimeException(e);
 		}
 	}
+	
 	public List<Event> findByServerVersion(long serverVersion) {
 		return allEvents.findByServerVersion(serverVersion);
 	}
@@ -222,7 +229,17 @@ public class EventService {
 		return allEvents.getAll();
 	}
 	
-	public List<Event> findEvents(String team,String providerId, String locationId, Long serverVersion,String sortBy,String sortOrder, int limit) {
-		return allEvents.findEvents(team,providerId, locationId, serverVersion, sortBy, sortOrder, limit);
+
+	public List<Event> findEvents(String team, String providerId, String locationId, Long serverVersion, String sortBy,
+	                              String sortOrder, int limit) {
+		return allEvents.findEvents(team, providerId, locationId,null, serverVersion, sortBy, sortOrder, limit);
+	}
+	public List<Event> findEvents(String team,String providerId, String locationId, String baseEntityId, Long serverVersion,String sortBy,String sortOrder, int limit) {
+		return allEvents.findEvents(team,providerId, locationId, baseEntityId, serverVersion, sortBy, sortOrder, limit);
+	}
+	
+	public List<Event> findEventsByConceptAndValue(String concept, String conceptValue){
+		return allEvents.findByConceptAndValue(concept, conceptValue);
+
 	}
 }
