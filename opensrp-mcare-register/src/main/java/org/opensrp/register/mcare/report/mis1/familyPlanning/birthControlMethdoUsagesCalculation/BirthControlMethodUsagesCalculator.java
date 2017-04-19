@@ -20,7 +20,7 @@ public abstract class BirthControlMethodUsagesCalculator {
 
     }
 
-    protected BirthControlMethodUsagesCalculator(String birthControlMethodToCalculate) {
+    protected   BirthControlMethodUsagesCalculator(String birthControlMethodToCalculate) {
         this.birthControlMethodToCalculate = birthControlMethodToCalculate;
         this.initCountVariables();
     }

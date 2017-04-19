@@ -7,6 +7,8 @@ import org.opensrp.register.mcare.report.mis1.MIS1Report;
 
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
+
 public class EligibleCoupleCountCalculatorTest {
 
     @Test
@@ -21,5 +23,7 @@ public class EligibleCoupleCountCalculatorTest {
         MIS1Report mis1Report = new MIS1Report(membersList, startDateTime, endDateTime);
         int newEligibleCoupleVisitCount = mis1Report.getFamilyPlanningReport().getEligibleCoupleCountCalculator().
                 getNewEligibleCoupleVisitCount();
+
+        assertEquals(newEligibleCoupleVisitCount, eligibleCoupleCountData.validCount);
     }
 }
