@@ -16,7 +16,7 @@ public class MIS1Report {
         this.membersList = membersList;
         this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;
-        familyPlanningReport = new FamilyPlanningReport();
+        familyPlanningReport = new FamilyPlanningReport(startDateTime, endDateTime);
         this.calculateReport();
     }
 

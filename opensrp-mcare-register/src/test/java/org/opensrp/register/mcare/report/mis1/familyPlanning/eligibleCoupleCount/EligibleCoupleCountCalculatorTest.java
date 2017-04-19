@@ -7,7 +7,7 @@ import org.opensrp.register.mcare.report.mis1.MIS1Report;
 
 import java.util.List;
 
-public class EligibleCoupleCountTest {
+public class EligibleCoupleCountCalculatorTest {
 
     @Test
     public void newEligibleCoupleVisitCountTest() {
@@ -19,6 +19,7 @@ public class EligibleCoupleCountTest {
                 new EligibleCoupleCountData(totalCount, validCount, startDateTime, endDateTime);
         List<Members> membersList = eligibleCoupleCountData.getNewEligibleCoupleVisitData();
         MIS1Report mis1Report = new MIS1Report(membersList, startDateTime, endDateTime);
-        int newEligibleCoupleVisitCount = mis1Report.getEligibleCoupleCountReport().getNewEligibleCoupleVisitCount();
+        int newEligibleCoupleVisitCount = mis1Report.getFamilyPlanningReport().getEligibleCoupleCountCalculator().
+                getNewEligibleCoupleCountVisit();
     }
 }
