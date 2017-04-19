@@ -20,6 +20,6 @@ public class EligibleCoupleCountCalculatorTest {
         List<Members> membersList = eligibleCoupleCountData.getNewEligibleCoupleVisitData();
         MIS1Report mis1Report = new MIS1Report(membersList, startDateTime, endDateTime);
         int newEligibleCoupleVisitCount = mis1Report.getFamilyPlanningReport().getEligibleCoupleCountCalculator().
-                getNewEligibleCoupleCountVisit();
+                getNewEligibleCoupleVisitCount();
     }
 }

@@ -30,6 +30,7 @@ public class FamilyPlanningReport {
     public void calculate(Members member) {
         pillUsagesCalculator.calculate(member);
         condomUsagesCalculator.calculate(member);
+        eligibleCoupleCountCalculator.calculate(member);
     }
 
     public BirthControlMethodUsagesCalculator getPillUsagesCalculator() {
@@ -40,4 +41,7 @@ public class FamilyPlanningReport {
         return condomUsagesCalculator;
     }
 
+    public EligibleCoupleCountCalculator getEligibleCoupleCountCalculator() {
+        return eligibleCoupleCountCalculator;
+    }
 }
