@@ -7,6 +7,8 @@ package org.opensrp.register.mcare.service;
 import static java.text.MessageFormat.format;
 import static org.opensrp.common.AllConstants.StockFields.date;
 
+import java.util.List;
+
 import org.json.JSONException;
 import org.opensrp.api.domain.User;
 import org.opensrp.common.util.DateTimeUtil;
@@ -39,14 +41,25 @@ public class StockService {
 					submission.entityId()));
 			return;
 		}
-		
+		long clientVersion = DateTimeUtil.getTimestampOfADate(submission.getField(date));
 		stock.setProvider(submission.anmId())
 		.setInstanceId(submission.instanceId())
 		.setServerVersion(DateUtil.getTimestampToday())
-		.setClientVersion(DateTimeUtil.getTimestampOfADate(submission.getField(date)))
+		.setClientVersion(clientVersion)
 		.setUpdateVersion(DateTimeUtil.getTimestampOfADate(submission.getField(date)))
 		;
+		List<Stock> stocks = allStocks.allStocksByProviderClientVersion(submission.anmId(), clientVersion);
 		
+		for (Stock st : stocks) {
+			 if(!st.getId().equalsIgnoreCase(stock.getId())){
+				try{
+					allStocks.remove(st);
+				}catch(Exception e){
+					logger.info("Duplicate Stock Delete error Message: "+e.getMessage());
+				}
+				
+			 }
+		}
 		allStocks.update(stock);
 	}
 

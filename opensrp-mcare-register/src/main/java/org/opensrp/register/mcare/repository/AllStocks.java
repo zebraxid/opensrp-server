@@ -43,7 +43,7 @@ public class AllStocks extends MotechBaseRepository<Stock> {
 
 	
 	@View(name = "stock_by_clientVersion_provider", map = "function(doc) { if(doc.type === 'Stock') { var x = new Date(); var y = new Date(x.getFullYear(), x.getMonth()-3, 0); var time = y.getTime(); if(doc.clientVersion > time){ emit([doc.provider,doc.clientVersion], null)} } }")
-	public List<Stock> allStocksByProviderClientVersion(String provider, String clientVersion){
+	public List<Stock> allStocksByProviderClientVersion(String provider, long clientVersion){
 		ComplexKey start = ComplexKey.of(provider,clientVersion);
 		ComplexKey end = ComplexKey.of(provider,clientVersion);
 		List<Stock> stocks =  db.queryView(

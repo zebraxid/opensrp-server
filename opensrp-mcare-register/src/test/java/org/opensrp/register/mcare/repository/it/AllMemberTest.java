@@ -66,7 +66,7 @@ public class AllMemberTest {
 		JSONArray obar1 = new JSONArray();
 		JSONObject obs1 = new JSONObject();
 		obs1.put("concept", "021e0705-953d-11e6-90c1-005056b01095");
-		obs1.put("value", "BCG");
+		obs1.put("value", "TT 1");
 		obar1.put(obs1);
 		
 		JSONArray obar2 = new JSONArray();
