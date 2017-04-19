@@ -9,9 +9,13 @@ import java.util.List;
 public class MIS1Report {
     private List<Members> membersList;
     private FamilyPlanningReport familyPlanningReport;
+    private long startDateTime;
+    private long endDateTime;
 
-    public MIS1Report(List<Members> membersList) {
+    public MIS1Report(List<Members> membersList, long startDateTime, long endDateTime) {
         this.membersList = membersList;
+        this.startDateTime = startDateTime;
+        this.endDateTime = endDateTime;
         familyPlanningReport = new FamilyPlanningReport();
         this.calculateReport();
     }
