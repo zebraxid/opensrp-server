@@ -20,7 +20,7 @@ public class EligibleCoupleCountCalculator {
         this.initCountVariable();
     }
 
-    public void initCountVariable(){
+    public void initCountVariable() {
         this.newEligibleCoupleVisitCount = 0;
         this.unitTotalEligibleCoupleVisitCount = 0;
         this.totalEligibleCouple = 0;
@@ -42,17 +42,22 @@ public class EligibleCoupleCountCalculator {
         return totalEligibleCouple;
     }
 
-    private int addToNewEligibleCoupleVisitCount(Members member){
+    private int addToNewEligibleCoupleVisitCount(Members member) {
         int countOfVisitForAMember = 0;
         List<Map<String, String>> eligibleCoupleVisits = member.elco_Followup();
-        for(Map<String, String> eligibleCoupleVisit : eligibleCoupleVisits) {
-            if(eligibleCoupleVisit.containsKey(Members.CLIENT_VERSION_KEY)) {
-                long clientVersion = Long.parseLong(eligibleCoupleVisit.get(Members.CLIENT_VERSION_KEY));
-                if(clientVersion >= startDateTime && clientVersion <= endDateTime) {
-                    countOfVisitForAMember++;
-                }
-            }
+        for (Map<String, String> eligibleCoupleVisit : eligibleCoupleVisits) {
+            countOfVisitForAMember += checkIfVisitedBetweenStartAndEndDateTime(eligibleCoupleVisit);
         }
         return countOfVisitForAMember;
+    }
+
+    private int checkIfVisitedBetweenStartAndEndDateTime(Map<String, String> eligibleCoupleVisit) {
+        if (eligibleCoupleVisit.containsKey(Members.CLIENT_VERSION_KEY)) {
+            long clientVersion = Long.parseLong(eligibleCoupleVisit.get(Members.CLIENT_VERSION_KEY));
+            if (clientVersion >= startDateTime && clientVersion <= endDateTime) {
+                return 1;
+            }
+        }
+        return 0;
     }
 }
