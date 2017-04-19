@@ -28,6 +28,7 @@ public class EligibleCoupleCountCalculator {
 
     public void calculate(Members member) {
         this.newEligibleCoupleVisitCount += addToNewEligibleCoupleVisitCount(member);
+        this.totalEligibleCouple += addToTotalEligibleCoupleCount(member);
     }
 
     public int getNewEligibleCoupleVisitCount() {
@@ -49,6 +50,16 @@ public class EligibleCoupleCountCalculator {
             countOfVisitForAMember += checkIfVisitedBetweenStartAndEndDateTime(eligibleCoupleVisit);
         }
         return countOfVisitForAMember;
+    }
+
+    private int addToTotalEligibleCoupleCount(Members member) {
+        Long clientVersion = member.getClientVersion();
+        if (clientVersion != null) {
+            if (clientVersion >= startDateTime && clientVersion <= endDateTime) {
+                return 1;
+            }
+        }
+        return 0;
     }
 
     private int checkIfVisitedBetweenStartAndEndDateTime(Map<String, String> eligibleCoupleVisit) {

@@ -25,7 +25,7 @@ public class EligibleCoupleCountTestData {
             Members member = new Members();
             member = addRandomNumberOfElcoFollowUpWithPreviousInvalidClientVersion(member);
             if (i < validCount - 2) {
-                Long randomDateTimeBetweenStartAndEndDateTime = ThreadLocalRandom.current().nextLong(startDateTime, endDateTime + 2);
+                Long randomDateTimeBetweenStartAndEndDateTime = getRandomNumberBetween(startDateTime, endDateTime);
                 member = addElcoFollowUpUsingClientVersionDateTime(member, randomDateTimeBetweenStartAndEndDateTime);
             }
             member = addRandomNumberOfElcoFollowUpWithExceedInvalidClientVersion(member);
@@ -40,11 +40,46 @@ public class EligibleCoupleCountTestData {
         return allMembers;
     }
 
+    public List<Members> getTotalEligibleCoupleData() {
+        List<Members> allMembers = new ArrayList<>();
+        for (int i = 0; i < totalCount; i++) {
+            Members member = new Members();
+            if(i < (validCount - 2)) {
+                long randomDateTimeBetweenStartAndEndDateTime = getRandomNumberBetween(startDateTime, endDateTime);
+                member.setClientVersion(randomDateTimeBetweenStartAndEndDateTime);
+            }else {
+                if(i % 2 == 0) {
+                    long randomDateTimeBeforeStartDateTime = getRandomNumberBetween(0, startDateTime-1);
+                    member.setClientVersion(randomDateTimeBeforeStartDateTime);
+                }else {
+                    long randomDateTimeAfterEndDateTime = getRandomNumberBetween(endDateTime+1, endDateTime*6);
+                    member.setClientVersion(randomDateTimeAfterEndDateTime);
+                }
+            }
+            allMembers.add(member);
+        }
+
+        Members member = new Members();
+        member.setClientVersion(startDateTime);
+        allMembers.add(member);
+
+        member = new Members();
+        member.setClientVersion(endDateTime);
+        allMembers.add(member);
+
+        member = new Members();
+        allMembers.add(member);
+
+        return allMembers;
+    }
+
+
+
     private Members addRandomNumberOfElcoFollowUpWithPreviousInvalidClientVersion(Members member) {
         Random rand = new Random();
         int randomNum = rand.nextInt((100 - 0) + 1) + 0;
         for (int i = 0; i < randomNum; i++) {
-            Long randomDateTimeBeforeStartDateTime = ThreadLocalRandom.current().nextLong(0, startDateTime);
+            Long randomDateTimeBeforeStartDateTime = getRandomNumberBetween(0, startDateTime-1);
             member = addElcoFollowUpUsingClientVersionDateTime(member, randomDateTimeBeforeStartDateTime);
 
         }
@@ -55,12 +90,17 @@ public class EligibleCoupleCountTestData {
         Random rand = new Random();
         int randomNum = rand.nextInt((100 - 0) + 1) + 0;
         for (int i = 0; i < randomNum; i++) {
-            Long randomDateTimeAfterEndDateTime = ThreadLocalRandom.current().nextLong(endDateTime, endDateTime*6);
+            Long randomDateTimeAfterEndDateTime = getRandomNumberBetween(endDateTime+1, endDateTime*6);
             member = addElcoFollowUpUsingClientVersionDateTime(member, randomDateTimeAfterEndDateTime);
 
         }
         return member;
     }
+
+    private long getRandomNumberBetween(long start, long end) {
+        return ThreadLocalRandom.current().nextLong(start, end);
+    }
+
 
     private Members addElcoFollowUpUsingClientVersionDateTime(Members member, long clientVersion) {
         Map<String, String> clientVersionKeyValuePair = createHashMap(Members.CLIENT_VERSION_KEY, String.valueOf(clientVersion));
