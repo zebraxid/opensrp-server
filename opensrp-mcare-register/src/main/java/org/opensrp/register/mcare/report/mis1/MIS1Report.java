@@ -7,16 +7,18 @@ import org.opensrp.register.mcare.report.mis1.familyPlanning.FamilyPlanningRepor
 import java.util.List;
 
 public class MIS1Report {
+    private String unionName;
     private List<Members> membersList;
     private FamilyPlanningReport familyPlanningReport;
     private long startDateTime;
     private long endDateTime;
 
-    public MIS1Report(List<Members> membersList, long startDateTime, long endDateTime) {
+    public MIS1Report(String unionName, List<Members> membersList, long startDateTime, long endDateTime) {
+        this.unionName = unionName;
         this.membersList = membersList;
         this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;
-        familyPlanningReport = new FamilyPlanningReport(startDateTime, endDateTime);
+        this.familyPlanningReport = new FamilyPlanningReport(startDateTime, endDateTime);
         this.calculateReport();
     }
 

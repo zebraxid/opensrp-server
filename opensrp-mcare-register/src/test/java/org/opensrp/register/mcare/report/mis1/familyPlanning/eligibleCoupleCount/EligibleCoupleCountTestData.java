@@ -73,6 +73,19 @@ public class EligibleCoupleCountTestData {
         return allMembers;
     }
 
+    public List<Members> getUnitTotalTestData(List<String> unitNames) {
+        int validDataPerUnit = validCount / unitNames.size();
+        List<Members> allMembers = new ArrayList<>();
+        for (int i = 0; i < totalCount; i++) {
+            Members member = new Members();
+            if(i < validDataPerUnit) {
+                long randomDateTimeBetweenStartAndEndDateTime = getRandomNumberBetween(startDateTime, endDateTime);
+                member.setClientVersion(randomDateTimeBetweenStartAndEndDateTime);
+            }
+        }
+        return allMembers;
+    }
+
 
 
     private Members addRandomNumberOfElcoFollowUpWithPreviousInvalidClientVersion(Members member) {

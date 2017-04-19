@@ -12,6 +12,7 @@ import static org.junit.Assert.assertEquals;
 
 public class BirthControlMethodUsagesCalculationTest {
 
+    public String unionName = "union";
     public BirthControlMethodTestData birthControlMethodTestData;
     public MIS1Report mis1Report;
     public static String ON_TEST_BIRTH_CONTROL_METHOD = Members.BIRTH_CONTROL_CONDOM;
@@ -27,7 +28,7 @@ public class BirthControlMethodUsagesCalculationTest {
 
     @Test
     public void testTotalCountOfCondomUsagesOfCurrentMonth() {
-        mis1Report = new MIS1Report(birthControlMethodTestData.createTotalUsagesData(), 0, 0 );
+        mis1Report = new MIS1Report(unionName, birthControlMethodTestData.createTotalUsagesData(), 0, 0 );
         int totalCondomUsagesOfCurrentMonth =
                 mis1Report.getFamilyPlanningReport().getCondomUsagesCalculator().totalUsages();
         assertEquals(totalCondomUsagesOfCurrentMonth, birthControlMethodTestData.validCount);
@@ -35,7 +36,7 @@ public class BirthControlMethodUsagesCalculationTest {
 
     @Test
     public void testNewCountOfCondomUsagesOfCurrentMonth() {
-        this.mis1Report = new MIS1Report(this.birthControlMethodTestData.createNewTestData(), 0, 0);
+        this.mis1Report = new MIS1Report(unionName, this.birthControlMethodTestData.createNewTestData(), 0, 0);
         int totalNewBirthControlPillUsagesOfCurrentMonth =
                 mis1Report.getFamilyPlanningReport().getCondomUsagesCalculator().newUsages();
         assertEquals(totalNewBirthControlPillUsagesOfCurrentMonth, this.birthControlMethodTestData.validCount);
@@ -44,7 +45,7 @@ public class BirthControlMethodUsagesCalculationTest {
     @Test
     public void testCountOfLeftCondomUsagesButTakenNoneInCurrentMonth() {
         this.mis1Report = new MIS1Report(
-                this.birthControlMethodTestData.createLeftBirthControlMethodButNoneTakenTestData(
+               unionName, this.birthControlMethodTestData.createLeftBirthControlMethodButNoneTakenTestData(
                         SECOND_BIRTH_CONTROL_METHOD, THIRD_BIRTH_CONTROL_METHOD), 0, 0);
         int totalCountOfMembersWhoLeftUsagesOfBirthControlPillOfCurrentMonth =
                 mis1Report.getFamilyPlanningReport().getCondomUsagesCalculator().leftUsagesButTakenNone();
@@ -54,7 +55,7 @@ public class BirthControlMethodUsagesCalculationTest {
     @Test
     public void testCountOfLeftCondomUsagesButTakenOtherInCurrentMonth() {
         this.mis1Report = new MIS1Report(
-                this.birthControlMethodTestData.createLeftBirthControlMethodButOtherTakenTestData(
+                unionName, this.birthControlMethodTestData.createLeftBirthControlMethodButOtherTakenTestData(
                         SECOND_BIRTH_CONTROL_METHOD, THIRD_BIRTH_CONTROL_METHOD), 0, 0);
         int totalCountOfMembersWhoLeftUsagesOfBirthControlPillOfCurrentMonth =
                 mis1Report.getFamilyPlanningReport().getCondomUsagesCalculator().leftUsagesButTakenOther();
