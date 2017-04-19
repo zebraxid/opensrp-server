@@ -17,13 +17,13 @@ public class EligibleCoupleCountCalculatorTest {
         int validCount = 600;
         long startDateTime = 140000;
         long endDateTime = 170000;
-        EligibleCoupleCountData eligibleCoupleCountData =
-                new EligibleCoupleCountData(totalCount, validCount, startDateTime, endDateTime);
-        List<Members> membersList = eligibleCoupleCountData.getNewEligibleCoupleVisitData();
+        EligibleCoupleCountTestData eligibleCoupleCountTestData =
+                new EligibleCoupleCountTestData(totalCount, validCount, startDateTime, endDateTime);
+        List<Members> membersList = eligibleCoupleCountTestData.getNewEligibleCoupleVisitData();
         MIS1Report mis1Report = new MIS1Report(membersList, startDateTime, endDateTime);
         int newEligibleCoupleVisitCount = mis1Report.getFamilyPlanningReport().getEligibleCoupleCountCalculator().
                 getNewEligibleCoupleVisitCount();
 
-        assertEquals(newEligibleCoupleVisitCount, eligibleCoupleCountData.validCount);
+        assertEquals(newEligibleCoupleVisitCount, eligibleCoupleCountTestData.validCount);
     }
 }

@@ -6,13 +6,13 @@ import org.opensrp.register.mcare.domain.Members;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class EligibleCoupleCountData {
+public class EligibleCoupleCountTestData {
     public int totalCount;
     public int validCount;
     public long startDateTime;
     public long endDateTime;
 
-    public EligibleCoupleCountData(int totalCount, int validCount, long startDateTime, long endDateTime) {
+    public EligibleCoupleCountTestData(int totalCount, int validCount, long startDateTime, long endDateTime) {
         this.totalCount = totalCount;
         this.validCount = validCount;
         this.startDateTime = startDateTime;
