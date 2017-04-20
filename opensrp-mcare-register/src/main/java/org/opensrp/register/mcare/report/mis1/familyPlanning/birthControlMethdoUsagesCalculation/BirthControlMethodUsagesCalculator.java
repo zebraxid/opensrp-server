@@ -2,12 +2,13 @@ package org.opensrp.register.mcare.report.mis1.familyPlanning.birthControlMethdo
 
 
 import org.opensrp.register.mcare.domain.Members;
+import org.opensrp.register.mcare.report.mis1.ReportCalculator;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-public abstract class BirthControlMethodUsagesCalculator {
+public abstract class BirthControlMethodUsagesCalculator extends ReportCalculator{
 
     private String birthControlMethodToCalculate;
     private int countOfTotalUsages;
@@ -15,12 +16,8 @@ public abstract class BirthControlMethodUsagesCalculator {
     private int countOfLeftUsagesButNoneTaken;
     private int countOfLeftUsagesButOtherTaken;
 
-
-    private BirthControlMethodUsagesCalculator() {
-
-    }
-
     protected   BirthControlMethodUsagesCalculator(String birthControlMethodToCalculate) {
+        super(0L, 0L);
         this.birthControlMethodToCalculate = birthControlMethodToCalculate;
         this.initCountVariables();
     }
@@ -32,6 +29,7 @@ public abstract class BirthControlMethodUsagesCalculator {
         this.countOfLeftUsagesButNoneTaken = 0;
     }
 
+    @Override
     public void calculate(Members member) {
         this.countOfTotalUsages += addToTheCountOfTotalUsages(member);
         this.countOfNewUsages += addToTheCountOfNewUsages(member);
