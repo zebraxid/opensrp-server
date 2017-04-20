@@ -2,31 +2,29 @@ package org.opensrp.register.mcare.report.mis1.familyPlanning;
 
 
 import org.opensrp.register.mcare.domain.Members;
+import org.opensrp.register.mcare.report.mis1.Report;
 import org.opensrp.register.mcare.report.mis1.familyPlanning.eligibleCoupleCount.EligibleCoupleCountCalculator;
 import org.opensrp.register.mcare.report.mis1.familyPlanning.birthControlMethdoUsagesCalculation.BirthControlMethodUsagesCalculator;
 import org.opensrp.register.mcare.report.mis1.familyPlanning.birthControlMethdoUsagesCalculation.CondomMethodUsagesCalculator;
 import org.opensrp.register.mcare.report.mis1.familyPlanning.birthControlMethdoUsagesCalculation.PillMethodUsagesCalculator;
 
-public class FamilyPlanningReport {
-    private long startDateTime;
-    private long endDateTime;
+public class FamilyPlanningReport extends Report {
     private EligibleCoupleCountCalculator eligibleCoupleCountCalculator;
     private BirthControlMethodUsagesCalculator pillUsagesCalculator;
     private BirthControlMethodUsagesCalculator condomUsagesCalculator;
 
     public FamilyPlanningReport(long startDateTime, long endDateTime) {
-        this.startDateTime = startDateTime;
-        this.endDateTime = endDateTime;
-        this.initCalculators();
+        this.initCalculators(startDateTime, endDateTime);
     }
 
-    private void initCalculators() {
+    @Override
+    protected void initCalculators(long startDateTime, long endDateTime) {
         this.eligibleCoupleCountCalculator = new EligibleCoupleCountCalculator(startDateTime, endDateTime);
         this.pillUsagesCalculator = new PillMethodUsagesCalculator();
         this.condomUsagesCalculator = new CondomMethodUsagesCalculator();
     }
 
-
+    @Override
     public void calculate(Members member) {
         pillUsagesCalculator.calculate(member);
         condomUsagesCalculator.calculate(member);
