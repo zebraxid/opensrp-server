@@ -2,15 +2,15 @@ package org.opensrp.register.mcare.report.mis1.familyPlanning.birthControlMethod
 
 
 import org.opensrp.register.mcare.domain.Members;
+import org.opensrp.register.mcare.report.mis1.MIS1TestData;
 
 import java.util.*;
 
-public class BirthControlMethodTestData {
-    public int totalCount;
-    public int validCount;
+public class BirthControlMethodTestData extends MIS1TestData {
     public String onTestBirthControlMethod;
 
     public BirthControlMethodTestData(String onTestBirthControlMethod, int totalCount, int validCount) {
+        super();
         this.onTestBirthControlMethod = onTestBirthControlMethod;
         this.totalCount = totalCount;
         this.validCount = validCount;

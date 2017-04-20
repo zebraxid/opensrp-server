@@ -1,18 +1,18 @@
 package org.opensrp.register.mcare.report.mis1.familyPlanning.eligibleCoupleCount;
 
 
+import org.opensrp.register.mcare.TestData;
 import org.opensrp.register.mcare.domain.Members;
+import org.opensrp.register.mcare.report.mis1.MIS1TestData;
 
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class EligibleCoupleCountTestData {
-    public int totalCount;
-    public int validCount;
-    public long startDateTime;
-    public long endDateTime;
+public class EligibleCoupleCountTestData extends MIS1TestData{
+
 
     public EligibleCoupleCountTestData(int totalCount, int validCount, long startDateTime, long endDateTime) {
+        super();
         this.totalCount = totalCount;
         this.validCount = validCount;
         this.startDateTime = startDateTime;
