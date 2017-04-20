@@ -1,31 +1,24 @@
-package org.opensrp.register.mcare.report.mis1.eligibleCoupleCount;
+package org.opensrp.register.mcare.report.mis1.familyPlanning.eligibleCoupleCount;
 
 
 import org.opensrp.register.mcare.domain.Members;
+import org.opensrp.register.mcare.report.mis1.ReportCalculator;
 
 import java.util.List;
 import java.util.Map;
 
-public class EligibleCoupleCountCalculator {
-    long startDateTime;
-    long endDateTime;
-    private int newEligibleCoupleVisitCount;
-    private int unitTotalEligibleCoupleVisitCount;
-    private int totalEligibleCouple;
+public class EligibleCoupleCountCalculator extends ReportCalculator{
+    private int newEligibleCoupleVisitCount = 0;
+    private int unitTotalEligibleCoupleVisitCount = 0;
+    private int totalEligibleCouple = 0;
 
 
     public EligibleCoupleCountCalculator(long startDateTime, long endDateTime) {
-        this.startDateTime = startDateTime;
-        this.endDateTime = endDateTime;
-        this.initCountVariable();
+        super(startDateTime, endDateTime);
+
     }
 
-    public void initCountVariable() {
-        this.newEligibleCoupleVisitCount = 0;
-        this.unitTotalEligibleCoupleVisitCount = 0;
-        this.totalEligibleCouple = 0;
-    }
-
+    @Override
     public void calculate(Members member) {
         this.newEligibleCoupleVisitCount += addToNewEligibleCoupleVisitCount(member);
         this.totalEligibleCouple += addToTotalEligibleCoupleCount(member);

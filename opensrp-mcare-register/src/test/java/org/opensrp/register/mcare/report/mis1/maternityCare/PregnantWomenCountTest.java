@@ -3,9 +3,14 @@ package org.opensrp.register.mcare.report.mis1.maternityCare;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.opensrp.register.mcare.domain.Members;
+import org.opensrp.register.mcare.report.mis1.MIS1Report;
 import org.opensrp.register.mcare.report.mis1.familyPlanning.eligibleCoupleCount.EligibleCoupleCountTestData;
 
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
+
+import static org.junit.Assert.assertEquals;
 
 public class PregnantWomenCountTest {
     public String unionName = "union";
@@ -22,9 +27,15 @@ public class PregnantWomenCountTest {
         pregnantWomenCountTestData =
                 new PregnantWomenCountTestData(totalCount, validCount, startDateTime, endDateTime);
     }
+
     @Test
     public void testNewPregnantWomenCount() {
+        List<Members> allMembers = pregnantWomenCountTestData.getDataForNewPregnantWomenCount();
+        MIS1Report mis1Report = new MIS1Report(unionName, allMembers, startDateTime, endDateTime);
 
+        long newPregnantWomenCount = mis1Report.getMaternityCareReport().getPregnantWomenCountCalculator().getNewCount();
+
+        assertEquals(newPregnantWomenCount, pregnantWomenCountTestData.validCount);
     }
 }
 

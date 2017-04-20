@@ -2,6 +2,7 @@ package org.opensrp.register.mcare.report.mis1;
 
 import org.opensrp.register.mcare.domain.Members;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,7 +15,7 @@ public class EligibleCoupleFollowUP {
     }
 
     public static class EligibleCoupleFollowUpBuilder {
-        private List<Map<String, String>> followUp;
+        private List<Map<String, String>> followUp = new ArrayList<>();
         public EligibleCoupleFollowUpBuilder(long clientVersion) {
             followUp.add(createMapWith(Members.CLIENT_VERSION_KEY, String.valueOf(clientVersion)));
         }

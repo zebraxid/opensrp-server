@@ -10,10 +10,8 @@ public class BirthControlMethodTestData extends MIS1TestData {
     public String onTestBirthControlMethod;
 
     public BirthControlMethodTestData(String onTestBirthControlMethod, int totalCount, int validCount) {
-        super();
+        super(totalCount, validCount, 0L, 0L);
         this.onTestBirthControlMethod = onTestBirthControlMethod;
-        this.totalCount = totalCount;
-        this.validCount = validCount;
     }
 
     public List<Members> createNewTestData() {

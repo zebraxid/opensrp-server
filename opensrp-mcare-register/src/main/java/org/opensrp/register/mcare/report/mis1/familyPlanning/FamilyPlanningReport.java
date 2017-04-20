@@ -2,7 +2,7 @@ package org.opensrp.register.mcare.report.mis1.familyPlanning;
 
 
 import org.opensrp.register.mcare.domain.Members;
-import org.opensrp.register.mcare.report.mis1.eligibleCoupleCount.EligibleCoupleCountCalculator;
+import org.opensrp.register.mcare.report.mis1.familyPlanning.eligibleCoupleCount.EligibleCoupleCountCalculator;
 import org.opensrp.register.mcare.report.mis1.familyPlanning.birthControlMethdoUsagesCalculation.BirthControlMethodUsagesCalculator;
 import org.opensrp.register.mcare.report.mis1.familyPlanning.birthControlMethdoUsagesCalculation.CondomMethodUsagesCalculator;
 import org.opensrp.register.mcare.report.mis1.familyPlanning.birthControlMethdoUsagesCalculation.PillMethodUsagesCalculator;
