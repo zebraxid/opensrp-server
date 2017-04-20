@@ -2,22 +2,21 @@ package org.opensrp.register.mcare.report.mis1;
 
 import org.opensrp.register.mcare.domain.Members;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class EligibleCoupleFollowUP {
-    private List<Map<String, String>> followUp = new ArrayList<>();
+    private Map<String, String> followUp;
 
-    public List<Map<String, String>> getFollowUp() {
+    public Map<String, String> getFollowUp() {
         return followUp;
     }
 
     public static class EligibleCoupleFollowUpBuilder {
-        private Map<String, String> followUp = new HashMap<>();
+        private Map<String, String> followUp;
 
         public EligibleCoupleFollowUpBuilder(long clientVersion) {
+            followUp = new HashMap<>();
             followUp.put(Members.CLIENT_VERSION_KEY, String.valueOf(clientVersion));
         }
 
@@ -26,20 +25,13 @@ public class EligibleCoupleFollowUP {
             return this;
         }
 
-        public EligibleCoupleFollowUP add(EligibleCoupleFollowUP eligibleCoupleFollowUP) {
-            eligibleCoupleFollowUP.addEligibleCoupleFollowUP(this.followUp);
-            return eligibleCoupleFollowUP;
-        }
-
-        private Map<String, String> createMapWith(String key, String value) {
-            Map<String, String> map = new HashMap<>();
-            map.put(key, value);
-            return map;
+        public EligibleCoupleFollowUP build() {
+            return new EligibleCoupleFollowUP(this);
         }
     }
 
-    private void addEligibleCoupleFollowUP(Map<String, String> eligibleCoupleFollowUp) {
-        this.followUp.add(eligibleCoupleFollowUp);
+    private EligibleCoupleFollowUP(EligibleCoupleFollowUpBuilder eligibleCoupleFollowUpBuilder) {
+        this.followUp = eligibleCoupleFollowUpBuilder.followUp;
     }
 
 }
