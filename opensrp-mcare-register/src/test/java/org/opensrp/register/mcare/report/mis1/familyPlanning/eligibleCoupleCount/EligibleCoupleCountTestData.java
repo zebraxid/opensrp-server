@@ -10,13 +10,8 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class EligibleCoupleCountTestData extends MIS1TestData{
 
-
     public EligibleCoupleCountTestData(int totalCount, int validCount, long startDateTime, long endDateTime) {
-        super();
-        this.totalCount = totalCount;
-        this.validCount = validCount;
-        this.startDateTime = startDateTime;
-        this.endDateTime = endDateTime;
+        super(totalCount, validCount, startDateTime, endDateTime);
     }
 
     public List<Members> getNewEligibleCoupleVisitData() {

@@ -7,7 +7,11 @@ import org.opensrp.register.mcare.report.mis1.MIS1TestData;
 
 import java.util.*;
 
-public class CountOfPregnantWomenTestData extends MIS1TestData {
+public class PregnantWomenCountTestData extends MIS1TestData {
+
+    public PregnantWomenCountTestData(int totalCount, int validCount, long startDateTime, long endDateTime) {
+        super(totalCount, validCount, startDateTime, endDateTime);
+    }
 
     public List<Members> getDataForNewPregnantWomenCount() {
         List<Members> allMembers = new ArrayList<>();
