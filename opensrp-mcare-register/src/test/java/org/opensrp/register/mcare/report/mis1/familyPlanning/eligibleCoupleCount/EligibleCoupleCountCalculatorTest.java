@@ -12,6 +12,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import static org.junit.Assert.assertEquals;
 
 public class EligibleCoupleCountCalculatorTest {
+    public String unionName = "union";
     private EligibleCoupleCountTestData eligibleCoupleCountTestData;
     private long startDateTime;
     private long endDateTime;
@@ -29,7 +30,7 @@ public class EligibleCoupleCountCalculatorTest {
     @Test
     public void newEligibleCoupleVisitCountTest() {
         List<Members> members = eligibleCoupleCountTestData.getNewEligibleCoupleVisitData();
-        MIS1Report mis1Report = new MIS1Report("test",members, startDateTime, endDateTime);
+        MIS1Report mis1Report = new MIS1Report(unionName,members, startDateTime, endDateTime);
 
         int newEligibleCoupleVisitCount = mis1Report.getFamilyPlanningReport().getEligibleCoupleCountCalculator().
                 getNewEligibleCoupleVisitCount();
@@ -40,7 +41,7 @@ public class EligibleCoupleCountCalculatorTest {
     @Test
     public void totalEligibleCoupleTest() {
         List<Members> members = eligibleCoupleCountTestData.getTotalEligibleCoupleData();
-        MIS1Report mis1Report = new MIS1Report("test", members, startDateTime, endDateTime);
+        MIS1Report mis1Report = new MIS1Report(unionName, members, startDateTime, endDateTime);
 
         int totalEligibleCoupleCount = mis1Report.getFamilyPlanningReport().getEligibleCoupleCountCalculator().getTotalEligibleCouple();
 
