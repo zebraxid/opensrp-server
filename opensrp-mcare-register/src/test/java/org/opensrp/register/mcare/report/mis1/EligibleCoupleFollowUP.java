@@ -8,26 +8,29 @@ import java.util.List;
 import java.util.Map;
 
 public class EligibleCoupleFollowUP {
-    private List<Map<String, String>> followUp;
+    private List<Map<String, String>> followUp = new ArrayList<>();
 
     public List<Map<String, String>> getFollowUp() {
         return followUp;
     }
 
     public static class EligibleCoupleFollowUpBuilder {
-        private List<Map<String, String>> followUp = new ArrayList<>();
+        private Map<String, String> followUp = new HashMap<>();
+
         public EligibleCoupleFollowUpBuilder(long clientVersion) {
-            followUp.add(createMapWith(Members.CLIENT_VERSION_KEY, String.valueOf(clientVersion)));
+            followUp.put(Members.CLIENT_VERSION_KEY, String.valueOf(clientVersion));
         }
 
         public EligibleCoupleFollowUpBuilder pregnant(String pregnantStatus) {
-            followUp.add(createMapWith(Members.PREGNANT_STATUS_KEY, pregnantStatus));
+            followUp.put(Members.PREGNANT_STATUS_KEY, pregnantStatus);
             return this;
         }
 
-        public EligibleCoupleFollowUP build() {
-            return new EligibleCoupleFollowUP(this);
+        public EligibleCoupleFollowUP add(EligibleCoupleFollowUP eligibleCoupleFollowUP) {
+            eligibleCoupleFollowUP.addEligibleCoupleFollowUP(this.followUp);
+            return eligibleCoupleFollowUP;
         }
+
         private Map<String, String> createMapWith(String key, String value) {
             Map<String, String> map = new HashMap<>();
             map.put(key, value);
@@ -35,7 +38,8 @@ public class EligibleCoupleFollowUP {
         }
     }
 
-    private EligibleCoupleFollowUP(EligibleCoupleFollowUpBuilder eligibleCoupleFollowUpBuilder) {
-        this.followUp = eligibleCoupleFollowUpBuilder.followUp;
+    private void addEligibleCoupleFollowUP(Map<String, String> eligibleCoupleFollowUp) {
+        this.followUp.add(eligibleCoupleFollowUp);
     }
+
 }

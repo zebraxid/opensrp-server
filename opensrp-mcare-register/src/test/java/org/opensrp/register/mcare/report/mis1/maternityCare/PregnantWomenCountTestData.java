@@ -17,81 +17,78 @@ public class PregnantWomenCountTestData extends MIS1TestData {
         List<Members> allMembers = new ArrayList<>();
 
         Members member = new Members();
-        member = addEligibleCoupleFollowUpUsingClientVersionDateTimeWithPregStatus(member, startDateTime, Members.IS_PREGNANT);
+        EligibleCoupleFollowUP eligibleCoupleFollowUP = new EligibleCoupleFollowUP();
+        eligibleCoupleFollowUP = addEligibleCoupleFollowUpUsingClientVersionDateTimeWithPregStatus(eligibleCoupleFollowUP, startDateTime, Members.IS_PREGNANT);
+        member.setelco_Followup(eligibleCoupleFollowUP.getFollowUp());
         allMembers.add(member);
+
         member = new Members();
-        member = addEligibleCoupleFollowUpUsingClientVersionDateTimeWithPregStatus(member, endDateTime, Members.IS_PREGNANT);
+        eligibleCoupleFollowUP = new EligibleCoupleFollowUP();
+        eligibleCoupleFollowUP = addEligibleCoupleFollowUpUsingClientVersionDateTimeWithPregStatus(eligibleCoupleFollowUP, endDateTime, Members.IS_PREGNANT);
+        member.setelco_Followup(eligibleCoupleFollowUP.getFollowUp());
         allMembers.add(member);
 
         for (int i = 0; i < totalCount; i++) {
             member = new Members();
-            member = addRandomNumberOfEligibleCoupleFollowUpWithPreviousInvalidClientVersionAndRandomPregStatus(member);
+            eligibleCoupleFollowUP = new EligibleCoupleFollowUP();
+            eligibleCoupleFollowUP = createRandomNumberOfEligibleCoupleFollowUpWithPreviousInvalidClientVersionAndRandomPregStatus(eligibleCoupleFollowUP);
             if (i < validCount - 2) {
                 Long randomDateTimeBetweenStartAndEndDateTime = getRandomNumberBetween(startDateTime, endDateTime);
-                member = addEligibleCoupleFollowUpUsingClientVersionDateTimeWithPregStatus(
-                        member, randomDateTimeBetweenStartAndEndDateTime, Members.IS_PREGNANT);
+                eligibleCoupleFollowUP = addEligibleCoupleFollowUpUsingClientVersionDateTimeWithPregStatus(eligibleCoupleFollowUP, randomDateTimeBetweenStartAndEndDateTime, Members.IS_PREGNANT);
             } else {
                 Long randomDateTimeBetweenStartAndEndDateTime = getRandomNumberBetween(startDateTime, endDateTime);
-                member = addEligibleCoupleFollowUpUsingClientVersionDateTimeWithPregStatus(
-                        member, randomDateTimeBetweenStartAndEndDateTime, Members.NOT_PREGNANT);
+                eligibleCoupleFollowUP = addEligibleCoupleFollowUpUsingClientVersionDateTimeWithPregStatus(eligibleCoupleFollowUP, randomDateTimeBetweenStartAndEndDateTime, Members.NOT_PREGNANT);
             }
-            member = addRandomNumberOfEligibleCoupleFollowUpWithExceedInvalidClientVersionAndRandomPregStatus(member);
+
+            eligibleCoupleFollowUP = addRandomNumberOfEligibleCoupleFollowUpWithExceedInvalidClientVersionAndRandomPregStatus(eligibleCoupleFollowUP);
+            member.setelco_Followup(eligibleCoupleFollowUP.getFollowUp());
             allMembers.add(member);
         }
 
         return allMembers;
     }
 
-    private Members addRandomNumberOfEligibleCoupleFollowUpWithPreviousInvalidClientVersionAndRandomPregStatus(Members member) {
+    private EligibleCoupleFollowUP createRandomNumberOfEligibleCoupleFollowUpWithPreviousInvalidClientVersionAndRandomPregStatus(EligibleCoupleFollowUP eligibleCoupleFollowUP) {
         Random rand = new Random();
         int randomNum = rand.nextInt((100 - 0) + 1) + 0;
-        EligibleCoupleFollowUP eligibleCoupleFollowUP;
         for (int i = 0; i < randomNum; i++) {
             Long randomDateTimeBeforeStartDateTime = getRandomNumberBetween(0, startDateTime - 1);
             EligibleCoupleFollowUP.EligibleCoupleFollowUpBuilder builder =
                     new EligibleCoupleFollowUP.EligibleCoupleFollowUpBuilder(randomDateTimeBeforeStartDateTime);
             if (i % 2 == 0) {
                 builder.pregnant(Members.IS_PREGNANT);
-                eligibleCoupleFollowUP = builder.build();
-                member.setelco_Followup(eligibleCoupleFollowUP.getFollowUp());
+                eligibleCoupleFollowUP = builder.add(eligibleCoupleFollowUP);
             } else {
                 builder.pregnant(Members.NOT_PREGNANT);
-                eligibleCoupleFollowUP = builder.build();
-                member.setelco_Followup(eligibleCoupleFollowUP.getFollowUp());
+                eligibleCoupleFollowUP = builder.add(eligibleCoupleFollowUP);
             }
         }
-        return member;
     }
 
-    private Members addEligibleCoupleFollowUpUsingClientVersionDateTimeWithPregStatus
-            (Members member, long clientVersion, String pregnantStatus) {
+    private EligibleCoupleFollowUP addEligibleCoupleFollowUpUsingClientVersionDateTimeWithPregStatus
+            (EligibleCoupleFollowUP eligibleCoupleFollowUP, long clientVersion, String pregnantStatus) {
         EligibleCoupleFollowUP.EligibleCoupleFollowUpBuilder builder =
                 new EligibleCoupleFollowUP.EligibleCoupleFollowUpBuilder(clientVersion);
         builder.pregnant(pregnantStatus);
-        EligibleCoupleFollowUP eligibleCoupleFollowUP = builder.build();
-        member.setelco_Followup(eligibleCoupleFollowUP.getFollowUp());
-        return member;
+        builder.add(eligibleCoupleFollowUP);
+
     }
 
-    private Members addRandomNumberOfEligibleCoupleFollowUpWithExceedInvalidClientVersionAndRandomPregStatus(Members member) {
+    private EligibleCoupleFollowUP addRandomNumberOfEligibleCoupleFollowUpWithExceedInvalidClientVersionAndRandomPregStatus(EligibleCoupleFollowUP eligibleCoupleFollowUP) {
         Random rand = new Random();
         int randomNum = rand.nextInt((100 - 0) + 1) + 0;
-        EligibleCoupleFollowUP eligibleCoupleFollowUP;
         for (int i = 0; i < randomNum; i++) {
             Long randomDateTimeBeforeStartDateTime = getRandomNumberBetween(endDateTime + 1, endDateTime * 3);
             EligibleCoupleFollowUP.EligibleCoupleFollowUpBuilder builder =
                     new EligibleCoupleFollowUP.EligibleCoupleFollowUpBuilder(randomDateTimeBeforeStartDateTime);
             if (i % 2 == 0) {
                 builder.pregnant(Members.IS_PREGNANT);
-                eligibleCoupleFollowUP = builder.build();
-                member.setelco_Followup(eligibleCoupleFollowUP.getFollowUp());
+                eligibleCoupleFollowUP = builder.add(eligibleCoupleFollowUP);
             } else {
                 builder.pregnant(Members.NOT_PREGNANT);
-                eligibleCoupleFollowUP = builder.build();
-                member.setelco_Followup(eligibleCoupleFollowUP.getFollowUp());
+                eligibleCoupleFollowUP = builder.add(eligibleCoupleFollowUP);
             }
         }
-        return member;
     }
 
 }
