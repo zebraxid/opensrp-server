@@ -26,5 +26,17 @@ public abstract class MIS1TestData {
         return ThreadLocalRandom.current().nextLong(start, end);
     }
 
+    protected Members createMemberWithEligibleCoupleFollowUpList(List<Map<String, String>> followUpList) {
+        Members member = new Members();
+        member.setelco_Followup(followUpList);
+        return member;
+    }
+
+    protected Members createMemberWithClientVersion(long clientVersion) {
+        Members member = new Members();
+        member.setClientVersion(clientVersion);
+        return member;
+    }
+
 
 }

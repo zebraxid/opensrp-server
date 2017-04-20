@@ -3,6 +3,7 @@ package org.opensrp.register.mcare.report.mis1.familyPlanning.eligibleCoupleCoun
 
 import org.opensrp.register.mcare.TestData;
 import org.opensrp.register.mcare.domain.Members;
+import org.opensrp.register.mcare.report.mis1.EligibleCoupleFollowUP;
 import org.opensrp.register.mcare.report.mis1.MIS1TestData;
 
 import java.util.*;
@@ -17,110 +18,102 @@ public class EligibleCoupleCountTestData extends MIS1TestData{
     public List<Members> getNewEligibleCoupleVisitData() {
         List<Members> allMembers = new ArrayList<>();
         for (int i = 0; i < totalCount; i++) {
-            Members member = new Members();
-            member = addRandomNumberOfElcoFollowUpWithPreviousInvalidClientVersion(member);
             if (i < validCount - 2) {
-                Long randomDateTimeBetweenStartAndEndDateTime = getRandomNumberBetween(startDateTime, endDateTime);
-                member = addElcoFollowUpUsingClientVersionDateTime(member, randomDateTimeBetweenStartAndEndDateTime);
+                allMembers.add(createValidDataWithRandomDateTime());
+            }else {
+                allMembers.add(createInvalidValidDataWithRandomDateTime());
             }
-            member = addRandomNumberOfElcoFollowUpWithExceedInvalidClientVersion(member);
-            allMembers.add(member);
         }
-        Members member = new Members();
-        member = addElcoFollowUpUsingClientVersionDateTime(member, startDateTime);
-        allMembers.add(member);
-        member = new Members();
-        member = addElcoFollowUpUsingClientVersionDateTime(member, endDateTime);
-        allMembers.add(member);
+
+        allMembers.add(createValidDataWithStartDateTime());
+        allMembers.add(createValidDataWithEndDateTime());
+
         return allMembers;
     }
 
     public List<Members> getTotalEligibleCoupleData() {
         List<Members> allMembers = new ArrayList<>();
         for (int i = 0; i < totalCount; i++) {
-            Members member = new Members();
             if(i < (validCount - 2)) {
                 long randomDateTimeBetweenStartAndEndDateTime = getRandomNumberBetween(startDateTime, endDateTime);
-                member.setClientVersion(randomDateTimeBetweenStartAndEndDateTime);
+                allMembers.add(createMemberWithClientVersion(randomDateTimeBetweenStartAndEndDateTime));
             }else {
                 if(i % 2 == 0) {
                     long randomDateTimeBeforeStartDateTime = getRandomNumberBetween(0, startDateTime-1);
-                    member.setClientVersion(randomDateTimeBeforeStartDateTime);
+                    allMembers.add(createMemberWithClientVersion(randomDateTimeBeforeStartDateTime));
                 }else {
                     long randomDateTimeAfterEndDateTime = getRandomNumberBetween(endDateTime+1, endDateTime*6);
-                    member.setClientVersion(randomDateTimeAfterEndDateTime);
+                    allMembers.add(createMemberWithClientVersion(randomDateTimeAfterEndDateTime));
                 }
             }
-            allMembers.add(member);
         }
 
-        Members member = new Members();
-        member.setClientVersion(startDateTime);
-        allMembers.add(member);
-
-        member = new Members();
-        member.setClientVersion(endDateTime);
-        allMembers.add(member);
-
-        member = new Members();
-        allMembers.add(member);
-
+        allMembers.add(createMemberWithClientVersion(startDateTime));
+        allMembers.add(createMemberWithClientVersion(endDateTime));
+        allMembers.add(new Members());
         return allMembers;
     }
 
-    public List<Members> getUnitTotalTestData(List<String> unitNames) {
-        int validDataPerUnit = validCount / unitNames.size();
-        List<Members> allMembers = new ArrayList<>();
-        for (int i = 0; i < totalCount; i++) {
-            Members member = new Members();
-            if(i < validDataPerUnit) {
-                long randomDateTimeBetweenStartAndEndDateTime = getRandomNumberBetween(startDateTime, endDateTime);
-                member.setClientVersion(randomDateTimeBetweenStartAndEndDateTime);
-            }
-        }
-        return allMembers;
+
+    private Members createValidDataWithStartDateTime(){
+        List<Map<String, String>> eligibleCoupleFollowUpList = new ArrayList<>();
+        eligibleCoupleFollowUpList.add(createEligibleCoupleFollowUpUsingClientVersionDateTime(startDateTime));
+        return createMemberWithEligibleCoupleFollowUpList(eligibleCoupleFollowUpList);
     }
 
-    private Members addRandomNumberOfElcoFollowUpWithPreviousInvalidClientVersion(Members member) {
+    private Members createValidDataWithEndDateTime(){
+        List<Map<String, String>> eligibleCoupleFollowUpList = new ArrayList<>();
+        eligibleCoupleFollowUpList.add(createEligibleCoupleFollowUpUsingClientVersionDateTime(endDateTime));
+        return createMemberWithEligibleCoupleFollowUpList(eligibleCoupleFollowUpList);
+    }
+
+    private Members createValidDataWithRandomDateTime(){
+        List<Map<String, String>> eligibleCoupleFollowUpList = new ArrayList<>();
+        eligibleCoupleFollowUpList.addAll(createRandomNumberOfElcoFollowUpWithPreviousInvalidClientVersion());
+        eligibleCoupleFollowUpList.add(createEligibleCoupleFollowUpUsingClientVersionDateTime(endDateTime));
+        eligibleCoupleFollowUpList.addAll(createRandomNumberOfElcoFollowUpWithExceedInvalidClientVersion());
+        return createMemberWithEligibleCoupleFollowUpList(eligibleCoupleFollowUpList);
+    }
+
+
+    private Members createInvalidValidDataWithRandomDateTime(){
+        List<Map<String, String>> eligibleCoupleFollowUpList = new ArrayList<>();
+        eligibleCoupleFollowUpList.addAll(createRandomNumberOfElcoFollowUpWithPreviousInvalidClientVersion());
+        eligibleCoupleFollowUpList.addAll(createRandomNumberOfElcoFollowUpWithExceedInvalidClientVersion());
+        return createMemberWithEligibleCoupleFollowUpList(eligibleCoupleFollowUpList);
+    }
+
+    private List<Map<String , String >> createRandomNumberOfElcoFollowUpWithPreviousInvalidClientVersion() {
         Random rand = new Random();
         int randomNum = rand.nextInt((100 - 0) + 1) + 0;
+        List<Map<String, String>> eligibleCoupleFollowUpList = new ArrayList<>();
         for (int i = 0; i < randomNum; i++) {
             Long randomDateTimeBeforeStartDateTime = getRandomNumberBetween(0, startDateTime-1);
-            member = addElcoFollowUpUsingClientVersionDateTime(member, randomDateTimeBeforeStartDateTime);
+            EligibleCoupleFollowUP.EligibleCoupleFollowUpBuilder builder =
+                    new EligibleCoupleFollowUP.EligibleCoupleFollowUpBuilder(randomDateTimeBeforeStartDateTime);
+            eligibleCoupleFollowUpList.add(builder.build().getFollowUp());
 
         }
-        return member;
+        return eligibleCoupleFollowUpList;
     }
 
-    private Members addRandomNumberOfElcoFollowUpWithExceedInvalidClientVersion(Members member) {
+    private List<Map<String , String >> createRandomNumberOfElcoFollowUpWithExceedInvalidClientVersion() {
         Random rand = new Random();
         int randomNum = rand.nextInt((100 - 0) + 1) + 0;
+        List<Map<String, String>> eligibleCoupleFollowUpList = new ArrayList<>();
         for (int i = 0; i < randomNum; i++) {
-            Long randomDateTimeAfterEndDateTime = getRandomNumberBetween(endDateTime+1, endDateTime*6);
-            member = addElcoFollowUpUsingClientVersionDateTime(member, randomDateTimeAfterEndDateTime);
+            Long randomDateTimeBeforeStartDateTime = getRandomNumberBetween(endDateTime+1, endDateTime*7);
+            EligibleCoupleFollowUP.EligibleCoupleFollowUpBuilder builder =
+                    new EligibleCoupleFollowUP.EligibleCoupleFollowUpBuilder(randomDateTimeBeforeStartDateTime);
+            eligibleCoupleFollowUpList.add(builder.build().getFollowUp());
 
         }
-        return member;
+        return eligibleCoupleFollowUpList;
     }
 
-
-    private Members addElcoFollowUpUsingClientVersionDateTime(Members member, long clientVersion) {
-        Map<String, String> clientVersionKeyValuePair = createHashMap(Members.CLIENT_VERSION_KEY, String.valueOf(clientVersion));
-        return addElcoFollowUp(member, clientVersionKeyValuePair);
+    private Map<String , String> createEligibleCoupleFollowUpUsingClientVersionDateTime(long clientVersion) {
+        EligibleCoupleFollowUP.EligibleCoupleFollowUpBuilder builder =
+                new EligibleCoupleFollowUP.EligibleCoupleFollowUpBuilder(clientVersion);
+        return builder.build().getFollowUp();
     }
-
-    private Map<String, String> createHashMap(String key, String value) {
-        HashMap detail = new HashMap();
-        detail.put(key, value);
-        return detail;
-    }
-
-    private Members addElcoFollowUp(Members member, Map<String, String> detail) {
-        List<Map<String, String>> elcoFollowUp = member.elco_Followup();
-        elcoFollowUp.add(detail);
-        member.setelco_Followup(elcoFollowUp);
-        return member;
-    }
-
-
 }

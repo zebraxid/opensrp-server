@@ -36,13 +36,13 @@ public class PregnantWomenCountTestData extends MIS1TestData {
 
     private Members createValidMemberWithStartDateTime() {
         List<Map<String, String>> eligibleCoupleFollowUpList = new ArrayList<>();
-        eligibleCoupleFollowUpList.add(addEligibleCoupleFollowUpUsingClientVersionDateTimeWithPregStatus(startDateTime, Members.IS_PREGNANT));
+        eligibleCoupleFollowUpList.add(createEligibleCoupleFollowUpUsingClientVersionDateTimeWithPregStatus(startDateTime, Members.IS_PREGNANT));
         return createMemberWithEligibleCoupleFollowUpList(eligibleCoupleFollowUpList);
     }
 
     private Members createValidMemberWithEndDateTime() {
         List<Map<String, String>> eligibleCoupleFollowUpList = new ArrayList<>();
-        eligibleCoupleFollowUpList.add(addEligibleCoupleFollowUpUsingClientVersionDateTimeWithPregStatus(endDateTime, Members.IS_PREGNANT));
+        eligibleCoupleFollowUpList.add(createEligibleCoupleFollowUpUsingClientVersionDateTimeWithPregStatus(endDateTime, Members.IS_PREGNANT));
         return createMemberWithEligibleCoupleFollowUpList(eligibleCoupleFollowUpList);
     }
 
@@ -51,8 +51,8 @@ public class PregnantWomenCountTestData extends MIS1TestData {
         eligibleCoupleFollowUpList.addAll(createRandomNumberOfEligibleCoupleFollowUpWithPreviousInvalidClientVersionAndRandomPregStatus());
         Long randomDateTimeBetweenStartAndEndDateTime = getRandomNumberBetween(startDateTime, endDateTime);
         eligibleCoupleFollowUpList.add(
-                addEligibleCoupleFollowUpUsingClientVersionDateTimeWithPregStatus(randomDateTimeBetweenStartAndEndDateTime, Members.IS_PREGNANT));
-        eligibleCoupleFollowUpList.addAll(addRandomNumberOfEligibleCoupleFollowUpWithExceedInvalidClientVersionAndRandomPregStatus());
+                createEligibleCoupleFollowUpUsingClientVersionDateTimeWithPregStatus(randomDateTimeBetweenStartAndEndDateTime, Members.IS_PREGNANT));
+        eligibleCoupleFollowUpList.addAll(createRandomNumberOfEligibleCoupleFollowUpWithExceedInvalidClientVersionAndRandomPregStatus());
         return createMemberWithEligibleCoupleFollowUpList(eligibleCoupleFollowUpList);
     }
 
@@ -61,8 +61,8 @@ public class PregnantWomenCountTestData extends MIS1TestData {
         eligibleCoupleFollowUpList.addAll(createRandomNumberOfEligibleCoupleFollowUpWithPreviousInvalidClientVersionAndRandomPregStatus());
         Long randomDateTimeBetweenStartAndEndDateTime = getRandomNumberBetween(startDateTime, endDateTime);
         eligibleCoupleFollowUpList.add(
-                addEligibleCoupleFollowUpUsingClientVersionDateTimeWithPregStatus(randomDateTimeBetweenStartAndEndDateTime, Members.NOT_PREGNANT));
-        eligibleCoupleFollowUpList.addAll(addRandomNumberOfEligibleCoupleFollowUpWithExceedInvalidClientVersionAndRandomPregStatus());
+                createEligibleCoupleFollowUpUsingClientVersionDateTimeWithPregStatus(randomDateTimeBetweenStartAndEndDateTime, Members.NOT_PREGNANT));
+        eligibleCoupleFollowUpList.addAll(createRandomNumberOfEligibleCoupleFollowUpWithExceedInvalidClientVersionAndRandomPregStatus());
         return createMemberWithEligibleCoupleFollowUpList(eligibleCoupleFollowUpList);
     }
 
@@ -88,14 +88,14 @@ public class PregnantWomenCountTestData extends MIS1TestData {
         return eligibleCoupleFollowUpList;
     }
 
-    private Map<String, String> addEligibleCoupleFollowUpUsingClientVersionDateTimeWithPregStatus(long clientVersion, String pregnantStatus) {
+    private Map<String, String> createEligibleCoupleFollowUpUsingClientVersionDateTimeWithPregStatus(long clientVersion, String pregnantStatus) {
         EligibleCoupleFollowUP.EligibleCoupleFollowUpBuilder builder =
                 new EligibleCoupleFollowUP.EligibleCoupleFollowUpBuilder(clientVersion);
         builder.pregnant(pregnantStatus);
         return builder.build().getFollowUp();
     }
 
-    private List<Map<String, String>> addRandomNumberOfEligibleCoupleFollowUpWithExceedInvalidClientVersionAndRandomPregStatus() {
+    private List<Map<String, String>> createRandomNumberOfEligibleCoupleFollowUpWithExceedInvalidClientVersionAndRandomPregStatus() {
         Random rand = new Random();
         int randomNum = rand.nextInt((100 - 0) + 1) + 0;
         EligibleCoupleFollowUP eligibleCoupleFollowUP;
@@ -117,10 +117,5 @@ public class PregnantWomenCountTestData extends MIS1TestData {
         return eligibleCoupleFollowUpList;
     }
 
-    private Members createMemberWithEligibleCoupleFollowUpList(List<Map<String, String>> followUpList) {
-        Members member = new Members();
-        member.setelco_Followup(followUpList);
-        return member;
-    }
 
 }
