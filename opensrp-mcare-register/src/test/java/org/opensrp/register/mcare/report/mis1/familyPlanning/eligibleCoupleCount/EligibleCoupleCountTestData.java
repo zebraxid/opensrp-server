@@ -86,8 +86,6 @@ public class EligibleCoupleCountTestData extends MIS1TestData{
         return allMembers;
     }
 
-
-
     private Members addRandomNumberOfElcoFollowUpWithPreviousInvalidClientVersion(Members member) {
         Random rand = new Random();
         int randomNum = rand.nextInt((100 - 0) + 1) + 0;
@@ -110,10 +108,6 @@ public class EligibleCoupleCountTestData extends MIS1TestData{
         return member;
     }
 
-    private long getRandomNumberBetween(long start, long end) {
-        return ThreadLocalRandom.current().nextLong(start, end);
-    }
-
 
     private Members addElcoFollowUpUsingClientVersionDateTime(Members member, long clientVersion) {
         Map<String, String> clientVersionKeyValuePair = createHashMap(Members.CLIENT_VERSION_KEY, String.valueOf(clientVersion));
@@ -132,4 +126,6 @@ public class EligibleCoupleCountTestData extends MIS1TestData{
         member.setelco_Followup(elcoFollowUp);
         return member;
     }
+
+
 }

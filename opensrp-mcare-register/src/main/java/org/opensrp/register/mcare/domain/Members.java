@@ -29,6 +29,14 @@ public class Members extends MotechBaseDataObject {
     @JsonIgnore
     public static String BIRTH_CONTROL_KEY = "Birth_Control";
     @JsonIgnore
+    public static String USING_FAMILY_PLANNING_KEY = "Using_FP";
+    @JsonIgnore
+    public static String PREGNANT_STATUS_KEY = "preg_status";
+    @JsonIgnore
+    public static String IS_PREGNANT = "1";
+    @JsonIgnore
+    public static String NOT_PREGNANT = "0";
+    @JsonIgnore
     public static String BIRTH_CONTROL_PILL = "1";
     @JsonIgnore
     public static String BIRTH_CONTROL_INJECTABLE = "3";
@@ -38,8 +46,6 @@ public class Members extends MotechBaseDataObject {
     public static String BIRTH_CONTROL_NULL_VALUE = "-1";
     @JsonIgnore
     public static String BIRTH_CONTROL_NOT_USING_ANY_METHOD = "99";
-    @JsonIgnore
-    public static String USING_FAMILY_PLANNING_KEY = "Using_FP";
     @JsonIgnore
     public static String USING_FAMILY_PLANNING_VALUE = "1";
     @JsonIgnore
