@@ -63,6 +63,7 @@ public class PregnantWomenCountTestData extends MIS1TestData {
                 eligibleCoupleFollowUP = builder.add(eligibleCoupleFollowUP);
             }
         }
+        return eligibleCoupleFollowUP;
     }
 
     private EligibleCoupleFollowUP addEligibleCoupleFollowUpUsingClientVersionDateTimeWithPregStatus
@@ -71,7 +72,7 @@ public class PregnantWomenCountTestData extends MIS1TestData {
                 new EligibleCoupleFollowUP.EligibleCoupleFollowUpBuilder(clientVersion);
         builder.pregnant(pregnantStatus);
         builder.add(eligibleCoupleFollowUP);
-
+        return eligibleCoupleFollowUP;
     }
 
     private EligibleCoupleFollowUP addRandomNumberOfEligibleCoupleFollowUpWithExceedInvalidClientVersionAndRandomPregStatus(EligibleCoupleFollowUP eligibleCoupleFollowUP) {
@@ -89,6 +90,7 @@ public class PregnantWomenCountTestData extends MIS1TestData {
                 eligibleCoupleFollowUP = builder.add(eligibleCoupleFollowUP);
             }
         }
+        return eligibleCoupleFollowUP;
     }
 
 }
