@@ -20,12 +20,45 @@ import org.springframework.stereotype.Service;
 
 import com.mysql.jdbc.StringUtils;
 
+@SuppressWarnings("unchecked")
 @Service
 public class EncounterService extends OpenmrsService{
 	private static final String ENCOUNTER_URL = "ws/rest/v1/encounter";
 	private static final String ENCOUNTER__TYPE_URL = "ws/rest/v1/encountertype";
 	private PatientService patientService;
 	private OpenmrsUserService userService;
+	@SuppressWarnings("rawtypes")
+	static Map map=new HashMap();
+	static{
+		map.put("TT1","c8e8ed67-d125-4c77-a8c7-2c9a5cf2c46b");  
+	    map.put("TT2","14f59334-bde6-4512-bfae-830d5bd7da87");
+	    map.put("TT3","8197f5b8-328c-402d-8128-fd04d9de8a94"); 
+	    map.put("TT4","4914c323-d32d-4412-905f-c8c90f92136f"); 
+	    map.put("TT5","4dd71b8e-8109-4eb3-b919-186f8236edb1");
+	    map.put("be200e2b-0469-4cb3-b3c3-eeda1c51b336","TT"); 
+	    
+	    map.put("bcg","1cf49965-5130-4648-8473-37238d24b826");
+	    map.put("opv0","548a2d2d-4803-4d9a-8d78-8a31741baccc");
+	    map.put("pcv1","e3340e49-df17-4b86-841e-6a207db40e58");
+	    map.put("opv1","548a2d2d-4803-4d9a-8d78-8a31741baccc");
+	    map.put("penta1","e601701f-a9c5-4cea-a06e-4e5abacaf6e4");
+	    map.put("pcv2","27c360d3-ce24-492d-a004-1d551dfd0933");
+	    map.put("opv2","548a2d2d-4803-4d9a-8d78-8a31741baccc");
+	    map.put("penta2","9fbd9d94-0634-4880-954e-502c8be1c2d4");
+	    map.put("pcv3","b0735577-6747-4c3e-bb52-b2d9b0d2419a");
+	    map.put("opv3","548a2d2d-4803-4d9a-8d78-8a31741baccc");
+	    map.put("penta3","8c0268d5-befe-47e3-a98d-d7d13f214f5b");
+	    map.put("ipv","caffb48d-4155-47a5-a81a-ef669f0585d0");
+	    map.put("measles1","9c23d2fe-e2db-48ea-98ac-cfb832f7c0b6");
+	    map.put("measles1","d2c8d3fa-495a-4e5f-8e8b-3c598725c0c3");
+	    
+	    map.put("6eea05d1-c7bc-4ef3-b42f-46541606daed","opv");	    
+	    map.put("8867aedf-21c4-4441-ac72-fa87510eff36","bcg");	    
+	    map.put("ff6fed1f-e05a-4ba5-a3f2-fba744c04550","pcv");
+	    map.put("dcddb74f-4bf0-4a2c-b52c-c530509c11f7","penta");
+	    map.put("1c35cc34-4ee2-47cd-8a30-cb37eb803a43","measles");
+	    map.put("79146dc6-82b0-4e07-9d8a-50f865c02667","ipv");
+	}
 
 	@Autowired
 	public EncounterService(PatientService patientService, OpenmrsUserService userService) {
@@ -141,39 +174,7 @@ public class EncounterService extends OpenmrsService{
 	
 	@SuppressWarnings("unchecked")
 	private JSONObject createVaccineEncounter(JSONArray obar,JSONObject enc,String parentCode) throws JSONException{
-		@SuppressWarnings("rawtypes")
-		Map map=new HashMap();  
-		map.put("TT1","c8e8ed67-d125-4c77-a8c7-2c9a5cf2c46b");  
-	    map.put("TT2","14f59334-bde6-4512-bfae-830d5bd7da87");
-	    map.put("TT3","8197f5b8-328c-402d-8128-fd04d9de8a94"); 
-	    map.put("TT4","4914c323-d32d-4412-905f-c8c90f92136f"); 
-	    map.put("TT5","4dd71b8e-8109-4eb3-b919-186f8236edb1");
-	    map.put("be200e2b-0469-4cb3-b3c3-eeda1c51b336","TT"); 
-	    
-	    map.put("bcg","1cf49965-5130-4648-8473-37238d24b826");
-	    map.put("opv0","548a2d2d-4803-4d9a-8d78-8a31741baccc");
-	    map.put("pcv1","e3340e49-df17-4b86-841e-6a207db40e58");
-	    map.put("opv1","548a2d2d-4803-4d9a-8d78-8a31741baccc");
-	    map.put("penta1","e601701f-a9c5-4cea-a06e-4e5abacaf6e4");
-	    map.put("pcv2","27c360d3-ce24-492d-a004-1d551dfd0933");
-	    map.put("opv2","548a2d2d-4803-4d9a-8d78-8a31741baccc");
-	    map.put("penta2","9fbd9d94-0634-4880-954e-502c8be1c2d4");
-	    map.put("pcv3","b0735577-6747-4c3e-bb52-b2d9b0d2419a");
-	    map.put("opv3","548a2d2d-4803-4d9a-8d78-8a31741baccc");
-	    map.put("penta3","8c0268d5-befe-47e3-a98d-d7d13f214f5b");
-	    map.put("ipv","caffb48d-4155-47a5-a81a-ef669f0585d0");
-	    map.put("measles1","9c23d2fe-e2db-48ea-98ac-cfb832f7c0b6");
-	    map.put("measles1","d2c8d3fa-495a-4e5f-8e8b-3c598725c0c3");
-	    
-	    map.put("6eea05d1-c7bc-4ef3-b42f-46541606daed","opv");	    
-	    map.put("8867aedf-21c4-4441-ac72-fa87510eff36","bcg");	    
-	    map.put("ff6fed1f-e05a-4ba5-a3f2-fba744c04550","pcv");
-	    map.put("dcddb74f-4bf0-4a2c-b52c-c530509c11f7","penta");
-	    map.put("1c35cc34-4ee2-47cd-8a30-cb37eb803a43","measles");
-	    map.put("79146dc6-82b0-4e07-9d8a-50f865c02667","ipv");
-	    
-	    
-	    String getVaccinesAsString =  obar.get(0).toString();
+		String getVaccinesAsString =  obar.get(0).toString();
         JSONObject convertVaccinesJsonObjectFromString = new JSONObject(getVaccinesAsString);
         		
 		for (int i = 1; i < obar.length(); i++) {
