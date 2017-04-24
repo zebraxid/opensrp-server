@@ -299,15 +299,16 @@ public class AllMemberTest {
 		//enc.put("obs", obar2);
 		//enc.put("obs", obar3);
 		
-		System.out.println("Going to create Encounter: " + enc.toString());
+		/*System.out.println("Going to create Encounter: " + enc.toString());
 		HttpResponse op = HttpUtil.post("https://103.247.238.26/openmrs/ws/rest/v1/encounter", "", enc.toString(),"sohel", "Sohel@123");
-		System.out.println(op.getClass());
+		System.out.println(op.getClass());*/
 		String c = "dd";
-		Map map=new HashMap();  
-		map.put("dd","Amit");  
-	    map.put("df","Rahul");  
-	  
-	    System.out.println( map.get(c));
+		StringBuilder sb = new StringBuilder();
+		sb.append("DDD"+" ");
+		sb.append("T dddT"+" ");
+		sb.append("R dddT"+" ");
+		System.out.println(sb);
+		
 	}
 	
 }
