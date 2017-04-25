@@ -86,12 +86,12 @@ public class EncounterService extends OpenmrsService{
 		this.userService = userService;
 	}
 	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+
+	@SuppressWarnings("rawtypes")
 	public JSONObject createEncounter(Event e,String idGen) throws JSONException{
 		JSONObject pt = patientService.getPatientByIdentifier(idGen);
 		JSONObject enc = new JSONObject();
-		JSONObject pr = userService.getPersonByUser(e.getProviderId());
-		
+		JSONObject pr = userService.getPersonByUser(e.getProviderId());		
 		enc.put("encounterDatetime", OPENMRS_DATE.format(e.getEventDate()));
 		// patient must be existing in OpenMRS before it submits an encounter. if it doesnot it would throw NPE
 		if (pr.getString("uuid").isEmpty() || pr.getString("uuid")==null)
@@ -104,50 +104,33 @@ public class EncounterService extends OpenmrsService{
 			System.out.println("Person or Patient does not exist or empty inside openmrs with identifier: " + pr.getString("uuid"));
 		else 
 			enc.put("provider", pr.getString("uuid"));
-
-		
 		
 		try{
-			List<Obs> ol = e.getObs();	
-			
+			List<Obs> ol = e.getObs();			
 			Map<String, List<JSONObject>> pc = new HashMap<>();
-			MultiValueMap   obsMap = new MultiValueMap();
-			String parentCode="";
-			StringBuilder sb = new StringBuilder();
+			MultiValueMap   obsMap = new MultiValueMap();						
 			for (Obs obs : ol) {	
 				//if no parent simply make it root obs
 				if(StringUtils.isEmptyOrWhitespaceOnly(obs.getParentCode())){					
-					sb.append(obs.getValue().toString()+ " ");
-					JSONObject obo = new JSONObject();
-					obo.put("value", sb);
-					obo.put("concept", obs.getFieldCode());
-					obsMap.put(obs.getFieldCode(), obo);
+					obsMap.put(obs.getFieldCode(), convertObsToJson(obs));
 				}
 				else {	
 					obsMap.put(obs.getParentCode(), convertObsToJson(getOrCreateParent(ol, obs)));
 					// find if any other exists with same parent if so add to the list otherwise create new list
-					List<JSONObject> obl = pc.get(obs.getParentCode());
-					parentCode = obs.getParentCode();
+					List<JSONObject> obl = pc.get(obs.getParentCode());					
 					if(obl == null){
 						obl = new ArrayList<>();
 					}
 					obl.add(convertObsToJson(obs));
 					pc.put(obs.getParentCode(), obl);
 				}
-			}
-			
+			}			
 			
 			JSONArray obar = new JSONArray();
-			List<JSONObject> list;	
-			
-			Set <String> entrySet = obsMap.entrySet();	
-			System.out.println("obsMap:"+obsMap.toString());
-	        @SuppressWarnings("rawtypes")
-			Iterator it = entrySet.iterator();
-	        System.err.println("entrySet:"+entrySet.toString());
-	        int i=0;
-	        while (it.hasNext()) {
-	        	
+			List<JSONObject> list;				
+			Set <String> entrySet = obsMap.entrySet();	        
+			Iterator it = entrySet.iterator();	       
+	        while (it.hasNext()) {	        	
 	            Map.Entry mapEntry = (Map.Entry) it.next();	           
 	            list = (List) obsMap.get(mapEntry.getKey());
 	            	JSONObject obo = list.get(0); 	            	
@@ -155,63 +138,52 @@ public class EncounterService extends OpenmrsService{
 	    			if(cob != null && cob.size() > 0) {	    				
 	    				obo.put("groupMembers", new JSONArray(cob));
 	    			}
-	    			obar.put(obo);	           
-	    			i++;
+	    			obar.put(obo);
 	        }
-	       
-	       System.out.println("parentCode:"+parentCode);
-	     return this.createVaccineEncounter(obar, enc,parentCode);
-	       
+	        this.createVaccineEncounter(obar, enc);	
+	        return new JSONObject("Vaccine Encounter created");
 		}catch(Exception ee){
 			System.out.println(ee.getMessage());
 		}
 		
 		System.out.println("Going to create Encounter: " + enc.toString());
 		HttpResponse op = HttpUtil.post(HttpUtil.removeEndingSlash(OPENMRS_BASE_URL)+"/"+ENCOUNTER_URL, "", enc.toString(), OPENMRS_USER, OPENMRS_PWD);
-		return new JSONObject(op.body());
-		
+		return new JSONObject(op.body());		
 	}
 	
-	@SuppressWarnings("unchecked")
-	private JSONObject createVaccineEncounter(JSONArray obar,JSONObject enc,String parentCode) throws JSONException{
+	private JSONObject createVaccineEncounter(JSONArray obar,JSONObject enc) throws JSONException{
 		String getVaccinesAsString =  obar.get(0).toString();
-        JSONObject convertVaccinesJsonObjectFromString = new JSONObject(getVaccinesAsString);
-        		
-		for (int i = 1; i < obar.length(); i++) {
-			 String groupMembers =  obar.get(i).toString();
+        JSONObject convertVaccinesJsonObjectFromString = new JSONObject(getVaccinesAsString);        
+		for (int totalGroupCounter = 1; totalGroupCounter < obar.length(); totalGroupCounter++) {
+			 String groupMembers =  obar.get(totalGroupCounter).toString();
 			 JSONObject groupMembersObject = new JSONObject(groupMembers);
 			 JSONArray groupMembersList =  (JSONArray) groupMembersObject.get("groupMembers");
 			 String concept =  groupMembersObject.get("concept").toString();			
-			 for (int k = 0; k < groupMembersList.length(); k+=2) {
+			 for (int vaccinationInAGroupMemberCounter = 0; vaccinationInAGroupMemberCounter < groupMembersList.length(); vaccinationInAGroupMemberCounter+=2) {
 				 JSONArray gruopMember = new JSONArray();
 		 	        JSONArray observation = new JSONArray();	 	       
-		 	        JSONObject groupObservation = new JSONObject();	
+		 	        JSONObject observationGroup = new JSONObject();	
 		 	        JSONObject observationConcept = new JSONObject();
-		 	       String vaccine =  map.get(concept).toString();
-		 	      
+		 	        String vaccine =  map.get(concept).toString();// get vaccine origin name such as  TT,bcg,opv etc
 		 	        try{
-		 	        	JSONObject gp = new JSONObject(groupMembersList.get(k+1).toString());
-		 	        	System.out.println("GPP:::"+gp.toString());
-		 	        	System.out.println("GPP:"+gp.get("value").toString());
-		 	        	vaccine  = vaccine+gp.get("value").toString();
-		 	        	gruopMember.put(groupMembersList.get(k+1));
-		 	        	System.err.println("Value:"+gp.get("value"));
+		 	        	JSONObject doseOfAvaccine = new JSONObject(groupMembersList.get(vaccinationInAGroupMemberCounter+1).toString());		 	        	
+		 	        	vaccine  = vaccine+doseOfAvaccine.get("value").toString();//concat dose number with vaccine such as  TT1,opv1
+		 	        	gruopMember.put(groupMembersList.get(vaccinationInAGroupMemberCounter+1));		 	        	
 		 	        }catch(Exception e){
 		 	        	System.out.println("Dose not found");
 		 	        }
 		 	        observationConcept.put("concept", convertVaccinesJsonObjectFromString.get("concept"));
 		 	        observationConcept.put("value", map.get(vaccine));		        	
-		        	gruopMember.put(groupMembersList.get(k));		        	
-		        	groupObservation.put("groupMembers", gruopMember);
-		        	groupObservation.put("concept", concept);		        	        	
+		        	gruopMember.put(groupMembersList.get(vaccinationInAGroupMemberCounter));		        	
+		        	observationGroup.put("groupMembers", gruopMember);
+		        	observationGroup.put("concept", concept);		        	        	
 		        	observation.put(observationConcept);
-		        	observation.put(groupObservation);	 	        
+		        	observation.put(observationGroup);	 	        
 		 	        enc.put("obs", observation);
 		 	        System.out.println("Going to create Encounter: " + enc.toString());
 		 	        HttpResponse op = HttpUtil.post(HttpUtil.removeEndingSlash(OPENMRS_BASE_URL)+"/"+ENCOUNTER_URL, "", enc.toString(), OPENMRS_USER, OPENMRS_PWD);
 		 	        System.out.println(new JSONObject(op.body())); 
-			}
-			 
+			}			 
 		}
 		
 		return null;
@@ -220,17 +192,11 @@ public class EncounterService extends OpenmrsService{
 	private JSONObject convertObsToJson(Obs o) throws JSONException{
 		JSONObject obo = new JSONObject();
 		obo.put("concept", o.getFieldCode());
-		if(o.getValue() != null && !StringUtils.isEmptyOrWhitespaceOnly(o.getValue().toString())) {
-			/*if(o.getFieldCode().toString().equalsIgnoreCase("163137AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA") || o.getFieldCode().toString().equalsIgnoreCase("163138AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA") || o.getFieldCode().toString().equalsIgnoreCase("5599AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA") || o.getFieldCode().toString().equalsIgnoreCase("5596AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"))
-			{*/	
-				//obo.put("value", OPENMRS_DATETime.format(o.getValue()));
-				if (o.getValue().toString().length() >= 19)
-					obo.put("value", (o.getValue().toString().substring(0, 19)).replace("T", " "));
-				else 
-					obo.put("value", o.getValue());
-			/*}			
+		if(o.getValue() != null && !StringUtils.isEmptyOrWhitespaceOnly(o.getValue().toString())) {			
+			if (o.getValue().toString().length() >= 19)
+				obo.put("value", (o.getValue().toString().substring(0, 19)).replace("T", " "));
 			else 
-				obo.put("value", o.getValue());*/
+				obo.put("value", o.getValue());			
 		}
 		
 		return obo;

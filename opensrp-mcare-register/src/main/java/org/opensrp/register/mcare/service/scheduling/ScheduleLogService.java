@@ -153,9 +153,9 @@ public class ScheduleLogService extends OpenmrsService {
 	
 	public String saveEnrollDataToOpenMRSTrack(Enrollment el, List<Action> alertActions, String motherId) {
 		
-		try {
+		/*try {
 			JSONObject t = openmrsSchedulerService.createTrack(el, alertActions, motherId);
-			//e.setStatus(EnrollmentStatus.COMPLETED);
+			
 			Map<String, String> metadata = new HashMap<>();
 			metadata.put(OpenmrsConstants.ENROLLMENT_TRACK_UUID, t.getString("uuid"));
 			el.setMetadata(metadata);
@@ -164,18 +164,18 @@ public class ScheduleLogService extends OpenmrsService {
 			return t.getString("uuid");
 		}
 		catch (JSONException e2) {
-			// TODO Auto-generated catch block
+			
 			e2.printStackTrace();
 			logger.info("Log:" + e2.toString());
 			return "";
 		}
 		catch (ParseException e2) {
-			// TODO Auto-generated catch block
+			
 			e2.printStackTrace();
 			logger.info("Log:" + e2.toString());
 			return "";
-		}
-		
+		}*/
+		return null;
 	}
 	
 	private ActionData alert(String schedule, String milestone) {

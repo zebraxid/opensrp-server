@@ -252,8 +252,8 @@ public class FormSubmissionController {
 					}
 				}
 			}
-			catch (Exception e) {
-				e.printStackTrace();
+			catch (Exception e) {				
+				logger.error(e.getMessage());
 			}
 			logger.debug(format("Added Form submissions to queue.\nSubmissions: {0}", formSubmissionsDTO));
 		}

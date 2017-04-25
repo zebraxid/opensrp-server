@@ -106,5 +106,14 @@ public class Obs {
 	public Obs withFormSubmissionField(String formSubmissionField) {
 		this.formSubmissionField = formSubmissionField;
 		return this;
-	}	
+	}
+
+	@Override
+	public String toString() {
+		return "Obs [fieldDataType=" + fieldDataType + ", fieldCode="
+				+ fieldCode + ", parentCode=" + parentCode + ", value=" + value
+				+ ", comments=" + comments + ", formSubmissionField="
+				+ formSubmissionField + "]";
+	}
+	
 }
