@@ -58,6 +58,8 @@ public class EncounterService extends OpenmrsService{
 	    map.put("dcddb74f-4bf0-4a2c-b52c-c530509c11f7","penta");
 	    map.put("1c35cc34-4ee2-47cd-8a30-cb37eb803a43","measles");
 	    map.put("79146dc6-82b0-4e07-9d8a-50f865c02667","ipv");
+	    
+	    map.put("parent","021e0705-953d-11e6-90c1-005056b01095");
 	}
 
 	@Autowired
@@ -86,7 +88,7 @@ public class EncounterService extends OpenmrsService{
 		this.userService = userService;
 	}
 	
-
+	
 	@SuppressWarnings("rawtypes")
 	public JSONObject createEncounter(Event e,String idGen) throws JSONException{
 		JSONObject pt = patientService.getPatientByIdentifier(idGen);
@@ -105,31 +107,34 @@ public class EncounterService extends OpenmrsService{
 		else 
 			enc.put("provider", pr.getString("uuid"));
 		
+		
 		try{
 			List<Obs> ol = e.getObs();			
 			Map<String, List<JSONObject>> pc = new HashMap<>();
-			MultiValueMap   obsMap = new MultiValueMap();						
+			MultiValueMap   obsMap = new MultiValueMap();
+			enc.put("location", "b767bf43-3cb0-49b6-8fb3-06a0625e5dd3");
 			for (Obs obs : ol) {	
-				//if no parent simply make it root obs
-				if(StringUtils.isEmptyOrWhitespaceOnly(obs.getParentCode())){					
-					obsMap.put(obs.getFieldCode(), convertObsToJson(obs));
-				}
-				else {	
-					obsMap.put(obs.getParentCode(), convertObsToJson(getOrCreateParent(ol, obs)));
-					// find if any other exists with same parent if so add to the list otherwise create new list
-					List<JSONObject> obl = pc.get(obs.getParentCode());					
-					if(obl == null){
-						obl = new ArrayList<>();
+				//if no parent simply make it root obs				
+					if(StringUtils.isEmptyOrWhitespaceOnly(obs.getParentCode())){					
+						obsMap.put(obs.getFieldCode(), convertObsToJson(obs));
 					}
-					obl.add(convertObsToJson(obs));
-					pc.put(obs.getParentCode(), obl);
-				}
+					else {	
+						obsMap.put(obs.getParentCode(), convertObsToJson(getOrCreateParent(ol, obs)));
+						// find if any other exists with same parent if so add to the list otherwise create new list
+						List<JSONObject> obl = pc.get(obs.getParentCode());					
+						if(obl == null){
+							obl = new ArrayList<>();
+						}
+						obl.add(convertObsToJson(obs));
+						pc.put(obs.getParentCode(), obl);
+					}
 			}			
 			
 			JSONArray obar = new JSONArray();
 			List<JSONObject> list;				
 			Set <String> entrySet = obsMap.entrySet();	        
-			Iterator it = entrySet.iterator();	       
+			Iterator it = entrySet.iterator();
+			
 	        while (it.hasNext()) {	        	
 	            Map.Entry mapEntry = (Map.Entry) it.next();	           
 	            list = (List) obsMap.get(mapEntry.getKey());
@@ -140,6 +145,7 @@ public class EncounterService extends OpenmrsService{
 	    			}
 	    			obar.put(obo);
 	        }
+	       
 	        this.createVaccineEncounter(obar, enc);	
 	        return new JSONObject("Vaccine Encounter created");
 		}catch(Exception ee){
@@ -152,44 +158,54 @@ public class EncounterService extends OpenmrsService{
 	}
 	
 	private JSONObject createVaccineEncounter(JSONArray obar,JSONObject enc) throws JSONException{
-		String getVaccinesAsString =  obar.get(0).toString();
-        JSONObject convertVaccinesJsonObjectFromString = new JSONObject(getVaccinesAsString);        
-		for (int totalGroupCounter = 1; totalGroupCounter < obar.length(); totalGroupCounter++) {
-			 String groupMembers =  obar.get(totalGroupCounter).toString();
-			 JSONObject groupMembersObject = new JSONObject(groupMembers);
-			 JSONArray groupMembersList =  (JSONArray) groupMembersObject.get("groupMembers");
-			 String concept =  groupMembersObject.get("concept").toString();			
-			 for (int vaccinationInAGroupMemberCounter = 0; vaccinationInAGroupMemberCounter < groupMembersList.length(); vaccinationInAGroupMemberCounter+=2) {
-				 JSONArray gruopMember = new JSONArray();
-		 	        JSONArray observation = new JSONArray();	 	       
-		 	        JSONObject observationGroup = new JSONObject();	
-		 	        JSONObject observationConcept = new JSONObject();
-		 	        String vaccine =  map.get(concept).toString();// get vaccine origin name such as  TT,bcg,opv etc
-		 	        try{
-		 	        	JSONObject doseOfAvaccine = new JSONObject(groupMembersList.get(vaccinationInAGroupMemberCounter+1).toString());		 	        	
-		 	        	vaccine  = vaccine+doseOfAvaccine.get("value").toString();//concat dose number with vaccine such as  TT1,opv1
-		 	        	gruopMember.put(groupMembersList.get(vaccinationInAGroupMemberCounter+1));		 	        	
-		 	        }catch(Exception e){
-		 	        	System.out.println("Dose not found");
-		 	        }
-		 	        observationConcept.put("concept", convertVaccinesJsonObjectFromString.get("concept"));
-		 	        observationConcept.put("value", map.get(vaccine));		        	
-		        	gruopMember.put(groupMembersList.get(vaccinationInAGroupMemberCounter));		        	
-		        	observationGroup.put("groupMembers", gruopMember);
-		        	observationGroup.put("concept", concept);		        	        	
-		        	observation.put(observationConcept);
-		        	observation.put(observationGroup);	 	        
-		 	        enc.put("obs", observation);
-		 	        System.out.println("Going to create Encounter: " + enc.toString());
-		 	        HttpResponse op = HttpUtil.post(HttpUtil.removeEndingSlash(OPENMRS_BASE_URL)+"/"+ENCOUNTER_URL, "", enc.toString(), OPENMRS_USER, OPENMRS_PWD);
-		 	        System.out.println(new JSONObject(op.body())); 
-			}			 
+		     System.out.println("obar.length():"+obar.length());
+		for ( int totalGroupCounter = 0; totalGroupCounter < obar.length(); totalGroupCounter++) {
+			 try{
+			
+				 String groupMembers =  obar.get(totalGroupCounter).toString();			
+				 JSONObject groupMembersObject = new JSONObject(groupMembers);
+				 JSONArray groupMembersList =  (JSONArray) groupMembersObject.get("groupMembers");
+				 String concept =  groupMembersObject.get("concept").toString();			
+				 System.out.println("okkkkkkOuter");
+				 System.out.println(" groupMembersList.length():"+ groupMembersList.length());
+			 
+				 for (int vaccinationInAGroupMemberCounter = 0; vaccinationInAGroupMemberCounter < groupMembersList.length(); vaccinationInAGroupMemberCounter+=2) {
+					 System.out.println("okkkkkkInner");
+					 JSONArray gruopMember = new JSONArray();
+			 	        JSONArray observation = new JSONArray();	 	       
+			 	        JSONObject observationGroup = new JSONObject();	
+			 	        JSONObject observationConcept = new JSONObject();
+			 	        String vaccine =  map.get(concept).toString();// get vaccine origin name such as  TT,bcg,opv etc
+			 	        try{
+			 	        	JSONObject doseOfAvaccine = new JSONObject(groupMembersList.get(vaccinationInAGroupMemberCounter+1).toString());		 	        	
+			 	        	vaccine  = vaccine+doseOfAvaccine.get("value").toString();//concat dose number with vaccine such as  TT1,opv1
+			 	        	gruopMember.put(groupMembersList.get(vaccinationInAGroupMemberCounter+1));		 	        	
+			 	        }catch(Exception e){
+			 	        	System.out.println("Dose not found");
+			 	        }
+			 	        observationConcept.put("concept",map.get("parent"));
+			 	        observationConcept.put("value", map.get(vaccine));		        	
+			        	gruopMember.put(groupMembersList.get(vaccinationInAGroupMemberCounter));		        	
+			        	observationGroup.put("groupMembers", gruopMember);
+			        	observationGroup.put("concept", concept);		        	        	
+			        	observation.put(observationConcept);
+			        	observation.put(observationGroup);	 	        
+			 	        enc.put("obs", observation);
+			 	        System.out.println("Going to create Encounter: " + enc.toString());
+			 	        HttpResponse op = HttpUtil.post(HttpUtil.removeEndingSlash(OPENMRS_BASE_URL)+"/"+ENCOUNTER_URL, "", enc.toString(), OPENMRS_USER, OPENMRS_PWD);
+			 	        System.out.println(new JSONObject(op.body())); 
+				}
+			 }
+			catch(Exception e){
+				System.out.println("No GroupMembers found"+e.getMessage());
+			
+			}
 		}
 		
 		return null;
 		
 	}
-	private JSONObject convertObsToJson(Obs o) throws JSONException{
+	private  JSONObject convertObsToJson(Obs o) throws JSONException{
 		JSONObject obo = new JSONObject();
 		obo.put("concept", o.getFieldCode());
 		if(o.getValue() != null && !StringUtils.isEmptyOrWhitespaceOnly(o.getValue().toString())) {			

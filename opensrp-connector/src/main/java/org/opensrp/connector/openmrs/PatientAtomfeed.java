@@ -153,11 +153,11 @@ public class PatientAtomfeed extends OpenmrsService implements EventWorker, Atom
 		this.clientService = clientService;
 	}
 	
-	/*@MotechListener(subjects = OpenmrsConstants.SCHEDULER_OPENMRS_ATOMFEED_SYNCER_SUBJECT_CLIENT)
+	@MotechListener(subjects = OpenmrsConstants.SCHEDULER_OPENMRS_ATOMFEED_SYNCER_SUBJECT_CLIENT)
 	public void getResponse(MotechEvent event) {
 		new TurnOffCertificateValidation().ForHTTPSConnections();
 		System.out.println("Response from Atom Client");
 		this.processEvents();
-	}*/
+	}
 	
 }
