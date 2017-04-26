@@ -12,8 +12,11 @@ import java.util.Random;
 
 public class PregnantWomenCountTestData extends MIS1TestData {
 
+     EligibleCoupleFollowUP.EligibleCoupleFollowUpBuilder builder;
+
     public PregnantWomenCountTestData(int totalCount, int validCount, long startDateTime, long endDateTime) {
         super(totalCount, validCount, startDateTime, endDateTime);
+        builder = new EligibleCoupleFollowUP.EligibleCoupleFollowUpBuilder();
     }
 
     public List<Members> getDataForNewPregnantWomenCount() {
@@ -73,8 +76,7 @@ public class PregnantWomenCountTestData extends MIS1TestData {
         List<Map<String, String>> eligibleCoupleFollowUpList = new ArrayList<>();
         for (int i = 0; i < randomNum; i++) {
             Long randomDateTimeBeforeStartDateTime = getRandomNumberBetween(0, startDateTime - 1);
-            EligibleCoupleFollowUP.EligibleCoupleFollowUpBuilder builder =
-                    new EligibleCoupleFollowUP.EligibleCoupleFollowUpBuilder(randomDateTimeBeforeStartDateTime);
+            builder.clientVersion(randomDateTimeBeforeStartDateTime);
             if (i % 2 == 0) {
                 builder.pregnant(Members.IS_PREGNANT);
                 eligibleCoupleFollowUP = builder.build();
@@ -89,9 +91,7 @@ public class PregnantWomenCountTestData extends MIS1TestData {
     }
 
     private Map<String, String> createEligibleCoupleFollowUpUsingClientVersionDateTimeWithPregStatus(long clientVersion, String pregnantStatus) {
-        EligibleCoupleFollowUP.EligibleCoupleFollowUpBuilder builder =
-                new EligibleCoupleFollowUP.EligibleCoupleFollowUpBuilder(clientVersion);
-        builder.pregnant(pregnantStatus);
+        builder.pregnant(pregnantStatus).clientVersion(clientVersion);
         return builder.build().getFollowUp();
     }
 
@@ -102,8 +102,7 @@ public class PregnantWomenCountTestData extends MIS1TestData {
         List<Map<String, String>> eligibleCoupleFollowUpList = new ArrayList<>();
         for (int i = 0; i < randomNum; i++) {
             Long randomDateTimeBeforeStartDateTime = getRandomNumberBetween(endDateTime + 1, endDateTime * 3);
-            EligibleCoupleFollowUP.EligibleCoupleFollowUpBuilder builder =
-                    new EligibleCoupleFollowUP.EligibleCoupleFollowUpBuilder(randomDateTimeBeforeStartDateTime);
+            builder.clientVersion(randomDateTimeBeforeStartDateTime);
             if (i % 2 == 0) {
                 builder.pregnant(Members.IS_PREGNANT);
                 eligibleCoupleFollowUP = builder.build();

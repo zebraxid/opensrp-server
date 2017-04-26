@@ -15,23 +15,29 @@ public class EligibleCoupleFollowUP {
     public static class EligibleCoupleFollowUpBuilder {
         private Map<String, String> followUp;
 
-        public EligibleCoupleFollowUpBuilder(long clientVersion) {
+        public EligibleCoupleFollowUpBuilder() {
             followUp = new HashMap<>();
-            followUp.put(Members.CLIENT_VERSION_KEY, String.valueOf(clientVersion));
         }
 
+        public EligibleCoupleFollowUpBuilder clientVersion(long clientVersion) {
+            followUp.put(Members.CLIENT_VERSION_KEY, String.valueOf(clientVersion));
+            return this;
+        }
         public EligibleCoupleFollowUpBuilder pregnant(String pregnantStatus) {
             followUp.put(Members.PREGNANT_STATUS_KEY, pregnantStatus);
             return this;
         }
 
         public EligibleCoupleFollowUP build() {
-            return new EligibleCoupleFollowUP(this);
+            EligibleCoupleFollowUP eligibleCoupleFollowUP = new EligibleCoupleFollowUP(this);
+            this.followUp.clear();
+            return eligibleCoupleFollowUP;
         }
     }
 
     private EligibleCoupleFollowUP(EligibleCoupleFollowUpBuilder eligibleCoupleFollowUpBuilder) {
-        this.followUp = eligibleCoupleFollowUpBuilder.followUp;
+        this.followUp = new HashMap<>();
+        this.followUp.putAll(eligibleCoupleFollowUpBuilder.followUp);
     }
 
 }
