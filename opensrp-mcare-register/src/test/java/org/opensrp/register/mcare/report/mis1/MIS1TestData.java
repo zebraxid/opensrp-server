@@ -1,6 +1,7 @@
 package org.opensrp.register.mcare.report.mis1;
 
 
+import com.sun.javaws.exceptions.InvalidArgumentException;
 import org.opensrp.register.mcare.domain.Members;
 
 import java.util.HashMap;
@@ -26,6 +27,10 @@ public abstract class MIS1TestData {
         return ThreadLocalRandom.current().nextLong(start, end);
     }
 
+    public int getRandomNumberBetween(int start, int end) {
+        return ThreadLocalRandom.current().nextInt(start, end);
+    }
+
     protected Members createMemberWithEligibleCoupleFollowUpList(List<Map<String, String>> followUpList) {
         Members member = new Members();
         member.setelco_Followup(followUpList);
@@ -38,5 +43,22 @@ public abstract class MIS1TestData {
         return member;
     }
 
+    protected Members createMemberWithANCVisit(VisitNumber visitNumber, Map<String, String> visitData)  {
+        Members member = new Members();
+        switch (visitNumber){
+            case one:
+                return member.setANCVisit1(visitData);
+            case two:
+                return member.setANCVisit2(visitData);
+        }
 
+        throw new IllegalArgumentException("Invalid visit number: " + visitNumber.toString());
+    }
+
+    public enum VisitNumber {
+        one,
+        two,
+        thee,
+        four
+    }
 }

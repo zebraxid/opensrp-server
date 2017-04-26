@@ -7,10 +7,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ANCVisit {
-    private Map<String, String> followUp;
+    private Map<String, String> visitData;
 
-    public Map<String, String> getFollowUp() {
-        return followUp;
+    public Map<String, String> getVisitData() {
+        return visitData;
     }
 
     public static class ANCVisitBuilder {
@@ -37,8 +37,8 @@ public class ANCVisit {
     }
 
     private ANCVisit(ANCVisit.ANCVisitBuilder ancVisitBuilder) {
-        this.followUp = new HashMap<>();
-        this.followUp.putAll(ancVisitBuilder.followUp);
+        this.visitData = new HashMap<>();
+        this.visitData.putAll(ancVisitBuilder.followUp);
     }
 
 }
