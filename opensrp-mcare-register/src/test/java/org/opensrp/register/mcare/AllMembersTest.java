@@ -98,7 +98,7 @@ public class AllMembersTest {
         assertFalse(false);
   }
 
-    @Ignore@Test
+    @Test
     public void EncounterTest() throws JSONException {
         ObjectMapper mapper = new ObjectMapper();
        /* JSONObject enc = new JSONObject();
@@ -125,7 +125,7 @@ public class AllMembersTest {
         //enc.put("obs", obar2);
      JsonNode enc = null;
      try {
-            enc = mapper.readValue(new File("src/test/java/org/opensrp/register/mcare/PNC2.json"), JsonNode.class);
+            enc = mapper.readValue(new File("src/test/java/org/opensrp/register/mcare/validEncounterJson/ElcoFollowUp.json"), JsonNode.class);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -135,28 +135,5 @@ public class AllMembersTest {
     }
 }
 
-/*
-elco follow up error:
-     { "concept": "160055AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-      "value": "4"
-    },
-    {
-      "groupMembers": [
-        {
-          "concept": "1825AAAAAAAAAAAAAAAAAAAAAAAAAAAA",//Less A's: check the json
-          "value": "0"
-        }
-      ],
-      "concept": "1535AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
-    },
-    {
-      "groupMembers": [
-        {
-          "concept": "1825AAAAAAAAAAAAAAAAAAAAAAAAAAAA",//Less A's
-          "value": "1"
-        }
-      ],
-      "concept": "1534AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
-    },
- */
+
 
