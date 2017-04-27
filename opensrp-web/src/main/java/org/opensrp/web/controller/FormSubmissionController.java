@@ -207,39 +207,20 @@ public class FormSubmissionController {
 								Client hhClient = bahmniOpenmrsConnector.getClientFromFormSubmission(formSubmission);
 								System.out.println(bahmniPatientService.createPatient(hhClient, idGen1));
 								Event e = bahmniOpenmrsConnector.getEventFromFormSubmission(formSubmission);
-								// Event hhhEvent =
-								// openmrsConnector.getEventFromFormSubmission(formSubmission);
-								// OpenmrsHouseHold hh = new
-								// OpenmrsHouseHold(hhhClient, hhhEvent);
-								
 								for (Map<String, Object> cm : dep.values()) {
 									String idGen2 = bahmniPatientService.generateID();
 									
 									Client c = (Client) cm.get("client");
-									//System.out.println("FSI:" + cm.toString());
-									//System.out.println("FSI:" + c.getBaseEntityId());
+									
 									this.createIdentifierMaping(c.getBaseEntityId(), idGen2);
 									System.out.println(bahmniPatientService.createPatient((Client) cm.get("client"), idGen2));
-									// /hh.addHHMember((Client)cm.get("client"),
-									// (Event)cm.get("event"));
-									// cm.get("event");
+									
 									System.out.println("E:" + (Event) cm.get("event"));
 									System.out.println(encounterService.createEncounter((Event) cm.get("event"), idGen2));
 								}
 								System.out.println(encounterService.createEncounter(e, idGen1));
-								// householdService.saveBahmniHH(hh,idGen);
+								
 							} else {// HnW(0)
-								/*
-								 * Client c =
-								 * openmrsConnector.getClientFromFormSubmission
-								 * (formSubmission);
-								 * System.out.println(patientService
-								 * .createPatient(c)); Event e =
-								 * openmrsConnector.getEventFromFormSubmission
-								 * (formSubmission);
-								 * System.out.println(encounterService
-								 * .createEncounter(e));
-								 */
 								
 								System.out
 								        .println("Patient and Dependent client not exist into Bahmni openmrs /***********************************************************************/ ");

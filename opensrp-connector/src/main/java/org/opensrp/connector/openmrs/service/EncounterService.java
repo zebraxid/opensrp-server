@@ -107,13 +107,16 @@ public class EncounterService extends OpenmrsService{
 		else 
 			enc.put("provider", pr.getString("uuid"));
 		
+		boolean status = true;
 		
 		try{
+			
 			List<Obs> ol = e.getObs();			
 			Map<String, List<JSONObject>> pc = new HashMap<>();
 			MultiValueMap   obsMap = new MultiValueMap();
 			enc.put("location", "b767bf43-3cb0-49b6-8fb3-06a0625e5dd3");
-			for (Obs obs : ol) {	
+			for (Obs obs : ol) {
+				System.out.println("obs:"+obs.toString());
 				//if no parent simply make it root obs				
 					if(StringUtils.isEmptyOrWhitespaceOnly(obs.getParentCode())){					
 						obsMap.put(obs.getFieldCode(), convertObsToJson(obs));
@@ -147,14 +150,20 @@ public class EncounterService extends OpenmrsService{
 	        }
 	       
 	        this.createVaccineEncounter(obar, enc);	
+	        status = false;
 	        return new JSONObject("Vaccine Encounter created");
 		}catch(Exception ee){
 			System.out.println(ee.getMessage());
 		}
 		
-		System.out.println("Going to create Encounter: " + enc.toString());
-		HttpResponse op = HttpUtil.post(HttpUtil.removeEndingSlash(OPENMRS_BASE_URL)+"/"+ENCOUNTER_URL, "", enc.toString(), OPENMRS_USER, OPENMRS_PWD);
-		return new JSONObject(op.body());		
+		if(!enc.has("obs")){
+			System.out.println("Going to create Registry  Encounter: " + enc.toString());
+			HttpResponse op = HttpUtil.post(HttpUtil.removeEndingSlash(OPENMRS_BASE_URL)+"/"+ENCOUNTER_URL, "", enc.toString(), OPENMRS_USER, OPENMRS_PWD);
+			return new JSONObject(op.body());
+		}else{
+			 return new JSONObject("Vaccine Encounter created");
+		}
+				
 	}
 	
 	private JSONObject createVaccineEncounter(JSONArray obar,JSONObject enc) throws JSONException{
