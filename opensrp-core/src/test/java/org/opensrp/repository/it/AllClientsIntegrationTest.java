@@ -67,7 +67,7 @@ public class AllClientsIntegrationTest {
 	}
 	
 	private void addClients() {
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 1000; i++) {
 			Client c = new Client("eid"+i)
 				.withName("fn"+i, "mn"+i, "ln"+i)
 				.withGender("MALE")
@@ -133,7 +133,7 @@ public class AllClientsIntegrationTest {
 		System.out.println(new DateTime("2016-01-23").toString("MMMM (yyyy)"));
 	}
 	
-	@Test 
+	@Ignore @Test 
 	public void shouldSearchFullDataClientsIn10Sec() throws MalformedURLException {
 		
 		 /*org.ektorp.http.HttpClient httpClient = new StdHttpClient.Builder().url("http://202.141.249.106:6808").build();
@@ -145,8 +145,10 @@ public class AllClientsIntegrationTest {
 		
 		final long start = System.currentTimeMillis();
 		
-		for (int i = 0; i < 100; i++) {
-			addClient(i, false, null);
+		for (int i = 0; i < 10000; i++) {
+			addClient(i, true, null);
+			Logger.getLogger("FileLogger").info("Search while adding");
+			List<Client> cl = clientService.findAllByIdentifier("1234556"+"786");
 		}
 		Logger.getLogger("FileLogger").info("10K entries complete at "+new DateTime()+" in "+((System.currentTimeMillis()-start)/1000)+" sec");
 		
@@ -193,6 +195,7 @@ public class AllClientsIntegrationTest {
 		else {
 			clientService.addClient(c, ActivityLogConstants.OpenSRPClientActionCategory);
 		}
+		System.out.println("Client # "+i);
 	}
 	
 	@Test

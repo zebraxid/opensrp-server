@@ -32,8 +32,8 @@ import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 import org.apache.commons.lang3.StringUtils;
 import org.opensrp.domain.ErrorTrace;
-import org.opensrp.domain.ErrorTraceForm;
 import org.opensrp.service.ErrorTraceService;
+import org.opensrp.web.ErrorTraceForm;
 
 import com.google.gson.Gson;
 

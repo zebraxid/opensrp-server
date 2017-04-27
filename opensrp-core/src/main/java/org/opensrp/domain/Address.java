@@ -7,10 +7,12 @@ import java.util.Map.Entry;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
+import org.ektorp.support.TypeDiscriminator;
 import org.joda.time.DateTime;
 import org.opensrp.common.AddressField;
 
-public class Address{
+//@TypeDiscriminator("doc.type === 'Address'")
+public class Address extends BaseDataObject{
 
 	@JsonProperty
 	private Boolean preferred;

@@ -37,7 +37,7 @@ public class XlsFormDownloaderService {
 	private FileCreator fileCreator;
 	private JsonParser jsonParser;
 	
-	private byte[] formJson=null; 
+	private String formJson=null; 
 	public XlsFormDownloaderService() {
 	netClientGet=new NetClientGet();
 	fileCreator=new FileCreator();
@@ -48,6 +48,10 @@ public class XlsFormDownloaderService {
 	public static void main(String[] args) {
 		try {
 
+//			new XlsFormDownloaderService().downloadFormFiles("D:\\opensrpVaccinatorWkspc\\forms", 
+//					"maimoonak", "opensrp", JustForFun.Form, "daily_treatment_monitoring", "196445");
+
+			
 			/*System.out.println(DateTime.now().getWeekOfWeekyear());
 			new XlsFormDownloaderService().downloadFormFiles("D:\\opensrpVaccinatorWkspc\\forms", 
 					"maimoonak", "opensrp", JustForFun.Form, "crvs_verbal_autopsy", "156735");
@@ -178,13 +182,15 @@ public class XlsFormDownloaderService {
 		formData = formData.replaceAll("selected\\(", "contains(");
 		formData = formData.replaceAll("<span.*lang=\"openmrs_code\".*</span>", "");
 		formData = formData.replaceAll("<option value=\"openmrs_code\">openmrs_code</option>", "");
+		formData = formData.replaceAll("required=\"required\"", "required=\"required\" data-required=\"true()\"");
+		formData = formData.replaceAll("novalidate=\"novalidate\"", "");
 		
 		formJson=netClientGet.downloadJson(username,password,  formPk);
-		
 		//formData=fileCreator.prettyFormat(formData);
-		System.out.println(getFormDefinition());
-		fileCreator.createFile("form_definition.json", fileCreator.osDirectorySet(directory)+formId, getFormDefinition().getBytes());
-		return fileCreator.createFormFiles(fileCreator.osDirectorySet(directory)+formId, formId, formData.getBytes(), modelData.getBytes(), formJson);
+		String formDefinition = getFormDefinition();
+		System.out.println(formDefinition);
+		fileCreator.createFile("form_definition.json", fileCreator.osDirectorySet(directory)+formId, formDefinition.getBytes());
+		return fileCreator.createFormFiles(fileCreator.osDirectorySet(directory)+formId, formId, formData.getBytes(), modelData.getBytes(), formJson.getBytes());
 	}
 	
 	public String getFormDefinition() throws JsonProcessingException, IOException{
@@ -192,6 +198,7 @@ public class XlsFormDownloaderService {
 			return "Data not found on server . Please retry again !";
 			
 		}
+
 		return jsonParser.getFormDefinition(formJson);
 		
 	}	

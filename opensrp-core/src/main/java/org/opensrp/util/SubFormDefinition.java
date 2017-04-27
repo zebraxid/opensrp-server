@@ -1,4 +1,4 @@
-package org.opensrp.domain;
+package org.opensrp.util;
 
 
 import java.util.ArrayList;

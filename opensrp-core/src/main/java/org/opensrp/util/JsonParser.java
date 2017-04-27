@@ -14,19 +14,16 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Scanner;
 
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.JsonProcessingException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.opensrp.domain.Form;
-import org.opensrp.domain.FormDefinition;
-import org.opensrp.domain.FormField;
-import org.opensrp.domain.SubFormDefinition;
 public class JsonParser {
 
-	public String getFormDefinition(byte[] jsonData) throws JsonProcessingException, IOException {
+	public String getFormDefinition(String formJson) throws JsonProcessingException, IOException {
 	try{
 		
 		
@@ -38,7 +35,7 @@ public class JsonParser {
 	//	objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
 	//	objectMapper.readValue(jsonData, FormSubmission.class)
 		//read JSON like DOM Parser FormSubmission
-		JsonNode rootNode = objectMapper.readTree(jsonData);
+		JsonNode rootNode = objectMapper.readTree(formJson);
 		FormDefinition formD=jsonParser.getForm(rootNode );
 		//System.out.println(objectMapper.writeValueAsString(formD));;
 	//	objectMapper.configure(SerializationFeature.INDENT_OUTPUT, true);
@@ -57,92 +54,49 @@ public class JsonParser {
 	return null;
 	}
 	
-	private List<String> getFields(JsonNode jsonNode) {
-		//StringBuilder fields=new StringBuilder();
-		List<String> fields=new ArrayList<String>();
-		
-		Iterator<JsonNode> elements = jsonNode.getElements();
-		while(elements.hasNext()){
-			Iterator<JsonNode>  phones = elements.next().getElements();
-			while (phones.hasNext()) {
-				JsonNode jsonNode1 = (JsonNode) phones.next();
-				Iterator<JsonNode>  ps	=jsonNode1.iterator();
-				while (ps.hasNext()) {
-					JsonNode jsonNode2 = (JsonNode) ps.next();
-					if(jsonNode2.get("name")!=null){
-					//	System.out.println(jsonNode2.get("name"));
-						fields.add(jsonNode2.get("name").asText());
-					}
-				}
-		//		System.out.println("Phone No = "+Text());	
-			}
-		    
+	private List<FormField> getFields(JsonNode node,String source, List<FormField> fields){
+		if(fields == null){
+			fields = new ArrayList<>();
 		}
+		
+		if(node.isArray()){
+			Iterator<JsonNode> elements = node.getElements();
+
+			while (elements.hasNext()) {
+				JsonNode childNode = elements.next();
+				getFields(childNode, source, fields);
+			}
+		}
+		else {
+			if(!node.get("type").asText().equalsIgnoreCase("group") && !node.get("type").asText().equalsIgnoreCase("repeat"))
+			{			
+				fields.add(new FormField(node.get("name").asText(), source+node.get("name").asText()));
+			}
+			else if(node.get("type").asText().equalsIgnoreCase("group")){
+				fields.addAll(getGroupFields(node,source));
+			}
+		}
+		
 		return fields;
 	}
 	
-	private List<FormField> getFields(JsonNode node,String source){
+	private List<FormField> getGroupFields(JsonNode node, String source){
+		
 		List<FormField> list =new ArrayList<FormField>();
-		//String source="/model/instance/"+source+"/";
+		source=source+node.get("name").asText()+"/";
+		try{
+			Iterator<JsonNode> elements = node.path("children").getElements();
 		
-		Iterator<JsonNode> elements = node.getElements();
-		
-			
-	//	System.err.println(node);
-		//System.out.println(phoneNosNode);
-		while(elements.hasNext()){
-			JsonNode jjNode=elements.next();
-			Iterator<JsonNode>  phones = node.getElements();
-
-			if(!jjNode.get("type").asText().equalsIgnoreCase("group") && !jjNode.get("type").asText().equalsIgnoreCase("repeat"))
-			{
-				
-			//	list.add(new FormField(  Node.get("name").asText(), source+Node.get("name").asText()  ));
-			
-				list.add(new FormField(jjNode.get("name").asText(), source+jjNode.get("name").asText()));
-			}else if(jjNode.get("type").asText().equalsIgnoreCase("group")){
-				//System.err.println( );
-				list.addAll(getGroupFields(jjNode,source));
+			while(elements.hasNext()){
+				JsonNode jjNode=elements.next();
+				getFields(jjNode, source, list);
 			}
-			
-			//System.out.println(Node.get("name"));
+		}
+		catch(Exception e){
+			e.printStackTrace();
 		}
 		
 		return list;
-	}
-	
-	private List<FormField> getGroupFields(JsonNode node,String formName){
-		
-		List<FormField> list =new ArrayList<FormField>();
-		String source=formName+node.get("name").asText()+"/";
-			try{//jjNode.path("children")
-		Iterator<JsonNode> elements = node.path("children").getElements();
-		
-		//System.out.println(phoneNosNode);
-		while(elements.hasNext()){
-			//System.err.println("sda");
-			JsonNode jjNode=elements.next();
-			//System.err.println(jjNode);
-			//Iterator<JsonNode>  phones = node.getElements();
-			if(jjNode.get("name")!=null ){
-			//System.err.println(jjNode.get("name").asText());
-				
-			list.add(new FormField(jjNode.get("name").asText(), source+jjNode.get("name").asText()));
-		
-		//	}//list.add(node.get("name")+"/"+(Node.get("name").asText()));
-			//System.out.println(Node.get("name"));
-		}else {
-			
-			//
-			System.err.println(jjNode.get("name").asText());
-		}
-			}}
-			catch(Exception e){
-				e.printStackTrace();
-			}
-		
-		return list;
-		
 	}
 	
 	private FormDefinition getForm(JsonNode rootNode ){
@@ -161,7 +115,7 @@ public class JsonParser {
 		//System.out.println(rootNode.get("name"));
 		JsonNode phoneNosNode = rootNode.path("children");
 		//getFields();
-		List<FormField> fields=getFields(phoneNosNode, source);
+		List<FormField> fields=getFields(phoneNosNode, source, null);
 		//System.out.println(fields);
 		FormField field=new FormField("id",null);
 		field.setShouldLoadValue(true);
@@ -169,7 +123,7 @@ public class JsonParser {
 	//	fields.set(0, field);
 		fields.add(0, field);
 		Form formData =new Form("", source, fields, null);
-		List<SubFormDefinition> sub_forms=getSubForms(phoneNosNode, source);
+		List<SubFormDefinition> sub_forms=getSubForms(phoneNosNode, source, null);
 		formData.setSub_forms(sub_forms);
 		formDefinition.setForm(formData);
 		return formDefinition;
@@ -180,7 +134,7 @@ public class JsonParser {
 		String formName=rootNode.get("name").asText();
 		source+=formName+"/";
 		System.out.println(rootNode.path("children"));
-		List<FormField> fields=getFields(rootNode.path("children"), source);
+		List<FormField> fields=getFields(rootNode.path("children"), source, null);
 		FormField field=new FormField("id",null);
 		field.setShouldLoadValue(true);
 		//fields.add(field);
@@ -192,25 +146,36 @@ public class JsonParser {
 		return subForm ;
 	}
 	
+	public static void main(String[] args) throws JsonProcessingException, IOException {
+		Scanner s = new Scanner(new File("D:\\opensrpVaccinatorWkspc\\forms\\daily_treatment_monitoring\\form.json"));
+		StringBuilder sb = new StringBuilder();
+		while (s.hasNextLine()) {
+			sb.append(s.nextLine());
+		}
+		System.out.println(new JsonParser().getFormDefinition(sb.toString()));
+	}
+	
 
 	
-	private List<SubFormDefinition> getSubForms(JsonNode node,String source){
-		List<SubFormDefinition> list =new ArrayList<SubFormDefinition>();
-		//String source="/model/instance/"+source+"/";
-		Iterator<JsonNode> elements = node.getElements();
-		//System.out.println(phoneNosNode);
-		while(elements.hasNext()){
-			JsonNode jjNode=elements.next();
-			Iterator<JsonNode>  phones = node.getElements();
-
-			 if(jjNode.get("type").asText().equalsIgnoreCase("repeat")){
-				
-				list.add(getSubForm(jjNode, source));
-			}
-			
-			//System.out.println(Node.get("name"));
+	private List<SubFormDefinition> getSubForms(JsonNode node,String source, List<SubFormDefinition> subforms){
+		if(subforms == null){
+			subforms = new ArrayList<>();
 		}
 		
-		return list;
+		if(node.isArray()){
+			Iterator<JsonNode> nodes = node.getElements();
+			
+			while(nodes.hasNext()){
+				JsonNode n = nodes.next();
+				if(n.has("type") && n.get("type").asText().equalsIgnoreCase("repeat")){
+					subforms.add(getSubForm(n, source));
+				}
+				if(n.has("children")){
+					String nodePath = source + n.get("name").asText() +"/";
+					getSubForms(n.get("children"), nodePath, subforms);
+				}		
+			}
+		}
+		return subforms;
 	}
 }

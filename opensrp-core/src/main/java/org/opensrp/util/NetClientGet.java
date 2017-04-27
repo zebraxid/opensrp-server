@@ -70,7 +70,7 @@ public class NetClientGet {
           return null;
 	}
         
-        public byte[] downloadJson(String username,String password, String formPk) throws IOException {
+        public String downloadJson(String username,String password, String formPk) throws IOException {
 		 
         	try{
 			String authString = username + ":" + password;
@@ -98,7 +98,7 @@ public class NetClientGet {
 			System.out.println(result);
 			System.out.println("*** END ***");
 			
-			return result.getBytes();
+			return result;
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

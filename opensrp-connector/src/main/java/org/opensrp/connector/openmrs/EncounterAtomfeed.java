@@ -89,7 +89,7 @@ public class EncounterAtomfeed extends OpenmrsService implements EventWorker, At
 				log.info("Update existing Event");
 				enc = eventService.mergeEvent(enc, "OpenMRS_Event");
 			}
-		} catch (JSONException e) {
+		} catch (Exception e) {
 			errorTraceService.log("ENCOUNTER ATOMFEED PROCESS FAIL", org.opensrp.domain.Event.class.getName(), event.getContent(), ExceptionUtils.getStackTrace(e), null);
 		}
 	}

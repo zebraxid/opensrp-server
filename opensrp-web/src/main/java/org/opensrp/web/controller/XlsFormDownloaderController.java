@@ -18,7 +18,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-
 @Controller
 @RequestMapping("/xlsform")
 public class XlsFormDownloaderController {
@@ -61,7 +60,7 @@ public class XlsFormDownloaderController {
 	String formDefinition="" ;
 		boolean check=false;
 		try {
-		check=	xlsService.downloadFormFiles(getPath().trim()+"form", userName, formPk, password,formName, formId);
+		check=	xlsService.downloadFormFiles(getPath().trim()+"form", userName, formName, password,formId, formPk);
 		formDefinition=xlsService.getFormDefinition();
 		
 		//Gson gson = new Gson();
@@ -86,7 +85,7 @@ public class XlsFormDownloaderController {
 		}
 		String msg=check==true?"Files downloaded in directory":"files not downloaded  !";
 		model.put("msg", msg);
-		model.put("definition", check?formDefinition:"All files were not downloaded, hence no form definition available");
+		model.put("definition", formDefinition);
 		if(check){
 			
 		}

@@ -97,7 +97,7 @@ public class PatientAtomfeed extends OpenmrsService implements EventWorker, Atom
 					log.info("Existing Client missing Valid SRP UID -> Posted Thrive ID back to OpenMRS : "+newId);
 				}
 			}
-		} catch (JSONException e) {
+		} catch (Exception e) {
 			errorTraceService.log("PATIENT ATOMFEED PROCESS FAIL", Client.class.getName(), event.getContent(), ExceptionUtils.getStackTrace(e), null);
 		}
 	}

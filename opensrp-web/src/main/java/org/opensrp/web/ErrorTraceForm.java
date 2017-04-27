@@ -1,8 +1,10 @@
 
-package org.opensrp.domain;
+package org.opensrp.web;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.opensrp.domain.ErrorTrace;
 
 /**
  * 

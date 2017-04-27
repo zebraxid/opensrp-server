@@ -1,10 +1,10 @@
 
 package org.opensrp.connector.openmrs.service;
-import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.*;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.startsWith;
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Map;
+import java.util.Random;
 
 import org.hamcrest.Matchers;
 import org.joda.time.DateTime;
@@ -21,12 +22,17 @@ import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+import org.opensrp.common.AllConstants.ActivityLogConstants;
 import org.opensrp.connector.openmrs.constants.OpenmrsHouseHold;
 import org.opensrp.domain.Client;
 import org.opensrp.domain.Event;
 import org.opensrp.domain.Obs;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.form.service.FormAttributeParser;
+import org.opensrp.service.ClientService;
 import org.opensrp.service.formSubmission.FormEntityConverter;
 
 import com.google.gson.JsonIOException;
@@ -42,11 +48,13 @@ public class EncounterTest extends TestResourceLoader{
 	PatientService ps;
 	OpenmrsUserService us;
 	HouseholdService hhs;
+	@Mock
+	ClientService clientService;
 
 	SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd");
 	
 	@Before
-	public void setup() throws IOException{
+	public void setup() throws IOException{		
 		ps = new PatientService(openmrsOpenmrsUrl, openmrsUsername, openmrsPassword);
 		us = new OpenmrsUserService(openmrsOpenmrsUrl, openmrsUsername, openmrsPassword);
 		s = new EncounterService(openmrsOpenmrsUrl, openmrsUsername, openmrsPassword);
@@ -57,6 +65,17 @@ public class EncounterTest extends TestResourceLoader{
 		hhs.setEncounterService(s);
 		FormAttributeParser fam = new FormAttributeParser(formDirPath);
 		oc = new FormEntityConverter(fam);
+		
+		MockitoAnnotations.initMocks(this);
+	}
+	
+	@Test
+	public void shouldPullEncounterFromOpenMRS() throws JSONException {
+		if(pushToOpenmrsForTest){
+			JSONObject enc = s.getEncounterByUuid("11ae9301-9c1e-41dc-962f-b98df0363b06", false);
+			Event e = s.convertToEvent(enc);
+			System.out.println(e);
+		}
 	}
 	
 	@Test
@@ -393,6 +412,51 @@ public class EncounterTest extends TestResourceLoader{
 				p = ps.createPatient(c);
 			}
 			s.createEncounter(e);
+		}
+	}
+	
+	@Test
+	public void shouldHandleEncounterRepeats() throws JsonIOException, IOException, JSONException {
+		FormSubmission fs = getFormSubmissionFor("daily_treatment_monitoring");
+		
+		Client c = oc.getClientFromFormSubmission(fs);
+		Event e = oc.getEventFromFormSubmission(fs);
+		Map<String, Map<String, Object>> dep = oc.getDependentClientsFromFormSubmission(fs);
+		
+		if(pushToOpenmrsForTest){
+			if(c != null && oc.hasUpdatedClientProperties(fs)){
+				JSONObject p = ps.getPatientByIdentifier(c.getBaseEntityId());
+				if(p == null){
+					p = ps.createPatient(c);
+				}				
+			}
+			else if(c != null){
+				c.withFirstName("Test Name")
+				.withLastName("Last Name")
+				.withGender("MALE")
+				.withBirthdate(DateTime.now().minusYears(5), null);
+				c.withIdentifier("Patient Identifier", "SRP-333-3299"+new Random().nextInt(9));
+
+				JSONObject p = ps.getPatientByIdentifier(c.getBaseEntityId());
+				if(p == null){
+					p = ps.createPatient(c);
+				}
+			}
+			
+			s.createEncounter(e);
+			
+			for (Map<String, Object> cm : dep.values()) {
+				Client cin = (Client)cm.get("client");
+				if(cin != null){// Only new clients would exist in map
+					JSONObject p = ps.getPatientByIdentifier(cin.getBaseEntityId());
+					if(p == null){
+						p = ps.createPatient(cin);
+					}	
+				}
+				Event evin = (Event)cm.get("event");
+				//check whether person exists and user did not miss client properties unintentionally 
+				s.createEncounter(evin);
+			}
 		}
 
 	}

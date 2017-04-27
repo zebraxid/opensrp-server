@@ -1,0 +1,55 @@
+<model>
+    <instance>
+        <dtm encounter_type="Daily Treatment Monitoring" id="daily_treatment_monitoring" version="201704101010">
+            <formhub>
+                <uuid/>
+            </formhub>
+            <start/>
+            <end/>
+            <Date_DTMEnc openmrs_entity="encounter" openmrs_entity_id="encounter_date"/>
+            <Section_BI>
+                <intro_1/>
+                <GPS_Pt openmrs_entity="concept" openmrs_entity_id="1d7179e8-0195-4869-8a96-04a2ddddd3d3"/>
+                <RegNo_Pt/>
+                <Date_TxStart/>
+            </Section_BI>
+            <Section_DM>
+                <intro_2/>
+                <TxDayNum openmrs_entity="concept" openmrs_entity_id="98c2c5ae-2e05-49bd-bbc2-e2f624192643"/>
+                <drug_repeat_count/>
+                <drug_repeat template="" openmrs_entity="encounter" openmrs_entity_id="Drugs Administered">
+                    <TBDrug openmrs_entity="concept" openmrs_entity_id="a6991695-5bf9-4cd9-96c6-9dd5268074c3"/>
+                    <PrescDoseAmount_TBDrug openmrs_entity="concept" openmrs_entity_id="a839f3c1-6823-4065-89fb-6f703bc2c757"/>
+                    <DoseUnit_TBDrug openmrs_entity="concept" openmrs_entity_id="8b506597-edd0-4d56-890d-7bcc9dc29aa7"/>
+                    <AdmDoseAmount_TBDrug openmrs_entity="concept" openmrs_entity_id="43f51bb2-cf22-44f4-9f8a-13d0e6fc8e32"/>
+                    <acknowledge_test/>
+                    <MissedDoseAmount_TBDrug openmrs_entity="concept" openmrs_entity_id="b9b17093-9df2-4107-a6c1-a20eafea130a"/>
+                    <MDA_TBDrug_note/>
+                    <DOTRate_TBDrug openmrs_entity="concept" openmrs_entity_id="bfe5c1f3-7a59-49ad-9e88-a722c81bd17d"/>
+                    <DOTR_TBDrug_note/>
+                    <Adm_TBDrug openmrs_entity="concept" openmrs_entity_id="6c86a203-7e4c-4d6a-912f-07132d8a38d3"/>
+                    <Adm_TBDrug_note/>
+                    <MethodAdm_TBDrug openmrs_entity="concept" openmrs_entity_id="dc17b32a-5bc6-462a-adfd-e8e3d839b850"/>
+                    <MethodAdm_TBDrug_other/>
+                    <test1/>
+                    <test3>1</test3>
+                </drug_repeat>
+                <test2/>
+                <NoOfDrugs_TxRx/>
+                <DOTRx openmrs_entity="concept" openmrs_entity_id="28872150-ff31-4fb5-a7bf-93353a6f16ba"/>
+                <DOTRx_note/>
+            </Section_DM>
+            <Section_AE>
+                <intro_2/>
+                <AE_DTM openmrs_entity="concept" openmrs_entity_id="e503ae6d-02ef-4603-a486-7643baebcb1b"/>
+                <SAE_DTM openmrs_entity="concept" openmrs_entity_id="8d80bcfa-3c35-4e7e-a941-e6fc67050bfc"/>
+                <AdmRefSAE_DTM openmrs_entity="concept" openmrs_entity_id="3d986a2a-187a-40bb-85c7-45def1ef491b"/>
+                <ActionAE_DTM openmrs_entity="concept" openmrs_entity_id="9b7c52a1-e1c6-497a-93db-70faf03314a0"/>
+            </Section_AE>
+            <EndTime_DTM/>
+            <meta>
+                <instanceID/>
+            </meta>
+        </dtm>
+    </instance>
+</model>

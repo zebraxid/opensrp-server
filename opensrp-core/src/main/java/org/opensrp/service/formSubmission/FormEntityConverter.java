@@ -545,7 +545,10 @@ public class FormEntityConverter {
 				else if(att.containsKey("openmrs_entity") 
 						&& att.get("openmrs_entity").equalsIgnoreCase("encounter")){
 					// a client property can not be updated via subform so process event only
-					cne.put("event", getEventForSubform(fs, att.get("openmrs_entity_id"), sbf));
+					Event event = getEventForSubform(fs, att.get("openmrs_entity_id"), sbf);
+					// for encounter types override the base entity id to be main FS entityId
+					event.setBaseEntityId(fs.entityId());
+					cne.put("event", event);
 				}
 				// if no client event just continue with 2nd subform
 				if(cne.isEmpty()){

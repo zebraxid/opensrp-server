@@ -86,7 +86,7 @@ public class DrugOrderAtomfeed extends OpenmrsService implements EventWorker, At
 			else {
 				allDrugOrders.merge(existingL.get(0).getId(), drugO);
 			}
-		} catch (JSONException e) {
+		} catch (Exception e) {
 			errorTraceService.log("DRUG ORDER ATOMFEED PROCESS FAIL", DrugOrder.class.getName(), event.getContent(), ExceptionUtils.getStackTrace(e), null);
 		}
 	}

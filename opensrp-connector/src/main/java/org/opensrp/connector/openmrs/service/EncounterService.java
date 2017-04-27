@@ -26,6 +26,8 @@ import com.mysql.jdbc.StringUtils;
 public class EncounterService extends OpenmrsService{
 	private static final String ENCOUNTER_URL = "ws/rest/v1/encounter";//"ws/rest/emrapi/encounter";
 	private static final String ENCOUNTER__TYPE_URL = "ws/rest/v1/encountertype";
+	private static final String VISIT_URL = "ws/rest/v1/visit";//"ws/rest/emrapi/encounter";
+	private static final String VISIT_TYPE_URL = "ws/rest/v1/visittype";
 	public static final String OPENMRS_UUID_IDENTIFIER_TYPE = "OPENMRS_UUID";
 
 	private PatientService patientService;
@@ -93,6 +95,36 @@ public class EncounterService extends OpenmrsService{
 		a.put("description", description);
 		return a;
 	}
+    
+    public JSONObject getVisitType(String visitType) throws JSONException
+    {
+    	// we have to use this ugly approach because identifier not found throws exception and 
+    	// its hard to find whether it was network error or object not found or server error
+    	JSONArray res = new JSONObject(HttpUtil.get(getURL()+"/"+VISIT_TYPE_URL, "v=full", 
+    			OPENMRS_USER, OPENMRS_PWD).body()).getJSONArray("results");
+    	for (int i = 0; i < res.length(); i++) {
+			if(res.getJSONObject(i).getString("display").equalsIgnoreCase(visitType)){
+				return res.getJSONObject(i);
+			}
+		}
+    	return null;
+    }
+	
+    public JSONObject createVisitType(String name, String description) throws JSONException{
+		JSONObject o = convertVisitTypeToOpenmrsJson(name, description);
+		return new JSONObject(HttpUtil.post(getURL()+"/"+VISIT_TYPE_URL, "", o.toString(), OPENMRS_USER, OPENMRS_PWD).body());
+	}
+    
+    public JSONObject convertVisitTypeToOpenmrsJson(String name, String description) throws JSONException {
+		JSONObject a = new JSONObject();
+		a.put("name", name);
+		a.put("description", description);
+		return a;
+	}
+    
+    public JSONObject createVisit(JSONObject visit) throws JSONException{
+		return new JSONObject(HttpUtil.post(getURL()+"/"+VISIT_URL, "", visit.toString(), OPENMRS_USER, OPENMRS_PWD).body());
+    }
 	
     private JSONObject convertToEncounter(Event e) throws JSONException {
     	JSONObject pt = patientService.getPatientByIdentifier(e.getBaseEntityId());
@@ -269,18 +301,53 @@ public class EncounterService extends OpenmrsService{
 		e.addIdentifier(OPENMRS_UUID_IDENTIFIER_TYPE, encounter.getString("uuid"));
 		
 		JSONArray ol = encounter.getJSONArray("obs");
+		List<Obs> obslist = new ArrayList<>();
 		for (int i = 0; i < ol.length(); i++) {
 			JSONObject o = ol.getJSONObject(i);
+			
+			extractObs(o, null, obslist);
+		}
+		
+		e.setObs(obslist);
+
+		return e;
+	}
+	
+	private List<Obs> extractObs(JSONObject o, String parentCode, List<Obs> obslist) throws JSONException {
+		if(obslist == null){
+			obslist = new ArrayList<>();
+		}
+		
+		String obsConcept = o.getJSONObject("concept").getString("uuid");
+		
+		if(o.has("value") == false || o.isNull("value") 
+				|| o.getString("value").equalsIgnoreCase("null") 
+				|| o.getString("value").equalsIgnoreCase("")){// if value is null obs is a parent
+			
+			JSONArray groupMembers = o.optJSONArray("groupMembers");
+			if(groupMembers != null){
+				for (int i = 0; i < groupMembers.length(); i++) {
+					JSONObject memberObs = groupMembers.getJSONObject(i);
+					extractObs(memberObs, obsConcept, obslist);
+				}
+			}
+		}
+		else {
 			List<String> values = new ArrayList<String>();
+			List<String> humanReadibleValues = new ArrayList<String>();
+			
 			if(o.optJSONObject("value") != null){
 				values.add(o.getJSONObject("value").getString("uuid"));
+				humanReadibleValues.add(o.getJSONObject("value").getString("display"));
 			}
 			else if(JsonUtil.getValue(o, "value") != null){
 				values.add(o.getString("value"));
 			}
-			e.addObs(new Obs(null, null, o.getJSONObject("concept").getString("uuid"), null /*//TODO handle parent*/, values, null, null/*comments*/, null/*formSubmissionField*/));
+			
+			Obs obs = new Obs("openmrs_concept", null, obsConcept, parentCode /*//TODO handle parent*/, values, humanReadibleValues, null/*comments*/, o.getJSONObject("concept").getString("display")/*formSubmissionField*/);
+			obslist.add(obs);
 		}
 		
-		return e;
+		return obslist;
 	}
 }
