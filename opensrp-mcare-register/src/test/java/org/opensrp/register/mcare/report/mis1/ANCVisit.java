@@ -37,8 +37,7 @@ public class ANCVisit {
     }
 
     private ANCVisit(ANCVisit.ANCVisitBuilder ancVisitBuilder) {
-        this.visitData = new HashMap<>();
-        this.visitData.putAll(ancVisitBuilder.followUp);
+        this.visitData = new HashMap<>(ancVisitBuilder.followUp);
     }
 
 }

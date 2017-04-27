@@ -9,6 +9,8 @@ import org.opensrp.register.mcare.report.mis1.MIS1TestData;
 
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
+
 public class ANCVisitCountTest {
     public String unionName = "union";
     private ANCVisitTestData ancVisitTestData;
@@ -29,6 +31,7 @@ public class ANCVisitCountTest {
     public void countANC1Visit() {
         List<Members> membersList = ancVisitTestData.createANCVisit1TestData();
         MIS1Report mis1Report = new MIS1Report(unionName, membersList, startDateTime, endDateTime);
-        long anc1VisitCount = mis1Report.getMaternityCareReport().getAncReportCalculator().getVisitOneCount();
+        long anc1VisitCount = mis1Report.getMaternityCareReport().getANCReportCalculator().getVisitOneCount();
+        assertEquals(anc1VisitCount, ancVisitTestData.validCount);
     }
 }
