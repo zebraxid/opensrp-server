@@ -55,14 +55,14 @@ public class ANCVisitTestData extends MIS1TestData {
     public List<Members> createANCVisit3TestData() {
         List<Members> allMembers = new ArrayList<>();
 
-        allMembers.add(createValidMemberWithStartDateTime(VisitNumber.thee));
-        allMembers.add(createValidMemberWithEndDateTime(VisitNumber.thee));
+        allMembers.add(createValidMemberWithStartDateTime(VisitNumber.three));
+        allMembers.add(createValidMemberWithEndDateTime(VisitNumber.three));
 
         for (int i = 0; i < totalCount; i++) {
             if (i < validCount - 2) {
-                allMembers.add(createValidMemberWithRandomDateTime(VisitNumber.thee));
+                allMembers.add(createValidMemberWithRandomDateTime(VisitNumber.three));
             } else {
-                allMembers.add(createInValidMemberWithRandomDateTime(VisitNumber.thee));
+                allMembers.add(createInValidMemberWithRandomDateTime(VisitNumber.three));
             }
 
         }

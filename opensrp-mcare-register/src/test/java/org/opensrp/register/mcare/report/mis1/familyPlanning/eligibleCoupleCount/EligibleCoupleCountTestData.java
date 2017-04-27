@@ -1,13 +1,11 @@
 package org.opensrp.register.mcare.report.mis1.familyPlanning.eligibleCoupleCount;
 
 
-import org.opensrp.register.mcare.TestData;
 import org.opensrp.register.mcare.domain.Members;
 import org.opensrp.register.mcare.report.mis1.EligibleCoupleFollowUP;
 import org.opensrp.register.mcare.report.mis1.MIS1TestData;
 
 import java.util.*;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class EligibleCoupleCountTestData extends MIS1TestData {
     static EligibleCoupleFollowUP.EligibleCoupleFollowUpBuilder builder =

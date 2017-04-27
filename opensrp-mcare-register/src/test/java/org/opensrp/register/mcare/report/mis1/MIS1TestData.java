@@ -23,11 +23,11 @@ public abstract class MIS1TestData {
         this.endDateTime = endDateTime;
     }
 
-    public long getRandomNumberBetween(long start, long end) {
+    public static long getRandomNumberBetween(long start, long end) {
         return ThreadLocalRandom.current().nextLong(start, end);
     }
 
-    public int getRandomNumberBetween(int start, int end) {
+    public static int getRandomNumberBetween(int start, int end) {
         return ThreadLocalRandom.current().nextInt(start, end);
     }
 
@@ -58,7 +58,7 @@ public abstract class MIS1TestData {
     public enum VisitNumber {
         one,
         two,
-        thee,
+        three,
         four
     }
 }
