@@ -7,7 +7,6 @@ import org.opensrp.register.mcare.report.mis1.MIS1TestData;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class ANCVisitTestData extends MIS1TestData {
 
@@ -30,6 +29,57 @@ public class ANCVisitTestData extends MIS1TestData {
                 allMembers.add(createValidMemberWithRandomDateTime(VisitNumber.one));
             } else {
                 allMembers.add(createInValidMemberWithRandomDateTime(VisitNumber.one));
+            }
+
+        }
+        return allMembers;
+    }
+
+    public List<Members> createANCVisit2TestData() {
+        List<Members> allMembers = new ArrayList<>();
+
+        allMembers.add(createValidMemberWithStartDateTime(VisitNumber.two));
+        allMembers.add(createValidMemberWithEndDateTime(VisitNumber.two));
+
+        for (int i = 0; i < totalCount; i++) {
+            if (i < validCount - 2) {
+                allMembers.add(createValidMemberWithRandomDateTime(VisitNumber.two));
+            } else {
+                allMembers.add(createInValidMemberWithRandomDateTime(VisitNumber.two));
+            }
+
+        }
+        return allMembers;
+    }
+
+    public List<Members> createANCVisit3TestData() {
+        List<Members> allMembers = new ArrayList<>();
+
+        allMembers.add(createValidMemberWithStartDateTime(VisitNumber.thee));
+        allMembers.add(createValidMemberWithEndDateTime(VisitNumber.thee));
+
+        for (int i = 0; i < totalCount; i++) {
+            if (i < validCount - 2) {
+                allMembers.add(createValidMemberWithRandomDateTime(VisitNumber.thee));
+            } else {
+                allMembers.add(createInValidMemberWithRandomDateTime(VisitNumber.thee));
+            }
+
+        }
+        return allMembers;
+    }
+
+    public List<Members> createANCVisit4TestData() {
+        List<Members> allMembers = new ArrayList<>();
+
+        allMembers.add(createValidMemberWithStartDateTime(VisitNumber.four));
+        allMembers.add(createValidMemberWithEndDateTime(VisitNumber.four));
+
+        for (int i = 0; i < totalCount; i++) {
+            if (i < validCount - 2) {
+                allMembers.add(createValidMemberWithRandomDateTime(VisitNumber.four));
+            } else {
+                allMembers.add(createInValidMemberWithRandomDateTime(VisitNumber.four));
             }
 
         }
