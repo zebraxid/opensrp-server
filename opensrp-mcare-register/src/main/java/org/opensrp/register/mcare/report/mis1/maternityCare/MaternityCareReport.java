@@ -6,7 +6,7 @@ import org.opensrp.register.mcare.report.mis1.Report;
 
 public class MaternityCareReport extends Report{
     private PregnantWomenCountCalculator pregnantWomenCountCalculator;
-    private ANCReportCalculator ANCReportCalculator;
+    private ANCReportCalculator ancReportCalculator;
 
 
     public MaternityCareReport(long startDateTime, long endDateTime) {
@@ -17,20 +17,20 @@ public class MaternityCareReport extends Report{
         return pregnantWomenCountCalculator;
     }
 
-    public ANCReportCalculator getANCReportCalculator() {
-        return ANCReportCalculator;
+    public ANCReportCalculator getAncReportCalculator() {
+        return ancReportCalculator;
     }
 
     @Override
     public void calculate(Members member) {
         this.pregnantWomenCountCalculator.calculate(member);
-        this.ANCReportCalculator.calculate(member);
+        this.ancReportCalculator.calculate(member);
     }
 
     @Override
     protected void initCalculators(long startDateTime, long endDateTime){
         this.pregnantWomenCountCalculator = new PregnantWomenCountCalculator(startDateTime, endDateTime);
-        this.ANCReportCalculator = new ANCReportCalculator(startDateTime, endDateTime);
+        this.ancReportCalculator = new ANCReportCalculator(startDateTime, endDateTime);
     }
 
 

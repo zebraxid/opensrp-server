@@ -8,6 +8,7 @@ import java.util.Map;
 
 public class ANCReportCalculator extends ReportCalculator {
     long visitOneCount = 0;
+    long visitTwoCount = 0;
 
 
     public ANCReportCalculator(long startDateTime, long endDateTime) {
@@ -21,6 +22,10 @@ public class ANCReportCalculator extends ReportCalculator {
 
     public long getVisitOneCount() {
         return visitOneCount;
+    }
+
+    public long getVisitTwoCount() {
+        return visitTwoCount;
     }
 
     private int addToVisitOneCount(Members member) {

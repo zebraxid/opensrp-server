@@ -31,7 +31,16 @@ public class ANCVisitCountTest {
     public void countANC1Visit() {
         List<Members> membersList = ancVisitTestData.createANCVisit1TestData();
         MIS1Report mis1Report = new MIS1Report(unionName, membersList, startDateTime, endDateTime);
-        long anc1VisitCount = mis1Report.getMaternityCareReport().getANCReportCalculator().getVisitOneCount();
+        long anc1VisitCount = mis1Report.getMaternityCareReport().getAncReportCalculator().getVisitOneCount();
         assertEquals(anc1VisitCount, ancVisitTestData.validCount);
+    }
+
+
+    @Test
+    public void countANC2Visit() {
+        List<Members> membersList = ancVisitTestData.createANCVisit2TestData();
+        MIS1Report mis1Report = new MIS1Report(unionName, membersList, startDateTime, endDateTime);
+        long anc2visitCount = mis1Report.getMaternityCareReport().getAncReportCalculator().getVisitTwoCount();
+        assertEquals(ancVisitTestData.validCount, anc2visitCount);
     }
 }
