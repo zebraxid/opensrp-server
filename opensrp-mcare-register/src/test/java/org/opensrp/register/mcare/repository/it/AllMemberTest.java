@@ -1,8 +1,13 @@
 package org.opensrp.register.mcare.repository.it;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.ektorp.CouchDbInstance;
 import org.ektorp.http.HttpClient;
 import org.ektorp.http.StdHttpClient;
@@ -22,7 +27,9 @@ import org.opensrp.register.mcare.domain.Members;
 import org.opensrp.register.mcare.repository.AllHouseHolds;
 import org.opensrp.register.mcare.repository.AllMembers;
 
-
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.util.ResourceUtils;
 public class AllMemberTest {
 	
 	private AllMembers allMembers;
@@ -240,7 +247,7 @@ public class AllMemberTest {
 		System.out.println(op.getClass());
 		
 	}*/
-	@Test
+	@Ignore@Test
 	public void EncounterTest() throws JSONException{
 		JSONObject enc = new JSONObject();
 		enc.put("encounterDatetime", "2017-04-05");
@@ -308,6 +315,20 @@ public class AllMemberTest {
 		sb.append("T dddT"+" ");
 		sb.append("R dddT"+" ");
 		System.out.println(sb);
+		
+	}
+	
+	@Test
+	public void getResourceFile() throws FileNotFoundException{
+		
+		JsonNode enc = null;
+		ObjectMapper mapper = new ObjectMapper();
+	     try {
+	            enc = mapper.readValue(new File("./../assets/form/woman_tt_form/form_definition.json"), JsonNode.class);
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+		 System.out.println(enc.toString());
 		
 	}
 	

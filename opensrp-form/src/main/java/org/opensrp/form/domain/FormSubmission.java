@@ -114,8 +114,36 @@ public class FormSubmission extends MotechBaseDataObject {
     public List<SubFormData> subForms() {
         return formInstance.subForms();
     }
+    
+    public String getAnmId() {
+		return anmId;
+	}
 
-    @Override
+	public String getFormName() {
+		return formName;
+	}
+
+	public String getEntityId() {
+		return entityId;
+	}
+
+	public long getClientVersion() {
+		return clientVersion;
+	}
+
+	public String getFormDataDefinitionVersion() {
+		return formDataDefinitionVersion;
+	}
+
+	public FormInstance getFormInstance() {
+		return formInstance;
+	}
+
+	public long getServerVersion() {
+		return serverVersion;
+	}
+
+	@Override
     public boolean equals(Object o) {
         return EqualsBuilder.reflectionEquals(o, this);
     }

@@ -9,7 +9,7 @@
     <import resource="classpath:applicationPlatformCommonAPI.xml"/>
     
     <context:property-placeholder location="classpath*:maven.properties"/>
-    
+    <util:properties id="opensrp" location="classpath:/opensrp.properties"/>
     <util:properties id="opensrp" location="classpath:/opensrp.properties"/>
 
     <context:annotation-config/>

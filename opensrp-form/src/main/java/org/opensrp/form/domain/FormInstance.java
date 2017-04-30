@@ -44,7 +44,15 @@ public class FormInstance {
         return form.subForms();
     }
 
-    @Override
+    public void setForm_data_definition_version(String form_data_definition_version) {
+		this.form_data_definition_version = form_data_definition_version;
+	}
+
+	public void setForm(FormData form) {
+		this.form = form;
+	}
+
+	@Override
     public boolean equals(Object o) {
         return EqualsBuilder.reflectionEquals(this, o);
     }

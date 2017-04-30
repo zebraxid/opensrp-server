@@ -33,7 +33,20 @@ public class FormField {
     public String source() {
         return source;
     }
-    @Override
+    
+    public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setValue(String value) {
+		this.value = value;
+	}
+
+	public void setSource(String source) {
+		this.source = source;
+	}
+
+	@Override
     public boolean equals(Object o) {
         return EqualsBuilder.reflectionEquals(this, o);
     }

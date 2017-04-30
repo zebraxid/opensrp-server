@@ -76,7 +76,31 @@ public class FormData {
         return sub_forms;
     }
     
-    @Override
+    
+
+	
+
+	public void setBind_type(String bind_type) {
+		this.bind_type = bind_type;
+	}
+
+	public void setDefault_bind_path(String default_bind_path) {
+		this.default_bind_path = default_bind_path;
+	}
+
+	public void setFields(List<FormField> fields) {
+		this.fields = fields;
+	}
+
+	public void setSub_forms(List<SubFormData> sub_forms) {
+		this.sub_forms = sub_forms;
+	}
+
+	public void setMapOfFieldsByName(Map<String, String> mapOfFieldsByName) {
+		this.mapOfFieldsByName = mapOfFieldsByName;
+	}
+
+	@Override
     public boolean equals(Object o) {
         return EqualsBuilder.reflectionEquals(this, o);
     }
