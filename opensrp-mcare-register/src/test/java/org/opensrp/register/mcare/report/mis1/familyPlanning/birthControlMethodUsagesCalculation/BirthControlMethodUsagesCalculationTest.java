@@ -31,7 +31,7 @@ public class BirthControlMethodUsagesCalculationTest {
         mis1Report = new MIS1Report(unionName, birthControlMethodTestData.createTotalUsagesData(), 0, 0 );
         int totalCondomUsagesOfCurrentMonth =
                 mis1Report.getFamilyPlanningReport().getCondomUsagesCalculator().totalUsages();
-        assertEquals(totalCondomUsagesOfCurrentMonth, birthControlMethodTestData.validCount);
+        assertEquals(birthControlMethodTestData.validCount, totalCondomUsagesOfCurrentMonth);
     }
 
     @Test
@@ -39,7 +39,7 @@ public class BirthControlMethodUsagesCalculationTest {
         this.mis1Report = new MIS1Report(unionName, this.birthControlMethodTestData.createNewTestData(), 0, 0);
         int totalNewBirthControlPillUsagesOfCurrentMonth =
                 mis1Report.getFamilyPlanningReport().getCondomUsagesCalculator().newUsages();
-        assertEquals(totalNewBirthControlPillUsagesOfCurrentMonth, this.birthControlMethodTestData.validCount);
+        assertEquals(this.birthControlMethodTestData.validCount, totalNewBirthControlPillUsagesOfCurrentMonth);
     }
 
     @Test
@@ -49,7 +49,7 @@ public class BirthControlMethodUsagesCalculationTest {
                         SECOND_BIRTH_CONTROL_METHOD, THIRD_BIRTH_CONTROL_METHOD), 0, 0);
         int totalCountOfMembersWhoLeftUsagesOfBirthControlPillOfCurrentMonth =
                 mis1Report.getFamilyPlanningReport().getCondomUsagesCalculator().leftUsagesButTakenNone();
-        assertEquals(totalCountOfMembersWhoLeftUsagesOfBirthControlPillOfCurrentMonth, this.birthControlMethodTestData.validCount);
+        assertEquals(this.birthControlMethodTestData.validCount, totalCountOfMembersWhoLeftUsagesOfBirthControlPillOfCurrentMonth);
     }
 
     @Test
@@ -59,6 +59,6 @@ public class BirthControlMethodUsagesCalculationTest {
                         SECOND_BIRTH_CONTROL_METHOD, THIRD_BIRTH_CONTROL_METHOD), 0, 0);
         int totalCountOfMembersWhoLeftUsagesOfBirthControlPillOfCurrentMonth =
                 mis1Report.getFamilyPlanningReport().getCondomUsagesCalculator().leftUsagesButTakenOther();
-        assertEquals(totalCountOfMembersWhoLeftUsagesOfBirthControlPillOfCurrentMonth, this.birthControlMethodTestData.validCount);
+        assertEquals(this.birthControlMethodTestData.validCount, totalCountOfMembersWhoLeftUsagesOfBirthControlPillOfCurrentMonth);
     }
 }

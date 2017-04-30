@@ -35,7 +35,7 @@ public class EligibleCoupleCountCalculatorTest {
         int newEligibleCoupleVisitCount = mis1Report.getFamilyPlanningReport().getEligibleCoupleCountCalculator().
                 getNewEligibleCoupleVisitCount();
 
-        assertEquals(newEligibleCoupleVisitCount, eligibleCoupleCountTestData.validCount);
+        assertEquals(eligibleCoupleCountTestData.validCount, newEligibleCoupleVisitCount);
     }
 
     @Test
@@ -45,6 +45,6 @@ public class EligibleCoupleCountCalculatorTest {
 
         int totalEligibleCoupleCount = mis1Report.getFamilyPlanningReport().getEligibleCoupleCountCalculator().getTotalEligibleCouple();
 
-        assertEquals(totalEligibleCoupleCount, eligibleCoupleCountTestData.validCount);
+        assertEquals(eligibleCoupleCountTestData.validCount, totalEligibleCoupleCount);
     }
 }

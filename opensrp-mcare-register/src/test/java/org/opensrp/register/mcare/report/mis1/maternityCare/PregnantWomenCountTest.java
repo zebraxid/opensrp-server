@@ -34,7 +34,7 @@ public class PregnantWomenCountTest {
 
         long newPregnantWomenCount = mis1Report.getMaternityCareReport().getPregnantWomenCountCalculator().getNewCount();
 
-        assertEquals(newPregnantWomenCount, pregnantWomenCountTestData.validCount);
+        assertEquals(pregnantWomenCountTestData.validCount, newPregnantWomenCount);
     }
 }
 
