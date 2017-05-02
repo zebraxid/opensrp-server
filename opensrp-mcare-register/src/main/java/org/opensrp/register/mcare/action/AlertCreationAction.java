@@ -118,4 +118,10 @@ public class AlertCreationAction implements HookedEvent {
 		multimediaRegisterService.saveMultimediaFileToRegistry(multimediaFile);
 	}
 
+	@Override
+	public void getMember(String id) {
+		allMembers.findByCaseId(id);
+		
+	}
+
 }

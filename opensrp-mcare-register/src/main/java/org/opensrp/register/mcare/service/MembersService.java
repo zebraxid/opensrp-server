@@ -865,199 +865,199 @@ public class MembersService {
 		
 		SimpleDateFormat dateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date today = Calendar.getInstance().getTime();
-
-		Map<String, String> vaccine = create(ID, submission.getField(ID))
-.put(REFERENCE_DATE, 
-		submission.getField(REFERENCE_DATE))
-.put(START_DATE, 
-		submission.getField(START_DATE))
-.put(END_DATE, 
-		submission.getField(END_DATE))
-.put(Member_Fname
-	    	, submission.getField(Member_Fname))
-.put(Child_mother_name
-	    	, submission.getField(Child_mother_name))
-.put(Child_gender
-	    	, submission.getField(Child_gender))
-.put(Child_dob
-	    	, submission.getField(Child_dob))
-.put(Member_Reg_Date
-	    	, submission.getField(Member_Reg_Date))
-.put(MEMBER_COUNTRY   
-			, submission.getField(MEMBER_COUNTRY))
-.put(MEMBER_DIVISION
-	    	, submission.getField(MEMBER_DIVISION))
-.put(MEMBER_DISTRICT
-	    	, submission.getField(MEMBER_DISTRICT))
-.put(MEMBER_UPAZILLA
-	    	, submission.getField(MEMBER_UPAZILLA))
-.put(MEMBER_PAURASAVA
-	    	, submission.getField(MEMBER_PAURASAVA))
-.put(MEMBER_UNION
-	    	, submission.getField(MEMBER_UNION))
-.put(MEMBER_WARD
-	    	, submission.getField(MEMBER_WARD))
-.put(Member_BLOCK
-	    	, submission.getField(Member_BLOCK))
-.put(MEMBER_HIE_FACILITIES
-	    	, submission.getField(MEMBER_HIE_FACILITIES))
-.put(MEMBER_ADDRESS_LINE
-	    	, submission.getField(MEMBER_ADDRESS_LINE))
-.put(MEMBER_GPS
-	    	, submission.getField(MEMBER_GPS))
-.put(existing_epi_card_number
-	    	, submission.getField(existing_epi_card_number))
-.put(child_was_suffering_from_a_disease_at_birth
-	    	, submission.getField(child_was_suffering_from_a_disease_at_birth))
-.put(contact_phone_number
-	    	, submission.getField(contact_phone_number))
-.put(e_bcg
-	    	, submission.getField(e_bcg))
-.put(e_opv0
-	    	, submission.getField(e_opv0))
-.put(e_penta2
-	    	, submission.getField(e_penta2))
-.put(e_penta1
-	    	, submission.getField(e_penta1))
-.put(e_penta3
-	    	, submission.getField(e_penta3))
-.put(e_opv1
-	    	, submission.getField(e_opv1))
-.put(e_opv2
-	    	, submission.getField(e_opv2))
-.put(e_opv3
-	    	, submission.getField(e_opv3))
-.put(e_pcv1
-	    	, submission.getField(e_pcv1))
-.put(e_pcv2
-	    	, submission.getField(e_pcv2)) 
-.put(e_pcv3
-	    	, submission.getField(e_pcv3))
-.put(e_ipv
-	    	, submission.getField(e_ipv))
-.put(e_measles1
-	    	, submission.getField(e_measles1))
-.put(e_measles2
-	    	, submission.getField(e_measles2))
-.put(provider_id
-	    	, submission.getField(provider_id))
-.put(provider_location_id
-	    	, submission.getField(provider_location_id))
-.put(provider_location_name
-	    	, submission.getField(provider_location_name))
-.put(provider_location_note
-	    	, submission.getField(provider_location_note))
-.put(existing_client_reg_date_note
-	    	, submission.getField(existing_client_reg_date_note))
-.put(epi_card_number_note
-	    	, submission.getField(epi_card_number_note))
-.put(first_name_note
-	    	, submission.getField(first_name_note))
-.put(child_age
-	    	, submission.getField(child_age))
-.put(child_age_days
-			, submission.getField(child_age_days))
-.put(calc_dob_note
-	    	, submission.getField(calc_dob_note))
-.put(gender_note
-	    	, submission.getField(gender_note))
-.put(mother_name_note
-	    	, submission.getField(mother_name_note))
-.put(address
-	    	, submission.getField(address))
-.put(address_change
-	    	, submission.getField(address_change))
-.put(address1
-	    	, submission.getField(address1))
-.put(landmark
-	    	, submission.getField(landmark))
-.put(center_gps
-	    	, submission.getField(center_gps))
-.put(child_was_suffering_from_a_disease_at_birth_note
-	    	, submission.getField(child_was_suffering_from_a_disease_at_birth_note))
-.put(side_effects
-	    	, submission.getField(side_effects))
-.put(six_weeks
-	    	, submission.getField(six_weeks))
-.put(ten_weeks
-	    	, submission.getField(ten_weeks))
-.put(forteen_weeks
-	    	, submission.getField(forteen_weeks))
-.put(nine_months
-	    	, submission.getField(nine_months))
-.put(fifteen_months
-	    	, submission.getField(fifteen_months))
-.put(bcg_note
-	    	, submission.getField(bcg_note))
-.put(opv0_note
-	    	, submission.getField(opv0_note))
-.put(opv1_note
-	    	, submission.getField(opv1_note))
-.put(pcv1_note
-	    	, submission.getField(pcv1_note))
-.put(penta1_note
-	    	, submission.getField(penta1_note))
-.put(opv2_note
-	    	, submission.getField(opv2_note))
-.put(pcv2_note
-	    	, submission.getField(pcv2_note))
-.put(penta2_note
-	    	, submission.getField(penta2_note))
-.put(opv3_note
-	    	, submission.getField(opv3_note))
-.put(pcv3_note
-	    	, submission.getField(pcv3_note))
-.put(penta3_note
-	    	, submission.getField(penta3_note))
-.put(ipv_note
-	    	, submission.getField(ipv_note))
-.put(measles1_note
-	    	, submission.getField(ipv_note))
-.put(measles2_note
-	    	, submission.getField(measles2_note))
-.put(vaccination_date
-	    	, submission.getField(vaccination_date))
-.put(final_bcg
-	    	, submission.getField(final_bcg))
-.put(final_opv0
-	    	, submission.getField(final_opv0))
-.put(final_pcv1
-	    	, submission.getField(final_pcv1))
-.put(final_opv1
-	    	, submission.getField(final_opv1))
-.put(final_penta1
-	    	, submission.getField(final_penta1))
-.put(final_pcv2
-	    	, submission.getField(final_pcv2))
-.put(final_opv2
-	    	, submission.getField(final_opv2))
-.put(final_penta2
-	    	, submission.getField(final_penta2))
-.put(final_pcv3
-	    	, submission.getField(final_pcv3))
-.put(final_opv3
-	    	, submission.getField(final_opv3))
-.put(final_penta3
-	    	, submission.getField(final_penta3))
-.put(final_ipv
-	    	, submission.getField(final_ipv))
-.put(final_measles1
-	    	, submission.getField(final_measles1))
-.put(final_measles2
-	    	, submission.getField(final_measles2))
-.put(Is_Reg_Today
-	    	, submission.getField(Is_Reg_Today))
-.put(child_vaccines
-	    	, submission.getField(child_vaccines))
-.put(child_vaccines1
-	    	, submission.getField(child_vaccines1))
-.put(child_vaccines1_2
-	    	, submission.getField(child_vaccines1_2))
-.put(child_vaccines_2
-	    	, submission.getField(child_vaccines_2))
-.put(Is_Reg_Today
-		    , submission.getField(Is_Reg_Today))
-.put(received_time, 
+		System.err.println("Starting child vaccination...");
+				Map<String, String> vaccine = create(ID, submission.getField(ID))
+		.put(REFERENCE_DATE, 
+				submission.getField(REFERENCE_DATE))
+		.put(START_DATE, 
+				submission.getField(START_DATE))
+		.put(END_DATE, 
+				submission.getField(END_DATE))
+		.put(Member_Fname
+			    	, submission.getField(Member_Fname))
+		.put(Child_mother_name
+			    	, submission.getField(Child_mother_name))
+		.put(Child_gender
+			    	, submission.getField(Child_gender))
+		.put(Child_dob
+			    	, submission.getField(Child_dob))
+		.put(Member_Reg_Date
+			    	, submission.getField(Member_Reg_Date))
+		.put(MEMBER_COUNTRY   
+					, submission.getField(MEMBER_COUNTRY))
+		.put(MEMBER_DIVISION
+			    	, submission.getField(MEMBER_DIVISION))
+		.put(MEMBER_DISTRICT
+			    	, submission.getField(MEMBER_DISTRICT))
+		.put(MEMBER_UPAZILLA
+			    	, submission.getField(MEMBER_UPAZILLA))
+		.put(MEMBER_PAURASAVA
+			    	, submission.getField(MEMBER_PAURASAVA))
+		.put(MEMBER_UNION
+			    	, submission.getField(MEMBER_UNION))
+		.put(MEMBER_WARD
+			    	, submission.getField(MEMBER_WARD))
+		.put(Member_BLOCK
+			    	, submission.getField(Member_BLOCK))
+		.put(MEMBER_HIE_FACILITIES
+			    	, submission.getField(MEMBER_HIE_FACILITIES))
+		.put(MEMBER_ADDRESS_LINE
+			    	, submission.getField(MEMBER_ADDRESS_LINE))
+		.put(MEMBER_GPS
+			    	, submission.getField(MEMBER_GPS))
+		.put(existing_epi_card_number
+			    	, submission.getField(existing_epi_card_number))
+		.put(child_was_suffering_from_a_disease_at_birth
+			    	, submission.getField(child_was_suffering_from_a_disease_at_birth))
+		.put(contact_phone_number
+			    	, submission.getField(contact_phone_number))
+		.put(e_bcg
+			    	, submission.getField(e_bcg))
+		.put(e_opv0
+			    	, submission.getField(e_opv0))
+		.put(e_penta2
+			    	, submission.getField(e_penta2))
+		.put(e_penta1
+			    	, submission.getField(e_penta1))
+		.put(e_penta3
+			    	, submission.getField(e_penta3))
+		.put(e_opv1
+			    	, submission.getField(e_opv1))
+		.put(e_opv2
+			    	, submission.getField(e_opv2))
+		.put(e_opv3
+			    	, submission.getField(e_opv3))
+		.put(e_pcv1
+			    	, submission.getField(e_pcv1))
+		.put(e_pcv2
+			    	, submission.getField(e_pcv2)) 
+		.put(e_pcv3
+			    	, submission.getField(e_pcv3))
+		.put(e_ipv
+			    	, submission.getField(e_ipv))
+		.put(e_measles1
+			    	, submission.getField(e_measles1))
+		.put(e_measles2
+			    	, submission.getField(e_measles2))
+		.put(provider_id
+			    	, submission.getField(provider_id))
+		.put(provider_location_id
+			    	, submission.getField(provider_location_id))
+		.put(provider_location_name
+			    	, submission.getField(provider_location_name))
+		.put(provider_location_note
+			    	, submission.getField(provider_location_note))
+		.put(existing_client_reg_date_note
+			    	, submission.getField(existing_client_reg_date_note))
+		.put(epi_card_number_note
+			    	, submission.getField(epi_card_number_note))
+		.put(first_name_note
+			    	, submission.getField(first_name_note))
+		.put(child_age
+			    	, submission.getField(child_age))
+		.put(child_age_days
+					, submission.getField(child_age_days))
+		.put(calc_dob_note
+			    	, submission.getField(calc_dob_note))
+		.put(gender_note
+			    	, submission.getField(gender_note))
+		.put(mother_name_note
+			    	, submission.getField(mother_name_note))
+		.put(address
+			    	, submission.getField(address))
+		.put(address_change
+			    	, submission.getField(address_change))
+		.put(address1
+			    	, submission.getField(address1))
+		.put(landmark
+			    	, submission.getField(landmark))
+		.put(center_gps
+			    	, submission.getField(center_gps))
+		.put(child_was_suffering_from_a_disease_at_birth_note
+			    	, submission.getField(child_was_suffering_from_a_disease_at_birth_note))
+		.put(side_effects
+			    	, submission.getField(side_effects))
+		.put(six_weeks
+			    	, submission.getField(six_weeks))
+		.put(ten_weeks
+			    	, submission.getField(ten_weeks))
+		.put(forteen_weeks
+			    	, submission.getField(forteen_weeks))
+		.put(nine_months
+			    	, submission.getField(nine_months))
+		.put(fifteen_months
+			    	, submission.getField(fifteen_months))
+		.put(bcg_note
+			    	, submission.getField(bcg_note))
+		.put(opv0_note
+			    	, submission.getField(opv0_note))
+		.put(opv1_note
+			    	, submission.getField(opv1_note))
+		.put(pcv1_note
+			    	, submission.getField(pcv1_note))
+		.put(penta1_note
+			    	, submission.getField(penta1_note))
+		.put(opv2_note
+			    	, submission.getField(opv2_note))
+		.put(pcv2_note
+			    	, submission.getField(pcv2_note))
+		.put(penta2_note
+			    	, submission.getField(penta2_note))
+		.put(opv3_note
+			    	, submission.getField(opv3_note))
+		.put(pcv3_note
+			    	, submission.getField(pcv3_note))
+		.put(penta3_note
+			    	, submission.getField(penta3_note))
+		.put(ipv_note
+			    	, submission.getField(ipv_note))
+		.put(measles1_note
+			    	, submission.getField(ipv_note))
+		.put(measles2_note
+			    	, submission.getField(measles2_note))
+		.put(vaccination_date
+			    	, submission.getField(vaccination_date))
+		.put(final_bcg
+			    	, submission.getField(final_bcg))
+		.put(final_opv0
+			    	, submission.getField(final_opv0))
+		.put(final_pcv1
+			    	, submission.getField(final_pcv1))
+		.put(final_opv1
+			    	, submission.getField(final_opv1))
+		.put(final_penta1
+			    	, submission.getField(final_penta1))
+		.put(final_pcv2
+			    	, submission.getField(final_pcv2))
+		.put(final_opv2
+			    	, submission.getField(final_opv2))
+		.put(final_penta2
+			    	, submission.getField(final_penta2))
+		.put(final_pcv3
+			    	, submission.getField(final_pcv3))
+		.put(final_opv3
+			    	, submission.getField(final_opv3))
+		.put(final_penta3
+			    	, submission.getField(final_penta3))
+		.put(final_ipv
+			    	, submission.getField(final_ipv))
+		.put(final_measles1
+			    	, submission.getField(final_measles1))
+		.put(final_measles2
+			    	, submission.getField(final_measles2))
+		.put(Is_Reg_Today
+			    	, submission.getField(Is_Reg_Today))
+		.put(child_vaccines
+			    	, submission.getField(child_vaccines))
+		.put(child_vaccines1
+			    	, submission.getField(child_vaccines1))
+		.put(child_vaccines1_2
+			    	, submission.getField(child_vaccines1_2))
+		.put(child_vaccines_2
+			    	, submission.getField(child_vaccines_2))
+		.put(Is_Reg_Today
+				    , submission.getField(Is_Reg_Today))
+		.put(received_time, 
 		dateTime.format(today).toString()).map();			
 		
 				members.child_vaccine().add(vaccine);

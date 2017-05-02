@@ -10,5 +10,6 @@ public interface HookedEvent {
     void invoke(MilestoneEvent event, Map<String, String> extraData);
     void scheduleSaveToOpenMRSMilestone( Enrollment el,List<Action> alertActions );
     void saveMultimediaToRegistry(Multimedia multimediaFile);
+    void getMember(String id);
     
 }
