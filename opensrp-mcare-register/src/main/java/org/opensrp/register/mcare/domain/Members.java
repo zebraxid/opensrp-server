@@ -58,7 +58,33 @@ public class Members extends MotechBaseDataObject {
         @JsonIgnore
         public static String WHERE_DELIVERED_KEY = "Where_Delivered";
         @JsonIgnore
+        public static String DELIVERED_AT_HOME_VALUE = "1";
+        @JsonIgnore
+        public static String DELIVERED_AT_UPAZILLA_HEALTH_AND_FAMILY_WELFARE_COMPLEX_VALUE = "2";
+        @JsonIgnore
+        public static String  DELIVERED_AT_UNION_HEALTH_AND_FAMILY_WELFARE_CENTER_VALUE = "3";
+        @JsonIgnore
+        public static String  DELIVERED_AT_MOTHER_AND_CHILD_WELFARE_CENTER_VALUE = "4";
+        @JsonIgnore
+        public static String  DELIVERED_AT_DISTRICT_OR_OTHER_GOVT_HOSPITAL_VALUE = "5";
+        @JsonIgnore
+        public static String  DELIVERED_AT_NGO_CLINIC_OR_HOSPITAL_VALUE = "6";
+        @JsonIgnore
+        public static String  DELIVERED_AT_PRIVATE_CLINIC_OR_HOSPITAL_VALUE = "7";
+        @JsonIgnore
         public static String WHO_DELIVERED_KEY = "Who_Delivered";
+        @JsonIgnore
+        public static String DELIVERED_BY_DOCTOR_VALUE = "1";
+        @JsonIgnore
+        public static String DELIVERED_BY_NURSE_VALUE = "2";
+        @JsonIgnore
+        public static String DELIVERED_BY_SACMO_VALUE = "3";
+        @JsonIgnore
+        public static String DELIVERED_BY_FWV_VALUE = "4";
+        @JsonIgnore
+        public static String DELIVERED_BY_PARAMEDICS_VALUE = "5";
+        @JsonIgnore
+        public static String DELIVERED_BY_CSBA_VALUE = "6";
         @JsonIgnore
         public static String DELIVERY_TYPE_KEY = "Delivery_Type";
         @JsonIgnore
