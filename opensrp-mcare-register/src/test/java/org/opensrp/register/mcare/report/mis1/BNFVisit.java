@@ -6,38 +6,37 @@ import org.opensrp.register.mcare.domain.Members;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ANCVisit {
+public class BNFVisit {
     private Map<String, String> visitData;
 
     public Map<String, String> getVisitData() {
         return visitData;
     }
 
-    public static class ANCVisitBuilder {
+    public static class BNFVisitBuilder {
         private Map<String, String> visitData;
 
-        public ANCVisitBuilder() {
+        public BNFVisitBuilder() {
             visitData = new HashMap<>();
         }
 
-        public ANCVisit.ANCVisitBuilder clientVersion(long clientVersion) {
+        public BNFVisit.BNFVisitBuilder clientVersion(long clientVersion) {
             visitData.put(Members.CLIENT_VERSION_KEY, String.valueOf(clientVersion));
             return this;
         }
-        public ANCVisit.ANCVisitBuilder pregnant(String pregnantStatus) {
+        public BNFVisit.BNFVisitBuilder pregnant(String pregnantStatus) {
             visitData.put(Members.PREGNANT_STATUS_KEY, pregnantStatus);
             return this;
         }
 
-        public ANCVisit build() {
-            ANCVisit ancVisit = new ANCVisit(this);
+        public BNFVisit build() {
+            BNFVisit bnfVisit = new BNFVisit(this);
             this.visitData.clear();
-            return ancVisit;
+            return bnfVisit;
         }
     }
 
-    private ANCVisit(ANCVisit.ANCVisitBuilder ancVisitBuilder) {
-        this.visitData = new HashMap<>(ancVisitBuilder.visitData);
+    private BNFVisit(BNFVisit.BNFVisitBuilder bnfVisitBuilder) {
+        this.visitData = new HashMap<>(bnfVisitBuilder.visitData);
     }
-
 }
