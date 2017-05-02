@@ -20,7 +20,7 @@ public class BirthControlMethodTestData extends MIS1TestData {
             if (i < validCount / 2) {
                 Members member = createMemberUsingBirthControlValue(onTestBirthControlMethod);
                 addRandomNumberOfElcoFollowUp(member);
-                addElcoFollowUpUsingBirthControlValue(member, Members.BIRTH_CONTROL_NULL_VALUE);
+                addElcoFollowUpUsingBirthControlValue(member, Members.EligibleCoupleVisitKeyValue.BIRTH_CONTROL_NULL_VALUE);
                 addElcoFollowUpUsingBirthControlValue(member, onTestBirthControlMethod);
                 members.add(member);
             } else if (i < validCount) {
@@ -28,10 +28,10 @@ public class BirthControlMethodTestData extends MIS1TestData {
                 addElcoFollowUpUsingBirthControlValue(member, onTestBirthControlMethod);
                 members.add(member);
             } else if (i < validCount + validCount / 2) {
-                Members member = createMemberUsingBirthControlValue(Members.BIRTH_CONTROL_NULL_VALUE);
+                Members member = createMemberUsingBirthControlValue(Members.EligibleCoupleVisitKeyValue.BIRTH_CONTROL_NULL_VALUE);
                 addRandomNumberOfElcoFollowUp(member);
                 addElcoFollowUpUsingBirthControlValue(member, onTestBirthControlMethod);
-                addElcoFollowUpUsingBirthControlValue(member, Members.BIRTH_CONTROL_NULL_VALUE);
+                addElcoFollowUpUsingBirthControlValue(member, Members.EligibleCoupleVisitKeyValue.BIRTH_CONTROL_NULL_VALUE);
                 members.add(member);
             } else {
                 members.add(new Members());
@@ -49,13 +49,13 @@ public class BirthControlMethodTestData extends MIS1TestData {
                     Members member = createMemberWithOutAnyFamilyPlanning();
                     addRandomNumberOfElcoFollowUp(member);
                     addElcoFollowUpUsingBirthControlValue(member, onTestBirthControlMethod);
-                    addElcoFollowUpUsingBirthControlValue(member, Members.BIRTH_CONTROL_NULL_VALUE);
+                    addElcoFollowUpUsingBirthControlValue(member, Members.EligibleCoupleVisitKeyValue.BIRTH_CONTROL_NULL_VALUE);
                     members.add(member);
                 } else {
-                    Members member = createMemberUsingBirthControlValue(Members.BIRTH_CONTROL_NOT_USING_ANY_METHOD);
+                    Members member = createMemberUsingBirthControlValue(Members.EligibleCoupleVisitKeyValue.BIRTH_CONTROL_NOT_USING_ANY_METHOD);
                     addRandomNumberOfElcoFollowUp(member);
                     addElcoFollowUpUsingBirthControlValue(member, onTestBirthControlMethod);
-                    addElcoFollowUpUsingBirthControlValue(member, Members.BIRTH_CONTROL_NOT_USING_ANY_METHOD);
+                    addElcoFollowUpUsingBirthControlValue(member, Members.EligibleCoupleVisitKeyValue.BIRTH_CONTROL_NOT_USING_ANY_METHOD);
                     members.add(member);
                 }
             } else {
@@ -63,13 +63,13 @@ public class BirthControlMethodTestData extends MIS1TestData {
                     Members member = createMemberWithOutAnyFamilyPlanning();
                     addRandomNumberOfElcoFollowUp(member);
                     addElcoFollowUpUsingBirthControlValue(member, thirdBirthControlMethod);
-                    addElcoFollowUpUsingBirthControlValue(member, Members.BIRTH_CONTROL_NULL_VALUE);
+                    addElcoFollowUpUsingBirthControlValue(member, Members.EligibleCoupleVisitKeyValue.BIRTH_CONTROL_NULL_VALUE);
                     members.add(member);
                 } else {
-                    Members member = createMemberUsingBirthControlValue(Members.BIRTH_CONTROL_NOT_USING_ANY_METHOD);
+                    Members member = createMemberUsingBirthControlValue(Members.EligibleCoupleVisitKeyValue.BIRTH_CONTROL_NOT_USING_ANY_METHOD);
                     addRandomNumberOfElcoFollowUp(member);
                     addElcoFollowUpUsingBirthControlValue(member, secondBirthControlMethod);
-                    addElcoFollowUpUsingBirthControlValue(member, Members.BIRTH_CONTROL_NOT_USING_ANY_METHOD);
+                    addElcoFollowUpUsingBirthControlValue(member, Members.EligibleCoupleVisitKeyValue.BIRTH_CONTROL_NOT_USING_ANY_METHOD);
                     members.add(member);
                 }
 
@@ -108,10 +108,10 @@ public class BirthControlMethodTestData extends MIS1TestData {
                     addElcoFollowUpUsingBirthControlValue(member, thirdBirthControlMethod);
                     members.add(member);
                 } else {
-                    Members member = createMemberUsingBirthControlValue(Members.BIRTH_CONTROL_NOT_USING_ANY_METHOD);
+                    Members member = createMemberUsingBirthControlValue(Members.EligibleCoupleVisitKeyValue.BIRTH_CONTROL_NOT_USING_ANY_METHOD);
                     addRandomNumberOfElcoFollowUp(member);
                     addElcoFollowUpUsingBirthControlValue(member, onTestBirthControlMethod);
-                    addElcoFollowUpUsingBirthControlValue(member, Members.BIRTH_CONTROL_NOT_USING_ANY_METHOD);
+                    addElcoFollowUpUsingBirthControlValue(member, Members.EligibleCoupleVisitKeyValue.BIRTH_CONTROL_NOT_USING_ANY_METHOD);
                     members.add(member);
                 }
             }
@@ -131,7 +131,7 @@ public class BirthControlMethodTestData extends MIS1TestData {
             if (i < validCount) {
                 members.add(createMemberUsingBirthControlValue(onTestBirthControlMethod));
             } else if (i < (validCount + (totalCount - validCount) / 2)) {
-                members.add(createMemberUsingBirthControlValue(Members.BIRTH_CONTROL_NULL_VALUE));
+                members.add(createMemberUsingBirthControlValue(Members.EligibleCoupleVisitKeyValue.BIRTH_CONTROL_NULL_VALUE));
             } else {
                 members.add(new Members());
             }
@@ -142,14 +142,14 @@ public class BirthControlMethodTestData extends MIS1TestData {
 
     protected Members createMemberUsingBirthControlValue(String birthControlValue) {
         Members member = new Members();
-        Map<String, String> detail = createHashMap(Members.BIRTH_CONTROL_KEY, birthControlValue);
+        Map<String, String> detail = createHashMap(Members.EligibleCoupleVisitKeyValue.BIRTH_CONTROL_KEY, birthControlValue);
         member.setDetails(detail);
         return member;
     }
 
     protected Members createMemberWithOutAnyFamilyPlanning() {
         Members member = new Members();
-        Map<String, String> detail = createHashMap(Members.USING_FAMILY_PLANNING_KEY, Members.NOT_USING_FAMILY_PLANNING_VALUE);
+        Map<String, String> detail = createHashMap(Members.EligibleCoupleVisitKeyValue.USING_FAMILY_PLANNING_KEY, Members.EligibleCoupleVisitKeyValue.NOT_USING_FAMILY_PLANNING_VALUE);
         member.setDetails(detail);
         return member;
     }
@@ -159,9 +159,9 @@ public class BirthControlMethodTestData extends MIS1TestData {
         int randomNum = rand.nextInt((100 - 0) + 1) + 0;
         for (int i = 0; i < randomNum; i++) {
             if (i % 2 == 0) {
-                addElcoFollowUpUsingBirthControlValue(member, Members.BIRTH_CONTROL_PILL);
+                addElcoFollowUpUsingBirthControlValue(member, Members.EligibleCoupleVisitKeyValue.BIRTH_CONTROL_PILL);
             } else {
-                addElcoFollowUpUsingBirthControlValue(member, Members.BIRTH_CONTROL_CONDOM);
+                addElcoFollowUpUsingBirthControlValue(member, Members.EligibleCoupleVisitKeyValue.BIRTH_CONTROL_CONDOM);
             }
         }
         return member;
@@ -169,7 +169,7 @@ public class BirthControlMethodTestData extends MIS1TestData {
 
 
     protected Members addElcoFollowUpUsingBirthControlValue(Members member, String value) {
-        Map<String, String> birthControlUsages = createHashMap(Members.BIRTH_CONTROL_KEY, value);
+        Map<String, String> birthControlUsages = createHashMap(Members.EligibleCoupleVisitKeyValue.BIRTH_CONTROL_KEY, value);
         return addElcoFollowUp(member, birthControlUsages);
     }
 

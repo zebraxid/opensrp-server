@@ -26,38 +26,45 @@ public class Members extends MotechBaseDataObject {
 
     @JsonIgnore
     public static String CLIENT_VERSION_KEY = CLIENT_VERSION;
-    @JsonIgnore
-    public static String BIRTH_CONTROL_KEY = "Birth_Control";
-    @JsonIgnore
-    public static String USING_FAMILY_PLANNING_KEY = "Using_FP";
-    @JsonIgnore
-    public static String PREGNANT_STATUS_KEY = "preg_status";
-    @JsonIgnore
-    public static String IS_PREGNANT = "1";
-    @JsonIgnore
-    public static String NOT_PREGNANT = "0";
-    @JsonIgnore
-    public static String BIRTH_CONTROL_PILL = "1";
-    @JsonIgnore
-    public static String BIRTH_CONTROL_INJECTABLE = "3";
-    @JsonIgnore
-    public static String BIRTH_CONTROL_CONDOM = "2";
-    @JsonIgnore
-    public static String BIRTH_CONTROL_NULL_VALUE = "-1";
-    @JsonIgnore
-    public static String BIRTH_CONTROL_NOT_USING_ANY_METHOD = "99";
-    @JsonIgnore
-    public static String USING_FAMILY_PLANNING_VALUE = "1";
-    @JsonIgnore
-    public static String NOT_USING_FAMILY_PLANNING_VALUE = "0";
+
+    public static class EligibleCoupleVisitKeyValue {
+        @JsonIgnore
+        public static String BIRTH_CONTROL_KEY = "Birth_Control";
+        @JsonIgnore
+        public static String USING_FAMILY_PLANNING_KEY = "Using_FP";
+        @JsonIgnore
+        public static String PREGNANT_STATUS_KEY = "preg_status";
+        @JsonIgnore
+        public static String IS_PREGNANT = "1";
+        @JsonIgnore
+        public static String NOT_PREGNANT = "0";
+        @JsonIgnore
+        public static String BIRTH_CONTROL_PILL = "1";
+        @JsonIgnore
+        public static String BIRTH_CONTROL_INJECTABLE = "3";
+        @JsonIgnore
+        public static String BIRTH_CONTROL_CONDOM = "2";
+        @JsonIgnore
+        public static String BIRTH_CONTROL_NULL_VALUE = "-1";
+        @JsonIgnore
+        public static String BIRTH_CONTROL_NOT_USING_ANY_METHOD = "99";
+        @JsonIgnore
+        public static String USING_FAMILY_PLANNING_VALUE = "1";
+        @JsonIgnore
+        public static String NOT_USING_FAMILY_PLANNING_VALUE = "0";
+    }
 
     public static class BirthNotificationVisitKeyValue {
+        @JsonIgnore
         public static String WHERE_DELIVERED_KEY = "Where_Delivered";
+        @JsonIgnore
         public static String WHO_DELIVERED_KEY = "Who_Delivered";
+        @JsonIgnore
         public static String DELIVERY_TYPE_KEY = "Delivery_Type";
+        @JsonIgnore
         public static String DELIVERY_TYPE_NORMAL_VALUE = "1";
+        @JsonIgnore
         public static String DELIVERY_TYPE_CESAREAN_VALUE = "2";
-        public static String
     }
 
     @JsonProperty

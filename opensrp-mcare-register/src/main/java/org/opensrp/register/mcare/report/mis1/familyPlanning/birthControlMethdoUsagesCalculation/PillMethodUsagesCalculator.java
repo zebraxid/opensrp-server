@@ -7,7 +7,7 @@ public class PillMethodUsagesCalculator extends BirthControlMethodUsagesCalculat
 
 
     public PillMethodUsagesCalculator() {
-        super(Members.BIRTH_CONTROL_PILL);
+        super(Members.EligibleCoupleVisitKeyValue.BIRTH_CONTROL_PILL);
     }
 
 }

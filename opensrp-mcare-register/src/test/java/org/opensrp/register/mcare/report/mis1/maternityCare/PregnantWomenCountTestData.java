@@ -39,13 +39,13 @@ public class PregnantWomenCountTestData extends MIS1TestData {
 
     private Members createValidMemberWithStartDateTime() {
         List<Map<String, String>> eligibleCoupleFollowUpList = new ArrayList<>();
-        eligibleCoupleFollowUpList.add(createEligibleCoupleFollowUpUsingClientVersionDateTimeWithPregStatus(startDateTime, Members.IS_PREGNANT));
+        eligibleCoupleFollowUpList.add(createEligibleCoupleFollowUpUsingClientVersionDateTimeWithPregStatus(startDateTime, Members.EligibleCoupleVisitKeyValue.IS_PREGNANT));
         return createMemberWithEligibleCoupleFollowUpList(eligibleCoupleFollowUpList);
     }
 
     private Members createValidMemberWithEndDateTime() {
         List<Map<String, String>> eligibleCoupleFollowUpList = new ArrayList<>();
-        eligibleCoupleFollowUpList.add(createEligibleCoupleFollowUpUsingClientVersionDateTimeWithPregStatus(endDateTime, Members.IS_PREGNANT));
+        eligibleCoupleFollowUpList.add(createEligibleCoupleFollowUpUsingClientVersionDateTimeWithPregStatus(endDateTime, Members.EligibleCoupleVisitKeyValue.IS_PREGNANT));
         return createMemberWithEligibleCoupleFollowUpList(eligibleCoupleFollowUpList);
     }
 
@@ -54,7 +54,7 @@ public class PregnantWomenCountTestData extends MIS1TestData {
         eligibleCoupleFollowUpList.addAll(createRandomNumberOfEligibleCoupleFollowUpWithPreviousInvalidClientVersionAndRandomPregStatus());
         Long randomDateTimeBetweenStartAndEndDateTime = getRandomNumberBetween(startDateTime, endDateTime);
         eligibleCoupleFollowUpList.add(
-                createEligibleCoupleFollowUpUsingClientVersionDateTimeWithPregStatus(randomDateTimeBetweenStartAndEndDateTime, Members.IS_PREGNANT));
+                createEligibleCoupleFollowUpUsingClientVersionDateTimeWithPregStatus(randomDateTimeBetweenStartAndEndDateTime, Members.EligibleCoupleVisitKeyValue.IS_PREGNANT));
         eligibleCoupleFollowUpList.addAll(createRandomNumberOfEligibleCoupleFollowUpWithExceedInvalidClientVersionAndRandomPregStatus());
         return createMemberWithEligibleCoupleFollowUpList(eligibleCoupleFollowUpList);
     }
@@ -64,7 +64,7 @@ public class PregnantWomenCountTestData extends MIS1TestData {
         eligibleCoupleFollowUpList.addAll(createRandomNumberOfEligibleCoupleFollowUpWithPreviousInvalidClientVersionAndRandomPregStatus());
         Long randomDateTimeBetweenStartAndEndDateTime = getRandomNumberBetween(startDateTime, endDateTime);
         eligibleCoupleFollowUpList.add(
-                createEligibleCoupleFollowUpUsingClientVersionDateTimeWithPregStatus(randomDateTimeBetweenStartAndEndDateTime, Members.NOT_PREGNANT));
+                createEligibleCoupleFollowUpUsingClientVersionDateTimeWithPregStatus(randomDateTimeBetweenStartAndEndDateTime, Members.EligibleCoupleVisitKeyValue.NOT_PREGNANT));
         eligibleCoupleFollowUpList.addAll(createRandomNumberOfEligibleCoupleFollowUpWithExceedInvalidClientVersionAndRandomPregStatus());
         return createMemberWithEligibleCoupleFollowUpList(eligibleCoupleFollowUpList);
     }
@@ -78,11 +78,11 @@ public class PregnantWomenCountTestData extends MIS1TestData {
             Long randomDateTimeBeforeStartDateTime = getRandomNumberBetween(0, startDateTime - 1);
             builder.clientVersion(randomDateTimeBeforeStartDateTime);
             if (i % 2 == 0) {
-                builder.pregnant(Members.IS_PREGNANT);
+                builder.pregnant(Members.EligibleCoupleVisitKeyValue.IS_PREGNANT);
                 eligibleCoupleFollowUP = builder.build();
                 eligibleCoupleFollowUpList.add(eligibleCoupleFollowUP.getFollowUp());
             } else {
-                builder.pregnant(Members.NOT_PREGNANT);
+                builder.pregnant(Members.EligibleCoupleVisitKeyValue.NOT_PREGNANT);
                 eligibleCoupleFollowUP = builder.build();
                 eligibleCoupleFollowUpList.add(eligibleCoupleFollowUP.getFollowUp());
             }
@@ -104,11 +104,11 @@ public class PregnantWomenCountTestData extends MIS1TestData {
             Long randomDateTimeBeforeStartDateTime = getRandomNumberBetween(endDateTime + 1, endDateTime * 3);
             builder.clientVersion(randomDateTimeBeforeStartDateTime);
             if (i % 2 == 0) {
-                builder.pregnant(Members.IS_PREGNANT);
+                builder.pregnant(Members.EligibleCoupleVisitKeyValue.IS_PREGNANT);
                 eligibleCoupleFollowUP = builder.build();
                 eligibleCoupleFollowUpList.add(eligibleCoupleFollowUP.getFollowUp());
             } else {
-                builder.pregnant(Members.NOT_PREGNANT);
+                builder.pregnant(Members.EligibleCoupleVisitKeyValue.NOT_PREGNANT);
                 eligibleCoupleFollowUP = builder.build();
                 eligibleCoupleFollowUpList.add(eligibleCoupleFollowUP.getFollowUp());
             }

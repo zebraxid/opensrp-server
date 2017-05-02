@@ -7,6 +7,6 @@ public class CondomMethodUsagesCalculator extends BirthControlMethodUsagesCalcul
 
 
     public CondomMethodUsagesCalculator() {
-        super(Members.BIRTH_CONTROL_CONDOM);
+        super(Members.EligibleCoupleVisitKeyValue.BIRTH_CONTROL_CONDOM);
     }
 }

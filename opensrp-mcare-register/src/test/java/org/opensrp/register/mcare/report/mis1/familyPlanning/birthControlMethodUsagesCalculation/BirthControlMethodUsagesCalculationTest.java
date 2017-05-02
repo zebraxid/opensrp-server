@@ -15,9 +15,9 @@ public class BirthControlMethodUsagesCalculationTest {
     public String unionName = "union";
     public BirthControlMethodTestData birthControlMethodTestData;
     public MIS1Report mis1Report;
-    public static String ON_TEST_BIRTH_CONTROL_METHOD = Members.BIRTH_CONTROL_CONDOM;
-    public static String SECOND_BIRTH_CONTROL_METHOD = Members.BIRTH_CONTROL_INJECTABLE;
-    public static String THIRD_BIRTH_CONTROL_METHOD = Members.BIRTH_CONTROL_PILL;
+    public static String ON_TEST_BIRTH_CONTROL_METHOD = Members.EligibleCoupleVisitKeyValue.BIRTH_CONTROL_CONDOM;
+    public static String SECOND_BIRTH_CONTROL_METHOD = Members.EligibleCoupleVisitKeyValue.BIRTH_CONTROL_INJECTABLE;
+    public static String THIRD_BIRTH_CONTROL_METHOD = Members.EligibleCoupleVisitKeyValue.BIRTH_CONTROL_PILL;
 
     @Before
     public void setUp() throws Exception {
