@@ -17,7 +17,7 @@ import java.util.List;
 @Repository
 public class AllFormSubmissions extends MotechBaseRepository<FormSubmission> {
     @Autowired
-    protected AllFormSubmissions(@Qualifier(AllConstants.OPENSRP_FORM_DATABASE_CONNECTOR) CouchDbConnector db) {
+    public AllFormSubmissions(@Qualifier(AllConstants.OPENSRP_FORM_DATABASE_CONNECTOR) CouchDbConnector db) {
         super(FormSubmission.class, db);
     }
 
