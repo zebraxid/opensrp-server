@@ -3,10 +3,10 @@ package org.opensrp.register.mcare.report.mis1.familyPlanning;
 
 import org.opensrp.register.mcare.domain.Members;
 import org.opensrp.register.mcare.report.mis1.Report;
-import org.opensrp.register.mcare.report.mis1.familyPlanning.eligibleCoupleCount.EligibleCoupleCountCalculator;
 import org.opensrp.register.mcare.report.mis1.familyPlanning.birthControlMethdoUsagesCalculation.BirthControlMethodUsagesCalculator;
 import org.opensrp.register.mcare.report.mis1.familyPlanning.birthControlMethdoUsagesCalculation.CondomMethodUsagesCalculator;
 import org.opensrp.register.mcare.report.mis1.familyPlanning.birthControlMethdoUsagesCalculation.PillMethodUsagesCalculator;
+import org.opensrp.register.mcare.report.mis1.familyPlanning.eligibleCoupleCount.EligibleCoupleCountCalculator;
 
 public class FamilyPlanningReport extends Report {
     private EligibleCoupleCountCalculator eligibleCoupleCountCalculator;

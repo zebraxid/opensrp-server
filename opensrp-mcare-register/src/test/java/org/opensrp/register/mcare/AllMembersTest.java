@@ -1,35 +1,15 @@
 package org.opensrp.register.mcare;
 
 
-import static java.util.Arrays.asList;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertFalse;
-
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import org.codehaus.jackson.JsonFactory;
+import com.google.gson.Gson;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.ektorp.http.HttpClient;
-import org.ektorp.http.StdHttpClient;
-import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
-import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.opensrp.common.util.HttpResponse;
 import org.opensrp.connector.HttpUtil;
-import org.opensrp.form.domain.FormSubmission;
-import org.opensrp.form.repository.AllFormSubmissions;
-import org.opensrp.register.mcare.domain.HouseHold;
 import org.opensrp.register.mcare.domain.Members;
 import org.opensrp.register.mcare.repository.AllHouseHolds;
 import org.opensrp.register.mcare.repository.AllMembers;
@@ -37,7 +17,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.google.gson.Gson;
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
+
+import static org.junit.Assert.assertFalse;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:test-applicationContext-opensrp-register-mcare.xml")

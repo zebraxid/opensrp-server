@@ -1,7 +1,5 @@
 package org.opensrp.register.mcare;
 
-import org.opensrp.dto.form.FormSubmissionDTO;
-
 public class TestData {
 	
 	public static final String ANM_ID = "opensrp";

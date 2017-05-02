@@ -1,13 +1,10 @@
 package org.opensrp.register.mcare.report.mis1;
 
 
-import com.sun.javaws.exceptions.InvalidArgumentException;
 import org.opensrp.register.mcare.domain.Members;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 public abstract class MIS1TestData {
@@ -53,6 +50,11 @@ public abstract class MIS1TestData {
         }
 
         throw new IllegalArgumentException("Invalid visit number: " + visitNumber.toString());
+    }
+
+    protected Members createMemberWithBNFVisits(List<Map<String, String >> bnfVisits) {
+        Members member = new Members();
+        return member.setbnfVisit(bnfVisits);
     }
 
     public enum VisitNumber {

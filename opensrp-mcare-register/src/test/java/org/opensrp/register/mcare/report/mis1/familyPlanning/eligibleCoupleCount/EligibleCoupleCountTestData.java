@@ -5,7 +5,10 @@ import org.opensrp.register.mcare.domain.Members;
 import org.opensrp.register.mcare.report.mis1.EligibleCoupleFollowUP;
 import org.opensrp.register.mcare.report.mis1.MIS1TestData;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
 public class EligibleCoupleCountTestData extends MIS1TestData {
     static EligibleCoupleFollowUP.EligibleCoupleFollowUpBuilder builder =

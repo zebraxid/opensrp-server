@@ -1,20 +1,5 @@
 package org.opensrp.register.mcare.repository.it;
 
-import static java.util.Arrays.asList;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.mockito.MockitoAnnotations.initMocks;
-import static org.opensrp.common.util.EasyMap.create;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.List;
-
 import org.ektorp.CouchDbInstance;
 import org.ektorp.ViewResult;
 import org.ektorp.http.HttpClient;
@@ -23,16 +8,15 @@ import org.ektorp.impl.StdCouchDbConnector;
 import org.ektorp.impl.StdCouchDbInstance;
 import org.ektorp.impl.StdObjectMapperFactory;
 import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.opensrp.common.util.DateUtil;
 import org.opensrp.common.util.WeekBoundariesAndTimestamps;
-import org.opensrp.register.mcare.domain.HouseHold;
 import org.opensrp.register.mcare.repository.AllElcos;
 import org.opensrp.register.mcare.repository.AllHouseHolds;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /*@RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:test-applicationContext-opensrp-register-mcare.xml")*/

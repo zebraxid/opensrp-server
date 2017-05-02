@@ -24,6 +24,17 @@ public class BNFVisit {
             visitData.put(Members.CLIENT_VERSION_KEY, String.valueOf(clientVersion));
             return this;
         }
+
+        public BNFVisit.BNFVisitBuilder deliveryAt(String deliveryPlace) {
+            visitData.put(Members.BirthNotificationVisitKeyValue.WHERE_DELIVERED_KEY, deliveryPlace);
+            return this;
+        }
+
+        public BNFVisit.BNFVisitBuilder deliveryBy(String deliveryPerson) {
+            visitData.put(Members.BirthNotificationVisitKeyValue.WHO_DELIVERED_KEY, deliveryPerson);
+            return this;
+        }
+
         public BNFVisit.BNFVisitBuilder normalDelivery(String deliveryType) {
             visitData.put(Members.BirthNotificationVisitKeyValue.DELIVERY_TYPE_KEY, deliveryType);
             return this;
