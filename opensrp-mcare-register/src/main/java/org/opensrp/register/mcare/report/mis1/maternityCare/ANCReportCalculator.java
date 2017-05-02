@@ -18,6 +18,7 @@ public class ANCReportCalculator extends ReportCalculator {
     @Override
     public void calculate(Members member) {
         visitOneCount += addToVisitOneCount(member);
+        visitTwoCount += addToVisitTwoCount(member);
     }
 
     public long getVisitOneCount() {
@@ -31,6 +32,14 @@ public class ANCReportCalculator extends ReportCalculator {
     private int addToVisitOneCount(Members member) {
         Map<String, String> anc1Visit = member.ANCVisit1();
         if(withInStartAndEndTime(anc1Visit)) {
+            return 1;
+        }
+        return 0;
+    }
+
+    private int addToVisitTwoCount(Members member) {
+        Map<String, String> anc2Visit = member.ANCVisit2();
+        if(withInStartAndEndTime(anc2Visit)) {
             return 1;
         }
         return 0;
