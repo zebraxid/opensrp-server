@@ -24,8 +24,8 @@ public class BNFVisit {
             visitData.put(Members.CLIENT_VERSION_KEY, String.valueOf(clientVersion));
             return this;
         }
-        public BNFVisit.BNFVisitBuilder pregnant(String pregnantStatus) {
-            visitData.put(Members.PREGNANT_STATUS_KEY, pregnantStatus);
+        public BNFVisit.BNFVisitBuilder normalDelivery(String deliveryType) {
+            visitData.put(Members.BirthNotificationVisitKeyValue.DELIVERY_TYPE_KEY, deliveryType);
             return this;
         }
 

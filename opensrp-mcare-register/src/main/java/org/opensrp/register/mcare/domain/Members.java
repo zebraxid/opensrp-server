@@ -51,6 +51,15 @@ public class Members extends MotechBaseDataObject {
     @JsonIgnore
     public static String NOT_USING_FAMILY_PLANNING_VALUE = "0";
 
+    public static class BirthNotificationVisitKeyValue {
+        public static String WHERE_DELIVERED_KEY = "Where_Delivered";
+        public static String WHO_DELIVERED_KEY = "Who_Delivered";
+        public static String DELIVERY_TYPE_KEY = "Delivery_Type";
+        public static String DELIVERY_TYPE_NORMAL_VALUE = "1";
+        public static String DELIVERY_TYPE_CESAREAN_VALUE = "2";
+        public static String
+    }
+
     @JsonProperty
     private String caseId;
     @JsonProperty
