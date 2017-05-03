@@ -50,10 +50,10 @@ public class PostpartumCareCalculator extends ReportCalculator {
     private boolean deliveredAtHomeWithTrainedPerson(Map<String, String> visitData) {
         if (visitData.containsKey(WHERE_DELIVERED_KEY)) {
             String deliveryPlace = visitData.get(WHERE_DELIVERED_KEY);
-            if(assertDeliveredAt(DELIVERED_AT_HOME_VALUE, deliveryPlace)) {
+            if(assertDeliveredAt(DeliveryPlace.HOME.getValue().toString(), deliveryPlace)) {
                 if (visitData.containsKey(WHO_DELIVERED_KEY)) {
                     String deliveryPerson = visitData.get(WHO_DELIVERED_KEY);
-                    return deliveredByTrainedPerson(deliveryPerson);
+                    return deliveredByTrainedPerson(DeliveryBy.fromInt(Integer.parseInt(deliveryPerson)));
                 }
             }
         }
@@ -67,19 +67,19 @@ public class PostpartumCareCalculator extends ReportCalculator {
         return false;
     }
 
-    private boolean deliveredByTrainedPerson(String deliveryPerson) {
+    private boolean deliveredByTrainedPerson(DeliveryBy deliveryPerson) {
         switch (deliveryPerson) {
-            case DELIVERED_BY_DOCTOR_VALUE:
+            case DOCTOR:
                 return true;
-            case DELIVERED_BY_NURSE_VALUE:
+            case NURSE:
                 return true;
-            case DELIVERED_BY_SACMO_VALUE:
+            case SACMO:
                 return true;
-            case DELIVERED_BY_FWV_VALUE:
+            case FWV:
                 return true;
-            case DELIVERED_BY_PARAMEDICS_VALUE:
+            case PARAMEDICS:
                 return true;
-            case DELIVERED_BY_CSBA_VALUE:
+            case CSBA:
                 return true;
             default:
                 return false;

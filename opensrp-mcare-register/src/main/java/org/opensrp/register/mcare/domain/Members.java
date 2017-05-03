@@ -52,45 +52,114 @@ public class Members extends MotechBaseDataObject {
         public static final String USING_FAMILY_PLANNING_VALUE = "1";
         @JsonIgnore
         public static final String NOT_USING_FAMILY_PLANNING_VALUE = "0";
+
     }
 
     public static class BirthNotificationVisitKeyValue {
         @JsonIgnore
         public static final String WHERE_DELIVERED_KEY = "Where_Delivered";
         @JsonIgnore
-        public static final String DELIVERED_AT_HOME_VALUE = "1";
-        @JsonIgnore
-        public static final String DELIVERED_AT_UPAZILLA_HEALTH_AND_FAMILY_WELFARE_COMPLEX_VALUE = "2";
-        @JsonIgnore
-        public static final String  DELIVERED_AT_UNION_HEALTH_AND_FAMILY_WELFARE_CENTER_VALUE = "3";
-        @JsonIgnore
-        public static final String  DELIVERED_AT_MOTHER_AND_CHILD_WELFARE_CENTER_VALUE = "4";
-        @JsonIgnore
-        public static final String  DELIVERED_AT_DISTRICT_OR_OTHER_GOVT_HOSPITAL_VALUE = "5";
-        @JsonIgnore
-        public static final String  DELIVERED_AT_NGO_CLINIC_OR_HOSPITAL_VALUE = "6";
-        @JsonIgnore
-        public static final String  DELIVERED_AT_PRIVATE_CLINIC_OR_HOSPITAL_VALUE = "7";
-        @JsonIgnore
         public static final String WHO_DELIVERED_KEY = "Who_Delivered";
         @JsonIgnore
-        public static final String DELIVERED_BY_DOCTOR_VALUE = "1";
-        @JsonIgnore
-        public static final String DELIVERED_BY_NURSE_VALUE = "2";
-        @JsonIgnore
-        public static final String DELIVERED_BY_SACMO_VALUE = "3";
-        @JsonIgnore
-        public static final String DELIVERED_BY_FWV_VALUE = "4";
-        @JsonIgnore
-        public static final String DELIVERED_BY_PARAMEDICS_VALUE = "5";
-        @JsonIgnore
-        public static final String DELIVERED_BY_CSBA_VALUE = "6";
-        @JsonIgnore
         public static final String DELIVERY_TYPE_KEY = "Delivery_Type";
-        @JsonIgnore
-        public static final String DELIVERY_TYPE_NORMAL_VALUE = "1";
-        @JsonIgnore
-        public static final String DELIVERY_TYPE_CESAREAN_VALUE = "2";
+
+        public enum DeliveryPlace {
+            HOME(1),
+            UPAZILLA_HEALTH_AND_FAMILY_WELFARE_COMPLEX(2),
+            UNION_HEALTH_AND_FAMILY_WELFARE_CENTER(3),
+            MOTHER_AND_CHILD_WELFARE_CENTER(4),
+             DISTRICT_OR_OTHER_GOVT_HOSPITAL(5),
+            NGO_CLINIC_OR_HOSPITAL(6),
+            PRIVATE_CLINIC_OR_HOSPITAL(7);
+
+            private Integer value;
+
+            DeliveryPlace(Integer value) {
+                this.value = value;
+            }
+
+            private static Map<Integer, DeliveryPlace> map = new HashMap<Integer, DeliveryPlace>();
+
+            static {
+                for (DeliveryPlace deliveryPlace : DeliveryPlace.values()) {
+                    map.put(deliveryPlace.value, deliveryPlace);
+                }
+            }
+
+            public static DeliveryPlace fromInt(int value) {
+                if(map.containsKey(value)) {
+                    return map.get(value);
+                }
+                throw new IllegalArgumentException();
+            }
+
+            public Integer getValue() {
+                return this.value;
+            }
+        }
+
+        public enum DeliveryBy {
+            DOCTOR(1),
+            NURSE(2),
+            SACMO(3),
+            FWV(4),
+            PARAMEDICS(5),
+            CSBA(6);
+
+            private Integer value;
+
+             DeliveryBy(Integer value) {
+                this.value = value;
+            }
+
+            private static Map<Integer, DeliveryBy> map = new HashMap<Integer, DeliveryBy>();
+
+            static {
+                for (DeliveryBy deliveryBy : DeliveryBy.values()) {
+                    map.put(deliveryBy.value, deliveryBy);
+                }
+            }
+
+            public static DeliveryBy fromInt(int value) {
+                if(map.containsKey(value)) {
+                    return map.get(value);
+                }
+                throw new IllegalArgumentException();
+            }
+
+            public Integer getValue() {
+                return this.value;
+            }
+        }
+
+        public enum DeliveryType {
+            NORMAL(1),
+            CESAREAN(2);
+            private Integer value;
+
+             DeliveryType(Integer value) {
+                this.value = value;
+            }
+
+            private static Map<Integer, DeliveryType> map = new HashMap<Integer, DeliveryType>();
+
+            static {
+                for (DeliveryType deliveryType : DeliveryType.values()) {
+                    map.put(deliveryType.value, deliveryType);
+                }
+            }
+
+            public static DeliveryType fromInt(int value) {
+                if(map.containsKey(value)) {
+                    return map.get(value);
+                }
+                throw new IllegalArgumentException();
+            }
+
+            public Integer getValue() {
+                return this.value;
+            }
+        }
     }
 
     @JsonProperty

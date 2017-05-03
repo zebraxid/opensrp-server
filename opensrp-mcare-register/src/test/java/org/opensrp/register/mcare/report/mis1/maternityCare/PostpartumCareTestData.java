@@ -8,7 +8,6 @@ import java.util.Map;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class PostpartumCareTestData extends MIS1TestData{
 
@@ -21,21 +20,21 @@ public class PostpartumCareTestData extends MIS1TestData{
 
     public List<Members> createBirthAtHomeWithTrainedPersonTestData() {
         List<Members> allMembers = new ArrayList<>();
-        allMembers.add(createValidMemberWithStartDateTime());
-        allMembers.add(createValidMemberWithEndDateTime());
+        allMembers.add(createValidMemberWithStartDateTimeForBirthAtHomeWithTrainedPerson());
+        allMembers.add(createValidMemberWithEndDateTimeForBirthAtHomeWithTrainedPerson());
         for(int i=0; i<totalCount;i++) {
             List<Map<String , String>> bnfVisits = new ArrayList<>();
-            bnfVisits.addAll(createRandomNumberOfBNFVisitsWithExceedInvalidClientVersion());
+            bnfVisits.addAll(createRandomNumberOfBNFVisitsWithPreviousInvalidClientVersion());
             if(i<validCount-2) {
                 String  deliveredBy = String.valueOf((i%6)+1);
                 bnfVisits.add(
                         createBnfVisitWithDeliveredAtAndBy(
-                                Members.BirthNotificationVisitKeyValue.DELIVERED_AT_HOME_VALUE, deliveredBy));
+                                Members.BirthNotificationVisitKeyValue.DeliveryPlace.HOME.getValue().toString(), deliveredBy));
             }else {
                 String  deliveredBy = String.valueOf((i%6)+1);
                 bnfVisits.add(
                         createBnfVisitWithDeliveredAtAndBy(
-                                Members.BirthNotificationVisitKeyValue.DELIVERED_AT_DISTRICT_OR_OTHER_GOVT_HOSPITAL_VALUE, deliveredBy));
+                                Members.BirthNotificationVisitKeyValue.DeliveryPlace.DISTRICT_OR_OTHER_GOVT_HOSPITAL.getValue().toString(), deliveredBy));
             }
             bnfVisits.addAll(createRandomNumberOfBNFVisitsWithExceedInvalidClientVersion());
             allMembers.add(createMemberWithBNFVisits(bnfVisits));
@@ -43,20 +42,20 @@ public class PostpartumCareTestData extends MIS1TestData{
         return allMembers;
     }
 
-    private Members createValidMemberWithStartDateTime() {
+    private Members createValidMemberWithStartDateTimeForBirthAtHomeWithTrainedPerson() {
         List<Map<String, String>> bnfVisits = new ArrayList<>();
         bnfVisitBuilder.clientVersion(startDateTime);
-        bnfVisitBuilder.deliveryAt(Members.BirthNotificationVisitKeyValue.DELIVERED_AT_HOME_VALUE);
-        bnfVisitBuilder.deliveryBy(Members.BirthNotificationVisitKeyValue.DELIVERED_BY_DOCTOR_VALUE);
+        bnfVisitBuilder.deliveryAt(Members.BirthNotificationVisitKeyValue.DeliveryPlace.HOME.getValue().toString());
+        bnfVisitBuilder.deliveryBy(String.valueOf(Members.BirthNotificationVisitKeyValue.DeliveryBy.DOCTOR.getValue()));
         bnfVisits.add(bnfVisitBuilder.build().getVisitData());
         return createMemberWithBNFVisits(bnfVisits);
     }
 
-    private Members createValidMemberWithEndDateTime() {
+    private Members createValidMemberWithEndDateTimeForBirthAtHomeWithTrainedPerson() {
         List<Map<String, String>> bnfVisits = new ArrayList<>();
         bnfVisitBuilder.clientVersion(endDateTime);
-        bnfVisitBuilder.deliveryAt(Members.BirthNotificationVisitKeyValue.DELIVERED_AT_HOME_VALUE);
-        bnfVisitBuilder.deliveryBy(Members.BirthNotificationVisitKeyValue.DELIVERED_BY_FWV_VALUE);
+        bnfVisitBuilder.deliveryAt(Members.BirthNotificationVisitKeyValue.DeliveryPlace.HOME.getValue().toString());
+        bnfVisitBuilder.deliveryBy(String.valueOf(Members.BirthNotificationVisitKeyValue.DeliveryBy.FWV.getValue()));
         bnfVisits.add(bnfVisitBuilder.build().getVisitData());
         return createMemberWithBNFVisits(bnfVisits);
     }
@@ -74,8 +73,8 @@ public class PostpartumCareTestData extends MIS1TestData{
         for (int i = 0; i < randomNum; i++) {
             Long randomDateTimeBeforeStartDateTime = getRandomNumberBetween(0, startDateTime - 1);
             bnfVisitBuilder.clientVersion(randomDateTimeBeforeStartDateTime);
-            bnfVisitBuilder.deliveryBy(Members.BirthNotificationVisitKeyValue.DELIVERED_BY_FWV_VALUE);
-            bnfVisitBuilder.deliveryAt(Members.BirthNotificationVisitKeyValue.DELIVERED_AT_HOME_VALUE);
+            bnfVisitBuilder.deliveryBy(String.valueOf(Members.BirthNotificationVisitKeyValue.DeliveryBy.FWV.getValue()));
+            bnfVisitBuilder.deliveryAt(Members.BirthNotificationVisitKeyValue.DeliveryPlace.HOME.getValue().toString());
             invalidBnfVisits.add(bnfVisitBuilder.build().getVisitData());
 
         }
@@ -88,8 +87,8 @@ public class PostpartumCareTestData extends MIS1TestData{
         for (int i = 0; i < randomNum; i++) {
             Long randomDateTimeBeforeStartDateTime = getRandomNumberBetween(endDateTime + 1, endDateTime * 7);
             bnfVisitBuilder.clientVersion(randomDateTimeBeforeStartDateTime);
-            bnfVisitBuilder.deliveryAt(Members.BirthNotificationVisitKeyValue.DELIVERED_AT_DISTRICT_OR_OTHER_GOVT_HOSPITAL_VALUE);
-            bnfVisitBuilder.deliveryBy(Members.BirthNotificationVisitKeyValue.DELIVERED_BY_DOCTOR_VALUE);
+            bnfVisitBuilder.deliveryAt(Members.BirthNotificationVisitKeyValue.DeliveryPlace.DISTRICT_OR_OTHER_GOVT_HOSPITAL.getValue().toString());
+            bnfVisitBuilder.deliveryBy(Members.BirthNotificationVisitKeyValue.DeliveryBy.DOCTOR.getValue().toString());
             invalidBnfVisits.add(bnfVisitBuilder.build().getVisitData());
 
         }
