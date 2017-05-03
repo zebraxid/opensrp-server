@@ -262,7 +262,7 @@ public class MembersService {
 		
 		members.setBNFVisit(bnf);
 		allMembers.update(members);
-		
+		System.err.println("submission.getField(EDD):"+submission.getField(EDD));
 		if (!submission.getField(Visit_status).equalsIgnoreCase("") && submission.getField(Visit_status) != null){	
 			if(submission.getField(Visit_status).equalsIgnoreCase("1")){
 				if (!submission.getField(EDD).equalsIgnoreCase("") && submission.getField(EDD) != null)
