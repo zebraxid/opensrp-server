@@ -31,6 +31,11 @@ public class PostpartumCareTestData extends MIS1TestData{
                 bnfVisits.add(
                         createBnfVisitWithDeliveredAtAndBy(
                                 Members.BirthNotificationVisitKeyValue.DELIVERED_AT_HOME_VALUE, deliveredBy));
+            }else {
+                String  deliveredBy = String.valueOf((i%6)+1);
+                bnfVisits.add(
+                        createBnfVisitWithDeliveredAtAndBy(
+                                Members.BirthNotificationVisitKeyValue.DELIVERED_AT_DISTRICT_OR_OTHER_GOVT_HOSPITAL_VALUE, deliveredBy));
             }
             bnfVisits.addAll(createRandomNumberOfBNFVisitsWithExceedInvalidClientVersion());
             allMembers.add(createMemberWithBNFVisits(bnfVisits));

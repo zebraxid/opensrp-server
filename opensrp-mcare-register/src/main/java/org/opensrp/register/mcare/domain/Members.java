@@ -25,72 +25,72 @@ import static org.opensrp.common.AllConstants.Form.CLIENT_VERSION;
 public class Members extends MotechBaseDataObject {
 
     @JsonIgnore
-    public static String CLIENT_VERSION_KEY = CLIENT_VERSION;
+    public static final String CLIENT_VERSION_KEY = CLIENT_VERSION;
 
     public static class EligibleCoupleVisitKeyValue {
         @JsonIgnore
-        public static String BIRTH_CONTROL_KEY = "Birth_Control";
+        public static final String BIRTH_CONTROL_KEY = "Birth_Control";
         @JsonIgnore
-        public static String USING_FAMILY_PLANNING_KEY = "Using_FP";
+        public static final String USING_FAMILY_PLANNING_KEY = "Using_FP";
         @JsonIgnore
-        public static String PREGNANT_STATUS_KEY = "preg_status";
+        public static final String PREGNANT_STATUS_KEY = "preg_status";
         @JsonIgnore
-        public static String IS_PREGNANT = "1";
+        public static final String IS_PREGNANT = "1";
         @JsonIgnore
-        public static String NOT_PREGNANT = "0";
+        public static final String NOT_PREGNANT = "0";
         @JsonIgnore
-        public static String BIRTH_CONTROL_PILL = "1";
+        public static final String BIRTH_CONTROL_PILL = "1";
         @JsonIgnore
-        public static String BIRTH_CONTROL_INJECTABLE = "3";
+        public static final String BIRTH_CONTROL_INJECTABLE = "3";
         @JsonIgnore
-        public static String BIRTH_CONTROL_CONDOM = "2";
+        public static final String BIRTH_CONTROL_CONDOM = "2";
         @JsonIgnore
-        public static String BIRTH_CONTROL_NULL_VALUE = "-1";
+        public static final String BIRTH_CONTROL_NULL_VALUE = "-1";
         @JsonIgnore
-        public static String BIRTH_CONTROL_NOT_USING_ANY_METHOD = "99";
+        public static final String BIRTH_CONTROL_NOT_USING_ANY_METHOD = "99";
         @JsonIgnore
-        public static String USING_FAMILY_PLANNING_VALUE = "1";
+        public static final String USING_FAMILY_PLANNING_VALUE = "1";
         @JsonIgnore
-        public static String NOT_USING_FAMILY_PLANNING_VALUE = "0";
+        public static final String NOT_USING_FAMILY_PLANNING_VALUE = "0";
     }
 
     public static class BirthNotificationVisitKeyValue {
         @JsonIgnore
-        public static String WHERE_DELIVERED_KEY = "Where_Delivered";
+        public static final String WHERE_DELIVERED_KEY = "Where_Delivered";
         @JsonIgnore
-        public static String DELIVERED_AT_HOME_VALUE = "1";
+        public static final String DELIVERED_AT_HOME_VALUE = "1";
         @JsonIgnore
-        public static String DELIVERED_AT_UPAZILLA_HEALTH_AND_FAMILY_WELFARE_COMPLEX_VALUE = "2";
+        public static final String DELIVERED_AT_UPAZILLA_HEALTH_AND_FAMILY_WELFARE_COMPLEX_VALUE = "2";
         @JsonIgnore
-        public static String  DELIVERED_AT_UNION_HEALTH_AND_FAMILY_WELFARE_CENTER_VALUE = "3";
+        public static final String  DELIVERED_AT_UNION_HEALTH_AND_FAMILY_WELFARE_CENTER_VALUE = "3";
         @JsonIgnore
-        public static String  DELIVERED_AT_MOTHER_AND_CHILD_WELFARE_CENTER_VALUE = "4";
+        public static final String  DELIVERED_AT_MOTHER_AND_CHILD_WELFARE_CENTER_VALUE = "4";
         @JsonIgnore
-        public static String  DELIVERED_AT_DISTRICT_OR_OTHER_GOVT_HOSPITAL_VALUE = "5";
+        public static final String  DELIVERED_AT_DISTRICT_OR_OTHER_GOVT_HOSPITAL_VALUE = "5";
         @JsonIgnore
-        public static String  DELIVERED_AT_NGO_CLINIC_OR_HOSPITAL_VALUE = "6";
+        public static final String  DELIVERED_AT_NGO_CLINIC_OR_HOSPITAL_VALUE = "6";
         @JsonIgnore
-        public static String  DELIVERED_AT_PRIVATE_CLINIC_OR_HOSPITAL_VALUE = "7";
+        public static final String  DELIVERED_AT_PRIVATE_CLINIC_OR_HOSPITAL_VALUE = "7";
         @JsonIgnore
-        public static String WHO_DELIVERED_KEY = "Who_Delivered";
+        public static final String WHO_DELIVERED_KEY = "Who_Delivered";
         @JsonIgnore
-        public static String DELIVERED_BY_DOCTOR_VALUE = "1";
+        public static final String DELIVERED_BY_DOCTOR_VALUE = "1";
         @JsonIgnore
-        public static String DELIVERED_BY_NURSE_VALUE = "2";
+        public static final String DELIVERED_BY_NURSE_VALUE = "2";
         @JsonIgnore
-        public static String DELIVERED_BY_SACMO_VALUE = "3";
+        public static final String DELIVERED_BY_SACMO_VALUE = "3";
         @JsonIgnore
-        public static String DELIVERED_BY_FWV_VALUE = "4";
+        public static final String DELIVERED_BY_FWV_VALUE = "4";
         @JsonIgnore
-        public static String DELIVERED_BY_PARAMEDICS_VALUE = "5";
+        public static final String DELIVERED_BY_PARAMEDICS_VALUE = "5";
         @JsonIgnore
-        public static String DELIVERED_BY_CSBA_VALUE = "6";
+        public static final String DELIVERED_BY_CSBA_VALUE = "6";
         @JsonIgnore
-        public static String DELIVERY_TYPE_KEY = "Delivery_Type";
+        public static final String DELIVERY_TYPE_KEY = "Delivery_Type";
         @JsonIgnore
-        public static String DELIVERY_TYPE_NORMAL_VALUE = "1";
+        public static final String DELIVERY_TYPE_NORMAL_VALUE = "1";
         @JsonIgnore
-        public static String DELIVERY_TYPE_CESAREAN_VALUE = "2";
+        public static final String DELIVERY_TYPE_CESAREAN_VALUE = "2";
     }
 
     @JsonProperty
