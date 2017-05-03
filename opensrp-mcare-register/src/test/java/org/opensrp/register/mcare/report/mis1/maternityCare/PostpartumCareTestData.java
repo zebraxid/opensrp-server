@@ -21,7 +21,20 @@ public class PostpartumCareTestData extends MIS1TestData{
 
     public List<Members> createBirthAtHomeWithTrainedPersonTestData() {
         List<Members> allMembers = new ArrayList<>();
-
+        allMembers.add(createValidMemberWithStartDateTime());
+        allMembers.add(createValidMemberWithEndDateTime());
+        for(int i=0; i<totalCount;i++) {
+            List<Map<String , String>> bnfVisits = new ArrayList<>();
+            bnfVisits.addAll(createRandomNumberOfBNFVisitsWithExceedInvalidClientVersion());
+            if(i<validCount-2) {
+                String  deliveredBy = String.valueOf((i%6)+1);
+                bnfVisits.add(
+                        createBnfVisitWithDeliveredAtAndBy(
+                                Members.BirthNotificationVisitKeyValue.DELIVERED_AT_HOME_VALUE, deliveredBy));
+            }
+            bnfVisits.addAll(createRandomNumberOfBNFVisitsWithExceedInvalidClientVersion());
+            allMembers.add(createMemberWithBNFVisits(bnfVisits));
+        }
         return allMembers;
     }
 
@@ -34,7 +47,7 @@ public class PostpartumCareTestData extends MIS1TestData{
         return createMemberWithBNFVisits(bnfVisits);
     }
 
-    private Members createValidMemberWithEndDateTime(VisitNumber visitNumber) {
+    private Members createValidMemberWithEndDateTime() {
         List<Map<String, String>> bnfVisits = new ArrayList<>();
         bnfVisitBuilder.clientVersion(endDateTime);
         bnfVisitBuilder.deliveryAt(Members.BirthNotificationVisitKeyValue.DELIVERED_AT_HOME_VALUE);
@@ -43,13 +56,21 @@ public class PostpartumCareTestData extends MIS1TestData{
         return createMemberWithBNFVisits(bnfVisits);
     }
 
+    private Map<String , String> createBnfVisitWithDeliveredAtAndBy(String deliveredAt, String deliveredBy) {
+        bnfVisitBuilder.clientVersion(endDateTime);
+        bnfVisitBuilder.deliveryAt(deliveredAt);
+        bnfVisitBuilder.deliveryBy(deliveredBy);
+        return bnfVisitBuilder.build().getVisitData();
+    }
+
     private List<Map<String, String>> createRandomNumberOfBNFVisitsWithPreviousInvalidClientVersion() {
-        Random rand = new Random();
         int randomNum = getRandomNumberBetween(0,100);
         List<Map<String, String>> invalidBnfVisits = new ArrayList<>();
         for (int i = 0; i < randomNum; i++) {
             Long randomDateTimeBeforeStartDateTime = getRandomNumberBetween(0, startDateTime - 1);
             bnfVisitBuilder.clientVersion(randomDateTimeBeforeStartDateTime);
+            bnfVisitBuilder.deliveryBy(Members.BirthNotificationVisitKeyValue.DELIVERED_BY_FWV_VALUE);
+            bnfVisitBuilder.deliveryAt(Members.BirthNotificationVisitKeyValue.DELIVERED_AT_HOME_VALUE);
             invalidBnfVisits.add(bnfVisitBuilder.build().getVisitData());
 
         }
@@ -57,12 +78,13 @@ public class PostpartumCareTestData extends MIS1TestData{
     }
 
     private List<Map<String, String>> createRandomNumberOfBNFVisitsWithExceedInvalidClientVersion() {
-        Random rand = new Random();
         int randomNum = getRandomNumberBetween(0, 100);
         List<Map<String, String>> invalidBnfVisits = new ArrayList<>();
         for (int i = 0; i < randomNum; i++) {
             Long randomDateTimeBeforeStartDateTime = getRandomNumberBetween(endDateTime + 1, endDateTime * 7);
             bnfVisitBuilder.clientVersion(randomDateTimeBeforeStartDateTime);
+            bnfVisitBuilder.deliveryAt(Members.BirthNotificationVisitKeyValue.DELIVERED_AT_DISTRICT_OR_OTHER_GOVT_HOSPITAL_VALUE);
+            bnfVisitBuilder.deliveryBy(Members.BirthNotificationVisitKeyValue.DELIVERED_BY_DOCTOR_VALUE);
             invalidBnfVisits.add(bnfVisitBuilder.build().getVisitData());
 
         }
