@@ -68,6 +68,7 @@ public class Members extends MotechBaseDataObject {
         }
 
         public enum DeliveryPlace {
+            INVALID(-1),
             HOME(1),
             UPAZILLA_HEALTH_AND_FAMILY_WELFARE_COMPLEX(2),
             UNION_HEALTH_AND_FAMILY_WELFARE_CENTER(3),
@@ -90,11 +91,20 @@ public class Members extends MotechBaseDataObject {
                 }
             }
 
+            public static DeliveryPlace fromStr(String value) {
+                if(value == null || value.isEmpty()) {
+                    return INVALID;
+                }else {
+                    return fromInt(Integer.parseInt(value));
+                }
+            }
+
             public static DeliveryPlace fromInt(int value) {
                 if(map.containsKey(value)) {
                     return map.get(value);
                 }
-                throw new IllegalArgumentException();
+
+                return INVALID;
             }
 
             public Integer getValue() {
@@ -103,6 +113,7 @@ public class Members extends MotechBaseDataObject {
         }
 
         public enum DeliveryBy {
+            INVALID(-1),
             DOCTOR(1),
             NURSE(2),
             SACMO(3),
@@ -124,11 +135,20 @@ public class Members extends MotechBaseDataObject {
                 }
             }
 
+            public static DeliveryBy fromStr(String value) {
+                if(value == null || value.isEmpty()) {
+                    return INVALID;
+                }else {
+                    return fromInt(Integer.parseInt(value));
+                }
+            }
+
             public static DeliveryBy fromInt(int value) {
                 if(map.containsKey(value)) {
                     return map.get(value);
                 }
-                throw new IllegalArgumentException();
+
+                return INVALID;
             }
 
             public Integer getValue() {
@@ -137,6 +157,7 @@ public class Members extends MotechBaseDataObject {
         }
 
         public enum DeliveryType {
+            INVALID(-1),
             NORMAL(1),
             CESAREAN(2);
             private Integer value;
@@ -153,11 +174,19 @@ public class Members extends MotechBaseDataObject {
                 }
             }
 
+            public static DeliveryType fromStr(String value) {
+                if(value == null || value.isEmpty()) {
+                    return INVALID;
+                }else {
+                    return fromInt(Integer.parseInt(value));
+                }
+            }
+
             public static DeliveryType fromInt(int value) {
                 if(map.containsKey(value)) {
                     return map.get(value);
                 }
-                throw new IllegalArgumentException();
+                return INVALID;
             }
 
             public Integer getValue() {
