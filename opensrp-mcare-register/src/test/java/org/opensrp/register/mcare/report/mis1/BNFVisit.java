@@ -26,17 +26,17 @@ public class BNFVisit {
         }
 
         public BNFVisit.BNFVisitBuilder deliveryAt(String deliveryPlace) {
-            visitData.put(Members.BirthNotificationVisitKeyValue.WHERE_DELIVERED_KEY, deliveryPlace);
+            visitData.put(Members.BirthNotificationVisitKeyValue.Key.WHERE_DELIVERED, deliveryPlace);
             return this;
         }
 
         public BNFVisit.BNFVisitBuilder deliveryBy(String deliveryPerson) {
-            visitData.put(Members.BirthNotificationVisitKeyValue.WHO_DELIVERED_KEY, deliveryPerson);
+            visitData.put(Members.BirthNotificationVisitKeyValue.Key.WHO_DELIVERED, deliveryPerson);
             return this;
         }
 
         public BNFVisit.BNFVisitBuilder normalDelivery(String deliveryType) {
-            visitData.put(Members.BirthNotificationVisitKeyValue.DELIVERY_TYPE_KEY, deliveryType);
+            visitData.put(Members.BirthNotificationVisitKeyValue.Key.DELIVERY_TYPE, deliveryType);
             return this;
         }
 

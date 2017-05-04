@@ -114,7 +114,7 @@ public class AllMembersTest {
             e.printStackTrace();
         }
         System.out.println("Going to create Encounter: " + enc.toString());
-        HttpResponse op = HttpUtil.post("http://192.168.19.28:8080/openmrs/ws/rest/v1/encounter", "", enc.toString(),"admin", "mPower@1234");
+       // HttpResponse op = HttpUtil.post("http://192.168.19.28:8080/openmrs/ws/rest/v1/encounter", "", enc.toString(),"admin", "mPower@1234");
         //System.out.println(new Gson().toJson(op));
     }
 }

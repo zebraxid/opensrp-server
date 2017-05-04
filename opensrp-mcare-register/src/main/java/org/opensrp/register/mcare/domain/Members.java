@@ -56,12 +56,16 @@ public class Members extends MotechBaseDataObject {
     }
 
     public static class BirthNotificationVisitKeyValue {
-        @JsonIgnore
-        public static final String WHERE_DELIVERED_KEY = "Where_Delivered";
-        @JsonIgnore
-        public static final String WHO_DELIVERED_KEY = "Who_Delivered";
-        @JsonIgnore
-        public static final String DELIVERY_TYPE_KEY = "Delivery_Type";
+
+        public static class Key {
+
+            @JsonIgnore
+            public static final String WHO_DELIVERED = "Who_Delivered";
+            @JsonIgnore
+            public static final String WHERE_DELIVERED = "Where_Delivered";
+            @JsonIgnore
+            public static final String DELIVERY_TYPE = "Delivery_Type";
+        }
 
         public enum DeliveryPlace {
             HOME(1),

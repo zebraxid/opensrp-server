@@ -48,11 +48,11 @@ public class PostpartumCareCalculator extends ReportCalculator {
     }
 
     private boolean deliveredAtHomeWithTrainedPerson(Map<String, String> visitData) {
-        if (visitData.containsKey(WHERE_DELIVERED_KEY)) {
-            String deliveryPlace = visitData.get(WHERE_DELIVERED_KEY);
-            if(assertDeliveredAt(DeliveryPlace.HOME.getValue().toString(), deliveryPlace)) {
-                if (visitData.containsKey(WHO_DELIVERED_KEY)) {
-                    String deliveryPerson = visitData.get(WHO_DELIVERED_KEY);
+        if (visitData.containsKey(Key.WHERE_DELIVERED)) {
+            String deliveryPlace = visitData.get(Key.WHERE_DELIVERED);
+            if(assertDeliveredAt(DeliveryPlace.HOME.getValue() .toString(), deliveryPlace)) {
+                if (visitData.containsKey(Key.WHO_DELIVERED)) {
+                    String deliveryPerson = visitData.get(Key.WHO_DELIVERED);
                     return deliveredByTrainedPerson(DeliveryBy.fromInt(Integer.parseInt(deliveryPerson)));
                 }
             }
