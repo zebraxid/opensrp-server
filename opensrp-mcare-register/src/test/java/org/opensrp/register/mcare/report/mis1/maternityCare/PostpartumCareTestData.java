@@ -42,11 +42,45 @@ public class PostpartumCareTestData extends MIS1TestData{
         return allMembers;
     }
 
+    public List<Members> createNormalBirthAtHospitalOrClinicTestData() {
+        String normalDeliveryType = String.valueOf(Members.BirthNotificationVisitKeyValue.DeliveryType.NORMAL.getValue());
+        List<Members> allMembers = new ArrayList<>();
+        allMembers.add(createValidMemberWithStartDateTimeForBirthAtHomeOrClinicDeliveryType(normalDeliveryType));
+        allMembers.add(createValidMemberWithEndDateTimeForBirthAtHomeOrClinicDeliveryType(normalDeliveryType));
+
+        for(int i=0; i<totalCount; i++) {
+            List<Map<String , String>> bnfVisits = new ArrayList<>();
+            bnfVisits.addAll(createRandomNumberOfBNFVisitsWithPreviousInvalidClientVersion());
+            if(i<validCount-2) {
+                String  deliveredAt = String.valueOf((i%6)+2);
+                bnfVisits.add(
+                        createBnfVisitWithDeliveredAtAndType(
+                                deliveredAt, normalDeliveryType));
+            }else {
+                bnfVisits.add(
+                        createBnfVisitWithDeliveredAtAndType(
+                                Members.BirthNotificationVisitKeyValue.DeliveryPlace.HOME.getValue().toString(), normalDeliveryType));
+            }
+            bnfVisits.addAll(createRandomNumberOfBNFVisitsWithExceedInvalidClientVersion());
+            allMembers.add(createMemberWithBNFVisits(bnfVisits));
+        }
+        return allMembers;
+    }
+
     private Members createValidMemberWithStartDateTimeForBirthAtHomeWithTrainedPerson() {
         List<Map<String, String>> bnfVisits = new ArrayList<>();
         bnfVisitBuilder.clientVersion(startDateTime);
         bnfVisitBuilder.deliveryAt(Members.BirthNotificationVisitKeyValue.DeliveryPlace.HOME.getValue().toString());
         bnfVisitBuilder.deliveryBy(String.valueOf(Members.BirthNotificationVisitKeyValue.DeliveryBy.DOCTOR.getValue()));
+        bnfVisits.add(bnfVisitBuilder.build().getVisitData());
+        return createMemberWithBNFVisits(bnfVisits);
+    }
+
+    private Members createValidMemberWithStartDateTimeForBirthAtHomeOrClinicDeliveryType(String deliveryType) {
+        List<Map<String, String>> bnfVisits = new ArrayList<>();
+        bnfVisitBuilder.clientVersion(startDateTime);
+        bnfVisitBuilder.deliveryAt(Members.BirthNotificationVisitKeyValue.DeliveryPlace.MOTHER_AND_CHILD_WELFARE_CENTER.getValue().toString());
+        bnfVisitBuilder.deliveryType(deliveryType);
         bnfVisits.add(bnfVisitBuilder.build().getVisitData());
         return createMemberWithBNFVisits(bnfVisits);
     }
@@ -60,10 +94,27 @@ public class PostpartumCareTestData extends MIS1TestData{
         return createMemberWithBNFVisits(bnfVisits);
     }
 
+    private Members createValidMemberWithEndDateTimeForBirthAtHomeOrClinicDeliveryType(String deliveryType) {
+        List<Map<String, String>> bnfVisits = new ArrayList<>();
+        bnfVisitBuilder.clientVersion(endDateTime);
+        bnfVisitBuilder.deliveryAt(Members.BirthNotificationVisitKeyValue.DeliveryPlace.NGO_CLINIC_OR_HOSPITAL.getValue().toString());
+        bnfVisitBuilder.deliveryType(deliveryType);
+        bnfVisits.add(bnfVisitBuilder.build().getVisitData());
+        return createMemberWithBNFVisits(bnfVisits);
+    }
+
+
     private Map<String , String> createBnfVisitWithDeliveredAtAndBy(String deliveredAt, String deliveredBy) {
         bnfVisitBuilder.clientVersion(endDateTime);
         bnfVisitBuilder.deliveryAt(deliveredAt);
         bnfVisitBuilder.deliveryBy(deliveredBy);
+        return bnfVisitBuilder.build().getVisitData();
+    }
+
+    private Map<String , String> createBnfVisitWithDeliveredAtAndType(String deliveredAt, String deliveryType) {
+        bnfVisitBuilder.clientVersion(endDateTime);
+        bnfVisitBuilder.deliveryAt(deliveredAt);
+        bnfVisitBuilder.deliveryType(deliveryType);
         return bnfVisitBuilder.build().getVisitData();
     }
 
@@ -75,6 +126,7 @@ public class PostpartumCareTestData extends MIS1TestData{
             bnfVisitBuilder.clientVersion(randomDateTimeBeforeStartDateTime);
             bnfVisitBuilder.deliveryBy(String.valueOf(Members.BirthNotificationVisitKeyValue.DeliveryBy.FWV.getValue()));
             bnfVisitBuilder.deliveryAt(Members.BirthNotificationVisitKeyValue.DeliveryPlace.HOME.getValue().toString());
+            bnfVisitBuilder.deliveryType(Members.BirthNotificationVisitKeyValue.DeliveryType.CESAREAN.toString());
             invalidBnfVisits.add(bnfVisitBuilder.build().getVisitData());
 
         }

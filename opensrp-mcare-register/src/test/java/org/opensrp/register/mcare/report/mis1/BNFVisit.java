@@ -35,6 +35,11 @@ public class BNFVisit {
             return this;
         }
 
+        public BNFVisit.BNFVisitBuilder deliveryType(String deliveryType) {
+            visitData.put(Members.BirthNotificationVisitKeyValue.Key.DELIVERY_TYPE, deliveryType);
+            return this;
+        }
+
         public BNFVisit.BNFVisitBuilder normalDelivery(String deliveryType) {
             visitData.put(Members.BirthNotificationVisitKeyValue.Key.DELIVERY_TYPE, deliveryType);
             return this;

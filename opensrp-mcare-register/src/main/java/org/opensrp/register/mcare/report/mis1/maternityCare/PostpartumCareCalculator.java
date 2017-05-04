@@ -11,6 +11,7 @@ import static org.opensrp.register.mcare.domain.Members.BirthNotificationVisitKe
 
 public class PostpartumCareCalculator extends ReportCalculator {
     private int countOfBirthAtHomeWithTrainedPerson = 0;
+    private int countOfNormalBirthAtHospitalOrClinic = 0;
 
     public PostpartumCareCalculator(long startDateTime, long endDateTime) {
         super(startDateTime, endDateTime);
@@ -20,9 +21,14 @@ public class PostpartumCareCalculator extends ReportCalculator {
         return countOfBirthAtHomeWithTrainedPerson;
     }
 
+    public int getCountOfNormalBirthAtHospitalOrClinic() {
+        return countOfNormalBirthAtHospitalOrClinic;
+    }
+
     @Override
     public void calculate(Members member) {
         this.countOfBirthAtHomeWithTrainedPerson += addToCountOfBirthAtHomeWithTrainedPerson(member);
+        this.countOfNormalBirthAtHospitalOrClinic += addToCountOfNormalBirthAtHospitalOrClinic(member);
     }
 
     private int addToCountOfBirthAtHomeWithTrainedPerson(Members member) {
@@ -30,6 +36,18 @@ public class PostpartumCareCalculator extends ReportCalculator {
         for (Map<String, String> bnfVisit : bnfVisits) {
             if (withInStartAndEndTime(bnfVisit)) {
                 if (deliveredAtHomeWithTrainedPerson(bnfVisit)) {
+                    return 1;
+                }
+            }
+        }
+        return 0;
+    }
+
+    private int addToCountOfNormalBirthAtHospitalOrClinic(Members member) {
+        List<Map<String, String>> bnfVisits = member.bnfVisit();
+        for (Map<String, String> bnfVisit : bnfVisits) {
+            if (withInStartAndEndTime(bnfVisit)) {
+                if (deliveryAtHospitalOrClinicWithType(bnfVisit, DeliveryType.NORMAL)) {
                     return 1;
                 }
             }
@@ -49,19 +67,42 @@ public class PostpartumCareCalculator extends ReportCalculator {
 
     private boolean deliveredAtHomeWithTrainedPerson(Map<String, String> visitData) {
         if (visitData.containsKey(Key.WHERE_DELIVERED)) {
-            String deliveryPlace = visitData.get(Key.WHERE_DELIVERED);
-            if(assertDeliveredAt(DeliveryPlace.HOME.getValue() .toString(), deliveryPlace)) {
+            DeliveryPlace deliveryPlace = DeliveryPlace.fromStr(visitData.get(Key.WHERE_DELIVERED));
+            if (!assertDeliveredAtHospitalOrClinic(deliveryPlace)) {
                 if (visitData.containsKey(Key.WHO_DELIVERED)) {
                     String deliveryPerson = visitData.get(Key.WHO_DELIVERED);
                     return deliveredByTrainedPerson(DeliveryBy.fromInt(Integer.parseInt(deliveryPerson)));
+                }
+            }
+
+        }
+        return false;
+    }
+
+    private boolean deliveryAtHospitalOrClinicWithType(Map<String, String> visitData, DeliveryType expectedDeliveryType) {
+        if (visitData.containsKey(Key.WHERE_DELIVERED)) {
+            DeliveryPlace deliveryPlace = DeliveryPlace.fromStr(visitData.get(Key.WHERE_DELIVERED));
+            if (assertDeliveredAtHospitalOrClinic(deliveryPlace)) {
+                if (visitData.containsKey(Key.DELIVERY_TYPE)) {
+                    DeliveryType actualDeliveryType = DeliveryType.fromStr(visitData.get(Key.DELIVERY_TYPE));
+                    return assertDeliveryType(expectedDeliveryType, actualDeliveryType);
                 }
             }
         }
         return false;
     }
 
-    private boolean assertDeliveredAt(String expected, String actual) {
-        if(expected.equalsIgnoreCase(actual)){
+    private boolean assertDeliveredAtHospitalOrClinic(DeliveryPlace deliveryPlace) {
+        switch (deliveryPlace) {
+            case HOME:
+                return false;
+            default:
+                return true;
+        }
+    }
+
+    private boolean assertDeliveryType(DeliveryType expected, DeliveryType actual) {
+        if (expected == actual) {
             return true;
         }
         return false;

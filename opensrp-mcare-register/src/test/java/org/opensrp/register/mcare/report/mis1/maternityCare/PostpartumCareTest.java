@@ -34,4 +34,13 @@ public class PostpartumCareTest {
         long birthAtHomeWithTrainedPerson = mis1Report.getMaternityCareReport().getPostpartumCareCalculator().getCountOfBirthAtHomeWithTrainedPerson();
         assertEquals(postpartumCareTestData.validCount, birthAtHomeWithTrainedPerson);
     }
+
+    @Test
+    public void testNormalBirthAtHospitalOrClinic() {
+        List<Members> allMembers = postpartumCareTestData.createNormalBirthAtHospitalOrClinicTestData();
+        MIS1Report mis1Report = new MIS1Report(unionName, allMembers, startDateTime, endDateTime);
+        long normalBirthAtHospitalOrClinic = mis1Report.getMaternityCareReport().getPostpartumCareCalculator().getCountOfNormalBirthAtHospitalOrClinic();
+        assertEquals(postpartumCareTestData.validCount, normalBirthAtHospitalOrClinic);
+    }
+
 }
