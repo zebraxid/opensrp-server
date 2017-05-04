@@ -55,6 +55,98 @@ public class Members extends MotechBaseDataObject {
 
     }
 
+    public static class PNCVisitKeyValue {
+        public static class Key {
+            public final static String VISIT_STATUS = "Visit_Status";
+            public final static String HAS_PNC_GIVEN_ON_TIME = "Has_PNC_Given_On_Time";
+        }
+
+        public enum VisitStatus {
+            INVALID(-1),
+            MET_AND_BABY_ALIVE(1),
+            NOT_MET(2),
+            MET_AND_WOMEN_HAD_STILLBIRTH(2),
+            REFUSED(6),
+            PERMANENTLY_MOVED(8),
+            WOMAN_DIED(10);
+
+            public int value;
+
+            VisitStatus(int value) {
+                this.value = value;
+            }
+
+            private static Map<Integer, VisitStatus> map = new HashMap<Integer, VisitStatus>();
+
+            static {
+                for (VisitStatus visitStatus : VisitStatus.values()) {
+                    map.put(visitStatus.value, visitStatus);
+                }
+            }
+
+            public static VisitStatus fromStr(String value) {
+                if(value == null || value.isEmpty()) {
+                    return INVALID;
+                }else {
+                    return fromInt(Integer.parseInt(value));
+                }
+            }
+
+            public static VisitStatus fromInt(int value) {
+                if(map.containsKey(value)) {
+                    return map.get(value);
+                }
+
+                return INVALID;
+            }
+
+            public Integer getValue() {
+                return this.value;
+            }
+        }
+
+        public enum PNCGivenOnTime {
+            INVALID(-1),
+            NO(0),
+            YES(1);
+
+            public int value;
+
+            PNCGivenOnTime(int value) {
+                this.value = value;
+            }
+
+            private static Map<Integer, PNCGivenOnTime> map = new HashMap<Integer, PNCGivenOnTime>();
+
+            static {
+                for (PNCGivenOnTime pncGivenOnTime : PNCGivenOnTime.values()) {
+                    map.put(pncGivenOnTime.value, pncGivenOnTime);
+                }
+            }
+
+            public static PNCGivenOnTime fromStr(String value) {
+                if(value == null || value.isEmpty()) {
+                    return INVALID;
+                }else {
+                    return fromInt(Integer.parseInt(value));
+                }
+            }
+
+            public static PNCGivenOnTime fromInt(int value) {
+                if(map.containsKey(value)) {
+                    return map.get(value);
+                }
+
+                return INVALID;
+            }
+
+            public Integer getValue() {
+                return this.value;
+            }
+        }
+    }
+
+
     public static class BirthNotificationVisitKeyValue {
 
         public static class Key {
