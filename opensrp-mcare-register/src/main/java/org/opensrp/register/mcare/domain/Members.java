@@ -65,7 +65,7 @@ public class Members extends MotechBaseDataObject {
             INVALID(-1),
             MET_AND_BABY_ALIVE(1),
             NOT_MET(2),
-            MET_AND_WOMEN_HAD_STILLBIRTH(2),
+            MET_AND_WOMEN_HAD_STILLBIRTH(3),
             REFUSED(6),
             PERMANENTLY_MOVED(8),
             WOMAN_DIED(10);

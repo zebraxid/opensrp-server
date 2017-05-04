@@ -57,6 +57,22 @@ public abstract class MIS1TestData {
         return member.setbnfVisit(bnfVisits);
     }
 
+    protected Members createMemberWithPNCVisit(VisitNumber visitNumber, Map<String , String> pncVisit) {
+        Members members = new Members();
+        switch (visitNumber) {
+            case one:
+              return members.setPNCVisit1(pncVisit);
+            case two:
+                return members.setPNCVisit2(pncVisit);
+            case three:
+                return members.setPNCVisit3(pncVisit);
+            case four:
+                return members.setPNCVisit4(pncVisit);
+
+        }
+        throw new IllegalArgumentException();
+    }
+
     public enum VisitNumber {
         one,
         two,
