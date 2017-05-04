@@ -108,7 +108,8 @@ public class HealthSchedulerService {
     }	
 	public void unEnrollAndCloseImmediateSchedule(String entityId, String providerId, String scheduleName, String ImmediateScheduleName, LocalDate completionDate) {
 		scheduleService.unenroll(entityId, ImmediateScheduleName);
-        actionService.markAlertAsClosed(providerId, entityId, scheduleName, completionDate.toString());
+		System.out.println("scheduleName:"+scheduleName);
+        actionService.markAlertAsInactive(providerId, entityId, scheduleName);
     }	
 	public void unEnrollFromAllSchedules(String entityId) {
         List<String> activeSchedules = scheduleService.findOpenEnrollmentNames(entityId);

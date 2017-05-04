@@ -66,8 +66,8 @@ public class MembersScheduleService {
         scheduler.unEnrollFromImmediateSchedule(entityId, anmId, scheduleName, ImmediateScheduleName);
     }
     
-    public void unEnrollAndCloseSchedule(String entityId, String anmId, String scheduleName, LocalDate completionDate) {
-        scheduler.unEnrollAndCloseSchedule(entityId, anmId, scheduleName, completionDate);
+    public void unEnrollAndCloseSchedule(String entityId, String anmId, String scheduleName,String ImmediateScheduleName, LocalDate completionDate) {
+        scheduler.unEnrollAndCloseImmediateSchedule(entityId, anmId, scheduleName,ImmediateScheduleName, completionDate);
     }
     
     public void unEnrollAndCloseImmediateSchedule(String entityId, String anmId, String scheduleName,String ImmediateScheduleName, LocalDate completionDate) {

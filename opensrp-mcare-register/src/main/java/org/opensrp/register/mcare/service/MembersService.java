@@ -273,7 +273,7 @@ public class MembersService {
 						membersScheduleService.enrollAfterimmediateVisit(members.caseId(),submission.anmId(),submission.getField(EDD),submission.instanceId(),SCHEDULE_Woman_BNF,IMD_SCHEDULE_Woman_BNF);
 			}else if(Integer.parseInt(submission.getField(Visit_status))==VisitStatus.LIVEBIRTH.value ||Integer.parseInt(submission.getField(Visit_status))==VisitStatus.DIED.value  || Integer.parseInt(submission.getField(Visit_status))==VisitStatus.MISCARRIAGE.value  ){
 				System.out.println("Comming here ...........");
-				membersScheduleService.unEnrollAndCloseSchedule(members.caseId(),submission.anmId(),IMD_SCHEDULE_Woman_BNF,LocalDate.parse(submission.getField(REFERENCE_DATE)));
+				membersScheduleService.unEnrollAndCloseSchedule(members.caseId(),submission.anmId(),SCHEDULE_Woman_BNF,IMD_SCHEDULE_Woman_BNF,LocalDate.parse(submission.getField(REFERENCE_DATE)));
 			}
 		}
 	}
