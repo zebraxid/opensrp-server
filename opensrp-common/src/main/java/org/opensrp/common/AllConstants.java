@@ -1494,8 +1494,20 @@ public class AllConstants {
 	public static final String FORM_SCHEDULE_SUBJECT = "FORM-SCHEDULE";
 	
 	public static final String OPENSRP_IDENTIFIER = "Bahmni Id";
-	//public static final String OPENSRP_IDENTIFIER_TYPE = "Patient Identifier";
-	
-	}
+	public enum Member{
+		CHILD(1),WOMAN(1);
+		  public int value;  
+		  Member(int value){  
+			  this.value=value;  
+		  }
+	}  
+	public enum VisitStatus{
+		LIVEBIRTH(3),PREGNANT(1),DIED(9),MISCARRIAGE(4);
+		  public int value;  
+		  VisitStatus(int value){  
+			  this.value=value;  
+		  }
+	} 
+}
 
 

@@ -15,6 +15,9 @@ import static org.opensrp.common.AllConstants.HHRegistrationFields.START_DATE;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.received_time;
 import static org.opensrp.common.AllConstants.MEMBERSRegistrationFields.*;
 import static org.opensrp.common.AllConstants.TT_VisitFields.Received_Time;
+import static org.opensrp.common.AllConstants.Member;
+import static org.opensrp.common.AllConstants.VisitStatus;
+
 import static org.opensrp.common.util.EasyMap.create;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MemberScheduleConstants.IMD_SCHEDULE_Woman_BNF;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MemberScheduleConstants.IMD_child_bcg;
@@ -130,14 +133,14 @@ public class MembersService {
 			
 			if(membersFields.containsKey(Is_woman))
 			if(!membersFields.get(Is_woman).equalsIgnoreCase("") || membersFields.get(Is_woman) != null)	
-				if(membersFields.get(Is_woman).equalsIgnoreCase("1")){
+				if(Integer.parseInt(membersFields.get(Is_woman)) == Member.WOMAN.value){
 					TT_Vaccine(submission, members, membersFields);
 				}					
 				
 			
 			if(membersFields.containsKey(Is_child))
 			if(!membersFields.get(Is_child).equalsIgnoreCase("") && membersFields.get(Is_child) != null)
-				if(membersFields.get(Is_child).equalsIgnoreCase("1"))
+				if(Integer.parseInt(membersFields.get(Is_child)) == Member.CHILD.value)
 					Child_Vaccine(submission, members, membersFields);
 		}	
 			
@@ -261,17 +264,16 @@ public class MembersService {
 											.map();	
 		
 		members.setBNFVisit(bnf);
-		allMembers.update(members);
-		System.err.println("submission.getField(EDD):"+submission.getField(EDD));
+		allMembers.update(members);		
 		if (!submission.getField(Visit_status).equalsIgnoreCase("") && submission.getField(Visit_status) != null){	
-			if(submission.getField(Visit_status).equalsIgnoreCase("1")){
+			if(Integer.parseInt(submission.getField(Visit_status))==VisitStatus.PREGNANT.value){
+				System.out.println("Pregnant here ...........");
 				if (!submission.getField(EDD).equalsIgnoreCase("") && submission.getField(EDD) != null)
 					if(isValidDate(submission.getField(EDD)))
 						membersScheduleService.enrollAfterimmediateVisit(members.caseId(),submission.anmId(),submission.getField(EDD),submission.instanceId(),SCHEDULE_Woman_BNF,IMD_SCHEDULE_Woman_BNF);
-			}
-				
-			else if(submission.getField(Visit_status).equalsIgnoreCase("3")){
-				membersScheduleService.unEnrollAndCloseSchedule(members.caseId(),submission.anmId(),SCHEDULE_Woman_BNF,LocalDate.parse(submission.getField(REFERENCE_DATE)));
+			}else if(Integer.parseInt(submission.getField(Visit_status))==VisitStatus.LIVEBIRTH.value ||Integer.parseInt(submission.getField(Visit_status))==VisitStatus.DIED.value  || Integer.parseInt(submission.getField(Visit_status))==VisitStatus.MISCARRIAGE.value  ){
+				System.out.println("Comming here ...........");
+				membersScheduleService.unEnrollAndCloseSchedule(members.caseId(),submission.anmId(),IMD_SCHEDULE_Woman_BNF,LocalDate.parse(submission.getField(REFERENCE_DATE)));
 			}
 		}
 	}
@@ -519,7 +521,7 @@ public class MembersService {
 			
 			if(membersFields.containsKey(Is_woman)){
 				if(!membersFields.get(Is_woman).equalsIgnoreCase("") || membersFields.get(Is_woman) != null){	
-					if(membersFields.get(Is_woman).equalsIgnoreCase("1")){
+					if(Integer.parseInt(membersFields.get(Is_woman))==Member.WOMAN.value){
 						TT_Vaccine(submission, members, membersFields);
 					}					
 				}
@@ -527,7 +529,7 @@ public class MembersService {
 			
 			if(membersFields.containsKey(Is_child))
 				if(!membersFields.get(Is_child).equalsIgnoreCase("") && membersFields.get(Is_child) != null)
-					if(membersFields.get(Is_child).equalsIgnoreCase("1")){
+					if(Integer.parseInt(membersFields.get(Is_child))==Member.CHILD.value){
 						Child_Vaccine(submission, members, membersFields);
 					}
 			

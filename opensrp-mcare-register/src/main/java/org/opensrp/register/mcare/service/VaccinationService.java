@@ -63,7 +63,7 @@ public class VaccinationService {
     	try{
     		
     		Vaccine existingVaccine = allVaccine.getVaccine(caseId,vaccineName);    
-    		if(existingVaccine != null){
+    		if(existingVaccine != null && existingVaccine.getStatus()==false){
 	    		existingVaccine.setStatus(true);
 	    		existingVaccine.setExecutionDate(new DateTime());
 	    		existingVaccine.setId(existingVaccine.getId());

@@ -317,19 +317,32 @@ public class AllMemberTest {
 		System.out.println(sb);
 		
 	}
+	public enum Member{
+		CHILD(1),WOMAN(1);
+		  
 	
+	  public int value;  
+	  Member(int value){  
+		  this.value=value;  
+	  }
+	}  
 	@Test
 	public void getResourceFile() throws FileNotFoundException{
 		
-		JsonNode enc = null;
+		/*JsonNode enc = null;
 		ObjectMapper mapper = new ObjectMapper();
 	     try {
 	            enc = mapper.readValue(new File("./../assets/form/woman_tt_form/form_definition.json"), JsonNode.class);
 	        } catch (IOException e) {
 	            e.printStackTrace();
 	        }
-		 System.out.println(enc.toString());
-		
-	}
+		 System.out.println(enc.toString());*/
+		System.out.println(Member.CHILD.name());
+		System.out.println(Member.CHILD.value);
+		for(Member s : Member.values())  
+		System.out.println(s+" "+s.value);  
+		  
+		}
+	
 	
 }
