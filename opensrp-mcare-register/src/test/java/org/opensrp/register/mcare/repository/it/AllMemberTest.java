@@ -3,6 +3,7 @@ package org.opensrp.register.mcare.repository.it;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,6 +15,7 @@ import org.ektorp.http.StdHttpClient;
 import org.ektorp.impl.StdCouchDbConnector;
 import org.ektorp.impl.StdCouchDbInstance;
 import org.ektorp.impl.StdObjectMapperFactory;
+import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -67,9 +69,10 @@ public class AllMemberTest {
 	public void bahmniEncounterTest() throws JSONException{
 		JSONObject enc = new JSONObject();
 		enc.put("encounterTypeUuid", "910d3315-0632-4c5b-9e2a-32916d0a8004");
-		enc.put("encounterDateTime", "2017-04-20T10:19:18.000+0600");
-		enc.put("patientUuid", "00f88b53-0b98-4fee-b09f-bd612dd9fc47");
-		
+		enc.put("encounterDateTime", new DateTime());
+		enc.put("patientUuid", "70f011b7-8f92-4cdf-bdf6-4b1e341083b1");
+		enc.put("locationUuid", "e0d82fb6-66f9-45cb-ad57-f4204b139f59");
+		enc.put("visitType", "field");
 		JSONObject providers = new JSONObject();
 		JSONArray providerArray = new JSONArray();
 		providers.put("uuid", "dd967c60-5089-4e49-82be-ef7990439619");
@@ -122,9 +125,11 @@ public class AllMemberTest {
 		
 		JSONObject conceptInner = new JSONObject();
 		conceptInner.put("uuid", "021d28cd-953d-11e6-90c1-005056b01095"); //Immunization Incident Group
+		conceptInner.put("name", "Immunization Incident Group");
 		groupMember.put("concept", conceptInner);
 		
-		
+		groupMember.put("isObservation", true);
+		groupMember.put("uniqueId", "observation_45");
 		
 		// group member array property
 		JSONArray groupMemberArray = new JSONArray();
@@ -148,12 +153,12 @@ public class AllMemberTest {
 	}
 	
 	
-	/*@Test
-	public void bahmniEncounterTest() throws JSONException{
+	@Ignore@Test
+	public void bahmniEncounterTest2() throws JSONException{
 		JSONObject enc = new JSONObject();
-		enc.put("encounterTypeUuid", "910d3315-0632-4c5b-9e2a-32916d0a8004");
-		enc.put("encounterDateTime", "2017-04-20T10:19:18.000+0600");
-		enc.put("patientUuid", "00f88b53-0b98-4fee-b09f-bd612dd9fc47");
+		enc.put("encounterTypeUuid", "03aecf69-953d-11e6-90c1-005056b01095");
+		enc.put("encounterDateTime", new DateTime());
+		enc.put("patientUuid", "abcea75c-f3e7-4d1c-aafe-fb9836090f70");
 		
 		JSONObject providers = new JSONObject();
 		JSONArray providerArray = new JSONArray();
@@ -181,9 +186,9 @@ public class AllMemberTest {
 		
 		
 		JSONObject innerGroupMember1Value = new JSONObject();
-		//innerGroupMember1Value.put("name", "TT 3");
+		innerGroupMember1Value.put("name", "TT 3");
 		innerGroupMember1Value.put("uuid", "8197f5b8-328c-402d-8128-fd04d9de8a94");
-		//innerGroupMember1Value.put("value", "TT 3");
+		innerGroupMember1Value.put("value", "TT 3");
 		innerGroupMember1.put("value", innerGroupMember1Value);
 		
 		
@@ -191,7 +196,7 @@ public class AllMemberTest {
 		/// group memener 2
 		JSONObject innerGroupMember2 = new JSONObject();
 		JSONObject innerGroupMember2Concept = new JSONObject();
-		//innerGroupMember2Concept.put("dataType", "Numeric");
+		innerGroupMember2Concept.put("dataType", "Numeric");
 		innerGroupMember2Concept.put("name", "Immunization Incident Vaccination Dosage");
 		innerGroupMember2Concept.put("uuid", "021efde7-953d-11e6-90c1-005056b01095");
 		innerGroupMember2.put("concept", innerGroupMember2Concept);
@@ -202,7 +207,7 @@ public class AllMemberTest {
 		/// group memener 2
 		JSONObject innerGroupMember3 = new JSONObject();
 		JSONObject innerGroupMember3Concept = new JSONObject();
-		//innerGroupMember3Concept.put("dataType", "Boolean");
+		innerGroupMember3Concept.put("dataType", "Boolean");
 		innerGroupMember3Concept.put("name", "Immunization Incident Vaccination Reported");
 		innerGroupMember3Concept.put("uuid", "021f7622-953d-11e6-90c1-005056b01095");
 		innerGroupMember3.put("concept", innerGroupMember3Concept);		
@@ -246,14 +251,25 @@ public class AllMemberTest {
 		HttpResponse op = HttpUtil.post("https://103.247.238.26/openmrs/ws/rest/v1/bahmnicore/bahmniencounter", "", enc.toString(),"sohel", "Sohel@123");
 		System.out.println(op.getClass());
 		
-	}*/
-	@Ignore@Test
+	}
+	@Test
 	public void EncounterTest() throws JSONException{
 		JSONObject enc = new JSONObject();
-		enc.put("encounterDatetime", "2017-04-05");
-		enc.put("provider", "3e03cbab-bb1b-427c-96c1-3ad4b1d63e9b");
-		enc.put("patient", "00f88b53-0b98-4fee-b09f-bd612dd9fc47");
-		enc.put("encounterType", "Woman TT Follow Up");
+		//enc.put("encounterDatetime", "2017-04-05");
+		//enc.put("provider", "3e03cbab-bb1b-427c-96c1-3ad4b1d63e9b");
+		//enc.put("patient", "00f88b53-0b98-4fee-b09f-bd612dd9fc47");
+		//enc.put("encounterType", "Woman TT Follow Up");
+		//enc.put("location", "b767bf43-3cb0-49b6-8fb3-06a0625e5dd3");
+		enc.put("encounterTypeUuid", "910d3315-0632-4c5b-9e2a-32916d0a8004");
+		enc.put("encounterDateTime", new DateTime());
+		enc.put("patientUuid", "a75320a7-7275-48db-a2af-50e4f7a9d063");
+		enc.put("locationUuid", "e0d82fb6-66f9-45cb-ad57-f4204b139f59");
+		enc.put("visitType", "field");
+		JSONObject providers = new JSONObject();
+		JSONArray providerArray = new JSONArray();
+		providers.put("uuid", "dd967c60-5089-4e49-82be-ef7990439619");
+		providerArray.put(providers);
+		enc.put("providers", providerArray);
 		
 		//021e0705-953d-11e6-90c1-005056b01095
 		JSONArray obar1 = new JSONArray();
@@ -302,19 +318,19 @@ public class AllMemberTest {
 		
 	
 		
-		enc.put("obs", obar1);
+		enc.put("observations", obar1);
 		//enc.put("obs", obar2);
 		//enc.put("obs", obar3);
 		
-		/*System.out.println("Going to create Encounter: " + enc.toString());
-		HttpResponse op = HttpUtil.post("https://103.247.238.26/openmrs/ws/rest/v1/encounter", "", enc.toString(),"sohel", "Sohel@123");
-		System.out.println(op.getClass());*/
-		String c = "dd";
+		System.out.println("Going to create Encounter: " + enc.toString());
+		HttpResponse op = HttpUtil.post("https://103.247.238.26/openmrs/ws/rest/v1/bahmnicore/bahmniencounter", "", enc.toString(),"sohel", "Sohel@123");
+		System.out.println(op.getClass());
+		/*String c = "dd";
 		StringBuilder sb = new StringBuilder();
 		sb.append("DDD"+" ");
 		sb.append("T dddT"+" ");
 		sb.append("R dddT"+" ");
-		System.out.println(sb);
+		System.out.println(sb);*/
 		
 	}
 	public enum Member{

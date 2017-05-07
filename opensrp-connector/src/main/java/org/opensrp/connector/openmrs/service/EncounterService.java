@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.collections.map.MultiValueMap;
+import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -23,7 +24,7 @@ import com.mysql.jdbc.StringUtils;
 @SuppressWarnings("unchecked")
 @Service
 public class EncounterService extends OpenmrsService{
-	private static final String ENCOUNTER_URL = "ws/rest/v1/encounter";
+	private static final String ENCOUNTER_URL = "ws/rest/v1/bahmnicore/bahmniencounter";
 	private static final String ENCOUNTER__TYPE_URL = "ws/rest/v1/encountertype";
 	private PatientService patientService;
 	private OpenmrsUserService userService;
@@ -91,30 +92,37 @@ public class EncounterService extends OpenmrsService{
 	
 	@SuppressWarnings("rawtypes")
 	public JSONObject createEncounter(Event e,String idGen) throws JSONException{
+		
 		JSONObject pt = patientService.getPatientByIdentifier(idGen);
 		JSONObject enc = new JSONObject();
 		JSONObject pr = userService.getPersonByUser(e.getProviderId());		
-		enc.put("encounterDatetime", OPENMRS_DATE.format(e.getEventDate()));
+		enc.put("encounterDateTime", new DateTime());
+		enc.put("visitType", "field");
 		// patient must be existing in OpenMRS before it submits an encounter. if it doesnot it would throw NPE
 		if (pr.getString("uuid").isEmpty() || pr.getString("uuid")==null)
 			System.out.println("Person or Patient does not exist or empty inside openmrs with identifier: " + pr.getString("uuid"));
 		else 
-			enc.put("patient", pt.getString("uuid"));
-		enc.put("encounterType", e.getEventType());
+			enc.put("patientUuid", pt.getString("uuid"));
+		enc.put("encounterTypeUuid", "910d3315-0632-4c5b-9e2a-32916d0a8004");
 		enc.put("location", e.getLocationId());
-		if (pr.getString("uuid").isEmpty() || pr.getString("uuid")==null)
+		if (pr.getString("uuid").isEmpty() || pr.getString("uuid")==null){
 			System.out.println("Person or Patient does not exist or empty inside openmrs with identifier: " + pr.getString("uuid"));
-		else 
-			enc.put("provider", pr.getString("uuid"));
+		}else{
+			JSONObject providers = new JSONObject();
+			JSONArray providerArray = new JSONArray();
+			providers.put("uuid", "dd967c60-5089-4e49-82be-ef7990439619");
+			providerArray.put(providers);
+			enc.put("providers", providerArray);
+			//enc.put("provider", pr.getString("uuid"));
+		}
 		
-		boolean status = true;
 		
 		try{
 			
 			List<Obs> ol = e.getObs();			
 			Map<String, List<JSONObject>> pc = new HashMap<>();
 			MultiValueMap   obsMap = new MultiValueMap();
-			enc.put("location", "b767bf43-3cb0-49b6-8fb3-06a0625e5dd3");
+			enc.put("locationUuid", "e0d82fb6-66f9-45cb-ad57-f4204b139f59");
 			for (Obs obs : ol) {
 				System.out.println("obs:"+obs.toString());
 				//if no parent simply make it root obs				
@@ -150,7 +158,7 @@ public class EncounterService extends OpenmrsService{
 	        }
 	       
 	        this.createVaccineEncounter(obar, enc);	
-	        status = false;
+	       
 	        return new JSONObject("Vaccine Encounter created");
 		}catch(Exception ee){
 			System.out.println(ee.getMessage());
@@ -167,7 +175,8 @@ public class EncounterService extends OpenmrsService{
 	}
 	
 	private JSONObject createVaccineEncounter(JSONArray obar,JSONObject enc) throws JSONException{
-		     System.out.println("obar.length():"+obar.length());
+		   
+		System.out.println("obar.length():"+obar.toString());
 		for ( int totalGroupCounter = 0; totalGroupCounter < obar.length(); totalGroupCounter++) {
 			 try{
 			
@@ -199,7 +208,7 @@ public class EncounterService extends OpenmrsService{
 			        	observationGroup.put("concept", concept);		        	        	
 			        	observation.put(observationConcept);
 			        	observation.put(observationGroup);	 	        
-			 	        enc.put("obs", observation);
+			 	        enc.put("observations", observation);
 			 	        System.out.println("Going to create Encounter: " + enc.toString());
 			 	        HttpResponse op = HttpUtil.post(HttpUtil.removeEndingSlash(OPENMRS_BASE_URL)+"/"+ENCOUNTER_URL, "", enc.toString(), OPENMRS_USER, OPENMRS_PWD);
 			 	        System.out.println(new JSONObject(op.body())); 

@@ -6,6 +6,7 @@ import java.util.List;
 import org.joda.time.DateTime;
 import org.opensrp.domain.Event;
 import org.opensrp.repository.AllEvents;
+import org.opensrp.scheduler.HookedEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,7 @@ import com.mysql.jdbc.StringUtils;
 public class EventService {
 	
 	private final AllEvents allEvents;
+	private HookedEvent action;
 	
 	@Autowired
 	public EventService(AllEvents allEvents) {
@@ -24,7 +26,10 @@ public class EventService {
 	public Event getByEventId(String eventId) {
 		return allEvents.findByEventId(eventId);
 	}
-	
+
+	public void setEvent(HookedEvent action){
+		this.action = action;
+	}
 	public Event getByBaseEntityAndFormSubmissionId(String baseEntityId, String formSubmissionId) {
 		System.out.println("baseEntityId:" + baseEntityId + "formSubmissionId:" + formSubmissionId);
 		List<Event> el = allEvents.findByBaseEntityAndFormSubmissionId(baseEntityId, formSubmissionId);
@@ -61,6 +66,7 @@ public class EventService {
 			throw new IllegalArgumentException("An event already exists with given eventId " + event.getEventId()
 			        + ". Consider updating");
 		}
+		//action.getMember(event.getBaseEntityId());
 		if (getByBaseEntityAndFormSubmissionId(event.getBaseEntityId(), event.getFormSubmissionId()) != null) {
 			//throw new IllegalArgumentException("An event already exists with given baseEntity and formSubmission combination. Consider updating");
 			return updateEvent(event);

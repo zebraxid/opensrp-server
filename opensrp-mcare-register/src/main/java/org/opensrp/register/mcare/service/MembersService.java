@@ -866,8 +866,7 @@ public class MembersService {
 		}
 		
 		SimpleDateFormat dateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		Date today = Calendar.getInstance().getTime();
-		System.err.println("Starting child vaccination...");
+		Date today = Calendar.getInstance().getTime();		
 				Map<String, String> vaccine = create(ID, submission.getField(ID))
 		.put(REFERENCE_DATE, 
 				submission.getField(REFERENCE_DATE))

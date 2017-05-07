@@ -120,7 +120,7 @@ public class AlertCreationAction implements HookedEvent {
 
 	@Override
 	public void getMember(String id) {
-		allMembers.findByCaseId(id);
+		logger.info("Member:"+allMembers.findByCaseId(id).toString());
 		
 	}
 
