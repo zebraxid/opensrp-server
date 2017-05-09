@@ -94,8 +94,7 @@ public class ChildVaccineSchedule {
 	public void ChildFollowupVaccine(FormSubmission submission, Members members, String scheduleName, String refDate, String age, String age_days, String cond, int agenum, int days) {
 		if ((submission.getField(cond) == null || submission.getField(cond).equalsIgnoreCase(""))  && ((submission.getField(age_days) != null && !submission.getField(age_days).equalsIgnoreCase("")) )){
 			if((Integer.parseInt(submission.getField(age_days))<=days) && ((submission.getField(refDate) != null && !submission.getField(refDate).equalsIgnoreCase("")) ))
-			if(isValidDate(submission.getField(refDate))){
-				System.out.println("ChildFollowupVaccine OK3");
+			if(isValidDate(submission.getField(refDate))){				
 				membersScheduleService.enrollChildVisit(members.caseId(),submission.anmId(),scheduleName,submission.getField(refDate));
 			}				
 		}

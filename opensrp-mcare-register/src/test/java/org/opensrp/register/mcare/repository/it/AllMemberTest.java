@@ -70,7 +70,7 @@ public class AllMemberTest {
 		JSONObject enc = new JSONObject();
 		enc.put("encounterTypeUuid", "910d3315-0632-4c5b-9e2a-32916d0a8004");
 		enc.put("encounterDateTime", new DateTime());
-		enc.put("patientUuid", "70f011b7-8f92-4cdf-bdf6-4b1e341083b1");
+		enc.put("patientUuid", "b336c3d9-6184-4898-a2f2-d9fa7fb5721d");
 		enc.put("locationUuid", "e0d82fb6-66f9-45cb-ad57-f4204b139f59");
 		enc.put("visitType", "field");
 		JSONObject providers = new JSONObject();
@@ -252,7 +252,7 @@ public class AllMemberTest {
 		System.out.println(op.getClass());
 		
 	}
-	@Test
+	@Ignore@Test
 	public void EncounterTest() throws JSONException{
 		JSONObject enc = new JSONObject();
 		//enc.put("encounterDatetime", "2017-04-05");

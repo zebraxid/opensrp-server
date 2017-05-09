@@ -34,16 +34,19 @@ public class FormField {
         return source;
     }
     
-    public void setName(String name) {
+    public FormField setName(String name) {
 		this.name = name;
+		return this;
 	}
 
-	public void setValue(String value) {
+	public FormField setValue(String value) {
 		this.value = value;
+		return this;
 	}
 
-	public void setSource(String source) {
+	public FormField setSource(String source) {
 		this.source = source;
+		return this;
 	}
 
 	@Override

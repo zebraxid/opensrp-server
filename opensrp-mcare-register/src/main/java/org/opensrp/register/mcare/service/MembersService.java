@@ -178,7 +178,7 @@ public class MembersService {
 				child_vaccination_opv0, IMD_child_opv0, Child_dob, Child_age, Child_age_days, final_opv0, 5, 1825);
 				
 		childVaccineSchedule.ChildVaccine(submission, members, membersFields, 
-				child_vaccination_opv1, final_opv0, Child_age, Child_age_days, final_opv1, 5, 1825);
+				child_vaccination_opv1, Child_dob, Child_age, Child_age_days, final_opv1, 5, 1825);
 		
 		childVaccineSchedule.ChildVaccine(submission, members, membersFields, 
 				child_vaccination_opv2, final_opv1, Child_age, Child_age_days, final_opv2, 5, 1825);
@@ -217,15 +217,10 @@ public class MembersService {
 	
 	public void TT_Vaccine(FormSubmission submission, Members members, Map<String, String> membersFields) {		
 		womanVaccineSchedule.immediateWomanVaccine(submission,members, membersFields, SCHEDULE_Woman_BNF, IMD_SCHEDULE_Woman_BNF, final_edd, Is_preg_outcome, Marital_status);
-		
 		womanVaccineSchedule.WomanVaccine(submission, members, membersFields, SCHEDULE_Woman_1, final_lmp, tt1_final);
-		
 		womanVaccineSchedule.WomanVaccine(submission, members, membersFields, SCHEDULE_Woman_2, tt1_final, tt2_final);
-		
 		womanVaccineSchedule.WomanVaccine(submission, members, membersFields, SCHEDULE_Woman_3, tt2_final, tt3_final);
-		
 		womanVaccineSchedule.WomanVaccine(submission, members, membersFields, SCHEDULE_Woman_4, tt3_final, tt4_final);
-		
 		womanVaccineSchedule.WomanVaccine(submission, members, membersFields, SCHEDULE_Woman_5, tt4_final, tt5_final);
 	}
 	
@@ -845,13 +840,9 @@ public class MembersService {
 		}
 		
 		womanVaccineSchedule.WomanFollowupVaccine(submission, members,  SCHEDULE_Woman_1, final_lmp, tt1_final);
-
 		womanVaccineSchedule.WomanFollowupVaccine(submission, members,  SCHEDULE_Woman_2, tt1_final, tt2_final);
-		
 		womanVaccineSchedule.WomanFollowupVaccine(submission, members,  SCHEDULE_Woman_3, tt2_final, tt3_final);
-	
 		womanVaccineSchedule.WomanFollowupVaccine(submission, members,  SCHEDULE_Woman_4, tt3_final, tt4_final);
-		
 		womanVaccineSchedule.WomanFollowupVaccine(submission, members,  SCHEDULE_Woman_5, tt4_final, tt5_final);
 	}
 	
@@ -1072,7 +1063,7 @@ public class MembersService {
 						child_vaccination_opv0, IMD_child_opv0, Child_dob, child_age, child_age_days, final_opv0, 5, 1825);
 				
 				childVaccineSchedule.ChildFollowupVaccine(submission, members, 
-						child_vaccination_opv1, final_opv0, child_age, child_age_days, final_opv1, 5, 1825);
+						child_vaccination_opv1, Child_dob, child_age, child_age_days, final_opv1, 5, 1825);
 				
 				childVaccineSchedule.ChildFollowupVaccine(submission, members, 
 						child_vaccination_opv2, final_opv1, child_age, child_age_days, final_opv2, 5, 1825);

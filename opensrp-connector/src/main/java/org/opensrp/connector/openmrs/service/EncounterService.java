@@ -61,6 +61,14 @@ public class EncounterService extends OpenmrsService{
 	    map.put("79146dc6-82b0-4e07-9d8a-50f865c02667","ipv");
 	    
 	    map.put("parent","021e0705-953d-11e6-90c1-005056b01095");
+	    
+	    map.put("Birth Outcome","3389d54b-6482-4282-88da-fa8c89b44365");
+	    map.put("Child Vaccination Followup","73ac68d0-7679-4ead-8d85-8a21e8de0fe5");
+	    map.put("HH And Member Registration","40e07564-758a-46bf-90a7-cae979111c8f");
+	    map.put("New Member Registration","cfbed971-8280-4d84-b667-a44de5e1a45c");
+	    map.put("Woman TT Follow Up","910d3315-0632-4c5b-9e2a-32916d0a8004");
+	    map.put("Pregnancy Status And Birth Notification Followup","3b67089f-b5ef-4b3b-9bda-0df9f06872ae");
+	    
 	}
 
 	@Autowired
@@ -103,22 +111,21 @@ public class EncounterService extends OpenmrsService{
 			System.out.println("Person or Patient does not exist or empty inside openmrs with identifier: " + pr.getString("uuid"));
 		else 
 			enc.put("patientUuid", pt.getString("uuid"));
-		enc.put("encounterTypeUuid", "910d3315-0632-4c5b-9e2a-32916d0a8004");
-		enc.put("location", e.getLocationId());
+		enc.put("encounterTypeUuid", map.get(e.getEventType()));
+		enc.put("locationUuid", e.getLocationId());
 		if (pr.getString("uuid").isEmpty() || pr.getString("uuid")==null){
 			System.out.println("Person or Patient does not exist or empty inside openmrs with identifier: " + pr.getString("uuid"));
 		}else{
 			JSONObject providers = new JSONObject();
 			JSONArray providerArray = new JSONArray();
-			providers.put("uuid", "dd967c60-5089-4e49-82be-ef7990439619");
+			providers.put("uuid", "dd967c60-5089-4e49-82be-ef7990439619");// uuid for sohel user
 			providerArray.put(providers);
 			enc.put("providers", providerArray);
 			//enc.put("provider", pr.getString("uuid"));
 		}
 		
 		
-		try{
-			
+		try{			
 			List<Obs> ol = e.getObs();			
 			Map<String, List<JSONObject>> pc = new HashMap<>();
 			MultiValueMap   obsMap = new MultiValueMap();
@@ -164,10 +171,11 @@ public class EncounterService extends OpenmrsService{
 			System.out.println(ee.getMessage());
 		}
 		
-		if(!enc.has("obs")){
+		if(!enc.has("observations")){
 			System.out.println("Going to create Registry  Encounter: " + enc.toString());
 			HttpResponse op = HttpUtil.post(HttpUtil.removeEndingSlash(OPENMRS_BASE_URL)+"/"+ENCOUNTER_URL, "", enc.toString(), OPENMRS_USER, OPENMRS_PWD);
 			return new JSONObject(op.body());
+			
 		}else{
 			 return new JSONObject("Vaccine Encounter created");
 		}
@@ -175,20 +183,14 @@ public class EncounterService extends OpenmrsService{
 	}
 	
 	private JSONObject createVaccineEncounter(JSONArray obar,JSONObject enc) throws JSONException{
-		   
-		System.out.println("obar.length():"+obar.toString());
 		for ( int totalGroupCounter = 0; totalGroupCounter < obar.length(); totalGroupCounter++) {
 			 try{
 			
 				 String groupMembers =  obar.get(totalGroupCounter).toString();			
 				 JSONObject groupMembersObject = new JSONObject(groupMembers);
 				 JSONArray groupMembersList =  (JSONArray) groupMembersObject.get("groupMembers");
-				 String concept =  groupMembersObject.get("concept").toString();			
-				 System.out.println("okkkkkkOuter");
-				 System.out.println(" groupMembersList.length():"+ groupMembersList.length());
-			 
+				 String concept =  groupMembersObject.get("concept").toString();				 
 				 for (int vaccinationInAGroupMemberCounter = 0; vaccinationInAGroupMemberCounter < groupMembersList.length(); vaccinationInAGroupMemberCounter+=2) {
-					 System.out.println("okkkkkkInner");
 					 JSONArray gruopMember = new JSONArray();
 			 	        JSONArray observation = new JSONArray();	 	       
 			 	        JSONObject observationGroup = new JSONObject();	
@@ -211,11 +213,11 @@ public class EncounterService extends OpenmrsService{
 			 	        enc.put("observations", observation);
 			 	        System.out.println("Going to create Encounter: " + enc.toString());
 			 	        HttpResponse op = HttpUtil.post(HttpUtil.removeEndingSlash(OPENMRS_BASE_URL)+"/"+ENCOUNTER_URL, "", enc.toString(), OPENMRS_USER, OPENMRS_PWD);
-			 	        System.out.println(new JSONObject(op.body())); 
+			 	       
 				}
 			 }
 			catch(Exception e){
-				System.out.println("No GroupMembers found"+e.getMessage());
+				System.out.println("No GroupMembers found:"+e.getMessage());
 			
 			}
 		}
