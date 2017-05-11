@@ -65,7 +65,7 @@ public class DashboardLocationServiceTest {
 		locationTagService  = new LocationTagService(allLocationTags);
     }
 
-   @Test 
+   @Ignore@Test 
     public void testDashboardLocationService() throws Exception {
 	   DashboardLocation countryLocation = allDashboardLocations.findDashboardLocationByName("Bangladesh");
     	LocationTag countryTag = allLocationTags.findLocationTagByName("Country");
