@@ -45,15 +45,4 @@ public class ANCReportCalculator extends ReportCalculator {
         return 0;
     }
 
-    private boolean withInStartAndEndTime(Map<String, String> visitData) {
-        if(visitData.containsKey(Members.CLIENT_VERSION_KEY)) {
-            long clientVersion = Long.parseLong(visitData.get(Members.CLIENT_VERSION_KEY));
-            if(clientVersion >= startDateTime && clientVersion <= endDateTime) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-
 }

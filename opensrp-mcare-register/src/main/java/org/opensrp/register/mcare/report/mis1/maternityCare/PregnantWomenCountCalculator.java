@@ -27,22 +27,15 @@ public class PregnantWomenCountCalculator extends ReportCalculator {
     private long addToNewPregnantCount(Members member) {
         List<Map<String, String>> eligibleCoupleVisits = member.elco_Followup();
         for (Map<String, String> eligibleCoupleVisit : eligibleCoupleVisits) {
-            if (identifiedPregnantWithInStartAndEndDateTime(eligibleCoupleVisit)) {
-                return 1;
+            if (withInStartAndEndTime(eligibleCoupleVisit)) {
+                if(checkPregnant(eligibleCoupleVisit)){
+                    return 1;
+                }
             }
         }
         return 0;
     }
 
-    private boolean identifiedPregnantWithInStartAndEndDateTime(Map<String, String> eligibleCoupleVisit) {
-        if (eligibleCoupleVisit.containsKey(Members.CLIENT_VERSION_KEY)) {
-            long clientVersion = Long.parseLong(eligibleCoupleVisit.get(Members.CLIENT_VERSION_KEY));
-            if (clientVersion >= startDateTime && clientVersion <= endDateTime) {
-                return checkPregnant(eligibleCoupleVisit);
-            }
-        }
-        return false;
-    }
 
     private boolean checkPregnant(Map<String, String> eligibleCoupleVisit) {
         if (eligibleCoupleVisit.containsKey(Members.EligibleCoupleVisitKeyValue.PREGNANT_STATUS_KEY)) {

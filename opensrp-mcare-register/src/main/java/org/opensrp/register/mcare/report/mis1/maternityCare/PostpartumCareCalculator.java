@@ -55,16 +55,6 @@ public class PostpartumCareCalculator extends ReportCalculator {
         return 0;
     }
 
-    private boolean withInStartAndEndTime(Map<String, String> visitData) {
-        if (visitData.containsKey(Members.CLIENT_VERSION_KEY)) {
-            long clientVersion = Long.parseLong(visitData.get(Members.CLIENT_VERSION_KEY));
-            if (clientVersion >= startDateTime && clientVersion <= endDateTime) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     private boolean deliveredAtHomeWithTrainedPerson(Map<String, String> visitData) {
         if (visitData.containsKey(Key.WHERE_DELIVERED)) {
             DeliveryPlace deliveryPlace = DeliveryPlace.fromStr(visitData.get(Key.WHERE_DELIVERED));

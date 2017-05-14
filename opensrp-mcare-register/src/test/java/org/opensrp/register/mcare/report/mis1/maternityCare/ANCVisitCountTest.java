@@ -28,7 +28,7 @@ public class ANCVisitCountTest {
     }
 
     @Test
-    public void countANC1Visit() {
+    public void testANC1VisitCount() {
         List<Members> membersList = ancVisitTestData.createANCVisit1TestData();
         MIS1Report mis1Report = new MIS1Report(unionName, membersList, startDateTime, endDateTime);
         long anc1VisitCount = mis1Report.getMaternityCareReport().getAncReportCalculator().getVisitOneCount();
@@ -37,7 +37,7 @@ public class ANCVisitCountTest {
 
 
     @Test
-    public void countANC2Visit() {
+    public void testANC2VisitCount() {
         List<Members> membersList = ancVisitTestData.createANCVisit2TestData();
         MIS1Report mis1Report = new MIS1Report(unionName, membersList, startDateTime, endDateTime);
         long anc2visitCount = mis1Report.getMaternityCareReport().getAncReportCalculator().getVisitTwoCount();
