@@ -11,6 +11,10 @@ import java.util.Calendar;
 
 public abstract class Report {
 
+    public Report(long startDateTime, long endDateTime) {
+        this.initCalculators(startDateTime, endDateTime);
+    }
+
      protected abstract void calculate(Members member);
 
     protected abstract void initCalculators(long startDateTime, long endDateTime);

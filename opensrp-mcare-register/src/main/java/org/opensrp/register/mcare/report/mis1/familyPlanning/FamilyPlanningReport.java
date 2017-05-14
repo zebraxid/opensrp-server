@@ -14,7 +14,7 @@ public class FamilyPlanningReport extends Report {
     private CondomMethodUsagesCalculator condomUsagesCalculator;
 
     public FamilyPlanningReport(long startDateTime, long endDateTime) {
-        this.initCalculators(startDateTime, endDateTime);
+        super(startDateTime, endDateTime);
     }
 
     @Override

@@ -15,7 +15,7 @@ public class MaternityCareReport extends Report{
     private PNCReportCalculator pncReportCalculator;
 
     public MaternityCareReport(long startDateTime, long endDateTime) {
-        this.initCalculators(startDateTime, endDateTime);
+       super(startDateTime, endDateTime);
     }
 
     public PregnantWomenCountCalculator getPregnantWomenCountCalculator() {
