@@ -41,23 +41,42 @@ public class PNCReportCalculator extends ReportCalculator{
     protected class PNCOneVisitCalculator extends Type {
 
         public void calculate(Members member) {
-            this.informationCount += addToInformationCount(member);
+            this.informationCount += addToInformationCount(member.PNCVisit1());
+            this.serviceCount += addToServiceCount(member.PNCVisit1());
         }
 
-        private int addToInformationCount(Members member) {
-            Map<String, String > pncVisitOneData = member.PNCVisit1();
-            if(withInStartAndEndTime(pncVisitOneData)) {
-                if(metWithWomenAndFoundLiveOrStillBirth(pncVisitOneData)) {
-                    return 1;
-                }
+
+    }
+
+    private int addToInformationCount(Map<String, String> visitData) {
+        if(withInStartAndEndTime(visitData)) {
+            if(metWithWomenAndFoundLiveOrStillBirth(visitData)) {
+                return 1;
             }
-            return 0;
         }
+        return 0;
+    }
+
+    private int addToServiceCount(Map<String, String> visitData) {
+        if(withInStartAndEndTime(visitData)) {
+            if(pncGivenOnTime(visitData)) {
+                return 1;
+            }
+        }
+        return 0;
     }
 
     protected boolean metWithWomenAndFoundLiveOrStillBirth(Map<String, String> visitData) {
         VisitStatus visitStatus = VisitStatus.fromStr(visitData.get(Key.VISIT_STATUS));
         if(visitStatus == VisitStatus.MET_AND_BABY_ALIVE || visitStatus == VisitStatus.MET_AND_WOMEN_HAD_STILLBIRTH) {
+            return true;
+        }
+        return false;
+    }
+
+    protected boolean pncGivenOnTime(Map<String, String> visitData) {
+        PNCGivenOnTime pncGivenOnTime = PNCGivenOnTime.fromStr(visitData.get(Key.HAS_PNC_GIVEN_ON_TIME));
+        if(pncGivenOnTime == PNCGivenOnTime.YES) {
             return true;
         }
         return false;

@@ -19,14 +19,35 @@ public class PNCVisitTestData extends MIS1TestData {
         pncVisitBuilder = new PNCVisit.PNCVisitBuilder();
     }
 
-    public List<Members> createPncVisit1TestData() {
+    public List<Members> createPncVisit1InformationTestData() {
         List<Members> allMembers = new ArrayList<>();
         allMembers.add(createValidMemberWithStartDateTimeFor(VisitNumber.one));
         allMembers.add(createValidMemberWithEndDateTimeFor(VisitNumber.one));
 
         for (int i = 0; i < totalCount; i++) {
             if (i < validCount - 2) {
-                allMembers.add(createValidMemberWithInStartAndEndDateTimeWith(VisitNumber.one));
+                allMembers.add(createValidMemberForInformationWithInStartAndEndDateTimeWith(VisitNumber.one));
+            } else {
+                if (i % 3 == 0) {
+                    allMembers.add(createInvalidMemberWithPreviousClientVersion(VisitNumber.one));
+                } else if (i % 3 == 1) {
+                    allMembers.add(createInvalidMemberWithExceedClientVersion(VisitNumber.one));
+                } else {
+                    allMembers.add(createInvalidMemberWithInStartAndEndDateTimeWith(VisitNumber.one));
+                }
+            }
+        }
+        return allMembers;
+    }
+
+    public List<Members> createPncVisit1ServiceTestData() {
+        List<Members> allMembers = new ArrayList<>();
+        allMembers.add(createValidMemberWithStartDateTimeFor(VisitNumber.one));
+        allMembers.add(createValidMemberWithEndDateTimeFor(VisitNumber.one));
+
+        for (int i = 0; i < totalCount; i++) {
+            if (i < validCount - 2) {
+                allMembers.add(createValidMemberForServiceWithInStartAndEndDateTimeWith(VisitNumber.one));
             } else {
                 if (i % 3 == 0) {
                     allMembers.add(createInvalidMemberWithPreviousClientVersion(VisitNumber.one));
@@ -68,12 +89,28 @@ public class PNCVisitTestData extends MIS1TestData {
         return createMemberWithPNCVisit(visitNumber, pncVisitBuilder.build().getVisitData());
     }
 
-    private Members createValidMemberWithInStartAndEndDateTimeWith(VisitNumber visitNumber) {
+    private Members createValidMemberForInformationWithInStartAndEndDateTimeWith(VisitNumber visitNumber) {
         long validClientVersion = getRandomNumberBetween(startDateTime, endDateTime);
         long randNumber = getRandomNumberBetween(0, 10);
         if (randNumber % 2 == 0) {
             pncVisitBuilder.clientVersion(validClientVersion);
             pncVisitBuilder.visitStatus(VisitStatus.MET_AND_BABY_ALIVE.getValue().toString());
+            pncVisitBuilder.hasPncGivenOnTime(PNCGivenOnTime.YES.getValue().toString());
+            return createMemberWithPNCVisit(visitNumber, pncVisitBuilder.build().getVisitData());
+        } else {
+            pncVisitBuilder.clientVersion(validClientVersion);
+            pncVisitBuilder.visitStatus(VisitStatus.MET_AND_WOMEN_HAD_STILLBIRTH.getValue().toString());
+            pncVisitBuilder.hasPncGivenOnTime(PNCGivenOnTime.NO.getValue().toString());
+            return createMemberWithPNCVisit(visitNumber, pncVisitBuilder.build().getVisitData());
+        }
+    }
+
+    private Members createValidMemberForServiceWithInStartAndEndDateTimeWith(VisitNumber visitNumber) {
+        long validClientVersion = getRandomNumberBetween(startDateTime, endDateTime);
+        long randNumber = getRandomNumberBetween(0, 10);
+        if (randNumber % 2 == 0) {
+            pncVisitBuilder.clientVersion(validClientVersion);
+            pncVisitBuilder.visitStatus(VisitStatus.REFUSED.getValue().toString());
             pncVisitBuilder.hasPncGivenOnTime(PNCGivenOnTime.YES.getValue().toString());
             return createMemberWithPNCVisit(visitNumber, pncVisitBuilder.build().getVisitData());
         } else {
