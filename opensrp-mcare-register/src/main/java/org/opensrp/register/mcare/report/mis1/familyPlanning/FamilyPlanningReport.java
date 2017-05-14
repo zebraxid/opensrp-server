@@ -10,8 +10,8 @@ import org.opensrp.register.mcare.report.mis1.familyPlanning.eligibleCoupleCount
 
 public class FamilyPlanningReport extends Report {
     private EligibleCoupleCountCalculator eligibleCoupleCountCalculator;
-    private BirthControlMethodUsagesCalculator pillUsagesCalculator;
-    private BirthControlMethodUsagesCalculator condomUsagesCalculator;
+    private PillMethodUsagesCalculator pillUsagesCalculator;
+    private CondomMethodUsagesCalculator condomUsagesCalculator;
 
     public FamilyPlanningReport(long startDateTime, long endDateTime) {
         this.initCalculators(startDateTime, endDateTime);
@@ -19,23 +19,19 @@ public class FamilyPlanningReport extends Report {
 
     @Override
     protected void initCalculators(long startDateTime, long endDateTime) {
-        this.eligibleCoupleCountCalculator = new EligibleCoupleCountCalculator(startDateTime, endDateTime);
-        this.pillUsagesCalculator = new PillMethodUsagesCalculator();
-        this.condomUsagesCalculator = new CondomMethodUsagesCalculator();
+        this.useReflectionToDynamicallyInitAllMemberOf(this.getClass(), startDateTime, endDateTime);
     }
 
     @Override
     public void calculate(Members member) {
-        pillUsagesCalculator.calculate(member);
-        condomUsagesCalculator.calculate(member);
-        eligibleCoupleCountCalculator.calculate(member);
+        this.useReflectionToDynamicallyCallCalculateMethodOnAllMemberOf(this.getClass(), member);
     }
 
-    public BirthControlMethodUsagesCalculator getPillUsagesCalculator() {
+    public PillMethodUsagesCalculator getPillUsagesCalculator() {
         return pillUsagesCalculator;
     }
 
-    public BirthControlMethodUsagesCalculator getCondomUsagesCalculator() {
+    public CondomMethodUsagesCalculator getCondomUsagesCalculator() {
         return condomUsagesCalculator;
     }
 

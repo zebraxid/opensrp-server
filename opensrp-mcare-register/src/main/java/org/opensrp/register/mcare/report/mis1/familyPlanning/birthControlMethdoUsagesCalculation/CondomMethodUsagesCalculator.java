@@ -6,7 +6,7 @@ import org.opensrp.register.mcare.domain.Members;
 public class CondomMethodUsagesCalculator extends BirthControlMethodUsagesCalculator {
 
 
-    public CondomMethodUsagesCalculator() {
-        super(Members.EligibleCoupleVisitKeyValue.BIRTH_CONTROL_CONDOM);
+    public CondomMethodUsagesCalculator(long startDateTime, long endDateTime) {
+        super(Members.EligibleCoupleVisitKeyValue.BIRTH_CONTROL_CONDOM, startDateTime, endDateTime);
     }
 }

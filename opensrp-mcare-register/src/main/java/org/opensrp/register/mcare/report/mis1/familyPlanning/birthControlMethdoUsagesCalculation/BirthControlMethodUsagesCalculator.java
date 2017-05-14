@@ -16,8 +16,8 @@ public abstract class BirthControlMethodUsagesCalculator extends ReportCalculato
     private int countOfLeftUsagesButNoneTaken;
     private int countOfLeftUsagesButOtherTaken;
 
-    protected   BirthControlMethodUsagesCalculator(String birthControlMethodToCalculate) {
-        super(0L, 0L);
+    protected   BirthControlMethodUsagesCalculator(String birthControlMethodToCalculate, long startDateTime, long endDateTime) {
+        super(startDateTime, endDateTime);
         this.birthControlMethodToCalculate = birthControlMethodToCalculate;
         this.initCountVariables();
     }

@@ -4,6 +4,10 @@ package org.opensrp.register.mcare.report.mis1.maternityCare;
 import org.opensrp.register.mcare.domain.Members;
 import org.opensrp.register.mcare.report.mis1.Report;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
 public class MaternityCareReport extends Report{
     private PregnantWomenCountCalculator pregnantWomenCountCalculator;
     private ANCReportCalculator ancReportCalculator;
@@ -32,18 +36,12 @@ public class MaternityCareReport extends Report{
 
     @Override
     public void calculate(Members member) {
-        this.pregnantWomenCountCalculator.calculate(member);
-        this.ancReportCalculator.calculate(member);
-        this.postpartumCareCalculator.calculate(member);
-        this.pncReportCalculator.calculate(member);
+        this.useReflectionToDynamicallyCallCalculateMethodOnAllMemberOf(this.getClass(), member);
     }
 
     @Override
     protected void initCalculators(long startDateTime, long endDateTime){
-        this.pregnantWomenCountCalculator = new PregnantWomenCountCalculator(startDateTime, endDateTime);
-        this.ancReportCalculator = new ANCReportCalculator(startDateTime, endDateTime);
-        this.postpartumCareCalculator = new PostpartumCareCalculator(startDateTime, endDateTime);
-        this.pncReportCalculator = new PNCReportCalculator(startDateTime, endDateTime);
+        this.useReflectionToDynamicallyInitAllMemberOf(this.getClass(), startDateTime, endDateTime);
     }
 
 

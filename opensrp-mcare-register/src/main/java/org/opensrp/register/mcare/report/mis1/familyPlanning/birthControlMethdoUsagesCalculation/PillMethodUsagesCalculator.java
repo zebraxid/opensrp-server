@@ -6,8 +6,8 @@ import org.opensrp.register.mcare.domain.Members;
 public class PillMethodUsagesCalculator extends BirthControlMethodUsagesCalculator {
 
 
-    public PillMethodUsagesCalculator() {
-        super(Members.EligibleCoupleVisitKeyValue.BIRTH_CONTROL_PILL);
+    public PillMethodUsagesCalculator(long startDateTime, long endDateTime) {
+        super(Members.EligibleCoupleVisitKeyValue.BIRTH_CONTROL_PILL, startDateTime, endDateTime);
     }
 
 }
