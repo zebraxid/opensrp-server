@@ -25,9 +25,8 @@ public abstract class Report {
         for (Field field : fields) {
             field.setAccessible(true);
             try {
-                Class classOfFiled = Class.forName(field.getType().getName());
-                Constructor calculate = classOfFiled.getConstructor(long.class, long.class);
-                field.set(this, calculate.newInstance(startDateTime, endDateTime));
+                Constructor constructor = reportClass.getConstructor(long.class, long.class);
+                field.set(this, constructor.newInstance(startDateTime, endDateTime));
             } catch (NoSuchMethodException e) {
                 e.printStackTrace();
             } catch (InstantiationException e) {
@@ -35,8 +34,6 @@ public abstract class Report {
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             } catch (InvocationTargetException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
         }
