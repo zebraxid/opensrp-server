@@ -142,14 +142,14 @@ public class BirthControlMethodTestData extends MIS1TestData {
 
     protected Members createMemberUsingBirthControlValue(String birthControlValue) {
         Members member = new Members();
-        Map<String, String> detail = createHashMap(Members.EligibleCoupleVisitKeyValue.BIRTH_CONTROL_KEY, birthControlValue);
+        Map<String, String> detail = createHashMap(Members.EligibleCoupleVisitKeyValue.Key.BIRTH_CONTROL, birthControlValue);
         member.setDetails(detail);
         return member;
     }
 
     protected Members createMemberWithOutAnyFamilyPlanning() {
         Members member = new Members();
-        Map<String, String> detail = createHashMap(Members.EligibleCoupleVisitKeyValue.USING_FAMILY_PLANNING_KEY, Members.EligibleCoupleVisitKeyValue.NOT_USING_FAMILY_PLANNING_VALUE);
+        Map<String, String> detail = createHashMap(Members.EligibleCoupleVisitKeyValue.Key.USING_FAMILY_PLANNING, Members.EligibleCoupleVisitKeyValue.NOT_USING_FAMILY_PLANNING_VALUE);
         member.setDetails(detail);
         return member;
     }
@@ -169,7 +169,7 @@ public class BirthControlMethodTestData extends MIS1TestData {
 
 
     protected Members addElcoFollowUpUsingBirthControlValue(Members member, String value) {
-        Map<String, String> birthControlUsages = createHashMap(Members.EligibleCoupleVisitKeyValue.BIRTH_CONTROL_KEY, value);
+        Map<String, String> birthControlUsages = createHashMap(Members.EligibleCoupleVisitKeyValue.Key.BIRTH_CONTROL, value);
         return addElcoFollowUp(member, birthControlUsages);
     }
 

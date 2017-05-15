@@ -38,8 +38,8 @@ public class PregnantWomenCountCalculator extends ReportCalculator {
 
 
     private boolean checkPregnant(Map<String, String> eligibleCoupleVisit) {
-        if (eligibleCoupleVisit.containsKey(Members.EligibleCoupleVisitKeyValue.PREGNANT_STATUS_KEY)) {
-            return Members.EligibleCoupleVisitKeyValue.IS_PREGNANT.equalsIgnoreCase(eligibleCoupleVisit.get(Members.EligibleCoupleVisitKeyValue.PREGNANT_STATUS_KEY));
+        if (eligibleCoupleVisit.containsKey(Members.EligibleCoupleVisitKeyValue.Key.PREGNANT_STATUS)) {
+            return Members.EligibleCoupleVisitKeyValue.IS_PREGNANT.equalsIgnoreCase(eligibleCoupleVisit.get(Members.EligibleCoupleVisitKeyValue.Key.PREGNANT_STATUS));
         }
         return false;
     }

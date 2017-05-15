@@ -71,13 +71,54 @@ public class Members extends MotechBaseDataObject {
         }
     }
 
+    public enum VaccineDose {
+        INVALID(-1),
+        ONE(1),
+        TWO(2),
+        THREE(3),
+        FOUR(4),
+        FIVE(5);
+
+        public int value;
+
+        VaccineDose(int value) {
+            this.value = value;
+        }
+
+        private static Map<Integer, VaccineDose> map = new HashMap<Integer, VaccineDose>();
+
+        static {
+            for (VaccineDose vaccineDose : VaccineDose.values()) {
+                map.put(vaccineDose.value, vaccineDose);
+            }
+        }
+
+        public static VaccineDose fromStr(String value) {
+            if(value == null || value.isEmpty()) {
+                return INVALID;
+            }else {
+                return fromInt(Integer.parseInt(value));
+            }
+        }
+
+        public static VaccineDose fromInt(int value) {
+            if(map.containsKey(value)) {
+                return map.get(value);
+            }
+
+            return INVALID;
+        }
+
+        public Integer getValue() {
+            return this.value;
+        }
+
+        public String getValueInString() {
+            return this.getValue().toString();
+        }
+    }
+
     public static class EligibleCoupleVisitKeyValue {
-        @JsonIgnore
-        public static final String BIRTH_CONTROL_KEY = "Birth_Control";
-        @JsonIgnore
-        public static final String USING_FAMILY_PLANNING_KEY = "Using_FP";
-        @JsonIgnore
-        public static final String PREGNANT_STATUS_KEY = "preg_status";
         @JsonIgnore
         public static final String IS_PREGNANT = "1";
         @JsonIgnore
@@ -96,6 +137,13 @@ public class Members extends MotechBaseDataObject {
         public static final String USING_FAMILY_PLANNING_VALUE = "1";
         @JsonIgnore
         public static final String NOT_USING_FAMILY_PLANNING_VALUE = "0";
+
+        public static class Key {
+            public final static String TT_DOSE = "tt_dose";
+            public static final String BIRTH_CONTROL = "Birth_Control";
+            public static final String USING_FAMILY_PLANNING = "Using_FP";
+            public static final String PREGNANT_STATUS = "preg_status";
+        }
 
     }
 

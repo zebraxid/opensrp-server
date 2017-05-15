@@ -24,7 +24,7 @@ public class EligibleCoupleFollowUP {
             return this;
         }
         public EligibleCoupleFollowUpBuilder pregnant(String pregnantStatus) {
-            followUp.put(Members.EligibleCoupleVisitKeyValue.PREGNANT_STATUS_KEY, pregnantStatus);
+            followUp.put(Members.EligibleCoupleVisitKeyValue.Key.PREGNANT_STATUS, pregnantStatus);
             return this;
         }
 

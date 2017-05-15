@@ -65,7 +65,7 @@ public abstract class BirthControlMethodUsagesCalculator extends ReportCalculato
 
     private int addToTheCountOfTotalUsages(Members member) {
         boolean usingThisBirthControlMethodInMemberDetail =
-                checkValueOfKeyIn(member.details(), Members.EligibleCoupleVisitKeyValue.BIRTH_CONTROL_KEY, birthControlMethodToCalculate);
+                checkValueOfKeyIn(member.details(), Members.EligibleCoupleVisitKeyValue.Key.BIRTH_CONTROL, birthControlMethodToCalculate);
         if (usingThisBirthControlMethodInMemberDetail) {
             return 1;
         }
@@ -74,13 +74,13 @@ public abstract class BirthControlMethodUsagesCalculator extends ReportCalculato
 
     private int addToTheCountOfNewUsages(Members member) {
         boolean usingThisBirthControlMethodInMemberDetail =
-                checkValueOfKeyIn(member.details(), Members.EligibleCoupleVisitKeyValue.BIRTH_CONTROL_KEY, birthControlMethodToCalculate);
+                checkValueOfKeyIn(member.details(), Members.EligibleCoupleVisitKeyValue.Key.BIRTH_CONTROL, birthControlMethodToCalculate);
         if (usingThisBirthControlMethodInMemberDetail) {
             Map<String, String> previousMonthElcoFollowUpData = getPreviousMonthElcoFollowUp(member.elco_Followup());
             boolean firstElcoFollowUP = previousMonthElcoFollowUpData.isEmpty();
             if (!firstElcoFollowUP) {
                 boolean usedThisBirthControlMethodInPreviousElcoFollowUp =
-                        checkValueOfKeyIn(previousMonthElcoFollowUpData, Members.EligibleCoupleVisitKeyValue.BIRTH_CONTROL_KEY,
+                        checkValueOfKeyIn(previousMonthElcoFollowUpData, Members.EligibleCoupleVisitKeyValue.Key.BIRTH_CONTROL,
                                 birthControlMethodToCalculate);
                 if (!usedThisBirthControlMethodInPreviousElcoFollowUp) {
                     return 1;
@@ -94,13 +94,13 @@ public abstract class BirthControlMethodUsagesCalculator extends ReportCalculato
 
     private int addToTheCountOfLeftUsagesButNoneTaken(Members member) {
         boolean notUsingAnyBirthControlMethodInMemberDetail =
-                checkValueOfKeyIn(member.details(), Members.EligibleCoupleVisitKeyValue.BIRTH_CONTROL_KEY, Members.EligibleCoupleVisitKeyValue.BIRTH_CONTROL_NOT_USING_ANY_METHOD);
+                checkValueOfKeyIn(member.details(), Members.EligibleCoupleVisitKeyValue.Key.BIRTH_CONTROL, Members.EligibleCoupleVisitKeyValue.BIRTH_CONTROL_NOT_USING_ANY_METHOD);
         boolean notUsingFamilyPlanningInMemberDetail =
-                checkValueOfKeyIn(member.details(), Members.EligibleCoupleVisitKeyValue.USING_FAMILY_PLANNING_KEY, Members.EligibleCoupleVisitKeyValue.NOT_USING_FAMILY_PLANNING_VALUE);
+                checkValueOfKeyIn(member.details(), Members.EligibleCoupleVisitKeyValue.Key.USING_FAMILY_PLANNING, Members.EligibleCoupleVisitKeyValue.NOT_USING_FAMILY_PLANNING_VALUE);
         if (notUsingAnyBirthControlMethodInMemberDetail || notUsingFamilyPlanningInMemberDetail) {
             Map<String, String> previousMonthElcoFollowUpData = getPreviousMonthElcoFollowUp(member.elco_Followup());
             boolean usedThisBirthControlMethodInPreviousElcoFollowUp =
-                    checkValueOfKeyIn(previousMonthElcoFollowUpData, Members.EligibleCoupleVisitKeyValue.BIRTH_CONTROL_KEY,
+                    checkValueOfKeyIn(previousMonthElcoFollowUpData, Members.EligibleCoupleVisitKeyValue.Key.BIRTH_CONTROL,
                             birthControlMethodToCalculate);
             if (usedThisBirthControlMethodInPreviousElcoFollowUp) {
                 return 1;
@@ -112,14 +112,14 @@ public abstract class BirthControlMethodUsagesCalculator extends ReportCalculato
 
     private int addToTheCountOfLeftUsagesButOtherTaken(Members member) {
         boolean usingThisBirthControlMethodInMemberDetail =
-                checkValueOfKeyIn(member.details(), Members.EligibleCoupleVisitKeyValue.BIRTH_CONTROL_KEY, birthControlMethodToCalculate);
+                checkValueOfKeyIn(member.details(), Members.EligibleCoupleVisitKeyValue.Key.BIRTH_CONTROL, birthControlMethodToCalculate);
         if (!usingThisBirthControlMethodInMemberDetail) {
             Map<String, String> previousMonthElcoFollowUpData = getPreviousMonthElcoFollowUp(member.elco_Followup());
             boolean usedThisBirthControlMethodInPreviousElcoFollowUp =
-                    checkValueOfKeyIn(previousMonthElcoFollowUpData, Members.EligibleCoupleVisitKeyValue.BIRTH_CONTROL_KEY,
+                    checkValueOfKeyIn(previousMonthElcoFollowUpData, Members.EligibleCoupleVisitKeyValue.Key.BIRTH_CONTROL,
                             birthControlMethodToCalculate);
             if (usedThisBirthControlMethodInPreviousElcoFollowUp) {
-                String currentBirthControlMethod = getValueBasedOnKeyIn(member.details(), Members.EligibleCoupleVisitKeyValue.BIRTH_CONTROL_KEY);
+                String currentBirthControlMethod = getValueBasedOnKeyIn(member.details(), Members.EligibleCoupleVisitKeyValue.Key.BIRTH_CONTROL);
                 if (checkIfValidBirthControlMethod(currentBirthControlMethod)) {
                     return 1;
                 }

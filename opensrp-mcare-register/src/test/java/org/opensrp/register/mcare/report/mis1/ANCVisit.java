@@ -28,7 +28,7 @@ public class ANCVisit {
         }
 
         public ANCVisit.ANCVisitBuilder pregnant(String pregnantStatus) {
-            visitData.put(Members.EligibleCoupleVisitKeyValue.PREGNANT_STATUS_KEY, pregnantStatus);
+            visitData.put(Members.EligibleCoupleVisitKeyValue.Key.PREGNANT_STATUS, pregnantStatus);
             return this;
         }
 
