@@ -75,8 +75,8 @@ public class PNCReportCalculator extends ReportCalculator{
     }
 
     protected boolean pncGivenOnTime(Map<String, String> visitData) {
-        PNCGivenOnTime pncGivenOnTime = PNCGivenOnTime.fromStr(visitData.get(Key.HAS_PNC_GIVEN_ON_TIME));
-        if(pncGivenOnTime == PNCGivenOnTime.YES) {
+        Members.BooleanAnswer pncGivenOnTime = Members.BooleanAnswer.fromStr(visitData.get(Key.HAS_PNC_GIVEN_ON_TIME));
+        if(pncGivenOnTime == Members.BooleanAnswer.YES) {
             return true;
         }
         return false;

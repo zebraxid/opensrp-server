@@ -8,7 +8,7 @@ import org.opensrp.register.mcare.report.mis1.PNCVisit;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.opensrp.register.mcare.domain.Members.PNCVisitKeyValue.PNCGivenOnTime;
+import static org.opensrp.register.mcare.domain.Members.BooleanAnswer;
 import static org.opensrp.register.mcare.domain.Members.PNCVisitKeyValue.VisitStatus;
 
 public class PNCVisitTestData extends MIS1TestData {
@@ -63,13 +63,13 @@ public class PNCVisitTestData extends MIS1TestData {
 
     private Members createValidMemberWithStartDateTimeFor(VisitNumber visitNumber) {
         pncVisitBuilder.clientVersion(startDateTime).visitStatus(VisitStatus.MET_AND_BABY_ALIVE.getValue().toString());
-        pncVisitBuilder.hasPncGivenOnTime(PNCGivenOnTime.YES.getValue().toString());
+        pncVisitBuilder.hasPncGivenOnTime(BooleanAnswer.YES.getValue().toString());
         return createMemberWithPNCVisit(visitNumber, pncVisitBuilder.build().getVisitData());
     }
 
     private Members createValidMemberWithEndDateTimeFor(VisitNumber visitNumber) {
         pncVisitBuilder.clientVersion(endDateTime).visitStatus(VisitStatus.MET_AND_WOMEN_HAD_STILLBIRTH.getValue().toString());
-        pncVisitBuilder.hasPncGivenOnTime(PNCGivenOnTime.YES.getValue().toString());
+        pncVisitBuilder.hasPncGivenOnTime(BooleanAnswer.YES.getValue().toString());
         return createMemberWithPNCVisit(visitNumber, pncVisitBuilder.build().getVisitData());
     }
 
@@ -77,7 +77,7 @@ public class PNCVisitTestData extends MIS1TestData {
         long previousClientVersion = getRandomNumberBetween(0, startDateTime - 1);
         pncVisitBuilder.clientVersion(previousClientVersion);
         pncVisitBuilder.visitStatus(VisitStatus.MET_AND_BABY_ALIVE.getValue().toString());
-        pncVisitBuilder.hasPncGivenOnTime(PNCGivenOnTime.YES.getValue().toString());
+        pncVisitBuilder.hasPncGivenOnTime(BooleanAnswer.YES.getValue().toString());
         return createMemberWithPNCVisit(visitNumber, pncVisitBuilder.build().getVisitData());
     }
 
@@ -85,7 +85,7 @@ public class PNCVisitTestData extends MIS1TestData {
         long previousClientVersion = getRandomNumberBetween(endDateTime + 1, endDateTime * 6);
         pncVisitBuilder.clientVersion(previousClientVersion);
         pncVisitBuilder.visitStatus(VisitStatus.MET_AND_BABY_ALIVE.getValue().toString());
-        pncVisitBuilder.hasPncGivenOnTime(PNCGivenOnTime.YES.getValue().toString());
+        pncVisitBuilder.hasPncGivenOnTime(BooleanAnswer.YES.getValue().toString());
         return createMemberWithPNCVisit(visitNumber, pncVisitBuilder.build().getVisitData());
     }
 
@@ -95,12 +95,12 @@ public class PNCVisitTestData extends MIS1TestData {
         if (randNumber % 2 == 0) {
             pncVisitBuilder.clientVersion(validClientVersion);
             pncVisitBuilder.visitStatus(VisitStatus.MET_AND_BABY_ALIVE.getValue().toString());
-            pncVisitBuilder.hasPncGivenOnTime(PNCGivenOnTime.YES.getValue().toString());
+            pncVisitBuilder.hasPncGivenOnTime(BooleanAnswer.YES.getValue().toString());
             return createMemberWithPNCVisit(visitNumber, pncVisitBuilder.build().getVisitData());
         } else {
             pncVisitBuilder.clientVersion(validClientVersion);
             pncVisitBuilder.visitStatus(VisitStatus.MET_AND_WOMEN_HAD_STILLBIRTH.getValue().toString());
-            pncVisitBuilder.hasPncGivenOnTime(PNCGivenOnTime.NO.getValue().toString());
+            pncVisitBuilder.hasPncGivenOnTime(BooleanAnswer.NO.getValue().toString());
             return createMemberWithPNCVisit(visitNumber, pncVisitBuilder.build().getVisitData());
         }
     }
@@ -111,12 +111,12 @@ public class PNCVisitTestData extends MIS1TestData {
         if (randNumber % 2 == 0) {
             pncVisitBuilder.clientVersion(validClientVersion);
             pncVisitBuilder.visitStatus(VisitStatus.REFUSED.getValue().toString());
-            pncVisitBuilder.hasPncGivenOnTime(PNCGivenOnTime.YES.getValue().toString());
+            pncVisitBuilder.hasPncGivenOnTime(BooleanAnswer.YES.getValue().toString());
             return createMemberWithPNCVisit(visitNumber, pncVisitBuilder.build().getVisitData());
         } else {
             pncVisitBuilder.clientVersion(validClientVersion);
             pncVisitBuilder.visitStatus(VisitStatus.MET_AND_WOMEN_HAD_STILLBIRTH.getValue().toString());
-            pncVisitBuilder.hasPncGivenOnTime(PNCGivenOnTime.YES.getValue().toString());
+            pncVisitBuilder.hasPncGivenOnTime(BooleanAnswer.YES.getValue().toString());
             return createMemberWithPNCVisit(visitNumber, pncVisitBuilder.build().getVisitData());
         }
     }
@@ -125,7 +125,7 @@ public class PNCVisitTestData extends MIS1TestData {
         long validClientVersion = getRandomNumberBetween(startDateTime, endDateTime);
         pncVisitBuilder.clientVersion(validClientVersion);
         pncVisitBuilder.visitStatus(VisitStatus.REFUSED.getValue().toString());
-        pncVisitBuilder.hasPncGivenOnTime(PNCGivenOnTime.NO.getValue().toString());
+        pncVisitBuilder.hasPncGivenOnTime(BooleanAnswer.NO.getValue().toString());
         return createMemberWithPNCVisit(visitNumber, pncVisitBuilder.build().getVisitData());
 
     }

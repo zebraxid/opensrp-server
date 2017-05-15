@@ -27,6 +27,46 @@ public class Members extends MotechBaseDataObject {
     @JsonIgnore
     public static final String CLIENT_VERSION_KEY = CLIENT_VERSION;
 
+    public enum BooleanAnswer {
+        INVALID(-1),
+        NO(0),
+        YES(1);
+
+        public int value;
+
+        BooleanAnswer(int value) {
+            this.value = value;
+        }
+
+        private static Map<Integer, BooleanAnswer> map = new HashMap<Integer, BooleanAnswer>();
+
+        static {
+            for (BooleanAnswer pncGivenOnTime : BooleanAnswer.values()) {
+                map.put(pncGivenOnTime.value, pncGivenOnTime);
+            }
+        }
+
+        public static BooleanAnswer fromStr(String value) {
+            if(value == null || value.isEmpty()) {
+                return INVALID;
+            }else {
+                return fromInt(Integer.parseInt(value));
+            }
+        }
+
+        public static BooleanAnswer fromInt(int value) {
+            if(map.containsKey(value)) {
+                return map.get(value);
+            }
+
+            return INVALID;
+        }
+
+        public Integer getValue() {
+            return this.value;
+        }
+    }
+
     public static class EligibleCoupleVisitKeyValue {
         @JsonIgnore
         public static final String BIRTH_CONTROL_KEY = "Birth_Control";
@@ -105,45 +145,6 @@ public class Members extends MotechBaseDataObject {
             }
         }
 
-        public enum PNCGivenOnTime {
-            INVALID(-1),
-            NO(0),
-            YES(1);
-
-            public int value;
-
-            PNCGivenOnTime(int value) {
-                this.value = value;
-            }
-
-            private static Map<Integer, PNCGivenOnTime> map = new HashMap<Integer, PNCGivenOnTime>();
-
-            static {
-                for (PNCGivenOnTime pncGivenOnTime : PNCGivenOnTime.values()) {
-                    map.put(pncGivenOnTime.value, pncGivenOnTime);
-                }
-            }
-
-            public static PNCGivenOnTime fromStr(String value) {
-                if(value == null || value.isEmpty()) {
-                    return INVALID;
-                }else {
-                    return fromInt(Integer.parseInt(value));
-                }
-            }
-
-            public static PNCGivenOnTime fromInt(int value) {
-                if(map.containsKey(value)) {
-                    return map.get(value);
-                }
-
-                return INVALID;
-            }
-
-            public Integer getValue() {
-                return this.value;
-            }
-        }
     }
 
 
