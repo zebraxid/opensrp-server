@@ -6,6 +6,8 @@ import org.opensrp.register.mcare.domain.Members;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.opensrp.register.mcare.domain.Members.ANCVisitKeyValue.*;
+
 public class ANCVisit {
     private Map<String, String> visitData;
 
@@ -24,8 +26,14 @@ public class ANCVisit {
             visitData.put(Members.CLIENT_VERSION_KEY, String.valueOf(clientVersion));
             return this;
         }
+
         public ANCVisit.ANCVisitBuilder pregnant(String pregnantStatus) {
             visitData.put(Members.EligibleCoupleVisitKeyValue.PREGNANT_STATUS_KEY, pregnantStatus);
+            return this;
+        }
+
+        public ANCVisit.ANCVisitBuilder isReferred(String isReferred) {
+            visitData.put(Key.IS_REFERRED, isReferred);
             return this;
         }
 

@@ -65,6 +65,10 @@ public class Members extends MotechBaseDataObject {
         public Integer getValue() {
             return this.value;
         }
+
+        public String getValueInString() {
+            return this.getValue().toString();
+        }
     }
 
     public static class EligibleCoupleVisitKeyValue {
@@ -93,6 +97,12 @@ public class Members extends MotechBaseDataObject {
         @JsonIgnore
         public static final String NOT_USING_FAMILY_PLANNING_VALUE = "0";
 
+    }
+
+    public static class ANCVisitKeyValue {
+        public static class Key {
+            public final static String IS_REFERRED = "Is_Reffered";
+        }
     }
 
     public static class PNCVisitKeyValue {
@@ -142,6 +152,10 @@ public class Members extends MotechBaseDataObject {
 
             public Integer getValue() {
                 return this.value;
+            }
+
+            public String getValueInString() {
+                return this.getValue().toString();
             }
         }
 
@@ -203,6 +217,10 @@ public class Members extends MotechBaseDataObject {
             public Integer getValue() {
                 return this.value;
             }
+
+            public String getValueInString() {
+                return this.getValue().toString();
+            }
         }
 
         public enum DeliveryBy {
@@ -247,6 +265,10 @@ public class Members extends MotechBaseDataObject {
             public Integer getValue() {
                 return this.value;
             }
+
+            public String getValueInString() {
+                return this.getValue().toString();
+            }
         }
 
         public enum DeliveryType {
@@ -284,6 +306,10 @@ public class Members extends MotechBaseDataObject {
 
             public Integer getValue() {
                 return this.value;
+            }
+
+            public String getValueInString() {
+                return this.getValue().toString();
             }
         }
     }

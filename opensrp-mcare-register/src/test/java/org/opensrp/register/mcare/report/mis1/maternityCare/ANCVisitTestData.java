@@ -8,6 +8,8 @@ import org.opensrp.register.mcare.report.mis1.MIS1TestData;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.opensrp.register.mcare.domain.Members.BooleanAnswer.*;
+
 public class ANCVisitTestData extends MIS1TestData {
 
     private ANCVisit.ANCVisitBuilder builder;
@@ -86,13 +88,29 @@ public class ANCVisitTestData extends MIS1TestData {
         return allMembers;
     }
 
+    public List<Members> createAFCVisitIsReferredData() {
+        List<Members> allMembers = new ArrayList<>();
+
+
+
+        for (int i = 0; i < totalCount; i++) {
+            if (i < validCount - 2) {
+                allMembers.add(createValidMemberWithRandomDateTime(VisitNumber.four));
+            } else {
+                allMembers.add(createInValidMemberWithRandomDateTime(VisitNumber.four));
+            }
+
+        }
+        return allMembers;
+    }
+
     private Members createValidMemberWithStartDateTime(VisitNumber visitNumber) {
-        builder.clientVersion(startDateTime);
+        builder.clientVersion(startDateTime).isReferred(YES.getValueInString());
         return createMemberWithANCVisit(visitNumber, builder.build().getVisitData());
     }
 
     private Members createValidMemberWithEndDateTime(VisitNumber visitNumber) {
-        builder.clientVersion(endDateTime);
+        builder.clientVersion(endDateTime).isReferred(YES.getValueInString());
         return createMemberWithANCVisit(visitNumber, builder.build().getVisitData());
     }
 
