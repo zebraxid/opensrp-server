@@ -23,21 +23,23 @@ public abstract class Report {
     protected void useReflectionToDynamicallyInitAllMemberOf(Class reportClass, long startDateTime, long endDateTime) {
         Field[] fields = reportClass.getDeclaredFields();
         for (Field field : fields) {
-            field.setAccessible(true);
-            try {
-                Class classOfFiled = Class.forName(field.getType().getName());
-                Constructor constructor = classOfFiled.getConstructor(long.class, long.class);
-                field.set(this, constructor.newInstance(startDateTime, endDateTime));
-            } catch (NoSuchMethodException e) {
-                e.printStackTrace();
-            } catch (InstantiationException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (InvocationTargetException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
+            if(!field.isSynthetic()) {
+                field.setAccessible(true);
+                try {
+                    Class classOfFiled = Class.forName(field.getType().getName());
+                    Constructor constructor = classOfFiled.getConstructor(long.class, long.class);
+                    field.set(this, constructor.newInstance(startDateTime, endDateTime));
+                } catch (NoSuchMethodException e) {
+                    e.printStackTrace();
+                } catch (InstantiationException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
@@ -45,17 +47,19 @@ public abstract class Report {
     protected void useReflectionToDynamicallyCallCalculateMethodOnAllMemberOf(Class reportClass, Members member) {
         Field[] fields = reportClass.getDeclaredFields();
         for (Field field : fields) {
-            field.setAccessible(true);
-            try {
-                Object fieldValue = field.get(this);
-                Method calculate = fieldValue.getClass().getMethod("calculate", Members.class);
-                calculate.invoke(fieldValue, member);
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (NoSuchMethodException e) {
-                e.printStackTrace();
-            } catch (InvocationTargetException e) {
-                e.printStackTrace();
+            if(!field.isSynthetic()) {
+                field.setAccessible(true);
+                try {
+                    Object fieldValue = field.get(this);
+                    Method calculate = fieldValue.getClass().getMethod("calculate", Members.class);
+                    calculate.invoke(fieldValue, member);
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                } catch (NoSuchMethodException e) {
+                    e.printStackTrace();
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
