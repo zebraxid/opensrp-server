@@ -43,4 +43,12 @@ public class ANCVisitCountTest {
         long anc2visitCount = mis1Report.getMaternityCareReport().getAncReportCalculator().getVisitTwoCount();
         assertEquals(ancVisitTestData.validCount, anc2visitCount);
     }
+
+    @Test
+    public void testANCVisitIsReferredCount() {
+        List<Members> membersList = ancVisitTestData.createANCVisitIsReferredData();
+        MIS1Report mis1Report = new MIS1Report(unionName, membersList, startDateTime, endDateTime);
+        long isReferredANCVisit = mis1Report.getMaternityCareReport().getAncReportCalculator().getIsReferredCount();
+        assertEquals(ancVisitTestData.validCount, isReferredANCVisit);
+    }
 }

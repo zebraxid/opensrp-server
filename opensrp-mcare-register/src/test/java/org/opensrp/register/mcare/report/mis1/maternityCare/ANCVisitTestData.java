@@ -94,8 +94,8 @@ public class ANCVisitTestData extends MIS1TestData {
 
 
         for (VisitNumber visitNumber : VisitNumber.values()) {
-            createValidMemberWithStartDateTime(visitNumber);
-            createValidMemberWithEndDateTime(visitNumber);
+            allMembers.add(createValidMemberWithStartDateTime(visitNumber));
+            allMembers.add(createValidMemberWithEndDateTime(visitNumber));
         }
 
         for (int i = 0; i < totalCount; i++) {

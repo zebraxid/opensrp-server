@@ -47,6 +47,10 @@ public abstract class MIS1TestData {
                 return member.setANCVisit1(visitData);
             case two:
                 return member.setANCVisit2(visitData);
+            case three:
+                return member.setANCVisit3(visitData);
+            case four:
+                return member.setANCVisit4(visitData);
         }
 
         throw new IllegalArgumentException("Invalid visit number: " + visitNumber.toString());
