@@ -65,14 +65,16 @@ public class AllMemberTest {
         System.err.println(houseHold.HoH_Mobile_No());
 		
 	}
-	@Ignore@Test
+	@Test
 	public void bahmniEncounterTest() throws JSONException{
 		JSONObject enc = new JSONObject();
-		enc.put("encounterTypeUuid", "910d3315-0632-4c5b-9e2a-32916d0a8004");
+		enc.put("encounterTypeUuid", "03aecf69-953d-11e6-90c1-005056b01095");
 		enc.put("encounterDateTime", new DateTime());
-		enc.put("patientUuid", "b336c3d9-6184-4898-a2f2-d9fa7fb5721d");
-		enc.put("locationUuid", "e0d82fb6-66f9-45cb-ad57-f4204b139f59");
+		enc.put("patientUuid", "ab1330c0-3095-43a1-8f7f-81214de7cb2e");
+		enc.put("locationUuid", "4f2b8e02-f9b5-47b5-afdc-fe6ca7d50f7d");
+		enc.put("encounterUuid", "02f0939b-e307-4f63-bacb-e32ac4bc7283");
 		enc.put("visitType", "field");
+		enc.put("visitUuid", "72a3ee07-0e7f-4f56-a7b6-c30b0665b787");
 		JSONObject providers = new JSONObject();
 		JSONArray providerArray = new JSONArray();
 		providers.put("uuid", "dd967c60-5089-4e49-82be-ef7990439619");
