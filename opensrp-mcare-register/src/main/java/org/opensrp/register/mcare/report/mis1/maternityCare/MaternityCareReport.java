@@ -4,15 +4,12 @@ package org.opensrp.register.mcare.report.mis1.maternityCare;
 import org.opensrp.register.mcare.domain.Members;
 import org.opensrp.register.mcare.report.mis1.Report;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-
 public class MaternityCareReport extends Report{
     private PregnantWomenCountCalculator pregnantWomenCountCalculator;
     private ANCReportCalculator ancReportCalculator;
     private PostpartumCareCalculator postpartumCareCalculator;
     private PNCReportCalculator pncReportCalculator;
+    private TTDoseReportCalculator ttDoseReportCalculator;
 
     public MaternityCareReport(long startDateTime, long endDateTime) {
        super(startDateTime, endDateTime);
@@ -32,6 +29,10 @@ public class MaternityCareReport extends Report{
 
     public PNCReportCalculator getPncReportCalculator() {
         return pncReportCalculator;
+    }
+
+    public TTDoseReportCalculator getTTDoseReportCalculator() {
+        return ttDoseReportCalculator;
     }
 
     @Override

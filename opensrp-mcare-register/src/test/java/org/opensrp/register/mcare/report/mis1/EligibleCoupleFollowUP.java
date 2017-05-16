@@ -5,6 +5,8 @@ import org.opensrp.register.mcare.domain.Members;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.opensrp.register.mcare.domain.Members.EligibleCoupleVisitKeyValue.*;
+
 public class EligibleCoupleFollowUP {
     private Map<String, String> followUp;
 
@@ -24,7 +26,12 @@ public class EligibleCoupleFollowUP {
             return this;
         }
         public EligibleCoupleFollowUpBuilder pregnant(String pregnantStatus) {
-            followUp.put(Members.EligibleCoupleVisitKeyValue.Key.PREGNANT_STATUS, pregnantStatus);
+            followUp.put(Key.PREGNANT_STATUS, pregnantStatus);
+            return this;
+        }
+
+        public EligibleCoupleFollowUpBuilder tt_dose(String ttDoses) {
+            followUp.put(Key.TT_DOSE, ttDoses);
             return this;
         }
 
