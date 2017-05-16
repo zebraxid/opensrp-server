@@ -10,15 +10,39 @@ import java.util.Map;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.node.ArrayNode;
+import org.hamcrest.text.pattern.FromTo;
+import org.opensrp.domain.Event;
+import org.opensrp.domain.Obs;
 import org.opensrp.form.domain.FormData;
 import org.opensrp.form.domain.FormField;
 import org.opensrp.form.domain.FormInstance;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.form.repository.AllFormSubmissions;
+import org.opensrp.register.encounter.sync.forms.WomanTTForm;
+import org.opensrp.register.encounter.sync.interfaces.FormsType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.DefaultResourceLoader;
+import org.springframework.core.io.ResourceLoader;
+import org.springframework.stereotype.Service;
 
 @SuppressWarnings("unchecked")
+@Service
 public class MakeFormSubmission {
+	
+	private String jsonFilePath;
+	
+	
+	@Autowired
+	public MakeFormSubmission(@Value("#{opensrp['form.directory.name']}") String formDirPath) throws IOException
+	{
+		ResourceLoader loader=new DefaultResourceLoader();
+		formDirPath = loader.getResource(formDirPath).getURI().getPath();
+		this.jsonFilePath = formDirPath;
+		
+	}
 	
 	@SuppressWarnings("rawtypes")
 	static Map map=new HashMap();
@@ -130,13 +154,35 @@ public class MakeFormSubmission {
 		map.put("lmp_calc_edd",  "Invalid Date");
 		
 	}
-
+	private static Logger logger = LoggerFactory.getLogger(MakeFormSubmission.class.toString());
 	private AllFormSubmissions formSubmissions;
 	@Autowired
 	public MakeFormSubmission(AllFormSubmissions formSubmissions){
 		this.formSubmissions = formSubmissions;
 	}
-	public FormSubmission createFormSumission(){
+	public Event getEvent(Event event){		
+		List<Obs> obs = event.getObs();		
+		for (Obs obs1 : obs) {			
+			String[] array = ((String) obs1.getValues().get(0)).split(":"); 
+			String name = array[0];
+			if(!name.equalsIgnoreCase("Immunization Incident Vaccine")){
+				if(name.equalsIgnoreCase("Tetanus toxoid")){
+					FormsType<WomanTTForm> womanTTForm	= FormFatcory.getFormsTypeInstance("WTT");
+					String filePath = this.jsonFilePath+"/woman_tt_form/form_definition.json";
+					womanTTForm.makeForm(filePath);
+					
+				}else{
+					
+				}
+			}
+			logger.info("Event:"+array[0]);	
+			
+		}
+		return event;
+		
+	}
+	
+	public FormSubmission createFormSubmission(){
 		JsonNode enc = null;
 		ObjectMapper mapper = new ObjectMapper();
 	     try {

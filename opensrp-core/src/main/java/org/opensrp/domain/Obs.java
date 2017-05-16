@@ -184,4 +184,14 @@ public class Obs {
 		return this;
 		
 	}
+
+	@Override
+	public String toString() {
+		return "Obs [fieldType=" + fieldType + ", fieldDataType="
+				+ fieldDataType + ", fieldCode=" + fieldCode + ", parentCode="
+				+ parentCode + ", values=" + values + ", comments=" + comments
+				+ ", formSubmissionField=" + formSubmissionField
+				+ ", effectiveDatetime=" + effectiveDatetime + "]";
+	}
+	
 }

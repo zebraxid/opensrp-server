@@ -1493,7 +1493,7 @@ public class AllConstants {
 	}
 	public static final String FORM_SCHEDULE_SUBJECT = "FORM-SCHEDULE";
 	
-	public static final String OPENSRP_IDENTIFIER = "Bahmni Id";
+	public static final String OPENSRP_IDENTIFIER = "Patient Identifier";
 	public enum Member{
 		CHILD(1),WOMAN(1);
 		  public int value;  

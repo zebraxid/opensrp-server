@@ -59,14 +59,14 @@ public class EventService {
 	
 	public List<Event> findEventsByDynamicQuery(String query) {
 		return allEvents.findEventsByDynamicQuery(query);
-	}
+	}	
 	
 	public Event addEvent(Event event) {
 		if (!StringUtils.isEmptyOrWhitespaceOnly(event.getEventId()) && getByEventId(event.getEventId()) != null) {
 			throw new IllegalArgumentException("An event already exists with given eventId " + event.getEventId()
 			        + ". Consider updating");
-		}
-		//action.getMember(event.getBaseEntityId());
+		}		
+		action.getEvent(event);		
 		if (getByBaseEntityAndFormSubmissionId(event.getBaseEntityId(), event.getFormSubmissionId()) != null) {
 			//throw new IllegalArgumentException("An event already exists with given baseEntity and formSubmission combination. Consider updating");
 			return updateEvent(event);

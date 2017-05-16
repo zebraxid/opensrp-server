@@ -1,11 +1,13 @@
 package org.opensrp.register.encounter.sync.forms;
 
+import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.register.encounter.sync.interfaces.FormsType;
 
 public class Household implements FormsType<Household> {
 
 	@Override
-	public void makeForm() {
+	public FormSubmission makeForm(String formDir) {
+		return null;
 		// TODO Auto-generated method stub
 		
 	}

@@ -11,9 +11,11 @@ import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.motechproject.scheduletracking.api.domain.Enrollment;
+import org.opensrp.domain.Event;
 import org.opensrp.common.AllConstants.ScheduleNames;
 import org.opensrp.domain.Multimedia;
 import org.opensrp.dto.BeneficiaryType;
+import org.opensrp.register.encounter.sync.MakeFormSubmission;
 import org.opensrp.register.mcare.domain.HouseHold;
 import org.opensrp.register.mcare.domain.Members;
 import org.opensrp.register.mcare.repository.AllHouseHolds;
@@ -37,16 +39,19 @@ public class AlertCreationAction implements HookedEvent {
 	private AllMembers allMembers;
 	private ScheduleLogService scheduleLogService;
 	private MultimediaRegisterService multimediaRegisterService;
+	private MakeFormSubmission makeFormSubmission;
 	private static Logger logger = LoggerFactory.getLogger(AlertCreationAction.class.toString());
 	@Autowired
 	public AlertCreationAction(HealthSchedulerService scheduler,
 			AllHouseHolds allHouseHolds, AllMembers allMembers,
-			ScheduleLogService scheduleLogService, MultimediaRegisterService multimediaRegisterService) {
+			ScheduleLogService scheduleLogService, 
+			MultimediaRegisterService multimediaRegisterService,MakeFormSubmission makeFormSubmission) {
 		this.scheduler = scheduler;
 		this.allHouseHolds = allHouseHolds;
 		this.allMembers = allMembers;
 		this.scheduleLogService = scheduleLogService;
 		this.multimediaRegisterService = multimediaRegisterService;
+		this.makeFormSubmission = makeFormSubmission;
 	}
 
 	@Override
@@ -119,8 +124,8 @@ public class AlertCreationAction implements HookedEvent {
 	}
 
 	@Override
-	public void getMember(String id) {
-		logger.info("Member:"+allMembers.findByCaseId(id).toString());
+	public void getEvent(Event event) {
+		makeFormSubmission.getEvent(event);
 		
 	}
 

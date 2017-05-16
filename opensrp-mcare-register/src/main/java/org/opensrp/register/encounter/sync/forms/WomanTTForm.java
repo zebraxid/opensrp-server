@@ -1,13 +1,19 @@
 package org.opensrp.register.encounter.sync.forms;
 
+import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.register.encounter.sync.interfaces.FormsType;
 import org.opensrp.register.mcare.domain.Members;
 
 public class WomanTTForm implements FormsType<Members> {
 
+	private WomanTTForm(){
+		
+	}
 	@Override
-	public void makeForm() {
+	public FormSubmission makeForm(String formDir) {
+		System.out.println("From Woman TT form");
 		// TODO Auto-generated method stub
+		return null;
 		
 	}
 
@@ -28,5 +34,7 @@ public class WomanTTForm implements FormsType<Members> {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	public static WomanTTForm getInstance(){
+		return new WomanTTForm();
+	}
 }

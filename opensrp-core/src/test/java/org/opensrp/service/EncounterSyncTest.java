@@ -22,7 +22,8 @@ import org.opensrp.form.repository.AllFormSubmissions;
 "classpath*:spring/test-applicationContext-opensrp.xml"})*/
 
 public class EncounterSyncTest {
-	
+	@Mock
+	EventService eventService;
 	@Mock
 	MakeFormSubmission makeFormSubmission;
 	@Mock
@@ -55,6 +56,7 @@ public class EncounterSyncTest {
 		formSubmission =makeFormSubmission.createFormSumission();
 		formSubmissions.remove(formSubmission);
 		assertNotNull(formSubmission);
+		
 	}
 	
 }
