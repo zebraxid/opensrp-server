@@ -7,6 +7,7 @@ import org.opensrp.register.mcare.domain.Members;
 import org.opensrp.register.mcare.report.mis1.MIS1Report;
 import org.opensrp.register.mcare.report.mis1.MIS1TestData;
 
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -50,5 +51,13 @@ public class ANCVisitCountTest {
         MIS1Report mis1Report = new MIS1Report(unionName, membersList, startDateTime, endDateTime);
         long isReferredANCVisit = mis1Report.getMaternityCareReport().getAncReportCalculator().getIsReferredCount();
         assertEquals(ancVisitTestData.validCount, isReferredANCVisit);
+    }
+
+    @Test
+    public void testANCVisitIsReferredCountForEmptyMemberList() {
+        List<Members> membersList = Collections.emptyList();
+        MIS1Report mis1Report = new MIS1Report(unionName, membersList, startDateTime, endDateTime);
+        long isReferredANCVisit = mis1Report.getMaternityCareReport().getAncReportCalculator().getIsReferredCount();
+        assertEquals(0 , isReferredANCVisit);
     }
 }
