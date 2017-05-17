@@ -6,6 +6,7 @@ import org.opensrp.register.mcare.domain.Members;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.opensrp.register.mcare.domain.Members.PNCVisitKeyValue.*;
 import static org.opensrp.register.mcare.domain.Members.PNCVisitKeyValue.Key;
 
 public class PNCVisit {
@@ -27,13 +28,13 @@ public class PNCVisit {
             return this;
         }
 
-        public PNCVisitBuilder visitStatus(String visitStatus) {
-            visitData.put(Key.VISIT_STATUS, visitStatus);
+        public PNCVisitBuilder visitStatus(VisitStatus visitStatus) {
+            visitData.put(Key.VISIT_STATUS, visitStatus.getValueInString());
             return this;
         }
 
-        public PNCVisitBuilder hasPncGivenOnTime(String pncGivenOnTime) {
-            visitData.put(Key.HAS_PNC_GIVEN_ON_TIME, pncGivenOnTime);
+        public PNCVisitBuilder hasPncGivenOnTime(Members.BooleanAnswer pncGivenOnTime) {
+            visitData.put(Key.HAS_PNC_GIVEN_ON_TIME, pncGivenOnTime.getValueInString());
             return this;
         }
 

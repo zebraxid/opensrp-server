@@ -110,12 +110,12 @@ public class ANCVisitTestData extends MIS1TestData {
     }
 
     private Members createValidMemberWithStartDateTime(VisitNumber visitNumber) {
-        builder.clientVersion(startDateTime).isReferred(YES.getValueInString());
+        builder.clientVersion(startDateTime).isReferred(YES);
         return createMemberWithANCVisit(visitNumber, builder.build().getVisitData());
     }
 
     private Members createValidMemberWithEndDateTime(VisitNumber visitNumber) {
-        builder.clientVersion(endDateTime).isReferred(YES.getValueInString());
+        builder.clientVersion(endDateTime).isReferred(YES);
         return createMemberWithANCVisit(visitNumber, builder.build().getVisitData());
     }
 
@@ -161,13 +161,13 @@ public class ANCVisitTestData extends MIS1TestData {
 
     private Members createValidMemberWithValidRandomDateTime(VisitNumber visitNumber) {
         Long randomDateTimeBetweenStartAndEndDateTime = getRandomNumberBetween(startDateTime, endDateTime);
-        builder.clientVersion(randomDateTimeBetweenStartAndEndDateTime).isReferred(YES.getValueInString());
+        builder.clientVersion(randomDateTimeBetweenStartAndEndDateTime).isReferred(YES);
         return createMemberWithANCVisit(visitNumber, builder.build().getVisitData());
     }
 
     private Members createInValidMemberWithValidRandomDateTime(VisitNumber visitNumber) {
         Long randomDateTimeBetweenStartAndEndDateTime = getRandomNumberBetween(startDateTime, endDateTime);
-        builder.clientVersion(randomDateTimeBetweenStartAndEndDateTime).isReferred(NO.getValueInString());
+        builder.clientVersion(randomDateTimeBetweenStartAndEndDateTime).isReferred(NO);
         return createMemberWithANCVisit(visitNumber, builder.build().getVisitData());
     }
 
@@ -179,7 +179,7 @@ public class ANCVisitTestData extends MIS1TestData {
         } else {
             invalidDataTime = getRandomNumberBetween(endDateTime + 1, endDateTime * 5);
         }
-        builder.clientVersion(invalidDataTime).isReferred(YES.getValueInString());
+        builder.clientVersion(invalidDataTime).isReferred(YES);
         return createMemberWithANCVisit(visitNumber, builder.build().getVisitData());
     }
 

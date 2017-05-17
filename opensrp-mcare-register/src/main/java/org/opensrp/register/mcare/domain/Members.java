@@ -150,6 +150,7 @@ public class Members extends MotechBaseDataObject {
     public static class ANCVisitKeyValue {
         public static class Key {
             public final static String IS_REFERRED = "Is_Reffered";
+            public final static String MISOPROSTOL_RECEIVED = "Misoprostol_Received";
         }
     }
 

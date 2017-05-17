@@ -30,8 +30,8 @@ public class EligibleCoupleFollowUP {
             return this;
         }
 
-        public EligibleCoupleFollowUpBuilder tt_dose(String ttDoses) {
-            followUp.put(Key.TT_DOSE, ttDoses);
+        public EligibleCoupleFollowUpBuilder tt_dose(TTDoseBuilder ttDoseBuilder) {
+            followUp.put(Key.TT_DOSE, ttDoseBuilder.build());
             return this;
         }
 
@@ -47,4 +47,50 @@ public class EligibleCoupleFollowUP {
         this.followUp.putAll(eligibleCoupleFollowUpBuilder.followUp);
     }
 
+
+    public static class TTDoseBuilder {
+        private String ttDoses = "";
+
+        public TTDoseBuilder addDoseOne() {
+            ttDoses += Members.VaccineDose.ONE.getValueInString();
+            return this;
+        }
+
+        public TTDoseBuilder addDoseTwo() {
+            addSpaceIfNotEmpty();
+            ttDoses += Members.VaccineDose.TWO.getValueInString();
+            return this;
+        }
+
+        public TTDoseBuilder addDoseThree() {
+            addSpaceIfNotEmpty();
+            ttDoses += Members.VaccineDose.THREE.getValueInString();
+            return this;
+        }
+
+        public TTDoseBuilder addDoseFour() {
+            addSpaceIfNotEmpty();
+            ttDoses += Members.VaccineDose.FOUR.getValueInString();
+            return this;
+        }
+
+        public TTDoseBuilder addDoseFive() {
+            addSpaceIfNotEmpty();
+            ttDoses += Members.VaccineDose.FIVE.getValueInString();
+            return this;
+        }
+
+        public String build() {
+            String temp = ttDoses;
+            ttDoses = "";
+            return temp;
+        }
+
+        private void addSpaceIfNotEmpty() {
+            if (!ttDoses.isEmpty()) {
+                ttDoses += " ";
+            }
+        }
+
+    }
 }

@@ -27,13 +27,14 @@ public class ANCVisit {
             return this;
         }
 
-        public ANCVisit.ANCVisitBuilder pregnant(String pregnantStatus) {
-            visitData.put(Members.EligibleCoupleVisitKeyValue.Key.PREGNANT_STATUS, pregnantStatus);
+
+        public ANCVisit.ANCVisitBuilder isReferred(Members.BooleanAnswer isReferred) {
+            visitData.put(Key.IS_REFERRED, isReferred.getValueInString());
             return this;
         }
 
-        public ANCVisit.ANCVisitBuilder isReferred(String isReferred) {
-            visitData.put(Key.IS_REFERRED, isReferred);
+        public ANCVisitBuilder misoprostolReceived(Members.BooleanAnswer booleanAnswer) {
+            visitData.put(Key.MISOPROSTOL_RECEIVED, booleanAnswer.getValueInString());
             return this;
         }
 

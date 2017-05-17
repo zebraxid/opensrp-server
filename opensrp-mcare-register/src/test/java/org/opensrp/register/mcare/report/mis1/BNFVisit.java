@@ -6,6 +6,8 @@ import org.opensrp.register.mcare.domain.Members;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.opensrp.register.mcare.domain.Members.BirthNotificationVisitKeyValue.*;
+
 public class BNFVisit {
     private Map<String, String> visitData;
 
@@ -25,23 +27,18 @@ public class BNFVisit {
             return this;
         }
 
-        public BNFVisit.BNFVisitBuilder deliveryAt(String deliveryPlace) {
-            visitData.put(Members.BirthNotificationVisitKeyValue.Key.WHERE_DELIVERED, deliveryPlace);
+        public BNFVisit.BNFVisitBuilder deliveryAt(DeliveryPlace deliveryPlace) {
+            visitData.put(Key.WHERE_DELIVERED, deliveryPlace.getValueInString());
             return this;
         }
 
-        public BNFVisit.BNFVisitBuilder deliveryBy(String deliveryPerson) {
-            visitData.put(Members.BirthNotificationVisitKeyValue.Key.WHO_DELIVERED, deliveryPerson);
+        public BNFVisit.BNFVisitBuilder deliveryBy(DeliveryBy deliveryPerson) {
+            visitData.put(Key.WHO_DELIVERED, deliveryPerson.getValueInString());
             return this;
         }
 
-        public BNFVisit.BNFVisitBuilder deliveryType(String deliveryType) {
-            visitData.put(Members.BirthNotificationVisitKeyValue.Key.DELIVERY_TYPE, deliveryType);
-            return this;
-        }
-
-        public BNFVisit.BNFVisitBuilder normalDelivery(String deliveryType) {
-            visitData.put(Members.BirthNotificationVisitKeyValue.Key.DELIVERY_TYPE, deliveryType);
+        public BNFVisit.BNFVisitBuilder deliveryType(DeliveryType deliveryType) {
+            visitData.put(Key.DELIVERY_TYPE, deliveryType.getValueInString());
             return this;
         }
 
