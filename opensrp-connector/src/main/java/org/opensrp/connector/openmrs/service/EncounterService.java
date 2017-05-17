@@ -63,10 +63,10 @@ public class EncounterService extends OpenmrsService{
 	    map.put("parent","021e0705-953d-11e6-90c1-005056b01095");
 	    
 	    map.put("Birth Outcome","3389d54b-6482-4282-88da-fa8c89b44365");
-	    map.put("Child Vaccination Followup","73ac68d0-7679-4ead-8d85-8a21e8de0fe5");
+	    map.put("Child Vaccination Followup","03aecf69-953d-11e6-90c1-005056b01095");
 	    map.put("HH And Member Registration","40e07564-758a-46bf-90a7-cae979111c8f");
 	    map.put("New Member Registration","cfbed971-8280-4d84-b667-a44de5e1a45c");
-	    map.put("Woman TT Follow Up","910d3315-0632-4c5b-9e2a-32916d0a8004");
+	    map.put("Woman TT Follow Up","03aecf69-953d-11e6-90c1-005056b01095");
 	    map.put("Pregnancy Status And Birth Notification Followup","3b67089f-b5ef-4b3b-9bda-0df9f06872ae");
 	    
 	}
@@ -106,6 +106,7 @@ public class EncounterService extends OpenmrsService{
 		JSONObject pr = userService.getPersonByUser(e.getProviderId());		
 		enc.put("encounterDateTime", new DateTime());
 		enc.put("visitType", "field");
+		//enc.put("encounterUuid", "02f0939b-e307-4f63-bacb-e32ac4bc7283");
 		// patient must be existing in OpenMRS before it submits an encounter. if it doesnot it would throw NPE
 		if (pr.getString("uuid").isEmpty() || pr.getString("uuid")==null)
 			System.out.println("Person or Patient does not exist or empty inside openmrs with identifier: " + pr.getString("uuid"));
@@ -118,7 +119,7 @@ public class EncounterService extends OpenmrsService{
 		}else{
 			JSONObject providers = new JSONObject();
 			JSONArray providerArray = new JSONArray();
-			providers.put("uuid", "dd967c60-5089-4e49-82be-ef7990439619");// uuid for sohel user
+			providers.put("uuid", "0da40551-08cb-4f13-94f9-04de483e3f6b");// uuid for sohel user
 			providerArray.put(providers);
 			enc.put("providers", providerArray);
 			//enc.put("provider", pr.getString("uuid"));
@@ -129,7 +130,7 @@ public class EncounterService extends OpenmrsService{
 			List<Obs> ol = e.getObs();			
 			Map<String, List<JSONObject>> pc = new HashMap<>();
 			MultiValueMap   obsMap = new MultiValueMap();
-			enc.put("locationUuid", "e0d82fb6-66f9-45cb-ad57-f4204b139f59");
+			enc.put("locationUuid", "4f2b8e02-f9b5-47b5-afdc-fe6ca7d50f7d");
 			for (Obs obs : ol) {
 				System.out.println("obs:"+obs.toString());
 				//if no parent simply make it root obs				
@@ -183,6 +184,7 @@ public class EncounterService extends OpenmrsService{
 	}
 	
 	private JSONObject createVaccineEncounter(JSONArray obar,JSONObject enc) throws JSONException{
+		System.err.println("obar:"+obar.toString());
 		for ( int totalGroupCounter = 0; totalGroupCounter < obar.length(); totalGroupCounter++) {
 			 try{
 			
@@ -191,26 +193,112 @@ public class EncounterService extends OpenmrsService{
 				 JSONArray groupMembersList =  (JSONArray) groupMembersObject.get("groupMembers");
 				 String concept =  groupMembersObject.get("concept").toString();				 
 				 for (int vaccinationInAGroupMemberCounter = 0; vaccinationInAGroupMemberCounter < groupMembersList.length(); vaccinationInAGroupMemberCounter+=2) {
-					 JSONArray gruopMember = new JSONArray();
-			 	        JSONArray observation = new JSONArray();	 	       
-			 	        JSONObject observationGroup = new JSONObject();	
-			 	        JSONObject observationConcept = new JSONObject();
+					 JSONArray gruopMember = new JSONArray();			 	        
 			 	        String vaccine =  map.get(concept).toString();// get vaccine origin name such as  TT,bcg,opv etc
-			 	        try{
-			 	        	JSONObject doseOfAvaccine = new JSONObject(groupMembersList.get(vaccinationInAGroupMemberCounter+1).toString());		 	        	
+			 	        String getDoseValue="";
+			 	        String getDateValue="";
+			 	       
+			 	        JSONObject 	dateOfAvaccine = new JSONObject(groupMembersList.get(vaccinationInAGroupMemberCounter).toString());
+			 	        try{			 	        	
+			 	        	JSONObject doseOfAvaccine = new JSONObject(groupMembersList.get(vaccinationInAGroupMemberCounter+1).toString());
+			 	        	 getDoseValue = doseOfAvaccine.get("value").toString();
+			 	        	getDateValue = dateOfAvaccine.get("value").toString();			 	        	
 			 	        	vaccine  = vaccine+doseOfAvaccine.get("value").toString();//concat dose number with vaccine such as  TT1,opv1
 			 	        	gruopMember.put(groupMembersList.get(vaccinationInAGroupMemberCounter+1));		 	        	
 			 	        }catch(Exception e){
 			 	        	System.out.println("Dose not found");
+			 	        	getDoseValue ="0";
+			 	        	getDateValue = dateOfAvaccine.get("value").toString();
 			 	        }
-			 	        observationConcept.put("concept",map.get("parent"));
-			 	        observationConcept.put("value", map.get(vaccine));		        	
-			        	gruopMember.put(groupMembersList.get(vaccinationInAGroupMemberCounter));		        	
-			        	observationGroup.put("groupMembers", gruopMember);
-			        	observationGroup.put("concept", concept);		        	        	
-			        	observation.put(observationConcept);
-			        	observation.put(observationGroup);	 	        
-			 	        enc.put("observations", observation);
+			 	    
+			        	
+			        	
+			        	JSONObject observations = new JSONObject();
+			    		JSONObject conceptTemplate = new JSONObject();
+			    		conceptTemplate.put("dataType", "N/A");
+			    		conceptTemplate.put("name", "Immunization Incident Template");
+			    		conceptTemplate.put("uuid", "021cb967-953d-11e6-90c1-005056b01095");
+			        	
+			        	JSONArray innerGroupMember = new JSONArray();
+			    		
+			    		
+			    		/// group memener vacine name
+			    		JSONObject vaccineNameGroupMember = new JSONObject();
+			    		JSONObject innerGroupMember1Concept = new JSONObject();
+			    		//innerGroupMember1Concept.put("dataType", "Coded");
+			    		innerGroupMember1Concept.put("name", "Immunization Incident Vaccine");
+			    		innerGroupMember1Concept.put("uuid", "021e0705-953d-11e6-90c1-005056b01095");
+			    		vaccineNameGroupMember.put("concept", innerGroupMember1Concept);
+			    		
+			    		
+			    		JSONObject vaccineNameConcept = new JSONObject();
+			    		vaccineNameConcept.put("name", vaccine);
+			    		vaccineNameConcept.put("uuid", map.get(vaccine));
+			    		vaccineNameConcept.put("value", vaccine);
+			    		vaccineNameGroupMember.put("value", vaccineNameConcept);
+			    		
+			    		
+			    		JSONObject vaccineDateConcept = new JSONObject();
+			    		JSONObject vaccineDate = new JSONObject();
+			    		vaccineDate.put("dataType", "Date");
+			    		vaccineDate.put("name", "Immunization Incident Vaccination Date");
+			    		vaccineDate.put("uuid", "021e8246-953d-11e6-90c1-005056b01095");
+			    		vaccineDateConcept.put("concept", vaccineDate);
+			    		
+			    		vaccineDateConcept.put("value", getDateValue);
+			    		
+			    		
+			    		/// group memener for dose
+			    		JSONObject doseValueGroupMember = new JSONObject();
+			    		JSONObject doseValueGroupMemberConcept = new JSONObject();
+			    		doseValueGroupMemberConcept.put("dataType", "Numeric");
+			    		doseValueGroupMemberConcept.put("name", "Immunization Incident Vaccination Dosage");
+			    		doseValueGroupMemberConcept.put("uuid", "021efde7-953d-11e6-90c1-005056b01095");
+			    		doseValueGroupMember.put("concept", doseValueGroupMemberConcept);
+			    		
+			    		doseValueGroupMember.put("value", getDoseValue);
+			    		
+			    		
+			    		/// group memener for reported 
+			    		JSONObject reportedGroupMember = new JSONObject();
+			    		JSONObject reportedGroupMemberConcept = new JSONObject();
+			    		reportedGroupMemberConcept.put("dataType", "Boolean");
+			    		reportedGroupMemberConcept.put("name", "Immunization Incident Vaccination Reported");
+			    		reportedGroupMemberConcept.put("uuid", "021f7622-953d-11e6-90c1-005056b01095");
+			    		reportedGroupMember.put("concept", reportedGroupMemberConcept);		
+			    		reportedGroupMember.put("value", true);			    		
+			    		
+			    		
+			    		innerGroupMember.put(vaccineNameGroupMember);
+			    		innerGroupMember.put(doseValueGroupMember);
+			    		innerGroupMember.put(reportedGroupMember);
+			    		innerGroupMember.put(vaccineDateConcept);
+			    		
+			    		// group member property
+			    		JSONObject groupMember = new JSONObject();
+			    		groupMember.put("groupMembers", innerGroupMember);
+			    		groupMember.put("isObservation", true);
+			    		JSONObject conceptInner = new JSONObject();
+			    		conceptInner.put("dataType", "N/A");
+			    		conceptInner.put("name", "Immunization Incident Group");
+			    		conceptInner.put("uuid", "021d28cd-953d-11e6-90c1-005056b01095");
+			    		groupMember.put("concept", conceptInner);
+			    		
+			    		
+			    		
+			    		// group member array property
+			    		JSONArray groupMemberArray = new JSONArray();
+			    		groupMemberArray.put(groupMember);
+			    		
+			    		JSONArray observationsArray = new JSONArray();
+			    		observations.put("conceptSetName", "Immunization Incident Group");
+			    		observations.put("concept", conceptTemplate);
+			    		observations.put("groupMembers", groupMemberArray);
+			    		observations.put("label", "Immunization Incident");
+			    		observationsArray.put(observations);
+			    		
+			    		
+			 	        enc.put("observations", observationsArray);
 			 	        System.out.println("Going to create Encounter: " + enc.toString());
 			 	        HttpResponse op = HttpUtil.post(HttpUtil.removeEndingSlash(OPENMRS_BASE_URL)+"/"+ENCOUNTER_URL, "", enc.toString(), OPENMRS_USER, OPENMRS_PWD);
 			 	       

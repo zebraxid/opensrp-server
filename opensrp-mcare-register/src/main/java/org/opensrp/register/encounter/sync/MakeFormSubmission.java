@@ -10,7 +10,6 @@ import java.util.Map;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.node.ArrayNode;
-import org.hamcrest.text.pattern.FromTo;
 import org.opensrp.domain.Event;
 import org.opensrp.domain.Obs;
 import org.opensrp.form.domain.FormData;
@@ -26,23 +25,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.ResourceLoader;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 @SuppressWarnings("unchecked")
-@Service
+@Component
 public class MakeFormSubmission {
 	
 	private String jsonFilePath;
 	
+	public MakeFormSubmission(){
+		
+	}
 	
-	@Autowired
+	/*@Autowired
 	public MakeFormSubmission(@Value("#{opensrp['form.directory.name']}") String formDirPath) throws IOException
 	{
 		ResourceLoader loader=new DefaultResourceLoader();
 		formDirPath = loader.getResource(formDirPath).getURI().getPath();
 		this.jsonFilePath = formDirPath;
 		
-	}
+	}*/
 	
 	@SuppressWarnings("rawtypes")
 	static Map map=new HashMap();
@@ -161,7 +163,8 @@ public class MakeFormSubmission {
 		this.formSubmissions = formSubmissions;
 	}
 	public Event getEvent(Event event){		
-		List<Obs> obs = event.getObs();		
+		List<Obs> obs = event.getObs();	
+		try{
 		for (Obs obs1 : obs) {			
 			String[] array = ((String) obs1.getValues().get(0)).split(":"); 
 			String name = array[0];
@@ -176,6 +179,9 @@ public class MakeFormSubmission {
 				}
 			}
 			logger.info("Event:"+array[0]);	
+			
+		}
+		}catch(Exception e){
 			
 		}
 		return event;

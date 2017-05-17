@@ -39,21 +39,22 @@ public class AlertCreationAction implements HookedEvent {
 	private AllMembers allMembers;
 	private ScheduleLogService scheduleLogService;
 	private MultimediaRegisterService multimediaRegisterService;
+	@Autowired
 	private MakeFormSubmission makeFormSubmission;
 	private static Logger logger = LoggerFactory.getLogger(AlertCreationAction.class.toString());
 	@Autowired
 	public AlertCreationAction(HealthSchedulerService scheduler,
 			AllHouseHolds allHouseHolds, AllMembers allMembers,
 			ScheduleLogService scheduleLogService, 
-			MultimediaRegisterService multimediaRegisterService,MakeFormSubmission makeFormSubmission) {
+			MultimediaRegisterService multimediaRegisterService) {
 		this.scheduler = scheduler;
 		this.allHouseHolds = allHouseHolds;
 		this.allMembers = allMembers;
 		this.scheduleLogService = scheduleLogService;
 		this.multimediaRegisterService = multimediaRegisterService;
-		this.makeFormSubmission = makeFormSubmission;
+		
 	}
-
+	
 	@Override
 	public void invoke(MilestoneEvent event, Map<String, String> extraData) {
 		BeneficiaryType beneficiaryType = BeneficiaryType.from(extraData
