@@ -184,7 +184,7 @@ public class EncounterService extends OpenmrsService{
 	}
 	
 	private JSONObject createVaccineEncounter(JSONArray obar,JSONObject enc) throws JSONException{
-		System.err.println("obar:"+obar.toString());
+		
 		for ( int totalGroupCounter = 0; totalGroupCounter < obar.length(); totalGroupCounter++) {
 			 try{
 			
