@@ -363,6 +363,60 @@ public class Members extends MotechBaseDataObject {
         }
     }
 
+    public static class AdolescentHealthVisitKeyValue {
+        public static class Key {
+            public static String COUNSELLING = "Councelling";
+        }
+
+        public enum CounsellingType {
+            INVALID(-1),
+            BAD_EFFECT_OF_CHILD_MARRIAGE_AND_TEENAGE_MOTHER(1),
+            TAKING_IRON_AND_FOLIC_ACID(2),
+            EATING_NUTRITIOUS_AND_BALANCED_DIET(3),
+            ON_ADOLESCENT(4),
+            CLEANNESS_AND_COMPLEXITY_OF_MENSTRUATION(5),
+            SEX_ORGAN_INFECTION_AND_SEXUALLY_TRANSMITTED_DISEASES(6);
+
+            private Integer value;
+
+            CounsellingType(Integer value) {
+                this.value = value;
+            }
+
+            private static Map<Integer, CounsellingType> map = new HashMap<Integer, CounsellingType>();
+
+            static {
+                for (CounsellingType counsellingType : CounsellingType.values()) {
+                    map.put(counsellingType.value, counsellingType);
+                }
+            }
+
+            public static CounsellingType fromStr(String value) {
+                if(value == null || value.isEmpty()) {
+                    return INVALID;
+                }else {
+                    return fromInt(Integer.parseInt(value));
+                }
+            }
+
+            public static CounsellingType fromInt(int value) {
+                if(map.containsKey(value)) {
+                    return map.get(value);
+                }
+                return INVALID;
+            }
+
+            public Integer getValue() {
+                return this.value;
+            }
+
+            public String getValueInString() {
+                return this.getValue().toString();
+            }
+
+        }
+    }
+
     @JsonProperty
     private String caseId;
     @JsonProperty
