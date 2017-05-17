@@ -61,4 +61,12 @@ public class ANCVisitCountTest {
         long isReferredANCVisit = mis1Report.getMaternityCareReport().getAncReportCalculator().getIsReferredCount();
         assertEquals(0 , isReferredANCVisit);
     }
+
+    @Test
+    public void testANCVisitMisoprostolReceivedCount() {
+        List<Members> membersList = ancVisitTestData.createANCVisitMisoprostolReceivedData();
+        MIS1Report mis1Report = new MIS1Report(unionName, membersList, startDateTime, endDateTime);
+        long misoprostolRecivedCount = mis1Report.getMaternityCareReport().getAncReportCalculator().getMisoprostolRecivedCount();
+        assertEquals(ancVisitTestData.validCount, misoprostolRecivedCount);
+    }
 }

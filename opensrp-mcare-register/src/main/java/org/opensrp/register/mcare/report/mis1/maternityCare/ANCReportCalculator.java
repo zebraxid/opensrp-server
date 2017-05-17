@@ -13,6 +13,7 @@ public class ANCReportCalculator extends ReportCalculator {
     long visitOneCount = 0;
     long visitTwoCount = 0;
     long isReferredCount = 0;
+    long misoprostolRecivedCount = 0;
 
 
     public ANCReportCalculator(long startDateTime, long endDateTime) {
@@ -24,6 +25,7 @@ public class ANCReportCalculator extends ReportCalculator {
         visitOneCount += addToVisitOneCount(member);
         visitTwoCount += addToVisitTwoCount(member);
         isReferredCount += addToIsReferredCount(member);
+        misoprostolRecivedCount += addToMisoprostolRecivedCount(member);
     }
 
     public long getVisitOneCount() {
@@ -36,6 +38,11 @@ public class ANCReportCalculator extends ReportCalculator {
 
     public long getIsReferredCount() {
         return isReferredCount;
+    }
+
+
+    public long getMisoprostolRecivedCount() {
+        return misoprostolRecivedCount;
     }
 
     private int addToVisitOneCount(Members member) {
@@ -78,9 +85,31 @@ public class ANCReportCalculator extends ReportCalculator {
         return count;
     }
 
+    private int addToMisoprostolRecivedCount(Members member) {
+        int count = 0;
+        Map<String, String> anc3Visit = member.ANCVisit3();
+        Map<String, String> anc4Visit = member.ANCVisit4();
+        if (misoprostolRecivedWithInStartAndEndTime(anc3Visit)) {
+            count++;
+        }
+        if (misoprostolRecivedWithInStartAndEndTime(anc4Visit)) {
+            count++;
+        }
+        return count;
+    }
+
     private boolean isReferredWithInStartAndEndTime(Map<String, String> visitData) {
         if (withInStartAndEndTime(visitData)) {
             if (isReferred(visitData)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean misoprostolRecivedWithInStartAndEndTime(Map<String, String> visitData) {
+        if (withInStartAndEndTime(visitData)) {
+            if (misoprostolRecived(visitData)) {
                 return true;
             }
         }
@@ -91,6 +120,14 @@ public class ANCReportCalculator extends ReportCalculator {
     private boolean isReferred(Map<String, String> visitData) {
         String isReferred = visitData.get(Key.IS_REFERRED);
         if (BooleanAnswer.fromStr(isReferred) == BooleanAnswer.YES) {
+            return true;
+        }
+        return false;
+    }
+
+    private boolean misoprostolRecived(Map<String, String> visitData) {
+        String misoprostolRecived = visitData.get(Key.MISOPROSTOL_RECEIVED);
+        if (BooleanAnswer.fromStr(misoprostolRecived) == BooleanAnswer.YES) {
             return true;
         }
         return false;
