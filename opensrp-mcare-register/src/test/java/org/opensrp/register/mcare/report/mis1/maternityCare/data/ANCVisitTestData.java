@@ -61,8 +61,10 @@ public class ANCVisitTestData extends MIS1TestData {
 
 
         for (VisitNumber visitNumber : VisitNumber.values()) {
-            allMembers.add(createValidMemberWithStartDateTime(visitNumber));
-            allMembers.add(createValidMemberWithEndDateTime(visitNumber));
+            if(visitNumber != VisitNumber.INVALID) {
+                allMembers.add(createValidMemberWithStartDateTime(visitNumber));
+                allMembers.add(createValidMemberWithEndDateTime(visitNumber));
+            }
         }
 
         for (int i = 0; i < totalCount; i++) {
@@ -164,7 +166,7 @@ public class ANCVisitTestData extends MIS1TestData {
         }
     }
 
-    private Members createValidMemberWithValidRandomDateTime(VisitNumber visitNumber) {
+    private Members     createValidMemberWithValidRandomDateTime(VisitNumber visitNumber) {
         Long randomDateTimeBetweenStartAndEndDateTime = getRandomNumberBetween(startDateTime, endDateTime);
         builder.clientVersion(randomDateTimeBetweenStartAndEndDateTime).isReferred(YES).misoprostolReceived(YES);
         return createMemberWithANCVisit(visitNumber, builder.build().getVisitData());
