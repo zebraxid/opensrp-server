@@ -1,4 +1,4 @@
-package org.opensrp.register.mcare.report.mis1.maternityCare.ttDoseCount;
+package org.opensrp.register.mcare.report.mis1.maternityCare;
 
 
 import org.opensrp.register.mcare.domain.Members;

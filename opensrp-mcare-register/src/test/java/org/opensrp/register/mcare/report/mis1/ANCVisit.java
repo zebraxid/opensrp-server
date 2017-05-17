@@ -2,6 +2,7 @@ package org.opensrp.register.mcare.report.mis1;
 
 
 import org.opensrp.register.mcare.domain.Members;
+import org.opensrp.register.mcare.domain.Members.BooleanAnswer;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,12 +29,12 @@ public class ANCVisit {
         }
 
 
-        public ANCVisit.ANCVisitBuilder isReferred(Members.BooleanAnswer isReferred) {
+        public ANCVisit.ANCVisitBuilder isReferred(BooleanAnswer isReferred) {
             visitData.put(Key.IS_REFERRED, isReferred.getValueInString());
             return this;
         }
 
-        public ANCVisitBuilder misoprostolReceived(Members.BooleanAnswer booleanAnswer) {
+        public ANCVisitBuilder misoprostolReceived(BooleanAnswer booleanAnswer) {
             visitData.put(Key.MISOPROSTOL_RECEIVED, booleanAnswer.getValueInString());
             return this;
         }
