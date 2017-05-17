@@ -2,6 +2,7 @@ package org.opensrp.register.mcare.report.mis1;
 
 
 import org.opensrp.register.mcare.domain.Members;
+import org.opensrp.register.mcare.domain.Members.BooleanAnswer;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -33,8 +34,13 @@ public class PNCVisit {
             return this;
         }
 
-        public PNCVisitBuilder hasPncGivenOnTime(Members.BooleanAnswer pncGivenOnTime) {
+        public PNCVisitBuilder hasPncGivenOnTime(BooleanAnswer pncGivenOnTime) {
             visitData.put(Key.HAS_PNC_GIVEN_ON_TIME, pncGivenOnTime.getValueInString());
+            return this;
+        }
+
+        public PNCVisitBuilder isCleaned(BooleanAnswer isCleaned) {
+            visitData.put(Key.IS_CLEANED, isCleaned.getValueInString());
             return this;
         }
 

@@ -3,6 +3,7 @@ package org.opensrp.register.mcare.report.mis1;
 
 import org.opensrp.register.mcare.domain.Members;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
@@ -84,9 +85,48 @@ public abstract class MIS1TestData {
     }
 
     public enum VisitNumber {
-        one,
-        two,
-        three,
-        four
+        INVALID(-1),
+        one(1),
+        two(2),
+        three(3),
+        four(4);
+
+        public int value;
+
+        VisitNumber(int value) {
+            this.value = value;
+        }
+
+        private static Map<Integer, VisitNumber> map = new HashMap<Integer, VisitNumber>();
+
+        static {
+            for (VisitNumber visitNumber : VisitNumber.values()) {
+                map.put(visitNumber.value, visitNumber);
+            }
+        }
+
+        public static VisitNumber fromStr(String value) {
+            if(value == null || value.isEmpty()) {
+                return INVALID;
+            }else {
+                return fromInt(Integer.parseInt(value));
+            }
+        }
+
+        public static VisitNumber fromInt(int value) {
+            if(map.containsKey(value)) {
+                return map.get(value);
+            }
+
+            return INVALID;
+        }
+
+        public Integer getValue() {
+            return this.value;
+        }
+
+        public String getValueInString() {
+            return this.getValue().toString();
+        }
     }
 }

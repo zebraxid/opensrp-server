@@ -164,6 +164,7 @@ public class Members extends MotechBaseDataObject {
         public static class Key {
             public final static String VISIT_STATUS = "Visit_Status";
             public final static String HAS_PNC_GIVEN_ON_TIME = "Has_PNC_Given_On_Time";
+            public final static String IS_CLEANED = "Is_Cleaned";
         }
 
         public enum VisitStatus {
