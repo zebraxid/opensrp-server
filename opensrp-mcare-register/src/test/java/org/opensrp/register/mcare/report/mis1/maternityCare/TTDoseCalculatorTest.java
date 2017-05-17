@@ -1,4 +1,4 @@
-package org.opensrp.register.mcare.report.mis1.maternityCare.data;
+package org.opensrp.register.mcare.report.mis1.maternityCare;
 
 
 import org.junit.Before;
@@ -6,7 +6,7 @@ import org.junit.Test;
 import org.opensrp.register.mcare.domain.Members;
 import org.opensrp.register.mcare.report.mis1.MIS1Report;
 import org.opensrp.register.mcare.report.mis1.MIS1TestData;
-import org.opensrp.register.mcare.report.mis1.maternityCare.TTDoseCalculationTestData;
+import org.opensrp.register.mcare.report.mis1.maternityCare.data.TTDoseCalculationTestData;
 
 import java.util.List;
 
