@@ -29,7 +29,7 @@ public class TTDoseReportCalculator extends ReportCalculator {
             if (withInStartAndEndTime(elcoFollowUp)) {
                 String ttDoseStr = getTTDoseString(elcoFollowUp);
                 if (validTTDoseString(ttDoseStr)) {
-                    List<VaccineDose> vaccineDoses = extractVaccineDosesFromStr(ttDoseStr);
+                    List<VaccineDose> vaccineDoses = VaccineDose.extractVaccineDoseListFrom(ttDoseStr);
                     addToCount(vaccineDoses);
                 }
             }
@@ -47,14 +47,7 @@ public class TTDoseReportCalculator extends ReportCalculator {
         return ttDoses != null && !ttDoses.isEmpty();
     }
 
-    private List<VaccineDose> extractVaccineDosesFromStr(String ttDoseStr) {
-        String[] ttDoseStrList = ttDoseStr.split(" ");
-        List<VaccineDose> vaccineDoses = new ArrayList<>();
-        for (int i = 0; i < ttDoseStrList.length; i++) {
-            vaccineDoses.add(VaccineDose.fromStr(ttDoseStrList[i]));
-        }
-        return vaccineDoses;
-    }
+
 
     private void addToCount(List<VaccineDose> vaccineDoses) {
         for(VaccineDose vaccineDose: vaccineDoses) {

@@ -101,6 +101,15 @@ public class Members extends MotechBaseDataObject {
             }
         }
 
+        public static List<VaccineDose> extractVaccineDoseListFrom(String ttDoseStr) {
+            String[] ttDoseStrList = ttDoseStr.split(" ");
+            List<VaccineDose> vaccineDoses = new ArrayList<>();
+            for (int i = 0; i < ttDoseStrList.length; i++) {
+                vaccineDoses.add(VaccineDose.fromStr(ttDoseStrList[i]));
+            }
+            return vaccineDoses;
+        }
+
         public static VaccineDose fromInt(int value) {
             if(map.containsKey(value)) {
                 return map.get(value);
