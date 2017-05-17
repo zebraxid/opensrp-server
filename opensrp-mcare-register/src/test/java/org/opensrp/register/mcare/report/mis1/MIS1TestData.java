@@ -77,6 +77,12 @@ public abstract class MIS1TestData {
         throw new IllegalArgumentException();
     }
 
+    protected Members createMemberWithAdolescentHealthVisits(List<Map<String, String>> adolescentHealthVisits) {
+        Members member = new Members();
+        member.setadolescent(adolescentHealthVisits);
+        return member;
+    }
+
     public enum VisitNumber {
         one,
         two,

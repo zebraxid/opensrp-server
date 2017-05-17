@@ -10,6 +10,7 @@ public class MaternityCareReport extends Report{
     private PostpartumCareCalculator postpartumCareCalculator;
     private PNCReportCalculator pncReportCalculator;
     private TTDoseReportCalculator ttDoseReportCalculator;
+    private AdolescentHealthReportCalculator adolescentHealthReportCalculator;
 
     public MaternityCareReport(long startDateTime, long endDateTime) {
        super(startDateTime, endDateTime);
@@ -33,6 +34,10 @@ public class MaternityCareReport extends Report{
 
     public TTDoseReportCalculator getTTDoseReportCalculator() {
         return ttDoseReportCalculator;
+    }
+
+    public AdolescentHealthReportCalculator getAdolescentHealthReportCalculator() {
+        return adolescentHealthReportCalculator;
     }
 
     @Override

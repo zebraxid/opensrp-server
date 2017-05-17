@@ -4,10 +4,7 @@
 
 package org.opensrp.register.mcare.domain;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -409,12 +406,28 @@ public class Members extends MotechBaseDataObject {
             }
 
             public static List<CounsellingType> extractCounsellingTypeListFrom(String counsellingTypesStr) {
+
+                if(counsellingTypesStr == null) {
+                    return Collections.emptyList();
+                }
+
                 String[] counsellingTypeStrList = counsellingTypesStr.split(" ");
                 List<CounsellingType> counsellingTypes = new ArrayList<>();
                 for (int i = 0; i < counsellingTypeStrList.length; i++) {
                     counsellingTypes.add(CounsellingType.fromStr(counsellingTypeStrList[i]));
                 }
                 return counsellingTypes;
+            }
+
+            public static String createValueStringFrom(List<CounsellingType> counsellingTypes) {
+                String counsellingTypeStr = "";
+                for(CounsellingType counsellingType: counsellingTypes) {
+                    if(!counsellingTypeStr.isEmpty()) {
+                        counsellingTypeStr += " ";
+                    }
+                    counsellingTypeStr += counsellingType.getValueInString();
+                }
+                return counsellingTypeStr;
             }
 
             public static CounsellingType fromInt(int value) {
