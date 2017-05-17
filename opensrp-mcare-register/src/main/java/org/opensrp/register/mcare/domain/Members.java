@@ -408,6 +408,15 @@ public class Members extends MotechBaseDataObject {
                 }
             }
 
+            public static List<CounsellingType> extractCounsellingTypeListFrom(String counsellingTypesStr) {
+                String[] counsellingTypeStrList = counsellingTypesStr.split(" ");
+                List<CounsellingType> counsellingTypes = new ArrayList<>();
+                for (int i = 0; i < counsellingTypeStrList.length; i++) {
+                    counsellingTypes.add(CounsellingType.fromStr(counsellingTypeStrList[i]));
+                }
+                return counsellingTypes;
+            }
+
             public static CounsellingType fromInt(int value) {
                 if(map.containsKey(value)) {
                     return map.get(value);
