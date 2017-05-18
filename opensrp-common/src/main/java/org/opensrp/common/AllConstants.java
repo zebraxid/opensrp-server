@@ -487,6 +487,7 @@ public class AllConstants {
 		public static final String FWBNFGEN = "FWBNFGEN";
 		public static final String FWBNFCHLDVITSTS = "FWBNFCHLDVITSTS";
 		public static final String FWBNFSMSRSN = "FWBNFSMSRSN";
+		public static final String STS_FALSE_PREGNANCY_IDENTIFICATION = "0";
 		public static final String STS_LB = "3";
 		public static final String STS_SB = "4";
 		public static final String STS_GONE = "7";
