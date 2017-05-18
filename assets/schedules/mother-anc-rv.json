@@ -95,8 +95,8 @@
             "scheduleWindows": {
             	"earliest": ["247 Days"],
                 "due": ["252 Days"],
-                "late": ["652 Days"],
-                "max": ["653 Days"]
+                "late": ["307 Days"],
+                "max": ["308 Days"]
             },
             "alerts": [
                 {
@@ -109,11 +109,11 @@
                     "window": "late",
                     "offset": ["252 Days"],
                     "interval": ["1 Day"],
-                    "count": "400"
+                    "count": "55"
                 },
                  {
                     "window": "max",
-                    "offset": ["652 Days"],
+                    "offset": ["307 Days"],
                     "interval": ["1 Day"],
                     "count": "1"
                 }                  
