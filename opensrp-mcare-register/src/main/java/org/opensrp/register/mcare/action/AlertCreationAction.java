@@ -10,6 +10,7 @@ import java.util.Map;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.json.JSONObject;
 import org.motechproject.scheduletracking.api.domain.Enrollment;
 import org.opensrp.domain.Event;
 import org.opensrp.common.AllConstants.ScheduleNames;
@@ -125,7 +126,7 @@ public class AlertCreationAction implements HookedEvent {
 	}
 
 	@Override
-	public void getEvent(Event event) {
+	public void getEvent(JSONObject event) {
 		makeFormSubmission.getEvent(event);
 		
 	}

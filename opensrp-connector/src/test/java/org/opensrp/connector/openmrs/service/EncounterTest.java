@@ -12,13 +12,16 @@ import java.util.Date;
 import java.util.Map;
 import java.util.Scanner;
 
+import org.apache.commons.collections.map.MultiValueMap;
 import org.hamcrest.Matchers;
+import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.mockito.Mock;
 import org.opensrp.api.domain.Client;
 import org.opensrp.api.domain.Event;
 import org.opensrp.api.domain.Obs;
@@ -42,7 +45,7 @@ public class EncounterTest extends TestResourceLoader{
 	HouseholdService hhs;
 
 	SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd");
-	
+	private static final String ENCOUNTER_URL = "ws/rest/v1/bahmnicore/bahmniencounter";
 	@Before
 	public void setup() throws IOException{
 		ps = new PatientService(openmrsOpenmrsUrl, openmrsUsername, openmrsPassword);
@@ -294,4 +297,80 @@ public class EncounterTest extends TestResourceLoader{
 		hhs.saveHH(hh);
 		
 	}	
+	
+	@Ignore@Test
+	public void shouldCreateVaccineEncouterToBahmni() throws JSONException{
+		JSONObject enc = new JSONObject();
+		enc.put("encounterDateTime", new DateTime());
+		enc.put("visitType", "field");
+		enc.put("patientUuid", "69fa8817-0aab-4f97-b494-2347b2d28daf");//milan
+		enc.put("locationUuid", "4f2b8e02-f9b5-47b5-afdc-fe6ca7d50f7d");
+		JSONObject providers = new JSONObject();
+		JSONArray providerArray = new JSONArray();
+		providers.put("uuid", "0da40551-08cb-4f13-94f9-04de483e3f6b");// uuid for sohel user
+		providerArray.put(providers);
+		enc.put("providers", providerArray);
+		
+		JSONObject vaccine = new JSONObject();
+		vaccine.put("concept","021e0705-953d-11e6-90c1-005056b01095");
+		vaccine.put("value","TT1 TT2 TT3");
+		
+		JSONArray obar = new JSONArray();
+		JSONArray groupMemberArray = new JSONArray();
+		JSONObject groupMemberObj = new JSONObject();
+		JSONObject obo = new JSONObject();
+		obo.put("concept","021e8246-953d-11e6-90c1-005056b01095");
+		obo.put("value","2011-05-17");
+		groupMemberArray.put(obo);
+		
+		JSONObject obo1 = new JSONObject();
+		obo1.put("concept","021efde7-953d-11e6-90c1-005056b01095");
+		obo1.put("value", "1");
+		groupMemberArray.put(obo1);
+		
+		JSONObject obo2 = new JSONObject();
+		obo2.put("concept","021e8246-953d-11e6-90c1-005056b01095");
+		obo2.put("value","2013-05-17");
+		//groupMemberArray.put(obo2);
+		
+		JSONObject obo3 = new JSONObject();
+		obo3.put("concept","021efde7-953d-11e6-90c1-005056b01095");
+		obo3.put("value","2");
+		//groupMemberArray.put(obo3);
+		
+		
+		JSONObject obo4 = new JSONObject();
+		obo4.put("concept","021e8246-953d-11e6-90c1-005056b01095");
+		obo4.put("value","2015-05-17");
+		//groupMemberArray.put(obo4);
+		
+		JSONObject obo5 = new JSONObject();
+		obo5.put("concept","021efde7-953d-11e6-90c1-005056b01095");
+		obo5.put("value","3");
+		//groupMemberArray.put(obo5);
+		
+		JSONObject obo6 = new JSONObject();
+		obo6.put("concept","021e8246-953d-11e6-90c1-005056b01095");
+		obo6.put("value","2017-05-17");
+		//groupMemberArray.put(obo6);
+		
+		JSONObject obo7 = new JSONObject();
+		obo7.put("concept","021efde7-953d-11e6-90c1-005056b01095");
+		obo7.put("value","4");
+		//groupMemberArray.put(obo7);
+		
+	
+		groupMemberObj.put("groupMembers", groupMemberArray);
+		groupMemberObj.put("concept", "be200e2b-0469-4cb3-b3c3-eeda1c51b336");
+		
+		obar.put(vaccine);
+		obar.put(groupMemberObj);
+		
+		JSONObject returnObjForEncounter = s.createVaccineEncounter(obar , enc);
+		String uuid = returnObjForEncounter.getString("encounterUuid");
+		assertNotNull(uuid);
+		HttpResponse op = HttpUtil.delete("https://103.247.238.26/openmrs/"+ENCOUNTER_URL+"/"+uuid,"","","sohel","Sohel@123");
+		assertTrue("Deleted successfull", op.isSuccess());
+		
+	}
 }

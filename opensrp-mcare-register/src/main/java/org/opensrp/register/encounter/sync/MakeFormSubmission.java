@@ -10,6 +10,9 @@ import java.util.Map;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.node.ArrayNode;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.opensrp.domain.Event;
 import org.opensrp.domain.Obs;
 import org.opensrp.form.domain.FormData;
@@ -25,26 +28,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.ResourceLoader;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+
+import com.google.gson.JsonArray;
+
 
 @SuppressWarnings("unchecked")
-@Component
-public class MakeFormSubmission {
+@Service
+public class MakeFormSubmission {	
+	private String jsonFilePath;	
 	
-	private String jsonFilePath;
 	
 	public MakeFormSubmission(){
 		
 	}
 	
-	/*@Autowired
-	public MakeFormSubmission(@Value("#{opensrp['form.directory.name']}") String formDirPath) throws IOException
-	{
-		ResourceLoader loader=new DefaultResourceLoader();
-		formDirPath = loader.getResource(formDirPath).getURI().getPath();
-		this.jsonFilePath = formDirPath;
-		
-	}*/
 	
 	@SuppressWarnings("rawtypes")
 	static Map map=new HashMap();
@@ -162,30 +160,34 @@ public class MakeFormSubmission {
 	public MakeFormSubmission(AllFormSubmissions formSubmissions){
 		this.formSubmissions = formSubmissions;
 	}
-	public Event getEvent(Event event){		
-		List<Obs> obs = event.getObs();	
-		try{
-		for (Obs obs1 : obs) {			
-			String[] array = ((String) obs1.getValues().get(0)).split(":"); 
-			String name = array[0];
-			if(!name.equalsIgnoreCase("Immunization Incident Vaccine")){
-				if(name.equalsIgnoreCase("Tetanus toxoid")){
-					FormsType<WomanTTForm> womanTTForm	= FormFatcory.getFormsTypeInstance("WTT");
-					String filePath = this.jsonFilePath+"/woman_tt_form/form_definition.json";
-					womanTTForm.makeForm(filePath);
-					
-				}else{
-					
-				}
+	public Event getEvent(JSONObject event){	
+				
+		String eventType;
+		try {
+			eventType = event.getJSONObject("encounterType").get("display").toString();
+			logger.info("eventType:"+eventType);
+			String patientIfo = event.getJSONObject("patient").get("display").toString();
+			String[] patientArray =  patientIfo.split("-");
+			logger.info("patient:"+patientArray[0]);
+			
+			JSONArray observations = event.getJSONArray("obs");
+			for (int i = 0; i < observations.length(); i++) {
+				JSONObject o = observations.getJSONObject(i);
+				String vaccines = (String) o.get("display");
+				String[] vaccineArray = vaccines.split(",");
+				logger.info("vaccineArray:"+vaccineArray[0] +" : "+ vaccineArray[1] + " : " +vaccineArray[2] );
 			}
-			logger.info("Event:"+array[0]);	
+			//String[] array = ((String) obs1.getValues().get(0)).split(":"); 
 			
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		}catch(Exception e){
-			
-		}
-		return event;
 		
+		
+		FormsType<WomanTTForm> womanTTForm	= FormFatcory.getFormsTypeInstance("WTT");		
+		//womanTTForm.makeForm(filePath);
+		return null;
 	}
 	
 	public FormSubmission createFormSubmission(){

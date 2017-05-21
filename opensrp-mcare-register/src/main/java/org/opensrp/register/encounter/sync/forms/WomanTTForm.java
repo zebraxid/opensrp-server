@@ -26,7 +26,7 @@ public class WomanTTForm implements FormsType<Members> {
 		JsonNode enc = null;
 		ObjectMapper mapper = new ObjectMapper();
 	     try {
-	            enc = mapper.readValue(new File(formDir), JsonNode.class);
+	    	 enc = mapper.readValue(new File("./../assets/form/woman_tt_form/form_definition.json"), JsonNode.class);
 	        } catch (IOException e) {
 	            e.printStackTrace();
 	        }

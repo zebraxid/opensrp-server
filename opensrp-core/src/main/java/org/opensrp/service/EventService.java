@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.joda.time.DateTime;
+import org.json.JSONObject;
 import org.opensrp.domain.Event;
 import org.opensrp.repository.AllEvents;
 import org.opensrp.scheduler.HookedEvent;
@@ -61,12 +62,17 @@ public class EventService {
 		return allEvents.findEventsByDynamicQuery(query);
 	}	
 	
+	public void getEvent(JSONObject e){
+		action.getEvent(e);	
+		
+		
+	}
 	public Event addEvent(Event event) {
 		if (!StringUtils.isEmptyOrWhitespaceOnly(event.getEventId()) && getByEventId(event.getEventId()) != null) {
 			throw new IllegalArgumentException("An event already exists with given eventId " + event.getEventId()
 			        + ". Consider updating");
 		}		
-		action.getEvent(event);		
+			
 		if (getByBaseEntityAndFormSubmissionId(event.getBaseEntityId(), event.getFormSubmissionId()) != null) {
 			//throw new IllegalArgumentException("An event already exists with given baseEntity and formSubmission combination. Consider updating");
 			return updateEvent(event);

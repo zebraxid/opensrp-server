@@ -57,6 +57,27 @@ public class HttpUtil {
         }
     }
     
+    public static HttpResponse delete(String url, String payload, String data, String username,String password) {
+        new TurnOffCertificateValidation().ForHTTPSConnections();
+    	try {
+        	HttpURLConnection con = makeConnection(url, payload, HttpMethod.DELETE, true, username, password);
+        	con.setDoOutput(true);
+        	con.setRequestProperty("Content-Type", "application/json");
+			String charset = "utf-8";
+			PrintWriter writer = new PrintWriter(new OutputStreamWriter(con.getOutputStream(), charset ), true); // true = autoFlush, important!
+
+			// Send normal param.
+		    //System.out.println(data);
+		    writer.append(data);
+		    if (writer != null) writer.close();
+
+            return new HttpResponse(con.getResponseCode() == HttpStatus.SC_OK, IOUtils.toString(con.getInputStream()));
+			
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+    
     /**
      * Gets the data using Http GET
      * @param url The complete http url of remote server service

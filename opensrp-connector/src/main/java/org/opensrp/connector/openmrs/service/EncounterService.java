@@ -16,6 +16,8 @@ import org.opensrp.api.domain.Event;
 import org.opensrp.api.domain.Obs;
 import org.opensrp.common.util.HttpResponse;
 import org.opensrp.connector.HttpUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +30,7 @@ public class EncounterService extends OpenmrsService{
 	private static final String ENCOUNTER__TYPE_URL = "ws/rest/v1/encountertype";
 	private PatientService patientService;
 	private OpenmrsUserService userService;
+	private static Logger logger = LoggerFactory.getLogger(EncounterService.class.toString());
 	@SuppressWarnings("rawtypes")
 	static Map map=new HashMap();
 	static{
@@ -62,12 +65,12 @@ public class EncounterService extends OpenmrsService{
 	    
 	    map.put("parent","021e0705-953d-11e6-90c1-005056b01095");
 	    
-	    map.put("Birth Outcome","3389d54b-6482-4282-88da-fa8c89b44365");
-	    map.put("Child Vaccination Followup","03aecf69-953d-11e6-90c1-005056b01095");
-	    map.put("HH And Member Registration","40e07564-758a-46bf-90a7-cae979111c8f");
-	    map.put("New Member Registration","cfbed971-8280-4d84-b667-a44de5e1a45c");
-	    map.put("Woman TT Follow Up","03aecf69-953d-11e6-90c1-005056b01095");
-	    map.put("Pregnancy Status And Birth Notification Followup","3b67089f-b5ef-4b3b-9bda-0df9f06872ae");
+	    map.put("Birth Outcome","7e12169a-e42f-11e5-8c3e-08002715d519");
+	    map.put("Child Vaccination Followup","7e0a6e63-c4d5-40aa-99b1-c9b3696e8b1b");
+	    map.put("HH And Member Registration","7e12169a-e42f-11e5-8c3e-08002715d519");
+	    map.put("New Member Registration","7e12169a-e42f-11e5-8c3e-08002715d519");
+	    map.put("Woman TT Follow Up","7e0a6e63-c4d5-40aa-99b1-c9b3696e8b1b");
+	    map.put("Pregnancy Status And Birth Notification Followup","03aecf69-953d-11e6-90c1-005056b01095");
 	    
 	}
 
@@ -167,7 +170,7 @@ public class EncounterService extends OpenmrsService{
 	       
 	        this.createVaccineEncounter(obar, enc);	
 	       
-	        return new JSONObject("Vaccine Encounter created");
+	        return null;
 		}catch(Exception ee){
 			System.out.println(ee.getMessage());
 		}
@@ -178,20 +181,22 @@ public class EncounterService extends OpenmrsService{
 			return new JSONObject(op.body());
 			
 		}else{
-			 return new JSONObject("Vaccine Encounter created");
+			 return null;
 		}
 				
 	}
 	
-	private JSONObject createVaccineEncounter(JSONArray obar,JSONObject enc) throws JSONException{
-		
+	public JSONObject createVaccineEncounter(JSONArray obar,JSONObject enc) throws JSONException{
+		 HttpResponse op = null;
+		 logger.info("obar :"+obar.toString());
 		for ( int totalGroupCounter = 0; totalGroupCounter < obar.length(); totalGroupCounter++) {
 			 try{
 			
 				 String groupMembers =  obar.get(totalGroupCounter).toString();			
 				 JSONObject groupMembersObject = new JSONObject(groupMembers);
-				 JSONArray groupMembersList =  (JSONArray) groupMembersObject.get("groupMembers");
-				 String concept =  groupMembersObject.get("concept").toString();				 
+				// System.out.println(groupMembersObject.toString());
+				 JSONArray groupMembersList =  (JSONArray) groupMembersObject.get("groupMembers");				
+				 String concept =  groupMembersObject.get("concept").toString();				
 				 for (int vaccinationInAGroupMemberCounter = 0; vaccinationInAGroupMemberCounter < groupMembersList.length(); vaccinationInAGroupMemberCounter+=2) {
 					 JSONArray gruopMember = new JSONArray();			 	        
 			 	        String vaccine =  map.get(concept).toString();// get vaccine origin name such as  TT,bcg,opv etc
@@ -299,18 +304,18 @@ public class EncounterService extends OpenmrsService{
 			    		
 			    		
 			 	        enc.put("observations", observationsArray);
-			 	        System.out.println("Going to create Encounter: " + enc.toString());
-			 	        HttpResponse op = HttpUtil.post(HttpUtil.removeEndingSlash(OPENMRS_BASE_URL)+"/"+ENCOUNTER_URL, "", enc.toString(), OPENMRS_USER, OPENMRS_PWD);
+			 	       logger.info("Going to create Encounter: " + enc.toString());
+			 	       op = HttpUtil.post(HttpUtil.removeEndingSlash(OPENMRS_BASE_URL)+"/"+ENCOUNTER_URL, "", enc.toString(), OPENMRS_USER, OPENMRS_PWD);
 			 	       
 				}
 			 }
 			catch(Exception e){
-				System.out.println("No GroupMembers found:"+e.getMessage());
+				logger.info("Message:"+e.getMessage());
 			
 			}
 		}
 		
-		return null;
+		return new JSONObject(op.body());
 		
 	}
 	private  JSONObject convertObsToJson(Obs o) throws JSONException{
