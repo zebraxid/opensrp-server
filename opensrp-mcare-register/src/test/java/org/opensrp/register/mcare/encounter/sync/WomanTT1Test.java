@@ -27,7 +27,7 @@ public class WomanTT1Test extends TestConfig {
 		String uuid = UUID.randomUUID().toString();
 		System.out.println("uuid:"+uuid);
 		MakeFormSubmission makeFormSubmission = new MakeFormSubmission(formSubmissions);
-		formSubmission =makeFormSubmission.createFormSubmission();
+		formSubmission =makeFormSubmission.createFormSumission();
 		formSubmissions.remove(formSubmission);
 		assertNotNull(formSubmission);
 		

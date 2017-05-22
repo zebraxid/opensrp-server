@@ -284,7 +284,7 @@ public class ECEncounterService extends OpenmrsService{
 			JSONArray ol = encounter.getJSONArray("obs");
 			for (int i = 0; i < ol.length(); i++) {
 				JSONObject o = ol.getJSONObject(i);
-				System.out.println(o.get("display"));
+				//System.out.println(o.get("display"));
 				/*List<Object> values = new ArrayList<Object>();
 				if(o.optJSONObject("display") != null){
 					values.add(o.getJSONObject("value").getString("uuid"));

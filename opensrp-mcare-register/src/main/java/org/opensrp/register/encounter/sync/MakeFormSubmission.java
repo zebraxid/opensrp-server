@@ -170,19 +170,27 @@ public class MakeFormSubmission {
 			String[] patientArray =  patientIfo.split("-");
 			logger.info("patient:"+patientArray[0]);
 			
-			JSONArray observations = event.getJSONArray("obs");
-			for (int i = 0; i < observations.length(); i++) {
-				JSONObject o = observations.getJSONObject(i);
-				String vaccines = (String) o.get("display");
-				String[] vaccineArray = vaccines.split(",");
-				logger.info("vaccineArray:"+vaccineArray[0] +" : "+ vaccineArray[1] + " : " +vaccineArray[2] );
+			if(eventType.equalsIgnoreCase("VAC")){
+				JSONArray observations = event.getJSONArray("obs");
+				for (int i = 0; i < observations.length(); i++) {
+					JSONObject o = observations.getJSONObject(i);
+					String vaccines = (String) o.get("display");
+					String vaccineString = this.StringFilter(vaccines);
+					System.err.println("vaccineString:"+vaccineString);
+					String[] vaccineArray = vaccineString.split(",");
+					System.out.println("Array:"+vaccineArray.toString());
+					logger.info("vaccineArray:"+vaccineArray[0] +" : "+ vaccineArray[1] + " : " +vaccineArray[2] +":"+vaccineArray[3]);
+				}
 			}
-			//String[] array = ((String) obs1.getValues().get(0)).split(":"); 
+			
 			
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}catch(ArrayIndexOutOfBoundsException ee){
+			logger.info(""+ee.getMessage());
 		}
+		
 		
 		
 		FormsType<WomanTTForm> womanTTForm	= FormFatcory.getFormsTypeInstance("WTT");		
@@ -190,7 +198,7 @@ public class MakeFormSubmission {
 		return null;
 	}
 	
-	public FormSubmission createFormSubmission(){
+	public FormSubmission createFormSumission(){
 		JsonNode enc = null;
 		ObjectMapper mapper = new ObjectMapper();
 	     try {
@@ -249,7 +257,26 @@ public class MakeFormSubmission {
 		return formSubmission;
 	}
 	
-	
+	public String StringFilter(String str){
+		
+		String strRemoveImmu = "";
+		strRemoveImmu = str.replace("Immunization Incident Template:", "");
+		String strRemoveTT = "";
+		strRemoveTT = strRemoveImmu.replace("(Tetanus toxoid)", "");//TT
+		String strRemoveOPV = "";
+		strRemoveOPV = strRemoveTT.replace("(Poliomyelitis oral, trivalent, live attenuated)", "");//OPV
+		String strRemovePenta = "";
+		strRemovePenta = strRemoveOPV.replace("(Diphtheria-hemophilus influenzae B-pertussis-poliomyelitis-tetanus-hepatitis B)", "");//penta
+		String strRemovePCV = "";
+		strRemovePCV = strRemovePenta.replace("(Pneumococcus, purified polysaccharides antigen conjugated)", "");//pcv1
+		String strRemoveBCG = "";
+		strRemoveBCG = strRemovePCV.replace("(Tuberculosis, live attenuated)", "");//bcg
+		String strRemoveIPV = "";
+		strRemoveIPV = strRemoveBCG.replace("(IPV Vaccine)", "");//ipv
+		System.out.println(strRemoveIPV);
+		return str;
+		
+	}
 	
 
 }

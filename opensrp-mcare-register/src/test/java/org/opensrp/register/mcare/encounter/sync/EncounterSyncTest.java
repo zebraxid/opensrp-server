@@ -13,7 +13,7 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mock;
-import org.opensrp.encounter.sync.MakeFormSubmission;
+import org.opensrp.register.encounter.sync.*;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.form.repository.AllFormSubmissions;
 import org.opensrp.service.EventService;
@@ -58,6 +58,13 @@ public class EncounterSyncTest {
 		formSubmission =makeFormSubmission.createFormSumission();
 		formSubmissions.remove(formSubmission);
 		assertNotNull(formSubmission);
+		
+	}
+	
+	@Test
+	public void ShouldRemoveSubstringFromString(){
+		MakeFormSubmission makeFormSubmission = new MakeFormSubmission();
+		makeFormSubmission.StringFilter("Immunization Incident Template: BCG (Tuberculosis, live attenuated), 2017-01-25, true, 0.0");
 		
 	}
 	
