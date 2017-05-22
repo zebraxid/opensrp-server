@@ -16,7 +16,7 @@
 	
     
     <task:scheduled-tasks scheduler="campStartScheduler">
-        <task:scheduled ref="campJob" method="campRemainderListener" cron="0 0 15 * * ?" />
+        <task:scheduled ref="campJob" method="campRemainderListener" cron="0 0 16 * * ?" />
     </task:scheduled-tasks>
     
     <task:scheduled-tasks scheduler="vaccinationScheduler">

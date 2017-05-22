@@ -158,7 +158,7 @@ public class AllMemberTest {
 	}
 	
 	//4f2b8e02-f9b5-47b5-afdc-fe6ca7d50f7d
-	@Test
+	@Ignore@Test
 	public void bahmniEncounterTest2() throws JSONException{
 		JSONObject enc = new JSONObject();
 		enc.put("encounterTypeUuid", "03aecf69-953d-11e6-90c1-005056b01095");

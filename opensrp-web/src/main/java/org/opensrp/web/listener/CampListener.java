@@ -61,7 +61,7 @@ public class CampListener {
 		}
 	}
 	
-	public void campRemainderListener() {	
+	public void campRemainderListener() throws JSONException {		
 		MessageFactory messageFactory = null;
 		messageFactory = MessageFactory.getMessageFactory("Rem");
 		try{
@@ -75,6 +75,7 @@ public class CampListener {
 	 private void sentMessageToClient(MessageFactory messageFactory,List<CampDate> campDates) throws JSONException{
 		String message;
 		System.err.println("messageFactory:"+messageFactory);
+		
 		if(campDates != null){
 			for (CampDate campDate : campDates) {
 				List<Action> actions = allActions.listOfEligibleClientForVaccine(campDate.getHealth_assistant(),campDate.getSession_name());

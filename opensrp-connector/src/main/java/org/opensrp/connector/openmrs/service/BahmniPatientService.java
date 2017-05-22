@@ -36,11 +36,11 @@ public class BahmniPatientService extends OpenmrsService{
     
     public String generateID() throws JSONException
     {
-    	String ids = "BDH";
-  		JSONObject gen = new JSONObject();
-  		gen.put("identifierSourceName",ids);
+    	String prefix = "BDH";
+  		JSONObject data = new JSONObject();
+  		data.put("identifierSourceName",prefix);
   		
-  		return BahmniHttpUtils.post(getURL()+"/"+GEN_ID_URL, "", gen.toString(), OPENMRS_USER, OPENMRS_PWD).body();
+  		return BahmniHttpUtils.post(getURL()+"/"+GEN_ID_URL, "", data.toString(), OPENMRS_USER, OPENMRS_PWD).body();
     }
 
     public JSONObject getPatientByIdentifier(String identifier) throws JSONException
@@ -195,9 +195,11 @@ public class BahmniPatientService extends OpenmrsService{
 	public JSONObject createPatient(Client c, String idGen) throws JSONException
 	{
 		JSONObject patientExist = null;
+		System.err.println("c.getBaseEntity().getId()"+c.getBaseEntity().getId());
 		patientExist = getPatientByIdentifier(c.getBaseEntity().getId());
 		if (patientExist != null){
 			System.out.println("Person or Patient already existis inside openmrs id:" + c.getBaseEntity().getId());
+			System.out.println("Person or Patient already existis inside openmrs id:" +patientExist.toString());
 			return patientExist;
 		}
 		JSONObject payloadJsonObj = new JSONObject();
