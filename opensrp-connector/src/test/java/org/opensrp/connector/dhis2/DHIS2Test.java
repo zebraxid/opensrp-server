@@ -37,7 +37,7 @@ public class DHIS2Test{
 		
 	}
 	 
-	@Ignore @Test
+	@Ignore@Test
 	public void shouldCreateTrackCaptureData() throws JSONException, ParseException {		
 		Dhis2TrackCaptureConnector dhis2 = new Dhis2TrackCaptureConnector("http://192.168.19.17:8080/api/", "path", "Path@123");	
 		JSONObject track = dhis2.getTrackCaptureFromFormSubmission();

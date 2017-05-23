@@ -39,15 +39,11 @@ public class DHIS2AggregateConnector extends DHIS2Service {
 		String periodTime =  Integer.toString(year)+Integer.toString(month);
 		
 		JSONObject vaccineAttrObj1 = new JSONObject();
-		vaccineAttrObj1.put("dataElement", "bDl4fsu1QIj");//Bcg given (0-11m)
-		//vaccineAttrObj1.put("period", "201701");
-		//vaccineAttrObj1.put("orgUnit", "IDc0HEyjhvL");
+		vaccineAttrObj1.put("dataElement", "bDl4fsu1QIj");//Bcg given (0-11m)		
 		vaccineAttrObj1.put("value", 53);
 		
 		JSONObject vaccineAttrObj2 = new JSONObject();
-		vaccineAttrObj2.put("dataElement", "Ar5v2MYP3EU");//Penta 1given (0-11m)
-		//vaccineAttrObj2.put("period", "201701");
-		//vaccineAttrObj2.put("orgUnit", "IDc0HEyjhvL");
+		vaccineAttrObj2.put("dataElement", "Ar5v2MYP3EU");//Penta 1given (0-11m)		
 		vaccineAttrObj2.put("value", 45);
 		
 		vaccineCountArray.put(vaccineAttrObj1);
@@ -70,15 +66,14 @@ public class DHIS2AggregateConnector extends DHIS2Service {
 		int year = now.get(Calendar.YEAR);
 		int month = now.get(Calendar.MONTH)+1;		
 		int length = (int)(Math.log10(month)+1);
-		String formatted ;
-		System.out.println(length);
+		String formattedMonthNUmber ;		
 		if(length<2){			
-		 formatted = String.format("%02d", month);
+			formattedMonthNUmber = String.format("%02d", month);
 		}else{
-			formatted =Integer.toString(month);
+			formattedMonthNUmber =Integer.toString(month);
 		}
 		
-		String periodTime =  Integer.toString(year)+formatted;		
+		String periodTime =  Integer.toString(year)+formattedMonthNUmber;		
 	   	Integer birthPlaceInHealthFacilityCount=0;
 	   	Integer birthPlaceInHome=0;
 	   	Integer birthUnderWeightCount = 0;
@@ -114,8 +109,7 @@ public class DHIS2AggregateConnector extends DHIS2Service {
 								for (Object object : values) {
 									try{
 										Double value = Double.parseDouble((String) object);
-										double conditionValue =value;
-										System.out.println("conditionValue:"+conditionValue);
+										double conditionValue =value;										
 										if(conditionValue <3.5){
 											birthUnderWeightCount++;
 										}else{

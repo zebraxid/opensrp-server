@@ -43,10 +43,8 @@ public class DHIS2SyncerListener {
 	    		start = lastsync==null||lastsync.get(0).getValue()==null?0:lastsync.get(0).getValue();
 	    	}
     		
-			Long end = System.currentTimeMillis();			
-    		System.out.println("START "+start+" , END "+end);
-			List<Client> cl = clientService.findByServerVersion(start);
-			System.out.println("Clients list size "+cl.size());
+			Long end = System.currentTimeMillis();    		
+			List<Client> cl = clientService.findByServerVersion(start);			
 			for (Client c : cl) {
 				try{
 					sentTrackCaptureDataToDHIS2(c);
@@ -77,8 +75,7 @@ private void sentTrackCaptureDataToDHIS2(Client client) throws JSONException{
 		JSONObject gender = new JSONObject();
 		gender.put("attribute", "xDvyz0ezL4e");
 		gender.put("value",  client.getGender());
-		clientAttribute.put(gender);
-		System.err.println(client.toString());
+		clientAttribute.put(gender);		
 		if(client.getAttributes().containsKey("Father_NRC_Number")){			
 			JSONObject Father_NRC_Number = new JSONObject();
 			Father_NRC_Number.put("attribute", "UpMkVyXSk4b");
