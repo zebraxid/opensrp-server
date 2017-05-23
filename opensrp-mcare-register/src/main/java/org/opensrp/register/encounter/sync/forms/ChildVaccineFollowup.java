@@ -10,7 +10,7 @@ public class ChildVaccineFollowup implements FormsType<Members> {
 		
 	}
 	@Override
-	public FormSubmission makeForm(String formDir) {
+	public FormSubmission makeForm(String formDir,String vaccineDate,int vaccineDose,String patientId) {
 		return null;
 		// TODO Auto-generated method stub
 		

@@ -6,7 +6,7 @@ import org.opensrp.register.encounter.sync.interfaces.FormsType;
 public class Household implements FormsType<Household> {
 
 	@Override
-	public FormSubmission makeForm(String formDir) {
+	public FormSubmission makeForm(String formDir,String vaccineDate,int vaccineDose,String patientId) {
 		return null;
 		// TODO Auto-generated method stub
 		

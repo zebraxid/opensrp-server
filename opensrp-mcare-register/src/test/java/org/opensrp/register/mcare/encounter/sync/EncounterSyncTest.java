@@ -1,5 +1,6 @@
 package org.opensrp.register.mcare.encounter.sync;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -9,6 +10,7 @@ import org.ektorp.http.StdHttpClient;
 import org.ektorp.impl.StdCouchDbConnector;
 import org.ektorp.impl.StdCouchDbInstance;
 import org.ektorp.impl.StdObjectMapperFactory;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -64,8 +66,18 @@ public class EncounterSyncTest {
 	@Test
 	public void ShouldRemoveSubstringFromString(){
 		MakeFormSubmission makeFormSubmission = new MakeFormSubmission();
-		makeFormSubmission.StringFilter("Immunization Incident Template: BCG (Tuberculosis, live attenuated), 2017-01-25, true, 0.0");
+		String StringAfterFilter = makeFormSubmission.StringFilter("Immunization Incident Template: BCG (Tuberculosis, live attenuated), 2017-01-25, true, 0.0");
+		assertEquals(makeFormSubmission.parseVaccineTypeFromString(StringAfterFilter, "BCG"),true);
 		
+		Assert.assertNotSame(makeFormSubmission.parseVaccineTypeFromString(StringAfterFilter, "TT"), true);
+		String getDateOfVaccine = makeFormSubmission.parseDateFromString(StringAfterFilter);
+		Assert.assertNotSame(getDateOfVaccine,null);
+		double getDoseOfVaccine = makeFormSubmission.parseDoseFromString(StringAfterFilter);
+		Assert.assertNotSame(getDoseOfVaccine,null);
+		int i =(int) getDoseOfVaccine;
+		System.out.println(i);
 	}
+	
+	
 	
 }

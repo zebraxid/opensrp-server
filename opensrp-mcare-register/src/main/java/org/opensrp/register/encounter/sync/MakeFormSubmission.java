@@ -2,6 +2,8 @@ package org.opensrp.register.encounter.sync;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,7 +16,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.opensrp.domain.Event;
-import org.opensrp.domain.Obs;
 import org.opensrp.form.domain.FormData;
 import org.opensrp.form.domain.FormField;
 import org.opensrp.form.domain.FormInstance;
@@ -25,24 +26,23 @@ import org.opensrp.register.encounter.sync.interfaces.FormsType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
 
-import com.google.gson.JsonArray;
-
 
 @SuppressWarnings("unchecked")
 @Service
-public class MakeFormSubmission {	
-	private String jsonFilePath;	
-	
+public class MakeFormSubmission extends FormSubmissionConfig{	
 	
 	public MakeFormSubmission(){
 		
 	}
 	
+	public MakeFormSubmission(String formDirectory) throws IOException {
+		super(formDirectory);
+		
+	}
 	
 	@SuppressWarnings("rawtypes")
 	static Map map=new HashMap();
@@ -166,26 +166,34 @@ public class MakeFormSubmission {
 		try {
 			eventType = event.getJSONObject("encounterType").get("display").toString();
 			logger.info("eventType:"+eventType);
-			String patientIfo = event.getJSONObject("patient").get("display").toString();
-			String[] patientArray =  patientIfo.split("-");
-			logger.info("patient:"+patientArray[0]);
-			
+			String patientInfo = event.getJSONObject("patient").get("display").toString();
+			String[] patientStringToArray =  patientInfo.split("-");
+			logger.info("patient:"+patientStringToArray[0]);
+			System.err.println("formDirectory:"+formDirectory);
 			if(eventType.equalsIgnoreCase("VAC")){
 				JSONArray observations = event.getJSONArray("obs");
 				for (int i = 0; i < observations.length(); i++) {
 					JSONObject o = observations.getJSONObject(i);
 					String vaccines = (String) o.get("display");
-					String vaccineString = this.StringFilter(vaccines);
-					System.err.println("vaccineString:"+vaccineString);
-					String[] vaccineArray = vaccineString.split(",");
-					System.out.println("Array:"+vaccineArray.toString());
-					logger.info("vaccineArray:"+vaccineArray[0] +" : "+ vaccineArray[1] + " : " +vaccineArray[2] +":"+vaccineArray[3]);
+					String vaccineStringAfterFilter = this.StringFilter(vaccines);					
+					boolean TT = this.parseVaccineTypeFromString(vaccineStringAfterFilter, SyncConstant.TT);
+					String vaccineDate = this.parseDateFromString(vaccineStringAfterFilter);
+					double getDoseOfVaccine = this.parseDoseFromString(vaccineStringAfterFilter);
+					int vaccineDose =(int) getDoseOfVaccine;
+					if(TT){	
+						FormsType<WomanTTForm> womanTTForm	= FormFatcory.getFormsTypeInstance("WTT");
+						womanTTForm.makeForm(formDirectory,vaccineDate,vaccineDose,patientStringToArray[0]);
+					}else{
+						
+					}
+					
+					
+					
 				}
 			}
 			
 			
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
+		} catch (JSONException e) {			
 			e.printStackTrace();
 		}catch(ArrayIndexOutOfBoundsException ee){
 			logger.info(""+ee.getMessage());
@@ -193,7 +201,7 @@ public class MakeFormSubmission {
 		
 		
 		
-		FormsType<WomanTTForm> womanTTForm	= FormFatcory.getFormsTypeInstance("WTT");		
+				
 		//womanTTForm.makeForm(filePath);
 		return null;
 	}
@@ -260,23 +268,55 @@ public class MakeFormSubmission {
 	public String StringFilter(String str){
 		
 		String strRemoveImmu = "";
-		strRemoveImmu = str.replace("Immunization Incident Template:", "");
+		strRemoveImmu = str.replace(SyncConstant.map.get("IIT"), "");
 		String strRemoveTT = "";
-		strRemoveTT = strRemoveImmu.replace("(Tetanus toxoid)", "");//TT
+		strRemoveTT = strRemoveImmu.replace(SyncConstant.map.get("TT"), "");//TT
 		String strRemoveOPV = "";
-		strRemoveOPV = strRemoveTT.replace("(Poliomyelitis oral, trivalent, live attenuated)", "");//OPV
+		strRemoveOPV = strRemoveTT.replace(SyncConstant.map.get("OPV"), "");//OPV
 		String strRemovePenta = "";
-		strRemovePenta = strRemoveOPV.replace("(Diphtheria-hemophilus influenzae B-pertussis-poliomyelitis-tetanus-hepatitis B)", "");//penta
+		strRemovePenta = strRemoveOPV.replace(SyncConstant.map.get("PENTA"), "");//penta
 		String strRemovePCV = "";
-		strRemovePCV = strRemovePenta.replace("(Pneumococcus, purified polysaccharides antigen conjugated)", "");//pcv1
+		strRemovePCV = strRemovePenta.replace(SyncConstant.map.get("PCV"), "");//pcv1
 		String strRemoveBCG = "";
-		strRemoveBCG = strRemovePCV.replace("(Tuberculosis, live attenuated)", "");//bcg
+		strRemoveBCG = strRemovePCV.replace(SyncConstant.map.get("BCG"), "");//bcg
 		String strRemoveIPV = "";
-		strRemoveIPV = strRemoveBCG.replace("(IPV Vaccine)", "");//ipv
-		System.out.println(strRemoveIPV);
-		return str;
+		strRemoveIPV = strRemoveBCG.replace(SyncConstant.map.get("IPV"), "");//ipv		
+		return strRemoveIPV;
 		
 	}
 	
+	public boolean parseVaccineTypeFromString(String  str,String subString){		
+		return str.toLowerCase().contains(subString.toLowerCase());
+			
+	}
+	
+	public String parseDateFromString(String str){
+		SimpleDateFormat formatter = new SimpleDateFormat("yyy-MM-dd");		
+		String[] vaccineStringToArray = str.split(",");
+		for (String value : vaccineStringToArray) {				
+			try {
+				formatter.parse(value.trim());				 
+				return value;
+			} catch (ParseException e) {				
+				logger.info("Message: "+e.getMessage());
+			}
+           
+		}
+		return null;
+		
+	}
+	
+	public Double parseDoseFromString(String str){		
+		String[] vaccineStringToArray = str.split(",");
+		for (String value : vaccineStringToArray) {				
+			try{				
+				return (double) Float.parseFloat(value);				 
+			}catch (Exception e) {				
+				logger.info("Message: "+e.getMessage());
+			}
+		}
+		return 99.0;
+		
+	}
 
 }

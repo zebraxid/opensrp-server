@@ -22,14 +22,17 @@ public class WomanTTForm implements FormsType<Members> {
 		
 	}
 	@Override
-	public FormSubmission makeForm(String formDir) {
+	public FormSubmission makeForm(String formDir,String vaccineDate,int vaccineDose,String patientId) {
 		JsonNode enc = null;
 		ObjectMapper mapper = new ObjectMapper();
+		String filePath = formDir+"/woman_tt_form/form_definition.json";
+		
 	     try {
-	    	 enc = mapper.readValue(new File("./../assets/form/woman_tt_form/form_definition.json"), JsonNode.class);
+	    	 enc = mapper.readValue(new File(filePath), JsonNode.class);
 	        } catch (IOException e) {
 	            e.printStackTrace();
 	        }
+	    
 	     String anmId ="sujan";
 	     String instanceId = UUID.randomUUID().toString();
 	     String formName ="woman_tt_form";
@@ -72,7 +75,7 @@ public class WomanTTForm implements FormsType<Members> {
 	     
 	     FormSubmission formSubmission = new FormSubmission(anmId, instanceId, formName, entityId, formDataDefinitionVersion, clientVersion, formInstance);
 	     formSubmission.setServerVersion(serverVersion);
-	    
+	    System.out.println("formSubmission:::::::::"+formSubmission.toString());
 		return formSubmission;
 		
 		
