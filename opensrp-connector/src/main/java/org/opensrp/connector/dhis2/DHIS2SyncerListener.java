@@ -30,7 +30,7 @@ public class DHIS2SyncerListener {
 	
    
 	@MotechListener(subjects = DHIS2Constants.DHIS2_TRACK_DATA_SYNCER_SUBJECT)
-	public void pushToOpenMRS(MotechEvent event) {
+	public void pushToDHIS2(MotechEvent event) {
     	try{
     		System.out.println("RUNNING "+event.getSubject());
     		Long start=0l;
