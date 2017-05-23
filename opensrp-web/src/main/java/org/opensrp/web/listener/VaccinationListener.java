@@ -7,6 +7,7 @@ import org.opensrp.camp.service.CampDateService;
 import org.opensrp.register.mcare.service.VaccinationService;
 import org.opensrp.scheduler.Action;
 import org.opensrp.scheduler.repository.AllActions;
+import org.opensrp.service.DHIS2DataCollectionService;
 import org.opensrp.service.DataCountService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,11 +25,12 @@ public class VaccinationListener {
 	private AllActions allActions;
 	@Autowired
 	private DataCountService dataCountService;
-	
+	private DHIS2DataCollectionService dhis2DataCollectionService;
 	
 	@Autowired
-    public void setAllActions(AllActions allActions) {
+    public void setAllActions(AllActions allActions,DHIS2DataCollectionService dhis2DataCollectionService) {
     	this.allActions = allActions;
+    	this.dhis2DataCollectionService = dhis2DataCollectionService;
     }
 
 	@Autowired
@@ -74,7 +76,7 @@ public class VaccinationListener {
 		logger.info("vaccinationCounter called for SendingToDHIS2");
 		
 		try{
-			dataCountService.getVaccineCountForSendingToDHIS2("all","2016-10-01","2016-10-31");
+			dhis2DataCollectionService.getVaccineCountForSendingToDHIS2("all","2016-10-01","2016-10-31");
 		}catch(Exception e){
 			e.printStackTrace();
 		}	
