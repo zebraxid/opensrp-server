@@ -18,7 +18,7 @@ public class EventService {
 	
 	private final AllEvents allEvents;
 	private HookedEvent action;
-	
+	private  JSONObject encounter;
 	@Autowired
 	public EventService(AllEvents allEvents) {
 		this.allEvents = allEvents;
@@ -28,7 +28,7 @@ public class EventService {
 		return allEvents.findByEventId(eventId);
 	}
 
-	public void setEvent(HookedEvent action){
+	public void setAction(HookedEvent action){
 		this.action = action;
 	}
 	public Event getByBaseEntityAndFormSubmissionId(String baseEntityId, String formSubmissionId) {
@@ -62,9 +62,8 @@ public class EventService {
 		return allEvents.findEventsByDynamicQuery(query);
 	}	
 	
-	public void getEvent(JSONObject e){
-		action.getEvent(e);	
-		
+	public void getEvent(JSONObject encounter){
+		this.encounter = encounter;
 		
 	}
 	public Event addEvent(Event event) {
@@ -72,7 +71,7 @@ public class EventService {
 			throw new IllegalArgumentException("An event already exists with given eventId " + event.getEventId()
 			        + ". Consider updating");
 		}		
-			
+		action.getEvent(encounter,event.getBaseEntityId());		
 		if (getByBaseEntityAndFormSubmissionId(event.getBaseEntityId(), event.getFormSubmissionId()) != null) {
 			//throw new IllegalArgumentException("An event already exists with given baseEntity and formSubmission combination. Consider updating");
 			return updateEvent(event);

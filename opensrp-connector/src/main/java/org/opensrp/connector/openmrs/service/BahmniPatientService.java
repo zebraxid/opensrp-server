@@ -194,12 +194,10 @@ public class BahmniPatientService extends OpenmrsService{
 	
 	public JSONObject createPatient(Client c, String idGen) throws JSONException
 	{
-		JSONObject patientExist = null;
-		System.err.println("c.getBaseEntity().getId()"+c.getBaseEntity().getId());
+		JSONObject patientExist = null;		
 		patientExist = getPatientByIdentifier(c.getBaseEntity().getId());
 		if (patientExist != null){
 			System.out.println("Person or Patient already existis inside openmrs id:" + c.getBaseEntity().getId());
-			System.out.println("Person or Patient already existis inside openmrs id:" +patientExist.toString());
 			return patientExist;
 		}
 		JSONObject payloadJsonObj = new JSONObject();

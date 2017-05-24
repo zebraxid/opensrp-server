@@ -85,7 +85,7 @@ public class TaskSchedulerService {
 	{
 		reportActionService.setEvent(action);
 		multimediaService.setEvent(action);
-		eventService.setEvent(action);
+		eventService.setAction(action);
 	}
 	
 	

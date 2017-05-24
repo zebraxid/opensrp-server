@@ -812,6 +812,8 @@ public class MembersService {
 				.put(tt4_note	,submission.getField(tt4_note))
 				.put(tt4_retro	,submission.getField(tt4_retro))
 				.put(tt5	,submission.getField(tt5))
+				.put(tt5_retro	,submission.getField(tt5_retro))
+				.put(tt_5_dose	,submission.getField(tt_5_dose))
 				.put(tt5_final	,submission.getField(tt5_final))
 				.put(ultrasound_date	,submission.getField(ultrasound_date))
 				.put(ultrasound_weeks	,submission.getField(ultrasound_weeks))

@@ -29,7 +29,7 @@ public class EncounterSyncTest {
 	@Mock
 	EventService eventService;
 	@Mock
-	MakeFormSubmission makeFormSubmission;
+	FormHandler makeFormSubmission;
 	@Mock
 	FormSubmission formSubmission;
 	@Mock
@@ -56,16 +56,16 @@ public class EncounterSyncTest {
 	
 	@Ignore@Test
 	public void shuoldCreateEncounter(){
-		MakeFormSubmission makeFormSubmission = new MakeFormSubmission(formSubmissions);
+		/*FormHandler makeFormSubmission = new FormHandler(formSubmissions);
 		formSubmission =makeFormSubmission.createFormSumission();
 		formSubmissions.remove(formSubmission);
-		assertNotNull(formSubmission);
+		assertNotNull(formSubmission);*/
 		
 	}
 	
 	@Test
 	public void ShouldRemoveSubstringFromString(){
-		MakeFormSubmission makeFormSubmission = new MakeFormSubmission();
+		FormHandler makeFormSubmission = new FormHandler();
 		String StringAfterFilter = makeFormSubmission.StringFilter("Immunization Incident Template: BCG (Tuberculosis, live attenuated), 2017-01-25, true, 0.0");
 		assertEquals(makeFormSubmission.parseVaccineTypeFromString(StringAfterFilter, "BCG"),true);
 		

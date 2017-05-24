@@ -12,7 +12,8 @@ import org.ektorp.impl.StdObjectMapperFactory;
 public class TestConfig {
 	
 	private CouchDbInstance dbInstance;
-	private StdCouchDbConnector stdCouchDbConnector;
+	private StdCouchDbConnector stdCouchDbConnectorOpensrpForm;
+	private StdCouchDbConnector stdCouchDbConnectorOpensrp;
 	
 	public TestConfig(){
 		initMocks(this);
@@ -23,14 +24,19 @@ public class TestConfig {
 	        .socketTimeout(1000) 
 	        .build(); 
 			dbInstance = new StdCouchDbInstance(httpClient);
-			stdCouchDbConnector = new StdCouchDbConnector("opensrp-form", dbInstance, new StdObjectMapperFactory());
-			stdCouchDbConnector.createDatabaseIfNotExists();
+			stdCouchDbConnectorOpensrpForm = new StdCouchDbConnector("opensrp-form", dbInstance, new StdObjectMapperFactory());
+			stdCouchDbConnectorOpensrpForm.createDatabaseIfNotExists();
+			stdCouchDbConnectorOpensrp = new StdCouchDbConnector("opensrp", dbInstance, new StdObjectMapperFactory());
+			stdCouchDbConnectorOpensrp.createDatabaseIfNotExists();
 			
 	}
 	
 
-	public StdCouchDbConnector getStdCouchDbConnector(){
-		return stdCouchDbConnector;
+	public StdCouchDbConnector getStdCouchDbConnectorForOpensrpForm(){
+		return stdCouchDbConnectorOpensrpForm;
+	}
+	public StdCouchDbConnector getStdCouchDbConnectorForOpensrp(){
+		return stdCouchDbConnectorOpensrp;
 	}
 	public CouchDbInstance getDbInstance() {
 		return dbInstance;

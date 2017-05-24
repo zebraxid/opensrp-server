@@ -10,7 +10,7 @@ public class ChildVaccineFollowup implements FormsType<Members> {
 		
 	}
 	@Override
-	public FormSubmission makeForm(String formDir,String vaccineDate,int vaccineDose,String patientId) {
+	public FormSubmission makeForm(String formDir,String vaccineDate,int vaccineDose,String patientId,Members member) {
 		return null;
 		// TODO Auto-generated method stub
 		
@@ -28,13 +28,14 @@ public class ChildVaccineFollowup implements FormsType<Members> {
 		
 	}
 
-	@Override
-	public Members get(String id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 	public static ChildVaccineFollowup getInstance(){
 		return new ChildVaccineFollowup();
+	}
+	@Override
+	public boolean isThisVaccineGiven(Members member,int dose) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

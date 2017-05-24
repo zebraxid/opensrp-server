@@ -295,6 +295,11 @@ public class Members extends MotechBaseDataObject {
 	private String tt5_final
 ;
 	@JsonProperty
+	private String tt5_retro;
+	@JsonProperty
+	private String tt_5_dose;
+	
+	@JsonProperty
 	private String Child_birth_date_known
 ;
 	@JsonProperty
@@ -619,7 +624,15 @@ public class Members extends MotechBaseDataObject {
 		this.caseId = caseId;
 		return this;
 	}
+	public Members setTT5Retro(String tt5_retro) {
+		this.tt5_retro = tt5_retro;
+		return this;
+	}
 
+	public Members setTT5Dose(String tt_5_dose) {
+		this.tt_5_dose = tt_5_dose;
+		return this;
+	}
 	public Members setINSTANCEID(String INSTANCEID) {
 		this.INSTANCEID = INSTANCEID;
 		return this;
@@ -2022,6 +2035,17 @@ public class Members extends MotechBaseDataObject {
 
 	public String Final_measles2() {
 		return final_measles2;
+	}
+	
+	
+	public String getTT5Retro() {
+		return tt5_retro;
+		
+	}
+
+	public String getTT5Dose() {
+		return tt_5_dose;
+		
 	}
 	
 	public String Member_Reg_Date() {

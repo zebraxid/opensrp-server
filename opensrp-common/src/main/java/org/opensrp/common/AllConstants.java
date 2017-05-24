@@ -262,6 +262,8 @@ public class AllConstants {
 	    	public static final String tt3_final="tt3_final"; 
 	    	public static final String tt4_final="tt4_final"; 
 	    	public static final String tt5_final="tt5_final"; 
+	    	public static final String tt5_retro ="tt5_retro";
+	    	public static final String tt_5_dose ="tt_5_dose";
 	    	public static final String e_tt1="e_tt1";
 	    	public static final String e_tt2="e_tt2";
 	    	public static final String e_tt3="e_tt3"; 
