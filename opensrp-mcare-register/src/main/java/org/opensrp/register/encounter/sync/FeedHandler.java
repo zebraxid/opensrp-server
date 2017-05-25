@@ -21,28 +21,28 @@ import org.springframework.stereotype.Service;
 
 
 @Service
-public class FormHandler extends FormSubmissionConfig{
+public class FeedHandler extends FormSubmissionConfig{
 	
 	private AllMembers allMembers;
-	public FormHandler(){
+	public FeedHandler(){
 		
 	}
 	
-	public FormHandler(String formDirectory) throws IOException {
+	public FeedHandler(String formDirectory) throws IOException {
 		super(formDirectory);
 		
 	}
 	
-	private static Logger logger = LoggerFactory.getLogger(FormHandler.class.toString());
+	private static Logger logger = LoggerFactory.getLogger(FeedHandler.class.toString());
 	private AllFormSubmissions formSubmissions;
 	@Autowired
-	public FormHandler(AllFormSubmissions formSubmissions,AllMembers allMembers){
+	public FeedHandler(AllFormSubmissions formSubmissions,AllMembers allMembers){
 		this.formSubmissions = formSubmissions;
 		this.allMembers = allMembers;
 	}
 	public Event getEvent(JSONObject encounter,String patientEntityId){	
 			
-		System.out.println("Event:"+encounter.toString());
+		//System.out.println("Event:"+encounter.toString());
 		System.out.println("patientEentityId:"+patientEntityId);
 		String encounterType;
 		try {
@@ -75,9 +75,9 @@ public class FormHandler extends FormSubmissionConfig{
 			
 			
 		} catch (JSONException e) {			
-			e.printStackTrace();
+			logger.info(e.getMessage());
 		}catch(ArrayIndexOutOfBoundsException ee){
-			logger.info(""+ee.getMessage());
+			logger.info(ee.getMessage());
 		}
 		
 		return null;

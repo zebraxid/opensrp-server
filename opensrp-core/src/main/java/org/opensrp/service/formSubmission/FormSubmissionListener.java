@@ -80,7 +80,8 @@ public class FormSubmissionListener {
 	            	logger.info(format("Invoking save for form with instance Id: {0} and for entity Id: {1}", submission.instanceId(), submission.entityId()));
 	
 	            	if(submission.getField("no_client_event") == null || submission.getField("no_client_event").contains("false")){
-		            	fsp.processFormSubmission(submission);
+		            	System.err.println("Form Submission.................");
+	            		fsp.processFormSubmission(submission);
 	            	}
 	            	
 	            	configService.updateAppStateToken(AllConstants.Config.FORM_ENTITY_PARSER_LAST_SYNCED_FORM_SUBMISSION, submission.serverVersion());

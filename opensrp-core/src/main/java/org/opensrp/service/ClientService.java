@@ -91,7 +91,7 @@ public class ClientService {
 	}
 	
 	public Client addClient(Client client) {
-		System.out.println("Client :" + client.toString());
+		
 		if (client.getBaseEntityId() == null) {
 			throw new RuntimeException("No baseEntityId");
 		}
@@ -101,11 +101,10 @@ public class ClientService {
 			        "A client already exists with given list of identifiers. Consider updating data.[" + c + "]");
 			
 		}
-		try {
-			System.out.println("Client BaseEntityId:" + client.getBaseEntityId());
+		try {			
 			IdentifierMaping id = bahmniIdRepository.findByentityId(client.getBaseEntityId());
 			client.addIdentifier(OPENSRP_IDENTIFIER, id.getGenId());
-			//client.addIdentifier("Patient Identifier", id.getGenId());
+			
 		}
 		catch (Exception ee) {
 			logger.info("Identifier :" + ee);
@@ -116,9 +115,9 @@ public class ClientService {
 	}
 	
 	public Client findClient(Client client) {
-		// find by auto assigned entity id
-		System.out.println("getBaseEntityId:" + client.getBaseEntityId());
+		
 		Client c = allClients.findByBaseEntityId(client.getBaseEntityId());
+		
 		if (c != null) {
 			return c;
 		}
@@ -126,10 +125,8 @@ public class ClientService {
 		//still not found!! search by generic identifiers
 		
 		try {
-			for (String idt : client.getIdentifiers().keySet()) {
-				System.out.println("client.getIdentifier(idt):" + client.getIdentifier(idt));
+			for (String idt : client.getIdentifiers().keySet()) {				
 				List<Client> cl = allClients.findAllByIdentifier(client.getIdentifier(idt));
-				System.out.println("Client String:" + cl.get(0).getId() + "Size:" + cl.size());
 				if (cl.size() > 1) {
 					//return cl.get(0); 
 					throw new IllegalArgumentException("Multiple clients with identifier type " + idt + " and ID "

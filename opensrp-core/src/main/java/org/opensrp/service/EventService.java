@@ -19,6 +19,7 @@ public class EventService {
 	private final AllEvents allEvents;
 	private HookedEvent action;
 	private  JSONObject encounter;
+	private boolean indicator = false;
 	@Autowired
 	public EventService(AllEvents allEvents) {
 		this.allEvents = allEvents;
@@ -62,16 +63,19 @@ public class EventService {
 		return allEvents.findEventsByDynamicQuery(query);
 	}	
 	
-	public void getEvent(JSONObject encounter){
+	public void getEvent(JSONObject encounter,boolean indicator){
 		this.encounter = encounter;
+		this.indicator = indicator;
 		
 	}
 	public Event addEvent(Event event) {
 		if (!StringUtils.isEmptyOrWhitespaceOnly(event.getEventId()) && getByEventId(event.getEventId()) != null) {
 			throw new IllegalArgumentException("An event already exists with given eventId " + event.getEventId()
 			        + ". Consider updating");
-		}		
-		action.getEvent(encounter,event.getBaseEntityId());		
+		}
+		if(indicator){
+			action.getEvent(encounter,event.getBaseEntityId());	
+		}
 		if (getByBaseEntityAndFormSubmissionId(event.getBaseEntityId(), event.getFormSubmissionId()) != null) {
 			//throw new IllegalArgumentException("An event already exists with given baseEntity and formSubmission combination. Consider updating");
 			return updateEvent(event);

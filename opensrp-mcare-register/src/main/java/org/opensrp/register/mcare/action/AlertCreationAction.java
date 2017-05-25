@@ -16,7 +16,7 @@ import org.opensrp.domain.Event;
 import org.opensrp.common.AllConstants.ScheduleNames;
 import org.opensrp.domain.Multimedia;
 import org.opensrp.dto.BeneficiaryType;
-import org.opensrp.register.encounter.sync.FormHandler;
+import org.opensrp.register.encounter.sync.FeedHandler;
 import org.opensrp.register.mcare.domain.HouseHold;
 import org.opensrp.register.mcare.domain.Members;
 import org.opensrp.register.mcare.repository.AllHouseHolds;
@@ -41,7 +41,7 @@ public class AlertCreationAction implements HookedEvent {
 	private ScheduleLogService scheduleLogService;
 	private MultimediaRegisterService multimediaRegisterService;
 	@Autowired
-	private FormHandler makeFormSubmission;
+	private FeedHandler makeFormSubmission;
 	private static Logger logger = LoggerFactory.getLogger(AlertCreationAction.class.toString());
 	@Autowired
 	public AlertCreationAction(HealthSchedulerService scheduler,

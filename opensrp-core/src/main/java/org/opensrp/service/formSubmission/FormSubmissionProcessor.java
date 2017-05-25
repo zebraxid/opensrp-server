@@ -143,16 +143,17 @@ public class FormSubmissionProcessor{
 		Event e = formEntityConverter.getEventFromFormSubmission(submission);
 		Map<String, Map<String, Object>> dep = formEntityConverter.getDependentClientsFromFormSubmission(submission);
 
-		if(clientService.findClient(c) != null){
+		if(clientService.findClient(c) != null){			
 			clientService.mergeClient(c);
+		}else {			
+			clientService.addClient(c);		
 		}
-		else clientService.addClient(c);		
 		eventService.addEvent(e);
 		// TODO relationships b/w entities
 			
 		for (Map<String, Object> cm : dep.values()) {
 			Client cin = (Client)cm.get("client");
-			Event evin = (Event)cm.get("event");
+			Event evin = (Event)cm.get("event");			
 			clientService.addClient(cin);
 			eventService.addEvent(evin);
 		}

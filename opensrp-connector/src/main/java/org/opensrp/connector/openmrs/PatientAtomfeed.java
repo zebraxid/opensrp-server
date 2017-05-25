@@ -98,13 +98,12 @@ public class PatientAtomfeed extends OpenmrsService implements EventWorker, Atom
 		try {
 			JSONObject p = patientService.getPatientByUuid(
 			    event.getContent().substring(event.getContent().lastIndexOf("/") + 1), true);
-			System.out.println(p);//TODO check in couch and if not exists update thrive id on opermrs side
-			Client c = patientService.convertToClient(p);
-			logger.info("Patient::" + c.toString());
+			
+			Client c = patientService.convertToClient(p);			
 			Client existing = clientService.findClient(c);
 			if (existing == null) {
 				//c.setBaseEntityId(UUID.randomUUID().toString());
-				logger.info("New Client found");
+				
 				clientService.addClient(c);
 				logger.info("New Client found with Baseentity ID:" + c.getBaseEntityId());
 			} else {

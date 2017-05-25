@@ -29,7 +29,7 @@ public class EncounterSyncTest {
 	@Mock
 	EventService eventService;
 	@Mock
-	FormHandler makeFormSubmission;
+	FeedHandler makeFormSubmission;
 	@Mock
 	FormSubmission formSubmission;
 	@Mock
@@ -65,7 +65,7 @@ public class EncounterSyncTest {
 	
 	@Test
 	public void ShouldRemoveSubstringFromString(){
-		FormHandler makeFormSubmission = new FormHandler();
+		FeedHandler makeFormSubmission = new FeedHandler();
 		String StringAfterFilter = makeFormSubmission.StringFilter("Immunization Incident Template: BCG (Tuberculosis, live attenuated), 2017-01-25, true, 0.0");
 		assertEquals(makeFormSubmission.parseVaccineTypeFromString(StringAfterFilter, "BCG"),true);
 		

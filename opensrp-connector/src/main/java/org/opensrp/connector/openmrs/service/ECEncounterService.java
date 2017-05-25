@@ -263,9 +263,7 @@ public class ECEncounterService extends OpenmrsService{
 		}
 		if(baseEntityId == null){
 			throw new IllegalStateException("Client was not registered before adding an Event in OpenSRP");
-		}		
-		
-		System.out.println( encounter.getString("encounterDatetime"));
+		}
 		try{
 			JSONArray creator = encounter.getJSONArray("encounterProviders");
 		e.withBaseEntityId(baseEntityId)
