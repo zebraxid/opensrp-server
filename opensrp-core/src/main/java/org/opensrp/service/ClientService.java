@@ -109,7 +109,7 @@ public class ClientService {
 		catch (Exception ee) {
 			logger.info("Identifier :" + ee);
 		}
-		client.setDateCreated(new Date());
+		client.setDateCreated(new Date());		
 		allClients.add(client);
 		return client;
 	}

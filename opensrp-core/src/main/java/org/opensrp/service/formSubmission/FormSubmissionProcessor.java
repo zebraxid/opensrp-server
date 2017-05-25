@@ -144,7 +144,7 @@ public class FormSubmissionProcessor{
 		Map<String, Map<String, Object>> dep = formEntityConverter.getDependentClientsFromFormSubmission(submission);
 
 		if(clientService.findClient(c) != null){			
-			clientService.mergeClient(c);
+			//clientService.mergeClient(c);
 		}else {			
 			clientService.addClient(c);		
 		}

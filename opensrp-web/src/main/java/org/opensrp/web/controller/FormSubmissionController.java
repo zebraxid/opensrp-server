@@ -339,16 +339,7 @@ public class FormSubmissionController {
 		bahmniIdgen.setEntityId(entityId);
 		try {			
 			bahmniIdRepository.add(bahmniIdgen);
-			org.opensrp.domain.Client c = allClients.findByBaseEntityId(entityId);
-			if(c!=null){
-				c.addIdentifier(OPENSRP_IDENTIFIER, idGen);
-				c.setRevision(c.getRevision());
-				c.setId(c.getId());
-				allClients.update(c);
-				logger.info("Clent Updated with Identifier:"+bahmniIdgen);
-			}else{
-				logger.info("Clent Not Updated with Identifier:"+bahmniIdgen);
-			}
+			
 		}
 		catch (Exception ee) {
 			logger.info("" + ee.getMessage());
