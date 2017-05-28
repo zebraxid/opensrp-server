@@ -380,25 +380,25 @@ public class ELCOService {
 		if (submission.getField(FW_PSRSTS) != null)
 			if (submission.getField(FW_PSRPREGSTS) != null && submission.getField(FW_PSRPREGSTS).equalsIgnoreCase("1")
 					&& submission.getField(FW_PSRSTS).equals("01")) {
+
+				elco.setIsClosed(true);
+				allEcos.update(elco);
+				elcoScheduleService.unEnrollFromScheduleOfPSRF(submission.entityId(), submission.anmId(), "");
+				try {
+					List<Action> beforeNewActions = allActions.findAlertByANMIdEntityIdScheduleName(submission.anmId(), submission.entityId(),
+							ELCO_SCHEDULE_PSRF);
+					if (beforeNewActions.size() > 0) {
+						scheduleLogService.closeSchedule(submission.entityId(), submission.instanceId(), beforeNewActions.get(0).timestamp(),
+								ELCO_SCHEDULE_PSRF);
+					}
+
+				} catch (Exception e) {
+					logger.info("From addPSRFDetailsToELCO:" + e.getMessage());
+				}
 				// user type condition
 				if(submission.getField("user_type").equalsIgnoreCase(FD)){
 					ancService.registerANC(submission);
 					bnfService.registerBNF(submission);
-					
-					elco.setIsClosed(true);
-					allEcos.update(elco);
-					elcoScheduleService.unEnrollFromScheduleOfPSRF(submission.entityId(), submission.anmId(), "");
-					try {
-						List<Action> beforeNewActions = allActions.findAlertByANMIdEntityIdScheduleName(submission.anmId(), submission.entityId(),
-								ELCO_SCHEDULE_PSRF);
-						if (beforeNewActions.size() > 0) {
-							scheduleLogService.closeSchedule(submission.entityId(), submission.instanceId(), beforeNewActions.get(0).timestamp(),
-									ELCO_SCHEDULE_PSRF);
-						}
-	
-					} catch (Exception e) {
-						logger.info("From addPSRFDetailsToELCO:" + e.getMessage());
-					}
 				
 				}
 				
