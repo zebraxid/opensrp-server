@@ -30,11 +30,11 @@ public class SyncConstant {
 	}
 	public static Map<String, String> TTRetroMapping=new HashMap<String, String>();
 	static{
-		TTFinalMapping.put("1","tt1_retro");  
-		TTFinalMapping.put("2","tt2_retro");
-		TTFinalMapping.put("3","tt3_retro"); 
-		TTFinalMapping.put("4","tt4_retro"); 
-		TTFinalMapping.put("5","tt5_retro");
+		TTRetroMapping.put("1","tt1_retro");  
+		TTRetroMapping.put("2","tt2_retro");
+		TTRetroMapping.put("3","tt3_retro"); 
+		TTRetroMapping.put("4","tt4_retro"); 
+		TTRetroMapping.put("5","tt5_retro");
 	}
 	
 	public static Map<String, String> TTDoseMapping=new HashMap<String, String>();

@@ -8,6 +8,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.opensrp.domain.Event;
+import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.form.repository.AllFormSubmissions;
 import org.opensrp.register.encounter.sync.forms.WomanTTForm;
 import org.opensrp.register.encounter.sync.interfaces.FormsType;
@@ -24,55 +25,50 @@ import org.springframework.stereotype.Service;
 public class FeedHandler extends FormSubmissionConfig{
 	
 	private AllMembers allMembers;
+	private AllFormSubmissions formSubmissions;
 	public FeedHandler(){
 		
 	}
 	
 	public FeedHandler(String formDirectory) throws IOException {
 		super(formDirectory);
-		
+		setFormDirectory(formDirectory);
+	}	
+
+	public void setFormDirectory(String formDirectory) {
+		this.formDirectory = formDirectory;
 	}
-	
-	private static Logger logger = LoggerFactory.getLogger(FeedHandler.class.toString());
-	private AllFormSubmissions formSubmissions;
+
+	private static Logger logger = LoggerFactory.getLogger(FeedHandler.class.toString());	
 	@Autowired
-	public FeedHandler(AllFormSubmissions formSubmissions,AllMembers allMembers){
-		this.formSubmissions = formSubmissions;
+	public FeedHandler(AllMembers allMembers,AllFormSubmissions formSubmissions){		
 		this.allMembers = allMembers;
+		this.formSubmissions = formSubmissions;
 	}
-	public Event getEvent(JSONObject encounter,String patientEntityId){	
-			
-		//System.out.println("Event:"+encounter.toString());
-		System.out.println("patientEentityId:"+patientEntityId);
-		String encounterType;
-		try {
-			encounterType = encounter.getJSONObject("encounterType").get("display").toString();
-			logger.info("eventType:"+encounterType);
-			String patientInfo = encounter.getJSONObject("patient").get("display").toString();
-			String[] patientStringToArray =  patientInfo.split("-");
-			logger.info("patient:"+patientStringToArray[0]);			
-			System.err.println("formDirectory:"+formDirectory);
-			if(encounterType.equalsIgnoreCase("VAC")){
-				JSONArray observations = encounter.getJSONArray("obs");
-				for (int i = 0; i < observations.length(); i++) {
-					JSONObject o = observations.getJSONObject(i);
-					String vaccines = (String) o.get("display");
-					String vaccineStringAfterFilter = this.StringFilter(vaccines);					
-					boolean TT = this.parseVaccineTypeFromString(vaccineStringAfterFilter, SyncConstant.TT);
-					String vaccineDate = this.parseDateFromString(vaccineStringAfterFilter);
-					double vaccineDose = this.parseDoseFromString(vaccineStringAfterFilter);
-					int vaccineDoseAsInt =(int) vaccineDose;
-					Members member =  this.get(patientEntityId);
-					if(TT){	
-						FormsType<WomanTTForm> womanTTForm	= FormFatcory.getFormsTypeInstance("WTT");
-						womanTTForm.makeForm(formDirectory,vaccineDate,vaccineDoseAsInt,patientEntityId, member);
-					}else{
-						
+	@SuppressWarnings("unchecked")
+	public void getEvent(JSONObject encounter,String patientEntityId,Members member){		
+		System.out.println("formDirectory:"+formDirectory);
+		
+		try {					
+			JSONArray observations = encounter.getJSONArray("obs");			
+			for (int i = 0; i < observations.length(); i++) {
+				JSONObject o = observations.getJSONObject(i);
+				String vaccines = (String) o.get("display");
+				String vaccineStringAfterFilter = this.StringFilter(vaccines);					
+				boolean TT = this.parseVaccineTypeFromString(vaccineStringAfterFilter, SyncConstant.TT);
+				String vaccineDate = this.parseDateFromString(vaccineStringAfterFilter);
+				double vaccineDose = this.parseDoseFromString(vaccineStringAfterFilter);
+				int vaccineDoseAsInt =(int) vaccineDose;					
+				if(TT){	
+					FormsType<WomanTTForm> womanTTForm	= FormFatcory.getFormsTypeInstance("WTT");
+					FormSubmission formsubmissionEntity=	womanTTForm.makeForm(this.formDirectory,vaccineDate,vaccineDoseAsInt,patientEntityId, member);
+					if(formsubmissionEntity !=null){
+						formSubmissions.add(formsubmissionEntity);
 					}
-					
-				}
-			}
-			
+				}else{
+						
+				}					
+			}			
 			
 		} catch (JSONException e) {			
 			logger.info(e.getMessage());
@@ -80,7 +76,7 @@ public class FeedHandler extends FormSubmissionConfig{
 			logger.info(ee.getMessage());
 		}
 		
-		return null;
+		
 	}
 	
 	
@@ -140,7 +136,7 @@ public class FeedHandler extends FormSubmissionConfig{
 	}
 
 	
-	private Members get(String patientIdEntityId) {
+	public Members get(String patientIdEntityId) {
 		 Members members = allMembers.findByCaseId(patientIdEntityId);		 
 		return members;
 	}

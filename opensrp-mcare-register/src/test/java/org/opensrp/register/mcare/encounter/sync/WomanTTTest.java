@@ -1,6 +1,5 @@
 package org.opensrp.register.mcare.encounter.sync;
 
-import static org.junit.Assert.assertNotNull;
 import static org.opensrp.common.AllConstants.CommonFormFields.ID;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.END_DATE;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.REFERENCE_DATE;
@@ -55,7 +54,6 @@ import static org.opensrp.common.AllConstants.MEMBERSRegistrationFields.first_na
 import static org.opensrp.common.AllConstants.MEMBERSRegistrationFields.ga_edd;
 import static org.opensrp.common.AllConstants.MEMBERSRegistrationFields.ga_lmp;
 import static org.opensrp.common.AllConstants.MEMBERSRegistrationFields.ga_ult;
-import static org.opensrp.common.AllConstants.MEMBERSRegistrationFields.husband_name;
 import static org.opensrp.common.AllConstants.MEMBERSRegistrationFields.husband_name_note;
 import static org.opensrp.common.AllConstants.MEMBERSRegistrationFields.landmark;
 import static org.opensrp.common.AllConstants.MEMBERSRegistrationFields.lmp;
@@ -85,11 +83,10 @@ import static org.opensrp.common.AllConstants.MEMBERSRegistrationFields.tt4;
 import static org.opensrp.common.AllConstants.MEMBERSRegistrationFields.tt4_final;
 import static org.opensrp.common.AllConstants.MEMBERSRegistrationFields.tt4_note;
 import static org.opensrp.common.AllConstants.MEMBERSRegistrationFields.tt4_retro;
-import static org.opensrp.common.AllConstants.MEMBERSRegistrationFields.tt5_retro;
 import static org.opensrp.common.AllConstants.MEMBERSRegistrationFields.tt5;
 import static org.opensrp.common.AllConstants.MEMBERSRegistrationFields.tt5_final;
+import static org.opensrp.common.AllConstants.MEMBERSRegistrationFields.tt5_retro;
 import static org.opensrp.common.AllConstants.MEMBERSRegistrationFields.tt_1_dose;
-import static org.opensrp.common.AllConstants.MEMBERSRegistrationFields.tt_5_dose;
 import static org.opensrp.common.AllConstants.MEMBERSRegistrationFields.tt_1_dose_today;
 import static org.opensrp.common.AllConstants.MEMBERSRegistrationFields.tt_2_dose;
 import static org.opensrp.common.AllConstants.MEMBERSRegistrationFields.tt_2_dose_today;
@@ -97,6 +94,7 @@ import static org.opensrp.common.AllConstants.MEMBERSRegistrationFields.tt_3_dos
 import static org.opensrp.common.AllConstants.MEMBERSRegistrationFields.tt_3_dose_today;
 import static org.opensrp.common.AllConstants.MEMBERSRegistrationFields.tt_4_dose;
 import static org.opensrp.common.AllConstants.MEMBERSRegistrationFields.tt_4_dose_today;
+import static org.opensrp.common.AllConstants.MEMBERSRegistrationFields.tt_5_dose;
 import static org.opensrp.common.AllConstants.MEMBERSRegistrationFields.tt_5_dose_today;
 import static org.opensrp.common.AllConstants.MEMBERSRegistrationFields.ultrasound_date;
 import static org.opensrp.common.AllConstants.MEMBERSRegistrationFields.ultrasound_weeks;
@@ -104,23 +102,32 @@ import static org.opensrp.common.AllConstants.MEMBERSRegistrationFields.vaccines
 import static org.opensrp.common.AllConstants.MEMBERSRegistrationFields.vaccines1;
 import static org.opensrp.common.AllConstants.MEMBERSRegistrationFields.vaccines1_2;
 import static org.opensrp.common.AllConstants.MEMBERSRegistrationFields.vaccines_2;
-import static org.opensrp.common.AllConstants.TT_VisitFields.Received_Time;
 import static org.opensrp.common.util.EasyMap.create;
 
+import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.Map;
-import java.util.UUID;
 
 import junit.framework.Assert;
 
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mock;
-import org.opensrp.register.encounter.sync.*;
+import org.opensrp.form.domain.FormSubmission;
+import org.opensrp.form.repository.AllFormSubmissions;
+import org.opensrp.register.encounter.sync.FeedHandler;
 import org.opensrp.register.encounter.sync.forms.WomanTTForm;
 import org.opensrp.register.mcare.domain.Members;
 import org.opensrp.register.mcare.repository.AllMembers;
-import org.opensrp.form.domain.FormSubmission;
-import org.opensrp.form.repository.AllFormSubmissions;
+
+import com.google.gson.Gson;
 
 public class WomanTTTest extends TestConfig {	
 	@Mock
@@ -145,11 +152,10 @@ public class WomanTTTest extends TestConfig {
 		assertNotNull(formSubmission);
 		
 	}*/
-	@Test
-	public void shouldCheckTT1GivenOrNot(){
+	@Ignore@Test
+	public void shouldCheckWhichHasTTVisit() throws JSONException{
 		
-		Members member = new Members();
-		
+		Members member = new Members();		
 		member.setCaseId("50a4ff37-46e0-4f3d-a3ed-ea6721d0c5ac");
 		member.setPROVIDERID("sujan");
 		member.setINSTANCEID("50d13e00-afe7-47c6-bbe3-a19a65e257ec");
@@ -304,9 +310,132 @@ public class WomanTTTest extends TestConfig {
 				.map();	
 		
 		member.setTTVisit(TTVisit);
-		WomanTTForm womanTTForm = new WomanTTForm(allMembers);		
+		
+		ObjectMapper members = new ObjectMapper();
+    	//members.writeValueAsString(member);
+    	Gson gson = new Gson();
+           gson.toJson(member);
+          
+          System.out.println("GOOO"+gson.toJson(member).valueOf("caseId"));
+           
+		JSONObject encounter = new JSONObject();
+		JSONObject ob1Object = new JSONObject();
+		JSONArray obs = new JSONArray();
+		ob1Object.put("display", 
+       "Immunization Incident Template: TT 2 (Tetanus toxoid), 2010-05-28, true, 2.0");
+		ob1Object.put("uuid", "08db9795-1016-4a3e-9174-cb030962b173");
+		JSONObject ob2Object = new JSONObject();
+		
+		ob2Object.put("display", 
+			       "Immunization Incident Template: 2008-05-28, true, 1.0, TT 1 (Tetanus toxoid)");
+		ob2Object.put("uuid", "e013eaf3-b8fc-4954-94a9-1691af8ddb49");
+		obs.put(ob1Object);
+		obs.put(ob2Object);
+		encounter.put("obs", obs);
+		System.out.println(encounter.toString());
+		WomanTTForm womanTTForm = new WomanTTForm(allMembers);	
+		FeedHandler feedHandler =  new FeedHandler(allMembers,formSubmissions);
+		feedHandler.setFormDirectory("./../assets/form");
+		//feedHandler.getEvent(encounter, "50a4ff37-46e0-4f3d-a3ed-ea6721d0c5ac",member);
+		System.err.println("member.TTVisit():"+member.TTVisit());
 		Assert.assertEquals(member.TTVisit().isEmpty(), false);		
 		Assert.assertEquals(womanTTForm.isThisVaccineGiven(member, 1),true);
+		
+	}
+	
+	
+	@Test
+	public void shouldCheckWhichHasNoTTVisit() throws JSONException, NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException, JsonGenerationException, JsonMappingException, IOException{
+		
+		Members member = new Members();		
+		member.setCaseId("50a4ff37-46e0-4f3d-a3ed-ea6721d0c5ac");
+		member.setPROVIDERID("sujan");
+		member.setINSTANCEID("50d13e00-afe7-47c6-bbe3-a19a65e257ec");
+		member.setMember_COUNTRY("");
+		member.setMember_DIVISION("Dhaka");
+		member.setMember_DISTRICT("Gazipur");
+		member.setMember_UPAZILLA("Kaliganj");
+		member.setMember_UNION("Urban Ward No-01");
+		member.setMember_WARD("Ward-1");
+		member.setMember_BLOCK("1-KA");
+		member.setMember_HIE_facilities("Kaliganj TW (10019869)");
+		member.setMember_GPS("");
+		member.setMember_Address_line(null);
+		member.setMember_type("1");
+		member.setMember_Fname("robff");
+		member.setMember_Fname("fhj");
+		member.setHusband_name("dfgjk");
+		member.setMarital_status("2");
+		member.setPregnant("yes");
+		member.setedd("");
+		member.setEdd_lmp("");
+		member.setLmp("");
+		member.setUltrasound_date("");
+		member.setUltrasound_weeks("");
+		member.setEdd_calc_lmp("Invalid Date");
+		member.setEdd_calc_ultrasound("Invalid Date");
+		member.setEdd_calc_lmp_formatted("Invalid Date");
+		member.setEdd_calc_ultrasound_formatted("Invalid Date");
+		member.setLmp_calc_edd("Invalid Date");
+		member.setLmp_calc_ultrasound("Invalid Date");
+		member.setLmp_calc_edd_formatted("Invalid Date");
+		member.setLmp_calc_ultrasound_formatted("Invalid Date");
+		member.setFinal_edd("2017-05-22");
+		member.setFinal_lmp("2016-8-15");
+		member.setGa_edd("NaN");
+		member.setGa_lmp("NaN");
+		member.setGa_ult("NaN");
+		member.setFinal_edd_note("");
+		member.setFinal_lmp_note("");
+		member.setFinal_ga("");
+		member.setFinal_ga_note("");
+		member.setTt1_retro("2012-05-22");
+		member.setTt_1_dose("1");
+		member.setTt1_final("2012-05-22");
+		member.setTt2_final("");
+		member.setTt3_final("");
+		member.setTt4_final("");
+		member.setTt5_final("");
+		
+		
+		
+		JSONObject encounter = new JSONObject();
+		JSONObject ob1Object = new JSONObject();
+		JSONArray obs = new JSONArray();
+		ob1Object.put("display", 
+       "Immunization Incident Template: TT 2 (Tetanus toxoid), 2010-05-28, true, 2.0");
+		ob1Object.put("uuid", "08db9795-1016-4a3e-9174-cb030962b173");
+		JSONObject ob2Object = new JSONObject();
+		
+		ob2Object.put("display", 
+			       "Immunization Incident Template: 2008-05-28, true, 1.0, TT 1 (Tetanus toxoid)");
+		ob2Object.put("uuid", "e013eaf3-b8fc-4954-94a9-1691af8ddb49");
+		obs.put(ob1Object);
+		obs.put(ob2Object);
+		encounter.put("obs", obs);
+		
+		ObjectMapper mapper = new ObjectMapper();
+		Members user = new Members();
+
+		//Object to JSON in file
+		String jsonStr = mapper.writeValueAsString(member);		
+		JSONObject jsonObj = new JSONObject(jsonStr);		
+		Members mem = new Members();		
+		Field field = mem.getClass().getDeclaredField("caseId");
+		field.setAccessible(true);
+		System.out.println(field.getName());		
+		System.err.println("value:"+jsonObj.get(field.getName()));
+
+		
+		
+		System.out.println(encounter.toString());
+		WomanTTForm womanTTForm = new WomanTTForm(allMembers);	
+		FeedHandler feedHandler =  new FeedHandler(allMembers,formSubmissions);
+		feedHandler.setFormDirectory("./../assets/form");
+		//feedHandler.getEvent(encounter, "50a4ff37-46e0-4f3d-a3ed-ea6721d0c5ac",member);
+	
+		Assert.assertEquals(member.TTVisit().isEmpty(), true);		
+		Assert.assertEquals(womanTTForm.isThisVaccineGiven(member, 1),false);
 		
 	}
 

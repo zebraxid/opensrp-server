@@ -40,6 +40,7 @@ public class AlertCreationAction implements HookedEvent {
 	private AllMembers allMembers;
 	private ScheduleLogService scheduleLogService;
 	private MultimediaRegisterService multimediaRegisterService;
+	private FeedHandler feedHandler;
 	@Autowired
 	private FeedHandler makeFormSubmission;
 	private static Logger logger = LoggerFactory.getLogger(AlertCreationAction.class.toString());
@@ -47,12 +48,13 @@ public class AlertCreationAction implements HookedEvent {
 	public AlertCreationAction(HealthSchedulerService scheduler,
 			AllHouseHolds allHouseHolds, AllMembers allMembers,
 			ScheduleLogService scheduleLogService, 
-			MultimediaRegisterService multimediaRegisterService) {
+			MultimediaRegisterService multimediaRegisterService,FeedHandler feedHandler) {
 		this.scheduler = scheduler;
 		this.allHouseHolds = allHouseHolds;
 		this.allMembers = allMembers;
 		this.scheduleLogService = scheduleLogService;
 		this.multimediaRegisterService = multimediaRegisterService;
+		this.feedHandler = feedHandler;
 		
 	}
 	
@@ -127,7 +129,10 @@ public class AlertCreationAction implements HookedEvent {
 
 	@Override
 	public void getEvent(JSONObject event,String PatientEntityId) {
-		makeFormSubmission.getEvent(event,PatientEntityId);
+		Members member = feedHandler.get(PatientEntityId);
+		if(member!=null){
+			makeFormSubmission.getEvent(event,PatientEntityId,member);
+		}
 		
 	}
 

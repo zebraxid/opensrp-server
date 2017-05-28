@@ -16,17 +16,7 @@ public class ChildVaccineFollowup implements FormsType<Members> {
 		
 	}
 
-	@Override
-	public void submit() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void delete() {
-		// TODO Auto-generated method stub
-		
-	}
+	
 
 	
 	public static ChildVaccineFollowup getInstance(){

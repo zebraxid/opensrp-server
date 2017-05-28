@@ -20,7 +20,6 @@ import org.motechproject.server.event.annotations.MotechListener;
 import org.opensrp.connector.atomfeed.AtomfeedService;
 import org.opensrp.connector.openmrs.constants.OpenmrsConstants;
 import org.opensrp.connector.openmrs.service.ECEncounterService;
-import org.opensrp.connector.openmrs.service.EncounterService;
 import org.opensrp.connector.openmrs.service.OpenmrsService;
 import org.opensrp.connector.openmrs.service.TurnOffCertificateValidation;
 import org.opensrp.service.EventService;
