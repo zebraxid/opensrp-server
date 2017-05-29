@@ -107,6 +107,7 @@ import static org.opensrp.common.util.EasyMap.create;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.Map;
+import java.util.UUID;
 
 import junit.framework.Assert;
 
@@ -123,13 +124,13 @@ import org.mockito.Mock;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.form.repository.AllFormSubmissions;
 import org.opensrp.register.encounter.sync.FeedHandler;
-import org.opensrp.register.encounter.sync.forms.WomanTTForm;
+import org.opensrp.register.encounter.sync.forms.WomanTTFollowUp;
 import org.opensrp.register.mcare.domain.Members;
 import org.opensrp.register.mcare.repository.AllMembers;
 
 import com.google.gson.Gson;
 
-public class WomanTTTest extends TestConfig {	
+public class WomanTTFollowUpTest extends TestConfig {	
 	@Mock
 	FormSubmission formSubmission;
 	@Mock
@@ -142,23 +143,14 @@ public class WomanTTTest extends TestConfig {
 		formSubmissions = new AllFormSubmissions(getStdCouchDbConnectorForOpensrpForm());
 		allMembers = new AllMembers(1,getStdCouchDbConnectorForOpensrp());
 	}
-	/*@Test
-	public void shuoldCreateWonamTT1(){
-		String uuid = UUID.randomUUID().toString();
-		System.out.println("uuid:"+uuid);
-		FormHandler makeFormSubmission = new FormHandler(formSubmissions);
-		formSubmission =makeFormSubmission.createFormSumission();
-		formSubmissions.remove(formSubmission);
-		assertNotNull(formSubmission);
-		
-	}*/
-	@Ignore@Test
+	
+	@Test
 	public void shouldCheckWhichHasTTVisit() throws JSONException{
 		
 		Members member = new Members();		
-		member.setCaseId("50a4ff37-46e0-4f3d-a3ed-ea6721d0c5ac");
+		member.setCaseId("1ace9084-8e71-45b7-b2b1-aeea66c203c2");
 		member.setPROVIDERID("sujan");
-		member.setINSTANCEID("50d13e00-afe7-47c6-bbe3-a19a65e257ec");
+		member.setINSTANCEID("8f3166f9-ae37-4d9c-9294-54cdb31e7546");
 		member.setMember_COUNTRY("");
 		member.setMember_DIVISION("Dhaka");
 		member.setMember_DISTRICT("Gazipur");
@@ -205,7 +197,7 @@ public class WomanTTTest extends TestConfig {
 		member.setTt4_final("");
 		member.setTt5_final("");
 		
-		Map<String, String> TTVisit = create(ID, "50a4ff37-46e0-4f3d-a3ed-ea6721d0c5ac")
+		Map<String, String> TTVisit = create(ID, "1ace9084-8e71-45b7-b2b1-aeea66c203c2")
 				.put(REFERENCE_DATE, "2017-05-22")
 				.put(START_DATE, "2017-05-22 17:23:59")
 				.put(END_DATE, "2017-05-22 17:24:22")											
@@ -232,7 +224,7 @@ public class WomanTTTest extends TestConfig {
 				.put(epi_card_number_note	,"")
 				.put(existing_contact_phone_number	,null)
 				.put(existing_location	,null)
-				.put(Father_name	,"fjh")
+				.put(Father_name	,"dfgfhfh")
 				.put(father_name_note	,"")
 				.put(final_edd	,"2017-05-22")
 				.put(final_edd_note	,"")
@@ -244,7 +236,7 @@ public class WomanTTTest extends TestConfig {
 				.put(ga_edd	,"")
 				.put(ga_lmp	,"NaN")
 				.put(ga_ult	,"NaN")
-				.put(Husband_name	, "dfgjk")				
+				.put(Husband_name	, "dfgdfghg")				
 				.put(husband_name_note	,"")
 				.put(landmark	,"")
 				.put(lmp	,"Invalid Date")
@@ -322,35 +314,37 @@ public class WomanTTTest extends TestConfig {
 		JSONObject ob1Object = new JSONObject();
 		JSONArray obs = new JSONArray();
 		ob1Object.put("display", 
-       "Immunization Incident Template: TT 2 (Tetanus toxoid), 2010-05-28, true, 2.0");
+       "Immunization Incident Template: TT 2 (Tetanus toxoid), 2016-02-28, true, 2.0");
 		ob1Object.put("uuid", "08db9795-1016-4a3e-9174-cb030962b173");
 		JSONObject ob2Object = new JSONObject();
 		
 		ob2Object.put("display", 
-			       "Immunization Incident Template: 2008-05-28, true, 1.0, TT 1 (Tetanus toxoid)");
+			       "Immunization Incident Template: 2014-05-28, true, 1.0, TT 1 (Tetanus toxoid)");
 		ob2Object.put("uuid", "e013eaf3-b8fc-4954-94a9-1691af8ddb49");
 		obs.put(ob1Object);
-		obs.put(ob2Object);
+		//obs.put(ob2Object);
 		encounter.put("obs", obs);
 		System.out.println(encounter.toString());
-		WomanTTForm womanTTForm = new WomanTTForm(allMembers);	
+		WomanTTFollowUp womanTTForm = WomanTTFollowUp.getInstance();	
 		FeedHandler feedHandler =  new FeedHandler(allMembers,formSubmissions);
 		feedHandler.setFormDirectory("./../assets/form");
-		//feedHandler.getEvent(encounter, "50a4ff37-46e0-4f3d-a3ed-ea6721d0c5ac",member);
+		FormSubmission formSubmission = feedHandler.getEvent(encounter, "1ace9084-8e71-45b7-b2b1-aeea66c203c2",member);
 		System.err.println("member.TTVisit():"+member.TTVisit());
 		Assert.assertEquals(member.TTVisit().isEmpty(), false);		
-		Assert.assertEquals(womanTTForm.isThisVaccineGiven(member, 1),true);
+		Assert.assertEquals(womanTTForm.isThisVaccineGiven(member, 1),true);		
+		Assert.assertNotNull(formSubmission);
+		formSubmissions.remove(formSubmission);
 		
 	}
 	
 	
 	@Test
 	public void shouldCheckWhichHasNoTTVisit() throws JSONException, NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException, JsonGenerationException, JsonMappingException, IOException{
-		
+		System.err.println(""+UUID.randomUUID().toString());
 		Members member = new Members();		
-		member.setCaseId("50a4ff37-46e0-4f3d-a3ed-ea6721d0c5ac");
+		member.setCaseId("e1e16f38-01d8-42ae-be55-4573b3ac349e");
 		member.setPROVIDERID("sujan");
-		member.setINSTANCEID("50d13e00-afe7-47c6-bbe3-a19a65e257ec");
+		member.setINSTANCEID("b73ec00b-17d4-40c9-b021-a857cf57369b");
 		member.setMember_COUNTRY("");
 		member.setMember_DIVISION("Dhaka");
 		member.setMember_DISTRICT("Gazipur");
@@ -395,8 +389,7 @@ public class WomanTTTest extends TestConfig {
 		member.setTt2_final("");
 		member.setTt3_final("");
 		member.setTt4_final("");
-		member.setTt5_final("");
-		
+		member.setTt5_final("");	
 		
 		
 		JSONObject encounter = new JSONObject();
@@ -411,7 +404,7 @@ public class WomanTTTest extends TestConfig {
 			       "Immunization Incident Template: 2008-05-28, true, 1.0, TT 1 (Tetanus toxoid)");
 		ob2Object.put("uuid", "e013eaf3-b8fc-4954-94a9-1691af8ddb49");
 		obs.put(ob1Object);
-		obs.put(ob2Object);
+		//obs.put(ob2Object);
 		encounter.put("obs", obs);
 		
 		ObjectMapper mapper = new ObjectMapper();
@@ -423,19 +416,20 @@ public class WomanTTTest extends TestConfig {
 		Members mem = new Members();		
 		Field field = mem.getClass().getDeclaredField("caseId");
 		field.setAccessible(true);
-		System.out.println(field.getName());		
-		System.err.println("value:"+jsonObj.get(field.getName()));
-
-		
+				
+		//System.err.println("value:"+jsonObj.get(field.getName()));	
 		
 		System.out.println(encounter.toString());
-		WomanTTForm womanTTForm = new WomanTTForm(allMembers);	
+		WomanTTFollowUp womanTTForm = WomanTTFollowUp.getInstance();	
 		FeedHandler feedHandler =  new FeedHandler(allMembers,formSubmissions);
 		feedHandler.setFormDirectory("./../assets/form");
-		//feedHandler.getEvent(encounter, "50a4ff37-46e0-4f3d-a3ed-ea6721d0c5ac",member);
+		FormSubmission formSubmission = feedHandler.getEvent(encounter, "e1e16f38-01d8-42ae-be55-4573b3ac349e",member);
 	
 		Assert.assertEquals(member.TTVisit().isEmpty(), true);		
 		Assert.assertEquals(womanTTForm.isThisVaccineGiven(member, 1),false);
+		Assert.assertNotNull(formSubmission);
+		formSubmissions.remove(formSubmission);
+		
 		
 	}
 

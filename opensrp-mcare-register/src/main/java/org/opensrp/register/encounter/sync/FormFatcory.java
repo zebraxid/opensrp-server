@@ -1,7 +1,7 @@
 package org.opensrp.register.encounter.sync;
 
 import org.opensrp.register.encounter.sync.forms.ChildVaccineFollowup;
-import org.opensrp.register.encounter.sync.forms.WomanTTForm;
+import org.opensrp.register.encounter.sync.forms.WomanTTFollowUp;
 import org.opensrp.register.encounter.sync.interfaces.FormsType;
 
 public class FormFatcory {
@@ -14,7 +14,7 @@ public class FormFatcory {
 		if(form.equalsIgnoreCase("CVF")){
 			return  ChildVaccineFollowup.getInstance();
 		}else if(form.equalsIgnoreCase("WTT")){
-			return  WomanTTForm.getInstance();
+			return  WomanTTFollowUp.getInstance();
 		}else{
 			return null;
 		}

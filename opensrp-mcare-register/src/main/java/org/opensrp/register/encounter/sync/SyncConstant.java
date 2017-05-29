@@ -7,6 +7,7 @@ public class SyncConstant {
 	
 
 	public static final String TT = "TT";
+	public static final String TTFORMNAME = "woman_tt_form";	
 	
 	public static Map<String, String> vaccines=new HashMap<String, String>();
 	static{

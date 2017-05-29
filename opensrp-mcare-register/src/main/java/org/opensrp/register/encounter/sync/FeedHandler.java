@@ -10,7 +10,7 @@ import org.json.JSONObject;
 import org.opensrp.domain.Event;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.form.repository.AllFormSubmissions;
-import org.opensrp.register.encounter.sync.forms.WomanTTForm;
+import org.opensrp.register.encounter.sync.forms.WomanTTFollowUp;
 import org.opensrp.register.encounter.sync.interfaces.FormsType;
 import org.opensrp.register.mcare.domain.Members;
 import org.opensrp.register.mcare.repository.AllMembers;
@@ -46,9 +46,7 @@ public class FeedHandler extends FormSubmissionConfig{
 		this.formSubmissions = formSubmissions;
 	}
 	@SuppressWarnings("unchecked")
-	public void getEvent(JSONObject encounter,String patientEntityId,Members member){		
-		System.out.println("formDirectory:"+formDirectory);
-		
+	public FormSubmission getEvent(JSONObject encounter,String patientEntityId,Members member){		
 		try {					
 			JSONArray observations = encounter.getJSONArray("obs");			
 			for (int i = 0; i < observations.length(); i++) {
@@ -58,12 +56,13 @@ public class FeedHandler extends FormSubmissionConfig{
 				boolean TT = this.parseVaccineTypeFromString(vaccineStringAfterFilter, SyncConstant.TT);
 				String vaccineDate = this.parseDateFromString(vaccineStringAfterFilter);
 				double vaccineDose = this.parseDoseFromString(vaccineStringAfterFilter);
-				int vaccineDoseAsInt =(int) vaccineDose;					
+				int vaccineDoseAsInt =(int) vaccineDose;				
 				if(TT){	
-					FormsType<WomanTTForm> womanTTForm	= FormFatcory.getFormsTypeInstance("WTT");
-					FormSubmission formsubmissionEntity=	womanTTForm.makeForm(this.formDirectory,vaccineDate,vaccineDoseAsInt,patientEntityId, member);
+					FormsType<WomanTTFollowUp> womanTTForm	= FormFatcory.getFormsTypeInstance("WTT");
+					FormSubmission formsubmissionEntity= womanTTForm.makeForm(this.formDirectory,vaccineDate,vaccineDoseAsInt,patientEntityId, member);
 					if(formsubmissionEntity !=null){
 						formSubmissions.add(formsubmissionEntity);
+						return formsubmissionEntity;
 					}
 				}else{
 						
@@ -76,7 +75,7 @@ public class FeedHandler extends FormSubmissionConfig{
 			logger.info(ee.getMessage());
 		}
 		
-		
+		return null;
 	}
 	
 	
