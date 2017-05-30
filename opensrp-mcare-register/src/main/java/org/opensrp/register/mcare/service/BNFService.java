@@ -173,7 +173,6 @@ public class BNFService {
 
 		} else if(submission.getField(FWBNFSTS).equalsIgnoreCase(STS_FALSE_PREGNANCY_IDENTIFICATION)) {
 			if (submission.getField("user_type").equalsIgnoreCase(FD)) {
-				if (submission.getField("user_type").equalsIgnoreCase(FD)) {
 					pncService.deleteBlankChild(submission);
 					bnfSchedulesService.unEnrollBNFSchedule(submission.entityId(), submission.anmId());
 					pncService.closeMother(mother);
@@ -190,13 +189,13 @@ public class BNFService {
 					} catch (Exception e) {
 						logger.info("From ancVisitOne:" + e.getMessage());
 					}
-				} else {
+			} else {
 					pncService.deleteBlankChild(submission);
-					logger.info("FWA says mother gone or died , so nothing hapened & BNF schedule continue.");
+					logger.info("FWA says false pregnancy , so nothing hapened & BNF schedule continue.");
 					bnfSchedulesService.enrollIntoMilestoneOfBNF(submission.entityId(), submission.getField(REFERENCE_DATE), submission.anmId(),
 							submission.instanceId());
-				}
 			}
+			
 
 		} else {
 			pncService.deleteBlankChild(submission);
