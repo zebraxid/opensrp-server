@@ -5,7 +5,7 @@ import org.opensrp.register.mcare.domain.Members;
 
 
 public interface FormsType<T> {
-	public FormSubmission makeForm(String formDir,String vaccineDate,int vaccineDose,String patientId,Members member);
-	public boolean isThisVaccineGiven(T t,int dose);
+	public FormSubmission makeForm(String formDir,String vaccineDate,int vaccineDose,String patientId,Members member,String vaccineName);
+	public boolean isThisVaccineGiven(T t,int dose,String vaccineName);
 
 }

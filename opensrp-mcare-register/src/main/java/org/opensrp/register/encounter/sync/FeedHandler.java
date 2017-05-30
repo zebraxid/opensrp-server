@@ -10,6 +10,7 @@ import org.json.JSONObject;
 import org.opensrp.domain.Event;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.form.repository.AllFormSubmissions;
+import org.opensrp.register.encounter.sync.forms.ChildVaccineFollowup;
 import org.opensrp.register.encounter.sync.forms.WomanTTFollowUp;
 import org.opensrp.register.encounter.sync.interfaces.FormsType;
 import org.opensrp.register.mcare.domain.Members;
@@ -56,16 +57,23 @@ public class FeedHandler extends FormSubmissionConfig{
 				boolean TT = this.parseVaccineTypeFromString(vaccineStringAfterFilter, SyncConstant.TT);
 				String vaccineDate = this.parseDateFromString(vaccineStringAfterFilter);
 				double vaccineDose = this.parseDoseFromString(vaccineStringAfterFilter);
+				String vaccineName = this.getVaccinationName(vaccineStringAfterFilter);
+				System.err.println("vaccineName:"+vaccineName);
 				int vaccineDoseAsInt =(int) vaccineDose;				
 				if(TT){	
-					FormsType<WomanTTFollowUp> womanTTForm	= FormFatcory.getFormsTypeInstance("WTT");
-					FormSubmission formsubmissionEntity= womanTTForm.makeForm(this.formDirectory,vaccineDate,vaccineDoseAsInt,patientEntityId, member);
+					FormsType<WomanTTFollowUp> womanVaccine	= FormFatcory.getFormsTypeInstance("WTT");
+					FormSubmission formsubmissionEntity= womanVaccine.makeForm(this.formDirectory,vaccineDate,vaccineDoseAsInt,patientEntityId, member,vaccineName);
 					if(formsubmissionEntity !=null){
 						formSubmissions.add(formsubmissionEntity);
 						return formsubmissionEntity;
 					}
 				}else{
-						
+					FormsType<ChildVaccineFollowup> childVaccine= FormFatcory.getFormsTypeInstance("CVF");
+					FormSubmission formsubmissionEntity= childVaccine.makeForm(this.formDirectory,vaccineDate,vaccineDoseAsInt,patientEntityId, member,vaccineName);
+					/*if(formsubmissionEntity !=null){
+						formSubmissions.add(formsubmissionEntity);
+						return formsubmissionEntity;
+					}*/
 				}					
 			}			
 			
@@ -80,8 +88,7 @@ public class FeedHandler extends FormSubmissionConfig{
 	
 	
 	
-	public String StringFilter(String str){
-		
+	public String StringFilter(String str){		
 		String strRemoveImmu = "";
 		strRemoveImmu = str.replace(SyncConstant.vaccines.get("IIT"), "");
 		String strRemoveTT = "";
@@ -99,14 +106,29 @@ public class FeedHandler extends FormSubmissionConfig{
 		return strRemoveIPV;
 		
 	}
-	
-	public boolean parseVaccineTypeFromString(String  str,String subString){		
+	private String getVaccinationName(String str){
+		String[] vaccineStringToArray = str.split(",");
+		for (String value : vaccineStringToArray) {	
+			try{				
+				String[] vaccine = value.trim().split(" ");				
+				if(SyncConstant.getChildVaccinesName().contains(vaccine[0])){
+					return vaccine[0];
+				}
+			}catch(Exception e ){
+				
+			}
+		}
+		return null;
+		
+	}
+	public boolean parseVaccineTypeFromString(String  str,String subString){
+		
 		return str.toLowerCase().contains(subString.toLowerCase());
 			
 	}
 	
 	public String parseDateFromString(String str){
-		SimpleDateFormat formatter = new SimpleDateFormat("yyy-MM-dd");		
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");		
 		String[] vaccineStringToArray = str.split(",");
 		for (String value : vaccineStringToArray) {				
 			try {

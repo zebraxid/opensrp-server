@@ -54,7 +54,7 @@ public class EncounterService extends OpenmrsService{
 	    map.put("penta3","8c0268d5-befe-47e3-a98d-d7d13f214f5b");
 	    map.put("ipv","caffb48d-4155-47a5-a81a-ef669f0585d0");
 	    map.put("measles1","9c23d2fe-e2db-48ea-98ac-cfb832f7c0b6");
-	    map.put("measles1","d2c8d3fa-495a-4e5f-8e8b-3c598725c0c3");
+	    map.put("measles2","d2c8d3fa-495a-4e5f-8e8b-3c598725c0c3");
 	    
 	    map.put("6eea05d1-c7bc-4ef3-b42f-46541606daed","opv");	    
 	    map.put("8867aedf-21c4-4441-ac72-fa87510eff36","bcg");	    

@@ -1112,6 +1112,15 @@ public class Members extends MotechBaseDataObject {
 		this.child_vaccines = child_vaccines;
 		return this;
 	}
+	public String getBcg_retro() {
+		return bcg_retro;
+	}
+
+	public Members setBcg_retro(String bcg_retro) {
+		this.bcg_retro = bcg_retro;
+		return this;
+	}
+
 	public Members setOpv0_retro(String opv0_retro) {
 		this.opv0_retro = opv0_retro;
 		return this;

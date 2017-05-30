@@ -899,8 +899,8 @@ public class MembersService {
 			    	, submission.getField(MEMBER_ADDRESS_LINE))
 		.put(MEMBER_GPS
 			    	, submission.getField(MEMBER_GPS))
-		.put(existing_epi_card_number
-			    	, submission.getField(existing_epi_card_number))
+		.put(epi_card_number
+			    	, submission.getField(epi_card_number))
 		.put(child_was_suffering_from_a_disease_at_birth
 			    	, submission.getField(child_was_suffering_from_a_disease_at_birth))
 		.put(contact_phone_number
