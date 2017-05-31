@@ -328,12 +328,12 @@ public class WomanTTFollowUpTest extends TestConfig {
 		WomanTTFollowUp womanTTForm = WomanTTFollowUp.getInstance();	
 		FeedHandler feedHandler =  new FeedHandler(allMembers,formSubmissions);
 		feedHandler.setFormDirectory("./../assets/form");
-		FormSubmission formSubmission = feedHandler.getEvent(encounter, "1ace9084-8e71-45b7-b2b1-aeea66c203c2",member);
+		 feedHandler.getEvent(encounter, "1ace9084-8e71-45b7-b2b1-aeea66c203c2",member);
 		System.err.println("member.TTVisit():"+member.TTVisit());
 		Assert.assertEquals(member.TTVisit().isEmpty(), false);		
 		Assert.assertEquals(womanTTForm.isThisVaccineGiven(member, 1,""),true);		
-		Assert.assertNotNull(formSubmission);
-		formSubmissions.remove(formSubmission);
+		//Assert.assertNotNull(formSubmission);
+		//formSubmissions.remove(formSubmission);
 		
 	}
 	
@@ -423,12 +423,11 @@ public class WomanTTFollowUpTest extends TestConfig {
 		WomanTTFollowUp womanTTForm = WomanTTFollowUp.getInstance();	
 		FeedHandler feedHandler =  new FeedHandler(allMembers,formSubmissions);
 		feedHandler.setFormDirectory("./../assets/form");
-		FormSubmission formSubmission = feedHandler.getEvent(encounter, "e1e16f38-01d8-42ae-be55-4573b3ac349e",member);
+		feedHandler.getEvent(encounter, "e1e16f38-01d8-42ae-be55-4573b3ac349e",member);
 	
 		Assert.assertEquals(member.TTVisit().isEmpty(), true);		
 		Assert.assertEquals(womanTTForm.isThisVaccineGiven(member, 1,""),false);
-		Assert.assertNotNull(formSubmission);
-		formSubmissions.remove(formSubmission);
+		
 		
 		
 	}

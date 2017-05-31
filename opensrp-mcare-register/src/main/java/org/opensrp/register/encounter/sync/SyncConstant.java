@@ -163,10 +163,10 @@ public class SyncConstant {
 	
 	public final static List<String> getChildVaccinesName(){		
 		 List<String> childVaccines = new ArrayList<>();
-		 childVaccines.add("OPV");
+		 childVaccines.add("BCG");
 		 childVaccines.add("Pentavalent");
 		 childVaccines.add("PCV");
-		 childVaccines.add("BCG");
+		 childVaccines.add("OPV");
 		 childVaccines.add("IPV");
 		return childVaccines;
 		

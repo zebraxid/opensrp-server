@@ -47,10 +47,10 @@ public class FeedHandler extends FormSubmissionConfig{
 		this.formSubmissions = formSubmissions;
 	}
 	@SuppressWarnings("unchecked")
-	public FormSubmission getEvent(JSONObject encounter,String patientEntityId,Members member){		
+	public void getEvent(JSONObject encounter,String patientEntityId,Members member){		
 		try {					
-			JSONArray observations = encounter.getJSONArray("obs");			
-			for (int i = 0; i < observations.length(); i++) {
+			JSONArray observations = encounter.getJSONArray("obs");				
+			for (int i = 0; i < observations.length(); i++) {				
 				JSONObject o = observations.getJSONObject(i);
 				String vaccines = (String) o.get("display");
 				String vaccineStringAfterFilter = this.StringFilter(vaccines);					
@@ -65,15 +65,15 @@ public class FeedHandler extends FormSubmissionConfig{
 					FormSubmission formsubmissionEntity= womanVaccine.makeForm(this.formDirectory,vaccineDate,vaccineDoseAsInt,patientEntityId, member,vaccineName);
 					if(formsubmissionEntity !=null){
 						formSubmissions.add(formsubmissionEntity);
-						return formsubmissionEntity;
+						
 					}
 				}else{
 					FormsType<ChildVaccineFollowup> childVaccine= FormFatcory.getFormsTypeInstance("CVF");
 					FormSubmission formsubmissionEntity= childVaccine.makeForm(this.formDirectory,vaccineDate,vaccineDoseAsInt,patientEntityId, member,vaccineName);
-					/*if(formsubmissionEntity !=null){
+					if(formsubmissionEntity !=null){
 						formSubmissions.add(formsubmissionEntity);
-						return formsubmissionEntity;
-					}*/
+						//return formsubmissionEntity;
+					}
 				}					
 			}			
 			
@@ -83,7 +83,7 @@ public class FeedHandler extends FormSubmissionConfig{
 			logger.info(ee.getMessage());
 		}
 		
-		return null;
+		
 	}
 	
 	
@@ -112,10 +112,11 @@ public class FeedHandler extends FormSubmissionConfig{
 			try{				
 				String[] vaccine = value.trim().split(" ");				
 				if(SyncConstant.getChildVaccinesName().contains(vaccine[0])){
+					System.err.println("fdfdf"+vaccine[0]);
 					return vaccine[0];
 				}
 			}catch(Exception e ){
-				
+				e.printStackTrace();
 			}
 		}
 		return null;

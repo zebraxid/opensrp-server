@@ -111,20 +111,27 @@ import junit.framework.Assert;
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.ektorp.support.CouchDbRepositorySupport;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.mockito.BDDMockito;
+import org.mockito.Matchers;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.form.repository.AllFormSubmissions;
 import org.opensrp.register.encounter.sync.FeedHandler;
+import org.opensrp.register.encounter.sync.FormFatcory;
 import org.opensrp.register.encounter.sync.forms.ChildVaccineFollowup;
 import org.opensrp.register.encounter.sync.forms.WomanTTFollowUp;
+import org.opensrp.register.encounter.sync.interfaces.FormsType;
 import org.opensrp.register.mcare.domain.Members;
 import org.opensrp.register.mcare.repository.AllMembers;
+import org.powermock.api.mockito.PowerMockito;
 
 public class ChildVaccinationFollowUpTest extends TestConfig {	
 	@Mock
@@ -136,8 +143,11 @@ public class ChildVaccinationFollowUpTest extends TestConfig {
 	@Before
 	public void setUp() throws Exception
 	{
+		//formSubmissions = Mockito.mock(AllFormSubmissions.class);
 		formSubmissions = new AllFormSubmissions(getStdCouchDbConnectorForOpensrpForm());
 		allMembers = new AllMembers(1,getStdCouchDbConnectorForOpensrp());
+		
+		
 	}
 	
 	@Test
@@ -383,27 +393,35 @@ public class ChildVaccinationFollowUpTest extends TestConfig {
 		JSONObject ob2Object = new JSONObject();
 		
 		ob2Object.put("display", 
-			       "Immunization Incident Template: 2016-07-28, true, OPV (Poliomyelitis oral, trivalent, live attenuated), 0.0");
+			       "Immunization Incident Template: 2016-07-28, true, OPV (Poliomyelitis oral, trivalent, live attenuated), 2.0");
 		ob2Object.put("uuid", "ba80a737-78bc-4933-9530-65527ce28b0a");
 		
 		JSONObject ob3Object = new JSONObject();
-		ob3Object.put("display", "Immunization Incident Template: PCV 1 (Pneumococcus, purified polysaccharides antigen conjugated), 2016-07-15, 1.0, true");
+		ob3Object.put("display", "Immunization Incident Template: PCV 2 (Pneumococcus, purified polysaccharides antigen conjugated), 2016-07-15, 2.0, true");
 		ob3Object.put("uuid", "5f8d190f-c51d-4f59-a3b0-247ca1e4e7d8");
 		
 		obs.put(ob3Object);
 		obs.put(ob1Object);
 		obs.put(ob2Object);
 		encounter.put("obs", obs);
-		System.out.println(encounter.toString());
-		ChildVaccineFollowup childVaccine = ChildVaccineFollowup.getInstance();	
+		
+		
+		FormsType<ChildVaccineFollowup> childVaccineFollowUp= FormFatcory.getFormsTypeInstance("CVF");
+		FormSubmission formsubmissionEntity= childVaccineFollowUp.makeForm("./../assets/form","2017-04-03",1,"6a1332be-5c19-4e26-b7cb-5851d27b68bd", member,"OPV");
+		//Mockito.doNothing().when(formSubmissions).add(Matchers.any(FormSubmission.class));
+		
+		
 		FeedHandler feedHandler =  new FeedHandler(allMembers,formSubmissions);
 		feedHandler.setFormDirectory("./../assets/form");
-		FormSubmission formSubmission = feedHandler.getEvent(encounter, "6a1332be-5c19-4e26-b7cb-5851d27b68bd",member);
+		
+		
+		ChildVaccineFollowup childVaccine = ChildVaccineFollowup.getInstance();	
+		feedHandler.getEvent(encounter, "6a1332be-5c19-4e26-b7cb-5851d27b68bd",member);
 		System.err.println("member.TTVisit():"+member.child_vaccine().toString());
 		
 		
-		/*Assert.assertEquals(childVaccine.isThisVaccineGiven(member, 1),true);		
-		Assert.assertNotNull(formSubmission);
+		Assert.assertEquals(childVaccine.isThisVaccineGiven(member, 0,"BCG"),true);		
+		/*Assert.assertNotNull(formSubmission);
 		formSubmissions.remove(formSubmission);*/
 		
 	}
@@ -494,7 +512,7 @@ public class ChildVaccinationFollowUpTest extends TestConfig {
 		WomanTTFollowUp womanTTForm = WomanTTFollowUp.getInstance();	
 		FeedHandler feedHandler =  new FeedHandler(allMembers,formSubmissions);
 		feedHandler.setFormDirectory("./../assets/form");
-		FormSubmission formSubmission = feedHandler.getEvent(encounter, "e1e16f38-01d8-42ae-be55-4573b3ac349e",member);
+		feedHandler.getEvent(encounter, "e1e16f38-01d8-42ae-be55-4573b3ac349e",member);
 	
 		
 		Assert.assertNotNull(formSubmission);

@@ -24,7 +24,7 @@ public class TestConfig {
 	        .socketTimeout(1000) 
 	        .build(); 
 			dbInstance = new StdCouchDbInstance(httpClient);
-			stdCouchDbConnectorOpensrpForm = new StdCouchDbConnector("opensrp-form", dbInstance, new StdObjectMapperFactory());
+			stdCouchDbConnectorOpensrpForm = new StdCouchDbConnector("opensrp-form-test", dbInstance, new StdObjectMapperFactory());
 			stdCouchDbConnectorOpensrpForm.createDatabaseIfNotExists();
 			stdCouchDbConnectorOpensrp = new StdCouchDbConnector("opensrp", dbInstance, new StdObjectMapperFactory());
 			stdCouchDbConnectorOpensrp.createDatabaseIfNotExists();
