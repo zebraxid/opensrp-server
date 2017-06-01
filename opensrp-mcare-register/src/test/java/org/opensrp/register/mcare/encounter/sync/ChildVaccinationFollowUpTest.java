@@ -150,7 +150,7 @@ public class ChildVaccinationFollowUpTest extends TestConfig {
 		
 	}
 	
-	@Test
+	@Ignore@Test
 	public void shouldCheckWhichHasAtLeastOneVisit() throws JSONException{
 		
 		Members member = new Members();		
@@ -393,7 +393,7 @@ public class ChildVaccinationFollowUpTest extends TestConfig {
 		JSONObject ob2Object = new JSONObject();
 		
 		ob2Object.put("display", 
-			       "Immunization Incident Template: 2016-07-28, true, OPV (Poliomyelitis oral, trivalent, live attenuated), 2.0");
+			       "Immunization Incident Template: 2016-07-28, true, OPV (Poliomyelitis oral, trivalent, live attenuated), 1.0");
 		ob2Object.put("uuid", "ba80a737-78bc-4933-9530-65527ce28b0a");
 		
 		JSONObject ob3Object = new JSONObject();
@@ -401,8 +401,8 @@ public class ChildVaccinationFollowUpTest extends TestConfig {
 		ob3Object.put("uuid", "5f8d190f-c51d-4f59-a3b0-247ca1e4e7d8");
 		
 		obs.put(ob3Object);
-		obs.put(ob1Object);
-		obs.put(ob2Object);
+		//obs.put(ob1Object);
+		//obs.put(ob2Object);
 		encounter.put("obs", obs);
 		
 		
@@ -427,13 +427,12 @@ public class ChildVaccinationFollowUpTest extends TestConfig {
 	}
 	
 	
-	@Ignore@Test
+	@Test
 	public void shouldCheckWhichHasNoVisit() throws JSONException, NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException, JsonGenerationException, JsonMappingException, IOException{
-		System.err.println(""+UUID.randomUUID().toString());
 		Members member = new Members();		
-		member.setCaseId("e1e16f38-01d8-42ae-be55-4573b3ac349e");
+		member.setCaseId("05cbaa2b-d3a6-40f6-a604-328bf725ddbf");
 		member.setPROVIDERID("sujan");
-		member.setINSTANCEID("b73ec00b-17d4-40c9-b021-a857cf57369b");
+		member.setINSTANCEID("3135f608-2206-41e8-b110-bba810c8a4f3");
 		member.setMember_COUNTRY("");
 		member.setMember_DIVISION("Dhaka");
 		member.setMember_DISTRICT("Gazipur");
@@ -445,78 +444,71 @@ public class ChildVaccinationFollowUpTest extends TestConfig {
 		member.setMember_GPS("");
 		member.setMember_Address_line(null);
 		member.setMember_type("1");
-		member.setMember_Fname("robff");
-		member.setMember_Fname("fhj");
-		member.setHusband_name("dfgjk");
-		member.setMarital_status("2");
-		member.setPregnant("yes");
-		member.setedd("");
-		member.setEdd_lmp("");
-		member.setLmp("");
-		member.setUltrasound_date("");
-		member.setUltrasound_weeks("");
-		member.setEdd_calc_lmp("Invalid Date");
-		member.setEdd_calc_ultrasound("Invalid Date");
-		member.setEdd_calc_lmp_formatted("Invalid Date");
-		member.setEdd_calc_ultrasound_formatted("Invalid Date");
-		member.setLmp_calc_edd("Invalid Date");
-		member.setLmp_calc_ultrasound("Invalid Date");
-		member.setLmp_calc_edd_formatted("Invalid Date");
-		member.setLmp_calc_ultrasound_formatted("Invalid Date");
-		member.setFinal_edd("2017-05-22");
-		member.setFinal_lmp("2016-8-15");
-		member.setGa_edd("NaN");
-		member.setGa_lmp("NaN");
-		member.setGa_ult("NaN");
-		member.setFinal_edd_note("");
-		member.setFinal_lmp_note("");
-		member.setFinal_ga("");
-		member.setFinal_ga_note("");
-		member.setTt1_retro("2012-05-22");
-		member.setTt_1_dose("1");
-		member.setTt1_final("2012-05-22");
-		member.setTt2_final("");
-		member.setTt3_final("");
-		member.setTt4_final("");
-		member.setTt5_final("");	
+		member.setMember_Fname("pakhiaa");
+		member.setMember_Unique_ID("");
+		member.setChild_dob("2017-01-07");
+		member.setChild_age_days("302") ;
+		member.setChild_age("11");
+		member.setChild_birth_date_note("");
+		member.setChild_gender("1");
+		member.setChild_mother_name("gghjj");
+		member.setChild_guardian_id("");
+		member.setChild_Mother_NID("");
+		member.setChild_Mother_BRID("");
+		member.setChild_Father_NID("");
+		member.setChild_Father_BRID("");
+		member.setChild_Other_Guardian_NID("");
+		member.setChild_Other_Guardian_BRID("");
+		member.setChild_was_suffering_from_a_disease_at_birth("no");
+		member.setContact_phone_number("");		
+		member.setMember_Reg_Date("2017-05-30");  
+		member.setIs_Reg_Today("0"); 
+		member.setIs_child("1");
+		member.setrelationalid("d4423a9f-a9df-4ae7-9abc-e776f077ccc8") ;
+		member.setMotherRelationalId("2a817076-8030-4fef-8740-c33500cd17c9");	
+	
+		
 		
 		
 		JSONObject encounter = new JSONObject();
 		JSONObject ob1Object = new JSONObject();
 		JSONArray obs = new JSONArray();
 		ob1Object.put("display", 
-       "Immunization Incident Template: TT 2 (Tetanus toxoid), 2010-05-28, true, 2.0");
-		ob1Object.put("uuid", "08db9795-1016-4a3e-9174-cb030962b173");
+       "Immunization Incident Template: BCG (Tuberculosis, live attenuated), 2016-08-25, true, 0.0");
+		ob1Object.put("uuid", "0c114163-948b-45a9-9f0b-786b0f5cb5ba");
 		JSONObject ob2Object = new JSONObject();
 		
 		ob2Object.put("display", 
-			       "Immunization Incident Template: 2008-05-28, true, 1.0, TT 1 (Tetanus toxoid)");
-		ob2Object.put("uuid", "e013eaf3-b8fc-4954-94a9-1691af8ddb49");
-		obs.put(ob1Object);
-		//obs.put(ob2Object);
+			       "Immunization Incident Template: 2016-07-28, true, OPV (Poliomyelitis oral, trivalent, live attenuated), 0.0");
+		ob2Object.put("uuid", "ba80a737-78bc-4933-9530-65527ce28b0a");
+		
+		JSONObject ob3Object = new JSONObject();
+		ob3Object.put("display", "Immunization Incident Template: PCV 2 (Pneumococcus, purified polysaccharides antigen conjugated), 2016-07-15, 2.0, true");
+		ob3Object.put("uuid", "5f8d190f-c51d-4f59-a3b0-247ca1e4e7d8");
+		
+		
+		//obs.put(ob1Object);
+		obs.put(ob2Object);
+		//obs.put(ob3Object);
 		encounter.put("obs", obs);
 		
-		ObjectMapper mapper = new ObjectMapper();
-		Members user = new Members();
-
-		//Object to JSON in file
-		String jsonStr = mapper.writeValueAsString(member);		
-		JSONObject jsonObj = new JSONObject(jsonStr);		
-		Members mem = new Members();		
-		Field field = mem.getClass().getDeclaredField("caseId");
-		field.setAccessible(true);
-				
-		//System.err.println("value:"+jsonObj.get(field.getName()));	
 		
-		System.out.println(encounter.toString());
-		WomanTTFollowUp womanTTForm = WomanTTFollowUp.getInstance();	
+		FormsType<ChildVaccineFollowup> childVaccineFollowUp= FormFatcory.getFormsTypeInstance("CVF");
+		FormSubmission formsubmissionEntity= childVaccineFollowUp.makeForm("./../assets/form","2017-04-03",1,"05cbaa2b-d3a6-40f6-a604-328bf725ddbf", member,"OPV");
+		//Mockito.doNothing().when(formSubmissions).add(Matchers.any(FormSubmission.class));
+		
+		
 		FeedHandler feedHandler =  new FeedHandler(allMembers,formSubmissions);
 		feedHandler.setFormDirectory("./../assets/form");
-		feedHandler.getEvent(encounter, "e1e16f38-01d8-42ae-be55-4573b3ac349e",member);
-	
 		
-		Assert.assertNotNull(formSubmission);
-		formSubmissions.remove(formSubmission);
+		
+		ChildVaccineFollowup childVaccine = ChildVaccineFollowup.getInstance();	
+		feedHandler.getEvent(encounter, "05cbaa2b-d3a6-40f6-a604-328bf725ddbf",member);
+		
+		
+		Assert.assertEquals(childVaccine.isThisVaccineGiven(member, 0,"BCG"),false);		
+		/*Assert.assertNotNull(formSubmission);
+		formSubmissions.remove(formSubmission);*/
 		
 		
 	}

@@ -306,7 +306,7 @@ public class Members extends MotechBaseDataObject {
 	private String Child_birth_date
 ;
 	@JsonProperty
-	private String Child_age
+	private String child_age
 ;
 	@JsonProperty
 	private String Child_calc_age
@@ -321,7 +321,7 @@ public class Members extends MotechBaseDataObject {
 	private String Child_dob_estimated
 ;
 	@JsonProperty
-	private String Child_age_days
+	private String child_age_days
 ;
 	@JsonProperty
 	private String Child_birth_date_note
@@ -1026,8 +1026,8 @@ public class Members extends MotechBaseDataObject {
 		Child_birth_date = child_birth_date;
 		return this;
 	}
-	public Members setChild_age(String child_age) {
-		Child_age = child_age;
+	public Members setChild_age(String Child_age) {
+		child_age = Child_age;
 		return this;
 	}
 	public Members setChild_calc_age(String child_calc_age) {
@@ -1046,8 +1046,8 @@ public class Members extends MotechBaseDataObject {
 		Child_dob_estimated = child_dob_estimated;
 		return this;
 	}
-	public Members setChild_age_days(String child_age_days) {
-		Child_age_days = child_age_days;
+	public Members setChild_age_days(String Child_age_days) {
+		child_age_days = Child_age_days;
 		return this;
 	}
 	public Members setChild_birth_date_note(String child_birth_date_note) {
@@ -1440,7 +1440,7 @@ public class Members extends MotechBaseDataObject {
 		return caseId;
 	}
 	
-	private String getCaseId() {
+	public String getCaseId() {
 		return caseId;
 	}
 	public String INSTANCEID() {
@@ -1733,7 +1733,7 @@ public class Members extends MotechBaseDataObject {
 		return Child_birth_date;
 	}
 	public String Child_age() {
-		return Child_age;
+		return child_age;
 	}
 	public String Child_calc_age() {
 		return Child_calc_age;
@@ -1748,7 +1748,7 @@ public class Members extends MotechBaseDataObject {
 		return Child_dob_estimated;
 	}
 	public String Child_age_days() {
-		return Child_age_days;
+		return child_age_days;
 	}
 	public String Child_birth_date_note() {
 		return Child_birth_date_note;

@@ -144,7 +144,7 @@ public class WomanTTFollowUp implements FormsType<Members> {
 		if(!member.TTVisit().isEmpty()){		
 			Map<String, String> TTVisit = member.TTVisit();		
 			String TTFinalDate = TTVisit.get(SyncConstant.TTFinalMapping.get(Integer.toString(dose)));
-			if(TTFinalDate.equalsIgnoreCase("") || TTFinalDate.equalsIgnoreCase("null") || TTFinalDate.equalsIgnoreCase(null)){
+			if(TTFinalDate.isEmpty() || TTFinalDate.equalsIgnoreCase("null") || TTFinalDate ==null){
 				return false;
 			}else{
 				return true;

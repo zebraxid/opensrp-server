@@ -15,6 +15,7 @@ import org.opensrp.register.encounter.sync.forms.WomanTTFollowUp;
 import org.opensrp.register.encounter.sync.interfaces.FormsType;
 import org.opensrp.register.mcare.domain.Members;
 import org.opensrp.register.mcare.repository.AllMembers;
+import org.opensrp.scheduler.NoRoutesMatchException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +54,7 @@ public class FeedHandler extends FormSubmissionConfig{
 			for (int i = 0; i < observations.length(); i++) {				
 				JSONObject o = observations.getJSONObject(i);
 				String vaccines = (String) o.get("display");
-				String vaccineStringAfterFilter = this.StringFilter(vaccines);					
+				String vaccineStringAfterFilter = this.stringFilter(vaccines);					
 				boolean TT = this.parseVaccineTypeFromString(vaccineStringAfterFilter, SyncConstant.TT);
 				String vaccineDate = this.parseDateFromString(vaccineStringAfterFilter);
 				double vaccineDose = this.parseDoseFromString(vaccineStringAfterFilter);
@@ -72,7 +73,7 @@ public class FeedHandler extends FormSubmissionConfig{
 					FormSubmission formsubmissionEntity= childVaccine.makeForm(this.formDirectory,vaccineDate,vaccineDoseAsInt,patientEntityId, member,vaccineName);
 					if(formsubmissionEntity !=null){
 						formSubmissions.add(formsubmissionEntity);
-						//return formsubmissionEntity;
+						
 					}
 				}					
 			}			
@@ -88,7 +89,7 @@ public class FeedHandler extends FormSubmissionConfig{
 	
 	
 	
-	public String StringFilter(String str){		
+	public String stringFilter(String str){		
 		String strRemoveImmu = "";
 		strRemoveImmu = str.replace(SyncConstant.vaccines.get("IIT"), "");
 		String strRemoveTT = "";
@@ -111,8 +112,7 @@ public class FeedHandler extends FormSubmissionConfig{
 		for (String value : vaccineStringToArray) {	
 			try{				
 				String[] vaccine = value.trim().split(" ");				
-				if(SyncConstant.getChildVaccinesName().contains(vaccine[0])){
-					System.err.println("fdfdf"+vaccine[0]);
+				if(SyncConstant.getChildVaccinesName().contains(vaccine[0])){					
 					return vaccine[0];
 				}
 			}catch(Exception e ){
@@ -140,6 +140,7 @@ public class FeedHandler extends FormSubmissionConfig{
 			}
            
 		}
+		
 		return null;
 		
 	}

@@ -66,7 +66,7 @@ public class EncounterSyncTest {
 	@Test
 	public void ShouldRemoveSubstringFromString(){
 		FeedHandler makeFormSubmission = new FeedHandler();
-		String StringAfterFilter = makeFormSubmission.StringFilter("Immunization Incident Template: BCG (Tuberculosis, live attenuated), 2017-01-25, true, 0.0");
+		String StringAfterFilter = makeFormSubmission.stringFilter("Immunization Incident Template: BCG (Tuberculosis, live attenuated), 2017-01-25, true, 0.0");
 		assertEquals(makeFormSubmission.parseVaccineTypeFromString(StringAfterFilter, "BCG"),true);
 		
 		Assert.assertNotSame(makeFormSubmission.parseVaccineTypeFromString(StringAfterFilter, "TT"), true);

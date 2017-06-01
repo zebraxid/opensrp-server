@@ -144,7 +144,7 @@ public class WomanTTFollowUpTest extends TestConfig {
 		allMembers = new AllMembers(1,getStdCouchDbConnectorForOpensrp());
 	}
 	
-	@Test
+	@Ignore@Test
 	public void shouldCheckWhichHasTTVisit() throws JSONException{
 		
 		Members member = new Members();		
@@ -338,7 +338,7 @@ public class WomanTTFollowUpTest extends TestConfig {
 	}
 	
 	
-	@Test
+	@Ignore@Test
 	public void shouldCheckWhichHasNoTTVisit() throws JSONException, NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException, JsonGenerationException, JsonMappingException, IOException{
 		System.err.println(""+UUID.randomUUID().toString());
 		Members member = new Members();		

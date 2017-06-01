@@ -62,18 +62,21 @@ public class ChildVaccineFollowup implements FormsType<Members> {
 	    String convertMemberToString ;
 	    JSONObject convertMemberToJsonObject = null;
 	    Members getMemberNewObject = new Members();
-	    if(member.TTVisit().isEmpty()){
+	    if(member.child_vaccine().isEmpty()){
 		    try{
 		    	convertMemberToString = mapper.writeValueAsString(member);		
 		    	convertMemberToJsonObject = new JSONObject(convertMemberToString);	
+		    	System.err.println("convertMemberToJsonObject:"+convertMemberToJsonObject);
 		    }catch(Exception e){
 		    	logger.info(""+e.getMessage());
 		    }
 	    }else{
 	    	
 	    }
-		
-	    Map<String, String> childVaccineFollowup = member.child_vaccine().get(member.child_vaccine().size()-1);
+	    Map<String, String> childVaccineFollowup = null;
+	    if(!member.child_vaccine().isEmpty()){
+	    	 childVaccineFollowup = member.child_vaccine().get(member.child_vaccine().size()-1);
+	    }
 	    ArrayNode fields = (ArrayNode) enc.get("form").get("fields");
 	    String fieldNameFinal="";
 	    String fieldNameRetro = "";
@@ -259,9 +262,10 @@ public class ChildVaccineFollowup implements FormsType<Members> {
 	}
 	@Override
 	public boolean isThisVaccineGiven(Members member,int dose,String vaccineName) {		
-		Map<String, String> childVaccineFollowup = member.child_vaccine().get(member.child_vaccine().size()-1);	
+		
 		String finalValue ;
 		if(!member.child_vaccine().isEmpty()){	
+			Map<String, String> childVaccineFollowup = member.child_vaccine().get(member.child_vaccine().size()-1);	
 			if(vaccineName.equalsIgnoreCase(SyncConstant.getChildVaccinesName().get(0))){//BCG
 				finalValue = childVaccineFollowup.get(SyncConstant.BCGFinalMapping.get(Integer.toString(dose)));
 				return this.checkThisVaccineGivenOrNot(finalValue);
