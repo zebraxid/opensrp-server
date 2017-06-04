@@ -138,7 +138,7 @@ public class FormSubmissionProcessor{
 		return null;
 	}
 	
-	private void makeModelEntities(FormSubmission submission) throws JSONException {
+	private void makeModelEntities(FormSubmission submission) throws Exception {
     	Client c = formEntityConverter.getClientFromFormSubmission(submission);
 		Event e = formEntityConverter.getEventFromFormSubmission(submission);
 		Map<String, Map<String, Object>> dep = formEntityConverter.getDependentClientsFromFormSubmission(submission);

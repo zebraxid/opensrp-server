@@ -128,7 +128,7 @@ public class AlertCreationAction implements HookedEvent {
 	}
 
 	@Override
-	public void getEvent(JSONObject event,String PatientEntityId) {
+	public void getEvent(JSONObject event,String PatientEntityId) throws Exception {
 		Members member = feedHandler.get(PatientEntityId);
 		if(member!=null){
 			makeFormSubmission.getEvent(event,PatientEntityId,member);

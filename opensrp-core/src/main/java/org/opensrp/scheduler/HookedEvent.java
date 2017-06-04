@@ -1,5 +1,6 @@
 package org.opensrp.scheduler;
 
+import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
 
@@ -12,6 +13,6 @@ public interface HookedEvent {
     void invoke(MilestoneEvent event, Map<String, String> extraData);
     void scheduleSaveToOpenMRSMilestone( Enrollment el,List<Action> alertActions );
     void saveMultimediaToRegistry(Multimedia multimediaFile);
-    void getEvent(JSONObject event,String entityId);
+    void getEvent(JSONObject event,String entityId) throws ParseException, Exception;
     
 }

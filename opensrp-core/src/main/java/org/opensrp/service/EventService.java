@@ -1,5 +1,6 @@
 package org.opensrp.service;
 
+import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
@@ -68,7 +69,7 @@ public class EventService {
 		this.indicator = indicator;
 		
 	}
-	public Event addEvent(Event event) {
+	public Event addEvent(Event event) throws Exception {
 		if (!StringUtils.isEmptyOrWhitespaceOnly(event.getEventId()) && getByEventId(event.getEventId()) != null) {
 			throw new IllegalArgumentException("An event already exists with given eventId " + event.getEventId()
 			        + ". Consider updating");

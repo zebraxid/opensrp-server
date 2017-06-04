@@ -255,11 +255,10 @@ public class ChildVaccineFollowup implements FormsType<Members> {
 		return formSubmission;
 	}
 	
-
-	
 	public static ChildVaccineFollowup getInstance(){
 		return new ChildVaccineFollowup();
 	}
+	
 	@Override
 	public boolean isThisVaccineGiven(Members member,int dose,String vaccineName) {		
 		
@@ -298,7 +297,7 @@ public class ChildVaccineFollowup implements FormsType<Members> {
 		}
 	}
 	
-	private String getFieldName(String vaccineMappinngFieldName,int vaccineDose){
+	public String getFieldName(String vaccineMappinngFieldName,int vaccineDose) throws NoSuchFieldException, IllegalAccessException, JSONException{
 		JSONObject convertVaccineToJsonObject = null;	    
     	Field field;
     	String fieldName = null;
@@ -307,27 +306,26 @@ public class ChildVaccineFollowup implements FormsType<Members> {
 			field.setAccessible(true); 
 			convertVaccineToJsonObject = new JSONObject(field.get(0).toString());			
 			fieldName = (String) convertVaccineToJsonObject.get(Integer.toString(vaccineDose));			
-			
 		} catch (NoSuchFieldException e1) {
 			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			throw new  NoSuchFieldException();
 		} catch (SecurityException e1) {
 			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			throw new SecurityException();
 		} catch (IllegalArgumentException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new IllegalArgumentException();
 		} catch (IllegalAccessException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new IllegalAccessException();
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new JSONException(e.getMessage());
 		}
 		return fieldName;
 		
 	}
-	private FormField setFormFieldValue(FormField formField,String name,String fieldName,int vaccineDose,String vaccineDate,boolean isDose){
+	public FormField setFormFieldValue(FormField formField,String name,String fieldName,int vaccineDose,String vaccineDate,boolean isDose){
 		if(isDose){
 			if(name.equalsIgnoreCase(fieldName)){
 				formField.setValue(Integer.toString(vaccineDose).trim());

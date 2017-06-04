@@ -106,6 +106,7 @@ import static org.opensrp.common.util.EasyMap.create;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.text.ParseException;
 import java.util.Map;
 import java.util.UUID;
 
@@ -145,7 +146,7 @@ public class WomanTTFollowUpTest extends TestConfig {
 	}
 	
 	@Ignore@Test
-	public void shouldCheckWhichHasTTVisit() throws JSONException{
+	public void shouldCheckWhichHasTTVisit() throws Exception{
 		
 		Members member = new Members();		
 		member.setCaseId("1ace9084-8e71-45b7-b2b1-aeea66c203c2");
@@ -339,7 +340,7 @@ public class WomanTTFollowUpTest extends TestConfig {
 	
 	
 	@Ignore@Test
-	public void shouldCheckWhichHasNoTTVisit() throws JSONException, NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException, JsonGenerationException, JsonMappingException, IOException{
+	public void shouldCheckWhichHasNoTTVisit() throws Exception{
 		System.err.println(""+UUID.randomUUID().toString());
 		Members member = new Members();		
 		member.setCaseId("e1e16f38-01d8-42ae-be55-4573b3ac349e");

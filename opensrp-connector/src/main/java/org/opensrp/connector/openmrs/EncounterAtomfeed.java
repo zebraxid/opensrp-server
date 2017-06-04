@@ -2,6 +2,7 @@ package org.opensrp.connector.openmrs;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.text.ParseException;
 
 import org.ict4h.atomfeed.client.AtomFeedProperties;
 import org.ict4h.atomfeed.client.domain.Event;
@@ -71,8 +72,11 @@ public class EncounterAtomfeed extends OpenmrsService implements EventWorker, At
 			System.out.println("Encounter:"+encounter);
 			eventService.getEvent(encounter,true);
 			eventService.addEvent(encounterService.convertToEvent(encounter));
-		} catch (JSONException e) {
+		} catch (JSONException | ParseException e) {
 			throw new RuntimeException(e);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 

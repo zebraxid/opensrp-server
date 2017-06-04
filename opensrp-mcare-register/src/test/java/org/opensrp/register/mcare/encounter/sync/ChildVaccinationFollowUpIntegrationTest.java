@@ -100,6 +100,7 @@ import static org.opensrp.common.util.EasyMap.create;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -133,7 +134,7 @@ import org.opensrp.register.mcare.domain.Members;
 import org.opensrp.register.mcare.repository.AllMembers;
 import org.powermock.api.mockito.PowerMockito;
 
-public class ChildVaccinationFollowUpTest extends TestConfig {	
+public class ChildVaccinationFollowUpIntegrationTest extends TestConfig {	
 	@Mock
 	FormSubmission formSubmission;
 	@Mock
@@ -151,7 +152,7 @@ public class ChildVaccinationFollowUpTest extends TestConfig {
 	}
 	
 	@Ignore@Test
-	public void shouldCheckWhichHasAtLeastOneVisit() throws JSONException{
+	public void shouldCheckWhichHasAtLeastOneVisit() throws Exception{
 		
 		Members member = new Members();		
 		member.setCaseId("6a1332be-5c19-4e26-b7cb-5851d27b68bd");
@@ -428,7 +429,7 @@ public class ChildVaccinationFollowUpTest extends TestConfig {
 	
 	
 	@Test
-	public void shouldCheckWhichHasNoVisit() throws JSONException, NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException, JsonGenerationException, JsonMappingException, IOException{
+	public void shouldCheckWhichHasNoVisit() throws Exception{
 		Members member = new Members();		
 		member.setCaseId("05cbaa2b-d3a6-40f6-a604-328bf725ddbf");
 		member.setPROVIDERID("sujan");

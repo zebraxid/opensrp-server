@@ -7,7 +7,6 @@ import java.text.SimpleDateFormat;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.opensrp.domain.Event;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.form.repository.AllFormSubmissions;
 import org.opensrp.register.encounter.sync.forms.ChildVaccineFollowup;
@@ -15,7 +14,6 @@ import org.opensrp.register.encounter.sync.forms.WomanTTFollowUp;
 import org.opensrp.register.encounter.sync.interfaces.FormsType;
 import org.opensrp.register.mcare.domain.Members;
 import org.opensrp.register.mcare.repository.AllMembers;
-import org.opensrp.scheduler.NoRoutesMatchException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,29 +46,29 @@ public class FeedHandler extends FormSubmissionConfig{
 		this.formSubmissions = formSubmissions;
 	}
 	@SuppressWarnings("unchecked")
-	public void getEvent(JSONObject encounter,String patientEntityId,Members member){		
+	public void getEvent(JSONObject encounter,String patientEntityId,Members member) throws Exception{		
 		try {					
 			JSONArray observations = encounter.getJSONArray("obs");				
 			for (int i = 0; i < observations.length(); i++) {				
 				JSONObject o = observations.getJSONObject(i);
 				String vaccines = (String) o.get("display");
 				String vaccineStringAfterFilter = this.stringFilter(vaccines);					
-				boolean TT = this.parseVaccineTypeFromString(vaccineStringAfterFilter, SyncConstant.TT);
-				String vaccineDate = this.parseDateFromString(vaccineStringAfterFilter);
-				double vaccineDose = this.parseDoseFromString(vaccineStringAfterFilter);
+				boolean TT = this.getTTFromString(vaccineStringAfterFilter, SyncConstant.TT);
+				String vaccineDate = this.getDateFromString(vaccineStringAfterFilter);
+				double vaccineDose = this.getDoseFromString(vaccineStringAfterFilter);
 				String vaccineName = this.getVaccinationName(vaccineStringAfterFilter);
 				System.err.println("vaccineName:"+vaccineName);
 				int vaccineDoseAsInt =(int) vaccineDose;				
 				if(TT){	
-					FormsType<WomanTTFollowUp> womanVaccine	= FormFatcory.getFormsTypeInstance("WTT");
-					FormSubmission formsubmissionEntity= womanVaccine.makeForm(this.formDirectory,vaccineDate,vaccineDoseAsInt,patientEntityId, member,vaccineName);
+					FormsType<WomanTTFollowUp> TTFormObj	= FormFatcory.getFormsTypeInstance("WTT");
+					FormSubmission formsubmissionEntity= TTFormObj.makeForm(this.formDirectory,vaccineDate,vaccineDoseAsInt,patientEntityId, member,vaccineName);
 					if(formsubmissionEntity !=null){
 						formSubmissions.add(formsubmissionEntity);
 						
 					}
 				}else{
-					FormsType<ChildVaccineFollowup> childVaccine= FormFatcory.getFormsTypeInstance("CVF");
-					FormSubmission formsubmissionEntity= childVaccine.makeForm(this.formDirectory,vaccineDate,vaccineDoseAsInt,patientEntityId, member,vaccineName);
+					FormsType<ChildVaccineFollowup> childVaccineFormObj= FormFatcory.getFormsTypeInstance("CVF");
+					FormSubmission formsubmissionEntity= childVaccineFormObj.makeForm(this.formDirectory,vaccineDate,vaccineDoseAsInt,patientEntityId, member,vaccineName);
 					if(formsubmissionEntity !=null){
 						formSubmissions.add(formsubmissionEntity);
 						
@@ -107,7 +105,8 @@ public class FeedHandler extends FormSubmissionConfig{
 		return strRemoveIPV;
 		
 	}
-	private String getVaccinationName(String str){
+	
+	public String getVaccinationName(String str) throws Exception{
 		String[] vaccineStringToArray = str.split(",");
 		for (String value : vaccineStringToArray) {	
 			try{				
@@ -116,19 +115,18 @@ public class FeedHandler extends FormSubmissionConfig{
 					return vaccine[0];
 				}
 			}catch(Exception e ){
-				e.printStackTrace();
+				throw new Exception();
 			}
 		}
 		return null;
 		
 	}
-	public boolean parseVaccineTypeFromString(String  str,String subString){
-		
+	public boolean getTTFromString(String  str,String subString){		
 		return str.toLowerCase().contains(subString.toLowerCase());
 			
 	}
 	
-	public String parseDateFromString(String str){
+	public String getDateFromString(String str) throws ParseException{
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");		
 		String[] vaccineStringToArray = str.split(",");
 		for (String value : vaccineStringToArray) {				
@@ -136,7 +134,7 @@ public class FeedHandler extends FormSubmissionConfig{
 				formatter.parse(value.trim());				 
 				return value;
 			} catch (ParseException e) {				
-				logger.info("Message: "+e.getMessage());
+				throw new ParseException("Unparseable string",e.getErrorOffset());
 			}
            
 		}
@@ -145,13 +143,13 @@ public class FeedHandler extends FormSubmissionConfig{
 		
 	}
 	
-	public Double parseDoseFromString(String str){		
+	public Double getDoseFromString(String str) throws Exception{		
 		String[] vaccineStringToArray = str.split(",");
 		for (String value : vaccineStringToArray) {				
 			try{				
 				return (double) Float.parseFloat(value);				 
 			}catch (Exception e) {				
-				logger.info("Message: "+e.getMessage());
+				throw new Exception();
 			}
 		}
 		return 99.0;

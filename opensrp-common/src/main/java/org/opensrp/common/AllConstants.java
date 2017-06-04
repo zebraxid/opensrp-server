@@ -276,8 +276,8 @@ public class AllConstants {
 	    	public static final String Child_calc_dob ="Child_calc_dob";
 	    	public static final String Child_dob ="Child_dob";
 	    	public static final String Child_dob_estimated ="Child_dob_estimated";
-	    	public static final String Child_age_days ="Child_age_days";
 	    	public static final String child_age_days ="child_age_days";
+	    	public static final String Child_age_days ="child_age_days";
 	    	public static final String Child_birth_date_note ="Child_birth_date_note";
 	    	public static final String Birth_Weigtht ="Birth_Weigtht";
 	    	public static final String Newborn_Care_Received ="Newborn_Care_Received";
