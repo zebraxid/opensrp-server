@@ -1,9 +1,7 @@
 package org.opensrp.register.encounter.sync.forms;
 
-import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -18,25 +16,25 @@ import org.opensrp.form.domain.FormData;
 import org.opensrp.form.domain.FormField;
 import org.opensrp.form.domain.FormInstance;
 import org.opensrp.form.domain.FormSubmission;
+import org.opensrp.register.encounter.sync.FileReader;
 import org.opensrp.register.encounter.sync.SyncConstant;
 import org.opensrp.register.encounter.sync.interfaces.FormsType;
 import org.opensrp.register.mcare.domain.Members;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ChildVaccineFollowup implements FormsType<Members> {
+public class ChildVaccineFollowup extends FileReader implements FormsType<Members> {
 	private static Logger logger = LoggerFactory.getLogger(ChildVaccineFollowup.class.toString());
 	private ChildVaccineFollowup(){
 		
 	}
 	@Override
-	public FormSubmission makeForm(String formDir,String vaccineDate,int vaccineDose,String patientIdEntityId,Members member,String vaccineName) {
-		FormSubmission  form = null ;
-		
+	public FormSubmission getFormSubmission(String formDir,String vaccineDate,int vaccineDose,String patientIdEntityId,Members member,String vaccineName) throws IOException {
+		FormSubmission  form = null ;		
 		if(member!=null){
 		    if(member.child_vaccine().isEmpty()){ 
 		    	form =  craeteFormsubmission(formDir,vaccineDate,vaccineDose,patientIdEntityId,member,vaccineName);	    	
-		    }else if(!isThisVaccineGiven(member,vaccineDose,vaccineName)){		    	
+		    }else if(!checkingVaccineGivenOrNot(member,vaccineDose,vaccineName)){		    	
 		    	form =  craeteFormsubmission(formDir,vaccineDate,vaccineDose,patientIdEntityId,member,vaccineName);	    	
 		    }else{    	
 		    	return  null;
@@ -44,26 +42,20 @@ public class ChildVaccineFollowup implements FormsType<Members> {
 		}else{
 			return  null;
 		}
-	    return form;
-		
+	    return form;		
 	}
-	private FormSubmission craeteFormsubmission(String formDir,String vaccineDate,int vaccineDose,String patientIdEntityId,Members member,String vaccineName){
-		JsonNode enc = null;
-		ObjectMapper mapper = new ObjectMapper();
-		String filePath = formDir+"/"+SyncConstant.CHILDACCINATIONFORMNAME+"/form_definition.json";		
-	    try {
-	    	 enc = mapper.readValue(new File(filePath), JsonNode.class);
-	     }catch (IOException e) {
-	         e.printStackTrace();
-	     }	    
+	private FormSubmission craeteFormsubmission(String formDir,String vaccineDate,int vaccineDose,String patientIdEntityId,Members member,String vaccineName) throws IOException{
+		JsonNode file = ChildVaccineFollowup.getFile(formDir, SyncConstant.CHILDACCINATIONFORMNAME);
+		ObjectMapper mapper = new ObjectMapper();		    
 	    FormInstance formInstance =new FormInstance();	     
 	    List<FormField> formFields = new ArrayList<FormField>();
-	    JsonNode bindType=  enc.get("form").get("bind_type");
+	    JsonNode bindType=  file.get("form").get("bind_type");
 	    String convertMemberToString ;
 	    JSONObject convertMemberToJsonObject = null;
 	    Members getMemberNewObject = new Members();
+	    Map<String, String> childVaccineFollowup = null;
 	    if(member.child_vaccine().isEmpty()){
-		    try{
+		    try{		    	
 		    	convertMemberToString = mapper.writeValueAsString(member);		
 		    	convertMemberToJsonObject = new JSONObject(convertMemberToString);	
 		    	System.err.println("convertMemberToJsonObject:"+convertMemberToJsonObject);
@@ -71,18 +63,13 @@ public class ChildVaccineFollowup implements FormsType<Members> {
 		    	logger.info(""+e.getMessage());
 		    }
 	    }else{
-	    	
-	    }
-	    Map<String, String> childVaccineFollowup = null;
-	    if(!member.child_vaccine().isEmpty()){
-	    	 childVaccineFollowup = member.child_vaccine().get(member.child_vaccine().size()-1);
-	    }
-	    ArrayNode fields = (ArrayNode) enc.get("form").get("fields");
+	    	childVaccineFollowup = member.child_vaccine().get(member.child_vaccine().size()-1);
+	    }	   
+	    
+	    ArrayNode fields = (ArrayNode) file.get("form").get("fields");
 	    String fieldNameFinal="";
 	    String fieldNameRetro = "";
-	    String fieldNameDose = "";
-	    
-	    
+	    String fieldNameDose = "";	    
 	    for (JsonNode node : fields) {
 	    	FormField formField=new FormField();
 	    	String name = node.get("name").toString();
@@ -260,7 +247,7 @@ public class ChildVaccineFollowup implements FormsType<Members> {
 	}
 	
 	@Override
-	public boolean isThisVaccineGiven(Members member,int dose,String vaccineName) {		
+	public boolean checkingVaccineGivenOrNot(Members member,int dose,String vaccineName) {		
 		
 		String finalValue ;
 		if(!member.child_vaccine().isEmpty()){	

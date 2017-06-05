@@ -14,29 +14,24 @@ public class FormFactoryUnitTest {
 	@Before
 	public void setUp() throws Exception
 	{
-		initMocks(this);
-		
-		
+		initMocks(this);		
 	}
 	
 	@Test
-	public void shuoldGetWomanTTFormInstance(){
-		
+	public void shuoldGetWomanTTFormInstance(){		
 		@SuppressWarnings("unchecked")
 		FormsType<WomanTTFollowUp> TTFormObj= FormFatcory.getFormsTypeInstance("WTT");		
 		Assert.assertNotNull(TTFormObj);
 	}
 	
 	@Test
-	public void shuoldGetChildVaccineFormInstance(){
-		
+	public void shuoldGetChildVaccineFormInstance(){		
 		@SuppressWarnings("unchecked")
 		FormsType<ChildVaccineFollowup> childVaccineFormObj= FormFatcory.getFormsTypeInstance("CVF");
 		Assert.assertNotNull(childVaccineFormObj);
 	}
 	@Test
-	public void shuoldGetNullInstance(){
-		
+	public void shuoldGetNullInstance(){		
 		@SuppressWarnings("unchecked")
 		FormsType<ChildVaccineFollowup> childVaccineFormObj= FormFatcory.getFormsTypeInstance("NULL");
 		Assert.assertEquals(null,childVaccineFormObj);

@@ -61,14 +61,14 @@ public class FeedHandler extends FormSubmissionConfig{
 				int vaccineDoseAsInt =(int) vaccineDose;				
 				if(TT){	
 					FormsType<WomanTTFollowUp> TTFormObj	= FormFatcory.getFormsTypeInstance("WTT");
-					FormSubmission formsubmissionEntity= TTFormObj.makeForm(this.formDirectory,vaccineDate,vaccineDoseAsInt,patientEntityId, member,vaccineName);
+					FormSubmission formsubmissionEntity= TTFormObj.getFormSubmission(this.formDirectory,vaccineDate,vaccineDoseAsInt,patientEntityId, member,vaccineName);
 					if(formsubmissionEntity !=null){
 						formSubmissions.add(formsubmissionEntity);
 						
 					}
 				}else{
 					FormsType<ChildVaccineFollowup> childVaccineFormObj= FormFatcory.getFormsTypeInstance("CVF");
-					FormSubmission formsubmissionEntity= childVaccineFormObj.makeForm(this.formDirectory,vaccineDate,vaccineDoseAsInt,patientEntityId, member,vaccineName);
+					FormSubmission formsubmissionEntity= childVaccineFormObj.getFormSubmission(this.formDirectory,vaccineDate,vaccineDoseAsInt,patientEntityId, member,vaccineName);
 					if(formsubmissionEntity !=null){
 						formSubmissions.add(formsubmissionEntity);
 						
@@ -126,7 +126,7 @@ public class FeedHandler extends FormSubmissionConfig{
 			
 	}
 	
-	public String getDateFromString(String str) throws ParseException{
+	public String getDateFromString(String str) {
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");		
 		String[] vaccineStringToArray = str.split(",");
 		for (String value : vaccineStringToArray) {				
@@ -134,7 +134,7 @@ public class FeedHandler extends FormSubmissionConfig{
 				formatter.parse(value.trim());				 
 				return value;
 			} catch (ParseException e) {				
-				throw new ParseException("Unparseable string",e.getErrorOffset());
+				logger.info("Message:"+e.getMessage());
 			}
            
 		}
@@ -143,13 +143,13 @@ public class FeedHandler extends FormSubmissionConfig{
 		
 	}
 	
-	public Double getDoseFromString(String str) throws Exception{		
+	public Double getDoseFromString(String str){		
 		String[] vaccineStringToArray = str.split(",");
 		for (String value : vaccineStringToArray) {				
 			try{				
 				return (double) Float.parseFloat(value);				 
 			}catch (Exception e) {				
-				throw new Exception();
+				logger.info("Message:"+e.getMessage());
 			}
 		}
 		return 99.0;

@@ -1,6 +1,5 @@
 package org.opensrp.register.encounter.sync.forms;
 
-import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -16,6 +15,7 @@ import org.opensrp.form.domain.FormData;
 import org.opensrp.form.domain.FormField;
 import org.opensrp.form.domain.FormInstance;
 import org.opensrp.form.domain.FormSubmission;
+import org.opensrp.register.encounter.sync.FileReader;
 import org.opensrp.register.encounter.sync.SyncConstant;
 import org.opensrp.register.encounter.sync.interfaces.FormsType;
 import org.opensrp.register.mcare.domain.Members;
@@ -23,20 +23,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 @Service
-public class WomanTTFollowUp implements FormsType<Members> {
+public class WomanTTFollowUp extends FileReader implements FormsType<Members> {
 	private static Logger logger = LoggerFactory.getLogger(WomanTTFollowUp.class.toString());
 	
-	private WomanTTFollowUp(){
-		
+	private WomanTTFollowUp(){		
 	}
 	
 	@Override
-	public FormSubmission makeForm(String formDir,String vaccineDate,int vaccineDose,String patientIdEntityId,Members member,String vaccineName) {
+	public FormSubmission getFormSubmission(String formDir,String vaccineDate,int vaccineDose,String patientIdEntityId,Members member,String vaccineName) throws IOException {
 		FormSubmission  form = null ;
 		if(member!=null){
 		    if(member.TTVisit().isEmpty()){ 
 		    	form =  craeteFormsubmission(formDir,vaccineDate,vaccineDose,patientIdEntityId,member);	    	
-		    }else if(!isThisVaccineGiven(member,vaccineDose, vaccineName)){ 
+		    }else if(!checkingVaccineGivenOrNot(member,vaccineDose, vaccineName)){ 
 		    	form =  craeteFormsubmission(formDir,vaccineDate,vaccineDose,patientIdEntityId,member);	    	
 		    }else{    	
 		    	
@@ -45,32 +44,23 @@ public class WomanTTFollowUp implements FormsType<Members> {
 			
 		}
 	    return form;		
-	}
+	}	
 	
-	
-	private FormSubmission craeteFormsubmission(String formDir,String vaccineDate,int vaccineDose,String patientIdEntityId,Members member){
-		JsonNode enc = null;
-		ObjectMapper mapper = new ObjectMapper();
-		String filePath = formDir+"/"+SyncConstant.TTFORMNAME+"/form_definition.json";		
-	    try {
-	    	 enc = mapper.readValue(new File(filePath), JsonNode.class);
-	    	 FormInstance formInstance =new FormInstance();	     
+	private FormSubmission craeteFormsubmission(String formDir,String vaccineDate,int vaccineDose,String patientIdEntityId,Members member) throws IOException{
+		JsonNode file = WomanTTFollowUp.getFile(formDir, SyncConstant.TTFORMNAME);
+		ObjectMapper mapper = new ObjectMapper();				
+	    try {	    	 
+	    	FormInstance formInstance =new FormInstance();	     
 	 	    List<FormField> formFields = new ArrayList<FormField>();
-	 	    JsonNode bindType=  enc.get("form").get("bind_type");
+	 	    JsonNode bindType=  file.get("form").get("bind_type");
 	 	    String convertMemberToString ;
 	 	    JSONObject convertMemberToJsonObject = null;
 	 	    Members getMemberNewObject = new Members();
-	 	    if(member.TTVisit().isEmpty()){
-	 		    try{
-	 		    	convertMemberToString = mapper.writeValueAsString(member);		
-	 		    	convertMemberToJsonObject = new JSONObject(convertMemberToString);	
-	 		    }catch(Exception e){
-	 		    	logger.info(""+e.getMessage());
-	 		    }
-	 	    }else{
-	 	    	
+	 	    if(member.TTVisit().isEmpty()){	 		    
+	 		    convertMemberToString = mapper.writeValueAsString(member);		
+	 		    convertMemberToJsonObject = new JSONObject(convertMemberToString);	 		    
 	 	    }
-	 	    ArrayNode fields = (ArrayNode) enc.get("form").get("fields");
+	 	    ArrayNode fields = (ArrayNode) file.get("form").get("fields");
 	 	    for (JsonNode node : fields) {
 	 	    	FormField form=new FormField();
 	 	    	String name = node.get("name").toString();
@@ -79,8 +69,7 @@ public class WomanTTFollowUp implements FormsType<Members> {
 	 	    	bType.append(".".toString());
 	 	    	bType.append(name);	    	
 	 	    	form.setName(name);	    	
-	 	    	form.setSource(bType.toString().replace("\"", ""));
-	 	    	
+	 	    	form.setSource(bType.toString().replace("\"", ""));	 	    	
 	 	    	if(!member.TTVisit().isEmpty()){
 	 		    	try{
 	 		    		if(name.equalsIgnoreCase(SyncConstant.TTFinalMapping.get(Integer.toString(vaccineDose)))){
@@ -115,10 +104,8 @@ public class WomanTTFollowUp implements FormsType<Members> {
 	 	    	if(name.equalsIgnoreCase("id")){				
 	 				form.setValue(patientIdEntityId.trim());
 	 			}
-	 	    	formFields.add(form);
-	 			
-	 		}
-	 	    
+	 	    	formFields.add(form);	 			
+	 		}   
 	 	    
 	 	    FormData formData = new FormData();
 	 	    formData.setBind_type("members");
@@ -129,8 +116,8 @@ public class WomanTTFollowUp implements FormsType<Members> {
 	 	    FormSubmission formSubmission = new FormSubmission(member.PROVIDERID(),UUID.randomUUID().toString().trim(), SyncConstant.TTFORMNAME, patientIdEntityId, "1", System.currentTimeMillis(), formInstance);
 	 	    formSubmission.setServerVersion(System.currentTimeMillis());	  
 	 		return formSubmission;
-	     }catch (IOException e) {
-	         e.printStackTrace();
+	     }catch (Exception e) {
+	         logger.info("Message:"+e.getMessage());
 	     }	    
 	    return null;
 	}	
@@ -140,15 +127,14 @@ public class WomanTTFollowUp implements FormsType<Members> {
 	}
 	
 	@Override
-	public boolean isThisVaccineGiven(Members member,int dose,String vaccineName) {		
+	public boolean checkingVaccineGivenOrNot(Members member,int dose,String vaccineName) {		
 		if(!member.TTVisit().isEmpty()){		
 			Map<String, String> TTVisit = member.TTVisit();		
 			String TTFinalDate = TTVisit.get(SyncConstant.TTFinalMapping.get(Integer.toString(dose)));
 			if(TTFinalDate.isEmpty() || TTFinalDate.equalsIgnoreCase("null") || TTFinalDate ==null){
 				return false;
 			}else{
-				return true;
-		}
+				return true;		}
 		}else{
 			return false;
 		}
