@@ -51,6 +51,8 @@ public class Child extends MotechBaseDataObject {
 	private long SUBMISSIONDATE;
 	@JsonProperty
 	private long clientVersion;
+	@JsonProperty
+	private String user_type;
 
 	public Child() {
 		details = new HashMap<String, String>();
@@ -217,6 +219,14 @@ public class Child extends MotechBaseDataObject {
 
 	public String getEncc3_current_form_status() {
 		return encc3_current_form_status;
+	}
+
+	public String getUser_type() {
+		return user_type;
+	}
+
+	public void setUser_type(String user_type) {
+		this.user_type = user_type;
 	}
 
 	@Override
