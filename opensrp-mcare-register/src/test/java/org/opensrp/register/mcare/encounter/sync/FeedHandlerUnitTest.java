@@ -1,23 +1,37 @@
 package org.opensrp.register.mcare.encounter.sync;
 
-import java.io.IOException;
+import junit.framework.Assert;
 
-import org.codehaus.jackson.JsonNode;
-import org.junit.Assert;
 import org.junit.Test;
-import org.opensrp.register.encounter.sync.FileReader;
-import org.opensrp.register.encounter.sync.SyncConstant;
-public class FeedHandlerUnitTest extends FileReader{	
+import org.opensrp.register.encounter.sync.FeedHandler;
+public class FeedHandlerUnitTest{	
+	
 	@Test
-	public void shuoldGetFile() throws IOException{
-		JsonNode file = FeedHandlerUnitTest.getFile("./../assets/form", SyncConstant.CHILDACCINATIONFORMNAME);
-		Assert.assertNotNull(file);
-	}	
-	@Test(expected=IOException.class)
-	public void shuoldNotGetFile() throws IOException{
-		JsonNode file = FeedHandlerUnitTest.getFile("./../assets/forms", SyncConstant.CHILDACCINATIONFORMNAME);
-		Assert.assertNull(file);
+	public void shouldGetDoseFromString(){
+		FeedHandler feedHandler = new FeedHandler();
+		String str = "TT 2 , 2016-02-28, true, 2.0";
+		Assert.assertEquals("Should equal",2.0, feedHandler.getDoseFromString(str));
 	}
 	
+	@Test
+	public void shouldGetDateFromString(){
+		FeedHandler feedHandler = new FeedHandler();
+		String str = "TT 2 , 2016-02-28, true, 2.0";
+		Assert.assertEquals("Should equal","2016-02-28", feedHandler.getDateFromString(str));
+	}
+	
+	@Test
+	public void shouldGetVaccinationName() throws Exception{
+		FeedHandler feedHandler = new FeedHandler();
+		String str = "BCG, 2016-02-28, true, 0.0";		
+		Assert.assertEquals("Should equal","BCG", feedHandler.getVaccinationName(str));
+	}
+	
+	@Test
+	public void shouldStringFilter(){
+		FeedHandler feedHandler = new FeedHandler();
+		String str ="Immunization Incident Template: TT 2 (Tetanus toxoid), 2016-02-28, true, 2.0";
+		Assert.assertEquals("Should equal these two string","TT 2 , 2016-02-28, true, 2.0", feedHandler.stringFilter(str));
+	}
 	
 }

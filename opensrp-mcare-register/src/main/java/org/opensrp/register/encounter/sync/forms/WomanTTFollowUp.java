@@ -1,3 +1,7 @@
+/***
+ * @author proshanto
+ * 
+ * */
 package org.opensrp.register.encounter.sync.forms;
 
 import java.io.IOException;
@@ -29,24 +33,44 @@ public class WomanTTFollowUp extends FileReader implements FormsType<Members> {
 	private WomanTTFollowUp(){		
 	}
 	
+	/**
+	 * @param   formDir  current directory location of the form.
+	 * @param 	vaccineDate date of vaccine.
+	 * @param 	vaccineDose dose number of a vaccine.
+	 * @param 	memberEntityId unique id of a member.
+	 * @param 	vaccineName name of a vaccine.
+	 * @param 	member A member information.	 
+	 * @return 	FormSubmission 
+	 */
 	@Override
-	public FormSubmission getFormSubmission(String formDir,String vaccineDate,int vaccineDose,String patientIdEntityId,Members member,String vaccineName) throws IOException {
+	public FormSubmission getFormSubmission(String formDir,String vaccineDate,int vaccineDose,String memberEntityId,Members member,String vaccineName) throws IOException {
 		FormSubmission  form = null ;
 		if(member!=null){
-		    if(member.TTVisit().isEmpty()){ 
-		    	form =  craeteFormsubmission(formDir,vaccineDate,vaccineDose,patientIdEntityId,member);	    	
-		    }else if(!checkingVaccineGivenOrNot(member,vaccineDose, vaccineName)){ 
-		    	form =  craeteFormsubmission(formDir,vaccineDate,vaccineDose,patientIdEntityId,member);	    	
-		    }else{    	
-		    	
+		    if(member.TTVisit().isEmpty()){ // when no vaccine is given before .
+		    	form =  craeteFormsubmission(formDir,vaccineDate,vaccineDose,memberEntityId,member);	    	
+		    }else if(!checkingVaccineGivenOrNot(member,vaccineDose, vaccineName)){  // At least one vaccine is given before. 
+		    	form =  craeteFormsubmission(formDir,vaccineDate,vaccineDose,memberEntityId,member);	    	
 		    }
-		}else{
-			
 		}
 	    return form;		
 	}	
 	
-	private FormSubmission craeteFormsubmission(String formDir,String vaccineDate,int vaccineDose,String patientIdEntityId,Members member) throws IOException{
+	/**
+	 * This method originally make a FormSubmission according to condition.
+	 * if no vaccine is given before then reqiured member information gets from Members object.
+	 * if at least one vaccine is given before then reqiured member information gets from Members.TTVisit() object. 
+	 * 
+	 * @param  formDir  current directory location of the form.
+	 * @param vaccineDate date of vaccine.
+	 * @param vaccineDose dose number of a vaccine.
+	 * @param memberEntityId unique id of a member.
+	 * @param vaccineName name of a vaccine.
+	 * @param member A member information.
+	 * @throws IOException 
+	 * 			if stream to a file cannot be written.
+	 * @return FormSubmission 
+	 * */
+	private FormSubmission craeteFormsubmission(String formDir,String vaccineDate,int vaccineDose,String memberEntityId,Members member) throws IOException{
 		JsonNode file = WomanTTFollowUp.getFile(formDir, SyncConstant.TTFORMNAME);
 		ObjectMapper mapper = new ObjectMapper();				
 	    try {	    	 
@@ -102,18 +126,17 @@ public class WomanTTFollowUp extends FileReader implements FormsType<Members> {
 	 		    	}
 	 	    	}	    	
 	 	    	if(name.equalsIgnoreCase("id")){				
-	 				form.setValue(patientIdEntityId.trim());
+	 				form.setValue(memberEntityId.trim());
 	 			}
 	 	    	formFields.add(form);	 			
-	 		}   
-	 	    
+	 		}	 	    
 	 	    FormData formData = new FormData();
 	 	    formData.setBind_type("members");
 	 	    formData.setDefault_bind_path("/model/instance/Woman_TT_Followup_Form");
 	 	    formData.setFields(formFields);	     
 	 	    formInstance.setForm_data_definition_version("1");	     
 	 	    formInstance.setForm(formData);	       
-	 	    FormSubmission formSubmission = new FormSubmission(member.PROVIDERID(),UUID.randomUUID().toString().trim(), SyncConstant.TTFORMNAME, patientIdEntityId, "1", System.currentTimeMillis(), formInstance);
+	 	    FormSubmission formSubmission = new FormSubmission(member.PROVIDERID(),UUID.randomUUID().toString().trim(), SyncConstant.TTFORMNAME, memberEntityId, "1", System.currentTimeMillis(), formInstance);
 	 	    formSubmission.setServerVersion(System.currentTimeMillis());	  
 	 		return formSubmission;
 	     }catch (Exception e) {
@@ -126,6 +149,14 @@ public class WomanTTFollowUp extends FileReader implements FormsType<Members> {
 		return new WomanTTFollowUp();
 	}
 	
+	/**
+	 * This method is used to check a vaccine given or not.	
+	 * 
+	 * @param vaccineDose dose number of a vaccine.	 
+	 * @param vaccineName name of a vaccine.
+	 * @param member member information.
+	 * 
+	 * */
 	@Override
 	public boolean checkingVaccineGivenOrNot(Members member,int dose,String vaccineName) {		
 		if(!member.TTVisit().isEmpty()){		

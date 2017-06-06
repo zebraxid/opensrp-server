@@ -58,34 +58,34 @@ public class FeedHandler extends FormSubmissionConfig{
 				double vaccineDose = this.getDoseFromString(vaccineStringAfterFilter);
 				String vaccineName = this.getVaccinationName(vaccineStringAfterFilter);
 				System.err.println("vaccineName:"+vaccineName);
-				int vaccineDoseAsInt =(int) vaccineDose;				
+				int vaccineDoseAsInt =(int) vaccineDose;
+				try{
 				if(TT){	
 					FormsType<WomanTTFollowUp> TTFormObj	= FormFatcory.getFormsTypeInstance("WTT");
 					FormSubmission formsubmissionEntity= TTFormObj.getFormSubmission(this.formDirectory,vaccineDate,vaccineDoseAsInt,patientEntityId, member,vaccineName);
 					if(formsubmissionEntity !=null){
 						formSubmissions.add(formsubmissionEntity);
-						
+						logger.info("Synced TT vaccine:"+formsubmissionEntity.toString());
 					}
 				}else{
 					FormsType<ChildVaccineFollowup> childVaccineFormObj= FormFatcory.getFormsTypeInstance("CVF");
 					FormSubmission formsubmissionEntity= childVaccineFormObj.getFormSubmission(this.formDirectory,vaccineDate,vaccineDoseAsInt,patientEntityId, member,vaccineName);
 					if(formsubmissionEntity !=null){
 						formSubmissions.add(formsubmissionEntity);
-						
+						logger.info("Synced child vaccine:"+formsubmissionEntity.toString());
 					}
-				}					
+				}
+				}catch(Exception e){
+					e.printStackTrace();
+				}
 			}			
 			
 		} catch (JSONException e) {			
 			logger.info(e.getMessage());
 		}catch(ArrayIndexOutOfBoundsException ee){
 			logger.info(ee.getMessage());
-		}
-		
-		
+		}		
 	}
-	
-	
 	
 	public String stringFilter(String str){		
 		String strRemoveImmu = "";
@@ -102,7 +102,7 @@ public class FeedHandler extends FormSubmissionConfig{
 		strRemoveBCG = strRemovePCV.replace(SyncConstant.vaccines.get("BCG"), "");//bcg
 		String strRemoveIPV = "";
 		strRemoveIPV = strRemoveBCG.replace(SyncConstant.vaccines.get("IPV"), "");//ipv		
-		return strRemoveIPV;
+		return strRemoveIPV.trim();
 		
 	}
 	
@@ -132,7 +132,7 @@ public class FeedHandler extends FormSubmissionConfig{
 		for (String value : vaccineStringToArray) {				
 			try {
 				formatter.parse(value.trim());				 
-				return value;
+				return value.trim();
 			} catch (ParseException e) {				
 				logger.info("Message:"+e.getMessage());
 			}
@@ -143,6 +143,9 @@ public class FeedHandler extends FormSubmissionConfig{
 		
 	}
 	
+	/**
+	 * get dose number form a string (e.x:)
+	 * */
 	public Double getDoseFromString(String str){		
 		String[] vaccineStringToArray = str.split(",");
 		for (String value : vaccineStringToArray) {				
@@ -152,13 +155,17 @@ public class FeedHandler extends FormSubmissionConfig{
 				logger.info("Message:"+e.getMessage());
 			}
 		}
-		return 99.0;
+		return 0.0;
 		
 	}
-
 	
-	public Members get(String patientIdEntityId) {
-		 Members members = allMembers.findByCaseId(patientIdEntityId);		 
+	/**
+	 * get a member 
+	 * @param memberEntityId A member unique Id.
+	 * @return member
+	 */	
+	public Members get(String memberEntityId) {
+		 Members members = allMembers.findByCaseId(memberEntityId);		 
 		return members;
 	}
 }

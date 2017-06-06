@@ -8,10 +8,15 @@ import org.codehaus.jackson.map.ObjectMapper;
 
 public abstract class FileReader {
 	
-	public static JsonNode getFile(String formDir,String formName) throws IOException{
+	/**
+	 * read a json file. 
+	 * @param formDir A directory of json file.
+	 * @param formName name of a form name.
+	 * @return a file as type JsonNode.
+	 */
+	public static JsonNode getFile(String formDir,String formName) throws IOException {
 		JsonNode file = null;
-		ObjectMapper mapper = new ObjectMapper();
-		System.out.println(formDir+":"+formName);
+		ObjectMapper mapper = new ObjectMapper();		
 		String filePath = formDir+"/"+formName+"/form_definition.json";		
 	    try {
 	    	file = mapper.readValue(new File(filePath), JsonNode.class);

@@ -9,6 +9,11 @@ public class FormFatcory {
 	private FormFatcory(){
 		
 	}
+	/**
+	 * Generate new instance
+	 * @param form a vaccine form type.
+	 * @return new Instance according to form type. 
+	 */
 	@SuppressWarnings("rawtypes")
 	public static FormsType getFormsTypeInstance(String form){
 		if(form.equalsIgnoreCase("CVF")){
