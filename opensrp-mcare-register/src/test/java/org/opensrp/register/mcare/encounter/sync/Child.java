@@ -148,8 +148,7 @@ public class Child {
 		member.setIs_child("1");
 		member.setrelationalid("d4423a9f-a9df-4ae7-9abc-e776f077ccc8") ;
 		member.setMotherRelationalId("2a817076-8030-4fef-8740-c33500cd17c9");	
-		return member;
-		
+		return member;		
 	}
 	
 	public Map<String, String> getChildVaccine(){
@@ -325,8 +324,182 @@ public class Child {
 					    	, null)				
 				.put(received_time, 
 				dateTime.format(today).toString()).map();
-		return vaccine;
-		
+		return vaccine;		
+	}
+	
+	
+	public Map<String, String> getChildVaccineWithNoBCGFinalField(){
+		SimpleDateFormat dateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date today = Calendar.getInstance().getTime();	
+		Map<String, String> vaccine = create(ID, "05cbaa2b-d3a6-40f6-a604-328bf725ddbf")
+				.put(REFERENCE_DATE,"2017-05-30")
+				.put(START_DATE,"2017-05-30 10:04:10")
+				.put(END_DATE,"2017-05-30 10:05:00")
+				.put(Member_Fname,"molim")
+				.put(Child_mother_name,"dghh")
+				.put(Child_gender,"1")
+				.put(Child_dob,"2015-01-07")
+				.put(Member_Reg_Date,"2017-05-30")
+				.put(MEMBER_COUNTRY	, "null")
+				.put(MEMBER_DIVISION,"Dhaka")
+				.put(MEMBER_DISTRICT,"Gazipur")
+				.put(MEMBER_UPAZILLA,"Kaliganj")
+				.put(MEMBER_PAURASAVA,"Kaliganj Paurashava")
+				.put(MEMBER_UNION,"Urban Ward No-01")
+				.put(MEMBER_WARD,"Ward-1")
+				.put(Member_BLOCK,"1-KA")
+				.put(MEMBER_HIE_FACILITIES,"Kaliganj TW (10019869)")
+				.put(MEMBER_ADDRESS_LINE,"")
+				.put(MEMBER_GPS,"")
+				.put(epi_card_number,"25874128")
+				.put(child_was_suffering_from_a_disease_at_birth,"no")
+				.put(contact_phone_number
+					    	, "")
+				.put(e_bcg
+					    	, "")
+				.put(e_opv0
+					    	, "")
+				.put(e_penta2
+					    	, "")
+				.put(e_penta1
+					    	, "")
+				.put(e_penta3
+					    	,"")
+				.put(e_opv1
+					    	, "")
+				.put(e_opv2
+					    	, "")
+				.put(e_opv3
+					    	, "")
+				.put(e_pcv1
+					    	, "")
+				.put(e_pcv2
+					    	, "") 
+				.put(e_pcv3
+					    	, "")
+				.put(e_ipv
+					    	, "")
+				.put(e_measles1
+					    	, "")
+				.put(e_measles2
+					    	, "")
+				.put(provider_id
+					    	, "")
+				.put(provider_location_id
+					    	, "")
+				.put(provider_location_name
+					    	, "")
+				.put(provider_location_note
+					    	, "")
+				.put(existing_client_reg_date_note
+					    	,"")
+				.put(epi_card_number_note
+					    	, "")
+				.put(first_name_note
+					    	, "")
+				.put(child_age
+					    	, "28")
+				.put(child_age_days
+							, "874")
+				.put(calc_dob_note
+					    	, "")
+				.put(gender_note
+					    	, "")
+				.put(mother_name_note
+					    	, "")
+				.put(address
+					    	, "")
+				.put(address_change
+					    	, "")
+				.put(address1
+					    	, "")
+				.put(landmark
+					    	, "")
+				.put(center_gps
+					    	, "")
+				.put(child_was_suffering_from_a_disease_at_birth_note
+					    	, "")
+				.put(side_effects
+					    	, "")
+				.put(six_weeks
+					    	, null)
+				.put(ten_weeks
+					    	, null)
+				.put(forteen_weeks
+					    	, null)
+				.put(nine_months
+					    	, null)
+				.put(fifteen_months
+					    	, null)
+				.put(bcg_note
+					    	, "")
+				.put(opv0_note
+					    	, "")
+				.put(opv1_note
+					    	, "")
+				.put(pcv1_note
+					    	, "")
+				.put(penta1_note
+					    	, "")
+				.put(opv2_note
+					    	, "")
+				.put(pcv2_note
+					    	, "")
+				.put(penta2_note
+					    	, "")
+				.put(opv3_note
+					    	, "")
+				.put(pcv3_note
+					    	, "")
+				.put(penta3_note
+					    	, "")
+				.put(ipv_note
+					    	, "")
+				.put(measles1_note
+					    	, "")
+				.put(measles2_note
+					    	, "")
+				.put(vaccination_date
+					    	, null)				
+				.put(final_opv0
+					    	, "2016-07-28")
+				.put(final_pcv1
+					    	, "2016-07-15")
+				.put(final_opv1
+					    	, "")
+				.put(final_penta1
+					    	, "")
+				.put(final_pcv2
+					    	, "")
+				.put(final_opv2
+					    	, "")
+				.put(final_penta2
+					    	, "")
+				.put(final_pcv3
+					    	, "")
+				.put(final_opv3
+					    	, "")
+				.put(final_penta3
+					    	, "")
+				.put(final_ipv
+					    	, "")
+				.put(final_measles1
+					    	, "")
+				.put(final_measles2
+					    	, "")
+				.put(Is_Reg_Today
+					    	,"0")
+				.put(child_vaccines
+					    	, null)
+				.put(child_vaccines1
+					    	,  "bcg opv0 pcv1")
+				.put(child_vaccines1_2
+					    	, null)
+				.put(child_vaccines_2
+					    	, null)				
+				.put(received_time, 
+				dateTime.format(today).toString()).map();
+		return vaccine;		
 	}
 
 }

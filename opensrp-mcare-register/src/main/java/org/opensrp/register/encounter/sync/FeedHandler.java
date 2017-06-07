@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
+import org.hamcrest.text.SubstringMatcher;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -28,53 +29,67 @@ public class FeedHandler extends FormSubmissionConfig{
 	private AllFormSubmissions formSubmissions;
 	public FeedHandler(){
 		
-	}
-	
+	}	
 	public FeedHandler(String formDirectory) throws IOException {
 		super(formDirectory);
 		setFormDirectory(formDirectory);
-	}	
-
+	}
 	public void setFormDirectory(String formDirectory) {
 		this.formDirectory = formDirectory;
 	}
-
 	private static Logger logger = LoggerFactory.getLogger(FeedHandler.class.toString());	
 	@Autowired
 	public FeedHandler(AllMembers allMembers,AllFormSubmissions formSubmissions){		
 		this.allMembers = allMembers;
 		this.formSubmissions = formSubmissions;
 	}
+	
+	/**
+	 * <p>get Event from <code>OpenMRS</code> through <code>AtomFeed</code>.
+	 *  getting <code>Formsubmission</code>  save to <code>opensrp-form</code></p>
+	 * @param encounter A Encounter comes from OpenMRS.
+	 * @param memberEntityId unique id of a member.
+	 * @param member A member information.
+	 * @throws JSONException if json is invalid.
+	 * @throws Exception. 
+	 * */
 	@SuppressWarnings("unchecked")
-	public void getEvent(JSONObject encounter,String patientEntityId,Members member) throws Exception{		
+	public void getEvent(JSONObject encounter,String memberEntityId,Members member) throws Exception{		
 		try {					
 			JSONArray observations = encounter.getJSONArray("obs");				
 			for (int i = 0; i < observations.length(); i++) {				
 				JSONObject o = observations.getJSONObject(i);
 				String vaccines = (String) o.get("display");
 				String vaccineStringAfterFilter = this.stringFilter(vaccines);					
-				boolean TT = this.getTTFromString(vaccineStringAfterFilter, SyncConstant.TT);
+				boolean TT = this.checkTTFVaccineFromAString(vaccineStringAfterFilter, SyncConstant.TT);
 				String vaccineDate = this.getDateFromString(vaccineStringAfterFilter);
 				double vaccineDose = this.getDoseFromString(vaccineStringAfterFilter);
-				String vaccineName = this.getVaccinationName(vaccineStringAfterFilter);
-				System.err.println("vaccineName:"+vaccineName);
-				int vaccineDoseAsInt =(int) vaccineDose;
+				String vaccineName = this.getVaccinationName(vaccineStringAfterFilter);				
+				int doseNumber =(int) vaccineDose;
 				try{
-				if(TT){	
-					FormsType<WomanTTFollowUp> TTFormObj	= FormFatcory.getFormsTypeInstance("WTT");
-					FormSubmission formsubmissionEntity= TTFormObj.getFormSubmission(this.formDirectory,vaccineDate,vaccineDoseAsInt,patientEntityId, member,vaccineName);
-					if(formsubmissionEntity !=null){
-						formSubmissions.add(formsubmissionEntity);
-						logger.info("Synced TT vaccine:"+formsubmissionEntity.toString());
+					if(TT){	
+						if(member.Is_woman().equalsIgnoreCase(SyncConstant.ISWOMAN)){
+							FormsType<WomanTTFollowUp> TTFormObj	= FormFatcory.getFormsTypeInstance("WTT");
+							FormSubmission formsubmissionEntity= TTFormObj.getFormSubmission(this.formDirectory,vaccineDate,doseNumber,memberEntityId, member,vaccineName);
+							if(formsubmissionEntity !=null){
+								formSubmissions.add(formsubmissionEntity);								
+								logger.info("Synced TT vaccine:"+formsubmissionEntity.toString());
+							}
+						}else{							
+							logger.info("Member is not a woman:"+member.toString());
+						}
+					}else{
+						if(member.Is_child().equalsIgnoreCase(SyncConstant.ISCHILD)){
+							FormsType<ChildVaccineFollowup> childVaccineFormObj= FormFatcory.getFormsTypeInstance("CVF");
+							FormSubmission formsubmissionEntity= childVaccineFormObj.getFormSubmission(this.formDirectory,vaccineDate,doseNumber,memberEntityId, member,vaccineName);
+							if(formsubmissionEntity !=null){
+								formSubmissions.add(formsubmissionEntity);								
+								logger.info("Synced child vaccine:"+formsubmissionEntity.toString());
+							}
+						}else{							
+							logger.info("Member is not a child:"+member.toString());
+						}
 					}
-				}else{
-					FormsType<ChildVaccineFollowup> childVaccineFormObj= FormFatcory.getFormsTypeInstance("CVF");
-					FormSubmission formsubmissionEntity= childVaccineFormObj.getFormSubmission(this.formDirectory,vaccineDate,vaccineDoseAsInt,patientEntityId, member,vaccineName);
-					if(formsubmissionEntity !=null){
-						formSubmissions.add(formsubmissionEntity);
-						logger.info("Synced child vaccine:"+formsubmissionEntity.toString());
-					}
-				}
 				}catch(Exception e){
 					e.printStackTrace();
 				}
@@ -87,6 +102,13 @@ public class FeedHandler extends FormSubmissionConfig{
 		}		
 	}
 	
+	/**
+	 * <p>extract a string from one format to another desired format. </p>
+	 * <p> input string is as like Immunization Incident Template: TT 2 (Tetanus toxoid), 2016-02-28, true, 2.0</p>
+	 * <p> Desired output string is as like TT 2 , 2016-02-28, true, 2.0</p>
+	 * @param str A String value.
+	 * @return Desired formatted string. 
+	 * */
 	public String stringFilter(String str){		
 		String strRemoveImmu = "";
 		strRemoveImmu = str.replace(SyncConstant.vaccines.get("IIT"), "");
@@ -106,6 +128,12 @@ public class FeedHandler extends FormSubmissionConfig{
 		
 	}
 	
+	/**
+	 * <p>get <code>Child vaccine name</code>  this is special for Child vaccine.</p>
+	 * @param str A String value.
+	 * @param subString A String Value.
+	 * @return child vaccine.  
+	 * */	
 	public String getVaccinationName(String str) throws Exception{
 		String[] vaccineStringToArray = str.split(",");
 		for (String value : vaccineStringToArray) {	
@@ -121,16 +149,28 @@ public class FeedHandler extends FormSubmissionConfig{
 		return null;
 		
 	}
-	public boolean getTTFromString(String  str,String subString){		
-		return str.toLowerCase().contains(subString.toLowerCase());
-			
+	
+	/**
+	 * <p>check <code>TT vaccine name</code>,this is special for TT vaccine.</p>
+	 * <h5> Ex.("TT 2 , 2016-02-28, true, 2.0" Compare to "TT")</h5>
+	 * @param str A String value.
+	 * @param subString A String which is compared to input str.
+	 * @return true or false.  
+	 * */
+	public boolean checkTTFVaccineFromAString(String  str,String subString){		
+		return str.toLowerCase().contains(subString.toLowerCase());			
 	}
 	
+	/**
+	 * get vaccine <code>Date</code> from a String (e.x: <code>OPV 2 , 2016-02-28, true, 2.0</code>).
+	 * @param str A String value.
+	 * @return vaccine Date.
+	 * */
 	public String getDateFromString(String str) {
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");		
 		String[] vaccineStringToArray = str.split(",");
 		for (String value : vaccineStringToArray) {				
-			try {
+			try{
 				formatter.parse(value.trim());				 
 				return value.trim();
 			} catch (ParseException e) {				
@@ -144,7 +184,9 @@ public class FeedHandler extends FormSubmissionConfig{
 	}
 	
 	/**
-	 * get dose number form a string (e.x:)
+	 * get <code>dose number</code> from a string (<code>e.x: OPV 2 , 2016-02-28, true, 2.0</code>).
+	 * @param str A String value.
+	 * @return  dose number.
 	 * */
 	public Double getDoseFromString(String str){		
 		String[] vaccineStringToArray = str.split(",");
@@ -160,7 +202,7 @@ public class FeedHandler extends FormSubmissionConfig{
 	}
 	
 	/**
-	 * get a member 
+	 * get a <code>member</code> 
 	 * @param memberEntityId A member unique Id.
 	 * @return member
 	 */	

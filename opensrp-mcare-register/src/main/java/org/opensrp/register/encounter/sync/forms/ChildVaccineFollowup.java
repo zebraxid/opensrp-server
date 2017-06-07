@@ -284,38 +284,43 @@ public class ChildVaccineFollowup extends FileReader implements FormsType<Member
 	@Override
 	public boolean checkingVaccineGivenOrNot(Members member,int dose,String vaccineName) {		
 		String finalValue ;
-		if(!member.child_vaccine().isEmpty()){	
-			Map<String, String> childVaccineFollowup = member.child_vaccine().get(member.child_vaccine().size()-1);	
-			if(vaccineName.equalsIgnoreCase(SyncConstant.getChildVaccinesName().get(0))){//BCG
-				finalValue = childVaccineFollowup.get(SyncConstant.BCGFinalMapping.get(Integer.toString(dose)));
-				return this.checkThisVaccineGivenOrNot(finalValue);
-			}else if(vaccineName.equalsIgnoreCase(SyncConstant.getChildVaccinesName().get(1))){// Pentavalent
-				finalValue = childVaccineFollowup.get(SyncConstant.PENTAFinalMapping.get(Integer.toString(dose)));
-				return this.checkThisVaccineGivenOrNot(finalValue);
-			}else if(vaccineName.equalsIgnoreCase(SyncConstant.getChildVaccinesName().get(2))){ //PCV
-				finalValue = childVaccineFollowup.get(SyncConstant.PCVFinalMapping.get(Integer.toString(dose)));
-				return this.checkThisVaccineGivenOrNot(finalValue);
-			}else if(vaccineName.equalsIgnoreCase(SyncConstant.getChildVaccinesName().get(3))){ //OPV
-				finalValue = childVaccineFollowup.get(SyncConstant.OPVFinalMapping.get(Integer.toString(dose)));
-				return this.checkThisVaccineGivenOrNot(finalValue);
-			}else if(vaccineName.equalsIgnoreCase(SyncConstant.getChildVaccinesName().get(4))){ //IPV
-				finalValue = childVaccineFollowup.get(SyncConstant.IPVFinalMapping.get(Integer.toString(dose)));
-				return this.checkThisVaccineGivenOrNot(finalValue);
-			}else{
-				return false;
-			}		
+		if(!member.child_vaccine().isEmpty()){
+			try{
+				Map<String, String> childVaccineFollowup = member.child_vaccine().get(member.child_vaccine().size()-1);	
+				if(vaccineName.equalsIgnoreCase(SyncConstant.getChildVaccinesName().get(0))){//BCG
+					finalValue = childVaccineFollowup.get(SyncConstant.BCGFinalMapping.get(Integer.toString(dose)));
+					return this.checkThisVaccineGivenOrNot(finalValue);
+				}else if(vaccineName.equalsIgnoreCase(SyncConstant.getChildVaccinesName().get(1))){// Pentavalent
+					finalValue = childVaccineFollowup.get(SyncConstant.PENTAFinalMapping.get(Integer.toString(dose)));
+					return this.checkThisVaccineGivenOrNot(finalValue);
+				}else if(vaccineName.equalsIgnoreCase(SyncConstant.getChildVaccinesName().get(2))){ //PCV
+					finalValue = childVaccineFollowup.get(SyncConstant.PCVFinalMapping.get(Integer.toString(dose)));
+					return this.checkThisVaccineGivenOrNot(finalValue);
+				}else if(vaccineName.equalsIgnoreCase(SyncConstant.getChildVaccinesName().get(3))){ //OPV
+					finalValue = childVaccineFollowup.get(SyncConstant.OPVFinalMapping.get(Integer.toString(dose)));
+					return this.checkThisVaccineGivenOrNot(finalValue);
+				}else if(vaccineName.equalsIgnoreCase(SyncConstant.getChildVaccinesName().get(4))){ //IPV
+					finalValue = childVaccineFollowup.get(SyncConstant.IPVFinalMapping.get(Integer.toString(dose)));
+					return this.checkThisVaccineGivenOrNot(finalValue);
+				}else{
+					return false;
+				}
+			}catch(Exception e){
+				throw new NullPointerException();
+			}
 		}else{
 			return false;
-		}
+		}		
 	}
 	
 	private boolean checkThisVaccineGivenOrNot(String finalValue){		
-		if(finalValue.equalsIgnoreCase("") || finalValue.equalsIgnoreCase("null") || finalValue.equalsIgnoreCase(null)){
+		if(finalValue.equalsIgnoreCase("") || finalValue.equalsIgnoreCase("null") || finalValue==null){
 			return false;
 		}else{
 			return true;
 		}
 	}
+	
 	/**
 	 * @param vaccineMappinngFieldName static Map variable of a class as example
 	 * {@link org.opensrp.register.encounter.sync.SyncConstant#BCGFinalMapping}

@@ -10,7 +10,7 @@ public class FormFatcory {
 		
 	}
 	/**
-	 * Generate new instance
+	 * <code>Generate new instance</code>
 	 * @param form a vaccine form type.
 	 * @return new Instance according to form type. 
 	 */

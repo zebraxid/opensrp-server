@@ -162,6 +162,7 @@ public class Woman {
 		member.setTt3_final("");
 		member.setTt4_final("");
 		member.setTt5_final("");
+		member.setIs_woman("1");
 		return member;
 	}
 

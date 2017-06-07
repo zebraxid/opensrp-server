@@ -56,9 +56,9 @@ public class WomanTTFollowUp extends FileReader implements FormsType<Members> {
 	}	
 	
 	/**
-	 * This method originally make a FormSubmission according to condition.
-	 * if no vaccine is given before then reqiured member information gets from Members object.
-	 * if at least one vaccine is given before then reqiured member information gets from Members.TTVisit() object. 
+	 * <p>make a <code>FormSubmission</code> according to condition.</p>
+	 * <h5>No vaccine is given before then reqiured member information gets from <code>Members</code> object.</h5>
+	 * <h5>At least one vaccine is given before then reqiured member information gets from <code>Members.TTVisit()</code> object.</h5> 
 	 * 
 	 * @param  formDir  current directory location of the form.
 	 * @param vaccineDate date of vaccine.
@@ -153,23 +153,22 @@ public class WomanTTFollowUp extends FileReader implements FormsType<Members> {
 	 * This method is used to check a vaccine given or not.	
 	 * 
 	 * @param vaccineDose dose number of a vaccine.	 
-	 * @param vaccineName name of a vaccine.
-	 * @param member member information.
+	 * @param vaccineName A vaccine name.
+	 * @param member A member information.
 	 * 
 	 * */
 	@Override
 	public boolean checkingVaccineGivenOrNot(Members member,int dose,String vaccineName) {		
-		if(!member.TTVisit().isEmpty()){		
-			Map<String, String> TTVisit = member.TTVisit();		
+		Map<String, String> TTVisit = member.TTVisit();	
+		if(!TTVisit.isEmpty()){
 			String TTFinalDate = TTVisit.get(SyncConstant.TTFinalMapping.get(Integer.toString(dose)));
 			if(TTFinalDate.isEmpty() || TTFinalDate.equalsIgnoreCase("null") || TTFinalDate ==null){
 				return false;
 			}else{
-				return true;		}
+				return true;	
+			}
 		}else{
 			return false;
 		}
-	}
-	
-	
+	}	
 }

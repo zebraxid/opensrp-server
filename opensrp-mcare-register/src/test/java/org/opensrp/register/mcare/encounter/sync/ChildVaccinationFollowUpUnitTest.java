@@ -32,6 +32,7 @@ public class ChildVaccinationFollowUpUnitTest extends TestConfig{
 		ChildVaccineFollowup childVaccineFollowup = ChildVaccineFollowup.getInstance();		
 		Assert.assertEquals("final_opv0", childVaccineFollowup.getFieldName("OPVFinalMapping", 0));
 	}
+	
 	@Test(expected=NoSuchFieldException.class)
 	public void shouldGetNoSuchFieldException() throws NoSuchFieldException, IllegalAccessException, JSONException{		
 		ChildVaccineFollowup childVaccineFollowup = ChildVaccineFollowup.getInstance();		
@@ -39,12 +40,29 @@ public class ChildVaccinationFollowUpUnitTest extends TestConfig{
 	}
 	
 	@Test
-	public void shouldCheckingVaccineGivenOrNot() throws NoSuchFieldException, IllegalAccessException, JSONException{		
+	public void shouldReturnTrueWhenTestCheckingVaccineGivenOrNot(){		
 		Child child = new Child();
 		Members member = child.getChildMember();
 		member.child_vaccine().add(child.getChildVaccine());
 		ChildVaccineFollowup childVaccineFollowup = ChildVaccineFollowup.getInstance();		
-		Assert.assertTrue(childVaccineFollowup.checkingVaccineGivenOrNot(member, 0, "BCG"));
+		Assert.assertTrue(childVaccineFollowup.checkingVaccineGivenOrNot(member, 0, "BCG"));		
+	}
+	
+	@Test
+	public void shouldReturnFalseWhenTestCheckingVaccineGivenOrNot(){		
+		Child child = new Child();
+		Members member = child.getChildMember();
+		member.child_vaccine().add(child.getChildVaccine());
+		ChildVaccineFollowup childVaccineFollowup = ChildVaccineFollowup.getInstance();		
 		Assert.assertFalse(childVaccineFollowup.checkingVaccineGivenOrNot(member, 1, "OPV"));
+	}
+	
+	@Test(expected=NullPointerException.class)
+	public void shouldReturnNullPointerExceptionWhenTestCheckingVaccineGivenOrNot() throws NullPointerException{		
+		Child child = new Child();
+		Members member = child.getChildMember();		
+		member.child_vaccine().add(child.getChildVaccineWithNoBCGFinalField());
+		ChildVaccineFollowup childVaccineFollowup = ChildVaccineFollowup.getInstance();		
+		Assert.assertFalse(childVaccineFollowup.checkingVaccineGivenOrNot(member, 0, "BCG"));
 	}
 }

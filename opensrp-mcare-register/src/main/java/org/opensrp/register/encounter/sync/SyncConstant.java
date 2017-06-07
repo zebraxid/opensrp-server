@@ -10,12 +10,11 @@ import java.util.List;
 import java.util.Map;
 
 public class SyncConstant {
-	
-
 	public static final String TT = "TT";
 	public static final String TTFORMNAME = "woman_tt_form";
 	public static final String CHILDACCINATIONFORMNAME = "child_vaccine_followup";	
-	
+	public static final String ISWOMAN = "1";
+	public static final String ISCHILD = "1";
 	public final static Map<String, String> vaccines=new HashMap<String, String>();
 	static{
 		vaccines.put("IIT","Immunization Incident Template:");  
