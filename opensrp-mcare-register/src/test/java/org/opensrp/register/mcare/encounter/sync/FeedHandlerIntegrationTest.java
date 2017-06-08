@@ -155,9 +155,10 @@ public class FeedHandlerIntegrationTest extends TestConfig {
 		JSONObject ob3Object = new JSONObject();
 		ob3Object.put("display", "Immunization Incident Template: PCV 2 (Pneumococcus, purified polysaccharides antigen conjugated), 2016-07-15, 2.0, true");
 		ob3Object.put("uuid", "5f8d190f-c51d-4f59-a3b0-247ca1e4e7d8");		
-		obs.put(ob3Object);
+		
 		//obs.put(ob1Object);
-		//obs.put(ob2Object);
+		obs.put(ob2Object);
+		//obs.put(ob3Object);
 		encounter.put("obs", obs);		
 		
 		FormsType<ChildVaccineFollowup> childVaccineFollowUp= FormFatcory.getFormsTypeInstance("CVF");
@@ -191,8 +192,8 @@ public class FeedHandlerIntegrationTest extends TestConfig {
 		JSONObject ob3Object = new JSONObject();
 		ob3Object.put("display", "Immunization Incident Template: PCV 2 (Pneumococcus, purified polysaccharides antigen conjugated), 2016-07-15, 2.0, true");
 		ob3Object.put("uuid", "5f8d190f-c51d-4f59-a3b0-247ca1e4e7d8");		
-		obs.put(ob3Object);
-		//obs.put(ob1Object);
+		
+		obs.put(ob1Object);
 		//obs.put(ob2Object);
 		encounter.put("obs", obs);		
 		
@@ -222,10 +223,12 @@ public class FeedHandlerIntegrationTest extends TestConfig {
 		JSONObject ob3Object = new JSONObject();
 		ob3Object.put("display", "Immunization Incident Template: PCV 2 (Pneumococcus, purified polysaccharides antigen conjugated), 2016-07-15, 2.0, true");
 		ob3Object.put("uuid", "5f8d190f-c51d-4f59-a3b0-247ca1e4e7d8");		
-		//obs.put(ob1Object);
-		obs.put(ob2Object);
+		obs.put(ob1Object);
+		
 		//obs.put(ob3Object);
-		encounter.put("obs", obs);		
+		//obs.put(ob3Object);
+		encounter.put("obs", obs);	
+		
 		FormsType<ChildVaccineFollowup> childVaccineFollowUp= FormFatcory.getFormsTypeInstance("CVF");
 		FormSubmission formsubmissionEntity= childVaccineFollowUp.getFormSubmission("./../assets/form","2017-04-03",1,"05cbaa2b-d3a6-40f6-a604-328bf725ddbf", member,"OPV");
 		FeedHandler feedHandler =  new FeedHandler(allMembers,formSubmissions);

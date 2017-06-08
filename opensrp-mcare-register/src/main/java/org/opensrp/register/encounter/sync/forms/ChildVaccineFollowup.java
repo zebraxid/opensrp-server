@@ -46,11 +46,13 @@ public class ChildVaccineFollowup extends FileReader implements FormsType<Member
 		    	form =  craeteFormsubmission(formDir,vaccineDate,vaccineDose,memberEntityId,member,vaccineName);	    	
 		    }else if(!checkingVaccineGivenOrNot(member,vaccineDose,vaccineName)){		    	
 		    	form =  craeteFormsubmission(formDir,vaccineDate,vaccineDose,memberEntityId,member,vaccineName);	    	
-		    }else{    	
-		    	return  null;
+		    }else{		    	
+		    	logger.info(vaccineName+" "+vaccineDose +" is given already...");
+		    	return  form;
 		    }
 		}else{
-			return  null;
+			logger.info("No member found in opensrp....");
+			return  form;
 		}
 	    return form;		
 	}
@@ -94,9 +96,9 @@ public class ChildVaccineFollowup extends FileReader implements FormsType<Member
 	    	childVaccineFollowup = member.child_vaccine().get(member.child_vaccine().size()-1);
 	    }	    
 	    ArrayNode fields = (ArrayNode) file.get("form").get("fields");
-	    String fieldNameFinal="";
-	    String fieldNameRetro = "";
-	    String fieldNameDose = "";	    
+	    String finalFieldName="";
+	    String retroFieldName = "";
+	    String doseFieldName = "";	    
 	    for (JsonNode node : fields) {
 	    	FormField formField=new FormField();
 	    	String name = node.get("name").toString();
@@ -112,65 +114,29 @@ public class ChildVaccineFollowup extends FileReader implements FormsType<Member
 	    	if(!member.child_vaccine().isEmpty()){
 		    	try{
 		    		if(vaccineName.equalsIgnoreCase(SyncConstant.getChildVaccinesName().get(0))){
-		    			fieldNameFinal = this.getFieldName("BCGFinalMapping", 0);
-		    			fieldNameRetro = this.getFieldName("BCGRetroMapping", 0);		    			
-		    			if(name.equalsIgnoreCase(fieldNameFinal.trim())){
-		    				formField=this.setFormFieldValue(formField, name, fieldNameFinal, 0, vaccineDate,false);
-		    			}else if(name.equalsIgnoreCase(fieldNameRetro.trim())){
-		    				formField=this.setFormFieldValue(formField,  name, fieldNameRetro, 0, vaccineDate,false);
-		    			}else{
-		    				formField.setValue(childVaccineFollowup.get(name).trim());
-		    			}		    			
+		    			finalFieldName = this.getFieldName("BCGFinalMapping", 0);
+		    			retroFieldName = this.getFieldName("BCGRetroMapping", 0);		    			
+		    			formField = this.getFormFieldValue(formField, name, finalFieldName, retroFieldName, "", vaccineDose, vaccineDate, childVaccineFollowup,false,null,convertMemberToJsonObject);
 		    		}else if(vaccineName.equalsIgnoreCase(SyncConstant.getChildVaccinesName().get(1))){
-		    			fieldNameFinal = this.getFieldName("PENTAFinalMapping", vaccineDose);
-		    			fieldNameRetro = this.getFieldName("PENTARetroMapping", vaccineDose);
-		    			fieldNameDose = this.getFieldName("PENTADoseMapping", vaccineDose);		    			
-		    			if(name.equalsIgnoreCase(fieldNameFinal.trim())){
-		    				formField=this.setFormFieldValue(formField, name, fieldNameFinal, vaccineDose, vaccineDate,false);
-		    			}else if(name.equalsIgnoreCase(fieldNameRetro.trim())){
-		    				formField=this.setFormFieldValue(formField,  name, fieldNameRetro, vaccineDose, vaccineDate,false);
-		    			}else if(name.equalsIgnoreCase(fieldNameDose.trim())){
-		    				formField=this.setFormFieldValue(formField, name, fieldNameDose, vaccineDose, vaccineDate,true);
-		    			}else{
-		    				formField.setValue(childVaccineFollowup.get(name).trim());
-		    			}		    			
+		    			finalFieldName = this.getFieldName("PENTAFinalMapping", vaccineDose);
+		    			retroFieldName = this.getFieldName("PENTARetroMapping", vaccineDose);
+		    			doseFieldName = this.getFieldName("PENTADoseMapping", vaccineDose);		    			
+		    			formField = this.getFormFieldValue(formField, name, finalFieldName, retroFieldName, doseFieldName, vaccineDose, vaccineDate, childVaccineFollowup,true,null,convertMemberToJsonObject);
 		    		}else if(vaccineName.equalsIgnoreCase(SyncConstant.getChildVaccinesName().get(2))){ //PCV
-		    			fieldNameFinal = this.getFieldName("PCVFinalMapping", vaccineDose);
-		    			fieldNameRetro = this.getFieldName("PCVRetroMapping", vaccineDose);
-		    			fieldNameDose = this.getFieldName("PCVDoseMapping", vaccineDose);
-		    			if(name.equalsIgnoreCase(fieldNameFinal.trim())){
-		    				formField=this.setFormFieldValue(formField, name, fieldNameFinal, vaccineDose, vaccineDate,false);
-		    			}else if(name.equalsIgnoreCase(fieldNameRetro.trim())){
-		    				formField=this.setFormFieldValue(formField,  name, fieldNameRetro, vaccineDose, vaccineDate,false);
-		    			}else if(name.equalsIgnoreCase(fieldNameDose.trim())){
-		    				formField=this.setFormFieldValue(formField, name, fieldNameDose, vaccineDose, vaccineDate,true);
-		    			}else{
-		    				formField.setValue(childVaccineFollowup.get(name).trim());
-		    			}    			
+		    			finalFieldName = this.getFieldName("PCVFinalMapping", vaccineDose);
+		    			retroFieldName = this.getFieldName("PCVRetroMapping", vaccineDose);
+		    			doseFieldName = this.getFieldName("PCVDoseMapping", vaccineDose);
+		    			formField = this.getFormFieldValue(formField, name, finalFieldName, retroFieldName, doseFieldName, vaccineDose, vaccineDate, childVaccineFollowup,true,null,convertMemberToJsonObject);
 		    		}else if(vaccineName.equalsIgnoreCase(SyncConstant.getChildVaccinesName().get(3))){
-		    			fieldNameFinal = this.getFieldName("OPVFinalMapping", vaccineDose);
-		    			fieldNameRetro = this.getFieldName("OPVRetroMapping", vaccineDose);
-		    			fieldNameDose = this.getFieldName("OPVDoseMapping", vaccineDose);
-		    			if(name.equalsIgnoreCase(fieldNameFinal.trim())){
-		    				formField=this.setFormFieldValue(formField, name, fieldNameFinal, vaccineDose, vaccineDate,false);
-		    			}else if(name.equalsIgnoreCase(fieldNameRetro.trim())){
-		    				formField=this.setFormFieldValue(formField,  name, fieldNameRetro, vaccineDose, vaccineDate,false);
-		    			}else if(name.equalsIgnoreCase(fieldNameDose.trim())){
-		    				formField=this.setFormFieldValue(formField, name, fieldNameDose, vaccineDose, vaccineDate,true);
-		    			}else{
-		    				formField.setValue(childVaccineFollowup.get(name).trim());
-		    			}
+		    			finalFieldName = this.getFieldName("OPVFinalMapping", vaccineDose);
+		    			retroFieldName = this.getFieldName("OPVRetroMapping", vaccineDose);
+		    			doseFieldName = this.getFieldName("OPVDoseMapping", vaccineDose);
+		    			formField = this.getFormFieldValue(formField, name, finalFieldName, retroFieldName, doseFieldName, vaccineDose, vaccineDate, childVaccineFollowup,true,null,convertMemberToJsonObject);
 		    			
 		    		}else if(vaccineName.equalsIgnoreCase(SyncConstant.getChildVaccinesName().get(4))){ //IPV
-		    			fieldNameFinal = this.getFieldName("IPVFinalMapping", 0);
-		    			fieldNameRetro = this.getFieldName("IPVRetroMapping", 0);
-		    			if(name.equalsIgnoreCase(fieldNameFinal.trim())){
-		    				formField=this.setFormFieldValue(formField, name, fieldNameFinal, 0, vaccineDate,false);
-		    			}else if(name.equalsIgnoreCase(fieldNameRetro.trim())){
-		    				formField=this.setFormFieldValue(formField,  name, fieldNameRetro, 0, vaccineDate,false);
-		    			}else{
-		    				formField.setValue(childVaccineFollowup.get(name).trim());
-		    			}		    			
+		    			finalFieldName = this.getFieldName("IPVFinalMapping", 0);
+		    			retroFieldName = this.getFieldName("IPVRetroMapping", 0);
+		    			formField = this.getFormFieldValue(formField, name, finalFieldName, retroFieldName, "", vaccineDose, vaccineDate, childVaccineFollowup,false,null,convertMemberToJsonObject);
 		    		}else{
 		    			logger.info("vaccine not found");
 		    		}
@@ -185,67 +151,30 @@ public class ChildVaccineFollowup extends FileReader implements FormsType<Member
 	    			Field field = getMemberNewObject.getClass().getDeclaredField(name);// access private filed of members class
 	    			field.setAccessible(true);	    			
 	    			if(vaccineName.equalsIgnoreCase(SyncConstant.getChildVaccinesName().get(0))){//BCG
-		    			fieldNameFinal = this.getFieldName("BCGFinalMapping", vaccineDose);
-		    			fieldNameRetro = this.getFieldName("BCGRetroMapping", vaccineDose);		    			
-		    			if(name.equalsIgnoreCase(fieldNameFinal.trim())){
-		    				formField=this.setFormFieldValue(formField, name, fieldNameFinal, vaccineDose, vaccineDate,false);
-		    			}else if(name.equalsIgnoreCase(fieldNameRetro.trim())){
-		    				formField=this.setFormFieldValue(formField,  name, fieldNameRetro, vaccineDose, vaccineDate,false);
-		    			}else{
-		    				formField.setValue(convertMemberToJsonObject.get(field.getName()).toString().trim());
-		    			}
+	    				finalFieldName = this.getFieldName("BCGFinalMapping", vaccineDose);
+	    				retroFieldName = this.getFieldName("BCGRetroMapping", vaccineDose);		    			
+		    			formField = this.getFormFieldValue(formField, name, finalFieldName, retroFieldName, "", vaccineDose, vaccineDate, childVaccineFollowup,false,field,convertMemberToJsonObject);
 		    		}else if(vaccineName.equalsIgnoreCase(SyncConstant.getChildVaccinesName().get(1))){// Pentavalent
-		    			fieldNameFinal = this.getFieldName("PENTAFinalMapping", vaccineDose);
-		    			fieldNameRetro = this.getFieldName("PENTARetroMapping", vaccineDose);
-		    			fieldNameDose = this.getFieldName("PENTADoseMapping", vaccineDose);		    			
-		    			if(name.equalsIgnoreCase(fieldNameFinal.trim())){
-		    				formField=this.setFormFieldValue(formField, name, fieldNameFinal, vaccineDose, vaccineDate,false);
-		    			}else if(name.equalsIgnoreCase(fieldNameRetro.trim())){
-		    				formField=this.setFormFieldValue(formField,  name, fieldNameRetro, vaccineDose, vaccineDate,false);
-		    			}else if(name.equalsIgnoreCase(fieldNameDose.trim())){
-		    				formField=this.setFormFieldValue(formField, name, fieldNameDose, vaccineDose, vaccineDate,true);
-		    			}else{
-		    				formField.setValue(convertMemberToJsonObject.get(field.getName()).toString().trim());
-		    			}
+		    			finalFieldName = this.getFieldName("PENTAFinalMapping", vaccineDose);
+		    			retroFieldName = this.getFieldName("PENTARetroMapping", vaccineDose);
+		    			doseFieldName = this.getFieldName("PENTADoseMapping", vaccineDose);		    			
+		    			formField = this.getFormFieldValue(formField, name, finalFieldName, retroFieldName, doseFieldName, vaccineDose, vaccineDate, childVaccineFollowup,false,field,convertMemberToJsonObject);
 		    			
 		    		}else if(vaccineName.equalsIgnoreCase(SyncConstant.getChildVaccinesName().get(2))){ //PCV
-		    			fieldNameFinal = this.getFieldName("PCVFinalMapping", vaccineDose);
-		    			fieldNameRetro = this.getFieldName("PCVRetroMapping", vaccineDose);
-		    			fieldNameDose = this.getFieldName("PCVDoseMapping", vaccineDose);
-		    			if(name.equalsIgnoreCase(fieldNameFinal.trim())){
-		    				formField=this.setFormFieldValue(formField, name, fieldNameFinal, vaccineDose, vaccineDate,false);
-		    			}else if(name.equalsIgnoreCase(fieldNameRetro.trim())){
-		    				formField=this.setFormFieldValue(formField,  name, fieldNameRetro, vaccineDose, vaccineDate,false);
-		    			}else if(name.equalsIgnoreCase(fieldNameDose.trim())){
-		    				formField=this.setFormFieldValue(formField, name, fieldNameDose, vaccineDose, vaccineDate,true);
-		    			}else{
-		    				formField.setValue(convertMemberToJsonObject.get(field.getName()).toString().trim());
-		    			}
+		    			finalFieldName = this.getFieldName("PCVFinalMapping", vaccineDose);
+		    			retroFieldName = this.getFieldName("PCVRetroMapping", vaccineDose);
+		    			doseFieldName = this.getFieldName("PCVDoseMapping", vaccineDose);
+		    			formField = this.getFormFieldValue(formField, name, finalFieldName, retroFieldName, doseFieldName, vaccineDose, vaccineDate, childVaccineFollowup,false,field,convertMemberToJsonObject);
 		    			
 		    		}else if(vaccineName.equalsIgnoreCase(SyncConstant.getChildVaccinesName().get(3))){ //OPV
-		    			fieldNameFinal = this.getFieldName("OPVFinalMapping", vaccineDose);
-		    			fieldNameRetro = this.getFieldName("OPVRetroMapping", vaccineDose);
-		    			fieldNameDose = this.getFieldName("OPVDoseMapping", vaccineDose);
-		    			if(name.equalsIgnoreCase(fieldNameFinal.trim())){
-		    				formField=this.setFormFieldValue(formField, name, fieldNameFinal, vaccineDose, vaccineDate,false);
-		    			}else if(name.equalsIgnoreCase(fieldNameRetro.trim())){
-		    				formField=this.setFormFieldValue(formField,  name, fieldNameRetro, vaccineDose, vaccineDate,false);
-		    			}else if(name.equalsIgnoreCase(fieldNameDose.trim())){
-		    				formField=this.setFormFieldValue(formField, name, fieldNameDose, vaccineDose, vaccineDate,true);
-		    			}else{
-		    				formField.setValue(convertMemberToJsonObject.get(field.getName()).toString().trim());
-		    			}
+		    			finalFieldName = this.getFieldName("OPVFinalMapping", vaccineDose);
+		    			retroFieldName = this.getFieldName("OPVRetroMapping", vaccineDose);
+		    			doseFieldName = this.getFieldName("OPVDoseMapping", vaccineDose);
+		    			formField = this.getFormFieldValue(formField, name, finalFieldName, retroFieldName, doseFieldName, vaccineDose, vaccineDate, childVaccineFollowup,false,field,convertMemberToJsonObject);
 		    		}else if(vaccineName.equalsIgnoreCase(SyncConstant.getChildVaccinesName().get(4))){ //IPV
-		    			fieldNameFinal = this.getFieldName("IPVFinalMapping", vaccineDose);
-		    			fieldNameRetro = this.getFieldName("IPVRetroMapping", vaccineDose);
-		    			if(name.equalsIgnoreCase(fieldNameFinal.trim())){
-		    				formField=this.setFormFieldValue(formField, name, fieldNameFinal, vaccineDose, vaccineDate,false);
-		    			}else if(name.equalsIgnoreCase(fieldNameRetro.trim())){
-		    				formField=this.setFormFieldValue(formField,  name, fieldNameRetro, vaccineDose, vaccineDate,false);
-		    			}else{
-		    				formField.setValue(convertMemberToJsonObject.get(field.getName()).toString().trim());
-		    			}
-		    			
+		    			finalFieldName = this.getFieldName("IPVFinalMapping", vaccineDose);
+		    			retroFieldName = this.getFieldName("IPVRetroMapping", vaccineDose);
+		    			formField = this.getFormFieldValue(formField, name, finalFieldName, retroFieldName, "", vaccineDose, vaccineDate, childVaccineFollowup,false,field,convertMemberToJsonObject);
 		    		}else{
 		    			logger.info("Vaccine not found");
 		    		}	    			
@@ -269,7 +198,46 @@ public class ChildVaccineFollowup extends FileReader implements FormsType<Member
 	    formSubmission.setServerVersion(System.currentTimeMillis());	  
 		return formSubmission;
 	}
+	/**
+	 * <p>gets FormField with value.</p>
+	 * @param  formField A FormField object.
+	 * @param  name parsed field name getting from json file. 
+	 * @param  finalFieldName A filed name which is defined in child vaccine followup form(Ex:<code>final_penta1</code>)
+	 * @param  retroFieldName A filed name which is defined in child vaccine followup form(Ex:<code>penta1_retro</code>)
+	 * @param  doseFieldName A filed name which is defined in child vaccine followup form(Ex:<code>penta1_dose</code>)
+	 * @param  childVaccineFollowup followup of a child.
+	 * @param  type false if child has no vaccine and true if child has at least one vavccine.
+	 * @param field 
+	 * @param convertMemberToJsonObject converted json of a member.
+	 * @return FormField
+	 * */
 	
+	public FormField getFormFieldValue(FormField formField,String name, String finalFieldName,String retroFieldName,String doseFieldName,int vaccineDose,String vaccineDate,Map<String, String> childVaccineFollowup,boolean type,Field field,JSONObject convertMemberToJsonObject ) throws JSONException{
+		if(type){
+			if(name.equalsIgnoreCase(finalFieldName.trim())){
+				formField=this.setFormFieldValue(formField, name, finalFieldName, vaccineDose, vaccineDate,false);
+			}else if(name.equalsIgnoreCase(retroFieldName.trim())){
+				formField=this.setFormFieldValue(formField,  name, retroFieldName, vaccineDose, vaccineDate,false);
+			}else if(!doseFieldName.isEmpty() && name.equalsIgnoreCase(doseFieldName.trim()) ){
+				formField=this.setFormFieldValue(formField, name, doseFieldName, vaccineDose, vaccineDate,true);
+			}else{
+				formField.setValue(childVaccineFollowup.get(name).trim());
+			}
+		}else{			
+			field.setAccessible(true);	
+			if(name.equalsIgnoreCase(finalFieldName.trim())){
+				formField=this.setFormFieldValue(formField, name, finalFieldName, vaccineDose, vaccineDate,false);
+			}else if(name.equalsIgnoreCase(retroFieldName.trim())){
+				formField=this.setFormFieldValue(formField,  name, retroFieldName, vaccineDose, vaccineDate,false);
+			}else if(!doseFieldName.isEmpty() && name.equalsIgnoreCase(doseFieldName.trim())){
+				formField=this.setFormFieldValue(formField, name, doseFieldName, vaccineDose, vaccineDate,true);
+			}else{
+				formField.setValue(convertMemberToJsonObject.get(field.getName()).toString().trim());
+			}
+		}
+		
+		return formField;
+	}
 	public static ChildVaccineFollowup getInstance(){
 		return new ChildVaccineFollowup();
 	}
