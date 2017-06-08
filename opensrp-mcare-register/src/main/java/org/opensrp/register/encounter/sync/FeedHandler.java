@@ -13,6 +13,8 @@ import org.opensrp.form.repository.AllFormSubmissions;
 import org.opensrp.register.encounter.sync.forms.ChildVaccineFollowup;
 import org.opensrp.register.encounter.sync.forms.WomanTTFollowUp;
 import org.opensrp.register.encounter.sync.interfaces.FormsType;
+import org.opensrp.register.encounter.sync.mapping.domain.EncounterSyncMapping;
+import org.opensrp.register.encounter.sync.mapping.repository.AllEncounterSyncMapping;
 import org.opensrp.register.mcare.domain.Members;
 import org.opensrp.register.mcare.repository.AllMembers;
 import org.slf4j.Logger;
@@ -27,6 +29,7 @@ public class FeedHandler extends FormSubmissionConfig{
 	
 	private AllMembers allMembers;
 	private AllFormSubmissions formSubmissions;
+	private AllEncounterSyncMapping allEncounterSyncMapping;
 	public FeedHandler(){
 		
 	}	
@@ -39,9 +42,10 @@ public class FeedHandler extends FormSubmissionConfig{
 	}
 	private static Logger logger = LoggerFactory.getLogger(FeedHandler.class.toString());	
 	@Autowired
-	public FeedHandler(AllMembers allMembers,AllFormSubmissions formSubmissions){		
+	public FeedHandler(AllMembers allMembers,AllFormSubmissions formSubmissions,AllEncounterSyncMapping allEncounterSyncMapping){		
 		this.allMembers = allMembers;
 		this.formSubmissions = formSubmissions;
+		this.allEncounterSyncMapping=allEncounterSyncMapping;
 	}
 	
 	/**
@@ -69,12 +73,14 @@ public class FeedHandler extends FormSubmissionConfig{
 				try{
 					if(TT){	
 						if(member.Is_woman().equalsIgnoreCase(SyncConstant.ISWOMAN)){
+							
 							FormsType<WomanTTFollowUp> TTFormObj	= FormFatcory.getFormsTypeInstance("WTT");
 							FormSubmission formsubmissionEntity= TTFormObj.getFormSubmission(this.formDirectory,vaccineDate,doseNumber,memberEntityId, member,vaccineName);
 							if(formsubmissionEntity !=null){
 								formSubmissions.add(formsubmissionEntity);								
 								logger.info("Synced TT vaccine:"+formsubmissionEntity.toString());
 							}
+							
 						}else{							
 							logger.info("Member is not a woman:"+member.toString());
 						}
@@ -209,5 +215,11 @@ public class FeedHandler extends FormSubmissionConfig{
 	public Members get(String memberEntityId) {
 		 Members members = allMembers.findByCaseId(memberEntityId);		 
 		return members;
+	}
+	
+	public EncounterSyncMapping getEncounterSyncMapping(String encounterId){
+		EncounterSyncMapping encounterSyncMapping = allEncounterSyncMapping.findByEncounterId(encounterId);
+		return encounterSyncMapping;
+		
 	}
 }

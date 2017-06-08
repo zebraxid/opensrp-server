@@ -132,6 +132,8 @@ public class AlertCreationAction implements HookedEvent {
 		Members member = feedHandler.get(PatientEntityId);
 		if(member!=null){
 			makeFormSubmission.getEvent(event,PatientEntityId,member);
+		}else{
+			logger.info("Member not found in Opensrp.");
 		}
 		
 	}

@@ -26,7 +26,7 @@ public class TestConfig {
 			dbInstance = new StdCouchDbInstance(httpClient);
 			stdCouchDbConnectorOpensrpForm = new StdCouchDbConnector("opensrp-form-test", dbInstance, new StdObjectMapperFactory());
 			stdCouchDbConnectorOpensrpForm.createDatabaseIfNotExists();
-			stdCouchDbConnectorOpensrp = new StdCouchDbConnector("opensrp", dbInstance, new StdObjectMapperFactory());
+			stdCouchDbConnectorOpensrp = new StdCouchDbConnector("opensrp-test", dbInstance, new StdObjectMapperFactory());
 			stdCouchDbConnectorOpensrp.createDatabaseIfNotExists();
 			
 	}

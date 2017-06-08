@@ -20,6 +20,7 @@ import org.opensrp.register.encounter.sync.FormFatcory;
 import org.opensrp.register.encounter.sync.forms.ChildVaccineFollowup;
 import org.opensrp.register.encounter.sync.forms.WomanTTFollowUp;
 import org.opensrp.register.encounter.sync.interfaces.FormsType;
+import org.opensrp.register.encounter.sync.mapping.repository.AllEncounterSyncMapping;
 import org.opensrp.register.mcare.domain.Members;
 import org.opensrp.register.mcare.repository.AllMembers;
 
@@ -32,12 +33,15 @@ public class FeedHandlerIntegrationTest extends TestConfig {
     private AllFormSubmissions formSubmissions;
 	@Mock
 	private AllMembers allMembers;
+	@Mock
+	private AllEncounterSyncMapping allEncounterSyncMapping;
 	@Before
 	public void setUp() throws Exception
 	{
 		formSubmissions = Mockito.mock(AllFormSubmissions.class);
 		//formSubmissions = new AllFormSubmissions(getStdCouchDbConnectorForOpensrpForm());
 		allMembers = new AllMembers(1,getStdCouchDbConnectorForOpensrp());
+		allEncounterSyncMapping = new AllEncounterSyncMapping(1,getStdCouchDbConnectorForOpensrp());
 	}
 	
 	@Test
@@ -63,7 +67,7 @@ public class FeedHandlerIntegrationTest extends TestConfig {
 		//obs.put(ob2Object);
 		encounter.put("obs", obs);		
 		WomanTTFollowUp womanTTForm = WomanTTFollowUp.getInstance();	
-		FeedHandler feedHandler =  new FeedHandler(allMembers,formSubmissions);
+		FeedHandler feedHandler =  new FeedHandler(allMembers,formSubmissions,allEncounterSyncMapping);
 		feedHandler.setFormDirectory("./../assets/form");
 		feedHandler.getEvent(encounter, "1ace9084-8e71-45b7-b2b1-aeea66c203c2",member);		
 		Assert.assertEquals(member.TTVisit().isEmpty(), false);	
@@ -97,7 +101,7 @@ public class FeedHandlerIntegrationTest extends TestConfig {
 		Field field = mem.getClass().getDeclaredField("caseId");
 		field.setAccessible(true);		
 		WomanTTFollowUp womanTTForm = WomanTTFollowUp.getInstance();	
-		FeedHandler feedHandler =  new FeedHandler(allMembers,formSubmissions);
+		FeedHandler feedHandler =  new FeedHandler(allMembers,formSubmissions,allEncounterSyncMapping);
 		feedHandler.setFormDirectory("./../assets/form");
 		feedHandler.getEvent(encounter, "e1e16f38-01d8-42ae-be55-4573b3ac349e",member);	
 		Assert.assertEquals(member.TTVisit().isEmpty(), true);		
@@ -129,7 +133,7 @@ public class FeedHandlerIntegrationTest extends TestConfig {
 		//obs.put(ob2Object);
 		encounter.put("obs", obs);		
 		WomanTTFollowUp womanTTForm = WomanTTFollowUp.getInstance();	
-		FeedHandler feedHandler =  new FeedHandler(allMembers,formSubmissions);
+		FeedHandler feedHandler =  new FeedHandler(allMembers,formSubmissions,allEncounterSyncMapping);
 		feedHandler.setFormDirectory("./../assets/form");
 		feedHandler.getEvent(encounter, "1ace9084-8e71-45b7-b2b1-aeea66c203c2",member);		
 		Assert.assertEquals(member.TTVisit().isEmpty(), false);	
@@ -163,7 +167,7 @@ public class FeedHandlerIntegrationTest extends TestConfig {
 		
 		FormsType<ChildVaccineFollowup> childVaccineFollowUp= FormFatcory.getFormsTypeInstance("CVF");
 		FormSubmission formsubmissionEntity= childVaccineFollowUp.getFormSubmission("./../assets/form","2017-04-03",1,"6a1332be-5c19-4e26-b7cb-5851d27b68bd", member,"OPV");
-		FeedHandler feedHandler =  new FeedHandler(allMembers,formSubmissions);
+		FeedHandler feedHandler =  new FeedHandler(allMembers,formSubmissions,allEncounterSyncMapping);
 		feedHandler.setFormDirectory("./../assets/form");		
 		ChildVaccineFollowup childVaccine = ChildVaccineFollowup.getInstance();	
 		feedHandler.getEvent(encounter, "05cbaa2b-d3a6-40f6-a604-328bf725ddbf",member);
@@ -199,7 +203,7 @@ public class FeedHandlerIntegrationTest extends TestConfig {
 		
 		FormsType<ChildVaccineFollowup> childVaccineFollowUp= FormFatcory.getFormsTypeInstance("CVF");
 		FormSubmission formsubmissionEntity= childVaccineFollowUp.getFormSubmission("./../assets/form","2017-04-03",1,"6a1332be-5c19-4e26-b7cb-5851d27b68bd", member,"OPV");
-		FeedHandler feedHandler =  new FeedHandler(allMembers,formSubmissions);
+		FeedHandler feedHandler =  new FeedHandler(allMembers,formSubmissions,allEncounterSyncMapping);
 		feedHandler.setFormDirectory("./../assets/form");		
 		ChildVaccineFollowup childVaccine = ChildVaccineFollowup.getInstance();	
 		feedHandler.getEvent(encounter, "05cbaa2b-d3a6-40f6-a604-328bf725ddbf",member);			
@@ -231,7 +235,7 @@ public class FeedHandlerIntegrationTest extends TestConfig {
 		
 		FormsType<ChildVaccineFollowup> childVaccineFollowUp= FormFatcory.getFormsTypeInstance("CVF");
 		FormSubmission formsubmissionEntity= childVaccineFollowUp.getFormSubmission("./../assets/form","2017-04-03",1,"05cbaa2b-d3a6-40f6-a604-328bf725ddbf", member,"OPV");
-		FeedHandler feedHandler =  new FeedHandler(allMembers,formSubmissions);
+		FeedHandler feedHandler =  new FeedHandler(allMembers,formSubmissions,allEncounterSyncMapping);
 		feedHandler.setFormDirectory("./../assets/form");
 		ChildVaccineFollowup childVaccine = ChildVaccineFollowup.getInstance();	
 		feedHandler.getEvent(encounter, "05cbaa2b-d3a6-40f6-a604-328bf725ddbf",member);
