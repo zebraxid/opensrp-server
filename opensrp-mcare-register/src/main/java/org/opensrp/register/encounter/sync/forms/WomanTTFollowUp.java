@@ -19,10 +19,13 @@ import org.opensrp.form.domain.FormData;
 import org.opensrp.form.domain.FormField;
 import org.opensrp.form.domain.FormInstance;
 import org.opensrp.form.domain.FormSubmission;
+import org.opensrp.form.repository.AllFormSubmissions;
 import org.opensrp.register.encounter.sync.FileReader;
 import org.opensrp.register.encounter.sync.SyncConstant;
 import org.opensrp.register.encounter.sync.interfaces.FormsType;
+import org.opensrp.register.encounter.sync.mapping.domain.EncounterSyncMapping;
 import org.opensrp.register.mcare.domain.Members;
+import org.opensrp.register.mcare.repository.AllMembers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -32,7 +35,7 @@ public class WomanTTFollowUp extends FileReader implements FormsType<Members> {
 	
 	private WomanTTFollowUp(){		
 	}
-	
+
 	/**
 	 * @param   formDir  current directory location of the form.
 	 * @param 	vaccineDate date of vaccine.
@@ -43,18 +46,103 @@ public class WomanTTFollowUp extends FileReader implements FormsType<Members> {
 	 * @return 	FormSubmission 
 	 */
 	@Override
-	public FormSubmission getFormSubmission(String formDir,String vaccineDate,int vaccineDose,String memberEntityId,Members member,String vaccineName) throws IOException {
+	public FormSubmission getFormSubmission(String formDir,String vaccineDate,int vaccineDose,String memberEntityId,Members member,String vaccineName,EncounterSyncMapping encounterSyncMapping,AllFormSubmissions formSubmissions,AllMembers allMembers) throws IOException {
 		FormSubmission  form = null ;
 		if(member!=null){
-		    if(member.TTVisit().isEmpty()){ // when no vaccine is given before .
-		    	form =  craeteFormsubmission(formDir,vaccineDate,vaccineDose,memberEntityId,member);	    	
-		    }else if(!checkingVaccineGivenOrNot(member,vaccineDose, vaccineName)){  // At least one vaccine is given before. 
-		    	form =  craeteFormsubmission(formDir,vaccineDate,vaccineDose,memberEntityId,member);	    	
-		    }
+			if(encounterSyncMapping!=null){
+				form = getFormSubmissionWithInstanceId(encounterSyncMapping.getInstanceId().trim(),vaccineName,vaccineDate,vaccineDose,encounterSyncMapping,formSubmissions,memberEntityId,allMembers);
+			}else{
+			    if(member.TTVisit().isEmpty()){ // when no vaccine is given before .
+			    	form =  craeteFormsubmission(formDir,vaccineDate,vaccineDose,memberEntityId,member);	    	
+			    }else if(!checkingVaccineGivenOrNot(member,vaccineDose, vaccineName)){  // At least one vaccine is given before. 
+			    	form =  craeteFormsubmission(formDir,vaccineDate,vaccineDose,memberEntityId,member);	    	
+			    }
+			}
 		}
 	    return form;		
 	}	
 	
+	public FormSubmission getFormSubmissionWithInstanceId(String instanceId,String vaccineName,String currentVaccineDate, int currentDose,EncounterSyncMapping encounterSyncMapping,AllFormSubmissions formSubmissions,String memberEntityId,AllMembers allMembers) {		
+		FormSubmission formSubmission = formSubmissions.findByInstanceId(instanceId);		
+		String currentTTRetroField = SyncConstant.TTRetroMapping.get(Integer.toString(currentDose));
+		String currentTTFinalField = SyncConstant.TTFinalMapping.get(Integer.toString(currentDose));
+		String currentTTDoseField = SyncConstant.TTDoseMapping.get(Integer.toString(currentDose));
+		int beforeDose = encounterSyncMapping.getDose();
+		String beforeTTRetroField = SyncConstant.TTRetroMapping.get(Integer.toString(beforeDose));
+		String beforeTTFinalField = SyncConstant.TTFinalMapping.get(Integer.toString(beforeDose));
+		String beforeTTDoseField = SyncConstant.TTDoseMapping.get(Integer.toString(beforeDose));
+		List<FormField> fields = formSubmission.getFormInstance().form().fields();		
+		Map<String,String> fieldsMap = formSubmission.getFormInstance().form().getFieldsAsMap();
+		System.err.println("allMembers:"+memberEntityId);
+		Members member = allMembers.findByCaseId(memberEntityId);
+		if(beforeDose==1){
+			member.setTt1_final("");
+			member.setTt1_retro("");
+			member.setTt_1_dose("");
+		}else if(beforeDose ==2){
+			member.setTt2_final("");
+			member.setTt2_retro("");
+			member.setTt_2_dose("");
+		}else if(beforeDose ==3){
+			member.setTt3_final("");
+			member.setTt3_retro("");
+			member.setTt_3_dose("");
+		}else if(beforeDose ==4){
+			member.setTt4_final("");
+			member.setTt4_retro("");
+			member.setTt_4_dose("");
+		}else if(beforeDose ==5){
+			member.setTt5_final("");
+			member.setTT5Retro("");
+			member.setTT5Dose("");
+		}else{
+			
+		}		
+		
+		fieldsMap.put(beforeTTRetroField, "");
+		fieldsMap.put(beforeTTFinalField, "");
+		fieldsMap.put(beforeTTDoseField, "");		
+		fieldsMap.put(currentTTRetroField, currentVaccineDate.trim());
+		fieldsMap.put(currentTTFinalField, currentVaccineDate.trim());
+		fieldsMap.put(currentTTDoseField, Integer.toString(currentDose).trim());
+		
+		Map<String, String> ttVisit = member.TTVisit();
+		for (FormField formField : fields) {			
+			String name =formField.name();
+			if(name.equalsIgnoreCase(currentTTRetroField.trim())){
+				formField.setValue(currentVaccineDate.trim());
+				ttVisit.put(currentTTRetroField, currentVaccineDate.trim());
+	    	}else if(name.equalsIgnoreCase(currentTTFinalField.trim())){
+	    		formField.setValue(currentVaccineDate.trim());
+	    		ttVisit.put(currentTTFinalField, currentVaccineDate.trim());
+	    	}else if(name.equalsIgnoreCase(currentTTDoseField.trim())){
+	    		formField.setValue(Integer.toString(currentDose).trim());
+	    		ttVisit.put(currentTTDoseField, Integer.toString(currentDose).trim());
+	    	}else if(name.equalsIgnoreCase(beforeTTRetroField)){
+	    		formField.setValue("");
+	    		ttVisit.put(beforeTTRetroField, "");
+	    	}else if(name.equalsIgnoreCase(beforeTTFinalField)){
+	    		formField.setValue("");
+	    		ttVisit.put(beforeTTFinalField, "");
+	    	}else if(name.equalsIgnoreCase(beforeTTDoseField)){
+	    		formField.setValue("");
+	    		ttVisit.put(beforeTTDoseField, "");
+	    	}else{
+	    		
+	    	}			
+		}
+		
+		try{
+			member.setId(member.getId());
+			member.setRevision(member.getRevision());
+			allMembers.update(member);
+			return formSubmission;
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 	/**
 	 * <p>make a <code>FormSubmission</code> according to condition.</p>
 	 * <h5>No vaccine is given before then reqiured member information gets from <code>Members</code> object.</h5>

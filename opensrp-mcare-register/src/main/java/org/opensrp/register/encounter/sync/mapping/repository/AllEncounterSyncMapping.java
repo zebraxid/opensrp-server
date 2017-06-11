@@ -38,4 +38,24 @@ public class AllEncounterSyncMapping extends MotechBaseRepository<EncounterSyncM
 		}
 		return encounterSyncMappings.get(0);
 	}
+	
+	public void add(String encounterId,String instancId,String vaccineName,int dose){
+		EncounterSyncMapping encounterSyncMapping = new EncounterSyncMapping();
+		encounterSyncMapping.setVaccineName(vaccineName);
+		encounterSyncMapping.setEncounterId(encounterId);
+		encounterSyncMapping.setInstanceId(instancId);
+		encounterSyncMapping.setDose(dose);
+		encounterSyncMapping.setCreated(System.currentTimeMillis());
+		encounterSyncMapping.setUpdated(System.currentTimeMillis());
+		this.add(encounterSyncMapping);
+	}
+	public void update(String encounterId,String vaccineName,int dose ){
+		EncounterSyncMapping encounterSyncMapping = this.findByEncounterId(encounterId);
+		encounterSyncMapping.setVaccineName(vaccineName);
+		encounterSyncMapping.setDose(dose);
+		encounterSyncMapping.setId(encounterSyncMapping.getId());
+		encounterSyncMapping.setUpdated(System.currentTimeMillis());
+		encounterSyncMapping.setRevision(encounterSyncMapping.getRevision());
+		this.update(encounterSyncMapping);
+	}
 }

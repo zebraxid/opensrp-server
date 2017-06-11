@@ -17,6 +17,8 @@ public class EncounterSyncMapping extends MotechBaseDataObject{
 	@JsonProperty
 	private String vaccineName;
 	@JsonProperty
+	private int dose;
+	@JsonProperty
 	private long created;
 	@JsonProperty
 	private long updated;
@@ -27,7 +29,7 @@ public class EncounterSyncMapping extends MotechBaseDataObject{
 	public EncounterSyncMapping setEncounterId(String encounterId) {
 		this.encounterId = encounterId;
 		return this;
-	}
+	}	
 	
 	public String getEncounterId() {
 		return encounterId;
@@ -50,6 +52,16 @@ public class EncounterSyncMapping extends MotechBaseDataObject{
 	public String getVaccineName() {
 		return vaccineName;
 	}
+	
+	public int getDose() {
+		return dose;
+	}
+	
+	public EncounterSyncMapping setDose(int dose) {
+		this.dose = dose;
+		return this;
+	}
+	
 	
 	public EncounterSyncMapping setCreated(long created) {
 		this.created = created;

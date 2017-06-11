@@ -16,10 +16,13 @@ import org.opensrp.form.domain.FormData;
 import org.opensrp.form.domain.FormField;
 import org.opensrp.form.domain.FormInstance;
 import org.opensrp.form.domain.FormSubmission;
+import org.opensrp.form.repository.AllFormSubmissions;
 import org.opensrp.register.encounter.sync.FileReader;
 import org.opensrp.register.encounter.sync.SyncConstant;
 import org.opensrp.register.encounter.sync.interfaces.FormsType;
+import org.opensrp.register.encounter.sync.mapping.domain.EncounterSyncMapping;
 import org.opensrp.register.mcare.domain.Members;
+import org.opensrp.register.mcare.repository.AllMembers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,7 +42,7 @@ public class ChildVaccineFollowup extends FileReader implements FormsType<Member
 	 * @return 	FormSubmission 
 	 */
 	@Override
-	public FormSubmission getFormSubmission(String formDir,String vaccineDate,int vaccineDose,String memberEntityId,Members member,String vaccineName) throws IOException {
+	public FormSubmission getFormSubmission(String formDir,String vaccineDate,int vaccineDose,String memberEntityId,Members member,String vaccineName,EncounterSyncMapping encounterSyncMapping,AllFormSubmissions formSubmissions,AllMembers allMembers) throws IOException {
 		FormSubmission  form = null ;		
 		if(member!=null){
 		    if(member.child_vaccine().isEmpty()){ 
