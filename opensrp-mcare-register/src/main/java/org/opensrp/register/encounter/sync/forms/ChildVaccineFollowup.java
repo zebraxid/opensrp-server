@@ -37,22 +37,26 @@ public class ChildVaccineFollowup extends FileReader implements FormsType<Member
 	 * @param 	vaccineDate date of vaccine.
 	 * @param 	vaccineDose dose number of a vaccine.
 	 * @param 	memberEntityId unique id of a member.
-	 * @param 	vaccineName number of vaccine dose.
+	 * @param 	vaccineName A vaccine name .
 	 * @param 	member A member information.	 
 	 * @return 	FormSubmission 
 	 */
 	@Override
-	public FormSubmission getFormSubmission(String formDir,String vaccineDate,int vaccineDose,String memberEntityId,Members member,String vaccineName,EncounterSyncMapping encounterSyncMapping,AllFormSubmissions formSubmissions,AllMembers allMembers) throws IOException {
+	public FormSubmission getFormSubmission(String formDir,String vaccineDate,int vaccineDose,Members member,String vaccineName,EncounterSyncMapping encounterSyncMapping,AllFormSubmissions formSubmissions,AllMembers allMembers) throws IOException {
 		FormSubmission  form = null ;		
 		if(member!=null){
-		    if(member.child_vaccine().isEmpty()){ 
-		    	form =  craeteFormsubmission(formDir,vaccineDate,vaccineDose,memberEntityId,member,vaccineName);	    	
-		    }else if(!checkingVaccineGivenOrNot(member,vaccineDose,vaccineName)){		    	
-		    	form =  craeteFormsubmission(formDir,vaccineDate,vaccineDose,memberEntityId,member,vaccineName);	    	
-		    }else{		    	
-		    	logger.info(vaccineName+" "+vaccineDose +" is given already...");
-		    	return  form;
-		    }
+			if(encounterSyncMapping!=null){
+				form = getFormSubmissionWithInstanceId(encounterSyncMapping.getInstanceId().trim(),vaccineName,vaccineDate,vaccineDose,encounterSyncMapping,formSubmissions,member.caseId(),allMembers);
+			}else{			
+			    if(member.child_vaccine().isEmpty()){ 
+			    	form =  craeteFormsubmission(formDir,vaccineDate,vaccineDose,member.caseId(),member,vaccineName);	    	
+			    }else if(!checkingVaccineGivenOrNot(member,vaccineDose,vaccineName)){		    	
+			    	form =  craeteFormsubmission(formDir,vaccineDate,vaccineDose,member.caseId(),member,vaccineName);	    	
+			    }else{		    	
+			    	logger.info(vaccineName+" "+vaccineDose +" is given already...");
+			    	return  form;
+			    }
+			}
 		}else{
 			logger.info("No member found in opensrp....");
 			return  form;
@@ -60,6 +64,114 @@ public class ChildVaccineFollowup extends FileReader implements FormsType<Member
 	    return form;		
 	}
 	
+	private FormSubmission getFormSubmissionWithInstanceId(String instanceId,String vaccineName,String currentVaccineDate, int currentDose,EncounterSyncMapping encounterSyncMapping,AllFormSubmissions formSubmissions,String memberEntityId,AllMembers allMembers) {
+		FormSubmission formSubmission = formSubmissions.findByInstanceId(instanceId);		
+		String currentRetroField="";
+		String currentFinalField = "";
+		String currentDoseField  = "";
+		String beforeRetroField  = "";		
+		String beforeFinalField="";
+		String beforeDoseField ="";
+		int beforeDose = encounterSyncMapping.getDose();	
+		try{
+			if(vaccineName.equalsIgnoreCase(SyncConstant.getChildVaccinesName().get(0))){
+				currentFinalField = this.getFieldName("BCGFinalMapping", 0);
+				currentRetroField = this.getFieldName("BCGRetroMapping", 0);				
+			}else if(vaccineName.equalsIgnoreCase(SyncConstant.getChildVaccinesName().get(1))){
+				currentFinalField = this.getFieldName("PENTAFinalMapping", currentDose);
+				currentRetroField = this.getFieldName("PENTARetroMapping", currentDose);
+				currentDoseField = this.getFieldName("PENTADoseMapping", currentDose);				
+			}else if(vaccineName.equalsIgnoreCase(SyncConstant.getChildVaccinesName().get(2))){ //PCV
+				currentFinalField = this.getFieldName("PCVFinalMapping", currentDose);
+				currentRetroField = this.getFieldName("PCVRetroMapping", currentDose);
+				currentDoseField = this.getFieldName("PCVDoseMapping", currentDose);				
+			}else if(vaccineName.equalsIgnoreCase(SyncConstant.getChildVaccinesName().get(3))){
+				currentFinalField = this.getFieldName("OPVFinalMapping", currentDose);
+				currentRetroField = this.getFieldName("OPVRetroMapping", currentDose);
+				currentDoseField = this.getFieldName("OPVDoseMapping", currentDose);				
+			}else if(vaccineName.equalsIgnoreCase(SyncConstant.getChildVaccinesName().get(4))){ //IPV
+				currentFinalField = this.getFieldName("IPVFinalMapping", 0);
+				currentRetroField = this.getFieldName("IPVRetroMapping", 0);				
+			}else{
+				logger.info("vaccine not found");
+			}
+			
+			String beforeVaccineName = encounterSyncMapping.getVaccineName();			
+			if(beforeVaccineName.equalsIgnoreCase(SyncConstant.getChildVaccinesName().get(0))){
+				beforeRetroField = this.getFieldName("BCGRetroMapping", 0);
+				beforeFinalField = this.getFieldName("BCGFinalMapping", 0);
+			}else if(beforeVaccineName.equalsIgnoreCase(SyncConstant.getChildVaccinesName().get(1))){
+				beforeFinalField = this.getFieldName("PENTAFinalMapping", beforeDose);
+				beforeRetroField = this.getFieldName("PENTARetroMapping", beforeDose);
+				beforeDoseField =  this.getFieldName("PENTADoseMapping", beforeDose);
+			}else if(beforeVaccineName.equalsIgnoreCase(SyncConstant.getChildVaccinesName().get(2))){ //PCV
+				beforeFinalField = this.getFieldName("PCVFinalMapping", beforeDose);
+				beforeRetroField = this.getFieldName("PCVRetroMapping", beforeDose);
+				beforeDoseField =  this.getFieldName("PCVDoseMapping", beforeDose);				
+			}else if(beforeVaccineName.equalsIgnoreCase(SyncConstant.getChildVaccinesName().get(3))){
+				beforeFinalField = this.getFieldName("OPVFinalMapping", beforeDose);
+				beforeRetroField = this.getFieldName("OPVRetroMapping", beforeDose);
+				beforeDoseField =  this.getFieldName("OPVDoseMapping", beforeDose);				
+			}else if(beforeVaccineName.equalsIgnoreCase(SyncConstant.getChildVaccinesName().get(4))){ //IPV
+				beforeRetroField = this.getFieldName("IPVRetroMapping", 0);
+				beforeFinalField = this.getFieldName("IPVFinalMapping", 0);				
+			}else{
+				logger.info("vaccine not found");
+			}
+		}catch(Exception e){
+    		logger.info("FormSubmission creating error megsasge"+e.getMessage());
+    	}
+		
+		List<FormField> fields = formSubmission.getFormInstance().form().fields();		
+		Map<String,String> fieldsMap = formSubmission.getFormInstance().form().getFieldsAsMap();
+		Members member = allMembers.findByCaseId(memberEntityId);				
+		
+		fieldsMap.put(beforeRetroField, "");
+		fieldsMap.put(beforeFinalField, "");
+		fieldsMap.put(beforeDoseField, "");		
+		fieldsMap.put(currentRetroField, currentVaccineDate.trim());
+		fieldsMap.put(currentFinalField, currentVaccineDate.trim());
+		fieldsMap.put(currentDoseField, Integer.toString(currentDose).trim());
+		
+		List<Map<String, String>> childVaccineVisits = member.child_vaccine();
+		for (Map<String, String> childVaccineVisit : childVaccineVisits) {
+			childVaccineVisit.put(currentRetroField, currentVaccineDate.trim());
+			childVaccineVisit.put(currentFinalField, currentVaccineDate.trim());
+			childVaccineVisit.put(currentDoseField, Integer.toString(currentDose).trim());			
+			childVaccineVisit.put(beforeRetroField, "");
+			childVaccineVisit.put(beforeFinalField, "");
+			childVaccineVisit.put(beforeDoseField, "");			
+		}		
+		
+		for (FormField formField : fields) {			
+			String name =formField.name();
+			if(name.equalsIgnoreCase(currentRetroField.trim())){
+				formField.setValue(currentVaccineDate.trim());				
+	    	}else if(name.equalsIgnoreCase(currentFinalField.trim())){
+	    		formField.setValue(currentVaccineDate.trim());	    		
+	    	}else if(name.equalsIgnoreCase(currentDoseField.trim())){
+	    		formField.setValue(Integer.toString(currentDose).trim());	    		
+	    	}else if(name.equalsIgnoreCase(beforeRetroField)){
+	    		formField.setValue("");	    		
+	    	}else if(name.equalsIgnoreCase(beforeFinalField)){
+	    		formField.setValue("");	    		
+	    	}else if(name.equalsIgnoreCase(beforeDoseField)){
+	    		formField.setValue("");	    		
+	    	}else{	    		
+	    	}			
+		}
+		
+		try{
+			member.setId(member.getId());
+			member.setRevision(member.getRevision());
+			allMembers.update(member);			
+			return formSubmission;
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 	/**
 	 * Make a <code>FormSubmission</code> according to condition.
 	 * if no vaccine is given before then reqiured member information 

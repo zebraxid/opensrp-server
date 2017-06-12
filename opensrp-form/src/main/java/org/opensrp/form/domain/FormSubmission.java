@@ -90,6 +90,10 @@ public class FormSubmission extends MotechBaseDataObject {
     public void setServerVersion(long serverVersion) {
         this.serverVersion = serverVersion;
     }
+    
+    public void setInstanceId(String instanceId) {
+        this.instanceId = instanceId;
+    }
 
     public String getField(String name) {
         return formInstance.getField(name);

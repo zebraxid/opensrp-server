@@ -10,7 +10,7 @@ import org.opensrp.register.mcare.repository.AllMembers;
 
 
 public interface FormsType<T> {
-	public FormSubmission getFormSubmission(String formDir,String vaccineDate,int vaccineDose,String memberEntityId,Members member,String vaccineName,EncounterSyncMapping encounterSyncMapping,AllFormSubmissions formSubmissions ,AllMembers allMembers) throws IOException;
+	public FormSubmission getFormSubmission(String formDir,String vaccineDate,int vaccineDose,Members member,String vaccineName,EncounterSyncMapping encounterSyncMapping,AllFormSubmissions formSubmissions ,AllMembers allMembers) throws IOException;
 	public boolean checkingVaccineGivenOrNot(T t,int dose,String vaccineName);
 
 }

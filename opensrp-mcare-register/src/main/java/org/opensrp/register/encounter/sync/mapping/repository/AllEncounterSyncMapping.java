@@ -49,10 +49,11 @@ public class AllEncounterSyncMapping extends MotechBaseRepository<EncounterSyncM
 		encounterSyncMapping.setUpdated(System.currentTimeMillis());
 		this.add(encounterSyncMapping);
 	}
-	public void update(String encounterId,String vaccineName,int dose ){
+	public void update(String encounterId,String instanceId,String vaccineName,int dose ){
 		EncounterSyncMapping encounterSyncMapping = this.findByEncounterId(encounterId);
 		encounterSyncMapping.setVaccineName(vaccineName);
 		encounterSyncMapping.setDose(dose);
+		encounterSyncMapping.setInstanceId(instanceId);
 		encounterSyncMapping.setId(encounterSyncMapping.getId());
 		encounterSyncMapping.setUpdated(System.currentTimeMillis());
 		encounterSyncMapping.setRevision(encounterSyncMapping.getRevision());

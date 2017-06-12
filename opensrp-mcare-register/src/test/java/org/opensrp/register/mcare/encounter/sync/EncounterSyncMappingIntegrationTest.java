@@ -20,7 +20,7 @@ public class EncounterSyncMappingIntegrationTest extends TestConfig {
 		allEncounterSyncMapping = new AllEncounterSyncMapping(1,getStdCouchDbConnectorForOpensrp());		
 	}
 	
-	@Test
+	@Ignore@Test
 	public void shouldAddEncounterSyncMapping(){		
 		EncounterSyncMapping encounterSyncMapping = new EncounterSyncMapping();
 		encounterSyncMapping.setVaccineName("BCG");
@@ -31,8 +31,11 @@ public class EncounterSyncMappingIntegrationTest extends TestConfig {
 		encounterSyncMapping.setUpdated(System.currentTimeMillis());		
 		allEncounterSyncMapping.add(encounterSyncMapping);
 		//Mockito.doNothing().when(allEncounterSyncMapping).add(Matchers.any(EncounterSyncMapping.class));		
-	}	
-	
+	}
+	@Test
+	public void get(){
+		System.err.println(allEncounterSyncMapping.findByEncounterId("0h5cbaa2b-d3a6-40f6-a604-328bf725ddbf"));
+	}
 	@Ignore@Test
 	public void shouldUpdateEncounterSyncMapping(){		
 		EncounterSyncMapping encounterSyncMapping = new EncounterSyncMapping();

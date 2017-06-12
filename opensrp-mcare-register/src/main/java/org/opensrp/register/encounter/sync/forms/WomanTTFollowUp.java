@@ -46,16 +46,16 @@ public class WomanTTFollowUp extends FileReader implements FormsType<Members> {
 	 * @return 	FormSubmission 
 	 */
 	@Override
-	public FormSubmission getFormSubmission(String formDir,String vaccineDate,int vaccineDose,String memberEntityId,Members member,String vaccineName,EncounterSyncMapping encounterSyncMapping,AllFormSubmissions formSubmissions,AllMembers allMembers) throws IOException {
+	public FormSubmission getFormSubmission(String formDir,String vaccineDate,int vaccineDose,Members member,String vaccineName,EncounterSyncMapping encounterSyncMapping,AllFormSubmissions formSubmissions,AllMembers allMembers) throws IOException {
 		FormSubmission  form = null ;
 		if(member!=null){
 			if(encounterSyncMapping!=null){
-				form = getFormSubmissionWithInstanceId(encounterSyncMapping.getInstanceId().trim(),vaccineName,vaccineDate,vaccineDose,encounterSyncMapping,formSubmissions,memberEntityId,allMembers);
+				form = getFormSubmissionWithInstanceId(encounterSyncMapping.getInstanceId().trim(),vaccineName,vaccineDate,vaccineDose,encounterSyncMapping,formSubmissions,member.caseId(),allMembers);
 			}else{
 			    if(member.TTVisit().isEmpty()){ // when no vaccine is given before .
-			    	form =  craeteFormsubmission(formDir,vaccineDate,vaccineDose,memberEntityId,member);	    	
+			    	form =  craeteFormsubmission(formDir,vaccineDate,vaccineDose,member.caseId(),member);	    	
 			    }else if(!checkingVaccineGivenOrNot(member,vaccineDose, vaccineName)){  // At least one vaccine is given before. 
-			    	form =  craeteFormsubmission(formDir,vaccineDate,vaccineDose,memberEntityId,member);	    	
+			    	form =  craeteFormsubmission(formDir,vaccineDate,vaccineDose,member.caseId(),member);	    	
 			    }
 			}
 		}
@@ -73,7 +73,6 @@ public class WomanTTFollowUp extends FileReader implements FormsType<Members> {
 		String beforeTTDoseField = SyncConstant.TTDoseMapping.get(Integer.toString(beforeDose));
 		List<FormField> fields = formSubmission.getFormInstance().form().fields();		
 		Map<String,String> fieldsMap = formSubmission.getFormInstance().form().getFieldsAsMap();
-		System.err.println("allMembers:"+memberEntityId);
 		Members member = allMembers.findByCaseId(memberEntityId);
 		if(beforeDose==1){
 			member.setTt1_final("");
@@ -136,6 +135,7 @@ public class WomanTTFollowUp extends FileReader implements FormsType<Members> {
 			member.setId(member.getId());
 			member.setRevision(member.getRevision());
 			allMembers.update(member);
+			
 			return formSubmission;
 		}catch(Exception e){
 			e.printStackTrace();
@@ -145,8 +145,8 @@ public class WomanTTFollowUp extends FileReader implements FormsType<Members> {
 
 	/**
 	 * <p>make a <code>FormSubmission</code> according to condition.</p>
-	 * <h5>No vaccine is given before then reqiured member information gets from <code>Members</code> object.</h5>
-	 * <h5>At least one vaccine is given before then reqiured member information gets from <code>Members.TTVisit()</code> object.</h5> 
+	 * <h5>No vaccine is given before then required member information gets from <code>Members</code> object.</h5>
+	 * <h5>At least one vaccine is given before then required member information gets from <code>Members.TTVisit()</code> object.</h5> 
 	 * 
 	 * @param  formDir  current directory location of the form.
 	 * @param vaccineDate date of vaccine.
