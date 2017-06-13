@@ -19,6 +19,7 @@ import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.form.repository.AllFormSubmissions;
 import org.opensrp.register.encounter.sync.FileReader;
 import org.opensrp.register.encounter.sync.SyncConstant;
+import org.opensrp.register.encounter.sync.VaccineParamsBuilder;
 import org.opensrp.register.encounter.sync.interfaces.FormsType;
 import org.opensrp.register.encounter.sync.mapping.domain.EncounterSyncMapping;
 import org.opensrp.register.mcare.domain.Members;
@@ -42,19 +43,23 @@ public class ChildVaccineFollowup extends FileReader implements FormsType<Member
 	 * @return 	FormSubmission 
 	 */
 	@Override
-	public FormSubmission getFormSubmission(String formDir,String vaccineDate,int vaccineDose,Members member,String vaccineName,EncounterSyncMapping encounterSyncMapping,AllFormSubmissions formSubmissions,AllMembers allMembers) throws IOException {
+	public FormSubmission getFormSubmission(VaccineParamsBuilder params) throws IOException {
 		FormSubmission  form = null ;		
-		if(member!=null){
-			if(encounterSyncMapping!=null){
-				form = getFormSubmissionWithInstanceId(encounterSyncMapping.getInstanceId().trim(),vaccineName,vaccineDate,vaccineDose,encounterSyncMapping,formSubmissions,member.caseId(),allMembers);
+		if(params.getMember()!=null){
+			if(params.getEncounterSyncMapping()!=null){
+				if(!checkingVaccineGivenOrNot(params.getMember(),params.getVaccineDose(),params.getVaccineName())){		    	
+					form = getFormSubmissionWithInstanceId(params);
+				}else{
+					System.out.println(params.getVaccineName()+" "+params.getVaccineDose() +" is  already given...");
+					logger.info(params.getVaccineName()+" "+params.getVaccineDose() +" is  already given...");
+				}
 			}else{			
-			    if(member.child_vaccine().isEmpty()){ 
-			    	form =  craeteFormsubmission(formDir,vaccineDate,vaccineDose,member.caseId(),member,vaccineName);	    	
-			    }else if(!checkingVaccineGivenOrNot(member,vaccineDose,vaccineName)){		    	
-			    	form =  craeteFormsubmission(formDir,vaccineDate,vaccineDose,member.caseId(),member,vaccineName);	    	
-			    }else{		    	
-			    	logger.info(vaccineName+" "+vaccineDose +" is given already...");
-			    	return  form;
+			    if(!checkingVaccineGivenOrNot(params.getMember(),params.getVaccineDose(),params.getVaccineName())){		    	
+			    	form =  craeteFormsubmission(params);	    	
+			    }else{	
+			    	System.out.println(params.getVaccineName()+" "+params.getVaccineDose() +" is given already given...");
+			    	logger.info(params.getVaccineName()+" "+params.getVaccineDose() +" is  already given...");
+			    	
 			    }
 			}
 		}else{
@@ -64,7 +69,15 @@ public class ChildVaccineFollowup extends FileReader implements FormsType<Member
 	    return form;		
 	}
 	
-	private FormSubmission getFormSubmissionWithInstanceId(String instanceId,String vaccineName,String currentVaccineDate, int currentDose,EncounterSyncMapping encounterSyncMapping,AllFormSubmissions formSubmissions,String memberEntityId,AllMembers allMembers) {
+	private FormSubmission getFormSubmissionWithInstanceId(VaccineParamsBuilder params) {
+		String instanceId = params.getEncounterSyncMapping().getInstanceId().trim();
+		String vaccineName = params.getVaccineName();
+		String currentVaccineDate = params.getVaccineDate();
+		int currentDose = params.getVaccineDose();
+		EncounterSyncMapping encounterSyncMapping = params.getEncounterSyncMapping();
+		AllFormSubmissions formSubmissions = params.getFormSubmissions();
+		String memberEntityId = params.getMember().caseId();
+		AllMembers allMembers = params.getAllMembers();
 		FormSubmission formSubmission = formSubmissions.findByInstanceId(instanceId);		
 		String currentRetroField="";
 		String currentFinalField = "";
@@ -84,11 +97,11 @@ public class ChildVaccineFollowup extends FileReader implements FormsType<Member
 			}else if(vaccineName.equalsIgnoreCase(SyncConstant.getChildVaccinesName().get(2))){ //PCV
 				currentFinalField = this.getFieldName("PCVFinalMapping", currentDose);
 				currentRetroField = this.getFieldName("PCVRetroMapping", currentDose);
-				currentDoseField = this.getFieldName("PCVDoseMapping", currentDose);				
+				currentDoseField =  this.getFieldName("PCVDoseMapping", currentDose);				
 			}else if(vaccineName.equalsIgnoreCase(SyncConstant.getChildVaccinesName().get(3))){
 				currentFinalField = this.getFieldName("OPVFinalMapping", currentDose);
 				currentRetroField = this.getFieldName("OPVRetroMapping", currentDose);
-				currentDoseField = this.getFieldName("OPVDoseMapping", currentDose);				
+				currentDoseField =  this.getFieldName("OPVDoseMapping", currentDose);				
 			}else if(vaccineName.equalsIgnoreCase(SyncConstant.getChildVaccinesName().get(4))){ //IPV
 				currentFinalField = this.getFieldName("IPVFinalMapping", 0);
 				currentRetroField = this.getFieldName("IPVRetroMapping", 0);				
@@ -190,7 +203,15 @@ public class ChildVaccineFollowup extends FileReader implements FormsType<Member
 	 * 			if stream to a file cannot be written.
 	 * @return FormSubmission 
 	 * */
-	private FormSubmission craeteFormsubmission(String formDir,String vaccineDate,int vaccineDose,String memberEntityId,Members member,String vaccineName) throws IOException{
+	
+	//formDir,vaccineDate,vaccineDose,member.caseId(),member,vaccineName
+	private FormSubmission craeteFormsubmission(VaccineParamsBuilder params) throws IOException{
+		String formDir = params.getFormDir();
+		String vaccineDate = params.getVaccineDate();
+		int vaccineDose = params.getVaccineDose();
+		String memberEntityId = params.getMember().caseId();
+		Members member = params.getMember();
+		String vaccineName = params.getVaccineName();
 		JsonNode file = ChildVaccineFollowup.getFile(formDir, SyncConstant.CHILDACCINATIONFORMNAME);
 		ObjectMapper mapper = new ObjectMapper();		    
 	    FormInstance formInstance =new FormInstance();	     
@@ -222,7 +243,8 @@ public class ChildVaccineFollowup extends FileReader implements FormsType<Member
 	    	bType.append(".".toString());
 	    	bType.append(name);	    	
 	    	formField.setName(name);	    	
-	    	formField.setSource(bType.toString().replace("\"", ""));	    	
+	    	formField.setSource(bType.toString().replace("\"", ""));
+	    	
 	    	/** 
 	    	 * At least one vaccine is given then goes here.	    		
 	    	 */
@@ -230,27 +252,80 @@ public class ChildVaccineFollowup extends FileReader implements FormsType<Member
 		    	try{
 		    		if(vaccineName.equalsIgnoreCase(SyncConstant.getChildVaccinesName().get(0))){
 		    			finalFieldName = this.getFieldName("BCGFinalMapping", 0);
-		    			retroFieldName = this.getFieldName("BCGRetroMapping", 0);		    			
+		    			retroFieldName = this.getFieldName("BCGRetroMapping", 0);
+		    			params.setFormField(formField);		    			
+		    			params.setFieldName(name);
+		    			params.setFinalFieldName(finalFieldName);
+		    			params.setRetroFieldName(retroFieldName);
+		    			params.setDoseFieldName("");
+		    			params.setChildVaccineFollowup(childVaccineFollowup);
+		    			params.setType(false);
+		    			params.setField(null);
+		    			params.setConvertMemberToJsonObject(convertMemberToJsonObject);
+		    			
 		    			formField = this.getFormFieldValue(formField, name, finalFieldName, retroFieldName, "", vaccineDose, vaccineDate, childVaccineFollowup,false,null,convertMemberToJsonObject);
 		    		}else if(vaccineName.equalsIgnoreCase(SyncConstant.getChildVaccinesName().get(1))){
 		    			finalFieldName = this.getFieldName("PENTAFinalMapping", vaccineDose);
 		    			retroFieldName = this.getFieldName("PENTARetroMapping", vaccineDose);
 		    			doseFieldName = this.getFieldName("PENTADoseMapping", vaccineDose);		    			
+		    			params.setFormField(formField);		    			
+		    			params.setFieldName(name);
+		    			params.setFinalFieldName(finalFieldName);
+		    			params.setRetroFieldName(retroFieldName);
+		    			params.setDoseFieldName(doseFieldName);
+		    			params.setChildVaccineFollowup(childVaccineFollowup);
+		    			params.setType(true);
+		    			params.setField(null);
+		    			params.setConvertMemberToJsonObject(convertMemberToJsonObject);
+		    			
 		    			formField = this.getFormFieldValue(formField, name, finalFieldName, retroFieldName, doseFieldName, vaccineDose, vaccineDate, childVaccineFollowup,true,null,convertMemberToJsonObject);
 		    		}else if(vaccineName.equalsIgnoreCase(SyncConstant.getChildVaccinesName().get(2))){ //PCV
 		    			finalFieldName = this.getFieldName("PCVFinalMapping", vaccineDose);
 		    			retroFieldName = this.getFieldName("PCVRetroMapping", vaccineDose);
 		    			doseFieldName = this.getFieldName("PCVDoseMapping", vaccineDose);
+		    			
+		    			params.setFormField(formField);		    			
+		    			params.setFieldName(name);
+		    			params.setFinalFieldName(finalFieldName);
+		    			params.setRetroFieldName(retroFieldName);
+		    			params.setDoseFieldName(doseFieldName);
+		    			params.setChildVaccineFollowup(childVaccineFollowup);
+		    			params.setType(true);
+		    			params.setField(null);
+		    			params.setConvertMemberToJsonObject(convertMemberToJsonObject);
+		    			
 		    			formField = this.getFormFieldValue(formField, name, finalFieldName, retroFieldName, doseFieldName, vaccineDose, vaccineDate, childVaccineFollowup,true,null,convertMemberToJsonObject);
 		    		}else if(vaccineName.equalsIgnoreCase(SyncConstant.getChildVaccinesName().get(3))){
 		    			finalFieldName = this.getFieldName("OPVFinalMapping", vaccineDose);
 		    			retroFieldName = this.getFieldName("OPVRetroMapping", vaccineDose);
 		    			doseFieldName = this.getFieldName("OPVDoseMapping", vaccineDose);
+		    			
+		    			params.setFormField(formField);		    			
+		    			params.setFieldName(name);
+		    			params.setFinalFieldName(finalFieldName);
+		    			params.setRetroFieldName(retroFieldName);
+		    			params.setDoseFieldName(doseFieldName);
+		    			params.setChildVaccineFollowup(childVaccineFollowup);
+		    			params.setType(true);
+		    			params.setField(null);
+		    			params.setConvertMemberToJsonObject(convertMemberToJsonObject);
+		    			
 		    			formField = this.getFormFieldValue(formField, name, finalFieldName, retroFieldName, doseFieldName, vaccineDose, vaccineDate, childVaccineFollowup,true,null,convertMemberToJsonObject);
 		    			
 		    		}else if(vaccineName.equalsIgnoreCase(SyncConstant.getChildVaccinesName().get(4))){ //IPV
 		    			finalFieldName = this.getFieldName("IPVFinalMapping", 0);
 		    			retroFieldName = this.getFieldName("IPVRetroMapping", 0);
+		    			
+		    			params.setFormField(formField);		    			
+		    			params.setFieldName(name);
+		    			params.setFinalFieldName(finalFieldName);
+		    			params.setRetroFieldName(retroFieldName);
+		    			params.setDoseFieldName("");
+		    			params.setChildVaccineFollowup(childVaccineFollowup);
+		    			params.setType(false);
+		    			params.setField(null);
+		    			params.setConvertMemberToJsonObject(convertMemberToJsonObject);
+		    			
 		    			formField = this.getFormFieldValue(formField, name, finalFieldName, retroFieldName, "", vaccineDose, vaccineDate, childVaccineFollowup,false,null,convertMemberToJsonObject);
 		    		}else{
 		    			logger.info("vaccine not found");
@@ -268,27 +343,80 @@ public class ChildVaccineFollowup extends FileReader implements FormsType<Member
 	    			if(vaccineName.equalsIgnoreCase(SyncConstant.getChildVaccinesName().get(0))){//BCG
 	    				finalFieldName = this.getFieldName("BCGFinalMapping", vaccineDose);
 	    				retroFieldName = this.getFieldName("BCGRetroMapping", vaccineDose);		    			
-		    			formField = this.getFormFieldValue(formField, name, finalFieldName, retroFieldName, "", vaccineDose, vaccineDate, childVaccineFollowup,false,field,convertMemberToJsonObject);
+		    			
+	    				params.setFormField(formField);		    			
+		    			params.setFieldName(name);
+		    			params.setFinalFieldName(finalFieldName);
+		    			params.setRetroFieldName(retroFieldName);
+		    			params.setDoseFieldName("");
+		    			params.setChildVaccineFollowup(childVaccineFollowup);
+		    			params.setType(false);
+		    			params.setField(field);
+		    			params.setConvertMemberToJsonObject(convertMemberToJsonObject);
+	    				
+	    				formField = this.getFormFieldValue(formField, name, finalFieldName, retroFieldName, "", vaccineDose, vaccineDate, childVaccineFollowup,false,field,convertMemberToJsonObject);
 		    		}else if(vaccineName.equalsIgnoreCase(SyncConstant.getChildVaccinesName().get(1))){// Pentavalent
 		    			finalFieldName = this.getFieldName("PENTAFinalMapping", vaccineDose);
 		    			retroFieldName = this.getFieldName("PENTARetroMapping", vaccineDose);
 		    			doseFieldName = this.getFieldName("PENTADoseMapping", vaccineDose);		    			
+		    			
+		    			params.setFormField(formField);		    			
+		    			params.setFieldName(name);
+		    			params.setFinalFieldName(finalFieldName);
+		    			params.setRetroFieldName(retroFieldName);
+		    			params.setDoseFieldName(doseFieldName);
+		    			params.setChildVaccineFollowup(childVaccineFollowup);
+		    			params.setType(false);
+		    			params.setField(field);
+		    			params.setConvertMemberToJsonObject(convertMemberToJsonObject);
+		    			
 		    			formField = this.getFormFieldValue(formField, name, finalFieldName, retroFieldName, doseFieldName, vaccineDose, vaccineDate, childVaccineFollowup,false,field,convertMemberToJsonObject);
 		    			
 		    		}else if(vaccineName.equalsIgnoreCase(SyncConstant.getChildVaccinesName().get(2))){ //PCV
 		    			finalFieldName = this.getFieldName("PCVFinalMapping", vaccineDose);
 		    			retroFieldName = this.getFieldName("PCVRetroMapping", vaccineDose);
 		    			doseFieldName = this.getFieldName("PCVDoseMapping", vaccineDose);
+		    			
+		    			params.setFormField(formField);		    			
+		    			params.setFieldName(name);
+		    			params.setFinalFieldName(finalFieldName);
+		    			params.setRetroFieldName(retroFieldName);
+		    			params.setDoseFieldName(doseFieldName);
+		    			params.setChildVaccineFollowup(childVaccineFollowup);
+		    			params.setType(false);
+		    			params.setField(field);
+		    			
 		    			formField = this.getFormFieldValue(formField, name, finalFieldName, retroFieldName, doseFieldName, vaccineDose, vaccineDate, childVaccineFollowup,false,field,convertMemberToJsonObject);
 		    			
 		    		}else if(vaccineName.equalsIgnoreCase(SyncConstant.getChildVaccinesName().get(3))){ //OPV
 		    			finalFieldName = this.getFieldName("OPVFinalMapping", vaccineDose);
 		    			retroFieldName = this.getFieldName("OPVRetroMapping", vaccineDose);
 		    			doseFieldName = this.getFieldName("OPVDoseMapping", vaccineDose);
+		    			
+		    			params.setFormField(formField);		    			
+		    			params.setFieldName(name);
+		    			params.setFinalFieldName(finalFieldName);
+		    			params.setRetroFieldName(retroFieldName);
+		    			params.setDoseFieldName(doseFieldName);
+		    			params.setChildVaccineFollowup(childVaccineFollowup);
+		    			params.setType(false);
+		    			params.setField(field);
+		    			
 		    			formField = this.getFormFieldValue(formField, name, finalFieldName, retroFieldName, doseFieldName, vaccineDose, vaccineDate, childVaccineFollowup,false,field,convertMemberToJsonObject);
 		    		}else if(vaccineName.equalsIgnoreCase(SyncConstant.getChildVaccinesName().get(4))){ //IPV
 		    			finalFieldName = this.getFieldName("IPVFinalMapping", vaccineDose);
 		    			retroFieldName = this.getFieldName("IPVRetroMapping", vaccineDose);
+		    			
+		    			params.setFormField(formField);		    			
+		    			params.setFieldName(name);
+		    			params.setFinalFieldName(finalFieldName);
+		    			params.setRetroFieldName(retroFieldName);
+		    			params.setDoseFieldName("");
+		    			params.setChildVaccineFollowup(childVaccineFollowup);
+		    			params.setType(false);
+		    			params.setField(field);
+		    			params.setConvertMemberToJsonObject(convertMemberToJsonObject);
+		    			
 		    			formField = this.getFormFieldValue(formField, name, finalFieldName, retroFieldName, "", vaccineDose, vaccineDate, childVaccineFollowup,false,field,convertMemberToJsonObject);
 		    		}else{
 		    			logger.info("Vaccine not found");
@@ -315,7 +443,7 @@ public class ChildVaccineFollowup extends FileReader implements FormsType<Member
 	}
 	
 	/**
-	 * <p>gets FormField with value.</p>
+	 * <p> gets FormField with value.</p>
 	 * @param  formField A FormField object.
 	 * @param  name parsed field name getting from json file. 
 	 * @param  finalFieldName A filed name which is defined in child vaccine followup form(Ex:<code>final_penta1</code>)
@@ -476,5 +604,7 @@ public class ChildVaccineFollowup extends FileReader implements FormsType<Member
 		}		
 		return formField;		
 	}
+	
+	
 
 }

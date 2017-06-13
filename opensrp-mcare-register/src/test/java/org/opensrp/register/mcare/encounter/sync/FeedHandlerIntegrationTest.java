@@ -1,6 +1,7 @@
 package org.opensrp.register.mcare.encounter.sync;
 
 import java.lang.reflect.Field;
+import java.util.Map;
 
 import junit.framework.Assert;
 
@@ -46,6 +47,37 @@ public class FeedHandlerIntegrationTest extends TestConfig {
 	
 	@Ignore@Test
 	public void shouldCheckWhichHasTTVisit() throws Exception{		
+		Woman woman = new Woman();
+		Members member = woman.getWomanMember();		
+		member.setTTVisit(woman.getTTVaccine());
+		//allMembers.add(member);
+		ObjectMapper members = new ObjectMapper();    	
+    	Gson gson = new Gson();
+        gson.toJson(member);         
+        //System.out.println("GOOO"+gson.toJson(member).valueOf("caseId"));           
+		JSONObject encounter = new JSONObject();
+		JSONObject ob1Object = new JSONObject();
+		JSONArray obs = new JSONArray();
+		ob1Object.put("display", 
+       "Immunization Incident Template: TT 4 (Tetanus toxoid), 2016-02-28, true, 4.0");
+		ob1Object.put("uuid", "08db9795-1016-4a3e-9174-cb030962b173");
+		JSONObject ob2Object = new JSONObject();		
+		ob2Object.put("display", 
+			       "Immunization Incident Template: 2014-05-28, true, 1.0, TT 1 (Tetanus toxoid)");
+		ob2Object.put("uuid", "e013eaf3-b8fc-4954-94a9-1691af8ddb49");
+		obs.put(ob1Object);
+		//obs.put(ob2Object);
+		encounter.put("obs", obs);		
+		WomanTTFollowUp womanTTForm = WomanTTFollowUp.getInstance();	
+		FeedHandler feedHandler =  new FeedHandler(allMembers,formSubmissions,allEncounterSyncMapping);
+		feedHandler.setFormDirectory("./../assets/form");
+		feedHandler.getEvent(encounter, "e1e16f38-01d8-42ae-be55-4573b3ac349e",member);		
+		Assert.assertEquals(member.TTVisit().isEmpty(), false);	
+		//Mockito.doNothing().when(formSubmissions).add(Matchers.any(FormSubmission.class));		
+	}
+	
+	@Ignore@Test
+	public void shouldCheckWhichHasGivenVisit() throws Exception{		
 		Woman woman = new Woman();
 		Members member = woman.getWomanMember();		
 		member.setTTVisit(woman.getTTVaccine());
@@ -107,7 +139,7 @@ public class FeedHandlerIntegrationTest extends TestConfig {
 		feedHandler.getEvent(encounter, "e1e16f38-01d8-42ae-be55-4573b3ac349e",member);	
 		Assert.assertEquals(member.TTVisit().isEmpty(), true);		
 		Assert.assertEquals(womanTTForm.checkingVaccineGivenOrNot(member, 1,""),false);
-		Mockito.doNothing().when(formSubmissions).add(Matchers.any(FormSubmission.class));
+		//Mockito.doNothing().when(formSubmissions).add(Matchers.any(FormSubmission.class));
 	}
 	
 	@Ignore@Test
@@ -141,7 +173,7 @@ public class FeedHandlerIntegrationTest extends TestConfig {
 		Mockito.doNothing().when(formSubmissions).add(Matchers.any(FormSubmission.class));
 	}
 	
-	@Test
+	@Ignore@Test
 	public void shouldCheckWhichHasAtLeastOneChildVisit() throws Exception{		
 		Child child = new Child();
 		Members member = child.getChildMember();
@@ -155,7 +187,7 @@ public class FeedHandlerIntegrationTest extends TestConfig {
 		ob1Object.put("uuid", "0c114163-948b-45a9-9f0b-786b0f5cb5ba");
 		JSONObject ob2Object = new JSONObject();		
 		ob2Object.put("display", 
-			       "Immunization Incident Template: 2016-07-28, true, OPV (Poliomyelitis oral, trivalent, live attenuated), 2.0");
+			       "Immunization Incident Template: 2016-07-28, true, OPV (Poliomyelitis oral, trivalent, live attenuated), 1.0");
 		ob2Object.put("uuid", "ba80a737-78bc-4933-9530-65527ce28b0a");		
 		JSONObject ob3Object = new JSONObject();
 		ob3Object.put("display", "Immunization Incident Template: PCV 2 (Pneumococcus, purified polysaccharides antigen conjugated), 2016-07-15, 2.0, true");
@@ -166,17 +198,53 @@ public class FeedHandlerIntegrationTest extends TestConfig {
 		//obs.put(ob3Object);
 		encounter.put("obs", obs);		
 		
-		FormsType<ChildVaccineFollowup> childVaccineFollowUp= FormFatcory.getFormsTypeInstance("CVF");
-		FormSubmission formsubmissionEntity= childVaccineFollowUp.getFormSubmission("./../assets/form","2017-04-03",1, member,"OPV",null, formSubmissions,allMembers);
+		//FormsType<ChildVaccineFollowup> childVaccineFollowUp= FormFatcory.getFormsTypeInstance("CVF");
+		//FormSubmission formsubmissionEntity= childVaccineFollowUp.getFormSubmission("./../assets/form","2017-04-03",1, member,"OPV",null, formSubmissions,allMembers);
 		FeedHandler feedHandler =  new FeedHandler(allMembers,formSubmissions,allEncounterSyncMapping);
 		feedHandler.setFormDirectory("./../assets/form");		
-		ChildVaccineFollowup childVaccine = ChildVaccineFollowup.getInstance();	
+		//ChildVaccineFollowup childVaccine = ChildVaccineFollowup.getInstance();	
 		feedHandler.getEvent(encounter, "05cbaa2b-d3a6-40f6-a604-328bf725ddbf",member);
 		//System.err.println("member.TTVisit():"+member.child_vaccine().toString());		
 		//Mockito.doNothing().when(formSubmissions).add(Matchers.any(FormSubmission.class));		
 	}
 	
 	
+	@Ignore@Test
+	public void shouldCheckWhichHasGivenAVisit() throws Exception{		
+		Child child = new Child();
+		Members member = child.getChildMember();
+		Map<String, String> childVaccine = child.getChildVaccine();
+		childVaccine.put("final_opv1", "2016-07-15");
+		member.child_vaccine().add(childVaccine);
+		
+		JSONObject encounter = new JSONObject();
+		JSONObject ob1Object = new JSONObject();
+		JSONArray obs = new JSONArray();
+		ob1Object.put("display", 
+       "Immunization Incident Template: BCG (Tuberculosis, live attenuated), 2016-08-25, true, 0.0");
+		ob1Object.put("uuid", "0c114163-948b-45a9-9f0b-786b0f5cb5ba");
+		JSONObject ob2Object = new JSONObject();		
+		ob2Object.put("display", 
+			       "Immunization Incident Template: 2016-07-28, true, OPV (Poliomyelitis oral, trivalent, live attenuated), 1.0");
+		ob2Object.put("uuid", "Pa80a737-78bc-4933-9530-65527ce28b0a");		
+		JSONObject ob3Object = new JSONObject();
+		ob3Object.put("display", "Immunization Incident Template: PCV 2 (Pneumococcus, purified polysaccharides antigen conjugated), 2016-07-15, 2.0, true");
+		ob3Object.put("uuid", "5f8d190f-c51d-4f59-a3b0-247ca1e4e7d8");		
+		
+		//obs.put(ob1Object);
+		obs.put(ob2Object);
+		//obs.put(ob3Object);
+		encounter.put("obs", obs);		
+		
+		//FormsType<ChildVaccineFollowup> childVaccineFollowUp= FormFatcory.getFormsTypeInstance("CVF");
+		//FormSubmission formsubmissionEntity= childVaccineFollowUp.getFormSubmission("./../assets/form","2017-04-03",1, member,"OPV",null, formSubmissions,allMembers);
+		FeedHandler feedHandler =  new FeedHandler(allMembers,formSubmissions,allEncounterSyncMapping);
+		feedHandler.setFormDirectory("./../assets/form");		
+		//ChildVaccineFollowup childVaccine = ChildVaccineFollowup.getInstance();	
+		feedHandler.getEvent(encounter, "05cbaa2b-d3a6-40f6-a604-328bf725ddbf",member);
+		//System.err.println("member.TTVisit():"+member.child_vaccine().toString());		
+		//Mockito.doNothing().when(formSubmissions).add(Matchers.any(FormSubmission.class));		
+	}
 	@Ignore@Test
 	public void shouldCheckChildVisitWhichIsActualllyNotAChild() throws Exception{		
 		Child child = new Child();
@@ -202,13 +270,13 @@ public class FeedHandlerIntegrationTest extends TestConfig {
 		//obs.put(ob2Object);
 		encounter.put("obs", obs);		
 		
-		FormsType<ChildVaccineFollowup> childVaccineFollowUp= FormFatcory.getFormsTypeInstance("CVF");
-		FormSubmission formsubmissionEntity= childVaccineFollowUp.getFormSubmission("./../assets/form","2017-04-03",1, member,"OPV",null,formSubmissions,allMembers);
+		//FormsType<ChildVaccineFollowup> childVaccineFollowUp= FormFatcory.getFormsTypeInstance("CVF");
+		//FormSubmission formsubmissionEntity= childVaccineFollowUp.getFormSubmission("./../assets/form","2017-04-03",1, member,"OPV",null,formSubmissions,allMembers);
 		FeedHandler feedHandler =  new FeedHandler(allMembers,formSubmissions,allEncounterSyncMapping);
 		feedHandler.setFormDirectory("./../assets/form");		
-		ChildVaccineFollowup childVaccine = ChildVaccineFollowup.getInstance();	
+		//ChildVaccineFollowup childVaccine = ChildVaccineFollowup.getInstance();	
 		feedHandler.getEvent(encounter, "05cbaa2b-d3a6-40f6-a604-328bf725ddbf",member);			
-		Mockito.doNothing().when(formSubmissions).add(Matchers.any(FormSubmission.class));		
+		//Mockito.doNothing().when(formSubmissions).add(Matchers.any(FormSubmission.class));		
 	}
 	
 	@Ignore@Test
@@ -234,13 +302,13 @@ public class FeedHandlerIntegrationTest extends TestConfig {
 		//obs.put(ob3Object);
 		encounter.put("obs", obs);	
 		
-		FormsType<ChildVaccineFollowup> childVaccineFollowUp= FormFatcory.getFormsTypeInstance("CVF");
-		FormSubmission formsubmissionEntity= childVaccineFollowUp.getFormSubmission("./../assets/form","2017-04-03",1, member,"OPV", null,formSubmissions,allMembers);
+		//FormsType<ChildVaccineFollowup> childVaccineFollowUp= FormFatcory.getFormsTypeInstance("CVF");
+		//FormSubmission formsubmissionEntity= childVaccineFollowUp.getFormSubmission("./../assets/form","2017-04-03",1, member,"OPV", null,formSubmissions,allMembers);
 		FeedHandler feedHandler =  new FeedHandler(allMembers,formSubmissions,allEncounterSyncMapping);
 		feedHandler.setFormDirectory("./../assets/form");
-		ChildVaccineFollowup childVaccine = ChildVaccineFollowup.getInstance();	
+		//ChildVaccineFollowup childVaccine = ChildVaccineFollowup.getInstance();	
 		feedHandler.getEvent(encounter, "05cbaa2b-d3a6-40f6-a604-328bf725ddbf",member);
-		Mockito.doNothing().when(formSubmissions).add(Matchers.any(FormSubmission.class));		
+		//Mockito.doNothing().when(formSubmissions).add(Matchers.any(FormSubmission.class));		
 	}
 
 }

@@ -22,6 +22,7 @@ import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.form.repository.AllFormSubmissions;
 import org.opensrp.register.encounter.sync.FileReader;
 import org.opensrp.register.encounter.sync.SyncConstant;
+import org.opensrp.register.encounter.sync.VaccineParamsBuilder;
 import org.opensrp.register.encounter.sync.interfaces.FormsType;
 import org.opensrp.register.encounter.sync.mapping.domain.EncounterSyncMapping;
 import org.opensrp.register.mcare.domain.Members;
@@ -46,23 +47,36 @@ public class WomanTTFollowUp extends FileReader implements FormsType<Members> {
 	 * @return 	FormSubmission 
 	 */
 	@Override
-	public FormSubmission getFormSubmission(String formDir,String vaccineDate,int vaccineDose,Members member,String vaccineName,EncounterSyncMapping encounterSyncMapping,AllFormSubmissions formSubmissions,AllMembers allMembers) throws IOException {
+	public FormSubmission getFormSubmission(VaccineParamsBuilder params) throws IOException {
 		FormSubmission  form = null ;
-		if(member!=null){
-			if(encounterSyncMapping!=null){
-				form = getFormSubmissionWithInstanceId(encounterSyncMapping.getInstanceId().trim(),vaccineName,vaccineDate,vaccineDose,encounterSyncMapping,formSubmissions,member.caseId(),allMembers);
+		if(params.getMember()!=null){
+			if(params.getEncounterSyncMapping()!=null ){				
+				if(!checkingVaccineGivenOrNot(params.getMember(),params.getVaccineDose(), params.getVaccineName())){ 
+					form = getFormSubmissionWithInstanceId(params);
+				}else{					
+			    	logger.info(params.getVaccineName() +" " +params.getVaccineDose()  +" is given alredy at member Id:" +params.getMember().caseId());
+				}
 			}else{
-			    if(member.TTVisit().isEmpty()){ // when no vaccine is given before .
-			    	form =  craeteFormsubmission(formDir,vaccineDate,vaccineDose,member.caseId(),member);	    	
-			    }else if(!checkingVaccineGivenOrNot(member,vaccineDose, vaccineName)){  // At least one vaccine is given before. 
-			    	form =  craeteFormsubmission(formDir,vaccineDate,vaccineDose,member.caseId(),member);	    	
-			    }
+			     if(!checkingVaccineGivenOrNot(params.getMember(),params.getVaccineDose(), params.getVaccineName())){   
+			    	form =  craeteFormsubmission(params);	    	
+			     }else{			    	
+			    	logger.info(params.getVaccineName() +" " +params.getVaccineDose()  +" is given alredy at member Id:" +params.getMember().caseId());
+			     }
 			}
 		}
 	    return form;		
 	}	
 	
-	public FormSubmission getFormSubmissionWithInstanceId(String instanceId,String vaccineName,String currentVaccineDate, int currentDose,EncounterSyncMapping encounterSyncMapping,AllFormSubmissions formSubmissions,String memberEntityId,AllMembers allMembers) {		
+	
+	public FormSubmission getFormSubmissionWithInstanceId(VaccineParamsBuilder params) {		
+		String instanceId = params.getEncounterSyncMapping().getInstanceId();
+		String vaccineName = params.getVaccineName();
+		String currentVaccineDate = params.getVaccineDate();
+		int currentDose =params.getVaccineDose();
+		EncounterSyncMapping encounterSyncMapping = params.getEncounterSyncMapping();
+		AllFormSubmissions formSubmissions = params.getFormSubmissions();
+		String memberEntityId= params.getMember().caseId();
+		AllMembers allMembers = params.getAllMembers();
 		FormSubmission formSubmission = formSubmissions.findByInstanceId(instanceId);		
 		String currentTTRetroField = SyncConstant.TTRetroMapping.get(Integer.toString(currentDose));
 		String currentTTFinalField = SyncConstant.TTFinalMapping.get(Integer.toString(currentDose));
@@ -158,7 +172,14 @@ public class WomanTTFollowUp extends FileReader implements FormsType<Members> {
 	 * 			if stream to a file cannot be written.
 	 * @return FormSubmission 
 	 * */
-	private FormSubmission craeteFormsubmission(String formDir,String vaccineDate,int vaccineDose,String memberEntityId,Members member) throws IOException{
+	
+	///formDir,vaccineDate,vaccineDose,member.caseId(),member
+	private FormSubmission craeteFormsubmission(VaccineParamsBuilder params) throws IOException{
+		String formDir  = params.getFormDir();
+		String vaccineDate =params.getVaccineDate();
+		int vaccineDose = params.getVaccineDose();
+		String memberEntityId = params.getMember().caseId();
+		Members member = params.getMember();
 		JsonNode file = WomanTTFollowUp.getFile(formDir, SyncConstant.TTFORMNAME);
 		ObjectMapper mapper = new ObjectMapper();				
 	    try {	    	 
@@ -250,6 +271,7 @@ public class WomanTTFollowUp extends FileReader implements FormsType<Members> {
 		Map<String, String> TTVisit = member.TTVisit();	
 		if(!TTVisit.isEmpty()){
 			String TTFinalDate = TTVisit.get(SyncConstant.TTFinalMapping.get(Integer.toString(dose)));
+			System.out.println("TTFinalDate:"+TTFinalDate);
 			if(TTFinalDate.isEmpty() || TTFinalDate.equalsIgnoreCase("null") || TTFinalDate ==null){
 				return false;
 			}else{

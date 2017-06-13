@@ -74,27 +74,40 @@ public class FeedHandler extends FormSubmissionConfig{
 				encounterId = encounterId.trim();
 				String instanceId="";
 				EncounterSyncMapping encounterSyncMapping = allEncounterSyncMapping.findByEncounterId(encounterId);
+				VaccineParamsBuilder params = VaccineParamsBuilder.getParamsBuilderInstance();
+				params.setAllMembers(allMembers);
+				params.setEncounterSyncMapping(encounterSyncMapping);
+				params.setFormSubmissions(formSubmissions);
+				params.setFormDir(this.formDirectory);
+				params.setVaccineDate(vaccineDate);
+				params.setVaccineDose(doseNumber);
+				params.setVaccineName(vaccineName);
+				params.setMember(member);
 				System.out.println("encounterId:"+encounterId+" encounterSyncMapping:"+encounterSyncMapping);
 				try{
 					if(TT){	
+						params.setVaccineName(SyncConstant.TT);
 						FormsType<WomanTTFollowUp> TTFormObj= FormFatcory.getFormsTypeInstance("WTT");
 						if(member.Is_woman().equalsIgnoreCase(SyncConstant.ISWOMAN)){
 							if(encounterSyncMapping !=null){
 								if(encounterSyncMapping.getVaccineName().equalsIgnoreCase(SyncConstant.TT) && encounterSyncMapping.getDose()!=doseNumber){
-									FormSubmission formsubmissionEntity= TTFormObj.getFormSubmission(this.formDirectory,vaccineDate,doseNumber, member,vaccineName,encounterSyncMapping,formSubmissions,allMembers);
-									formsubmissionEntity.setId(formsubmissionEntity.getId());
-									formsubmissionEntity.setRevision(formsubmissionEntity.getRevision());
-									formsubmissionEntity.setServerVersion(System.currentTimeMillis());
-									instanceId  = UUID.randomUUID().toString().trim();
-									formsubmissionEntity.setInstanceId(instanceId);
-									formSubmissions.update(formsubmissionEntity);
-									allEncounterSyncMapping.update(encounterId,instanceId, SyncConstant.TT,doseNumber);								
+									FormSubmission formsubmissionEntity= TTFormObj.getFormSubmission(params);
+									if(formsubmissionEntity!=null){
+										formsubmissionEntity.setId(formsubmissionEntity.getId());
+										formsubmissionEntity.setRevision(formsubmissionEntity.getRevision());
+										formsubmissionEntity.setServerVersion(System.currentTimeMillis());
+										instanceId  = UUID.randomUUID().toString().trim();
+										formsubmissionEntity.setInstanceId(instanceId);
+										formSubmissions.update(formsubmissionEntity);
+										allEncounterSyncMapping.update(encounterId,instanceId, SyncConstant.TT,doseNumber);
+									}
 								}else{
+									System.err.println("Nothing changed found. of encounterId:"+encounterId);
 									logger.info("Nothing changed found. of encounterId:"+encounterId);
 								}
 								
 							}else{							
-								FormSubmission formsubmissionEntity= TTFormObj.getFormSubmission(this.formDirectory,vaccineDate,doseNumber,member,vaccineName,null,formSubmissions,allMembers);
+								FormSubmission formsubmissionEntity= TTFormObj.getFormSubmission(params);
 								if(formsubmissionEntity !=null){
 									formSubmissions.add(formsubmissionEntity);
 									allEncounterSyncMapping.add(encounterId, formsubmissionEntity.getInstanceId(), SyncConstant.TT,doseNumber);
@@ -110,14 +123,16 @@ public class FeedHandler extends FormSubmissionConfig{
 							if(encounterSyncMapping !=null){
 								System.err.println(encounterSyncMapping.getVaccineName()+" == "+vaccineName +" : "+encounterSyncMapping.getDose() +"=="+doseNumber);
 								if(!encounterSyncMapping.getVaccineName().equalsIgnoreCase(vaccineName) || encounterSyncMapping.getDose()!=doseNumber){
-									FormSubmission formsubmissionEntity= childVaccineFormObj.getFormSubmission(this.formDirectory,vaccineDate,doseNumber, member,vaccineName,encounterSyncMapping, formSubmissions,allMembers);
-									formsubmissionEntity.setId(formsubmissionEntity.getId());
-									formsubmissionEntity.setRevision(formsubmissionEntity.getRevision());
-									formsubmissionEntity.setServerVersion(System.currentTimeMillis());
-									instanceId  = UUID.randomUUID().toString().trim();
-									formsubmissionEntity.setInstanceId(instanceId);
-									formSubmissions.update(formsubmissionEntity);
-									allEncounterSyncMapping.update(encounterId,instanceId, vaccineName,doseNumber);
+									FormSubmission formsubmissionEntity= childVaccineFormObj.getFormSubmission(params);
+									if(formsubmissionEntity !=null){
+										formsubmissionEntity.setId(formsubmissionEntity.getId());
+										formsubmissionEntity.setRevision(formsubmissionEntity.getRevision());
+										formsubmissionEntity.setServerVersion(System.currentTimeMillis());
+										instanceId  = UUID.randomUUID().toString().trim();
+										formsubmissionEntity.setInstanceId(instanceId);
+										formSubmissions.update(formsubmissionEntity);
+										allEncounterSyncMapping.update(encounterId,instanceId, vaccineName,doseNumber);
+									}
 								}else{
 									System.out.println("Nothing changed found. of encounterId:"+encounterId);
 									logger.info("Nothing changed found. of encounterId:"+encounterId);
@@ -125,16 +140,15 @@ public class FeedHandler extends FormSubmissionConfig{
 								
 							}else{
 								
-								FormSubmission formsubmissionEntity= childVaccineFormObj.getFormSubmission(this.formDirectory,vaccineDate,doseNumber, member,vaccineName,null, formSubmissions,allMembers);
+								FormSubmission formsubmissionEntity= childVaccineFormObj.getFormSubmission(params);
 								if(formsubmissionEntity !=null){
-									formSubmissions.add(formsubmissionEntity);
-									System.err.println("sfsdfsdfsdfs:"+formsubmissionEntity.getInstanceId());
+									formSubmissions.add(formsubmissionEntity);									
 									allEncounterSyncMapping.add(encounterId, formsubmissionEntity.getInstanceId(), vaccineName,doseNumber);
 									logger.info("Synced child vaccine:"+formsubmissionEntity.toString());
 								}
 							}
 							
-						}else{							
+						}else{								
 							logger.info("Member is not a child:"+member.toString());
 						}
 					}

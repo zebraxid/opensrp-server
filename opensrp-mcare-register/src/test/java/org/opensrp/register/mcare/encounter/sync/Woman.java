@@ -247,7 +247,7 @@ public class Woman {
 				.put(tt1_note	,"")
 				.put(tt1_retro	,"2012-05-22")
 				.put(tt2	,null)
-				.put(tt2_final	,"")
+				.put(tt2_final	,"2014-05-22")
 				.put(tt2_note	,"")
 				.put(tt2_retro	,null)
 				.put(tt3	,null)
