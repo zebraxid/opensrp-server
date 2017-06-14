@@ -63,7 +63,7 @@ public class AllVaccinationTest {
 	public void shouldGeTodaysCamp(){
 		
 	}
-	@Test
+	@Ignore@Test
 	public void shouldGetActionsByeligibleClient(){
 		System.err.println("All Action:"+allActions.listOfEligibleClientForVaccines("sohel"));
 		
