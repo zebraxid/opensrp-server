@@ -55,4 +55,13 @@ public class AllEnrollmentWrapper extends AllEnrollments{
 	        List<Enrollment> enrollments = queryView("by_externalId_scheduleName", ComplexKey.of(externalId, ScheduleName,"ACTIVE"));
 	        return populateWithSchedule(enrollments);
 	    } 
+	    private static final String FUNCTION_DOC_EMIT_DOC_EXTERNALID_AND_SCHEDULENAME_ACTIVE = "function(doc) { if(doc.type === 'Enrollment' && doc.status=='ACTIVE') emit([doc.externalId,doc.scheduleName,doc.status], doc._id);}";
+	    @View(name = "by_externalId_scheduleName", map = FUNCTION_DOC_EMIT_DOC_EXTERNALID_AND_SCHEDULENAME_ACTIVE)
+	    public List<Enrollment> findByActiveEnrollmentByExternalIdAndScheduleName(String externalId, String ScheduleName) {
+	        List<Enrollment> enrollments = queryView("by_externalId_scheduleName", ComplexKey.of(externalId, ScheduleName,"ACTIVE"));
+	        if (enrollments == null || enrollments.isEmpty()) {
+				return null;
+			}
+	        return enrollments;
+	    } 
 }

@@ -82,4 +82,11 @@ public class FeedHandlerUnitTest{
 		String str ="BCG , 2016-02-28, true, 2.0";		 
 		Assert.assertFalse(feedHandler.checkTTFVaccineFromAString(str, SyncConstant.TT));
 	}
+	
+	@Test
+	public void shouldGetScheduleName(){
+		FeedHandler feedHandler = new FeedHandler();
+		String s =feedHandler.getScheduleName("PCV", 1);
+		System.out.println(s);
+	}
 }

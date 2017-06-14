@@ -239,6 +239,29 @@ public class SyncConstant {
 		 womanVaccines.add("TT");		 
 		return womanVaccines;
 		
-	}	
+	}
+	
+	public final static Map<String, String> scheduleMapping=new HashMap<String, String>();
+	static{
+		scheduleMapping.put("BCG","child_bcg");
+		scheduleMapping.put("IPV","child_ipv");
+		scheduleMapping.put("3","child_measles1");	
+		scheduleMapping.put("3","child_measles2");
+		scheduleMapping.put("OPV 0","child_opv0");
+		scheduleMapping.put("OPV 1","child_opv1");
+		scheduleMapping.put("OPV 2","child_opv2");
+		scheduleMapping.put("OPV 3","child_opv3");
+		scheduleMapping.put("PCV 1","child_pcv1");
+		scheduleMapping.put("PCV 2","child_pcv2");
+		scheduleMapping.put("PCV 3","child_pcv3");
+		scheduleMapping.put("Pentavalent 1","child_penta1");
+		scheduleMapping.put("Pentavalent 2","child_penta2");
+		scheduleMapping.put("Pentavalent 3","child_penta3");
+		scheduleMapping.put("TT 1","Woman_TT1");
+		scheduleMapping.put("TT 2","Woman_TT2");
+		scheduleMapping.put("TT 3","Woman_TT3");
+		scheduleMapping.put("TT 4","Woman_TT4");
+		scheduleMapping.put("TT 5","Woman_TT5");
+	}
 
 }

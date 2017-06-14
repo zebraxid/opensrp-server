@@ -3,11 +3,13 @@ package org.opensrp.register.encounter.sync;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.UUID;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.motechproject.scheduletracking.api.domain.Enrollment;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.form.repository.AllFormSubmissions;
 import org.opensrp.register.encounter.sync.forms.ChildVaccineFollowup;
@@ -17,6 +19,9 @@ import org.opensrp.register.encounter.sync.mapping.domain.EncounterSyncMapping;
 import org.opensrp.register.encounter.sync.mapping.repository.AllEncounterSyncMapping;
 import org.opensrp.register.mcare.domain.Members;
 import org.opensrp.register.mcare.repository.AllMembers;
+import org.opensrp.scheduler.Action;
+import org.opensrp.scheduler.repository.AllActions;
+import org.opensrp.scheduler.service.AllEnrollmentWrapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +35,8 @@ public class FeedHandler extends FormSubmissionConfig{
 	private AllMembers allMembers;
 	private AllFormSubmissions formSubmissions;
 	private AllEncounterSyncMapping allEncounterSyncMapping;
+	private AllEnrollmentWrapper allEnrollments;
+	private AllActions allActions;
 	public FeedHandler(){
 		
 	}	
@@ -42,10 +49,12 @@ public class FeedHandler extends FormSubmissionConfig{
 	}
 	private static Logger logger = LoggerFactory.getLogger(FeedHandler.class.toString());	
 	@Autowired
-	public FeedHandler(AllMembers allMembers,AllFormSubmissions formSubmissions,AllEncounterSyncMapping allEncounterSyncMapping){		
+	public FeedHandler(AllMembers allMembers,AllFormSubmissions formSubmissions,AllEncounterSyncMapping allEncounterSyncMapping,AllEnrollmentWrapper allEnrollments,AllActions allActions){		
 		this.allMembers = allMembers;
 		this.formSubmissions = formSubmissions;
 		this.allEncounterSyncMapping=allEncounterSyncMapping;
+		this.allEnrollments = allEnrollments;
+		this.allActions = allActions;
 	}
 	
 	/**
@@ -99,7 +108,8 @@ public class FeedHandler extends FormSubmissionConfig{
 										instanceId  = UUID.randomUUID().toString().trim();
 										formsubmissionEntity.setInstanceId(instanceId);
 										formSubmissions.update(formsubmissionEntity);
-										allEncounterSyncMapping.update(encounterId,instanceId, SyncConstant.TT,doseNumber);
+										allEncounterSyncMapping.update(encounterId,instanceId, SyncConstant.TT,doseNumber);										
+										removeActionAndEnrollment(member, vaccineName, doseNumber);								
 									}
 								}else{
 									System.err.println("Nothing changed found. of encounterId:"+encounterId);
@@ -132,6 +142,8 @@ public class FeedHandler extends FormSubmissionConfig{
 										formsubmissionEntity.setInstanceId(instanceId);
 										formSubmissions.update(formsubmissionEntity);
 										allEncounterSyncMapping.update(encounterId,instanceId, vaccineName,doseNumber);
+										removeActionAndEnrollment(member, vaccineName, doseNumber);
+										
 									}
 								}else{
 									System.out.println("Nothing changed found. of encounterId:"+encounterId);
@@ -279,5 +291,29 @@ public class FeedHandler extends FormSubmissionConfig{
 		
 	}
 	
+	public String getScheduleName(String vaccineName,int dose){
+		if(vaccineName.equalsIgnoreCase("BCG") || vaccineName.equalsIgnoreCase("IPV")){
+			return vaccineName;		
+		}else{
+			StringBuilder name = new StringBuilder(vaccineName);
+			name.append(" ");
+			name.append(dose);
+			System.err.println(SyncConstant.scheduleMapping.get(name.toString()));
+			return name.toString();
+		}
+	}
 	
+	public void removeActionAndEnrollment(Members member, String vaccineName,int doseNumber){
+		try{			
+			List<Enrollment> enrollment = allEnrollments.findByActiveEnrollmentByExternalIdAndScheduleName(member.caseId(), SyncConstant.scheduleMapping.get(getScheduleName(vaccineName, doseNumber)));
+			List<Action> action = allActions.findAlertByANMIdEntityIdScheduleName(member.PROVIDERID(), member.caseId(), SyncConstant.scheduleMapping.get(getScheduleName(vaccineName, doseNumber)));
+			if(!enrollment.isEmpty() && !action.isEmpty()){
+				allEnrollments.remove(enrollment.get(0));
+				allActions.remove(action.get(0));
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+	}
 }
