@@ -49,15 +49,13 @@ public class ChildVaccineFollowup extends FileReader implements FormsType<Member
 			if(params.getEncounterSyncMapping()!=null){
 				if(!checkingVaccineGivenOrNot(params.getMember(),params.getVaccineDose(),params.getVaccineName())){		    	
 					form = getFormSubmissionWithInstanceId(params);
-				}else{
-					System.out.println(params.getVaccineName()+" "+params.getVaccineDose() +" is  already given...");
+				}else{					
 					logger.info(params.getVaccineName()+" "+params.getVaccineDose() +" is  already given...");
 				}
 			}else{			
 			    if(!checkingVaccineGivenOrNot(params.getMember(),params.getVaccineDose(),params.getVaccineName())){		    	
 			    	form =  craeteFormsubmission(params);	    	
-			    }else{	
-			    	System.out.println(params.getVaccineName()+" "+params.getVaccineDose() +" is given already given...");
+			    }else{			    	
 			    	logger.info(params.getVaccineName()+" "+params.getVaccineDose() +" is  already given...");
 			    	
 			    }

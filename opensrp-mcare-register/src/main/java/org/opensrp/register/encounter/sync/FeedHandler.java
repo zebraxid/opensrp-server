@@ -107,12 +107,11 @@ public class FeedHandler extends FormSubmissionConfig{
 										formsubmissionEntity.setServerVersion(System.currentTimeMillis());
 										instanceId  = UUID.randomUUID().toString().trim();
 										formsubmissionEntity.setInstanceId(instanceId);
+										removeActionAndEnrollment(member, SyncConstant.TT, encounterSyncMapping.getDose()+1);
 										formSubmissions.update(formsubmissionEntity);
-										allEncounterSyncMapping.update(encounterId,instanceId, SyncConstant.TT,doseNumber);										
-										removeActionAndEnrollment(member, vaccineName, doseNumber);								
+										allEncounterSyncMapping.update(encounterId,instanceId, SyncConstant.TT,doseNumber);																			
 									}
-								}else{
-									System.err.println("Nothing changed found. of encounterId:"+encounterId);
+								}else{									
 									logger.info("Nothing changed found. of encounterId:"+encounterId);
 								}
 								
@@ -130,8 +129,7 @@ public class FeedHandler extends FormSubmissionConfig{
 					}else{	
 						FormsType<ChildVaccineFollowup> childVaccineFormObj= FormFatcory.getFormsTypeInstance("CVF");
 						if(member.Is_child().equalsIgnoreCase(SyncConstant.ISCHILD)){
-							if(encounterSyncMapping !=null){
-								System.err.println(encounterSyncMapping.getVaccineName()+" == "+vaccineName +" : "+encounterSyncMapping.getDose() +"=="+doseNumber);
+							if(encounterSyncMapping !=null){								
 								if(!encounterSyncMapping.getVaccineName().equalsIgnoreCase(vaccineName) || encounterSyncMapping.getDose()!=doseNumber){
 									FormSubmission formsubmissionEntity= childVaccineFormObj.getFormSubmission(params);
 									if(formsubmissionEntity !=null){
@@ -140,26 +138,21 @@ public class FeedHandler extends FormSubmissionConfig{
 										formsubmissionEntity.setServerVersion(System.currentTimeMillis());
 										instanceId  = UUID.randomUUID().toString().trim();
 										formsubmissionEntity.setInstanceId(instanceId);
+										removeActionAndEnrollment(member, encounterSyncMapping.getVaccineName(), encounterSyncMapping.getDose()+1);
 										formSubmissions.update(formsubmissionEntity);
 										allEncounterSyncMapping.update(encounterId,instanceId, vaccineName,doseNumber);
-										removeActionAndEnrollment(member, vaccineName, doseNumber);
-										
 									}
-								}else{
-									System.out.println("Nothing changed found. of encounterId:"+encounterId);
+								}else{									
 									logger.info("Nothing changed found. of encounterId:"+encounterId);
-								}
-								
-							}else{
-								
+								}								
+							}else{								
 								FormSubmission formsubmissionEntity= childVaccineFormObj.getFormSubmission(params);
 								if(formsubmissionEntity !=null){
 									formSubmissions.add(formsubmissionEntity);									
 									allEncounterSyncMapping.add(encounterId, formsubmissionEntity.getInstanceId(), vaccineName,doseNumber);
 									logger.info("Synced child vaccine:"+formsubmissionEntity.toString());
 								}
-							}
-							
+							}							
 						}else{								
 							logger.info("Member is not a child:"+member.toString());
 						}
@@ -209,7 +202,7 @@ public class FeedHandler extends FormSubmissionConfig{
 	 * @return child vaccine.  
 	 * */	
 	public String getVaccinationName(String str) throws Exception{
-		String[] vaccineStringToArray = str.split(",");
+		String[] vaccineStringToArray = str.split(",");		
 		for (String value : vaccineStringToArray) {	
 			try{				
 				String[] vaccine = value.trim().split(" ");				
@@ -297,19 +290,24 @@ public class FeedHandler extends FormSubmissionConfig{
 		}else{
 			StringBuilder name = new StringBuilder(vaccineName);
 			name.append(" ");
-			name.append(dose);
-			System.err.println(SyncConstant.scheduleMapping.get(name.toString()));
+			name.append(dose);			
 			return name.toString();
 		}
 	}
 	
 	public void removeActionAndEnrollment(Members member, String vaccineName,int doseNumber){
-		try{			
-			List<Enrollment> enrollment = allEnrollments.findByActiveEnrollmentByExternalIdAndScheduleName(member.caseId(), SyncConstant.scheduleMapping.get(getScheduleName(vaccineName, doseNumber)));
-			List<Action> action = allActions.findAlertByANMIdEntityIdScheduleName(member.PROVIDERID(), member.caseId(), SyncConstant.scheduleMapping.get(getScheduleName(vaccineName, doseNumber)));
-			if(!enrollment.isEmpty() && !action.isEmpty()){
-				allEnrollments.remove(enrollment.get(0));
-				allActions.remove(action.get(0));
+		try{
+			if(vaccineName.equals(SyncConstant.getChildVaccinesName().get(3)) && doseNumber==1){
+				logger.info("No Action for  "+vaccineName +" Dose: "+doseNumber);
+			}else{
+				List<Enrollment> enrollment = allEnrollments.findByEnrollmentByExternalIdAndScheduleName(member.caseId(), SyncConstant.scheduleMapping.get(getScheduleName(vaccineName, doseNumber)));
+				List<Action> action = allActions.findAlertByANMIdEntityIdScheduleName(member.PROVIDERID(), member.caseId(), SyncConstant.scheduleMapping.get(getScheduleName(vaccineName, doseNumber)));
+				if(!enrollment.isEmpty() ){
+					allEnrollments.remove(enrollment.get(0));							
+				}			
+				if(!action.isEmpty()){				
+					allActions.remove(action.get(0));			
+				}				
 			}
 		}catch(Exception e){
 			e.printStackTrace();
