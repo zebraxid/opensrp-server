@@ -38,12 +38,12 @@ public class WomanTTFollowUp extends FileReader implements FormsType<Members> {
 	}
 
 	/**
-	 * @param   formDir  current directory location of the form.
-	 * @param 	vaccineDate date of vaccine.
-	 * @param 	vaccineDose dose number of a vaccine.
-	 * @param 	memberEntityId unique id of a member.
-	 * @param 	vaccineName name of a vaccine.
-	 * @param 	member A member information.	 
+	 * @param   params.formDir  current directory location of the form.
+	 * @param 	params.vaccineDate date of vaccine.
+	 * @param 	params.vaccineDose dose number of a vaccine.
+	 * @param 	params.memberEntityId unique id of a member.
+	 * @param 	params.vaccineName name of a vaccine.
+	 * @param 	params.member A member information.	 
 	 * @return 	FormSubmission 
 	 */
 	@Override
@@ -67,10 +67,21 @@ public class WomanTTFollowUp extends FileReader implements FormsType<Members> {
 	    return form;		
 	}	
 	
-	
+	/**
+	 * <code>Called when a encounter is updated.</code>
+	 * @param params.getEncounterSyncMapping().getInstanceId() as instanceId A member Id.
+	 * @param params.getVaccineDate() as currentVaccineDate date of vaccine.
+	 * @param params.getVaccineDose() as currentDose dose number of a dose.
+	 * @param params.getMember().caseId() as memberEntityId unique id of a member.
+	 * @param params.getVaccineName() as vaccineName number of vaccine name.	 
+	 * @param params.getEncounterSyncMapping() as encounterSyncMapping A existing encounterSyncMapping.
+	 * @param params.getFormSubmissions() as formSubmissions A FormSubmission object.
+	 * @param params.getAllMembers() as allMembers A Allmember object.
+	 * @return FormSubmission. 
+	 * 
+	 * */
 	public FormSubmission getFormSubmissionWithInstanceId(VaccineParamsBuilder params) {		
-		String instanceId = params.getEncounterSyncMapping().getInstanceId();
-		String vaccineName = params.getVaccineName();
+		String instanceId = params.getEncounterSyncMapping().getInstanceId();		
 		String currentVaccineDate = params.getVaccineDate();
 		int currentDose =params.getVaccineDose();
 		EncounterSyncMapping encounterSyncMapping = params.getEncounterSyncMapping();
@@ -162,18 +173,17 @@ public class WomanTTFollowUp extends FileReader implements FormsType<Members> {
 	 * <h5>No vaccine is given before then required member information gets from <code>Members</code> object.</h5>
 	 * <h5>At least one vaccine is given before then required member information gets from <code>Members.TTVisit()</code> object.</h5> 
 	 * 
-	 * @param  formDir  current directory location of the form.
-	 * @param vaccineDate date of vaccine.
-	 * @param vaccineDose dose number of a vaccine.
-	 * @param memberEntityId unique id of a member.
-	 * @param vaccineName name of a vaccine.
-	 * @param member A member information.
+	 * @param  params.getFormDir() as formDir  current directory location of the form.
+	 * @param  params.getVaccineDate() as vaccineDate date of vaccine.
+	 * @param  params.getVaccineDose() as vaccineDose dose number of a vaccine.
+	 * @param  params.getMember().caseId() as memberEntityId unique id of a member.	 
+	 * @param  params.getMember() as member A member information.
 	 * @throws IOException 
 	 * 			if stream to a file cannot be written.
 	 * @return FormSubmission 
 	 * */
 	
-	///formDir,vaccineDate,vaccineDose,member.caseId(),member
+	
 	private FormSubmission craeteFormsubmission(VaccineParamsBuilder params) throws IOException{
 		String formDir  = params.getFormDir();
 		String vaccineDate =params.getVaccineDate();

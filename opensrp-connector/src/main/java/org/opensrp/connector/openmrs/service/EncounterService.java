@@ -133,7 +133,7 @@ public class EncounterService extends OpenmrsService{
 			List<Obs> ol = e.getObs();			
 			Map<String, List<JSONObject>> pc = new HashMap<>();
 			MultiValueMap   obsMap = new MultiValueMap();
-			enc.put("locationUuid", "4f2b8e02-f9b5-47b5-afdc-fe6ca7d50f7d");
+			//enc.put("locationUuid", "4f2b8e02-f9b5-47b5-afdc-fe6ca7d50f7d");
 			for (Obs obs : ol) {
 				System.out.println("obs:"+obs.toString());
 				//if no parent simply make it root obs				

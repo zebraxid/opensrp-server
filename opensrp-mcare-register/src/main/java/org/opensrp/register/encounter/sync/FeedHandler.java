@@ -283,7 +283,12 @@ public class FeedHandler extends FormSubmissionConfig{
 		return encounterSyncMapping;
 		
 	}
-	
+	/**
+	 * <code>Generate schedule name from vaccine name and dose</code>.
+	 * @param vaccineName A vaccine name.
+	 * @param dose A dose of a vaccine
+	 * @return schedule name.
+	 * */
 	public String getScheduleName(String vaccineName,int dose){
 		if(vaccineName.equalsIgnoreCase("BCG") || vaccineName.equalsIgnoreCase("IPV")){
 			return vaccineName;		
@@ -294,6 +299,13 @@ public class FeedHandler extends FormSubmissionConfig{
 			return name.toString();
 		}
 	}
+	
+	/**
+	 * <code> Reove schedule from Action and Enrolment. </code>
+	 * @param member A Member.
+	 * @param vaccineName A vaccine name.
+	 * @param dose A dose of a vaccine
+	 * */
 	
 	public void removeActionAndEnrollment(Members member, String vaccineName,int doseNumber){
 		try{

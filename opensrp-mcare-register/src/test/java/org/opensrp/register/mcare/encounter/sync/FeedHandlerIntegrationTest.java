@@ -55,15 +55,15 @@ public class FeedHandlerIntegrationTest extends TestConfig {
 	@Before
 	public void setUp() throws Exception
 	{
-		//formSubmissions = Mockito.mock(AllFormSubmissions.class);
+		formSubmissions = Mockito.mock(AllFormSubmissions.class);
 		PowerMockito.mockStatic(AllEnrollmentWrapper.class);
 		PowerMockito.mockStatic(AllActions.class);
-		formSubmissions = new AllFormSubmissions(getStdCouchDbConnectorForOpensrpForm());
+		//formSubmissions = new AllFormSubmissions(getStdCouchDbConnectorForOpensrpForm());
 		allMembers = new AllMembers(1,getStdCouchDbConnectorForOpensrp());
 		allEncounterSyncMapping = new AllEncounterSyncMapping(1,getStdCouchDbConnectorForOpensrp());
 	}
 	
-	@Ignore@Test
+	@Test
 	public void shouldCheckWhichHasTTVisit() throws Exception{		
 		Woman woman = new Woman();
 		Members member = woman.getWomanMember();		
@@ -91,10 +91,10 @@ public class FeedHandlerIntegrationTest extends TestConfig {
 		feedHandler.setFormDirectory("./../assets/form");
 		feedHandler.getEvent(encounter, "e1e16f38-01d8-42ae-be55-4573b3ac349e",member);		
 		Assert.assertEquals(member.TTVisit().isEmpty(), false);	
-		//Mockito.doNothing().when(formSubmissions).add(Matchers.any(FormSubmission.class));		
+		Mockito.doNothing().when(formSubmissions).add(Matchers.any(FormSubmission.class));		
 	}
 	
-	@Ignore@Test
+	@Test
 	public void shouldCheckWhichHasGivenVisit() throws Exception{		
 		Woman woman = new Woman();
 		Members member = woman.getWomanMember();		
@@ -122,11 +122,11 @@ public class FeedHandlerIntegrationTest extends TestConfig {
 		feedHandler.setFormDirectory("./../assets/form");
 		feedHandler.getEvent(encounter, "e1e16f38-01d8-42ae-be55-4573b3ac349e",member);		
 		Assert.assertEquals(member.TTVisit().isEmpty(), false);	
-		//Mockito.doNothing().when(formSubmissions).add(Matchers.any(FormSubmission.class));		
+		Mockito.doNothing().when(formSubmissions).add(Matchers.any(FormSubmission.class));		
 	}
 	
 	
-	@Ignore@Test
+	@Test
 	public void shouldCheckWhichHasNoTTVisit() throws Exception{
 		Woman woman = new Woman();
 		Members member = woman.getWomanMember();		
@@ -157,10 +157,10 @@ public class FeedHandlerIntegrationTest extends TestConfig {
 		feedHandler.getEvent(encounter, "e1e16f38-01d8-42ae-be55-4573b3ac349e",member);	
 		Assert.assertEquals(member.TTVisit().isEmpty(), true);		
 		Assert.assertEquals(womanTTForm.checkingVaccineGivenOrNot(member, 1,""),false);
-		//Mockito.doNothing().when(formSubmissions).add(Matchers.any(FormSubmission.class));
+		Mockito.doNothing().when(formSubmissions).add(Matchers.any(FormSubmission.class));
 	}
 	
-	@Ignore@Test
+	@Test
 	public void shouldCheckWhichIsActuallyIsNotAWoman() throws Exception{
 		Woman woman = new Woman();
 		Members member = woman.getWomanMember();
@@ -223,11 +223,11 @@ public class FeedHandlerIntegrationTest extends TestConfig {
 		//ChildVaccineFollowup childVaccine = ChildVaccineFollowup.getInstance();	
 		feedHandler.getEvent(encounter, "05cbaa2b-d3a6-40f6-a604-328bf725ddbf",member);
 		//System.err.println("member.TTVisit():"+member.child_vaccine().toString());		
-		//Mockito.doNothing().when(formSubmissions).add(Matchers.any(FormSubmission.class));		
+		Mockito.doNothing().when(formSubmissions).add(Matchers.any(FormSubmission.class));		
 	}
 	
 	
-	@Ignore@Test
+	@Test
 	public void shouldCheckWhichHasGivenAVisit() throws Exception{		
 		Child child = new Child();
 		Members member = child.getChildMember();
@@ -261,9 +261,9 @@ public class FeedHandlerIntegrationTest extends TestConfig {
 		//ChildVaccineFollowup childVaccine = ChildVaccineFollowup.getInstance();	
 		feedHandler.getEvent(encounter, "05cbaa2b-d3a6-40f6-a604-328bf725ddbf",member);
 		//System.err.println("member.TTVisit():"+member.child_vaccine().toString());		
-		//Mockito.doNothing().when(formSubmissions).add(Matchers.any(FormSubmission.class));		
+		Mockito.doNothing().when(formSubmissions).add(Matchers.any(FormSubmission.class));		
 	}
-	@Ignore@Test
+	@Test
 	public void shouldCheckChildVisitWhichIsActualllyNotAChild() throws Exception{		
 		Child child = new Child();
 		Members member = child.getChildMember();
@@ -294,10 +294,10 @@ public class FeedHandlerIntegrationTest extends TestConfig {
 		feedHandler.setFormDirectory("./../assets/form");		
 		//ChildVaccineFollowup childVaccine = ChildVaccineFollowup.getInstance();	
 		feedHandler.getEvent(encounter, "05cbaa2b-d3a6-40f6-a604-328bf725ddbf",member);			
-		//Mockito.doNothing().when(formSubmissions).add(Matchers.any(FormSubmission.class));		
+		Mockito.doNothing().when(formSubmissions).add(Matchers.any(FormSubmission.class));		
 	}
 	
-	@Ignore@Test
+	@Test
 	public void shouldCheckWhichHasNoChildVisit() throws Exception{
 		Child child = new Child();
 		Members member = child.getChildMember();
@@ -326,7 +326,7 @@ public class FeedHandlerIntegrationTest extends TestConfig {
 		feedHandler.setFormDirectory("./../assets/form");
 		//ChildVaccineFollowup childVaccine = ChildVaccineFollowup.getInstance();	
 		feedHandler.getEvent(encounter, "05cbaa2b-d3a6-40f6-a604-328bf725ddbf",member);
-		//Mockito.doNothing().when(formSubmissions).add(Matchers.any(FormSubmission.class));		
+		Mockito.doNothing().when(formSubmissions).add(Matchers.any(FormSubmission.class));		
 	}
 
 }
