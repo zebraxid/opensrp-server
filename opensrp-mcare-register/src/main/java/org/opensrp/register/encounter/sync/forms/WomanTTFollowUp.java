@@ -51,13 +51,13 @@ public class WomanTTFollowUp extends FileReader implements FormsType<Members> {
 		FormSubmission  form = null ;
 		if(params.getMember()!=null){
 			if(params.getEncounterSyncMapping()!=null ){				
-				if(!checkingVaccineGivenOrNot(params.getMember(),params.getVaccineDose(), params.getVaccineName())){ 
+				if(!isVaccineGiven(params.getMember(),params.getVaccineDose(), params.getVaccineName())){ 
 					form = getFormSubmissionWithInstanceId(params);
 				}else{					
 			    	logger.info(params.getVaccineName() +" " +params.getVaccineDose()  +" is given alredy at member Id:" +params.getMember().caseId());
 				}
 			}else{
-			     if(!checkingVaccineGivenOrNot(params.getMember(),params.getVaccineDose(), params.getVaccineName())){   
+			     if(!isVaccineGiven(params.getMember(),params.getVaccineDose(), params.getVaccineName())){   
 			    	form =  craeteFormsubmission(params);	    	
 			     }else{			    	
 			    	logger.info(params.getVaccineName() +" " +params.getVaccineDose()  +" is given alredy at member Id:" +params.getMember().caseId());
@@ -277,7 +277,7 @@ public class WomanTTFollowUp extends FileReader implements FormsType<Members> {
 	 * 
 	 * */
 	@Override
-	public boolean checkingVaccineGivenOrNot(Members member,int dose,String vaccineName) {		
+	public boolean isVaccineGiven(Members member,int dose,String vaccineName) {		
 		Map<String, String> TTVisit = member.TTVisit();	
 		if(!TTVisit.isEmpty()){
 			String TTFinalDate = TTVisit.get(SyncConstant.TTFinalMapping.get(Integer.toString(dose)));

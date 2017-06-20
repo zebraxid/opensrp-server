@@ -12,6 +12,6 @@ import org.opensrp.register.mcare.repository.AllMembers;
 
 public interface FormsType<T> {
 	public FormSubmission getFormSubmission(VaccineParamsBuilder params) throws IOException;
-	public boolean checkingVaccineGivenOrNot(T t,int dose,String vaccineName);
+	public boolean isVaccineGiven(T t,int dose,String vaccineName);
 
 }

@@ -21,7 +21,7 @@ public class WomanTTFollowUpUnitTest extends TestConfig{
 		Members member = woman.getWomanMember();
 		member.setTTVisit(woman.getTTVaccine());
 		WomanTTFollowUp ttFollowUp = WomanTTFollowUp.getInstance();		
-		Assert.assertTrue(ttFollowUp.checkingVaccineGivenOrNot(member, 1, "TT"));		
+		Assert.assertTrue(ttFollowUp.isVaccineGiven(member, 1, "TT"));		
 	}
 	
 	@Test
@@ -30,6 +30,6 @@ public class WomanTTFollowUpUnitTest extends TestConfig{
 		Members member = woman.getWomanMember();
 		member.setTTVisit(woman.getTTVaccine());
 		WomanTTFollowUp ttFollowUp = WomanTTFollowUp.getInstance();		
-		Assert.assertFalse(ttFollowUp.checkingVaccineGivenOrNot(member, 3, "TT"));
+		Assert.assertFalse(ttFollowUp.isVaccineGiven(member, 3, "TT"));
 	}
 }

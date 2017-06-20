@@ -36,12 +36,12 @@ public class ChildVaccineFollowup extends FileReader implements FormsType<Member
 	}
 	
 	/**
-	 * @param   formDir  current directory location of the form.
-	 * @param 	vaccineDate date of vaccine.
-	 * @param 	vaccineDose dose number of a vaccine.
-	 * @param 	memberEntityId unique id of a member.
-	 * @param 	vaccineName A vaccine name .
-	 * @param 	member A member information.	 
+	 * @param   params.getFormDir(); as formDir  current directory location of the form.
+	 * @param 	params.getVaccineDate() as vaccineDate date of vaccine.
+	 * @param 	params.getVaccineDose() as vaccineDose dose number of a vaccine.
+	 * @param 	params.getMember().caseId() as memberEntityId unique id of a member.
+	 * @param 	params.getVaccineName() as vaccineName A vaccine name .
+	 * @param 	params.getMember() as member A member information.	 
 	 * @return 	FormSubmission 
 	 */
 	@Override
@@ -49,13 +49,13 @@ public class ChildVaccineFollowup extends FileReader implements FormsType<Member
 		FormSubmission  form = null ;		
 		if(params.getMember()!=null){
 			if(params.getEncounterSyncMapping()!=null){
-				if(!checkingVaccineGivenOrNot(params.getMember(),params.getVaccineDose(),params.getVaccineName())){		    	
+				if(!isVaccineGiven(params.getMember(),params.getVaccineDose(),params.getVaccineName())){		    	
 					form = getFormSubmissionWithInstanceId(params);
 				}else{					
 					logger.info(params.getVaccineName()+" "+params.getVaccineDose() +" is  already given...");
 				}
 			}else{			
-			    if(!checkingVaccineGivenOrNot(params.getMember(),params.getVaccineDose(),params.getVaccineName())){		    	
+			    if(!isVaccineGiven(params.getMember(),params.getVaccineDose(),params.getVaccineName())){		    	
 			    	form =  craeteFormsubmission(params);	    	
 			    }else{			    	
 			    	logger.info(params.getVaccineName()+" "+params.getVaccineDose() +" is  already given...");
@@ -335,7 +335,7 @@ public class ChildVaccineFollowup extends FileReader implements FormsType<Member
 	 * 
 	 * */
 	@Override
-	public boolean checkingVaccineGivenOrNot(Members member,int dose,String vaccineName) {		
+	public boolean isVaccineGiven(Members member,int dose,String vaccineName) {		
 		String finalValue ;
 		if(!member.child_vaccine().isEmpty()){
 			try{

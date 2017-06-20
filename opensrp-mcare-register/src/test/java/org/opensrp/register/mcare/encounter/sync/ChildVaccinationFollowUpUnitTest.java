@@ -45,7 +45,7 @@ public class ChildVaccinationFollowUpUnitTest extends TestConfig{
 		Members member = child.getChildMember();
 		member.child_vaccine().add(child.getChildVaccine());
 		ChildVaccineFollowup childVaccineFollowup = ChildVaccineFollowup.getInstance();		
-		Assert.assertTrue(childVaccineFollowup.checkingVaccineGivenOrNot(member, 0, "BCG"));		
+		Assert.assertTrue(childVaccineFollowup.isVaccineGiven(member, 0, "BCG"));		
 	}
 	
 	@Test
@@ -54,7 +54,7 @@ public class ChildVaccinationFollowUpUnitTest extends TestConfig{
 		Members member = child.getChildMember();
 		member.child_vaccine().add(child.getChildVaccine());
 		ChildVaccineFollowup childVaccineFollowup = ChildVaccineFollowup.getInstance();		
-		Assert.assertFalse(childVaccineFollowup.checkingVaccineGivenOrNot(member, 1, "OPV"));
+		Assert.assertFalse(childVaccineFollowup.isVaccineGiven(member, 1, "OPV"));
 	}
 	
 	@Test(expected=NullPointerException.class)
@@ -63,6 +63,6 @@ public class ChildVaccinationFollowUpUnitTest extends TestConfig{
 		Members member = child.getChildMember();		
 		member.child_vaccine().add(child.getChildVaccineWithNoBCGFinalField());
 		ChildVaccineFollowup childVaccineFollowup = ChildVaccineFollowup.getInstance();		
-		Assert.assertFalse(childVaccineFollowup.checkingVaccineGivenOrNot(member, 0, "BCG"));
+		Assert.assertFalse(childVaccineFollowup.isVaccineGiven(member, 0, "BCG"));
 	}
 }

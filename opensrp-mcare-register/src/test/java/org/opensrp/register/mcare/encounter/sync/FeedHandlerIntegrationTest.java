@@ -156,7 +156,7 @@ public class FeedHandlerIntegrationTest extends TestConfig {
 		feedHandler.setFormDirectory("./../assets/form");
 		feedHandler.getEvent(encounter, "e1e16f38-01d8-42ae-be55-4573b3ac349e",member);	
 		Assert.assertEquals(member.TTVisit().isEmpty(), true);		
-		Assert.assertEquals(womanTTForm.checkingVaccineGivenOrNot(member, 1,""),false);
+		Assert.assertEquals(womanTTForm.isVaccineGiven(member, 1,""),false);
 		Mockito.doNothing().when(formSubmissions).add(Matchers.any(FormSubmission.class));
 	}
 	
