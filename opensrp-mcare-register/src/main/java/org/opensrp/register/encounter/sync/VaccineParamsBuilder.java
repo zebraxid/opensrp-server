@@ -181,7 +181,7 @@ public class VaccineParamsBuilder {
 	}
 
 
-	public boolean isType() {
+	public boolean getType() {
 		return type;
 	}
 

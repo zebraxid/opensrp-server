@@ -238,8 +238,19 @@ public class ChildVaccineFollowup extends FileReader implements FormsType<Member
 		    		finalFieldName = finalRetroDoseField.get("finalFieldName");	
 		    		retroFieldName = finalRetroDoseField.get("retroFieldName");
 		    		doseFieldName = finalRetroDoseField.get("doseFieldName");		    		
+		    		params.setFormField(formField);
+		    		params.setFieldName(name);
+		    		params.setRetroFieldName(retroFieldName);
+		    		params.setFinalFieldName(finalFieldName);
+		    		params.setDoseFieldName(doseFieldName);
+		    		params.setVaccineDose(vaccineDose);
+		    		params.setVaccineDate(vaccineDate);
+		    		params.setChildVaccineFollowup(childVaccineFollowup);
+		    		params.setType(true);
+		    		params.setField(null);
+		    		params.setConvertMemberToJsonObject(convertMemberToJsonObject);
 		    		if(!finalRetroDoseField.isEmpty()){		    			
-		    			formField = this.getFormFieldValue(formField, name, finalFieldName, retroFieldName, doseFieldName, vaccineDose, vaccineDate, childVaccineFollowup,true,null,convertMemberToJsonObject);
+		    			formField = this.getFormFieldValue(params);
 		    		}else{
 		    			logger.info("vaccine not found");
 		    		}
@@ -257,9 +268,20 @@ public class ChildVaccineFollowup extends FileReader implements FormsType<Member
 	    			Map<String,String> finalRetroDoseField= this.getFinalRetroDoseAndField(vaccineName, vaccineDose);
 	    			finalFieldName = finalRetroDoseField.get("finalFieldName");	
 		    		retroFieldName = finalRetroDoseField.get("retroFieldName");
-		    		doseFieldName = finalRetroDoseField.get("doseFieldName");		    		
+		    		doseFieldName = finalRetroDoseField.get("doseFieldName");
+		    		params.setFormField(formField);
+		    		params.setFieldName(name);
+		    		params.setRetroFieldName(retroFieldName);
+		    		params.setFinalFieldName(finalFieldName);
+		    		params.setDoseFieldName(doseFieldName);
+		    		params.setVaccineDose(vaccineDose);
+		    		params.setVaccineDate(vaccineDate);
+		    		params.setChildVaccineFollowup(childVaccineFollowup);
+		    		params.setType(false);
+		    		params.setField(field);
+		    		params.setConvertMemberToJsonObject(convertMemberToJsonObject);
 		    		if(!finalRetroDoseField.isEmpty()){
-		    			formField = this.getFormFieldValue(formField, name, finalFieldName, retroFieldName, doseFieldName, vaccineDose, vaccineDate, childVaccineFollowup,false,field,convertMemberToJsonObject);
+		    			formField = this.getFormFieldValue(params);
 		    		}else{
 		    			logger.info("vaccine not found");
 		    		}
@@ -297,7 +319,19 @@ public class ChildVaccineFollowup extends FileReader implements FormsType<Member
 	 * @return FormField
 	 * */
 	
-	public FormField getFormFieldValue(FormField formField,String name, String finalFieldName,String retroFieldName,String doseFieldName,int vaccineDose,String vaccineDate,Map<String, String> childVaccineFollowup,boolean type,Field field,JSONObject convertMemberToJsonObject ) throws JSONException{
+	
+	public FormField getFormFieldValue(VaccineParamsBuilder params ) throws JSONException{
+		FormField formField =params.getFormField();
+		String name = params.getFieldName();
+		String finalFieldName = params.getFinalFieldName();
+		String retroFieldName = params.getRetroFieldName();
+		String doseFieldName = params.getDoseFieldName();
+		int vaccineDose = params.getVaccineDose();
+		String vaccineDate = params.getVaccineDate();
+		Map<String, String> childVaccineFollowup = params.getChildVaccineFollowup();
+		boolean type = params.getType();
+		Field field = params.getField();
+		JSONObject convertMemberToJsonObject = params.getConvertMemberToJsonObject();
 		if(type){
 			if(name.equalsIgnoreCase(finalFieldName.trim())){
 				formField=this.setFormFieldValue(formField, name, finalFieldName, vaccineDose, vaccineDate,false);
