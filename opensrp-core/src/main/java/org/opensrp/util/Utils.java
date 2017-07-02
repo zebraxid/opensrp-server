@@ -41,6 +41,10 @@ import com.mysql.jdbc.StringUtils;
 
 public class Utils {
 
+	private Utils() {
+
+    }
+    
 	public static Map<String, String> getStringMapFromJSON(String fields) {
 		return new Gson().fromJson(fields, new TypeToken<Map<String, String>>() {
 		}.getType());
