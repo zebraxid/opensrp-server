@@ -44,7 +44,7 @@ public class Utils {
 	private Utils() {
 
     }
-    
+
 	public static Map<String, String> getStringMapFromJSON(String fields) {
 		return new Gson().fromJson(fields, new TypeToken<Map<String, String>>() {
 		}.getType());
@@ -142,7 +142,8 @@ public class Utils {
 	 */
 	public static CouchDbConnector connectToDB(DatabaseConnectionParams dbParams) throws MalformedURLException {
 		HttpClient authenticatedHttpClient = null;
-		if (dbParams.userName != null && !dbParams.userName.isEmpty() && dbParams.password != null && !dbParams.password.isEmpty()) {
+
+        if (dbParams.userName != null && !dbParams.userName.isEmpty() && dbParams.password != null && !dbParams.password.isEmpty()) {
 
 			authenticatedHttpClient = new StdHttpClient.Builder().url(dbParams.url.concat(":").concat(dbParams.portNumber)).username(dbParams.userName)
 					.password(dbParams.password).build();
