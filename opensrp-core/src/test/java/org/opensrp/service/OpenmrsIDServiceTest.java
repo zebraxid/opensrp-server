@@ -1,5 +1,6 @@
 package org.opensrp.service;
 
+import com.google.gson.Gson;
 import org.joda.time.DateTime;
 import org.junit.*;
 import org.opensrp.SpringApplicationContextProvider;
@@ -13,6 +14,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.*;
@@ -63,7 +65,6 @@ public class OpenmrsIDServiceTest  extends SpringApplicationContextProvider{
 
         Client client = new Client(baseEntityId, firstName, "", lastName, dateOfBirth, null, false, false, gender, addressList, null, null);
         client.addAttribute(CHILD_REGISTER_CARD_NUMBER, childRegisterCardNumber);
-        //PREVIOUS: client.addIdentifiers(CHILD_REGISTER_CARD_NUMBER, childRegisterCardNumber);
         return client;
     }
 
@@ -75,7 +76,6 @@ public class OpenmrsIDServiceTest  extends SpringApplicationContextProvider{
         assertNotNull(client.getIdentifier(OpenmrsIDService.ZEIR_IDENTIFIER));
     }
 
-    //TODO: CHILD_REGISTER_CARD_NUMBER is identifier of attributes.
 
     @Test
     public void testExistingClientsDoNotReceiveNewOpenmrsId() throws Exception {
@@ -88,5 +88,15 @@ public class OpenmrsIDServiceTest  extends SpringApplicationContextProvider{
         openmrsIDService.assignOpenmrsIdToClient("12345-1", duplicateClient);
         assertTrue(openmrsIDService.checkIfClientExists(duplicateClient));
         assertNull(duplicateClient.getIdentifier(OpenmrsIDService.ZEIR_IDENTIFIER));
+    }
+
+    @Test
+    public void testDownloadsOpenmrsIds() {
+        Client client = this.createClient("45678", "Jane", "Doe", "Female", "102/17");
+        Client client2 = this.createClient("45679", "John", "Doe", "Male", "103/17");
+
+        List<String> ids = openmrsIDService.downloadOpenmrsIds(2);
+
+        System.out.println(new Gson().toJson(ids));
     }
 }

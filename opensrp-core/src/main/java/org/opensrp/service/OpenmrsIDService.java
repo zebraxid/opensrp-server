@@ -67,7 +67,8 @@ public class OpenmrsIDService {
 		try {
 			HttpResponse response = client.execute(get);
 			String jsonResponse = EntityUtils.toString(response.getEntity());
-			
+            System.out.println(jsonResponse);
+
 			JSONObject responseJson = new JSONObject(jsonResponse);
 			JSONArray jsonArray = responseJson.getJSONArray("identifiers");
 			
@@ -170,6 +171,7 @@ public class OpenmrsIDService {
 	public List<String> getNotUsedIdsAsString(int limit){
 		return uniqueIdRepository.getNotUsedIdsAsString(limit);
 	}
+
 	public int[] markIdsAsUsed(List<String> ids){
 		return uniqueIdRepository.markAsUsed(ids);
 	}
