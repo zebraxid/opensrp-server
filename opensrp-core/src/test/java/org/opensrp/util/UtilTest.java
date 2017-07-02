@@ -60,13 +60,27 @@ public class UtilTest extends TestResourceLoader {
 
     @Test
     public void testGetXlsToJson() throws IOException, JSONException {
-        String path = getFullPath("sampleXls.xls");
+        String path = getFullPath("sampleXLS/validXLS.xls");
         JSONArray jsonArray = Utils.getXlsToJson(path);
         JSONObject jsonObject = jsonArray.getJSONObject(0);
-        assertEquals(1, jsonArray.length());
+        assertEquals(2, jsonArray.length());
         assertEquals("f", jsonObject.get("first"));
         assertEquals("s", jsonObject.get("second"));
+        assertEquals("t", jsonObject.get("third"));
 
+    }
+
+    @Test
+    public void testGetXlsToJsonForEmptyXls() throws IOException, JSONException{
+        String path = getFullPath("sampleXLS/emptyXLS.xls");
+        JSONArray jsonArray = Utils.getXlsToJson(path);
+        assertEquals(0, jsonArray.length());
+    }
+
+    @Test(expected = Exception.class)
+    public void testGetXlsToJsonForInvalidXls() throws IOException, JSONException{
+        String path = getFullPath("sampleXLS/invalidXLS.xls");
+        JSONArray jsonArray = Utils.getXlsToJson(path);
     }
 
 }
