@@ -54,7 +54,9 @@ public class Utils {
 		List<String> fieldList = new ArrayList<>();
 		Field[] fieldSet = cls.getDeclaredFields();
 		for (Field field : fieldSet) {
-			fieldList.add(field.getName());
+			if(!field.isSynthetic()) {
+				fieldList.add(field.getName());
+			}
 		}
 		return fieldList;
 	}
