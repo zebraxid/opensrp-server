@@ -78,6 +78,7 @@ public class UniqueIdRepository {
 			uniqueId.setOpenmrsId(rs.getString(rs.findColumn(UniqueId.COL_OPENMRSID)));
 			uniqueId.setLocation(rs.getString(rs.findColumn(UniqueId.COL_LOCATION)));
 			uniqueId.setStatus(rs.getString(rs.findColumn(UniqueId.COL_STATUS)));
+			uniqueId.setUsedBy(rs.getString(rs.findColumn(UniqueId.COL_USEDBY)));
 			return uniqueId;
 		}
 		

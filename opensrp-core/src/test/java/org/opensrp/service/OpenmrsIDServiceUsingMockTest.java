@@ -20,6 +20,7 @@ import java.util.List;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
+import static org.junit.Assert.assertNull;
 import static org.mockito.Matchers.any;
 
 @RunWith(PowerMockRunner.class)
@@ -33,11 +34,12 @@ public class OpenmrsIDServiceUsingMockTest {
     @Before
     public void setUp() {
         PowerMockito.mockStatic(EntityUtils.class);
-        openmrsIDService = OpenmrsIDService.createInstanceWithOpenMrsUrl("http://localhost/");
+
     }
 
     @Test
     public void testDownloadsOpenmrsIds() throws IOException {
+        openmrsIDService = OpenmrsIDService.createInstanceWithOpenMrsUrl("http://localhost/");
         String jsonResponse = "{\"identifiers\":[\"1\",\"2\"]}";
         BDDMockito.when(EntityUtils.toString(any(HttpEntity.class))).thenReturn(jsonResponse);
         List<String> ids = openmrsIDService.downloadOpenmrsIds(2);
@@ -45,5 +47,12 @@ public class OpenmrsIDServiceUsingMockTest {
         assertTrue(ids.contains("1"));
         assertTrue(ids.contains("2"));
         assertFalse(ids.contains("3"));
+    }
+
+    @Test
+    public void testDownloadOpenmrsIdsWithInvalidUrl() {
+        openmrsIDService = OpenmrsIDService.createInstanceWithOpenMrsUrl("");
+        List<String> ids = openmrsIDService.downloadOpenmrsIds(2);
+        assertNull(ids);
     }
 }

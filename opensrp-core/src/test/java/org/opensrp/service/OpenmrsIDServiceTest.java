@@ -1,27 +1,18 @@
 package org.opensrp.service;
 
-import com.google.gson.Gson;
-import org.apache.http.HttpEntity;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.util.EntityUtils;
 import org.joda.time.DateTime;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.BDDMockito;
-import org.mockito.MockitoAnnotations;
+import org.mockito.Mockito;
 import org.opensrp.SpringApplicationContextProvider;
 import org.opensrp.domain.Address;
 import org.opensrp.domain.Client;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PowerMockIgnore;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
+import org.opensrp.domain.UniqueId;
+import org.opensrp.repository.UniqueIdRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.*;
+import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.any;
 import static org.opensrp.service.OpenmrsIDService.CHILD_REGISTER_CARD_NUMBER;
 
@@ -37,6 +29,8 @@ public class OpenmrsIDServiceTest  extends SpringApplicationContextProvider{
     OpenmrsIDService openmrsIDService;
     @Autowired
     JdbcTemplate jdbcTemplate;
+    @Autowired
+    UniqueIdRepository uniqueIdRepository;
 
     @Before
     public void setUp() {
@@ -102,4 +96,24 @@ public class OpenmrsIDServiceTest  extends SpringApplicationContextProvider{
         assertNull(duplicateClient.getIdentifier(OpenmrsIDService.ZEIR_IDENTIFIER));
     }
 
+    @Test
+    public void testDownloadAndSaveIds() {
+        List<String > downloadedIds = new ArrayList<>();
+        downloadedIds.add("1");
+        downloadedIds.add("2");
+        OpenmrsIDService openmrsIDServiceSpy = Mockito.spy(openmrsIDService);
+        Mockito.doReturn(downloadedIds).when(openmrsIDServiceSpy).downloadOpenmrsIds(anyInt());
+
+        openmrsIDServiceSpy.downloadAndSaveIds(2, "test");
+
+        List<UniqueId> uniqueIds = uniqueIdRepository.getNotUsedIds(2);
+        List<String> actualList = new ArrayList<>();
+        for(UniqueId uniqueId : uniqueIds) {
+            assertEquals("test", uniqueId.getUsedBy());
+            actualList.add(uniqueId.getOpenmrsId());
+        }
+
+        assertEquals(2, (int)uniqueIdRepository.totalUnUsedIds());
+        assertEquals(downloadedIds, actualList);
+    }
 }
