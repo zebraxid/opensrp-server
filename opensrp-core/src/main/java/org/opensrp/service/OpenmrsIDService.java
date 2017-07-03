@@ -51,6 +51,13 @@ public class OpenmrsIDService {
 	
 	@Autowired
 	private UniqueIdRepository uniqueIdRepository;
+
+
+	public static OpenmrsIDService createInstanceWithOpenMrsUrl(String openmrsUrl) {
+	   OpenmrsIDService openmrsIDService = new OpenmrsIDService();
+	   openmrsIDService.openmrsUrl = openmrsUrl;
+	   return openmrsIDService;
+    }
 	
 	public OpenmrsIDService() {
 		this.client = HttpClientBuilder.create().build();
@@ -62,12 +69,11 @@ public class OpenmrsIDService {
 		// Add query parameters
 		openmrsQueryUrl += "?source=" + this.openmrsSourceId + "&numberToGenerate=" + size;
 		openmrsQueryUrl += "&username=" + this.openmrsUserName + "&password=" + this.openmrsPassword;
-		
+
 		HttpGet get = new HttpGet(openmrsQueryUrl);
 		try {
 			HttpResponse response = client.execute(get);
 			String jsonResponse = EntityUtils.toString(response.getEntity());
-            System.out.println(jsonResponse);
 
 			JSONObject responseJson = new JSONObject(jsonResponse);
 			JSONArray jsonArray = responseJson.getJSONArray("identifiers");
