@@ -14,17 +14,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.anyInt;
-import static org.mockito.Mockito.any;
 import static org.opensrp.service.OpenmrsIDService.CHILD_REGISTER_CARD_NUMBER;
 
-public class OpenmrsIDServiceTest  extends SpringApplicationContextProvider{
+public class OpenmrsIDServiceTest extends SpringApplicationContextProvider {
     @Autowired
     OpenmrsIDService openmrsIDService;
     @Autowired
@@ -36,24 +33,24 @@ public class OpenmrsIDServiceTest  extends SpringApplicationContextProvider{
     public void setUp() {
         String dropDbSql = "DROP TABLE IF EXISTS `unique_ids`;";
         jdbcTemplate.execute(dropDbSql);
-        String  tableCreationString =
+        String tableCreationString =
                 "CREATE TABLE `unique_ids` (\n" +
-                "  `_id` bigint(20) NOT NULL AUTO_INCREMENT,\n" +
-                "  `created_at` datetime DEFAULT NULL,\n" +
-                "  `location` varchar(255) DEFAULT NULL,\n" +
-                "  `openmrs_id` varchar(255) DEFAULT NULL,\n" +
-                "  `status` varchar(255) DEFAULT NULL,\n" +
-                "  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,\n" +
-                "  `used_by` varchar(255) DEFAULT NULL,\n" +
-                "  PRIMARY KEY (`_id`)\n" +
-                ") ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+                        "  `_id` bigint(20) NOT NULL AUTO_INCREMENT,\n" +
+                        "  `created_at` datetime DEFAULT NULL,\n" +
+                        "  `location` varchar(255) DEFAULT NULL,\n" +
+                        "  `openmrs_id` varchar(255) DEFAULT NULL,\n" +
+                        "  `status` varchar(255) DEFAULT NULL,\n" +
+                        "  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,\n" +
+                        "  `used_by` varchar(255) DEFAULT NULL,\n" +
+                        "  PRIMARY KEY (`_id`)\n" +
+                        ") ENGINE=InnoDB DEFAULT CHARSET=utf8;";
         jdbcTemplate.execute(tableCreationString);
     }
 
     @After
     public void tearDown() {
         String dropDbSql = "DROP TABLE IF EXISTS `unique_ids`;";
-        jdbcTemplate.execute(dropDbSql);
+        // jdbcTemplate.execute(dropDbSql);
 
     }
 
@@ -98,7 +95,7 @@ public class OpenmrsIDServiceTest  extends SpringApplicationContextProvider{
 
     @Test
     public void testDownloadAndSaveIds() {
-        List<String > downloadedIds = new ArrayList<>();
+        List<String> downloadedIds = new ArrayList<>();
         downloadedIds.add("1");
         downloadedIds.add("2");
         OpenmrsIDService openmrsIDServiceSpy = Mockito.spy(openmrsIDService);
@@ -108,12 +105,65 @@ public class OpenmrsIDServiceTest  extends SpringApplicationContextProvider{
 
         List<UniqueId> uniqueIds = uniqueIdRepository.getNotUsedIds(2);
         List<String> actualList = new ArrayList<>();
-        for(UniqueId uniqueId : uniqueIds) {
+        for (UniqueId uniqueId : uniqueIds) {
             assertEquals("test", uniqueId.getUsedBy());
             actualList.add(uniqueId.getOpenmrsId());
         }
 
-        assertEquals(2, (int)uniqueIdRepository.totalUnUsedIds());
+        assertEquals(2, (int) uniqueIdRepository.totalUnUsedIds());
         assertEquals(downloadedIds, actualList);
+    }
+
+    @Test
+    public void testClearRecord() throws SQLException {
+        Client client = this.createClient("12345", "First", "Last", "Male", "454/16");
+        openmrsIDService.assignOpenmrsIdToClient("12345-1", client);
+
+        assertTrue(openmrsIDService.checkIfClientExists(client));
+
+        openmrsIDService.clearRecords();
+
+        assertFalse(openmrsIDService.checkIfClientExists(client));
+    }
+
+    //TODO: fix date issues
+    @Test
+    public void testGetNotUsedId() throws Exception {
+        int size = 10;
+        List<UniqueId> expectedList = createNotUsedUniqIdEntries(size);
+        List<UniqueId> actualList = openmrsIDService.getNotUsedIds(100);
+        assertEquals(size, actualList.size());
+
+        for (int i = 0; i < size; i++) {
+            UniqueId expected = expectedList.get(i);
+            UniqueId actual = actualList.get(i);
+            assertUniqueId(expected, actual);
+        }
+
+    }
+
+    private List<UniqueId> createNotUsedUniqIdEntries(int size) throws Exception {
+        List<UniqueId> notUsedUniqueIds = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            UniqueId uniqueId = new UniqueId();
+            uniqueId.setOpenmrsId(String.valueOf(i));
+            uniqueId.setStatus(UniqueId.STATUS_NOT_USED);
+            uniqueId.setUsedBy("test" + i);
+            uniqueId.setCreatedAt(new Date());
+            uniqueId.setLocation("test");
+            notUsedUniqueIds.add(uniqueId);
+            uniqueIdRepository.save(uniqueId);
+        }
+        return notUsedUniqueIds;
+    }
+
+    private void assertUniqueId(UniqueId expected, UniqueId actual) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("YYYY-mm-hh hh:MM:ss Z");
+        assertEquals(dateFormat.format(expected.getCreatedAt()), dateFormat.format(actual.getCreatedAt()));
+        assertEquals(expected.getLocation(), actual.getLocation());
+        assertEquals(expected.getId(), actual.getId());
+        assertEquals(expected.getOpenmrsId(), actual.getOpenmrsId());
+        assertEquals(expected.getStatus(), actual.getStatus());
+        assertEquals(expected.getUsedBy(), actual.getUsedBy());
     }
 }

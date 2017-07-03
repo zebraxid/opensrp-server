@@ -20,7 +20,6 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -87,7 +86,7 @@ public class OpenmrsIDService {
 		}
 		catch (IOException | JSONException e) {
 			logger.error("", e);
-			return Collections.emptyList();
+			return null;
 		}
 		// import IDs and client data to database together with assignments 
 		return ids;
