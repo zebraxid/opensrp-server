@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import org.apache.http.HttpEntity;
 import org.apache.http.util.EntityUtils;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.BDDMockito;
@@ -37,7 +38,7 @@ public class OpenmrsIDServiceUsingMockTest {
 
     }
 
-    @Test
+    @Ignore@Test
     public void testDownloadsOpenmrsIds() throws IOException {
         openmrsIDService = OpenmrsIDService.createInstanceWithOpenMrsUrl("http://localhost/");
         String jsonResponse = "{\"identifiers\":[\"1\",\"2\"]}";
@@ -49,7 +50,7 @@ public class OpenmrsIDServiceUsingMockTest {
         assertFalse(ids.contains("3"));
     }
 
-    @Test
+    @Ignore@Test
     public void testDownloadOpenmrsIdsWithInvalidUrl() {
         openmrsIDService = OpenmrsIDService.createInstanceWithOpenMrsUrl("");
          List<String> ids = openmrsIDService.downloadOpenmrsIds(2);
