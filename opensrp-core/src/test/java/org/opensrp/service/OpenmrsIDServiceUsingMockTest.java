@@ -25,7 +25,7 @@ import static org.mockito.Matchers.any;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(EntityUtils.class)
-@PowerMockIgnore({"org.apache.http.ssl.*", "javax.net.ssl.*"})
+@PowerMockIgnore({"org.apache.http.ssl.*", "javax.net.ssl.*","org.apache.http.conn.ssl.*"})
 public class OpenmrsIDServiceUsingMockTest {
 
 
@@ -52,7 +52,7 @@ public class OpenmrsIDServiceUsingMockTest {
     @Test
     public void testDownloadOpenmrsIdsWithInvalidUrl() {
         openmrsIDService = OpenmrsIDService.createInstanceWithOpenMrsUrl("");
-        List<String> ids = openmrsIDService.downloadOpenmrsIds(2);
+         List<String> ids = openmrsIDService.downloadOpenmrsIds(2);
         assertNull(ids);
     }
 }

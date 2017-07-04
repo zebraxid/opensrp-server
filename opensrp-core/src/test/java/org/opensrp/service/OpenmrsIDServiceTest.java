@@ -19,6 +19,7 @@ import java.util.*;
 
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.intThat;
 import static org.opensrp.service.OpenmrsIDService.CHILD_REGISTER_CARD_NUMBER;
 
 public class OpenmrsIDServiceTest extends SpringApplicationContextProvider {
@@ -94,6 +95,24 @@ public class OpenmrsIDServiceTest extends SpringApplicationContextProvider {
     }
 
     @Test
+    public void testCheckClient() throws SQLException {
+        Client client = this.createClient("45678", "Jane", "Doe", "Female", "102/17");
+        openmrsIDService.assignOpenmrsIdToClient("12345-1", client);
+        assertTrue(openmrsIDService.checkIfClientExists(client));
+    }
+
+    @Test
+    public void testCheckClientWithFalseData() throws SQLException {
+        Client client = this.createClient("45678", "Jane", "Doe", "Female", "102/17");
+        assertFalse(openmrsIDService.checkIfClientExists(client));
+    }
+
+    @Test
+    public void testCheckClientWithInvalidData() throws SQLException {Client client = this.createClient("*", "Jane", "Doe", "Female", "*");
+        assertNull(openmrsIDService.checkIfClientExists(null));
+    }
+
+    @Test
     public void testDownloadAndSaveIds() {
         List<String> downloadedIds = new ArrayList<>();
         downloadedIds.add("1");
@@ -126,7 +145,7 @@ public class OpenmrsIDServiceTest extends SpringApplicationContextProvider {
         assertFalse(openmrsIDService.checkIfClientExists(client));
     }
 
-    //TODO: fix date issues
+
     @Test
     public void testGetNotUsedId() throws Exception {
         int size = 10;
@@ -139,6 +158,38 @@ public class OpenmrsIDServiceTest extends SpringApplicationContextProvider {
             UniqueId actual = actualList.get(i);
             assertUniqueId(expected, actual);
         }
+
+    }
+
+    @Test
+    public void testGetNotUsedIdAsString() throws Exception {
+        int size = 10;
+        List<UniqueId> ids = createNotUsedUniqIdEntries(size);
+        List<String> expectedList = new ArrayList<>();
+        List<String> actualList = openmrsIDService.getNotUsedIdsAsString(100);
+        for (int i = 0; i < size; i++) {
+            expectedList.add(ids.get(i).getOpenmrsId());
+        }
+
+        assertEquals(size, actualList.size());
+        assertEquals(expectedList, actualList);
+    }
+
+    @Test
+    public void testMarkIdAsUsed() throws Exception {
+        int size = 10;
+        List<UniqueId> ids = createNotUsedUniqIdEntries(size);
+        List<String> idListAsString = new ArrayList<>();
+
+        for (int i = 0; i < size; i++) {
+            idListAsString.add(ids.get(i).getOpenmrsId());
+        }
+
+        int[] actualIds = openmrsIDService.markIdsAsUsed(idListAsString);
+        List<String> actualList = openmrsIDService.getNotUsedIdsAsString(100);
+
+        assertEquals(size, actualIds.length);
+        assertEquals(0, actualList.size());
 
     }
 
