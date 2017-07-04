@@ -71,12 +71,12 @@ public class FormSubmissionProcessor{
     
     void handleSchedules(FormSubmission submission) throws JSONException, IOException {
     	List<Schedule> schl = scheduleService.findAutomatedSchedules(submission.formName());
-    	for (Schedule sch : schl) {
+        for (Schedule sch : schl) {
 			Map<String, String> entsch = getEntitiesQualifyingForSchedule(submission, sch);
 			System.out.println("creating schedule for : "+entsch);
 			for (String enid : entsch.keySet()) {
-				if(sch.action().equals(ActionType.enroll)){
-					scheduleService.enrollIntoSchedule(enid, sch.schedule(), 
+                if(sch.action().equals(ActionType.enroll)){
+					scheduleService.enrollIntoSchedule(enid, sch.schedule(),
 							sch.milestone(), entsch.get(enid), submission.instanceId());
 				}
 				else if(sch.action().equals(ActionType.fulfill)){
