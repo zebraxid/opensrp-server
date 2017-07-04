@@ -3,6 +3,7 @@ package org.opensrp.service.formSubmission;
 
 import com.google.gson.Gson;
 import org.joda.time.DateTime;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.opensrp.BaseIntegrationTest;
 import org.opensrp.domain.Address;
@@ -72,20 +73,6 @@ public class FormEntityConverterTest extends BaseIntegrationTest{
         assertEquals(expectedClient.getIdentifier("GOB HHID"), client.getIdentifier("GOB HHID"));
 
     }
-
-    @Test
-    public void testCreateBaseClientWithOutFirstName() throws Exception {
-
-        FormSubmission fsubmission = getFormSubmissionFor("new_household_registration", 9);
-        FormSubmissionMap formSubmissionMap = formAttributeParser.createFormSubmissionMap(fsubmission);
-
-
-        Client client = formEntityConverter.createBaseClient(formSubmissionMap);
-
-        assertNull(client);
-
-    }
-
 
 
 }

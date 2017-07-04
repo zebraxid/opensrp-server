@@ -160,6 +160,21 @@ public class Utils {
 
 	}
 
+	public static CouchDbInstance getDbInstance(DatabaseConnectionParams dbParams) throws MalformedURLException {
+		HttpClient authenticatedHttpClient = null;
+
+		if (dbParams.userName != null && !dbParams.userName.isEmpty() && dbParams.password != null && !dbParams.password.isEmpty()) {
+
+			authenticatedHttpClient = new StdHttpClient.Builder().url(dbParams.url.concat(":").concat(dbParams.portNumber)).username(dbParams.userName)
+					.password(dbParams.password).build();
+		} else {
+			authenticatedHttpClient = new StdHttpClient.Builder().url(dbParams.url.concat(":").concat(dbParams.portNumber)).build();
+		}
+
+		CouchDbInstance dbInstance = new StdCouchDbInstance(authenticatedHttpClient);
+		return dbInstance;
+	}
+
 	public static class DatabaseConnectionParams {
 		public String url;
 		public String portNumber;
