@@ -1,7 +1,5 @@
 package org.opensrp.scheduler.service;
 
-import java.util.List;
-
 import org.joda.time.DateTime;
 import org.opensrp.dto.ActionData;
 import org.opensrp.dto.AlertStatus;
@@ -14,6 +12,8 @@ import org.opensrp.scheduler.repository.AllActions;
 import org.opensrp.scheduler.repository.AllAlerts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class ActionService {
@@ -50,7 +50,7 @@ public class ActionService {
 	}
 
     public void alertForBeneficiary(String beneficiaryType, String caseID, String anmIdentifier, String scheduleName, String visitCode, AlertStatus alertStatus, DateTime startDate, DateTime expiryDate) {
-    	allActions.addOrUpdateAlert(new Action(caseID, anmIdentifier, ActionData.createAlert(beneficiaryType, scheduleName, visitCode, alertStatus, startDate, expiryDate)));
+        allActions.addOrUpdateAlert(new Action(caseID, anmIdentifier, ActionData.createAlert(beneficiaryType, scheduleName, visitCode, alertStatus, startDate, expiryDate)));
     	allAlerts.addOrUpdateScheduleNotificationAlert(beneficiaryType, caseID, anmIdentifier, scheduleName, visitCode, alertStatus, startDate, expiryDate);
     }
     public void alertForBeneficiary(Action action) {

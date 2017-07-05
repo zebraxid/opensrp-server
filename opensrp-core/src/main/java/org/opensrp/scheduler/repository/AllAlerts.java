@@ -1,10 +1,5 @@
 package org.opensrp.scheduler.repository;
 
-import java.text.MessageFormat;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.lang3.StringUtils;
 import org.ektorp.ComplexKey;
 import org.ektorp.CouchDbConnector;
@@ -14,7 +9,6 @@ import org.joda.time.DateTime;
 import org.motechproject.dao.MotechBaseRepository;
 import org.opensrp.common.AllConstants;
 import org.opensrp.dto.AlertStatus;
-import org.opensrp.scheduler.Action;
 import org.opensrp.scheduler.Alert;
 import org.opensrp.scheduler.Alert.AlertType;
 import org.opensrp.scheduler.Alert.TriggerType;
@@ -23,6 +17,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
+
+import java.text.MessageFormat;
+import java.util.List;
 
 @Repository
 public class AllAlerts extends MotechBaseRepository<Alert> {

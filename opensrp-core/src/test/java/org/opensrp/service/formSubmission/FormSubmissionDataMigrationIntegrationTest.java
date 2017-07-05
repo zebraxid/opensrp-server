@@ -86,7 +86,7 @@ public class FormSubmissionDataMigrationIntegrationTest extends BaseIntegrationT
 		Assert.assertTrue("AppStateToken shouldn't be empty after a successful migration", !ol.isEmpty());
 		Assert.assertTrue("AppStateToken should be greater than 0 all the times after a successful migration", ol.get(0).longValue() > 0);
 
-		
+
 	}
 
 	

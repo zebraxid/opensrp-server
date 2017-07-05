@@ -1,34 +1,31 @@
-/*package org.opensrp.scheduler;
+package org.opensrp.scheduler;
 
-import static java.util.Arrays.asList;
-import static junit.framework.Assert.assertEquals;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.initMocks;
-import static org.opensrp.dto.AlertStatus.normal;
-import static org.opensrp.dto.AlertStatus.urgent;
-import static org.opensrp.dto.BeneficiaryType.child;
-import static org.opensrp.dto.BeneficiaryType.ec;
-import static org.opensrp.dto.BeneficiaryType.mother;
-
-import java.util.Arrays;
-import java.util.List;
-
+import com.google.gson.Gson;
 import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.BDDMockito;
 import org.mockito.Mock;
-import org.opensrp.domain.BaseEntity;
+import org.motechproject.util.DateUtil;
 import org.opensrp.dto.ActionData;
 import org.opensrp.dto.MonthSummaryDatum;
-import org.opensrp.scheduler.Action;
 import org.opensrp.scheduler.repository.AllActions;
 import org.opensrp.scheduler.repository.AllAlerts;
 import org.opensrp.scheduler.service.ActionService;
 import org.opensrp.service.BaseEntityService;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
-import com.google.gson.Gson;
+import static java.util.Arrays.asList;
+import static org.mockito.Mockito.verify;
+import static org.mockito.MockitoAnnotations.initMocks;
+import static org.opensrp.dto.AlertStatus.normal;
+import static org.opensrp.dto.AlertStatus.urgent;
 
+@RunWith(PowerMockRunner.class)
+@PrepareForTest({DateUtil.class})
 public class ActionServiceTest {
     @Mock
     private AllActions allActions;
@@ -44,6 +41,7 @@ public class ActionServiceTest {
     @Before
     public void setUp() throws Exception {
         initMocks(this);
+        PowerMockito.mockStatic(DateUtil.class);
         allActions.removeAll();
         allAlerts.removeAll();
         service = new ActionService(allActions, allAlerts);
@@ -53,12 +51,70 @@ public class ActionServiceTest {
     public void shouldSaveAlertActionForEntity() throws Exception {
         DateTime dueDate = DateTime.now().minusDays(1);
         DateTime expiryDate = dueDate.plusWeeks(2);
-        service.alertForBeneficiary("mother", "Case X", "ANM ID M", "Ante Natal Care - Normal", "ANC 1", normal, dueDate, expiryDate);
+        BDDMockito.given(DateUtil.now()).willReturn(new DateTime(123l));
 
+        service.alertForBeneficiary("mother", "Case X", "ANM ID M", "Ante Natal Care - Normal", "ANC 1", normal, dueDate, expiryDate);
         Action action = new Action("Case X", "ANM ID M", ActionData.createAlert("mother", "Ante Natal Care - Normal", "ANC 1", normal, dueDate, expiryDate));
+
+
         verify(allActions).addOrUpdateAlert(action);
-        verify(allActions).add(action);
         verify(allAlerts).addOrUpdateScheduleNotificationAlert("mother", "Case X", "ANM ID M", "Ante Natal Care - Normal", "ANC 1", normal, dueDate, expiryDate);
+    }
+
+
+    @Test(expected = IllegalArgumentException.class)
+    public void shouldThrowExceptionIfBeneficiaryTypeIsUnknown() throws Exception {
+        service.alertForBeneficiary("Case Y", "Case X", "ANM ID C", "Schedule name", "FP Complications", urgent, new DateTime(), new DateTime());
+    }
+
+    @Test
+    public void shouldCreateACloseActionForAVisitOfAChild() throws Exception {
+        service.markAlertAsClosed("Case X", "ANM 1", "OPV 1", "2012-01-01");
+
+        verify(allActions).add(new Action("Case X", "ANM 1", ActionData.markAlertAsClosed("OPV 1", "2012-01-01")));
+    }
+
+
+    @Test
+    public void shouldCreateADeleteAllActionForAMother() throws Exception {
+        service.markAllAlertsAsInactive("Case X");
+
+        verify(allActions).markAllAsInActiveFor("Case X");
+    }
+
+    @Test
+    public void shouldMarkAnAlertAsInactive() throws Exception {
+        service.markAlertAsInactive("ANM 1","Case X", "Schedule 1");
+
+        verify(allActions).markAlertAsInactiveFor("ANM 1","Case X", "Schedule 1");
+    }
+
+
+    @Test
+    public void shouldReportForIndicator() {
+        ActionData summaryActionData = ActionData.reportForIndicator("ANC", "30", new Gson().toJson(asList(new MonthSummaryDatum("3", "2012", "2", "2", asList("CASE 5", "CASE 6")))));
+
+        service.reportForIndicator("ANM X", summaryActionData);
+
+        verify(allActions).add(new Action("", "ANM X", summaryActionData));
+    }
+
+    @Test
+    public void shouldDeleteAllActionsWithTargetReport() {
+        service.deleteReportActions();
+
+        verify(allActions).deleteAllByTarget("report");
+    }
+
+
+    /*
+    @Test
+    public void shouldCreateACloseActionForAVisitOfAMother() throws Exception {
+        when(allMothers.findByCaseId("Case X")).thenReturn(new Mother("Case X", "EC-CASE-1", "Thayi 1").withAnm("ANM ID 1"));
+
+        service.markAlertAsClosed("Case X", "ANM ID 1", "ANC 1", "2012-12-12");
+
+        verify(allActions).add(new Action("Case X", "ANM ID 1", ActionData.markAlertAsClosed("ANC 1", "2012-12-12")));
     }
 
     @Test
@@ -91,42 +147,6 @@ public class ActionServiceTest {
 
         verify(allActions).addOrUpdateAlert(new Action("Case X", "ANM ID C", ActionData.createAlert(ec, "OCP Refill", "OCP Refill", urgent, dueDate, expiryDate)));
     }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void shouldThrowExceptionIfBeneficiaryTypeIsUnknown() throws Exception {
-        service.alertForBeneficiary(null, "Case X", "ANM ID C", "Schedule name", "FP Complications", urgent, null, null);
-    }
-
-    @Test
-    public void shouldCreateACloseActionForAVisitOfAChild() throws Exception {
-        service.markAlertAsClosed("Case X", "ANM 1", "OPV 1", "2012-01-01");
-
-        verify(allActions).add(new Action("Case X", "ANM 1", ActionData.markAlertAsClosed("OPV 1", "2012-01-01")));
-    }
-
-    @Test
-    public void shouldCreateACloseActionForAVisitOfAMother() throws Exception {
-        when(allMothers.findByCaseId("Case X")).thenReturn(new Mother("Case X", "EC-CASE-1", "Thayi 1").withAnm("ANM ID 1"));
-
-        service.markAlertAsClosed("Case X", "ANM ID 1", "ANC 1", "2012-12-12");
-
-        verify(allActions).add(new Action("Case X", "ANM ID 1", ActionData.markAlertAsClosed("ANC 1", "2012-12-12")));
-    }
-
-    @Test
-    public void shouldCreateADeleteAllActionForAMother() throws Exception {
-        service.markAllAlertsAsInactive("Case X");
-
-        verify(allActions).markAllAsInActiveFor("Case X");
-    }
-
-    @Test
-    public void shouldMarkAnAlertAsInactive() throws Exception {
-        service.markAlertAsInactive("ANM 1","Case X", "Schedule 1");
-
-        verify(allActions).markAlertAsInactiveFor("ANM 1","Case X", "Schedule 1");
-    }
-
     @Test
     public void shouldReturnAlertsBasedOnANMIDAndTimeStamp() throws Exception {
         List<Action> alertActions = Arrays.asList(new Action("Case X", "ANM 1", ActionData.createAlert(mother, "Ante Natal Care - Normal", "ANC 1", normal, DateTime.now(), DateTime.now().plusDays(3))));
@@ -138,20 +158,7 @@ public class ActionServiceTest {
         assertEquals(alertActions, alerts);
     }
 
-    @Test
-    public void shouldReportForIndicator() {
-        ActionData summaryActionData = ActionData.reportForIndicator("ANC", "30", new Gson().toJson(asList(new MonthSummaryDatum("3", "2012", "2", "2", asList("CASE 5", "CASE 6")))));
 
-        service.reportForIndicator("ANM X", summaryActionData);
+    */
 
-        verify(allActions).add(new Action("", "ANM X", summaryActionData));
-    }
-
-    @Test
-    public void shouldDeleteAllActionsWithTargetReport() {
-        service.deleteReportActions();
-
-        verify(allActions).deleteAllByTarget("report");
-    }
 }
-*/
