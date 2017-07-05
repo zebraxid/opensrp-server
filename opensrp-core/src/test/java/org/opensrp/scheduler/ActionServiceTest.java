@@ -3,6 +3,7 @@ package org.opensrp.scheduler;
 import com.google.gson.Gson;
 import org.joda.time.DateTime;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.opensrp.dto.ActionData;
@@ -12,7 +13,11 @@ import org.opensrp.scheduler.repository.AllAlerts;
 import org.opensrp.scheduler.service.ActionService;
 import org.opensrp.service.BaseEntityService;
 
+import java.util.Arrays;
+import java.util.List;
+
 import static java.util.Arrays.asList;
+import static junit.framework.Assert.assertEquals;
 import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static org.opensrp.dto.AlertStatus.normal;
@@ -50,6 +55,20 @@ public class ActionServiceTest {
 
         verify(allActions).addOrUpdateAlert(action);
         verify(allAlerts).addOrUpdateScheduleNotificationAlert("mother", "Case X", "ANM ID M", "Ante Natal Care - Normal", "ANC 1", normal, dueDate, expiryDate);
+    }
+
+    @Test
+    @Ignore//TODO: alertForBeneficiary(action) should also call allAlerts.
+    public void shouldSaveAlertActionForEntityWithActionObject() throws Exception {
+        DateTime dueDate = DateTime.now().minusDays(1);
+        DateTime expiryDate = dueDate.plusWeeks(2);
+
+        Action action = new Action("Case X", "ANM ID M", ActionData.createAlert("mother", "Ante Natal Care - Normal", "ANC 1", normal, dueDate, expiryDate));
+
+        service.alertForBeneficiary(action);
+
+        verify(allActions).addOrUpdateAlert(action);
+       // verify(allAlerts).addOrUpdateScheduleNotificationAlert("mother", "Case X", "ANM ID M", "Ante Natal Care - Normal", "ANC 1", normal, dueDate, expiryDate);
     }
 
 
@@ -102,42 +121,10 @@ public class ActionServiceTest {
     }
 
 
-    /*
-
-    @Test
-    public void shouldDeleteExistingAlertBeforeCreatingNewOne() throws Exception {
-        DateTime dueDate = DateTime.now().minusDays(1);
-        DateTime expiryDate = dueDate.plusWeeks(2);
-        service.alertForBeneficiary(mother, "Case X", "ANM ID M", "Ante Natal Care - Normal", "ANC 1", normal, dueDate, expiryDate);
-
-        verify(allActions).addOrUpdateAlert(new Action("Case X", "ANM ID M", ActionData.createAlert(mother, "Ante Natal Care - Normal", "ANC 1", normal, dueDate, expiryDate)));
-    }
-
-    @Test
-    public void shouldSaveAlertActionForChild() throws Exception {
-        when(allChildren.findByCaseId("Case X")).thenReturn(new Child("Case X", "MOTHER-CASE-1", "bcg", "3", "female").withAnm("ANM ID C"));
-
-        DateTime dueDate = DateTime.now().minusDays(1);
-        DateTime expiryDate = dueDate.plusWeeks(2);
-        service.alertForBeneficiary(child, "Case X", "ANM ID C", "OPV", "OPV", normal, dueDate, expiryDate);
-
-        verify(allActions).addOrUpdateAlert(new Action("Case X", "ANM ID C", ActionData.createAlert(child, "OPV", "OPV", normal, dueDate, expiryDate)));
-    }
-
-    @Test
-    public void shouldSaveAlertActionForEC() throws Exception {
-        when(allEligibleCouples.findByCaseId("Case X")).thenReturn(new EligibleCouple("Case X", "EC-CASE-1").withANMIdentifier("ANM ID C"));
-
-        DateTime dueDate = DateTime.now().minusDays(1);
-        DateTime expiryDate = dueDate.plusWeeks(2);
-        service.alertForBeneficiary(ec, "Case X", "ANM ID C", "OCP Refill", "OCP Refill", urgent, dueDate, expiryDate);
-
-        verify(allActions).addOrUpdateAlert(new Action("Case X", "ANM ID C", ActionData.createAlert(ec, "OCP Refill", "OCP Refill", urgent, dueDate, expiryDate)));
-    }
     @Test
     public void shouldReturnAlertsBasedOnANMIDAndTimeStamp() throws Exception {
-        List<Action> alertActions = Arrays.asList(new Action("Case X", "ANM 1", ActionData.createAlert(mother, "Ante Natal Care - Normal", "ANC 1", normal, DateTime.now(), DateTime.now().plusDays(3))));
-        when(allActions.findByANMIDAndTimeStamp("ANM 1", 1010101)).thenReturn(alertActions);
+        List<Action> alertActions = Arrays.asList(new Action("Case X", "ANM 1", ActionData.createAlert("mother", "Ante Natal Care - Normal", "ANC 1", normal, DateTime.now(), DateTime.now().plusDays(3))));
+        when(allActions.findByProviderIdAndTimeStamp("ANM 1", 1010101)).thenReturn(alertActions);
 
         List<Action> alerts = service.getNewAlertsForANM("ANM 1", 1010101);
 
@@ -145,7 +132,10 @@ public class ActionServiceTest {
         assertEquals(alertActions, alerts);
     }
 
+    @Test
+    public void shouldFindAllByCriteria() {
+        List<Action> alerts = service.findByCriteria("team", "ANM 1", 1010101, "sortBy", "sortOrder", 1);
+        verify(allActions).findByCriteria("team", "ANM 1", 1010101, "sortBy", "sortOrder", 1);
 
-    */
-
+    }
 }

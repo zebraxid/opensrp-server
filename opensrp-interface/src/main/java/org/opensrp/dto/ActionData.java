@@ -96,7 +96,7 @@ public class ActionData {
     }
 
 
-    static class DataKey {
+    public static class DataKey {
         public static final String START_DATE = "startDate";
         public static final String EXPIRY_DATE = "expiryDate";
         public static final String COMPLETION_DATE = "completionDate";
