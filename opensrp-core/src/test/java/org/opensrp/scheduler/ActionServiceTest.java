@@ -16,7 +16,6 @@ import static java.util.Arrays.asList;
 import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static org.opensrp.dto.AlertStatus.normal;
-import static org.opensrp.dto.AlertStatus.urgent;
 
 
 public class ActionServiceTest {
@@ -52,13 +51,6 @@ public class ActionServiceTest {
         verify(allAlerts).addOrUpdateScheduleNotificationAlert("mother", "Case X", "ANM ID M", "Ante Natal Care - Normal", "ANC 1", normal, dueDate, expiryDate);
     }
 
-
-    @Test(expected = IllegalArgumentException.class)
-    public void shouldThrowExceptionIfBeneficiaryTypeIsUnknown() throws Exception {
-        allActions = new StubAllActions().allActions;
-        service = new ActionService(allActions, allAlerts);
-        service.alertForBeneficiary("Case Y", "Case X", "ANM ID C", "Schedule name", "FP Complications", urgent, new DateTime(), new DateTime());
-    }
 
     @Test
     public void shouldCreateACloseActionForAVisitOfAChild() throws Exception {

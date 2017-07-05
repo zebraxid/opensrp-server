@@ -1,5 +1,8 @@
 package org.opensrp.scheduler.service;
 
+import java.util.List;
+
+import com.google.gson.Gson;
 import org.joda.time.DateTime;
 import org.opensrp.dto.ActionData;
 import org.opensrp.dto.AlertStatus;
@@ -12,8 +15,6 @@ import org.opensrp.scheduler.repository.AllActions;
 import org.opensrp.scheduler.repository.AllAlerts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class ActionService {
