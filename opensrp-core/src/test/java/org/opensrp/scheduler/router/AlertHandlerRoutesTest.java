@@ -1,32 +1,29 @@
-/*package org.opensrp.scheduler.router;
+package org.opensrp.scheduler.router;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.motechproject.scheduletracking.api.domain.WindowName.due;
-import static org.motechproject.scheduletracking.api.domain.WindowName.earliest;
-import static org.motechproject.scheduletracking.api.domain.WindowName.late;
-import static org.motechproject.scheduletracking.api.domain.WindowName.max;
+import org.junit.Test;
+import org.motechproject.scheduler.domain.MotechEvent;
+import org.motechproject.scheduletracking.api.domain.MilestoneAlert;
+import org.motechproject.scheduletracking.api.domain.WindowName;
+import org.opensrp.scheduler.*;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.Test;
-import org.motechproject.scheduler.domain.MotechEvent;
-import org.motechproject.scheduletracking.api.domain.WindowName;
-import org.opensrp.scheduler.AlertRouter;
-import org.opensrp.scheduler.TaskSchedulerService;
-import org.opensrp.scheduler.HookedEvent;
-import org.opensrp.scheduler.MilestoneEvent;
+import static org.mockito.Mockito.*;
+import static org.motechproject.scheduletracking.api.domain.WindowName.max;
+import static org.motechproject.scheduletracking.api.events.constants.EventDataKeys.*;
 
 public class AlertHandlerRoutesTest {
+
+    private static final String SCHEDULE_ANC = "Schedule Anc";
+
     @Test
     public void shouldSendMaxEventsOfANCNormalScheduleToForceFulfillAction() {
         Event.of(SCHEDULE_ANC, "ANC 1", max).shouldRouteToForceFulfillAction();
         Event.of(SCHEDULE_ANC, "ANC 3", max).shouldRouteToForceFulfillAction();
     }
 
-    @Test
+  /*  @Test
     public void shouldSendMaxEventsOfLabRemindersScheduleToForceFulfillAction() {
         Event.of(SCHEDULE_LAB, "EDD", max).shouldRouteToForceFulfillAction();
     }
@@ -77,8 +74,8 @@ public class AlertHandlerRoutesTest {
         Event.of(SCHEDULE_DELIVERY_PLAN, "Delivery Plan", due).shouldRouteToAlertCreationActionForMother();
         Event.of(SCHEDULE_DELIVERY_PLAN, "Delivery Plan", late).shouldRouteToAlertCreationActionForMother();
     }
-
-    @Test
+*/
+   /* @Test
     public void shouldSendReminderForAllChildSchedulesToCaptureRemindersAction() throws Exception {
         Event.of(CHILD_SCHEDULE_BCG, "BCG", earliest).shouldRouteToAlertCreationActionForChild();
         Event.of(CHILD_SCHEDULE_BCG, "BCG", due).shouldRouteToAlertCreationActionForChild();
@@ -169,7 +166,7 @@ public class AlertHandlerRoutesTest {
     @Test
     public void shouldSendDueRemindersOfPNCCloseToAutoClosePNCAction() throws Exception {
         Event.of(SCHEDULE_AUTO_CLOSE_PNC, "PNC Close", due).shouldRouteToAutoClosePNCAction();
-    }
+    }*/
 
     private static class Event {
         private final String schedule;
@@ -227,17 +224,27 @@ public class AlertHandlerRoutesTest {
         private MotechEvent routeEvent(HookedEvent ancMissedAction, HookedEvent captureANCReminderAction, HookedEvent autoClosePNCAction) {
             AlertRouter router = new AlertRouter();
             TaskSchedulerService sf = new TaskSchedulerService(null, null, router);
-            new AlertHandler(sf, ancMissedAction, captureANCReminderAction, autoClosePNCAction);
-            MotechEvent event = org.opensrp.register.util.Event
-                    .create()
-                    .withMilestone(milestone)
-                    .withSchedule(schedule)
-                    .withWindow(window)
-                    .build();
+            new AlertHandler(sf, ancMissedAction);
+            MotechEvent event = createMotechEvent();
 
-            router.handle(event);
+            router.handleAlerts(event);
 
             return event;
+        }
+
+        private MotechEvent createMotechEvent() {
+            MilestoneAlert alert = mock(MilestoneAlert.class);
+            when(alert.getMilestoneName()).thenReturn(milestone);
+
+
+            Map<String, Object> parameters = new HashMap<>();
+
+            parameters.put(SCHEDULE_NAME, schedule);
+            parameters.put(MILESTONE_NAME, alert);
+            parameters.put(WINDOW_NAME, window.toString());
+
+
+            return new MotechEvent("Subject", parameters);
         }
 
         private static class Expectation {
@@ -259,4 +266,3 @@ public class AlertHandlerRoutesTest {
         }
     }
 }
-*/
