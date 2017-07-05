@@ -4,19 +4,13 @@ import com.google.gson.Gson;
 import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.BDDMockito;
 import org.mockito.Mock;
-import org.motechproject.util.DateUtil;
 import org.opensrp.dto.ActionData;
 import org.opensrp.dto.MonthSummaryDatum;
 import org.opensrp.scheduler.repository.AllActions;
 import org.opensrp.scheduler.repository.AllAlerts;
 import org.opensrp.scheduler.service.ActionService;
 import org.opensrp.service.BaseEntityService;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
 
 import static java.util.Arrays.asList;
 import static org.mockito.Mockito.verify;
@@ -24,13 +18,12 @@ import static org.mockito.MockitoAnnotations.initMocks;
 import static org.opensrp.dto.AlertStatus.normal;
 import static org.opensrp.dto.AlertStatus.urgent;
 
-@RunWith(PowerMockRunner.class)
-@PrepareForTest({DateUtil.class})
+
 public class ActionServiceTest {
     @Mock
     private AllActions allActions;
     
-    @Mock 
+    @Mock
     private AllAlerts allAlerts;
     
     @Mock
@@ -41,7 +34,6 @@ public class ActionServiceTest {
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        PowerMockito.mockStatic(DateUtil.class);
         allActions.removeAll();
         allAlerts.removeAll();
         service = new ActionService(allActions, allAlerts);
@@ -51,7 +43,6 @@ public class ActionServiceTest {
     public void shouldSaveAlertActionForEntity() throws Exception {
         DateTime dueDate = DateTime.now().minusDays(1);
         DateTime expiryDate = dueDate.plusWeeks(2);
-        BDDMockito.given(DateUtil.now()).willReturn(new DateTime(123l));
 
         service.alertForBeneficiary("mother", "Case X", "ANM ID M", "Ante Natal Care - Normal", "ANC 1", normal, dueDate, expiryDate);
         Action action = new Action("Case X", "ANM ID M", ActionData.createAlert("mother", "Ante Natal Care - Normal", "ANC 1", normal, dueDate, expiryDate));
@@ -64,6 +55,8 @@ public class ActionServiceTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void shouldThrowExceptionIfBeneficiaryTypeIsUnknown() throws Exception {
+        allActions = new StubAllActions().allActions;
+        service = new ActionService(allActions, allAlerts);
         service.alertForBeneficiary("Case Y", "Case X", "ANM ID C", "Schedule name", "FP Complications", urgent, new DateTime(), new DateTime());
     }
 
