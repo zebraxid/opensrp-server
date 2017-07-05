@@ -16,6 +16,7 @@ import static java.util.Arrays.asList;
 import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static org.opensrp.dto.AlertStatus.normal;
+import static org.powermock.api.mockito.PowerMockito.when;
 
 
 public class ActionServiceTest {
@@ -91,16 +92,17 @@ public class ActionServiceTest {
         verify(allActions).deleteAllByTarget("report");
     }
 
-
-    /*
     @Test
     public void shouldCreateACloseActionForAVisitOfAMother() throws Exception {
-        when(allMothers.findByCaseId("Case X")).thenReturn(new Mother("Case X", "EC-CASE-1", "Thayi 1").withAnm("ANM ID 1"));
-
         service.markAlertAsClosed("Case X", "ANM ID 1", "ANC 1", "2012-12-12");
 
-        verify(allActions).add(new Action("Case X", "ANM ID 1", ActionData.markAlertAsClosed("ANC 1", "2012-12-12")));
+        Action action = new Action("Case X", "ANM ID 1", ActionData.markAlertAsClosed("ANC 1", "2012-12-12"));
+        verify(allActions).add(action);
+        verify(allAlerts).markAlertAsCompleteFor("ANM ID 1", "Case X", "ANC 1", "2012-12-12");
     }
+
+
+    /*
 
     @Test
     public void shouldDeleteExistingAlertBeforeCreatingNewOne() throws Exception {
