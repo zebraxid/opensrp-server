@@ -15,19 +15,26 @@ import static org.motechproject.scheduletracking.api.events.constants.EventDataK
 
 public class AlertHandlerRoutesTest {
 
-    private static final String SCHEDULE_ANC = "Schedule Anc";
+    public static final String SCHEDULE_LAB = "EC EVENT";
+
 
     @Test
+    public void shouldRouteToProperEcHandeler() {
+        Event.of(SCHEDULE_LAB, "Milestone", max).shouldRouteToECAlertCreation();
+    }
+
+
+  /*
+      @Test
     public void shouldSendMaxEventsOfANCNormalScheduleToForceFulfillAction() {
         Event.of(SCHEDULE_ANC, "ANC 1", max).shouldRouteToForceFulfillAction();
         Event.of(SCHEDULE_ANC, "ANC 3", max).shouldRouteToForceFulfillAction();
     }
 
-  /*  @Test
+    @Test
     public void shouldSendMaxEventsOfLabRemindersScheduleToForceFulfillAction() {
         Event.of(SCHEDULE_LAB, "EDD", max).shouldRouteToForceFulfillAction();
     }
-
     @Test
     public void shouldSendDueRemindersOfAllMotherSchedulesToCaptureRemindersAction() throws Exception {
         Event.of(SCHEDULE_ANC, "ANC 1", due).shouldRouteToAlertCreationActionForMother();
@@ -183,6 +190,19 @@ public class AlertHandlerRoutesTest {
             return new Event(schedule, milestone, window);
         }
 
+        public void shouldRouteToECAlertCreation() {
+            expectCallsToECAlertCreation(Expectation.of(1));
+        }
+
+        private void expectCallsToECAlertCreation(Expectation fulfillActionCallsExpected) {
+            ECAlertCreationAction ecAlertCreationAction = mock(ECAlertCreationAction.class);
+
+            MotechEvent event = routeEvent(ecAlertCreationAction, null, null);
+
+            verify(ecAlertCreationAction, times(fulfillActionCallsExpected.numberOfCallsExpected)).invoke(new MilestoneEvent(event), fulfillActionCallsExpected.extraDataExpected);
+        }
+
+        /*
         public void shouldRouteToForceFulfillAction() {
             expectCalls(Expectation.of(1), Expectation.of(0), Expectation.of(0));
         }
@@ -210,7 +230,7 @@ public class AlertHandlerRoutesTest {
         }
 
         private void expectCalls(Expectation fulfillActionCallsExpected, Expectation captureReminderActionCallsExpected, Expectation autoClosePNCActionCallsExpected) {
-            HookedEvent forceFulfillAction = mock(HookedEvent.class);
+            HookedEvent forceFulfillAction = mock(ECAlertCreationAction.class);
             HookedEvent captureANCReminderAction = mock(HookedEvent.class);
             HookedEvent autoClosePNCAction = mock(HookedEvent.class);
 
@@ -219,7 +239,7 @@ public class AlertHandlerRoutesTest {
             verify(forceFulfillAction, times(fulfillActionCallsExpected.numberOfCallsExpected)).invoke(new MilestoneEvent(event), fulfillActionCallsExpected.extraDataExpected);
             verify(captureANCReminderAction, times(captureReminderActionCallsExpected.numberOfCallsExpected)).invoke(new MilestoneEvent(event), captureReminderActionCallsExpected.extraDataExpected);
             verify(autoClosePNCAction, times(autoClosePNCActionCallsExpected.numberOfCallsExpected)).invoke(new MilestoneEvent(event), autoClosePNCActionCallsExpected.extraDataExpected);
-        }
+        }*/
 
         private MotechEvent routeEvent(HookedEvent ancMissedAction, HookedEvent captureANCReminderAction, HookedEvent autoClosePNCAction) {
             AlertRouter router = new AlertRouter();
