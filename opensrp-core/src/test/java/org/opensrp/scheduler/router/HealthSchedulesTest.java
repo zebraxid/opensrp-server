@@ -24,6 +24,7 @@ import org.opensrp.util.TestResourceLoader;
 import com.google.gson.JsonIOException;
 
 public class HealthSchedulesTest extends TestResourceLoader{
+
 	public HealthSchedulesTest() throws IOException {
 		super();
 	}
@@ -43,7 +44,7 @@ public class HealthSchedulesTest extends TestResourceLoader{
 	
 	@SuppressWarnings("unchecked")
 	@Test
-	public void test() throws JsonIOException, IOException {
+	public void testFindAutomatedSchedules() throws JsonIOException, IOException {
 		FormSubmission fs = getFormSubmissionFor("child_enrollment", 3);
 		List<Schedule> s = sch.findAutomatedSchedules(fs.formName());
 		assertThat(s, hasItem(Matchers.<Schedule>allOf(
