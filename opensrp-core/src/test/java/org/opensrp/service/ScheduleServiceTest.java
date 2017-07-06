@@ -1,4 +1,4 @@
-package org.opensrp.scheduler.router;
+package org.opensrp.service;
 
 import static org.joda.time.LocalDate.parse;
 import static org.mockito.Mockito.verify;
