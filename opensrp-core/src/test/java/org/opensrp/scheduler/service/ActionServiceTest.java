@@ -15,6 +15,7 @@ import org.opensrp.dto.BeneficiaryType;
 import org.opensrp.dto.MonthSummaryDatum;
 import org.opensrp.scheduler.Action;
 import org.opensrp.scheduler.Alert;
+import org.opensrp.scheduler.Schedule;
 import org.opensrp.scheduler.repository.AllActions;
 import org.opensrp.scheduler.repository.AllAlerts;
 import org.opensrp.scheduler.service.ActionService;
@@ -42,6 +43,8 @@ public class ActionServiceTest {
     public static final String ANM_1 = "ANM 1";
     public static final String CASE_X = "Case X";
     public static final String REASON_FOR_CLOSE = "reason for close";
+    public static final DateTime DATE_TIME = new DateTime(0l);
+    public static final String SCHDEDULE = "schdedule";
     @Mock
     private AllActions allActions;
     
@@ -191,5 +194,32 @@ public class ActionServiceTest {
         verify(allAlerts).findByProviderAndTimestamp(ANM_1, 200l);
     }
 
+    @Test
+    public void shouldGetAlertsActiveForProvider() {
+        service.getAlertsActiveForProvider(ANM_1, DATE_TIME.getMillis());
+
+        verify(allAlerts).findActiveByProviderAndTimestamp(ANM_1, new DateTime(0l).getMillis());
+    }
+
+    @Test
+    public void shouldFindByCaseIdScheduleAndTimeStamp() {
+        service.findByCaseIdScheduleAndTimeStamp(CASE_X, SCHDEDULE, DATE_TIME, DATE_TIME);
+
+        verify(allActions).findByCaseIdScheduleAndTimeStamp(CASE_X, SCHDEDULE, DATE_TIME, DATE_TIME);
+    }
+
+    @Test
+    public void shouldFindByCaseIdAndTimeStamp() {
+        service.findByCaseIdAndTimeStamp(CASE_X, DATE_TIME.getMillis());
+
+        verify(allActions).findByCaseIdAndTimeStamp(CASE_X, DATE_TIME.getMillis());
+    }
+
+    @Test
+    public void shouldFindAlertByEntityIdScheduleAndTimeStamp() {
+        service.findAlertByEntityIdScheduleAndTimeStamp(CASE_X, SCHDEDULE, DATE_TIME, DATE_TIME);
+
+        verify(allAlerts).findByEntityIdTriggerAndTimeStamp(CASE_X, SCHDEDULE, DATE_TIME, DATE_TIME);
+    }
 
 }
