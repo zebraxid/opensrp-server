@@ -17,6 +17,7 @@ import java.util.List;
 
 @Service
 public class ActionService {
+    public static final String ALL_PROVIDERS = "all_providers";
     private AllActions allActions;
     private AllAlerts allAlerts;
 
@@ -74,7 +75,7 @@ public class ActionService {
     }
 
     public void markAlertAsClosed(String caseId, String visitCode, String completionDate) {
-    	allActions.add(new Action(caseId, "all_providers", ActionData.markAlertAsClosed(visitCode, completionDate)));
+    	allActions.add(new Action(caseId, ALL_PROVIDERS, ActionData.markAlertAsClosed(visitCode, completionDate)));
         allAlerts.markAlertAsCompleteFor(caseId, visitCode, completionDate);
     }
     

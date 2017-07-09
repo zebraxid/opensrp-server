@@ -1,4 +1,4 @@
-package org.opensrp.scheduler;
+package org.opensrp.scheduler.service;
 
 import com.google.gson.Gson;
 import org.joda.time.DateTime;
@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.opensrp.dto.ActionData;
 import org.opensrp.dto.MonthSummaryDatum;
+import org.opensrp.scheduler.Action;
 import org.opensrp.scheduler.repository.AllActions;
 import org.opensrp.scheduler.repository.AllAlerts;
 import org.opensrp.scheduler.service.ActionService;
@@ -21,10 +22,13 @@ import static junit.framework.Assert.assertEquals;
 import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static org.opensrp.dto.AlertStatus.normal;
+import static org.opensrp.scheduler.service.ActionService.ALL_PROVIDERS;
 import static org.powermock.api.mockito.PowerMockito.when;
 
 
 public class ActionServiceTest {
+    public static final String ANM_1 = "ANM 1";
+    public static final String CASE_X = "Case X";
     @Mock
     private AllActions allActions;
     
@@ -120,6 +124,15 @@ public class ActionServiceTest {
         verify(allAlerts).markAlertAsCompleteFor("ANM ID 1", "Case X", "ANC 1", "2012-12-12");
     }
 
+    @Test
+    public void shouldCloseAlertBasedOnCaseId() throws Exception {
+        service.markAlertAsClosed(CASE_X, "ANC 1", "2012-12-12");
+
+        Action action = new Action(CASE_X, ALL_PROVIDERS, ActionData.markAlertAsClosed("ANC 1", "2012-12-12"));
+        verify(allActions).add(action);
+        verify(allAlerts).markAlertAsCompleteFor( CASE_X, "ANC 1", "2012-12-12");
+    }
+
 
     @Test
     public void shouldReturnAlertsBasedOnANMIDAndTimeStamp() throws Exception {
@@ -136,6 +149,17 @@ public class ActionServiceTest {
     public void shouldFindAllByCriteria() {
         List<Action> alerts = service.findByCriteria("team", "ANM 1", 1010101, "sortBy", "sortOrder", 1);
         verify(allActions).findByCriteria("team", "ANM 1", 1010101, "sortBy", "sortOrder", 1);
+
+    }
+
+    @Test
+    public void shouldGetAlertsForProvider() {
+        service.getAlertsForProvider(ANM_1, 200l);
+        verify(allAlerts).findByProviderAndTimestamp(ANM_1, 200l);
+    }
+
+    @Test
+    public void shouldMarkAlertForClose() {
 
     }
 }
