@@ -59,6 +59,16 @@ public class ScheduleServiceTest {
         verify(scheduleTrackingService).enroll(ScheduleBuilder.enrollmentFor("entity_1", "my_schedule", secondMilestone.getName(), "2012-01-01"));
     }
 
+    @Test(expected = NullPointerException.class)
+    public void shouldThrowNullPointerExceptionIfSchduleIsNotFound() {
+        scheduleService.enroll("entity_1", "my_schedule", "2012-01-01", "formsubmission2");
+    }
+
+    @Test
+    public void test() {
+
+    }
+
     private Period weeks(int numberOfWeeks) {
         return new Period(0, 0, numberOfWeeks, 0, 0, 0, 0, 0);
     }

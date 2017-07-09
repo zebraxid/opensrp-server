@@ -44,9 +44,7 @@ public class ScheduleService {
 
     public void enroll(String entityId, String scheduleName, String referenceDate, String formSubmissionId) {
         String startingMilestoneName = getStartingMilestoneName(scheduleName, parse(referenceDate));
-		EnrollmentRequest request = new EnrollmentRequest(entityId, scheduleName, null,
-                parse(referenceDate), null, null, null, startingMilestoneName, addOrUpdateEventTrackMetadata(null, formSubmissionId, ActionType.enroll));
-        scheduleTrackingService.enroll(request);
+        enroll(entityId, scheduleName, startingMilestoneName,referenceDate, formSubmissionId);
     }
 
     private String getStartingMilestoneName(String name, LocalDate referenceDate) {
@@ -65,8 +63,10 @@ public class ScheduleService {
     }
     
     public void fulfillMilestone(String entityId, String scheduleName, LocalDate completionDate, String formSubmissionId) {
-    	if(updateExistingEnrollmentWithEventTrackMetadata(entityId, scheduleName, formSubmissionId, ActionType.fulfill))
-    	scheduleTrackingService.fulfillCurrentMilestone(entityId, scheduleName, completionDate, new Time(now()));
+        boolean successFullyUpdates = updateExistingEnrollmentWithEventTrackMetadata(entityId, scheduleName, formSubmissionId, ActionType.fulfill);
+    	if(successFullyUpdates) {
+            scheduleTrackingService.fulfillCurrentMilestone(entityId, scheduleName, completionDate, new Time(now()));
+        }
     }
     
     public void unenroll(String entityId, String scheduleName, String formSubmissionId) {
@@ -123,7 +123,8 @@ public class ScheduleService {
     	return allEnrollments.get(enrollmentId);
     }
     
-    private Map<String, String> addOrUpdateEventTrackMetadata(Map<String, String> map, String formSubmissionId, ActionType actionType) {
+    private Map<String, String> addOrUpdateEventTrackMetadata(
+            Map<String, String> map, String formSubmissionId, ActionType actionType) {
 		if(map == null){
 			map = new HashMap<>();
 		}
