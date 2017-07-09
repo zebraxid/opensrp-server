@@ -98,6 +98,7 @@ public class ScheduleService {
     	e.getMetadata().put(key, value);
     	allEnrollments.update(e);
 	}
+
     public List<String> findOpenEnrollmentNames(String entityId) {
     	List<EnrollmentRecord> openEnrollments = findOpenEnrollments(entityId);
     	List<String> openSchedules = new ArrayList<>();

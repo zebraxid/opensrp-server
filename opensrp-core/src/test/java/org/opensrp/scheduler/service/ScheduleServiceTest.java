@@ -15,6 +15,7 @@ import org.motechproject.scheduletracking.api.domain.EnrollmentStatus;
 import org.motechproject.scheduletracking.api.domain.Milestone;
 import org.motechproject.scheduletracking.api.domain.Schedule;
 import org.motechproject.scheduletracking.api.repository.AllSchedules;
+import org.motechproject.scheduletracking.api.service.EnrollmentsQuery;
 import org.motechproject.scheduletracking.api.service.ScheduleTrackingService;
 import org.opensrp.common.util.DateUtil;
 import org.opensrp.scheduler.HealthSchedulerService;
@@ -25,6 +26,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.util.Map;
 
+import static java.util.Arrays.asList;
 import static org.joda.time.LocalDate.parse;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
@@ -107,6 +109,65 @@ public class ScheduleServiceTest {
         verify(allEnrollments, never()).update(any(Enrollment.class));
         verifyNoMoreInteractions(scheduleTrackingService);
     }
+
+    @Test
+    public void shouldUnEnroll() {
+        Enrollment enrollment = ScheduleBuilder.enrollment("entity_1", "my_schedule", "milestone", new DateTime(0l), new DateTime(1l), EnrollmentStatus.ACTIVE, "formSubmission3");
+        when(allEnrollments.getActiveEnrollment("entity_1", "my_schedule")).thenReturn(enrollment);
+
+
+        scheduleService.unenroll("entity_1", "my_schedule", "formSubmission3");
+
+        Map<String, String> metaData = enrollment.getMetadata();
+        metaData.put(HealthSchedulerService.MetadataField.unenrollmentEvent.name(), "formSubmission3");
+        enrollment.setMetadata(metaData);
+        InOrder inOrder = Mockito.inOrder(allEnrollments, scheduleTrackingService);
+        inOrder.verify(allEnrollments).update(enrollment);
+        inOrder.verify(scheduleTrackingService).unenroll(
+                "entity_1", asList("my_schedule"));
+    }
+
+    @Test
+    public void shouldNotTryToUnEnrollIfNoEnrollmentFound() {
+        scheduleService.fulfillMilestone("entity_1", "my_schedule", new DateTime(0l).toLocalDate(), "formSubmission3");
+        verify(allEnrollments, never()).update(any(Enrollment.class));
+        verifyNoMoreInteractions(scheduleTrackingService);
+    }
+
+    @Test
+    public void shouldUnEnrollGivenScheduleList() {
+        Enrollment enrollment_1 = ScheduleBuilder.enrollment("entity_1", "my_schedule",
+                "milestone", new DateTime(0l), new DateTime(1l),
+                EnrollmentStatus.ACTIVE, "formSubmission3");
+        Enrollment enrollment_2 = ScheduleBuilder.enrollment("entity_1", "my_schedule",
+                "milestone", new DateTime(0l), new DateTime(1l),
+                EnrollmentStatus.ACTIVE, "formSubmission3");
+        when(allEnrollments.getActiveEnrollment("entity_1", "schedule_1")).thenReturn(enrollment_1);
+        when(allEnrollments.getActiveEnrollment("entity_1", "schedule_2")).thenReturn(enrollment_2);
+
+
+        scheduleService.unenroll("entity_1", asList("schedule_1", "schedule_2"), "formSubmission3");
+
+        Map<String, String> metaData = enrollment_1.getMetadata();
+        metaData.put(HealthSchedulerService.MetadataField.unenrollmentEvent.name(), "formSubmission3");
+        enrollment_1.setMetadata(metaData);
+        enrollment_2.setMetadata(metaData);
+
+        InOrder inOrder = Mockito.inOrder(allEnrollments, scheduleTrackingService);
+        inOrder.verify(allEnrollments).update(enrollment_1);
+        inOrder.verify(allEnrollments).update(enrollment_2);
+        inOrder.verify(scheduleTrackingService).unenroll(
+                "entity_1", asList("schedule_1", "schedule_2"));
+    }
+
+    @Test
+    public void findOpenEnrollments() {
+        scheduleService.findOpenEnrollmentNames("entity_id");
+        verify(scheduleTrackingService).search(new EnrollmentsQuery().havingExternalId("entity_id").havingState(EnrollmentStatus.ACTIVE));
+    }
+
+   /* @Test
+    public void*/
 
     private Period weeks(int numberOfWeeks) {
         return new Period(0, 0, numberOfWeeks, 0, 0, 0, 0, 0);
