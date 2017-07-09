@@ -2,17 +2,26 @@ package org.opensrp.scheduler.service;
 
 import com.google.gson.Gson;
 import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.opensrp.common.util.DateUtil;
 import org.opensrp.dto.ActionData;
+import org.opensrp.dto.AlertStatus;
+import org.opensrp.dto.BeneficiaryType;
 import org.opensrp.dto.MonthSummaryDatum;
 import org.opensrp.scheduler.Action;
+import org.opensrp.scheduler.Alert;
 import org.opensrp.scheduler.repository.AllActions;
 import org.opensrp.scheduler.repository.AllAlerts;
 import org.opensrp.scheduler.service.ActionService;
 import org.opensrp.service.BaseEntityService;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.util.Arrays;
 import java.util.List;
@@ -23,12 +32,16 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static org.opensrp.dto.AlertStatus.normal;
 import static org.opensrp.scheduler.service.ActionService.ALL_PROVIDERS;
+import static org.powermock.api.mockito.PowerMockito.mock;
 import static org.powermock.api.mockito.PowerMockito.when;
 
 
+@RunWith(PowerMockRunner.class)
+@PrepareForTest({DateTime.class, ActionService.class, org.motechproject.util.DateUtil.class})
 public class ActionServiceTest {
     public static final String ANM_1 = "ANM 1";
     public static final String CASE_X = "Case X";
+    public static final String REASON_FOR_CLOSE = "reason for close";
     @Mock
     private AllActions allActions;
     
@@ -133,6 +146,26 @@ public class ActionServiceTest {
         verify(allAlerts).markAlertAsCompleteFor( CASE_X, "ANC 1", "2012-12-12");
     }
 
+    @Test
+    public void shouldCloseBeneficiary() throws Exception {
+        PowerMockito.mockStatic(org.motechproject.util.DateUtil.class);
+        DateTime dateTime = mock(DateTime.class);
+
+        when(org.motechproject.util.DateUtil.now()).thenReturn(new DateTime(0l));
+        PowerMockito.whenNew(DateTime.class).withNoArguments().thenReturn(dateTime);
+        when(dateTime.toLocalDate()).thenReturn(new LocalDate(0l));
+
+        service.closeBeneficiary(BeneficiaryType.mother, CASE_X, ANM_1, REASON_FOR_CLOSE);
+
+        Action action = new Action(CASE_X, ANM_1, ActionData.closeBeneficiary(BeneficiaryType.mother.name(), REASON_FOR_CLOSE));
+        Alert alert = new Alert(ANM_1, CASE_X, BeneficiaryType.mother.value(), Alert.AlertType.notification,
+                Alert.TriggerType.caseClosed, null, null,
+                new DateTime(), new DateTime(), AlertStatus.urgent, null);
+
+        verify(allActions).add(action);
+        verify(allAlerts).add(alert);
+    }
+
 
     @Test
     public void shouldReturnAlertsBasedOnANMIDAndTimeStamp() throws Exception {
@@ -158,8 +191,5 @@ public class ActionServiceTest {
         verify(allAlerts).findByProviderAndTimestamp(ANM_1, 200l);
     }
 
-    @Test
-    public void shouldMarkAlertForClose() {
 
-    }
 }
