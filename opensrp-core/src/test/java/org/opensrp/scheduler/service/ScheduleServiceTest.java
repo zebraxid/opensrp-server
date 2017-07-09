@@ -1,28 +1,46 @@
-package org.opensrp.service;
+package org.opensrp.scheduler.service;
 
-import static org.joda.time.LocalDate.parse;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.initMocks;
-
+import org.joda.time.DateTime;
+import org.joda.time.LocalTime;
 import org.joda.time.Period;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InOrder;
 import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.motechproject.model.Time;
+import org.motechproject.scheduletracking.api.domain.Enrollment;
+import org.motechproject.scheduletracking.api.domain.EnrollmentStatus;
 import org.motechproject.scheduletracking.api.domain.Milestone;
 import org.motechproject.scheduletracking.api.domain.Schedule;
 import org.motechproject.scheduletracking.api.repository.AllSchedules;
 import org.motechproject.scheduletracking.api.service.ScheduleTrackingService;
 import org.opensrp.common.util.DateUtil;
-import org.opensrp.scheduler.service.ScheduleService;
+import org.opensrp.scheduler.HealthSchedulerService;
 import org.opensrp.util.ScheduleBuilder;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
+import java.util.Map;
+
+import static org.joda.time.LocalDate.parse;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.*;
+import static org.mockito.MockitoAnnotations.initMocks;
+
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(LocalTime.class)
 public class ScheduleServiceTest {
 
     @Mock
     private ScheduleTrackingService scheduleTrackingService;
     @Mock
     private AllSchedules allSchedules;
+    @Mock
+    private AllEnrollmentWrapper allEnrollments;
+
     private ScheduleService scheduleService;
     private Milestone firstMilestone;
     private Milestone secondMilestone;
@@ -31,12 +49,13 @@ public class ScheduleServiceTest {
     @Before
     public void setUp() throws Exception {
         initMocks(this);
+        PowerMockito.mockStatic(LocalTime.class);
         firstMilestone = new Milestone("firstMilestone", weeks(1), weeks(1), weeks(1), weeks(1));
         secondMilestone = new Milestone("secondMilestone", weeks(5), weeks(1), weeks(1), weeks(1));
         schedule = new Schedule("my_schedule");
         schedule.addMilestones(firstMilestone);
         schedule.addMilestones(secondMilestone);
-        scheduleService = new ScheduleService(scheduleTrackingService, allSchedules, 14, null);
+        scheduleService = new ScheduleService(scheduleTrackingService, allSchedules, 14, allEnrollments);
     }
 
     @Test
@@ -65,8 +84,28 @@ public class ScheduleServiceTest {
     }
 
     @Test
-    public void test() {
+    public void shouldSuccessfullyFulfilMilestone() {
+        Enrollment enrollment = ScheduleBuilder.enrollment("entity_1", "my_schedule", "milestone", new DateTime(0l), new DateTime(1l), EnrollmentStatus.ACTIVE, "formSubmission3");
+        when(allEnrollments.getActiveEnrollment("entity_1", "my_schedule")).thenReturn(enrollment);
+        when(LocalTime.now()).thenReturn(new DateTime(3l).toLocalTime());
 
+        scheduleService.fulfillMilestone("entity_1", "my_schedule", new DateTime(0l).toLocalDate(), "formSubmission3");
+
+        Map<String, String> metaData = enrollment.getMetadata();
+        metaData.put(HealthSchedulerService.MetadataField.fulfillmentEvent.name(), "formSubmission3");
+        enrollment.setMetadata(metaData);
+        InOrder inOrder = Mockito.inOrder(allEnrollments, scheduleTrackingService);
+        inOrder.verify(allEnrollments).update(enrollment);
+        inOrder.verify(scheduleTrackingService).fulfillCurrentMilestone(
+                "entity_1", "my_schedule", new DateTime(1l).toLocalDate(),
+                new Time(LocalTime.now()));
+    }
+
+    @Test
+    public void shouldNotTryToFulfilMilestoneIfNoEnrollmentFound() {
+        scheduleService.fulfillMilestone("entity_1", "my_schedule", new DateTime(0l).toLocalDate(), "formSubmission3");
+        verify(allEnrollments, never()).update(any(Enrollment.class));
+        verifyNoMoreInteractions(scheduleTrackingService);
     }
 
     private Period weeks(int numberOfWeeks) {
