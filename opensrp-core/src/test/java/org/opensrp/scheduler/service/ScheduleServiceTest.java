@@ -15,6 +15,7 @@ import org.motechproject.scheduletracking.api.domain.EnrollmentStatus;
 import org.motechproject.scheduletracking.api.domain.Milestone;
 import org.motechproject.scheduletracking.api.domain.Schedule;
 import org.motechproject.scheduletracking.api.repository.AllSchedules;
+import org.motechproject.scheduletracking.api.service.EnrollmentRecord;
 import org.motechproject.scheduletracking.api.service.EnrollmentsQuery;
 import org.motechproject.scheduletracking.api.service.ScheduleTrackingService;
 import org.opensrp.common.util.DateUtil;
@@ -24,18 +25,24 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import static java.util.Arrays.asList;
+import static junit.framework.Assert.assertEquals;
 import static org.joda.time.LocalDate.parse;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest(LocalTime.class)
+@PrepareForTest({LocalTime.class, EnrollmentsQuery.class, ScheduleService.class})
 public class ScheduleServiceTest {
 
+    public static final String ENTITY_ID = "entity_id";
+    public static final String MY_SCHEDULE = "my_schedule";
+    public static final String ENROLLMENT_ID = "enrollment_di";
     @Mock
     private ScheduleTrackingService scheduleTrackingService;
     @Mock
@@ -121,6 +128,7 @@ public class ScheduleServiceTest {
         Map<String, String> metaData = enrollment.getMetadata();
         metaData.put(HealthSchedulerService.MetadataField.unenrollmentEvent.name(), "formSubmission3");
         enrollment.setMetadata(metaData);
+
         InOrder inOrder = Mockito.inOrder(allEnrollments, scheduleTrackingService);
         inOrder.verify(allEnrollments).update(enrollment);
         inOrder.verify(scheduleTrackingService).unenroll(
@@ -161,13 +169,88 @@ public class ScheduleServiceTest {
     }
 
     @Test
-    public void findOpenEnrollments() {
-        scheduleService.findOpenEnrollmentNames("entity_id");
-        verify(scheduleTrackingService).search(new EnrollmentsQuery().havingExternalId("entity_id").havingState(EnrollmentStatus.ACTIVE));
+    public void findOpenEnrollments() throws Exception {
+        EnrollmentsQuery enrollmentsQuery = PowerMockito.mock(EnrollmentsQuery.class);
+        when(enrollmentsQuery.havingExternalId(ENTITY_ID)).thenReturn(enrollmentsQuery);
+        when(enrollmentsQuery.havingState(EnrollmentStatus.ACTIVE)).thenReturn(enrollmentsQuery);
+        PowerMockito.whenNew(EnrollmentsQuery.class).withNoArguments().thenReturn(enrollmentsQuery);
+
+        scheduleService.findOpenEnrollments(ENTITY_ID);
+
+        verify(scheduleTrackingService).search(enrollmentsQuery);
     }
 
-   /* @Test
-    public void*/
+    @Test
+    public void shouldFindAllEnrollmentByStatusAndEnrollmentDate() {
+        scheduleService.findEnrollmentByStatusAndEnrollmentDate("active", new DateTime(0l), new DateTime(1l));
+        verify(allEnrollments).findByEnrollmentDate("active", new DateTime(0l), new DateTime(1l));
+    }
+
+    @Test
+    public void shouldFindEnrollmentByLastUpDate() {
+        scheduleService.findEnrollmentByLastUpDate(new DateTime(0l), new DateTime(1l));
+        verify(allEnrollments).findByLastUpDate(new DateTime(0l), new DateTime(1l));
+    }
+
+
+    @Test
+    public void shouldUpdateEnrollmentWithMetadata() {
+        Enrollment enrollment = ScheduleBuilder.enrollment("entity_1", "my_schedule", "milestone", new DateTime(0l), new DateTime(1l), EnrollmentStatus.ACTIVE, "formSubmission3");
+        when(allEnrollments.get("enrollment_id")).thenReturn(enrollment);
+
+        scheduleService.updateEnrollmentWithMetadata("enrollment_id", "key", "value");
+
+        Map<String, String> metaData = enrollment.getMetadata();
+        metaData.put("key", "value");
+        enrollment.setMetadata(metaData);
+
+        verify(allEnrollments).update(enrollment);
+
+    }
+
+    @Test
+    public void shouldFindOpenEnrollmentNames() throws Exception {
+        EnrollmentsQuery enrollmentsQuery = PowerMockito.mock(EnrollmentsQuery.class);
+        when(enrollmentsQuery.havingExternalId(ENTITY_ID)).thenReturn(enrollmentsQuery);
+        when(enrollmentsQuery.havingState(EnrollmentStatus.ACTIVE)).thenReturn(enrollmentsQuery);
+        PowerMockito.whenNew(EnrollmentsQuery.class).withNoArguments().thenReturn(enrollmentsQuery);
+
+        List<EnrollmentRecord> enrollmentRecords = new ArrayList<>();
+        List<String> expected = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            enrollmentRecords.add(ScheduleBuilder.enrollmentRecord("entity_id", "schedule" + i, "milestone"));
+            expected.add("schedule" + i);
+        }
+
+        when(scheduleTrackingService.search(enrollmentsQuery)).thenReturn(enrollmentRecords);
+        List<String> actual = scheduleService.findOpenEnrollmentNames("entity_id");
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void shouldGetActiveEnrollment() {
+        scheduleService.getActiveEnrollment(ENTITY_ID, MY_SCHEDULE);
+        verify(allEnrollments).getActiveEnrollment(ENTITY_ID, MY_SCHEDULE);
+    }
+
+    @Test
+    public void shouldGetEnrollment() {
+        scheduleService.getEnrollment(ENTITY_ID, MY_SCHEDULE);
+        verify(allEnrollments).getEnrollment(ENTITY_ID, MY_SCHEDULE);
+    }
+
+    @Test
+    public void shouldGetEnrollmentRecord() {
+        scheduleService.getEnrollmentRecord(ENTITY_ID, MY_SCHEDULE);
+        verify(scheduleTrackingService).getEnrollment(ENTITY_ID, MY_SCHEDULE);
+    }
+
+    @Test
+    public void shouldGetEnrollmentById() {
+        scheduleService.getEnrollment(ENROLLMENT_ID);
+        verify(allEnrollments).get(ENROLLMENT_ID);
+    }
 
     private Period weeks(int numberOfWeeks) {
         return new Period(0, 0, numberOfWeeks, 0, 0, 0, 0, 0);
