@@ -19,18 +19,19 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class VaccinesScheduleHandler extends BaseScheduleHandler {
-	
-	@Autowired
-	private HealthSchedulerService scheduler;
-	
-	@Autowired
-	AllEvents allEvents;
-	
+    private HealthSchedulerService scheduler;	
+    private AllEvents allEvents;
+    @Autowired
+    public VaccinesScheduleHandler(HealthSchedulerService scheduler,AllEvents allEvents){
+    	this.scheduler = scheduler;
+    	this.allEvents = allEvents;		
+    }
 	@Override
 	public void handle(Event event, JSONObject scheduleConfigEvent, String scheduleName) {
 		try {
 			String action = getAction(scheduleConfigEvent);
 			if (evaluateEvent(event, scheduleConfigEvent)) {
+				System.err.println("evaluateOpv4(event.getBaseEntityId():::"+evaluateOpv4(event.getBaseEntityId()));
 				if (scheduleName.equalsIgnoreCase("OPV 4") && !evaluateOpv4(event.getBaseEntityId())) {
 					return;
 				} 

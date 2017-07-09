@@ -42,8 +42,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @PowerMockIgnore({ "org.apache.log4j.*", "org.apache.commons.logging.*" })*/
 public class ANCScheduleHandlerTest extends TestResourceLoader {	
     @Mock
-    private AnteNatalCareSchedulesService anteNatalCareSchedulesService;
-    @Autowired
+    private AnteNatalCareSchedulesService anteNatalCareSchedulesService;    
     private ANCScheduleHandler aNCScheduleHandler;
     @Autowired
     private AllClients allClients;
@@ -56,7 +55,8 @@ public class ANCScheduleHandlerTest extends TestResourceLoader {
 	
     @Before
     public void setUp() throws Exception {
-        initMocks(this);		
+        initMocks(this);
+        aNCScheduleHandler = new ANCScheduleHandler(anteNatalCareSchedulesService);
     }
 
     @Test
@@ -86,7 +86,6 @@ public class ANCScheduleHandlerTest extends TestResourceLoader {
         event.addObs(observation2);
         JSONArray schedulesJsonObject = new JSONArray("[" + schedulesStr + "]");
         //iterate through concatenated schedule-configs files to retrieve the events and compare with the current event from the db
-        System.out.println("aNCScheduleHandler:"+aNCScheduleHandler);		
         allClients.add(client);
         for (int i = 0; i < schedulesJsonObject.length(); i++) {
             JSONObject scheduleJsonObject = schedulesJsonObject.getJSONObject(i);
@@ -97,10 +96,9 @@ public class ANCScheduleHandlerTest extends TestResourceLoader {
             for (int j = 0; j < eventsJsonArray.length(); j++) {
                 JSONObject scheduleConfigEvent = eventsJsonArray.getJSONObject(j);
                 JSONArray eventTypesJsonArray = scheduleConfigEvent.getJSONArray(JSON_KEY_TYPES);
-                List<String> eventsList = jsonArrayToList(eventTypesJsonArray);
-                System.err.println("eventsList:"+eventsList);
+                List<String> eventsList = jsonArrayToList(eventTypesJsonArray);                
                 if (eventsList.contains(event.getEventType())) {					
-                    aNCScheduleHandler.handle(event,scheduleConfigEvent, scheduleName);
+                    aNCScheduleHandler.handle(event,scheduleConfigEvent, null);
                     // InOrder inOrder = inOrder(anteNatalCareSchedulesService);
                     /*inOrder.verify(anteNatalCareSchedulesService).enrollMother(event.getBaseEntityId(),scheduleName, LocalDate.parse(refDate),
 					   event.getId());*/					
