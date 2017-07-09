@@ -53,6 +53,7 @@ public class ScheduleServiceTest {
     private ScheduleService scheduleService;
     private Milestone firstMilestone;
     private Milestone secondMilestone;
+    private Milestone thirdMilestone;
     private Schedule schedule;
 
     @Before
@@ -61,9 +62,11 @@ public class ScheduleServiceTest {
         PowerMockito.mockStatic(LocalTime.class);
         firstMilestone = new Milestone("firstMilestone", weeks(1), weeks(1), weeks(1), weeks(1));
         secondMilestone = new Milestone("secondMilestone", weeks(5), weeks(1), weeks(1), weeks(1));
+        thirdMilestone = new Milestone("thirdMilestone", weeks(8), weeks(1), weeks(1), weeks(1));
         schedule = new Schedule("my_schedule");
         schedule.addMilestones(firstMilestone);
         schedule.addMilestones(secondMilestone);
+        schedule.addMilestones(thirdMilestone);
         scheduleService = new ScheduleService(scheduleTrackingService, allSchedules, 14, allEnrollments);
     }
 
@@ -85,6 +88,16 @@ public class ScheduleServiceTest {
         scheduleService.enroll("entity_1", "my_schedule", "2012-01-01", "formsubmission2");
 
         verify(scheduleTrackingService).enroll(ScheduleBuilder.enrollmentFor("entity_1", "my_schedule", secondMilestone.getName(), "2012-01-01"));
+    }
+
+    @Test
+    public void shouldEnrollToThirdMilestoneBasedOnScheduleDatesAndReferenceDate() {
+        DateUtil.fakeIt(parse("2012-03-01"));
+        when(allSchedules.getByName("my_schedule")).thenReturn(schedule);
+
+        scheduleService.enroll("entity_1", "my_schedule", "2012-01-01", "formsubmission3");
+
+        verify(scheduleTrackingService).enroll(ScheduleBuilder.enrollmentFor("entity_1", "my_schedule", thirdMilestone.getName(), "2012-01-01"));
     }
 
     @Test(expected = NullPointerException.class)
