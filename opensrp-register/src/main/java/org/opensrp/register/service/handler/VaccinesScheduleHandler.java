@@ -120,7 +120,7 @@ public class VaccinesScheduleHandler extends BaseScheduleHandler {
 						}
 					}
 					catch (ParseException e) {
-						logger.error("", e.getMessage());
+						logger.error(e.getMessage());
 					}
 					
 				}
