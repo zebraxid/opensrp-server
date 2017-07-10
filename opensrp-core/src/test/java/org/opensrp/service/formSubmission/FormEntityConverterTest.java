@@ -2,21 +2,33 @@ package org.opensrp.service.formSubmission;
 
 
 import com.google.gson.Gson;
+import nl.jqno.equalsverifier.EqualsVerifier;
 import org.joda.time.DateTime;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.mockito.BDDMockito;
 import org.opensrp.BaseIntegrationTest;
-import org.opensrp.domain.Address;
-import org.opensrp.domain.Client;
+import org.opensrp.domain.*;
+import org.opensrp.common.FormEntityConstants;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.form.service.FormAttributeParser;
 import org.opensrp.form.service.FormSubmissionMap;
+import org.powermock.api.mockito.PowerMockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.xml.sax.SAXException;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNull;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPathExpressionException;
+import java.io.IOException;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
 
-public class FormEntityConverterTest extends BaseIntegrationTest{
+import static junit.framework.Assert.*;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+
+public class FormEntityConverterTest extends BaseIntegrationTest {
 
     @Autowired
     FormAttributeParser formAttributeParser;
@@ -54,7 +66,7 @@ public class FormEntityConverterTest extends BaseIntegrationTest{
         expectedClient.withFirstName("test")
                 .withLastName(".")
                 .withGender("male")
-                .withBirthdate(new DateTime("1900-01-01").withTimeAtStartOfDay(),false)
+                .withBirthdate(new DateTime("1900-01-01").withTimeAtStartOfDay(), false)
                 .withAddress(new Gson().fromJson(addressString, Address.class))
                 .withIdentifier("JiVita HHID", "1234")
                 .withIdentifier("GOB HHID", "1234");
@@ -72,6 +84,74 @@ public class FormEntityConverterTest extends BaseIntegrationTest{
         assertEquals(expectedClient.getIdentifier("JiVita HHID"), client.getIdentifier("JiVita HHID"));
         assertEquals(expectedClient.getIdentifier("GOB HHID"), client.getIdentifier("GOB HHID"));
 
+    }
+
+    @Test
+    public void testValidOpenmrsForm() throws IOException, XPathExpressionException, SAXException, ParserConfigurationException {
+        FormSubmission fsubmission = getFormSubmissionFor("new_household_registration", 1);
+        FormSubmissionMap formSubmissionMap = formAttributeParser.createFormSubmissionMap(fsubmission);
+
+        boolean expectedValue = formEntityConverter.isOpenmrsForm(formSubmissionMap);
+
+        assertTrue(expectedValue);
+    }
+
+    @Test
+    public void testInvalidOpenmrsForm() throws IOException, XPathExpressionException, SAXException, ParserConfigurationException {
+        FormSubmission fsubmission = getFormSubmissionFor("new_household_registration", 1);
+        FormSubmissionMap formSubmissionMap = formAttributeParser.createFormSubmissionMap(fsubmission);
+        formSubmissionMap.formAttributes().remove("encounter_type");
+
+        boolean expectedValue = formEntityConverter.isOpenmrsForm(formSubmissionMap);
+
+        assertFalse(expectedValue);
+    }
+
+    @Test
+    public void testCreateEvent() throws ParserConfigurationException, SAXException, XPathExpressionException, IOException, ParseException {
+        FormSubmission fsubmission = getFormSubmissionFor("new_household_registration", 1);
+        FormSubmissionMap formSubmissionMap = formAttributeParser.createFormSubmissionMap(fsubmission);
+        Event expectedEvent = new Event()
+                .withBaseEntityId(fsubmission.entityId())
+                .withEventDate(new DateTime(FormEntityConstants.FORM_DATE.parse("2015-05-07")))
+                .withEventType(formSubmissionMap.formAttributes().get("encounter_type"))
+                .withLocationId("KUPTALA")
+                .withProviderId(formSubmissionMap.providerId())
+                .withEntityType(formSubmissionMap.bindType())
+                .withFormSubmissionId(formSubmissionMap.instanceId());
+
+        List<Object> values = new ArrayList<>();
+        values.add("2015-05-07");
+
+        Obs obs1 = new Obs("concept", "DateTime",
+                "160753AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",null ,values ,
+                null,  "FWNHREGDATE");
+        values.clear();
+        values.add(2);
+        Obs obs2 = new Obs("concept", "Integer",
+                "5611AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", null, values,
+                null,"FWNHHMBRNUM");
+        expectedEvent.addObs(obs1);
+        expectedEvent.addObs(obs2);
+
+        Event event = formEntityConverter.getEventFromFormSubmission(fsubmission);
+
+        System.out.println(expectedEvent.equals(event));
+
+        assertEvents(expectedEvent, event);
+    }
+
+    private void assertEvents(Event expected, Event actual) {
+        assertEquals(expected.getBaseEntityId(), actual.getBaseEntityId());
+        assertEquals(expected.getEntityType(), actual.getEntityType());
+        assertEquals(expected.getDetails(), actual.getDetails());
+        assertEquals(expected.getEventDate(), actual.getEventDate());
+        assertEquals(expected.getFormSubmissionId(), actual.getFormSubmissionId());
+        assertEquals(expected.getId(), actual.getId());
+        assertEquals(expected.getIdentifiers(), expected.getIdentifiers());
+        assertThat(actual.getObs(), is(actual.getObs()));
+        assertEquals(expected.getLocationId(), actual.getLocationId());
+        assertEquals(expected.getProviderId(), actual.getProviderId());
     }
 
 
