@@ -8,20 +8,16 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.opensrp.common.util.DateUtil;
 import org.opensrp.dto.ActionData;
 import org.opensrp.dto.AlertStatus;
 import org.opensrp.dto.BeneficiaryType;
 import org.opensrp.dto.MonthSummaryDatum;
 import org.opensrp.scheduler.Action;
 import org.opensrp.scheduler.Alert;
-import org.opensrp.scheduler.Schedule;
 import org.opensrp.scheduler.repository.AllActions;
 import org.opensrp.scheduler.repository.AllAlerts;
-import org.opensrp.scheduler.service.ActionService;
 import org.opensrp.service.BaseEntityService;
 import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
@@ -38,6 +34,8 @@ import static org.powermock.api.mockito.PowerMockito.mock;
 import static org.powermock.api.mockito.PowerMockito.when;
 
 
+@RunWith(PowerMockRunner.class)
+@PrepareForTest({DateTime.class, ActionService.class, org.motechproject.util.DateUtil.class})
 public class ActionServiceTest {
     public static final String ANM_1 = "ANM 1";
     public static final String CASE_X = "Case X";
@@ -149,7 +147,6 @@ public class ActionServiceTest {
     }
 
     @Test
-    @Ignore
     public void shouldCloseBeneficiary() throws Exception {
         PowerMockito.mockStatic(org.motechproject.util.DateUtil.class);
         DateTime dateTime = mock(DateTime.class);
@@ -171,7 +168,6 @@ public class ActionServiceTest {
 
 
     @Test
-    @Ignore
     public void shouldReturnAlertsBasedOnANMIDAndTimeStamp() throws Exception {
         List<Action> alertActions = Arrays.asList(new Action("Case X", "ANM 1", ActionData.createAlert("mother", "Ante Natal Care - Normal", "ANC 1", normal, DateTime.now(), DateTime.now().plusDays(3))));
         when(allActions.findByProviderIdAndTimeStamp("ANM 1", 1010101)).thenReturn(alertActions);
