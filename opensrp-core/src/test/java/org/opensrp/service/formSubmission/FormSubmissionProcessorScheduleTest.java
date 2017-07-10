@@ -57,9 +57,27 @@ public class FormSubmissionProcessorScheduleTest extends TestResourceLoader {
 
         fsp.handleSchedules(fs);
 
-        verify(mockScheduleService).fullfillMilestoneAndCloseAlert("101aab44-5377-4846-95ad-442b857b54d2", fs.anmId(), "PENTAVALENT 1", new LocalDate("2016-09-20"), fs.instanceId());
-        verify(mockScheduleService).unEnrollFromSchedule("101aab44-5377-4846-95ad-442b857b54d2", fs.anmId(), "PENTAVALENT 1", fs.instanceId());
-        verify(mockScheduleService).enrollIntoSchedule("101aab44-5377-4846-95ad-442b857b54d2", "PENTAVALENT 2", "penta2", "2016-09-20", fs.instanceId());
+        verify(mockScheduleService).fullfillMilestoneAndCloseAlert("101aab44-5377-4846-95ad-442b857b54d2", fs.anmId(),
+                "PENTAVALENT 1", new LocalDate("2016-09-20"), fs.instanceId());
+        verify(mockScheduleService).unEnrollFromSchedule("101aab44-5377-4846-95ad-442b857b54d2", fs.anmId(),
+                "PENTAVALENT 1", fs.instanceId());
+        verify(mockScheduleService).enrollIntoSchedule("101aab44-5377-4846-95ad-442b857b54d2", "PENTAVALENT 2",
+                "penta2", "2016-09-20", fs.instanceId());
+    }
+
+    @Test
+    public void shouldEnrollScheduleForSubforms() throws IOException, JSONException {
+        FormSubmission fs = getFormSubmissionFor("new_household_registration", 2);
+        HealthSchedulerService mockScheduleService = mock(HealthSchedulerService.class);
+        when(mockScheduleService.findAutomatedSchedules(fs.formName())).thenReturn(scheduleService.findAutomatedSchedules(fs.formName()));
+        fsp = new FormSubmissionProcessor(null, null, null, mockScheduleService, null, null);
+
+        fsp.handleSchedules(fs);
+
+        verify(mockScheduleService).enrollIntoSchedule("0aac6d81-b51f-4096-b354-5a5786e406c8", "FW CENSUS",
+                "FW CENSUS", "2015-05-06", fs.instanceId());
+        verify(mockScheduleService).enrollIntoSchedule("b19db74f-6e96-4652-a765-5078beb12434", "Psrf",
+                "psrf", "2000-12-12", fs.instanceId());
     }
 
 

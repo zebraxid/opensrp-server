@@ -67,7 +67,6 @@ public class FormSubmissionProcessor {
 
     void handleSchedules(FormSubmission submission) throws JSONException, IOException {
         List<Schedule> schl = scheduleService.findAutomatedSchedules(submission.formName());
-        System.out.println(new Gson().toJson(schl));
         for (Schedule sch : schl) {
             Map<String, String> entsch = getEntitiesQualifyingForSchedule(submission, sch);
             System.out.println("creating schedule for : " + entsch);
@@ -98,17 +97,18 @@ public class FormSubmissionProcessor {
             }
         }
 
-        if (submission.subForms() != null)
-            for (SubFormData sbf : submission.subForms()) {
-                if (schedule.applicableForEntity(sbf.bindType())) {
-                    for (Map<String, String> inst : sbf.instances()) {
-                        String res = evaluateScheduleFor(schedule, inst);
+        if (submission.subForms() != null) {
+            for (SubFormData subFormData : submission.subForms()) {
+                if (schedule.applicableForEntity(subFormData.bindType())) {
+                    for (Map<String, String> instance : subFormData.instances()) {
+                        String res = evaluateScheduleFor(schedule, instance);
                         if (!StringUtils.isEmptyOrWhitespaceOnly(res)) {
-                            entityIds.put(inst.get("id"), res);
+                            entityIds.put(instance.get("id"), res);
                         }
                     }
                 }
             }
+        }
         return entityIds;
     }
 
