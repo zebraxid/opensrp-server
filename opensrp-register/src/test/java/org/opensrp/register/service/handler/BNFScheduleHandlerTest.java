@@ -28,6 +28,7 @@ import org.opensrp.domain.Event;
 import org.opensrp.domain.Obs;
 import org.opensrp.register.service.handler.BaseScheduleHandler.ActionType;
 import org.opensrp.register.service.scheduling.AnteNatalCareSchedulesService;
+import org.opensrp.register.service.scheduling.BNFSchedulesService;
 import org.opensrp.repository.AllClients;
 import org.opensrp.scheduler.HealthSchedulerService;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
@@ -41,25 +42,23 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(PowerMockRunner.class)
 @PowerMockIgnore({ "org.apache.log4j.*", "org.apache.commons.logging.*" })
-public class ANCScheduleHandlerTest extends TestResourceLoader {	
+public class BNFScheduleHandlerTest extends TestResourceLoader {	
     @Mock
-    private AnteNatalCareSchedulesService anteNatalCareSchedulesService;    
-    private ANCScheduleHandler aNCScheduleHandler;
+    private BNFSchedulesService bnfSchedulesService;    
+    private BNFScheduleHandler bnfScheduleHandler;
     @Mock
     private HealthSchedulerService scheduler;
-    private static final String JSON_KEY_HANDLER = "handler";	
     private static final String JSON_KEY_TYPES = "types";	
-    private static final String JSON_KEY_SCHEDULE_NAME = "name";	
     private static final String JSON_KEY_EVENTS = "events";	
 	
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        aNCScheduleHandler = new ANCScheduleHandler(anteNatalCareSchedulesService);
+        bnfScheduleHandler = new BNFScheduleHandler(bnfSchedulesService);
     }   
     
     @Test
-    public void shouldTestANCScheduleHandler() throws Exception{
+    public void shouldTestBNFScheduleHandler() throws Exception{
         Event event = getevent();
         JSONArray schedulesJsonObject = new JSONArray("[" + getFile() + "]");
         String scheduleName =null;
@@ -71,21 +70,14 @@ public class ANCScheduleHandlerTest extends TestResourceLoader {
                 JSONArray eventTypesJsonArray = scheduleConfigEvent.getJSONArray(JSON_KEY_TYPES);
                 List<String> eventsList = jsonArrayToList(eventTypesJsonArray);                
                 if (eventsList.contains(event.getEventType())) {  
-                	String action = aNCScheduleHandler.getAction(scheduleConfigEvent);                	
-                	String milestone=aNCScheduleHandler.getMilestone(scheduleConfigEvent);
+                	String action = bnfScheduleHandler.getAction(scheduleConfigEvent);                	
+                	String milestone=bnfScheduleHandler.getMilestone(scheduleConfigEvent);
                     LocalDate  date = LocalDate.parse("2016-07-10");
                 	if(milestone.equalsIgnoreCase("opv2") && action.equalsIgnoreCase(ActionType.enroll.toString())){
-                		aNCScheduleHandler.handle(event,scheduleConfigEvent, scheduleName);
-                        InOrder inOrder = inOrder(anteNatalCareSchedulesService);                        
-                        inOrder.verify(anteNatalCareSchedulesService).enrollMother(event.getBaseEntityId(),"Ante Natal Care Reminder Visit", LocalDate.parse("2016-07-10"),
-         					   event.getId());                       
-                    }
-                    else if(milestone.equalsIgnoreCase("opv2") && action.equalsIgnoreCase(ActionType.fulfill.toString())){
-                    	aNCScheduleHandler.handle(event,scheduleConfigEvent, scheduleName);
-                        InOrder inOrder = inOrder(anteNatalCareSchedulesService);                                                
-                        inOrder.verify(anteNatalCareSchedulesService).fullfillMilestone(event.getBaseEntityId(), event.getProviderId(), "Ante Natal Care Reminder Visit", date, event.getId()); 
-                    }else{
-                    	
+                		bnfScheduleHandler.handle(event,scheduleConfigEvent, scheduleName);
+                        InOrder inOrder = inOrder(bnfSchedulesService);                        
+                        inOrder.verify(bnfSchedulesService).enrollBNF(event.getBaseEntityId(), "BirthNotificationPregnancyStatusFollowUp", LocalDate.parse("2016-07-10"), event.getId());                     
+                    } else{                    	
                     }
                 }				
             }			

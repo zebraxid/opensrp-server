@@ -201,6 +201,7 @@ public class TestResourceLoader {
         String formSubmissionId ="";
         Event event = new Event(baseEntityId, eventType, eventDate, entityType, providerId, locationId, formSubmissionId);
         event.setId("23456");
+        event.setDateCreated(new DateTime("2017-02-02"));
         String scheduleName = "VIT A 1";
         String schedulesStr = getFile();
         List<Object> values = new ArrayList<>();
@@ -215,5 +216,13 @@ public class TestResourceLoader {
         event.addObs(observation1);
         event.addObs(observation2);
         return event;
+    }
+    public List<Client> getClients(){
+    	List<Client> clients = new ArrayList<>();
+    	Client client = new Client("ooo-yyy-yyy");
+    	client.setFirstName("Client");
+    	client.setId("2345");
+    	clients.add(client);
+    	return clients;
     }
 }

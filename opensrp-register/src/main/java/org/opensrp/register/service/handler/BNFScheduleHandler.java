@@ -11,28 +11,31 @@ import org.springframework.stereotype.Component;
 @Component
 public class BNFScheduleHandler extends BaseScheduleHandler {
 	
-	@Autowired
-	private BNFSchedulesService bnfSchedulesService;
-	@Override
-	public void handle(Event event, JSONObject scheduleConfigEvent,String scheduleName) {
-		try {
-			
-			if(scheduleName==null){
-				scheduleName="BirthNotificationPregnancyStatusFollowUp";
-			}
-			
-			if (evaluateEvent(event, scheduleConfigEvent)) {
-				String action = getAction(scheduleConfigEvent);
-				if (action.equalsIgnoreCase(ActionType.enroll.toString())) {
-					String refDate=getReferenceDateForSchedule(event, scheduleConfigEvent, action);
-					if(!refDate.isEmpty())
-					bnfSchedulesService.enrollBNF(event.getBaseEntityId(), scheduleName, LocalDate.parse(refDate), event.getId());
-				}
-			}
-			
-		}
-		catch (JSONException e) {
-			logger.error("", e);
-		}
+    private BNFSchedulesService bnfSchedulesService;
+    @Autowired
+    public BNFScheduleHandler(BNFSchedulesService bnfSchedulesService){
+        this.bnfSchedulesService = bnfSchedulesService;
 	}
+    @Override
+    public void handle(Event event, JSONObject scheduleConfigEvent,String scheduleName) {
+        try {
+			
+            if(scheduleName==null){
+                scheduleName="BirthNotificationPregnancyStatusFollowUp";
+            }
+			
+            if (evaluateEvent(event, scheduleConfigEvent)) {
+                String action = getAction(scheduleConfigEvent);
+                if (action.equalsIgnoreCase(ActionType.enroll.toString())) {
+                    String refDate=getReferenceDateForSchedule(event, scheduleConfigEvent, action);
+                    if(!refDate.isEmpty())
+                        bnfSchedulesService.enrollBNF(event.getBaseEntityId(), scheduleName, LocalDate.parse(refDate), event.getId());
+                    }
+                }
+			
+            }
+            catch (JSONException e) {
+            logger.error("", e);
+        }
+    }
 }
