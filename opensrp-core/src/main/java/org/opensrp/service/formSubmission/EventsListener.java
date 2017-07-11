@@ -59,6 +59,19 @@ public class EventsListener {
 		this.configService.registerAppStateToken(AllConstants.Config.EVENTS_PARSER_LAST_PROCESSED_EVENT, 0,
 		    "Token to keep track of events processed for client n event parsing and schedule handling", true);
 	}
+
+	@Autowired
+	public EventsListener(EventsRouter eventsRouter, ConfigService configService, AllEvents allEvents, EventService eventService,
+						  ErrorTraceService errorTraceService, AllClients allClients) {
+		this.configService = configService;
+		this.errorTraceService = errorTraceService;
+		this.eventsRouter = eventsRouter;
+		this.allEvents = allEvents;
+		this.eventService = eventService;
+		this.allClients = allClients;
+		this.configService.registerAppStateToken(AllConstants.Config.EVENTS_PARSER_LAST_PROCESSED_EVENT, 0,
+				"Token to keep track of events processed for client n event parsing and schedule handling", true);
+	}
 	
 	@MotechListener(subjects = AllConstants.EVENTS_SCHEDULE_SUBJECT)
 	public void processEvent(MotechEvent motechEvent) {

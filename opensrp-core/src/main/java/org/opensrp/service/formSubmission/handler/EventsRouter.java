@@ -45,7 +45,13 @@ public class EventsRouter {
 	File scheduleConfigsFolder = null;
 	
 	Event event;
-	
+
+	@Autowired
+	public EventsRouter(IHandlerMapper handlerMapper, String scheduleConfigFilesPath) {
+		this.handlerMapper = handlerMapper;
+		this.scheduleConfigFilesPath = scheduleConfigFilesPath;
+	}
+
 	/**
 	 * @param event
 	 */
