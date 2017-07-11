@@ -19,7 +19,7 @@ public class ChildScheduleHandler extends BaseScheduleHandler {
 	
     private ENCCSchedulesService enccSchedulesService;	
     private ClientService clientService;
-	@Autowired
+    @Autowired
     public ChildScheduleHandler(ENCCSchedulesService enccSchedulesService,ClientService clientService){
         this.enccSchedulesService = enccSchedulesService;
         this.clientService = clientService;
@@ -67,7 +67,7 @@ public class ChildScheduleHandler extends BaseScheduleHandler {
     * @param event
     * @return
     */
-    public List<Client> getChildrenIds(Event event) {		
+    private List<Client> getChildrenIds(Event event) {		
         Date dateCreated = event.getDateCreated().toDate();		
         Calendar cal = Calendar.getInstance();
         cal.setTime(dateCreated);

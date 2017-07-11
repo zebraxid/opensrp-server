@@ -50,18 +50,17 @@ public class ChildScheduleHandlerTest extends TestResourceLoader {
         JSONArray schedulesJsonObject = new JSONArray("[" + getFile() + "]");
         String scheduleName =null;
         Date dateCreated = event.getDateCreated().toDate();		
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(dateCreated);
-		cal.add(Calendar.DATE, 1);
-		String dateTo = dateFormat.format(cal.getTime());
-		cal = Calendar.getInstance();
-		cal.setTime(dateCreated);
-		cal.add(Calendar.DATE, -1);
-		String dateFrom = dateFormat.format(cal.getTime());
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(dateCreated);
+        cal.add(Calendar.DATE, 1);
+        String dateTo = dateFormat.format(cal.getTime());
+        cal = Calendar.getInstance();
+        cal.setTime(dateCreated);
+        cal.add(Calendar.DATE, -1);
+        String dateFrom = dateFormat.format(cal.getTime());
         when(clientService, method(ClientService.class, "findByRelationshipIdAndDateCreated", String.class,String.class,String.class))
             .withArguments("ooo-yyy-yyy",dateFrom,dateTo)
-            .thenReturn(getClients());
-        System.err.println("getClients:"+getClients());
+            .thenReturn(getClients());    
         for (int i = 0; i < schedulesJsonObject.length(); i++) {
             JSONObject scheduleJsonObject = schedulesJsonObject.getJSONObject(i);            
             JSONArray eventsJsonArray = scheduleJsonObject.getJSONArray(JSON_KEY_EVENTS);                      
