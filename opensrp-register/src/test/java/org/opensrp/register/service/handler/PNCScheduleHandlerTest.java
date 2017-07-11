@@ -99,18 +99,15 @@ public class PNCScheduleHandlerTest extends TestResourceLoader{
         Obs observation2  = new Obs("concept", "birthdate", "163137AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", "783AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", values1, "", "birthdate");
         event.addObs(observation1);
         event.addObs(observation2);
-        JSONArray schedulesJsonObject = new JSONArray("[" + schedulesStr + "]");
-        allClients.add(client);
+        JSONArray schedulesJsonObject = new JSONArray("[" + schedulesStr + "]");        
         for (int i = 0; i < schedulesJsonObject.length(); i++) {
             JSONObject scheduleJsonObject = schedulesJsonObject.getJSONObject(i);
             String handler = scheduleJsonObject.has(JSON_KEY_HANDLER)?scheduleJsonObject.getString(JSON_KEY_HANDLER):"VaccinesScheduleHandler";
-            JSONArray eventsJsonArray = scheduleJsonObject.getJSONArray(JSON_KEY_EVENTS);
-            //scheduleName = scheduleJsonObject.getString(JSON_KEY_SCHEDULE_NAME);           
+            JSONArray eventsJsonArray = scheduleJsonObject.getJSONArray(JSON_KEY_EVENTS);                      
             for (int j = 0; j < eventsJsonArray.length(); j++) {
                 JSONObject scheduleConfigEvent = eventsJsonArray.getJSONObject(j);
                 JSONArray eventTypesJsonArray = scheduleConfigEvent.getJSONArray(JSON_KEY_TYPES);
-                List<String> eventsList = jsonArrayToList(eventTypesJsonArray);
-                //System.err.println("eventsList:"+eventsList);
+                List<String> eventsList = jsonArrayToList(eventTypesJsonArray);                
                 if (eventsList.contains(event.getEventType())) {  
                 	String action = pncScheduleHandler.getAction(scheduleConfigEvent);                	
                 	String milestone=pncScheduleHandler.getMilestone(scheduleConfigEvent);
