@@ -58,7 +58,7 @@ public class ANMIndicatorSummaryTest {
                 "11111", monthSummaryList);
         ANMIndicatorSummary anmIndicatorSummary2 = new ANMIndicatorSummary("22",
                 "2222", monthSummaryList);
-        assertEquals(anmIndicatorSummary.toString(), anmIndicatorSummary.toString());
+        assertEquals("11111", anmIndicatorSummary.annualTarget().toString());
         assertNotSame(anmIndicatorSummary.indicator().toString(), anmIndicatorSummary2.indicator().toString());
     }
 }
