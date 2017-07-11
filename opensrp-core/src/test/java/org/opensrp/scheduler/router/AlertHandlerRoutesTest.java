@@ -175,10 +175,11 @@ public class AlertHandlerRoutesTest {
         Event.of(SCHEDULE_AUTO_CLOSE_PNC, "PNC Close", due).shouldRouteToAutoClosePNCAction();
     }*/
 
-    private static class Event {
+    public static class Event {
         private final String schedule;
         private final String milestone;
         private final WindowName window;
+        private String externalId;
 
         private Event(String schedule, String milestone, WindowName window) {
             this.schedule = schedule;
@@ -190,11 +191,17 @@ public class AlertHandlerRoutesTest {
             return new Event(schedule, milestone, window);
         }
 
+        public static Event of(String externalId, String schedule, String milestone, WindowName window) {
+            Event event = new Event(schedule, milestone, window);
+            event.externalId  = externalId;
+            return event;
+        }
+
         public void shouldRouteToECAlertCreation() {
             expectCallsToECAlertCreation(Expectation.of(1));
         }
 
-        private void expectCallsToECAlertCreation(Expectation fulfillActionCallsExpected) {
+        public void expectCallsToECAlertCreation(Expectation fulfillActionCallsExpected) {
             ECAlertCreationAction ecAlertCreationAction = mock(ECAlertCreationAction.class);
 
             MotechEvent event = routeEvent(ecAlertCreationAction, null, null);
@@ -241,7 +248,7 @@ public class AlertHandlerRoutesTest {
             verify(autoClosePNCAction, times(autoClosePNCActionCallsExpected.numberOfCallsExpected)).invoke(new MilestoneEvent(event), autoClosePNCActionCallsExpected.extraDataExpected);
         }*/
 
-        private MotechEvent routeEvent(HookedEvent ancMissedAction, HookedEvent captureANCReminderAction, HookedEvent autoClosePNCAction) {
+        public MotechEvent routeEvent(HookedEvent ancMissedAction, HookedEvent captureANCReminderAction, HookedEvent autoClosePNCAction) {
             AlertRouter router = new AlertRouter();
             TaskSchedulerService sf = new TaskSchedulerService(null, null, router);
             new AlertHandler(sf, ancMissedAction);
@@ -252,13 +259,14 @@ public class AlertHandlerRoutesTest {
             return event;
         }
 
-        private MotechEvent createMotechEvent() {
+        public MotechEvent createMotechEvent() {
             MilestoneAlert alert = mock(MilestoneAlert.class);
             when(alert.getMilestoneName()).thenReturn(milestone);
 
 
             Map<String, Object> parameters = new HashMap<>();
 
+            parameters.put(EXTERNAL_ID, externalId);
             parameters.put(SCHEDULE_NAME, schedule);
             parameters.put(MILESTONE_NAME, alert);
             parameters.put(WINDOW_NAME, window.toString());
@@ -267,7 +275,7 @@ public class AlertHandlerRoutesTest {
             return new MotechEvent("Subject", parameters);
         }
 
-        private static class Expectation {
+        public static class Expectation {
             private final int numberOfCallsExpected;
             private final Map<String, String> extraDataExpected;
 
