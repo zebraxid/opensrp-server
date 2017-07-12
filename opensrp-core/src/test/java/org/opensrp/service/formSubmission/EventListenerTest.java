@@ -4,7 +4,6 @@ package org.opensrp.service.formSubmission;
 import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.InOrder;
 import org.mockito.Matchers;
 import org.mockito.Mock;
@@ -22,11 +21,11 @@ import org.opensrp.service.EventService;
 import org.opensrp.service.formSubmission.handler.EventsHandler;
 import org.opensrp.service.formSubmission.handler.EventsRouter;
 import org.opensrp.service.formSubmission.handler.IHandlerMapper;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static java.util.Arrays.asList;
 import static org.mockito.Matchers.any;
@@ -61,7 +60,7 @@ public class EventListenerTest {
         allClients = mock(AllClients.class);
         handlerMapper = mock(IHandlerMapper.class);
 
-        when(configService.registerAppStateToken(any(AllConstants.Config.class), Matchers.anyObject(),anyString(), anyBoolean()))
+        when(configService.registerAppStateToken(any(AllConstants.Config.class), Matchers.anyObject(), anyString(), anyBoolean()))
                 .thenReturn(new AppStateToken("token", 01l, 02l));
         eventsRouter = new EventsRouter(handlerMapper, "/schedules/schedule-configs");
         eventService = new EventService(allEvents, clientService);
@@ -79,7 +78,7 @@ public class EventListenerTest {
         List<Client> clients = asList(new Client("2222"));
         List<Event> events = asList(new Event()
                 .withIdentifier(AllConstants.Client.ZEIR_ID.toUpperCase(), "2")
-                .withEventType("Vaccination"),new Event());
+                .withEventType("Vaccination"), new Event());
 
 
         when(allClients.findByEmptyServerVersion()).thenReturn(clients, Collections.<Client>emptyList());
@@ -89,7 +88,7 @@ public class EventListenerTest {
         when(allEvents.findByServerVersion(1l)).thenReturn(events);
         when(clientService.findAllByIdentifier(AllConstants.Client.ZEIR_ID.toUpperCase(), "2"))
                 .thenReturn(clients);
-        when(allEvents.findByBaseEntityAndType("222","Birth Registration")).thenReturn(events);
+        when(allEvents.findByBaseEntityAndType("222", "Birth Registration")).thenReturn(events);
 
         when(handlerMapper.handlerMap()).thenReturn(handlerMap);
 
@@ -106,6 +105,11 @@ public class EventListenerTest {
         inOrder.verify(allClients).update(clients.get(0));
         inOrder.verify(allEvents).update(events.get(0));
         inOrder.verify(eventHandler, atLeastOnce()).handle(eq(events.get(0)), any(JSONObject.class), eq("BCG"));
+
+    }
+
+    @Test
+    public void testComparator() {
 
     }
 

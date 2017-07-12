@@ -5,7 +5,6 @@ import org.joda.time.LocalTime;
 import org.joda.time.Period;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -22,8 +21,6 @@ import org.opensrp.common.util.DateUtil;
 import org.opensrp.scheduler.HealthSchedulerService;
 import org.opensrp.util.ScheduleBuilder;
 import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -97,6 +94,17 @@ public class ScheduleServiceTest {
 
         verify(scheduleTrackingService).enroll(ScheduleBuilder.enrollmentFor("entity_1", "my_schedule", thirdMilestone.getName(), "2012-01-01"));
     }
+
+    @Test
+    public void testEnrollIntoNullMilestone() {
+        DateUtil.fakeIt(parse("2018-03-01"));
+        when(allSchedules.getByName("my_schedule")).thenReturn(schedule);
+
+        scheduleService.enroll("entity_1", "my_schedule", "2012-01-01", "formsubmission3");
+
+        verify(scheduleTrackingService).enroll(ScheduleBuilder.enrollmentFor("entity_1", "my_schedule", null, "2012-01-01"));
+    }
+
 
     @Test(expected = NullPointerException.class)
     public void shouldThrowNullPointerExceptionIfSchduleIsNotFound() {
