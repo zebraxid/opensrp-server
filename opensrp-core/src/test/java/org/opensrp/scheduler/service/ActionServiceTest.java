@@ -148,7 +148,6 @@ public class ActionServiceTest {
     }
 
     @Test
-    @Ignore
     public void shouldCloseBeneficiary() throws Exception {
         ActionService spyActionService = spy(service);
         when(spyActionService.getCurrentDateTime()).thenReturn(new DateTime(0l));

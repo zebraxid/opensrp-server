@@ -56,7 +56,7 @@ public class Alert extends MotechBaseDataObject {
     @JsonProperty
     private Boolean isActive;
     @JsonProperty
-    private long timestamp;
+    private long timeStamp;
     @JsonProperty
     private Map<String, String> details;
 
@@ -77,7 +77,7 @@ public class Alert extends MotechBaseDataObject {
 		this.expiryDate = expiryDate.toLocalDate().toString();
 		this.alertStatus = alertStatus.name();
 		this.isActive = true;
-		this.timestamp = DateUtil.now().getMillis();
+		this.timeStamp = DateUtil.now().getMillis();
 		this.details = details;
 	}
 
@@ -167,7 +167,7 @@ public class Alert extends MotechBaseDataObject {
 	}
 
 	public long timestamp() {
-		return timestamp;
+		return timeStamp;
 	}
 
 	public Map<String, String> details() {
@@ -285,12 +285,12 @@ public class Alert extends MotechBaseDataObject {
 		this.isActive = isActive;
 	}
 
-	public long getTimestamp() {
-		return timestamp;
+	public long getTimeStamp() {
+		return timeStamp;
 	}
 
-	public void setTimestamp(long timestamp) {
-		this.timestamp = timestamp;
+	public void setTimeStamp(long timeStamp) {
+		this.timeStamp = timeStamp;
 	}
 
 	public Map<String, String> getDetails() {
@@ -322,12 +322,12 @@ public class Alert extends MotechBaseDataObject {
 	}
 
     @Override
-    public boolean equals(Object o) {
+    public final boolean equals(Object o) {
         return EqualsBuilder.reflectionEquals(this, o, "timeStamp", "revision");
     }
 
     @Override
-    public int hashCode() {
+    public final int hashCode() {
         return HashCodeBuilder.reflectionHashCode(this, "timeStamp", "revision");
     }
 
