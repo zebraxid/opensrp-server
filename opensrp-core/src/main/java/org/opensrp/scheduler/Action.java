@@ -15,7 +15,7 @@ import org.opensrp.dto.ActionData;
  * The entity which helps in identifying the type of action applicable for the entity or provider
  */
 @TypeDiscriminator("doc.type === 'Action'")
-public class Action extends MotechBaseDataObject {
+public class  Action extends MotechBaseDataObject {
     @JsonProperty
     private String providerId;
     @JsonProperty
@@ -101,12 +101,12 @@ public class Action extends MotechBaseDataObject {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public final boolean equals(Object o) {
         return EqualsBuilder.reflectionEquals(this, o, "timeStamp", "revision");
     }
 
     @Override
-    public int hashCode() {
+    public final int hashCode() {
         return HashCodeBuilder.reflectionHashCode(this, "timeStamp", "revision");
     }
 
