@@ -65,8 +65,8 @@ abstract class BaseScheduleHandler implements EventsHandler {
 	protected static DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 	
 	
-	ClientService clientService;
-	@Autowired
+    private ClientService clientService;
+    @Autowired
     public void setClientService(ClientService clientService){
         this.clientService = clientService;
     }
