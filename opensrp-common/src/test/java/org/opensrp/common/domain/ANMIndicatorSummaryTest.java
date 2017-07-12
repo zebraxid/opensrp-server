@@ -6,8 +6,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.*;
 
 /**
  * Created by real on 10/07/17.
@@ -27,6 +26,9 @@ public class ANMIndicatorSummaryTest {
         ANMIndicatorSummary anmIndicatorSummary = new ANMIndicatorSummary("11", "11111", monthSummaryList);
         assertEquals(monthSummaryList, anmIndicatorSummary.monthlySummaries());
 
+        assertTrue(anmIndicatorSummary.toString().contains("indicator=11"));
+        assertFalse(anmIndicatorSummary.toString().contains("annualTarget=2222"));
+
         assertEquals("11111", anmIndicatorSummary.annualTarget());
         assertNotSame("11112", anmIndicatorSummary.annualTarget());
 
@@ -44,21 +46,5 @@ public class ANMIndicatorSummaryTest {
     @Test
     public void testEqualsAndHashCode() {
         EqualsVerifier.forClass(ANMIndicatorSummary.class).verify();
-    }
-
-    @Test
-    public void testToString() {
-        List<String> externalIDs = new ArrayList<>();
-        externalIDs.add("1");
-        MonthSummary monthSummary = new MonthSummary("July", "2017", "73%",
-                "47%", externalIDs);
-        List<MonthSummary> monthSummaryList = new ArrayList<>();
-        monthSummaryList.add(monthSummary);
-        ANMIndicatorSummary anmIndicatorSummary = new ANMIndicatorSummary("11",
-                "11111", monthSummaryList);
-        ANMIndicatorSummary anmIndicatorSummary2 = new ANMIndicatorSummary("22",
-                "2222", monthSummaryList);
-        assertEquals("11111", anmIndicatorSummary.annualTarget().toString());
-        assertNotSame(anmIndicatorSummary.indicator().toString(), anmIndicatorSummary2.indicator().toString());
     }
 }
