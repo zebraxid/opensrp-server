@@ -18,7 +18,7 @@ public class HHScheduleHandler extends BaseScheduleHandler {
     }
     @Override
     public void handle(Event event, JSONObject scheduleConfigEvent,String scheduleName) {
-	    try {
+        try {
 			
             if(scheduleName==null){
                 scheduleName="FW CENSUS";
