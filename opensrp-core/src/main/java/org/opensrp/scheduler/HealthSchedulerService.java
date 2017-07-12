@@ -134,7 +134,7 @@ public class HealthSchedulerService {
     }
 
     public void alertFor(String beneficiaryType, String entityId, String providerId, String schedule,
-                         String milestone, AlertStatus alertStatus, DateTime startDate, DateTime expiryDate) {
+                         String milestone, AlertStatus alertStatus, DateTime startOfDueWindow, DateTime startDate, DateTime expiryDate) {
         actionService.alertForBeneficiary(beneficiaryType, entityId, providerId, schedule, milestone, alertStatus,
                 startDate, expiryDate);
     }
