@@ -29,12 +29,12 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:test-applicationContext-opensrp-register.xml")
 public class TestResourceLoader {
-	public String entityId = "entityId1";
-	public String scheduleName = "opv 1";
-	public String provider = "anm";
-	public String eventId = "eventID 1";
-	public String caseId = "caseId";
-	public String milestone = "milestone";
+    public String entityId = "entityId1";
+    public String scheduleName = "opv 1";
+    public String provider = "anm";
+    public String eventId = "eventID 1";
+    public String caseId = "caseId";
+    public String milestone = "milestone";
     @Autowired
     private AllSchedules allSchedules;
 	

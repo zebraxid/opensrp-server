@@ -43,7 +43,7 @@ public class AnteNatalCareSchedulesServiceTest extends TestResourceLoader {
         final Logger logger = Logger.getLogger(AnteNatalCareSchedulesService.class.toString());
         logger.setLevel(Level.ALL);
         logger.addAppender(appender);
-    	anteNatalCareSchedulesService.enrollMother(entityId, scheduleName, LocalDate.now(), eventId);    	
+        anteNatalCareSchedulesService.enrollMother(entityId, scheduleName, LocalDate.now(), eventId);    	
         InOrder inOrder = inOrder(scheduler);
         inOrder.verify(scheduler).enrollIntoSchedule(entityId,scheduleName, LocalDate.now().toString(),
             "eventID 1");
