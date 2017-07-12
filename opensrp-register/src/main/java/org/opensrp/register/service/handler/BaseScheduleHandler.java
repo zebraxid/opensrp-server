@@ -67,9 +67,9 @@ abstract class BaseScheduleHandler implements EventsHandler {
 	
 	ClientService clientService;
 	@Autowired
-	public void setClientService(ClientService clientService){
-		this.clientService = clientService;
-	}
+    public void setClientService(ClientService clientService){
+        this.clientService = clientService;
+    }
 	/**
 	 * Converts values in a json key into key-value pair
 	 * 

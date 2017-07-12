@@ -15,7 +15,7 @@ public class BNFScheduleHandler extends BaseScheduleHandler {
     @Autowired
     public BNFScheduleHandler(BNFSchedulesService bnfSchedulesService){
         this.bnfSchedulesService = bnfSchedulesService;
-	}
+    }
     @Override
     public void handle(Event event, JSONObject scheduleConfigEvent,String scheduleName) {
         try {
