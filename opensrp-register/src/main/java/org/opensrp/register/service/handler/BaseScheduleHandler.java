@@ -64,9 +64,12 @@ abstract class BaseScheduleHandler implements EventsHandler {
 	
 	protected static DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 	
-	@Autowired
-	ClientService clientService;
 	
+	ClientService clientService;
+	@Autowired
+	public void setClientService(ClientService clientService){
+		this.clientService = clientService;
+	}
 	/**
 	 * Converts values in a json key into key-value pair
 	 * 
@@ -137,6 +140,7 @@ abstract class BaseScheduleHandler implements EventsHandler {
 	    throws JSONException {
 		Map<String, Object> refDateFields = new HashMap<String, Object>();
 		if (action.equalsIgnoreCase(ActionType.enroll.toString())) {
+			System.err.println("scheduleConfigEvent"+scheduleConfigEvent.toString());
 			refDateFields = getReferenceDateFields(scheduleConfigEvent);
 		} else if (action.equalsIgnoreCase(ActionType.fulfill.toString())) {
 			refDateFields = getFulfillmentDateFields(scheduleConfigEvent);
@@ -145,9 +149,10 @@ abstract class BaseScheduleHandler implements EventsHandler {
 		Map<String, Object> obs = getEventObs(eventJson);
 		Map<String, Object> obsByFormSubmissionField = getEventObsByFormSubmissionField(eventJson);
 		String dateStr = "";
-		
+		System.err.println("refDateFields:"+refDateFields);
 		for (Map.Entry<String, Object> entry : refDateFields.entrySet()) {
 			String key = entry.getKey();//"concept"
+			System.err.println("key:"+key);
 			String value = entry.getValue().toString();//"concept value or fieldname"
 			if (key.equalsIgnoreCase(JSON_KEY_CONCEPT) && !refDateFields.containsKey(JSON_KEY_EVENT)) {
 				//date is a concept and in the current event being processed search it in the event's obs
@@ -170,7 +175,9 @@ abstract class BaseScheduleHandler implements EventsHandler {
 					dateStr = getDateValue(obsByFormSubmissionField.get(value));
 				}
 			} else if(key.equalsIgnoreCase(JSON_KEY_TYPE) && value.equalsIgnoreCase("Client")){
+				System.out.println("client:");
 				Client client = getClient(event);
+				
 				String fieldValue = refDateFields.get(JSON_KEY_FIELD) != null? refDateFields.get(JSON_KEY_FIELD).toString() : null;
 				
 				if(client != null && fieldValue != null){
@@ -425,7 +432,7 @@ abstract class BaseScheduleHandler implements EventsHandler {
 		return fieldsMap;
 	}
 	
-	private Client getClient(Event event){
+	public Client getClient(Event event){
 		if(event == null){
 			return null;
 		}

@@ -59,7 +59,7 @@ public class BNFScheduleHandlerTest extends TestResourceLoader {
     
     @Test
     public void shouldTestBNFScheduleHandler() throws Exception{
-        Event event = getevent();
+        Event event = geteventOfVaccination();
         JSONArray schedulesJsonObject = new JSONArray("[" + getFile() + "]");
         String scheduleName =null;
         for (int i = 0; i < schedulesJsonObject.length(); i++) {

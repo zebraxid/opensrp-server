@@ -196,10 +196,9 @@ public class TestResourceLoader {
         events.add(eventObj3);
         return events;
     }
-    public Event getevent() throws IOException{
+    public Event geteventOfVaccination() throws IOException{
         String baseEntityId = "ooo-yyy-yyy";
-        String eventType="Vaccination";
-       // String eventType = "Birth Registration";
+        String eventType="Vaccination";        
         DateTime eventDate = new DateTime();
         String entityType = "";
         String providerId ="anm";
@@ -218,7 +217,34 @@ public class TestResourceLoader {
         Client client = new Client("ooo-yyy-yyy", "hmmm", "hummm", "lssssss", new DateTime("1995-12-28T00:00:00.000Z"), new DateTime(), true, true, "Female", "", "");
         List<Object> values1 = new ArrayList<>();
         values1.add("2017-06-08 09:33:39");		
-        Obs observation2  = new Obs("concept", "birthdate", "163137AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", "783AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", values1, "", "birthdate");
+        Obs observation2  = new Obs("client", "birthdate", "163137AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", "783AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", values1, "", "birthdate");
+        event.addObs(observation1);
+        event.addObs(observation2);
+        return event;
+    }
+    
+    public Event geteventOfBirthRegistration() throws IOException{
+        String baseEntityId = "ooo-yyy-yyy";        
+        String eventType = "Birth Registration";
+        DateTime eventDate = new DateTime();
+        String entityType = "";
+        String providerId ="anm";
+        String locationId ="";
+        String formSubmissionId ="";
+        Event event = new Event(baseEntityId, eventType, eventDate, entityType, providerId, locationId, formSubmissionId);
+        event.setId("23456");
+        event.setDateCreated(new DateTime("2017-02-02"));
+        String scheduleName = "VIT A 1";
+        String schedulesStr = getFile();
+        List<Object> values = new ArrayList<>();
+        values.add("2016-07-10");
+        Obs observation1  = new Obs("concept", "date", "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", "783AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", values, "", "");
+        List<Obs> obs = new ArrayList<>();
+        obs.add(observation1);		
+        Client client = new Client("ooo-yyy-yyy", "hmmm", "hummm", "lssssss", new DateTime("1995-12-28T00:00:00.000Z"), new DateTime(), true, true, "Female", "", "");
+        List<Object> values1 = new ArrayList<>();
+        values1.add("2017-06-08 09:33:39");		
+        Obs observation2  = new Obs("client", "birthdate", "163137AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", "783AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", values1, "", "birthdate");
         event.addObs(observation1);
         event.addObs(observation2);
         return event;
@@ -229,6 +255,8 @@ public class TestResourceLoader {
     	client.setFirstName("Client");
     	client.setId("2345");
     	clients.add(client);
+    	client.setBirthdate(new DateTime());
     	return clients;
     }
+    
 }

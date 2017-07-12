@@ -60,7 +60,7 @@ public class VaccinesScheduleHandlerTest extends TestResourceLoader {
 
     @Test
     public void shouldVaccinesScheduleHandlerForVIT() throws Exception{
-        Event event = getevent(); 
+        Event event = geteventOfVaccination(); 
         String scheduleName = "";
         Schedule schedule = new Schedule("VIT A 1");
         Enrollment enrollment = new Enrollment("ooo-yyy-yyy", schedule, "", new DateTime(), new DateTime(), new Time(), EnrollmentStatus.ACTIVE, null);
@@ -95,7 +95,7 @@ public class VaccinesScheduleHandlerTest extends TestResourceLoader {
     }
     @Test
     public void shouldVaccinesScheduleHandlerForMEASLES() throws Exception{
-        Event event = getevent(); 
+        Event event = geteventOfVaccination(); 
         String scheduleName = "";
         JSONArray schedulesJsonObject = new JSONArray("[" + getFile() + "]");         
         for (int i = 0; i < schedulesJsonObject.length(); i++) {
@@ -126,7 +126,7 @@ public class VaccinesScheduleHandlerTest extends TestResourceLoader {
     }
     @Test
     public void shouldVaccinesScheduleHandlerForMR() throws Exception{
-        Event event = getevent(); 
+        Event event = geteventOfVaccination(); 
         String scheduleName = "";
         JSONArray schedulesJsonObject = new JSONArray("[" + getFile() + "]");        
         for (int i = 0; i < schedulesJsonObject.length(); i++) {
@@ -153,7 +153,7 @@ public class VaccinesScheduleHandlerTest extends TestResourceLoader {
     }
     @Test
     public void shouldVaccinesScheduleHandlerForOPV() throws Exception{
-        Event event = getevent();      
+        Event event = geteventOfVaccination();      
         List<Event> events = getEvents("2016-02-03");
         when(allEvents, method(AllEvents.class, "findByBaseEntityIdAndConceptParentCode", String.class, String.class,String.class))
             .withArguments(anyString(), anyString(),anyString())
@@ -185,7 +185,7 @@ public class VaccinesScheduleHandlerTest extends TestResourceLoader {
     }
     @Test
     public void shouldTestNUllOrEmptyMilestone() throws Exception{
-        Event event = getevent();      
+        Event event = geteventOfVaccination();      
         List<Event> events = getEvents("2016-02-03");
         when(allEvents, method(AllEvents.class, "findByBaseEntityIdAndConceptParentCode", String.class, String.class,String.class))
             .withArguments(anyString(), anyString(),anyString())
@@ -217,7 +217,7 @@ public class VaccinesScheduleHandlerTest extends TestResourceLoader {
     
     @Test
     public void shouldTestExceptionForVaccinesScheduleHandlerForOPV() throws Exception{
-        Event event = getevent();      
+        Event event = geteventOfVaccination();      
         List<Event> events = getEvents("Not A Valid Date");
         when(allEvents, method(AllEvents.class, "findByBaseEntityIdAndConceptParentCode", String.class, String.class,String.class))
            .withArguments(anyString(), anyString(),anyString())

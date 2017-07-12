@@ -46,7 +46,7 @@ public class ChildScheduleHandlerTest extends TestResourceLoader {
     
     @Test
     public void shouldTestChilsScheduleHandler() throws Exception{
-        Event event = getevent();
+        Event event = geteventOfVaccination();
         JSONArray schedulesJsonObject = new JSONArray("[" + getFile() + "]");
         String scheduleName =null;
         Date dateCreated = event.getDateCreated().toDate();		
