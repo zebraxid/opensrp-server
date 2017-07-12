@@ -321,7 +321,7 @@ public class Alert extends MotechBaseDataObject {
 		this.triggerType = triggerType;
 	}
 
-	@Override
+    @Override
     public boolean equals(Object o) {
         return EqualsBuilder.reflectionEquals(this, o, "timeStamp", "revision");
     }

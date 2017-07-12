@@ -36,8 +36,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-@RunWith(PowerMockRunner.class)
-@PrepareForTest({LocalTime.class, EnrollmentsQuery.class, ScheduleService.class})
+
 public class ScheduleServiceTest {
 
     public static final String ENTITY_ID = "entity_id";
@@ -59,7 +58,6 @@ public class ScheduleServiceTest {
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        PowerMockito.mockStatic(LocalTime.class);
         firstMilestone = new Milestone("firstMilestone", weeks(1), weeks(1), weeks(1), weeks(1));
         secondMilestone = new Milestone("secondMilestone", weeks(5), weeks(1), weeks(1), weeks(1));
         thirdMilestone = new Milestone("thirdMilestone", weeks(8), weeks(1), weeks(1), weeks(1));
@@ -109,9 +107,12 @@ public class ScheduleServiceTest {
     public void shouldSuccessfullyFulfilMilestone() {
         Enrollment enrollment = ScheduleBuilder.enrollment("entity_1", "my_schedule", "milestone", new DateTime(0l), new DateTime(1l), EnrollmentStatus.ACTIVE, "formSubmission3");
         when(allEnrollments.getActiveEnrollment("entity_1", "my_schedule")).thenReturn(enrollment);
-        when(LocalTime.now()).thenReturn(new DateTime(3l).toLocalTime());
+        LocalTime localTime = new DateTime(3l).toLocalTime();
 
-        scheduleService.fulfillMilestone("entity_1", "my_schedule", new DateTime(0l).toLocalDate(), "formSubmission3");
+        ScheduleService spyScheduleService = spy(scheduleService);
+        when(spyScheduleService.getCurrentTime()).thenReturn(new Time(localTime));
+
+        spyScheduleService.fulfillMilestone("entity_1", "my_schedule", new DateTime(0l).toLocalDate(), "formSubmission3");
 
         Map<String, String> metaData = enrollment.getMetadata();
         metaData.put(HealthSchedulerService.MetadataField.fulfillmentEvent.name(), "formSubmission3");
@@ -120,7 +121,7 @@ public class ScheduleServiceTest {
         inOrder.verify(allEnrollments).update(enrollment);
         inOrder.verify(scheduleTrackingService).fulfillCurrentMilestone(
                 "entity_1", "my_schedule", new DateTime(1l).toLocalDate(),
-                new Time(LocalTime.now()));
+                new Time(localTime));
     }
 
     @Test
@@ -183,12 +184,14 @@ public class ScheduleServiceTest {
 
     @Test
     public void findOpenEnrollments() throws Exception {
-        EnrollmentsQuery enrollmentsQuery = PowerMockito.mock(EnrollmentsQuery.class);
+        EnrollmentsQuery enrollmentsQuery = mock(EnrollmentsQuery.class);
         when(enrollmentsQuery.havingExternalId(ENTITY_ID)).thenReturn(enrollmentsQuery);
         when(enrollmentsQuery.havingState(EnrollmentStatus.ACTIVE)).thenReturn(enrollmentsQuery);
-        PowerMockito.whenNew(EnrollmentsQuery.class).withNoArguments().thenReturn(enrollmentsQuery);
 
-        scheduleService.findOpenEnrollments(ENTITY_ID);
+        ScheduleService spyScheduleService = spy(scheduleService);
+        when(spyScheduleService.createEnrollmentQueryWithActiveExternalId(ENTITY_ID)).thenReturn(enrollmentsQuery);
+
+        spyScheduleService.findOpenEnrollments(ENTITY_ID);
 
         verify(scheduleTrackingService).search(enrollmentsQuery);
     }
@@ -226,17 +229,19 @@ public class ScheduleServiceTest {
         EnrollmentsQuery enrollmentsQuery = PowerMockito.mock(EnrollmentsQuery.class);
         when(enrollmentsQuery.havingExternalId(ENTITY_ID)).thenReturn(enrollmentsQuery);
         when(enrollmentsQuery.havingState(EnrollmentStatus.ACTIVE)).thenReturn(enrollmentsQuery);
-        PowerMockito.whenNew(EnrollmentsQuery.class).withNoArguments().thenReturn(enrollmentsQuery);
+
+        ScheduleService spyScheduleService = spy(scheduleService);
+        when(spyScheduleService.createEnrollmentQueryWithActiveExternalId(ENTITY_ID)).thenReturn(enrollmentsQuery);
 
         List<EnrollmentRecord> enrollmentRecords = new ArrayList<>();
         List<String> expected = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
-            enrollmentRecords.add(ScheduleBuilder.enrollmentRecord("entity_id", "schedule" + i, "milestone"));
+            enrollmentRecords.add(ScheduleBuilder.enrollmentRecord(ENTITY_ID, "schedule" + i, "milestone"));
             expected.add("schedule" + i);
         }
 
         when(scheduleTrackingService.search(enrollmentsQuery)).thenReturn(enrollmentRecords);
-        List<String> actual = scheduleService.findOpenEnrollmentNames("entity_id");
+        List<String> actual = spyScheduleService.findOpenEnrollmentNames(ENTITY_ID);
 
         assertEquals(expected, actual);
     }

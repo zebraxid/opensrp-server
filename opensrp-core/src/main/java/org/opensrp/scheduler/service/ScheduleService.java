@@ -65,7 +65,7 @@ public class ScheduleService {
     public void fulfillMilestone(String entityId, String scheduleName, LocalDate completionDate, String formSubmissionId) {
         boolean successFullyUpdates = updateExistingEnrollmentWithEventTrackMetadata(entityId, scheduleName, formSubmissionId, ActionType.fulfill);
     	if(successFullyUpdates) {
-            scheduleTrackingService.fulfillCurrentMilestone(entityId, scheduleName, completionDate, new Time(now()));
+            scheduleTrackingService.fulfillCurrentMilestone(entityId, scheduleName, completionDate, getCurrentTime());
         }
     }
     
@@ -73,6 +73,10 @@ public class ScheduleService {
     	updateExistingEnrollmentWithEventTrackMetadata(entityId, scheduleName, formSubmissionId, ActionType.unenroll);
     	scheduleTrackingService.unenroll(entityId, asList(scheduleName));
 	}
+
+	public Time getCurrentTime() {
+        return new Time(now());
+    }
     
     public void unenroll(String entityId, List<String> schedules, String formSubmissionId) {
     	for (String schedule : schedules) {
@@ -82,8 +86,12 @@ public class ScheduleService {
 	}
     
     public List<EnrollmentRecord> findOpenEnrollments(String entityId) {
-        return scheduleTrackingService.search(new EnrollmentsQuery().havingExternalId(entityId).havingState(ACTIVE));
+        return scheduleTrackingService.search(createEnrollmentQueryWithActiveExternalId(entityId));
 	}
+
+	public EnrollmentsQuery createEnrollmentQueryWithActiveExternalId(String entityId) {
+        return new EnrollmentsQuery().havingExternalId(entityId).havingState(ACTIVE);
+    }
     
     public List<Enrollment> findEnrollmentByStatusAndEnrollmentDate(String status, DateTime start, DateTime end) {
         return allEnrollments.findByEnrollmentDate(status, start, end);
