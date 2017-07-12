@@ -26,10 +26,7 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static java.util.Arrays.asList;
 import static org.mockito.Matchers.any;
@@ -38,8 +35,6 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.eq;
 
-@RunWith(PowerMockRunner.class)
-@PrepareForTest(System.class)
 public class EventListenerTest {
 
     @Mock
@@ -60,7 +55,6 @@ public class EventListenerTest {
 
     @Before
     public void setUp() {
-        PowerMockito.mockStatic(System.class);
         configService = mock(ConfigService.class);
         allEvents = mock(AllEvents.class);
         clientService = mock(ClientService.class);
@@ -87,7 +81,7 @@ public class EventListenerTest {
                 .withIdentifier(AllConstants.Client.ZEIR_ID.toUpperCase(), "2")
                 .withEventType("Vaccination"),new Event());
 
-        when(System.currentTimeMillis()).thenReturn(0l);
+
         when(allClients.findByEmptyServerVersion()).thenReturn(clients, Collections.<Client>emptyList());
         when(configService.getAppStateTokenByName(AllConstants.Config.EVENTS_PARSER_LAST_PROCESSED_EVENT))
                 .thenReturn(new AppStateToken("token", 1l, 0l));
@@ -100,8 +94,10 @@ public class EventListenerTest {
         when(handlerMapper.handlerMap()).thenReturn(handlerMap);
 
 
+        EventsListener spyEventListener = spy(eventsListener);
+        when(spyEventListener.getCurrentMilliseconds()).thenReturn(0l);
 
-        eventsListener.processEvent(new MotechEvent("motechEvent"));
+        spyEventListener.processEvent(new MotechEvent("motechEvent"));
 
 
         InOrder inOrder = inOrder(allClients, allEvents, eventHandler);
