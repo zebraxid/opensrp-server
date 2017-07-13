@@ -1,9 +1,6 @@
 package org.opensrp.common.util;
 
 
-import org.junit.Test;
-import org.opensrp.common.audit.AuditMessage;
-
 public class ComparableVerifier<T> {
 
     Class classToTest;

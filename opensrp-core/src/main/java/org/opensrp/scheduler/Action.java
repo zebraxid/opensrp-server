@@ -66,16 +66,16 @@ public class  Action extends MotechBaseDataObject {
         return data;
     }
 
-    public String actionType() {
+    public String getActionType() {
         return actionType;
     }
 
-    public long timestamp() {
+    public long getTimestamp() {
         return timeStamp;
     }
    
 
-    public String target() {
+    public String getTarget() {
         return actionTarget;
     }
 
@@ -88,7 +88,7 @@ public class  Action extends MotechBaseDataObject {
         return isActionActive;
     }
 
-    public Map<String, String> details() {
+    public Map<String, String> getDetails() {
         return details;
     }
 

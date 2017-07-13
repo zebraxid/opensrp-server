@@ -229,6 +229,11 @@
             <version>2.3</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.openpojo</groupId>
+            <artifactId>openpojo</artifactId>
+            <version>0.8.6</version>
+        </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-annotations -->
         <dependency>
