@@ -12,7 +12,7 @@ public class EntityDataMap {
 	public static final String ID = "id";
 	public static final String DETAILS = "details";
 	public static final String DOCUMENT_TYPE = "type";
-	public static final String[] ID_FIELD_ON_ENTITY = new String[]{"caseId", "baseEntityId", "getEntityId"};
+	public static final String[] ID_FIELD_ON_ENTITY = new String[]{"getCaseId", "baseEntityId", "getEntityId"};
 	private Map<String, Class<?>> classMap;
 	
 	public EntityDataMap() {

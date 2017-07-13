@@ -30,7 +30,7 @@ public class AllActions extends MotechBaseRepository<Action> {
         luceneActionRepo=_luceneActionRepo;
     }
 
-    @View(name = "action_by_provider_and_time", map = "function(doc) { if (doc.type === 'Action') { emit([doc.providerId, doc.timeStamp], null); } }")
+    @View(name = "action_by_provider_and_time", map = "function(doc) { if (doc.type === 'Action') { emit([doc.getProviderId, doc.timeStamp], null); } }")
     public List<Action> findByProviderIdAndTimeStamp(String providerId, long timeStamp) {
         ComplexKey startKey = ComplexKey.of(providerId, timeStamp + 1);
         ComplexKey endKey = ComplexKey.of(providerId, Long.MAX_VALUE);
@@ -39,8 +39,8 @@ public class AllActions extends MotechBaseRepository<Action> {
 
     @View(name = "action_by_provider_entityId_scheduleName",
             map = "function(doc) { " +
-                    "if(doc.type === 'Action' && doc.actionTarget === 'alert' && doc.providerId && doc.baseEntityId && doc.data && doc.data.scheduleName) {" +
-                    "emit([doc.providerId, doc.baseEntityId, doc.data.scheduleName], null)} " +
+                    "if(doc.type === 'Action' && doc.actionTarget === 'alert' && doc.getProviderId && doc.baseEntityId && doc.data && doc.data.scheduleName) {" +
+                    "emit([doc.getProviderId, doc.baseEntityId, doc.data.scheduleName], null)} " +
                     "}")
     public List<Action> findAlertByANMIdEntityIdScheduleName(String providerId, String baseEntityId, String scheduleName) {
         ComplexKey key = ComplexKey.of(providerId, baseEntityId, scheduleName);
@@ -94,7 +94,7 @@ public class AllActions extends MotechBaseRepository<Action> {
     public void addOrUpdateAlert(Action alertAction) {
         List<Action> existingAlerts = findAlertByANMIdEntityIdScheduleName(alertAction.providerId(), alertAction.baseEntityId(), alertAction.data().get("scheduleName"));
         if (existingAlerts.size() > 1) {
-            logger.warn(MessageFormat.format("Found more than one alert for the combination of providerId: {0}, getEntityId: {1} and scheduleName : {2}. Alerts : {3}",
+            logger.warn(MessageFormat.format("Found more than one alert for the combination of getProviderId: {0}, getEntityId: {1} and scheduleName : {2}. Alerts : {3}",
                     alertAction.providerId(), alertAction.baseEntityId(), alertAction.data().get("scheduleName"), existingAlerts));
         }
         for (Action existingAlert : existingAlerts) {
@@ -106,7 +106,7 @@ public class AllActions extends MotechBaseRepository<Action> {
     public void markAlertAsInactiveFor(String providerId, String baseEntityId, String scheduleName) {
         List<Action> existingAlerts = findAlertByANMIdEntityIdScheduleName(providerId, baseEntityId, scheduleName);
         if (existingAlerts.size() > 1) {
-            logger.warn(MessageFormat.format("Found more than one alert for the combination of providerId: {0}, getEntityId: {1} and scheduleName : {2}. Alerts : {3}",
+            logger.warn(MessageFormat.format("Found more than one alert for the combination of getProviderId: {0}, getEntityId: {1} and scheduleName : {2}. Alerts : {3}",
                     providerId, baseEntityId, scheduleName, existingAlerts));
         }
         for (Action existingAlert : existingAlerts) {

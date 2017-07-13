@@ -33,14 +33,14 @@ public class AllAlerts extends MotechBaseRepository<Alert> {
         super(Alert.class, db);
     }
 
-    @View(name = "alert_by_provider_and_time", map = "function(doc) { if (doc.type === 'Alert') { emit([doc.providerId, doc.timestamp], null); } }")
+    @View(name = "alert_by_provider_and_time", map = "function(doc) { if (doc.type === 'Alert') { emit([doc.getProviderId, doc.timestamp], null); } }")
     public List<Alert> findByProviderAndTimestamp(String provider, long timeStamp) {
         ComplexKey startKey = ComplexKey.of(provider, timeStamp + 1);
         ComplexKey endKey = ComplexKey.of(provider, Long.MAX_VALUE);
         return db.queryView(createQuery("alert_by_provider_and_time").startKey(startKey).endKey(endKey).includeDocs(true), Alert.class);
     }
 
-    @View(name = "alert_by_provider_and_time_active", map = "function(doc) { if (doc.type === 'Alert' && doc.isActive) { emit([doc.providerId, doc.timestamp], null); } }")
+    @View(name = "alert_by_provider_and_time_active", map = "function(doc) { if (doc.type === 'Alert' && doc.isActive) { emit([doc.getProviderId, doc.timestamp], null); } }")
     public List<Alert> findActiveByProviderAndTimestamp(String provider, long timeStamp) {
         ComplexKey startKey = ComplexKey.of(provider, timeStamp + 1);
         ComplexKey endKey = ComplexKey.of(provider, Long.MAX_VALUE);
@@ -50,7 +50,7 @@ public class AllAlerts extends MotechBaseRepository<Alert> {
     @View(name = "alert_by_provider_entityId_trigger",
             map = "function(doc) { " +
                     "if(doc.type === 'Alert') {" +
-                    "emit([doc.providerId, doc.getEntityId, doc.triggerName], null)} " +
+                    "emit([doc.getProviderId, doc.getEntityId, doc.triggerName], null)} " +
                     "}")
     public List<Alert> findAlertByProviderEntityIdTriggerName(String provider, String entityId, String triggerName) {
         ComplexKey key = ComplexKey.of(provider, entityId, triggerName);
@@ -60,7 +60,7 @@ public class AllAlerts extends MotechBaseRepository<Alert> {
     @View(name = "alert_by_provider_entityId_trigger_active",
             map = "function(doc) { " +
                     "if(doc.type === 'Alert' && doc.isActive) {" +
-                    "emit([doc.providerId, doc.getEntityId, doc.triggerName], null)} " +
+                    "emit([doc.getProviderId, doc.getEntityId, doc.triggerName], null)} " +
                     "}")
     public List<Alert> findActiveAlertByProviderEntityIdTriggerName(String provider, String entityId, String triggerName) {
         ComplexKey key = ComplexKey.of(provider, entityId, triggerName);
@@ -124,7 +124,7 @@ public class AllAlerts extends MotechBaseRepository<Alert> {
     public void markAlertAsClosedFor(String providerId, String entityId, String triggerName, String reasonForClose) {
         List<Alert> existingAlerts = findActiveAlertByProviderEntityIdTriggerName(providerId, entityId, triggerName);
         if (existingAlerts.size() > 1) {
-            logger.warn(MessageFormat.format("Found more than one alert for the combination of providerId: {0}, getEntityId: {1} and triggerName : {2}. Alerts : {3}",
+            logger.warn(MessageFormat.format("Found more than one alert for the combination of getProviderId: {0}, getEntityId: {1} and triggerName : {2}. Alerts : {3}",
                     providerId, entityId, triggerName, existingAlerts));
         }
         for (Alert existingAlert : existingAlerts) {
@@ -136,7 +136,7 @@ public class AllAlerts extends MotechBaseRepository<Alert> {
     public void markAlertAsCompleteFor(String providerId, String entityId, String triggerName, String completionDate) {
         List<Alert> existingAlerts = findActiveAlertByProviderEntityIdTriggerName(providerId, entityId, triggerName);
         if (existingAlerts.size() > 1) {
-            logger.warn(MessageFormat.format("Found more than one alert for the combination of providerId: {0}, getEntityId: {1} and triggerName : {2}. Alerts : {3}",
+            logger.warn(MessageFormat.format("Found more than one alert for the combination of getProviderId: {0}, getEntityId: {1} and triggerName : {2}. Alerts : {3}",
                     providerId, entityId, triggerName, existingAlerts));
         }
         for (Alert existingAlert : existingAlerts) {
@@ -150,7 +150,7 @@ public class AllAlerts extends MotechBaseRepository<Alert> {
         List<Alert> existingAlerts =  findActiveAlertByProviderEntityIdTriggerName(providerId, entityId, triggerName);
         if (existingAlerts.size() > 1) {
             logger.warn(MessageFormat.format("Found more than one active alerts for the combination of "
-            		+ "providerId: {0}, getEntityId: {1} and triggerName: {2}", providerId, entityId, triggerName));
+            		+ "getProviderId: {0}, getEntityId: {1} and triggerName: {2}", providerId, entityId, triggerName));
         }
         
         if(existingAlerts.size() == 0){

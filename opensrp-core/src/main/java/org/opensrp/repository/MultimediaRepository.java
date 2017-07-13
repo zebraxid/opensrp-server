@@ -30,7 +30,7 @@ public class MultimediaRepository extends MotechBaseRepository<Multimedia> {
 		return files.get(0);
 	}
 
-	@View(name = "all_multimedia_files", map = "function(doc) { if (doc.type === 'Multimedia' && doc.providerId) { emit(doc.providerId, doc); } }")
+	@View(name = "all_multimedia_files", map = "function(doc) { if (doc.type === 'Multimedia' && doc.getProviderId) { emit(doc.getProviderId, doc); } }")
 	public List<Multimedia> all(String providerId) {
 		return db.queryView(createQuery("all_multimedia_files").key(providerId)
 				.includeDocs(true), Multimedia.class);

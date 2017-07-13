@@ -36,7 +36,7 @@ public class ELCOScheduleService {
 	
 	
 	public void unEnrollFromScheduleCensus(String caseId, String providerId, String scheduleName,String eventId) {
-		//scheduler.unEnrollFromScheduleCensus(caseId, providerId, HH_SCHEDULE_CENSUS);
+		//scheduler.unEnrollFromScheduleCensus(getCaseId, getProviderId, HH_SCHEDULE_CENSUS);
 		try {
 			scheduler.fullfillMilestoneAndCloseAlert(caseId, providerId, scheduleName, new LocalDate(), eventId);
 		}
@@ -49,7 +49,7 @@ public class ELCOScheduleService {
 	public void unEnrollFromScheduleOfPSRF(String caseId, String providerId, String scheduleName,String eventId) {
 		logger.info(format("Unenrolling Elco from PSRF schedule. Id: {0}", caseId));
 		try {
-			//scheduler.unEnrollFromSchedule(caseId, providerId, ELCO_SCHEDULE_PSRF);
+			//scheduler.unEnrollFromSchedule(getCaseId, getProviderId, ELCO_SCHEDULE_PSRF);
 			scheduler.fullfillMilestoneAndCloseAlert(caseId, providerId, scheduleName, new LocalDate(), eventId);
 
 		}
@@ -65,7 +65,7 @@ public class ELCOScheduleService {
 	public void imediateEnrollIntoMilestoneOfPSRF(String caseId, String date, String provider, String scheduleName,String eventId) {
 		logger.info(format("Enrolling Elco into PSRF schedule. Id: {0}", caseId));
 		scheduler.enrollIntoSchedule(caseId, scheduleName, date, eventId);
-		// scheduleLogService.createImmediateScheduleAndScheduleLog(caseId, date, provider, instanceId, BeneficiaryType.elco, ELCO_SCHEDULE_PSRF, duration,ELCOSchedulesConstantsImediate.IMD_ELCO_SCHEDULE_PSRF);
+		// scheduleLogService.createImmediateScheduleAndScheduleLog(getCaseId, date, provider, instanceId, BeneficiaryType.elco, ELCO_SCHEDULE_PSRF, duration,ELCOSchedulesConstantsImediate.IMD_ELCO_SCHEDULE_PSRF);
 		
 	}
 	public void fullfillMilestone(String entityId, String providerId, String scheduleName, LocalDate completionDate,

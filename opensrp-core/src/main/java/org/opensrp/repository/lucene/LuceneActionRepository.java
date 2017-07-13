@@ -21,7 +21,7 @@ import com.mysql.jdbc.StringUtils;
 @FullText({
         @Index(name = "by_all_criteria", analyzer = "perfield:{baseEntityId:\"keyword\"}", index = "function(doc) {"+
     "if (doc.type !== 'Action') return null;"+
-    "var arr1 = ['baseEntityId','providerId','actionTarget','actionType', 'isActionActive','timeStamp','version'];"+
+    "var arr1 = ['baseEntityId','getProviderId','actionTarget','actionType', 'isActionActive','timeStamp','version'];"+
     "var ret = new Document();"+
     "for (var i in arr1) {"+
         "ret.add(doc[arr1[i]], {"+
@@ -68,7 +68,7 @@ public class LuceneActionRepository extends CouchDbRepositorySupportWithLucene<A
 			//convert team string to list
 			String[] idsArray = org.apache.commons.lang.StringUtils.split(team, ",");
 			List<String> ids = new ArrayList<String>(Arrays.asList(idsArray));
-			//include providerId records also
+			//include getProviderId records also
 			if (providerId != null && !ids.contains(providerId)) {
 				ids.add(providerId);
 			}
