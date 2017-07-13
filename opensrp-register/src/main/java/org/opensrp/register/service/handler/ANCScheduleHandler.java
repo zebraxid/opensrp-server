@@ -9,10 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ANCScheduleHandler extends BaseScheduleHandler {
+public class ANCScheduleHandler extends BaseScheduleHandler {	
 	
-	@Autowired
 	private AnteNatalCareSchedulesService ancScheduleService;
+    @Autowired
+    public ANCScheduleHandler(AnteNatalCareSchedulesService ancScheduleService){
+        this.ancScheduleService = ancScheduleService;
+	}
 	@Override
 	public void handle(Event event, JSONObject scheduleConfigEvent,String scheduleName) {
 		try {

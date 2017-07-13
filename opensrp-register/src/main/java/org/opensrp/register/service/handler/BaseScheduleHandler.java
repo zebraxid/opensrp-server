@@ -64,9 +64,12 @@ abstract class BaseScheduleHandler implements EventsHandler {
 	
 	protected static DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 	
-	@Autowired
-	ClientService clientService;
 	
+    private ClientService clientService;
+    @Autowired
+    public void setClientService(ClientService clientService){
+        this.clientService = clientService;
+    }
 	/**
 	 * Converts values in a json key into key-value pair
 	 * 
@@ -136,7 +139,7 @@ abstract class BaseScheduleHandler implements EventsHandler {
 	protected String getReferenceDateForSchedule(Event event, JSONObject scheduleConfigEvent, String action)
 	    throws JSONException {
 		Map<String, Object> refDateFields = new HashMap<String, Object>();
-		if (action.equalsIgnoreCase(ActionType.enroll.toString())) {
+		if (action.equalsIgnoreCase(ActionType.enroll.toString())) {			
 			refDateFields = getReferenceDateFields(scheduleConfigEvent);
 		} else if (action.equalsIgnoreCase(ActionType.fulfill.toString())) {
 			refDateFields = getFulfillmentDateFields(scheduleConfigEvent);
@@ -144,10 +147,9 @@ abstract class BaseScheduleHandler implements EventsHandler {
 		JSONObject eventJson = objectToJson(event);
 		Map<String, Object> obs = getEventObs(eventJson);
 		Map<String, Object> obsByFormSubmissionField = getEventObsByFormSubmissionField(eventJson);
-		String dateStr = "";
-		
+		String dateStr = "";		
 		for (Map.Entry<String, Object> entry : refDateFields.entrySet()) {
-			String key = entry.getKey();//"concept"
+			String key = entry.getKey();//"concept"			
 			String value = entry.getValue().toString();//"concept value or fieldname"
 			if (key.equalsIgnoreCase(JSON_KEY_CONCEPT) && !refDateFields.containsKey(JSON_KEY_EVENT)) {
 				//date is a concept and in the current event being processed search it in the event's obs
@@ -169,8 +171,9 @@ abstract class BaseScheduleHandler implements EventsHandler {
 				if(obsByFormSubmissionField.containsKey(value) && !obsByFormSubmissionField.get(value).toString().isEmpty()){
 					dateStr = getDateValue(obsByFormSubmissionField.get(value));
 				}
-			} else if(key.equalsIgnoreCase(JSON_KEY_TYPE) && value.equalsIgnoreCase("Client")){
+			} else if(key.equalsIgnoreCase(JSON_KEY_TYPE) && value.equalsIgnoreCase("Client")){				
 				Client client = getClient(event);
+				
 				String fieldValue = refDateFields.get(JSON_KEY_FIELD) != null? refDateFields.get(JSON_KEY_FIELD).toString() : null;
 				
 				if(client != null && fieldValue != null){
