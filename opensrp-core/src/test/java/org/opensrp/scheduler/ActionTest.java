@@ -20,7 +20,7 @@ public class ActionTest {
     }
 
     @Test
-    public void testConstructorGetterAndSetter() {
+    public void testGetterAndSetter() {
         Validator validator = ValidatorBuilder.create()
                 .with(new SetterTester())
                 .with(new GetterTester())
