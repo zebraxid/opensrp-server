@@ -14,8 +14,8 @@ import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.form.domain.SubFormData;
 
 public class FormSubmissionBuilder {
-    private String anmId = "anmId";
-    private String instanceId = "instance id 1";
+    private String anmId = "getAnmId";
+    private String instanceId = "getFormInstance id 1";
     private String entityId = "entity id 1";
     private String formName = "form name 1";
     private String bind_type = "entity 1";

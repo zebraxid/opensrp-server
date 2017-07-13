@@ -78,7 +78,7 @@ public class FormSubmissionListener {
 
             for (FormSubmission submission : formSubmissions) {
             	try{
-	            	logger.info(format("Invoking save for form with instance Id: {0} and for entity Id: {1}", submission.instanceId(), submission.entityId()));
+	            	logger.info(format("Invoking save for form with getFormInstance Id: {0} and for entity Id: {1}", submission.instanceId(), submission.entityId()));
 	
 	            	if(submission.getField("no_client_event") == null || submission.getField("no_client_event").contains("false")){
 		            	fsp.processFormSubmission(submission);

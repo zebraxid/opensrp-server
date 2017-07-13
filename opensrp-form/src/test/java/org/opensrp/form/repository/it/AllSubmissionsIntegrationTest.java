@@ -29,10 +29,10 @@ public class AllSubmissionsIntegrationTest extends TestDatabaseConfig {
 
     @Test
     public void shouldCheckIfFormSubmissionExistsByInstanceId() throws Exception {
-        FormSubmission formSubmission = new FormSubmission("anm id 1", "instance id 1", "form name 1", "entity id 1", 1L, "1", null, 0L);
+        FormSubmission formSubmission = new FormSubmission("anm id 1", "getFormInstance id 1", "form name 1", "entity id 1", 1L, "1", null, 0L);
         formSubmissions.add(formSubmission);
 
-        assertTrue(formSubmissions.exists("instance id 1"));
+        assertTrue(formSubmissions.exists("getFormInstance id 1"));
         assertFalse(formSubmissions.exists("Invalid Instance Id"));
     }
 
@@ -40,13 +40,13 @@ public class AllSubmissionsIntegrationTest extends TestDatabaseConfig {
     public void shouldFetchAllFormSubmissionsAfterServerVersion() throws Exception {
         long baseTimeStamp = DateUtil.now().getMillis();
 
-        FormSubmission firstFormSubmission = new FormSubmission("anm id 1", "instance id 1", "form name 1", "entity id 1", 0L, "1", null, baseTimeStamp);
+        FormSubmission firstFormSubmission = new FormSubmission("anm id 1", "getFormInstance id 1", "form name 1", "entity id 1", 0L, "1", null, baseTimeStamp);
         formSubmissions.add(firstFormSubmission);
 
-        FormSubmission secondFormSubmission = new FormSubmission("anm id 2", "instance id 2", "form name 1", "entity id 2", 1L, "1", null, baseTimeStamp + 1);
+        FormSubmission secondFormSubmission = new FormSubmission("anm id 2", "getFormInstance id 2", "form name 1", "entity id 2", 1L, "1", null, baseTimeStamp + 1);
         formSubmissions.add(secondFormSubmission);
 
-        FormSubmission thirdFormSubmission = new FormSubmission("anm id 3", "instance id 3", "form name 1", "entity id 3", 2L, "1", null, baseTimeStamp + 2);
+        FormSubmission thirdFormSubmission = new FormSubmission("anm id 3", "getFormInstance id 3", "form name 1", "entity id 3", 2L, "1", null, baseTimeStamp + 2);
         formSubmissions.add(thirdFormSubmission);
 
         assertEquals(asList(firstFormSubmission, secondFormSubmission, thirdFormSubmission), formSubmissions.findByServerVersion(0L));
@@ -59,13 +59,13 @@ public class AllSubmissionsIntegrationTest extends TestDatabaseConfig {
     public void shouldFetchAllFormSubmissions() throws Exception {
         long baseTimeStamp = DateUtil.now().getMillis();
 
-        FormSubmission firstFormSubmission = new FormSubmission("anm id 1", "instance id 1", "form name 1", "entity id 1", 0L, "1", null, baseTimeStamp);
+        FormSubmission firstFormSubmission = new FormSubmission("anm id 1", "getFormInstance id 1", "form name 1", "entity id 1", 0L, "1", null, baseTimeStamp);
         formSubmissions.add(firstFormSubmission);
 
-        FormSubmission secondFormSubmission = new FormSubmission("anm id 2", "instance id 2", "form name 1", "entity id 2", 1L, "1", null, baseTimeStamp + 1);
+        FormSubmission secondFormSubmission = new FormSubmission("anm id 2", "getFormInstance id 2", "form name 1", "entity id 2", 1L, "1", null, baseTimeStamp + 1);
         formSubmissions.add(secondFormSubmission);
 
-        FormSubmission thirdFormSubmission = new FormSubmission("anm id 3", "instance id 3", "form name 1", "entity id 3", 2L, "1", null, baseTimeStamp + 2);
+        FormSubmission thirdFormSubmission = new FormSubmission("anm id 3", "getFormInstance id 3", "form name 1", "entity id 3", 2L, "1", null, baseTimeStamp + 2);
         formSubmissions.add(thirdFormSubmission);
 
         assertEquals(asList(firstFormSubmission, secondFormSubmission, thirdFormSubmission), formSubmissions.allFormSubmissions(0, 3));
@@ -78,13 +78,13 @@ public class AllSubmissionsIntegrationTest extends TestDatabaseConfig {
     @Test
     public void shouldFetchFormSubmissionsBasedOnANMIDTimeStampAndBatchSize() throws Exception {
         long baseTimeStamp = DateUtil.now().getMillis();
-        FormSubmission firstFormSubmission = new FormSubmission("ANM 1", "instance id 1", "form name 1", "entity id 1", 0L, "1", null, baseTimeStamp);
+        FormSubmission firstFormSubmission = new FormSubmission("ANM 1", "getFormInstance id 1", "form name 1", "entity id 1", 0L, "1", null, baseTimeStamp);
         formSubmissions.add(firstFormSubmission);
 
-        FormSubmission secondFormSubmission = new FormSubmission("ANM 1", "instance id 2", "form name 1", "entity id 2", 1L, "1", null, baseTimeStamp + 1);
+        FormSubmission secondFormSubmission = new FormSubmission("ANM 1", "getFormInstance id 2", "form name 1", "entity id 2", 1L, "1", null, baseTimeStamp + 1);
         formSubmissions.add(secondFormSubmission);
 
-        FormSubmission thirdFormSubmission = new FormSubmission("ANM 1", "instance id 3", "form name 1", "entity id 3", 2L, "1", null, baseTimeStamp + 2);
+        FormSubmission thirdFormSubmission = new FormSubmission("ANM 1", "getFormInstance id 3", "form name 1", "entity id 3", 2L, "1", null, baseTimeStamp + 2);
         formSubmissions.add(thirdFormSubmission);
 
         assertEquals(asList(firstFormSubmission, secondFormSubmission, thirdFormSubmission), formSubmissions.findByANMIDAndServerVersion("ANM 1", 0L, null));
@@ -97,31 +97,31 @@ public class AllSubmissionsIntegrationTest extends TestDatabaseConfig {
     @Test
     public void shouldFindByFormName(){    	
     	 long baseTimeStamp = DateUtil.now().getMillis();
-         FormSubmission firstFormSubmission = new FormSubmission("ANM 1", "instance id 1", "DemoForm", "entity id 1", 0L, "1", null, baseTimeStamp);
+         FormSubmission firstFormSubmission = new FormSubmission("ANM 1", "getFormInstance id 1", "DemoForm", "entity id 1", 0L, "1", null, baseTimeStamp);
          formSubmissions.add(firstFormSubmission);
          assertEquals(asList(firstFormSubmission), formSubmissions.findByFormName("DemoForm", 0l));
-         FormSubmission secondFormSubmission = new FormSubmission("ANM 1", "instance id 2", "form name 1", "entity id 2", 1L, "1", null, baseTimeStamp + 1);
+         FormSubmission secondFormSubmission = new FormSubmission("ANM 1", "getFormInstance id 2", "form name 1", "entity id 2", 1L, "1", null, baseTimeStamp + 1);
          assertNotSame(asList(secondFormSubmission), formSubmissions.findByFormName("DemoForm", 0l));
     }
     @Test
     public void shouldGetAllFormSubmissions(){
     	 long baseTimeStamp = DateUtil.now().getMillis();
-         FormSubmission firstFormSubmission = new FormSubmission("ANM 1", "instance id 1", "DemoForm Name", "entity id 1", 0L, "1", null, baseTimeStamp);
+         FormSubmission firstFormSubmission = new FormSubmission("ANM 1", "getFormInstance id 1", "DemoForm Name", "entity id 1", 0L, "1", null, baseTimeStamp);
          formSubmissions.add(firstFormSubmission);
          assertEquals(asList(firstFormSubmission), formSubmissions.allFormSubmissions(getStdCouchDbConnectorForOpensrpForm(),0, 1));
-         FormSubmission secondFormSubmission = new FormSubmission("ANM 1", "instance id 2", "form name 1", "entity id 2", 1L, "1", null, baseTimeStamp + 1);
+         FormSubmission secondFormSubmission = new FormSubmission("ANM 1", "getFormInstance id 2", "form name 1", "entity id 2", 1L, "1", null, baseTimeStamp + 1);
          assertNotSame(asList(secondFormSubmission), formSubmissions.allFormSubmissions(getStdCouchDbConnectorForOpensrpForm(),0, 1));
     }
     @Test
     public void shouldFindByMetadata(){
     	 long baseTimeStamp = DateUtil.now().getMillis();
-         FormSubmission firstFormSubmission = new FormSubmission("ANM 2", "instance id 7", "DemoForm ff", "entity id 78", 0L, "1", null, baseTimeStamp);
+         FormSubmission firstFormSubmission = new FormSubmission("ANM 2", "getFormInstance id 7", "DemoForm ff", "entity id 78", 0L, "1", null, baseTimeStamp);
          Map<String, Object> metadata = new HashMap<>();
          metadata.put("formType", new String("type"));
          firstFormSubmission.setMetadata(metadata);
          formSubmissions.add(firstFormSubmission);
          assertEquals(asList(firstFormSubmission), formSubmissions.findByMetadata("formType","type"));
-         FormSubmission secondFormSubmission = new FormSubmission("ANM 1", "instance id 2", "form name 1", "entity id 2", 1L, "1", null, baseTimeStamp + 1);
+         FormSubmission secondFormSubmission = new FormSubmission("ANM 1", "getFormInstance id 2", "form name 1", "entity id 2", 1L, "1", null, baseTimeStamp + 1);
          assertNotSame(asList(secondFormSubmission), formSubmissions.findByMetadata("formType","type"));
     }
 }

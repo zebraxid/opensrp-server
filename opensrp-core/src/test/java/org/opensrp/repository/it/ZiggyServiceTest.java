@@ -65,7 +65,7 @@ public class ZiggyServiceTest extends TestResourceLoader{
 
     @Test
     public void test() throws Exception {
-        String params = "{\"instanceId\":\"88c0e824-10b4-44c2-9429-754b8d823776\", \"anmId\":\"demotest\", \"entityId\":\"a3f2abf4-2699-4761-819a-cea739224164\",\"formName\":\"new_household_registration\",\"clientVersion\":\"1430997074596\", \"serverVersion\": \"1430998001293\"}";
+        String params = "{\"getInstanceId\":\"88c0e824-10b4-44c2-9429-754b8d823776\", \"getAnmId\":\"demotest\", \"getEntityId\":\"a3f2abf4-2699-4761-819a-cea739224164\",\"getFormName\":\"new_household_registration\",\"getClientVersion\":\"1430997074596\", \"getServerVersion\": \"1430998001293\"}";
         FormSubmission fs = getFormSubmissionFor("new_household_registration",1);
         String formInstance = new Gson().toJson(fs.instance());
 

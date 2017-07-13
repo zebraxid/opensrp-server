@@ -39,7 +39,7 @@ public class FormDataTest {
     }
     public FormData getForm(){
         String bind_type = "pkchild";
-        String default_bind_path = "/model/instance/Child_Vaccination_Enrollment/";
+        String default_bind_path = "/model/getFormInstance/Child_Vaccination_Enrollment/";
         List<FormField> fields = new ArrayList<>();
         FormField formField1 = new FormField("provider_town","pktown","pkchild.provider_town");
         FormField formField2 = new FormField("provider_city","providerCity","pkchild.provider_city");
@@ -59,7 +59,7 @@ public class FormDataTest {
     @Test(expected=RuntimeException.class)
     public void shouldGetRunTimeExceptionBygetSubFormByName(){
         String bind_type = "pkchild";
-        String default_bind_path = "/model/instance/Child_Vaccination_Enrollment/";
+        String default_bind_path = "/model/getFormInstance/Child_Vaccination_Enrollment/";
         List<FormField> fields = new ArrayList<>();
         FormField formField1 = new FormField("provider_town","pktown","pkchild.provider_town");
         FormField formField2 = new FormField("provider_city","providerCity","pkchild.provider_city");

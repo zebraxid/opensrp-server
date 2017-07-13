@@ -28,7 +28,7 @@ public class FormSubmissionRouter {
 	public void formSubmissionProcessed(String client, List<String> dependents, FormSubmission formSubmission) {
 		FormSubmissionProcessedListener handler = handlerMapper.formSubmissionProcessedListenerMap().get(formSubmission.formName());
 		if(handler != null){
-			logger.info(format("Found a post processor handler for form submission ( {0} ) with instance Id: {1} for entity: {2}",
+			logger.info(format("Found a post processor handler for form submission ( {0} ) with getFormInstance Id: {1} for entity: {2}",
 					formSubmission.formName(), formSubmission.instanceId(), formSubmission.entityId()));
 			handler.onFormSubmissionProcessed(client, dependents, formSubmission);
 		}
@@ -40,18 +40,18 @@ public class FormSubmissionRouter {
 	}
 	
 	public void route(FormSubmission formSubmission) throws Exception {
-		CustomFormSubmissionHandler handler = handlerMapper.customFormSubmissionHandlerMap().get(formSubmission.formName());// handlerMap.get(submission.formName());
+		CustomFormSubmissionHandler handler = handlerMapper.customFormSubmissionHandlerMap().get(formSubmission.formName());// handlerMap.get(submission.getFormName());
 		if (handler == null) {
-			logger.warn(format("Could not find a handler due to unknown form submission ( {0} ) with instance Id: {1} for entity: {2}",
+			logger.warn(format("Could not find a handler due to unknown form submission ( {0} ) with getFormInstance Id: {1} for entity: {2}",
 				formSubmission.formName(), formSubmission.instanceId(), formSubmission.entityId()));
 			return;
 		}
-		logger.info(format("Handling {0} form submission with instance Id: {1} for entity: {2}",
+		logger.info(format("Handling {0} form submission with getFormInstance Id: {1} for entity: {2}",
 				formSubmission.formName(), formSubmission.instanceId(), formSubmission.entityId()));
 		try {
 			handler.handle(formSubmission);
 		} catch (Exception e) {
-			logger.error(format("Handling {0} form submission with instance Id: {1} for entity: {2} failed with exception : {3}",
+			logger.error(format("Handling {0} form submission with getFormInstance Id: {1} for entity: {2} failed with exception : {3}",
 					formSubmission.formName(), formSubmission.instanceId(), formSubmission.entityId(), getFullStackTrace(e)));
 			throw e;
 		}

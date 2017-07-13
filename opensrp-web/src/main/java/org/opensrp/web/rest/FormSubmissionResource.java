@@ -63,8 +63,8 @@ public class FormSubmissionResource extends RestResource<FormSubmission>{
 	
 	@Override
 	public List<FormSubmission> search(HttpServletRequest request) throws ParseException {
-		String formName = getStringFilter("formName", request);
-		String entityId = getStringFilter("entityId", request);
+		String formName = getStringFilter("getFormName", request);
+		String entityId = getStringFilter("getEntityId", request);
 		String version = getStringFilter("version", request);//TODO
 		long v = version==null?0L:Long.parseLong(version);
 		

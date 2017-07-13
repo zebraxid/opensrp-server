@@ -8,9 +8,9 @@ public class RegisterConstants {
     public static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd";
     public static final String EMPTY_STRING = "";
     public static class Form {
-        public static final String ENTITY_ID = "entityId";
+        public static final String ENTITY_ID = "getEntityId";
         public static final String ANM_ID = "anmId";
-        public static final String FORM_NAME = "formName";
+        public static final String FORM_NAME = "getFormName";
         public static final String INSTANCE_ID = "instanceId";
         public static final String CLIENT_VERSION = "clientVersion";
         public static final String SERVER_VERSION = "serverVersion";

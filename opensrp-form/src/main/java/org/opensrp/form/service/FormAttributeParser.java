@@ -574,7 +574,7 @@ public class FormAttributeParser {
 			for (int j = 0; j < nodeChAr.size(); j++) {
 				JsonObject option = nodeChAr.get(j).getAsJsonObject();
 				if(option.get("name").getAsString().equalsIgnoreCase(fieldVal)){
-					return convertToMap(option.get("instance"));
+					return convertToMap(option.get("getFormInstance"));
 				}
 			}
 		}

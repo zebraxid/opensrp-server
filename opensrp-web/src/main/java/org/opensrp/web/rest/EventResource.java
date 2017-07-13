@@ -80,7 +80,7 @@ public class EventResource extends RestResource<Event> {
 	}
 	
 	/**
-	 * Fetch events ordered by serverVersion ascending order and return the clients associated with
+	 * Fetch events ordered by getServerVersion ascending order and return the clients associated with
 	 * the events
 	 * 
 	 * @param request

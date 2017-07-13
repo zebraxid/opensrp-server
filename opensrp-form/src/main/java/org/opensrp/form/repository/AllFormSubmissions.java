@@ -34,7 +34,7 @@ public class AllFormSubmissions extends MotechBaseRepository<FormSubmission> {
         return submissions.get(0);
     }
 
-    @View(name = "formSubmission_by_server_version", map = "function(doc) { if (doc.type === 'FormSubmission') { emit([doc.serverVersion], null); } }")
+    @View(name = "formSubmission_by_server_version", map = "function(doc) { if (doc.type === 'FormSubmission') { emit([doc.getServerVersion], null); } }")
     public List<FormSubmission> findByServerVersion(long serverVersion) {
         ComplexKey startKey = ComplexKey.of(serverVersion + 1);
         ComplexKey endKey = ComplexKey.of(Long.MAX_VALUE);
@@ -56,7 +56,7 @@ public class AllFormSubmissions extends MotechBaseRepository<FormSubmission> {
     }
 
     @View(name = "formSubmission_by_anm_and_server_version",
-            map = "function(doc) { if (doc.type === 'FormSubmission') { emit([doc.anmId, doc.serverVersion], null); } }")
+            map = "function(doc) { if (doc.type === 'FormSubmission') { emit([doc.getAnmId, doc.getServerVersion], null); } }")
     public List<FormSubmission> findByANMIDAndServerVersion(String anmId, long version, Integer batchSize) {
         ComplexKey startKey = ComplexKey.of(anmId, version + 1);
         ComplexKey endKey = ComplexKey.of(anmId, Long.MAX_VALUE);
@@ -71,7 +71,7 @@ public class AllFormSubmissions extends MotechBaseRepository<FormSubmission> {
     }
     
     @View(name = "formSubmission_by_form_name_and_server_version", 
-    		map = "function(doc) { if (doc.type === 'FormSubmission') { emit([doc.formName, doc.serverVersion]); } }")
+    		map = "function(doc) { if (doc.type === 'FormSubmission') { emit([doc.getFormName, doc.getServerVersion]); } }")
     public List<FormSubmission> findByFormName(String formName, long version) {
     	ComplexKey startKey = ComplexKey.of(formName, version + 1);
         ComplexKey endKey = ComplexKey.of(formName, Long.MAX_VALUE);

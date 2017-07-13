@@ -135,7 +135,7 @@ public class FormLifeCycleTest extends TestResourceLoader{
 		assertNotNull(clientService.getByBaseEntityId(fs.entityId()));
 		List<Event> evl = allEvents.findByBaseEntityId(fs.entityId());
 		assertTrue(evl.size() == 1);
-		//TODO assertTrue(eventService.findEventsBy(fs.entityId(), null, "Enrollement Vaccination Register", null, "pkchild", 0, Long.MAX_VALUE).size() == 1);
+		//TODO assertTrue(eventService.findEventsBy(fs.getEntityId(), null, "Enrollement Vaccination Register", null, "pkchild", 0, Long.MAX_VALUE).size() == 1);
 		Enrollment p1schedule = scheduleService.getEnrollment(fs.entityId(), "PENTAVALENT 1");
 		assertNotNull(p1schedule);
 		assertTrue(p1schedule.isActive());

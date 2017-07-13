@@ -76,7 +76,7 @@ public class FormSubmissionService {
                 logger.warn(format("Received form submission that already exists. Skipping. Submission: {0}", submission));
                 continue;
             }
-            logger.info(format("Saving form {0} with instance Id: {1} and for entity Id: {2}",
+            logger.info(format("Saving form {0} with getFormInstance Id: {1} and for entity Id: {2}",
                     submission.formName(), submission.instanceId(), submission.entityId()));
             submission.setServerVersion(DateUtil.millis());
             allFormSubmissions.add(submission);

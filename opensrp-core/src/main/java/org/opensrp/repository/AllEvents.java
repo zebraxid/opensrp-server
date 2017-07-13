@@ -99,7 +99,7 @@ public class AllEvents extends MotechBaseRepository<Event> {
 		targetDb.create(event);
 	}
 	
-	@View(name = "events_by_version", map = "function(doc) { if (doc.type === 'Event') { emit([doc.serverVersion], null); } }")
+	@View(name = "events_by_version", map = "function(doc) { if (doc.type === 'Event') { emit([doc.getServerVersion], null); } }")
 	public List<Event> findByServerVersion(long serverVersion) {
 		ComplexKey startKey = ComplexKey.of(serverVersion + 1);
 		ComplexKey endKey = ComplexKey.of(Long.MAX_VALUE);
@@ -147,7 +147,7 @@ public class AllEvents extends MotechBaseRepository<Event> {
 	}
 	
 
-	@View(name = "events_by_empty_server_version", map = "function(doc) { if (doc.type == 'Event' && !doc.serverVersion) { emit(doc._id, doc); } }")
+	@View(name = "events_by_empty_server_version", map = "function(doc) { if (doc.type == 'Event' && !doc.getServerVersion) { emit(doc._id, doc); } }")
 	public List<Event> findByEmptyServerVersion() {
 		return db.queryView(createQuery("events_by_empty_server_version").limit(200).includeDocs(true), Event.class);
 	}

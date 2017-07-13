@@ -48,10 +48,10 @@ public class ZiggyService {
         try {
             invocable.invokeMethod(ziggyFormController, SAVE_METHOD_NAME, params, formInstance);
             logger.info(format("Saving form successful, with params: {0}.", params));
-            logger.debug(format("Saving form successful, with params: {0}, with instance {1}.", params, formInstance));
+            logger.debug(format("Saving form successful, with params: {0}, with getFormInstance {1}.", params, formInstance));
         } catch (Exception e) {
         	e.printStackTrace();
-            logger.error(format("Form save failed, with params: {0}, with instance {1}. Exception: {2}", params, formInstance, e));
+            logger.error(format("Form save failed, with params: {0}, with getFormInstance {1}. Exception: {2}", params, formInstance, e));
         }
     }
 

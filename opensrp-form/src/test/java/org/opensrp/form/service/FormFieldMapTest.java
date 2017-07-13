@@ -15,7 +15,7 @@ public class FormFieldMapTest {
         String name = "provider_town";
         String value = "ProviderTown";
         String source = "pkchild.provider_town";
-        String bindPath = "/model/instance/CensusNewMemberRegistration";
+        String bindPath = "/model/getFormInstance/CensusNewMemberRegistration";
         String type = "FormSubmission";
         Map<String, String> attributes = new HashMap<>();
         attributes.put("atr1", "atrValue1");

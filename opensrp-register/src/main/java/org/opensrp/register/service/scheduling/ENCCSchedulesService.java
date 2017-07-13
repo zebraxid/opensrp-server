@@ -31,7 +31,7 @@ public class ENCCSchedulesService {
 	public void fullfillMilestone(String entityId, String providerId, String scheduleName, LocalDate completionDate,
 	                              String eventId) {
 		try {
-			//scheduler.fullfillMilestone(entityId, providerId, scheduleName, completionDate);
+			//scheduler.fullfillMilestone(getEntityId, providerId, scheduleName, completionDate);
 			scheduler.fullfillMilestoneAndCloseAlert(entityId, providerId, scheduleName, completionDate, eventId);
 			logger.info("fullfillMilestone with id: :" + entityId);
 		}

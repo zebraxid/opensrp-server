@@ -27,7 +27,7 @@ public class ExportResource {
 
 	@RequestMapping(value = "dumpcsv" , method = RequestMethod.GET)
 	public @ResponseBody String dumpCsv(HttpServletRequest request) throws ParseException, IOException {
-		String formName = getStringFilter("formName", request);
+		String formName = getStringFilter("getFormName", request);
 		return IOUtils.toString(fsv.dump_csv(formName));
 	}
 	

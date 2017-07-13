@@ -33,7 +33,7 @@ public class JsonParser {
 		//read json file data to String
 		//byte[] jsonData = Files.readAllBytes(Paths.get("tt.json"));
 		JsonParser jsonParser=new  JsonParser();
-		//create ObjectMapper instance
+		//create ObjectMapper getFormInstance
 		ObjectMapper objectMapper = new ObjectMapper();
 	//	objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
 	//	objectMapper.readValue(jsonData, FormSubmission.class)
@@ -83,7 +83,7 @@ public class JsonParser {
 	
 	private List<FormField> getFields(JsonNode node,String source){
 		List<FormField> list =new ArrayList<FormField>();
-		//String source="/model/instance/"+source+"/";
+		//String source="/model/getFormInstance/"+source+"/";
 		
 		Iterator<JsonNode> elements = node.getElements();
 		
@@ -156,7 +156,7 @@ public class JsonParser {
 		
 	
 		String formName=rootNode.get("name").asText();
-	String source="/model/instance/"+formName+"/";
+	String source="/model/getFormInstance/"+formName+"/";
 	
 		//System.out.println(rootNode.get("name"));
 		JsonNode phoneNosNode = rootNode.path("children");
@@ -196,7 +196,7 @@ public class JsonParser {
 	
 	private List<SubFormDefinition> getSubForms(JsonNode node,String source){
 		List<SubFormDefinition> list =new ArrayList<SubFormDefinition>();
-		//String source="/model/instance/"+source+"/";
+		//String source="/model/getFormInstance/"+source+"/";
 		Iterator<JsonNode> elements = node.getElements();
 		//System.out.println(phoneNosNode);
 		while(elements.hasNext()){

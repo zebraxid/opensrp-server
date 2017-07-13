@@ -45,7 +45,7 @@ public class XlsFormDownloaderController {
 		Map<String, Object> model = new HashMap<String, Object>();
 		String userName=request.getParameter("userName").trim();
 		String formId=request.getParameter("formId").trim();
-		String formName=request.getParameter("formName").trim();
+		String formName=request.getParameter("getFormName").trim();
 		String formPk=request.getParameter("formPk").trim();
 		String password=request.getParameter("password").trim();
 		
@@ -64,7 +64,7 @@ public class XlsFormDownloaderController {
 		
 
 		//	BufferedReader br = new BufferedReader(
-		//		new FileReader(getPath().trim()+"form/"+formName+"form.json"));
+		//		new FileReader(getPath().trim()+"form/"+getFormName+"form.json"));
 
 			//convert the json string back to object
 			//FormSubmission obj = gson.fromJson(br, FormSubmission.class);

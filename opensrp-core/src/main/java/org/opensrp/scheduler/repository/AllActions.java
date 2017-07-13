@@ -94,7 +94,7 @@ public class AllActions extends MotechBaseRepository<Action> {
     public void addOrUpdateAlert(Action alertAction) {
         List<Action> existingAlerts = findAlertByANMIdEntityIdScheduleName(alertAction.providerId(), alertAction.baseEntityId(), alertAction.data().get("scheduleName"));
         if (existingAlerts.size() > 1) {
-            logger.warn(MessageFormat.format("Found more than one alert for the combination of providerId: {0}, entityId: {1} and scheduleName : {2}. Alerts : {3}",
+            logger.warn(MessageFormat.format("Found more than one alert for the combination of providerId: {0}, getEntityId: {1} and scheduleName : {2}. Alerts : {3}",
                     alertAction.providerId(), alertAction.baseEntityId(), alertAction.data().get("scheduleName"), existingAlerts));
         }
         for (Action existingAlert : existingAlerts) {
@@ -106,7 +106,7 @@ public class AllActions extends MotechBaseRepository<Action> {
     public void markAlertAsInactiveFor(String providerId, String baseEntityId, String scheduleName) {
         List<Action> existingAlerts = findAlertByANMIdEntityIdScheduleName(providerId, baseEntityId, scheduleName);
         if (existingAlerts.size() > 1) {
-            logger.warn(MessageFormat.format("Found more than one alert for the combination of providerId: {0}, entityId: {1} and scheduleName : {2}. Alerts : {3}",
+            logger.warn(MessageFormat.format("Found more than one alert for the combination of providerId: {0}, getEntityId: {1} and scheduleName : {2}. Alerts : {3}",
                     providerId, baseEntityId, scheduleName, existingAlerts));
         }
         for (Action existingAlert : existingAlerts) {

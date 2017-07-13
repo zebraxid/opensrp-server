@@ -147,11 +147,11 @@ public class AllClients extends MotechBaseRepository<Client> {
 	 * 
 	 * @return
 	 */
-	@View(name = "clients_by_empty_server_version", map = "function(doc) { if ( doc.type == 'Client' && !doc.serverVersion) { emit(doc._id, doc); } }")
+	@View(name = "clients_by_empty_server_version", map = "function(doc) { if ( doc.type == 'Client' && !doc.getServerVersion) { emit(doc._id, doc); } }")
 	public List<Client> findByEmptyServerVersion() {
 		return db.queryView(createQuery("clients_by_empty_server_version").limit(200).includeDocs(true), Client.class);
 	}
-	@View(name = "events_by_version", map = "function(doc) { if (doc.type === 'Client') { emit([doc.serverVersion], null); } }")
+	@View(name = "events_by_version", map = "function(doc) { if (doc.type === 'Client') { emit([doc.getServerVersion], null); } }")
 	public List<Client> findByServerVersion(long serverVersion) {
 		ComplexKey startKey = ComplexKey.of(serverVersion + 1);
 		ComplexKey endKey = ComplexKey.of(System.currentTimeMillis());

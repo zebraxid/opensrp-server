@@ -12,17 +12,17 @@ import org.junit.Test;
 public class SubformMapTest {
     @Test
     public void shouldGetFieldValueAndGetField(){
-        String entityId = "entityId";
+        String entityId = "getEntityId";
         String subformName ="woman_registration";
         String bindType = "woman";
-        String defaultBindPath = "/model/instance/CensusNewMemberRegistration/HH_Member";
+        String defaultBindPath = "/model/getFormInstance/CensusNewMemberRegistration/HH_Member";
         Map<String, String> formAttributes =new HashMap<>();
         List<FormFieldMap> fields = new ArrayList<>();
         formAttributes.put("atr", "atrValue");
         String name = "provider_town";
         String value = "ProviderTown";
         String source = "pkchild.provider_town";
-        String bindPath = "/model/instance/CensusNewMemberRegistration";
+        String bindPath = "/model/getFormInstance/CensusNewMemberRegistration";
         String type = "FormSubmission";
         Map<String, String> attributes = new HashMap<>();
         attributes.put("atr1", "atrValue1");

@@ -36,7 +36,7 @@ public class FormSubmissionServiceTest extends TestDatabaseConfig{
     public void shouldFindByFormName(){
         long baseTimeStamp = DateUtil.now().getMillis();
         String provider = "ANM 6";
-        FormSubmission firstFormSubmission = new FormSubmission("ANM 6", "instance id 77", "DemoForm77", "entity id 778", 0L, "1", null, baseTimeStamp);
+        FormSubmission firstFormSubmission = new FormSubmission("ANM 6", "getFormInstance id 77", "DemoForm77", "entity id 778", 0L, "1", null, baseTimeStamp);
         Map<String, Object> metadata = new HashMap<>();
         metadata.put("formType", new String("type"));
         firstFormSubmission.setMetadata(metadata);
@@ -49,7 +49,7 @@ public class FormSubmissionServiceTest extends TestDatabaseConfig{
     public void shouldGetRuntimeExceptionForFindByFormName(){
         long baseTimeStamp = DateUtil.now().getMillis();
         String provider = "ANM 6";
-        FormSubmission firstFormSubmission = new FormSubmission("ANM 6", "instance id 77", "DemoForm77", "entity id 778", 0L, "1", null, baseTimeStamp);
+        FormSubmission firstFormSubmission = new FormSubmission("ANM 6", "getFormInstance id 77", "DemoForm77", "entity id 778", 0L, "1", null, baseTimeStamp);
         Map<String, Object> metadata = new HashMap<>();
         metadata.put("formType", new String("type"));
         firstFormSubmission.setMetadata(metadata);
@@ -63,19 +63,19 @@ public class FormSubmissionServiceTest extends TestDatabaseConfig{
         long baseTimeStamp = DateUtil.now().getMillis();
         String provider = "ANM 6";
         String formName = "DemoForm77";
-        FormSubmission firstFormSubmission = new FormSubmission("ANM 6", "instance id 77", formName, "entity id 778", 0L, "1", null, baseTimeStamp);
+        FormSubmission firstFormSubmission = new FormSubmission("ANM 6", "getFormInstance id 77", formName, "entity id 778", 0L, "1", null, baseTimeStamp);
         Map<String, Object> metadata = new HashMap<>();
         metadata.put("formType", new String("type"));
         firstFormSubmission.setMetadata(metadata);
         formSubmissions.add(firstFormSubmission);        
-        assertEquals(formName, formSubmissionService.findByInstanceId("instance id 77").formName());
-        assertNotSame("fff", formSubmissionService.findByInstanceId("instance id 77").formName());
+        assertEquals(formName, formSubmissionService.findByInstanceId("getFormInstance id 77").formName());
+        assertNotSame("fff", formSubmissionService.findByInstanceId("getFormInstance id 77").formName());
     }
 	
     @Test
     public void shouldFindByMetadata(){
         long baseTimeStamp = DateUtil.now().getMillis();
-        FormSubmission firstFormSubmission = new FormSubmission("ANM 2", "instance id 7", "DemoForm ff", "entity id 78", 0L, "1", null, baseTimeStamp);
+        FormSubmission firstFormSubmission = new FormSubmission("ANM 2", "getFormInstance id 7", "DemoForm ff", "entity id 78", 0L, "1", null, baseTimeStamp);
         Map<String, Object> metadata = new HashMap<>();
         metadata.put("formType", new String("type"));
         firstFormSubmission.setMetadata(metadata);
@@ -88,7 +88,7 @@ public class FormSubmissionServiceTest extends TestDatabaseConfig{
     public void shouldGetNewSubmissionsForANM(){
         long baseTimeStamp = DateUtil.now().getMillis();
         String provider = "ANM 5";
-        FormSubmission firstFormSubmission = new FormSubmission(provider, "instance id 7", "DemoForm ff", "entity id 78", 0L, "1", null, baseTimeStamp);
+        FormSubmission firstFormSubmission = new FormSubmission(provider, "getFormInstance id 7", "DemoForm ff", "entity id 78", 0L, "1", null, baseTimeStamp);
         Map<String, Object> metadata = new HashMap<>();
         metadata.put("formType", new String("type"));
         firstFormSubmission.setMetadata(metadata);
@@ -100,7 +100,7 @@ public class FormSubmissionServiceTest extends TestDatabaseConfig{
     @Test
     public void shouldGetAllFormSubmissions(){
         long baseTimeStamp = DateUtil.now().getMillis();
-        FormSubmission firstFormSubmission = new FormSubmission("ANM 1", "instance id 1", "DemoForm Name", "entity id 1", 0L, "1", null, baseTimeStamp);
+        FormSubmission firstFormSubmission = new FormSubmission("ANM 1", "getFormInstance id 1", "DemoForm Name", "entity id 1", 0L, "1", null, baseTimeStamp);
         formSubmissions.add(firstFormSubmission);
         assertEquals(1, formSubmissionService.getAllSubmissions(getStdCouchDbConnectorForOpensrpForm(),0L, 1).size());	    	
     }

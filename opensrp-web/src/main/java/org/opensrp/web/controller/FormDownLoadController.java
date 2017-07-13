@@ -161,7 +161,7 @@ public class FormDownLoadController {
 	    } catch (IOException e) {
 	        e.printStackTrace();
 	    }
-	    return "{\"formName\": \"" + formName + "\", \"formDirName\": \"" + formDirName + "\", \"formDataDefinitionVersion\": \""
+	    return "{\"getFormName\": \"" + formName + "\", \"formDirName\": \"" + formDirName + "\", \"getFormDataDefinitionVersion\": \""
 	            + versionNo + "\"}";
 	}
 }

@@ -10,8 +10,8 @@ public class FormSubmissionConverterTest {
     @Test
     public void shouldToFormSubmission(){
         String anmId ="ANM1";
-        String instanceId = "instanceId";
-        String entityId = "entityId";
+        String instanceId = "getInstanceId";
+        String entityId = "getEntityId";
         String formName = "woman_registration";
         String formInstance = null;
         String clientVersion = "09999";
@@ -25,8 +25,8 @@ public class FormSubmissionConverterTest {
     @Test(expected=Exception.class)
     public void shouldGetExceptionToFormSubmission(){
         String anmId ="ANM1";
-        String instanceId = "instanceId";
-        String entityId = "entityId";
+        String instanceId = "getInstanceId";
+        String entityId = "getEntityId";
         String formName = "woman_registration";
         String formInstance = "formInstance";
         String clientVersion = "09999";
