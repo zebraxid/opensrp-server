@@ -14,14 +14,17 @@ public class EventTest {
 	
     @Test
     public void shouldTestEvent(){
-    	Event firstEvent = new Event();
+        Event firstEvent = new Event();
         firstEvent.withLocationId("locationId2");
         firstEvent.withEventDate(new DateTime());
         firstEvent.withEntityType("entityType");
         firstEvent.withFormSubmissionId("formSubmissionId");
         firstEvent.withEventType("eventType");
         firstEvent.withProviderId("providerId");
-        
+        firstEvent.withIdentifier("ff", "dd");
+        firstEvent.getIdentifiers();
+        firstEvent.getIdentifier("");
+        firstEvent.getIdentifierMatchingRegex("");
         Event secondEvent = new Event("baseEntityId", "eventType", new DateTime(), "entityType", "providerId", "locationId", "formSubmissionId");
         firstEvent.setBaseEntityId("baseEntityId");
         Assert.assertEquals(firstEvent.getBaseEntityId(), "baseEntityId");
@@ -47,7 +50,8 @@ public class EventTest {
         firstEvent.withObs(obs);
         observations.add(obs);
         firstEvent.withObs(observations);
-        //Obs obs = new Obs("fieldType", "fieldDataType", "fieldCode", "parentCode", value, "comments", "formSubmissionField");
+        
+        firstEvent.setObs(null);
         firstEvent.addObs(obs);
         
         firstEvent.setObs(observations);
