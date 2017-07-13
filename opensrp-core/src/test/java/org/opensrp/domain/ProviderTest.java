@@ -11,12 +11,14 @@ import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 import org.junit.Test;
 
-public class UserTest {
+import static org.junit.Assert.assertEquals;
+
+public class ProviderTest {
 
     @Test
     public void testEqualAndHashcodeContract() {
-        EqualsVerifier.forClass(User.class)
-                .withIgnoredFields("id","revision")
+        EqualsVerifier.forClass(Provider.class)
+                .withIgnoredFields("id", "revision")
                 .suppress(Warning.NONFINAL_FIELDS)
                 .withPrefabValues(User.class, new User("ll"), new User("e"))
                 .withRedefinedSuperclass()
@@ -30,17 +32,23 @@ public class UserTest {
                 .with(new GetterTester())
                 .build();
 
-        validator.validate(PojoClassFactory.getPojoClass(User.class));
+        validator.validate(PojoClassFactory.getPojoClass(Provider.class));
     }
 
     @Test
     public void testConstructor() {
-        final Class<?> clazz = User.class;
-        final Object obj1 = FormTest.getInstance(clazz, "entityId","username", "password", "salt");
+        final Class<?> clazz = Provider.class;
+        final Object obj1 = FormTest.getInstance(clazz, "entityId", "name");
         Affirm.affirmNotNull("Should have created an object", obj1);
 
-        final Object obj2 = FormTest.getInstance(clazz, new Object[] {});
+        Provider provider = (Provider) obj1;
+        assertEquals("entityId", provider.getBaseEntityId());
+        assertEquals("name", provider.getFullName());
+
+        final Object obj2 = FormTest.getInstance(clazz, "entityId");
+        provider = (Provider) obj2;
+        assertEquals("entityId", provider.getBaseEntityId());
+        assertEquals(null, provider.getFullName());
         Affirm.affirmTrue("Should have created a different object", obj1 != obj2);
     }
-
 }
