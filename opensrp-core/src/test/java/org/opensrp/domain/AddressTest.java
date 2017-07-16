@@ -84,7 +84,6 @@ public class AddressTest {
         address.addAddressField("field", "val");
 
         assertNull( address.getAddressFieldMatchingRegex(""));
-        assertEquals("val", address.getAddressFieldMatchingRegex("^[a-zA-Z]+"));
         assertNull(address.getAddressFieldMatchingRegex("^[0-9]+"));
         assertEquals("val", address.getAddressFieldMatchingRegex("^field"));
         assertNull(address.getAddressFieldMatchingRegex("^TYPE"));
