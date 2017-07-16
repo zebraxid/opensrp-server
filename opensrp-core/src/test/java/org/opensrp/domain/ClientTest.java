@@ -52,6 +52,8 @@ public class ClientTest {
         assertNull(client.findRelatives("dd"));
         assertEquals(0, client.getRelationships("d").size());
 
+
+
         client.withRelationships(null);
         client.addRelationship("type", "r");
         client.addRelationship("type", "e");

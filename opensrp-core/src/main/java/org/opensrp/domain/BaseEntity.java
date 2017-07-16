@@ -149,7 +149,7 @@ public class BaseEntity extends BaseDataObject {
 		attributes.remove(name);
 	}
 	
-	public Map<String, String> getIdentifiers() {
+	public Map<String, String>  getIdentifiers() {
 		if(identifiers == null){
 			identifiers = new HashMap<>();
 		}
