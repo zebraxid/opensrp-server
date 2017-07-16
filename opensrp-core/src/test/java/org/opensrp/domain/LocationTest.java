@@ -115,15 +115,15 @@ public class LocationTest {
         assertNull(location.getTags());
 
         location.withTag("tag");
-        location.addTag("d");
-        assertEquals(1, location.getTags().size());
+        location.addTag("tag2");
+        assertEquals(2, location.getTags().size());
         assertTrue(location.hasTag("tag"));
-        assertTrue(location.hasTag("d"));
+        assertTrue(location.hasTag("tag2"));
         assertFalse(location.hasTag("dd"));
 
         assertFalse(location.removeTag("d"));
         assertTrue(location.removeTag("tag"));
-        assertEquals(0, location.getTags().size());
+        assertEquals(1, location.getTags().size());
         assertFalse(location.hasTag("tag"));
 
         location.withTags(null);
