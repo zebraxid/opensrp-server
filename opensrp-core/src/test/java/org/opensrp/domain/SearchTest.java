@@ -17,6 +17,7 @@ import java.util.List;
 
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class SearchTest {
 
@@ -68,15 +69,25 @@ public class SearchTest {
     }
 
     @Test
-    public void testRealationShip() {
+    public void testRelationShip() {
         Search search = new Search("ee", "", "", "last", new DateTime(0l), true, "male", "d", "d");
         search.withBirthdate(new DateTime(0l), true);
         search.withGender("male");
         search.withRelationships(null);
+        assertNull( search.findRelatives("d"));
 
+        search.withRelationships(null);
         search.addRelationship("t", "id");
         assertEquals(1, search.getRelationships().size());
         assertEquals(asList("id"), search.findRelatives("t"));
         assertEquals(asList("t"), search.getRelationships("id"));
+        assertEquals(0, search.getRelationships("ddd").size());
+
+        search.withRelationships(null);
+        search.addRelationship("t", "id");
+        assertEquals(1, search.getRelationships().size());
+        assertEquals(asList("id"), search.findRelatives("t"));
+        assertEquals(asList("t"), search.getRelationships("id"));
+
     }
 }

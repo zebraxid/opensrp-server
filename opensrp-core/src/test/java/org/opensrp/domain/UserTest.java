@@ -88,6 +88,7 @@ public class UserTest {
         user.withPermission("permission");
         assertNotNull(user.getPermissions());
         assertTrue(user.hasPermission("permission"));
+        assertFalse(user.hasPermission("permis"));
 
         assertFalse(user.removePermission("perms"));
 
