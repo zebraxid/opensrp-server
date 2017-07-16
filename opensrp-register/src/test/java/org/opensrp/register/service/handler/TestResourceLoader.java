@@ -1,14 +1,12 @@
 package org.opensrp.register.service.handler;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.io.FileUtils;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.motechproject.scheduletracking.api.domain.json.ScheduleRecord;
 import org.motechproject.scheduletracking.api.repository.AllSchedules;
 import org.opensrp.domain.Client;
@@ -17,18 +15,12 @@ import org.opensrp.domain.Obs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.ResourceLoader;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.mockito.MockitoAnnotations.initMocks;
-
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath:test-applicationContext-opensrp-register.xml")
 public class TestResourceLoader {
     public String entityId = "entityId1";
     public String scheduleName = "opv 1";
@@ -36,13 +28,10 @@ public class TestResourceLoader {
     public String eventId = "eventID 1";
     public String caseId = "caseId";
     public String milestone = "milestone";
+
     @Autowired
-    private AllSchedules allSchedules;
-	
-    @Before
-    public void setUp() throws Exception {
-        initMocks(this);		
-    }
+    private AllSchedules allSchedules;	
+    
 	
     public String getFile() throws IOException{
         ResourceLoader loader = new DefaultResourceLoader();
@@ -59,6 +48,7 @@ public class TestResourceLoader {
             scheduleConfigMapping += (i + 1 == scheduleFiles.length) ? scheduleConfig : scheduleConfig.concat(",");			
         }		
         return scheduleConfigMapping;
+
     }
 
     @Test
@@ -87,7 +77,7 @@ public class TestResourceLoader {
             }
         }		
     }
-		
+
     public List<String> jsonArrayToList(JSONArray jsonArray) throws JSONException {
         List<String> values = new ArrayList<String>();
         if (jsonArray == null) {
@@ -106,7 +96,7 @@ public class TestResourceLoader {
         eventObj1.setEventType("Vaccination");
         eventObj1.setProviderId("anm");
        
-        List<Obs> observations1 = new ArrayList<>();       
+        List<Obs> observations1 = new ArrayList<>();
         Obs obs1 = new Obs();
         obs1.setFieldCode("1418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
         obs1.setFieldDataType("calculate");
@@ -251,6 +241,7 @@ public class TestResourceLoader {
         event.addObs(observation2);
         return event;
     }
+
     public List<Client> getClients(){
     	List<Client> clients = new ArrayList<>();
     	Client client = new Client("ooo-yyy-yyy");

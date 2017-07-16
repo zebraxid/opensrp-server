@@ -1,12 +1,5 @@
 package org.opensrp.form.service.it;
 
-import static java.util.Arrays.asList;
-import static junit.framework.Assert.assertEquals;
-import static org.junit.Assert.assertNotSame;
-
-import java.util.HashMap;
-import java.util.Map;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,6 +11,12 @@ import org.opensrp.form.service.FormSubmissionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import static junit.framework.Assert.assertEquals;
+import static org.junit.Assert.assertNotSame;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:applicationContext-opensrp-form.xml")
