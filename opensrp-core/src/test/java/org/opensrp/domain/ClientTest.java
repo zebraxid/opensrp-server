@@ -11,6 +11,8 @@ import nl.jqno.equalsverifier.Warning;
 import org.joda.time.DateTime;
 import org.junit.Test;
 
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
@@ -60,6 +62,7 @@ public class ClientTest {
         assertEquals(2, client.getRelationships().size());
         assertEquals(new HashSet<>(expectedRelationships), new HashSet<>(client.getRelationships("r")));
         assertEquals(new HashSet<>(expectedIds), new HashSet<>(client.findRelatives("type")));
+        assertEquals(0, client.getRelationships("d").size());
 
     }
 
@@ -76,6 +79,7 @@ public class ClientTest {
         String gender = "male";
         String type = "type";
         String identifier = "identifier";
+
         Client client = new Client(baseEntityId, firstName, middleName, lastName, birthDate, deathDate, birthDateApprx, deathDateApprox, gender, type, identifier);
 
         assertEquals(firstName, client.getFirstName());
@@ -87,7 +91,46 @@ public class ClientTest {
         assertEquals(deathDateApprox, client.getDeathdateApprox());
         assertEquals(identifier, client.getIdentifier(type));
         assertEquals(gender, client.getGender());
+
+        client = new Client(baseEntityId, firstName, middleName, lastName, birthDate, deathDate, birthDateApprx, deathDateApprox, gender);
+        assertEquals(firstName, client.getFirstName());
+        assertEquals(middleName, client.getMiddleName());
+        assertEquals(lastName, client.getLastName());
+        assertEquals(birthDate, client.getBirthdate());
+        assertEquals(birthDateApprx, client.getBirthdateApprox());
+        assertEquals(deathDate, client.getDeathdate());
+        assertEquals(deathDateApprox, client.getDeathdateApprox());
+        assertNull(client.getIdentifier(type));
+        assertEquals(gender, client.getGender());
     }
+
+    @Test
+    public void testFullName() {
+        Client client = new Client("ss").withFirstName("first").withMiddleName("middle").withLastName("last");
+        assertEquals("first middle last", client.fullName());
+
+        client = new Client("dd").withName("first", "middle", null);
+        assertEquals("first middle", client.fullName());
+
+        client = new Client("dd").withName("first", null, "last");
+        assertEquals("first last", client.fullName());
+
+        client = new Client("dd").withName("first", null, null);
+        assertEquals("first", client.fullName());
+
+        client = new Client("dd").withName(null, "middle", null);
+        assertEquals("middle", client.fullName());
+
+        client = new Client("dd").withName(null, "middle", "last");
+        assertEquals("middle last", client.fullName());
+
+        client = new Client("dd").withName(null, null, "last");
+        assertEquals("last", client.fullName());
+
+        client = new Client("dd").withName(null, null, null);
+        assertEquals("", client.fullName());
+    }
+
 
 
 }

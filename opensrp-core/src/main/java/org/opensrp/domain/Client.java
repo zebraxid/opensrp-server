@@ -48,14 +48,14 @@ public class Client extends BaseEntity {
     public Client(String baseEntityId, String firstName, String middleName, String lastName, DateTime birthdate,
                   DateTime deathdate, Boolean birthdateApprox, Boolean deathdateApprox, String gender) {
         super(baseEntityId);
-        this.firstName = firstName;
-        this.middleName = middleName;
-        this.lastName = lastName;
-        this.birthdate = birthdate;
-        this.deathdate = deathdate;
-        this.birthdateApprox = birthdateApprox;
-        this.deathdateApprox = deathdateApprox;
-        this.gender = gender;
+        setFirstName(firstName);
+        setMiddleName(middleName);
+        setLastName(lastName);
+        setBirthdate(birthdate);
+        setDeathdate(deathdate);
+        setBirthdateApprox(birthdateApprox);
+        setDeathdateApprox(deathdateApprox);
+        setGender(gender);
     }
 
     public Client(String baseEntityId, String firstName, String middleName, String lastName, DateTime birthdate,
