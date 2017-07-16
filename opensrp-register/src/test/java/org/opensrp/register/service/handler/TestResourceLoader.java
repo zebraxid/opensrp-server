@@ -60,7 +60,7 @@ public class TestResourceLoader {
         return scheduleConfigMapping;
     }
 	
-    @Test
+    
     public void getScheduleFile() throws IOException{
         ResourceLoader loader = new DefaultResourceLoader();
         String scheduleConfigFilesPath = "./../assets/schedules";
