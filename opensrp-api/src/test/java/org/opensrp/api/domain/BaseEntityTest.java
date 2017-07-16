@@ -26,7 +26,7 @@ import com.openpojo.validation.test.impl.SetterTester;
 public class BaseEntityTest {
 	
 	
-	@Test
+    @Test
     public void shouldTestBaseEntity(){
         BaseEntity baseEntity = new BaseEntity();
         Assert.assertNull(baseEntity.getIdentifier(null));
@@ -54,12 +54,45 @@ public class BaseEntityTest {
         Assert.assertEquals("101304-4", baseEntity.getIdentifier("ZEIR_ID"));
         Assert.assertEquals("101304-4", baseEntity.getIdentifierMatchingRegex("ZEIR_ID"));
         baseEntity.removeIdentifier("ZEIR_ID");
-        baseEntity.withBaseEntityId("fff-uuur-8utt");
-
-        
+        baseEntity.withBaseEntityId("fff-uuur-8utt");        
 		
     }
 	
+    @Test
+    public void shouldTestIdentifier(){
+        BaseEntity baseEntity = new BaseEntity();
+        baseEntity.withIdentifier("Zeir", "1234");
+        Assert.assertEquals("1234", baseEntity.getIdentifier("Zeir"));
+        Assert.assertNotSame("1234s", baseEntity.getIdentifier("Zeir"));
+        
+        Map<String, String> identifiers = new HashMap<>();
+        identifiers.put("ZEIR_ID", "101304-4");
+        baseEntity.withIdentifiers(identifiers);
+        Assert.assertEquals("101304-4", baseEntity.getIdentifier("ZEIR_ID"));
+        Assert.assertNotSame("1234s", baseEntity.getIdentifier("ZEIR_ID"));
+		
+    }
+    @Test
+    public void shouldTestAttributeAndAttribute(){
+        BaseEntity baseEntity = new BaseEntity();
+        List<Address> addresses = new ArrayList<>();
+        Address address = new Address();
+        address.setAddressType("usual_residence");
+        addresses.add(address);
+        baseEntity.withAddress(address);
+        Assert.assertEquals(addresses, baseEntity.getAddresses());
+        baseEntity.withAddresses(addresses);
+        BaseEntity baseEntityForAttribute = new BaseEntity();
+        baseEntityForAttribute.withAttribute("CHW_Phone_Number", "n/a");
+        
+        Assert.assertEquals("n/a", baseEntityForAttribute.getAttribute("CHW_Phone_Number"));
+        Assert.assertNotSame("n/aa", baseEntityForAttribute.getAttribute("CHW_Phone_Number"));
+        Map<String, Object> attributes = new HashMap<>();
+        attributes.put("CHW_Phone_Number", "1234");
+        baseEntityForAttribute.withAttributes(attributes);
+        Assert.assertEquals("1234", baseEntityForAttribute.getAttribute("CHW_Phone_Number"));
+        
+    }
     @Test
     public void shouldTestSetterAndGetter() {
         PojoClass pojoClass = PojoClassFactory.getPojoClass(BaseEntity.class);
@@ -72,9 +105,5 @@ public class BaseEntityTest {
 
         pojoValidator.validate(pojoClass);
     }
-    private Object getInstance(final Class<?> clazz, final Object... parameters) {
-        final PojoClass pojoClass = PojoClassFactory.getPojoClass(clazz);
-        return InstanceFactory.getInstance(pojoClass, parameters);
-    }
-
+   
 }
