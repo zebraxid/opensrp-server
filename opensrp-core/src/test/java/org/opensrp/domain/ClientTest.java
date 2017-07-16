@@ -11,6 +11,9 @@ import nl.jqno.equalsverifier.Warning;
 import org.joda.time.DateTime;
 import org.junit.Test;
 
+import java.util.HashSet;
+import java.util.List;
+
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -52,9 +55,11 @@ public class ClientTest {
         client.addRelationship("type", "e");
         client.addRelationship("type1", "r");
 
+        List<String> expectedRelationships = asList("type1", "type");
+        List<String> expectedIds = asList("r", "e");
         assertEquals(2, client.getRelationships().size());
-        assertEquals(asList("type1", "type"), client.getRelationships("r"));
-        assertEquals(asList("r", "e"), client.findRelatives("type"));
+        assertEquals(new HashSet<>(expectedRelationships), new HashSet<>(client.getRelationships("r")));
+        assertEquals(new HashSet<>(expectedIds), new HashSet<>(client.findRelatives("type")));
 
     }
 

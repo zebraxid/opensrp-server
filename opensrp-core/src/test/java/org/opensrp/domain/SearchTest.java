@@ -11,13 +11,10 @@ import nl.jqno.equalsverifier.Warning;
 import org.joda.time.DateTime;
 import org.junit.Test;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 import static java.util.Arrays.asList;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
 public class SearchTest {
 
@@ -74,7 +71,7 @@ public class SearchTest {
         search.withBirthdate(new DateTime(0l), true);
         search.withGender("male");
         search.withRelationships(null);
-        assertNull( search.findRelatives("d"));
+        assertNull(search.findRelatives("d"));
 
         search.withRelationships(null);
         search.addRelationship("t", "id");
@@ -85,9 +82,17 @@ public class SearchTest {
 
         search.withRelationships(null);
         search.addRelationship("t", "id");
-        assertEquals(1, search.getRelationships().size());
-        assertEquals(asList("id"), search.findRelatives("t"));
-        assertEquals(asList("t"), search.getRelationships("id"));
+        search.addRelationship("t", "id1");
+        search.addRelationship("t2", "id");
+        assertEquals(2, search.getRelationships().size());
+        List<String> expectedRelationships = new ArrayList<>();
+        expectedRelationships.add("t");
+        expectedRelationships.add("t2");
+        List<String> expectedIds = new ArrayList<>();
+        expectedIds.add("id");
+        expectedIds.add("id1");
+        assertEquals(new HashSet<>(expectedIds), new HashSet<>(search.findRelatives("t")));
+        assertEquals(new HashSet<>(expectedRelationships), new HashSet<>(search.getRelationships("id")));
 
     }
 }

@@ -223,9 +223,13 @@ public class Search extends BaseEntity {
 	public List<String> getRelationships(String relativeEntityId) {
 		List<String> relations = new ArrayList<String>();
 		for (Entry<String, List<String>> rl : relationships.entrySet()) {
-			if (rl.getValue().get(0).toString().equalsIgnoreCase(relativeEntityId)) {
-				relations.add(rl.getKey());
-			}
+		    List<String > relativeEntityIdList = rl.getValue();
+		    for(String entityId : relativeEntityIdList) {
+                if (entityId.equalsIgnoreCase(relativeEntityId)) {
+                    relations.add(rl.getKey());
+                    break;
+                }
+            }
 		}
 		return relations;
 	}

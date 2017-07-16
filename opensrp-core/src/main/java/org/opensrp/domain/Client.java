@@ -253,9 +253,9 @@ public class Client extends BaseEntity {
     public List<String> getRelationships(String relativeEntityId) {
         List<String> relations = new ArrayList<String>();
         for (Entry<String, List<String>> rl : relationships.entrySet()) {
-            List<String> relationEntityIdList = rl.getValue();
-            for(String relationEntityId : relationEntityIdList) {
-                if (relationEntityId.equalsIgnoreCase(relativeEntityId)) {
+            List<String> relativeEntityIdList = rl.getValue();
+            for(String entityId : relativeEntityIdList) {
+                if (entityId.equalsIgnoreCase(relativeEntityId)) {
                     relations.add(rl.getKey());
                     break;
                 }
