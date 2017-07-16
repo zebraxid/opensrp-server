@@ -29,12 +29,8 @@ public class TestResourceLoader {
     public String caseId = "caseId";
     public String milestone = "milestone";
     @Autowired
-    private AllSchedules allSchedules;
-	
-    @Before
-    public void setUp() throws Exception {
-        initMocks(this);		
-    }
+    private AllSchedules allSchedules;	
+    
 	
     public String getFile() throws IOException{
         ResourceLoader loader = new DefaultResourceLoader();
