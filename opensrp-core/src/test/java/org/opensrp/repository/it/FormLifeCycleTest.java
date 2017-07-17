@@ -206,7 +206,7 @@ public class FormLifeCycleTest extends TestResourceLoader{
 		
 	}
 	
-	@Test
+	@Test@Ignore
 	public void shouldCreateClientAndEventAndSchedulesWithZiggy() throws Exception {
 		hmap.addCustomFormSubmissionHandler("new_household_registration", new CustomFormSubmissionHandler() {
 			@Override

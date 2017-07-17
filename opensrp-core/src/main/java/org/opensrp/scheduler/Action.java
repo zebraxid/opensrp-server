@@ -5,6 +5,7 @@ import java.util.Map;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.ektorp.support.TypeDiscriminator;
 import org.motechproject.model.MotechBaseDataObject;
@@ -70,11 +71,13 @@ public class  Action extends MotechBaseDataObject {
         return actionType;
     }
 
+    @JsonIgnore
     public long getTimestamp() {
         return timeStamp;
     }
    
 
+    @JsonIgnore
     public String getTarget() {
         return actionTarget;
     }

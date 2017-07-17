@@ -109,6 +109,7 @@ public class Alert extends MotechBaseDataObject {
     	return this;
 	}
 
+	@JsonIgnore
 	public DateTime getCurrentDateTime() {
 	    return new DateTime();
     }
