@@ -20,7 +20,7 @@ public class ProviderTest {
 	
     @Test
     @SuppressWarnings("RedundantArrayCreation")
-    public void shouldTestConstructorUsingDefaultConstructor() {       
+    public void shouldTestConstructorUsing() {       
         final Class<?> clazz = Provider.class;
         final Object obj1 = getInstance(clazz, "baseEntityId");
         Affirm.affirmNotNull("Should have created an object", obj1);        

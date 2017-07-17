@@ -1,6 +1,8 @@
 package org.opensrp.api.domain;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -81,9 +83,75 @@ public class EventTest {
         firstEvent.setDetails(details);
         Assert.assertEquals(firstEvent.getDetails(), details);        
         firstEvent.setVersion(0L);
-        Assert.assertEquals(firstEvent.getVersion(), 0l);
-       
+        Assert.assertEquals(firstEvent.getVersion(), 0l);       
         
+    }
+    
+    @Test
+    public void shouldTestParentClassBaseObject(){
+        Event event = new Event();
+        User user = new User("oooo-r34444-jgu45");
+        User user1 = new User("oooo-r34444-jgu45");
+        event.setCreator(user);
+        Assert.assertEquals(user, event.getCreator());
+        Assert.assertNotSame(user1, event.getCreator());
+        
+        user.setDateCreated(new Date());
+        Assert.assertEquals(new Date(), user.getDateCreated());
+        
+        User editor = new User("oooo-r34444-jgu45");
+        editor.setEditor(editor);
+        user.setEditor(editor);
+        User editor1 = new User("oooo-r34444-jgu45");
+        Assert.assertEquals(editor, user.getEditor());
+        Assert.assertNotSame(editor1, user.getEditor());
+        
+        event.setDateEdited(new Date());
+        Assert.assertEquals(new Date(), event.getDateEdited());
+        Date dt = new Date();
+        Calendar c = Calendar.getInstance(); 
+        c.setTime(dt); 
+        c.add(Calendar.DATE, 1);
+        dt = c.getTime();        
+        Assert.assertNotSame(dt, event.getDateEdited());
+        
+        event.setVoided(true);
+        Assert.assertTrue(event.getVoided());
+        Assert.assertFalse(!event.getVoided());
+        
+        event.setDateVoided(new Date());
+        Assert.assertEquals(new Date(), event.getDateVoided());
+        
+        event.setVoider(user);
+        Assert.assertEquals(user, event.getVoider());
+        Assert.assertNotSame(user1, event.getVoider());
+        
+        event.setVoidReason("fake data");
+        Assert.assertEquals("fake data", event.getVoidReason());
+        Assert.assertNotSame("fakes data", event.getVoidReason());
+        
+        event.withCreator(user);
+        Assert.assertEquals(user, event.getCreator());
+        Assert.assertNotSame(user1, event.getCreator());
+        
+        event.withDateCreated(new Date());
+        event.withEditor(user);
+        Assert.assertEquals(editor, user.getEditor());
+        Assert.assertNotSame(editor1, user.getEditor());
+        event.withDateEdited(new Date());
+        event.withVoided(true);
+        Assert.assertTrue(event.getVoided());
+        Assert.assertFalse(!event.getVoided());
+        
+        event.withDateVoided(new Date());
+        event.withVoider(editor);
+        Assert.assertEquals(editor, user.getEditor());
+        Assert.assertNotSame(editor1, user.getEditor());
+        event.withVoidReason("fake data");
+        Assert.assertEquals("fake data", event.getVoidReason());
+        Assert.assertNotSame("fakes data", event.getVoidReason());
+        
+    	
     }
 
 }
