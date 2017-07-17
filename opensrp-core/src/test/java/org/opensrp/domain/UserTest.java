@@ -11,6 +11,10 @@ import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 import org.junit.Test;
 
+import java.util.Collections;
+
+import static org.junit.Assert.*;
+
 public class UserTest {
 
     @Test
@@ -41,6 +45,59 @@ public class UserTest {
 
         final Object obj2 = FormTest.getInstance(clazz, new Object[] {});
         Affirm.affirmTrue("Should have created a different object", obj1 != obj2);
+    }
+
+    @Test
+    public void testRoles() {
+        User user = new User("dd", "userName", "password", "salt", "status" , null, null);
+        assertFalse(user.hasRole("role"));
+        assertFalse(user.hasAdminRights());
+        assertFalse(user.isDefaultAdmin());
+
+        user.addRole("role");
+        assertTrue(user.hasRole("role"));
+        assertFalse(user.hasAdminRights());
+        assertFalse(user.isDefaultAdmin());
+
+        user.removeRole("role");
+        assertFalse(user.hasRole("role"));
+
+        user.withRole("admin");
+        assertTrue(user.hasRole("admin"));
+        assertTrue(user.hasAdminRights());
+        assertFalse(user.isDefaultAdmin());
+
+        user.removeRole("admin");
+        user.withRole("administrator");
+        assertFalse(user.hasRole("admin"));
+        assertTrue(user.hasAdminRights());
+        assertFalse(user.isDefaultAdmin());
+
+        user.withUsername("admin");
+        assertTrue(user.hasRole("administrator"));
+        assertTrue(user.hasAdminRights());
+        assertTrue(user.isDefaultAdmin());
+    }
+
+    @Test
+    public void testPermission() {
+        User user = new User();
+        assertNull(user.getPermissions());
+        assertFalse(user.hasPermission("permission"));
+
+        user.withPermission("permission");
+        assertNotNull(user.getPermissions());
+        assertTrue(user.hasPermission("permission"));
+        assertFalse(user.hasPermission("permis"));
+
+        assertFalse(user.removePermission("perms"));
+
+        assertTrue(user.removePermission("permission"));
+        assertFalse(user.hasPermission("permission"));
+
+        user.withPermissions(null);
+        user.addPermission("permission");
+        assertTrue(user.hasPermission("permission"));
     }
 
 }
