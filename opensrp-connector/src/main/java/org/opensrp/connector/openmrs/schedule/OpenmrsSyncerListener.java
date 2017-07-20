@@ -1,6 +1,5 @@
 package org.opensrp.connector.openmrs.schedule;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.concurrent.locks.ReentrantLock;
@@ -40,23 +39,24 @@ public class OpenmrsSyncerListener {
 	
 	private static Logger logger = LoggerFactory.getLogger(OpenmrsSyncerListener.class.toString());
 	
-	private OpenmrsSchedulerService openmrsSchedulerService;
+	private final OpenmrsSchedulerService openmrsSchedulerService;
 	
-	private ScheduleService opensrpScheduleService;
+	private final ScheduleService opensrpScheduleService;
 	
-	private ActionService actionService;
+	private final ActionService actionService;
 	
-	private ConfigService config;
+	private final ConfigService config;
 	
-	private ErrorTraceService errorTraceService;
+	private final ErrorTraceService errorTraceService;
 	
-	private PatientService patientService;
+	private final PatientService patientService;
 	
-	private EncounterService encounterService;
+	private final EncounterService encounterService;
 	
-	private EventService eventService;
+	private final EventService eventService;
 	
-	private ClientService clientService;
+	private final ClientService clientService;
+	
 	// private RelationShipService relationShipService;
 	
 	@Autowired
@@ -155,11 +155,6 @@ public class OpenmrsSyncerListener {
 			List<Client> cl = clientService.findByServerVersion(start);
 			logger.info("Clients list size " + cl.size());
 			for (Client c : cl) {
-				// try {
-				// //sentTrackCaptureDataToDHIS2(c);
-				// } catch (Exception e) {
-				// logger.error("DHIS2 Message:" + e.getMessage());
-				// }
 				try {
 					// FIXME This is to deal with existing records and should be
 					// removed later
@@ -211,8 +206,8 @@ public class OpenmrsSyncerListener {
 			}
 			for (Client c : cl) {
 				
-				JSONObject motherJson = patientService
-				        .getPatientByIdentifier(c.getRelationships().get("mother").get(0).toString());
+				JSONObject motherJson = patientService.getPatientByIdentifier(c.getRelationships().get("mother").get(0)
+				        .toString());
 				JSONObject person = motherJson.getJSONObject("person");
 				
 				if (person.getString("uuid") != null) {
@@ -221,8 +216,8 @@ public class OpenmrsSyncerListener {
 					logger.info("RelationshipsCreated check openrs" + c.getIdentifier("OPENMRS_UUID"));
 				}
 				
-				List<Client> siblings = clientService
-				        .findByRelationship(c.getRelationships().get("mother").get(0).toString());
+				List<Client> siblings = clientService.findByRelationship(c.getRelationships().get("mother").get(0)
+				        .toString());
 				if (!siblings.isEmpty() || siblings != null) {
 					JSONObject siblingJson;
 					JSONObject sibling;
