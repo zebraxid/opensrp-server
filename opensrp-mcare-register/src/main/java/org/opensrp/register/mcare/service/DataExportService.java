@@ -6,15 +6,22 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
 import org.ektorp.ViewResult;
+import org.opensrp.common.AllConstants.ExportConstant;
 import org.opensrp.register.mcare.domain.Exports;
+import org.opensrp.register.mcare.domain.Mother;
 import org.opensrp.register.mcare.repository.AllExports;
 import org.opensrp.register.mcare.repository.AllHouseHolds;
 import org.opensrp.register.mcare.repository.AllElcos;
+import org.opensrp.register.mcare.repository.AllMothers;
+import org.opensrp.scheduler.Action;
+import org.opensrp.scheduler.repository.AllActions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -27,14 +34,19 @@ public class DataExportService{
 	private AllHouseHolds allHouseHolds;
 	private AllElcos allElcos;
 	private String multimediaDirPath;
+	private AllActions allActions;
+	private AllMothers allMothers;
 	public DataExportService(){
 		
 	}
 	@Autowired
-	public DataExportService(@Value("#{opensrp['multimedia.directory.name']}") String multimediaDirName, AllHouseHolds allHouseHolds, AllElcos allElcos){
+	public DataExportService(@Value("#{opensrp['multimedia.directory.name']}") String multimediaDirName, AllHouseHolds allHouseHolds,
+			AllElcos allElcos,AllActions allActions,AllMothers allMothers){
 		this.multimediaDirPath = multimediaDirName;
 		this.allHouseHolds = allHouseHolds;
 		this.allElcos = allElcos;
+		this.allActions = allActions;
+		this.allMothers = allMothers;
 	}
 	
 	public String exports(HttpServletResponse response,String formName,String start_date,String end_date,String user) {		
@@ -50,22 +62,579 @@ public class DataExportService{
 		
 		export.setTimeStamp(System.currentTimeMillis());
 		
-		if(formName.equalsIgnoreCase("NEW_HOUSEHOLD_FORM"))
+		if(formName.equalsIgnoreCase("NEW_HOUSEHOLD_FORM")) {
 			createHHCSV( response,formName,start_date,end_date,reportName);
-		else if(formName.equalsIgnoreCase("CENSUS_FORM"))
+		}
+		else if(formName.equalsIgnoreCase("CENSUS_FORM")) {
 			createCensusCSV( response,formName,start_date,end_date,reportName);
-		else if(formName.equalsIgnoreCase("PSRF_FORM"))
+		}
+		else if(formName.equalsIgnoreCase("PSRF_FORM")) {
 			createPsrfCSV( response,formName,start_date,end_date,reportName);
-		else if(formName.equalsIgnoreCase("MIS_CENSUS_FORM"))
+		}
+		else if(formName.equalsIgnoreCase("MIS_CENSUS_FORM")) {
 			createMisCensusCSV( response,formName,start_date,end_date,reportName);
-		else if(formName.equalsIgnoreCase("MIS_ELCO_FORM"))
+		}
+		else if(formName.equalsIgnoreCase("MIS_ELCO_FORM")) {
 			createMisElcoCSV( response,formName,start_date,end_date,reportName);
-		else
+		} 
+		else if(formName.equalsIgnoreCase("ANC")) {
+			String schedule = "Ante Natal Care Reminder Visit";
+			boolean isAcitve = false;
+			createANCRV(response, schedule, start_date, end_date, reportName,isAcitve);
+		}
+		else if(formName.equalsIgnoreCase("ANCNOTSUBMIT")) {
+			String schedule = "Ante Natal Care Reminder Visit";
+			boolean isAcitve = true;
+			createANCRVNotSubmit(response, schedule, start_date, end_date, reportName,isAcitve);
+		}
+		else if(formName.equalsIgnoreCase("PNC")) {
+			String schedule = "Post Natal Care Reminder Visit";
+			boolean isAcitve = false;
+			createPNC(response, schedule, start_date, end_date, reportName,isAcitve);
+		}
+		else if(formName.equalsIgnoreCase("PNCNOTSUBMIT")) {
+			String schedule = "Post Natal Care Reminder Visit";
+			boolean isAcitve = true;
+			createPNCNotSubmit(response, schedule, start_date, end_date, reportName,isAcitve);
+		}
+		else{
+			
+		}
 			;
 		allExports.add(export);
 		
 		return reportName;
 	}
+	
+	public void createPNCNotSubmit(HttpServletResponse response,String schedule,String start_date,String end_date,String reportName,boolean isAcitve) {		
+		List<Action> actions = allActions.findByScheduleIsActivenAndTimeStamp(schedule, isAcitve, convertDateToTimestampMills(start_date), convertDateToTimestampMills(end_date));
+		response.setContentType("text/csv");		
+		response.setHeader("Content-disposition",
+				"attachment; " + "filename=" + reportName);		
+		FileWriter writer;
+		try {
+			writer = new FileWriter(multimediaDirPath +"/export/" + reportName);			
+			writer.append("Beneficiary Name"); 
+			writer.append(',');//1 
+			writer.append("Identifier"); 
+			writer.append(',');//1     
+			writer.append("Schedule Status"); 
+			writer.append(',');//4
+			writer.append("FWA Name"); 
+			writer.append(',');//5
+			writer.append("Upazilla"); 
+			writer.append(',');//6
+			writer.append("Union"); 
+			writer.append(',');//7
+			writer.append("Unit"); 
+			writer.append(',');//8
+			writer.append("Mouza Para"); 
+			writer.append(',');//9
+			writer.append("Name of ANC Visit"); 
+			writer.append(',');//10
+			writer.append("Visit date"); 
+			writer.append(',');//11
+			writer.append("Time Started"); 
+			writer.append(',');//12
+			writer.append("Time Ended");
+			writer.append('\n'); //22
+			
+			for (Action action : actions) {
+				Mother mother = allMothers.findByCaseId(action.caseId());
+				String visitCode  = action.data().get("visitCode");
+				
+				
+				if(mother.PROVIDERID()!=null || !mother.PROVIDERID().isEmpty()){// should have pnc visit
+				try {
+					
+				
+					if(mother.mother_first_name()!=null){
+						writer.append(mother.mother_first_name());
+						writer.append(',');
+					}else{
+						writer.append("");
+					    writer.append(',');
+					}
+					
+					if(mother.mother_wom_nid()!=null || mother.mother_wom_bid()!=null){
+					    writer.append("''"+String.valueOf(mother.mother_wom_nid().toString()) +mother.mother_wom_bid()+"''");
+					    writer.append(',');
+					}else{
+						writer.append("");
+					    writer.append(',');
+						
+					}
+					
+				writer.append(action.data().get("alertStatus"));
+				writer.append(',');
+				writer.append(mother.PROVIDERID());
+				writer.append(',');
+				if(mother.FWWOMUPAZILLA()!=null) {
+				    writer.append(mother.FWWOMUPAZILLA());
+				    writer.append(',');
+				}else{
+					writer.append("");
+					writer.append(',');
+				}
+				
+				if(mother.getFWWOMUNION()!=null) {
+				    writer.append(mother.getFWWOMUNION());
+				    writer.append(',');
+				}else{
+					writer.append("");
+					writer.append(',');
+				}				
+				
+				if(mother.getFWWOMSUBUNIT()!=null) {
+				    writer.append(mother.getFWWOMSUBUNIT());
+				    writer.append(',');
+				}else{
+					writer.append("");
+					writer.append(',');
+				}
+				
+				if(mother.getMother_mauza()!=null) {
+				    writer.append(mother.getMother_mauza());
+				    writer.append(',');
+				}else{
+					writer.append("");
+					writer.append(',');
+				}				
+				
+				writer.append(visitCode);
+				
+				writer.append('\n');
+				}catch(Exception e){
+					e.printStackTrace();
+				}
+				}
+				
+			}
+				
+		     
+				writer.flush();
+				writer.close();
+				
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				//e.printStackTrace();
+			}finally{				
+				
+			}
+		
+	}
+	
+	public void createPNC(HttpServletResponse response,String schedule,String start_date,String end_date,String reportName,boolean isAcitve) {		
+		List<Action> actions = allActions.findByScheduleIsActivenAndTimeStamp(schedule, isAcitve, convertDateToTimestampMills(start_date), convertDateToTimestampMills(end_date));
+		response.setContentType("text/csv");		
+		response.setHeader("Content-disposition",
+				"attachment; " + "filename=" + reportName);		
+		FileWriter writer;
+		try {
+			writer = new FileWriter(multimediaDirPath +"/export/" + reportName);			
+			writer.append("Beneficiary Name"); 
+			writer.append(',');//1 
+			writer.append("Identifier"); 
+			writer.append(',');//1     
+			writer.append("Schedule Status"); 
+			writer.append(',');//4
+			writer.append("FWA Name"); 
+			writer.append(',');//5
+			writer.append("Upazilla"); 
+			writer.append(',');//6
+			writer.append("Union"); 
+			writer.append(',');//7
+			writer.append("Unit"); 
+			writer.append(',');//8
+			writer.append("Mouza Para"); 
+			writer.append(',');//9
+			writer.append("Name of ANC Visit"); 
+			writer.append(',');//10
+			writer.append("Visit date"); 
+			writer.append(',');//11
+			writer.append("Time Started"); 
+			writer.append(',');//12
+			writer.append("Time Ended");
+			writer.append('\n'); //22
+			
+			for (Action action : actions) {
+				Mother mother = allMothers.findByCaseId(action.caseId());
+				String visitCode  = action.data().get("visitCode");
+				
+				String visitDate ="";
+				String startTime = "";
+				String endTime = "";				
+				Map<String, String> pncvisit = new HashMap<>();
+				if(visitCode.equalsIgnoreCase(ExportConstant.pnc1)) {
+					pncvisit = mother.pncVisitOne();
+					visitDate =pncvisit.get("today");
+					startTime = pncvisit.get("start");
+					endTime = pncvisit.get("end");
+					
+				}else if(visitCode.equalsIgnoreCase(ExportConstant.pnc2)) {
+					pncvisit = mother.pncVisitTwo();
+					visitDate =pncvisit.get("today");
+					startTime = pncvisit.get("start");
+					endTime = pncvisit.get("end");
+				}else if(visitCode.equalsIgnoreCase(ExportConstant.pnc3)) {
+					pncvisit = mother.pncVisitThree();
+					visitDate =pncvisit.get("today");
+					startTime = pncvisit.get("start");
+					endTime = pncvisit.get("end");
+				}
+				else {
+				}
+				if(!pncvisit.isEmpty() && (mother.PROVIDERID()!=null || !mother.PROVIDERID().isEmpty())){// should have pnc visit
+				try {
+					
+				
+					if(mother.mother_first_name()!=null){
+						writer.append(mother.mother_first_name());
+						writer.append(',');
+					}else{
+						writer.append("");
+					    writer.append(',');
+					}
+					
+					if(mother.mother_wom_nid()!=null || mother.mother_wom_bid()!=null){
+					    writer.append("''"+String.valueOf(mother.mother_wom_nid().toString()) +mother.mother_wom_bid()+"''");
+					    writer.append(',');
+					}else{
+						writer.append("");
+					    writer.append(',');
+						
+					}
+					
+				writer.append(action.data().get("alertStatus"));
+				writer.append(',');
+				writer.append(mother.PROVIDERID());
+				writer.append(',');
+				if(mother.FWWOMUPAZILLA()!=null) {
+				    writer.append(mother.FWWOMUPAZILLA());
+				    writer.append(',');
+				}else{
+					writer.append("");
+					writer.append(',');
+				}
+				
+				if(mother.getFWWOMUNION()!=null) {
+				    writer.append(mother.getFWWOMUNION());
+				    writer.append(',');
+				}else{
+					writer.append("");
+					writer.append(',');
+				}				
+				
+				if(mother.getFWWOMSUBUNIT()!=null) {
+				    writer.append(mother.getFWWOMSUBUNIT());
+				    writer.append(',');
+				}else{
+					writer.append("");
+					writer.append(',');
+				}
+				
+				if(mother.getMother_mauza()!=null) {
+				    writer.append(mother.getMother_mauza());
+				    writer.append(',');
+				}else{
+					writer.append("");
+					writer.append(',');
+				}				
+				
+				writer.append(visitCode);
+				writer.append(',');
+				
+					
+				writer.append(visitDate);
+				writer.append(',');
+				writer.append(startTime);
+				writer.append(',');
+				writer.append(endTime);
+				writer.append('\n');
+				}catch(Exception e){
+					e.printStackTrace();
+				}
+				}
+				
+			}
+				
+		     
+				writer.flush();
+				writer.close();
+				
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				//e.printStackTrace();
+			}finally{				
+				System.out.println("Loop time end:"+ System.currentTimeMillis());
+			}
+		
+	}
+	
+	public void createANCRVNotSubmit(HttpServletResponse response,String schedule,String start_date,String end_date,String reportName,boolean isAcitve) {		
+		List<Action> actions = allActions.findByScheduleIsActivenAndTimeStamp(schedule, isAcitve, convertDateToTimestampMills(start_date), convertDateToTimestampMills(end_date));
+		response.setContentType("text/csv");		
+		response.setHeader("Content-disposition",
+				"attachment; " + "filename=" + reportName);		
+		FileWriter writer;
+		try {
+			writer = new FileWriter(multimediaDirPath +"/export/" + reportName);			
+			writer.append("Beneficiary Name"); 
+			writer.append(',');//1 
+			writer.append("Identifier"); 
+			writer.append(',');//1     
+			writer.append("Schedule Status"); 
+			writer.append(',');//4
+			writer.append("FWA Name"); 
+			writer.append(',');//5
+			writer.append("Upazilla"); 
+			writer.append(',');//6
+			writer.append("Union"); 
+			writer.append(',');//7
+			writer.append("Unit"); 
+			writer.append(',');//8
+			writer.append("Mouza Para"); 
+			writer.append(',');//9
+			writer.append("Name of ANC Visit"); 
+			
+			writer.append('\n'); //22
+			
+			for (Action action : actions) {
+				Mother mother = allMothers.findByCaseId(action.caseId());
+				String visitCode  = action.data().get("visitCode");
+				
+				if(mother.PROVIDERID()!=null || !mother.PROVIDERID().isEmpty() ){// should have anc visit
+				try {
+					
+				
+					if(mother.mother_first_name()!=null){
+						writer.append(mother.mother_first_name());
+						writer.append(',');
+					}else{
+						writer.append("");
+					    writer.append(',');
+					}
+					
+					if(mother.mother_wom_nid()!=null || mother.mother_wom_bid()!=null){
+					    writer.append("''"+String.valueOf(mother.mother_wom_nid().toString()) +mother.mother_wom_bid()+"''");
+					    writer.append(',');
+					}else{
+						writer.append("");
+					    writer.append(',');
+						
+					}
+					
+				writer.append(action.data().get("alertStatus"));
+				writer.append(',');
+				writer.append(mother.PROVIDERID());
+				writer.append(',');
+				if(mother.FWWOMUPAZILLA()!=null) {
+				    writer.append(mother.FWWOMUPAZILLA());
+				    writer.append(',');
+				}else{
+					writer.append("");
+					writer.append(',');
+				}
+				
+				if(mother.getFWWOMUNION()!=null) {
+				    writer.append(mother.getFWWOMUNION());
+				    writer.append(',');
+				}else{
+					writer.append("");
+					writer.append(',');
+				}				
+				
+				if(mother.getFWWOMSUBUNIT()!=null) {
+				    writer.append(mother.getFWWOMSUBUNIT());
+				    writer.append(',');
+				}else{
+					writer.append("");
+					writer.append(',');
+				}
+				
+				if(mother.getMother_mauza()!=null) {
+				    writer.append(mother.getMother_mauza());
+				    writer.append(',');
+				}else{
+					writer.append("");
+					writer.append(',');
+				}				
+				
+				writer.append(visitCode);
+				
+				writer.append('\n');
+				}catch(Exception e){
+					e.printStackTrace();
+				}
+				
+				}
+			}
+				
+		     
+				writer.flush();
+				writer.close();
+				
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				//e.printStackTrace();
+			}finally{				
+				System.out.println("Loop time end:"+ System.currentTimeMillis());
+			}
+		
+	}
+	
+	
+	
+	public void createANCRV(HttpServletResponse response,String schedule,String start_date,String end_date,String reportName,boolean isAcitve) {		
+		List<Action> actions = allActions.findByScheduleIsActivenAndTimeStamp(schedule, isAcitve, convertDateToTimestampMills(start_date), convertDateToTimestampMills(end_date));
+		response.setContentType("text/csv");		
+		response.setHeader("Content-disposition",
+				"attachment; " + "filename=" + reportName);		
+		FileWriter writer;
+		try {
+			writer = new FileWriter(multimediaDirPath +"/export/" + reportName);			
+			writer.append("Beneficiary Name"); 
+			writer.append(',');//1 
+			writer.append("Identifier"); 
+			writer.append(',');//1     
+			writer.append("Schedule Status"); 
+			writer.append(',');//4
+			writer.append("FWA Name"); 
+			writer.append(',');//5
+			writer.append("Upazilla"); 
+			writer.append(',');//6
+			writer.append("Union"); 
+			writer.append(',');//7
+			writer.append("Unit"); 
+			writer.append(',');//8
+			writer.append("Mouza Para"); 
+			writer.append(',');//9
+			writer.append("Name of ANC Visit"); 
+			writer.append(',');//10
+			writer.append("Visit date"); 
+			writer.append(',');//11
+			writer.append("Time Started"); 
+			writer.append(',');//12
+			writer.append("Time Ended");
+			writer.append('\n'); //22
+			
+			for (Action action : actions) {
+				Mother mother = allMothers.findByCaseId(action.caseId());
+				String visitCode  = action.data().get("visitCode");
+				
+				String visitDate ="";
+				String startTime = "";
+				String endTime = "";				
+				Map<String, String> ancvisit = new HashMap<>();
+				if(visitCode.equalsIgnoreCase(ExportConstant.anc1)) {
+					ancvisit = mother.ancVisitOne();
+					visitDate =ancvisit.get("today");
+					startTime = ancvisit.get("start");
+					endTime = ancvisit.get("end");
+					
+				}else if(visitCode.equalsIgnoreCase(ExportConstant.anc2)) {
+					ancvisit = mother.ancVisitTwo();
+					visitDate = ancvisit.get("today");
+					startTime = ancvisit.get("start");
+					endTime =ancvisit.get("end");
+				}else if(visitCode.equalsIgnoreCase(ExportConstant.anc3)) {
+					ancvisit =  mother.ancVisitThree();
+					visitDate =ancvisit.get("today");
+					startTime = ancvisit.get("start");
+					endTime = ancvisit.get("end");
+				}else if(visitCode.equalsIgnoreCase(ExportConstant.anc4)){
+					ancvisit =  mother.ancVisitFour();
+					visitDate =ancvisit.get("today");
+					startTime = ancvisit.get("start");
+					endTime = ancvisit.get("end");
+				}
+				if(!ancvisit.isEmpty() && (mother.PROVIDERID()!=null || !mother.PROVIDERID().isEmpty())){// should have anc visit
+				try {
+					
+				
+					if(mother.mother_first_name()!=null){
+						writer.append(mother.mother_first_name());
+						writer.append(',');
+					}else{
+						writer.append("");
+					    writer.append(',');
+					}
+					
+					if(mother.mother_wom_nid()!=null || mother.mother_wom_bid()!=null){
+					    writer.append("''"+String.valueOf(mother.mother_wom_nid().toString()) +mother.mother_wom_bid()+"''");
+					    writer.append(',');
+					}else{
+						writer.append("");
+					    writer.append(',');
+						
+					}
+					
+				writer.append(action.data().get("alertStatus"));
+				writer.append(',');
+				writer.append(mother.PROVIDERID());
+				writer.append(',');
+				if(mother.FWWOMUPAZILLA()!=null) {
+				    writer.append(mother.FWWOMUPAZILLA());
+				    writer.append(',');
+				}else{
+					writer.append("");
+					writer.append(',');
+				}
+				
+				if(mother.getFWWOMUNION()!=null) {
+				    writer.append(mother.getFWWOMUNION());
+				    writer.append(',');
+				}else{
+					writer.append("");
+					writer.append(',');
+				}				
+				
+				if(mother.getFWWOMSUBUNIT()!=null) {
+				    writer.append(mother.getFWWOMSUBUNIT());
+				    writer.append(',');
+				}else{
+					writer.append("");
+					writer.append(',');
+				}
+				
+				if(mother.getMother_mauza()!=null) {
+				    writer.append(mother.getMother_mauza());
+				    writer.append(',');
+				}else{
+					writer.append("");
+					writer.append(',');
+				}				
+				
+				writer.append(visitCode);
+				writer.append(',');
+				
+					
+				writer.append(visitDate);
+				writer.append(',');
+				writer.append(startTime);
+				writer.append(',');
+				writer.append(endTime);
+				writer.append('\n');
+				}catch(Exception e){
+					e.printStackTrace();
+				}
+				}
+				
+			}
+				
+		     
+				writer.flush();
+				writer.close();
+				
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				//e.printStackTrace();
+			}finally{				
+				System.out.println("Loop time end:"+ System.currentTimeMillis());
+			}
+		
+	}
+	
 	
 	public List<Exports> getExportsByUser(String user){
 		return allExports.getExportsByUser(user);

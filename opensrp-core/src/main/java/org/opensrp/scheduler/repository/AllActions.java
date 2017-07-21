@@ -37,6 +37,13 @@ public class AllActions extends MotechBaseRepository<Action> {
         ComplexKey endKey = ComplexKey.of(anmIdentifier, Long.MAX_VALUE);
         return db.queryView(createQuery("action_by_anm_and_time").startKey(startKey).endKey(endKey).includeDocs(true), Action.class);
     }
+    
+    @View(name = "action_by_schedule_isActionActive_and_time", map = "function(doc) { if (doc.type === 'Action') { emit([doc.data.scheduleName,doc.isActionActive, doc.timeStamp], null); } }")
+    public List<Action> findByScheduleIsActivenAndTimeStamp(String schedule,boolean isActive, long start,long end) {
+        ComplexKey startKey = ComplexKey.of(schedule,isActive, start);
+        ComplexKey endKey = ComplexKey.of(schedule,isActive, end);
+        return db.queryView(createQuery("action_by_schedule_isActionActive_and_time").startKey(startKey).endKey(endKey).includeDocs(true), Action.class);
+    }
 
     @View(name = "action_by_anm_entityId_scheduleName",
             map = "function(doc) { " +

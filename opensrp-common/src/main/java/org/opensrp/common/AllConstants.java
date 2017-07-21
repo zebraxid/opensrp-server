@@ -993,4 +993,14 @@ public class AllConstants {
 	public static class UserType {
 		public static final String FD = "FD";
 	}
+	
+	public static class ExportConstant{
+		public static final String anc1 = "ancrv_1";
+		public static final String anc2 = "ancrv_2";
+		public static final String anc3 = "ancrv_3";
+		public static final String anc4 = "ancrv_4";
+		public static final String pnc1 = "pncrv_1";
+		public static final String pnc2 = "pncrv_2";
+		public static final String pnc3 = "pncrv_3";
+	}
 }
