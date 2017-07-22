@@ -190,6 +190,11 @@ public class PNCService {
 							.withSTART(submission.getField(START_DATE)).withEND(submission.getField(END_DATE))
 							.withSUBMISSIONDATE(DateUtil.getTimestampToday())
 							.withClientVersion(DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)))
+							.withDistrict(mother.FWWOMDISTRICT())
+							.withUpazilla(mother.FWWOMUPAZILLA())
+							.withUnion(mother.getFWWOMUNION())
+							.withUnit(mother.getFWWOMSUBUNIT())
+							.withMouzaPara(mother.getMother_mauza())
 							.setIsClosed(false);
 
 					child.details().put(relationalid, childFields.get(relationalid));

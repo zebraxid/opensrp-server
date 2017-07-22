@@ -32,6 +32,18 @@ public class Child extends MotechBaseDataObject {
 	@JsonProperty
 	private String END;
 	@JsonProperty
+	private String district;
+	@JsonProperty
+	private String division;	
+	@JsonProperty
+	private String upazilla;
+	@JsonProperty
+	private String union;
+	@JsonProperty
+	private String unit;
+	@JsonProperty
+	private String mouzaPara;
+	@JsonProperty
 	private String encc1_current_form_status;
 	@JsonProperty
 	private String encc2_current_form_status;
@@ -63,6 +75,36 @@ public class Child extends MotechBaseDataObject {
 
 	public Child withCaseId(String caseId) {
 		this.caseId = caseId;
+		return this;
+	}
+	
+	public Child withUpazilla(String upazilla) {
+		this.upazilla = upazilla;
+		return this;
+	}
+	
+	public Child withUnion(String union) {
+		this.union = union;
+		return this;
+	}
+	
+	public Child withUnit(String unit) {
+		this.unit = unit;
+		return this;
+	}
+	
+	public Child withMouzaPara(String mouzaPara) {
+		this.mouzaPara = mouzaPara;
+		return this;
+	}
+	
+	public Child withDistrict(String district) {
+		this.district = district;
+		return this;
+	}
+	
+	public Child withDivision(String division) {
+		this.division = division;
 		return this;
 	}
 
@@ -227,6 +269,31 @@ public class Child extends MotechBaseDataObject {
 
 	public void setUser_type(String user_type) {
 		this.user_type = user_type;
+	}
+
+	public String getUpazilla() {
+		return upazilla;
+	}
+
+	public String getUnion() {
+		return union;
+	}
+
+	public String getUnit() {
+		return unit;
+	}
+
+	public String getMouzaPara() {
+		return mouzaPara;
+	}
+	
+
+	public String getDistrict() {
+		return district;
+	}
+
+	public String getDivision() {
+		return division;
 	}
 
 	@Override

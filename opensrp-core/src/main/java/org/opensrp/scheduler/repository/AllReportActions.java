@@ -36,8 +36,8 @@ public class AllReportActions extends MotechBaseRepository<ScheduleLog> {
 	}
 	
 	@GenerateView
-    private List<ScheduleLog> findByCaseId(String caseId) {
-        return queryView("by_caseId", caseId);
+    public List<ScheduleLog> findByCaseID(String caseID) {
+        return queryView("by_caseID", caseID);
     }
 	
 	public void addAlert(ScheduleLog alertAction) {
@@ -90,6 +90,16 @@ public class AllReportActions extends MotechBaseRepository<ScheduleLog> {
 	@View(name = "by_instance_id_bycaseId_by_name", map = FUNCTION_DOC_EMIT_DOC_INSTANCEID_CASEID_NAME)
     public ScheduleLog findByInstanceIdByCaseIdByname(String instanceId,String caseId,String name) {
         List<ScheduleLog> scheduleLog = queryView("by_instance_id_bycaseId_by_name", ComplexKey.of(instanceId,caseId,name));
+        if (scheduleLog == null || scheduleLog.isEmpty()) {
+			return null;
+		}
+		return scheduleLog.get(0);        
+    }
+	
+	private static final String FUNCTION_DOC_EMIT_DOC__CASEID_NAME = "function(doc) { if(doc.type === 'ScheduleLog') emit([doc.caseID,doc.scheduleName], doc.caseID);}";
+	@View(name = "by_bycaseId_by_name", map = FUNCTION_DOC_EMIT_DOC__CASEID_NAME)
+    public ScheduleLog findByyCaseIdByname(String caseId,String name) {
+        List<ScheduleLog> scheduleLog = queryView("by_bycaseId_by_name", ComplexKey.of(caseId,name));
         if (scheduleLog == null || scheduleLog.isEmpty()) {
 			return null;
 		}

@@ -24,6 +24,7 @@ import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.opensrp.common.util.DateTimeUtil;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.register.mcare.domain.Child;
 import org.opensrp.register.mcare.repository.AllChilds;
@@ -84,6 +85,7 @@ public class ChildService {
 				.put(END_DATE, submission.getField(END_DATE)).map();	
 
 		child.withENCCVisitOne(enccOne);
+		child.withClientVersion(DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)));
 		child.withTODAY(submission.getField(REFERENCE_DATE));
 		allChilds.update(child);
 		childSchedulesService.fullfillMilestone(submission.entityId(), submission.anmId(), SCHEDULE_ENCC, new LocalDate());
@@ -127,6 +129,7 @@ public class ChildService {
 
 		child.withENCCVisitTwo(enccTwo);
 		child.withTODAY(submission.getField(REFERENCE_DATE));
+		child.withClientVersion(DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)));
 		allChilds.update(child);		
 		childSchedulesService.fullfillMilestone(submission.entityId(), submission.anmId(), SCHEDULE_ENCC, new LocalDate());	
 		childSchedulesService.enrollENCCVisit(submission.entityId(), SCHEDULE_ENCC_3, LocalDate.parse(child.getDetail(referenceDate)));
@@ -168,6 +171,7 @@ public class ChildService {
 				.put(END_DATE, submission.getField(END_DATE)).map();	
 
 		child.withENCCVisitThree(enccThree);
+		child.withClientVersion(DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)));
 		child.withTODAY(submission.getField(REFERENCE_DATE));
 		allChilds.update(child);		
 		childSchedulesService.unEnrollFromSchedule(submission.entityId(), submission.anmId(), SCHEDULE_ENCC);
