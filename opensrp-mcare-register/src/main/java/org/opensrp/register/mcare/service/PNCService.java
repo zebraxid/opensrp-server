@@ -261,8 +261,11 @@ public class PNCService {
 				.put(REFERENCE_DATE, submission.getField(REFERENCE_DATE)).put(START_DATE, submission.getField(START_DATE))
 				.put(END_DATE, submission.getField(END_DATE)).put(pnc1_current_formStatus, submission.getField(pnc1_current_formStatus))
 				.put(relationalid, submission.getField(relationalid)).put(user_type, submission.getField(user_type))
-				.put(external_user_ID, submission.getField(external_user_ID)).put("received_time", format.format(today).toString()).map();
+				.put(external_user_ID, submission.getField(external_user_ID))
+				.put("clientVersion", DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)).toString())
+				.put("received_time", DateUtil.getTodayAsString()).map();
 
+		mother.withClientVersion(DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)));
 		mother.withPNCVisitOne(pncVisitOne);
 		mother.withTODAY(submission.getField(REFERENCE_DATE));
 		allMothers.update(mother);
@@ -304,8 +307,11 @@ public class PNCService {
 				.put(REFERENCE_DATE, submission.getField(REFERENCE_DATE)).put(START_DATE, submission.getField(START_DATE))
 				.put(END_DATE, submission.getField(END_DATE)).put(pnc2_current_formStatus, submission.getField(pnc2_current_formStatus))
 				.put(relationalid, submission.getField(relationalid)).put(user_type, submission.getField(user_type))
-				.put(external_user_ID, submission.getField(external_user_ID)).put("received_time", format.format(today).toString()).map();
+				.put("clientVersion", DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)).toString())
+				.put(external_user_ID, submission.getField(external_user_ID))
+				.put("received_time", DateUtil.getTodayAsString()).map();
 
+		mother.withClientVersion(DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)));
 		mother.withPNCVisitTwo(pncVisitTwo);
 		mother.withTODAY(submission.getField(REFERENCE_DATE));
 		allMothers.update(mother);		
@@ -349,8 +355,12 @@ public class PNCService {
 				.put(REFERENCE_DATE, submission.getField(REFERENCE_DATE)).put(START_DATE, submission.getField(START_DATE))
 				.put(END_DATE, submission.getField(END_DATE)).put(pnc3_current_formStatus, submission.getField(pnc3_current_formStatus))
 				.put(relationalid, submission.getField(relationalid)).put(user_type, submission.getField(user_type))
-				.put(external_user_ID, submission.getField(external_user_ID)).put("received_time", format.format(today).toString()).map();
+				.put("clientVersion", DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)).toString())
+				.put(external_user_ID, submission.getField(external_user_ID))
+				.put("received_time", DateUtil.getTodayAsString()).map();
+		
 		mother.withPNCVisitThree(pncVisitThree);
+		mother.withClientVersion(DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)));
 		mother.withTODAY(submission.getField(REFERENCE_DATE));
 		allMothers.update(mother);
 		pncSchedulesService.unEnrollFromSchedule(submission.entityId(), submission.anmId(), SCHEDULE_PNC);

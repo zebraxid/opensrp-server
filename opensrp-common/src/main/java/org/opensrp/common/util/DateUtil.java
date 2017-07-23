@@ -296,6 +296,12 @@ public class DateUtil {
 		return monthBoundaries;
 	}
 	
+	public static String getTodayAsString(){
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date today = Calendar.getInstance().getTime();
+		return format.format(today).toString();
+	}
+	
     public static List<Long> getWeekBoundariesForDashboardAsTimestamp(){   	
     	Calendar now = GregorianCalendar.getInstance();   	
     	

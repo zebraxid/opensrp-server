@@ -248,8 +248,7 @@ public class ANCService {
 			logger.warn(format("Failed to handle ANC-1 as there is no Mother enroll with ID: {0}", submission.entityId()));
 			return;
 		}
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		Date today = Calendar.getInstance().getTime();
+		
 		Map<String, String> ancVisitOne = create(FWANC1DATE, submission.getField(FWANC1DATE))
 				.put(anc1_current_formStatus, submission.getField(anc1_current_formStatus)).put(FWCONFIRMATION, submission.getField(FWCONFIRMATION))
 				.put(FWGESTATIONALAGE, submission.getField(FWGESTATIONALAGE)).put(FWEDD, submission.getField(FWEDD))
@@ -275,8 +274,9 @@ public class ANCService {
 				.put(FW_WOMFNAME, submission.getField(FW_WOMFNAME)).put(FW_HUSNAME, submission.getField(FW_HUSNAME))
 				.put(MOTHER_REFERENCE_DATE, submission.getField(MOTHER_REFERENCE_DATE)).put(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
 				.put(START_DATE, submission.getField(START_DATE)).put(END_DATE, submission.getField(END_DATE))
-				.put("received_time", format.format(today).toString()).map();
-
+				.put("clientVersion", DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)).toString())
+				.put("received_time", DateUtil.getTodayAsString()).map();
+		mother.withClientVersion(DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)));
 		mother.withANCVisitOne(ancVisitOne);
 		mother.withTODAY(submission.getField(REFERENCE_DATE));
 		allMothers.update(mother);
@@ -303,8 +303,7 @@ public class ANCService {
 			logger.warn(format("Failed to handle ANC-2 as there is no Mother enroll with ID: {0}", submission.entityId()));
 			return;
 		}
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		Date today = Calendar.getInstance().getTime();
+		
 		Map<String, String> ancVisitTwo = create(FWANC2DATE, submission.getField(FWANC2DATE))
 				.put(ANC2_current_formStatus, submission.getField(ANC2_current_formStatus)).put(FWCONFIRMATION, submission.getField(FWCONFIRMATION))
 				.put(FWGESTATIONALAGE, submission.getField(FWGESTATIONALAGE)).put(FWEDD, submission.getField(FWEDD))
@@ -330,8 +329,9 @@ public class ANCService {
 				.put(FW_WOMFNAME, submission.getField(FW_WOMFNAME)).put(FW_HUSNAME, submission.getField(FW_HUSNAME))
 				.put(MOTHER_REFERENCE_DATE, submission.getField(MOTHER_REFERENCE_DATE)).put(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
 				.put(START_DATE, submission.getField(START_DATE)).put(END_DATE, submission.getField(END_DATE))
-				.put("received_time", format.format(today).toString()).map();
-
+				.put("clientVersion", DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)).toString())
+				.put("received_time", DateUtil.getTodayAsString()).map();
+		mother.withClientVersion(DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)));
 		mother.withANCVisitTwo(ancVisitTwo);
 		mother.withTODAY(submission.getField(REFERENCE_DATE));
 		allMothers.update(mother);
@@ -358,8 +358,7 @@ public class ANCService {
 			logger.warn(format("Failed to handle ANC-3 as there is no Mother enroll with ID: {0}", submission.entityId()));
 			return;
 		}
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		Date today = Calendar.getInstance().getTime();
+		
 		Map<String, String> ancVisitThree = create(FWANC3DATE, submission.getField(FWANC3DATE))
 				.put(ANC3_current_formStatus, submission.getField(ANC3_current_formStatus)).put(FWCONFIRMATION, submission.getField(FWCONFIRMATION))
 				.put(FWGESTATIONALAGE, submission.getField(FWGESTATIONALAGE)).put(FWEDD, submission.getField(FWEDD))
@@ -385,8 +384,9 @@ public class ANCService {
 				.put(FW_WOMFNAME, submission.getField(FW_WOMFNAME)).put(FW_HUSNAME, submission.getField(FW_HUSNAME))
 				.put(MOTHER_REFERENCE_DATE, submission.getField(MOTHER_REFERENCE_DATE)).put(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
 				.put(START_DATE, submission.getField(START_DATE)).put(END_DATE, submission.getField(END_DATE))
-				.put("received_time", format.format(today).toString()).map();
-
+				.put("clientVersion", DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)).toString())
+				.put("received_time", DateUtil.getTodayAsString()).map();
+		mother.withClientVersion(DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)));
 		mother.withANCVisitThree(ancVisitThree);
 		mother.withTODAY(submission.getField(REFERENCE_DATE));
 		allMothers.update(mother);
@@ -413,8 +413,7 @@ public class ANCService {
 			logger.warn(format("Failed to handle ANC-4 as there is no Mother enroll with ID: {0}", submission.entityId()));
 			return;
 		}
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		Date today = Calendar.getInstance().getTime();
+		
 		Map<String, String> ancVisitFour = create(FWANC4DATE, submission.getField(FWANC4DATE))
 				.put(ANC4_current_formStatus, submission.getField(ANC4_current_formStatus)).put(FWCONFIRMATION, submission.getField(FWCONFIRMATION))
 				.put(FWGESTATIONALAGE, submission.getField(FWGESTATIONALAGE)).put(FWEDD, submission.getField(FWEDD))
@@ -440,8 +439,10 @@ public class ANCService {
 				.put(FW_WOMNID, submission.getField(FW_WOMNID)).put(FW_WOMFNAME, submission.getField(FW_WOMFNAME))
 				.put(FW_HUSNAME, submission.getField(FW_HUSNAME)).put(MOTHER_REFERENCE_DATE, submission.getField(MOTHER_REFERENCE_DATE))
 				.put(REFERENCE_DATE, submission.getField(REFERENCE_DATE)).put(START_DATE, submission.getField(START_DATE))
-				.put(END_DATE, submission.getField(END_DATE)).put("received_time", format.format(today).toString()).map();
-
+				.put("clientVersion", DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)).toString())
+				.put(END_DATE, submission.getField(END_DATE))
+				.put("received_time", DateUtil.getTodayAsString()).map();
+		mother.withClientVersion(DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)));
 		mother.withANCVisitFour(ancVisitFour);
 		mother.withTODAY(submission.getField(REFERENCE_DATE));
 		allMothers.update(mother);

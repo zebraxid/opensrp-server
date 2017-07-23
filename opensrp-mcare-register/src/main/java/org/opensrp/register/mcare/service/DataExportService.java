@@ -42,6 +42,7 @@ public class DataExportService {
 	private AllMothers allMothers;
 	private AllChilds allChilds;
 	private AllReportActions allReportActions;
+
 	public DataExportService() {
 
 	}
@@ -50,7 +51,8 @@ public class DataExportService {
 	public DataExportService(
 			@Value("#{opensrp['multimedia.directory.name']}") String multimediaDirName,
 			AllHouseHolds allHouseHolds, AllElcos allElcos,
-			AllActions allActions, AllMothers allMothers, AllChilds allChilds,AllReportActions allReportActions) {
+			AllActions allActions, AllMothers allMothers, AllChilds allChilds,
+			AllReportActions allReportActions) {
 		this.multimediaDirPath = multimediaDirName;
 		this.allHouseHolds = allHouseHolds;
 		this.allElcos = allElcos;
@@ -89,7 +91,8 @@ public class DataExportService {
 		} else if (formName.equalsIgnoreCase("MIS_ELCO_FORM")) {
 			createMisElcoCSV(response, formName, start_date, end_date,
 					reportName);
-		} else if (formName.equalsIgnoreCase("ANC")) {
+		} else if (formName.equalsIgnoreCase("ANCSUBMIT")) {
+			System.err.println("Come .............");
 			String schedule = "Ante Natal Care Reminder Visit";
 			boolean isAcitve = false;
 			createANCRV(response, schedule, start_date, end_date, reportName,
@@ -99,7 +102,7 @@ public class DataExportService {
 			boolean isAcitve = true;
 			createANCRVNotSubmit(response, schedule, start_date, end_date,
 					reportName, isAcitve);
-		} else if (formName.equalsIgnoreCase("PNC")) {
+		} else if (formName.equalsIgnoreCase("PNCSUBMIT")) {
 			String schedule = "Post Natal Care Reminder Visit";
 			boolean isAcitve = false;
 			createPNC(response, schedule, start_date, end_date, reportName,
@@ -109,7 +112,7 @@ public class DataExportService {
 			boolean isAcitve = true;
 			createPNCNotSubmit(response, schedule, start_date, end_date,
 					reportName, isAcitve);
-		} else if (formName.equalsIgnoreCase("ENCC")) {
+		} else if (formName.equalsIgnoreCase("ENCCSUBMIT")) {
 			createENCCCSV(response, start_date, end_date, reportName);
 		} else if (formName.equalsIgnoreCase("ENCCNOTSUBMIT")) {
 			String schedule = "Essential Newborn Care Checklist";
@@ -153,20 +156,17 @@ public class DataExportService {
 			writer.append(',');// 8
 			writer.append("Mouza Para");
 			writer.append(',');// 9
-			writer.append("Name of PNC Visit");
+			writer.append("Name of ENCC Visit");
 			writer.append('\n'); // 22
 
 			for (Action action : actions) {
 				Child child = allChilds.findByCaseId(action.caseId());
 				String visitCode = action.data().get("visitCode");
+				if (child != null) {
 
-				if (child.PROVIDERID() != null
-						|| !child.PROVIDERID().isEmpty()) {
-															
 					try {
 						if (child.details().get("FWBNFCHILDNAME") != null) {
-							writer.append(child.details().get(
-									"FWBNFCHILDNAME"));
+							writer.append(child.details().get("FWBNFCHILDNAME"));
 							writer.append(',');
 						} else {
 							writer.append("");
@@ -216,15 +216,19 @@ public class DataExportService {
 					}
 				}
 				
-				for (int i = 1; i < getLimit(visitCode); i++) {// check previous encc
-					Map<String,String> encc = getENCCNumber(child, i);
-					ScheduleLog scheduleLog = allReportActions.findByyCaseIdByname(child.caseId(),action.data().get("scheduleName"));
-					
-					
-					
-					if ((child.PROVIDERID() != null
-							|| !child.PROVIDERID().isEmpty()) && encc.isEmpty() && isScheduleCreated(scheduleLog,getScheduleMilestone(i))) {
-																
+				if (child != null){
+				for (int i = 1; i < getLimit(visitCode); i++) {// check previous
+																// encc
+					Map<String, String> encc = getENCCNumber(child, i);
+					ScheduleLog scheduleLog = allReportActions
+							.findByyCaseIdByname(child.caseId(), action.data()
+									.get("scheduleName"));
+
+					if ((child != null)
+							&& encc.isEmpty()
+							&& isScheduleCreated(scheduleLog,
+									getScheduleMilestone(i))) {
+
 						try {
 							if (child.details().get("FWBNFCHILDNAME") != null) {
 								writer.append(child.details().get(
@@ -270,20 +274,18 @@ public class DataExportService {
 								writer.append(',');
 							}
 
-							writer.append("enccrv_"+i);
+							writer.append("enccrv_" + i);
 
 							writer.append('\n');
 						} catch (Exception e) {
 							e.printStackTrace();
 						}
-					}else{
-						
-					}
-					
-					}
-					
+					} else {
 
-				
+					}
+
+				}
+				}
 
 			}
 
@@ -299,19 +301,24 @@ public class DataExportService {
 
 	}
 
-	public boolean isScheduleCreated(ScheduleLog scheduleLog,String milestone){
+	public boolean isScheduleCreated(ScheduleLog scheduleLog, String milestone) {
+		if(scheduleLog!=null){
 		List<Map<String, String>> data = scheduleLog.data();
-		System.out.println("scheduleLog:"+scheduleLog.toString());
+		
 		for (Map<String, String> map : data) {
-			if(map.get("visitCode").equalsIgnoreCase(milestone)){
-				System.err.println("milestone"+ milestone+"visitCode::::"+map.get("visitCode"));
+			if (map.get("visitCode").equalsIgnoreCase(milestone)) {
+				
 				return true;
 			}
 		}
-		
+
 		return false;
-		
+		}else{
+			return false;
+		}
+
 	}
+
 	public int getLimit(String visitCode) {
 		String[] visitCodeSplit = visitCode.trim().split("_");
 		int ancNumber = Integer.parseInt(visitCodeSplit[1]);
@@ -321,10 +328,11 @@ public class DataExportService {
 
 	public void createENCCCSV(HttpServletResponse response, String start_date,
 			String end_date, String reportName) {
+		long startTime = convertDateToTimestampMills(start_date);
 		List<Child> childs = allChilds.allChildsCreatedBetween2Dates("Child",
 				convertDateToTimestampMills(start_date),
 				convertDateToTimestampMills(end_date));
-		System.err.println("childs:" + childs);
+		
 		response.setContentType("text/csv");
 		response.setHeader("Content-disposition", "attachment; " + "filename="
 				+ reportName);
@@ -354,15 +362,17 @@ public class DataExportService {
 			writer.append("Time Started");
 			writer.append(',');// 12
 			writer.append("Time Ended");
-			writer.append('\n'); // 22
+			writer.append('\n');
 
 			for (Child child : childs) {
 
 				for (int i = 0; i < 3; i++) {
-
+					Map<String,String> encc = getENCCNumber(child, i);
 					if (!getENCCNumber(child, i).isEmpty()
-							&& !child.PROVIDERID().isEmpty()) {
-
+							&& child.PROVIDERID()!=null) {
+						Long submitTime = Long.parseLong(encc.get("clientVersion"));
+						
+					 if( isInRange(submitTime,startTime)){
 						writer.append(child.details().get("FWBNFCHILDNAME"));
 						writer.append(',');
 						writer.append("");
@@ -386,7 +396,6 @@ public class DataExportService {
 							writer.append("");
 							writer.append(',');
 						}
-
 						if (child.getUnit() != null) {
 							writer.append(child.getUnit());
 							writer.append(',');
@@ -401,7 +410,6 @@ public class DataExportService {
 							writer.append("");
 							writer.append(',');
 						}
-						
 						writer.append(getScheduleMilestone(i));
 						writer.append(',');
 						writer.append(getENCCNumber(child, i).get("today"));
@@ -409,14 +417,13 @@ public class DataExportService {
 						writer.append(getENCCNumber(child, i).get("start"));
 						writer.append(',');
 						writer.append(getENCCNumber(child, i).get("end"));
-
 						writer.append('\n');
 
 					} else {
 
 					}
 				}
-
+				}
 			}
 
 			writer.flush();
@@ -426,7 +433,7 @@ public class DataExportService {
 			// TODO Auto-generated catch block
 			// e.printStackTrace();
 		} finally {
-			System.out.println("Loop time end:" + System.currentTimeMillis());
+			
 		}
 
 	}
@@ -502,7 +509,7 @@ public class DataExportService {
 			writer.append(',');// 8
 			writer.append("Mouza Para");
 			writer.append(',');// 9
-			writer.append("Name of PNC Visit");
+			writer.append("Name of ENCC Visit");
 
 			writer.append('\n'); // 22
 
@@ -510,8 +517,7 @@ public class DataExportService {
 				Mother mother = allMothers.findByCaseId(action.caseId());
 				String visitCode = action.data().get("visitCode");
 
-				if (mother.PROVIDERID() != null
-						|| !mother.PROVIDERID().isEmpty()) {// should have pnc
+				if (mother.PROVIDERID() != null ) {// should have pnc
 															// visit
 					try {
 
@@ -525,16 +531,18 @@ public class DataExportService {
 
 						if (mother.mother_wom_nid() != null
 								|| mother.mother_wom_bid() != null) {
-							writer.append("''"
-									+ String.valueOf(mother.mother_wom_nid()
-											.toString())
-									+ mother.mother_wom_bid() + "''");
-							writer.append(',');
-						} else {
-							writer.append("");
-							writer.append(',');
-
-						}
+								String id = mother.mother_wom_nid();
+								if(id.isEmpty()){
+									id = mother.mother_wom_bid();
+								}
+								writer.append("''"
+								+ String.valueOf(id.toString())+ "''");
+								writer.append(',');
+								} else {
+								writer.append("");
+								writer.append(',');
+								
+								}
 
 						writer.append(action.data().get("alertStatus"));
 						writer.append(',');
@@ -578,11 +586,94 @@ public class DataExportService {
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
+				}else{
+					
 				}
 				
-				
-				
-				
+				for (int i = 1; i < getLimit(visitCode); i++) {
+					Map<String, String> encc = getPNCNumber(mother, i);
+					ScheduleLog scheduleLog = allReportActions
+							.findByyCaseIdByname(mother.caseId(), action.data()
+									.get("scheduleName"));
+					
+
+					if (mother != null && mother.PROVIDERID() != null
+							&& encc.isEmpty()
+							&& isScheduleCreated(scheduleLog,
+									getPNCScheduleMilestone(i))) {	
+						// visit
+						try {
+						
+						if (mother.mother_first_name() != null) {
+						writer.append(mother.mother_first_name());
+						writer.append(',');
+						} else {
+						writer.append("");
+						writer.append(',');
+						}
+						
+						if (mother.mother_wom_nid() != null
+						|| mother.mother_wom_bid() != null) {
+						String id = mother.mother_wom_nid();
+						if(id.isEmpty()){
+							id = mother.mother_wom_bid();
+						}
+						writer.append("''"
+						+ String.valueOf(id.toString())+ "''");
+						writer.append(',');
+						} else {
+						writer.append("");
+						writer.append(',');
+						
+						}
+						
+						writer.append("expired");
+						writer.append(',');
+						writer.append(mother.PROVIDERID());
+						writer.append(',');
+						if (mother.FWWOMUPAZILLA() != null) {
+						writer.append(mother.FWWOMUPAZILLA());
+						writer.append(',');
+						} else {
+						writer.append("");
+						writer.append(',');
+						}
+						
+						if (mother.getFWWOMUNION() != null) {
+						writer.append(mother.getFWWOMUNION());
+						writer.append(',');
+						} else {
+						writer.append("");
+						writer.append(',');
+						}
+						
+						if (mother.getFWWOMSUBUNIT() != null) {
+						writer.append(mother.getFWWOMSUBUNIT());
+						writer.append(',');
+						} else {
+						writer.append("");
+						writer.append(',');
+						}
+						
+						if (mother.getMother_mauza() != null) {
+						writer.append(mother.getMother_mauza());
+						writer.append(',');
+						} else {
+						writer.append("");
+						writer.append(',');
+						}
+						
+						writer.append(getPNCScheduleMilestone(i));
+						
+						writer.append('\n');
+						} catch (Exception e) {
+						e.printStackTrace();
+						}
+						}else{
+						
+						}
+
+				}
 
 			}
 
@@ -598,11 +689,39 @@ public class DataExportService {
 
 	}
 
+	public String getPNCScheduleMilestone(int i) {
+		String milestone = "";
+		if (i == 0) {
+			milestone = "pncrv_1";
+		} else if (i == 1) {
+			milestone = "pncrv_2";
+		} else if (i == 2) {
+			milestone = "pncrv_3";
+		} else {
+
+		}
+		return milestone;
+	}
+	public Map<String, String> getPNCNumber(Mother mother, int i) {
+		Map<String, String> pnc = new HashMap<>();
+		if (i == 0) {
+			pnc = mother.pncVisitOne();
+		} else if (i == 1) {
+			pnc = mother.pncVisitTwo();
+		} else if (i == 2) {
+			pnc = mother.pncVisitThree();
+		} else {
+			
+		}
+		return pnc;
+
+	}
 	public void createPNC(HttpServletResponse response, String schedule,
 			String start_date, String end_date, String reportName,
 			boolean isAcitve) {
-		List<Action> actions = allActions.findByScheduleIsActivenAndTimeStamp(
-				schedule, isAcitve, convertDateToTimestampMills(start_date),
+		long startTime = convertDateToTimestampMills(start_date);
+		List<Mother> mothers = allMothers.allMothersCreatedBetween2Dates("Mother",
+				startTime,
 				convertDateToTimestampMills(end_date));
 		response.setContentType("text/csv");
 		response.setHeader("Content-disposition", "attachment; " + "filename="
@@ -635,37 +754,13 @@ public class DataExportService {
 			writer.append("Time Ended");
 			writer.append('\n'); // 22
 
-			for (Action action : actions) {
-				Mother mother = allMothers.findByCaseId(action.caseId());
-				String visitCode = action.data().get("visitCode");
-
-				String visitDate = "";
-				String startTime = "";
-				String endTime = "";
-				Map<String, String> pncvisit = new HashMap<>();
-				if (visitCode.equalsIgnoreCase(ExportConstant.pnc1)) {
-					pncvisit = mother.pncVisitOne();
-					visitDate = pncvisit.get("today");
-					startTime = pncvisit.get("start");
-					endTime = pncvisit.get("end");
-
-				} else if (visitCode.equalsIgnoreCase(ExportConstant.pnc2)) {
-					pncvisit = mother.pncVisitTwo();
-					visitDate = pncvisit.get("today");
-					startTime = pncvisit.get("start");
-					endTime = pncvisit.get("end");
-				} else if (visitCode.equalsIgnoreCase(ExportConstant.pnc3)) {
-					pncvisit = mother.pncVisitThree();
-					visitDate = pncvisit.get("today");
-					startTime = pncvisit.get("start");
-					endTime = pncvisit.get("end");
-				} else {
-				}
-				if (!pncvisit.isEmpty()
-						&& (mother.PROVIDERID() != null || !mother.PROVIDERID()
-								.isEmpty())) {// should have pnc visit
-					try {
-
+			for (Mother mother : mothers) {
+				
+				for (int i = 0; i < 3; i++) {
+					Map<String,String> pncvisit = getPNCNumber(mother,i);				
+				if (!pncvisit.isEmpty()	&& mother.PROVIDERID() != null ) {					
+					Long submitTime = Long.parseLong(pncvisit.get("clientVersion"));					
+				   if( isInRange(submitTime,startTime)){
 						if (mother.mother_first_name() != null) {
 							writer.append(mother.mother_first_name());
 							writer.append(',');
@@ -676,18 +771,19 @@ public class DataExportService {
 
 						if (mother.mother_wom_nid() != null
 								|| mother.mother_wom_bid() != null) {
-							writer.append("''"
-									+ String.valueOf(mother.mother_wom_nid()
-											.toString())
-									+ mother.mother_wom_bid() + "''");
-							writer.append(',');
-						} else {
-							writer.append("");
-							writer.append(',');
-
+								String id = mother.mother_wom_nid();
+								if(id.isEmpty()){
+									id = mother.mother_wom_bid();
+							}
+								writer.append("''"
+								+ String.valueOf(id.toString())+ "''");
+								writer.append(',');
+							} else {
+								writer.append("");
+								writer.append(',');							
 						}
 
-						writer.append(action.data().get("alertStatus"));
+						writer.append(pncvisit.get(getPNCFormStattusKeyName(i)));
 						writer.append(',');
 						writer.append(mother.PROVIDERID());
 						writer.append(',');
@@ -723,20 +819,20 @@ public class DataExportService {
 							writer.append(',');
 						}
 
-						writer.append(visitCode);
+						writer.append(getPNCScheduleMilestone(i));
 						writer.append(',');
 
-						writer.append(visitDate);
+						writer.append(pncvisit.get("today"));
 						writer.append(',');
-						writer.append(startTime);
+						writer.append(pncvisit.get("start"));
 						writer.append(',');
-						writer.append(endTime);
+						writer.append(pncvisit.get("end"));
 						writer.append('\n');
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
+				}					
+					
 				}
-
+				
+				}
 			}
 
 			writer.flush();
@@ -746,9 +842,24 @@ public class DataExportService {
 			// TODO Auto-generated catch block
 			// e.printStackTrace();
 		} finally {
-			System.out.println("Loop time end:" + System.currentTimeMillis());
+			
 		}
 
+	}
+	
+	public String getPNCFormStattusKeyName(int i) {
+		String keyName = "";
+		if (i == 0) {
+			keyName = "pnc1_current_formStatus";
+		} else if (i == 1) {
+			keyName = "pnc2_current_formStatus";
+		} else if (i == 2) {
+			keyName = "PNC3_current_formStatus";
+		
+		} else {
+			
+		}
+		return keyName;
 	}
 
 	public void createANCRVNotSubmit(HttpServletResponse response,
@@ -787,9 +898,11 @@ public class DataExportService {
 				Mother mother = allMothers.findByCaseId(action.caseId());
 				String visitCode = action.data().get("visitCode");
 
-				if (mother.PROVIDERID() != null
-						|| !mother.PROVIDERID().isEmpty()) {// should have anc
-															// visit
+				if (mother != null && mother.PROVIDERID() != null) {// should
+																	// have anc
+					// visit
+					
+					
 					try {
 
 						if (mother.mother_first_name() != null) {
@@ -802,16 +915,18 @@ public class DataExportService {
 
 						if (mother.mother_wom_nid() != null
 								|| mother.mother_wom_bid() != null) {
-							writer.append("''"
-									+ String.valueOf(mother.mother_wom_nid()
-											.toString())
-									+ mother.mother_wom_bid() + "''");
-							writer.append(',');
-						} else {
-							writer.append("");
-							writer.append(',');
-
-						}
+								String id = mother.mother_wom_nid();
+								if(id.isEmpty()){
+									id = mother.mother_wom_bid();
+								}
+								writer.append("''"
+								+ String.valueOf(id.toString())+ "''");
+								writer.append(',');
+								} else {
+								writer.append("");
+								writer.append(',');
+								
+								}
 
 						writer.append(action.data().get("alertStatus"));
 						writer.append(',');
@@ -856,6 +971,95 @@ public class DataExportService {
 						e.printStackTrace();
 					}
 
+				} else {
+
+				}
+
+				for (int i = 1; i < getLimit(visitCode); i++) {
+					Map<String, String> anc = getANCNumber(mother, i);
+					ScheduleLog scheduleLog = allReportActions
+							.findByyCaseIdByname(mother.caseId(), action.data()
+									.get("scheduleName"));
+
+					
+						if (mother != null && mother.PROVIDERID() != null
+								&& anc.isEmpty()
+								&& isScheduleCreated(scheduleLog,
+										getANCScheduleMilestone(i))) {											// have
+																		
+						
+						try {
+
+							if (mother.mother_first_name() != null) {
+								writer.append(mother.mother_first_name());
+								writer.append(',');
+							} else {
+								writer.append("");
+								writer.append(',');
+							}
+
+							if (mother.mother_wom_nid() != null
+									|| mother.mother_wom_bid() != null) {
+									String id = mother.mother_wom_nid();
+									if(id.isEmpty()){
+										id = mother.mother_wom_bid();
+									}
+									writer.append("''"
+									+ String.valueOf(id.toString())+ "''");
+									writer.append(',');
+									} else {
+									writer.append("");
+									writer.append(',');
+									
+									}
+
+							writer.append("expired");
+							writer.append(',');
+							writer.append(mother.PROVIDERID());
+							writer.append(',');
+							if (mother.FWWOMUPAZILLA() != null) {
+								writer.append(mother.FWWOMUPAZILLA());
+								writer.append(',');
+							} else {
+								writer.append("");
+								writer.append(',');
+							}
+
+							if (mother.getFWWOMUNION() != null) {
+								writer.append(mother.getFWWOMUNION());
+								writer.append(',');
+							} else {
+								writer.append("");
+								writer.append(',');
+							}
+
+							if (mother.getFWWOMSUBUNIT() != null) {
+								writer.append(mother.getFWWOMSUBUNIT());
+								writer.append(',');
+							} else {
+								writer.append("");
+								writer.append(',');
+							}
+
+							if (mother.getMother_mauza() != null) {
+								writer.append(mother.getMother_mauza());
+								writer.append(',');
+							} else {
+								writer.append("");
+								writer.append(',');
+							}
+
+							writer.append(getANCScheduleMilestone(i));
+
+							writer.append('\n');
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+
+					} else {
+
+					}
+
 				}
 			}
 
@@ -871,12 +1075,44 @@ public class DataExportService {
 
 	}
 
+	public String getANCScheduleMilestone(int i) {
+		String milestone = "";
+		if (i == 0) {
+			milestone = "ancrv_1";
+		} else if (i == 1) {
+			milestone = "ancrv_2";
+		} else if (i == 2) {
+			milestone = "ancrv_3";
+		} else if( i== 3) {
+			milestone = "ancrv_4";
+		}else {
+			
+		}
+		return milestone;
+	}
+	public Map<String, String> getANCNumber(Mother mother, int i) {
+		Map<String, String> anc = new HashMap<>();
+		if (i == 0) {
+			anc = mother.ancVisitOne();
+		} else if (i == 1) {
+			anc = mother.ancVisitTwo();
+		} else if (i == 2) {
+			anc = mother.ancVisitThree();
+		} else if(i == 3){
+			anc = mother.ancVisitFour();
+		}
+		return anc;
+
+	}
+
 	public void createANCRV(HttpServletResponse response, String schedule,
 			String start_date, String end_date, String reportName,
 			boolean isAcitve) {
-		List<Action> actions = allActions.findByScheduleIsActivenAndTimeStamp(
-				schedule, isAcitve, convertDateToTimestampMills(start_date),
+		long startTime = convertDateToTimestampMills(start_date);
+		List<Mother> mothers = allMothers.allMothersCreatedBetween2Dates("Mother",
+				startTime,
 				convertDateToTimestampMills(end_date));
+		System.err.println("Mother:"+mothers.size());
 		response.setContentType("text/csv");
 		response.setHeader("Content-disposition", "attachment; " + "filename="
 				+ reportName);
@@ -908,40 +1144,15 @@ public class DataExportService {
 			writer.append("Time Ended");
 			writer.append('\n'); // 22
 
-			for (Action action : actions) {
-				Mother mother = allMothers.findByCaseId(action.caseId());
-				String visitCode = action.data().get("visitCode");
-
-				String visitDate = "";
-				String startTime = "";
-				String endTime = "";
-				Map<String, String> ancvisit = new HashMap<>();
-				if (visitCode.equalsIgnoreCase(ExportConstant.anc1)) {
-					ancvisit = mother.ancVisitOne();
-					visitDate = ancvisit.get("today");
-					startTime = ancvisit.get("start");
-					endTime = ancvisit.get("end");
-
-				} else if (visitCode.equalsIgnoreCase(ExportConstant.anc2)) {
-					ancvisit = mother.ancVisitTwo();
-					visitDate = ancvisit.get("today");
-					startTime = ancvisit.get("start");
-					endTime = ancvisit.get("end");
-				} else if (visitCode.equalsIgnoreCase(ExportConstant.anc3)) {
-					ancvisit = mother.ancVisitThree();
-					visitDate = ancvisit.get("today");
-					startTime = ancvisit.get("start");
-					endTime = ancvisit.get("end");
-				} else if (visitCode.equalsIgnoreCase(ExportConstant.anc4)) {
-					ancvisit = mother.ancVisitFour();
-					visitDate = ancvisit.get("today");
-					startTime = ancvisit.get("start");
-					endTime = ancvisit.get("end");
-				}
-				if (!ancvisit.isEmpty()
-						&& (mother.PROVIDERID() != null || !mother.PROVIDERID()
-								.isEmpty())) {// should have anc visit
-					try {
+			for (Mother mother : mothers) {
+				
+				for (int i = 0; i < 4; i++) {
+					Map<String,String> anc = getANCNumber(mother,i);
+					
+					if (!anc.isEmpty()	&& mother.PROVIDERID() !=null  ) {		
+						Long submitTime = Long.parseLong(anc.get("clientVersion"));
+						System.err.println("submitTime:"+submitTime);
+					if( isInRange(submitTime,startTime)){
 
 						if (mother.mother_first_name() != null) {
 							writer.append(mother.mother_first_name());
@@ -953,18 +1164,20 @@ public class DataExportService {
 
 						if (mother.mother_wom_nid() != null
 								|| mother.mother_wom_bid() != null) {
-							writer.append("''"
-									+ String.valueOf(mother.mother_wom_nid()
-											.toString())
-									+ mother.mother_wom_bid() + "''");
-							writer.append(',');
-						} else {
-							writer.append("");
-							writer.append(',');
+								String id = mother.mother_wom_nid();
+								if(id.isEmpty()){
+									id = mother.mother_wom_bid();
+								}
+								writer.append("''"
+								+ String.valueOf(id.toString())+ "''");
+								writer.append(',');
+								} else {
+								writer.append("");
+								writer.append(',');
+								
+								}
 
-						}
-
-						writer.append(action.data().get("alertStatus"));
+						writer.append(anc.get(getANCFormStattusKeyName(i)));
 						writer.append(',');
 						writer.append(mother.PROVIDERID());
 						writer.append(',');
@@ -1000,22 +1213,20 @@ public class DataExportService {
 							writer.append(',');
 						}
 
-						writer.append(visitCode);
+						writer.append(getANCScheduleMilestone(i));
 						writer.append(',');
 
-						writer.append(visitDate);
+						writer.append(anc.get("today"));
 						writer.append(',');
-						writer.append(startTime);
+						writer.append(anc.get("start"));
 						writer.append(',');
-						writer.append(endTime);
+						writer.append(anc.get("end"));
 						writer.append('\n');
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
+					
 				}
-
 			}
-
+			}
+			}	
 			writer.flush();
 			writer.close();
 
@@ -1027,7 +1238,33 @@ public class DataExportService {
 		}
 
 	}
-
+	
+	public boolean isInRange(long submitTime, long startTime){
+		System.err.println("submitTime:"+submitTime+" startTime"+startTime);
+		if(startTime <=submitTime){
+			System.err.println("OKKKK");
+			return true;
+		}else{
+			System.err.println("Mot OKK");
+		return false;
+		}
+	}
+		public String getANCFormStattusKeyName(int i) {
+			String keyName = "";
+			if (i == 0) {
+				keyName = "anc1_current_formStatus";
+			} else if (i == 1) {
+				keyName = "ANC2_current_formStatus";
+			} else if (i == 2) {
+				keyName = "ANC3_current_formStatus";
+			} else if (i == 3) {
+				keyName = "ANC4_current_formStatus";
+			} else {
+				
+			}
+			return keyName;
+		}
+		
 	public List<Exports> getExportsByUser(String user) {
 		return allExports.getExportsByUser(user);
 	}

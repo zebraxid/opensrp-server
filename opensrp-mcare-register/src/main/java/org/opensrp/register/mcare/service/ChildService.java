@@ -25,6 +25,7 @@ import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.opensrp.common.util.DateTimeUtil;
+import org.opensrp.common.util.DateUtil;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.register.mcare.domain.Child;
 import org.opensrp.register.mcare.repository.AllChilds;
@@ -59,8 +60,7 @@ public class ChildService {
 					submission.entityId()));
 			return;
 		}
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		Date today = Calendar.getInstance().getTime();
+		
 		Map<String, String> enccOne = create(FWENC1DATE, submission.getField(FWENC1DATE))
 				.put(FWENC1STS, submission.getField(FWENC1STS))
 				.put(FWENC1BFINTN, submission.getField(FWENC1BFINTN))
@@ -81,7 +81,8 @@ public class ChildService {
 				.put(encc1_current_formStatus, submission.getField(encc1_current_formStatus))
 				.put(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
 				.put(START_DATE, submission.getField(START_DATE))
-				.put("received_time", format.format(today).toString())
+				.put("received_time", DateUtil.getTodayAsString())
+				.put("clientVersion", DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)).toString())
 				.put(END_DATE, submission.getField(END_DATE)).map();	
 
 		child.withENCCVisitOne(enccOne);
@@ -102,8 +103,7 @@ public class ChildService {
 					submission.entityId()));
 			return;
 		}
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		Date today = Calendar.getInstance().getTime();
+		
 		Map<String, String> enccTwo = create(FWENC2DATE, submission.getField(FWENC2DATE))
 				.put(FWENC2STS, submission.getField(FWENC2STS))
 				.put(FWENC2BFINTN, submission.getField(FWENC2BFINTN))
@@ -124,7 +124,8 @@ public class ChildService {
 				.put(encc2_current_formStatus, submission.getField(encc2_current_formStatus))
 				.put(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
 				.put(START_DATE, submission.getField(START_DATE))
-				.put("received_time", format.format(today).toString())
+				.put("received_time", DateUtil.getTodayAsString())
+				.put("clientVersion", DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)).toString())
 				.put(END_DATE, submission.getField(END_DATE)).map();	
 
 		child.withENCCVisitTwo(enccTwo);
@@ -145,8 +146,7 @@ public class ChildService {
 					submission.entityId()));
 			return;
 		}
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		Date today = Calendar.getInstance().getTime();
+		
 		Map<String, String> enccThree = create(FWENC3DATE, submission.getField(FWENC3DATE))
 				.put(FWENC3STS, submission.getField(FWENC3STS))
 				.put(FWENC3BFINTN, submission.getField(FWENC3BFINTN))
@@ -167,7 +167,8 @@ public class ChildService {
 				.put(encc3_current_formStatus, submission.getField(encc3_current_formStatus))
 				.put(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
 				.put(START_DATE, submission.getField(START_DATE))
-				.put("received_time", format.format(today).toString())
+				.put("received_time", DateUtil.getTodayAsString())
+				.put("clientVersion", DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)).toString())
 				.put(END_DATE, submission.getField(END_DATE)).map();	
 
 		child.withENCCVisitThree(enccThree);
