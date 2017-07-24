@@ -157,6 +157,8 @@ public class DataExportService {
 			writer.append("Mouza Para");
 			writer.append(',');// 9
 			writer.append("Name of ENCC Visit");
+			writer.append(',');// 9
+			writer.append("Expired Date");
 			writer.append('\n'); // 22
 
 			for (Action action : actions) {
@@ -209,6 +211,8 @@ public class DataExportService {
 						}
 
 						writer.append(visitCode);
+						writer.append(',');
+						writer.append(action.data().get("expiryDate"));
 
 						writer.append('\n');
 					} catch (Exception e) {
@@ -275,7 +279,8 @@ public class DataExportService {
 							}
 
 							writer.append("enccrv_" + i);
-
+							writer.append(',');
+							writer.append(action.data().get("expiryDate"));
 							writer.append('\n');
 						} catch (Exception e) {
 							e.printStackTrace();
@@ -510,7 +515,8 @@ public class DataExportService {
 			writer.append("Mouza Para");
 			writer.append(',');// 9
 			writer.append("Name of ENCC Visit");
-
+			writer.append(',');// 9
+			writer.append("Expired Date");
 			writer.append('\n'); // 22
 
 			for (Action action : actions) {
@@ -581,7 +587,8 @@ public class DataExportService {
 						}
 
 						writer.append(visitCode);
-
+						writer.append(',');
+						writer.append(action.data().get("expiryDate"));
 						writer.append('\n');
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -664,7 +671,8 @@ public class DataExportService {
 						}
 						
 						writer.append(getPNCScheduleMilestone(i));
-						
+						writer.append(',');
+						writer.append(action.data().get("expiryDate"));
 						writer.append('\n');
 						} catch (Exception e) {
 						e.printStackTrace();
@@ -891,7 +899,8 @@ public class DataExportService {
 			writer.append("Mouza Para");
 			writer.append(',');// 9
 			writer.append("Name of ANC Visit");
-
+			writer.append(',');// 9
+			writer.append("Expired Date");
 			writer.append('\n'); // 22
 
 			for (Action action : actions) {
@@ -965,7 +974,8 @@ public class DataExportService {
 						}
 
 						writer.append(visitCode);
-
+						writer.append(',');
+						writer.append(action.data().get("expiryDate"));
 						writer.append('\n');
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -1050,7 +1060,8 @@ public class DataExportService {
 							}
 
 							writer.append(getANCScheduleMilestone(i));
-
+							writer.append(',');
+							writer.append(action.data().get("expiryDate"));
 							writer.append('\n');
 						} catch (Exception e) {
 							e.printStackTrace();
