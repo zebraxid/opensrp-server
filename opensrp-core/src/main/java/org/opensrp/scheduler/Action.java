@@ -5,6 +5,7 @@ import java.util.Map;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.ektorp.support.TypeDiscriminator;
 import org.motechproject.model.MotechBaseDataObject;
@@ -15,7 +16,7 @@ import org.opensrp.dto.ActionData;
  * The entity which helps in identifying the type of action applicable for the entity or provider
  */
 @TypeDiscriminator("doc.type === 'Action'")
-public class Action extends MotechBaseDataObject {
+public class  Action extends MotechBaseDataObject {
     @JsonProperty
     private String providerId;
     @JsonProperty
@@ -46,11 +47,11 @@ public class Action extends MotechBaseDataObject {
     public Action(String baseEntityId, String providerId, ActionData actionData) {
         this.providerId = providerId;
         this.baseEntityId = baseEntityId;
-        this.data = actionData.data();
-        this.actionTarget = actionData.target();
-        this.actionType = actionData.type();
+        this.data = actionData.getData();
+        this.actionTarget = actionData.getTarget();
+        this.actionType = actionData.getType();
         this.timeStamp = DateUtil.now().getMillis();
-        this.details = actionData.details();
+        this.details = actionData.getDetails();
         this.isActionActive = true;
     }
 
@@ -66,16 +67,18 @@ public class Action extends MotechBaseDataObject {
         return data;
     }
 
-    public String actionType() {
+    public String getActionType() {
         return actionType;
     }
 
-    public long timestamp() {
+    @JsonIgnore
+    public long getTimestamp() {
         return timeStamp;
     }
    
 
-    public String target() {
+    @JsonIgnore
+    public String getTarget() {
         return actionTarget;
     }
 
@@ -88,7 +91,7 @@ public class Action extends MotechBaseDataObject {
         return isActionActive;
     }
 
-    public Map<String, String> details() {
+    public Map<String, String> getDetails() {
         return details;
     }
 
@@ -101,12 +104,12 @@ public class Action extends MotechBaseDataObject {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public final boolean equals(Object o) {
         return EqualsBuilder.reflectionEquals(this, o, "timeStamp", "revision");
     }
 
     @Override
-    public int hashCode() {
+    public final int hashCode() {
         return HashCodeBuilder.reflectionHashCode(this, "timeStamp", "revision");
     }
 
