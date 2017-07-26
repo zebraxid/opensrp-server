@@ -340,7 +340,7 @@ public class ClientResourceTest {
 				.withTown(town);
 
 		Client expectedClient = (Client) new Client("1").withFirstName(name).withGender(male).withBirthdate(birthdate, false)
-				.withDeathdate(deathdate, true).withAddress(null);
+				.withDeathdate(deathdate, true).withAddress(address);
 		expectedClient.setDateCreated(new DateTime(0l, DateTimeZone.UTC));
 
 		Client otherClient = new Client("2");
