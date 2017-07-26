@@ -71,6 +71,31 @@ public class ClientResourceTest {
 
 	ObjectMapper mapper = new ObjectMapper();
 
+	String addressType = "addressType";
+
+	String country = "country";
+
+	String stateProvince = "stateProvince";
+
+	String cityVillage = "cityVillage";
+
+	String countryDistrict = "countryDistrict";
+
+	String subDistrict = "subDistrict";
+
+	String town = "town";
+
+	String name = "name";
+
+	String male = "male";
+
+	DateTime birthDate = new DateTime(0l, DateTimeZone.UTC);
+
+	DateTime deathDate = new DateTime(1l, DateTimeZone.UTC);
+
+	Address address = new Address().withAddressType(addressType).withCountry(country).withStateProvince(stateProvince)
+			.withCityVillage(cityVillage).withCountyDistrict(countryDistrict).withSubDistrict(subDistrict).withTown(town);
+
 	@Before
 	public void setUp() {
 		allClients.removeAll();
@@ -78,7 +103,7 @@ public class ClientResourceTest {
 
 	@After
 	public void tearDown() {
-		//allClients.removeAll();
+		allClients.removeAll();
 	}
 
 	@Test
@@ -323,24 +348,8 @@ public class ClientResourceTest {
 
 	@Test
 	public void shouldSearchClient() throws Exception {
-		String addressType = "addressType";
-		String country = "country";
-		String stateProvince = "stateProvince";
-		String cityVillage = "cityVillage";
-		String countryDistrict = "countryDistrict";
-		String subDistrict = "subDistrict";
-		String town = "town";
-		String name = "name";
-		String male = "male";
-		DateTime birthdate = new DateTime(0l, DateTimeZone.UTC);
-		DateTime deathdate = new DateTime(1l, DateTimeZone.UTC);
-
-		Address address = new Address().withAddressType(addressType).withCountry(country).withStateProvince(stateProvince)
-				.withCityVillage(cityVillage).withCountyDistrict(countryDistrict).withSubDistrict(subDistrict)
-				.withTown(town);
-
-		Client expectedClient = (Client) new Client("1").withFirstName(name).withGender(male).withBirthdate(birthdate, false)
-				.withDeathdate(deathdate, true).withAddress(address);
+		Client expectedClient = (Client) new Client("1").withFirstName(name).withGender(male).withBirthdate(birthDate, false)
+				.withDeathdate(deathDate, true).withAddress(address);
 		expectedClient.setDateCreated(new DateTime(0l, DateTimeZone.UTC));
 
 		Client otherClient = new Client("2");
@@ -350,7 +359,7 @@ public class ClientResourceTest {
 
 		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
 		MvcResult mvcResult = this.mockMvc
-				.perform(get(BASE_URL + "search?name=name").contentType(MediaType.APPLICATION_JSON)).andDo(print())
+				.perform(get(BASE_URL + "search?name=" + name).contentType(MediaType.APPLICATION_JSON)).andDo(print())
 				.andReturn();
 
 		String responseString = mvcResult.getResponse().getContentAsString();
@@ -358,6 +367,71 @@ public class ClientResourceTest {
 		Client actualClient = mapper.treeToValue(actualObj.get(0), Client.class);
 		assertEquals(expectedClient, actualClient);
 
+	}
+
+	@Test
+	public void shouldFailToSearchIfClientDoesntHaveDateCreateField() throws Exception {
+		Client expectedClient = (Client) new Client("1").withFirstName(name).withGender(male).withBirthdate(birthDate, false)
+				.withDeathdate(deathDate, true).withAddress(address);
+
+		Client otherClient = new Client("2");
+		Client otherClient2 = new Client("3");
+
+		createClient(asList(expectedClient, otherClient, otherClient2));
+
+		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
+		MvcResult mvcResult = this.mockMvc
+				.perform(get(BASE_URL + "search?name=" + name).contentType(MediaType.APPLICATION_JSON)).andDo(print())
+				.andReturn();
+
+		String responseString = mvcResult.getResponse().getContentAsString();
+		assertTrue(responseString.equals("[]"));
+		JsonNode actualObj = mapper.readTree(responseString);
+		assertNull(actualObj.get(0));
+	}
+
+	@Test
+	public void shouldFailToSearchIfClientDoesntHaveBirthDate() throws Exception {
+		Client expectedClient = (Client) new Client("1").withFirstName(name).withGender(male).withDeathdate(deathDate, true)
+				.withAddress(address);
+		expectedClient.setDateCreated(new DateTime(0l, DateTimeZone.UTC));
+
+		Client otherClient = new Client("2");
+		Client otherClient2 = new Client("3");
+
+		createClient(asList(expectedClient, otherClient, otherClient2));
+
+		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
+		MvcResult mvcResult = this.mockMvc
+				.perform(get(BASE_URL + "search?gender=" + male).contentType(MediaType.APPLICATION_JSON)).andDo(print())
+				.andReturn();
+
+		String responseString = mvcResult.getResponse().getContentAsString();
+		assertTrue(responseString.equals("[]"));
+		JsonNode actualObj = mapper.readTree(responseString);
+		assertNull(actualObj.get(0));
+	}
+
+	@Test
+	public void shouldFailToSearchIfClientDoesntHaveAddressField() throws Exception {
+		Client expectedClient = (Client) new Client("1").withFirstName(name).withGender(male).withBirthdate(birthDate, false)
+				.withDeathdate(deathDate, true);
+		expectedClient.setDateCreated(new DateTime(0l, DateTimeZone.UTC));
+
+		Client otherClient = new Client("2");
+		Client otherClient2 = new Client("3");
+
+		createClient(asList(expectedClient, otherClient, otherClient2));
+
+		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
+		MvcResult mvcResult = this.mockMvc
+				.perform(get(BASE_URL + "search?name=" + name).contentType(MediaType.APPLICATION_JSON)).andDo(print())
+				.andReturn();
+
+		String responseString = mvcResult.getResponse().getContentAsString();
+		assertTrue(responseString.equals("[]"));
+		JsonNode actualObj = mapper.readTree(responseString);
+		assertNull(actualObj.get(0));
 	}
 
 	private void createClient(List<Client> allClient) {
