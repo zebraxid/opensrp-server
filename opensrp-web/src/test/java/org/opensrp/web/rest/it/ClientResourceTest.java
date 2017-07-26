@@ -16,8 +16,6 @@ import org.opensrp.service.ClientService;
 import org.opensrp.web.rest.ClientResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.http.converter.json.MappingJacksonHttpMessageConverter;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ContextConfiguration;
@@ -26,18 +24,12 @@ import org.springframework.test.web.server.MockMvc;
 import org.springframework.test.web.server.MvcResult;
 import org.springframework.test.web.server.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.servlet.HandlerMapping;
-import org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter;
 import org.springframework.web.util.NestedServletException;
 
 import java.util.List;
 
 import static java.util.Arrays.asList;
 import static org.junit.Assert.*;
-import static org.opensrp.common.AllConstants.BaseEntity.SUB_TOWN;
-import static org.opensrp.common.AllConstants.BaseEntity.TOWN;
-import static org.opensrp.common.AllConstants.Client.BIRTH_DATE;
-import static org.opensrp.common.AllConstants.Client.GENDER;
 import static org.springframework.test.web.server.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.server.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.server.result.MockMvcResultHandlers.print;
@@ -104,38 +96,6 @@ public class ClientResourceTest {
 	@After
 	public void tearDown() {
 		allClients.removeAll();
-	}
-
-	@Test
-	public void testClientSearch() throws Exception {
-		MockHttpServletRequest mockRequest = new MockHttpServletRequest();
-		//  mockRequest.setContentType(MediaType.APPLICATION_JSON.toString());
-		mockRequest.setMethod("GET");
-		mockRequest.setRequestURI("/rest/client/search");
-		mockRequest.setAttribute(HandlerMapping.class.getName() + ".introspectTypeLevelMapping", true);
-		mockRequest.addParameter("name", "firstName100");
-		mockRequest.addParameter(GENDER, "MALE");
-		mockRequest.addParameter(BIRTH_DATE, "2016-02-01:2016-03-21");
-		//mockRequest.addParameter(DEATH_DATE, request);
-		//mockRequest.addParameter(ADDRESS_TYPE, request);
-		//mockRequest.addParameter(COUNTRY, request);
-		//mockRequest.addParameter(STATE_PROVINCE, request);
-		//mockRequest.addParameter(CITY_VILLAGE, request);
-		//mockRequest.addParameter(COUNTY_DISTRICT, request);
-		//mockRequest.addParameter(SUB_DISTRICT, request);
-		mockRequest.addParameter(TOWN, "Korangi");
-		mockRequest.addParameter(SUB_TOWN, "UC0");
-
-		AnnotationMethodHandlerAdapter handlerAdapter = new AnnotationMethodHandlerAdapter();
-		HttpMessageConverter[] messageConverters = { new MappingJacksonHttpMessageConverter() };
-		handlerAdapter.setMessageConverters(messageConverters);
-
-		MockHttpServletResponse mockResponse = new MockHttpServletResponse();
-		handlerAdapter.handle(mockRequest, mockResponse, cr);
-
-		String actual = mockResponse.getContentAsString();
-		System.out.println(actual);
-
 	}
 
 	@Test
@@ -357,20 +317,45 @@ public class ClientResourceTest {
 
 		createClient(asList(expectedClient, otherClient, otherClient2));
 
-		String searchQuery = "search?name=" + name + "&gender=" + male + "&addressType=" + addressType
-				+ "&birthDate" + birthDate.toLocalDate().toString() + "&deathDate=" + deathDate.toLocalDate().toString()
-				+ "&country=" + country + "&stateProvince" + stateProvince + "&countryDistrict" + countryDistrict
-				+"&cityVillage" + cityVillage + "&town" + town + "&subDistrict" + subDistrict;
+		String searchQuery =
+				"search?name=" + name + "&gender=" + male + "&addressType=" + addressType + "&birthDate=" + birthDate
+						.toLocalDate().toString() + "&deathDate=" + deathDate.toLocalDate().toString() + "&country="
+						+ country + "&stateProvince=" + stateProvince + "&countryDistrict=" + countryDistrict
+						+ "&cityVillage=" + cityVillage + "&town=" + town + "&subDistrict=" + subDistrict;
 		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
-		MvcResult mvcResult = this.mockMvc
-				.perform(get(BASE_URL + searchQuery).contentType(MediaType.APPLICATION_JSON)).andDo(print())
-				.andReturn();
+		MvcResult mvcResult = this.mockMvc.perform(get(BASE_URL + searchQuery).contentType(MediaType.APPLICATION_JSON))
+				.andDo(print()).andReturn();
 
 		String responseString = mvcResult.getResponse().getContentAsString();
 		JsonNode actualObj = mapper.readTree(responseString);
 		Client actualClient = mapper.treeToValue(actualObj.get(0), Client.class);
 		assertEquals(expectedClient, actualClient);
+	}
 
+	@Test
+	public void shouldFailSearchClientWithInvalidQuery() throws Exception {
+		Client expectedClient = (Client) new Client("1").withFirstName(name).withGender(male).withBirthdate(birthDate, false)
+				.withDeathdate(deathDate, true).withAddress(address);
+		expectedClient.setDateCreated(new DateTime(0l, DateTimeZone.UTC));
+
+		Client otherClient = new Client("2");
+		Client otherClient2 = new Client("3");
+
+		createClient(asList(expectedClient, otherClient, otherClient2));
+
+		String searchQuery =
+				"search?name=invalid" + name + "&gender=invalid" + male + "&addressType=" + addressType + "&birthDate="
+						+ birthDate.toLocalDate().toString() + "&deathDate=" + deathDate.toLocalDate().toString()
+						+ "&country=" + country + "&stateProvince=" + stateProvince + "&countryDistrict=" + countryDistrict
+						+ "&cityVillage=" + cityVillage + "&town=" + town + "&subDistrict=" + subDistrict;
+		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
+		MvcResult mvcResult = this.mockMvc.perform(get(BASE_URL + searchQuery).contentType(MediaType.APPLICATION_JSON))
+				.andDo(print()).andReturn();
+
+		String responseString = mvcResult.getResponse().getContentAsString();
+		assertTrue(responseString.equals("[]"));
+		JsonNode actualObj = mapper.readTree(responseString);
+		assertNull(actualObj.get(0));
 	}
 
 	@Test
@@ -431,6 +416,116 @@ public class ClientResourceTest {
 		MvcResult mvcResult = this.mockMvc
 				.perform(get(BASE_URL + "search?name=" + name).contentType(MediaType.APPLICATION_JSON)).andDo(print())
 				.andReturn();
+
+		String responseString = mvcResult.getResponse().getContentAsString();
+		assertTrue(responseString.equals("[]"));
+		JsonNode actualObj = mapper.readTree(responseString);
+		assertNull(actualObj.get(0));
+	}
+
+	@Test
+	public void shouldFilterData() throws Exception {
+		Client expectedClient = (Client) new Client("1").withFirstName(name).withGender(male).withBirthdate(birthDate, false)
+				.withDeathdate(deathDate, true).withAddress(address);
+		expectedClient.setDateCreated(new DateTime(0l, DateTimeZone.UTC));
+
+		Client otherClient = new Client("2");
+		Client otherClient2 = new Client("3");
+
+		createClient(asList(expectedClient, otherClient, otherClient2));
+
+		String searchQuery =
+				"?q=name:" + name + "and gender:" + male + "and addressType:" + addressType + "and birthDate:" + birthDate
+						.toLocalDate().toString() + "and deathDate:" + deathDate.toLocalDate().toString() + "and country:"
+						+ country + "and stateProvince:" + stateProvince + "and countryDistrict:" + countryDistrict
+						+ "and cityVillage:" + cityVillage + "and town:" + town + "and subDistrict:" + subDistrict;
+		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
+		MvcResult mvcResult = this.mockMvc.perform(get(BASE_URL + searchQuery).contentType(MediaType.APPLICATION_JSON))
+				.andDo(print()).andReturn();
+
+		String responseString = mvcResult.getResponse().getContentAsString();
+		JsonNode actualObj = mapper.readTree(responseString);
+		Client actualClient = mapper.treeToValue(actualObj.get(0), Client.class);
+		assertEquals(expectedClient, actualClient);
+	}
+
+	@Test
+	public void shouldFailToFilterClientWithInvalidQuery() throws Exception {
+		Client expectedClient = (Client) new Client("1").withFirstName(name).withGender(male).withBirthdate(birthDate, false)
+				.withDeathdate(deathDate, true).withAddress(address);
+		expectedClient.setDateCreated(new DateTime(0l, DateTimeZone.UTC));
+
+		Client otherClient = new Client("2");
+		Client otherClient2 = new Client("3");
+
+		createClient(asList(expectedClient, otherClient, otherClient2));
+
+		String searchQuery =
+				"?q=firstName:invalid" + name + "and gender:invalid" + male;
+		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
+		MvcResult mvcResult = this.mockMvc.perform(get(BASE_URL + searchQuery).contentType(MediaType.APPLICATION_JSON))
+				.andDo(print()).andReturn();
+
+		String responseString = mvcResult.getResponse().getContentAsString();
+		assertTrue(responseString.equals("[]"));
+		JsonNode actualObj = mapper.readTree(responseString);
+		assertNull(actualObj.get(0));
+	}
+
+	@Test
+	public void shouldFailToFailIfClientDoesntHaveDateCreateField() throws Exception {
+		Client expectedClient = (Client) new Client("1").withFirstName(name).withGender(male).withBirthdate(birthDate, false)
+				.withDeathdate(deathDate, true).withAddress(address);
+
+		Client otherClient = new Client("2");
+		Client otherClient2 = new Client("3");
+
+		createClient(asList(expectedClient, otherClient, otherClient2));
+
+		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
+		MvcResult mvcResult = this.mockMvc.perform(get(BASE_URL + "?q=name:" + name).contentType(MediaType.APPLICATION_JSON))
+				.andDo(print()).andReturn();
+
+		String responseString = mvcResult.getResponse().getContentAsString();
+		assertTrue(responseString.equals("[]"));
+		JsonNode actualObj = mapper.readTree(responseString);
+		assertNull(actualObj.get(0));
+	}
+
+	@Test
+	public void shouldFailToFilterIfClientDoesntHaveBirthDate() throws Exception {
+		Client expectedClient = (Client) new Client("1").withFirstName(name).withGender(male).withDeathdate(deathDate, true)
+				.withAddress(address);
+		expectedClient.setDateCreated(new DateTime(0l, DateTimeZone.UTC));
+
+		Client otherClient = new Client("2");
+		Client otherClient2 = new Client("3");
+
+		createClient(asList(expectedClient, otherClient, otherClient2));
+
+		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
+		MvcResult mvcResult = this.mockMvc
+				.perform(get(BASE_URL + "?q?gender:" + male).contentType(MediaType.APPLICATION_JSON)).andDo(print())
+				.andReturn();
+
+		String responseString = mvcResult.getResponse().getContentAsString();
+		assertTrue(responseString.isEmpty());
+	}
+
+	@Test
+	public void shouldFailToFilterIfClientDoesntHaveAddressField() throws Exception {
+		Client expectedClient = (Client) new Client("1").withFirstName(name).withGender(male).withBirthdate(birthDate, false)
+				.withDeathdate(deathDate, true);
+		expectedClient.setDateCreated(new DateTime(0l, DateTimeZone.UTC));
+
+		Client otherClient = new Client("2");
+		Client otherClient2 = new Client("3");
+
+		createClient(asList(expectedClient, otherClient, otherClient2));
+
+		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
+		MvcResult mvcResult = this.mockMvc.perform(get(BASE_URL + "?q=name:" + name).contentType(MediaType.APPLICATION_JSON))
+				.andDo(print()).andReturn();
 
 		String responseString = mvcResult.getResponse().getContentAsString();
 		assertTrue(responseString.equals("[]"));
