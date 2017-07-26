@@ -8,7 +8,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.opensrp.domain.Address;
 import org.opensrp.domain.Client;
 import org.opensrp.repository.AllClients;
@@ -16,8 +15,6 @@ import org.opensrp.service.ClientService;
 import org.opensrp.web.rest.ClientResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.server.MockMvc;
@@ -30,6 +27,10 @@ import java.util.List;
 
 import static java.util.Arrays.asList;
 import static org.junit.Assert.*;
+import static org.opensrp.common.AllConstants.BaseEntity.BASE_ENTITY_ID;
+import static org.opensrp.common.AllConstants.Client.BIRTH_DATE;
+import static org.opensrp.common.AllConstants.Client.FIRST_NAME;
+import static org.opensrp.common.AllConstants.Client.GENDER;
 import static org.springframework.test.web.server.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.server.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.server.result.MockMvcResultHandlers.print;
@@ -45,21 +46,16 @@ public class ClientResourceTest {
 	@Autowired
 	private WebApplicationContext wac;
 
-	MockHttpServletRequest req;
-
 	MockMvc mockMvc;
-
-	@Mock
-	private MockHttpServletResponse resp = new MockHttpServletResponse();
-
-	@Autowired
-	private ClientService cs;
-
-	@Autowired
-	private ClientResource cr;
 
 	@Autowired
 	private AllClients allClients;
+
+	@Autowired
+	private ClientService clientService;
+
+	@Autowired
+	private ClientResource clientResource;
 
 	ObjectMapper mapper = new ObjectMapper();
 
@@ -96,6 +92,16 @@ public class ClientResourceTest {
 	@After
 	public void tearDown() {
 		allClients.removeAll();
+	}
+
+
+	@Test
+	public void testRequiredProperties() {
+		List<String> requiredProperties = clientResource.requiredProperties();
+		assertTrue(requiredProperties.contains(FIRST_NAME));
+		assertTrue(requiredProperties.contains(GENDER));
+		assertTrue(requiredProperties.contains(BIRTH_DATE));
+		assertTrue(requiredProperties.contains(BASE_ENTITY_ID));
 	}
 
 	@Test
@@ -460,8 +466,7 @@ public class ClientResourceTest {
 
 		createClient(asList(expectedClient, otherClient, otherClient2));
 
-		String searchQuery =
-				"?q=firstName:invalid" + name + "and gender:invalid" + male;
+		String searchQuery = "?q=firstName:invalid" + name + "and gender:invalid" + male;
 		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
 		MvcResult mvcResult = this.mockMvc.perform(get(BASE_URL + searchQuery).contentType(MediaType.APPLICATION_JSON))
 				.andDo(print()).andReturn();
