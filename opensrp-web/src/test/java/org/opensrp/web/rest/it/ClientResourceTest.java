@@ -357,9 +357,13 @@ public class ClientResourceTest {
 
 		createClient(asList(expectedClient, otherClient, otherClient2));
 
+		String searchQuery = "search?name=" + name + "&gender=" + male + "&addressType=" + addressType
+				+ "&birthDate" + birthDate.toLocalDate().toString() + "&deathDate=" + deathDate.toLocalDate().toString()
+				+ "&country=" + country + "&stateProvince" + stateProvince + "&countryDistrict" + countryDistrict
+				+"&cityVillage" + cityVillage + "&town" + town + "&subDistrict" + subDistrict;
 		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
 		MvcResult mvcResult = this.mockMvc
-				.perform(get(BASE_URL + "search?name=" + name).contentType(MediaType.APPLICATION_JSON)).andDo(print())
+				.perform(get(BASE_URL + searchQuery).contentType(MediaType.APPLICATION_JSON)).andDo(print())
 				.andReturn();
 
 		String responseString = mvcResult.getResponse().getContentAsString();
