@@ -116,7 +116,7 @@ public class Address {
 
 
 	/** TODO: functionality if multiple entry matches single regex
-	 * Returns field matching the regex. Note that incase of multiple fields matching criteria
+	 * Returns field matching the regex. Note that incase of multiple fields matching criteriam
 	 * function would return first match. The must be well formed to find out a single value
 	 *
 	 * @param regex
