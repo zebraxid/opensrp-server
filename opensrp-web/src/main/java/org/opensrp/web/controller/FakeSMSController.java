@@ -16,6 +16,9 @@ public class FakeSMSController {
     private DrishtiSMSService drishtiSMSService;
     private static Logger logger = LoggerFactory.getLogger(FakeSMSController.class.toString());
 
+    public FakeSMSController() {
+		// TODO Auto-generated constructor stub
+	}
     @Autowired
     public FakeSMSController(DrishtiSMSService drishtiSMSService) {
         this.drishtiSMSService = drishtiSMSService;
