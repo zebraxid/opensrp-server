@@ -8,105 +8,105 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
+import org.hibernate.annotations.TypeDefs;
+import org.joda.time.DateTime;
+import org.opensrp.register.mcare.domain.HouseHold;
+import org.opensrp.register.mcare.dump.type.HouseholdDocumentType;
+import org.opensrp.register.mcare.dump.type.HouseholdDocument;
+
 @Entity
 @Table(name="household_dump")
-public class HousoholdEntity {	
+@TypeDefs( {@TypeDef( name= "jsonb", typeClass = HouseholdDocumentType.class)})
+public class HousoholdEntity  {	
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator="household_dump_id_seq")
 	@SequenceGenerator(name="household_dump_id_seq", sequenceName="household_dump_id_seq", allocationSize=1)
     private int id;
-	@Column(name="caseId")
+	@Column(name="document_id")
+	private String documentId;
+	@Column(name="case_id")
 	private String caseId;
-	@Column(name="instanceId")
-	private String instanceId;
-	/*@Column(name="provider")
-	private String provider;
-	@Column(name="locationId")
-	private String locationId;
-	@Column(name="today")
-	private String today;
-	@Column(name="start")
-	private String start;
-	@Column(name="end")
-	private String end;
-	@Column(name="FWNHRegDate")
-	private String FWNHRegDate;
-	@Column(name="FWGOBHHID")
-	private String FWGOBHHID; 
-	@Column(name="FWJIVHHID")
-	private String FWJIVHHID;
-	@Column(name="FWCountry")
-	private String FWCountry;
-	@Column(name="FWDivision")
-	private String FWDivision;
-	@Column(name="FWDistrict")
-	private String FWDistrict;
-	@Column(name="FWUpazila")
-	private String FWUpazila;
-	@Column(name="FWUnion")
-	private String FWUnion;
-	@Column(name="FWWard")
-	private String FWWard;
-	@Column(name="FWSubUnit")
-	private String FWSubUnit;
-	@Column(name="FWMauzaPara")
-	private String FWMauzaPara;
-	@Column(name="FWNHHHGPS")
-	private String FWNHHHGPS;
-	@Column(name="formName")
-	private String formName;
-	@Column(name="FWHOHFName")
-	private String FWHOHFName;
-	@Column(name="FWHOHLName")
-	private String FWHOHLName;
-	@Column(name="FWHOHBirthDate")
-	private String FWHOHBirthDate; 
-	@Column(name="FWHOHGender")
-	private String FWHOHGender;
-	@Column(name="FWNHHMBRNUM")
-	private String FWNHHMBRNUM;
-	@Column(name="FWNHHMWRA")
-	private String FWNHHMWRA;
-	@Column(name="elco")
-	private String elco;
-	@Column(name="userType")
-	private String userType;
-	@Column(name="externalUserId")
-	private String externalUserId;
-	@Column(name="currentFormStatus")
-	private String currentFormStatus;
-	
-	@JsonProperty
-	private List<Map<String, String>> multimediaAttachments;
-	@JsonProperty
-	private Map<String, String> details;
-	@Column(name="submissionTimestamp")
-	private long submissionTimestamp;
-	@Column(name="clientVersion")
-	private long clientVersion;*/
+	@Column
+	@Type(type = "jsonb")
+    private HouseholdDocument doc;	
+	@Column(name="created")
+	private DateTime created;
+	@Column(name="updated")
+	private DateTime updated;
+	@Column(name="time_stamp")
+	private long timeStamp;
+	@Column(name="status")
+	private boolean status;
+	@Column(name="rev_id")
+	private String revId;
 	public int getId() {
 		return id;
 	}
 	public void setId(int id) {
 		this.id = id;
 	}
+	public String getDocumentId() {
+		return documentId;
+	}
+	public void setDocumentId(String documentId) {
+		this.documentId = documentId;
+	}
 	public String getCaseId() {
 		return caseId;
 	}
 	public void setCaseId(String caseId) {
 		this.caseId = caseId;
+	}	
+	
+	public HouseholdDocument getDoc() {
+		return doc;
 	}
-	public String getInstanceId() {
-		return instanceId;
+	public void setDoc(HouseholdDocument doc) {
+		this.doc = doc;
 	}
-	public void setInstanceId(String instanceId) {
-		this.instanceId = instanceId;
+	public DateTime getCreated() {
+		return created;
+	}
+	public void setCreated() {
+		this.created = new DateTime();
+	}
+	public DateTime getUpdated() {
+		return updated;
+	}
+	public void setUpdated() {
+		this.updated = new DateTime();
+	}
+	public long getTimeStamp() {
+		return timeStamp;
+	}
+	public void setTimeStamp() {
+		this.timeStamp = System.currentTimeMillis();
+	}
+	
+	public boolean isStatus() {
+		return status;
+	}
+	public void setStatus(boolean status) {
+		this.status = status;
+	}
+	
+	public String getRevId() {
+		return revId;
+	}
+	public void setRevId(String revId) {
+		this.revId = revId;
 	}
 	@Override
 	public String toString() {
-		return "Housohold [id=" + id + ", caseId=" + caseId + ", instanceId="
-				+ instanceId + "]";
+		return "HousoholdEntity [id=" + id + ", documentId=" + documentId
+				+ ", caseId=" + caseId + ", doc=" + doc
+				+ ", created=" + created + ", updated=" + updated
+				+ ", timeStamp=" + timeStamp + "]";
 	}
+	
+	
 	
 
 }

@@ -18,9 +18,8 @@ public class HouseholdServices {
 	}
 
 	@Transactional
-	public void addHousehold(HousoholdEntity p) {
-		System.err.println("householdDAO:"+householdDAO);
-		 householdDAO.addHousehold(p);
+	public void addHousehold(HousoholdEntity p) {		
+        householdDAO.addHousehold(p);
 	 }
 
 }
