@@ -9,9 +9,9 @@
        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
 
-   <context:component-scan base-package="org.opensrp.register.mcare.migration.dao" />
-    <context:component-scan base-package="org.opensrp.register.mcare.migration.entities" />
-    <context:component-scan base-package="org.opensrp.register.mcare.migration.services" />
+   <context:component-scan base-package="org.opensrp.etl.repository" />
+    <context:component-scan base-package="org.opensrp.etl.entities" />
+    <context:component-scan base-package="org.opensrp.etl.services" />
   <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
         destroy-method="close">
         <property name="driverClassName" value="org.postgresql.Driver" />
@@ -26,37 +26,38 @@
         <property name="dataSource" ref="dataSource" />
         <property name="annotatedClasses">
             <list>
-                <value>org.opensrp.register.mcare.dump.entities.HousoholdEntity</value>
-                <value>org.opensrp.register.mcare.dump.entities.ElcoEntity</value>
+                <value>org.opensrp.etl.entity.HousoholdEntity</value>
+                <value>org.opensrp.etl.entity.ElcoEntity</value>
             </list>
         </property>
         <property name="hibernateProperties">
             <props>
-                <prop key="hibernate.dialect">org.opensrp.register.mcare.dump.postgresSQLDialect.JSONPostgreSQLDialect
+                <prop key="hibernate.dialect">org.opensrp.etl.postgresSQLDialect.JSONPostgreSQLDialect
                 </prop>
                 <prop key="hibernate.show_sql">true</prop>
-               <prop key="hibernate.hbm2ddl.auto">create</prop>
+               <prop key="hibernate.hbm2ddl.auto">update</prop>
             </props>
         </property>
     </bean>
 
-    <bean id="householdDAO" class="org.opensrp.register.mcare.dump.dao.HouseholdDAO">
+    <bean id="householdDAO" class="org.opensrp.etl.repository.HouseholdRepository">
         <property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
     </bean>
     
-    <bean id="elcoDAO" class="org.opensrp.register.mcare.dump.dao.ElcoDAO">
+    <bean id="elcoDAO" class="org.opensrp.etl.repository.ElcoRepository">
         <property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
     </bean>
     
-    <bean id="householdServices" class="org.opensrp.register.mcare.dump.services.HouseholdServices">
+    <bean id="householdServices" class="org.opensrp.etl.service.HouseholdServices">
         <property name="householdDAO" ref="householdDAO"></property>
     </bean>
     
-     <bean id="elcoServices" class="org.opensrp.register.mcare.dump.services.ElcoServices">
+     <bean id="elcoServices" class="org.opensrp.etl.service.ElcoServices">
         <property name="elcoDAO" ref="elcoDAO"></property>
     </bean>
     
-
+	<bean id="housoholdEntity" class="org.opensrp.etl.entity.HousoholdEntity">        
+    </bean>
     <tx:annotation-driven transaction-manager="transactionManager"/>
 
     <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">

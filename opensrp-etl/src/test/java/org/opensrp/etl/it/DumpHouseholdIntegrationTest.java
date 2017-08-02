@@ -1,4 +1,4 @@
-package org.opensrp.register.mcare.repository.it;
+package org.opensrp.etl.it;
 
 import org.ektorp.CouchDbInstance;
 import org.ektorp.http.HttpClient;
@@ -9,17 +9,17 @@ import org.ektorp.impl.StdObjectMapperFactory;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.opensrp.etl.document.HouseholdDocument;
+import org.opensrp.etl.entity.HousoholdEntity;
+import org.opensrp.etl.service.HouseholdServices;
 import org.opensrp.register.mcare.domain.HouseHold;
-import org.opensrp.register.mcare.dump.entities.HousoholdEntity;
-import org.opensrp.register.mcare.dump.services.HouseholdServices;
-import org.opensrp.register.mcare.dump.type.HouseholdDocument;
 import org.opensrp.register.mcare.repository.AllHouseHolds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath:test-applicationContext-opensrp-mcare-dump.xml")
+@ContextConfiguration("classpath:test-applicationContext-opensrp-etl.xml")
 public class DumpHouseholdIntegrationTest {
 
 	@Autowired

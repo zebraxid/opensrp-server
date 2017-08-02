@@ -1,4 +1,4 @@
-package org.opensrp.register.mcare.dump.type;
+package org.opensrp.etl.document;
 
 import java.io.Serializable;
 
