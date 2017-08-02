@@ -7,6 +7,7 @@ import org.ektorp.impl.StdCouchDbConnector;
 import org.ektorp.impl.StdCouchDbInstance;
 import org.ektorp.impl.StdObjectMapperFactory;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.opensrp.etl.document.HouseholdDocument;
@@ -20,13 +21,11 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:test-applicationContext-opensrp-etl.xml")
+
 public class DumpHouseholdIntegrationTest {
 
 	@Autowired
-	private HouseholdServices householdServices; 
-	@Autowired
-	private HousoholdEntity housoholdEntity;
-	
+	private HouseholdServices householdServices;
     private AllHouseHolds allHouseHolds;
 	
 	private CouchDbInstance dbInstance;
@@ -48,56 +47,12 @@ public class DumpHouseholdIntegrationTest {
     
     @Test
     public void testAddHousehold(){
-    	HouseHold houseHold = allHouseHolds.findByCaseId("00004627-2f6d-443d-a162-4bbce38661fb");
-    	housoholdEntity.setCaseId(houseHold.caseId());
-    	housoholdEntity.setCreated();
-    	housoholdEntity.setTimeStamp();
-    	housoholdEntity.setUpdated();
-    	housoholdEntity.setDocumentId(houseHold.getId());
-    	housoholdEntity.setTimeStamp();
-    	housoholdEntity.setRevId(houseHold.getRevision());
-    	housoholdEntity.setStatus(true);
+    	HouseHold houseHold = allHouseHolds.findByCaseId("000446ae-96fa-48b1-bfc3-0c62bb0bb9c0");
     	
-    	HouseholdDocument doc = new HouseholdDocument();
-    	doc.withCASEID(houseHold.caseId());
-    	doc.withINSTANCEID(houseHold.INSTANCEID());
-    	doc.withClientVersion(houseHold.get());
-    	doc.withDetails(houseHold.details());
-    	doc.withPROVIDERID(houseHold.PROVIDERID());
-    	doc.withTODAY(houseHold.TODAY());
-    	doc.withSTART(houseHold.START());
-    	doc.withEND(houseHold.END());
-    	doc.withFWNHREGDATE(houseHold.FWNHREGDATE());
-    	doc.withFWGOBHHID(houseHold.FWGOBHHID());
-    	doc.withFWJIVHHID(houseHold.FWJIVHHID());
-    	doc.withFWCOUNTRY(houseHold.FWCOUNTRY());
-    	doc.withFWDIVISION(houseHold.FWDIVISION());
-    	doc.withFWDISTRICT(houseHold.FWDISTRICT());
-    	doc.withFWUPAZILLA(houseHold.FWUPAZILLA());
-    	doc.withFWUNION(houseHold.FWUNION());
-    	doc.withFWWARD(houseHold.FWWARD());
-    	doc.withFWSUBUNIT(houseHold.FWSUBUNIT());
-    	doc.withFWMAUZA_PARA(houseHold.FWMAUZA_PARA());
-    	doc.withFWNHHHGPS(houseHold.FWNHHHGPS());
-    	doc.withform_name(houseHold.form_name());
-    	doc.withFWHOHFNAME(houseHold.FWHOHFNAME());
-    	doc.withFWHOHLNAME(houseHold.FWHOHLNAME());
-    	doc.withFWHOHBIRTHDATE(houseHold.FWHOHBIRTHDATE());
-    	doc.withFWHOHGENDER(houseHold.FWHOHGENDER());
-    	doc.withFWNHHMBRNUM(houseHold.FWNHHMBRNUM());
-    	doc.withFWNHHMWRA(houseHold.FWNHHMWRA());
-    	doc.withELCO(houseHold.ELCO());
-    	doc.withuser_type(houseHold.user_type());
-    	doc.withexternal_user_ID(houseHold.external_user_ID());
-    	doc.withcurrent_formStatus(houseHold.current_formStatus());
-    	doc.withELCODETAILS(houseHold.ELCODETAILS());
-    	doc.withmultimediaAttachments(houseHold.multimediaAttachments());
-    	doc.withDetails(houseHold.details());
-    	doc.withSUBMISSIONDATE(houseHold.SUBMISSIONDATE());
     	
-    	housoholdEntity.setDoc(doc);
-    	
-    	householdServices.addHousehold(housoholdEntity);
+    	HouseholdDocument doc = HouseholdDocument.getInstance();
+    	System.err.println("doc:"+doc);
+    	doc.sendPreparedData(houseHold,householdServices);
     	
     }
    

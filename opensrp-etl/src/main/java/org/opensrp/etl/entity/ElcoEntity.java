@@ -12,10 +12,11 @@ import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
 import org.joda.time.DateTime;
+import org.opensrp.etl.hibernate.custom.type.ElcoJsonbType;
 
 @Entity
 @Table(name="elcos_dump")
-@TypeDefs( {@TypeDef( name= "json", typeClass = Elco.class)})
+@TypeDefs( {@TypeDef( name= "json", typeClass = ElcoJsonbType.class)})
 public class ElcoEntity {
 	
 	@Id

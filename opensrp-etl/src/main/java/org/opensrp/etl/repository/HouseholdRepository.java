@@ -22,9 +22,9 @@ public class HouseholdRepository {
     
     public void addHousehold(HousoholdEntity p) {
         Session session = this.sessionFactory.getCurrentSession();
-        System.err.println("Session:"+session);
+       
         try{
-        session.persist(p);
+        session.save(p);
         }catch(Exception e){
         	e.printStackTrace();
         }

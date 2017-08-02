@@ -16,12 +16,12 @@ import org.opensrp.etl.document.HouseholdDocument;
 import org.opensrp.etl.hibernate.custom.type.HouseholdJsonbType;
 
 @Entity
-@Table(name="household_dump")
+@Table(name="household_document")
 @TypeDefs( {@TypeDef( name= "jsonb", typeClass = HouseholdJsonbType.class)})
 public class HousoholdEntity  {	
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator="household_dump_id_seq")
-	@SequenceGenerator(name="household_dump_id_seq", sequenceName="household_dump_id_seq", allocationSize=1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator="household_document_id_seq")
+	@SequenceGenerator(name="household_document_id_seq", sequenceName="household_document_id_seq", allocationSize=1)
     private int id;
 	@Column(name="document_id")
 	private String documentId;
