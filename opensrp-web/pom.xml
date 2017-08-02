@@ -54,6 +54,9 @@
 			<resource>
 				<directory>../opensrp-mcare-register/src/main/resources</directory>
 			</resource>
+			<resource>
+				<directory>../opensrp-etl/src/main/resources</directory>
+			</resource>
 		</resources>
 		<plugins>
 			<plugin>
@@ -191,6 +194,11 @@
 		<dependency>
 			<groupId>org.opensrp</groupId>
 			<artifactId>opensrp-core</artifactId>
+			<version>${release.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.opensrp</groupId>
+			<artifactId>opensrp-etl</artifactId>
 			<version>${release.version}</version>
 		</dependency>
 		<dependency>

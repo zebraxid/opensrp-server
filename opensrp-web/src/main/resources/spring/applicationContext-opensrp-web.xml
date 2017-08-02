@@ -12,7 +12,7 @@
     
     <import resource="classpath:applicationContext-opensrp.xml"/>
     <import resource="classpath:applicationContext-opensrp-form.xml"/>
-     <import resource="classpath:applicationContext-opensrp-mcare-dump.xml"/>
+     <import resource="classpath:applicationContext-opensrp-etl.xml"/>
    
     <import resource="securityContext.xml"/>
 
