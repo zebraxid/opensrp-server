@@ -195,6 +195,219 @@ public abstract class CommonInformation {
 	public void setClientVersion(long clientVersion) {
 		this.clientVersion = clientVersion;
 	}
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((GOBHHID == null) ? 0 : GOBHHID.hashCode());
+		result = prime * result + ((caseId == null) ? 0 : caseId.hashCode());
+		result = prime * result
+				+ (int) (clientVersion ^ (clientVersion >>> 32));
+		result = prime * result + ((country == null) ? 0 : country.hashCode());
+		result = prime
+				* result
+				+ ((currentFormStatus == null) ? 0 : currentFormStatus
+						.hashCode());
+		result = prime * result + ((details == null) ? 0 : details.hashCode());
+		result = prime * result
+				+ ((district == null) ? 0 : district.hashCode());
+		result = prime * result
+				+ ((division == null) ? 0 : division.hashCode());
+		result = prime * result + ((end == null) ? 0 : end.hashCode());
+		result = prime * result
+				+ ((externalUserId == null) ? 0 : externalUserId.hashCode());
+		result = prime * result
+				+ ((formName == null) ? 0 : formName.hashCode());
+		result = prime * result + ((gps == null) ? 0 : gps.hashCode());
+		result = prime * result
+				+ ((instantId == null) ? 0 : instantId.hashCode());
+		result = prime
+				* result
+				+ ((jivitaHouseholdId == null) ? 0 : jivitaHouseholdId
+						.hashCode());
+		result = prime * result
+				+ ((locationId == null) ? 0 : locationId.hashCode());
+		result = prime * result
+				+ ((mauzaPara == null) ? 0 : mauzaPara.hashCode());
+		result = prime
+				* result
+				+ ((multimediaAttachments == null) ? 0 : multimediaAttachments
+						.hashCode());
+		result = prime * result
+				+ ((provider == null) ? 0 : provider.hashCode());
+		result = prime
+				* result
+				+ ((registrationDate == null) ? 0 : registrationDate.hashCode());
+		result = prime * result + ((start == null) ? 0 : start.hashCode());
+		result = prime * result
+				+ (int) (submissionTime ^ (submissionTime >>> 32));
+		result = prime * result + ((subunit == null) ? 0 : subunit.hashCode());
+		result = prime * result + ((today == null) ? 0 : today.hashCode());
+		result = prime * result + ((union == null) ? 0 : union.hashCode());
+		result = prime * result + ((upazila == null) ? 0 : upazila.hashCode());
+		result = prime * result
+				+ ((userType == null) ? 0 : userType.hashCode());
+		result = prime * result + ((ward == null) ? 0 : ward.hashCode());
+		return result;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		CommonInformation other = (CommonInformation) obj;
+		if (GOBHHID == null) {
+			if (other.GOBHHID != null)
+				return false;
+		} else if (!GOBHHID.equals(other.GOBHHID))
+			return false;
+		if (caseId == null) {
+			if (other.caseId != null)
+				return false;
+		} else if (!caseId.equals(other.caseId))
+			return false;
+		if (clientVersion != other.clientVersion)
+			return false;
+		if (country == null) {
+			if (other.country != null)
+				return false;
+		} else if (!country.equals(other.country))
+			return false;
+		if (currentFormStatus == null) {
+			if (other.currentFormStatus != null)
+				return false;
+		} else if (!currentFormStatus.equals(other.currentFormStatus))
+			return false;
+		if (details == null) {
+			if (other.details != null)
+				return false;
+		} else if (!details.equals(other.details))
+			return false;
+		if (district == null) {
+			if (other.district != null)
+				return false;
+		} else if (!district.equals(other.district))
+			return false;
+		if (division == null) {
+			if (other.division != null)
+				return false;
+		} else if (!division.equals(other.division))
+			return false;
+		if (end == null) {
+			if (other.end != null)
+				return false;
+		} else if (!end.equals(other.end))
+			return false;
+		if (externalUserId == null) {
+			if (other.externalUserId != null)
+				return false;
+		} else if (!externalUserId.equals(other.externalUserId))
+			return false;
+		if (formName == null) {
+			if (other.formName != null)
+				return false;
+		} else if (!formName.equals(other.formName))
+			return false;
+		if (gps == null) {
+			if (other.gps != null)
+				return false;
+		} else if (!gps.equals(other.gps))
+			return false;
+		if (instantId == null) {
+			if (other.instantId != null)
+				return false;
+		} else if (!instantId.equals(other.instantId))
+			return false;
+		if (jivitaHouseholdId == null) {
+			if (other.jivitaHouseholdId != null)
+				return false;
+		} else if (!jivitaHouseholdId.equals(other.jivitaHouseholdId))
+			return false;
+		if (locationId == null) {
+			if (other.locationId != null)
+				return false;
+		} else if (!locationId.equals(other.locationId))
+			return false;
+		if (mauzaPara == null) {
+			if (other.mauzaPara != null)
+				return false;
+		} else if (!mauzaPara.equals(other.mauzaPara))
+			return false;
+		if (multimediaAttachments == null) {
+			if (other.multimediaAttachments != null)
+				return false;
+		} else if (!multimediaAttachments.equals(other.multimediaAttachments))
+			return false;
+		if (provider == null) {
+			if (other.provider != null)
+				return false;
+		} else if (!provider.equals(other.provider))
+			return false;
+		if (registrationDate == null) {
+			if (other.registrationDate != null)
+				return false;
+		} else if (!registrationDate.equals(other.registrationDate))
+			return false;
+		if (start == null) {
+			if (other.start != null)
+				return false;
+		} else if (!start.equals(other.start))
+			return false;
+		if (submissionTime != other.submissionTime)
+			return false;
+		if (subunit == null) {
+			if (other.subunit != null)
+				return false;
+		} else if (!subunit.equals(other.subunit))
+			return false;
+		if (today == null) {
+			if (other.today != null)
+				return false;
+		} else if (!today.equals(other.today))
+			return false;
+		if (union == null) {
+			if (other.union != null)
+				return false;
+		} else if (!union.equals(other.union))
+			return false;
+		if (upazila == null) {
+			if (other.upazila != null)
+				return false;
+		} else if (!upazila.equals(other.upazila))
+			return false;
+		if (userType == null) {
+			if (other.userType != null)
+				return false;
+		} else if (!userType.equals(other.userType))
+			return false;
+		if (ward == null) {
+			if (other.ward != null)
+				return false;
+		} else if (!ward.equals(other.ward))
+			return false;
+		return true;
+	}
+	@Override
+	public String toString() {
+		return "CommonInformation [caseId=" + caseId + ", instantId="
+				+ instantId + ", provider=" + provider + ", locationId="
+				+ locationId + ", today=" + today + ", start=" + start
+				+ ", end=" + end + ", registrationDate=" + registrationDate
+				+ ", GOBHHID=" + GOBHHID + ", jivitaHouseholdId="
+				+ jivitaHouseholdId + ", country=" + country + ", division="
+				+ division + ", district=" + district + ", upazila=" + upazila
+				+ ", union=" + union + ", ward=" + ward + ", subunit="
+				+ subunit + ", mauzaPara=" + mauzaPara + ", gps=" + gps
+				+ ", formName=" + formName + ", userType=" + userType
+				+ ", externalUserId=" + externalUserId + ", currentFormStatus="
+				+ currentFormStatus + ", multimediaAttachments="
+				+ multimediaAttachments + ", details=" + details
+				+ ", submissionTime=" + submissionTime + ", clientVersion="
+				+ clientVersion + "]";
+	}
 	
 	
 

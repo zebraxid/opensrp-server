@@ -14,6 +14,7 @@ import org.ektorp.support.View;
 import org.motechproject.dao.MotechBaseRepository;
 import org.opensrp.common.AllConstants;
 import org.opensrp.register.mcare.domain.HouseHold;
+import org.opensrp.scheduler.Action;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -202,5 +203,12 @@ public class AllHouseHolds extends MotechBaseRepository<HouseHold> {
                 .includeDocs(false));        
         return vr;
         
+    }
+    
+    @View(name = "house_by_client_version", map = "function(doc) { if (doc.type === 'HouseHold') { emit([doc.type, doc.clientVersion], null); } }")
+    public List<HouseHold> findByTypeAndTimeStamp(String type, long timeStamp) {
+        ComplexKey startKey = ComplexKey.of(type, timeStamp + 1);
+        ComplexKey endKey = ComplexKey.of(type, Long.MAX_VALUE);
+        return db.queryView(createQuery("house_by_client_version").startKey(startKey).endKey(endKey).includeDocs(true), HouseHold.class);
     }
 }

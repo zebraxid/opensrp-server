@@ -9,19 +9,19 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class ElcoServices {
 	
-	private ElcoRepository elcoDAO;
+	private ElcoRepository elcoRepository;
 	public ElcoServices() {
 		// TODO Auto-generated constructor stub
 	}	
     
 	@Autowired
-	public void setElcoDAO(ElcoRepository elcoDAO) {
-		this.elcoDAO = elcoDAO;
+	public void setElcoRepository(ElcoRepository elcoRepository) {
+		this.elcoRepository = elcoRepository;
 	}
 
 	@Transactional
 	public void addElco(ElcoEntity p) {
-		elcoDAO.addelco(p);
+		elcoRepository.addelco(p);
 	 }
 
 }

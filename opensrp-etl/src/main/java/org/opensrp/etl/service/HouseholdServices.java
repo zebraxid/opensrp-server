@@ -8,18 +8,20 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class HouseholdServices {
-	private HouseholdRepository householdDAO;
+	private HouseholdRepository householdRepository;
 	public HouseholdServices() {
 		// TODO Auto-generated constructor stub
 	}
-	@Autowired
-	 public void setHouseholdDAO(HouseholdRepository householdDAO) {
-		this.householdDAO = householdDAO;
+	
+    @Autowired
+	public void setHouseholdRepository(HouseholdRepository householdRepository) {
+		this.householdRepository = householdRepository;
 	}
 
+
 	@Transactional
-	public void addHousehold(HousoholdEntity p) {		
-        householdDAO.addHousehold(p);
+	public void save(HousoholdEntity p) {		
+		householdRepository.addHousehold(p);
 	 }
 
 }

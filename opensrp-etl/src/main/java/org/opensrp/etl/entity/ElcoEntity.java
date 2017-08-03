@@ -1,5 +1,7 @@
 package org.opensrp.etl.entity;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -30,9 +32,9 @@ public class ElcoEntity {
 	@Type(type = "json")
     private String document;	
 	@Column(name="created")
-	private DateTime created;
+	private Date created;
 	@Column(name="updated")
-	private DateTime updated;
+	private Date updated;
 	@Column(name="time_stamp")
 	private long timeStamp;
 	public int getId() {
@@ -59,17 +61,17 @@ public class ElcoEntity {
 	public void setDocument(String document) {
 		this.document = document;
 	}
-	public DateTime getCreated() {
+	public Date getCreated() {
 		return created;
 	}
-	public void setCreated(DateTime created) {
-		this.created = created;
+	public void setCreated() {
+		this.created = new Date();
 	}
-	public DateTime getUpdated() {
+	public Date getUpdated() {
 		return updated;
 	}
-	public void setUpdated(DateTime updated) {
-		this.updated = updated;
+	public void setUpdated() {
+		this.updated = new Date();
 	}
 	public long getTimeStamp() {
 		return timeStamp;

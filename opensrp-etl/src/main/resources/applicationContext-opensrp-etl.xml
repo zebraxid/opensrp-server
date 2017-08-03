@@ -28,6 +28,7 @@
             <list>
                 <value>org.opensrp.etl.entity.HousoholdEntity</value>
                 <value>org.opensrp.etl.entity.ElcoEntity</value>
+                <value>org.opensrp.etl.entity.MarkerEntity</value>
             </list>
         </property>
         <property name="hibernateProperties">
@@ -40,23 +41,37 @@
         </property>
     </bean>
 
-    <bean id="householdDAO" class="org.opensrp.etl.repository.HouseholdRepository">
+    <bean id="householdRepository" class="org.opensrp.etl.repository.HouseholdRepository">
         <property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
     </bean>
     
-    <bean id="elcoDAO" class="org.opensrp.etl.repository.ElcoRepository">
+    <bean id="elcoRepository" class="org.opensrp.etl.repository.ElcoRepository">
+        <property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
+    </bean>
+    <bean id="markerRepository" class="org.opensrp.etl.repository.MarkerRepository">
         <property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
     </bean>
     
     <bean id="householdServices" class="org.opensrp.etl.service.HouseholdServices">
-        <property name="householdDAO" ref="householdDAO"></property>
+        <property name="householdRepository" ref="householdRepository"></property>
     </bean>
     
      <bean id="elcoServices" class="org.opensrp.etl.service.ElcoServices">
-        <property name="elcoDAO" ref="elcoDAO"></property>
+        <property name="elcoRepository" ref="elcoRepository"></property>
+    </bean>
+    
+    <bean id="markerService" class="org.opensrp.etl.service.MarkerService">
+        <property name="markerRepository" ref="markerRepository"></property>
     </bean>
     
 	<bean id="housoholdEntity" class="org.opensrp.etl.entity.HousoholdEntity">        
+    </bean>
+    
+    <bean id="markerEntity" class="org.opensrp.etl.entity.MarkerEntity">        
+    </bean>
+    <bean id="householdDocumentProcesor" class="org.opensrp.etl.document.processor.HouseholdDocumentProcesor">        
+    </bean>
+    <bean id="dataTransmisssionListener" class="org.opensrp.etl.listener.DataTransmisssionListener">        
     </bean>
     <tx:annotation-driven transaction-manager="transactionManager"/>
 

@@ -4,14 +4,10 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-import org.opensrp.etl.entity.HousoholdEntity;
-import org.opensrp.etl.interfaces.DocumentType;
-import org.opensrp.etl.service.HouseholdServices;
-import org.opensrp.register.mcare.domain.HouseHold;
 import org.springframework.stereotype.Component;
 
 @Component
-public class HouseholdDocument extends CommonInformation implements Serializable,DocumentType<HouseholdDocument, HouseHold,HouseholdServices> {
+public class HouseholdDocument extends CommonInformation implements Serializable {
 	/**
 	 * 
 	 */
@@ -85,67 +81,83 @@ public class HouseholdDocument extends CommonInformation implements Serializable
 	public static HouseholdDocument getInstance() {
 		return INSTANCE;
 	}
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((ELCO == null) ? 0 : ELCO.hashCode());
+		result = prime * result
+				+ ((Elcodetails == null) ? 0 : Elcodetails.hashCode());
+		result = prime * result
+				+ ((FWNHHMBRNUM == null) ? 0 : FWNHHMBRNUM.hashCode());
+		result = prime * result
+				+ ((FWNHHMWRA == null) ? 0 : FWNHHMWRA.hashCode());
+		result = prime * result
+				+ ((birthDate == null) ? 0 : birthDate.hashCode());
+		result = prime * result
+				+ ((firstName == null) ? 0 : firstName.hashCode());
+		result = prime * result + ((gender == null) ? 0 : gender.hashCode());
+		result = prime * result
+				+ ((lastName == null) ? 0 : lastName.hashCode());
+		return result;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		HouseholdDocument other = (HouseholdDocument) obj;
+		if (ELCO == null) {
+			if (other.ELCO != null)
+				return false;
+		} else if (!ELCO.equals(other.ELCO))
+			return false;
+		if (Elcodetails == null) {
+			if (other.Elcodetails != null)
+				return false;
+		} else if (!Elcodetails.equals(other.Elcodetails))
+			return false;
+		if (FWNHHMBRNUM == null) {
+			if (other.FWNHHMBRNUM != null)
+				return false;
+		} else if (!FWNHHMBRNUM.equals(other.FWNHHMBRNUM))
+			return false;
+		if (FWNHHMWRA == null) {
+			if (other.FWNHHMWRA != null)
+				return false;
+		} else if (!FWNHHMWRA.equals(other.FWNHHMWRA))
+			return false;
+		if (birthDate == null) {
+			if (other.birthDate != null)
+				return false;
+		} else if (!birthDate.equals(other.birthDate))
+			return false;
+		if (firstName == null) {
+			if (other.firstName != null)
+				return false;
+		} else if (!firstName.equals(other.firstName))
+			return false;
+		if (gender == null) {
+			if (other.gender != null)
+				return false;
+		} else if (!gender.equals(other.gender))
+			return false;
+		if (lastName == null) {
+			if (other.lastName != null)
+				return false;
+		} else if (!lastName.equals(other.lastName))
+			return false;
+		return true;
+	}
+	@Override
+	public String toString() {
+		return "HouseholdDocument [firstName=" + firstName + ", lastName="
+				+ lastName + ", birthDate=" + birthDate + ", gender=" + gender
+				+ ", FWNHHMBRNUM=" + FWNHHMBRNUM + ", FWNHHMWRA=" + FWNHHMWRA
+				+ ", ELCO=" + ELCO + ", Elcodetails=" + Elcodetails + "]";
+	}
 	
-	@Override
-	public HouseholdDocument getPreparedData(HouseHold houseHold) {
-		getInstance().setBirthDate(houseHold.FWHOHBIRTHDATE());
-		getInstance().setCaseId(houseHold.caseId());
-		getInstance().setClientVersion(houseHold.get());
-	    getInstance().setCountry(houseHold.FWCOUNTRY());
-	    getInstance().setCurrentFormStatus(houseHold.current_formStatus());
-	    getInstance().setDetails(houseHold.details());
-	    getInstance().setDistrict(houseHold.FWDISTRICT());
-	    getInstance().setDivision(houseHold.FWDIVISION());
-	    getInstance().setElco(houseHold.ELCO());
-	    getInstance().setElcodetails(houseHold.ELCODETAILS());
-	    getInstance().setEnd(houseHold.END());
-	    getInstance().setExternalUserId(houseHold.external_user_ID());
-	    getInstance().setFirstName(houseHold.FWHOHFNAME());
-	    getInstance().setFormName(houseHold.form_name());
-	    getInstance().setFWNHHMBRNUM(houseHold.FWNHHMBRNUM());
-	    getInstance().setFWNHHMWRA(houseHold.FWNHHMWRA());
-	    getInstance().setGender(houseHold.FWHOHGENDER());
-	    getInstance().setGOBHHID(houseHold.FWGOBHHID());
-	    getInstance().setGps(houseHold.FWNHHHGPS());
-	    getInstance().setInstantId(houseHold.INSTANCEID());
-	    getInstance().setJivitahouseholdId(houseHold.FWJIVHHID());
-	    getInstance().setLastName(houseHold.FWHOHLNAME());
-	    getInstance().setLocationId(houseHold.LOCATIONID());
-	    getInstance().setMauzaPara(houseHold.FWMAUZA_PARA());
-	    getInstance().setMultimediaAttachments(houseHold.multimediaAttachments());
-	    getInstance().setProvider(houseHold.PROVIDERID());
-	    getInstance().setRegistrationDate(houseHold.FWNHREGDATE());
-	    getInstance().setStart(houseHold.START());
-	    getInstance().setSubmissionTime(houseHold.SUBMISSIONDATE());
-	    getInstance().setSubunit(houseHold.FWSUBUNIT());
-	    getInstance().setToday(houseHold.TODAY());
-	    getInstance().setUnion(houseHold.FWUNION());
-	    getInstance().setUpazila(houseHold.FWUPAZILLA());
-	    getInstance().setUserType(houseHold.user_type());
-	    getInstance().setWard(houseHold.FWWARD());
-	   
-	    
-	    
-		return getInstance();
-	}
-	@Override
-	public void sendPreparedData(HouseHold houseHold,HouseholdServices householdServices) {
-		HousoholdEntity housoholdEntity = new HousoholdEntity();
-		
-		housoholdEntity.setCaseId(houseHold.caseId());
-    	housoholdEntity.setCreated();
-    	housoholdEntity.setTimeStamp();
-    	housoholdEntity.setUpdated();
-    	housoholdEntity.setDocumentId(houseHold.getId());
-    	housoholdEntity.setTimeStamp();
-    	housoholdEntity.setRevId(houseHold.getRevision());
-    	housoholdEntity.setStatus(true);
-    	HouseholdDocument doc = HouseholdDocument.getInstance();
-    	doc.getPreparedData(houseHold);
-    	housoholdEntity.setDoc(doc);
-    	
-    	householdServices.addHousehold(housoholdEntity);
-		
-	}
-
 }
