@@ -135,6 +135,7 @@ public class ELCOService {
 					.withTODAY(submission.getField(REFERENCE_DATE))
 					.withSUBMISSIONDATE(DateUtil.getTimestampToday())
 					.withClientVersion(DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)))
+					.withClientVersion(DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)))
 					.withexternal_user_ID(submission.getField(external_user_ID))
 					.withuser_type(submission.getField(user_type))					
 					.withFWWOMUPAZILLA(UPAZILA);
@@ -368,10 +369,14 @@ public class ELCOService {
 				.put(START_DATE, submission.getField(START_DATE)).put(END_DATE, submission.getField(END_DATE))
 				.put(REFERENCE_DATE, submission.getField(REFERENCE_DATE)).put(existing_ELCO, submission.getField(existing_ELCO))
 				.put(FWNOTELIGIBLE, submission.getField(FWNOTELIGIBLE)).put(ELCO, submission.getField(ELCO)).put(FW_ELIGIBLE, submission.getField(FW_ELIGIBLE))
-				.put(current_formStatus, submission.getField(current_formStatus)).put(received_time, format.format(today).toString()).map();
+				.put(current_formStatus, submission.getField(current_formStatus))
+				.put("clientVersion", DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)).toString())
+				.put(received_time, format.format(today).toString()).map();
 
+		
 		elco.PSRFDETAILS().add(psrf);
 		elco.details().put(FW_PSRPREGSTS, submission.getField(FW_PSRPREGSTS));
+		elco.withClientVersion(DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)));
 
 		allEcos.update(elco);
 		logger.info("Expected value leading zero and found submission.getField(FW_PSRSTS): " + submission.getField(FW_PSRSTS));

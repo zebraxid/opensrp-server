@@ -21,6 +21,7 @@ import org.opensrp.rest.repository.LuceneElcoRepository;
 import com.github.ldriscoll.ektorplucene.LuceneAwareCouchDbConnector;
 import com.github.ldriscoll.ektorplucene.LuceneResult;
 
+@Ignore
 public class LuceneElcoRepositoryTest {
 
 	private LuceneAwareCouchDbConnector connector;

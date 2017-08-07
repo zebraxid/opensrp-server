@@ -159,6 +159,7 @@ public class HHService {
 					.put(FW_WOMGPS, elcoFields.get(FW_WOMGPS))
 					.put(profileImagePath, "")
 					.put(received_time, format.format(today).toString())
+					.put("clientVersion", DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)).toString())
 					.put(nidImagePath, "").map();
  
 			

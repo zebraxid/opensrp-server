@@ -701,7 +701,7 @@ public class Elco extends MotechBaseDataObject {
 		return SUBMISSIONDATE;
 	}
 	
-	public long clientVersion() {
+	public long getclientVersion() {
 		return clientVersion;
 	}
 	

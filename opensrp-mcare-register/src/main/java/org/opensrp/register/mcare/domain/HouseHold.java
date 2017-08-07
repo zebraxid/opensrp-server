@@ -87,7 +87,7 @@ public class HouseHold extends MotechBaseDataObject {
 	@JsonProperty
 	private long SUBMISSIONDATE;
 	@JsonProperty
-	private long clientVersion;
+	private Long clientVersion;
 	
 	public HouseHold() {
 		this.ELCODETAILS = new ArrayList<>();
@@ -387,7 +387,7 @@ public class HouseHold extends MotechBaseDataObject {
 	public long SUBMISSIONDATE(){
 		return SUBMISSIONDATE;
 	}
-	public long get(){
+	public Long getClientVersion(){
 		return clientVersion;
 	}
 	

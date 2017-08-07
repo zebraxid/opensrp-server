@@ -22,7 +22,7 @@
 		<!-- <module>opensrp-reporting</module> -->
     <module>opensrp-rest-services</module>
 	<module>opensrp-dashboard</module>
-    <module>opensrp-etl</module>
+   <!--  <module>opensrp-etl</module> -->
   </modules>
 
 	<properties>

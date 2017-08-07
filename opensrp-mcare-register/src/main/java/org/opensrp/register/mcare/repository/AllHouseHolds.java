@@ -1,9 +1,5 @@
 package org.opensrp.register.mcare.repository;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.ektorp.ComplexKey;
@@ -14,7 +10,6 @@ import org.ektorp.support.View;
 import org.motechproject.dao.MotechBaseRepository;
 import org.opensrp.common.AllConstants;
 import org.opensrp.register.mcare.domain.HouseHold;
-import org.opensrp.scheduler.Action;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -209,6 +204,6 @@ public class AllHouseHolds extends MotechBaseRepository<HouseHold> {
     public List<HouseHold> findByTypeAndTimeStamp(String type, long timeStamp) {
         ComplexKey startKey = ComplexKey.of(type, timeStamp + 1);
         ComplexKey endKey = ComplexKey.of(type, Long.MAX_VALUE);
-        return db.queryView(createQuery("house_by_client_version").startKey(startKey).endKey(endKey).includeDocs(true), HouseHold.class);
+        return db.queryView(createQuery("house_by_client_version").descending(true).key("clientVersion").startKey(startKey).endKey(endKey).includeDocs(true), HouseHold.class);
     }
 }

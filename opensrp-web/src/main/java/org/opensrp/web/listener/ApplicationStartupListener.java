@@ -2,7 +2,6 @@ package org.opensrp.web.listener;
 
 import java.util.concurrent.TimeUnit;
 
-import org.opensrp.etl.constant.ETLConstant;
 import org.opensrp.register.mcare.OpenSRPScheduleConstants;
 import org.opensrp.scheduler.RepeatingSchedule;
 import org.opensrp.scheduler.TaskSchedulerService;
@@ -35,7 +34,7 @@ public class ApplicationStartupListener implements ApplicationListener<ContextRe
         //anmReportScheduler = new RepeatingSchedule(OpenSRPScheduleConstants.ANM_REPORT_SCHEDULE_SUBJECT, 10, TimeUnit.MINUTES, 6, TimeUnit.HOURS);
         //mctsReportScheduler = new RepeatingSchedule(OpenSRPScheduleConstants.MCTS_REPORT_SCHEDULE_SUBJECT, 10, TimeUnit.MINUTES, mctsPollIntervalInHours, TimeUnit.HOURS);
         //openmrsScheduleSyncerScheduler = new RepeatingSchedule(OpenmrsConstants.SCHEDULER_TRACKER_SYNCER_SUBJECT, 0, TimeUnit.MINUTES, 1, TimeUnit.MINUTES);
-        dataTransmission = new RepeatingSchedule(ETLConstant.DATA_TRANSMISSION_SUBJECT, 0, TimeUnit.MINUTES, formPollInterval, TimeUnit.MINUTES);
+       // dataTransmission = new RepeatingSchedule(ETLConstant.DATA_TRANSMISSION_SUBJECT, 0, TimeUnit.MINUTES, formPollInterval, TimeUnit.MINUTES);
     }
 
     @Override
@@ -47,7 +46,7 @@ public class ApplicationStartupListener implements ApplicationListener<ContextRe
             //scheduler.startJob(anmReportScheduler);
             //scheduler.startJob(mctsReportScheduler);
             //scheduler.startJob(openmrsScheduleSyncerScheduler);
-            scheduler.startJob(dataTransmission);
+            //scheduler.startJob(dataTransmission);
         }
     }
 }

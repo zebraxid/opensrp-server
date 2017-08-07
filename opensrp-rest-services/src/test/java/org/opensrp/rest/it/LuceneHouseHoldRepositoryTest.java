@@ -46,6 +46,7 @@ import com.github.ldriscoll.ektorplucene.LuceneResult.Row;
 
 //@RunWith(SpringJUnit4ClassRunner.class)
 //@ContextConfiguration("classpath:test-applicationContext-opensrp-rest-services.xml")
+@Ignore
 public class LuceneHouseHoldRepositoryTest {
 	
 	private LuceneAwareCouchDbConnector connector; 

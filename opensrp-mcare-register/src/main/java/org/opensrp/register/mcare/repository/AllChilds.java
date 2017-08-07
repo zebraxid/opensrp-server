@@ -38,7 +38,7 @@ public class AllChilds extends MotechBaseRepository<Child> {
 		return db.queryView(createQuery("all_open_childs_for_provider").includeDocs(true), Child.class);
 	}
 
-	@View(name = "created_in_between_2_dates", map = "function(doc) { if(doc.type === 'Child' && doc.type && doc.SUBMISSIONDATE) { emit( [doc.type, doc.SUBMISSIONDATE], null); } }")
+	@View(name = "created_in_between_2_dates", map = "function(doc) { if(doc.type === 'Child' && doc.type && doc.clientVersion) { emit( [doc.type, doc.clientVersion], null); } }")
 	public List<Child> allChildsCreatedBetween2Dates(String type, long startKey, long endKey) {
 		ComplexKey start = ComplexKey.of(type, startKey);
 		ComplexKey end = ComplexKey.of(type, endKey);

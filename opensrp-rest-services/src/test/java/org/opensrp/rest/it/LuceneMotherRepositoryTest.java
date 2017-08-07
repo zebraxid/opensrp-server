@@ -16,6 +16,7 @@ import org.ektorp.http.StdHttpClient;
 import org.ektorp.impl.StdCouchDbInstance;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.opensrp.rest.repository.LuceneElcoRepository;
 import org.opensrp.rest.repository.LuceneMotherRepository;
@@ -23,6 +24,7 @@ import org.opensrp.rest.repository.LuceneMotherRepository;
 import com.github.ldriscoll.ektorplucene.LuceneAwareCouchDbConnector;
 import com.github.ldriscoll.ektorplucene.LuceneResult;
 
+@Ignore
 public class LuceneMotherRepositoryTest {
 	private LuceneAwareCouchDbConnector connector; 
     private LuceneMotherRepository luceneMotherRepository; 
