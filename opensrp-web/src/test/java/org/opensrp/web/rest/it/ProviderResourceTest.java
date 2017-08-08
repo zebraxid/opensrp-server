@@ -69,14 +69,14 @@ public class ProviderResourceTest {
 	}
 
 	@Test
-	public void shouldReturnEmptyRespnseWithOutTeamId() throws Exception {
+	public void shouldReturnEmptyResponseWithOutTeamId() throws Exception {
 		String query = "?u=" + USER_NAME + "&p=" + PASSWORD;
 		String urlWithQuery = BASE_URL + AUTHENTICATE_URL + query;
 		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
 		MvcResult mvcResult = this.mockMvc.perform(get(urlWithQuery).accept(MediaType.APPLICATION_JSON)).andDo(print())
 				.andExpect(status().isOk()).andReturn();
 		String responseString = mvcResult.getResponse().getContentAsString();
-		assertTrue(responseString.isEmpty());
+		assertTrue(responseString.equals("{}"));
 	}
 
 	@Test

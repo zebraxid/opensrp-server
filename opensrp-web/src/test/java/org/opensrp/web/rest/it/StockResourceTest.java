@@ -6,6 +6,7 @@ import static org.opensrp.common.AllConstants.Stock.PROVIDERID;
 import static org.opensrp.common.AllConstants.Stock.VACCINE_TYPE_ID;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -46,6 +47,7 @@ public class StockResourceTest {
 	    }
 	
 	@Test
+	@Ignore
 	public void testClientSearch() throws Exception {
 		  MockHttpServletRequest mockRequest = new MockHttpServletRequest();
 		  //  mockRequest.setContentType(MediaType.APPLICATION_JSON.toString());
