@@ -100,8 +100,8 @@ public class EventResourceTest {
 
 	@After
 	public void tearDown() {
-		/*allEvents.removeAll();
-		allClients.removeAll();*/
+		allEvents.removeAll();
+		allClients.removeAll();
 	}
 
 	@Test
@@ -308,7 +308,7 @@ public class EventResourceTest {
 	}
 
 	@Test
-	public void shouldSearchClientWithValidQuery() throws Exception {
+	public void shouldSearchEventWithValidQuery() throws Exception {
 		Event expectedEvent = new Event(baseEntityId, eventType, eventDate, entityType, providerId, locationId,
 				formSubmissionId);
 		expectedEvent.addIdentifier("key", "value");
@@ -322,8 +322,8 @@ public class EventResourceTest {
 		createEvent(asList(expectedEvent, otherEvent, otherEvent2));
 		createClient();
 
-		String searchQuery =
-				"search?identifier=1&" + "eventType=" + eventType + "&locationId=" + locationId + "&providerId=" + providerId;
+		String searchQuery = "search?identifier=1&" + "eventType=" + eventType + "&locationId=" + locationId + "&providerId="
+				+ providerId;
 
 		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
 		MvcResult mvcResult = this.mockMvc.perform(get(BASE_URL + searchQuery)).andDo(print()).andReturn();
@@ -336,7 +336,7 @@ public class EventResourceTest {
 	}
 
 	@Test
-	public void shouldSearchClientWithInvalidQuery() throws Exception {
+	public void shouldFailToSearchIfEventDoesntHaveAssociatedClient() throws Exception {
 		Event expectedEvent = new Event(baseEntityId, eventType, eventDate, entityType, providerId, locationId,
 				formSubmissionId);
 		expectedEvent.addIdentifier("key", "value");
@@ -356,6 +356,81 @@ public class EventResourceTest {
 		assertTrue(responseString.equals("[]"));
 		JsonNode actualObj = mapper.readTree(responseString);
 		assertNull(actualObj.get(0));
+	}
+
+	@Test
+	public void shouldFailToSearchIfEventDoesntHaveDateCreatedField() throws Exception {
+		Event expectedEvent = new Event(baseEntityId, eventType, eventDate, entityType, providerId, locationId,
+				formSubmissionId);
+		expectedEvent.addIdentifier("key", "value");
+		DateTime dateEdited = new DateTime(3l, DateTimeZone.UTC);
+
+		Event otherEvent = new Event("2", eventType, eventDate, entityType, providerId, locationId, formSubmissionId);
+		otherEvent.setDateCreated(dateEdited);
+		Event otherEvent2 = new Event("3", eventType, eventDate, entityType, providerId, locationId, formSubmissionId);
+		otherEvent2.setDateCreated(dateEdited);
+		createEvent(asList(expectedEvent, otherEvent, otherEvent2));
+		createClient();
+
+		String searchQuery = "search?identifier=1&" + "eventType=" + eventType + "&locationId=" + locationId + "&providerId="
+				+ providerId;
+
+		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
+		MvcResult mvcResult = this.mockMvc.perform(get(BASE_URL + searchQuery)).andDo(print()).andReturn();
+
+		String responseString = mvcResult.getResponse().getContentAsString();
+		assertTrue(responseString.equals("[]"));
+		JsonNode actualObj = mapper.readTree(responseString);
+		assertNull(actualObj.get(0));
+	}
+
+	@Test
+	public void shouldFilterData() throws Exception {
+		Event expectedEvent = new Event(baseEntityId, eventType, eventDate, entityType, providerId, locationId,
+				formSubmissionId);
+		expectedEvent.addIdentifier("key", "value");
+		DateTime dateEdited = new DateTime(3l, DateTimeZone.UTC);
+		expectedEvent.setDateCreated(dateEdited);
+
+		Event otherEvent = new Event("2", eventType, eventDate, entityType, providerId, locationId, formSubmissionId);
+		otherEvent.setDateCreated(dateEdited);
+		Event otherEvent2 = new Event("3", eventType, eventDate, entityType, providerId, locationId, formSubmissionId);
+		otherEvent2.setDateCreated(dateEdited);
+		createEvent(asList(expectedEvent, otherEvent, otherEvent2));
+
+		String searchQuery =
+				"?q=" + "eventType:" + eventType + " and locationId:" + locationId + " and providerId:" + providerId;
+
+		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
+		MvcResult mvcResult = this.mockMvc.perform(get(BASE_URL + searchQuery)).andDo(print()).andReturn();
+
+		String responseString = mvcResult.getResponse().getContentAsString();
+		JsonNode actualObj = mapper.readTree(responseString);
+		List<Event> actualEventList = new ArrayList<>();
+		for (int i = 0; i < actualObj.size(); i++) {
+			Event actualEvent = mapper.treeToValue(actualObj.get(i), Event.class);
+			actualEventList.add(actualEvent);
+		}
+		assertEquals(3, actualObj.size());
+		assertTrue(asList(expectedEvent, otherEvent, otherEvent2).containsAll(actualEventList) && actualEventList
+				.containsAll(asList(expectedEvent, otherEvent, otherEvent2)));
+	}
+
+	@Test(expected = NestedServletException.class)
+	public void shouldFailToFilterDataWithoutDateCreatedField() throws Exception {
+		Event expectedEvent = new Event(baseEntityId, eventType, eventDate, entityType, providerId, locationId,
+				formSubmissionId);
+		expectedEvent.addIdentifier("key", "value");
+		Event otherEvent = new Event("2", "e", eventDate, entityType, providerId, locationId, formSubmissionId);
+		otherEvent.setDateCreated(eventDate);
+		Event otherEvent2 = new Event("3", eventType, eventDate, entityType, providerId, locationId, formSubmissionId);
+		createEvent(asList(expectedEvent, otherEvent, otherEvent2));
+
+		String searchQuery =
+				"?q=" + "eventType:" + eventType + " and locationId:" + locationId + " and providerId:" + providerId;
+
+		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
+		MvcResult mvcResult = this.mockMvc.perform(get(BASE_URL + searchQuery)).andDo(print()).andReturn();
 	}
 
 	@Test
@@ -394,7 +469,6 @@ public class EventResourceTest {
 		List<Event> expectedEvent = createEventsForSyncTest();
 
 		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
-
 		MvcResult mvcResult = this.mockMvc.perform(get(BASE_URL + "sync?serverVersion=0&providerId=providerId"))
 				.andExpect(status().isOk()).andDo(print()).andReturn();
 
@@ -419,6 +493,41 @@ public class EventResourceTest {
 		assertEquals(4, eventSize);
 		assertTrue(expectedEvent.containsAll(actualEventList) && actualEventList.containsAll(expectedEvent));
 		assertTrue(expectedClient.containsAll(actualClientList) && actualClientList.containsAll(expectedClient));
+	}
+
+	@Test
+	public void shouldAddClientAndEventFromSyncData() throws Exception {
+		String synData = "{\"events\":[{\"identifiers\":{\"key\":\"value\"},\"baseEntityId\":\"1\",\"locationId\":\"locationId\",\"eventDate\":\"1970-01-01T00:00:00.000Z\",\"eventType\":\"eventType\",\"formSubmissionId\":\"formSubmissionId\",\"providerId\":\"providerId\",\"duration\":0,\"obs\":[],\"entityType\":\"entityType\",\"version\":1502179200127,\"dateCreated\":\"1970-01-01T00:00:00.003Z\",\"type\":\"Event\",\"id\":\"14bda0b96952ad4347732585037e1d58\"},"
+				+ "{\"identifiers\":{},\"baseEntityId\":\"2\",\"locationId\":\"locationId\",\"eventDate\":\"1970-01-01T00:00:00.000Z\",\"eventType\":\"eventType\",\"formSubmissionId\":\"formSubmissionId\",\"providerId\":\"providerId\",\"duration\":0,\"obs\":[],\"entityType\":\"entityType\",\"version\":1502179200127,\"dateCreated\":\"1970-01-01T00:00:00.003Z\",\"type\":\"Event\",\"id\":\"14bda0b96952ad4347732585037e1ee8\"},"
+				+ "{\"identifiers\":{},\"baseEntityId\":\"3\",\"locationId\":\"locationId\",\"eventDate\":\"1970-01-01T00:00:00.000Z\",\"eventType\":\"eventType\",\"formSubmissionId\":\"formSubmissionId\",\"providerId\":\"providerId\",\"duration\":0,\"obs\":[],\"entityType\":\"entityType\",\"version\":1502179200127,\"dateCreated\":\"1970-01-01T00:00:00.003Z\",\"type\":\"Event\",\"id\":\"14bda0b96952ad4347732585037e22d3\"},"
+				+ "{\"identifiers\":{},\"baseEntityId\":\"1\",\"locationId\":\"locationId\",\"eventDate\":\"1970-01-01T00:00:00.000Z\",\"eventType\":\"eventType\",\"formSubmissionId\":\"formSubmissionId\",\"providerId\":\"providerId\",\"duration\":0,\"obs\":[],\"entityType\":\"entityType\",\"version\":1502179200127,\"dateCreated\":\"1970-01-01T00:00:00.003Z\",\"type\":\"Event\",\"id\":\"14bda0b96952ad4347732585037e233e\"}],"
+				+ "\"no_of_events\":4,"
+				+ "\"clients\":[{\"firstName\":\"name\",\"birthdate\":\"1970-01-01T00:00:00.000Z\",\"birthdateApprox\":false,\"gender\":\"male\",\"baseEntityId\":\"1\",\"identifiers\":{},\"addresses\":[{\"addressType\":\"addressType\",\"town\":\"town\",\"subDistrict\":\"subDistrict\",\"countyDistrict\":\"countryDistrict\",\"cityVillage\":\"cityVillage\",\"stateProvince\":\"stateProvince\",\"country\":\"country\"}],\"attributes\":{},\"dateCreated\":\"1970-01-01T00:00:00.000Z\",\"type\":\"Client\",\"id\":\"14bda0b96952ad4347732585037dff66\"},"
+				+ "{\"firstName\":\"name\",\"birthdate\":\"1970-01-01T00:00:00.000Z\",\"birthdateApprox\":false,\"gender\":\"male\",\"baseEntityId\":\"2\",\"identifiers\":{},\"addresses\":[{\"addressType\":\"addressType\",\"town\":\"town\",\"subDistrict\":\"subDistrict\",\"countyDistrict\":\"countryDistrict\",\"cityVillage\":\"cityVillage\",\"stateProvince\":\"stateProvince\",\"country\":\"country\"}],\"attributes\":{},\"dateCreated\":\"1970-01-01T00:00:00.000Z\",\"type\":\"Client\",\"id\":\"14bda0b96952ad4347732585037e0c85\"},"
+				+ "{\"firstName\":\"name\",\"birthdate\":\"1970-01-01T00:00:00.000Z\",\"birthdateApprox\":false,\"gender\":\"male\",\"baseEntityId\":\"3\",\"identifiers\":{},\"addresses\":[{\"addressType\":\"addressType\",\"town\":\"town\",\"subDistrict\":\"subDistrict\",\"countyDistrict\":\"countryDistrict\",\"cityVillage\":\"cityVillage\",\"stateProvince\":\"stateProvince\",\"country\":\"country\"}],\"attributes\":{},\"dateCreated\":\"1970-01-01T00:00:00.000Z\",\"type\":\"Client\",\"id\":\"14bda0b96952ad4347732585037e1519\"}]}";
+		assertEquals(0, allEvents.getAll().size());
+		assertEquals(0, allClients.getAll().size());
+
+		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
+		MvcResult mvcResult = this.mockMvc.perform(post(BASE_URL + "add").body(synData.getBytes()))
+				.andExpect(status().isCreated()).andDo(print()).andReturn();
+
+		assertEquals(4, allEvents.getAll().size());
+		assertEquals(3, allClients.getAll().size());
+	}
+
+	@Test
+	public void shouldThrowErrorIfSyncDataDoesntHaveClientAndEvent() throws Exception {
+		String synData = "{\"no_of_events\":0}";
+		assertEquals(0, allEvents.getAll().size());
+		assertEquals(0, allClients.getAll().size());
+
+		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
+		MvcResult mvcResult = this.mockMvc.perform(post(BASE_URL + "add").body(synData.getBytes()))
+				.andExpect(status().isBadRequest()).andDo(print()).andReturn();
+
+		assertEquals(0, allEvents.getAll().size());
+		assertEquals(0, allClients.getAll().size());
 	}
 
 	private List<Event> createEventsForSyncTest() {
