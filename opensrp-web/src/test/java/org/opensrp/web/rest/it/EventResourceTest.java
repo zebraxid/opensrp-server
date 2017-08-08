@@ -6,7 +6,6 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.opensrp.domain.Address;
@@ -27,9 +26,7 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.util.NestedServletException;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static java.util.Arrays.asList;
 import static org.junit.Assert.*;
@@ -59,7 +56,6 @@ public class EventResourceTest {
 	String locationId = "locationId";
 
 	String formSubmissionId = "formSubmissionId";
-
 
 	String addressType = "addressType";
 
@@ -104,8 +100,8 @@ public class EventResourceTest {
 
 	@After
 	public void tearDown() {
-		//allEvents.removeAll();
-		//allClients.removeAll();
+		/*allEvents.removeAll();
+		allClients.removeAll();*/
 	}
 
 	@Test
@@ -120,9 +116,7 @@ public class EventResourceTest {
 	public void shouldFindEventById() throws Exception {
 		Event expectedEvent = new Event("1", "eventType", new DateTime(0l, DateTimeZone.UTC), "entityType", "providerId",
 				"locationId", "formSubmissionId");
-		Map<String, String> identifiers = new HashMap<>();
-		identifiers.put("key", "value");
-		expectedEvent.setIdentifiers(identifiers);
+		expectedEvent.addIdentifier("key", "value");
 		createEvent(asList(expectedEvent));
 
 		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
@@ -150,9 +144,7 @@ public class EventResourceTest {
 	public void shouldCreateEventWithAllRequiredProperties() throws Exception {
 		Event expectedEvent = new Event("1", "eventType", new DateTime(0l, DateTimeZone.UTC), "entityType", "providerId",
 				"locationId", "formSubmissionId");
-		Map<String, String> identifiers = new HashMap<>();
-		identifiers.put("key", "value");
-		expectedEvent.setIdentifiers(identifiers);
+		expectedEvent.addIdentifier("key", "value");
 
 		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
 		this.mockMvc.perform(
@@ -169,9 +161,7 @@ public class EventResourceTest {
 	public void shouldNotCreateEventWithOutProviderId() throws Exception {
 		Event expectedEvent = new Event("1", "eventType", new DateTime(0l, DateTimeZone.UTC), "entityType", "providerId",
 				"locationId", "formSubmissionId");
-		Map<String, String> identifiers = new HashMap<>();
-		identifiers.put("key", "value");
-		expectedEvent.setIdentifiers(identifiers);
+		expectedEvent.addIdentifier("key", "value");
 		expectedEvent.setProviderId(null);
 
 		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
@@ -187,9 +177,7 @@ public class EventResourceTest {
 	public void shouldNotCreateEventWithOutEventType() throws Exception {
 		Event expectedEvent = new Event("1", "eventType", new DateTime(0l, DateTimeZone.UTC), "entityType", "providerId",
 				"locationId", "formSubmissionId");
-		Map<String, String> identifiers = new HashMap<>();
-		identifiers.put("key", "value");
-		expectedEvent.setIdentifiers(identifiers);
+		expectedEvent.addIdentifier("key", "value");
 		expectedEvent.setEventType(null);
 
 		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
@@ -205,9 +193,7 @@ public class EventResourceTest {
 	public void shouldNotCreateEventWithOutBaseEntityId() throws Exception {
 		Event expectedEvent = new Event("1", "eventType", new DateTime(0l, DateTimeZone.UTC), "entityType", "providerId",
 				"locationId", "formSubmissionId");
-		Map<String, String> identifiers = new HashMap<>();
-		identifiers.put("key", "value");
-		expectedEvent.setIdentifiers(identifiers);
+		expectedEvent.addIdentifier("key", "value");
 		expectedEvent.setBaseEntityId(null);
 
 		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
@@ -223,9 +209,7 @@ public class EventResourceTest {
 	public void shouldUpdateExistingClient() throws Exception {
 		Event expectedEvent = new Event("1", "eventType", new DateTime(0l, DateTimeZone.UTC), "entityType", "providerId",
 				"locationId", "formSubmissionId");
-		Map<String, String> identifiers = new HashMap<>();
-		identifiers.put("key", "value");
-		expectedEvent.setIdentifiers(identifiers);
+		expectedEvent.addIdentifier("key", "value");
 		createEvent(asList(expectedEvent));
 
 		expectedEvent.addDetails("detail", "value");
@@ -261,9 +245,7 @@ public class EventResourceTest {
 	public void shouldThrowExceptionWhileUpdateIfBaseEntityIdNotPresent() throws Exception {
 		Event expectedEvent = new Event("1", "eventType", new DateTime(0l, DateTimeZone.UTC), "entityType", "providerId",
 				"locationId", "formSubmissionId");
-		Map<String, String> identifiers = new HashMap<>();
-		identifiers.put("key", "value");
-		expectedEvent.setIdentifiers(identifiers);
+		expectedEvent.addIdentifier("key", "value");
 		expectedEvent.setBaseEntityId(null);
 		createEvent(asList(expectedEvent));
 		Event updatedEvent = expectedEvent;
@@ -285,9 +267,7 @@ public class EventResourceTest {
 	public void shouldThrowExceptionWhileUpdateIfEventTypeNotPresent() throws Exception {
 		Event expectedEvent = new Event("1", "eventType", new DateTime(0l, DateTimeZone.UTC), "entityType", "providerId",
 				"locationId", "formSubmissionId");
-		Map<String, String> identifiers = new HashMap<>();
-		identifiers.put("key", "value");
-		expectedEvent.setIdentifiers(identifiers);
+		expectedEvent.addIdentifier("key", "value");
 		expectedEvent.setEventType(null);
 		createEvent(asList(expectedEvent));
 		Event updatedEvent = expectedEvent;
@@ -309,9 +289,7 @@ public class EventResourceTest {
 	public void shouldThrowExceptionWhileUpdateIfProviderIdNotPresent() throws Exception {
 		Event expectedEvent = new Event("1", "eventType", new DateTime(0l, DateTimeZone.UTC), "entityType", "providerId",
 				"locationId", "formSubmissionId");
-		Map<String, String> identifiers = new HashMap<>();
-		identifiers.put("key", "value");
-		expectedEvent.setIdentifiers(identifiers);
+		expectedEvent.addIdentifier("key", "value");
 		expectedEvent.setProviderId(null);
 		createEvent(asList(expectedEvent));
 		Event updatedEvent = expectedEvent;
@@ -330,22 +308,22 @@ public class EventResourceTest {
 	}
 
 	@Test
-	@Ignore
 	public void shouldSearchClientWithValidQuery() throws Exception {
 		Event expectedEvent = new Event(baseEntityId, eventType, eventDate, entityType, providerId, locationId,
 				formSubmissionId);
-		Map<String, String> identifiers = new HashMap<>();
-		identifiers.put("key", "value");
-		expectedEvent.setIdentifiers(identifiers);
+		expectedEvent.addIdentifier("key", "value");
 		DateTime dateEdited = new DateTime(3l, DateTimeZone.UTC);
-		expectedEvent.setDateEdited(dateEdited);
+		expectedEvent.setDateCreated(dateEdited);
 
 		Event otherEvent = new Event("2", eventType, eventDate, entityType, providerId, locationId, formSubmissionId);
+		otherEvent.setDateCreated(dateEdited);
 		Event otherEvent2 = new Event("3", eventType, eventDate, entityType, providerId, locationId, formSubmissionId);
+		otherEvent2.setDateCreated(dateEdited);
 		createEvent(asList(expectedEvent, otherEvent, otherEvent2));
+		createClient();
 
 		String searchQuery =
-				"search?" + "eventType=" + eventType + "&locationId=" + locationId + "&providerId=" + providerId;
+				"search?identifier=1&" + "eventType=" + eventType + "&locationId=" + locationId + "&providerId=" + providerId;
 
 		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
 		MvcResult mvcResult = this.mockMvc.perform(get(BASE_URL + searchQuery)).andDo(print()).andReturn();
@@ -353,6 +331,7 @@ public class EventResourceTest {
 		String responseString = mvcResult.getResponse().getContentAsString();
 		JsonNode actualObj = mapper.readTree(responseString);
 		Event actualEvent = mapper.treeToValue(actualObj.get(0), Event.class);
+		assertEquals(1, actualObj.size());
 		assertEquals(expectedEvent, actualEvent);
 	}
 
@@ -360,12 +339,9 @@ public class EventResourceTest {
 	public void shouldSearchClientWithInvalidQuery() throws Exception {
 		Event expectedEvent = new Event(baseEntityId, eventType, eventDate, entityType, providerId, locationId,
 				formSubmissionId);
-		Map<String, String> identifiers = new HashMap<>();
-		identifiers.put("key", "value");
-		expectedEvent.setIdentifiers(identifiers);
+		expectedEvent.addIdentifier("key", "value");
 		DateTime dateEdited = new DateTime(3l, DateTimeZone.UTC);
 		expectedEvent.setDateEdited(dateEdited);
-
 		Event otherEvent = new Event("2", eventType, eventDate, entityType, providerId, locationId, formSubmissionId);
 		Event otherEvent2 = new Event("3", eventType, eventDate, entityType, providerId, locationId, formSubmissionId);
 		createEvent(asList(expectedEvent, otherEvent, otherEvent2));
@@ -373,7 +349,6 @@ public class EventResourceTest {
 		String searchQuery =
 				"search?identifier= invalid" + "eventType=" + eventType + "&locationId=" + locationId + "&providerId="
 						+ providerId;
-
 		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
 		MvcResult mvcResult = this.mockMvc.perform(get(BASE_URL + searchQuery)).andDo(print()).andReturn();
 
@@ -382,18 +357,14 @@ public class EventResourceTest {
 		JsonNode actualObj = mapper.readTree(responseString);
 		assertNull(actualObj.get(0));
 	}
-	//TODO couch-lucene related test
 
 	@Test
 	public void shouldReturnAllEvents() throws Exception {
 		Event expectedEvent = new Event(baseEntityId, eventType, eventDate, entityType, providerId, locationId,
 				formSubmissionId);
-		Map<String, String> identifiers = new HashMap<>();
-		identifiers.put("key", "value");
-		expectedEvent.setIdentifiers(identifiers);
+		expectedEvent.addIdentifier("key", "value");
 		DateTime dateEdited = new DateTime(3l, DateTimeZone.UTC);
 		expectedEvent.setDateEdited(dateEdited);
-
 		Event otherEvent = new Event("2", eventType, eventDate, entityType, providerId, locationId, formSubmissionId);
 		Event otherEvent2 = new Event("3", eventType, eventDate, entityType, providerId, locationId, formSubmissionId);
 		createEvent(asList(expectedEvent, otherEvent, otherEvent2));
@@ -401,10 +372,9 @@ public class EventResourceTest {
 		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
 		MvcResult mvcResult = this.mockMvc.perform(get(BASE_URL + "getall")).andExpect(status().isOk()).andDo(print())
 				.andReturn();
-
 		String responseString = mvcResult.getResponse().getContentAsString();
 		JsonNode actualObj = mapper.readTree(responseString);
-		assertEquals(3, actualObj.size());
+
 		List<Event> actualEventList = new ArrayList<>();
 		for (int i = 0; i < actualObj.size(); i++) {
 			Event actualEvent = mapper.treeToValue(actualObj.get(i), Event.class);
@@ -412,14 +382,67 @@ public class EventResourceTest {
 			actualEventList.add(actualEvent);
 		}
 
+		assertEquals(3, actualObj.size());
 		assertTrue(asList(expectedEvent, otherEvent, otherEvent2).containsAll(actualEventList) && actualEventList
 				.containsAll(asList(expectedEvent, otherEvent, otherEvent2)));
 	}
 
 	@Test
 	public void shouldSyncEventAndRelatedClient() throws Exception {
+
+		List<Client> expectedClient = createClient();
+		List<Event> expectedEvent = createEventsForSyncTest();
+
+		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
+
+		MvcResult mvcResult = this.mockMvc.perform(get(BASE_URL + "sync?serverVersion=0&providerId=providerId"))
+				.andExpect(status().isOk()).andDo(print()).andReturn();
+
+		String responseString = mvcResult.getResponse().getContentAsString();
+		JsonNode actualObj = mapper.readTree(responseString);
+		JsonNode eventObj = actualObj.get("events");
+		JsonNode clientObj = actualObj.get("clients");
+		int eventSize = actualObj.get("no_of_events").asInt();
+
+		List<Event> actualEventList = new ArrayList<>();
+		for (int i = 0; i < eventObj.size(); i++) {
+			Event actualEvent = mapper.treeToValue(eventObj.get(i), Event.class);
+			actualEventList.add(actualEvent);
+		}
+
+		List<Client> actualClientList = new ArrayList<>();
+		for (int i = 0; i < clientObj.size(); i++) {
+			Client actualClient = mapper.treeToValue(clientObj.get(i), Client.class);
+			actualClientList.add(actualClient);
+		}
+
+		assertEquals(4, eventSize);
+		assertTrue(expectedEvent.containsAll(actualEventList) && actualEventList.containsAll(expectedEvent));
+		assertTrue(expectedClient.containsAll(actualClientList) && actualClientList.containsAll(expectedClient));
+	}
+
+	private List<Event> createEventsForSyncTest() {
+		Event expectedEvent = new Event(baseEntityId, eventType, eventDate, entityType, providerId, locationId,
+				formSubmissionId);
+		expectedEvent.addIdentifier("key", "value");
+		DateTime dateEdited = new DateTime(3l, DateTimeZone.UTC);
+		expectedEvent.setDateCreated(dateEdited);
+
+		Event oE = new Event("1", eventType, eventDate, entityType, providerId, locationId, formSubmissionId);
+		oE.setDateCreated(dateEdited);
+		Event otherEvent = new Event("2", eventType, eventDate, entityType, providerId, locationId, formSubmissionId);
+		otherEvent.setDateCreated(dateEdited);
+		Event otherEvent2 = new Event("3", eventType, eventDate, entityType, providerId, locationId, formSubmissionId);
+		otherEvent2.setDateCreated(dateEdited);
+
+		createEvent(asList(expectedEvent, otherEvent, otherEvent2, oE));
+		return asList(expectedEvent, otherEvent, otherEvent2, oE);
+	}
+
+	private List<Client> createClient() {
 		Address address = new Address().withAddressType(addressType).withCountry(country).withStateProvince(stateProvince)
-				.withCityVillage(cityVillage).withCountyDistrict(countryDistrict).withSubDistrict(subDistrict).withTown(town);
+				.withCityVillage(cityVillage).withCountyDistrict(countryDistrict).withSubDistrict(subDistrict)
+				.withTown(town);
 
 		Client expectedClient = (Client) new Client("1").withFirstName("name").withGender("male")
 				.withBirthdate(new DateTime(0l, DateTimeZone.UTC), false).withAddress(address);
@@ -433,51 +456,8 @@ public class EventResourceTest {
 		otherClient2.setDateCreated(new DateTime(0l, DateTimeZone.UTC));
 
 		createClient(asList(expectedClient, otherClient, otherClient2));
+		return asList(expectedClient, otherClient, otherClient2);
 
-		Event expectedEvent = new Event(baseEntityId, eventType, eventDate, entityType, providerId, locationId,
-				formSubmissionId);
-		Map<String, String> identifiers = new HashMap<>();
-		identifiers.put("key", "value");
-		expectedEvent.setIdentifiers(identifiers);
-		DateTime dateEdited = new DateTime(3l, DateTimeZone.UTC);
-		expectedEvent.setDateCreated(dateEdited);
-
-		Event oE = new Event("1", eventType, eventDate, entityType, providerId, locationId, formSubmissionId);
-		oE.setDateCreated(dateEdited);
-		Event otherEvent = new Event("2", eventType, eventDate, entityType, providerId, locationId, formSubmissionId);
-		otherEvent.setDateCreated(dateEdited);
-		Event otherEvent2 = new Event("3", eventType, eventDate, entityType, providerId, locationId, formSubmissionId);
-		otherEvent2.setDateCreated(dateEdited);
-		createEvent(asList(expectedEvent, otherEvent, otherEvent2, oE));
-
-		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
-
-		MvcResult mvcResult = this.mockMvc.perform(get(BASE_URL + "sync?serverVersion=0&providerId=providerId")).andExpect(status().isOk()).andDo(print())
-				.andReturn();
-
-		String responseString = mvcResult.getResponse().getContentAsString();
-		JsonNode actualObj = mapper.readTree(responseString);
-		JsonNode eventObj = actualObj.get("events");
-		JsonNode clientObj = actualObj.get("clients");
-		int eventSize = actualObj.get("no_of_events").asInt();
-		assertEquals(4, eventSize);
-		List<Event> actualEventList = new ArrayList<>();
-		for (int i = 0; i < eventObj.size(); i++) {
-			Event actualEvent = mapper.treeToValue(eventObj.get(i), Event.class);
-			actualEventList.add(actualEvent);
-		}
-		assertTrue(asList(oE,expectedEvent, otherEvent, otherEvent2).containsAll(actualEventList) && actualEventList
-				.containsAll(asList(expectedEvent, otherEvent, otherEvent2, oE)));
-
-		List<Client> actualClientList = new ArrayList<>();
-		for (int i = 0; i < clientObj.size(); i++) {
-			Client actualClient = mapper.treeToValue(clientObj.get(i), Client.class);
-			actualClientList.add(actualClient);
-		}
-		assertEquals(actualClientList, asList(expectedClient, otherClient, otherClient2));
-
-		assertTrue(asList(expectedClient, otherClient, otherClient2).containsAll(actualClientList) && actualClientList
-				.containsAll(asList(expectedClient, otherClient, otherClient2)));
 	}
 
 	private void createEvent(List<Event> events) {
