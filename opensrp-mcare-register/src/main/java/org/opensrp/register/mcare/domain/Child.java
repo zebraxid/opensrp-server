@@ -65,7 +65,8 @@ public class Child extends MotechBaseDataObject {
 	private long clientVersion;
 	@JsonProperty
 	private String user_type;
-
+	@JsonProperty
+	private Long serverVersion;
 	public Child() {
 		details = new HashMap<String, String>();
 		enccVisitOne = new HashMap<String, String>();
@@ -75,6 +76,14 @@ public class Child extends MotechBaseDataObject {
 
 	public Child withCaseId(String caseId) {
 		this.caseId = caseId;
+		return this;
+	}
+	public Long getServerVersion() {
+		return serverVersion;
+	}
+
+	public Child setServerVersion(Long serverVersion) {
+		this.serverVersion = serverVersion;
 		return this;
 	}
 	

@@ -115,6 +115,8 @@ public class Mother extends MotechBaseDataObject {
 	private String FWWOMUPAZILLA;
 	@JsonProperty
 	private long clientVersion;
+	@JsonProperty
+	private Long serverVersion;
 	public Mother() {
 		this.ancVisitOne = new HashMap<>();
 		this.ancVisitTwo = new HashMap<>();
@@ -127,6 +129,18 @@ public class Mother extends MotechBaseDataObject {
 		this.setIsClosed(false);
 	}
 
+	public Mother withCASEID(String caseId) {
+		this.caseId = caseId;
+		return this;
+	}
+	public Long getServerVersion() {
+		return serverVersion;
+	}
+
+	public Mother setServerVersion(Long serverVersion) {
+		this.serverVersion = serverVersion;
+		return this;
+	}
 	public Mother withFWWOMDISTRICT(String FWWOMDISTRICT) {
 		this.FWWOMDISTRICT = FWWOMDISTRICT;
 		return this;

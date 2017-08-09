@@ -63,7 +63,7 @@ public class ConfigService {
 		}
 		
 		if(allAppStateTokens.findByName(tokenName.name()) != null){
-			throw new IllegalArgumentException("Token with given name ("+tokenName.name()+") already exists.");
+			//throw new IllegalArgumentException("Token with given name ("+tokenName.name()+") already exists.");
 		}
 		AppStateToken token = new AppStateToken(tokenName.name(), defaultValue, 0L, description);
 		allAppStateTokens.add(token);

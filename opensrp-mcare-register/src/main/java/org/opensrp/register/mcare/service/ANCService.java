@@ -203,7 +203,7 @@ public class ANCService {
 		mother.withINSTANCEID(submission.instanceId());
 		mother.withClientVersion(DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)));
 		mother.withSUBMISSIONDATE(DateUtil.getTimestampToday());
-
+		mother.setServerVersion(System.currentTimeMillis());
 		Elco lco = allElcos.findByCaseId(mother.relationalid());
 
 		mother.withmother_gobhhid(submission.getField(mother_gobhhid));
@@ -279,6 +279,7 @@ public class ANCService {
 		mother.withClientVersion(DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)));
 		mother.withANCVisitOne(ancVisitOne);
 		mother.withTODAY(submission.getField(REFERENCE_DATE));
+		mother.setServerVersion(System.currentTimeMillis());
 		allMothers.update(mother);
 		ancSchedulesService.fullfillMilestone(submission.entityId(), submission.anmId(), SCHEDULE_ANC, new LocalDate());
 		actionService.markAllAlertsAsInactive(submission.entityId());
@@ -334,6 +335,7 @@ public class ANCService {
 		mother.withClientVersion(DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)));
 		mother.withANCVisitTwo(ancVisitTwo);
 		mother.withTODAY(submission.getField(REFERENCE_DATE));
+		mother.setServerVersion(System.currentTimeMillis());
 		allMothers.update(mother);
 		ancSchedulesService.fullfillMilestone(submission.entityId(), submission.anmId(), SCHEDULE_ANC, new LocalDate());
 		actionService.markAllAlertsAsInactive(submission.entityId());
@@ -389,6 +391,7 @@ public class ANCService {
 		mother.withClientVersion(DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)));
 		mother.withANCVisitThree(ancVisitThree);
 		mother.withTODAY(submission.getField(REFERENCE_DATE));
+		mother.setServerVersion(System.currentTimeMillis());
 		allMothers.update(mother);
 		ancSchedulesService.fullfillMilestone(submission.entityId(), submission.anmId(), SCHEDULE_ANC, new LocalDate());
 		actionService.markAllAlertsAsInactive(submission.entityId());
@@ -445,6 +448,7 @@ public class ANCService {
 		mother.withClientVersion(DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)));
 		mother.withANCVisitFour(ancVisitFour);
 		mother.withTODAY(submission.getField(REFERENCE_DATE));
+		mother.setServerVersion(System.currentTimeMillis());
 		allMothers.update(mother);
 		ancSchedulesService.fullfillMilestone(submission.entityId(), submission.anmId(), SCHEDULE_ANC, new LocalDate());
 		// actionService.markAllAlertsAsInactive(submission.entityId());

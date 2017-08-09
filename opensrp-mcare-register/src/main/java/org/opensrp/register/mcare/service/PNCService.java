@@ -195,6 +195,7 @@ public class PNCService {
 							.withUnion(mother.getFWWOMUNION())
 							.withUnit(mother.getFWWOMSUBUNIT())
 							.withMouzaPara(mother.getMother_mauza())
+							.setServerVersion(System.currentTimeMillis())
 							.setIsClosed(false);
 
 					child.details().put(relationalid, childFields.get(relationalid));
@@ -268,6 +269,7 @@ public class PNCService {
 		mother.withClientVersion(DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)));
 		mother.withPNCVisitOne(pncVisitOne);
 		mother.withTODAY(submission.getField(REFERENCE_DATE));
+		mother.setServerVersion(System.currentTimeMillis());
 		allMothers.update(mother);
 		pncSchedulesService.fullfillMilestone(submission.entityId(), submission.anmId(), SCHEDULE_PNC, new LocalDate());
 		String pattern = "yyyy-MM-dd";
@@ -314,6 +316,7 @@ public class PNCService {
 		mother.withClientVersion(DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)));
 		mother.withPNCVisitTwo(pncVisitTwo);
 		mother.withTODAY(submission.getField(REFERENCE_DATE));
+		mother.setServerVersion(System.currentTimeMillis());
 		allMothers.update(mother);		
 		pncSchedulesService.fullfillMilestone(submission.entityId(), submission.anmId(), SCHEDULE_PNC, new LocalDate());
 	
@@ -362,6 +365,7 @@ public class PNCService {
 		mother.withPNCVisitThree(pncVisitThree);
 		mother.withClientVersion(DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)));
 		mother.withTODAY(submission.getField(REFERENCE_DATE));
+		mother.setServerVersion(System.currentTimeMillis());
 		allMothers.update(mother);
 		pncSchedulesService.unEnrollFromSchedule(submission.entityId(), submission.anmId(), SCHEDULE_PNC);
 		

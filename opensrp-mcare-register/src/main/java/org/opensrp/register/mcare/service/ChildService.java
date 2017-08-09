@@ -88,6 +88,7 @@ public class ChildService {
 		child.withENCCVisitOne(enccOne);
 		child.withClientVersion(DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)));
 		child.withTODAY(submission.getField(REFERENCE_DATE));
+		child.setServerVersion(System.currentTimeMillis());
 		allChilds.update(child);
 		childSchedulesService.fullfillMilestone(submission.entityId(), submission.anmId(), SCHEDULE_ENCC, new LocalDate());
 		childSchedulesService.enrollENCCVisit(submission.entityId(), SCHEDULE_ENCC_2, LocalDate.parse(child.getDetail(referenceDate)));
@@ -131,6 +132,7 @@ public class ChildService {
 		child.withENCCVisitTwo(enccTwo);
 		child.withTODAY(submission.getField(REFERENCE_DATE));
 		child.withClientVersion(DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)));
+		child.setServerVersion(System.currentTimeMillis());
 		allChilds.update(child);		
 		childSchedulesService.fullfillMilestone(submission.entityId(), submission.anmId(), SCHEDULE_ENCC, new LocalDate());	
 		childSchedulesService.enrollENCCVisit(submission.entityId(), SCHEDULE_ENCC_3, LocalDate.parse(child.getDetail(referenceDate)));
@@ -174,6 +176,7 @@ public class ChildService {
 		child.withENCCVisitThree(enccThree);
 		child.withClientVersion(DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)));
 		child.withTODAY(submission.getField(REFERENCE_DATE));
+		child.setServerVersion(System.currentTimeMillis());
 		allChilds.update(child);		
 		childSchedulesService.unEnrollFromSchedule(submission.entityId(), submission.anmId(), SCHEDULE_ENCC);
 		
