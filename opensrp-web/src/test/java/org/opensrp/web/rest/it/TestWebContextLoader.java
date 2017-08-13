@@ -26,7 +26,6 @@ public class TestWebContextLoader extends AbstractContextLoader {
 	private MockServletContext initServletContext(String warRootDir, ResourceLoader resourceLoader) {
 		return new MockServletContext(warRootDir, resourceLoader) {
 
-			// Required for DefaultServletHttpRequestHandler...
 			public RequestDispatcher getNamedDispatcher(String path) {
 				return (path.equals("default")) ? new MockRequestDispatcher(path) : super.getNamedDispatcher(path);
 			}
@@ -42,7 +41,6 @@ public class TestWebContextLoader extends AbstractContextLoader {
 	}
 
 	public ApplicationContext loadContext(String... locations) throws Exception {
-		// should never be called
 		throw new UnsupportedOperationException();
 	}
 
