@@ -33,10 +33,7 @@ import static org.springframework.test.web.server.request.MockMvcRequestBuilders
 import static org.springframework.test.web.server.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.server.result.MockMvcResultMatchers.status;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(loader = TestWebContextLoader.class, locations = {
-		"classpath:spring/applicationContext-opensrp-web.xml" })
-public class FormSubmissionResourceTest {
+public class FormSubmissionResourceTest extends BaseResourceTest {
 
 	public static final String ANM_ID = "anmId";
 
@@ -55,17 +52,10 @@ public class FormSubmissionResourceTest {
 	public static final String BASE_URL = "/rest/formSubmission/";
 
 	@Autowired
-	private WebApplicationContext wac;
-
-	@Autowired
 	private AllFormSubmissions allFormSubmissions;
 
 	@Autowired
 	private FormSubmissionResource formSubmissionResource;
-
-	MockMvc mockMvc;
-
-	ObjectMapper mapper = new ObjectMapper();
 
 	@Before
 	public void setUp() {

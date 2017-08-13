@@ -38,10 +38,7 @@ import static org.springframework.test.web.server.request.MockMvcRequestBuilders
 import static org.springframework.test.web.server.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.server.result.MockMvcResultMatchers.status;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(loader = TestWebContextLoader.class, locations = {
-		"classpath:spring/applicationContext-opensrp-web.xml" })
-public class EventResourceTest {
+public class EventResourceTest extends BaseResourceTest {
 
 	String baseEntityId = "1";
 
@@ -74,11 +71,6 @@ public class EventResourceTest {
 	private final static String BASE_URL = "/rest/event/";
 
 	@Autowired
-	private WebApplicationContext wac;
-
-	MockMvc mockMvc;
-
-	@Autowired
 	private AllEvents allEvents;
 
 	@Autowired
@@ -89,8 +81,6 @@ public class EventResourceTest {
 
 	@Autowired
 	private EventResource eventResource;
-
-	ObjectMapper mapper = new ObjectMapper();
 
 	@Before
 	public void setUp() {
@@ -497,14 +487,15 @@ public class EventResourceTest {
 
 	@Test
 	public void shouldAddClientAndEventFromSyncData() throws Exception {
-		String synData = "{\"events\":[{\"identifiers\":{\"key\":\"value\"},\"baseEntityId\":\"1\",\"locationId\":\"locationId\",\"eventDate\":\"1970-01-01T00:00:00.000Z\",\"eventType\":\"eventType\",\"formSubmissionId\":\"formSubmissionId\",\"providerId\":\"providerId\",\"duration\":0,\"obs\":[],\"entityType\":\"entityType\",\"version\":1502179200127,\"dateCreated\":\"1970-01-01T00:00:00.003Z\",\"type\":\"Event\",\"id\":\"14bda0b96952ad4347732585037e1d58\"},"
-				+ "{\"identifiers\":{},\"baseEntityId\":\"2\",\"locationId\":\"locationId\",\"eventDate\":\"1970-01-01T00:00:00.000Z\",\"eventType\":\"eventType\",\"formSubmissionId\":\"formSubmissionId\",\"providerId\":\"providerId\",\"duration\":0,\"obs\":[],\"entityType\":\"entityType\",\"version\":1502179200127,\"dateCreated\":\"1970-01-01T00:00:00.003Z\",\"type\":\"Event\",\"id\":\"14bda0b96952ad4347732585037e1ee8\"},"
-				+ "{\"identifiers\":{},\"baseEntityId\":\"3\",\"locationId\":\"locationId\",\"eventDate\":\"1970-01-01T00:00:00.000Z\",\"eventType\":\"eventType\",\"formSubmissionId\":\"formSubmissionId\",\"providerId\":\"providerId\",\"duration\":0,\"obs\":[],\"entityType\":\"entityType\",\"version\":1502179200127,\"dateCreated\":\"1970-01-01T00:00:00.003Z\",\"type\":\"Event\",\"id\":\"14bda0b96952ad4347732585037e22d3\"},"
-				+ "{\"identifiers\":{},\"baseEntityId\":\"1\",\"locationId\":\"locationId\",\"eventDate\":\"1970-01-01T00:00:00.000Z\",\"eventType\":\"eventType\",\"formSubmissionId\":\"formSubmissionId\",\"providerId\":\"providerId\",\"duration\":0,\"obs\":[],\"entityType\":\"entityType\",\"version\":1502179200127,\"dateCreated\":\"1970-01-01T00:00:00.003Z\",\"type\":\"Event\",\"id\":\"14bda0b96952ad4347732585037e233e\"}],"
-				+ "\"no_of_events\":4,"
-				+ "\"clients\":[{\"firstName\":\"name\",\"birthdate\":\"1970-01-01T00:00:00.000Z\",\"birthdateApprox\":false,\"gender\":\"male\",\"baseEntityId\":\"1\",\"identifiers\":{},\"addresses\":[{\"addressType\":\"addressType\",\"town\":\"town\",\"subDistrict\":\"subDistrict\",\"countyDistrict\":\"countryDistrict\",\"cityVillage\":\"cityVillage\",\"stateProvince\":\"stateProvince\",\"country\":\"country\"}],\"attributes\":{},\"dateCreated\":\"1970-01-01T00:00:00.000Z\",\"type\":\"Client\",\"id\":\"14bda0b96952ad4347732585037dff66\"},"
-				+ "{\"firstName\":\"name\",\"birthdate\":\"1970-01-01T00:00:00.000Z\",\"birthdateApprox\":false,\"gender\":\"male\",\"baseEntityId\":\"2\",\"identifiers\":{},\"addresses\":[{\"addressType\":\"addressType\",\"town\":\"town\",\"subDistrict\":\"subDistrict\",\"countyDistrict\":\"countryDistrict\",\"cityVillage\":\"cityVillage\",\"stateProvince\":\"stateProvince\",\"country\":\"country\"}],\"attributes\":{},\"dateCreated\":\"1970-01-01T00:00:00.000Z\",\"type\":\"Client\",\"id\":\"14bda0b96952ad4347732585037e0c85\"},"
-				+ "{\"firstName\":\"name\",\"birthdate\":\"1970-01-01T00:00:00.000Z\",\"birthdateApprox\":false,\"gender\":\"male\",\"baseEntityId\":\"3\",\"identifiers\":{},\"addresses\":[{\"addressType\":\"addressType\",\"town\":\"town\",\"subDistrict\":\"subDistrict\",\"countyDistrict\":\"countryDistrict\",\"cityVillage\":\"cityVillage\",\"stateProvince\":\"stateProvince\",\"country\":\"country\"}],\"attributes\":{},\"dateCreated\":\"1970-01-01T00:00:00.000Z\",\"type\":\"Client\",\"id\":\"14bda0b96952ad4347732585037e1519\"}]}";
+		String synData =
+				"{\"events\":[{\"identifiers\":{\"key\":\"value\"},\"baseEntityId\":\"1\",\"locationId\":\"locationId\",\"eventDate\":\"1970-01-01T00:00:00.000Z\",\"eventType\":\"eventType\",\"formSubmissionId\":\"formSubmissionId\",\"providerId\":\"providerId\",\"duration\":0,\"obs\":[],\"entityType\":\"entityType\",\"version\":1502179200127,\"dateCreated\":\"1970-01-01T00:00:00.003Z\",\"type\":\"Event\",\"id\":\"14bda0b96952ad4347732585037e1d58\"},"
+						+ "{\"identifiers\":{},\"baseEntityId\":\"2\",\"locationId\":\"locationId\",\"eventDate\":\"1970-01-01T00:00:00.000Z\",\"eventType\":\"eventType\",\"formSubmissionId\":\"formSubmissionId\",\"providerId\":\"providerId\",\"duration\":0,\"obs\":[],\"entityType\":\"entityType\",\"version\":1502179200127,\"dateCreated\":\"1970-01-01T00:00:00.003Z\",\"type\":\"Event\",\"id\":\"14bda0b96952ad4347732585037e1ee8\"},"
+						+ "{\"identifiers\":{},\"baseEntityId\":\"3\",\"locationId\":\"locationId\",\"eventDate\":\"1970-01-01T00:00:00.000Z\",\"eventType\":\"eventType\",\"formSubmissionId\":\"formSubmissionId\",\"providerId\":\"providerId\",\"duration\":0,\"obs\":[],\"entityType\":\"entityType\",\"version\":1502179200127,\"dateCreated\":\"1970-01-01T00:00:00.003Z\",\"type\":\"Event\",\"id\":\"14bda0b96952ad4347732585037e22d3\"},"
+						+ "{\"identifiers\":{},\"baseEntityId\":\"1\",\"locationId\":\"locationId\",\"eventDate\":\"1970-01-01T00:00:00.000Z\",\"eventType\":\"eventType\",\"formSubmissionId\":\"formSubmissionId\",\"providerId\":\"providerId\",\"duration\":0,\"obs\":[],\"entityType\":\"entityType\",\"version\":1502179200127,\"dateCreated\":\"1970-01-01T00:00:00.003Z\",\"type\":\"Event\",\"id\":\"14bda0b96952ad4347732585037e233e\"}],"
+						+ "\"no_of_events\":4,"
+						+ "\"clients\":[{\"firstName\":\"name\",\"birthdate\":\"1970-01-01T00:00:00.000Z\",\"birthdateApprox\":false,\"gender\":\"male\",\"baseEntityId\":\"1\",\"identifiers\":{},\"addresses\":[{\"addressType\":\"addressType\",\"town\":\"town\",\"subDistrict\":\"subDistrict\",\"countyDistrict\":\"countryDistrict\",\"cityVillage\":\"cityVillage\",\"stateProvince\":\"stateProvince\",\"country\":\"country\"}],\"attributes\":{},\"dateCreated\":\"1970-01-01T00:00:00.000Z\",\"type\":\"Client\",\"id\":\"14bda0b96952ad4347732585037dff66\"},"
+						+ "{\"firstName\":\"name\",\"birthdate\":\"1970-01-01T00:00:00.000Z\",\"birthdateApprox\":false,\"gender\":\"male\",\"baseEntityId\":\"2\",\"identifiers\":{},\"addresses\":[{\"addressType\":\"addressType\",\"town\":\"town\",\"subDistrict\":\"subDistrict\",\"countyDistrict\":\"countryDistrict\",\"cityVillage\":\"cityVillage\",\"stateProvince\":\"stateProvince\",\"country\":\"country\"}],\"attributes\":{},\"dateCreated\":\"1970-01-01T00:00:00.000Z\",\"type\":\"Client\",\"id\":\"14bda0b96952ad4347732585037e0c85\"},"
+						+ "{\"firstName\":\"name\",\"birthdate\":\"1970-01-01T00:00:00.000Z\",\"birthdateApprox\":false,\"gender\":\"male\",\"baseEntityId\":\"3\",\"identifiers\":{},\"addresses\":[{\"addressType\":\"addressType\",\"town\":\"town\",\"subDistrict\":\"subDistrict\",\"countyDistrict\":\"countryDistrict\",\"cityVillage\":\"cityVillage\",\"stateProvince\":\"stateProvince\",\"country\":\"country\"}],\"attributes\":{},\"dateCreated\":\"1970-01-01T00:00:00.000Z\",\"type\":\"Client\",\"id\":\"14bda0b96952ad4347732585037e1519\"}]}";
 		assertEquals(0, allEvents.getAll().size());
 		assertEquals(0, allClients.getAll().size());
 

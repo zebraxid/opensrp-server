@@ -1,7 +1,6 @@
 package org.opensrp.web.rest.it;
 
 import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.junit.After;
@@ -17,23 +16,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.web.server.MockMvc;
 import org.springframework.test.web.server.MvcResult;
 import org.springframework.test.web.server.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
 
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 import static org.opensrp.web.rest.it.ResourceTestUtility.createClient;
 import static org.springframework.test.web.server.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.server.result.MockMvcResultHandlers.print;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(loader = TestWebContextLoader.class, locations = {
-		"classpath:spring/applicationContext-opensrp-web.xml" })
-public class SearchResourceTest {
+public class SearchResourceTest extends BaseResourceTest {
 
 	private final static String BASE_URL = "/rest/search/";
 
@@ -61,13 +54,6 @@ public class SearchResourceTest {
 
 	@Autowired
 	private AllEvents allEvents;
-
-	@Autowired
-	private WebApplicationContext wac;
-
-	MockMvc mockMvc;
-
-	ObjectMapper mapper = new ObjectMapper();
 
 	String addressType = "addressType";
 
@@ -104,8 +90,8 @@ public class SearchResourceTest {
 
 	@After
 	public void cleanUp() {
-		//allEvents.removeAll();
-		//allClients.removeAll();
+		allEvents.removeAll();
+		allClients.removeAll();
 	}
 
 	@Test
@@ -171,7 +157,8 @@ public class SearchResourceTest {
 	public void shouldSearchClientWithLastEdited() throws Exception {
 		Client expectedClient = createOneSearchableClient();
 
-		String searchQuery = "lastEdited=" + DATE_CREATED.toLocalDate().toString() + ":" + DATE_CREATED.toLocalDate().toString();
+		String searchQuery =
+				"lastEdited=" + DATE_CREATED.toLocalDate().toString() + ":" + DATE_CREATED.toLocalDate().toString();
 		String responseString = searchClient(searchQuery);
 		JsonNode actualObj = mapper.readTree(responseString);
 		Client actualClient = mapper.treeToValue(actualObj.get(0), Client.class);

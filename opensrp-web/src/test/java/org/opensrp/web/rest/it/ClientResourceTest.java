@@ -37,17 +37,9 @@ import static org.springframework.test.web.server.request.MockMvcRequestBuilders
 import static org.springframework.test.web.server.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.server.result.MockMvcResultMatchers.status;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(loader = TestWebContextLoader.class, locations = {
-		"classpath:spring/applicationContext-opensrp-web.xml" })
-public class ClientResourceTest {
+public class ClientResourceTest extends BaseResourceTest {
 
 	private final static String BASE_URL = "/rest/client/";
-
-	@Autowired
-	private WebApplicationContext wac;
-
-	MockMvc mockMvc;
 
 	@Autowired
 	private AllClients allClients;
@@ -57,8 +49,6 @@ public class ClientResourceTest {
 
 	@Autowired
 	private ClientResource clientResource;
-
-	ObjectMapper mapper = new ObjectMapper();
 
 	String addressType = "addressType";
 
@@ -95,7 +85,6 @@ public class ClientResourceTest {
 	public void tearDown() {
 		allClients.removeAll();
 	}
-
 
 	@Test
 	public void testRequiredProperties() {
@@ -150,7 +139,6 @@ public class ClientResourceTest {
 		Client expectedClient = new Client("1").withGender("male").withBirthdate(new DateTime(0l, DateTimeZone.UTC), false);
 		expectedClient.setBaseEntityId(null);
 
-
 		this.mockMvc.perform(
 				post(BASE_URL).contentType(MediaType.APPLICATION_JSON).body(mapper.writeValueAsBytes(expectedClient))
 						.accept(MediaType.APPLICATION_JSON));
@@ -173,7 +161,6 @@ public class ClientResourceTest {
 	public void shouldNotCreateClientWithOutGender() throws Exception {
 		Client expectedClient = new Client("1").withFirstName("first").withBirthdate(new DateTime(0l), false);
 
-
 		this.mockMvc.perform(
 				post(BASE_URL).contentType(MediaType.APPLICATION_JSON).body(mapper.writeValueAsBytes(expectedClient))
 						.accept(MediaType.APPLICATION_JSON));
@@ -186,7 +173,6 @@ public class ClientResourceTest {
 	@Test(expected = NestedServletException.class)
 	public void shouldNotCreateClientWithOutBirthDate() throws Exception {
 		Client expectedClient = new Client("1").withFirstName("first").withGender("male");
-
 
 		this.mockMvc.perform(
 				post(BASE_URL).contentType(MediaType.APPLICATION_JSON).body(mapper.writeValueAsBytes(expectedClient))
@@ -223,7 +209,6 @@ public class ClientResourceTest {
 				.withBirthdate(new DateTime(0l, DateTimeZone.UTC), false);
 		expectedClient.setDeathdate(new DateTime(2l, DateTimeZone.UTC));
 
-
 		this.mockMvc.perform(
 				post(BASE_URL + "1").contentType(MediaType.APPLICATION_JSON).body(mapper.writeValueAsBytes(expectedClient))
 						.accept(MediaType.APPLICATION_JSON));
@@ -240,7 +225,6 @@ public class ClientResourceTest {
 		createClient(asList(expectedNotUpdatedClient), allClients);
 		Client updatedClient = expectedNotUpdatedClient;
 		updatedClient.setDeathdate(new DateTime(2l, DateTimeZone.UTC));
-
 
 		this.mockMvc.perform(
 				post(BASE_URL + "1").contentType(MediaType.APPLICATION_JSON).body(mapper.writeValueAsBytes(updatedClient))
@@ -261,7 +245,6 @@ public class ClientResourceTest {
 		Client updatedClient = expectedNotUpdatedClient;
 		updatedClient.setDeathdate(new DateTime(2l, DateTimeZone.UTC));
 
-
 		this.mockMvc.perform(
 				post(BASE_URL + "1").contentType(MediaType.APPLICATION_JSON).body(mapper.writeValueAsBytes(updatedClient))
 						.accept(MediaType.APPLICATION_JSON));
@@ -279,7 +262,6 @@ public class ClientResourceTest {
 		createClient(asList(expectedNotUpdatedClient), allClients);
 		Client updatedClient = expectedNotUpdatedClient;
 		updatedClient.setDeathdate(new DateTime(2l, DateTimeZone.UTC));
-
 
 		this.mockMvc.perform(
 				post(BASE_URL + "1").contentType(MediaType.APPLICATION_JSON).body(mapper.writeValueAsBytes(updatedClient))
@@ -300,7 +282,6 @@ public class ClientResourceTest {
 		createClient(asList(expectedNotUpdatedClient), allClients);
 		Client updatedClient = expectedNotUpdatedClient;
 		updatedClient.setDeathdate(new DateTime(2l, DateTimeZone.UTC));
-
 
 		this.mockMvc.perform(
 				post(BASE_URL + "1").contentType(MediaType.APPLICATION_JSON).body(mapper.writeValueAsBytes(updatedClient))
@@ -375,7 +356,6 @@ public class ClientResourceTest {
 
 		createClient(asList(expectedClient, otherClient, otherClient2), allClients);
 
-
 		MvcResult mvcResult = this.mockMvc
 				.perform(get(BASE_URL + "search?name=" + name).contentType(MediaType.APPLICATION_JSON)).andDo(print())
 				.andReturn();
@@ -397,7 +377,6 @@ public class ClientResourceTest {
 
 		createClient(asList(expectedClient, otherClient, otherClient2), allClients);
 
-
 		MvcResult mvcResult = this.mockMvc
 				.perform(get(BASE_URL + "search?gender=" + male).contentType(MediaType.APPLICATION_JSON)).andDo(print())
 				.andReturn();
@@ -418,7 +397,6 @@ public class ClientResourceTest {
 		Client otherClient2 = new Client("3");
 
 		createClient(asList(expectedClient, otherClient, otherClient2), allClients);
-
 
 		MvcResult mvcResult = this.mockMvc
 				.perform(get(BASE_URL + "search?name=" + name).contentType(MediaType.APPLICATION_JSON)).andDo(print())
@@ -488,7 +466,6 @@ public class ClientResourceTest {
 
 		createClient(asList(expectedClient, otherClient, otherClient2), allClients);
 
-
 		MvcResult mvcResult = this.mockMvc.perform(get(BASE_URL + "?q=name:" + name).contentType(MediaType.APPLICATION_JSON))
 				.andDo(print()).andReturn();
 
@@ -509,7 +486,6 @@ public class ClientResourceTest {
 
 		createClient(asList(expectedClient, otherClient, otherClient2), allClients);
 
-
 		MvcResult mvcResult = this.mockMvc
 				.perform(get(BASE_URL + "?q?gender:" + male).contentType(MediaType.APPLICATION_JSON)).andDo(print())
 				.andReturn();
@@ -529,7 +505,6 @@ public class ClientResourceTest {
 
 		createClient(asList(expectedClient, otherClient, otherClient2), allClients);
 
-
 		MvcResult mvcResult = this.mockMvc.perform(get(BASE_URL + "?q=name:" + name).contentType(MediaType.APPLICATION_JSON))
 				.andDo(print()).andReturn();
 
@@ -538,7 +513,5 @@ public class ClientResourceTest {
 		JsonNode actualObj = mapper.readTree(responseString);
 		assertNull(actualObj.get(0));
 	}
-
-
 
 }

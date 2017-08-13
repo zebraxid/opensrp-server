@@ -28,10 +28,7 @@ import static org.springframework.test.web.server.request.MockMvcRequestBuilders
 import static org.springframework.test.web.server.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.server.result.MockMvcResultMatchers.status;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(loader = TestWebContextLoader.class, locations = {
-		"classpath:spring/applicationContext-opensrp-web.xml" })
-public class ProviderResourceTest {
+public class ProviderResourceTest extends BaseResourceTest {
 
 	private final static String BASE_URL = "/rest/provider/";
 
@@ -43,19 +40,10 @@ public class ProviderResourceTest {
 
 	public static final String USER_NAME = "userName";
 
-	public static final String OPENMRS_TEAM_ID = "33";
-
 	public static final String BASE_ENTITY_ID = "1";
 
 	@Autowired
-	private WebApplicationContext wac;
-
-	MockMvc mockMvc;
-
-	@Autowired
 	AllUsers allUsers;
-
-	ObjectMapper mapper = new ObjectMapper();
 
 	@Before
 	public void setUp() {
