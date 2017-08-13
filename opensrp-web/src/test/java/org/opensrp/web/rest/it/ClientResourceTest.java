@@ -87,6 +87,7 @@ public class ClientResourceTest {
 
 	@Before
 	public void setUp() {
+		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
 		allClients.removeAll();
 	}
 
@@ -110,7 +111,7 @@ public class ClientResourceTest {
 		Client expectedClient = new Client("1").withFirstName("first").withGender("male")
 				.withBirthdate(new DateTime(0l, DateTimeZone.UTC), false);
 		createClient(asList(expectedClient), allClients);
-		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
+
 		MvcResult mvcResult = this.mockMvc.perform(get(BASE_URL + "1").accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk()).andDo(print()).andReturn();
 		String responseString = mvcResult.getResponse().getContentAsString();
@@ -123,7 +124,6 @@ public class ClientResourceTest {
 
 	@Test
 	public void shouldNotFindClient() throws Exception {
-		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
 		MvcResult mvcResult = this.mockMvc.perform(get(BASE_URL + "1").accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk()).andDo(print()).andReturn();
 		String responseString = mvcResult.getResponse().getContentAsString();
@@ -134,7 +134,7 @@ public class ClientResourceTest {
 	public void shouldCreateClientWithAllRequiredProperties() throws Exception {
 		Client expectedClient = new Client("1").withFirstName("first").withGender("male")
 				.withBirthdate(new DateTime(0l, DateTimeZone.UTC), false);
-		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
+
 		this.mockMvc.perform(
 				post(BASE_URL).contentType(MediaType.APPLICATION_JSON).body(mapper.writeValueAsBytes(expectedClient))
 						.accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
@@ -150,7 +150,7 @@ public class ClientResourceTest {
 		Client expectedClient = new Client("1").withGender("male").withBirthdate(new DateTime(0l, DateTimeZone.UTC), false);
 		expectedClient.setBaseEntityId(null);
 
-		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
+
 		this.mockMvc.perform(
 				post(BASE_URL).contentType(MediaType.APPLICATION_JSON).body(mapper.writeValueAsBytes(expectedClient))
 						.accept(MediaType.APPLICATION_JSON));
@@ -161,7 +161,7 @@ public class ClientResourceTest {
 	@Test(expected = NestedServletException.class)
 	public void shouldNotCreateClientWithOutFirstName() throws Exception {
 		Client expectedClient = new Client("1").withGender("male").withBirthdate(new DateTime(0l, DateTimeZone.UTC), false);
-		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
+
 		this.mockMvc.perform(
 				post(BASE_URL).contentType(MediaType.APPLICATION_JSON).body(mapper.writeValueAsBytes(expectedClient))
 						.accept(MediaType.APPLICATION_JSON));
@@ -173,7 +173,7 @@ public class ClientResourceTest {
 	public void shouldNotCreateClientWithOutGender() throws Exception {
 		Client expectedClient = new Client("1").withFirstName("first").withBirthdate(new DateTime(0l), false);
 
-		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
+
 		this.mockMvc.perform(
 				post(BASE_URL).contentType(MediaType.APPLICATION_JSON).body(mapper.writeValueAsBytes(expectedClient))
 						.accept(MediaType.APPLICATION_JSON));
@@ -187,7 +187,7 @@ public class ClientResourceTest {
 	public void shouldNotCreateClientWithOutBirthDate() throws Exception {
 		Client expectedClient = new Client("1").withFirstName("first").withGender("male");
 
-		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
+
 		this.mockMvc.perform(
 				post(BASE_URL).contentType(MediaType.APPLICATION_JSON).body(mapper.writeValueAsBytes(expectedClient))
 						.accept(MediaType.APPLICATION_JSON));
@@ -204,7 +204,7 @@ public class ClientResourceTest {
 		createClient(asList(expectedClient), allClients);
 
 		expectedClient.setDeathdate(new DateTime(2l, DateTimeZone.UTC));
-		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
+
 		this.mockMvc.perform(
 				post(BASE_URL + "1").contentType(MediaType.APPLICATION_JSON).body(mapper.writeValueAsBytes(expectedClient))
 						.accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
@@ -223,7 +223,7 @@ public class ClientResourceTest {
 				.withBirthdate(new DateTime(0l, DateTimeZone.UTC), false);
 		expectedClient.setDeathdate(new DateTime(2l, DateTimeZone.UTC));
 
-		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
+
 		this.mockMvc.perform(
 				post(BASE_URL + "1").contentType(MediaType.APPLICATION_JSON).body(mapper.writeValueAsBytes(expectedClient))
 						.accept(MediaType.APPLICATION_JSON));
@@ -241,7 +241,7 @@ public class ClientResourceTest {
 		Client updatedClient = expectedNotUpdatedClient;
 		updatedClient.setDeathdate(new DateTime(2l, DateTimeZone.UTC));
 
-		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
+
 		this.mockMvc.perform(
 				post(BASE_URL + "1").contentType(MediaType.APPLICATION_JSON).body(mapper.writeValueAsBytes(updatedClient))
 						.accept(MediaType.APPLICATION_JSON));
@@ -261,7 +261,7 @@ public class ClientResourceTest {
 		Client updatedClient = expectedNotUpdatedClient;
 		updatedClient.setDeathdate(new DateTime(2l, DateTimeZone.UTC));
 
-		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
+
 		this.mockMvc.perform(
 				post(BASE_URL + "1").contentType(MediaType.APPLICATION_JSON).body(mapper.writeValueAsBytes(updatedClient))
 						.accept(MediaType.APPLICATION_JSON));
@@ -280,7 +280,7 @@ public class ClientResourceTest {
 		Client updatedClient = expectedNotUpdatedClient;
 		updatedClient.setDeathdate(new DateTime(2l, DateTimeZone.UTC));
 
-		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
+
 		this.mockMvc.perform(
 				post(BASE_URL + "1").contentType(MediaType.APPLICATION_JSON).body(mapper.writeValueAsBytes(updatedClient))
 						.accept(MediaType.APPLICATION_JSON));
@@ -301,7 +301,7 @@ public class ClientResourceTest {
 		Client updatedClient = expectedNotUpdatedClient;
 		updatedClient.setDeathdate(new DateTime(2l, DateTimeZone.UTC));
 
-		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
+
 		this.mockMvc.perform(
 				post(BASE_URL + "1").contentType(MediaType.APPLICATION_JSON).body(mapper.writeValueAsBytes(updatedClient))
 						.accept(MediaType.APPLICATION_JSON));
@@ -329,7 +329,7 @@ public class ClientResourceTest {
 						.toLocalDate().toString() + "&deathDate=" + deathDate.toLocalDate().toString() + "&country="
 						+ country + "&stateProvince=" + stateProvince + "&countryDistrict=" + countryDistrict
 						+ "&cityVillage=" + cityVillage + "&town=" + town + "&subDistrict=" + subDistrict;
-		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
+
 		MvcResult mvcResult = this.mockMvc.perform(get(BASE_URL + searchQuery).contentType(MediaType.APPLICATION_JSON))
 				.andDo(print()).andReturn();
 
@@ -355,7 +355,7 @@ public class ClientResourceTest {
 						+ birthDate.toLocalDate().toString() + "&deathDate=" + deathDate.toLocalDate().toString()
 						+ "&country=" + country + "&stateProvince=" + stateProvince + "&countryDistrict=" + countryDistrict
 						+ "&cityVillage=" + cityVillage + "&town=" + town + "&subDistrict=" + subDistrict;
-		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
+
 		MvcResult mvcResult = this.mockMvc.perform(get(BASE_URL + searchQuery).contentType(MediaType.APPLICATION_JSON))
 				.andDo(print()).andReturn();
 
@@ -375,7 +375,7 @@ public class ClientResourceTest {
 
 		createClient(asList(expectedClient, otherClient, otherClient2), allClients);
 
-		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
+
 		MvcResult mvcResult = this.mockMvc
 				.perform(get(BASE_URL + "search?name=" + name).contentType(MediaType.APPLICATION_JSON)).andDo(print())
 				.andReturn();
@@ -397,7 +397,7 @@ public class ClientResourceTest {
 
 		createClient(asList(expectedClient, otherClient, otherClient2), allClients);
 
-		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
+
 		MvcResult mvcResult = this.mockMvc
 				.perform(get(BASE_URL + "search?gender=" + male).contentType(MediaType.APPLICATION_JSON)).andDo(print())
 				.andReturn();
@@ -419,7 +419,7 @@ public class ClientResourceTest {
 
 		createClient(asList(expectedClient, otherClient, otherClient2), allClients);
 
-		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
+
 		MvcResult mvcResult = this.mockMvc
 				.perform(get(BASE_URL + "search?name=" + name).contentType(MediaType.APPLICATION_JSON)).andDo(print())
 				.andReturn();
@@ -446,7 +446,7 @@ public class ClientResourceTest {
 						.toLocalDate().toString() + "and deathDate:" + deathDate.toLocalDate().toString() + "and country:"
 						+ country + "and stateProvince:" + stateProvince + "and countryDistrict:" + countryDistrict
 						+ "and cityVillage:" + cityVillage + "and town:" + town + "and subDistrict:" + subDistrict;
-		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
+
 		MvcResult mvcResult = this.mockMvc.perform(get(BASE_URL + searchQuery).contentType(MediaType.APPLICATION_JSON))
 				.andDo(print()).andReturn();
 
@@ -468,7 +468,7 @@ public class ClientResourceTest {
 		createClient(asList(expectedClient, otherClient, otherClient2), allClients);
 
 		String searchQuery = "?q=firstName:invalid" + name + "and gender:invalid" + male;
-		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
+
 		MvcResult mvcResult = this.mockMvc.perform(get(BASE_URL + searchQuery).contentType(MediaType.APPLICATION_JSON))
 				.andDo(print()).andReturn();
 
@@ -488,7 +488,7 @@ public class ClientResourceTest {
 
 		createClient(asList(expectedClient, otherClient, otherClient2), allClients);
 
-		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
+
 		MvcResult mvcResult = this.mockMvc.perform(get(BASE_URL + "?q=name:" + name).contentType(MediaType.APPLICATION_JSON))
 				.andDo(print()).andReturn();
 
@@ -509,7 +509,7 @@ public class ClientResourceTest {
 
 		createClient(asList(expectedClient, otherClient, otherClient2), allClients);
 
-		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
+
 		MvcResult mvcResult = this.mockMvc
 				.perform(get(BASE_URL + "?q?gender:" + male).contentType(MediaType.APPLICATION_JSON)).andDo(print())
 				.andReturn();
@@ -529,7 +529,7 @@ public class ClientResourceTest {
 
 		createClient(asList(expectedClient, otherClient, otherClient2), allClients);
 
-		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
+
 		MvcResult mvcResult = this.mockMvc.perform(get(BASE_URL + "?q=name:" + name).contentType(MediaType.APPLICATION_JSON))
 				.andDo(print()).andReturn();
 

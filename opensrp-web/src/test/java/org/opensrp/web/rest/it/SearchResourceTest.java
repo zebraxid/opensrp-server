@@ -1,8 +1,150 @@
 package org.opensrp.web.rest.it;
 
-/**
- * Created by user on 8/13/17.
- */
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.opensrp.domain.Address;
+import org.opensrp.domain.Client;
+import org.opensrp.repository.AllClients;
+import org.opensrp.repository.AllEvents;
+import org.opensrp.web.rest.SearchResource;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.web.server.MockMvc;
+import org.springframework.test.web.server.MvcResult;
+import org.springframework.test.web.server.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
+
+import static java.util.Arrays.asList;
+import static org.junit.Assert.assertEquals;
+import static org.opensrp.web.rest.it.ResourceTestUtility.createClient;
+import static org.springframework.test.web.server.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.server.result.MockMvcResultHandlers.print;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(loader = TestWebContextLoader.class, locations = {
+		"classpath:spring/applicationContext-opensrp-web.xml" })
 public class SearchResourceTest {
+
+	private final static String BASE_URL = "/rest/search/";
+
+	public static final DateTime DATE_CREATED = new DateTime(0l, DateTimeZone.UTC);
+
+	public static final String MIDDLE_NAME = "middleName";
+
+	public static final String LAST_NAME = "lastName";
+
+	public static final String IDENTIFIER_TYPE = "type";
+
+	public static final String IDENTIFIER = "value";
+
+	public static final String ATTRIBUTES_NAME = "name";
+
+	public static final String ATTRIBUTES_VALUE = "value";
+
+	@Autowired
+	private SearchResource searchResource;
+
+	@Autowired
+	private AllClients allClients;
+
+	@Autowired
+	private AllEvents allEvents;
+
+	@Autowired
+	private WebApplicationContext wac;
+
+	MockMvc mockMvc;
+
+	ObjectMapper mapper = new ObjectMapper();
+
+	String addressType = "addressType";
+
+	String country = "country";
+
+	String stateProvince = "stateProvince";
+
+	String cityVillage = "cityVillage";
+
+	String countryDistrict = "countryDistrict";
+
+	String subDistrict = "subDistrict";
+
+	String town = "town";
+
+	String firstName = "name";
+
+	String male = "male";
+
+	DateTime birthDate = new DateTime(0l, DateTimeZone.UTC);
+
+	DateTime deathDate = new DateTime(1l, DateTimeZone.UTC);
+
+	Address address = new Address().withAddressType(addressType).withCountry(country).withStateProvince(stateProvince)
+			.withCityVillage(cityVillage).withCountyDistrict(countryDistrict).withSubDistrict(subDistrict).withTown(town);
+
+	@Before
+	public void setUp() {
+		allClients.removeAll();
+		allEvents.removeAll();
+
+		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
+	}
+
+	@After
+	public void cleanUp() {
+		//allEvents.removeAll();
+		//allClients.removeAll();
+	}
+
+	@Test
+	public void shouldSearchClientWithFirstName() throws Exception {
+		Client expectedClient = createOneSearchableClient();
+
+		String searchQuery = "search?firstName=" + firstName;
+
+		MvcResult mvcResult = this.mockMvc.perform(get(BASE_URL + searchQuery).contentType(MediaType.APPLICATION_JSON))
+				.andDo(print()).andReturn();
+
+		String responseString = mvcResult.getResponse().getContentAsString();
+		JsonNode actualObj = mapper.readTree(responseString);
+		Client actualClient = mapper.treeToValue(actualObj.get(0), Client.class);
+		assertEquals(expectedClient, actualClient);
+
+	}
+
+	private Client createOneSearchableClient() {
+		Client expectedClient = (Client) new Client("1").withFirstName(firstName).withMiddleName(MIDDLE_NAME)
+				.withLastName(LAST_NAME).withGender(male).withBirthdate(birthDate, false).withDeathdate(deathDate, true)
+				.withAddress(address);
+		expectedClient.setDateCreated(DATE_CREATED);
+		expectedClient.withIdentifier(IDENTIFIER_TYPE, IDENTIFIER);
+		expectedClient.withAttribute(ATTRIBUTES_NAME, ATTRIBUTES_VALUE);
+
+		Client otherClient = (Client)new Client("2").withFirstName("ff").withMiddleName("fd")
+				.withLastName("sfdf").withGender(male).withBirthdate(birthDate, false).withDeathdate(deathDate, true)
+				.withAddress(address);
+		otherClient.setDateCreated(DATE_CREATED);
+		otherClient.withIdentifier("fsdf", "sfdf");
+		otherClient.withAttribute("sfdf", "sfdf");
+		Client otherClient2 = (Client)new Client("3").withFirstName("dd").withMiddleName("fdf")
+				.withLastName("sfd").withGender(male).withBirthdate(birthDate, false).withDeathdate(deathDate, true)
+				.withAddress(address);;
+		otherClient2.setDateCreated(DATE_CREATED);
+		otherClient2.withIdentifier("hg", "ghgh");
+		otherClient2.withAttribute("hg", "hgh");
+
+
+		createClient(asList(expectedClient, otherClient, otherClient2), allClients);
+
+		return expectedClient;
+	}
 
 }
