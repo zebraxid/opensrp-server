@@ -31,6 +31,7 @@ import static org.opensrp.common.AllConstants.BaseEntity.BASE_ENTITY_ID;
 import static org.opensrp.common.AllConstants.Client.BIRTH_DATE;
 import static org.opensrp.common.AllConstants.Client.FIRST_NAME;
 import static org.opensrp.common.AllConstants.Client.GENDER;
+import static org.opensrp.web.rest.it.ResourceTestUtility.createClient;
 import static org.springframework.test.web.server.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.server.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.server.result.MockMvcResultHandlers.print;
@@ -108,7 +109,7 @@ public class ClientResourceTest {
 	public void shouldFindClientById() throws Exception {
 		Client expectedClient = new Client("1").withFirstName("first").withGender("male")
 				.withBirthdate(new DateTime(0l, DateTimeZone.UTC), false);
-		createClient(asList(expectedClient));
+		createClient(asList(expectedClient), allClients);
 		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
 		MvcResult mvcResult = this.mockMvc.perform(get(BASE_URL + "1").accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk()).andDo(print()).andReturn();
@@ -200,7 +201,7 @@ public class ClientResourceTest {
 	public void shouldUpdateExistingClient() throws Exception {
 		Client expectedClient = new Client("1").withFirstName("first").withGender("male")
 				.withBirthdate(new DateTime(0l, DateTimeZone.UTC), false);
-		createClient(asList(expectedClient));
+		createClient(asList(expectedClient), allClients);
 
 		expectedClient.setDeathdate(new DateTime(2l, DateTimeZone.UTC));
 		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
@@ -236,7 +237,7 @@ public class ClientResourceTest {
 	public void shouldThrowExceptionWhileUpdateIfFistNameNotPresent() throws Exception {
 		Client expectedNotUpdatedClient = new Client("1").withGender("male")
 				.withBirthdate(new DateTime(0l, DateTimeZone.UTC), false);
-		createClient(asList(expectedNotUpdatedClient));
+		createClient(asList(expectedNotUpdatedClient), allClients);
 		Client updatedClient = expectedNotUpdatedClient;
 		updatedClient.setDeathdate(new DateTime(2l, DateTimeZone.UTC));
 
@@ -256,7 +257,7 @@ public class ClientResourceTest {
 	public void shouldThrowExceptionWhileUpdateIfGenderNotPresent() throws Exception {
 		Client expectedNotUpdatedClient = new Client("1").withFirstName("name")
 				.withBirthdate(new DateTime(0l, DateTimeZone.UTC), false);
-		createClient(asList(expectedNotUpdatedClient));
+		createClient(asList(expectedNotUpdatedClient), allClients);
 		Client updatedClient = expectedNotUpdatedClient;
 		updatedClient.setDeathdate(new DateTime(2l, DateTimeZone.UTC));
 
@@ -275,7 +276,7 @@ public class ClientResourceTest {
 	@Test(expected = NestedServletException.class)
 	public void shouldThrowExceptionWhileUpdateIfBirthDateNotPresent() throws Exception {
 		Client expectedNotUpdatedClient = new Client("1").withGender("male").withFirstName("name");
-		createClient(asList(expectedNotUpdatedClient));
+		createClient(asList(expectedNotUpdatedClient), allClients);
 		Client updatedClient = expectedNotUpdatedClient;
 		updatedClient.setDeathdate(new DateTime(2l, DateTimeZone.UTC));
 
@@ -296,7 +297,7 @@ public class ClientResourceTest {
 		Client expectedNotUpdatedClient = new Client("1").withFirstName("name").withGender("male")
 				.withBirthdate(new DateTime(0l, DateTimeZone.UTC), false);
 		expectedNotUpdatedClient.setBaseEntityId(null);
-		createClient(asList(expectedNotUpdatedClient));
+		createClient(asList(expectedNotUpdatedClient), allClients);
 		Client updatedClient = expectedNotUpdatedClient;
 		updatedClient.setDeathdate(new DateTime(2l, DateTimeZone.UTC));
 
@@ -321,7 +322,7 @@ public class ClientResourceTest {
 		Client otherClient = new Client("2");
 		Client otherClient2 = new Client("3");
 
-		createClient(asList(expectedClient, otherClient, otherClient2));
+		createClient(asList(expectedClient, otherClient, otherClient2), allClients);
 
 		String searchQuery =
 				"search?name=" + name + "&gender=" + male + "&addressType=" + addressType + "&birthDate=" + birthDate
@@ -347,7 +348,7 @@ public class ClientResourceTest {
 		Client otherClient = new Client("2");
 		Client otherClient2 = new Client("3");
 
-		createClient(asList(expectedClient, otherClient, otherClient2));
+		createClient(asList(expectedClient, otherClient, otherClient2), allClients);
 
 		String searchQuery =
 				"search?name=invalid" + name + "&gender=invalid" + male + "&addressType=" + addressType + "&birthDate="
@@ -372,7 +373,7 @@ public class ClientResourceTest {
 		Client otherClient = new Client("2");
 		Client otherClient2 = new Client("3");
 
-		createClient(asList(expectedClient, otherClient, otherClient2));
+		createClient(asList(expectedClient, otherClient, otherClient2), allClients);
 
 		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
 		MvcResult mvcResult = this.mockMvc
@@ -394,7 +395,7 @@ public class ClientResourceTest {
 		Client otherClient = new Client("2");
 		Client otherClient2 = new Client("3");
 
-		createClient(asList(expectedClient, otherClient, otherClient2));
+		createClient(asList(expectedClient, otherClient, otherClient2), allClients);
 
 		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
 		MvcResult mvcResult = this.mockMvc
@@ -416,7 +417,7 @@ public class ClientResourceTest {
 		Client otherClient = new Client("2");
 		Client otherClient2 = new Client("3");
 
-		createClient(asList(expectedClient, otherClient, otherClient2));
+		createClient(asList(expectedClient, otherClient, otherClient2), allClients);
 
 		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
 		MvcResult mvcResult = this.mockMvc
@@ -438,7 +439,7 @@ public class ClientResourceTest {
 		Client otherClient = new Client("2");
 		Client otherClient2 = new Client("3");
 
-		createClient(asList(expectedClient, otherClient, otherClient2));
+		createClient(asList(expectedClient, otherClient, otherClient2), allClients);
 
 		String searchQuery =
 				"?q=name:" + name + "and gender:" + male + "and addressType:" + addressType + "and birthDate:" + birthDate
@@ -464,7 +465,7 @@ public class ClientResourceTest {
 		Client otherClient = new Client("2");
 		Client otherClient2 = new Client("3");
 
-		createClient(asList(expectedClient, otherClient, otherClient2));
+		createClient(asList(expectedClient, otherClient, otherClient2), allClients);
 
 		String searchQuery = "?q=firstName:invalid" + name + "and gender:invalid" + male;
 		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
@@ -485,7 +486,7 @@ public class ClientResourceTest {
 		Client otherClient = new Client("2");
 		Client otherClient2 = new Client("3");
 
-		createClient(asList(expectedClient, otherClient, otherClient2));
+		createClient(asList(expectedClient, otherClient, otherClient2), allClients);
 
 		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
 		MvcResult mvcResult = this.mockMvc.perform(get(BASE_URL + "?q=name:" + name).contentType(MediaType.APPLICATION_JSON))
@@ -506,7 +507,7 @@ public class ClientResourceTest {
 		Client otherClient = new Client("2");
 		Client otherClient2 = new Client("3");
 
-		createClient(asList(expectedClient, otherClient, otherClient2));
+		createClient(asList(expectedClient, otherClient, otherClient2), allClients);
 
 		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
 		MvcResult mvcResult = this.mockMvc
@@ -526,7 +527,7 @@ public class ClientResourceTest {
 		Client otherClient = new Client("2");
 		Client otherClient2 = new Client("3");
 
-		createClient(asList(expectedClient, otherClient, otherClient2));
+		createClient(asList(expectedClient, otherClient, otherClient2), allClients);
 
 		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
 		MvcResult mvcResult = this.mockMvc.perform(get(BASE_URL + "?q=name:" + name).contentType(MediaType.APPLICATION_JSON))
@@ -538,10 +539,6 @@ public class ClientResourceTest {
 		assertNull(actualObj.get(0));
 	}
 
-	private void createClient(List<Client> allClient) {
-		for (Client client : allClient) {
-			allClients.add(client);
-		}
-	}
+
 
 }
