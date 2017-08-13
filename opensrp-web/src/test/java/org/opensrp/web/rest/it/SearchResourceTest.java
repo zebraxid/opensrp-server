@@ -24,6 +24,8 @@ import org.springframework.web.context.WebApplicationContext;
 
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.opensrp.web.rest.it.ResourceTestUtility.createClient;
 import static org.springframework.test.web.server.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.server.result.MockMvcResultHandlers.print;
@@ -37,7 +39,7 @@ public class SearchResourceTest {
 
 	public static final DateTime DATE_CREATED = new DateTime(0l, DateTimeZone.UTC);
 
-	public static final String MIDDLE_NAME = "middleName";
+	public static final String MIDDLE_NAME = "middlename";
 
 	public static final String LAST_NAME = "lastName";
 
@@ -48,6 +50,8 @@ public class SearchResourceTest {
 	public static final String ATTRIBUTES_NAME = "name";
 
 	public static final String ATTRIBUTES_VALUE = "value";
+
+	public static final String FEMALE = "female";
 
 	@Autowired
 	private SearchResource searchResource;
@@ -108,16 +112,91 @@ public class SearchResourceTest {
 	public void shouldSearchClientWithFirstName() throws Exception {
 		Client expectedClient = createOneSearchableClient();
 
-		String searchQuery = "search?firstName=" + firstName;
-
-		MvcResult mvcResult = this.mockMvc.perform(get(BASE_URL + searchQuery).contentType(MediaType.APPLICATION_JSON))
-				.andDo(print()).andReturn();
-
-		String responseString = mvcResult.getResponse().getContentAsString();
+		String searchQuery = "firstName=" + firstName;
+		String responseString = searchClient(searchQuery);
 		JsonNode actualObj = mapper.readTree(responseString);
 		Client actualClient = mapper.treeToValue(actualObj.get(0), Client.class);
+
 		assertEquals(expectedClient, actualClient);
 
+	}
+
+	@Test
+	public void shouldSearchClientWithMiddleName() throws Exception {
+		Client expectedClient = createOneSearchableClient();
+
+		String searchQuery = "middleName=" + MIDDLE_NAME;
+		String responseString = searchClient(searchQuery);
+		JsonNode actualObj = mapper.readTree(responseString);
+		Client actualClient = mapper.treeToValue(actualObj.get(0), Client.class);
+
+		assertEquals(expectedClient, actualClient);
+	}
+
+	@Test
+	public void canNotSearchIfAnyNamePortionHasCamelCaseLetter() throws Exception {
+		Client expectedClient = createOneSearchableClient();
+
+		String searchQuery = "lastName=" + LAST_NAME;
+		String responseString = searchClient(searchQuery);
+		JsonNode actualObj = mapper.readTree(responseString);
+		assertNull(actualObj.get(0));
+	}
+
+	@Test
+	public void shouldSearchClientWithGender() throws Exception {
+		Client expectedClient = createOneSearchableClient();
+
+		String searchQuery = "gender=" + male;
+		String responseString = searchClient(searchQuery);
+		JsonNode actualObj = mapper.readTree(responseString);
+		Client actualClient = mapper.treeToValue(actualObj.get(0), Client.class);
+
+		assertEquals(expectedClient, actualClient);
+	}
+
+	@Test
+	public void shouldSearchClientWithBirthDate() throws Exception {
+		Client expectedClient = createOneSearchableClient();
+
+		String searchQuery = "birthdate=" + birthDate.toLocalDate().toString() + ":" + birthDate.toLocalDate().toString();
+		String responseString = searchClient(searchQuery);
+		JsonNode actualObj = mapper.readTree(responseString);
+		Client actualClient = mapper.treeToValue(actualObj.get(0), Client.class);
+
+		assertEquals(expectedClient, actualClient);
+	}
+
+	@Test
+	public void shouldSearchClientWithLastEdited() throws Exception {
+		Client expectedClient = createOneSearchableClient();
+
+		String searchQuery = "lastEdited=" + DATE_CREATED.toLocalDate().toString() + ":" + DATE_CREATED.toLocalDate().toString();
+		String responseString = searchClient(searchQuery);
+		JsonNode actualObj = mapper.readTree(responseString);
+		Client actualClient = mapper.treeToValue(actualObj.get(0), Client.class);
+
+		assertEquals(expectedClient, actualClient);
+	}
+
+	@Test
+	public void shouldSearchClientWithAttribute() throws Exception {
+		Client expectedClient = createOneSearchableClient();
+
+		String searchQuery = "attribute=" + ATTRIBUTES_NAME + ":" + ATTRIBUTES_VALUE;
+		String responseString = searchClient(searchQuery);
+		JsonNode actualObj = mapper.readTree(responseString);
+		Client actualClient = mapper.treeToValue(actualObj.get(0), Client.class);
+
+		assertEquals(expectedClient, actualClient);
+	}
+
+	private String searchClient(String query) throws Exception {
+		String searchQuery = "search?" + query;
+		MvcResult mvcResult = this.mockMvc.perform(get(BASE_URL + searchQuery).contentType(MediaType.APPLICATION_JSON))
+				.andDo(print()).andReturn();
+		String responseString = mvcResult.getResponse().getContentAsString();
+		return responseString;
 	}
 
 	private Client createOneSearchableClient() {
@@ -128,19 +207,17 @@ public class SearchResourceTest {
 		expectedClient.withIdentifier(IDENTIFIER_TYPE, IDENTIFIER);
 		expectedClient.withAttribute(ATTRIBUTES_NAME, ATTRIBUTES_VALUE);
 
-		Client otherClient = (Client)new Client("2").withFirstName("ff").withMiddleName("fd")
-				.withLastName("sfdf").withGender(male).withBirthdate(birthDate, false).withDeathdate(deathDate, true)
-				.withAddress(address);
+		Client otherClient = (Client) new Client("2").withFirstName("ff").withMiddleName("fd").withLastName("sfdf")
+				.withGender(FEMALE).withBirthdate(birthDate, false).withDeathdate(deathDate, true).withAddress(address);
 		otherClient.setDateCreated(DATE_CREATED);
 		otherClient.withIdentifier("fsdf", "sfdf");
 		otherClient.withAttribute("sfdf", "sfdf");
-		Client otherClient2 = (Client)new Client("3").withFirstName("dd").withMiddleName("fdf")
-				.withLastName("sfd").withGender(male).withBirthdate(birthDate, false).withDeathdate(deathDate, true)
-				.withAddress(address);;
+		Client otherClient2 = (Client) new Client("3").withFirstName("dd").withMiddleName("fdf").withLastName("sfd")
+				.withGender(FEMALE).withBirthdate(birthDate, false).withDeathdate(deathDate, true).withAddress(address);
+		;
 		otherClient2.setDateCreated(DATE_CREATED);
 		otherClient2.withIdentifier("hg", "ghgh");
 		otherClient2.withAttribute("hg", "hgh");
-
 
 		createClient(asList(expectedClient, otherClient, otherClient2), allClients);
 
