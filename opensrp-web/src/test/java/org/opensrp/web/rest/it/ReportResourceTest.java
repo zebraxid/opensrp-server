@@ -42,6 +42,7 @@ public class ReportResourceTest extends BaseResourceTest {
 		//allReports.removeAll();
 	}
 
+	//TODO: Upgrade `jackson` to serialize joda datetime. Currently using null datetime.
 	@Test
 	public void shouldCreateReportFromSyncData() throws Exception {
 		Hia2Indicator hia2Indicator = new Hia2Indicator("indicatorCode", "label", "dhisId", "description", "category",
