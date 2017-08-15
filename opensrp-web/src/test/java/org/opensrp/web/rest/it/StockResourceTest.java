@@ -1,34 +1,24 @@
 package org.opensrp.web.rest.it;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.MockitoAnnotations.initMocks;
-import static org.opensrp.common.AllConstants.Stock.*;
-
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
+import org.opensrp.domain.Stock;
 import org.opensrp.repository.AllStocks;
-import org.opensrp.service.StockService;
 import org.opensrp.web.rest.StockResource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.http.converter.json.MappingJacksonHttpMessageConverter;
-import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.mock.web.MockHttpServletResponse;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.server.setup.MockMvcBuilders;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.servlet.HandlerMapping;
-import org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter;
 
 import java.util.List;
 
-public class StockResourceTest extends BaseResourceTest {
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.opensrp.common.AllConstants.Stock.PROVIDERID;
+import static org.opensrp.common.AllConstants.Stock.TIMESTAMP;
+
+public class StockResourceTest extends RestResourceTest<AllStocks, Stock> {
 
 	private static final String BASE_URL = "/rest/stockresource/";
 
@@ -42,11 +32,23 @@ public class StockResourceTest extends BaseResourceTest {
 	public void setUp() {
 		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
 		allStocks.removeAll();
+		setDatabaseAccessObjectOfParent();
 	}
 
 	@After
 	public void cleanUp() {
 		//allStocks.removeAll();
+	}
+
+
+	@Autowired
+	public StockResourceTest() {
+		super(Stock.class, BASE_URL);
+	}
+
+	@Override
+	public void setDatabaseAccessObjectOfParent() {
+		this.databaseAccesObject = allStocks;
 	}
 
 	@Test
@@ -58,29 +60,12 @@ public class StockResourceTest extends BaseResourceTest {
 		assertTrue(actulaRequiredProperties.contains(TIMESTAMP));
 	}
 
+	@Test
+	public void shouldFindByProviderId() throws Exception {
+		Stock expectedStock = new Stock(200l, "vaccineTypeId", "transactionType", "providerId", 3,
+				new DateTime(0l, DateTimeZone.UTC).getMillis(), "toFrom", new DateTime(0l, DateTimeZone.UTC).getMillis(),
+				223l);
+		assertAddByUniqueId(expectedStock, "providerId");
+	}
 
-	/*@Test
-	@Ignore
-	public void testClientSearch() throws Exception {
-		MockHttpServletRequest mockRequest = new MockHttpServletRequest();
-		//  mockRequest.setContentType(MediaType.APPLICATION_JSON.toString());
-		mockRequest.setMethod("GET");
-		mockRequest.setRequestURI("/rest/stock/sync/");
-		mockRequest.setAttribute(HandlerMapping.class.getName() + ".introspectTypeLevelMapping", true);
-		mockRequest.addParameter(IDENTIFIER, "003");
-		mockRequest.addParameter(VACCINE_TYPE_ID, "VTID");
-		mockRequest.addParameter(PROVIDERID, "4-2");
-
-		AnnotationMethodHandlerAdapter handlerAdapter = new AnnotationMethodHandlerAdapter();
-		HttpMessageConverter[] messageConverters = { new MappingJacksonHttpMessageConverter() };
-		handlerAdapter.setMessageConverters(messageConverters);
-
-		MockHttpServletResponse mockResponse = new MockHttpServletResponse();
-		mockResponse.addHeader("chii", "noa");
-		handlerAdapter.handle(mockRequest, mockResponse, ss);
-
-		String actual = mockResponse.getContentAsString();
-		System.out.println(actual);
-
-	}*/
 }
