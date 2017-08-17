@@ -3,7 +3,6 @@ package org.opensrp.web.controller.it;
 import org.codehaus.jackson.JsonNode;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.opensrp.domain.Multimedia;
 import org.opensrp.dto.form.FormSubmissionDTO;
@@ -76,23 +75,39 @@ public class FormSubmissionIntegrationTest extends BaseResourceTest {
 		assertEquals(FormSubmissionConverter.from(expectedFormSubmission), actualFormSubmissionDto);
 	}
 
+	/**
+	 * This test if a form is submitted to openSRP db successfully.
+	 *
+	 * @throws Exception
+	 */
 	@Test
 	public void shouldSubmitForm() throws Exception {
 		String url = "/form-submissions";
 		FormSubmission expectedFormSubmission = testResourceLoader.getFormSubmissionFor("new_household_registration", 10);
+		// This call is made to generate mapOfFieldsByName field in FormData.class.
+		// This field is kept as json string inside formInstance field in FormSubmissionDTO.class
+		// So without generating this field expected FormSubmissionDTO won't match actual FormSubmissionDTO
 		expectedFormSubmission.instance().getField("id");
+
 		FormSubmissionDTO expectedFormSubmissionDto = FormSubmissionConverter.from(expectedFormSubmission);
+
 		assertEquals(0, allFormSubmissions.getAll().size());
-
 		String parameterObject = mapper.writeValueAsString(asList(expectedFormSubmissionDto));
-		JsonNode responseObject = postCallWithJsonContent(url, parameterObject, status().isCreated());
+		postCallWithJsonContent(url, parameterObject, status().isCreated());
 
+		//Give time to run motech event
 		TimeUnit.SECONDS.sleep(10);
 
 		List<FormSubmission> formSubmissions = allFormSubmissions.getAll();
-		FormSubmissionDTO actualFormSubmissionDto = FormSubmissionConverter.from(formSubmissions.get(0));
+		FormSubmission actualFormSubmission = formSubmissions.get(0);
+
+		expectedFormSubmission.setServerVersion(0);
+		actualFormSubmission.setServerVersion(0);
+
+
 		assertEquals(1, formSubmissions.size());
-		assertEquals(expectedFormSubmissionDto.withServerVersion("0"), actualFormSubmissionDto.withServerVersion("0"));
+		assertEquals(expectedFormSubmission, actualFormSubmission);
+
 	}
 
 	@Test
