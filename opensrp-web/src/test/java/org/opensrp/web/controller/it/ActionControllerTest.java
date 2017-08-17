@@ -18,9 +18,6 @@ import org.opensrp.scheduler.repository.AllAlerts;
 import org.opensrp.web.controller.ActionConvertor;
 import org.opensrp.web.rest.it.BaseResourceTest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.server.MvcResult;
-import org.springframework.test.web.server.setup.MockMvcBuilders;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -30,8 +27,6 @@ import static org.junit.Assert.assertEquals;
 import static org.opensrp.dto.AlertStatus.normal;
 import static org.opensrp.dto.BeneficiaryType.mother;
 import static org.opensrp.web.rest.it.ResourceTestUtility.*;
-import static org.springframework.test.web.server.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.server.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.server.result.MockMvcResultMatchers.status;
 
 public class ActionControllerTest extends BaseResourceTest {
@@ -47,7 +42,6 @@ public class ActionControllerTest extends BaseResourceTest {
 
 	@Before
 	public void setUp() {
-		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
 		allClients.removeAll();
 		allActions.removeAll();
 		allAlerts.removeAll();
@@ -72,12 +66,8 @@ public class ActionControllerTest extends BaseResourceTest {
 
 		org.opensrp.dto.Action expectedActionDto = ActionConvertor.from(expectedAction);
 
-		MvcResult mvcResult = this.mockMvc.perform(
-				get(url + "?anmIdentifier=" + "ANM 1" + "&timeStamp=" + new DateTime().minusDays(1).getMillis())
-						.accept(MediaType.APPLICATION_JSON)).andDo(print()).andExpect(status().isOk()).andReturn();
-
-		String responseString = mvcResult.getResponse().getContentAsString();
-		JsonNode actualObj = mapper.readTree(responseString);
+		JsonNode actualObj = getCallAsJsonNode(url,
+				"anmIdentifier=" + "ANM 1" + "&timeStamp=" + new DateTime().minusDays(1).getMillis(), status().isOk());
 		org.opensrp.dto.Action actualActionDto = mapper.treeToValue(actualObj.get(0), org.opensrp.dto.Action.class);
 
 		assertEquals(expectedActionDto, actualActionDto);
@@ -95,12 +85,8 @@ public class ActionControllerTest extends BaseResourceTest {
 
 		org.opensrp.dto.Action expectedActionDto = ActionConvertor.from(expectedAction);
 
-		MvcResult mvcResult = this.mockMvc.perform(
-				get(url + "?baseEntityId=" + "Case X" + "&timeStamp=" + new DateTime().minusDays(1).getMillis())
-						.accept(MediaType.APPLICATION_JSON)).andDo(print()).andExpect(status().isOk()).andReturn();
-
-		String responseString = mvcResult.getResponse().getContentAsString();
-		JsonNode actualObj = mapper.readTree(responseString);
+		JsonNode actualObj = getCallAsJsonNode(url,
+				"baseEntityId=" + "Case X" + "&timeStamp=" + new DateTime().minusDays(1).getMillis(), status().isOk());
 		org.opensrp.dto.Action actualActionDto = mapper.treeToValue(actualObj.get(0), org.opensrp.dto.Action.class);
 
 		assertEquals(expectedActionDto, actualActionDto);
@@ -123,9 +109,7 @@ public class ActionControllerTest extends BaseResourceTest {
 		createAlerts(asList(alert, duplicateAlert), allAlerts);
 		assertEquals(2, allAlerts.getAll().size());
 
-		MvcResult mvcResult = this.mockMvc
-				.perform(get(url + "?key=" + "20160727KiSafaiMuhim").accept(MediaType.APPLICATION_JSON)).andDo(print())
-				.andExpect(status().isOk()).andReturn();
+		getCallAsJsonNode(url, "key=" + "20160727KiSafaiMuhim", status().isOk());
 
 		assertEquals(1, allAlerts.getAll().size());
 	}
@@ -140,12 +124,9 @@ public class ActionControllerTest extends BaseResourceTest {
 						DateTime.now().plusDays(3)));
 		createActions(asList(expectedAction), allActions);
 
-		MvcResult mvcResult = this.mockMvc.perform(
-				get(url + "?providerId=" + "ANM 1" + "&serverVersion=" + new DateTime().minusDays(1).getMillis())
-						.accept(MediaType.APPLICATION_JSON)).andDo(print()).andExpect(status().isOk()).andReturn();
+		JsonNode actualObj = getCallAsJsonNode(url,
+				"providerId=" + "ANM 1" + "&serverVersion=" + new DateTime().minusDays(1).getMillis(), status().isOk());
 
-		String responseString = mvcResult.getResponse().getContentAsString();
-		JsonNode actualObj = mapper.readTree(responseString);
 		int actualActionsSize = Integer.parseInt(actualObj.get("no_of_actions").asText());
 		ObjectNode actionObj = (ObjectNode) actualObj.get("actions").get(0);
 		actionObj.remove("id");
@@ -166,12 +147,9 @@ public class ActionControllerTest extends BaseResourceTest {
 						DateTime.now().plusDays(3)));
 		createActions(asList(expectedAction), allActions);
 
-		MvcResult mvcResult = this.mockMvc
-				.perform(get(url + "?providerId=" + "ANM 1" + "&serverVersion=" + "dsfs").accept(MediaType.APPLICATION_JSON))
-				.andDo(print()).andExpect(status().isInternalServerError()).andReturn();
+		JsonNode actualObj = getCallAsJsonNode(url, "?providerId=" + "ANM 1" + "&serverVersion=" + "dsfs",
+				status().isInternalServerError());
 
-		String responseString = mvcResult.getResponse().getContentAsString();
-		JsonNode actualObj = mapper.readTree(responseString);
 		assertEquals("Error occurred", actualObj.get("msg").asText());
 	}
 

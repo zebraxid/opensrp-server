@@ -2,7 +2,6 @@ package org.opensrp.web.rest.it;
 
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,13 +11,11 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.server.MockMvc;
 import org.springframework.test.web.server.MvcResult;
 import org.springframework.test.web.server.ResultMatcher;
-import org.springframework.test.web.server.result.StatusResultMatchers;
 import org.springframework.test.web.server.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.springframework.test.web.server.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.server.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.server.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(loader = TestWebContextLoader.class, locations = {
@@ -33,7 +30,7 @@ public abstract class BaseResourceTest {
 	protected ObjectMapper mapper = new ObjectMapper();
 
 	@Before
-	public void setUp() {
+	public void setMockMvc() {
 		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
 	}
 
@@ -47,14 +44,17 @@ public abstract class BaseResourceTest {
 				.andExpect(expectedStatus).andReturn();
 
 		String responseString = mvcResult.getResponse().getContentAsString();
+		if(responseString.isEmpty()) {
+			return null;
+		}
 		JsonNode actualObj = mapper.readTree(responseString);
 		return actualObj;
 	}
 
-	protected byte[] getCallAsByeArray(String url, String parameter, ResultMatcher expectedStatus) throws Exception {
+	protected byte[] getCallAsByeArray(String url, String parameterQuery, ResultMatcher expectedStatus) throws Exception {
 		String finalUrl = url;
-		if (!parameter.isEmpty()) {
-			finalUrl = finalUrl + "?" + parameter;
+		if (!parameterQuery.isEmpty()) {
+			finalUrl = finalUrl + "?" + parameterQuery;
 		}
 
 		MvcResult mvcResult = this.mockMvc.perform(get(finalUrl).accept(MediaType.APPLICATION_JSON)).andDo(print())
