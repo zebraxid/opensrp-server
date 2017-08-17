@@ -21,7 +21,11 @@ public abstract class OpenmrsApiService extends TestResourceLoader {
 	
 	String USER_URL = "ws/rest/v1/user";
 	
+	String PERSON_ATTRIBUTE_TYPE = "ws/rest/v1/personattributetype";
+	
 	JSONObject person = new JSONObject();
+	
+	JSONObject personAttributeType = new JSONObject();
 	
 	public JSONObject createPerson(String fn, String mn, String ln) throws JSONException {
 		
@@ -58,6 +62,23 @@ public abstract class OpenmrsApiService extends TestResourceLoader {
 		
 		return new JSONObject(response);
 		
+	}
+	
+	public JSONObject createPersonAttributeType(String desc, String name) throws JSONException {
+		
+		personAttributeType.put("description", desc);
+		personAttributeType.put("name", name);
+		personAttributeType.put("format", "java.lang.String");
+		String response = HttpUtil.post(HttpUtil.removeEndingSlash(OPENMRS_URL) + "/" + PERSON_ATTRIBUTE_TYPE, "",
+		    personAttributeType.toString(), openmrsUsername, openmrsPassword).body();
+		
+		return new JSONObject(response);
+		
+	}
+	
+	public void deletePersonAttributeType(String uuid) {
+		HttpResponse od = HttpUtil.delete(HttpUtil.removeEndingSlash(OPENMRS_URL) + "/ws/rest/v1/personattributetype/"
+		        + uuid + "?purge=true", "", openmrsUsername, openmrsPassword);
 	}
 	
 	public void deleteUser(String uuid) {
