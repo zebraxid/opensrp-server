@@ -77,22 +77,22 @@ public class FormSubmissionIntegrationTest extends BaseResourceTest {
 	}
 
 	@Test
-	@Ignore
 	public void shouldSubmitForm() throws Exception {
 		String url = "/form-submissions";
 		FormSubmission expectedFormSubmission = testResourceLoader.getFormSubmissionFor("new_household_registration", 10);
-
+		expectedFormSubmission.instance().getField("id");
+		FormSubmissionDTO expectedFormSubmissionDto = FormSubmissionConverter.from(expectedFormSubmission);
 		assertEquals(0, allFormSubmissions.getAll().size());
 
-		String parameterObject = mapper.writeValueAsString(asList(FormSubmissionConverter.from(expectedFormSubmission)));
+		String parameterObject = mapper.writeValueAsString(asList(expectedFormSubmissionDto));
 		JsonNode responseObject = postCallWithJsonContent(url, parameterObject, status().isCreated());
 
-		TimeUnit.SECONDS.sleep(50);
+		TimeUnit.SECONDS.sleep(10);
 
 		List<FormSubmission> formSubmissions = allFormSubmissions.getAll();
+		FormSubmissionDTO actualFormSubmissionDto = FormSubmissionConverter.from(formSubmissions.get(0));
 		assertEquals(1, formSubmissions.size());
-		assertEquals(FormSubmissionConverter.from(expectedFormSubmission),
-				FormSubmissionConverter.from(formSubmissions.get(0)));
+		assertEquals(expectedFormSubmissionDto.withServerVersion("0"), actualFormSubmissionDto.withServerVersion("0"));
 	}
 
 	@Test
