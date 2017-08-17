@@ -52,7 +52,7 @@ public class TestResourceLoader {
 		this.encounterService.setPatientService(patientService);
 	}
 
-	protected FormSubmission getFormSubmissionFor(String formName, Integer number) throws JsonIOException, IOException {
+	public FormSubmission getFormSubmissionFor(String formName, Integer number) throws JsonIOException, IOException {
 		ResourceLoader loader = new DefaultResourceLoader();
 		String path = loader.getResource(formDirPath).getURI().getPath();
 		File fsfile = new File(path + "/" + formName + "/form_submission" + (number == null ? "" : number) + ".json");

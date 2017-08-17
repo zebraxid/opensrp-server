@@ -1,28 +1,21 @@
 package org.opensrp.web.rest.it;
 
 import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.opensrp.domain.Address;
 import org.opensrp.domain.Client;
 import org.opensrp.domain.Event;
 import org.opensrp.repository.AllClients;
 import org.opensrp.repository.AllEvents;
-import org.opensrp.service.EventService;
 import org.opensrp.web.rest.EventResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.web.server.MockMvc;
 import org.springframework.test.web.server.MvcResult;
 import org.springframework.test.web.server.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.util.NestedServletException;
 
 import java.util.ArrayList;
@@ -75,9 +68,6 @@ public class EventResourceTest extends BaseResourceTest {
 
 	@Autowired
 	private AllClients allClients;
-
-	@Autowired
-	private EventService eventService;
 
 	@Autowired
 	private EventResource eventResource;

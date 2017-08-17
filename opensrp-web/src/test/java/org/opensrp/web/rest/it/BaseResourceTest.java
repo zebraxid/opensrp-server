@@ -15,6 +15,7 @@ import org.springframework.test.web.server.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.springframework.test.web.server.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.server.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.server.result.MockMvcResultHandlers.print;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -44,7 +45,7 @@ public abstract class BaseResourceTest {
 				.andExpect(expectedStatus).andReturn();
 
 		String responseString = mvcResult.getResponse().getContentAsString();
-		if(responseString.isEmpty()) {
+		if (responseString.isEmpty()) {
 			return null;
 		}
 		JsonNode actualObj = mapper.readTree(responseString);
@@ -57,9 +58,23 @@ public abstract class BaseResourceTest {
 			finalUrl = finalUrl + "?" + parameterQuery;
 		}
 
-		MvcResult mvcResult = this.mockMvc.perform(get(finalUrl).accept(MediaType.APPLICATION_JSON)).andDo(print())
+		MvcResult mvcResult = this.mockMvc.perform(get(finalUrl).accept(MediaType.APPLICATION_JSON))
 				.andExpect(expectedStatus).andReturn();
 
 		return mvcResult.getResponse().getContentAsByteArray();
+	}
+
+	protected JsonNode postCallWithJsonContent(String url, String data, ResultMatcher expectedStatus) throws Exception {
+
+		MvcResult mvcResult = this.mockMvc.perform(
+				post(url).contentType(MediaType.APPLICATION_JSON).body(data.getBytes()).accept(MediaType.APPLICATION_JSON))
+				.andDo(print()).andExpect(expectedStatus).andReturn();
+
+		String responseString = mvcResult.getResponse().getContentAsString();
+		if (responseString.isEmpty()) {
+			return null;
+		}
+		JsonNode actualObj = mapper.readTree(responseString);
+		return actualObj;
 	}
 }
