@@ -55,23 +55,10 @@ public class ActionControllerTest extends BaseResourceTest {
 
 	@After
 	public void cleanUp() {
-		/*allClients.removeAll();
+		allClients.removeAll();
 		allActions.removeAll();
-		allAlerts.removeAll();*/
+		allAlerts.removeAll();
 	}
-
-	/*@Test
-	public void shouldGiveAlertActionForANMSinceTimeStamp() throws Exception {
-		org.opensrp.scheduler.Action alertAction = new org.opensrp.scheduler.Action("Case X", "ANM 1", ActionData
-				.createAlert(mother.value(), "Ante Natal Care - Normal", "ANC 1", normal, DateTime.now(),
-						DateTime.now().plusDays(3)));
-		when(actionService.getNewAlertsForANM("ANM 1", 0L)).thenReturn(asList(alertAction));
-
-		Action expectedAlertActionItem = ActionConvertor.from(alertAction);
-		ActionController actionController = new ActionController(actionService, null, null);
-
-		assertThat(asList(expectedAlertActionItem), hasSameItemsAs(actionController.getNewActionForANM("ANM 1", 0L)));
-	}*/
 
 	@Test
 	public void shouldFetchNewActionsBasedOnAnmIdAndTimestamp() throws Exception {
@@ -98,7 +85,7 @@ public class ActionControllerTest extends BaseResourceTest {
 
 	@Test
 	public void shouldFetchNewActionsBasedOnBaseEntityIdAndTimestamp() throws Exception {
-		String url = "/actions";
+		String url = "/useractions";
 		Map<String, String> data = new HashMap<>();
 		data.put("key", "value");
 		Action expectedAction = new Action("Case X", "ANM 1", ActionData

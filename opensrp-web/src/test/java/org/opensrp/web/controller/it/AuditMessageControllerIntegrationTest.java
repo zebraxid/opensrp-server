@@ -2,6 +2,7 @@ package org.opensrp.web.controller.it;
 
 import org.codehaus.jackson.JsonNode;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.opensrp.common.audit.AuditMessage;
 import org.opensrp.common.audit.AuditMessageType;
@@ -19,15 +20,13 @@ import static org.springframework.test.web.server.request.MockMvcRequestBuilders
 import static org.springframework.test.web.server.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.server.result.MockMvcResultMatchers.status;
 
+@Ignore
 public class AuditMessageControllerIntegrationTest extends BaseResourceTest {
 
 	@Autowired
 	Auditor auditor;
 
-	@Before
-	public void setUp() {
-		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
-	}
+
 /*
 	@Test
 	public void getAuditMessagesBasedOnPreviousIndex() throws Exception {

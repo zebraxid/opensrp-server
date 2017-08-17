@@ -2,7 +2,6 @@ package org.opensrp.web.controller.it;
 
 import org.codehaus.jackson.JsonNode;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.opensrp.web.rest.it.BaseResourceTest;
 import org.springframework.core.io.ClassPathResource;
@@ -32,19 +31,18 @@ public class FormDownloadIntegrationTest extends BaseResourceTest {
 
 	String formToDownload;
 
+/*
 	@Before
 	public void setUp() {
 		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
 	}
+*/
 
 	@Test
 	public void shouldFetchAllAvailableVersion() throws Exception {
 		String url = "latest-form-versions";
-		MvcResult mvcResult = this.mockMvc.perform(get(BASE_URL + url).accept(MediaType.APPLICATION_JSON)).andDo(print())
-				.andExpect(status().isOk()).andReturn();
 
-		String responseString = mvcResult.getResponse().getContentAsString();
-		JsonNode actualObj = mapper.readTree(responseString);
+		JsonNode actualObj = getCallAsJsonNode(BASE_URL + url, "", status().isOk());
 
 		assertEquals(currentFormVersions(), actualObj);
 	}
@@ -52,10 +50,8 @@ public class FormDownloadIntegrationTest extends BaseResourceTest {
 	@Test
 	public void shouldDownloadCurrentChildFollowupForms() throws Exception {
 		String url = "form-files";
-		MvcResult mvcResult = this.mockMvc.perform(get(BASE_URL + url + "?formDirName=child_followup")).andDo(print())
-				.andExpect(status().isOk()).andReturn();
 
-		byte[] responseZipFile = mvcResult.getResponse().getContentAsByteArray();
+		byte[] responseZipFile = getCallAsByeArray(BASE_URL + url, "formDirName=child_followup", status().isOk());
 		byte[] expectedZipFile = getFormDirectoryAsZip("child_followup");
 
 		assertArrayEquals(expectedZipFile, responseZipFile);
@@ -64,9 +60,7 @@ public class FormDownloadIntegrationTest extends BaseResourceTest {
 	@Test(expected = NestedServletException.class)
 	public void shouldThrowExceptionForInvalidFormDirectoryName() throws Exception {
 		String url = "form-files";
-		MvcResult mvcResult = this.mockMvc.perform(get(BASE_URL + url + "?formDirName=invalid")).andDo(print())
-				.andExpect(status().isOk()).andReturn();
-
+		getCallAsByeArray(BASE_URL + url, "formDirName=invalid", status().isOk());
 	}
 
 	private byte[] getFormDirectoryAsZip(String directoryName) throws IOException {
@@ -83,11 +77,8 @@ public class FormDownloadIntegrationTest extends BaseResourceTest {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		ZipOutputStream zos = new ZipOutputStream(baos);
 		byte bytes[] = new byte[2048];
-
-		System.out.println(directory.exists());
 		String[] fl = directory.list();
 		for (String fileName : fl) {
-			System.out.println(fileName);
 			if (formToDownload.matches("(.+,)?" + fileName + "(,.+)?$")) {
 
 				FileInputStream fis = new FileInputStream(directory.getPath() + "/" + fileName);
