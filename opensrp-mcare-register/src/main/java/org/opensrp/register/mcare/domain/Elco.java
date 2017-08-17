@@ -142,8 +142,8 @@ public class Elco extends MotechBaseDataObject {
 	private String FWPSRPREGSTS;
 	@JsonProperty
 	private long clientVersion;
-	@JsonProperty
-	private Long serverVersion;
+	@JsonProperty("timeStamp")
+	private Long timeStamp;
 
 	public Elco() {
 		this.PSRFDETAILS = new ArrayList<>();
@@ -155,14 +155,16 @@ public class Elco extends MotechBaseDataObject {
 		this.caseId = caseId;
 		return this;
 	}
-	public Long getServerVersion() {
-		return serverVersion;
+	
+	public Long getTimeStamp() {
+		return timeStamp;
 	}
 
-	public Elco setServerVersion(Long serverVersion) {
-		this.serverVersion = serverVersion;
+	public Elco setTimeStamp(Long timeStamp) {
+		this.timeStamp = timeStamp;
 		return this;
 	}
+
 	public Elco withINSTANCEID(String INSTANCEID) {
 		this.INSTANCEID = INSTANCEID;
 		return this;

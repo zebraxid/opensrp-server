@@ -16,6 +16,8 @@ import static org.opensrp.common.AllConstants.DeliveryOutcomeFields.CHILD_REGIST
 import static org.opensrp.common.AllConstants.HHRegistrationFields.MOTHER_REFERENCE_DATE;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.REFERENCE_DATE;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.received_time;
+import static org.opensrp.common.AllConstants.PSRFFields.clientVersion;
+import static org.opensrp.common.AllConstants.PSRFFields.timeStamp;
 import static org.opensrp.common.AllConstants.UserType.FD;
 
 import static org.opensrp.common.util.EasyMap.create;
@@ -29,6 +31,7 @@ import java.util.Map;
 
 import org.joda.time.LocalDate;
 import org.opensrp.common.AllConstants;
+import org.opensrp.common.util.DateTimeUtil;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.form.domain.SubFormData;
 import org.opensrp.register.mcare.domain.Elco;
@@ -108,6 +111,8 @@ public class BNFService {
 				.put(FWBNFWOMVITSTS, submission.getField(FWBNFWOMVITSTS)).put(FWBNFDTOO, submission.getField(FWBNFDTOO))
 				.put(FWBNFLB, submission.getField(FWBNFLB)).put(FWBNFSMSRSN, submission.getField(FWBNFSMSRSN)).put(user_type, submission.getField(user_type))
 				.put(external_user_ID, submission.getField(external_user_ID)).put(received_time, format.format(today).toString())
+				.put(timeStamp, ""+System.currentTimeMillis())
+				.put(clientVersion, DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)).toString())
 				.put(relationalid, submission.getField(relationalid)).map();
 
 		SubFormData subFormData = submission.getSubFormByName(CHILD_REGISTRATION_SUB_FORM_NAME);

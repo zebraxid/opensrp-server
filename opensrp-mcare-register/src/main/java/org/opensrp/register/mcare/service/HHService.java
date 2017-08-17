@@ -81,7 +81,7 @@ public class HHService {
 		houseHold.withFWUPAZILLA(UPAZILLA);
 		houseHold.withSUBMISSIONDATE(DateUtil.getTimestampToday());
 		houseHold.withClientVersion(DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)));
-		houseHold.setServerVersion(System.currentTimeMillis());
+		houseHold.setTimeStamp(System.currentTimeMillis());
 		allHouseHolds.update(houseHold);			
 		
 		hhSchedulesService.enrollIntoMilestoneOfCensus(submission.entityId(),

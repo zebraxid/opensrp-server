@@ -63,9 +63,12 @@ import static org.opensrp.common.AllConstants.PSRFFields.FW_PSRVDGMEM;
 import static org.opensrp.common.AllConstants.PSRFFields.FW_PSRWOMEDU;
 import static org.opensrp.common.AllConstants.PSRFFields.FW_SORTVALUE;
 import static org.opensrp.common.AllConstants.PSRFFields.FW_VG;
+import static org.opensrp.common.AllConstants.PSRFFields.clientVersion;
 import static org.opensrp.common.AllConstants.PSRFFields.current_formStatus;
 import static org.opensrp.common.AllConstants.PSRFFields.mis_elco_current_formStatus;
+import static org.opensrp.common.AllConstants.PSRFFields.timeStamp;
 import static org.opensrp.common.AllConstants.UserType.FD;
+import static org.opensrp.common.AllConstants.PSRFFields.*;
 
 import static org.opensrp.common.util.EasyMap.create;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ELCOSchedulesConstants.ELCO_SCHEDULE_PSRF;
@@ -135,7 +138,7 @@ public class ELCOService {
 					.withTODAY(submission.getField(REFERENCE_DATE))
 					.withSUBMISSIONDATE(DateUtil.getTimestampToday())
 					.withClientVersion(DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)))
-					.setServerVersion(System.currentTimeMillis())
+					.setTimeStamp(System.currentTimeMillis())
 					.withexternal_user_ID(submission.getField(external_user_ID))
 					.withuser_type(submission.getField(user_type))					
 					.withFWWOMUPAZILLA(UPAZILA);
@@ -196,7 +199,7 @@ public class ELCOService {
 
 			houseHold.details().put(existing_ELCO, submission.getField(existing_ELCO));
 			houseHold.details().put(new_ELCO, submission.getField(new_ELCO));
-			houseHold.setServerVersion(System.currentTimeMillis());
+			houseHold.setTimeStamp(System.currentTimeMillis());
 			allHouseHolds.update(houseHold);
 
 			logger.info("Expected value leading non zero and found FWCENSTAT : " + submission.getField("FWCENSTAT"));
@@ -334,6 +337,8 @@ public class ELCOService {
 					.put(FW_WOMUNION, elcoFields.get(FW_WOMUNION)).put(FW_WOMWARD, elcoFields.get(FW_WOMWARD))
 					.put(FW_WOMSUBUNIT, elcoFields.get(FW_WOMSUBUNIT)).put(FW_WOMMAUZA_PARA, elcoFields.get(FW_WOMMAUZA_PARA))
 					.put(FW_WOMGOBHHID, elcoFields.get(FW_WOMGOBHHID)).put(FW_WOMGPS, elcoFields.get(FW_WOMGPS)).put(profileImagePath, "")
+					.put(clientVersion, DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)).toString())
+					.put(timeStamp, ""+System.currentTimeMillis())
 					.put(received_time, format.format(today).toString()).put(nidImagePath, "").map();
 
 			houseHold.ELCODETAILS().add(elco);
@@ -370,14 +375,15 @@ public class ELCOService {
 				.put(REFERENCE_DATE, submission.getField(REFERENCE_DATE)).put(existing_ELCO, submission.getField(existing_ELCO))
 				.put(FWNOTELIGIBLE, submission.getField(FWNOTELIGIBLE)).put(ELCO, submission.getField(ELCO)).put(FW_ELIGIBLE, submission.getField(FW_ELIGIBLE))
 				.put(current_formStatus, submission.getField(current_formStatus))
-				.put("clientVersion", DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)).toString())
+				.put(clientVersion, DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)).toString())
+				.put(timeStamp, ""+System.currentTimeMillis())
 				.put(received_time, format.format(today).toString()).map();
-
+		
 		
 		elco.PSRFDETAILS().add(psrf);
 		elco.details().put(FW_PSRPREGSTS, submission.getField(FW_PSRPREGSTS));
 		elco.withClientVersion(DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)));
-		elco.setServerVersion(System.currentTimeMillis());
+		elco.setTimeStamp(System.currentTimeMillis());
 		allEcos.update(elco);
 		logger.info("Expected value leading zero and found submission.getField(FW_PSRSTS): " + submission.getField(FW_PSRSTS));
 		logger.info("Expected value leading no zero and found submission.getField(FW_PSRPREGSTS): " + submission.getField(FW_PSRPREGSTS));

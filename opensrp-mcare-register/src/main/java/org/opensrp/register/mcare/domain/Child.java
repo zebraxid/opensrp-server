@@ -65,8 +65,8 @@ public class Child extends MotechBaseDataObject {
 	private long clientVersion;
 	@JsonProperty
 	private String user_type;
-	@JsonProperty
-	private Long serverVersion;
+	@JsonProperty("timeStamp")
+	private Long timeStamp;
 	public Child() {
 		details = new HashMap<String, String>();
 		enccVisitOne = new HashMap<String, String>();
@@ -78,15 +78,17 @@ public class Child extends MotechBaseDataObject {
 		this.caseId = caseId;
 		return this;
 	}
-	public Long getServerVersion() {
-		return serverVersion;
+	
+	
+	public Long getTimeStamp() {
+		return timeStamp;
 	}
 
-	public Child setServerVersion(Long serverVersion) {
-		this.serverVersion = serverVersion;
+	public Child setTimeStamp(Long timeStamp) {
+		this.timeStamp = timeStamp;
 		return this;
 	}
-	
+
 	public Child withUpazilla(String upazilla) {
 		this.upazilla = upazilla;
 		return this;

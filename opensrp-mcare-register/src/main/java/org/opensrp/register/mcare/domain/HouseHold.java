@@ -89,21 +89,23 @@ public class HouseHold extends MotechBaseDataObject {
 	@JsonProperty
 	private Long clientVersion;
 	@JsonProperty
-	private Long serverVersion;
+	private Long timeStamp;
 	
-	public Long getServerVersion() {
-		return serverVersion;
-	}
-
-	public HouseHold setServerVersion(Long serverVersion) {
-		this.serverVersion = serverVersion;
-		return this;
-	}
-
 	public HouseHold() {
 		this.ELCODETAILS = new ArrayList<>();
 		this.multimediaAttachments = new ArrayList<>();
 	}
+
+	public Long getTimeStamp() {
+		return timeStamp;
+	}
+
+	public HouseHold setTimeStamp(Long timeStamp) {
+		this.timeStamp = timeStamp;
+		return this;
+	}
+
+	
 	
 	public HouseHold withCASEID(String caseId) {
 		this.caseId = caseId;

@@ -497,4 +497,19 @@ public class AllHouseHoldsIntegrationTest {
     	return -1;
     }
 
+    
+   @Ignore @Test
+    public void updateHouseHold(){
+ 	   List<HouseHold> houseHolds = allHouseHolds.getAll();
+ 	   int i=0;
+ 	   for (HouseHold houseHold : houseHolds) {
+ 		houseHold.setTimeStamp(System.currentTimeMillis());
+ 		allHouseHolds.update(houseHold);
+ 		i++;
+ 		System.err.println("I::"+i);
+ 	   }
+ 	   
+    }
+    
+    
 }

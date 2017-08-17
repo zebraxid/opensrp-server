@@ -5,6 +5,7 @@ import static org.opensrp.common.AllConstants.ELCORegistrationFields.FWPSRPREGST
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.ektorp.CouchDbInstance;
 import org.ektorp.ViewResult;
@@ -16,9 +17,11 @@ import org.ektorp.impl.StdObjectMapperFactory;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.opensrp.common.util.DateTimeUtil;
 import org.opensrp.common.util.DateUtil;
 import org.opensrp.common.util.WeekBoundariesAndTimestamps;
 import org.opensrp.register.mcare.domain.Elco;
+import org.opensrp.register.mcare.domain.HouseHold;
 import org.opensrp.register.mcare.repository.AllElcos;
 import org.opensrp.register.mcare.repository.AllHouseHolds;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +57,7 @@ public class AllElcoIntegrationTest {
 		allElcos = new AllElcos(2, stdCouchDbConnector);
     	//initMocks(this);
     }
-    @Test
+    @Ignore@Test
     public void hhTest() throws ParseException{
     	
     	System.err.println(DateUtil.getCurrentMonthCurrentweek());
@@ -170,6 +173,26 @@ public class AllElcoIntegrationTest {
     	}catch(Exception e){
     		e.printStackTrace();
     	}*/
+    }
+    
+  @Ignore @Test
+    public void updateElco(){
+ 	   List<Elco> elcos = allElcos.getAll();
+ 	   for (Elco elco : elcos) {
+ 		  List<Map<String, String>> psrfs = elco.PSRFDETAILS();
+ 		 
+ 		
+ 		 for (int j = 0; j < psrfs.size(); j++) { 			  
+ 			psrfs.get(j).put("timeStamp", ""+System.currentTimeMillis()); 			 
+ 			 
+ 			psrfs.get(j).put("clientVersion", DateTimeUtil.getTimestampOfADate(elco.TODAY()).toString());
+ 			 
+		  }
+ 		
+ 		  elco.setTimeStamp(System.currentTimeMillis());
+ 		allElcos.update(elco);
+ 	   }
+ 	   
     }
   
 }

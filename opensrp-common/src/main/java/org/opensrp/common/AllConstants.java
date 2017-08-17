@@ -252,6 +252,8 @@ public class AllConstants {
 		public static final String FWMISOPT = "FWMISOPT";
 		public static final String FWMISIMPT = "FWMISIMPT";
 		public static final String mis_elco_current_formStatus = "mis_elco_current_formStatus";
+		public static final String timeStamp = "timeStamp";
+		public static final String clientVersion = "clientVersion";
 	}
 
 	public static class ANCVisitOneFields {

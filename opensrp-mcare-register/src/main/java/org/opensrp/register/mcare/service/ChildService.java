@@ -4,26 +4,74 @@
 package org.opensrp.register.mcare.service;
 
 import static java.text.MessageFormat.format;
-import static org.opensrp.common.AllConstants.ENCCVisitOneFields.*;
-import static org.opensrp.common.AllConstants.ENCCVisitTwoFields.*;
-import static org.opensrp.common.AllConstants.ENCCVisitThreeFields.*;
+import static org.opensrp.common.AllConstants.ENCCVisitOneFields.FWENC1BFINTN;
+import static org.opensrp.common.AllConstants.ENCCVisitOneFields.FWENC1BTHD;
+import static org.opensrp.common.AllConstants.ENCCVisitOneFields.FWENC1DATE;
+import static org.opensrp.common.AllConstants.ENCCVisitOneFields.FWENC1DELCOMP;
+import static org.opensrp.common.AllConstants.ENCCVisitOneFields.FWENC1DRYWM;
+import static org.opensrp.common.AllConstants.ENCCVisitOneFields.FWENC1DSCONVL;
+import static org.opensrp.common.AllConstants.ENCCVisitOneFields.FWENC1DSDIFBRTH;
+import static org.opensrp.common.AllConstants.ENCCVisitOneFields.FWENC1DSFOULUMBS;
+import static org.opensrp.common.AllConstants.ENCCVisitOneFields.FWENC1DSFVRCLD;
+import static org.opensrp.common.AllConstants.ENCCVisitOneFields.FWENC1DSLETH;
+import static org.opensrp.common.AllConstants.ENCCVisitOneFields.FWENC1DSLIMBLUE;
+import static org.opensrp.common.AllConstants.ENCCVisitOneFields.FWENC1DSSKNYLW;
+import static org.opensrp.common.AllConstants.ENCCVisitOneFields.FWENC1HDCOV;
+import static org.opensrp.common.AllConstants.ENCCVisitOneFields.FWENC1PRLCTL;
+import static org.opensrp.common.AllConstants.ENCCVisitOneFields.FWENC1STS;
+import static org.opensrp.common.AllConstants.ENCCVisitOneFields.FWENC1TEMP;
+import static org.opensrp.common.AllConstants.ENCCVisitOneFields.FWENC1UMBS;
+import static org.opensrp.common.AllConstants.ENCCVisitOneFields.encc1_current_formStatus;
+import static org.opensrp.common.AllConstants.ENCCVisitOneFields.referenceDate;
+import static org.opensrp.common.AllConstants.ENCCVisitThreeFields.FWENC3BFINTN;
+import static org.opensrp.common.AllConstants.ENCCVisitThreeFields.FWENC3BTHD;
+import static org.opensrp.common.AllConstants.ENCCVisitThreeFields.FWENC3DATE;
+import static org.opensrp.common.AllConstants.ENCCVisitThreeFields.FWENC3DELCOMP;
+import static org.opensrp.common.AllConstants.ENCCVisitThreeFields.FWENC3DRYWM;
+import static org.opensrp.common.AllConstants.ENCCVisitThreeFields.FWENC3DSCONVL;
+import static org.opensrp.common.AllConstants.ENCCVisitThreeFields.FWENC3DSDIFBRTH;
+import static org.opensrp.common.AllConstants.ENCCVisitThreeFields.FWENC3DSFOULUMBS;
+import static org.opensrp.common.AllConstants.ENCCVisitThreeFields.FWENC3DSFVRCLD;
+import static org.opensrp.common.AllConstants.ENCCVisitThreeFields.FWENC3DSLETH;
+import static org.opensrp.common.AllConstants.ENCCVisitThreeFields.FWENC3DSLIMBLUE;
+import static org.opensrp.common.AllConstants.ENCCVisitThreeFields.FWENC3DSSKNYLW;
+import static org.opensrp.common.AllConstants.ENCCVisitThreeFields.FWENC3HDCOV;
+import static org.opensrp.common.AllConstants.ENCCVisitThreeFields.FWENC3PRLCTL;
+import static org.opensrp.common.AllConstants.ENCCVisitThreeFields.FWENC3STS;
+import static org.opensrp.common.AllConstants.ENCCVisitThreeFields.FWENC3TEMP;
+import static org.opensrp.common.AllConstants.ENCCVisitThreeFields.FWENC3UMBS;
+import static org.opensrp.common.AllConstants.ENCCVisitThreeFields.encc3_current_formStatus;
+import static org.opensrp.common.AllConstants.ENCCVisitTwoFields.FWENC2BFINTN;
+import static org.opensrp.common.AllConstants.ENCCVisitTwoFields.FWENC2BTHD;
+import static org.opensrp.common.AllConstants.ENCCVisitTwoFields.FWENC2DATE;
+import static org.opensrp.common.AllConstants.ENCCVisitTwoFields.FWENC2DELCOMP;
+import static org.opensrp.common.AllConstants.ENCCVisitTwoFields.FWENC2DRYWM;
+import static org.opensrp.common.AllConstants.ENCCVisitTwoFields.FWENC2DSCONVL;
+import static org.opensrp.common.AllConstants.ENCCVisitTwoFields.FWENC2DSDIFBRTH;
+import static org.opensrp.common.AllConstants.ENCCVisitTwoFields.FWENC2DSFOULUMBS;
+import static org.opensrp.common.AllConstants.ENCCVisitTwoFields.FWENC2DSFVRCLD;
+import static org.opensrp.common.AllConstants.ENCCVisitTwoFields.FWENC2DSLETH;
+import static org.opensrp.common.AllConstants.ENCCVisitTwoFields.FWENC2DSLIMBLUE;
+import static org.opensrp.common.AllConstants.ENCCVisitTwoFields.FWENC2DSSKNYLW;
+import static org.opensrp.common.AllConstants.ENCCVisitTwoFields.FWENC2HDCOV;
+import static org.opensrp.common.AllConstants.ENCCVisitTwoFields.FWENC2PRLCTL;
+import static org.opensrp.common.AllConstants.ENCCVisitTwoFields.FWENC2STS;
+import static org.opensrp.common.AllConstants.ENCCVisitTwoFields.FWENC2TEMP;
+import static org.opensrp.common.AllConstants.ENCCVisitTwoFields.FWENC2UMBS;
+import static org.opensrp.common.AllConstants.ENCCVisitTwoFields.encc2_current_formStatus;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.END_DATE;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.REFERENCE_DATE;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.START_DATE;
-import static org.opensrp.common.AllConstants.UserType.FD;
-
+import static org.opensrp.common.AllConstants.PSRFFields.clientVersion;
+import static org.opensrp.common.AllConstants.PSRFFields.timeStamp;
 import static org.opensrp.common.util.EasyMap.create;
-import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ChildScheduleConstants.*;
+import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ChildScheduleConstants.SCHEDULE_ENCC;
+import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ChildScheduleConstants.SCHEDULE_ENCC_2;
+import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ChildScheduleConstants.SCHEDULE_ENCC_3;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.Map;
 
-import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import org.opensrp.common.util.DateTimeUtil;
 import org.opensrp.common.util.DateUtil;
 import org.opensrp.form.domain.FormSubmission;
@@ -82,13 +130,14 @@ public class ChildService {
 				.put(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
 				.put(START_DATE, submission.getField(START_DATE))
 				.put("received_time", DateUtil.getTodayAsString())
-				.put("clientVersion", DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)).toString())
+				.put(timeStamp, ""+System.currentTimeMillis())
+				.put(clientVersion, DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)).toString())
 				.put(END_DATE, submission.getField(END_DATE)).map();	
 
 		child.withENCCVisitOne(enccOne);
 		child.withClientVersion(DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)));
 		child.withTODAY(submission.getField(REFERENCE_DATE));
-		child.setServerVersion(System.currentTimeMillis());
+		child.setTimeStamp(System.currentTimeMillis());
 		allChilds.update(child);
 		childSchedulesService.fullfillMilestone(submission.entityId(), submission.anmId(), SCHEDULE_ENCC, new LocalDate());
 		childSchedulesService.enrollENCCVisit(submission.entityId(), SCHEDULE_ENCC_2, LocalDate.parse(child.getDetail(referenceDate)));
@@ -126,13 +175,14 @@ public class ChildService {
 				.put(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
 				.put(START_DATE, submission.getField(START_DATE))
 				.put("received_time", DateUtil.getTodayAsString())
-				.put("clientVersion", DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)).toString())
+				.put(timeStamp, ""+System.currentTimeMillis())
+				.put(clientVersion, DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)).toString())
 				.put(END_DATE, submission.getField(END_DATE)).map();	
 
 		child.withENCCVisitTwo(enccTwo);
 		child.withTODAY(submission.getField(REFERENCE_DATE));
 		child.withClientVersion(DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)));
-		child.setServerVersion(System.currentTimeMillis());
+		child.setTimeStamp(System.currentTimeMillis());
 		allChilds.update(child);		
 		childSchedulesService.fullfillMilestone(submission.entityId(), submission.anmId(), SCHEDULE_ENCC, new LocalDate());	
 		childSchedulesService.enrollENCCVisit(submission.entityId(), SCHEDULE_ENCC_3, LocalDate.parse(child.getDetail(referenceDate)));
@@ -170,13 +220,14 @@ public class ChildService {
 				.put(REFERENCE_DATE, submission.getField(REFERENCE_DATE))
 				.put(START_DATE, submission.getField(START_DATE))
 				.put("received_time", DateUtil.getTodayAsString())
-				.put("clientVersion", DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)).toString())
+				.put(timeStamp, ""+System.currentTimeMillis())
+				.put(clientVersion, DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)).toString())
 				.put(END_DATE, submission.getField(END_DATE)).map();	
 
 		child.withENCCVisitThree(enccThree);
 		child.withClientVersion(DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)));
 		child.withTODAY(submission.getField(REFERENCE_DATE));
-		child.setServerVersion(System.currentTimeMillis());
+		child.setTimeStamp(System.currentTimeMillis());
 		allChilds.update(child);		
 		childSchedulesService.unEnrollFromSchedule(submission.entityId(), submission.anmId(), SCHEDULE_ENCC);
 		

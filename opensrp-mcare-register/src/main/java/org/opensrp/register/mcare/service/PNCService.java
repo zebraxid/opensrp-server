@@ -64,6 +64,7 @@ import static org.opensrp.common.AllConstants.PNCVisitTwoFields.FWPNC2KNWPRVDR;
 import static org.opensrp.common.AllConstants.PNCVisitTwoFields.FWPNC2REMSTS;
 import static org.opensrp.common.AllConstants.PNCVisitTwoFields.FWPNC2TEMP;
 import static org.opensrp.common.AllConstants.PNCVisitTwoFields.pnc2_current_formStatus;
+import static org.opensrp.common.AllConstants.PSRFFields.*;
 import static org.opensrp.common.AllConstants.UserType.FD;
 
 import static org.opensrp.common.util.EasyMap.create;
@@ -195,7 +196,7 @@ public class PNCService {
 							.withUnion(mother.getFWWOMUNION())
 							.withUnit(mother.getFWWOMSUBUNIT())
 							.withMouzaPara(mother.getMother_mauza())
-							.setServerVersion(System.currentTimeMillis())
+							.setTimeStamp(System.currentTimeMillis())
 							.setIsClosed(false);
 
 					child.details().put(relationalid, childFields.get(relationalid));
@@ -263,13 +264,14 @@ public class PNCService {
 				.put(END_DATE, submission.getField(END_DATE)).put(pnc1_current_formStatus, submission.getField(pnc1_current_formStatus))
 				.put(relationalid, submission.getField(relationalid)).put(user_type, submission.getField(user_type))
 				.put(external_user_ID, submission.getField(external_user_ID))
-				.put("clientVersion", DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)).toString())
-				.put("received_time", DateUtil.getTodayAsString()).map();
+				.put(timeStamp, ""+System.currentTimeMillis())
+				.put(clientVersion, DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)).toString())
+				.put(received_time, DateUtil.getTodayAsString()).map();
 
 		mother.withClientVersion(DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)));
 		mother.withPNCVisitOne(pncVisitOne);
 		mother.withTODAY(submission.getField(REFERENCE_DATE));
-		mother.setServerVersion(System.currentTimeMillis());
+		mother.setTimeStamp(System.currentTimeMillis());
 		allMothers.update(mother);
 		pncSchedulesService.fullfillMilestone(submission.entityId(), submission.anmId(), SCHEDULE_PNC, new LocalDate());
 		String pattern = "yyyy-MM-dd";
@@ -309,14 +311,15 @@ public class PNCService {
 				.put(REFERENCE_DATE, submission.getField(REFERENCE_DATE)).put(START_DATE, submission.getField(START_DATE))
 				.put(END_DATE, submission.getField(END_DATE)).put(pnc2_current_formStatus, submission.getField(pnc2_current_formStatus))
 				.put(relationalid, submission.getField(relationalid)).put(user_type, submission.getField(user_type))
-				.put("clientVersion", DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)).toString())
+				.put(clientVersion, DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)).toString())
 				.put(external_user_ID, submission.getField(external_user_ID))
-				.put("received_time", DateUtil.getTodayAsString()).map();
+				.put(timeStamp, ""+System.currentTimeMillis())
+				.put(received_time, DateUtil.getTodayAsString()).map();
 
 		mother.withClientVersion(DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)));
 		mother.withPNCVisitTwo(pncVisitTwo);
 		mother.withTODAY(submission.getField(REFERENCE_DATE));
-		mother.setServerVersion(System.currentTimeMillis());
+		mother.setTimeStamp(System.currentTimeMillis());
 		allMothers.update(mother);		
 		pncSchedulesService.fullfillMilestone(submission.entityId(), submission.anmId(), SCHEDULE_PNC, new LocalDate());
 	
@@ -358,14 +361,15 @@ public class PNCService {
 				.put(REFERENCE_DATE, submission.getField(REFERENCE_DATE)).put(START_DATE, submission.getField(START_DATE))
 				.put(END_DATE, submission.getField(END_DATE)).put(pnc3_current_formStatus, submission.getField(pnc3_current_formStatus))
 				.put(relationalid, submission.getField(relationalid)).put(user_type, submission.getField(user_type))
-				.put("clientVersion", DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)).toString())
+				.put(clientVersion, DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)).toString())
 				.put(external_user_ID, submission.getField(external_user_ID))
-				.put("received_time", DateUtil.getTodayAsString()).map();
+				.put(timeStamp, ""+System.currentTimeMillis())
+				.put(received_time, DateUtil.getTodayAsString()).map();
 		
 		mother.withPNCVisitThree(pncVisitThree);
 		mother.withClientVersion(DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)));
 		mother.withTODAY(submission.getField(REFERENCE_DATE));
-		mother.setServerVersion(System.currentTimeMillis());
+		mother.setTimeStamp(System.currentTimeMillis());
 		allMothers.update(mother);
 		pncSchedulesService.unEnrollFromSchedule(submission.entityId(), submission.anmId(), SCHEDULE_PNC);
 		
