@@ -43,8 +43,8 @@ public class FormSubmissionIntegrationTest extends BaseResourceTest {
 
 	@After
 	public void cleanUp() {
-		//allFormSubmissions.removeAll();
-		//multimediaRepository.removeAll();
+		allFormSubmissions.removeAll();
+		multimediaRepository.removeAll();
 	}
 
 	@Test
@@ -86,7 +86,7 @@ public class FormSubmissionIntegrationTest extends BaseResourceTest {
 		FormSubmission expectedFormSubmission = testResourceLoader.getFormSubmissionFor("new_household_registration", 10);
 		// This call is made to generate mapOfFieldsByName field in FormData.class.
 		// This field is kept as json string inside formInstance field in FormSubmissionDTO.class
-		// So without generating this field expected FormSubmissionDTO won't match actual FormSubmissionDTO
+		// So without generating this field expected FormSubmission won't match actual FormSubmission
 		expectedFormSubmission.instance().getField("id");
 
 		FormSubmissionDTO expectedFormSubmissionDto = FormSubmissionConverter.from(expectedFormSubmission);
