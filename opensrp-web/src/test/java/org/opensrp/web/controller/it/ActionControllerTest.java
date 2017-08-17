@@ -1,4 +1,4 @@
-package org.opensrp.web.controller;
+package org.opensrp.web.controller.it;
 
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.node.ObjectNode;
@@ -15,6 +15,7 @@ import org.opensrp.scheduler.Action;
 import org.opensrp.scheduler.Alert;
 import org.opensrp.scheduler.repository.AllActions;
 import org.opensrp.scheduler.repository.AllAlerts;
+import org.opensrp.web.controller.ActionConvertor;
 import org.opensrp.web.rest.it.BaseResourceTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
