@@ -13,7 +13,7 @@ import org.motechproject.model.MotechBaseDataObject;
 /**
  * @author muhammad.ahmed@ihsinformatics.com Created on May 25, 2015
  */
-@TypeDiscriminator("doc.type == 'Error'")
+@TypeDiscriminator("doc.type == 'ErrorTrace'")
 public class ErrorTrace extends MotechBaseDataObject {
 
 	/*
