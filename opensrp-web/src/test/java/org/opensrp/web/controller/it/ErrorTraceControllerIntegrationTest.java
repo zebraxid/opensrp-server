@@ -14,15 +14,15 @@ import org.opensrp.web.rest.it.BaseResourceTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
 import static org.motechproject.delivery.schedule.util.SameItems.hasSameItemsAs;
 import static org.opensrp.web.rest.it.ResourceTestUtility.createErrorTraces;
 import static org.springframework.test.web.server.result.MockMvcResultMatchers.status;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class ErrorTraceControllerIntegrationTest extends BaseResourceTest {
 
@@ -41,7 +41,7 @@ public class ErrorTraceControllerIntegrationTest extends BaseResourceTest {
 
 	@After
 	public void cleanUp() {
-		allErrorTrace.removeAll();
+		//allErrorTrace.removeAll();
 	}
 
 	@Test
@@ -68,14 +68,57 @@ public class ErrorTraceControllerIntegrationTest extends BaseResourceTest {
 		String url = BASE_URL + "/errortrace";
 		ErrorTrace expectedErrorTrace = new ErrorTrace(new DateTime(0l, DateTimeZone.UTC), "documentType", "errorType",
 				"occuredAt", "stackTrace", "status");
-
 		createErrorTraces(asList(expectedErrorTrace), allErrorTrace);
 
 		JsonNode returnedObject = getCallAsJsonNode(url, "", status().isOk());
-
 		ErrorTrace actualErrorTrace = mapper.treeToValue(returnedObject.get(0), ErrorTrace.class);
 
 		assertEquals(expectedErrorTrace, actualErrorTrace);
+	}
+
+	@Test
+	public void shouldReturnAllSolvedError() throws Exception {
+		String url = BASE_URL + "/solvederrors";
+		ErrorTrace expectedErrorTrace = new ErrorTrace(new DateTime(DateTimeZone.UTC), "errorType", "occuredAT",
+				"stackTrace", "solved", "documentType");
+		ErrorTrace unsolvedErrorTrace = new ErrorTrace(new DateTime(DateTimeZone.UTC), "errorType", "occuredAT",
+				"stackTrace", "unsolved", "documentType");
+		ErrorTrace randomStatusErrorTrace = new ErrorTrace(new DateTime(DateTimeZone.UTC), "errorType", "occuredAT",
+				"stackTrace", "random", "documentType");
+		createErrorTraces(asList(expectedErrorTrace, unsolvedErrorTrace, randomStatusErrorTrace), allErrorTrace);
+
+		JsonNode returnedObject = getCallAsJsonNode(url, "", status().isOk());
+		ErrorTrace actualErrorTrace = mapper.treeToValue(returnedObject.get(0), ErrorTrace.class);
+
+		assertEquals(expectedErrorTrace, actualErrorTrace);
+
+	}
+
+	@Test
+	public void shouldReturnAllUnSolvedError() throws Exception {
+		String url = BASE_URL + "/unsolvederrors";
+		ErrorTrace solvedErrorTrace = new ErrorTrace(new DateTime(DateTimeZone.UTC), "errorType", "occuredAT", "stackTrace",
+				"solved", "documentType");
+		ErrorTrace expectedErrorTrace = new ErrorTrace(new DateTime(DateTimeZone.UTC), "errorType", "occuredAT",
+				"stackTrace", "unsolved", "documentType");
+		ErrorTrace randomStatusErrorTrace = new ErrorTrace(new DateTime(DateTimeZone.UTC), "errorType", "occuredAT",
+				"stackTrace", "random", "documentType");
+		createErrorTraces(asList(expectedErrorTrace, solvedErrorTrace, randomStatusErrorTrace), allErrorTrace);
+
+		JsonNode returnedObject = getCallAsJsonNode(url, "", status().isOk());
+		ErrorTrace actualErrorTrace = mapper.treeToValue(returnedObject.get(0), ErrorTrace.class);
+
+		assertEquals(expectedErrorTrace, actualErrorTrace);
+	}
+
+	@Test
+	public void shouldReturnAllErrorStatus() throws Exception {
+		String url = BASE_URL + "/getstatusoptions";
+
+		JsonNode returnedObject = getCallAsJsonNode(url, "", status().isOk());
+		List<String> actualStatusOptions = mapper.treeToValue(returnedObject, List.class);
+
+		assertEquals(errorTraceForm.getStatusOptions(), actualStatusOptions);
 
 	}
 
