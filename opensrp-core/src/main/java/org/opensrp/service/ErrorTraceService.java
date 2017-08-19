@@ -67,7 +67,7 @@ public class ErrorTraceService {
 
 	public List<ErrorTrace> getAllSolvedErrors() throws DocumentNotFoundException {
 
-		ArrayList<ErrorTrace> allErrorList = (ArrayList<ErrorTrace>) allErrorTrace.findAllSolvedErrors();
+		List<ErrorTrace> allErrorList = allErrorTrace.findAllSolvedErrors();
 		if (null == allErrorList || allErrorList.isEmpty()) {
 			return null;
 
@@ -79,7 +79,7 @@ public class ErrorTraceService {
 
 	public List<ErrorTrace> getAllUnsolvedErrors() throws DocumentNotFoundException {
 
-		ArrayList<ErrorTrace> allErrorList = (ArrayList<ErrorTrace>) allErrorTrace.findAllUnSolvedErrors();
+		List<ErrorTrace> allErrorList = allErrorTrace.findAllUnSolvedErrors();
 		if (null == allErrorList || allErrorList.isEmpty()) {
 			return null;
 

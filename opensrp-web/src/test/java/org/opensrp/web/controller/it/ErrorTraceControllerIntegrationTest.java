@@ -175,4 +175,21 @@ public class ErrorTraceControllerIntegrationTest extends BaseResourceTest {
 		assertEquals(expectedErrorTrace, actualErrorTrace);
 	}
 
+	@Test
+	public void shouldGetErrorById() throws Exception {
+		String url = BASE_URL + "/viewerror";
+
+		ErrorTrace expectedErrorTrace = new ErrorTrace(new DateTime(DateTimeZone.UTC), "errorType", "occuredAT",
+				"stackTrace", "unsolved", "documentType");
+		createErrorTraces(asList(expectedErrorTrace), allErrorTrace);
+		expectedErrorTrace = allErrorTrace.getAll().get(0);
+
+		String param = "id=" + expectedErrorTrace.getId();
+
+		JsonNode returnedObject = getCallAsJsonNode(url, param, status().isOk());
+		ErrorTraceForm actualErrorTraceForm = mapper.treeToValue(returnedObject, ErrorTraceForm.class);
+		assertEquals(expectedErrorTrace, actualErrorTraceForm.getErrorTrace());
+	}
+
+
 }
