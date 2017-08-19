@@ -2,7 +2,9 @@ package org.opensrp.web.rest.it;
 
 import org.opensrp.domain.Client;
 
+import org.opensrp.domain.ErrorTrace;
 import org.opensrp.repository.AllClients;
+import org.opensrp.repository.AllErrorTrace;
 import org.opensrp.scheduler.Action;
 import org.opensrp.scheduler.Alert;
 import org.opensrp.scheduler.repository.AllActions;
@@ -30,6 +32,12 @@ public final class ResourceTestUtility {
 	public static void createAlerts(List<Alert> alerts, AllAlerts allAlerts) {
 		for (Alert alert : alerts) {
 			allAlerts.add(alert);
+		}
+	}
+
+	public static void createErrorTraces(List<ErrorTrace> errorTraces, AllErrorTrace allErrorTrace) {
+		for (ErrorTrace errorTrace : errorTraces) {
+			allErrorTrace.add(errorTrace);
 		}
 	}
 }

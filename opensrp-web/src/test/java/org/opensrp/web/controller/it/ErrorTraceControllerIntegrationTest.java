@@ -20,6 +20,7 @@ import java.util.Map;
 
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.motechproject.delivery.schedule.util.SameItems.hasSameItemsAs;
 import static org.opensrp.web.rest.it.ResourceTestUtility.createErrorTraces;
 import static org.springframework.test.web.server.result.MockMvcResultMatchers.status;
@@ -77,6 +78,20 @@ public class ErrorTraceControllerIntegrationTest extends BaseResourceTest {
 	}
 
 	@Test
+	@Ignore
+	public void shouldReturnAllErrorWithDifferentURl() throws Exception {
+		String url = BASE_URL + "/allerrors";
+		ErrorTrace expectedErrorTrace = new ErrorTrace(new DateTime(0l, DateTimeZone.UTC), "documentType", "errorType",
+				"occuredAt", "stackTrace", "status");
+		createErrorTraces(asList(expectedErrorTrace), allErrorTrace);
+
+		JsonNode returnedObject = getCallAsJsonNode(url, "", status().isOk());
+		ErrorTrace actualErrorTrace = mapper.treeToValue(returnedObject.get(0), ErrorTrace.class);
+
+		assertEquals(expectedErrorTrace, actualErrorTrace);
+	}
+
+	@Test
 	public void shouldReturnAllSolvedError() throws Exception {
 		String url = BASE_URL + "/solvederrors";
 		ErrorTrace expectedErrorTrace = new ErrorTrace(new DateTime(DateTimeZone.UTC), "errorType", "occuredAT",
@@ -120,6 +135,44 @@ public class ErrorTraceControllerIntegrationTest extends BaseResourceTest {
 
 		assertEquals(errorTraceForm.getStatusOptions(), actualStatusOptions);
 
+	}
+
+	@Test
+	@Ignore
+	public void shouldUpdateErrorTraceStatus() throws Exception {
+		String url = BASE_URL + "/update_errortrace";
+
+		ErrorTrace expectedErrorTrace = new ErrorTrace(new DateTime(DateTimeZone.UTC), "errorType", "occuredAT",
+				"stackTrace", "unsolved", "documentType");
+		createErrorTraces(asList(expectedErrorTrace), allErrorTrace);
+
+		expectedErrorTrace = allErrorTrace.getAll().get(0);
+		System.out.println(expectedErrorTrace);
+		expectedErrorTrace.setStatus("solved");
+		ErrorTraceForm errorTraceForm = new ErrorTraceForm();
+		errorTraceForm.setErrorTrace(expectedErrorTrace);
+
+		postCallWithJsonContent(url, mapper.writeValueAsString(errorTraceForm), status().isOk());
+		ErrorTrace actualErrorTrace = allErrorTrace.get(expectedErrorTrace.getId());
+
+		assertEquals(expectedErrorTrace, actualErrorTrace);
+	}
+
+	@Test
+	public void shouldUpdateErrorTraceStatusUsingGetMethod() throws Exception {
+		String url = BASE_URL + "/update_status";
+
+		ErrorTrace expectedErrorTrace = new ErrorTrace(new DateTime(DateTimeZone.UTC), "errorType", "occuredAT",
+				"stackTrace", "unsolved", "documentType");
+		createErrorTraces(asList(expectedErrorTrace), allErrorTrace);
+		expectedErrorTrace = allErrorTrace.getAll().get(0);
+		expectedErrorTrace.setStatus("solved");
+		String param = "id=" + expectedErrorTrace.getId() + "&status=solved";
+
+		getCallAsJsonNode(url, param, status().isOk());
+		ErrorTrace actualErrorTrace = allErrorTrace.get(expectedErrorTrace.getId());
+
+		assertEquals(expectedErrorTrace, actualErrorTrace);
 	}
 
 }
