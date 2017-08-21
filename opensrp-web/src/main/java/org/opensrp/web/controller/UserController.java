@@ -1,16 +1,8 @@
 package org.opensrp.web.controller;
 
-import static org.opensrp.web.HttpHeaderFactory.allowOrigin;
-import static org.springframework.http.HttpStatus.OK;
-
-import java.nio.charset.Charset;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TimeZone;
-
-import javax.servlet.http.HttpServletRequest;
-
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.mysql.jdbc.StringUtils;
 import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,11 +15,11 @@ import org.opensrp.connector.openmrs.service.OpenmrsLocationService;
 import org.opensrp.connector.openmrs.service.OpenmrsUserService;
 import org.opensrp.web.security.DrishtiAuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.codec.Base64;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,14 +27,21 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import com.mysql.jdbc.StringUtils;
+import javax.servlet.http.HttpServletRequest;
+import java.nio.charset.Charset;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.TimeZone;
+
+import static org.opensrp.web.HttpHeaderFactory.allowOrigin;
+import static org.springframework.http.HttpStatus.OK;
 
 @Controller
 public class UserController {
 
-	private String opensrpSiteUrl;
+	@Value("#{opensrp['opensrp.site.url']}")
+	private String  opensrpSiteUrl;
 
 	private DrishtiAuthenticationProvider opensrpAuthenticationProvider;
 
@@ -101,6 +100,7 @@ public class UserController {
 	@ResponseBody
 	public ResponseEntity<String> authenticate(HttpServletRequest request) throws JSONException {
 		User u = currentUser(request);
+		System.out.println(u);
 		String lid = "";
 		JSONObject tm = null;
 		try {
