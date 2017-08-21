@@ -7,6 +7,8 @@ import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Before;
 import org.junit.runner.RunWith;
+import org.motechproject.dao.MotechBaseRepository;
+import org.opensrp.domain.Stock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
@@ -18,12 +20,15 @@ import org.springframework.test.web.server.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import static java.util.Arrays.asList;
+import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.server.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.server.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.server.result.MockMvcResultHandlers.print;
 
 import org.springframework.security.crypto.codec.Base64;
 
+import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -116,5 +121,39 @@ public abstract class BaseResourceTest {
 		}
 		JsonNode actualObj = mapper.readTree(responseString);
 		return actualObj;
+	}
+
+	protected static <T, R extends MotechBaseRepository> void addObjectToRepository(List<T> objectList, R repository) {
+		for (T object : objectList) {
+			repository.add(object);
+		}
+	}
+
+	protected <T> List<T> createObjectListFromJson(JsonNode jsonList, Class<T> classOfT) throws IOException {
+		final List<T> objectList = new ArrayList<>();
+		for (int i = 0; i < jsonList.size(); i++) {
+			T object = mapper.treeToValue(jsonList.get(i), classOfT);
+			objectList.add(object);
+		}
+		return objectList;
+	}
+
+	protected <T> void assertTwoListAreSame(List<T> expectedList, List<T> actualList) {
+		assertTrue(expectedList.containsAll(actualList) && actualList.containsAll(expectedList));
+	}
+
+	protected <T> void assetClassHasAllRequiredFields(Class<T> classOfT, List<String> requiredProperties) {
+		Field[] allFields = classOfT.getDeclaredFields();
+		List<String> nameOfFieldsOfT = new ArrayList<>();
+		for (Field field : allFields) {
+			if (!field.isSynthetic()) {
+				nameOfFieldsOfT.add(field.getName().trim().toLowerCase());
+			}
+		}
+
+		for (String requiredProperty : requiredProperties) {
+			assertTrue("'" + requiredProperty + "' not Found.",
+					nameOfFieldsOfT.contains(requiredProperty.trim().toLowerCase()));
+		}
 	}
 }

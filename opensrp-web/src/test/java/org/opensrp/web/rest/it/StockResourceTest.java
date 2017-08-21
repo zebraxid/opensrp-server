@@ -1,27 +1,38 @@
 package org.opensrp.web.rest.it;
 
+import org.codehaus.jackson.JsonNode;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.opensrp.domain.Event;
 import org.opensrp.domain.Stock;
 import org.opensrp.repository.AllStocks;
 import org.opensrp.web.rest.StockResource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.server.MvcResult;
 import org.springframework.test.web.server.setup.MockMvcBuilders;
+import org.springframework.web.util.NestedServletException;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static java.util.Arrays.asList;
+import static org.junit.Assert.*;
+import static org.motechproject.delivery.schedule.util.SameItems.hasSameItemsAs;
 import static org.opensrp.common.AllConstants.Stock.PROVIDERID;
 import static org.opensrp.common.AllConstants.Stock.TIMESTAMP;
+import static org.springframework.test.web.server.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.server.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.server.result.MockMvcResultMatchers.status;
 
-public class StockResourceTest extends RestResourceTest<AllStocks, Stock> {
+public class StockResourceTest extends BaseResourceTest {
 
-	private static final String BASE_URL = "/rest/stockresource/";
+	private static final String BASE_URL = "/rest/stockresource";
 
 	@Autowired
 	private AllStocks allStocks;
@@ -31,9 +42,7 @@ public class StockResourceTest extends RestResourceTest<AllStocks, Stock> {
 
 	@Before
 	public void setUp() {
-		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
 		allStocks.removeAll();
-		setDatabaseAccessObjectOfParent();
 	}
 
 	@After
@@ -41,33 +50,106 @@ public class StockResourceTest extends RestResourceTest<AllStocks, Stock> {
 		//allStocks.removeAll();
 	}
 
-
-	@Autowired
-	public StockResourceTest() {
-		super(Stock.class, BASE_URL);
-	}
-
-	@Override
-	public void setDatabaseAccessObjectOfParent() {
-		this.databaseAccesObject = allStocks;
-	}
-
 	@Test
 	public void testRequiredProperties() {
-		List<String> actulaRequiredProperties = stockResource.requiredProperties();
+		List<String> actualRequiredProperties = stockResource.requiredProperties();
 
-		assertEquals(2, actulaRequiredProperties.size());
-		assertTrue(actulaRequiredProperties.contains(PROVIDERID));
-		assertTrue(actulaRequiredProperties.contains(TIMESTAMP));
+		assertEquals(2, actualRequiredProperties.size());
+		assertTrue(actualRequiredProperties.contains(PROVIDERID));
+		assertTrue(actualRequiredProperties.contains(TIMESTAMP));
 	}
 
+	//TODO: `Stock.class` does't contain `timestamp` field.
+	@Test
+	@Ignore
+	public void testStockClassHasAllTheRequiredField() {
+		assetClassHasAllRequiredFields(Stock.class, stockResource.requiredProperties());
+	}
+
+	//TODO: Error in `couchdb` query.
 	@Test
 	@Ignore
 	public void shouldFindByProviderId() throws Exception {
 		Stock expectedStock = new Stock(200l, "vaccineTypeId", "transactionType", "providerId", 3,
 				new DateTime(0l, DateTimeZone.UTC).getMillis(), "toFrom", new DateTime(0l, DateTimeZone.UTC).getMillis(),
 				223l);
-		assertAddByUniqueId(expectedStock, "providerId");
+		addObjectToRepository(Collections.singletonList(expectedStock), allStocks);
+
+		JsonNode responseJson = getCallAsJsonNode(BASE_URL + "/provider", "", status().isOk());
+		Stock actualStock = mapper.treeToValue(responseJson, Stock.class);
+
+		assertEquals(expectedStock, actualStock);
 	}
+
+	@Test
+	public void shouldNotFindStock() throws Exception {
+		Stock expectedStock = new Stock(200l, "vaccineTypeId", "transactionType", "providerId", 3,
+				new DateTime(0l, DateTimeZone.UTC).getMillis(), "toFrom", new DateTime(0l, DateTimeZone.UTC).getMillis(),
+				223l);
+		addObjectToRepository(Collections.singletonList(expectedStock), allStocks);
+
+		JsonNode responseJson = getCallAsJsonNode(BASE_URL + "/invalidProviderId", "", status().isOk());
+		assertNull(responseJson);
+	}
+
+	@Test
+	public void shouldGetAllStocks() throws Exception {
+		String url = BASE_URL + "/getall";
+		Stock expectedStock1 = new Stock(200l, "vaccineTypeId", "transactionType", "providerId", 3,
+				new DateTime(0l, DateTimeZone.UTC).getMillis(), "toFrom", new DateTime(0l, DateTimeZone.UTC).getMillis(),
+				223l);
+		Stock expectedStock2 = new Stock(300l, "vaccineTypeId", "transactionType", "providerId1", 3,
+				new DateTime(10l, DateTimeZone.UTC).getMillis(), "toFrom", new DateTime(10l, DateTimeZone.UTC).getMillis(),
+				223l);
+		Stock expectedStock3 = new Stock(400l, "vaccineTypeId", "transactionType", "providerId2", 3,
+				new DateTime(100l, DateTimeZone.UTC).getMillis(), "toFrom", new DateTime(100l, DateTimeZone.UTC).getMillis(),
+				223l);
+		List<Stock> expectedStocks = asList(expectedStock1, expectedStock2, expectedStock3);
+
+		addObjectToRepository(expectedStocks, allStocks);
+		JsonNode responseJson = getCallAsJsonNode(url, "", status().isOk());
+
+		final List<Stock> actualStocks = createObjectListFromJson(responseJson.get("stocks"), Stock.class);
+
+		assertTwoListAreSame(expectedStocks, actualStocks);
+	}
+
+	//TODO: There is bug in production code. in `StockService.java` method `addStock()`.
+	@Test
+	@Ignore
+	public void shouldCreateValidStock() throws Exception {
+			Stock expectedStock = new Stock(200l, "vaccineTypeId", "transactionType", "providerId", 3,
+				new DateTime(0l, DateTimeZone.UTC).getMillis(), "toFrom", new DateTime(0l, DateTimeZone.UTC).getMillis(),
+				223l);
+		String postData = mapper.writeValueAsString(expectedStock);
+
+		postCallWithJsonContent(BASE_URL + "/", postData, status().isOk());
+		Stock actualStock = allStocks.getAll().get(0);
+
+		assertEquals(expectedStock, actualStock);
+	}
+
+	@Test(expected = NestedServletException.class)
+	public void shouldFailCreateStockWithOutProviderId() throws Exception{
+		Stock expectedStock = new Stock(200l, "vaccineTypeId", "transactionType", "providerId", 3,
+				new DateTime(0l, DateTimeZone.UTC).getMillis(), "toFrom", new DateTime(0l, DateTimeZone.UTC).getMillis(),
+				223l);
+		expectedStock.setProviderid(null);
+		String postData = mapper.writeValueAsString(expectedStock);
+
+		postCallWithJsonContent(BASE_URL + "/", postData, status().isOk());
+	}
+
+	//TODO: `Stock.class` doesn't have a field call `timestamp`
+	/*@Test(expected = NestedServletException.class)
+	public void shouldFailCreateStockWithOutTimestamp() throws Exception{
+		Stock expectedStock = new Stock(200l, "vaccineTypeId", "transactionType", "providerId", 3,
+				new DateTime(0l, DateTimeZone.UTC).getMillis(), "toFrom", new DateTime(0l, DateTimeZone.UTC).getMillis(),
+				223l);
+		expectedStock.setProviderid(null);
+		String postData = mapper.writeValueAsString(expectedStock);
+
+		postCallWithJsonContent(BASE_URL + "/", postData, status().isOk());
+	}*/
 
 }
