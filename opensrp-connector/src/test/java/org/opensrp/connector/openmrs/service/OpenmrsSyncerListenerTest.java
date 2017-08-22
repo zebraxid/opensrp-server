@@ -41,7 +41,7 @@ public class OpenmrsSyncerListenerTest {
 		initMocks(this);
 		HttpClient httpClient = new StdHttpClient.Builder().host("localhost")
 		//.host("192.168.19.55")
-		        .port(5984).username("Admin").password("mPower@1234").socketTimeout(1000).build();
+		        .port(5984).username("rootuser").password("adminpass").socketTimeout(1000).build();
 		dbInstance = new StdCouchDbInstance(httpClient);
 		stdCouchDbConnector = new StdCouchDbConnector("opensrp", dbInstance, new StdObjectMapperFactory());
 		stdCouchDbConnector.createDatabaseIfNotExists();
