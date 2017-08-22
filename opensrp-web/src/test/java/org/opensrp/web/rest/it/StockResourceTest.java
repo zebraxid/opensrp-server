@@ -175,6 +175,7 @@ public class StockResourceTest extends BaseResourceTest {
 	}
 
 	@Test
+	@Ignore
 	public void shouldUpdateExistingStockUsingAddUrl() throws Exception {
 		Stock expectedStock = new Stock(200l, "vaccineTypeId", "transactionType", "providerId", 3,
 				new DateTime(0l, DateTimeZone.UTC).getMillis(), "toFrom", new DateTime(0l, DateTimeZone.UTC).getMillis(),
