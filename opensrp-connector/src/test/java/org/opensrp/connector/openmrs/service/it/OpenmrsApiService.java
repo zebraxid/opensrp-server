@@ -15,13 +15,15 @@ public abstract class OpenmrsApiService extends TestResourceLoader {
 		// TODO Auto-generated constructor stub
 	}
 	
-	String OPENMRS_URL = openmrsOpenmrsUrl;
+	final String OPENMRS_URL = openmrsOpenmrsUrl;
 	
-	String PERSON_URL = "ws/rest/v1/person";
+	final String PERSON_URL = "ws/rest/v1/person";
 	
-	String USER_URL = "ws/rest/v1/user";
+	final String USER_URL = "ws/rest/v1/user";
 	
-	String PERSON_ATTRIBUTE_TYPE = "ws/rest/v1/personattributetype";
+	final String PERSON_ATTRIBUTE_TYPE = "ws/rest/v1/personattributetype";
+	
+	final String ENCOUTER_TYPE_URL = "ws/rest/v1/encountertype";
 	
 	JSONObject person = new JSONObject();
 	
@@ -94,6 +96,37 @@ public abstract class OpenmrsApiService extends TestResourceLoader {
 	public void deleteProvider(String uuid) {
 		
 		HttpUtil.delete(HttpUtil.removeEndingSlash(OPENMRS_URL) + "/ws/rest/v1/provider/" + uuid + "?purge=true", "",
+		    openmrsUsername, openmrsPassword);
+		
+	}
+	
+	public void deleteRelation(String uuid) {
+		HttpUtil.delete(HttpUtil.removeEndingSlash(OPENMRS_URL) + "/ws/rest/v1/relationship/" + uuid + "?purge=true", "",
+		    openmrsUsername, openmrsPassword);
+	}
+	
+	public JSONObject createEncounterType(String name, String desc) throws JSONException {
+		
+		JSONObject encounterType = new JSONObject();
+		encounterType.put("name", name);
+		encounterType.put("description", desc);
+		String response = HttpUtil.post(HttpUtil.removeEndingSlash(OPENMRS_URL) + "/" + ENCOUTER_TYPE_URL, "",
+		    encounterType.toString(), openmrsUsername, openmrsPassword).body();
+		
+		return new JSONObject(response);
+		
+	}
+	
+	public void deleteEncounterType(String uuid) {
+		
+		HttpUtil.delete(HttpUtil.removeEndingSlash(OPENMRS_URL) + "/ws/rest/v1/encountertype/" + uuid + "?purge=true", "",
+		    openmrsUsername, openmrsPassword);
+		
+	}
+	
+	public void deleteEncounter(String uuid) {
+		
+		HttpUtil.delete(HttpUtil.removeEndingSlash(OPENMRS_URL) + "/ws/rest/v1/encounter/" + uuid + "?purge=true", "",
 		    openmrsUsername, openmrsPassword);
 		
 	}
