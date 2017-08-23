@@ -6,6 +6,7 @@ import org.ektorp.CouchDbInstance;
 import org.ektorp.http.StdHttpClient;
 import org.ektorp.impl.StdCouchDbInstance;
 import org.motechproject.dao.MotechBaseRepository;
+import org.opensrp.domain.BaseEntity;
 
 import java.io.IOException;
 import java.util.List;
@@ -29,5 +30,13 @@ public final class CouchDbAccessUtils {
 		CouchDbInstance couchDbInstance = new StdCouchDbInstance(httpClient);
 		CouchDbConnector couchDbConnector = new LuceneAwareCouchDbConnector(dbName, couchDbInstance);
 		return couchDbConnector;
+	}
+
+	public static <T extends BaseEntity> void purgeDateCreatedEditedAndVoidedField(List<T> objecstToPurge) {
+		for (T objectToPurge : objecstToPurge) {
+			objectToPurge.setDateCreated(null);
+			objectToPurge.setDateEdited(null);
+			objectToPurge.setDateVoided(null);
+		}
 	}
 }

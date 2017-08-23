@@ -3,6 +3,7 @@ package org.opensrp.service.it;
 import org.ektorp.CouchDbConnector;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
+import org.json.JSONException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -11,21 +12,24 @@ import org.opensrp.BaseIntegrationTest;
 import org.opensrp.domain.Client;
 import org.opensrp.repository.AllClients;
 import org.opensrp.service.ClientService;
-import org.opensrp.util.SampleFullDomainObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.utils.CouchDbAccessUtils;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static java.util.Arrays.asList;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 import static org.opensrp.util.SampleFullDomainObject.*;
-import static org.opensrp.util.SampleFullDomainObject.getClient;
+import static org.utils.AssertionUtil.assertNewObjectCreation;
+import static org.utils.AssertionUtil.assertObjectUpdate;
 import static org.utils.AssertionUtil.assertTwoListAreSameIgnoringOrder;
 import static org.utils.CouchDbAccessUtils.addObjectToRepository;
+import static org.utils.CouchDbAccessUtils.getCouchDbConnector;
+import static org.utils.CouchDbAccessUtils.purgeDateCreatedEditedAndVoidedField;
 
 public class ClientServiceTest extends BaseIntegrationTest {
 
@@ -195,6 +199,7 @@ public class ClientServiceTest extends BaseIntegrationTest {
 		assertTwoListAreSameIgnoringOrder(expectedClientList, actualClientList);
 	}*/
 	//TODO: Repository is returning time in UTC format.
+	//TODO: TEST value of Date created field.
 	@Test
 	public void shouldAdd() {
 		Client expectedClient = getClient();
@@ -203,10 +208,9 @@ public class ClientServiceTest extends BaseIntegrationTest {
 
 		List<Client> dbClients = allClients.getAll();
 		assertEquals(1, dbClients.size());
+
 		assertEquals(expectedClient, actualClient);
-		expectedClient.setDateCreated(null);
-		dbClients.get(0).setDateCreated(null);
-		assertEquals(expectedClient, dbClients.get(0));
+		assertNewObjectCreation(expectedClient, dbClients.get(0));
 	}
 
 	@Test(expected = RuntimeException.class)
@@ -219,24 +223,16 @@ public class ClientServiceTest extends BaseIntegrationTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void shouldThrowIllegalArgumentExceptionIfAClientAlreadyExistWithSameIdentifier() {
-		Client expectedClient = getClient();
-		addObjectToRepository(Collections.singletonList(expectedClient), allClients);
+
+		addObjectToRepository(Collections.singletonList(getClient()), allClients);
+		Client expectedClient = allClients.getAll().get(0);
 		expectedClient.setBaseEntityId(DIFFERENT_BASE_ENTITY_ID);
 
 		clientService.addClient(expectedClient);
 	}
 
-	@Test
-	public void shouldFindFromClientObjectWithBaseIdentifier() {
-		Client expectedClient = getClient();
-		addObjectToRepository(Collections.singletonList(expectedClient), allClients);
-
-		Client actualClient = clientService.findClient(expectedClient);
-
-		assertEquals(expectedClient, actualClient);
-	}
-
 	//TODO: Repository is returning time in UTC format.
+	//TODO: TEST value of Date created field.
 	@Test
 	public void shouldAddWithCouchDbConnector() throws IOException {
 		Client expectedClient = getClient();
@@ -246,10 +242,9 @@ public class ClientServiceTest extends BaseIntegrationTest {
 
 		List<Client> dbClients = allClients.getAll();
 		assertEquals(1, dbClients.size());
+		assertNewObjectCreation(expectedClient, dbClients.get(0));
 		assertEquals(expectedClient, actualClient);
-		expectedClient.setDateCreated(null);
-		dbClients.get(0).setDateCreated(null);
-		assertEquals(expectedClient, dbClients.get(0));
+
 	}
 
 	@Test(expected = RuntimeException.class)
@@ -273,7 +268,17 @@ public class ClientServiceTest extends BaseIntegrationTest {
 	}
 
 	@Test
-	public void shouldFindFromClientWithIdetifiers() {
+	public void shouldFindFromClientObjectWithBaseIdentifier() {
+		Client expectedClient = getClient();
+		addObjectToRepository(Collections.singletonList(expectedClient), allClients);
+
+		Client actualClient = clientService.findClient(expectedClient);
+
+		assertEquals(expectedClient, actualClient);
+	}
+
+	@Test
+	public void shouldFindFromClientWithIdentifiers() {
 		Client expectedClient = getClient();
 		expectedClient.setBaseEntityId(null);
 		addObjectToRepository(Collections.singletonList(expectedClient), allClients);
@@ -286,8 +291,10 @@ public class ClientServiceTest extends BaseIntegrationTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void shouldThrowExceptionIfMultipleClientFoundWithSameIdentifier() {
 		Client expectedClient = getClient();
+		Client sameClient = getClient();
+		sameClient.setBaseEntityId(DIFFERENT_BASE_ENTITY_ID);
+		addObjectToRepository(asList(expectedClient, sameClient), allClients);
 		expectedClient.setBaseEntityId(null);
-		addObjectToRepository(asList(expectedClient, expectedClient), allClients);
 
 		clientService.findClient(expectedClient);
 
@@ -300,6 +307,193 @@ public class ClientServiceTest extends BaseIntegrationTest {
 		Client actualClient = clientService.findClient(expectedClient);
 
 		assertNull(actualClient);
+	}
+
+	@Test
+	public void shouldFindFromClientObjectWithBaseIdentifierWithCouchDbConnector() throws IOException {
+		Client expectedClient = getClient();
+		addObjectToRepository(Collections.singletonList(expectedClient), allClients);
+
+		Client actualClient = clientService.findClient(getCouchDbConnector("opensrp"), expectedClient);
+
+		assertEquals(expectedClient, actualClient);
+	}
+
+	@Test
+	public void shouldFindFromClientWithIdentifiersWithCouchDbConnector() throws IOException {
+		Client expectedClient = getClient();
+		expectedClient.setBaseEntityId(null);
+		addObjectToRepository(Collections.singletonList(expectedClient), allClients);
+
+		Client actualClient = clientService.findClient(getCouchDbConnector("opensrp"), expectedClient);
+
+		assertEquals(expectedClient, actualClient);
+	}
+
+	public void shouldReturnNullIfMultipleClientFoundWithSameIdentifierWithCouchDbConnector() throws IOException {
+		Client expectedClient = getClient();
+		Client sameClient = getClient();
+		sameClient.setBaseEntityId(DIFFERENT_BASE_ENTITY_ID);
+		addObjectToRepository(asList(expectedClient, sameClient), allClients);
+		expectedClient.setBaseEntityId(null);
+
+		Client client = clientService.findClient(getCouchDbConnector("opensrp"), expectedClient);
+
+		assertNull(client);
+
+	}
+
+	@Test
+	public void shouldReturnNullIfNoClientFoundWithCouchDbConnector() throws IOException {
+		Client expectedClient = getClient();
+
+		Client actualClient = clientService.findClient(getCouchDbConnector("opensrp"), expectedClient);
+
+		assertNull(actualClient);
+	}
+
+	@Test
+	public void shouldFindByUniqueIdBaseEntityId() {
+		Client expectedClient = getClient();
+		Client invalidClient = getClient();
+		invalidClient.setBaseEntityId(DIFFERENT_BASE_ENTITY_ID);
+		addObjectToRepository(asList(expectedClient, invalidClient), allClients);
+
+		Client actualClient = clientService.find(BASE_ENTITY_ID);
+
+		assertEquals(expectedClient, actualClient);
+
+	}
+
+	@Test
+	public void shouldFindByUniqueIdIdentifier() {
+		Client expectedClient = getClient();
+		Client invalidClient = getClient();
+		Map<String, String> differentIdentifiers = new HashMap<>(identifier);
+		differentIdentifiers.put(IDENTIFIER_TYPE, "differentValue");
+		invalidClient.setIdentifiers(differentIdentifiers);
+		addObjectToRepository(asList(expectedClient, invalidClient), allClients);
+
+		Client actualClient = clientService.find(IDENTIFIER_VALUE);
+
+		assertEquals(expectedClient, actualClient);
+
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void shouldThrowExceptionIfMultipleClientFoundWithSameIdentifierUsingUniqueId() {
+		Client expectedClient = getClient();
+		Client sameClient = getClient();
+		sameClient.setBaseEntityId(DIFFERENT_BASE_ENTITY_ID);
+		addObjectToRepository(asList(expectedClient, sameClient), allClients);
+
+		clientService.find(IDENTIFIER_VALUE);
+
+	}
+
+	@Test
+	public void shouldReturnNullIfNoClientFoundUsingUniqueId() {
+		Client expectedClient = getClient();
+		addObjectToRepository(Collections.singletonList(expectedClient), allClients);
+		Client actualClient = clientService.find(DIFFERENT_BASE_ENTITY_ID);
+
+		assertNull(actualClient);
+	}
+
+	//TODO: Repository is returning time in UTC format.
+	//TODO: TEST value of Date edited field.
+	@Test
+	public void shouldUpdateClient() throws JSONException {
+		Client client = getClient();
+		addObjectToRepository(Collections.singletonList(client), allClients);
+		Client updatedClient = allClients.getAll().get(0);
+		updatedClient.setFirstName(LAST_NAME);
+
+		clientService.updateClient(updatedClient);
+
+		List<Client> actualClientList = allClients.getAll();
+		assertEquals(1, actualClientList.size());
+		assertObjectUpdate(updatedClient, actualClientList.get(0));
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void shouldThrowExceptionWhileUpdateIfNewClient() throws JSONException {
+		Client client = getClient();
+
+		clientService.updateClient(client);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void shouldThrowExceptionWhileUpdateIfClientIsNotFound() throws JSONException {
+		addObjectToRepository(Collections.singletonList(getClient()), allClients);
+		Client updatedClient = allClients.getAll().get(0);
+		allClients.removeAll();
+
+		clientService.updateClient(updatedClient);
+	}
+
+	@Test
+	public void shouldFindByServerVersion() {
+		addObjectToRepository(Collections.singletonList(getClient()), allClients);
+		Client expectedClient = allClients.getAll().get(0);
+
+		List<Client> actualClientList = clientService.findByServerVersion(expectedClient.getServerVersion() - 1);
+
+		assertEquals(1, actualClientList.size());
+		assertEquals(expectedClient, actualClientList.get(0));
+	}
+
+	@Test
+	public void shouldAddIfNewEntityInAddOrUpdateMethod() {
+		Client expectedClient = getClient();
+
+		Client actualClient = clientService.addorUpdate(expectedClient);
+
+		List<Client> dbClients = allClients.getAll();
+		assertEquals(1, dbClients.size());
+
+		assertEquals(expectedClient, actualClient);
+		assertNewObjectCreation(expectedClient, dbClients.get(0));
+
+	}
+
+	@Test
+	public void shouldUpdateIfExistingEntityInAddOrUpdateMethodRes() {
+		addObjectToRepository(Collections.singletonList(getClient()), allClients);
+		Client expectedClient = allClients.getAll().get(0);
+		expectedClient.setFirstName(LAST_NAME);
+		Long expectedServerVersion = expectedClient.getServerVersion();
+
+		Client actualClient = clientService.addorUpdate(expectedClient);
+
+		List<Client> dbClients = allClients.getAll();
+		assertEquals(1, dbClients.size());
+		assertEquals(expectedClient, actualClient);
+
+		assertNotEquals(expectedServerVersion, dbClients.get(0).getServerVersion());
+		assertObjectUpdate(expectedClient, dbClients.get(0));
+	}
+
+	@Test(expected = RuntimeException.class)
+	public void shouldThrowErrorIfBaseEntityIdNotFound() {
+		addObjectToRepository(Collections.singletonList(getClient()), allClients);
+		Client expectedClient = allClients.getAll().get(0);
+		expectedClient.setBaseEntityId(null);
+		clientService.addorUpdate(expectedClient);
+	}
+
+	@Test
+	public void shouldUpdateIfExistingEntityInAddOrUpdateMethodWithOutResettingServerVersion() {
+		addObjectToRepository(Collections.singletonList(getClient()), allClients);
+		Client expectedClient = allClients.getAll().get(0);
+		expectedClient.setFirstName(LAST_NAME);
+		Client actualClient = clientService.addorUpdate(expectedClient, false);
+
+		List<Client> dbClients = allClients.getAll();
+		assertEquals(1, dbClients.size());
+
+		assertEquals(expectedClient, actualClient);
+		assertObjectUpdate(expectedClient, dbClients.get(0));
 	}
 
 }

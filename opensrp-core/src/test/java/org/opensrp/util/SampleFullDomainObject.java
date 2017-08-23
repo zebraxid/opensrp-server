@@ -33,7 +33,7 @@ public class SampleFullDomainObject {
 
 	public static final DateTime deathDate = new DateTime(1l, DateTimeZone.UTC);
 
-	public static final Map<String, String> identifier = new HashMap<>();
+	public static Map<String, String> identifier = new HashMap<>();
 
 	public static final Map<String, Object> attributes = new HashMap<>();
 
