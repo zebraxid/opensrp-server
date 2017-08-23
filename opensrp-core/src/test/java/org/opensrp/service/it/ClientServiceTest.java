@@ -24,13 +24,11 @@ import java.util.Map;
 import static java.util.Arrays.asList;
 import static org.junit.Assert.*;
 import static org.opensrp.util.SampleFullDomainObject.*;
-import static org.utils.AssertionUtil.assertNewObjectCreation;
-import static org.utils.AssertionUtil.assertObjectUpdate;
-import static org.utils.AssertionUtil.assertTwoListAreSameIgnoringOrder;
+import static org.utils.AssertionUtil.*;
 import static org.utils.CouchDbAccessUtils.addObjectToRepository;
 import static org.utils.CouchDbAccessUtils.getCouchDbConnector;
-import static org.utils.CouchDbAccessUtils.purgeDateCreatedEditedAndVoidedField;
 
+//TODO: Write couch-lucene related method test cases e.g: findByCriteria
 public class ClientServiceTest extends BaseIntegrationTest {
 
 	@Autowired
@@ -46,7 +44,7 @@ public class ClientServiceTest extends BaseIntegrationTest {
 
 	@After
 	public void cleanUp() {
-		//allClients.removeAll();
+		allClients.removeAll();
 	}
 
 	@Test
