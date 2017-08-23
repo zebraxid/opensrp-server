@@ -1,10 +1,18 @@
 package org.utils;
 
+import com.github.ldriscoll.ektorplucene.LuceneAwareCouchDbConnector;
+import org.ektorp.CouchDbConnector;
+import org.ektorp.CouchDbInstance;
+import org.ektorp.http.StdHttpClient;
+import org.ektorp.impl.StdCouchDbInstance;
 import org.motechproject.dao.MotechBaseRepository;
 
+import java.io.IOException;
 import java.util.List;
 
 public final class CouchDbAccessUtils {
+
+	public static final String TEST_REMOTE_URL = "http://localhost:5984";
 
 	private CouchDbAccessUtils() {
 
@@ -14,5 +22,12 @@ public final class CouchDbAccessUtils {
 		for (T object : objectList) {
 			repository.add(object);
 		}
+	}
+
+	public static CouchDbConnector getCouchDbConnector(String dbName) throws IOException {
+		org.ektorp.http.HttpClient httpClient = new StdHttpClient.Builder().url(TEST_REMOTE_URL).build();
+		CouchDbInstance couchDbInstance = new StdCouchDbInstance(httpClient);
+		CouchDbConnector couchDbConnector = new LuceneAwareCouchDbConnector(dbName, couchDbInstance);
+		return couchDbConnector;
 	}
 }
