@@ -25,6 +25,8 @@ public abstract class OpenmrsApiService extends TestResourceLoader {
 	
 	final String ENCOUTER_TYPE_URL = "ws/rest/v1/encountertype";
 	
+	final String RELATIONSHIP_TYPE = "/ws/rest/v1/relationshiptype/";
+	
 	JSONObject person = new JSONObject();
 	
 	JSONObject personAttributeType = new JSONObject();
@@ -127,6 +129,13 @@ public abstract class OpenmrsApiService extends TestResourceLoader {
 	public void deleteEncounter(String uuid) {
 		
 		HttpUtil.delete(HttpUtil.removeEndingSlash(OPENMRS_URL) + "/ws/rest/v1/encounter/" + uuid + "?purge=true", "",
+		    openmrsUsername, openmrsPassword);
+		
+	}
+	
+	public void deleteRelationshipType(String uuid) {
+		
+		HttpUtil.delete(HttpUtil.removeEndingSlash(OPENMRS_URL) + RELATIONSHIP_TYPE + uuid + "?purge=true", "",
 		    openmrsUsername, openmrsPassword);
 		
 	}
