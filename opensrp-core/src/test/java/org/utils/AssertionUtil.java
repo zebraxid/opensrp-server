@@ -1,13 +1,12 @@
 package org.utils;
 
+import org.opensrp.domain.BaseDataObject;
 import org.opensrp.domain.BaseEntity;
 
 import java.util.List;
 
 import static java.util.Arrays.asList;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.utils.CouchDbAccessUtils.purgeDateCreatedEditedAndVoidedField;
 
 public final class AssertionUtil {
@@ -22,7 +21,7 @@ public final class AssertionUtil {
 				expectedList.containsAll(actualList) && actualList.containsAll(expectedList));
 	}
 
-	public static <T extends BaseEntity> void assertNewObjectCreation(T expectedObject, T actualObject) {
+	public static <T extends BaseDataObject> void assertNewObjectCreation(T expectedObject, T actualObject) {
 		assertNotNull(actualObject.getDateCreated());
 
 		purgeDateCreatedEditedAndVoidedField(asList(expectedObject, actualObject));
@@ -31,7 +30,7 @@ public final class AssertionUtil {
 
 	}
 
-	public static <T extends BaseEntity> void assertObjectUpdate(T expectedObject, T actualObject) {
+	public static <T extends BaseDataObject> void assertObjectUpdate(T expectedObject, T actualObject) {
 		assertNotNull(actualObject.getDateEdited());
 
 		purgeDateCreatedEditedAndVoidedField(asList(expectedObject, actualObject));
