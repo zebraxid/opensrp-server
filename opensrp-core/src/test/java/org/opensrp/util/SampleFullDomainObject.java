@@ -2,10 +2,8 @@ package org.opensrp.util;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
-import org.opensrp.domain.Address;
-import org.opensrp.domain.Client;
+import org.opensrp.domain.*;
 import org.opensrp.domain.Event;
-import org.opensrp.domain.Obs;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -110,6 +108,24 @@ public class SampleFullDomainObject {
 	public static final String FORM_SUBMISSION_FIELD = "formSubmissionField";
 	//**
 
+	//**
+	public enum  AppStateTokenName {
+		APP_STATE_TOKEN_NAME("appStateTokenName"),
+		DIFFERENT_APP_STATE_TOKEN_NAME("differentAppStateToken");
+
+		String value;
+
+		AppStateTokenName(String value) {
+			this.value = value;
+		}
+
+	};
+
+	public static final int LAST_EDIT_DATE = 1222;
+
+	public static final String APP_STATE_TOKEN_DESCRIPTION = "description";
+	//**
+
 	public static Address getAddress() {
 		Address address = new Address().withAddressType(addressType).withCountry(country).withStateProvince(stateProvince)
 				.withCityVillage(cityVillage).withCountyDistrict(countryDistrict).withSubDistrict(subDistrict)
@@ -136,5 +152,11 @@ public class SampleFullDomainObject {
 		event.setDetails(DETAILS);
 		event.addObs(getObs());
 		return event;
+	}
+
+	public static AppStateToken getAppStateToken() {
+		AppStateToken appStateToken = new AppStateToken(AppStateTokenName.APP_STATE_TOKEN_NAME.name(), VALUE, LAST_EDIT_DATE,
+				APP_STATE_TOKEN_DESCRIPTION);
+		return appStateToken;
 	}
 }
