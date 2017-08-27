@@ -53,7 +53,7 @@ public class PatientaServiceTest extends OpenmrsApiService {
 		addressFields.put("ADDRESS4", "ADDRESS4");
 		
 		Map<String, Object> attributes = new HashMap<>();
-		String attributeName = "Test";
+		String attributeName = "Testss";
 		JSONObject attribute = createPersonAttributeType("Description", attributeName);
 		attributes.put(attributeName, "test value");
 		List<Address> addresses = new ArrayList<>();

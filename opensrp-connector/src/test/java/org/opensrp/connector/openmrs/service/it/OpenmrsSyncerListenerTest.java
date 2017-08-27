@@ -71,7 +71,6 @@ public class OpenmrsSyncerListenerTest extends OpenmrsApiService {
 		allClients.removeAll();
 	}
 	
-	@Ignore
 	@Test
 	public void testPushToOpenMRS() throws JSONException {
 		
@@ -130,7 +129,6 @@ public class OpenmrsSyncerListenerTest extends OpenmrsApiService {
 		
 	}
 	
-	@Ignore
 	@Test
 	public void testPushEvent() throws JSONException {
 		
