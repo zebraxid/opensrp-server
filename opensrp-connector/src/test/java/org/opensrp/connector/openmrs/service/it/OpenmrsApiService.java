@@ -7,12 +7,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.opensrp.common.util.HttpResponse;
 import org.opensrp.common.util.HttpUtil;
+import org.opensrp.connector.openmrs.service.OpenmrsLocationService;
 import org.opensrp.connector.openmrs.service.TestResourceLoader;
 
 public abstract class OpenmrsApiService extends TestResourceLoader {
 	
+	OpenmrsLocationService ls;
+	
 	public OpenmrsApiService() throws IOException {
-		// TODO Auto-generated constructor stub
+		ls = new OpenmrsLocationService(openmrsOpenmrsUrl, openmrsUsername, openmrsPassword);
 	}
 	
 	final String OPENMRS_URL = openmrsOpenmrsUrl;
@@ -26,6 +29,8 @@ public abstract class OpenmrsApiService extends TestResourceLoader {
 	final String ENCOUTER_TYPE_URL = "ws/rest/v1/encountertype";
 	
 	final String RELATIONSHIP_TYPE = "/ws/rest/v1/relationshiptype/";
+	
+	final String LOCATION = "ws/rest/v1/location";
 	
 	JSONObject person = new JSONObject();
 	
@@ -136,6 +141,26 @@ public abstract class OpenmrsApiService extends TestResourceLoader {
 	public void deleteRelationshipType(String uuid) {
 		
 		HttpUtil.delete(HttpUtil.removeEndingSlash(OPENMRS_URL) + RELATIONSHIP_TYPE + uuid + "?purge=true", "",
+		    openmrsUsername, openmrsPassword);
+		
+	}
+	
+	public JSONObject createLocation(String name, String parentLocation) throws JSONException {
+		JSONObject location = new JSONObject();
+		String response = "";
+		location.put("name", name);
+		if (parentLocation != null || !parentLocation.isEmpty()) {
+			location.put("parentLocation", parentLocation);
+		}
+		response = HttpUtil.post(HttpUtil.removeEndingSlash(OPENMRS_URL) + "/" + LOCATION, "", location.toString(),
+		    openmrsUsername, openmrsPassword).body();
+		return new JSONObject(response);
+		
+	}
+	
+	public void deleteLocation(String uuid) {
+		
+		HttpUtil.delete(HttpUtil.removeEndingSlash(OPENMRS_URL) + "/" + LOCATION + "/" + uuid + "?purge=true", "",
 		    openmrsUsername, openmrsPassword);
 		
 	}
