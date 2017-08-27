@@ -581,7 +581,7 @@ public class EventServiceTest extends BaseIntegrationTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void shouldThrowExceptionIfExistingClientNotFound() {
-		Event updatedEvent = allEvents.getAll().get(0);
+		Event updatedEvent = getEvent();
 
 		eventService.mergeEvent(updatedEvent);
 	}
