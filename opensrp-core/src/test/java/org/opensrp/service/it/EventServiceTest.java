@@ -1,9 +1,12 @@
 package org.opensrp.service.it;
 
+import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.opensrp.BaseIntegrationTest;
+import org.opensrp.domain.Client;
 import org.opensrp.domain.Event;
+import org.opensrp.repository.AllClients;
 import org.opensrp.repository.AllEvents;
 import org.opensrp.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +20,7 @@ import java.util.Map;
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.opensrp.common.AllConstants.OpenSRPEvent.Client.ZEIR_ID;
 import static org.opensrp.util.SampleFullDomainObject.*;
 import static org.utils.AssertionUtil.assertNewObjectCreation;
 import static org.utils.AssertionUtil.assertObjectUpdate;
@@ -30,15 +34,20 @@ public class EventServiceTest extends BaseIntegrationTest {
 	private AllEvents allEvents;
 
 	@Autowired
+	private AllClients allClients;
+
+	@Autowired
 	private EventService eventService;
 
 	@Before
 	public void setUp() {
+		allClients.removeAll();
 		allEvents.removeAll();
 	}
 
 	@Before
 	public void cleanUp() {
+		//allClients.removeAll();
 		//allEvents.removeAll();
 	}
 
@@ -376,6 +385,7 @@ public class EventServiceTest extends BaseIntegrationTest {
 		assertEquals(1, dbEvents.size());
 		assertEquals(expectedEvent, actualEvent);
 
+		dbEvents.get(0).setServerVersion(null);
 		assertObjectUpdate(expectedEvent, dbEvents.get(0));
 	}
 
@@ -428,8 +438,151 @@ public class EventServiceTest extends BaseIntegrationTest {
 	}
 
 	@Test
-	public void shouldFindByObsConceptAndValue() {
+	public void shouldFindByObsFieldCodeKeyAndValue() {
+		Event expectedEvent = getEvent();
 
+		addObjectToRepository(Collections.singletonList(expectedEvent), allEvents);
+
+		List<Event> actualEvents = eventService.findEventsByConceptAndValue(FIELD_CODE, VALUE);
+
+		assertEquals(1, actualEvents.size());
+		assertEquals(expectedEvent, actualEvents.get(0));
 	}
 
+	@Test
+	public void shouldFindByBaseEntityAndEventType() {
+		Event expectedEvent = getEvent();
+		Event invalidEvent = getEvent();
+		invalidEvent.setEventType("diff");
+
+		addObjectToRepository(asList(expectedEvent, invalidEvent), allEvents);
+
+		List<Event> actualEvents = eventService.findByBaseEntityAndType(BASE_ENTITY_ID, EVENT_TYPE);
+
+		assertEquals(1, actualEvents.size());
+		assertEquals(expectedEvent, actualEvents.get(0));
+	}
+
+	@Test
+	public void shouldProcessOutOfArea() {
+		Client client = getClient();
+		client.addIdentifier(ZEIR_ID.toUpperCase(), "zeirId");
+		addObjectToRepository(Collections.singletonList(client), allClients);
+		Event existingEvent = getEvent();
+		existingEvent.setBaseEntityId(client.getBaseEntityId());
+		existingEvent.setEventType("Birth Registration");
+		addObjectToRepository(Collections.singletonList(existingEvent), allEvents);
+
+		//For null baseEntityId
+		Event expectedEvent = getEvent();
+		expectedEvent.setBaseEntityId(null);
+		expectedEvent.addIdentifier(ZEIR_ID.toUpperCase(), "zeirId");
+		Event actualEvent = eventService.processOutOfArea(expectedEvent);
+
+		assertNull(actualEvent.getIdentifier(ZEIR_ID.toUpperCase()));
+		assertEquals(BASE_ENTITY_ID, actualEvent.getBaseEntityId());
+		assertEquals(PROVIDER_ID, actualEvent.getDetails().get("out_of_catchment_provider_id"));
+		assertEquals(expectedEvent, actualEvent);
+
+		//For empty baseEntityId
+		expectedEvent = getEvent();
+		expectedEvent.setBaseEntityId("");
+		expectedEvent.addIdentifier(ZEIR_ID.toUpperCase(), "zeirId");
+		actualEvent = eventService.processOutOfArea(expectedEvent);
+
+		assertNull(actualEvent.getIdentifier(ZEIR_ID.toUpperCase()));
+		assertEquals(BASE_ENTITY_ID, actualEvent.getBaseEntityId());
+		assertEquals(PROVIDER_ID, actualEvent.getDetails().get("out_of_catchment_provider_id"));
+		assertEquals(expectedEvent, actualEvent);
+	}
+
+	@Test
+	public void shouldNotProcessOutOfAreaIfEventHasBaseEntityId() {
+		Client client = getClient();
+		client.addIdentifier(ZEIR_ID.toUpperCase(), "zeirId");
+		addObjectToRepository(Collections.singletonList(client), allClients);
+		Event existingEvent = getEvent();
+		existingEvent.setBaseEntityId(client.getBaseEntityId());
+		existingEvent.setEventType("Birth Registration");
+		addObjectToRepository(Collections.singletonList(existingEvent), allEvents);
+
+		Event expectedEvent = getEvent();
+		expectedEvent.setBaseEntityId(DIFFERENT_BASE_ENTITY_ID);
+		expectedEvent.addIdentifier(ZEIR_ID.toUpperCase(), "zeirId");
+
+		Event actualEvent = eventService.processOutOfArea(expectedEvent);
+
+		assertEquals("zeirId", actualEvent.getIdentifier(ZEIR_ID.toUpperCase()));
+		assertEquals(DIFFERENT_BASE_ENTITY_ID, actualEvent.getBaseEntityId());
+		assertNull(actualEvent.getDetails().get("out_of_catchment_provider_id"));
+		assertEquals(expectedEvent, actualEvent);
+	}
+
+	@Test
+	public void shouldNotProcessOutAreaIfNoClientFound() {
+		Event existingEvent = getEvent();
+		existingEvent.setBaseEntityId(BASE_ENTITY_ID);
+		existingEvent.setEventType("Birth Registration");
+		addObjectToRepository(Collections.singletonList(existingEvent), allEvents);
+
+		Event expectedEvent = getEvent();
+		expectedEvent.setBaseEntityId(null);
+		expectedEvent.addIdentifier(ZEIR_ID.toUpperCase(), "zeirId");
+
+		Event actualEvent = eventService.processOutOfArea(expectedEvent);
+
+		assertEquals("zeirId", actualEvent.getIdentifier(ZEIR_ID.toUpperCase()));
+		assertNull(actualEvent.getBaseEntityId());
+		assertNull(actualEvent.getDetails().get("out_of_catchment_provider_id"));
+		assertEquals(expectedEvent, actualEvent);
+	}
+
+	@Test
+	public void shouldNotProcessOutOfAreaIfNoExistingBirthRegistrationEventFound() {
+		Client client = getClient();
+		client.addIdentifier(ZEIR_ID.toUpperCase(), "zeirId");
+		addObjectToRepository(Collections.singletonList(client), allClients);
+		Event existingEvent = getEvent();
+		existingEvent.setBaseEntityId(client.getBaseEntityId());
+		addObjectToRepository(Collections.singletonList(existingEvent), allEvents);
+
+		//For null baseEntityId
+		Event expectedEvent = getEvent();
+		expectedEvent.setBaseEntityId(null);
+		expectedEvent.addIdentifier(ZEIR_ID.toUpperCase(), "zeirId");
+		Event actualEvent = eventService.processOutOfArea(expectedEvent);
+
+		assertEquals("zeirId", actualEvent.getIdentifier(ZEIR_ID.toUpperCase()));
+		assertNull(actualEvent.getBaseEntityId());
+		assertNull(actualEvent.getDetails().get("out_of_catchment_provider_id"));
+		assertEquals(expectedEvent, actualEvent);
+	}
+
+	@Test
+	public void shouldMergeAndUpdateExistingEvent() {
+		addObjectToRepository(Collections.singletonList(getEvent()), allEvents);
+		Event updatedEvent = allEvents.getAll().get(0);
+
+		updatedEvent.addIdentifier("Second_Identifier", DIFFERENT_BASE_ENTITY_ID);
+		updatedEvent.addObs(getObs().withComments("comments").withFieldCode(DIFFERENT_BASE_ENTITY_ID));
+
+		Event actualEvent = eventService.mergeEvent(updatedEvent);
+		List<Event> dbEvents = allEvents.getAll();
+
+		DateTime updatedEventDate = updatedEvent.getEventDate();
+		updatedEvent.setEventDate(null);
+		actualEvent.setEventDate(null);
+		actualEvent.setDateEdited(null);
+		assertEquals(1, dbEvents.size());
+		assertEquals(updatedEvent, actualEvent);
+		updatedEvent.setEventDate(updatedEventDate);
+		assertObjectUpdate(updatedEvent, dbEvents.get(0));
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void shouldThrowExceptionIfExistingClientNotFound() {
+		Event updatedEvent = allEvents.getAll().get(0);
+
+		eventService.mergeEvent(updatedEvent);
+	}
 }
