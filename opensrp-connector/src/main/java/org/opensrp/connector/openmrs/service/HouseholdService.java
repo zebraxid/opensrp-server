@@ -77,7 +77,7 @@ public class HouseholdService extends OpenmrsService {
 	public void saveHH(OpenmrsHouseHold household, boolean ignoreExisting) throws JSONException {
 		String hhrel = "Household Head";
 		JSONObject hhheadrel = findRelationshipTypeMatching(hhrel);
-		if (hhheadrel == null) {//i think never return null but error.
+		if (hhheadrel == null) {
 			createRelationshipType(hhrel, "Dependent", "Household Head and Member relationship created by OpenSRP");
 		}
 		
@@ -94,10 +94,8 @@ public class HouseholdService extends OpenmrsService {
 				//skip Data push for now
 			} else {
 				JSONObject hhMemEx = patientService.getPatientByIdentifier(m.getClient().getBaseEntityId());
-				
 				JSONObject mp = ignoreExisting && hhMemEx != null ? hhMemEx : patientService.createPatient(m.getClient());
 				JSONObject me = encounterService.createEncounter(m.getEvent().get(0));
-				
 				createRelationship(hhp.getString("uuid"), hhrel, mp.getString("uuid"));
 			}
 		}
