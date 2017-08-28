@@ -2,12 +2,18 @@ package org.opensrp.util;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
+import org.opensrp.api.domain.*;
 import org.opensrp.domain.*;
+import org.opensrp.domain.Address;
+import org.opensrp.domain.Client;
 import org.opensrp.domain.Event;
+import org.opensrp.domain.Location;
+import org.opensrp.domain.Obs;
+import org.opensrp.domain.Provider;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+
+import static java.util.Arrays.asList;
 
 public class SampleFullDomainObject {
 
@@ -36,6 +42,8 @@ public class SampleFullDomainObject {
 	public static final DateTime deathDate = new DateTime(1l, DateTimeZone.UTC);
 
 	public static final String FULL_NAME = "full name";
+
+	public static final String LOCATION_NAME = "locationName";
 
 	public static Map<String, String> identifier = new HashMap<>();
 
@@ -140,6 +148,10 @@ public class SampleFullDomainObject {
 	public static final String APP_STATE_TOKEN_DESCRIPTION = "description";
 	//**
 
+	//** LOCATION RELATED
+	public static Set<String> locationTags = new HashSet<>(asList("tags1", "tags2"));
+	//**
+
 	public static Address getAddress() {
 		Address address = new Address().withAddressType(addressType).withCountry(country).withStateProvince(stateProvince)
 				.withCityVillage(cityVillage).withCountyDistrict(countryDistrict).withSubDistrict(subDistrict)
@@ -182,5 +194,17 @@ public class SampleFullDomainObject {
 	public static Provider getProvider() {
 		Provider provider = new Provider(BASE_ENTITY_ID, FULL_NAME);
 		return provider;
+	}
+
+	public static Location getDomainLocation() {
+		Location location = new Location(LOCATION_ID, LOCATION_NAME, getAddress(), identifier, null, locationTags,
+				attributes);
+		return location;
+	}
+
+	public static org.opensrp.api.domain.Location getApiLocation() {
+		org.opensrp.api.domain.Location location = new org.opensrp.api.domain.Location(LOCATION_ID, LOCATION_NAME, null,
+				identifier, null, locationTags, attributes);
+		return location;
 	}
 }
