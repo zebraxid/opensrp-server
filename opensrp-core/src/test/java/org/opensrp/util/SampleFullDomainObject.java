@@ -35,6 +35,8 @@ public class SampleFullDomainObject {
 
 	public static final DateTime deathDate = new DateTime(1l, DateTimeZone.UTC);
 
+	public static final String FULL_NAME = "full name";
+
 	public static Map<String, String> identifier = new HashMap<>();
 
 	public static final Map<String, Object> attributes = new HashMap<>();
@@ -175,5 +177,10 @@ public class SampleFullDomainObject {
 	public static ErrorTrace getErrorTrace() {
 		ErrorTrace errorTrace = new ErrorTrace(RECORD_ID, EPOCH_DATE_TIME, ERROR_NAME, OCCURED_AT, STACK_TRACE, SOLVED);
 		return errorTrace;
+	}
+
+	public static Provider getProvider() {
+		Provider provider = new Provider(BASE_ENTITY_ID, FULL_NAME);
+		return provider;
 	}
 }
