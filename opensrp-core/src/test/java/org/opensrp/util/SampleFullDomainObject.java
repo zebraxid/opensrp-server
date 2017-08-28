@@ -108,10 +108,22 @@ public class SampleFullDomainObject {
 	public static final String FORM_SUBMISSION_FIELD = "formSubmissionField";
 	//**
 
-	//**
-	public enum  AppStateTokenName {
-		APP_STATE_TOKEN_NAME("appStateTokenName"),
-		DIFFERENT_APP_STATE_TOKEN_NAME("differentAppStateToken");
+	//** ERROR TRACE RELATED
+	public static final String RECORD_ID = "recordId";
+
+	public static final DateTime EPOCH_DATE_TIME = new DateTime(0l, DateTimeZone.UTC);
+
+	public static final String ERROR_NAME = "errorName";
+
+	public static final String OCCURED_AT = "occuredAt";
+
+	public static final String STACK_TRACE = "stackTrace";
+
+	public static final String SOLVED = "solved";
+
+	//** APP STATE TOKEN RELATED
+	public enum AppStateTokenName {
+		APP_STATE_TOKEN_NAME("appStateTokenName"), DIFFERENT_APP_STATE_TOKEN_NAME("differentAppStateToken");
 
 		String value;
 
@@ -119,7 +131,7 @@ public class SampleFullDomainObject {
 			this.value = value;
 		}
 
-	};
+	}
 
 	public static final int LAST_EDIT_DATE = 1222;
 
@@ -158,5 +170,10 @@ public class SampleFullDomainObject {
 		AppStateToken appStateToken = new AppStateToken(AppStateTokenName.APP_STATE_TOKEN_NAME.name(), VALUE, LAST_EDIT_DATE,
 				APP_STATE_TOKEN_DESCRIPTION);
 		return appStateToken;
+	}
+
+	public static ErrorTrace getErrorTrace() {
+		ErrorTrace errorTrace = new ErrorTrace(RECORD_ID, EPOCH_DATE_TIME, ERROR_NAME, OCCURED_AT, STACK_TRACE, SOLVED);
+		return errorTrace;
 	}
 }
