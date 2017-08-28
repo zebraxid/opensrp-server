@@ -6,8 +6,6 @@ import java.io.IOException;
 import java.util.Properties;
 
 import org.opensrp.connector.dhis2.DHIS2DatasetPush;
-import org.opensrp.connector.openmrs.service.EncounterService;
-import org.opensrp.connector.openmrs.service.PatientService;
 import org.opensrp.form.domain.FormSubmission;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.DefaultResourceLoader;
@@ -45,6 +43,10 @@ public class TestResourceLoader {
 	
 	protected OpenmrsLocationService openmrsLocationService;
 	
+	protected String couchDBUserName;
+	
+	protected String couchDBPassword;
+	
 	public TestResourceLoader() throws IOException {
 		Resource resource = new ClassPathResource("/opensrp.properties");
 		Properties props = PropertiesLoaderUtils.loadProperties(resource);
@@ -65,6 +67,8 @@ public class TestResourceLoader {
 		this.openmrsLocationService = new OpenmrsLocationService(openmrsOpenmrsUrl, openmrsUsername, openmrsPassword);
 		this.dhis2DatasetPush = new DHIS2DatasetPush(dhis2Url, dhis2Username, dhis2Password);
 		this.encounterService.setPatientService(patientService);
+		couchDBUserName = props.getProperty("couchdb.username");
+		couchDBPassword = props.getProperty("couchdb.password");
 	}
 	
 	protected FormSubmission getFormSubmissionFor(String formName, Integer number) throws JsonIOException, IOException {

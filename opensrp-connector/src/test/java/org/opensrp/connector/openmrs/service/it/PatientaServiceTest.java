@@ -41,7 +41,7 @@ public class PatientaServiceTest extends OpenmrsApiService {
 	}
 	
 	@Test
-	public void shouldCreatePerson() throws JSONException {
+	public void shouldCreatePatient() throws JSONException {
 		String fn = "jack";
 		String mn = "bgu";
 		String ln = "nil";
