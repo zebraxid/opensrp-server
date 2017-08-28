@@ -64,6 +64,7 @@ public class LocationService {
 
 	}
 
+	// FIXME: 8/28/17 api.Location to domain.Location doens't set id field.
 	public void updateLocation(Location location) {
 		org.opensrp.domain.Location domainLocation = new org.opensrp.domain.Location()
 				.withLocationId(location.getLocationId()).withName(location.getName()).withTags(location.getTags())
