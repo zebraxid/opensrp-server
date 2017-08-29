@@ -6,6 +6,7 @@ import org.joda.time.DateTimeZone;
 import org.opensrp.api.domain.*;
 import org.opensrp.domain.*;
 import org.opensrp.domain.Address;
+import org.opensrp.domain.BaseEntity;
 import org.opensrp.domain.Client;
 import org.opensrp.domain.Event;
 import org.opensrp.domain.Location;
@@ -266,5 +267,10 @@ public class SampleFullDomainObject {
 	public static User getUser() {
 		User user = new User(BASE_ENTITY_ID, USER_NAME, PASSWORD, SALT, USER_STATUS, ROLES, PERMISSIONS);
 		return user;
+	}
+
+	public static BaseEntity getBaseEntity() {
+		BaseEntity baseEntity = new BaseEntity(BASE_ENTITY_ID, identifier, attributes, asList(getAddress()));
+		return baseEntity;
 	}
 }
