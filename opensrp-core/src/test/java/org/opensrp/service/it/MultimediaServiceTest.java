@@ -47,7 +47,7 @@ public class MultimediaServiceTest extends BaseIntegrationTest {
 
 	@After
 	public void cleanUp() {
-		//multimediaRepository.removeAll();
+		multimediaRepository.removeAll();
 		deleteFolders("../multimedia");
 	}
 
