@@ -35,7 +35,7 @@ public class UserServiceTest extends BaseIntegrationTest {
 
 	@After
 	public void cleanUp() {
-		//allUsers.removeAll();
+		allUsers.removeAll();
 	}
 
 	@Test

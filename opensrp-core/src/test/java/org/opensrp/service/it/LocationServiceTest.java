@@ -34,7 +34,7 @@ public class LocationServiceTest extends BaseIntegrationTest {
 
 	@After
 	public void cleanUp() {
-		//allLocations.removeAll();
+		allLocations.removeAll();
 	}
 
 	@Test

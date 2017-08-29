@@ -34,7 +34,7 @@ public class BaseEntityServiceTest extends BaseIntegrationTest {
 
 	@After
 	public void cleanUp() {
-		//allBaseEntities.removeAll();
+		allBaseEntities.removeAll();
 	}
 
 	@Test

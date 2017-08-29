@@ -35,7 +35,7 @@ public class ReportServiceTest extends BaseIntegrationTest {
 
 	@After
 	public void cleanUp() {
-		//allReports.removeAll();
+		allReports.removeAll();
 	}
 
 	@Test

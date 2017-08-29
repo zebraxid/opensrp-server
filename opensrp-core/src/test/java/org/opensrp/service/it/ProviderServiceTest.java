@@ -35,7 +35,7 @@ public class ProviderServiceTest extends BaseIntegrationTest {
 
 	@After
 	public void cleanUp() {
-		//allProviders.removeAll();
+		allProviders.removeAll();
 	}
 
 	@Test
@@ -85,7 +85,6 @@ public class ProviderServiceTest extends BaseIntegrationTest {
 		List<Provider> actualProviders = allProviders.getAll();
 		assertEquals(1, actualProviders.size());
 		assertEquals(updatedProvider, actualProviders.get(0));
-
 
 	}
 }

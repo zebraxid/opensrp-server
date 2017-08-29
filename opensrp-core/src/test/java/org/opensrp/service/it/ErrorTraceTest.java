@@ -36,7 +36,7 @@ public class ErrorTraceTest extends BaseIntegrationTest {
 
 	@After
 	public void cleanUp() {
-		//allErrorTrace.removeAll();
+		allErrorTrace.removeAll();
 	}
 
 	@Test

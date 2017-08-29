@@ -38,7 +38,7 @@ public class ConfigServiceTest extends BaseIntegrationTest {
 
 	@After
 	public void cleanUp() {
-		//allAppStateTokens.removeAll();
+		allAppStateTokens.removeAll();
 	}
 
 	@Test

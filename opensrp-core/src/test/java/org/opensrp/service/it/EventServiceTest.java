@@ -47,8 +47,8 @@ public class EventServiceTest extends BaseIntegrationTest {
 
 	@Before
 	public void cleanUp() {
-		//allClients.removeAll();
-		//allEvents.removeAll();
+		allClients.removeAll();
+		allEvents.removeAll();
 	}
 
 	@Test
