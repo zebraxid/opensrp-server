@@ -13,6 +13,7 @@ import org.opensrp.domain.Location;
 import org.opensrp.domain.Obs;
 import org.opensrp.domain.Provider;
 import org.opensrp.domain.User;
+import org.opensrp.dto.form.MultimediaDTO;
 
 import java.util.*;
 
@@ -195,6 +196,16 @@ public class SampleFullDomainObject {
 	public static final List<String> PERMISSIONS = asList("permission1", "permission2");
 	//**
 
+	//** MULTIMEDIA RELATED
+	public static final String FILE_CATEGORY = "fileCategory";
+
+	public static final String FILE_PATH = "filePath";
+
+	public static final String CONTENT_TYPE = "contentType";
+
+	public static final String CASE_ID = "caseId";
+	//**
+
 	public static Address getAddress() {
 		Address address = new Address().withAddressType(addressType).withCountry(country).withStateProvince(stateProvince)
 				.withCityVillage(cityVillage).withCountyDistrict(countryDistrict).withSubDistrict(subDistrict)
@@ -272,5 +283,15 @@ public class SampleFullDomainObject {
 	public static BaseEntity getBaseEntity() {
 		BaseEntity baseEntity = new BaseEntity(BASE_ENTITY_ID, identifier, attributes, asList(getAddress()));
 		return baseEntity;
+	}
+
+	public static Multimedia getMultimedia() {
+		Multimedia multimedia = new Multimedia(CASE_ID, PROVIDER_ID, CONTENT_TYPE, FILE_PATH, FILE_CATEGORY);
+		return multimedia;
+	}
+
+	public static MultimediaDTO getMultimediaDTO(String contentType) {
+		MultimediaDTO multimediaDTO = new MultimediaDTO(CASE_ID, PROVIDER_ID, contentType, FILE_PATH, FILE_CATEGORY);
+		return multimediaDTO;
 	}
 }
