@@ -1,5 +1,6 @@
 package org.opensrp.util;
 
+import com.sun.org.apache.regexp.internal.RE;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.opensrp.api.domain.*;
@@ -10,6 +11,7 @@ import org.opensrp.domain.Event;
 import org.opensrp.domain.Location;
 import org.opensrp.domain.Obs;
 import org.opensrp.domain.Provider;
+import org.opensrp.domain.User;
 
 import java.util.*;
 
@@ -152,6 +154,46 @@ public class SampleFullDomainObject {
 	public static Set<String> locationTags = new HashSet<>(asList("tags1", "tags2"));
 	//**
 
+	//** HIA2 INDICATOR RELATED
+	public static final String INDICATOR_CODE = "indicatorCode";
+
+	public static final String HIA2_INDICATOR_LABEL = "hia2IndicatorLabel";
+
+	public static final String DHIS_ID = "dhisId";
+
+	public static final String HIA_2_DESCRIPTION = "hia2Description";
+
+	public static final String HIA2_CATEGORY = "hia2Category";
+
+	public static final String HIA2_VALUE = "hia2Value";
+
+	public static final String HIA2_UPDATED_AT = "hia2UpdatedAt";
+	//**
+
+	//** REPORT RELATED
+	public static final String REPORT_TYPE = "reportType";
+
+	public static final String REPORT_STATUS = "reportStatus";
+
+	public static final int REPORT_VERSION = 222;
+
+	public static final int REPORT_DURATION = 3434;
+	//**
+
+	//** USER RELATED
+	public static final String USER_NAME = "userName";
+
+	public static final String PASSWORD = "password";
+
+	public static final String SALT = "salt";
+
+	public static final String USER_STATUS = "userStatus";
+
+	public static final List<String> ROLES = asList("role1", "role2");
+
+	public static final List<String> PERMISSIONS = asList("permission1", "permission2");
+	//**
+
 	public static Address getAddress() {
 		Address address = new Address().withAddressType(addressType).withCountry(country).withStateProvince(stateProvince)
 				.withCityVillage(cityVillage).withCountyDistrict(countryDistrict).withSubDistrict(subDistrict)
@@ -206,5 +248,23 @@ public class SampleFullDomainObject {
 		org.opensrp.api.domain.Location location = new org.opensrp.api.domain.Location(LOCATION_ID, LOCATION_NAME, null,
 				identifier, null, locationTags, attributes);
 		return location;
+	}
+
+	public static Hia2Indicator getHia2Indicator() {
+		Hia2Indicator hia2Indicator = new Hia2Indicator(INDICATOR_CODE, HIA2_INDICATOR_LABEL, DHIS_ID, HIA_2_DESCRIPTION,
+				HIA2_CATEGORY, HIA2_VALUE, PROVIDER_ID, HIA2_UPDATED_AT);
+		return hia2Indicator;
+	}
+
+	public static Report getReport() {
+		Report report = new Report(BASE_ENTITY_ID, LOCATION_ID, EPOCH_DATE_TIME, REPORT_TYPE, FORM_SUBMISSION_ID,
+				PROVIDER_ID, REPORT_STATUS, REPORT_VERSION, REPORT_DURATION, asList(getHia2Indicator()));
+		report.setIdentifiers(identifier);
+		return report;
+	}
+
+	public static User getUser() {
+		User user = new User(BASE_ENTITY_ID, USER_NAME, PASSWORD, SALT, USER_STATUS, ROLES, PERMISSIONS);
+		return user;
 	}
 }
