@@ -94,8 +94,10 @@ public class HouseholdService extends OpenmrsService {
 				//skip Data push for now
 			} else {
 				JSONObject hhMemEx = patientService.getPatientByIdentifier(m.getClient().getBaseEntityId());
+				
 				JSONObject mp = ignoreExisting && hhMemEx != null ? hhMemEx : patientService.createPatient(m.getClient());
 				JSONObject me = encounterService.createEncounter(m.getEvent().get(0));
+				
 				createRelationship(hhp.getString("uuid"), hhrel, mp.getString("uuid"));
 			}
 		}

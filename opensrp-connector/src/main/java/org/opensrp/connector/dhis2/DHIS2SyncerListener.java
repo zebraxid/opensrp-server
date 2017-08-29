@@ -35,7 +35,7 @@ public class DHIS2SyncerListener {
 	@MotechListener(subjects = DHIS2Constants.DHIS2_TRACK_DATA_SYNCER_SUBJECT)
 	public void pushToDHIS2(MotechEvent event) {
 		try {
-			System.out.println("RUNNING " + event.getSubject());
+			
 			Long start = 0l;
 			List<DHIS2Marker> lastsync = allDHIS2Marker.findByName(DHIS2Constants.DHIS2_TRACK_DATA_SYNCER_VERSION_MARKER);
 			System.err.println(lastsync.size());
@@ -58,14 +58,14 @@ public class DHIS2SyncerListener {
 				
 			}
 			allDHIS2Marker.update();
-			System.out.println("RUNNING FOR EVENTS");
+			
 		}
 		catch (Exception ex) {
 			ex.printStackTrace();
 		}
 	}
 	
-	private void sentTrackCaptureDataToDHIS2(Client client) throws JSONException {
+	public JSONObject sentTrackCaptureDataToDHIS2(Client client) throws JSONException {
 		
 		JSONObject clientData = new JSONObject();
 		JSONArray clientAttribute = new JSONArray();
@@ -125,6 +125,7 @@ public class DHIS2SyncerListener {
 		clientData.put("attributes", clientAttribute);
 		clientData.put("trackedEntity", "MCPQUTHX1Ze");
 		clientData.put("orgUnit", "IDc0HEyjhvL");
-		dhis2TrackCaptureConnector.trackCaptureDataSendToDHIS2(clientData);
+		
+		return dhis2TrackCaptureConnector.trackCaptureDataSendToDHIS2(clientData);
 	}
 }
