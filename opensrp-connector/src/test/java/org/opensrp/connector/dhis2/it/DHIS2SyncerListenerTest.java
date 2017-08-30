@@ -9,12 +9,16 @@ import java.util.List;
 import java.util.Map;
 
 import org.joda.time.DateTime;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.motechproject.scheduler.domain.MotechEvent;
+import org.opensrp.common.AllConstants.DHIS2Constants;
 import org.opensrp.connector.dhis2.DHIS2SyncerListener;
+import org.opensrp.connector.dhis2.Dhis2HttpUtils;
 import org.opensrp.connector.openmrs.service.TestResourceLoader;
 import org.opensrp.domain.Client;
 import org.opensrp.repository.AllClients;
@@ -37,13 +41,16 @@ public class DHIS2SyncerListenerTest extends TestResourceLoader {
 	@Autowired
 	private DHIS2SyncerListener dhis2SyncerListener;
 	
+	@Autowired
+	private Dhis2HttpUtils dhis2HttpUtils;
+	
 	@Before
 	public void setup() {
 		allClients.removeAll();
 	}
 	
 	@Test
-	public void testsentTrackCaptureDataToDHIS2() throws JSONException {
+	public void testPushToDHIS2() throws JSONException {
 		Client client = new Client("29").withFirstName("Jared").withGender("male").withLastName("Omwenga")
 		        .withBirthdate(new DateTime(), false);
 		Map<String, String> identifiers = new HashMap<>();
@@ -59,15 +66,31 @@ public class DHIS2SyncerListenerTest extends TestResourceLoader {
 		attributes.put("Child_Birth_Certificate", "344");
 		client.setAttributes(attributes);
 		allClients.add(client);
-		JSONObject returns = dhis2SyncerListener.sentTrackCaptureDataToDHIS2(client);
+		MotechEvent event = new MotechEvent(DHIS2Constants.DHIS2_TRACK_DATA_SYNCER_SUBJECT);
+		JSONObject returns = dhis2SyncerListener.pushToDHIS2(event);
 		JSONObject response = returns.getJSONObject("response");
 		String expectedImport = "1";
 		String actualImport = response.getString("imported");
-		assertEquals(expectedImport, actualImport);
 		String expectedHttpStatusCode = "200";
 		String actualHttpStatusCode = returns.getString("httpStatusCode");
+		assertEquals(expectedImport, actualImport);
 		assertEquals(expectedHttpStatusCode, actualHttpStatusCode);
+		String trackReference = returns.getString("track");
 		
+		JSONArray importSummariesArray = response.getJSONArray("importSummaries");
+		JSONObject importSummariesJsonObject = importSummariesArray.getJSONObject(0);
+		String refId = importSummariesJsonObject.getString("reference");
+		deleteEnrollment(refId);
+		deleteTrackInstances(trackReference);
 	}
 	
+	public void deleteEnrollment(String id) {
+		String url = "enrollments/" + id;
+		dhis2HttpUtils.delete(url, "", "");
+	}
+	
+	public void deleteTrackInstances(String id) {
+		String url = "trackedEntityInstances/" + id;
+		dhis2HttpUtils.delete(url, "", "");
+	}
 }

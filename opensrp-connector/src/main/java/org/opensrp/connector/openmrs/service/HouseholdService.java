@@ -80,7 +80,6 @@ public class HouseholdService extends OpenmrsService {
 		if (hhheadrel == null) {
 			createRelationshipType(hhrel, "Dependent", "Household Head and Member relationship created by OpenSRP");
 		}
-		
 		JSONObject hhheadEx = patientService.getPatientByIdentifier(household.getHouseholdHead().getClient()
 		        .getBaseEntityId());
 		
@@ -94,10 +93,8 @@ public class HouseholdService extends OpenmrsService {
 				//skip Data push for now
 			} else {
 				JSONObject hhMemEx = patientService.getPatientByIdentifier(m.getClient().getBaseEntityId());
-				
 				JSONObject mp = ignoreExisting && hhMemEx != null ? hhMemEx : patientService.createPatient(m.getClient());
 				JSONObject me = encounterService.createEncounter(m.getEvent().get(0));
-				
 				createRelationship(hhp.getString("uuid"), hhrel, mp.getString("uuid"));
 			}
 		}

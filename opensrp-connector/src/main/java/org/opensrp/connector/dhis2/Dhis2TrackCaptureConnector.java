@@ -20,18 +20,20 @@ public class Dhis2TrackCaptureConnector extends DHIS2Service {
 	}
 	
 	public JSONObject trackCaptureDataSendToDHIS2(JSONObject payloadJsonObj) throws JSONException {
-		JSONObject Jobj = new JSONObject(Dhis2HttpUtils.post(
+		JSONObject responseTrackEntityInstance = new JSONObject(Dhis2HttpUtils.post(
 		    DHIS2_BASE_URL.replaceAll("\\s+", "") + "trackedEntityInstances", "", payloadJsonObj.toString(),
 		    DHIS2_USER.replaceAll("\\s+", ""), DHIS2_PWD.replaceAll("\\s+", "")).body());
-		JSONObject j = (JSONObject) Jobj.get("response");
-		System.err.println(j.get("reference"));
+		JSONObject trackEntityReference = (JSONObject) responseTrackEntityInstance.get("response");
+		
 		JSONObject enroll = new JSONObject();
-		enroll.put("trackedEntityInstance", j.get("reference"));
+		enroll.put("trackedEntityInstance", trackEntityReference.get("reference"));
 		enroll.put("program", "OprRhyWVIM6");
 		enroll.put("orgUnit", "IDc0HEyjhvL");
-		return new JSONObject(Dhis2HttpUtils.post(DHIS2_BASE_URL.replaceAll("\\s+", "") + "enrollments", "",
+		JSONObject response = new JSONObject(Dhis2HttpUtils.post(DHIS2_BASE_URL.replaceAll("\\s+", "") + "enrollments", "",
 		    enroll.toString(), DHIS2_USER.replaceAll("\\s+", ""), DHIS2_PWD.replaceAll("\\s+", "")).body());
 		
+		response.put("track", trackEntityReference.get("reference"));
+		return response;
+		
 	}
-	
 }

@@ -1,7 +1,10 @@
 package org.opensrp.connector.dhis2.it;
 
+import static junit.framework.Assert.assertEquals;
+
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import org.joda.time.DateTime;
@@ -12,6 +15,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.opensrp.connector.dhis2.DHIS2AggregateConnector;
+import org.opensrp.connector.dhis2.Dhis2HttpUtils;
 import org.opensrp.connector.openmrs.service.TestResourceLoader;
 import org.opensrp.domain.Event;
 import org.opensrp.domain.Obs;
@@ -38,13 +42,36 @@ public class DHIS2AggregateConnectorTest extends TestResourceLoader {
 	@Autowired
 	private DHIS2AggregateConnector dHIS2AggregateConnector;
 	
+	@Autowired
+	private Dhis2HttpUtils dhis2HttpUtils;
+	
 	@Before
 	public void setup() {
 		allEvents.removeAll();
 	}
 	
 	@Test
-	public void testGetAggregatedDataCount() throws JSONException {
+	public void testDeleteDHIS2Data() throws JSONException, IOException {
+		delete("IDc0HEyjhvL", "xMlVHstzOgC");
+		delete("IDc0HEyjhvL", "yNWOJ0OOOQD");
+		delete("IDc0HEyjhvL", "ii7lOGQqEq5");
+		delete("IDc0HEyjhvL", "Wtf7iSiQdUJ");
+		
+		delete("IDc0HEyjhvL", "XYqYdPiapTB");
+		delete("IDc0HEyjhvL", "ghHOqHNST3Z");
+		delete("IDc0HEyjhvL", "jY9SUZVxPHZ");
+		delete("IDc0HEyjhvL", "MNe2NbiMPi4");
+		
+		delete("IDc0HEyjhvL", "DF4I78hJCyE");
+		delete("IDc0HEyjhvL", "IMh3lVLICJM");
+		delete("IDc0HEyjhvL", "belqjUALCbL");
+		delete("IDc0HEyjhvL", "dYqIehgysyx");
+		delete("IDc0HEyjhvL", "MR1zrXS829u");
+		delete("IDc0HEyjhvL", "dxH32jHc21V");
+	}
+	
+	@Test
+	public void testGetAggregatedDataCount() throws JSONException, IOException {
 		Event expectedEvent = new Event("049e6b44-a9b5-4553-b463-004fa6743dc2", "Birth Registration", new DateTime(0l,
 		        DateTimeZone.UTC), "child", "provider", "5bf3b4ca-9482-4e85-ab7a-0c44e4edb329", "formSubmissionId");
 		expectedEvent.addIdentifier("key", "value");
@@ -198,12 +225,58 @@ public class DHIS2AggregateConnectorTest extends TestResourceLoader {
 		expectedVaccineEvent.setObs(vaccineObservations);
 		allEvents.add(expectedVaccineEvent);
 		JSONObject aggregatedDataSet = null;
-		String message = "";
+		
 		aggregatedDataSet = dHIS2AggregateConnector.getAggregatedDataCount();
 		JSONObject response = dHIS2AggregateConnector.aggredateDataSendToDHIS2(aggregatedDataSet);
-		System.err.println("response:::::Event:" + response);
-		message = aggregatedDataSet.toString();
-		System.out.println("Aggregated data send to DHIS2..." + aggregatedDataSet.toString());
+		String expectedImportedCount = "14";
+		JSONObject importCount = response.getJSONObject("importCount");
+		String actualImportedCount = importCount.getString("imported");
+		String expectedStatus = "SUCCESS";
+		String actualdStatus = response.getString("status");
+		assertEquals(expectedImportedCount, actualImportedCount);
+		assertEquals(expectedStatus, actualdStatus);
+		
+		delete("IDc0HEyjhvL", "xMlVHstzOgC");
+		delete("IDc0HEyjhvL", "yNWOJ0OOOQD");
+		delete("IDc0HEyjhvL", "ii7lOGQqEq5");
+		delete("IDc0HEyjhvL", "Wtf7iSiQdUJ");
+		
+		delete("IDc0HEyjhvL", "XYqYdPiapTB");
+		delete("IDc0HEyjhvL", "ghHOqHNST3Z");
+		delete("IDc0HEyjhvL", "jY9SUZVxPHZ");
+		delete("IDc0HEyjhvL", "MNe2NbiMPi4");
+		
+		delete("IDc0HEyjhvL", "DF4I78hJCyE");
+		delete("IDc0HEyjhvL", "IMh3lVLICJM");
+		delete("IDc0HEyjhvL", "belqjUALCbL");
+		delete("IDc0HEyjhvL", "dYqIehgysyx");
+		delete("IDc0HEyjhvL", "MR1zrXS829u");
+		delete("IDc0HEyjhvL", "dxH32jHc21V");
+		
+	}
+	
+	@Test(expected = Exception.class)
+	public void testException() throws JSONException {
+		JSONObject aggregatedDataSet = null;
+		dHIS2AggregateConnector.aggredateDataSendToDHIS2(aggregatedDataSet);
+	}
+	
+	public void delete(String ou, String de) throws JSONException, IOException {
+		Calendar now = Calendar.getInstance();
+		now.add(Calendar.MONTH, -1);
+		int year = now.get(Calendar.YEAR);
+		int month = now.get(Calendar.MONTH) + 1;
+		int length = (int) (Math.log10(month) + 1);
+		String formatted;
+		
+		if (length < 2) {
+			formatted = String.format("%02d", month);
+		} else {
+			formatted = Integer.toString(month);
+		}
+		String periodTime = Integer.toString(year) + formatted;
+		String url = "dataValues?pe=" + periodTime + "&ou=" + ou + "&de=" + de;
+		dhis2HttpUtils.delete(url, "", "");
 		
 	}
 	

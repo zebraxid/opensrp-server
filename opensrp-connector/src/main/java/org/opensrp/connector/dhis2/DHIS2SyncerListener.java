@@ -33,36 +33,33 @@ public class DHIS2SyncerListener {
 	}
 	
 	@MotechListener(subjects = DHIS2Constants.DHIS2_TRACK_DATA_SYNCER_SUBJECT)
-	public void pushToDHIS2(MotechEvent event) {
+	public JSONObject pushToDHIS2(MotechEvent event) {
+		JSONObject response = null;
 		try {
-			
 			Long start = 0l;
 			List<DHIS2Marker> lastsync = allDHIS2Marker.findByName(DHIS2Constants.DHIS2_TRACK_DATA_SYNCER_VERSION_MARKER);
-			System.err.println(lastsync.size());
+			
 			if (lastsync.size() == 0) {
 				allDHIS2Marker.add();
 				start = 0l;
 			} else {
 				start = lastsync == null || lastsync.get(0).getValue() == null ? 0 : lastsync.get(0).getValue();
 			}
-			
-			Long end = System.currentTimeMillis();
 			List<Client> cl = clientService.findByServerVersion(start);
 			for (Client c : cl) {
 				try {
-					sentTrackCaptureDataToDHIS2(c);
+					response = sentTrackCaptureDataToDHIS2(c);
 				}
 				catch (Exception e) {
 					System.out.println("DHIS2 Message:" + e.getMessage());
 				}
-				
 			}
 			allDHIS2Marker.update();
-			
 		}
 		catch (Exception ex) {
 			ex.printStackTrace();
 		}
+		return response;
 	}
 	
 	public JSONObject sentTrackCaptureDataToDHIS2(Client client) throws JSONException {

@@ -37,19 +37,19 @@ public class EventClient {
 	}
 	
 	public static Client getMotherClient() {
-		Client expectedClient = new Client("27").withFirstName("motherName").withGender("male")
+		Client expectedClient = new Client("2455").withFirstName("motherName").withGender("male")
 		        .withBirthdate(new DateTime(), false);
 		Map<String, String> identifiers = new HashMap<>();
-		identifiers.put("M_ZEIR_ID", "159451-37_mothers");
+		identifiers.put("M_ZEIR_ID", "159451-r7_mothers");
 		expectedClient.setIdentifiers(identifiers);
 		return expectedClient;
 	}
 	
 	public static Client getChildClient() {
-		Client expectedClient = new Client("29").withFirstName("childName").withGender("male")
+		Client expectedClient = new Client("errrr29").withFirstName("childName").withGender("male")
 		        .withBirthdate(new DateTime(), false);
 		Map<String, String> identifiers = new HashMap<>();
-		identifiers.put("ZEIR_ID", "159451-37_child");
+		identifiers.put("ZEIR_ID", "159451-r7_child");
 		expectedClient.setIdentifiers(identifiers);
 		List<String> list = new ArrayList<>();
 		list.add("27");

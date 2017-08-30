@@ -67,8 +67,8 @@ public class OpenmrsSyncerListenerTest extends OpenmrsApiService {
 	
 	@After
 	public void tearDown() {
-		allEvents.removeAll();
-		allClients.removeAll();
+		//allEvents.removeAll();
+		//allClients.removeAll();
 	}
 	
 	@Test
