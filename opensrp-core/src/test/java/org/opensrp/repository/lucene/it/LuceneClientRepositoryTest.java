@@ -26,6 +26,7 @@ import static org.opensrp.util.SampleFullDomainObject.*;
 import static org.utils.AssertionUtil.assertTwoListAreSameIgnoringOrder;
 import static org.utils.CouchDbAccessUtils.addObjectToRepository;
 
+//TODO: test birthDate range
 public class LuceneClientRepositoryTest extends BaseIntegrationTest {
 
 	@Autowired
@@ -56,6 +57,23 @@ public class LuceneClientRepositoryTest extends BaseIntegrationTest {
 
 		List<Client> actualClients = luceneClientRepository
 				.getByCriteria(expectedClient.getFirstName(), null, null, null, null, null, null, null, null, null, null,
+						null, null, null, null, null, null, null, null);
+
+		assertEquals(expectedClient, actualClients.get(0));
+	}
+
+	@Test(expected = RuntimeException.class)
+	public void shouldThrowExceptionIfNoCriteriaIsSelected() {
+		Client expectedClient = new Client(BASE_ENTITY_ID);
+		expectedClient.setFirstName(FIRST_NAME);
+		expectedClient.setBirthdate(EPOCH_DATE_TIME);
+		expectedClient.setAddresses(asList(getAddress()));
+		expectedClient.setDateCreated(EPOCH_DATE_TIME);
+
+		addObjectToRepository(Collections.singletonList(expectedClient), allClients);
+
+		List<Client> actualClients = luceneClientRepository
+				.getByCriteria(null, null, null, null, null, null, null, null, null, null, null,
 						null, null, null, null, null, null, null, null);
 
 		assertEquals(expectedClient, actualClients.get(0));
