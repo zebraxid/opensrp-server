@@ -220,6 +220,7 @@ public class SampleFullDomainObject {
 		return client;
 	}
 
+
 	public static Obs getObs() {
 		Obs obs = new Obs(CONCEPT, FIELD_DATA_TYPE, FIELD_CODE, PARENT_CODE, VALUE, COMMENTS_TEST, FORM_SUBMISSION_FIELD);
 		return obs;
