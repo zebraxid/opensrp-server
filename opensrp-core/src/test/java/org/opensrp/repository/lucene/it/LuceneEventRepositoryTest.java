@@ -120,7 +120,7 @@ public class LuceneEventRepositoryTest extends BaseIntegrationTest {
 		expectedEvent.setDateEdited(new DateTime(DateTimeZone.UTC));
 
 		Event expectedEvent2 = new Event();
-		expectedEvent2.setBaseEntityId(BASE_ENTITY_ID);
+		expectedEvent2.setBaseEntityId(DIFFERENT_BASE_ENTITY_ID);
 		expectedEvent2.setDateCreated(EPOCH_DATE_TIME);
 		expectedEvent2.setEventDate(new DateTime(DateTimeZone.UTC));
 		expectedEvent2.setEventType(EVENT_TYPE);
@@ -132,8 +132,9 @@ public class LuceneEventRepositoryTest extends BaseIntegrationTest {
 		addObjectToRepository(asList(expectedEvent, expectedEvent2), allEvents);
 
 		String teamIds = PROVIDER_ID + "," + DIFFERENT_BASE_ENTITY_ID;
+		String baseEntityIds = BASE_ENTITY_ID + "," + DIFFERENT_BASE_ENTITY_ID;
 		List<Event> actualEvents = luceneEventRepository
-				.getByCriteria(teamIds, PROVIDER_ID, LOCATION_ID, BASE_ENTITY_ID, EPOCH_DATE_TIME.getMillis(), null, "desc",
+				.getByCriteria(teamIds, PROVIDER_ID, LOCATION_ID, baseEntityIds, EPOCH_DATE_TIME.getMillis(), null, "desc",
 						100);
 
 		assertTwoListAreSameIgnoringOrder(asList(expectedEvent, expectedEvent2), actualEvents);
@@ -141,7 +142,7 @@ public class LuceneEventRepositoryTest extends BaseIntegrationTest {
 
 	//TODO: fix source
 	@Test(expected = NullPointerException.class)
-	public void shouldThrowExceptionImCriteriaWithTeamIdWithOutSortOrder() {
+	public void shouldThrowExceptionFindByCriteriaWithTeamIdWithOutSortOrder() {
 		addRandomInvalidEvents();
 		Event expectedEvent = new Event();
 		expectedEvent.setBaseEntityId(BASE_ENTITY_ID);
@@ -154,7 +155,7 @@ public class LuceneEventRepositoryTest extends BaseIntegrationTest {
 		expectedEvent.setDateEdited(new DateTime(DateTimeZone.UTC));
 
 		Event expectedEvent2 = new Event();
-		expectedEvent2.setBaseEntityId(BASE_ENTITY_ID);
+		expectedEvent2.setBaseEntityId(DIFFERENT_BASE_ENTITY_ID);
 		expectedEvent2.setDateCreated(EPOCH_DATE_TIME);
 		expectedEvent2.setEventDate(new DateTime(DateTimeZone.UTC));
 		expectedEvent2.setEventType(EVENT_TYPE);
@@ -166,8 +167,9 @@ public class LuceneEventRepositoryTest extends BaseIntegrationTest {
 		addObjectToRepository(asList(expectedEvent, expectedEvent2), allEvents);
 
 		String teamIds = PROVIDER_ID + "," + DIFFERENT_BASE_ENTITY_ID;
+		String baseEntityIds = BASE_ENTITY_ID + "," + DIFFERENT_BASE_ENTITY_ID;
 		List<Event> actualEvents = luceneEventRepository
-				.getByCriteria(teamIds, PROVIDER_ID, LOCATION_ID, BASE_ENTITY_ID, EPOCH_DATE_TIME.getMillis(), null, null,
+				.getByCriteria(teamIds, PROVIDER_ID, LOCATION_ID, baseEntityIds, EPOCH_DATE_TIME.getMillis(), null, null,
 						100);
 
 		assertTwoListAreSameIgnoringOrder(asList(expectedEvent, expectedEvent2), actualEvents);
