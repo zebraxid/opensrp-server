@@ -53,7 +53,7 @@ public class PatientaServiceTest extends OpenmrsApiService {
 		addressFields.put("ADDRESS4", "ADDRESS4");
 		
 		Map<String, Object> attributes = new HashMap<>();
-		String attributeName = "Testss";
+		String attributeName = "Attribute";
 		JSONObject attribute = createPersonAttributeType("Description", attributeName);
 		attributes.put(attributeName, "test value");
 		List<Address> addresses = new ArrayList<>();
@@ -75,12 +75,9 @@ public class PatientaServiceTest extends OpenmrsApiService {
 			System.err.println("patient:" + patient);
 			JSONObject person = patient.getJSONObject("person");
 			String personName = person.getString("display");
-			
 			String uuid = patient.getString("uuid");
 			deletePerson(uuid);
-			System.err.println("personName:" + personName);
 			assertEquals("Should equal Person:", fn + " " + mn + " " + ln, personName);
-			System.err.println("Attribute:" + attribute.getString("uuid"));
 			deletePersonAttributeType(attribute.getString("uuid"));
 		}
 		

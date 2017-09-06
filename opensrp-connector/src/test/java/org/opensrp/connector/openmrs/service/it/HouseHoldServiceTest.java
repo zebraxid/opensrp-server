@@ -7,8 +7,11 @@ import static org.opensrp.dto.BeneficiaryType.mother;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.joda.time.DateTime;
 import org.json.JSONException;
@@ -23,6 +26,7 @@ import org.opensrp.connector.openmrs.service.HouseholdService;
 import org.opensrp.connector.openmrs.service.OpenmrsSchedulerService;
 import org.opensrp.connector.openmrs.service.OpenmrsUserService;
 import org.opensrp.connector.openmrs.service.PatientService;
+import org.opensrp.domain.Address;
 import org.opensrp.domain.Client;
 import org.opensrp.domain.Event;
 import org.opensrp.dto.ActionData;
@@ -86,16 +90,7 @@ public class HouseHoldServiceTest extends OpenmrsApiService {
 	
 	@Before
 	public void setup() throws IOException {
-		/*ps = new PatientService(openmrsOpenmrsUrl, openmrsUsername, openmrsPassword);
-		us = new OpenmrsUserService(openmrsOpenmrsUrl, openmrsUsername, openmrsPassword);
-		es = new EncounterService(openmrsOpenmrsUrl, openmrsUsername, openmrsPassword);
-		es.setPatientService(ps);
-		es.setUserService(us);
-		hhs = new HouseholdService(openmrsOpenmrsUrl, openmrsUsername, openmrsPassword);
-		hhs.setPatientService(ps);
-		hhs.setEncounterService(es);
-		FormAttributeParser fam = new FormAttributeParser(formDirPath);
-		oc = new FormEntityConverter(fam);*/
+		
 	}
 	
 	@Test
@@ -168,6 +163,59 @@ public class HouseHoldServiceTest extends OpenmrsApiService {
 	public void testHHScheduleData() throws JSONException, ParseException, JsonIOException, IOException {
 		FormSubmission fs = getFormSubmissionFor("new_household_registration", 6);
 		
+		/**********/
+		
+		String fn = "gg";
+		String mn = "hu";
+		String ln = "hhh";
+		Map<String, String> addressFields = new HashMap<>();
+		addressFields.put("ADDRESS1", "ADDRESS1");
+		addressFields.put("ADDRESS2", "ADDRESS2");
+		addressFields.put("ADDRESS3", "ADDRESS3");
+		addressFields.put("ADDRESS4", "ADDRESS4");
+		addressFields.put("ADDRESS4", "ADDRESS4");
+		
+		Map<String, Object> attributes = new HashMap<>();
+		String attributeName = "Attribute";
+		JSONObject attribute = createPersonAttributeType("Description", attributeName);
+		attributes.put(attributeName, "test value");
+		List<Address> addresses = new ArrayList<>();
+		addresses.add(new Address("BIRTH", DateTime.now(), DateTime.now(), addressFields, "LAT", "LON", "PCODE", "SINDH",
+		        "PK"));
+		addresses.add(new Address("DEATH", DateTime.now(), DateTime.now(), addressFields, "LATd", "LONd", "dPCODE", "KPK",
+		        "PK"));
+		Map<String, Object> attribs = new HashMap<>();
+		
+		Client c = new Client(UUID.randomUUID().toString()).withFirstName(fn).withMiddleName(mn).withLastName(ln)
+		        .withBirthdate(new DateTime(), true).withDeathdate(new DateTime(), false).withGender("MALE");
+		
+		c.withAddresses(addresses).withAttributes(attributes);
+		c.withIdentifier("OpenSRP Thrive UID", "a3f2abf4-2699-4761-819a-cea739224165");
+		JSONObject patient = patientService.createPatient(c);
+		
+		Client c1 = new Client(UUID.randomUUID().toString()).withFirstName(fn).withMiddleName(mn).withLastName(ln)
+		        .withBirthdate(new DateTime(), true).withDeathdate(new DateTime(), false).withGender("MALE");
+		
+		c1.withAddresses(addresses).withAttributes(attributes);
+		c1.withIdentifier("OpenSRP Thrive UID", "babcd9d2-b3e9-4f6d-8a06-2df8f5fbf01t");
+		JSONObject patients = patientService.createPatient(c1);
+		
+		/*************/
+		String IdentifierType = "TestIdentifierType";
+		JSONObject identifier = patientService.createIdentifierType(IdentifierType, "description");
+		String identifierUuid = identifier.getString("uuid");
+		
+		String userName = "adminadmin";
+		String password = "Dotel@1234";
+		JSONObject person = createPerson(fn, mn, ln);
+		JSONObject usr = createUser(userName, password, fn, mn, ln);
+		System.err.println("usr:" + usr.toString());
+		String getUserName = us.getUser(userName).getUsername();
+		us.createProvider(userName, IdentifierType);
+		
+		JSONObject provider = us.getProvider(IdentifierType);
+		JSONObject personObject = provider.getJSONObject("person");
+		
 		Client hhhead = oc.getClientFromFormSubmission(fs);
 		Event ev = oc.getEventFromFormSubmission(fs);
 		Map<String, Map<String, Object>> dep = oc.getDependentClientsFromFormSubmission(fs);
@@ -193,9 +241,29 @@ public class HouseHoldServiceTest extends OpenmrsApiService {
 			if (hmenct == null) {
 				es.createEncounterType(ein.getEventType(), "Encounter type created to fullfill scheduling test pre-reqs");
 			}
+			
 		}
 		
+		/*JSONObject pt = patientService.getPatientByIdentifier(household.getHouseholdHead().getClient().getBaseEntityId());
+		
+		for (HouseholdMember m : household.getMembers()) {
+			System.err.println("Entity:" + m.getClient().getBaseEntityId());
+		}
+		System.err.println("household:" + household.getHouseholdHead().getClient().getBaseEntityId());*/
 		hhs.saveHH(household, true);
+		
+		deletePerson(person.getString("uuid"));
+		deleteUser(usr.getString("uuid"));
+		deleteIdentifierType(identifierUuid);
+		deleteProvider(provider.getString("uuid"));
+		deletePerson(personObject.getString("uuid").trim());
+		
+		String uuid = patient.getString("uuid");
+		deletePerson(uuid);
+		
+		String uuids = patients.getString("uuid");
+		
+		deletePerson(uuids);
 		
 	}
 	

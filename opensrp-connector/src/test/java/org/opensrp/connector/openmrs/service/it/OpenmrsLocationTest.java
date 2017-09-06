@@ -183,4 +183,16 @@ public class OpenmrsLocationTest extends OpenmrsApiService {
 		str[1] = secondLocation;
 		ls.getLocationTreeOf(str);
 	}
+	
+	@Test
+	public void testgetLocationTree() throws JSONException {
+		String expectedLocation = "testlocationofOpenmrs";
+		JSONObject responseLocation = createLocation(expectedLocation, "");
+		LocationTree lt = ls.getLocationTree();
+		deleteLocation(responseLocation.getString("uuid"));
+		Location location = lt.findLocation(responseLocation.getString("uuid"));
+		String actualLocation = location.getName();
+		assertEquals(expectedLocation, actualLocation);
+		
+	}
 }
