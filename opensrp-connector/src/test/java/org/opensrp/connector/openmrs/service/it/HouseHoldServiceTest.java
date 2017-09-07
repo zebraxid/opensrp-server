@@ -14,10 +14,10 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.joda.time.DateTime;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.opensrp.connector.openmrs.constants.OpenmrsHouseHold;
@@ -158,16 +158,15 @@ public class HouseHoldServiceTest extends OpenmrsApiService {
 		assertNotSame("2234frt", actualBIsToA);
 	}
 	
-	@Ignore
 	@Test
 	public void testHHScheduleData() throws JSONException, ParseException, JsonIOException, IOException {
 		FormSubmission fs = getFormSubmissionFor("new_household_registration", 6);
 		
-		/**********/
+		/*** create patient *******/
 		
-		String fn = "gg";
-		String mn = "hu";
-		String ln = "hhh";
+		String fn = "shumi";
+		String mn = "sumaita";
+		String ln = "khan";
 		Map<String, String> addressFields = new HashMap<>();
 		addressFields.put("ADDRESS1", "ADDRESS1");
 		addressFields.put("ADDRESS2", "ADDRESS2");
@@ -190,17 +189,17 @@ public class HouseHoldServiceTest extends OpenmrsApiService {
 		        .withBirthdate(new DateTime(), true).withDeathdate(new DateTime(), false).withGender("MALE");
 		
 		c.withAddresses(addresses).withAttributes(attributes);
-		c.withIdentifier("OpenSRP Thrive UID", "a3f2abf4-2699-4761-819a-cea739224165");
+		c.withIdentifier("OpenSRP Thrive UID", "a3f2abf4-2699-4761-819a-cea739224164");
 		JSONObject patient = patientService.createPatient(c);
 		
 		Client c1 = new Client(UUID.randomUUID().toString()).withFirstName(fn).withMiddleName(mn).withLastName(ln)
 		        .withBirthdate(new DateTime(), true).withDeathdate(new DateTime(), false).withGender("MALE");
 		
 		c1.withAddresses(addresses).withAttributes(attributes);
-		c1.withIdentifier("OpenSRP Thrive UID", "babcd9d2-b3e9-4f6d-8a06-2df8f5fbf01t");
+		c1.withIdentifier("OpenSRP Thrive UID", "babcd9d2-b3e9-4f6d-8a06-2df8f5fbf01f");
 		JSONObject patients = patientService.createPatient(c1);
 		
-		/*************/
+		/**** create provider *********/
 		String IdentifierType = "TestIdentifierType";
 		JSONObject identifier = patientService.createIdentifierType(IdentifierType, "description");
 		String identifierUuid = identifier.getString("uuid");
@@ -216,6 +215,7 @@ public class HouseHoldServiceTest extends OpenmrsApiService {
 		JSONObject provider = us.getProvider(IdentifierType);
 		JSONObject personObject = provider.getJSONObject("person");
 		
+		/*********************/
 		Client hhhead = oc.getClientFromFormSubmission(fs);
 		Event ev = oc.getEventFromFormSubmission(fs);
 		Map<String, Map<String, Object>> dep = oc.getDependentClientsFromFormSubmission(fs);
@@ -244,26 +244,47 @@ public class HouseHoldServiceTest extends OpenmrsApiService {
 			
 		}
 		
-		/*JSONObject pt = patientService.getPatientByIdentifier(household.getHouseholdHead().getClient().getBaseEntityId());
+		JSONObject response = hhs.saveHH(household, true);
 		
-		for (HouseholdMember m : household.getMembers()) {
-			System.err.println("Entity:" + m.getClient().getBaseEntityId());
-		}
-		System.err.println("household:" + household.getHouseholdHead().getClient().getBaseEntityId());*/
-		hhs.saveHH(household, true);
+		JSONArray encounters = response.getJSONArray("encounters");
+		JSONArray relationships = response.getJSONArray("relationships");
+		JSONObject hhEncounter = encounters.getJSONObject(0);
+		String hhEncounterUUID = hhEncounter.getString("uuid");
+		JSONObject hhEncounterType = hhEncounter.getJSONObject("encounterType");
+		String actualHHEncounterTypeName = hhEncounterType.getString("display");
 		
+		JSONObject memberEncounter = encounters.getJSONObject(1);
+		String memberEncounterUUID = memberEncounter.getString("uuid");
+		
+		JSONObject meEncounterType = memberEncounter.getJSONObject("encounterType");
+		String actualMEEncounterTypeName = meEncounterType.getString("display");
+		
+		JSONObject relationship = relationships.getJSONObject(0);
+		String relationshipUUID = relationship.getString("uuid");
+		JSONObject personB = relationship.getJSONObject("personB");
+		JSONObject personA = relationship.getJSONObject("personA");
+		String actualPersonBName = personB.getString("display");
+		String actualPersonAName = personA.getString("display");
+		
+		/* cleaning openmrs data */
+		deleteEncounter(hhEncounterUUID);
+		deleteEncounter(memberEncounterUUID);
+		
+		deleteRelation(relationshipUUID);
 		deletePerson(person.getString("uuid"));
 		deleteUser(usr.getString("uuid"));
 		deleteIdentifierType(identifierUuid);
 		deleteProvider(provider.getString("uuid"));
 		deletePerson(personObject.getString("uuid").trim());
-		
 		String uuid = patient.getString("uuid");
 		deletePerson(uuid);
-		
 		String uuids = patients.getString("uuid");
-		
 		deletePerson(uuids);
+		deletePersonAttributeType(attribute.getString("uuid"));
+		assertEquals("New Household Registration", actualHHEncounterTypeName);
+		assertEquals("Census and New Woman Registration", actualMEEncounterTypeName);
+		assertEquals(fn + " " + mn + " " + ln, actualPersonBName);
+		assertEquals(fn + " " + mn + " " + ln, actualPersonAName);
 		
 	}
 	
