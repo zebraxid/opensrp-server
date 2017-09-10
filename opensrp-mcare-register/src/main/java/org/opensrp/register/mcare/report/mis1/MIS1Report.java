@@ -19,9 +19,11 @@ import java.util.List;
  * 1. Go through the code to understand underlying desing patterns. <br>
  * 2. Don't use raw strings. Update <i>{@link org.opensrp.register.mcare.domain.Members}</i> class with key value. e.g: {@link org.opensrp.register.mcare.domain.Members.VaccineDose}. <br>
  * 3. Some report calculators are done partially e.g:{@link org.opensrp.register.mcare.report.mis1.maternityCare.ANCReportCalculator}. Others calculation can be done in same way. <br>
+ * 4. Read description of SRS in alfresco about color code. Color code is not implemented fully.<br>
+ * 5. Class diagram is not implemented fully. Members and Methods are not listed.
  * <br>
- * For a general understanding, this class represents the complete page of SRS with all the table. Every Report object {@link FamilyPlanningReport} is an table of SRS.
- * Every Report calculator object can be thought of an row of the table {@link org.opensrp.register.mcare.report.mis1.familyPlanning.birthControlMethdoUsagesCalculation.CondomMethodUsagesCalculator}, {@link org.opensrp.register.mcare.report.mis1.maternityCare.TTDoseReportCalculator}.
+ *<b>For a general understanding, this class represents the complete page of SRS with all the table. Every Report object {@link FamilyPlanningReport} is an table of SRS.
+ * Every Report calculator object can be thought of an row of the table {@link org.opensrp.register.mcare.report.mis1.familyPlanning.birthControlMethdoUsagesCalculation.CondomMethodUsagesCalculator}, {@link org.opensrp.register.mcare.report.mis1.maternityCare.TTDoseReportCalculator}.</b>
  * <br>
  *
  * @see <a href="http://doc.mpower-social.com:8080/share/page/document-details?nodeRef=workspace://SpacesStore/bb7b37bd-0d5a-4813-9903-33dce944b165">MIS1 Report SRS.</a>
