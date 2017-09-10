@@ -175,7 +175,7 @@ public class HouseHoldServiceTest extends OpenmrsApiService {
 		addressFields.put("ADDRESS4", "ADDRESS4");
 		
 		Map<String, Object> attributes = new HashMap<>();
-		String attributeName = "Attribute";
+		String attributeName = "HouseholdAttributeName";
 		JSONObject attribute = createPersonAttributeType("Description", attributeName);
 		attributes.put(attributeName, "test value");
 		List<Address> addresses = new ArrayList<>();
@@ -191,14 +191,14 @@ public class HouseHoldServiceTest extends OpenmrsApiService {
 		c.withAddresses(addresses).withAttributes(attributes);
 		c.withIdentifier("OpenSRP Thrive UID", "a3f2abf4-2699-4761-819a-cea739224164");
 		JSONObject patient = patientService.createPatient(c);
-		
+		System.err.println("Patient:" + patient);
 		Client c1 = new Client(UUID.randomUUID().toString()).withFirstName(fn).withMiddleName(mn).withLastName(ln)
 		        .withBirthdate(new DateTime(), true).withDeathdate(new DateTime(), false).withGender("MALE");
 		
 		c1.withAddresses(addresses).withAttributes(attributes);
 		c1.withIdentifier("OpenSRP Thrive UID", "babcd9d2-b3e9-4f6d-8a06-2df8f5fbf01f");
 		JSONObject patients = patientService.createPatient(c1);
-		
+		System.err.println("Patient:" + patients);
 		/**** create provider *********/
 		String IdentifierType = "TestIdentifierType";
 		JSONObject identifier = patientService.createIdentifierType(IdentifierType, "description");

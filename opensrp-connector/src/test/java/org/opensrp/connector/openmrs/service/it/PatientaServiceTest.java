@@ -19,6 +19,7 @@ import org.junit.runner.RunWith;
 import org.opensrp.connector.openmrs.service.PatientService;
 import org.opensrp.domain.Address;
 import org.opensrp.domain.Client;
+import org.opensrp.domain.Multimedia;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -72,7 +73,6 @@ public class PatientaServiceTest extends OpenmrsApiService {
 		if (patientService.getPatientByIdentifier(c.getBaseEntityId()) == null) {
 			
 			JSONObject patient = patientService.createPatient(c);
-			System.err.println("patient:" + patient);
 			JSONObject person = patient.getJSONObject("person");
 			String personName = person.getString("display");
 			String uuid = patient.getString("uuid");
@@ -83,4 +83,42 @@ public class PatientaServiceTest extends OpenmrsApiService {
 		
 	}
 	
+	@Test
+	public void testPatientImageUpload() throws IOException, JSONException {
+		
+		String fn = "moushumi";
+		String mn = "sumaita";
+		String ln = "khan";
+		Map<String, String> addressFields = new HashMap<>();
+		addressFields.put("ADDRESS1", "ADDRESS1");
+		addressFields.put("ADDRESS2", "ADDRESS2");
+		addressFields.put("ADDRESS3", "ADDRESS3");
+		addressFields.put("ADDRESS4", "ADDRESS4");
+		addressFields.put("ADDRESS4", "ADDRESS4");
+		Map<String, Object> attributes = new HashMap<>();
+		String attributeName = "PatientAttributeName";
+		JSONObject attribute = createPersonAttributeType("Description", attributeName);
+		attributes.put(attributeName, "test value");
+		List<Address> addresses = new ArrayList<>();
+		Client c1 = new Client(UUID.randomUUID().toString()).withFirstName(fn).withMiddleName(mn).withLastName(ln)
+		        .withBirthdate(new DateTime(), true).withDeathdate(new DateTime(), false).withGender("MALE");
+		
+		c1.withAddresses(addresses).withAttributes(attributes);
+		c1.withIdentifier("OpenSRP Thrive UID", "yuucd9d2-b3e9-4fud-8a06-udf8f5fbf018");
+		JSONObject patient = patientService.createPatient(c1);
+		
+		Multimedia multimedia = new Multimedia();
+		multimedia.setFilePath("/multimedia/sumon/images/1.jpg");
+		multimedia.setCaseId("74cc2645-8202-4f12-a7b0-e73f7c49eea9");
+		multimedia.setFileCategory("dp");
+		multimedia.setProviderId("sumon");
+		multimedia.setContentType("Image");
+		String expectedResponse = "Patient Image is  successfully uploaded !";
+		List<String> resposne = patientService.patientImageUpload(multimedia);
+		String uuids = patient.getString("uuid");
+		deletePerson(uuids);
+		
+		deletePersonAttributeType(attribute.getString("uuid"));
+		assertEquals(expectedResponse, resposne.get(0));
+	}
 }
