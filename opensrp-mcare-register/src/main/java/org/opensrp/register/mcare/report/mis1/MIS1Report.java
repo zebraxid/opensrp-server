@@ -1,39 +1,67 @@
 package org.opensrp.register.mcare.report.mis1;
 
-
 import org.opensrp.register.mcare.domain.Members;
 import org.opensrp.register.mcare.report.mis1.familyPlanning.FamilyPlanningReport;
 import org.opensrp.register.mcare.report.mis1.maternityCare.MaternityCareReport;
 
 import java.util.List;
 
+/**
+ * Top level class for calculating MIS1Report.
+ * Client init an object of this class using the targeted member list.
+ * <br>
+ * <b>For developers</b>
+ * <br>
+ * Targeted member list is looped through once in this top level class. All the internal.
+ * <i>{@link org.opensrp.register.mcare.report.mis1.Report}</i> object operate on single <i>{@link org.opensrp.register.mcare.domain.Members}</i> object.
+ * <br>
+ * TODO: <br>
+ * 1. Go through the code to understand underlying desing patterns. <br>
+ * 2. Don't use raw strings. Update <i>{@link org.opensrp.register.mcare.domain.Members}</i> class with key value. e.g: {@link org.opensrp.register.mcare.domain.Members.VaccineDose}. <br>
+ * 3. Some report calculators are done partially e.g:{@link org.opensrp.register.mcare.report.mis1.maternityCare.ANCReportCalculator}. Others calculation can be done in same way. <br>
+ * <br>
+ * For a general understanding, this class represents the complete page of SRS with all the table. Every Report object {@link FamilyPlanningReport} is an table of SRS.
+ * Every Report calculator object can be thought of an row of the table {@link org.opensrp.register.mcare.report.mis1.familyPlanning.birthControlMethdoUsagesCalculation.CondomMethodUsagesCalculator}, {@link org.opensrp.register.mcare.report.mis1.maternityCare.TTDoseReportCalculator}.
+ * <br>
+ *
+ * @see <a href="http://doc.mpower-social.com:8080/share/page/document-details?nodeRef=workspace://SpacesStore/bb7b37bd-0d5a-4813-9903-33dce944b165">MIS1 Report SRS.</a>
+ * <br>
+ * @see <a href="https://go.gliffy.com/go/publish/12216901">Class diagram</a>
+ */
 public class MIS1Report {
-    private String unionName;
-    private List<Members> membersList;
-    private FamilyPlanningReport familyPlanningReport;
-    private MaternityCareReport maternityCareReport;
 
+	private String unionName;
 
-    public MIS1Report(String unionName, List<Members> membersList, long startDateTime, long endDateTime) {
-        this.unionName = unionName;
-        this.membersList = membersList;
-        this.familyPlanningReport = new FamilyPlanningReport(startDateTime, endDateTime);
-        this.maternityCareReport = new MaternityCareReport(startDateTime, endDateTime);
-        this.calculateReport();
-    }
+	private List<Members> membersList;
 
-    public FamilyPlanningReport getFamilyPlanningReport() {
-        return familyPlanningReport;
-    }
+	private FamilyPlanningReport familyPlanningReport;
 
-    public MaternityCareReport getMaternityCareReport() {
-        return maternityCareReport;
-    }
+	private MaternityCareReport maternityCareReport;
 
-    private void calculateReport() {
-        for (Members member : membersList) {
-            familyPlanningReport.calculate(member);
-            maternityCareReport.calculate(member);
-        }
-    }
+	public MIS1Report(String unionName, List<Members> membersList, long startDateTime, long endDateTime) {
+		this.unionName = unionName;
+		this.membersList = membersList;
+		this.familyPlanningReport = new FamilyPlanningReport(startDateTime, endDateTime);
+		this.maternityCareReport = new MaternityCareReport(startDateTime, endDateTime);
+		this.calculateReport();
+	}
+
+	public FamilyPlanningReport getFamilyPlanningReport() {
+		return familyPlanningReport;
+	}
+
+	public MaternityCareReport getMaternityCareReport() {
+		return maternityCareReport;
+	}
+
+	/**
+	 * This function calls all member reports <i>calculate</i> method using single member.
+	 * <b>Should be called inside constructor.</b>
+	 */
+	private void calculateReport() {
+		for (Members member : membersList) {
+			familyPlanningReport.calculate(member);
+			maternityCareReport.calculate(member);
+		}
+	}
 }
