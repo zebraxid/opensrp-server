@@ -145,6 +145,7 @@ public abstract class BaseResourceTest {
 				expectedList.containsAll(actualList) && actualList.containsAll(expectedList));
 	}
 
+	//TODO: bug in `assetClassHasAllRequiredFields` method. should check base class for property.
 	protected <T> void assetClassHasAllRequiredFields(Class<T> classOfT, List<String> requiredProperties) {
 		Field[] allFields = classOfT.getDeclaredFields();
 		List<String> nameOfFieldsOfT = new ArrayList<>();
