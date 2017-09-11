@@ -39,7 +39,7 @@ public class ReportResourceTest extends BaseResourceTest {
 
 	@After
 	public void cleanUp() {
-		//allReports.removeAll();
+		allReports.removeAll();
 	}
 
 	//TODO: Upgrade `jackson` to serialize joda datetime. Currently using null datetime.
