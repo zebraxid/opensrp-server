@@ -36,12 +36,34 @@ public abstract class OpenmrsApiService extends TestResourceLoader {
 	
 	JSONObject personAttributeType = new JSONObject();
 	
+	final static String ageKey = "age";
+	
+	final static String genderKey = "gender";
+	
+	final static String birthdateKey = "birthdate";
+	
+	final static String namesKey = "names";
+	
+	final static String purgePartUrl = "?purge=true";
+	
+	final static String nameKey = "name";
+	
+	final static String descriptionkey = "description";
+	
+	final static String usernameKey = "username";
+	
+	final static String passwordKey = "password";
+	
+	final static String personKey = "person";
+	
+	final static String formatKey = "format";
+	
 	public JSONObject createPerson(String fn, String mn, String ln) throws JSONException {
 		
-		person.put("gender", "F");
-		person.put("birthdate", "2017-01-01");
-		person.put("age", "32");
-		person.put("names", new JSONArray("[{\"givenName\":\"" + fn + "\",\"middleName\":\"" + mn + "\", \"familyName\":\""
+		person.put(genderKey, "F");
+		person.put(birthdateKey, "2017-01-01");
+		person.put(ageKey, "32");
+		person.put(namesKey, new JSONArray("[{\"givenName\":\"" + fn + "\",\"middleName\":\"" + mn + "\", \"familyName\":\""
 		        + ln + "\"}]"));
 		String response = HttpUtil.post(HttpUtil.removeEndingSlash(OPENMRS_URL) + "/" + PERSON_URL, "", person.toString(),
 		    openmrsUsername, openmrsPassword).body();
@@ -57,15 +79,15 @@ public abstract class OpenmrsApiService extends TestResourceLoader {
 	
 	public JSONObject createUser(String userName, String password, String fn, String mn, String ln) throws JSONException {
 		
-		person.put("gender", "F");
-		person.put("birthdate", "2017-01-01");
-		person.put("age", "32");
-		person.put("names", new JSONArray("[{\"givenName\":\"" + fn + "\",\"middleName\":\"" + mn + "\", \"familyName\":\""
+		person.put(genderKey, "F");
+		person.put(birthdateKey, "2017-01-01");
+		person.put(ageKey, "32");
+		person.put(namesKey, new JSONArray("[{\"givenName\":\"" + fn + "\",\"middleName\":\"" + mn + "\", \"familyName\":\""
 		        + ln + "\"}]"));
 		JSONObject user = new JSONObject();
-		user.put("username", userName);
-		user.put("password", password);
-		user.put("person", person);
+		user.put(usernameKey, userName);
+		user.put(passwordKey, password);
+		user.put(personKey, person);
 		String response = HttpUtil.post(HttpUtil.removeEndingSlash(OPENMRS_URL) + "/" + USER_URL, "", user.toString(),
 		    openmrsUsername, openmrsPassword).body();
 		
@@ -75,9 +97,9 @@ public abstract class OpenmrsApiService extends TestResourceLoader {
 	
 	public JSONObject createPersonAttributeType(String desc, String name) throws JSONException {
 		
-		personAttributeType.put("description", desc);
-		personAttributeType.put("name", name);
-		personAttributeType.put("format", "java.lang.String");
+		personAttributeType.put(descriptionkey, desc);
+		personAttributeType.put(nameKey, name);
+		personAttributeType.put(formatKey, "java.lang.String");
 		String response = HttpUtil.post(HttpUtil.removeEndingSlash(OPENMRS_URL) + "/" + PERSON_ATTRIBUTE_TYPE, "",
 		    personAttributeType.toString(), openmrsUsername, openmrsPassword).body();
 		
@@ -87,36 +109,37 @@ public abstract class OpenmrsApiService extends TestResourceLoader {
 	
 	public void deletePersonAttributeType(String uuid) {
 		HttpResponse od = HttpUtil.delete(HttpUtil.removeEndingSlash(OPENMRS_URL) + "/ws/rest/v1/personattributetype/"
-		        + uuid + "?purge=true", "", openmrsUsername, openmrsPassword);
+		        + uuid + purgePartUrl, "", openmrsUsername, openmrsPassword);
 	}
 	
 	public void deleteUser(String uuid) {
 		HttpResponse od = HttpUtil.delete(HttpUtil.removeEndingSlash(OPENMRS_URL) + "/ws/rest/v1/user/" + uuid
-		        + "?purge=true", "", openmrsUsername, openmrsPassword);
+		        + purgePartUrl, "", openmrsUsername, openmrsPassword);
 	}
 	
 	public void deleteIdentifierType(String uuid) {
-		HttpUtil.delete(HttpUtil.removeEndingSlash(OPENMRS_URL) + "/ws/rest/v1/patientidentifiertype/" + uuid
-		        + "?purge=true", "", openmrsUsername, openmrsPassword);
+		HttpUtil.delete(
+		    HttpUtil.removeEndingSlash(OPENMRS_URL) + "/ws/rest/v1/patientidentifiertype/" + uuid + purgePartUrl, "",
+		    openmrsUsername, openmrsPassword);
 	}
 	
 	public void deleteProvider(String uuid) {
 		
-		HttpUtil.delete(HttpUtil.removeEndingSlash(OPENMRS_URL) + "/ws/rest/v1/provider/" + uuid + "?purge=true", "",
+		HttpUtil.delete(HttpUtil.removeEndingSlash(OPENMRS_URL) + "/ws/rest/v1/provider/" + uuid + purgePartUrl, "",
 		    openmrsUsername, openmrsPassword);
 		
 	}
 	
 	public void deleteRelation(String uuid) {
-		HttpUtil.delete(HttpUtil.removeEndingSlash(OPENMRS_URL) + "/ws/rest/v1/relationship/" + uuid + "?purge=true", "",
+		HttpUtil.delete(HttpUtil.removeEndingSlash(OPENMRS_URL) + "/ws/rest/v1/relationship/" + uuid + purgePartUrl, "",
 		    openmrsUsername, openmrsPassword);
 	}
 	
 	public JSONObject createEncounterType(String name, String desc) throws JSONException {
 		
 		JSONObject encounterType = new JSONObject();
-		encounterType.put("name", name);
-		encounterType.put("description", desc);
+		encounterType.put(nameKey, name);
+		encounterType.put(descriptionkey, desc);
 		String response = HttpUtil.post(HttpUtil.removeEndingSlash(OPENMRS_URL) + "/" + ENCOUTER_TYPE_URL, "",
 		    encounterType.toString(), openmrsUsername, openmrsPassword).body();
 		
@@ -126,21 +149,21 @@ public abstract class OpenmrsApiService extends TestResourceLoader {
 	
 	public void deleteEncounterType(String uuid) {
 		
-		HttpUtil.delete(HttpUtil.removeEndingSlash(OPENMRS_URL) + "/ws/rest/v1/encountertype/" + uuid + "?purge=true", "",
+		HttpUtil.delete(HttpUtil.removeEndingSlash(OPENMRS_URL) + "/ws/rest/v1/encountertype/" + uuid + purgePartUrl, "",
 		    openmrsUsername, openmrsPassword);
 		
 	}
 	
 	public void deleteEncounter(String uuid) {
 		
-		HttpUtil.delete(HttpUtil.removeEndingSlash(OPENMRS_URL) + "/ws/rest/v1/encounter/" + uuid + "?purge=true", "",
+		HttpUtil.delete(HttpUtil.removeEndingSlash(OPENMRS_URL) + "/ws/rest/v1/encounter/" + uuid + purgePartUrl, "",
 		    openmrsUsername, openmrsPassword);
 		
 	}
 	
 	public void deleteRelationshipType(String uuid) {
 		
-		HttpUtil.delete(HttpUtil.removeEndingSlash(OPENMRS_URL) + RELATIONSHIP_TYPE + uuid + "?purge=true", "",
+		HttpUtil.delete(HttpUtil.removeEndingSlash(OPENMRS_URL) + RELATIONSHIP_TYPE + uuid + purgePartUrl, "",
 		    openmrsUsername, openmrsPassword);
 		
 	}
@@ -148,7 +171,7 @@ public abstract class OpenmrsApiService extends TestResourceLoader {
 	public JSONObject createLocation(String name, String parentLocation) throws JSONException {
 		JSONObject location = new JSONObject();
 		String response = "";
-		location.put("name", name);
+		location.put(nameKey, name);
 		if (parentLocation != null || !parentLocation.isEmpty()) {
 			location.put("parentLocation", parentLocation);
 		}
