@@ -17,13 +17,25 @@ public class EventClient {
 		// TODO Auto-generated constructor stub
 	}
 	
+	final static String text = "text";
+	
+	final static String formSubmissionId = "formSubmissionId";
+	
+	final static String baseEntityId = "2";
+	
+	final static String M_ZEIR_ID = "M_ZEIR_ID";
+	
+	final static String ZEIR_ID = "ZEIR_ID";
+	
+	final static String mother = "mother";
+	
 	public static Event getEvent() {
-		Event expectedEvent = new Event("2", "TestEncounter", new DateTime(0l, DateTimeZone.UTC), "entityType",
-		        "providerId", "locationId", "formSubmissionId");
+		Event expectedEvent = new Event(baseEntityId, "TestEncounter", new DateTime(0l, DateTimeZone.UTC), "entityType",
+		        "providerId", "locationId", formSubmissionId);
 		expectedEvent.addIdentifier("key", "value");
 		Obs obs = new Obs();
 		obs.setFieldCode("163260AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-		obs.setFieldDataType("text");
+		obs.setFieldDataType(text);
 		obs.setFieldType("concept");
 		obs.setParentCode("678AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 		List<Object> values = new ArrayList<Object>();
@@ -40,7 +52,7 @@ public class EventClient {
 		Client expectedClient = new Client("2455").withFirstName("motherName").withGender("male")
 		        .withBirthdate(new DateTime(), false);
 		Map<String, String> identifiers = new HashMap<>();
-		identifiers.put("M_ZEIR_ID", "159451-r7_mothers");
+		identifiers.put(M_ZEIR_ID, "159451-r7_mothers");
 		expectedClient.setIdentifiers(identifiers);
 		return expectedClient;
 	}
@@ -49,12 +61,12 @@ public class EventClient {
 		Client expectedClient = new Client("errrr29").withFirstName("childName").withGender("male")
 		        .withBirthdate(new DateTime(), false);
 		Map<String, String> identifiers = new HashMap<>();
-		identifiers.put("ZEIR_ID", "159451-r7_child");
+		identifiers.put(ZEIR_ID, "159451-r7_child");
 		expectedClient.setIdentifiers(identifiers);
 		List<String> list = new ArrayList<>();
 		list.add("27");
 		Map<String, List<String>> relationships = new HashMap<>();
-		relationships.put("mother", list);
+		relationships.put(mother, list);
 		expectedClient.setRelationships(relationships);
 		return expectedClient;
 	}
@@ -63,7 +75,7 @@ public class EventClient {
 		Client expectedClient = new Client("53").withFirstName("testmotherName").withGender("male")
 		        .withBirthdate(new DateTime(), false);
 		Map<String, String> identifiers = new HashMap<>();
-		identifiers.put("M_ZEIR_ID", "159451-53_mothers");
+		identifiers.put(M_ZEIR_ID, "159451-53_mothers");
 		expectedClient.setIdentifiers(identifiers);
 		return expectedClient;
 	}
@@ -72,23 +84,23 @@ public class EventClient {
 		Client expectedClient = new Client("52").withFirstName("testchildName").withGender("male")
 		        .withBirthdate(new DateTime(), false);
 		Map<String, String> identifiers = new HashMap<>();
-		identifiers.put("ZEIR_ID", "159451-52_child");
+		identifiers.put(ZEIR_ID, "159451-52_child");
 		expectedClient.setIdentifiers(identifiers);
 		List<String> list = new ArrayList<>();
 		list.add("53");
 		Map<String, List<String>> relationships = new HashMap<>();
-		relationships.put("mother", list);
+		relationships.put(mother, list);
 		expectedClient.setRelationships(relationships);
 		return expectedClient;
 	}
 	
 	public static Event getEvent1() {
-		Event expectedEvent = new Event("2", "Test", new DateTime(0l, DateTimeZone.UTC), "entityTypess", "sumon",
-		        "locationIds", "formSubmissionId");
+		Event expectedEvent = new Event(baseEntityId, "Test", new DateTime(0l, DateTimeZone.UTC), "entityTypess", "sumon",
+		        "locationIds", formSubmissionId);
 		expectedEvent.addIdentifier("key", "values");
 		Obs obs = new Obs();
 		obs.setFieldCode("163260AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-		obs.setFieldDataType("text");
+		obs.setFieldDataType(text);
 		obs.setFieldType("concept");
 		obs.setParentCode("678AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 		List<Object> values = new ArrayList<Object>();

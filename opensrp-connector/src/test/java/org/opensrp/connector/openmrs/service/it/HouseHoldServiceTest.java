@@ -191,7 +191,7 @@ public class HouseHoldServiceTest extends OpenmrsApiService {
 		c.withAddresses(addresses).withAttributes(attributes);
 		c.withIdentifier("OpenSRP Thrive UID", "a3f2abf4-2699-4761-819a-cea739224164");
 		JSONObject patient = patientService.createPatient(c);
-		System.err.println("Patient:" + patient);
+		
 		Client c1 = new Client(UUID.randomUUID().toString()).withFirstName(fn).withMiddleName(mn).withLastName(ln)
 		        .withBirthdate(new DateTime(), true).withDeathdate(new DateTime(), false).withGender("MALE");
 		
@@ -208,7 +208,7 @@ public class HouseHoldServiceTest extends OpenmrsApiService {
 		String password = "Dotel@1234";
 		JSONObject person = createPerson(fn, mn, ln);
 		JSONObject usr = createUser(userName, password, fn, mn, ln);
-		System.err.println("usr:" + usr.toString());
+		
 		String getUserName = us.getUser(userName).getUsername();
 		us.createProvider(userName, IdentifierType);
 		
