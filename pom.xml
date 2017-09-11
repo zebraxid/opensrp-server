@@ -326,7 +326,7 @@
 					<configuration>
 						<printSummary>true</printSummary>
 						<excludes>
-							<!--<exclude>**/it/**</exclude>-->
+							<exclude>**/it/**</exclude>
 						</excludes>
 						
 					</configuration>
