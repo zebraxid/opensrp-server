@@ -1,8 +1,6 @@
 package org.opensrp.web.rest.it;
 
-import org.motechproject.dao.MotechBaseRepository;
 import org.opensrp.domain.Client;
-
 import org.opensrp.domain.ErrorTrace;
 import org.opensrp.repository.AllClients;
 import org.opensrp.repository.AllErrorTrace;
@@ -41,6 +39,5 @@ public final class ResourceTestUtility {
 			allErrorTrace.add(errorTrace);
 		}
 	}
-
 
 }
