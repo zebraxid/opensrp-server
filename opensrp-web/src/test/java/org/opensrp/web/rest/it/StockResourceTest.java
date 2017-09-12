@@ -24,6 +24,9 @@ import static org.opensrp.common.AllConstants.Stock.PROVIDERID;
 import static org.opensrp.common.AllConstants.Stock.TIMESTAMP;
 import static org.springframework.test.web.server.result.MockMvcResultMatchers.status;
 
+/**
+ * TODO: Solve bug at source {@link StockResource} and refactor like {@link EventResourceTest}
+ */
 public class StockResourceTest extends BaseResourceTest {
 
 	private static final String BASE_URL = "/rest/stockresource";
@@ -41,7 +44,7 @@ public class StockResourceTest extends BaseResourceTest {
 
 	@After
 	public void cleanUp() {
-		//allStocks.removeAll();
+		allStocks.removeAll();
 	}
 
 	@Test

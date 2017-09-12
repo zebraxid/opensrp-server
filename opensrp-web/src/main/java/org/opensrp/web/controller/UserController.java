@@ -41,7 +41,7 @@ import static org.springframework.http.HttpStatus.OK;
 public class UserController {
 
 	@Value("#{opensrp['opensrp.site.url']}")
-	private String  opensrpSiteUrl;
+	private String opensrpSiteUrl;
 
 	private DrishtiAuthenticationProvider opensrpAuthenticationProvider;
 
@@ -112,7 +112,6 @@ public class UserController {
 		}
 		catch (Exception e) {
 			System.out.println("USER Location info not mapped in team management module. Now trying Person Attribute");
-			;
 		}
 		if (StringUtils.isEmptyOrWhitespaceOnly(lid)) {
 			lid = (String) u.getAttribute("Location");

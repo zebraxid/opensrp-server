@@ -22,6 +22,7 @@ import static org.junit.Assert.assertNull;
 import static org.opensrp.web.rest.it.ResourceTestUtility.createClients;
 import static org.springframework.test.web.server.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.server.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.server.result.MockMvcResultMatchers.status;
 
 public class SearchResourceTest extends BaseResourceTest {
 
@@ -81,8 +82,6 @@ public class SearchResourceTest extends BaseResourceTest {
 	public void setUp() {
 		allClients.removeAll();
 		allEvents.removeAll();
-
-		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
 	}
 
 	@After
@@ -96,8 +95,7 @@ public class SearchResourceTest extends BaseResourceTest {
 		Client expectedClient = createOneSearchableClient();
 
 		String searchQuery = "firstName=" + firstName;
-		String responseString = searchClient(searchQuery);
-		JsonNode actualObj = mapper.readTree(responseString);
+		JsonNode actualObj = searchClient(searchQuery);
 		Client actualClient = mapper.treeToValue(actualObj.get(0), Client.class);
 
 		assertEquals(expectedClient, actualClient);
@@ -109,8 +107,7 @@ public class SearchResourceTest extends BaseResourceTest {
 		Client expectedClient = createOneSearchableClient();
 
 		String searchQuery = "middleName=" + MIDDLE_NAME;
-		String responseString = searchClient(searchQuery);
-		JsonNode actualObj = mapper.readTree(responseString);
+		JsonNode actualObj = searchClient(searchQuery);
 		Client actualClient = mapper.treeToValue(actualObj.get(0), Client.class);
 
 		assertEquals(expectedClient, actualClient);
@@ -121,8 +118,8 @@ public class SearchResourceTest extends BaseResourceTest {
 		Client expectedClient = createOneSearchableClient();
 
 		String searchQuery = "lastName=" + LAST_NAME;
-		String responseString = searchClient(searchQuery);
-		JsonNode actualObj = mapper.readTree(responseString);
+		JsonNode actualObj = searchClient(searchQuery);
+
 		assertNull(actualObj.get(0));
 	}
 
@@ -131,8 +128,7 @@ public class SearchResourceTest extends BaseResourceTest {
 		Client expectedClient = createOneSearchableClient();
 
 		String searchQuery = "gender=" + male;
-		String responseString = searchClient(searchQuery);
-		JsonNode actualObj = mapper.readTree(responseString);
+		JsonNode actualObj = searchClient(searchQuery);
 		Client actualClient = mapper.treeToValue(actualObj.get(0), Client.class);
 
 		assertEquals(expectedClient, actualClient);
@@ -143,8 +139,7 @@ public class SearchResourceTest extends BaseResourceTest {
 		Client expectedClient = createOneSearchableClient();
 
 		String searchQuery = "birthdate=" + birthDate.toLocalDate().toString() + ":" + birthDate.toLocalDate().toString();
-		String responseString = searchClient(searchQuery);
-		JsonNode actualObj = mapper.readTree(responseString);
+		JsonNode actualObj = searchClient(searchQuery);
 		Client actualClient = mapper.treeToValue(actualObj.get(0), Client.class);
 
 		assertEquals(expectedClient, actualClient);
@@ -156,8 +151,7 @@ public class SearchResourceTest extends BaseResourceTest {
 
 		String searchQuery =
 				"lastEdited=" + DATE_CREATED.toLocalDate().toString() + ":" + DATE_CREATED.toLocalDate().toString();
-		String responseString = searchClient(searchQuery);
-		JsonNode actualObj = mapper.readTree(responseString);
+		JsonNode actualObj = searchClient(searchQuery);
 		Client actualClient = mapper.treeToValue(actualObj.get(0), Client.class);
 
 		assertEquals(expectedClient, actualClient);
@@ -168,19 +162,16 @@ public class SearchResourceTest extends BaseResourceTest {
 		Client expectedClient = createOneSearchableClient();
 
 		String searchQuery = "attribute=" + ATTRIBUTES_NAME + ":" + ATTRIBUTES_VALUE;
-		String responseString = searchClient(searchQuery);
-		JsonNode actualObj = mapper.readTree(responseString);
+		JsonNode actualObj = searchClient(searchQuery);
 		Client actualClient = mapper.treeToValue(actualObj.get(0), Client.class);
 
 		assertEquals(expectedClient, actualClient);
 	}
 
-	private String searchClient(String query) throws Exception {
+	private JsonNode searchClient(String query) throws Exception {
 		String searchQuery = "search?" + query;
-		MvcResult mvcResult = this.mockMvc.perform(get(BASE_URL + searchQuery).contentType(MediaType.APPLICATION_JSON))
-				.andDo(print()).andReturn();
-		String responseString = mvcResult.getResponse().getContentAsString();
-		return responseString;
+
+		return getCallAsJsonNode(BASE_URL + searchQuery, "", status().isOk());
 	}
 
 	private Client createOneSearchableClient() {
@@ -203,7 +194,7 @@ public class SearchResourceTest extends BaseResourceTest {
 		otherClient2.withIdentifier("hg", "ghgh");
 		otherClient2.withAttribute("hg", "hgh");
 
-		createClients(asList(expectedClient, otherClient, otherClient2), allClients);
+		addObjectToRepository(asList(expectedClient, otherClient, otherClient2), allClients);
 
 		return expectedClient;
 	}

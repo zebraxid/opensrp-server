@@ -5,6 +5,7 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.opensrp.domain.Address;
 import org.opensrp.domain.Client;
@@ -19,6 +20,7 @@ import org.springframework.test.web.server.setup.MockMvcBuilders;
 import org.springframework.web.util.NestedServletException;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static java.util.Arrays.asList;
@@ -93,18 +95,19 @@ public class EventResourceTest extends BaseResourceTest {
 	}
 
 	@Test
+	@Ignore //TODO: bug in `assetClassHasAllRequiredFields` method. should check base class for property.
+	public void eventClassShouldHaveAllRequiredProperties() {
+		assetClassHasAllRequiredFields(Event.class, eventResource.requiredProperties());
+	}
+
+	@Test
 	public void shouldFindEventById() throws Exception {
 		Event expectedEvent = new Event("1", "eventType", new DateTime(0l, DateTimeZone.UTC), "entityType", "providerId",
 				"locationId", "formSubmissionId");
 		expectedEvent.addIdentifier("key", "value");
-		createEvent(asList(expectedEvent));
+		createEvent(Collections.singletonList(expectedEvent));
 
-		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
-		MvcResult mvcResult = this.mockMvc.perform(get(BASE_URL + "value").accept(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk()).andDo(print()).andReturn();
-
-		String responseString = mvcResult.getResponse().getContentAsString();
-		JsonNode actualObj = mapper.readTree(responseString);
+		JsonNode actualObj = getCallAsJsonNode(BASE_URL + "value", "", status().isOk());
 		Event actualEvent = mapper.treeToValue(actualObj, Event.class);
 
 		assertEquals(expectedEvent, actualEvent);
@@ -114,10 +117,10 @@ public class EventResourceTest extends BaseResourceTest {
 	@Test
 	public void shouldNotFindEvent() throws Exception {
 		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
-		MvcResult mvcResult = this.mockMvc.perform(get(BASE_URL + "value").accept(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk()).andDo(print()).andReturn();
-		String responseString = mvcResult.getResponse().getContentAsString();
-		assertTrue(responseString.isEmpty());
+
+		JsonNode actualObj = getCallAsJsonNode(BASE_URL + "value", "", status().isOk());
+
+		assertNull(actualObj);
 	}
 
 	@Test
@@ -126,13 +129,11 @@ public class EventResourceTest extends BaseResourceTest {
 				"locationId", "formSubmissionId");
 		expectedEvent.addIdentifier("key", "value");
 
-		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
-		this.mockMvc.perform(
-				post(BASE_URL).contentType(MediaType.APPLICATION_JSON).body(mapper.writeValueAsBytes(expectedEvent))
-						.accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+		postCallWithJsonContent(BASE_URL, mapper.writeValueAsString(expectedEvent), status().isOk());
 		List<Event> allEventsInDB = allEvents.getAll();
 		Event actualEvent = allEventsInDB.get(0);
 		actualEvent.setDateCreated(null); //So We don't need to mock DateTimeUtil.now()
+
 		assertEquals(1, allEventsInDB.size());
 		assertEquals(expectedEvent, actualEvent);
 	}
@@ -144,10 +145,7 @@ public class EventResourceTest extends BaseResourceTest {
 		expectedEvent.addIdentifier("key", "value");
 		expectedEvent.setProviderId(null);
 
-		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
-		this.mockMvc.perform(
-				post(BASE_URL).contentType(MediaType.APPLICATION_JSON).body(mapper.writeValueAsBytes(expectedEvent))
-						.accept(MediaType.APPLICATION_JSON));
+		postCallWithJsonContent(BASE_URL, mapper.writeValueAsString(expectedEvent), status().isOk());
 
 		List<Event> allEventsInDb = allEvents.getAll();
 		assertEquals(0, allEventsInDb.size());
@@ -160,10 +158,7 @@ public class EventResourceTest extends BaseResourceTest {
 		expectedEvent.addIdentifier("key", "value");
 		expectedEvent.setEventType(null);
 
-		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
-		this.mockMvc.perform(
-				post(BASE_URL).contentType(MediaType.APPLICATION_JSON).body(mapper.writeValueAsBytes(expectedEvent))
-						.accept(MediaType.APPLICATION_JSON));
+		postCallWithJsonContent(BASE_URL, mapper.writeValueAsString(expectedEvent), status().isOk());
 
 		List<Event> allEventsInDb = allEvents.getAll();
 		assertEquals(0, allEventsInDb.size());
@@ -176,10 +171,7 @@ public class EventResourceTest extends BaseResourceTest {
 		expectedEvent.addIdentifier("key", "value");
 		expectedEvent.setBaseEntityId(null);
 
-		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
-		this.mockMvc.perform(
-				post(BASE_URL).contentType(MediaType.APPLICATION_JSON).body(mapper.writeValueAsBytes(expectedEvent))
-						.accept(MediaType.APPLICATION_JSON));
+		postCallWithJsonContent(BASE_URL, mapper.writeValueAsString(expectedEvent), status().isOk());
 
 		List<Event> allEventsInDb = allEvents.getAll();
 		assertEquals(0, allEventsInDb.size());
@@ -190,13 +182,10 @@ public class EventResourceTest extends BaseResourceTest {
 		Event expectedEvent = new Event("1", "eventType", new DateTime(0l, DateTimeZone.UTC), "entityType", "providerId",
 				"locationId", "formSubmissionId");
 		expectedEvent.addIdentifier("key", "value");
-		createEvent(asList(expectedEvent));
-
+		createEvent(Collections.singletonList(expectedEvent));
 		expectedEvent.addDetails("detail", "value");
-		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
-		this.mockMvc.perform(post(BASE_URL + "value").contentType(MediaType.APPLICATION_JSON)
-				.body(mapper.writeValueAsBytes(expectedEvent)).accept(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk());
+
+		postCallWithJsonContent(BASE_URL + "value", mapper.writeValueAsString(expectedEvent), status().isOk());
 
 		List<Event> allEventsInDb = allEvents.getAll();
 		Event actualEvent = allEventsInDb.get(0);
@@ -211,10 +200,7 @@ public class EventResourceTest extends BaseResourceTest {
 				"locationId", "formSubmissionId");
 		expectedEvent.addDetails("detail", "value");
 
-		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
-		this.mockMvc.perform(
-				post(BASE_URL + "1").contentType(MediaType.APPLICATION_JSON).body(mapper.writeValueAsBytes(expectedEvent))
-						.accept(MediaType.APPLICATION_JSON));
+		postCallWithJsonContent(BASE_URL + "1", mapper.writeValueAsString(expectedEvent), status().isOk());
 
 		List<Event> allEventsInDb = allEvents.getAll();
 		assertEquals(0, allEventsInDb.size());
@@ -227,14 +213,11 @@ public class EventResourceTest extends BaseResourceTest {
 				"locationId", "formSubmissionId");
 		expectedEvent.addIdentifier("key", "value");
 		expectedEvent.setBaseEntityId(null);
-		createEvent(asList(expectedEvent));
+		createEvent(Collections.singletonList(expectedEvent));
 		Event updatedEvent = expectedEvent;
 		updatedEvent.addDetails("key", "value");
 
-		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
-		this.mockMvc.perform(
-				post(BASE_URL + "value").contentType(MediaType.APPLICATION_JSON).body(mapper.writeValueAsBytes(updatedEvent))
-						.accept(MediaType.APPLICATION_JSON));
+		postCallWithJsonContent(BASE_URL + "value", mapper.writeValueAsString(expectedEvent), status().isOk());
 
 		List<Event> allEventsInDb = allEvents.getAll();
 		Event actualEvent = allEventsInDb.get(0);
@@ -249,14 +232,11 @@ public class EventResourceTest extends BaseResourceTest {
 				"locationId", "formSubmissionId");
 		expectedEvent.addIdentifier("key", "value");
 		expectedEvent.setEventType(null);
-		createEvent(asList(expectedEvent));
+		createEvent(Collections.singletonList(expectedEvent));
 		Event updatedEvent = expectedEvent;
 		updatedEvent.addDetails("key", "value");
 
-		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
-		this.mockMvc.perform(
-				post(BASE_URL + "value").contentType(MediaType.APPLICATION_JSON).body(mapper.writeValueAsBytes(updatedEvent))
-						.accept(MediaType.APPLICATION_JSON));
+		postCallWithJsonContent(BASE_URL + "value", mapper.writeValueAsString(expectedEvent), status().isOk());
 
 		List<Event> allEventsInDb = allEvents.getAll();
 		Event actualEvent = allEventsInDb.get(0);
@@ -271,14 +251,11 @@ public class EventResourceTest extends BaseResourceTest {
 				"locationId", "formSubmissionId");
 		expectedEvent.addIdentifier("key", "value");
 		expectedEvent.setProviderId(null);
-		createEvent(asList(expectedEvent));
+		createEvent(Collections.singletonList(expectedEvent));
 		Event updatedEvent = expectedEvent;
 		updatedEvent.addDetails("key", "value");
 
-		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
-		this.mockMvc.perform(
-				post(BASE_URL + "value").contentType(MediaType.APPLICATION_JSON).body(mapper.writeValueAsBytes(updatedEvent))
-						.accept(MediaType.APPLICATION_JSON));
+		postCallWithJsonContent(BASE_URL + "value", mapper.writeValueAsString(expectedEvent), status().isOk());
 
 		List<Event> allEventsInDb = allEvents.getAll();
 		Event actualEvent = allEventsInDb.get(0);
@@ -304,12 +281,8 @@ public class EventResourceTest extends BaseResourceTest {
 
 		String searchQuery = "search?identifier=1&" + "eventType=" + eventType + "&locationId=" + locationId + "&providerId="
 				+ providerId;
+		JsonNode actualObj = getCallAsJsonNode(BASE_URL + searchQuery, "", status().isOk());
 
-		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
-		MvcResult mvcResult = this.mockMvc.perform(get(BASE_URL + searchQuery)).andDo(print()).andReturn();
-
-		String responseString = mvcResult.getResponse().getContentAsString();
-		JsonNode actualObj = mapper.readTree(responseString);
 		Event actualEvent = mapper.treeToValue(actualObj.get(0), Event.class);
 		assertEquals(1, actualObj.size());
 		assertEquals(expectedEvent, actualEvent);
@@ -329,13 +302,9 @@ public class EventResourceTest extends BaseResourceTest {
 		String searchQuery =
 				"search?identifier= invalid" + "eventType=" + eventType + "&locationId=" + locationId + "&providerId="
 						+ providerId;
-		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
-		MvcResult mvcResult = this.mockMvc.perform(get(BASE_URL + searchQuery)).andDo(print()).andReturn();
-
-		String responseString = mvcResult.getResponse().getContentAsString();
-		assertTrue(responseString.equals("[]"));
-		JsonNode actualObj = mapper.readTree(responseString);
-		assertNull(actualObj.get(0));
+		JsonNode actualObj = getCallAsJsonNode(BASE_URL + searchQuery, "", status().isOk());
+		assertTrue(actualObj.isArray());
+		assertEquals(0, actualObj.size());
 	}
 
 	@Test
@@ -355,13 +324,9 @@ public class EventResourceTest extends BaseResourceTest {
 		String searchQuery = "search?identifier=1&" + "eventType=" + eventType + "&locationId=" + locationId + "&providerId="
 				+ providerId;
 
-		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
-		MvcResult mvcResult = this.mockMvc.perform(get(BASE_URL + searchQuery)).andDo(print()).andReturn();
-
-		String responseString = mvcResult.getResponse().getContentAsString();
-		assertTrue(responseString.equals("[]"));
-		JsonNode actualObj = mapper.readTree(responseString);
-		assertNull(actualObj.get(0));
+		JsonNode actualObj = getCallAsJsonNode(BASE_URL + searchQuery, "", status().isOk());
+		assertTrue(actualObj.isArray());
+		assertEquals(0, actualObj.size());
 	}
 
 	@Test
@@ -376,24 +341,19 @@ public class EventResourceTest extends BaseResourceTest {
 		otherEvent.setDateCreated(dateEdited);
 		Event otherEvent2 = new Event("3", eventType, eventDate, entityType, providerId, locationId, formSubmissionId);
 		otherEvent2.setDateCreated(dateEdited);
-		createEvent(asList(expectedEvent, otherEvent, otherEvent2));
+		List<Event> expectedEvents = asList(expectedEvent, otherEvent, otherEvent2);
+		createEvent(expectedEvents);
 
 		String searchQuery =
 				"?q=" + "eventType:" + eventType + " and locationId:" + locationId + " and providerId:" + providerId;
-
-		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
-		MvcResult mvcResult = this.mockMvc.perform(get(BASE_URL + searchQuery)).andDo(print()).andReturn();
-
-		String responseString = mvcResult.getResponse().getContentAsString();
-		JsonNode actualObj = mapper.readTree(responseString);
+		JsonNode actualObj = getCallAsJsonNode(BASE_URL + searchQuery, "", status().isOk());
 		List<Event> actualEventList = new ArrayList<>();
 		for (int i = 0; i < actualObj.size(); i++) {
 			Event actualEvent = mapper.treeToValue(actualObj.get(i), Event.class);
 			actualEventList.add(actualEvent);
 		}
-		assertEquals(3, actualObj.size());
-		assertTrue(asList(expectedEvent, otherEvent, otherEvent2).containsAll(actualEventList) && actualEventList
-				.containsAll(asList(expectedEvent, otherEvent, otherEvent2)));
+
+		assertTwoListAreSameIgnoringOrder(expectedEvents, actualEventList);
 	}
 
 	@Test(expected = NestedServletException.class)
@@ -409,8 +369,7 @@ public class EventResourceTest extends BaseResourceTest {
 		String searchQuery =
 				"?q=" + "eventType:" + eventType + " and locationId:" + locationId + " and providerId:" + providerId;
 
-		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
-		MvcResult mvcResult = this.mockMvc.perform(get(BASE_URL + searchQuery)).andDo(print()).andReturn();
+		getCallAsJsonNode(BASE_URL + searchQuery, "", status().isOk());
 	}
 
 	@Test
@@ -422,13 +381,10 @@ public class EventResourceTest extends BaseResourceTest {
 		expectedEvent.setDateEdited(dateEdited);
 		Event otherEvent = new Event("2", eventType, eventDate, entityType, providerId, locationId, formSubmissionId);
 		Event otherEvent2 = new Event("3", eventType, eventDate, entityType, providerId, locationId, formSubmissionId);
-		createEvent(asList(expectedEvent, otherEvent, otherEvent2));
+		List<Event> expectedEvents = asList(expectedEvent, otherEvent, otherEvent2);
+		createEvent(expectedEvents);
 
-		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
-		MvcResult mvcResult = this.mockMvc.perform(get(BASE_URL + "getall")).andExpect(status().isOk()).andDo(print())
-				.andReturn();
-		String responseString = mvcResult.getResponse().getContentAsString();
-		JsonNode actualObj = mapper.readTree(responseString);
+		JsonNode actualObj = getCallAsJsonNode(BASE_URL + "getall", "", status().isOk());
 
 		List<Event> actualEventList = new ArrayList<>();
 		for (int i = 0; i < actualObj.size(); i++) {
@@ -437,9 +393,7 @@ public class EventResourceTest extends BaseResourceTest {
 			actualEventList.add(actualEvent);
 		}
 
-		assertEquals(3, actualObj.size());
-		assertTrue(asList(expectedEvent, otherEvent, otherEvent2).containsAll(actualEventList) && actualEventList
-				.containsAll(asList(expectedEvent, otherEvent, otherEvent2)));
+		assertTwoListAreSameIgnoringOrder(expectedEvents, actualEventList);
 	}
 
 	@Test
@@ -448,16 +402,12 @@ public class EventResourceTest extends BaseResourceTest {
 		List<Client> expectedClient = createClient();
 		List<Event> expectedEvent = createEventsForSyncTest();
 
-		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
-		MvcResult mvcResult = this.mockMvc.perform(get(BASE_URL + "sync?serverVersion=0&providerId=providerId"))
-				.andExpect(status().isOk()).andDo(print()).andReturn();
+		String syncQuery = "sync?serverVersion=0&providerId=providerId";
+		JsonNode actualObj = getCallAsJsonNode(BASE_URL + syncQuery, "", status().isOk());
 
-		String responseString = mvcResult.getResponse().getContentAsString();
-		JsonNode actualObj = mapper.readTree(responseString);
 		JsonNode eventObj = actualObj.get("events");
 		JsonNode clientObj = actualObj.get("clients");
 		int eventSize = actualObj.get("no_of_events").asInt();
-
 		List<Event> actualEventList = new ArrayList<>();
 		for (int i = 0; i < eventObj.size(); i++) {
 			Event actualEvent = mapper.treeToValue(eventObj.get(i), Event.class);
@@ -471,8 +421,8 @@ public class EventResourceTest extends BaseResourceTest {
 		}
 
 		assertEquals(4, eventSize);
-		assertTrue(expectedEvent.containsAll(actualEventList) && actualEventList.containsAll(expectedEvent));
-		assertTrue(expectedClient.containsAll(actualClientList) && actualClientList.containsAll(expectedClient));
+		assertTwoListAreSameIgnoringOrder(expectedClient, actualClientList);
+		assertTwoListAreSameIgnoringOrder(expectedEvent, actualEventList);
 	}
 
 	@Test
@@ -489,9 +439,7 @@ public class EventResourceTest extends BaseResourceTest {
 		assertEquals(0, allEvents.getAll().size());
 		assertEquals(0, allClients.getAll().size());
 
-		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
-		MvcResult mvcResult = this.mockMvc.perform(post(BASE_URL + "add").body(synData.getBytes()))
-				.andExpect(status().isCreated()).andDo(print()).andReturn();
+		postCallWithJsonContent(BASE_URL + "add", synData, status().isCreated());
 
 		assertEquals(4, allEvents.getAll().size());
 		assertEquals(3, allClients.getAll().size());
@@ -503,9 +451,7 @@ public class EventResourceTest extends BaseResourceTest {
 		assertEquals(0, allEvents.getAll().size());
 		assertEquals(0, allClients.getAll().size());
 
-		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
-		MvcResult mvcResult = this.mockMvc.perform(post(BASE_URL + "add").body(synData.getBytes()))
-				.andExpect(status().isBadRequest()).andDo(print()).andReturn();
+		postCallWithJsonContent(BASE_URL + "add", synData, status().isBadRequest());
 
 		assertEquals(0, allEvents.getAll().size());
 		assertEquals(0, allClients.getAll().size());
@@ -551,15 +497,11 @@ public class EventResourceTest extends BaseResourceTest {
 	}
 
 	private void createEvent(List<Event> events) {
-		for (Event event : events) {
-			allEvents.add(event);
-		}
+		addObjectToRepository(events, allEvents);
 	}
 
 	private void createClient(List<Client> allClient) {
-		for (Client client : allClient) {
-			allClients.add(client);
-		}
+		addObjectToRepository(allClient, allClients);
 	}
 
 }

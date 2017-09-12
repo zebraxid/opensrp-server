@@ -3,6 +3,7 @@ package org.opensrp.web.rest.it;
 import org.codehaus.jackson.JsonNode;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
+import org.json.JSONArray;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,6 +18,7 @@ import org.springframework.test.web.server.MvcResult;
 import org.springframework.test.web.server.setup.MockMvcBuilders;
 import org.springframework.web.util.NestedServletException;
 
+import java.util.Collections;
 import java.util.List;
 
 import static java.util.Arrays.asList;
@@ -71,7 +73,6 @@ public class ClientResourceTest extends BaseResourceTest {
 
 	@Before
 	public void setUp() {
-		this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
 		allClients.removeAll();
 	}
 
@@ -89,16 +90,18 @@ public class ClientResourceTest extends BaseResourceTest {
 		assertTrue(requiredProperties.contains(BASE_ENTITY_ID));
 	}
 
+/*	@Test
+	public void testClientClassHasAllRequiredProperties() {
+		assetClassHasAllRequiredFields(Client.class, clientResource.requiredProperties());
+	}*/
+
 	@Test
 	public void shouldFindClientById() throws Exception {
 		Client expectedClient = new Client("1").withFirstName("first").withGender("male")
 				.withBirthdate(new DateTime(0l, DateTimeZone.UTC), false);
-		createClients(asList(expectedClient), allClients);
+		addObjectToRepository(Collections.singletonList(expectedClient), allClients);
 
-		MvcResult mvcResult = this.mockMvc.perform(get(BASE_URL + "1").accept(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk()).andDo(print()).andReturn();
-		String responseString = mvcResult.getResponse().getContentAsString();
-		JsonNode actualObj = mapper.readTree(responseString);
+		JsonNode actualObj = getCallAsJsonNode(BASE_URL + "1", "", status().isOk());
 		Client actualClient = mapper.treeToValue(actualObj, Client.class);
 
 		assertEquals(expectedClient, actualClient);
@@ -107,10 +110,9 @@ public class ClientResourceTest extends BaseResourceTest {
 
 	@Test
 	public void shouldNotFindClient() throws Exception {
-		MvcResult mvcResult = this.mockMvc.perform(get(BASE_URL + "1").accept(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk()).andDo(print()).andReturn();
-		String responseString = mvcResult.getResponse().getContentAsString();
-		assertTrue(responseString.isEmpty());
+		JsonNode response = getCallAsJsonNode(BASE_URL + "1", "", status().isOk());
+
+		assertNull(response);
 	}
 
 	@Test
@@ -118,9 +120,8 @@ public class ClientResourceTest extends BaseResourceTest {
 		Client expectedClient = new Client("1").withFirstName("first").withGender("male")
 				.withBirthdate(new DateTime(0l, DateTimeZone.UTC), false);
 
-		this.mockMvc.perform(
-				post(BASE_URL).contentType(MediaType.APPLICATION_JSON).body(mapper.writeValueAsBytes(expectedClient))
-						.accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+		postCallWithJsonContent(BASE_URL, mapper.writeValueAsString(expectedClient), status().isOk());
+
 		List<Client> allClientsInDb = allClients.getAll();
 		Client actualClient = allClientsInDb.get(0);
 		actualClient.setDateCreated(null); //So We don't need to mock DateTimeUtil.now()
@@ -133,9 +134,8 @@ public class ClientResourceTest extends BaseResourceTest {
 		Client expectedClient = new Client("1").withGender("male").withBirthdate(new DateTime(0l, DateTimeZone.UTC), false);
 		expectedClient.setBaseEntityId(null);
 
-		this.mockMvc.perform(
-				post(BASE_URL).contentType(MediaType.APPLICATION_JSON).body(mapper.writeValueAsBytes(expectedClient))
-						.accept(MediaType.APPLICATION_JSON));
+		postCallWithJsonContent(BASE_URL, mapper.writeValueAsString(expectedClient), status().isOk());
+
 		List<Client> allClientsInDb = allClients.getAll();
 		assertEquals(0, allClientsInDb.size());
 	}
@@ -144,9 +144,8 @@ public class ClientResourceTest extends BaseResourceTest {
 	public void shouldNotCreateClientWithOutFirstName() throws Exception {
 		Client expectedClient = new Client("1").withGender("male").withBirthdate(new DateTime(0l, DateTimeZone.UTC), false);
 
-		this.mockMvc.perform(
-				post(BASE_URL).contentType(MediaType.APPLICATION_JSON).body(mapper.writeValueAsBytes(expectedClient))
-						.accept(MediaType.APPLICATION_JSON));
+		postCallWithJsonContent(BASE_URL, mapper.writeValueAsString(expectedClient), status().isOk());
+
 		List<Client> allClientsInDb = allClients.getAll();
 		assertEquals(0, allClientsInDb.size());
 	}
@@ -155,9 +154,7 @@ public class ClientResourceTest extends BaseResourceTest {
 	public void shouldNotCreateClientWithOutGender() throws Exception {
 		Client expectedClient = new Client("1").withFirstName("first").withBirthdate(new DateTime(0l), false);
 
-		this.mockMvc.perform(
-				post(BASE_URL).contentType(MediaType.APPLICATION_JSON).body(mapper.writeValueAsBytes(expectedClient))
-						.accept(MediaType.APPLICATION_JSON));
+		postCallWithJsonContent(BASE_URL, mapper.writeValueAsString(expectedClient), status().isOk());
 
 		List<Client> allClientsInDb = allClients.getAll();
 		assertEquals(0, allClientsInDb.size());
@@ -168,9 +165,7 @@ public class ClientResourceTest extends BaseResourceTest {
 	public void shouldNotCreateClientWithOutBirthDate() throws Exception {
 		Client expectedClient = new Client("1").withFirstName("first").withGender("male");
 
-		this.mockMvc.perform(
-				post(BASE_URL).contentType(MediaType.APPLICATION_JSON).body(mapper.writeValueAsBytes(expectedClient))
-						.accept(MediaType.APPLICATION_JSON));
+		postCallWithJsonContent(BASE_URL, mapper.writeValueAsString(expectedClient), status().isOk());
 
 		List<Client> allClientsInDb = allClients.getAll();
 		assertEquals(0, allClientsInDb.size());
@@ -181,13 +176,11 @@ public class ClientResourceTest extends BaseResourceTest {
 	public void shouldUpdateExistingClient() throws Exception {
 		Client expectedClient = new Client("1").withFirstName("first").withGender("male")
 				.withBirthdate(new DateTime(0l, DateTimeZone.UTC), false);
-		createClients(asList(expectedClient), allClients);
+		addObjectToRepository(Collections.singletonList(expectedClient), allClients);
 
 		expectedClient.setDeathdate(new DateTime(2l, DateTimeZone.UTC));
 
-		this.mockMvc.perform(
-				post(BASE_URL + "1").contentType(MediaType.APPLICATION_JSON).body(mapper.writeValueAsBytes(expectedClient))
-						.accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+		postCallWithJsonContent(BASE_URL + "1", mapper.writeValueAsString(expectedClient), status().isOk());
 
 		List<Client> allClientsInDb = allClients.getAll();
 		Client actualClient = allClientsInDb.get(0);
@@ -203,9 +196,7 @@ public class ClientResourceTest extends BaseResourceTest {
 				.withBirthdate(new DateTime(0l, DateTimeZone.UTC), false);
 		expectedClient.setDeathdate(new DateTime(2l, DateTimeZone.UTC));
 
-		this.mockMvc.perform(
-				post(BASE_URL + "1").contentType(MediaType.APPLICATION_JSON).body(mapper.writeValueAsBytes(expectedClient))
-						.accept(MediaType.APPLICATION_JSON));
+		postCallWithJsonContent(BASE_URL + "1", mapper.writeValueAsString(expectedClient), status().isOk());
 
 		List<Client> allClientsInDb = allClients.getAll();
 		assertEquals(0, allClientsInDb.size());
@@ -216,16 +207,14 @@ public class ClientResourceTest extends BaseResourceTest {
 	public void shouldThrowExceptionWhileUpdateIfFistNameNotPresent() throws Exception {
 		Client expectedNotUpdatedClient = new Client("1").withGender("male")
 				.withBirthdate(new DateTime(0l, DateTimeZone.UTC), false);
-		createClients(asList(expectedNotUpdatedClient), allClients);
+		addObjectToRepository(Collections.singletonList(expectedNotUpdatedClient), allClients);
 		Client updatedClient = expectedNotUpdatedClient;
 		updatedClient.setDeathdate(new DateTime(2l, DateTimeZone.UTC));
 
-		this.mockMvc.perform(
-				post(BASE_URL + "1").contentType(MediaType.APPLICATION_JSON).body(mapper.writeValueAsBytes(updatedClient))
-						.accept(MediaType.APPLICATION_JSON));
-
+		postCallWithJsonContent(BASE_URL + "1", mapper.writeValueAsString(updatedClient), status().isOk());
 		List<Client> allClientsInDb = allClients.getAll();
 		Client actualClient = allClientsInDb.get(0);
+
 		assertEquals(1, allClientsInDb.size());
 		assertEquals(expectedNotUpdatedClient, actualClient);
 		assertNotSame(updatedClient, actualClient);
@@ -235,16 +224,14 @@ public class ClientResourceTest extends BaseResourceTest {
 	public void shouldThrowExceptionWhileUpdateIfGenderNotPresent() throws Exception {
 		Client expectedNotUpdatedClient = new Client("1").withFirstName("name")
 				.withBirthdate(new DateTime(0l, DateTimeZone.UTC), false);
-		createClients(asList(expectedNotUpdatedClient), allClients);
+		addObjectToRepository(Collections.singletonList(expectedNotUpdatedClient), allClients);
 		Client updatedClient = expectedNotUpdatedClient;
 		updatedClient.setDeathdate(new DateTime(2l, DateTimeZone.UTC));
 
-		this.mockMvc.perform(
-				post(BASE_URL + "1").contentType(MediaType.APPLICATION_JSON).body(mapper.writeValueAsBytes(updatedClient))
-						.accept(MediaType.APPLICATION_JSON));
-
+		postCallWithJsonContent(BASE_URL + "1", mapper.writeValueAsString(updatedClient), status().isOk());
 		List<Client> allClientsInDb = allClients.getAll();
 		Client actualClient = allClientsInDb.get(0);
+
 		assertEquals(1, allClientsInDb.size());
 		assertEquals(expectedNotUpdatedClient, actualClient);
 		assertNotSame(updatedClient, actualClient);
@@ -253,16 +240,14 @@ public class ClientResourceTest extends BaseResourceTest {
 	@Test(expected = NestedServletException.class)
 	public void shouldThrowExceptionWhileUpdateIfBirthDateNotPresent() throws Exception {
 		Client expectedNotUpdatedClient = new Client("1").withGender("male").withFirstName("name");
-		createClients(asList(expectedNotUpdatedClient), allClients);
+		addObjectToRepository(Collections.singletonList(expectedNotUpdatedClient), allClients);
 		Client updatedClient = expectedNotUpdatedClient;
 		updatedClient.setDeathdate(new DateTime(2l, DateTimeZone.UTC));
 
-		this.mockMvc.perform(
-				post(BASE_URL + "1").contentType(MediaType.APPLICATION_JSON).body(mapper.writeValueAsBytes(updatedClient))
-						.accept(MediaType.APPLICATION_JSON));
-
+		postCallWithJsonContent(BASE_URL + "1", mapper.writeValueAsString(updatedClient), status().isOk());
 		List<Client> allClientsInDb = allClients.getAll();
 		Client actualClient = allClientsInDb.get(0);
+
 		assertEquals(1, allClientsInDb.size());
 		assertEquals(expectedNotUpdatedClient, actualClient);
 		assertNotSame(updatedClient, actualClient);
@@ -273,16 +258,14 @@ public class ClientResourceTest extends BaseResourceTest {
 		Client expectedNotUpdatedClient = new Client("1").withFirstName("name").withGender("male")
 				.withBirthdate(new DateTime(0l, DateTimeZone.UTC), false);
 		expectedNotUpdatedClient.setBaseEntityId(null);
-		createClients(asList(expectedNotUpdatedClient), allClients);
+		addObjectToRepository(Collections.singletonList(expectedNotUpdatedClient), allClients);
 		Client updatedClient = expectedNotUpdatedClient;
 		updatedClient.setDeathdate(new DateTime(2l, DateTimeZone.UTC));
 
-		this.mockMvc.perform(
-				post(BASE_URL + "1").contentType(MediaType.APPLICATION_JSON).body(mapper.writeValueAsBytes(updatedClient))
-						.accept(MediaType.APPLICATION_JSON));
-
+		postCallWithJsonContent(BASE_URL + "1", mapper.writeValueAsString(updatedClient), status().isOk());
 		List<Client> allClientsInDb = allClients.getAll();
 		Client actualClient = allClientsInDb.get(0);
+
 		assertEquals(1, allClientsInDb.size());
 		assertEquals(expectedNotUpdatedClient, actualClient);
 		assertNotSame(updatedClient, actualClient);
@@ -296,21 +279,16 @@ public class ClientResourceTest extends BaseResourceTest {
 
 		Client otherClient = new Client("2");
 		Client otherClient2 = new Client("3");
-
-		createClients(asList(expectedClient, otherClient, otherClient2), allClients);
+		addObjectToRepository(asList(expectedClient, otherClient, otherClient2), allClients);
 
 		String searchQuery =
 				"search?name=" + name + "&gender=" + male + "&addressType=" + addressType + "&birthDate=" + birthDate
 						.toLocalDate().toString() + "&deathDate=" + deathDate.toLocalDate().toString() + "&country="
 						+ country + "&stateProvince=" + stateProvince + "&countryDistrict=" + countryDistrict
 						+ "&cityVillage=" + cityVillage + "&town=" + town + "&subDistrict=" + subDistrict;
-
-		MvcResult mvcResult = this.mockMvc.perform(get(BASE_URL + searchQuery).contentType(MediaType.APPLICATION_JSON))
-				.andDo(print()).andReturn();
-
-		String responseString = mvcResult.getResponse().getContentAsString();
-		JsonNode actualObj = mapper.readTree(responseString);
+		JsonNode actualObj = getCallAsJsonNode(BASE_URL + searchQuery, "", status().isOk());
 		Client actualClient = mapper.treeToValue(actualObj.get(0), Client.class);
+
 		assertEquals(expectedClient, actualClient);
 	}
 
@@ -322,21 +300,16 @@ public class ClientResourceTest extends BaseResourceTest {
 
 		Client otherClient = new Client("2");
 		Client otherClient2 = new Client("3");
-
-		createClients(asList(expectedClient, otherClient, otherClient2), allClients);
+		addObjectToRepository(asList(expectedClient, otherClient, otherClient2), allClients);
 
 		String searchQuery =
 				"search?name=invalid" + name + "&gender=invalid" + male + "&addressType=" + addressType + "&birthDate="
 						+ birthDate.toLocalDate().toString() + "&deathDate=" + deathDate.toLocalDate().toString()
 						+ "&country=" + country + "&stateProvince=" + stateProvince + "&countryDistrict=" + countryDistrict
 						+ "&cityVillage=" + cityVillage + "&town=" + town + "&subDistrict=" + subDistrict;
+		JsonNode actualObj = getCallAsJsonNode(BASE_URL + searchQuery, "", status().isOk());
 
-		MvcResult mvcResult = this.mockMvc.perform(get(BASE_URL + searchQuery).contentType(MediaType.APPLICATION_JSON))
-				.andDo(print()).andReturn();
-
-		String responseString = mvcResult.getResponse().getContentAsString();
-		assertTrue(responseString.equals("[]"));
-		JsonNode actualObj = mapper.readTree(responseString);
+		assertTrue(actualObj.isArray());
 		assertNull(actualObj.get(0));
 	}
 
@@ -347,16 +320,12 @@ public class ClientResourceTest extends BaseResourceTest {
 
 		Client otherClient = new Client("2");
 		Client otherClient2 = new Client("3");
+		addObjectToRepository(asList(expectedClient, otherClient, otherClient2), allClients);
 
-		createClients(asList(expectedClient, otherClient, otherClient2), allClients);
+		String searchQuery = "search?name=" + name;
+		JsonNode actualObj = getCallAsJsonNode(BASE_URL + searchQuery, "", status().isOk());
 
-		MvcResult mvcResult = this.mockMvc
-				.perform(get(BASE_URL + "search?name=" + name).contentType(MediaType.APPLICATION_JSON)).andDo(print())
-				.andReturn();
-
-		String responseString = mvcResult.getResponse().getContentAsString();
-		assertTrue(responseString.equals("[]"));
-		JsonNode actualObj = mapper.readTree(responseString);
+		assertTrue(actualObj.isArray());
 		assertNull(actualObj.get(0));
 	}
 
@@ -368,16 +337,12 @@ public class ClientResourceTest extends BaseResourceTest {
 
 		Client otherClient = new Client("2");
 		Client otherClient2 = new Client("3");
+		addObjectToRepository(asList(expectedClient, otherClient, otherClient2), allClients);
 
-		createClients(asList(expectedClient, otherClient, otherClient2), allClients);
+		String searchQuery = "search?gender=" + male;
+		JsonNode actualObj = getCallAsJsonNode(BASE_URL + searchQuery, "", status().isOk());
 
-		MvcResult mvcResult = this.mockMvc
-				.perform(get(BASE_URL + "search?gender=" + male).contentType(MediaType.APPLICATION_JSON)).andDo(print())
-				.andReturn();
-
-		String responseString = mvcResult.getResponse().getContentAsString();
-		assertTrue(responseString.equals("[]"));
-		JsonNode actualObj = mapper.readTree(responseString);
+		assertTrue(actualObj.isArray());
 		assertNull(actualObj.get(0));
 	}
 
@@ -389,16 +354,12 @@ public class ClientResourceTest extends BaseResourceTest {
 
 		Client otherClient = new Client("2");
 		Client otherClient2 = new Client("3");
+		addObjectToRepository(asList(expectedClient, otherClient, otherClient2), allClients);
 
-		createClients(asList(expectedClient, otherClient, otherClient2), allClients);
+		String searchQuery = "search?name=" + name;
+		JsonNode actualObj = getCallAsJsonNode(BASE_URL + searchQuery, "", status().isOk());
 
-		MvcResult mvcResult = this.mockMvc
-				.perform(get(BASE_URL + "search?name=" + name).contentType(MediaType.APPLICATION_JSON)).andDo(print())
-				.andReturn();
-
-		String responseString = mvcResult.getResponse().getContentAsString();
-		assertTrue(responseString.equals("[]"));
-		JsonNode actualObj = mapper.readTree(responseString);
+		assertTrue(actualObj.isArray());
 		assertNull(actualObj.get(0));
 	}
 
@@ -410,21 +371,16 @@ public class ClientResourceTest extends BaseResourceTest {
 
 		Client otherClient = new Client("2");
 		Client otherClient2 = new Client("3");
-
-		createClients(asList(expectedClient, otherClient, otherClient2), allClients);
+		addObjectToRepository(asList(expectedClient, otherClient, otherClient2), allClients);
 
 		String searchQuery =
 				"?q=name:" + name + "and gender:" + male + "and addressType:" + addressType + "and birthDate:" + birthDate
 						.toLocalDate().toString() + "and deathDate:" + deathDate.toLocalDate().toString() + "and country:"
 						+ country + "and stateProvince:" + stateProvince + "and countryDistrict:" + countryDistrict
 						+ "and cityVillage:" + cityVillage + "and town:" + town + "and subDistrict:" + subDistrict;
-
-		MvcResult mvcResult = this.mockMvc.perform(get(BASE_URL + searchQuery).contentType(MediaType.APPLICATION_JSON))
-				.andDo(print()).andReturn();
-
-		String responseString = mvcResult.getResponse().getContentAsString();
-		JsonNode actualObj = mapper.readTree(responseString);
+		JsonNode actualObj = getCallAsJsonNode(BASE_URL + searchQuery, "", status().isOk());
 		Client actualClient = mapper.treeToValue(actualObj.get(0), Client.class);
+
 		assertEquals(expectedClient, actualClient);
 	}
 
@@ -436,17 +392,12 @@ public class ClientResourceTest extends BaseResourceTest {
 
 		Client otherClient = new Client("2");
 		Client otherClient2 = new Client("3");
-
-		createClients(asList(expectedClient, otherClient, otherClient2), allClients);
+		addObjectToRepository(asList(expectedClient, otherClient, otherClient2), allClients);
 
 		String searchQuery = "?q=firstName:invalid" + name + "and gender:invalid" + male;
+		JsonNode actualObj = getCallAsJsonNode(BASE_URL + searchQuery, "", status().isOk());
 
-		MvcResult mvcResult = this.mockMvc.perform(get(BASE_URL + searchQuery).contentType(MediaType.APPLICATION_JSON))
-				.andDo(print()).andReturn();
-
-		String responseString = mvcResult.getResponse().getContentAsString();
-		assertTrue(responseString.equals("[]"));
-		JsonNode actualObj = mapper.readTree(responseString);
+		assertTrue(actualObj.isArray());
 		assertNull(actualObj.get(0));
 	}
 
@@ -457,15 +408,12 @@ public class ClientResourceTest extends BaseResourceTest {
 
 		Client otherClient = new Client("2");
 		Client otherClient2 = new Client("3");
+		addObjectToRepository(asList(expectedClient, otherClient, otherClient2), allClients);
 
-		createClients(asList(expectedClient, otherClient, otherClient2), allClients);
+		String searchQuery = "?q=name:" + name;
+		JsonNode actualObj = getCallAsJsonNode(BASE_URL + searchQuery, "", status().isOk());
 
-		MvcResult mvcResult = this.mockMvc.perform(get(BASE_URL + "?q=name:" + name).contentType(MediaType.APPLICATION_JSON))
-				.andDo(print()).andReturn();
-
-		String responseString = mvcResult.getResponse().getContentAsString();
-		assertTrue(responseString.equals("[]"));
-		JsonNode actualObj = mapper.readTree(responseString);
+		assertTrue(actualObj.isArray());
 		assertNull(actualObj.get(0));
 	}
 
@@ -477,15 +425,13 @@ public class ClientResourceTest extends BaseResourceTest {
 
 		Client otherClient = new Client("2");
 		Client otherClient2 = new Client("3");
+		addObjectToRepository(asList(expectedClient, otherClient, otherClient2), allClients);
 
-		createClients(asList(expectedClient, otherClient, otherClient2), allClients);
+		String searchQuery = "?q=gender:" + male;
+		JsonNode actualObj = getCallAsJsonNode(BASE_URL + searchQuery, "", status().isOk());
 
-		MvcResult mvcResult = this.mockMvc
-				.perform(get(BASE_URL + "?q?gender:" + male).contentType(MediaType.APPLICATION_JSON)).andDo(print())
-				.andReturn();
-
-		String responseString = mvcResult.getResponse().getContentAsString();
-		assertTrue(responseString.isEmpty());
+		assertTrue(actualObj.isArray());
+		assertNull(actualObj.get(0));
 	}
 
 	@Test
@@ -496,15 +442,12 @@ public class ClientResourceTest extends BaseResourceTest {
 
 		Client otherClient = new Client("2");
 		Client otherClient2 = new Client("3");
+		addObjectToRepository(asList(expectedClient, otherClient, otherClient2), allClients);
 
-		createClients(asList(expectedClient, otherClient, otherClient2), allClients);
+		String searchQuery = "?q=name:" + name;
+		JsonNode actualObj = getCallAsJsonNode(BASE_URL + searchQuery, "", status().isOk());
 
-		MvcResult mvcResult = this.mockMvc.perform(get(BASE_URL + "?q=name:" + name).contentType(MediaType.APPLICATION_JSON))
-				.andDo(print()).andReturn();
-
-		String responseString = mvcResult.getResponse().getContentAsString();
-		assertTrue(responseString.equals("[]"));
-		JsonNode actualObj = mapper.readTree(responseString);
+		assertTrue(actualObj.isArray());
 		assertNull(actualObj.get(0));
 	}
 
