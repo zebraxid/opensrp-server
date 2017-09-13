@@ -3,17 +3,12 @@ package org.opensrp.connector.openmrs.service.it;
 import static junit.framework.Assert.assertEquals;
 
 import java.io.IOException;
-import java.util.List;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
-import org.apache.log4j.spi.LoggingEvent;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.motechproject.scheduler.domain.MotechEvent;
@@ -72,7 +67,7 @@ public class OpenmrsSyncerListenerTest extends OpenmrsApiService {
 	}
 	
 	@Test
-	public void testPushToOpenMRS() throws JSONException {
+	public void testPushClient() throws JSONException {
 		
 		Client expectedChildClient = EventClient.getChildClient();
 		allClients.add(expectedChildClient);
@@ -80,46 +75,46 @@ public class OpenmrsSyncerListenerTest extends OpenmrsApiService {
 		allClients.add(expectedMotherClient);
 		
 		String identifierType = "OPENMRS_UUID";
-		JSONObject expectedIdentifier = patientService.getIdentifierType("OPENMRS_UUID");
+		JSONObject expectedIdentifier = patientService.getIdentifierType(identifierType);
 		
-		if (!identifierType.equals(expectedIdentifier.get("display"))) {
+		if (!identifierType.equals(expectedIdentifier.get(displayKey))) {
 			patientService.createIdentifierType(identifierType, identifierType);
 		}
 		
-		JSONObject createdPatientJsonObject = openmrsSyncerListener.pushClient(0);
+		JSONObject createdPatientJsonObject = openmrsSyncerListener.pushClient(indexKey);
 		
-		JSONObject updatedPatient = openmrsSyncerListener.pushClient(0);
+		JSONObject updatedPatient = openmrsSyncerListener.pushClient(indexKey);
 		
 		JSONArray createdPatientJsonArray = createdPatientJsonObject.getJSONArray("patient");
-		JSONArray createdRelationArray = createdPatientJsonObject.getJSONArray("relation");
-		JSONArray updatedRelationArray = updatedPatient.getJSONArray("relation");
+		JSONArray createdRelationArray = createdPatientJsonObject.getJSONArray(relationKey);
+		JSONArray updatedRelationArray = updatedPatient.getJSONArray(relationKey);
 		String actualChildNname = "";
 		String actualMotherName = "";
 		
-		JSONObject craetedRelationObject = createdRelationArray.getJSONObject(0);
-		String createdRelationId = craetedRelationObject.getString("uuid");
+		JSONObject craetedRelationObject = createdRelationArray.getJSONObject(indexKey);
+		String createdRelationId = craetedRelationObject.getString(uuidKey);
 		
-		JSONObject updatedRelationObject = updatedRelationArray.getJSONObject(0);
-		String updatedRelationId = updatedRelationObject.getString("uuid");
+		JSONObject updatedRelationObject = updatedRelationArray.getJSONObject(indexKey);
+		String updatedRelationId = updatedRelationObject.getString(uuidKey);
 		
 		deleteRelation(createdRelationId);
 		deleteRelation(updatedRelationId);
 		
 		for (int i = 0; i < createdPatientJsonArray.length(); i++) {
 			JSONObject patient = createdPatientJsonArray.getJSONObject(i);
-			JSONObject person = patient.getJSONObject("person");
-			deletePerson(person.getString("uuid"));// client person
-			if (person.getString("gender").equalsIgnoreCase("male")) {
+			JSONObject person = patient.getJSONObject(personKey);
+			deletePerson(person.getString(uuidKey));// client person
+			if (person.getString(genderKey).equalsIgnoreCase("male")) {
 				actualChildNname = person.getString("display");
-			} else if (person.getString("gender").equalsIgnoreCase("Female")) {
-				actualMotherName = person.getString("display");
+			} else if (person.getString(genderKey).equalsIgnoreCase("Female")) {
+				actualMotherName = person.getString(displayKey);
 			}
 		}
 		
 		JSONObject childFromRelation = craetedRelationObject.getJSONObject("personB");
 		JSONObject motherFromRelation = craetedRelationObject.getJSONObject("personA");
-		String actualMotherNameForRelation = motherFromRelation.getString("display");
-		String actualChildNameForRelation = childFromRelation.getString("display");
+		String actualMotherNameForRelation = motherFromRelation.getString(displayKey);
+		String actualChildNameForRelation = childFromRelation.getString(displayKey);
 		
 		assertEquals(expectedChildClient.fullName() + " -", actualChildNameForRelation);
 		assertEquals(expectedMotherClient.fullName() + " -", actualMotherNameForRelation);
@@ -136,7 +131,7 @@ public class OpenmrsSyncerListenerTest extends OpenmrsApiService {
 		allEvents.add(creatingEvent);
 		String IdentifierType = "TestIdentifierType";
 		JSONObject identifier = patientService.createIdentifierType(IdentifierType, "description");
-		String identifierUuid = identifier.getString("uuid");
+		String identifierUuid = identifier.getString(uuidKey);
 		String fn = "jack";
 		String mn = "bgu";
 		String ln = "nil";
@@ -148,54 +143,35 @@ public class OpenmrsSyncerListenerTest extends OpenmrsApiService {
 		openmrsUserService.createProvider(userName, IdentifierType);
 		
 		JSONObject provider = openmrsUserService.getProvider(IdentifierType);
-		JSONObject personObject = provider.getJSONObject("person");
+		JSONObject personObject = provider.getJSONObject(personKey);
 		
 		JSONObject returnEncounterType = encounterService.createEncounterType("TestEncounter", "Test desc");
 		JSONObject expectedEvent = openmrsSyncerListener.pushEvent(0);
 		openmrsSyncerListener.pushEvent(0);
-		deletePerson(person.getString("uuid"));
-		deleteUser(usr.getString("uuid"));
+		
+		/** Data cleaning ***/
+		deletePerson(person.getString(uuidKey));
+		deleteUser(usr.getString(uuidKey));
 		deleteIdentifierType(identifierUuid);
-		deleteProvider(provider.getString("uuid"));
-		deletePerson(personObject.getString("uuid").trim());
-		deleteEncounter(expectedEvent.getString("uuid"));
-		deleteEncounterType(returnEncounterType.getString("uuid"));
+		deleteProvider(provider.getString(uuidKey));
+		deletePerson(personObject.getString(uuidKey).trim());
+		deleteEncounter(expectedEvent.getString(uuidKey));
+		deleteEncounterType(returnEncounterType.getString(uuidKey));
 		JSONArray obsArray = expectedEvent.getJSONArray("obs");
 		JSONObject obs = obsArray.getJSONObject(0);
 		JSONArray encounterProviders = expectedEvent.getJSONArray("encounterProviders");
 		JSONObject encounterProvider = encounterProviders.getJSONObject(0);
-		JSONObject encounterType = expectedEvent.getJSONObject("encounterType");
+		JSONObject encounterType = expectedEvent.getJSONObject(encounterTypeKey);
 		String expectedEncounterProvider = fn + " " + mn + " " + ln + ":" + " Unknown";
-		String actualEncounterProvider = encounterProvider.getString("display");
+		String actualEncounterProvider = encounterProvider.getString(displayKey);
 		
 		String expectedConceptOfObservation = "WHITE BLOOD CELLS: ";
-		String actualConceptOfObservation = obs.getString("display");
-		String expectedEncounterType = encounterType.getString("display");
+		String actualConceptOfObservation = obs.getString(displayKey);
+		String expectedEncounterType = encounterType.getString(displayKey);
 		String actualEncounterType = "TestEncounter";
 		assertEquals(expectedConceptOfObservation, actualConceptOfObservation);
 		assertEquals(expectedEncounterProvider, actualEncounterProvider);
 		assertEquals(expectedEncounterType, actualEncounterType);
 	}
 	
-	@Ignore
-	@Test
-	public void test() {
-		Client expectedChildClient = EventClient.getChild1Client();
-		allClients.add(expectedChildClient);
-		Client expectedMotherClient = EventClient.getMother1Client();
-		allClients.add(expectedMotherClient);
-		
-		Event creatingEvent = EventClient.getEvent1();
-		allEvents.add(creatingEvent);
-		//openmrsSyncerListener.pushToOpenMRS(event);
-		final TestLoggerAppender appender = new TestLoggerAppender();
-		final Logger logger = Logger.getLogger(OpenmrsSyncerListener.class.toString());
-		logger.setLevel(Level.ALL);
-		logger.addAppender(appender);
-		
-		final List<LoggingEvent> log = appender.getLog();
-		final LoggingEvent firstLogEntry = log.get(0);
-		assertEquals(firstLogEntry.getRenderedMessage(), "Unparseable date: \"Not A Valid Date\"");
-		logger.removeAllAppenders();
-	}
 }

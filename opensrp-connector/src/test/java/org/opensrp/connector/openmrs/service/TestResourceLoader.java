@@ -19,11 +19,11 @@ import com.mysql.jdbc.StringUtils;
 
 public class TestResourceLoader {
 	
-	protected String openmrsOpenmrsUrl;
+	protected static String openmrsOpenmrsUrl;
 	
-	protected String openmrsUsername;
+	protected static String openmrsUsername;
 	
-	protected String openmrsPassword;
+	protected static String openmrsPassword;
 	
 	protected String formDirPath;
 	

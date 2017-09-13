@@ -46,76 +46,76 @@ public class OpenmrsLocationTest extends OpenmrsApiService {
 	
 	@Test
 	public void testGetLocationTreeOf() throws JSONException {
-		String expectedCountry = "ABBAA";
-		String expectedDivision = "ABBBB";
-		String expectedDistrict = "BBCCC";
-		String expectedSudDistrict = "CCDDD";
-		String expectedUnion = "DDEEEE";
-		String expectedWard = "EEFFFFFF";
+		String expectedCountry = "BDCountry";
+		String expectedDivision = "Division";
+		String expectedDistrict = "District";
+		String expectedSudDistrict = "SubDistrict";
+		String expectedUnion = "Union";
+		String expectedWard = "Ward";
 		JSONObject country = createLocation(expectedCountry, "");
-		JSONObject division = createLocation(expectedDivision, country.getString("uuid"));
-		JSONObject district = createLocation(expectedDistrict, division.getString("uuid"));
-		JSONObject sudDistrict = createLocation(expectedSudDistrict, district.getString("uuid"));
-		JSONObject union = createLocation(expectedUnion, sudDistrict.getString("uuid"));
-		JSONObject ward = createLocation(expectedWard, union.getString("uuid"));
+		JSONObject division = createLocation(expectedDivision, country.getString(uuidKey));
+		JSONObject district = createLocation(expectedDistrict, division.getString(uuidKey));
+		JSONObject sudDistrict = createLocation(expectedSudDistrict, district.getString(uuidKey));
+		JSONObject union = createLocation(expectedUnion, sudDistrict.getString(uuidKey));
+		JSONObject ward = createLocation(expectedWard, union.getString(uuidKey));
 		
 		JSONObject location = new JSONObject(ls.getLocationTreeOf(expectedWard));
-		deleteLocation(country.getString("uuid"));
-		JSONObject response = location.getJSONObject("locationsHierarchy");
+		deleteLocation(country.getString(uuidKey));
+		JSONObject response = location.getJSONObject(locationsHierarchyKey);
 		
-		JSONObject countryJSON = response.getJSONObject(country.getString("uuid"));
-		JSONObject countryNode = countryJSON.getJSONObject("node");
-		String actualParentOfCountry = countryNode.getString("parentLocation");
-		String actualCountry = countryJSON.getString("label");
+		JSONObject countryJSON = response.getJSONObject(country.getString(uuidKey));
+		JSONObject countryNode = countryJSON.getJSONObject(nodeKey);
+		String actualParentOfCountry = countryNode.getString(parentLocationKey);
+		String actualCountry = countryJSON.getString(labelKey);
 		assertEquals(expectedCountry, actualCountry);
 		assertEquals(null + "", actualParentOfCountry);
 		
-		JSONObject divisionJSON = countryJSON.getJSONObject("children");
-		JSONObject divisionJSONOFUUID = divisionJSON.getJSONObject(division.getString("uuid"));
-		String actualDivision = divisionJSONOFUUID.getString("label");
-		JSONObject nodeOFDivision = divisionJSONOFUUID.getJSONObject("node");
-		JSONObject parentOFDivision = nodeOFDivision.getJSONObject("parentLocation");
-		String actualParentOFDIvision = parentOFDivision.getString("name");
+		JSONObject divisionJSON = countryJSON.getJSONObject(childrenKey);
+		JSONObject divisionJSONOFUUID = divisionJSON.getJSONObject(division.getString(uuidKey));
+		String actualDivision = divisionJSONOFUUID.getString(labelKey);
+		JSONObject nodeOFDivision = divisionJSONOFUUID.getJSONObject(nodeKey);
+		JSONObject parentOFDivision = nodeOFDivision.getJSONObject(parentLocationKey);
+		String actualParentOFDIvision = parentOFDivision.getString(nameKey);
 		assertEquals(expectedDivision, actualDivision);
 		String expectedDivisionPArent = expectedCountry;
 		assertEquals(expectedDivisionPArent, actualParentOFDIvision);
 		
-		JSONObject districtJSON = divisionJSONOFUUID.getJSONObject("children");
-		JSONObject districtJSONOFUUID = districtJSON.getJSONObject(district.getString("uuid"));
-		String actualDistrict = districtJSONOFUUID.getString("label");
-		JSONObject nodeOFDistrict = districtJSONOFUUID.getJSONObject("node");
-		JSONObject parentOFDistrict = nodeOFDistrict.getJSONObject("parentLocation");
-		String actualParentOFDistrict = parentOFDistrict.getString("name");
+		JSONObject districtJSON = divisionJSONOFUUID.getJSONObject(childrenKey);
+		JSONObject districtJSONOFUUID = districtJSON.getJSONObject(district.getString(uuidKey));
+		String actualDistrict = districtJSONOFUUID.getString(labelKey);
+		JSONObject nodeOFDistrict = districtJSONOFUUID.getJSONObject(nodeKey);
+		JSONObject parentOFDistrict = nodeOFDistrict.getJSONObject(parentLocationKey);
+		String actualParentOFDistrict = parentOFDistrict.getString(nameKey);
 		assertEquals(expectedDistrict, actualDistrict);
 		String expectedDistrictParent = expectedDivision;
 		assertEquals(expectedDistrictParent, actualParentOFDistrict);
 		
-		JSONObject sudDistrictJSON = districtJSONOFUUID.getJSONObject("children");
-		JSONObject subDistrictJSONOFUUID = sudDistrictJSON.getJSONObject(sudDistrict.getString("uuid"));
-		String actualSubDistrict = subDistrictJSONOFUUID.getString("label");
-		JSONObject nodeOFSUbDistrict = subDistrictJSONOFUUID.getJSONObject("node");
-		JSONObject parentOFSubDistrict = nodeOFSUbDistrict.getJSONObject("parentLocation");
-		String actualParentOFSubDistrict = parentOFSubDistrict.getString("name");
+		JSONObject sudDistrictJSON = districtJSONOFUUID.getJSONObject(childrenKey);
+		JSONObject subDistrictJSONOFUUID = sudDistrictJSON.getJSONObject(sudDistrict.getString(uuidKey));
+		String actualSubDistrict = subDistrictJSONOFUUID.getString(labelKey);
+		JSONObject nodeOFSUbDistrict = subDistrictJSONOFUUID.getJSONObject(nodeKey);
+		JSONObject parentOFSubDistrict = nodeOFSUbDistrict.getJSONObject(parentLocationKey);
+		String actualParentOFSubDistrict = parentOFSubDistrict.getString(nameKey);
 		assertEquals(expectedSudDistrict, actualSubDistrict);
 		String expectedSubDistrictParent = expectedDistrict;
 		assertEquals(expectedSubDistrictParent, actualParentOFSubDistrict);
 		
-		JSONObject uionJSON = subDistrictJSONOFUUID.getJSONObject("children");
-		JSONObject unionJSONOFUUID = uionJSON.getJSONObject(union.getString("uuid"));
-		String actualunion = unionJSONOFUUID.getString("label");
-		JSONObject nodeOFUnion = unionJSONOFUUID.getJSONObject("node");
-		JSONObject parentOFUnion = nodeOFUnion.getJSONObject("parentLocation");
-		String actualParentOFUnion = parentOFUnion.getString("name");
+		JSONObject uionJSON = subDistrictJSONOFUUID.getJSONObject(childrenKey);
+		JSONObject unionJSONOFUUID = uionJSON.getJSONObject(union.getString(uuidKey));
+		String actualunion = unionJSONOFUUID.getString(labelKey);
+		JSONObject nodeOFUnion = unionJSONOFUUID.getJSONObject(nodeKey);
+		JSONObject parentOFUnion = nodeOFUnion.getJSONObject(parentLocationKey);
+		String actualParentOFUnion = parentOFUnion.getString(nameKey);
 		assertEquals(expectedUnion, actualunion);
 		String expectedUnionParent = expectedSudDistrict;
 		assertEquals(expectedUnionParent, actualParentOFUnion);
 		
-		JSONObject wardJSON = unionJSONOFUUID.getJSONObject("children");
-		JSONObject wardJSONOFUUID = wardJSON.getJSONObject(ward.getString("uuid"));
-		String actualward = wardJSONOFUUID.getString("label");
-		JSONObject nodeOFWard = wardJSONOFUUID.getJSONObject("node");
-		JSONObject parentOFWard = nodeOFWard.getJSONObject("parentLocation");
-		String actualParentOFWard = parentOFWard.getString("name");
+		JSONObject wardJSON = unionJSONOFUUID.getJSONObject(childrenKey);
+		JSONObject wardJSONOFUUID = wardJSON.getJSONObject(ward.getString(uuidKey));
+		String actualward = wardJSONOFUUID.getString(labelKey);
+		JSONObject nodeOFWard = wardJSONOFUUID.getJSONObject(nodeKey);
+		JSONObject parentOFWard = nodeOFWard.getJSONObject(parentLocationKey);
+		String actualParentOFWard = parentOFWard.getString(nameKey);
 		assertEquals(expectedWard, actualward);
 		String expectedUnionWard = expectedUnion;
 		assertEquals(expectedUnionWard, actualParentOFWard);
@@ -124,14 +124,14 @@ public class OpenmrsLocationTest extends OpenmrsApiService {
 	
 	@Test(expected = JSONException.class)
 	public void testGetLocationTreeOfZException() throws JSONException {
-		String locationName = "ABBAADERRR";
+		String locationName = "testLocationName";
 		ls.getLocationTreeOf(locationName);
 	}
 	
 	@Test
 	public void testGetLocation() throws JSONException {
 		
-		String locationName = "ABBAA";
+		String locationName = "testLocationName";
 		createLocation(locationName, "");
 		Location location = ls.getLocation(locationName);
 		String actualLocation = location.getName();
@@ -143,7 +143,7 @@ public class OpenmrsLocationTest extends OpenmrsApiService {
 	@Test(expected = JSONException.class)
 	public void testGetLocationException() throws JSONException {
 		
-		String locationName = "ABBAADERRR";
+		String locationName = "testLocationName";
 		ls.getLocation(locationName);
 		
 	}
@@ -151,22 +151,22 @@ public class OpenmrsLocationTest extends OpenmrsApiService {
 	@Test
 	public void testGetLocationTreeOfArray() throws JSONException {
 		
-		String firstLocation = "ABBAA";
-		String secondLocation = "ABBBB";
+		String firstLocation = "testLocationA";
+		String secondLocation = "testLocationB";
 		JSONObject responseFirstLocation = createLocation(firstLocation, "");
 		JSONObject responseSecondLocation = createLocation(secondLocation, "");
 		String[] str = new String[2];
 		str[0] = firstLocation;
 		str[1] = secondLocation;
 		LocationTree lt = ls.getLocationTreeOf(str);
-		deleteLocation(responseFirstLocation.getString("uuid"));
-		deleteLocation(responseSecondLocation.getString("uuid"));
+		deleteLocation(responseFirstLocation.getString(uuidKey));
+		deleteLocation(responseSecondLocation.getString(uuidKey));
 		JSONObject locations = new JSONObject(lt);
-		JSONObject responseLocationTree = locations.getJSONObject("locationsHierarchy");
+		JSONObject responseLocationTree = locations.getJSONObject(locationsHierarchyKey);
 		JSONObject firstLocationJSONOFUUID = responseLocationTree.getJSONObject(responseFirstLocation.getString("uuid"));
 		JSONObject secondLocationJSONOFUUID = responseLocationTree.getJSONObject(responseSecondLocation.getString("uuid"));
-		String actulaFirstLocation = firstLocationJSONOFUUID.getString("label");
-		String actulaSecondLocation = secondLocationJSONOFUUID.getString("label");
+		String actulaFirstLocation = firstLocationJSONOFUUID.getString(labelKey);
+		String actulaSecondLocation = secondLocationJSONOFUUID.getString(labelKey);
 		String expectedFirstLocation = firstLocation;
 		String expectedSecondLocation = secondLocation;
 		assertEquals(expectedFirstLocation, actulaFirstLocation);
@@ -176,8 +176,8 @@ public class OpenmrsLocationTest extends OpenmrsApiService {
 	
 	@Test(expected = JSONException.class)
 	public void testGetLocationTreeOfArrayException() throws JSONException {
-		String firstLocation = "ADDDBBAA";
-		String secondLocation = "ABBDFFBB";
+		String firstLocation = "testLocationC";
+		String secondLocation = "testLcationD";
 		String[] str = new String[2];
 		str[0] = firstLocation;
 		str[1] = secondLocation;
@@ -189,8 +189,8 @@ public class OpenmrsLocationTest extends OpenmrsApiService {
 		String expectedLocation = "testlocationofOpenmrs";
 		JSONObject responseLocation = createLocation(expectedLocation, "");
 		LocationTree lt = ls.getLocationTree();
-		deleteLocation(responseLocation.getString("uuid"));
-		Location location = lt.findLocation(responseLocation.getString("uuid"));
+		deleteLocation(responseLocation.getString(uuidKey));
+		Location location = lt.findLocation(responseLocation.getString(uuidKey));
 		String actualLocation = location.getName();
 		assertEquals(expectedLocation, actualLocation);
 		

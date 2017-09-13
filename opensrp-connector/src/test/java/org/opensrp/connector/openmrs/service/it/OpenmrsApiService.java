@@ -58,6 +58,38 @@ public abstract class OpenmrsApiService extends TestResourceLoader {
 	
 	final static String formatKey = "format";
 	
+	String aIsToBKey = "aIsToB";
+	
+	String bIsToAKey = "bIsToA";
+	
+	String description = "description";
+	
+	String uuidKey = "uuid";
+	
+	String displayKey = "display";
+	
+	String encountersKey = "encounters";
+	
+	String relationshipsKey = "relationships";
+	
+	String encounterTypeKey = "encounterType";
+	
+	String identifierKey = "identifier";
+	
+	String relationKey = "relation";
+	
+	String childrenKey = "children";
+	
+	String labelKey = "label";
+	
+	String nodeKey = "node";
+	
+	String parentLocationKey = "parentLocation";
+	
+	String locationsHierarchyKey = "locationsHierarchy";
+	
+	int indexKey = 0;
+	
 	public JSONObject createPerson(String fn, String mn, String ln) throws JSONException {
 		
 		person.put(genderKey, "F");

@@ -43,10 +43,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration("classpath:test-applicationContext-opensrp-connector.xml")
 public class AtomFeedTest extends OpenmrsApiService {
 	
-	public AtomFeedTest() throws IOException {
-		super();
-	}
-	
 	@Autowired
 	ClientService cs;
 	
@@ -68,6 +64,10 @@ public class AtomFeedTest extends OpenmrsApiService {
 	@Autowired
 	private EncounterService encounterService;
 	
+	public AtomFeedTest() throws IOException {
+		super();
+	}
+	
 	@Before
 	public void setup() {
 		MockitoAnnotations.initMocks(this);
@@ -82,11 +82,11 @@ public class AtomFeedTest extends OpenmrsApiService {
 		String mn = "raw";
 		String ln = "mon";
 		Map<String, String> addressFields = new HashMap<>();
-		addressFields.put("ADDRESS1", "ADDRESS1");
-		addressFields.put("ADDRESS2", "ADDRESS2");
-		addressFields.put("ADDRESS3", "ADDRESS3");
-		addressFields.put("ADDRESS4", "ADDRESS4");
-		addressFields.put("ADDRESS4", "ADDRESS4");
+		addressFields.put("ADDRESS1", "Dhaka");
+		addressFields.put("ADDRESS2", "Dhaka");
+		addressFields.put("ADDRESS3", "gazipur");
+		addressFields.put("ADDRESS4", "gazipur");
+		addressFields.put("ADDRESS4", "gazipur sadar");
 		
 		String attributeName = "personAttribute";
 		JSONObject attribute = createPersonAttributeType("Description", attributeName);

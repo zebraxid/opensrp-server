@@ -68,17 +68,17 @@ public class OpenmrsUserServiceTest extends OpenmrsApiService {
 		openmrsUserService.createProvider(userName, IdentifierType);
 		
 		JSONObject provider = openmrsUserService.getProvider(IdentifierType);
-		JSONObject personObject = provider.getJSONObject("person");
-		assertEquals("Should equal IdentifierType:", IdentifierType, provider.get("identifier"));
+		JSONObject personObject = provider.getJSONObject(personKey);
 		
-		assertEquals("Should equal Person:", fn + " " + mn + " " + ln, personObject.get("display"));
+		assertEquals("Should equal IdentifierType:", IdentifierType, provider.get(identifierKey));
+		assertEquals("Should equal Person:", fn + " " + mn + " " + ln, personObject.get(displayKey));
+		assertEquals("Should equal Provider:", IdentifierType + " - " + fn + " " + mn + " " + ln, provider.get(displayKey));
 		
-		assertEquals("Should equal Provider:", IdentifierType + " - " + fn + " " + mn + " " + ln, provider.get("display"));
-		deletePerson(person.getString("uuid"));
-		deleteUser(usr.getString("uuid"));
+		deletePerson(person.getString(uuidKey));
+		deleteUser(usr.getString(uuidKey));
 		deleteIdentifierType(identifierUuid);
-		deleteProvider(provider.getString("uuid"));
-		deletePerson(personObject.getString("uuid").trim());
+		deleteProvider(provider.getString(uuidKey));
+		deletePerson(personObject.getString(uuidKey).trim());
 		
 	}
 	

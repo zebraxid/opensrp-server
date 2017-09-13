@@ -15,7 +15,6 @@ import org.opensrp.connector.dhis2.Dhis2TrackCaptureConnector;
 import org.opensrp.connector.openmrs.constants.OpenmrsConstants;
 import org.opensrp.connector.openmrs.constants.OpenmrsConstants.SchedulerConfig;
 import org.opensrp.connector.openmrs.service.EncounterService;
-import org.opensrp.connector.openmrs.service.OpenmrsSchedulerService;
 import org.opensrp.connector.openmrs.service.PatientService;
 import org.opensrp.domain.AppStateToken;
 import org.opensrp.domain.Client;
@@ -38,7 +37,7 @@ public class OpenmrsSyncerListener {
 	
 	private static Logger logger = LoggerFactory.getLogger(OpenmrsSyncerListener.class.toString());
 	
-	private final OpenmrsSchedulerService openmrsSchedulerService;
+	//private final OpenmrsSchedulerService openmrsSchedulerService;
 	
 	private final ScheduleService opensrpScheduleService;
 	
@@ -62,11 +61,10 @@ public class OpenmrsSyncerListener {
 	private Dhis2TrackCaptureConnector dhis2TrackCaptureConnector;
 	
 	@Autowired
-	public OpenmrsSyncerListener(OpenmrsSchedulerService openmrsSchedulerService, ScheduleService opensrpScheduleService,
-	    ActionService actionService, ConfigService config, ErrorTraceService errorTraceService,
-	    PatientService patientService, EncounterService encounterService, ClientService clientService,
-	    EventService eventService) {
-		this.openmrsSchedulerService = openmrsSchedulerService;
+	public OpenmrsSyncerListener(ScheduleService opensrpScheduleService, ActionService actionService, ConfigService config,
+	    ErrorTraceService errorTraceService, PatientService patientService, EncounterService encounterService,
+	    ClientService clientService, EventService eventService) {
+		//this.openmrsSchedulerService = openmrsSchedulerService;
 		this.opensrpScheduleService = opensrpScheduleService;
 		this.actionService = actionService;
 		this.config = config;
