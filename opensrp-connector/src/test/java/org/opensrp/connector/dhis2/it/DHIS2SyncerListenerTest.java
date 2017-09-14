@@ -3,9 +3,7 @@ package org.opensrp.connector.dhis2.it;
 import static junit.framework.Assert.assertEquals;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.joda.time.DateTime;
@@ -30,11 +28,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration("classpath:test-applicationContext-opensrp-connector.xml")
 public class DHIS2SyncerListenerTest extends TestResourceLoader {
 	
-	public DHIS2SyncerListenerTest() throws IOException {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-	
 	@Autowired
 	private AllClients allClients;
 	
@@ -49,15 +42,22 @@ public class DHIS2SyncerListenerTest extends TestResourceLoader {
 		allClients.removeAll();
 	}
 	
+	public DHIS2SyncerListenerTest() throws IOException {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	
 	@Test
 	public void testPushToDHIS2() throws JSONException {
-		Client client = new Client("29").withFirstName("Jared").withGender("male").withLastName("Omwenga")
+		String baseEntityId = "29";
+		String identifierTypeForChild = "ZEIR_ID";
+		String identifierTypeValue = "159451-37_child";
+		Client client = new Client(baseEntityId).withFirstName("Jared").withGender("male").withLastName("Omwenga")
 		        .withBirthdate(new DateTime(), false);
 		Map<String, String> identifiers = new HashMap<>();
-		identifiers.put("ZEIR_ID", "159451-37_child");
+		identifiers.put(identifierTypeForChild, identifierTypeValue);
 		client.setIdentifiers(identifiers);
-		List<String> list = new ArrayList<>();
-		list.add("27");
+		
 		Map<String, Object> attributes = new HashMap<>();
 		attributes.put("Father_NRC_Number", "34");
 		attributes.put("Child_Register_Card_Number", "24");
@@ -66,8 +66,10 @@ public class DHIS2SyncerListenerTest extends TestResourceLoader {
 		attributes.put("Child_Birth_Certificate", "344");
 		client.setAttributes(attributes);
 		allClients.add(client);
+		
 		MotechEvent event = new MotechEvent(DHIS2Constants.DHIS2_TRACK_DATA_SYNCER_SUBJECT);
 		JSONObject returns = dhis2SyncerListener.pushToDHIS2(event);
+		
 		JSONObject response = returns.getJSONObject("response");
 		String expectedImport = "1";
 		String actualImport = response.getString("imported");
@@ -80,6 +82,8 @@ public class DHIS2SyncerListenerTest extends TestResourceLoader {
 		JSONArray importSummariesArray = response.getJSONArray("importSummaries");
 		JSONObject importSummariesJsonObject = importSummariesArray.getJSONObject(0);
 		String refId = importSummariesJsonObject.getString("reference");
+		
+		/*Clening data*/
 		deleteEnrollment(refId);
 		deleteTrackInstances(trackReference);
 	}

@@ -6,6 +6,7 @@ import static junit.framework.Assert.assertNotSame;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.Map;
+import java.util.UUID;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -47,9 +48,8 @@ public class HouseHoldServiceTest extends OpenmrsApiService {
 	@Autowired
 	private HouseholdService hhs;
 	
-	/*@Autowired
-	private OpenmrsSchedulerService ss;
-	*/
+	String baseEntity = UUID.randomUUID().toString();
+	
 	int firstIndex = 0;
 	
 	int secondIndex = 1;
@@ -146,9 +146,9 @@ public class HouseHoldServiceTest extends OpenmrsApiService {
 		String attributeName = "HouseholdAttributeName";
 		JSONObject attribute = createPersonAttributeType(description, attributeName);
 		JSONObject firstPatient = EventClient.getCreatedPatientData(fn, mn, ln, "a3f2abf4-2699-4761-819a-cea739224164",
-		    attributeName);
+		    attributeName, baseEntity);
 		JSONObject secondPatient = EventClient.getCreatedPatientData(fn, mn, ln, "babcd9d2-b3e9-4f6d-8a06-2df8f5fbf01f",
-		    attributeName);
+		    attributeName, baseEntity);
 		
 		Client hhhead = oc.getClientFromFormSubmission(fs);
 		Event ev = oc.getEventFromFormSubmission(fs);

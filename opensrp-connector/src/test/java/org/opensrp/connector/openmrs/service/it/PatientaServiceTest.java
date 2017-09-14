@@ -5,6 +5,7 @@ import static junit.framework.Assert.assertEquals;
 import java.io.IOException;
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -20,6 +21,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:test-applicationContext-opensrp-connector.xml")
 public class PatientaServiceTest extends OpenmrsApiService {
+	
+	String baseEntity = UUID.randomUUID().toString();
 	
 	public PatientaServiceTest() throws IOException {
 		super();
@@ -44,7 +47,7 @@ public class PatientaServiceTest extends OpenmrsApiService {
 		JSONObject attribute = createPersonAttributeType("Description", attributeName);
 		
 		JSONObject patient = EventClient.getCreatedPatientData(fn, mn, ln, "b-8912819" + new Random().nextInt(99),
-		    attributeName);
+		    attributeName, baseEntity);
 		JSONObject person = patient.getJSONObject(personKey);
 		String personName = person.getString(displayKey);
 		String uuid = patient.getString(uuidKey);
@@ -64,7 +67,7 @@ public class PatientaServiceTest extends OpenmrsApiService {
 		String attributeName = "PatientAttributeName";
 		JSONObject attribute = createPersonAttributeType("Description", attributeName);
 		String OpenSRPThriveUID = "b-8912819" + new Random().nextInt(99);
-		JSONObject patient = EventClient.getCreatedPatientData(fn, mn, ln, OpenSRPThriveUID, attributeName);
+		JSONObject patient = EventClient.getCreatedPatientData(fn, mn, ln, OpenSRPThriveUID, attributeName, baseEntity);
 		
 		Multimedia multimedia = new Multimedia();
 		multimedia.setFilePath("/multimedia/sumon/images/1.jpg");

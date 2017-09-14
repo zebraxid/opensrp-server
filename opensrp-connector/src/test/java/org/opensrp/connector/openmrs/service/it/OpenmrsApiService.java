@@ -54,39 +54,41 @@ public abstract class OpenmrsApiService extends TestResourceLoader {
 	
 	final static String passwordKey = "password";
 	
-	final static String personKey = "person";
+	public final static String personKey = "person";
 	
 	final static String formatKey = "format";
 	
-	String aIsToBKey = "aIsToB";
+	public String aIsToBKey = "aIsToB";
 	
-	String bIsToAKey = "bIsToA";
+	public String bIsToAKey = "bIsToA";
 	
-	String description = "description";
+	public String description = "description";
 	
-	String uuidKey = "uuid";
+	public String uuidKey = "uuid";
 	
-	String displayKey = "display";
+	public String displayKey = "display";
 	
-	String encountersKey = "encounters";
+	public String encountersKey = "encounters";
 	
-	String relationshipsKey = "relationships";
+	public String relationshipsKey = "relationships";
 	
-	String encounterTypeKey = "encounterType";
+	public String encounterTypeKey = "encounterType";
 	
-	String identifierKey = "identifier";
+	public String identifierKey = "identifier";
 	
-	String relationKey = "relation";
+	public String relationKey = "relation";
 	
-	String childrenKey = "children";
+	public String childrenKey = "children";
 	
-	String labelKey = "label";
+	public String labelKey = "label";
 	
-	String nodeKey = "node";
+	public String nodeKey = "node";
 	
-	String parentLocationKey = "parentLocation";
+	public String OPENMRS_UUIDKey = "OPENMRS_UUID";
 	
-	String locationsHierarchyKey = "locationsHierarchy";
+	public String parentLocationKey = "parentLocation";
+	
+	public String locationsHierarchyKey = "locationsHierarchy";
 	
 	int indexKey = 0;
 	

@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
@@ -106,14 +105,14 @@ public class EventClient extends OpenmrsApiService {
 	}
 	
 	public static JSONObject getCreatedPatientData(String fn, String mn, String ln, String OpenSRPThriveUID,
-	                                               String attributeName) throws JSONException {
+	                                               String attributeName, String baseEntityId) throws JSONException {
 		
 		Map<String, String> addressFields = new HashMap<>();
-		addressFields.put("ADDRESS1", "ADDRESS1");
-		addressFields.put("ADDRESS2", "ADDRESS2");
-		addressFields.put("ADDRESS3", "ADDRESS3");
-		addressFields.put("ADDRESS4", "ADDRESS4");
-		addressFields.put("ADDRESS4", "ADDRESS4");
+		addressFields.put("ADDRESS1", "testAdress1");
+		addressFields.put("ADDRESS2", "testAddress2");
+		addressFields.put("ADDRESS3", "testAddress3");
+		addressFields.put("ADDRESS4", "testAddress4");
+		addressFields.put("ADDRESS4", "testAddress5");
 		
 		Map<String, Object> attributes = new HashMap<>();
 		
@@ -125,7 +124,7 @@ public class EventClient extends OpenmrsApiService {
 		        "PKA"));
 		Map<String, Object> attribs = new HashMap<>();
 		
-		Client c = new Client(UUID.randomUUID().toString()).withFirstName(fn).withMiddleName(mn).withLastName(ln)
+		Client c = new Client(baseEntityId).withFirstName(fn).withMiddleName(mn).withLastName(ln)
 		        .withBirthdate(new DateTime(), true).withDeathdate(new DateTime(), false).withGender("MALE");
 		
 		c.withAddresses(addresses).withAttributes(attributes);

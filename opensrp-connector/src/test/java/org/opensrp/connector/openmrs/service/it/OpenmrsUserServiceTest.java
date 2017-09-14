@@ -8,6 +8,7 @@ import java.io.IOException;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.opensrp.connector.openmrs.service.OpenmrsUserService;
@@ -48,6 +49,7 @@ public class OpenmrsUserServiceTest extends OpenmrsApiService {
 		openmrsUserService.deleteSession(openmrsUsername, openmrsPassword);
 	}
 	
+	@Ignore
 	@Test
 	public void shouldTestProviderAndUser() throws JSONException {
 		
@@ -80,6 +82,11 @@ public class OpenmrsUserServiceTest extends OpenmrsApiService {
 		deleteProvider(provider.getString(uuidKey));
 		deletePerson(personObject.getString(uuidKey).trim());
 		
+	}
+	
+	@Test
+	public void getPrvider() throws JSONException {
+		System.err.println("" + openmrsUserService.getProvider("doel"));
 	}
 	
 }

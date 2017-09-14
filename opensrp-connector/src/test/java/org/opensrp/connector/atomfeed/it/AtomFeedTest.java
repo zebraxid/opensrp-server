@@ -19,6 +19,7 @@ import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.opensrp.connector.atomfeed.AllFailedEventsInMemoryImpl;
 import org.opensrp.connector.atomfeed.AllMarkersInMemoryImpl;
+import org.opensrp.connector.dhis2.it.DHIS2AggregateConnectorTest;
 import org.opensrp.connector.openmrs.EncounterAtomfeed;
 import org.opensrp.connector.openmrs.PatientAtomfeed;
 import org.opensrp.connector.openmrs.service.EncounterService;
@@ -37,8 +38,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-/*@RunWith(PowerMockRunner.class)
-@PrepareForTest({ PatientService.class })*/
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:test-applicationContext-opensrp-connector.xml")
 public class AtomFeedTest extends OpenmrsApiService {
@@ -90,46 +89,35 @@ public class AtomFeedTest extends OpenmrsApiService {
 		
 		String attributeName = "personAttribute";
 		JSONObject attribute = createPersonAttributeType("Description", attributeName);
-		
 		Map<String, Object> attributes = new HashMap<>();
-		
 		attributes.put(attributeName, "test value");
 		List<Address> addresses = new ArrayList<>();
 		addresses.add(new Address("BIRTH", DateTime.now(), DateTime.now(), addressFields, "LAT", "LON", "PCODE", "SINDH",
 		        "PK"));
 		addresses.add(new Address("DEATH", DateTime.now(), DateTime.now(), addressFields, "LATd", "LONd", "dPCODE", "KPK",
-		        "PK"));
+		        "PKD"));
 		Map<String, Object> attribs = new HashMap<>();
 		
 		String baseEntity = UUID.randomUUID().toString();
 		Client c = new Client(baseEntity).withFirstName(fn).withMiddleName(mn).withLastName(ln)
 		        .withBirthdate(new DateTime(), true).withDeathdate(new DateTime(), false).withGender("MALE");
-		
 		c.withAddresses(addresses).withAttributes(attributes);
-		
 		JSONObject patient = patientService.createPatient(c);
 		
 		/** create Event Info **/
 		String encounterType = "RegistartionForPerson";
-		String prividerID = "joel";
+		String prividerID = "detal";
 		Event expectedEvent = new Event(baseEntity, encounterType, new DateTime(0l, DateTimeZone.UTC), "entityType",
 		        prividerID, "locationId", "formSubmissionId");
 		expectedEvent.addIdentifier("key", "value");
-		Obs obs = new Obs();
-		obs.setFieldCode("163260AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-		obs.setFieldDataType("text");
-		obs.setFieldType("concept");
-		obs.setParentCode("678AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-		List<Object> values = new ArrayList<Object>();
-		values.add("09-03-2017");
-		obs.setValues(values);
+		
 		List<Obs> observations = new ArrayList<>();
-		observations.add(obs);
+		observations.add(new DHIS2AggregateConnectorTest().getObsWithVaccine("opv1"));
 		expectedEvent.setObs(observations);
 		
 		String IdentifierType = "TestIdentifierType";
 		JSONObject identifier = patientService.createIdentifierType(IdentifierType, "description");
-		String identifierUuid = identifier.getString("uuid");
+		String identifierUuid = identifier.getString(uuidKey);
 		
 		String userName = prividerID;
 		String password = "Dotel@1234";
@@ -139,14 +127,14 @@ public class AtomFeedTest extends OpenmrsApiService {
 		openmrsUserService.createProvider(userName, IdentifierType);
 		
 		JSONObject provider = openmrsUserService.getProvider(IdentifierType);
-		JSONObject personObject = provider.getJSONObject("person");
+		JSONObject person = provider.getJSONObject(personKey);
 		
 		JSONObject returnEncounterType = encounterService.createEncounterType(encounterType, "Test desc");
 		JSONObject returnEvent = encounterService.createEncounter(expectedEvent);
 		
-		JSONObject createdPerson = patient.getJSONObject("person");
+		JSONObject createdPerson = patient.getJSONObject(personKey);
 		
-		String uuid = createdPerson.getString("uuid");
+		String uuid = createdPerson.getString(uuidKey);
 		/**** end event info ****/
 		
 		/**** start atomfeed for patient ****/
@@ -163,22 +151,22 @@ public class AtomFeedTest extends OpenmrsApiService {
 		/*** finding info ********/
 		Client client = new Client("baseEntityId");
 		Map<String, String> identifiers = new HashMap<>();
-		identifiers.put("OPENMRS_UUID", uuid);
+		identifiers.put(OPENMRS_UUIDKey, uuid);
 		client.setIdentifiers(identifiers);
 		Client existingClient = cs.findClient(client);
-		String euuid = existingClient.getIdentifier("OPENMRS_UUID");
+		String euuid = existingClient.getIdentifier(OPENMRS_UUIDKey);
 		
 		Event actualEvent = es.findByBaseEntityId(existingClient.getBaseEntityId()).get(0);
 		
 		/*** Cleaning data *********/
-		System.err.println("attributeName:" + attributeName);
-		deletePerson(createdPerson.getString("uuid"));
-		deleteUser(usr.getString("uuid"));
+		
+		deletePerson(createdPerson.getString(uuidKey));
+		deleteUser(usr.getString(uuidKey));
 		deleteIdentifierType(identifierUuid);
-		deleteProvider(provider.getString("uuid"));
-		deletePerson(personObject.getString("uuid").trim());
-		deleteEncounter(returnEvent.getString("uuid"));
-		deleteEncounterType(returnEncounterType.getString("uuid"));
+		deleteProvider(provider.getString(uuidKey));
+		deletePerson(person.getString(uuidKey).trim());
+		deleteEncounter(returnEvent.getString(uuidKey));
+		deleteEncounterType(returnEncounterType.getString(uuidKey));
 		//deletePersonAttributeType(attribute.getString("uuid"));
 		
 		assertEquals(uuid, euuid);
