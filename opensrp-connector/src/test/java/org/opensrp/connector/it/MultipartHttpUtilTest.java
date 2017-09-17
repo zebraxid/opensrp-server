@@ -27,17 +27,17 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration("classpath:test-applicationContext-opensrp-connector.xml")
 public class MultipartHttpUtilTest extends OpenmrsApiService {
 	
-	public MultipartHttpUtilTest() throws IOException {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-	
 	final String PERSON_ATTRIBUTE_TYPE = "ws/rest/v1/personattributetype";
 	
 	final String OPENMRS_URL = openmrsOpenmrsUrl;
 	
 	@Autowired
 	private MultipartHttpUtil multipartHttpUtil;
+	
+	public MultipartHttpUtilTest() throws IOException {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 	
 	@Before
 	public void setup() {
@@ -48,23 +48,23 @@ public class MultipartHttpUtilTest extends OpenmrsApiService {
 	public void testPostAndGet() throws JSONException {
 		String attributeName = "multipartAttribute";
 		JSONObject personAttributeType = new JSONObject();
-		personAttributeType.put("description", "Description");
-		personAttributeType.put("name", attributeName);
-		personAttributeType.put("format", "java.lang.String");
+		personAttributeType.put(description, "Description");
+		personAttributeType.put(nameKey, attributeName);
+		personAttributeType.put(formatKey, typeString);
 		String responseFromPostRequest = MultipartHttpUtil.post(
 		    MultipartHttpUtil.removeEndingSlash(OPENMRS_URL) + "/" + PERSON_ATTRIBUTE_TYPE, "",
 		    personAttributeType.toString(), openmrsUsername, openmrsPassword).body();
 		
 		JSONObject personAttributeTypeCreatedResponse = new JSONObject(responseFromPostRequest);
-		String uuid = personAttributeTypeCreatedResponse.getString("uuid");
-		assertEquals(attributeName, personAttributeTypeCreatedResponse.getString("display"));
+		String uuid = personAttributeTypeCreatedResponse.getString(uuidKey);
+		assertEquals(attributeName, personAttributeTypeCreatedResponse.getString(displayKey));
 		
 		HttpResponse responseFromGetRequest = MultipartHttpUtil.get(MultipartHttpUtil.removeEndingSlash(OPENMRS_URL) + "/"
 		        + PERSON_ATTRIBUTE_TYPE + "/" + uuid + "?v=full", "", openmrsUsername, openmrsPassword);
-		deletePersonAttributeType(personAttributeTypeCreatedResponse.getString("uuid"));
+		deletePersonAttributeType(personAttributeTypeCreatedResponse.getString(uuidKey));
 		
 		JSONObject personAttributeTypeGetResponse = new JSONObject(responseFromGetRequest.body());
-		assertEquals(attributeName, personAttributeTypeGetResponse.getString("display"));
+		assertEquals(attributeName, personAttributeTypeGetResponse.getString(displayKey));
 		
 	}
 	
@@ -72,9 +72,9 @@ public class MultipartHttpUtilTest extends OpenmrsApiService {
 	public void testIOExceptionPostAndGet() throws JSONException {
 		String attributeName = "ExceptionmultipartAttribute";
 		JSONObject personAttributeType = new JSONObject();
-		personAttributeType.put("description", "Description");
-		personAttributeType.put("name", attributeName);
-		personAttributeType.put("format", "java.lang.String");
+		personAttributeType.put(description, "Description text");
+		personAttributeType.put(nameKey, attributeName);
+		personAttributeType.put(formatKey, typeString);
 		MultipartHttpUtil.post(MultipartHttpUtil.removeEndingSlash(OPENMRS_URL) + "/" + PERSON_ATTRIBUTE_TYPE, "",
 		    personAttributeType.toString(), openmrsUsername, openmrsPassword).body();
 		MultipartHttpUtil.post(MultipartHttpUtil.removeEndingSlash(OPENMRS_URL) + "/" + PERSON_ATTRIBUTE_TYPE, "",

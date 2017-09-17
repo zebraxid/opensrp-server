@@ -46,7 +46,7 @@ public abstract class OpenmrsApiService extends TestResourceLoader {
 	
 	final static String purgePartUrl = "?purge=true";
 	
-	final static String nameKey = "name";
+	public final static String nameKey = "name";
 	
 	final static String descriptionkey = "description";
 	
@@ -56,7 +56,9 @@ public abstract class OpenmrsApiService extends TestResourceLoader {
 	
 	public final static String personKey = "person";
 	
-	final static String formatKey = "format";
+	public final static String formatKey = "format";
+	
+	public final static String typeString = "java.lang.String";
 	
 	public String aIsToBKey = "aIsToB";
 	
@@ -222,20 +224,4 @@ public abstract class OpenmrsApiService extends TestResourceLoader {
 		
 	}
 	
-	public void sample() throws IOException, JSONException {
-		
-		String fn = "jack";
-		String mn = "mil";
-		String ln = "nil";
-		String userName = "joaki";
-		String password = "sd@@fggWW1";
-		JSONObject person = createPerson(fn, mn, ln);
-		JSONObject user = createUser(userName, password, fn, mn, ln);
-		JSONObject pr = user.getJSONObject("person");
-		String uuid = pr.getString("uuid");
-		
-		deletePerson(uuid);
-		
-		//openmrsApiService.deleteUser(user.getString("uuid"));
-	}
 }

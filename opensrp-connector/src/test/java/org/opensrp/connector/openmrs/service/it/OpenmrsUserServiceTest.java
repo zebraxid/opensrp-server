@@ -8,7 +8,6 @@ import java.io.IOException;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.opensrp.connector.openmrs.service.OpenmrsUserService;
@@ -49,17 +48,16 @@ public class OpenmrsUserServiceTest extends OpenmrsApiService {
 		openmrsUserService.deleteSession(openmrsUsername, openmrsPassword);
 	}
 	
-	@Ignore
 	@Test
 	public void shouldTestProviderAndUser() throws JSONException {
 		
 		String IdentifierType = "TestIdentifierType";
 		JSONObject identifier = patientService.createIdentifierType(IdentifierType, "description");
-		String identifierUuid = identifier.getString("uuid");
-		String fn = "jack";
-		String mn = "bgu";
+		String identifierUuid = identifier.getString(uuidKey);
+		String fn = "Royal";
+		String mn = "Jack";
 		String ln = "nil";
-		String userName = "Doteli";
+		String userName = "Royal";
 		String password = "Dotel@1234";
 		JSONObject person = createPerson(fn, mn, ln);
 		JSONObject usr = createUser(userName, password, fn, mn, ln);
@@ -82,11 +80,6 @@ public class OpenmrsUserServiceTest extends OpenmrsApiService {
 		deleteProvider(provider.getString(uuidKey));
 		deletePerson(personObject.getString(uuidKey).trim());
 		
-	}
-	
-	@Test
-	public void getPrvider() throws JSONException {
-		System.err.println("" + openmrsUserService.getProvider("doel"));
 	}
 	
 }

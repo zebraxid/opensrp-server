@@ -26,16 +26,22 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration("classpath:test-applicationContext-opensrp-connector.xml")
 public class AllFailedEventsCouchImplTest extends TestResourceLoader {
 	
-	public AllFailedEventsCouchImplTest() throws IOException {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-	
 	private AllFailedEventsCouchImpl allFailedEventsCouchImpl;
 	
 	private CouchDbInstance dbInstance;
 	
 	private StdCouchDbConnector stdCouchDbConnector;
+	
+	String feedUri = "feedUri";
+	
+	String feedUriId = "feedUriId";
+	
+	String entryId = "entry";
+	
+	public AllFailedEventsCouchImplTest() throws IOException {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 	
 	@Before
 	public void setup() {
@@ -53,7 +59,7 @@ public class AllFailedEventsCouchImplTest extends TestResourceLoader {
 	@Test
 	public void testAddOrUpdate() {
 		String feedUri = "apis/feed/patient";
-		Event event = new Event("entry", "/apis/v2/some");
+		Event event = new Event(entryId, "/apis/v2/some");
 		String errorMessage = "error";
 		int retries = 0;
 		org.ict4h.atomfeed.client.domain.FailedEvent expectedFailedEvent = new org.ict4h.atomfeed.client.domain.FailedEvent(
@@ -71,8 +77,7 @@ public class AllFailedEventsCouchImplTest extends TestResourceLoader {
 	@Test(expected = NullPointerException.class)
 	public void testGetNullPointerException() {
 		
-		org.ict4h.atomfeed.client.domain.FailedEvent actualFailedEvent = allFailedEventsCouchImpl.get("vvvvvvvvvvvvvvvv",
-		    "dddddddddddddddd");
+		org.ict4h.atomfeed.client.domain.FailedEvent actualFailedEvent = allFailedEventsCouchImpl.get(feedUri, feedUriId);
 		
 	}
 	
@@ -86,7 +91,7 @@ public class AllFailedEventsCouchImplTest extends TestResourceLoader {
 	public void testGetOldestNFailedEvents() {
 		
 		String feedUri = "apis/feed/patient";
-		Event event = new Event("entry", "/apis/v2/somes");
+		Event event = new Event(entryId, "/apis/v2/somes");
 		String errorMessage = "error";
 		int retries = 0;
 		org.ict4h.atomfeed.client.domain.FailedEvent failedEvent = new org.ict4h.atomfeed.client.domain.FailedEvent(feedUri,
@@ -107,7 +112,7 @@ public class AllFailedEventsCouchImplTest extends TestResourceLoader {
 	@Test
 	public void testGetNumberOfFailedEvents() {
 		String feedUri = "apis/feed/patient";
-		Event event = new Event("entry", "/apis/v2/somes");
+		Event event = new Event(entryId, "/apis/v2/somes");
 		String errorMessage = "error";
 		int retries = 0;
 		org.ict4h.atomfeed.client.domain.FailedEvent failedEvent = new org.ict4h.atomfeed.client.domain.FailedEvent(feedUri,

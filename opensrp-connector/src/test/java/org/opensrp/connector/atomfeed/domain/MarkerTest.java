@@ -26,7 +26,7 @@ public class MarkerTest {
 	@Test
 	public void testConstructorSetetrAndGetter() throws URISyntaxException {
 		URI feedUri = new URI("/ddd/ddd");
-		String lastReadEntryId = "qwewewe";
+		String lastReadEntryId = "qwewewe-it-23243";
 		URI feedURIForLastReadEntry = new URI("dff/ggg");
 		org.ict4h.atomfeed.client.domain.Marker marker = new org.ict4h.atomfeed.client.domain.Marker(feedUri,
 		        lastReadEntryId, feedURIForLastReadEntry);

@@ -28,11 +28,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration("classpath:test-applicationContext-opensrp-connector.xml")
 public class OpenmrsSyncerListenerTest extends OpenmrsApiService {
 	
-	public OpenmrsSyncerListenerTest() throws IOException {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-	
 	@Autowired
 	private AllClients allClients;
 	
@@ -52,6 +47,11 @@ public class OpenmrsSyncerListenerTest extends OpenmrsApiService {
 	private EncounterService encounterService;
 	
 	MotechEvent event = new MotechEvent("subject");
+	
+	public OpenmrsSyncerListenerTest() throws IOException {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 	
 	@Before
 	public void setup() {
@@ -132,10 +132,10 @@ public class OpenmrsSyncerListenerTest extends OpenmrsApiService {
 		String IdentifierType = "TestIdentifierType";
 		JSONObject identifier = patientService.createIdentifierType(IdentifierType, "description");
 		String identifierUuid = identifier.getString(uuidKey);
-		String fn = "jack";
-		String mn = "bgu";
+		String fn = "red";
+		String mn = "huth";
 		String ln = "nil";
-		String userName = "providerId";
+		String userName = "RedHut";
 		String password = "Dotel@1234";
 		JSONObject person = createPerson(fn, mn, ln);
 		JSONObject usr = createUser(userName, password, fn, mn, ln);

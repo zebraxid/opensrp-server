@@ -24,13 +24,13 @@ public class PatientaServiceTest extends OpenmrsApiService {
 	
 	String baseEntity = UUID.randomUUID().toString();
 	
+	@Autowired
+	private PatientService patientService;
+	
 	public PatientaServiceTest() throws IOException {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	
-	@Autowired
-	private PatientService patientService;
 	
 	@Before
 	public void setup() {
@@ -77,10 +77,10 @@ public class PatientaServiceTest extends OpenmrsApiService {
 		multimedia.setContentType("Image");
 		String expectedResponse = "Patient Image is  successfully uploaded !";
 		List<String> resposne = patientService.patientImageUpload(multimedia);
-		String uuids = patient.getString("uuid");
+		String uuids = patient.getString(uuidKey);
 		deletePerson(uuids);
 		
-		deletePersonAttributeType(attribute.getString("uuid"));
+		deletePersonAttributeType(attribute.getString(uuidKey));
 		assertEquals(expectedResponse, resposne.get(0));
 	}
 }

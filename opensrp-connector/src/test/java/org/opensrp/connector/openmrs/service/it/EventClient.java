@@ -30,7 +30,13 @@ public class EventClient extends OpenmrsApiService {
 	
 	final static String mother = "mother";
 	
+	final static String female = "female";
+	
+	final static String male = "male";
+	
 	final static String description = "description";
+	
+	static String motherBaseEntityId = "53";
 	
 	static PatientService patientService = new PatientService(openmrsOpenmrsUrl, openmrsUsername, openmrsPassword);
 	
@@ -59,7 +65,8 @@ public class EventClient extends OpenmrsApiService {
 	}
 	
 	public static Client getMotherClient() {
-		Client expectedClient = new Client("2455").withFirstName("motherName").withGender("male")
+		String baseEntityId = "2455";
+		Client expectedClient = new Client(baseEntityId).withFirstName("motherName").withGender(female)
 		        .withBirthdate(new DateTime(), false);
 		Map<String, String> identifiers = new HashMap<>();
 		identifiers.put(M_ZEIR_ID, "159451-r7_mothers");
@@ -68,7 +75,8 @@ public class EventClient extends OpenmrsApiService {
 	}
 	
 	public static Client getChildClient() {
-		Client expectedClient = new Client("errrr29").withFirstName("childName").withGender("male")
+		String baseEntityId = "errrr29";
+		Client expectedClient = new Client(baseEntityId).withFirstName("childName").withGender(male)
 		        .withBirthdate(new DateTime(), false);
 		Map<String, String> identifiers = new HashMap<>();
 		identifiers.put(ZEIR_ID, "159451-r7_child");
@@ -82,7 +90,7 @@ public class EventClient extends OpenmrsApiService {
 	}
 	
 	public static Client getMother1Client() {
-		Client expectedClient = new Client("53").withFirstName("testmotherName").withGender("male")
+		Client expectedClient = new Client(motherBaseEntityId).withFirstName("testmotherName").withGender(female)
 		        .withBirthdate(new DateTime(), false);
 		Map<String, String> identifiers = new HashMap<>();
 		identifiers.put(M_ZEIR_ID, "159451-53_mothers");
@@ -91,13 +99,14 @@ public class EventClient extends OpenmrsApiService {
 	}
 	
 	public static Client getChild1Client() {
-		Client expectedClient = new Client("52").withFirstName("testchildName").withGender("male")
+		String baseEntityId = "52";
+		Client expectedClient = new Client(baseEntityId).withFirstName("testchildName").withGender(female)
 		        .withBirthdate(new DateTime(), false);
 		Map<String, String> identifiers = new HashMap<>();
 		identifiers.put(ZEIR_ID, "159451-52_child");
 		expectedClient.setIdentifiers(identifiers);
 		List<String> list = new ArrayList<>();
-		list.add("53");
+		list.add(motherBaseEntityId);
 		Map<String, List<String>> relationships = new HashMap<>();
 		relationships.put(mother, list);
 		expectedClient.setRelationships(relationships);
