@@ -82,7 +82,7 @@ public class OpenmrsSyncerListenerTest extends OpenmrsApiService {
 		}
 		
 		JSONObject createdPatientJsonObject = openmrsSyncerListener.pushClient(indexKey);
-		
+		System.out.println("createdPatientJsonObject:" + createdPatientJsonObject);
 		JSONObject updatedPatient = openmrsSyncerListener.pushClient(indexKey);
 		
 		JSONArray createdPatientJsonArray = createdPatientJsonObject.getJSONArray("patient");
@@ -128,14 +128,16 @@ public class OpenmrsSyncerListenerTest extends OpenmrsApiService {
 	public void testPushEvent() throws JSONException {
 		
 		Event creatingEvent = EventClient.getEvent();
+		
 		allEvents.add(creatingEvent);
+		
 		String IdentifierType = "TestIdentifierType";
 		JSONObject identifier = patientService.createIdentifierType(IdentifierType, "description");
 		String identifierUuid = identifier.getString(uuidKey);
-		String fn = "red";
-		String mn = "huth";
+		String fn = "jack";
+		String mn = "bgu";
 		String ln = "nil";
-		String userName = "RedHut";
+		String userName = "providerId";
 		String password = "Dotel@1234";
 		JSONObject person = createPerson(fn, mn, ln);
 		JSONObject usr = createUser(userName, password, fn, mn, ln);
@@ -144,9 +146,10 @@ public class OpenmrsSyncerListenerTest extends OpenmrsApiService {
 		
 		JSONObject provider = openmrsUserService.getProvider(IdentifierType);
 		JSONObject personObject = provider.getJSONObject(personKey);
-		
-		JSONObject returnEncounterType = encounterService.createEncounterType("TestEncounter", "Test desc");
+		String actualEncounterType = "TestEncounterType";
+		JSONObject returnEncounterType = encounterService.createEncounterType(actualEncounterType, "Test desc");
 		JSONObject expectedEvent = openmrsSyncerListener.pushEvent(0);
+		System.err.println("expectedEvent:" + expectedEvent);
 		openmrsSyncerListener.pushEvent(0);
 		
 		/** Data cleaning ***/
@@ -168,7 +171,7 @@ public class OpenmrsSyncerListenerTest extends OpenmrsApiService {
 		String expectedConceptOfObservation = "WHITE BLOOD CELLS: ";
 		String actualConceptOfObservation = obs.getString(displayKey);
 		String expectedEncounterType = encounterType.getString(displayKey);
-		String actualEncounterType = "TestEncounter";
+		
 		assertEquals(expectedConceptOfObservation, actualConceptOfObservation);
 		assertEquals(expectedEncounterProvider, actualEncounterProvider);
 		assertEquals(expectedEncounterType, actualEncounterType);

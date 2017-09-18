@@ -30,13 +30,7 @@ public class EventClient extends OpenmrsApiService {
 	
 	final static String mother = "mother";
 	
-	final static String female = "female";
-	
-	final static String male = "male";
-	
 	final static String description = "description";
-	
-	static String motherBaseEntityId = "53";
 	
 	static PatientService patientService = new PatientService(openmrsOpenmrsUrl, openmrsUsername, openmrsPassword);
 	
@@ -46,7 +40,7 @@ public class EventClient extends OpenmrsApiService {
 	}
 	
 	public static Event getEvent() {
-		Event expectedEvent = new Event(baseEntityId, "TestEncounter", new DateTime(0l, DateTimeZone.UTC), "entityType",
+		Event expectedEvent = new Event("2", "TestEncounterType", new DateTime(0l, DateTimeZone.UTC), "entityType",
 		        "providerId", "locationId", formSubmissionId);
 		expectedEvent.addIdentifier("key", "value");
 		Obs obs = new Obs();
@@ -65,24 +59,23 @@ public class EventClient extends OpenmrsApiService {
 	}
 	
 	public static Client getMotherClient() {
-		String baseEntityId = "2455";
-		Client expectedClient = new Client(baseEntityId).withFirstName("motherName").withGender(female)
+		Client expectedClient = new Client("127").withFirstName("monika").withGender("male")
 		        .withBirthdate(new DateTime(), false);
 		Map<String, String> identifiers = new HashMap<>();
-		identifiers.put(M_ZEIR_ID, "159451-r7_mothers");
+		identifiers.put(M_ZEIR_ID, "159451-r7_mother3s");
 		expectedClient.setIdentifiers(identifiers);
 		return expectedClient;
 	}
 	
 	public static Client getChildClient() {
-		String baseEntityId = "errrr29";
-		Client expectedClient = new Client(baseEntityId).withFirstName("childName").withGender(male)
+		Client expectedClient = new Client("129").withFirstName("momima").withGender("male")
 		        .withBirthdate(new DateTime(), false);
 		Map<String, String> identifiers = new HashMap<>();
-		identifiers.put(ZEIR_ID, "159451-r7_child");
+		identifiers.put(ZEIR_ID, "159451-r7r_child");
+		//identifiers.put("OPENMRS_UUID", "b1def4fa-fed8-4d54-a6aa-cbb7523b6f24");
 		expectedClient.setIdentifiers(identifiers);
 		List<String> list = new ArrayList<>();
-		list.add("27");
+		list.add("127");
 		Map<String, List<String>> relationships = new HashMap<>();
 		relationships.put(mother, list);
 		expectedClient.setRelationships(relationships);
@@ -90,7 +83,7 @@ public class EventClient extends OpenmrsApiService {
 	}
 	
 	public static Client getMother1Client() {
-		Client expectedClient = new Client(motherBaseEntityId).withFirstName("testmotherName").withGender(female)
+		Client expectedClient = new Client("53").withFirstName("testmotherName").withGender("male")
 		        .withBirthdate(new DateTime(), false);
 		Map<String, String> identifiers = new HashMap<>();
 		identifiers.put(M_ZEIR_ID, "159451-53_mothers");
@@ -99,14 +92,13 @@ public class EventClient extends OpenmrsApiService {
 	}
 	
 	public static Client getChild1Client() {
-		String baseEntityId = "52";
-		Client expectedClient = new Client(baseEntityId).withFirstName("testchildName").withGender(female)
+		Client expectedClient = new Client("52").withFirstName("testchildName").withGender("male")
 		        .withBirthdate(new DateTime(), false);
 		Map<String, String> identifiers = new HashMap<>();
 		identifiers.put(ZEIR_ID, "159451-52_child");
 		expectedClient.setIdentifiers(identifiers);
 		List<String> list = new ArrayList<>();
-		list.add(motherBaseEntityId);
+		list.add("53");
 		Map<String, List<String>> relationships = new HashMap<>();
 		relationships.put(mother, list);
 		expectedClient.setRelationships(relationships);
