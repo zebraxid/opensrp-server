@@ -54,7 +54,7 @@ public class OpenmrsUserServiceTest extends OpenmrsApiService {
 		String IdentifierType = "TestIdentifierType";
 		JSONObject identifier = patientService.createIdentifierType(IdentifierType, "description");
 		String identifierUuid = identifier.getString(uuidKey);
-		String fn = "Royal";
+		String fn = "Royals";
 		String mn = "Jack";
 		String ln = "nil";
 		String userName = "Royal";

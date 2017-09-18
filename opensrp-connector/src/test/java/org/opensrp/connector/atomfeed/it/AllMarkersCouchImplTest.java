@@ -38,6 +38,8 @@ public class AllMarkersCouchImplTest extends TestResourceLoader {
 	
 	private StdCouchDbConnector stdCouchDbConnector;
 	
+	String str = "2233-fhghghg-888";
+	
 	@Before
 	public void setup() throws URISyntaxException {
 		HttpClient httpClient = new StdHttpClient.Builder().host("localhost").port(5984).username(couchDBUserName)
@@ -54,8 +56,8 @@ public class AllMarkersCouchImplTest extends TestResourceLoader {
 	@Test
 	public void testFindByfeedUri() throws URISyntaxException {
 		URI feedUri = new URI("/apis/patient");
-		String expectedEntryId = "qwewewe-fgg-hhhh";
-		URI expectedFeedURIForLastReadEntry = new URI("2233-fhghghg-888");
+		String expectedEntryId = "qwewewse-fgg-hhhh";
+		URI expectedFeedURIForLastReadEntry = new URI(str);
 		
 		allMarkersCouchImpl.put(feedUri, expectedEntryId, expectedFeedURIForLastReadEntry);
 		allMarkersCouchImpl.put(feedUri, expectedEntryId, expectedFeedURIForLastReadEntry);
@@ -70,8 +72,8 @@ public class AllMarkersCouchImplTest extends TestResourceLoader {
 	@Test
 	public void testGet() throws URISyntaxException {
 		URI feedUri = new URI("/apis/patient");
-		String expectedEntryId = "qwewewe-fgg-hhhh";
-		URI expectedFeedURIForLastReadEntry = new URI("2233-fhghghg-888");
+		String expectedEntryId = "qweweswe-fgg-hhhh";
+		URI expectedFeedURIForLastReadEntry = new URI(str);
 		
 		allMarkersCouchImpl.put(feedUri, expectedEntryId, expectedFeedURIForLastReadEntry);
 		allMarkersCouchImpl.put(feedUri, expectedEntryId, expectedFeedURIForLastReadEntry);
@@ -85,14 +87,16 @@ public class AllMarkersCouchImplTest extends TestResourceLoader {
 	@Test
 	public void testFindAllMarkers() throws URISyntaxException {
 		URI feedUri = new URI("/apis/patient");
-		String expectedEntryId = "qwewewe-fgg-hhhh";
-		URI expectedFeedURIForLastReadEntry = new URI("2233-fhghghg-888");
+		String expectedEntryId = "qwewegwe-fgg-hhhh";
+		URI expectedFeedURIForLastReadEntry = new URI(str);
 		
 		allMarkersCouchImpl.put(feedUri, expectedEntryId, expectedFeedURIForLastReadEntry);
 		allMarkersCouchImpl.put(feedUri, expectedEntryId, expectedFeedURIForLastReadEntry);
 		List<Marker> marker = allMarkersCouchImpl.findAllMarkers();
-		assertEquals(1, marker.size());
-		assertNotSame(100000, marker.size());
+		int expectedSize = 1;
+		assertEquals(expectedSize, marker.size());
+		expectedSize = -2;
+		assertNotSame(expectedSize, marker.size());
 		allMarkersCouchImpl.removeAll();
 	}
 }

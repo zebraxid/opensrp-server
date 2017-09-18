@@ -92,11 +92,15 @@ public abstract class OpenmrsApiService extends TestResourceLoader {
 	
 	public String locationsHierarchyKey = "locationsHierarchy";
 	
+	public String givenName = "givenName";
+	
+	public String female = "F";
+	
 	int indexKey = 0;
 	
 	public JSONObject createPerson(String fn, String mn, String ln) throws JSONException {
 		
-		person.put(genderKey, "F");
+		person.put(genderKey, female);
 		person.put(birthdateKey, "2017-01-01");
 		person.put(ageKey, "32");
 		person.put(namesKey, new JSONArray("[{\"givenName\":\"" + fn + "\",\"middleName\":\"" + mn + "\", \"familyName\":\""
@@ -115,8 +119,8 @@ public abstract class OpenmrsApiService extends TestResourceLoader {
 	
 	public JSONObject createUser(String userName, String password, String fn, String mn, String ln) throws JSONException {
 		
-		person.put(genderKey, "F");
-		person.put(birthdateKey, "2017-01-01");
+		person.put(genderKey, female);
+		person.put(birthdateKey, "2017-02-01");
 		person.put(ageKey, "32");
 		person.put(namesKey, new JSONArray("[{\"givenName\":\"" + fn + "\",\"middleName\":\"" + mn + "\", \"familyName\":\""
 		        + ln + "\"}]"));

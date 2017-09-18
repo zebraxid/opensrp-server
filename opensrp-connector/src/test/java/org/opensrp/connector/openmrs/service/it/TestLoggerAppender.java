@@ -22,7 +22,7 @@ public class TestLoggerAppender extends AppenderSkeleton {
 	
 	@Override
 	public void close() {
-		
+		System.err.println("close");
 	}
 	
 	public List<LoggingEvent> getLog() {
