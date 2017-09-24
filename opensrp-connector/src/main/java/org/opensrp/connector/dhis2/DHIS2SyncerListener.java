@@ -30,7 +30,12 @@ public class DHIS2SyncerListener {
 	@Autowired
 	private DHIS2TrackerService dhis2TrackerService;
 	
+	@Autowired
+	private DHIS2VersionFactory dhis2VersionFactory;
+	
 	private DHIS2Tracker dhis2Tracker;
+	
+	private DHIS2Version dhis2Version;
 	
 	@Autowired
 	public DHIS2SyncerListener(ClientService clientService) {
@@ -71,8 +76,9 @@ public class DHIS2SyncerListener {
 	public JSONObject processTracker(Client client) throws JSONException {
 		
 		dhis2Tracker = dhis2TrackerService.getTrackerType(client);
-		dhis2Tracker.getTrackCaptureData(client);
-		System.err.println("DHIS2SyncerListener:" + dhis2Tracker);
+		//dhis2Tracker.getTrackCaptureData(client);
+		dhis2Version = dhis2VersionFactory.getVersion(DHIS2VersionType.VERSION2POINT3);
+		System.err.println("DHIS2SyncerListener:" + dhis2Version.send());
 		return null;
 		
 	}

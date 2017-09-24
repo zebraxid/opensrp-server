@@ -8,7 +8,7 @@ public class DHIS2VersionTwoPointTwo implements DHIS2Version {
 	
 	@Override
 	public JSONObject send() {
-		// TODO Auto-generated method stub
+		System.err.println("come to 2");
 		return null;
 	}
 	
