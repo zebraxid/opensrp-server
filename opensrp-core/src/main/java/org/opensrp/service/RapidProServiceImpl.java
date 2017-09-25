@@ -4,7 +4,6 @@ import java.net.URI;
 import java.util.List;
 import java.util.Map;
 
-import com.google.gson.Gson;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -23,24 +22,23 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class RapidProServiceImpl implements RapidProService {
+	
 	@Value("#{opensrp['rapidpro.url']}")
 	private String rapidproUrl;
-
+	
 	@Value("#{opensrp['rapidpro.token']}")
 	private String rapidproToken;
-
+	
 	private static Logger logger = LoggerFactory.getLogger(RapidProServiceImpl.class.toString());
-
+	
 	HttpClient client = HttpClientBuilder.create().build();
-
+	
 	/**
-	 * urns - JSON array of URNs to send the message to (array of strings,
-	 * optional) contacts - JSON array of contact UUIDs to send the message to
-	 * (array of strings, optional) groups - JSON array of group UUIDs to send
-	 * the message to (array of strings, optional) text - the text of the
-	 * message to send (string, limit of 480 characters) channel - the id of the
-	 * channel to use. Contacts and URNs which can't be reached with this
-	 * channel are ignored (int, optional)
+	 * urns - JSON array of URNs to send the message to (array of strings, optional) contacts - JSON
+	 * array of contact UUIDs to send the message to (array of strings, optional) groups - JSON
+	 * array of group UUIDs to send the message to (array of strings, optional) text - the text of
+	 * the message to send (string, limit of 480 characters) channel - the id of the channel to use.
+	 * Contacts and URNs which can't be reached with this channel are ignored (int, optional)
 	 * 
 	 * @param urns
 	 * @param contacts
@@ -49,7 +47,7 @@ public class RapidProServiceImpl implements RapidProService {
 	 * @param channel
 	 * @return
 	 */
-
+	
 	@Override
 	public String sendMessage(List<String> urns, List<String> contacts, List<String> groups, String text, String channel) {
 		try {
@@ -60,9 +58,9 @@ public class RapidProServiceImpl implements RapidProService {
 			}
 			String uri = rapidproUrl + "/api/v1/broadcasts.json";
 			post = setPostAuthHeader(uri, post);
-
+			
 			JSONObject jsonParams = new JSONObject();
-
+			
 			if (urns != null && !urns.isEmpty()) {
 				jsonParams.put("urns", new JSONArray(urns));
 			}
@@ -75,37 +73,36 @@ public class RapidProServiceImpl implements RapidProService {
 			if (channel != null && !channel.isEmpty()) {
 				jsonParams.put("channel", channel);
 			}
-
+			
 			if (!jsonParams.has("urns") && !jsonParams.has("contacts") && !jsonParams.has("groups")) {
 				logger.info("RapidPro: No one to send message to!");
 				return "No recipients specified";
 			}
-
+			
 			jsonParams.put("text", text);
-
+			System.err.println("jsonParams:" + jsonParams);
 			StringEntity params = new StringEntity(jsonParams.toString());
 			post.setEntity(params);
-
+			
 			HttpResponse response = client.execute(post);
 			HttpEntity entity = response.getEntity();
 			String responseString = EntityUtils.toString(entity, "UTF-8");
 			return responseString;
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			logger.error("", e);
 			return "Exception occurred";
 		}
 	}
-
+	
 	/**
-	 * This method creates a contact in rapidpro. The param fieldValues should
-	 * contain a key urns(a list of URNs you want associated with the contact
-	 * (java.util.arraylist)) which is required by rapidpro. uuid - the UUID of
-	 * the contact to update (string) (optional, new contact created if not
-	 * present). name - the full name of the contact (string, optional).language
-	 * - the preferred language for the contact (3 letter iso code, optional).
-	 * group_uuids - a list of the UUIDs of any groups this contact is part of
-	 * (string array, optional). fields - a hashmap of contact fields you want
-	 * to set or update on this contact (JSON, optional)
+	 * This method creates a contact in rapidpro. The param fieldValues should contain a key urns(a
+	 * list of URNs you want associated with the contact (java.util.arraylist)) which is required by
+	 * rapidpro. uuid - the UUID of the contact to update (string) (optional, new contact created if
+	 * not present). name - the full name of the contact (string, optional).language - the preferred
+	 * language for the contact (3 letter iso code, optional). group_uuids - a list of the UUIDs of
+	 * any groups this contact is part of (string array, optional). fields - a hashmap of contact
+	 * fields you want to set or update on this contact (JSON, optional)
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
@@ -117,7 +114,7 @@ public class RapidProServiceImpl implements RapidProService {
 			}
 			String uri = rapidproUrl + "/api/v1/contacts.json";
 			post = setPostAuthHeader(uri, post);
-
+			
 			JSONObject jsonParams = new JSONObject();
 			for (Map.Entry<String, Object> entry : fieldValues.entrySet()) {
 				String key = entry.getKey();
@@ -134,22 +131,23 @@ public class RapidProServiceImpl implements RapidProService {
 					}
 				}
 				jsonParams.put(key, value);
-
+				
 			}
 			StringEntity params = new StringEntity(jsonParams.toString());
 			post.setEntity(params);
-			logger.info("Creating RapidPro contact for " + (fieldValues.containsKey("name")?fieldValues.get("name"):""));
+			logger.info("Creating RapidPro contact for " + (fieldValues.containsKey("name") ? fieldValues.get("name") : ""));
 			HttpResponse response = client.execute(post);
 			HttpEntity entity = response.getEntity();
 			String responseString = EntityUtils.toString(entity, "UTF-8");
 			return responseString;
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			logger.error("", e);
 			return "Exception occurred";
 		}
-
+		
 	}
-
+	
 	private HttpPost setPostAuthHeader(String url, HttpPost post) {
 		post.setURI(URI.create(url));
 		// add header Authorization: Token YOUR_API_TOKEN_GOES_HERE
@@ -158,7 +156,7 @@ public class RapidProServiceImpl implements RapidProService {
 		post.addHeader("Accept", "application/json");
 		return post;
 	}
-
+	
 	private HttpDelete setDeleteAuthHeader(String url, HttpDelete delete) {
 		delete.setURI(URI.create(url));
 		// add header Authorization: Token YOUR_API_TOKEN_GOES_HERE
@@ -167,21 +165,18 @@ public class RapidProServiceImpl implements RapidProService {
 		delete.addHeader("Accept", "application/json");
 		return delete;
 	}
-
+	
 	@Override
 	public String createGroup(String name) {
 		// FIXME Not currently supported in rapidpro
 		return "Exception occurred";
 	}
-
+	
 	/**
-	 * This method adds a field to rapidpro valuetype is a required field in
-	 * rapidpro so if empty the default is set to T-text other acceptable
-	 * fieldtypes are: N - Decimal Number D - Datetime S - State I - District
-	 * label is the field name as it will appear in rapidpro and it's used to
-	 * generate the field key e.g a field label like woman name translates to
-	 * woman_name key
-	 * 
+	 * This method adds a field to rapidpro valuetype is a required field in rapidpro so if empty
+	 * the default is set to T-text other acceptable fieldtypes are: N - Decimal Number D - Datetime
+	 * S - State I - District label is the field name as it will appear in rapidpro and it's used to
+	 * generate the field key e.g a field label like woman name translates to woman_name key
 	 */
 	@Override
 	public String addField(String label, String valueType) {
@@ -195,19 +190,20 @@ public class RapidProServiceImpl implements RapidProService {
 			JSONObject jsonParams = new JSONObject();
 			jsonParams.put("label", label);
 			jsonParams.put("value_type", valueType == null || valueType.isEmpty() ? "T" : valueType);
-
+			
 			StringEntity params = new StringEntity(jsonParams.toString());
 			post.setEntity(params);
 			HttpResponse response = client.execute(post);
 			HttpEntity entity = response.getEntity();
 			String responseString = EntityUtils.toString(entity, "UTF-8");
 			return responseString;
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			logger.error("", e);
 			return "Exception occurred";
 		}
 	}
-
+	
 	@Override
 	public int deleteContact(String uuid) {
 		try {
@@ -217,8 +213,9 @@ public class RapidProServiceImpl implements RapidProService {
 			HttpResponse response = client.execute(delete);
 			int status = response.getStatusLine().getStatusCode();
 			return status;
-
-		} catch (Exception e) {
+			
+		}
+		catch (Exception e) {
 			logger.error("", e);
 			return HttpStatus.SC_INTERNAL_SERVER_ERROR;
 		}
