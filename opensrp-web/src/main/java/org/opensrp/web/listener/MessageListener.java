@@ -74,7 +74,7 @@ public class MessageListener {
 			
 			if (data.get("beneficiaryType").equalsIgnoreCase("child")) {
 				if (isEligible(data)) {
-					Client client = clientService.find(action.baseEntityId());
+					/*Client client = clientService.find(action.baseEntityId());
 					Map<String, Object> attributes = new HashMap<>();
 					attributes = client.getAttributes();
 					List<String> urns;
@@ -84,10 +84,10 @@ public class MessageListener {
 					contacts = new ArrayList<String>();
 					List<String> groups = new ArrayList<String>();
 					message = messageFactory.getMessageType("Child").message();
-					rapidproService.sendMessage(urns, contacts, groups, message, "");
+					rapidproService.sendMessage(urns, contacts, groups, message, "");*/
+					sendMessage(action, data, messageFactory);
 				}
 			} else if (data.get("beneficiaryType").equalsIgnoreCase("mother")) {
-				//message = messageFactory.getMessageType("Woman").message(member, campDate);
 				
 			} else {
 				
@@ -95,6 +95,19 @@ public class MessageListener {
 			
 		}
 		
+	}
+	
+	private void sendMessage(Action action, Map<String, String> data, MessageFactory messageFactory) {
+		Client client = clientService.find(action.baseEntityId());
+		Map<String, Object> attributes = new HashMap<>();
+		attributes = client.getAttributes();
+		List<String> urns;
+		urns = new ArrayList<String>();
+		urns.add("tel:" + getMobileNumber((String) attributes.get("phoneNumber")));
+		List<String> contacts;
+		contacts = new ArrayList<String>();
+		List<String> groups = new ArrayList<String>();
+		rapidproService.sendMessage(urns, contacts, groups, messageFactory.getMessageType("Child").message(), "");
 	}
 	
 	private boolean isEligible(Map<String, String> data) {
@@ -121,7 +134,7 @@ public class MessageListener {
 			mobile = "+880" + mobile;
 		} else {
 			// whatever is appropriate in this case
-			throw new IllegalArgumentException("word has less than 3 characters!");
+			throw new IllegalArgumentException("word has less than 10 characters!");
 		}
 		return mobile;
 		
