@@ -53,14 +53,20 @@ public class ClientListenerTest {
 	@Test
 	public void testFetchClient() throws JSONException {
 		
-		Client mother = (Client) new Client("127").withFirstName("foo").withGender("female").withLastName("bae ff")
+		Client child = (Client) new Client("127").withFirstName("foo").withGender("female").withLastName("bae ff")
 		        .withBirthdate(new DateTime(), false).withDateCreated(new DateTime());
 		
 		List<String> motherRelationshipsList = new ArrayList<>();
 		motherRelationshipsList.add("130");
 		Map<String, List<String>> motherRelationships = new HashMap<>();
-		motherRelationships.put("household", motherRelationshipsList);
-		mother.setRelationships(motherRelationships);
+		motherRelationships.put("mother", motherRelationshipsList);
+		child.setRelationships(motherRelationships);
+		
+		allClients.add(child);
+		
+		Client mother = (Client) new Client("130").withFirstName("foo").withGender("female").withLastName("bae ff")
+		        .withBirthdate(new DateTime(), false).withDateCreated(new DateTime());
+		
 		Map<String, Object> motherAttributes = new HashMap<>();
 		
 		motherAttributes.put("phoneNumber", "01912773007");
@@ -68,7 +74,6 @@ public class ClientListenerTest {
 		motherAttributes.put("spouseName", "Dion");
 		mother.setAttributes(motherAttributes);
 		allClients.add(mother);
-		
 		Action normalAction = new Action("127", "ANM 1", ActionData.createAlert("child", "opv", "opv0", normal,
 		    DateTime.now(), DateTime.now().plusDays(3)));
 		Action upcominglAction = new Action("127", "ANM 1", ActionData.createAlert("child", "opv", "opv0", upcoming,
