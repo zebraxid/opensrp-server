@@ -4,6 +4,7 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.opensrp.BaseIntegrationTest;
 import org.opensrp.domain.Client;
@@ -22,6 +23,7 @@ import static org.opensrp.util.SampleFullDomainObject.EPOCH_DATE_TIME;
 import static org.utils.AssertionUtil.assertTwoListAreSameIgnoringOrder;
 import static org.utils.CouchDbAccessUtils.addObjectToRepository;
 
+@Ignore
 public class SearchServiceTest extends BaseIntegrationTest {
 
 	@Autowired

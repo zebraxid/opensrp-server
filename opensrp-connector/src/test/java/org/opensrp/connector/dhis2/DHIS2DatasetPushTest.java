@@ -10,7 +10,9 @@ import static org.mockito.MockitoAnnotations.initMocks;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.joda.time.DateTime;
 import org.json.JSONArray;
@@ -77,8 +79,8 @@ public class DHIS2DatasetPushTest extends TestResourceLoader {
 		apiResponse.put("dataSets", dataSets);
 		
 		when(dhis2HttpUtils.get(anyString(), anyString())).thenReturn(apiResponse);
-		when(mockConfig.getAppStateTokenByName(DhisSchedulerConfig.dhis2_syncer_sync_report_by_date_updated))
-		        .thenReturn(null);
+		when(mockConfig.getAppStateTokenByName(DhisSchedulerConfig.dhis2_syncer_sync_report_by_date_updated)).thenReturn(
+		    null);
 		
 		Location location = new Location();
 		location.addAttribute("dhis_ou_id", orgUnitId);
@@ -196,4 +198,13 @@ public class DHIS2DatasetPushTest extends TestResourceLoader {
 		verify(mockReportService, times(1)).updateReport(report);
 	}
 	
+	@Test
+	public void test() {
+		Map<String, Object> attributes = new HashMap<>();
+		attributes.put("phoneNumber", "232424434345");
+		
+		String phone = (String) attributes.get("phoneNumber");
+		System.err.println("" + phone);
+		
+	}
 }

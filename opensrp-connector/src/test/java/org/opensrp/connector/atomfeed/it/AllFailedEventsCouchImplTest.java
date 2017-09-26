@@ -15,6 +15,7 @@ import org.ektorp.impl.StdObjectMapperFactory;
 import org.ict4h.atomfeed.client.domain.Event;
 import org.ict4h.atomfeed.client.domain.FailedEvent;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.opensrp.connector.atomfeed.AllFailedEventsCouchImpl;
@@ -24,6 +25,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:test-applicationContext-opensrp-connector.xml")
+@Ignore
 public class AllFailedEventsCouchImplTest extends TestResourceLoader {
 	
 	private AllFailedEventsCouchImpl allFailedEventsCouchImpl;

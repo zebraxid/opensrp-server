@@ -2,6 +2,7 @@ package org.opensrp.web.rest.it;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.opensrp.domain.Hia2Indicator;
 import org.opensrp.domain.Report;
@@ -13,7 +14,7 @@ import java.util.List;
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
 import static org.springframework.test.web.server.result.MockMvcResultMatchers.status;
-
+@Ignore
 public class ReportResourceTest extends BaseResourceTest {
 
 	public static final String ADD_URL = "add";

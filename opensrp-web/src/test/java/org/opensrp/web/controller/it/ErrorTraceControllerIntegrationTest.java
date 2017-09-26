@@ -25,6 +25,7 @@ import static org.motechproject.delivery.schedule.util.SameItems.hasSameItemsAs;
 import static org.opensrp.web.rest.it.ResourceTestUtility.createErrorTraces;
 import static org.springframework.test.web.server.result.MockMvcResultMatchers.status;
 
+@Ignore
 public class ErrorTraceControllerIntegrationTest extends BaseResourceTest {
 
 	private final static String BASE_URL = "/errorhandler";

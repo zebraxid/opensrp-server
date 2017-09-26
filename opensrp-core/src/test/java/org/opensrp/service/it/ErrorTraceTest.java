@@ -2,6 +2,7 @@ package org.opensrp.service.it;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.opensrp.BaseIntegrationTest;
 import org.opensrp.domain.ErrorTrace;
@@ -21,6 +22,7 @@ import static org.opensrp.util.SampleFullDomainObject.getErrorTrace;
 import static org.utils.AssertionUtil.assertTwoListAreSameIgnoringOrder;
 import static org.utils.CouchDbAccessUtils.addObjectToRepository;
 
+@Ignore
 public class ErrorTraceTest extends BaseIntegrationTest {
 
 	@Autowired

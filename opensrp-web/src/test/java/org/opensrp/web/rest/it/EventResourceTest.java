@@ -33,6 +33,7 @@ import static org.springframework.test.web.server.request.MockMvcRequestBuilders
 import static org.springframework.test.web.server.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.server.result.MockMvcResultMatchers.status;
 
+@Ignore
 public class EventResourceTest extends BaseResourceTest {
 
 	String baseEntityId = "1";

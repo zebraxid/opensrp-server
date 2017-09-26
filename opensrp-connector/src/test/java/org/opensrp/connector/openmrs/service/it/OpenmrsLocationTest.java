@@ -8,6 +8,7 @@ import java.io.IOException;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.opensrp.api.domain.Location;
 import org.opensrp.api.util.LocationTree;
@@ -15,6 +16,7 @@ import org.opensrp.connector.openmrs.service.OpenmrsLocationService;
 
 import com.google.gson.Gson;
 
+@Ignore
 public class OpenmrsLocationTest extends OpenmrsApiService {
 	
 	OpenmrsLocationService ls;

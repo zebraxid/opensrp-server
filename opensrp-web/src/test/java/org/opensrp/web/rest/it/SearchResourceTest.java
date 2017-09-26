@@ -5,6 +5,7 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.opensrp.domain.Address;
 import org.opensrp.domain.Client;
@@ -23,7 +24,7 @@ import static org.opensrp.web.rest.it.ResourceTestUtility.createClients;
 import static org.springframework.test.web.server.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.server.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.server.result.MockMvcResultMatchers.status;
-
+@Ignore
 public class SearchResourceTest extends BaseResourceTest {
 
 	private final static String BASE_URL = "/rest/search/";

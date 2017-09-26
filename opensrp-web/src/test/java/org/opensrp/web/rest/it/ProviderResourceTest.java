@@ -3,6 +3,7 @@ package org.opensrp.web.rest.it;
 import org.codehaus.jackson.JsonNode;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.opensrp.domain.User;
 import org.opensrp.repository.AllUsers;
@@ -13,7 +14,7 @@ import java.util.Map;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.server.result.MockMvcResultMatchers.status;
-
+@Ignore
 public class ProviderResourceTest extends BaseResourceTest {
 
 	private final static String BASE_URL = "/rest/provider/";
