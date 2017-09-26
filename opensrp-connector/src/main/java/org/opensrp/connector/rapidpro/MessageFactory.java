@@ -2,13 +2,13 @@ package org.opensrp.connector.rapidpro;
 
 public abstract class MessageFactory {
 	
-	public abstract Message getMessageType(String type);
+	public abstract Message getClientType(ClientType type);
 	
-	public static MessageFactory getMessageFactory(String type) {
+	public static MessageFactory getMessageFactory(MessageType type) {
 		MessageFactory messageFactory = null;
-		if (type.equalsIgnoreCase("Ann")) {
+		if (type == MessageType.ANNOUNCEMENT) {
 			messageFactory = new AnnouncementMessage();
-		} else if (type.equalsIgnoreCase("Remainder")) {
+		} else if (type == MessageType.REMINDER) {
 			messageFactory = new RemainderMessage();
 		}
 		return messageFactory;

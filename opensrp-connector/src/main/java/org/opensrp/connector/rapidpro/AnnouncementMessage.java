@@ -3,12 +3,12 @@ package org.opensrp.connector.rapidpro;
 public class AnnouncementMessage extends MessageFactory {
 	
 	@Override
-	public Message getMessageType(String type) {
+	public Message getClientType(ClientType type) {
 		// TODO Auto-generated method stub
 		Message message = null;
-		if (type.equalsIgnoreCase("Woman")) {
+		if (type == ClientType.mother) {
 			message = new WomanAnnouncementMessage();
-		} else if (type.equalsIgnoreCase("Child")) {
+		} else if (type == ClientType.child) {
 			message = new ChildAnnouncementMessage();
 		} else {}
 		return message;

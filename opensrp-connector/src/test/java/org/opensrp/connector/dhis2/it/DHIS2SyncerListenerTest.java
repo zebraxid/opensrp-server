@@ -9,6 +9,7 @@ import java.util.Map;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.json.JSONException;
+import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -58,7 +59,7 @@ public class DHIS2SyncerListenerTest extends TestResourceLoader {
 		String baseEntityId = "29";
 		String identifierTypeForChild = "ZEIR_ID";
 		String identifierTypeValue = "159451-37_child";
-		Client client = new Client(baseEntityId).withFirstName("FOOM child").withGender("male").withLastName("Magento")
+		Client client = new Client(baseEntityId).withFirstName("MOOM child").withGender("male").withLastName("Magento")
 		        .withBirthdate(new DateTime(), false);
 		Map<String, String> identifiers = new HashMap<>();
 		identifiers.put(identifierTypeForChild, identifierTypeValue);
@@ -79,7 +80,7 @@ public class DHIS2SyncerListenerTest extends TestResourceLoader {
 		allClients.add(client);
 		
 		/**** mother **/
-		Client mother = (Client) new Client("127").withFirstName("FOOM Mother").withGender("female")
+		Client mother = (Client) new Client("127").withFirstName("HOOM Mother").withGender("female")
 		        .withLastName("WORD motehr").withBirthdate(new DateTime(), false).withDateCreated(new DateTime());
 		
 		List<String> motherRelationshipsList = new ArrayList<>();
@@ -112,7 +113,7 @@ public class DHIS2SyncerListenerTest extends TestResourceLoader {
 		allEvents.add(event);
 		
 		/** Household ***/
-		Client household = (Client) new Client("130").withFirstName("Foom").withGender("female").withLastName("la")
+		Client household = (Client) new Client("130").withFirstName("humoom").withGender("female").withLastName("la")
 		        .withBirthdate(new DateTime(), false).withDateCreated(new DateTime());
 		Map<String, Object> householdAttributes = new HashMap<>();
 		householdAttributes.put("householdCode", "34Zoomrttt");
@@ -127,7 +128,7 @@ public class DHIS2SyncerListenerTest extends TestResourceLoader {
 		allEvents.add(householdEvent);
 		
 		MotechEvent motechEvent = new MotechEvent(DHIS2Constants.DHIS2_TRACK_DATA_SYNCER_SUBJECT);
-		//JSONObject returns = dhis2SyncerListener.pushToDHIS2(motechEvent);
+		JSONObject returns = dhis2SyncerListener.pushToDHIS2(motechEvent);
 		
 		/*JSONObject response = returns.getJSONObject("response");
 		String expectedImport = "1";

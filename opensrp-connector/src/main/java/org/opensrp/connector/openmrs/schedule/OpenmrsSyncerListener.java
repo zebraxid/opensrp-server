@@ -212,6 +212,7 @@ public class OpenmrsSyncerListener {
 					
 				} else {
 					JSONObject patientJson = patientService.createPatient(c);
+					System.err.println("patientJson:" + patientJson);
 					patient = patientJson;//only for test code purpose					
 					if (patientJson != null && patientJson.has("uuid")) {
 						c.addIdentifier(PatientService.OPENMRS_UUID_IDENTIFIER_TYPE, patientJson.getString("uuid"));
@@ -241,6 +242,7 @@ public class OpenmrsSyncerListener {
 				if (person.getString("uuid") != null) {
 					JSONObject relation = patientService.createPatientRelationShip(c.getIdentifier("OPENMRS_UUID"),
 					    person.getString("uuid"), "8d91a210-c2cc-11de-8d13-0010c6dffd0f");
+					System.err.println("normalAction:" + relation);
 					relationshipsArray.put(relation); // only for test code purpose
 					logger.info("RelationshipsCreated check openrs" + c.getIdentifier("OPENMRS_UUID"));
 				}

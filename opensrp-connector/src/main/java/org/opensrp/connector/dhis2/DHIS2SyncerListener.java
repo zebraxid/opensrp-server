@@ -54,7 +54,7 @@ public class DHIS2SyncerListener {
 			System.err.println("Sixe:" + cl.size());
 			for (Client c : cl) {
 				try {
-					response = processTracker(c);
+					response = processTrackerAndSendToDHIS2(c);
 					//response = sentTrackCaptureDataToDHIS2(c);
 				}
 				catch (Exception e) {
@@ -69,13 +69,11 @@ public class DHIS2SyncerListener {
 		return response;
 	}
 	
-	public JSONObject processTracker(Client client) throws JSONException {
+	public JSONObject processTrackerAndSendToDHIS2(Client client) throws JSONException {
 		
 		dhis2Tracker = dhis2TrackerService.getTrackerType(client);
 		JSONArray clientData = dhis2Tracker.getTrackCaptureData(client);
-		dhis2Tracker.sendTrackCaptureData(clientData);
-		
-		return null;
+		return dhis2Tracker.sendTrackCaptureData(clientData);
 		
 	}
 	
