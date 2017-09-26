@@ -9,7 +9,7 @@ public abstract class MessageFactory {
 		if (type == MessageType.ANNOUNCEMENT) {
 			messageFactory = new AnnouncementMessage();
 		} else if (type == MessageType.REMINDER) {
-			messageFactory = new RemainderMessage();
+			messageFactory = new ReminderMessage();
 		}
 		return messageFactory;
 		

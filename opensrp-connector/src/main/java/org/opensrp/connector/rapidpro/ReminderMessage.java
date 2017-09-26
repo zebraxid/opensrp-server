@@ -1,6 +1,6 @@
 package org.opensrp.connector.rapidpro;
 
-public class RemainderMessage extends MessageFactory {
+public class ReminderMessage extends MessageFactory {
 	
 	@Override
 	public Message getClientType(ClientType type) {
