@@ -67,7 +67,8 @@ public class MessageService {
 		List<String> contacts;
 		contacts = new ArrayList<String>();
 		List<String> groups = new ArrayList<String>();
-		rapidproService.sendMessage(urns, contacts, groups, messageFactory.getClientType(ClientType.child).message(), "");
+		rapidproService.sendMessage(urns, contacts, groups, messageFactory.getClientType(ClientType.child).message(client),
+		    "");
 	}
 	
 	private boolean isEligible(Map<String, String> data) {

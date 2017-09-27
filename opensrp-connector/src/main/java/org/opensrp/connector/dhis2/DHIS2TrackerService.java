@@ -65,6 +65,9 @@ public class DHIS2TrackerService {
 			data.put("attribute", attributeId);
 			data.put("value", client.getString(key));
 			
+		} else {
+			data.put("attribute", attributeId);
+			data.put("value", "");
 		}
 		return data;
 		
@@ -81,6 +84,8 @@ public class DHIS2TrackerService {
 				return data;
 			}
 		}
+		data.put("attribute", attributeId);
+		data.put("value", "");
 		return data;
 		
 	}
@@ -96,6 +101,8 @@ public class DHIS2TrackerService {
 				return data;
 			}
 		}
+		data.put("attribute", attributeId);
+		data.put("value", "");
 		return data;
 		
 	}
