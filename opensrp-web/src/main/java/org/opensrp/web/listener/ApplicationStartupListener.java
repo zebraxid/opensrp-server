@@ -63,7 +63,7 @@ public class ApplicationStartupListener implements ApplicationListener<ContextRe
 	public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
 		System.out.println(contextRefreshedEvent.getApplicationContext().getId());
 		if (contextRefreshedEvent.getApplicationContext().getId().endsWith(APPLICATION_ID)) {
-			scheduler.startJob(formSchedule);
+			//scheduler.startJob(formSchedule);
 			scheduler.startJob(eventsSchedule);
 			//scheduler.startJob(anmReportScheduler);
 			//scheduler.startJob(mctsReportScheduler);
