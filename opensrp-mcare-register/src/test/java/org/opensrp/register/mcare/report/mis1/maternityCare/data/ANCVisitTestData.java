@@ -166,7 +166,7 @@ public class ANCVisitTestData extends MIS1TestData {
         }
     }
 
-    private Members     createValidMemberWithValidRandomDateTime(VisitNumber visitNumber) {
+    private Members createValidMemberWithValidRandomDateTime(VisitNumber visitNumber) {
         Long randomDateTimeBetweenStartAndEndDateTime = getRandomNumberBetween(startDateTime, endDateTime);
         builder.clientVersion(randomDateTimeBetweenStartAndEndDateTime).isReferred(YES).misoprostolReceived(YES);
         return createMemberWithANCVisit(visitNumber, builder.build().getVisitData());

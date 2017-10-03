@@ -7,9 +7,7 @@ import org.opensrp.register.mcare.report.mis1.familyPlanning.birthControlMethdoU
 import org.opensrp.register.mcare.report.mis1.familyPlanning.birthControlMethdoUsagesCalculation.PillMethodUsagesCalculator;
 import org.opensrp.register.mcare.report.mis1.familyPlanning.eligibleCoupleCount.EligibleCoupleCountCalculator;
 
-/**
- * TODO: TO use Abstract class `BirthMethodUsagesCalculator` instead of concrete implementation.
- */
+
 public class FamilyPlanningReport extends Report {
 
 	private EligibleCoupleCountCalculator eligibleCoupleCountCalculator;
@@ -19,6 +17,7 @@ public class FamilyPlanningReport extends Report {
 	private CondomMethodUsagesCalculator condomUsagesCalculator;
 
 	public FamilyPlanningReport(long startDateTime, long endDateTime) {
+
 		super(startDateTime, endDateTime);
 	}
 
@@ -44,14 +43,17 @@ public class FamilyPlanningReport extends Report {
 	}
 
 	public PillMethodUsagesCalculator getPillUsagesCalculator() {
+
 		return pillUsagesCalculator;
 	}
 
 	public CondomMethodUsagesCalculator getCondomUsagesCalculator() {
+
 		return condomUsagesCalculator;
 	}
 
 	public EligibleCoupleCountCalculator getEligibleCoupleCountCalculator() {
+
 		return eligibleCoupleCountCalculator;
 	}
 }

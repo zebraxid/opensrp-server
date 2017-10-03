@@ -99,6 +99,17 @@ public class EligibleCoupleCountTestData extends MIS1TestData {
         return eligibleCoupleFollowUpList;
     }
 
+  /*  public List<Members> test() {
+        List<Members> members = new ArrayList<>();
+        for(int i=0; i<totalCount;i++ ){
+            if(i<validCount) {
+                members.add(validMembers() );
+            }else {
+                members.add(invalidMembers());
+            }
+        }
+    }*/
+
     private List<Map<String, String>> createRandomNumberOfElcoFollowUpWithExceedInvalidClientVersion() {
         Random rand = new Random();
         int randomNum = rand.nextInt((100 - 0) + 1) + 0;
@@ -112,8 +123,8 @@ public class EligibleCoupleCountTestData extends MIS1TestData {
         return eligibleCoupleFollowUpList;
     }
 
-    private Map<String, String> createEligibleCoupleFollowUpUsingClientVersionDateTime(long clientVersion) {
-        builder.clientVersion(clientVersion);
-        return builder.build().getFollowUp();
-    }
+        private Map<String, String> createEligibleCoupleFollowUpUsingClientVersionDateTime(long clientVersion) {
+            builder.clientVersion(clientVersion);
+            return builder.build().getFollowUp();
+        }
 }

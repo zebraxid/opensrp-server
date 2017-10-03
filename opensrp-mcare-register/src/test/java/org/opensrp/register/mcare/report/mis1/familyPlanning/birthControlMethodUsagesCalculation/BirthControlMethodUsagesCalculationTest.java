@@ -23,12 +23,14 @@ public class BirthControlMethodUsagesCalculationTest {
     public void setUp() throws Exception {
         int totalCount = 10000;
         int validCount = ThreadLocalRandom.current().nextInt(200, totalCount+1);
+       
         birthControlMethodTestData = new BirthControlMethodTestData(ON_TEST_BIRTH_CONTROL_METHOD, totalCount, validCount);
     }
 
     @Test
     public void testTotalCountOfCondomUsagesOfCurrentMonth() {
         mis1Report = new MIS1Report(unionName, birthControlMethodTestData.createTotalUsagesData(), 0, 0 );
+        System.err.println(""+mis1Report.getMembersList().toString());
         int totalCondomUsagesOfCurrentMonth =
                 mis1Report.getFamilyPlanningReport().getCondomUsagesCalculator().totalUsages();
         assertEquals(birthControlMethodTestData.validCount, totalCondomUsagesOfCurrentMonth);
