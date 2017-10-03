@@ -23,6 +23,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertFalse;
 
+@Ignore
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:test-applicationContext-opensrp-register-mcare.xml")
 public class AllMembersTest {

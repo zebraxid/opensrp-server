@@ -2,9 +2,7 @@ package org.opensrp.register.mcare.report.mis1.familyPlanning;
 
 import org.opensrp.register.mcare.domain.Members;
 import org.opensrp.register.mcare.report.mis1.Report;
-import org.opensrp.register.mcare.report.mis1.familyPlanning.birthControlMethdoUsagesCalculation.BirthControlMethodUsagesCalculator;
-import org.opensrp.register.mcare.report.mis1.familyPlanning.birthControlMethdoUsagesCalculation.CondomMethodUsagesCalculator;
-import org.opensrp.register.mcare.report.mis1.familyPlanning.birthControlMethdoUsagesCalculation.PillMethodUsagesCalculator;
+import org.opensrp.register.mcare.report.mis1.familyPlanning.birthControlMethdoUsagesCalculation.*;
 import org.opensrp.register.mcare.report.mis1.familyPlanning.eligibleCoupleCount.EligibleCoupleCountCalculator;
 
 /**
@@ -12,46 +10,48 @@ import org.opensrp.register.mcare.report.mis1.familyPlanning.eligibleCoupleCount
  */
 public class FamilyPlanningReport extends Report {
 
-	private EligibleCoupleCountCalculator eligibleCoupleCountCalculator;
+    private EligibleCoupleCountCalculator eligibleCoupleCountCalculator;
+    private PillMethodUsagesCalculator pillUsagesCalculator;
+    private CondomMethodUsagesCalculator condomUsagesCalculator;
+    private IUDUsagesCalculator iudUsagesCalculator;
+    private ImplantUsagesCalculator implantUsagesCalculator;
+    private MalePermanentMethodUsagesCalculator malePermanentMethodUsagesCalculator;
+    private FemalePermanentMethodUsagesCalculator femalePermanentMethodUsagesCalculator;
 
-	private PillMethodUsagesCalculator pillUsagesCalculator;
+    public FamilyPlanningReport(long startDateTime, long endDateTime) {
+        super(startDateTime, endDateTime);
+    }
 
-	private CondomMethodUsagesCalculator condomUsagesCalculator;
+    /**
+     * Use base classes reflection method to init all internal calculators.
+     *
+     * @param startDateTime
+     * @param endDateTime
+     */
+    @Override
+    protected void initCalculators(long startDateTime, long endDateTime) {
+        this.useReflectionToDynamicallyInitAllMemberOf(this.getClass(), startDateTime, endDateTime);
+    }
 
-	public FamilyPlanningReport(long startDateTime, long endDateTime) {
-		super(startDateTime, endDateTime);
-	}
+    /**
+     * Use base classes reflection method to call `calculate` method on all calculator.
+     *
+     * @param member
+     */
+    @Override
+    public void calculate(Members member) {
+        this.useReflectionToDynamicallyCallCalculateMethodOnAllMemberOf(this.getClass(), member);
+    }
 
-	/**
-	 * Use base classes reflection method to init all internal calculators.
-	 *
-	 * @param startDateTime
-	 * @param endDateTime
-	 */
-	@Override
-	protected void initCalculators(long startDateTime, long endDateTime) {
-		this.useReflectionToDynamicallyInitAllMemberOf(this.getClass(), startDateTime, endDateTime);
-	}
+    public PillMethodUsagesCalculator getPillUsagesCalculator() {
+        return pillUsagesCalculator;
+    }
 
-	/**
-	 * Use base classes reflection method to call `calculate` method on all calculator.
-	 *
-	 * @param member
-	 */
-	@Override
-	public void calculate(Members member) {
-		this.useReflectionToDynamicallyCallCalculateMethodOnAllMemberOf(this.getClass(), member);
-	}
+    public CondomMethodUsagesCalculator getCondomUsagesCalculator() {
+        return condomUsagesCalculator;
+    }
 
-	public PillMethodUsagesCalculator getPillUsagesCalculator() {
-		return pillUsagesCalculator;
-	}
-
-	public CondomMethodUsagesCalculator getCondomUsagesCalculator() {
-		return condomUsagesCalculator;
-	}
-
-	public EligibleCoupleCountCalculator getEligibleCoupleCountCalculator() {
-		return eligibleCoupleCountCalculator;
-	}
+    public EligibleCoupleCountCalculator getEligibleCoupleCountCalculator() {
+        return eligibleCoupleCountCalculator;
+    }
 }

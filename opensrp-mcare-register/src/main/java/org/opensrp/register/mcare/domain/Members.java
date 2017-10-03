@@ -136,6 +136,14 @@ public class Members extends MotechBaseDataObject {
         @JsonIgnore
         public static final String BIRTH_CONTROL_CONDOM = "2";
         @JsonIgnore
+        public static final String BIRTH_CONTROL_MALE_PERMANENT = "6";
+        @JsonIgnore
+        public static final String BIRTH_CONTROL_FEMALE_PERMANENT = "7";
+        @JsonIgnore
+        public static final String BIRTH_CONTROL_IUD = "4";
+        @JsonIgnore
+        public static final String BIRTH_CONTROL_IMPLANT = "5";
+        @JsonIgnore
         public static final String BIRTH_CONTROL_NULL_VALUE = "-1";
         @JsonIgnore
         public static final String BIRTH_CONTROL_NOT_USING_ANY_METHOD = "99";
