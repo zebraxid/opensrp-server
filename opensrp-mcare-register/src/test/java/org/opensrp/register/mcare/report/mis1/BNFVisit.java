@@ -12,6 +12,7 @@ public class BNFVisit {
     private Map<String, String> visitData;
 
     public Map<String, String> getVisitData() {
+
         return visitData;
     }
 
@@ -19,6 +20,7 @@ public class BNFVisit {
         private Map<String, String> visitData;
 
         public BNFVisitBuilder() {
+
             visitData = new HashMap<>();
         }
 

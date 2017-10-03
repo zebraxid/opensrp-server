@@ -63,6 +63,7 @@ public abstract class Report {
 					e.printStackTrace();
 				}
 				catch (InvocationTargetException e) {
+					System.out.println("all data:" );
 					e.printStackTrace();
 				}
 				catch (ClassNotFoundException e) {
@@ -88,6 +89,7 @@ public abstract class Report {
 				try {
 					Object fieldValue = field.get(this);
 					Method calculate = fieldValue.getClass().getMethod("calculate", Members.class);
+					//System.out.println( " calculate::" + calculate);
 					calculate.invoke(fieldValue, member);
 				}
 				catch (IllegalAccessException e) {
@@ -97,6 +99,7 @@ public abstract class Report {
 					e.printStackTrace();
 				}
 				catch (InvocationTargetException e) {
+					//System.out.println( " field::" + field);
 					e.printStackTrace();
 				}
 			}

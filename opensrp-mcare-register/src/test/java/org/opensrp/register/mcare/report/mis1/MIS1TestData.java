@@ -1,8 +1,14 @@
 package org.opensrp.register.mcare.report.mis1;
 
 
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+import org.joda.time.format.DateTimeFormatterBuilder;
 import org.opensrp.register.mcare.domain.Members;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,9 +47,123 @@ public abstract class MIS1TestData {
         return member;
     }
 
-    protected Members createMemberWithANCVisit(VisitNumber visitNumber, Map<String, String> visitData)  {
+
+    protected Members createMemberWithDeliveryVisitDate(long deliveryTime , String status) {
         Members member = new Members();
-        switch (visitNumber){
+        Date dooDate = new Date(deliveryTime * 1000);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(member.Member_Date_Format);
+        Map<String,String> dooDateMp = new HashMap<>();
+        String dooDateStr = simpleDateFormat.format(dooDate);
+        System.out.println("status::: "  + status + " doodate::: " + dooDateStr);
+        /*dooDateMp.put("DOO", dooDateStr);
+        dooDateMp.put("Num_Live_Birth","2");
+        member.setDetails(dooDateMp);*/
+        member.setMember_Birth_Date(dooDateStr);
+        return member;
+    }
+
+    protected  Members createMemberWithPrematureChild( long deliveryTime , String status){
+        Members member = new Members();
+        Date dooDate = new Date(deliveryTime * 1000);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(member.Member_Date_Format);
+        Map<String,String> dooDateMp = new HashMap<>();
+        String dooDateStr = simpleDateFormat.format(dooDate);
+        System.out.println("status::: " + status + " doodate::: " + dooDateStr);
+        dooDateMp.put("DOO", dooDateStr);
+        dooDateMp.put("Premature_Birth","1");
+        member.setDetails(dooDateMp);
+        return member;
+    }
+
+    protected  Members createMemberWithDInLessSevDaysDate( long deliveryTime , Members.DeathSectionQuery deathSectionQuery){
+        Members member = new Members();
+        Date dooDate = new Date(deliveryTime * 1000);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(member.Member_Date_Format);
+        Map<String,String> dooDateMp = new HashMap<>();
+        String dooDateStr = simpleDateFormat.format(dooDate);
+        dooDateMp.put("DOO", dooDateStr);
+        dooDateMp.put("Deceased_Age_Group", "1");
+        member.setDeathReg(dooDateMp);
+        return member;
+    }
+
+    protected  Members createMemberWithDInLessTwnEightDaysDate( long deliveryTime , Members.DeathSectionQuery deathSectionQuery){
+        Members member = new Members();
+        Date dooDate = new Date(deliveryTime * 1000);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(member.Member_Date_Format);
+        Map<String,String> dooDateMp = new HashMap<>();
+        String dooDateStr = simpleDateFormat.format(dooDate);
+        dooDateMp.put("DOO", dooDateStr);
+        dooDateMp.put("Deceased_Age_Group", "2");
+        member.setDeathReg(dooDateMp);
+        return member;
+    }
+
+    protected  Members createMemberWithDInLessOneYrDate( long deliveryTime , Members.DeathSectionQuery deathSectionQuery){
+        Members member = new Members();
+        Date dooDate = new Date(deliveryTime * 1000);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(member.Member_Date_Format);
+        Map<String,String> dooDateMp = new HashMap<>();
+        String dooDateStr = simpleDateFormat.format(dooDate);
+        dooDateMp.put("DOO", dooDateStr);
+        dooDateMp.put("Deceased_Age_Group", "3");
+        member.setDeathReg(dooDateMp);
+        return member;
+    }
+
+    protected  Members createMemberWithDInLessFiveYrDate( long deliveryTime , Members.DeathSectionQuery deathSectionQuery){
+        Members member = new Members();
+        Date dooDate = new Date(deliveryTime * 1000);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(member.Member_Date_Format);
+        Map<String,String> dooDateMp = new HashMap<>();
+        String dooDateStr = simpleDateFormat.format(dooDate);
+        dooDateMp.put("DOO", dooDateStr);
+        dooDateMp.put("Deceased_Age_Group", "4");
+        member.setDeathReg(dooDateMp);
+        return member;
+    }
+
+    protected  Members createMemberWithDMotherDate( long deliveryTime , Members.DeathSectionQuery deathSectionQuery){
+        Members member = new Members();
+        Date dooDate = new Date(deliveryTime * 1000);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(member.Member_Date_Format);
+        Map<String,String> dooDateMp = new HashMap<>();
+        String dooDateStr = simpleDateFormat.format(dooDate);
+        dooDateMp.put("DOO", dooDateStr);
+        dooDateMp.put("Deceased_Age_Group", "5");
+        member.setDeathReg(dooDateMp);
+        return member;
+    }
+
+    protected  Members createMemberOtherDeathDate( long deliveryTime , Members.DeathSectionQuery deathSectionQuery){
+        Members member = new Members();
+        Date dooDate = new Date(deliveryTime * 1000);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(member.Member_Date_Format);
+        Map<String,String> dooDateMp = new HashMap<>();
+        String dooDateStr = simpleDateFormat.format(dooDate);
+        dooDateMp.put("DOO", dooDateStr);
+        dooDateMp.put("Deceased_Age_Group", "6");
+        member.setDeathReg(dooDateMp);
+        return member;
+    }
+    protected Members createMemberWithChildUnderWeight(long deliveryTime , String status) {
+        Members member = new Members();
+        Date dooDate = new Date(deliveryTime * 1000);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(member.Member_Date_Format);
+        Map<String,String> dooDateMp = new HashMap<>();
+        String dooDateStr = simpleDateFormat.format(dooDate);
+        System.out.println("status::: " + status + " doodate::: " + dooDateStr);
+        dooDateMp.put("DOO", dooDateStr);
+     //   dooDateMp.put("Num_Live_Birth","2");
+       // dooDateMp.put("Premature_Birth","1");
+        dooDateMp.put("Child_Weight","2");
+        member.setDetails(dooDateMp);
+        return member;
+    }
+    
+    protected Members createMemberWithANCVisit(VisitNumber visitNumber, Map<String, String> visitData) {
+        Members member = new Members();
+        switch (visitNumber) {
             case one:
                 return member.setANCVisit1(visitData);
             case two:
@@ -57,16 +177,16 @@ public abstract class MIS1TestData {
         throw new IllegalArgumentException("Invalid visit number: " + visitNumber.toString());
     }
 
-    protected Members createMemberWithBNFVisits(List<Map<String, String >> bnfVisits) {
+    protected Members createMemberWithBNFVisits(List<Map<String, String>> bnfVisits) {
         Members member = new Members();
         return member.setbnfVisit(bnfVisits);
     }
 
-    protected Members createMemberWithPNCVisit(VisitNumber visitNumber, Map<String , String> pncVisit) {
+    protected Members createMemberWithPNCVisit(VisitNumber visitNumber, Map<String, String> pncVisit) {
         Members members = new Members();
         switch (visitNumber) {
             case one:
-              return members.setPNCVisit1(pncVisit);
+                return members.setPNCVisit1(pncVisit);
             case two:
                 return members.setPNCVisit2(pncVisit);
             case three:
@@ -106,15 +226,15 @@ public abstract class MIS1TestData {
         }
 
         public static VisitNumber fromStr(String value) {
-            if(value == null || value.isEmpty()) {
+            if (value == null || value.isEmpty()) {
                 return INVALID;
-            }else {
+            } else {
                 return fromInt(Integer.parseInt(value));
             }
         }
 
         public static VisitNumber fromInt(int value) {
-            if(map.containsKey(value)) {
+            if (map.containsKey(value)) {
                 return map.get(value);
             }
 

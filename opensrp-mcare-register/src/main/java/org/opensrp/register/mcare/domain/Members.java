@@ -23,6 +23,7 @@ public class Members extends MotechBaseDataObject {
 
     @JsonIgnore
     public static final String CLIENT_VERSION_KEY = CLIENT_VERSION;
+    public static final String Member_Date_Format = "dd/MM/yyyy";
 
     public enum BooleanAnswer {
         INVALID(-1),
@@ -161,6 +162,22 @@ public class Members extends MotechBaseDataObject {
 
     }
 
+    /*public static class DeathSectionQuery {
+        @JsonIgnore
+        public static final String deathInLessThanSevenDays = "1";
+        @JsonIgnore
+        public static final String deathInLessThanTwentyEightDays = "2";
+        @JsonIgnore
+        public static final String deathInLessThanOneYear = "3";
+        @JsonIgnore
+        public static final String deathInLessThanFiveYear = "4";
+        @JsonIgnore
+        public static final String deathOfMother = "5";
+        @JsonIgnore
+        public static final String otherDeath = "6";
+
+    }*/
+
     public static class ANCVisitKeyValue {
         public static class Key {
             public final static String IS_REFERRED = "Is_Reffered";
@@ -187,6 +204,7 @@ public class Members extends MotechBaseDataObject {
             public int value;
 
             VisitStatus(int value) {
+
                 this.value = value;
             }
 
@@ -223,6 +241,58 @@ public class Members extends MotechBaseDataObject {
             }
         }
 
+    }
+
+
+
+    public enum DeathSectionQuery {
+        INVALID(-1),
+        deathInLessThanSevenDays (1),
+        deathInLessThanTwentyEightDays(2),
+        deathInLessThanOneYear(3),
+        deathInLessThanFiveYear(4),
+        deathOfMother(5),
+        otherDeath(6);
+
+        private Integer value;
+
+        DeathSectionQuery(Integer value) {
+
+            this.value = value;
+        }
+
+        private static Map<Integer, DeathSectionQuery> map = new HashMap<Integer, DeathSectionQuery>();
+
+        static {
+            for (DeathSectionQuery deathSectionQuery : DeathSectionQuery.values()) {
+                map.put(deathSectionQuery.value, deathSectionQuery);
+            }
+        }
+
+        public static DeathSectionQuery fromStr(String value) {
+            if(value == null || value.isEmpty()) {
+                return INVALID;
+            }else {
+                return fromInt(Integer.parseInt(value));
+            }
+        }
+
+        public static DeathSectionQuery fromInt(int value) {
+            if(map.containsKey(value)) {
+                return map.get(value);
+            }
+
+            return INVALID;
+        }
+
+        public Integer getValue() {
+            return this.value;
+        }
+
+        public String getValueInString() {
+
+            return this.getValue().toString();
+        }
     }
 
 
@@ -299,7 +369,8 @@ public class Members extends MotechBaseDataObject {
             private Integer value;
 
              DeliveryBy(Integer value) {
-                this.value = value;
+
+                 this.value = value;
             }
 
             private static Map<Integer, DeliveryBy> map = new HashMap<Integer, DeliveryBy>();
@@ -334,6 +405,8 @@ public class Members extends MotechBaseDataObject {
                 return this.getValue().toString();
             }
         }
+
+
 
         public enum DeliveryType {
             INVALID(-1),
@@ -1140,6 +1213,12 @@ public class Members extends MotechBaseDataObject {
         return details;
     }
 
+    public Map<String, String> getDeathReg() {
+        if (DeathReg == null)
+            this.DeathReg = new HashMap<>();
+        return DeathReg;
+    }
+
     public String Detail(String name) {
         return details.get(name);
     }
@@ -1553,6 +1632,7 @@ public class Members extends MotechBaseDataObject {
 
     @Override
     public String toString() {
+
         return ToStringBuilder.reflectionToString(this);
     }
 }

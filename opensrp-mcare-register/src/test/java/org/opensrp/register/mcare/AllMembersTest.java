@@ -2,14 +2,9 @@ package org.opensrp.register.mcare;
 
 
 import com.google.gson.Gson;
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.json.JSONException;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.opensrp.common.util.HttpResponse;
-import org.opensrp.connector.HttpUtil;
 import org.opensrp.register.mcare.domain.Members;
 import org.opensrp.register.mcare.repository.AllHouseHolds;
 import org.opensrp.register.mcare.repository.AllMembers;
@@ -17,11 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.List;
 
 import static org.junit.Assert.assertFalse;
+
 
 @Ignore
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -34,13 +28,7 @@ public class AllMembersTest {
 	private AllMembers allMembers;
 
 	
-	
-   // @Before
-    public void setUp() throws Exception {
-    
-       
-    }
-    
+
     @Ignore@Test
     public void simpleTest() {
     	assert(true);
@@ -82,11 +70,11 @@ public class AllMembersTest {
   public void failedTest() {
         assertFalse(false);
   }
-
+/*
     @Test
     public void EncounterTest() throws JSONException {
         ObjectMapper mapper = new ObjectMapper();
-       /* JSONObject enc = new JSONObject();
+        JSONObject enc = new JSONObject();
         enc.put("encounterDatetime", "2017-04-05");
         enc.put("provider", "99f68f5f-2278-4b1b-bd64-1af3991b1148");
         enc.put("patient", "9cf5582f-dfb5-478e-9e35-a386f9c3f9d2");
@@ -102,7 +90,7 @@ public class AllMembersTest {
         JSONObject obs2 = new JSONObject();
         obs2.put("concept", "163087AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
         obs2.put("value", "163084AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-        obar1.put(obs2);*/
+        obar1.put(obs2);
 
 
 
@@ -117,8 +105,5 @@ public class AllMembersTest {
         System.out.println("Going to create Encounter: " + enc.toString());
        // HttpResponse op = HttpUtil.post("http://192.168.19.28:8080/openmrs/ws/rest/v1/encounter", "", enc.toString(),"admin", "mPower@1234");
         //System.out.println(new Gson().toJson(op));
-    }
+    }*/
 }
-
-
-

@@ -47,4 +47,14 @@ public class EligibleCoupleCountCalculatorTest {
 
         assertEquals(eligibleCoupleCountTestData.validCount, totalEligibleCoupleCount);
     }
+
+    /*@Test
+    public void testTest() {
+        List<Members> members = eligibleCoupleCountTestData.test();
+        MIS1Report mis1Report = new MIS1Report(unionName, members, startDateTime, endDateTime);
+
+        int totalEligibleCoupleCount = mis1Report.getFamilyPlanningReport().getEligibleCoupleCountCalculator().getTotalEligibleCouple();
+
+        assertEquals(eligibleCoupleCountTestData.validCount, totalEligibleCoupleCount);
+    }*/
 }

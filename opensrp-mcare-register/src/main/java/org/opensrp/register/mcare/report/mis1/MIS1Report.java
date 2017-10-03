@@ -1,6 +1,7 @@
 package org.opensrp.register.mcare.report.mis1;
 
 import org.opensrp.register.mcare.domain.Members;
+import org.opensrp.register.mcare.report.mis1.birthAndDeath.BirthAndDeathReport;
 import org.opensrp.register.mcare.report.mis1.familyPlanning.FamilyPlanningReport;
 import org.opensrp.register.mcare.report.mis1.maternityCare.MaternityCareReport;
 
@@ -22,7 +23,7 @@ import java.util.List;
  * 4. Read description of SRS in alfresco about color code. Color code is not implemented fully.<br>
  * 5. Class diagram is not implemented fully. Members and Methods are not listed.
  * <br>
- *<b>For a general understanding, this class represents the complete page of SRS with all the table. Every Report object {@link FamilyPlanningReport} is an table of SRS.
+ * <b>For a general understanding, this class represents the complete page of SRS with all the table. Every Report object {@link FamilyPlanningReport} is an table of SRS.
  * Every Report calculator object can be thought of an row of the table {@link org.opensrp.register.mcare.report.mis1.familyPlanning.birthControlMethdoUsagesCalculation.CondomMethodUsagesCalculator}, {@link org.opensrp.register.mcare.report.mis1.maternityCare.TTDoseReportCalculator}.</b>
  * <br>
  *
@@ -32,38 +33,59 @@ import java.util.List;
  */
 public class MIS1Report {
 
-	private String unionName;
+    private String unionName;
 
-	private List<Members> membersList;
+    private List<Members> membersList;
 
-	private FamilyPlanningReport familyPlanningReport;
+    private FamilyPlanningReport familyPlanningReport;
 
-	private MaternityCareReport maternityCareReport;
+    private MaternityCareReport maternityCareReport;
 
-	public MIS1Report(String unionName, List<Members> membersList, long startDateTime, long endDateTime) {
-		this.unionName = unionName;
-		this.membersList = membersList;
-		this.familyPlanningReport = new FamilyPlanningReport(startDateTime, endDateTime);
-		this.maternityCareReport = new MaternityCareReport(startDateTime, endDateTime);
-		this.calculateReport();
+    private BirthAndDeathReport birthAndDeathReport;
+
+
+    public MIS1Report(String unionName, List<Members> membersList, long startDateTime, long endDateTime) {
+        this.unionName = unionName;
+        this.membersList = membersList;
+        this.familyPlanningReport = new FamilyPlanningReport(startDateTime, endDateTime);
+        this.maternityCareReport = new MaternityCareReport(startDateTime, endDateTime);
+       this.birthAndDeathReport = new BirthAndDeathReport(startDateTime, endDateTime);
+        this.calculateReport();
+    }
+
+    public List<Members> getMembersList() {
+		return membersList;
+	}
+
+	public void setMembersList(List<Members> membersList) {
+
+        this.membersList = membersList;
 	}
 
 	public FamilyPlanningReport getFamilyPlanningReport() {
-		return familyPlanningReport;
-	}
 
-	public MaternityCareReport getMaternityCareReport() {
-		return maternityCareReport;
-	}
+        return familyPlanningReport;
+    }
 
-	/**
-	 * This function calls all member reports <i>calculate</i> method using single member.
-	 * <b>Should be called inside constructor.</b>
-	 */
-	private void calculateReport() {
-		for (Members member : membersList) {
-			familyPlanningReport.calculate(member);
-			maternityCareReport.calculate(member);
-		}
-	}
+    public MaternityCareReport getMaternityCareReport() {
+
+        return maternityCareReport;
+    }
+
+    public BirthAndDeathReport getBirthAndDeathReport() {
+
+        return birthAndDeathReport;
+    }
+
+    /**
+     * This function calls all member reports <i>calculate</i> method using single member.
+     * <b>Should be called inside constructor.</b>
+     */
+    private void calculateReport() {
+        for (Members member : membersList) {
+            familyPlanningReport.calculate(member);
+            maternityCareReport.calculate(member);
+           birthAndDeathReport.calculate(member);
+        }
+    }
 }
