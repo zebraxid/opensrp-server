@@ -14,6 +14,8 @@ public class ANCReportCalculator extends ReportCalculator {
     long visitTwoCount = 0;
     long isReferredCount = 0;
     long misoprostolRecivedCount = 0;
+    private long visitThreeCount = 0;
+    private long visitFourCount;
 
 
     public ANCReportCalculator(long startDateTime, long endDateTime) {
@@ -24,9 +26,12 @@ public class ANCReportCalculator extends ReportCalculator {
     public void calculate(Members member) {
         visitOneCount += addToVisitOneCount(member);
         visitTwoCount += addToVisitTwoCount(member);
+        visitThreeCount += addToVisitThreeCount(member);
+        visitFourCount += addToVisitFourCount(member);
         isReferredCount += addToIsReferredCount(member);
         misoprostolRecivedCount += addToMisoprostolRecivedCount(member);
     }
+
 
     public long getVisitOneCount() {
         return visitOneCount;
@@ -34,6 +39,14 @@ public class ANCReportCalculator extends ReportCalculator {
 
     public long getVisitTwoCount() {
         return visitTwoCount;
+    }
+
+    public long getVisitThreeCount() {
+        return visitThreeCount;
+    }
+
+    public long getVisitFourCount() {
+        return visitFourCount;
     }
 
     public long getIsReferredCount() {
@@ -56,6 +69,23 @@ public class ANCReportCalculator extends ReportCalculator {
     private int addToVisitTwoCount(Members member) {
         Map<String, String> anc2Visit = member.ANCVisit2();
         if (withInStartAndEndTime(anc2Visit)) {
+            return 1;
+        }
+        return 0;
+    }
+
+
+    private long addToVisitThreeCount(Members member) {
+        Map<String, String> anc3Visit = member.ANCVisit3();
+        if (withInStartAndEndTime(anc3Visit)) {
+            return 1;
+        }
+        return 0;
+    }
+
+    private long addToVisitFourCount(Members member) {
+        Map<String, String> anc4Visit = member.ANCVisit4();
+        if (withInStartAndEndTime(anc4Visit)) {
             return 1;
         }
         return 0;

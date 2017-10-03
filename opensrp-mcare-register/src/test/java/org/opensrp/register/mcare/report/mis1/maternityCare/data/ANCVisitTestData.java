@@ -56,6 +56,40 @@ public class ANCVisitTestData extends MIS1TestData {
         return allMembers;
     }
 
+    public List<Members> createANCVisit3TestData() {
+        List<Members> allMembers = new ArrayList<>();
+
+        allMembers.add(createValidMemberWithStartDateTime(VisitNumber.three));
+        allMembers.add(createValidMemberWithEndDateTime(VisitNumber.three));
+
+        for (int i = 0; i < totalCount; i++) {
+            if (i < validCount - 2) {
+                allMembers.add(createValidMemberWithValidRandomDateTime(VisitNumber.three));
+            } else {
+                allMembers.add(createInValidMemberWithInvalidRandomDateTime(VisitNumber.three));
+            }
+
+        }
+        return allMembers;
+    }
+
+    public List<Members> createANCVisit4TestData() {
+        List<Members> allMembers = new ArrayList<>();
+
+        allMembers.add(createValidMemberWithStartDateTime(VisitNumber.four));
+        allMembers.add(createValidMemberWithEndDateTime(VisitNumber.four));
+
+        for (int i = 0; i < totalCount; i++) {
+            if (i < validCount - 2) {
+                allMembers.add(createValidMemberWithValidRandomDateTime(VisitNumber.four));
+            } else {
+                allMembers.add(createInValidMemberWithInvalidRandomDateTime(VisitNumber.four));
+            }
+
+        }
+        return allMembers;
+    }
+
     public List<Members> createANCVisitIsReferredData() {
         List<Members> allMembers = new ArrayList<>();
 

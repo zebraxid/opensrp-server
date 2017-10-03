@@ -61,6 +61,50 @@ public class PNCVisitTestData extends MIS1TestData {
         return allMembers;
     }
 
+    public List<Members> createPncVisit2InformationTestData() {
+        List<Members> allMembers = new ArrayList<>();
+        VisitNumber visitNumber = VisitNumber.two;
+        allMembers.add(createValidMemberWithStartDateTimeFor(visitNumber));
+        allMembers.add(createValidMemberWithEndDateTimeFor(visitNumber));
+
+        for (int i = 0; i < totalCount; i++) {
+            if (i < validCount - 2) {
+                allMembers.add(createValidMemberForInformationWithInStartAndEndDateTimeWith(i, visitNumber));
+            } else {
+                if (i % 3 == 0) {
+                    allMembers.add(createInvalidMemberWithPreviousClientVersion(visitNumber));
+                } else if (i % 3 == 1) {
+                    allMembers.add(createInvalidMemberWithExceedClientVersion(visitNumber));
+                } else {
+                    allMembers.add(createInvalidMemberWithInStartAndEndDateTimeWith(visitNumber));
+                }
+            }
+        }
+        return allMembers;
+    }
+
+    public List<Members> createPncVisit2ServiceTestData() {
+        List<Members> allMembers = new ArrayList<>();
+        VisitNumber visitNumber = VisitNumber.two;
+        allMembers.add(createValidMemberWithStartDateTimeFor(visitNumber));
+        allMembers.add(createValidMemberWithEndDateTimeFor(visitNumber));
+
+        for (int i = 0; i < totalCount; i++) {
+            if (i < validCount - 2) {
+                allMembers.add(createValidMemberForServiceWithInStartAndEndDateTimeWith(i, visitNumber));
+            } else {
+                if (i % 3 == 0) {
+                    allMembers.add(createInvalidMemberWithPreviousClientVersion(visitNumber));
+                } else if (i % 3 == 1) {
+                    allMembers.add(createInvalidMemberWithExceedClientVersion(visitNumber));
+                } else {
+                    allMembers.add(createInvalidMemberWithInStartAndEndDateTimeWith(visitNumber));
+                }
+            }
+        }
+        return allMembers;
+    }
+
     public List<Members> createIsCleanedTestData() {
         List<Members> allMembers = new ArrayList<>();
         for( VisitNumber visitNumber : VisitNumber.values()) {

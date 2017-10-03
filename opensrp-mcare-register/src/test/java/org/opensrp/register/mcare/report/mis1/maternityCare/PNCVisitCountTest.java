@@ -44,4 +44,20 @@ public class PNCVisitCountTest {
         assertEquals(pncVisitTestData.validCount, pncVisit1InformationCount);
     }
 
+    @Test
+    public void testPNCVisit2InformationCount() {
+        List<Members> allMembers = pncVisitTestData.createPncVisit2InformationTestData();
+        MIS1Report mis1Report = new MIS1Report(unionName, allMembers, startDateTime, endDateTime);
+        long pncVisit2InformationCount = mis1Report.getMaternityCareReport().getPncReportCalculator().getPncTwoVisitCalculator().getInformationCount();
+        assertEquals(pncVisitTestData.validCount, pncVisit2InformationCount);
+    }
+
+    @Test
+    public void testPNCVisit2ServiceCount() {
+        List<Members> allMembers = pncVisitTestData.createPncVisit2ServiceTestData();
+        MIS1Report mis1Report = new MIS1Report(unionName, allMembers, startDateTime, endDateTime);
+        long pncVisit2ServiceCount = mis1Report.getMaternityCareReport().getPncReportCalculator().getPncTwoVisitCalculator().getServiceCount();
+        assertEquals(pncVisitTestData.validCount, pncVisit2ServiceCount);
+    }
+
 }

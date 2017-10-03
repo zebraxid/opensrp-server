@@ -11,6 +11,9 @@ import static org.opensrp.register.mcare.domain.Members.PNCVisitKeyValue.*;
 public class PNCReportCalculator extends ReportCalculator{
 
     private PNCOneVisitCalculator pncOneVisitCalculator = new PNCOneVisitCalculator();
+    private PNCTwoVisitCalculator pncTwoVisitCalculator=  new PNCTwoVisitCalculator();
+    private PNCThreeVisitCalculator pncThreeVisitCalculator=  new PNCThreeVisitCalculator();
+    private PNCFourVisitCalculator pncFourVisitCalculator=  new PNCFourVisitCalculator();
 
     public PNCReportCalculator(long startDateTime, long endDateTime) {
         super(startDateTime, endDateTime);
@@ -23,7 +26,23 @@ public class PNCReportCalculator extends ReportCalculator{
     @Override
     public void calculate(Members member) {
         this.pncOneVisitCalculator.calculate(member);
+        this.pncTwoVisitCalculator.calculate(member);
+        this.pncThreeVisitCalculator.calculate(member);
+        this.pncFourVisitCalculator.calculate(member);
     }
+
+    public PNCTwoVisitCalculator getPncTwoVisitCalculator() {
+        return pncTwoVisitCalculator;
+    }
+
+    public PNCThreeVisitCalculator getPncThreeVisitCalculator() {
+        return pncThreeVisitCalculator;
+    }
+
+    public PNCFourVisitCalculator getPncFourVisitCalculator() {
+        return pncFourVisitCalculator;
+    }
+
 
     private class Type {
         long informationCount = 0 ;
@@ -47,6 +66,37 @@ public class PNCReportCalculator extends ReportCalculator{
 
 
     }
+
+    protected class PNCTwoVisitCalculator extends Type {
+
+        public void calculate(Members member) {
+            this.informationCount += addToInformationCount(member.PNCVisit2());
+            this.serviceCount += addToServiceCount(member.PNCVisit2());
+        }
+
+
+    }
+
+    protected class PNCThreeVisitCalculator extends Type {
+
+        public void calculate(Members member) {
+            this.informationCount += addToInformationCount(member.PNCVisit3());
+            this.serviceCount += addToServiceCount(member.PNCVisit3());
+        }
+
+
+    }
+
+    protected class PNCFourVisitCalculator extends Type {
+
+        public void calculate(Members member) {
+            this.informationCount += addToInformationCount(member.PNCVisit4());
+            this.serviceCount += addToServiceCount(member.PNCVisit4());
+        }
+
+
+    }
+
 
     private int addToInformationCount(Map<String, String> visitData) {
         if(withInStartAndEndTime(visitData)) {

@@ -47,6 +47,22 @@ public class ANCVisitCountTest {
     }
 
     @Test
+    public void testANC3VisitCount() {
+        List<Members> membersList = ancVisitTestData.createANCVisit3TestData();
+        MIS1Report mis1Report = new MIS1Report(unionName, membersList, startDateTime, endDateTime);
+        long anc3visitCount = mis1Report.getMaternityCareReport().getAncReportCalculator().getVisitThreeCount();
+        assertEquals(ancVisitTestData.validCount, anc3visitCount);
+    }
+
+    @Test
+    public void testANC4VisitCount() {
+        List<Members> membersList = ancVisitTestData.createANCVisit4TestData();
+        MIS1Report mis1Report = new MIS1Report(unionName, membersList, startDateTime, endDateTime);
+        long anc4visitCount = mis1Report.getMaternityCareReport().getAncReportCalculator().getVisitFourCount();
+        assertEquals(ancVisitTestData.validCount, anc4visitCount);
+    }
+
+    @Test
     public void testANCVisitIsReferredCount() {
         List<Members> membersList = ancVisitTestData.createANCVisitIsReferredData();
         MIS1Report mis1Report = new MIS1Report(unionName, membersList, startDateTime, endDateTime);
