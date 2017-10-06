@@ -12,6 +12,7 @@ import static org.opensrp.register.mcare.domain.Members.BirthNotificationVisitKe
 public class PostpartumCareCalculator extends ReportCalculator {
     private int countOfBirthAtHomeWithTrainedPerson = 0;
     private int countOfNormalBirthAtHospitalOrClinic = 0;
+    private long countOfCesareanBirthAtHospitalOrClinic =0;
 
     public PostpartumCareCalculator(long startDateTime, long endDateTime) {
         super(startDateTime, endDateTime);
@@ -29,6 +30,7 @@ public class PostpartumCareCalculator extends ReportCalculator {
     public void calculate(Members member) {
         this.countOfBirthAtHomeWithTrainedPerson += addToCountOfBirthAtHomeWithTrainedPerson(member);
         this.countOfNormalBirthAtHospitalOrClinic += addToCountOfNormalBirthAtHospitalOrClinic(member);
+        this.countOfCesareanBirthAtHospitalOrClinic += addToCountOfCesareanBirthAtHospitalOrClinic(member);
     }
 
     private int addToCountOfBirthAtHomeWithTrainedPerson(Members member) {
@@ -54,6 +56,19 @@ public class PostpartumCareCalculator extends ReportCalculator {
         }
         return 0;
     }
+
+    private long addToCountOfCesareanBirthAtHospitalOrClinic(Members member) {
+        List<Map<String, String>> bnfVisits = member.bnfVisit();
+        for (Map<String, String> bnfVisit : bnfVisits) {
+            if (withInStartAndEndTime(bnfVisit)) {
+                if (deliveryAtHospitalOrClinicWithType(bnfVisit, DeliveryType.CESAREAN)) {
+                    return 1;
+                }
+            }
+        }
+        return 0;
+    }
+
 
     private boolean deliveredAtHomeWithTrainedPerson(Map<String, String> visitData) {
         if (visitData.containsKey(Key.WHERE_DELIVERED)) {
@@ -115,5 +130,9 @@ public class PostpartumCareCalculator extends ReportCalculator {
             default:
                 return false;
         }
+    }
+
+    public long getCountOfCesareanBirthAtHospitalOrClinic() {
+        return countOfCesareanBirthAtHospitalOrClinic;
     }
 }

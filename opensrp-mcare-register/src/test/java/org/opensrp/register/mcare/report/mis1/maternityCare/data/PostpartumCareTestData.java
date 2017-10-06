@@ -67,6 +67,31 @@ public class PostpartumCareTestData extends MIS1TestData{
         return allMembers;
     }
 
+    public List<Members> createCesareanBirthAtHospitalOrClinicTestData() {
+        List<Members> allMembers = new ArrayList<>();
+        DeliveryType cesarean = DeliveryType.CESAREAN;
+        allMembers.add(createValidMemberWithStartDateTimeForBirthAtHomeOrClinicDeliveryType(cesarean));
+        allMembers.add(createValidMemberWithEndDateTimeForBirthAtHomeOrClinicDeliveryType(cesarean));
+
+        for(int i=0; i<totalCount; i++) {
+            List<Map<String , String>> bnfVisits = new ArrayList<>();
+            bnfVisits.addAll(createRandomNumberOfBNFVisitsWithPreviousInvalidClientVersion());
+            if(i<validCount-2) {
+                int  deliveredAt = (i%6)+2;
+                bnfVisits.add(
+                        createBnfVisitWithDeliveredAtAndType(
+                                DeliveryPlace.fromInt(deliveredAt), cesarean));
+            }else {
+                bnfVisits.add(
+                        createBnfVisitWithDeliveredAtAndType(
+                                DeliveryPlace.HOME, cesarean));
+            }
+            bnfVisits.addAll(createRandomNumberOfBNFVisitsWithExceedInvalidClientVersion());
+            allMembers.add(createMemberWithBNFVisits(bnfVisits));
+        }
+        return allMembers;
+    }
+
     private Members createValidMemberWithStartDateTimeForBirthAtHomeWithTrainedPerson() {
         List<Map<String, String>> bnfVisits = new ArrayList<>();
         bnfVisitBuilder.clientVersion(startDateTime);

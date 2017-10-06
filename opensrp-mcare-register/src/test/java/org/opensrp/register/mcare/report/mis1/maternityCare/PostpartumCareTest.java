@@ -44,4 +44,12 @@ public class PostpartumCareTest {
         assertEquals(postpartumCareTestData.validCount, normalBirthAtHospitalOrClinic);
     }
 
+    @Test
+    public void testCesareanBirthAtHospitalOrClinic() {
+        List<Members> allMembers = postpartumCareTestData.createCesareanBirthAtHospitalOrClinicTestData();
+        MIS1Report mis1Report = new MIS1Report(unionName, allMembers, startDateTime, endDateTime);
+        long cesareanBirthAtHospitalOrClinic = mis1Report.getMaternityCareReport().getPostpartumCareCalculator().getCountOfCesareanBirthAtHospitalOrClinic();
+        assertEquals(postpartumCareTestData.validCount, cesareanBirthAtHospitalOrClinic);
+    }
+
 }
