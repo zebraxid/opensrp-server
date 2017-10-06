@@ -45,11 +45,33 @@ public class AdolescentHealthVisitTestData extends MIS1TestData {
         return allMembers;
     }
 
+    public List<Members> createCountOfCounsellingOnBadEffectOnChildMarriageAnTeenPregnancy() {
+        List<Members> allMembers = new ArrayList<>();
+
+        allMembers.add(createValidMemberWithStartDateTime());
+        allMembers.add(createValidMemberWithEndDateTime());
+        allMembers.add(createValidMemberWithTripleAdolescentVisit());
+
+
+        for (int i=0; i<totalCount; i++) {
+
+            CounsellingType badEffectOfChildMarriageAndTeenageMother = CounsellingType.BAD_EFFECT_OF_CHILD_MARRIAGE_AND_TEENAGE_MOTHER;
+            if(i<validCount-5) {
+                allMembers.add(createValidMemberWith(badEffectOfChildMarriageAndTeenageMother));
+            }else {
+                allMembers.add(createInvalidMemberWithValidDateTimeExcept(badEffectOfChildMarriageAndTeenageMother));
+            }
+
+        }
+
+        return allMembers;
+    }
+
     private Members createValidMemberWith(CounsellingType counsellingType) {
         List<Map<String, String>> visits = new ArrayList<>();
         visits.addAll(crateRandomNumberOfInvalidAdolescentVisit());
         long clientVersion = getRandomNumberBetween(startDateTime, endDateTime);
-        counsellingBuilder.add(CounsellingType.ON_ADOLESCENT);
+        counsellingBuilder.add(counsellingType);
         adolescentHealthVisitBuilder.clientVersion(clientVersion).counselling(counsellingBuilder.buildAndClean());
         visits.add(adolescentHealthVisitBuilder.build().getVisitData());
         return createMemberWithAdolescentHealthVisits(visits);

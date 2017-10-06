@@ -35,4 +35,12 @@ public class AdolescentHealthVisitTest {
         long countOfCounsellingOnChangesOfAdolescent = mis1Report.getMaternityCareReport().getAdolescentHealthReportCalculator().getCountOfCounsellingOnChangesOfAdolescent();
         assertEquals(adolescentHealthVisitTestData.validCount, countOfCounsellingOnChangesOfAdolescent);
     }
+
+    @Test
+    public void testCountOfCounsellingBadEffectOnChildMarriageAndTeenPregnency() {
+        List<Members> members = adolescentHealthVisitTestData.createCountOfCounsellingOnBadEffectOnChildMarriageAnTeenPregnancy();
+        MIS1Report mis1Report = new MIS1Report(unionName, members, startDateTime, endDateTime);
+        long countOfCounsellingBadEffectOnChildMarriageAndTeenPregnency = mis1Report.getMaternityCareReport().getAdolescentHealthReportCalculator().getCountOfCounsellingBadEffectOnChildMarriageAndTeenPregnancy();
+        assertEquals(adolescentHealthVisitTestData.validCount, countOfCounsellingBadEffectOnChildMarriageAndTeenPregnency);
+    }
 }
