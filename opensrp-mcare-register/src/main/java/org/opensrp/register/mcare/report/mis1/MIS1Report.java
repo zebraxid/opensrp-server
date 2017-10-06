@@ -2,6 +2,7 @@ package org.opensrp.register.mcare.report.mis1;
 
 import org.opensrp.register.mcare.domain.Members;
 import org.opensrp.register.mcare.report.mis1.birthAndDeath.BirthAndDeathReport;
+import org.opensrp.register.mcare.report.mis1.childCare.ChildCareReport;
 import org.opensrp.register.mcare.report.mis1.familyPlanning.FamilyPlanningReport;
 import org.opensrp.register.mcare.report.mis1.maternityCare.MaternityCareReport;
 
@@ -42,6 +43,7 @@ public class MIS1Report {
     private MaternityCareReport maternityCareReport;
 
     private BirthAndDeathReport birthAndDeathReport;
+    private ChildCareReport childCareReport;
 
 
     public MIS1Report(String unionName, List<Members> membersList, long startDateTime, long endDateTime) {
@@ -50,6 +52,7 @@ public class MIS1Report {
         this.familyPlanningReport = new FamilyPlanningReport(startDateTime, endDateTime);
         this.maternityCareReport = new MaternityCareReport(startDateTime, endDateTime);
        this.birthAndDeathReport = new BirthAndDeathReport(startDateTime, endDateTime);
+        this.childCareReport = new ChildCareReport(startDateTime, endDateTime);
         this.calculateReport();
     }
 
@@ -77,6 +80,11 @@ public class MIS1Report {
         return birthAndDeathReport;
     }
 
+    public ChildCareReport getChildCareReport() {
+        return childCareReport;
+    }
+
+
     /**
      * This function calls all member reports <i>calculate</i> method using single member.
      * <b>Should be called inside constructor.</b>
@@ -86,6 +94,7 @@ public class MIS1Report {
             familyPlanningReport.calculate(member);
             maternityCareReport.calculate(member);
            birthAndDeathReport.calculate(member);
+           childCareReport.calculate(member);
         }
     }
 }

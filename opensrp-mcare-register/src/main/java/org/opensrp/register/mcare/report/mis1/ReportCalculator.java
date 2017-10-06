@@ -42,4 +42,12 @@ public abstract class ReportCalculator {
 		}
 		return false;
 	}
+
+	protected boolean havePositiveValueWithKey(Map<String, String> visitData, String key) {
+		String valueOfKey = visitData.get(key);
+		if (Members.BooleanAnswer.fromStr(valueOfKey) == Members.BooleanAnswer.YES) {
+			return true;
+		}
+		return false;
+	}
 }

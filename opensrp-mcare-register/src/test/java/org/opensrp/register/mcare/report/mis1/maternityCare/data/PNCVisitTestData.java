@@ -105,27 +105,6 @@ public class PNCVisitTestData extends MIS1TestData {
         return allMembers;
     }
 
-    public List<Members> createIsCleanedTestData() {
-        List<Members> allMembers = new ArrayList<>();
-        for( VisitNumber visitNumber : VisitNumber.values()) {
-            allMembers.add(createValidMemberWithStartDateTimeFor(visitNumber));
-            allMembers.add(createValidMemberWithEndDateTimeFor(visitNumber));
-        }
-
-        for(int i=0; i<totalCount; i++) {
-            if(i<validCount-8) {
-                allMembers.add(createValidMemberForIsCleanedWithInStartAndEndDateTimeWith(VisitNumber.fromInt(i%4+1)));
-            }else {
-                if(i%3 == 0) {
-                    allMembers.add(createInvalidMemberWithPreviousClientVersion(VisitNumber.fromInt(i%4+1)));
-                }else if(i%3 == 1) {
-                    allMembers.add(createInvalidMemberWithExceedClientVersion(VisitNumber.fromInt(i%4+1)));
-                }
-            }
-        }
-        return allMembers;
-    }
-
     private Members createValidMemberWithStartDateTimeFor(VisitNumber visitNumber) {
         pncVisitBuilder.clientVersion(startDateTime).visitStatus(Members.PNCVisitKeyValue.VisitStatus.MET_AND_BABY_ALIVE);
         pncVisitBuilder.hasPncGivenOnTime(BooleanAnswer.YES).isCleaned(BooleanAnswer.YES);
@@ -182,14 +161,6 @@ public class PNCVisitTestData extends MIS1TestData {
             pncVisitBuilder.hasPncGivenOnTime(BooleanAnswer.YES);
             return createMemberWithPNCVisit(visitNumber, pncVisitBuilder.build().getVisitData());
         }
-    }
-
-    private Members createValidMemberForIsCleanedWithInStartAndEndDateTimeWith(VisitNumber visitNumber) {
-        long validClientVersion = getRandomNumberBetween(startDateTime, endDateTime);
-        pncVisitBuilder.clientVersion(validClientVersion);
-        pncVisitBuilder.isCleaned(BooleanAnswer.YES);
-        return createMemberWithPNCVisit(visitNumber, pncVisitBuilder.build().getVisitData());
-
     }
 
     private Members createInvalidMemberWithInStartAndEndDateTimeWith(VisitNumber visitNumber) {
