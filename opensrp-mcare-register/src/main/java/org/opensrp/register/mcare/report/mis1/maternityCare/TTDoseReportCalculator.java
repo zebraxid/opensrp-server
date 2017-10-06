@@ -13,6 +13,11 @@ import static org.opensrp.register.mcare.domain.Members.VaccineDose;
 
 public class TTDoseReportCalculator extends ReportCalculator {
     private long doseOneCount = 0;
+    private long doseTwoCount = 0;
+    private long doseThreeCount = 0;
+    private long doseFourCount = 0;
+    private long doseFiveCount = 0;
+
 
     public TTDoseReportCalculator(long startDateTime, long endDateTime) {
         super(startDateTime, endDateTime);
@@ -21,6 +26,24 @@ public class TTDoseReportCalculator extends ReportCalculator {
     public long getDoseOneCount() {
         return doseOneCount;
     }
+
+
+    public long getDoseTwoCount() {
+        return doseTwoCount;
+    }
+
+    public long getDoseThreeCount() {
+        return doseThreeCount;
+    }
+
+    public long getDoseFourCount() {
+        return doseFourCount;
+    }
+
+    public long getDoseFiveCount() {
+        return doseFiveCount;
+    }
+
 
     @Override
     public void calculate(Members member) {
@@ -54,6 +77,19 @@ public class TTDoseReportCalculator extends ReportCalculator {
             switch (vaccineDose) {
                 case ONE:
                     doseOneCount ++;
+                    break;
+                case TWO:
+                    doseTwoCount ++;
+                    break;
+                case THREE:
+                    doseThreeCount ++;
+                    break;
+                case FOUR:
+                    doseFourCount ++;
+                    break;
+                case FIVE:
+                    doseFiveCount ++;
+                    break;
             }
         }
     }

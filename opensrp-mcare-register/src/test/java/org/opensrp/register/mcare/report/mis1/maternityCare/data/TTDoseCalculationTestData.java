@@ -41,7 +41,30 @@ public class TTDoseCalculationTestData extends MIS1TestData {
         }
 
         return allMembers;
+    }public List<Members> createTTDoseTwoCountTestData() {
+        List<Members> allMembers = new ArrayList<>();
+
+        allMembers.add(createValidMemberWithStartDateTime());
+        allMembers.add(createValidMemberWithEndDateTime());
+
+        for (int i=0; i< totalCount; i++) {
+            List<Map<String, String>> allEligibleCoupleFollowUp = new ArrayList<>();
+            allEligibleCoupleFollowUp.addAll(createRandomNumberOfInvalidElcoFollowUP());
+            if(i < validCount-2) {
+                long randomDateTime = getRandomNumberBetween(startDateTime, endDateTime);
+                ttDoseBuilder.addDoseTwo();
+                ttDoseBuilder.addDoseFour();
+                eligibleCoupleFollowUpBuilder.clientVersion(randomDateTime);
+                eligibleCoupleFollowUpBuilder.tt_dose(ttDoseBuilder);
+                allEligibleCoupleFollowUp.add(eligibleCoupleFollowUpBuilder.build().getFollowUp());
+                allMembers.add(createMemberWithEligibleCoupleFollowUpList(allEligibleCoupleFollowUp));
+            }
+        }
+
+        return allMembers;
     }
+
+
 
     public Members createValidMemberWithStartDateTime() {
         eligibleCoupleFollowUpBuilder.clientVersion(startDateTime);

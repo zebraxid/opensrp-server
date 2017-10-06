@@ -35,4 +35,12 @@ public class TTDoseCalculatorTest {
         assertEquals(ttDoseCalculationTestData.validCount, ttDoseOneCount);
     }
 
+    @Test
+    public void testCountOfTTDoseTwo() {
+        List<Members> membersList = ttDoseCalculationTestData.createTTDoseTwoCountTestData();
+        MIS1Report mis1Report = new MIS1Report(unionName, membersList, startDateTime, endDateTime);
+        long ttDoseTwoCount = mis1Report.getMaternityCareReport().getTTDoseReportCalculator().getDoseTwoCount();
+        assertEquals(ttDoseCalculationTestData.validCount, ttDoseTwoCount);
+    }
+
 }
