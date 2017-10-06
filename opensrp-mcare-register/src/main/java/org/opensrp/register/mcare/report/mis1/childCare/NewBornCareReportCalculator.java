@@ -7,9 +7,20 @@ import java.util.Map;
 
 public class NewBornCareReportCalculator extends ReportCalculator {
     private long isCleanedCount = 0;
+    private long usedChlorhexidinCount = 0;
+    private long fedBreastMilkCount = 0;
 
     public long getIsCleanedCount() {
         return isCleanedCount;
+    }
+
+    public long getUsedChlorhexidinCount() {
+        return usedChlorhexidinCount;
+    }
+
+
+    public long getFedBreastMilkCount() {
+        return fedBreastMilkCount;
     }
 
     public NewBornCareReportCalculator(long startDateTime, long endDateTime) {
@@ -19,42 +30,56 @@ public class NewBornCareReportCalculator extends ReportCalculator {
     @Override
     public void calculate(Members member) {
         this.isCleanedCount += addToIsCleanedCount(member);
+        this.usedChlorhexidinCount += addToUsedChlorhexidinCount(member);
+        this.fedBreastMilkCount += addToFedBreastMilkCount(member);
     }
 
     private long addToIsCleanedCount(Members member) {
+        return getCountBasedOnKey(member, Members.PNCVisitKeyValue.Key.IS_CLEANED);
+    }
+
+
+    private long addToUsedChlorhexidinCount(Members member) {
+        return getCountBasedOnKey(member, Members.PNCVisitKeyValue.Key.USED_CHLORHEXIDIN);
+    }
+
+    private long addToFedBreastMilkCount(Members member) {
+        return getCountBasedOnKey(member, Members.PNCVisitKeyValue.Key.BREASMILK_FED);
+    }
+
+    private long getCountBasedOnKey(Members member, String key) {
         Map<String, String> pnc1Visit = member.PNCVisit1();
         Map<String, String> pnc2Visit = member.PNCVisit2();
         Map<String, String> pnc3Visit = member.PNCVisit3();
         Map<String, String> pnc4Visit = member.PNCVisit4();
 
-        if (isCleanedWithInStartAndEndTime(pnc1Visit)) {
-           return 1;
-        }
-        if (isCleanedWithInStartAndEndTime(pnc2Visit)) {
+        if (positiveValueWithInStartAndEndTime(pnc1Visit, key)) {
             return 1;
         }
-        if (isCleanedWithInStartAndEndTime(pnc3Visit)) {
+        if (positiveValueWithInStartAndEndTime(pnc2Visit,key)) {
             return 1;
         }
-        if (isCleanedWithInStartAndEndTime(pnc4Visit)) {
+        if (positiveValueWithInStartAndEndTime(pnc3Visit, key)) {
+            return 1;
+        }
+        if (positiveValueWithInStartAndEndTime(pnc4Visit, key)) {
             return 1;
         }
 
         return 0;
     }
 
-    private boolean isCleanedWithInStartAndEndTime(Map<String, String> visitData) {
+    private boolean positiveValueWithInStartAndEndTime(Map<String, String> visitData, String key) {
         if (withInStartAndEndTime(visitData)) {
-            if (isCleaned(visitData)) {
+            if (isPositive(visitData, key)) {
                 return true;
             }
         }
         return false;
     }
 
-    private boolean isCleaned(Map<String, String> visitData) {
-        return havePositiveValueWithKey(visitData, Members.PNCVisitKeyValue.Key.IS_CLEANED);
+    private boolean isPositive(Map<String, String> visitData, String key) {
+        return havePositiveValueWithKey(visitData, key);
     }
-
 
 }

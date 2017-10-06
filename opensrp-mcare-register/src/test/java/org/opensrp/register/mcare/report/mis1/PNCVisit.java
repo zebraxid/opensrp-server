@@ -44,6 +44,16 @@ public class PNCVisit {
             return this;
         }
 
+        public PNCVisitBuilder usedChlorhexidin(BooleanAnswer usedChlorhexidin) {
+            visitData.put(Key.USED_CHLORHEXIDIN, usedChlorhexidin.getValueInString());
+            return this;
+        }
+
+        public PNCVisitBuilder fedBreastMilk(BooleanAnswer fedBreastMilk) {
+            visitData.put(Key.BREASMILK_FED, fedBreastMilk.getValueInString());
+            return this;
+        }
+
         public PNCVisit build() {
             PNCVisit ancVisit = new PNCVisit(this);
             this.visitData.clear();

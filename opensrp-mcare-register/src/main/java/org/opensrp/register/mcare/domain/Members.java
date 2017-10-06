@@ -190,6 +190,8 @@ public class Members extends MotechBaseDataObject {
             public final static String VISIT_STATUS = "Visit_Status";
             public final static String HAS_PNC_GIVEN_ON_TIME = "Has_PNC_Given_On_Time";
             public final static String IS_CLEANED = "Is_Cleaned";
+            public final static String USED_CHLORHEXIDIN = "Chlorhexidin";
+            public final static String BREASMILK_FED = "Breasmilk_Fed";
         }
 
         public enum VisitStatus {

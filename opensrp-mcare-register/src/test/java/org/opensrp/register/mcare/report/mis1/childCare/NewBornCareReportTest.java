@@ -33,4 +33,12 @@ public class NewBornCareReportTest {
         long newBornCleanedCount = mis1Report.getChildCareReport().getNewBornCareReportCalculator().getIsCleanedCount();
         assertEquals(newBornCareReportTest.validCount, newBornCleanedCount);
     }
+
+    @Test
+    public void testCountOfUsedChlorhexidinOnPNCVisit() {
+        List<Members> members = newBornCareReportTest.createUseOfChlorhexidinOnPNCVisitTestData();
+        MIS1Report mis1Report = new MIS1Report(unionName, members, startDateTime, endDateTime);
+        long usedChlorhexidinCount = mis1Report.getChildCareReport().getNewBornCareReportCalculator().getUsedChlorhexidinCount();
+        assertEquals(newBornCareReportTest.validCount, usedChlorhexidinCount);
+    }
 }
