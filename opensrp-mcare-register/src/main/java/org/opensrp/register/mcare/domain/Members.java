@@ -4,7 +4,6 @@
 
 package org.opensrp.register.mcare.domain;
 
-import com.sun.javaws.exceptions.InvalidArgumentException;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -472,6 +471,65 @@ public class Members extends MotechBaseDataObject {
                 return this.getValue().toString();
             }
 
+        }
+    }
+
+    public static final class ChildVisitKeyValue {
+        public static final String LIST_SEPARATOR = " ";
+        public static final class Key {
+            public static final String DISEASE_PROBLEM = "Diseases_Prob";
+            public static String VACCINE = "vaccine";
+        }
+
+        private ChildVisitKeyValue() {
+        }
+    }
+
+    public enum DiseaseName {
+        OTHERS(1),
+        PNEUMONIA(2),
+        DIARRHEA(3);
+
+        public int getValue() {
+            return value;
+        }
+
+        public String  getValueAsStr() {
+            return String.valueOf(value);
+        }
+
+        private int value;
+        private static Map<Integer, DiseaseName> map = new HashMap<>();
+
+        static {
+            for(DiseaseName diseaseName : DiseaseName.values()) {
+                map.put(diseaseName.value, diseaseName);
+            }
+        }
+
+        DiseaseName(int value) {
+            this.value = value;
+        }
+
+        public static DiseaseName fromStr(String value) {
+            return fromInt(Integer.parseInt(value.trim()));
+        }
+
+        public static DiseaseName fromInt(int value) {
+            if(map.containsKey(value)) {
+                return map.get(value);
+            }else {
+                throw new IllegalArgumentException();
+            }
+        }
+
+        public static List<DiseaseName> extractDiseaseListFrom(String diseaseStr) {
+            String[] diseases = diseaseStr.split(ChildVisitKeyValue.LIST_SEPARATOR);
+            List<DiseaseName> diseaseList = new ArrayList<>();
+            for (int i = 0; i < diseases.length; i++) {
+                diseaseList.add(DiseaseName.fromStr(diseases[i]));
+            }
+            return diseaseList;
         }
     }
 

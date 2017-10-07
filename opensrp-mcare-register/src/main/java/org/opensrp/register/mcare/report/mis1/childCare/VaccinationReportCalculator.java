@@ -48,8 +48,8 @@ public class VaccinationReportCalculator extends ReportCalculator{
     }
 
     private List<Vaccine> getVaccines(Map<String, String> visit) {
-        if(visit.containsKey(Vaccine.Key)) {
-            String vaccinesStr = visit.get(Vaccine.Key);
+        if(visit.containsKey(Members.ChildVisitKeyValue.Key.VACCINE)) {
+            String vaccinesStr = visit.get(Members.ChildVisitKeyValue.Key.VACCINE);
             return Vaccine.extractVaccinesFromStr(vaccinesStr);
         }else {
             return Collections.EMPTY_LIST;

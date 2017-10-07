@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 public class Vaccine {
-    public static String Key = "vaccine";
     private VaccineName name;
     private VaccineDose dose;
 
@@ -129,7 +128,7 @@ public class Vaccine {
         }
 
         public static List<VaccineDose> extractVaccineDoseListFrom(String ttDoseStr) {
-            String[] ttDoseStrList = ttDoseStr.split(" ");
+            String[] ttDoseStrList = ttDoseStr.split(Members.ChildVisitKeyValue.LIST_SEPARATOR);
             List<VaccineDose> vaccineDoses = new ArrayList<>();
             for (int i = 0; i < ttDoseStrList.length; i++) {
                 vaccineDoses.add(VaccineDose.fromStr(ttDoseStrList[i]));
