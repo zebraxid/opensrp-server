@@ -4,12 +4,11 @@ package org.opensrp.register.mcare.report.mis1.maternityCare;
 import org.opensrp.register.mcare.domain.Members;
 import org.opensrp.register.mcare.report.mis1.ReportCalculator;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import static org.opensrp.register.mcare.domain.Members.EligibleCoupleVisitKeyValue.Key;
-import static org.opensrp.register.mcare.domain.Members.VaccineDose;
+import static org.opensrp.register.mcare.domain.Vaccine.VaccineDose;
 
 public class TTDoseReportCalculator extends ReportCalculator {
     private long doseOneCount = 0;

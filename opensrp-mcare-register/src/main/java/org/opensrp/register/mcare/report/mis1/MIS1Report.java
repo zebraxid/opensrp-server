@@ -1,6 +1,7 @@
 package org.opensrp.register.mcare.report.mis1;
 
 import org.opensrp.register.mcare.domain.Members;
+import org.opensrp.register.mcare.domain.Vaccine;
 import org.opensrp.register.mcare.report.mis1.birthAndDeath.BirthAndDeathReport;
 import org.opensrp.register.mcare.report.mis1.childCare.ChildCareReport;
 import org.opensrp.register.mcare.report.mis1.familyPlanning.FamilyPlanningReport;
@@ -19,7 +20,7 @@ import java.util.List;
  * <br>
  * TODO: <br>
  * 1. Go through the code to understand underlying desing patterns. <br>
- * 2. Don't use raw strings. Update <i>{@link org.opensrp.register.mcare.domain.Members}</i> class with key value. e.g: {@link org.opensrp.register.mcare.domain.Members.VaccineDose}. <br>
+ * 2. Don't use raw strings. Update <i>{@link org.opensrp.register.mcare.domain.Members}</i> class with key value. e.g: {@link Vaccine.VaccineDose}. <br>
  * 3. Some report calculators are done partially e.g:{@link org.opensrp.register.mcare.report.mis1.maternityCare.ANCReportCalculator}. Others calculation can be done in same way. <br>
  * 4. Read description of SRS in alfresco about color code. Color code is not implemented fully.<br>
  * 5. Class diagram is not implemented fully. Members and Methods are not listed.

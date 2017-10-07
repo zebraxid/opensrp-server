@@ -1,15 +1,11 @@
 package org.opensrp.register.mcare.report.mis1.birthAndDeath;
 
 
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import org.opensrp.register.mcare.domain.Members;
 import org.opensrp.register.mcare.report.mis1.ReportCalculator;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 
 public class BirthCountCalculator extends ReportCalculator {

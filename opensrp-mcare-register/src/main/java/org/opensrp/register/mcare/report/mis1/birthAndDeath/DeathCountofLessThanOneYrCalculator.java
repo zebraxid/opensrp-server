@@ -1,7 +1,6 @@
 package org.opensrp.register.mcare.report.mis1.birthAndDeath;
 
 import org.opensrp.register.mcare.domain.Members;
-import org.opensrp.register.mcare.report.mis1.Report;
 import org.opensrp.register.mcare.report.mis1.ReportCalculator;
 
 import java.text.ParseException;

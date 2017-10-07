@@ -198,6 +198,12 @@ public abstract class MIS1TestData {
         throw new IllegalArgumentException();
     }
 
+    protected Members createMemberWithChildVaccine(List<Map<String, String>> maps) {
+       Members member = new Members();
+       member.setchild_vaccine(maps);
+       return member;
+    }
+
     protected Members createMemberWithAdolescentHealthVisits(List<Map<String, String>> adolescentHealthVisits) {
         Members member = new Members();
         member.setadolescent(adolescentHealthVisits);

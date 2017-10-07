@@ -5,6 +5,7 @@ import org.opensrp.register.mcare.report.mis1.Report;
 
 public class ChildCareReport extends Report {
     private NewBornCareReportCalculator newBornCareReportCalculator;
+    private VaccinationReportCalculator vaccinationReportCalculator;
 
     public ChildCareReport(long startDateTime, long endDateTime) {
         super(startDateTime, endDateTime);
@@ -25,4 +26,7 @@ public class ChildCareReport extends Report {
         useReflectionToDynamicallyInitAllMemberOf(this.getClass(), startDateTime, endDateTime);
     }
 
+    public VaccinationReportCalculator getVaccinationReportCalculator() {
+        return vaccinationReportCalculator;
+    }
 }

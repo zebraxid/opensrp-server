@@ -4,8 +4,7 @@
 
 package org.opensrp.register.mcare.domain;
 
-import java.util.*;
-
+import com.sun.javaws.exceptions.InvalidArgumentException;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -14,6 +13,8 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.ektorp.support.TypeDiscriminator;
 import org.motechproject.model.MotechBaseDataObject;
+
+import java.util.*;
 
 import static org.opensrp.common.AllConstants.Form.CLIENT_VERSION;
 
@@ -45,71 +46,15 @@ public class Members extends MotechBaseDataObject {
         }
 
         public static BooleanAnswer fromStr(String value) {
-            if(value == null || value.isEmpty()) {
+            if (value == null || value.isEmpty()) {
                 return INVALID;
-            }else {
+            } else {
                 return fromInt(Integer.parseInt(value));
             }
         }
 
         public static BooleanAnswer fromInt(int value) {
-            if(map.containsKey(value)) {
-                return map.get(value);
-            }
-
-            return INVALID;
-        }
-
-        public Integer getValue() {
-            return this.value;
-        }
-
-        public String getValueInString() {
-            return this.getValue().toString();
-        }
-    }
-
-    public enum VaccineDose {
-        INVALID(-1),
-        ONE(1),
-        TWO(2),
-        THREE(3),
-        FOUR(4),
-        FIVE(5);
-
-        public int value;
-
-        VaccineDose(int value) {
-            this.value = value;
-        }
-
-        private static Map<Integer, VaccineDose> map = new HashMap<Integer, VaccineDose>();
-
-        static {
-            for (VaccineDose vaccineDose : VaccineDose.values()) {
-                map.put(vaccineDose.value, vaccineDose);
-            }
-        }
-
-        public static VaccineDose fromStr(String value) {
-            if(value == null || value.isEmpty()) {
-                return INVALID;
-            }else {
-                return fromInt(Integer.parseInt(value));
-            }
-        }
-
-        public static List<VaccineDose> extractVaccineDoseListFrom(String ttDoseStr) {
-            String[] ttDoseStrList = ttDoseStr.split(" ");
-            List<VaccineDose> vaccineDoses = new ArrayList<>();
-            for (int i = 0; i < ttDoseStrList.length; i++) {
-                vaccineDoses.add(VaccineDose.fromStr(ttDoseStrList[i]));
-            }
-            return vaccineDoses;
-        }
-
-        public static VaccineDose fromInt(int value) {
-            if(map.containsKey(value)) {
+            if (map.containsKey(value)) {
                 return map.get(value);
             }
 
@@ -219,15 +164,15 @@ public class Members extends MotechBaseDataObject {
             }
 
             public static VisitStatus fromStr(String value) {
-                if(value == null || value.isEmpty()) {
+                if (value == null || value.isEmpty()) {
                     return INVALID;
-                }else {
+                } else {
                     return fromInt(Integer.parseInt(value));
                 }
             }
 
             public static VisitStatus fromInt(int value) {
-                if(map.containsKey(value)) {
+                if (map.containsKey(value)) {
                     return map.get(value);
                 }
 
@@ -246,10 +191,9 @@ public class Members extends MotechBaseDataObject {
     }
 
 
-
     public enum DeathSectionQuery {
         INVALID(-1),
-        deathInLessThanSevenDays (1),
+        deathInLessThanSevenDays(1),
         deathInLessThanTwentyEightDays(2),
         deathInLessThanOneYear(3),
         deathInLessThanFiveYear(4),
@@ -272,15 +216,15 @@ public class Members extends MotechBaseDataObject {
         }
 
         public static DeathSectionQuery fromStr(String value) {
-            if(value == null || value.isEmpty()) {
+            if (value == null || value.isEmpty()) {
                 return INVALID;
-            }else {
+            } else {
                 return fromInt(Integer.parseInt(value));
             }
         }
 
         public static DeathSectionQuery fromInt(int value) {
-            if(map.containsKey(value)) {
+            if (map.containsKey(value)) {
                 return map.get(value);
             }
 
@@ -316,7 +260,7 @@ public class Members extends MotechBaseDataObject {
             UPAZILLA_HEALTH_AND_FAMILY_WELFARE_COMPLEX(2),
             UNION_HEALTH_AND_FAMILY_WELFARE_CENTER(3),
             MOTHER_AND_CHILD_WELFARE_CENTER(4),
-             DISTRICT_OR_OTHER_GOVT_HOSPITAL(5),
+            DISTRICT_OR_OTHER_GOVT_HOSPITAL(5),
             NGO_CLINIC_OR_HOSPITAL(6),
             PRIVATE_CLINIC_OR_HOSPITAL(7);
 
@@ -335,15 +279,15 @@ public class Members extends MotechBaseDataObject {
             }
 
             public static DeliveryPlace fromStr(String value) {
-                if(value == null || value.isEmpty()) {
+                if (value == null || value.isEmpty()) {
                     return INVALID;
-                }else {
+                } else {
                     return fromInt(Integer.parseInt(value));
                 }
             }
 
             public static DeliveryPlace fromInt(int value) {
-                if(map.containsKey(value)) {
+                if (map.containsKey(value)) {
                     return map.get(value);
                 }
 
@@ -370,9 +314,9 @@ public class Members extends MotechBaseDataObject {
 
             private Integer value;
 
-             DeliveryBy(Integer value) {
+            DeliveryBy(Integer value) {
 
-                 this.value = value;
+                this.value = value;
             }
 
             private static Map<Integer, DeliveryBy> map = new HashMap<Integer, DeliveryBy>();
@@ -384,15 +328,15 @@ public class Members extends MotechBaseDataObject {
             }
 
             public static DeliveryBy fromStr(String value) {
-                if(value == null || value.isEmpty()) {
+                if (value == null || value.isEmpty()) {
                     return INVALID;
-                }else {
+                } else {
                     return fromInt(Integer.parseInt(value));
                 }
             }
 
             public static DeliveryBy fromInt(int value) {
-                if(map.containsKey(value)) {
+                if (map.containsKey(value)) {
                     return map.get(value);
                 }
 
@@ -409,14 +353,13 @@ public class Members extends MotechBaseDataObject {
         }
 
 
-
         public enum DeliveryType {
             INVALID(-1),
             NORMAL(1),
             CESAREAN(2);
             private Integer value;
 
-             DeliveryType(Integer value) {
+            DeliveryType(Integer value) {
                 this.value = value;
             }
 
@@ -429,15 +372,15 @@ public class Members extends MotechBaseDataObject {
             }
 
             public static DeliveryType fromStr(String value) {
-                if(value == null || value.isEmpty()) {
+                if (value == null || value.isEmpty()) {
                     return INVALID;
-                }else {
+                } else {
                     return fromInt(Integer.parseInt(value));
                 }
             }
 
             public static DeliveryType fromInt(int value) {
-                if(map.containsKey(value)) {
+                if (map.containsKey(value)) {
                     return map.get(value);
                 }
                 return INVALID;
@@ -482,16 +425,16 @@ public class Members extends MotechBaseDataObject {
             }
 
             public static CounsellingType fromStr(String value) {
-                if(value == null || value.isEmpty()) {
+                if (value == null || value.isEmpty()) {
                     return INVALID;
-                }else {
+                } else {
                     return fromInt(Integer.parseInt(value));
                 }
             }
 
             public static List<CounsellingType> extractCounsellingTypeListFrom(String counsellingTypesStr) {
 
-                if(counsellingTypesStr == null) {
+                if (counsellingTypesStr == null) {
                     return Collections.emptyList();
                 }
 
@@ -505,8 +448,8 @@ public class Members extends MotechBaseDataObject {
 
             public static String createValueStringFrom(List<CounsellingType> counsellingTypes) {
                 String counsellingTypeStr = "";
-                for(CounsellingType counsellingType: counsellingTypes) {
-                    if(!counsellingTypeStr.isEmpty()) {
+                for (CounsellingType counsellingType : counsellingTypes) {
+                    if (!counsellingTypeStr.isEmpty()) {
                         counsellingTypeStr += " ";
                     }
                     counsellingTypeStr += counsellingType.getValueInString();
@@ -515,7 +458,7 @@ public class Members extends MotechBaseDataObject {
             }
 
             public static CounsellingType fromInt(int value) {
-                if(map.containsKey(value)) {
+                if (map.containsKey(value)) {
                     return map.get(value);
                 }
                 return INVALID;

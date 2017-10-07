@@ -1,6 +1,7 @@
 package org.opensrp.register.mcare.report.mis1;
 
 import org.opensrp.register.mcare.domain.Members;
+import org.opensrp.register.mcare.domain.Vaccine;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -52,31 +53,31 @@ public class EligibleCoupleFollowUP {
         private String ttDoses = "";
 
         public TTDoseBuilder addDoseOne() {
-            ttDoses += Members.VaccineDose.ONE.getValueInString();
+            ttDoses += Vaccine.VaccineDose.ONE.getValueInString();
             return this;
         }
 
         public TTDoseBuilder addDoseTwo() {
             addSpaceIfNotEmpty();
-            ttDoses += Members.VaccineDose.TWO.getValueInString();
+            ttDoses += Vaccine.VaccineDose.TWO.getValueInString();
             return this;
         }
 
         public TTDoseBuilder addDoseThree() {
             addSpaceIfNotEmpty();
-            ttDoses += Members.VaccineDose.THREE.getValueInString();
+            ttDoses += Vaccine.VaccineDose.THREE.getValueInString();
             return this;
         }
 
         public TTDoseBuilder addDoseFour() {
             addSpaceIfNotEmpty();
-            ttDoses += Members.VaccineDose.FOUR.getValueInString();
+            ttDoses += Vaccine.VaccineDose.FOUR.getValueInString();
             return this;
         }
 
         public TTDoseBuilder addDoseFive() {
             addSpaceIfNotEmpty();
-            ttDoses += Members.VaccineDose.FIVE.getValueInString();
+            ttDoses += Vaccine.VaccineDose.FIVE.getValueInString();
             return this;
         }
 
