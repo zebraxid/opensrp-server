@@ -123,6 +123,7 @@ public class BNFService {
 		}
 
 		mother.bnfVisitDetails().add(bnfVisit);
+		mother.withClientVersion(DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)));
 		mother.withTODAY(submission.getField(REFERENCE_DATE));
 		allMothers.update(mother);
 

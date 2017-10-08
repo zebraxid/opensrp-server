@@ -27,7 +27,7 @@ public class AllActions extends MotechBaseRepository<Action> {
     private static Logger logger = LoggerFactory.getLogger(AllActions.class.toString());
 
     @Autowired
-    protected AllActions(@Qualifier(AllConstants.OPENSRP_DATABASE_CONNECTOR) CouchDbConnector db) {
+    public AllActions(@Qualifier(AllConstants.OPENSRP_DATABASE_CONNECTOR) CouchDbConnector db) {
         super(Action.class, db);
     }
 
@@ -117,5 +117,11 @@ public class AllActions extends MotechBaseRepository<Action> {
             existingAlert.markAsInActive();
         }
         db.executeBulk(existingAlerts);
+    }
+    
+    public List<Action> findByScheduleNameAndIsActive(boolean isActive, String schedule) {
+        ComplexKey startKey = ComplexKey.of(isActive, schedule);
+        ComplexKey endKey = ComplexKey.of(isActive, schedule);
+        return db.queryView(createQuery("action_by_anm_active_scheduleName").startKey(startKey).endKey(endKey).includeDocs(true), Action.class);
     }
 }

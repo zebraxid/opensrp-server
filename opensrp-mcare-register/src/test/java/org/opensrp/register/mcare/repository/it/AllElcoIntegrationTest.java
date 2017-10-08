@@ -22,8 +22,12 @@ import org.opensrp.common.util.DateUtil;
 import org.opensrp.common.util.WeekBoundariesAndTimestamps;
 import org.opensrp.register.mcare.domain.Elco;
 import org.opensrp.register.mcare.domain.HouseHold;
+import org.opensrp.register.mcare.repository.AllChilds;
 import org.opensrp.register.mcare.repository.AllElcos;
 import org.opensrp.register.mcare.repository.AllHouseHolds;
+import org.opensrp.register.mcare.repository.AllMothers;
+import org.opensrp.scheduler.Action;
+import org.opensrp.scheduler.repository.AllActions;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /*@RunWith(SpringJUnit4ClassRunner.class)
@@ -36,6 +40,9 @@ public class AllElcoIntegrationTest {
 	private AllElcos allElcos;
 	private CouchDbInstance dbInstance;
 	private StdCouchDbConnector stdCouchDbConnector;
+	private AllActions allActions;
+	private AllChilds allChilds;
+	private AllMothers allMothers;
 	
     @Before
     public void setUp() throws Exception {
@@ -55,6 +62,9 @@ public class AllElcoIntegrationTest {
 		stdCouchDbConnector.createDatabaseIfNotExists(); 
 		allHouseHolds = new AllHouseHolds(2, stdCouchDbConnector);
 		allElcos = new AllElcos(2, stdCouchDbConnector);
+		allActions = new AllActions(stdCouchDbConnector);
+		allChilds = new AllChilds(2, stdCouchDbConnector);
+		allMothers = new AllMothers(2, stdCouchDbConnector);
     	//initMocks(this);
     }
     @Ignore@Test
@@ -175,7 +185,89 @@ public class AllElcoIntegrationTest {
     	}*/
     }
     
-  @Ignore @Test
+    // data cleaning
+    // woman who has inactive psrf schedule but not in elco so delete them
+    @SuppressWarnings("unused")
+	@Ignore@Test
+    public void shouldRemoveAction(){
+    	
+    	List<Action> actions = allActions.findByScheduleNameAndIsActive(false, "ELCO PSRF");
+    	System.err.println("actions:"+actions.size());
+    	int i=0;
+    	int j=0;
+    	for (Action action : actions) {    		
+    		Elco elco = allElcos.findByCaseId(action.caseId());
+	    		 
+	    		//System.out.println("caseId:"+elco.PSRFDETAILS().size());
+	    		
+	    		//System.out.println("visitNumber:"+visitNumber+"Moterh:"+mother);
+	    		if(elco ==null ){
+	    			j++;
+	    			allActions.remove(action);
+	    		}else{	    			
+	    			if(elco.PSRFDETAILS().isEmpty()){
+	    				i++;
+	    				allActions.remove(action);
+	    			}else{
+	    				//System.err.println("ANC:"+elco);
+	    			}
+    		
+	    		}
+		}
+    	System.err.println("CNT:"+i +"Mj:"+j);
+    	
+    }
+    
+    // delete elco which has no provider
+    @Ignore@Test
+    public void deleteElco(){
+    	// _count need to remove from view
+    	List<Elco> elcos = allElcos.getAll();
+    	int i=0;
+    	int cnt=0;
+    	for (Elco elco : elcos) {
+			if(elco.PROVIDERID()==null){
+				i++;
+				allElcos.remove(elco);
+				/*List<FormSubmission> formSubmissions = allFormSubmissions.findByEntity(elco.caseId());
+    			// mother created from bnf or psrf submission where psrf or bnf valid  but there mother is invalid
+				for (FormSubmission formSubmission : formSubmissions) {
+					allFormSubmissions.remove(formSubmission);
+					System.err.println("FormName:"+formSubmission.formName()+"Provider: "+formSubmission.anmId()+ "      Case:"+formSubmission.entityId());
+				}
+				cnt += allFormSubmissions.findByEntity(elco.caseId()).size();*/
+				
+			}
+			
+		}
+    	System.err.println("Count :"+i+"FORM:"+elcos.size());
+    }
+ 
+ 
+ 
+  @Test
+    public void updateElco(){
+ 	   List<Elco> elcos = allElcos.getAll();
+ 	   for (Elco elco : elcos) {
+ 		  List<Map<String, String>> psrfs = elco.PSRFDETAILS();	 
+ 		 try{
+ 		 for (int j = 0; j < psrfs.size(); j++) { 			  
+ 			psrfs.get(j).put("timeStamp", ""+System.currentTimeMillis());
+ 			psrfs.get(j).put("clientVersion", DateTimeUtil.getTimestampOfADate(elco.TODAY()).toString());
+ 			 
+		  }
+ 		
+ 		  elco.setTimeStamp(DateTimeUtil.getTimestampOfADate(elco.TODAY()));
+ 		  allElcos.update(elco);
+ 		}catch(Exception e){
+ 			System.err.println("MSG:"+e.getMessage());
+ 			System.err.println("Case::"+elco.caseId());
+ 		}
+ 	   }
+ 	   
+    }
+ 
+ /* @Ignore @Test
     public void updateElco(){
  	   List<Elco> elcos = allElcos.getAll();
  	   for (Elco elco : elcos) {
@@ -193,6 +285,6 @@ public class AllElcoIntegrationTest {
  		allElcos.update(elco);
  	   }
  	   
-    }
+    }*/
   
 }

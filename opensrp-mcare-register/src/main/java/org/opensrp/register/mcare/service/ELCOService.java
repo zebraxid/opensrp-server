@@ -199,7 +199,7 @@ public class ELCOService {
 
 			houseHold.details().put(existing_ELCO, submission.getField(existing_ELCO));
 			houseHold.details().put(new_ELCO, submission.getField(new_ELCO));
-			houseHold.setTimeStamp(System.currentTimeMillis());
+			houseHold.withClientVersion(DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)));
 			allHouseHolds.update(houseHold);
 
 			logger.info("Expected value leading non zero and found FWCENSTAT : " + submission.getField("FWCENSTAT"));

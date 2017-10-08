@@ -19,6 +19,7 @@ import org.ektorp.impl.StdObjectMapperFactory;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.opensrp.common.util.DateTimeUtil;
 import org.opensrp.common.util.DateUtil;
 import org.opensrp.common.util.WeekBoundariesAndTimestamps;
 import org.opensrp.register.mcare.domain.HouseHold;
@@ -510,6 +511,30 @@ public class AllHouseHoldsIntegrationTest {
  	   }
  	   
     }
-    
+   // remove hh which has no provider and update setTimeStamp
+   // Data cleaning
+  @Test
+   public void shouldRemoveAndUpdateTimeStampHHWithNoProvider(){
+   	int i=0; // _count need to remove from view
+   	List<HouseHold> households = allHouseHolds.getAll();
+   	for (HouseHold houehold : households) {
+			if(houehold.PROVIDERID()==null){
+				i++;
+				allHouseHolds.remove(houehold);
+				
+			}else{
+				try{
+				houehold.setTimeStamp(DateTimeUtil.getTimestampOfADate(houehold.START()));
+				
+		 		allHouseHolds.update(houehold);
+				}catch(Exception e){
+					System.err.println("MSG:"+e.getMessage());
+					System.err.println("houehold:"+houehold.caseId());
+				}
+			}
+		}
+   	System.err.println("CNT:"+i);
+   }
+   
     
 }
