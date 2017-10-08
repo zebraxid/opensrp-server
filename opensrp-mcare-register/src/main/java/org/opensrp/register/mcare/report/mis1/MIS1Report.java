@@ -6,6 +6,7 @@ import org.opensrp.register.mcare.report.mis1.birthAndDeath.BirthAndDeathReport;
 import org.opensrp.register.mcare.report.mis1.childCare.ChildCareReport;
 import org.opensrp.register.mcare.report.mis1.familyPlanning.FamilyPlanningReport;
 import org.opensrp.register.mcare.report.mis1.maternityCare.MaternityCareReport;
+import org.opensrp.register.mcare.report.mis1.nutrition.NutritionReport;
 
 import java.util.List;
 
@@ -45,6 +46,7 @@ public class MIS1Report {
 
     private BirthAndDeathReport birthAndDeathReport;
     private ChildCareReport childCareReport;
+    private NutritionReport nutritionReport;
 
 
     public MIS1Report(String unionName, List<Members> membersList, long startDateTime, long endDateTime) {
@@ -52,21 +54,22 @@ public class MIS1Report {
         this.membersList = membersList;
         this.familyPlanningReport = new FamilyPlanningReport(startDateTime, endDateTime);
         this.maternityCareReport = new MaternityCareReport(startDateTime, endDateTime);
-       this.birthAndDeathReport = new BirthAndDeathReport(startDateTime, endDateTime);
+        this.birthAndDeathReport = new BirthAndDeathReport(startDateTime, endDateTime);
         this.childCareReport = new ChildCareReport(startDateTime, endDateTime);
+        this.nutritionReport = new NutritionReport(startDateTime, endDateTime);
         this.calculateReport();
     }
 
     public List<Members> getMembersList() {
-		return membersList;
-	}
+        return membersList;
+    }
 
-	public void setMembersList(List<Members> membersList) {
+    public void setMembersList(List<Members> membersList) {
 
         this.membersList = membersList;
-	}
+    }
 
-	public FamilyPlanningReport getFamilyPlanningReport() {
+    public FamilyPlanningReport getFamilyPlanningReport() {
 
         return familyPlanningReport;
     }
@@ -94,8 +97,13 @@ public class MIS1Report {
         for (Members member : membersList) {
             familyPlanningReport.calculate(member);
             maternityCareReport.calculate(member);
-           birthAndDeathReport.calculate(member);
-           childCareReport.calculate(member);
+            birthAndDeathReport.calculate(member);
+            childCareReport.calculate(member);
+            nutritionReport.calculate(member);
         }
+    }
+
+    public NutritionReport getNutritionReport() {
+        return nutritionReport;
     }
 }

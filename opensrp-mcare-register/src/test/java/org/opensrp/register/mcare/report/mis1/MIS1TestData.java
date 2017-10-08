@@ -204,6 +204,13 @@ public abstract class MIS1TestData {
        return member;
     }
 
+    protected Members createMemberWithNutrition(List<Map<String, String>> maps) {
+        Members member = new Members();
+        member.setnutrition(maps);
+        return member;
+    }
+
+
     protected Members createMemberWithAdolescentHealthVisits(List<Map<String, String>> adolescentHealthVisits) {
         Members member = new Members();
         member.setadolescent(adolescentHealthVisits);

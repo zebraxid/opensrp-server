@@ -485,6 +485,115 @@ public class Members extends MotechBaseDataObject {
         }
     }
 
+    public static final class NutritionVisitKeyValue {
+        public static final String LIST_SEPERATOR = " ";
+        public static final class Key {
+            public static final String WOMAN_NUTRITION = "Mother_Nutrition";
+            public static final String DISTRINUTED_NUTRITION = "Distrinuted_Nutrition";
+            public static final String CHILD_NUTRITION = "Child_Nutrition";
+        }
+
+        public enum WomanNutritionService {
+            IRON_AND_FOLIC_ACID_COUNSELLING_OR_DISTRIBUTION(1),
+            COUNSELLING_ON_BREAST_MILK_AND_COMPLEMENTARY_FOOD(2),
+            COUNSELLING_ON_FEEDING_MM(3);
+
+            public int getValue() {
+                return value;
+            }
+
+            public String  getValueAsStr() {
+                return String.valueOf(value);
+            }
+
+            private int value;
+            private static Map<Integer, WomanNutritionService> map = new HashMap<>();
+
+            static {
+                for(WomanNutritionService womanNutritionService : WomanNutritionService.values()) {
+                    map.put(womanNutritionService.value, womanNutritionService);
+                }
+            }
+
+            WomanNutritionService(int value) {
+                this.value = value;
+            }
+
+            public static WomanNutritionService fromStr(String value) {
+                return fromInt(Integer.parseInt(value.trim()));
+            }
+
+            public static WomanNutritionService fromInt(int value) {
+                if(map.containsKey(value)) {
+                    return map.get(value);
+                }else {
+                    throw new IllegalArgumentException();
+                }
+            }
+
+            public static List<WomanNutritionService> extractDiseaseListFrom(String motherNutrtionServiceStr) {
+                String[] diseases = motherNutrtionServiceStr.split(NutritionVisitKeyValue.LIST_SEPERATOR);
+                List<WomanNutritionService> diseaseList = new ArrayList<>();
+                for (int i = 0; i < diseases.length; i++) {
+                    diseaseList.add(WomanNutritionService.fromStr(diseases[i]));
+                }
+                return diseaseList;
+            }
+        }
+
+        public enum ChildNutritionService {
+            FEEDING_BREAST_MILK_WITHIN_ONE_HOUR_OF_BIRTH(1),
+            FEEDING_BREAST_MILK_UNTILL_SIX_MONTH(2),
+            FEEDING_BREAST_MILK_AFTER_SIX_MONTH(3),
+            CONTRACTED_MAM(4),
+            CONTRACTED_SAM(5);
+
+            public int getValue() {
+                return value;
+            }
+
+            public String  getValueAsStr() {
+                return String.valueOf(value);
+            }
+
+            private int value;
+            private static Map<Integer, ChildNutritionService> map = new HashMap<>();
+
+            static {
+                for(ChildNutritionService childNutritionService : ChildNutritionService.values()) {
+                    map.put(childNutritionService.value, childNutritionService);
+                }
+            }
+
+            ChildNutritionService(int value) {
+                this.value = value;
+            }
+
+            public static ChildNutritionService fromStr(String value) {
+                return fromInt(Integer.parseInt(value.trim()));
+            }
+
+            public static ChildNutritionService fromInt(int value) {
+                if(map.containsKey(value)) {
+                    return map.get(value);
+                }else {
+                    throw new IllegalArgumentException();
+                }
+            }
+
+            public static List<ChildNutritionService> extractDiseaseListFrom(String childNutrtionServiceStr) {
+                String[] diseases = childNutrtionServiceStr.split(NutritionVisitKeyValue.LIST_SEPERATOR);
+                List<ChildNutritionService> diseaseList = new ArrayList<>();
+                for (int i = 0; i < diseases.length; i++) {
+                    diseaseList.add(ChildNutritionService.fromStr(diseases[i]));
+                }
+                return diseaseList;
+            }
+        }
+
+
+    }
+
     public enum DiseaseName {
         OTHERS(1),
         PNEUMONIA(2),
