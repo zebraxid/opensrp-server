@@ -10,10 +10,8 @@ import java.util.Map;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.opensrp.common.util.DateUtil;
 import org.opensrp.domain.Client;
 import org.opensrp.service.ClientService;
-import org.opensrp.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,9 +26,6 @@ public class ChildTracker extends DHIS2Service implements DHIS2Tracker {
 	
 	@Autowired
 	private ClientService clientService;
-	
-	@Autowired
-	private EventService eventService;
 	
 	public ChildTracker() {
 		
@@ -52,13 +47,13 @@ public class ChildTracker extends DHIS2Service implements DHIS2Tracker {
 		
 		// firstName
 		generateTrackCaptureData.put(dhis2TrackerService.getTrackCaptureData(clientAsJson, DHIS2Settings.CLIENTIDMAPPING
-		        .get("firstName").toString(), "firstName"));
+		        .get(DHIS2Settings.FIRSTNAME).toString(), DHIS2Settings.FIRSTNAME));
 		// LastName
 		generateTrackCaptureData.put(dhis2TrackerService.getTrackCaptureData(clientAsJson, DHIS2Settings.CLIENTIDMAPPING
-		        .get("lastName").toString(), "lastName"));
+		        .get(DHIS2Settings.LASTNAME).toString(), DHIS2Settings.LASTNAME));
 		//Gender
 		generateTrackCaptureData.put(dhis2TrackerService.getTrackCaptureData(clientAsJson, DHIS2Settings.CLIENTIDMAPPING
-		        .get("gender").toString(), "gender"));
+		        .get(DHIS2Settings.GENDER).toString(), DHIS2Settings.GENDER));
 		//Child_Birth_Certificate
 		generateTrackCaptureData.put(dhis2TrackerService.getTrackCaptureData(attributesAsJson, DHIS2Settings.CLIENTIDMAPPING
 		        .get("Child_Birth_Certificate").toString(), "Child_Birth_Certificate"));
@@ -76,11 +71,11 @@ public class ChildTracker extends DHIS2Service implements DHIS2Tracker {
 		JSONObject motherAsJson = new JSONObject(mother);
 		//Mother/Guardian First Name
 		generateTrackCaptureData.put(dhis2TrackerService.getTrackCaptureData(motherAsJson, DHIS2Settings.CLIENTIDMAPPING
-		        .get("Mother_guardian_First_Name").toString(), "firstName"));
+		        .get("Mother_guardian_First_Name").toString(), DHIS2Settings.FIRSTNAME));
 		
 		// Mother_Guardian_Last_Name
 		generateTrackCaptureData.put(dhis2TrackerService.getTrackCaptureData(motherAsJson, DHIS2Settings.CLIENTIDMAPPING
-		        .get("Mother_Guardian_Last_Name").toString(), "lastName"));
+		        .get("Mother_Guardian_Last_Name").toString(), DHIS2Settings.LASTNAME));
 		
 		// Mother_Guardian birthdate		
 		JSONObject motherbirthDate = new JSONObject();
@@ -100,30 +95,31 @@ public class ChildTracker extends DHIS2Service implements DHIS2Tracker {
 		String orgUnit = "IDc0HEyjhvL";
 		String program = "OprRhyWVIM6";
 		JSONObject clientData = new JSONObject();
-		JSONArray enrollments = new JSONArray();
+		/*JSONArray enrollments = new JSONArray();
 		JSONObject enrollmentsObj = new JSONObject();
-		enrollmentsObj.put("orgUnit", orgUnit);
-		enrollmentsObj.put("program", program);
+		enrollmentsObj.put(DHIS2Settings.ORGUNITKEY, orgUnit);
+		enrollmentsObj.put(DHIS2Settings.PROGRAM, program);
 		enrollmentsObj.put("enrollmentDate", DateUtil.getTodayAsString());
 		enrollmentsObj.put("incidentDate", DateUtil.getTodayAsString());
-		enrollments.put(enrollmentsObj);
+		enrollments.put(enrollmentsObj);*/
 		
 		clientData.put("attributes", attributes);
 		clientData.put("trackedEntity", "MCPQUTHX1Ze");
-		clientData.put("orgUnit", orgUnit);
+		clientData.put(DHIS2Settings.ORGUNITKEY, orgUnit);
 		
 		JSONObject responseTrackEntityInstance = new JSONObject(Dhis2HttpUtils.post(
-		    DHIS2_BASE_URL.replaceAll("\\s+", "") + "trackedEntityInstances", "", clientData.toString(),
-		    DHIS2_USER.replaceAll("\\s+", ""), DHIS2_PWD.replaceAll("\\s+", "")).body());
+		    DHIS2_BASE_URL.replaceAll(DHIS2Settings.REPLACE, "") + "trackedEntityInstances", "", clientData.toString(),
+		    DHIS2_USER.replaceAll(DHIS2Settings.REPLACE, ""), DHIS2_PWD.replaceAll(DHIS2Settings.REPLACE, "")).body());
 		JSONObject trackEntityReference = (JSONObject) responseTrackEntityInstance.get("response");
 		
 		JSONObject enroll = new JSONObject();
 		enroll.put("trackedEntityInstance", trackEntityReference.get("reference"));
-		enroll.put("program", program);
-		enroll.put("orgUnit", orgUnit);
+		enroll.put(DHIS2Settings.PROGRAM, program);
+		enroll.put(DHIS2Settings.ORGUNITKEY, orgUnit);
 		
-		JSONObject response = new JSONObject(Dhis2HttpUtils.post(DHIS2_BASE_URL.replaceAll("\\s+", "") + "enrollments", "",
-		    enroll.toString(), DHIS2_USER.replaceAll("\\s+", ""), DHIS2_PWD.replaceAll("\\s+", "")).body());
+		JSONObject response = new JSONObject(Dhis2HttpUtils.post(
+		    DHIS2_BASE_URL.replaceAll(DHIS2Settings.REPLACE, "") + "enrollments", "", enroll.toString(),
+		    DHIS2_USER.replaceAll(DHIS2Settings.REPLACE, ""), DHIS2_PWD.replaceAll(DHIS2Settings.REPLACE, "")).body());
 		
 		response.put("track", trackEntityReference.get("reference"));
 		

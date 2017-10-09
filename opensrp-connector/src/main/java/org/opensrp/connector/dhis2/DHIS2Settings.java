@@ -55,4 +55,16 @@ public class DHIS2Settings {
 		HOUSEHOLDIDMAPPING.put("registration_Date", "bWoFS5a23fo");
 	}
 	
+	public static String ORGUNITKEY = "orgUnit";
+	
+	public static String PROGRAM = "program";
+	
+	public static String REPLACE = "\\s+";
+	
+	public static String LASTNAME = "lastName";
+	
+	public static String FIRSTNAME = "firstName";
+	
+	public static String GENDER = "gender";
+	
 }
