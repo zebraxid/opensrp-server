@@ -67,4 +67,10 @@ public class DHIS2Settings {
 	
 	public static String GENDER = "gender";
 	
+	public static String ATTRIBUTEKEY = "attribute";
+	
+	public static String ATTRIBUTSEKEY = "attributes";
+	
+	public static String VALUEKEY = "value";
+	
 }

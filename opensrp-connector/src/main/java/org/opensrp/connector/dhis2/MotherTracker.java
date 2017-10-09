@@ -53,13 +53,13 @@ public class MotherTracker extends DHIS2Service implements DHIS2Tracker {
 		        .get(DHIS2Settings.LASTNAME).toString(), DHIS2Settings.LASTNAME));
 		//birthdate		
 		JSONObject birthDate = new JSONObject();
-		birthDate.put("attribute", DHIS2Settings.MOTHERIDMAPPING.get("birthdate").toString());
-		birthDate.put("value", client.getBirthdate());
+		birthDate.put(DHIS2Settings.ATTRIBUTEKEY, DHIS2Settings.MOTHERIDMAPPING.get("birthdate").toString());
+		birthDate.put(DHIS2Settings.VALUEKEY, client.getBirthdate());
 		generateTrackCaptureData.put(birthDate);
 		// registration date
 		JSONObject registrationDate = new JSONObject();
-		registrationDate.put("attribute", DHIS2Settings.MOTHERIDMAPPING.get("registration_Date").toString());
-		registrationDate.put("value", client.getDateCreated());
+		registrationDate.put(DHIS2Settings.ATTRIBUTEKEY, DHIS2Settings.MOTHERIDMAPPING.get("registration_Date").toString());
+		registrationDate.put(DHIS2Settings.VALUEKEY, client.getDateCreated());
 		generateTrackCaptureData.put(registrationDate);
 		
 		// Phone number
@@ -113,7 +113,7 @@ public class MotherTracker extends DHIS2Service implements DHIS2Tracker {
 		    DHIS2Settings.MOTHERIDMAPPING.get("EDD").toString(), "edd"));
 		
 		/****************/
-		clientData.put("attributes", generateTrackCaptureData);
+		clientData.put(DHIS2Settings.ATTRIBUTSEKEY, generateTrackCaptureData);
 		
 		return generateTrackCaptureData;
 	}
@@ -131,7 +131,7 @@ public class MotherTracker extends DHIS2Service implements DHIS2Tracker {
 		enrollmentsObj.put("incidentDate", DateUtil.getTodayAsString());
 		enrollments.put(enrollmentsObj);*/
 		//clientData.put("enrollments", enrollments);
-		clientData.put("attributes", attributes);
+		clientData.put(DHIS2Settings.ATTRIBUTSEKEY, attributes);
 		clientData.put("trackedEntity", "MCPQUTHX1Ze");
 		clientData.put(DHIS2Settings.ORGUNITKEY, orgUnit);
 		

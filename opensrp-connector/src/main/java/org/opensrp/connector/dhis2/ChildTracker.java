@@ -59,8 +59,8 @@ public class ChildTracker extends DHIS2Service implements DHIS2Tracker {
 		        .get("Child_Birth_Certificate").toString(), "Child_Birth_Certificate"));
 		//birthdate		
 		JSONObject data = new JSONObject();
-		data.put("attribute", DHIS2Settings.CLIENTIDMAPPING.get("birthdate").toString());
-		data.put("value", client.getBirthdate());
+		data.put(DHIS2Settings.ATTRIBUTEKEY, DHIS2Settings.CLIENTIDMAPPING.get("birthdate").toString());
+		data.put(DHIS2Settings.VALUEKEY, client.getBirthdate());
 		generateTrackCaptureData.put(data);
 		
 		/**** getting mother info from Client of Mother *******/
@@ -79,13 +79,13 @@ public class ChildTracker extends DHIS2Service implements DHIS2Tracker {
 		
 		// Mother_Guardian birthdate		
 		JSONObject motherbirthDate = new JSONObject();
-		motherbirthDate.put("attribute", DHIS2Settings.CLIENTIDMAPPING.get("Mother_Guardian_DOB").toString());
-		motherbirthDate.put("value", mother.getBirthdate());
+		motherbirthDate.put(DHIS2Settings.ATTRIBUTEKEY, DHIS2Settings.CLIENTIDMAPPING.get("Mother_Guardian_DOB").toString());
+		motherbirthDate.put(DHIS2Settings.VALUEKEY, mother.getBirthdate());
 		generateTrackCaptureData.put(motherbirthDate);
 		
 		/****** getting information from Event *****/
 		
-		clientData.put("attributes", generateTrackCaptureData);
+		clientData.put(DHIS2Settings.ATTRIBUTSEKEY, generateTrackCaptureData);
 		
 		return generateTrackCaptureData;
 	}
@@ -103,7 +103,7 @@ public class ChildTracker extends DHIS2Service implements DHIS2Tracker {
 		enrollmentsObj.put("incidentDate", DateUtil.getTodayAsString());
 		enrollments.put(enrollmentsObj);*/
 		
-		clientData.put("attributes", attributes);
+		clientData.put(DHIS2Settings.ATTRIBUTSEKEY, attributes);
 		clientData.put("trackedEntity", "MCPQUTHX1Ze");
 		clientData.put(DHIS2Settings.ORGUNITKEY, orgUnit);
 		

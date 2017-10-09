@@ -55,8 +55,8 @@ public class HouseholdTracker extends DHIS2Service implements DHIS2Tracker {
 		    DHIS2Settings.HOUSEHOLDIDMAPPING.get("Household_ID").toString(), "householdCode"));
 		//birthdate		
 		JSONObject data = new JSONObject();
-		data.put("attribute", DHIS2Settings.HOUSEHOLDIDMAPPING.get("birthdate").toString());
-		data.put("value", client.getBirthdate());
+		data.put(DHIS2Settings.ATTRIBUTEKEY, DHIS2Settings.HOUSEHOLDIDMAPPING.get("birthdate").toString());
+		data.put(DHIS2Settings.VALUEKEY, client.getBirthdate());
 		generateTrackCaptureData.put(data);
 		
 		/***** get information form Event ******/
@@ -65,7 +65,7 @@ public class HouseholdTracker extends DHIS2Service implements DHIS2Tracker {
 		/**** Member_Registration_No /Date_Of_Reg ***/
 		generateTrackCaptureData.put(dhis2TrackerService.getTrackCaptureDataFromEventByValues(observations,
 		    DHIS2Settings.MOTHERIDMAPPING.get("registration_Date").toString(), "Date_Of_Reg"));
-		clientData.put("attributes", generateTrackCaptureData);
+		clientData.put(DHIS2Settings.ATTRIBUTSEKEY, generateTrackCaptureData);
 		
 		return generateTrackCaptureData;
 	}
@@ -86,7 +86,7 @@ public class HouseholdTracker extends DHIS2Service implements DHIS2Tracker {
 		//enrollments.put(enrollmentsObj);
 		//clientData.put("enrollments", enrollments);
 		
-		clientData.put("attributes", attributes);
+		clientData.put(DHIS2Settings.ATTRIBUTSEKEY, attributes);
 		clientData.put("trackedEntity", "MCPQUTHX1Ze");
 		clientData.put(DHIS2Settings.ORGUNITKEY, orgUnit);
 		
