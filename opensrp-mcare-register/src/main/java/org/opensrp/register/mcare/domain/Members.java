@@ -25,6 +25,13 @@ public class Members extends MotechBaseDataObject {
     public static final String CLIENT_VERSION_KEY = CLIENT_VERSION;
     public static final String Member_Date_Format = "dd/MM/yyyy";
 
+
+    public static class DetailKeyValue {
+        public static class Key {
+            public static final String LAST_CHILD_BIRTH_DAY = "last_child_birth_day";
+        }
+    }
+
     public enum BooleanAnswer {
         INVALID(-1),
         NO(0),
@@ -476,6 +483,7 @@ public class Members extends MotechBaseDataObject {
 
     public static final class ChildVisitKeyValue {
         public static final String LIST_SEPARATOR = " ";
+
         public static final class Key {
             public static final String DISEASE_PROBLEM = "Diseases_Prob";
             public static String VACCINE = "vaccine";
@@ -487,6 +495,7 @@ public class Members extends MotechBaseDataObject {
 
     public static final class NutritionVisitKeyValue {
         public static final String LIST_SEPERATOR = " ";
+
         public static final class Key {
             public static final String WOMAN_NUTRITION = "Mother_Nutrition";
             public static final String DISTRINUTED_NUTRITION = "Distrinuted_Nutrition";
@@ -502,7 +511,7 @@ public class Members extends MotechBaseDataObject {
                 return value;
             }
 
-            public String  getValueAsStr() {
+            public String getValueAsStr() {
                 return String.valueOf(value);
             }
 
@@ -510,7 +519,7 @@ public class Members extends MotechBaseDataObject {
             private static Map<Integer, WomanNutritionService> map = new HashMap<>();
 
             static {
-                for(WomanNutritionService womanNutritionService : WomanNutritionService.values()) {
+                for (WomanNutritionService womanNutritionService : WomanNutritionService.values()) {
                     map.put(womanNutritionService.value, womanNutritionService);
                 }
             }
@@ -524,9 +533,9 @@ public class Members extends MotechBaseDataObject {
             }
 
             public static WomanNutritionService fromInt(int value) {
-                if(map.containsKey(value)) {
+                if (map.containsKey(value)) {
                     return map.get(value);
-                }else {
+                } else {
                     throw new IllegalArgumentException();
                 }
             }
@@ -552,7 +561,7 @@ public class Members extends MotechBaseDataObject {
                 return value;
             }
 
-            public String  getValueAsStr() {
+            public String getValueAsStr() {
                 return String.valueOf(value);
             }
 
@@ -560,7 +569,7 @@ public class Members extends MotechBaseDataObject {
             private static Map<Integer, ChildNutritionService> map = new HashMap<>();
 
             static {
-                for(ChildNutritionService childNutritionService : ChildNutritionService.values()) {
+                for (ChildNutritionService childNutritionService : ChildNutritionService.values()) {
                     map.put(childNutritionService.value, childNutritionService);
                 }
             }
@@ -574,9 +583,9 @@ public class Members extends MotechBaseDataObject {
             }
 
             public static ChildNutritionService fromInt(int value) {
-                if(map.containsKey(value)) {
+                if (map.containsKey(value)) {
                     return map.get(value);
-                }else {
+                } else {
                     throw new IllegalArgumentException();
                 }
             }
@@ -603,7 +612,7 @@ public class Members extends MotechBaseDataObject {
             return value;
         }
 
-        public String  getValueAsStr() {
+        public String getValueAsStr() {
             return String.valueOf(value);
         }
 
@@ -611,7 +620,7 @@ public class Members extends MotechBaseDataObject {
         private static Map<Integer, DiseaseName> map = new HashMap<>();
 
         static {
-            for(DiseaseName diseaseName : DiseaseName.values()) {
+            for (DiseaseName diseaseName : DiseaseName.values()) {
                 map.put(diseaseName.value, diseaseName);
             }
         }
@@ -625,9 +634,9 @@ public class Members extends MotechBaseDataObject {
         }
 
         public static DiseaseName fromInt(int value) {
-            if(map.containsKey(value)) {
+            if (map.containsKey(value)) {
                 return map.get(value);
-            }else {
+            } else {
                 throw new IllegalArgumentException();
             }
         }

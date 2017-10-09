@@ -12,7 +12,8 @@ import static org.junit.Assert.assertEquals;
 
 public class WomanNutritionReportTest {
     public String unionName = "union";
-    private WomanNutritionReportTestData womanNutritionReportTestData;
+    private PregnantWomanNutritionReportTestData pregnantWomanNutritionReportTestData;
+    private MotherNutritionTestData motherNutritionTestData;
     private long startDateTime;
     private long endDateTime;
 
@@ -22,16 +23,28 @@ public class WomanNutritionReportTest {
         int validCount = MIS1TestData.getRandomNumberBetween(0, totalCount);
         startDateTime = MIS1TestData.getRandomNumberBetween(120000, 140000);
         endDateTime = MIS1TestData.getRandomNumberBetween(170000, 200000);
-        womanNutritionReportTestData =
-                new WomanNutritionReportTestData(totalCount, validCount, startDateTime, endDateTime);
+        pregnantWomanNutritionReportTestData =
+                new PregnantWomanNutritionReportTestData(totalCount, validCount, startDateTime, endDateTime);
+        motherNutritionTestData =
+                new MotherNutritionTestData(totalCount,validCount,startDateTime,endDateTime);
     }
 
     @Test
-    public void testCountOfCounsellingOnFolicAcidAndIron() {
-        List<Members> members = womanNutritionReportTestData.createDataForCountOfCounsellingOnFolicAcidAndIron();
+    public void testCountOfCounsellingOnFolicAcidAndIronForPregnantWoman() {
+        List<Members> members = pregnantWomanNutritionReportTestData.createDataForCountOfCounsellingOnFolicAcidAndIronPregnantWoman();
         MIS1Report mis1Report = new MIS1Report(unionName, members, startDateTime, endDateTime);
-        long countOfCounsellingOnFolicAcidAndIron = mis1Report.getNutritionReport().getWomanNutritionCalculator().getCountOfCounsellingOnFolicAcidAndIron();
-        assertEquals(womanNutritionReportTestData.validCount, countOfCounsellingOnFolicAcidAndIron);
+        long countOfCounsellingOnFolicAcidAndIron = mis1Report.getNutritionReport().getWomanNutritionCalculator().getCountOfCounsellingOnFolicAcidAndIronForPregWoman();
+        assertEquals(pregnantWomanNutritionReportTestData.validCount, countOfCounsellingOnFolicAcidAndIron);
+
+    }
+
+    @Test
+    public void testCountOfCounsellingOnFolicAcidAndIronForMother() {
+        List<Members> members = motherNutritionTestData.createDataForCountOfCounsellingOnFolicAcidAndIron();
+        MIS1Report mis1Report = new MIS1Report(unionName, members, startDateTime, endDateTime);
+        long countOfCounsellingOnFolicAcidAndIron = mis1Report.getNutritionReport().getWomanNutritionCalculator().getCountOfCounsellingOnFolicAcidAndIronForMother();
+        System.out.println(motherNutritionTestData.totalCount);
+        assertEquals(motherNutritionTestData.validCount, countOfCounsellingOnFolicAcidAndIron);
 
     }
 
