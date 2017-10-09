@@ -3,10 +3,13 @@ package org.opensrp.connector.dhis2.it;
 import static junit.framework.Assert.assertEquals;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,7 +22,10 @@ import org.opensrp.connector.dhis2.DHIS2SyncerListener;
 import org.opensrp.connector.dhis2.Dhis2HttpUtils;
 import org.opensrp.connector.openmrs.service.TestResourceLoader;
 import org.opensrp.domain.Client;
+import org.opensrp.domain.Event;
+import org.opensrp.domain.Obs;
 import org.opensrp.repository.AllClients;
+import org.opensrp.repository.AllEvents;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -30,6 +36,9 @@ public class DHIS2SyncerListenerTest extends TestResourceLoader {
 	
 	@Autowired
 	private AllClients allClients;
+	
+	@Autowired
+	private AllEvents allEvents;
 	
 	@Autowired
 	private DHIS2SyncerListener dhis2SyncerListener;
@@ -49,23 +58,21 @@ public class DHIS2SyncerListenerTest extends TestResourceLoader {
 	
 	@Test
 	public void testPushToDHIS2() throws JSONException {
-		String baseEntityId = "29";
-		String identifierTypeForChild = "ZEIR_ID";
-		String identifierTypeValue = "159451-37_child";
-		Client client = new Client(baseEntityId).withFirstName("Jared").withGender("male").withLastName("Omwenga")
-		        .withBirthdate(new DateTime(), false);
-		Map<String, String> identifiers = new HashMap<>();
-		identifiers.put(identifierTypeForChild, identifierTypeValue);
-		client.setIdentifiers(identifiers);
+		/** Household ***/
+		String baseEntityId = "130";
+		Client household = (Client) new Client(baseEntityId).withFirstName("pamoom").withGender("female").withLastName("la")
+		        .withBirthdate(new DateTime(), false).withDateCreated(new DateTime());
+		Map<String, Object> householdAttributes = new HashMap<>();
+		householdAttributes.put("householdCode", "34Zoomrttt");
+		household.setAttributes(householdAttributes);
+		allClients.add(household);
 		
-		Map<String, Object> attributes = new HashMap<>();
-		attributes.put("Father_NRC_Number", "34");
-		attributes.put("Child_Register_Card_Number", "24");
-		attributes.put("CHW_Phone_Number", "01284556788");
-		attributes.put("CHW_Name", "Jakly");
-		attributes.put("Child_Birth_Certificate", "344");
-		client.setAttributes(attributes);
-		allClients.add(client);
+		Event householdEvent = new Event(baseEntityId, "Household Registration", new DateTime(0l, DateTimeZone.UTC),
+		        "entityType", "provider", "locationId", "formSubmissionId");
+		List<Obs> householdOservations = new ArrayList<>();
+		householdOservations.add(getObsWithValue("Date_Of_Reg", "21-09-2017"));
+		householdEvent.setObs(householdOservations);
+		allEvents.add(householdEvent);
 		
 		MotechEvent event = new MotechEvent(DHIS2Constants.DHIS2_TRACK_DATA_SYNCER_SUBJECT);
 		JSONObject returns = dhis2SyncerListener.pushToDHIS2(event);
@@ -86,6 +93,32 @@ public class DHIS2SyncerListenerTest extends TestResourceLoader {
 		/*Clening data*/
 		deleteEnrollment(refId);
 		deleteTrackInstances(trackReference);
+	}
+	
+	public Obs getObsWithValue(String fielCode, String value) {
+		Obs obs = new Obs();
+		obs.setFieldCode(fielCode);
+		obs.setFieldDataType("text");
+		obs.setFormSubmissionField(fielCode);
+		
+		List<Object> values = new ArrayList<Object>();
+		values.add(value);
+		obs.setValues(values);
+		
+		return obs;
+		
+	}
+	
+	public Obs getObsWithHumanReadableValue(String fielCode, String value) {
+		Obs obs = new Obs();
+		obs.setFieldCode(fielCode);
+		obs.setFieldDataType("select one");
+		obs.setFormSubmissionField(fielCode);
+		List<Object> humanReadableValues = new ArrayList<Object>();
+		humanReadableValues.add(value);
+		obs.setHumanReadableValues(humanReadableValues);
+		return obs;
+		
 	}
 	
 	public void deleteEnrollment(String id) {

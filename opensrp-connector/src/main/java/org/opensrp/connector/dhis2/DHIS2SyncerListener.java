@@ -26,7 +26,10 @@ public class DHIS2SyncerListener {
 	
 	@Autowired
 	private Dhis2TrackCaptureConnector dhis2TrackCaptureConnector;
+	@Autowired
+	private DHIS2TrackerService dhis2TrackerService;
 	
+	private DHIS2Tracker dhis2Tracker;
 	@Autowired
 	public DHIS2SyncerListener(ClientService clientService) {
 		this.clientService = clientService;
@@ -48,7 +51,8 @@ public class DHIS2SyncerListener {
 			List<Client> cl = clientService.findByServerVersion(start);
 			for (Client c : cl) {
 				try {
-					response = sentTrackCaptureDataToDHIS2(c);
+					response = processTrackerAndSendToDHIS2(c);
+					//response = sentTrackCaptureDataToDHIS2(c);
 				}
 				catch (Exception e) {
 					System.out.println("DHIS2 Message:" + e.getMessage());
@@ -62,6 +66,14 @@ public class DHIS2SyncerListener {
 		return response;
 	}
 	
+public JSONObject processTrackerAndSendToDHIS2(Client client) throws JSONException {
+		
+		dhis2Tracker = dhis2TrackerService.getTrackerType(client);
+		JSONArray clientData = dhis2Tracker.getTrackCaptureData(client);
+		return dhis2Tracker.sendTrackCaptureData(clientData);
+		
+	}
+
 	public JSONObject sentTrackCaptureDataToDHIS2(Client client) throws JSONException {
 		
 		JSONObject clientData = new JSONObject();
