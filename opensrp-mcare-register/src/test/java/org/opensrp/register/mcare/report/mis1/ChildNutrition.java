@@ -14,7 +14,7 @@ public class ChildNutrition {
         return visitData;
     }
 
-    public class ChildNutritionBuilder {
+    public static class ChildNutritionBuilder {
 
         private String visitData;
 
@@ -22,9 +22,9 @@ public class ChildNutrition {
             visitData = "";
         }
 
-        public ChildNutritionBuilder feedingBreastMilkWithInOneHour(ChildNutritionService nutritionService) {
+        public ChildNutritionBuilder service(ChildNutritionService nutritionService) {
             if (nutritionService != null) {
-                addNutritionToExistingList(nutritionService.toString());
+                addNutritionToExistingList(nutritionService.getValueAsStr());
             }
             return this;
         }

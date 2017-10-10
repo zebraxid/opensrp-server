@@ -6,6 +6,7 @@ import org.opensrp.register.mcare.report.mis1.Report;
 public class NutritionReport extends Report {
 
     private WomanNutritionCalculator womanNutritionCalculator;
+    private ChildNutritionCalculator childNutritionCalculator;
 
     public NutritionReport(long startDateTime, long endDateTime) {
         super(startDateTime, endDateTime);
@@ -23,5 +24,9 @@ public class NutritionReport extends Report {
 
     public WomanNutritionCalculator getWomanNutritionCalculator() {
         return womanNutritionCalculator;
+    }
+
+    public ChildNutritionCalculator getChildNutritionCalculator() {
+        return childNutritionCalculator;
     }
 }

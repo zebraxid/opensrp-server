@@ -37,8 +37,8 @@ public class WomanNutritionCalculator extends ReportCalculator {
         for (Map<String, String> nutritionVisit : nutritionVisits) {
             if (withInStartAndEndTime(nutritionVisit)) {
                 String womanNutritionString = getWomanNutritionString(nutritionVisit);
-                List<WomanNutritionService> nutritionServices = WomanNutritionService.extractDiseaseListFrom(womanNutritionString);
-                if (validDiseaseString(womanNutritionString)) {
+                if (validString(womanNutritionString)) {
+                    List<WomanNutritionService> nutritionServices = WomanNutritionService.extractDiseaseListFrom(womanNutritionString);
                     addToPregnantWomanCounts(member, nutritionServices);
                     addToMotherCounts(member, nutritionServices);
                 } ;
@@ -83,11 +83,6 @@ public class WomanNutritionCalculator extends ReportCalculator {
         }
         return "";
     }
-
-    private boolean validDiseaseString(String ttDoses) {
-        return ttDoses != null && !ttDoses.isEmpty();
-    }
-
 
     private void addToCountForPregWoman(List<WomanNutritionService> womanNutritionServices) {
         for (WomanNutritionService womanNutritionService : womanNutritionServices) {

@@ -50,4 +50,11 @@ public abstract class ReportCalculator {
 		}
 		return false;
 	}
+
+
+	protected boolean validString(String ttDoses) {
+		return ttDoses != null && !ttDoses.isEmpty();
+	}
+
+
 }
