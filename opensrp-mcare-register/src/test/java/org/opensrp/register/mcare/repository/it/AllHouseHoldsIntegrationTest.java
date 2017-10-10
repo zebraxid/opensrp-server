@@ -513,7 +513,7 @@ public class AllHouseHoldsIntegrationTest {
     }
    // remove hh which has no provider and update setTimeStamp
    // Data cleaning
-  @Test
+  @Ignore@Test
    public void shouldRemoveAndUpdateTimeStampHHWithNoProvider(){
    	int i=0; // _count need to remove from view
    	List<HouseHold> households = allHouseHolds.getAll();

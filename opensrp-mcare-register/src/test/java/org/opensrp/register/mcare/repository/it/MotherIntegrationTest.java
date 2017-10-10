@@ -72,12 +72,12 @@ public class MotherIntegrationTest {
     }
     
   //Data cleaning
-    @Ignore@Test
+   @Ignore @Test
     public void shouldRemoveAction(){
     	DataExportService dataExportService =  new DataExportService();
     	//Post Natal Care Reminder Visit
     	//Ante Natal Care Reminder Visit
-    	List<Action> actions = allActions.findByScheduleNameAndIsActive(false, "Ante Natal Care Reminder Visit");
+    	List<Action> actions = allActions.findByScheduleNameAndIsActive(false, "Post Natal Care Reminder Visit");
     	System.err.println("actions:"+actions.size());
     	int i=0;
     	int j=0;
@@ -106,7 +106,7 @@ public class MotherIntegrationTest {
     }
     
     // for data cleaning
-    @Ignore@Test
+   @Ignore @Test
     public void shouldRemoveMotherWithNoProvider(){
     	List<Mother> mothers = allMothers.getAll();
     	int i=0;
@@ -130,6 +130,13 @@ public class MotherIntegrationTest {
     			
     			try{
             		Elco elco = allElcos.findByCaseId(mother.getRelationalid());
+            		
+            		mother.details().put("birthDate", elco.FWBIRTHDATE());
+            		 List<Map<String, String>> psrfs =elco.PSRFDETAILS();
+            		 int psrfsCount = psrfs.size()-1;
+            		 Map<String, String> psrf = psrfs.get(psrfsCount);
+            		 mother.details().put("LMP", psrf.get("FWPSRLMP"));
+            		 
             		if(elco !=null){
             			if(elco.FWWOMDISTRICT()!=null){
             				FWWOMDISTRICT = elco.FWWOMDISTRICT();
@@ -144,14 +151,15 @@ public class MotherIntegrationTest {
             			
             		}
             		
-            		if(mother.getFWWOMUNION() ==null){
+            		/*if(mother.getFWWOMUNION() ==null){
         				mother.setFWWOMUNION("");
-        			}
+        			}*/
         			
-            		 List<Map<String, String>> psrfs =mother.bnfVisitDetails();
+            		 List<Map<String, String>> bnfs =mother.bnfVisitDetails();
             	 		
-            		  for (int j = 0; j < psrfs.size(); j++) {
-            			  psrfs.get(i).put("timeStamp", ""+System.currentTimeMillis());
+            		  for (int j = 0; j < bnfs.size(); j++) {
+            			  bnfs.get(i).put("timeStamp", ""+System.currentTimeMillis());
+            			  bnfs.get(i).put("clientVersion", DateTimeUtil.getTimestampOfADate(mother.TODAY()).toString());
             		  }
             		
         			mother.withFWWOMDISTRICT(FWWOMDISTRICT);
@@ -160,6 +168,8 @@ public class MotherIntegrationTest {
             		allMothers.update(mother);
             		
             	}catch(Exception e){
+            		allMothers.remove(mother);
+            		e.printStackTrace();
             		System.out.println("mother:"+e.getMessage());
             		System.out.println("caseId:"+mother.caseId());
             	}
@@ -183,8 +193,69 @@ public class MotherIntegrationTest {
 			psrfs.get(i).put("timeStamp", ""+System.currentTimeMillis());
 			psrfs.get(i).put("clientVersion", DateTimeUtil.getTimestampOfADate(mother.TODAY()).toString());
 		}
- 		 mother.withClientVersion(DateTimeUtil.getTimestampOfADate(mother.TODAY()));
- 		 mother.setTimeStamp(System.currentTimeMillis());
+ 		 
+ 		
+ 		
+ 		//mother.withClientVersion(DateTimeUtil.getTimestampOfADate(mother.TODAY()));
+ 		 //mother.setTimeStamp(System.currentTimeMillis());
+ 		if(mother.TODAY()!=null){
+			mother.withClientVersion(DateTimeUtil.getTimestampOfADate(mother.TODAY()));
+		}else{
+			mother.withClientVersion(0);
+		}
+		if(!mother.ancVisitOne().isEmpty()){
+			mother.ancVisitOne().put("clientVersion", DateTimeUtil.getTimestampOfADate(mother.ancVisitOne().get("today")).toString());
+			mother.ancVisitOne().put("timeStamp", ""+System.currentTimeMillis());
+			
+			
+		}
+		
+		if(!mother.ancVisitTwo().isEmpty()){
+			mother.ancVisitTwo().put("clientVersion", DateTimeUtil.getTimestampOfADate(mother.ancVisitTwo().get("today")).toString());
+			mother.ancVisitTwo().put("timeStamp", ""+System.currentTimeMillis());
+			
+			
+		}
+		
+		if(!mother.ancVisitThree().isEmpty()){
+			mother.ancVisitThree().put("clientVersion", DateTimeUtil.getTimestampOfADate(mother.ancVisitThree().get("today")).toString());
+			mother.ancVisitThree().put("timeStamp", ""+System.currentTimeMillis());
+			
+			
+		}
+
+		if(!mother.ancVisitFour().isEmpty()){
+			mother.ancVisitFour().put("clientVersion", DateTimeUtil.getTimestampOfADate(mother.ancVisitFour().get("today")).toString());
+			mother.ancVisitFour().put("timeStamp", ""+System.currentTimeMillis());
+			
+			
+		}
+		
+		if(!mother.pncVisitOne().isEmpty()){
+			mother.pncVisitOne().put("clientVersion", DateTimeUtil.getTimestampOfADate(mother.pncVisitOne().get("today")).toString());
+			mother.pncVisitOne().put("timeStamp", ""+System.currentTimeMillis());
+			
+			
+		}
+		
+		if(!mother.pncVisitTwo().isEmpty()){
+			mother.pncVisitTwo().put("clientVersion", DateTimeUtil.getTimestampOfADate(mother.pncVisitTwo().get("today")).toString());
+			mother.pncVisitTwo().put("timeStamp", ""+System.currentTimeMillis());
+			
+			
+		}
+		if(!mother.pncVisitThree().isEmpty()){
+			mother.pncVisitThree().put("clientVersion", DateTimeUtil.getTimestampOfADate(mother.pncVisitThree().get("today")).toString());
+			mother.pncVisitTwo().put("timeStamp", ""+System.currentTimeMillis());
+			
+			
+		}
+		 List<Map<String, String>> bnfs =mother.bnfVisitDetails();
+		 for (int j = 0; j < bnfs.size(); j++) {
+			 bnfs.get(j).put("timeStamp", ""+System.currentTimeMillis());
+			 bnfs.get(j).put("clientVersion", DateTimeUtil.getTimestampOfADate(mother.TODAY()).toString());
+			}
+		mother.setTimeStamp(System.currentTimeMillis());
  		 allMothers.update(mother);
  		 
  		}catch(Exception e){
@@ -198,7 +269,7 @@ public class MotherIntegrationTest {
  
   
   
-  @Ignore@Test
+ /* @Ignore@Test
   public void womanUpdate(){
 		List<Mother> mothers = allMothers.getAll();
 		int i =0;
@@ -272,7 +343,7 @@ public class MotherIntegrationTest {
 			
 		}
 		
-	}
+	}*/
   
  @Ignore@Test
  public void deleteUpdateChild(){
@@ -290,7 +361,7 @@ public class MotherIntegrationTest {
 	}
  	
  }
-@Ignore @Test
+ @Ignore @Test
   public void childUpdate(){
 		List<Child> clilds = allChilds.getAll();
 		int i =0;
@@ -298,7 +369,7 @@ public class MotherIntegrationTest {
 			try{
 			Mother mother = allMothers.findByCaseId(child.details().get("relationalid"));
 			if(child.TODAY()!=null){			
-			child.setTimeStamp(DateTimeUtil.getTimestampOfADate(child.TODAY()));
+			child.withClientVersion(DateTimeUtil.getTimestampOfADate(child.TODAY()));
 			}else{
 				child.withClientVersion(0);
 			}
@@ -339,7 +410,7 @@ public class MotherIntegrationTest {
 		}
 		
 	}
-  @Ignore@Test
+  @Test
   public void childENCCUpdate(){
 		List<Child> childs = allChilds.getAll();
 		int i =0;
