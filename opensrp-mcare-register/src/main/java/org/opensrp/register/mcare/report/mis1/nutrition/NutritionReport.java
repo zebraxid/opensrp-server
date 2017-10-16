@@ -15,7 +15,7 @@ public class NutritionReport extends Report {
     @Override
     public void calculate(Members member) {
         useReflectionToDynamicallyCallCalculateMethodOnAllMemberOf(this.getClass(), member);
-    }
+     }
 
     @Override
     protected void initCalculators(long startDateTime, long endDateTime) {

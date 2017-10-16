@@ -1,5 +1,6 @@
 package org.opensrp.register.mcare.report.mis1.familyPlanning.eligibleCoupleCount;
 
+import org.opensrp.connector.DHIS2.dxf2.DHIS2;
 import org.opensrp.register.mcare.domain.Members;
 import org.opensrp.register.mcare.report.mis1.ReportCalculator;
 
@@ -16,6 +17,7 @@ public class EligibleCoupleCountCalculator extends ReportCalculator {
 
 	private int unitTotalEligibleCoupleVisitCount = 0;
 
+	@DHIS2(dataSetId = "dataSet", orgUnit = "org", completeDate = "completeDate", period = "perio", dateElementId = "dataEle", categoryOptionId = "cate")
 	private int totalEligibleCouple = 0;
 
 	public EligibleCoupleCountCalculator(long startDateTime, long endDateTime) {

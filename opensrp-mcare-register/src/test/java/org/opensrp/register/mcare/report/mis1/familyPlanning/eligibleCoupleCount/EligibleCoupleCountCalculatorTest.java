@@ -3,6 +3,7 @@ package org.opensrp.register.mcare.report.mis1.familyPlanning.eligibleCoupleCoun
 
 import org.junit.Before;
 import org.junit.Test;
+import org.opensrp.connector.DHIS2.DHIS2ReportBuilder;
 import org.opensrp.register.mcare.domain.Members;
 import org.opensrp.register.mcare.report.mis1.MIS1Report;
 
@@ -48,13 +49,12 @@ public class EligibleCoupleCountCalculatorTest {
         assertEquals(eligibleCoupleCountTestData.validCount, totalEligibleCoupleCount);
     }
 
-    /*@Test
+    @Test
     public void testTest() {
-        List<Members> members = eligibleCoupleCountTestData.test();
+        List<Members> members = eligibleCoupleCountTestData.getTotalEligibleCoupleData();
         MIS1Report mis1Report = new MIS1Report(unionName, members, startDateTime, endDateTime);
-
-        int totalEligibleCoupleCount = mis1Report.getFamilyPlanningReport().getEligibleCoupleCountCalculator().getTotalEligibleCouple();
-
-        assertEquals(eligibleCoupleCountTestData.validCount, totalEligibleCoupleCount);
-    }*/
+        DHIS2ReportBuilder dhis2ReportBuilder = new DHIS2ReportBuilder();
+        dhis2ReportBuilder.build(mis1Report);
+        System.out.println("here");
+    }
 }
