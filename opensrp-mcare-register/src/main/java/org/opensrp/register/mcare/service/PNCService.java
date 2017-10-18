@@ -218,7 +218,7 @@ public class PNCService {
 					child.details().put(FWBNFDOB, childFields.get(FWBNFDOB));
 					child.details().put(external_user_ID, childFields.get(external_user_ID));
 					child.details().put("referenceDate", referenceDate);
-
+					child.details().put("ward",  mother.getFWWOMWARD());
 					allChilds.update(child);
 					logger.info("FWBNFCHLDVITSTS:" + childFields.get(FWBNFCHLDVITSTS));
 					if (childFields.get(FWBNFCHLDVITSTS).equalsIgnoreCase("0")) {

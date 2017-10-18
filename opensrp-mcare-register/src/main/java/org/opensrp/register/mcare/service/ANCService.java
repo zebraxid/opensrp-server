@@ -144,6 +144,7 @@ import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherSchedule
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import org.joda.time.LocalDate;
@@ -219,7 +220,7 @@ public class ANCService {
 		mother.withJmother_first_name(submission.getField(mother_first_name));
 		mother.withmother_husname(submission.getField(mother_husname));
 
-		addDetailsToMother(submission, mother);
+		addDetailsToMother(submission, mother,lco);
 
 		allMothers.update(mother);
 		
@@ -227,7 +228,7 @@ public class ANCService {
 				submission.getField(MOTHER_REFERENCE_DATE));
 	}
 
-	private void addDetailsToMother(FormSubmission submission, Mother mother) {
+	private void addDetailsToMother(FormSubmission submission, Mother mother,Elco elco) {
 
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date today = Calendar.getInstance().getTime();
@@ -240,6 +241,11 @@ public class ANCService {
 		mother.details().put(FWFLAGVALUE, submission.getField(FWFLAGVALUE));
 		mother.details().put(FWSORTVALUE, submission.getField(FWSORTVALUE));
 		mother.details().put(received_time, format.format(today).toString());
+		mother.details().put("birthDate", elco.FWBIRTHDATE());
+		List<Map<String, String>> psrfs =elco.PSRFDETAILS();
+		int psrfsCount = psrfs.size()-1;
+		Map<String, String> psrf = psrfs.get(psrfsCount);
+		mother.details().put("LMP", psrf.get("FWPSRLMP"));
 	}
 
 	public void ancVisitOne(FormSubmission submission) {

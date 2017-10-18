@@ -72,7 +72,7 @@ public class MotherIntegrationTest {
     }
     
   //Data cleaning
-   @Ignore @Test
+  @Ignore@Test
     public void shouldRemoveAction(){
     	DataExportService dataExportService =  new DataExportService();
     	//Post Natal Care Reminder Visit
@@ -106,7 +106,7 @@ public class MotherIntegrationTest {
     }
     
     // for data cleaning
-   @Ignore @Test
+    @Ignore@Test
     public void shouldRemoveMotherWithNoProvider(){
     	List<Mother> mothers = allMothers.getAll();
     	int i=0;
@@ -156,10 +156,11 @@ public class MotherIntegrationTest {
         			}*/
         			
             		 List<Map<String, String>> bnfs =mother.bnfVisitDetails();
-            	 		
+            	 		System.err.println("bnfs.size():"+bnfs.size());
             		  for (int j = 0; j < bnfs.size(); j++) {
-            			  bnfs.get(i).put("timeStamp", ""+System.currentTimeMillis());
-            			  bnfs.get(i).put("clientVersion", DateTimeUtil.getTimestampOfADate(mother.TODAY()).toString());
+            			  System.err.println(""+i);
+            			  bnfs.get(j).put("timeStamp", ""+System.currentTimeMillis());
+            			  bnfs.get(j).put("clientVersion", DateTimeUtil.getTimestampOfADate(mother.TODAY()).toString());
             		  }
             		
         			mother.withFWWOMDISTRICT(FWWOMDISTRICT);
@@ -183,7 +184,7 @@ public class MotherIntegrationTest {
     
    
     
- @Ignore@Test
+   @Ignore @Test
     public void updateMother(){
  	   List<Mother> mothers = allMothers.getAll();
  	   for (Mother mother : mothers) {
@@ -269,83 +270,9 @@ public class MotherIntegrationTest {
  
   
   
- /* @Ignore@Test
-  public void womanUpdate(){
-		List<Mother> mothers = allMothers.getAll();
-		int i =0;
-		for (Mother mother : mothers) {
-			try{
-			
-			if(mother.TODAY()!=null){
-				mother.withClientVersion(DateTimeUtil.getTimestampOfADate(mother.TODAY()));
-			}else{
-				mother.withClientVersion(0);
-			}
-			if(!mother.ancVisitOne().isEmpty()){
-				mother.ancVisitOne().put("clientVersion", DateTimeUtil.getTimestampOfADate(mother.ancVisitOne().get("today")).toString());
-				mother.ancVisitOne().put("timeStamp", ""+System.currentTimeMillis());
-				
-				
-			}
-			
-			if(!mother.ancVisitTwo().isEmpty()){
-				mother.ancVisitTwo().put("clientVersion", DateTimeUtil.getTimestampOfADate(mother.ancVisitTwo().get("today")).toString());
-				mother.ancVisitTwo().put("timeStamp", ""+System.currentTimeMillis());
-				
-				
-			}
-			
-			if(!mother.ancVisitThree().isEmpty()){
-				mother.ancVisitThree().put("clientVersion", DateTimeUtil.getTimestampOfADate(mother.ancVisitThree().get("today")).toString());
-				mother.ancVisitThree().put("timeStamp", ""+System.currentTimeMillis());
-				
-				
-			}
-
-			if(!mother.ancVisitFour().isEmpty()){
-				mother.ancVisitFour().put("clientVersion", DateTimeUtil.getTimestampOfADate(mother.ancVisitFour().get("today")).toString());
-				mother.ancVisitFour().put("timeStamp", ""+System.currentTimeMillis());
-				
-				
-			}
-			
-			if(!mother.pncVisitOne().isEmpty()){
-				mother.pncVisitOne().put("clientVersion", DateTimeUtil.getTimestampOfADate(mother.pncVisitOne().get("today")).toString());
-				mother.pncVisitOne().put("timeStamp", ""+System.currentTimeMillis());
-				
-				
-			}
-			
-			if(!mother.pncVisitTwo().isEmpty()){
-				mother.pncVisitTwo().put("clientVersion", DateTimeUtil.getTimestampOfADate(mother.pncVisitTwo().get("today")).toString());
-				mother.pncVisitTwo().put("timeStamp", ""+System.currentTimeMillis());
-				
-				
-			}
-			if(!mother.pncVisitThree().isEmpty()){
-				mother.pncVisitThree().put("clientVersion", DateTimeUtil.getTimestampOfADate(mother.pncVisitThree().get("today")).toString());
-				mother.pncVisitTwo().put("timeStamp", ""+System.currentTimeMillis());
-				
-				
-			}
-			 List<Map<String, String>> bnfs =mother.bnfVisitDetails();
-			 for (int j = 0; j < bnfs.size(); j++) {
-				 bnfs.get(j).put("timeStamp", ""+System.currentTimeMillis());
-				 bnfs.get(j).put("clientVersion", DateTimeUtil.getTimestampOfADate(mother.TODAY()).toString());
-				}
-			mother.setTimeStamp(System.currentTimeMillis());
-			
-			allMothers.update(mother);
-			System.err.println("I:"+i+1);
-			}catch(Exception e){
-				e.printStackTrace();
-			}
-			
-		}
-		
-	}*/
+ 
   
- @Ignore@Test
+@Ignore @Test
  public void deleteUpdateChild(){
  	List<Child> childs = allChilds.getAll();
  	for (Child child : childs) {
@@ -400,6 +327,11 @@ public class MotherIntegrationTest {
 			}catch(Exception e){
 				child.withMouzaPara("");
 			}
+			try{
+			child.details().put("ward", mother.getFWWOMWARD());
+			}catch(Exception e){
+				child.details().put("ward", "");
+			}
 			
 			allChilds.update(child);
 			System.err.println("I:"+i+1);
@@ -410,7 +342,7 @@ public class MotherIntegrationTest {
 		}
 		
 	}
-  @Test
+  @Ignore@Test
   public void childENCCUpdate(){
 		List<Child> childs = allChilds.getAll();
 		int i =0;
@@ -455,248 +387,5 @@ public class MotherIntegrationTest {
   
   
     
-    ////////////////////////not necessary////////////////////////////////
-    @Ignore@Test
-    public void motherAddressUpdateTests() throws ParseException{
-    	
-    	List<Mother> mothers = allMothers.getAll();
-    	String FWWOMDISTRICT = "";
-    	String FWWOMUPAZILLA ="";
-    	for (Mother mother : mothers) { 
-        	try{
-        		Elco elco = allElcos.findByCaseId(mother.getRelationalid());
-        		if(elco !=null){
-        			if(elco.FWWOMDISTRICT()!=null){
-        				FWWOMDISTRICT = elco.FWWOMDISTRICT();
-        			}else{
-        				FWWOMDISTRICT = "";
-        			}
-        			if(elco.FWWOMUPAZILLA()!=null ){
-        				FWWOMUPAZILLA =elco.FWWOMUPAZILLA();
-        			}else{
-        				FWWOMUPAZILLA = "";
-        			}
-        			
-        		}/*else{
-        			//allMothers.remove(mother);
-        		}*/
-        		
-        		if(mother.getFWWOMUNION() ==null){
-    				mother.setFWWOMUNION("");
-    			}
-    			
-    			mother.withFWWOMDISTRICT(FWWOMDISTRICT);
-            	mother.withFWWOMUPAZILLA(FWWOMUPAZILLA);
-        		System.out.println("mother:"+mother);
-        		allMothers.update(mother);
-        		
-        	}catch(Exception e){
-        		e.printStackTrace();
-        	}
-		}
-    	
-    	
-    }
-    
-    @Ignore@Test
-    public void updateChild(){
-    	List<Child> childs = allChilds.getAll();
-    	for (Child child : childs) {
-			child.setTimeStamp(System.currentTimeMillis());
-			allChilds.update(child);
-		}
-    	
-    }
-    
-  @Ignore@Test
-    public void updateMothers(){
- 	   List<Mother> mothers = allMothers.getAll();
- 	   for (Mother mother : mothers) {
- 		  List<Map<String, String>> psrfs =mother.bnfVisitDetails();
- 		// mother.bnfVisitDetails().clear();
- 		  for (int i = 0; i < psrfs.size(); i++) {
-			psrfs.get(i).put("timeStamp", ""+System.currentTimeMillis());
-		}
- 		
- 		  mother.setTimeStamp(System.currentTimeMillis());
- 		 allMothers.update(mother);
- 	   }
- 	   
-    }
- 
- 
-  
-  
- @Ignore @Test
-  public void womanUpdates(){
-		List<Mother> mothers = allMothers.getAll();
-		int i =0;
-		for (Mother mother : mothers) {
-			try{
-			
-			if(mother.TODAY()!=null){
-				mother.withClientVersion(DateTimeUtil.getTimestampOfADate(mother.TODAY()));
-			}else{
-				mother.withClientVersion(0);
-			}
-			if(!mother.ancVisitOne().isEmpty()){
-				mother.ancVisitOne().put("clientVersion", DateTimeUtil.getTimestampOfADate(mother.ancVisitOne().get("today")).toString());
-				mother.ancVisitOne().put("timeStamp", ""+System.currentTimeMillis());
-				
-				
-			}
-			
-			if(!mother.ancVisitTwo().isEmpty()){
-				mother.ancVisitTwo().put("clientVersion", DateTimeUtil.getTimestampOfADate(mother.ancVisitTwo().get("today")).toString());
-				mother.ancVisitTwo().put("timeStamp", ""+System.currentTimeMillis());
-				
-				
-			}
-			
-			if(!mother.ancVisitThree().isEmpty()){
-				mother.ancVisitThree().put("clientVersion", DateTimeUtil.getTimestampOfADate(mother.ancVisitThree().get("today")).toString());
-				mother.ancVisitThree().put("timeStamp", ""+System.currentTimeMillis());
-				
-				
-			}
-
-			if(!mother.ancVisitFour().isEmpty()){
-				mother.ancVisitFour().put("clientVersion", DateTimeUtil.getTimestampOfADate(mother.ancVisitFour().get("today")).toString());
-				mother.ancVisitFour().put("timeStamp", ""+System.currentTimeMillis());
-				
-				
-			}
-			
-			if(!mother.pncVisitOne().isEmpty()){
-				mother.pncVisitOne().put("clientVersion", DateTimeUtil.getTimestampOfADate(mother.pncVisitOne().get("today")).toString());
-				mother.pncVisitOne().put("timeStamp", ""+System.currentTimeMillis());
-				
-				
-			}
-			
-			if(!mother.pncVisitTwo().isEmpty()){
-				mother.pncVisitTwo().put("clientVersion", DateTimeUtil.getTimestampOfADate(mother.pncVisitTwo().get("today")).toString());
-				mother.pncVisitTwo().put("timeStamp", ""+System.currentTimeMillis());
-				
-				
-			}
-			if(!mother.pncVisitThree().isEmpty()){
-				mother.pncVisitThree().put("clientVersion", DateTimeUtil.getTimestampOfADate(mother.pncVisitThree().get("today")).toString());
-				mother.pncVisitTwo().put("timeStamp", ""+System.currentTimeMillis());
-				
-				
-			}
-			 List<Map<String, String>> bnfs =mother.bnfVisitDetails();
-			 for (int j = 0; j < bnfs.size(); j++) {
-				 bnfs.get(j).put("timeStamp", ""+System.currentTimeMillis());
-				 bnfs.get(j).put("clientVersion", DateTimeUtil.getTimestampOfADate(mother.TODAY()).toString());
-				}
-			mother.setTimeStamp(System.currentTimeMillis());
-			//mother.withClientVersion(DateTimeUtil.getTimestampOfADate(mother.TODAY()));
-			allMothers.update(mother);
-			System.err.println("I:"+i+1);
-			}catch(Exception e){
-				e.printStackTrace();
-			}
-			
-		}
-		
-	}
-  
-  @Ignore @Test
-  public void childUpdates(){
-		List<Child> clilds = allChilds.getAll();
-		int i =0;
-		for (Child child : clilds) {
-			try{
-			Mother mother = allMothers.findByCaseId(child.details().get("relationalid"));
-			if(child.TODAY()!=null){
-			child.withClientVersion(DateTimeUtil.getTimestampOfADate(child.TODAY()));
-			}else{
-				child.withClientVersion(0);
-			}
-			try{
-				child.withDistrict(mother.FWWOMDISTRICT());
-			}catch(Exception e){
-				child.withDistrict("");
-			}
-			try{
-				child.withUpazilla(mother.FWWOMUPAZILLA());
-			}catch(Exception e){
-				child.withUpazilla("");
-			}
-			
-			try{
-				child.withUnion(mother.getFWWOMUNION());
-			}catch(Exception e){
-				child.withUnion("");
-			}
-			try{
-				child.withUnit(mother.getFWWOMSUBUNIT());
-			}catch(Exception e){
-				child.withUnit("");
-			}
-			
-			try{
-				child.withMouzaPara(mother.getMother_mauza());
-			}catch(Exception e){
-				child.withMouzaPara("");
-			}
-			
-			allChilds.update(child);
-			System.err.println("I:"+i+1);
-			}catch(Exception e){
-				e.printStackTrace();
-			}
-			
-		}
-		
-	}
- @Ignore @Test
-  public void childENCCUpdates(){
-		List<Child> childs = allChilds.getAll();
-		int i =0;
-		for (Child child : childs) {
-			try{
-			
-			if(child.TODAY()!=null){
-				child.withClientVersion(DateTimeUtil.getTimestampOfADate(child.TODAY()));
-			}else{
-				child.withClientVersion(0);
-			}
-			if(!child.enccVisitOne().isEmpty()){
-				child.enccVisitOne().put("clientVersion", DateTimeUtil.getTimestampOfADate(child.enccVisitOne().get("today")).toString());
-				child.enccVisitOne().put("timeStamp", ""+System.currentTimeMillis());
-				
-				
-			}
-			
-			if(!child.enccVisitTwo().isEmpty()){
-				child.enccVisitTwo().put("clientVersion", DateTimeUtil.getTimestampOfADate(child.enccVisitTwo().get("today")).toString());
-				child.enccVisitTwo().put("timeStamp", ""+System.currentTimeMillis());
-				
-				
-			}
-			
-			if(!child.enccVisitThree().isEmpty()){
-				child.enccVisitThree().put("clientVersion", DateTimeUtil.getTimestampOfADate(child.enccVisitThree().get("today")).toString());
-				child.enccVisitThree().put("timeStamp", ""+System.currentTimeMillis());
-				
-				
-			}
-
-			
-			
-			child.setTimeStamp(System.currentTimeMillis());
-			
-			allChilds.update(child);
-			
-			}catch(Exception e){
-				e.printStackTrace();
-			}
-			
-		}
-		
-	}
-  
+   
 }

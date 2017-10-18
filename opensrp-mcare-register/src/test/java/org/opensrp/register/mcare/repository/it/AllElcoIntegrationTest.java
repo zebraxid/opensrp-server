@@ -67,123 +67,9 @@ public class AllElcoIntegrationTest {
 		allMothers = new AllMothers(2, stdCouchDbConnector);
     	//initMocks(this);
     }
-    @Ignore@Test
-    public void hhTest() throws ParseException{
-    	
-    	System.err.println(DateUtil.getCurrentMonthCurrentweek());
-	 
-    	/*Long startTime =DateUtil.getStartTimeStampOfAMonth(3);
-    	ViewResult vr = allElcos.pregnantElcoBetweenTwoDatesAsViewResult(startTime);
-    	System.err.println(allElcos.totalElco());*/
-    	//System.out.println("Start"+allElcos.pregnantElcoBetweenTwoDatesAsViewResult(startTime).size());
-    	//this.convertViewResultToWeekWiseCount(vr);
-    	/*for (ViewResult.Row row : vr.getRows()) {
-    		System.err.println("Row:"+Long.parseLong(row.getValue()));
-    	}*/
-    	//this.convertViewResultToWeekWiseCount(vr);
-    	/*System.err.println("startTime:"+startTime+ " : "+ vr.getRows().size());
-    	Calendar c = Calendar.getInstance();
-		int dayOfTheMonth = c.get(Calendar.DAY_OF_MONTH);
-		System.out.println("dayOfTheMonth:"+dayOfTheMonth);*/
-    }
+   
     
-    private List<Integer> convertViewResultToWeekWiseCount( ViewResult vr){		
-		List<Integer> seperateWeeklyCountDataForRegisterFromViewResult = new ArrayList<>();
-		for (int index = 0; index < 23; index++) {
-			seperateWeeklyCountDataForRegisterFromViewResult.add(index,0);
-		}
-		WeekBoundariesAndTimestamps boundaries = DateUtil.getWeekBoundariesForDashboard();
-    	List<Long> startAndEndOfWeeksAsTimestamp = boundaries.weekBoundariesAsTimeStamp; 
-    	System.err.println("startAndEndOfWeeksAsTimestamp:"+startAndEndOfWeeksAsTimestamp);
-    	int todaysCount=0;
-    	long todayTimeStamp = DateUtil.getTimestampToday() ; 
-    	long oldTimeStamp=0;
-    	int oldPosition=0;
-    	int position = 0;
-    	for (ViewResult.Row row : vr.getRows()) {
-    		String stringValue = row.getValue(); 
-    		long value = Long.parseLong(stringValue);			
-			if(todayTimeStamp==value){
-				todaysCount++;
-			}			
-    		try{ 
-    			if(Long.parseLong(stringValue) == oldTimeStamp){
-    				Integer existingCount = seperateWeeklyCountDataForRegisterFromViewResult.get(oldPosition);
-    				seperateWeeklyCountDataForRegisterFromViewResult.set(oldPosition, existingCount+1);
-    			}else{
-	    			position = DateUtil.binarySearch(Long.parseLong(stringValue), startAndEndOfWeeksAsTimestamp);
-	    			Integer existingCount = seperateWeeklyCountDataForRegisterFromViewResult.get(position);
-	    			seperateWeeklyCountDataForRegisterFromViewResult.set(position, existingCount+1);
-    			}    			
-    			oldTimeStamp = Long.parseLong(stringValue);
-    			oldPosition = position;
-    			   			
-    		}catch(Exception e){
-    			e.printStackTrace();
-    		}
-    	}    	
-    	
-    	for(int monthIndex = 3; monthIndex >= 0; monthIndex--){
-			int month = DateUtil.getMontNumber(monthIndex);    		
-    		if(monthIndex ==3 && month==1 ){
-    			seperateWeeklyCountDataForRegisterFromViewResult.add(4, 0);    			
-    		}else if(monthIndex ==2 && month==1){
-    			seperateWeeklyCountDataForRegisterFromViewResult.add(9, 0);    			
-    		}else if(monthIndex ==1 && month==1){
-    			seperateWeeklyCountDataForRegisterFromViewResult.add(14, 0);    			
-    		}else if(monthIndex ==0 && month==1){
-    			seperateWeeklyCountDataForRegisterFromViewResult.add(19, 0);    			
-    		}else{
-    			
-    		}
-    	}
-    	seperateWeeklyCountDataForRegisterFromViewResult.set(20, todaysCount);
-    	System.out.println(seperateWeeklyCountDataForRegisterFromViewResult.toString());
-		return seperateWeeklyCountDataForRegisterFromViewResult;
-	}
-    
-    @Ignore@Test
-    public void PSRFStatusAddedTest(){
-    	List<Elco> elcos = allElcos.getAll();
-    	System.out.println(elcos.size());
-    	for (Elco elco : elcos) {
-    		if(elco.details().containsKey(FWPSRPREGSTS)){
-        		if(elco.details().get("FWPSRPREGSTS") ==null){
-    			
-    				elco.withFWPSRPREGSTS("");
-	    		}else{
-	    			elco.withFWPSRPREGSTS(elco.details().get("FWPSRPREGSTS"));
-	    		}
-        	}else{
-        		elco.withFWPSRPREGSTS("");
-        	}
-        	try{
-        	allElcos.update(elco);
-        	System.err.println("Updated with id :"+elco.getId());
-        	}catch(Exception e){
-        		e.printStackTrace();
-        	}
-		}
-    	
-    	/*Elco elco = allElcos.get("ffff869e-cda4-488e-b3ce-2ac478edfdd9");
-    	if(elco.details().containsKey(FWPSRPREGSTS)){
-    		if(elco.details().get("FWPSRPREGSTS") ==null){
-    			System.out.println("okkkk");
-    			elco.withFWPSRPREGSTS("");
-    		}else{
-    			elco.withFWPSRPREGSTS(elco.details().get("FWPSRPREGSTS"));
-    		}
-    		
-    	}else{
-    		elco.withFWPSRPREGSTS("");
-    	}
-    	try{
-    	allElcos.update(elco);
-    	System.err.println("Updated with id :"+elco.getId());
-    	}catch(Exception e){
-    		e.printStackTrace();
-    	}*/
-    }
+   
     
     // data cleaning
     // woman who has inactive psrf schedule but not in elco so delete them
@@ -196,11 +82,7 @@ public class AllElcoIntegrationTest {
     	int i=0;
     	int j=0;
     	for (Action action : actions) {    		
-    		Elco elco = allElcos.findByCaseId(action.caseId());
-	    		 
-	    		//System.out.println("caseId:"+elco.PSRFDETAILS().size());
-	    		
-	    		//System.out.println("visitNumber:"+visitNumber+"Moterh:"+mother);
+    		Elco elco = allElcos.findByCaseId(action.caseId());	    		
 	    		if(elco ==null ){
 	    			j++;
 	    			allActions.remove(action);
@@ -209,7 +91,7 @@ public class AllElcoIntegrationTest {
 	    				i++;
 	    				allActions.remove(action);
 	    			}else{
-	    				//System.err.println("ANC:"+elco);
+	    				
 	    			}
     		
 	    		}
@@ -219,8 +101,8 @@ public class AllElcoIntegrationTest {
     }
     
     // delete elco which has no provider
-    @Ignore@Test
-    public void deleteElco(){
+  @Test
+    public void deleteAndUpdateElco(){
     	// _count need to remove from view
     	List<Elco> elcos = allElcos.getAll();
     	int i=0;
@@ -229,62 +111,27 @@ public class AllElcoIntegrationTest {
 			if(elco.PROVIDERID()==null){
 				i++;
 				allElcos.remove(elco);
-				/*List<FormSubmission> formSubmissions = allFormSubmissions.findByEntity(elco.caseId());
-    			// mother created from bnf or psrf submission where psrf or bnf valid  but there mother is invalid
-				for (FormSubmission formSubmission : formSubmissions) {
-					allFormSubmissions.remove(formSubmission);
-					System.err.println("FormName:"+formSubmission.formName()+"Provider: "+formSubmission.anmId()+ "      Case:"+formSubmission.entityId());
-				}
-				cnt += allFormSubmissions.findByEntity(elco.caseId()).size();*/
 				
+			}else{
+				 List<Map<String, String>> psrfs = elco.PSRFDETAILS();					 
+		 		 try{
+		 			 
+		 		 for (int j = 0; j < psrfs.size(); j++) { 			  
+		 			psrfs.get(j).put("timeStamp", ""+System.currentTimeMillis());
+		 			psrfs.get(j).put("clientVersion", DateTimeUtil.getTimestampOfADate(psrfs.get(j).get("today")).toString());
+		 			 
+				  }
+		 		
+		 		  elco.setTimeStamp(DateTimeUtil.getTimestampOfADate(elco.TODAY()));
+		 		  allElcos.update(elco);
+		 		}catch(Exception e){
+		 			System.err.println("MSG:"+e.getMessage());
+		 			System.err.println("Case::"+elco.caseId());
+		 		}
 			}
 			
 		}
     	System.err.println("Count :"+i+"FORM:"+elcos.size());
-    }
- 
- 
- 
-  @Test
-    public void updateElco(){
- 	   List<Elco> elcos = allElcos.getAll();
- 	   for (Elco elco : elcos) {
- 		  List<Map<String, String>> psrfs = elco.PSRFDETAILS();	 
- 		 try{
- 		 for (int j = 0; j < psrfs.size(); j++) { 			  
- 			psrfs.get(j).put("timeStamp", ""+System.currentTimeMillis());
- 			psrfs.get(j).put("clientVersion", DateTimeUtil.getTimestampOfADate(elco.TODAY()).toString());
- 			 
-		  }
- 		
- 		  elco.setTimeStamp(DateTimeUtil.getTimestampOfADate(elco.TODAY()));
- 		  allElcos.update(elco);
- 		}catch(Exception e){
- 			System.err.println("MSG:"+e.getMessage());
- 			System.err.println("Case::"+elco.caseId());
- 		}
- 	   }
- 	   
-    }
- 
- /* @Ignore @Test
-    public void updateElco(){
- 	   List<Elco> elcos = allElcos.getAll();
- 	   for (Elco elco : elcos) {
- 		  List<Map<String, String>> psrfs = elco.PSRFDETAILS();
- 		 
- 		
- 		 for (int j = 0; j < psrfs.size(); j++) { 			  
- 			psrfs.get(j).put("timeStamp", ""+System.currentTimeMillis()); 			 
- 			 
- 			psrfs.get(j).put("clientVersion", DateTimeUtil.getTimestampOfADate(elco.TODAY()).toString());
- 			 
-		  }
- 		
- 		  elco.setTimeStamp(System.currentTimeMillis());
- 		allElcos.update(elco);
- 	   }
- 	   
-    }*/
+    } 
   
 }
