@@ -1,23 +1,23 @@
 package org.opensrp.form.repository;
 
+import java.util.List;
+
 import org.ektorp.ComplexKey;
 import org.ektorp.CouchDbConnector;
 import org.ektorp.ViewQuery;
 import org.ektorp.support.GenerateView;
 import org.ektorp.support.View;
 import org.motechproject.dao.MotechBaseRepository;
+import org.opensrp.common.AllConstants;
 import org.opensrp.form.domain.FormSubmission;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
-import org.opensrp.common.AllConstants;
-
-import java.util.List;
 
 @Repository
 public class AllFormSubmissions extends MotechBaseRepository<FormSubmission> {
     @Autowired
-    protected AllFormSubmissions(@Qualifier(AllConstants.OPENSRP_FORM_DATABASE_CONNECTOR) CouchDbConnector db) {
+    public AllFormSubmissions(@Qualifier(AllConstants.OPENSRP_FORM_DATABASE_CONNECTOR) CouchDbConnector db) {
         super(FormSubmission.class, db);
     }
 
@@ -137,4 +137,14 @@ public class AllFormSubmissions extends MotechBaseRepository<FormSubmission> {
         }
         return db.queryView(query, FormSubmission.class);*/
     }
+	
+	 @View(name = "form_by_entity", map = "function(doc) { if (doc.type === 'FormSubmission' && doc.entityId) { emit(doc.entityId,null ); } }")
+	 public List<FormSubmission> getByEntityId(String entityId){
+		 System.err.println("entityId:"+entityId);
+	    return db.queryView(
+					createQuery("form_by_entity").key(entityId)
+							.includeDocs(true), FormSubmission.class);
+	 }
+	 
+	
 }

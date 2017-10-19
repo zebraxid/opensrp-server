@@ -206,4 +206,11 @@ public class AllHouseHolds extends MotechBaseRepository<HouseHold> {
         ComplexKey endKey = ComplexKey.of(type, Long.MAX_VALUE);
         return db.queryView(createQuery("house_by_client_version").descending(true).key("clientVersion").startKey(startKey).endKey(endKey).includeDocs(true), HouseHold.class);
     }
+    
+    @View(name = "household_by_mouzaPara", map = "function(doc) { if (doc.type === 'HouseHold' && doc.PROVIDERID && doc.FWMAUZA_PARA) { emit(doc.FWMAUZA_PARA,null ); } }")
+    public List<HouseHold> getByMouzaPara(String mouzaPara){
+    	return db.queryView(
+				createQuery("household_by_mouzaPara").key(mouzaPara)
+						.includeDocs(true), HouseHold.class);
+    }
 }
