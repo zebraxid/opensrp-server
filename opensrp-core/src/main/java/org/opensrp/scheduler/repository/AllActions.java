@@ -81,7 +81,7 @@ public class AllActions extends MotechBaseRepository<Action> {
     }
 
     @GenerateView
-    private List<Action> findByCaseID(String caseId) {
+    public List<Action> findByCaseID(String caseId) {
         return queryView("by_caseID", caseId);
     }
 

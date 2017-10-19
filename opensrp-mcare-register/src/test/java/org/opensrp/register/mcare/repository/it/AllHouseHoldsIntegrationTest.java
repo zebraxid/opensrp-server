@@ -26,11 +26,18 @@ import org.junit.Test;
 import org.opensrp.common.util.DateTimeUtil;
 import org.opensrp.common.util.DateUtil;
 import org.opensrp.common.util.WeekBoundariesAndTimestamps;
+import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.form.repository.AllFormSubmissions;
+import org.opensrp.register.mcare.domain.Child;
 import org.opensrp.register.mcare.domain.Elco;
 import org.opensrp.register.mcare.domain.HouseHold;
+import org.opensrp.register.mcare.domain.Mother;
+import org.opensrp.register.mcare.repository.AllChilds;
 import org.opensrp.register.mcare.repository.AllElcos;
 import org.opensrp.register.mcare.repository.AllHouseHolds;
+import org.opensrp.register.mcare.repository.AllMothers;
+import org.opensrp.scheduler.Action;
+import org.opensrp.scheduler.repository.AllActions;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /*@RunWith(SpringJUnit4ClassRunner.class)
@@ -46,6 +53,12 @@ public class AllHouseHoldsIntegrationTest {
 	private StdCouchDbConnector stdCouchDbConnectorForm;
 	@Autowired
 	private AllFormSubmissions allFormSubmissions;
+	@Autowired	
+	private AllMothers allMothers;
+	@Autowired
+	private AllChilds allChilds;
+	@Autowired
+	private AllActions allActions;
     @Before
     public void setUp() throws Exception {
     	//allHouseHolds.removeAll();
@@ -65,6 +78,9 @@ public class AllHouseHoldsIntegrationTest {
 		allHouseHolds = new AllHouseHolds(2, stdCouchDbConnector);
 		allElcos = new AllElcos(2, stdCouchDbConnector);
 		allFormSubmissions = new AllFormSubmissions(stdCouchDbConnectorForm);
+		allMothers = new AllMothers(2, stdCouchDbConnector);
+		allChilds = new AllChilds(2, stdCouchDbConnector);
+		allActions = new AllActions(stdCouchDbConnector);
     	//initMocks(this);
     }
     
@@ -119,6 +135,10 @@ public class AllHouseHoldsIntegrationTest {
 	 for (HouseHold houseHold : households) {	
 		Elco elco = allElcos.findByCaseId(houseHold.caseId());
 		 int size = allFormSubmissions.getByEntityId(houseHold.caseId()).size();
+		 
+         Mother mother = allMothers.findByCaseId("caseId");
+         Child child = allChilds.findByCaseId("caseId");
+         List<Action> actions =  allActions.findByCaseID("caseId");
 		 i = i+size;
 		 System.err.println("size:"+size);
 		System.err.println("Case:"+elco.caseId());
@@ -138,6 +158,12 @@ public class AllHouseHoldsIntegrationTest {
            br = new BufferedReader(new FileReader(csvFile));
            while ((line = br.readLine()) != null) {               
                String[] country = line.split(cvsSplitBy);
+               HouseHold household = allHouseHolds.findByCaseId("caseId");
+               Elco elco = allElcos.findByCaseId("caseId");
+               Mother mother = allMothers.findByCaseId("caseId");
+               Child child = allChilds.findByCaseId("caseId");
+               List<Action> actions =  allActions.findByCaseID("caseId");
+               List<FormSubmission> forms = allFormSubmissions.getByEntityId("");
                System.out.println("Country [code= " + country[4] + " , name=" + country[5] + "]");
 
            }
