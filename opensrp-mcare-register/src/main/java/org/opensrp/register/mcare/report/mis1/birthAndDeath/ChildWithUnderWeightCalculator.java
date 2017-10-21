@@ -27,14 +27,10 @@ public class ChildWithUnderWeightCalculator extends ReportCalculator {
 
     @Override
     public void calculate(Members member) {
-        System.out.println("ChildUnderWeight");
-
         this.totalChildWithUnderWeight += countTotalChildWithUnderWeight(member);
     }
 
     private long countTotalChildWithUnderWeight(Members member) {
-
-        System.out.println("child with under weight");
         Date dooDate = null;
         Date startDate = null;
         Date endDate = null;

@@ -7,9 +7,6 @@ import java.lang.annotation.*;
 @Target(ElementType.FIELD)
 public @interface DHIS2 {
     String dataSetId();
-    String orgUnit();
-    String completeDate();
-    String period();
     String dateElementId();
     String categoryOptionId();
 }

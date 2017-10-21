@@ -36,7 +36,6 @@ public class BirthCountCalculator extends ReportCalculator {
     }
 
     private long addTotalLiveBirthChild(Members member) {
-        System.out.println("total live child");
         Date dooDate = null;
         Date startDate = null;
         Date endDate = null;

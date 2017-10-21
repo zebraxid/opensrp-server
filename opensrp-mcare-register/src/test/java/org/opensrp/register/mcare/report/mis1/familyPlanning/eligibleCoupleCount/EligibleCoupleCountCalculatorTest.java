@@ -1,12 +1,19 @@
 package org.opensrp.register.mcare.report.mis1.familyPlanning.eligibleCoupleCount;
 
 
+import org.joda.time.DateTime;
+import org.json.JSONException;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.opensrp.connector.DHIS2.DHIS2ReportBuilder;
+import org.opensrp.connector.DHIS2.DHIS2Service;
+import org.opensrp.connector.DHIS2.dxf2.DataValue;
+import org.opensrp.connector.DHIS2.dxf2.DataValueSet;
 import org.opensrp.register.mcare.domain.Members;
 import org.opensrp.register.mcare.report.mis1.MIS1Report;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -50,11 +57,18 @@ public class EligibleCoupleCountCalculatorTest {
     }
 
     @Test
-    public void testTest() {
+    public void testTest() throws IOException, JSONException {
+        DateTime period = new DateTime().minusYears(1);
         List<Members> members = eligibleCoupleCountTestData.getTotalEligibleCoupleData();
         MIS1Report mis1Report = new MIS1Report(unionName, members, startDateTime, endDateTime);
-        DHIS2ReportBuilder dhis2ReportBuilder = new DHIS2ReportBuilder();
-        dhis2ReportBuilder.build(mis1Report);
-        System.out.println("here");
+        DHIS2ReportBuilder dhis2ReportBuilder = new DHIS2ReportBuilder("PKTk8zxbl0J", new DateTime(), period);
+        List<DataValueSet> dataValueSets = dhis2ReportBuilder.build(mis1Report);
+        DHIS2Service service = new DHIS2Service("http://123.200.18.20:8080", "dgfp", "Dgfp@123");
+        for(DataValueSet dataValueSet : dataValueSets) {
+            System.out.println(dataValueSet.send(service));
+        }
+
     }
+
+
 }

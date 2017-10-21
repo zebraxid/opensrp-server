@@ -1,11 +1,11 @@
 package org.opensrp.connector.DHIS2;
 
-import java.text.SimpleDateFormat;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 
-@Component
-public abstract class DHIS2Service {
+import java.text.SimpleDateFormat;
+
+
+public class DHIS2Service {
 	@Value("#{opensrp['dhis2.url']}")
 	protected String DHIS2_BASE_URL;
 	
@@ -24,6 +24,15 @@ public abstract class DHIS2Service {
 		DHIS2_PWD = password;
 	}
 
-	
-	
+	public String getDHIS2_BASE_URL() {
+		return DHIS2_BASE_URL;
+	}
+
+	public String getDHIS2_USER() {
+		return DHIS2_USER;
+	}
+
+	public String getDHIS2_PWD() {
+		return DHIS2_PWD;
+	}
 }

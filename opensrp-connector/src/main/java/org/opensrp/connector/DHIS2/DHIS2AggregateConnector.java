@@ -56,7 +56,8 @@ public class DHIS2AggregateConnector extends DHIS2Service {
 	
 	}
 	
-	
+
+
 	public void getAggregatedDataCount() throws JSONException{
 			
 		

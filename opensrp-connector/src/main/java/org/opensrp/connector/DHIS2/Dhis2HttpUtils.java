@@ -1,24 +1,17 @@
 package org.opensrp.connector.DHIS2;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
-
+import com.mysql.jdbc.StringUtils;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.httpclient.HttpStatus;
 import org.opensrp.common.util.HttpResponse;
 import org.opensrp.connector.openmrs.service.TurnOffCertificateValidation;
 import org.springframework.http.HttpMethod;
-import org.springframework.stereotype.Component;
 
-import com.mysql.jdbc.StringUtils;
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
-@Component
+
 public class Dhis2HttpUtils {
 	
 	public Dhis2HttpUtils(){
@@ -56,7 +49,6 @@ public class Dhis2HttpUtils {
 		       while ((output = br.readLine()) != null) {
 		    	   sb.append(output);		        
 		       }
-		       System.out.println(sb.toString());	
 		       return new HttpResponse(con.getResponseCode() == HttpStatus.SC_OK, sb.toString());
 		  	}  catch(FileNotFoundException e){
 	        	return new HttpResponse(true, "");

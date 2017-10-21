@@ -36,7 +36,6 @@ public class PrematureChildCountCalculator extends ReportCalculator {
 
     private long countTotalPrematureChild(Members member){
 
-        System.out.println("total premature child");
         long value = 0;
         if( member.details().get("DOO") != null ){
             String deliveryDateStr = member.details().get("DOO");

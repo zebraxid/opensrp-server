@@ -1,0 +1,211 @@
+{
+  "pager": {
+    "page": 1,
+    "pageCount": 2,
+    "total": 68,
+    "pageSize": 50,
+    "nextPage": "http://123.200.18.20:8080/api/dataElements?page=2"
+  },
+  "dataElements": [
+    {
+      "id": "b6GYG9Io0OK",
+      "displayName": "0-59 months child care"
+    },
+    {
+      "id": "owIgYD4tVO4",
+      "displayName": "Adolencence counsiling"
+    },
+    {
+      "id": "tpA10DvTrwU",
+      "displayName": "ANC_1"
+    },
+    {
+      "id": "tPLjOV0P7vD",
+      "displayName": "ANC_2"
+    },
+    {
+      "id": "Ey7ZhdpGi54",
+      "displayName": "ANC_3"
+    },
+    {
+      "id": "R1nlR3GB5rB",
+      "displayName": "ANC_4"
+    },
+    {
+      "id": "MNe2NbiMPi4",
+      "displayName": "bcg"
+    },
+    {
+      "id": "GTORqGy67Jm",
+      "displayName": "Birht Control Implant"
+    },
+    {
+      "id": "m1KL4jyNQMt",
+      "displayName": "Birth"
+    },
+    {
+      "id": "V6hsObJOf8O",
+      "displayName": "Birth Control IUD"
+    },
+    {
+      "id": "Kt4PihqO6KL",
+      "displayName": "Birth Controll Pill"
+    },
+    {
+      "id": "cZ4qzXVjQPL",
+      "displayName": "Birth Control Permanent Female"
+    },
+    {
+      "id": "SFwYAnTq2cH",
+      "displayName": "Birth Control Permanent Male"
+    },
+    {
+      "id": "bDl4fsu1QIj",
+      "displayName": "Child"
+    },
+    {
+      "id": "PkTanLJAOTR",
+      "displayName": "Child disease"
+    },
+    {
+      "id": "C7dBDNkUwIF",
+      "displayName": "Child vaccination"
+    },
+    {
+      "id": "rQKuOKwecFt",
+      "displayName": "Condom"
+    },
+    {
+      "id": "o8mqI9NQxA5",
+      "displayName": "data"
+    },
+    {
+      "id": "nnbO37HLsTj",
+      "displayName": "Death"
+    },
+    {
+      "id": "CQGKI0K6GaX",
+      "displayName": "Delivery at Home"
+    },
+    {
+      "id": "OcKLDpwC9q3",
+      "displayName": "Delivery at Hospital/Clinic"
+    },
+    {
+      "id": "qQRGs57YZ2z",
+      "displayName": "Eligable Couple"
+    },
+    {
+      "id": "ii7lOGQqEq5",
+      "displayName": "Facility Birth"
+    },
+    {
+      "id": "Z6VfJJiDQS5",
+      "displayName": "Female"
+    },
+    {
+      "id": "AvLCmo5oFmD",
+      "displayName": "HIV Positive"
+    },
+    {
+      "id": "yNWOJ0OOOQD",
+      "displayName": "Home Birth"
+    },
+    {
+      "id": "JIRvFhurcdG",
+      "displayName": "Household"
+    },
+    {
+      "id": "lVz34lbDHdt",
+      "displayName": "HUM"
+    },
+    {
+      "id": "biRKRKOV0Ul",
+      "displayName": "Information of New born"
+    },
+    {
+      "id": "WJQ7zP7o5HU",
+      "displayName": "Injectable"
+    },
+    {
+      "id": "FgGmDsPlrIV",
+      "displayName": "m"
+    },
+    {
+      "id": "vqC0UF1XSWy",
+      "displayName": "Male"
+    },
+    {
+      "id": "j4MrqmQJPVI",
+      "displayName": "male type"
+    },
+    {
+      "id": "Ar5v2MYP3EU",
+      "displayName": "Mother"
+    },
+    {
+      "id": "gxn2uGvFxnj",
+      "displayName": "Number of child vaccine"
+    },
+    {
+      "id": "Y9Its4gY209",
+      "displayName": "Number of complex pregnency"
+    },
+    {
+      "id": "RkOxXkzMxcm",
+      "displayName": "Number of ICP taker"
+    },
+    {
+      "id": "mA2I4ldutAs",
+      "displayName": "Number of Misoprostol pill taker"
+    },
+    {
+      "id": "sMIF1kZ2qi6",
+      "displayName": "Number of Pregnant Women"
+    },
+    {
+      "id": "XYqYdPiapTB",
+      "displayName": "opv_0"
+    },
+    {
+      "id": "ghHOqHNST3Z",
+      "displayName": "opv_1"
+    },
+    {
+      "id": "jY9SUZVxPHZ",
+      "displayName": "opv_2"
+    },
+    {
+      "id": "G31Xpcd32Gd",
+      "displayName": "opv_3"
+    },
+    {
+      "id": "piYwtzhAyFz",
+      "displayName": "opv_4"
+    },
+    {
+      "id": "DF4I78hJCyE",
+      "displayName": "pcv_1"
+    },
+    {
+      "id": "IMh3lVLICJM",
+      "displayName": "pcv_2"
+    },
+    {
+      "id": "hiz7iYmEevj",
+      "displayName": "pcv_3"
+    },
+    {
+      "id": "dYqIehgysyx",
+      "displayName": "penta_1"
+    },
+    {
+      "id": "belqjUALCbL",
+      "displayName": "penta_2"
+    },
+    {
+      "id": "ggbPpWtAWSK",
+      "displayName": "PNC_1"
+    }
+  ]
+}

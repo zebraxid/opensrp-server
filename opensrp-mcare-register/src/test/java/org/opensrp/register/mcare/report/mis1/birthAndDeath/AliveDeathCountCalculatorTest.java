@@ -45,7 +45,6 @@ public class AliveDeathCountCalculatorTest {
         List<Members> members = aliveDeathCountTestData.getChildUnderWeight();
         MIS1Report mis1Report = new MIS1Report(unionName,members, startDateTime, endDateTime);
         long totalChildWithUnderWeight = mis1Report.getBirthAndDeathReport().getTotalChildWithUnderWeight().getTotalChildWithUnderWeight();
-        System.out.println("member size:" + members.size() + " validcount:" + aliveDeathCountTestData.validCount + " totalChildUnderWeight:" + totalChildWithUnderWeight);
         assertEquals(aliveDeathCountTestData.validCount, totalChildWithUnderWeight);
     }
 
@@ -54,7 +53,6 @@ public class AliveDeathCountCalculatorTest {
         List<Members> members = aliveDeathCountTestData.getPrematureChild();
         MIS1Report mis1Report = new MIS1Report(unionName,members, startDateTime, endDateTime);
         long totalPrematureChild = mis1Report.getBirthAndDeathReport().getTotalPrematureChild().getTotalPrematureChild();
-        System.out.println("member size:" + members.size() + " validcount:" + aliveDeathCountTestData.validCount + " totalPrematureChild:" + totalPrematureChild);
         assertEquals(aliveDeathCountTestData.validCount, totalPrematureChild);
     }
 
