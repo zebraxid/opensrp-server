@@ -440,7 +440,7 @@ public class Members extends MotechBaseDataObject {
 
             public static List<CounsellingType> extractCounsellingTypeListFrom(String counsellingTypesStr) {
 
-                if (counsellingTypesStr == null) {
+                if (counsellingTypesStr == null || counsellingTypesStr.isEmpty()) {
                     return Collections.emptyList();
                 }
 
@@ -540,7 +540,10 @@ public class Members extends MotechBaseDataObject {
                 }
             }
 
-            public static List<WomanNutritionService> extractDiseaseListFrom(String motherNutrtionServiceStr) {
+            public static List<WomanNutritionService> extractNutritionListFrom(String motherNutrtionServiceStr) {
+                if(motherNutrtionServiceStr == null || motherNutrtionServiceStr.isEmpty()) {
+                    return Collections.EMPTY_LIST;
+                }
                 String[] diseases = motherNutrtionServiceStr.split(NutritionVisitKeyValue.LIST_SEPERATOR);
                 List<WomanNutritionService> diseaseList = new ArrayList<>();
                 for (int i = 0; i < diseases.length; i++) {
@@ -591,6 +594,9 @@ public class Members extends MotechBaseDataObject {
             }
 
             public static List<ChildNutritionService> extractDiseaseListFrom(String childNutrtionServiceStr) {
+                if(childNutrtionServiceStr == null || childNutrtionServiceStr.isEmpty()) {
+                    return Collections.EMPTY_LIST;
+                }
                 String[] diseases = childNutrtionServiceStr.split(NutritionVisitKeyValue.LIST_SEPERATOR);
                 List<ChildNutritionService> diseaseList = new ArrayList<>();
                 for (int i = 0; i < diseases.length; i++) {

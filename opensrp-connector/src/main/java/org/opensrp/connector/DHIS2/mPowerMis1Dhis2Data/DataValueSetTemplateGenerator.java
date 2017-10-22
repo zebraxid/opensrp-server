@@ -6,7 +6,6 @@ import org.apache.commons.httpclient.HttpStatus;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.opensrp.common.util.HttpResponse;
-import org.opensrp.connector.DHIS2.dxf2.DHIS2;
 import org.springframework.http.HttpMethod;
 
 import java.io.BufferedReader;
@@ -18,9 +17,10 @@ import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.*;
-
-import static java.util.Arrays.asList;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 //Z5WPr2zconV
 public class DataValueSetTemplateGenerator {
