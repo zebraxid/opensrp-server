@@ -22,7 +22,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-//Z5WPr2zconV
+/**
+ * This class create appropriate DHIS2 annotation with display name of data element and category option.
+ * Add the data sets in dataSetTemplate.json in same folder.
+ * Set the url and other information below
+ * Run main.
+ *
+ * e.g:
+ *  annotation example : @DHIS2(dateElementId="qQRGs57YZ2z",categoryOptionId="DHJ5tZVSSsl", dataSetId = "Z5WPr2zconV")
+ *  category option list api example: http://123.200.18.20:8080/api/categoryOptionCombos.json?page=1
+    data element list api example: http://123.200.18.20:8080/api/dataElements.json?page=1
+
+ */
 public class DataValueSetTemplateGenerator {
     private static String DATA_SET_TEMPLATE_PATH = "/home/habib/Music/projets/dgfp/opensrp-server/opensrp-connector/src/main/java/org/opensrp/connector/DHIS2/mPowerMis1Dhis2Data/dataSetTemplate.json";
 
@@ -42,10 +53,7 @@ public class DataValueSetTemplateGenerator {
         System.out.println("in main");
     }
 
-    //@DHIS2(dateElementId="qQRGs57YZ2z",categoryOptionId="DHJ5tZVSSsl", dataSetId = "Z5WPr2zconV")
     private static void createAnnotationTemplate() {
-//        Template template1 = new Template("dE", "cat", "dn", "cn");
-//        dataSetTemplateMap.put("ds", asList(template1));
         String stringBuilder = "";
         for(Map.Entry dataSetTemplate : dataSetTemplateMap.entrySet()) {
             List<Template> templates = (List) dataSetTemplate.getValue();
@@ -66,14 +74,13 @@ public class DataValueSetTemplateGenerator {
         }
     }
 
-    //http://123.200.18.20:8080/api/categoryOptionCombos.json?page=1
-    //http://123.200.18.20:8080/api/dataElements.json?page=1
+
     private static void getAllDataValues() throws IOException {
-        int totalPages = 2;
+        int totalPages = 0;
         int currentPage = 1;
         String url = BASE_URL + "/api" + "/dataElements.json?page=" + currentPage;
         JsonNode jsonNode = getCall(url, USER_NAME, PASSWORD);
-       // totalPages = jsonNode.get("pager").get("total").getIntValue();
+        totalPages = jsonNode.get("pager").get("total").getIntValue();
         JsonNode dataElements = jsonNode.get("dataElements");
         getDataValues(dataElements);
         currentPage++;
