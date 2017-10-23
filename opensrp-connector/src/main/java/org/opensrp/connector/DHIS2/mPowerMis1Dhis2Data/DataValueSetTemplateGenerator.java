@@ -29,7 +29,7 @@ import java.util.Map;
  * Run main.
  *
  * e.g:
- *  annotation example : @DHIS2(dateElementId="qQRGs57YZ2z",categoryOptionId="DHJ5tZVSSsl", dataSetId = "Z5WPr2zconV")
+ *  annotation template(printed string) example : eligibleCouble totalS @DHIS2(dateElementId="qQRGs57YZ2z",categoryOptionId="DHJ5tZVSSsl", dataSetId = "Z5WPr2zconV")
  *  category option list api example: http://123.200.18.20:8080/api/categoryOptionCombos.json?page=1
     data element list api example: http://123.200.18.20:8080/api/dataElements.json?page=1
 
