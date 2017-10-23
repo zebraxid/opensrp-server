@@ -30,7 +30,7 @@ public class VaccineCountTest {
     public void testCountOfBCGCount() {
         List<Members> members = vaccineCountTestData.createBCGVaccineTestDate();
         MIS1Report mis1Report = new MIS1Report(unionName, members, startDateTime, endDateTime);
-        long countOfBcg = mis1Report.getChildCareReport().getVaccinationReportCalculator().getBCGCount();
+        long countOfBcg = mis1Report.getChildCareReport().getVaccinationReportCalculator().getBcgCount();
         assertEquals(vaccineCountTestData.validCount, countOfBcg);
     }
 }

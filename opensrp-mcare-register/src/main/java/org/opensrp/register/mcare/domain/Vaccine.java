@@ -71,7 +71,10 @@ public class Vaccine {
     public enum VaccineName {
         BCG("bcg"),
         PENTA("penta"),
-        TT("tt");
+        TT("tt"),
+        OPV("opv"),
+        PCV("pcv");
+
         private String value;
         private static final Map<String , VaccineName> map = new HashMap();
 

@@ -8,23 +8,59 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import static java.util.Arrays.asList;
+
 public class VaccinationReportCalculator extends ReportCalculator{
     private long bcgCount = 0;
+    private long opv1Andpcv1Andpenta1Count = 0;
+    private long opv2Andpcv2Andpenta2Count = 0;
+    private long opv3Andpenta3Count = 0;
+    private long pcv3Count = 0;
 
     public VaccinationReportCalculator(long startDateTime, long endDateTime) {
         super(startDateTime, endDateTime);
     }
 
-    public long getBCGCount() {
+    public long getBcgCount() {
         return bcgCount;
     }
 
+    public long getOpv1Andpcv1Andpenta1Count() {
+        return opv1Andpcv1Andpenta1Count;
+    }
+
+    public long getOpv2Andpcv2Andpenta2Count() {
+        return opv2Andpcv2Andpenta2Count;
+    }
+
+    public long getOpv3Andpenta3Count() {
+        return opv3Andpenta3Count;
+    }
+
+    public long getPcv3Count() {
+        return pcv3Count;
+    }
 
     @Override
     public void calculate(Members member) {
         List<Vaccine> givenVaccines = getGivenVaccines(member);
         Vaccine bcg = new Vaccine(Vaccine.VaccineName.BCG, null);
+        Vaccine pcv1 = new Vaccine(Vaccine.VaccineName.PCV, Vaccine.VaccineDose.ONE);
+        Vaccine pcv2 = new Vaccine(Vaccine.VaccineName.PCV, Vaccine.VaccineDose.TWO);
+        Vaccine pcv3 = new Vaccine(Vaccine.VaccineName.PCV, Vaccine.VaccineDose.THREE);
+        Vaccine opv1 = new Vaccine(Vaccine.VaccineName.OPV, Vaccine.VaccineDose.ONE);
+        Vaccine opv2 = new Vaccine(Vaccine.VaccineName.OPV, Vaccine.VaccineDose.TWO);
+        Vaccine opv3 = new Vaccine(Vaccine.VaccineName.OPV, Vaccine.VaccineDose.THREE);
+        Vaccine penta1 = new Vaccine(Vaccine.VaccineName.PENTA, Vaccine.VaccineDose.ONE);
+        Vaccine penta2 = new Vaccine(Vaccine.VaccineName.PENTA, Vaccine.VaccineDose.TWO);
+        Vaccine penta3 = new Vaccine(Vaccine.VaccineName.PENTA, Vaccine.VaccineDose.THREE);
+
+
         this.bcgCount += vaccineGiven(givenVaccines, bcg);
+        this.opv1Andpcv1Andpenta1Count += vaccineGiven(givenVaccines, asList(opv1, pcv1, penta1));
+        this.opv2Andpcv2Andpenta2Count += vaccineGiven(givenVaccines, asList(opv2, pcv2, penta2));
+        this.opv3Andpenta3Count += vaccineGiven(givenVaccines, asList(opv3, penta3));
+        this.pcv3Count += vaccineGiven(givenVaccines, pcv3);
     }
 
 
@@ -42,6 +78,13 @@ public class VaccinationReportCalculator extends ReportCalculator{
 
     private long vaccineGiven(List<Vaccine> givenVaccines, Vaccine vaccine) {
         if(givenVaccines.contains(vaccine)) {
+            return 1;
+        }
+        return 0;
+    }
+
+    private long vaccineGiven(List<Vaccine> givenVaccines, List<Vaccine> vaccine) {
+        if(givenVaccines.containsAll(vaccine)) {
             return 1;
         }
         return 0;

@@ -10,6 +10,8 @@ import java.util.Map;
 public class DiseaseReportCalculator extends ReportCalculator{
 
     private long veryDangerousDiseasesCount = 0;
+    private long pneumoniaCount = 0;
+    private long diarrheaCount = 0;
 
     public DiseaseReportCalculator(long startDateTime, long endDateTime) {
         super(startDateTime, endDateTime);
@@ -17,6 +19,14 @@ public class DiseaseReportCalculator extends ReportCalculator{
 
     public long getVeryDangerousDiseasesCount() {
         return veryDangerousDiseasesCount;
+    }
+
+    public long getPneumoniaCount() {
+        return pneumoniaCount;
+    }
+
+    public long getDiarrheaCount() {
+        return diarrheaCount;
     }
 
     @Override
@@ -51,6 +61,11 @@ public class DiseaseReportCalculator extends ReportCalculator{
             switch (diseaseName) {
                 case OTHERS:
                     veryDangerousDiseasesCount ++;
+                    break;
+                case PNEUMONIA:
+                    pneumoniaCount++;
+                case DIARRHEA:
+                    diarrheaCount++;
                     break;
             }
         }
