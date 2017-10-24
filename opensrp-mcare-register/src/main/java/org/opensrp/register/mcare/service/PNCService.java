@@ -232,7 +232,7 @@ public class PNCService {
 					} else {
 						// user type conditions
 						if(submission.getField("user_type").equalsIgnoreCase(FD)){
-							childSchedulesService.enrollENCCForChild(childFields.get(ID), LocalDate.parse(referenceDate));
+							childSchedulesService.enrollENCCForChild(childFields.get(ID),submission.instanceId(),submission.anmId(), LocalDate.parse(referenceDate),referenceDate);
 						}
 					}
 				}
