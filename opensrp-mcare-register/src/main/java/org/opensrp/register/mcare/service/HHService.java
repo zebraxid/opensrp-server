@@ -84,8 +84,8 @@ public class HHService {
 		houseHold.setTimeStamp(System.currentTimeMillis());
 		allHouseHolds.update(houseHold);			
 		
-		hhSchedulesService.enrollIntoMilestoneOfCensus(submission.entityId(),
-				submission.getField(FWNHREGDATE),submission.anmId(),submission.instanceId());
+		/*hhSchedulesService.enrollIntoMilestoneOfCensus(submission.entityId(),
+				submission.getField(FWNHREGDATE),submission.anmId(),submission.instanceId());*/
 		elcoService.registerELCO(submission);
 	}
 	

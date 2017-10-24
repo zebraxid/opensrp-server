@@ -1,5 +1,6 @@
 /**
  * @author julkar nain 
+  @author proshanto
  */
 package org.opensrp.register.mcare.service;
 
@@ -149,6 +150,7 @@ import java.util.Map;
 
 import org.joda.time.LocalDate;
 import org.opensrp.common.AllConstants;
+import org.opensrp.common.ErrorDocType;
 import org.opensrp.common.util.DateTimeUtil;
 import org.opensrp.common.util.DateUtil;
 import org.opensrp.form.domain.FormSubmission;
@@ -160,6 +162,7 @@ import org.opensrp.register.mcare.service.scheduling.ANCSchedulesService;
 import org.opensrp.register.mcare.service.scheduling.BNFSchedulesService;
 import org.opensrp.register.mcare.service.scheduling.ScheduleLogService;
 import org.opensrp.scheduler.service.ActionService;
+import org.opensrp.service.ErrorTraceService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -176,10 +179,10 @@ public class ANCService {
 	private ScheduleLogService scheduleLogService;
 	private BNFSchedulesService bnfSchedulesService;
 	private PNCService pncService;
-
+	private ErrorTraceService errorTraceService;
 	@Autowired
 	public ANCService(AllElcos allElcos, AllMothers allMothers, ANCSchedulesService ancSchedulesService, ActionService actionService,
-			ScheduleLogService scheduleLogService, BNFSchedulesService bnfSchedulesService, PNCService pncService) {
+			ScheduleLogService scheduleLogService, BNFSchedulesService bnfSchedulesService, PNCService pncService,ErrorTraceService errorTraceService) {
 		this.allElcos = allElcos;
 		this.allMothers = allMothers;
 		this.ancSchedulesService = ancSchedulesService;
@@ -187,6 +190,7 @@ public class ANCService {
 		this.scheduleLogService = scheduleLogService;
 		this.bnfSchedulesService = bnfSchedulesService;
 		this.pncService = pncService;
+		this.errorTraceService = errorTraceService;	
 	}
 
 	public void registerANC(FormSubmission submission) {
@@ -195,6 +199,8 @@ public class ANCService {
 
 		Mother mother = allMothers.findByCaseId(motherId);
 		if (!allElcos.exists(submission.entityId())) {
+			errorTraceService.save(ErrorDocType.PSRF.name(),format("Found mother without registered eligible couple. Ignoring: {0} for mother with id: {1} for ANM: {2}", submission.entityId(),
+					motherId, submission.anmId()),submission.getInstanceId());
 			logger.warn(format("Found mother without registered eligible couple. Ignoring: {0} for mother with id: {1} for ANM: {2}", submission.entityId(),
 					motherId, submission.anmId()));
 			return;
@@ -242,6 +248,7 @@ public class ANCService {
 		mother.details().put(FWSORTVALUE, submission.getField(FWSORTVALUE));
 		mother.details().put(received_time, format.format(today).toString());
 		mother.details().put("birthDate", elco.FWBIRTHDATE());
+		mother.details().put("division", elco.FWWOMDIVISION());
 		List<Map<String, String>> psrfs =elco.PSRFDETAILS();
 		int psrfsCount = psrfs.size()-1;
 		Map<String, String> psrf = psrfs.get(psrfsCount);
@@ -252,6 +259,7 @@ public class ANCService {
 		Mother mother = allMothers.findByCaseId(submission.entityId());
 
 		if (mother == null) {
+			errorTraceService.save(ErrorDocType.ANC.name(),format("Failed to handle ANC-1 as there is no Mother enroll with ID: {0}", submission.entityId()),submission.getInstanceId());
 			logger.warn(format("Failed to handle ANC-1 as there is no Mother enroll with ID: {0}", submission.entityId()));
 			return;
 		}
@@ -309,6 +317,7 @@ public class ANCService {
 		Mother mother = allMothers.findByCaseId(submission.entityId());
 
 		if (mother == null) {
+			errorTraceService.save(ErrorDocType.ANC.name(),format("Failed to handle ANC-2 as there is no Mother enroll with ID: {0}", submission.entityId()),submission.getInstanceId());
 			logger.warn(format("Failed to handle ANC-2 as there is no Mother enroll with ID: {0}", submission.entityId()));
 			return;
 		}
@@ -366,6 +375,7 @@ public class ANCService {
 		Mother mother = allMothers.findByCaseId(submission.entityId());
 
 		if (mother == null) {
+			errorTraceService.save(ErrorDocType.ANC.name(),format("Failed to handle ANC-3 as there is no Mother enroll with ID: {0}", submission.entityId()),submission.getInstanceId());
 			logger.warn(format("Failed to handle ANC-3 as there is no Mother enroll with ID: {0}", submission.entityId()));
 			return;
 		}
@@ -423,6 +433,7 @@ public class ANCService {
 		Mother mother = allMothers.findByCaseId(submission.entityId());
 
 		if (mother == null) {
+			errorTraceService.save(ErrorDocType.ANC.name(),format("Failed to handle ANC-4 as there is no Mother enroll with ID: {0}", submission.entityId()),submission.getInstanceId());
 			logger.warn(format("Failed to handle ANC-4 as there is no Mother enroll with ID: {0}", submission.entityId()));
 			return;
 		}

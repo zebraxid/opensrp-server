@@ -299,7 +299,7 @@ public class ScheduleLogService extends OpenmrsService{
 	 * @return nothing
 	 * */
 	public void scheduleCloseAndSave(String entityId,String instanceId,String provider,String ScheduleName,String milestoneName,BeneficiaryType beneficiaryType,AlertStatus alertStaus, DateTime startDate, DateTime expiredDate){
-		try{
+		/*try{
 			List<Action> beforeNewActions = allActions.findAlertByANMIdEntityIdScheduleName(provider, entityId, ScheduleName);
 			if(beforeNewActions.size() > 0){ 
 			 this.closeSchedule(entityId,instanceId,beforeNewActions.get(0).timestamp(),ScheduleName);
@@ -308,16 +308,16 @@ public class ScheduleLogService extends OpenmrsService{
 			
 		}catch(Exception e){
 			logger.info("From scheduleCloseAndSave for close : "+e.getMessage());
-		}
+		}*/
 		try{
 			allActions.addOrUpdateAlert(new Action(entityId, provider, ActionData.createAlert(beneficiaryType, ScheduleName, milestoneName, alertStaus, startDate,  expiredDate)));
-			logger.info(format("create psrf from psrf to psrf..", entityId));
+			/*logger.info(format("create psrf from psrf to psrf..", entityId));
 			List<Action> afterNewActions = allActions.findAlertByANMIdEntityIdScheduleName(provider, entityId, ScheduleName);
 			if(afterNewActions.size() > 0){ 
 				this.saveScheduleLog(beneficiaryType, entityId, instanceId, provider, ScheduleName, milestoneName, alertStaus, startDate, expiredDate,ScheduleName,afterNewActions.get(0).timestamp());
 				logger.info("create a schedule with id : "+entityId);
 			}
-			
+			*/
 		}catch(Exception e){
 			logger.info("From scheduleCloseAndSave for save: "+e.getMessage());
 		}

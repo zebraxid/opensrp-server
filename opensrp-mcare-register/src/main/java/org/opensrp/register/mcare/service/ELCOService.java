@@ -6,12 +6,56 @@ package org.opensrp.register.mcare.service;
 
 import static java.text.MessageFormat.format;
 import static org.opensrp.common.AllConstants.CommonFormFields.ID;
-
-import static org.opensrp.common.AllConstants.ELCORegistrationFields.*;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.ELCO;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.END_DATE;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.FWCWOMSTER;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.FWPSRPREGSTS;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_BIRTHDATE;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_CENDATE;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_CENSTAT;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_CWOMHUSALV;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_CWOMHUSLIV;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_CWOMHUSSTR;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_CWOMSTRMEN;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_DISPLAY_AGE;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_ELIGIBLE;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_ELIGIBLE2;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_GENDER;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_GOBHHID;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_HUSNAME;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_JiVitAHHID;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_TODAY;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_WOMAGE;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_WOMANYID;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_WOMBID;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_WOMCOUNTRY;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_WOMDISTRICT;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_WOMDIVISION;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_WOMFNAME;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_WOMGOBHHID;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_WOMGPS;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_WOMLNAME;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_WOMMAUZA_PARA;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_WOMNID;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_WOMRETYPEBID;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_WOMRETYPENID;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_WOMSUBUNIT;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_WOMUNION;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_WOMUPAZILLA;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_WOMWARD;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.START_DATE;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.WomanREGDATE;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.existing_ELCO;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.external_user_ID;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.form_name;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.new_ELCO;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.nidImagePath;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.profileImagePath;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.relationalid;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.user_type;
 import static org.opensrp.common.AllConstants.Form.ELCO_REGISTRATION;
 import static org.opensrp.common.AllConstants.Form.MIS_Census;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.ELCO_REGISTRATION_SUB_FORM_NAME;
-import static org.opensrp.common.AllConstants.HHRegistrationFields.FWCENDATE;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.FWPSRDATE;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.FW_UPAZILLA;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.REFERENCE_DATE;
@@ -68,11 +112,8 @@ import static org.opensrp.common.AllConstants.PSRFFields.current_formStatus;
 import static org.opensrp.common.AllConstants.PSRFFields.mis_elco_current_formStatus;
 import static org.opensrp.common.AllConstants.PSRFFields.timeStamp;
 import static org.opensrp.common.AllConstants.UserType.FD;
-import static org.opensrp.common.AllConstants.PSRFFields.*;
-
 import static org.opensrp.common.util.EasyMap.create;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ELCOSchedulesConstants.ELCO_SCHEDULE_PSRF;
-import static org.opensrp.register.mcare.OpenSRPScheduleConstants.HHSchedulesConstants.HH_SCHEDULE_CENSUS;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -80,6 +121,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.opensrp.common.ErrorDocType;
 import org.opensrp.common.util.DateTimeUtil;
 import org.opensrp.common.util.DateUtil;
 import org.opensrp.form.domain.FormSubmission;
@@ -93,6 +135,7 @@ import org.opensrp.register.mcare.service.scheduling.HHSchedulesService;
 import org.opensrp.register.mcare.service.scheduling.ScheduleLogService;
 import org.opensrp.scheduler.Action;
 import org.opensrp.scheduler.repository.AllActions;
+import org.opensrp.service.ErrorTraceService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -110,10 +153,12 @@ public class ELCOService {
 	private BNFService bnfService;
 	private ScheduleLogService scheduleLogService;
 	private AllActions allActions;
-
+    private ErrorTraceService errorTraceService;
+    
 	@Autowired
 	public ELCOService(AllHouseHolds allHouseHolds, AllElcos allEcos, HHSchedulesService hhSchedulesService, ELCOScheduleService elcoScheduleService,
-			ANCService ancService, BNFService bnfService, ScheduleLogService scheduleLogService, AllActions allActions) {
+			ANCService ancService, BNFService bnfService, ScheduleLogService scheduleLogService, AllActions allActions,
+			ErrorTraceService errorTraceService) {
 		this.allHouseHolds = allHouseHolds;
 		this.allEcos = allEcos;
 		this.hhSchedulesService = hhSchedulesService;
@@ -122,7 +167,7 @@ public class ELCOService {
 		this.bnfService = bnfService;
 		this.scheduleLogService = scheduleLogService;
 		this.allActions = allActions;
-
+		this.errorTraceService = errorTraceService;		
 	}
 
 	public void registerELCO(FormSubmission submission) {
@@ -164,8 +209,7 @@ public class ELCOService {
 				logger.info("Elco removed");
 			}
 
-			String fieldName = "FWWOMFNAME";
-			logger.info("FieldName:" + fieldName);
+			String fieldName = "FWWOMFNAME";			
 			if (!fieldName.equalsIgnoreCase("")) {
 				if (elcoFields.containsKey(fieldName)) {
 					if (!elcoFields.get(fieldName).equalsIgnoreCase("") || elcoFields.get(fieldName) != null) {
@@ -183,7 +227,8 @@ public class ELCOService {
 
 			HouseHold houseHold = allHouseHolds.findByCaseId(submission.entityId());
 
-			if (houseHold == null) {
+			if (houseHold == null) {				
+				errorTraceService.save(ErrorDocType.HouseHold.name(),format("Failed to handle Census form as there is no household registered with ID: {0}", submission.entityId()),submission.getInstanceId());
 				logger.warn(format("Failed to handle Census form as there is no household registered with ID: {0}", submission.entityId()));
 				return;
 			}
@@ -196,15 +241,15 @@ public class ELCOService {
 			houseHold.withPROVIDERID(submission.anmId());
 			houseHold.withINSTANCEID(submission.instanceId());
 			houseHold.withFWUPAZILLA(UPAZILLA);
-
+			houseHold.setTimeStamp(System.currentTimeMillis());
 			houseHold.details().put(existing_ELCO, submission.getField(existing_ELCO));
 			houseHold.details().put(new_ELCO, submission.getField(new_ELCO));
 			houseHold.withClientVersion(DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)));
 			allHouseHolds.update(houseHold);
 
-			logger.info("Expected value leading non zero and found FWCENSTAT : " + submission.getField("FWCENSTAT"));
+			/*logger.info("Expected value leading non zero and found FWCENSTAT : " + submission.getField("FWCENSTAT"));
 			if (submission.getField("FWCENSTAT").equalsIgnoreCase("7")) {
-				// user type condition
+				
 				if(submission.getField("user_type").equalsIgnoreCase(FD)){
 					elcoScheduleService.unEnrollFromScheduleCensus(submission.entityId(), submission.anmId(), "");
 					try {
@@ -225,7 +270,7 @@ public class ELCOService {
 			} else {
 				hhSchedulesService.enrollIntoMilestoneOfCensus(submission.entityId(), submission.getField(FWCENDATE), submission.anmId(),
 						submission.instanceId());
-			}
+			}*/
 		}
 	}
 
@@ -273,6 +318,7 @@ public class ELCOService {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date today = Calendar.getInstance().getTime();
 		if (elco == null) {
+			errorTraceService.save(ErrorDocType.Elco.name(),format("Failed to handle MIS ELCO form as there is no ELCO registered with ID: {0}", submission.entityId()),submission.getInstanceId());
 			logger.warn(format("Failed to handle MIS ELCO form as there is no ELCO registered with ID: {0}", submission.entityId()));
 			return;
 		}
@@ -352,6 +398,7 @@ public class ELCOService {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date today = Calendar.getInstance().getTime();
 		if (elco == null) {
+			errorTraceService.save(ErrorDocType.PSRF.name(),format("Failed to handle PSRF form as there is no ELCO registered with ID: {0}", submission.entityId()),submission.getInstanceId());
 			logger.warn(format("Failed to handle PSRF form as there is no ELCO registered with ID: {0}", submission.entityId()));
 			return;
 		}

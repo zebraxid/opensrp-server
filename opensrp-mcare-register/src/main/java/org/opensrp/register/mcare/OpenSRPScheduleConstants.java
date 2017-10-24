@@ -106,6 +106,9 @@ public class OpenSRPScheduleConstants {
     	public static final Integer anc4Start = 247;
     	public static final Integer anc4End = 252;
     	public static final Integer bnf = 261;
+    	public static final Integer pnc1 = 2;
+    	public static final Integer pnc2 = 4;
+    	public static final Integer pnc3 = 3;
     }
    
 }

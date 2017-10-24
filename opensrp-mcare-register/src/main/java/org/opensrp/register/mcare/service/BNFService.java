@@ -31,7 +31,9 @@ import java.util.Map;
 
 import org.joda.time.LocalDate;
 import org.opensrp.common.AllConstants;
+import org.opensrp.common.ErrorDocType;
 import org.opensrp.common.util.DateTimeUtil;
+import org.opensrp.common.util.DateUtil;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.form.domain.SubFormData;
 import org.opensrp.register.mcare.domain.Elco;
@@ -43,6 +45,7 @@ import org.opensrp.register.mcare.service.scheduling.BNFSchedulesService;
 import org.opensrp.register.mcare.service.scheduling.ELCOScheduleService;
 import org.opensrp.register.mcare.service.scheduling.ScheduleLogService;
 import org.opensrp.scheduler.service.ActionService;
+import org.opensrp.service.ErrorTraceService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,10 +63,11 @@ public class BNFService {
 	private ScheduleLogService scheduleLogService;
 	private ANCSchedulesService ancSchedulesService;
     private ELCOScheduleService elcoScheduleService;
-
+    private ErrorTraceService errorTraceService;
 	@Autowired
 	public BNFService(AllElcos allElcos, AllMothers allMothers, BNFSchedulesService bnfSchedulesService, PNCService pncService,
-			ScheduleLogService scheduleLogService, ActionService actionService, ANCSchedulesService ancSchedulesService, ELCOScheduleService elcoScheduleService) {
+			ScheduleLogService scheduleLogService, ActionService actionService, ANCSchedulesService ancSchedulesService,
+			ELCOScheduleService elcoScheduleService,ErrorTraceService errorTraceService) {
 		this.allElcos = allElcos;
 		this.allMothers = allMothers;
 		this.bnfSchedulesService = bnfSchedulesService;
@@ -72,6 +76,7 @@ public class BNFService {
 		this.actionService = actionService;
 		this.ancSchedulesService = ancSchedulesService;
 		this.elcoScheduleService = elcoScheduleService;
+		this.errorTraceService = errorTraceService;	
 	}
 
 	public void registerBNF(FormSubmission submission) {
@@ -80,12 +85,16 @@ public class BNFService {
 		Mother mother = allMothers.findByCaseId(motherId);
 		Elco elco = allElcos.findByCaseId(mother.relationalid());
 		if (!allElcos.exists(submission.entityId())) {
+			errorTraceService.save(ErrorDocType.PSRF.name(),format("Found mother without registered eligible couple. Ignoring: {0} for mother with id: {1} for ANM: {2}", submission.entityId(),
+					motherId, submission.anmId()),submission.getInstanceId());
 			logger.warn(format("Found mother without registered eligible couple. Ignoring: {0} for mother with id: {1} for ANM: {2}", submission.entityId(),
 					motherId, submission.anmId()));
 			return;
 		}
 		mother.withFWWOMDISTRICT(elco.FWWOMDISTRICT());
 		mother.withFWWOMUPAZILLA(elco.FWWOMUPAZILLA());
+		mother.setTimeStamp(System.currentTimeMillis());
+		mother.withSUBMISSIONDATE(DateUtil.getTimestampToday());
 		allMothers.update(mother);
 		
 		bnfSchedulesService.enrollBNF(motherId, LocalDate.parse(submission.getField(MOTHER_REFERENCE_DATE)), submission.anmId(), submission.instanceId(),
@@ -98,6 +107,7 @@ public class BNFService {
 		Mother mother = allMothers.findByCaseId(submission.entityId());
 
 		if (mother == null) {
+			errorTraceService.save(ErrorDocType.BNF.name(),format("Failed to handle BNF as there is no Mother enroll with ID: {0}", submission.entityId()),submission.getInstanceId());
 			logger.warn(format("Failed to handle BNF as there is no Mother enroll with ID: {0}", submission.entityId()));
 			return;
 		}
@@ -121,7 +131,7 @@ public class BNFService {
 			bnfVisit.put(FWBNFGEN, childFields.get(FWBNFGEN));
 			bnfVisit.put(FWBNFCHLDVITSTS, childFields.get(FWBNFCHLDVITSTS));
 		}
-
+		mother.setTimeStamp(System.currentTimeMillis());
 		mother.bnfVisitDetails().add(bnfVisit);
 		mother.withClientVersion(DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)));
 		mother.withTODAY(submission.getField(REFERENCE_DATE));
@@ -205,7 +215,7 @@ public class BNFService {
 
 		} else {
 			pncService.deleteBlankChild(submission);
-			logger.info("FWA submit BNF form , so nothing hapened & BNF schedule continue.");
+			logger.info("FWA submit BNF form , so nothing happened & BNF schedule continue.");
 			bnfSchedulesService.enrollIntoMilestoneOfBNF(submission.entityId(), submission.getField(REFERENCE_DATE), submission.anmId(),
 					submission.instanceId());
 		}

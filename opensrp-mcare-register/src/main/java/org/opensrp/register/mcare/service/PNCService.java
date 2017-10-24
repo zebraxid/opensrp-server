@@ -81,6 +81,7 @@ import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.opensrp.common.ErrorDocType;
 import org.opensrp.common.util.DateTimeUtil;
 import org.opensrp.common.util.DateUtil;
 import org.opensrp.connector.HttpUtil;
@@ -96,6 +97,7 @@ import org.opensrp.register.mcare.service.scheduling.ChildSchedulesService;
 import org.opensrp.register.mcare.service.scheduling.ELCOScheduleService;
 import org.opensrp.register.mcare.service.scheduling.PNCSchedulesService;
 import org.opensrp.register.mcare.service.scheduling.ScheduleLogService;
+import org.opensrp.service.ErrorTraceService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -118,10 +120,11 @@ public class PNCService {
 	private String womanBID = "";
 	private String feverTemp = "";
 	private String identifier = "text=";
-
+	private ErrorTraceService errorTraceService;
 	@Autowired
 	public PNCService(AllElcos allElcos, AllMothers allMothers, AllChilds allChilds, ELCOScheduleService elcoSchedulesService,
-			PNCSchedulesService pncSchedulesService, ChildSchedulesService childSchedulesService, ScheduleLogService scheduleLogService,
+			PNCSchedulesService pncSchedulesService, ChildSchedulesService childSchedulesService,
+			ScheduleLogService scheduleLogService,ErrorTraceService errorTraceService,
 			@Value("#{opensrp['FEVER_SMS_URL']}") String fever_sms_url) {
 		this.allElcos = allElcos;
 		this.allMothers = allMothers;
@@ -130,6 +133,7 @@ public class PNCService {
 		this.pncSchedulesService = pncSchedulesService;
 		this.childSchedulesService = childSchedulesService;
 		this.scheduleLogService = scheduleLogService;
+		this.errorTraceService = errorTraceService;	
 		this.FEVER_SMS_URL = fever_sms_url;
 	}
 
@@ -150,6 +154,7 @@ public class PNCService {
 			Mother mother = allMothers.findByCaseId(submission.entityId());
 
 			if (mother == null) {
+				errorTraceService.save(ErrorDocType.BNF.name(),format("Failed to add Child as there is no Mother enroll with ID: {0}", submission.entityId()),submission.getInstanceId());
 				logger.warn(format("Failed to handle PNC as there is no Mother enroll with ID: {0}", submission.entityId()));
 				return;
 			}
@@ -176,7 +181,7 @@ public class PNCService {
 				} else {
 					//User type conditions
 					if(submission.getField("user_type").equalsIgnoreCase(FD)){					
-						pncSchedulesService.enrollPNCRVForMother(submission.entityId(), LocalDate.parse(referenceDate));
+						pncSchedulesService.enrollPNCRVForMother(submission.entityId(),submission.instanceId(),submission.anmId(), LocalDate.parse(referenceDate),referenceDate);
 						logger.info("Generating schedule for Child when Child is Live Birth. Mother Id: " + mother.caseId());
 					}
 				}
@@ -219,6 +224,7 @@ public class PNCService {
 					child.details().put(external_user_ID, childFields.get(external_user_ID));
 					child.details().put("referenceDate", referenceDate);
 					child.details().put("ward",  mother.getFWWOMWARD());
+					child.details().put("division",  mother.details().get("division"));
 					allChilds.update(child);
 					logger.info("FWBNFCHLDVITSTS:" + childFields.get(FWBNFCHLDVITSTS));
 					if (childFields.get(FWBNFCHLDVITSTS).equalsIgnoreCase("0")) {
@@ -233,7 +239,7 @@ public class PNCService {
 			} else if (submission.getField(FWBNFSTS).equals(STS_SB)) {
 				if (submission.getField("user_type").equalsIgnoreCase(FD)) {
 					logger.info("Generating schedule for Mother when Child is Still Birth. Mother Id: " + mother.caseId());
-					pncSchedulesService.enrollPNCRVForMother(submission.entityId(), LocalDate.parse(referenceDate));
+					pncSchedulesService.enrollPNCRVForMother(submission.entityId(),submission.instanceId(),submission.anmId(), LocalDate.parse(referenceDate),referenceDate);
 				} else {
 					logger.info("FWA submit form for Still Birth so nothing happend ");
 				}
@@ -244,6 +250,7 @@ public class PNCService {
 	public void pncVisitOne(FormSubmission submission) {
 		Mother mother = allMothers.findByCaseId(submission.entityId());
 		if (mother == null) {
+			errorTraceService.save(ErrorDocType.PNC.name(),format("Failed to handle PNC-1 as there is no Mother enroll with ID: {0}", submission.entityId()),submission.getInstanceId());
 			logger.warn(format("Failed to handle PNC-1 as there is no Mother enroll with ID: {0}", submission.entityId()));
 			return;
 		}
@@ -293,6 +300,7 @@ public class PNCService {
 		Mother mother = allMothers.findByCaseId(submission.entityId());
 
 		if (mother == null) {
+			errorTraceService.save(ErrorDocType.PNC.name(),format("Failed to handle PNC-2 as there is no Mother enroll with ID: {0}", submission.entityId()),submission.getInstanceId());
 			logger.warn(format("Failed to handle PNC-2 as there is no Mother enroll with ID: {0}", submission.entityId()));
 			return;
 		}
@@ -343,6 +351,7 @@ public class PNCService {
 		Mother mother = allMothers.findByCaseId(submission.entityId());
 
 		if (mother == null) {
+			errorTraceService.save(ErrorDocType.PNC.name(),format("Failed to handle PNC-2 as there is no Mother enroll with ID: {0}", submission.entityId()),submission.getInstanceId());
 			logger.warn(format("Failed to handle PNC-3 as there is no Mother enroll with ID: {0}", submission.entityId()));
 			return;
 		}
