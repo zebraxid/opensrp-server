@@ -1,5 +1,6 @@
 package org.opensrp.register.mcare.report.mis1.familyPlanning.birthControlMethdoUsagesCalculation;
 
+import org.opensrp.connector.DHIS2.dxf2.DHIS2;
 import org.opensrp.register.mcare.domain.Members;
 import org.opensrp.register.mcare.report.mis1.ReportCalculator;
 
@@ -16,8 +17,10 @@ import java.util.Map;
  */
 public abstract class BirthControlMethodUsagesCalculator extends ReportCalculator {
 
+    @DHIS2(categoryOptionId = "c1")
     private String birthControlMethodToCalculate;
 
+    @DHIS2(categoryOptionId = "c3")
     private int countOfTotalUsages;
 
     private int countOfNewUsages;

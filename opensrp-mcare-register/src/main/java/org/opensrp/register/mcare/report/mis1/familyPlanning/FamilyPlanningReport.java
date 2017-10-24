@@ -1,5 +1,6 @@
 package org.opensrp.register.mcare.report.mis1.familyPlanning;
 
+import org.opensrp.connector.DHIS2.dxf2.DHIS2;
 import org.opensrp.register.mcare.domain.Members;
 import org.opensrp.register.mcare.report.mis1.Report;
 import org.opensrp.register.mcare.report.mis1.familyPlanning.birthControlMethdoUsagesCalculation.*;
@@ -8,7 +9,9 @@ import org.opensrp.register.mcare.report.mis1.familyPlanning.eligibleCoupleCount
 
 public class FamilyPlanningReport extends Report {
     private EligibleCoupleCountCalculator eligibleCoupleCountCalculator;
+    @DHIS2(dateElementId = "d1")
     private PillMethodUsagesCalculator pillUsagesCalculator;
+    @DHIS2(dateElementId = "d2")
     private CondomMethodUsagesCalculator condomUsagesCalculator;
     private IUDUsagesCalculator iudUsagesCalculator;
     private ImplantUsagesCalculator implantUsagesCalculator;
