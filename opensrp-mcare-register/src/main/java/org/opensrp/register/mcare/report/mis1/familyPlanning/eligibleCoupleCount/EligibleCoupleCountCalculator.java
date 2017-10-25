@@ -32,10 +32,12 @@ public class EligibleCoupleCountCalculator extends ReportCalculator {
 	}
 
 	public int getNewEligibleCoupleVisitCount() {
+
 		return newEligibleCoupleVisitCount;
 	}
 
-	public int getUnitTotalEligibleCoupleVisitCount() {
+	public int getUnitTotalEligibleCoupleVisitCount()
+	{
 		return unitTotalEligibleCoupleVisitCount;
 	}
 

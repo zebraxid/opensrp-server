@@ -26,6 +26,7 @@ public class VaccinationReportCalculator extends ReportCalculator{
     }
 
     public long getOpv1Andpcv1Andpenta1Count() {
+
         return opv1Andpcv1Andpenta1Count;
     }
 
@@ -34,6 +35,7 @@ public class VaccinationReportCalculator extends ReportCalculator{
     }
 
     public long getOpv3Andpenta3Count() {
+
         return opv3Andpenta3Count;
     }
 

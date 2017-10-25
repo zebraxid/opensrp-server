@@ -66,9 +66,10 @@ public class AllMembersTest {
 
     
 
-   @Ignore @Test
+ //  @Test
   public void failedTest() {
-        assertFalse(false);
+	   System.err.println("okkkkkkkkkk");
+	   allMembers.allMembersCreatedBetweenTwoDateBasedOnUpdatedTimeStamp(1508310734000l);
   }
 /*
     @Test

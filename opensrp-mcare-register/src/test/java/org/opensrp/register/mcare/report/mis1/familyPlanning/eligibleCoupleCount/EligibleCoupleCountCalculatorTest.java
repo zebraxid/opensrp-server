@@ -19,6 +19,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import static org.junit.Assert.assertEquals;
 
+@Ignore
 public class EligibleCoupleCountCalculatorTest {
     public String unionName = "union";
     private EligibleCoupleCountTestData eligibleCoupleCountTestData;

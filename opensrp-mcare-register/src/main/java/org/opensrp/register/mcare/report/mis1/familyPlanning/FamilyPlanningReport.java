@@ -11,6 +11,7 @@ public class FamilyPlanningReport extends Report {
     private PillMethodUsagesCalculator pillUsagesCalculator;
     private CondomMethodUsagesCalculator condomUsagesCalculator;
     private IUDUsagesCalculator iudUsagesCalculator;
+    //private InjectableUsagesCalculator injectableUsagesCalculator;
     private ImplantUsagesCalculator implantUsagesCalculator;
     private MalePermanentMethodUsagesCalculator malePermanentMethodUsagesCalculator;
     private FemalePermanentMethodUsagesCalculator femalePermanentMethodUsagesCalculator;
@@ -27,6 +28,7 @@ public class FamilyPlanningReport extends Report {
      */
     @Override
     protected void initCalculators(long startDateTime, long endDateTime) {
+      //  System.err.println("WWWWWWWWWWWWWWWWWWW" + this.getClass());
         this.useReflectionToDynamicallyInitAllMemberOf(this.getClass(), startDateTime, endDateTime);
     }
 
@@ -37,10 +39,12 @@ public class FamilyPlanningReport extends Report {
      */
     @Override
     public void calculate(Members member) {
+      //  System.err.println("WWWWWWWWWWWWWWWWWWW" + this.getClass());
         this.useReflectionToDynamicallyCallCalculateMethodOnAllMemberOf(this.getClass(), member);
     }
 
     public PillMethodUsagesCalculator getPillUsagesCalculator() {
+
         return pillUsagesCalculator;
     }
 
@@ -48,7 +52,21 @@ public class FamilyPlanningReport extends Report {
         return condomUsagesCalculator;
     }
 
-    public EligibleCoupleCountCalculator getEligibleCoupleCountCalculator() {
+   /* public InjectableUsagesCalculator getInjectableUsagesCalculator() {
+
+        return injectableUsagesCalculator;
+    }*/
+    public IUDUsagesCalculator getIudUsagesCalculator (){
+
+        return  iudUsagesCalculator;
+    }
+    public ImplantUsagesCalculator getImplantUsagesCalculator(){
+
+        return implantUsagesCalculator;
+    }
+
+    public EligibleCoupleCountCalculator getEligibleCoupleCountCalculator()
+    {
         return eligibleCoupleCountCalculator;
     }
 

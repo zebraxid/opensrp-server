@@ -1,0 +1,24 @@
+{
+  "obs": [
+    {
+      "concept": "160753AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+      "value": "2017-04-17"
+    },
+    {
+      "concept": "161641AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+      "value": "1434AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    },
+    {
+      "concept": "163137AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+      "value": "2017-04-17 13:06:23"
+    },
+    {
+      "concept": "163138AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+      "value": "2017-04-17 13:06:35"
+    }
+  ],
+  "provider": "99f68f5f-2278-4b1b-bd64-1af3991b1148",
+  "patient": "9cf5582f-dfb5-478e-9e35-a386f9c3f9d2",
+  "encounterDatetime": "2017-04-17",
+  "encounterType": "Birth Notification Form"
+}

@@ -11,6 +11,7 @@ import org.ektorp.support.View;
 import org.motechproject.dao.MotechBaseRepository;
 import org.opensrp.common.AllConstants;
 import org.opensrp.register.mcare.domain.Members;
+import org.opensrp.register.mcare.report.mis1.MIS1ReportGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ import java.util.List;
 public class AllMembers extends MotechBaseRepository<Members> {
 
 	private static Logger logger = LoggerFactory.getLogger(AllMembers.class);
-
+    
 	@Autowired
 	public AllMembers(@Value("#{opensrp['couchdb.atomfeed-db.revision-limit']}") int revisionLimit,
 			@Qualifier(AllConstants.OPENSRP_DATABASE_CONNECTOR) CouchDbConnector db) {
@@ -32,6 +33,7 @@ public class AllMembers extends MotechBaseRepository<Members> {
 		this.db.setRevisionLimit(revisionLimit);
 	}
 
+	
 	@GenerateView
 	public Members findByCaseId(String caseId) {
 		List<Members> members = queryView("by_caseId", caseId);
@@ -79,5 +81,24 @@ public class AllMembers extends MotechBaseRepository<Members> {
 		return members;
 	}
 
+	@View(name = "create_member_with_updatedTimeStamp", map = "function(doc) { " +
+            "if(doc.type === 'Members' "
+            + "&& doc.caseId) "
+            + "{emit([doc.updatedTimeStamp],null)}  }"
+    )
+	public List<Members> allMembersCreatedBetweenTwoDateBasedOnUpdatedTimeStamp(Long updatedTimeStamp) {	
+		ComplexKey startKey = ComplexKey.of(updatedTimeStamp);
+        ComplexKey endKey = ComplexKey.of(Long.MAX_VALUE);
+		List<Members> members = db.queryView(
+				createQuery("create_member_with_updatedTimeStamp")
+				.startKey(startKey)
+				.endKey(endKey)
+				.includeDocs(true), Members.class);
+		System.err.println("members:"+members.size());
+		/*for( int i=0 ; i< members.size() ; i++){
+			System.out.println("show updatedtimestamp of member::" + members.get(i).getUpdatedTimeStamp());
+		}*/
+		return members;
+	}
 
 }

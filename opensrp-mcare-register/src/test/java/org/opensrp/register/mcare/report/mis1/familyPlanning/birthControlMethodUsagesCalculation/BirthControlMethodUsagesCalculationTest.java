@@ -2,6 +2,7 @@ package org.opensrp.register.mcare.report.mis1.familyPlanning.birthControlMethod
 
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.opensrp.register.mcare.domain.Members;
 import org.opensrp.register.mcare.report.mis1.MIS1Report;
@@ -9,6 +10,7 @@ import org.opensrp.register.mcare.report.mis1.MIS1Report;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static org.junit.Assert.assertEquals;
+
 
 public class BirthControlMethodUsagesCalculationTest {
 
@@ -49,9 +51,9 @@ public class BirthControlMethodUsagesCalculationTest {
         this.mis1Report = new MIS1Report(
                unionName, this.birthControlMethodTestData.createLeftBirthControlMethodButNoneTakenTestData(
                         SECOND_BIRTH_CONTROL_METHOD, THIRD_BIRTH_CONTROL_METHOD), 0, 0);
-        int totalCountOfMembersWhoLeftUsagesOfBirthControlPillOfCurrentMonth =
+        int totalCountOfMembersWhoLeftUsagesOfBirthControlCondomOfCurrentMonth =
                 mis1Report.getFamilyPlanningReport().getCondomUsagesCalculator().leftUsagesButTakenNone();
-        assertEquals(this.birthControlMethodTestData.validCount, totalCountOfMembersWhoLeftUsagesOfBirthControlPillOfCurrentMonth);
+        assertEquals(this.birthControlMethodTestData.validCount, totalCountOfMembersWhoLeftUsagesOfBirthControlCondomOfCurrentMonth);
     }
 
     @Test

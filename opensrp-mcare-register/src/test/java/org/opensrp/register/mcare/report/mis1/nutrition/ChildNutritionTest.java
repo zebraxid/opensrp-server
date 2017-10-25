@@ -32,8 +32,8 @@ public class ChildNutritionTest {
                 childNutritionTestData
                         .createDataForCountOfBreastFeedingWithInOneHourOfBirthForChildAgeZeroToSixMonth();
         MIS1Report mis1Report = new MIS1Report(unionName, members, startDateTime, endDateTime);
-        long count = mis1Report.getNutritionReport().getChildNutritionCalculator().forChildAgeZeroToSix().countOfBreastFeedingWithInOneHour();
-        assertEquals(childNutritionTestData.validCount, count);
+        long testCountOfBreastFeedingWithInOneHourOfBirthForChildAgeZeroToSixMonth = mis1Report.getNutritionReport().getChildNutritionCalculator().forChildAgeZeroToSix().countOfBreastFeedingWithInOneHour();
+        assertEquals(childNutritionTestData.validCount, testCountOfBreastFeedingWithInOneHourOfBirthForChildAgeZeroToSixMonth);
 
     }
 }

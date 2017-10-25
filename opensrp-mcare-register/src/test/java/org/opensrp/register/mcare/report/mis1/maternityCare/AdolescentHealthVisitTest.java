@@ -2,6 +2,7 @@ package org.opensrp.register.mcare.report.mis1.maternityCare;
 
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.opensrp.register.mcare.domain.Members;
 import org.opensrp.register.mcare.report.mis1.MIS1Report;
@@ -12,6 +13,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
+@Ignore
 public class AdolescentHealthVisitTest {
     public String unionName = "union";
     private AdolescentHealthVisitTestData adolescentHealthVisitTestData;

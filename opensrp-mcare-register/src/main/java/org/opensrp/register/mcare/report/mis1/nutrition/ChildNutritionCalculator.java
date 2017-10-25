@@ -26,6 +26,18 @@ public class ChildNutritionCalculator extends ReportCalculator {
         child24to59 = new ChildAgeLimit(24, 59);
     }
 
+    public ChildAgeLimit getChildZeroToSix() {
+        return childZeroToSix;
+    }
+
+    public ChildAgeLimit getChild6TO23() {
+        return child6TO23;
+    }
+
+    public ChildAgeLimit getChild24to59() {
+        return child24to59;
+    }
+
     @Override
     public void calculate(Members member) {
         int ageInMonth = getAgeInMonthOf(member);
@@ -76,10 +88,12 @@ public class ChildNutritionCalculator extends ReportCalculator {
         private long countOfContractedMAM = 0;
 
         public long getCountOfBreastFeedingWithInOneHour() {
+
             return countOfBreastFeedingWithInOneHour;
         }
 
         public long getCountOfBreastFeedingUntillSixMonth() {
+
             return countOfBreastFeedingUntillSixMonth;
         }
 
@@ -88,10 +102,12 @@ public class ChildNutritionCalculator extends ReportCalculator {
         }
 
         public long getCountOfContractedMAM() {
+
             return countOfContractedMAM;
         }
 
         public long getCountOfContractedSAM() {
+
             return countOfContractedSAM;
         }
 
