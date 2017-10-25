@@ -20,11 +20,11 @@ import org.springframework.stereotype.Service;
 public class ErrorTraceService {
 	
 	private final AllErrorTrace allErrorTrace;	
-	private ErrorTrace errorTrace;
+	
 	@Autowired
-	public ErrorTraceService(AllErrorTrace allErrorTrace, ErrorTrace errorTrace) {
+	public ErrorTraceService(AllErrorTrace allErrorTrace) {
 		this.allErrorTrace=allErrorTrace;
-		this.errorTrace = errorTrace;
+		
 	}
 	
 	public void addError(ErrorTrace entity){
@@ -99,12 +99,7 @@ public class ErrorTraceService {
 		return null;
 	}
 
-	public void save(String documentType,String stackTrace,String recordId ){		
-		errorTrace.setDocumentType(documentType);
-		errorTrace.setStackTrace(stackTrace);
-		errorTrace.setRecordId(recordId);		
-		allErrorTrace.add(errorTrace);
-	}
+	
 	
 	
 }

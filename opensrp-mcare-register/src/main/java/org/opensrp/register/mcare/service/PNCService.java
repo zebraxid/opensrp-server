@@ -97,6 +97,7 @@ import org.opensrp.register.mcare.service.scheduling.ChildSchedulesService;
 import org.opensrp.register.mcare.service.scheduling.ELCOScheduleService;
 import org.opensrp.register.mcare.service.scheduling.PNCSchedulesService;
 import org.opensrp.register.mcare.service.scheduling.ScheduleLogService;
+import org.opensrp.repository.AllErrorTrace;
 import org.opensrp.service.ErrorTraceService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -120,11 +121,11 @@ public class PNCService {
 	private String womanBID = "";
 	private String feverTemp = "";
 	private String identifier = "text=";
-	private ErrorTraceService errorTraceService;
+	private AllErrorTrace allErrorTrace;
 	@Autowired
 	public PNCService(AllElcos allElcos, AllMothers allMothers, AllChilds allChilds, ELCOScheduleService elcoSchedulesService,
 			PNCSchedulesService pncSchedulesService, ChildSchedulesService childSchedulesService,
-			ScheduleLogService scheduleLogService,ErrorTraceService errorTraceService,
+			ScheduleLogService scheduleLogService,AllErrorTrace allErrorTrace,
 			@Value("#{opensrp['FEVER_SMS_URL']}") String fever_sms_url) {
 		this.allElcos = allElcos;
 		this.allMothers = allMothers;
@@ -133,7 +134,7 @@ public class PNCService {
 		this.pncSchedulesService = pncSchedulesService;
 		this.childSchedulesService = childSchedulesService;
 		this.scheduleLogService = scheduleLogService;
-		this.errorTraceService = errorTraceService;	
+		this.allErrorTrace = allErrorTrace;	
 		this.FEVER_SMS_URL = fever_sms_url;
 	}
 
@@ -154,7 +155,7 @@ public class PNCService {
 			Mother mother = allMothers.findByCaseId(submission.entityId());
 
 			if (mother == null) {
-				errorTraceService.save(ErrorDocType.BNF.name(),format("Failed to add Child as there is no Mother enroll with ID: {0}", submission.entityId()),submission.getInstanceId());
+				allErrorTrace.save(ErrorDocType.BNF.name(),format("Failed to add Child as there is no Mother enroll with ID: {0}", submission.entityId()),submission.getInstanceId());
 				logger.warn(format("Failed to handle PNC as there is no Mother enroll with ID: {0}", submission.entityId()));
 				return;
 			}
@@ -250,7 +251,7 @@ public class PNCService {
 	public void pncVisitOne(FormSubmission submission) {
 		Mother mother = allMothers.findByCaseId(submission.entityId());
 		if (mother == null) {
-			errorTraceService.save(ErrorDocType.PNC.name(),format("Failed to handle PNC-1 as there is no Mother enroll with ID: {0}", submission.entityId()),submission.getInstanceId());
+			allErrorTrace.save(ErrorDocType.PNC.name(),format("Failed to handle PNC-1 as there is no Mother enroll with ID: {0}", submission.entityId()),submission.getInstanceId());
 			logger.warn(format("Failed to handle PNC-1 as there is no Mother enroll with ID: {0}", submission.entityId()));
 			return;
 		}
@@ -300,7 +301,7 @@ public class PNCService {
 		Mother mother = allMothers.findByCaseId(submission.entityId());
 
 		if (mother == null) {
-			errorTraceService.save(ErrorDocType.PNC.name(),format("Failed to handle PNC-2 as there is no Mother enroll with ID: {0}", submission.entityId()),submission.getInstanceId());
+			allErrorTrace.save(ErrorDocType.PNC.name(),format("Failed to handle PNC-2 as there is no Mother enroll with ID: {0}", submission.entityId()),submission.getInstanceId());
 			logger.warn(format("Failed to handle PNC-2 as there is no Mother enroll with ID: {0}", submission.entityId()));
 			return;
 		}
@@ -351,7 +352,7 @@ public class PNCService {
 		Mother mother = allMothers.findByCaseId(submission.entityId());
 
 		if (mother == null) {
-			errorTraceService.save(ErrorDocType.PNC.name(),format("Failed to handle PNC-2 as there is no Mother enroll with ID: {0}", submission.entityId()),submission.getInstanceId());
+			allErrorTrace.save(ErrorDocType.PNC.name(),format("Failed to handle PNC-2 as there is no Mother enroll with ID: {0}", submission.entityId()),submission.getInstanceId());
 			logger.warn(format("Failed to handle PNC-3 as there is no Mother enroll with ID: {0}", submission.entityId()));
 			return;
 		}

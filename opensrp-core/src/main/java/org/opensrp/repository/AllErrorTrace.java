@@ -65,4 +65,11 @@ public class AllErrorTrace extends MotechBaseRepository<ErrorTrace> {
 				ErrorTrace.class);
 	}
 
+	public void save(String documentType,String stackTrace,String recordId ){
+		ErrorTrace errorTrace = new ErrorTrace();
+		errorTrace.setDocumentType(documentType);
+		errorTrace.setStackTrace(stackTrace);
+		errorTrace.setRecordId(recordId);		
+		this.add(errorTrace);
+	}
 }

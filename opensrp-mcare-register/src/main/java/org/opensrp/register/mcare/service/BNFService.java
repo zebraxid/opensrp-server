@@ -44,6 +44,7 @@ import org.opensrp.register.mcare.service.scheduling.ANCSchedulesService;
 import org.opensrp.register.mcare.service.scheduling.BNFSchedulesService;
 import org.opensrp.register.mcare.service.scheduling.ELCOScheduleService;
 import org.opensrp.register.mcare.service.scheduling.ScheduleLogService;
+import org.opensrp.repository.AllErrorTrace;
 import org.opensrp.scheduler.service.ActionService;
 import org.opensrp.service.ErrorTraceService;
 import org.slf4j.Logger;
@@ -63,11 +64,11 @@ public class BNFService {
 	private ScheduleLogService scheduleLogService;
 	private ANCSchedulesService ancSchedulesService;
     private ELCOScheduleService elcoScheduleService;
-    private ErrorTraceService errorTraceService;
+    private AllErrorTrace allErrorTrace;
 	@Autowired
 	public BNFService(AllElcos allElcos, AllMothers allMothers, BNFSchedulesService bnfSchedulesService, PNCService pncService,
 			ScheduleLogService scheduleLogService, ActionService actionService, ANCSchedulesService ancSchedulesService,
-			ELCOScheduleService elcoScheduleService,ErrorTraceService errorTraceService) {
+			ELCOScheduleService elcoScheduleService,AllErrorTrace allErrorTrace) {
 		this.allElcos = allElcos;
 		this.allMothers = allMothers;
 		this.bnfSchedulesService = bnfSchedulesService;
@@ -76,7 +77,7 @@ public class BNFService {
 		this.actionService = actionService;
 		this.ancSchedulesService = ancSchedulesService;
 		this.elcoScheduleService = elcoScheduleService;
-		this.errorTraceService = errorTraceService;	
+		this.allErrorTrace = allErrorTrace;	
 	}
 
 	public void registerBNF(FormSubmission submission) {
@@ -85,7 +86,7 @@ public class BNFService {
 		Mother mother = allMothers.findByCaseId(motherId);
 		Elco elco = allElcos.findByCaseId(mother.relationalid());
 		if (!allElcos.exists(submission.entityId())) {
-			errorTraceService.save(ErrorDocType.PSRF.name(),format("Found mother without registered eligible couple. Ignoring: {0} for mother with id: {1} for ANM: {2}", submission.entityId(),
+			allErrorTrace.save(ErrorDocType.PSRF.name(),format("Found mother without registered eligible couple. Ignoring: {0} for mother with id: {1} for ANM: {2}", submission.entityId(),
 					motherId, submission.anmId()),submission.getInstanceId());
 			logger.warn(format("Found mother without registered eligible couple. Ignoring: {0} for mother with id: {1} for ANM: {2}", submission.entityId(),
 					motherId, submission.anmId()));
@@ -107,7 +108,7 @@ public class BNFService {
 		Mother mother = allMothers.findByCaseId(submission.entityId());
 
 		if (mother == null) {
-			errorTraceService.save(ErrorDocType.BNF.name(),format("Failed to handle BNF as there is no Mother enroll with ID: {0}", submission.entityId()),submission.getInstanceId());
+			allErrorTrace.save(ErrorDocType.BNF.name(),format("Failed to handle BNF as there is no Mother enroll with ID: {0}", submission.entityId()),submission.getInstanceId());
 			logger.warn(format("Failed to handle BNF as there is no Mother enroll with ID: {0}", submission.entityId()));
 			return;
 		}

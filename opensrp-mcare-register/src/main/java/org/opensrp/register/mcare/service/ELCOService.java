@@ -133,6 +133,7 @@ import org.opensrp.register.mcare.repository.AllHouseHolds;
 import org.opensrp.register.mcare.service.scheduling.ELCOScheduleService;
 import org.opensrp.register.mcare.service.scheduling.HHSchedulesService;
 import org.opensrp.register.mcare.service.scheduling.ScheduleLogService;
+import org.opensrp.repository.AllErrorTrace;
 import org.opensrp.scheduler.Action;
 import org.opensrp.scheduler.repository.AllActions;
 import org.opensrp.service.ErrorTraceService;
@@ -153,12 +154,12 @@ public class ELCOService {
 	private BNFService bnfService;
 	private ScheduleLogService scheduleLogService;
 	private AllActions allActions;
-    private ErrorTraceService errorTraceService;
+	private AllErrorTrace allErrorTrace;
     
 	@Autowired
 	public ELCOService(AllHouseHolds allHouseHolds, AllElcos allEcos, HHSchedulesService hhSchedulesService, ELCOScheduleService elcoScheduleService,
 			ANCService ancService, BNFService bnfService, ScheduleLogService scheduleLogService, AllActions allActions,
-			ErrorTraceService errorTraceService) {
+			AllErrorTrace allErrorTrace) {
 		this.allHouseHolds = allHouseHolds;
 		this.allEcos = allEcos;
 		this.hhSchedulesService = hhSchedulesService;
@@ -167,7 +168,7 @@ public class ELCOService {
 		this.bnfService = bnfService;
 		this.scheduleLogService = scheduleLogService;
 		this.allActions = allActions;
-		this.errorTraceService = errorTraceService;		
+		this.allErrorTrace = allErrorTrace;		
 	}
 
 	public void registerELCO(FormSubmission submission) {
@@ -228,7 +229,7 @@ public class ELCOService {
 			HouseHold houseHold = allHouseHolds.findByCaseId(submission.entityId());
 
 			if (houseHold == null) {				
-				errorTraceService.save(ErrorDocType.HouseHold.name(),format("Failed to handle Census form as there is no household registered with ID: {0}", submission.entityId()),submission.getInstanceId());
+				allErrorTrace.save(ErrorDocType.HouseHold.name(),format("Failed to handle Census form as there is no household registered with ID: {0}", submission.entityId()),submission.getInstanceId());
 				logger.warn(format("Failed to handle Census form as there is no household registered with ID: {0}", submission.entityId()));
 				return;
 			}
@@ -318,7 +319,7 @@ public class ELCOService {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date today = Calendar.getInstance().getTime();
 		if (elco == null) {
-			errorTraceService.save(ErrorDocType.Elco.name(),format("Failed to handle MIS ELCO form as there is no ELCO registered with ID: {0}", submission.entityId()),submission.getInstanceId());
+			allErrorTrace.save(ErrorDocType.Elco.name(),format("Failed to handle MIS ELCO form as there is no ELCO registered with ID: {0}", submission.entityId()),submission.getInstanceId());
 			logger.warn(format("Failed to handle MIS ELCO form as there is no ELCO registered with ID: {0}", submission.entityId()));
 			return;
 		}
@@ -398,7 +399,7 @@ public class ELCOService {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date today = Calendar.getInstance().getTime();
 		if (elco == null) {
-			errorTraceService.save(ErrorDocType.PSRF.name(),format("Failed to handle PSRF form as there is no ELCO registered with ID: {0}", submission.entityId()),submission.getInstanceId());
+			allErrorTrace.save(ErrorDocType.PSRF.name(),format("Failed to handle PSRF form as there is no ELCO registered with ID: {0}", submission.entityId()),submission.getInstanceId());
 			logger.warn(format("Failed to handle PSRF form as there is no ELCO registered with ID: {0}", submission.entityId()));
 			return;
 		}

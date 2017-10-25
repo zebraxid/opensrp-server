@@ -20,6 +20,7 @@ import static org.opensrp.common.AllConstants.HHRegistrationFields.FWNHREGDATE;
 
 import static org.opensrp.common.util.EasyMap.create;
 
+import org.opensrp.common.ErrorDocType;
 import org.opensrp.common.util.DateTimeUtil;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -34,6 +35,8 @@ import org.opensrp.register.mcare.domain.HouseHold;
 import org.opensrp.register.mcare.repository.AllHouseHolds;
 import org.opensrp.register.mcare.service.scheduling.HHSchedulesService;
 import org.opensrp.register.mcare.service.scheduling.ScheduleLogService;
+import org.opensrp.repository.AllErrorTrace;
+import org.opensrp.service.ErrorTraceService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,20 +50,24 @@ public class HHService {
 	private AllHouseHolds allHouseHolds;
 	private ELCOService elcoService;
 	private HHSchedulesService hhSchedulesService;
-	private ScheduleLogService scheduleLogService;	 
+	private ScheduleLogService scheduleLogService;	
+	private AllErrorTrace allErrorTrace;
 	@Autowired
 	public HHService(AllHouseHolds allHouseHolds, ELCOService elcoService,
-			HHSchedulesService hhSchedulesService,ScheduleLogService scheduleLogService) {
+			HHSchedulesService hhSchedulesService,ScheduleLogService scheduleLogService,AllErrorTrace allErrorTrace) {
 		this.allHouseHolds = allHouseHolds;
 		this.elcoService = elcoService;
 		this.hhSchedulesService = hhSchedulesService;	
 		this.scheduleLogService = scheduleLogService;
+		this.allErrorTrace = allErrorTrace;	
 	}	
 	public void registerHouseHold(FormSubmission submission) {
 
 		HouseHold houseHold = allHouseHolds.findByCaseId(submission.entityId());
 
 		if (houseHold == null) {
+			
+			allErrorTrace.save(ErrorDocType.HouseHold.name(),format("Failed to handle Census form as there is no household registered with ID: {0}", submission.entityId()),submission.getInstanceId());
 			logger.warn(format(
 					"Failed to handle Census form as there is no household registered with ID: {0}",
 					submission.entityId()));
