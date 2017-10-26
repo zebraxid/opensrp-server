@@ -1,6 +1,7 @@
 package org.opensrp.register.mcare.report.mis1.maternityCare;
 
 
+import org.opensrp.connector.DHIS2.dxf2.DHIS2;
 import org.opensrp.register.mcare.domain.Members;
 import org.opensrp.register.mcare.report.mis1.ReportCalculator;
 
@@ -9,6 +10,7 @@ import java.util.Map;
 
 public class PregnantWomenCountCalculator extends ReportCalculator {
 
+    @DHIS2(dateElementId="sMIF1kZ2qi6",categoryOptionId="DHJ5tZVSSsl",dataSetId="iVd5aTE9P1B")
     long newPregnantCount = 0;
 
     public PregnantWomenCountCalculator(long statDateTime, long endDateTime) {
