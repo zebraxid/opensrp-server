@@ -13,7 +13,7 @@ import java.util.Date;
  */
 public class DeathCountofOtherCalculator extends ReportCalculator {
 
-    @DHIS2(dateElementId="nnbO37HLsTj",categoryOptionId="PMxt6isoiYP",dataSetId="VvCMvqQWHa0")
+    @DHIS2(dataElementId ="nnbO37HLsTj",categoryOptionId="PMxt6isoiYP",dataSetId="VvCMvqQWHa0")
     private long totalCountOfDeathofOther;
     public DeathCountofOtherCalculator(long startDateTime, long endDateTime) {
         super(startDateTime, endDateTime);

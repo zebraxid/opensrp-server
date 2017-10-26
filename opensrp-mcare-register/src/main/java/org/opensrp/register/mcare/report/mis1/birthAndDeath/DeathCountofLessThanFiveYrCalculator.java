@@ -13,7 +13,7 @@ import java.util.Date;
  */
 public class DeathCountofLessThanFiveYrCalculator extends ReportCalculator {
 
-    @DHIS2(dateElementId="nnbO37HLsTj",categoryOptionId="zlga59Nvu4T",dataSetId="VvCMvqQWHa0")
+    @DHIS2(dataElementId ="nnbO37HLsTj",categoryOptionId="zlga59Nvu4T",dataSetId="VvCMvqQWHa0")
     private long totalCountOfDeathofLessThanFiveYr;
 
     public DeathCountofLessThanFiveYrCalculator(long startDateTime, long endDateTime) {

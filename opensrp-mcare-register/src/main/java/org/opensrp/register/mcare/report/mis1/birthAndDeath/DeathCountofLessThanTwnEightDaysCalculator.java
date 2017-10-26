@@ -13,7 +13,7 @@ import java.util.Date;
  */
 public class DeathCountofLessThanTwnEightDaysCalculator extends ReportCalculator {
 
-    @DHIS2(dateElementId="nnbO37HLsTj",categoryOptionId="tvXyBlG3shM",dataSetId="VvCMvqQWHa0")
+    @DHIS2(dataElementId ="nnbO37HLsTj",categoryOptionId="tvXyBlG3shM",dataSetId="VvCMvqQWHa0")
     private long totalCountOfDeathofLessThanTwnEightDays ;
 
     public DeathCountofLessThanTwnEightDaysCalculator(long startDateTime, long endDateTime) {

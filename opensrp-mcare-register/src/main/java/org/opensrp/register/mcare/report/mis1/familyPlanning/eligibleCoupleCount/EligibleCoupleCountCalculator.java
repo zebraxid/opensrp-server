@@ -13,13 +13,13 @@ import java.util.Map;
  */
 public class EligibleCoupleCountCalculator extends ReportCalculator {
 
-	@DHIS2(dateElementId="qQRGs57YZ2z",categoryOptionId="UI7LOrrDRyJ",dataSetId="Z5WPr2zconV")
+	@DHIS2(categoryOptionId="UI7LOrrDRyJ")
 	private int newEligibleCoupleVisitCount = 0;
 
-	@DHIS2(dateElementId="qQRGs57YZ2z",categoryOptionId="Y2nkJYOsPfL",dataSetId="Z5WPr2zconV")
+	@DHIS2(categoryOptionId="Y2nkJYOsPfL")
 	private int unitTotalEligibleCoupleVisitCount = 0;
 
-
+	@DHIS2(categoryOptionId="DHJ5tZVSSsl")
 	private int totalEligibleCouple = 0;
 
 	public EligibleCoupleCountCalculator(long startDateTime, long endDateTime) {

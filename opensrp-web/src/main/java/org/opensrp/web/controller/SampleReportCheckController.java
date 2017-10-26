@@ -1,9 +1,15 @@
 package org.opensrp.web.controller;
 
 
+import java.io.IOException;
 import java.util.List;
 
+import org.joda.time.DateTime;
+import org.json.JSONException;
 import org.opensrp.common.AllConstants;
+import org.opensrp.connector.DHIS2.DHIS2ReportBuilder;
+import org.opensrp.connector.DHIS2.DHIS2Service;
+import org.opensrp.connector.DHIS2.dxf2.DataValueSet;
 import org.opensrp.register.mcare.domain.Members;
 import org.opensrp.register.mcare.report.mis1.MIS1Report;
 import org.opensrp.register.mcare.report.mis1.MIS1ReportGenerator;
@@ -72,10 +78,18 @@ public class SampleReportCheckController {
     private long totalCountOfEligibleCoupleInUnitOfCurrentMonth=0;
 
     @RequestMapping("/checkmisreport")
-     public ModelAndView sampleCheck(){
+     public ModelAndView sampleCheck() throws IllegalAccessException, IOException, JSONException {
+        List<Members> listOfMembers = mis1ReportGenerator.getAllCalculatorValue();
 
-       List<Members> listOfMembers = mis1ReportGenerator.getAllCalculatorValue();
-       MIS1Report mis1Report = new MIS1Report(unionName,listOfMembers, startDateTime, endDateTime);
+        MIS1Report mis1Report = new MIS1Report(unionName, listOfMembers, startDateTime, endDateTime);
+        DHIS2ReportBuilder dhis2ReportBuilder = new DHIS2ReportBuilder("PKTk8zxbl0J", new DateTime(), new DateTime().minusYears(2));
+        List<DataValueSet> dataValueSets = dhis2ReportBuilder.build(mis1Report);
+        DHIS2Service service = new DHIS2Service("http://192.168.19.18:1971", "dgfp", "Dgfp@123");
+        for(DataValueSet dataValueSet : dataValueSets) {
+            System.out.println(dataValueSet.getDataSet() + dataValueSet.send(service));
+        }
+
+      // MIS1Report mis1Report = new MIS1Report(unionName,listOfMembers, startDateTime, endDateTime);
         familyPlanningCalculatorCheck(mis1Report);
         childCare(mis1Report);
         nutrition(mis1Report);

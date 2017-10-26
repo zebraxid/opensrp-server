@@ -7,6 +7,6 @@ import java.lang.annotation.*;
 @Target(ElementType.FIELD)
 public @interface DHIS2 {
     String dataSetId() default "";
-    String dateElementId() default "";
+    String dataElementId() default "";
     String categoryOptionId() default "";
 }

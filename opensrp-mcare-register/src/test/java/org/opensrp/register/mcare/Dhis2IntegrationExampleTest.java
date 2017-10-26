@@ -10,6 +10,8 @@ import org.opensrp.connector.DHIS2.DHIS2Service;
 import org.opensrp.connector.DHIS2.dxf2.DataValueSet;
 import org.opensrp.register.mcare.domain.Members;
 import org.opensrp.register.mcare.report.mis1.MIS1Report;
+import org.opensrp.register.mcare.report.mis1.birthAndDeath.AliveDeathCountTestData;
+import org.opensrp.register.mcare.report.mis1.familyPlanning.birthControlMethodUsagesCalculation.BirthControlMethodTestData;
 import org.opensrp.register.mcare.report.mis1.familyPlanning.eligibleCoupleCount.EligibleCoupleCountTestData;
 
 import java.io.IOException;
@@ -19,6 +21,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class Dhis2IntegrationExampleTest {
     public String unionName = "union";
     private EligibleCoupleCountTestData eligibleCoupleCountTestData;
+    private AliveDeathCountTestData birthControlMethodTestData;
     private long startDateTime;
     private long endDateTime;
 
@@ -30,6 +33,7 @@ public class Dhis2IntegrationExampleTest {
         endDateTime = ThreadLocalRandom.current().nextLong(170000, 200000);
         eligibleCoupleCountTestData =
                 new EligibleCoupleCountTestData(totalCount, validCount, startDateTime, endDateTime);
+        birthControlMethodTestData = new AliveDeathCountTestData(totalCount, validCount, startDateTime, endDateTime);
     }
 
     /**
@@ -53,16 +57,16 @@ public class Dhis2IntegrationExampleTest {
      */
 
     @Test
-    //@Ignore
+    @Ignore
     public void exampleTest() throws IOException, JSONException, IllegalAccessException {
-        DateTime period = new DateTime().minusYears(1);
-        List<Members> members = eligibleCoupleCountTestData.getTotalEligibleCoupleData();
+        DateTime period = new DateTime().minusYears(2);
+        List<Members> members = null;
         MIS1Report mis1Report = new MIS1Report(unionName, members, startDateTime, endDateTime);
         DHIS2ReportBuilder dhis2ReportBuilder = new DHIS2ReportBuilder("PKTk8zxbl0J", new DateTime(), period);
         List<DataValueSet> dataValueSets = dhis2ReportBuilder.build(mis1Report);
-        DHIS2Service service = new DHIS2Service("http://123.200.18.20:8080", "dgfp", "Dgfp@123");
+        DHIS2Service service = new DHIS2Service("http://192.168.19.18:1971", "dgfp", "Dgfp@123");
         for(DataValueSet dataValueSet : dataValueSets) {
-          //   System.out.println(dataValueSet.send(service));
+             System.out.println(dataValueSet.send(service));
         }
 
     }

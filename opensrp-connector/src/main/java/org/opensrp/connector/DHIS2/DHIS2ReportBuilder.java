@@ -11,8 +11,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static java.util.Arrays.asList;
-
 public class DHIS2ReportBuilder {
     private String orgUnitId;
     private DateTime completionDate;
@@ -31,7 +29,7 @@ public class DHIS2ReportBuilder {
 
     private String createDhis2FormattedPeriod() {
         int year = period.getYear();
-        int month = period.getMonthOfYear() + 1;
+        int month = period.getMonthOfYear();
         return String.valueOf(year) + String.valueOf(month);
     }
 
@@ -44,12 +42,12 @@ public class DHIS2ReportBuilder {
                 dataSetId = m.getAnnotation(DHIS2.class).dataSetId();
                 String dataElementId;
                 String categoryOptionId;
-                dataElementId = m.getAnnotation(DHIS2.class).dateElementId();
+                dataElementId = m.getAnnotation(DHIS2.class).dataElementId();
                 categoryOptionId = m.getAnnotation(DHIS2.class).categoryOptionId();
                 if(dataElementId.isEmpty() && categoryOptionId.isEmpty()){
                     for(Field dataElementField : m.getType().getDeclaredFields()) {
                         if(dataElementField.isAnnotationPresent(DHIS2.class)){
-                            dataElementId = dataElementField.getAnnotation(DHIS2.class).dateElementId();
+                            dataElementId = dataElementField.getAnnotation(DHIS2.class).dataElementId();
                             categoryOptionId = dataElementField.getAnnotation(DHIS2.class).categoryOptionId();
                             if(!dataElementId.isEmpty() && categoryOptionId.isEmpty()) {
                                 for (Field categoryOptionField : dataElementField.getType().getSuperclass().getDeclaredFields()) {
@@ -135,7 +133,7 @@ public class DHIS2ReportBuilder {
 
         String orgUnit = orgUnitId;
         String period = dhis2FormattedPeriod;
-        String dataElementId = m.getAnnotation(DHIS2.class).dateElementId();
+        String dataElementId = m.getAnnotation(DHIS2.class).dataElementId();
         String categoryOptionId = m.getAnnotation(DHIS2.class).categoryOptionId();
         m.setAccessible(true);
         String value = m.get(reportingObj).toString();

@@ -72,7 +72,7 @@ public class ReportController {
 
 			String startDate = data.getString("startDate");
 			String endDate = data.getString("endDate");
-			List<Members> members = this.allMembers.getAll();
+			List<Members> members = allMembers.allMembersCreatedBetweenTwoDateBasedOnUpdatedTimeStamp(new DateTime().getMillis());
             DateTime startDateTime = new DateTime(startDate);
             DateTime endDateTime = new DateTime(endDate);
             MIS1Report mis1Report = new MIS1Report("union", members, startDateTime.getMillis(), endDateTime.getMillis());

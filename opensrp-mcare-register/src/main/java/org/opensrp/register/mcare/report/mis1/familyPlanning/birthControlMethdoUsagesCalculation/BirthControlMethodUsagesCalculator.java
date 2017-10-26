@@ -17,16 +17,18 @@ import java.util.Map;
  */
 public abstract class BirthControlMethodUsagesCalculator extends ReportCalculator {
 
-    @DHIS2(categoryOptionId = "c1")
     private String birthControlMethodToCalculate;
 
-    @DHIS2(categoryOptionId = "c3")
+    @DHIS2(categoryOptionId="UI7LOrrDRyJ")
     private int countOfTotalUsages;
 
+    @DHIS2(categoryOptionId="DHJ5tZVSSsl")
     private int countOfNewUsages;
 
+    @DHIS2(categoryOptionId="ip04bzGTrPX")
     private int countOfLeftUsagesButNoneTaken;
 
+    @DHIS2(categoryOptionId="zmioNFEGCmE")
     private int countOfLeftUsagesButOtherTaken;
 
     protected BirthControlMethodUsagesCalculator(String birthControlMethodToCalculate, long startDateTime,

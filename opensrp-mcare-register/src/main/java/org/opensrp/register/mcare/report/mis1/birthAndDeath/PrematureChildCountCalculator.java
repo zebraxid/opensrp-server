@@ -13,7 +13,7 @@ import java.util.Date;
  */
 public class PrematureChildCountCalculator extends ReportCalculator {
 
-    @DHIS2(dateElementId="m1KL4jyNQMt",categoryOptionId="GkwIERMWu28",dataSetId="VvCMvqQWHa0")
+    @DHIS2(dataElementId ="m1KL4jyNQMt",categoryOptionId="GkwIERMWu28",dataSetId="VvCMvqQWHa0")
     private long totalPrematureChild;
     public PrematureChildCountCalculator(long startDateTime, long endDateTime) {
         super(startDateTime, endDateTime);

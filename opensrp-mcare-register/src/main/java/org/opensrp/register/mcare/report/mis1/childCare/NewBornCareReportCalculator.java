@@ -8,13 +8,13 @@ import java.util.Map;
 
 public class NewBornCareReportCalculator extends ReportCalculator {
 
-    @DHIS2(dateElementId="biRKRKOV0Ul",categoryOptionId="D6XGHUZbN8B",dataSetId="Vc8Ps0P84hZ")
+    @DHIS2(dataElementId ="biRKRKOV0Ul",categoryOptionId="D6XGHUZbN8B",dataSetId="Vc8Ps0P84hZ")
     private long isCleanedCount = 0;
 
-    @DHIS2(dateElementId="biRKRKOV0Ul",categoryOptionId="pdIMQ6uChwY",dataSetId="Vc8Ps0P84hZ")
+    @DHIS2(dataElementId ="biRKRKOV0Ul",categoryOptionId="pdIMQ6uChwY",dataSetId="Vc8Ps0P84hZ")
     private long usedChlorhexidinCount = 0;
 
-    @DHIS2(dateElementId="biRKRKOV0Ul",categoryOptionId="KHDexzpGhKx",dataSetId="Vc8Ps0P84hZ")
+    @DHIS2(dataElementId ="biRKRKOV0Ul",categoryOptionId="KHDexzpGhKx",dataSetId="Vc8Ps0P84hZ")
     private long fedBreastMilkCount = 0;
 
     public long getIsCleanedCount() {

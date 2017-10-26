@@ -12,7 +12,7 @@ import java.util.Date;
 public class BirthCountCalculator extends ReportCalculator {
 
 
-    @DHIS2(dateElementId="m1KL4jyNQMt",categoryOptionId="lB0hF1v7fbX",dataSetId="VvCMvqQWHa0")
+    @DHIS2(dataElementId ="m1KL4jyNQMt",categoryOptionId="lB0hF1v7fbX",dataSetId="VvCMvqQWHa0")
     private long totalCountOfLiveBirth ;
 
     public BirthCountCalculator(long startDateTime, long endDateTime) {
@@ -44,7 +44,7 @@ public class BirthCountCalculator extends ReportCalculator {
         long value = 0;
         if( member.getMember_Birth_Date() != null ){
             String deliveryDateStr =  member.getMember_Birth_Date();
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
             try {
                 dooDate = simpleDateFormat.parse(deliveryDateStr);
                 startDate = new Date( startDateTime * 1000);

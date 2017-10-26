@@ -13,19 +13,19 @@ import static java.util.Arrays.asList;
 
 public class VaccinationReportCalculator extends ReportCalculator{
 
-    @DHIS2(dateElementId="C7dBDNkUwIF",categoryOptionId="IMxc771Kd54",dataSetId="Vc8Ps0P84hZ")
+    @DHIS2(dataElementId ="C7dBDNkUwIF",categoryOptionId="IMxc771Kd54",dataSetId="Vc8Ps0P84hZ")
     private long bcgCount = 0;
 
-    @DHIS2(dateElementId="C7dBDNkUwIF",categoryOptionId="qLFls93A9pf",dataSetId="Vc8Ps0P84hZ")
+    @DHIS2(dataElementId ="C7dBDNkUwIF",categoryOptionId="qLFls93A9pf",dataSetId="Vc8Ps0P84hZ")
     private long opv1Andpcv1Andpenta1Count = 0;
 
-    @DHIS2(dateElementId="C7dBDNkUwIF",categoryOptionId="rOHlNDOjCCd",dataSetId="Vc8Ps0P84hZ")
+    @DHIS2(dataElementId ="C7dBDNkUwIF",categoryOptionId="rOHlNDOjCCd",dataSetId="Vc8Ps0P84hZ")
     private long opv2Andpcv2Andpenta2Count = 0;
 
-    @DHIS2(dateElementId="C7dBDNkUwIF",categoryOptionId="kLTdVFqLpBq",dataSetId="Vc8Ps0P84hZ")
+    @DHIS2(dataElementId ="C7dBDNkUwIF",categoryOptionId="kLTdVFqLpBq",dataSetId="Vc8Ps0P84hZ")
     private long opv3Andpenta3Count = 0;
 
-    @DHIS2(dateElementId="C7dBDNkUwIF",categoryOptionId="DuKOJDReMQm",dataSetId="Vc8Ps0P84hZ")
+    @DHIS2(dataElementId ="C7dBDNkUwIF",categoryOptionId="DuKOJDReMQm",dataSetId="Vc8Ps0P84hZ")
     private long pcv3Count = 0;
 
     public VaccinationReportCalculator(long startDateTime, long endDateTime) {

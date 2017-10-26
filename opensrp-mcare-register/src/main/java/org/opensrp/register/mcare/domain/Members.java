@@ -23,7 +23,7 @@ public class Members extends MotechBaseDataObject {
 
     @JsonIgnore
     public static final String CLIENT_VERSION_KEY = CLIENT_VERSION;
-    public static final String Member_Date_Format = "dd/MM/yyyy";
+    public static final String Member_Date_Format = "yyyy-MM-dd";
 
 
     public static class DetailKeyValue {

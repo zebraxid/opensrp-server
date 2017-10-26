@@ -12,16 +12,16 @@ import static org.opensrp.register.mcare.domain.Members.AdolescentHealthVisitKey
 
 public class AdolescentHealthReportCalculator extends ReportCalculator {
 
-    @DHIS2(dateElementId="owIgYD4tVO4",categoryOptionId="CzqFFc5xsJT",dataSetId="iVd5aTE9P1B")
+    @DHIS2(dataElementId ="owIgYD4tVO4",categoryOptionId="CzqFFc5xsJT",dataSetId="iVd5aTE9P1B")
     private long countOfCounsellingOnChangesOfAdolescent = 0;
 
-    @DHIS2(dateElementId="owIgYD4tVO4",categoryOptionId="Z8LnHwmNSHQ",dataSetId="iVd5aTE9P1B")
+    @DHIS2(dataElementId ="owIgYD4tVO4",categoryOptionId="Z8LnHwmNSHQ",dataSetId="iVd5aTE9P1B")
     private long countOfCounsellingBadEffectOnChildMarriageAndTeenPregnancy = 0;
 
-    @DHIS2(dateElementId="owIgYD4tVO4",categoryOptionId="KSBm7EWOgDY",dataSetId="iVd5aTE9P1B")
+    @DHIS2(dataElementId ="owIgYD4tVO4",categoryOptionId="KSBm7EWOgDY",dataSetId="iVd5aTE9P1B")
     private long countOfCounsellingTeenageGirlsOnTakingIronAndFolicAcid = 0;
 
-    @DHIS2(dateElementId="owIgYD4tVO4",categoryOptionId="BfyPoGtghkP",dataSetId="iVd5aTE9P1B")
+    @DHIS2(dataElementId ="owIgYD4tVO4",categoryOptionId="BfyPoGtghkP",dataSetId="iVd5aTE9P1B")
     private long countOfCounsellingOnInfectionOfGenitialsAndSexuallyTransmittedDiseases = 0;
 
     public AdolescentHealthReportCalculator(long startDateTime, long endDateTime) {
