@@ -181,7 +181,7 @@ public class FormSubmissionController {
 	            		Map<String, Map<String, Object>> dep;
 						dep = openmrsConnector.getDependentClientsFromFormSubmission(formSubmission);
 						if(dep.size()>0){ //HnW(n)
-							System.out.println("Dependent client exist into formsubmission /***********************************************************************/ ");
+							System.out.println("Dependent  client exist into formsubmission ");
 		        			Client hhhClient = openmrsConnector.getClientFromFormSubmission(formSubmission);
 		        			Event hhhEvent = openmrsConnector.getEventFromFormSubmission(formSubmission);
 		        			OpenmrsHouseHold hh = new OpenmrsHouseHold(hhhClient, hhhEvent);
@@ -191,7 +191,7 @@ public class FormSubmissionController {
 			    			householdService.saveHH(hh);
 					    }
 						else {//HnW(0)
-							System.out.println("Patient and Dependent client not exist into openmrs /***********************************************************************/ ");
+							System.out.println("Patient and Dependent client not exist into openmrs /**********************F*************************************************/ ");
 		        			Client c = openmrsConnector.getClientFromFormSubmission(formSubmission);
 		        			System.out.println(patientService.createPatient(c));
 		        			Event e = openmrsConnector.getEventFromFormSubmission(formSubmission);

@@ -19,7 +19,7 @@ public class EligibleCoupleCountCalculator extends ReportCalculator {
 	@DHIS2(dateElementId="qQRGs57YZ2z",categoryOptionId="Y2nkJYOsPfL",dataSetId="Z5WPr2zconV")
 	private int unitTotalEligibleCoupleVisitCount = 0;
 
-	@DHIS2(dateElementId="qQRGs57YZ2z",categoryOptionId="DHJ5tZVSSsl", dataSetId = "Z5WPr2zconV")
+
 	private int totalEligibleCouple = 0;
 
 	public EligibleCoupleCountCalculator(long startDateTime, long endDateTime) {

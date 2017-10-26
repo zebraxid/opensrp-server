@@ -355,11 +355,13 @@ public class MembersService {
         /**
          * Injectables schedule craete and closed condition
          * */
-        if (submission.getField(Is_Eligible_Injectables) != null && !submission.getField(Is_Eligible_Injectables).equalsIgnoreCase(""))
+       
             if (submission.getField(Is_Eligible_Injectables).equalsIgnoreCase("1")) {
-                membersScheduleService.enrollIntoSchedule(submission.entityId(), submission.getField(Format_Injection_Date), Injectables);
+                membersScheduleService.enrollIntoSchedule(submission.entityId(), submission.getField(today), Injectables);
             }
-
+            else{
+        	 logger.info("Injectable not created for"+ submission.entityId());
+            }
         if (submission.getField(fieldName) != null && !submission.getField(fieldName).equalsIgnoreCase("")) {
             if (submission.getField(fieldName).equalsIgnoreCase("1") ||
                     submission.getField(fieldName).equalsIgnoreCase("2") || submission.getField(fieldName).equalsIgnoreCase("3")) {
@@ -877,15 +879,34 @@ public class MembersService {
         /**
          * child Child_05yr schedule generation
          * */
+        try{
+        	membersScheduleService.fullfillMilestone(submission.entityId(), submission.anmId(), IMD_child_bcg,new LocalDate());
+        }catch(Exception e){
+        	logger.info("Immediate Child schedule close:"+e.getMessage());
+        }
+        
         if (submission.getField(Visit_Status) != null && !submission.getField(Visit_Status).equalsIgnoreCase("")) {
             if (submission.getField(Visit_Status).equalsIgnoreCase("3") || submission.getField(Visit_Status).equalsIgnoreCase("2")) {
-                membersScheduleService.enrollIntoMilestoneOfChild_vaccination(submission.entityId(), submission.getField(child_today), submission.anmId(),
-                        submission.instanceId());
+                membersScheduleService.enrollIntoSchedule(submission.entityId(), submission.getField(child_today), child_bcg);
+                
             }
         }
-
+       //succesfully completetion condition is 1  newly added discuss with sarfaraz vai at 2017-10-26
+        /*if (submission.getField(Visit_Status) != null && !submission.getField(Visit_Status).equalsIgnoreCase("")) {
+            if (submission.getField(Visit_Status).equalsIgnoreCase("1")) {
+            	try{
+            		scheduleLogService.markAlertAsInactive(submission.anmId(), submission.entityId(), child_bcg);
+            		membersScheduleService.fullfillMilestone(submission.entityId(), submission.anmId(), child_bcg,new LocalDate());
+            		
+            	}catch(Exception e){
+            		logger.info("Child schedule close:"+e.getMessage());
+            	}
+            }
+        }*/
+        
         if (submission.getField(Visit_Status) != null && !submission.getField(Visit_Status).equalsIgnoreCase("")) {
             if (submission.getField(Visit_Status).equalsIgnoreCase("8")) {
+            	scheduleLogService.markAlertAsInactive(submission.anmId(), submission.entityId(), child_bcg);
                 membersScheduleService.unEnrollFromScheduleOfChild_vaccination(submission.entityId(), submission.anmId(), "");
                 try {
                     List<Action> beforeNewActions = allActions.findAlertByANMIdEntityIdScheduleName(submission.anmId(), submission.entityId(),
@@ -903,6 +924,7 @@ public class MembersService {
 
         if (submission.getField(Visit_Status) != null && !submission.getField(Visit_Status).equalsIgnoreCase(""))
             if (submission.getField(Visit_Status).equalsIgnoreCase("10")) {
+            	scheduleLogService.markAlertAsInactive(submission.anmId(), submission.entityId(), child_bcg);
                 membersScheduleService.unEnrollFromAllSchedules(submission.entityId());
             }
     }

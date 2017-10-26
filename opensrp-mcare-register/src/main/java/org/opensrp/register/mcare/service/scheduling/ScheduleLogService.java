@@ -117,7 +117,7 @@ public class ScheduleLogService extends OpenmrsService{
 		for (Enrollment e : el){
 			try{
 				alertActions.add(new Action(caseID, anmIdentifier, ActionData.createAlert(beneficiaryType, scheduleName, visitCode, alertStatus, startDate, expiryDate)));
-				trackId = this.saveEnrollDataToOpenMRSTrack(e,alertActions,motherId);
+				//trackId = this.saveEnrollDataToOpenMRSTrack(e,alertActions,motherId);
 			}catch(Exception ex){
 				logger.info(""+ex.toString());
 			}
@@ -166,6 +166,18 @@ public class ScheduleLogService extends OpenmrsService{
 		
 		
 		
+	}
+	
+	public void markAlertAsInactive(String anmIdentifier,String caseID,String scheduleName){
+		List<Action> existingAlerts = allActions.findAlertByANMIdEntityIdScheduleName(anmIdentifier, caseID, scheduleName);
+		try{
+		existingAlerts.get(0).setRevision(existingAlerts.get(0).getRevision());
+		existingAlerts.get(0).markAsInActive();
+    	Action action = existingAlerts.get(0); 	    	 
+        allActions.update(action);
+		}catch(Exception e){
+			
+		}
 	}
 	 /*private ActionData alert(String schedule, String milestone) {
 	        return ActionData.createAlert(mother, schedule, milestone, normal, DateTime.now(), DateTime.now().plusDays(3));
@@ -250,7 +262,7 @@ public class ScheduleLogService extends OpenmrsService{
 			allActions.addOrUpdateAlert(new Action(caseId, provider, ActionData.createAlert(beneficiaryType, scheduleName, scheduleName, AlertStatus.upcoming, new DateTime(), new DateTime().plusHours(durationInHour))));	    
 			List<Action> existingAlerts = allActions.findAlertByANMIdEntityIdScheduleName(provider, caseId, scheduleName);
 			if(existingAlerts.size() > 0){ 
-				this.saveScheduleLog(beneficiaryType, caseId, instanceId, provider, scheduleName, scheduleName, AlertStatus.upcoming, new DateTime(), new DateTime().plusHours(durationInHour), ImmediateScheduleName,existingAlerts.get(0).timestamp());
+				//this.saveScheduleLog(beneficiaryType, caseId, instanceId, provider, scheduleName, scheduleName, AlertStatus.upcoming, new DateTime(), new DateTime().plusHours(durationInHour), ImmediateScheduleName,existingAlerts.get(0).timestamp());
 				logger.info("Create a Schedule Log with id :"+caseId);
 			}
 				

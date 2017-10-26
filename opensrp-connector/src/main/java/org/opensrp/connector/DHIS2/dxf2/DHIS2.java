@@ -6,7 +6,7 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface DHIS2 {
-    String dataSetId();
-    String dateElementId();
-    String categoryOptionId();
+    String dataSetId() default "";
+    String dateElementId() default "";
+    String categoryOptionId() default "";
 }

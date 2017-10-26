@@ -10,8 +10,8 @@ import java.util.Map;
 
 public class PregnantWomenCountCalculator extends ReportCalculator {
 
-    @DHIS2(dateElementId="sMIF1kZ2qi6",categoryOptionId="DHJ5tZVSSsl",dataSetId="iVd5aTE9P1B")
-    long newPregnantCount = 0;
+    @DHIS2(dateElementId="qQRGs57YZ2z",categoryOptionId="DHJ5tZVSSsl", dataSetId = "Z5WPr2zconV")
+    long newCount = 0;
 
     public PregnantWomenCountCalculator(long statDateTime, long endDateTime) {
         super(statDateTime, endDateTime);

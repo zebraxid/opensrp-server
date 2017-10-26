@@ -53,8 +53,8 @@ public class Dhis2IntegrationExampleTest {
      */
 
     @Test
-    @Ignore
-    public void exampleTest() throws IOException, JSONException {
+    //@Ignore
+    public void exampleTest() throws IOException, JSONException, IllegalAccessException {
         DateTime period = new DateTime().minusYears(1);
         List<Members> members = eligibleCoupleCountTestData.getTotalEligibleCoupleData();
         MIS1Report mis1Report = new MIS1Report(unionName, members, startDateTime, endDateTime);
@@ -62,7 +62,7 @@ public class Dhis2IntegrationExampleTest {
         List<DataValueSet> dataValueSets = dhis2ReportBuilder.build(mis1Report);
         DHIS2Service service = new DHIS2Service("http://123.200.18.20:8080", "dgfp", "Dgfp@123");
         for(DataValueSet dataValueSet : dataValueSets) {
-             System.out.println(dataValueSet.send(service));
+          //   System.out.println(dataValueSet.send(service));
         }
 
     }
