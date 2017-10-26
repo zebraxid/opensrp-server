@@ -242,11 +242,11 @@
             </staticText>
             <staticText>
                 <reportElement x="-3" y="70" width="80" height="20" uuid="7ad4d731-13e3-4918-98ac-289bdba52b33"/>
-                <text><![CDATA[Zilla:Gazipur]]></text>
+                <text><![CDATA[Zi:Gazipur]]></text>
             </staticText>
             <staticText>
                 <reportElement x="82" y="70" width="80" height="20" uuid="fcd42e38-4777-40ea-99f4-67f4de71be6e"/>
-                <text><![CDATA[Upzilla:Kaligonj]]></text>
+                <text><![CDATA[Upzi:Kaligonj]]></text>
             </staticText>
             <staticText>
                 <reportElement x="172" y="69" width="80" height="20" uuid="dc0cb8ef-b040-4a20-bb91-cf4e17bfdf77"/>
@@ -254,11 +254,11 @@
             </staticText>
             <staticText>
                 <reportElement x="269" y="69" width="80" height="20" uuid="577e4e64-2cf2-42cf-9c70-b936dfe875e7"/>
-                <text><![CDATA[Health Worker]]></text>
+                <text><![CDATA[Worker]]></text>
             </staticText>
             <staticText>
                 <reportElement x="378" y="71" width="61" height="20" uuid="b6d5bd4a-78ae-4fd7-8fea-dab3afc42a7c"/>
-                <text><![CDATA[Month :]]></text>
+                <text><![CDATA[Month:]]></text>
             </staticText>
             <textField>
                 <reportElement x="445" y="70" width="75" height="19" uuid="dca22182-f559-4063-b57e-cb36367f5e72"/>

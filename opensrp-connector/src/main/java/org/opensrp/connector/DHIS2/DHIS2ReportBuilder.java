@@ -24,7 +24,7 @@ public class DHIS2ReportBuilder {
         this.orgUnitId = orgUnitId;
         this.completionDate = completionDate;
         this.period = period;
-        this.dhis2FormattedPeriod = "201709";
+        this.dhis2FormattedPeriod = "201710";
     }
 
     private String createDhis2FormattedPeriod() {
