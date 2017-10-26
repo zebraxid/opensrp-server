@@ -1,5 +1,6 @@
 package org.opensrp.register.mcare.report.mis1.birthAndDeath;
 
+import org.opensrp.connector.DHIS2.dxf2.DHIS2;
 import org.opensrp.register.mcare.domain.Members;
 import org.opensrp.register.mcare.report.mis1.ReportCalculator;
 
@@ -12,7 +13,9 @@ import java.util.Date;
  */
 public class DeathCountofMotherCalculator extends ReportCalculator {
 
+    @DHIS2(dateElementId="nnbO37HLsTj",categoryOptionId="yVpPp8S4nU8",dataSetId="VvCMvqQWHa0")
     private long totalCountOfDeathofMother;
+
     public DeathCountofMotherCalculator(long startDateTime, long endDateTime) {
         super(startDateTime, endDateTime);
         this.initCountVariables();

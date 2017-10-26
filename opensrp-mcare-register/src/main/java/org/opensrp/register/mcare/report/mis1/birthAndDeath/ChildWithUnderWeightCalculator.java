@@ -1,6 +1,7 @@
 package org.opensrp.register.mcare.report.mis1.birthAndDeath;
 
 
+import org.opensrp.connector.DHIS2.dxf2.DHIS2;
 import org.opensrp.register.mcare.domain.Members;
 import org.opensrp.register.mcare.report.mis1.ReportCalculator;
 
@@ -10,6 +11,7 @@ import java.util.Date;
 
 public class ChildWithUnderWeightCalculator extends ReportCalculator {
 
+    @DHIS2(dateElementId="m1KL4jyNQMt",categoryOptionId="URSu6Wxv8KV",dataSetId="VvCMvqQWHa0")
     private long totalChildWithUnderWeight ;
 
     public ChildWithUnderWeightCalculator(long startDateTime, long endDateTime) {
@@ -27,6 +29,7 @@ public class ChildWithUnderWeightCalculator extends ReportCalculator {
 
     @Override
     public void calculate(Members member) {
+
         this.totalChildWithUnderWeight += countTotalChildWithUnderWeight(member);
     }
 

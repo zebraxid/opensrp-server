@@ -1,6 +1,7 @@
 package org.opensrp.register.mcare.report.mis1.maternityCare;
 
 
+import org.opensrp.connector.DHIS2.dxf2.DHIS2;
 import org.opensrp.register.mcare.domain.Members;
 import org.opensrp.register.mcare.report.mis1.ReportCalculator;
 
@@ -10,8 +11,14 @@ import java.util.Map;
 import static org.opensrp.register.mcare.domain.Members.BirthNotificationVisitKeyValue.*;
 
 public class PostpartumCareCalculator extends ReportCalculator {
+
+    @DHIS2(dateElementId="CQGKI0K6GaX",categoryOptionId="BNL2zb4Y9SA",dataSetId="iVd5aTE9P1B")
     private int countOfBirthAtHomeWithTrainedPerson = 0;
+
+    @DHIS2(dateElementId="OcKLDpwC9q3",categoryOptionId="TiCMh5Usf76",dataSetId="iVd5aTE9P1B")
     private int countOfNormalBirthAtHospitalOrClinic = 0;
+
+    @DHIS2(dateElementId="OcKLDpwC9q3",categoryOptionId="A5zxITs3U20",dataSetId="iVd5aTE9P1B")
     private long countOfCesareanBirthAtHospitalOrClinic =0;
 
     public PostpartumCareCalculator(long startDateTime, long endDateTime) {

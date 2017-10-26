@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class PregnantWomenCountCalculator extends ReportCalculator {
 
-    long newCount = 0;
+    long newPregnantCount = 0;
 
     public PregnantWomenCountCalculator(long statDateTime, long endDateTime) {
         super(statDateTime, endDateTime);
@@ -17,11 +17,12 @@ public class PregnantWomenCountCalculator extends ReportCalculator {
 
     @Override
     public void calculate(Members member) {
-        this.newCount += addToNewPregnantCount(member);
+
+        this.newPregnantCount += addToNewPregnantCount(member);
     }
 
-    public long getNewCount() {
-        return newCount;
+    public long getNewPregnantCount() {
+        return newPregnantCount;
     }
 
     private long addToNewPregnantCount(Members member) {

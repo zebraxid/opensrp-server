@@ -1,13 +1,20 @@
 package org.opensrp.register.mcare.report.mis1.childCare;
 
+import org.opensrp.connector.DHIS2.dxf2.DHIS2;
 import org.opensrp.register.mcare.domain.Members;
 import org.opensrp.register.mcare.report.mis1.ReportCalculator;
 
 import java.util.Map;
 
 public class NewBornCareReportCalculator extends ReportCalculator {
+
+    @DHIS2(dateElementId="biRKRKOV0Ul",categoryOptionId="D6XGHUZbN8B",dataSetId="Vc8Ps0P84hZ")
     private long isCleanedCount = 0;
+
+    @DHIS2(dateElementId="biRKRKOV0Ul",categoryOptionId="pdIMQ6uChwY",dataSetId="Vc8Ps0P84hZ")
     private long usedChlorhexidinCount = 0;
+
+    @DHIS2(dateElementId="biRKRKOV0Ul",categoryOptionId="KHDexzpGhKx",dataSetId="Vc8Ps0P84hZ")
     private long fedBreastMilkCount = 0;
 
     public long getIsCleanedCount() {

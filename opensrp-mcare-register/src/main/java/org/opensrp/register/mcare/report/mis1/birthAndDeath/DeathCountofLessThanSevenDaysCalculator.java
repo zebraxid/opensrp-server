@@ -1,5 +1,6 @@
 package org.opensrp.register.mcare.report.mis1.birthAndDeath;
 
+import org.opensrp.connector.DHIS2.dxf2.DHIS2;
 import org.opensrp.register.mcare.domain.Members;
 import org.opensrp.register.mcare.report.mis1.ReportCalculator;
 
@@ -12,6 +13,7 @@ import java.util.Date;
  */
 public class DeathCountofLessThanSevenDaysCalculator extends ReportCalculator {
 
+    @DHIS2(dateElementId="nnbO37HLsTj",categoryOptionId="QypvSQnrOeY",dataSetId="VvCMvqQWHa0")
     private long totalCountOfDeathofLessThanSevenDays;
 
     public DeathCountofLessThanSevenDaysCalculator(long startDateTime, long endDateTime) {

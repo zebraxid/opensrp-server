@@ -33,7 +33,7 @@ public class PregnantWomenCountTest {
         List<Members> allMembers = pregnantWomenCountTestData.getDataForNewPregnantWomenCount();
         MIS1Report mis1Report = new MIS1Report(unionName, allMembers, startDateTime, endDateTime);
 
-        long newPregnantWomenCount = mis1Report.getMaternityCareReport().getPregnantWomenCountCalculator().getNewCount();
+        long newPregnantWomenCount = mis1Report.getMaternityCareReport().getPregnantWomenCountCalculator().getNewPregnantCount();
 
         assertEquals(pregnantWomenCountTestData.validCount, newPregnantWomenCount);
     }

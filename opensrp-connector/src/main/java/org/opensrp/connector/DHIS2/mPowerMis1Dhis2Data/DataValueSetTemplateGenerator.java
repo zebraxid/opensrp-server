@@ -35,11 +35,11 @@ import java.util.Map;
 
  */
 public class DataValueSetTemplateGenerator {
-    private static String DATA_SET_TEMPLATE_PATH = "/home/habib/Music/projets/dgfp/opensrp-server/opensrp-connector/src/main/java/org/opensrp/connector/DHIS2/mPowerMis1Dhis2Data/dataSetTemplate.json";
+    private static String DATA_SET_TEMPLATE_PATH = "/home/asha/MIS_Report/bd-family-planning/opensrp-server/opensrp-connector/src/main/java/org/opensrp/connector/DHIS2/mPowerMis1Dhis2Data/dataSetTemplate.json";
 
-    private static String BASE_URL = "http://123.200.18.20:8080";
-    private static String USER_NAME = "dgfp";
-    private static String PASSWORD = "Dgfp@123";
+    private static String BASE_URL = "http://192.168.19.18:1971";
+    private static String USER_NAME = "path";
+    private static String PASSWORD = "Path@123";
 
     private static Map<String, String> dataElementsIdName = new HashMap<>();
     private static Map<String, String> categoryOptionMap = new HashMap<>();
@@ -69,8 +69,9 @@ public class DataValueSetTemplateGenerator {
                 stringBuilder += ",";
                 stringBuilder += "dataSetId=\"" + dataSetTemplate.getKey() + "\"";
                 stringBuilder += ")";
+                System.out.println(stringBuilder);
             }
-            System.out.println(stringBuilder);
+
         }
     }
 
@@ -79,6 +80,7 @@ public class DataValueSetTemplateGenerator {
         int totalPages = 0;
         int currentPage = 1;
         String url = BASE_URL + "/api" + "/dataElements.json?page=" + currentPage;
+       // System.out.println("url:" + url);
         JsonNode jsonNode = getCall(url, USER_NAME, PASSWORD);
         totalPages = jsonNode.get("pager").get("total").getIntValue();
         JsonNode dataElements = jsonNode.get("dataElements");
@@ -100,13 +102,15 @@ public class DataValueSetTemplateGenerator {
         String url = BASE_URL + "/api" + "/categoryOptionCombos.json?page=" + currentPage;
         JsonNode jsonNode = getCall(url, USER_NAME, PASSWORD);
         totalPages = jsonNode.get("pager").get("total").getIntValue();
-        JsonNode categoryOptions = jsonNode.get("dataElements");
+        JsonNode categoryOptions = jsonNode.get("categoryOptionCombos");
+        //System.out.println("categoryOptions1:" + categoryOptions);
         getCategoryOptions(categoryOptions);
         currentPage++;
         while (currentPage <= totalPages) {
-            url = BASE_URL + "/api" + "/dataElements.json?page=" + currentPage;
+            url = BASE_URL + "/api" + "/categoryOptionCombos.json?page=" + currentPage;
             jsonNode = getCall(url, USER_NAME, PASSWORD);
-            categoryOptions = jsonNode.get("dataElements");
+            categoryOptions = jsonNode.get("categoryOptionCombos");
+          //  System.out.println("categoryOptions2:" + categoryOptions);
             getCategoryOptions(categoryOptions);
             currentPage++;
         }
@@ -132,6 +136,8 @@ public class DataValueSetTemplateGenerator {
     }
 
     private static void getCategoryOptions(JsonNode categoryOptionJson) {
+
+       // System.out.println("categoryOptionJson.size()" + categoryOptionJson.size());
         for (int i = 0; i < categoryOptionJson.size(); i++) {
             categoryOptionMap.put(categoryOptionJson.get(i).get("id").asText(), categoryOptionJson.get(i).get("displayName").asText());
         }

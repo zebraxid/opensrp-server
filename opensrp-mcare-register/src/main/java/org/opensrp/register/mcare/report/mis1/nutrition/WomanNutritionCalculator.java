@@ -1,6 +1,7 @@
 package org.opensrp.register.mcare.report.mis1.nutrition;
 
 import org.joda.time.DateTime;
+import org.opensrp.connector.DHIS2.dxf2.DHIS2;
 import org.opensrp.register.mcare.domain.Members;
 import org.opensrp.register.mcare.domain.Members.NutritionVisitKeyValue.WomanNutritionService;
 import org.opensrp.register.mcare.report.mis1.ReportCalculator;
@@ -17,13 +18,28 @@ import static org.opensrp.register.mcare.domain.Members.NutritionVisitKeyValue.K
 public class WomanNutritionCalculator extends ReportCalculator {
     private static long UPPER_RANGE_OF_MOTHERHOOD_IN_MILLIS = 23 * 30 * 24 * 60 * 60 * 1000l;
 
+    @DHIS2(dateElementId="oBT0vt4IWgu",categoryOptionId="G5dG9wWnQsw",dataSetId="vO69KowjS5p")
     private long countOfCounsellingOnFolicAcidAndIronForPregWoman = 0;
+
+    @DHIS2(dateElementId="oBT0vt4IWgu",categoryOptionId="Rpndk4e2H5k",dataSetId="vO69KowjS5p")
     private long countOfCounsellingOnFolicAcidAndIronForMother = 0;
+
+    @DHIS2(dateElementId="oBT0vt4IWgu",categoryOptionId="VY25Alwyfa5",dataSetId="vO69KowjS5p")
     private long countOfCounsellingOnBreastMilkAndComplementaryFoodForPregWoman = 0;
+
+    @DHIS2(dateElementId="oBT0vt4IWgu",categoryOptionId="Sy4VfmJw5Ut",dataSetId="vO69KowjS5p")
     private long countOfCounsellingOnFeedingMMPregWoman = 0;
+
+    @DHIS2(dateElementId="oBT0vt4IWgu",categoryOptionId="zJJFCziftcY",dataSetId="vO69KowjS5p")
     private long countOfCounsellingOnBreastMilkAndComplementaryFoodFoMother = 0;
+
+    @DHIS2(dateElementId="oBT0vt4IWgu",categoryOptionId="zKLdjSgXHKN",dataSetId="vO69KowjS5p")
     private long countOfCounsellingOnFeedingMMMother = 0;
+
+    @DHIS2(dateElementId="oBT0vt4IWgu",categoryOptionId="YHXTy0Hmttw",dataSetId="vO69KowjS5p")
     private long countOfDistributionOfFolicAcidAndIronForMother = 0;
+
+    @DHIS2(dateElementId="oBT0vt4IWgu",categoryOptionId="HwEkRYoOuKD",dataSetId="vO69KowjS5p")
     private long countOfDistributionOfFolicAcidAndIronForPregWoman = 0;
 
     public WomanNutritionCalculator(long startDateTime, long endDateTime) {

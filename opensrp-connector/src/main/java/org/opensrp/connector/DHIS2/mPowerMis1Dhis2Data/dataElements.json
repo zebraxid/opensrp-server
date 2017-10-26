@@ -4,7 +4,7 @@
     "pageCount": 2,
     "total": 68,
     "pageSize": 50,
-    "nextPage": "http://123.200.18.20:8080/api/dataElements?page=2"
+    "nextPage": "http://192.168.19.18:1971/api/dataElements?page=2"
   },
   "dataElements": [
     {

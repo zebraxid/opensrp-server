@@ -27,14 +27,17 @@ public class ChildNutritionCalculator extends ReportCalculator {
     }
 
     public ChildAgeLimit getChildZeroToSix() {
+
         return childZeroToSix;
     }
 
     public ChildAgeLimit getChild6TO23() {
+
         return child6TO23;
     }
 
     public ChildAgeLimit getChild24to59() {
+
         return child24to59;
     }
 
@@ -86,6 +89,7 @@ public class ChildNutritionCalculator extends ReportCalculator {
         private long countOfBreastFeedingUntillSixMonth = 0;
         private long countOfBreastFeedingAfterSixMonth = 0;
         private long countOfContractedMAM = 0;
+        private long countOfContractedSAM = 0;
 
         public long getCountOfBreastFeedingWithInOneHour() {
 
@@ -98,6 +102,7 @@ public class ChildNutritionCalculator extends ReportCalculator {
         }
 
         public long getCountOfBreastFeedingAfterSixMonth() {
+
             return countOfBreastFeedingAfterSixMonth;
         }
 
@@ -110,8 +115,6 @@ public class ChildNutritionCalculator extends ReportCalculator {
 
             return countOfContractedSAM;
         }
-
-        private long countOfContractedSAM = 0;
 
         public ChildAgeLimit(int startMonth, int endMonth) {
             this.startMonth = startMonth;

@@ -1,6 +1,7 @@
 package org.opensrp.register.mcare.report.mis1.birthAndDeath;
 
 
+import org.opensrp.connector.DHIS2.dxf2.DHIS2;
 import org.opensrp.register.mcare.domain.Members;
 import org.opensrp.register.mcare.report.mis1.ReportCalculator;
 
@@ -10,8 +11,9 @@ import java.util.Date;
 
 public class BirthCountCalculator extends ReportCalculator {
 
-    private long totalCountOfLiveBirth ;
 
+    @DHIS2(dateElementId="m1KL4jyNQMt",categoryOptionId="lB0hF1v7fbX",dataSetId="VvCMvqQWHa0")
+    private long totalCountOfLiveBirth ;
 
     public BirthCountCalculator(long startDateTime, long endDateTime) {
         super(startDateTime, endDateTime);

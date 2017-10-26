@@ -4,8 +4,8 @@
     "pageCount": 4,
     "total": 184,
     "pageSize": 50,
-    "nextPage": "http://123.200.18.20:8080/api/categoryOptionCombos?page=4",
-    "prevPage": "http://123.200.18.20:8080/api/categoryOptionCombos?page=2"
+    "nextPage": "http://192.168.19.18:1971/api/categoryOptionCombos?page=4",
+    "prevPage": "http://192.168.19.18:1971/api/categoryOptionCombos?page=2"
   },
   "categoryOptionCombos": [
     {

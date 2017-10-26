@@ -1,5 +1,6 @@
 package org.opensrp.register.mcare.report.mis1.childCare;
 
+import org.opensrp.connector.DHIS2.dxf2.DHIS2;
 import org.opensrp.register.mcare.domain.Members;
 import org.opensrp.register.mcare.domain.Members.DiseaseName;
 import org.opensrp.register.mcare.report.mis1.ReportCalculator;
@@ -9,8 +10,13 @@ import java.util.Map;
 
 public class DiseaseReportCalculator extends ReportCalculator{
 
+    @DHIS2(dateElementId="PkTanLJAOTR",categoryOptionId="gW2sf4yURTS",dataSetId="Vc8Ps0P84hZ")
     private long veryDangerousDiseasesCount = 0;
+
+    @DHIS2(dateElementId="PkTanLJAOTR",categoryOptionId="Ji1mGTKOY2s",dataSetId="Vc8Ps0P84hZ")
     private long pneumoniaCount = 0;
+
+    @DHIS2(dateElementId="PkTanLJAOTR",categoryOptionId="xkkjXkjVXwG",dataSetId="Vc8Ps0P84hZ")
     private long diarrheaCount = 0;
 
     public DiseaseReportCalculator(long startDateTime, long endDateTime) {
