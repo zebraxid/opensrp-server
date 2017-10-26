@@ -250,7 +250,7 @@
             </staticText>
             <staticText>
                 <reportElement x="172" y="69" width="80" height="20" uuid="dc0cb8ef-b040-4a20-bb91-cf4e17bfdf77"/>
-                <text><![CDATA[Union: Boktarpur]]></text>
+                <text><![CDATA[Un:Boktarpur]]></text>
             </staticText>
             <staticText>
                 <reportElement x="269" y="69" width="80" height="20" uuid="577e4e64-2cf2-42cf-9c70-b936dfe875e7"/>
