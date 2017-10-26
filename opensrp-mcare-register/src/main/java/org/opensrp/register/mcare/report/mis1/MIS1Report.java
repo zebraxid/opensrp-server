@@ -1,5 +1,6 @@
 package org.opensrp.register.mcare.report.mis1;
 
+import org.opensrp.connector.DHIS2.dxf2.DHIS2;
 import org.opensrp.register.mcare.domain.Members;
 import org.opensrp.register.mcare.domain.Vaccine;
 import org.opensrp.register.mcare.report.mis1.birthAndDeath.BirthAndDeathReport;
@@ -40,6 +41,7 @@ public class MIS1Report {
 
     private List<Members> membersList;
 
+    @DHIS2(dataSetId = "dataSet")
     private FamilyPlanningReport familyPlanningReport;
 
     private MaternityCareReport maternityCareReport;
