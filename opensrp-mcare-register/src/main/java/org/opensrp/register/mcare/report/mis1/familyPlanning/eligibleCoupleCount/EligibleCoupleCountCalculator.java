@@ -13,84 +13,85 @@ import java.util.Map;
  */
 public class EligibleCoupleCountCalculator extends ReportCalculator {
 
-	@DHIS2(categoryOptionId="UI7LOrrDRyJ")
-	private int newEligibleCoupleVisitCount = 0;
+    @DHIS2(categoryOptionId = "UI7LOrrDRyJ")
+    private int newEligibleCoupleVisitCount = 0;
 
-	@DHIS2(categoryOptionId="Y2nkJYOsPfL")
-	private int unitTotalEligibleCoupleVisitCount = 0;
+    @DHIS2(categoryOptionId = "Y2nkJYOsPfL")
+    private int unitTotalEligibleCoupleVisitCount = 0;
 
-	@DHIS2(categoryOptionId="DHJ5tZVSSsl")
-	private int totalEligibleCouple = 0;
+    @DHIS2(categoryOptionId = "DHJ5tZVSSsl")
+    private int totalEligibleCouple = 0;
 
-	public EligibleCoupleCountCalculator(long startDateTime, long endDateTime) {
-		super(startDateTime, endDateTime);
+    public EligibleCoupleCountCalculator(long startDateTime, long endDateTime) {
+        super(startDateTime, endDateTime);
 
-	}
+    }
 
-	@Override
-	public void calculate(Members member) {
-		this.newEligibleCoupleVisitCount += addToNewEligibleCoupleVisitCount(member);
-		this.totalEligibleCouple += addToTotalEligibleCoupleCount(member);
-	}
+    @Override
+    public void calculate(Members member) {
+        this.newEligibleCoupleVisitCount += addToNewEligibleCoupleVisitCount(member);
+        this.totalEligibleCouple += addToTotalEligibleCoupleCount(member);
+    }
 
-	public int getNewEligibleCoupleVisitCount() {
+    public int getNewEligibleCoupleVisitCount() {
 
-		return newEligibleCoupleVisitCount;
-	}
+        return newEligibleCoupleVisitCount;
+    }
 
-	public int getUnitTotalEligibleCoupleVisitCount()
-	{
-		return unitTotalEligibleCoupleVisitCount;
-	}
+    public int getUnitTotalEligibleCoupleVisitCount() {
+        return unitTotalEligibleCoupleVisitCount;
+    }
 
-	public int getTotalEligibleCouple() {
-		return totalEligibleCouple;
-	}
+    public int getTotalEligibleCouple() {
+        return totalEligibleCouple;
+    }
 
-	/**
-	 * Add to new count if current member is newly eligible.
-	 *
-	 * @param member
-	 * @return
-	 */
-	private int addToNewEligibleCoupleVisitCount(Members member) {
-		int countOfVisitForAMember = 0;
-		List<Map<String, String>> eligibleCoupleVisits = member.elco_Followup();
-		for (Map<String, String> eligibleCoupleVisit : eligibleCoupleVisits) {
-			countOfVisitForAMember += checkIfVisitedBetweenStartAndEndDateTime(eligibleCoupleVisit);
-		}
-		return countOfVisitForAMember;
-	}
+    /**
+     * Add to new count if current member is newly eligible.
+     *
+     * @param member
+     * @return
+     */
+    private int addToNewEligibleCoupleVisitCount(Members member) {
+        int countOfVisitForAMember = 0;
+        List<Map<String, String>> eligibleCoupleVisits = member.elco_Followup();
+        for (Map<String, String> eligibleCoupleVisit : eligibleCoupleVisits) {
+            countOfVisitForAMember += checkIfVisitedBetweenStartAndEndDateTime(eligibleCoupleVisit);
+        }
+        return countOfVisitForAMember;
+    }
 
-	/**
-	 * Add to total count if current member is eligible.
-	 *
-	 * @param member
-	 * @return
-	 */
-	private int addToTotalEligibleCoupleCount(Members member) {
-		Long clientVersion = member.getClientVersion();
-		if (clientVersion != null) {
-			if (clientVersion >= startDateTime && clientVersion <= endDateTime) {
-				return 1;
-			}
-		}
-		return 0;
-	}
+    /**
+     * Add to total count if current member is eligible.
+     *
+     * @param member
+     * @return
+     */
+    private int addToTotalEligibleCoupleCount(Members member) {
+        Long clientVersion = member.getClientVersion();
+        if (clientVersion != null) {
+            if (Members.BooleanAnswer.fromStr(member.getEligible()).toBoolean()) {
+                if (clientVersion >= startDateTime && clientVersion <= endDateTime) {
+                    return 1;
+                }
+            }
+        }
+        return 0;
+    }
 
-	/**
-	 * TODO: Use {@link org.opensrp.register.mcare.report.mis1.ReportCalculator#withInStartAndEndTime existing Funciton}
-	 *
-	 * @param eligibleCoupleVisit
-	 * @return
-	 */
-	private int checkIfVisitedBetweenStartAndEndDateTime(Map<String, String> eligibleCoupleVisit) {
-		if (eligibleCoupleVisit.containsKey(Members.CLIENT_VERSION_KEY)) {
-			long clientVersion = Long.parseLong(eligibleCoupleVisit.get(Members.CLIENT_VERSION_KEY));
-			if (clientVersion >= startDateTime && clientVersion <= endDateTime) {
-				return 1;
-			}
-		}
-		return 0;
-	}
+    /**
+     * TODO: Use {@link org.opensrp.register.mcare.report.mis1.ReportCalculator#withInStartAndEndTime existing Funciton}
+     *
+     * @param eligibleCoupleVisit
+     * @return
+     */
+    private int checkIfVisitedBetweenStartAndEndDateTime(Map<String, String> eligibleCoupleVisit) {
+        if (eligibleCoupleVisit.containsKey(Members.CLIENT_VERSION_KEY)) {
+            long clientVersion = Long.parseLong(eligibleCoupleVisit.get(Members.CLIENT_VERSION_KEY));
+            if (clientVersion >= startDateTime && clientVersion <= endDateTime) {
+                return 1;
+            }
+        }
+        return 0;
+    }
 }

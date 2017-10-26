@@ -7,7 +7,7 @@ import java.util.Map;
 /**
  * Base abstract class for report calculation. Every report calculator should extends this class.
  */
-public abstract class ReportCalculator {
+public abstract class     ReportCalculator {
 
 	protected long startDateTime;
 

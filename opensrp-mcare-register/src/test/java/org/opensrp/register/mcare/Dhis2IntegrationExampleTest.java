@@ -1,5 +1,9 @@
 package org.opensrp.register.mcare;
 
+import org.ektorp.CouchDbConnector;
+import org.ektorp.CouchDbInstance;
+import org.ektorp.http.StdHttpClient;
+import org.ektorp.impl.StdCouchDbInstance;
 import org.joda.time.DateTime;
 import org.json.JSONException;
 import org.junit.Before;
@@ -11,8 +15,8 @@ import org.opensrp.connector.DHIS2.dxf2.DataValueSet;
 import org.opensrp.register.mcare.domain.Members;
 import org.opensrp.register.mcare.report.mis1.MIS1Report;
 import org.opensrp.register.mcare.report.mis1.birthAndDeath.AliveDeathCountTestData;
-import org.opensrp.register.mcare.report.mis1.familyPlanning.birthControlMethodUsagesCalculation.BirthControlMethodTestData;
 import org.opensrp.register.mcare.report.mis1.familyPlanning.eligibleCoupleCount.EligibleCoupleCountTestData;
+import org.opensrp.register.mcare.repository.AllMembers;
 
 import java.io.IOException;
 import java.util.List;
@@ -60,11 +64,17 @@ public class Dhis2IntegrationExampleTest {
     @Ignore
     public void exampleTest() throws IOException, JSONException, IllegalAccessException {
         DateTime period = new DateTime().minusYears(2);
-        List<Members> members = null;
-        MIS1Report mis1Report = new MIS1Report(unionName, members, startDateTime, endDateTime);
+        org.ektorp.http.HttpClient httpClient = new StdHttpClient.Builder().build();
+        CouchDbInstance dbInstance = new StdCouchDbInstance(httpClient);
+// if the second parameter is true, the database will be created if it doesn't exists
+        CouchDbConnector couchDbConnector = dbInstance.createConnector("opensrp", true);
+
+        AllMembers allMembers = new AllMembers(1, couchDbConnector );
+        List<Members> members = allMembers.getAll();
+        MIS1Report mis1Report = new MIS1Report(unionName, members, new DateTime(0l).getMillis(), new DateTime().getMillis());
         DHIS2ReportBuilder dhis2ReportBuilder = new DHIS2ReportBuilder("PKTk8zxbl0J", new DateTime(), period);
         List<DataValueSet> dataValueSets = dhis2ReportBuilder.build(mis1Report);
-        DHIS2Service service = new DHIS2Service("http://192.168.19.18:1971", "dgfp", "Dgfp@123");
+        DHIS2Service service = new DHIS2Service("http://123.200.18.20:1971", "dgfp", "Dgfp@123");
         for(DataValueSet dataValueSet : dataValueSets) {
              System.out.println(dataValueSet.send(service));
         }

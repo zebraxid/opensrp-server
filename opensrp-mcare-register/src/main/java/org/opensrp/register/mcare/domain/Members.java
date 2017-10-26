@@ -33,14 +33,21 @@ public class Members extends MotechBaseDataObject {
     }
 
     public enum BooleanAnswer {
-        INVALID(-1),
-        NO(0),
-        YES(1);
+        INVALID(-1, false),
+        NO(0, false),
+        YES(1, true);
 
         public int value;
+        public boolean bool;
 
-        BooleanAnswer(int value) {
+        public boolean toBoolean() {
+            return bool;
+        }
+
+        BooleanAnswer(int value, boolean bool) {
             this.value = value;
+            this.bool = bool;
+
         }
 
         private static Map<Integer, BooleanAnswer> map = new HashMap<Integer, BooleanAnswer>();
@@ -74,6 +81,7 @@ public class Members extends MotechBaseDataObject {
         public String getValueInString() {
             return this.getValue().toString();
         }
+
     }
 
     public static class EligibleCoupleVisitKeyValue {

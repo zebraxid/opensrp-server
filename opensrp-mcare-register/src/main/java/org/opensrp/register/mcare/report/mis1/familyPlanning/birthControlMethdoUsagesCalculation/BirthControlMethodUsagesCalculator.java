@@ -19,10 +19,10 @@ public abstract class BirthControlMethodUsagesCalculator extends ReportCalculato
 
     private String birthControlMethodToCalculate;
 
-    @DHIS2(categoryOptionId="UI7LOrrDRyJ")
+    @DHIS2(categoryOptionId="DHJ5tZVSSsl")
     private int countOfTotalUsages;
 
-    @DHIS2(categoryOptionId="DHJ5tZVSSsl")
+    @DHIS2(categoryOptionId="UI7LOrrDRyJ")
     private int countOfNewUsages;
 
     @DHIS2(categoryOptionId="ip04bzGTrPX")

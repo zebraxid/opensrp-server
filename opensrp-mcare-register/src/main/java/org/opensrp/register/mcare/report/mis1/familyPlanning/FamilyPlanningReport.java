@@ -16,8 +16,8 @@ public class FamilyPlanningReport extends Report {
     private CondomMethodUsagesCalculator condomUsagesCalculator;
     @DHIS2(dataElementId="V6hsObJOf8O")
     private IUDUsagesCalculator iudUsagesCalculator;
-   // @DHIS2(dataElementId="WJQ7zP7o5HU")
-    //private InjectableUsagesCalculator injectableUsagesCalculator;
+    @DHIS2(dataElementId="WJQ7zP7o5HU")
+    private InjectableUsagesCalculator injectableUsagesCalculator;
     @DHIS2(dataElementId="GTORqGy67Jm")
     private ImplantUsagesCalculator implantUsagesCalculator;
     @DHIS2(dataElementId="SFwYAnTq2cH")
@@ -37,7 +37,6 @@ public class FamilyPlanningReport extends Report {
      */
     @Override
     protected void initCalculators(long startDateTime, long endDateTime) {
-      //  System.err.println("WWWWWWWWWWWWWWWWWWW" + this.getClass());
         this.useReflectionToDynamicallyInitAllMemberOf(this.getClass(), startDateTime, endDateTime);
     }
 
@@ -61,10 +60,10 @@ public class FamilyPlanningReport extends Report {
         return condomUsagesCalculator;
     }
 
-   /* public InjectableUsagesCalculator getInjectableUsagesCalculator() {
+    public InjectableUsagesCalculator getInjectableUsagesCalculator() {
 
         return injectableUsagesCalculator;
-    }*/
+    }
     public IUDUsagesCalculator getIudUsagesCalculator (){
 
         return  iudUsagesCalculator;
