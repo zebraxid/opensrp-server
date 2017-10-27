@@ -1684,7 +1684,7 @@ Acid
 				<textElement textAlignment="Center">
 					<font size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[2+2]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{bc_per_f absoulate new} + $F{implant absoulate new} + $F{condom absoulate new} + $F{iud absoulate new} + $F{bc_per_f absoulate new} + $F{bc_per_m absoulate new} + $F{injectable absoulate new}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="489" y="163" width="55" height="20" uuid="048afce4-cb06-4c64-b9ab-169093e43236"/>
