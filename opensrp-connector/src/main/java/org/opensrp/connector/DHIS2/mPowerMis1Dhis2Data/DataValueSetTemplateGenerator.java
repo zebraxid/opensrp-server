@@ -35,9 +35,9 @@ import java.util.Map;
 
  */
 public class DataValueSetTemplateGenerator {
-    private static String DATA_SET_TEMPLATE_PATH = "/home/asha/MIS_Report/bd-family-planning/opensrp-server/opensrp-connector/src/main/java/org/opensrp/connector/DHIS2/mPowerMis1Dhis2Data/dataSetTemplate.json";
+    private static String DATA_SET_TEMPLATE_PATH = "/home/habib/Music/projets/dgfp/opensrp-server/opensrp-connector/src/main/java/org/opensrp/connector/DHIS2/mPowerMis1Dhis2Data/dataSetTemplate.json";
 
-    private static String BASE_URL = "http://192.168.19.18:1971";
+    private static String BASE_URL = "http://123.200.18.20:1971";
     private static String USER_NAME = "path";
     private static String PASSWORD = "Path@123";
 
@@ -59,7 +59,7 @@ public class DataValueSetTemplateGenerator {
             List<Template> templates = (List) dataSetTemplate.getValue();
             for(Template template : templates) {
                 stringBuilder = "";
-                stringBuilder += template.dataElementName + " " + template.categoryName;
+                stringBuilder += template.dataElementName + " ***** " + template.categoryName;
                 stringBuilder += " : ";
                 stringBuilder += "@DHIS2";
                 stringBuilder += "(";
