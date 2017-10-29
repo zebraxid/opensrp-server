@@ -211,24 +211,24 @@ public class ELCOService {
 			}
 
 			String fieldName = "FWWOMFNAME";			
-			if (!fieldName.equalsIgnoreCase("")) {
-				if (elcoFields.containsKey(fieldName)) {
-					if (!elcoFields.get(fieldName).equalsIgnoreCase("") || elcoFields.get(fieldName) != null) {
-						elcoScheduleService.imediateEnrollIntoMilestoneOfPSRF(elcoFields.get(ID), submission.getField(REFERENCE_DATE), submission.anmId(),
-								submission.instanceId());
-					}
-				} else {
-
-					logger.info("Variable not found which is defined in rule defination for elco");
-				}
-			}
+			
+			
+			if (!elcoFields.get(fieldName).equalsIgnoreCase("") || elcoFields.get(fieldName) != null) {
+				elcoScheduleService.imediateEnrollIntoMilestoneOfPSRF(elcoFields.get(ID), submission.getField(REFERENCE_DATE), submission.anmId(),submission.instanceId());
+			}		 
+			
 		}
 
 		if (submission.formName().equalsIgnoreCase(ELCO_REGISTRATION)) {
 
 			HouseHold houseHold = allHouseHolds.findByCaseId(submission.entityId());
 
-			if (houseHold == null) {				
+			if (houseHold == null) {	
+				
+				for (Map<String, String> elcoFields : subFormData.instances()) {
+					Elco elco = allEcos.findByCaseId(elcoFields.get(ID));
+					allEcos.remove(elco);
+				}
 				allErrorTrace.save(ErrorDocType.HouseHold.name(),format("Failed to handle Census form as there is no household registered with ID: {0}", submission.entityId()),submission.getInstanceId());
 				logger.warn(format("Failed to handle Census form as there is no household registered with ID: {0}", submission.entityId()));
 				return;

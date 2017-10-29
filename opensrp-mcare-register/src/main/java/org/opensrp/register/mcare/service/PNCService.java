@@ -155,6 +155,11 @@ public class PNCService {
 			Mother mother = allMothers.findByCaseId(submission.entityId());
 
 			if (mother == null) {
+				SubFormData subFormData = submission.getSubFormByName(CHILD_REGISTRATION_SUB_FORM_NAME);
+				for (Map<String, String> childFields : subFormData.instances()) {
+					Child child = allChilds.findByCaseId(childFields.get(ID));
+					allChilds.remove(child);
+				}
 				allErrorTrace.save(ErrorDocType.BNF.name(),format("Failed to add Child as there is no Mother enroll with ID: {0}", submission.entityId()),submission.getInstanceId());
 				logger.warn(format("Failed to handle PNC as there is no Mother enroll with ID: {0}", submission.entityId()));
 				return;
@@ -166,8 +171,9 @@ public class PNCService {
 				logger.info("Closing EC case. Ec Id: " + elco.caseId());
 				elco.setIsClosed(false);
 				elco.withTODAY(submission.getField(REFERENCE_DATE));
-				allElcos.update(elco);
-				
+				elco.setTimeStamp(System.currentTimeMillis());
+				elco.withClientVersion(DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)));
+				allElcos.update(elco);				
 				elcoSchedulesService.imediateEnrollIntoMilestoneOfPSRF(elco.caseId(), elco.TODAY(), elco.PROVIDERID(), elco.INSTANCEID());
 			}
 

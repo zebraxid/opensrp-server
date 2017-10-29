@@ -86,6 +86,7 @@ public class BNFService {
 		Mother mother = allMothers.findByCaseId(motherId);
 		Elco elco = allElcos.findByCaseId(mother.relationalid());
 		if (!allElcos.exists(submission.entityId())) {
+			allMothers.remove(mother);
 			allErrorTrace.save(ErrorDocType.PSRF.name(),format("Found mother without registered eligible couple. Ignoring: {0} for mother with id: {1} for ANM: {2}", submission.entityId(),
 					motherId, submission.anmId()),submission.getInstanceId());
 			logger.warn(format("Found mother without registered eligible couple. Ignoring: {0} for mother with id: {1} for ANM: {2}", submission.entityId(),
