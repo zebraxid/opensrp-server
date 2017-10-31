@@ -1,6 +1,7 @@
 package org.opensrp.register.mcare.report.mis1.maternityCare;
 
 
+import org.opensrp.connector.DHIS2.dxf2.DHIS2;
 import org.opensrp.register.mcare.domain.Members;
 import org.opensrp.register.mcare.report.mis1.ReportCalculator;
 
@@ -11,10 +12,13 @@ import static org.opensrp.register.mcare.domain.Members.EligibleCoupleVisitKeyVa
 import static org.opensrp.register.mcare.domain.Vaccine.VaccineDose;
 
 public class TTDoseReportCalculator extends ReportCalculator {
+    @DHIS2(dataElementId="A48EPn3QZIr",categoryOptionId="jxUVAqMdWPL",dataSetId="iVd5aTE9P1B")
     private long doseOneCount = 0;
+
     private long doseTwoCount = 0;
     private long doseThreeCount = 0;
     private long doseFourCount = 0;
+    @DHIS2(dataElementId="A48EPn3QZIr",categoryOptionId="ArybpuT1Q5x",dataSetId="iVd5aTE9P1B")
     private long doseFiveCount = 0;
 
 

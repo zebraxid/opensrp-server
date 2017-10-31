@@ -11,6 +11,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * SUPPORT MULTIPLE COI
+ */
 public class DHIS2ReportBuilder {
     private String orgUnitId;
     private DateTime completionDate;
@@ -59,19 +62,24 @@ public class DHIS2ReportBuilder {
 
                 }
                 /*
+                assumption: For single variable annotation, one annotation at a time, will be in consecutive class hierarchy and in order dataSet-dataElementId-categoryOptionId
+                            No double variable annotation supported
+                            complete annotation supported at any level of class/object hierarchy.
                     check contain data set only
                     if true
-                        list all the member of that field
+                        //list all the member of that field
                         for m : allFields
                             if field contain only data elementId
-                                list all the member of that field
+                               / list all the member of that field
                                     for m : allFields in super class
-                                        if fileld contain one or multiple category option id in super class
+                                        if field contain one or multiple category option id in super class
                                             create ad datavalue object
                                             add to template list
+                                        else
+                                            recurse
 
                                     for m : all declared fields
-                                         if fileld contain one or multiple category option id in super class
+                                         if field contain one or multiple category option id in super class
                                             create ad datavalue object
                                             add to template list
                                         else

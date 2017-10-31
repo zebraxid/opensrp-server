@@ -35,7 +35,7 @@ import java.util.List;
  * <br>
  * @see <a href="https://go.gliffy.com/go/publish/12216901">Class diagram</a>
  */
-public class MIS1Report {
+public class MIS1Report      {
 
     private String unionName;
 

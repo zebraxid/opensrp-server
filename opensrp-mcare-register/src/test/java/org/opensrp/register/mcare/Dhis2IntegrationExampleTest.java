@@ -1,5 +1,8 @@
 package org.opensrp.register.mcare;
 
+import org.codehaus.jackson.annotate.JsonAutoDetect;
+import org.codehaus.jackson.annotate.JsonMethod;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.ektorp.CouchDbConnector;
 import org.ektorp.CouchDbInstance;
 import org.ektorp.http.StdHttpClient;
@@ -72,6 +75,7 @@ public class Dhis2IntegrationExampleTest {
         AllMembers allMembers = new AllMembers(1, couchDbConnector );
         List<Members> members = allMembers.getAll();
         MIS1Report mis1Report = new MIS1Report(unionName, members, new DateTime(0l).getMillis(), new DateTime().getMillis());
+        //System.out.println(new ObjectMapper().setVisibility(JsonMethod.FIELD, JsonAutoDetect.Visibility.ANY).enableDefaultTyping().writeValueAsString(mis1Report));
         DHIS2ReportBuilder dhis2ReportBuilder = new DHIS2ReportBuilder("PKTk8zxbl0J", new DateTime(), period);
         List<DataValueSet> dataValueSets = dhis2ReportBuilder.build(mis1Report);
         DHIS2Service service = new DHIS2Service("http://123.200.18.20:1971", "dgfp", "Dgfp@123");
