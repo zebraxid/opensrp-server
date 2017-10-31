@@ -39,7 +39,9 @@ public class VaccinationTracker extends DHIS2Service {
 				
 				if (DHIS2Settings.VACCINATION.containsKey(obs.getFormSubmissionField())) {
 					Client client = clientService.find(event.getBaseEntityId());
-					sendTrackCaptureData(prepareData(obs, client));
+					System.err.println("CLLL:" + client);
+					if (client != null)
+						sendTrackCaptureData(prepareData(obs, client));
 				}
 			}
 			
@@ -51,8 +53,7 @@ public class VaccinationTracker extends DHIS2Service {
 		
 		JSONArray generateTrackCaptureData = new JSONArray();
 		Map<String, Object> attributes = new HashMap<>();
-		attributes = client.getAttributes();
-		JSONObject attributesAsJson = new JSONObject(attributes);
+		
 		JSONObject clientAsJson = new JSONObject(client);
 		try {
 			//firstName
@@ -62,10 +63,16 @@ public class VaccinationTracker extends DHIS2Service {
 			generateTrackCaptureData.put(dhis2TrackerService.getTrackCaptureData(clientAsJson,
 			    DHIS2Settings.VACCINATIONMAPPING.get("lastName").toString(), "lastName"));
 			
-			generateTrackCaptureData.put(dhis2TrackerService.getTrackCaptureData(attributesAsJson,
-			    DHIS2Settings.VACCINATIONMAPPING.get("NID_BRID").toString(), "nationalId"));
-			generateTrackCaptureData.put(dhis2TrackerService.getTrackCaptureData(attributesAsJson,
-			    DHIS2Settings.VACCINATIONMAPPING.get("Child_Birth_Certificate").toString(), "Child_Birth_Certificate"));
+			attributes = client.getAttributes();
+			if (attributes != null) {
+				JSONObject attributesAsJson = new JSONObject(attributes);
+				
+				generateTrackCaptureData.put(dhis2TrackerService.getTrackCaptureData(attributesAsJson,
+				    DHIS2Settings.VACCINATIONMAPPING.get("NID_BRID").toString(), "nationalId"));
+				generateTrackCaptureData.put(dhis2TrackerService.getTrackCaptureData(attributesAsJson,
+				    DHIS2Settings.VACCINATIONMAPPING.get("Child_Birth_Certificate").toString(), "Child_Birth_Certificate"));
+				
+			}
 			
 			//vaccination name
 			JSONObject vaccieName = new JSONObject();
