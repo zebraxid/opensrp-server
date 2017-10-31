@@ -34,11 +34,12 @@ public class VaccinationTracker extends DHIS2Service {
 	public JSONArray getTrackCaptureDataAndSend(List<Event> events) throws JSONException {
 		for (Event event : events) {
 			List<Obs> observations = event.getObs();
+			
 			for (Obs obs : observations) {
-				if (DHIS2Settings.VACCINATIONMAPPING.containsKey(obs.getFormSubmissionField())) {
+				
+				if (DHIS2Settings.VACCINATION.containsKey(obs.getFormSubmissionField())) {
 					Client client = clientService.find(event.getBaseEntityId());
-					sendTrackCaptureData(prepareData(obs,
-					    DHIS2Settings.VACCINATIONMAPPING.get(obs.getFormSubmissionField()), client));
+					sendTrackCaptureData(prepareData(obs, client));
 				}
 			}
 			
@@ -46,7 +47,7 @@ public class VaccinationTracker extends DHIS2Service {
 		return null;
 	}
 	
-	private JSONArray prepareData(Obs obs, String attributeId, Client client) {
+	private JSONArray prepareData(Obs obs, Client client) {
 		
 		JSONArray generateTrackCaptureData = new JSONArray();
 		Map<String, Object> attributes = new HashMap<>();
@@ -75,8 +76,8 @@ public class VaccinationTracker extends DHIS2Service {
 			//vaccination dose
 			JSONObject vaccieDose = new JSONObject();
 			vaccieDose.put("attribute", DHIS2Settings.VACCINATIONMAPPING.get("Vaccina_dose"));
-			vaccieDose.put("value", obs.getFormSubmissionField());
-			generateTrackCaptureData.put(DHIS2Settings.VACCINATION.containsKey(obs.getFormSubmissionField()));
+			vaccieDose.put("value", DHIS2Settings.VACCINATION.get(obs.getFormSubmissionField()));
+			generateTrackCaptureData.put(vaccieDose);
 			
 			generateTrackCaptureData.put(dhis2TrackerService.getVaccinationDataFromObservation(obs,
 			    DHIS2Settings.VACCINATIONMAPPING.get("Vaccina_date").toString()));
@@ -86,11 +87,12 @@ public class VaccinationTracker extends DHIS2Service {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+		System.err.println("generateTrackCaptureData:" + generateTrackCaptureData);
 		return generateTrackCaptureData;
 	}
 	
 	public JSONObject sendTrackCaptureData(JSONArray attributes) throws JSONException {
+		System.err.println("attributes:" + attributes);
 		String orgUnit = "IDc0HEyjhvL";
 		String program = "Bxy7WXRMscX";
 		JSONObject clientData = new JSONObject();
