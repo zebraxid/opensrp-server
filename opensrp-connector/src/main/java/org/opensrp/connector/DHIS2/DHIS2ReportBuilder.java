@@ -39,7 +39,7 @@ public class DHIS2ReportBuilder {
     public <T> List<DataValueSet> build(T reportingObj) throws IllegalAccessException {
         String dataSetId;
         String dataElementId;
-        String categoryOptionId;
+        String[] categoryOptionId;
         Class reportingClass = reportingObj.getClass();
 
         for (Field m : reportingClass.getDeclaredFields()) {
@@ -47,17 +47,17 @@ public class DHIS2ReportBuilder {
                 dataSetId = m.getAnnotation(DHIS2.class).dataSetId();
                 dataElementId = m.getAnnotation(DHIS2.class).dataElementId();
                 categoryOptionId = m.getAnnotation(DHIS2.class).categoryOptionId();
-                boolean onlyDataSetAnnotationPresent = !dataSetId.isEmpty() && dataElementId.isEmpty() && categoryOptionId.isEmpty();
-                boolean dataSetAndDataElementAnnotationPresent = !dataSetId.isEmpty() && !dataElementId.isEmpty() && categoryOptionId.isEmpty();
-                boolean completeAnnotationPresent = !dataSetId.isEmpty() && dataElementId.isEmpty() && !categoryOptionId.isEmpty();
-                if(onlyDataSetAnnotationPresent){
-                    for(Field dataElementField : m.getType().getDeclaredFields()) {
+                boolean onlyDataSetAnnotationPresent = !dataSetId.isEmpty() && dataElementId.isEmpty() && isEmptyArray(categoryOptionId);
+                boolean dataSetAndDataElementAnnotationPresent = !dataSetId.isEmpty() && !dataElementId.isEmpty() && isEmptyArray(categoryOptionId);
+                boolean completeAnnotationPresent = !dataSetId.isEmpty() && dataElementId.isEmpty() && !isEmptyArray(categoryOptionId);
+                if (onlyDataSetAnnotationPresent) {
+                    for (Field dataElementField : m.getType().getDeclaredFields()) {
                         createDataValueSetForChainAnnotation(reportingObj, m, dataSetId, dataElementField);
 
                     }
-                } else if(dataSetAndDataElementAnnotationPresent) {
+                } else if (dataSetAndDataElementAnnotationPresent) {
 
-                } else if(completeAnnotationPresent){
+                } else if (completeAnnotationPresent) {
                     createDataValueFromCompleteAnnotatedMember(reportingObj, m, dataSetId);
 
                 }
@@ -65,6 +65,7 @@ public class DHIS2ReportBuilder {
                 assumption: For single variable annotation, one annotation at a time, will be in consecutive class hierarchy and in order dataSet-dataElementId-categoryOptionId
                             No double variable annotation supported
                             complete annotation supported at any level of class/object hierarchy.
+                            Supports multiple categoryOptionId for single annotation
                     check contain data set only
                     if true
                         //list all the member of that field
@@ -105,59 +106,57 @@ public class DHIS2ReportBuilder {
 
     private <T> void createDataValueSetForChainAnnotation(T reportingObj, Field dataSetIdAnnotedField, String dataSetId, Field dataElementAnnotedField) throws IllegalAccessException {
         String dataElementId;
-        String categoryOptionId;
-        if(dataElementAnnotedField.isAnnotationPresent(DHIS2.class)){
+        String[] categoryOptionId;
+        if (dataElementAnnotedField.isAnnotationPresent(DHIS2.class)) {
             dataElementId = dataElementAnnotedField.getAnnotation(DHIS2.class).dataElementId();
             categoryOptionId = dataElementAnnotedField.getAnnotation(DHIS2.class).categoryOptionId();
-            boolean onlyDataElementAnnotationPresent = !dataElementId.isEmpty() && categoryOptionId.isEmpty();
-            if(onlyDataElementAnnotationPresent) {
+            boolean onlyDataElementAnnotationPresent = !dataElementId.isEmpty() && (categoryOptionId.length == 0);
+            if (onlyDataElementAnnotationPresent) {
                 createDataValueFromSuperClassCategoryOptionId(reportingObj, dataSetIdAnnotedField, dataSetId, dataElementId, dataElementAnnotedField);
                 createDataValueFromDeclaredFieldsCategoryOptionId(reportingObj, dataSetIdAnnotedField, dataSetId, dataElementId, dataElementAnnotedField);
 
             }
-        }else {
+        } else {
             recurse(reportingObj, dataElementAnnotedField);
         }
     }
 
     private <T> void createDataValueFromDeclaredFieldsCategoryOptionId(T reportingObj, Field dataSetIdAnnotedField, String dataSetId, String dataElementId, Field dataElementAnnotedField) throws IllegalAccessException {
-        String categoryOptionId;
+        String[] categoryOptionId;
         for (Field categoryOptionField : dataElementAnnotedField.getType().getDeclaredFields()) {
-            if(categoryOptionField.isAnnotationPresent(DHIS2.class)) {
+            if (categoryOptionField.isAnnotationPresent(DHIS2.class)) {
                 categoryOptionId = categoryOptionField.getAnnotation(DHIS2.class).categoryOptionId();
                 createDataValueSetFromChain(reportingObj, dataSetIdAnnotedField, dataSetId, dataElementId, categoryOptionId, dataElementAnnotedField, categoryOptionField);
-            }else {
+            } else {
                 recurse(reportingObj, categoryOptionField);
             }
         }
     }
 
     private <T> void createDataValueFromSuperClassCategoryOptionId(T reportingObj, Field dataSetAnnotatedField, String dataSetId, String dataElementId, Field dataElementField) throws IllegalAccessException {
-        String categoryOptionId;
+        String[] categoryOptionId;
         for (Field categoryOptionField : dataElementField.getType().getSuperclass().getDeclaredFields()) {
-            if(categoryOptionField.isAnnotationPresent(DHIS2.class)) {
+            if (categoryOptionField.isAnnotationPresent(DHIS2.class)) {
                 categoryOptionId = categoryOptionField.getAnnotation(DHIS2.class).categoryOptionId();
                 createDataValueSetFromChain(reportingObj, dataSetAnnotatedField, dataSetId, dataElementId, categoryOptionId, dataElementField, categoryOptionField);
             }
         }
     }
 
-    private <T> void createDataValueSetFromChain(T reportingObj, Field m, String dataSetId, String dataElementId, String categoryOptionId, Field dataElementField, Field categoryOptionField) throws IllegalAccessException {
-        String orgUnit = orgUnitId;
-        String period = dhis2FormattedPeriod;
+    private <T> void createDataValueSetFromChain(T reportingObj, Field m, String dataSetId, String dataElementId, String[] categoryOptionId, Field dataElementField, Field categoryOptionField) throws IllegalAccessException {
         categoryOptionField.setAccessible(true);
         dataElementField.setAccessible(true);
         m.setAccessible(true);
         categoryOptionField.setAccessible(true);
         String value = categoryOptionField.get(dataElementField.get(m.get(reportingObj))).toString();
-        DataValue dataValue = new DataValue(dataElementId, categoryOptionId, orgUnit, period, value);
-        addToTemplate(dataSetId, dataValue);
+        createDataValueSetFromCategoryOptionIds(dataSetId, dataElementId, categoryOptionId, value);
+
     }
+
 
     private <T> void createDataValueFromCompleteAnnotatedMember(T reportingObj, Field m, String dataSetId) {
         try {
-            DataValue dataValue = createDataValue(reportingObj, m);
-            addToTemplate(dataSetId, dataValue);
+            createDataValue(reportingObj, m, dataSetId);
         } catch (Exception exc) {
             exc.printStackTrace();
         }
@@ -193,15 +192,14 @@ public class DHIS2ReportBuilder {
         return !m.getType().isPrimitive() && !m.isSynthetic() && !m.getType().isArray();
     }
 
-    private <T> DataValue createDataValue(T reportingObj, Field m) throws IllegalAccessException {
+    private <T> void createDataValue(T reportingObj, Field m, String dataSetId) throws IllegalAccessException {
 
-        String orgUnit = orgUnitId;
-        String period = dhis2FormattedPeriod;
         String dataElementId = m.getAnnotation(DHIS2.class).dataElementId();
-        String categoryOptionId = m.getAnnotation(DHIS2.class).categoryOptionId();
+        String[] categoryOptionId = m.getAnnotation(DHIS2.class).categoryOptionId();
         m.setAccessible(true);
         String value = m.get(reportingObj).toString();
-        return new DataValue(dataElementId, categoryOptionId, orgUnit, period, value);
+        createDataValueSetFromCategoryOptionIds(dataSetId, dataElementId, categoryOptionId, value);
+
     }
 
     private List<DataValueSet> buildDataValueSets() {
@@ -211,6 +209,17 @@ public class DHIS2ReportBuilder {
             dataValueSets.add(dataValueSet);
         }
         return dataValueSets;
+    }
+
+    private void createDataValueSetFromCategoryOptionIds(String dataSetId, String dataElementId, String[] categoryOptionId, String value) {
+        for (int i = 0; i < categoryOptionId.length; i++) {
+            DataValue dataValue = new DataValue(dataElementId, categoryOptionId[i], orgUnitId, dhis2FormattedPeriod, value);
+            addToTemplate(dataSetId, dataValue);
+        }
+    }
+
+    private boolean isEmptyArray(String[] array){
+        return array.length == 0;
     }
 
 }

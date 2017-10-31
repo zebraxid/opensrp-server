@@ -1,6 +1,7 @@
 package org.opensrp.register.mcare.report.mis1.maternityCare;
 
 
+import org.opensrp.connector.DHIS2.dxf2.DHIS2;
 import org.opensrp.register.mcare.domain.Members;
 import org.opensrp.register.mcare.domain.Members.BooleanAnswer;
 import org.opensrp.register.mcare.report.mis1.ReportCalculator;
@@ -10,12 +11,14 @@ import java.util.Map;
 import static org.opensrp.register.mcare.domain.Members.ANCVisitKeyValue.Key;
 
 public class ANCReportCalculator extends ReportCalculator {
+    @DHIS2(dataElementId="tpA10DvTrwU",categoryOptionId={"Gp7njQnYwG4", "rAjjuDsDx61"},dataSetId="iVd5aTE9P1B")
     long visitOneCount = 0;
     long visitTwoCount = 0;
     long isReferredCount = 0;
     long misoprostolRecivedCount = 0;
     private long visitThreeCount = 0;
-    private long visitFourCount;
+    @DHIS2(dataElementId="R1nlR3GB5rB",categoryOptionId={"Gp7njQnYwG4", "rAjjuDsDx61"},dataSetId="iVd5aTE9P1B")
+    private long visitFourCount = 0;
 
 
     public ANCReportCalculator(long startDateTime, long endDateTime) {

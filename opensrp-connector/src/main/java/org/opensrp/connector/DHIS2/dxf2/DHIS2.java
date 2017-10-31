@@ -8,5 +8,5 @@ import java.lang.annotation.*;
 public @interface DHIS2 {
     String dataSetId() default "";
     String dataElementId() default "";
-    String categoryOptionId() default "";
+    String[] categoryOptionId() default {};
 }
