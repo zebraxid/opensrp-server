@@ -41,7 +41,6 @@ public class DHIS2TrackerService {
 		JSONObject clientData = new JSONObject(client);
 		Map<String, List<String>> relationships = client.getRelationships();
 		TrackerType type = null;
-		System.err.println("relationships:" + relationships);
 		if (relationships == null) {
 			type = TrackerType.HOUSEHOLD;
 		} else if (relationships.containsKey("household")) {
@@ -88,6 +87,13 @@ public class DHIS2TrackerService {
 		data.put("value", "");
 		return data;
 		
+	}
+	
+	public JSONObject getVaccinationDataFromObservation(Obs obs, String attributeId) throws JSONException {
+		JSONObject data = new JSONObject();
+		data.put("attribute", attributeId);
+		data.put("value", obs.getValues().get(0));
+		return data;
 	}
 	
 	public JSONObject getTrackCaptureDataFromEventByHumanReadableValues(List<Obs> obsservations, String attributeId,

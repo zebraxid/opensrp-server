@@ -11,8 +11,10 @@ import org.opensrp.common.AllConstants.DHIS2Constants;
 import org.opensrp.common.util.DateUtil;
 import org.opensrp.domain.Client;
 import org.opensrp.domain.DHIS2Marker;
+import org.opensrp.domain.Event;
 import org.opensrp.repository.AllDHIS2Marker;
 import org.opensrp.service.ClientService;
+import org.opensrp.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -33,6 +35,12 @@ public class DHIS2SyncerListener {
 	private DHIS2Tracker dhis2Tracker;
 	
 	@Autowired
+	private EventService eventService;
+	
+	@Autowired
+	public VaccinationTracker vaccinationTracker;
+	
+	@Autowired
 	public DHIS2SyncerListener(ClientService clientService) {
 		this.clientService = clientService;
 	}
@@ -51,16 +59,16 @@ public class DHIS2SyncerListener {
 				start = lastsync == null || lastsync.get(0).getValue() == null ? 0 : lastsync.get(0).getValue();
 			}
 			List<Client> cl = clientService.findByServerVersion(start);
-			System.err.println("Sixe:" + cl.size());
+			List<Event> events = eventService.findByServerVersion(start);
 			for (Client c : cl) {
 				try {
 					response = processTrackerAndSendToDHIS2(c);
-					//response = sentTrackCaptureDataToDHIS2(c);
 				}
 				catch (Exception e) {
 					System.out.println("DHIS2 Message:" + e.getMessage());
 				}
 			}
+			processAndSendVaccineTrackerToDHIS2(events);
 			allDHIS2Marker.update();
 		}
 		catch (Exception ex) {
@@ -69,7 +77,13 @@ public class DHIS2SyncerListener {
 		return response;
 	}
 	
-	public JSONObject processTrackerAndSendToDHIS2(Client client) throws JSONException {
+	private JSONObject processAndSendVaccineTrackerToDHIS2(List<Event> events) throws JSONException {
+		vaccinationTracker.getTrackCaptureDataAndSend(events);
+		return null;
+		
+	}
+	
+	private JSONObject processTrackerAndSendToDHIS2(Client client) throws JSONException {
 		
 		dhis2Tracker = dhis2TrackerService.getTrackerType(client);
 		JSONArray clientData = dhis2Tracker.getTrackCaptureData(client);
