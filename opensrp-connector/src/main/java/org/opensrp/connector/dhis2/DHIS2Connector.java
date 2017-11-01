@@ -24,6 +24,10 @@ public class DHIS2Connector extends DHIS2Service {
 	
 	private JSONObject clientData = new JSONObject();
 	
+	private String programKey = "program";
+	
+	private String orgUnitKey = "orgUnit";
+	
 	public DHIS2Connector() {
 		
 	}
@@ -63,13 +67,12 @@ public class DHIS2Connector extends DHIS2Service {
 	public JSONObject prepareClientData() throws JSONException {
 		clientData.put("attributes", attributes);
 		clientData.put("trackedEntity", trackedEntity);
-		clientData.put("orgUnit", orgUnit);
+		clientData.put(orgUnitKey, orgUnit);
 		return clientData;
 	}
 	
 	public JSONObject send() throws JSONException {
-		String programKey = "program";
-		String orgUnitKey = "orgUnit";
+		
 		String reference = "reference";
 		JSONObject responseTrackEntityInstance = new JSONObject(Dhis2HttpUtils.post(
 		    DHIS2_BASE_URL.replaceAll("\\s+", "") + "trackedEntityInstances", "", prepareClientData().toString(),

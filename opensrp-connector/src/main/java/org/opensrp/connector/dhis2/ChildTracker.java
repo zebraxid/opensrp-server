@@ -12,7 +12,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.opensrp.domain.Client;
 import org.opensrp.service.ClientService;
-import org.opensrp.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +25,7 @@ public class ChildTracker extends DHIS2Service implements DHIS2Tracker {
 	private DHIS2TrackerService dhis2TrackerService;
 	
 	@Autowired
-	private ClientService clientService;	
+	private ClientService clientService;
 	
 	@Autowired
 	private DHIS2Connector dhis2Connector;
@@ -80,16 +79,16 @@ public class ChildTracker extends DHIS2Service implements DHIS2Tracker {
 		JSONObject motherAsJson = new JSONObject(mother);
 		//Mother/Guardian First Name
 		generateTrackCaptureData.put(dhis2TrackerService.getTrackCaptureData(motherAsJson, DHIS2Settings.CLIENTIDMAPPING
-		        .get("Mother_guardian_First_Name").toString(), "firstName"));
+		        .get("Mother_guardian_First_Name").toString(), firstName));
 		
 		// Mother_Guardian_Last_Name
 		generateTrackCaptureData.put(dhis2TrackerService.getTrackCaptureData(motherAsJson, DHIS2Settings.CLIENTIDMAPPING
-		        .get("Mother_Guardian_Last_Name").toString(), "lastName"));
+		        .get("Mother_Guardian_Last_Name").toString(), lastName));
 		
 		// Mother_Guardian birthdate		
 		JSONObject motherbirthDate = new JSONObject();
-		motherbirthDate.put("attribute", DHIS2Settings.CLIENTIDMAPPING.get("Mother_Guardian_DOB").toString());
-		motherbirthDate.put("value", mother.getBirthdate());
+		motherbirthDate.put(attributeKey, DHIS2Settings.CLIENTIDMAPPING.get("Mother_Guardian_DOB").toString());
+		motherbirthDate.put(valueKey, mother.getBirthdate());
 		generateTrackCaptureData.put(motherbirthDate);
 		
 		/****** getting information from Event *****/
