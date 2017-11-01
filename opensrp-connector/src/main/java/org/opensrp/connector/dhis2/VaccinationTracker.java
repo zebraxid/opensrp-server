@@ -23,6 +23,9 @@ public class VaccinationTracker extends DHIS2Service {
 	@Autowired
 	private ClientService clientService;
 	
+	@Autowired
+	private DHIS2Connector dhis2Connector;
+	
 	public VaccinationTracker() {
 		
 	}
@@ -99,38 +102,13 @@ public class VaccinationTracker extends DHIS2Service {
 	}
 	
 	public JSONObject sendTrackCaptureData(JSONArray attributes) throws JSONException {
-		System.err.println("attributes:" + attributes);
 		String orgUnit = "IDc0HEyjhvL";
 		String program = "Bxy7WXRMscX";
-		JSONObject clientData = new JSONObject();
-		/*JSONArray enrollments = new JSONArray();
-		JSONObject enrollmentsObj = new JSONObject();
-		enrollmentsObj.put("orgUnit", orgUnit);
-		enrollmentsObj.put("program", program);
-		enrollmentsObj.put("enrollmentDate", DateUtil.getTodayAsString());
-		enrollmentsObj.put("incidentDate", DateUtil.getTodayAsString());
-		enrollments.put(enrollmentsObj);*/
-		
-		clientData.put("attributes", attributes);
-		clientData.put("trackedEntity", "MCPQUTHX1Ze");
-		clientData.put("orgUnit", orgUnit);
-		
-		JSONObject responseTrackEntityInstance = new JSONObject(Dhis2HttpUtils.post(
-		    DHIS2_BASE_URL.replaceAll("\\s+", "") + "trackedEntityInstances", "", clientData.toString(),
-		    DHIS2_USER.replaceAll("\\s+", ""), DHIS2_PWD.replaceAll("\\s+", "")).body());
-		JSONObject trackEntityReference = (JSONObject) responseTrackEntityInstance.get("response");
-		
-		JSONObject enroll = new JSONObject();
-		enroll.put("trackedEntityInstance", trackEntityReference.get("reference"));
-		enroll.put("program", program);
-		enroll.put("orgUnit", orgUnit);
-		
-		JSONObject response = new JSONObject(Dhis2HttpUtils.post(DHIS2_BASE_URL.replaceAll("\\s+", "") + "enrollments", "",
-		    enroll.toString(), DHIS2_USER.replaceAll("\\s+", ""), DHIS2_PWD.replaceAll("\\s+", "")).body());
-		
-		response.put("track", trackEntityReference.get("reference"));
-		
-		return response;
+		String trackedEntity = "MCPQUTHX1Ze";
+		dhis2Connector.setAttributes(attributes);
+		dhis2Connector.setOrgUnit(orgUnit);
+		dhis2Connector.setProgram(program);
+		dhis2Connector.setTrackedEntity(trackedEntity);
+		return dhis2Connector.send();
 	}
-	
 }

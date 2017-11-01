@@ -58,17 +58,17 @@ public class DHIS2SyncerListener {
 			} else {
 				start = lastsync == null || lastsync.get(0).getValue() == null ? 0 : lastsync.get(0).getValue();
 			}
-			List<Client> cl = clientService.findByServerVersion(0l);
-			List<Event> events = eventService.findByServerVersion(0l);
+			List<Client> cl = clientService.findByServerVersion(start);
+			List<Event> events = eventService.findByServerVersion(start);
 			for (Client c : cl) {
 				try {
-					//response = processTrackerAndSendToDHIS2(c);
+					response = processTrackerAndSendToDHIS2(c);
 				}
 				catch (Exception e) {
 					System.out.println("DHIS2 Message:" + e.getMessage());
 				}
 			}
-			System.err.println("DDDD:" + events.toString());
+			
 			processAndSendVaccineTrackerToDHIS2(events);
 			allDHIS2Marker.update();
 		}
