@@ -55,22 +55,45 @@ public class DHIS2Settings {
 		HOUSEHOLDIDMAPPING.put("registration_Date", "bWoFS5a23fo");
 	}
 	
-	public static String ORGUNITKEY = "orgUnit";
+	static Map<String, String> VACCINATIONMAPPING = new HashMap<String, String>();
+	static {
+		VACCINATIONMAPPING.put("firstName", "pzuh7zrs9Xx");
+		VACCINATIONMAPPING.put("lastName", "VDWBOoLHJ8S");
+		VACCINATIONMAPPING.put("Mother_guardian_First_Name", "ra9rJm4IoD0");
+		VACCINATIONMAPPING.put("Mother_Guardian_DOB", "UhNq433oy7S");
+		VACCINATIONMAPPING.put("NID_BRID", "gXDTMMEoPTO");
+		VACCINATIONMAPPING.put("Child_Birth_Certificate", "ZDWzVhjlgWK");
+		VACCINATIONMAPPING.put("Vaccina_date", "FrU0Gy7JgDj");
+		VACCINATIONMAPPING.put("Vaccina_dose", "angDB9as1Mm");
+		VACCINATIONMAPPING.put("Vaccina_name", "xpcgeevTaHG");
+	}
 	
-	public static String PROGRAM = "program";
-	
-	public static String REPLACE = "\\s+";
-	
-	public static String LASTNAME = "lastName";
-	
-	public static String FIRSTNAME = "firstName";
-	
-	public static String GENDER = "gender";
-	
-	public static String ATTRIBUTEKEY = "attribute";
-	
-	public static String ATTRIBUTSEKEY = "attributes";
-	
-	public static String VALUEKEY = "value";
-	
+	static Map<String, Integer> VACCINATION = new HashMap<String, Integer>();
+	static {
+		VACCINATION.put("opv_0", 0);
+		VACCINATION.put("opv_1", 1);
+		VACCINATION.put("opv_2", 2);
+		VACCINATION.put("opv_3", 3);
+		VACCINATION.put("opv_4", 4);
+		
+		VACCINATION.put("bcg", 1);
+		
+		VACCINATION.put("penta_1", 1);
+		VACCINATION.put("penta_2", 2);
+		VACCINATION.put("penta_3", 3);
+		
+		VACCINATION.put("pcv_1", 1);
+		VACCINATION.put("pcv_2", 2);
+		VACCINATION.put("pcv_3", 3);
+		
+		VACCINATION.put("measles_1", 1);
+		VACCINATION.put("measles_2", 2);
+		
+		VACCINATION.put("tt_1", 1);
+		VACCINATION.put("tt_2", 2);
+		VACCINATION.put("tt_3", 3);
+		VACCINATION.put("tt_4", 4);
+		VACCINATION.put("tt_5", 5);
+		
+	}
 }

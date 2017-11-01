@@ -20,6 +20,7 @@ public class Dhis2TrackCaptureConnector extends DHIS2Service {
 	}
 	
 	public JSONObject trackCaptureDataSendToDHIS2(JSONObject payloadJsonObj) throws JSONException {
+		
 		JSONObject responseTrackEntityInstance = new JSONObject(Dhis2HttpUtils.post(
 		    DHIS2_BASE_URL.replaceAll("\\s+", "") + "trackedEntityInstances", "", payloadJsonObj.toString(),
 		    DHIS2_USER.replaceAll("\\s+", ""), DHIS2_PWD.replaceAll("\\s+", "")).body());

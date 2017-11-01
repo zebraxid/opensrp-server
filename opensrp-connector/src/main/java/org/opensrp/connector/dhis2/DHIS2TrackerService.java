@@ -89,6 +89,13 @@ public class DHIS2TrackerService {
 		
 	}
 	
+	public JSONObject getVaccinationDataFromObservation(Obs obs, String attributeId) throws JSONException {
+		JSONObject data = new JSONObject();
+		data.put("attribute", attributeId);
+		data.put("value", obs.getValues().get(0));
+		return data;
+	}
+	
 	public JSONObject getTrackCaptureDataFromEventByHumanReadableValues(List<Obs> obsservations, String attributeId,
 	                                                                    String formSubmissionField) throws JSONException {
 		JSONObject data = new JSONObject();
