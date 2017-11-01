@@ -37,7 +37,7 @@ import java.util.List;
  */
 public class MIS1Report      {
 
-    private String unionName;
+    private String healthWorker;
 
     private List<Members> membersList;
 
@@ -51,8 +51,8 @@ public class MIS1Report      {
     private NutritionReport nutritionReport;
 
 
-    public MIS1Report(String unionName, List<Members> membersList, long startDateTime, long endDateTime) {
-        this.unionName = unionName;
+    public MIS1Report(String healthWorker, List<Members> membersList, long startDateTime, long endDateTime) {
+        this.healthWorker = healthWorker;
         this.membersList = membersList;
         this.familyPlanningReport = new FamilyPlanningReport(startDateTime, endDateTime);
         this.maternityCareReport = new MaternityCareReport(startDateTime, endDateTime);

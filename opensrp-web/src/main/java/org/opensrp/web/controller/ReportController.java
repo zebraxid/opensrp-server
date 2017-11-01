@@ -16,6 +16,7 @@ import org.opensrp.register.mcare.domain.Members;
 import org.opensrp.register.mcare.mapper.ELCORegisterMapper;
 import org.opensrp.register.mcare.mapper.HHRegisterMapper;
 import org.opensrp.register.mcare.report.mis1.MIS1Report;
+import org.opensrp.register.mcare.report.mis1.MIS1ReportGenerator;
 import org.opensrp.register.mcare.repository.AllMembers;
 import org.opensrp.register.mcare.service.reporting.HHReportService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,32 +67,11 @@ public class ReportController {
     }
 
 
-    //@RequestMapping(method = RequestMethod.GET, value = "/report/dhis2/mis1")
-	public ResponseEntity<Map<String, JSONObject>> createAndSendMis1ReportToDhis2(@RequestParam("startDateTime")JSONObject data) {
-		try {
-
-			String startDate = data.getString("startDate");
-			String endDate = data.getString("endDate");
-			List<Members> members = allMembers.allMembersCreatedBetweenTwoDateBasedOnUpdatedTimeStamp(new DateTime().getMillis());
-            DateTime startDateTime = new DateTime(startDate);
-            DateTime endDateTime = new DateTime(endDate);
-            MIS1Report mis1Report = new MIS1Report("union", members, startDateTime.getMillis(), endDateTime.getMillis());
-            List<DataValueSet> dataSets = new DHIS2ReportBuilder("orgUnit", null, startDateTime).build(mis1Report);
-            Map<String, JSONObject> dhis2Responses = new HashMap<>(data.length());
-            DHIS2Service service = new DHIS2Service("http://123.200.18.20:8080", "dgfp", "Dgfp@123");
-            for(DataValueSet dataValueSet: dataSets) {
-                JSONObject response = dataValueSet.send(service);
-                dhis2Responses.put(dataValueSet.getDataSet(), response);
-            }
-            return new ResponseEntity<Map<String, JSONObject>>(dhis2Responses, HttpStatus.OK);
-		} catch (JSONException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
+    @RequestMapping(method = RequestMethod.GET, value = "/report/mis1", headers = { "Accept=application/json" })
+	public ResponseEntity<MIS1Report> getMis1Report(@RequestParam("filter")MIS1ReportGenerator.Filter filter) {
+		MIS1ReportGenerator mis1ReportGenerator = new MIS1ReportGenerator();
+		MIS1Report mis1Report = mis1ReportGenerator.getReportBasedOn(filter);
+		return new ResponseEntity<>(mis1Report, HttpStatus.OK);
     }
 	/*
 	@RequestMapping(method = RequestMethod.GET, value = "/report/report-hh-7-days")

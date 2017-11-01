@@ -1,27 +1,55 @@
 package org.opensrp.register.mcare.report.mis1;
 
-import java.util.List;
-
+import org.joda.time.DateTime;
 import org.opensrp.register.mcare.domain.Members;
 import org.opensrp.register.mcare.repository.AllMembers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+
 @Service
 public class MIS1ReportGenerator {
 
-	public static long start = 1506816000;
-	public static long end = 1508092200;
+    public long start;
+    public long end;
 
-	@Autowired
-	private AllMembers allMembers;
+    @Autowired
+    private AllMembers allMembers;
 
-	public List<Members> getAllCalculatorValue() {
+    public List<Members> getAllCalculatorValue() {
 
-		List<Members> getAllMembers = allMembers.allMembersCreatedBetweenTwoDateBasedOnUpdatedTimeStamp(1504224000000L);
-		
-		long value = getAllMembers.size();
+        List<Members> getAllMembers = allMembers.allMembersCreatedBetweenTwoDateBasedOnUpdatedTimeStamp(1504224000000L);
 
-		return getAllMembers;
-	}
+        long value = getAllMembers.size();
+
+        return getAllMembers;
+    }
+
+    public MIS1Report getReportBasedOn(Filter filter) {
+        DateTime startDateTime = new DateTime(filter.year, filter.month, 1, 0, 0, 0);
+        DateTime endDateTime = startDateTime.dayOfMonth().withMaximumValue();
+        List<Members> members = allMembers.allMembersBasedOnDistrictUpazillaUnionAndUpdateTimeStamp(filter.district, filter.subDistrict, filter.union, filter.worker, startDateTime.getMillis(), endDateTime.getMillis());
+        MIS1Report mis1Report = new MIS1Report("not necessary", members, start, end);
+        return mis1Report;
+    }
+
+    public static class Filter {
+        public String district;
+        public String subDistrict;
+        public String union;
+        public String worker;
+        public int month;
+        public int year;
+
+        public Filter(String district, String subDistrict, String union, String worker, int year, int month) {
+            this.district = district;
+            this.subDistrict = subDistrict;
+            this.union = union;
+            this.worker = worker;
+            this.month = month;
+            this.year = year;
+        }
+    }
 
 }

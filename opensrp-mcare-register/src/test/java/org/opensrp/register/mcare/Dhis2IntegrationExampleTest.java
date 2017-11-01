@@ -17,10 +17,12 @@ import org.opensrp.connector.DHIS2.DHIS2Service;
 import org.opensrp.connector.DHIS2.dxf2.DataValueSet;
 import org.opensrp.register.mcare.domain.Members;
 import org.opensrp.register.mcare.report.mis1.MIS1Report;
+import org.opensrp.register.mcare.report.mis1.MIS1ReportGenerator;
 import org.opensrp.register.mcare.report.mis1.birthAndDeath.AliveDeathCountTestData;
 import org.opensrp.register.mcare.report.mis1.familyPlanning.eligibleCoupleCount.EligibleCoupleCountTestData;
 import org.opensrp.register.mcare.repository.AllMembers;
 
+import javax.print.attribute.standard.Fidelity;
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -73,15 +75,20 @@ public class Dhis2IntegrationExampleTest {
         CouchDbConnector couchDbConnector = dbInstance.createConnector("opensrp", true);
 
         AllMembers allMembers = new AllMembers(1, couchDbConnector );
-        List<Members> members = allMembers.getAll();
-        MIS1Report mis1Report = new MIS1Report(unionName, members, new DateTime(0l).getMillis(), new DateTime().getMillis());
+        List<Members> members = allMembers.allMembersBasedOnDistrictUpazillaUnionAndUpdateTimeStamp("Gaibandha", "Gaibandha Sadar", "Kuptala", "opensrp", null, null);
+        System.out.println("members " + members.size());
+       /* MIS1Report mis1Report = new MIS1Report(unionName, members, new DateTime(0l).getMillis(), new DateTime().getMillis());
         //System.out.println(new ObjectMapper().setVisibility(JsonMethod.FIELD, JsonAutoDetect.Visibility.ANY).enableDefaultTyping().writeValueAsString(mis1Report));
         DHIS2ReportBuilder dhis2ReportBuilder = new DHIS2ReportBuilder("PKTk8zxbl0J", new DateTime(), period);
         List<DataValueSet> dataValueSets = dhis2ReportBuilder.build(mis1Report);
         DHIS2Service service = new DHIS2Service("http://123.200.18.20:1971", "dgfp", "Dgfp@123");
         for(DataValueSet dataValueSet : dataValueSets) {
              System.out.println(dataValueSet.send(service));
-        }
+        }*/
+
+        MIS1ReportGenerator.Filter filter = new MIS1ReportGenerator.Filter("Gaibandha", "Gaibandha Sadar", "Kuptala", "opensrp", 2017, 10);
+        MIS1Report mis1Report = new MIS1ReportGenerator().getReportBasedOn(filter);
+        System.out.println(new ObjectMapper().setVisibility(JsonMethod.FIELD, JsonAutoDetect.Visibility.ANY).enableDefaultTyping().writeValueAsString(mis1Report));
 
     }
 }
