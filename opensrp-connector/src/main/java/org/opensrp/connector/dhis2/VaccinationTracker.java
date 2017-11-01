@@ -56,8 +56,8 @@ public class VaccinationTracker extends DHIS2Service {
 		String attributeKey = "attribute";
 		String valueKey = "value";
 		JSONArray generateTrackCaptureData = new JSONArray();
-		String firstName ="firstName";
-		String lastName ="lastName";
+		String firstName = "firstName";
+		String lastName = "lastName";
 		String Child_Birth_Certificate = "Child_Birth_Certificate";
 		Map<String, Object> attributes = new HashMap<>();
 		

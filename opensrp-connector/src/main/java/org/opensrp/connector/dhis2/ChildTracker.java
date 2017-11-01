@@ -42,8 +42,8 @@ public class ChildTracker extends DHIS2Service implements DHIS2Tracker {
 	@Override
 	public JSONArray getTrackCaptureData(Client client) throws JSONException {
 		JSONObject clientData = new JSONObject();
-		String firstName ="firstName";
-		String lastName ="lastName";
+		String firstName = "firstName";
+		String lastName = "lastName";
 		String attributeKey = "attribute";
 		String valueKey = "value";
 		String gender = "gender";
