@@ -13,7 +13,6 @@ import org.json.JSONObject;
 import org.opensrp.domain.Client;
 import org.opensrp.domain.Event;
 import org.opensrp.domain.Obs;
-import org.opensrp.service.ClientService;
 import org.opensrp.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,9 +25,6 @@ public class MotherTracker extends DHIS2Service implements DHIS2Tracker {
 	
 	@Autowired
 	private DHIS2TrackerService dhis2TrackerService;
-	
-	@Autowired
-	private ClientService clientService;
 	
 	@Autowired
 	private EventService eventService;
@@ -47,26 +43,29 @@ public class MotherTracker extends DHIS2Service implements DHIS2Tracker {
 	@Override
 	public JSONArray getTrackCaptureData(Client client) throws JSONException {
 		JSONObject clientData = new JSONObject();
-		
+		String firstName = "firstName";
+		String lastName = "lastName";
+		String attributeKey = "attribute";
+		String valueKey = "value";
 		JSONArray generateTrackCaptureData = new JSONArray();
 		Map<String, Object> attributes = new HashMap<>();
 		attributes = client.getAttributes();
 		JSONObject attributesAsJson = new JSONObject(attributes);
 		JSONObject clientAsJson = new JSONObject(client);
 		generateTrackCaptureData.put(dhis2TrackerService.getTrackCaptureData(clientAsJson, DHIS2Settings.MOTHERIDMAPPING
-		        .get("firstName").toString(), "firstName"));
+		        .get(firstName).toString(), firstName));
 		// LastName
 		generateTrackCaptureData.put(dhis2TrackerService.getTrackCaptureData(clientAsJson, DHIS2Settings.MOTHERIDMAPPING
-		        .get("lastName").toString(), "lastName"));
+		        .get(lastName).toString(), lastName));
 		//birthdate		
 		JSONObject birthDate = new JSONObject();
-		birthDate.put("attribute", DHIS2Settings.MOTHERIDMAPPING.get("birthdate").toString());
-		birthDate.put("value", client.getBirthdate());
+		birthDate.put(attributeKey, DHIS2Settings.MOTHERIDMAPPING.get("birthdate").toString());
+		birthDate.put(valueKey, client.getBirthdate());
 		generateTrackCaptureData.put(birthDate);
 		// registration date
 		JSONObject registrationDate = new JSONObject();
-		registrationDate.put("attribute", DHIS2Settings.MOTHERIDMAPPING.get("registration_Date").toString());
-		registrationDate.put("value", client.getDateCreated());
+		registrationDate.put(attributeKey, DHIS2Settings.MOTHERIDMAPPING.get("registration_Date").toString());
+		registrationDate.put(valueKey, client.getDateCreated());
 		generateTrackCaptureData.put(registrationDate);
 		
 		// Phone number

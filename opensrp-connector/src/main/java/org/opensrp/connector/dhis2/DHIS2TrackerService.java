@@ -26,7 +26,6 @@ public class DHIS2TrackerService {
 		} else if (clientType == TrackerType.MOTHER) {
 			dhis2Tracker = dhis2TrackerFactory.getTracker(TrackerType.MOTHER);
 		} else if (clientType == TrackerType.CHILD) {
-			System.err.println("DHIS2TrackerService gg:");
 			dhis2Tracker = dhis2TrackerFactory.getTracker(TrackerType.CHILD);
 		} else {
 			

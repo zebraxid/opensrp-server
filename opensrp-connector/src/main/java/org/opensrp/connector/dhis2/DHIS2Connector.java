@@ -24,6 +24,10 @@ public class DHIS2Connector extends DHIS2Service {
 	
 	private JSONObject clientData = new JSONObject();
 	
+	private String programKey = "program";
+	
+	private String orgUnitKey = "orgUnit";
+	
 	public DHIS2Connector() {
 		
 	}
@@ -63,25 +67,27 @@ public class DHIS2Connector extends DHIS2Service {
 	public JSONObject prepareClientData() throws JSONException {
 		clientData.put("attributes", attributes);
 		clientData.put("trackedEntity", trackedEntity);
-		clientData.put("orgUnit", orgUnit);
+		clientData.put(orgUnitKey, orgUnit);
 		return clientData;
 	}
 	
 	public JSONObject send() throws JSONException {
+		
+		String reference = "reference";
 		JSONObject responseTrackEntityInstance = new JSONObject(Dhis2HttpUtils.post(
 		    DHIS2_BASE_URL.replaceAll("\\s+", "") + "trackedEntityInstances", "", prepareClientData().toString(),
 		    DHIS2_USER.replaceAll("\\s+", ""), DHIS2_PWD.replaceAll("\\s+", "")).body());
 		JSONObject trackEntityReference = (JSONObject) responseTrackEntityInstance.get("response");
 		
 		JSONObject enroll = new JSONObject();
-		enroll.put("trackedEntityInstance", trackEntityReference.get("reference"));
-		enroll.put("program", program);
-		enroll.put("orgUnit", orgUnit);
+		enroll.put("trackedEntityInstance", trackEntityReference.get(reference));
+		enroll.put(programKey, program);
+		enroll.put(orgUnitKey, orgUnit);
 		
 		JSONObject response = new JSONObject(Dhis2HttpUtils.post(DHIS2_BASE_URL.replaceAll("\\s+", "") + "enrollments", "",
 		    enroll.toString(), DHIS2_USER.replaceAll("\\s+", ""), DHIS2_PWD.replaceAll("\\s+", "")).body());
 		
-		response.put("track", trackEntityReference.get("reference"));
+		response.put("track", trackEntityReference.get(reference));
 		
 		return response;
 		

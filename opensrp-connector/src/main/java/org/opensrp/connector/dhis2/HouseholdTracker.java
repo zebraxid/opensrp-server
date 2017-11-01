@@ -10,7 +10,6 @@ import org.json.JSONObject;
 import org.opensrp.domain.Client;
 import org.opensrp.domain.Event;
 import org.opensrp.domain.Obs;
-import org.opensrp.service.ClientService;
 import org.opensrp.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,9 +19,6 @@ public class HouseholdTracker extends DHIS2Service implements DHIS2Tracker {
 	
 	@Autowired
 	private DHIS2TrackerService dhis2TrackerService;
-	
-	@Autowired
-	private ClientService clientService;
 	
 	@Autowired
 	private EventService eventService;
@@ -41,7 +37,10 @@ public class HouseholdTracker extends DHIS2Service implements DHIS2Tracker {
 	@Override
 	public JSONArray getTrackCaptureData(Client client) throws JSONException {
 		JSONObject clientData = new JSONObject();
-		
+		String firstName = "firstName";
+		String lastName = "lastName";
+		String attributeKey = "attribute";
+		String valueKey = "value";
 		JSONArray generateTrackCaptureData = new JSONArray();
 		Map<String, Object> attributes = new HashMap<>();
 		attributes = client.getAttributes();
@@ -50,10 +49,10 @@ public class HouseholdTracker extends DHIS2Service implements DHIS2Tracker {
 		
 		// firstName
 		generateTrackCaptureData.put(dhis2TrackerService.getTrackCaptureData(clientAsJson, DHIS2Settings.HOUSEHOLDIDMAPPING
-		        .get("firstName").toString(), "firstName"));
+		        .get(firstName).toString(), firstName));
 		// LastName 
 		generateTrackCaptureData.put(dhis2TrackerService.getTrackCaptureData(clientAsJson, DHIS2Settings.HOUSEHOLDIDMAPPING
-		        .get("lastName").toString(), "lastName"));
+		        .get(lastName).toString(), lastName));
 		//Gender
 		/*generateTrackCaptureData.put(dhis2TrackerService.getTrackCaptureData(clientAsJson, DHIS2Settings.CLIENTIDMAPPING
 		        .get("gender").toString(), "gender"));*/
@@ -62,8 +61,8 @@ public class HouseholdTracker extends DHIS2Service implements DHIS2Tracker {
 		    DHIS2Settings.HOUSEHOLDIDMAPPING.get("Household_ID").toString(), "householdCode"));
 		//birthdate		
 		JSONObject data = new JSONObject();
-		data.put("attribute", DHIS2Settings.HOUSEHOLDIDMAPPING.get("birthdate").toString());
-		data.put("value", client.getBirthdate());
+		data.put(attributeKey, DHIS2Settings.HOUSEHOLDIDMAPPING.get("birthdate").toString());
+		data.put(valueKey, client.getBirthdate());
 		generateTrackCaptureData.put(data);
 		
 		/***** get information form Event ******/
