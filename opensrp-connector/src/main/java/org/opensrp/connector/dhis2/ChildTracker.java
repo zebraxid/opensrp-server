@@ -27,6 +27,9 @@ public class ChildTracker extends DHIS2Service implements DHIS2Tracker {
 	@Autowired
 	private ClientService clientService;
 	
+	@Autowired
+	private DHIS2Connector dhis2Connector;
+	
 	public ChildTracker() {
 		
 	}
@@ -38,7 +41,12 @@ public class ChildTracker extends DHIS2Service implements DHIS2Tracker {
 	@Override
 	public JSONArray getTrackCaptureData(Client client) throws JSONException {
 		JSONObject clientData = new JSONObject();
-		
+		String firstName = "firstName";
+		String lastName = "lastName";
+		String attributeKey = "attribute";
+		String valueKey = "value";
+		String gender = "gender";
+		String Child_Birth_Certificate = "Child_Birth_Certificate";
 		JSONArray generateTrackCaptureData = new JSONArray();
 		Map<String, Object> attributes = new HashMap<>();
 		attributes = client.getAttributes();
@@ -47,20 +55,20 @@ public class ChildTracker extends DHIS2Service implements DHIS2Tracker {
 		
 		// firstName
 		generateTrackCaptureData.put(dhis2TrackerService.getTrackCaptureData(clientAsJson, DHIS2Settings.CLIENTIDMAPPING
-		        .get(DHIS2Settings.FIRSTNAME).toString(), DHIS2Settings.FIRSTNAME));
+		        .get(firstName).toString(), firstName));
 		// LastName
 		generateTrackCaptureData.put(dhis2TrackerService.getTrackCaptureData(clientAsJson, DHIS2Settings.CLIENTIDMAPPING
-		        .get(DHIS2Settings.LASTNAME).toString(), DHIS2Settings.LASTNAME));
+		        .get(lastName).toString(), lastName));
 		//Gender
 		generateTrackCaptureData.put(dhis2TrackerService.getTrackCaptureData(clientAsJson, DHIS2Settings.CLIENTIDMAPPING
-		        .get(DHIS2Settings.GENDER).toString(), DHIS2Settings.GENDER));
+		        .get(gender).toString(), gender));
 		//Child_Birth_Certificate
 		generateTrackCaptureData.put(dhis2TrackerService.getTrackCaptureData(attributesAsJson, DHIS2Settings.CLIENTIDMAPPING
-		        .get("Child_Birth_Certificate").toString(), "Child_Birth_Certificate"));
+		        .get(Child_Birth_Certificate).toString(), Child_Birth_Certificate));
 		//birthdate		
 		JSONObject data = new JSONObject();
-		data.put(DHIS2Settings.ATTRIBUTEKEY, DHIS2Settings.CLIENTIDMAPPING.get("birthdate").toString());
-		data.put(DHIS2Settings.VALUEKEY, client.getBirthdate());
+		data.put(attributeKey, DHIS2Settings.CLIENTIDMAPPING.get("birthdate").toString());
+		data.put(valueKey, client.getBirthdate());
 		generateTrackCaptureData.put(data);
 		
 		/**** getting mother info from Client of Mother *******/
@@ -71,21 +79,21 @@ public class ChildTracker extends DHIS2Service implements DHIS2Tracker {
 		JSONObject motherAsJson = new JSONObject(mother);
 		//Mother/Guardian First Name
 		generateTrackCaptureData.put(dhis2TrackerService.getTrackCaptureData(motherAsJson, DHIS2Settings.CLIENTIDMAPPING
-		        .get("Mother_guardian_First_Name").toString(), DHIS2Settings.FIRSTNAME));
+		        .get("Mother_guardian_First_Name").toString(), firstName));
 		
 		// Mother_Guardian_Last_Name
 		generateTrackCaptureData.put(dhis2TrackerService.getTrackCaptureData(motherAsJson, DHIS2Settings.CLIENTIDMAPPING
-		        .get("Mother_Guardian_Last_Name").toString(), DHIS2Settings.LASTNAME));
+		        .get("Mother_Guardian_Last_Name").toString(), lastName));
 		
 		// Mother_Guardian birthdate		
 		JSONObject motherbirthDate = new JSONObject();
-		motherbirthDate.put(DHIS2Settings.ATTRIBUTEKEY, DHIS2Settings.CLIENTIDMAPPING.get("Mother_Guardian_DOB").toString());
-		motherbirthDate.put(DHIS2Settings.VALUEKEY, mother.getBirthdate());
+		motherbirthDate.put(attributeKey, DHIS2Settings.CLIENTIDMAPPING.get("Mother_Guardian_DOB").toString());
+		motherbirthDate.put(valueKey, mother.getBirthdate());
 		generateTrackCaptureData.put(motherbirthDate);
 		
 		/****** getting information from Event *****/
 		
-		clientData.put(DHIS2Settings.ATTRIBUTSEKEY, generateTrackCaptureData);
+		clientData.put("attributes", generateTrackCaptureData);
 		
 		return generateTrackCaptureData;
 	}
@@ -94,35 +102,11 @@ public class ChildTracker extends DHIS2Service implements DHIS2Tracker {
 	public JSONObject sendTrackCaptureData(JSONArray attributes) throws JSONException {
 		String orgUnit = "IDc0HEyjhvL";
 		String program = "OprRhyWVIM6";
-		JSONObject clientData = new JSONObject();
-		/*JSONArray enrollments = new JSONArray();
-		JSONObject enrollmentsObj = new JSONObject();
-		enrollmentsObj.put(DHIS2Settings.ORGUNITKEY, orgUnit);
-		enrollmentsObj.put(DHIS2Settings.PROGRAM, program);
-		enrollmentsObj.put("enrollmentDate", DateUtil.getTodayAsString());
-		enrollmentsObj.put("incidentDate", DateUtil.getTodayAsString());
-		enrollments.put(enrollmentsObj);*/
-		
-		clientData.put(DHIS2Settings.ATTRIBUTSEKEY, attributes);
-		clientData.put("trackedEntity", "MCPQUTHX1Ze");
-		clientData.put(DHIS2Settings.ORGUNITKEY, orgUnit);
-		
-		JSONObject responseTrackEntityInstance = new JSONObject(Dhis2HttpUtils.post(
-		    DHIS2_BASE_URL.replaceAll(DHIS2Settings.REPLACE, "") + "trackedEntityInstances", "", clientData.toString(),
-		    DHIS2_USER.replaceAll(DHIS2Settings.REPLACE, ""), DHIS2_PWD.replaceAll(DHIS2Settings.REPLACE, "")).body());
-		JSONObject trackEntityReference = (JSONObject) responseTrackEntityInstance.get("response");
-		
-		JSONObject enroll = new JSONObject();
-		enroll.put("trackedEntityInstance", trackEntityReference.get("reference"));
-		enroll.put(DHIS2Settings.PROGRAM, program);
-		enroll.put(DHIS2Settings.ORGUNITKEY, orgUnit);
-		
-		JSONObject response = new JSONObject(Dhis2HttpUtils.post(
-		    DHIS2_BASE_URL.replaceAll(DHIS2Settings.REPLACE, "") + "enrollments", "", enroll.toString(),
-		    DHIS2_USER.replaceAll(DHIS2Settings.REPLACE, ""), DHIS2_PWD.replaceAll(DHIS2Settings.REPLACE, "")).body());
-		
-		response.put("track", trackEntityReference.get("reference"));
-		
-		return response;
+		String trackedEntity = "MCPQUTHX1Ze";
+		dhis2Connector.setAttributes(attributes);
+		dhis2Connector.setOrgUnit(orgUnit);
+		dhis2Connector.setProgram(program);
+		dhis2Connector.setTrackedEntity(trackedEntity);
+		return dhis2Connector.send();
 	}
 }
