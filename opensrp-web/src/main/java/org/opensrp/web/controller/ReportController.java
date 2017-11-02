@@ -27,7 +27,8 @@ public class ReportController {
 	private ELCORegisterMapper ecRegisterMapper;
 	private HHRegisterMapper hhRegisterMapper;
 	private AllMembers allMembers;
-	
+	@Autowired
+	private MIS1ReportGenerator mis1ReportGenerator;
 	
 	@Autowired
 	public ReportController(
@@ -54,28 +55,10 @@ public class ReportController {
 
 	@RequestMapping(headers = { "Accept=application/json" }, method = RequestMethod.POST, value = "/report/mis1")
     //@RequestMapping(method = RequestMethod.GET, value = "/report/mis1", headers = { "Accept=application/json" })
-	public ResponseEntity<MIS1Report> getMis1Report(@RequestBody Filter filter) {
-		MIS1ReportGenerator mis1ReportGenerator = new MIS1ReportGenerator();
+	public ResponseEntity<String> getMis1Report(@RequestBody Filter filter) {
+		//MIS1ReportGenerator mis1ReportGenerator = new MIS1ReportGenerator();
 		MIS1Report mis1Report = mis1ReportGenerator.getReportBasedOn(filter);
-		return new ResponseEntity<>(mis1Report, HttpStatus.OK);
+		return new ResponseEntity<>(new Gson().toJson(mis1Report).toString(), HttpStatus.OK);
     }
-	/*
-	@RequestMapping(method = RequestMethod.GET, value = "/report/report-hh-7-days")
-    public ResponseEntity<HHRegisterDTO> reportHHForPrev7Days(@RequestParam("provider-id") String providerId) {
-		 HHRegister hhRegister = hhReportService.getHHDataVisitedPrev7Days(providerId);
-	     return new ResponseEntity<>(hhRegisterMapper.mapToDTO(hhRegister), HttpStatus.OK);
-    }*/
-/*
-    @RequestMapping(method = RequestMethod.GET, value = "/report/actions")
-    @ResponseBody
-    public List<Action> getNewActionForANM(@RequestParam("anmIdentifier") String anmIdentifier, @RequestParam("timeStamp") Long timeStamp){
-        List<org.opensrp.scheduler.Action> actions = actionService.getNewAlertsForANM(anmIdentifier, timeStamp);
-        return with(actions).convert(new Converter<org.opensrp.scheduler.Action, Action>() {
-            @Override
-            public Action convert(org.opensrp.scheduler.Action action) {
-                return ActionConvertor.from(action);
-            }
-        });
-    }*/
-
+	
 }

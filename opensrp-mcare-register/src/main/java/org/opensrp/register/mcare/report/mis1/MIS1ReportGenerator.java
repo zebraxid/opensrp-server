@@ -28,33 +28,12 @@ public class MIS1ReportGenerator {
 
     public MIS1Report getReportBasedOn(Filter filter) {
         DateTime startDateTime = new DateTime(filter.year, filter.month, 1, 0, 0, 0);
-        DateTime endDateTime = startDateTime.dayOfMonth().withMaximumValue();
-    	System.err.println("startDateTime.getMillis():"+startDateTime.getMillis());
-    	System.err.println("endDateTime.getMillis():"+endDateTime.getMillis());
-    	System.err.println("dist:"+filter.district);
-    	System.err.println("filter.subDistrict:"+filter.subDistrict);
-    	System.err.println("filter.union:"+filter.union);
+        DateTime endDateTime = startDateTime.dayOfMonth().withMaximumValue();    	
         List<Members> members = allMembers.allMembersBasedOnDistrictUpazillaUnionAndUpdateTimeStamp(filter.district, filter.subDistrict, filter.union, filter.worker, startDateTime.getMillis(), endDateTime.getMillis());
         MIS1Report mis1Report = new MIS1Report("not necessary", members, start, end);
         return mis1Report;
     }
 
-   /* public static class Filter {
-        public String district;
-        public String subDistrict;
-        public String union;
-        public String worker;
-        public int month;
-        public int year;
-
-        public Filter(String district, String subDistrict, String union, String worker, int year, int month) {
-            this.district = district;
-            this.subDistrict = subDistrict;
-            this.union = union;
-            this.worker = worker;
-            this.month = month;
-            this.year = year;
-        }
-    }*/
+  
 
 }
