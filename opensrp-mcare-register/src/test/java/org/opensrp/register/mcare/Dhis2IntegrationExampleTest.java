@@ -86,9 +86,5 @@ public class Dhis2IntegrationExampleTest {
              System.out.println(dataValueSet.send(service));
         }*/
 
-        MIS1ReportGenerator.Filter filter = new MIS1ReportGenerator.Filter("Gaibandha", "Gaibandha Sadar", "Kuptala", "opensrp", 2017, 10);
-        MIS1Report mis1Report = new MIS1ReportGenerator().getReportBasedOn(filter);
-        System.out.println(new ObjectMapper().setVisibility(JsonMethod.FIELD, JsonAutoDetect.Visibility.ANY).enableDefaultTyping().writeValueAsString(mis1Report));
-
     }
 }
