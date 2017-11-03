@@ -6,6 +6,7 @@ package org.opensrp.register.mcare.repository;
 
 import org.ektorp.ComplexKey;
 import org.ektorp.CouchDbConnector;
+import org.ektorp.ViewQuery;
 import org.ektorp.support.GenerateView;
 import org.ektorp.support.View;
 import org.motechproject.dao.MotechBaseRepository;
@@ -18,6 +19,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -96,21 +98,53 @@ public class AllMembers extends MotechBaseRepository<Members> {
                         .includeDocs(true), Members.class);
         System.err.println("members:" + members.size());
         /*for( int i=0 ; i< members.size() ; i++){
-			System.out.println("show updatedtimestamp of member::" + members.get(i).getUpdatedTimeStamp());
+            System.out.println("show updatedtimestamp of member::" + members.get(i).getUpdatedTimeStamp());
 		}*/
         return members;
     }
 
-    @View(name = "all_member_based_on_district_upazilla_union_provider_updatetimestamp", map = "function(doc) { if(doc.type === 'Members' && doc.caseId) {emit([doc.Mem_District, doc.Mem_Upazilla, doc.Mem_Union, doc.PROVIDERID, doc.updatedTimeStamp], null)} }"
+    @View(name = "all_member_based_on_district_upazilla_union_provider_updatetimestamp", map = "function(doc) { if(doc.type === 'Members' && doc.caseId) {emit([ doc.updatedTimeStamp,doc.Mem_District, doc.Mem_Upazilla, doc.Mem_Union, doc.Mem_Ward, doc.Mem_Subunit, doc.PROVIDERID], null)} }"
     )
-    public List<Members> allMembersBasedOnDistrictUpazillaUnionAndUpdateTimeStamp(String district, String upaZilla, String union, String providerId, Long startTime, Long endTime) {
-        ComplexKey startKey = ComplexKey.of(district, upaZilla, union,providerId,startTime);
-        ComplexKey endKey = ComplexKey.of(district, upaZilla, union,providerId, endTime);
-        List<Members> members = db.queryView(
-                createQuery("all_member_based_on_district_upazilla_union_provider_updatetimestamp")
-                        .startKey(startKey)
-                        .endKey(endKey)
-                        .includeDocs(true), Members.class);
+    public List<Members> allMembersBasedOnDistrictUpazillaUnionAndUpdateTimeStamp(String district, String upaZilla, String union, String ward, String unit, String providerId, Long startTime, Long endTime) {
+        List<Object> starKeyArgument = new ArrayList<>();
+        starKeyArgument.add(startTime);
+        starKeyArgument.add(district);
+        if(!notValidKey(upaZilla)) {
+            starKeyArgument.add(upaZilla);
+        }
+
+        if(!notValidKey(union)) {
+            starKeyArgument.add(union);
+        }
+
+        if(!notValidKey(ward)) {
+            starKeyArgument.add(ward);
+        }
+
+        if(!notValidKey(unit)) {
+            starKeyArgument.add(unit);
+        }
+
+        ComplexKey startKey = ComplexKey.of(starKeyArgument.toArray());
+        ComplexKey endKey = ComplexKey.of( endTime,district, getComplexKey(upaZilla), getComplexKey(union), getComplexKey(ward), getComplexKey(unit), getComplexKey(providerId));
+
+        ViewQuery query = createQuery("all_member_based_on_district_upazilla_union_provider_updatetimestamp")
+                .startKey(startKey)
+                .endKey(endKey)
+                .includeDocs(true);
+        System.out.println(query.buildQuery());
+        List<Members> members = db.queryView(query, Members.class);
         return members;
+    }
+
+    private Object getComplexKey(String key) {
+        if (notValidKey(key)) {
+            return ComplexKey.emptyObject();
+        }
+        return key;
+    }
+
+    private boolean notValidKey(String key) {
+        return key == null || key.isEmpty();
     }
 }

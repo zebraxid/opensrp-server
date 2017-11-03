@@ -69,13 +69,14 @@ public class Dhis2IntegrationExampleTest {
     @Ignore
     public void exampleTest() throws IOException, JSONException, IllegalAccessException {
         DateTime period = new DateTime().minusYears(2);
-        org.ektorp.http.HttpClient httpClient = new StdHttpClient.Builder().build();
+        org.ektorp.http.HttpClient httpClient = new StdHttpClient.Builder().username("opensrp").password("opensrp").build();
         CouchDbInstance dbInstance = new StdCouchDbInstance(httpClient);
 // if the second parameter is true, the database will be created if it doesn't exists
         CouchDbConnector couchDbConnector = dbInstance.createConnector("opensrp", true);
 
+
         AllMembers allMembers = new AllMembers(1, couchDbConnector );
-        List<Members> members = allMembers.allMembersBasedOnDistrictUpazillaUnionAndUpdateTimeStamp("Gaibandha", "Gaibandha Sadar", "Kuptala", "opensrp", null, null);
+        List<Members> members = allMembers.allMembersBasedOnDistrictUpazillaUnionAndUpdateTimeStamp("Gaibandha", "Gaibandha Sadar 2", null, null, null, null, null, null);
         System.out.println("members " + members.size());
        /* MIS1Report mis1Report = new MIS1Report(unionName, members, new DateTime(0l).getMillis(), new DateTime().getMillis());
         //System.out.println(new ObjectMapper().setVisibility(JsonMethod.FIELD, JsonAutoDetect.Visibility.ANY).enableDefaultTyping().writeValueAsString(mis1Report));
@@ -88,3 +89,6 @@ public class Dhis2IntegrationExampleTest {
 
     }
 }
+
+
+///opensrp/_design/Members/_view/all_member_based_on_district_upazilla_union_provider_updatetimestamp?startkey=%5B%22Gaibandha%22%2C%22Gaibandha+Sadar+2%22%2C%7B%7D%2C%7B%7D%2C%7B%7D%2C%7B%7D%2Cnull%5D&endkey=%5B%22Gaibandha%22%2C%22Gaibandha+Sadar+2%22%2C%7B%7D%2C%7B%7D%2C%7B%7D%2C%7B%7D%2Cnull%5D&include_docs=true
