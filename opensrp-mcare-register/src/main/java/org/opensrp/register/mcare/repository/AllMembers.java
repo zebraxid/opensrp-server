@@ -109,20 +109,24 @@ public class AllMembers extends MotechBaseRepository<Members> {
         List<Object> starKeyArgument = new ArrayList<>();
         starKeyArgument.add(startTime);
         starKeyArgument.add(district);
-        if(!notValidKey(upaZilla)) {
+        if(validKey(upaZilla)) {
             starKeyArgument.add(upaZilla);
         }
 
-        if(!notValidKey(union)) {
+        if(validKey(union)) {
             starKeyArgument.add(union);
         }
 
-        if(!notValidKey(ward)) {
+        if(validKey(ward)) {
             starKeyArgument.add(ward);
         }
 
-        if(!notValidKey(unit)) {
+        if(validKey(unit)) {
             starKeyArgument.add(unit);
+        }
+
+        if(validKey(providerId)) {
+            starKeyArgument.add(providerId);
         }
 
         ComplexKey startKey = ComplexKey.of(starKeyArgument.toArray());
@@ -138,13 +142,13 @@ public class AllMembers extends MotechBaseRepository<Members> {
     }
 
     private Object getComplexKey(String key) {
-        if (notValidKey(key)) {
+        if (!validKey(key)) {
             return ComplexKey.emptyObject();
         }
         return key;
     }
 
-    private boolean notValidKey(String key) {
-        return key == null || key.isEmpty();
+    private boolean validKey(String key) {
+        return key != null && !key.isEmpty();
     }
 }

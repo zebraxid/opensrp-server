@@ -92,15 +92,19 @@ public class Filter {
 		}
 
 
-		if(!validParam(subDistrict) && anyValidParam(asList(union, ward, unit))) {
+		if(!validParam(subDistrict) && anyValidParam(asList(union, ward, unit, worker))) {
 			return  false;
 		}
 
-		if(!validParam(union) && anyValidParam(asList(ward, unit))) {
+		if(!validParam(union) && anyValidParam(asList(ward, unit, worker))) {
 			return false;
 		}
 
-		if(!validParam(ward) && anyValidParam(asList(unit))) {
+		if(!validParam(ward) && anyValidParam(asList(unit, worker))) {
+			return false;
+		}
+
+		if(!validParam(unit) && anyValidParam(asList(worker))) {
 			return false;
 		}
 
