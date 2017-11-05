@@ -80,7 +80,7 @@ public class Filter {
 		this.year = year;
 	}
 
-	public boolean authenticate() {
+	public boolean validate() {
 		boolean valid = false;
 
 		if(!validYear(year) || !validMonth(month)){

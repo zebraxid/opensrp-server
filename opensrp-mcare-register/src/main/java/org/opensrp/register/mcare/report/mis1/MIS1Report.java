@@ -1,5 +1,6 @@
 package org.opensrp.register.mcare.report.mis1;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.opensrp.connector.DHIS2.dxf2.DHIS2;
 import org.opensrp.register.mcare.domain.Members;
 import org.opensrp.register.mcare.domain.Vaccine;
@@ -38,8 +39,9 @@ import java.util.List;
 public class MIS1Report      {
 
     private String healthWorker;
-
-    private List<Members> membersList;
+    
+   
+    private transient List<Members> membersList;
 
     @DHIS2(dataSetId="Z5WPr2zconV")
     private FamilyPlanningReport familyPlanningReport;
@@ -61,7 +63,7 @@ public class MIS1Report      {
         this.nutritionReport = new NutritionReport(startDateTime, endDateTime);
         this.calculateReport();
     }
-
+  
     public List<Members> getMembersList() {
         return membersList;
     }

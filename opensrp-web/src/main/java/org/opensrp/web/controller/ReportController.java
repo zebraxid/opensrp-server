@@ -54,13 +54,12 @@ public class ReportController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/report/mis1")
-	//@RequestMapping(method = RequestMethod.GET, value = "/report/mis1", headers = { "Accept=application/json" })
-	public ResponseEntity<String> getMis1Report(@RequestParam(value = "district") String district, @RequestParam(value = "upazilla", required = false) String upazilla, @RequestParam(value = "union", required = false) String union, @RequestParam(value = "ward", required = false) String ward, @RequestParam(value = "unit", required = false) String unit, @RequestParam(value = "worker", required = false) String worker, @RequestParam(value = "year") int year, @RequestParam(value = "month") int month) {
+		public ResponseEntity<String> getMis1Report(@RequestParam(value = "district") String district, @RequestParam(value = "upazilla", required = false) String upazilla, @RequestParam(value = "union", required = false) String union, @RequestParam(value = "ward", required = false) String ward, @RequestParam(value = "unit", required = false) String unit, @RequestParam(value = "worker", required = false) String worker, @RequestParam(value = "year") int year, @RequestParam(value = "month") int month) {
 		Filter filter = new Filter(district, upazilla, union, ward, unit, worker , year, month);
-		if(!filter.authenticate()) {
+		if(!filter.validate()) {
+			System.out.println("validation failed");
 			return new ResponseEntity<>(new Gson().toJson("Invalid parameters").toString(), HttpStatus.BAD_REQUEST);
 		}
-		MIS1ReportGenerator mis1ReportGenerator = new MIS1ReportGenerator();
 		MIS1Report mis1Report = mis1ReportGenerator.getReportBasedOn(filter);
 		return new ResponseEntity<>(new Gson().toJson(mis1Report).toString(), HttpStatus.OK);
 	}

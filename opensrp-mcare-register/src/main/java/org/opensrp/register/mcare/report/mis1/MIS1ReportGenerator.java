@@ -38,16 +38,8 @@ public class MIS1ReportGenerator {
     public MIS1Report getReportBasedOn(Filter filter) {
         DateTime startDateTime = new DateTime(filter.year, filter.month, 1, 0, 0, 0);
         DateTime endDateTime = startDateTime.dayOfMonth().withMaximumValue();
-        if (allMembers == null) {
-            org.ektorp.http.HttpClient httpClient = new StdHttpClient.Builder().username("opensrp").password("opensrp").build();
-            CouchDbInstance dbInstance = new StdCouchDbInstance(httpClient);
-// if the second parameter is true, the database will be created if it doesn't exists
-            CouchDbConnector couchDbConnector = dbInstance.createConnector("opensrp", true);
-            allMembers = new AllMembers(1, couchDbConnector);
-            System.out.println("****** NUll all members found. Created own.");
-        }
         List<Members> members = allMembers.allMembersBasedOnDistrictUpazillaUnionAndUpdateTimeStamp(filter.district, filter.subDistrict, filter.union,filter.ward, filter.unit, filter.worker, startDateTime.getMillis(), endDateTime.getMillis());
-        MIS1Report mis1Report = new MIS1Report("not necessary", members, startDateTime.getMillis(), endDateTime.getMillis());
+        MIS1Report mis1Report = new MIS1Report("opensrp", members, startDateTime.getMillis(), endDateTime.getMillis());
         return mis1Report;
     }
 
