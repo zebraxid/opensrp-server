@@ -14,7 +14,7 @@ import static org.junit.Assert.assertEquals;
 @Ignore
 public class AliveDeathCountCalculatorTest {
 
-    public String unionName = "union";
+   /* public String unionName = "union";
     private AliveDeathCountTestData aliveDeathCountTestData;
     private long startDateTime;
     private long endDateTime;
@@ -110,6 +110,6 @@ public class AliveDeathCountCalculatorTest {
         long deathofOther = mis1Report.getBirthAndDeathReport().getDeathCountofOther().getTotalCountOfDeathofOther();
         System.out.println("member size:" + members.size() + " validcount:" + aliveDeathCountTestData.validCount + " deathofOther:" + deathofOther);
         assertEquals(aliveDeathCountTestData.validCount, deathofOther);
-    }
+    }*/
 
 }

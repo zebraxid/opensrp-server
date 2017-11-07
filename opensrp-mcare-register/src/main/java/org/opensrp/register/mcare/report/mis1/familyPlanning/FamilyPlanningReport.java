@@ -78,4 +78,12 @@ public class FamilyPlanningReport extends Report {
         return eligibleCoupleCountCalculator;
     }
 
+    public MalePermanentMethodUsagesCalculator getMalePermanentMethodUsagesCalculator(){
+        return malePermanentMethodUsagesCalculator;
+    }
+
+    public FemalePermanentMethodUsagesCalculator getFemalePermanentMethodUsagesCalculator(){
+        return femalePermanentMethodUsagesCalculator;
+    }
+
 }

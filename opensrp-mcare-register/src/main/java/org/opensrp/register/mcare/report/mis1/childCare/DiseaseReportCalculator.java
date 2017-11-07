@@ -38,9 +38,11 @@ public class DiseaseReportCalculator extends ReportCalculator{
     @Override
     public void calculate(Members member) {
         List<Map<String, String>> childVisits = member.child_vaccine();
+        System.out.println("SSSSSSSSSSSSSSSSSSSSSSSSSSSS::" + childVisits.size());
         for (Map<String, String> childVisit : childVisits) {
             if (withInStartAndEndTime(childVisit)) {
                 String diseaseStr = getDiseaseString(childVisit);
+                System.out.println("DDDDDDDDDDDDDDDDDDDDDDDDDDDD:::" + diseaseStr);
                 if (validDiseaseString(diseaseStr)) {
                     List<DiseaseName> vaccineDoses = DiseaseName.extractDiseaseListFrom(diseaseStr);
                     addToCount(vaccineDoses);
@@ -65,7 +67,7 @@ public class DiseaseReportCalculator extends ReportCalculator{
     private void addToCount(List<DiseaseName> diseaseNames) {
         for(DiseaseName diseaseName: diseaseNames) {
             switch (diseaseName) {
-                case OTHERS:
+                case SERIOUS_DISEASES:
                     veryDangerousDiseasesCount ++;
                     break;
                 case PNEUMONIA:

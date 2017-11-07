@@ -27,6 +27,7 @@ public class SampleReportCheckController {
 	private long startDateTime = 1506816000000L;
     private long endDateTime = 1509408000000L;
     public String unionName = "union";
+
     private int totalCondomUsagesOfCurrentMonth=0;
     private int totalPillUsagesOfCurrentMonth=0;
     private int totalInjectableUsagesOfCurrentMonth=0;
@@ -46,6 +47,37 @@ public class SampleReportCheckController {
     private int totalCountOfMembersWhoLeftUsagesTakeOtherOfBirthControlPillOfCurrentMonth=0;
     private int totalCountOfMembersWhoLeftUsagesTakeOtherOfBirthControlInjectableOfCurrentMonth=0;
     private int totalCountOfMembersWhoLeftUsagesTakeOtherOfBirthControlIEUDOfCurrentMonth=0;
+    private int totalCountOfMembersWhoLeftUsagesTakeOthereOfBirthControlImplantOfCurrentMonth=0;
+    private int newParmanentMale = 0;
+    private int totalParmanentMale = 0;
+    private int newParmanentFemale = 0;
+    private int totalParmanentFemale = 0;
+
+    private long informationCountPnc1 = 0;
+    private long serviceCountPnc1 = 0;
+    private long informationCountPnc2 = 0;
+    private long serviceCountPnc2 = 0;
+    private long informationCountPnc3 = 0;
+    private long serviceCountPnc3 = 0;
+    private long informationCountPnc4 = 0;
+    private long serviceCountPnc4 = 0;
+    private long informationCountAnc1 = 0;
+    private long serviceCountAnc1 = 0;
+    private long informationCountAnc2 = 0;
+    private long serviceCountAnc2 = 0;
+    private long informationCountAnc3 = 0;
+    private long serviceCountAnc3 = 0;
+    private long informationCountAnc4 = 0;
+    private long serviceCountAnc4 = 0;
+    private long countOfBirthAtHomeWithTrainedPerson =0 ;
+    private long countOfNormalBirthAtHospitalOrClinic =0 ;
+    private long countOfCesareanBirthAtHospitalOrClinic =0 ;
+    private long tt1 = 0 ;
+    private long tt2 = 0 ;
+    private long tt3 = 0 ;
+    private long tt4 = 0 ;
+    private long tt5 = 0 ;
+    private long totalPregnentCount = 0 ;
 
     private long countOfBcg=0;
     private long newBornCleanedCount=0;
@@ -91,23 +123,59 @@ public class SampleReportCheckController {
 
       // MIS1Report mis1Report = new MIS1Report(unionName,listOfMembers, startDateTime, endDateTime);
         familyPlanningCalculatorCheck(mis1Report);
+        maternityCare(mis1Report);
         childCare(mis1Report);
         nutrition(mis1Report);
         ModelAndView model = new ModelAndView("reportcalculatorcheck");
         model.addObject("size", listOfMembers.size());
+
+        ///////////////////////////////////////////Family Planning /////////////////////////////////////////
         model.addObject("totalCondomUsagesOfCurrentMonth", totalCondomUsagesOfCurrentMonth);
         model.addObject("totalPillUsagesOfCurrentMonth", totalPillUsagesOfCurrentMonth);
+        model.addObject("totalInjectableUsagesOfCurrentMonth" , totalInjectableUsagesOfCurrentMonth);
         model.addObject("totalIUEUDUsagesOfCurrentMonth", totalIUEUDUsagesOfCurrentMonth);
         model.addObject("totalImplantUsagesOfCurrentMonth", totalImplantUsagesOfCurrentMonth);
 
         model.addObject("totalNewBirthControlCondomUsagesOfCurrentMonth", totalNewBirthControlCondomUsagesOfCurrentMonth);
         model.addObject("totalNewBirthControlPillUsagesOfCurrentMonth", totalNewBirthControlPillUsagesOfCurrentMonth);
+        model.addObject("totalNewBirthControlInjectableUsagesOfCurrentMonth" , totalNewBirthControlInjectableUsagesOfCurrentMonth);
         model.addObject("totalNewBirthControlIUEUUsagesOfCurrentMonth", totalNewBirthControlIUEUUsagesOfCurrentMonth);
         model.addObject("totalNewBirthControlImplantUsagesOfCurrentMonth", totalNewBirthControlImplantUsagesOfCurrentMonth);
+
+        model.addObject("totalCountOfMembersWhoLeftUsagesTakeNoneOfBirthControlCondomOfCurrentMonth" , totalCountOfMembersWhoLeftUsagesTakeNoneOfBirthControlCondomOfCurrentMonth);
+        model.addObject("totalCountOfMembersWhoLeftUsagesTakeNoneOfBirthControlPillOfCurrentMonth" ,totalCountOfMembersWhoLeftUsagesTakeNoneOfBirthControlPillOfCurrentMonth);
+        model.addObject("totalCountOfMembersWhoLeftUsagesTakeNoneOfBirthControlInjectableOfCurrentMonth" , totalCountOfMembersWhoLeftUsagesTakeNoneOfBirthControlInjectableOfCurrentMonth);
+        model.addObject("totalCountOfMembersWhoLeftUsagesTakeNoneOfBirthControlIUEUDUOfCurrentMonth", totalCountOfMembersWhoLeftUsagesTakeNoneOfBirthControlIUEUDUOfCurrentMonth);
+        model.addObject("totalCountOfMembersWhoLeftUsagesTakeNoneOfBirthControlImplantOfCurrentMonth" , totalCountOfMembersWhoLeftUsagesTakeNoneOfBirthControlImplantOfCurrentMonth);
+
+        model.addObject("totalCountOfMembersWhoLeftUsagesTakeOtherOfBirthControlCondomOfCurrentMonth" , totalCountOfMembersWhoLeftUsagesTakeOtherOfBirthControlCondomOfCurrentMonth);
+        model.addObject("totalCountOfMembersWhoLeftUsagesTakeOtherOfBirthControlPillOfCurrentMonth" , totalCountOfMembersWhoLeftUsagesTakeOtherOfBirthControlPillOfCurrentMonth);
+        model.addObject("totalCountOfMembersWhoLeftUsagesTakeOtherOfBirthControlInjectableOfCurrentMonth" , totalCountOfMembersWhoLeftUsagesTakeOtherOfBirthControlInjectableOfCurrentMonth);
+        model.addObject("totalCountOfMembersWhoLeftUsagesTakeOtherOfBirthControlIEUDOfCurrentMonth" , totalCountOfMembersWhoLeftUsagesTakeOtherOfBirthControlIEUDOfCurrentMonth);
+        model.addObject("totalCountOfMembersWhoLeftUsagesTakeOthereOfBirthControlImplantOfCurrentMonth" , totalCountOfMembersWhoLeftUsagesTakeOthereOfBirthControlImplantOfCurrentMonth);
+
+        model.addObject("newParmanentMale" , newParmanentMale);
+        model.addObject("newParmanentFemale" , newParmanentFemale);
+        model.addObject("totalParmanentMale" , totalParmanentMale);
+        model.addObject("totalParmanentFemale" , totalParmanentFemale);
+
         model.addObject("totalCountOfEligibleCoupleOfCurrentMonth" , totalCountOfEligibleCoupleOfCurrentMonth);
         model.addObject("totalCountOfNewEligibleCoupleOfCurrentMonth" , totalCountOfNewEligibleCoupleOfCurrentMonth);
         model.addObject("totalCountOfEligibleCoupleInUnitOfCurrentMonth" , totalCountOfEligibleCoupleInUnitOfCurrentMonth);
 
+
+        //////////////////////////////////////Maternity Care//////////////////////////////////////////////////////
+        model.addObject("countOfBirthAtHomeWithTrainedPerson" , countOfBirthAtHomeWithTrainedPerson);
+        model.addObject("countOfNormalBirthAtHospitalOrClinic" , countOfNormalBirthAtHospitalOrClinic);
+        model.addObject("countOfCesareanBirthAtHospitalOrClinic" , countOfCesareanBirthAtHospitalOrClinic);
+        model.addObject("tt1" , tt1);
+        model.addObject("tt2" , tt2);
+        model.addObject("tt3" , tt3);
+        model.addObject("tt4" , tt4);
+        model.addObject("tt5" ,tt5);
+        model.addObject("totalPregnentCount" , totalPregnentCount);
+
+        ///////////////////////////////////Child Care///////////////////////////////////////////////////////////
         model.addObject("countOfBcg" , countOfBcg);
         model.addObject("newBornCleanedCount" , newBornCleanedCount);
         model.addObject("usedChlorhexidinCount" , usedChlorhexidinCount);
@@ -119,6 +187,8 @@ public class SampleReportCheckController {
         model.addObject("countOfOpv3Andpenta3" , countOfOpv3Andpenta3);
         model.addObject("countOfPcv3" , countOfPcv3);
 
+
+        ///////////////////////////////////Birth and Death/////////////////////////////////////////////////////////
         model.addObject("countOfIronAndFolicAcidCouncilingForPregWoman" , countOfIronAndFolicAcidCouncilingForPregWoman);
         model.addObject("countOfIronAndFolicAcidDistributionForPregWomen" , countOfIronAndFolicAcidDistributionForPregWomen);
         model.addObject("countOfIronAndFolicAcidCouncilingForMother" , countOfIronAndFolicAcidCouncilingForMother);
@@ -142,8 +212,8 @@ public class SampleReportCheckController {
                 mis1Report.getFamilyPlanningReport().getCondomUsagesCalculator().totalUsages();
       totalPillUsagesOfCurrentMonth =
                 mis1Report.getFamilyPlanningReport().getPillUsagesCalculator().totalUsages();
-     /* totalInjectableUsagesOfCurrentMonth =
-                mis1Report.getFamilyPlanningReport().getInjectableUsagesCalculator().totalUsages();*/
+     totalInjectableUsagesOfCurrentMonth =
+                mis1Report.getFamilyPlanningReport().getInjectableUsagesCalculator().totalUsages();
       totalIUEUDUsagesOfCurrentMonth =
                 mis1Report.getFamilyPlanningReport().getIudUsagesCalculator().totalUsages();
       totalImplantUsagesOfCurrentMonth =
@@ -153,8 +223,8 @@ public class SampleReportCheckController {
                 mis1Report.getFamilyPlanningReport().getCondomUsagesCalculator().newUsages();
       totalNewBirthControlPillUsagesOfCurrentMonth =
                 mis1Report.getFamilyPlanningReport().getPillUsagesCalculator().newUsages();
-     /* totalNewBirthControlInjectableUsagesOfCurrentMonth =
-                mis1Report.getFamilyPlanningReport().getInjectableUsagesCalculator().newUsages();*/
+     totalNewBirthControlInjectableUsagesOfCurrentMonth =
+                mis1Report.getFamilyPlanningReport().getInjectableUsagesCalculator().newUsages();
       totalNewBirthControlIUEUUsagesOfCurrentMonth =
                 mis1Report.getFamilyPlanningReport().getIudUsagesCalculator().newUsages();
       totalNewBirthControlImplantUsagesOfCurrentMonth =
@@ -164,12 +234,33 @@ public class SampleReportCheckController {
                mis1Report.getFamilyPlanningReport().getCondomUsagesCalculator().leftUsagesButTakenNone();
       totalCountOfMembersWhoLeftUsagesTakeNoneOfBirthControlPillOfCurrentMonth =
                mis1Report.getFamilyPlanningReport().getPillUsagesCalculator().leftUsagesButTakenNone();
-      /*totalCountOfMembersWhoLeftUsagesTakeNoneOfBirthControlInjectableOfCurrentMonth =
-               mis1Report.getFamilyPlanningReport().getInjectableUsagesCalculator().leftUsagesButTakenNone();*/
+      totalCountOfMembersWhoLeftUsagesTakeNoneOfBirthControlInjectableOfCurrentMonth =
+               mis1Report.getFamilyPlanningReport().getInjectableUsagesCalculator().leftUsagesButTakenNone();
       totalCountOfMembersWhoLeftUsagesTakeNoneOfBirthControlIUEUDUOfCurrentMonth =
               mis1Report.getFamilyPlanningReport().getIudUsagesCalculator().leftUsagesButTakenNone();
       totalCountOfMembersWhoLeftUsagesTakeNoneOfBirthControlImplantOfCurrentMonth =
               mis1Report.getFamilyPlanningReport().getImplantUsagesCalculator().leftUsagesButTakenNone();
+
+      totalCountOfMembersWhoLeftUsagesTakeOtherOfBirthControlCondomOfCurrentMonth =
+              mis1Report.getFamilyPlanningReport().getCondomUsagesCalculator().leftUsagesButTakenOther();
+      totalCountOfMembersWhoLeftUsagesTakeOtherOfBirthControlPillOfCurrentMonth =
+              mis1Report.getFamilyPlanningReport().getPillUsagesCalculator().leftUsagesButTakenOther();
+      totalCountOfMembersWhoLeftUsagesTakeOtherOfBirthControlInjectableOfCurrentMonth =
+              mis1Report.getFamilyPlanningReport().getInjectableUsagesCalculator().leftUsagesButTakenOther();
+      totalCountOfMembersWhoLeftUsagesTakeOtherOfBirthControlIEUDOfCurrentMonth =
+              mis1Report.getFamilyPlanningReport().getIudUsagesCalculator().leftUsagesButTakenOther();
+      totalCountOfMembersWhoLeftUsagesTakeOthereOfBirthControlImplantOfCurrentMonth =
+              mis1Report.getFamilyPlanningReport().getImplantUsagesCalculator().leftUsagesButTakenOther();
+
+      newParmanentMale =
+              mis1Report.getFamilyPlanningReport().getMalePermanentMethodUsagesCalculator().newUsages();
+      totalParmanentMale =
+              mis1Report.getFamilyPlanningReport().getMalePermanentMethodUsagesCalculator().totalUsages();
+      newParmanentFemale =
+              mis1Report.getFamilyPlanningReport().getFemalePermanentMethodUsagesCalculator().newUsages();
+      totalParmanentFemale =
+              mis1Report.getFamilyPlanningReport().getFemalePermanentMethodUsagesCalculator().totalUsages();
+
       totalCountOfEligibleCoupleOfCurrentMonth =
               mis1Report.getFamilyPlanningReport().getEligibleCoupleCountCalculator().getTotalEligibleCouple();
       totalCountOfNewEligibleCoupleOfCurrentMonth =
@@ -177,6 +268,30 @@ public class SampleReportCheckController {
       totalCountOfEligibleCoupleInUnitOfCurrentMonth =
               mis1Report.getFamilyPlanningReport().getEligibleCoupleCountCalculator().getUnitTotalEligibleCoupleVisitCount();
 
+    }
+
+    public void maternityCare(MIS1Report mis1Report){
+
+        totalPregnentCount =
+                mis1Report.getMaternityCareReport().getPregnantWomenCountCalculator().getNewPregnantCount();
+      /* informationCountPnc1 =
+               mis1Report.getMaternityCareReport().getPncReportCalculator().getPncOneVisitCalculator()..getInformationCount();
+        informationCountAnc1 =
+                mis1Report.getMaternityCareReport().getAncReportCalculator().getVisitOneCount().*/
+        tt1 =
+                mis1Report.getMaternityCareReport().getTTDoseReportCalculator().getDoseOneCount();
+        tt2 =
+                mis1Report.getMaternityCareReport().getTTDoseReportCalculator().getDoseTwoCount();
+        tt3 =
+                mis1Report.getMaternityCareReport().getTTDoseReportCalculator().getDoseThreeCount();
+        tt4 =
+                mis1Report.getMaternityCareReport().getTTDoseReportCalculator().getDoseFourCount();
+        tt5 =
+                mis1Report.getMaternityCareReport().getTTDoseReportCalculator().getDoseFiveCount();
+
+        countOfBirthAtHomeWithTrainedPerson = mis1Report.getMaternityCareReport().getPostpartumCareCalculator().getCountOfBirthAtHomeWithTrainedPerson();
+        countOfNormalBirthAtHospitalOrClinic = mis1Report.getMaternityCareReport().getPostpartumCareCalculator().getCountOfNormalBirthAtHospitalOrClinic();
+        countOfCesareanBirthAtHospitalOrClinic = mis1Report.getMaternityCareReport().getPostpartumCareCalculator().getCountOfCesareanBirthAtHospitalOrClinic();
     }
 
     public void childCare(MIS1Report mis1Report){
@@ -194,43 +309,43 @@ public class SampleReportCheckController {
 
     }
 
-    public void nutrition(MIS1Report mis1Report){
+ public void nutrition(MIS1Report mis1Report) {
 
-        countOfIronAndFolicAcidCouncilingForPregWoman =
-                mis1Report.getNutritionReport().getWomanNutritionCalculator().getCountOfCounsellingOnFolicAcidAndIronForPregWoman();
-        countOfIronAndFolicAcidDistributionForPregWomen =
-                mis1Report.getNutritionReport().getWomanNutritionCalculator().getCountOfDistributionOfFolicAcidAndIronForPregWoman();
-        countOfIronAndFolicAcidCouncilingForMother =
-                mis1Report.getNutritionReport().getWomanNutritionCalculator().getCountOfCounsellingOnFolicAcidAndIronForMother();
-        countOfIronAndFolicAcidDistributionForMother =
-                mis1Report.getNutritionReport().getWomanNutritionCalculator().getCountOfDistributionOfFolicAcidAndIronForMother();
-        countOfCouncilingOnBreastFeedingAndNutritionForPregWomen =
-                mis1Report.getNutritionReport().getWomanNutritionCalculator().getCountOfCounsellingOnBreastMilkAndComplementaryFoodForPregWoman();
-        countOfCouncilingOnBreastFeedingAndNutritionForMother =
-                mis1Report.getNutritionReport().getWomanNutritionCalculator().getCountOfCounsellingOnBreastMilkAndComplementaryFoodFoMother();
-        countOfCouncilingOnMNPForMother =
-                mis1Report.getNutritionReport().getWomanNutritionCalculator().getCountOfCounsellingOnFeedingMMMother();
-        countOfBreastFeedinginOneHourlessThnZeroGreaterThnSix =
-                mis1Report.getNutritionReport().getChildNutritionCalculator().getChildZeroToSix().countOfBreastFeedingWithInOneHour();
-        countOfBreastFeedingFromZeroToSixMonth =
-                mis1Report.getNutritionReport().getChildNutritionCalculator().getChildZeroToSix().getCountOfBreastFeedingUntillSixMonth();
-        /*countOfFeedingAfterSixMonthSixToTwntyFour =
+     countOfIronAndFolicAcidCouncilingForPregWoman =
+             mis1Report.getNutritionReport().getWomanNutritionCalculator().getCountOfCounsellingOnFolicAcidAndIronForPregWoman();
+     countOfIronAndFolicAcidDistributionForPregWomen =
+             mis1Report.getNutritionReport().getWomanNutritionCalculator().getCountOfDistributionOfFolicAcidAndIronForPregWoman();
+     countOfIronAndFolicAcidCouncilingForMother =
+             mis1Report.getNutritionReport().getWomanNutritionCalculator().getCountOfCounsellingOnFolicAcidAndIronForMother();
+     countOfIronAndFolicAcidDistributionForMother =
+             mis1Report.getNutritionReport().getWomanNutritionCalculator().getCountOfDistributionOfFolicAcidAndIronForMother();
+     countOfCouncilingOnBreastFeedingAndNutritionForPregWomen =
+             mis1Report.getNutritionReport().getWomanNutritionCalculator().getCountOfCounsellingOnBreastMilkAndComplementaryFoodForPregWoman();
+     countOfCouncilingOnBreastFeedingAndNutritionForMother =
+             mis1Report.getNutritionReport().getWomanNutritionCalculator().getCountOfCounsellingOnBreastMilkAndComplementaryFoodFoMother();
+     countOfCouncilingOnMNPForMother =
+             mis1Report.getNutritionReport().getWomanNutritionCalculator().getCountOfCounsellingOnFeedingMMMother();
+     countOfBreastFeedinginOneHourlessThnZeroGreaterThnSix =
+             mis1Report.getNutritionReport().getChildNutritionCalculator().getChildZeroToSix().countOfBreastFeedingWithInOneHour();
+     countOfBreastFeedingFromZeroToSixMonth =
+             mis1Report.getNutritionReport().getChildNutritionCalculator().getChildZeroToSix().getCountOfBreastFeedingUntillSixMonth();
+      /*  countOfFeedingAfterSixMonthSixToTwntyFour =
                 mis1Report.getNutritionReport().getChildNutritionCalculator().getChild6TO23().getCountOfBreastFeedingAfterSixMonth();
         countOfFeedingAfterSixMonthTwntyFourToSixty =
                 mis1Report.getNutritionReport().getChildNutritionCalculator().getChild24to59().get*/
-        countOfMAMForZeroToSix=
-                mis1Report.getNutritionReport().getChildNutritionCalculator().getChildZeroToSix().getCountOfContractedMAM();
-        countOfSAMForZeroToSix =
-                mis1Report.getNutritionReport().getChildNutritionCalculator().getChildZeroToSix().getCountOfContractedSAM();
-        countOfMAMForSixToTwntyFour =
-                mis1Report.getNutritionReport().getChildNutritionCalculator().getChild6TO23().getCountOfContractedMAM();
-        countOfSAMForSixToTwntyFour =
-                mis1Report.getNutritionReport().getChildNutritionCalculator().getChild6TO23().getCountOfContractedSAM();
-        countOfMAMForTwntyFourToSixty =
-                mis1Report.getNutritionReport().getChildNutritionCalculator().getChild24to59().getCountOfContractedMAM();
-        countOfSAMForTwntyFourToSixty =
-                mis1Report.getNutritionReport().getChildNutritionCalculator().getChild24to59().getCountOfContractedSAM();
+     countOfMAMForZeroToSix =
+             mis1Report.getNutritionReport().getChildNutritionCalculator().getChildZeroToSix().getCountOfContractedMAM();
+     countOfSAMForZeroToSix =
+             mis1Report.getNutritionReport().getChildNutritionCalculator().getChildZeroToSix().getCountOfContractedSAM();
+     countOfMAMForSixToTwntyFour =
+             mis1Report.getNutritionReport().getChildNutritionCalculator().getChild6TO23().getCountOfContractedMAM();
+     countOfSAMForSixToTwntyFour =
+             mis1Report.getNutritionReport().getChildNutritionCalculator().getChild6TO23().getCountOfContractedSAM();
+     countOfMAMForTwntyFourToSixty =
+             mis1Report.getNutritionReport().getChildNutritionCalculator().getChild24to59().getCountOfContractedMAM();
+     countOfSAMForTwntyFourToSixty =
+             mis1Report.getNutritionReport().getChildNutritionCalculator().getChild24to59().getCountOfContractedSAM();
 
+ }
 
-    }
 }
