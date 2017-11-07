@@ -404,6 +404,7 @@ public class AllConstants {
         public static final String existing_Birth_Outcome = "existing_Birth_Outcome";
         public static final String existing_Dead_Child = "existing_Dead_Child";
         public static final String existing_Risky_Preg = "existing_Risky_Preg";
+        public static final String ANC_Due_Date = "ANC_Due_Date";
         public static final String ANC1_Due_Date = "ANC1_Due_Date";
         public static final String ANC2_Due_Date = "ANC2_Due_Date";
         public static final String ANC3_Due_Date = "ANC3_Due_Date";
@@ -411,9 +412,11 @@ public class AllConstants {
         public static final String Is_On_Time = "Is_On_Time";
         public static final String ANC1_Post_Due_Date = "ANC1_Post_Due_Date";
         public static final String ANC2_Post_Due_Date = "ANC2_Post_Due_Date";
+        public static final String ANC_Post_Due_Date = "ANC_Post_Due_Date";
         public static final String ANC3_Post_Due_Date = "ANC3_Post_Due_Date";
         public static final String ANC4_Post_Due_Date = "ANC4_Post_Due_Date";
         public static final String Is_Post_Due = "Is_Post_Due";
+        public static final String ANC_Expired_Date = "ANC_Expired_Date";
         public static final String ANC1_Expired_Date = "ANC1_Expired_Date";
         public static final String ANC2_Expired_Date = "ANC2_Expired_Date";
         public static final String ANC3_Expired_Date = "ANC3_Expired_Date";
@@ -441,6 +444,7 @@ public class AllConstants {
         public static final String existing_Delivery_Type = "existing_Delivery_Type";
         public static final String existing_Visit_Status = "existing_Visit_Status";
         public static final String existing_Where_Delivered = "existing_Where_Delivered";
+        public static final String PNC_Due_Date = "PNC_Due_Date";
         public static final String PNC1_Due_Date = "PNC1_Due_Date";
         public static final String PNC2_Due_Date = "PNC2_Due_Date";
         public static final String PNC3_Due_Date = "PNC3_Due_Date";
@@ -448,11 +452,13 @@ public class AllConstants {
         public static final String PNC1_Post_Due_Date = "PNC1_Post_Due_Date";
         public static final String PNC2_Post_Due_Date = "PNC2_Post_Due_Date";
         public static final String PNC3_Post_Due_Date = "PNC3_Post_Due_Date";
+        public static final String PNC_Post_Due_Date = "PNC_Post_Due_Date";
         public static final String PNC4_Post_Due_Date = "PNC4_Post_Due_Date";
         public static final String PNC1_Expired_Date = "PNC1_Expired_Date";
         public static final String PNC2_Expired_Date = "PNC2_Expired_Date";
         public static final String PNC3_Expired_Date = "PNC3_Expired_Date";
         public static final String PNC4_Expired_Date = "PNC4_Expired_Date";
+        public static final String PNC_Expired_Date = "PNC_Expired_Date";
         public static final String Calc_On_Time = "Calc_On_Time";
         public static final String Has_PNC_Given_On_Time = "Has_PNC_Given_On_Time";
         public static final String Newborn = "Newborn";
@@ -463,11 +469,13 @@ public class AllConstants {
         public static final String Comment = "Comment";
         public static final String Visit_No = "Visit_No";
         public static final String HR = "HR";
+        public static final String anc_current_formStatus = "anc_current_formStatus";
         public static final String anc1_current_formStatus = "anc1_current_formStatus";
         public static final String anc2_current_formStatus = "anc2_current_formStatus";
         public static final String anc3_current_formStatus = "anc3_current_formStatus";
         public static final String anc4_current_formStatus = "anc4_current_formStatus";
         public static final String pnc1_current_formStatus = "pnc1_current_formStatus";
+        public static final String pnc_current_formStatus = "pnc_current_formStatus";
         public static final String PNC2_current_formStatus = "PNC2_current_formStatus";
         public static final String PNC3_current_formStatus = "PNC3_current_formStatus";
         public static final String PNC4_current_formStatus = "PNC4_current_formStatus";
