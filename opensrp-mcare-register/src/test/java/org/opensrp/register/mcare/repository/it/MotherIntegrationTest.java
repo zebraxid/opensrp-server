@@ -118,14 +118,7 @@ public class MotherIntegrationTest {
     		if(mother.PROVIDERID()==null){
     			i++;
     			allMothers.remove(mother);
-    			/*List<FormSubmission> formSubmissions = allFormSubmissions.findByEntity(mother.caseId());
-    			// mother created from bnf or psrf submission where psrf or bnf valid  but there mother is invalid
-				for (FormSubmission formSubmission : formSubmissions) {
-					allFormSubmissions.remove(formSubmission);
-					System.err.println("FormName:"+formSubmission.formName()+ "Provider: "+formSubmission.anmId()+ "      Case:"+formSubmission.entityId());
-				}
-				cnt += allFormSubmissions.findByEntity(mother.caseId()).size();*/
-				System.err.println(""+i);
+    			
     		}else{
     			
     			try{
@@ -136,7 +129,7 @@ public class MotherIntegrationTest {
             		 int psrfsCount = psrfs.size()-1;
             		 Map<String, String> psrf = psrfs.get(psrfsCount);
             		 mother.details().put("LMP", psrf.get("FWPSRLMP"));
-            		 
+            		 mother.details().put("division", elco.FWWOMDIVISION());
             		if(elco !=null){
             			if(elco.FWWOMDISTRICT()!=null){
             				FWWOMDISTRICT = elco.FWWOMDISTRICT();
