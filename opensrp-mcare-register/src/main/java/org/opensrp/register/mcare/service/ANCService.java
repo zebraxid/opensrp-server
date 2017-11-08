@@ -219,6 +219,8 @@ public class ANCService {
 		mother.setFWWOMUNION(lco.FWWOMUNION());
 		mother.setFWWOMWARD(lco.FWWOMWARD());
 		mother.setFWWOMSUBUNIT(lco.FWWOMSUBUNIT());
+		mother.withFWWOMDISTRICT(lco.FWWOMDISTRICT());
+		
 		mother.setMother_mauza(submission.getField(mother_mauza));
 		mother.withmother_wom_nid(submission.getField(mother_wom_nid));
 		mother.withmother_wom_bid(submission.getField(mother_wom_bid));
