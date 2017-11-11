@@ -292,7 +292,7 @@ public class PNCService {
 		DateTime dateTime = DateTime.parse(mother.getbnfVisitDetails(FWBNFDTOO));
 		DateTimeFormatter fmt = DateTimeFormat.forPattern(pattern);
 		String referenceDate = fmt.print(dateTime);
-		pncSchedulesService.enrollPNCForMother(submission.entityId(), SCHEDULE_PNC_2, LocalDate.parse(referenceDate));
+		//pncSchedulesService.enrollPNCForMother(submission.entityId(), SCHEDULE_PNC_2, LocalDate.parse(referenceDate));
 		
 		if (Double.parseDouble(feverTemp) >= 100.4) {
 			if (!womanBID.equalsIgnoreCase(""))
@@ -342,7 +342,7 @@ public class PNCService {
 		DateTime dateTime = DateTime.parse(mother.getbnfVisitDetails(FWBNFDTOO));
 		DateTimeFormatter fmt = DateTimeFormat.forPattern(pattern);
 		String referenceDate = fmt.print(dateTime);
-		pncSchedulesService.enrollPNCForMother(submission.entityId(), SCHEDULE_PNC_3, LocalDate.parse(referenceDate));
+		//pncSchedulesService.enrollPNCForMother(submission.entityId(), SCHEDULE_PNC_3, LocalDate.parse(referenceDate));
 		
 		if (Double.parseDouble(feverTemp) >= 100.4) {
 			if (!womanBID.equalsIgnoreCase(""))

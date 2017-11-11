@@ -1,5 +1,6 @@
 package org.opensrp.scheduler.service;
 
+import static org.opensrp.common.AllConstants.BnfFollowUpVisitFields.FWBNFDTOO;
 import static org.opensrp.dto.BeneficiaryType.child;
 import static org.opensrp.dto.BeneficiaryType.ec;
 import static org.opensrp.dto.BeneficiaryType.elco;
@@ -11,16 +12,18 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.opensrp.common.AllConstants.ScheduleNames;
 import org.opensrp.dto.ActionData;
 import org.opensrp.dto.AlertStatus;
 import org.opensrp.dto.BeneficiaryType;
 import org.opensrp.scheduler.Action;
+import org.opensrp.scheduler.HealthSchedulerService;
 import org.opensrp.scheduler.repository.AllActions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +35,7 @@ public class ActionService {
     private AllActions allActions;
     private ReportActionService reportActionService;
     private final ScheduleService scheduleService;
+    
     private static Logger logger = LoggerFactory.getLogger(ActionService.class
 			.toString());
     @Autowired
@@ -110,12 +114,17 @@ public class ActionService {
 	    	allActions.add(action);
 	    	if(existingAlerts.size() > 0){ 	    		
 	        	long numOfDays =  this.getDaysDifference(expiryDate);
-	        	if(numOfDays <=0  && alertStatus.name().equalsIgnoreCase("urgent")){
+	        	System.err.println("numOfDays:"+numOfDays+" alertStatus:"+alertStatus);
+	        	
+	        	if(( numOfDays<=0 || numOfDays<=1)   && alertStatus.name().equalsIgnoreCase("urgent")){	        		
 	    			scheduleService.fulfillMilestone(caseID, scheduleName, new LocalDate());
-	    			System.err.println("numOfDays:"+numOfDays);
+	    			
 	    		  }else{
 	    			logger.info("Date diffrenece required less or equal 2")	;
+	    			
 	    		 }
+	        }else{
+	        	
 	        }
 	        
 	        
