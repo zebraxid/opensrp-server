@@ -6,6 +6,10 @@ import static org.opensrp.dto.BeneficiaryType.ec;
 import static org.opensrp.dto.BeneficiaryType.elco;
 import static org.opensrp.dto.BeneficiaryType.household;
 import static org.opensrp.dto.BeneficiaryType.mother;
+import static org.opensrp.common.AllConstants.ScheduleNames.ANC;
+import static org.opensrp.common.AllConstants.ScheduleNames.PNC;
+import static org.opensrp.common.AllConstants.ScheduleNames.CHILD;
+
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -95,9 +99,10 @@ public class ActionService {
     	try{
 	    	List<Action> existingAlerts = allActions.findAlertByANMIdEntityIdScheduleName(anmIdentifier, caseID, scheduleName);
 	    	if(existingAlerts.size() > 0){ 	    	      
-	        	allActions.remove(existingAlerts.get(0));
+	        	/*allActions.remove(existingAlerts.get(0));
 		    	Action action  = new Action(caseID, anmIdentifier, ActionData.createAlert(beneficiaryType, scheduleName, visitCode, alertStatus, startDate,  expiryDate));
-		    	allActions.add(action);
+		    	allActions.add(action);*/
+	    		updateDataAction(visitCode,alertStatus,startDate,expiryDate,existingAlerts);
 	    	}
     	}catch(Exception e){
     		logger.info(e.getMessage());
@@ -109,22 +114,38 @@ public class ActionService {
     	
     	try{
 	    	List<Action> existingAlerts = allActions.findAlertByANMIdEntityIdScheduleName(anmIdentifier, caseID, scheduleName);
-	    	allActions.remove(existingAlerts.get(0));
-	    	Action action  = new Action(caseID, anmIdentifier, ActionData.createAlert(beneficiaryType, scheduleName, visitCode, alertStatus, startDate,  expiryDate));
-	    	allActions.add(action);
+	    	//allActions.remove(existingAlerts.get(0));
+	    	//Action action  = new Action(caseID, anmIdentifier, ActionData.createAlert(beneficiaryType, scheduleName, visitCode, alertStatus, startDate,  expiryDate));
+	    	//allActions.add(action);
+	    	updateDataAction(visitCode,alertStatus,startDate,expiryDate,existingAlerts);
 	    	if(existingAlerts.size() > 0){ 	    		
 	        	long numOfDays =  this.getDaysDifference(expiryDate);
 	        	System.err.println("numOfDays:"+numOfDays+" alertStatus:"+alertStatus);
 	        	
-	        	if(( numOfDays<=0 || numOfDays<=1)   && alertStatus.name().equalsIgnoreCase("urgent")){	        		
-	    			scheduleService.fulfillMilestone(caseID, scheduleName, new LocalDate());
-	    			
-	    		  }else{
-	    			logger.info("Date diffrenece required less or equal 2")	;
-	    			
-	    		 }
-	        }else{
+	        	if(ANC.equalsIgnoreCase(scheduleName) ){
+	        		if(( numOfDays<=2)   && alertStatus.name().equalsIgnoreCase("urgent")){	        		
+		    			scheduleService.fulfillMilestone(caseID, scheduleName, new LocalDate());
+		    			
+		    		  }else{
+		    			logger.info("Date diffrenece required less or equal 2")	;
+		    			
+		    		 }
+	        		
+	        	}else if(PNC.equalsIgnoreCase(scheduleName) || CHILD.equalsIgnoreCase(scheduleName)){
+		        	if(( numOfDays<=0 || numOfDays<=1)   && alertStatus.name().equalsIgnoreCase("urgent")){	        		
+		    			scheduleService.fulfillMilestone(caseID, scheduleName, new LocalDate());
+		    			
+		    		  }else{
+		    			logger.info("Date diffrenece required less or equal 1 or 0")	;
+		    			
+		    		 }
+	        	}else{
+	        		System.err.println("NOT PNC OR ENCC OR ANC");
+	        	}
 	        	
+	        	
+	        }else{
+	        	System.err.println("No Doc found");
 	        }
 	        
 	        
@@ -133,16 +154,15 @@ public class ActionService {
     	}
     }
     
-    public void updateDataForAction(BeneficiaryType beneficiaryType, String caseID, String instanceId,  String anmIdentifier, String scheduleName, String visitCode, AlertStatus alertStatus, DateTime startDate, DateTime expiryDate,List<Action> existingAlerts){
+    public void updateDataAction( String visitCode, AlertStatus alertStatus, DateTime startDate, DateTime expiryDate,List<Action> existingAlerts){
     	existingAlerts.get(0).setRevision(existingAlerts.get(0).getRevision());
 	   	existingAlerts.get(0).data().put("alertStatus", alertStatus.toString());
 	   	existingAlerts.get(0).data().put("expiryDate", expiryDate.toLocalDate().toString());
 	   	existingAlerts.get(0).data().put("startDate", startDate.toLocalDate().toString());
 	   	existingAlerts.get(0).data().put("visitCode", visitCode);
 	   	existingAlerts.get(0).markAsActive();
-	   	existingAlerts.get(0).timestamp(Calendar.getInstance().getTimeInMillis()); 	    	  
-	   	Action action = existingAlerts.get(0);
-	   	allActions.update(action);
+	   	existingAlerts.get(0).timestamp(Calendar.getInstance().getTimeInMillis()); 
+	   	allActions.update(existingAlerts.get(0));
     }
     
    

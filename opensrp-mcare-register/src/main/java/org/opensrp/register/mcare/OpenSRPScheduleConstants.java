@@ -110,8 +110,8 @@ public class OpenSRPScheduleConstants {
     	public static final Integer pnc2 = 5;
     	public static final Integer pnc3 = 8;
     	public static final Integer encc1 = 1;
-    	public static final Integer encc2 = 3;
-    	public static final Integer encc3 = 2;
+    	public static final Integer encc2 = 5;
+    	public static final Integer encc3 = 8;
     }
    
 }

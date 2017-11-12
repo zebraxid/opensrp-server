@@ -16,6 +16,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
@@ -369,4 +370,22 @@ public class ScheduleLogService extends OpenmrsService{
 	public void ancScheduleUnEnroll(String entityId, String  providerId,String scheduleName){
 		scheduler.unEnrollFromSchedule(entityId, providerId, scheduleName);
 	}
+	
+	 public static long getDaysDifference(DateTime expiryDate){
+		   SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+	   	   Date today = Calendar.getInstance().getTime();
+	   	   
+	   	   long days = 0;
+		   try {
+		   	 Date expiredDate = format.parse(expiryDate.toString());
+		   	 String todayDate = format.format(today);
+		   	 Date today_date = format.parse(todayDate);
+		   	 long diff = expiredDate.getTime() - today_date.getTime();
+		   	 days = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+		    } catch (ParseException e) {
+		   		// TODO Auto-generated catch block
+		   		e.printStackTrace();
+		   }
+		   return days;
+	   }
 }
