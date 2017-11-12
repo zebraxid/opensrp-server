@@ -96,7 +96,7 @@ public class ScheduleLogService extends OpenmrsService{
 	 * */
 	
 	public void saveScheduleLog(BeneficiaryType beneficiaryType, String caseID, String instanceId, String anmIdentifier, String scheduleName, String visitCode, AlertStatus alertStatus, DateTime startDate, DateTime expiryDate,String immediateScheduleName,long timeStamp){
-		List<Enrollment> el = null;
+		/*List<Enrollment> el = null;
 		List<Action> alertActions = new ArrayList<Action>();
 		if(!immediateScheduleName.equalsIgnoreCase("")){
 			el =this.findEnrollmentByCaseIdAndScheduleName(caseID,immediateScheduleName);			 
@@ -133,7 +133,7 @@ public class ScheduleLogService extends OpenmrsService{
 		}catch(Exception e){
 			logger.info("ScheduleLog Does not create:"+e.getMessage());
 		}
-		
+		*/
 	}
 	
 	public  List<Enrollment> findEnrollmentByCaseIdAndScheduleName(String caseID,String scheduleName ){
@@ -310,7 +310,12 @@ public class ScheduleLogService extends OpenmrsService{
 			logger.info("From scheduleCloseAndSave for close : "+e.getMessage());
 		}*/
 		try{
-			allActions.addOrUpdateAlert(new Action(entityId, provider, ActionData.createAlert(beneficiaryType, ScheduleName, milestoneName, alertStaus, startDate,  expiredDate)));
+			System.err.println("BF ACtion"+ScheduleName);
+			Action ac = new Action(entityId, provider, ActionData.createAlert(beneficiaryType, ScheduleName, milestoneName, alertStaus, startDate,  expiredDate));
+			ac.getIsActionActive();
+			allActions.add(ac);
+			//allActions.addOrUpdateAlert(new Action(entityId, provider, ActionData.createAlert(beneficiaryType, ScheduleName, milestoneName, alertStaus, startDate,  expiredDate)));
+			System.err.println("AF ACtion");
 			/*logger.info(format("create psrf from psrf to psrf..", entityId));
 			List<Action> afterNewActions = allActions.findAlertByANMIdEntityIdScheduleName(provider, entityId, ScheduleName);
 			if(afterNewActions.size() > 0){ 

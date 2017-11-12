@@ -55,7 +55,7 @@ public class ChildSchedulesService {
 				e.printStackTrace();
 			}
 	        DateTime FWBNFDTOO = new DateTime(date);
-	        if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Days.ONE.toPeriod())) {
+	        if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Days.TWO.toPeriod())) {
 	            milestone = SCHEDULE_ENCC_1;
 	            startDate = new DateTime(FWBNFDTOO);
 	            expireDate = new DateTime(FWBNFDTOO).plusDays(DateTimeDuration.encc1);
@@ -63,14 +63,14 @@ public class ChildSchedulesService {
 	            milestone = SCHEDULE_ENCC_2;
 	            startDate = new DateTime(FWBNFDTOO).plusDays(DateTimeDuration.encc1);
 	            expireDate = new DateTime(startDate).plusDays(DateTimeDuration.encc2);
-	        } else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Days.SIX.toPeriod().plusDays(2))) {
+	        } else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Days.SEVEN.toPeriod().plusDays(2))) {
 	            milestone = SCHEDULE_ENCC_3;
 	            startDate = new DateTime(FWBNFDTOO).plusDays(DateTimeDuration.encc2);
 	            expireDate = new DateTime(startDate).plusDays(DateTimeDuration.encc3);
 	        } else{
 	        	
 	        }
-	        scheduleLogService.scheduleCloseAndSave(entityId, instanceId, provider, SCHEDULE_ENCC, milestone, BeneficiaryType.child, AlertStatus.urgent, startDate, expireDate);
+	        scheduleLogService.scheduleCloseAndSave(entityId, instanceId, provider, SCHEDULE_ENCC, milestone, BeneficiaryType.child, AlertStatus.upcoming, startDate, expireDate);
 	        logger.info(format("Enrolling with Entity id:{0} to ENCC schedule, milestone: {1}.", entityId, milestone));
 	        scheduler.enrollIntoSchedule(entityId, SCHEDULE_ENCC, milestone, referenceDateForSchedule.toString());
 	    }

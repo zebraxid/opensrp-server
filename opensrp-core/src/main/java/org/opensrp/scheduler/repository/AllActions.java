@@ -104,6 +104,8 @@ public class AllActions extends MotechBaseRepository<Action> {
         for (Action existingAlert : existingAlerts) {
             safeRemove(existingAlert);
         }
+        System.err.println("alertAction:"+alertAction.toString());
+        alertAction.markAsActive();
         add(alertAction);
     }
 

@@ -66,24 +66,24 @@ public class PNCSchedulesService {
 			e.printStackTrace();
 		}
         DateTime FWBNFDTOO = new DateTime(date);
+        
         if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Days.ONE.toPeriod())) {
             milestone = SCHEDULE_PNC_1;
             startDate = new DateTime(FWBNFDTOO);
             expireDate = new DateTime(FWBNFDTOO).plusDays(DateTimeDuration.pnc1);
-        } else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Days.FIVE.toPeriod())) {
+        } else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Days.FOUR.toPeriod())) {
             milestone = SCHEDULE_PNC_2;  
             startDate = new DateTime(FWBNFDTOO).plusDays(DateTimeDuration.pnc1);
             expireDate = new DateTime(startDate).plusDays(DateTimeDuration.pnc2);
            
-        } else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Days.SEVEN.toPeriod().plusDays(1))) {
+        } else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Days.SEVEN.plus(1).toPeriod())) {
             milestone = SCHEDULE_PNC_3;
             startDate = new DateTime(FWBNFDTOO).plusDays(DateTimeDuration.pnc2);
             expireDate = new DateTime(startDate).plusDays(DateTimeDuration.pnc3);
         } else{
         	
         }
-
-        scheduleLogService.scheduleCloseAndSave(entityId, instanceId, provider, SCHEDULE_ANC, milestone, BeneficiaryType.mother, AlertStatus.urgent, startDate, expireDate);
+        scheduleLogService.scheduleCloseAndSave(entityId, instanceId, provider, SCHEDULE_PNC, milestone, BeneficiaryType.mother, AlertStatus.upcoming, startDate, expireDate);
 
         logger.info(format("Enrolling PNC with Entity id:{0} to PNC schedule, milestone: {1}.", entityId, milestone));
         scheduler.enrollIntoSchedule(entityId, SCHEDULE_PNC, milestone, referenceDateForSchedule.toString());
