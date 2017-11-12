@@ -56,13 +56,13 @@ public class ChildSchedulesService {
 			}
 	        DateTime FWBNFDTOO = new DateTime(date);
 	        long datediff = ScheduleLogService.getDaysDifference(FWBNFDTOO);
-	        System.err.println("datediff:"+datediff);
+	        
 	        
 	        if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Days.ONE.minus(1).toPeriod())) {
 	            milestone = SCHEDULE_ENCC_1;
 	            startDate = new DateTime(FWBNFDTOO);
 	            expireDate = new DateTime(FWBNFDTOO);            
-	            scheduleLogService.scheduleCloseAndSave(entityId, instanceId, provider, SCHEDULE_ENCC, milestone, BeneficiaryType.child, AlertStatus.upcoming, FWBNFDTOO, expireDate);
+	            scheduleLogService.saveAction(entityId, instanceId, provider, SCHEDULE_ENCC, milestone, BeneficiaryType.child, AlertStatus.upcoming, FWBNFDTOO, expireDate);
 
 	        } else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Days.FOUR.toPeriod())) {
 	        	
@@ -70,11 +70,11 @@ public class ChildSchedulesService {
 	            startDate = new DateTime(FWBNFDTOO).plusDays(DateTimeDuration.encc1);
 	            expireDate = new DateTime(FWBNFDTOO).plusDays(DateTimeDuration.encc2);
 	            if(datediff==-1){
-	            	scheduleLogService.scheduleCloseAndSave(entityId, instanceId, provider, SCHEDULE_ENCC, SCHEDULE_ENCC_1, BeneficiaryType.child, AlertStatus.urgent, FWBNFDTOO,  new DateTime(FWBNFDTOO).plusDays(DateTimeDuration.encc1));
+	            	scheduleLogService.saveAction(entityId, instanceId, provider, SCHEDULE_ENCC, SCHEDULE_ENCC_1, BeneficiaryType.child, AlertStatus.urgent, FWBNFDTOO,  new DateTime(FWBNFDTOO).plusDays(DateTimeDuration.encc1));
 	            }else if(datediff ==-2){
-	            	scheduleLogService.scheduleCloseAndSave(entityId, instanceId, provider, SCHEDULE_ENCC, milestone, BeneficiaryType.child, AlertStatus.upcoming, FWBNFDTOO, new DateTime(FWBNFDTOO).plusDays(3));
+	            	scheduleLogService.saveAction(entityId, instanceId, provider, SCHEDULE_ENCC, milestone, BeneficiaryType.child, AlertStatus.upcoming, FWBNFDTOO, new DateTime(FWBNFDTOO).plusDays(3));
 	            }else{
-	            	scheduleLogService.scheduleCloseAndSave(entityId, instanceId, provider, SCHEDULE_ENCC, milestone, BeneficiaryType.child, AlertStatus.urgent, FWBNFDTOO, expireDate);
+	            	scheduleLogService.saveAction(entityId, instanceId, provider, SCHEDULE_ENCC, milestone, BeneficiaryType.child, AlertStatus.urgent, FWBNFDTOO, expireDate);
 	            }
 
 	        } else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Days.SEVEN.plus(1).toPeriod())) {
@@ -84,18 +84,18 @@ public class ChildSchedulesService {
 	            expireDate = new DateTime(FWBNFDTOO).plusDays(DateTimeDuration.encc3);
 	            
 	            if(ScheduleLogService.getDaysDifference(FWBNFDTOO)==-5){
-	            	scheduleLogService.scheduleCloseAndSave(entityId, instanceId, provider, SCHEDULE_ENCC, SCHEDULE_ENCC_2, BeneficiaryType.child, AlertStatus.urgent, FWBNFDTOO, new DateTime(FWBNFDTOO).plusDays(DateTimeDuration.encc2));
+	            	scheduleLogService.saveAction(entityId, instanceId, provider, SCHEDULE_ENCC, SCHEDULE_ENCC_2, BeneficiaryType.child, AlertStatus.urgent, FWBNFDTOO, new DateTime(FWBNFDTOO).plusDays(DateTimeDuration.encc2));
 	            }else if(datediff==-6){
-	            	 scheduleLogService.scheduleCloseAndSave(entityId, instanceId, provider, SCHEDULE_ENCC, milestone, BeneficiaryType.child, AlertStatus.upcoming, FWBNFDTOO, new DateTime(FWBNFDTOO).plusDays(6));
+	            	 scheduleLogService.saveAction(entityId, instanceId, provider, SCHEDULE_ENCC, milestone, BeneficiaryType.child, AlertStatus.upcoming, FWBNFDTOO, new DateTime(FWBNFDTOO).plusDays(6));
 	            }else if(datediff==-7){
-	            	scheduleLogService.scheduleCloseAndSave(entityId, instanceId, provider, SCHEDULE_ENCC, milestone, BeneficiaryType.child, AlertStatus.urgent, FWBNFDTOO, new DateTime(FWBNFDTOO).plusDays(7));
+	            	scheduleLogService.saveAction(entityId, instanceId, provider, SCHEDULE_ENCC, milestone, BeneficiaryType.child, AlertStatus.urgent, FWBNFDTOO, new DateTime(FWBNFDTOO).plusDays(7));
 	            }else{
-	            	scheduleLogService.scheduleCloseAndSave(entityId, instanceId, provider, SCHEDULE_ENCC, milestone, BeneficiaryType.child, AlertStatus.expired, FWBNFDTOO, new DateTime(FWBNFDTOO).plusDays(8));
+	            	scheduleLogService.saveAction(entityId, instanceId, provider, SCHEDULE_ENCC, milestone, BeneficiaryType.child, AlertStatus.expired, FWBNFDTOO, new DateTime(FWBNFDTOO).plusDays(8));
 	            }
 	           
 
 	        } else{
-	        	scheduleLogService.scheduleCloseAndSave(entityId, instanceId, provider, SCHEDULE_ENCC, milestone, BeneficiaryType.child, AlertStatus.expired, FWBNFDTOO, new DateTime(FWBNFDTOO).plusDays(8));
+	        	scheduleLogService.saveAction(entityId, instanceId, provider, SCHEDULE_ENCC, milestone, BeneficiaryType.child, AlertStatus.expired, FWBNFDTOO, new DateTime(FWBNFDTOO).plusDays(8));
 	        }
 
 	        logger.info(format("Enrolling ENCC with Entity id:{0} to ENCC schedule, milestone: {1}.", entityId, milestone));

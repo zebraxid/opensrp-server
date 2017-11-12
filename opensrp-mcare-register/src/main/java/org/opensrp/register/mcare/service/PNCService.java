@@ -186,7 +186,7 @@ public class PNCService {
 				if (submission.getField(FWBNFWOMVITSTS).equalsIgnoreCase("0")) {
 					logger.info("Mother died");
 				} else {
-					//User type conditions
+					
 					if(submission.getField("user_type").equalsIgnoreCase(FD)){					
 						pncSchedulesService.enrollPNCRVForMother(submission.entityId(),submission.instanceId(),submission.anmId(), LocalDate.parse(referenceDate),referenceDate);
 						logger.info("Generating schedule for Child when Child is Live Birth. Mother Id: " + mother.caseId());
@@ -237,7 +237,7 @@ public class PNCService {
 					if (childFields.get(FWBNFCHLDVITSTS).equalsIgnoreCase("0")) {
 						logger.info("Child died");
 					} else {
-						// user type conditions
+						
 						if(submission.getField("user_type").equalsIgnoreCase(FD)){
 							childSchedulesService.enrollENCCForChild(childFields.get(ID),submission.instanceId(),submission.anmId(), LocalDate.parse(referenceDate),referenceDate);
 						}

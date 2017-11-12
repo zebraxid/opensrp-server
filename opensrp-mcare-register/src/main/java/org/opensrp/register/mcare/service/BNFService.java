@@ -150,7 +150,7 @@ public class BNFService {
 				 * Close Corresponding ANC schedule
 				 * */
 				scheduleLogService.ancScheduleUnEnroll(submission.entityId(), submission.anmId(), SCHEDULE_ANC);
-				actionService.markAllAlertsAsInactive(submission.entityId());
+				//actionService.markAllAlertsAsInactive(submission.entityId());
 				try {
 					long timestamp = actionService.getActionTimestamp(submission.anmId(), submission.entityId(), SCHEDULE_ANC);
 					ancSchedulesService.fullfillSchedule(submission.entityId(), SCHEDULE_ANC, submission.instanceId(), timestamp);
@@ -163,7 +163,7 @@ public class BNFService {
 						submission.instanceId());
 			}
 			
-			//pncService.deliveryOutcome(submission);
+			
 
 		} else if (submission.getField(FWBNFSTS).equalsIgnoreCase(STS_GONE) || submission.getField(FWBNFSTS).equalsIgnoreCase(STS_WD)) {
 			if (submission.getField("user_type").equalsIgnoreCase(FD)) {
@@ -175,7 +175,8 @@ public class BNFService {
 				 * Close Corresponding ANC schedule
 				 * */
 				scheduleLogService.ancScheduleUnEnroll(submission.entityId(), submission.anmId(), SCHEDULE_ANC);
-				actionService.markAllAlertsAsInactive(submission.entityId());
+				//actionService.markAllAlertsAsInactive(submission.entityId());
+				
 				try {
 					long timestamp = actionService.getActionTimestamp(submission.anmId(), submission.entityId(), SCHEDULE_ANC);
 					ancSchedulesService.fullfillSchedule(submission.entityId(), SCHEDULE_ANC, submission.instanceId(), timestamp);

@@ -99,9 +99,7 @@ public class ActionService {
     	try{
 	    	List<Action> existingAlerts = allActions.findAlertByANMIdEntityIdScheduleName(anmIdentifier, caseID, scheduleName);
 	    	if(existingAlerts.size() > 0){ 	    	      
-	        	/*allActions.remove(existingAlerts.get(0));
-		    	Action action  = new Action(caseID, anmIdentifier, ActionData.createAlert(beneficiaryType, scheduleName, visitCode, alertStatus, startDate,  expiryDate));
-		    	allActions.add(action);*/
+	        	
 	    		updateDataAction(visitCode,alertStatus,startDate,expiryDate,existingAlerts);
 	    	}
     	}catch(Exception e){
@@ -114,13 +112,10 @@ public class ActionService {
     	
     	try{
 	    	List<Action> existingAlerts = allActions.findAlertByANMIdEntityIdScheduleName(anmIdentifier, caseID, scheduleName);
-	    	//allActions.remove(existingAlerts.get(0));
-	    	//Action action  = new Action(caseID, anmIdentifier, ActionData.createAlert(beneficiaryType, scheduleName, visitCode, alertStatus, startDate,  expiryDate));
-	    	//allActions.add(action);
+	    	
 	    	updateDataAction(visitCode,alertStatus,startDate,expiryDate,existingAlerts);
 	    	if(existingAlerts.size() > 0){ 	    		
 	        	long numOfDays =  this.getDaysDifference(expiryDate);
-	        	System.err.println("numOfDays:"+numOfDays+" alertStatus:"+alertStatus);
 	        	
 	        	if(ANC.equalsIgnoreCase(scheduleName) ){
 	        		if(( numOfDays<=2)   && alertStatus.name().equalsIgnoreCase("urgent")){	        		
@@ -170,7 +165,7 @@ public class ActionService {
    public long getDaysDifference(DateTime expiryDate){
 	   SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
    	   Date today = Calendar.getInstance().getTime();
-   	   //DateTime expiryDates = new DateTime(today).minus(24);
+   	   
    	   long days = 0;
 	   try {
 	   	 Date expiredDate = format.parse(expiryDate.toString());
@@ -179,7 +174,7 @@ public class ActionService {
 	   	 long diff = expiredDate.getTime() - today_date.getTime();
 	   	 days = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
 	    } catch (ParseException e) {
-	   		// TODO Auto-generated catch block
+	   		
 	   		e.printStackTrace();
 	   }
 	   return days;

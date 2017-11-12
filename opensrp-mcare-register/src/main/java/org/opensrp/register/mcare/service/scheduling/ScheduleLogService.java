@@ -300,35 +300,15 @@ public class ScheduleLogService extends OpenmrsService{
 	 * @return nothing
 	 * */
 	public void scheduleCloseAndSave(String entityId,String instanceId,String provider,String ScheduleName,String milestoneName,BeneficiaryType beneficiaryType,AlertStatus alertStaus, DateTime startDate, DateTime expiredDate){
-		/*try{
-			List<Action> beforeNewActions = allActions.findAlertByANMIdEntityIdScheduleName(provider, entityId, ScheduleName);
-			if(beforeNewActions.size() > 0){ 
-			 this.closeSchedule(entityId,instanceId,beforeNewActions.get(0).timestamp(),ScheduleName);
-			 logger.info("close a schedule with id : "+entityId);
-			}
+		allActions.addOrUpdateAlert(new Action(entityId, provider, ActionData.createAlert(beneficiaryType, ScheduleName, milestoneName, alertStaus, startDate,  expiredDate)));
+		
 			
-		}catch(Exception e){
-			logger.info("From scheduleCloseAndSave for close : "+e.getMessage());
-		}*/
-		try{
-			System.err.println("BF ACtion"+ScheduleName);
-			Action ac = new Action(entityId, provider, ActionData.createAlert(beneficiaryType, ScheduleName, milestoneName, alertStaus, startDate,  expiredDate));
-			ac.getIsActionActive();
-			allActions.add(ac);
-			//allActions.addOrUpdateAlert(new Action(entityId, provider, ActionData.createAlert(beneficiaryType, ScheduleName, milestoneName, alertStaus, startDate,  expiredDate)));
-			System.err.println("AF ACtion");
-			/*logger.info(format("create psrf from psrf to psrf..", entityId));
-			List<Action> afterNewActions = allActions.findAlertByANMIdEntityIdScheduleName(provider, entityId, ScheduleName);
-			if(afterNewActions.size() > 0){ 
-				this.saveScheduleLog(beneficiaryType, entityId, instanceId, provider, ScheduleName, milestoneName, alertStaus, startDate, expiredDate,ScheduleName,afterNewActions.get(0).timestamp());
-				logger.info("create a schedule with id : "+entityId);
-			}
-			*/
-		}catch(Exception e){
-			logger.info("From scheduleCloseAndSave for save: "+e.getMessage());
-		}
 	}
 	
+	public void saveAction(String entityId,String instanceId,String provider,String ScheduleName,String milestoneName,BeneficiaryType beneficiaryType,AlertStatus alertStaus, DateTime startDate, DateTime expiredDate){
+		allActions.addOrUpdateAlert(new Action(entityId, provider, ActionData.createAlert(beneficiaryType, ScheduleName, milestoneName, alertStaus, startDate,  expiredDate)));
+		
+	}
 	public String getScheduleRuleForPSRFInHH(String name){
 		ScheduleRules scheduleRule = scheduleRuleRepository.findByName(name);	
 		String fieldName = "";
