@@ -13,7 +13,7 @@ import static org.junit.Assert.assertEquals;
 
 @Ignore
 public class DiseaseProblemReportTest {
-    public String unionName = "union";
+   /* public String unionName = "union";
     private DiseaseProblemReportTestData diseaseProblemReportTestData;
     private long startDateTime;
     private long endDateTime;
@@ -34,5 +34,5 @@ public class DiseaseProblemReportTest {
         MIS1Report mis1Report = new MIS1Report(unionName, members, startDateTime, endDateTime);
         long countOfDangerousDiseases = mis1Report.getChildCareReport().getDiseaseReportCalculator().getVeryDangerousDiseasesCount();
         assertEquals(diseaseProblemReportTestData.validCount, countOfDangerousDiseases);
-    }
+    }*/
 }

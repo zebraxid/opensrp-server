@@ -53,6 +53,10 @@
  tt3:<br>db result: <b> ${tt3}</b> <br>
  tt4:<br>db result: <b> ${tt4}</b><br>
  tt5:<br>db result: <b> ${tt5}</b> <br>
+ countOfCounsellingOnChangesOfAdolescent:<br>db result:<b>${countOfCounsellingOnChangesOfAdolescent}</b><br>
+ countOfCounsellingBadEffectOnChildMarriageAndTeenPregnancy:<br>db result:<b>${countOfCounsellingBadEffectOnChildMarriageAndTeenPregnancy}</b><br>
+ countOfCounsellingTeenageGirlsOnTakingIronAndFolicAcid:<br>db result:<b>${countOfCounsellingTeenageGirlsOnTakingIronAndFolicAcid}</b><br>
+ countOfCounsellingOnInfectionOfGenitialsAndSexuallyTransmittedDiseases:<br>db result:<b>${countOfCounsellingOnInfectionOfGenitialsAndSexuallyTransmittedDiseases}</b><br>
  totalPregnentCount:<br>db result: <b> ${totalPregnentCount}</b>
  <h3>Child Care</h3>
  BCG:<br>db result: <b> ${countOfBcg}</b><br>
@@ -64,6 +68,16 @@
  Count of Dangerous Diseases:<br>db result: <b> ${countOfDangerousDiseases}</b><br>
  Count of Pneumonia:<br>db result: <b> ${countOfPnueomonia}</b><br>
  Count of Diarrhea:<br>db result: <b> ${countOfDiarrhea}</b><br>
+ <h3>Birth And Death</h3>
+ Number of live birth:<br>db result:<b>${totalCountOfLiveBirth}</b><br>
+ Child of Under weight:<br>db result:<b>${totalChildWithUnderWeight}</b><br>
+ Child of Premature birth:<br>db result:<b>${totalPrematureChild}</b><br>
+ Death- 0 to 7 days:<br>db result:<b>${totalCountOfDeathofLessThanSevenDays}</b><br>
+ Death- 8 to 28 days:<br>db result:<b>${totalCountOfDeathofLessThanTwnEightDays}</b><br>
+ Death- less than 1 yr:<br>db result:<b>${totalCountOfDeathofLessThanOneYr}</b><br>
+ Death- less than 5 yr:<br>db result:<b>${totalCountOfDeathofLessThanFiveYr}</b><br>
+ Death-Mother:<br>db result:<b>${totalCountOfDeathofMother}</b><br>
+ Death-Other:<br>db result:<b>${totalCountOfDeathofOther}</b><br>
  <h3>Nutrition</h3>
  Iron and Folic Acid Counselling for Preg Women:<br>db result: <b> ${countOfIronAndFolicAcidCouncilingForPregWoman}</b><br>
  Iron and Folic Acid Counselling for Mother:<br>db result: <b> ${countOfIronAndFolicAcidCouncilingForMother}</b><br>
@@ -73,9 +87,7 @@
  Counselling Breast Feeding and Food for Mother:<br>db result: <b> ${countOfCouncilingOnBreastFeedingAndNutritionForMother}</b><br>
  Feeding MNP Powder for Mother<br>db result: <b> ${countOfCouncilingOnMNPForMother}</b><br>
  Breast Feeding Within One Hour:<br>db result: <b> ${countOfBreastFeedinginOneHourlessThnZeroGreaterThnSix}</b><br>
- Breast Feeding Until Six month:<br>db result: <b> ${countOfBreastFeedingFromZeroToSixMonth}</b><br>
- Food for after Six Month in 6 to 24:<br>db result: <b> ${countOfBcg}</b><br>
- Food for After Six Month 24 to 60:<br>db result: <b> ${countOfBcg}</b>:<br>
+ Breast Feeding Until Six month:<br>db result: <b> ${countOfBreastFeedingUntillSixMonth}</b><br>
  MAM - 0 to 6:<br>db result: <b> ${countOfMAMForZeroToSix}</b><br>
  SAM - 0 to 6:<br>db result: <b> ${countOfSAMForZeroToSix}</b><br>
  MAM - 6 to 24:<br>db result: <b> ${countOfMAMForSixToTwntyFour}</b><br>

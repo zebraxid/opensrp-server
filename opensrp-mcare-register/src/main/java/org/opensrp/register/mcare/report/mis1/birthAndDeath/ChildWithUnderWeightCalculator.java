@@ -8,6 +8,8 @@ import org.opensrp.register.mcare.report.mis1.ReportCalculator;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ChildWithUnderWeightCalculator extends ReportCalculator {
 
@@ -38,32 +40,38 @@ public class ChildWithUnderWeightCalculator extends ReportCalculator {
         Date startDate = null;
         Date endDate = null;
         long totalunderweightcount = 0;
-        if( member.details().get("DOO") != null ){
-            String deliveryDateStr = member.details().get("DOO");
 
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        Map<String , String> detailsMap = member.details();
+        if( detailsMap.containsKey("DOO")){
+            if( member.details().get("DOO").length() != 0 ){
+                String deliveryDateStr = member.details().get("DOO");
 
-            try {
-                dooDate = simpleDateFormat.parse(deliveryDateStr);
-                startDate = new Date( startDateTime * 1000);
-                endDate = new Date( endDateTime * 1000);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
 
-            if(dooDate.after(startDate) && dooDate.before(endDate) || dooDate.equals(startDate)){
-
-                if( member.details().get("Child_Weight") != null ){
-                    System.out.println("Child_Weight::: " + member.details().get("Child_Weight") + " dooDate::: " + dooDate);
-                    String childWeightStr = member.details().get("Child_Weight");
-                    float childWeight = Float.parseFloat(childWeightStr);
-                    if( childWeight < 2.5 )
-                        totalunderweightcount = 1;
+                try {
+                    dooDate = simpleDateFormat.parse(deliveryDateStr);
+                    startDate = new Date( startDateTime);
+                    endDate = new Date( endDateTime);
+                } catch (ParseException e) {
+                    e.printStackTrace();
                 }
-            }
-            else{
-                totalunderweightcount =0 ;
-            }
+                if(detailsMap.containsKey("Child_Weight")){
+                    System.out.println("Details::: " + member.details().toString());
+
+                    if(dooDate.after(startDate) && dooDate.before(endDate) || dooDate.equals(startDate)){
+                            String childWeightStr = member.details().get("Child_Weight");
+                            float childWeight = Float.parseFloat(childWeightStr);
+                            System.out.println("float:" + childWeight + " string:" + childWeightStr);
+                            if( childWeight < 2.5 )
+                                totalunderweightcount = 1;
+
+                    }
+                    else{
+                        totalunderweightcount =0 ;
+                    }
+                }
+                }
+
 
 
         }

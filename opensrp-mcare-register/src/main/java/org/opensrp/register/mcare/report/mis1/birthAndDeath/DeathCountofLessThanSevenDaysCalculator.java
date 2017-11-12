@@ -7,6 +7,7 @@ import org.opensrp.register.mcare.report.mis1.ReportCalculator;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Map;
 
 /**
  * Created by asha on 9/28/17.
@@ -40,16 +41,17 @@ public class DeathCountofLessThanSevenDaysCalculator extends ReportCalculator {
 
         long value=0;
 
-        if( member.getDeathReg().get("DOO") != null ){
-            String deliveryDateStr = member.getDeathReg().get("DOO");
+        Map<String , String> deathReg = member.getDeathReg();
+        if( deathReg.containsKey("death_today")){
+            String deathDateStr = member.getDeathReg().get("death_today");
 
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
             Date dooDate = null;
             Date startDate = null;
             Date endDate = null;
 
             try {
-                dooDate = simpleDateFormat.parse(deliveryDateStr);
+                dooDate = simpleDateFormat.parse(deathDateStr);
                 startDate = new Date( startDateTime * 1000);
                 endDate = new Date( endDateTime * 1000);
             } catch (ParseException e) {
@@ -58,7 +60,7 @@ public class DeathCountofLessThanSevenDaysCalculator extends ReportCalculator {
 
             if(dooDate.after(startDate) && dooDate.before(endDate) || dooDate.equals(startDate)){
 
-                if (member.getDeathReg().get("Deceased_Age_Group") != null && member.getDeathReg().get("Deceased_Age_Group") == "1") {
+                if (member.getDeathReg().get("Deceased_Age_Group").equals("1")) {
                     value = 1;
                 }
                 else {
@@ -66,7 +68,7 @@ public class DeathCountofLessThanSevenDaysCalculator extends ReportCalculator {
                 }
 
             }
-            System.out.println("in seven days value::::" + value);
+
         }
 
         return value;

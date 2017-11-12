@@ -21,7 +21,7 @@ import static org.junit.Assert.assertEquals;
 
 @Ignore
 public class EligibleCoupleCountCalculatorTest {
-    public String unionName = "union";
+    /*public String unionName = "union";
     private EligibleCoupleCountTestData eligibleCoupleCountTestData;
     private long startDateTime;
     private long endDateTime;
@@ -58,5 +58,5 @@ public class EligibleCoupleCountCalculatorTest {
     }
 
 
-
+*/
 }

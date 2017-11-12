@@ -14,7 +14,7 @@ import static org.junit.Assert.assertEquals;
 
 public class BirthControlMethodUsagesCalculationTest {
 
-    public String unionName = "union";
+   /* public String unionName = "union";
     public BirthControlMethodTestData birthControlMethodTestData;
     public MIS1Report mis1Report;
     public static String ON_TEST_BIRTH_CONTROL_METHOD = Members.EligibleCoupleVisitKeyValue.BIRTH_CONTROL_CONDOM;
@@ -64,5 +64,5 @@ public class BirthControlMethodUsagesCalculationTest {
         int totalCountOfMembersWhoLeftUsagesOfBirthControlPillOfCurrentMonth =
                 mis1Report.getFamilyPlanningReport().getCondomUsagesCalculator().leftUsagesButTakenOther();
         assertEquals(this.birthControlMethodTestData.validCount, totalCountOfMembersWhoLeftUsagesOfBirthControlPillOfCurrentMonth);
-    }
+    }*/
 }

@@ -68,9 +68,10 @@ public class ChildNutritionCalculator extends ReportCalculator {
     }
 
     private int getAgeInMonthOf(Members member) {
-        if (member.getMember_Birth_Date() != null) {
+        if (member.getCalc_Dob_Confirm() != null) {
+            System.out.println("ddddddddddddddddddd:" + member.getCalc_Dob_Confirm());
             DateTimeFormatter formatter = DateTimeFormat.forPattern(Members.Member_Date_Format);
-            DateTime birthDate = formatter.parseDateTime(member.getMember_Birth_Date());
+            DateTime birthDate = formatter.parseDateTime(member.getCalc_Dob_Confirm());
             Period diff = new Period(birthDate, new DateTime());
             return diff.getMonths();
         }
@@ -79,6 +80,7 @@ public class ChildNutritionCalculator extends ReportCalculator {
     }
 
     public ChildAgeLimit forChildAgeZeroToSix() {
+
         return childZeroToSix;
     }
 

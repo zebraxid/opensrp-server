@@ -78,6 +78,10 @@ public class SampleReportCheckController {
     private long tt4 = 0 ;
     private long tt5 = 0 ;
     private long totalPregnentCount = 0 ;
+    private long countOfCounsellingOnChangesOfAdolescent = 0;
+    private long countOfCounsellingBadEffectOnChildMarriageAndTeenPregnancy = 0;
+    private long countOfCounsellingTeenageGirlsOnTakingIronAndFolicAcid = 0;
+    private long countOfCounsellingOnInfectionOfGenitialsAndSexuallyTransmittedDiseases = 0;
 
     private long countOfBcg=0;
     private long newBornCleanedCount=0;
@@ -90,7 +94,18 @@ public class SampleReportCheckController {
     private long countOfOpv3Andpenta3=0;
     private long countOfPcv3=0;
 
+    private long totalCountOfLiveBirth = 0 ;
+    private long totalChildWithUnderWeight = 0;
+    private long totalCountOfDeathofLessThanFiveYr = 0;
+    private long totalCountOfDeathofLessThanOneYr = 0;
+    private long totalCountOfDeathofLessThanSevenDays = 0;
+    private long totalCountOfDeathofLessThanTwnEightDays = 0;
+    private long totalCountOfDeathofMother = 0;
+    private long totalCountOfDeathofOther = 0;
+    private long totalPrematureChild = 0;
+
     private long countOfBreastFeedinginOneHourlessThnZeroGreaterThnSix=0;
+    private long countOfBreastFeedingUntillSixMonth = 0;
     private long countOfBreastFeedingFromZeroToSixMonth=0;
     private long countOfMAMForZeroToSix=0;
     private long countOfSAMForZeroToSix=0;
@@ -105,6 +120,7 @@ public class SampleReportCheckController {
     private long countOfCouncilingOnBreastFeedingAndNutritionForPregWomen=0;
     private long countOfCouncilingOnBreastFeedingAndNutritionForMother=0;
     private long countOfCouncilingOnMNPForMother=0;
+
     private long totalCountOfEligibleCoupleOfCurrentMonth=0;
     private long totalCountOfNewEligibleCoupleOfCurrentMonth=0;
     private long totalCountOfEligibleCoupleInUnitOfCurrentMonth=0;
@@ -114,18 +130,19 @@ public class SampleReportCheckController {
         List<Members> listOfMembers = mis1ReportGenerator.getAllCalculatorValue();
 
         MIS1Report mis1Report = new MIS1Report(unionName, listOfMembers, startDateTime, endDateTime);
-        DHIS2ReportBuilder dhis2ReportBuilder = new DHIS2ReportBuilder("PKTk8zxbl0J", new DateTime(), new DateTime().minusYears(2));
+        /*DHIS2ReportBuilder dhis2ReportBuilder = new DHIS2ReportBuilder("PKTk8zxbl0J", new DateTime(), new DateTime().minusYears(2));
         List<DataValueSet> dataValueSets = dhis2ReportBuilder.build(mis1Report);
         DHIS2Service service = new DHIS2Service("http://192.168.19.18:1971", "dgfp", "Dgfp@123");
         for(DataValueSet dataValueSet : dataValueSets) {
             System.out.println(dataValueSet.getDataSet() + dataValueSet.send(service));
-        }
+        }*/
 
       // MIS1Report mis1Report = new MIS1Report(unionName,listOfMembers, startDateTime, endDateTime);
         familyPlanningCalculatorCheck(mis1Report);
         maternityCare(mis1Report);
         childCare(mis1Report);
-        nutrition(mis1Report);
+       // nutrition(mis1Report);
+        birthAndDeath(mis1Report);
         ModelAndView model = new ModelAndView("reportcalculatorcheck");
         model.addObject("size", listOfMembers.size());
 
@@ -174,7 +191,10 @@ public class SampleReportCheckController {
         model.addObject("tt4" , tt4);
         model.addObject("tt5" ,tt5);
         model.addObject("totalPregnentCount" , totalPregnentCount);
-
+        model.addObject("countOfCounsellingOnChangesOfAdolescent" ,countOfCounsellingOnChangesOfAdolescent);
+        model.addObject("countOfCounsellingBadEffectOnChildMarriageAndTeenPregnancy" , countOfCounsellingBadEffectOnChildMarriageAndTeenPregnancy);
+        model.addObject("countOfCounsellingTeenageGirlsOnTakingIronAndFolicAcid" ,countOfCounsellingTeenageGirlsOnTakingIronAndFolicAcid);
+        model.addObject("countOfCounsellingOnInfectionOfGenitialsAndSexuallyTransmittedDiseases" ,countOfCounsellingOnInfectionOfGenitialsAndSexuallyTransmittedDiseases);
         ///////////////////////////////////Child Care///////////////////////////////////////////////////////////
         model.addObject("countOfBcg" , countOfBcg);
         model.addObject("newBornCleanedCount" , newBornCleanedCount);
@@ -187,8 +207,18 @@ public class SampleReportCheckController {
         model.addObject("countOfOpv3Andpenta3" , countOfOpv3Andpenta3);
         model.addObject("countOfPcv3" , countOfPcv3);
 
+        ////////////////////////////////////////Birth And Death/////////////////////////////////////////////////
+        model.addObject("totalCountOfLiveBirth" ,totalCountOfLiveBirth );
+        model.addObject("totalChildWithUnderWeight" ,totalChildWithUnderWeight );
+        model.addObject("totalPrematureChild" , totalPrematureChild);
+        model.addObject("totalCountOfDeathofLessThanSevenDays" , totalCountOfDeathofLessThanSevenDays);
+        model.addObject("totalCountOfDeathofLessThanTwnEightDays" ,totalCountOfDeathofLessThanTwnEightDays);
+        model.addObject("totalCountOfDeathofLessThanOneYr" , totalCountOfDeathofLessThanOneYr);
+        model.addObject("totalCountOfDeathofLessThanFiveYr" ,totalCountOfDeathofLessThanFiveYr );
+        model.addObject("totalCountOfDeathofMother" , totalCountOfDeathofMother);
+        model.addObject("totalCountOfDeathofOther" ,totalCountOfDeathofOther);
 
-        ///////////////////////////////////Birth and Death/////////////////////////////////////////////////////////
+        ///////////////////////////////////Nutrition/////////////////////////////////////////////////////////
         model.addObject("countOfIronAndFolicAcidCouncilingForPregWoman" , countOfIronAndFolicAcidCouncilingForPregWoman);
         model.addObject("countOfIronAndFolicAcidDistributionForPregWomen" , countOfIronAndFolicAcidDistributionForPregWomen);
         model.addObject("countOfIronAndFolicAcidCouncilingForMother" , countOfIronAndFolicAcidCouncilingForMother);
@@ -203,6 +233,7 @@ public class SampleReportCheckController {
         model.addObject("countOfSAMForSixToTwntyFour" , countOfSAMForSixToTwntyFour);
         model.addObject("countOfMAMForTwntyFourToSixty" , countOfMAMForTwntyFourToSixty);
         model.addObject("countOfSAMForTwntyFourToSixty" , countOfSAMForTwntyFourToSixty);
+        model.addObject("countOfBreastFeedingUntillSixMonth" , countOfBreastFeedingUntillSixMonth);
         return model;
     }
     
@@ -274,10 +305,19 @@ public class SampleReportCheckController {
 
         totalPregnentCount =
                 mis1Report.getMaternityCareReport().getPregnantWomenCountCalculator().getNewPregnantCount();
-      /* informationCountPnc1 =
-               mis1Report.getMaternityCareReport().getPncReportCalculator().getPncOneVisitCalculator()..getInformationCount();
+     informationCountPnc1 =
+    /*           mis1Report.getMaternityCareReport().getPncReportCalculator().getPncOneVisitCalculator().getInformationCount();
         informationCountAnc1 =
-                mis1Report.getMaternityCareReport().getAncReportCalculator().getVisitOneCount().*/
+                mis1Report.getMaternityCareReport().getAncReportCalculator().getVisitOneCount().
+*/
+        countOfCounsellingOnChangesOfAdolescent =
+                mis1Report.getMaternityCareReport().getAdolescentHealthReportCalculator().getCountOfCounsellingOnChangesOfAdolescent();
+        countOfCounsellingBadEffectOnChildMarriageAndTeenPregnancy=
+                mis1Report.getMaternityCareReport().getAdolescentHealthReportCalculator().getCountOfCounsellingBadEffectOnChildMarriageAndTeenPregnancy();
+        countOfCounsellingTeenageGirlsOnTakingIronAndFolicAcid=
+                mis1Report.getMaternityCareReport().getAdolescentHealthReportCalculator().getCountOfCounsellingTeenageGirlsOnTakingIronAndFolicAcid();
+        countOfCounsellingOnInfectionOfGenitialsAndSexuallyTransmittedDiseases=
+                mis1Report.getMaternityCareReport().getAdolescentHealthReportCalculator().getCountOfCounsellingOnInfectionOfGenitialsAndSexuallyTransmittedDiseases();
         tt1 =
                 mis1Report.getMaternityCareReport().getTTDoseReportCalculator().getDoseOneCount();
         tt2 =
@@ -294,7 +334,8 @@ public class SampleReportCheckController {
         countOfCesareanBirthAtHospitalOrClinic = mis1Report.getMaternityCareReport().getPostpartumCareCalculator().getCountOfCesareanBirthAtHospitalOrClinic();
     }
 
-    public void childCare(MIS1Report mis1Report){
+
+   public void childCare(MIS1Report mis1Report){
 
        countOfBcg = mis1Report.getChildCareReport().getVaccinationReportCalculator().getBcgCount();
        newBornCleanedCount = mis1Report.getChildCareReport().getNewBornCareReportCalculator().getIsCleanedCount();
@@ -308,10 +349,32 @@ public class SampleReportCheckController {
        countOfPcv3 = mis1Report.getChildCareReport().getVaccinationReportCalculator().getPcv3Count();
 
     }
+  public void birthAndDeath(MIS1Report mis1Report){
 
- public void nutrition(MIS1Report mis1Report) {
+        totalCountOfLiveBirth =
+                mis1Report.getBirthAndDeathReport().getBirthCountCalculator().getTotalCountOfLiveBirth();
+        totalChildWithUnderWeight =
+                mis1Report.getBirthAndDeathReport().getTotalChildWithUnderWeight().getTotalChildWithUnderWeight();
+        totalPrematureChild =
+                mis1Report.getBirthAndDeathReport().getTotalPrematureChild().getTotalPrematureChild();
+        totalCountOfDeathofLessThanSevenDays =
+                mis1Report.getBirthAndDeathReport().getTotalDeathCountofLessThanSevenDays().getTotalCountofLessThanSevenDays();
+        totalCountOfDeathofLessThanTwnEightDays =
+                mis1Report.getBirthAndDeathReport().getTotalDeathCountofLessThanTwnEightDays().getTotalCountofLessThanTwnEightDays();
+        totalCountOfDeathofLessThanOneYr =
+                mis1Report.getBirthAndDeathReport().getDeathCountofLessThanOneYr().getTotalCountofLessThanOneYr();
+        totalCountOfDeathofLessThanFiveYr =
+                mis1Report.getBirthAndDeathReport().getDeathCountofLessThanFiveYr().getTotalCountofLessThanFiveYr();
+        totalCountOfDeathofMother =
+                mis1Report.getBirthAndDeathReport().getDeathCountofMother().getTotalCountOfDeathofMother();
+        totalCountOfDeathofOther =
+                mis1Report.getBirthAndDeathReport().getDeathCountofOther().getTotalCountOfDeathofOther();
 
-     countOfIronAndFolicAcidCouncilingForPregWoman =
+    }
+
+ /*public void nutrition(MIS1Report mis1Report) {
+
+    countOfIronAndFolicAcidCouncilingForPregWoman =
              mis1Report.getNutritionReport().getWomanNutritionCalculator().getCountOfCounsellingOnFolicAcidAndIronForPregWoman();
      countOfIronAndFolicAcidDistributionForPregWomen =
              mis1Report.getNutritionReport().getWomanNutritionCalculator().getCountOfDistributionOfFolicAcidAndIronForPregWoman();
@@ -327,12 +390,8 @@ public class SampleReportCheckController {
              mis1Report.getNutritionReport().getWomanNutritionCalculator().getCountOfCounsellingOnFeedingMMMother();
      countOfBreastFeedinginOneHourlessThnZeroGreaterThnSix =
              mis1Report.getNutritionReport().getChildNutritionCalculator().getChildZeroToSix().countOfBreastFeedingWithInOneHour();
-     countOfBreastFeedingFromZeroToSixMonth =
+     countOfBreastFeedingUntillSixMonth =
              mis1Report.getNutritionReport().getChildNutritionCalculator().getChildZeroToSix().getCountOfBreastFeedingUntillSixMonth();
-      /*  countOfFeedingAfterSixMonthSixToTwntyFour =
-                mis1Report.getNutritionReport().getChildNutritionCalculator().getChild6TO23().getCountOfBreastFeedingAfterSixMonth();
-        countOfFeedingAfterSixMonthTwntyFourToSixty =
-                mis1Report.getNutritionReport().getChildNutritionCalculator().getChild24to59().get*/
      countOfMAMForZeroToSix =
              mis1Report.getNutritionReport().getChildNutritionCalculator().getChildZeroToSix().getCountOfContractedMAM();
      countOfSAMForZeroToSix =
@@ -345,7 +404,6 @@ public class SampleReportCheckController {
              mis1Report.getNutritionReport().getChildNutritionCalculator().getChild24to59().getCountOfContractedMAM();
      countOfSAMForTwntyFourToSixty =
              mis1Report.getNutritionReport().getChildNutritionCalculator().getChild24to59().getCountOfContractedSAM();
-
- }
+ }*/
 
 }

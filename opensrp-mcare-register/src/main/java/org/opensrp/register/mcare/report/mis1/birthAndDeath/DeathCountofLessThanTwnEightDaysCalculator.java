@@ -7,6 +7,7 @@ import org.opensrp.register.mcare.report.mis1.ReportCalculator;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Map;
 
 /**
  * Created by asha on 9/28/17.
@@ -38,24 +39,27 @@ public class DeathCountofLessThanTwnEightDaysCalculator extends ReportCalculator
    private long addTotalCountOfDeathofLessThanTwnEightDay(Members member){
         long value=0;
 
-        if( member.getDeathReg().get("DOO") != null ){
-            String deliveryDateStr = member.getDeathReg().get("DOO");
+       Map<String , String> deathReg = member.getDeathReg();
+       if( deathReg.containsKey("death_today")){
+           System.out.println("in1");
+           String deathDateStr = member.getDeathReg().get("death_today");
 
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+           SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
             Date dooDate = null;
             Date startDate = null;
             Date endDate = null;
 
             try {
-                dooDate = simpleDateFormat.parse(deliveryDateStr);
-                startDate = new Date( startDateTime * 1000);
-                endDate = new Date( endDateTime * 1000);
+                dooDate = simpleDateFormat.parse(deathDateStr);
+                startDate = new Date( startDateTime);
+                endDate = new Date( endDateTime);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
 
             if(dooDate.after(startDate) && dooDate.before(endDate) || dooDate.equals(startDate)){
-                if (member.getDeathReg().get("Deceased_Age_Group") != null && member.getDeathReg().get("Deceased_Age_Group") == "2") {
+                System.out.println("in2");
+                if (member.getDeathReg().get("Deceased_Age_Group").equals("2")) {
                     value = 1;
                 }else {
                     value = 0;
