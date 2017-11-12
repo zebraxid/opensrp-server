@@ -1,15 +1,13 @@
 package org.opensrp.scheduler.service;
 
-import static org.opensrp.common.AllConstants.BnfFollowUpVisitFields.FWBNFDTOO;
+import static org.opensrp.common.AllConstants.ScheduleNames.ANC;
+import static org.opensrp.common.AllConstants.ScheduleNames.CHILD;
+import static org.opensrp.common.AllConstants.ScheduleNames.PNC;
 import static org.opensrp.dto.BeneficiaryType.child;
 import static org.opensrp.dto.BeneficiaryType.ec;
 import static org.opensrp.dto.BeneficiaryType.elco;
 import static org.opensrp.dto.BeneficiaryType.household;
 import static org.opensrp.dto.BeneficiaryType.mother;
-import static org.opensrp.common.AllConstants.ScheduleNames.ANC;
-import static org.opensrp.common.AllConstants.ScheduleNames.PNC;
-import static org.opensrp.common.AllConstants.ScheduleNames.CHILD;
-
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -20,14 +18,11 @@ import java.util.concurrent.TimeUnit;
 
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import org.opensrp.common.AllConstants.ScheduleNames;
 import org.opensrp.dto.ActionData;
 import org.opensrp.dto.AlertStatus;
 import org.opensrp.dto.BeneficiaryType;
 import org.opensrp.scheduler.Action;
-import org.opensrp.scheduler.HealthSchedulerService;
 import org.opensrp.scheduler.repository.AllActions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

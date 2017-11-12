@@ -425,6 +425,7 @@ public class ELCOService {
 				.put(current_formStatus, submission.getField(current_formStatus))
 				.put(clientVersion, DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)).toString())
 				.put(timeStamp, ""+System.currentTimeMillis())
+				.put(user_type, submission.getField(user_type))
 				.put(received_time, format.format(today).toString()).map();
 		
 		

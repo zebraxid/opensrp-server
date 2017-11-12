@@ -106,7 +106,7 @@ public class PNCSchedulesService {
            
 
         } else{
-        	scheduleLogService.saveAction(entityId, instanceId, provider, SCHEDULE_PNC, milestone, BeneficiaryType.mother, AlertStatus.expired, FWBNFDTOO, new DateTime(FWBNFDTOO).plusDays(8));
+        	scheduleLogService.saveAction(entityId, instanceId, provider, SCHEDULE_PNC, SCHEDULE_PNC_3, BeneficiaryType.mother, AlertStatus.expired, FWBNFDTOO, new DateTime(FWBNFDTOO).plusDays(8));
         }
 
         logger.info(format("Enrolling PNC with Entity id:{0} to PNC schedule, milestone: {1}.", entityId, milestone));
