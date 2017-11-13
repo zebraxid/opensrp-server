@@ -4,13 +4,14 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class FormData {
     @JsonProperty
     private String bind_type;
@@ -20,7 +21,7 @@ public class FormData {
     private List<FormField> fields;
     @JsonProperty
     private List<SubFormData> sub_forms;
-
+   
     private Map<String, String> mapOfFieldsByName;
 
     public FormData() {
