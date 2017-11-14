@@ -61,11 +61,10 @@ public class AllHouseHoldsIntegrationTest {
 	private AllActions allActions;
     @Before
     public void setUp() throws Exception {
-    	//allHouseHolds.removeAll();
-    	//allElcos.removeAll();
+    	
        HttpClient httpClient = new StdHttpClient.Builder() 
         //.host("localhost") 
-       	.host("localhost")
+       	.host("192.168.19.97")
         .port(5984)
         .username("Admin").password("mPower@1234")
         .socketTimeout(1000) 
@@ -86,7 +85,7 @@ public class AllHouseHoldsIntegrationTest {
     
   
     
-    @Ignore@Test
+   /* @Ignore@Test
     public void updateHouseHold(){
  	   List<HouseHold> houseHolds = allHouseHolds.getAll();
  	   int i=0;
@@ -98,92 +97,10 @@ public class AllHouseHoldsIntegrationTest {
  	   }
  	   
     }
-   // remove hh which has no provider and update setTimeStamp
-   // Data cleaning
-  @Ignore@Test
-   public void shouldRemoveAndUpdateTimeStampHHWithNoProvider(){
-   	int i=0; // _count need to remove from view
-   	List<HouseHold> households = allHouseHolds.getAll();
-   	for (HouseHold houehold : households) {
-			if(houehold.PROVIDERID()==null){
-				i++;
-				allHouseHolds.remove(houehold);
-				
-			}else{
-				try{
-				houehold.setTimeStamp(DateTimeUtil.getTimestampOfADate(houehold.START()));
-				i++;
-		 		allHouseHolds.update(houehold);
-		 		System.err.println("I::"+i);
-				}catch(Exception e){
-					System.err.println("MSG:"+e.getMessage());
-					System.err.println("houehold:"+houehold.caseId());
-				}
-			}
-   	}
-   	System.err.println("CNT:"+i);
-   }
    
-  //for provider update 
-  @Ignore @Test
-   public void removeFormByMouzaPara(){	 
-	 
-	 List<HouseHold> households=  allHouseHolds.getByMouzaPara("Kashdoho - Fakir Para");
-	 System.err.println("households:"+households.size());
-	 int i=0;
-	 int e = 0;
-	 for (HouseHold houseHold : households) {	
-		Elco elco = allElcos.findByCaseId(houseHold.caseId());
-		 int size = allFormSubmissions.getByEntityId(houseHold.caseId()).size();
-		 
-         Mother mother = allMothers.findByCaseId("caseId");
-         Child child = allChilds.findByCaseId("caseId");
-         List<Action> actions =  allActions.findByCaseID("caseId");
-		 i = i+size;
-		 System.err.println("size:"+size);
-		System.err.println("Case:"+elco.caseId());
-	 }
-	   System.err.println("I:"+i);
-	   
-   }
-    
-   @Test
-   public void updateDocByEntityId(){
-	   String csvFile = "/opt/multimedia/export/ANCSUBMIT_1500974436027.csv";
-       BufferedReader br = null;
-       String line = "";
-       String cvsSplitBy = ",";
-
-       try {
-           br = new BufferedReader(new FileReader(csvFile));
-           while ((line = br.readLine()) != null) {               
-               String[] country = line.split(cvsSplitBy);
-               HouseHold household = allHouseHolds.findByCaseId("caseId");
-               Elco elco = allElcos.findByCaseId("caseId");
-               Mother mother = allMothers.findByCaseId("caseId");
-               Child child = allChilds.findByCaseId("caseId");
-               List<Action> actions =  allActions.findByCaseID("caseId");
-               List<FormSubmission> forms = allFormSubmissions.getByEntityId("");
-               System.out.println("Country [code= " + country[4] + " , name=" + country[5] + "]");
-
-           }
-
-       } catch (FileNotFoundException e) {
-           e.printStackTrace();
-       } catch (IOException e) {
-           e.printStackTrace();
-       } finally {
-           if (br != null) {
-               try {
-                   br.close();
-               } catch (IOException e) {
-                   e.printStackTrace();
-               }
-           }
-       }
-
-   }
    
+  
+   */
    
 }
 

@@ -1,14 +1,9 @@
 package org.opensrp.register.mcare.repository.it;
 
-import static org.opensrp.common.AllConstants.ELCORegistrationFields.FWPSRPREGSTS;
-
-import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import org.ektorp.CouchDbInstance;
-import org.ektorp.ViewResult;
 import org.ektorp.http.HttpClient;
 import org.ektorp.http.StdHttpClient;
 import org.ektorp.impl.StdCouchDbConnector;
@@ -18,22 +13,16 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.opensrp.common.util.DateTimeUtil;
-import org.opensrp.common.util.DateUtil;
-import org.opensrp.common.util.WeekBoundariesAndTimestamps;
 import org.opensrp.register.mcare.domain.Child;
-import org.opensrp.register.mcare.domain.Elco;
 import org.opensrp.register.mcare.domain.Mother;
 import org.opensrp.register.mcare.repository.AllChilds;
 import org.opensrp.register.mcare.repository.AllElcos;
 import org.opensrp.register.mcare.repository.AllHouseHolds;
 import org.opensrp.register.mcare.repository.AllMothers;
-import org.opensrp.register.mcare.service.DataExportService;
-import org.opensrp.scheduler.Action;
 import org.opensrp.scheduler.repository.AllActions;
 import org.springframework.beans.factory.annotation.Autowired;
 
-/*@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath:test-applicationContext-opensrp-register-mcare.xml")*/
+
 public class MotherIntegrationTest {
 
 	@Autowired
@@ -49,11 +38,10 @@ public class MotherIntegrationTest {
 	
     @Before
     public void setUp() throws Exception {
-    	//allHouseHolds.removeAll();
-    	//allElcos.removeAll();
+    	
        HttpClient httpClient = new StdHttpClient.Builder() 
-        //.host("localhost") 
-       	.host("localhost")
+        
+       	.host("192.168.19.97")
         .port(5984) 
         .socketTimeout(1000) 
         .username("Admin").password("mPower@1234")
@@ -68,69 +56,34 @@ public class MotherIntegrationTest {
 		allMothers = new AllMothers(2, stdCouchDbConnector);
 		allChilds = new AllChilds(2, stdCouchDbConnector);
 		allActions = new AllActions(stdCouchDbConnector);
-    	//initMocks(this);
-    }
-    
-  //Data cleaning
-  @Ignore@Test
-    public void shouldRemoveAction(){
-    	DataExportService dataExportService =  new DataExportService();
-    	//Post Natal Care Reminder Visit
-    	//Ante Natal Care Reminder Visit
-    	List<Action> actions = allActions.findByScheduleNameAndIsActive(false, "Post Natal Care Reminder Visit");
-    	System.err.println("actions:"+actions.size());
-    	int i=0;
-    	int j=0;
-    	for (Action action : actions) {    		
-    		Mother mother = allMothers.findByCaseId(action.caseId());
-	    		String visitCode = action.data().get("visitCode"); 
-	    		
-	    		int visitNumber = dataExportService.getLimit(visitCode);
-	    		
-	    		if(mother ==null ){
-	    			j++;
-	    			allActions.remove(action);
-	    		}else{
-	    			Map<String, String> anc = dataExportService.getANCNumber(mother, visitNumber-1);
-	    			if(  anc!=null ||!anc.isEmpty()){
-	    				i++;
-	    				allActions.remove(action);
-	    			}else{
-	    				System.err.println("ANC:"+anc);
-	    			}
-    		
-	    		}
-		}
-    	System.err.println("CNT:"+i +"Mj:"+j);
     	
     }
     
+  
     // for data cleaning
-    @Ignore@Test
-    public void shouldRemoveMotherWithNoProvider(){
+  @Ignore @Test
+    public void shouldUpdateLocation(){
     	List<Mother> mothers = allMothers.getAll();
     	int i=0;
     	int cnt = 0;
     	String FWWOMDISTRICT = "";
     	String FWWOMUPAZILLA ="";
     	for (Mother mother : mothers) {
-    		
-    		if(mother.PROVIDERID()==null){
-    			i++;
-    			allMothers.remove(mother);
-    			
-    		}else{
+    		//allMothers.remove(mother);
+    		/*i++;
     			
     			try{
             		Elco elco = allElcos.findByCaseId(mother.getRelationalid());
             		
-            		mother.details().put("birthDate", elco.FWBIRTHDATE());
-            		 List<Map<String, String>> psrfs =elco.PSRFDETAILS();
-            		 int psrfsCount = psrfs.size()-1;
-            		 Map<String, String> psrf = psrfs.get(psrfsCount);
-            		 mother.details().put("LMP", psrf.get("FWPSRLMP"));
-            		 mother.details().put("division", elco.FWWOMDIVISION());
+            		
             		if(elco !=null){
+            			
+            			mother.details().put("birthDate", elco.FWBIRTHDATE());
+               		 List<Map<String, String>> psrfs =elco.PSRFDETAILS();
+               		 int psrfsCount = psrfs.size()-1;
+               		 Map<String, String> psrf = psrfs.get(psrfsCount);
+               		 mother.details().put("LMP", psrf.get("FWPSRLMP"));
+               		 mother.details().put("division", elco.FWWOMDIVISION());
             			if(elco.FWWOMDISTRICT()!=null){
             				FWWOMDISTRICT = elco.FWWOMDISTRICT();
             			}else{
@@ -142,34 +95,34 @@ public class MotherIntegrationTest {
             				FWWOMUPAZILLA = "";
             			}
             			
+            			List<Map<String, String>> bnfs =mother.bnfVisitDetails();
+            	 		
+              		  for (int j = 0; j < bnfs.size(); j++) {
+              			  System.err.println(""+i);
+              			  bnfs.get(j).put("timeStamp", ""+System.currentTimeMillis());
+              			  bnfs.get(j).put("clientVersion",""+System.currentTimeMillis());
+              		  }
+              		
+          			mother.withFWWOMDISTRICT(FWWOMDISTRICT);
+                  	mother.withFWWOMUPAZILLA(FWWOMUPAZILLA);
+            			
             		}
             		
-            		/*if(mother.getFWWOMUNION() ==null){
-        				mother.setFWWOMUNION("");
-        			}*/
+            		
         			
-            		 List<Map<String, String>> bnfs =mother.bnfVisitDetails();
-            	 		System.err.println("bnfs.size():"+bnfs.size());
-            		  for (int j = 0; j < bnfs.size(); j++) {
-            			  System.err.println(""+i);
-            			  bnfs.get(j).put("timeStamp", ""+System.currentTimeMillis());
-            			  bnfs.get(j).put("clientVersion", DateTimeUtil.getTimestampOfADate(mother.TODAY()).toString());
-            		  }
-            		
-        			mother.withFWWOMDISTRICT(FWWOMDISTRICT);
-                	mother.withFWWOMUPAZILLA(FWWOMUPAZILLA);
-                	mother.setTimeStamp(DateTimeUtil.getTimestampOfADate(mother.TODAY()));
+            		 
+                	mother.setTimeStamp(System.currentTimeMillis());
             		allMothers.update(mother);
-            		
+            		System.err.println("CNT:::"+i);
             	}catch(Exception e){
-            		allMothers.remove(mother);
+            		
             		e.printStackTrace();
             		System.out.println("mother:"+e.getMessage());
             		System.out.println("caseId:"+mother.caseId());
             	}
-    		}
+    		}*/
 			
-		}
+    	}
     	System.out.println("CNT:"+i+"FormCNT:"+cnt);
     	
     }
@@ -177,9 +130,11 @@ public class MotherIntegrationTest {
     
    
     
-   @Ignore @Test
+   /*@Test
     public void updateMother(){
+	   
  	   List<Mother> mothers = allMothers.getAll();
+ 	  System.err.println("kk"+mothers.size());
  	   for (Mother mother : mothers) {
  		  List<Map<String, String>> psrfs =mother.bnfVisitDetails();
  		try{
@@ -190,8 +145,7 @@ public class MotherIntegrationTest {
  		 
  		
  		
- 		//mother.withClientVersion(DateTimeUtil.getTimestampOfADate(mother.TODAY()));
- 		 //mother.setTimeStamp(System.currentTimeMillis());
+ 		
  		if(mother.TODAY()!=null){
 			mother.withClientVersion(DateTimeUtil.getTimestampOfADate(mother.TODAY()));
 		}else{
@@ -251,41 +205,39 @@ public class MotherIntegrationTest {
 			}
 		mother.setTimeStamp(System.currentTimeMillis());
  		 allMothers.update(mother);
- 		 
+ 		 System.err.println("okkkk");
  		}catch(Exception e){
  			System.err.println(""+e.getMessage());
  			System.err.println(""+mother.caseId());
  		}
  	   }
  	   
-    }
+    }*/
  
  
   
   
- 
-  
-@Ignore @Test
+/*
+  @Ignore
+@Test
  public void deleteUpdateChild(){
  	List<Child> childs = allChilds.getAll();
  	for (Child child : childs) {
  		
- 		if(child.PROVIDERID()==null || child.PROVIDERID().isEmpty() ){
- 			System.err.println("DD:"+child.PROVIDERID());
- 			allChilds.remove(child);
- 		}else{
+ 		
  			child.setTimeStamp(System.currentTimeMillis());
 			allChilds.update(child);
- 		}
-			
+ 			
 	}
  	
- }
- @Ignore @Test
+ }*/
+
+ /* @Ignore@Test
   public void childUpdate(){
 		List<Child> clilds = allChilds.getAll();
 		int i =0;
 		for (Child child : clilds) {
+			i++;
 			try{
 			Mother mother = allMothers.findByCaseId(child.details().get("relationalid"));
 			if(child.TODAY()!=null){			
@@ -326,16 +278,25 @@ public class MotherIntegrationTest {
 				child.details().put("ward", "");
 			}
 			
+			
+			try{
+				child.details().put("division", mother.details().get("division"));
+				}catch(Exception e){
+					child.details().put("division", "");
+				}
+			
+			
 			allChilds.update(child);
-			System.err.println("I:"+i+1);
+			System.err.println("I:"+i);
 			}catch(Exception e){
 				e.printStackTrace();
 			}
 			
 		}
 		
-	}
-  @Ignore@Test
+	}*/
+
+  /*@Test
   public void childENCCUpdate(){
 		List<Child> childs = allChilds.getAll();
 		int i =0;
@@ -363,11 +324,6 @@ public class MotherIntegrationTest {
 				
 				
 			}
-
-			
-			
-			//child.setTimeStamp(System.currentTimeMillis());
-			
 			allChilds.update(child);
 			
 			}catch(Exception e){
@@ -377,7 +333,7 @@ public class MotherIntegrationTest {
 		}
 		
 	}
-  
+  */
   
     
    

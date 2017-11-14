@@ -249,11 +249,8 @@ public class ANCService {
 		mother.details().put(FWSORTVALUE, submission.getField(FWSORTVALUE));
 		mother.details().put(received_time, format.format(today).toString());
 		mother.details().put("birthDate", elco.FWBIRTHDATE());
-		mother.details().put("division", elco.FWWOMDIVISION());
-		List<Map<String, String>> psrfs =elco.PSRFDETAILS();
-		int psrfsCount = psrfs.size()-1;
-		Map<String, String> psrf = psrfs.get(psrfsCount);
-		mother.details().put("LMP", psrf.get("FWPSRLMP"));
+		mother.details().put("division", elco.FWWOMDIVISION());		
+		mother.details().put("LMP", submission.getField(FW_PSRLMP));
 	}
 
 	public void ancVisitOne(FormSubmission submission) {

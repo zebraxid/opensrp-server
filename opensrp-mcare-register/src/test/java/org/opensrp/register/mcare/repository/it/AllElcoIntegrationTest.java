@@ -46,11 +46,10 @@ public class AllElcoIntegrationTest {
 	
     @Before
     public void setUp() throws Exception {
-    	//allHouseHolds.removeAll();
-    	//allElcos.removeAll();
+    	
        HttpClient httpClient = new StdHttpClient.Builder() 
         //.host("localhost") 
-       	.host("localhost")
+       	.host("192.168.19.97")
         .port(5984) 
         .username("Admin").password("mPower@1234")
         .socketTimeout(1000) 
@@ -65,7 +64,7 @@ public class AllElcoIntegrationTest {
 		allActions = new AllActions(stdCouchDbConnector);
 		allChilds = new AllChilds(2, stdCouchDbConnector);
 		allMothers = new AllMothers(2, stdCouchDbConnector);
-    	//initMocks(this);
+    	
     }
    
     
@@ -73,7 +72,7 @@ public class AllElcoIntegrationTest {
     
     // data cleaning
     // woman who has inactive psrf schedule but not in elco so delete them
-    @SuppressWarnings("unused")
+    /*@SuppressWarnings("unused")
 	@Ignore@Test
     public void shouldRemoveAction(){
     	
@@ -98,40 +97,35 @@ public class AllElcoIntegrationTest {
 		}
     	System.err.println("CNT:"+i +"Mj:"+j);
     	
-    }
+    }*/
     
     // delete elco which has no provider
-  @Test
-    public void deleteAndUpdateElco(){
+  /*@Test
+    public void updateElco(){
     	// _count need to remove from view
     	List<Elco> elcos = allElcos.getAll();
     	int i=0;
     	int cnt=0;
-    	for (Elco elco : elcos) {
-			if(elco.PROVIDERID()==null){
-				i++;
-				allElcos.remove(elco);
-				
-			}else{
+    	for (Elco elco : elcos) {			
 				 List<Map<String, String>> psrfs = elco.PSRFDETAILS();					 
 		 		 try{
 		 			 
 		 		 for (int j = 0; j < psrfs.size(); j++) { 			  
 		 			psrfs.get(j).put("timeStamp", ""+System.currentTimeMillis());
-		 			psrfs.get(j).put("clientVersion", DateTimeUtil.getTimestampOfADate(psrfs.get(j).get("today")).toString());
+		 			psrfs.get(j).put("clientVersion", ""+System.currentTimeMillis());
 		 			 
 				  }
 		 		
-		 		  elco.setTimeStamp(DateTimeUtil.getTimestampOfADate(elco.TODAY()));
+		 		  elco.setTimeStamp(System.currentTimeMillis());
 		 		  allElcos.update(elco);
 		 		}catch(Exception e){
 		 			System.err.println("MSG:"+e.getMessage());
 		 			System.err.println("Case::"+elco.caseId());
 		 		}
-			}
+			
 			
 		}
     	System.err.println("Count :"+i+"FORM:"+elcos.size());
-    } 
+    } */
   
 }
