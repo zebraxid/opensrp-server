@@ -74,14 +74,14 @@ public class AlertCreationAction implements HookedEvent {
 		String providerId = null;
 		String caseID = event.externalId();
 		DateTime startOfEarliestWindow = new DateTime();
-		DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd");
-		
+	
+		String DateString = "";
 		if (household.equals(beneficiaryType)) {
 			HouseHold houseHold = allHouseHolds.findByCaseId(caseID);
 			if (houseHold != null) {
 				instanceId= houseHold.INSTANCEID();
 				providerId = houseHold.PROVIDERID();
-				startOfEarliestWindow = DateTime.parse(houseHold.TODAY(),formatter);
+				startOfEarliestWindow = parseDate(houseHold.TODAY());
 			}
 		} else if (elco.equals(beneficiaryType)) {
 			
@@ -90,7 +90,7 @@ public class AlertCreationAction implements HookedEvent {
 			if (elco != null) {
 				instanceId= elco.INSTANCEID();
 				providerId = elco.PROVIDERID();
-				startOfEarliestWindow = DateTime.parse(elco.TODAY(),formatter);
+				startOfEarliestWindow = parseDate(elco.TODAY());
 			}
 		}
 		else if(mother.equals(beneficiaryType))
@@ -100,7 +100,7 @@ public class AlertCreationAction implements HookedEvent {
 			if (mother != null) {
 				instanceId= mother.INSTANCEID();
 				providerId = mother.PROVIDERID();
-				startOfEarliestWindow = DateTime.parse(mother.TODAY(),formatter);
+				startOfEarliestWindow =parseDate(mother.TODAY());
 			}
 		}
 		else if(child.equals(beneficiaryType))
@@ -110,7 +110,7 @@ public class AlertCreationAction implements HookedEvent {
 			if (child != null) {
 				instanceId= child.INSTANCEID();
 				providerId = child.PROVIDERID();
-				startOfEarliestWindow = DateTime.parse(child.TODAY(),formatter);
+				startOfEarliestWindow = parseDate(child.TODAY());
 			}
 		}
 		else {
@@ -119,15 +119,16 @@ public class AlertCreationAction implements HookedEvent {
 		}
 
 		
+			logger.info("caseID: "+caseID);		
+			logger.info(" event.windowName():"+startOfEarliestWindow);
+			logger.info(" Name:"+event.scheduleName().replace(ELCOSchedulesConstantsImediate.IMD_ELCO_SCHEDULE_PSRF, ELCOSchedulesConstants.ELCO_SCHEDULE_PSRF));
+			logger.info(" MileStoneName:"+event.milestoneName().replace(ELCOSchedulesConstantsImediate.IMD_ELCO_SCHEDULE_PSRF, ELCOSchedulesConstants.ELCO_SCHEDULE_PSRF));
+			scheduler.alertFor(event.windowName(), beneficiaryType, caseID, instanceId, providerId, parseScheduleName(event.scheduleName()), parseScheduleName(event.milestoneName()),
+					startOfEarliestWindow, event.startOfDueWindow(),
+					event.startOfLateWindow(), event.startOfMaxWindow());
 		
-		logger.info("caseID: "+caseID);
-		logger.info("instanceId: "+instanceId);
-		logger.info(" event.windowName():"+event.windowName());
-		logger.info(" Name:"+event.scheduleName().replace(ELCOSchedulesConstantsImediate.IMD_ELCO_SCHEDULE_PSRF, ELCOSchedulesConstants.ELCO_SCHEDULE_PSRF));
-		logger.info(" MileStoneName:"+event.milestoneName().replace(ELCOSchedulesConstantsImediate.IMD_ELCO_SCHEDULE_PSRF, ELCOSchedulesConstants.ELCO_SCHEDULE_PSRF));
-		scheduler.alertFor(event.windowName(), beneficiaryType, caseID, instanceId, providerId, parseScheduleName(event.scheduleName()), parseScheduleName(event.milestoneName()),
-				startOfEarliestWindow, event.startOfDueWindow(),
-				event.startOfLateWindow(), event.startOfMaxWindow());
+		
+		
 	}
 	
 	public String parseScheduleName(String scheduleName){
@@ -140,7 +141,9 @@ public class AlertCreationAction implements HookedEvent {
     }
 
 	@Override
-	public void scheduleSaveToOpenMRSMilestone(Enrollment el,List<Action> alertActions ) {		
+	public void scheduleSaveToOpenMRSMilestone(Enrollment el,List<Action> alertActions ) {	
+		
+		
 		try {
 			scheduleLogService.saveActionDataToOpenMrsMilestoneTrack(el, alertActions);
 		} catch (ParseException e) {
@@ -153,6 +156,18 @@ public class AlertCreationAction implements HookedEvent {
 	@Override
 	public void saveMultimediaToRegistry(Multimedia multimediaFile) {
 		multimediaRegisterService.saveMultimediaFileToRegistry(multimediaFile);
+	}
+	
+	private DateTime parseDate(String DateAsString){
+		DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd");
+		DateTime startOfEarliestWindow = new DateTime();
+		try {
+			startOfEarliestWindow = DateTime.parse(DateAsString, formatter);			
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return  startOfEarliestWindow;
+		
 	}
 
 }

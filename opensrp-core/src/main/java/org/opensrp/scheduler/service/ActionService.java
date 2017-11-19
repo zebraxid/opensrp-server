@@ -107,11 +107,10 @@ public class ActionService {
     	
     	try{
 	    	List<Action> existingAlerts = allActions.findAlertByANMIdEntityIdScheduleName(anmIdentifier, caseID, scheduleName);
-	    	
 	    	updateDataAction(visitCode,alertStatus,startDate,expiryDate,existingAlerts);
 	    	if(existingAlerts.size() > 0){ 	    		
 	        	long numOfDays =  this.getDaysDifference(expiryDate);
-	        	
+	        	System.err.println("numOfDays:"+numOfDays+"  alertStatus.name():"+alertStatus.name());
 	        	if(ANC.equalsIgnoreCase(scheduleName) ){
 	        		if(( numOfDays<=2)   && alertStatus.name().equalsIgnoreCase("urgent")){	        		
 		    			scheduleService.fulfillMilestone(caseID, scheduleName, new LocalDate());

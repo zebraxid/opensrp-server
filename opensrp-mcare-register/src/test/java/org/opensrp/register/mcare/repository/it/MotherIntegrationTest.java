@@ -1,5 +1,8 @@
 package org.opensrp.register.mcare.repository.it;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
 
@@ -13,6 +16,7 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.opensrp.common.util.DateTimeUtil;
+import org.opensrp.scheduler.Action;
 import org.opensrp.register.mcare.domain.Child;
 import org.opensrp.register.mcare.domain.Mother;
 import org.opensrp.register.mcare.repository.AllChilds;
@@ -43,7 +47,7 @@ public class MotherIntegrationTest {
         
        	.host("192.168.19.97")
         .port(5984) 
-        .socketTimeout(1000) 
+        .socketTimeout(1000000) 
         .username("Admin").password("mPower@1234")
         .build(); 
 		dbInstance = new StdCouchDbInstance(httpClient); 
@@ -335,6 +339,33 @@ public class MotherIntegrationTest {
 	}
   */
   
-    
+  //Essential Newborn Care Checklist
+  //Post Natal Care Reminder Visit
+  @Test
+    public void actionFalse() throws ParseException{
+    	
+    	DateFormat yyyyMMdd = new SimpleDateFormat("yyyy-MM-dd");
+    	List<Action> actions = allActions.getAll();
+    	System.err.println("-------------------------------");
+    	int i = 0;
+    	for (Action action : actions) {
+    		i++;
+    		String date =action.data().get("expiryDate");
+    		long  checkingDate = 1510751863000l;
+    		long timestamp = yyyyMMdd.parse(date).getTime();
+    		//if(timestamp<checkingDate && "enccrv_3".equalsIgnoreCase(action.data().get("visitCode"))){
+    		System.err.println(""+action.caseId()+"visitCode:  "+action.data().get("visitCode")+"    alertStatus:"+action.data().get("alertStatus")+"                                   Data:  "+action.data().get("expiryDate"));
+    		
+    		action.data().put("alertStatus", "expired");
+    		action.timestamp(System.currentTimeMillis()+200);
+    		//allActions.update(action);
+    		//System.err.println("action:"+action);
+    		//}
+    		
+    		
+		}
+    	
+    	System.err.println("CNT:"+i);
+    }
    
 }

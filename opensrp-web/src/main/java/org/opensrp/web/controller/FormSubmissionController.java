@@ -129,7 +129,7 @@ public class FormSubmissionController {
            try{
             ////////TODO MAIMOONA : SHOULD BE IN EVENT but event needs to be moved to web so for now kept here
             String json = new Gson().toJson(formSubmissionsDTO);
-            System.out.println("MMMMMMMMMMMYYYYYYYYYYYYYY::"+json);
+            System.out.println("Form Submission Received.....");
             List<FormSubmissionDTO> formSubmissions = new Gson().fromJson(json, new TypeToken<List<FormSubmissionDTO>>() {
             }.getType());
             
@@ -179,9 +179,9 @@ public class FormSubmissionController {
 						else {//HnW(0)
 							System.out.println("Patient and Dependent client not exist into openmrs /***********************************************************************/ ");
 		        			Client c = openmrsConnector.getClientFromFormSubmission(formSubmission);
-		        			System.out.println(patientService.createPatient(c));
+		        			patientService.createPatient(c);
 		        			Event e = openmrsConnector.getEventFromFormSubmission(formSubmission);
-			        		System.out.println(encounterService.createEncounter(e));
+			        		encounterService.createEncounter(e);
 		        		}
 	            	}
             	}
