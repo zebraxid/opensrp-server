@@ -163,8 +163,9 @@ public class ActionService {
 	        		}
 	        		
 	        		else if(dateDifference==-7){
+	        			updateDataAction(visitCode,AlertStatus.expired,startDate,expiryDate,existingAlerts);
 	        			scheduleService.fulfillMilestone(caseID, scheduleName, new LocalDate());
-	        			updateDataAction(AlertStatus.expired.name(),alertStatus,startDate,expiryDate,existingAlerts);
+	        			
 	        			System.err.println("444444444444444");
 	        		}
 	        		
