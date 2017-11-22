@@ -9,6 +9,12 @@
                 "late": ["2 Days"]
             },
             "alerts": [
+            {
+                    "window": "due",
+                    "offset": ["0 Day"],
+                    "interval": ["1 Day"],
+                    "count": "1"
+                },
                  {
                     "window": "late",
                     "offset": ["1 Day"],
