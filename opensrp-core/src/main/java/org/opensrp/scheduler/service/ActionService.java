@@ -137,7 +137,7 @@ public class ActionService {
 			updateDataAction(visitCode, alertStatus, startDate, expiryDate, existingAlerts);
 			if (existingAlerts.size() > 0) {
 				long numOfDays = this.getDaysDifference(expiryDate);
-				logger.info("numOfDays:" + numOfDays + "  alertStatus.name():" + alertStatus.name());
+				
 				if (ANC.equalsIgnoreCase(scheduleName)) {
 					if ((numOfDays <= 2) && alertStatus.name().equalsIgnoreCase("urgent")) {
 						scheduleService.fulfillMilestone(caseID, scheduleName, new LocalDate());
@@ -150,26 +150,23 @@ public class ActionService {
 				} else if (PNC.equalsIgnoreCase(scheduleName) || CHILD.equalsIgnoreCase(scheduleName)) {
 					String scheduleNameVisitCodeWithoutNumber;
 					if (PNC.equalsIgnoreCase(scheduleName)) {
-						scheduleNameVisitCodeWithoutNumber = "pncrv";
+						scheduleNameVisitCodeWithoutNumber = ScheduleNames.PNCRV;
 					} else {
-						scheduleNameVisitCodeWithoutNumber = "enccrv";
+						scheduleNameVisitCodeWithoutNumber = ScheduleNames.ENCCRV;
 					}
 					Date date = null;
-					System.err.println(visitCodeName + "  doo:" + doo);
+					
 					date = format.parse(doo);
 					DateTime FWBNFDTOO = new DateTime(date);
 					long dateDifference = DateTimeUtil.getDaysDifference(FWBNFDTOO);
-					System.err.println("dateDifference:" + dateDifference);
 					
 					if (dateDifference == -0
-					        && isFullfillment(scheduleNameVisitCodeWithoutNumber + "_1", caseID, scheduleName) == false) {
+					        && !isFullfillment(scheduleNameVisitCodeWithoutNumber + "_1", caseID, scheduleName)) {
 						System.err.println("0000011111");
 						updateDataAction(visitCode, AlertStatus.urgent, startDate, expiryDate, existingAlerts);
-						//scheduleService.fulfillMilestone(caseID, scheduleName, new LocalDate());
-						System.err.println("0000011111");
 						
 					} else if (dateDifference == -1
-					        && isFullfillment(scheduleNameVisitCodeWithoutNumber + "_1", caseID, scheduleName) == false) {
+					        && !isFullfillment(scheduleNameVisitCodeWithoutNumber + "_1", caseID, scheduleName)) {
 						updateDataAction(scheduleNameVisitCodeWithoutNumber + "_2", AlertStatus.upcoming, startDate,
 						    expiryDate, existingAlerts);
 						scheduleService.fulfillMilestone(caseID, scheduleName, new LocalDate());
@@ -177,7 +174,7 @@ public class ActionService {
 					
 					else if ((dateDifference == -2 || dateDifference == -3)
 					        && visitCode.equalsIgnoreCase(scheduleNameVisitCodeWithoutNumber + "_1")
-					        && isFullfillment(scheduleNameVisitCodeWithoutNumber + "_1", caseID, scheduleName) == true) {
+					        && isFullfillment(scheduleNameVisitCodeWithoutNumber + "_1", caseID, scheduleName)) {
 						
 						scheduleService.fulfillMilestone(caseID, scheduleName, new LocalDate());
 						
@@ -185,41 +182,33 @@ public class ActionService {
 					        && visitCode.equalsIgnoreCase(scheduleNameVisitCodeWithoutNumber + "_2")) {
 						updateDataAction(scheduleNameVisitCodeWithoutNumber + "_2", AlertStatus.urgent, startDate,
 						    expiryDate, existingAlerts);
+						
 					}
 					
 					else if (dateDifference == -4
-					        && isFullfillment(scheduleNameVisitCodeWithoutNumber + "_2", caseID, scheduleName) == false) {
+					        && !isFullfillment(scheduleNameVisitCodeWithoutNumber + "_2", caseID, scheduleName)) {
+						updateDataAction(scheduleNameVisitCodeWithoutNumber + "_2", AlertStatus.urgent, startDate,
+						    expiryDate, existingAlerts);
 						
 					} else if (dateDifference == -5
-					        && isFullfillment(scheduleNameVisitCodeWithoutNumber + "_2", caseID, scheduleName) == false) {
+					        && !isFullfillment(scheduleNameVisitCodeWithoutNumber + "_2", caseID, scheduleName)) {
 						updateDataAction(scheduleNameVisitCodeWithoutNumber + "_3", AlertStatus.upcoming, startDate,
 						    expiryDate, existingAlerts);
 						scheduleService.fulfillMilestone(caseID, scheduleName, new LocalDate());
-						System.err.println("555555555555");
+						
 					} else if (dateDifference == -6
-					        && isFullfillment(scheduleNameVisitCodeWithoutNumber + "_2", caseID, scheduleName) == true) {
+					        && isFullfillment(scheduleNameVisitCodeWithoutNumber + "_2", caseID, scheduleName)) {
 						updateDataAction(scheduleNameVisitCodeWithoutNumber + "_3", AlertStatus.urgent, startDate,
 						    expiryDate, existingAlerts);
 						
-						System.err.println("666666666");
 					}
 					
 					else if (dateDifference <= -7) {
 						updateDataAction(visitCode, AlertStatus.expired, startDate, expiryDate, existingAlerts);
 						scheduleService.fulfillMilestone(caseID, scheduleName, new LocalDate());
 						
-						System.err.println("7777777777");
 					}
 					
-					/*if(( numOfDays<=0 || numOfDays<=1)   && alertStatus.name().equalsIgnoreCase("urgent") ){	        		
-						scheduleService.fulfillMilestone(caseID, scheduleName, new LocalDate());
-						if("pncrv_3".equalsIgnoreCase(visitCode)){
-							updateDataAction(AlertStatus.expired.name(),alertStatus,startDate,expiryDate,existingAlerts);
-						}
-					  }else{
-						logger.info("Date diffrenece required less or equal 1 or 0")	;
-						
-					 }*/
 				} else {
 					System.err.println("NOT PNC OR ENCC OR ANC");
 				}
@@ -272,19 +261,17 @@ public class ActionService {
 	
 	private boolean isFullfillment(String visitCode, String caseID, String scheduleName) {
 		List<Enrollment> enrolments = allEnrollmentWrapper.findByEnrollmentByExternalIdAndScheduleName(caseID, scheduleName);
-		System.err.println("enrolments:" + enrolments);
+		
 		List<MilestoneFulfillment> milestoneFulfillments = enrolments.get(0).getFulfillments();
 		boolean status = false;
 		for (MilestoneFulfillment milestoneFulfillment : milestoneFulfillments) {
-			System.err.println("visitCode: " + visitCode + "   milestoneFulfillment.getMilestoneName():"
-			        + milestoneFulfillment.getMilestoneName());
+			
 			if (visitCode.equalsIgnoreCase(milestoneFulfillment.getMilestoneName())) {
 				status = true;
-				System.err.println("status:" + status);
 				break;
 			}
 		}
-		System.err.println("Status:" + status);
+		
 		return status;
 		
 	}

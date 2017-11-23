@@ -1,41 +1,43 @@
 package org.opensrp.web.controller;
 
-import static org.opensrp.common.AllConstants.BnfFollowUpVisitFields.FWBNFDTOO;
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
-import java.awt.peer.LightweightPeer;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.json.JSONException;
 import org.motechproject.scheduletracking.api.domain.Enrollment;
-import org.motechproject.scheduletracking.api.domain.EnrollmentStatus;
+import org.opensrp.common.AllConstants.ScheduleNames;
 import org.opensrp.connector.openmrs.service.OpenmrsUserService;
-import org.opensrp.dto.AclDTO;
 import org.opensrp.dashboard.dto.PrivilegeDTO;
 import org.opensrp.dashboard.dto.RoleDTO;
 import org.opensrp.dashboard.dto.UserDTO;
+import org.opensrp.dashboard.service.PrivilegeService;
+import org.opensrp.dashboard.service.RoleService;
+import org.opensrp.dashboard.service.UsersService;
+import org.opensrp.dto.AclDTO;
+import org.opensrp.register.mcare.domain.Child;
 import org.opensrp.register.mcare.domain.Mother;
+import org.opensrp.register.mcare.repository.AllChilds;
 import org.opensrp.register.mcare.repository.AllMothers;
 import org.opensrp.register.mcare.service.AclService;
 import org.opensrp.register.mcare.service.scheduling.ChildSchedulesService;
 import org.opensrp.register.mcare.service.scheduling.PNCSchedulesService;
 import org.opensrp.scheduler.Action;
+import org.opensrp.scheduler.HealthSchedulerService;
 import org.opensrp.scheduler.repository.AllActions;
 import org.opensrp.scheduler.service.AllEnrollmentWrapper;
-import org.opensrp.dashboard.service.PrivilegeService;
-import org.opensrp.dashboard.service.RoleService;
-import org.opensrp.dashboard.service.UsersService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -48,34 +50,50 @@ import com.google.gson.Gson;
 
 @Controller
 public class AclController {
-
+	
 	private RoleService roleService;
-	private AclService aclService;	
+	
+	private AclService aclService;
+	
 	private OpenmrsUserService openmrsUserService;
+	
 	private PrivilegeService privilegeService;
+	
 	private UsersService userService;
+	
 	private static Logger logger = LoggerFactory.getLogger(AclController.class);
+	
 	@Autowired
 	private AllEnrollmentWrapper allEnrollmentWrapper;
+	
+	@Autowired
+	private HealthSchedulerService scheduler;
+	
 	@Autowired
 	private AllActions allActions;
+	
 	@Autowired
 	private AllMothers allMothers;
+	
+	@Autowired
+	private AllChilds allChilds;
+	
 	@Autowired
 	private PNCSchedulesService pncSchedulesService;
+	
 	@Autowired
 	private ChildSchedulesService childSchedulesService;
+	
 	@Autowired
-	public AclController(RoleService roleService, AclService aclService,
-			OpenmrsUserService openmrsUserService, PrivilegeService privilegeService,
-			UsersService userService) {
+	public AclController(RoleService roleService, AclService aclService, OpenmrsUserService openmrsUserService,
+	    PrivilegeService privilegeService, UsersService userService) {
 		this.roleService = roleService;
 		this.aclService = aclService;
-		this.openmrsUserService = openmrsUserService;		
+		this.openmrsUserService = openmrsUserService;
 		this.privilegeService = privilegeService;
 		this.userService = userService;
 	}
-
+	
 	/*@RequestMapping(headers = { "Accept=application/json" }, method = POST, value = "/add-user")
 	public ResponseEntity<String> addRole(@RequestBody RoleDTO roleDTO) {
 		String message = roleService.addRole(roleDTO);
@@ -87,25 +105,25 @@ public class AclController {
 		String message = roleService.editRole(roleDTO);
 		return new ResponseEntity<>(message,OK);
 	}*/
-
+	
 	@RequestMapping(headers = { "Accept=application/json" }, method = POST, value = "/add-acl")
 	public ResponseEntity<String> addAcl(@RequestBody AclDTO aclDTO) {
-		String message = aclService.addAcl(aclDTO);		
-		return new ResponseEntity<>(message,OK);
+		String message = aclService.addAcl(aclDTO);
+		return new ResponseEntity<>(message, OK);
 	}
+	
 	@RequestMapping(headers = { "Accept=application/json" }, method = POST, value = "/edit-acl")
 	public ResponseEntity<String> editAcl(@RequestBody AclDTO aclDTO) {
-		String message = aclService.editAcl(aclDTO);		
-		return new ResponseEntity<>(message,OK);
+		String message = aclService.editAcl(aclDTO);
+		return new ResponseEntity<>(message, OK);
 	}
-
+	
 	@RequestMapping(method = GET, value = "/all-user-name")
 	@ResponseBody
 	public ResponseEntity<String> getAllUserName() throws JSONException {
-		return new ResponseEntity<>(new Gson().toJson(openmrsUserService
-				.getAllUsers()), OK);
+		return new ResponseEntity<>(new Gson().toJson(openmrsUserService.getAllUsers()), OK);
 	}
-
+	
 	/*@RequestMapping(method = GET, value = "/role-access-tokens")
 	@ResponseBody
 	public AclDTO getRoleAndAccessTokens(@RequestParam String userName) {
@@ -156,6 +174,7 @@ public class AclController {
 	public ArrayList<AclDTO> getActiveRolesAndAccessTokens() {
 		return (ArrayList<AclDTO>) aclService.getActiveRolesAndAccessTokens();
 	}
+	
 	@RequestMapping(method = GET, value = "/all-roles-with-user")
 	@ResponseBody
 	public ArrayList<RoleDTO> getRolesAndUser() {
@@ -165,31 +184,31 @@ public class AclController {
 	@RequestMapping(headers = { "Accept=application/json" }, method = POST, value = "/add-privilege")
 	public ResponseEntity<String> addPrivilege(@RequestBody PrivilegeDTO privilegeDTO) {
 		logger.info("request received for creating privilege with name- " + privilegeDTO.getName());
-		String message = privilegeService.addPrivilege(privilegeDTO);		
+		String message = privilegeService.addPrivilege(privilegeDTO);
 		//return new ResponseEntity<>(message,OK);
-		return new ResponseEntity<>(message,OK);
+		return new ResponseEntity<>(message, OK);
 		//return "1";
 	}
 	
 	@RequestMapping(method = GET, value = "/privilege-by-name")
 	@ResponseBody
 	public PrivilegeDTO getPrivilegeByName(@RequestParam String privilegeName) {
-		logger.info("requeset reached with - " + privilegeName );
+		logger.info("requeset reached with - " + privilegeName);
 		return privilegeService.getPrivilegeByName(privilegeName);
 	}
 	
 	@RequestMapping(method = GET, value = "/all-privileges")
 	@ResponseBody
 	public ArrayList<PrivilegeDTO> getPrivileges() {
-		logger.info("getting all privileges " );
+		logger.info("getting all privileges ");
 		return privilegeService.getAllPrivileges();
 	}
 	
 	@RequestMapping(headers = { "Accept=application/json" }, method = POST, value = "/edit-privilege")
 	public ResponseEntity<String> editPrivilege(@RequestBody PrivilegeDTO privilegeDTO) {
 		logger.info("received status - " + privilegeDTO.getStatus());
-		String message = privilegeService.editPrivilege(privilegeDTO);		
-		return new ResponseEntity<>(message,OK);
+		String message = privilegeService.editPrivilege(privilegeDTO);
+		return new ResponseEntity<>(message, OK);
 	}
 	
 	@RequestMapping(headers = { "Accept=application/json" }, method = POST, value = "/add-role")
@@ -200,7 +219,7 @@ public class AclController {
 			logger.info("Privilege name - " + privileges.get(i).getName() + " - id - " + privileges.get(i).getId());
 		}*/
 		String message = roleService.addRole(roleDTO);//privilegeService.addPrivilege(privilegeDTO);		
-		return new ResponseEntity<>(message,OK);
+		return new ResponseEntity<>(message, OK);
 		//return new ResponseEntity<>("1",OK);
 		//return "1";
 	}
@@ -209,7 +228,7 @@ public class AclController {
 	public ResponseEntity<String> editRole(@RequestBody RoleDTO roleDTO) {
 		logger.info("create request received for role - " + roleDTO.getName());
 		String message = roleService.editRole(roleDTO);//privilegeService.addPrivilege(privilegeDTO);		
-		return new ResponseEntity<>(message,OK);
+		return new ResponseEntity<>(message, OK);
 		//return new ResponseEntity<>("1",OK);
 		//return "1";
 	}
@@ -217,7 +236,7 @@ public class AclController {
 	@RequestMapping(method = GET, value = "role-by-name")
 	@ResponseBody
 	public RoleDTO getRoleByName(@RequestParam String roleName) {
-		logger.info("requeset reached with - " + roleName );
+		logger.info("requeset reached with - " + roleName);
 		return roleService.getRoleByName(roleName);
 	}
 	
@@ -225,42 +244,125 @@ public class AclController {
 	public ResponseEntity<String> addUser(@RequestBody UserDTO userDTO) {
 		logger.info("create request received for user - " + userDTO.getName());
 		
-		String message = userService.addUser(userDTO);		
-		return new ResponseEntity<>(message,OK);
+		String message = userService.addUser(userDTO);
+		return new ResponseEntity<>(message, OK);
 	}
 	
 	@RequestMapping(headers = { "Accept=application/json" }, method = POST, value = "/edit-user")
 	public ResponseEntity<String> editUser(@RequestBody UserDTO userDTO) {
 		logger.info("update request received for user - " + userDTO.getUserName());
 		
-		String message = userService.editUser(userDTO);		
-		return new ResponseEntity<>(message,OK);
+		String message = userService.editUser(userDTO);
+		return new ResponseEntity<>(message, OK);
 	}
 	
-	@RequestMapping( method = GET, value = "/valid-username")
+	@RequestMapping(method = GET, value = "/valid-username")
 	@ResponseBody
 	public ResponseEntity<String> isUsernameAvailable(@RequestParam String userName) {
 		logger.info("check if user with name -" + userName + " exists.");
-		String message = userService.ifUserExists(userName);		
-		return new ResponseEntity<>(message,OK);
+		String message = userService.ifUserExists(userName);
+		return new ResponseEntity<>(message, OK);
 	}
 	
-	@RequestMapping( method = GET, value = "/update")
-	public void update(@RequestParam String id){
+	@RequestMapping(method = GET, value = "/pnc")
+	public void pnc() {
 		String pattern = "yyyy-MM-dd";
 		
-    		Mother mother = allMothers.findByCaseId(id);
-    		 List<Map<String, String>> bnfs =mother.bnfVisitDetails();
-    		 int psrfsCount = bnfs.size()-1;
-    		 Map<String, String> bnf = bnfs.get(psrfsCount);
-    		 String doo = bnf.get("FWBNFDTOO");
-    		 DateTime dateTime = DateTime.parse(doo);
-    			DateTimeFormatter fmt = DateTimeFormat.forPattern(pattern);
-    			String referenceDate = fmt.print(dateTime);
-    		 pncSchedulesService.enrollPNCRVForMother(id, "",mother.PROVIDERID(), LocalDate.parse(referenceDate), referenceDate);
-    		 childSchedulesService.enrollENCCForChild(id, "", mother.PROVIDERID(), LocalDate.parse(referenceDate), referenceDate);
-    		
-    
+		String csvFile = "/opt/multimedia/export/pnc.csv";
+		BufferedReader br = null;
+		String line = "";
+		String cvsSplitBy = ",";
+		String id = "";
 		
+		try {
+			
+			br = new BufferedReader(new FileReader(csvFile));
+			while ((line = br.readLine()) != null) {
+				String[] csvData = line.split(cvsSplitBy);
+				id = csvData[0].trim();
+				System.err.println("Id:" + id);
+				Mother mother = allMothers.findByCaseId(id);
+				System.err.println("mother;" + mother);
+				if (mother != null) {
+					List<Action> actions = allActions.findAlertByANMIdEntityIdScheduleName(mother.PROVIDERID(), id,
+					    ScheduleNames.PNC);
+					if (!actions.isEmpty()) {
+						allActions.remove(actions.get(0));
+					}
+					
+					List<Map<String, String>> bnfs = mother.bnfVisitDetails();
+					int psrfsCount = bnfs.size() - 1;
+					Map<String, String> bnf = bnfs.get(psrfsCount);
+					String doo = bnf.get("FWBNFDTOO");
+					DateTime dateTime = DateTime.parse(doo);
+					DateTimeFormatter fmt = DateTimeFormat.forPattern(pattern);
+					String referenceDate = fmt.print(dateTime);
+					List<Enrollment> enrolments = allEnrollmentWrapper.getByNameAndExternalId(ScheduleNames.PNC, id);
+					allEnrollmentWrapper.remove(enrolments.get(0));
+					try {
+						scheduler.fullfillMilestone(id, mother.PROVIDERID(), ScheduleNames.PNC, new LocalDate());
+					}
+					catch (Exception e) {
+						// TODO: handle exception
+					}
+					pncSchedulesService.enrollPNCRVForMother(id, "", mother.PROVIDERID(), LocalDate.parse(referenceDate),
+					    referenceDate);
+					
+				} else {
+					System.err.println("NO data foubd");
+				}
+			}
+			
+		}
+		catch (Exception e) {
+			
+		}
+		
+	}
+	
+	@RequestMapping(method = GET, value = "/encc")
+	public void encc() {
+		String pattern = "yyyy-MM-dd";
+		String csvFile = "/opt/multimedia/export/encc.csv";
+		BufferedReader br = null;
+		String line = "";
+		String cvsSplitBy = ",";
+		String id = "";
+		try {
+			
+			br = new BufferedReader(new FileReader(csvFile));
+			while ((line = br.readLine()) != null) {
+				String[] csvData = line.split(cvsSplitBy);
+				id = csvData[0].trim();
+				Child child = allChilds.findByCaseId(id);
+				if (child != null) {
+					List<Action> actions = allActions.findAlertByANMIdEntityIdScheduleName(child.PROVIDERID(), id,
+					    ScheduleNames.CHILD);
+					if (!actions.isEmpty()) {
+						allActions.remove(actions.get(0));
+					}
+					
+					String doo = child.details().get("FWBNFDOB");
+					DateTime dateTime = DateTime.parse(doo);
+					DateTimeFormatter fmt = DateTimeFormat.forPattern(pattern);
+					String referenceDate = fmt.print(dateTime);
+					List<Enrollment> enrolments = allEnrollmentWrapper.getByNameAndExternalId(ScheduleNames.CHILD, id);
+					allEnrollmentWrapper.remove(enrolments.get(0));
+					try {
+						scheduler.fullfillMilestone(id, child.PROVIDERID(), ScheduleNames.CHILD, new LocalDate());
+					}
+					catch (Exception e) {
+						
+					}
+					childSchedulesService.enrollENCCForChild(id, "", child.PROVIDERID(), LocalDate.parse(referenceDate),
+					    referenceDate);
+				} else {
+					System.err.println("NO data foubd");
+				}
+			}
+		}
+		catch (Exception e) {
+			
+		}
 	}
 }
