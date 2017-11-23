@@ -14,7 +14,6 @@ import org.ektorp.impl.StdObjectMapperFactory;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.motechproject.scheduletracking.api.domain.Enrollment;
 import org.opensrp.register.mcare.domain.Mother;
 import org.opensrp.register.mcare.repository.AllChilds;
 import org.opensrp.register.mcare.repository.AllElcos;
@@ -52,7 +51,7 @@ public class MotherIntegrationTest {
 		
 		HttpClient httpClient = new StdHttpClient.Builder()
 		
-		.host("localhost").port(5984).socketTimeout(1000000).username("Admin").password("mPower@1234").build();
+		.host("192.168.19.97").port(5984).socketTimeout(1000000).username("Admin").password("mPower@1234").build();
 		dbInstance = new StdCouchDbInstance(httpClient);
 		
 		stdCouchDbConnector = new StdCouchDbConnector("opensrp", dbInstance, new StdObjectMapperFactory());
@@ -340,6 +339,7 @@ public class MotherIntegrationTest {
 	
 	//Essential Newborn Care Checklist
 	//Post Natal Care Reminder Visit
+	
 	@Test
 	public void actionFalse() throws ParseException {
 		
@@ -349,9 +349,9 @@ public class MotherIntegrationTest {
 		int i = 0;
 		for (Action action : actions) {
 			String status = "";
-			List<Enrollment> enrollments = allEnrollmentWrapper.getByEid(action.caseId());
+			//List<Enrollment> enrollments = allEnrollmentWrapper.getByEid(action.caseId());
 			
-			if (enrollments != null) {
+			/*if (enrollments != null) {
 				for (Enrollment enrollment : enrollments) {
 					if ("Post Natal Care Reminder Visit".equalsIgnoreCase(enrollment.getScheduleName())) {
 						//enrollment.setStatus(EnrollmentStatus.ACTIVE);
@@ -359,9 +359,9 @@ public class MotherIntegrationTest {
 						status = enrollment.getStatus().name();
 					}
 				}
-			}
+			}*/
 			i++;
-			String date = action.data().get("expiryDate");
+			/*String date = action.data().get("expiryDate");
 			long checkingDate = 1510751863000l;
 			long timestamp = yyyyMMdd.parse(date).getTime();
 			//if(timestamp<checkingDate && "pncrv_3".equalsIgnoreCase(action.data().get("visitCode"))){
@@ -374,7 +374,9 @@ public class MotherIntegrationTest {
 				action.timestamp(System.currentTimeMillis() + 2000);
 				//allActions.update(action);
 				//System.err.println("action:"+action);
-			}
+			}*/
+			
+			System.err.println(action.caseId() + ",");
 			
 		}
 		

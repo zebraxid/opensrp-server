@@ -268,7 +268,7 @@ public class AclController {
 	public void pnc() {
 		String pattern = "yyyy-MM-dd";
 		
-		String csvFile = "/opt/multimedia/export/pnc.csv";
+		String csvFile = "/opt/multimedia/pnc.csv";
 		BufferedReader br = null;
 		String line = "";
 		String cvsSplitBy = ",";
@@ -282,11 +282,12 @@ public class AclController {
 				id = csvData[0].trim();
 				System.err.println("Id:" + id);
 				Mother mother = allMothers.findByCaseId(id);
-				System.err.println("mother;" + mother);
-				if (mother != null) {
+				
+				try {
 					List<Action> actions = allActions.findAlertByANMIdEntityIdScheduleName(mother.PROVIDERID(), id,
 					    ScheduleNames.PNC);
-					if (!actions.isEmpty()) {
+					System.err.println("actions:" + actions);
+					if (!actions.isEmpty() && actions != null) {
 						allActions.remove(actions.get(0));
 					}
 					
@@ -297,25 +298,41 @@ public class AclController {
 					DateTime dateTime = DateTime.parse(doo);
 					DateTimeFormatter fmt = DateTimeFormat.forPattern(pattern);
 					String referenceDate = fmt.print(dateTime);
-					List<Enrollment> enrolments = allEnrollmentWrapper.getByNameAndExternalId(ScheduleNames.PNC, id);
-					allEnrollmentWrapper.remove(enrolments.get(0));
+					
 					try {
-						scheduler.fullfillMilestone(id, mother.PROVIDERID(), ScheduleNames.PNC, new LocalDate());
+						scheduler.unEnrollFromSchedule(id, mother.PROVIDERID(), ScheduleNames.PNC);
 					}
 					catch (Exception e) {
 						// TODO: handle exception
 					}
+					List<Enrollment> enrolments = allEnrollmentWrapper.getByEid(id);
+					
+					if (enrolments != null && !enrolments.isEmpty()) {
+						for (Enrollment enrollment : enrolments) {
+							if (enrollment.getScheduleName().equalsIgnoreCase(ScheduleNames.PNC)) {
+								System.err.println("enrolments:" + enrolments.get(0).getScheduleName());
+								allEnrollmentWrapper.remove(enrollment);
+								System.err.println("enrolments:" + enrolments.get(0).getScheduleName());
+							} else {
+								System.err.println("Not PNC");
+							}
+						}
+						
+					} else {
+						
+					}
 					pncSchedulesService.enrollPNCRVForMother(id, "", mother.PROVIDERID(), LocalDate.parse(referenceDate),
 					    referenceDate);
 					
-				} else {
+				}
+				catch (Exception ee) {
 					System.err.println("NO data foubd");
 				}
 			}
 			
 		}
 		catch (Exception e) {
-			
+			e.printStackTrace();
 		}
 		
 	}
@@ -323,7 +340,7 @@ public class AclController {
 	@RequestMapping(method = GET, value = "/encc")
 	public void encc() {
 		String pattern = "yyyy-MM-dd";
-		String csvFile = "/opt/multimedia/export/encc.csv";
+		String csvFile = "/opt/multimedia/encc.csv";
 		BufferedReader br = null;
 		String line = "";
 		String cvsSplitBy = ",";
@@ -335,10 +352,10 @@ public class AclController {
 				String[] csvData = line.split(cvsSplitBy);
 				id = csvData[0].trim();
 				Child child = allChilds.findByCaseId(id);
-				if (child != null) {
+				try {
 					List<Action> actions = allActions.findAlertByANMIdEntityIdScheduleName(child.PROVIDERID(), id,
 					    ScheduleNames.CHILD);
-					if (!actions.isEmpty()) {
+					if (!actions.isEmpty() && actions != null) {
 						allActions.remove(actions.get(0));
 					}
 					
@@ -346,17 +363,32 @@ public class AclController {
 					DateTime dateTime = DateTime.parse(doo);
 					DateTimeFormatter fmt = DateTimeFormat.forPattern(pattern);
 					String referenceDate = fmt.print(dateTime);
-					List<Enrollment> enrolments = allEnrollmentWrapper.getByNameAndExternalId(ScheduleNames.CHILD, id);
-					allEnrollmentWrapper.remove(enrolments.get(0));
+					
 					try {
-						scheduler.fullfillMilestone(id, child.PROVIDERID(), ScheduleNames.CHILD, new LocalDate());
+						scheduler.unEnrollFromSchedule(id, child.PROVIDERID(), ScheduleNames.CHILD);
 					}
 					catch (Exception e) {
 						
 					}
+					List<Enrollment> enrolments = allEnrollmentWrapper.getByEid(id);
+					if (enrolments != null && !enrolments.isEmpty()) {
+						for (Enrollment enrollment : enrolments) {
+							
+							if (enrollment.getScheduleName().equalsIgnoreCase(ScheduleNames.CHILD)) {
+								System.err.println("enrolments:" + enrolments.get(0).getScheduleName());
+								allEnrollmentWrapper.remove(enrollment);
+							} else {
+								System.err.println("Not ENCC");
+							}
+						}
+						
+					} else {
+						
+					}
 					childSchedulesService.enrollENCCForChild(id, "", child.PROVIDERID(), LocalDate.parse(referenceDate),
 					    referenceDate);
-				} else {
+				}
+				catch (Exception e) {
 					System.err.println("NO data foubd");
 				}
 			}

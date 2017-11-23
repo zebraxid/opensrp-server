@@ -70,14 +70,4 @@ public class AllEnrollmentWrapper extends AllEnrollments {
 		return enrollments;
 	}
 	
-	public List<Enrollment> getByNameAndExternalId(String scheduleName, String externalId) {
-		ComplexKey start = ComplexKey.of(scheduleName, externalId);
-		ComplexKey end = ComplexKey.of(scheduleName, externalId);
-		List<Enrollment> enrollments = db.queryView(createQuery("by_externalId_scheduleName").startKey(start).endKey(end)
-		        .includeDocs(true), Enrollment.class);
-		if (enrollments == null || enrollments.isEmpty()) {
-			return null;
-		}
-		return enrollments;
-	}
 }

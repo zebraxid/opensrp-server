@@ -109,7 +109,7 @@ public class AlertCreationAction implements HookedEvent {
 				providerId = mother.PROVIDERID();
 				startOfEarliestWindow = parseDate(mother.TODAY());
 				List<Map<String, String>> bnfs = mother.bnfVisitDetails();
-				if (!bnfs.isEmpty()) {
+				if (!bnfs.isEmpty() && bnfs != null) {
 					int psrfsCount = bnfs.size() - 1;
 					Map<String, String> bnf = bnfs.get(psrfsCount);
 					doo = bnf.get("FWBNFDTOO");
