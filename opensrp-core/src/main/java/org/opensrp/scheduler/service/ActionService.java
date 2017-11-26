@@ -134,11 +134,12 @@ public class ActionService {
 			List<Action> existingAlerts = allActions.findAlertByANMIdEntityIdScheduleName(anmIdentifier, caseID,
 			    scheduleName);
 			String visitCodeName = existingAlerts.get(0).data().get("visitCode");
-			updateDataAction(visitCode, alertStatus, startDate, expiryDate, existingAlerts);
+			
 			if (existingAlerts.size() > 0) {
 				long numOfDays = this.getDaysDifference(expiryDate);
 				
 				if (ANC.equalsIgnoreCase(scheduleName)) {
+					updateDataAction(visitCode, alertStatus, startDate, expiryDate, existingAlerts);
 					if ((numOfDays <= 2) && alertStatus.name().equalsIgnoreCase("urgent")) {
 						scheduleService.fulfillMilestone(caseID, scheduleName, new LocalDate());
 						
@@ -159,53 +160,46 @@ public class ActionService {
 					date = format.parse(doo);
 					DateTime FWBNFDTOO = new DateTime(date);
 					long dateDifference = DateTimeUtil.getDaysDifference(FWBNFDTOO);
-					
-					if (dateDifference == -0
-					        && !isFullfillment(scheduleNameVisitCodeWithoutNumber + "_1", caseID, scheduleName)) {
+					System.err.println("dateDifference:" + dateDifference);
+					if (dateDifference == -0 && visitCode.equalsIgnoreCase(scheduleNameVisitCodeWithoutNumber + "_1")) {
 						System.err.println("0000011111");
 						updateDataAction(visitCode, AlertStatus.urgent, startDate, expiryDate, existingAlerts);
 						
-					} else if (dateDifference == -1
-					        && !isFullfillment(scheduleNameVisitCodeWithoutNumber + "_1", caseID, scheduleName)) {
+					} else if (dateDifference == -1 && visitCode.equalsIgnoreCase(scheduleNameVisitCodeWithoutNumber + "_1")) {
 						updateDataAction(scheduleNameVisitCodeWithoutNumber + "_2", AlertStatus.upcoming, startDate,
 						    expiryDate, existingAlerts);
+						System.err.println("-1111");
 						scheduleService.fulfillMilestone(caseID, scheduleName, new LocalDate());
-					}
-					
-					else if ((dateDifference == -2 || dateDifference == -3)
-					        && visitCode.equalsIgnoreCase(scheduleNameVisitCodeWithoutNumber + "_1")
-					        && isFullfillment(scheduleNameVisitCodeWithoutNumber + "_1", caseID, scheduleName)) {
-						
-						scheduleService.fulfillMilestone(caseID, scheduleName, new LocalDate());
-						
-					} else if ((dateDifference == -2 || dateDifference == -3)
+					} else if ((dateDifference == -2 || dateDifference == -3 || dateDifference == -4)
 					        && visitCode.equalsIgnoreCase(scheduleNameVisitCodeWithoutNumber + "_2")) {
 						updateDataAction(scheduleNameVisitCodeWithoutNumber + "_2", AlertStatus.urgent, startDate,
 						    expiryDate, existingAlerts);
+						System.err.println("-22223334444");
 						
 					}
 					
-					else if (dateDifference == -4
-					        && !isFullfillment(scheduleNameVisitCodeWithoutNumber + "_2", caseID, scheduleName)) {
-						updateDataAction(scheduleNameVisitCodeWithoutNumber + "_2", AlertStatus.urgent, startDate,
-						    expiryDate, existingAlerts);
-						
-					} else if (dateDifference == -5
-					        && !isFullfillment(scheduleNameVisitCodeWithoutNumber + "_2", caseID, scheduleName)) {
+					else if (dateDifference == -5 && visitCode.equalsIgnoreCase(scheduleNameVisitCodeWithoutNumber + "_2")) {
 						updateDataAction(scheduleNameVisitCodeWithoutNumber + "_3", AlertStatus.upcoming, startDate,
 						    expiryDate, existingAlerts);
 						scheduleService.fulfillMilestone(caseID, scheduleName, new LocalDate());
+						System.err.println("-555");
 						
-					} else if (dateDifference == -6
-					        && isFullfillment(scheduleNameVisitCodeWithoutNumber + "_2", caseID, scheduleName)) {
+					} else if (dateDifference == -6 && visitCode.equalsIgnoreCase(scheduleNameVisitCodeWithoutNumber + "_3")) {
+						updateDataAction(scheduleNameVisitCodeWithoutNumber + "_3", AlertStatus.upcoming, startDate,
+						    expiryDate, existingAlerts);
+						System.err.println("-6666");
+						
+					} else if (dateDifference == -7 && visitCode.equalsIgnoreCase(scheduleNameVisitCodeWithoutNumber + "_3")) {
 						updateDataAction(scheduleNameVisitCodeWithoutNumber + "_3", AlertStatus.urgent, startDate,
 						    expiryDate, existingAlerts);
+						System.err.println("-7777");
 						
 					}
 					
-					else if (dateDifference <= -7) {
+					else if (dateDifference <= -8) {
 						updateDataAction(visitCode, AlertStatus.expired, startDate, expiryDate, existingAlerts);
 						scheduleService.fulfillMilestone(caseID, scheduleName, new LocalDate());
+						System.err.println("-888888");
 						
 					}
 					

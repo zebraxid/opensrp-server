@@ -107,10 +107,10 @@ public class PNCSchedulesService {
 			milestone = SCHEDULE_PNC_3;
 			startDate = new DateTime(FWBNFDTOO).plusDays(DateTimeDuration.pnc2);
 			expireDate = new DateTime(FWBNFDTOO).plusDays(DateTimeDuration.pnc3);
-			if (datediff == -6) {
+			if (datediff == -6 || datediff == -7) {
 				scheduleLogService.saveAction(entityId, instanceId, provider, SCHEDULE_PNC, milestone,
 				    BeneficiaryType.mother, AlertStatus.upcoming, FWBNFDTOO, new DateTime(FWBNFDTOO).plusDays(6));
-			} else if (datediff == -7) {
+			} else if (datediff == -8) {
 				scheduleLogService.saveAction(entityId, instanceId, provider, SCHEDULE_PNC, milestone,
 				    BeneficiaryType.mother, AlertStatus.urgent, FWBNFDTOO, new DateTime(FWBNFDTOO).plusDays(7));
 			} else {

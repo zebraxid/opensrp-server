@@ -127,7 +127,7 @@ public class AlertCreationAction implements HookedEvent {
 			throw new IllegalArgumentException("Beneficiary Type : " + beneficiaryType + " is of unknown type");
 		}
 		
-		logger.info("caseID: " + caseID);
+		logger.info("caseID: " + caseID + "  Doo:" + doo);
 		logger.info(" event.windowName():" + startOfEarliestWindow);
 		logger.info(" Name:"
 		        + event.scheduleName().replace(ELCOSchedulesConstantsImediate.IMD_ELCO_SCHEDULE_PSRF,

@@ -48,27 +48,27 @@
         {
             "name": "enccrv_3",
             "scheduleWindows": {
-            	 "due": ["7 Days"],
-                "late": ["8 Days"],
-                "max": ["9 Days"]
+            	 "due": ["8 Days"],
+                "late": ["9 Days"],
+                "max": ["10 Days"]
             },
             "alerts": [            	
               {
                     "window": "due",
                     "offset": ["6 Days"],
                     "interval": ["1 Day"],
-                    "count": "1"
+                    "count": "2"
                 },
                 {
                     "window": "late",
-                    "offset": ["7 Days"],
+                    "offset": ["8 Days"],
                     "interval": ["1 Day"],
                     "count": "1"
                 } 
                 ,
                 {
                     "window": "late",
-                    "offset": ["8 Days"],
+                    "offset": ["9 Days"],
                     "interval": ["1 Day"],
                     "count": "1"
                 }                 

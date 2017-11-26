@@ -264,6 +264,15 @@ public class AclController {
 		return new ResponseEntity<>(message, OK);
 	}
 	
+	@RequestMapping(method = GET, value = "/pe")
+	public void pncencc() {
+		scheduler.fullfillMilestoneAndCloseAlert("06072b3a-8fe7-4b44-a9c6-308397b35cf1", "rojina", ScheduleNames.CHILD,
+		    new LocalDate());
+		scheduler.fullfillMilestoneAndCloseAlert("e85d12d7-cce5-443e-8e18-0a79fe249f8b", "rojina", ScheduleNames.PNC,
+		    new LocalDate());
+		
+	}
+	
 	@RequestMapping(method = GET, value = "/pnc")
 	public void pnc() {
 		String pattern = "yyyy-MM-dd";
