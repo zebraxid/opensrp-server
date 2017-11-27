@@ -55,4 +55,13 @@ public class AllEnrollmentWrapper extends AllEnrollments{
 	        List<Enrollment> enrollments = queryView("by_externalId_scheduleName", ComplexKey.of(externalId, ScheduleName,"ACTIVE"));
 	        return populateWithSchedule(enrollments);
 	    } 
+	    
+	    public List<Enrollment> getByEid(String eid) {
+			List<Enrollment> enrollments = db.queryView(createQuery("by_external_id").key(eid).includeDocs(true),
+			    Enrollment.class);
+			if (enrollments == null || enrollments.isEmpty()) {
+				return null;
+			}
+			return enrollments;
+		}
 }

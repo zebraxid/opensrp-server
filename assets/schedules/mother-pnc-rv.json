@@ -5,15 +5,15 @@
         {
             "name": "pncrv_1",
             "scheduleWindows": {            	
-                "due": ["0 Days"],
-                "late": ["1 Days"]
+                "due": ["1 Days"],
+                "late": ["2 Days"]
                 
             },
             "alerts": [
                 
                 {
                     "window": "late",
-                    "offset": ["0 Day"],
+                    "offset": ["1 Day"],
                     "interval": ["1 Day"],
                     "count": "1"
                 }
@@ -23,14 +23,14 @@
         {
             "name": "pncrv_2",
             "scheduleWindows": {            	
-                "due": ["2 Days"],
-                "late": ["5 Days"]
+                "due": ["3 Days"],
+                "late": ["6 Days"]
                 
             },
             "alerts": [           
                 {
                     "window": "due",
-                    "offset": ["1 Days"],
+                    "offset": ["2 Days"],
                     "interval": ["1 Day"],
                     "count": "1"
                 },
@@ -38,35 +38,35 @@
                     "window": "late",
                     "offset": ["3 Days"],
                     "interval": ["1 Day"],
-                    "count": "2"
+                    "count": "3"
                 }                          
             ]
         },
         {
             "name": "pncrv_3",
             "scheduleWindows": {            	
-                "due": ["6 Days"],
-                "late": ["7 Days"],
+                "due": ["7 Days"],
+                "late": ["8 Days"],
                 "max": ["9 Days"]
                
             },
             "alerts": [            	
                 {
                     "window": "due",
-                    "offset": ["5 Days"],
+                    "offset": ["6 Days"],
                     "interval": ["1 Day"],
                     "count": "1"
                 },
                 {
                     "window": "late",
-                    "offset": ["6 Days"],
+                    "offset": ["7 Days"],
                     "interval": ["1 Day"],
                     "count": "1"
                 } 
                 ,
                 {
                     "window": "late",
-                    "offset": ["7 Days"],
+                    "offset": ["8 Days"],
                     "interval": ["1 Day"],
                     "count": "1"
                 }               

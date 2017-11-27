@@ -1,5 +1,6 @@
 package org.opensrp.web.controller;
 
+import static org.opensrp.common.AllConstants.BnfFollowUpVisitFields.FWBNFDTOO;
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
@@ -12,13 +13,26 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.json.JSONException;
+import org.motechproject.scheduletracking.api.domain.Enrollment;
+import org.motechproject.scheduletracking.api.domain.EnrollmentStatus;
 import org.opensrp.connector.openmrs.service.OpenmrsUserService;
 import org.opensrp.dto.AclDTO;
 import org.opensrp.dashboard.dto.PrivilegeDTO;
 import org.opensrp.dashboard.dto.RoleDTO;
 import org.opensrp.dashboard.dto.UserDTO;
+import org.opensrp.register.mcare.domain.Mother;
+import org.opensrp.register.mcare.repository.AllMothers;
 import org.opensrp.register.mcare.service.AclService;
+import org.opensrp.register.mcare.service.scheduling.ChildSchedulesService;
+import org.opensrp.register.mcare.service.scheduling.PNCSchedulesService;
+import org.opensrp.scheduler.Action;
+import org.opensrp.scheduler.repository.AllActions;
+import org.opensrp.scheduler.service.AllEnrollmentWrapper;
 import org.opensrp.dashboard.service.PrivilegeService;
 import org.opensrp.dashboard.service.RoleService;
 import org.opensrp.dashboard.service.UsersService;
@@ -41,7 +55,16 @@ public class AclController {
 	private PrivilegeService privilegeService;
 	private UsersService userService;
 	private static Logger logger = LoggerFactory.getLogger(AclController.class);
-
+	@Autowired
+	private AllEnrollmentWrapper allEnrollmentWrapper;
+	@Autowired
+	private AllActions allActions;
+	@Autowired
+	private AllMothers allMothers;
+	@Autowired
+	private PNCSchedulesService pncSchedulesService;
+	@Autowired
+	private ChildSchedulesService childSchedulesService;
 	@Autowired
 	public AclController(RoleService roleService, AclService aclService,
 			OpenmrsUserService openmrsUserService, PrivilegeService privilegeService,
@@ -220,5 +243,24 @@ public class AclController {
 		logger.info("check if user with name -" + userName + " exists.");
 		String message = userService.ifUserExists(userName);		
 		return new ResponseEntity<>(message,OK);
+	}
+	
+	@RequestMapping( method = GET, value = "/update")
+	public void update(@RequestParam String id){
+		String pattern = "yyyy-MM-dd";
+		
+    		Mother mother = allMothers.findByCaseId(id);
+    		 List<Map<String, String>> bnfs =mother.bnfVisitDetails();
+    		 int psrfsCount = bnfs.size()-1;
+    		 Map<String, String> bnf = bnfs.get(psrfsCount);
+    		 String doo = bnf.get("FWBNFDTOO");
+    		 DateTime dateTime = DateTime.parse(doo);
+    			DateTimeFormatter fmt = DateTimeFormat.forPattern(pattern);
+    			String referenceDate = fmt.print(dateTime);
+    		 pncSchedulesService.enrollPNCRVForMother(id, "",mother.PROVIDERID(), LocalDate.parse(referenceDate), referenceDate);
+    		 childSchedulesService.enrollENCCForChild(id, "", mother.PROVIDERID(), LocalDate.parse(referenceDate), referenceDate);
+    		
+    
+		
 	}
 }

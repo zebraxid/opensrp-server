@@ -18,7 +18,10 @@ import java.util.concurrent.TimeUnit;
 
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
+import org.motechproject.scheduletracking.api.domain.Enrollment;
+import org.motechproject.scheduletracking.api.domain.MilestoneFulfillment;
 import org.opensrp.common.AllConstants.ScheduleNames;
+import org.opensrp.common.util.DateTimeUtil;
 import org.opensrp.dto.ActionData;
 import org.opensrp.dto.AlertStatus;
 import org.opensrp.dto.BeneficiaryType;
@@ -34,7 +37,8 @@ public class ActionService {
     private AllActions allActions;
     private ReportActionService reportActionService;
     private final ScheduleService scheduleService;
-    
+    @Autowired
+    private AllEnrollmentWrapper allEnrollmentWrapper;
     private static Logger logger = LoggerFactory.getLogger(ActionService.class
 			.toString());
     @Autowired
@@ -51,7 +55,7 @@ public class ActionService {
     public List<Action> findByCaseIdScheduleAndTimeStamp(String caseId, String schedule, DateTime start, DateTime end) {
 		return allActions.findByCaseIdScheduleAndTimeStamp(caseId, schedule, start, end);
 	}
-    public void alertForBeneficiary(BeneficiaryType beneficiaryType, String caseID, String instanceId,  String anmIdentifier, String scheduleName, String visitCode, AlertStatus alertStatus, DateTime startDate, DateTime expiryDate) {
+    public void alertForBeneficiary(BeneficiaryType beneficiaryType, String caseID, String instanceId,  String anmIdentifier, String scheduleName, String visitCode, AlertStatus alertStatus, DateTime startDate, DateTime expiryDate,String doo) {
     	if (!(mother.equals(beneficiaryType)||child.equals(beneficiaryType)||ec.equals(beneficiaryType)||household.equals(beneficiaryType) || elco.equals(beneficiaryType))) {
             throw new IllegalArgumentException("Beneficiary Type : " + beneficiaryType + " is of unknown type");
         }
@@ -59,7 +63,7 @@ public class ActionService {
     		this.ActionUpdateOrCreateForOther(beneficiaryType, caseID, instanceId, anmIdentifier, scheduleName, visitCode, alertStatus, startDate, expiryDate);
     		
     	}else if(scheduleName.equals(ScheduleNames.ANC) || scheduleName.equals(ScheduleNames.PNC) || scheduleName.equals(ScheduleNames.CHILD)){
-    		this.ActionUpdateOrCreateForMotherType(beneficiaryType, caseID, instanceId, anmIdentifier, scheduleName, visitCode, alertStatus, startDate, expiryDate);
+    		this.ActionUpdateOrCreateForMotherType(beneficiaryType, caseID, instanceId, anmIdentifier, scheduleName, visitCode, alertStatus, startDate, expiryDate,doo);
     		
     	}else{
     		
@@ -103,14 +107,15 @@ public class ActionService {
     	}
     }
     
-    public void ActionUpdateOrCreateForMotherType(BeneficiaryType beneficiaryType, String caseID, String instanceId,  String anmIdentifier, String scheduleName, String visitCode, AlertStatus alertStatus, DateTime startDate, DateTime expiryDate){
-    	
+    public void ActionUpdateOrCreateForMotherType(BeneficiaryType beneficiaryType, String caseID, String instanceId,  String anmIdentifier, String scheduleName, String visitCode, AlertStatus alertStatus, DateTime startDate, DateTime expiryDate,String doo){
+    	 SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
     	try{
 	    	List<Action> existingAlerts = allActions.findAlertByANMIdEntityIdScheduleName(anmIdentifier, caseID, scheduleName);
+	    	String visitCodeName = existingAlerts.get(0).data().get("visitCode");
 	    	updateDataAction(visitCode,alertStatus,startDate,expiryDate,existingAlerts);
 	    	if(existingAlerts.size() > 0){ 	    		
 	        	long numOfDays =  this.getDaysDifference(expiryDate);
-	        	System.err.println("numOfDays:"+numOfDays+"  alertStatus.name():"+alertStatus.name());
+	        	logger.info("numOfDays:"+numOfDays+"  alertStatus.name():"+alertStatus.name());
 	        	if(ANC.equalsIgnoreCase(scheduleName) ){
 	        		if(( numOfDays<=2)   && alertStatus.name().equalsIgnoreCase("urgent")){	        		
 		    			scheduleService.fulfillMilestone(caseID, scheduleName, new LocalDate());
@@ -121,13 +126,57 @@ public class ActionService {
 		    		 }
 	        		
 	        	}else if(PNC.equalsIgnoreCase(scheduleName) || CHILD.equalsIgnoreCase(scheduleName)){
-		        	if(( numOfDays<=0 || numOfDays<=1)   && alertStatus.name().equalsIgnoreCase("urgent")){	        		
+	                String scheduleNameVisitCodeWithoutNumber;
+	        		if(PNC.equalsIgnoreCase(scheduleName)){
+	        			scheduleNameVisitCodeWithoutNumber = "pncrv";
+	                }else{
+	                	scheduleNameVisitCodeWithoutNumber = "enccrv";
+	                }
+	        		Date date = null;	                
+	                System.err.println(visitCodeName+"  doo:"+doo);
+	                date = format.parse(doo);
+	                DateTime FWBNFDTOO = new DateTime(date);
+	        		long dateDifference = DateTimeUtil.getDaysDifference(FWBNFDTOO);
+	        		System.err.println("dateDifference:"+dateDifference);
+	        	
+	        		if((dateDifference==-0 ||dateDifference==-1 )&& isFullfillment(scheduleNameVisitCodeWithoutNumber+"_1",caseID,scheduleName)==false){
+	        			System.err.println("0000011111");
+	        			scheduleService.fulfillMilestone(caseID, scheduleName, new LocalDate());
+	        			System.err.println("0000011111");
+	        			
+	        		}else if((dateDifference==-2 ||   dateDifference==-3 )&& isFullfillment(scheduleNameVisitCodeWithoutNumber+"_1",caseID,scheduleName) ==true){
+	        			
+	        			scheduleService.fulfillMilestone(caseID, scheduleName, new LocalDate());
+	        			System.err.println("32222222222");
+	        		}
+	        		else if(dateDifference==-4  && isFullfillment(scheduleNameVisitCodeWithoutNumber+"_2",caseID,scheduleName) ==false){
+	        			scheduleService.fulfillMilestone(caseID, scheduleName, new LocalDate());
+	        			System.err.println("4444444444444");
+	        		}
+	        		else if(dateDifference==-5  && isFullfillment(scheduleNameVisitCodeWithoutNumber+"_2",caseID,scheduleName) ==true){
+	        			scheduleService.fulfillMilestone(caseID, scheduleName, new LocalDate());
+	        			System.err.println("555555555555");
+	        		}
+	        		else if(dateDifference==-6  && isFullfillment(scheduleNameVisitCodeWithoutNumber+"_2",caseID,scheduleName) ==false){
+	        			scheduleService.fulfillMilestone(caseID, scheduleName, new LocalDate());
+	        			System.err.println("3333333333");
+	        		}
+	        		
+	        		else if(dateDifference==-7){
+	        			scheduleService.fulfillMilestone(caseID, scheduleName, new LocalDate());
+	        			updateDataAction(AlertStatus.expired.name(),alertStatus,startDate,expiryDate,existingAlerts);
+	        			System.err.println("444444444444444");
+	        		}
+	        		
+	        		/*if(( numOfDays<=0 || numOfDays<=1)   && alertStatus.name().equalsIgnoreCase("urgent") ){	        		
 		    			scheduleService.fulfillMilestone(caseID, scheduleName, new LocalDate());
-		    			
+		    			if("pncrv_3".equalsIgnoreCase(visitCode)){
+		    				updateDataAction(AlertStatus.expired.name(),alertStatus,startDate,expiryDate,existingAlerts);
+		    			}
 		    		  }else{
 		    			logger.info("Date diffrenece required less or equal 1 or 0")	;
 		    			
-		    		 }
+		    		 }*/
 	        	}else{
 	        		System.err.println("NOT PNC OR ENCC OR ANC");
 	        	}
@@ -177,5 +226,23 @@ public class ActionService {
    public long getActionTimestamp(String anmIdentifier, String caseID, String scheduleName){
 	   List<Action> existingAlerts = allActions.findAlertByANMIdEntityIdScheduleName(anmIdentifier, caseID, scheduleName);
 	   return existingAlerts.get(0).timestamp();
+   }
+   
+   private boolean isFullfillment(String visitCode,String caseID,String scheduleName){
+	   List<Enrollment> enrolments = allEnrollmentWrapper.findByEnrollmentByExternalIdAndScheduleName(caseID, scheduleName);
+	   System.err.println("enrolments:"+enrolments);
+	   List<MilestoneFulfillment> milestoneFulfillments= enrolments.get(0).getFulfillments();
+	   boolean status = false;
+	   for (MilestoneFulfillment milestoneFulfillment : milestoneFulfillments) {
+		   System.err.println("visitCode: "+visitCode+"   milestoneFulfillment.getMilestoneName():"+milestoneFulfillment.getMilestoneName());
+		   if(visitCode.equalsIgnoreCase(milestoneFulfillment.getMilestoneName())){
+			   status = true;
+			   System.err.println("status:"+status);
+			  break;
+		   }
+	   }
+	   System.err.println("Status:"+status);
+	  return status;
+	   
    }
 }

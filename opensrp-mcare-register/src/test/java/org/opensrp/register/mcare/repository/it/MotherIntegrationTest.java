@@ -15,6 +15,8 @@ import org.ektorp.impl.StdObjectMapperFactory;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.motechproject.scheduletracking.api.domain.Enrollment;
+import org.motechproject.scheduletracking.api.domain.EnrollmentStatus;
 import org.opensrp.common.util.DateTimeUtil;
 import org.opensrp.scheduler.Action;
 import org.opensrp.register.mcare.domain.Child;
@@ -24,6 +26,7 @@ import org.opensrp.register.mcare.repository.AllElcos;
 import org.opensrp.register.mcare.repository.AllHouseHolds;
 import org.opensrp.register.mcare.repository.AllMothers;
 import org.opensrp.scheduler.repository.AllActions;
+import org.opensrp.scheduler.service.AllEnrollmentWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
@@ -36,9 +39,11 @@ public class MotherIntegrationTest {
 	private AllMothers allMothers;
 	private CouchDbInstance dbInstance;
 	private StdCouchDbConnector stdCouchDbConnector;
+	private StdCouchDbConnector stdCouchDbConnectorMothech;
 	private AllChilds allChilds;
 	
 	private AllActions allActions;
+	private AllEnrollmentWrapper allEnrollmentWrapper;
 	
     @Before
     public void setUp() throws Exception {
@@ -53,13 +58,14 @@ public class MotherIntegrationTest {
 		dbInstance = new StdCouchDbInstance(httpClient); 
 		
 		stdCouchDbConnector = new StdCouchDbConnector("opensrp", dbInstance, new StdObjectMapperFactory());
-		 
-		stdCouchDbConnector.createDatabaseIfNotExists(); 
+		stdCouchDbConnectorMothech = new StdCouchDbConnector("motech-scheduletracking-api", dbInstance, new StdObjectMapperFactory());
+		//stdCouchDbConnector.createDatabaseIfNotExists(); 
 		allHouseHolds = new AllHouseHolds(2, stdCouchDbConnector);
 		allElcos = new AllElcos(2, stdCouchDbConnector);
 		allMothers = new AllMothers(2, stdCouchDbConnector);
 		allChilds = new AllChilds(2, stdCouchDbConnector);
 		allActions = new AllActions(stdCouchDbConnector);
+		allEnrollmentWrapper = new AllEnrollmentWrapper(stdCouchDbConnectorMothech);
     	
     }
     
@@ -341,7 +347,7 @@ public class MotherIntegrationTest {
   
   //Essential Newborn Care Checklist
   //Post Natal Care Reminder Visit
-  @Test
+ @Test
     public void actionFalse() throws ParseException{
     	
     	DateFormat yyyyMMdd = new SimpleDateFormat("yyyy-MM-dd");
@@ -349,18 +355,31 @@ public class MotherIntegrationTest {
     	System.err.println("-------------------------------");
     	int i = 0;
     	for (Action action : actions) {
+    		String status = "";
+    		List<Enrollment> enrollments = allEnrollmentWrapper.getByEid(action.caseId());
+    		
+    		if(enrollments!=null){
+    		for (Enrollment enrollment : enrollments) {
+				if("Post Natal Care Reminder Visit".equalsIgnoreCase(enrollment.getScheduleName())){
+					//enrollment.setStatus(EnrollmentStatus.ACTIVE);
+					//allEnrollmentWrapper.update(enrollment);
+					status = enrollment.getStatus().name();
+				}
+			}
+    		}
     		i++;
     		String date =action.data().get("expiryDate");
     		long  checkingDate = 1510751863000l;
     		long timestamp = yyyyMMdd.parse(date).getTime();
-    		//if(timestamp<checkingDate && "enccrv_3".equalsIgnoreCase(action.data().get("visitCode"))){
-    		System.err.println(""+action.caseId()+"visitCode:  "+action.data().get("visitCode")+"    alertStatus:"+action.data().get("alertStatus")+"                                   Data:  "+action.data().get("expiryDate"));
+    		//if(timestamp<checkingDate && "pncrv_3".equalsIgnoreCase(action.data().get("visitCode"))){
+    		if("DEFAULTED".equalsIgnoreCase(status)){
+    		System.err.println(""+status+"visitCode:  "+action.caseId() +"     "+action.data().get("visitCode")+"    alertStatus:"+action.data().get("alertStatus")+"                                   Data:  "+action.data().get("expiryDate"));
     		
     		action.data().put("alertStatus", "expired");
-    		action.timestamp(System.currentTimeMillis()+200);
+    		action.timestamp(System.currentTimeMillis()+2000);
     		//allActions.update(action);
     		//System.err.println("action:"+action);
-    		//}
+    		}
     		
     		
 		}

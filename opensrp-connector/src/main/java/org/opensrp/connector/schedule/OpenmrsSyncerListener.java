@@ -47,7 +47,8 @@ public class OpenmrsSyncerListener {
 			}
 		}
 		catch(Exception e){
-			e.printStackTrace();
+			
+			//e.printStackTrace();
 		}
 	}
 	

@@ -74,6 +74,7 @@ public class AlertCreationAction implements HookedEvent {
 		String providerId = null;
 		String caseID = event.externalId();
 		DateTime startOfEarliestWindow = new DateTime();
+		String doo="";
 	
 		String DateString = "";
 		if (household.equals(beneficiaryType)) {
@@ -101,6 +102,12 @@ public class AlertCreationAction implements HookedEvent {
 				instanceId= mother.INSTANCEID();
 				providerId = mother.PROVIDERID();
 				startOfEarliestWindow =parseDate(mother.TODAY());
+				List<Map<String, String>> bnfs =mother.bnfVisitDetails();
+				if(!bnfs.isEmpty()){
+		    		int psrfsCount = bnfs.size()-1;
+		    		Map<String, String> bnf = bnfs.get(psrfsCount);
+		    		doo = bnf.get("FWBNFDTOO");
+				}
 			}
 		}
 		else if(child.equals(beneficiaryType))
@@ -125,7 +132,7 @@ public class AlertCreationAction implements HookedEvent {
 			logger.info(" MileStoneName:"+event.milestoneName().replace(ELCOSchedulesConstantsImediate.IMD_ELCO_SCHEDULE_PSRF, ELCOSchedulesConstants.ELCO_SCHEDULE_PSRF));
 			scheduler.alertFor(event.windowName(), beneficiaryType, caseID, instanceId, providerId, parseScheduleName(event.scheduleName()), parseScheduleName(event.milestoneName()),
 					startOfEarliestWindow, event.startOfDueWindow(),
-					event.startOfLateWindow(), event.startOfMaxWindow());
+					event.startOfLateWindow(), event.startOfMaxWindow(),doo);
 		
 		
 		

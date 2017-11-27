@@ -248,30 +248,7 @@ public class ELCOService {
 			houseHold.withClientVersion(DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)));
 			allHouseHolds.update(houseHold);
 
-			/*logger.info("Expected value leading non zero and found FWCENSTAT : " + submission.getField("FWCENSTAT"));
-			if (submission.getField("FWCENSTAT").equalsIgnoreCase("7")) {
-				
-				if(submission.getField("user_type").equalsIgnoreCase(FD)){
-					elcoScheduleService.unEnrollFromScheduleCensus(submission.entityId(), submission.anmId(), "");
-					try {
-						List<Action> beforeNewActions = allActions.findAlertByANMIdEntityIdScheduleName(submission.anmId(), submission.entityId(),
-								HH_SCHEDULE_CENSUS);
-						if (beforeNewActions.size() > 0) {
-							scheduleLogService.closeSchedule(submission.entityId(), submission.instanceId(), beforeNewActions.get(0).timestamp(),
-									HH_SCHEDULE_CENSUS);
-							logger.info("Create a Schedule Log with id : " + submission.entityId());
-						}
-	
-					} catch (Exception e) {
-						logger.info("From registerELCO: " + e.getMessage());
-					}
-				
-				}
-
-			} else {
-				hhSchedulesService.enrollIntoMilestoneOfCensus(submission.entityId(), submission.getField(FWCENDATE), submission.anmId(),
-						submission.instanceId());
-			}*/
+			
 		}
 	}
 
