@@ -19,10 +19,10 @@ import org.opensrp.common.AllConstants.ELCOSchedulesConstantsImediate;
 import org.opensrp.domain.Multimedia;
 import org.opensrp.dto.BeneficiaryType;
 import org.opensrp.register.mcare.OpenSRPScheduleConstants.ELCOSchedulesConstants;
+import org.opensrp.register.mcare.domain.Child;
 import org.opensrp.register.mcare.domain.Elco;
 import org.opensrp.register.mcare.domain.HouseHold;
 import org.opensrp.register.mcare.domain.Mother;
-import org.opensrp.register.mcare.domain.Child;
 import org.opensrp.register.mcare.repository.AllChilds;
 import org.opensrp.register.mcare.repository.AllElcos;
 import org.opensrp.register.mcare.repository.AllHouseHolds;
@@ -38,22 +38,31 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
+
 @Component
 @Qualifier("AlertCreationAction")
 public class AlertCreationAction implements HookedEvent {
+	
 	private HealthSchedulerService scheduler;
+	
 	private AllHouseHolds allHouseHolds;
+	
 	private AllElcos allElcos;
+	
 	private AllMothers allMothers;
+	
 	private AllChilds allChilds;
+	
 	private ScheduleLogService scheduleLogService;
+	
 	private MultimediaRegisterService multimediaRegisterService;
+	
 	private static Logger logger = LoggerFactory.getLogger(AlertCreationAction.class.toString());
+	
 	@Autowired
-	public AlertCreationAction(HealthSchedulerService scheduler,
-			AllHouseHolds allHouseHolds, AllElcos allElcos,
-			AllMothers allMothers, AllChilds allChilds,
-			ScheduleLogService scheduleLogService, MultimediaRegisterService multimediaRegisterService) {
+	public AlertCreationAction(HealthSchedulerService scheduler, AllHouseHolds allHouseHolds, AllElcos allElcos,
+	    AllMothers allMothers, AllChilds allChilds, ScheduleLogService scheduleLogService,
+	    MultimediaRegisterService multimediaRegisterService) {
 		this.scheduler = scheduler;
 		this.allHouseHolds = allHouseHolds;
 		this.allElcos = allElcos;
@@ -62,25 +71,24 @@ public class AlertCreationAction implements HookedEvent {
 		this.scheduleLogService = scheduleLogService;
 		this.multimediaRegisterService = multimediaRegisterService;
 	}
-
+	
 	@Override
 	public void invoke(MilestoneEvent event, Map<String, String> extraData) {
-		BeneficiaryType beneficiaryType = BeneficiaryType.from(extraData
-				.get("beneficiaryType"));
-
+		BeneficiaryType beneficiaryType = BeneficiaryType.from(extraData.get("beneficiaryType"));
+		
 		// TODO: Get rid of this horrible if-else after Motech-Platform fixes
 		// the bug related to metadata in motech-schedule-tracking.
 		String instanceId = null;
 		String providerId = null;
 		String caseID = event.externalId();
 		DateTime startOfEarliestWindow = new DateTime();
-		String doo="";
-	
+		String doo = "";
+		
 		String DateString = "";
 		if (household.equals(beneficiaryType)) {
 			HouseHold houseHold = allHouseHolds.findByCaseId(caseID);
 			if (houseHold != null) {
-				instanceId= houseHold.INSTANCEID();
+				instanceId = houseHold.INSTANCEID();
 				providerId = houseHold.PROVIDERID();
 				startOfEarliestWindow = parseDate(houseHold.TODAY());
 			}
@@ -89,92 +97,89 @@ public class AlertCreationAction implements HookedEvent {
 			Elco elco = allElcos.findByCaseId(caseID);
 			
 			if (elco != null) {
-				instanceId= elco.INSTANCEID();
+				instanceId = elco.INSTANCEID();
 				providerId = elco.PROVIDERID();
 				startOfEarliestWindow = parseDate(elco.TODAY());
 			}
-		}
-		else if(mother.equals(beneficiaryType))
-		{
+		} else if (mother.equals(beneficiaryType)) {
 			Mother mother = allMothers.findByCaseId(caseID);
 			
 			if (mother != null) {
-				instanceId= mother.INSTANCEID();
+				instanceId = mother.INSTANCEID();
 				providerId = mother.PROVIDERID();
-				startOfEarliestWindow =parseDate(mother.TODAY());
-				List<Map<String, String>> bnfs =mother.bnfVisitDetails();
-				if(!bnfs.isEmpty()){
-		    		int psrfsCount = bnfs.size()-1;
-		    		Map<String, String> bnf = bnfs.get(psrfsCount);
-		    		doo = bnf.get("FWBNFDTOO");
+				startOfEarliestWindow = parseDate(mother.TODAY());
+				List<Map<String, String>> bnfs = mother.bnfVisitDetails();
+				if (!bnfs.isEmpty()) {
+					int psrfsCount = bnfs.size() - 1;
+					Map<String, String> bnf = bnfs.get(psrfsCount);
+					doo = bnf.get("FWBNFDTOO");
 				}
 			}
-		}
-		else if(child.equals(beneficiaryType))
-		{
+		} else if (child.equals(beneficiaryType)) {
 			Child child = allChilds.findByCaseId(caseID);
-
+			doo = child.details().get("FWBNFDOB");
 			if (child != null) {
-				instanceId= child.INSTANCEID();
+				instanceId = child.INSTANCEID();
 				providerId = child.PROVIDERID();
 				startOfEarliestWindow = parseDate(child.TODAY());
 			}
+		} else {
+			throw new IllegalArgumentException("Beneficiary Type : " + beneficiaryType + " is of unknown type");
 		}
-		else {
-			throw new IllegalArgumentException("Beneficiary Type : "
-					+ beneficiaryType + " is of unknown type");
-		}
-
 		
-			logger.info("caseID: "+caseID);		
-			logger.info(" event.windowName():"+startOfEarliestWindow);
-			logger.info(" Name:"+event.scheduleName().replace(ELCOSchedulesConstantsImediate.IMD_ELCO_SCHEDULE_PSRF, ELCOSchedulesConstants.ELCO_SCHEDULE_PSRF));
-			logger.info(" MileStoneName:"+event.milestoneName().replace(ELCOSchedulesConstantsImediate.IMD_ELCO_SCHEDULE_PSRF, ELCOSchedulesConstants.ELCO_SCHEDULE_PSRF));
-			scheduler.alertFor(event.windowName(), beneficiaryType, caseID, instanceId, providerId, parseScheduleName(event.scheduleName()), parseScheduleName(event.milestoneName()),
-					startOfEarliestWindow, event.startOfDueWindow(),
-					event.startOfLateWindow(), event.startOfMaxWindow(),doo);
-		
-		
+		logger.info("caseID: " + caseID);
+		logger.info(" event.windowName():" + startOfEarliestWindow);
+		logger.info(" Name:"
+		        + event.scheduleName().replace(ELCOSchedulesConstantsImediate.IMD_ELCO_SCHEDULE_PSRF,
+		            ELCOSchedulesConstants.ELCO_SCHEDULE_PSRF));
+		logger.info(" MileStoneName:"
+		        + event.milestoneName().replace(ELCOSchedulesConstantsImediate.IMD_ELCO_SCHEDULE_PSRF,
+		            ELCOSchedulesConstants.ELCO_SCHEDULE_PSRF));
+		scheduler.alertFor(event.windowName(), beneficiaryType, caseID, instanceId, providerId,
+		    parseScheduleName(event.scheduleName()), parseScheduleName(event.milestoneName()), startOfEarliestWindow,
+		    event.startOfDueWindow(), event.startOfLateWindow(), event.startOfMaxWindow(), doo);
 		
 	}
 	
-	public String parseScheduleName(String scheduleName){
-    	if(scheduleName.equalsIgnoreCase(ELCOSchedulesConstantsImediate.IMD_ELCO_SCHEDULE_PSRF)){
-    		return scheduleName.replace(ELCOSchedulesConstantsImediate.IMD_ELCO_SCHEDULE_PSRF, ELCOSchedulesConstantsImediate.ELCO_SCHEDULE_PSRF);
-    	}else{
-    		return scheduleName.replace(SCHEDULE_BNF_IME, BnfFollowUpVisitFields.SCHEDULE_BNF);
-    	}
-    	
-    }
-
-	@Override
-	public void scheduleSaveToOpenMRSMilestone(Enrollment el,List<Action> alertActions ) {	
-		
-		
-		try {
-			scheduleLogService.saveActionDataToOpenMrsMilestoneTrack(el, alertActions);
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			logger.info("From scheduleSaveToOpenMRSMilestone :"+e.getMessage());
+	public String parseScheduleName(String scheduleName) {
+		if (scheduleName.equalsIgnoreCase(ELCOSchedulesConstantsImediate.IMD_ELCO_SCHEDULE_PSRF)) {
+			return scheduleName.replace(ELCOSchedulesConstantsImediate.IMD_ELCO_SCHEDULE_PSRF,
+			    ELCOSchedulesConstantsImediate.ELCO_SCHEDULE_PSRF);
+		} else {
+			return scheduleName.replace(SCHEDULE_BNF_IME, BnfFollowUpVisitFields.SCHEDULE_BNF);
 		}
 		
 	}
-
+	
+	@Override
+	public void scheduleSaveToOpenMRSMilestone(Enrollment el, List<Action> alertActions) {
+		
+		try {
+			scheduleLogService.saveActionDataToOpenMrsMilestoneTrack(el, alertActions);
+		}
+		catch (ParseException e) {
+			// TODO Auto-generated catch block
+			logger.info("From scheduleSaveToOpenMRSMilestone :" + e.getMessage());
+		}
+		
+	}
+	
 	@Override
 	public void saveMultimediaToRegistry(Multimedia multimediaFile) {
 		multimediaRegisterService.saveMultimediaFileToRegistry(multimediaFile);
 	}
 	
-	private DateTime parseDate(String DateAsString){
+	private DateTime parseDate(String DateAsString) {
 		DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd");
 		DateTime startOfEarliestWindow = new DateTime();
 		try {
-			startOfEarliestWindow = DateTime.parse(DateAsString, formatter);			
-		} catch (Exception e) {
+			startOfEarliestWindow = DateTime.parse(DateAsString, formatter);
+		}
+		catch (Exception e) {
 			// TODO: handle exception
 		}
-		return  startOfEarliestWindow;
+		return startOfEarliestWindow;
 		
 	}
-
+	
 }

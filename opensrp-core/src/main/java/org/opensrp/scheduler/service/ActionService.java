@@ -180,7 +180,7 @@ public class ActionService {
 					        && isFullfillment(scheduleNameVisitCodeWithoutNumber + "_1", caseID, scheduleName) == true) {
 						
 						scheduleService.fulfillMilestone(caseID, scheduleName, new LocalDate());
-						System.err.println("32222222222");
+						
 					} else if ((dateDifference == -2 || dateDifference == -3)
 					        && visitCode.equalsIgnoreCase(scheduleNameVisitCodeWithoutNumber + "_2")) {
 						updateDataAction(scheduleNameVisitCodeWithoutNumber + "_2", AlertStatus.urgent, startDate,
@@ -189,8 +189,7 @@ public class ActionService {
 					
 					else if (dateDifference == -4
 					        && isFullfillment(scheduleNameVisitCodeWithoutNumber + "_2", caseID, scheduleName) == false) {
-						//scheduleService.fulfillMilestone(caseID, scheduleName, new LocalDate());
-						System.err.println("4444444444444");
+						
 					} else if (dateDifference == -5
 					        && isFullfillment(scheduleNameVisitCodeWithoutNumber + "_2", caseID, scheduleName) == false) {
 						updateDataAction(scheduleNameVisitCodeWithoutNumber + "_3", AlertStatus.upcoming, startDate,
