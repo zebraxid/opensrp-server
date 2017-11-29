@@ -478,9 +478,12 @@ public class MembersScheduleService {
      }
 	 
 	 public void unEnrollFromAllSchedules(String entityId) {
-		 
+		 try{
 		logger.info(format("Un-enrolling with Entity id:{0} from all schedules", entityId));
 	    scheduler.unEnrollFromAllSchedules(entityId);
+		 }catch(Exception e){
+			 System.err.println(""+e.getMessage());
+		 }
 	        
 	 }
 }

@@ -119,7 +119,7 @@ public class MembersPaybackService {
         members.setUpdatedTimeStamp(DateUtil.getTimestampToday());
         members.injecTables().add(Injectable);
         allMembers.update(members);
-
+/*
         if (submission.getField(Visit_Status) != null && !submission.getField(Visit_Status).equalsIgnoreCase(""))
             if (submission.getField(Visit_Status).equalsIgnoreCase("2") || submission.getField(Visit_Status).equalsIgnoreCase("6")) {
                 membersScheduleService.enrollIntoSchedule(submission.entityId(), submission.getField(injectable_Today), Injectables);
@@ -129,7 +129,7 @@ public class MembersPaybackService {
             if (submission.getField(Visit_Status).equalsIgnoreCase("8")) {
                 membersScheduleService.unEnrollFromSchedule(submission.entityId(), submission.anmId(), Injectables);
             }
-
+*/
         if (submission.getField(Visit_Status) != null && !submission.getField(Visit_Status).equalsIgnoreCase(""))
             if (submission.getField(Visit_Status).equalsIgnoreCase("10")) {
                 membersScheduleService.unEnrollFromAllSchedules(submission.entityId());
@@ -184,8 +184,8 @@ public class MembersPaybackService {
         members.adolescent().add(Adolescent);
         allMembers.update(members);
 
-        if (submission.getField(Visit_Status) != null && (submission.getField(Visit_Status).equalsIgnoreCase("8"))) {
-            membersScheduleService.unEnrollFromScheduleOfAdolescent(submission.entityId(), submission.anmId(), "");
+        /*if (submission.getField(Visit_Status) != null && (submission.getField(Visit_Status).equalsIgnoreCase("8"))) {
+           membersScheduleService.unEnrollFromScheduleOfAdolescent(submission.entityId(), submission.anmId(), "");
             try {
                 List<Action> beforeNewActions = allActions.findAlertByANMIdEntityIdScheduleName(submission.anmId(), submission.entityId(),
                         Adolescent_Health);
@@ -197,13 +197,13 @@ public class MembersPaybackService {
             } catch (Exception e) {
                 logger.info("From Adolescent_Health: " + e.getMessage());
             }
-        }
-        System.out.println("submission.getField(Visit_Status)::  " + submission.getField(Visit_Status));
+        }*/
+        /*System.out.println("submission.getField(Visit_Status)::  " + submission.getField(Visit_Status));
         if (submission.getField(Visit_Status) != null &&
                 (submission.getField(Visit_Status).equalsIgnoreCase("2") || submission.getField(Visit_Status).equalsIgnoreCase("3"))) {
             membersScheduleService.enrollIntoMilestoneOfAdolescent(submission.entityId(), submission.getField(adolescent_today), submission.anmId(),
                     submission.instanceId());
-        }
+        }*/
 
         if (submission.getField(Visit_Status) != null && !submission.getField(Visit_Status).equalsIgnoreCase(""))
             if (submission.getField(Visit_Status).equalsIgnoreCase("10")) {
@@ -325,7 +325,7 @@ public class MembersPaybackService {
         members.nutrition().add(Nutritions);
         allMembers.update(members);
 
-        membersScheduleService.unEnrollFromSchedule(submission.entityId(), submission.anmId(), Nutrition);
+        //membersScheduleService.unEnrollFromSchedule(submission.entityId(), submission.anmId(), Nutrition);
 
         if (submission.getField(Visit_Status) != null && !submission.getField(Visit_Status).equalsIgnoreCase(""))
             if (submission.getField(Visit_Status).equalsIgnoreCase("10") || submission.getField(Visit_Status).equalsIgnoreCase("11")) {
