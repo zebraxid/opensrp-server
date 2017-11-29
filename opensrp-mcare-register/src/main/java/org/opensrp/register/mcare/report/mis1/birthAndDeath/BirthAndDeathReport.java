@@ -33,7 +33,7 @@ public class BirthAndDeathReport extends Report {
         useReflectionToDynamicallyInitAllMemberOf(this.getClass(), startDateTime, endDateTime);
     }
 
-    public BirthCountCalculator getBirthCountCalculator() {
+   public BirthCountCalculator getBirthCountCalculator() {
 
         return birthCountCalculator;
     }

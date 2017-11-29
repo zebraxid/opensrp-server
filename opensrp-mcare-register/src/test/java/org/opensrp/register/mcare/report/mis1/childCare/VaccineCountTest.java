@@ -11,7 +11,7 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 
 public class VaccineCountTest {
-    public String unionName = "union";
+   /* public String unionName = "union";
     private VaccineCountTestData vaccineCountTestData;
     private long startDateTime;
     private long endDateTime;
@@ -32,5 +32,5 @@ public class VaccineCountTest {
         MIS1Report mis1Report = new MIS1Report(unionName, members, startDateTime, endDateTime);
         long countOfBcg = mis1Report.getChildCareReport().getVaccinationReportCalculator().getBcgCount();
         assertEquals(vaccineCountTestData.validCount, countOfBcg);
-    }
+    }*/
 }

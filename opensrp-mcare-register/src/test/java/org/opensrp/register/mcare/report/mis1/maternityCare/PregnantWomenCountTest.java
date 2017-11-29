@@ -13,7 +13,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import static org.junit.Assert.assertEquals;
 
 public class PregnantWomenCountTest {
-    public String unionName = "union";
+   /* public String unionName = "union";
     private PregnantWomenCountTestData pregnantWomenCountTestData;
     private long startDateTime;
     private long endDateTime;
@@ -36,6 +36,6 @@ public class PregnantWomenCountTest {
         long newPregnantWomenCount = mis1Report.getMaternityCareReport().getPregnantWomenCountCalculator().getNewPregnantCount();
 
         assertEquals(pregnantWomenCountTestData.validCount, newPregnantWomenCount);
-    }
+    }*/
 }
 

@@ -11,7 +11,7 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 
 public class NewBornCareReportTest {
-    public String unionName = "union";
+   /* public String unionName = "union";
     private NewBornCareTestData newBornCareReportTest;
     private long startDateTime;
     private long endDateTime;
@@ -40,5 +40,5 @@ public class NewBornCareReportTest {
         MIS1Report mis1Report = new MIS1Report(unionName, members, startDateTime, endDateTime);
         long usedChlorhexidinCount = mis1Report.getChildCareReport().getNewBornCareReportCalculator().getUsedChlorhexidinCount();
         assertEquals(newBornCareReportTest.validCount, usedChlorhexidinCount);
-    }
+    }*/
 }

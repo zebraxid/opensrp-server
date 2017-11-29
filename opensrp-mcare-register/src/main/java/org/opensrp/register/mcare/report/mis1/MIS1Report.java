@@ -44,22 +44,20 @@ public class MIS1Report      {
     private transient List<Members> membersList;
 
     @DHIS2(dataSetId="Z5WPr2zconV")
-    private FamilyPlanningReport familyPlanningReport;
-
-    private MaternityCareReport maternityCareReport;
-
-    private BirthAndDeathReport birthAndDeathReport;
-    private ChildCareReport childCareReport;
-    private NutritionReport nutritionReport;
+      private FamilyPlanningReport familyPlanningReport;
+      private MaternityCareReport maternityCareReport;
+      private BirthAndDeathReport birthAndDeathReport;
+      private ChildCareReport childCareReport;
+      private NutritionReport nutritionReport;
 
 
     public MIS1Report(String healthWorker, List<Members> membersList, long startDateTime, long endDateTime) {
         this.healthWorker = healthWorker;
         this.membersList = membersList;
         this.familyPlanningReport = new FamilyPlanningReport(startDateTime, endDateTime);
-        this.maternityCareReport = new MaternityCareReport(startDateTime, endDateTime);
-        this.birthAndDeathReport = new BirthAndDeathReport(startDateTime, endDateTime);
-        this.childCareReport = new ChildCareReport(startDateTime, endDateTime);
+       this.maternityCareReport = new MaternityCareReport(startDateTime, endDateTime);
+         this.childCareReport = new ChildCareReport(startDateTime, endDateTime);
+       this.birthAndDeathReport = new BirthAndDeathReport(startDateTime, endDateTime);
         this.nutritionReport = new NutritionReport(startDateTime, endDateTime);
         this.calculateReport();
     }
@@ -83,7 +81,7 @@ public class MIS1Report      {
         return maternityCareReport;
     }
 
-    public BirthAndDeathReport getBirthAndDeathReport() {
+   public BirthAndDeathReport getBirthAndDeathReport() {
 
         return birthAndDeathReport;
     }
@@ -102,13 +100,13 @@ public class MIS1Report      {
             familyPlanningReport.calculate(member);
             maternityCareReport.calculate(member);
             birthAndDeathReport.calculate(member);
+            //nutritionReport.calculate(member);
             childCareReport.calculate(member);
-            nutritionReport.calculate(member);
         }
     }
 
 
-    public NutritionReport getNutritionReport() {
+   public NutritionReport getNutritionReport() {
         return nutritionReport;
     }
 }

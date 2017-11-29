@@ -13,7 +13,7 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 
 public class TTDoseCalculatorTest {
-    public String unionName = "union";
+   /* public String unionName = "union";
     private TTDoseCalculationTestData ttDoseCalculationTestData;
     private long startDateTime;
     private long endDateTime;
@@ -42,5 +42,5 @@ public class TTDoseCalculatorTest {
         long ttDoseTwoCount = mis1Report.getMaternityCareReport().getTTDoseReportCalculator().getDoseTwoCount();
         assertEquals(ttDoseCalculationTestData.validCount, ttDoseTwoCount);
     }
-
+*/
 }

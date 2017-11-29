@@ -32,14 +32,17 @@ public class PNCReportCalculator extends ReportCalculator{
     }
 
     public PNCTwoVisitCalculator getPncTwoVisitCalculator() {
+
         return pncTwoVisitCalculator;
     }
 
     public PNCThreeVisitCalculator getPncThreeVisitCalculator() {
+
         return pncThreeVisitCalculator;
     }
 
     public PNCFourVisitCalculator getPncFourVisitCalculator() {
+
         return pncFourVisitCalculator;
     }
 

@@ -42,13 +42,13 @@ public class BirthCountCalculator extends ReportCalculator {
         Date startDate = null;
         Date endDate = null;
         long value = 0;
-        if( member.getMember_Birth_Date() != null ){
-            String deliveryDateStr =  member.getMember_Birth_Date();
+        if( member.getCalc_Dob_Confirm() != null ){
+            String deliveryDateStr =  member.getCalc_Dob_Confirm();
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
             try {
                 dooDate = simpleDateFormat.parse(deliveryDateStr);
-                startDate = new Date( startDateTime * 1000);
-                endDate = new Date( endDateTime * 1000);
+                startDate = new Date(startDateTime);
+                endDate = new Date(endDateTime);
             } catch (ParseException e) {
                 e.printStackTrace();
             }

@@ -15,7 +15,7 @@ import static org.junit.Assert.assertEquals;
 
 @Ignore
 public class AdolescentHealthVisitTest {
-    public String unionName = "union";
+   /* public String unionName = "union";
     private AdolescentHealthVisitTestData adolescentHealthVisitTestData;
     private long startDateTime;
     private long endDateTime;
@@ -44,5 +44,5 @@ public class AdolescentHealthVisitTest {
         MIS1Report mis1Report = new MIS1Report(unionName, members, startDateTime, endDateTime);
         long countOfCounsellingBadEffectOnChildMarriageAndTeenPregnency = mis1Report.getMaternityCareReport().getAdolescentHealthReportCalculator().getCountOfCounsellingBadEffectOnChildMarriageAndTeenPregnancy();
         assertEquals(adolescentHealthVisitTestData.validCount, countOfCounsellingBadEffectOnChildMarriageAndTeenPregnency);
-    }
+    }*/
 }
