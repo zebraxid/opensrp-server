@@ -714,10 +714,10 @@ public class MembersService {
 
             if (membersFields.containsKey(Mem_F_Name)) {
                 allMembers.update(members);
-                logger.info("members updated");
+               
             } else {
                 allMembers.remove(members);
-                logger.info("members removed");
+               
             }
 
             //womanVaccineSchedule.Vaccine(submission, members, membersFields, child_bcg, submission.getField(REFERENCE_DATE), "Child");

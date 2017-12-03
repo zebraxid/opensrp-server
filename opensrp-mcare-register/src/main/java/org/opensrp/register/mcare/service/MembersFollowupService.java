@@ -124,7 +124,7 @@ public class MembersFollowupService {
                 .put(Breasmilk_Fed, submission.getField(Breasmilk_Fed))
                 .put(Not_Bathed, submission.getField(Not_Bathed))
                 .put(Comment, submission.getField(Comment))
-                .put(Visit_No, submission.getField(Visit_No))
+                .put(Visit_No, parseVisitNo(submission.getField(Visit_No)))
                 .put(HR, submission.getField(HR))
                 .put(pnc_current_formStatus, submission.getField(pnc1_current_formStatus))
                 .put(Received_Time, format.format(day).toString())
@@ -216,7 +216,7 @@ public class MembersFollowupService {
                 .put(Breasmilk_Fed, submission.getField(Breasmilk_Fed))
                 .put(Not_Bathed, submission.getField(Not_Bathed))
                 .put(Comment, submission.getField(Comment))
-                .put(Visit_No, submission.getField(Visit_No))
+                .put(Visit_No, parseVisitNo(submission.getField(Visit_No)))
                 .put(HR, submission.getField(HR))
                 .put(pnc_current_formStatus, submission.getField(PNC2_current_formStatus))
                 .put(Received_Time, format.format(day).toString())
@@ -307,7 +307,7 @@ public class MembersFollowupService {
                 .put(Breasmilk_Fed, submission.getField(Breasmilk_Fed))
                 .put(Not_Bathed, submission.getField(Not_Bathed))
                 .put(Comment, submission.getField(Comment))
-                .put(Visit_No, submission.getField(Visit_No))
+                .put(Visit_No, parseVisitNo(submission.getField(Visit_No)))
                 .put(HR, submission.getField(HR))
                 .put(pnc_current_formStatus, submission.getField(PNC3_current_formStatus))
                 .put(Received_Time, format.format(day).toString())
@@ -398,7 +398,7 @@ public class MembersFollowupService {
                 .put(Breasmilk_Fed, submission.getField(Breasmilk_Fed))
                 .put(Not_Bathed, submission.getField(Not_Bathed))
                 .put(Comment, submission.getField(Comment))
-                .put(Visit_No, submission.getField(Visit_No))
+                .put(Visit_No, parseVisitNo(submission.getField(Visit_No)))
                 .put(HR, submission.getField(HR))
                 .put(pnc_current_formStatus, submission.getField(PNC4_current_formStatus))
                 .put(Received_Time, format.format(day).toString())
@@ -806,4 +806,7 @@ public class MembersFollowupService {
         }
     }
 
+    private String parseVisitNo(String s){
+    	return s.replace("\"", "");
+    }
 }
