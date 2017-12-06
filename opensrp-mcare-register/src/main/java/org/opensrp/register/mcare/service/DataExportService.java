@@ -139,7 +139,7 @@ public class DataExportService {
 				+ reportName);
 		FileWriter writer;
 		try {
-			writer = new FileWriter(multimediaDirPath + "/export/" + reportName);
+			writer = new FileWriter("" + "/export/" + reportName);
 			writer.append("Beneficiary Name");
 			writer.append(',');// 1
 			writer.append("Identifier");
