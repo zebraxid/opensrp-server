@@ -8,6 +8,7 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.json.JSONException;
 import org.opensrp.domain.Client;
 import org.opensrp.domain.Multimedia;
 import org.opensrp.dto.form.MultimediaDTO;
@@ -52,8 +53,11 @@ public class MultimediaService {
 	@Value("#{opensrp['aws_bucket']}")
 	String awsBucket;
 
-	@Value("#{opensrp['aws_key_folder']}")
-	String awsKeyFolder;
+	@Value("#{opensrp['media_key_folder']}")
+	String mediaKeyFolder;
+
+	@Value("#{opensrp['multimedia_directory_location']}")
+	String multimediaDirectoryLocation;
 
 	@Autowired
 	public MultimediaService(MultimediaRepository multimediaRepository, ClientService clientService) {
@@ -62,75 +66,53 @@ public class MultimediaService {
 	}
 
 	public String saveMultimediaFile(MultimediaDTO multimediaDTO, MultipartFile file) {
+		String fileExtension = makeFileExtension(multimediaDTO);
+
+		if (multimediaDirectoryLocation.equalsIgnoreCase("s3")) {
+			try {
+				File imageToSave = new File(multimediaDTO.getCaseId() + fileExtension);
+				file.transferTo(imageToSave);
+				uploadImageToS3(imageToSave, awsAccessKeyId, awsSecretAccessKey, awsRegion, awsBucket, mediaKeyFolder);
+				updateClientWithImage(multimediaDTO, fileExtension);
+				return "success";
+			}
+			catch (IOException e) {
+				e.printStackTrace();
+				return "fail";
+			}
+		}
 
 		if (uploadFile(multimediaDTO, file)) {
+
 			try {
 				logger.info("Image path : " + multimediaDirPath);
-
 				Multimedia multimediaFile = new Multimedia().withCaseId(multimediaDTO.getCaseId())
 						.withProviderId(multimediaDTO.getProviderId()).withContentType(multimediaDTO.getContentType())
 						.withFilePath(multimediaDTO.getFilePath()).withFileCategory(multimediaDTO.getFileCategory());
-
 				multimediaRepository.add(multimediaFile);
-				Client client = clientService.getByBaseEntityId(multimediaDTO.getCaseId());
-				if (client != null) {
-					if (client.getAttribute("Patient Image") != null) {
-						client.removeAttribute("Patient Image");
-					}
-					client.addAttribute("Patient Image", multimediaDTO.getCaseId() + ".jpg");
-					client.setServerVersion(null);
-					clientService.updateClient(client);
-				}
+				updateClientWithImage(multimediaDTO, fileExtension);
 				return "success";
 			}
 			catch (Exception e) {
 				e.getMessage();
+				return "fail";
 			}
 		}
-
 		return "fail";
 	}
 
 	public boolean uploadFile(MultimediaDTO multimediaDTO, MultipartFile multimediaFile) {
 
-		// String baseMultimediaDirPath = System.getProperty("user.home");
-
 		if (!multimediaFile.isEmpty()) {
 			try {
 
 				multimediaDirPath = baseMultimediaDirPath + File.separator;
-				String fileExt = ".jpg";
-				switch (multimediaDTO.getContentType()) {
-
-					case "application/octet-stream":
-						multimediaDirPath += VIDEOS_DIR;
-						fileExt = ".mp4";
-						break;
-
-					case "image/jpeg":
-						multimediaDirPath += IMAGES_DIR;
-						fileExt = ".jpg";
-						break;
-
-					case "image/gif":
-						multimediaDirPath += IMAGES_DIR;
-						fileExt = ".gif";
-						break;
-
-					case "image/png":
-						multimediaDirPath += IMAGES_DIR;
-						fileExt = ".png";
-						break;
-
-				}
 				new File(multimediaDirPath).mkdir();
-				String fileName = multimediaDirPath + File.separator + multimediaDTO.getCaseId() + fileExt;
+				String fileName =
+						multimediaDirPath + File.separator + multimediaDTO.getCaseId() + makeFileExtension(multimediaDTO);
 				multimediaDTO.withFilePath(fileName);
 				File multimediaDir = new File(fileName);
-
 				multimediaFile.transferTo(multimediaDir);
-
-				uploadImageTos3(multimediaDir, awsAccessKeyId, awsSecretAccessKey, awsRegion,awsBucket, awsKeyFolder);
 
 				return true;
 
@@ -152,8 +134,8 @@ public class MultimediaService {
 		return multimediaRepository.findByCaseId(entityId);
 	}
 
-	public boolean uploadImageTos3(File imageFile, String awsAccessKeyId, String awsSecretAccessKey, String awsRegion,
-	                               String awsBucket, String awsKeyFolder) {
+	public String uploadImageToS3(File imageFile, String awsAccessKeyId, String awsSecretAccessKey, String awsRegion,
+	                              String awsBucket, String awsKeyFolder) {
 
 		AmazonS3 s3Client = AmazonS3ClientBuilder.standard().withCredentials(
 				new AWSStaticCredentialsProvider(new BasicAWSCredentials(awsAccessKeyId, awsSecretAccessKey)))
@@ -167,19 +149,54 @@ public class MultimediaService {
 			metadata.setContentMD5(new String(Base64.encodeBase64(md5)));
 			PutObjectRequest request = new PutObjectRequest(awsBucket, awsKeyFolder + imageFile.getName(), inputStream,
 					metadata);
-			//			request.setCannedAcl(CannedAccessControlList.PublicRead);
-			//			PutObjectResult result = s3Client.putObject(request);
 			s3Client.putObject(request);
-			return true;
+			return "success";
 		}
 		catch (FileNotFoundException e) {
 			e.printStackTrace();
-			return false;
+			return "fail";
 		}
 		catch (IOException e) {
 			e.printStackTrace();
-			return false;
+			return "fail";
 		}
+	}
 
+	public String makeFileExtension(MultimediaDTO multimediaDTO) {
+		switch (multimediaDTO.getContentType()) {
+			case "application/octet-stream":
+				multimediaDirPath += VIDEOS_DIR;
+				return ".mp4";
+
+			case "image/jpeg":
+				multimediaDirPath += IMAGES_DIR;
+				return ".jpg";
+
+			case "image/gif":
+				multimediaDirPath += IMAGES_DIR;
+				return ".gif";
+
+			case "image/png":
+				multimediaDirPath += IMAGES_DIR;
+				return ".png";
+		}
+		return ".jpg";
+	}
+
+	public void updateClientWithImage(MultimediaDTO multimediaDTO, String fileExtension) {
+		Client client = clientService.getByBaseEntityId(multimediaDTO.getCaseId());
+		if (client != null) {
+			try {
+				if (client.getAttribute("Patient Image") != null) {
+					client.removeAttribute("Patient Image");
+				}
+				client.addAttribute("Patient Image", multimediaDTO.getCaseId() + fileExtension);
+				client.setServerVersion(null);
+				clientService.updateClient(client);
+			}
+			catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 }
