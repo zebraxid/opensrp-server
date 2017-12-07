@@ -140,7 +140,7 @@ public class ActionService {
 				
 				if (ANC.equalsIgnoreCase(scheduleName)) {
 					updateDataAction(visitCode, alertStatus, startDate, expiryDate, existingAlerts);
-					if ((numOfDays <= 2) && alertStatus.name().equalsIgnoreCase("urgent")) {
+					if ("expired".equalsIgnoreCase(alertStatus.name())) {
 						scheduleService.fulfillMilestone(caseID, scheduleName, new LocalDate());
 						
 					} else {

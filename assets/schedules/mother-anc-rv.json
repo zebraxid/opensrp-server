@@ -5,7 +5,7 @@
         {
             "name": "ancrv_1",
             "scheduleWindows": {
-                "earliest": ["51 Days"],
+                
                 "due": ["56 Days"],
                 "late": ["161 Days"],
                 "max": ["162 Days"]
@@ -35,7 +35,7 @@
         {
             "name": "ancrv_2",
             "scheduleWindows": {
-            	"earliest": ["163 Days"],
+            	
                 "due": ["168 Days"],
                 "late": ["217 Days"],
                 "max": ["218 Days"]
@@ -43,9 +43,9 @@
             "alerts": [           
                 {
                     "window": "due",
-                    "offset": ["163 Days"],
+                    "offset": ["162 Days"],
                     "interval": ["1 Day"],
-                    "count": "5"
+                    "count": "6"
                 },
                 {
                     "window": "late",
@@ -64,7 +64,7 @@
         {
             "name": "ancrv_3",
             "scheduleWindows": {
-            	"earliest": ["219 Days"],
+            	
                 "due": ["224 Days"],
                 "late": ["245 Days"],
                 "max": ["246 Days"]
@@ -72,9 +72,9 @@
             "alerts": [            	
                 {
                     "window": "due",
-                    "offset": ["219 Days"],
+                    "offset": ["218 Days"],
                     "interval": ["1 Day"],
-                    "count": "5"
+                    "count": "6"
                 },
                 {
                     "window": "late",
@@ -93,7 +93,7 @@
         {
             "name": "ancrv_4",
             "scheduleWindows": {
-            	"earliest": ["247 Days"],
+            	
                 "due": ["252 Days"],
                 "late": ["307 Days"],
                 "max": ["308 Days"]
@@ -101,9 +101,9 @@
             "alerts": [
                 {
                     "window": "due",
-                    "offset": ["247 Days"],
+                    "offset": ["246 Days"],
                     "interval": ["1 Day"],
-                    "count": "5"
+                    "count": "6"
                 },
                 {
                     "window": "late",
