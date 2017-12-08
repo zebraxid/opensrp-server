@@ -25,7 +25,7 @@
 			<resource>
 				<directory>../assets/schedules</directory>
 				<targetPath>schedules</targetPath>
-			</resource> 
+			</resource>
 			<resource>
 				<directory>../build</directory>
 				<filtering>true</filtering>
@@ -50,7 +50,7 @@
 		<dependency>
 			<groupId>com.amazonaws</groupId>
 			<artifactId>aws-java-sdk</artifactId>
-			<version>1.11.238</version>
+			<version>1.11.244</version>
 		</dependency>
 		<dependency>
 			<artifactId>motech-platform-server-api</artifactId>
@@ -213,7 +213,7 @@
 			<groupId>org.springframework.data</groupId>
 			<artifactId>spring-data-jpa</artifactId>
 			<version>1.1.0.RELEASE</version>
-		</dependency> 
+		</dependency>
         <dependency>
             <groupId>nl.jqno.equalsverifier</groupId>
             <artifactId>equalsverifier</artifactId>
@@ -224,7 +224,7 @@
             <groupId>com.openpojo</groupId>
             <artifactId>openpojo</artifactId>
             <version>0.8.6</version>
-        </dependency> 
+        </dependency>
 		<!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-annotations -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
@@ -245,7 +245,7 @@
 			<scope>test</scope>
 			<classifier>runtime</classifier>
 		</dependency>
-		
-		
+
+
 	</dependencies>
 </project>

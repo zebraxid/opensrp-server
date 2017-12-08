@@ -1,5 +1,17 @@
 package org.opensrp;
 
+import com.amazonaws.AmazonClientException;
+import com.amazonaws.AmazonServiceException;
+import com.amazonaws.ClientConfiguration;
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.services.s3.model.GetObjectRequest;
+import com.amazonaws.services.s3.model.S3Object;
+import com.amazonaws.services.s3.model.S3ObjectInputStream;
+import com.amazonaws.util.IOUtils;
+import org.apache.commons.io.FileUtils;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -18,10 +30,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
+import java.net.URL;
 import java.util.List;
 
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -30,20 +40,20 @@ import static org.mockito.MockitoAnnotations.initMocks;
 @ContextConfiguration("classpath:test-applicationContext-opensrp.xml")
 public class MultimediaServiceTest {
 
-	@Value("#{opensrp['aws_access_key_id']}")
+	@Value("#{opensrp['aws.access.key.id']}")
 	String awsAccessKeyId;
 
-	@Value("#{opensrp['aws_secret_access_key']}")
+	@Value("#{opensrp['aws.secret.access.key']}")
 	String awsSecretAccessKey;
 
-	@Value("#{opensrp['aws_region']}")
+	@Value("#{opensrp['aws.region']}")
 	String awsRegion;
 
-	@Value("#{opensrp['aws_bucket']}")
+	@Value("#{opensrp['aws.bucket']}")
 	String awsBucket;
 
-	@Value("#{opensrp['aws_key_folder']}")
-	String awsKeyFolder;
+	@Value("#{opensrp['aws.key.folder']}")
+	String mediaKeyFolder;
 
 	@Mock
 	private MultimediaService multimediaService;
@@ -58,10 +68,20 @@ public class MultimediaServiceTest {
 	@Value("#{opensrp['multimedia.directory.name']}")
 	private String multimediaDirPath;
 
+	public static final int MAX_ERROR_RETRY = 5;
+
+	public static final int MAX_CONNECTIONS = 5000;
+
+	public static final int MAX_CONNECTION_TIME_OUT = 5000;
+
+	public static final int SOCKET_TIME_OUT = 5000;
+
+	URL url;
+
 	@Before
 	public void setUp() throws Exception {
 		initMocks(this);
-
+		url = new URL("https://www.dropbox.com/s/cwazpyy2mipj865/gimage.png");
 		multimediaService = new MultimediaService(multimediaRepository, clientService);
 	}
 
@@ -123,9 +143,53 @@ public class MultimediaServiceTest {
 
 	@Test
 	public void shouldSaveImageTos3() throws Exception {
-		File fileImage = new File("/Users/ona/.OpenMRS/patient_images/7f58a6cf-51ec-4bb4-929e-5ffcd3b1fac3.jpg");
-		Assert.assertTrue(multimediaService
-				.uploadImageTos3(fileImage, awsAccessKeyId, awsSecretAccessKey, awsRegion, awsBucket, awsKeyFolder));
+		File fileImage = new File("s3image.jpg");
+		FileUtils.copyURLToFile(url, fileImage);
+		Assert.assertEquals("success", multimediaService
+				.uploadImageToS3(fileImage, awsAccessKeyId, awsSecretAccessKey, awsRegion, awsBucket, mediaKeyFolder));
 
+	}
+
+	@Test
+	public void shouldDownloadImageFroms3() throws Exception {
+
+		File expectedImage = new File("s3image.jpg");
+		FileUtils.copyURLToFile(url, expectedImage);
+		ClientConfiguration clientConfiguration = new ClientConfiguration().withMaxErrorRetry(MAX_ERROR_RETRY)
+				.withMaxConnections(MAX_CONNECTIONS).withConnectionTimeout(MAX_CONNECTION_TIME_OUT)
+				.withSocketTimeout(SOCKET_TIME_OUT);
+
+		AmazonS3 s3Client = AmazonS3ClientBuilder.standard().withCredentials(
+				new AWSStaticCredentialsProvider(new BasicAWSCredentials(awsAccessKeyId, awsSecretAccessKey)))
+				.withClientConfiguration(clientConfiguration).withRegion(awsRegion).build();
+
+		OutputStream fetchedOutputStream = null;
+		OutputStream expectedOutputStream = null;
+		try {
+			S3Object object = s3Client.getObject(new GetObjectRequest(awsBucket, mediaKeyFolder + "gimage.png"));
+			S3ObjectInputStream objectContent = object.getObjectContent();
+			IOUtils.copy(objectContent, fetchedOutputStream);
+
+			byte[] buffer = new byte[1024];
+			int count;
+			FileInputStream fileInputStream = new FileInputStream(expectedImage);
+			while ((count = fileInputStream.read(buffer)) >= 0) {
+				expectedOutputStream.write(buffer, 0, count);
+			}
+			Assert.assertEquals(expectedOutputStream, fetchedOutputStream);
+			expectedOutputStream.flush();
+			fetchedOutputStream.flush();
+			object.close();
+			objectContent.close();
+		}
+		catch (AmazonServiceException aws) {
+			aws.printStackTrace();
+		}
+		catch (AmazonClientException aws) {
+			aws.printStackTrace();
+		}
+		catch (IOException io) {
+			io.printStackTrace();
+		}
 	}
 }

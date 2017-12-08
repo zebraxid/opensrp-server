@@ -1,5 +1,7 @@
 package org.opensrp.service;
 
+import com.amazonaws.AmazonServiceException;
+import com.amazonaws.SdkClientException;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3;
@@ -41,22 +43,22 @@ public class MultimediaService {
 	@Value("#{opensrp['multimedia.directory.name']}")
 	String baseMultimediaDirPath;
 
-	@Value("#{opensrp['aws_access_key_id']}")
+	@Value("#{opensrp['aws.access.key.id']}")
 	String awsAccessKeyId;
 
-	@Value("#{opensrp['aws_secret_access_key']}")
+	@Value("#{opensrp['aws.secret.access.key']}")
 	String awsSecretAccessKey;
 
-	@Value("#{opensrp['aws_region']}")
+	@Value("#{opensrp['aws.region']}")
 	String awsRegion;
 
-	@Value("#{opensrp['aws_bucket']}")
+	@Value("#{opensrp['aws.bucket']}")
 	String awsBucket;
 
-	@Value("#{opensrp['media_key_folder']}")
+	@Value("#{opensrp['aws.key.folder']}")
 	String mediaKeyFolder;
 
-	@Value("#{opensrp['multimedia_directory_location']}")
+	@Value("#{opensrp['multimedia.directory.location']}")
 	String multimediaDirectoryLocation;
 
 	@Autowired
@@ -66,6 +68,7 @@ public class MultimediaService {
 	}
 
 	public String saveMultimediaFile(MultimediaDTO multimediaDTO, MultipartFile file) {
+
 		String fileExtension = makeFileExtension(multimediaDTO);
 
 		if (multimediaDirectoryLocation.equalsIgnoreCase("s3")) {
@@ -152,12 +155,20 @@ public class MultimediaService {
 			s3Client.putObject(request);
 			return "success";
 		}
+		catch (AmazonServiceException e) {
+			logger.error("", e);
+			return "fail";
+		}
+		catch (SdkClientException e) {
+			logger.error("", e);
+			return "fail";
+		}
 		catch (FileNotFoundException e) {
-			e.printStackTrace();
+			logger.error("", e);
 			return "fail";
 		}
 		catch (IOException e) {
-			e.printStackTrace();
+			logger.error("", e);
 			return "fail";
 		}
 	}
