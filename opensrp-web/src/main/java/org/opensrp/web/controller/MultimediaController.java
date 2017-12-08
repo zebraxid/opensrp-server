@@ -26,11 +26,22 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.BufferedInputStream;
+
 import java.net.URLConnection;
 import java.nio.charset.Charset;
 
@@ -51,32 +62,34 @@ public class MultimediaController {
 	public static final int SOCKET_TIME_OUT = 5000;
 
 	@Value("#{opensrp['multimedia.directory.name']}")
-	String multiMediaDir;
+    private String multiMediaDir;
 
 	@Value("#{opensrp['multimedia.directory.name']}")
-	String baseMultimediaDirPath;
+	private String baseMultimediaDirPath;
 
 	@Value("#{opensrp['aws.access.key.id']}")
-	String awsAccessKeyId;
+	private String awsAccessKeyId;
 
 	@Value("#{opensrp['aws.secret.access.key']}")
-	String awsSecretAccessKey;
+	private String awsSecretAccessKey;
 
 	@Value("#{opensrp['aws.region']}")
-	String awsRegion;
+	private String awsRegion;
 
 	@Value("#{opensrp['aws.bucket']}")
-	String awsBucket;
+	private String awsBucket;
 
 	@Value("#{opensrp['aws.key.folder']}")
-	String mediaKeyFolder;
+	private String mediaKeyFolder;
 
 	@Value("#{opensrp['multimedia.directory.location']}")
-	String multimediaDirectoryLocation;
+	private String multimediaDirectoryLocation;
 
 	@Autowired
 	@Qualifier("drishtiAuthenticationProvider")
 	DrishtiAuthenticationProvider provider;
+
+	private String fileExtension = ".jpg";
 
 	@Autowired
 	MultimediaService multimediaService;
@@ -129,7 +142,7 @@ public class MultimediaController {
 	                                   @RequestHeader(value = "password") String password) throws Exception {
 		try {
 			if (multimediaDirectoryLocation.equalsIgnoreCase("s3")) {
-				downloadFileFromS3(new File(baseEntityId + ".jpg"), awsAccessKeyId, awsSecretAccessKey, awsRegion, awsBucket,
+				downloadFileFromS3(new File(baseEntityId + fileExtension), awsAccessKeyId, awsSecretAccessKey, awsRegion, awsBucket,
 						mediaKeyFolder, response);
 			} else {
 				if (authenticate(userName, password).isAuthenticated()) {
@@ -138,7 +151,7 @@ public class MultimediaController {
 						//see if the file exists in the disk with the assumption that it's .jpg otherwise return error msg
 						File file = new File(
 								multiMediaDir + File.separator + MultimediaService.IMAGES_DIR + File.separator + baseEntityId
-										+ ".jpg");
+										+ fileExtension);
 						if (file.exists()) {
 							downloadFile(file, response);
 						} else {
@@ -263,5 +276,4 @@ public class MultimediaController {
 		}
 
 	}
-
 }

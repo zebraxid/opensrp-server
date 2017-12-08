@@ -22,7 +22,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.List;
 
 @Service
@@ -41,25 +45,31 @@ public class MultimediaService {
 	private String multimediaDirPath;
 
 	@Value("#{opensrp['multimedia.directory.name']}")
-	String baseMultimediaDirPath;
+	private String baseMultimediaDirPath;
 
 	@Value("#{opensrp['aws.access.key.id']}")
-	String awsAccessKeyId;
+	private String awsAccessKeyId;
 
 	@Value("#{opensrp['aws.secret.access.key']}")
-	String awsSecretAccessKey;
+	private String awsSecretAccessKey;
 
 	@Value("#{opensrp['aws.region']}")
-	String awsRegion;
+	private String awsRegion;
 
 	@Value("#{opensrp['aws.bucket']}")
-	String awsBucket;
+	private String awsBucket;
 
 	@Value("#{opensrp['aws.key.folder']}")
 	String mediaKeyFolder;
 
 	@Value("#{opensrp['multimedia.directory.location']}")
-	String multimediaDirectoryLocation;
+	private String multimediaDirectoryLocation;
+
+	private String successResponse ="success";
+
+	private String failedResponse ="fail";
+
+	private String imageAttribute ="Patient Image";
 
 	@Autowired
 	public MultimediaService(MultimediaRepository multimediaRepository, ClientService clientService) {
@@ -77,11 +87,11 @@ public class MultimediaService {
 				file.transferTo(imageToSave);
 				uploadImageToS3(imageToSave, awsAccessKeyId, awsSecretAccessKey, awsRegion, awsBucket, mediaKeyFolder);
 				updateClientWithImage(multimediaDTO, fileExtension);
-				return "success";
+				return successResponse;
 			}
 			catch (IOException e) {
 				e.printStackTrace();
-				return "fail";
+				return failedResponse;
 			}
 		}
 
@@ -94,14 +104,14 @@ public class MultimediaService {
 						.withFilePath(multimediaDTO.getFilePath()).withFileCategory(multimediaDTO.getFileCategory());
 				multimediaRepository.add(multimediaFile);
 				updateClientWithImage(multimediaDTO, fileExtension);
-				return "success";
+				return successResponse;
 			}
 			catch (Exception e) {
 				e.getMessage();
-				return "fail";
+				return failedResponse;
 			}
 		}
-		return "fail";
+		return failedResponse;
 	}
 
 	public boolean uploadFile(MultimediaDTO multimediaDTO, MultipartFile multimediaFile) {
@@ -118,7 +128,6 @@ public class MultimediaService {
 				multimediaFile.transferTo(multimediaDir);
 
 				return true;
-
 			}
 			catch (Exception e) {
 				logger.error("", e);
@@ -153,23 +162,23 @@ public class MultimediaService {
 			PutObjectRequest request = new PutObjectRequest(awsBucket, awsKeyFolder + imageFile.getName(), inputStream,
 					metadata);
 			s3Client.putObject(request);
-			return "success";
+			return successResponse;
 		}
 		catch (AmazonServiceException e) {
 			logger.error("", e);
-			return "fail";
+			return failedResponse;
 		}
 		catch (SdkClientException e) {
 			logger.error("", e);
-			return "fail";
+			return failedResponse;
 		}
 		catch (FileNotFoundException e) {
 			logger.error("", e);
-			return "fail";
+			return failedResponse;
 		}
 		catch (IOException e) {
 			logger.error("", e);
-			return "fail";
+			return failedResponse;
 		}
 	}
 
@@ -198,10 +207,10 @@ public class MultimediaService {
 		Client client = clientService.getByBaseEntityId(multimediaDTO.getCaseId());
 		if (client != null) {
 			try {
-				if (client.getAttribute("Patient Image") != null) {
-					client.removeAttribute("Patient Image");
+				if (client.getAttribute(imageAttribute) != null) {
+					client.removeAttribute(imageAttribute);
 				}
-				client.addAttribute("Patient Image", multimediaDTO.getCaseId() + fileExtension);
+				client.addAttribute(imageAttribute, multimediaDTO.getCaseId() + fileExtension);
 				client.setServerVersion(null);
 				clientService.updateClient(client);
 			}

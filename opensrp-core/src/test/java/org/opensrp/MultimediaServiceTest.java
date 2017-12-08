@@ -18,6 +18,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.opensrp.domain.Multimedia;
 import org.opensrp.dto.form.MultimediaDTO;
 import org.opensrp.repository.MultimediaRepository;
@@ -30,30 +31,33 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.FileNotFoundException;
+
 import java.net.URL;
 import java.util.List;
-
-import static org.mockito.MockitoAnnotations.initMocks;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:test-applicationContext-opensrp.xml")
 public class MultimediaServiceTest {
 
 	@Value("#{opensrp['aws.access.key.id']}")
-	String awsAccessKeyId;
+	private String awsAccessKeyId;
 
 	@Value("#{opensrp['aws.secret.access.key']}")
-	String awsSecretAccessKey;
+	private String awsSecretAccessKey;
 
 	@Value("#{opensrp['aws.region']}")
-	String awsRegion;
+	private String awsRegion;
 
 	@Value("#{opensrp['aws.bucket']}")
-	String awsBucket;
+	private String awsBucket;
 
 	@Value("#{opensrp['aws.key.folder']}")
-	String mediaKeyFolder;
+	private String mediaKeyFolder;
 
 	@Mock
 	private MultimediaService multimediaService;
@@ -68,20 +72,25 @@ public class MultimediaServiceTest {
 	@Value("#{opensrp['multimedia.directory.name']}")
 	private String multimediaDirPath;
 
-	public static final int MAX_ERROR_RETRY = 5;
+	private static final int MAX_ERROR_RETRY = 5;
 
-	public static final int MAX_CONNECTIONS = 5000;
+	private static final int MAX_CONNECTIONS = 5000;
 
-	public static final int MAX_CONNECTION_TIME_OUT = 5000;
+	private static final int MAX_CONNECTION_TIME_OUT = 5000;
 
-	public static final int SOCKET_TIME_OUT = 5000;
+	private static final int SOCKET_TIME_OUT = 5000;
 
-	URL url;
+	public static final int BUFFER_SIZE = 1024;
+
+	private URL url;
+
+	private File expectedImage;
 
 	@Before
 	public void setUp() throws Exception {
-		initMocks(this);
+		MockitoAnnotations.initMocks(this);
 		url = new URL("https://www.dropbox.com/s/cwazpyy2mipj865/gimage.png");
+		expectedImage = new File("s3image.jpg");
 		multimediaService = new MultimediaService(multimediaRepository, clientService);
 	}
 
@@ -140,20 +149,19 @@ public class MultimediaServiceTest {
 				Assert.assertEquals(expectedMultimedia.getFilePath(), actualMultimedia.getFilePath());
 		}
 	}
+
 	@Ignore
 	@Test
 	public void shouldSaveImageTos3() throws Exception {
-		File fileImage = new File("s3image.jpg");
-		FileUtils.copyURLToFile(url, fileImage);
+		FileUtils.copyURLToFile(url, expectedImage);
 		Assert.assertEquals("success", multimediaService
-				.uploadImageToS3(fileImage, awsAccessKeyId, awsSecretAccessKey, awsRegion, awsBucket, mediaKeyFolder));
+				.uploadImageToS3(expectedImage, awsAccessKeyId, awsSecretAccessKey, awsRegion, awsBucket, mediaKeyFolder));
 
 	}
+
 	@Ignore
 	@Test
 	public void shouldDownloadImageFroms3() throws Exception {
-
-		File expectedImage = new File("s3image.jpg");
 		FileUtils.copyURLToFile(url, expectedImage);
 		ClientConfiguration clientConfiguration = new ClientConfiguration().withMaxErrorRetry(MAX_ERROR_RETRY)
 				.withMaxConnections(MAX_CONNECTIONS).withConnectionTimeout(MAX_CONNECTION_TIME_OUT)
@@ -170,7 +178,7 @@ public class MultimediaServiceTest {
 			S3ObjectInputStream objectContent = object.getObjectContent();
 			IOUtils.copy(objectContent, fetchedOutputStream);
 
-			byte[] buffer = new byte[1024];
+			byte[] buffer = new byte[BUFFER_SIZE];
 			int count;
 			FileInputStream fileInputStream = new FileInputStream(expectedImage);
 			while ((count = fileInputStream.read(buffer)) >= 0) {
