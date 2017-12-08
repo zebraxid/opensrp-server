@@ -140,7 +140,7 @@ public class MultimediaServiceTest {
 				Assert.assertEquals(expectedMultimedia.getFilePath(), actualMultimedia.getFilePath());
 		}
 	}
-
+	@Ignore
 	@Test
 	public void shouldSaveImageTos3() throws Exception {
 		File fileImage = new File("s3image.jpg");
@@ -149,7 +149,7 @@ public class MultimediaServiceTest {
 				.uploadImageToS3(fileImage, awsAccessKeyId, awsSecretAccessKey, awsRegion, awsBucket, mediaKeyFolder));
 
 	}
-
+	@Ignore
 	@Test
 	public void shouldDownloadImageFroms3() throws Exception {
 
