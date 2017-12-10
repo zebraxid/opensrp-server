@@ -93,7 +93,6 @@ public class MultimediaService {
 				e.printStackTrace();
 				return failedResponse;
 			}
-
 		}
 
 		if (uploadFile(multimediaDTO, file)) {
