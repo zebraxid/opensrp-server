@@ -7,6 +7,7 @@ import java.util.Map;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.opensrp.domain.Address;
 import org.opensrp.domain.Client;
 import org.opensrp.domain.Event;
 import org.opensrp.domain.Obs;
@@ -46,6 +47,31 @@ public class HouseholdTracker extends DHIS2Service implements DHIS2Tracker {
 		attributes = client.getAttributes();
 		JSONObject attributesAsJson = new JSONObject(attributes);
 		JSONObject clientAsJson = new JSONObject(client);
+		List<Address> addresses = client.getAddresses();
+		Address address = addresses.get(0);
+		
+		String division = address.getAddressField("stateProvince");
+		String district = address.getAddressField("countyDistrict");
+		String upazilla = address.getAddressField("cityVillage");
+		String union = address.getAddressField("address1");
+		String ward = address.getAddressField("address2");
+		String subUnit = address.getAddressField("address3");
+		String vaccinationCenter = address.getAddressField("address4");
+		
+		generateTrackCaptureData.put(dhis2TrackerService.directValue(DHIS2Settings.HOUSEHOLDIDMAPPING.get("division")
+		        .toString(), division));
+		generateTrackCaptureData.put(dhis2TrackerService.directValue(DHIS2Settings.HOUSEHOLDIDMAPPING.get("district")
+		        .toString(), district));
+		generateTrackCaptureData.put(dhis2TrackerService.directValue(DHIS2Settings.HOUSEHOLDIDMAPPING.get("upazilla")
+		        .toString(), upazilla));
+		generateTrackCaptureData.put(dhis2TrackerService.directValue(DHIS2Settings.HOUSEHOLDIDMAPPING.get("union")
+		        .toString(), union));
+		generateTrackCaptureData.put(dhis2TrackerService.directValue(
+		    DHIS2Settings.HOUSEHOLDIDMAPPING.get("ward").toString(), ward));
+		generateTrackCaptureData.put(dhis2TrackerService.directValue(DHIS2Settings.HOUSEHOLDIDMAPPING.get("sub_unit")
+		        .toString(), subUnit));
+		generateTrackCaptureData.put(dhis2TrackerService.directValue(
+		    DHIS2Settings.HOUSEHOLDIDMAPPING.get("vaccination_center").toString(), vaccinationCenter));
 		
 		// firstName
 		generateTrackCaptureData.put(dhis2TrackerService.getTrackCaptureData(clientAsJson, DHIS2Settings.HOUSEHOLDIDMAPPING
@@ -54,11 +80,16 @@ public class HouseholdTracker extends DHIS2Service implements DHIS2Tracker {
 		generateTrackCaptureData.put(dhis2TrackerService.getTrackCaptureData(clientAsJson, DHIS2Settings.HOUSEHOLDIDMAPPING
 		        .get(lastName).toString(), lastName));
 		//Gender
-		/*generateTrackCaptureData.put(dhis2TrackerService.getTrackCaptureData(clientAsJson, DHIS2Settings.CLIENTIDMAPPING
-		        .get("gender").toString(), "gender"));*/
+		generateTrackCaptureData.put(dhis2TrackerService.getTrackCaptureData(clientAsJson, DHIS2Settings.HOUSEHOLDIDMAPPING
+		        .get("gender").toString(), "gender"));
 		//"householdCode/Household ID
 		generateTrackCaptureData.put(dhis2TrackerService.getTrackCaptureData(attributesAsJson,
 		    DHIS2Settings.HOUSEHOLDIDMAPPING.get("Household_ID").toString(), "householdCode"));
+		generateTrackCaptureData.put(dhis2TrackerService.getTrackCaptureData(attributesAsJson,
+		    DHIS2Settings.HOUSEHOLDIDMAPPING.get("phone_number").toString(), "phoneNumber"));
+		
+		generateTrackCaptureData.put(dhis2TrackerService.getTrackCaptureData(clientAsJson, DHIS2Settings.HOUSEHOLDIDMAPPING
+		        .get("base_entity_id").toString(), "baseEntityId"));
 		//birthdate		
 		JSONObject data = new JSONObject();
 		data.put(attributeKey, DHIS2Settings.HOUSEHOLDIDMAPPING.get("birthdate").toString());

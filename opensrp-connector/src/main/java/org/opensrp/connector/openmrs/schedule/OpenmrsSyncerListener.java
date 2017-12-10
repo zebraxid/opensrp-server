@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.concurrent.locks.ReentrantLock;
 
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -137,7 +136,7 @@ public class OpenmrsSyncerListener {
 	
 	@MotechListener(subjects = OpenmrsConstants.SCHEDULER_OPENMRS_DATA_PUSH_SUBJECT)
 	public void pushToOpenMRS(MotechEvent event) {
-		
+		System.err.println("OPENMRS...........");
 		if (!lock.tryLock()) {
 			logger.warn("Not fetching forms from Message Queue. It is already in progress.");
 			return;
@@ -160,7 +159,7 @@ public class OpenmrsSyncerListener {
 			
 		}
 		catch (Exception ex) {
-			logger.error("", ex);
+			logger.error("", ex.getMessage());
 		}
 		finally {
 			lock.unlock();
@@ -226,9 +225,9 @@ public class OpenmrsSyncerListener {
 				}
 			}
 			catch (Exception ex1) {
-				ex1.printStackTrace();
-				errorTraceService.log("OPENMRS FAILED CLIENT PUSH", Client.class.getName(), c.getBaseEntityId(),
-				    ExceptionUtils.getStackTrace(ex1), "");
+				//ex1.printStackTrace();
+				/*errorTraceService.log("OPENMRS FAILED CLIENT PUSH", Client.class.getName(), c.getBaseEntityId(),
+				    ExceptionUtils.getStackTrace(ex1), "");*/
 			}
 			patientsJsonArray.put(patient);
 		}
@@ -296,9 +295,9 @@ public class OpenmrsSyncerListener {
 				}
 			}
 			catch (Exception ex2) {
-				logger.error("", ex2);
-				errorTraceService.log("OPENMRS FAILED EVENT PUSH", Event.class.getName(), e.getId(),
-				    ExceptionUtils.getStackTrace(ex2), "");
+				logger.error("", ex2.getMessage());
+				/*errorTraceService.log("OPENMRS FAILED EVENT PUSH", Event.class.getName(), e.getId(),
+				    ExceptionUtils.getStackTrace(ex2), "");*/
 			}
 		}
 		return encounter;

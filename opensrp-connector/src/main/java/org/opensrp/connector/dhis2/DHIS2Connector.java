@@ -89,7 +89,7 @@ public class DHIS2Connector extends DHIS2Service {
 		
 		response.put("track", trackEntityReference.get(reference));
 		
-		return response;
+		return null;
 		
 	}
 	
