@@ -26,22 +26,16 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.BufferedInputStream;
-
 import java.net.URLConnection;
 import java.nio.charset.Charset;
 
@@ -62,10 +56,7 @@ public class MultimediaController {
 	public static final int SOCKET_TIME_OUT = 5000;
 
 	@Value("#{opensrp['multimedia.directory.name']}")
-    private String multiMediaDir;
-
-	@Value("#{opensrp['multimedia.directory.name']}")
-	private String baseMultimediaDirPath;
+	private String multiMediaDir;
 
 	@Value("#{opensrp['aws.access.key.id']}")
 	private String awsAccessKeyId;
@@ -142,8 +133,8 @@ public class MultimediaController {
 	                                   @RequestHeader(value = "password") String password) throws Exception {
 		try {
 			if (multimediaDirectoryLocation.equalsIgnoreCase("s3")) {
-				downloadFileFromS3(new File(baseEntityId + fileExtension), awsAccessKeyId, awsSecretAccessKey, awsRegion, awsBucket,
-						mediaKeyFolder, response);
+				downloadFileFromS3(new File(baseEntityId + fileExtension), awsAccessKeyId, awsSecretAccessKey, awsRegion,
+						awsBucket, mediaKeyFolder, response);
 			} else {
 				if (authenticate(userName, password).isAuthenticated()) {
 					Multimedia multiMedia = multimediaService.findByCaseId(baseEntityId);

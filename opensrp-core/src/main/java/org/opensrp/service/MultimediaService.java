@@ -60,7 +60,7 @@ public class MultimediaService {
 	private String awsBucket;
 
 	@Value("#{opensrp['aws.key.folder']}")
-	String mediaKeyFolder;
+	private String mediaKeyFolder;
 
 	@Value("#{opensrp['multimedia.directory.location']}")
 	private String multimediaDirectoryLocation;
@@ -199,8 +199,9 @@ public class MultimediaService {
 			case "image/png":
 				multimediaDirPath += IMAGES_DIR;
 				return ".png";
+				default:
+					return  ".jpg";
 		}
-		return ".jpg";
 	}
 
 	public void updateClientWithImage(MultimediaDTO multimediaDTO, String fileExtension) {
