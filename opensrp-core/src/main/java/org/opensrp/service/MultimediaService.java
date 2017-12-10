@@ -88,7 +88,7 @@ public class MultimediaService {
 				uploadImageToS3(imageToSave, awsAccessKeyId, awsSecretAccessKey, awsRegion, awsBucket, mediaKeyFolder);
 				updateClientWithImage(multimediaDTO, fileExtension);
 				return successResponse;
-			}catch (IOException e) {
+			} catch (IOException e) {
 				e.printStackTrace();
 				return failedResponse;
 			}
