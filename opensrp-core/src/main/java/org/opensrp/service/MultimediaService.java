@@ -65,11 +65,11 @@ public class MultimediaService {
 	@Value("#{opensrp['multimedia.directory.location']}")
 	private String multimediaDirectoryLocation;
 
-	private String successResponse ="success";
+	private String successResponse = "success";
 
-	private String failedResponse ="fail";
+	private String failedResponse = "fail";
 
-	private String imageAttribute ="Patient Image";
+	private String imageAttribute = "Patient Image";
 
 	@Autowired
 	public MultimediaService(MultimediaRepository multimediaRepository, ClientService clientService) {
@@ -188,10 +188,6 @@ public class MultimediaService {
 				multimediaDirPath += VIDEOS_DIR;
 				return ".mp4";
 
-			case "image/jpeg":
-				multimediaDirPath += IMAGES_DIR;
-				return ".jpg";
-
 			case "image/gif":
 				multimediaDirPath += IMAGES_DIR;
 				return ".gif";
@@ -199,8 +195,8 @@ public class MultimediaService {
 			case "image/png":
 				multimediaDirPath += IMAGES_DIR;
 				return ".png";
-				default:
-					return  ".jpg";
+			default:
+				return ".jpg";
 		}
 	}
 
