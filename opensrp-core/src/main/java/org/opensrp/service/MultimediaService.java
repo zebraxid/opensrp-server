@@ -82,8 +82,8 @@ public class MultimediaService {
 		String fileExtension = makeFileExtension(multimediaDTO);
 
 		if (multimediaDirectoryLocation.equalsIgnoreCase("s3")) {
-			try {
 				File imageToSave = new File(multimediaDTO.getCaseId() + fileExtension);
+			try {
 				file.transferTo(imageToSave);
 				uploadImageToS3(imageToSave, awsAccessKeyId, awsSecretAccessKey, awsRegion, awsBucket, mediaKeyFolder);
 				updateClientWithImage(multimediaDTO, fileExtension);
@@ -93,10 +93,10 @@ public class MultimediaService {
 				e.printStackTrace();
 				return failedResponse;
 			}
+
 		}
 
 		if (uploadFile(multimediaDTO, file)) {
-
 			try {
 				logger.info("Image path : " + multimediaDirPath);
 				Multimedia multimediaFile = new Multimedia().withCaseId(multimediaDTO.getCaseId())
