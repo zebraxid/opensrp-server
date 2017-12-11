@@ -62,7 +62,7 @@ public class EventClient extends OpenmrsApiService {
 		Client expectedClient = new Client("127").withFirstName("monika").withGender("male")
 		        .withBirthdate(new DateTime(), false);
 		Map<String, String> identifiers = new HashMap<>();
-		identifiers.put(M_ZEIR_ID, "159451-r7_mother3s");
+		identifiers.put(M_ZEIR_ID, "159451-rr7_mother3s");
 		expectedClient.setIdentifiers(identifiers);
 		return expectedClient;
 	}
@@ -71,7 +71,7 @@ public class EventClient extends OpenmrsApiService {
 		Client expectedClient = new Client("129").withFirstName("momima").withGender("male")
 		        .withBirthdate(new DateTime(), false);
 		Map<String, String> identifiers = new HashMap<>();
-		identifiers.put(ZEIR_ID, "159451-r7r_child");
+		identifiers.put(ZEIR_ID, "159451-r7rr_child");
 		//identifiers.put("OPENMRS_UUID", "b1def4fa-fed8-4d54-a6aa-cbb7523b6f24");
 		expectedClient.setIdentifiers(identifiers);
 		List<String> list = new ArrayList<>();

@@ -37,7 +37,6 @@ public class DHIS2TrackerService {
 	
 	public static TrackerType getClientType(Client client) {
 		
-		JSONObject clientData = new JSONObject(client);
 		Map<String, List<String>> relationships = client.getRelationships();
 		TrackerType type = null;
 		if (relationships == null) {
@@ -71,7 +70,7 @@ public class DHIS2TrackerService {
 		
 	}
 	
-	public JSONObject directValue(String attributeId, String value) throws JSONException {
+	public JSONObject withKnownValue(String attributeId, String value) throws JSONException {
 		JSONObject data = new JSONObject();
 		try {
 			data.put("attribute", attributeId);

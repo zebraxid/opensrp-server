@@ -32,10 +32,27 @@ public class AllDHIS2Marker extends MotechBaseRepository<DHIS2Marker> {
 		this.add(dHIS2MarkerEntry);
 	}
 	
+	public void addEventMarker() {
+		DHIS2Marker dHIS2MarkerEntry = new DHIS2Marker();
+		dHIS2MarkerEntry.setName(DHIS2Constants.DHIS2_TRACK_DATA_SYNCER_VERSION_MARKER_EVENT);
+		dHIS2MarkerEntry.setValue(0l);
+		this.add(dHIS2MarkerEntry);
+	}
+	
 	public void update(long ServerVersion) {
-		
 		try {
 			DHIS2Marker lastsync = this.findByName(DHIS2Constants.DHIS2_TRACK_DATA_SYNCER_VERSION_MARKER).get(0);
+			lastsync.setValue(ServerVersion);
+			this.update(lastsync);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void updateEventMarker(long ServerVersion) {
+		try {
+			DHIS2Marker lastsync = this.findByName(DHIS2Constants.DHIS2_TRACK_DATA_SYNCER_VERSION_MARKER_EVENT).get(0);
 			lastsync.setValue(ServerVersion);
 			this.update(lastsync);
 		}

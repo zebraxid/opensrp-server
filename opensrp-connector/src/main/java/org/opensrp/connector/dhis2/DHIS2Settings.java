@@ -26,6 +26,7 @@ public class DHIS2Settings {
 		CHILDMAPPING.put("child_health_facility_name", "r4yR1YLNR7C");
 		CHILDMAPPING.put("base_entity_id", "s67McYqu0lP");
 		CHILDMAPPING.put("birth_weight", "mpRaccA9dB9");
+		CHILDMAPPING.put("birth_weight", "mpRaccA9dB9");
 		
 	}
 	
@@ -46,7 +47,7 @@ public class DHIS2Settings {
 		MOTHERIDMAPPING.put("EPI_Card_Number", "AcfzB53w2JK");
 		MOTHERIDMAPPING.put("Maritial_Status", "NkOtPre4iTm");
 		MOTHERIDMAPPING.put("Couple_No", "DftawD2qqQJ");
-		MOTHERIDMAPPING.put("Pregnant", "HaFQAe7H67k");
+		MOTHERIDMAPPING.put("pregnant", "HaFQAe7H67k");
 		MOTHERIDMAPPING.put("FP_User", "ip2EZBFuVLk");
 		MOTHERIDMAPPING.put("know_lmp", "ipQwd1NbKne");
 		MOTHERIDMAPPING.put("know_edd_ultra", "rWW7UXlpsji");
@@ -87,6 +88,14 @@ public class DHIS2Settings {
 		VACCINATIONMAPPING.put("Vaccina_date", "FrU0Gy7JgDj");
 		VACCINATIONMAPPING.put("Vaccina_dose", "angDB9as1Mm");
 		VACCINATIONMAPPING.put("Vaccina_name", "xpcgeevTaHG");
+		VACCINATIONMAPPING.put("child_id", "OWr9r1SlkZd");
+		VACCINATIONMAPPING.put("base_entity_id", "s67McYqu0lP");
+	}
+	
+	static Map<String, String> COMMONMAPPING = new HashMap<String, String>();
+	static {
+		COMMONMAPPING.put("client_type", "ps3fmHS873u");
+		
 	}
 	
 	static Map<String, Integer> VACCINATION = new HashMap<String, Integer>();

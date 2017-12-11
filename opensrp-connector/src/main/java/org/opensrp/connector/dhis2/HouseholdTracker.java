@@ -12,11 +12,14 @@ import org.opensrp.domain.Client;
 import org.opensrp.domain.Event;
 import org.opensrp.domain.Obs;
 import org.opensrp.service.EventService;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class HouseholdTracker extends DHIS2Service implements DHIS2Tracker {
+	
+	private static org.slf4j.Logger logger = LoggerFactory.getLogger(HouseholdTracker.class.toString());
 	
 	@Autowired
 	private DHIS2TrackerService dhis2TrackerService;
@@ -39,69 +42,84 @@ public class HouseholdTracker extends DHIS2Service implements DHIS2Tracker {
 	public JSONArray getTrackCaptureData(Client client) throws JSONException {
 		JSONObject clientData = new JSONObject();
 		String firstName = "firstName";
-		String lastName = "lastName";
-		String attributeKey = "attribute";
-		String valueKey = "value";
+		
 		JSONArray generateTrackCaptureData = new JSONArray();
 		Map<String, Object> attributes = new HashMap<>();
 		attributes = client.getAttributes();
 		JSONObject attributesAsJson = new JSONObject(attributes);
-		JSONObject clientAsJson = new JSONObject(client);
+		
 		List<Address> addresses = client.getAddresses();
-		Address address = addresses.get(0);
+		String division = "";
+		String district = "";
+		String upazilla = "";
+		String union = "";
+		String ward = "";
+		String subUnit = "";
+		String vaccinationCenter = "";
+		if (!addresses.isEmpty()) {
+			Address address = addresses.get(0);
+			division = address.getAddressField("stateProvince");
+			district = address.getAddressField("countyDistrict");
+			upazilla = address.getAddressField("cityVillage");
+			union = address.getAddressField("address1");
+			ward = address.getAddressField("address2");
+			subUnit = address.getAddressField("address3");
+			vaccinationCenter = address.getAddressField("address4");
+		} else {
+			
+			logger.info("No Address found for base entity id:" + client.getBaseEntityId());
+		}
 		
-		String division = address.getAddressField("stateProvince");
-		String district = address.getAddressField("countyDistrict");
-		String upazilla = address.getAddressField("cityVillage");
-		String union = address.getAddressField("address1");
-		String ward = address.getAddressField("address2");
-		String subUnit = address.getAddressField("address3");
-		String vaccinationCenter = address.getAddressField("address4");
-		
-		generateTrackCaptureData.put(dhis2TrackerService.directValue(DHIS2Settings.HOUSEHOLDIDMAPPING.get("division")
+		generateTrackCaptureData.put(dhis2TrackerService.withKnownValue(DHIS2Settings.HOUSEHOLDIDMAPPING.get("division")
 		        .toString(), division));
-		generateTrackCaptureData.put(dhis2TrackerService.directValue(DHIS2Settings.HOUSEHOLDIDMAPPING.get("district")
+		generateTrackCaptureData.put(dhis2TrackerService.withKnownValue(DHIS2Settings.HOUSEHOLDIDMAPPING.get("district")
 		        .toString(), district));
-		generateTrackCaptureData.put(dhis2TrackerService.directValue(DHIS2Settings.HOUSEHOLDIDMAPPING.get("upazilla")
+		generateTrackCaptureData.put(dhis2TrackerService.withKnownValue(DHIS2Settings.HOUSEHOLDIDMAPPING.get("upazilla")
 		        .toString(), upazilla));
-		generateTrackCaptureData.put(dhis2TrackerService.directValue(DHIS2Settings.HOUSEHOLDIDMAPPING.get("union")
+		generateTrackCaptureData.put(dhis2TrackerService.withKnownValue(DHIS2Settings.HOUSEHOLDIDMAPPING.get("union")
 		        .toString(), union));
-		generateTrackCaptureData.put(dhis2TrackerService.directValue(
-		    DHIS2Settings.HOUSEHOLDIDMAPPING.get("ward").toString(), ward));
-		generateTrackCaptureData.put(dhis2TrackerService.directValue(DHIS2Settings.HOUSEHOLDIDMAPPING.get("sub_unit")
+		generateTrackCaptureData.put(dhis2TrackerService.withKnownValue(DHIS2Settings.HOUSEHOLDIDMAPPING.get("ward")
+		        .toString(), ward));
+		generateTrackCaptureData.put(dhis2TrackerService.withKnownValue(DHIS2Settings.HOUSEHOLDIDMAPPING.get("sub_unit")
 		        .toString(), subUnit));
-		generateTrackCaptureData.put(dhis2TrackerService.directValue(
+		generateTrackCaptureData.put(dhis2TrackerService.withKnownValue(
 		    DHIS2Settings.HOUSEHOLDIDMAPPING.get("vaccination_center").toString(), vaccinationCenter));
+		generateTrackCaptureData.put(dhis2TrackerService.withKnownValue(DHIS2Settings.COMMONMAPPING.get("client_type")
+		        .toString(), "Household"));
 		
-		// firstName
-		generateTrackCaptureData.put(dhis2TrackerService.getTrackCaptureData(clientAsJson, DHIS2Settings.HOUSEHOLDIDMAPPING
-		        .get(firstName).toString(), firstName));
-		// LastName 
-		generateTrackCaptureData.put(dhis2TrackerService.getTrackCaptureData(clientAsJson, DHIS2Settings.HOUSEHOLDIDMAPPING
-		        .get(lastName).toString(), lastName));
+		// name
+		generateTrackCaptureData.put(dhis2TrackerService.withKnownValue(DHIS2Settings.HOUSEHOLDIDMAPPING.get(firstName)
+		        .toString(), client.fullName()));
+		
 		//Gender
-		generateTrackCaptureData.put(dhis2TrackerService.getTrackCaptureData(clientAsJson, DHIS2Settings.HOUSEHOLDIDMAPPING
-		        .get("gender").toString(), "gender"));
+		generateTrackCaptureData.put(dhis2TrackerService.withKnownValue(DHIS2Settings.HOUSEHOLDIDMAPPING.get("gender")
+		        .toString(), client.getGender()));
 		//"householdCode/Household ID
 		generateTrackCaptureData.put(dhis2TrackerService.getTrackCaptureData(attributesAsJson,
 		    DHIS2Settings.HOUSEHOLDIDMAPPING.get("Household_ID").toString(), "householdCode"));
 		generateTrackCaptureData.put(dhis2TrackerService.getTrackCaptureData(attributesAsJson,
 		    DHIS2Settings.HOUSEHOLDIDMAPPING.get("phone_number").toString(), "phoneNumber"));
 		
-		generateTrackCaptureData.put(dhis2TrackerService.getTrackCaptureData(clientAsJson, DHIS2Settings.HOUSEHOLDIDMAPPING
-		        .get("base_entity_id").toString(), "baseEntityId"));
+		generateTrackCaptureData.put(dhis2TrackerService.withKnownValue(
+		    DHIS2Settings.HOUSEHOLDIDMAPPING.get("base_entity_id").toString(), client.getBaseEntityId()));
 		//birthdate		
-		JSONObject data = new JSONObject();
+		generateTrackCaptureData.put(dhis2TrackerService.withKnownValue(DHIS2Settings.HOUSEHOLDIDMAPPING.get("birthdate")
+		        .toString(), client.getBirthdate().toString()));
+		/*JSONObject data = new JSONObject();
 		data.put(attributeKey, DHIS2Settings.HOUSEHOLDIDMAPPING.get("birthdate").toString());
 		data.put(valueKey, client.getBirthdate());
-		generateTrackCaptureData.put(data);
+		generateTrackCaptureData.put(data);*/
 		
 		/***** get information form Event ******/
 		List<Event> event = eventService.findByBaseEntityAndType(client.getBaseEntityId(), "Household Registration");
-		List<Obs> observations = event.get(0).getObs();
-		/**** Member_Registration_No /Date_Of_Reg ***/
-		generateTrackCaptureData.put(dhis2TrackerService.getTrackCaptureDataFromEventByValues(observations,
-		    DHIS2Settings.MOTHERIDMAPPING.get("registration_Date").toString(), "Date_Of_Reg"));
+		if (event.size() != 0) {
+			List<Obs> observations = event.get(0).getObs();
+			/**** Member_Registration_No /Date_Of_Reg ***/
+			generateTrackCaptureData.put(dhis2TrackerService.getTrackCaptureDataFromEventByValues(observations,
+			    DHIS2Settings.MOTHERIDMAPPING.get("registration_Date").toString(), "Date_Of_Reg"));
+		} else {
+			logger.info("No event Found of baseEntityid: " + client.getBaseEntityId());
+		}
 		clientData.put("attributes", generateTrackCaptureData);
 		System.err.println("HHData:" + clientData.toString());
 		return generateTrackCaptureData;

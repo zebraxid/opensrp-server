@@ -105,7 +105,7 @@ public class LuceneSearchRepository extends CouchDbRepositorySupportWithLucene<S
 				}
 			}
 		}
-		
+		// comment for search working
 		//qf.addToQuery(sq);
 		
 		if (birthdateFrom != null && birthdateTo != null) {
