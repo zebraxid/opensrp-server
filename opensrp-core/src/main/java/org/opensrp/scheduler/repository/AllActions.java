@@ -133,8 +133,13 @@ public class AllActions extends MotechBaseRepository<Action> {
 		return luceneActionRepo.getByCriteria(team, providerId, timeStamp, sortBy, sortOrder, limit);
 	}
 	
-	@View(name = "action_by_alertStatus_not_expired", map = "function(doc) { if (doc.type === 'Action' && doc.data.alertStatus!='urgent') { emit(doc.id, null); } }")
+	@View(name = "action_by_provider_alertStatus_not_expired", map = "function(doc) { if (doc.type === 'Action' && (doc.data.alertStatus=='urgent' || doc.data.alertStatus=='upcoming')) { emit(doc.providerId, null); } }")
+	public List<Action> findAllActionByProviderNotExpired(String provider) {
+		return db.queryView(createQuery("action_by_provider_alertStatus_not_expired").key(provider).includeDocs(true),
+		    Action.class);
+	}
+	
 	public List<Action> findAllActionNotExpired() {
-		return db.queryView(createQuery("action_by_alertStatus_not_expired").includeDocs(true), Action.class);
+		return db.queryView(createQuery("action_by_provider_alertStatus_not_expired").includeDocs(true), Action.class);
 	}
 }

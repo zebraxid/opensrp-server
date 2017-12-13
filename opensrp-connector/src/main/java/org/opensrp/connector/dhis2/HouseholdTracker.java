@@ -56,7 +56,7 @@ public class HouseholdTracker extends DHIS2Service implements DHIS2Tracker {
 		String ward = "";
 		String subUnit = "";
 		String vaccinationCenter = "";
-		if (!addresses.isEmpty()) {
+		try {
 			Address address = addresses.get(0);
 			division = address.getAddressField("stateProvince");
 			district = address.getAddressField("countyDistrict");
@@ -65,7 +65,8 @@ public class HouseholdTracker extends DHIS2Service implements DHIS2Tracker {
 			ward = address.getAddressField("address2");
 			subUnit = address.getAddressField("address3");
 			vaccinationCenter = address.getAddressField("address4");
-		} else {
+		}
+		catch (Exception e) {
 			
 			logger.info("No Address found for base entity id:" + client.getBaseEntityId());
 		}

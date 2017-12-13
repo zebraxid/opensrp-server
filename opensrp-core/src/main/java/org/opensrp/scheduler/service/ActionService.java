@@ -110,6 +110,10 @@ public class ActionService {
 		return new DateTime();
 	}
 	
+	public List<Action> findAllActionByProviderNotExpired(String provider) {
+		return allActions.findAllActionByProviderNotExpired(provider);
+	}
+	
 	public List<Action> findAllActionNotExpired() {
 		return allActions.findAllActionNotExpired();
 	}

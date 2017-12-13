@@ -7,7 +7,9 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -48,6 +50,9 @@ public class UniqueIdController {
 	
 	@Autowired
 	OpenmrsUserService openmrsUserService;
+	
+	@Autowired
+	private UserController userController;
 	
 	/**
 	 * Download extra ids from openmrs if less than the specified batch size, convert the ids to qr
@@ -116,6 +121,29 @@ public class UniqueIdController {
 			if (StringUtils.containsIgnoreCase(roleName, role))
 				return true;
 		return false;
+	}
+	
+	/**
+	 * Fetch unique Ids from OMRS
+	 * 
+	 * @return json array object with ids
+	 */
+	
+	@RequestMapping(value = "/get", method = RequestMethod.GET)
+	@ResponseBody
+	protected ResponseEntity<String> get(HttpServletRequest request) throws JSONException {
+		
+		String numberToGenerate = getStringFilter("numberToGenerate", request);
+		String source = getStringFilter("source", request);
+		Map<String, Object> map = new HashMap<>();
+		
+		map.put(
+		    "identifiers",
+		    openmrsIdService.getOpenMRSIdentifiers(source, numberToGenerate, SecurityContextHolder.getContext()
+		            .getAuthentication().getName(), userController.getAuthenticationAdvisor(request).getCredentials()
+		            .toString()));
+		
+		return new ResponseEntity<>(new Gson().toJson(map), HttpStatus.OK);
 	}
 	
 }

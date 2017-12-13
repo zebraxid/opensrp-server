@@ -31,7 +31,7 @@ public class ApplicationStartupListener implements ApplicationListener<ContextRe
 	//private RepeatingSchedule mctsReportScheduler;
 	private RepeatingSchedule openmrsScheduleSyncerScheduler;
 	
-	private final RepeatingSchedule atomfeedSchedule;
+	//private final RepeatingSchedule atomfeedSchedule;
 	
 	private final RepeatingSchedule encounterSchedule;
 	
@@ -51,8 +51,8 @@ public class ApplicationStartupListener implements ApplicationListener<ContextRe
 		        TimeUnit.MINUTES);
 		
 		// TODO openmrsScheduleSyncerScheduler = new RepeatingSchedule(OpenmrsConstants.SCHEDULER_TRACKER_SYNCER_SUBJECT, 2, TimeUnit.MINUTES, openmrsSchSyncerMin, TimeUnit.MINUTES);
-		atomfeedSchedule = new RepeatingSchedule(OpenmrsConstants.SCHEDULER_OPENMRS_ATOMFEED_SYNCER_SUBJECT, 5,
-		        TimeUnit.MINUTES, 1, TimeUnit.MINUTES);
+		/*atomfeedSchedule = new RepeatingSchedule(OpenmrsConstants.SCHEDULER_OPENMRS_ATOMFEED_SYNCER_SUBJECT, 5,
+		        TimeUnit.MINUTES, 1, TimeUnit.MINUTES);*/
 		encounterSchedule = new RepeatingSchedule(OpenmrsConstants.SCHEDULER_OPENMRS_DATA_PUSH_SUBJECT, 5, TimeUnit.MINUTES,
 		        1, TimeUnit.MINUTES);
 		DHIS2Syncer = new RepeatingSchedule(DHIS2Constants.DHIS2_TRACK_DATA_SYNCER_SUBJECT, 1, TimeUnit.MINUTES, 1,
@@ -68,7 +68,7 @@ public class ApplicationStartupListener implements ApplicationListener<ContextRe
 			//scheduler.startJob(anmReportScheduler);
 			//scheduler.startJob(mctsReportScheduler);
 			// scheduler.startJob(openmrsScheduleSyncerScheduler);
-			scheduler.startJob(atomfeedSchedule);
+			//scheduler.startJob(atomfeedSchedule);
 			scheduler.startJob(encounterSchedule);
 			scheduler.startJob(DHIS2Syncer);
 			

@@ -2,12 +2,8 @@ package org.opensrp.connector.dhis2.it;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Before;
@@ -18,8 +14,6 @@ import org.opensrp.common.AllConstants.DHIS2Constants;
 import org.opensrp.connector.dhis2.DHIS2SyncerListener;
 import org.opensrp.connector.dhis2.Dhis2HttpUtils;
 import org.opensrp.connector.openmrs.service.TestResourceLoader;
-import org.opensrp.domain.Client;
-import org.opensrp.domain.Event;
 import org.opensrp.domain.Obs;
 import org.opensrp.repository.AllClients;
 import org.opensrp.repository.AllEvents;
@@ -45,8 +39,8 @@ public class DHIS2SyncerListenerTest extends TestResourceLoader {
 	
 	@Before
 	public void setup() {
-		allClients.removeAll();
-		allEvents.removeAll();
+		//allClients.removeAll();
+		//allEvents.removeAll();
 	}
 	
 	public DHIS2SyncerListenerTest() throws IOException {
@@ -56,7 +50,7 @@ public class DHIS2SyncerListenerTest extends TestResourceLoader {
 	
 	@Test
 	public void testPushToDHIS2() throws JSONException {
-		String baseEntityId = "29";
+		/*String baseEntityId = "29";
 		String identifierTypeForChild = "ZEIR_ID";
 		String identifierTypeValue = "159451-37_child";
 		Client client = new Client(baseEntityId).withFirstName("MOOM child").withGender("male").withLastName("Magento")
@@ -79,8 +73,8 @@ public class DHIS2SyncerListenerTest extends TestResourceLoader {
 		client.setRelationships(relationships);
 		allClients.add(client);
 		
-		/**** mother **/
-		Client mother = (Client) new Client("127").withFirstName("HOOM Mother").withGender("female")
+		
+		Client mother = (Client) new Client("127").withFirstName("maton Mother").withGender("female")
 		        .withLastName("WORD motehr").withBirthdate(new DateTime(), false).withDateCreated(new DateTime());
 		
 		List<String> motherRelationshipsList = new ArrayList<>();
@@ -90,7 +84,7 @@ public class DHIS2SyncerListenerTest extends TestResourceLoader {
 		mother.setRelationships(motherRelationships);
 		Map<String, Object> motherAttributes = new HashMap<>();
 		
-		motherAttributes.put("phoneNumber", "7654322234");
+		
 		motherAttributes.put("nationalId", "76543222349775");
 		motherAttributes.put("spouseName", "Dion");
 		mother.setAttributes(motherAttributes);
@@ -99,7 +93,7 @@ public class DHIS2SyncerListenerTest extends TestResourceLoader {
 		Event event = new Event("127", "New Woman Member Registration", new DateTime(0l, DateTimeZone.UTC), "entityType",
 		        "provider", "locationId", "formSubmissionId");
 		List<Obs> observations = new ArrayList<>();
-		observations.add(getObsWithValue("reg_No", "45213687"));
+		
 		observations.add(getObsWithValue("epi_card_number", "25096325"));
 		observations.add(getObsWithValue("maritial_status", "Married"));
 		observations.add(getObsWithValue("couple_no", "1"));
@@ -112,7 +106,7 @@ public class DHIS2SyncerListenerTest extends TestResourceLoader {
 		event.setObs(observations);
 		allEvents.add(event);
 		
-		/** Household ***/
+		
 		Client household = (Client) new Client("130").withFirstName("humoom").withGender("female").withLastName("la")
 		        .withBirthdate(new DateTime(), false).withDateCreated(new DateTime());
 		Map<String, Object> householdAttributes = new HashMap<>();
@@ -125,7 +119,7 @@ public class DHIS2SyncerListenerTest extends TestResourceLoader {
 		List<Obs> householdOservations = new ArrayList<>();
 		householdOservations.add(getObsWithValue("Date_Of_Reg", "21-09-2017"));
 		householdEvent.setObs(householdOservations);
-		allEvents.add(householdEvent);
+		allEvents.add(householdEvent);*/
 		
 		MotechEvent motechEvent = new MotechEvent(DHIS2Constants.DHIS2_TRACK_DATA_SYNCER_SUBJECT);
 		JSONObject returns = dhis2SyncerListener.pushToDHIS2(motechEvent);
