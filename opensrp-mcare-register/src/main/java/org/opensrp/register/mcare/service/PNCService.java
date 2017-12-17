@@ -64,13 +64,12 @@ import static org.opensrp.common.AllConstants.PNCVisitTwoFields.FWPNC2KNWPRVDR;
 import static org.opensrp.common.AllConstants.PNCVisitTwoFields.FWPNC2REMSTS;
 import static org.opensrp.common.AllConstants.PNCVisitTwoFields.FWPNC2TEMP;
 import static org.opensrp.common.AllConstants.PNCVisitTwoFields.pnc2_current_formStatus;
-import static org.opensrp.common.AllConstants.PSRFFields.*;
+import static org.opensrp.common.AllConstants.PSRFFields.clientVersion;
+import static org.opensrp.common.AllConstants.PSRFFields.timeStamp;
 import static org.opensrp.common.AllConstants.UserType.FD;
-
 import static org.opensrp.common.util.EasyMap.create;
+import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_ANC;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_PNC;
-import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_PNC_2;
-import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_PNC_3;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -98,7 +97,7 @@ import org.opensrp.register.mcare.service.scheduling.ELCOScheduleService;
 import org.opensrp.register.mcare.service.scheduling.PNCSchedulesService;
 import org.opensrp.register.mcare.service.scheduling.ScheduleLogService;
 import org.opensrp.repository.AllErrorTrace;
-import org.opensrp.service.ErrorTraceService;
+import org.opensrp.scheduler.service.ActionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -107,26 +106,42 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class PNCService {
-
+	
 	private static Logger logger = LoggerFactory.getLogger(ANCService.class.toString());
+	
 	private AllElcos allElcos;
+	
 	private AllMothers allMothers;
+	
 	private AllChilds allChilds;
+	
 	private ELCOScheduleService elcoSchedulesService;
+	
 	private PNCSchedulesService pncSchedulesService;
+	
 	private ChildSchedulesService childSchedulesService;
+	
 	private ScheduleLogService scheduleLogService;
+	
 	private static String FEVER_SMS_URL;
+	
 	private String womanNID = "";
+	
 	private String womanBID = "";
+	
 	private String feverTemp = "";
+	
 	private String identifier = "text=";
+	
 	private AllErrorTrace allErrorTrace;
+	
+	private ActionService actionService;
+	
 	@Autowired
-	public PNCService(AllElcos allElcos, AllMothers allMothers, AllChilds allChilds, ELCOScheduleService elcoSchedulesService,
-			PNCSchedulesService pncSchedulesService, ChildSchedulesService childSchedulesService,
-			ScheduleLogService scheduleLogService,AllErrorTrace allErrorTrace,
-			@Value("#{opensrp['FEVER_SMS_URL']}") String fever_sms_url) {
+	public PNCService(AllElcos allElcos, AllMothers allMothers, AllChilds allChilds,
+	    ELCOScheduleService elcoSchedulesService, PNCSchedulesService pncSchedulesService,
+	    ChildSchedulesService childSchedulesService, ScheduleLogService scheduleLogService, AllErrorTrace allErrorTrace,
+	    @Value("#{opensrp['FEVER_SMS_URL']}") String fever_sms_url, ActionService actionService) {
 		this.allElcos = allElcos;
 		this.allMothers = allMothers;
 		this.allChilds = allChilds;
@@ -134,49 +149,53 @@ public class PNCService {
 		this.pncSchedulesService = pncSchedulesService;
 		this.childSchedulesService = childSchedulesService;
 		this.scheduleLogService = scheduleLogService;
-		this.allErrorTrace = allErrorTrace;	
+		this.allErrorTrace = allErrorTrace;
 		this.FEVER_SMS_URL = fever_sms_url;
+		this.actionService = actionService;
 	}
-
+	
 	public PNCService(@Value("#{opensrp['FEVER_SMS_URL']}") String fever_sms_url) {
 		this.FEVER_SMS_URL = fever_sms_url;
 	}
-
+	
 	public void deliveryOutcome(FormSubmission submission) {
 		String pattern = "yyyy-MM-dd";
 		// DateTimeFormatter formatter = DateTimeFormat.forPattern(pattern);
-
+		
 		DateTime dateTime = DateTime.parse(submission.getField(FWBNFDTOO));
 		DateTimeFormatter fmt = DateTimeFormat.forPattern(pattern);
 		String referenceDate = fmt.print(dateTime);
-
+		
 		if (submission.getField(FWBNFDTOO) != null) {
-
+			
 			Mother mother = allMothers.findByCaseId(submission.entityId());
-
+			
 			if (mother == null) {
 				SubFormData subFormData = submission.getSubFormByName(CHILD_REGISTRATION_SUB_FORM_NAME);
 				for (Map<String, String> childFields : subFormData.instances()) {
 					Child child = allChilds.findByCaseId(childFields.get(ID));
 					allChilds.remove(child);
 				}
-				allErrorTrace.save(ErrorDocType.BNF.name(),format("Failed to add Child as there is no Mother enroll with ID: {0}", submission.entityId()),submission.getInstanceId());
+				allErrorTrace.save(ErrorDocType.BNF.name(),
+				    format("Failed to add Child as there is no Mother enroll with ID: {0}", submission.entityId()),
+				    submission.getInstanceId());
 				logger.warn(format("Failed to handle PNC as there is no Mother enroll with ID: {0}", submission.entityId()));
 				return;
 			}
-
+			
 			Elco elco = allElcos.findByCaseId(mother.relationalid());
-
+			
 			if (elco != null) {
 				logger.info("Closing EC case. Ec Id: " + elco.caseId());
 				elco.setIsClosed(false);
 				elco.withTODAY(submission.getField(REFERENCE_DATE));
 				elco.setTimeStamp(System.currentTimeMillis());
 				elco.withClientVersion(DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)));
-				allElcos.update(elco);				
-				elcoSchedulesService.imediateEnrollIntoMilestoneOfPSRF(elco.caseId(), elco.TODAY(), elco.PROVIDERID(), elco.INSTANCEID());
+				allElcos.update(elco);
+				elcoSchedulesService.imediateEnrollIntoMilestoneOfPSRF(elco.caseId(), elco.TODAY(), elco.PROVIDERID(),
+				    elco.INSTANCEID());
 			}
-
+			
 			if (submission.getField(FWBNFSTS).equals(STS_WD)) {
 				logger.info("Closing Mother as the mother died during delivery. Mother Id: " + mother.caseId());
 				closeMother(mother);
@@ -187,8 +206,9 @@ public class PNCService {
 					logger.info("Mother died");
 				} else {
 					
-					if(submission.getField("user_type").equalsIgnoreCase(FD)){					
-						pncSchedulesService.enrollPNCRVForMother(submission.entityId(),submission.instanceId(),submission.anmId(), LocalDate.parse(referenceDate),referenceDate);
+					if (submission.getField("user_type").equalsIgnoreCase(FD)) {
+						pncSchedulesService.enrollPNCRVForMother(submission.entityId(), submission.instanceId(),
+						    submission.anmId(), LocalDate.parse(referenceDate), referenceDate);
 						logger.info("Generating schedule for Child when Child is Live Birth. Mother Id: " + mother.caseId());
 					}
 				}
@@ -197,22 +217,19 @@ public class PNCService {
 				SimpleDateFormat formats = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 				Date today = Calendar.getInstance().getTime();
 				for (Map<String, String> childFields : subFormData.instances()) {
-
-					Child child = allChilds.findByCaseId(childFields.get(ID)).withINSTANCEID(submission.instanceId()).withPROVIDERID(submission.anmId())
-							.withLOCATIONID(submission.getField(FW_LOCATIONID)).withTODAY(submission.getField(REFERENCE_DATE))
-							.withSTART(submission.getField(START_DATE)).withEND(submission.getField(END_DATE))
-							.withSUBMISSIONDATE(DateUtil.getTimestampToday())
-							.withClientVersion(DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)))
-							.withDistrict(mother.FWWOMDISTRICT())
-							.withUpazilla(mother.FWWOMUPAZILLA())
-							.withUnion(mother.getFWWOMUNION())
-							.withUnit(mother.getFWWOMSUBUNIT())
-							.withMouzaPara(mother.getMother_mauza())
-							.setTimeStamp(System.currentTimeMillis())
-							.setIsClosed(false);
-
+					
+					Child child = allChilds.findByCaseId(childFields.get(ID)).withINSTANCEID(submission.instanceId())
+					        .withPROVIDERID(submission.anmId()).withLOCATIONID(submission.getField(FW_LOCATIONID))
+					        .withTODAY(submission.getField(REFERENCE_DATE)).withSTART(submission.getField(START_DATE))
+					        .withEND(submission.getField(END_DATE)).withSUBMISSIONDATE(DateUtil.getTimestampToday())
+					        .withClientVersion(DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)))
+					        .withDistrict(mother.FWWOMDISTRICT()).withUpazilla(mother.FWWOMUPAZILLA())
+					        .withUnion(mother.getFWWOMUNION()).withUnit(mother.getFWWOMSUBUNIT())
+					        .withMouzaPara(mother.getMother_mauza()).setTimeStamp(System.currentTimeMillis())
+					        .setIsClosed(false);
+					
 					child.details().put(relationalid, childFields.get(relationalid));
-
+					
 					child.details().put(FW_WOMNID, submission.getField(FW_WOMNID));
 					child.details().put(FW_WOMBID, submission.getField(FW_WOMBID));
 					child.details().put(FW_GOBHHID, submission.getField(FW_GOBHHID));
@@ -230,34 +247,39 @@ public class PNCService {
 					child.details().put(FWBNFDOB, childFields.get(FWBNFDOB));
 					child.details().put(external_user_ID, childFields.get(external_user_ID));
 					child.details().put("referenceDate", referenceDate);
-					child.details().put("ward",  mother.getFWWOMWARD());
-					child.details().put("division",  mother.details().get("division"));
+					child.details().put("ward", mother.getFWWOMWARD());
+					child.details().put("division", mother.details().get("division"));
 					allChilds.update(child);
 					logger.info("FWBNFCHLDVITSTS:" + childFields.get(FWBNFCHLDVITSTS));
 					if (childFields.get(FWBNFCHLDVITSTS).equalsIgnoreCase("0")) {
 						logger.info("Child died");
 					} else {
 						
-						if(submission.getField("user_type").equalsIgnoreCase(FD)){
-							childSchedulesService.enrollENCCForChild(childFields.get(ID),submission.instanceId(),submission.anmId(), LocalDate.parse(referenceDate),referenceDate);
+						if (submission.getField("user_type").equalsIgnoreCase(FD)) {
+							childSchedulesService.enrollENCCForChild(childFields.get(ID), submission.instanceId(),
+							    submission.anmId(), LocalDate.parse(referenceDate), referenceDate);
 						}
 					}
 				}
+				
 			} else if (submission.getField(FWBNFSTS).equals(STS_SB)) {
 				if (submission.getField("user_type").equalsIgnoreCase(FD)) {
 					logger.info("Generating schedule for Mother when Child is Still Birth. Mother Id: " + mother.caseId());
-					pncSchedulesService.enrollPNCRVForMother(submission.entityId(),submission.instanceId(),submission.anmId(), LocalDate.parse(referenceDate),referenceDate);
+					pncSchedulesService.enrollPNCRVForMother(submission.entityId(), submission.instanceId(),
+					    submission.anmId(), LocalDate.parse(referenceDate), referenceDate);
 				} else {
 					logger.info("FWA submit form for Still Birth so nothing happend ");
 				}
 			}
 		}
 	}
-
+	
 	public void pncVisitOne(FormSubmission submission) {
 		Mother mother = allMothers.findByCaseId(submission.entityId());
 		if (mother == null) {
-			allErrorTrace.save(ErrorDocType.PNC.name(),format("Failed to handle PNC-1 as there is no Mother enroll with ID: {0}", submission.entityId()),submission.getInstanceId());
+			allErrorTrace.save(ErrorDocType.PNC.name(),
+			    format("Failed to handle PNC-1 as there is no Mother enroll with ID: {0}", submission.entityId()),
+			    submission.getInstanceId());
 			logger.warn(format("Failed to handle PNC-1 as there is no Mother enroll with ID: {0}", submission.entityId()));
 			return;
 		}
@@ -266,33 +288,36 @@ public class PNCService {
 		womanBID = submission.getField(FW_WOMBID);
 		womanNID = submission.getField(FW_WOMBID);
 		feverTemp = submission.getField(FWPNC1TEMP);
-		Map<String, String> pncVisitOne = create(FWPNC1DATE, submission.getField(FWPNC1DATE)).put(FWCONFIRMATION, submission.getField(FWCONFIRMATION))
-				.put(FWPNC1REMSTS, submission.getField(FWPNC1REMSTS)).put(FWPNC1INT, submission.getField(FWPNC1INT))
-				.put(FWPNC1KNWPRVDR, submission.getField(FWPNC1KNWPRVDR)).put(FWPNC1FVR, submission.getField(FWPNC1FVR)).put(FWPNC1TEMP, feverTemp)
-				.put(FWPNC1DNGRSIGN, submission.getField(FWPNC1DNGRSIGN)).put(FWPNC1DELTYPE, submission.getField(FWPNC1DELTYPE))
-				.put(FWPNC1DELCOMP, submission.getField(FWPNC1DELCOMP)).put(FW_GOBHHID, submission.getField(FW_GOBHHID))
-				.put(FW_JiVitAHHID, submission.getField(FW_JiVitAHHID)).put(FW_WOMBID, womanBID).put(FW_WOMNID, womanNID)
-				.put(FW_WOMFNAME, submission.getField(FW_WOMFNAME)).put(FW_HUSNAME, submission.getField(FW_HUSNAME))
-				.put(FWBNFDTOO, submission.getField(FWBNFDTOO)).put(FWBNFSTS, submission.getField(FWBNFSTS))
-				.put(REFERENCE_DATE, submission.getField(REFERENCE_DATE)).put(START_DATE, submission.getField(START_DATE))
-				.put(END_DATE, submission.getField(END_DATE)).put(pnc1_current_formStatus, submission.getField(pnc1_current_formStatus))
-				.put(relationalid, submission.getField(relationalid)).put(user_type, submission.getField(user_type))
-				.put(external_user_ID, submission.getField(external_user_ID))
-				.put(timeStamp, ""+System.currentTimeMillis())
-				.put(clientVersion, DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)).toString())
-				.put(received_time, DateUtil.getTodayAsString()).map();
-
+		Map<String, String> pncVisitOne = create(FWPNC1DATE, submission.getField(FWPNC1DATE))
+		        .put(FWCONFIRMATION, submission.getField(FWCONFIRMATION))
+		        .put(FWPNC1REMSTS, submission.getField(FWPNC1REMSTS)).put(FWPNC1INT, submission.getField(FWPNC1INT))
+		        .put(FWPNC1KNWPRVDR, submission.getField(FWPNC1KNWPRVDR)).put(FWPNC1FVR, submission.getField(FWPNC1FVR))
+		        .put(FWPNC1TEMP, feverTemp).put(FWPNC1DNGRSIGN, submission.getField(FWPNC1DNGRSIGN))
+		        .put(FWPNC1DELTYPE, submission.getField(FWPNC1DELTYPE))
+		        .put(FWPNC1DELCOMP, submission.getField(FWPNC1DELCOMP)).put(FW_GOBHHID, submission.getField(FW_GOBHHID))
+		        .put(FW_JiVitAHHID, submission.getField(FW_JiVitAHHID)).put(FW_WOMBID, womanBID).put(FW_WOMNID, womanNID)
+		        .put(FW_WOMFNAME, submission.getField(FW_WOMFNAME)).put(FW_HUSNAME, submission.getField(FW_HUSNAME))
+		        .put(FWBNFDTOO, submission.getField(FWBNFDTOO)).put(FWBNFSTS, submission.getField(FWBNFSTS))
+		        .put(REFERENCE_DATE, submission.getField(REFERENCE_DATE)).put(START_DATE, submission.getField(START_DATE))
+		        .put(END_DATE, submission.getField(END_DATE))
+		        .put(pnc1_current_formStatus, submission.getField(pnc1_current_formStatus))
+		        .put(relationalid, submission.getField(relationalid)).put(user_type, submission.getField(user_type))
+		        .put(external_user_ID, submission.getField(external_user_ID))
+		        .put(timeStamp, "" + System.currentTimeMillis())
+		        .put(clientVersion, DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)).toString())
+		        .put(received_time, DateUtil.getTodayAsString()).map();
+		
 		mother.withClientVersion(DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)));
 		mother.withPNCVisitOne(pncVisitOne);
 		mother.withTODAY(submission.getField(REFERENCE_DATE));
 		mother.setTimeStamp(System.currentTimeMillis());
 		allMothers.update(mother);
 		pncSchedulesService.fullfillMilestone(submission.entityId(), submission.anmId(), SCHEDULE_PNC, new LocalDate());
+		actionService.markAlertAsInactive(submission.anmId(), submission.entityId(), SCHEDULE_ANC);
 		String pattern = "yyyy-MM-dd";
 		DateTime dateTime = DateTime.parse(mother.getbnfVisitDetails(FWBNFDTOO));
 		DateTimeFormatter fmt = DateTimeFormat.forPattern(pattern);
 		String referenceDate = fmt.print(dateTime);
-		//pncSchedulesService.enrollPNCForMother(submission.entityId(), SCHEDULE_PNC_2, LocalDate.parse(referenceDate));
 		
 		if (Double.parseDouble(feverTemp) >= 100.4) {
 			if (!womanBID.equalsIgnoreCase(""))
@@ -302,12 +327,14 @@ public class PNCService {
 			sendFeverSMS(identifier);
 		}
 	}
-
+	
 	public void pncVisitTwo(FormSubmission submission) {
 		Mother mother = allMothers.findByCaseId(submission.entityId());
-
+		
 		if (mother == null) {
-			allErrorTrace.save(ErrorDocType.PNC.name(),format("Failed to handle PNC-2 as there is no Mother enroll with ID: {0}", submission.entityId()),submission.getInstanceId());
+			allErrorTrace.save(ErrorDocType.PNC.name(),
+			    format("Failed to handle PNC-2 as there is no Mother enroll with ID: {0}", submission.entityId()),
+			    submission.getInstanceId());
 			logger.warn(format("Failed to handle PNC-2 as there is no Mother enroll with ID: {0}", submission.entityId()));
 			return;
 		}
@@ -316,33 +343,34 @@ public class PNCService {
 		womanBID = submission.getField(FW_WOMBID);
 		womanNID = submission.getField(FW_WOMBID);
 		feverTemp = submission.getField(FWPNC2TEMP);
-		Map<String, String> pncVisitTwo = create(FWPNC2DATE, submission.getField(FWPNC2DATE)).put(FWCONFIRMATION, submission.getField(FWCONFIRMATION))
-				.put(FWPNC2REMSTS, submission.getField(FWPNC2REMSTS)).put(FWPNC2INT, submission.getField(FWPNC2INT))
-				.put(FWPNC2KNWPRVDR, submission.getField(FWPNC2KNWPRVDR)).put(FWPNC2FVR, submission.getField(FWPNC2FVR)).put(FWPNC2TEMP, feverTemp)
-				.put(FWPNC2DNGRSIGN, submission.getField(FWPNC2DNGRSIGN)).put(FWPNC2DELCOMP, submission.getField(FWPNC2DELCOMP))
-				.put(FW_GOBHHID, submission.getField(FW_GOBHHID)).put(FW_JiVitAHHID, submission.getField(FW_JiVitAHHID)).put(FW_WOMBID, womanBID)
-				.put(FW_WOMNID, womanNID).put(FW_WOMFNAME, submission.getField(FW_WOMFNAME)).put(FW_HUSNAME, submission.getField(FW_HUSNAME))
-				.put(FWBNFDTOO, submission.getField(FWBNFDTOO)).put(FWBNFSTS, submission.getField(FWBNFSTS))
-				.put(REFERENCE_DATE, submission.getField(REFERENCE_DATE)).put(START_DATE, submission.getField(START_DATE))
-				.put(END_DATE, submission.getField(END_DATE)).put(pnc2_current_formStatus, submission.getField(pnc2_current_formStatus))
-				.put(relationalid, submission.getField(relationalid)).put(user_type, submission.getField(user_type))
-				.put(clientVersion, DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)).toString())
-				.put(external_user_ID, submission.getField(external_user_ID))
-				.put(timeStamp, ""+System.currentTimeMillis())
-				.put(received_time, DateUtil.getTodayAsString()).map();
-
+		Map<String, String> pncVisitTwo = create(FWPNC2DATE, submission.getField(FWPNC2DATE))
+		        .put(FWCONFIRMATION, submission.getField(FWCONFIRMATION))
+		        .put(FWPNC2REMSTS, submission.getField(FWPNC2REMSTS)).put(FWPNC2INT, submission.getField(FWPNC2INT))
+		        .put(FWPNC2KNWPRVDR, submission.getField(FWPNC2KNWPRVDR)).put(FWPNC2FVR, submission.getField(FWPNC2FVR))
+		        .put(FWPNC2TEMP, feverTemp).put(FWPNC2DNGRSIGN, submission.getField(FWPNC2DNGRSIGN))
+		        .put(FWPNC2DELCOMP, submission.getField(FWPNC2DELCOMP)).put(FW_GOBHHID, submission.getField(FW_GOBHHID))
+		        .put(FW_JiVitAHHID, submission.getField(FW_JiVitAHHID)).put(FW_WOMBID, womanBID).put(FW_WOMNID, womanNID)
+		        .put(FW_WOMFNAME, submission.getField(FW_WOMFNAME)).put(FW_HUSNAME, submission.getField(FW_HUSNAME))
+		        .put(FWBNFDTOO, submission.getField(FWBNFDTOO)).put(FWBNFSTS, submission.getField(FWBNFSTS))
+		        .put(REFERENCE_DATE, submission.getField(REFERENCE_DATE)).put(START_DATE, submission.getField(START_DATE))
+		        .put(END_DATE, submission.getField(END_DATE))
+		        .put(pnc2_current_formStatus, submission.getField(pnc2_current_formStatus))
+		        .put(relationalid, submission.getField(relationalid)).put(user_type, submission.getField(user_type))
+		        .put(clientVersion, DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)).toString())
+		        .put(external_user_ID, submission.getField(external_user_ID))
+		        .put(timeStamp, "" + System.currentTimeMillis()).put(received_time, DateUtil.getTodayAsString()).map();
+		
 		mother.withClientVersion(DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)));
 		mother.withPNCVisitTwo(pncVisitTwo);
 		mother.withTODAY(submission.getField(REFERENCE_DATE));
 		mother.setTimeStamp(System.currentTimeMillis());
-		allMothers.update(mother);		
+		allMothers.update(mother);
 		pncSchedulesService.fullfillMilestone(submission.entityId(), submission.anmId(), SCHEDULE_PNC, new LocalDate());
-	
-		String pattern = "yyyy-MM-dd";		
+		actionService.markAlertAsInactive(submission.anmId(), submission.entityId(), SCHEDULE_ANC);
+		String pattern = "yyyy-MM-dd";
 		DateTime dateTime = DateTime.parse(mother.getbnfVisitDetails(FWBNFDTOO));
 		DateTimeFormatter fmt = DateTimeFormat.forPattern(pattern);
 		String referenceDate = fmt.print(dateTime);
-		//pncSchedulesService.enrollPNCForMother(submission.entityId(), SCHEDULE_PNC_3, LocalDate.parse(referenceDate));
 		
 		if (Double.parseDouble(feverTemp) >= 100.4) {
 			if (!womanBID.equalsIgnoreCase(""))
@@ -352,13 +380,15 @@ public class PNCService {
 			sendFeverSMS(identifier);
 		}
 	}
-
+	
 	public void pncVisitThree(FormSubmission submission) {
-
+		
 		Mother mother = allMothers.findByCaseId(submission.entityId());
-
+		
 		if (mother == null) {
-			allErrorTrace.save(ErrorDocType.PNC.name(),format("Failed to handle PNC-2 as there is no Mother enroll with ID: {0}", submission.entityId()),submission.getInstanceId());
+			allErrorTrace.save(ErrorDocType.PNC.name(),
+			    format("Failed to handle PNC-2 as there is no Mother enroll with ID: {0}", submission.entityId()),
+			    submission.getInstanceId());
 			logger.warn(format("Failed to handle PNC-3 as there is no Mother enroll with ID: {0}", submission.entityId()));
 			return;
 		}
@@ -367,28 +397,30 @@ public class PNCService {
 		womanBID = submission.getField(FW_WOMBID);
 		womanNID = submission.getField(FW_WOMBID);
 		feverTemp = submission.getField(FWPNC3TEMP);
-		Map<String, String> pncVisitThree = create(FWPNC3DATE, submission.getField(FWPNC3DATE)).put(FWCONFIRMATION, submission.getField(FWCONFIRMATION))
-				.put(FWPNC3REMSTS, submission.getField(FWPNC3REMSTS)).put(FWPNC3INT, submission.getField(FWPNC3INT))
-				.put(FWPNC3KNWPRVDR, submission.getField(FWPNC3KNWPRVDR)).put(FWPNC3FVR, submission.getField(FWPNC3FVR)).put(FWPNC3TEMP, feverTemp)
-				.put(FWPNC3DNGRSIGN, submission.getField(FWPNC3DNGRSIGN)).put(FWPNC3DELCOMP, submission.getField(FWPNC3DELCOMP))
-				.put(FW_GOBHHID, submission.getField(FW_GOBHHID)).put(FW_JiVitAHHID, submission.getField(FW_JiVitAHHID)).put(FW_WOMBID, womanBID)
-				.put(FW_WOMNID, womanNID).put(FW_WOMFNAME, submission.getField(FW_WOMFNAME)).put(FW_HUSNAME, submission.getField(FW_HUSNAME))
-				.put(FWBNFDTOO, submission.getField(FWBNFDTOO)).put(FWBNFSTS, submission.getField(FWBNFSTS))
-				.put(REFERENCE_DATE, submission.getField(REFERENCE_DATE)).put(START_DATE, submission.getField(START_DATE))
-				.put(END_DATE, submission.getField(END_DATE)).put(pnc3_current_formStatus, submission.getField(pnc3_current_formStatus))
-				.put(relationalid, submission.getField(relationalid)).put(user_type, submission.getField(user_type))
-				.put(clientVersion, DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)).toString())
-				.put(external_user_ID, submission.getField(external_user_ID))
-				.put(timeStamp, ""+System.currentTimeMillis())
-				.put(received_time, DateUtil.getTodayAsString()).map();
+		Map<String, String> pncVisitThree = create(FWPNC3DATE, submission.getField(FWPNC3DATE))
+		        .put(FWCONFIRMATION, submission.getField(FWCONFIRMATION))
+		        .put(FWPNC3REMSTS, submission.getField(FWPNC3REMSTS)).put(FWPNC3INT, submission.getField(FWPNC3INT))
+		        .put(FWPNC3KNWPRVDR, submission.getField(FWPNC3KNWPRVDR)).put(FWPNC3FVR, submission.getField(FWPNC3FVR))
+		        .put(FWPNC3TEMP, feverTemp).put(FWPNC3DNGRSIGN, submission.getField(FWPNC3DNGRSIGN))
+		        .put(FWPNC3DELCOMP, submission.getField(FWPNC3DELCOMP)).put(FW_GOBHHID, submission.getField(FW_GOBHHID))
+		        .put(FW_JiVitAHHID, submission.getField(FW_JiVitAHHID)).put(FW_WOMBID, womanBID).put(FW_WOMNID, womanNID)
+		        .put(FW_WOMFNAME, submission.getField(FW_WOMFNAME)).put(FW_HUSNAME, submission.getField(FW_HUSNAME))
+		        .put(FWBNFDTOO, submission.getField(FWBNFDTOO)).put(FWBNFSTS, submission.getField(FWBNFSTS))
+		        .put(REFERENCE_DATE, submission.getField(REFERENCE_DATE)).put(START_DATE, submission.getField(START_DATE))
+		        .put(END_DATE, submission.getField(END_DATE))
+		        .put(pnc3_current_formStatus, submission.getField(pnc3_current_formStatus))
+		        .put(relationalid, submission.getField(relationalid)).put(user_type, submission.getField(user_type))
+		        .put(clientVersion, DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)).toString())
+		        .put(external_user_ID, submission.getField(external_user_ID))
+		        .put(timeStamp, "" + System.currentTimeMillis()).put(received_time, DateUtil.getTodayAsString()).map();
 		
 		mother.withPNCVisitThree(pncVisitThree);
 		mother.withClientVersion(DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)));
 		mother.withTODAY(submission.getField(REFERENCE_DATE));
 		mother.setTimeStamp(System.currentTimeMillis());
 		allMothers.update(mother);
-		pncSchedulesService.unEnrollFromSchedule(submission.entityId(), submission.anmId(), SCHEDULE_PNC);
-		
+		pncSchedulesService.fullfillMilestone(submission.entityId(), submission.anmId(), SCHEDULE_PNC, new LocalDate());
+		actionService.markAlertAsInactive(submission.anmId(), submission.entityId(), SCHEDULE_PNC);
 		if (Double.parseDouble(feverTemp) >= 100.4) {
 			if (!womanBID.equalsIgnoreCase(""))
 				identifier += "b " + womanBID;
@@ -397,27 +429,27 @@ public class PNCService {
 			sendFeverSMS(identifier);
 		}
 	}
-
+	
 	public void pncClose(String entityId) {
-
+		
 		Mother mother = allMothers.findByCaseId(entityId);
-
+		
 		if (mother == null) {
 			logger.warn("Tried to close case without registered mother for case ID: " + entityId);
 			return;
 		}
-
+		
 		allMothers.close(entityId);
-
+		
 		pncSchedulesService.unEnrollFromAllSchedules(entityId);
 	}
-
+	
 	public void closeMother(Mother mother) {
-
+		
 		mother.setIsClosed(true);
 		allMothers.update(mother);
 		pncSchedulesService.unEnrollFromAllSchedules(mother.caseId());
-
+		
 		Elco elco = allElcos.findByCaseId(mother.relationalid());
 		if (elco != null) {
 			logger.info("Closing EC case along with PNC case. Ec Id: " + elco.caseId());
@@ -425,7 +457,7 @@ public class PNCService {
 			allElcos.update(elco);
 		}
 	}
-
+	
 	public void deleteBlankChild(FormSubmission submission) {
 		SubFormData subFormData = submission.getSubFormByName(CHILD_REGISTRATION_SUB_FORM_NAME);
 		for (Map<String, String> childFields : subFormData.instances()) {
@@ -434,12 +466,13 @@ public class PNCService {
 				allChilds.remove(child);
 			}
 		}
-
+		
 	}
-
+	
 	public void sendFeverSMS(String identifier) {
 		System.out.println("hello" + FEVER_SMS_URL);
-		System.out.println("sending feversms for woman identifier: " + identifier + " ,response:" + HttpUtil.get(FEVER_SMS_URL, identifier, "", "").body());
+		System.out.println("sending feversms for woman identifier: " + identifier + " ,response:"
+		        + HttpUtil.get(FEVER_SMS_URL, identifier, "", "").body());
 	}
-
+	
 }

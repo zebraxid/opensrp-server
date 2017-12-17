@@ -144,7 +144,7 @@ public class ActionService {
 						scheduleService.fulfillMilestone(caseID, scheduleName, new LocalDate());
 						
 					} else {
-						logger.info("Date diffrenece required less or equal 2");
+						logger.info("alertStatus:" + alertStatus.name());
 						
 					}
 					

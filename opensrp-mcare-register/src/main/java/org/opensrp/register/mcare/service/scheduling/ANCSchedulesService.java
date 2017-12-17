@@ -139,21 +139,26 @@ public class ANCSchedulesService {
 				alertStaus = AlertStatus.upcoming;
 				ancStartDate = new DateTime(start).plusDays(DateTimeDuration.ANC2UPCOMINGSTART);
 				ancExpireDate = new DateTime(ancStartDate).plusDays(DateTimeDuration.ANC2UPCOMINGEND);
+				scheduleLogService.saveAction(entityId, instanceId, provider, SCHEDULE_ANC, milestone,
+				    BeneficiaryType.mother, alertStaus, ancStartDate, ancExpireDate);
 			} else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(31).toPeriod()
 			        .minusDays(1))) {//216
 				alertStaus = AlertStatus.urgent;
 				ancStartDate = new DateTime(start).plusDays(DateTimeDuration.ANC2URGENTSTART);
 				ancExpireDate = new DateTime(ancStartDate).plusDays(DateTimeDuration.ANC2URGENTEND);
+				scheduleLogService.saveAction(entityId, instanceId, provider, SCHEDULE_ANC, milestone,
+				    BeneficiaryType.mother, alertStaus, ancStartDate, ancExpireDate);
 			} else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(31).toPeriod())) {
 				//217
 				alertStaus = AlertStatus.expired;
 				ancStartDate = new DateTime(start).plusDays(DateTimeDuration.ANC2EXPIREDSTART);
 				ancExpireDate = new DateTime(ancStartDate).plusDays(DateTimeDuration.ANC2EXPIREDEND);
+				scheduleLogService.saveAction(entityId, instanceId, provider, SCHEDULE_ANC, milestone,
+				    BeneficiaryType.mother, alertStaus, ancStartDate, ancExpireDate);
 			} else {
 				logger.info("Form anc2");
 			}
-			scheduleLogService.saveAction(entityId, instanceId, provider, SCHEDULE_ANC, milestone, BeneficiaryType.mother,
-			    alertStaus, ancStartDate, ancExpireDate);
+			
 		} else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(35).toPeriod())) {
 			//245
 			milestone = SCHEDULE_ANC_3;
@@ -168,22 +173,26 @@ public class ANCSchedulesService {
 				alertStaus = AlertStatus.upcoming;
 				ancStartDate = new DateTime(start).plusDays(DateTimeDuration.ANC3UPCOMINGSTART);
 				ancExpireDate = new DateTime(ancStartDate).plusDays(DateTimeDuration.ANC3UPCOMINGEND);
+				scheduleLogService.saveAction(entityId, instanceId, provider, SCHEDULE_ANC, milestone,
+				    BeneficiaryType.mother, alertStaus, ancStartDate, ancExpireDate);
 			} else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(35).toPeriod()
 			        .minusDays(1))) {
 				//244
 				alertStaus = AlertStatus.urgent;
 				ancStartDate = new DateTime(start).plusDays(DateTimeDuration.ANC3URGENTSTART);
 				ancExpireDate = new DateTime(ancStartDate).plusDays(DateTimeDuration.ANC3URGENTEND);
+				scheduleLogService.saveAction(entityId, instanceId, provider, SCHEDULE_ANC, milestone,
+				    BeneficiaryType.mother, alertStaus, ancStartDate, ancExpireDate);
 			} else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(35).toPeriod())) {
 				//245
 				alertStaus = AlertStatus.expired;
 				ancStartDate = new DateTime(start).plusDays(DateTimeDuration.ANC3EXPIREDSTART);
 				ancExpireDate = new DateTime(ancStartDate).plusDays(DateTimeDuration.ANC3EXPIREDEND);
+				scheduleLogService.saveAction(entityId, instanceId, provider, SCHEDULE_ANC, milestone,
+				    BeneficiaryType.mother, alertStaus, ancStartDate, ancExpireDate);
 			} else {
 				logger.info("Form anc3");
 			}
-			scheduleLogService.saveAction(entityId, instanceId, provider, SCHEDULE_ANC, milestone, BeneficiaryType.mother,
-			    alertStaus, ancStartDate, ancExpireDate);
 			
 		} else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(44).toPeriod())) {
 			// 307
@@ -199,12 +208,16 @@ public class ANCSchedulesService {
 				alertStaus = AlertStatus.upcoming;
 				ancStartDate = new DateTime(start).plusDays(DateTimeDuration.ANC4UPCOMINGSTART);
 				ancExpireDate = new DateTime(ancStartDate).plusDays(DateTimeDuration.ANC4UPCOMINGEND);
+				scheduleLogService.saveAction(entityId, instanceId, provider, SCHEDULE_ANC, milestone,
+				    BeneficiaryType.mother, alertStaus, ancStartDate, ancExpireDate);
 			} else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(44).toPeriod()
 			        .minusDays(2))) {
 				//306
 				alertStaus = AlertStatus.urgent;
 				ancStartDate = new DateTime(start).plusDays(DateTimeDuration.ANC4URGENTSTART);
 				ancExpireDate = new DateTime(ancStartDate).plusDays(DateTimeDuration.ANC4URGENTEND);
+				scheduleLogService.saveAction(entityId, instanceId, provider, SCHEDULE_ANC, milestone,
+				    BeneficiaryType.mother, alertStaus, ancStartDate, ancExpireDate);
 				
 			} else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(44).toPeriod()
 			        .minusDays(1))) {
@@ -212,13 +225,13 @@ public class ANCSchedulesService {
 				alertStaus = AlertStatus.expired;
 				ancStartDate = new DateTime(start).plusDays(DateTimeDuration.ANC4EXPIREDSTART);
 				ancExpireDate = new DateTime(ancStartDate).plusDays(DateTimeDuration.ANC4EXPIREDEND);
+				scheduleLogService.saveAction(entityId, instanceId, provider, SCHEDULE_ANC, milestone,
+				    BeneficiaryType.mother, alertStaus, ancStartDate, ancExpireDate);
 				
 			} else {
 				logger.info("Form anc4");
 			}
 			
-			scheduleLogService.saveAction(entityId, instanceId, provider, SCHEDULE_ANC, milestone, BeneficiaryType.mother,
-			    alertStaus, ancStartDate, ancExpireDate);
 		} else {
 			logger.info("ANC Schedule out of Date of case id" + entityId);
 			scheduleLogService.saveAction(entityId, instanceId, provider, SCHEDULE_ANC, SCHEDULE_ANC_4,
