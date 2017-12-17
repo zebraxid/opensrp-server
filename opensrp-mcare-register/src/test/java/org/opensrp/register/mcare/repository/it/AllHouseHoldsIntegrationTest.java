@@ -8,10 +8,14 @@ import org.ektorp.impl.StdCouchDbConnector;
 import org.ektorp.impl.StdCouchDbInstance;
 import org.ektorp.impl.StdObjectMapperFactory;
 import org.junit.Before;
+import org.junit.Test;
 import org.opensrp.common.util.DateUtil;
 import org.opensrp.common.util.WeekBoundariesAndTimestamps;
+import org.opensrp.register.mcare.domain.HouseHold;
+import org.opensrp.register.mcare.domain.Members;
 import org.opensrp.register.mcare.repository.AllElcos;
 import org.opensrp.register.mcare.repository.AllHouseHolds;
+import org.opensrp.register.mcare.repository.AllMembers;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
@@ -24,6 +28,10 @@ public class AllHouseHoldsIntegrationTest {
 
 	@Autowired
     private AllHouseHolds allHouseHolds;
+
+	@Autowired
+    private AllMembers allMembers;
+
 	@Autowired
 	private AllElcos allElcos;
 	private CouchDbInstance dbInstance;
@@ -31,24 +39,42 @@ public class AllHouseHoldsIntegrationTest {
 	
     @Before
     public void setUp() throws Exception {
-    	//allHouseHolds.removeAll();
-    	//allElcos.removeAll();
-       HttpClient httpClient = new StdHttpClient.Builder() 
-        //.host("localhost") 
-       	.host("192.168.19.55")
-        .port(5984) 
-        .socketTimeout(1000) 
-        .build(); 
-		dbInstance = new StdCouchDbInstance(httpClient); 
-		
-		stdCouchDbConnector = new StdCouchDbConnector("opensrp", dbInstance, new StdObjectMapperFactory());
-		 
-		stdCouchDbConnector.createDatabaseIfNotExists(); 
-		allHouseHolds = new AllHouseHolds(2, stdCouchDbConnector);
-		allElcos = new AllElcos(2, stdCouchDbConnector);
-    	//initMocks(this);
+        // allHouseHolds.removeAll();
+        // allElcos.removeAll();
+        HttpClient httpClient = new StdHttpClient.Builder().host("localhost")
+                // .host("192.168.19.55")
+                .port(5984).username("Admin").password("mPower@1234")
+                .socketTimeout(1000).build();
+        dbInstance = new StdCouchDbInstance(httpClient);
+
+        stdCouchDbConnector = new StdCouchDbConnector("opensrp", dbInstance,
+                new StdObjectMapperFactory());
+
+        stdCouchDbConnector.createDatabaseIfNotExists();
+        allHouseHolds = new AllHouseHolds(2, stdCouchDbConnector);
+        allMembers = new AllMembers(2, stdCouchDbConnector);
+        allElcos = new AllElcos(2, stdCouchDbConnector);
+        // initMocks(this);
     }
-    
+
+    @Test
+    public void updateTimeStampKeyForHouseHolds() {
+        List<HouseHold> households = allHouseHolds.getAll();
+        for (HouseHold houseHold : households) {
+            houseHold.setUpdatedTimeStamp(houseHold.getUpdatedTimeStamp());
+            allHouseHolds.update(houseHold);
+        }
+    }
+
+    @Test
+    public void updateTimeStampKeyForMembers() {
+        List<Members> members = allMembers.getAll();
+        for (Members member : members) {
+            member.setUpdatedTimeStamp(member.getUpdatedTimeStamp());
+            allMembers.update(member);
+        }
+    }
+
   /*  @Test
     public void shouldRegisterEligibleCouple() throws Exception {
     	HouseHold houseHold = new HouseHold().withFWHOHNAME("HouseHold-1").withPROVIDERID("Provider-I");

@@ -149,7 +149,7 @@ public class HouseHold extends MotechBaseDataObject {
 	@JsonProperty
     private long clientVersion;
 	@JsonProperty
-    private long updatedTimeStamp;
+    private long timeStamp;
 
 
 	public HouseHold() {
@@ -175,11 +175,11 @@ public class HouseHold extends MotechBaseDataObject {
     }
 
     public long getUpdatedTimeStamp() {
-        return updatedTimeStamp;
+        return timeStamp;
     }
 
     public void setUpdatedTimeStamp(long updatedTimeStamp) {
-        this.updatedTimeStamp = updatedTimeStamp;
+        this.timeStamp = updatedTimeStamp;
     }
 
     public HouseHold setCASEID(String caseId) {
