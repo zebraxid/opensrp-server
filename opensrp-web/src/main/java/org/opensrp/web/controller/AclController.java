@@ -30,6 +30,7 @@ import org.opensrp.register.mcare.domain.Mother;
 import org.opensrp.register.mcare.repository.AllChilds;
 import org.opensrp.register.mcare.repository.AllMothers;
 import org.opensrp.register.mcare.service.AclService;
+import org.opensrp.register.mcare.service.scheduling.ANCSchedulesService;
 import org.opensrp.register.mcare.service.scheduling.ChildSchedulesService;
 import org.opensrp.register.mcare.service.scheduling.PNCSchedulesService;
 import org.opensrp.scheduler.Action;
@@ -83,6 +84,9 @@ public class AclController {
 	
 	@Autowired
 	private ChildSchedulesService childSchedulesService;
+	
+	@Autowired
+	private ANCSchedulesService ancSchedulesService;
 	
 	@Autowired
 	public AclController(RoleService roleService, AclService aclService, OpenmrsUserService openmrsUserService,
@@ -403,6 +407,33 @@ public class AclController {
 			}
 		}
 		catch (Exception e) {
+			
+		}
+	}
+	
+	@RequestMapping(method = GET, value = "/anc")
+	public void anc() {
+		List<Enrollment> enrollments = allEnrollmentWrapper.all();
+		for (Enrollment enrollment : enrollments) {
+			if ("DEFAULTED".equalsIgnoreCase(enrollment.getStatus().name())) {
+				List<Action> actions = allActions.findByCaseID(enrollment.getExternalId());
+				if (actions.size() != 0) {
+					allEnrollmentWrapper.remove(enrollment);
+					allActions.remove(actions.get(0));
+					Mother mother = allMothers.findByCaseId(enrollment.getExternalId());
+					System.err.println("" + enrollment.getExternalId());
+					if (mother != null) {
+						try {
+							String lmp = mother.details().get("LMP");
+							ancSchedulesService.enrollMother(enrollment.getExternalId(), LocalDate.parse(lmp),
+							    mother.PROVIDERID(), mother.INSTANCEID(), lmp);
+						}
+						catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+				}
+			}
 			
 		}
 	}

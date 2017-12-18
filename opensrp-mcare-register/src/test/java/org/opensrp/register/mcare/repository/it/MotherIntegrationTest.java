@@ -14,6 +14,7 @@ import org.ektorp.impl.StdObjectMapperFactory;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.motechproject.scheduletracking.api.domain.Enrollment;
 import org.opensrp.register.mcare.domain.Mother;
 import org.opensrp.register.mcare.repository.AllChilds;
 import org.opensrp.register.mcare.repository.AllElcos;
@@ -51,7 +52,7 @@ public class MotherIntegrationTest {
 		
 		HttpClient httpClient = new StdHttpClient.Builder()
 		
-		.host("192.168.19.97").port(5984).socketTimeout(1000000).username("Admin").password("mPower@1234").build();
+		.host("localhost").port(5984).socketTimeout(1000000).username("Admin").password("mPower@1234").build();
 		dbInstance = new StdCouchDbInstance(httpClient);
 		
 		stdCouchDbConnector = new StdCouchDbConnector("opensrp", dbInstance, new StdObjectMapperFactory());
@@ -340,6 +341,7 @@ public class MotherIntegrationTest {
 	//Essential Newborn Care Checklist
 	//Post Natal Care Reminder Visit
 	
+	@Ignore
 	@Test
 	public void actionFalse() throws ParseException {
 		
@@ -383,4 +385,26 @@ public class MotherIntegrationTest {
 		System.err.println("CNT:" + i);
 	}
 	
+	@Test
+	public void anc() {
+		System.err.println("" + allEnrollmentWrapper);
+		List<Enrollment> enrollments = allEnrollmentWrapper.all();
+		System.err.println("" + enrollments.size());
+		int i = 0;
+		int j = 0;
+		for (Enrollment enrollment : enrollments) {
+			if ("DEFAULTED".equalsIgnoreCase(enrollment.getStatus().name())) {
+				List<Action> actions = allActions.findByCaseID(enrollment.getExternalId());
+				if (actions.size() != 0) {
+					if ("ancrv_1".equalsIgnoreCase(actions.get(0).data().get("visitCode"))) {
+						j++;
+						//System.err.println("" + actions.get(0).data().get("visitCode"));
+					}
+				}
+				i++;
+				System.err.println(enrollment.getFulfillments().toString() + "  " + enrollment.getStatus() + "  ");
+			}
+		}
+		System.err.println("CNT:" + i + "   " + j);
+	}
 }

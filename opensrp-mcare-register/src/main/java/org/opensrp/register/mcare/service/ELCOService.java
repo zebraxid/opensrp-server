@@ -461,6 +461,8 @@ public class ELCOService {
 					ancService.registerANC(submission);
 					bnfService.registerBNF(submission);
 					
+				} else {
+					ancService.deleteBlankMother(submission);
 				}
 				
 			} else if (submission.getField(FW_PSRSTS).equalsIgnoreCase("02")

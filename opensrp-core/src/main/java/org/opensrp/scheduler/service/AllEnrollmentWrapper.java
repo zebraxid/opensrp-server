@@ -70,4 +70,12 @@ public class AllEnrollmentWrapper extends AllEnrollments {
 		return enrollments;
 	}
 	
+	public List<Enrollment> all() {
+		List<Enrollment> enrollments = db.queryView(createQuery("all").includeDocs(true), Enrollment.class);
+		if (enrollments == null || enrollments.isEmpty()) {
+			return null;
+		}
+		return enrollments;
+	}
+	
 }

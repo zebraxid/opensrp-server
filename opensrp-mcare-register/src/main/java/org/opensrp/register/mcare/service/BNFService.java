@@ -227,6 +227,7 @@ public class BNFService {
 		} else {
 			pncService.deleteBlankChild(submission);
 			logger.info("FWA submit BNF form , so nothing happened & BNF schedule continue.");
+			
 			bnfSchedulesService.enrollIntoMilestoneOfBNF(submission.entityId(), submission.getField(REFERENCE_DATE),
 			    submission.anmId(), submission.instanceId());
 		}

@@ -234,6 +234,7 @@ public class ANCSchedulesService {
 			}
 			
 		} else {
+			milestone = SCHEDULE_ANC_4;
 			logger.info("ANC Schedule out of Date of case id" + entityId);
 			scheduleLogService.saveAction(entityId, instanceId, provider, SCHEDULE_ANC, SCHEDULE_ANC_4,
 			    BeneficiaryType.mother, alertStaus.expired, new DateTime(start).plusDays(308),
@@ -241,7 +242,7 @@ public class ANCSchedulesService {
 		}
 		
 		logger.info(format("Enrolling ANC with Entity id:{0} to ANC schedule, milestone: {1}.", entityId, milestone));
-		scheduler.enrollIntoSchedule(entityId, SCHEDULE_ANC, SCHEDULE_ANC_4, referenceDateForSchedule.toString());
+		scheduler.enrollIntoSchedule(entityId, SCHEDULE_ANC, milestone, referenceDateForSchedule.toString());
 		
 	}
 	
