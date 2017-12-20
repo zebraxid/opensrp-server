@@ -851,7 +851,7 @@ public class Members extends MotechBaseDataObject {
     @JsonProperty
     private Long clientVersion;
     @JsonProperty
-    private long timeStamp;
+    private Long updatedTimeStamp;
 
     public Members() {
         this.details = new HashMap<>();
@@ -1747,12 +1747,12 @@ public class Members extends MotechBaseDataObject {
         return this;
     }
 
-    public long getUpdatedTimeStamp() {
-        return timeStamp;
+    public Long getUpdatedTimeStamp() {
+        return updatedTimeStamp;
     }
 
     public Members setUpdatedTimeStamp(long updatedTimeStamp) {
-        this.timeStamp = updatedTimeStamp;
+        this.updatedTimeStamp = updatedTimeStamp;
         return this;
     }
 

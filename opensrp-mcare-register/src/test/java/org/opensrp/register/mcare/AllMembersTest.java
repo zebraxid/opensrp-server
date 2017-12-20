@@ -17,9 +17,9 @@ import java.util.List;
 import static org.junit.Assert.assertFalse;
 
 
-@Ignore
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath:test-applicationContext-opensrp-register-mcare.xml")
+
+/*@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration("classpath:test-applicationContext-opensrp-register-mcare.xml")*/
 public class AllMembersTest {
 	
 	//@Autowired
@@ -70,6 +70,12 @@ public class AllMembersTest {
   public void failedTest() {
 	   System.err.println("okkkkkkkkkk");
 	   allMembers.allMembersCreatedBetweenTwoDateBasedOnUpdatedTimeStamp(1508310734000l);
+  }
+  
+  @Test
+  public void teet(){
+	String s =   "1";
+	System.err.println( s.replace("\"", ""));
   }
 /*
     @Test

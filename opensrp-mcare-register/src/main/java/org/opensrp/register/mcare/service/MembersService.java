@@ -79,6 +79,7 @@ public class MembersService {
                     .setRelationalid(submission.getField(relationalid))
                     .setUpdatedTimeStamp(DateUtil.getTimestampToday())
                     .setServerVersion(submission.serverVersion())
+                    .setRelationalid(membersFields.get(relationalid))
                     .setClientVersion(submission.clientVersion());
 
 
