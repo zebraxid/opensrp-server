@@ -60,7 +60,7 @@ public class AllHouseHoldsIntegrationTest {
         // initMocks(this);
     }
 
-    @Test
+   @Ignore @Test
     public void updateTimeStampKeyForHouseHolds() {
         List<HouseHold> households = allHouseHolds.getAll();
         for (HouseHold houseHold : households) {
@@ -72,6 +72,8 @@ public class AllHouseHoldsIntegrationTest {
 				String relationId = map.get("relationalid");
 				Members member = allMembers.findByCaseId(map.get("id"));
 				member.setRelationalid(relationId);
+				member.setEnd(map.get("End"));
+				member.setStart(map.get("Start"));
 				allMembers.update(member);
 			}
             
