@@ -8,6 +8,7 @@ import org.ektorp.impl.StdCouchDbConnector;
 import org.ektorp.impl.StdCouchDbInstance;
 import org.ektorp.impl.StdObjectMapperFactory;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.opensrp.common.util.DateUtil;
 import org.opensrp.common.util.WeekBoundariesAndTimestamps;
@@ -18,9 +19,11 @@ import org.opensrp.register.mcare.repository.AllHouseHolds;
 import org.opensrp.register.mcare.repository.AllMembers;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.lang.reflect.Member;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /*@RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:test-applicationContext-opensrp-register-mcare.xml")*/
@@ -63,15 +66,26 @@ public class AllHouseHoldsIntegrationTest {
         for (HouseHold houseHold : households) {
             houseHold.setUpdatedTimeStamp(houseHold.getUpdatedTimeStamp());
             allHouseHolds.update(houseHold);
+            List<Map<String, String>> members = houseHold.MEMBERDETAILS();
+            for (Map<String, String> map : members) {
+				System.err.println("relationalid:"+map.get("relationalid") +"  " +map.get("id"));
+				String relationId = map.get("relationalid");
+				Members member = allMembers.findByCaseId(map.get("id"));
+				member.setRelationalid(relationId);
+				allMembers.update(member);
+			}
+            
         }
     }
 
-    @Test
+   @Ignore @Test
     public void updateTimeStampKeyForMembers() {
         List<Members> members = allMembers.getAll();
         for (Members member : members) {
             member.setUpdatedTimeStamp(member.getUpdatedTimeStamp());
             allMembers.update(member);
+           
+            
         }
     }
 
