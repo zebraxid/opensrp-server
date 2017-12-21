@@ -134,12 +134,15 @@ public class ActionService {
 			List<Action> existingAlerts = allActions.findAlertByANMIdEntityIdScheduleName(anmIdentifier, caseID,
 			    scheduleName);
 			String visitCodeName = existingAlerts.get(0).data().get("visitCode");
+			Date date = null;
 			
+			date = format.parse(doo);
+			DateTime FWBNFDTOO = new DateTime(date);
 			if (existingAlerts.size() > 0) {
 				long numOfDays = this.getDaysDifference(expiryDate);
 				
 				if (ANC.equalsIgnoreCase(scheduleName)) {
-					updateDataAction(visitCode, alertStatus, startDate, expiryDate, existingAlerts);
+					updateDataAction(visitCode, alertStatus, new DateTime(doo).plusDays(2), expiryDate, existingAlerts);
 					if ("expired".equalsIgnoreCase(alertStatus.name())) {
 						scheduleService.fulfillMilestone(caseID, scheduleName, new LocalDate());
 						
@@ -155,31 +158,30 @@ public class ActionService {
 					} else {
 						scheduleNameVisitCodeWithoutNumber = ScheduleNames.ENCCRV;
 					}
-					Date date = null;
 					
-					date = format.parse(doo);
-					DateTime FWBNFDTOO = new DateTime(date);
 					long dateDifference = DateTimeUtil.getDaysDifference(FWBNFDTOO);
 					
 					if (dateDifference == -0 && visitCode.equalsIgnoreCase(scheduleNameVisitCodeWithoutNumber + "_1")) {
 						
-						updateDataAction(visitCode, AlertStatus.urgent, startDate, expiryDate, existingAlerts);
+						updateDataAction(visitCode, AlertStatus.urgent, new DateTime(FWBNFDTOO),
+						    new DateTime(FWBNFDTOO).plusDays(1), existingAlerts);
 						
 					} else if (dateDifference == -1 && visitCode.equalsIgnoreCase(scheduleNameVisitCodeWithoutNumber + "_1")) {
-						updateDataAction(scheduleNameVisitCodeWithoutNumber + "_2", AlertStatus.upcoming, startDate,
-						    expiryDate, existingAlerts);
+						updateDataAction(scheduleNameVisitCodeWithoutNumber + "_2", AlertStatus.upcoming, new DateTime(
+						        FWBNFDTOO).plusDays(1), new DateTime(FWBNFDTOO).plusDays(2), existingAlerts);
 						
 						scheduleService.fulfillMilestone(caseID, scheduleName, new LocalDate());
 					} else if ((dateDifference == -2 || dateDifference == -3 || dateDifference == -4)
 					        && visitCode.equalsIgnoreCase(scheduleNameVisitCodeWithoutNumber + "_2")) {
-						updateDataAction(scheduleNameVisitCodeWithoutNumber + "_2", AlertStatus.urgent, startDate,
-						    expiryDate, existingAlerts);
+						
+						updateDataAction(scheduleNameVisitCodeWithoutNumber + "_2", AlertStatus.urgent, new DateTime(
+						        FWBNFDTOO).plusDays(3), new DateTime(FWBNFDTOO).plusDays(6), existingAlerts);
 						
 					}
 					
 					else if (dateDifference == -5 && visitCode.equalsIgnoreCase(scheduleNameVisitCodeWithoutNumber + "_2")) {
-						updateDataAction(scheduleNameVisitCodeWithoutNumber + "_3", AlertStatus.upcoming, startDate,
-						    expiryDate, existingAlerts);
+						updateDataAction(scheduleNameVisitCodeWithoutNumber + "_3", AlertStatus.upcoming, new DateTime(
+						        FWBNFDTOO).plusDays(6), new DateTime(FWBNFDTOO).plusDays(7), existingAlerts);
 						scheduleService.fulfillMilestone(caseID, scheduleName, new LocalDate());
 						
 					} else if (dateDifference == -6 && visitCode.equalsIgnoreCase(scheduleNameVisitCodeWithoutNumber + "_3")) {
@@ -187,13 +189,14 @@ public class ActionService {
 						    expiryDate, existingAlerts);
 						
 					} else if (dateDifference == -7 && visitCode.equalsIgnoreCase(scheduleNameVisitCodeWithoutNumber + "_3")) {
-						updateDataAction(scheduleNameVisitCodeWithoutNumber + "_3", AlertStatus.urgent, startDate,
-						    expiryDate, existingAlerts);
+						updateDataAction(scheduleNameVisitCodeWithoutNumber + "_3", AlertStatus.urgent, new DateTime(
+						        FWBNFDTOO).plusDays(8), new DateTime(FWBNFDTOO).plusDays(9), existingAlerts);
 						
 					}
 					
 					else if (dateDifference <= -8) {
-						updateDataAction(visitCode, AlertStatus.expired, startDate, expiryDate, existingAlerts);
+						updateDataAction(visitCode, AlertStatus.expired, new DateTime(FWBNFDTOO).plusDays(10), new DateTime(
+						        FWBNFDTOO).plusDays(10), existingAlerts);
 						scheduleService.fulfillMilestone(caseID, scheduleName, new LocalDate());
 						
 					}

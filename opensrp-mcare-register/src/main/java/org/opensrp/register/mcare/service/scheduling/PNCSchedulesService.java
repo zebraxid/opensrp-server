@@ -81,25 +81,28 @@ public class PNCSchedulesService {
 			expireDate = new DateTime(FWBNFDTOO);
 			if (datediff == 0) {
 				scheduleLogService.saveAction(entityId, instanceId, provider, SCHEDULE_PNC, milestone,
-				    BeneficiaryType.mother, AlertStatus.upcoming, FWBNFDTOO, expireDate);
+				    BeneficiaryType.mother, AlertStatus.upcoming, startDate, expireDate);
 			} else if (datediff == -1) {
+				startDate = new DateTime(FWBNFDTOO).plusDays(DateTimeDuration.pnc1);
+				expireDate = new DateTime(FWBNFDTOO).plusDays(DateTimeDuration.pnc1);
 				scheduleLogService.saveAction(entityId, instanceId, provider, SCHEDULE_PNC, SCHEDULE_PNC_1,
-				    BeneficiaryType.mother, AlertStatus.urgent, FWBNFDTOO,
-				    new DateTime(FWBNFDTOO).plusDays(DateTimeDuration.pnc1));
+				    BeneficiaryType.mother, AlertStatus.urgent, startDate, expireDate);
 				
 			}
 			
 		} else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Days.FIVE.toPeriod())) {
 			
 			milestone = SCHEDULE_PNC_2;
-			startDate = new DateTime(FWBNFDTOO).plusDays(DateTimeDuration.pnc1);
+			
 			expireDate = new DateTime(FWBNFDTOO).plusDays(DateTimeDuration.pnc2);
 			if (datediff == -2) {
 				scheduleLogService.saveAction(entityId, instanceId, provider, SCHEDULE_PNC, milestone,
-				    BeneficiaryType.mother, AlertStatus.upcoming, FWBNFDTOO, new DateTime(FWBNFDTOO).plusDays(3));
+				    BeneficiaryType.mother, AlertStatus.upcoming, new DateTime(FWBNFDTOO).plusDays(2), new DateTime(
+				            FWBNFDTOO).plusDays(2));
 			} else {
 				scheduleLogService.saveAction(entityId, instanceId, provider, SCHEDULE_PNC, milestone,
-				    BeneficiaryType.mother, AlertStatus.urgent, FWBNFDTOO, expireDate);
+				    BeneficiaryType.mother, AlertStatus.urgent, new DateTime(FWBNFDTOO).plusDays(3),
+				    new DateTime(FWBNFDTOO).plusDays(6));
 			}
 			
 		} else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Days.SEVEN.plus(2).toPeriod())) {
@@ -109,16 +112,20 @@ public class PNCSchedulesService {
 			expireDate = new DateTime(FWBNFDTOO).plusDays(DateTimeDuration.pnc3);
 			if (datediff == -6 || datediff == -7) {
 				scheduleLogService.saveAction(entityId, instanceId, provider, SCHEDULE_PNC, milestone,
-				    BeneficiaryType.mother, AlertStatus.upcoming, FWBNFDTOO, new DateTime(FWBNFDTOO).plusDays(6));
+				    BeneficiaryType.mother, AlertStatus.upcoming, new DateTime(FWBNFDTOO).plusDays(6), new DateTime(
+				            FWBNFDTOO).plusDays(8));
 			} else if (datediff == -8) {
 				scheduleLogService.saveAction(entityId, instanceId, provider, SCHEDULE_PNC, milestone,
-				    BeneficiaryType.mother, AlertStatus.urgent, FWBNFDTOO, new DateTime(FWBNFDTOO).plusDays(7));
+				    BeneficiaryType.mother, AlertStatus.urgent, new DateTime(FWBNFDTOO).plusDays(9),
+				    new DateTime(FWBNFDTOO).plusDays(9));
 			} else {
 				scheduleLogService.saveAction(entityId, instanceId, provider, SCHEDULE_PNC, milestone,
-				    BeneficiaryType.mother, AlertStatus.expired, FWBNFDTOO, new DateTime(FWBNFDTOO).plusDays(8));
+				    BeneficiaryType.mother, AlertStatus.expired, new DateTime(FWBNFDTOO).plusDays(10), new DateTime(
+				            FWBNFDTOO).plusDays(10));
 			}
 			
 		} else {
+			milestone = SCHEDULE_PNC_3;
 			logger.info("PNC out of Date of case id" + entityId);
 			scheduleLogService.saveAction(entityId, instanceId, provider, SCHEDULE_PNC, SCHEDULE_PNC_3,
 			    BeneficiaryType.mother, AlertStatus.expired, new DateTime(new Date()), new DateTime(new Date()));

@@ -5,6 +5,7 @@ import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ChildScheduleC
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ChildScheduleConstants.SCHEDULE_ENCC_1;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ChildScheduleConstants.SCHEDULE_ENCC_2;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ChildScheduleConstants.SCHEDULE_ENCC_3;
+import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_PNC_3;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -69,27 +70,28 @@ public class ChildSchedulesService {
 			milestone = SCHEDULE_ENCC_1;
 			startDate = new DateTime(FWBNFDTOO);
 			expireDate = new DateTime(FWBNFDTOO);
-			expireDate = new DateTime(FWBNFDTOO);
 			if (datediff == 0) {
 				scheduleLogService.saveAction(entityId, instanceId, provider, SCHEDULE_ENCC, milestone,
-				    BeneficiaryType.child, AlertStatus.upcoming, FWBNFDTOO, expireDate);
+				    BeneficiaryType.child, AlertStatus.upcoming, expireDate, expireDate);
 			} else if (datediff == -1) {
+				startDate = new DateTime(FWBNFDTOO).plusDays(DateTimeDuration.encc1);
+				expireDate = new DateTime(FWBNFDTOO).plusDays(DateTimeDuration.encc1);
 				scheduleLogService.saveAction(entityId, instanceId, provider, SCHEDULE_ENCC, SCHEDULE_ENCC_1,
-				    BeneficiaryType.child, AlertStatus.urgent, FWBNFDTOO,
-				    new DateTime(FWBNFDTOO).plusDays(DateTimeDuration.encc1));
+				    BeneficiaryType.child, AlertStatus.urgent, startDate, expireDate);
 			}
 			
 		} else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Days.FIVE.toPeriod())) {
 			
 			milestone = SCHEDULE_ENCC_2;
-			startDate = new DateTime(FWBNFDTOO).plusDays(DateTimeDuration.encc1);
-			expireDate = new DateTime(FWBNFDTOO).plusDays(DateTimeDuration.encc2);
+			
 			if (datediff == -2) {
 				scheduleLogService.saveAction(entityId, instanceId, provider, SCHEDULE_ENCC, milestone,
-				    BeneficiaryType.child, AlertStatus.upcoming, FWBNFDTOO, new DateTime(FWBNFDTOO).plusDays(3));
+				    BeneficiaryType.child, AlertStatus.upcoming, new DateTime(FWBNFDTOO).plusDays(2),
+				    new DateTime(FWBNFDTOO).plusDays(2));
 			} else {
 				scheduleLogService.saveAction(entityId, instanceId, provider, SCHEDULE_ENCC, milestone,
-				    BeneficiaryType.child, AlertStatus.urgent, FWBNFDTOO, expireDate);
+				    BeneficiaryType.child, AlertStatus.urgent, new DateTime(FWBNFDTOO).plusDays(3),
+				    new DateTime(FWBNFDTOO).plusDays(6));
 			}
 			
 		} else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Days.SEVEN.plus(2).toPeriod())) {
@@ -100,16 +102,20 @@ public class ChildSchedulesService {
 			
 			if (datediff == -6) {
 				scheduleLogService.saveAction(entityId, instanceId, provider, SCHEDULE_ENCC, milestone,
-				    BeneficiaryType.child, AlertStatus.upcoming, FWBNFDTOO, new DateTime(FWBNFDTOO).plusDays(6));
+				    BeneficiaryType.child, AlertStatus.upcoming, new DateTime(FWBNFDTOO).plusDays(6),
+				    new DateTime(FWBNFDTOO).plusDays(8));
 			} else if (datediff == -7) {
 				scheduleLogService.saveAction(entityId, instanceId, provider, SCHEDULE_ENCC, milestone,
-				    BeneficiaryType.child, AlertStatus.urgent, FWBNFDTOO, new DateTime(FWBNFDTOO).plusDays(7));
+				    BeneficiaryType.child, AlertStatus.urgent, new DateTime(FWBNFDTOO).plusDays(9),
+				    new DateTime(FWBNFDTOO).plusDays(9));
 			} else {
 				scheduleLogService.saveAction(entityId, instanceId, provider, SCHEDULE_ENCC, milestone,
-				    BeneficiaryType.child, AlertStatus.expired, FWBNFDTOO, new DateTime(FWBNFDTOO).plusDays(8));
+				    BeneficiaryType.child, AlertStatus.expired, new DateTime(FWBNFDTOO).plusDays(10),
+				    new DateTime(FWBNFDTOO).plusDays(10));
 			}
 			
 		} else {
+			milestone = SCHEDULE_PNC_3;
 			logger.info("ENCC out of Date of case id" + entityId);
 			scheduleLogService.saveAction(entityId, instanceId, provider, SCHEDULE_ENCC, SCHEDULE_ENCC_3,
 			    BeneficiaryType.child, AlertStatus.expired, new DateTime(new Date()), new DateTime(new Date()));
