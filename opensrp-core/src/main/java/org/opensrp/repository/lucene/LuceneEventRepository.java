@@ -161,6 +161,16 @@ public class LuceneEventRepository extends CouchDbRepositorySupportWithLucene<Ev
 				qf.eq(LOCATION_ID, locationId);
 			}
 		}
+		
+		if (locationId != null || !StringUtils.isEmptyOrWhitespaceOnly(locationId)) {
+			if (locationId.contains(",")) {
+				String[] locationArray = org.apache.commons.lang.StringUtils.split(locationId, ",");
+				List<String> locations = new ArrayList<>(Arrays.asList(locationArray));
+				qf.inList(LOCATION_ID, locations);
+			} else {
+				qf.eq(LOCATION_ID, locationId);
+			}
+		}
 
 		if (!StringUtils.isEmptyOrWhitespaceOnly(baseEntityId)) {
 			if (baseEntityId.contains(",")) {
