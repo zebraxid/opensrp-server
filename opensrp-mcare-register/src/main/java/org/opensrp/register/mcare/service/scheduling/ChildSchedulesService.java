@@ -5,7 +5,6 @@ import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ChildScheduleC
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ChildScheduleConstants.SCHEDULE_ENCC_1;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ChildScheduleConstants.SCHEDULE_ENCC_2;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ChildScheduleConstants.SCHEDULE_ENCC_3;
-import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_PNC_3;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -115,7 +114,7 @@ public class ChildSchedulesService {
 			}
 			
 		} else {
-			milestone = SCHEDULE_PNC_3;
+			milestone = SCHEDULE_ENCC_3;
 			logger.info("ENCC out of Date of case id" + entityId);
 			scheduleLogService.saveAction(entityId, instanceId, provider, SCHEDULE_ENCC, SCHEDULE_ENCC_3,
 			    BeneficiaryType.child, AlertStatus.expired, new DateTime(new Date()), new DateTime(new Date()));
