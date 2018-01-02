@@ -1,9 +1,16 @@
 package org.opensrp.register.mcare.repository.it;
 
+import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_ANC_1;
+import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_ANC_2;
+import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_ANC_3;
+import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_ANC_4;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.ektorp.CouchDbInstance;
 import org.ektorp.http.HttpClient;
@@ -11,15 +18,21 @@ import org.ektorp.http.StdHttpClient;
 import org.ektorp.impl.StdCouchDbConnector;
 import org.ektorp.impl.StdCouchDbInstance;
 import org.ektorp.impl.StdObjectMapperFactory;
+import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
+import org.joda.time.Weeks;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.motechproject.scheduletracking.api.domain.Enrollment;
+import org.opensrp.common.util.DateUtil;
+import org.opensrp.register.mcare.OpenSRPScheduleConstants;
 import org.opensrp.register.mcare.domain.Mother;
 import org.opensrp.register.mcare.repository.AllChilds;
 import org.opensrp.register.mcare.repository.AllElcos;
 import org.opensrp.register.mcare.repository.AllHouseHolds;
 import org.opensrp.register.mcare.repository.AllMothers;
+import org.opensrp.register.mcare.service.scheduling.ScheduleLogService;
 import org.opensrp.scheduler.Action;
 import org.opensrp.scheduler.repository.AllActions;
 import org.opensrp.scheduler.service.AllEnrollmentWrapper;
@@ -385,6 +398,7 @@ public class MotherIntegrationTest {
 		System.err.println("CNT:" + i);
 	}
 	
+	@Ignore
 	@Test
 	public void anc() {
 		System.err.println("" + allEnrollmentWrapper);
@@ -406,5 +420,165 @@ public class MotherIntegrationTest {
 			}
 		}
 		System.err.println("CNT:" + i + "   " + j);
+	}
+	
+	@Test
+	public void ancScheduleTest() {
+		int i = 0;
+		String visitCode = "";
+		List<Action> actions = allActions.getAll();
+		System.err.println("" + actions.size());
+		String lmp = "";
+		String currentVisitiCode = "";
+		int m = 0;
+		int acn4 = 0;
+		int unenroll = 0;
+		int currentVisitiCodec = 0;
+		int notCurrentVisitiCodec = 0;
+		int expired = 0;
+		int enroll = 0;
+		int notsubSame = 0;
+		int notsubNotSame = 0;
+		boolean isEnrolled = false;
+		for (Action action : actions) {
+			visitCode = action.data().get("visitCode");
+			Mother mother = allMothers.findByCaseId(action.caseId());
+			//System.err.println("Mother;" + mother);
+			
+			if (mother != null) {
+				lmp = mother.details().get("LMP");
+				currentVisitiCode = checkANC(LocalDate.parse(lmp), lmp);
+				boolean ancStatus = isANCSubmited(mother, visitCode);
+				if (ancStatus) {// if submitted //780
+				
+					/*System.err.println("ANC CaseId:" + action.caseId() + "visitCode:" + visitCode + " status:"
+					        + action.getIsActionActive());*/
+					if (SCHEDULE_ANC_4.equalsIgnoreCase(visitCode)) {
+						// false all scedule;
+						acn4++;//196
+					} else {
+						if (!currentVisitiCode.equalsIgnoreCase(visitCode)) {
+							
+							notCurrentVisitiCodec++; //168
+							System.err.println(currentVisitiCode + " | " + visitCode + "  |  " + action.getIsActionActive()
+							        + " | " + action.caseId());
+							// refresh schedule
+						} else {
+							currentVisitiCodec++; //416
+							/*System.err.println("currentVisitiCode:" + currentVisitiCode + " visitCode:" + visitCode
+							        + " caseId: " + action.caseId());*/
+							
+							// nothing do to
+						}
+					}
+					
+				} else { // not submitted
+					i++; //1875
+					if (currentVisitiCode.equalsIgnoreCase("expired")) {
+						List<Enrollment> enrollments = allEnrollmentWrapper.getByEid(action.caseId());
+						
+						for (Enrollment enrollment : enrollments) {
+							if (!"ACTIVE".equalsIgnoreCase(enrollment.getStatus().name())
+							        && OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_ANC
+							                .equalsIgnoreCase(enrollment.getScheduleName())) {
+								//System.err.println("Sataus:" + enrollment.getStatus());
+								isEnrolled = true;
+							}
+						}
+						if (isEnrolled) {
+							unenroll++;//311
+							// nothing to do OR refresh all unenroled/completed
+						} else {
+							enroll++;
+						}
+						expired++;//466
+						/*System.err.println(currentVisitiCode + " | " + visitCode + "  |  " + action.getIsActionActive()
+						        + " | " + action.caseId());*/
+						// refresh schedule
+					} else {
+						if (!currentVisitiCode.equalsIgnoreCase(visitCode)) {
+							notsubNotSame++; //203
+							// must need to refresh
+							
+						} else {
+							notsubSame++;//1038/ may be nothing to do
+							
+							/*System.err.println(currentVisitiCode + " | " + visitCode + "  |  " + action.getIsActionActive()
+							        + " | " + action.caseId());*/
+							
+						}
+					}
+					
+					/*System.err.println("ANC CaseId:" + action.caseId() + "visitCode:" + visitCode + " status:"
+					        + action.getIsActionActive());*/
+				}
+			} else {
+				m++;
+			}
+			
+		}
+		System.err.println("CNT:" + i + "Not Mother:" + m + "acn4:" + acn4 + "currentVisitiCodec:" + currentVisitiCodec
+		        + "   notCurrentVisitiCodec:" + notCurrentVisitiCodec + "  expired:" + expired + "unenroll: " + unenroll
+		        + "  enroll:" + enroll + " notsubSame  :" + notsubSame + " notsubNotSame;" + notsubNotSame);
+	}
+	
+	private String checkANC(LocalDate referenceDateForSchedule, String startDate) {
+		String milestone = null;
+		
+		Date date = null;
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		try {
+			date = format.parse(startDate);
+		}
+		catch (ParseException e) {
+			System.err.println(e.getMessage());
+		}
+		//System.err.println("startDate:" + startDate);
+		DateTime start = new DateTime(date);
+		
+		long datediff = ScheduleLogService.getDaysDifference(start);
+		//System.err.println("start:" + start + " datediff:" + datediff);
+		if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(23).toPeriod())) {
+			//161
+			milestone = SCHEDULE_ANC_1;
+			
+		} else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(31).toPeriod())) {
+			//217
+			milestone = SCHEDULE_ANC_2;
+			
+		} else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(35).toPeriod())) {
+			//245
+			milestone = SCHEDULE_ANC_3;
+			
+		} else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(44).toPeriod()
+		        .minusDays(1))) {
+			// 307
+			milestone = SCHEDULE_ANC_4;
+			
+		} else {
+			milestone = "expired";
+			
+		}
+		return milestone;
+		
+	}
+	
+	private boolean isANCSubmited(Mother mother, String visitCode) {
+		Map<String, String> anc = null;
+		
+		if (SCHEDULE_ANC_1.equalsIgnoreCase(visitCode)) {
+			anc = mother.ancVisitOne();
+		} else if (SCHEDULE_ANC_2.equalsIgnoreCase(visitCode)) {
+			anc = mother.ancVisitTwo();
+		} else if (SCHEDULE_ANC_3.equalsIgnoreCase(visitCode)) {
+			anc = mother.ancVisitThree();
+		} else if (SCHEDULE_ANC_4.equalsIgnoreCase(visitCode)) {
+			anc = mother.ancVisitFour();
+		}
+		if (!anc.isEmpty()) {
+			return true;//submitted
+		}
+		return false;
+		
 	}
 }
