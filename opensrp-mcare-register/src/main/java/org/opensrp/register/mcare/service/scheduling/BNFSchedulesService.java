@@ -12,6 +12,7 @@ import org.joda.time.LocalDate;
 import org.opensrp.dto.BeneficiaryType;
 import org.opensrp.scheduler.HealthSchedulerService;
 import org.opensrp.scheduler.repository.AllActions;
+import org.opensrp.scheduler.service.ActionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,13 +27,17 @@ public class BNFSchedulesService {
 	
 	private AllActions allActions;
 	
+	private ActionService actionService;
+	
 	private ScheduleLogService scheduleLogService;
 	
 	@Autowired
-	public BNFSchedulesService(HealthSchedulerService scheduler, AllActions allActions, ScheduleLogService scheduleLogService) {
+	public BNFSchedulesService(HealthSchedulerService scheduler, AllActions allActions,
+	    ScheduleLogService scheduleLogService, ActionService actionService) {
 		this.scheduler = scheduler;
 		this.allActions = allActions;
 		this.scheduleLogService = scheduleLogService;
+		this.actionService = actionService;
 	}
 	
 	public void enrollBNF(String caseId, LocalDate referenceDateForSchedule, String provider, String instanceId,
@@ -45,9 +50,8 @@ public class BNFSchedulesService {
 		logger.info(format("Unenrolling Mother from BNF schedule. Id: {0}", caseId));
 		try {
 			scheduler.fullfillMilestoneAndCloseAlert(caseId, providerId, SCHEDULE_BNF, new LocalDate());
-			//scheduler.unEnrollFromSchedule(caseId, providerId, SCHEDULE_BNF);        	
-			//scheduler.fullfillMilestoneAndCloseAlert(caseId, providerId, SCHEDULE_BNF, SCHEDULE_BNF, new LocalDate());
 			
+			actionService.markAlertAsInactive(providerId, caseId, SCHEDULE_BNF);
 		}
 		catch (Exception e) {
 			logger.info(format("Failed to UnEnrollFromSchedule BNF" + e.getMessage()));
@@ -55,9 +59,8 @@ public class BNFSchedulesService {
 		
 		try {
 			scheduler.fullfillMilestoneAndCloseAlert(caseId, providerId, SCHEDULE_BNF_IME, new LocalDate());
-			//scheduler.unEnrollFromScheduleimediate(caseId, providerId, SCHEDULE_BNF_IME);        	
-			//scheduler.fullfillMilestoneAndCloseAlert(caseId, providerId, SCHEDULE_BNF_IME, SCHEDULE_BNF_IME, new LocalDate());
 			
+			actionService.markAlertAsInactive(providerId, caseId, SCHEDULE_BNF);
 		}
 		catch (Exception e) {
 			logger.info(format("Failed to UnEnrollFromSchedule BNF" + e.getMessage()));

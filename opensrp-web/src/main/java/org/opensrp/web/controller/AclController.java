@@ -39,6 +39,7 @@ import org.opensrp.dashboard.service.PrivilegeService;
 import org.opensrp.dashboard.service.RoleService;
 import org.opensrp.dashboard.service.UsersService;
 import org.opensrp.dto.AclDTO;
+import org.opensrp.register.mcare.OpenSRPScheduleConstants;
 import org.opensrp.register.mcare.domain.Child;
 import org.opensrp.register.mcare.domain.Mother;
 import org.opensrp.register.mcare.repository.AllChilds;
@@ -292,199 +293,6 @@ public class AclController {
 		
 	}
 	
-	@RequestMapping(method = GET, value = "/schedule-refresh-pnc")
-	public void scheduleRefreshPNC() {
-		String pattern = "yyyy-MM-dd";
-		List<Action> actions = allActions.getAll();
-		String visitCode = "";
-		for (Action action : actions) {
-			List<Enrollment> enrolments = allEnrollmentWrapper.getByEid(action.caseId());
-			
-			if (enrolments != null && !enrolments.isEmpty()) {
-				for (Enrollment enrollment : enrolments) {
-					if (enrollment.getScheduleName().equalsIgnoreCase(ScheduleNames.PNC)) {
-						System.err.println("PNC enrolments:" + enrollment.getScheduleName());
-						
-						try {
-							allEnrollmentWrapper.remove(enrollment);
-							allActions.remove(actions.get(0));
-							scheduler.unEnrollFromSchedule(action.caseId(), action.anmIdentifier(), ScheduleNames.PNC);
-						}
-						catch (Exception e) {
-							
-						}
-						
-						System.err.println("" + enrollment.getExternalId());
-						
-						try {
-							Mother mother = allMothers.findByCaseId(enrollment.getExternalId());
-							List<Map<String, String>> bnfs = mother.bnfVisitDetails();
-							int psrfsCount = bnfs.size() - 1;
-							Map<String, String> bnf = bnfs.get(psrfsCount);
-							String doo = bnf.get("FWBNFDTOO");
-							DateTime dateTime = DateTime.parse(doo);
-							DateTimeFormatter fmt = DateTimeFormat.forPattern(pattern);
-							String referenceDate = fmt.print(dateTime);
-							pncSchedulesService.enrollPNCRVForMother(action.caseId(), "", mother.PROVIDERID(),
-							    LocalDate.parse(referenceDate), referenceDate);
-						}
-						catch (Exception e) {
-							e.printStackTrace();
-						}
-						
-					} else {
-						
-					}
-				}
-				
-			} else {
-				
-			}
-		}
-		
-	}
-	
-	@RequestMapping(method = GET, value = "/schedule-refresh-encc")
-	public void scheduleRefreshENNC() {
-		String pattern = "yyyy-MM-dd";
-		List<Action> actions = allActions.getAll();
-		String visitCode = "";
-		for (Action action : actions) {
-			List<Enrollment> enrolments = allEnrollmentWrapper.getByEid(action.caseId());
-			
-			if (enrolments != null && !enrolments.isEmpty()) {
-				for (Enrollment enrollment : enrolments) {
-					if (enrollment.getScheduleName().equalsIgnoreCase(ScheduleNames.CHILD)) {
-						System.err.println("ENCC enrolments:" + enrollment.getScheduleName());
-						
-						try {
-							allEnrollmentWrapper.remove(enrollment);
-							allActions.remove(actions.get(0));
-							scheduler.unEnrollFromSchedule(action.caseId(), action.anmIdentifier(), ScheduleNames.CHILD);
-						}
-						catch (Exception e) {
-							
-						}
-						
-						System.err.println("" + enrollment.getExternalId());
-						
-						try {
-							Child child = allChilds.findByCaseId(action.caseId());
-							String doo = child.details().get("FWBNFDOB");
-							DateTime dateTime = DateTime.parse(doo);
-							DateTimeFormatter fmt = DateTimeFormat.forPattern(pattern);
-							String referenceDate = fmt.print(dateTime);
-							childSchedulesService.enrollENCCForChild(action.caseId(), "", child.PROVIDERID(),
-							    LocalDate.parse(referenceDate), referenceDate);
-						}
-						catch (Exception e) {
-							e.printStackTrace();
-						}
-						
-					} else {
-						System.err.println("Not related schedule");
-					}
-				}
-				
-			} else {
-				
-			}
-		}
-	}
-	
-	@RequestMapping(method = GET, value = "/schedule-refresh-anc")
-	public void scheduleRefreshANC() {
-		String pattern = "yyyy-MM-dd";
-		List<Action> actions = allActions.getAll();
-		String visitCode = "";
-		String currentVisitiCode = "";
-		String lmp = "";
-		for (Action action : actions) {
-			List<Enrollment> enrolments = allEnrollmentWrapper.getByEid(action.caseId());
-			
-			if (enrolments != null && !enrolments.isEmpty()) {
-				for (Enrollment enrollment : enrolments) {
-					if (enrollment.getScheduleName().equalsIgnoreCase(ScheduleNames.ANC)) {
-						System.err.println("ANC enrolments:" + enrollment.getScheduleName());
-						visitCode = action.data().get("visitCode");
-						Mother mother = allMothers.findByCaseId(enrollment.getExternalId());
-						if (mother != null) {
-							
-							if (isANCSubmited(mother, visitCode)) {
-								try {
-									lmp = mother.details().get("LMP");
-									currentVisitiCode = checkANC(LocalDate.parse(lmp), lmp);
-									if (currentVisitiCode.equalsIgnoreCase(visitCode)) {
-										System.err.println("nothing to do ");
-									} else {
-										try {
-											allEnrollmentWrapper.remove(enrollment);
-											allActions.remove(actions.get(0));
-											scheduler.unEnrollFromSchedule(action.caseId(), action.anmIdentifier(),
-											    ScheduleNames.ANC);
-										}
-										catch (Exception e) {
-											
-										}
-										
-										System.err.println("" + enrollment.getExternalId());
-										
-										try {
-											
-											lmp = mother.details().get("LMP");
-											ancSchedulesService.enrollMother(enrollment.getExternalId(),
-											    LocalDate.parse(lmp), mother.PROVIDERID(), mother.INSTANCEID(), lmp);
-										}
-										catch (Exception e) {
-											e.printStackTrace();
-										}
-									}
-									
-								}
-								catch (Exception e) {
-									
-								}
-								
-							} else {
-								try {
-									allEnrollmentWrapper.remove(enrollment);
-									allActions.remove(actions.get(0));
-									scheduler.unEnrollFromSchedule(action.caseId(), action.anmIdentifier(),
-									    ScheduleNames.ANC);
-								}
-								catch (Exception e) {
-									
-								}
-								
-								System.err.println("" + enrollment.getExternalId());
-								
-								try {
-									
-									lmp = mother.details().get("LMP");
-									ancSchedulesService.enrollMother(enrollment.getExternalId(), LocalDate.parse(lmp),
-									    mother.PROVIDERID(), mother.INSTANCEID(), lmp);
-								}
-								catch (Exception e) {
-									e.printStackTrace();
-								}
-								
-							}
-						} else {
-							System.err.println("No mother found");
-						}
-						
-					} else {
-						System.err.println("Not related schedule");
-					}
-				}
-				
-			} else {
-				
-			}
-		}
-		
-	}
-	
 	private boolean isANCSubmited(Mother mother, String visitCode) {
 		Map<String, String> anc = null;
 		
@@ -677,104 +485,317 @@ public class AclController {
 		}
 	}
 	
-	@RequestMapping(method = GET, value = "/pnc")
-	public void scheduleRefresh21first() {
-		String pattern = "yyyy-MM-dd";
+	/////////////////////////////////////
+	@RequestMapping(method = GET, value = "/schedule-refresh-anc")
+	public void ancScheduleRefresh() {
+		int i = 0;
+		String visitCode = "";
 		List<Action> actions = allActions.getAll();
-		
+		System.err.println("" + actions.size());
+		String lmp = "";
+		String currentVisitiCode = "";
+		int m = 0;
+		int acn4 = 0;
+		int unenroll = 0;
+		int currentVisitiCodec = 0;
+		int notCurrentVisitiCodec = 0;
+		int expired = 0;
+		int enroll = 0;
+		int notsubSame = 0;
+		int notsubNotSame = 0;
+		boolean isEnrolled = false;
 		for (Action action : actions) {
-			List<Enrollment> enrolments = allEnrollmentWrapper.getByEid(action.caseId());
+			visitCode = action.data().get("visitCode");
+			Mother mother = allMothers.findByCaseId(action.caseId());
+			//System.err.println("Mother;" + mother);
 			
-			if (enrolments != null && !enrolments.isEmpty()) {
-				for (Enrollment enrollment : enrolments) {
-					if (enrollment.getScheduleName().equalsIgnoreCase(ScheduleNames.PNC)) {
-						System.err.println("PNC enrolments:" + enrollment.getScheduleName());
-						
-						try {
-							allEnrollmentWrapper.remove(enrollment);
-							allActions.remove(actions.get(0));
-							scheduler.unEnrollFromSchedule(action.caseId(), action.anmIdentifier(), ScheduleNames.PNC);
-						}
-						catch (Exception e) {
+			if (mother != null) {
+				lmp = mother.details().get("LMP");
+				currentVisitiCode = checkANC(LocalDate.parse(lmp), lmp);
+				boolean ancStatus = isANCSubmited(mother, visitCode);
+				List<Enrollment> enrollments = allEnrollmentWrapper.getByEid(action.caseId());
+				if (ancStatus) {// if submitted //780
+				
+					if (SCHEDULE_ANC_4.equalsIgnoreCase(visitCode)) {
+						//should false all scedule; // problem in tab synced schedule
+						// unenroll all schedule
+						acn4++;//196
+						makeScheduleFalse(action);
+					} else {
+						if (!currentVisitiCode.equalsIgnoreCase(visitCode)) {
 							
+							notCurrentVisitiCodec++; //168
+							scheduleRefresh(enrollments, action, lmp, action.anmIdentifier(), "", ScheduleNames.ANC);
+							// refresh schedule
+						} else {
+							currentVisitiCodec++; //416
+							makeScheduleFalse(action);
+							// false all schedule
 						}
+					}
+					
+				} else { // not submitted
+					i++; //1875
+					if (currentVisitiCode.equalsIgnoreCase("expired")) {
 						
-						System.err.println("" + enrollment.getExternalId());
-						
-						try {
-							Mother mother = allMothers.findByCaseId(enrollment.getExternalId());
-							List<Map<String, String>> bnfs = mother.bnfVisitDetails();
-							int psrfsCount = bnfs.size() - 1;
-							Map<String, String> bnf = bnfs.get(psrfsCount);
-							String doo = bnf.get("FWBNFDTOO");
-							DateTime dateTime = DateTime.parse(doo);
-							DateTimeFormatter fmt = DateTimeFormat.forPattern(pattern);
-							String referenceDate = fmt.print(dateTime);
-							pncSchedulesService.enrollPNCRVForMother(action.caseId(), "", mother.PROVIDERID(),
-							    LocalDate.parse(referenceDate), referenceDate);
+						for (Enrollment enrollment : enrollments) {
+							if (!"ACTIVE".equalsIgnoreCase(enrollment.getStatus().name())
+							        && OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_ANC
+							                .equalsIgnoreCase(enrollment.getScheduleName())) {
+								//System.err.println("Sataus:" + enrollment.getStatus());
+								isEnrolled = true;
+							}
 						}
-						catch (Exception e) {
-							e.printStackTrace();
+						if (isEnrolled) {
+							unenroll++;//311
+							// nothing to do OR refresh all unenroled/completed
+						} else {
+							enroll++;
 						}
 						
 					} else {
-						
-					}
-				}
-				
-			} else {
-				
-			}
-		}
-		
-	}
-	
-	@RequestMapping(method = GET, value = "/encc")
-	public void schedulENNC() {
-		String pattern = "yyyy-MM-dd";
-		List<Action> actions = allActions.getAll();
-		
-		for (Action action : actions) {
-			List<Enrollment> enrolments = allEnrollmentWrapper.getByEid(action.caseId());
-			
-			if (enrolments != null && !enrolments.isEmpty()) {
-				for (Enrollment enrollment : enrolments) {
-					if (enrollment.getScheduleName().equalsIgnoreCase(ScheduleNames.CHILD)) {
-						System.err.println("ENCC enrolments:" + enrollment.getScheduleName());
-						
-						try {
-							allEnrollmentWrapper.remove(enrollment);
-							allActions.remove(actions.get(0));
-							scheduler.unEnrollFromSchedule(action.caseId(), action.anmIdentifier(), ScheduleNames.CHILD);
-						}
-						catch (Exception e) {
+						if (!currentVisitiCode.equalsIgnoreCase(visitCode)) {
+							notsubNotSame++; //203
+							// must need to refresh
+							scheduleRefresh(enrollments, action, lmp, action.anmIdentifier(), "", ScheduleNames.ANC);
+						} else {
+							notsubSame++;//1038/ may be nothing to do
 							
 						}
-						
-						System.err.println("" + enrollment.getExternalId());
-						
-						try {
-							Child child = allChilds.findByCaseId(action.caseId());
-							String doo = child.details().get("FWBNFDOB");
-							DateTime dateTime = DateTime.parse(doo);
-							DateTimeFormatter fmt = DateTimeFormat.forPattern(pattern);
-							String referenceDate = fmt.print(dateTime);
-							childSchedulesService.enrollENCCForChild(action.caseId(), "", child.PROVIDERID(),
-							    LocalDate.parse(referenceDate), referenceDate);
+					}
+					
+				}
+			} else {
+				m++;
+			}
+			
+		}
+		System.err.println("CNT:" + i + "Not Mother:" + m + "acn4:" + acn4 + "currentVisitiCodec:" + currentVisitiCodec
+		        + "   notCurrentVisitiCodec:" + notCurrentVisitiCodec + "  expired:" + expired + "unenroll: " + unenroll
+		        + "  enroll:" + enroll + " notsubSame  :" + notsubSame + " notsubNotSame;" + notsubNotSame);
+	}
+	
+	@RequestMapping(method = GET, value = "/schedule-refresh-pnc")
+	public void pncScheduleRefresh() {
+		String pattern = "yyyy-MM-dd";
+		int i = 0;
+		String visitCode = "";
+		List<Action> actions = allActions.getAll();
+		System.err.println("" + actions.size());
+		String doo = "";
+		String currentVisitiCode = "";
+		int m = 0;
+		int acn4 = 0;
+		int unenroll = 0;
+		int currentVisitiCodec = 0;
+		int notCurrentVisitiCodec = 0;
+		int expired = 0;
+		int enroll = 0;
+		int notsubSame = 0;
+		int notsubNotSame = 0;
+		boolean isEnrolled = false;
+		for (Action action : actions) {
+			visitCode = action.data().get("visitCode");
+			Mother mother = allMothers.findByCaseId(action.caseId());
+			//System.err.println("Mother;" + mother);
+			
+			if (mother != null) {
+				List<Enrollment> enrollments = allEnrollmentWrapper.getByEid(action.caseId());
+				List<Map<String, String>> bnfVisitDetails = mother.bnfVisitDetails();
+				doo = getBnfDate(bnfVisitDetails);
+				DateTime dateTime = DateTime.parse(doo);
+				DateTimeFormatter fmt = DateTimeFormat.forPattern(pattern);
+				String referenceDate = fmt.print(dateTime);
+				currentVisitiCode = checkPNC(LocalDate.parse(referenceDate), referenceDate);
+				boolean pncStatus = isPNCSubmited(mother, visitCode);
+				if (pncStatus) {// if submitted //780
+				
+					if (SCHEDULE_PNC_3.equalsIgnoreCase(visitCode)) {
+						//should false all scedule; // problem in tab synced schedule
+						// unenroll all schedule
+						makeScheduleFalse(action);
+					} else {
+						if (!currentVisitiCode.equalsIgnoreCase(visitCode)) {
+							
+							notCurrentVisitiCodec++; //7
+							scheduleRefresh(enrollments, action, doo, action.anmIdentifier(), "", ScheduleNames.PNC);
+							// refresh schedule
+						} else {
+							currentVisitiCodec++; //0
+							makeScheduleFalse(action);
 						}
-						catch (Exception e) {
-							e.printStackTrace();
+					}
+					
+				} else { // not submitted
+				
+					if (currentVisitiCode.equalsIgnoreCase("expired")) {
+						
+						for (Enrollment enrollment : enrollments) {
+							if (!"ACTIVE".equalsIgnoreCase(enrollment.getStatus().name())
+							        && ScheduleNames.PNC.equalsIgnoreCase(enrollment.getScheduleName())) {
+								
+								isEnrolled = true;
+							}
+						}
+						if (isEnrolled) {
+							unenroll++;//69
+							// nothing to do OR refresh all unenroled/completed
+						} else {
+							enroll++;
 						}
 						
 					} else {
-						System.err.println("Not related schedule");
+						if (!currentVisitiCode.equalsIgnoreCase(visitCode)) {
+							notsubNotSame++; //0
+							scheduleRefresh(enrollments, action, doo, action.anmIdentifier(), "", ScheduleNames.PNC);
+							// must need to refresh
+							
+						} else {
+							notsubSame++;//6/ may be nothing to do
+							
+						}
 					}
+					
 				}
-				
 			} else {
-				
+				m++;
 			}
+			
+		}
+		System.err.println("Not Mother:" + m + "acn4:" + acn4 + "currentVisitiCodec:" + currentVisitiCodec
+		        + "   notCurrentVisitiCodec:" + notCurrentVisitiCodec + "  expired:" + expired + "unenroll: " + unenroll
+		        + "  enroll:" + enroll + " notsubSame  :" + notsubSame + " notsubNotSame;" + notsubNotSame);
+	}
+	
+	@RequestMapping(method = GET, value = "/schedule-refresh-encc")
+	public void enncScheduleRefresh() {
+		String pattern = "yyyy-MM-dd";
+		int i = 0;
+		String visitCode = "";
+		List<Action> actions = allActions.getAll();
+		
+		String doo = "";
+		String currentVisitiCode = "";
+		int m = 0;
+		int acn4 = 0;
+		int unenroll = 0;
+		int currentVisitiCodec = 0;
+		int notCurrentVisitiCodec = 0;
+		int expired = 0;
+		int enroll = 0;
+		int notsubSame = 0;
+		int notsubNotSame = 0;
+		boolean isEnrolled = false;
+		for (Action action : actions) {
+			visitCode = action.data().get("visitCode");
+			Child child = allChilds.findByCaseId(action.caseId());
+			//System.err.println("Mother;" + mother);
+			
+			if (child != null) {
+				doo = child.details().get("FWBNFDOB");
+				DateTime dateTime = DateTime.parse(doo);
+				DateTimeFormatter fmt = DateTimeFormat.forPattern(pattern);
+				String referenceDate = fmt.print(dateTime);
+				currentVisitiCode = checkENCC(LocalDate.parse(referenceDate), referenceDate);
+				boolean enccStatus = isENNCSubmited(child, visitCode);
+				List<Enrollment> enrollments = allEnrollmentWrapper.getByEid(action.caseId());
+				if (enccStatus) {// if submitted //780
+				
+					if (SCHEDULE_ENCC_3.equalsIgnoreCase(visitCode)) {
+						//should false all scedule; // problem in tab synced schedule
+						// unenroll all schedule
+						//10
+						makeScheduleFalse(action);
+					} else {
+						if (!currentVisitiCode.equalsIgnoreCase(visitCode)) {
+							notCurrentVisitiCodec++; //7							
+							scheduleRefresh(enrollments, action, doo, action.anmIdentifier(), "", ScheduleNames.CHILD);
+						} else {
+							currentVisitiCodec++; //0
+							makeScheduleFalse(action);
+							//// false all schedule
+						}
+					}
+					
+				} else { // not submitted
+				
+					if (currentVisitiCode.equalsIgnoreCase("expired")) {
+						
+						for (Enrollment enrollment : enrollments) {
+							if (!"ACTIVE".equalsIgnoreCase(enrollment.getStatus().name())
+							        && ScheduleNames.CHILD.equalsIgnoreCase(enrollment.getScheduleName())) {
+								//System.err.println("Sataus:" + enrollment.getStatus());
+								isEnrolled = true;
+							}
+						}
+						if (isEnrolled) {
+							unenroll++;//0
+							// nothing to do OR refresh all unenroled/completed
+						} else {
+							enroll++;//29
+						}
+						
+					} else {
+						if (!currentVisitiCode.equalsIgnoreCase(visitCode)) {
+							notsubNotSame++; //0
+							// must need to refresh
+							scheduleRefresh(enrollments, action, doo, action.anmIdentifier(), "", ScheduleNames.CHILD);
+							
+						} else {
+							notsubSame++;//6/ may be nothing to do
+							
+						}
+					}
+					
+				}
+			} else {
+				m++;
+			}
+			
+		}
+		System.err.println("Not Mother:" + m + "acn4:" + acn4 + "currentVisitiCodec:" + currentVisitiCodec
+		        + "   notCurrentVisitiCodec:" + notCurrentVisitiCodec + "  expired:" + expired + "unenroll: " + unenroll
+		        + "  enroll:" + enroll + " notsubSame  :" + notsubSame + " notsubNotSame;" + notsubNotSame);
+	}
+	
+	private void scheduleRefresh(List<Enrollment> enrollments, Action action, String refDate, String provider,
+	                             String instance, String scheduleName) {
+		try {
+			allEnrollmentWrapper.remove(enrollments.get(0));
+			allActions.remove(action);
+			scheduler.unEnrollFromSchedule(action.caseId(), action.anmIdentifier(), scheduleName);
+		}
+		catch (Exception e) {
+			
+		}
+		
+		try {
+			ancSchedulesService.enrollMother(enrollments.get(0).getExternalId(), LocalDate.parse(refDate), provider,
+			    instance, refDate);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 	
+	private void makeScheduleFalse(Action action) {
+		action.markAsInActive();
+		allActions.update(action);
+	}
+	
+	private String getBnfDate(List<Map<String, String>> bnfVisitDetails) {
+		String user_type = "";
+		String date = "";
+		for (Map<String, String> map : bnfVisitDetails) {
+			user_type = map.get("user_type");
+			date = map.get("FWBNFDTOO");
+			if ((!"".equalsIgnoreCase(date) || !date.isEmpty()) && "FD".equalsIgnoreCase(user_type)) {
+				//System.err.println("Date:" + date);
+				return date;
+			}
+		}
+		
+		return null;
+		
+	}
 }

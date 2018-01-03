@@ -54,7 +54,7 @@ public class HealthSchedulerService {
 	public void fullfillMilestoneAndCloseAlert(String entityId, String providerId, String scheduleName,
 	                                           LocalDate completionDate) {
 		scheduleService.fulfillMilestone(entityId, scheduleName, completionDate);
-		actionService.markAlertAsClosed(entityId, providerId, scheduleName, completionDate.toString());
+		//actionService.markAlertAsClosed(entityId, providerId, scheduleName, completionDate.toString());
 	}
 	
 	public void fullfillMilestone(String entityId, String providerId, String scheduleName, LocalDate completionDate) {
