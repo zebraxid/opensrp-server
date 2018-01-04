@@ -432,6 +432,11 @@ public class MotherIntegrationTest {
 		System.err.println("CNT:" + i + "   " + j);
 	}
 	
+	///http://localhost:5984/_utils/database.html?motech-scheduletracking-api/_design/Enrollment/_view/by_external_id
+	//function(doc) { if(doc.type === 'Enrollment' && doc.scheduleName=='Ante Natal Care Reminder Visit') emit(doc.externalId); }
+	//http://localhost:5984/_utils/database.html?opensrp/_design/Action/_view/all#
+	//function(doc) { if(doc.type === 'Action' && doc.data.scheduleName=='Ante Natal Care Reminder Visit' && doc.data.alertStatus!='expired') {emit(null, doc._id)} }
+	
 	@Ignore
 	@Test
 	public void ancScheduleTest() {
@@ -456,8 +461,9 @@ public class MotherIntegrationTest {
 			Mother mother = allMothers.findByCaseId(action.caseId());
 			//System.err.println("Mother;" + mother);
 			
-			if (mother != null) {
+			if (mother != null && mother.PROVIDERID() != null) {
 				lmp = mother.details().get("LMP");
+				List<Enrollment> enrollments = allEnrollmentWrapper.getByEid(action.caseId());
 				currentVisitiCode = checkANC(LocalDate.parse(lmp), lmp);
 				boolean ancStatus = isANCSubmited(mother, visitCode);
 				if (ancStatus) {// if submitted //780
@@ -467,18 +473,16 @@ public class MotherIntegrationTest {
 					if (SCHEDULE_ANC_4.equalsIgnoreCase(visitCode)) {
 						//should false all scedule; // problem in tab synced schedule
 						// unenroll all schedule
+						
 						acn4++;//196
 					} else {
 						if (!currentVisitiCode.equalsIgnoreCase(visitCode)) {
 							
 							notCurrentVisitiCodec++; //168
-							/*System.err.println(currentVisitiCode + " | " + visitCode + "  |  " + action.getIsActionActive()
-							        + " | " + action.caseId());*/
+							
 							// refresh schedule
 						} else {
 							currentVisitiCodec++; //416
-							System.err.println(currentVisitiCode + " | " + visitCode + "  |  " + action.getIsActionActive()
-							        + " | " + action.caseId() + " | " + action.getIsActionActive());
 							
 							// false all schedule
 						}
@@ -487,7 +491,6 @@ public class MotherIntegrationTest {
 				} else { // not submitted
 					i++; //1875
 					if (action.data().get("alertStatus").equalsIgnoreCase("expired")) {
-						List<Enrollment> enrollments = allEnrollmentWrapper.getByEid(action.caseId());
 						
 						for (Enrollment enrollment : enrollments) {
 							if (!"ACTIVE".equalsIgnoreCase(enrollment.getStatus().name())
@@ -498,9 +501,11 @@ public class MotherIntegrationTest {
 						}
 						if (isEnrolled) {
 							unenroll++;//311
+							
 							// nothing to do OR refresh all unenroled/completed
 						} else {
 							enroll++;
+							
 						}
 						expired++;//466
 						/*System.err.println(currentVisitiCode + " | " + visitCode + "  |  " + action.getIsActionActive()
@@ -514,8 +519,16 @@ public class MotherIntegrationTest {
 						} else {
 							notsubSame++;//1038/ may be nothing to do
 							
-							/*System.err.println(currentVisitiCode + " | " + visitCode + "  |  " + action.getIsActionActive()
-							        + " | " + action.caseId());*/
+							try {
+								System.err.println("Sataus:" + enrollments.get(0).getStatus() + " | "
+								        + action.getIsActionActive() + " |" + action.caseId() + " | " + currentVisitiCode
+								        + " | " + action.data().get("alertStatus") + " | " + visitCode + " | "
+								        + action.data().get("expiryDate") + " | " + enrollments.size() + " | "
+								        + action.timestamp());
+							}
+							catch (Exception e) {
+								
+							}
 							
 						}
 					}
@@ -567,6 +580,7 @@ public class MotherIntegrationTest {
 				String referenceDate = fmt.print(dateTime);
 				currentVisitiCode = checkPNC(LocalDate.parse(referenceDate), referenceDate);
 				boolean pncStatus = isPNCSubmited(mother, visitCode);
+				List<Enrollment> enrollments = allEnrollmentWrapper.getByEid(action.caseId());
 				if (pncStatus) {// if submitted //780
 				
 					/*System.err.println("ANC CaseId:" + action.caseId() + "visitCode:" + visitCode + " status:"
@@ -575,17 +589,15 @@ public class MotherIntegrationTest {
 						//should false all scedule; // problem in tab synced schedule
 						// unenroll all schedule
 						acn4++;//14
+						
 					} else {
 						if (!currentVisitiCode.equalsIgnoreCase(visitCode)) {
 							
 							notCurrentVisitiCodec++; //7
-							/*System.err.println(currentVisitiCode + " | " + visitCode + "  |  " + action.getIsActionActive()
-							        + " | " + action.caseId());*/
+							
 							// refresh schedule
 						} else {
 							currentVisitiCodec++; //0
-							System.err.println(currentVisitiCode + " | " + visitCode + "  |  " + action.getIsActionActive()
-							        + " | " + action.caseId() + " | " + action.getIsActionActive());
 							
 							// // false all schedule
 						}
@@ -594,20 +606,20 @@ public class MotherIntegrationTest {
 				} else { // not submitted
 				
 					if (action.data().get("alertStatus").equalsIgnoreCase("expired")) {
-						List<Enrollment> enrollments = allEnrollmentWrapper.getByEid(action.caseId());
 						
-						for (Enrollment enrollment : enrollments) {
-							if (!"ACTIVE".equalsIgnoreCase(enrollment.getStatus().name())
-							        && ScheduleNames.PNC.equalsIgnoreCase(enrollment.getScheduleName())) {
-								//System.err.println("Sataus:" + enrollment.getStatus());
-								isEnrolled = true;
-							}
+						if (!"ACTIVE".equalsIgnoreCase(enrollments.get(0).getStatus().name())
+						        && ScheduleNames.PNC.equalsIgnoreCase(enrollments.get(0).getScheduleName())) {
+							//System.err.println("Sataus:" + enrollment.getStatus());
+							isEnrolled = true;
 						}
+						
 						if (isEnrolled) {
 							unenroll++;//69
 							// nothing to do OR refresh all unenroled/completed
+							
 						} else {
 							enroll++;
+							
 						}
 						expired++;//466
 						/*System.err.println(currentVisitiCode + " | " + visitCode + "  |  " + action.getIsActionActive()
@@ -616,6 +628,7 @@ public class MotherIntegrationTest {
 					} else {
 						if (!currentVisitiCode.equalsIgnoreCase(visitCode)) {
 							notsubNotSame++; //0
+							
 							// must need to refresh
 							
 						} else {
@@ -665,6 +678,7 @@ public class MotherIntegrationTest {
 			//System.err.println("Mother;" + mother);
 			
 			if (child != null) {
+				List<Enrollment> enrollments = allEnrollmentWrapper.getByEid(action.caseId());
 				doo = child.details().get("FWBNFDOB");
 				DateTime dateTime = DateTime.parse(doo);
 				DateTimeFormatter fmt = DateTimeFormat.forPattern(pattern);
@@ -679,18 +693,19 @@ public class MotherIntegrationTest {
 						//should false all scedule; // problem in tab synced schedule
 						// unenroll all schedule
 						acn4++;//4
+						System.err.println("Sataus:" + enrollments.get(0).getStatus() + " | " + action.getIsActionActive()
+						        + " |" + action.caseId() + " | " + currentVisitiCode + " | "
+						        + action.data().get("alertStatus") + " | " + visitCode + " | "
+						        + action.data().get("expiryDate") + " | " + enrollments.size() + " | " + action.timestamp());
+						
 					} else {
 						if (!currentVisitiCode.equalsIgnoreCase(visitCode)) {
-							
 							notCurrentVisitiCodec++; //5
-							/*System.err.println(currentVisitiCode + " | " + visitCode + "  |  " + action.getIsActionActive()
-							        + " | " + action.caseId());*/
-							// refresh schedule
+							
+							// refresh schedule // schedule interupted due to server off 21 december
 						} else {
-							currentVisitiCodec++; //0
-							/*System.err.println(currentVisitiCode + " | " + visitCode + "  |  " + action.getIsActionActive()
-							        + " | " + action.caseId() + "  " + action.getIsActionActive());
-							*/
+							currentVisitiCodec++; //0 no data found
+							
 							//// false all schedule
 						}
 					}
@@ -698,39 +713,35 @@ public class MotherIntegrationTest {
 				} else { // not submitted
 				
 					if (action.data().get("alertStatus").equalsIgnoreCase("expired")) {
-						List<Enrollment> enrollments = allEnrollmentWrapper.getByEid(action.caseId());
 						
-						for (Enrollment enrollment : enrollments) {
-							if (!"ACTIVE".equalsIgnoreCase(enrollment.getStatus().name())
-							        && ScheduleNames.CHILD.equalsIgnoreCase(enrollment.getScheduleName())) {
-								
-								isEnrolled = true;
-							} else {
-								System.err.println("Sataus:" + enrollment.getStatus() + " | " + action.getIsActionActive()
-								        + " |" + action.caseId());
-							}
+						if (!"ACTIVE".equalsIgnoreCase(enrollments.get(0).getStatus().name())
+						        && ScheduleNames.CHILD.equalsIgnoreCase(enrollments.get(0).getScheduleName())) {
+							
+							isEnrolled = true;
+						} else {
+							/*System.err.println("Sataus:" + enrollment.getStatus() + " | " + action.getIsActionActive()
+							        + " |" + action.caseId());*/
 						}
+						
 						if (isEnrolled) {
 							unenroll++;//0
-							// nothing to do OR refresh all unenroled/completed
+							
+							// nothing to do OR refresh all unenroled/completed / no data found
 						} else {
 							enroll++;//0
 							
 						}
 						expired++;//466
-						/*System.err.println(currentVisitiCode + " | " + visitCode + "  |  " + action.getIsActionActive()
-						        + " | " + action.caseId());*/
+						
 						// refresh schedule
 					} else {
 						if (!currentVisitiCode.equalsIgnoreCase(visitCode)) {
 							notsubNotSame++; //29
+							
 							// must need to refresh
 							
 						} else {
 							notsubSame++;//6/ may be nothing to do
-							
-							/*System.err.println(currentVisitiCode + " | " + visitCode + "  |  " + action.getIsActionActive()
-							        + " | " + action.caseId());*/
 							
 						}
 					}

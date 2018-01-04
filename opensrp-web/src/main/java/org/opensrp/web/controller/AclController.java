@@ -509,7 +509,7 @@ public class AclController {
 			Mother mother = allMothers.findByCaseId(action.caseId());
 			//System.err.println("Mother;" + mother);
 			
-			if (mother != null) {
+			if (mother != null && mother.PROVIDERID() != null) {
 				lmp = mother.details().get("LMP");
 				currentVisitiCode = checkANC(LocalDate.parse(lmp), lmp);
 				boolean ancStatus = isANCSubmited(mother, visitCode);
@@ -525,7 +525,7 @@ public class AclController {
 						if (!currentVisitiCode.equalsIgnoreCase(visitCode)) {
 							
 							notCurrentVisitiCodec++; //168
-							scheduleRefresh(enrollments, action, lmp, action.anmIdentifier(), "", ScheduleNames.ANC);
+							scheduleRefreshANC(enrollments, action, lmp, action.anmIdentifier(), "", ScheduleNames.ANC);
 							// refresh schedule
 						} else {
 							currentVisitiCodec++; //416
@@ -536,7 +536,7 @@ public class AclController {
 					
 				} else { // not submitted
 					i++; //1875
-					if (currentVisitiCode.equalsIgnoreCase("expired")) {
+					if (action.data().get("alertStatus").equalsIgnoreCase("expired")) {
 						
 						for (Enrollment enrollment : enrollments) {
 							if (!"ACTIVE".equalsIgnoreCase(enrollment.getStatus().name())
@@ -557,7 +557,7 @@ public class AclController {
 						if (!currentVisitiCode.equalsIgnoreCase(visitCode)) {
 							notsubNotSame++; //203
 							// must need to refresh
-							scheduleRefresh(enrollments, action, lmp, action.anmIdentifier(), "", ScheduleNames.ANC);
+							scheduleRefreshANC(enrollments, action, lmp, action.anmIdentifier(), "", ScheduleNames.ANC);
 						} else {
 							notsubSame++;//1038/ may be nothing to do
 							
@@ -599,14 +599,16 @@ public class AclController {
 			Mother mother = allMothers.findByCaseId(action.caseId());
 			//System.err.println("Mother;" + mother);
 			
-			if (mother != null) {
+			if (mother != null && mother.PROVIDERID() != null) {
 				List<Enrollment> enrollments = allEnrollmentWrapper.getByEid(action.caseId());
 				List<Map<String, String>> bnfVisitDetails = mother.bnfVisitDetails();
 				doo = getBnfDate(bnfVisitDetails);
 				DateTime dateTime = DateTime.parse(doo);
 				DateTimeFormatter fmt = DateTimeFormat.forPattern(pattern);
 				String referenceDate = fmt.print(dateTime);
+				System.err.println("referenceDate:" + referenceDate + "" + action.caseId());
 				currentVisitiCode = checkPNC(LocalDate.parse(referenceDate), referenceDate);
+				
 				boolean pncStatus = isPNCSubmited(mother, visitCode);
 				if (pncStatus) {// if submitted //780
 				
@@ -618,7 +620,8 @@ public class AclController {
 						if (!currentVisitiCode.equalsIgnoreCase(visitCode)) {
 							
 							notCurrentVisitiCodec++; //7
-							scheduleRefresh(enrollments, action, doo, action.anmIdentifier(), "", ScheduleNames.PNC);
+							scheduleRefreshPNC(enrollments, action, referenceDate, action.anmIdentifier(), "",
+							    ScheduleNames.PNC);
 							// refresh schedule
 						} else {
 							currentVisitiCodec++; //0
@@ -628,7 +631,7 @@ public class AclController {
 					
 				} else { // not submitted
 				
-					if (currentVisitiCode.equalsIgnoreCase("expired")) {
+					if (action.data().get("alertStatus").equalsIgnoreCase("expired")) {
 						
 						for (Enrollment enrollment : enrollments) {
 							if (!"ACTIVE".equalsIgnoreCase(enrollment.getStatus().name())
@@ -647,7 +650,8 @@ public class AclController {
 					} else {
 						if (!currentVisitiCode.equalsIgnoreCase(visitCode)) {
 							notsubNotSame++; //0
-							scheduleRefresh(enrollments, action, doo, action.anmIdentifier(), "", ScheduleNames.PNC);
+							scheduleRefreshPNC(enrollments, action, referenceDate, action.anmIdentifier(), "",
+							    ScheduleNames.PNC);
 							// must need to refresh
 							
 						} else {
@@ -691,7 +695,7 @@ public class AclController {
 			Child child = allChilds.findByCaseId(action.caseId());
 			//System.err.println("Mother;" + mother);
 			
-			if (child != null) {
+			if (child != null && child.PROVIDERID() != null) {
 				doo = child.details().get("FWBNFDOB");
 				DateTime dateTime = DateTime.parse(doo);
 				DateTimeFormatter fmt = DateTimeFormat.forPattern(pattern);
@@ -709,7 +713,8 @@ public class AclController {
 					} else {
 						if (!currentVisitiCode.equalsIgnoreCase(visitCode)) {
 							notCurrentVisitiCodec++; //7							
-							scheduleRefresh(enrollments, action, doo, action.anmIdentifier(), "", ScheduleNames.CHILD);
+							scheduleRefreshENCC(enrollments, action, referenceDate, action.anmIdentifier(), "",
+							    ScheduleNames.CHILD);
 						} else {
 							currentVisitiCodec++; //0
 							makeScheduleFalse(action);
@@ -719,7 +724,7 @@ public class AclController {
 					
 				} else { // not submitted
 				
-					if (currentVisitiCode.equalsIgnoreCase("expired")) {
+					if (action.data().get("alertStatus").equalsIgnoreCase("expired")) {
 						
 						for (Enrollment enrollment : enrollments) {
 							if (!"ACTIVE".equalsIgnoreCase(enrollment.getStatus().name())
@@ -739,7 +744,8 @@ public class AclController {
 						if (!currentVisitiCode.equalsIgnoreCase(visitCode)) {
 							notsubNotSame++; //0
 							// must need to refresh
-							scheduleRefresh(enrollments, action, doo, action.anmIdentifier(), "", ScheduleNames.CHILD);
+							scheduleRefreshENCC(enrollments, action, referenceDate, action.anmIdentifier(), "",
+							    ScheduleNames.CHILD);
 							
 						} else {
 							notsubSame++;//6/ may be nothing to do
@@ -758,8 +764,8 @@ public class AclController {
 		        + "  enroll:" + enroll + " notsubSame  :" + notsubSame + " notsubNotSame;" + notsubNotSame);
 	}
 	
-	private void scheduleRefresh(List<Enrollment> enrollments, Action action, String refDate, String provider,
-	                             String instance, String scheduleName) {
+	private void scheduleRefreshANC(List<Enrollment> enrollments, Action action, String refDate, String provider,
+	                                String instance, String scheduleName) {
 		try {
 			allEnrollmentWrapper.remove(enrollments.get(0));
 			allActions.remove(action);
@@ -770,8 +776,46 @@ public class AclController {
 		}
 		
 		try {
-			ancSchedulesService.enrollMother(enrollments.get(0).getExternalId(), LocalDate.parse(refDate), provider,
-			    instance, refDate);
+			ancSchedulesService.enrollMother(action.caseId(), LocalDate.parse(refDate), provider, instance, refDate);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void scheduleRefreshPNC(List<Enrollment> enrollments, Action action, String refDate, String provider,
+	                                String instance, String scheduleName) {
+		try {
+			allEnrollmentWrapper.remove(enrollments.get(0));
+			allActions.remove(action);
+			scheduler.unEnrollFromSchedule(action.caseId(), action.anmIdentifier(), scheduleName);
+		}
+		catch (Exception e) {
+			
+		}
+		
+		try {
+			
+			pncSchedulesService.enrollPNCRVForMother(action.caseId(), "", provider, LocalDate.parse(refDate), refDate);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void scheduleRefreshENCC(List<Enrollment> enrollments, Action action, String refDate, String provider,
+	                                 String instance, String scheduleName) {
+		try {
+			allEnrollmentWrapper.remove(enrollments.get(0));
+			allActions.remove(action);
+			scheduler.unEnrollFromSchedule(action.caseId(), action.anmIdentifier(), scheduleName);
+		}
+		catch (Exception e) {
+			
+		}
+		
+		try {
+			childSchedulesService.enrollENCCForChild(action.caseId(), "", provider, LocalDate.parse(refDate), refDate);
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -780,6 +824,7 @@ public class AclController {
 	
 	private void makeScheduleFalse(Action action) {
 		action.markAsInActive();
+		action.timestamp(System.currentTimeMillis());
 		allActions.update(action);
 	}
 	
@@ -790,7 +835,7 @@ public class AclController {
 			user_type = map.get("user_type");
 			date = map.get("FWBNFDTOO");
 			if ((!"".equalsIgnoreCase(date) || !date.isEmpty()) && "FD".equalsIgnoreCase(user_type)) {
-				//System.err.println("Date:" + date);
+				System.err.println("Date:" + date);
 				return date;
 			}
 		}
