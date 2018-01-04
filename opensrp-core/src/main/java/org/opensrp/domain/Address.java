@@ -10,6 +10,10 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.joda.time.DateTime;
+import org.joda.time.Days;
+import org.joda.time.Months;
+import org.joda.time.Weeks;
+import org.joda.time.Years;
 import org.opensrp.common.AddressField;
 
 public class Address {
@@ -272,24 +276,8 @@ public class Address {
 	 *
 	 * @return
 	 */
-	private long durationInMillis() {
-		if (startDate == null) {
-			return -1;
-		}
-		if (endDate == null) {
-			return DateTime.now().getMillis() - startDate.getMillis();
-		}
-
-		return endDate.getMillis() - startDate.getMillis();
-	}
-
-	/**
-	 * If startDate is not specified returns -1. If endDate is not specified duration is from startDate to current date
-	 *
-	 * @return
-	 */
 	public int durationInDays() {
-		return (int) (durationInMillis() == -1 ? durationInMillis() : (durationInMillis() / (1000 * 60 * 60 * 24)));
+		return startDate == null ? -1 : Days.daysBetween(startDate, endDate == null ? DateTime.now() : endDate).getDays();
 	}
 
 	/**
@@ -298,7 +286,7 @@ public class Address {
 	 * @return
 	 */
 	public int durationInWeeks() {
-		return durationInDays() == -1 ? durationInDays() : (durationInDays() / 7);
+		return startDate == null ? -1 : Weeks.weeksBetween(startDate, endDate == null ? DateTime.now() : endDate).getWeeks();
 	}
 
 	/**
@@ -307,7 +295,8 @@ public class Address {
 	 * @return
 	 */
 	public int durationInMonths() {
-		return durationInDays() == -1 ? durationInDays() : ((int) (durationInDays() / 30));
+		return startDate == null ? -1
+		        : Months.monthsBetween(startDate, endDate == null ? DateTime.now() : endDate).getMonths();
 	}
 
 	/**
@@ -316,7 +305,7 @@ public class Address {
 	 * @return
 	 */
 	public int durationInYears() {
-		return durationInDays() == -1 ? durationInDays() : (durationInDays() / 365);
+		return startDate == null ? -1 : Years.yearsBetween(startDate, endDate == null ? DateTime.now() : endDate).getYears();
 	}
 
 	/**
