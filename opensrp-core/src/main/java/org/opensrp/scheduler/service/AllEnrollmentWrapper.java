@@ -78,4 +78,12 @@ public class AllEnrollmentWrapper extends AllEnrollments {
 		return enrollments;
 	}
 	
+	private static final String FUNCTION_DOC_EMIT_EXTERNALID_SCHEDULENAME = "function(doc) { if(doc.type === 'Enrollment') emit([doc.externalId,doc.scheduleName], doc._id);}";
+	
+	@View(name = "by_scheduleName_externalId", map = FUNCTION_DOC_EMIT_EXTERNALID_SCHEDULENAME)
+	public List<Enrollment> findByExternalIdAndScheduleName(String externalId, String scheduleName) {
+		ComplexKey key = ComplexKey.of(externalId, scheduleName);
+		return db.queryView(createQuery("by_scheduleName_externalId").key(key).includeDocs(true), Enrollment.class);
+	}
+	
 }

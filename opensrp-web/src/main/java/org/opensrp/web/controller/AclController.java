@@ -29,6 +29,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.json.JSONException;
 import org.motechproject.scheduletracking.api.domain.Enrollment;
+import org.motechproject.scheduletracking.api.domain.EnrollmentStatus;
 import org.opensrp.common.AllConstants.ScheduleNames;
 import org.opensrp.common.util.DateUtil;
 import org.opensrp.connector.openmrs.service.OpenmrsUserService;
@@ -490,7 +491,7 @@ public class AclController {
 	public void ancScheduleRefresh() {
 		int i = 0;
 		String visitCode = "";
-		List<Action> actions = allActions.getAll();
+		List<Action> actions = allActions.findActionByScheduleName("Ante Natal Care Reminder Visit");
 		System.err.println("" + actions.size());
 		String lmp = "";
 		String currentVisitiCode = "";
@@ -513,7 +514,8 @@ public class AclController {
 				lmp = mother.details().get("LMP");
 				currentVisitiCode = checkANC(LocalDate.parse(lmp), lmp);
 				boolean ancStatus = isANCSubmited(mother, visitCode);
-				List<Enrollment> enrollments = allEnrollmentWrapper.getByEid(action.caseId());
+				List<Enrollment> enrollments = allEnrollmentWrapper.findByExternalIdAndScheduleName(action.caseId(),
+				    "Ante Natal Care Reminder Visit");
 				if (ancStatus) {// if submitted //780
 				
 					if (SCHEDULE_ANC_4.equalsIgnoreCase(visitCode)) {
@@ -522,7 +524,7 @@ public class AclController {
 						acn4++;//196
 						makeScheduleFalse(action);
 					} else {
-						if (!currentVisitiCode.equalsIgnoreCase(visitCode)) {
+						if (!currentVisitiCode.equalsIgnoreCase(visitCode) && isActiveOrDefaulted(enrollments)) {
 							
 							notCurrentVisitiCodec++; //168
 							scheduleRefreshANC(enrollments, action, lmp, action.anmIdentifier(), "", ScheduleNames.ANC);
@@ -554,7 +556,7 @@ public class AclController {
 						}
 						
 					} else {
-						if (!currentVisitiCode.equalsIgnoreCase(visitCode)) {
+						if (!currentVisitiCode.equalsIgnoreCase(visitCode) && isActiveOrDefaulted(enrollments)) {
 							notsubNotSame++; //203
 							// must need to refresh
 							scheduleRefreshANC(enrollments, action, lmp, action.anmIdentifier(), "", ScheduleNames.ANC);
@@ -580,7 +582,7 @@ public class AclController {
 		String pattern = "yyyy-MM-dd";
 		int i = 0;
 		String visitCode = "";
-		List<Action> actions = allActions.getAll();
+		List<Action> actions = allActions.findActionByScheduleName("Post Natal Care Reminder Visit");
 		System.err.println("" + actions.size());
 		String doo = "";
 		String currentVisitiCode = "";
@@ -600,7 +602,8 @@ public class AclController {
 			//System.err.println("Mother;" + mother);
 			
 			if (mother != null && mother.PROVIDERID() != null) {
-				List<Enrollment> enrollments = allEnrollmentWrapper.getByEid(action.caseId());
+				List<Enrollment> enrollments = allEnrollmentWrapper.findByExternalIdAndScheduleName(action.caseId(),
+				    "Post Natal Care Reminder Visit");
 				List<Map<String, String>> bnfVisitDetails = mother.bnfVisitDetails();
 				doo = getBnfDate(bnfVisitDetails);
 				DateTime dateTime = DateTime.parse(doo);
@@ -617,7 +620,7 @@ public class AclController {
 						// unenroll all schedule
 						makeScheduleFalse(action);
 					} else {
-						if (!currentVisitiCode.equalsIgnoreCase(visitCode)) {
+						if (!currentVisitiCode.equalsIgnoreCase(visitCode) && isActiveOrDefaulted(enrollments)) {
 							
 							notCurrentVisitiCodec++; //7
 							scheduleRefreshPNC(enrollments, action, referenceDate, action.anmIdentifier(), "",
@@ -648,7 +651,7 @@ public class AclController {
 						}
 						
 					} else {
-						if (!currentVisitiCode.equalsIgnoreCase(visitCode)) {
+						if (!currentVisitiCode.equalsIgnoreCase(visitCode) && isActiveOrDefaulted(enrollments)) {
 							notsubNotSame++; //0
 							scheduleRefreshPNC(enrollments, action, referenceDate, action.anmIdentifier(), "",
 							    ScheduleNames.PNC);
@@ -676,7 +679,7 @@ public class AclController {
 		String pattern = "yyyy-MM-dd";
 		int i = 0;
 		String visitCode = "";
-		List<Action> actions = allActions.getAll();
+		List<Action> actions = allActions.findActionByScheduleName("Essential Newborn Care Checklist");
 		
 		String doo = "";
 		String currentVisitiCode = "";
@@ -702,7 +705,8 @@ public class AclController {
 				String referenceDate = fmt.print(dateTime);
 				currentVisitiCode = checkENCC(LocalDate.parse(referenceDate), referenceDate);
 				boolean enccStatus = isENNCSubmited(child, visitCode);
-				List<Enrollment> enrollments = allEnrollmentWrapper.getByEid(action.caseId());
+				List<Enrollment> enrollments = allEnrollmentWrapper.findByExternalIdAndScheduleName(action.caseId(),
+				    "Essential Newborn Care Checklist");
 				if (enccStatus) {// if submitted //780
 				
 					if (SCHEDULE_ENCC_3.equalsIgnoreCase(visitCode)) {
@@ -711,7 +715,7 @@ public class AclController {
 						//10
 						makeScheduleFalse(action);
 					} else {
-						if (!currentVisitiCode.equalsIgnoreCase(visitCode)) {
+						if (!currentVisitiCode.equalsIgnoreCase(visitCode) && isActiveOrDefaulted(enrollments)) {
 							notCurrentVisitiCodec++; //7							
 							scheduleRefreshENCC(enrollments, action, referenceDate, action.anmIdentifier(), "",
 							    ScheduleNames.CHILD);
@@ -741,7 +745,7 @@ public class AclController {
 						}
 						
 					} else {
-						if (!currentVisitiCode.equalsIgnoreCase(visitCode)) {
+						if (!currentVisitiCode.equalsIgnoreCase(visitCode) && isActiveOrDefaulted(enrollments)) {
 							notsubNotSame++; //0
 							// must need to refresh
 							scheduleRefreshENCC(enrollments, action, referenceDate, action.anmIdentifier(), "",
@@ -770,9 +774,10 @@ public class AclController {
 			allEnrollmentWrapper.remove(enrollments.get(0));
 			allActions.remove(action);
 			scheduler.unEnrollFromSchedule(action.caseId(), action.anmIdentifier(), scheduleName);
+			System.err.println("UNEnrolled .......................");
 		}
 		catch (Exception e) {
-			
+			e.printStackTrace();
 		}
 		
 		try {
@@ -786,12 +791,14 @@ public class AclController {
 	private void scheduleRefreshPNC(List<Enrollment> enrollments, Action action, String refDate, String provider,
 	                                String instance, String scheduleName) {
 		try {
+			
 			allEnrollmentWrapper.remove(enrollments.get(0));
 			allActions.remove(action);
 			scheduler.unEnrollFromSchedule(action.caseId(), action.anmIdentifier(), scheduleName);
+			System.err.println("UNEnrolled .......................");
 		}
 		catch (Exception e) {
-			
+			e.printStackTrace();
 		}
 		
 		try {
@@ -809,9 +816,10 @@ public class AclController {
 			allEnrollmentWrapper.remove(enrollments.get(0));
 			allActions.remove(action);
 			scheduler.unEnrollFromSchedule(action.caseId(), action.anmIdentifier(), scheduleName);
+			System.err.println("UNEnrolled .......................");
 		}
 		catch (Exception e) {
-			
+			e.printStackTrace();
 		}
 		
 		try {
@@ -825,6 +833,7 @@ public class AclController {
 	private void makeScheduleFalse(Action action) {
 		action.markAsInActive();
 		action.timestamp(System.currentTimeMillis());
+		action.setRevision(action.getRevision());
 		allActions.update(action);
 	}
 	
@@ -841,6 +850,34 @@ public class AclController {
 		}
 		
 		return null;
+		
+	}
+	
+	private boolean isActiveOrDefaulted(List<Enrollment> enrollments) {
+		boolean completed = true;
+		boolean active = false;
+		
+		System.err.println("Size:" + enrollments.size());
+		for (Enrollment enrollment : enrollments) {
+			//System.err.println("enrollment:" + enrollment.getStatus());
+			if (EnrollmentStatus.COMPLETED.name().equalsIgnoreCase(enrollment.getStatus().name())
+			        || EnrollmentStatus.UNENROLLED.name().equalsIgnoreCase(enrollment.getStatus().name())) {
+				completed = false;
+				
+			} else if (EnrollmentStatus.ACTIVE.name().equalsIgnoreCase(enrollment.getStatus().name())
+			        || EnrollmentStatus.DEFAULTED.name().equalsIgnoreCase(enrollment.getStatus().name())) {
+				
+				active = true;
+				
+			}
+			
+		}
+		
+		if (completed == false) {
+			return false;
+		} else {
+			return true;
+		}
 		
 	}
 }

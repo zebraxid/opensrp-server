@@ -34,6 +34,7 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.motechproject.scheduletracking.api.domain.Enrollment;
+import org.motechproject.scheduletracking.api.domain.EnrollmentStatus;
 import org.opensrp.common.AllConstants.ScheduleNames;
 import org.opensrp.common.util.DateUtil;
 import org.opensrp.register.mcare.domain.Child;
@@ -437,12 +438,11 @@ public class MotherIntegrationTest {
 	//http://localhost:5984/_utils/database.html?opensrp/_design/Action/_view/all#
 	//function(doc) { if(doc.type === 'Action' && doc.data.scheduleName=='Ante Natal Care Reminder Visit' && doc.data.alertStatus!='expired') {emit(null, doc._id)} }
 	
-	@Ignore
 	@Test
 	public void ancScheduleTest() {
 		int i = 0;
 		String visitCode = "";
-		List<Action> actions = allActions.getAll();
+		List<Action> actions = allActions.findActionByScheduleName("Ante Natal Care Reminder Visit");
 		System.err.println("" + actions.size());
 		String lmp = "";
 		String currentVisitiCode = "";
@@ -463,7 +463,8 @@ public class MotherIntegrationTest {
 			
 			if (mother != null && mother.PROVIDERID() != null) {
 				lmp = mother.details().get("LMP");
-				List<Enrollment> enrollments = allEnrollmentWrapper.getByEid(action.caseId());
+				List<Enrollment> enrollments = allEnrollmentWrapper.findByExternalIdAndScheduleName(action.caseId(),
+				    "Ante Natal Care Reminder Visit");
 				currentVisitiCode = checkANC(LocalDate.parse(lmp), lmp);
 				boolean ancStatus = isANCSubmited(mother, visitCode);
 				if (ancStatus) {// if submitted //780
@@ -476,14 +477,18 @@ public class MotherIntegrationTest {
 						
 						acn4++;//196
 					} else {
-						if (!currentVisitiCode.equalsIgnoreCase(visitCode)) {
+						if (!currentVisitiCode.equalsIgnoreCase(visitCode) && isActive(enrollments)) {
 							
 							notCurrentVisitiCodec++; //168
 							
 							// refresh schedule
 						} else {
 							currentVisitiCodec++; //416
-							
+							System.err.println("Refresh Sataus:" + enrollments.get(0).getStatus() + " | "
+							        + action.getIsActionActive() + " |" + action.caseId() + " | " + currentVisitiCode
+							        + " | " + action.data().get("alertStatus") + " | " + visitCode + " | "
+							        + action.data().get("expiryDate") + " | " + enrollments.size() + " | "
+							        + action.timestamp());
 							// false all schedule
 						}
 					}
@@ -493,7 +498,7 @@ public class MotherIntegrationTest {
 					if (action.data().get("alertStatus").equalsIgnoreCase("expired")) {
 						
 						for (Enrollment enrollment : enrollments) {
-							if (!"ACTIVE".equalsIgnoreCase(enrollment.getStatus().name())
+							if (!EnrollmentStatus.ACTIVE.name().equalsIgnoreCase(enrollment.getStatus().name())
 							        && ScheduleNames.ANC.equalsIgnoreCase(enrollment.getScheduleName())) {
 								//System.err.println("Sataus:" + enrollment.getStatus());
 								isEnrolled = true;
@@ -512,23 +517,12 @@ public class MotherIntegrationTest {
 						        + " | " + action.caseId());*/
 						// refresh schedule
 					} else {
-						if (!currentVisitiCode.equalsIgnoreCase(visitCode)) {
+						if (!currentVisitiCode.equalsIgnoreCase(visitCode) && isActive(enrollments)) {
 							notsubNotSame++; //203
 							// must need to refresh
 							
 						} else {
 							notsubSame++;//1038/ may be nothing to do
-							
-							try {
-								System.err.println("Sataus:" + enrollments.get(0).getStatus() + " | "
-								        + action.getIsActionActive() + " |" + action.caseId() + " | " + currentVisitiCode
-								        + " | " + action.data().get("alertStatus") + " | " + visitCode + " | "
-								        + action.data().get("expiryDate") + " | " + enrollments.size() + " | "
-								        + action.timestamp());
-							}
-							catch (Exception e) {
-								
-							}
 							
 						}
 					}
@@ -552,7 +546,7 @@ public class MotherIntegrationTest {
 		String pattern = "yyyy-MM-dd";
 		int i = 0;
 		String visitCode = "";
-		List<Action> actions = allActions.getAll();
+		List<Action> actions = allActions.findActionByScheduleName("Post Natal Care Reminder Visit");
 		System.err.println("" + actions.size());
 		String doo = "";
 		String currentVisitiCode = "";
@@ -580,7 +574,8 @@ public class MotherIntegrationTest {
 				String referenceDate = fmt.print(dateTime);
 				currentVisitiCode = checkPNC(LocalDate.parse(referenceDate), referenceDate);
 				boolean pncStatus = isPNCSubmited(mother, visitCode);
-				List<Enrollment> enrollments = allEnrollmentWrapper.getByEid(action.caseId());
+				List<Enrollment> enrollments = allEnrollmentWrapper.findByExternalIdAndScheduleName(action.caseId(),
+				    "Post Natal Care Reminder Visit");
 				if (pncStatus) {// if submitted //780
 				
 					/*System.err.println("ANC CaseId:" + action.caseId() + "visitCode:" + visitCode + " status:"
@@ -591,7 +586,7 @@ public class MotherIntegrationTest {
 						acn4++;//14
 						
 					} else {
-						if (!currentVisitiCode.equalsIgnoreCase(visitCode)) {
+						if (!currentVisitiCode.equalsIgnoreCase(visitCode) && isActive(enrollments)) {
 							
 							notCurrentVisitiCodec++; //7
 							
@@ -607,7 +602,7 @@ public class MotherIntegrationTest {
 				
 					if (action.data().get("alertStatus").equalsIgnoreCase("expired")) {
 						
-						if (!"ACTIVE".equalsIgnoreCase(enrollments.get(0).getStatus().name())
+						if (!EnrollmentStatus.ACTIVE.name().equalsIgnoreCase(enrollments.get(0).getStatus().name())
 						        && ScheduleNames.PNC.equalsIgnoreCase(enrollments.get(0).getScheduleName())) {
 							//System.err.println("Sataus:" + enrollment.getStatus());
 							isEnrolled = true;
@@ -626,7 +621,7 @@ public class MotherIntegrationTest {
 						        + " | " + action.caseId());*/
 						// refresh schedule
 					} else {
-						if (!currentVisitiCode.equalsIgnoreCase(visitCode)) {
+						if (!currentVisitiCode.equalsIgnoreCase(visitCode) && isActive(enrollments)) {
 							notsubNotSame++; //0
 							
 							// must need to refresh
@@ -634,14 +629,9 @@ public class MotherIntegrationTest {
 						} else {
 							notsubSame++;//6/ may be nothing to do
 							
-							/*System.err.println(currentVisitiCode + " | " + visitCode + "  |  " + action.getIsActionActive()
-							        + " | " + action.caseId());*/
-							
 						}
 					}
 					
-					/*System.err.println("ANC CaseId:" + action.caseId() + "visitCode:" + visitCode + " status:"
-					        + action.getIsActionActive());*/
 				}
 			} else {
 				m++;
@@ -653,12 +643,13 @@ public class MotherIntegrationTest {
 		        + "  enroll:" + enroll + " notsubSame  :" + notsubSame + " notsubNotSame;" + notsubNotSame);
 	}
 	
+	@Ignore
 	@Test
 	public void enncScheduleTest() {
 		String pattern = "yyyy-MM-dd";
 		int i = 0;
 		String visitCode = "";
-		List<Action> actions = allActions.getAll();
+		List<Action> actions = allActions.findActionByScheduleName("Essential Newborn Care Checklist");
 		System.err.println("" + actions.size());
 		String doo = "";
 		String currentVisitiCode = "";
@@ -678,7 +669,8 @@ public class MotherIntegrationTest {
 			//System.err.println("Mother;" + mother);
 			
 			if (child != null) {
-				List<Enrollment> enrollments = allEnrollmentWrapper.getByEid(action.caseId());
+				List<Enrollment> enrollments = allEnrollmentWrapper.findByExternalIdAndScheduleName(action.caseId(),
+				    "Essential Newborn Care Checklist");
 				doo = child.details().get("FWBNFDOB");
 				DateTime dateTime = DateTime.parse(doo);
 				DateTimeFormatter fmt = DateTimeFormat.forPattern(pattern);
@@ -693,13 +685,9 @@ public class MotherIntegrationTest {
 						//should false all scedule; // problem in tab synced schedule
 						// unenroll all schedule
 						acn4++;//4
-						System.err.println("Sataus:" + enrollments.get(0).getStatus() + " | " + action.getIsActionActive()
-						        + " |" + action.caseId() + " | " + currentVisitiCode + " | "
-						        + action.data().get("alertStatus") + " | " + visitCode + " | "
-						        + action.data().get("expiryDate") + " | " + enrollments.size() + " | " + action.timestamp());
 						
 					} else {
-						if (!currentVisitiCode.equalsIgnoreCase(visitCode)) {
+						if (!currentVisitiCode.equalsIgnoreCase(visitCode) && isActive(enrollments)) {
 							notCurrentVisitiCodec++; //5
 							
 							// refresh schedule // schedule interupted due to server off 21 december
@@ -714,28 +702,9 @@ public class MotherIntegrationTest {
 				
 					if (action.data().get("alertStatus").equalsIgnoreCase("expired")) {
 						
-						if (!"ACTIVE".equalsIgnoreCase(enrollments.get(0).getStatus().name())
-						        && ScheduleNames.CHILD.equalsIgnoreCase(enrollments.get(0).getScheduleName())) {
-							
-							isEnrolled = true;
-						} else {
-							/*System.err.println("Sataus:" + enrollment.getStatus() + " | " + action.getIsActionActive()
-							        + " |" + action.caseId());*/
-						}
-						
-						if (isEnrolled) {
-							unenroll++;//0
-							
-							// nothing to do OR refresh all unenroled/completed / no data found
-						} else {
-							enroll++;//0
-							
-						}
-						expired++;//466
-						
 						// refresh schedule
 					} else {
-						if (!currentVisitiCode.equalsIgnoreCase(visitCode)) {
+						if (!currentVisitiCode.equalsIgnoreCase(visitCode) && isActive(enrollments)) {
 							notsubNotSame++; //29
 							
 							// must need to refresh
@@ -937,6 +906,34 @@ public class MotherIntegrationTest {
 		}
 		
 		return null;
+		
+	}
+	
+	private boolean isActive(List<Enrollment> enrollments) {
+		boolean completed = true;
+		boolean active = false;
+		String status = "";
+		System.err.println("Size:" + enrollments.size());
+		for (Enrollment enrollment : enrollments) {
+			System.err.println("enrollment:" + enrollment.getStatus());
+			if (EnrollmentStatus.COMPLETED.name().equalsIgnoreCase(enrollment.getStatus().name())
+			        || EnrollmentStatus.UNENROLLED.name().equalsIgnoreCase(enrollment.getStatus().name())) {
+				completed = false;
+				status = enrollment.getStatus().name();
+			} else if (EnrollmentStatus.ACTIVE.name().equalsIgnoreCase(enrollment.getStatus().name())
+			        || EnrollmentStatus.DEFAULTED.name().equalsIgnoreCase(enrollment.getStatus().name())) {
+				
+				active = true;
+				status = enrollment.getStatus().name();
+			}
+			
+		}
+		
+		if (completed == false) {
+			return false;
+		} else {
+			return true;
+		}
 		
 	}
 }
