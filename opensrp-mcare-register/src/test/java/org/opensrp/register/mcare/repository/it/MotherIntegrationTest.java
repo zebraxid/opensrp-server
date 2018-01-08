@@ -409,35 +409,11 @@ public class MotherIntegrationTest {
 		System.err.println("CNT:" + i);
 	}
 	
-	@Ignore
-	@Test
-	public void anc() {
-		System.err.println("" + allEnrollmentWrapper);
-		List<Enrollment> enrollments = allEnrollmentWrapper.all();
-		System.err.println("" + enrollments.size());
-		int i = 0;
-		int j = 0;
-		for (Enrollment enrollment : enrollments) {
-			if ("DEFAULTED".equalsIgnoreCase(enrollment.getStatus().name())) {
-				List<Action> actions = allActions.findByCaseID(enrollment.getExternalId());
-				if (actions.size() != 0) {
-					if ("ancrv_1".equalsIgnoreCase(actions.get(0).data().get("visitCode"))) {
-						j++;
-						//System.err.println("" + actions.get(0).data().get("visitCode"));
-					}
-				}
-				i++;
-				System.err.println(enrollment.getFulfillments().toString() + "  " + enrollment.getStatus() + "  ");
-			}
-		}
-		System.err.println("CNT:" + i + "   " + j);
-	}
-	
 	///http://localhost:5984/_utils/database.html?motech-scheduletracking-api/_design/Enrollment/_view/by_external_id
 	//function(doc) { if(doc.type === 'Enrollment' && doc.scheduleName=='Ante Natal Care Reminder Visit') emit(doc.externalId); }
 	//http://localhost:5984/_utils/database.html?opensrp/_design/Action/_view/all#
 	//function(doc) { if(doc.type === 'Action' && doc.data.scheduleName=='Ante Natal Care Reminder Visit' && doc.data.alertStatus!='expired') {emit(null, doc._id)} }
-	
+	@Ignore
 	@Test
 	public void ancScheduleTest() {
 		int i = 0;
@@ -540,7 +516,6 @@ public class MotherIntegrationTest {
 		        + "  enroll:" + enroll + " notsubSame  :" + notsubSame + " notsubNotSame;" + notsubNotSame);
 	}
 	
-	@Ignore
 	@Test
 	public void pncScheduleTest() {
 		String pattern = "yyyy-MM-dd";
@@ -910,30 +885,39 @@ public class MotherIntegrationTest {
 	}
 	
 	private boolean isActive(List<Enrollment> enrollments) {
-		boolean completed = true;
-		boolean active = false;
-		String status = "";
+		boolean completed = false;
 		System.err.println("Size:" + enrollments.size());
 		for (Enrollment enrollment : enrollments) {
 			System.err.println("enrollment:" + enrollment.getStatus());
 			if (EnrollmentStatus.COMPLETED.name().equalsIgnoreCase(enrollment.getStatus().name())
 			        || EnrollmentStatus.UNENROLLED.name().equalsIgnoreCase(enrollment.getStatus().name())) {
-				completed = false;
-				status = enrollment.getStatus().name();
+				completed = true;
+				
 			} else if (EnrollmentStatus.ACTIVE.name().equalsIgnoreCase(enrollment.getStatus().name())
 			        || EnrollmentStatus.DEFAULTED.name().equalsIgnoreCase(enrollment.getStatus().name())) {
 				
-				active = true;
-				status = enrollment.getStatus().name();
 			}
 			
 		}
 		
-		if (completed == false) {
+		if (completed) {
+			System.err.println("completed;" + completed);
 			return false;
 		} else {
 			return true;
 		}
 		
+	}
+	
+	@Ignore
+	@Test
+	public void expiredScheduleCorrection() {
+		List<Action> actions = allActions.getAll();
+		for (Action action : actions) {
+			action.markAsInActive();
+			action.timestamp(System.currentTimeMillis());
+			action.setRevision(action.getRevision());
+			allActions.update(action);
+		}
 	}
 }
