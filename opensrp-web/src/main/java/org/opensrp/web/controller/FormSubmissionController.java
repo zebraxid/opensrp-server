@@ -97,6 +97,22 @@ public class FormSubmissionController {
         });
     }
 
+    @RequestMapping(method = GET, value = "/form-submissions-by-loc")
+    @ResponseBody
+    private List<FormSubmissionDTO> getNewSubmissionsForLoc(@RequestParam("locationId") String locationId,
+                                                            @RequestParam("timestamp") Long timeStamp,
+                                                            @RequestParam(value = "batch-size", required = false)
+                                                            Integer batchSize) {
+        List<FormSubmission> newSubmissionsForANM = formSubmissionService
+                .getNewSubmissionsForLoc(locationId, timeStamp, batchSize);
+        return with(newSubmissionsForANM).convert(new Converter<FormSubmission, FormSubmissionDTO>() {
+            @Override
+            public FormSubmissionDTO convert(FormSubmission submission) {
+                return FormSubmissionConverter.from(submission);
+            }
+        });
+    }
+
     @RequestMapping(method = GET, value="/all-form-submissions")
     @ResponseBody
     private List<FormSubmissionDTO> getAllFormSubmissions(@RequestParam("timestamp") Long timeStamp,
@@ -123,34 +139,6 @@ public class FormSubmissionController {
 
             scheduler.notifyEvent(new SystemEvent<>(AllConstants.OpenSRPEvent.FORM_SUBMISSION, formSubmissionsDTO));
             
-            try{
-          
-            ////////TODO MAIMOONA : SHOULD BE IN EVENT but event needs to be moved to web so for now kept here
-            String json = new Gson().toJson(formSubmissionsDTO);
-            System.out.println("MMMMMMMMMMMYYYYYYYYYYYYYY::"+json);
-            List<FormSubmissionDTO> formSubmissions = new Gson().fromJson(json, new TypeToken<List<FormSubmissionDTO>>() {
-            }.getType());
-            List<FormSubmission> fsl = with(formSubmissions).convert(new Converter<FormSubmissionDTO, FormSubmission>() {
-                @Override
-                public FormSubmission convert(FormSubmissionDTO submission) {
-                    return FormSubmissionConverter.toFormSubmission(submission);
-                }
-            });
-	            for (FormSubmission formSubmission : fsl) {
-	            	try{
-	            		addFormToOpenMRS(formSubmission);
-	            	}
-	            	catch(Exception e){
-	            		e.printStackTrace();
-	            		ErrorTrace errorTrace=new ErrorTrace(new DateTime(), "Parse Exception", "", e.getStackTrace().toString(), "Unsolved", formSubmission.formName());
-						errorTrace.setRecordId(formSubmission.instanceId());
-						errorTraceService.addError(errorTrace);
-	            	}
-	    		}
-            }
-            catch(Exception e){
-            	e.printStackTrace();
-            }
             logger.debug(format("Added Form submissions to queue.\nSubmissions: {0}", formSubmissionsDTO));
         } catch (Exception e) {
             logger.error(format("Form submissions processing failed with exception {0}.\nSubmissions: {1}", e, formSubmissionsDTO));
@@ -158,7 +146,7 @@ public class FormSubmissionController {
         }
         return new ResponseEntity<>(CREATED);
     }
-    
+
     private void addFormToOpenMRS(FormSubmission formSubmission) throws ParseException, IllegalStateException, JSONException{
 //    	if(formEntityConverter.isOpenmrsForm(formSubmission)){
     		Client c = formEntityConverter.getClientFromFormSubmission(formSubmission);
@@ -166,13 +154,13 @@ public class FormSubmissionController {
 			Map<String, Map<String, Object>> dep = formEntityConverter.getDependentClientsFromFormSubmission(formSubmission);
 
     		// TODO temporary because not necessarily we register inner entity for Household only
-    		if(formSubmission.formName().toLowerCase().contains("household") 
+    		if(formSubmission.formName().toLowerCase().contains("household")
     				|| formSubmission.formName().toLowerCase().contains("census") ){
     			OpenmrsHouseHold hh = new OpenmrsHouseHold(c, e);
     			for (Map<String, Object> cm : dep.values()) {
     				hh.addHHMember((Client)cm.get("client"), (Event)cm.get("event"));
     			}
-    			
+
     			householdService.saveHH(hh, true);
     		}
     		else {
@@ -180,9 +168,9 @@ public class FormSubmissionController {
     			if(p == null){
     				System.out.println(patientService.createPatient(c));
     			}
-        	
+
     			System.out.println(encounterService.createEncounter(e));
-    			
+
     			for (Map<String, Object> cm : dep.values()) {
     				Client cin = (Client)cm.get("client");
     				Event evin = (Event)cm.get("event");
@@ -190,7 +178,7 @@ public class FormSubmissionController {
         			if(pin == null){
         				System.out.println(patientService.createPatient(cin));
         			}
-            	
+
         			System.out.println(encounterService.createEncounter(evin));
     			}
     		}

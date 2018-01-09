@@ -13,6 +13,7 @@ import java.nio.charset.Charset;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.opensrp.common.util.DateUtil;
 import org.opensrp.domain.Multimedia;
 import org.opensrp.dto.form.MultimediaDTO;
 import org.opensrp.service.MultimediaService;
@@ -127,7 +128,7 @@ public class MultimediaController {
     	
     	String contentType= file.getContentType();
     	
-    	MultimediaDTO multimediaDTO = new MultimediaDTO(entityId, providerId, contentType, null, fileCategory,locationId).withAttributes("faceVector",faceVector);
+    	MultimediaDTO multimediaDTO = new MultimediaDTO(entityId, providerId, contentType, null, fileCategory,locationId).withAttributes("faceVector",faceVector).withAttributes("timeStamp",Long.toString(DateUtil.millis()));
     	
     	String status = multimediaService.saveMultimediaFile(multimediaDTO, file);
     	 

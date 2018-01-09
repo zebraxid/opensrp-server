@@ -69,8 +69,23 @@ public class AllFormSubmissions extends MotechBaseRepository<FormSubmission> {
         }
         return db.queryView(query, FormSubmission.class);
     }
-    
-    @View(name = "formSubmission_by_form_name_and_server_version", 
+
+    @View(name = "formSubmission_by_loc_and_server_version",
+            map = "function(doc) { if (doc.type === 'FormSubmission') { emit([doc.locationId, doc.serverVersion], null); } }")
+    public List<FormSubmission> findByLocIdAndServerVersion(String locationId, long version, Integer batchSize) {
+        ComplexKey startKey = ComplexKey.of(locationId, version + 1);
+        ComplexKey endKey = ComplexKey.of(locationId, Long.MAX_VALUE);
+        ViewQuery query = createQuery("formSubmission_by_loc_and_server_version")
+                .startKey(startKey)
+                .endKey(endKey)
+                .includeDocs(true);
+        if (batchSize != null) {
+            query.limit(batchSize);
+        }
+        return db.queryView(query, FormSubmission.class);
+    }
+
+    @View(name = "formSubmission_by_form_name_and_server_version",
     		map = "function(doc) { if (doc.type === 'FormSubmission') { emit([doc.formName, doc.serverVersion]); } }")
     public List<FormSubmission> findByFormName(String formName, long version) {
     	ComplexKey startKey = ComplexKey.of(formName, version + 1);
@@ -81,7 +96,7 @@ public class AllFormSubmissions extends MotechBaseRepository<FormSubmission> {
                 .includeDocs(true), FormSubmission.class);
     }
 
-    @View(name = "formSubmission_by_metadata_keyval", 
+    @View(name = "formSubmission_by_metadata_keyval",
     		map = "function(doc) { if (doc.type === 'FormSubmission') { "
     				+ "if(doc.metadata){"
     				+ "for(var key in doc.metadata) {emit([key, doc.metadata[key]]);}"

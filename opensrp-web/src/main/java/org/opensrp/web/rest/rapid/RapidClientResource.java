@@ -249,7 +249,7 @@ static Map<String, String[]> vs = new HashMap<String, String[]>(){{
 			FormData form = new FormData(bindType, "/model/instance/Child_Vaccination_Followup/", 
 					generateChildFields(eid, insId, location, user, location, DateTime.now(), vaccine, new DateTime(dt)), null);
 			FormInstance formInstance = new FormInstance(form, "1");
-			FormSubmission fs = new FormSubmission(user, insId, "child_followup", eid, DateTime.now().getMillis(), "1", formInstance, DateTime.now().getMillis());
+			FormSubmission fs = new FormSubmission(user, insId, "child_followup","loc1", eid, DateTime.now().getMillis(), "1", formInstance, DateTime.now().getMillis());
 
 			allFormSubmission.add(fs);
 

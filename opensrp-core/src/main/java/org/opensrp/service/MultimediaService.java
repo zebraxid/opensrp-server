@@ -89,7 +89,7 @@ public class MultimediaService {
 
 				}
 				new File(multimediaDirPath).mkdir();
-				String fileName=multimediaDirPath+File.separator+multimediaDTO.caseId() + fileExt;
+				String fileName=multimediaDirPath+File.separator+multimediaDTO.caseId()+"_"+multimediaDTO.fileCategory() + fileExt;
 				multimediaDTO.withFilePath(fileName);
 				File multimediaDir = new File(fileName);
 

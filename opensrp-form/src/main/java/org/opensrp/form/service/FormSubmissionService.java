@@ -46,6 +46,10 @@ public class FormSubmissionService {
         return allFormSubmissions.findByANMIDAndServerVersion(anmIdentifier, version, batchSize);
     }
 
+    public List<FormSubmission> getNewSubmissionsForLoc(String locationId, Long version, Integer batchSize) {
+        return allFormSubmissions.findByLocIdAndServerVersion(locationId, version, batchSize);
+    }
+
     public List<FormSubmission> getAllSubmissions(Long version, Integer batchSize) {
         return allFormSubmissions.allFormSubmissions(version, batchSize);
     }

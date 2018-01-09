@@ -54,7 +54,7 @@ public class TaskSchedulerService {
         startJob(new CronSchedulableJob(event, job.CRON, startTime, job.getEndTime()));
     }
 	
-	public void notifyEvent(SystemEvent<?> event){
+	public void  notifyEvent(SystemEvent<?> event){
 		gateway.sendEventMessage(event.toMotechEvent());
 	}
 	

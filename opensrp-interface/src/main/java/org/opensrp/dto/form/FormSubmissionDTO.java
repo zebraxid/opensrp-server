@@ -15,6 +15,8 @@ public class FormSubmissionDTO {
     @JsonProperty
     private String formName;
     @JsonProperty
+    private String locationId;
+    @JsonProperty
     private String formInstance;
     @JsonProperty
     private String clientVersion;
@@ -23,11 +25,12 @@ public class FormSubmissionDTO {
     @JsonProperty
     private String formDataDefinitionVersion;
 
-    public FormSubmissionDTO(String anmId, String instanceId, String entityId, String formName, String formInstance, String clientVersion, String formDataDefinitionVersion) {
+    public FormSubmissionDTO(String anmId, String instanceId, String entityId, String formName, String locationId, String formInstance, String clientVersion, String formDataDefinitionVersion) {
         this.anmId = anmId;
         this.instanceId = instanceId;
         this.entityId = entityId;
         this.formName = formName;
+        this.locationId = locationId;
         this.formInstance = formInstance;
         this.clientVersion = clientVersion;
         this.formDataDefinitionVersion = formDataDefinitionVersion;
@@ -52,6 +55,10 @@ public class FormSubmissionDTO {
 
     public String formName() {
         return this.formName;
+    }
+
+    public String locationId() {
+        return this.locationId;
     }
 
     public String instance() {
