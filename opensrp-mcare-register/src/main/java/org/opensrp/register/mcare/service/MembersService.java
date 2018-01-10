@@ -78,7 +78,7 @@ public class MembersService {
                     .setToday(submission.getField(REFERENCE_DATE))
                     .setEnd(submission.getField(END_DATE))
                     .setStart(submission.getField(START_DATE))
-                    .setUpdatedTimeStamp(DateUtil.getTimestampToday())
+                    .setUpdatedTimeStamp(System.currentTimeMillis())
                     .setServerVersion(submission.serverVersion())
                     .setRelationalid(membersFields.get(relationalid))
                     .setClientVersion(submission.clientVersion());
@@ -296,7 +296,7 @@ public class MembersService {
                 .put(Received_Time, format.format(day).toString())
                 .map();
 
-        members.setUpdatedTimeStamp(DateUtil.getTimestampToday());
+        members.setUpdatedTimeStamp(System.currentTimeMillis());
         members.elco_Followup().add(Elco_Followup);
         allMembers.update(members);
 
@@ -500,7 +500,7 @@ public class MembersService {
                 .put(Received_Time, format.format(day).toString())
                 .map();
 
-        members.setUpdatedTimeStamp(DateUtil.getTimestampToday());
+        members.setUpdatedTimeStamp(System.currentTimeMillis());
         members.bnfVisit().add(bnf);
         allMembers.update(members);
 
@@ -712,7 +712,7 @@ public class MembersService {
                     .setRelationalid(submission.getField(relationalid))
                     .setServerVersion(submission.serverVersion())
                     .setClientVersion(submission.clientVersion())
-                    .setUpdatedTimeStamp(DateUtil.getTimestampToday());
+                    .setUpdatedTimeStamp(System.currentTimeMillis());
 
             if (membersFields.containsKey(Mem_F_Name)) {
                 allMembers.update(members);
@@ -745,7 +745,7 @@ public class MembersService {
         }
 
         addchildRegistratonToHH(submission, subFormData, houseHold);
-
+        houseHold.setUpdatedTimeStamp(System.currentTimeMillis());
         allHouseHolds.update(houseHold);
 
         membersScheduleService.unEnrollFromSchedule(submission.entityId(), submission.anmId(), child_reg);
@@ -874,7 +874,7 @@ public class MembersService {
                 .put(child_current_form_status, submission.getField(child_current_form_status))
                 .put(received_time, dateTime.format(day).toString()).map();
 
-        members.setUpdatedTimeStamp(DateUtil.getTimestampToday());
+        members.setUpdatedTimeStamp(System.currentTimeMillis());
         members.child_vaccine().add(vaccine);
 
         allMembers.update(members);

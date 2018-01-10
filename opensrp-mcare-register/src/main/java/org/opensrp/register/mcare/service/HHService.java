@@ -59,7 +59,7 @@ public class HHService {
 		houseHold.setClientVersion(submission.clientVersion());
 		houseHold.setServerVersion(submission.serverVersion());
 		houseHold.setToday(submission.getField(REFERENCE_DATE));
-		houseHold.setUpdatedTimeStamp(DateUtil.getTimestampToday());
+		houseHold.setUpdatedTimeStamp(System.currentTimeMillis());
 
 		allHouseHolds.update(houseHold);
 			

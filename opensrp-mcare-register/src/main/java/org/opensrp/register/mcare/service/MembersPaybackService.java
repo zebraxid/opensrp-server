@@ -116,7 +116,7 @@ public class MembersPaybackService {
                 .put(Received_Time, format.format(day).toString())
                 .map();
 
-        members.setUpdatedTimeStamp(DateUtil.getTimestampToday());
+        members.setUpdatedTimeStamp(System.currentTimeMillis());
         members.injecTables().add(Injectable);
         allMembers.update(members);
 /*
@@ -180,7 +180,7 @@ public class MembersPaybackService {
                 .put(Received_Time, format.format(day).toString())
                 .map();
 
-        members.setUpdatedTimeStamp(DateUtil.getTimestampToday());
+        members.setUpdatedTimeStamp(System.currentTimeMillis());
         members.adolescent().add(Adolescent);
         allMembers.update(members);
 
@@ -255,7 +255,7 @@ public class MembersPaybackService {
                 .put(Received_Time, format.format(day).toString())
                 .map();
 
-        members.setUpdatedTimeStamp(DateUtil.getTimestampToday());
+        members.setUpdatedTimeStamp(System.currentTimeMillis());
         members.setDeathReg(DeathReg);
         allMembers.update(members);
 
@@ -321,7 +321,7 @@ public class MembersPaybackService {
                 .put(Received_Time, format.format(day).toString())
                 .map();
 
-        members.setUpdatedTimeStamp(DateUtil.getTimestampToday());
+        members.setUpdatedTimeStamp(System.currentTimeMillis());
         members.nutrition().add(Nutritions);
         allMembers.update(members);
 

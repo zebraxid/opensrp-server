@@ -130,7 +130,7 @@ public class MembersFollowupService {
                 .put(Received_Time, format.format(day).toString())
                 .map();
 
-        members.setUpdatedTimeStamp(DateUtil.getTimestampToday());
+        members.setUpdatedTimeStamp(System.currentTimeMillis());
         members.setPNCVisit1(PNCVisit1);
         allMembers.update(members);
 
@@ -222,7 +222,7 @@ public class MembersFollowupService {
                 .put(Received_Time, format.format(day).toString())
                 .map();
 
-        members.setUpdatedTimeStamp(DateUtil.getTimestampToday());
+        members.setUpdatedTimeStamp(System.currentTimeMillis());
         members.setPNCVisit2(PNCVisit2);
         allMembers.update(members);
         if (submission.getField(Visit_status).equalsIgnoreCase("8") || submission.getField(Visit_status).equalsIgnoreCase("10")) {
@@ -313,7 +313,7 @@ public class MembersFollowupService {
                 .put(Received_Time, format.format(day).toString())
                 .map();
 
-        members.setUpdatedTimeStamp(DateUtil.getTimestampToday());
+        members.setUpdatedTimeStamp(System.currentTimeMillis());
         members.setPNCVisit3(PNCVisit3);
         allMembers.update(members);
         if (submission.getField(Visit_status).equalsIgnoreCase("8") || submission.getField(Visit_status).equalsIgnoreCase("10")) {
@@ -404,7 +404,7 @@ public class MembersFollowupService {
                 .put(Received_Time, format.format(day).toString())
                 .map();
 
-        members.setUpdatedTimeStamp(DateUtil.getTimestampToday());
+        members.setUpdatedTimeStamp(System.currentTimeMillis());
         members.setPNCVisit4(PNCVisit4);
         allMembers.update(members);
 
@@ -498,7 +498,7 @@ public class MembersFollowupService {
                 .put(Received_Time, format.format(day).toString())
                 .map();
 
-        members.setUpdatedTimeStamp(DateUtil.getTimestampToday());
+        members.setUpdatedTimeStamp(System.currentTimeMillis());
         members.setANCVisit1(ANCVisit1);
         allMembers.update(members);
 
@@ -590,7 +590,7 @@ public class MembersFollowupService {
                 .put(Received_Time, format.format(day).toString())
                 .map();
 
-        members.setUpdatedTimeStamp(DateUtil.getTimestampToday());
+        members.setUpdatedTimeStamp(System.currentTimeMillis());
         members.setANCVisit2(ANCVisit2);
         allMembers.update(members);
 
@@ -685,7 +685,7 @@ public class MembersFollowupService {
                 .put(Received_Time, format.format(day).toString())
                 .map();
 
-        members.setUpdatedTimeStamp(DateUtil.getTimestampToday());
+        members.setUpdatedTimeStamp(System.currentTimeMillis());
         members.setANCVisit3(ANCVisit3);
         allMembers.update(members);
 
@@ -778,7 +778,7 @@ public class MembersFollowupService {
                 .put(Received_Time, format.format(day).toString())
                 .map();
 
-        members.setUpdatedTimeStamp(DateUtil.getTimestampToday());
+        members.setUpdatedTimeStamp(System.currentTimeMillis());
         members.setANCVisit4(ANCVisit4);
         allMembers.update(members);
 
