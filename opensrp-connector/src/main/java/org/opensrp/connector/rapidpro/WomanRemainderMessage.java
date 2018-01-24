@@ -9,9 +9,9 @@ public class WomanRemainderMessage implements Message {
 	
 	@Override
 	public String message(Client client, Camp camp, Map<String, String> data) {
-		// TODO Auto-generated method stub
-		String message = "  AGAMIKAL " + camp.getDate() + "  APNAR ELAKAY TIKADAN KENDRO BOSHBE. SOMOY MOTO TT TIKA PETE "
-		        + camp.getCampName() + " KENDRE CHOLE ASUN";
+
+		String message = " AGAMIKAL " + camp.getDate() + "  apnar tikadaner  tarikh. Tika nite "
+		        + camp.getCampName() + " -e oboshshoi chole ashben.";
 		return message;
 	}
 	

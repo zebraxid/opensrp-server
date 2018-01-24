@@ -24,6 +24,9 @@ public class Camp extends MotechBaseDataObject {
 	private String campName;
 	
 	@JsonProperty
+	private String centerName;
+	
+	@JsonProperty
 	private boolean status;
 	
 	@JsonProperty
@@ -94,5 +97,15 @@ public class Camp extends MotechBaseDataObject {
 	public void setCreated_date(Date created_date) {
 		this.created_date = created_date;
 	}
+
+	public String getCenterName() {
+		return centerName;
+	}
+
+	public void setCenterName(String centerName) {
+		this.centerName = centerName;
+	}
+	
+	
 	
 }

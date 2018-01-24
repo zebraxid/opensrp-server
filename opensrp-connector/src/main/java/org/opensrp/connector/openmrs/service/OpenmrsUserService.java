@@ -55,7 +55,6 @@ public class OpenmrsUserService extends OpenmrsService{
 		JSONObject obj = jsonArray.getJSONObject(0);
 		JSONObject p = obj.getJSONObject("person");
 		String preferredName=p.getJSONObject("preferredName").getString("display");
-		logger.info(jsonArray.toString());
 		User u = new User(obj.getString("uuid"), obj.getString("username"), null, preferredName,null,
 				p.getString("display"), null, null);
 		//Object ploc;

@@ -2,6 +2,7 @@ package org.opensrp.scheduler.service;
 
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
+import org.joda.time.LocalTime;
 import org.motechproject.model.Time;
 import org.motechproject.scheduletracking.api.domain.Enrollment;
 import org.motechproject.scheduletracking.api.domain.Milestone;
@@ -28,11 +29,14 @@ import static org.joda.time.LocalTime.now;
 import static org.motechproject.scheduletracking.api.domain.EnrollmentStatus.ACTIVE;
 import static org.opensrp.common.util.DateUtil.today;
 
+
 @Service
 public class ScheduleService {
     private final ScheduleTrackingService scheduleTrackingService;
     private final AllSchedules allSchedules;
     private final AllEnrollmentWrapper allEnrollments;
+    private int preferredTime;
+ 
 
     @Autowired
     public ScheduleService(ScheduleTrackingService scheduleTrackingService, AllSchedules allSchedules,
@@ -40,7 +44,10 @@ public class ScheduleService {
         this.scheduleTrackingService = scheduleTrackingService;
         this.allSchedules = allSchedules;
         this.allEnrollments = allEnrollments;
+        this.preferredTime = preferredTime;
     }
+    
+
 
     public void enroll(String entityId, String scheduleName, String referenceDate, String formSubmissionId) {
         String startingMilestoneName = getStartingMilestoneName(scheduleName, parse(referenceDate));
@@ -60,7 +67,7 @@ public class ScheduleService {
         EnrollmentRequest request = new EnrollmentRequest(
                 entityId,
                 scheduleName,
-                null,
+                new Time(new LocalTime(preferredTime, 0)),
                 parse(referenceDate),
                 null,
                 null,

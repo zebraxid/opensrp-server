@@ -9,9 +9,7 @@ public class ChildAnnouncementMessage implements Message {
 	
 	@Override
 	public String message(Client client, Camp camp, Map<String, String> data) {
-		String message = " APNAR ELAKAR TIKADAN KENDRO EKHON KHOLA ASE " + client.fullName() + " -ER BACHCHAKE  "
-		        + data.get("scheduleName") + " TIKA DEYAR JONNO NIYE ASUN";
-		
+		String message = "Ajke " + camp.getCenterName() + " -e Tika deya hobe. Apnar shishuke tika deyar jonno taratari kendre niye ashun.";		
 		return message;
 		
 	}

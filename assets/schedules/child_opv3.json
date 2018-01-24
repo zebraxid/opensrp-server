@@ -1,42 +1,41 @@
 {
-    "name": "FW CENSUS",
+    "name": "child_opv3",
     "absolute": true,
     "milestones": [
-        {
-            "name": "FW CENSUS",
+    	{
+            "name": "child_opv3",
             "scheduleWindows": {
-                "earliest": ["56 Days"],
-                "due": ["84 Days"],
-                "late": ["184 Days"],
-                "max": ["185 Days"]
+            	"earliest": ["28 Days"],
+                "due": ["42 Days"],
+                "late": ["1825 Days"],
+                "max": ["1826 Days"]
             },
             "alerts": [
-                {
+            	{
                     "window": "earliest",
                     "offset": ["0 Days"],
-                    "interval": ["1 Day"],
-                    "count": "56"
-                },
-                {
-                    "window": "due",
-                    "offset": ["56 Days"],
                     "interval": ["1 Day"],
                     "count": "28"
                 },
                 {
-                    "window": "late",
-                    "offset": ["84 Days"],
+                    "window": "due",
+                    "offset": ["28 Days"],
                     "interval": ["1 Day"],
-                    "count": "100"
+                    "count": "14"
+                },
+                {
+                    "window": "late",
+                    "offset": ["42 Days"],
+                    "interval": ["1 Day"],
+                    "count": "1783"
                 },
                 {
                     "window": "max",
-                    "offset": ["184 Days"],
+                    "offset": ["1825 Days"],
                     "interval": ["1 Day"],
                     "count": "1"
                 }
-                
             ]
         }
     ]
-}
+}        

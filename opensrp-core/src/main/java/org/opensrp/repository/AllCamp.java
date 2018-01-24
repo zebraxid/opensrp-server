@@ -5,6 +5,7 @@ import java.util.List;
 import org.ektorp.CouchDbConnector;
 import org.ektorp.support.View;
 import org.motechproject.dao.MotechBaseRepository;
+import org.motechproject.util.DateUtil;
 import org.opensrp.common.AllConstants;
 import org.opensrp.domain.Camp;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,7 @@ public class AllCamp extends MotechBaseRepository<Camp> {
 	
 	public void updateCamp(Camp camp) {
 		camp.setStatus(false);
+		camp.setTimestamp(DateUtil.now().getMillis());
 		camp.setId(camp.getId());
 		camp.setRevision(camp.getRevision());
 		this.update(camp);

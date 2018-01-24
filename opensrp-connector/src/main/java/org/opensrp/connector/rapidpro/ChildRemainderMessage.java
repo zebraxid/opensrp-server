@@ -9,10 +9,11 @@ public class ChildRemainderMessage implements Message {
 	
 	@Override
 	public String message(Client client, Camp camp, Map<String, String> data) {
-		// TODO Auto-generated method stub
-		String message = client.fullName() + "  ER BACHCHAKE TIKA DEYAR SOMOY HOYESE. " + camp.getDate() + "  TARIKHE  "
-		        + data.get("scheduleName") + " DEYAR JONNO BACHCHAKE  TIKADAN KENDRE NIYE ASUN";
+	
+		String message = "Agamikal " + camp.getDate() + "  apnar shishur  tikadaner  tarikh. Shishuke tika dite "
+		        + camp.getCenterName() + "-e oboshshoi niye ashben. Tika diye shishuke rog theke rokkha korun.";
+		System.err.println("messageText: " + message);
 		return message;
-	}
+	}	
 	
 }

@@ -295,6 +295,10 @@ public class EventService {
 	public List<Event> findByServerVersion(long serverVersion) {
 		return allEvents.findByServerVersion(serverVersion);
 	}
+	
+	public List<Event> findByProviderAndEntityType(String provider) {
+		return allEvents.findByProviderAndEntityType(provider);
+	}
 
 	public List<Event> getAll() {
 		return allEvents.getAll();

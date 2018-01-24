@@ -1,42 +1,41 @@
 {
-    "name": "FW CENSUS",
+    "name": "child_measles2",
     "absolute": true,
     "milestones": [
-        {
-            "name": "FW CENSUS",
+    	{
+            "name": "child_measles2",
             "scheduleWindows": {
-                "earliest": ["56 Days"],
-                "due": ["84 Days"],
-                "late": ["184 Days"],
-                "max": ["185 Days"]
+            	"earliest": ["182 Days"],
+                "due": ["427 Days"],
+                "late": ["1825 Days"],
+                "max": ["1826 Days"]
             },
             "alerts": [
-                {
+            	{
                     "window": "earliest",
                     "offset": ["0 Days"],
                     "interval": ["1 Day"],
-                    "count": "56"
+                    "count": "182"
                 },
                 {
                     "window": "due",
-                    "offset": ["56 Days"],
+                    "offset": ["182 Days"],
                     "interval": ["1 Day"],
-                    "count": "28"
+                    "count": "245"
                 },
                 {
                     "window": "late",
-                    "offset": ["84 Days"],
+                    "offset": ["427 Days"],
                     "interval": ["1 Day"],
-                    "count": "100"
+                    "count": "1398"
                 },
                 {
                     "window": "max",
-                    "offset": ["184 Days"],
+                    "offset": ["1825 Days"],
                     "interval": ["1 Day"],
                     "count": "1"
                 }
-                
             ]
         }
     ]
-}
+}        

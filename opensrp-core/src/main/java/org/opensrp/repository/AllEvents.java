@@ -107,6 +107,11 @@ public class AllEvents extends MotechBaseRepository<Event> {
 		    Event.class);
 	}
 	
+	@View(name = "events_by_provider_and_entity_type", map = "function(doc) { if (doc.type === 'Event' && (doc.entityType=='child' || doc.entityType=='mother')) { emit(doc.providerId, null); } }")
+	public List<Event> findByProviderAndEntityType(String provider) {
+		return db.queryView(createQuery("events_by_provider_and_entity_type").key(provider).includeDocs(true),Event.class);
+	}
+	
 	/**
 	 * Find an event based on a concept and between a range of date created dates
 	 * 

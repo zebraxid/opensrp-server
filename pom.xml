@@ -140,7 +140,7 @@
 				<plugin>
 					<artifactId>maven-antrun-plugin</artifactId>
 					<version>1.6</version>
-					<executions>
+<!-- 					<executions>
 						<execution>
 							<id>Drop DB Before Unit and Repository Tests</id>
 							<phase>process-test-classes</phase>
@@ -181,7 +181,7 @@
 								<goal>run</goal>
 							</goals>
 						</execution>
-					</executions>
+					</executions> -->
 				</plugin>
 				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
