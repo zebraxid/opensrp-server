@@ -16,7 +16,7 @@ import org.springframework.stereotype.Repository;
 public class AllCamp extends MotechBaseRepository<Camp> {
 	
 	@Autowired
-	protected AllCamp(@Qualifier(AllConstants.OPENSRP_DATABASE_CONNECTOR) CouchDbConnector db) {
+	public AllCamp(@Qualifier(AllConstants.OPENSRP_DATABASE_CONNECTOR) CouchDbConnector db) {
 		super(Camp.class, db);
 		
 	}

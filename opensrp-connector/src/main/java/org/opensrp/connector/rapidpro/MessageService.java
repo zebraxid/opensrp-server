@@ -48,16 +48,20 @@ public class MessageService {
 								logger.info("sentMessageToClient actiondata:" +  data.toString());*/
 				if (event.getEntityType().equalsIgnoreCase(ClientType.child.name())) {
 					Client child = clientService.find(event.getBaseEntityId());
-					logger.info("sending message to child childBaseEntityId:" + child.getBaseEntityId());
-					Map<String, List<String>> relationships = child.getRelationships();
-					String motherId = relationships.get("mother").get(0);
-					Client mother = clientService.find(motherId);
-					logger.info("sending message to mother moterBaseEntityId:" + mother.getBaseEntityId());
-					generateDataAndsendMessageToRapidpro(mother, ClientType.child, messageFactory, camp);
+					if (child != null) {
+						logger.info("sending message to child childBaseEntityId:" + child.getBaseEntityId());
+						Map<String, List<String>> relationships = child.getRelationships();
+						String motherId = relationships.get("mother").get(0);
+						Client mother = clientService.find(motherId);
+						logger.info("sending message to mother moterBaseEntityId:" + mother.getBaseEntityId());
+						generateDataAndsendMessageToRapidpro(mother, ClientType.child, messageFactory, camp);
+					}
 				} else if (event.getEntityType().equalsIgnoreCase(ClientType.mother.name())) {
 					Client mother = clientService.find(event.getBaseEntityId());
-					logger.info("sending message to mother moterBaseEntityId:" + mother.getBaseEntityId());
-					generateDataAndsendMessageToRapidpro(mother, ClientType.mother, messageFactory, camp);
+					if (mother != null) {
+						logger.info("sending message to mother moterBaseEntityId:" + mother.getBaseEntityId());
+						generateDataAndsendMessageToRapidpro(mother, ClientType.mother, messageFactory, camp);
+					}
 					
 				} else {
 					
