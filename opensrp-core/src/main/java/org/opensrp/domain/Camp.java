@@ -38,10 +38,6 @@ public class Camp extends MotechBaseDataObject {
 	@JsonProperty
 	private Date created_date;
 	
-	public Camp() {
-		
-	}
-	
 	public String getProviderName() {
 		return providerName;
 	}
@@ -82,30 +78,28 @@ public class Camp extends MotechBaseDataObject {
 		this.timestamp = timestamp;
 	}
 	
-	public String getCreated_by() {
+	public String getCreatedBy() {
 		return created_by;
 	}
 	
-	public void setCreated_by(String created_by) {
+	public void setCreatedBy(String created_by) {
 		this.created_by = created_by;
 	}
 	
-	public Date getCreated_date() {
+	public Date getCreatedDate() {
 		return created_date;
 	}
 	
-	public void setCreated_date(Date created_date) {
+	public void setCreatedDate(Date created_date) {
 		this.created_date = created_date;
 	}
-
+	
 	public String getCenterName() {
 		return centerName;
 	}
-
+	
 	public void setCenterName(String centerName) {
 		this.centerName = centerName;
 	}
-	
-	
 	
 }

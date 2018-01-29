@@ -85,6 +85,7 @@ public class RapidproMessageListener {
 					if (DateUtil.dateDiff(camp.getDate()) == -1) {
 						if (camp.getProviderName() == null || camp.getProviderName().isEmpty()
 						        || camp.getProviderName().equalsIgnoreCase("")) {
+							logger.info("problem with camp definition!!");
 							//actions = actionService.findAllActionNotExpired();
 							//List<Event> events = eventService.findByProviderAndEntityType(camp.getProviderName());
 						} else {
