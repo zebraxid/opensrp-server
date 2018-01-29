@@ -50,27 +50,38 @@ public class DHIS2SyncerListener {
 		JSONObject response = null;
 		try {
 			Long start = 0l;
-			List<DHIS2Marker> lastsync = allDHIS2Marker.findByName(DHIS2Constants.DHIS2_TRACK_DATA_SYNCER_VERSION_MARKER);
-			
-			if (lastsync.size() == 0) {
+			Long eventStart = 0l;
+			List<DHIS2Marker> clientSync = allDHIS2Marker.findByName(DHIS2Constants.DHIS2_TRACK_DATA_SYNCER_VERSION_MARKER);
+			List<DHIS2Marker> eventSync = allDHIS2Marker
+			        .findByName(DHIS2Constants.DHIS2_TRACK_DATA_SYNCER_VERSION_MARKER_EVENT);
+			if (clientSync.size() == 0) {
 				allDHIS2Marker.add();
 				start = 0l;
 			} else {
-				start = lastsync == null || lastsync.get(0).getValue() == null ? 0 : lastsync.get(0).getValue();
+				start = clientSync == null || clientSync.get(0).getValue() == null ? 0 : clientSync.get(0).getValue();
 			}
+			System.err.println("start:" + start);
 			List<Client> cl = clientService.findByServerVersion(start);
-			List<Event> events = eventService.findByServerVersion(start);
+			if (eventSync.size() == 0) {
+				allDHIS2Marker.addEventMarker();
+				eventStart = 0l;
+			} else {
+				eventStart = eventSync == null || eventSync.get(0).getValue() == null ? 0 : eventSync.get(0).getValue();
+			}
+			List<Event> events = eventService.findByServerVersion(eventStart);
 			for (Client c : cl) {
+				System.err.println("Name:" + c.fullName());
 				try {
 					response = processTrackerAndSendToDHIS2(c);
+					allDHIS2Marker.update(c.getServerVersion());
 				}
 				catch (Exception e) {
-					System.out.println("DHIS2 Message:" + e.getMessage());
+					e.printStackTrace();
 				}
 			}
 			
 			processAndSendVaccineTrackerToDHIS2(events);
-			allDHIS2Marker.update();
+			
 		}
 		catch (Exception ex) {
 			ex.printStackTrace();

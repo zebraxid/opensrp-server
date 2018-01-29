@@ -26,7 +26,6 @@ public class DHIS2TrackerService {
 		} else if (clientType == TrackerType.MOTHER) {
 			dhis2Tracker = dhis2TrackerFactory.getTracker(TrackerType.MOTHER);
 		} else if (clientType == TrackerType.CHILD) {
-			System.err.println("DHIS2TrackerService gg:");
 			dhis2Tracker = dhis2TrackerFactory.getTracker(TrackerType.CHILD);
 		} else {
 			
@@ -38,7 +37,6 @@ public class DHIS2TrackerService {
 	
 	public static TrackerType getClientType(Client client) {
 		
-		JSONObject clientData = new JSONObject(client);
 		Map<String, List<String>> relationships = client.getRelationships();
 		TrackerType type = null;
 		if (relationships == null) {
@@ -72,6 +70,20 @@ public class DHIS2TrackerService {
 		
 	}
 	
+	public JSONObject withKnownValue(String attributeId, String value) throws JSONException {
+		JSONObject data = new JSONObject();
+		try {
+			data.put("attribute", attributeId);
+			data.put("value", value);
+		}
+		catch (JSONException e) {
+			data.put("attribute", attributeId);
+			data.put("value", "");
+		}
+		return data;
+		
+	}
+	
 	public JSONObject getTrackCaptureDataFromEventByValues(List<Obs> obsservations, String attributeId,
 	                                                       String formSubmissionField) throws JSONException {
 		JSONObject data = new JSONObject();
@@ -91,8 +103,15 @@ public class DHIS2TrackerService {
 	
 	public JSONObject getVaccinationDataFromObservation(Obs obs, String attributeId) throws JSONException {
 		JSONObject data = new JSONObject();
-		data.put("attribute", attributeId);
-		data.put("value", obs.getValues().get(0));
+		try {
+			
+			data.put("attribute", attributeId);
+			data.put("value", obs.getValues().get(0));
+		}
+		catch (Exception e) {
+			data.put("attribute", attributeId);
+			data.put("value", "");
+		}
 		return data;
 	}
 	

@@ -29,10 +29,10 @@ public class DHIS2TrackerFactory {
 			System.err.println("tracker:" + tracker + ":" + householdTracker);
 		} else if (tracker == TrackerType.MOTHER) {
 			dhis2Tracker = motherTracker;
-			
+			System.err.println("tracker:" + tracker + ":" + motherTracker);
 		} else if (tracker == TrackerType.CHILD) {
 			dhis2Tracker = childTracker;
-			
+			System.err.println("tracker:" + tracker + ":" + childTracker);
 		} else {
 			
 		}

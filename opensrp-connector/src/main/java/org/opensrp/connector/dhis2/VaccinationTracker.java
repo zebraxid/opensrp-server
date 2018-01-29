@@ -10,12 +10,16 @@ import org.json.JSONObject;
 import org.opensrp.domain.Client;
 import org.opensrp.domain.Event;
 import org.opensrp.domain.Obs;
+import org.opensrp.repository.AllDHIS2Marker;
 import org.opensrp.service.ClientService;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class VaccinationTracker extends DHIS2Service {
+	
+	private static org.slf4j.Logger logger = LoggerFactory.getLogger(VaccinationTracker.class.toString());
 	
 	@Autowired
 	private DHIS2TrackerService dhis2TrackerService;
@@ -25,6 +29,9 @@ public class VaccinationTracker extends DHIS2Service {
 	
 	@Autowired
 	private DHIS2Connector dhis2Connector;
+	
+	@Autowired
+	private AllDHIS2Marker allDHIS2Marker;
 	
 	public VaccinationTracker() {
 		
@@ -37,12 +44,12 @@ public class VaccinationTracker extends DHIS2Service {
 	public JSONArray getTrackCaptureDataAndSend(List<Event> events) throws JSONException {
 		for (Event event : events) {
 			List<Obs> observations = event.getObs();
-			
+			allDHIS2Marker.updateEventMarker(event.getServerVersion());
 			for (Obs obs : observations) {
 				
 				if (DHIS2Settings.VACCINATION.containsKey(obs.getFormSubmissionField())) {
 					Client client = clientService.find(event.getBaseEntityId());
-					System.err.println("CLLL:" + client);
+					
 					if (client != null)
 						sendTrackCaptureData(prepareData(obs, client));
 				}
@@ -57,28 +64,19 @@ public class VaccinationTracker extends DHIS2Service {
 		String valueKey = "value";
 		JSONArray generateTrackCaptureData = new JSONArray();
 		String firstName = "firstName";
-		String lastName = "lastName";
-		String Child_Birth_Certificate = "Child_Birth_Certificate";
-		Map<String, Object> attributes = new HashMap<>();
 		
-		JSONObject clientAsJson = new JSONObject(client);
 		try {
-			//firstName
-			generateTrackCaptureData.put(dhis2TrackerService.getTrackCaptureData(clientAsJson,
-			    DHIS2Settings.VACCINATIONMAPPING.get(firstName).toString(), firstName));
-			// LastName
-			generateTrackCaptureData.put(dhis2TrackerService.getTrackCaptureData(clientAsJson,
-			    DHIS2Settings.VACCINATIONMAPPING.get(lastName).toString(), lastName));
+			//Name
+			generateTrackCaptureData.put(dhis2TrackerService.withKnownValue(DHIS2Settings.VACCINATIONMAPPING.get(firstName)
+			        .toString(), client.fullName()));
+			generateTrackCaptureData.put(dhis2TrackerService.withKnownValue(
+			    DHIS2Settings.VACCINATIONMAPPING.get("base_entity_id").toString(), client.getBaseEntityId()));
 			
-			attributes = client.getAttributes();
-			if (attributes != null) {
-				JSONObject attributesAsJson = new JSONObject(attributes);				
-				generateTrackCaptureData.put(dhis2TrackerService.getTrackCaptureData(attributesAsJson,
-				    DHIS2Settings.VACCINATIONMAPPING.get("NID_BRID").toString(), "nationalId"));
-				generateTrackCaptureData.put(dhis2TrackerService.getTrackCaptureData(attributesAsJson,
-				    DHIS2Settings.VACCINATIONMAPPING.get(Child_Birth_Certificate).toString(), Child_Birth_Certificate));
-				
-			}
+			Map<String, String> identifiers = new HashMap<>();
+			identifiers = client.getIdentifiers();
+			JSONObject identifiersAsJson = new JSONObject(identifiers);
+			generateTrackCaptureData.put(dhis2TrackerService.getTrackCaptureData(identifiersAsJson,
+			    DHIS2Settings.VACCINATIONMAPPING.get("child_id").toString(), "OpenMRS_ID"));
 			
 			//vaccination name
 			JSONObject vaccieName = new JSONObject();
@@ -94,13 +92,13 @@ public class VaccinationTracker extends DHIS2Service {
 			
 			generateTrackCaptureData.put(dhis2TrackerService.getVaccinationDataFromObservation(obs,
 			    DHIS2Settings.VACCINATIONMAPPING.get("Vaccina_date").toString()));
-			
+			logger.info("Vaccination Data:" + generateTrackCaptureData.toString());
 		}
 		catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.err.println("generateTrackCaptureData:" + generateTrackCaptureData);
+		
 		return generateTrackCaptureData;
 	}
 	
