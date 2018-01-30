@@ -6,7 +6,9 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.ektorp.support.TypeDiscriminator;
 import org.motechproject.model.MotechBaseDataObject;
+import org.springframework.stereotype.Service;
 
+@Service
 @TypeDiscriminator("doc.type == 'DHIS2Marker'")
 public class DHIS2Marker extends MotechBaseDataObject {
 	
@@ -14,12 +16,14 @@ public class DHIS2Marker extends MotechBaseDataObject {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
 	@JsonProperty
-    private String name;    
-    @JsonProperty
-    private Long value;    
-    
-	public DHIS2Marker(){
+	private String name;
+	
+	@JsonProperty
+	private Long value;
+	
+	public DHIS2Marker() {
 		
 	}
 	
@@ -34,26 +38,24 @@ public class DHIS2Marker extends MotechBaseDataObject {
 	public Long getValue() {
 		return value;
 	}
-
-
+	
 	public void setValue(Long value) {
 		this.value = value;
 	}
-
-
+	
 	@Override
 	public boolean equals(Object o) {
 		return EqualsBuilder.reflectionEquals(this, o, "id", "revision");
 	}
-
+	
 	@Override
 	public int hashCode() {
 		return HashCodeBuilder.reflectionHashCode(this, "id", "revision");
 	}
-
+	
 	@Override
 	public String toString() {
 		return ToStringBuilder.reflectionToString(this);
 	}
-
+	
 }

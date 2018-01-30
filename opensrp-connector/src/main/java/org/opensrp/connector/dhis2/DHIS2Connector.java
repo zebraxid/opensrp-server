@@ -6,6 +6,7 @@ package org.opensrp.connector.dhis2;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 /**
@@ -13,6 +14,8 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class DHIS2Connector extends DHIS2Service {
+	
+	private static org.slf4j.Logger logger = LoggerFactory.getLogger(DHIS2Connector.class.toString());
 	
 	private String orgUnit;
 	
@@ -74,22 +77,28 @@ public class DHIS2Connector extends DHIS2Service {
 	public JSONObject send() throws JSONException {
 		
 		String reference = "reference";
-		JSONObject responseTrackEntityInstance = new JSONObject(Dhis2HttpUtils.post(
-		    DHIS2_BASE_URL.replaceAll("\\s+", "") + "trackedEntityInstances", "", prepareClientData().toString(),
-		    DHIS2_USER.replaceAll("\\s+", ""), DHIS2_PWD.replaceAll("\\s+", "")).body());
-		JSONObject trackEntityReference = (JSONObject) responseTrackEntityInstance.get("response");
+		try {
+			JSONObject responseTrackEntityInstance = new JSONObject(Dhis2HttpUtils.post(
+			    DHIS2_BASE_URL.replaceAll("\\s+", "") + "trackedEntityInstances", "", prepareClientData().toString(),
+			    DHIS2_USER.replaceAll("\\s+", ""), DHIS2_PWD.replaceAll("\\s+", "")).body());
+			JSONObject trackEntityReference = (JSONObject) responseTrackEntityInstance.get("response");
+			
+			JSONObject enroll = new JSONObject();
+			enroll.put("trackedEntityInstance", trackEntityReference.get(reference));
+			enroll.put(programKey, program);
+			enroll.put(orgUnitKey, orgUnit);
+			
+			JSONObject response = new JSONObject(Dhis2HttpUtils.post(DHIS2_BASE_URL.replaceAll("\\s+", "") + "enrollments",
+			    "", enroll.toString(), DHIS2_USER.replaceAll("\\s+", ""), DHIS2_PWD.replaceAll("\\s+", "")).body());
+			
+			response.put("track", trackEntityReference.get(reference));
+			return response;
+		}
+		catch (Exception e) {
+			logger.info("send Data: " + e.getMessage());
+		}
 		
-		JSONObject enroll = new JSONObject();
-		enroll.put("trackedEntityInstance", trackEntityReference.get(reference));
-		enroll.put(programKey, program);
-		enroll.put(orgUnitKey, orgUnit);
-		
-		JSONObject response = new JSONObject(Dhis2HttpUtils.post(DHIS2_BASE_URL.replaceAll("\\s+", "") + "enrollments", "",
-		    enroll.toString(), DHIS2_USER.replaceAll("\\s+", ""), DHIS2_PWD.replaceAll("\\s+", "")).body());
-		
-		response.put("track", trackEntityReference.get(reference));
-		
-		return response;
+		return null;
 		
 	}
 	
