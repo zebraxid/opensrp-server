@@ -4,6 +4,7 @@ import static org.opensrp.dto.AlertStatus.normal;
 import static org.opensrp.dto.AlertStatus.upcoming;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +14,8 @@ import org.opensrp.common.util.DateUtil;
 import org.opensrp.domain.Camp;
 import org.opensrp.domain.Client;
 import org.opensrp.domain.Event;
+import org.opensrp.domain.SMSLog;
+import org.opensrp.repository.AllSMSLog;
 import org.opensrp.service.ClientService;
 import org.opensrp.service.RapidProServiceImpl;
 import org.slf4j.Logger;
@@ -28,6 +31,9 @@ public class MessageService {
 	private RapidProServiceImpl rapidproService;
 	
 	private ClientService clientService;
+	
+	@Autowired
+	private AllSMSLog allSMSLog;
 	
 	public MessageService() {
 		
@@ -77,16 +83,26 @@ public class MessageService {
 		
 		Map<String, Object> attributes = new HashMap<>();
 		attributes = client.getAttributes();
-		List<String> urns;
-		urns = new ArrayList<String>();
+		List<String> urns = new ArrayList<String>();
+		List<String> contacts = new ArrayList<String>();
+		List<String> groups = new ArrayList<String>();
+		String mobileNo = null;
+		String smsText = null;
 		if (attributes.containsKey("phoneNumber")) {
-			logger.info("sending mesage to mobileno:" + addExtensionToMobile((String) attributes.get("phoneNumber")));
-			urns.add("tel:" + addExtensionToMobile((String) attributes.get("phoneNumber")));
-			List<String> contacts;
-			contacts = new ArrayList<String>();
-			List<String> groups = new ArrayList<String>();
-			rapidproService.sendMessage(urns, contacts, groups,
-			    messageFactory.getClientType(clientType).message(client, camp, null), "");
+			mobileNo = addExtensionToMobile((String) attributes.get("phoneNumber"));
+			smsText = messageFactory.getClientType(clientType).message(client, camp, null);
+			logger.info("sending mesage to mobileno:" + mobileNo);
+			urns.add("tel:" + mobileNo);
+			rapidproService.sendMessage(urns, contacts, groups, smsText, "");
+			SMSLog smsLog = new SMSLog();
+			smsLog.setMobileNo(mobileNo);
+			smsLog.setSmsText(smsText);
+			smsLog.setSentTime(new Date());
+			smsLog.setProviderName(camp.getProviderName());
+			smsLog.setCampDate(camp.getDate());
+			smsLog.setCampName(camp.getCampName());
+			smsLog.setCenterName(camp.getCenterName());
+			allSMSLog.add(smsLog);
 		}
 	}
 	

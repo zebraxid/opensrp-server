@@ -48,7 +48,6 @@ public class ClientListenerTest {
 		//	allActions.removeAll();
 	}
 	
-	@Ignore
 	@Test
 	public void testFetchClient() throws JSONException {
 		
@@ -79,13 +78,13 @@ public class ClientListenerTest {
 				    DateTime.now(), DateTime.now().plusDays(3)));
 				allActions.add(normalAction);
 				allActions.add(upcominglAction);*/
-		//rapidProMessageListener.fetchClient();
+		rapidProMessageListener.fetchClient();
 		
-		rapidProMessageListener.campAnnouncementListener("raihan");
+		//rapidProMessageListener.campAnnouncementListener("raihan");
 		
 	}
 	
-	@Test
+	@Ignore
 	public void createCamp() throws FileNotFoundException {
 		String csvFile = "/home/sohel/workspace-3.6.1/opensrp-server/CreateNewCamp.csv";
 		BufferedReader br = null;

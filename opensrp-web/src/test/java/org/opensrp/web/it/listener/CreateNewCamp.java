@@ -18,14 +18,12 @@ import org.opensrp.repository.AllCamp;
 
 public class CreateNewCamp {
 	
-	private CouchDbInstance dbInstance;
-	
-	private StdCouchDbConnector stdCouchDbConnector;
-	
 	private AllCamp allCamp;
 	
 	@Before
 	public void setUp() throws Exception {
+		CouchDbInstance dbInstance;
+		StdCouchDbConnector stdCouchDbConnector;
 		HttpClient httpClient = new StdHttpClient.Builder().host("localhost").port(5984).username("rootuser")
 		        .password("adminpass").socketTimeout(10000000).build();
 		dbInstance = new StdCouchDbInstance(httpClient);
