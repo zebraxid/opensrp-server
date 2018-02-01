@@ -249,6 +249,7 @@ public class PNCService {
 					child.details().put("referenceDate", referenceDate);
 					child.details().put("ward", mother.getFWWOMWARD());
 					child.details().put("division", mother.details().get("division"));
+					child.details().put(FWBNFDTOO, submission.getField(FWBNFDTOO));
 					allChilds.update(child);
 					logger.info("FWBNFCHLDVITSTS:" + childFields.get(FWBNFCHLDVITSTS));
 					if (childFields.get(FWBNFCHLDVITSTS).equalsIgnoreCase("0")) {

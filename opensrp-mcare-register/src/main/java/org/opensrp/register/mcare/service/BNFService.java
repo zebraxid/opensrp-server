@@ -19,6 +19,7 @@ import static org.opensrp.common.AllConstants.BnfFollowUpVisitFields.FWBNFSMSRSN
 import static org.opensrp.common.AllConstants.BnfFollowUpVisitFields.FWBNFSTS;
 import static org.opensrp.common.AllConstants.BnfFollowUpVisitFields.FWBNFWOMVITSTS;
 import static org.opensrp.common.AllConstants.BnfFollowUpVisitFields.FWDISPLAYTEXT1;
+import static org.opensrp.common.AllConstants.BnfFollowUpVisitFields.SCHEDULE_BNF_IME;
 import static org.opensrp.common.AllConstants.BnfFollowUpVisitFields.STS_FALSE_PREGNANCY_IDENTIFICATION;
 import static org.opensrp.common.AllConstants.BnfFollowUpVisitFields.STS_GONE;
 import static org.opensrp.common.AllConstants.BnfFollowUpVisitFields.STS_LB;
@@ -34,6 +35,7 @@ import static org.opensrp.common.AllConstants.PSRFFields.timeStamp;
 import static org.opensrp.common.AllConstants.UserType.FD;
 import static org.opensrp.common.util.EasyMap.create;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_ANC;
+import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_BNF;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -182,6 +184,8 @@ public class BNFService {
 				logger.info("FWA submit live birth or still birth , so nothing hapened & BNF schedule continue.");
 				bnfSchedulesService.enrollIntoMilestoneOfBNF(submission.entityId(), submission.getField(REFERENCE_DATE),
 				    submission.anmId(), submission.instanceId());
+				actionService.markAlertAsInactive(submission.anmId(), submission.entityId(), SCHEDULE_BNF);
+				actionService.markAlertAsInactive(submission.anmId(), submission.entityId(), SCHEDULE_BNF_IME);
 			}
 			
 		} else if (submission.getField(FWBNFSTS).equalsIgnoreCase(STS_GONE)
@@ -222,6 +226,8 @@ public class BNFService {
 				logger.info("FWA says false pregnancy , so nothing hapened & BNF schedule continue.");
 				bnfSchedulesService.enrollIntoMilestoneOfBNF(submission.entityId(), submission.getField(REFERENCE_DATE),
 				    submission.anmId(), submission.instanceId());
+				actionService.markAlertAsInactive(submission.anmId(), submission.entityId(), SCHEDULE_BNF);
+				actionService.markAlertAsInactive(submission.anmId(), submission.entityId(), SCHEDULE_BNF_IME);
 			}
 			
 		} else {
@@ -230,6 +236,8 @@ public class BNFService {
 			
 			bnfSchedulesService.enrollIntoMilestoneOfBNF(submission.entityId(), submission.getField(REFERENCE_DATE),
 			    submission.anmId(), submission.instanceId());
+			actionService.markAlertAsInactive(submission.anmId(), submission.entityId(), SCHEDULE_BNF);
+			actionService.markAlertAsInactive(submission.anmId(), submission.entityId(), SCHEDULE_BNF_IME);
 		}
 		
 	}

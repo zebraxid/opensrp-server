@@ -112,7 +112,7 @@ public class PNCSchedulesService {
 			expireDate = new DateTime(FWBNFDTOO).plusDays(DateTimeDuration.pnc3);
 			if (datediff == -6 || datediff == -7) {
 				scheduleLogService.saveAction(entityId, instanceId, provider, SCHEDULE_PNC, milestone,
-				    BeneficiaryType.mother, AlertStatus.upcoming, new DateTime(FWBNFDTOO).plusDays(6), new DateTime(
+				    BeneficiaryType.mother, AlertStatus.upcoming, new DateTime(FWBNFDTOO).plusDays(7), new DateTime(
 				            FWBNFDTOO).plusDays(8));
 			} else if (datediff == -8) {
 				scheduleLogService.saveAction(entityId, instanceId, provider, SCHEDULE_PNC, milestone,

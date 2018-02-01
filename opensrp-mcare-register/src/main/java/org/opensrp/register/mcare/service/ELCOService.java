@@ -113,6 +113,8 @@ import static org.opensrp.common.AllConstants.PSRFFields.mis_elco_current_formSt
 import static org.opensrp.common.AllConstants.PSRFFields.timeStamp;
 import static org.opensrp.common.AllConstants.UserType.FD;
 import static org.opensrp.common.util.EasyMap.create;
+import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ELCOSchedulesConstants.ELCO_SCHEDULE_PSRF;
+import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ELCOSchedulesConstantsImediate.IMD_ELCO_SCHEDULE_PSRF;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -132,7 +134,7 @@ import org.opensrp.register.mcare.service.scheduling.ELCOScheduleService;
 import org.opensrp.register.mcare.service.scheduling.HHSchedulesService;
 import org.opensrp.register.mcare.service.scheduling.ScheduleLogService;
 import org.opensrp.repository.AllErrorTrace;
-import org.opensrp.scheduler.repository.AllActions;
+import org.opensrp.scheduler.service.ActionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -157,14 +159,14 @@ public class ELCOService {
 	
 	private ScheduleLogService scheduleLogService;
 	
-	private AllActions allActions;
-	
 	private AllErrorTrace allErrorTrace;
+	
+	private ActionService actionService;
 	
 	@Autowired
 	public ELCOService(AllHouseHolds allHouseHolds, AllElcos allEcos, HHSchedulesService hhSchedulesService,
 	    ELCOScheduleService elcoScheduleService, ANCService ancService, BNFService bnfService,
-	    ScheduleLogService scheduleLogService, AllActions allActions, AllErrorTrace allErrorTrace) {
+	    ScheduleLogService scheduleLogService, AllErrorTrace allErrorTrace, ActionService actionService) {
 		this.allHouseHolds = allHouseHolds;
 		this.allEcos = allEcos;
 		this.hhSchedulesService = hhSchedulesService;
@@ -172,7 +174,7 @@ public class ELCOService {
 		this.ancService = ancService;
 		this.bnfService = bnfService;
 		this.scheduleLogService = scheduleLogService;
-		this.allActions = allActions;
+		this.actionService = actionService;
 		this.allErrorTrace = allErrorTrace;
 	}
 	
@@ -455,7 +457,8 @@ public class ELCOService {
 				elco.setIsClosed(true);
 				allEcos.update(elco);
 				elcoScheduleService.fullfillMilestoneAndCloseAlert(submission.entityId(), submission.anmId(), "");
-				
+				actionService.markAlertAsInactive(submission.anmId(), submission.entityId(), ELCO_SCHEDULE_PSRF);
+				actionService.markAlertAsInactive(submission.anmId(), submission.entityId(), IMD_ELCO_SCHEDULE_PSRF);
 				// user type condition
 				if (submission.getField("user_type").equalsIgnoreCase(FD)) {
 					ancService.registerANC(submission);
@@ -470,6 +473,8 @@ public class ELCOService {
 				ancService.deleteBlankMother(submission);
 				elcoScheduleService.enrollIntoMilestoneOfPSRF(submission.entityId(), submission.getField(FWPSRDATE),
 				    submission.anmId(), submission.instanceId());
+				actionService.markAlertAsInactive(submission.anmId(), submission.entityId(), ELCO_SCHEDULE_PSRF);
+				actionService.markAlertAsInactive(submission.anmId(), submission.entityId(), IMD_ELCO_SCHEDULE_PSRF);
 			} else {
 				ancService.deleteBlankMother(submission);
 				

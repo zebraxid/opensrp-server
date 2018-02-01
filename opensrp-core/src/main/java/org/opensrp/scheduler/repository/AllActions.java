@@ -11,6 +11,7 @@ import org.ektorp.support.GenerateView;
 import org.ektorp.support.View;
 import org.joda.time.DateTime;
 import org.motechproject.dao.MotechBaseRepository;
+import org.motechproject.util.DateUtil;
 import org.opensrp.common.AllConstants;
 import org.opensrp.scheduler.Action;
 import org.slf4j.Logger;
@@ -29,7 +30,7 @@ public class AllActions extends MotechBaseRepository<Action> {
 		super(Action.class, db);
 	}
 	
-	@View(name = "action_by_anm_and_time", map = "function(doc) { if (doc.type === 'Action') { emit([doc.anmIdentifier, doc.timeStamp], null); } }")
+	@View(name = "action_by_anm_and_time", map = "function(doc) { if (doc.type === 'Action' && doc.isActionActive==true) { emit([doc.anmIdentifier, doc.timeStamp], null); } }")
 	public List<Action> findByANMIDAndTimeStamp(String anmIdentifier, long timeStamp) {
 		ComplexKey startKey = ComplexKey.of(anmIdentifier, timeStamp + 1);
 		ComplexKey endKey = ComplexKey.of(anmIdentifier, Long.MAX_VALUE);
@@ -119,10 +120,14 @@ public class AllActions extends MotechBaseRepository<Action> {
 			            "Found more than one alert for the combination of anmId: {0}, entityId: {1} and scheduleName : {2}. Alerts : {3}",
 			            anmIdentifier, caseId, scheduleName, existingAlerts));
 		}
-		for (Action existingAlert : existingAlerts) {
-			existingAlert.markAsInActive();
+		if (existingAlerts.size() != 0) {
+			for (Action existingAlert : existingAlerts) {
+				existingAlert.timestamp(DateUtil.now().getMillis());
+				existingAlert.markAsInActive();
+				update(existingAlert);
+			}
 		}
-		db.executeBulk(existingAlerts);
+		//db.executeBulk(existingAlerts);
 	}
 	
 	public List<Action> findByScheduleNameAndIsActive(boolean isActive, String schedule) {

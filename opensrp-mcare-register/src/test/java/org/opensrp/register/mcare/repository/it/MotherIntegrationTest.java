@@ -76,7 +76,7 @@ public class MotherIntegrationTest {
 		
 		HttpClient httpClient = new StdHttpClient.Builder()
 		
-		.host("localhost").port(5984).socketTimeout(1000000).username("Admin").password("mPower@1234").build();
+		.host("192.168.19.97").port(5984).socketTimeout(1000000).username("Admin").password("mPower@1234").build();
 		dbInstance = new StdCouchDbInstance(httpClient);
 		
 		stdCouchDbConnector = new StdCouchDbConnector("opensrp", dbInstance, new StdObjectMapperFactory());
@@ -516,6 +516,7 @@ public class MotherIntegrationTest {
 		        + "  enroll:" + enroll + " notsubSame  :" + notsubSame + " notsubNotSame;" + notsubNotSame);
 	}
 	
+	@Ignore
 	@Test
 	public void pncScheduleTest() {
 		String pattern = "yyyy-MM-dd";
@@ -598,7 +599,7 @@ public class MotherIntegrationTest {
 					} else {
 						if (!currentVisitiCode.equalsIgnoreCase(visitCode) && isActive(enrollments)) {
 							notsubNotSame++; //0
-							
+							System.err.println("" + action.caseId());
 							// must need to refresh
 							
 						} else {
@@ -681,10 +682,11 @@ public class MotherIntegrationTest {
 					} else {
 						if (!currentVisitiCode.equalsIgnoreCase(visitCode) && isActive(enrollments)) {
 							notsubNotSame++; //29
-							
+							System.err.println("" + action.caseId());
 							// must need to refresh
 							
 						} else {
+							
 							notsubSame++;//6/ may be nothing to do
 							
 						}
