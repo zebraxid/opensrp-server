@@ -133,13 +133,12 @@ public class ActionService {
 		try {
 			List<Action> existingAlerts = allActions.findAlertByANMIdEntityIdScheduleName(anmIdentifier, caseID,
 			    scheduleName);
-			String visitCodeName = existingAlerts.get(0).data().get("visitCode");
+			
 			Date date = null;
 			
 			date = format.parse(doo);
 			DateTime FWBNFDTOO = new DateTime(date);
 			if (existingAlerts.size() > 0) {
-				long numOfDays = this.getDaysDifference(expiryDate);
 				
 				if (ANC.equalsIgnoreCase(scheduleName)) {
 					updateDataAction(visitCode, alertStatus, new DateTime(doo).plusDays(2), expiryDate, existingAlerts);

@@ -76,7 +76,7 @@ public class MotherIntegrationTest {
 		
 		HttpClient httpClient = new StdHttpClient.Builder()
 		
-		.host("192.168.19.97").port(5984).socketTimeout(1000000).username("Admin").password("mPower@1234").build();
+		.host("localhost").port(5984).socketTimeout(1000000).username("Admin").password("mPower@1234").build();
 		dbInstance = new StdCouchDbInstance(httpClient);
 		
 		stdCouchDbConnector = new StdCouchDbConnector("opensrp", dbInstance, new StdObjectMapperFactory());

@@ -15,7 +15,7 @@
      <!-- <import resource="classpath:applicationContext-opensrp-etl.xml"/> -->
    
     <import resource="securityContext.xml"/>
-
+    <import resource="listener-context.xml"/>
     <mvc:default-servlet-handler/>
 
     <context:annotation-config/>
