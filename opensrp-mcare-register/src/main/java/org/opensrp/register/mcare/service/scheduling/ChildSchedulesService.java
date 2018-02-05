@@ -99,11 +99,11 @@ public class ChildSchedulesService {
 			startDate = new DateTime(FWBNFDTOO).plusDays(DateTimeDuration.encc2);
 			expireDate = new DateTime(FWBNFDTOO).plusDays(DateTimeDuration.encc3);
 			
-			if (datediff == -6) {
+			if (datediff == -6 || datediff == -7) {
 				scheduleLogService.saveAction(entityId, instanceId, provider, SCHEDULE_ENCC, milestone,
 				    BeneficiaryType.child, AlertStatus.upcoming, new DateTime(FWBNFDTOO).plusDays(6),
 				    new DateTime(FWBNFDTOO).plusDays(7));
-			} else if (datediff == -7) {
+			} else if (datediff == -8) {
 				scheduleLogService.saveAction(entityId, instanceId, provider, SCHEDULE_ENCC, milestone,
 				    BeneficiaryType.child, AlertStatus.urgent, new DateTime(FWBNFDTOO).plusDays(8),
 				    new DateTime(FWBNFDTOO).plusDays(8));
