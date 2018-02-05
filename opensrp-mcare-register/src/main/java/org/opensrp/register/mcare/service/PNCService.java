@@ -68,7 +68,6 @@ import static org.opensrp.common.AllConstants.PSRFFields.clientVersion;
 import static org.opensrp.common.AllConstants.PSRFFields.timeStamp;
 import static org.opensrp.common.AllConstants.UserType.FD;
 import static org.opensrp.common.util.EasyMap.create;
-import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_ANC;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_PNC;
 
 import java.text.SimpleDateFormat;
@@ -314,19 +313,12 @@ public class PNCService {
 		mother.setTimeStamp(System.currentTimeMillis());
 		allMothers.update(mother);
 		pncSchedulesService.fullfillMilestone(submission.entityId(), submission.anmId(), SCHEDULE_PNC, new LocalDate());
-		actionService.markAlertAsInactive(submission.anmId(), submission.entityId(), SCHEDULE_ANC);
+		actionService.markAlertAsInactive(submission.anmId(), submission.entityId(), SCHEDULE_PNC);
 		String pattern = "yyyy-MM-dd";
 		DateTime dateTime = DateTime.parse(mother.getbnfVisitDetails(FWBNFDTOO));
 		DateTimeFormatter fmt = DateTimeFormat.forPattern(pattern);
 		String referenceDate = fmt.print(dateTime);
-		
-		if (Double.parseDouble(feverTemp) >= 100.4) {
-			if (!womanBID.equalsIgnoreCase(""))
-				identifier += "b " + womanBID;
-			else if (!womanNID.equalsIgnoreCase(""))
-				identifier += "n " + womanNID;
-			sendFeverSMS(identifier);
-		}
+		sendMessage(feverTemp, womanBID, womanNID);
 	}
 	
 	public void pncVisitTwo(FormSubmission submission) {
@@ -367,19 +359,12 @@ public class PNCService {
 		mother.setTimeStamp(System.currentTimeMillis());
 		allMothers.update(mother);
 		pncSchedulesService.fullfillMilestone(submission.entityId(), submission.anmId(), SCHEDULE_PNC, new LocalDate());
-		actionService.markAlertAsInactive(submission.anmId(), submission.entityId(), SCHEDULE_ANC);
+		actionService.markAlertAsInactive(submission.anmId(), submission.entityId(), SCHEDULE_PNC);
 		String pattern = "yyyy-MM-dd";
 		DateTime dateTime = DateTime.parse(mother.getbnfVisitDetails(FWBNFDTOO));
 		DateTimeFormatter fmt = DateTimeFormat.forPattern(pattern);
 		String referenceDate = fmt.print(dateTime);
-		
-		if (Double.parseDouble(feverTemp) >= 100.4) {
-			if (!womanBID.equalsIgnoreCase(""))
-				identifier += "b " + womanBID;
-			else if (!womanNID.equalsIgnoreCase(""))
-				identifier += "n " + womanNID;
-			sendFeverSMS(identifier);
-		}
+		sendMessage(feverTemp, womanBID, womanNID);
 	}
 	
 	public void pncVisitThree(FormSubmission submission) {
@@ -422,13 +407,7 @@ public class PNCService {
 		allMothers.update(mother);
 		pncSchedulesService.fullfillMilestone(submission.entityId(), submission.anmId(), SCHEDULE_PNC, new LocalDate());
 		actionService.markAlertAsInactive(submission.anmId(), submission.entityId(), SCHEDULE_PNC);
-		if (Double.parseDouble(feverTemp) >= 100.4) {
-			if (!womanBID.equalsIgnoreCase(""))
-				identifier += "b " + womanBID;
-			else if (!womanNID.equalsIgnoreCase(""))
-				identifier += "n " + womanNID;
-			sendFeverSMS(identifier);
-		}
+		sendMessage(feverTemp, womanBID, womanNID);
 	}
 	
 	public void pncClose(String entityId) {
@@ -468,6 +447,21 @@ public class PNCService {
 			}
 		}
 		
+	}
+	
+	private void sendMessage(String feverTemp, String womanBID, String womanNID) {
+		try {
+			if (Double.parseDouble(feverTemp) >= 100.4) {
+				if (!womanBID.equalsIgnoreCase(""))
+					identifier += "b " + womanBID;
+				else if (!womanNID.equalsIgnoreCase(""))
+					identifier += "n " + womanNID;
+				sendFeverSMS(identifier);
+			}
+		}
+		catch (Exception e) {
+			logger.info("From sendMessage: " + e.getMessage());
+		}
 	}
 	
 	public void sendFeverSMS(String identifier) {
