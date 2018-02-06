@@ -178,6 +178,8 @@ public class BNFService {
 				 * Close Corresponding ANC schedule
 				 */
 				scheduleLogService.ancScheduleUnEnroll(submission.entityId(), submission.anmId(), SCHEDULE_ANC);
+				actionService.markAlertAsInactive(submission.anmId(), submission.entityId(), SCHEDULE_BNF);
+				actionService.markAlertAsInactive(submission.anmId(), submission.entityId(), SCHEDULE_BNF_IME);
 				
 			} else {
 				pncService.deleteBlankChild(submission);
@@ -199,13 +201,16 @@ public class BNFService {
 				 * Close Corresponding ANC schedule
 				 */
 				scheduleLogService.ancScheduleUnEnroll(submission.entityId(), submission.anmId(), SCHEDULE_ANC);
-				//actionService.markAllAlertsAsInactive(submission.entityId());
+				actionService.markAlertAsInactive(submission.anmId(), submission.entityId(), SCHEDULE_BNF);
+				actionService.markAlertAsInactive(submission.anmId(), submission.entityId(), SCHEDULE_BNF_IME);
 				
 			} else {
 				pncService.deleteBlankChild(submission);
 				logger.info("FWA says mother gone or died , so nothing hapened & BNF schedule continue.");
 				bnfSchedulesService.enrollIntoMilestoneOfBNF(submission.entityId(), submission.getField(REFERENCE_DATE),
 				    submission.anmId(), submission.instanceId());
+				actionService.markAlertAsInactive(submission.anmId(), submission.entityId(), SCHEDULE_BNF);
+				actionService.markAlertAsInactive(submission.anmId(), submission.entityId(), SCHEDULE_BNF_IME);
 			}
 			
 		} else if (submission.getField(FWBNFSTS).equalsIgnoreCase(STS_FALSE_PREGNANCY_IDENTIFICATION)) {
