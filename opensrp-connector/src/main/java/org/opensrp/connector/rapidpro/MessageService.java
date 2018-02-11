@@ -4,6 +4,7 @@ import static org.opensrp.dto.AlertStatus.normal;
 import static org.opensrp.dto.AlertStatus.upcoming;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -54,8 +55,9 @@ public class MessageService {
 								logger.info("sentMessageToClient actiondata:" +  data.toString());*/
 				if (event.getEntityType().equalsIgnoreCase(ClientType.child.name())) {
 					Client child = clientService.find(event.getBaseEntityId());
-					if (child != null) {
-						logger.info("sending message to child childBaseEntityId:" + child.getBaseEntityId());
+					int age = getAgeOfChild(child.getBirthdate().toDate());
+					if (child != null && (age >= 0 && age <= 2)) {
+						logger.info("sending message to child childBaseEntityId:" + child.getBaseEntityId() + " ,age:" + age);
 						Map<String, List<String>> relationships = child.getRelationships();
 						String motherId = relationships.get("mother").get(0);
 						Client mother = clientService.find(motherId);
@@ -76,6 +78,25 @@ public class MessageService {
 		} else {
 			logger.info("No vaccine data Found Today");
 		}
+	}
+	
+	private int getAgeOfChild(Date dateTime) {
+		Calendar now = Calendar.getInstance();
+		Calendar dob = Calendar.getInstance();
+		int age = 0;
+		
+		dob.setTime(dateTime);
+		
+		if (dob.after(now)) {
+			throw new IllegalArgumentException("Can't be born in the future");
+		}
+		
+		age = now.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
+		if (now.get(Calendar.DAY_OF_YEAR) < dob.get(Calendar.DAY_OF_YEAR)) {
+			age--;
+		}
+		
+		return age;
 	}
 	
 	private void generateDataAndsendMessageToRapidpro(Client client, ClientType clientType, MessageFactory messageFactory,

@@ -7,7 +7,10 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.Date;
 
+import org.joda.time.DateTime;
 import org.json.JSONException;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -78,10 +81,31 @@ public class ClientListenerTest {
 				    DateTime.now(), DateTime.now().plusDays(3)));
 				allActions.add(normalAction);
 				allActions.add(upcominglAction);*/
-		rapidProMessageListener.fetchClient();
+		//rapidProMessageListener.fetchClient();
 		
 		//rapidProMessageListener.campAnnouncementListener("raihan");
+		System.err.println("age: " + getAgeOfChild(new DateTime().minusDays(365).toDate()));
 		
+	}
+	
+	private int getAgeOfChild(Date dateTime) {
+		System.err.println("dateTime: " + dateTime);
+		Calendar now = Calendar.getInstance();
+		Calendar dob = Calendar.getInstance();
+		int age = 0;
+		
+		dob.setTime(dateTime);
+		
+		if (dob.after(now)) {
+			throw new IllegalArgumentException("Can't be born in the future");
+		}
+		
+		age = now.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
+		if (now.get(Calendar.DAY_OF_YEAR) < dob.get(Calendar.DAY_OF_YEAR)) {
+			age--;
+		}
+		
+		return age;
 	}
 	
 	@Ignore

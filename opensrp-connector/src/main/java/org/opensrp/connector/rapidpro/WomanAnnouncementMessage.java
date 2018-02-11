@@ -10,9 +10,9 @@ public class WomanAnnouncementMessage implements Message {
 	@Override
 	public String message(Client client, Camp camp, Map<String, String> data) {
 		
-		String message = "Ajke " + camp.getCenterName() + " -e Tika deya hobe. Tika newar jonno joto taratari shombhob kendre chole ashun.";
+		String message = camp.getDate() + " tarik " + camp.getCenterName()
+		        + " te Shishu O Mohilader tika nebar jonno bela 9ta theke 2tar moddhe asar jonno onurodh kora holo";
 		return message;
 		
 	}
-	
 }
