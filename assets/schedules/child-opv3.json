@@ -1,9 +1,9 @@
 {
-    "name": "OPV 3",
+    "name": "child_opv3",
     "absolute": true,
     "milestones": [
         {
-            "name": "opv3",
+            "name": "child_opv3",
             "scheduleWindows": {
              "earliest": ["4 Weeks"],
             "due": ["4 Weeks","10 Days"],

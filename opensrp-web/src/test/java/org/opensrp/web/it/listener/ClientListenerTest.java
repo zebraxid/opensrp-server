@@ -3,9 +3,6 @@
  */
 package org.opensrp.web.it.listener;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 
 import org.json.JSONException;
@@ -13,7 +10,6 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.opensrp.domain.Camp;
 import org.opensrp.repository.AllCamp;
 import org.opensrp.repository.AllClients;
 import org.opensrp.scheduler.repository.AllActions;
@@ -48,6 +44,7 @@ public class ClientListenerTest {
 		//	allActions.removeAll();
 	}
 	
+	@Ignore
 	@Test
 	public void testFetchClient() throws JSONException {
 		
@@ -82,43 +79,6 @@ public class ClientListenerTest {
 		
 		//rapidProMessageListener.campAnnouncementListener("raihan");
 		
-	}
-	
-	@Ignore
-	public void createCamp() throws FileNotFoundException {
-		String csvFile = "/home/sohel/workspace-3.6.1/opensrp-server/CreateNewCamp.csv";
-		BufferedReader br = null;
-		String line = "";
-		String cvsSplitBy = ",";
-		int lineNumber = 0;
-		try {
-			br = new BufferedReader(new FileReader(csvFile));
-			while ((line = br.readLine()) != null) {
-				if (lineNumber == 0) {
-					lineNumber++;
-					continue;
-				}
-				String[] updateObject = line.split(cvsSplitBy);
-				String providerName = updateObject[0].trim();
-				String date = updateObject[1].trim();
-				String campName = updateObject[2].trim();
-				String centerName = updateObject[3].trim();
-				boolean status = Boolean.parseBoolean(updateObject[4].trim());
-				Camp camp = new Camp();
-				camp.setProviderName(providerName);
-				camp.setDate(date);
-				camp.setCampName(campName);
-				camp.setCenterName(centerName);
-				camp.setStatus(status);
-				allCamp.add(camp);
-				System.err.println("successfully defined camp: " + campName);
-				lineNumber++;
-			}
-			
-		}
-		catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 	
 }

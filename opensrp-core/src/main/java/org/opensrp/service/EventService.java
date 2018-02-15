@@ -211,12 +211,14 @@ public class EventService {
 		Event existingEvent = findById(event.getId());
 		if (existingEvent != null) {
 			event.setDateEdited(DateTime.now());
-			event.setServerVersion(null);
+			//event.setServerVersion(null);
+			event.setServerVersion(System.currentTimeMillis());
 			event.setRevision(existingEvent.getRevision());
 			allEvents.update(event);
 			
 		} else {
 			event.setDateCreated(DateTime.now());
+			event.setServerVersion(System.currentTimeMillis());
 			allEvents.add(event);
 			
 		}
