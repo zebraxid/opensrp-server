@@ -41,6 +41,12 @@
 		<constructor-arg ref="couchDbInstance" />
 	</bean>
 
+	<bean id="couchDbInstance" class="org.ektorp.impl.StdCouchDbInstance">
+         <constructor-arg>
+         	<bean class="org.ektorp.spring.HttpClientFactoryBean" />
+         </constructor-arg>
+    </bean>
+    
 	<task:scheduler id="applicationScheduler" pool-size="10" />
 
 	<task:scheduled-tasks scheduler="applicationScheduler">
