@@ -56,7 +56,7 @@ public class MessageService {
 				if (event.getEntityType().equalsIgnoreCase(ClientType.child.name())) {
 					Client child = clientService.find(event.getBaseEntityId());
 					int age = getAgeOfChild(child.getBirthdate().toDate());
-					if (child != null && (age >= 0 && age <= 2)) {
+					if (child != null && (age >= 0 && age < 2)) {
 						logger.info("sending message to child childBaseEntityId:" + child.getBaseEntityId() + " ,age:" + age);
 						Map<String, List<String>> relationships = child.getRelationships();
 						String motherId = relationships.get("mother").get(0);

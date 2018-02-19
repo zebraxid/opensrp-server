@@ -4,7 +4,10 @@
 package org.opensrp.web.it.listener;
 
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.Date;
 
+import org.joda.time.DateTime;
 import org.json.JSONException;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -79,6 +82,32 @@ public class ClientListenerTest {
 		
 		//rapidProMessageListener.campAnnouncementListener("raihan");
 		
+	}
+	
+	@Test
+	public void testgetAgeOfChild() {
+		System.err.println("getAgeOfChild: " + getAgeOfChild(new DateTime().minusMonths(23).toDate()));
+		
+	}
+	
+	private int getAgeOfChild(Date dateTime) {
+		System.err.println("getAgeOfChild: " + dateTime);
+		Calendar now = Calendar.getInstance();
+		Calendar dob = Calendar.getInstance();
+		int age = 0;
+		
+		dob.setTime(dateTime);
+		
+		if (dob.after(now)) {
+			throw new IllegalArgumentException("Can't be born in the future");
+		}
+		
+		age = now.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
+		if (now.get(Calendar.DAY_OF_YEAR) < dob.get(Calendar.DAY_OF_YEAR)) {
+			age--;
+		}
+		
+		return age;
 	}
 	
 }
