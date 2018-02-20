@@ -85,6 +85,15 @@ public class ClientListenerTest {
 	}
 	
 	@Test
+	public void testAddress() {
+		
+		System.err.println("client address: "
+		        + allClients.findByBaseEntityId("03cb7e03-35f3-455c-8047-ac7e5aa0febd").getAddresses().get(0)
+		                .getAddressField("address3"));
+	}
+	
+	@Ignore
+	@Test
 	public void testgetAgeOfChild() {
 		System.err.println("getAgeOfChild: " + getAgeOfChild(new DateTime().minusMonths(23).toDate()));
 		

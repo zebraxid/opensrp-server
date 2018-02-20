@@ -18,13 +18,16 @@ public class Camp extends MotechBaseDataObject {
 	private String providerName;
 	
 	@JsonProperty
+	private String subUnit;
+	
+	@JsonProperty
 	private String date;
 	
 	@JsonProperty
-	private String campName;
+	private String centerName;
 	
 	@JsonProperty
-	private String centerName;
+	private String campName;
 	
 	@JsonProperty
 	private boolean status;
@@ -97,15 +100,21 @@ public class Camp extends MotechBaseDataObject {
 	public void setCreated_date(Date created_date) {
 		this.created_date = created_date;
 	}
-
+	
 	public String getCenterName() {
 		return centerName;
 	}
-
+	
 	public void setCenterName(String centerName) {
 		this.centerName = centerName;
 	}
 	
+	public String getSubUnit() {
+		return subUnit;
+	}
 	
+	public void setSubUnit(String subUnit) {
+		this.subUnit = subUnit;
+	}
 	
 }
