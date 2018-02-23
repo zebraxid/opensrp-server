@@ -124,6 +124,16 @@ public class AllConstants {
 		public static final String TYPE = "type";
 		
 	}
+
+	public static class Order {
+
+		public static final String LOCATION_ID = "locationId";
+
+		public static final String PROVIDER_ID = "providerId";
+
+		public static final String DATE_CREATED = "dateCreated";
+
+	}
 	
 	public static class Action {
 		
