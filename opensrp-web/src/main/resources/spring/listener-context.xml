@@ -19,7 +19,7 @@
     
     <task:scheduled-tasks scheduler="messageScheduler">
     <!--     <task:scheduled ref="rapidproMessageListener" method="fetchClient" cron="0 10 16 01-31 * ?" /> -->
-    <task:scheduled ref="rapidproMessageListener" method="fetchClient" cron="*/60 * * * * *" /> 
+    <task:scheduled ref="rapidproMessageListener" method="fetchClient" cron="0 00 06 01-31 * ?" /> 
     </task:scheduled-tasks>
     
     <task:scheduler pool-size="1" id="dhis2Scheduler"/>

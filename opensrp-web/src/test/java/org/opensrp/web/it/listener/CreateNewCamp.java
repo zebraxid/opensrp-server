@@ -48,19 +48,24 @@ public class CreateNewCamp {
 					continue;
 				}
 				String[] updateObject = line.split(cvsSplitBy);
+				
 				String providerName = updateObject[0].trim();
 				String date = updateObject[1].trim();
 				String campName = updateObject[2].trim();
 				String centerName = updateObject[3].trim();
 				boolean status = Boolean.parseBoolean(updateObject[4].trim());
+				String subUnit = updateObject[8].trim();
 				Camp camp = new Camp();
 				camp.setProviderName(providerName);
 				camp.setDate(date);
 				camp.setCampName(campName);
 				camp.setCenterName(centerName);
 				camp.setStatus(status);
+				camp.setSubUnit(subUnit);
 				allCamp.add(camp);
-				System.err.println("successfully defined camp: " + campName);
+				//System.out.println(camp.toString());
+				System.err.println("successfully defined camp: " + lineNumber + " ,status:" + status + " "
+				        + updateObject[4].trim());
 				lineNumber++;
 			}
 			

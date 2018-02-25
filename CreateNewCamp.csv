@@ -1,2 +1,185 @@
-providerName,date,campName,centerName,status
-raihan,2018-01-23,epi camp,mohakhali,TRUE
+provider name (user name in openmrs),February,campName,vaccination center,status,union (openmrs name),ward (openmrs name),subunit(openmrs name),subunit
+shikha,2018-02-04,epi camp,Jaynal Abediner Bari  Jangalia,TRUE,Jangalia,Ward-1,Ka-1,Jangalia:Ward-1:Ka-1
+shikha,2018-02-07,epi camp,Dori Jangalia govt Primary School,TRUE,Jangalia,Ward-1,Ka-2,Jangalia:Ward-1:Ka-2
+shikha,2018-02-11,epi camp,Redcresent matresodon  Jangalia,TRUE,Jangalia,Ward-1,Kha-1,Jangalia:Ward-1:Kha-1
+shikha,2018-02-14,epi camp,Jangalia CC  Jangalia,TRUE,Jangalia,Ward-1,Kha-2,Jangalia:Ward-1:Kha-2
+shikha,2018-02-18,epi camp,Mojnu Gajir Bari  Jangalia,TRUE,Jangalia,Ward-1,Ga-1,Jangalia:Ward-1:Ga-1
+shikha,2018-02-20,epi camp,Amjad Mollar Bari  Jangalia,TRUE,Jangalia,Ward-1,Ga-2,Jangalia:Ward-1:Ga-2
+shikha,2018-02-25,epi camp,Ziauddin Fokirer Bari  Jangalia,TRUE,Jangalia,Ward-1,Gha-1,Jangalia:Ward-1:Gha-1
+shikha,2018-02-28,epi camp,Dubriya CC  Duboria,TRUE,Jangalia,Ward-1,Gha-2,Jangalia:Ward-1:Gha-2
+taher,2018-02-04,epi camp,Jaynal Abediner buiar Bari  Punsohi,TRUE,Jangalia,Ward-2,Ka-1,Jangalia:Ward-2:Ka-1
+taher,2018-02-07,epi camp,Sahaj uddin mollar bari  Punsohi,TRUE,Jangalia,Ward-2,Ka-2,Jangalia:Ward-2:Ka-2
+taher,2018-02-11,epi camp,Chatiani CC Chatiani,TRUE,Jangalia,Ward-2,Kha-1,Jangalia:Ward-2:Kha-1
+taher,2018-02-14,epi camp,Akmot Ali Sheikh  Royen,TRUE,Jangalia,Ward-2,Kha-2,Jangalia:Ward-2:Kha-2
+taher,2018-02-18,epi camp,Tofazzol Hosen khaner bari  Kawlita,TRUE,Jangalia,Ward-2,Ga-1,Jangalia:Ward-2:Ga-1
+taher,2018-02-20,epi camp,H&FWC  Kulthun,TRUE,Jangalia,Ward-2,Ga-2,Jangalia:Ward-2:Ga-2
+taher,2018-02-25,epi camp,Mofiz uddin khaner bari  Ajmotpur,TRUE,Jangalia,Ward-2,Gha-1,Jangalia:Ward-2:Gha-1
+taher,2018-02-28,epi camp,Idris alir bari  saildiya,TRUE,Jangalia,Ward-2,Gha-2,Jangalia:Ward-2:Gha-2
+rafiqul,2018-02-04,epi camp,Barek chairman bari  Norun,TRUE,Jangalia,Ward-3,Ka-1,Jangalia:Ward-3:Ka-1
+rafiqul,2018-02-07,epi camp,Momin uddiner bari  Norun,TRUE,Jangalia,Ward-3,Ka-2,Jangalia:Ward-3:Ka-2
+rafiqul,2018-02-11,epi camp,Anowar mastarer bari  Norun,TRUE,Jangalia,Ward-3,Kha-1,Jangalia:Ward-3:Kha-1
+rafiqul,2018-02-14,epi camp,Norun CC  Norun,TRUE,Jangalia,Ward-3,Kha-2,Jangalia:Ward-3:Kha-2
+rafiqul,2018-02-18,epi camp,Nesar Ahmeder bari  Boriadi,TRUE,Jangalia,Ward-3,Ga-1,Jangalia:Ward-3:Ga-1
+rafiqul,2018-02-20,epi camp,Eakub khaner bari  Boraiya,TRUE,Jangalia,Ward-3,Ga-2,Jangalia:Ward-3:Ga-2
+rafiqul,2018-02-25,epi camp,Hafiz uddiner barI  Boraiya,TRUE,Jangalia,Ward-3,Gha-1,Jangalia:Ward-3:Gha-1
+rafiqul,2018-02-28,epi camp,Abdul Samad khaner bari  Dewtola,TRUE,Jangalia,Ward-3,Gha-2,Jangalia:Ward-3:Gha-2
+razia,2018-02-04,epi camp,Fuldi CC  Fuldi,TRUE,Bokterpur,Ward-1,Ka-1,Bokterpur:Ward-1:Ka-1
+razia,2018-02-07,epi camp,Mohiuddiner bari  Fuldi,TRUE,Bokterpur,Ward-1,Ka-2,Bokterpur:Ward-1:Ka-2
+razia,2018-02-11,epi camp,Mawlana Rustum Alir Bari  Vatira,TRUE,Bokterpur,Ward-1,Kha-1,Bokterpur:Ward-1:Kha-1
+razia,2018-02-14,epi camp,Vatira CC Vatira,TRUE,Bokterpur,Ward-1,Kha-2,Bokterpur:Ward-1:Kha-2
+razia,2018-02-18,epi camp,World Vision office  Fuldi,TRUE,Bokterpur,Ward-1,Ga-1,Bokterpur:Ward-1:Ga-1
+razia,2018-02-20,epi camp,Momen shekher bari  Majhukhan,TRUE,Bokterpur,Ward-1,Ga-2,Bokterpur:Ward-1:Ga-2
+razia,2018-02-25,epi camp,Majhukhan CC Majhukhan,TRUE,Bokterpur,Ward-1,Gha-1,Bokterpur:Ward-1:Gha-1
+razia,2018-02-28,epi camp,Munjur shekher bari  Majhukhan,TRUE,Bokterpur,Ward-1,Gha-2,Bokterpur:Ward-1:Gha-2
+gopal,2018-02-04,epi camp,Mohani CC Mohani,TRUE,Bokterpur,Ward-2,Ka-1,Bokterpur:Ward-2:Ka-1
+gopal,2018-02-07,epi camp,Samsul hauquer bari  Boktarpur,TRUE,Bokterpur,Ward-2,Ka-2,Bokterpur:Ward-2:Ka-2
+gopal,2018-02-11,epi camp,H&FWC  Boktarpur,TRUE,Bokterpur,Ward-2,Kha-1,Bokterpur:Ward-2:Kha-1
+gopal,2018-02-14,epi camp,Berua C C Beruya,TRUE,Bokterpur,Ward-2,Kha-2,Bokterpur:Ward-2:Kha-2
+gopal,2018-02-18,epi camp,Forid uddin khaner bari  Berua,TRUE,Bokterpur,Ward-2,Ga-1,Bokterpur:Ward-2:Ga-1
+gopal,2018-02-20,epi camp,Angur Miyar bari  Bramongeo,TRUE,Bokterpur,Ward-2,Ga-2,Bokterpur:Ward-2:Ga-2
+gopal,2018-02-25,epi camp,Bramongeo C C Bramongeo,TRUE,Bokterpur,Ward-2,Gha-1,Bokterpur:Ward-2:Gha-1
+gopal,2018-02-28,epi camp,Kadir Mohajoner bari  Goyaliya bari,TRUE,Bokterpur,Ward-2,Gha-2,Bokterpur:Ward-2:Gha-2
+asmabegum,2018-02-04,epi camp,Khoikra CC,TRUE,Bokterpur,Ward-3,Ka-1,Bokterpur:Ward-3:Ka-1
+asmabegum,2018-02-07,epi camp,Baccu Mejorer bari  Khoikra,TRUE,Bokterpur,Ward-3,Ka-2,Bokterpur:Ward-3:Ka-2
+asmabegum,2018-02-11,epi camp,Golzar hosener bari  Khoikra,TRUE,Bokterpur,Ward-3,Kha-1,Bokterpur:Ward-3:Kha-1
+asmabegum,2018-02-14,epi camp,Kadir membarer bari  Khoikra,TRUE,Bokterpur,Ward-3,Kha-2,Bokterpur:Ward-3:Kha-2
+asmabegum,2018-02-18,epi camp,Iman uddiner bari  Poilanpur,TRUE,Bokterpur,Ward-3,Ga-1,Bokterpur:Ward-3:Ga-1
+asmabegum,2018-02-20,epi camp,Ekota kindar garden  Uttor Rajnogor,TRUE,Bokterpur,Ward-3,Ga-2,Bokterpur:Ward-3:Ga-2
+asmabegum,2018-02-25,epi camp,Ali Akborer bari  Satanipara,TRUE,Bokterpur,Ward-3,Gha-1,Bokterpur:Ward-3:Gha-1
+asmabegum,2018-02-28,epi camp,Kresno mondoler bari  Joyramber,TRUE,Bokterpur,Ward-3,Gha-2,Bokterpur:Ward-3:Gha-2
+minoti,2018-02-04,epi camp,Soncoy rindan somity  Dokhin Cuyarikhola,TRUE,Tumulia,Ward-1,Ka-1,Tumulia:Ward-1:Ka-1
+minoti,2018-02-07,epi camp,Joj daktarer bari  Dokhin Cuyarikhola,TRUE,Tumulia,Ward-1,Ka-2,Tumulia:Ward-1:Ka-2
+minoti,2018-02-11,epi camp,Nobo Jagoron rindan somity  Dokhin Cuyarikhola,TRUE,Tumulia,Ward-1,Kha-1,Tumulia:Ward-1:Kha-1
+minoti,2018-02-14,epi camp,Sunil Gomejer bari  Doripara,TRUE,Tumulia,Ward-1,Kha-2,Tumulia:Ward-1:Kha-2
+minoti,2018-02-18,epi camp,Nurul Islamer bari  Cuyarikhola,TRUE,Tumulia,Ward-1,Ga-1,Tumulia:Ward-1:Ga-1
+minoti,2018-02-20,epi camp,Rahim Moroler bari  Cuyarikhola,TRUE,Tumulia,Ward-1,Ga-2,Tumulia:Ward-1:Ga-2
+minoti,2018-02-25,epi camp,Dilip Gomejer bari  Dokhin Rajnogor,TRUE,Tumulia,Ward-1,Gha-1,Tumulia:Ward-1:Gha-1
+minoti,2018-02-28,epi camp,Benedikt Gomejer bari  Joyrambera,TRUE,Tumulia,Ward-1,Gha-2,Tumulia:Ward-1:Gha-2
+rowsanara,2018-02-04,epi camp,Mukul Chandra korer bari  Doripara,TRUE,Tumulia,Ward-2,Ka-1,Tumulia:Ward-2:Ka-1
+rowsanara,2018-02-07,epi camp,Boweler asrom  Bandakhola,TRUE,Tumulia,Ward-2,Ka-2,Tumulia:Ward-2:Ka-2
+rowsanara,2018-02-11,epi camp,Noresh Rayer bari  Ara bandakhola,TRUE,Tumulia,Ward-2,Kha-1,Tumulia:Ward-2:Kha-1
+rowsanara,2018-02-14,epi camp,Stifen kolentoner bari  Corakhola,TRUE,Tumulia,Ward-2,Kha-2,Tumulia:Ward-2:Kha-2
+rowsanara,2018-02-18,epi camp,Jogodish mondoler bari  Parartek,TRUE,Tumulia,Ward-2,Ga-1,Tumulia:Ward-2:Ga-1
+rowsanara,2018-02-20,epi camp,Abbasiya dakhil madrasha  manikpura,TRUE,Tumulia,Ward-2,Ga-2,Tumulia:Ward-2:Ga-2
+rowsanara,2018-02-25,epi camp,F. W. C Pakuriya,TRUE,Tumulia,Ward-2,Gha-1,Tumulia:Ward-2:Gha-1
+rowsanara,2018-02-28,epi camp,Sahin Sorkarer bari  Tiori,TRUE,Tumulia,Ward-2,Gha-2,Tumulia:Ward-2:Gha-2
+yasmin,2018-02-04,epi camp,Sunil Sahar bari  Vurulia,TRUE,Nagori,Ward-1,Ka-1,Nagori:Ward-1:Ka-1
+yasmin,2018-02-07,epi camp,Royen CC Royen,TRUE,Nagori,Ward-1,Ka-2,Nagori:Ward-1:Ka-2
+yasmin,2018-02-11,epi camp,Bipul Rozarior bari  Chatiyana,TRUE,Nagori,Ward-1,Kha-1,Nagori:Ward-1:Kha-1
+yasmin,2018-02-14,epi camp,Chandro Mohoner bari  Sujapur,TRUE,Nagori,Ward-1,Kha-2,Nagori:Ward-1:Kha-2
+yasmin,2018-02-18,epi camp,Bilu kostar bari  Luduria,TRUE,Nagori,Ward-1,Ga-1,Nagori:Ward-1:Ga-1
+yasmin,2018-02-20,epi camp,Godu Palmar bari  Nolchata,TRUE,Nagori,Ward-1,Ga-2,Nagori:Ward-1:Ga-2
+yasmin,2018-02-25,epi camp,Anisur Rahamaner bari  Shimulia,TRUE,Nagori,Ward-1,Gha-1,Nagori:Ward-1:Gha-1
+yasmin,2018-02-28,epi camp,Ilius mridar bari  Pipulia,TRUE,Nagori,Ward-1,Gha-2,Nagori:Ward-1:Gha-2
+sujon,2018-02-04,epi camp,Mannan Rajer bari  Panjora,TRUE,Nagori,Ward-2,Ka-1,Nagori:Ward-2:Ka-1
+sujon,2018-02-07,epi camp,Abu Saider bari  Garalia,TRUE,Nagori,Ward-2,Ka-2,Nagori:Ward-2:Ka-2
+sujon,2018-02-11,epi camp,Shikdar bari  Panjara,TRUE,Nagori,Ward-2,Kha-1,Nagori:Ward-2:Kha-1
+sujon,2018-02-14,epi camp,Usuf kajir bari  Panjara,TRUE,Nagori,Ward-2,Kha-2,Nagori:Ward-2:Kha-2
+sujon,2018-02-18,epi camp,Govt Primary School  Rathura,TRUE,Nagori,Ward-2,Ga-1,Nagori:Ward-2:Ga-1
+sujon,2018-02-20,epi camp,Faijuddin Moroler bari  Golan,TRUE,Nagori,Ward-2,Ga-2,Nagori:Ward-2:Ga-2
+sujon,2018-02-25,epi camp,Meri Rozarior bari  Vasaniya,TRUE,Nagori,Ward-2,Gha-1,Nagori:Ward-2:Gha-1
+sujon,2018-02-28,epi camp,Govt Primary School  Birtula,TRUE,Nagori,Ward-2,Gha-2,Nagori:Ward-2:Gha-2
+shahida,2018-02-04,epi camp,Parabortha CC Parabortha,TRUE,Nagori,Ward-3,Ka-1,Nagori:Ward-3:Ka-1
+shahida,2018-02-07,epi camp,Borokau Govt Primary School ,TRUE,Nagori,Ward-3,Ka-2,Nagori:Ward-3:Ka-2
+shahida,2018-02-11,epi camp,Ababil Ecademy  Tekpara,TRUE,Nagori,Ward-3,Kha-1,Nagori:Ward-3:Kha-1
+shahida,2018-02-14,epi camp,Nowyab Alir bari  Vasabasi,TRUE,Nagori,Ward-3,Kha-2,Nagori:Ward-3:Kha-2
+shahida,2018-02-18,epi camp,Govt Primary school  Mothbari,TRUE,Nagori,Ward-3,Ga-1,Nagori:Ward-3:Ga-1
+shahida,2018-02-20,epi camp,Harej memberer bari  Boro Dahindi,TRUE,Nagori,Ward-3,Ga-2,Nagori:Ward-3:Ga-2
+shahida,2018-02-25,epi camp,Sahida memberer bari  Nogorvela,TRUE,Nagori,Ward-3,Gha-1,Nagori:Ward-3:Gha-1
+shahida,2018-02-28,epi camp,Govt Primary school  Rayer dia,TRUE,Nagori,Ward-3,Gha-2,Nagori:Ward-3:Gha-2
+asma,2018-02-05,epi camp,Lehaj uddin mastarer bari  Horidevpur,TRUE,Mokterpur,Ward-1,Ka-1,Mokterpur:Ward-1:Ka-1
+asma,2018-02-01,epi camp,Redcrecent Hospital  Noyapara,TRUE,Mokterpur,Ward-1,Ka-2,Mokterpur:Ward-1:Ka-2
+asma,2018-02-12,epi camp,Aman ullar bari  Borohora,TRUE,Mokterpur,Ward-1,Kha-1,Mokterpur:Ward-1:Kha-1
+asma,2018-02-08,epi camp,Shinglab CC Shinglab,TRUE,Mokterpur,Ward-1,Kha-2,Mokterpur:Ward-1:Kha-2
+asma,2018-02-19,epi camp,Dr. Romjan Alir bari  Shibpur,TRUE,Mokterpur,Ward-1,Ga-1,Mokterpur:Ward-1:Ga-1
+asma,2018-02-15,epi camp,Harun ur rashider bari  Potan,TRUE,Mokterpur,Ward-1,Ga-2,Mokterpur:Ward-1:Ga-2
+asma,2018-02-26,epi camp,Dr. Abdul Maleker bari  Moishair,TRUE,Mokterpur,Ward-1,Gha-1,Mokterpur:Ward-1:Gha-1
+asma,2018-02-22,epi camp,Bagun CC Bagun,TRUE,Mokterpur,Ward-1,Gha-2,Mokterpur:Ward-1:Gha-2
+sarker,2018-02-05,epi camp,Ab. Rashid Miyar bari  Borogeo,TRUE,Mokterpur,Ward-2,Ka-1,Mokterpur:Ward-2:Ka-1
+sarker,2018-02-01,epi camp,Borogeo CC Borogeo,TRUE,Mokterpur,Ward-2,Ka-2,Mokterpur:Ward-2:Ka-2
+sarker,2018-02-12,epi camp,Sultan Mastarer bari  Ramchandropur,TRUE,Mokterpur,Ward-2,Kha-1,Mokterpur:Ward-2:Kha-1
+sarker,2018-02-08,epi camp,Shahjahan khaner bari  Boraid,TRUE,Mokterpur,Ward-2,Kha-2,Mokterpur:Ward-2:Kha-2
+sarker,2018-02-19,epi camp,Ukil uddiner bari  Dhonpur,TRUE,Mokterpur,Ward-2,Ga-1,Mokterpur:Ward-2:Ga-1
+sarker,2018-02-15,epi camp,Dhonpur C  C Dhonpur,TRUE,Mokterpur,Ward-2,Ga-2,Mokterpur:Ward-2:Ga-2
+sarker,2018-02-26,epi camp,Rathura C  C Rathura,TRUE,Mokterpur,Ward-2,Gha-1,Mokterpur:Ward-2:Gha-1
+sarker,2018-02-22,epi camp,Ab. Jaliler bari  Borogeo,TRUE,Mokterpur,Ward-2,Gha-2,Mokterpur:Ward-2:Gha-2
+ferdousi,2018-02-05,epi camp,Somoresh babur bari  Mokterpur,TRUE,Mokterpur,Ward-3,Ka-1,Mokterpur:Ward-3:Ka-1
+ferdousi,2018-02-01,epi camp,Monjur Miyar bari  Demra,TRUE,Mokterpur,Ward-3,Ka-2,Mokterpur:Ward-3:Ka-2
+ferdousi,2018-02-12,epi camp,Ab. Salam Mastarer bari  Demra,TRUE,Mokterpur,Ward-3,Kha-1,Mokterpur:Ward-3:Kha-1
+ferdousi,2018-02-08,epi camp,Abdur Rahamaner bari  Saoraid,TRUE,Mokterpur,Ward-3,Kha-2,Mokterpur:Ward-3:Kha-2
+ferdousi,2018-02-19,epi camp,Kobir Mastarer bari  Ekuta,TRUE,Mokterpur,Ward-3,Ga-1,Mokterpur:Ward-3:Ga-1
+ferdousi,2018-02-15,epi camp,Solaimaner bari  Mokterpur,TRUE,Mokterpur,Ward-3,Ga-2,Mokterpur:Ward-3:Ga-2
+ferdousi,2018-02-26,epi camp,H&FWC  Mokterpur,TRUE,Mokterpur,Ward-3,Gha-1,Mokterpur:Ward-3:Gha-1
+ferdousi,2018-02-22,epi camp,Abdur Samader bari  Kalihasi,TRUE,Mokterpur,Ward-3,Gha-2,Mokterpur:Ward-3:Gha-2
+sheuli,2018-02-05,epi camp,Md. Ayeb Alir bari  Cupair,TRUE,Jamalpur,Ward-1,Ka-1,Jamalpur:Ward-1:Ka-1
+sheuli,2018-02-01,epi camp,Nojumuddin Memberer bari  Cupair,TRUE,Jamalpur,Ward-1,Ka-2,Jamalpur:Ward-1:Ka-2
+sheuli,2018-02-12,epi camp,Kapaish C  C Kapaish,TRUE,Jamalpur,Ward-1,Kha-1,Jamalpur:Ward-1:Kha-1
+sheuli,2018-02-08,epi camp,Sudhendro Mastarer bari  Borobola,TRUE,Jamalpur,Ward-1,Kha-2,Jamalpur:Ward-1:Kha-2
+sheuli,2018-02-19,epi camp,Siraj Mastarer bari  Kapaish,TRUE,Jamalpur,Ward-1,Ga-1,Jamalpur:Ward-1:Ga-1
+sheuli,2018-02-15,epi camp,Nurul Islamer bari  Kapaish,TRUE,Jamalpur,Ward-1,Ga-2,Jamalpur:Ward-1:Ga-2
+sheuli,2018-02-26,epi camp,Soiladi C  C Soiladi,TRUE,Jamalpur,Ward-1,Gha-1,Jamalpur:Ward-1:Gha-1
+sheuli,2018-02-22,epi camp,Khairuler bari  Soiladi,TRUE,Jamalpur,Ward-1,Gha-2,Jamalpur:Ward-1:Gha-2
+mitali,2018-02-05,epi camp,Bimol Babur bari  Kolapatua,TRUE,Jamalpur,Ward-2,Ka-1,Jamalpur:Ward-2:Ka-1
+mitali,2018-02-01,epi camp,Nazmul Hoker Bari-Mendipur,TRUE,Jamalpur,Ward-2,Ka-2,Jamalpur:Ward-2:Ka-2
+mitali,2018-02-12,epi camp,Md. Aminul Islamer bari  Golartek,TRUE,Jamalpur,Ward-2,Kha-1,Jamalpur:Ward-2:Kha-1
+mitali,2018-02-08,epi camp,Mukul Miyar bari  Jamalpur,TRUE,Jamalpur,Ward-2,Kha-2,Jamalpur:Ward-2:Kha-2
+mitali,2018-02-19,epi camp,Said Sorkarer bari  Jamalpur,TRUE,Jamalpur,Ward-2,Ga-1,Jamalpur:Ward-2:Ga-1
+mitali,2018-02-15,epi camp,Sanaullar bari  Jamalpur,TRUE,Jamalpur,Ward-2,Ga-2,Jamalpur:Ward-2:Ga-2
+mitali,2018-02-26,epi camp,H&FWC  Jamalpur,TRUE,Jamalpur,Ward-2,Gha-1,Jamalpur:Ward-2:Gha-1
+mitali,2018-02-22,epi camp,Ismail Mastarer bari  Jamalpur,TRUE,Jamalpur,Ward-2,Gha-2,Jamalpur:Ward-2:Gha-2
+afrina,2018-02-05,epi camp,Gofur P L bari  Cander bag,TRUE,Jamalpur,Ward-3,Ka-1,Jamalpur:Ward-3:Ka-1
+afrina,2018-02-01,epi camp,Jamalpur C  C Jamalpur,TRUE,Jamalpur,Ward-3,Ka-2,Jamalpur:Ward-3:Ka-2
+afrina,2018-02-12,epi camp,Habibur Rahamaner bari  Nargana,TRUE,Jamalpur,Ward-3,Kha-1,Jamalpur:Ward-3:Kha-1
+afrina,2018-02-08,epi camp,Said Miyar bari  Nargana,TRUE,Jamalpur,Ward-3,Kha-2,Jamalpur:Ward-3:Kha-2
+afrina,2018-02-19,epi camp,Taleb Alir bari. Nargana,TRUE,Jamalpur,Ward-3,Ga-1,Jamalpur:Ward-3:Ga-1
+afrina,2018-02-15,epi camp,Ramij uddiner bari  Nargana,TRUE,Jamalpur,Ward-3,Ga-2,Jamalpur:Ward-3:Ga-2
+afrina,2018-02-26,epi camp,Monjurer bari  Jamalpur,TRUE,Jamalpur,Ward-3,Gha-1,Jamalpur:Ward-3:Gha-1
+afrina,2018-02-22,epi camp,Masum Miyar bari  Jamalpur,TRUE,Jamalpur,Ward-3,Gha-2,Jamalpur:Ward-3:Gha-2
+bakir,2018-02-05,epi camp,Tofazzol Hosen khaner bari  Kholapara,TRUE,Bahadursadi,Ward-1,Ka-1,Bahadursadi:Ward-1:Ka-1
+bakir,2018-02-01,epi camp,Siraj mollar bari  Kholapara,TRUE,Bahadursadi,Ward-1,Ka-2,Bahadursadi:Ward-1:Ka-2
+bakir,2018-02-12,epi camp,Kholapara C  C Kholapara,TRUE,Bahadursadi,Ward-1,Kha-1,Bahadursadi:Ward-1:Kha-1
+bakir,2018-02-08,epi camp,Siraj uddiner bari  Kholapara,TRUE,Bahadursadi,Ward-1,Kha-2,Bahadursadi:Ward-1:Kha-2
+bakir,2018-02-19,epi camp,Abdur Rahim Memberer bari  Kholapar,TRUE,Bahadursadi,Ward-1,Ga-1,Bahadursadi:Ward-1:Ga-1
+bakir,2018-02-15,epi camp,Narayon Cowdhurir bari  Kholapara,TRUE,Bahadursadi,Ward-1,Ga-2,Bahadursadi:Ward-1:Ga-2
+bakir,2018-02-26,epi camp,Nurul Hoquer bari  Kholapara,TRUE,Bahadursadi,Ward-1,Gha-1,Bahadursadi:Ward-1:Gha-1
+bakir,2018-02-22,epi camp,Jaynal Abediner Bari  Jangalia,TRUE,Bahadursadi,Ward-1,Gha-2,Bahadursadi:Ward-1:Gha-2
+bakar,2018-02-05,epi camp,Subimol Mondoler bari  Dokhinbag,TRUE,Bahadursadi,Ward-2,Ka-1,Bahadursadi:Ward-2:Ka-1
+bakar,2018-02-01,epi camp,Abu Said Akonder bari  Dokhinbag,TRUE,Bahadursadi,Ward-2,Ka-2,Bahadursadi:Ward-2:Ka-2
+bakar,2018-02-12,epi camp,Safaj uddiner bari  Bahadursadi,TRUE,Bahadursadi,Ward-2,Kha-1,Bahadursadi:Ward-2:Kha-1
+bakar,2018-02-08,epi camp,Ahammad Alir bari  Dokhinbag,TRUE,Bahadursadi,Ward-2,Kha-2,Bahadursadi:Ward-2:Kha-2
+bakar,2018-02-19,epi camp,Can Miyar bari  Voiyab,TRUE,Bahadursadi,Ward-2,Ga-1,Bahadursadi:Ward-2:Ga-1
+bakar,2018-02-15,epi camp,Arun prodhaner bari  Bahadursadi,TRUE,Bahadursadi,Ward-2,Ga-2,Bahadursadi:Ward-2:Ga-2
+bakar,2018-02-26,epi camp,H&FWC  Bahadursadi,TRUE,Bahadursadi,Ward-2,Gha-1,Bahadursadi:Ward-2:Gha-1
+bakar,2018-02-22,epi camp,Hosen Ali Memberer bari  Bahadursadi,TRUE,Bahadursadi,Ward-2,Gha-2,Bahadursadi:Ward-2:Gha-2
+jaman,2018-02-05,epi camp,Kholasadu kha C  C Kholasadu kha,TRUE,Bahadursadi,Ward-3,Ka-1,Bahadursadi:Ward-3:Ka-1
+jaman,2018-02-01,epi camp,Shorif Hosener bari  Kholasadu kha,TRUE,Bahadursadi,Ward-3,Ka-2,Bahadursadi:Ward-3:Ka-2
+jaman,2018-02-12,epi camp,Ismail Hosener bari  Issorpur,TRUE,Bahadursadi,Ward-3,Kha-1,Bahadursadi:Ward-3:Kha-1
+jaman,2018-02-08,epi camp,Kuddus Fokirer bari  Issorpur,TRUE,Bahadursadi,Ward-3,Kha-2,Bahadursadi:Ward-3:Kha-2
+jaman,2018-02-19,epi camp,Sohidullahar bari  Jugli,TRUE,Bahadursadi,Ward-3,Ga-1,Bahadursadi:Ward-3:Ga-1
+jaman,2018-02-15,epi camp,Issorpur Govt Primary school  Issorpur,TRUE,Bahadursadi,Ward-3,Ga-2,Bahadursadi:Ward-3:Ga-2
+jaman,2018-02-26,epi camp,Forkan Miyar bari  Mollabarir tek,TRUE,Bahadursadi,Ward-3,Gha-1,Bahadursadi:Ward-3:Gha-1
+jaman,2018-02-22,epi camp,Dr। MD Belaet Hosener bari  Betua,TRUE,Bahadursadi,Ward-3,Gha-2,Bahadursadi:Ward-3:Gha-2
+gaffar,2018-02-05,epi camp,Falu Munsir bari  Uttor Vadarti,TRUE,Kaliganj Union,Ward-1,Ka-1,Kaliganj Union:Ward-1:Ka-1
+gaffar,2018-02-01,epi camp,Govt Primary school  Uttor Vadarti,TRUE,Kaliganj Union,Ward-1,Ka-2,Kaliganj Union:Ward-1:Ka-2
+gaffar,2018-02-12,epi camp,Hachi uddin dewan bari  Uttor Vadarti,TRUE,Kaliganj Union,Ward-1,Kha-1,Kaliganj Union:Ward-1:Kha-1
+gaffar,2018-02-08,epi camp,Gebriyel kostar bari  Uttor Vadarti,TRUE,Kaliganj Union,Ward-1,Kha-2,Kaliganj Union:Ward-1:Kha-2
+gaffar,2018-02-19,epi camp,Jamal Mollar bari  Tumulia,TRUE,Kaliganj Union,Ward-1,Ga-1,Kaliganj Union:Ward-1:Ga-1
+gaffar,2018-02-15,epi camp,Ab. Goni Miyar bari  Bangal hawla,TRUE,Kaliganj Union,Ward-1,Ga-2,Kaliganj Union:Ward-1:Ga-2
+gaffar,2018-02-26,epi camp,Aftab uddiner bari  Durbati,TRUE,Kaliganj Union,Ward-1,Gha-1,Kaliganj Union:Ward-1:Gha-1
+gaffar,2018-02-22,epi camp,Community Clinic  Durbarti,TRUE,Kaliganj Union,Ward-1,Gha-2,Kaliganj Union:Ward-1:Gha-2
+rahman,2018-02-05,epi camp,Ab. Aziz Miyar bari  Dorisom,TRUE,Kaliganj Union,Ward-2,Ka-1,Kaliganj Union:Ward-2:Ka-1
+rahman,2018-02-01,epi camp,Ab. Awyal Member bari  Munsefpur,TRUE,Kaliganj Union,Ward-2,Ka-2,Kaliganj Union:Ward-2:Ka-2
+rahman,2018-02-12,epi camp,Mostofa Member bari  Baligeo,TRUE,Kaliganj Union,Ward-2,Kha-1,Kaliganj Union:Ward-2:Kha-1
+rahman,2018-02-08,epi camp,Dulal Babur Bari  Baligeo,TRUE,Kaliganj Union,Ward-2,Kha-2,Kaliganj Union:Ward-2:Kha-2
+rahman,2018-02-19,epi camp,Monir Miyar bari  Vadgati,TRUE,Kaliganj Union,Ward-2,Ga-1,Kaliganj Union:Ward-2:Ga-1
+rahman,2018-02-15,epi camp,Taher Ahmmeder bari  Boronogor,TRUE,Kaliganj Union,Ward-2,Ga-2,Kaliganj Union:Ward-2:Ga-2
+rahman,2018-02-26,epi camp,Community Clinic  Candaiya,TRUE,Kaliganj Union,Ward-2,Gha-1,Kaliganj Union:Ward-2:Gha-1
+rahman,2018-02-22,epi camp,Red Cricent Hospital  Coura,TRUE,Kaliganj Union,Ward-2,Gha-2,Kaliganj Union:Ward-2:Gha-2
+mojammel,2018-02-05,epi camp,Community Clinic  Dewpara,TRUE,Kaliganj Union,Ward-3,Ka-1,Kaliganj Union:Ward-3:Ka-1
+mojammel,2018-02-01,epi camp,Community Clinic  Coitar para,TRUE,Kaliganj Union,Ward-3,Ka-2,Kaliganj Union:Ward-3:Ka-2
+mojammel,2018-02-12,epi camp,Durga Mondir  Mulgeo,TRUE,Kaliganj Union,Ward-3,Kha-1,Kaliganj Union:Ward-3:Kha-1
+mojammel,2018-02-08,epi camp,Shimuler bari  Corpara,TRUE,Kaliganj Union,Ward-3,Kha-2,Kaliganj Union:Ward-3:Kha-2
+mojammel,2018-02-19,epi camp,Community Clinic  Uttor geo,TRUE,Kaliganj Union,Ward-3,Ga-1,Kaliganj Union:Ward-3:Ga-1
+mojammel,2018-02-15,epi camp,Community Clinic  Kumartek,TRUE,Kaliganj Union,Ward-3,Ga-2,Kaliganj Union:Ward-3:Ga-2
+mojammel,2018-02-26,epi camp,Jamal Miyar bari  Golabari,TRUE,Kaliganj Union,Ward-3,Gha-1,Kaliganj Union:Ward-3:Gha-1
+mojammel,2018-02-22,epi camp,Goljar Mamber bari  Ghonpara,TRUE,Kaliganj Union,Ward-3,Gha-2,Kaliganj Union:Ward-3:Gha-2
