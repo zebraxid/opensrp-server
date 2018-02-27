@@ -6,6 +6,7 @@ package org.opensrp.web.it.listener;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import org.joda.time.DateTime;
 import org.json.JSONException;
@@ -13,6 +14,8 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.opensrp.domain.Address;
+import org.opensrp.domain.Client;
 import org.opensrp.repository.AllCamp;
 import org.opensrp.repository.AllClients;
 import org.opensrp.scheduler.repository.AllActions;
@@ -78,18 +81,35 @@ public class ClientListenerTest {
 				    DateTime.now(), DateTime.now().plusDays(3)));
 				allActions.add(normalAction);
 				allActions.add(upcominglAction);*/
-		rapidProMessageListener.fetchClient();
+		//rapidProMessageListener.fetchClient();
 		
-		//rapidProMessageListener.campAnnouncementListener("raihan");
+		rapidProMessageListener.campAnnouncementListener("asma");
 		
 	}
 	
+	@Ignore
 	@Test
 	public void testAddress() {
 		
-		System.err.println("client address: "
-		        + allClients.findByBaseEntityId("03cb7e03-35f3-455c-8047-ac7e5aa0febd").getAddresses().get(0)
-		                .getAddressField("address3"));
+		Client client = allClients.findByBaseEntityId("0001644c-799a-4c5f-b466-99c32025fa61");
+		
+		System.err.println("subunit" + getClientSubunit(client));
+		
+	}
+	
+	private String getClientSubunit(Client client) {
+		String clientSubUnit = null;
+		List<Address> address = client.getAddresses();
+		if (address.size() != 0) {
+			Address clientAddress = address.get(0);
+			if (clientAddress != null) {
+				clientSubUnit = clientAddress.getAddressField("address3");
+				return clientSubUnit;
+			}
+			
+		}
+		
+		return clientSubUnit;
 	}
 	
 	@Ignore

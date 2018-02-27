@@ -2,7 +2,6 @@ package org.opensrp.web.listener;
 
 import java.util.List;
 
-import org.json.JSONException;
 import org.opensrp.common.util.DateUtil;
 import org.opensrp.connector.rapidpro.MessageFactory;
 import org.opensrp.connector.rapidpro.MessageService;
@@ -49,66 +48,72 @@ public class RapidproMessageListener {
 		MessageFactory messageFactory = null;
 		messageFactory = MessageFactory.getMessageFactory(MessageType.ANNOUNCEMENT);
 		logger.info("request receive for camp announchment message provider: " + provider);
-		try {
-			List<Camp> camps = allCamp.findAllActiveByProvider(provider);
-			if (camps != null) {
-				for (Camp camp : camps) {
+		
+		List<Camp> camps = allCamp.findAllActiveByProvider(provider);
+		if (camps != null) {
+			for (Camp camp : camps) {
+				try {
 					if (DateUtil.dateDiff(camp.getDate()) == 0) {
-						//List<Action> actions = actionService.findAllActionByProviderNotExpired(camp.getProviderName());
 						List<Event> events = eventService.findByProviderAndEntityType(camp.getProviderName());
 						logger.info("total events found for announcement eventSize: " + events.size() + " ,provider:"
 						        + camp.getProviderName());
 						messageService.sentMessageToClient(messageFactory, events, camp);
 						allCamp.updateCamp(camp);
 					} else {
-						logger.info("No Camp Found for camp announchment message");
+						logger.info("no camp found for camp announchment message provider:" + camp.getProviderName());
 					}
 				}
-			} else {
-				logger.info("No Camp Found for camp announchment message");
+				catch (Exception e) {
+					logger.error("camp announcement error: " + e.getMessage() + " ,cause:" + e.getCause());
+				}
 			}
+		} else {
+			logger.info("no camp found for camp announchment message provider:" + provider);
 		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
+		
 	}
 	
-	public void fetchClient() throws JSONException {
+	public void fetchClient() {
 		MessageFactory messageFactory = null;
 		messageFactory = MessageFactory.getMessageFactory(MessageType.REMINDER);
 		logger.info("started processing camp reminder messages");
-		try {
-			List<Camp> camps = allCamp.findAllActive();
-			//List<Action> actions = null;
-			if (camps != null) {
-				for (Camp camp : camps) {
+		List<Camp> camps = allCamp.findAllActive();
+		logger.info("total active camp found campsize: " + camps.size());
+		if (camps.size() != 0) {
+			for (Camp camp : camps) {
+				try {
 					if (DateUtil.dateDiff(camp.getDate()) == -1) {
+						logger.info("active camp found for camp reminder message campDate: " + camp.getDate()
+						        + " ,provider:" + camp.getProviderName());
 						if (camp.getProviderName() == null || camp.getProviderName().isEmpty()
 						        || camp.getProviderName().equalsIgnoreCase("")) {
-							//actions = actionService.findAllActionNotExpired();
-							//List<Event> events = eventService.findByProviderAndEntityType(camp.getProviderName());
+							logger.info("problem with camp definition " + camp.getDate() + " ,_id:" + camp.getId());
+							
 						} else {
-							logger.info("finding all events for provider:" + camp.getProviderName());
-							//actions = actionService.findAllActionByProviderNotExpired(camp.getProviderName());
 							List<Event> events = eventService.findByProviderAndEntityType(camp.getProviderName());
-							logger.info("total events found for reminder eventSize: " + events.size() + " ,provider:"
-							        + camp.getProviderName());
-							messageService.sentMessageToClient(messageFactory, events, camp);
+							if (events.size() != 0) {
+								logger.info("total events found for reminder eventSize: " + events.size() + " ,provider:"
+								        + camp.getProviderName());
+								messageService.sentMessageToClient(messageFactory, events, camp);
+							} else {
+								logger.info("no events found for reminder eventSize: " + events.size() + " ,provider:"
+								        + camp.getProviderName());
+							}
 						}
-						
 						//allCamp.updateCamp(camp);
 					} else {
-						logger.info("No Camp Found for camp reminder message");
+						logger.info("no camp found for camp reminder message campDate: " + camp.getDate() + " ,provider:"
+						        + camp.getProviderName());
 					}
 				}
-				
-			} else {
-				logger.info("No Camp Found for camp reminder message");
+				catch (Exception e) {
+					logger.error("fetchClient error: " + e.getMessage() + " ,cause:" + e.getCause());
+				}
 			}
 			
+		} else {
+			logger.info("no camp found for camp reminder message");
 		}
-		catch (Exception e) {
-			logger.info("Fetch client:" + e.getMessage());
-		}
+		
 	}
 }

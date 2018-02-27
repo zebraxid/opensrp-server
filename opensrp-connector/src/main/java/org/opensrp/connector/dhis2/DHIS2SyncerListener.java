@@ -15,11 +15,15 @@ import org.opensrp.domain.Event;
 import org.opensrp.repository.AllDHIS2Marker;
 import org.opensrp.service.ClientService;
 import org.opensrp.service.EventService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class DHIS2SyncerListener {
+	
+	private static Logger logger = LoggerFactory.getLogger(DHIS2SyncerListener.class.toString());
 	
 	private final ClientService clientService;
 	
@@ -70,13 +74,13 @@ public class DHIS2SyncerListener {
 			}
 			List<Event> events = eventService.findByServerVersion(eventStart);
 			for (Client c : cl) {
-				System.err.println("Name:" + c.fullName());
 				try {
 					response = processTrackerAndSendToDHIS2(c);
 					allDHIS2Marker.update(c.getServerVersion());
 				}
 				catch (Exception e) {
-					e.printStackTrace();
+					logger.error("dhis2 data sync error: " + e.getMessage() + ",cause:" + e.getCause() + ",client:"
+					        + c.getBaseEntityId());
 				}
 			}
 			

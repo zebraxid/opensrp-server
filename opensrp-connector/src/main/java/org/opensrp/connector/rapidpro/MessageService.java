@@ -10,8 +10,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.json.JSONException;
 import org.opensrp.common.util.DateUtil;
+import org.opensrp.domain.Address;
 import org.opensrp.domain.Camp;
 import org.opensrp.domain.Client;
 import org.opensrp.domain.Event;
@@ -47,42 +47,66 @@ public class MessageService {
 		this.clientService = clientService;
 	}
 	
-	public void sentMessageToClient(MessageFactory messageFactory, List<Event> events, Camp camp) throws JSONException {
+	public void sentMessageToClient(MessageFactory messageFactory, List<Event> events, Camp camp) {
 		
-		if (events != null) {
-			for (Event event : events) {
-				/*				Map<String, String> data = action.data();
-								logger.info("sentMessageToClient actiondata:" +  data.toString());*/
+		for (Event event : events) {
+			try {
 				if (event.getEntityType().equalsIgnoreCase(ClientType.child.name())) {
 					Client child = clientService.find(event.getBaseEntityId());
-					if (child != null && child.getAddresses().get(0).getAddressField("address3").equals(camp.getSubUnit())) {
-						int age = getAgeOfChild(child.getBirthdate().toDate());
-						if ((age >= 0 && age < 2)) {
-							logger.info("sending message to child childBaseEntityId:" + child.getBaseEntityId() + " ,age:"
-							        + age);
-							Map<String, List<String>> relationships = child.getRelationships();
-							String motherId = relationships.get("mother").get(0);
-							Client mother = clientService.find(motherId);
-							logger.info("sending message to mother moterBaseEntityId:" + mother.getBaseEntityId());
-							generateDataAndsendMessageToRapidpro(mother, ClientType.child, messageFactory, camp);
+					if (child != null) {
+						String clientSubUnit = getClientSubunit(child);
+						if (clientSubUnit != null && clientSubUnit.equalsIgnoreCase(camp.getSubUnit())) {
+							int age = getAgeOfChild(child.getBirthdate().toDate());
+							if ((age >= 0 && age < 2)) {
+								logger.info("sending message to child childBaseEntityId:" + child.getBaseEntityId()
+								        + " ,age:" + age);
+								Map<String, List<String>> relationships = child.getRelationships();
+								String motherId = relationships.get("mother").get(0);
+								Client mother = clientService.find(motherId);
+								logger.info("sending message to mother moterBaseEntityId:" + mother.getBaseEntityId());
+								generateDataAndsendMessageToRapidpro(mother, ClientType.child, messageFactory, camp);
+							}
+						} else {
+							logger.info("child subunit is not correct: " + child.getBaseEntityId());
 						}
+						
 					}
 				} else if (event.getEntityType().equalsIgnoreCase(ClientType.mother.name())) {
 					Client mother = clientService.find(event.getBaseEntityId());
 					if (mother != null) {
-						if (mother.getAddresses().get(0).getAddressField("address3").equals(camp.getSubUnit())) {
+						String clientSubUnit = getClientSubunit(mother);
+						if ((clientSubUnit != null && clientSubUnit.equalsIgnoreCase(camp.getSubUnit()))) {
 							logger.info("sending message to mother moterBaseEntityId:" + mother.getBaseEntityId());
 							generateDataAndsendMessageToRapidpro(mother, ClientType.mother, messageFactory, camp);
+						} else {
+							logger.info("mother subunit is not correct: " + mother.getBaseEntityId());
 						}
 					}
 					
 				} else {
-					
+					logger.info("invalid event entity type:" + event.getBaseEntityId());
 				}
 			}
-		} else {
-			logger.info("No vaccine data Found Today");
+			catch (Exception e) {
+				logger.error("sentMessageToClient error: " + e.getMessage() + " ,cause:" + e.getCause());
+			}
 		}
+		
+	}
+	
+	private String getClientSubunit(Client client) {
+		String clientSubUnit = null;
+		List<Address> address = client.getAddresses();
+		if (address.size() != 0) {
+			Address clientAddress = address.get(0);
+			if (clientAddress != null) {
+				clientSubUnit = clientAddress.getAddressField("address3");
+				return clientSubUnit;
+			}
+			
+		}
+		
+		return clientSubUnit;
 	}
 	
 	private int getAgeOfChild(Date dateTime) {

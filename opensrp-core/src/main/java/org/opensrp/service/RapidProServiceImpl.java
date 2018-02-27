@@ -80,18 +80,18 @@ public class RapidProServiceImpl implements RapidProService {
 			}
 			
 			jsonParams.put("text", text);
-			System.err.println("jsonParams:" + jsonParams);
 			StringEntity params = new StringEntity(jsonParams.toString());
 			post.setEntity(params);
 			
 			HttpResponse response = client.execute(post);
 			HttpEntity entity = response.getEntity();
 			String responseString = EntityUtils.toString(entity, "UTF-8");
+			logger.info("rapidpro response:" + responseString + " ,jsonParams:" + jsonParams);
 			return responseString;
 		}
 		catch (Exception e) {
-			logger.error("", e);
-			return "Exception occurred";
+			logger.error("sendMessage error: " + e.getMessage() + " ,cause:" + e.getCause());
+			return "error";
 		}
 	}
 	
