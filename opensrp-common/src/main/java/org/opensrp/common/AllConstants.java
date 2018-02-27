@@ -136,6 +136,14 @@ public class AllConstants {
 		public static final String DATE_CREATED = "dateCreated";
 
 	}
+
+	public static class Shipment {
+
+		public static final String LOCATION_ID = "locationId";
+
+		public static final String SERVER_VERSION = "serverVersion";
+
+	}
 	
 	public static class Action {
 		
