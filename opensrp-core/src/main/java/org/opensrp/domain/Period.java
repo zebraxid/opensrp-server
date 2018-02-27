@@ -9,10 +9,10 @@ public class Period {
     private String name;
 
     @JsonProperty
-    private Date startDate;
+    private String startDate;
 
     @JsonProperty
-    private Date endDate;
+    private String endDate;
 
     public String getName() {
         return name;
@@ -22,19 +22,19 @@ public class Period {
         this.name = name;
     }
 
-    public Date getStartDate() {
+    public String getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(String startDate) {
         this.startDate = startDate;
     }
 
-    public Date getEndDate() {
+    public String getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(String endDate) {
         this.endDate = endDate;
     }
 }

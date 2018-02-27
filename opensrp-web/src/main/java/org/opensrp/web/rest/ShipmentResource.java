@@ -28,7 +28,7 @@ public class ShipmentResource extends RestResource<Shipment> {
 
     private ShipmentService shipmentService;
     private Logger logger = LoggerFactory.getLogger(ShipmentService.class.getName());
-    private Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
+    private Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
             .registerTypeAdapter(DateTime.class, new DateTimeTypeConverter()).create();
 
     @Autowired
