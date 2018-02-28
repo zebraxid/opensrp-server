@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.util.List;
 
-// To fix: later
 @FullText({
         @Index(name = "by_all_criteria", analyzer = "perfield:{orderCode : \"keyword\", receivingFacility.code : \"keyword\"}", index = "function(doc) { if (doc.type !== 'Shipment') return null; var arr1 = ['orderedDate', 'orderCode', 'serverVersion']; var ret = new Document(); ret.add(doc.receivingFacility.code, {field: \"receivingFacility.code\"}); for (var i in arr1) { ret.add(doc[arr1[i]], { 'field': arr1[i] }); }  return ret;}")
 })
