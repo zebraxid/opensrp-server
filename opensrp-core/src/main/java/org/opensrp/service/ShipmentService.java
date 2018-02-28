@@ -7,6 +7,8 @@ import org.opensrp.repository.AllShipments;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ShipmentService {
 
@@ -29,4 +31,25 @@ public class ShipmentService {
         return shipment;
     }
 
+    /**
+     *  Queries for {@link Shipment}s in CouchDB whose {@link Shipment#receivingFacility} code is
+     *  the receivingFacilityCode passed & serverVersion is greater than the {@code serverVersion} passed and returns a
+     *  {@link List} of {@link Shipment} orderedBy {@code orderBy} field that is passed in order {@code sortOrder} passed
+     *  limited to {@code limit} passed.
+     * <p>
+     *  {@code sortOrder} values can be <strong>desc</strong> or <strong>asc</strong>
+     *
+     * @param receivingFacilityCode
+     * @param serverVersion
+     * @param orderBy
+     * @param sortOrder
+     * @param limit
+     *
+     * @return a {@link List} of {@link Shipment} based on the query specified
+     */
+    public List<Shipment> findShipmentsByReceivingFacility(String receivingFacilityCode, long serverVersion,
+                                                           String orderBy, String sortOrder, int limit) {
+        return allShipments.findShipmentsByReceivingFacility(receivingFacilityCode, serverVersion, orderBy,
+                sortOrder, limit);
+    }
 }
