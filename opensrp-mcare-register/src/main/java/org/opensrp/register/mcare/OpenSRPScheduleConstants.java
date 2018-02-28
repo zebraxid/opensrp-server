@@ -162,81 +162,88 @@ public class OpenSRPScheduleConstants {
 	
 	public static class DateTimeDuration {
 		
-		public static final Integer duration = 1344; // hour
+		public static final int duration = 1344; // hour
 		
-		public static final Integer bnf_duration = 6264;//hour
+		public static final int bnf_duration = 6264;//hour
 		
-		public static final Integer bnf_due_duration = 168;//hour
+		public static final int bnf_due_duration = 168;//hour
 		
-		public static final Integer ANC1NORMALEND = 49; // day
+		public static final int ANC1NORMALEND = 49; // day
 		
-		public static final Integer ANC1UPCOMINGSTART = 51;
+		public static final int ANC1UPCOMINGSTART = 51;
 		
-		public static final Integer ANC1UPCOMINGEND = 5;
+		public static final int ANC1UPCOMINGEND = 5;
 		
-		public static final Integer ANC1URGENTSTART = 56;
+		public static final int ANC1URGENTSTART = 56;
 		
-		public static final Integer ANC1URGENTEND = 105;
+		public static final int ANC1URGENTEND = 106;
 		
-		public static final Integer ANC1EXPIREDSTART = 161;
+		public static final int ANC1EXPIREDSTART = 161;
 		
-		public static final Integer ANC1EXPIREDEND = 1;
+		public static final int ANC1EXPIREDEND = 1;
 		
 		//////
 		
-		public static final Integer ANC2UPCOMINGSTART = 162;
+		public static final int ANC2UPCOMINGSTART = 162;
 		
-		public static final Integer ANC2UPCOMINGEND = 6;
+		public static final int ANC2UPCOMINGEND = 6;
 		
-		public static final Integer ANC2URGENTSTART = 168;
+		public static final int ANC2URGENTSTART = 168;
 		
-		public static final Integer ANC2URGENTEND = 49;
+		public static final int ANC2URGENTEND = 50;
 		
-		public static final Integer ANC2EXPIREDSTART = 217;
+		public static final int ANC2EXPIREDSTART = 217;
 		
-		public static final Integer ANC2EXPIREDEND = 1;
-		
-		//////////
-		
-		public static final Integer ANC3UPCOMINGSTART = 219;
-		
-		public static final Integer ANC3UPCOMINGEND = 6;
-		
-		public static final Integer ANC3URGENTSTART = 224;
-		
-		public static final Integer ANC3URGENTEND = 21;
-		
-		public static final Integer ANC3EXPIREDSTART = 245;
-		
-		public static final Integer ANC3EXPIREDEND = 1;
+		public static final int ANC2EXPIREDEND = 1;
 		
 		//////////
 		
-		public static final Integer ANC4UPCOMINGSTART = 247;
+		public static final int ANC3UPCOMINGSTART = 219;
 		
-		public static final Integer ANC4UPCOMINGEND = 6;
+		public static final int ANC3UPCOMINGEND = 6;
 		
-		public static final Integer ANC4URGENTSTART = 252;
+		public static final int ANC3URGENTSTART = 224;
 		
-		public static final Integer ANC4URGENTEND = 55;
+		public static final int ANC3URGENTEND = 22;
 		
-		public static final Integer ANC4EXPIREDSTART = 307;
+		public static final int ANC3EXPIREDSTART = 245;
 		
-		public static final Integer ANC4EXPIREDEND = 1;
+		public static final int ANC3EXPIREDEND = 1;
 		
-		public static final Integer bnf = 261;
+		//////////
 		
-		public static final Integer pnc1 = 1;
+		public static final int ANC4UPCOMINGSTART = 247;
 		
-		public static final Integer pnc2 = 5;
+		public static final int ANC4UPCOMINGEND = 6;
 		
-		public static final Integer pnc3 = 8;
+		public static final int ANC4URGENTSTART = 252;
 		
-		public static final Integer encc1 = 1;
+		public static final int ANC4URGENTEND = 55;
 		
-		public static final Integer encc2 = 5;
+		public static final int ANC4EXPIREDSTART = 307;
 		
-		public static final Integer encc3 = 8;
+		public static final int ANC4EXPIREDEND = 1;
+		
+		public static final int bnf = 261;
+		
+		public static final int pnc1 = 1;
+		
+		public static final int pnc2 = 5;
+		
+		public static final int pnc3 = 8;
+		
+		public static final int encc1 = 1;
+		
+		public static final int encc2 = 5;
+		
+		public static final int encc3 = 8;
+		
+		public static final int LASTDAYOFANC1 = -163;
+		
+		public static final int LASTDAYOFANC2 = -219;
+		
+		public static final int LASTDAYOFAN3 = -247;
+		
 	}
 	
 }

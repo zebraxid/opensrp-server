@@ -1804,4 +1804,25 @@ public class AllConstants {
 		
 		public static final String pnc3 = "pncrv_3";
 	}
+	
+	public static class Condition {
+		
+		public static final Integer PNCENCCDAYZERO = 0;
+		
+		public static final Integer PNCENCCDAYONE = -1;
+		
+		public static final Integer PNCENCCDAYTWO = -2;
+		
+		public static final Integer PNCENCCDAYTHREE = -3;
+		
+		public static final Integer PNCENCCDAYFOUR = -4;
+		
+		public static final Integer PNCENCCDAYFIVE = -5;
+		
+		public static final Integer PNCENCCDAYSIX = -6;
+		
+		public static final Integer PNCENCCDAYSEVEN = -7;
+		
+		public static final Integer PNCENCCDAYEIGHT = -8;
+	}
 }

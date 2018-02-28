@@ -7,8 +7,8 @@
             "scheduleWindows": {
                 
                 "due": ["56 Days"],
-                "late": ["161 Days"],
-                "max": ["162 Days"]
+                "late": ["162 Days"]
+                
             },
             "alerts": [
                  {
@@ -21,13 +21,7 @@
                     "window": "late",
                     "offset": ["56 Days"],
                     "interval": ["1 Day"],
-                    "count": "105"
-                },
-                {
-                    "window": "max",
-                    "offset": ["161 Days"],
-                    "interval": ["1 Day"],
-                    "count": "1"
+                    "count": "106"
                 }
                 
             ]
@@ -37,8 +31,8 @@
             "scheduleWindows": {
             	
                 "due": ["168 Days"],
-                "late": ["217 Days"],
-                "max": ["218 Days"]
+                "late": ["218 Days"]
+               
             },
             "alerts": [           
                 {
@@ -51,14 +45,8 @@
                     "window": "late",
                     "offset": ["168 Days"],
                     "interval": ["1 Day"],
-                    "count": "49"
-                },
-                 {
-                    "window": "max",
-                    "offset": ["217 Days"],
-                    "interval": ["1 Day"],
-                    "count": "1"
-                }                            
+                    "count": "50"
+                }                          
             ]
         },
         {
@@ -66,8 +54,8 @@
             "scheduleWindows": {
             	
                 "due": ["224 Days"],
-                "late": ["245 Days"],
-                "max": ["246 Days"]
+                "late": ["246 Days"]
+               
             },
             "alerts": [            	
                 {
@@ -80,13 +68,7 @@
                     "window": "late",
                     "offset": ["224 Days"],
                     "interval": ["1 Day"],
-                    "count": "21"
-                },
-                {
-                    "window": "max",
-                    "offset": ["245 Days"],
-                    "interval": ["1 Day"],
-                    "count": "1"
+                    "count": "22"
                 }
             ]
         },
