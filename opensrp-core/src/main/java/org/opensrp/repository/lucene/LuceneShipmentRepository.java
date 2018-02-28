@@ -16,7 +16,7 @@ import java.util.List;
 
 // To fix: later
 @FullText({
-        @Index(name = "by_all_criteria", analyzer = "perfield:{receivingFacility.code : \"keyword\"}", index = "function(doc) { if (doc.type !== 'Shipment') return null; var arr1 = ['orderedDate', 'orderCode', 'receivingFacility', 'supplyingFacility', 'lineItems', 'processingPeriod']; var ret = new Document(); ret.add(orderedDate, { 'field': 'orderedDate' }); for (var i in arr1) { ret.add(doc[arr1[i]], { 'field': arr1[i] }); } if (doc.orderCode) { var oc = doc.orderCode; ret.add(rf, { 'field': 'receivingFacility' }); } if (doc.lineItems) { var li = doc.lineItems; ret.add(pp, { 'field': 'processingPeriod' }); } return ret;}")
+        @Index(name = "by_all_criteria", analyzer = "perfield:{orderCode : \"keyword\", receivingFacility.code : \"keyword\"}", index = "function(doc) { if (doc.type !== 'Shipment') return null; var arr1 = ['orderedDate', 'orderCode', 'serverVersion']; var ret = new Document(); ret.add(doc.receivingFacility.code, {field: \"receivingFacility.code\"}); for (var i in arr1) { ret.add(doc[arr1[i]], { 'field': arr1[i] }); }  return ret;}")
 })
 @Component
 public class LuceneShipmentRepository extends CouchDbRepositorySupportWithLucene<Shipment> {
@@ -30,16 +30,18 @@ public class LuceneShipmentRepository extends CouchDbRepositorySupportWithLucene
         initStandardDesignDocument();
     }
 
-    public List<Shipment> getShipmentsByLocationId(String locationId, long serverVersion, String orderBy, String sortOrder, int limit) {
+    public List<Shipment> findShipmentsByReceivingFacility(String receivingFacilityCode, long serverVersion,
+                                                           String sortOrder, String orderBy, int limit) {
         LuceneQuery luceneQuery = new LuceneQuery("Shipment", "by_all_criteria");
 
         Query query = new Query(FilterType.AND);
 
-        query.eq(AllConstants.Shipment.LOCATION_ID, locationId);
+        query.eq(AllConstants.Shipment.RECEIVING_FACILITY_CODE, receivingFacilityCode);
         query.between(AllConstants.Shipment.SERVER_VERSION, serverVersion, Long.MAX_VALUE);
 
         luceneQuery.setQuery(query.query());
         luceneQuery.setStaleOk(false);
+        luceneQuery.setIncludeDocs(true);
         luceneQuery.setLimit(limit);
 
         if (!StringUtils.isEmptyOrWhitespaceOnly(orderBy) && !StringUtils.isEmptyOrWhitespaceOnly(sortOrder)) {
