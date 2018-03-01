@@ -168,7 +168,7 @@ public class OpenSRPScheduleConstants {
 		
 		public static final int bnf_due_duration = 168;//hour
 		
-		public static final int ANC1NORMALEND = 49; // day
+		public static final int ANC1NORMALEND = 50; // day
 		
 		public static final int ANC1UPCOMINGSTART = 51;
 		
@@ -176,7 +176,7 @@ public class OpenSRPScheduleConstants {
 		
 		public static final int ANC1URGENTSTART = 56;
 		
-		public static final int ANC1URGENTEND = 106;
+		public static final int ANC1URGENTEND = 107;
 		
 		public static final int ANC1EXPIREDSTART = 161;
 		

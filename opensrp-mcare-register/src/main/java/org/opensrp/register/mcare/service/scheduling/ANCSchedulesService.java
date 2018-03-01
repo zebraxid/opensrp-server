@@ -1,6 +1,3 @@
-/**
- * @author julkar nain 
- */
 package org.opensrp.register.mcare.service.scheduling;
 
 import static java.text.MessageFormat.format;
@@ -9,16 +6,12 @@ import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherSchedule
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_ANC_2;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_ANC_3;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_ANC_4;
-import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_DELIVERY_PLAN;
-import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_EDD;
-import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_HB_TEST_1;
-import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_IFA_1;
-import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_LAB;
-import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_TT_1;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
@@ -26,47 +19,26 @@ import org.joda.time.Weeks;
 import org.opensrp.common.util.DateUtil;
 import org.opensrp.dto.AlertStatus;
 import org.opensrp.dto.BeneficiaryType;
-import org.opensrp.register.mcare.service.scheduling.impl.ANC1ScheduleServiceImpl;
-import org.opensrp.register.mcare.service.scheduling.impl.ANC2ScheduleServiceImpl;
-import org.opensrp.register.mcare.service.scheduling.impl.ANC3ScheduleServiceImpl;
-import org.opensrp.register.mcare.service.scheduling.impl.ANC4ScheduleServiceImpl;
+import org.opensrp.register.mcare.service.scheduling.impl.ANCScheduleImplementation;
 import org.opensrp.scheduler.HealthSchedulerService;
-import org.opensrp.scheduler.repository.AllActions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ANCSchedulesService {
+public class ANCSchedulesService extends ANCScheduleImplementation {
 	
 	private static Logger logger = LoggerFactory.getLogger(ANCSchedulesService.class.toString());
 	
-	private static final String[] NON_ANC_SCHEDULES = { SCHEDULE_EDD, SCHEDULE_LAB, SCHEDULE_TT_1, SCHEDULE_IFA_1,
-	        SCHEDULE_HB_TEST_1, SCHEDULE_DELIVERY_PLAN };
-	
 	private HealthSchedulerService scheduler;
-	
-	private AllActions allActions;
 	
 	private ScheduleLogService scheduleLogService;
 	
 	@Autowired
-	private ANC1ScheduleServiceImpl anc1ScheduleServiceImpl;
-	
-	@Autowired
-	private ANC2ScheduleServiceImpl anc2ScheduleServiceImpl;
-	
-	@Autowired
-	private ANC3ScheduleServiceImpl anc3ScheduleServiceImpl;
-	
-	@Autowired
-	private ANC4ScheduleServiceImpl anc4ScheduleServiceImpl;
-	
-	@Autowired
-	public ANCSchedulesService(HealthSchedulerService scheduler, AllActions allActions, ScheduleLogService scheduleLogService) {
+	public ANCSchedulesService(HealthSchedulerService scheduler, ScheduleLogService scheduleLogService) {
 		this.scheduler = scheduler;
-		this.allActions = allActions;
+		
 		this.scheduleLogService = scheduleLogService;
 	}
 	
@@ -75,7 +47,7 @@ public class ANCSchedulesService {
 		/*for (String schedule : NON_ANC_SCHEDULES) {
 			scheduler.enrollIntoSchedule(caseId, schedule, referenceDateForSchedule);
 		}*/
-		enrollIntoCorrectMilestoneOfANCCare(caseId, referenceDateForSchedule, provider, instanceId, startDate);
+		ScheduleCheckAndSaveOrNot(caseId, referenceDateForSchedule, provider, instanceId, startDate, true);
 	}
 	
 	/**
@@ -87,12 +59,12 @@ public class ANCSchedulesService {
 	 * @param instanceId form instance id
 	 * @param startDate LMP Date as String format
 	 */
-	private void enrollIntoCorrectMilestoneOfANCCare(String entityId, LocalDate referenceDateForSchedule, String provider,
-	                                                 String instanceId, String startDate) {
+	private Map<String, String> ScheduleCheckAndSaveOrNot(String entityId, LocalDate referenceDateForSchedule,
+	                                                      String provider, String instanceId, String startDate,
+	                                                      boolean isSave) {
 		String milestone = null;
-		DateTime ancStartDate = null;
-		DateTime ancExpireDate = null;
-		AlertStatus alertStaus = null;
+		
+		String alertStaus = null;
 		Date date = null;
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		try {
@@ -107,154 +79,40 @@ public class ANCSchedulesService {
 		long datediff = ScheduleLogService.getDaysDifference(start);
 		
 		if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(23).toPeriod().plusDays(1))) {
-			//161
 			milestone = SCHEDULE_ANC_1;
-			
-			anc1ScheduleServiceImpl.saveSchedule(start, milestone, entityId, referenceDateForSchedule, provider, instanceId,
-			    startDate);
-			
-			/*if (DateUtil
-			        .isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(8).toPeriod().minusDays(6))) {
-				alertStaus = AlertStatus.normal;
-				ancStartDate = new DateTime(start);
-				ancExpireDate = new DateTime(start).plusDays(DateTimeDuration.ANC1NORMALEND);
-			} else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(8).toPeriod()
-			        .minusDays(1))) {
-				alertStaus = AlertStatus.upcoming;
-				ancStartDate = new DateTime(start).plusDays(DateTimeDuration.ANC1UPCOMINGSTART);
-				ancExpireDate = new DateTime(ancStartDate).plusDays(DateTimeDuration.ANC1UPCOMINGEND);
-			} else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(23).toPeriod()
-			        .plusDays(1))) {
-				//160
-				alertStaus = AlertStatus.urgent;
-				ancStartDate = new DateTime(start).plusDays(DateTimeDuration.ANC1URGENTSTART);
-				ancExpireDate = new DateTime(ancStartDate).plusDays(DateTimeDuration.ANC1URGENTEND);
-				System.err.println("from anc1 urgent");
-			} else {
-				logger.info("Form anc1");
-			}
-			scheduleLogService.saveAction(entityId, instanceId, provider, SCHEDULE_ANC, milestone, BeneficiaryType.mother,
-			    alertStaus, ancStartDate, ancExpireDate);*/
+			alertStaus = saveANCC1Schedule(start, milestone, entityId, referenceDateForSchedule, provider, instanceId,
+			    startDate, isSave);
 		} else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(31).toPeriod()
 		        .plusDays(1))) {
-			//218
 			milestone = SCHEDULE_ANC_2;
-			
-			anc2ScheduleServiceImpl.saveSchedule(datediff, start, milestone, entityId, referenceDateForSchedule, provider,
-			    instanceId, startDate);
-			/*if (datediff == DateTimeDuration.LASTDAYOFANC1) {
-				System.err.println("from 2 to 1");
-				alertStaus = AlertStatus.urgent;
-				ancStartDate = new DateTime(start).plusDays(DateTimeDuration.ANC1URGENTSTART);
-				ancExpireDate = new DateTime(ancStartDate).plusDays(DateTimeDuration.ANC1URGENTEND);
-				scheduleLogService.saveAction(entityId, instanceId, provider, SCHEDULE_ANC, SCHEDULE_ANC_1,
-				    BeneficiaryType.mother, alertStaus, ancStartDate, ancExpireDate);
-				
-			} else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(24).toPeriod()
-			        .minusDays(1))) {//167
-				alertStaus = AlertStatus.upcoming;
-				ancStartDate = new DateTime(start).plusDays(DateTimeDuration.ANC2UPCOMINGSTART);
-				ancExpireDate = new DateTime(ancStartDate).plusDays(DateTimeDuration.ANC2UPCOMINGEND);
-				scheduleLogService.saveAction(entityId, instanceId, provider, SCHEDULE_ANC, milestone,
-				    BeneficiaryType.mother, alertStaus, ancStartDate, ancExpireDate);
-			} else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(31).toPeriod()
-			        .plusDays(1))) {//216
-				alertStaus = AlertStatus.urgent;
-				ancStartDate = new DateTime(start).plusDays(DateTimeDuration.ANC2URGENTSTART);
-				ancExpireDate = new DateTime(ancStartDate).plusDays(DateTimeDuration.ANC2URGENTEND);
-				scheduleLogService.saveAction(entityId, instanceId, provider, SCHEDULE_ANC, milestone,
-				    BeneficiaryType.mother, alertStaus, ancStartDate, ancExpireDate);
-			} else {
-				logger.info("Form anc2");
-			}*/
-			
+			alertStaus = saveANC2Schedule(datediff, start, milestone, entityId, referenceDateForSchedule, provider,
+			    instanceId, startDate, isSave);
 		} else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(35).toPeriod()
 		        .plusDays(1))) {
-			
 			milestone = SCHEDULE_ANC_3;
-			anc3ScheduleServiceImpl.saveSchedule(datediff, start, milestone, entityId, referenceDateForSchedule, provider,
-			    instanceId, startDate);
-			
-			/*if (datediff == DateTimeDuration.LASTDAYOFANC2) {
-				alertStaus = AlertStatus.urgent;
-				ancStartDate = new DateTime(start).plusDays(DateTimeDuration.ANC2URGENTSTART);
-				ancExpireDate = new DateTime(ancStartDate).plusDays(DateTimeDuration.ANC2URGENTEND);
-				scheduleLogService.saveAction(entityId, instanceId, provider, SCHEDULE_ANC, SCHEDULE_ANC_2,
-				    BeneficiaryType.mother, alertStaus, ancStartDate, ancExpireDate);
-			} else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(32).toPeriod()
-			        .minusDays(1))) {
-				
-				alertStaus = AlertStatus.upcoming;
-				ancStartDate = new DateTime(start).plusDays(DateTimeDuration.ANC3UPCOMINGSTART);
-				ancExpireDate = new DateTime(ancStartDate).plusDays(DateTimeDuration.ANC3UPCOMINGEND);
-				scheduleLogService.saveAction(entityId, instanceId, provider, SCHEDULE_ANC, milestone,
-				    BeneficiaryType.mother, alertStaus, ancStartDate, ancExpireDate);
-			} else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(35).toPeriod()
-			        .plusDays(1))) {
-				
-				alertStaus = AlertStatus.urgent;
-				ancStartDate = new DateTime(start).plusDays(DateTimeDuration.ANC3URGENTSTART);
-				ancExpireDate = new DateTime(ancStartDate).plusDays(DateTimeDuration.ANC3URGENTEND);
-				scheduleLogService.saveAction(entityId, instanceId, provider, SCHEDULE_ANC, milestone,
-				    BeneficiaryType.mother, alertStaus, ancStartDate, ancExpireDate);
-			} else {
-				logger.info("Form anc3");
-			}*/
+			alertStaus = saveANC3Schedule(datediff, start, milestone, entityId, referenceDateForSchedule, provider,
+			    instanceId, startDate, isSave);
 			
 		} else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(44).toPeriod()
 		        .minusDays(1))) {
-			
 			milestone = SCHEDULE_ANC_4;
+			alertStaus = saveANC4Schedule(datediff, start, milestone, entityId, referenceDateForSchedule, provider,
+			    instanceId, startDate, isSave);
 			
-			anc4ScheduleServiceImpl.saveSchedule(datediff, start, milestone, entityId, referenceDateForSchedule, provider,
-			    instanceId, startDate);
-			/*if (datediff == DateTimeDuration.LASTDAYOFAN3) {
-				alertStaus = AlertStatus.urgent;
-				ancStartDate = new DateTime(start).plusDays(DateTimeDuration.ANC3URGENTSTART);
-				ancExpireDate = new DateTime(ancStartDate).plusDays(DateTimeDuration.ANC3URGENTEND);
-				scheduleLogService.saveAction(entityId, instanceId, provider, SCHEDULE_ANC, SCHEDULE_ANC_3,
-				    BeneficiaryType.mother, alertStaus, ancStartDate, ancExpireDate);
-			} else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(36).toPeriod()
-			        .minusDays(1))) {
-				//251
-				alertStaus = AlertStatus.upcoming;
-				ancStartDate = new DateTime(start).plusDays(DateTimeDuration.ANC4UPCOMINGSTART);
-				ancExpireDate = new DateTime(ancStartDate).plusDays(DateTimeDuration.ANC4UPCOMINGEND);
-				scheduleLogService.saveAction(entityId, instanceId, provider, SCHEDULE_ANC, milestone,
-				    BeneficiaryType.mother, alertStaus, ancStartDate, ancExpireDate);
-			} else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(44).toPeriod()
-			        .minusDays(2))) {
-				//306
-				alertStaus = AlertStatus.urgent;
-				ancStartDate = new DateTime(start).plusDays(DateTimeDuration.ANC4URGENTSTART);
-				ancExpireDate = new DateTime(ancStartDate).plusDays(DateTimeDuration.ANC4URGENTEND);
-				scheduleLogService.saveAction(entityId, instanceId, provider, SCHEDULE_ANC, milestone,
-				    BeneficiaryType.mother, alertStaus, ancStartDate, ancExpireDate);
-				
-			} else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(44).toPeriod()
-			        .minusDays(1))) {
-				//307
-				alertStaus = AlertStatus.expired;
-				ancStartDate = new DateTime(start).plusDays(DateTimeDuration.ANC4EXPIREDSTART);
-				ancExpireDate = new DateTime(ancStartDate).plusDays(DateTimeDuration.ANC4EXPIREDEND);
-				scheduleLogService.saveAction(entityId, instanceId, provider, SCHEDULE_ANC, milestone,
-				    BeneficiaryType.mother, alertStaus, ancStartDate, ancExpireDate);
-				
-			} else {
-				logger.info("Form anc4");
-			}
-			*/
 		} else {
 			milestone = SCHEDULE_ANC_4;
 			logger.info("ANC Schedule out of Date of case id" + entityId);
 			scheduleLogService.saveAction(entityId, instanceId, provider, SCHEDULE_ANC, SCHEDULE_ANC_4,
-			    BeneficiaryType.mother, alertStaus.expired, new DateTime(start).plusDays(308),
+			    BeneficiaryType.mother, AlertStatus.expired, new DateTime(start).plusDays(308),
 			    new DateTime(start).plusDays(308));
 		}
 		
 		logger.info(format("Enrolling ANC with Entity id:{0} to ANC schedule, milestone: {1}.", entityId, milestone));
 		scheduler.enrollIntoSchedule(entityId, SCHEDULE_ANC, milestone, referenceDateForSchedule.toString());
-		
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("alert", alertStaus);
+		map.put("milestone", milestone);
+		return map;
 	}
 	
 	public void fullfillSchedule(String caseID, String scheduleName, String instanceId, long timestamp) {
@@ -269,11 +127,6 @@ public class ANCSchedulesService {
 	
 	public void unEnrollFromAllSchedules(String entityId) {
 		scheduler.unEnrollFromAllSchedules(entityId);
-	}
-	
-	private void unEnrollFromSchedule(String entityId, String anmId, String scheduleName) {
-		logger.info(format("Un-enrolling ANC with Entity id:{0} from schedule: {1}", entityId, scheduleName));
-		scheduler.unEnrollFromSchedule(entityId, anmId, scheduleName);
 	}
 	
 	public void fullfillMilestone(String entityId, String providerId, String scheduleName, LocalDate completionDate) {

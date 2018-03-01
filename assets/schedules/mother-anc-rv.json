@@ -7,19 +7,19 @@
             "scheduleWindows": {
                 
                 "due": ["56 Days"],
-                "late": ["162 Days"]
+                "late": ["163 Days"]
                 
             },
             "alerts": [
                  {
                     "window": "due",
-                    "offset": ["51 Days"],
+                    "offset": ["50 Days"],
                     "interval": ["1 Day"],
-                    "count": "5"
+                    "count": "6"
                 },
                 {
                     "window": "late",
-                    "offset": ["56 Days"],
+                    "offset": ["57 Days"],
                     "interval": ["1 Day"],
                     "count": "106"
                 }
@@ -31,21 +31,21 @@
             "scheduleWindows": {
             	
                 "due": ["168 Days"],
-                "late": ["218 Days"]
+                "late": ["219 Days"]
                
             },
             "alerts": [           
                 {
                     "window": "due",
-                    "offset": ["162 Days"],
+                    "offset": ["163 Days"],
                     "interval": ["1 Day"],
-                    "count": "6"
+                    "count": "5"
                 },
                 {
                     "window": "late",
                     "offset": ["168 Days"],
                     "interval": ["1 Day"],
-                    "count": "50"
+                    "count": "51"
                 }                          
             ]
         },
@@ -54,21 +54,21 @@
             "scheduleWindows": {
             	
                 "due": ["224 Days"],
-                "late": ["246 Days"]
+                "late": ["247 Days"]
                
             },
             "alerts": [            	
                 {
                     "window": "due",
-                    "offset": ["218 Days"],
+                    "offset": ["219 Days"],
                     "interval": ["1 Day"],
-                    "count": "6"
+                    "count": "5"
                 },
                 {
                     "window": "late",
                     "offset": ["224 Days"],
                     "interval": ["1 Day"],
-                    "count": "22"
+                    "count": "23"
                 }
             ]
         },
@@ -77,25 +77,25 @@
             "scheduleWindows": {
             	
                 "due": ["252 Days"],
-                "late": ["307 Days"],
-                "max": ["308 Days"]
+                "late": ["308 Days"],
+                "max": ["309 Days"]
             },
             "alerts": [
                 {
                     "window": "due",
-                    "offset": ["246 Days"],
+                    "offset": ["247 Days"],
                     "interval": ["1 Day"],
-                    "count": "6"
+                    "count": "5"
                 },
                 {
                     "window": "late",
                     "offset": ["252 Days"],
                     "interval": ["1 Day"],
-                    "count": "55"
+                    "count": "56"
                 },
                  {
                     "window": "max",
-                    "offset": ["307 Days"],
+                    "offset": ["308 Days"],
                     "interval": ["1 Day"],
                     "count": "1"
                 }                  

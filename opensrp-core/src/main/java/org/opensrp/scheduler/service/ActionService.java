@@ -135,17 +135,23 @@ public class ActionService {
 			List<Action> existingAlerts = allActions.findAlertByANMIdEntityIdScheduleName(anmIdentifier, caseID,
 			    scheduleName);
 			
-			Date date = null;
+			Date date = new Date();
 			
-			date = format.parse(doo);
+			if (doo != null) {
+				date = format.parse(doo);
+			}
+			
 			DateTime FWBNFDTOO = new DateTime(date);
 			if (existingAlerts.size() > 0) {
-				
 				if (ANC.equalsIgnoreCase(scheduleName)) {
+					System.err.println("startDate:" + startDate);
 					updateDataAction(visitCode, alertStatus, startDate, expiryDate, existingAlerts);
 					long dateDiff = DateTimeUtil.getDaysDifference(expiryDate);
+					logger.info("dateDiff:::" + dateDiff + "  Status: " + alertStatus.name());
 					if ("urgent".equalsIgnoreCase(alertStatus.name()) && dateDiff == 1) {
+						logger.info("StartInner:::" + dateDiff + "  Status: " + alertStatus.name());
 						scheduleService.fulfillMilestone(caseID, scheduleName, new LocalDate());
+						logger.info("EndiNNER:::" + dateDiff + "  Status: " + alertStatus.name());
 						
 					} else {
 						logger.info("alertStatus:" + alertStatus.name());
@@ -161,8 +167,7 @@ public class ActionService {
 					}
 					
 					long dateDifference = DateTimeUtil.getDaysDifference(FWBNFDTOO);
-					System.err.println("dateDifference: " + dateDifference);
-					System.err.println("startDate:" + startDate + " expiryDate: " + expiryDate);
+					
 					if (dateDifference == Condition.PNCENCCDAYZERO
 					        && visitCode.equalsIgnoreCase(scheduleNameVisitCodeWithoutNumber + "_1")) {
 						
@@ -202,16 +207,18 @@ public class ActionService {
 					}
 					
 				} else {
-					System.err.println("NOT PNC OR ENCC OR ANC");
+					logger.info("NOT PNC OR ENCC OR ANC  at caseID:" + caseID + " scheduleName : " + scheduleName);
 				}
 				
 			} else {
-				System.err.println("No Doc found");
+				
+				logger.info("No Doc found at caseID:" + caseID + " scheduleName : " + scheduleName);
 			}
 			
 		}
 		catch (Exception e) {
-			logger.info(e.getMessage());
+			logger.info("Exception found at caseID:" + caseID + " scheduleName : " + scheduleName + "Message:"
+			        + e.getMessage());
 		}
 	}
 	
@@ -224,6 +231,7 @@ public class ActionService {
 		existingAlerts.get(0).data().put("visitCode", visitCode);
 		existingAlerts.get(0).markAsActive();
 		existingAlerts.get(0).timestamp(Calendar.getInstance().getTimeInMillis());
+		logger.info("Done" + existingAlerts);
 		allActions.update(existingAlerts.get(0));
 	}
 	
