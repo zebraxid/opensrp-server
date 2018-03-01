@@ -8,6 +8,7 @@ import com.github.ldriscoll.ektorplucene.designdocument.annotation.Index;
 import com.mysql.jdbc.StringUtils;
 import org.opensrp.common.AllConstants;
 import org.opensrp.domain.Shipment;
+import org.opensrp.repository.lucene.exception.LuceneShipmentRepositoryQueryException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -51,7 +52,7 @@ public class LuceneShipmentRepository extends CouchDbRepositorySupportWithLucene
             LuceneResult luceneResult = db.queryLucene(luceneQuery);
             return luceneDbConnector.asList(luceneResult, Shipment.class);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new LuceneShipmentRepositoryQueryException(e);
         }
     }
 }

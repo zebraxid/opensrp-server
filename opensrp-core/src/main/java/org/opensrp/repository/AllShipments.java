@@ -6,7 +6,6 @@ import org.ektorp.util.Documents;
 import org.motechproject.dao.MotechBaseRepository;
 import org.opensrp.common.AllConstants;
 import org.opensrp.domain.Shipment;
-import org.opensrp.repository.lucene.LuceneSearchRepository;
 import org.opensrp.repository.lucene.LuceneShipmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

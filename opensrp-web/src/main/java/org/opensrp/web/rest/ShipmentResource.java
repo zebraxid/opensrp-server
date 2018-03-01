@@ -7,7 +7,6 @@ import com.google.gson.reflect.TypeToken;
 import org.apache.http.util.TextUtils;
 import org.joda.time.DateTime;
 import org.opensrp.common.AllConstants;
-import org.opensrp.domain.Order;
 import org.opensrp.domain.Shipment;
 import org.opensrp.service.ShipmentService;
 import org.opensrp.util.DateTimeTypeConverter;
