@@ -2,8 +2,6 @@ package org.opensrp.domain;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 
-import java.util.Date;
-
 public class Period {
     @JsonProperty
     private String name;
