@@ -35,7 +35,6 @@ public class LuceneShipmentRepository extends CouchDbRepositorySupportWithLucene
         LuceneQuery luceneQuery = new LuceneQuery("Shipment", "by_all_criteria");
 
         Query query = new Query(FilterType.AND);
-
         query.eq(AllConstants.Shipment.RECEIVING_FACILITY_CODE, receivingFacilityCode);
         query.between(AllConstants.Shipment.SERVER_VERSION, serverVersion, Long.MAX_VALUE);
 
