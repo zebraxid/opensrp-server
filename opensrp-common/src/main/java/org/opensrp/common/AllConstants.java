@@ -3,7 +3,9 @@ package org.opensrp.common;
 import static java.util.Arrays.asList;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class AllConstants {
 	
@@ -1776,6 +1778,8 @@ public class AllConstants {
 		
 		public static final String ENCCRV = "enccrv";
 		
+		public static final String anc4 = "ancrv_4";
+		
 	}
 	
 	public static class OpenmrsTrackUuid {
@@ -1824,5 +1828,11 @@ public class AllConstants {
 		public static final Integer PNCENCCDAYSEVEN = -7;
 		
 		public static final Integer PNCENCCDAYEIGHT = -8;
+	}
+	
+	public static Map<String, Integer> ALERTSTATUS = new HashMap<String, Integer>();
+	static {
+		ALERTSTATUS.put("upcoming", 1);
+		ALERTSTATUS.put("urgent", 2);
 	}
 }

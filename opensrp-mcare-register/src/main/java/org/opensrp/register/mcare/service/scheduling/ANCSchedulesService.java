@@ -20,6 +20,7 @@ import org.opensrp.common.util.DateUtil;
 import org.opensrp.dto.AlertStatus;
 import org.opensrp.dto.BeneficiaryType;
 import org.opensrp.register.mcare.service.scheduling.impl.ANCScheduleImplementation;
+import org.opensrp.register.mcare.service.scheduling.impl.ScheduleParamData;
 import org.opensrp.scheduler.HealthSchedulerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,6 +67,7 @@ public class ANCSchedulesService extends ANCScheduleImplementation {
 		
 		String alertStaus = null;
 		Date date = null;
+		ScheduleParamData scheduleParamData = new ScheduleParamData();
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		try {
 			date = format.parse(startDate);
@@ -80,23 +82,23 @@ public class ANCSchedulesService extends ANCScheduleImplementation {
 		
 		if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(23).toPeriod().plusDays(1))) {
 			milestone = SCHEDULE_ANC_1;
-			alertStaus = saveANCC1Schedule(start, milestone, entityId, referenceDateForSchedule, provider, instanceId,
-			    startDate, isSave);
+			scheduleParamData = saveANCC1Schedule(datediff, start, milestone, entityId, referenceDateForSchedule, provider,
+			    instanceId, startDate, isSave);
 		} else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(31).toPeriod()
 		        .plusDays(1))) {
 			milestone = SCHEDULE_ANC_2;
-			alertStaus = saveANC2Schedule(datediff, start, milestone, entityId, referenceDateForSchedule, provider,
+			scheduleParamData = saveANC2Schedule(datediff, start, milestone, entityId, referenceDateForSchedule, provider,
 			    instanceId, startDate, isSave);
 		} else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(35).toPeriod()
 		        .plusDays(1))) {
 			milestone = SCHEDULE_ANC_3;
-			alertStaus = saveANC3Schedule(datediff, start, milestone, entityId, referenceDateForSchedule, provider,
+			scheduleParamData = saveANC3Schedule(datediff, start, milestone, entityId, referenceDateForSchedule, provider,
 			    instanceId, startDate, isSave);
 			
 		} else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(44).toPeriod()
 		        .minusDays(1))) {
 			milestone = SCHEDULE_ANC_4;
-			alertStaus = saveANC4Schedule(datediff, start, milestone, entityId, referenceDateForSchedule, provider,
+			scheduleParamData = saveANC4Schedule(datediff, start, milestone, entityId, referenceDateForSchedule, provider,
 			    instanceId, startDate, isSave);
 			
 		} else {
@@ -108,9 +110,9 @@ public class ANCSchedulesService extends ANCScheduleImplementation {
 		}
 		
 		logger.info(format("Enrolling ANC with Entity id:{0} to ANC schedule, milestone: {1}.", entityId, milestone));
-		scheduler.enrollIntoSchedule(entityId, SCHEDULE_ANC, milestone, referenceDateForSchedule.toString());
+		scheduler.enrollIntoSchedule(entityId, SCHEDULE_ANC, milestone, scheduleParamData.getStart().toString());
 		Map<String, String> map = new HashMap<String, String>();
-		map.put("alert", alertStaus);
+		map.put("alert", scheduleParamData.getAlertStaus());
 		map.put("milestone", milestone);
 		return map;
 	}

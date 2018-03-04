@@ -18,7 +18,6 @@ import org.opensrp.common.AllConstants.BnfFollowUpVisitFields;
 import org.opensrp.common.AllConstants.ELCOSchedulesConstantsImediate;
 import org.opensrp.domain.Multimedia;
 import org.opensrp.dto.BeneficiaryType;
-import org.opensrp.register.mcare.OpenSRPScheduleConstants.ELCOSchedulesConstants;
 import org.opensrp.register.mcare.domain.Child;
 import org.opensrp.register.mcare.domain.Elco;
 import org.opensrp.register.mcare.domain.HouseHold;
@@ -78,6 +77,11 @@ public class AlertCreationAction implements HookedEvent {
 		
 		// TODO: Get rid of this horrible if-else after Motech-Platform fixes
 		// the bug related to metadata in motech-schedule-tracking.
+		logger.info(
+		    "receving motech event in invoke, event: " + event.externalId() + " milestoneName:" + event.milestoneName()
+		            + " windowName: " + event.windowName() + " startOfDueWindow :" + " startOfDueWindow : "
+		            + event.startOfDueWindow() + " startOfLateWindow: " + event.startOfLateWindow(),
+		    event.startOfMaxWindow());
 		String instanceId = null;
 		String providerId = null;
 		String caseID = event.externalId();
@@ -127,14 +131,6 @@ public class AlertCreationAction implements HookedEvent {
 			throw new IllegalArgumentException("Beneficiary Type : " + beneficiaryType + " is of unknown type");
 		}
 		
-		logger.info("caseID: " + caseID + "  Doo:" + doo);
-		logger.info(" event.windowName():" + startOfEarliestWindow);
-		logger.info(" Name:"
-		        + event.scheduleName().replace(ELCOSchedulesConstantsImediate.IMD_ELCO_SCHEDULE_PSRF,
-		            ELCOSchedulesConstants.ELCO_SCHEDULE_PSRF));
-		logger.info(" MileStoneName:"
-		        + event.milestoneName().replace(ELCOSchedulesConstantsImediate.IMD_ELCO_SCHEDULE_PSRF,
-		            ELCOSchedulesConstants.ELCO_SCHEDULE_PSRF));
 		scheduler.alertFor(event.windowName(), beneficiaryType, caseID, instanceId, providerId,
 		    parseScheduleName(event.scheduleName()), parseScheduleName(event.milestoneName()), startOfEarliestWindow,
 		    event.startOfDueWindow(), event.startOfLateWindow(), event.startOfMaxWindow(), doo);

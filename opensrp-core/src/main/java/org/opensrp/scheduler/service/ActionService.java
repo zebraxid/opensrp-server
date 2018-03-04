@@ -1,5 +1,6 @@
 package org.opensrp.scheduler.service;
 
+import static org.opensrp.common.AllConstants.ALERTSTATUS;
 import static org.opensrp.common.AllConstants.ScheduleNames.ANC;
 import static org.opensrp.common.AllConstants.ScheduleNames.CHILD;
 import static org.opensrp.common.AllConstants.ScheduleNames.PNC;
@@ -144,18 +145,14 @@ public class ActionService {
 			DateTime FWBNFDTOO = new DateTime(date);
 			if (existingAlerts.size() > 0) {
 				if (ANC.equalsIgnoreCase(scheduleName)) {
-					System.err.println("startDate:" + startDate);
 					updateDataAction(visitCode, alertStatus, startDate, expiryDate, existingAlerts);
 					long dateDiff = DateTimeUtil.getDaysDifference(expiryDate);
 					logger.info("dateDiff:::" + dateDiff + "  Status: " + alertStatus.name());
-					if ("urgent".equalsIgnoreCase(alertStatus.name()) && dateDiff == 1) {
-						logger.info("StartInner:::" + dateDiff + "  Status: " + alertStatus.name());
+					if (AlertStatus.expired.name().equalsIgnoreCase(alertStatus.name()) && dateDiff <= 1) {
 						scheduleService.fulfillMilestone(caseID, scheduleName, new LocalDate());
-						logger.info("EndiNNER:::" + dateDiff + "  Status: " + alertStatus.name());
-						
-					} else {
-						logger.info("alertStatus:" + alertStatus.name());
-						
+						if (visitCode.equalsIgnoreCase(ScheduleNames.anc4)) {
+							updateDataAction(visitCode, AlertStatus.expired, startDate, expiryDate, existingAlerts);
+						}
 					}
 					
 				} else if (PNC.equalsIgnoreCase(scheduleName) || CHILD.equalsIgnoreCase(scheduleName)) {
@@ -224,15 +221,20 @@ public class ActionService {
 	
 	public void updateDataAction(String visitCode, AlertStatus alertStatus, DateTime startDate, DateTime expiryDate,
 	                             List<Action> existingAlerts) {
-		existingAlerts.get(0).setRevision(existingAlerts.get(0).getRevision());
-		existingAlerts.get(0).data().put("alertStatus", alertStatus.toString());
-		existingAlerts.get(0).data().put("expiryDate", expiryDate.toLocalDate().toString());
-		existingAlerts.get(0).data().put("startDate", startDate.toLocalDate().toString());
-		existingAlerts.get(0).data().put("visitCode", visitCode);
-		existingAlerts.get(0).markAsActive();
-		existingAlerts.get(0).timestamp(Calendar.getInstance().getTimeInMillis());
-		logger.info("Done" + existingAlerts);
-		allActions.update(existingAlerts.get(0));
+		Integer existingAlertStatus = ALERTSTATUS.get(existingAlerts.get(0).data().get("alertStatus"));
+		Integer currentAlertStatus = ALERTSTATUS.get(alertStatus.name());
+		
+		if (!visitCode.equalsIgnoreCase(existingAlerts.get(0).data().get("visitCode"))
+		        && currentAlertStatus > existingAlertStatus) {
+			existingAlerts.get(0).setRevision(existingAlerts.get(0).getRevision());
+			existingAlerts.get(0).data().put("alertStatus", alertStatus.toString());
+			existingAlerts.get(0).data().put("expiryDate", expiryDate.toLocalDate().toString());
+			existingAlerts.get(0).data().put("startDate", startDate.toLocalDate().toString());
+			existingAlerts.get(0).data().put("visitCode", visitCode);
+			existingAlerts.get(0).markAsActive();
+			existingAlerts.get(0).timestamp(Calendar.getInstance().getTimeInMillis());
+			allActions.update(existingAlerts.get(0));
+		}
 	}
 	
 	public long getDaysDifference(DateTime expiryDate) {

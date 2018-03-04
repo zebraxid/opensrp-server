@@ -5,6 +5,8 @@ import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherSchedule
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_ANC_2;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_ANC_3;
 
+import java.text.SimpleDateFormat;
+
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.joda.time.Weeks;
@@ -24,34 +26,44 @@ public abstract class ANCScheduleImplementation {
 	@Autowired
 	private ScheduleLogService scheduleLogService;
 	
-	public String saveANCC1Schedule(DateTime start, String milestone, String entityId, LocalDate referenceDateForSchedule,
-	                                String provider, String instanceId, String startDate, boolean isSave) {
+	public ScheduleParamData saveANCC1Schedule(long datediff, DateTime start, String milestone, String entityId,
+	                                           LocalDate referenceDateForSchedule, String provider, String instanceId,
+	                                           String startDate, boolean isSave) {
+		ScheduleParamData scheduleParamData = new ScheduleParamData();
 		DateTime ancStartDate = null;
 		DateTime ancExpireDate = null;
 		AlertStatus alertStaus = null;
+		boolean save = false;
 		if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(8).toPeriod())) {
-			alertStaus = AlertStatus.upcoming;
-			ancStartDate = new DateTime(start).plusDays(DateTimeDuration.ANC1UPCOMINGSTART);
-			ancExpireDate = new DateTime(ancStartDate).plusDays(DateTimeDuration.ANC1UPCOMINGEND);
+			if (datediff > DateTimeDuration.ANC1UPCOMINGSTART) {
+				alertStaus = AlertStatus.upcoming;
+				ancStartDate = new DateTime(start).plusDays(DateTimeDuration.ANC1UPCOMINGSTART);
+				ancExpireDate = new DateTime(ancStartDate).plusDays(DateTimeDuration.ANC1UPCOMINGEND);
+				save = true;
+			}
 		} else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(23).toPeriod()
 		        .plusDays(1))) {
 			alertStaus = AlertStatus.urgent;
 			ancStartDate = new DateTime(start).plusDays(DateTimeDuration.ANC1URGENTSTART);
 			ancExpireDate = new DateTime(ancStartDate).plusDays(DateTimeDuration.ANC1URGENTEND);
-			System.err.println("from anc1 urgent");
+			save = true;
 		} else {
 			logger.info("Form anc1");
 		}
-		if (isSave) {
+		if (isSave && save) {
 			scheduleLogService.saveAction(entityId, instanceId, provider, SCHEDULE_ANC, milestone, BeneficiaryType.mother,
 			    alertStaus, ancStartDate, ancExpireDate);
 		}
-		return alertStaus.name();
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		scheduleParamData.setAlertStaus(alertStaus.name());
+		String ancStart = format.format(ancStartDate).toString();
+		scheduleParamData.setStart(LocalDate.parse(ancStart));
+		return scheduleParamData;
 	}
 	
-	public String saveANC2Schedule(long datediff, DateTime start, String milestone, String entityId,
-	                               LocalDate referenceDateForSchedule, String provider, String instanceId, String startDate,
-	                               boolean isSave) {
+	public ScheduleParamData saveANC2Schedule(long datediff, DateTime start, String milestone, String entityId,
+	                                          LocalDate referenceDateForSchedule, String provider, String instanceId,
+	                                          String startDate, boolean isSave) {
 		DateTime ancStartDate = null;
 		DateTime ancExpireDate = null;
 		AlertStatus alertStaus = null;
@@ -85,12 +97,15 @@ public abstract class ANCScheduleImplementation {
 		} else {
 			logger.info("Form anc2");
 		}
-		return alertStaus.name();
+		ScheduleParamData scheduleParamData = new ScheduleParamData();
+		scheduleParamData.setAlertStaus(alertStaus.name());
+		scheduleParamData.setStart(referenceDateForSchedule);
+		return scheduleParamData;
 	}
 	
-	public String saveANC3Schedule(long datediff, DateTime start, String milestone, String entityId,
-	                               LocalDate referenceDateForSchedule, String provider, String instanceId, String startDate,
-	                               boolean isSave) {
+	public ScheduleParamData saveANC3Schedule(long datediff, DateTime start, String milestone, String entityId,
+	                                          LocalDate referenceDateForSchedule, String provider, String instanceId,
+	                                          String startDate, boolean isSave) {
 		DateTime ancStartDate = null;
 		DateTime ancExpireDate = null;
 		AlertStatus alertStaus = null;
@@ -125,12 +140,15 @@ public abstract class ANCScheduleImplementation {
 		} else {
 			logger.info("Form anc3");
 		}
-		return alertStaus.name();
+		ScheduleParamData scheduleParamData = new ScheduleParamData();
+		scheduleParamData.setAlertStaus(alertStaus.name());
+		scheduleParamData.setStart(referenceDateForSchedule);
+		return scheduleParamData;
 	}
 	
-	public String saveANC4Schedule(long datediff, DateTime start, String milestone, String entityId,
-	                               LocalDate referenceDateForSchedule, String provider, String instanceId, String startDate,
-	                               boolean isSave) {
+	public ScheduleParamData saveANC4Schedule(long datediff, DateTime start, String milestone, String entityId,
+	                                          LocalDate referenceDateForSchedule, String provider, String instanceId,
+	                                          String startDate, boolean isSave) {
 		DateTime ancStartDate = null;
 		DateTime ancExpireDate = null;
 		AlertStatus alertStaus = null;
@@ -177,7 +195,10 @@ public abstract class ANCScheduleImplementation {
 		} else {
 			logger.info("Form anc4");
 		}
-		return alertStaus.name();
+		ScheduleParamData scheduleParamData = new ScheduleParamData();
+		scheduleParamData.setAlertStaus(alertStaus.name());
+		scheduleParamData.setStart(referenceDateForSchedule);
+		return scheduleParamData;
 	}
 	
 }
