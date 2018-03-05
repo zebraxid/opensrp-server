@@ -135,26 +135,23 @@ public class ActionService {
 		try {
 			List<Action> existingAlerts = allActions.findAlertByANMIdEntityIdScheduleName(anmIdentifier, caseID,
 			    scheduleName);
-			
 			Date date = new Date();
-			
 			if (doo != null) {
 				date = format.parse(doo);
 			}
-			
 			DateTime FWBNFDTOO = new DateTime(date);
 			if (existingAlerts.size() > 0) {
 				if (ANC.equalsIgnoreCase(scheduleName)) {
-					updateDataAction(visitCode, alertStatus, startDate, expiryDate, existingAlerts);
+					checkForUpdate(visitCode, alertStatus, startDate, expiryDate, existingAlerts);
 					long dateDiff = DateTimeUtil.getDaysDifference(expiryDate);
-					logger.info("dateDiff:::" + dateDiff + "  Status: " + alertStatus.name());
-					if (AlertStatus.expired.name().equalsIgnoreCase(alertStatus.name()) && dateDiff <= 1) {
+					logger.info("dateDiff:::" + dateDiff + "  Status: " + alertStatus.name() + "Start Date:" + startDate
+					        + " EndDate:" + expiryDate);
+					if (AlertStatus.urgent.name().equalsIgnoreCase(alertStatus.name()) && dateDiff <= 1) {
 						scheduleService.fulfillMilestone(caseID, scheduleName, new LocalDate());
 						if (visitCode.equalsIgnoreCase(ScheduleNames.anc4)) {
-							updateDataAction(visitCode, AlertStatus.expired, startDate, expiryDate, existingAlerts);
+							checkForUpdate(visitCode, AlertStatus.expired, startDate, expiryDate, existingAlerts);
 						}
 					}
-					
 				} else if (PNC.equalsIgnoreCase(scheduleName) || CHILD.equalsIgnoreCase(scheduleName)) {
 					String scheduleNameVisitCodeWithoutNumber;
 					if (PNC.equalsIgnoreCase(scheduleName)) {
@@ -162,43 +159,41 @@ public class ActionService {
 					} else {
 						scheduleNameVisitCodeWithoutNumber = ScheduleNames.ENCCRV;
 					}
-					
 					long dateDifference = DateTimeUtil.getDaysDifference(FWBNFDTOO);
 					
 					if (dateDifference == Condition.PNCENCCDAYZERO
 					        && visitCode.equalsIgnoreCase(scheduleNameVisitCodeWithoutNumber + "_1")) {
 						
-						updateDataAction(visitCode, AlertStatus.urgent, new DateTime(FWBNFDTOO).plusDays(1), new DateTime(
+						checkForUpdate(visitCode, AlertStatus.urgent, new DateTime(FWBNFDTOO).plusDays(1), new DateTime(
 						        FWBNFDTOO).plusDays(1), existingAlerts);
 						
 					} else if (dateDifference == Condition.PNCENCCDAYONE
 					        && visitCode.equalsIgnoreCase(scheduleNameVisitCodeWithoutNumber + "_1")) {
-						updateDataAction(scheduleNameVisitCodeWithoutNumber + "_2", AlertStatus.upcoming, new DateTime(
+						checkForUpdate(scheduleNameVisitCodeWithoutNumber + "_2", AlertStatus.upcoming, new DateTime(
 						        FWBNFDTOO).plusDays(2), new DateTime(FWBNFDTOO).plusDays(2), existingAlerts);
-						
 						scheduleService.fulfillMilestone(caseID, scheduleName, new LocalDate());
 					} else if ((dateDifference == Condition.PNCENCCDAYTWO || dateDifference == Condition.PNCENCCDAYTHREE || dateDifference == Condition.PNCENCCDAYFOUR)
 					        && visitCode.equalsIgnoreCase(scheduleNameVisitCodeWithoutNumber + "_2")) {
-						updateDataAction(scheduleNameVisitCodeWithoutNumber + "_2", AlertStatus.urgent, new DateTime(
-						        FWBNFDTOO).plusDays(3), new DateTime(FWBNFDTOO).plusDays(5), existingAlerts);
+						checkForUpdate(scheduleNameVisitCodeWithoutNumber + "_2", AlertStatus.urgent,
+						    new DateTime(FWBNFDTOO).plusDays(3), new DateTime(FWBNFDTOO).plusDays(5), existingAlerts);
 					} else if (dateDifference == Condition.PNCENCCDAYFIVE
 					        && visitCode.equalsIgnoreCase(scheduleNameVisitCodeWithoutNumber + "_2")) {
-						updateDataAction(scheduleNameVisitCodeWithoutNumber + "_3", AlertStatus.upcoming, new DateTime(
+						checkForUpdate(scheduleNameVisitCodeWithoutNumber + "_3", AlertStatus.upcoming, new DateTime(
 						        FWBNFDTOO).plusDays(6), new DateTime(FWBNFDTOO).plusDays(7), existingAlerts);
 						scheduleService.fulfillMilestone(caseID, scheduleName, new LocalDate());
 						
 					} else if (dateDifference == Condition.PNCENCCDAYSIX
 					        && visitCode.equalsIgnoreCase(scheduleNameVisitCodeWithoutNumber + "_3")) {
-						updateDataAction(scheduleNameVisitCodeWithoutNumber + "_3", AlertStatus.upcoming, new DateTime(
+						checkForUpdate(scheduleNameVisitCodeWithoutNumber + "_3", AlertStatus.upcoming, new DateTime(
 						        FWBNFDTOO).plusDays(6), new DateTime(FWBNFDTOO).plusDays(7), existingAlerts);
 						
 					} else if (dateDifference == Condition.PNCENCCDAYSEVEN
 					        && visitCode.equalsIgnoreCase(scheduleNameVisitCodeWithoutNumber + "_3")) {
-						updateDataAction(scheduleNameVisitCodeWithoutNumber + "_3", AlertStatus.urgent, new DateTime(
-						        FWBNFDTOO).plusDays(8), new DateTime(FWBNFDTOO).plusDays(8), existingAlerts);
+						checkForUpdate(scheduleNameVisitCodeWithoutNumber + "_3", AlertStatus.urgent,
+						    new DateTime(FWBNFDTOO).plusDays(8), new DateTime(FWBNFDTOO).plusDays(8), existingAlerts);
 						
 					} else if (dateDifference <= Condition.PNCENCCDAYEIGHT) {
-						updateDataAction(visitCode, AlertStatus.expired, new DateTime(FWBNFDTOO).plusDays(9), new DateTime(
+						checkForUpdate(visitCode, AlertStatus.expired, new DateTime(FWBNFDTOO).plusDays(9), new DateTime(
 						        FWBNFDTOO).plusDays(9), existingAlerts);
 						scheduleService.fulfillMilestone(caseID, scheduleName, new LocalDate());
 					}
@@ -211,7 +206,6 @@ public class ActionService {
 				
 				logger.info("No Doc found at caseID:" + caseID + " scheduleName : " + scheduleName);
 			}
-			
 		}
 		catch (Exception e) {
 			logger.info("Exception found at caseID:" + caseID + " scheduleName : " + scheduleName + "Message:"
@@ -219,22 +213,33 @@ public class ActionService {
 		}
 	}
 	
-	public void updateDataAction(String visitCode, AlertStatus alertStatus, DateTime startDate, DateTime expiryDate,
-	                             List<Action> existingAlerts) {
+	private void checkForUpdate(String visitCode, AlertStatus alertStatus, DateTime startDate, DateTime expiryDate,
+	                            List<Action> existingAlerts) {
 		Integer existingAlertStatus = ALERTSTATUS.get(existingAlerts.get(0).data().get("alertStatus"));
 		Integer currentAlertStatus = ALERTSTATUS.get(alertStatus.name());
-		
-		if (!visitCode.equalsIgnoreCase(existingAlerts.get(0).data().get("visitCode"))
+		if (visitCode.equalsIgnoreCase(existingAlerts.get(0).data().get("visitCode"))
 		        && currentAlertStatus > existingAlertStatus) {
-			existingAlerts.get(0).setRevision(existingAlerts.get(0).getRevision());
-			existingAlerts.get(0).data().put("alertStatus", alertStatus.toString());
-			existingAlerts.get(0).data().put("expiryDate", expiryDate.toLocalDate().toString());
-			existingAlerts.get(0).data().put("startDate", startDate.toLocalDate().toString());
-			existingAlerts.get(0).data().put("visitCode", visitCode);
-			existingAlerts.get(0).markAsActive();
-			existingAlerts.get(0).timestamp(Calendar.getInstance().getTimeInMillis());
-			allActions.update(existingAlerts.get(0));
+			updateDataAction(visitCode, alertStatus, startDate, expiryDate, existingAlerts);
+			
+		} else if (!visitCode.equalsIgnoreCase(existingAlerts.get(0).data().get("visitCode"))
+		        && currentAlertStatus < existingAlertStatus) {
+			updateDataAction(visitCode, alertStatus, startDate, expiryDate, existingAlerts);
 		}
+		
+	}
+	
+	public void updateDataAction(String visitCode, AlertStatus alertStatus, DateTime startDate, DateTime expiryDate,
+	                             List<Action> existingAlerts) {
+		
+		existingAlerts.get(0).setRevision(existingAlerts.get(0).getRevision());
+		existingAlerts.get(0).data().put("alertStatus", alertStatus.toString());
+		existingAlerts.get(0).data().put("expiryDate", expiryDate.toLocalDate().toString());
+		existingAlerts.get(0).data().put("startDate", startDate.toLocalDate().toString());
+		existingAlerts.get(0).data().put("visitCode", visitCode);
+		existingAlerts.get(0).markAsActive();
+		existingAlerts.get(0).timestamp(Calendar.getInstance().getTimeInMillis());
+		allActions.update(existingAlerts.get(0));
+		
 	}
 	
 	public long getDaysDifference(DateTime expiryDate) {

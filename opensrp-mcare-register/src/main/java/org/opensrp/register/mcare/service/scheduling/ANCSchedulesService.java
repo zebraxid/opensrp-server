@@ -39,7 +39,6 @@ public class ANCSchedulesService extends ANCScheduleImplementation {
 	@Autowired
 	public ANCSchedulesService(HealthSchedulerService scheduler, ScheduleLogService scheduleLogService) {
 		this.scheduler = scheduler;
-		
 		this.scheduleLogService = scheduleLogService;
 	}
 	
@@ -63,8 +62,9 @@ public class ANCSchedulesService extends ANCScheduleImplementation {
 	private Map<String, String> ScheduleCheckAndSaveOrNot(String entityId, LocalDate referenceDateForSchedule,
 	                                                      String provider, String instanceId, String startDate,
 	                                                      boolean isSave) {
-		String milestone = null;
 		
+		String milestone = null;
+		Map<String, String> map = new HashMap<String, String>();
 		String alertStaus = null;
 		Date date = null;
 		ScheduleParamData scheduleParamData = new ScheduleParamData();
@@ -81,38 +81,51 @@ public class ANCSchedulesService extends ANCScheduleImplementation {
 		long datediff = ScheduleLogService.getDaysDifference(start);
 		
 		if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(23).toPeriod().plusDays(1))) {
+			// 162 days
 			milestone = SCHEDULE_ANC_1;
 			scheduleParamData = saveANCC1Schedule(datediff, start, milestone, entityId, referenceDateForSchedule, provider,
 			    instanceId, startDate, isSave);
+			map.put("alert", scheduleParamData.getAlertStaus());
+			System.err.println("From 1" + datediff);
 		} else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(31).toPeriod()
 		        .plusDays(1))) {
+			//218
 			milestone = SCHEDULE_ANC_2;
 			scheduleParamData = saveANC2Schedule(datediff, start, milestone, entityId, referenceDateForSchedule, provider,
 			    instanceId, startDate, isSave);
+			map.put("alert", scheduleParamData.getAlertStaus());
+			System.err.println("From 2" + datediff);
 		} else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(35).toPeriod()
 		        .plusDays(1))) {
+			// 246
 			milestone = SCHEDULE_ANC_3;
 			scheduleParamData = saveANC3Schedule(datediff, start, milestone, entityId, referenceDateForSchedule, provider,
 			    instanceId, startDate, isSave);
-			
+			map.put("alert", scheduleParamData.getAlertStaus());
+			System.err.println("From 3" + datediff);
 		} else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(44).toPeriod()
 		        .minusDays(1))) {
+			// 307
 			milestone = SCHEDULE_ANC_4;
 			scheduleParamData = saveANC4Schedule(datediff, start, milestone, entityId, referenceDateForSchedule, provider,
 			    instanceId, startDate, isSave);
-			
+			map.put("alert", scheduleParamData.getAlertStaus());
+			System.err.println("From 4" + datediff);
 		} else {
 			milestone = SCHEDULE_ANC_4;
 			logger.info("ANC Schedule out of Date of case id" + entityId);
 			scheduleLogService.saveAction(entityId, instanceId, provider, SCHEDULE_ANC, SCHEDULE_ANC_4,
 			    BeneficiaryType.mother, AlertStatus.expired, new DateTime(start).plusDays(308),
-			    new DateTime(start).plusDays(308));
+			    new DateTime(start).plusDays(309));
+			map.put("alert", AlertStatus.expired.name());
 		}
+		logger.info(format(
+		    "Enrolling ANC with Entity id:{0} to ANC schedule, milestone: {1}. with referenceDateForSchedule{2}. SCHEDULE_ANC {3}. ",
+		    entityId, SCHEDULE_ANC_1, referenceDateForSchedule.toString(), SCHEDULE_ANC));
+		System.err.println("scheduler:" + scheduler);
 		
-		logger.info(format("Enrolling ANC with Entity id:{0} to ANC schedule, milestone: {1}.", entityId, milestone));
-		scheduler.enrollIntoSchedule(entityId, SCHEDULE_ANC, milestone, scheduleParamData.getStart().toString());
-		Map<String, String> map = new HashMap<String, String>();
-		map.put("alert", scheduleParamData.getAlertStaus());
+		scheduler.enrollIntoSchedule(entityId, SCHEDULE_ANC, milestone, referenceDateForSchedule.toString());
+		
 		map.put("milestone", milestone);
 		return map;
 	}

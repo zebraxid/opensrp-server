@@ -170,13 +170,13 @@ public class OpenSRPScheduleConstants {
 		
 		public static final int ANC1NORMALEND = 50; // day
 		
-		public static final int ANC1UPCOMINGSTART = 51;
+		public static final int ANC1UPCOMINGSTART = 50;
 		
 		public static final int ANC1UPCOMINGEND = 5;
 		
-		public static final int ANC1URGENTSTART = 56;
+		public static final int ANC1URGENTSTART = 55;
 		
-		public static final int ANC1URGENTEND = 107;
+		public static final int ANC1URGENTEND = 108;
 		
 		public static final int ANC1EXPIREDSTART = 161;
 		
@@ -184,13 +184,13 @@ public class OpenSRPScheduleConstants {
 		
 		//////
 		
-		public static final int ANC2UPCOMINGSTART = 162;
+		public static final int ANC2UPCOMINGSTART = 163;
 		
-		public static final int ANC2UPCOMINGEND = 6;
+		public static final int ANC2UPCOMINGEND = 5;
 		
 		public static final int ANC2URGENTSTART = 168;
 		
-		public static final int ANC2URGENTEND = 50;
+		public static final int ANC2URGENTEND = 51;
 		
 		public static final int ANC2EXPIREDSTART = 217;
 		
@@ -200,11 +200,11 @@ public class OpenSRPScheduleConstants {
 		
 		public static final int ANC3UPCOMINGSTART = 219;
 		
-		public static final int ANC3UPCOMINGEND = 6;
+		public static final int ANC3UPCOMINGEND = 5;
 		
 		public static final int ANC3URGENTSTART = 224;
 		
-		public static final int ANC3URGENTEND = 22;
+		public static final int ANC3URGENTEND = 23;
 		
 		public static final int ANC3EXPIREDSTART = 245;
 		
@@ -214,11 +214,11 @@ public class OpenSRPScheduleConstants {
 		
 		public static final int ANC4UPCOMINGSTART = 247;
 		
-		public static final int ANC4UPCOMINGEND = 6;
+		public static final int ANC4UPCOMINGEND = 5;
 		
 		public static final int ANC4URGENTSTART = 252;
 		
-		public static final int ANC4URGENTEND = 55;
+		public static final int ANC4URGENTEND = 56;
 		
 		public static final int ANC4EXPIREDSTART = 307;
 		
