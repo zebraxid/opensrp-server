@@ -21,7 +21,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping(value = "/rest/stockresource/shipment")
-public class ShipmentResource extends RestResource<Shipment> {
+public class ShipmentResource {
 
     private ShipmentService shipmentService;
     private Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
@@ -44,33 +44,4 @@ public class ShipmentResource extends RestResource<Shipment> {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @Override
-    public List<Shipment> filter(String query) {
-        return null;
-    }
-
-    @Override
-    public List<Shipment> search(HttpServletRequest request) throws ParseException {
-        return null;
-    }
-
-    @Override
-    public Shipment getByUniqueId(String uniqueId) {
-        return null;
-    }
-
-    @Override
-    public List<String> requiredProperties() {
-        return null;
-    }
-
-    @Override
-    public Shipment create(Shipment entity) {
-        return null;
-    }
-
-    @Override
-    public Shipment update(Shipment entity) {
-        return null;
-    }
 }
