@@ -35,7 +35,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.motechproject.scheduletracking.api.domain.Enrollment;
 import org.motechproject.scheduletracking.api.domain.EnrollmentStatus;
-import org.opensrp.common.AllConstants.ScheduleNames;
 import org.opensrp.common.util.DateUtil;
 import org.opensrp.dto.AlertStatus;
 import org.opensrp.register.mcare.OpenSRPScheduleConstants.DateTimeDuration;
@@ -98,7 +97,7 @@ public class MotherIntegrationTest {
 	//function(doc) { if(doc.type === 'Enrollment' && doc.scheduleName=='Ante Natal Care Reminder Visit') emit(doc.externalId); }
 	//http://localhost:5984/_utils/database.html?opensrp/_design/Action/_view/all#
 	//function(doc) { if(doc.type === 'Action' && doc.data.scheduleName=='Ante Natal Care Reminder Visit' && doc.data.alertStatus!='expired') {emit(null, doc._id)} }
-	
+	@Ignore
 	@Test
 	public void ancScheduleTest() {
 		int i = 0;
@@ -161,25 +160,6 @@ public class MotherIntegrationTest {
 					i++; //1875
 					if (action.data().get("alertStatus").equalsIgnoreCase("expired")) {
 						
-						for (Enrollment enrollment : enrollments) {
-							if (!EnrollmentStatus.ACTIVE.name().equalsIgnoreCase(enrollment.getStatus().name())
-							        && ScheduleNames.ANC.equalsIgnoreCase(enrollment.getScheduleName())) {
-								//System.err.println("Sataus:" + enrollment.getStatus());
-								isEnrolled = true;
-							}
-						}
-						if (isEnrolled) {
-							unenroll++;//311
-							
-							// nothing to do OR refresh all unenroled/completed
-						} else {
-							enroll++;
-							
-						}
-						expired++;//466
-						/*System.err.println(currentVisitiCode + " | " + visitCode + "  |  " + action.getIsActionActive()
-						        + " | " + action.caseId());*/
-						// refresh schedule
 					} else {
 						if (!ancParam.get("alert").equalsIgnoreCase(action.data().get("alertStatus"))
 						        && !ancParam.get("alert").equalsIgnoreCase(visitCode) && isActive(enrollments)) {
@@ -267,24 +247,6 @@ public class MotherIntegrationTest {
 				
 					if (action.data().get("alertStatus").equalsIgnoreCase("expired")) {
 						
-						if (!EnrollmentStatus.ACTIVE.name().equalsIgnoreCase(enrollments.get(0).getStatus().name())
-						        && ScheduleNames.PNC.equalsIgnoreCase(enrollments.get(0).getScheduleName())) {
-							//System.err.println("Sataus:" + enrollment.getStatus());
-							isEnrolled = true;
-						}
-						
-						if (isEnrolled) {
-							unenroll++;//69
-							// nothing to do OR refresh all unenroled/completed
-							
-						} else {
-							enroll++;
-							
-						}
-						expired++;//466
-						/*System.err.println(currentVisitiCode + " | " + visitCode + "  |  " + action.getIsActionActive()
-						        + " | " + action.caseId());*/
-						// refresh schedule
 					} else {
 						if (!currentVisitiCode.equalsIgnoreCase(visitCode) && isActive(enrollments)) {
 							notsubNotSame++; //0
@@ -729,5 +691,45 @@ public class MotherIntegrationTest {
 			action.setRevision(action.getRevision());
 			allActions.update(action);
 		}
+	}
+	
+	//function(doc) { if(doc.type === 'Action' && doc.data.alertStatus=='expired' && doc.data.scheduleName=='Ante Natal Care Reminder Visit') {emit([doc.data.scheduleName], null)} }
+	@Test
+	public void updateANCForExpiredSchedule() {
+		List<Action> actions = allActions.findActionByScheduleName("Ante Natal Care Reminder Visit");
+		System.err.println("actions:" + actions.size());
+		int anc1 = 0;
+		int anc2 = 0;
+		int anc3 = 0;
+		int anc4 = 0;
+		int e = 0;
+		for (Action action : actions) {
+			
+			if (action.data().get("visitCode").equalsIgnoreCase("ancrv_1")) {
+				anc1++;
+				
+				action.data().put("alertStatus", "urgent");
+				action.setRevision(action.getRevision());
+				
+				allActions.update(action);
+			} else if (action.data().get("visitCode").equalsIgnoreCase("ancrv_2")) {
+				anc2++;
+				action.data().put("alertStatus", "urgent");
+				action.setRevision(action.getRevision());
+				allActions.update(action);
+			} else if (action.data().get("visitCode").equalsIgnoreCase("ancrv_3")) {
+				anc3++;
+				action.data().put("alertStatus", "urgent");
+				action.setRevision(action.getRevision());
+				allActions.update(action);
+			} else if (action.data().get("visitCode").equalsIgnoreCase("ancrv_4")) {
+				anc4++;
+				
+			} else {
+				e++;
+			}
+			
+		}
+		System.err.println("anc1:" + anc1 + " anc2:" + anc2 + " anc3:" + anc3 + " anc4:" + anc4 + " e:" + e);
 	}
 }

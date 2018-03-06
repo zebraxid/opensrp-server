@@ -3,6 +3,7 @@ package org.opensrp.register.mcare.service.scheduling.impl;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_ANC;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_ANC_1;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_ANC_2;
+import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_ANC_3;
 
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
@@ -32,7 +33,7 @@ public abstract class ANCScheduleImplementation {
 		AlertStatus alertStaus = null;
 		boolean save = false;
 		if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(8).toPeriod())) {
-			// til 56
+			// til 50- 56
 			if (datediff <= -DateTimeDuration.ANC1UPCOMINGSTART) {
 				alertStaus = AlertStatus.upcoming;
 				ancStartDate = new DateTime(start).plusDays(DateTimeDuration.ANC1UPCOMINGSTART);
@@ -41,15 +42,13 @@ public abstract class ANCScheduleImplementation {
 				scheduleParamData.setAlertStaus(alertStaus.name());
 			}
 		} else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(23).toPeriod()
-		        .plusDays(2))) {
-			// til 163
+		        .plusDays(1))) {
+			// til 57-162
 			alertStaus = AlertStatus.urgent;
 			ancStartDate = new DateTime(start).plusDays(DateTimeDuration.ANC1URGENTSTART);
 			ancExpireDate = new DateTime(ancStartDate).plusDays(DateTimeDuration.ANC1URGENTEND);
 			save = true;
 			scheduleParamData.setAlertStaus(alertStaus.name());
-		} else {
-			logger.info("Form anc1");
 		}
 		if (isSave && save) {
 			scheduleLogService.saveAction(entityId, instanceId, provider, SCHEDULE_ANC, milestone, BeneficiaryType.mother,
@@ -65,7 +64,7 @@ public abstract class ANCScheduleImplementation {
 		DateTime ancStartDate = null;
 		DateTime ancExpireDate = null;
 		AlertStatus alertStaus = null;
-		if (datediff == DateTimeDuration.LASTDAYOFANC1) {
+		if (datediff == -DateTimeDuration.LASTDAYOFANC1) {
 			alertStaus = AlertStatus.urgent;
 			ancStartDate = new DateTime(start).plusDays(DateTimeDuration.ANC1URGENTSTART);
 			ancExpireDate = new DateTime(ancStartDate).plusDays(DateTimeDuration.ANC1URGENTEND);
@@ -93,8 +92,6 @@ public abstract class ANCScheduleImplementation {
 				scheduleLogService.saveAction(entityId, instanceId, provider, SCHEDULE_ANC, milestone,
 				    BeneficiaryType.mother, alertStaus, ancStartDate, ancExpireDate);
 			}
-		} else {
-			logger.info("Form anc2");
 		}
 		ScheduleParamData scheduleParamData = new ScheduleParamData();
 		scheduleParamData.setAlertStaus(alertStaus.name());
@@ -135,8 +132,6 @@ public abstract class ANCScheduleImplementation {
 				scheduleLogService.saveAction(entityId, instanceId, provider, SCHEDULE_ANC, milestone,
 				    BeneficiaryType.mother, alertStaus, ancStartDate, ancExpireDate);
 			}
-		} else {
-			logger.info("Form anc3");
 		}
 		ScheduleParamData scheduleParamData = new ScheduleParamData();
 		scheduleParamData.setAlertStaus(alertStaus.name());
@@ -150,7 +145,7 @@ public abstract class ANCScheduleImplementation {
 		DateTime ancStartDate = null;
 		DateTime ancExpireDate = null;
 		AlertStatus alertStaus = null;
-		/*if (datediff == DateTimeDuration.LASTDAYOFAN3) {
+		if (datediff == DateTimeDuration.LASTDAYOFAN3) {
 			// till 
 			alertStaus = AlertStatus.urgent;
 			ancStartDate = new DateTime(start).plusDays(DateTimeDuration.ANC3URGENTSTART);
@@ -159,7 +154,7 @@ public abstract class ANCScheduleImplementation {
 				scheduleLogService.saveAction(entityId, instanceId, provider, SCHEDULE_ANC, SCHEDULE_ANC_3,
 				    BeneficiaryType.mother, alertStaus, ancStartDate, ancExpireDate);
 			}
-		} else*/if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(36).toPeriod())) {
+		} else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(36).toPeriod())) {
 			// from  248  to 252
 			alertStaus = AlertStatus.upcoming;
 			ancStartDate = new DateTime(start).plusDays(DateTimeDuration.ANC4UPCOMINGSTART);
@@ -178,13 +173,10 @@ public abstract class ANCScheduleImplementation {
 				    BeneficiaryType.mother, alertStaus, ancStartDate, ancExpireDate);
 			}
 			
-		} else {
-			logger.info("Form anc4");
 		}
 		ScheduleParamData scheduleParamData = new ScheduleParamData();
 		scheduleParamData.setAlertStaus(alertStaus.name());
 		scheduleParamData.setStart(referenceDateForSchedule);
 		return scheduleParamData;
 	}
-	
 }

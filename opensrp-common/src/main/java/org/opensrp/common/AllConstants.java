@@ -1832,7 +1832,9 @@ public class AllConstants {
 	
 	public static Map<String, Integer> ALERTSTATUS = new HashMap<String, Integer>();
 	static {
+		ALERTSTATUS.put("normal", 0);
 		ALERTSTATUS.put("upcoming", 1);
 		ALERTSTATUS.put("urgent", 2);
+		ALERTSTATUS.put("expired", 3);
 	}
 }

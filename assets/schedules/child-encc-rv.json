@@ -67,7 +67,7 @@
                 } 
                 ,
                 {
-                    "window": "late",
+                    "window": "max",
                     "offset": ["9 Days"],
                     "interval": ["1 Day"],
                     "count": "1"

@@ -79,7 +79,6 @@ public class ActionService {
 		        || scheduleName.equals(ScheduleNames.CHILD)) {
 			this.ActionUpdateOrCreateForMotherType(beneficiaryType, caseID, instanceId, anmIdentifier, scheduleName,
 			    visitCode, alertStatus, startDate, expiryDate, doo);
-			
 		} else {
 			
 		}
@@ -144,13 +143,10 @@ public class ActionService {
 				if (ANC.equalsIgnoreCase(scheduleName)) {
 					checkForUpdate(visitCode, alertStatus, startDate, expiryDate, existingAlerts);
 					long dateDiff = DateTimeUtil.getDaysDifference(expiryDate);
-					logger.info("dateDiff:::" + dateDiff + "  Status: " + alertStatus.name() + "Start Date:" + startDate
-					        + " EndDate:" + expiryDate);
+					
 					if (AlertStatus.urgent.name().equalsIgnoreCase(alertStatus.name()) && dateDiff <= 1) {
 						scheduleService.fulfillMilestone(caseID, scheduleName, new LocalDate());
-						if (visitCode.equalsIgnoreCase(ScheduleNames.anc4)) {
-							checkForUpdate(visitCode, AlertStatus.expired, startDate, expiryDate, existingAlerts);
-						}
+						
 					}
 				} else if (PNC.equalsIgnoreCase(scheduleName) || CHILD.equalsIgnoreCase(scheduleName)) {
 					String scheduleNameVisitCodeWithoutNumber;
