@@ -28,6 +28,7 @@ public class LuceneOrderRepository extends CouchDbRepositorySupportWithLucene<Or
     protected LuceneOrderRepository(LuceneDbConnector db) {
         super(Order.class, db);
         this.luceneDbConnector = db;
+        initStandardDesignDocument();
     }
 
     /**
