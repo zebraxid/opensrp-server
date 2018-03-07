@@ -1,5 +1,17 @@
 package org.opensrp.web.controller.it;
 
+import static java.util.Arrays.asList;
+import static org.junit.Assert.assertEquals;
+import static org.opensrp.dto.AlertStatus.normal;
+import static org.opensrp.dto.BeneficiaryType.mother;
+import static org.opensrp.web.rest.it.ResourceTestUtility.createActions;
+import static org.opensrp.web.rest.it.ResourceTestUtility.createAlerts;
+import static org.opensrp.web.rest.it.ResourceTestUtility.createClients;
+import static org.springframework.test.web.server.result.MockMvcResultMatchers.status;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.node.ObjectNode;
 import org.joda.time.DateTime;
@@ -10,7 +22,7 @@ import org.junit.Test;
 import org.opensrp.domain.Client;
 import org.opensrp.dto.ActionData;
 import org.opensrp.dto.AlertStatus;
-import org.opensrp.repository.AllClients;
+import org.opensrp.repository.couch.AllClients;
 import org.opensrp.scheduler.Action;
 import org.opensrp.scheduler.Alert;
 import org.opensrp.scheduler.repository.AllActions;
@@ -18,16 +30,6 @@ import org.opensrp.scheduler.repository.AllAlerts;
 import org.opensrp.web.controller.ActionConvertor;
 import org.opensrp.web.rest.it.BaseResourceTest;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import static java.util.Arrays.asList;
-import static org.junit.Assert.assertEquals;
-import static org.opensrp.dto.AlertStatus.normal;
-import static org.opensrp.dto.BeneficiaryType.mother;
-import static org.opensrp.web.rest.it.ResourceTestUtility.*;
-import static org.springframework.test.web.server.result.MockMvcResultMatchers.status;
 
 public class ActionControllerTest extends BaseResourceTest {
 

@@ -15,7 +15,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.opensrp.domain.Camp;
 import org.opensrp.repository.AllCamp;
-import org.opensrp.repository.AllClients;
+import org.opensrp.repository.couch.AllClients;
 import org.opensrp.scheduler.repository.AllActions;
 import org.opensrp.web.listener.RapidproMessageListener;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,23 +1,28 @@
 package org.opensrp.service.it;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.opensrp.BaseIntegrationTest;
-import org.opensrp.domain.BaseEntity;
-import org.opensrp.repository.AllBaseEntities;
-import org.opensrp.service.BaseEntityService;
-import org.springframework.beans.factory.annotation.Autowired;
+import static java.util.Arrays.asList;
+import static org.junit.Assert.assertEquals;
+import static org.opensrp.util.SampleFullDomainObject.BASE_ENTITY_ID;
+import static org.opensrp.util.SampleFullDomainObject.DIFFERENT_BASE_ENTITY_ID;
+import static org.opensrp.util.SampleFullDomainObject.IDENTIFIER_TYPE;
+import static org.opensrp.util.SampleFullDomainObject.IDENTIFIER_VALUE;
+import static org.opensrp.util.SampleFullDomainObject.getBaseEntity;
+import static org.opensrp.util.SampleFullDomainObject.identifier;
+import static org.utils.AssertionUtil.assertTwoListAreSameIgnoringOrder;
+import static org.utils.CouchDbAccessUtils.addObjectToRepository;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static java.util.Arrays.asList;
-import static org.junit.Assert.assertEquals;
-import static org.opensrp.util.SampleFullDomainObject.*;
-import static org.utils.AssertionUtil.assertTwoListAreSameIgnoringOrder;
-import static org.utils.CouchDbAccessUtils.addObjectToRepository;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.opensrp.BaseIntegrationTest;
+import org.opensrp.domain.BaseEntity;
+import org.opensrp.repository.couch.AllBaseEntities;
+import org.opensrp.service.BaseEntityService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class BaseEntityServiceTest extends BaseIntegrationTest {
 

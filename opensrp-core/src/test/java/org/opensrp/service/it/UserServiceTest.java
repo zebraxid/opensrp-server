@@ -1,17 +1,5 @@
 package org.opensrp.service.it;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.opensrp.BaseIntegrationTest;
-import org.opensrp.domain.User;
-import org.opensrp.repository.AllUsers;
-import org.opensrp.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.Collections;
-import java.util.List;
-
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
 import static org.opensrp.util.SampleFullDomainObject.BASE_ENTITY_ID;
@@ -19,6 +7,18 @@ import static org.opensrp.util.SampleFullDomainObject.DIFFERENT_BASE_ENTITY_ID;
 import static org.opensrp.util.SampleFullDomainObject.getUser;
 import static org.utils.AssertionUtil.assertTwoListAreSameIgnoringOrder;
 import static org.utils.CouchDbAccessUtils.addObjectToRepository;
+
+import java.util.Collections;
+import java.util.List;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.opensrp.BaseIntegrationTest;
+import org.opensrp.domain.User;
+import org.opensrp.repository.couch.AllUsers;
+import org.opensrp.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class UserServiceTest extends BaseIntegrationTest {
 

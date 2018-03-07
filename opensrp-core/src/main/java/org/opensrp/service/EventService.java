@@ -6,14 +6,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.ektorp.CouchDbConnector;
 import org.joda.time.DateTime;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.opensrp.common.AllConstants.Client;
 import org.opensrp.domain.Event;
 import org.opensrp.domain.Obs;
-import org.opensrp.repository.AllEvents;
+import org.opensrp.repository.EventsRepository;
 import org.opensrp.util.DateTimeTypeConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,12 +25,12 @@ import com.google.gson.GsonBuilder;
 @Service
 public class EventService {
 	
-	private final AllEvents allEvents;
+	private final EventsRepository allEvents;
 	
 	private ClientService clientService;
 	
 	@Autowired
-	public EventService(AllEvents allEvents, ClientService clientService) {
+	public EventService(EventsRepository allEvents, ClientService clientService) {
 		this.allEvents = allEvents;
 		this.clientService = clientService;
 	}
@@ -56,20 +55,6 @@ public class EventService {
 		catch (IllegalArgumentException e) {
 			throw new IllegalStateException("Multiple events for baseEntityId and formSubmissionId combination ("
 			        + baseEntityId + "," + formSubmissionId + ")");
-		}
-	}
-	
-	public Event getByBaseEntityAndFormSubmissionId(CouchDbConnector targetDb, String baseEntityId, String formSubmissionId) {
-		try {
-			List<Event> el = allEvents.findByBaseEntityAndFormSubmissionId(targetDb, baseEntityId, formSubmissionId);
-			return getUniqueEventFromEventList(el);
-		}
-		catch (IllegalArgumentException e) {
-			throw new IllegalStateException("Multiple events for baseEntityId and formSubmissionId combination ("
-			        + baseEntityId + "," + formSubmissionId + ")");
-		}
-		catch (Exception e) {
-			return null;
 		}
 	}
 	
@@ -188,23 +173,6 @@ public class EventService {
 				
 			}
 		}
-		return event;
-	}
-	
-	public synchronized Event addEvent(CouchDbConnector targetDb, Event event) {
-		//		Event e = find(targetDb,event);
-		//		if(e != null){
-		//			throw new IllegalArgumentException("An event already exists with given list of identifiers. Consider updating data.["+e+"]");
-		//		}
-		if (event.getFormSubmissionId() != null
-		        && getByBaseEntityAndFormSubmissionId(targetDb, event.getBaseEntityId(), event.getFormSubmissionId()) != null) {
-			throw new IllegalArgumentException(
-			        "An event already exists with given baseEntity and formSubmission combination. Consider updating");
-		}
-		
-		event.setDateCreated(new DateTime());
-		
-		allEvents.add(targetDb, event);
 		return event;
 	}
 	
@@ -329,6 +297,6 @@ public class EventService {
 	}
 	
 	public List<Event> findByProviderAndEntityType(String provider) {
-		return allEvents.findByProviderAndEntityType(provider);
+		return allEvents.findByProvider(provider);
 	}
 }

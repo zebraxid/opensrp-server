@@ -1,5 +1,14 @@
 package org.opensrp.web.controller.it;
 
+import static java.util.Arrays.asList;
+import static org.junit.Assert.assertEquals;
+import static org.motechproject.delivery.schedule.util.SameItems.hasSameItemsAs;
+import static org.opensrp.web.rest.it.ResourceTestUtility.createErrorTraces;
+import static org.springframework.test.web.server.result.MockMvcResultMatchers.status;
+
+import java.util.List;
+import java.util.Map;
+
 import org.codehaus.jackson.JsonNode;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
@@ -9,21 +18,10 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.opensrp.domain.ErrorTrace;
 import org.opensrp.domain.ErrorTraceForm;
-import org.opensrp.repository.AllErrorTrace;
+import org.opensrp.repository.couch.AllErrorTrace;
 import org.opensrp.web.rest.it.BaseResourceTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.ModelAndView;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import static java.util.Arrays.asList;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.motechproject.delivery.schedule.util.SameItems.hasSameItemsAs;
-import static org.opensrp.web.rest.it.ResourceTestUtility.createErrorTraces;
-import static org.springframework.test.web.server.result.MockMvcResultMatchers.status;
 
 public class ErrorTraceControllerIntegrationTest extends BaseResourceTest {
 

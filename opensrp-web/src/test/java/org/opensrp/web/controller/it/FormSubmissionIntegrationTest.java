@@ -1,5 +1,14 @@
 package org.opensrp.web.controller.it;
 
+import static java.util.Arrays.asList;
+import static org.junit.Assert.assertEquals;
+import static org.springframework.test.web.server.result.MockMvcResultMatchers.status;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
 import org.codehaus.jackson.JsonNode;
 import org.junit.After;
 import org.junit.Before;
@@ -10,19 +19,10 @@ import org.opensrp.dto.form.MultimediaDTO;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.form.repository.AllFormSubmissions;
 import org.opensrp.form.service.FormSubmissionConverter;
-import org.opensrp.repository.MultimediaRepository;
+import org.opensrp.repository.couch.MultimediaRepositoryImpl;
 import org.opensrp.web.rest.it.BaseResourceTest;
 import org.opensrp.web.utils.TestResourceLoader;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-
-import static java.util.Arrays.asList;
-import static org.junit.Assert.assertEquals;
-import static org.springframework.test.web.server.result.MockMvcResultMatchers.status;
 
 public class FormSubmissionIntegrationTest extends BaseResourceTest {
 
@@ -30,7 +30,7 @@ public class FormSubmissionIntegrationTest extends BaseResourceTest {
 	private AllFormSubmissions allFormSubmissions;
 
 	@Autowired
-	private MultimediaRepository multimediaRepository;
+	private MultimediaRepositoryImpl multimediaRepository;
 
 	private TestResourceLoader testResourceLoader;
 

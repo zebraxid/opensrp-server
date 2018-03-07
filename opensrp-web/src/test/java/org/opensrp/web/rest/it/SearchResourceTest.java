@@ -1,5 +1,10 @@
 package org.opensrp.web.rest.it;
 
+import static java.util.Arrays.asList;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.springframework.test.web.server.result.MockMvcResultMatchers.status;
+
 import org.codehaus.jackson.JsonNode;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
@@ -8,21 +13,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.opensrp.domain.Address;
 import org.opensrp.domain.Client;
-import org.opensrp.repository.AllClients;
-import org.opensrp.repository.AllEvents;
+import org.opensrp.repository.couch.AllClients;
+import org.opensrp.repository.couch.AllEvents;
 import org.opensrp.web.rest.SearchResource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.server.MvcResult;
-import org.springframework.test.web.server.setup.MockMvcBuilders;
-
-import static java.util.Arrays.asList;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.opensrp.web.rest.it.ResourceTestUtility.createClients;
-import static org.springframework.test.web.server.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.server.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.server.result.MockMvcResultMatchers.status;
 
 public class SearchResourceTest extends BaseResourceTest {
 

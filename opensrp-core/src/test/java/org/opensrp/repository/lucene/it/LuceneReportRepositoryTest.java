@@ -1,6 +1,20 @@
 package org.opensrp.repository.lucene.it;
 
-import com.sun.org.apache.regexp.internal.RE;
+import static java.util.Arrays.asList;
+import static org.junit.Assert.assertEquals;
+import static org.opensrp.util.SampleFullDomainObject.BASE_ENTITY_ID;
+import static org.opensrp.util.SampleFullDomainObject.DIFFERENT_BASE_ENTITY_ID;
+import static org.opensrp.util.SampleFullDomainObject.EPOCH_DATE_TIME;
+import static org.opensrp.util.SampleFullDomainObject.LOCATION_ID;
+import static org.opensrp.util.SampleFullDomainObject.PROVIDER_ID;
+import static org.opensrp.util.SampleFullDomainObject.REPORT_TYPE;
+import static org.opensrp.util.SampleFullDomainObject.getReport;
+import static org.utils.AssertionUtil.assertTwoListAreSameIgnoringOrder;
+import static org.utils.CouchDbAccessUtils.addObjectToRepository;
+
+import java.util.Collections;
+import java.util.List;
+
 import org.ektorp.DbAccessException;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
@@ -9,18 +23,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.opensrp.BaseIntegrationTest;
 import org.opensrp.domain.Report;
-import org.opensrp.repository.AllReports;
+import org.opensrp.repository.couch.AllReports;
 import org.opensrp.repository.lucene.LuceneReportRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.Collections;
-import java.util.List;
-
-import static java.util.Arrays.asList;
-import static org.junit.Assert.assertEquals;
-import static org.opensrp.util.SampleFullDomainObject.*;
-import static org.utils.AssertionUtil.assertTwoListAreSameIgnoringOrder;
-import static org.utils.CouchDbAccessUtils.addObjectToRepository;
 
 public class LuceneReportRepositoryTest extends BaseIntegrationTest {
 
