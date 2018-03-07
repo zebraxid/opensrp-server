@@ -48,7 +48,7 @@ public class ANCSchedulesService extends ANCScheduleImplementation {
 		/*for (String schedule : NON_ANC_SCHEDULES) {
 			scheduler.enrollIntoSchedule(caseId, schedule, referenceDateForSchedule);
 		}*/
-		ScheduleCheckAndSaveOrNot(caseId, referenceDateForSchedule, provider, instanceId, startDate, true);
+		scheduleCheckAndSaveOrNot(caseId, referenceDateForSchedule, provider, instanceId, startDate, true);
 	}
 	
 	/**
@@ -60,9 +60,8 @@ public class ANCSchedulesService extends ANCScheduleImplementation {
 	 * @param instanceId form instance id
 	 * @param startDate LMP Date as String format
 	 */
-	private Map<String, String> ScheduleCheckAndSaveOrNot(String entityId, LocalDate referenceDateForSchedule,
-	                                                      String provider, String instanceId, String startDate,
-	                                                      boolean isSave) {
+	public Map<String, String> scheduleCheckAndSaveOrNot(String entityId, LocalDate referenceDateForSchedule,
+	                                                     String provider, String instanceId, String startDate, boolean isSave) {
 		
 		String milestone = null;
 		Map<String, String> map = new HashMap<String, String>();

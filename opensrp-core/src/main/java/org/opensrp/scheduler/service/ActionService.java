@@ -134,22 +134,27 @@ public class ActionService {
 		try {
 			List<Action> existingAlerts = allActions.findAlertByANMIdEntityIdScheduleName(anmIdentifier, caseID,
 			    scheduleName);
-			Date date = new Date();
-			if (doo != null) {
-				date = format.parse(doo);
-			}
-			DateTime FWBNFDTOO = new DateTime(date);
+			
 			if (existingAlerts.size() > 0) {
 				if (ANC.equalsIgnoreCase(scheduleName)) {
 					checkForUpdate(visitCode, alertStatus, startDate, expiryDate, existingAlerts);
 					long dateDiff = DateTimeUtil.getDaysDifference(expiryDate);
-					
+					logger.info("dateDiff:::" + dateDiff + "  Status: " + alertStatus.name() + "Start Date:" + startDate
+					        + " EndDate:" + expiryDate);
 					if (AlertStatus.urgent.name().equalsIgnoreCase(alertStatus.name()) && dateDiff <= 1) {
 						scheduleService.fulfillMilestone(caseID, scheduleName, new LocalDate());
+						if (visitCode.equalsIgnoreCase(ScheduleNames.anc4)) {
+							checkForUpdate(visitCode, AlertStatus.expired, startDate, expiryDate, existingAlerts);
+						}
 						
 					}
 				} else if (PNC.equalsIgnoreCase(scheduleName) || CHILD.equalsIgnoreCase(scheduleName)) {
 					String scheduleNameVisitCodeWithoutNumber;
+					Date date = null;
+					if (doo != null) {
+						date = format.parse(doo);
+					}
+					DateTime FWBNFDTOO = new DateTime(date);
 					if (PNC.equalsIgnoreCase(scheduleName)) {
 						scheduleNameVisitCodeWithoutNumber = ScheduleNames.PNCRV;
 					} else {
@@ -217,8 +222,7 @@ public class ActionService {
 		        && currentAlertStatus > existingAlertStatus) {
 			updateDataAction(visitCode, alertStatus, startDate, expiryDate, existingAlerts);
 			
-		} else if (!visitCode.equalsIgnoreCase(existingAlerts.get(0).data().get("visitCode"))
-		        && currentAlertStatus < existingAlertStatus) {
+		} else if (!visitCode.equalsIgnoreCase(existingAlerts.get(0).data().get("visitCode"))) {
 			updateDataAction(visitCode, alertStatus, startDate, expiryDate, existingAlerts);
 		}
 		

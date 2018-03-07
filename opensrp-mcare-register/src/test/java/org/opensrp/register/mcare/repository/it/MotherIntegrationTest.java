@@ -77,7 +77,7 @@ public class MotherIntegrationTest {
 		
 		HttpClient httpClient = new StdHttpClient.Builder()
 		
-		.host("localhost").port(5984).socketTimeout(1000000).username("Admin").password("mPower@1234").build();
+		.host("192.168.19.79").port(5984).socketTimeout(1000000).username("Admin").password("mPower@1234").build();
 		dbInstance = new StdCouchDbInstance(httpClient);
 		
 		stdCouchDbConnector = new StdCouchDbConnector("opensrp", dbInstance, new StdObjectMapperFactory());
@@ -139,20 +139,18 @@ public class MotherIntegrationTest {
 						
 						acn4++;//196
 					} else {
-						if (!ancParam.get("alert").equalsIgnoreCase(action.data().get("alertStatus"))
-						        && !ancParam.get("milestone").equalsIgnoreCase(visitCode) && isActive(enrollments)) {
+						if (!ancParam.get("milestone").equalsIgnoreCase(visitCode) && isActive(enrollments)) {
 							
 							notCurrentVisitiCodec++; //168
 							
 							// refresh schedule
+						} else if (!ancParam.get("alert").equalsIgnoreCase(action.data().get("alertStatus"))
+						        && ancParam.get("milestone").equalsIgnoreCase(visitCode) && isActive(enrollments)) {
+							notCurrentVisitiCodec++; //168
+							
 						} else {
 							currentVisitiCodec++; //416
-							/*System.err.println("Refresh Sataus:" + enrollments.get(0).getStatus() + " | "
-							        + action.getIsActionActive() + " |" + action.caseId() + " | "
-							        + ancParam.get("milestone") + " | " + action.data().get("alertStatus") + " | "
-							        + visitCode + " | " + action.data().get("expiryDate") + " | " + enrollments.size()
-							        + " | " + action.timestamp());*/
-							// false all schedule
+							
 						}
 					}
 					
@@ -161,19 +159,21 @@ public class MotherIntegrationTest {
 					if (action.data().get("alertStatus").equalsIgnoreCase("expired")) {
 						
 					} else {
-						if (!ancParam.get("alert").equalsIgnoreCase(action.data().get("alertStatus"))
-						        && !ancParam.get("alert").equalsIgnoreCase(visitCode) && isActive(enrollments)) {
-							notsubNotSame++; //203
-							// must need to refresh
-							System.err.println("CaseId: " + action.caseId());
+						if (!ancParam.get("milestone").equalsIgnoreCase(visitCode) && isActive(enrollments)) {
+							
+							notsubNotSame++; //168
+							
+							// refresh schedule
+						} else if (!ancParam.get("alert").equalsIgnoreCase(action.data().get("alertStatus"))
+						        && ancParam.get("milestone").equalsIgnoreCase(visitCode) && isActive(enrollments)) {
+							notsubNotSame++; //168
+							
 						} else {
 							notsubSame++;//1038/ may be nothing to do
 							
 						}
 					}
 					
-					/*System.err.println("ANC CaseId:" + action.caseId() + "visitCode:" + visitCode + " status:"
-					        + action.getIsActionActive());*/
 				}
 			} else {
 				m++;
