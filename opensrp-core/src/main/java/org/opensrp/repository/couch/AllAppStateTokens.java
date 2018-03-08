@@ -136,13 +136,5 @@ public class AllAppStateTokens extends MotechBaseRepository<AppStateToken> imple
 		db.update(entity);
 	}
 	
-	/**
-	 * @throws UpdateConflictException if there was an update conflict.
-	 */
-	public void add(CouchDbConnector db, AppStateToken entity) {
-		Assert.notNull(entity, "entity may not be null");
-		Assert.isTrue(Documents.isNew(entity), "entity must be new");
-		db.create(entity);
-	}
 	
 }

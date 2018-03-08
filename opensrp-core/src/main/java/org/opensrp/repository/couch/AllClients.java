@@ -16,6 +16,8 @@ import org.opensrp.common.AllConstants;
 import org.opensrp.domain.Client;
 import org.opensrp.repository.ClientsRepository;
 import org.opensrp.repository.lucene.LuceneClientRepository;
+import org.opensrp.search.AddressSearchBean;
+import org.opensrp.search.ClientSearchBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
@@ -23,7 +25,6 @@ import org.springframework.stereotype.Repository;
 import com.mysql.jdbc.StringUtils;
 
 @Repository
-
 public class AllClients extends MotechBaseRepository<Client> implements ClientsRepository {
 	
 	private LuceneClientRepository lcr;
@@ -94,7 +95,7 @@ public class AllClients extends MotechBaseRepository<Client> implements ClientsR
 	/**
 	 * Find a client based on the relationship id and between a range of date created dates e.g
 	 * given mother's id get children born at a given time
-	 * 
+	 * Use Beans to search for methods with very many search params
 	 * @param relationalId
 	 * @param dateFrom
 	 * @param dateTo
@@ -122,32 +123,25 @@ public class AllClients extends MotechBaseRepository<Client> implements ClientsR
 	//	public List<Client> findByRelationshipId(String identifier) {
 	//		return db.queryView(createQuery("clients_by_relationship").key(identifier).includeDocs(true), Client.class);
 	//	}
-	public List<Client> findByCriteria(String nameLike, String gender, DateTime birthdateFrom, DateTime birthdateTo,
-	                                   DateTime deathdateFrom, DateTime deathdateTo, String attributeType,
-	                                   String attributeValue, String addressType, String country, String stateProvince,
-	                                   String cityVillage, String countyDistrict, String subDistrict, String town,
-	                                   String subTown, DateTime lastEditFrom, DateTime lastEditTo) {
-		return lcr.getByCriteria(nameLike, gender, birthdateFrom, birthdateTo, deathdateFrom, deathdateTo, attributeType,
-		    attributeValue, addressType, country, stateProvince, cityVillage, countyDistrict, subDistrict, town, subTown,
-		    lastEditFrom, lastEditTo, null);//db.queryView(q.includeDocs(true), Client.class);
+
+	public List<Client> findByCriteria(ClientSearchBean searchBean, AddressSearchBean addressSearchBean,
+	                                   DateTime lastEditFrom, DateTime lastEditTo) {
+		return lcr.getByCriteria(searchBean, addressSearchBean, lastEditFrom, lastEditTo, null);//db.queryView(q.includeDocs(true), Client.class);
+
 	}
 	
 	public List<Client> findByDynamicQuery(String query) {
 		return lcr.getByCriteria(query);//db.queryView(q.includeDocs(true), Client.class);
 	}
 	
-	public List<Client> findByCriteria(String nameLike, String gender, DateTime birthdateFrom, DateTime birthdateTo,
-	                                   DateTime deathdateFrom, DateTime deathdateTo, String attributeType,
-	                                   String attributeValue, DateTime lastEditFrom, DateTime lastEditTo) {
-		return lcr.getByCriteria(nameLike, gender, birthdateFrom, birthdateTo, deathdateFrom, deathdateTo, attributeType,
-		    attributeValue, null, null, null, null, null, null, null, null, lastEditFrom, lastEditTo, null);
+
+	public List<Client> findByCriteria(ClientSearchBean searchBean) {
+		return lcr.getByCriteria(searchBean, new AddressSearchBean(), searchBean.getLastEditFrom(),
+		    searchBean.getLastEditTo(), null);
 	}
 	
-	public List<Client> findByCriteria(String addressType, String country, String stateProvince, String cityVillage,
-	                                   String countyDistrict, String subDistrict, String town, String subTown,
-	                                   DateTime lastEditFrom, DateTime lastEditTo) {
-		return lcr.getByCriteria(null, null, null, null, null, null, null, null, addressType, country, stateProvince,
-		    cityVillage, countyDistrict, subDistrict, town, subTown, lastEditFrom, lastEditTo, null);
+	public List<Client> findByCriteria(AddressSearchBean addressSearchBean, DateTime lastEditFrom, DateTime lastEditTo) {
+		return lcr.getByCriteria(new ClientSearchBean(), addressSearchBean, lastEditFrom, lastEditTo, null);
 	}
 	
 	public List<Client> findByRelationShip(String motherIndentier) {
@@ -187,6 +181,7 @@ public class AllClients extends MotechBaseRepository<Client> implements ClientsR
 		return db.queryView(createQuery("clients_by_empty_server_version").limit(200).includeDocs(true), Client.class);
 	}
 	
+
 	@View(name = "clients_by__server_version", map = "function(doc) { if (doc.type === 'Client') { emit([doc.serverVersion], null); } }")
 	public List<Client> findByServerVersion(long serverVersion) {
 		ComplexKey startKey = ComplexKey.of(serverVersion + 1);

@@ -27,6 +27,7 @@ import org.junit.Test;
 import org.opensrp.BaseIntegrationTest;
 import org.opensrp.domain.Client;
 import org.opensrp.repository.couch.AllClients;
+import org.opensrp.search.ClientSearchBean;
 import org.opensrp.service.SearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -67,10 +68,15 @@ public class SearchServiceTest extends BaseIntegrationTest {
 		queryAttributes.put("inactive", "false");
 		queryAttributes.put("lost_to_follow_up", "true");
 
-		List<Client> actualClients = searchService
-				.searchClient("first", "first", "middle", "last", expectedClient.getGender(), null, null, EPOCH_DATE_TIME,
-						new DateTime(DateTimeZone.UTC), EPOCH_DATE_TIME, new DateTime(DateTimeZone.UTC), 10);
-
+		
+		ClientSearchBean clientSearchBean=new ClientSearchBean();
+		clientSearchBean.setNameLike("first");
+		clientSearchBean.setGender(expectedClient.getGender());
+		clientSearchBean.setBirthdateFrom(EPOCH_DATE_TIME);
+		clientSearchBean.setBirthdateTo(new DateTime(DateTimeZone.UTC));
+		clientSearchBean.setLastEditFrom(EPOCH_DATE_TIME);
+		clientSearchBean.setLastEditTo(new DateTime(DateTimeZone.UTC));
+		List<Client> actualClients=searchService.searchClient(clientSearchBean, "first", "middle", "last",10);
 		assertTwoListAreSameIgnoringOrder(expectedClients, actualClients);
 	}
 

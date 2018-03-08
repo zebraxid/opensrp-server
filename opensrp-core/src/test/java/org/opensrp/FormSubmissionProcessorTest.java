@@ -54,12 +54,6 @@ public class FormSubmissionProcessorTest extends TestResourceLoader{
 	@Mock
 	private AllEvents allEvents;
 	
-	@Mock
-	private AllClients allClients;
-	
-	@Mock
-	private AllEvents allEvents;
-	
 	public FormSubmissionProcessorTest() throws IOException {
 		super();
 	}

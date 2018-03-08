@@ -70,12 +70,6 @@ public class FormEntityServiceTest extends TestResourceLoader{
     @Mock
     private FormEntityConverter fec;
     
-    @Mock
-    private AllClients allClients;
-    
-    @Mock
-    private AllEvents allEvents;
-    
     public FormEntityServiceTest() throws IOException {
 		super();
 	}
