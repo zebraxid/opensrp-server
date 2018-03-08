@@ -35,10 +35,6 @@ import org.opensrp.util.TestResourceLoader;
 
 public class FormSubmissionProcessorTest extends TestResourceLoader{
 
-	public FormSubmissionProcessorTest() throws IOException {
-		super();
-	}
-
 	@Mock
 	private FormSubmissionProcessor fsp;
 	@Mock
@@ -63,6 +59,10 @@ public class FormSubmissionProcessorTest extends TestResourceLoader{
 	
 	@Mock
 	private AllEvents allEvents;
+	
+	public FormSubmissionProcessorTest() throws IOException {
+		super();
+	}
 	
 	@Before
 	public void setup() throws IOException{
