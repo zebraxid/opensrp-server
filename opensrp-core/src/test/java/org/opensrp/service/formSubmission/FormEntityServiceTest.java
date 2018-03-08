@@ -73,6 +73,12 @@ public class FormEntityServiceTest extends TestResourceLoader{
     @Mock
     private FormEntityConverter fec;
     
+    @Mock
+    private AllClients allClients;
+    
+    @Mock
+    private AllEvents allEvents;
+    
     @Before
     public void setUp() throws Exception {
     	scheduleConfig = new ScheduleConfig("/schedules/schedule-config.xls"); 

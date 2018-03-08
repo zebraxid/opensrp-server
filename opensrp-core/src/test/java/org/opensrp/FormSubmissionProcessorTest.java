@@ -58,6 +58,12 @@ public class FormSubmissionProcessorTest extends TestResourceLoader{
 	@Mock
 	private AllEvents allEvents;
 	
+	@Mock
+	private AllClients allClients;
+	
+	@Mock
+	private AllEvents allEvents;
+	
 	@Before
 	public void setup() throws IOException{
 		initMocks(this);
