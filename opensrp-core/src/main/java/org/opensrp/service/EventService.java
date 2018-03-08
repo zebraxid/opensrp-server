@@ -247,6 +247,9 @@ public class EventService {
 					original.addIdentifier(k, updatedEvent.getIdentifier(k));
 				}
 			}
+			for (String k : updatedEvent.getIdentifiers().keySet()) {
+				original.addIdentifier(k, updatedEvent.getIdentifier(k));
+			}
 			
 			original.setDateEdited(DateTime.now());
 			allEvents.update(original);
