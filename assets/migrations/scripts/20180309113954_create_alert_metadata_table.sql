@@ -14,36 +14,37 @@
 --    limitations under the License.
 --
 
--- // create report metadata table
+-- // create alert metadata table
 -- Migration SQL that makes the change goes here.
 
-CREATE TABLE core.report_metadata
+CREATE TABLE core.alert_metadata
 (
     id bigserial NOT NULL,
-    report_id bigint REFERENCES core.report (id),
+    alert_id bigint REFERENCES core.alert (id),
     base_entity_id character varying NOT NULL,
 	server_version timestamp without time zone,
-	report_type character varying,
     provider_id character varying,
     location_id character varying,
 	team character varying,
 	team_id character varying,
+	is_active boolean,
+	trigger_name character varying,
     PRIMARY KEY (id)
 )
 WITH (
     OIDS = FALSE
-) TABLESPACE core_space;
+)TABLESPACE core_space;
 
-CREATE INDEX report_metadata_base_entity_id_index ON core.report_metadata (base_entity_id);
-CREATE INDEX report_metadata_server_version_index ON core.report_metadata (server_version);
-CREATE INDEX report_metadata_report_type_index ON core.report_metadata (report_type);
-CREATE INDEX report_metadata_provider_id_index ON core.report_metadata (provider_id);
-CREATE INDEX report_metadata_location_id_index ON core.report_metadata (location_id);
-CREATE INDEX report_metadata_team_index ON core.report_metadata (team);
-CREATE INDEX report_metadata_team_id_index ON core.report_metadata (team_id);
-
+CREATE INDEX alert_metadata_base_entity_id_index ON core.alert_metadata (base_entity_id);
+CREATE INDEX alert_metadata_server_version_index ON core.alert_metadata (server_version);
+CREATE INDEX alert_metadata_provider_id_index ON core.alert_metadata (provider_id);
+CREATE INDEX alert_metadata_location_id_index ON core.alert_metadata (location_id);
+CREATE INDEX alert_metadata_team_index ON core.alert_metadata (team);
+CREATE INDEX alert_metadata_team_id_index ON core.alert_metadata (team_id);
+CREATE INDEX alert_metadata_is_active_index ON core.alert_metadata (is_active);
+CREATE INDEX alert_metadata_trigger_name_index ON core.alert_metadata (trigger_name);
 
 -- //@UNDO
 -- SQL to undo the change goes here.
 
-DROP TABLE core.report_metadata;
+DROP TABLE core.alert_metadata;
