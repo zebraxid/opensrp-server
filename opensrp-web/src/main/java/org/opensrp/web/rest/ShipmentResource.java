@@ -10,6 +10,8 @@ import org.opensrp.common.AllConstants;
 import org.opensrp.domain.Shipment;
 import org.opensrp.service.ShipmentService;
 import org.opensrp.util.DateTimeTypeConverter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,9 +29,10 @@ import java.util.Map;
 
 @Controller
 @RequestMapping(value = "/rest/stockresource/shipment")
-public class ShipmentResource {
+public class ShipmentResource extends RestResource<Shipment> {
 
     private ShipmentService shipmentService;
+    private Logger logger = LoggerFactory.getLogger(ShipmentService.class.getName());
     private Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
             .registerTypeAdapter(DateTime.class, new DateTimeTypeConverter()).create();
 
