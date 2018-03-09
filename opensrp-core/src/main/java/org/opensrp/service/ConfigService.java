@@ -15,7 +15,8 @@ public class ConfigService {
 	private final AppStateTokensRepository allAppStateTokens;
 	
 	@Autowired
-	public ConfigService(AppStateTokensRepository allAppStateTokens) {
+	public ConfigService(AppStateTokensRepository allAppStateTokens)
+	{
 		this.allAppStateTokens = allAppStateTokens;
 	}
 	
@@ -65,7 +66,7 @@ public class ConfigService {
 		allAppStateTokens.add(token);
 		return token;
 	}
-	
+
 	private AppStateToken getUniqueAppStateTokeFromTokenList(List<AppStateToken> appStateTokens, Enum<?> tokenName) {
 		if (appStateTokens.size() > 1) {
 			throw new IllegalStateException("System was found to have multiple token with same name (" + tokenName.name()
@@ -107,4 +108,5 @@ public class ConfigService {
 		}
 		return null;
 	}
+
 }

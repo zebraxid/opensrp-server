@@ -1,5 +1,7 @@
 package org.opensrp.service;
 
+
+
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -48,14 +50,15 @@ public class EventService {
 	}
 	
 	public Event getByBaseEntityAndFormSubmissionId(String baseEntityId, String formSubmissionId) {
-		try {
-			List<Event> el = allEvents.findByBaseEntityAndFormSubmissionId(baseEntityId, formSubmissionId);
-			return getUniqueEventFromEventList(el);
-		}
-		catch (IllegalArgumentException e) {
+		List<Event> el = allEvents.findByBaseEntityAndFormSubmissionId(baseEntityId, formSubmissionId);
+		if (el.size() > 1) {
 			throw new IllegalStateException("Multiple events for baseEntityId and formSubmissionId combination ("
 			        + baseEntityId + "," + formSubmissionId + ")");
 		}
+		if (el.size() == 0) {
+			return null;
+		}
+		return el.get(0);
 	}
 	
 	public List<Event> findByBaseEntityId(String baseEntityId) {
@@ -96,8 +99,8 @@ public class EventService {
 				return getUniqueEventFromEventList(el);
 			}
 			catch (IllegalArgumentException e) {
-				throw new IllegalArgumentException("Multiple events with identifier type " + idt + " and ID "
-				        + event.getIdentifier(idt) + " exist.");
+				throw new IllegalArgumentException(
+				        "Multiple events with identifier type " + idt + " and ID " + event.getIdentifier(idt) + " exist.");
 			}
 		}
 		return null;
@@ -173,6 +176,7 @@ public class EventService {
 				
 			}
 		}
+		
 		return event;
 	}
 	

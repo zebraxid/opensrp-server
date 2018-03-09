@@ -191,7 +191,7 @@ public class ClientService {
 	public List<Client> notInOpenMRSByServerVersion(long serverVersion, Calendar calendar) {
 		return allClients.notInOpenMRSByServerVersion(serverVersion, calendar);
 	}
-
+	
 	public List<Client> findByFieldValue(String field, List<String> ids) {
 		return allClients.findByFieldValue(field, ids);
 	}

@@ -94,8 +94,9 @@ public class AllClients extends MotechBaseRepository<Client> implements ClientsR
 	
 	/**
 	 * Find a client based on the relationship id and between a range of date created dates e.g
-	 * given mother's id get children born at a given time
-	 * Use Beans to search for methods with very many search params
+	 * given mother's id get children born at a given time Use Beans to search for methods with very
+	 * many search params
+	 * 
 	 * @param relationalId
 	 * @param dateFrom
 	 * @param dateTo
@@ -123,18 +124,16 @@ public class AllClients extends MotechBaseRepository<Client> implements ClientsR
 	//	public List<Client> findByRelationshipId(String identifier) {
 	//		return db.queryView(createQuery("clients_by_relationship").key(identifier).includeDocs(true), Client.class);
 	//	}
-
+	
 	public List<Client> findByCriteria(ClientSearchBean searchBean, AddressSearchBean addressSearchBean,
 	                                   DateTime lastEditFrom, DateTime lastEditTo) {
 		return lcr.getByCriteria(searchBean, addressSearchBean, lastEditFrom, lastEditTo, null);//db.queryView(q.includeDocs(true), Client.class);
-
 	}
 	
 	public List<Client> findByDynamicQuery(String query) {
 		return lcr.getByCriteria(query);//db.queryView(q.includeDocs(true), Client.class);
 	}
 	
-
 	public List<Client> findByCriteria(ClientSearchBean searchBean) {
 		return lcr.getByCriteria(searchBean, new AddressSearchBean(), searchBean.getLastEditFrom(),
 		    searchBean.getLastEditTo(), null);
@@ -181,7 +180,6 @@ public class AllClients extends MotechBaseRepository<Client> implements ClientsR
 		return db.queryView(createQuery("clients_by_empty_server_version").limit(200).includeDocs(true), Client.class);
 	}
 	
-
 	@View(name = "clients_by__server_version", map = "function(doc) { if (doc.type === 'Client') { emit([doc.serverVersion], null); } }")
 	public List<Client> findByServerVersion(long serverVersion) {
 		ComplexKey startKey = ComplexKey.of(serverVersion + 1);

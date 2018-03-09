@@ -22,30 +22,30 @@ public class AllAppStateTokens extends MotechBaseRepository<AppStateToken> imple
 	
 	private CouchDbConnector db;
 	
-	@Autowired
-	protected AllAppStateTokens(@Qualifier(AllConstants.OPENSRP_DATABASE_CONNECTOR) CouchDbConnector db) {
-		super(AppStateToken.class, db);
-		this.db = db;
-	}
-	
-	@GenerateView
+    @Autowired
+    protected AllAppStateTokens(@Qualifier(AllConstants.OPENSRP_DATABASE_CONNECTOR) CouchDbConnector db) {
+        super(AppStateToken.class, db);
+        this.db=db;
+    }
+    
+    @GenerateView
 	public List<AppStateToken> findByName(String name) {
-		return queryView("by_name", name);
+    	return queryView("by_name", name);
 	}
-	
-	@GenerateView
-	public List<AppStateToken> findByName(CouchDbConnector db, String name) {
-		return db.queryView(createQuery("by_name").includeDocs(true).key(name), AppStateToken.class);
+    @GenerateView
+	public List<AppStateToken> findByName(CouchDbConnector db,String name) {
+    	return db.queryView(createQuery("by_name")
+				.includeDocs(true)
+				.key(name),
+				AppStateToken.class);
 	}
-	
-	/**
+    /**
 	 * @throws UpdateConflictException if there was an update conflict.
 	 */
 	public void update(AppStateToken entity) {
 		Assert.notNull(entity, "entity may not be null");
 		db.update(entity);
 	}
-	
 	/**
 	 * @throws UpdateConflictException if there was an update conflict.
 	 */
@@ -61,7 +61,6 @@ public class AllAppStateTokens extends MotechBaseRepository<AppStateToken> imple
 		Assert.isTrue(Documents.isNew(entity), "entity must be new");
 		db.create(entity);
 	}
-	
 	/**
 	 * Gets appstatetoken from the specified database
 	 * 
@@ -81,10 +80,25 @@ public class AllAppStateTokens extends MotechBaseRepository<AppStateToken> imple
 		return ol.size() == 0 ? null : ol.get(0);
 	}
 	
+
+	public void updateAppStateToken(CouchDbConnector db,Enum<?> tokenName, Object value) {
+		List<AppStateToken> ol = findByName(db,tokenName.name());
+		if(ol.size() > 1){
+			throw new IllegalStateException("System was found to have multiple token with same name ("+tokenName.name()+"). This can lead to potential critical inconsistencies.");
+		}
+		
+		if(ol.size() == 0){
+			throw new IllegalStateException("Property with name ("+tokenName.name()+") not found.");
+		}
+		
+		AppStateToken ast = ol.get(0);
+		ast.setValue(value);
+		ast.setLastEditDate(System.currentTimeMillis());
+		db.update(ast);
+	}
+	
 	/**
-	 * Registers a new token to manage the specified variable state (by token name) of App. The
-	 * token is registered in the specified db
-	 * 
+	 * Registers a new token to manage the specified variable state (by token name) of App. The token is registered in the specified db
 	 * @param db
 	 * @param tokenName
 	 * @param defaultValue
@@ -92,49 +106,22 @@ public class AllAppStateTokens extends MotechBaseRepository<AppStateToken> imple
 	 * @param suppressExceptionIfExists
 	 * @return
 	 */
-	public AppStateToken registerAppStateToken(CouchDbConnector db, Enum<?> tokenName, Object defaultValue,
-	                                           String description, boolean suppressExceptionIfExists) {
-		if (tokenName == null || StringUtils.isEmptyOrWhitespaceOnly(description)) {
+	public AppStateToken registerAppStateToken(CouchDbConnector db,Enum<?> tokenName, Object defaultValue, String description, boolean suppressExceptionIfExists) {
+		if(tokenName == null || StringUtils.isEmptyOrWhitespaceOnly(description)){
 			throw new IllegalArgumentException("Token name and description must be provided");
 		}
 		
-		List<AppStateToken> atl = findByName(db, tokenName.name());
-		if (atl.size() > 0) {
-			if (!suppressExceptionIfExists) {
-				throw new IllegalArgumentException("Token with given name (" + tokenName.name() + ") already exists.");
+		List<AppStateToken> atl = findByName(db,tokenName.name());
+		if(atl.size() > 0){
+			if(!suppressExceptionIfExists){
+				throw new IllegalArgumentException("Token with given name ("+tokenName.name()+") already exists.");
 			}
 			return atl.get(0);
 		}
 		
 		AppStateToken token = new AppStateToken(tokenName.name(), defaultValue, 0L, description);
-		add(db, token);
+		add(db,token);
 		return token;
 	}
-	
-	public void updateAppStateToken(CouchDbConnector db, Enum<?> tokenName, Object value) {
-		List<AppStateToken> ol = findByName(db, tokenName.name());
-		if (ol.size() > 1) {
-			throw new IllegalStateException("System was found to have multiple token with same name (" + tokenName.name()
-			        + "). This can lead to potential critical inconsistencies.");
-		}
-		
-		if (ol.size() == 0) {
-			throw new IllegalStateException("Property with name (" + tokenName.name() + ") not found.");
-		}
-		
-		AppStateToken ast = ol.get(0);
-		ast.setValue(value);
-		ast.setLastEditDate(System.currentTimeMillis());
-		update(db, ast);
-	}
-	
-	/**
-	 * @throws UpdateConflictException if there was an update conflict.
-	 */
-	public void update(CouchDbConnector db, AppStateToken entity) {
-		Assert.notNull(entity, "entity may not be null");
-		db.update(entity);
-	}
-	
-	
+
 }

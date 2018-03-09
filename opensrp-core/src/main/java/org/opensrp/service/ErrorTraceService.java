@@ -16,10 +16,10 @@ import org.springframework.stereotype.Service;
 public class ErrorTraceService {
 	
 	private final ErrorTraceRepository allErrorTrace;
-	
+
 	@Autowired
-	public ErrorTraceService(ErrorTraceRepository allErrorTrace) {
-		this.allErrorTrace = allErrorTrace;
+	public ErrorTraceService(ErrorTraceRepository allErrorTrace)  {
+		this.allErrorTrace=allErrorTrace;
 	}
 	
 	public void addError(ErrorTrace entity) {
