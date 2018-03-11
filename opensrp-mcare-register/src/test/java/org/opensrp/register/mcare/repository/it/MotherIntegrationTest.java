@@ -77,7 +77,7 @@ public class MotherIntegrationTest {
 		
 		HttpClient httpClient = new StdHttpClient.Builder()
 		
-		.host("192.168.19.79").port(5984).socketTimeout(1000000).username("Admin").password("mPower@1234").build();
+		.host("192.168.22.152").port(5984).socketTimeout(1000000).username("Admin").password("mPower@1234").build();
 		dbInstance = new StdCouchDbInstance(httpClient);
 		
 		stdCouchDbConnector = new StdCouchDbConnector("opensrp", dbInstance, new StdObjectMapperFactory());
@@ -97,7 +97,7 @@ public class MotherIntegrationTest {
 	//function(doc) { if(doc.type === 'Enrollment' && doc.scheduleName=='Ante Natal Care Reminder Visit') emit(doc.externalId); }
 	//http://localhost:5984/_utils/database.html?opensrp/_design/Action/_view/all#
 	//function(doc) { if(doc.type === 'Action' && doc.data.scheduleName=='Ante Natal Care Reminder Visit' && doc.data.alertStatus!='expired') {emit(null, doc._id)} }
-	@Ignore
+	
 	@Test
 	public void ancScheduleTest() {
 		int i = 0;
@@ -131,47 +131,13 @@ public class MotherIntegrationTest {
 				boolean ancStatus = isANCSubmited(mother, visitCode);
 				if (ancStatus) {// if submitted //780
 				
-					/*System.err.println("ANC CaseId:" + action.caseId() + "visitCode:" + visitCode + " status:"
-					        + action.getIsActionActive());*/
-					if (SCHEDULE_ANC_4.equalsIgnoreCase(visitCode)) {
-						//should false all scedule; // problem in tab synced schedule
-						// unenroll all schedule
-						
-						acn4++;//196
+					if (ancParam.get("alert").equalsIgnoreCase(action.data().get("alertStatus"))
+					        && ancParam.get("milestone").equalsIgnoreCase(visitCode) && isActive(enrollments)) {
+						action.markAsInActive();
+						//allActions.update(action);
+						currentVisitiCodec++; //416
 					} else {
-						if (!ancParam.get("milestone").equalsIgnoreCase(visitCode) && isActive(enrollments)) {
-							
-							notCurrentVisitiCodec++; //168
-							
-							// refresh schedule
-						} else if (!ancParam.get("alert").equalsIgnoreCase(action.data().get("alertStatus"))
-						        && ancParam.get("milestone").equalsIgnoreCase(visitCode) && isActive(enrollments)) {
-							notCurrentVisitiCodec++; //168
-							
-						} else {
-							currentVisitiCodec++; //416
-							
-						}
-					}
-					
-				} else { // not submitted
-					i++; //1875
-					if (action.data().get("alertStatus").equalsIgnoreCase("expired")) {
 						
-					} else {
-						if (!ancParam.get("milestone").equalsIgnoreCase(visitCode) && isActive(enrollments)) {
-							
-							notsubNotSame++; //168
-							
-							// refresh schedule
-						} else if (!ancParam.get("alert").equalsIgnoreCase(action.data().get("alertStatus"))
-						        && ancParam.get("milestone").equalsIgnoreCase(visitCode) && isActive(enrollments)) {
-							notsubNotSame++; //168
-							
-						} else {
-							notsubSame++;//1038/ may be nothing to do
-							
-						}
 					}
 					
 				}
@@ -180,9 +146,7 @@ public class MotherIntegrationTest {
 			}
 			
 		}
-		System.err.println("CNT:" + i + "Not Mother:" + m + "acn4:" + acn4 + "currentVisitiCodec:" + currentVisitiCodec
-		        + "   notCurrentVisitiCodec:" + notCurrentVisitiCodec + "  expired:" + expired + "unenroll: " + unenroll
-		        + "  enroll:" + enroll + " notsubSame  :" + notsubSame + " notsubNotSame;" + notsubNotSame);
+		System.err.println("currentVisitiCodec:" + currentVisitiCodec);
 	}
 	
 	@Ignore
@@ -433,31 +397,17 @@ public class MotherIntegrationTest {
 		if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(23).toPeriod())) {
 			//161
 			milestone = SCHEDULE_ANC_1;
-			if (DateUtil
-			        .isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(8).toPeriod().minusDays(6))) {
-				alertStaus = AlertStatus.normal;
-				ancStartDate = new DateTime(start);
-				ancExpireDate = new DateTime(start).plusDays(DateTimeDuration.ANC1NORMALEND);
-			} else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(8).toPeriod()
-			        .minusDays(1))) {
-				alertStaus = AlertStatus.upcoming;
-				ancStartDate = new DateTime(start).plusDays(DateTimeDuration.ANC1UPCOMINGSTART);
-				ancExpireDate = new DateTime(ancStartDate).plusDays(DateTimeDuration.ANC1UPCOMINGEND);
+			if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(8).toPeriod())) {
+				// til 50- 56
+				if (datediff <= -DateTimeDuration.ANC1UPCOMINGSTART) {
+					alertStaus = AlertStatus.upcoming;
+					
+				}
 			} else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(23).toPeriod()
-			        .minusDays(1))) {
-				//160
+			        .plusDays(1))) {
+				// til 57-162
 				alertStaus = AlertStatus.urgent;
-				ancStartDate = new DateTime(start).plusDays(DateTimeDuration.ANC1URGENTSTART);
-				ancExpireDate = new DateTime(ancStartDate).plusDays(DateTimeDuration.ANC1URGENTEND);
-				System.err.println("from anc1 urgent");
-			} else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(23).toPeriod())) {
-				//162
-				alertStaus = AlertStatus.expired;
-				ancStartDate = new DateTime(start).plusDays(DateTimeDuration.ANC1EXPIREDSTART);
-				ancExpireDate = new DateTime(ancStartDate).plusDays(DateTimeDuration.ANC1EXPIREDEND);
 				
-			} else {
-				alertStaus = AlertStatus.expired;
 			}
 			
 		} else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(31).toPeriod())) {
@@ -470,24 +420,52 @@ public class MotherIntegrationTest {
 				ancExpireDate = new DateTime(ancStartDate).plusDays(DateTimeDuration.ANC1EXPIREDEND);
 				ancStartDate = ancExpireDate;
 				
-			} else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(24).toPeriod()
-			        .minusDays(1))) {//167
-				alertStaus = AlertStatus.upcoming;
-				ancStartDate = new DateTime(start).plusDays(DateTimeDuration.ANC2UPCOMINGSTART);
-				ancExpireDate = new DateTime(ancStartDate).plusDays(DateTimeDuration.ANC2UPCOMINGEND);
-				
 			} else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(31).toPeriod()
-			        .minusDays(1))) {//216
-				alertStaus = AlertStatus.urgent;
-				ancStartDate = new DateTime(start).plusDays(DateTimeDuration.ANC2URGENTSTART);
-				ancExpireDate = new DateTime(ancStartDate).plusDays(DateTimeDuration.ANC2URGENTEND);
+			        .plusDays(1))) {//167
+				if (datediff == -DateTimeDuration.LASTDAYOFANC1) {
+					alertStaus = AlertStatus.urgent;
+					
+				} else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(24).toPeriod())) {
+					// till 168
+					alertStaus = AlertStatus.upcoming;
+					
+				} else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(31).toPeriod()
+				        .plusDays(1))) {
+					// till 219
+					alertStaus = AlertStatus.urgent;
+					
+				}
 				
-			} else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(31).toPeriod())) {
-				//217
-				alertStaus = AlertStatus.expired;
-				ancStartDate = new DateTime(start).plusDays(DateTimeDuration.ANC2EXPIREDSTART);
-				ancExpireDate = new DateTime(ancStartDate).plusDays(DateTimeDuration.ANC2EXPIREDEND);
+			} else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(35).toPeriod()
+			        .plusDays(1))) {
+				if (datediff == DateTimeDuration.LASTDAYOFANC2) {
+					alertStaus = AlertStatus.urgent;
+					
+				} else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(32).toPeriod())) {
+					// till 224
+					alertStaus = AlertStatus.upcoming;
+					
+				} else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(35).toPeriod()
+				        .plusDays(1))) {
+					// 246
+					alertStaus = AlertStatus.urgent;
+					
+				}
 				
+			} else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(44).toPeriod())) {
+				if (datediff == DateTimeDuration.LASTDAYOFAN3) {
+					// till 
+					alertStaus = AlertStatus.urgent;
+					
+				} else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(36).toPeriod())) {
+					// from  248  to 252
+					alertStaus = AlertStatus.upcoming;
+					
+				} else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(44).toPeriod())) {
+					// 253 - 308
+					alertStaus = AlertStatus.urgent;
+					
+				}
 			} else {
 				alertStaus = AlertStatus.expired;
 			}
@@ -497,27 +475,20 @@ public class MotherIntegrationTest {
 			milestone = SCHEDULE_ANC_3;
 			if (datediff == -218) {
 				alertStaus = AlertStatus.expired;
-				ancExpireDate = new DateTime(ancStartDate).plusDays(DateTimeDuration.ANC2EXPIREDEND);
 				
 			} else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(32).toPeriod()
 			        .minusDays(1))) {
 				//223
 				alertStaus = AlertStatus.upcoming;
-				ancStartDate = new DateTime(start).plusDays(DateTimeDuration.ANC3UPCOMINGSTART);
-				ancExpireDate = new DateTime(ancStartDate).plusDays(DateTimeDuration.ANC3UPCOMINGEND);
 				
 			} else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(35).toPeriod()
 			        .minusDays(1))) {
 				//244
 				alertStaus = AlertStatus.urgent;
-				ancStartDate = new DateTime(start).plusDays(DateTimeDuration.ANC3URGENTSTART);
-				ancExpireDate = new DateTime(ancStartDate).plusDays(DateTimeDuration.ANC3URGENTEND);
 				
 			} else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(35).toPeriod())) {
 				//245
 				alertStaus = AlertStatus.expired;
-				ancStartDate = new DateTime(start).plusDays(DateTimeDuration.ANC3EXPIREDSTART);
-				ancExpireDate = new DateTime(ancStartDate).plusDays(DateTimeDuration.ANC3EXPIREDEND);
 				
 			} else {
 				alertStaus = AlertStatus.expired;
@@ -526,7 +497,7 @@ public class MotherIntegrationTest {
 		} else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(44).toPeriod()
 		        .minusDays(1))) {
 			// 307
-			System.err.println("ojjj");
+			
 			milestone = SCHEDULE_ANC_4;
 			if (datediff == -246) {
 				alertStaus = AlertStatus.expired;
@@ -536,24 +507,16 @@ public class MotherIntegrationTest {
 			        .minusDays(1))) {
 				//251
 				alertStaus = AlertStatus.upcoming;
-				ancStartDate = new DateTime(start).plusDays(DateTimeDuration.ANC4UPCOMINGSTART);
-				ancExpireDate = new DateTime(ancStartDate).plusDays(DateTimeDuration.ANC4UPCOMINGEND);
 				
 			} else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(44).toPeriod()
 			        .minusDays(2))) {
 				//306
 				alertStaus = AlertStatus.urgent;
-				ancStartDate = new DateTime(start).plusDays(DateTimeDuration.ANC4URGENTSTART);
-				ancExpireDate = new DateTime(ancStartDate).plusDays(DateTimeDuration.ANC4URGENTEND);
 				
 			} else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(44).toPeriod()
 			        .minusDays(1))) {
 				//307
 				alertStaus = AlertStatus.expired;
-				ancStartDate = new DateTime(start).plusDays(DateTimeDuration.ANC4EXPIREDSTART);
-				ancExpireDate = new DateTime(ancStartDate).plusDays(DateTimeDuration.ANC4EXPIREDEND);
-				
-			} else {
 				
 			}
 			
@@ -681,6 +644,7 @@ public class MotherIntegrationTest {
 		
 	}
 	
+	// need to apply  in live
 	@Ignore
 	@Test
 	public void expiredScheduleCorrection() {
@@ -693,7 +657,9 @@ public class MotherIntegrationTest {
 		}
 	}
 	
+	// need to apply  in live
 	//function(doc) { if(doc.type === 'Action' && doc.data.alertStatus=='expired' && doc.data.scheduleName=='Ante Natal Care Reminder Visit') {emit([doc.data.scheduleName], null)} }
+	@Ignore
 	@Test
 	public void updateANCForExpiredSchedule() {
 		List<Action> actions = allActions.findActionByScheduleName("Ante Natal Care Reminder Visit");
@@ -731,5 +697,44 @@ public class MotherIntegrationTest {
 			
 		}
 		System.err.println("anc1:" + anc1 + " anc2:" + anc2 + " anc3:" + anc3 + " anc4:" + anc4 + " e:" + e);
+	}
+	
+	//function(doc) { if(doc.type === 'Action' && doc.data.visitCode=='ancrv_4' && doc.data.scheduleName=='Ante Natal Care Reminder Visit') {emit([doc.data.scheduleName], null)} }
+	
+	// need to apply  in live
+	@Ignore
+	@Test
+	public void expiredAndSubmittedScheduleCorrection() {
+		String visitCode = "";
+		int acn4 = 0;
+		int c = 0;
+		List<Action> actions = allActions.findActionByScheduleName("Ante Natal Care Reminder Visit");
+		for (Action action : actions) {
+			try {
+				visitCode = action.data().get("visitCode");
+				Mother mother = allMothers.findByCaseId(action.caseId());
+				//System.err.println("Mother;" + mother);
+				boolean ancStatus = isANCSubmited(mother, visitCode);
+				if (mother != null && mother.PROVIDERID() != null) {
+					if (ancStatus) {
+						
+						if (SCHEDULE_ANC_4.equalsIgnoreCase(visitCode)) {
+							
+							action.markAsInActive();
+							allActions.update(action);
+							acn4++;//196
+							System.err.println("visitCode" + visitCode + "" + action.getIsActionActive());
+						}
+					}
+					
+				}
+			}
+			catch (Exception e) {
+				c++;
+				System.err.println("" + e.getMessage() + " caseId:" + action.caseId());
+			}
+			
+		}
+		System.err.println("acn4:" + acn4 + "c:" + c);
 	}
 }

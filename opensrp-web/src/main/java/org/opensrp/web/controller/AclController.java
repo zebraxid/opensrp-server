@@ -18,6 +18,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -347,12 +348,15 @@ public class AclController {
 		
 	}
 	
-	private String checkENCC(LocalDate referenceDateForSchedule, String referenceDate) {
+	private Map<String, String> checkENCC(LocalDate referenceDateForSchedule, String referenceDate) {
 		
 		String milestone = null;
-		
+		DateTime startDate = null;
+		DateTime expireDate = null;
+		Map<String, String> map = new HashMap<String, String>();
 		Date date = null;
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		AlertStatus alertStaus = null;
 		try {
 			date = format.parse(referenceDate);
 			
@@ -363,32 +367,66 @@ public class AclController {
 		}
 		DateTime FWBNFDTOO = new DateTime(date);
 		long datediff = ScheduleLogService.getDaysDifference(FWBNFDTOO);
-		System.err.println("datediff:" + datediff);
+		
 		if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Days.ONE.toPeriod())) {
 			milestone = SCHEDULE_ENCC_1;
+			startDate = new DateTime(FWBNFDTOO);
+			expireDate = new DateTime(FWBNFDTOO);
+			if (datediff == 0) {
+				alertStaus = AlertStatus.upcoming;
+				
+			} else if (datediff == -1) {
+				alertStaus = AlertStatus.urgent;
+				
+			}
 			
 		} else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Days.FIVE.toPeriod())) {
 			
 			milestone = SCHEDULE_ENCC_2;
 			
+			if (datediff == -2) {
+				alertStaus = AlertStatus.upcoming;
+				
+			} else {
+				alertStaus = AlertStatus.urgent;
+				
+			}
+			
 		} else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Days.SEVEN.plus(2).toPeriod())) {
 			
 			milestone = SCHEDULE_ENCC_3;
+			startDate = new DateTime(FWBNFDTOO).plusDays(DateTimeDuration.encc2);
+			expireDate = new DateTime(FWBNFDTOO).plusDays(DateTimeDuration.encc3);
+			
+			if (datediff == -6 || datediff == -7) {
+				alertStaus = AlertStatus.upcoming;
+				
+			} else if (datediff == -8) {
+				alertStaus = AlertStatus.urgent;
+				
+			} else {
+				alertStaus = AlertStatus.expired;
+				
+			}
 			
 		} else {
-			milestone = "expired";
+			milestone = SCHEDULE_ENCC_3;
+			alertStaus = AlertStatus.expired;
 			
 		}
-		return milestone;
+		map.put("alert", alertStaus.name());
+		map.put("milestone", milestone);
+		return map;
 		
 	}
 	
-	private String checkPNC(LocalDate referenceDateForSchedule, String referenceDate) {
+	private Map<String, String> checkPNC(LocalDate referenceDateForSchedule, String referenceDate) {
 		String milestone = null;
 		DateTime startDate = null;
 		DateTime expireDate = null;
 		AlertStatus alertStaus = null;
 		Date date = null;
+		Map<String, String> map = new HashMap<String, String>();
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		try {
 			date = format.parse(referenceDate);
@@ -409,7 +447,6 @@ public class AclController {
 				alertStaus = AlertStatus.upcoming;
 				
 			} else if (datediff == -1) {
-				
 				alertStaus = AlertStatus.urgent;
 				
 			}
@@ -448,7 +485,9 @@ public class AclController {
 			alertStaus = AlertStatus.expired;
 			
 		}
-		return milestone;
+		map.put("alert", alertStaus.name());
+		map.put("milestone", milestone);
+		return map;
 		
 	}
 	
@@ -524,12 +563,12 @@ public class AclController {
 								
 								notCurrentVisitiCodec++; //168
 								scheduleRefreshANC(enrollments, action, lmp, action.anmIdentifier(), "", ScheduleNames.ANC);
+								logger.info("CaseID:" + action.caseId() + " provider: " + action.anmIdentifier() + " LMP:"
+								        + lmp + " Current visitCode:" + ancParam.get("milestone") + " Current Alert Status:"
+								        + ancParam.get("alert") + " Existing Current visitCode"
+								        + action.data().get("visitCode") + " Existing Alert Status:"
+								        + action.data().get("alertStatus"));
 								// refresh schedule
-							} else if (!ancParam.get("alert").equalsIgnoreCase(action.data().get("alertStatus"))
-							        && ancParam.get("milestone").equalsIgnoreCase(visitCode)
-							        && isActiveOrDefaulted(enrollments)) {
-								alertNotName++;
-								scheduleRefreshANC(enrollments, action, lmp, action.anmIdentifier(), "", ScheduleNames.ANC);
 							} else {
 								currentVisitiCodec++; //416
 								makeScheduleFalse(action);
@@ -546,11 +585,21 @@ public class AclController {
 								notsubNotSame++; //203
 								// must need to refresh
 								scheduleRefreshANC(enrollments, action, lmp, action.anmIdentifier(), "", ScheduleNames.ANC);
+								logger.info("CaseID:" + action.caseId() + " provider: " + action.anmIdentifier() + " LMP:"
+								        + lmp + " Current visitCode:" + ancParam.get("milestone") + " Current Alert Status:"
+								        + ancParam.get("alert") + " Existing Current visitCode"
+								        + action.data().get("visitCode") + " Existing Alert Status:"
+								        + action.data().get("alertStatus"));
 							} else if (!ancParam.get("alert").equalsIgnoreCase(action.data().get("alertStatus"))
 							        && ancParam.get("milestone").equalsIgnoreCase(visitCode)
 							        && isActiveOrDefaulted(enrollments)) {
 								alertNotName++;
 								scheduleRefreshANC(enrollments, action, lmp, action.anmIdentifier(), "", ScheduleNames.ANC);
+								logger.info("CaseID:" + action.caseId() + " provider: " + action.anmIdentifier() + " LMP:"
+								        + lmp + " Current visitCode:" + ancParam.get("milestone") + " Current Alert Status:"
+								        + ancParam.get("alert") + " Existing Current visitCode"
+								        + action.data().get("visitCode") + " Existing Alert Status:"
+								        + action.data().get("alertStatus"));
 							} else {
 								notsubSame++;//1038/ may be nothing to do
 								
@@ -598,54 +647,66 @@ public class AclController {
 			//System.err.println("Mother;" + mother);
 			
 			if (mother != null && mother.PROVIDERID() != null) {
-				List<Enrollment> enrollments = allEnrollmentWrapper.findByExternalIdAndScheduleName(action.caseId(),
-				    ScheduleNames.PNC);
-				List<Map<String, String>> bnfVisitDetails = mother.bnfVisitDetails();
-				doo = getBnfDate(bnfVisitDetails);
-				DateTime dateTime = DateTime.parse(doo);
-				DateTimeFormatter fmt = DateTimeFormat.forPattern(pattern);
-				String referenceDate = fmt.print(dateTime);
-				System.err.println("referenceDate:" + referenceDate + "" + action.caseId());
-				currentVisitiCode = checkPNC(LocalDate.parse(referenceDate), referenceDate);
 				
-				boolean pncStatus = isPNCSubmited(mother, visitCode);
-				if (pncStatus) {// if submitted //780
-				
-					if (SCHEDULE_PNC_3.equalsIgnoreCase(visitCode)) {
-						//should false all scedule; // problem in tab synced schedule
-						// unenroll all schedule
-						makeScheduleFalse(action);
-					} else {
-						if (!currentVisitiCode.equalsIgnoreCase(visitCode) && isActiveOrDefaulted(enrollments)) {
-							
-							notCurrentVisitiCodec++; //7
-							scheduleRefreshPNC(enrollments, action, referenceDate, action.anmIdentifier(), "",
-							    ScheduleNames.PNC);
-							// refresh schedule
-						} else {
-							currentVisitiCodec++; //0
+				try {
+					List<Enrollment> enrollments = allEnrollmentWrapper.findByExternalIdAndScheduleName(action.caseId(),
+					    ScheduleNames.PNC);
+					List<Map<String, String>> bnfVisitDetails = mother.bnfVisitDetails();
+					doo = getBnfDate(bnfVisitDetails);
+					DateTime dateTime = DateTime.parse(doo);
+					DateTimeFormatter fmt = DateTimeFormat.forPattern(pattern);
+					String referenceDate = fmt.print(dateTime);
+					System.err.println("referenceDate:" + referenceDate + "" + action.caseId());
+					Map<String, String> ancParam = checkPNC(LocalDate.parse(referenceDate), referenceDate);
+					
+					boolean pncStatus = isPNCSubmited(mother, visitCode);
+					if (pncStatus) {// if submitted //780
+					
+						if (SCHEDULE_PNC_3.equalsIgnoreCase(visitCode)) {
+							//should false all scedule; // problem in tab synced schedule
+							// unenroll all schedule
 							makeScheduleFalse(action);
+						} else {
+							if (!ancParam.get("milestone").equalsIgnoreCase(visitCode) && isActiveOrDefaulted(enrollments)) {
+								
+								notCurrentVisitiCodec++; //7
+								scheduleRefreshPNC(enrollments, action, referenceDate, action.anmIdentifier(), "",
+								    ScheduleNames.PNC);
+								// refresh schedule
+							} else {
+								currentVisitiCodec++; //0
+								makeScheduleFalse(action);
+							}
 						}
-					}
-					
-				} else { // not submitted
-				
-					if (action.data().get("alertStatus").equalsIgnoreCase("expired")) {
 						
-					} else {
-						if (!currentVisitiCode.equalsIgnoreCase(visitCode) && isActiveOrDefaulted(enrollments)) {
-							notsubNotSame++; //0
-							scheduleRefreshPNC(enrollments, action, referenceDate, action.anmIdentifier(), "",
-							    ScheduleNames.PNC);
-							// must need to refresh
+					} else { // not submitted
+					
+						if (action.data().get("alertStatus").equalsIgnoreCase("expired")) {
 							
 						} else {
-							notsubSame++;//6/ may be nothing to do
-							
+							if (!ancParam.get("milestone").equalsIgnoreCase(visitCode) && isActiveOrDefaulted(enrollments)) {
+								notsubNotSame++; //0
+								scheduleRefreshPNC(enrollments, action, referenceDate, action.anmIdentifier(), "",
+								    ScheduleNames.PNC);
+								// must need to refresh
+								
+							} else if (!ancParam.get("alert").equalsIgnoreCase(action.data().get("alertStatus"))
+							        && ancParam.get("milestone").equalsIgnoreCase(visitCode)
+							        && isActiveOrDefaulted(enrollments)) {
+								scheduleRefreshPNC(enrollments, action, referenceDate, action.anmIdentifier(), "",
+								    ScheduleNames.PNC);
+							} else {
+								notsubSame++;//6/ may be nothing to do
+								
+							}
 						}
+						
 					}
-					
 				}
+				catch (Exception e) {
+					logger.info("PNC Exception at caseID: " + action.caseId() + " message:" + e.getMessage());
+				}
+				
 			} else {
 				m++;
 			}
@@ -681,50 +742,60 @@ public class AclController {
 			//System.err.println("Mother;" + mother);
 			
 			if (child != null && child.PROVIDERID() != null) {
-				doo = child.details().get("FWBNFDOB");
-				DateTime dateTime = DateTime.parse(doo);
-				DateTimeFormatter fmt = DateTimeFormat.forPattern(pattern);
-				String referenceDate = fmt.print(dateTime);
-				currentVisitiCode = checkENCC(LocalDate.parse(referenceDate), referenceDate);
-				boolean enccStatus = isENNCSubmited(child, visitCode);
-				List<Enrollment> enrollments = allEnrollmentWrapper.findByExternalIdAndScheduleName(action.caseId(),
-				    ScheduleNames.CHILD);
-				if (enccStatus) {// if submitted //780
-				
-					if (SCHEDULE_ENCC_3.equalsIgnoreCase(visitCode)) {
-						//should false all scedule; // problem in tab synced schedule
-						// unenroll all schedule
-						//10
-						makeScheduleFalse(action);
-					} else {
-						if (!currentVisitiCode.equalsIgnoreCase(visitCode) && isActiveOrDefaulted(enrollments)) {
-							notCurrentVisitiCodec++; //7							
-							scheduleRefreshENCC(enrollments, action, referenceDate, action.anmIdentifier(), "",
-							    ScheduleNames.CHILD);
-						} else {
-							currentVisitiCodec++; //0
+				try {
+					doo = child.details().get("FWBNFDOB");
+					DateTime dateTime = DateTime.parse(doo);
+					DateTimeFormatter fmt = DateTimeFormat.forPattern(pattern);
+					String referenceDate = fmt.print(dateTime);
+					Map<String, String> enccParam = checkENCC(LocalDate.parse(referenceDate), referenceDate);
+					boolean enccStatus = isENNCSubmited(child, visitCode);
+					List<Enrollment> enrollments = allEnrollmentWrapper.findByExternalIdAndScheduleName(action.caseId(),
+					    ScheduleNames.CHILD);
+					if (enccStatus) {// if submitted //780
+					
+						if (SCHEDULE_ENCC_3.equalsIgnoreCase(visitCode)) {
+							//should false all scedule; // problem in tab synced schedule
+							// unenroll all schedule
+							//10
 							makeScheduleFalse(action);
-							//// false all schedule
+						} else {
+							if (!enccParam.get("milestone").equalsIgnoreCase(visitCode) && isActiveOrDefaulted(enrollments)) {
+								notCurrentVisitiCodec++; //7							
+								scheduleRefreshENCC(enrollments, action, referenceDate, action.anmIdentifier(), "",
+								    ScheduleNames.CHILD);
+							} else {
+								currentVisitiCodec++; //0
+								makeScheduleFalse(action);
+								//// false all schedule
+							}
 						}
-					}
-					
-				} else { // not submitted
-				
-					if (action.data().get("alertStatus").equalsIgnoreCase("expired")) {
 						
-					} else {
-						if (!currentVisitiCode.equalsIgnoreCase(visitCode) && isActiveOrDefaulted(enrollments)) {
-							notsubNotSame++; //0
-							// must need to refresh
-							scheduleRefreshENCC(enrollments, action, referenceDate, action.anmIdentifier(), "",
-							    ScheduleNames.CHILD);
+					} else { // not submitted
+					
+						if (action.data().get("alertStatus").equalsIgnoreCase("expired")) {
 							
 						} else {
-							notsubSame++;//6/ may be nothing to do
-							
+							if (!enccParam.get("milestone").equalsIgnoreCase(visitCode) && isActiveOrDefaulted(enrollments)) {
+								notsubNotSame++; //0
+								// must need to refresh
+								scheduleRefreshENCC(enrollments, action, referenceDate, action.anmIdentifier(), "",
+								    ScheduleNames.CHILD);
+								
+							} else if (!enccParam.get("alert").equalsIgnoreCase(action.data().get("alertStatus"))
+							        && enccParam.get("milestone").equalsIgnoreCase(visitCode)
+							        && isActiveOrDefaulted(enrollments)) {
+								scheduleRefreshENCC(enrollments, action, referenceDate, action.anmIdentifier(), "",
+								    ScheduleNames.CHILD);
+							} else {
+								notsubSame++;//6/ may be nothing to do
+								
+							}
 						}
+						
 					}
-					
+				}
+				catch (Exception e) {
+					logger.info("ENCC Exception at caseID: " + action.caseId() + " message:" + e.getMessage());
 				}
 			} else {
 				m++;
@@ -753,6 +824,7 @@ public class AclController {
 		try {
 			
 			pncSchedulesService.enrollPNCRVForMother(action.caseId(), "", provider, LocalDate.parse(refDate), refDate);
+			
 		}
 		catch (Exception e) {
 			e.printStackTrace();
