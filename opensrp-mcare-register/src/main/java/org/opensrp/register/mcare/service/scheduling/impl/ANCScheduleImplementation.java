@@ -32,7 +32,11 @@ public abstract class ANCScheduleImplementation {
 		DateTime ancExpireDate = null;
 		AlertStatus alertStaus = null;
 		boolean save = false;
-		if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(8).toPeriod())) {
+		if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(8).toPeriod().minusDays(6))) {
+			alertStaus = AlertStatus.normal;
+			ancStartDate = new DateTime(start);
+			ancExpireDate = new DateTime(start).plusDays(DateTimeDuration.ANC1NORMALEND);
+		} else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(8).toPeriod())) {
 			// til 50- 56
 			if (datediff <= -DateTimeDuration.ANC1UPCOMINGSTART) {
 				alertStaus = AlertStatus.upcoming;

@@ -5,12 +5,18 @@
         {
             "name": "ancrv_1",
             "scheduleWindows": {
-                
+                "earliest": ["0 Days"],
                 "due": ["56 Days"],
                 "late": ["163 Days"]
                 
             },
             "alerts": [
+            {
+                    "window": "earliest",
+                    "offset": ["0 Days"],
+                    "interval": ["1 Day"],
+                    "count": "50"
+                },
                  {
                     "window": "due",
                     "offset": ["50 Days"],

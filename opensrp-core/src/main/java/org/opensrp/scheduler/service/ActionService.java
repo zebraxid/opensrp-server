@@ -116,8 +116,13 @@ public class ActionService {
 			List<Action> existingAlerts = allActions.findAlertByANMIdEntityIdScheduleName(anmIdentifier, caseID,
 			    scheduleName);
 			if (existingAlerts.size() > 0) {
-				
 				updateDataAction(visitCode, alertStatus, startDate, expiryDate, existingAlerts);
+				logger.info("CaseID:" + existingAlerts.get(0).caseId() + " provider: "
+				        + existingAlerts.get(0).anmIdentifier() + " Current visitCode:" + visitCode
+				        + " Current Alert Status:" + alertStatus.name() + " Existing Current visitCode"
+				        + existingAlerts.get(0).data().get("visitCode") + " Existing Alert Status:"
+				        + existingAlerts.get(0).data().get("alertStatus") + " Active:"
+				        + existingAlerts.get(0).getIsActionActive());
 			}
 		}
 		catch (Exception e) {
@@ -131,6 +136,7 @@ public class ActionService {
 	                                              AlertStatus alertStatus, DateTime startDate, DateTime expiryDate,
 	                                              String doo) {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		
 		try {
 			List<Action> existingAlerts = allActions.findAlertByANMIdEntityIdScheduleName(anmIdentifier, caseID,
 			    scheduleName);
@@ -139,8 +145,7 @@ public class ActionService {
 				if (ANC.equalsIgnoreCase(scheduleName)) {
 					checkForUpdate(visitCode, alertStatus, startDate, expiryDate, existingAlerts);
 					long dateDiff = DateTimeUtil.getDaysDifference(expiryDate);
-					logger.info("dateDiff:::" + dateDiff + "  Status: " + alertStatus.name() + "Start Date:" + startDate
-					        + " EndDate:" + expiryDate);
+					
 					if (AlertStatus.urgent.name().equalsIgnoreCase(alertStatus.name()) && dateDiff <= 1) {
 						scheduleService.fulfillMilestone(caseID, scheduleName, new LocalDate());
 						if (visitCode.equalsIgnoreCase(ScheduleNames.anc4)) {
@@ -203,10 +208,18 @@ public class ActionService {
 					logger.info("NOT PNC OR ENCC OR ANC  at caseID:" + caseID + " scheduleName : " + scheduleName);
 				}
 				
+				logger.info("CaseID:" + existingAlerts.get(0).caseId() + " provider: "
+				        + existingAlerts.get(0).anmIdentifier() + " Current visitCode:" + visitCode
+				        + " Current Alert Status:" + alertStatus.name() + " Existing Current visitCode"
+				        + existingAlerts.get(0).data().get("visitCode") + " Existing Alert Status:"
+				        + existingAlerts.get(0).data().get("alertStatus") + " Active:"
+				        + existingAlerts.get(0).getIsActionActive());
+				
 			} else {
 				
 				logger.info("No Doc found at caseID:" + caseID + " scheduleName : " + scheduleName);
 			}
+			
 		}
 		catch (Exception e) {
 			logger.info("Exception found at caseID:" + caseID + " scheduleName : " + scheduleName + "Message:"

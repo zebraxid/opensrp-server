@@ -77,7 +77,7 @@ public class MotherIntegrationTest {
 		
 		HttpClient httpClient = new StdHttpClient.Builder()
 		
-		.host("192.168.22.152").port(5984).socketTimeout(1000000).username("Admin").password("mPower@1234").build();
+		.host("localhost").port(5984).socketTimeout(1000000).username("Admin").password("mPower@1234").build();
 		dbInstance = new StdCouchDbInstance(httpClient);
 		
 		stdCouchDbConnector = new StdCouchDbConnector("opensrp", dbInstance, new StdObjectMapperFactory());
@@ -97,7 +97,7 @@ public class MotherIntegrationTest {
 	//function(doc) { if(doc.type === 'Enrollment' && doc.scheduleName=='Ante Natal Care Reminder Visit') emit(doc.externalId); }
 	//http://localhost:5984/_utils/database.html?opensrp/_design/Action/_view/all#
 	//function(doc) { if(doc.type === 'Action' && doc.data.scheduleName=='Ante Natal Care Reminder Visit' && doc.data.alertStatus!='expired') {emit(null, doc._id)} }
-	
+	@Ignore
 	@Test
 	public void ancScheduleTest() {
 		int i = 0;
@@ -603,22 +603,6 @@ public class MotherIntegrationTest {
 		
 	}
 	
-	private String getBnfDate(List<Map<String, String>> bnfVisitDetails) {
-		String user_type = "";
-		String date = "";
-		for (Map<String, String> map : bnfVisitDetails) {
-			user_type = map.get("user_type");
-			date = map.get("FWBNFDTOO");
-			if ((!"".equalsIgnoreCase(date) || !date.isEmpty()) && "FD".equalsIgnoreCase(user_type)) {
-				//System.err.println("Date:" + date);
-				return date;
-			}
-		}
-		
-		return null;
-		
-	}
-	
 	private boolean isActive(List<Enrollment> enrollments) {
 		boolean completed = false;
 		System.err.println("Size:" + enrollments.size());
@@ -736,5 +720,46 @@ public class MotherIntegrationTest {
 			
 		}
 		System.err.println("acn4:" + acn4 + "c:" + c);
+	}
+	
+	@Test
+	public void createPNCExpiredSchedule() {
+		List<Mother> mothers = allMothers.getAll();
+		String doo = "";
+		String pattern = "yyyy-MM-dd";
+		for (Mother mother : mothers) {
+			try {
+				List<Map<String, String>> bnfVisitDetails = mother.bnfVisitDetails();
+				doo = getBnfDate(bnfVisitDetails);
+				DateTime dateTime = DateTime.parse(doo);
+				DateTimeFormatter fmt = DateTimeFormat.forPattern(pattern);
+				String referenceDate = fmt.print(dateTime);
+				long datediff = ScheduleLogService.getDaysDifference(dateTime);
+				if (datediff <= -9) {
+					
+				}
+				
+			}
+			catch (Exception e) {
+				
+			}
+			
+		}
+	}
+	
+	public String getBnfDate(List<Map<String, String>> bnfVisitDetails) {
+		String user_type = "";
+		String date = "";
+		for (Map<String, String> map : bnfVisitDetails) {
+			user_type = map.get("user_type");
+			date = map.get("FWBNFDTOO");
+			if ((!"".equalsIgnoreCase(date) || !date.isEmpty()) && "FD".equalsIgnoreCase(user_type)) {
+				System.err.println("Date:" + date);
+				return date;
+			}
+		}
+		
+		return null;
+		
 	}
 }
