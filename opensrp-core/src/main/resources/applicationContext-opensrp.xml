@@ -22,11 +22,11 @@
 
     <util:properties id="opensrp" location="classpath:/opensrp.properties"/>
 
-    <context:annotation-config/>
-    
-    <bean id="statsdAgent" class="org.motechproject.metrics.impl.LoggingAgentBackendImpl"/>
-     
-    <import resource="persistence_couchdb.xml"/>
-	<!-- <import resource="persistence_postgress.xml"/> -->
+	<context:annotation-config />
+
+	<bean id="statsdAgent" class="org.motechproject.metrics.impl.LoggingAgentBackendImpl" />
+
+	<import resource="persistence_couchdb.xml"/>
+	<!-- <import resource="persistence_postgres.xml"/>-->
 
 </beans>

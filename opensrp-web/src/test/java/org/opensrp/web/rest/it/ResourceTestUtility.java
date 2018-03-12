@@ -8,8 +8,8 @@ import org.opensrp.repository.couch.AllClients;
 import org.opensrp.repository.couch.AllErrorTrace;
 import org.opensrp.scheduler.Action;
 import org.opensrp.scheduler.Alert;
-import org.opensrp.scheduler.repository.AllActions;
-import org.opensrp.scheduler.repository.AllAlerts;
+import org.opensrp.scheduler.repository.couch.AllActions;
+import org.opensrp.scheduler.repository.couch.AllAlerts;
 
 public final class ResourceTestUtility {
 

@@ -1,5 +1,15 @@
 package org.opensrp.repository.lucene.it;
 
+import static org.opensrp.util.SampleFullDomainObject.BASE_ENTITY_ID;
+import static org.opensrp.util.SampleFullDomainObject.DIFFERENT_BASE_ENTITY_ID;
+import static org.opensrp.util.SampleFullDomainObject.EPOCH_DATE_TIME;
+import static org.opensrp.util.SampleFullDomainObject.PROVIDER_ID;
+import static org.utils.AssertionUtil.assertTwoListAreSameIgnoringOrder;
+import static org.utils.CouchDbAccessUtils.addObjectToRepository;
+
+import java.util.Arrays;
+import java.util.List;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -8,15 +18,8 @@ import org.opensrp.dto.ActionData;
 import org.opensrp.dto.AlertStatus;
 import org.opensrp.repository.lucene.LuceneActionRepository;
 import org.opensrp.scheduler.Action;
-import org.opensrp.scheduler.repository.AllActions;
+import org.opensrp.scheduler.repository.couch.AllActions;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.List;
-
-import static java.util.Arrays.asList;
-import static org.opensrp.util.SampleFullDomainObject.*;
-import static org.utils.AssertionUtil.assertTwoListAreSameIgnoringOrder;
-import static org.utils.CouchDbAccessUtils.addObjectToRepository;
 
 public class LuceneActionRepositoryTest extends BaseIntegrationTest {
 
@@ -43,7 +46,7 @@ public class LuceneActionRepositoryTest extends BaseIntegrationTest {
 						EPOCH_DATE_TIME);
 		Action expectedAction = new Action(BASE_ENTITY_ID, PROVIDER_ID, actionData);
 		Action expectedAction2 = new Action(DIFFERENT_BASE_ENTITY_ID, DIFFERENT_BASE_ENTITY_ID, actionData);
-		List<Action> expectedActions = asList(expectedAction, expectedAction2);
+		List<Action> expectedActions = Arrays.asList(expectedAction, expectedAction2);
 		addObjectToRepository(expectedActions, allActions);
 
 		String teamIds = PROVIDER_ID + "," + DIFFERENT_BASE_ENTITY_ID;
@@ -61,7 +64,7 @@ public class LuceneActionRepositoryTest extends BaseIntegrationTest {
 						EPOCH_DATE_TIME);
 		Action expectedAction = new Action(BASE_ENTITY_ID, PROVIDER_ID, actionData);
 		Action expectedAction2 = new Action(DIFFERENT_BASE_ENTITY_ID, DIFFERENT_BASE_ENTITY_ID, actionData);
-		List<Action> expectedActions = asList(expectedAction, expectedAction2);
+		List<Action> expectedActions = Arrays.asList(expectedAction, expectedAction2);
 		addObjectToRepository(expectedActions, allActions);
 
 		String teamIds = PROVIDER_ID + "," + DIFFERENT_BASE_ENTITY_ID;
