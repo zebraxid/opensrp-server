@@ -73,6 +73,7 @@ import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherSchedule
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import org.joda.time.DateTime;
@@ -85,6 +86,7 @@ import org.opensrp.common.util.DateUtil;
 import org.opensrp.connector.HttpUtil;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.form.domain.SubFormData;
+import org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants;
 import org.opensrp.register.mcare.domain.Child;
 import org.opensrp.register.mcare.domain.Elco;
 import org.opensrp.register.mcare.domain.Mother;
@@ -96,6 +98,8 @@ import org.opensrp.register.mcare.service.scheduling.ELCOScheduleService;
 import org.opensrp.register.mcare.service.scheduling.PNCSchedulesService;
 import org.opensrp.register.mcare.service.scheduling.ScheduleLogService;
 import org.opensrp.repository.AllErrorTrace;
+import org.opensrp.scheduler.Action;
+import org.opensrp.scheduler.repository.AllActions;
 import org.opensrp.scheduler.service.ActionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -135,6 +139,9 @@ public class PNCService {
 	private AllErrorTrace allErrorTrace;
 	
 	private ActionService actionService;
+	
+	@Autowired
+	private AllActions allActions;
 	
 	@Autowired
 	public PNCService(AllElcos allElcos, AllMothers allMothers, AllChilds allChilds,
@@ -312,8 +319,10 @@ public class PNCService {
 		mother.withTODAY(submission.getField(REFERENCE_DATE));
 		mother.setTimeStamp(System.currentTimeMillis());
 		allMothers.update(mother);
-		pncSchedulesService.fullfillMilestone(submission.entityId(), submission.anmId(), SCHEDULE_PNC, new LocalDate());
-		actionService.markAlertAsInactive(submission.anmId(), submission.entityId(), SCHEDULE_PNC);
+		
+		pncScheduleFullfillAndMakeFalse(submission, MotherScheduleConstants.SCHEDULE_PNC_1);
+		/*pncSchedulesService.fullfillMilestone(submission.entityId(), submission.anmId(), SCHEDULE_PNC, new LocalDate());
+		actionService.markAlertAsInactive(submission.anmId(), submission.entityId(), SCHEDULE_PNC);*/
 		String pattern = "yyyy-MM-dd";
 		DateTime dateTime = DateTime.parse(mother.getbnfVisitDetails(FWBNFDTOO));
 		DateTimeFormatter fmt = DateTimeFormat.forPattern(pattern);
@@ -358,8 +367,8 @@ public class PNCService {
 		mother.withTODAY(submission.getField(REFERENCE_DATE));
 		mother.setTimeStamp(System.currentTimeMillis());
 		allMothers.update(mother);
-		pncSchedulesService.fullfillMilestone(submission.entityId(), submission.anmId(), SCHEDULE_PNC, new LocalDate());
-		actionService.markAlertAsInactive(submission.anmId(), submission.entityId(), SCHEDULE_PNC);
+		pncScheduleFullfillAndMakeFalse(submission, MotherScheduleConstants.SCHEDULE_PNC_2);
+		
 		String pattern = "yyyy-MM-dd";
 		DateTime dateTime = DateTime.parse(mother.getbnfVisitDetails(FWBNFDTOO));
 		DateTimeFormatter fmt = DateTimeFormat.forPattern(pattern);
@@ -405,8 +414,7 @@ public class PNCService {
 		mother.withTODAY(submission.getField(REFERENCE_DATE));
 		mother.setTimeStamp(System.currentTimeMillis());
 		allMothers.update(mother);
-		pncSchedulesService.fullfillMilestone(submission.entityId(), submission.anmId(), SCHEDULE_PNC, new LocalDate());
-		actionService.markAlertAsInactive(submission.anmId(), submission.entityId(), SCHEDULE_PNC);
+		pncScheduleFullfillAndMakeFalse(submission, MotherScheduleConstants.SCHEDULE_PNC_3);
 		sendMessage(feverTemp, womanBID, womanNID);
 	}
 	
@@ -468,6 +476,28 @@ public class PNCService {
 		System.out.println("hello" + FEVER_SMS_URL);
 		System.out.println("sending feversms for woman identifier: " + identifier + " ,response:"
 		        + HttpUtil.get(FEVER_SMS_URL, identifier, "", "").body());
+	}
+	
+	private void pncScheduleFullfillAndMakeFalse(FormSubmission submission, String currentVisitCode) {
+		
+		List<Action> existingAlerts = allActions.findAlertByANMIdEntityIdScheduleName(submission.anmId(),
+		    submission.entityId(), SCHEDULE_PNC);
+		if (existingAlerts.size() != 0) {
+			String existingAlert = existingAlerts.get(0).data().get("visitCode");
+			if (currentVisitCode.equalsIgnoreCase(existingAlert)) {
+				pncSchedulesService.fullfillMilestone(submission.entityId(), submission.anmId(), SCHEDULE_PNC,
+				    new LocalDate());
+				actionService.markAlertAsInactive(submission.anmId(), submission.entityId(), SCHEDULE_PNC);
+				logger.info(currentVisitCode + "  received in time provider: " + submission.anmId() + "caseId:"
+				        + submission.entityId());
+			} else {
+				logger.info(currentVisitCode + "  received not in time  provider: " + submission.anmId() + "caseId:"
+				        + submission.entityId());
+			}
+		} else {
+			logger.info(currentVisitCode + "  no schedule found in action  provider: " + submission.anmId() + "caseId:"
+			        + submission.entityId());
+		}
 	}
 	
 }

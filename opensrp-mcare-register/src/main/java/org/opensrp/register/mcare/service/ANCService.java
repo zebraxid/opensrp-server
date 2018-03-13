@@ -146,6 +146,7 @@ import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherSchedule
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import org.joda.time.LocalDate;
@@ -154,6 +155,7 @@ import org.opensrp.common.ErrorDocType;
 import org.opensrp.common.util.DateTimeUtil;
 import org.opensrp.common.util.DateUtil;
 import org.opensrp.form.domain.FormSubmission;
+import org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants;
 import org.opensrp.register.mcare.domain.Elco;
 import org.opensrp.register.mcare.domain.Mother;
 import org.opensrp.register.mcare.repository.AllElcos;
@@ -162,6 +164,8 @@ import org.opensrp.register.mcare.service.scheduling.ANCSchedulesService;
 import org.opensrp.register.mcare.service.scheduling.BNFSchedulesService;
 import org.opensrp.register.mcare.service.scheduling.ScheduleLogService;
 import org.opensrp.repository.AllErrorTrace;
+import org.opensrp.scheduler.Action;
+import org.opensrp.scheduler.repository.AllActions;
 import org.opensrp.scheduler.service.ActionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -188,6 +192,9 @@ public class ANCService {
 	private PNCService pncService;
 	
 	private AllErrorTrace allErrorTrace;
+	
+	@Autowired
+	private AllActions allActions;
 	
 	@Autowired
 	public ANCService(AllElcos allElcos, AllMothers allMothers, ANCSchedulesService ancSchedulesService,
@@ -316,8 +323,8 @@ public class ANCService {
 		mother.withTODAY(submission.getField(REFERENCE_DATE));
 		mother.setTimeStamp(System.currentTimeMillis());
 		allMothers.update(mother);
-		ancSchedulesService.fullfillMilestone(submission.entityId(), submission.anmId(), SCHEDULE_ANC, new LocalDate());
-		actionService.markAlertAsInactive(submission.anmId(), submission.entityId(), SCHEDULE_ANC);
+		
+		ancScheduleFullfillAndMakeFalse(submission, MotherScheduleConstants.SCHEDULE_ANC_1);
 		logger.info("submission.getField(FWANC1REMSTS):" + submission.getField(FWANC1REMSTS));
 		
 		logger.info("FWANC1REMSTS:" + submission.getField(FWANC1REMSTS));
@@ -380,8 +387,9 @@ public class ANCService {
 		mother.withTODAY(submission.getField(REFERENCE_DATE));
 		mother.setTimeStamp(System.currentTimeMillis());
 		allMothers.update(mother);
-		ancSchedulesService.fullfillMilestone(submission.entityId(), submission.anmId(), SCHEDULE_ANC, new LocalDate());
-		actionService.markAlertAsInactive(submission.anmId(), submission.entityId(), SCHEDULE_ANC);
+		ancScheduleFullfillAndMakeFalse(submission, MotherScheduleConstants.SCHEDULE_ANC_2);
+		/*ancSchedulesService.fullfillMilestone(submission.entityId(), submission.anmId(), SCHEDULE_ANC, new LocalDate());
+		actionService.markAlertAsInactive(submission.anmId(), submission.entityId(), SCHEDULE_ANC);*/
 		logger.info("submission.getField(FWANC1REMSTS):" + submission.getField(FWANC1REMSTS));
 		
 		logger.info("FWANC1REMSTS:" + submission.getField(FWANC1REMSTS));
@@ -444,8 +452,7 @@ public class ANCService {
 		mother.withTODAY(submission.getField(REFERENCE_DATE));
 		mother.setTimeStamp(System.currentTimeMillis());
 		allMothers.update(mother);
-		ancSchedulesService.fullfillMilestone(submission.entityId(), submission.anmId(), SCHEDULE_ANC, new LocalDate());
-		actionService.markAlertAsInactive(submission.anmId(), submission.entityId(), SCHEDULE_ANC);
+		ancScheduleFullfillAndMakeFalse(submission, MotherScheduleConstants.SCHEDULE_ANC_3);
 		logger.info("submission.getField(FWANC1REMSTS):" + submission.getField(FWANC1REMSTS));
 		
 		logger.info("FWANC1REMSTS:" + submission.getField(FWANC1REMSTS));
@@ -509,8 +516,8 @@ public class ANCService {
 		mother.withTODAY(submission.getField(REFERENCE_DATE));
 		mother.setTimeStamp(System.currentTimeMillis());
 		allMothers.update(mother);
-		ancSchedulesService.fullfillMilestone(submission.entityId(), submission.anmId(), SCHEDULE_ANC, new LocalDate());
-		actionService.markAlertAsInactive(submission.anmId(), submission.entityId(), SCHEDULE_ANC);
+		
+		ancScheduleFullfillAndMakeFalse(submission, MotherScheduleConstants.SCHEDULE_ANC_4);
 		
 		if (submission.getField(FWANC4REMSTS).equalsIgnoreCase(STS_GONE)
 		        || submission.getField(FWANC4REMSTS).equalsIgnoreCase(STS_DEAD)) {
@@ -571,6 +578,28 @@ public class ANCService {
 			//scheduleLogService.closeScheduleAndScheduleLog(entityId, instanceId, SCHEDULE_BNF, provider);
 		} else {
 			logger.info("User type :" + user_type);
+		}
+	}
+	
+	private void ancScheduleFullfillAndMakeFalse(FormSubmission submission, String currentVisitCode) {
+		
+		List<Action> existingAlerts = allActions.findAlertByANMIdEntityIdScheduleName(submission.anmId(),
+		    submission.entityId(), SCHEDULE_ANC);
+		if (existingAlerts.size() != 0) {
+			String existingAlert = existingAlerts.get(0).data().get("visitCode");
+			if (currentVisitCode.equalsIgnoreCase(existingAlert)) {
+				ancSchedulesService.fullfillMilestone(submission.entityId(), submission.anmId(), SCHEDULE_ANC,
+				    new LocalDate());
+				actionService.markAlertAsInactive(submission.anmId(), submission.entityId(), SCHEDULE_ANC);
+				logger.info(currentVisitCode + "  received in time provider: " + submission.anmId() + "caseId:"
+				        + submission.entityId());
+			} else {
+				logger.info(currentVisitCode + "  received not in time  provider: " + submission.anmId() + "caseId:"
+				        + submission.entityId());
+			}
+		} else {
+			logger.info(currentVisitCode + "  no schedule found in action  provider: " + submission.anmId() + "caseId:"
+			        + submission.entityId());
 		}
 	}
 }

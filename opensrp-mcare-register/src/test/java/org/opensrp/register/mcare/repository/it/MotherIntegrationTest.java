@@ -722,29 +722,49 @@ public class MotherIntegrationTest {
 		System.err.println("acn4:" + acn4 + "c:" + c);
 	}
 	
+	@Ignore
 	@Test
 	public void createPNCExpiredSchedule() {
 		List<Mother> mothers = allMothers.getAll();
 		String doo = "";
 		String pattern = "yyyy-MM-dd";
+		int notINpnc = 0;
+		int iNpnc = 0;
+		int exceptiion = 0;
+		
 		for (Mother mother : mothers) {
+			
+			List<Map<String, String>> bnfVisitDetails = mother.bnfVisitDetails();
 			try {
-				List<Map<String, String>> bnfVisitDetails = mother.bnfVisitDetails();
-				doo = getBnfDate(bnfVisitDetails);
-				DateTime dateTime = DateTime.parse(doo);
-				DateTimeFormatter fmt = DateTimeFormat.forPattern(pattern);
-				String referenceDate = fmt.print(dateTime);
-				long datediff = ScheduleLogService.getDaysDifference(dateTime);
-				if (datediff <= -9) {
+				if (bnfVisitDetails.size() != 0) {
+					System.err.println("CaseId:" + mother.caseId());
+					doo = getBnfDate(bnfVisitDetails);
+					/*if (doo != null) {
+						DateTime dateTime = DateTime.parse(doo);
+						DateTimeFormatter fmt = DateTimeFormat.forPattern(pattern);
+						String referenceDate = fmt.print(dateTime);
+						long datediff = ScheduleLogService.getDaysDifference(dateTime);
+						
+						if (datediff <= -9) {
+							
+							notINpnc++;
+						} else {
+							
+							iNpnc++;
+						}
+					}*/
 					
 				}
-				
 			}
 			catch (Exception e) {
+				e.printStackTrace();
+				exceptiion++;
 				
 			}
 			
 		}
+		
+		System.err.println("notINpnc:" + notINpnc + " iNpnc:" + iNpnc + " exceptiion:" + exceptiion);
 	}
 	
 	public String getBnfDate(List<Map<String, String>> bnfVisitDetails) {
@@ -753,10 +773,14 @@ public class MotherIntegrationTest {
 		for (Map<String, String> map : bnfVisitDetails) {
 			user_type = map.get("user_type");
 			date = map.get("FWBNFDTOO");
-			if ((!"".equalsIgnoreCase(date) || !date.isEmpty()) && "FD".equalsIgnoreCase(user_type)) {
-				System.err.println("Date:" + date);
-				return date;
+			if ("FD".equalsIgnoreCase(user_type)) {
+				if (!date.isEmpty()) {
+					System.err.println("date:" + date);
+					
+					return date;
+				}
 			}
+			
 		}
 		
 		return null;

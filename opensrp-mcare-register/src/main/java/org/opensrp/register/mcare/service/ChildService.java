@@ -66,15 +66,19 @@ import static org.opensrp.common.AllConstants.PSRFFields.timeStamp;
 import static org.opensrp.common.util.EasyMap.create;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ChildScheduleConstants.SCHEDULE_ENCC;
 
+import java.util.List;
 import java.util.Map;
 
 import org.joda.time.LocalDate;
 import org.opensrp.common.util.DateTimeUtil;
 import org.opensrp.common.util.DateUtil;
 import org.opensrp.form.domain.FormSubmission;
+import org.opensrp.register.mcare.OpenSRPScheduleConstants.ChildScheduleConstants;
 import org.opensrp.register.mcare.domain.Child;
 import org.opensrp.register.mcare.repository.AllChilds;
 import org.opensrp.register.mcare.service.scheduling.ChildSchedulesService;
+import org.opensrp.scheduler.Action;
+import org.opensrp.scheduler.repository.AllActions;
 import org.opensrp.scheduler.service.ActionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -91,6 +95,9 @@ public class ChildService {
 	private ChildSchedulesService childSchedulesService;
 	
 	private ActionService actionService;
+	
+	@Autowired
+	private AllActions allActions;
 	
 	@Autowired
 	public ChildService(AllChilds allChilds, ChildSchedulesService childSchedulesService, ActionService actionService) {
@@ -131,8 +138,9 @@ public class ChildService {
 		child.withTODAY(submission.getField(REFERENCE_DATE));
 		child.setTimeStamp(System.currentTimeMillis());
 		allChilds.update(child);
-		childSchedulesService.fullfillMilestone(submission.entityId(), submission.anmId(), SCHEDULE_ENCC, new LocalDate());
-		actionService.markAlertAsInactive(submission.anmId(), submission.entityId(), SCHEDULE_ENCC);
+		enccScheduleFullfillAndMakeFalse(submission, ChildScheduleConstants.SCHEDULE_ENCC_1);
+		/*childSchedulesService.fullfillMilestone(submission.entityId(), submission.anmId(), SCHEDULE_ENCC, new LocalDate());
+		actionService.markAlertAsInactive(submission.anmId(), submission.entityId(), SCHEDULE_ENCC);*/
 	}
 	
 	public void enccTwo(FormSubmission submission) {
@@ -167,8 +175,7 @@ public class ChildService {
 		child.withClientVersion(DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)));
 		child.setTimeStamp(System.currentTimeMillis());
 		allChilds.update(child);
-		childSchedulesService.fullfillMilestone(submission.entityId(), submission.anmId(), SCHEDULE_ENCC, new LocalDate());
-		actionService.markAlertAsInactive(submission.anmId(), submission.entityId(), SCHEDULE_ENCC);
+		enccScheduleFullfillAndMakeFalse(submission, ChildScheduleConstants.SCHEDULE_ENCC_2);
 	}
 	
 	public void enccThree(FormSubmission submission) {
@@ -203,8 +210,28 @@ public class ChildService {
 		child.withTODAY(submission.getField(REFERENCE_DATE));
 		child.setTimeStamp(System.currentTimeMillis());
 		allChilds.update(child);
-		childSchedulesService.fullfillMilestone(submission.entityId(), submission.anmId(), SCHEDULE_ENCC, new LocalDate());
-		actionService.markAlertAsInactive(submission.anmId(), submission.entityId(), SCHEDULE_ENCC);
+		enccScheduleFullfillAndMakeFalse(submission, ChildScheduleConstants.SCHEDULE_ENCC_3);
 	}
 	
+	private void enccScheduleFullfillAndMakeFalse(FormSubmission submission, String currentVisitCode) {
+		
+		List<Action> existingAlerts = allActions.findAlertByANMIdEntityIdScheduleName(submission.anmId(),
+		    submission.entityId(), SCHEDULE_ENCC);
+		if (existingAlerts.size() != 0) {
+			String existingAlert = existingAlerts.get(0).data().get("visitCode");
+			if (currentVisitCode.equalsIgnoreCase(existingAlert)) {
+				childSchedulesService.fullfillMilestone(submission.entityId(), submission.anmId(), SCHEDULE_ENCC,
+				    new LocalDate());
+				actionService.markAlertAsInactive(submission.anmId(), submission.entityId(), SCHEDULE_ENCC);
+				logger.info(currentVisitCode + "  received in time provider: " + submission.anmId() + "caseId:"
+				        + submission.entityId());
+			} else {
+				logger.info(currentVisitCode + "  received not in time  provider: " + submission.anmId() + "caseId:"
+				        + submission.entityId());
+			}
+		} else {
+			logger.info(currentVisitCode + "  no schedule found in action  provider: " + submission.anmId() + "caseId:"
+			        + submission.entityId());
+		}
+	}
 }

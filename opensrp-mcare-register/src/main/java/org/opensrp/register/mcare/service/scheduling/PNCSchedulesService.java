@@ -128,7 +128,8 @@ public class PNCSchedulesService {
 			milestone = SCHEDULE_PNC_3;
 			logger.info("PNC out of Date of case id" + entityId);
 			scheduleLogService.saveAction(entityId, instanceId, provider, SCHEDULE_PNC, SCHEDULE_PNC_3,
-			    BeneficiaryType.mother, AlertStatus.expired, new DateTime(new Date()), new DateTime(new Date()));
+			    BeneficiaryType.mother, AlertStatus.expired, new DateTime(FWBNFDTOO).plusDays(9),
+			    new DateTime(FWBNFDTOO).plusDays(9));
 		}
 		
 		logger.info(format("Enrolling PNC with Entity id:{0} to PNC schedule, milestone: {1}.", entityId, milestone));

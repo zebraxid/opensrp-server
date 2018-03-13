@@ -441,8 +441,7 @@ public class AclController {
 		
 		if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Days.ONE.toPeriod())) {
 			milestone = SCHEDULE_PNC_1;
-			startDate = new DateTime(FWBNFDTOO);
-			expireDate = new DateTime(FWBNFDTOO);
+			
 			if (datediff == 0) {
 				alertStaus = AlertStatus.upcoming;
 				
@@ -455,7 +454,6 @@ public class AclController {
 			
 			milestone = SCHEDULE_PNC_2;
 			
-			expireDate = new DateTime(FWBNFDTOO).plusDays(DateTimeDuration.pnc2);
 			if (datediff == -2) {
 				alertStaus = AlertStatus.upcoming;
 				
@@ -467,8 +465,7 @@ public class AclController {
 		} else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Days.SEVEN.plus(2).toPeriod())) {
 			
 			milestone = SCHEDULE_PNC_3;
-			startDate = new DateTime(FWBNFDTOO).plusDays(DateTimeDuration.pnc2);
-			expireDate = new DateTime(FWBNFDTOO).plusDays(DateTimeDuration.pnc3);
+			
 			if (datediff == -6 || datediff == -7) {
 				alertStaus = AlertStatus.upcoming;
 				
@@ -545,20 +542,18 @@ public class AclController {
 					Map<String, String> ancParam = ancSchedulesService.scheduleCheckAndSaveOrNot("", LocalDate.parse(lmp),
 					    "", "", lmp, false);
 					
-					//System.err.println("ancParam:" + ancParam.toString() + " VisitCode" + visitCode);
 					boolean ancStatus = isANCSubmited(mother, visitCode);
 					List<Action> pncs = allActions.findAlertByANMIdEntityIdScheduleName(action.anmIdentifier(),
 					    action.caseId(), "Post Natal Care Reminder Visit");
-					/*List<Enrollment> enrollments = allEnrollmentWrapper.findByExternalIdAndScheduleName(action.caseId(),
-					    ScheduleNames.ANC); */
-					if (ancStatus) {// if submitted //780
 					
+					if (ancStatus) {
 						if (SCHEDULE_ANC_4.equalsIgnoreCase(visitCode)) {
-							logger.info("ANC4 Submitted CaseID:" + action.caseId() + " provider: " + action.anmIdentifier()
-							        + " LMP:" + lmp + " Current visitCode:" + ancParam.get("milestone")
-							        + " Current Alert Status:" + ancParam.get("alert") + " Existing Current visitCode : "
-							        + action.data().get("visitCode") + " Existing Alert Status:"
-							        + action.data().get("alertStatus") + " Active:" + action.getIsActionActive());
+							logger.info("ANC4 Submitted not  corrected CaseID:" + action.caseId() + " provider: "
+							        + action.anmIdentifier() + " LMP:" + lmp + " Current visitCode:"
+							        + ancParam.get("milestone") + " Current Alert Status:" + ancParam.get("alert")
+							        + " Existing Current visitCode : " + action.data().get("visitCode")
+							        + " Existing Alert Status:" + action.data().get("alertStatus") + " Active:"
+							        + action.getIsActionActive());
 							acn4submitted++;//196
 							makeScheduleFalse(action);
 						} else {
@@ -566,7 +561,7 @@ public class AclController {
 								
 								corrected++;
 								scheduleRefreshANC(action, lmp, action.anmIdentifier(), "", ScheduleNames.ANC);
-								logger.info("from submitted  milestone is  not same CaseID:" + action.caseId()
+								logger.info("from submitted  milestone is  not same corrected CaseID:" + action.caseId()
 								        + " provider: " + action.anmIdentifier() + " LMP:" + lmp + " Current visitCode:"
 								        + ancParam.get("milestone") + " Current Alert Status:" + ancParam.get("alert")
 								        + " Existing Current visitCode : " + action.data().get("visitCode")
@@ -575,7 +570,7 @@ public class AclController {
 								
 							} else {
 								submittedButMilestoneSame++;
-								logger.info("submitted same alert status Not Corrected CaseID:" + action.caseId()
+								logger.info("submitted same alert status not Corrected CaseID:" + action.caseId()
 								        + " provider: " + action.anmIdentifier() + " LMP:" + lmp + " Current visitCode:"
 								        + ancParam.get("milestone") + " Current Alert Status:" + ancParam.get("alert")
 								        + " Existing Current visitCode : " + action.data().get("visitCode")
@@ -589,18 +584,19 @@ public class AclController {
 						i++; //1875
 						if (action.data().get("alertStatus").equalsIgnoreCase("expired")) {
 							expired++;
-							logger.info("expired  CaseID:" + action.caseId() + " provider: " + action.anmIdentifier()
-							        + " LMP:" + lmp + " Current visitCode:" + ancParam.get("milestone")
-							        + " Current Alert Status:" + ancParam.get("alert") + " Existing Current visitCode : "
-							        + action.data().get("visitCode") + " Existing Alert Status:"
-							        + action.data().get("alertStatus") + " Active:" + action.getIsActionActive());
+							logger.info("expired not corrected CaseID:" + action.caseId() + " provider: "
+							        + action.anmIdentifier() + " LMP:" + lmp + " Current visitCode:"
+							        + ancParam.get("milestone") + " Current Alert Status:" + ancParam.get("alert")
+							        + " Existing Current visitCode : " + action.data().get("visitCode")
+							        + " Existing Alert Status:" + action.data().get("alertStatus") + " Active:"
+							        + action.getIsActionActive());
 						} else {
 							
 							if (!ancParam.get("milestone").equalsIgnoreCase(visitCode) && pncs.size() == 0) {
 								corrected++; //203
 								// must need to refresh
 								scheduleRefreshANC(action, lmp, action.anmIdentifier(), "", ScheduleNames.ANC);
-								logger.info("from not submitted milestone is  not same CaseID:" + action.caseId()
+								logger.info("from not submitted milestone is  not same corrected CaseID:" + action.caseId()
 								        + " provider: " + action.anmIdentifier() + " LMP:" + lmp + " Current visitCode:"
 								        + ancParam.get("milestone") + " Current Alert Status:" + ancParam.get("alert")
 								        + " Existing Current visitCode:" + action.data().get("visitCode")
@@ -610,20 +606,20 @@ public class AclController {
 							        && ancParam.get("milestone").equalsIgnoreCase(visitCode) && pncs.size() == 0) {
 								corrected++;
 								scheduleRefreshANC(action, lmp, action.anmIdentifier(), "", ScheduleNames.ANC);
-								logger.info("from not submitted milestone is same CaseID:" + action.caseId() + " provider: "
-								        + action.anmIdentifier() + " LMP:" + lmp + " Current visitCode:"
-								        + ancParam.get("milestone") + " Current Alert Status:" + ancParam.get("alert")
-								        + " Existing Current visitCode :" + action.data().get("visitCode")
-								        + " Existing Alert Status:" + action.data().get("alertStatus") + " Active:"
-								        + action.getIsActionActive());
+								logger.info("from not submitted milestone is but alert not same corrected CaseID:"
+								        + action.caseId() + " provider: " + action.anmIdentifier() + " LMP:" + lmp
+								        + " Current visitCode:" + ancParam.get("milestone") + " Current Alert Status:"
+								        + ancParam.get("alert") + " Existing Current visitCode :"
+								        + action.data().get("visitCode") + " Existing Alert Status:"
+								        + action.data().get("alertStatus") + " Active:" + action.getIsActionActive());
 							} else {
 								sameAlertStatus++;//1038/ may be nothing to do
-								logger.info(" not submitted same alert status Not Corrected CaseID:" + action.caseId()
-								        + " provider: " + action.anmIdentifier() + " LMP:" + lmp + " Current visitCode:"
-								        + ancParam.get("milestone") + " Current Alert Status:" + ancParam.get("alert")
-								        + " Existing Current visitCode : " + action.data().get("visitCode")
-								        + " Existing Alert Status:" + action.data().get("alertStatus") + " Active:"
-								        + action.getIsActionActive());
+								logger.info(" not submitted same alert status or now in pnc not Corrected CaseID:"
+								        + action.caseId() + " provider: " + action.anmIdentifier() + " LMP:" + lmp
+								        + " Current visitCode:" + ancParam.get("milestone") + " Current Alert Status:"
+								        + ancParam.get("alert") + " Existing Current visitCode : "
+								        + action.data().get("visitCode") + " Existing Alert Status:"
+								        + action.data().get("alertStatus") + " Active:" + action.getIsActionActive());
 								
 							}
 						}
@@ -675,90 +671,101 @@ public class AclController {
 					    ScheduleNames.PNC);
 					List<Map<String, String>> bnfVisitDetails = mother.bnfVisitDetails();
 					doo = getBnfDate(bnfVisitDetails);
-					DateTime dateTime = DateTime.parse(doo);
-					DateTimeFormatter fmt = DateTimeFormat.forPattern(pattern);
-					String referenceDate = fmt.print(dateTime);
-					System.err.println("referenceDate:" + referenceDate + "" + action.caseId());
-					Map<String, String> ancParam = checkPNC(LocalDate.parse(referenceDate), referenceDate);
-					
-					boolean pncStatus = isPNCSubmited(mother, visitCode);
-					if (pncStatus) {// if submitted //780
-					
-						if (SCHEDULE_PNC_3.equalsIgnoreCase(visitCode)) {
-							
-							makeScheduleFalse(action);
-							logger.info("PNC3 Submitted CaseID:" + action.caseId() + " provider: " + action.anmIdentifier()
-							        + " doo:" + doo + " Current visitCode:" + ancParam.get("milestone")
-							        + " Current Alert Status:" + ancParam.get("alert") + " Existing Current visitCode : "
-							        + action.data().get("visitCode") + " Existing Alert Status:"
-							        + action.data().get("alertStatus") + " Active:" + action.getIsActionActive());
-							acn4submitted++;//196
-						} else {
-							if (!ancParam.get("milestone").equalsIgnoreCase(visitCode)) {
-								
-								corrected++; //7
-								scheduleRefreshPNC(enrollments, action, referenceDate, action.anmIdentifier(), "",
-								    ScheduleNames.PNC);
-								logger.info("from not submitted milestone is  not same CaseID:" + action.caseId()
-								        + " provider: " + action.anmIdentifier() + " doo:" + doo + " Current visitCode:"
-								        + ancParam.get("milestone") + " Current Alert Status:" + ancParam.get("alert")
-								        + " Existing Current visitCode:" + action.data().get("visitCode")
-								        + " Existing Alert Status:" + action.data().get("alertStatus") + " Active:"
-								        + action.getIsActionActive());
-								// refresh schedule
-							} else {
+					if (doo != null) {
+						DateTime dateTime = DateTime.parse(doo);
+						DateTimeFormatter fmt = DateTimeFormat.forPattern(pattern);
+						String referenceDate = fmt.print(dateTime);
+						
+						Map<String, String> ancParam = checkPNC(LocalDate.parse(referenceDate), referenceDate);
+						
+						boolean pncStatus = isPNCSubmited(mother, visitCode);
+						if (pncStatus) {// if submitted //780
+						
+							if (SCHEDULE_PNC_3.equalsIgnoreCase(visitCode)) {
 								
 								makeScheduleFalse(action);
-								submittedButMilestoneSame++;
-								logger.info("submitted same alert status Not Corrected CaseID:" + action.caseId()
-								        + " provider: " + action.anmIdentifier() + " doo:" + doo + " Current visitCode:"
+								logger.info("PNC3 Submitted not corrected CaseID:" + action.caseId() + " provider: "
+								        + action.anmIdentifier() + " doo:" + doo + " Current visitCode:"
 								        + ancParam.get("milestone") + " Current Alert Status:" + ancParam.get("alert")
 								        + " Existing Current visitCode : " + action.data().get("visitCode")
 								        + " Existing Alert Status:" + action.data().get("alertStatus") + " Active:"
 								        + action.getIsActionActive());
-							}
-						}
-						
-					} else { // not submitted
-					
-						if (action.data().get("alertStatus").equalsIgnoreCase("expired")) {
-							expired++;
-						} else {
-							if (!ancParam.get("milestone").equalsIgnoreCase(visitCode)) {
-								corrected++; //0
-								scheduleRefreshPNC(enrollments, action, referenceDate, action.anmIdentifier(), "",
-								    ScheduleNames.PNC);
-								logger.info("from  submitted milestone is  not same CaseID:" + action.caseId()
-								        + " provider: " + action.anmIdentifier() + " doo:" + doo + " Current visitCode:"
-								        + ancParam.get("milestone") + " Current Alert Status:" + ancParam.get("alert")
-								        + " Existing Current visitCode:" + action.data().get("visitCode")
-								        + " Existing Alert Status:" + action.data().get("alertStatus") + " Active:"
-								        + action.getIsActionActive());
-								// must need to refresh
-								
-							} else if (!ancParam.get("alert").equalsIgnoreCase(action.data().get("alertStatus"))
-							        && ancParam.get("milestone").equalsIgnoreCase(visitCode)) {
-								scheduleRefreshPNC(enrollments, action, referenceDate, action.anmIdentifier(), "",
-								    ScheduleNames.PNC);
-								corrected++;
-								logger.info("from  submitted milestone is same but alert status not same CaseID:"
-								        + action.caseId() + " provider: " + action.anmIdentifier() + " doo:" + doo
-								        + " Current visitCode:" + ancParam.get("milestone") + " Current Alert Status:"
-								        + ancParam.get("alert") + " Existing Current visitCode:"
-								        + action.data().get("visitCode") + " Existing Alert Status:"
-								        + action.data().get("alertStatus") + " Active:" + action.getIsActionActive());
+								acn4submitted++;//196
 							} else {
-								sameAlertStatus++;//1038/ may be nothing to do
-								logger.info(" not submitted same alert status Not Corrected CaseID:" + action.caseId()
-								        + " provider: " + action.anmIdentifier() + " doo:" + doo + " Current visitCode:"
-								        + ancParam.get("milestone") + " Current Alert Status:" + ancParam.get("alert")
-								        + " Existing Current visitCode : " + action.data().get("visitCode")
-								        + " Existing Alert Status:" + action.data().get("alertStatus") + " Active:"
-								        + action.getIsActionActive());
-								
+								if (!ancParam.get("milestone").equalsIgnoreCase(visitCode)) {
+									
+									corrected++; //7
+									scheduleRefreshPNC(enrollments, action, referenceDate, action.anmIdentifier(), "",
+									    ScheduleNames.PNC);
+									logger.info("from  submitted milestone is  not same corrected CaseID:" + action.caseId()
+									        + " provider: " + action.anmIdentifier() + " doo:" + doo + " Current visitCode:"
+									        + ancParam.get("milestone") + " Current Alert Status:" + ancParam.get("alert")
+									        + " Existing Current visitCode:" + action.data().get("visitCode")
+									        + " Existing Alert Status:" + action.data().get("alertStatus") + " Active:"
+									        + action.getIsActionActive());
+									// refresh schedule
+								} else {
+									
+									makeScheduleFalse(action);
+									submittedButMilestoneSame++;
+									logger.info("submitted same alert status not Corrected CaseID:" + action.caseId()
+									        + " provider: " + action.anmIdentifier() + " doo:" + doo + " Current visitCode:"
+									        + ancParam.get("milestone") + " Current Alert Status:" + ancParam.get("alert")
+									        + " Existing Current visitCode : " + action.data().get("visitCode")
+									        + " Existing Alert Status:" + action.data().get("alertStatus") + " Active:"
+									        + action.getIsActionActive());
+								}
 							}
-						}
+							
+						} else { // not submitted
 						
+							if (action.data().get("alertStatus").equalsIgnoreCase("expired")) {
+								expired++;
+							} else {
+								if (!ancParam.get("milestone").equalsIgnoreCase(visitCode)) {
+									corrected++; //0
+									scheduleRefreshPNC(enrollments, action, referenceDate, action.anmIdentifier(), "",
+									    ScheduleNames.PNC);
+									logger.info("from  not submitted milestone is  not same corrected CaseID:"
+									        + action.caseId() + " provider: " + action.anmIdentifier() + " doo:" + doo
+									        + " Current visitCode:" + ancParam.get("milestone") + " Current Alert Status:"
+									        + ancParam.get("alert") + " Existing Current visitCode:"
+									        + action.data().get("visitCode") + " Existing Alert Status:"
+									        + action.data().get("alertStatus") + " Active:" + action.getIsActionActive());
+									// must need to refresh
+									
+								} else if (!ancParam.get("alert").equalsIgnoreCase(action.data().get("alertStatus"))
+								        && ancParam.get("milestone").equalsIgnoreCase(visitCode)) {
+									scheduleRefreshPNC(enrollments, action, referenceDate, action.anmIdentifier(), "",
+									    ScheduleNames.PNC);
+									corrected++;
+									logger.info("from not submitted milestone is same but alert status not same corrected CaseID:"
+									        + action.caseId()
+									        + " provider: "
+									        + action.anmIdentifier()
+									        + " doo:"
+									        + doo
+									        + " Current visitCode:"
+									        + ancParam.get("milestone")
+									        + " Current Alert Status:"
+									        + ancParam.get("alert")
+									        + " Existing Current visitCode:"
+									        + action.data().get("visitCode")
+									        + " Existing Alert Status:"
+									        + action.data().get("alertStatus") + " Active:" + action.getIsActionActive());
+								} else {
+									sameAlertStatus++;//1038/ may be nothing to do
+									logger.info(" not submitted same alert status not Corrected CaseID:" + action.caseId()
+									        + " provider: " + action.anmIdentifier() + " doo:" + doo + " Current visitCode:"
+									        + ancParam.get("milestone") + " Current Alert Status:" + ancParam.get("alert")
+									        + " Existing Current visitCode : " + action.data().get("visitCode")
+									        + " Existing Alert Status:" + action.data().get("alertStatus") + " Active:"
+									        + action.getIsActionActive());
+									
+								}
+							}
+							
+						}
 					}
 				}
 				catch (Exception e) {
@@ -814,18 +821,19 @@ public class AclController {
 						if (SCHEDULE_ENCC_3.equalsIgnoreCase(visitCode)) {
 							
 							makeScheduleFalse(action);
-							logger.info("ENCC3 Submitted CaseID:" + action.caseId() + " provider: " + action.anmIdentifier()
-							        + " doo:" + doo + " Current visitCode:" + enccParam.get("milestone")
-							        + " Current Alert Status:" + enccParam.get("alert") + " Existing Current visitCode : "
-							        + action.data().get("visitCode") + " Existing Alert Status:"
-							        + action.data().get("alertStatus") + " Active:" + action.getIsActionActive());
+							logger.info("ENCC3 Submitted not corrected CaseID:" + action.caseId() + " provider: "
+							        + action.anmIdentifier() + " doo:" + doo + " Current visitCode:"
+							        + enccParam.get("milestone") + " Current Alert Status:" + enccParam.get("alert")
+							        + " Existing Current visitCode : " + action.data().get("visitCode")
+							        + " Existing Alert Status:" + action.data().get("alertStatus") + " Active:"
+							        + action.getIsActionActive());
 							acn4submitted++;//196
 						} else {
 							if (!enccParam.get("milestone").equalsIgnoreCase(visitCode)) {
 								corrected++;
 								scheduleRefreshENCC(enrollments, action, referenceDate, action.anmIdentifier(), "",
 								    ScheduleNames.CHILD);
-								logger.info("from not submitted milestone is  not same CaseID:" + action.caseId()
+								logger.info("from  submitted milestone is  not same corrected CaseID:" + action.caseId()
 								        + " provider: " + action.anmIdentifier() + " doo:" + doo + " Current visitCode:"
 								        + enccParam.get("milestone") + " Current Alert Status:" + enccParam.get("alert")
 								        + " Existing Current visitCode:" + action.data().get("visitCode")
@@ -835,7 +843,7 @@ public class AclController {
 								
 								makeScheduleFalse(action);
 								submittedButMilestoneSame++;
-								logger.info("submitted same alert status Not Corrected CaseID:" + action.caseId()
+								logger.info("submitted same alert status not Corrected CaseID:" + action.caseId()
 								        + " provider: " + action.anmIdentifier() + " doo:" + doo + " Current visitCode:"
 								        + enccParam.get("milestone") + " Current Alert Status:" + enccParam.get("alert")
 								        + " Existing Current visitCode : " + action.data().get("visitCode")
@@ -849,12 +857,12 @@ public class AclController {
 						if (action.data().get("alertStatus").equalsIgnoreCase("expired")) {
 							
 						} else {
-							if (!enccParam.get("milestone").equalsIgnoreCase(visitCode) && isActiveOrDefaulted(enrollments)) {
+							if (!enccParam.get("milestone").equalsIgnoreCase(visitCode)) {
 								corrected++; //0
 								// must need to refresh
 								scheduleRefreshENCC(enrollments, action, referenceDate, action.anmIdentifier(), "",
 								    ScheduleNames.CHILD);
-								logger.info("from  submitted milestone is  not same CaseID:" + action.caseId()
+								logger.info("from not submitted milestone is  not same corrected CaseID:" + action.caseId()
 								        + " provider: " + action.anmIdentifier() + " doo:" + doo + " Current visitCode:"
 								        + enccParam.get("milestone") + " Current Alert Status:" + enccParam.get("alert")
 								        + " Existing Current visitCode:" + action.data().get("visitCode")
@@ -867,15 +875,23 @@ public class AclController {
 								    ScheduleNames.CHILD);
 								
 								corrected++;
-								logger.info("from  submitted milestone is same but alert status not same CaseID:"
-								        + action.caseId() + " provider: " + action.anmIdentifier() + " doo:" + doo
-								        + " Current visitCode:" + enccParam.get("milestone") + " Current Alert Status:"
-								        + enccParam.get("alert") + " Existing Current visitCode:"
-								        + action.data().get("visitCode") + " Existing Alert Status:"
+								logger.info("from not submitted milestone is same but alert status not same  corrected CaseID:"
+								        + action.caseId()
+								        + " provider: "
+								        + action.anmIdentifier()
+								        + " doo:"
+								        + doo
+								        + " Current visitCode:"
+								        + enccParam.get("milestone")
+								        + " Current Alert Status:"
+								        + enccParam.get("alert")
+								        + " Existing Current visitCode:"
+								        + action.data().get("visitCode")
+								        + " Existing Alert Status:"
 								        + action.data().get("alertStatus") + " Active:" + action.getIsActionActive());
 							} else {
 								sameAlertStatus++;//1038/ may be nothing to do
-								logger.info(" not submitted same alert status Not Corrected CaseID:" + action.caseId()
+								logger.info("from not submitted same alert status not Corrected CaseID:" + action.caseId()
 								        + " provider: " + action.anmIdentifier() + " doo:" + doo + " Current visitCode:"
 								        + enccParam.get("milestone") + " Current Alert Status:" + enccParam.get("alert")
 								        + " Existing Current visitCode : " + action.data().get("visitCode")
@@ -947,10 +963,13 @@ public class AclController {
 		for (Map<String, String> map : bnfVisitDetails) {
 			user_type = map.get("user_type");
 			date = map.get("FWBNFDTOO");
-			if ((!"".equalsIgnoreCase(date) || !date.isEmpty()) && "FD".equalsIgnoreCase(user_type)) {
-				System.err.println("Date:" + date);
-				return date;
+			if ("FD".equalsIgnoreCase(user_type)) {
+				if (!date.isEmpty()) {
+					
+					return date;
+				}
 			}
+			
 		}
 		
 		return null;

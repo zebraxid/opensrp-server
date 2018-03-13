@@ -117,7 +117,8 @@ public class ChildSchedulesService {
 			milestone = SCHEDULE_ENCC_3;
 			logger.info("ENCC out of Date of case id" + entityId);
 			scheduleLogService.saveAction(entityId, instanceId, provider, SCHEDULE_ENCC, SCHEDULE_ENCC_3,
-			    BeneficiaryType.child, AlertStatus.expired, new DateTime(new Date()), new DateTime(new Date()));
+			    BeneficiaryType.child, AlertStatus.expired, new DateTime(FWBNFDTOO).plusDays(9),
+			    new DateTime(FWBNFDTOO).plusDays(9));
 		}
 		
 		logger.info(format("Enrolling ENCC with Entity id:{0} to ENCC schedule, milestone: {1}.", entityId, milestone));
