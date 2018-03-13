@@ -81,6 +81,8 @@ public class AllConstants {
 		public static final String GENDER = "gender";
 		
 		public static final String ZEIR_ID = "zeir_id";
+		
+		public static final String OPENMRS_UUID_IDENTIFIER_TYPE = "OPENMRS_UUID";
 	}
 	
 	public static class Event {
@@ -102,6 +104,8 @@ public class AllConstants {
 		public static final String TEAM = "team";
 		
 		public static final String TEAM_ID = "teamId";
+		
+		public static final String OPENMRS_UUID_IDENTIFIER_TYPE = "OPENMRS_UUID";
 		
 	}
 	
