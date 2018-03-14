@@ -13,11 +13,14 @@ import org.opensrp.domain.AppStateToken;
 import org.opensrp.repository.AppStateTokensRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
 import com.mysql.jdbc.StringUtils;
 
-@Repository
+
+@Repository("couchAppStateTokensRepository")
+@Primary
 public class AllAppStateTokens extends MotechBaseRepository<AppStateToken> implements AppStateTokensRepository {
 	
 	private CouchDbConnector db;

@@ -18,12 +18,14 @@ import org.opensrp.service.FormSubmissionDataMigrationService;
 import org.opensrp.util.Utils;
 import org.opensrp.util.Utils.DatabaseConnectionParams;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 
 public class FormSubmissionDataMigrationIntegrationTest extends BaseIntegrationTest{
 	@Autowired
 	FormSubmissionDataMigrationService dataMigrationService;
 	@Autowired
+	@Qualifier("couchAppStateTokensRepository")
 	AllAppStateTokens allAppStateTokens;
 	@Autowired
     private FormSubmissionProcessor fsp;

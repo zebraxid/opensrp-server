@@ -12,12 +12,14 @@ import org.opensrp.domain.ErrorTrace;
 import org.opensrp.repository.ErrorTraceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
 /**
  * @author muhammad.ahmed@ihsinformatics.com Created on May 25, 2015
  */
-@Repository
+@Repository("couchErrorTraceRepository")
+@Primary
 public class AllErrorTrace extends MotechBaseRepository<ErrorTrace> implements ErrorTraceRepository {
 	
 	@Autowired
