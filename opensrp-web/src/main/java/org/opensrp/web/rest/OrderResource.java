@@ -60,6 +60,7 @@ public class OrderResource extends RestResource<Order> {
                     new TypeToken<ArrayList<Order>>(){}.getType());
 
             for(Order order: orderArrayList) {
+                order.setServerVersion(System.currentTimeMillis());
                 orderService.addOrder(order);
             }
             return new ResponseEntity<>(HttpStatus.CREATED);
