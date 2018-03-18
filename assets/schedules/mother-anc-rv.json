@@ -5,7 +5,7 @@
         {
             "name": "ancrv_1",
             "scheduleWindows": {
-                "earliest": ["0 Days"],
+                "earliest": ["50 Days"],
                 "due": ["56 Days"],
                 "late": ["163 Days"]
                 

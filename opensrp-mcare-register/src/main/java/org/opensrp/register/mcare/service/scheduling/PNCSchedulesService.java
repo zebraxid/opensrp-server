@@ -126,18 +126,18 @@ public class PNCSchedulesService {
 			
 		} else {
 			milestone = SCHEDULE_PNC_3;
-			logger.info("PNC out of Date of case id" + entityId);
+			logger.info("pnc submission received at end of pnc3 expire caseId:" + entityId + " ,provider:" + provider);
 			scheduleLogService.saveAction(entityId, instanceId, provider, SCHEDULE_PNC, SCHEDULE_PNC_3,
 			    BeneficiaryType.mother, AlertStatus.expired, new DateTime(FWBNFDTOO).plusDays(9),
 			    new DateTime(FWBNFDTOO).plusDays(9));
 		}
 		
-		logger.info(format("Enrolling PNC with Entity id:{0} to PNC schedule, milestone: {1}.", entityId, milestone));
+		logger.info(format("enrolling pnc with entityId: {0} , schedule milestone: {1}.", entityId, milestone));
 		scheduler.enrollIntoSchedule(entityId, SCHEDULE_PNC, milestone, referenceDateForSchedule.toString());
 	}
 	
 	public void enrollPNCForMother(String entityId, String sch_name, LocalDate referenceDateForSchedule) {
-		logger.info(format("Enrolling PNC with Entity id:{0} to PNC schedule, milestone: {1}.", entityId, sch_name));
+		logger.info(format("enrolling pnc with entityId: {0} , schedule milestone: {1}.", entityId, sch_name));
 		scheduler.enrollIntoSchedule(entityId, SCHEDULE_PNC, sch_name, referenceDateForSchedule.toString());
 	}
 	

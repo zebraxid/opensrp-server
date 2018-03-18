@@ -115,19 +115,19 @@ public class ChildSchedulesService {
 			
 		} else {
 			milestone = SCHEDULE_ENCC_3;
-			logger.info("ENCC out of Date of case id" + entityId);
+			logger.info("encc submission received at end of encc3 expire caseId:" + entityId + " ,provider:" + provider);
 			scheduleLogService.saveAction(entityId, instanceId, provider, SCHEDULE_ENCC, SCHEDULE_ENCC_3,
 			    BeneficiaryType.child, AlertStatus.expired, new DateTime(FWBNFDTOO).plusDays(9),
 			    new DateTime(FWBNFDTOO).plusDays(9));
 		}
 		
-		logger.info(format("Enrolling ENCC with Entity id:{0} to ENCC schedule, milestone: {1}.", entityId, milestone));
+		logger.info(format("enrolling encc with entityId:{0}, milestone: {1}.", entityId, milestone));
 		scheduler.enrollIntoSchedule(entityId, SCHEDULE_ENCC, milestone, referenceDateForSchedule.toString());
 		
 	}
 	
 	public void enrollENCCVisit(String entityId, String sch_name, LocalDate referenceDateForSchedule) {
-		logger.info(format("Enrolling with Entity id:{0} to ENCC schedule, milestone: {1}.", entityId, sch_name));
+		logger.info(format("enrolling with Entity id:{0} to ENCC schedule, milestone: {1}.", entityId, sch_name));
 		scheduler.enrollIntoSchedule(entityId, SCHEDULE_ENCC, sch_name, referenceDateForSchedule.toString());
 	}
 	

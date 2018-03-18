@@ -3,6 +3,7 @@ package org.opensrp.register.mcare.repository.it;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ChildScheduleConstants.SCHEDULE_ENCC_1;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ChildScheduleConstants.SCHEDULE_ENCC_2;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ChildScheduleConstants.SCHEDULE_ENCC_3;
+import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_ANC;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_ANC_1;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_ANC_2;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_ANC_3;
@@ -36,7 +37,9 @@ import org.junit.Test;
 import org.motechproject.scheduletracking.api.domain.Enrollment;
 import org.motechproject.scheduletracking.api.domain.EnrollmentStatus;
 import org.opensrp.common.util.DateUtil;
+import org.opensrp.dto.ActionData;
 import org.opensrp.dto.AlertStatus;
+import org.opensrp.dto.BeneficiaryType;
 import org.opensrp.register.mcare.OpenSRPScheduleConstants.DateTimeDuration;
 import org.opensrp.register.mcare.domain.Child;
 import org.opensrp.register.mcare.domain.Mother;
@@ -784,6 +787,38 @@ public class MotherIntegrationTest {
 		}
 		
 		return null;
+		
+	}
+	
+	// e3ff91cb-6106-47b3-b672-cf020c539f1f
+	//c1a8d55c-e49b-4f12-859f-ed684477a9eb
+	//75629717-b9f9-4be8-86bd-f7b0e817a013
+	//e275ea2d-6b90-46eb-b860-055d654a57f9
+	// ab357e49-0f11-4a41-8f8a-06354dda100c
+	
+	// 7ffe724e-46d3-4a21-828a-9767294104ce
+	@Ignore
+	@Test
+	public void craeteANC() {
+		
+		String entityId = "7ffe724e-46d3-4a21-828a-9767294104ce";
+		
+		DateTime ancStartDate = null;
+		DateTime ancExpireDate = null;
+		Mother mother = allMothers.findByCaseId(entityId);
+		Date date = null;
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		try {
+			date = format.parse(mother.details().get("LMP"));
+		}
+		catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		ancStartDate = new DateTime(date);
+		ancExpireDate = new DateTime(date).plusDays(DateTimeDuration.ANC1NORMALEND);
+		allActions.addOrUpdateAlert(new Action(entityId, mother.PROVIDERID(), ActionData.createAlert(BeneficiaryType.mother,
+		    SCHEDULE_ANC, SCHEDULE_ANC_1, AlertStatus.normal, ancStartDate, ancExpireDate)));
 		
 	}
 }

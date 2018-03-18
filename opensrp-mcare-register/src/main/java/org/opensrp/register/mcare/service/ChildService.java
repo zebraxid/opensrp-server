@@ -223,14 +223,14 @@ public class ChildService {
 				childSchedulesService.fullfillMilestone(submission.entityId(), submission.anmId(), SCHEDULE_ENCC,
 				    new LocalDate());
 				actionService.markAlertAsInactive(submission.anmId(), submission.entityId(), SCHEDULE_ENCC);
-				logger.info(currentVisitCode + "  received in time provider: " + submission.anmId() + "caseId:"
+				logger.info(currentVisitCode + " received within time provider: " + submission.anmId() + " ,caseId:"
 				        + submission.entityId());
 			} else {
-				logger.info(currentVisitCode + "  received not in time  provider: " + submission.anmId() + "caseId:"
+				logger.info(currentVisitCode + "  received not within time  provider: " + submission.anmId() + " ,caseId: "
 				        + submission.entityId());
 			}
 		} else {
-			logger.info(currentVisitCode + "  no schedule found in action  provider: " + submission.anmId() + "caseId:"
+			logger.warn(currentVisitCode + "  no schedule found in action  provider: " + submission.anmId() + " ,caseId: "
 			        + submission.entityId());
 		}
 	}

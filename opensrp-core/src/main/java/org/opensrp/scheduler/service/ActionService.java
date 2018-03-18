@@ -117,16 +117,21 @@ public class ActionService {
 			    scheduleName);
 			if (existingAlerts.size() > 0) {
 				updateDataAction(visitCode, alertStatus, startDate, expiryDate, existingAlerts);
-				logger.info("CaseID:" + existingAlerts.get(0).caseId() + " provider: "
-				        + existingAlerts.get(0).anmIdentifier() + " Current visitCode:" + visitCode
-				        + " Current Alert Status:" + alertStatus.name() + " Existing Current visitCode"
-				        + existingAlerts.get(0).data().get("visitCode") + " Existing Alert Status:"
-				        + existingAlerts.get(0).data().get("alertStatus") + " Active:"
+				logger.info("ActionUpdateOrCreateForOther for motech event caseId: " + existingAlerts.get(0).caseId()
+				        + " ,provider: " + existingAlerts.get(0).anmIdentifier() + " ,event visitCode: " + visitCode
+				        + " ,event alert status: " + alertStatus.name() + " ,existing visitCode: "
+				        + existingAlerts.get(0).data().get("visitCode") + " ,exisiting alert status: "
+				        + existingAlerts.get(0).data().get("alertStatus") + " ,isactive: "
 				        + existingAlerts.get(0).getIsActionActive());
+				
+			} else {
+				/*allActions.addOrUpdateAlert(new Action(caseID, anmIdentifier, ActionData.createAlert(beneficiaryType,
+				    scheduleName, visitCode, alertStatus, startDate, expiryDate)));*/
+				logger.info("schedule not found caseId: " + caseID + " ,scheduleName: " + scheduleName);
 			}
 		}
 		catch (Exception e) {
-			logger.info(e.getMessage());
+			logger.warn("ActionUpdateOrCreateForOther, error: " + e.getMessage());
 			
 		}
 	}
@@ -205,25 +210,26 @@ public class ActionService {
 					}
 					
 				} else {
-					logger.info("NOT PNC OR ENCC OR ANC  at caseID:" + caseID + " scheduleName : " + scheduleName);
+					logger.info("expected schedule not found caseId:" + caseID + " ,scheduleName: " + scheduleName);
 				}
 				
-				logger.info("CaseID:" + existingAlerts.get(0).caseId() + " provider: "
-				        + existingAlerts.get(0).anmIdentifier() + " Current visitCode:" + visitCode
-				        + " Current Alert Status:" + alertStatus.name() + " Existing Current visitCode"
-				        + existingAlerts.get(0).data().get("visitCode") + " Existing Alert Status:"
-				        + existingAlerts.get(0).data().get("alertStatus") + " Active:"
+				logger.info("ActionUpdateOrCreateForMotherType for motech event caseId: " + existingAlerts.get(0).caseId()
+				        + " ,provider: " + existingAlerts.get(0).anmIdentifier() + " ,event visitCode: " + visitCode
+				        + " ,event alert status: " + alertStatus.name() + " ,existing visitCode: "
+				        + existingAlerts.get(0).data().get("visitCode") + " ,exisiting alert status: "
+				        + existingAlerts.get(0).data().get("alertStatus") + " ,isactive: "
 				        + existingAlerts.get(0).getIsActionActive());
 				
 			} else {
-				
-				logger.info("No Doc found at caseID:" + caseID + " scheduleName : " + scheduleName);
+				/*allActions.addOrUpdateAlert(new Action(caseID, anmIdentifier, ActionData.createAlert(beneficiaryType,
+				    scheduleName, visitCode, alertStatus, startDate, expiryDate)));*/
+				logger.info("schedule not found caseId: " + caseID + " ,scheduleName: " + scheduleName);
 			}
 			
 		}
 		catch (Exception e) {
-			logger.info("Exception found at caseID:" + caseID + " scheduleName : " + scheduleName + "Message:"
-			        + e.getMessage());
+			logger.warn("ActionUpdateOrCreateForMotherType caseId: " + caseID + " ,scheduleName : " + scheduleName
+			        + " ,error:" + e.getMessage());
 		}
 	}
 	

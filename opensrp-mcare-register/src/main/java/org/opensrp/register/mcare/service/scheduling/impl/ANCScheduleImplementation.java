@@ -31,30 +31,32 @@ public abstract class ANCScheduleImplementation {
 		DateTime ancStartDate = null;
 		DateTime ancExpireDate = null;
 		AlertStatus alertStaus = null;
-		boolean save = false;
+		
 		if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(8).toPeriod().minusDays(6))) {
 			alertStaus = AlertStatus.normal;
 			ancStartDate = new DateTime(start);
 			ancExpireDate = new DateTime(start).plusDays(DateTimeDuration.ANC1NORMALEND);
+			
+			scheduleParamData.setAlertStaus(alertStaus.name());
 		} else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(8).toPeriod())) {
-			// til 50- 56
-			if (datediff <= -DateTimeDuration.ANC1UPCOMINGSTART) {
+			
+			if (datediff < -DateTimeDuration.ANC1UPCOMINGSTART) {
 				alertStaus = AlertStatus.upcoming;
 				ancStartDate = new DateTime(start).plusDays(DateTimeDuration.ANC1UPCOMINGSTART);
 				ancExpireDate = new DateTime(ancStartDate).plusDays(DateTimeDuration.ANC1UPCOMINGEND);
-				save = true;
+				
 				scheduleParamData.setAlertStaus(alertStaus.name());
 			}
 		} else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(23).toPeriod()
 		        .plusDays(1))) {
-			// til 57-162
+			
 			alertStaus = AlertStatus.urgent;
 			ancStartDate = new DateTime(start).plusDays(DateTimeDuration.ANC1URGENTSTART);
 			ancExpireDate = new DateTime(ancStartDate).plusDays(DateTimeDuration.ANC1URGENTEND);
-			save = true;
+			
 			scheduleParamData.setAlertStaus(alertStaus.name());
 		}
-		if (isSave && save) {
+		if (isSave) {
 			scheduleLogService.saveAction(entityId, instanceId, provider, SCHEDULE_ANC, milestone, BeneficiaryType.mother,
 			    alertStaus, ancStartDate, ancExpireDate);
 		}
@@ -78,7 +80,7 @@ public abstract class ANCScheduleImplementation {
 			}
 			
 		} else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(24).toPeriod())) {
-			// till 168
+			
 			alertStaus = AlertStatus.upcoming;
 			ancStartDate = new DateTime(start).plusDays(DateTimeDuration.ANC2UPCOMINGSTART);
 			ancExpireDate = new DateTime(ancStartDate).plusDays(DateTimeDuration.ANC2UPCOMINGEND);
@@ -88,7 +90,7 @@ public abstract class ANCScheduleImplementation {
 			}
 		} else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(31).toPeriod()
 		        .plusDays(1))) {
-			// till 219
+			
 			alertStaus = AlertStatus.urgent;
 			ancStartDate = new DateTime(start).plusDays(DateTimeDuration.ANC2URGENTSTART);
 			ancExpireDate = new DateTime(ancStartDate).plusDays(DateTimeDuration.ANC2URGENTEND);
@@ -118,7 +120,7 @@ public abstract class ANCScheduleImplementation {
 				    BeneficiaryType.mother, alertStaus, ancStartDate, ancExpireDate);
 			}
 		} else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(32).toPeriod())) {
-			// till 224
+			
 			alertStaus = AlertStatus.upcoming;
 			ancStartDate = new DateTime(start).plusDays(DateTimeDuration.ANC3UPCOMINGSTART);
 			ancExpireDate = new DateTime(ancStartDate).plusDays(DateTimeDuration.ANC3UPCOMINGEND);
@@ -128,7 +130,7 @@ public abstract class ANCScheduleImplementation {
 			}
 		} else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(35).toPeriod()
 		        .plusDays(1))) {
-			// 246
+			
 			alertStaus = AlertStatus.urgent;
 			ancStartDate = new DateTime(start).plusDays(DateTimeDuration.ANC3URGENTSTART);
 			ancExpireDate = new DateTime(ancStartDate).plusDays(DateTimeDuration.ANC3URGENTEND);
@@ -150,7 +152,7 @@ public abstract class ANCScheduleImplementation {
 		DateTime ancExpireDate = null;
 		AlertStatus alertStaus = null;
 		if (datediff == DateTimeDuration.LASTDAYOFAN3) {
-			// till 
+			
 			alertStaus = AlertStatus.urgent;
 			ancStartDate = new DateTime(start).plusDays(DateTimeDuration.ANC3URGENTSTART);
 			ancExpireDate = new DateTime(ancStartDate).plusDays(DateTimeDuration.ANC3URGENTEND);
@@ -159,7 +161,7 @@ public abstract class ANCScheduleImplementation {
 				    BeneficiaryType.mother, alertStaus, ancStartDate, ancExpireDate);
 			}
 		} else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(36).toPeriod())) {
-			// from  248  to 252
+			
 			alertStaus = AlertStatus.upcoming;
 			ancStartDate = new DateTime(start).plusDays(DateTimeDuration.ANC4UPCOMINGSTART);
 			ancExpireDate = new DateTime(ancStartDate).plusDays(DateTimeDuration.ANC4UPCOMINGEND);
@@ -168,7 +170,7 @@ public abstract class ANCScheduleImplementation {
 				    BeneficiaryType.mother, alertStaus, ancStartDate, ancExpireDate);
 			}
 		} else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(44).toPeriod())) {
-			// 253 - 308
+			
 			alertStaus = AlertStatus.urgent;
 			ancStartDate = new DateTime(start).plusDays(DateTimeDuration.ANC4URGENTSTART);
 			ancExpireDate = new DateTime(ancStartDate).plusDays(DateTimeDuration.ANC4URGENTEND);

@@ -110,7 +110,7 @@ public class ANCSchedulesService extends ANCScheduleImplementation {
 			milestone = SCHEDULE_ANC_4;
 			
 			if (isSave) {
-				logger.info("ANC Schedule out of Date of case id" + entityId);
+				logger.info("anc submission received at end of anc4 expire caseId:" + entityId + " ,provider:" + provider);
 				scheduleLogService.saveAction(entityId, instanceId, provider, SCHEDULE_ANC, SCHEDULE_ANC_4,
 				    BeneficiaryType.mother, AlertStatus.expired, new DateTime(start)
 				            .plusDays(OpenSRPScheduleConstants.DateTimeDuration.ANC4EXPIREDSTART), new DateTime(start)
@@ -121,9 +121,8 @@ public class ANCSchedulesService extends ANCScheduleImplementation {
 		
 		if (isSave) {
 			logger.info(format(
-			    "Enrolling ANC with Entity id:{0} to ANC schedule, milestone: {1}. with referenceDateForSchedule{2}. SCHEDULE_ANC {3}. ",
+			    "enrolling anc with entityId:{0} , milestone: {1} referenceDateForSchedule{2}. SCHEDULE_ANC {3}. ",
 			    entityId, milestone, referenceDateForSchedule.toString(), SCHEDULE_ANC));
-			
 			scheduler.enrollIntoSchedule(entityId, SCHEDULE_ANC, milestone, referenceDateForSchedule.toString());
 			
 		}
@@ -134,10 +133,10 @@ public class ANCSchedulesService extends ANCScheduleImplementation {
 	public void fullfillSchedule(String caseID, String scheduleName, String instanceId, long timestamp) {
 		try {
 			scheduleLogService.fullfillSchedule(caseID, scheduleName, instanceId, timestamp);
-			logger.info("fullfillSchedule a Schedule with id : " + caseID);
+			logger.info("fullfillSchedule a Schedule with caseId : " + caseID);
 		}
 		catch (Exception e) {
-			logger.info("Does not fullfill a schedule:" + e.getMessage());
+			logger.warn("fullfillSchedule failed error:" + e.getMessage());
 		}
 	}
 	

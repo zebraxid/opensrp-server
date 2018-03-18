@@ -473,8 +473,7 @@ public class PNCService {
 	}
 	
 	public void sendFeverSMS(String identifier) {
-		System.out.println("hello" + FEVER_SMS_URL);
-		System.out.println("sending feversms for woman identifier: " + identifier + " ,response:"
+		logger.info("sending feversms for woman identifier: " + identifier + " ,response:"
 		        + HttpUtil.get(FEVER_SMS_URL, identifier, "", "").body());
 	}
 	
@@ -488,14 +487,14 @@ public class PNCService {
 				pncSchedulesService.fullfillMilestone(submission.entityId(), submission.anmId(), SCHEDULE_PNC,
 				    new LocalDate());
 				actionService.markAlertAsInactive(submission.anmId(), submission.entityId(), SCHEDULE_PNC);
-				logger.info(currentVisitCode + "  received in time provider: " + submission.anmId() + "caseId:"
+				logger.info(currentVisitCode + " received within time provider: " + submission.anmId() + " ,caseId:"
 				        + submission.entityId());
 			} else {
-				logger.info(currentVisitCode + "  received not in time  provider: " + submission.anmId() + "caseId:"
+				logger.info(currentVisitCode + "  received not within time  provider: " + submission.anmId() + " ,caseId: "
 				        + submission.entityId());
 			}
 		} else {
-			logger.info(currentVisitCode + "  no schedule found in action  provider: " + submission.anmId() + "caseId:"
+			logger.warn(currentVisitCode + "  no schedule found in action  provider: " + submission.anmId() + " ,caseId: "
 			        + submission.entityId());
 		}
 	}
