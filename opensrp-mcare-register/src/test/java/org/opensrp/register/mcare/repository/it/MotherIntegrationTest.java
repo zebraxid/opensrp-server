@@ -12,12 +12,16 @@ import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherSchedule
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_PNC_2;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_PNC_3;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import org.ektorp.CouchDbInstance;
 import org.ektorp.http.HttpClient;
@@ -634,10 +638,10 @@ public class MotherIntegrationTest {
 	// need to apply  in live
 	@Ignore
 	@Test
-	public void expiredScheduleCorrection() {
+	public void expiredScheduleChangeTimestamp() {
 		List<Action> actions = allActions.getAll(); //all view should change as only get expired schedule
 		for (Action action : actions) {
-			action.markAsInActive();
+			//action.markAsInActive();
 			action.timestamp(System.currentTimeMillis());
 			action.setRevision(action.getRevision());
 			allActions.update(action);
@@ -800,25 +804,83 @@ public class MotherIntegrationTest {
 	@Ignore
 	@Test
 	public void craeteANC() {
+		String csvFile = "/opt/multimedia/export/Final/Update.csv";
+		BufferedReader br = null;
+		String line = "";
+		String cvsSplitBy = ",";
 		
+		try {
+			br = new BufferedReader(new FileReader(csvFile));
+			while ((line = br.readLine()) != null) {
+				String[] csvData = line.split(cvsSplitBy);
+				String entityId = csvData[0].trim();
+				DateTime ancStartDate = null;
+				DateTime ancExpireDate = null;
+				Mother mother = allMothers.findByCaseId(entityId);
+				Date date = null;
+				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+				try {
+					date = format.parse(mother.details().get("LMP"));
+				}
+				catch (ParseException e) {
+					e.printStackTrace();
+				}
+				ancStartDate = new DateTime(date);
+				ancExpireDate = new DateTime(date).plusDays(DateTimeDuration.ANC1NORMALEND);
+				allActions.addOrUpdateAlert(new Action(entityId, mother.PROVIDERID(), ActionData.createAlert(
+				    BeneficiaryType.mother, SCHEDULE_ANC, SCHEDULE_ANC_1, AlertStatus.normal, ancStartDate, ancExpireDate)));
+			}
+		}
+		catch (Exception e) {
+			
+		}
 		String entityId = "7ffe724e-46d3-4a21-828a-9767294104ce";
 		
-		DateTime ancStartDate = null;
-		DateTime ancExpireDate = null;
-		Mother mother = allMothers.findByCaseId(entityId);
-		Date date = null;
+	}
+	
+	@Test
+	public void csheduleCheck() {
+		List<Action> actions = allActions.findActionByScheduleName("Ante Natal Care Reminder Visit");
+		System.err.println("Total:" + actions.size());
+		int cnt = 0;
+		for (Action action : actions) {
+			Date date = null;
+			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+			try {
+				if (action.getIsActionActive()) {
+					date = format.parse(action.data().get("expiryDate"));
+					DateTime start = new DateTime(date);
+					long datediff = getDaysDifference(start);
+					
+					System.err.println(action.data().get("expiryDate") + " : " + datediff + " : "
+					        + action.getIsActionActive() + " : " + action.data().get("visitCode") + " : " + action.caseId());
+				} else {
+					cnt++;
+				}
+			}
+			catch (ParseException e) {
+				e.printStackTrace();
+			}
+		}
+		System.err.println("CNT:" + cnt);
+	}
+	
+	public static long getDaysDifference(DateTime expiryDate) {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		Date today = Calendar.getInstance().getTime();
+		
+		long days = 0;
 		try {
-			date = format.parse(mother.details().get("LMP"));
+			Date expiredDate = format.parse(expiryDate.toString());
+			String todayDate = format.format(today);
+			Date today_date = format.parse(todayDate);
+			long diff = expiredDate.getTime() - today_date.getTime();
+			days = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
 		}
 		catch (ParseException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		ancStartDate = new DateTime(date);
-		ancExpireDate = new DateTime(date).plusDays(DateTimeDuration.ANC1NORMALEND);
-		allActions.addOrUpdateAlert(new Action(entityId, mother.PROVIDERID(), ActionData.createAlert(BeneficiaryType.mother,
-		    SCHEDULE_ANC, SCHEDULE_ANC_1, AlertStatus.normal, ancStartDate, ancExpireDate)));
-		
+		return days;
 	}
 }

@@ -11,15 +11,11 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.http.client.ClientProtocolException;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.opensrp.api.domain.Client;
-import org.opensrp.api.domain.Event;
 import org.opensrp.connector.OpenmrsConnector;
-import org.opensrp.connector.openmrs.constants.OpenmrsHouseHold;
 import org.opensrp.connector.openmrs.service.EncounterService;
 import org.opensrp.connector.openmrs.service.HouseholdService;
 import org.opensrp.connector.openmrs.service.OpenmrsUserService;
@@ -51,7 +47,6 @@ import org.springframework.web.multipart.MultipartFile;
 import ch.lambdaj.function.convert.Converter;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 @Controller
 public class FormSubmissionController {
@@ -142,7 +137,7 @@ public class FormSubmissionController {
 				logger.info("form submission received and registered notify event dtosize: " + formSubmissionsDTO.size());
 			}
 			
-			try {
+			/*try {
 				
 				String json = new Gson().toJson(formSubmissionsDTO);
 				List<FormSubmissionDTO> formSubmissions = new Gson().fromJson(json,
@@ -203,7 +198,7 @@ public class FormSubmissionController {
 			}
 			catch (Exception e) {
 				e.printStackTrace();
-			}
+			}*/
 			
 			logger.debug(format("Added Form submissions to queue.\nSubmissions: {0}", formSubmissionsDTO));
 		}
