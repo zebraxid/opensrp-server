@@ -4,6 +4,8 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.ektorp.support.TypeDiscriminator;
 
+import java.util.Map;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 @TypeDiscriminator("doc.type == 'Order'")
 public class Order extends BaseDataObject {
@@ -19,6 +21,17 @@ public class Order extends BaseDataObject {
 
     @JsonProperty
     private long dateCreatedByClient;
+
+    @JsonProperty
+    private Map<String, Integer> stockOnHand;
+
+    public Map<String, Integer> getStockOnHand() {
+        return stockOnHand;
+    }
+
+    public void setStockOnHand(Map<String, Integer> stockOnHand) {
+        this.stockOnHand = stockOnHand;
+    }
 
     public long getDateCreatedByClient() {
         return dateCreatedByClient;
