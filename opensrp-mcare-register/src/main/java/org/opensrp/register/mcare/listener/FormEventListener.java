@@ -87,12 +87,11 @@ public class FormEventListener {
 				    }
 			    });
 			formEntityService.process(formSubmissions);
-			
 			sentDataToOpenMRS(formSubmissions);
 		}
 		catch (Exception e) {
 			logger.error(MessageFormat.format("{0} occurred while trying to fetch forms. Message: {1} with stack trace {2}",
-			    e.toString(), e.getMessage(), getFullStackTrace(e)));
+			    e.getCause(), e.getMessage(), getFullStackTrace(e)));
 		}
 		finally {
 			lock.unlock();
@@ -110,6 +109,7 @@ public class FormEventListener {
 	
 	private void sentDataToOpenMRS(List<FormSubmission> formSubmissions) {
 		for (FormSubmission formSubmission : formSubmissions) {
+			logger.info("CaseId: " + formSubmission.entityId());
 			openMRSService.sendDataToOpenMRS(formSubmission);
 		}
 	}

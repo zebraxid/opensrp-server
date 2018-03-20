@@ -87,11 +87,11 @@ public class OpenMRSService {
 		}
 		catch (JSONException e) {
 			logger.error(MessageFormat.format("{0} occurred while trying to fetch forms. Message: {1} with stack trace {2}",
-			    e.toString(), e.getMessage(), getFullStackTrace(e)));
+			    e.getCause(), e.getMessage(), getFullStackTrace(e)));
 		}
 		catch (ParseException e) {
 			logger.error(MessageFormat.format("{0} occurred while trying to fetch forms. Message: {1} with stack trace {2}",
-			    e.toString(), e.getMessage(), getFullStackTrace(e)));
+			    e.getCause(), e.getMessage(), getFullStackTrace(e)));
 		}
 		
 	}

@@ -1,16 +1,7 @@
 package org.opensrp.register.mcare.repository.it;
 
-import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ChildScheduleConstants.SCHEDULE_ENCC_1;
-import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ChildScheduleConstants.SCHEDULE_ENCC_2;
-import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ChildScheduleConstants.SCHEDULE_ENCC_3;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_ANC;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_ANC_1;
-import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_ANC_2;
-import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_ANC_3;
-import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_ANC_4;
-import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_PNC_1;
-import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_PNC_2;
-import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_PNC_3;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -18,7 +9,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -30,28 +20,18 @@ import org.ektorp.impl.StdCouchDbConnector;
 import org.ektorp.impl.StdCouchDbInstance;
 import org.ektorp.impl.StdObjectMapperFactory;
 import org.joda.time.DateTime;
-import org.joda.time.Days;
-import org.joda.time.LocalDate;
-import org.joda.time.Weeks;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.motechproject.scheduletracking.api.domain.Enrollment;
-import org.motechproject.scheduletracking.api.domain.EnrollmentStatus;
-import org.opensrp.common.util.DateUtil;
 import org.opensrp.dto.ActionData;
 import org.opensrp.dto.AlertStatus;
 import org.opensrp.dto.BeneficiaryType;
 import org.opensrp.register.mcare.OpenSRPScheduleConstants.DateTimeDuration;
-import org.opensrp.register.mcare.domain.Child;
 import org.opensrp.register.mcare.domain.Mother;
 import org.opensrp.register.mcare.repository.AllChilds;
 import org.opensrp.register.mcare.repository.AllElcos;
 import org.opensrp.register.mcare.repository.AllHouseHolds;
 import org.opensrp.register.mcare.repository.AllMothers;
-import org.opensrp.register.mcare.service.scheduling.ScheduleLogService;
 import org.opensrp.scheduler.Action;
 import org.opensrp.scheduler.repository.AllActions;
 import org.opensrp.scheduler.service.AllEnrollmentWrapper;
@@ -84,7 +64,7 @@ public class MotherIntegrationTest {
 		
 		HttpClient httpClient = new StdHttpClient.Builder()
 		
-		.host("localhost").port(5984).socketTimeout(1000000).username("Admin").password("mPower@1234").build();
+		.host("192.168.19.97").port(5984).socketTimeout(1000000).username("Admin").password("mPower@1234").build();
 		dbInstance = new StdCouchDbInstance(httpClient);
 		
 		stdCouchDbConnector = new StdCouchDbConnector("opensrp", dbInstance, new StdObjectMapperFactory());
@@ -104,7 +84,7 @@ public class MotherIntegrationTest {
 	//function(doc) { if(doc.type === 'Enrollment' && doc.scheduleName=='Ante Natal Care Reminder Visit') emit(doc.externalId); }
 	//http://localhost:5984/_utils/database.html?opensrp/_design/Action/_view/all#
 	//function(doc) { if(doc.type === 'Action' && doc.data.scheduleName=='Ante Natal Care Reminder Visit' && doc.data.alertStatus!='expired') {emit(null, doc._id)} }
-	@Ignore
+	/*@Ignore
 	@Test
 	public void ancScheduleTest() {
 		int i = 0;
@@ -194,8 +174,8 @@ public class MotherIntegrationTest {
 				    "Post Natal Care Reminder Visit");
 				if (pncStatus) {// if submitted //780
 				
-					/*System.err.println("ANC CaseId:" + action.caseId() + "visitCode:" + visitCode + " status:"
-					        + action.getIsActionActive());*/
+					System.err.println("ANC CaseId:" + action.caseId() + "visitCode:" + visitCode + " status:"
+					        + action.getIsActionActive());
 					if (SCHEDULE_PNC_3.equalsIgnoreCase(visitCode)) {
 						//should false all scedule; // problem in tab synced schedule
 						// unenroll all schedule
@@ -277,8 +257,8 @@ public class MotherIntegrationTest {
 				boolean enccStatus = isENNCSubmited(child, visitCode);
 				if (enccStatus) {// if submitted //780
 				
-					/*System.err.println("ANC CaseId:" + action.caseId() + "visitCode:" + visitCode + " status:"
-					        + action.getIsActionActive());*/
+					System.err.println("ANC CaseId:" + action.caseId() + "visitCode:" + visitCode + " status:"
+					        + action.getIsActionActive());
 					if (SCHEDULE_ENCC_3.equalsIgnoreCase(visitCode)) {
 						//should false all scedule; // problem in tab synced schedule
 						// unenroll all schedule
@@ -314,8 +294,8 @@ public class MotherIntegrationTest {
 						}
 					}
 					
-					/*System.err.println("ANC CaseId:" + action.caseId() + "visitCode:" + visitCode + " status:"
-					        + action.getIsActionActive());*/
+					System.err.println("ANC CaseId:" + action.caseId() + "visitCode:" + visitCode + " status:"
+					        + action.getIsActionActive());
 				}
 			} else {
 				m++;//1
@@ -633,7 +613,7 @@ public class MotherIntegrationTest {
 			return true;
 		}
 		
-	}
+	}*/
 	
 	// need to apply  in live
 	@Ignore
@@ -650,7 +630,7 @@ public class MotherIntegrationTest {
 	
 	// need to apply  in live
 	//function(doc) { if(doc.type === 'Action' && doc.data.alertStatus=='expired' && doc.data.scheduleName=='Ante Natal Care Reminder Visit') {emit([doc.data.scheduleName], null)} }
-	@Ignore
+	/*@Ignore
 	@Test
 	public void updateANCForExpiredSchedule() {
 		List<Action> actions = allActions.findActionByScheduleName("Ante Natal Care Reminder Visit");
@@ -688,12 +668,12 @@ public class MotherIntegrationTest {
 			
 		}
 		System.err.println("anc1:" + anc1 + " anc2:" + anc2 + " anc3:" + anc3 + " anc4:" + anc4 + " e:" + e);
-	}
+	}*/
 	
 	//function(doc) { if(doc.type === 'Action' && doc.data.visitCode=='ancrv_4' && doc.data.scheduleName=='Ante Natal Care Reminder Visit') {emit([doc.data.scheduleName], null)} }
 	
 	// need to apply  in live
-	@Ignore
+	/*@Ignore
 	@Test
 	public void expiredAndSubmittedScheduleCorrection() {
 		String visitCode = "";
@@ -727,7 +707,7 @@ public class MotherIntegrationTest {
 			
 		}
 		System.err.println("acn4:" + acn4 + "c:" + c);
-	}
+	}*/
 	
 	@Ignore
 	@Test
@@ -782,8 +762,8 @@ public class MotherIntegrationTest {
 			date = map.get("FWBNFDTOO");
 			if ("FD".equalsIgnoreCase(user_type)) {
 				if (!date.isEmpty()) {
-					System.err.println("date:" + date);
-					
+					/*System.err.println("FWBNFDTOO:" + date + "  received_time: " + map.get("received_time")
+					        + " FWBNFWOMVITSTS:" + map.get("FWBNFWOMVITSTS"));*/
 					return date;
 				}
 			}
@@ -838,6 +818,7 @@ public class MotherIntegrationTest {
 		
 	}
 	
+	@Ignore
 	@Test
 	public void csheduleCheck() {
 		List<Action> actions = allActions.findActionByScheduleName("Ante Natal Care Reminder Visit");
@@ -865,6 +846,32 @@ public class MotherIntegrationTest {
 		System.err.println("CNT:" + cnt);
 	}
 	
+	@Ignore
+	@Test
+	public void calculateLiveANC() {
+		List<Action> actions = allActions.findActionByScheduleName("Ante Natal Care Reminder Visit");
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		Date today = Calendar.getInstance().getTime();
+		List<Mother> mothers = allMothers.getAll();
+		int cnt = 0;
+		int ecnt = 0;
+		for (Mother mother : mothers) {
+			try {
+				String lmp = mother.details().get("LMP");
+				DateTime start = new DateTime(lmp);
+				long datediff = getDaysDifference(start);
+				if (datediff > -308) {
+					System.err.println("datediff:" + datediff + " :" + lmp);
+					cnt++;//1838
+				}
+			}
+			catch (Exception e) {
+				ecnt++;
+			}
+		}
+		System.err.println("Total:" + mothers.size() + " actions: " + actions.size() + " : CNT:" + cnt + " ECNT:" + ecnt);
+	}
+	
 	public static long getDaysDifference(DateTime expiryDate) {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		Date today = Calendar.getInstance().getTime();
@@ -882,5 +889,57 @@ public class MotherIntegrationTest {
 			e.printStackTrace();
 		}
 		return days;
+	}
+	
+	@Test
+	public void checkMotherForProperSchedule() {
+		String csvFile = "/opt/multimedia/gestational.csv";
+		BufferedReader br = null;
+		String line = "";
+		String cvsSplitBy = ",";
+		int properBNFCount = 0;
+		int notBNFReceived = 0;
+		try {
+			br = new BufferedReader(new FileReader(csvFile));
+			while ((line = br.readLine()) != null) {
+				String[] csvData = line.split(cvsSplitBy);
+				String entityId = csvData[0].trim();
+				Mother mother = allMothers.findByCaseId(entityId);
+				List<Map<String, String>> bnfVisitDetails = mother.bnfVisitDetails();
+				if (bnfVisitDetails.size() != 0) {
+					
+					String date = getBnfDate(bnfVisitDetails);
+					if (date != null) {
+						//System.err.println("entityId:" + entityId);
+						properBNFCount++;
+					} else {
+						System.err.println(entityId + ",");
+					}
+					
+				} else {
+					System.err.println(entityId + ",");
+					notBNFReceived++;
+				}
+				/*DateTime ancStartDate = null;
+				DateTime ancExpireDate = null;
+				Mother mother = allMothers.findByCaseId(entityId);
+				Date date = null;
+				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+				try {
+					date = format.parse(mother.details().get("LMP"));
+				}
+				catch (ParseException e) {
+					e.printStackTrace();
+				}
+				ancStartDate = new DateTime(date);
+				ancExpireDate = new DateTime(date).plusDays(DateTimeDuration.ANC1NORMALEND);
+				allActions.addOrUpdateAlert(new Action(entityId, mother.PROVIDERID(), ActionData.createAlert(
+				    BeneficiaryType.mother, SCHEDULE_ANC, SCHEDULE_ANC_1, AlertStatus.normal, ancStartDate, ancExpireDate)));*/
+			}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		System.err.println("properBNFCount:" + properBNFCount + " notBNFReceived:" + notBNFReceived);
 	}
 }
