@@ -28,6 +28,17 @@ public class Shipment extends BaseDataObject {
     @JsonProperty
     private Period processingPeriod;
 
+    @JsonProperty
+    private String openlmisOrderCode;
+
+    public String getOpenlmisOrderCode() {
+        return openlmisOrderCode;
+    }
+
+    public void setOpenlmisOrderCode(String openlmisOrderCode) {
+        this.openlmisOrderCode = openlmisOrderCode;
+    }
+
     public Date getOrderedDate() {
         return orderedDate;
     }
