@@ -69,6 +69,16 @@ public class OrderResource extends RestResource<Order> {
     @RequestMapping(value = "/sync", method = RequestMethod.GET)
     @ResponseBody
     protected ResponseEntity<String> sync(HttpServletRequest request) {
+        return getOrdersByLocationIdAndServerVersionFromHttpRequest(request);
+    }
+
+    @RequestMapping(value = "/getOrders", method = RequestMethod.GET)
+    @ResponseBody
+    protected ResponseEntity<String> getOrders(HttpServletRequest request) {
+        return getOrdersByLocationIdAndServerVersionFromHttpRequest(request);
+    }
+
+    private ResponseEntity<String> getOrdersByLocationIdAndServerVersionFromHttpRequest(HttpServletRequest request) {
         Map<String, Object> response = new HashMap<>();
         try {
             String locationId = RestUtils.getStringFilter(AllConstants.Order.LOCATION_ID, request);
@@ -77,9 +87,8 @@ public class OrderResource extends RestResource<Order> {
             String limitStringRep = RestUtils.getStringFilter("limit", request);
 
             int limit = (limitStringRep == null) ? 25 : Integer.valueOf(limitStringRep);
-
-            String serverVersionStringRepr = RestUtils.getStringFilter(AllConstants.Order.SERVER_VERSION, request);
-            long serverVersion = serverVersionStringRepr == null ? 0 : Long.valueOf(serverVersionStringRepr);
+            String serverVersionStringRep = RestUtils.getStringFilter(AllConstants.Order.SERVER_VERSION, request);
+            long serverVersion = (serverVersionStringRep == null) ? 0 : Long.valueOf(serverVersionStringRep);
 
             List<Order> orders = orderService.findOrdersByLocationId(locationId, serverVersion, orderBy, sortOrder, limit);
             JsonArray ordersArray = (JsonArray) gson.toJsonTree(orders, new TypeToken<List<Order>>() {}.getType());
@@ -91,8 +100,8 @@ public class OrderResource extends RestResource<Order> {
             logger.error("", e);
             return new ResponseEntity<>(new Gson().toJson(response), HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
     }
+
     @Override
     public List<Order> filter(String query) {
         return null;
