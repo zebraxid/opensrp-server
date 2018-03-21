@@ -11,7 +11,7 @@ import java.util.Map;
 public class Order extends BaseDataObject {
 
     @JsonProperty
-    private Long clientIdentifier;
+    private String formSubmissionId;
 
     @JsonProperty
     private String locationId;
@@ -24,6 +24,14 @@ public class Order extends BaseDataObject {
 
     @JsonProperty
     private Map<String, Integer> stockOnHand;
+
+    public String getFormSubmissionId() {
+        return formSubmissionId;
+    }
+
+    public void setFormSubmissionId(String formSubmissionId) {
+        this.formSubmissionId = formSubmissionId;
+    }
 
     public Map<String, Integer> getStockOnHand() {
         return stockOnHand;
@@ -39,14 +47,6 @@ public class Order extends BaseDataObject {
 
     public void setDateCreatedByClient(long dateCreatedByClient) {
         this.dateCreatedByClient = dateCreatedByClient;
-    }
-
-    public Long getClientIdentifier() {
-        return clientIdentifier;
-    }
-
-    public void setClientIdentifier(Long clientIdentifier) {
-        this.clientIdentifier = clientIdentifier;
     }
 
     public String getType() {
