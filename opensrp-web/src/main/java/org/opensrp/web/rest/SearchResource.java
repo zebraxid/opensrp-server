@@ -86,8 +86,19 @@ public class SearchResource extends RestResource<Client> {
 			attributeMap = new HashMap<String, String>();
 			attributeMap.put(attributeType, attributeValue);
 		}
-		
 		searchBean.setAttributes(attributeMap);
+		
+		Map<String, String> identifierMap = null;
+		String identifiers = getStringFilter("identifier", request);
+		if (!StringUtils.isEmptyOrWhitespaceOnly(identifiers)) {
+			String identifierType = StringUtils.isEmptyOrWhitespaceOnly(identifiers) ? null : identifiers.split(":", -1)[0];
+			String identifierValue = StringUtils.isEmptyOrWhitespaceOnly(identifiers) ? null : identifiers.split(":", -1)[1];
+			
+			identifierMap = new HashMap<String, String>();
+			identifierMap.put(identifierType, identifierValue);
+		}
+		
+		searchBean.setIdentifiers(identifierMap);
 		return searchService.searchClient(searchBean, firstName, middleName, lastName, null);
 	}
 	
