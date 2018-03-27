@@ -32,6 +32,7 @@ import org.json.JSONObject;
 import org.opensrp.common.AllConstants.BaseEntity;
 import org.opensrp.domain.Client;
 import org.opensrp.domain.Event;
+import org.opensrp.search.EventSearchBean;
 import org.opensrp.service.ClientService;
 import org.opensrp.service.EventService;
 import org.opensrp.util.DateTimeTypeConverter;
@@ -115,9 +116,15 @@ public class EventResource extends RestResource<Event> {
 			List<Client> clients = new ArrayList<Client>();
 			long startTime = System.currentTimeMillis();
 			if (team != null || providerId != null || locationId != null || baseEntityId != null) {
-				events = eventService.findEvents(team, teamId, providerId, locationId, baseEntityId, lastSyncedServerVersion,
-				    BaseEntity.SERVER_VERSIOIN, "asc", limit);
-				logger.info("fetching events took: " + (System.currentTimeMillis() - startTime)/1000);
+				EventSearchBean eventSearchBean = new EventSearchBean();
+				eventSearchBean.setTeam(team);
+				eventSearchBean.setTeamId(teamId);
+				eventSearchBean.setProviderId(providerId);
+				eventSearchBean.setLocationId(locationId);
+				eventSearchBean.setBaseEntityId(baseEntityId);
+				eventSearchBean.setServerVersion(lastSyncedServerVersion);
+				events = eventService.findEvents(eventSearchBean, BaseEntity.SERVER_VERSIOIN, "asc", limit);
+				logger.info("fetching events took: " + (System.currentTimeMillis() - startTime) / 1000);
 				if (!events.isEmpty()) {
 					for (Event event : events) {
 						if (event.getBaseEntityId() != null && !event.getBaseEntityId().isEmpty()
@@ -130,7 +137,7 @@ public class EventResource extends RestResource<Event> {
 						        : clientIds.size();
 						clients.addAll(clientService.findByFieldValue(BASE_ENTITY_ID, clientIds.subList(i, end)));
 					}
-					logger.info("fetching clients took: " + (System.currentTimeMillis() - startTime)/1000);
+					logger.info("fetching clients took: " + (System.currentTimeMillis() - startTime) / 1000);
 				}
 			}
 			
@@ -148,7 +155,7 @@ public class EventResource extends RestResource<Event> {
 					}
 				}
 			}
-			logger.info("fetching missing clients took: " + (System.currentTimeMillis() - startTime)/1000);
+			logger.info("fetching missing clients took: " + (System.currentTimeMillis() - startTime) / 1000);
 			
 			JsonArray eventsArray = (JsonArray) gson.toJsonTree(events, new TypeToken<List<Event>>() {}.getType());
 			
@@ -271,10 +278,20 @@ public class EventResource extends RestResource<Event> {
 			
 			clientId = c.getBaseEntityId();
 		}
+		EventSearchBean eventSearchBean = new EventSearchBean();
+		eventSearchBean.setBaseEntityId(clientId);
+		eventSearchBean.setEventDateFrom(eventDate == null ? null : eventDate[0]);
+		eventSearchBean.setEventDateTo(eventDate == null ? null : eventDate[1]);
+		eventSearchBean.setEventType(eventType);
+		eventSearchBean.setEntityType(entityType);
+		eventSearchBean.setProviderId(provider);
+		eventSearchBean.setLocationId(location);
+		eventSearchBean.setLastEditFrom(lastEdit == null ? null : lastEdit[0]);
+		eventSearchBean.setLastEditTo(lastEdit == null ? null : lastEdit[1]);
+		eventSearchBean.setTeam(team);
+		eventSearchBean.setTeamId(teamId);
 		
-		return eventService.findEventsBy(clientId, eventDate == null ? null : eventDate[0],
-		    eventDate == null ? null : eventDate[1], eventType, entityType, provider, location,
-		    lastEdit == null ? null : lastEdit[0], lastEdit == null ? null : lastEdit[1], team, teamId);
+		return eventService.findEventsBy(eventSearchBean);
 	}
 	
 	@Override
