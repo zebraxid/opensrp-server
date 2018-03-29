@@ -168,16 +168,12 @@ public class EventServiceTest extends BaseIntegrationTest {
 	@Test
 	public void shouldFindByFormSubmissionId() {
 		Event expectedEvent = getEvent();
-		Event expectedEvent2 = getEvent();
-		Event invalidEvent = getEvent();
-		invalidEvent.setFormSubmissionId(DIFFERENT_BASE_ENTITY_ID);
-		List<Event> expectedEvents = asList(expectedEvent, expectedEvent2);
 		
-		addObjectToRepository(asList(expectedEvent, expectedEvent2, invalidEvent), allEvents);
+		addObjectToRepository(asList(expectedEvent), allEvents);
 		
-		List<Event> actualEvents = eventService.findByFormSubmissionId(FORM_SUBMISSION_ID);
+		Event actualEvent = eventService.findByFormSubmissionId(FORM_SUBMISSION_ID);
 		
-		assertTwoListAreSameIgnoringOrder(expectedEvents, actualEvents);
+		assertEquals(expectedEvent, actualEvent);
 	}
 	
 	@Test

@@ -98,6 +98,7 @@ public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements E
 		
 		EventMetadataExample eventMetadataExample = new EventMetadataExample();
 		eventMetadataExample.createCriteria().andEventIdEqualTo(id);
+
 		eventMetadata.setId(eventMetadataMapper.selectByExample(eventMetadataExample).get(0).getId());
 		eventMetadataMapper.updateByPrimaryKey(eventMetadata);
 		
@@ -381,6 +382,12 @@ public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements E
 			return null;
 		}
 		return t.getId();
+	}
+	
+	@Override
+	public List<Event> findByProvider(String provider) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	// Private Methods	

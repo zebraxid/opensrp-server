@@ -98,6 +98,7 @@
 		<if test="addressBean!=null and addressBean.hasFilter">
 			join jsonb_array_elements(json->'addresses') as address on true	
 		</if>
+		<where>
 		<trim prefixOverrides="and">
 			<if test="clientBean.nameLike != null">
 				<bind name="name" value="'%' + clientBean.nameLike + '%'" />
@@ -180,6 +181,7 @@
 	    			</trim>
 			</if>
 		</trim>
+		</where>
 		LIMIT #{limit} OFFSET #{offset}
 	</select>	
 	

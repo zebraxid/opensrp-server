@@ -115,6 +115,7 @@ public class EventResource extends RestResource<Event> {
 			List<String> clientIds = new ArrayList<String>();
 			List<Client> clients = new ArrayList<Client>();
 			if (team != null || providerId != null || locationId != null || baseEntityId != null) {
+				
 				long startTime = System.currentTimeMillis();
 				EventSearchBean eventSearchBean = new EventSearchBean();
 				eventSearchBean.setTeam(team);
@@ -152,6 +153,7 @@ public class EventResource extends RestResource<Event> {
 								clients.add(client);
 							}
 						}
+						
 					}
 					logger.info("fetching missing clients took: " + (System.currentTimeMillis() - startTime) / 1000);
 				}

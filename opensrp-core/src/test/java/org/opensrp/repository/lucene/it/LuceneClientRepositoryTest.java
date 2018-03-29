@@ -6,7 +6,6 @@ import static org.junit.Assert.assertTrue;
 import static org.opensrp.common.AllConstants.BaseEntity.BASE_ENTITY_ID;
 import static org.opensrp.common.AllConstants.BaseEntity.MOTHERS_INDENTIFIER;
 import static org.opensrp.util.SampleFullDomainObject.ATTRIBUTES_TYPE;
-import static org.opensrp.util.SampleFullDomainObject.ATTRIBUTES_VALUE;
 import static org.opensrp.util.SampleFullDomainObject.DIFFERENT_BASE_ENTITY_ID;
 import static org.opensrp.util.SampleFullDomainObject.EPOCH_DATE_TIME;
 import static org.opensrp.util.SampleFullDomainObject.FEMALE;
@@ -153,8 +152,7 @@ public class LuceneClientRepositoryTest extends BaseIntegrationTest {
 		
 		ClientSearchBean clientSearchBean = new ClientSearchBean();
 		clientSearchBean.setNameLike(expectedClient.getFirstName());
-		List<Client> actualClients = luceneClientRepository.getByCriteria(clientSearchBean, new AddressSearchBean(), null,
-		    null, null);
+		List<Client> actualClients = luceneClientRepository.getByCriteria(clientSearchBean, new AddressSearchBean(), null);
 		
 		assertTrue(actualClients.isEmpty());
 	}
@@ -169,8 +167,7 @@ public class LuceneClientRepositoryTest extends BaseIntegrationTest {
 		
 		ClientSearchBean clientSearchBean = new ClientSearchBean();
 		clientSearchBean.setNameLike(expectedClient.getFirstName());
-		List<Client> actualClients = luceneClientRepository.getByCriteria(clientSearchBean, new AddressSearchBean(), null,
-		    null, null);
+		List<Client> actualClients = luceneClientRepository.getByCriteria(clientSearchBean, new AddressSearchBean(), null);
 		
 		assertTrue(actualClients.isEmpty());
 	}
@@ -185,8 +182,7 @@ public class LuceneClientRepositoryTest extends BaseIntegrationTest {
 		
 		ClientSearchBean clientSearchBean = new ClientSearchBean();
 		clientSearchBean.setNameLike(expectedClient.getFirstName());
-		List<Client> actualClients = luceneClientRepository.getByCriteria(clientSearchBean, new AddressSearchBean(), null,
-		    null, null);
+		List<Client> actualClients = luceneClientRepository.getByCriteria(clientSearchBean, new AddressSearchBean(), null);
 		
 		assertTrue(actualClients.isEmpty());
 	}
@@ -206,8 +202,7 @@ public class LuceneClientRepositoryTest extends BaseIntegrationTest {
 		clientSearchBean.setNameLike(expectedClient.getFirstName());
 		clientSearchBean.setDeathdateFrom(EPOCH_DATE_TIME);
 		clientSearchBean.setDeathdateTo(new DateTime(DateTimeZone.UTC));
-		List<Client> actualClients = luceneClientRepository.getByCriteria(clientSearchBean, new AddressSearchBean(), null,
-		    null, null);
+		List<Client> actualClients = luceneClientRepository.getByCriteria(clientSearchBean, new AddressSearchBean(), null);
 		
 		assertEquals(0, actualClients.size());
 	}
@@ -232,6 +227,8 @@ public class LuceneClientRepositoryTest extends BaseIntegrationTest {
 		clientSearchBean.setBirthdateTo(new DateTime());
 		clientSearchBean.setAttributeType(ATTRIBUTES_TYPE);
 		clientSearchBean.setAttributeValue(IDENTIFIER_VALUE);
+		clientSearchBean.setLastEditFrom(EPOCH_DATE_TIME);
+		clientSearchBean.setLastEditTo(new DateTime(DateTimeZone.UTC));
 		
 		AddressSearchBean addressSearchBean = new AddressSearchBean();
 		addressSearchBean.setAddressType(getAddress().getAddressType());
@@ -242,8 +239,7 @@ public class LuceneClientRepositoryTest extends BaseIntegrationTest {
 		addressSearchBean.setSubDistrict(getAddress().getSubDistrict());
 		addressSearchBean.setTown(getAddress().getTown());
 		addressSearchBean.setSubTown(getAddress().getSubTown());
-		List<Client> actualClients = luceneClientRepository.getByCriteria(clientSearchBean, addressSearchBean,
-		    EPOCH_DATE_TIME, new DateTime(DateTimeZone.UTC), null);
+		List<Client> actualClients = luceneClientRepository.getByCriteria(clientSearchBean, addressSearchBean, null);
 		
 		assertEquals(1, actualClients.size());
 		assertEquals(expectedClient, actualClients.get(0));
@@ -301,7 +297,8 @@ public class LuceneClientRepositoryTest extends BaseIntegrationTest {
 		addressSearchBean.setTown(getAddress().getTown());
 		addressSearchBean.setSubTown(getAddress().getSubTown());
 		
-		List<Client> actualClients = luceneClientRepository.getByCriteria(addressSearchBean, EPOCH_DATE_TIME, new DateTime(DateTimeZone.UTC), null);
+		List<Client> actualClients = luceneClientRepository.getByCriteria(addressSearchBean, EPOCH_DATE_TIME,
+		    new DateTime(DateTimeZone.UTC), null);
 		assertEquals(1, actualClients.size());
 		assertEquals(expectedClient, actualClients.get(0));
 	}

@@ -1,7 +1,5 @@
 package org.opensrp.service;
 
-
-
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -234,8 +232,8 @@ public class EventService {
 					} else {
 						original.getObs(null, o.getFieldCode()).setComments(o.getComments());
 						original.getObs(null, o.getFieldCode()).setEffectiveDatetime(o.getEffectiveDatetime());
-						original.getObs(null, o.getFieldCode()).setValue(
-						    o.getValues().size() < 2 ? o.getValue() : o.getValues());
+						original.getObs(null, o.getFieldCode())
+						        .setValue(o.getValues().size() < 2 ? o.getValue() : o.getValues());
 					}
 				}
 				for (String k : updatedEvent.getIdentifiers().keySet()) {
@@ -259,7 +257,6 @@ public class EventService {
 		return allEvents.findByServerVersion(serverVersion);
 	}
 	
-
 	public List<Event> notInOpenMRSByServerVersion(long serverVersion, Calendar calendar) {
 		return allEvents.notInOpenMRSByServerVersion(serverVersion, calendar);
 	}
