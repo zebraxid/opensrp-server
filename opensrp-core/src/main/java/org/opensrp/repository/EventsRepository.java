@@ -3,8 +3,8 @@ package org.opensrp.repository;
 import java.util.Calendar;
 import java.util.List;
 
-import org.joda.time.DateTime;
 import org.opensrp.domain.Event;
+import org.opensrp.search.EventSearchBean;
 
 public interface EventsRepository extends BaseRepository<Event> {
 	
@@ -14,16 +14,15 @@ public interface EventsRepository extends BaseRepository<Event> {
 	
 	Event findById(String id);
 	
-	List<Event> findByFormSubmissionId(String formSubmissionId);
+	Event findByFormSubmissionId(String formSubmissionId);
 	
 	List<Event> findByBaseEntityId(String baseEntityId);
 	
-	List<Event> findByBaseEntityAndFormSubmissionId(String baseEntityId, String formSubmissionId);
+	Event findByBaseEntityAndFormSubmissionId(String baseEntityId, String formSubmissionId);
 	
 	List<Event> findByBaseEntityAndType(String baseEntityId, String eventType);
 	
-	List<Event> findEvents(String baseEntityId, DateTime from, DateTime to, String eventType, String entityType,
-	                       String providerId, String locationId, DateTime lastEditFrom, DateTime lastEditTo);
+	List<Event> findEvents(EventSearchBean eventSearchBean);
 	
 	List<Event> findEventsByDynamicQuery(String query);
 	
@@ -42,8 +41,7 @@ public interface EventsRepository extends BaseRepository<Event> {
 	
 	List<Event> findByEmptyServerVersion();
 	
-	List<Event> findEvents(String team, String providerId, String locationId, String baseEntityId, Long serverVersion,
-	                       String sortBy, String sortOrder, int limit);
+	List<Event> findEvents(EventSearchBean eventSearchBean, String sortBy, String sortOrder, int limit);
 	
 	List<Event> findEventByEventTypeBetweenTwoDates(String eventType);
 	

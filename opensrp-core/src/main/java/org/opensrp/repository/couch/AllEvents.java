@@ -11,12 +11,12 @@ import org.ektorp.support.GenerateView;
 import org.ektorp.support.View;
 import org.ektorp.util.Assert;
 import org.ektorp.util.Documents;
-import org.joda.time.DateTime;
 import org.motechproject.dao.MotechBaseRepository;
 import org.opensrp.common.AllConstants;
 import org.opensrp.domain.Event;
 import org.opensrp.repository.EventsRepository;
 import org.opensrp.repository.lucene.LuceneEventRepository;
+import org.opensrp.search.EventSearchBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Primary;
@@ -51,9 +51,14 @@ public class AllEvents extends MotechBaseRepository<Event> implements EventsRepo
 	}
 	
 	@GenerateView
-	public List<Event> findByFormSubmissionId(String formSubmissionId) {
+	public Event findByFormSubmissionId(String formSubmissionId) {
 		List<Event> events = queryView("by_formSubmissionId", formSubmissionId);
-		return events;
+		if (events == null || events.isEmpty())
+			return null;
+		else if (events.size() > 1) {
+			throw new IllegalStateException("Multiple events for formSubmissionId " + formSubmissionId);
+		} else
+			return events.get(0);
 	}
 	
 	@GenerateView
@@ -62,10 +67,18 @@ public class AllEvents extends MotechBaseRepository<Event> implements EventsRepo
 	}
 	
 	@View(name = "all_events_by_base_entity_and_form_submission", map = "function(doc) { if (doc.type === 'Event'){  emit([doc.baseEntityId, doc.formSubmissionId], doc); } }")
-	public List<Event> findByBaseEntityAndFormSubmissionId(String baseEntityId, String formSubmissionId) {
-		return db.queryView(createQuery("all_events_by_base_entity_and_form_submission")
+	public Event findByBaseEntityAndFormSubmissionId(String baseEntityId, String formSubmissionId) {
+		List<Event> events = db.queryView(createQuery("all_events_by_base_entity_and_form_submission")
 		        .key(ComplexKey.of(baseEntityId, formSubmissionId)).includeDocs(true),
 		    Event.class);
+		if (events == null || events.isEmpty())
+			return null;
+		else if (events.size() > 1) {
+			throw new IllegalStateException("Multiple events for baseEntityId and formSubmissionId combination ("
+			        + baseEntityId + "," + formSubmissionId + ")");
+		} else
+			return events.get(0);
+		
 	}
 	
 	@View(name = "all_events_by_base_entity_and_type", map = "function(doc) { if (doc.type === 'Event'){  emit([doc.baseEntityId, doc.eventType], doc); } }")
@@ -83,10 +96,8 @@ public class AllEvents extends MotechBaseRepository<Event> implements EventsRepo
 		    Event.class);
 	}
 	
-	public List<Event> findEvents(String baseEntityId, DateTime from, DateTime to, String eventType, String entityType,
-	                              String providerId, String locationId, DateTime lastEditFrom, DateTime lastEditTo) {
-		return ler.getByCriteria(baseEntityId, from, to, eventType, entityType, providerId, locationId, lastEditFrom,
-		    lastEditTo);
+	public List<Event> findEvents(EventSearchBean eventSearchBean) {
+		return ler.getByCriteria(eventSearchBean);
 	}
 	
 	public List<Event> findEventsByDynamicQuery(String query) {
@@ -187,9 +198,8 @@ public class AllEvents extends MotechBaseRepository<Event> implements EventsRepo
 		return super.getAll();
 	}
 	
-	public List<Event> findEvents(String team, String providerId, String locationId, String baseEntityId, Long serverVersion,
-	                              String sortBy, String sortOrder, int limit) {
-		return ler.getByCriteria(team, providerId, locationId, baseEntityId, serverVersion, sortBy, sortOrder, limit);
+	public List<Event> findEvents(EventSearchBean eventSearchBean, String sortBy, String sortOrder, int limit) {
+		return ler.getByCriteria(eventSearchBean, sortBy, sortOrder, limit);
 	}
 	
 	@View(name = "all_events_by_event_type_and_version", map = "function(doc) { if (doc.type === 'Event'){  emit([doc.eventType, doc.version], null); } }")

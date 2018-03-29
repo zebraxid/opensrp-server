@@ -14,12 +14,6 @@
 		<property name="password" value="admin" />
 	</bean>
 
-	<jdbc:initialize-database data-source="openSRPDataSource"
-		ignore-failures="DROPS">
-		<jdbc:script location="classpath:test-scripts/schema.sql" />
-		<jdbc:script location="classpath:test-scripts/data.sql" />
-	</jdbc:initialize-database>
-
 	<tx:annotation-driven transaction-manager="openSRPTransactionManager" />
 	<bean id="openSRPTransactionManager"
 		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
@@ -30,7 +24,7 @@
 		<property name="dataSource" ref="openSRPDataSource" />
 		<property name="typeAliasesPackage" value="org.opensrp.domain.postgres" />
 		<property name="mapperLocations"
-			value="classpath*:org/opensrp/repository/postgres/mapper/xml/*.xml" />
+			value="classpath*:org/opensrp/repository/postgres/mapper/**/*.xml" />
 	</bean>
 
 	<bean id="OpenSRPSqlSession" class="org.mybatis.spring.SqlSessionTemplate">

@@ -14,6 +14,7 @@ import org.opensrp.common.AllConstants.Client;
 import org.opensrp.domain.Event;
 import org.opensrp.domain.Obs;
 import org.opensrp.repository.EventsRepository;
+import org.opensrp.search.EventSearchBean;
 import org.opensrp.util.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,29 +47,19 @@ public class EventService {
 	}
 	
 	public Event getByBaseEntityAndFormSubmissionId(String baseEntityId, String formSubmissionId) {
-		List<Event> el = allEvents.findByBaseEntityAndFormSubmissionId(baseEntityId, formSubmissionId);
-		if (el.size() > 1) {
-			throw new IllegalStateException("Multiple events for baseEntityId and formSubmissionId combination ("
-			        + baseEntityId + "," + formSubmissionId + ")");
-		}
-		if (el.size() == 0) {
-			return null;
-		}
-		return el.get(0);
+		return allEvents.findByBaseEntityAndFormSubmissionId(baseEntityId, formSubmissionId);
 	}
 	
 	public List<Event> findByBaseEntityId(String baseEntityId) {
 		return allEvents.findByBaseEntityId(baseEntityId);
 	}
 	
-	public List<Event> findByFormSubmissionId(String formSubmissionId) {
+	public Event findByFormSubmissionId(String formSubmissionId) {
 		return allEvents.findByFormSubmissionId(formSubmissionId);
 	}
 	
-	public List<Event> findEventsBy(String baseEntityId, DateTime from, DateTime to, String eventType, String entityType,
-	                                String providerId, String locationId, DateTime lastEditFrom, DateTime lastEditTo) {
-		return allEvents.findEvents(baseEntityId, from, to, eventType, entityType, providerId, locationId, lastEditFrom,
-		    lastEditTo);
+	public List<Event> findEventsBy(EventSearchBean eventSearchBean) {
+		return allEvents.findEvents(eventSearchBean);
 	}
 	
 	public List<Event> findEventsByDynamicQuery(String query) {
@@ -281,21 +272,19 @@ public class EventService {
 	}
 	
 	public List<Event> notInOpenMRSByServerVersionAndType(String type, long serverVersion, Calendar calendar) {
-		return allEvents.notInOpenMRSByServerVersionAndType(type,serverVersion, calendar);
+		return allEvents.notInOpenMRSByServerVersionAndType(type, serverVersion, calendar);
 	}
 	
 	public List<Event> getAll() {
 		return allEvents.getAll();
 	}
 	
-	public List<Event> findEvents(String team, String providerId, String locationId, Long serverVersion, String sortBy,
-	                              String sortOrder, int limit) {
-		return allEvents.findEvents(team, providerId, locationId, null, serverVersion, sortBy, sortOrder, limit);
+	public List<Event> findEvents(EventSearchBean eventSearchBean, String sortBy, String sortOrder, int limit) {
+		return allEvents.findEvents(eventSearchBean, sortBy, sortOrder, limit);
 	}
 	
-	public List<Event> findEvents(String team, String providerId, String locationId, String baseEntityId, Long serverVersion,
-	                              String sortBy, String sortOrder, int limit) {
-		return allEvents.findEvents(team, providerId, locationId, baseEntityId, serverVersion, sortBy, sortOrder, limit);
+	public List<Event> findEvents(EventSearchBean eventSearchBean) {
+		return allEvents.findEvents(eventSearchBean);
 	}
 	
 	public List<Event> findEventsByConceptAndValue(String concept, String conceptValue) {

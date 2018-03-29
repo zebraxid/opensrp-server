@@ -21,11 +21,14 @@ CREATE TABLE core.client_metadata
 (
     id bigserial NOT NULL,
     client_id bigint REFERENCES core.client (id),
-    base_entity_id character varying NOT NULL,
+    document_id character varying UNIQUE NOT NULL,
+    base_entity_id character varying UNIQUE NOT NULL,
     relational_id character varying,
+    server_version bigint,
     openmrs_uuid character varying,
     unique_id character varying,
     first_name character varying,
+    middle_name character varying,
     last_name character varying,
     birth_date date,
     PRIMARY KEY (id)
@@ -34,12 +37,14 @@ WITH (
     OIDS = FALSE
 ) TABLESPACE core_space;
 
-CREATE UNIQUE INDEX client_metadata_base_entity_id_unique_index ON core.client_metadata (base_entity_id);
-
+CREATE INDEX client_metadata_document_id_index ON core.client_metadata (document_id);
+CREATE INDEX client_metadata_base_entity_id_index ON core.client_metadata (base_entity_id);
 CREATE INDEX client_metadata_relational_id_index ON core.client_metadata (relational_id);
+CREATE INDEX client_metadata_server_version_index ON core.client_metadata (server_version);
 CREATE INDEX client_metadata_openmrs_uuid_index ON core.client_metadata (openmrs_uuid);
 CREATE INDEX client_metadata_unique_id_index ON core.client_metadata (unique_id);
 CREATE INDEX client_metadata_first_name_index ON core.client_metadata (first_name NULLS LAST);
+CREATE INDEX client_metadata_middle_name_index ON core.client_metadata (middle_name NULLS LAST);
 CREATE INDEX client_metadata_last_name_index ON core.client_metadata (last_name NULLS LAST);
 CREATE INDEX client_metadata_birth_date_index ON core.client_metadata (birth_date);
 

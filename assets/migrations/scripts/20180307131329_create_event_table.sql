@@ -21,11 +21,14 @@ CREATE TABLE core.event
 (
     id bigserial NOT NULL,
     json jsonb NOT NULL,
+    date_deleted date,
     PRIMARY KEY (id)
 )
 WITH (
     OIDS = FALSE
 ) TABLESPACE core_space;
+
+CREATE INDEX event_id_index ON core.event USING BTREE ((json->>'id'));
 
 -- //@UNDO
 -- SQL to undo the change goes here.
