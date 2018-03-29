@@ -136,7 +136,9 @@ public class ChildService {
 		child.withENCCVisitOne(enccOne);
 		child.withClientVersion(DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)));
 		child.withTODAY(submission.getField(REFERENCE_DATE));
-		child.setTimeStamp(System.currentTimeMillis());
+		synchronized (enccOne) {
+			child.setTimeStamp(System.currentTimeMillis());
+		}
 		allChilds.update(child);
 		enccScheduleFullfillAndMakeFalse(submission, ChildScheduleConstants.SCHEDULE_ENCC_1);
 		/*childSchedulesService.fullfillMilestone(submission.entityId(), submission.anmId(), SCHEDULE_ENCC, new LocalDate());
@@ -173,7 +175,9 @@ public class ChildService {
 		child.withENCCVisitTwo(enccTwo);
 		child.withTODAY(submission.getField(REFERENCE_DATE));
 		child.withClientVersion(DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)));
-		child.setTimeStamp(System.currentTimeMillis());
+		synchronized (enccTwo) {
+			child.setTimeStamp(System.currentTimeMillis());
+		}
 		allChilds.update(child);
 		enccScheduleFullfillAndMakeFalse(submission, ChildScheduleConstants.SCHEDULE_ENCC_2);
 	}
@@ -208,7 +212,9 @@ public class ChildService {
 		child.withENCCVisitThree(enccThree);
 		child.withClientVersion(DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)));
 		child.withTODAY(submission.getField(REFERENCE_DATE));
-		child.setTimeStamp(System.currentTimeMillis());
+		synchronized (enccThree) {
+			child.setTimeStamp(System.currentTimeMillis());
+		}
 		allChilds.update(child);
 		enccScheduleFullfillAndMakeFalse(submission, ChildScheduleConstants.SCHEDULE_ENCC_3);
 	}

@@ -233,7 +233,9 @@ public class ANCService {
 		mother.withINSTANCEID(submission.instanceId());
 		mother.withClientVersion(DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)));
 		mother.withSUBMISSIONDATE(DateUtil.getTimestampToday());
-		mother.setTimeStamp(System.currentTimeMillis());
+		synchronized (lco) {
+			mother.setTimeStamp(System.currentTimeMillis());
+		}
 		mother.withmother_gobhhid(submission.getField(mother_gobhhid));
 		mother.withmother_jivhhid(submission.getField(mother_jivhhid));
 		mother.setFWWOMUNION(lco.FWWOMUNION());
@@ -321,7 +323,9 @@ public class ANCService {
 		mother.withClientVersion(DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)));
 		mother.withANCVisitOne(ancVisitOne);
 		mother.withTODAY(submission.getField(REFERENCE_DATE));
-		mother.setTimeStamp(System.currentTimeMillis());
+		synchronized (ancVisitOne) {
+			mother.setTimeStamp(System.currentTimeMillis());
+		}
 		allMothers.update(mother);
 		
 		ancScheduleFullfillAndMakeFalse(submission, MotherScheduleConstants.SCHEDULE_ANC_1);
@@ -385,11 +389,12 @@ public class ANCService {
 		mother.withClientVersion(DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)));
 		mother.withANCVisitTwo(ancVisitTwo);
 		mother.withTODAY(submission.getField(REFERENCE_DATE));
-		mother.setTimeStamp(System.currentTimeMillis());
+		synchronized (ancVisitTwo) {
+			mother.setTimeStamp(System.currentTimeMillis());
+		}
 		allMothers.update(mother);
 		ancScheduleFullfillAndMakeFalse(submission, MotherScheduleConstants.SCHEDULE_ANC_2);
-		/*ancSchedulesService.fullfillMilestone(submission.entityId(), submission.anmId(), SCHEDULE_ANC, new LocalDate());
-		actionService.markAlertAsInactive(submission.anmId(), submission.entityId(), SCHEDULE_ANC);*/
+		
 		logger.info("submission.getField(FWANC1REMSTS):" + submission.getField(FWANC1REMSTS));
 		
 		logger.info("FWANC1REMSTS:" + submission.getField(FWANC1REMSTS));
@@ -450,7 +455,9 @@ public class ANCService {
 		mother.withClientVersion(DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)));
 		mother.withANCVisitThree(ancVisitThree);
 		mother.withTODAY(submission.getField(REFERENCE_DATE));
-		mother.setTimeStamp(System.currentTimeMillis());
+		synchronized (ancVisitThree) {
+			mother.setTimeStamp(System.currentTimeMillis());
+		}
 		allMothers.update(mother);
 		ancScheduleFullfillAndMakeFalse(submission, MotherScheduleConstants.SCHEDULE_ANC_3);
 		logger.info("submission.getField(FWANC1REMSTS):" + submission.getField(FWANC1REMSTS));
@@ -514,7 +521,9 @@ public class ANCService {
 		mother.withClientVersion(DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)));
 		mother.withANCVisitFour(ancVisitFour);
 		mother.withTODAY(submission.getField(REFERENCE_DATE));
-		mother.setTimeStamp(System.currentTimeMillis());
+		synchronized (ancVisitFour) {
+			mother.setTimeStamp(System.currentTimeMillis());
+		}
 		allMothers.update(mother);
 		
 		ancScheduleFullfillAndMakeFalse(submission, MotherScheduleConstants.SCHEDULE_ANC_4);
@@ -575,7 +584,6 @@ public class ANCService {
 			closeMother(mother);
 			bnfSchedulesService.unEnrollBNFSchedule(entityId, provider);
 			pncService.closeMother(mother);
-			//scheduleLogService.closeScheduleAndScheduleLog(entityId, instanceId, SCHEDULE_BNF, provider);
 		} else {
 			logger.info("User type :" + user_type);
 		}

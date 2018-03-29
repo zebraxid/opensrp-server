@@ -68,6 +68,7 @@ import static org.opensrp.common.AllConstants.PSRFFields.clientVersion;
 import static org.opensrp.common.AllConstants.PSRFFields.timeStamp;
 import static org.opensrp.common.AllConstants.UserType.FD;
 import static org.opensrp.common.util.EasyMap.create;
+import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ELCOSchedulesConstants.ELCO_SCHEDULE_PSRF;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_PNC;
 
 import java.text.SimpleDateFormat;
@@ -99,6 +100,7 @@ import org.opensrp.register.mcare.service.scheduling.PNCSchedulesService;
 import org.opensrp.register.mcare.service.scheduling.ScheduleLogService;
 import org.opensrp.repository.AllErrorTrace;
 import org.opensrp.scheduler.Action;
+import org.opensrp.scheduler.HealthSchedulerService;
 import org.opensrp.scheduler.repository.AllActions;
 import org.opensrp.scheduler.service.ActionService;
 import org.slf4j.Logger;
@@ -142,6 +144,9 @@ public class PNCService {
 	
 	@Autowired
 	private AllActions allActions;
+	
+	@Autowired
+	private HealthSchedulerService scheduler;
 	
 	@Autowired
 	public PNCService(AllElcos allElcos, AllMothers allMothers, AllChilds allChilds,
@@ -195,11 +200,14 @@ public class PNCService {
 				logger.info("Closing EC case. Ec Id: " + elco.caseId());
 				elco.setIsClosed(false);
 				elco.withTODAY(submission.getField(REFERENCE_DATE));
-				elco.setTimeStamp(System.currentTimeMillis());
+				synchronized (elco) {
+					elco.setTimeStamp(System.currentTimeMillis());
+				}
 				elco.withClientVersion(DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)));
 				allElcos.update(elco);
-				elcoSchedulesService.imediateEnrollIntoMilestoneOfPSRF(elco.caseId(), elco.TODAY(), elco.PROVIDERID(),
-				    elco.INSTANCEID());
+				/*elcoSchedulesService.imediateEnrollIntoMilestoneOfPSRF(elco.caseId(), elco.TODAY(), elco.PROVIDERID(),
+				    elco.INSTANCEID());*/
+				scheduler.enrollIntoSchedule(elco.caseId(), ELCO_SCHEDULE_PSRF, elco.TODAY());
 			}
 			
 			if (submission.getField(FWBNFSTS).equals(STS_WD)) {
@@ -317,7 +325,9 @@ public class PNCService {
 		mother.withClientVersion(DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)));
 		mother.withPNCVisitOne(pncVisitOne);
 		mother.withTODAY(submission.getField(REFERENCE_DATE));
-		mother.setTimeStamp(System.currentTimeMillis());
+		synchronized (pncVisitOne) {
+			mother.setTimeStamp(System.currentTimeMillis());
+		}
 		allMothers.update(mother);
 		
 		pncScheduleFullfillAndMakeFalse(submission, MotherScheduleConstants.SCHEDULE_PNC_1);
@@ -365,7 +375,9 @@ public class PNCService {
 		mother.withClientVersion(DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)));
 		mother.withPNCVisitTwo(pncVisitTwo);
 		mother.withTODAY(submission.getField(REFERENCE_DATE));
-		mother.setTimeStamp(System.currentTimeMillis());
+		synchronized (pncVisitTwo) {
+			mother.setTimeStamp(System.currentTimeMillis());
+		}
 		allMothers.update(mother);
 		pncScheduleFullfillAndMakeFalse(submission, MotherScheduleConstants.SCHEDULE_PNC_2);
 		
@@ -412,7 +424,9 @@ public class PNCService {
 		mother.withPNCVisitThree(pncVisitThree);
 		mother.withClientVersion(DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)));
 		mother.withTODAY(submission.getField(REFERENCE_DATE));
-		mother.setTimeStamp(System.currentTimeMillis());
+		synchronized (pncVisitThree) {
+			mother.setTimeStamp(System.currentTimeMillis());
+		}
 		allMothers.update(mother);
 		pncScheduleFullfillAndMakeFalse(submission, MotherScheduleConstants.SCHEDULE_PNC_3);
 		sendMessage(feverTemp, womanBID, womanNID);

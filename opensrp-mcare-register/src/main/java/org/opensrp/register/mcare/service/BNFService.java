@@ -121,7 +121,9 @@ public class BNFService {
 		}
 		mother.withFWWOMDISTRICT(elco.FWWOMDISTRICT());
 		mother.withFWWOMUPAZILLA(elco.FWWOMUPAZILLA());
-		mother.setTimeStamp(System.currentTimeMillis());
+		synchronized (submission) {
+			mother.setTimeStamp(System.currentTimeMillis());
+		}
 		mother.withSUBMISSIONDATE(DateUtil.getTimestampToday());
 		allMothers.update(mother);
 		
@@ -162,7 +164,9 @@ public class BNFService {
 			bnfVisit.put(FWBNFGEN, childFields.get(FWBNFGEN));
 			bnfVisit.put(FWBNFCHLDVITSTS, childFields.get(FWBNFCHLDVITSTS));
 		}
-		mother.setTimeStamp(System.currentTimeMillis());
+		synchronized (subFormData) {
+			mother.setTimeStamp(System.currentTimeMillis());
+		}
 		mother.bnfVisitDetails().add(bnfVisit);
 		mother.withClientVersion(DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)));
 		mother.withTODAY(submission.getField(REFERENCE_DATE));

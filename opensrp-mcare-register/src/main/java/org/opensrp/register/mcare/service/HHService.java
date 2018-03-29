@@ -2,32 +2,70 @@ package org.opensrp.register.mcare.service;
 
 import static java.text.MessageFormat.format;
 import static org.opensrp.common.AllConstants.CommonFormFields.ID;
-import static org.opensrp.common.AllConstants.ELCORegistrationFields.*;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.ELCO;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.END_DATE;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.FWCWOMSTER;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_BIRTHDATE;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_CENDATE;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_CENSTAT;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_CWOMHUSALV;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_CWOMHUSLIV;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_CWOMHUSSTR;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_CWOMSTRMEN;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_DISPLAY_AGE;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_ELIGIBLE;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_ELIGIBLE2;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_GENDER;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_GOBHHID;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_HUSNAME;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_JiVitAHHID;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_TODAY;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_WOMAGE;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_WOMANYID;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_WOMBID;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_WOMCOUNTRY;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_WOMDISTRICT;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_WOMDIVISION;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_WOMFNAME;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_WOMGOBHHID;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_WOMGPS;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_WOMLNAME;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_WOMMAUZA_PARA;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_WOMNID;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_WOMRETYPEBID;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_WOMRETYPENID;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_WOMSUBUNIT;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_WOMUNION;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_WOMUPAZILLA;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.FW_WOMWARD;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.START_DATE;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.WomanREGDATE;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.form_name;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.nidImagePath;
+import static org.opensrp.common.AllConstants.ELCORegistrationFields.profileImagePath;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.ELCO_REGISTRATION_SUB_FORM_NAME;
-import static org.opensrp.common.AllConstants.HHRegistrationFields.REFERENCE_DATE;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.FW_UPAZILLA;
-import static org.opensrp.common.AllConstants.HHRegistrationFields.existing_location;
+import static org.opensrp.common.AllConstants.HHRegistrationFields.REFERENCE_DATE;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.existing_Country;
-import static org.opensrp.common.AllConstants.HHRegistrationFields.existing_Division;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.existing_District;
-import static org.opensrp.common.AllConstants.HHRegistrationFields.existing_Upazilla;
-import static org.opensrp.common.AllConstants.HHRegistrationFields.existing_Union;
-import static org.opensrp.common.AllConstants.HHRegistrationFields.existing_Ward;
-import static org.opensrp.common.AllConstants.HHRegistrationFields.existing_Subunit;
+import static org.opensrp.common.AllConstants.HHRegistrationFields.existing_Division;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.existing_Mauzapara;
+import static org.opensrp.common.AllConstants.HHRegistrationFields.existing_Subunit;
+import static org.opensrp.common.AllConstants.HHRegistrationFields.existing_Union;
+import static org.opensrp.common.AllConstants.HHRegistrationFields.existing_Upazilla;
+import static org.opensrp.common.AllConstants.HHRegistrationFields.existing_Ward;
+import static org.opensrp.common.AllConstants.HHRegistrationFields.existing_location;
 import static org.opensrp.common.AllConstants.HHRegistrationFields.received_time;
-import static org.opensrp.common.AllConstants.HHRegistrationFields.FWNHREGDATE;
-
 import static org.opensrp.common.util.EasyMap.create;
 
-import org.opensrp.common.ErrorDocType;
-import org.opensrp.common.util.DateTimeUtil;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.opensrp.common.ErrorDocType;
+import org.opensrp.common.util.DateTimeUtil;
 import org.opensrp.common.util.DateUtil;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.form.domain.SubFormData;
@@ -36,7 +74,6 @@ import org.opensrp.register.mcare.repository.AllHouseHolds;
 import org.opensrp.register.mcare.service.scheduling.HHSchedulesService;
 import org.opensrp.register.mcare.service.scheduling.ScheduleLogService;
 import org.opensrp.repository.AllErrorTrace;
-import org.opensrp.service.ErrorTraceService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,41 +81,50 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class HHService {
-
-	private static Logger logger = LoggerFactory.getLogger(HHService.class
-			.toString());
+	
+	private static Logger logger = LoggerFactory.getLogger(HHService.class.toString());
+	
 	private AllHouseHolds allHouseHolds;
+	
 	private ELCOService elcoService;
+	
 	private HHSchedulesService hhSchedulesService;
-	private ScheduleLogService scheduleLogService;	
+	
+	private ScheduleLogService scheduleLogService;
+	
 	private AllErrorTrace allErrorTrace;
+	
 	@Autowired
-	public HHService(AllHouseHolds allHouseHolds, ELCOService elcoService,
-			HHSchedulesService hhSchedulesService,ScheduleLogService scheduleLogService,AllErrorTrace allErrorTrace) {
+	public HHService(AllHouseHolds allHouseHolds, ELCOService elcoService, HHSchedulesService hhSchedulesService,
+	    ScheduleLogService scheduleLogService, AllErrorTrace allErrorTrace) {
 		this.allHouseHolds = allHouseHolds;
 		this.elcoService = elcoService;
-		this.hhSchedulesService = hhSchedulesService;	
+		this.hhSchedulesService = hhSchedulesService;
 		this.scheduleLogService = scheduleLogService;
-		this.allErrorTrace = allErrorTrace;	
-	}	
+		this.allErrorTrace = allErrorTrace;
+	}
+	
 	public void registerHouseHold(FormSubmission submission) {
-
+		
 		HouseHold houseHold = allHouseHolds.findByCaseId(submission.entityId());
-
+		
 		if (houseHold == null) {
 			
-			allErrorTrace.save(ErrorDocType.HouseHold.name(),format("Failed to handle Census form as there is no household registered with ID: {0}", submission.entityId()),submission.getInstanceId());
-			logger.warn(format(
-					"Failed to handle Census form as there is no household registered with ID: {0}",
-					submission.entityId()));
+			allErrorTrace.save(
+			    ErrorDocType.HouseHold.name(),
+			    format("Failed to handle Census form as there is no household registered with ID: {0}",
+			        submission.entityId()), submission.getInstanceId());
+			logger.warn(format("Failed to handle Census form as there is no household registered with ID: {0}",
+			    submission.entityId()));
 			return;
 		}
-		SubFormData subFormData =null;
-		subFormData = submission.getSubFormByName(ELCO_REGISTRATION_SUB_FORM_NAME);		
+		SubFormData subFormData = null;
+		subFormData = submission.getSubFormByName(ELCO_REGISTRATION_SUB_FORM_NAME);
 		addDetailsToHH(submission, subFormData, houseHold);
 		
 		String UPAZILLA = submission.getField(FW_UPAZILLA);
-		if(UPAZILLA!=null && UPAZILLA.contains("+")) UPAZILLA.replace("+", " ");	
+		if (UPAZILLA != null && UPAZILLA.contains("+"))
+			UPAZILLA.replace("+", " ");
 		
 		addELCODetailsToHH(submission, subFormData, houseHold);
 		
@@ -88,117 +134,92 @@ public class HHService {
 		houseHold.withFWUPAZILLA(UPAZILLA);
 		houseHold.withSUBMISSIONDATE(DateUtil.getTimestampToday());
 		houseHold.withClientVersion(DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)));
-		houseHold.setTimeStamp(System.currentTimeMillis());
-		allHouseHolds.update(houseHold);			
+		synchronized (submission) {
+			houseHold.setTimeStamp(System.currentTimeMillis());
+		}
+		allHouseHolds.update(houseHold);
 		
 		/*hhSchedulesService.enrollIntoMilestoneOfCensus(submission.entityId(),
 				submission.getField(FWNHREGDATE),submission.anmId(),submission.instanceId());*/
 		elcoService.registerELCO(submission);
 	}
 	
-	private void addDetailsToHH(FormSubmission submission,
-			SubFormData subFormData, HouseHold houseHold) {
-						SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-						Date today = Calendar.getInstance().getTime();
-						houseHold.details().put(existing_location, submission.getField(existing_location));
-						houseHold.details().put(existing_Country, submission.getField(existing_Country));		
-						houseHold.details().put(existing_Division, submission.getField(existing_Division));
-						houseHold.details().put(existing_District, submission.getField(existing_District));
-						houseHold.details().put(existing_Upazilla, submission.getField(existing_Upazilla));
-						houseHold.details().put(existing_Union, submission.getField(existing_Union));		
-						houseHold.details().put(existing_Ward, submission.getField(existing_Ward));
-						houseHold.details().put(existing_Subunit, submission.getField(existing_Subunit));
-						houseHold.details().put(existing_Mauzapara, submission.getField(existing_Mauzapara));
-						houseHold.details().put(received_time,format.format(today).toString());
-				    	houseHold.details().put(REFERENCE_DATE, submission.getField(REFERENCE_DATE));
-						houseHold.details().put(START_DATE, submission.getField(START_DATE));		
-						houseHold.details().put(END_DATE, submission.getField(END_DATE));
-	}
-
-
-	private void addELCODetailsToHH(FormSubmission submission,
-			SubFormData subFormData, HouseHold houseHold) {
+	private void addDetailsToHH(FormSubmission submission, SubFormData subFormData, HouseHold houseHold) {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		Date today = Calendar.getInstance().getTime();		
+		Date today = Calendar.getInstance().getTime();
+		houseHold.details().put(existing_location, submission.getField(existing_location));
+		houseHold.details().put(existing_Country, submission.getField(existing_Country));
+		houseHold.details().put(existing_Division, submission.getField(existing_Division));
+		houseHold.details().put(existing_District, submission.getField(existing_District));
+		houseHold.details().put(existing_Upazilla, submission.getField(existing_Upazilla));
+		houseHold.details().put(existing_Union, submission.getField(existing_Union));
+		houseHold.details().put(existing_Ward, submission.getField(existing_Ward));
+		houseHold.details().put(existing_Subunit, submission.getField(existing_Subunit));
+		houseHold.details().put(existing_Mauzapara, submission.getField(existing_Mauzapara));
+		houseHold.details().put(received_time, format.format(today).toString());
+		houseHold.details().put(REFERENCE_DATE, submission.getField(REFERENCE_DATE));
+		houseHold.details().put(START_DATE, submission.getField(START_DATE));
+		houseHold.details().put(END_DATE, submission.getField(END_DATE));
+	}
+	
+	private void addELCODetailsToHH(FormSubmission submission, SubFormData subFormData, HouseHold houseHold) {
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date today = Calendar.getInstance().getTime();
 		
-		for (Map<String, String> elcoFields : subFormData.instances()) {			
+		for (Map<String, String> elcoFields : subFormData.instances()) {
 			String UPAZILA = elcoFields.get(FW_WOMUPAZILLA);
-			if(UPAZILA!=null && UPAZILA.contains("+")) UPAZILA.replace("+", " ");
+			if (UPAZILA != null && UPAZILA.contains("+"))
+				UPAZILA.replace("+", " ");
 			
-			Map<String, String> elco = create(ID, elcoFields.get(ID))
-					.put(FW_TODAY, submission.getField(REFERENCE_DATE))
-					.put(START_DATE, submission.getField(START_DATE))
-					.put(END_DATE, submission.getField(END_DATE))
-					.put(FW_GOBHHID, elcoFields.get(FW_GOBHHID))
-					.put(FW_JiVitAHHID, elcoFields.get(FW_JiVitAHHID))
-					.put(FW_CENDATE, submission.getField(FW_CENDATE))
-					.put(FW_CENSTAT, submission.getField(FW_CENSTAT))
-					.put(ELCO, submission.getField(ELCO))
-					.put(WomanREGDATE, elcoFields.get(WomanREGDATE))
-					.put(form_name, submission.getField(form_name))
-					.put(FW_WOMFNAME, elcoFields.get(FW_WOMFNAME))
-					.put(FW_WOMLNAME, elcoFields.get(FW_WOMLNAME))
-					.put(FW_WOMANYID, elcoFields.get(FW_WOMANYID))
-					.put(FW_WOMNID, elcoFields.get(FW_WOMNID))
-					.put(FW_WOMRETYPENID, elcoFields.get(FW_WOMRETYPENID))
-					.put(FW_WOMBID, elcoFields.get(FW_WOMBID))
-					.put(FW_WOMRETYPEBID, elcoFields.get(FW_WOMRETYPEBID))
-					.put(FW_HUSNAME, elcoFields.get(FW_HUSNAME))
-					.put(FW_GENDER, elcoFields.get(FW_GENDER))
-					.put(FW_BIRTHDATE, elcoFields.get(FW_BIRTHDATE))
-					.put(FW_WOMAGE, elcoFields.get(FW_WOMAGE))
-					.put(FW_DISPLAY_AGE, elcoFields.get(FW_DISPLAY_AGE))
-					.put(FW_CWOMSTRMEN, elcoFields.get(FW_CWOMSTRMEN))
-					.put(FWCWOMSTER, elcoFields.get(FWCWOMSTER))
-					.put(FW_CWOMHUSALV, elcoFields.get(FW_CWOMHUSALV))
-					.put(FW_CWOMHUSSTR, elcoFields.get(FW_CWOMHUSSTR))
-					.put(FW_CWOMHUSLIV, elcoFields.get(FW_CWOMHUSLIV))
-					.put(FW_ELIGIBLE, elcoFields.get(FW_ELIGIBLE))
-					.put(FW_ELIGIBLE2, elcoFields.get(FW_ELIGIBLE2))
-					.put(FW_WOMCOUNTRY, elcoFields.get(FW_WOMCOUNTRY))
-					.put(FW_WOMDIVISION, elcoFields.get(FW_WOMDIVISION))
-					.put(FW_WOMDISTRICT, elcoFields.get(FW_WOMDISTRICT))
-					.put(FW_WOMUPAZILLA, UPAZILA)
-					.put(FW_WOMUNION, elcoFields.get(FW_WOMUNION))
-					.put(FW_WOMWARD, elcoFields.get(FW_WOMWARD))
-					.put(FW_WOMSUBUNIT, elcoFields.get(FW_WOMSUBUNIT))
-					.put(FW_WOMMAUZA_PARA, elcoFields.get(FW_WOMMAUZA_PARA))
-					.put(FW_WOMGOBHHID, elcoFields.get(FW_WOMGOBHHID))
-					.put(FW_WOMGPS, elcoFields.get(FW_WOMGPS))
-					.put(profileImagePath, "")
-					.put(received_time, format.format(today).toString())
-					.put("clientVersion", DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)).toString())
-					.put(nidImagePath, "").map();
- 
+			Map<String, String> elco = create(ID, elcoFields.get(ID)).put(FW_TODAY, submission.getField(REFERENCE_DATE))
+			        .put(START_DATE, submission.getField(START_DATE)).put(END_DATE, submission.getField(END_DATE))
+			        .put(FW_GOBHHID, elcoFields.get(FW_GOBHHID)).put(FW_JiVitAHHID, elcoFields.get(FW_JiVitAHHID))
+			        .put(FW_CENDATE, submission.getField(FW_CENDATE)).put(FW_CENSTAT, submission.getField(FW_CENSTAT))
+			        .put(ELCO, submission.getField(ELCO)).put(WomanREGDATE, elcoFields.get(WomanREGDATE))
+			        .put(form_name, submission.getField(form_name)).put(FW_WOMFNAME, elcoFields.get(FW_WOMFNAME))
+			        .put(FW_WOMLNAME, elcoFields.get(FW_WOMLNAME)).put(FW_WOMANYID, elcoFields.get(FW_WOMANYID))
+			        .put(FW_WOMNID, elcoFields.get(FW_WOMNID)).put(FW_WOMRETYPENID, elcoFields.get(FW_WOMRETYPENID))
+			        .put(FW_WOMBID, elcoFields.get(FW_WOMBID)).put(FW_WOMRETYPEBID, elcoFields.get(FW_WOMRETYPEBID))
+			        .put(FW_HUSNAME, elcoFields.get(FW_HUSNAME)).put(FW_GENDER, elcoFields.get(FW_GENDER))
+			        .put(FW_BIRTHDATE, elcoFields.get(FW_BIRTHDATE)).put(FW_WOMAGE, elcoFields.get(FW_WOMAGE))
+			        .put(FW_DISPLAY_AGE, elcoFields.get(FW_DISPLAY_AGE)).put(FW_CWOMSTRMEN, elcoFields.get(FW_CWOMSTRMEN))
+			        .put(FWCWOMSTER, elcoFields.get(FWCWOMSTER)).put(FW_CWOMHUSALV, elcoFields.get(FW_CWOMHUSALV))
+			        .put(FW_CWOMHUSSTR, elcoFields.get(FW_CWOMHUSSTR)).put(FW_CWOMHUSLIV, elcoFields.get(FW_CWOMHUSLIV))
+			        .put(FW_ELIGIBLE, elcoFields.get(FW_ELIGIBLE)).put(FW_ELIGIBLE2, elcoFields.get(FW_ELIGIBLE2))
+			        .put(FW_WOMCOUNTRY, elcoFields.get(FW_WOMCOUNTRY)).put(FW_WOMDIVISION, elcoFields.get(FW_WOMDIVISION))
+			        .put(FW_WOMDISTRICT, elcoFields.get(FW_WOMDISTRICT)).put(FW_WOMUPAZILLA, UPAZILA)
+			        .put(FW_WOMUNION, elcoFields.get(FW_WOMUNION)).put(FW_WOMWARD, elcoFields.get(FW_WOMWARD))
+			        .put(FW_WOMSUBUNIT, elcoFields.get(FW_WOMSUBUNIT))
+			        .put(FW_WOMMAUZA_PARA, elcoFields.get(FW_WOMMAUZA_PARA))
+			        .put(FW_WOMGOBHHID, elcoFields.get(FW_WOMGOBHHID)).put(FW_WOMGPS, elcoFields.get(FW_WOMGPS))
+			        .put(profileImagePath, "").put(received_time, format.format(today).toString())
+			        .put("clientVersion", DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)).toString())
+			        .put(nidImagePath, "").map();
 			
-				if(elcoFields.containsKey(FW_WOMFNAME)){
-					if(!elcoFields.get(FW_WOMFNAME).equalsIgnoreCase("") || elcoFields.get(FW_WOMFNAME) != null){
-						houseHold.ELCODETAILS().add(elco);
-				  }
+			if (elcoFields.containsKey(FW_WOMFNAME)) {
+				if (!elcoFields.get(FW_WOMFNAME).equalsIgnoreCase("") || elcoFields.get(FW_WOMFNAME) != null) {
+					houseHold.ELCODETAILS().add(elco);
 				}
-				
+			}
 			
 		}
 		
 	}
 	
-	public String getEntityIdBybrnId(List<String> brnIdList)
-	{
-	   List<HouseHold> houseHolds =	allHouseHolds.getAll();
-	   
-	   if (houseHolds == null || houseHolds.isEmpty()) {
-           return null;
-       }
-	   
-	   for (HouseHold household : houseHolds)
-	   {
-		   for ( Map<String, String> elco : household.ELCODETAILS()) 
-		   {
-			   if(brnIdList.contains(elco.get("FWWOMBID")))
-				   return household.caseId();
-		   }
-	   }
-	   return null;
+	public String getEntityIdBybrnId(List<String> brnIdList) {
+		List<HouseHold> houseHolds = allHouseHolds.getAll();
+		
+		if (houseHolds == null || houseHolds.isEmpty()) {
+			return null;
+		}
+		
+		for (HouseHold household : houseHolds) {
+			for (Map<String, String> elco : household.ELCODETAILS()) {
+				if (brnIdList.contains(elco.get("FWWOMBID")))
+					return household.caseId();
+			}
+		}
+		return null;
 	}
 	
 }

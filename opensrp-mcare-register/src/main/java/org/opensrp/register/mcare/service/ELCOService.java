@@ -253,7 +253,9 @@ public class ELCOService {
 			houseHold.withPROVIDERID(submission.anmId());
 			houseHold.withINSTANCEID(submission.instanceId());
 			houseHold.withFWUPAZILLA(UPAZILLA);
-			houseHold.setTimeStamp(System.currentTimeMillis());
+			synchronized (submission) {
+				houseHold.setTimeStamp(System.currentTimeMillis());
+			}
 			houseHold.details().put(existing_ELCO, submission.getField(existing_ELCO));
 			houseHold.details().put(new_ELCO, submission.getField(new_ELCO));
 			houseHold.withClientVersion(DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)));
@@ -443,7 +445,9 @@ public class ELCOService {
 		elco.PSRFDETAILS().add(psrf);
 		elco.details().put(FW_PSRPREGSTS, submission.getField(FW_PSRPREGSTS));
 		elco.withClientVersion(DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)));
-		elco.setTimeStamp(System.currentTimeMillis());
+		synchronized (submission) {
+			elco.setTimeStamp(System.currentTimeMillis());
+		}
 		allEcos.update(elco);
 		logger.info("Expected value leading zero and found submission.getField(FW_PSRSTS): "
 		        + submission.getField(FW_PSRSTS));

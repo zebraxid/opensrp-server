@@ -162,7 +162,7 @@ public class OpenSRPScheduleConstants {
 	
 	public static class DateTimeDuration {
 		
-		public static final int duration = 1344; // hour
+		public static final int duration = 10; // day
 		
 		public static final int bnf_duration = 6264;//hour
 		

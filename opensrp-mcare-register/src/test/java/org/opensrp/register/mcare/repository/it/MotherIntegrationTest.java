@@ -616,15 +616,17 @@ public class MotherIntegrationTest {
 	}*/
 	
 	// need to apply  in live
-	@Ignore
+	
 	@Test
 	public void expiredScheduleChangeTimestamp() {
-		List<Action> actions = allActions.getAll(); //all view should change as only get expired schedule
+		List<Action> actions = allActions.getAll(); // && doc.data.alertStatus=='expired' all view should change as only get expired schedule
 		for (Action action : actions) {
 			//action.markAsInActive();
 			action.timestamp(System.currentTimeMillis());
 			action.setRevision(action.getRevision());
 			allActions.update(action);
+			System.nanoTime();
+			System.currentTimeMillis();
 		}
 	}
 	
@@ -891,6 +893,7 @@ public class MotherIntegrationTest {
 		return days;
 	}
 	
+	@Ignore
 	@Test
 	public void checkMotherForProperSchedule() {
 		String csvFile = "/opt/multimedia/gestational.csv";

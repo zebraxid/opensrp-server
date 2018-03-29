@@ -116,7 +116,7 @@ public class ActionService {
 			List<Action> existingAlerts = allActions.findAlertByANMIdEntityIdScheduleName(anmIdentifier, caseID,
 			    scheduleName);
 			if (existingAlerts.size() > 0) {
-				updateDataAction(visitCode, alertStatus, startDate, expiryDate, existingAlerts);
+				checkForUpdateOtherType(visitCode, alertStatus, startDate, expiryDate, existingAlerts);
 				logger.info("ActionUpdateOrCreateForOther for motech event caseId: " + existingAlerts.get(0).caseId()
 				        + " ,provider: " + existingAlerts.get(0).anmIdentifier() + " ,event visitCode: " + visitCode
 				        + " ,event alert status: " + alertStatus.name() + " ,existing visitCode: "
@@ -133,6 +133,13 @@ public class ActionService {
 		catch (Exception e) {
 			logger.warn("ActionUpdateOrCreateForOther, error: " + e.getMessage());
 			
+		}
+	}
+	
+	private void checkForUpdateOtherType(String visitCode, AlertStatus alertStatus, DateTime startDate, DateTime expiryDate,
+	                                     List<Action> existingAlerts) {
+		if (!visitCode.equalsIgnoreCase(existingAlerts.get(0).data().get("visitCode"))) {
+			updateDataAction(visitCode, alertStatus, startDate, expiryDate, existingAlerts);
 		}
 	}
 	
@@ -256,7 +263,10 @@ public class ActionService {
 		existingAlerts.get(0).data().put("startDate", startDate.toLocalDate().toString());
 		existingAlerts.get(0).data().put("visitCode", visitCode);
 		existingAlerts.get(0).markAsActive();
-		existingAlerts.get(0).timestamp(Calendar.getInstance().getTimeInMillis());
+		
+		synchronized (existingAlerts) {
+			existingAlerts.get(0).timestamp(Calendar.getInstance().getTimeInMillis());
+		}
 		allActions.update(existingAlerts.get(0));
 		
 	}
