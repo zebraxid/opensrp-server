@@ -162,7 +162,7 @@ public class OpenSRPScheduleConstants {
 	
 	public static class DateTimeDuration {
 		
-		public static final int duration = 10; // day
+		public static final int duration = 70; // day
 		
 		public static final int bnf_duration = 6264;//hour
 		
@@ -243,6 +243,14 @@ public class OpenSRPScheduleConstants {
 		public static final int LASTDAYOFANC2 = -219;
 		
 		public static final int LASTDAYOFAN3 = -247;
+		
+		public static final int PSRFUPCOMING = 70;
+		
+		public static final int PSRFURGENT = 931;
+		
+		public static final int BNFUPCOMING = 9;
+		
+		public static final int BNFURGENT = 652;
 		
 	}
 	

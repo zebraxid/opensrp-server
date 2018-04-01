@@ -460,16 +460,21 @@ public class ELCOService {
 				
 				elco.setIsClosed(true);
 				allEcos.update(elco);
-				elcoScheduleService.fullfillMilestoneAndCloseAlert(submission.entityId(), submission.anmId(), "");
-				actionService.markAlertAsInactive(submission.anmId(), submission.entityId(), ELCO_SCHEDULE_PSRF);
-				actionService.markAlertAsInactive(submission.anmId(), submission.entityId(), IMD_ELCO_SCHEDULE_PSRF);
+				
 				// user type condition
 				if (submission.getField("user_type").equalsIgnoreCase(FD)) {
 					ancService.registerANC(submission);
 					bnfService.registerBNF(submission);
+					elcoScheduleService.fullfillMilestoneAndCloseAlert(submission.entityId(), submission.anmId(), "");
+					actionService.markAlertAsInactive(submission.anmId(), submission.entityId(), ELCO_SCHEDULE_PSRF);
+					actionService.markAlertAsInactive(submission.anmId(), submission.entityId(), IMD_ELCO_SCHEDULE_PSRF);
 					
 				} else {
 					ancService.deleteBlankMother(submission);
+					elcoScheduleService.enrollIntoMilestoneOfPSRF(submission.entityId(), submission.getField(FWPSRDATE),
+					    submission.anmId(), submission.instanceId());
+					actionService.markAlertAsInactive(submission.anmId(), submission.entityId(), ELCO_SCHEDULE_PSRF);
+					actionService.markAlertAsInactive(submission.anmId(), submission.entityId(), IMD_ELCO_SCHEDULE_PSRF);
 				}
 				
 			} else if (submission.getField(FW_PSRSTS).equalsIgnoreCase("02")
@@ -488,6 +493,11 @@ public class ELCOService {
 					actionService.markAlertAsInactive(submission.anmId(), submission.entityId(), ELCO_SCHEDULE_PSRF);
 					actionService.markAlertAsInactive(submission.anmId(), submission.entityId(), IMD_ELCO_SCHEDULE_PSRF);
 					
+				} else {
+					elcoScheduleService.enrollIntoMilestoneOfPSRF(submission.entityId(), submission.getField(FWPSRDATE),
+					    submission.anmId(), submission.instanceId());
+					actionService.markAlertAsInactive(submission.anmId(), submission.entityId(), ELCO_SCHEDULE_PSRF);
+					actionService.markAlertAsInactive(submission.anmId(), submission.entityId(), IMD_ELCO_SCHEDULE_PSRF);
 				}
 				
 			}

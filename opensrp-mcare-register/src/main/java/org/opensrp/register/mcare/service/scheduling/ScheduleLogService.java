@@ -255,10 +255,12 @@ public class ScheduleLogService extends OpenmrsService {
 	 */
 	public void createImmediateScheduleAndScheduleLog(String caseId, String date, String provider, String instanceId,
 	                                                  BeneficiaryType beneficiaryType, String scheduleName,
-	                                                  Integer duration, String ImmediateScheduleName) {
+	                                                  
+	                                                  Integer duration, String ImmediateScheduleName,
+	                                                  AlertStatus alertStatus, DateTime start, int plusDays) {
 		
 		allActions.addOrUpdateAlert(new Action(caseId, provider, ActionData.createAlert(beneficiaryType, scheduleName,
-		    scheduleName, AlertStatus.upcoming, new DateTime(), new DateTime().plusDays(duration))));
+		    scheduleName, alertStatus, start, start.plusDays(plusDays))));
 		
 	}
 	

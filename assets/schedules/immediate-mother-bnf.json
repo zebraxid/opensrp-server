@@ -5,7 +5,7 @@
         {
             "name": "ImmediateBirthNotificationPregnancyStatusFollowUp",
             "scheduleWindows": {
-                "due": ["261 Days"],
+                "due": ["9 Days"],
                 "late": ["661 Days"],
                 "max": ["662 Days"]
             },
@@ -14,13 +14,13 @@
                     "window": "due",
                     "offset": ["0 Days"],
                     "interval": ["1 Day"],
-                    "count": "261"
+                    "count": "9"
                 },
                 {
                     "window": "late",
-                    "offset": ["261 Days"],
+                    "offset": ["9 Days"],
                     "interval": ["1 Day"],
-                    "count": "400"
+                    "count": "652"
                 },
                  {
                     "window": "max",

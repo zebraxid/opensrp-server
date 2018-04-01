@@ -43,11 +43,14 @@ import org.opensrp.dto.AclDTO;
 import org.opensrp.dto.AlertStatus;
 import org.opensrp.register.mcare.OpenSRPScheduleConstants.DateTimeDuration;
 import org.opensrp.register.mcare.domain.Child;
+import org.opensrp.register.mcare.domain.Elco;
 import org.opensrp.register.mcare.domain.Mother;
 import org.opensrp.register.mcare.repository.AllChilds;
+import org.opensrp.register.mcare.repository.AllElcos;
 import org.opensrp.register.mcare.repository.AllMothers;
 import org.opensrp.register.mcare.service.AclService;
 import org.opensrp.register.mcare.service.scheduling.ANCSchedulesService;
+import org.opensrp.register.mcare.service.scheduling.BNFSchedulesService;
 import org.opensrp.register.mcare.service.scheduling.ChildSchedulesService;
 import org.opensrp.register.mcare.service.scheduling.PNCSchedulesService;
 import org.opensrp.register.mcare.service.scheduling.ScheduleLogService;
@@ -98,6 +101,9 @@ public class AclController {
 	private AllChilds allChilds;
 	
 	@Autowired
+	private AllElcos allElcos;
+	
+	@Autowired
 	private PNCSchedulesService pncSchedulesService;
 	
 	@Autowired
@@ -105,6 +111,9 @@ public class AclController {
 	
 	@Autowired
 	private ANCSchedulesService ancSchedulesService;
+	
+	@Autowired
+	private BNFSchedulesService bnfSchedulesService;
 	
 	@Autowired
 	public AclController(RoleService roleService, AclService aclService, OpenmrsUserService openmrsUserService,
@@ -994,6 +1003,36 @@ public class AclController {
 		} else {
 			return true;
 		}
+		
+	}
+	
+	@RequestMapping(method = GET, value = "/schedule-refresh-bnf")
+	public void correctionOfImmediateBNF() {
+		List<Enrollment> enrollments = allEnrollmentWrapper
+		        .findByCurrentMilestone("ImmediateBirthNotificationPregnancyStatusFollowUp");
+		for (Enrollment enrollment : enrollments) {
+			if (enrollment.getStatus().name().equalsIgnoreCase("ACTIVE")) {
+				Elco elco = allElcos.findByCaseId(enrollment.getExternalId());
+				List<Map<String, String>> psrfs = elco.PSRFDETAILS();
+				String lmp = getLMP(psrfs);
+				if (lmp != null) {
+					bnfSchedulesService.immediateEnrollIntoMilestoneOfBNF(enrollment.getExternalId(), lmp,
+					    elco.PROVIDERID(), "");
+					System.err.println("" + enrollment.getExternalId() + " status:" + enrollment.getStatus());
+				}
+				
+			}
+			
+		}
+	}
+	
+	public String getLMP(List<Map<String, String>> psrfs) {
+		for (Map<String, String> psrf : psrfs) {
+			if (psrf.get("user_type").equalsIgnoreCase("FD") && psrf.get("FWPSRPREGSTS").equalsIgnoreCase("1")) {
+				return psrf.get("FWPSRLMP");
+			}
+		}
+		return null;
 		
 	}
 }

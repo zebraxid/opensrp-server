@@ -8,8 +8,15 @@ import static org.opensrp.common.AllConstants.BnfFollowUpVisitFields.SCHEDULE_BN
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.DateTimeDuration.bnf_duration;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_BNF;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
+import org.opensrp.dto.AlertStatus;
 import org.opensrp.dto.BeneficiaryType;
+import org.opensrp.register.mcare.OpenSRPScheduleConstants.DateTimeDuration;
 import org.opensrp.scheduler.HealthSchedulerService;
 import org.opensrp.scheduler.repository.AllActions;
 import org.opensrp.scheduler.service.ActionService;
@@ -77,8 +84,31 @@ public class BNFSchedulesService {
 	public void immediateEnrollIntoMilestoneOfBNF(String caseId, String date, String provider, String instanceId) {
 		logger.info(format("Enrolling Mother into Immediate BNF schedule. Id: {0}", caseId));
 		scheduler.enrollIntoSchedule(caseId, SCHEDULE_BNF_IME, date);
-		scheduleLogService.createImmediateScheduleAndScheduleLog(caseId, date, provider, instanceId, BeneficiaryType.mother,
-		    SCHEDULE_BNF, bnf_duration, SCHEDULE_BNF_IME);
+		
+		Date startDate = null;
+		AlertStatus alertStatus;
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		try {
+			startDate = format.parse(date);
+			DateTime start = new DateTime(startDate);
+			long datediff = ScheduleLogService.getDaysDifference(start);
+			
+			int plusDays = 0;
+			if (datediff >= -DateTimeDuration.BNFUPCOMING) {
+				plusDays = DateTimeDuration.BNFUPCOMING;
+				alertStatus = AlertStatus.upcoming;
+			} else {
+				plusDays = DateTimeDuration.BNFURGENT;
+				alertStatus = AlertStatus.urgent;
+				start = start.plusDays(DateTimeDuration.BNFUPCOMING);
+			}
+			
+			scheduleLogService.createImmediateScheduleAndScheduleLog(caseId, date, provider, instanceId,
+			    BeneficiaryType.mother, SCHEDULE_BNF, bnf_duration, SCHEDULE_BNF_IME, alertStatus, start, plusDays);
+		}
+		catch (ParseException e) {
+			logger.info("Date parse exception:" + e.getMessage());
+		}
 		
 	}
 	

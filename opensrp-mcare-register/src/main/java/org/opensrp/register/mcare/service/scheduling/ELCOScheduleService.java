@@ -14,16 +14,21 @@ import static org.opensrp.register.mcare.OpenSRPScheduleConstants.HHSchedulesCon
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.motechproject.scheduletracking.api.service.ScheduleTrackingService;
 import org.opensrp.common.AllConstants.ELCOSchedulesConstantsImediate;
+import org.opensrp.dto.AlertStatus;
 import org.opensrp.dto.BeneficiaryType;
+import org.opensrp.register.mcare.OpenSRPScheduleConstants.DateTimeDuration;
 import org.opensrp.scheduler.HealthSchedulerService;
 import org.opensrp.scheduler.repository.AllActions;
 import org.slf4j.Logger;
@@ -150,8 +155,33 @@ public class ELCOScheduleService {
 	public void imediateEnrollIntoMilestoneOfPSRF(String caseId, String date, String provider, String instanceId) {
 		logger.info(format("Enrolling Elco into PSRF schedule. Id: {0}", caseId));
 		scheduler.enrollIntoSchedule(caseId, ELCOSchedulesConstantsImediate.IMD_ELCO_SCHEDULE_PSRF, date);
-		scheduleLogService.createImmediateScheduleAndScheduleLog(caseId, date, provider, instanceId, BeneficiaryType.elco,
-		    ELCO_SCHEDULE_PSRF, duration, ELCOSchedulesConstantsImediate.IMD_ELCO_SCHEDULE_PSRF);
+		
+		Date startDate = null;
+		AlertStatus alertStatus;
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		try {
+			startDate = format.parse(date);
+			DateTime start = new DateTime(startDate);
+			long datediff = ScheduleLogService.getDaysDifference(start);
+			
+			int plusDays = 0;
+			if (datediff >= -DateTimeDuration.PSRFUPCOMING) {
+				plusDays = DateTimeDuration.PSRFUPCOMING;
+				alertStatus = AlertStatus.upcoming;
+			} else {
+				plusDays = DateTimeDuration.PSRFURGENT;
+				alertStatus = AlertStatus.urgent;
+				start = start.plusDays(DateTimeDuration.PSRFUPCOMING);
+			}
+			
+			scheduleLogService.createImmediateScheduleAndScheduleLog(caseId, date, provider, instanceId,
+			    BeneficiaryType.elco, ELCO_SCHEDULE_PSRF, duration, ELCOSchedulesConstantsImediate.IMD_ELCO_SCHEDULE_PSRF,
+			    alertStatus, start, plusDays);
+			
+		}
+		catch (ParseException e) {
+			logger.info("Date parse exception:" + e.getMessage());
+		}
 		
 	}
 	

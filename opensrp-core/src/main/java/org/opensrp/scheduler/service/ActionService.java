@@ -138,7 +138,9 @@ public class ActionService {
 	
 	private void checkForUpdateOtherType(String visitCode, AlertStatus alertStatus, DateTime startDate, DateTime expiryDate,
 	                                     List<Action> existingAlerts) {
-		if (!visitCode.equalsIgnoreCase(existingAlerts.get(0).data().get("visitCode"))) {
+		Integer existingAlertStatus = ALERTSTATUS.get(existingAlerts.get(0).data().get("alertStatus"));
+		Integer currentAlertStatus = ALERTSTATUS.get(alertStatus.name());
+		if (currentAlertStatus > existingAlertStatus) {
 			updateDataAction(visitCode, alertStatus, startDate, expiryDate, existingAlerts);
 		}
 	}
