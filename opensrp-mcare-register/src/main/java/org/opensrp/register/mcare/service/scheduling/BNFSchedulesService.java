@@ -75,14 +75,14 @@ public class BNFSchedulesService {
 	}
 	
 	public void enrollIntoMilestoneOfBNF(String caseId, String date, String provider, String instanceId) {
-		logger.info(format("Enrolling Mother into BNF schedule. Id: {0}", caseId));
+		logger.info(format("enrolling mother into BNF schedule. id: {0}", caseId));
 		
 		scheduler.enrollIntoSchedule(caseId, SCHEDULE_BNF, date);
 		
 	}
 	
 	public void immediateEnrollIntoMilestoneOfBNF(String caseId, String date, String provider, String instanceId) {
-		logger.info(format("Enrolling Mother into Immediate BNF schedule. Id: {0}", caseId));
+		logger.info(format("enrolling mother into immediate BNF schedule. id: {0}", caseId));
 		scheduler.enrollIntoSchedule(caseId, SCHEDULE_BNF_IME, date);
 		
 		Date startDate = null;
@@ -97,17 +97,21 @@ public class BNFSchedulesService {
 			if (datediff >= -DateTimeDuration.BNFUPCOMING) {
 				plusDays = DateTimeDuration.BNFUPCOMING;
 				alertStatus = AlertStatus.upcoming;
-			} else {
+			} else if (datediff >= -DateTimeDuration.BNFURGENT) {
 				plusDays = DateTimeDuration.BNFURGENT;
 				alertStatus = AlertStatus.urgent;
 				start = start.plusDays(DateTimeDuration.BNFUPCOMING);
+			} else {
+				alertStatus = AlertStatus.expired;
+				start = start.plusDays(DateTimeDuration.BNFURGENT);
 			}
 			
 			scheduleLogService.createImmediateScheduleAndScheduleLog(caseId, date, provider, instanceId,
 			    BeneficiaryType.mother, SCHEDULE_BNF, bnf_duration, SCHEDULE_BNF_IME, alertStatus, start, plusDays);
 		}
 		catch (ParseException e) {
-			logger.info("Date parse exception:" + e.getMessage());
+			logger.info("date parse exception immediateEnrollIntoMilestoneOfBNF for caseid:" + caseId + " ,error:"
+			        + e.getMessage());
 		}
 		
 	}

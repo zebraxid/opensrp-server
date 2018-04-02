@@ -487,7 +487,6 @@ public class ELCOService {
 			} else {
 				ancService.deleteBlankMother(submission);
 				
-				// user type condition
 				if (submission.getField("user_type").equalsIgnoreCase(FD)) {
 					elcoScheduleService.fullfillMilestoneAndCloseAlert(submission.entityId(), submission.anmId(), "");
 					actionService.markAlertAsInactive(submission.anmId(), submission.entityId(), ELCO_SCHEDULE_PSRF);

@@ -246,11 +246,15 @@ public class OpenSRPScheduleConstants {
 		
 		public static final int PSRFUPCOMING = 70;
 		
+		public static final int PSRFEXPIRED = 7;
+		
 		public static final int PSRFURGENT = 931;
 		
 		public static final int BNFUPCOMING = 9;
 		
 		public static final int BNFURGENT = 652;
+		
+		public static final int BNEXPIRED = 1;
 		
 	}
 	

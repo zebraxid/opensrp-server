@@ -71,18 +71,11 @@ public class ELCOScheduleService {
 		scheduler.enrollIntoSchedule(caseId, ELCO_SCHEDULE_PSRF, date);
 		scheduleLogService.createNewScheduleLogandUnenrollImmediateSchedule(caseId, date, provider, instanceId,
 		    IMD_ELCO_SCHEDULE_PSRF, ELCO_SCHEDULE_PSRF, elco, duration);
-		/*try{
-			scheduler.unEnrollFromScheduleimediate(caseId, provider, IMD_ELCO_SCHEDULE_PSRF);
-		}catch(Exception e){
-			logger.info(format("Failed to UnEnrollFromSchedule PSRF"));
-		}
 		
-		scheduleLogService.scheduleCloseAndSave(caseId, instanceId, provider, ELCO_SCHEDULE_PSRF, ELCO_SCHEDULE_PSRF, elco, AlertStatus.normal, new DateTime(), new DateTime().plusHours(duration));
-		*/
 	}
 	
 	public void unEnrollFromScheduleCensus(String caseId, String providerId, String scheduleName) {
-		//scheduler.unEnrollFromScheduleCensus(caseId, providerId, HH_SCHEDULE_CENSUS);
+		
 		try {
 			scheduler.fullfillMilestoneAndCloseAlert(caseId, providerId, HH_SCHEDULE_CENSUS, new LocalDate());
 		}
@@ -146,14 +139,13 @@ public class ELCOScheduleService {
 			
 		}
 		catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			
 		}
 		return todayDate;
 	}
 	
 	public void imediateEnrollIntoMilestoneOfPSRF(String caseId, String date, String provider, String instanceId) {
-		logger.info(format("Enrolling Elco into PSRF schedule. Id: {0}", caseId));
+		logger.info(format("enrolling elco into PSRF schedule. Id: {0}", caseId));
 		scheduler.enrollIntoSchedule(caseId, ELCOSchedulesConstantsImediate.IMD_ELCO_SCHEDULE_PSRF, date);
 		
 		Date startDate = null;
@@ -168,10 +160,14 @@ public class ELCOScheduleService {
 			if (datediff >= -DateTimeDuration.PSRFUPCOMING) {
 				plusDays = DateTimeDuration.PSRFUPCOMING;
 				alertStatus = AlertStatus.upcoming;
-			} else {
+			} else if (datediff >= -DateTimeDuration.PSRFURGENT) {
 				plusDays = DateTimeDuration.PSRFURGENT;
 				alertStatus = AlertStatus.urgent;
 				start = start.plusDays(DateTimeDuration.PSRFUPCOMING);
+			} else {
+				alertStatus = AlertStatus.expired;
+				start = start.plusDays(DateTimeDuration.PSRFURGENT);
+				plusDays = DateTimeDuration.PSRFEXPIRED;
 			}
 			
 			scheduleLogService.createImmediateScheduleAndScheduleLog(caseId, date, provider, instanceId,
@@ -180,7 +176,8 @@ public class ELCOScheduleService {
 			
 		}
 		catch (ParseException e) {
-			logger.info("Date parse exception:" + e.getMessage());
+			logger.info("date parse exception at imediateEnrollIntoMilestoneOfPSRF for caseid:" + caseId + " ,error:"
+			        + e.getMessage());
 		}
 		
 	}
