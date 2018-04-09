@@ -27,5 +27,4 @@ public interface CustomClientMapper extends ClientMapper {
 	                                          @Param("relationshipId") String relationshipId);
 	
 	List<Client> selectByRelationShip(String relationshipId);
-	
 }
