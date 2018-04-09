@@ -125,7 +125,7 @@ public class EncounterService extends OpenmrsService {
 		}
 
 		if (e.getEventType().equals("Update Birth Registration")) {
-			return patientService.updatePersonAddressAndName(e);
+			return patientService.updatePersonAddress(e);
 		} else {
 
 			JSONObject enc = new JSONObject();
@@ -405,7 +405,7 @@ public class EncounterService extends OpenmrsService {
 		if (event.getEventType().equals("Death")) {
 			patientService.updatePersonAsDeceased(event);
 		} else if (event.getEventType().equals("Update Birth Registration")) {
-			patientService.updatePersonAddressAndName(event);
+			patientService.updatePersonAddress(event);
 		}
 
 		return event;
