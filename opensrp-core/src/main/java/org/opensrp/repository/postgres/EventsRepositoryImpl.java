@@ -91,21 +91,24 @@ public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements E
 			return;
 		}
 		
-		int rowsAffected = eventMapper.updateByPrimaryKeySelective(pgEvent);
+		int rowsAffected = eventMapper.updateByPrimaryKey(pgEvent);
 		if (rowsAffected < 1) {
 			return;
 		}
 		
 		EventMetadataExample eventMetadataExample = new EventMetadataExample();
-		eventMetadataExample.createCriteria().andEventIdEqualTo(id);
-		eventMetadataMapper.updateByExampleSelective(eventMetadata, eventMetadataExample);
+		eventMetadataExample.createCriteria().andEventIdEqualTo(id).andDateDeletedIsNull();
+		eventMetadata.setId(eventMetadataMapper.selectByExample(eventMetadataExample).get(0).getId());
+		eventMetadataMapper.updateByPrimaryKey(eventMetadata);
 		
 	}
 	
 	@Override
 	public List<Event> getAll() {
-		List<org.opensrp.domain.postgres.Event> events = eventMetadataMapper
-		        .selectManyWithRowBounds(new EventMetadataExample(), 0, DEFAULT_FETCH_SIZE);
+		EventMetadataExample eventMetadataExample = new EventMetadataExample();
+		eventMetadataExample.createCriteria().andDateDeletedIsNull();
+		List<org.opensrp.domain.postgres.Event> events = eventMetadataMapper.selectManyWithRowBounds(eventMetadataExample, 0,
+		    DEFAULT_FETCH_SIZE);
 		return convert(events);
 	}
 	
@@ -120,14 +123,21 @@ public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements E
 			return;
 		}
 		
+		Date dateDeleted = entity.getDateVoided() == null ? new Date() : entity.getDateVoided().toDate();
+		EventMetadata eventMetadata = new EventMetadata();
+		eventMetadata.setDateDeleted(dateDeleted);
+		
 		EventMetadataExample eventMetadataExample = new EventMetadataExample();
-		eventMetadataExample.createCriteria().andEventIdEqualTo(id);
-		int rowsAffected = eventMetadataMapper.deleteByExample(eventMetadataExample);
+		eventMetadataExample.createCriteria().andEventIdEqualTo(id).andDateDeletedIsNull();
+		int rowsAffected = eventMetadataMapper.updateByExampleSelective(eventMetadata, eventMetadataExample);
 		if (rowsAffected < 1) {
 			return;
 		}
 		
-		eventMapper.deleteByPrimaryKey(id);
+		org.opensrp.domain.postgres.Event pgEvent = new org.opensrp.domain.postgres.Event();
+		pgEvent.setId(id);
+		pgEvent.setDateDeleted(dateDeleted);
+		eventMapper.updateByPrimaryKeySelective(pgEvent);
 		
 	}
 	
@@ -154,7 +164,7 @@ public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements E
 			return null;
 		}
 		EventMetadataExample example = new EventMetadataExample();
-		example.createCriteria().andFormSubmissionIdEqualTo(formSubmissionId);
+		example.createCriteria().andFormSubmissionIdEqualTo(formSubmissionId).andDateDeletedIsNull();
 		List<org.opensrp.domain.postgres.Event> events = eventMetadataMapper.selectMany(example);
 		if (events.size() > 1) {
 			throw new IllegalStateException("Multiple events for formSubmissionId " + formSubmissionId);
@@ -167,14 +177,15 @@ public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements E
 	@Override
 	public List<Event> findByBaseEntityId(String baseEntityId) {
 		EventMetadataExample example = new EventMetadataExample();
-		example.createCriteria().andBaseEntityIdEqualTo(baseEntityId);
+		example.createCriteria().andBaseEntityIdEqualTo(baseEntityId).andDateDeletedIsNull();
 		return convert(eventMetadataMapper.selectMany(example));
 	}
 	
 	@Override
 	public Event findByBaseEntityAndFormSubmissionId(String baseEntityId, String formSubmissionId) {
 		EventMetadataExample example = new EventMetadataExample();
-		example.createCriteria().andBaseEntityIdEqualTo(baseEntityId).andFormSubmissionIdEqualTo(formSubmissionId);
+		example.createCriteria().andBaseEntityIdEqualTo(baseEntityId).andFormSubmissionIdEqualTo(formSubmissionId)
+		        .andDateDeletedIsNull();
 		List<org.opensrp.domain.postgres.Event> events = eventMetadataMapper.selectMany(example);
 		if (events.size() > 1) {
 			throw new IllegalStateException("Multiple events for baseEntityId and formSubmissionId combination ("
@@ -188,7 +199,7 @@ public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements E
 	@Override
 	public List<Event> findByBaseEntityAndType(String baseEntityId, String eventType) {
 		EventMetadataExample example = new EventMetadataExample();
-		example.createCriteria().andBaseEntityIdEqualTo(baseEntityId).andEventTypeEqualTo(eventType);
+		example.createCriteria().andBaseEntityIdEqualTo(baseEntityId).andEventTypeEqualTo(eventType).andDateDeletedIsNull();
 		return convert(eventMetadataMapper.selectMany(example));
 	}
 	
@@ -199,7 +210,8 @@ public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements E
 		if (StringUtils.isNotEmpty(eventSearchBean.getBaseEntityId()))
 			criteria.andBaseEntityIdEqualTo(eventSearchBean.getBaseEntityId());
 		if (eventSearchBean.getEventDateFrom() != null && eventSearchBean.getEventDateTo() != null)
-			criteria.andEventDateBetween(eventSearchBean.getEventDateFrom().toDate(), eventSearchBean.getEventDateTo().toDate());
+			criteria.andEventDateBetween(eventSearchBean.getEventDateFrom().toDate(),
+			    eventSearchBean.getEventDateTo().toDate());
 		if (StringUtils.isNotEmpty(eventSearchBean.getEventType()))
 			criteria.andEventTypeEqualTo(eventSearchBean.getEventType());
 		if (StringUtils.isNotEmpty(eventSearchBean.getEntityType()))
@@ -209,13 +221,15 @@ public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements E
 		if (StringUtils.isNotEmpty(eventSearchBean.getLocationId()))
 			criteria.andLocationIdEqualTo(eventSearchBean.getLocationId());
 		if (eventSearchBean.getLastEditFrom() != null && eventSearchBean.getLastEditTo() != null)
-			criteria.andDateEditedBetween(eventSearchBean.getLastEditFrom().toDate(), eventSearchBean.getLastEditTo().toDate());
+			criteria.andDateEditedBetween(eventSearchBean.getLastEditFrom().toDate(),
+			    eventSearchBean.getLastEditTo().toDate());
 		if (StringUtils.isNotEmpty(eventSearchBean.getTeam()))
 			criteria.andTeamEqualTo(eventSearchBean.getTeam());
 		if (StringUtils.isNotEmpty(eventSearchBean.getTeamId()))
 			criteria.andTeamIdEqualTo(eventSearchBean.getTeamId());
 		if (!criteria.isValid())
 			throw new IllegalArgumentException("Atleast one search filter must be specified");
+		criteria.andDateDeletedIsNull();
 		return convert(eventMetadataMapper.selectManyWithRowBounds(example, 0, DEFAULT_FETCH_SIZE));
 	}
 	
@@ -227,7 +241,7 @@ public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements E
 	@Override
 	public List<Event> findByServerVersion(long serverVersion) {
 		EventMetadataExample example = new EventMetadataExample();
-		example.createCriteria().andServerVersionGreaterThanOrEqualTo(serverVersion + 1);
+		example.createCriteria().andServerVersionGreaterThanOrEqualTo(serverVersion + 1).andDateDeletedIsNull();
 		return convert(eventMetadataMapper.selectManyWithRowBounds(example, 0, DEFAULT_FETCH_SIZE));
 	}
 	
@@ -274,8 +288,8 @@ public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements E
 	@Override
 	public List<Event> findByEmptyServerVersion() {
 		EventMetadataExample example = new EventMetadataExample();
-		example.createCriteria().andServerVersionIsNull();
-		example.or(example.createCriteria().andServerVersionEqualTo(0l));
+		example.createCriteria().andDateDeletedIsNull().andServerVersionIsNull();
+		example.or(example.createCriteria().andDateDeletedIsNull().andServerVersionEqualTo(0l));
 		return convert(eventMetadataMapper.selectManyWithRowBounds(example, 0, DEFAULT_FETCH_SIZE));
 	}
 	
@@ -331,6 +345,7 @@ public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements E
 		if (!criteria.isValid())
 			throw new IllegalArgumentException("Atleast one search filter must be specified");
 		
+		criteria.andDateDeletedIsNull();
 		example.setOrderByClause(getOrderByClause(sortBy, sortOrder));
 		return convert(eventMetadataMapper.selectManyWithRowBounds(example, 0, limit));
 	}
@@ -350,8 +365,8 @@ public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements E
 		calendar.set(Calendar.MINUTE, 0);
 		calendar.set(Calendar.MILLISECOND, 0);
 		EventMetadataExample example = new EventMetadataExample();
-		example.createCriteria().andEventTypeEqualTo(eventType).andServerVersionBetween(calendar.getTimeInMillis(),
-		    System.currentTimeMillis());
+		example.createCriteria().andEventTypeEqualTo(eventType)
+		        .andServerVersionBetween(calendar.getTimeInMillis(), System.currentTimeMillis()).andDateDeletedIsNull();
 		return convert(eventMetadataMapper.selectManyWithRowBounds(example, 0, DEFAULT_FETCH_SIZE));
 	}
 	
@@ -437,6 +452,10 @@ public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements E
 			eventMetadata.setServerVersion(event.getServerVersion());
 			if (event.getDateCreated() != null)
 				eventMetadata.setDateCreated(event.getDateCreated().toDate());
+			if (event.getDateEdited() != null)
+				eventMetadata.setDateEdited(event.getDateEdited().toDate());
+			if (event.getDateVoided() != null)
+				eventMetadata.setDateDeleted(event.getDateVoided().toDate());
 			return eventMetadata;
 		}
 		catch (Exception e) {

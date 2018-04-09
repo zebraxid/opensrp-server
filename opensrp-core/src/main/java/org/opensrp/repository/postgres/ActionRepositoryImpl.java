@@ -60,9 +60,9 @@ public class ActionRepositoryImpl extends BaseRepositoryImpl<Action> implements 
 			return;
 		}
 		
-		ActionMetadata eventMetadata = createMetadata(entity, pgAction.getId());
-		if (eventMetadata != null) {
-			actionMetadataMapper.insertSelective(eventMetadata);
+		ActionMetadata actionMetadata = createMetadata(entity, pgAction.getId());
+		if (actionMetadata != null) {
+			actionMetadataMapper.insertSelective(actionMetadata);
 		}
 		
 	}
@@ -88,14 +88,15 @@ public class ActionRepositoryImpl extends BaseRepositoryImpl<Action> implements 
 			return;
 		}
 		
-		int rowsAffected = actionMapper.updateByPrimaryKeySelective(pgAction);
+		int rowsAffected = actionMapper.updateByPrimaryKey(pgAction);
 		if (rowsAffected < 1) {
 			return;
 		}
 		
 		ActionMetadataExample actionMetadataExample = new ActionMetadataExample();
 		actionMetadataExample.createCriteria().andActionIdEqualTo(id);
-		actionMetadataMapper.updateByExampleSelective(actionMetadata, actionMetadataExample);
+		actionMetadata.setId(actionMetadataMapper.selectByExample(actionMetadataExample).get(0).getId());
+		actionMetadataMapper.updateByPrimaryKey(actionMetadata);
 		
 	}
 	
@@ -224,7 +225,7 @@ public class ActionRepositoryImpl extends BaseRepositoryImpl<Action> implements 
 				ids.add(providerId);
 			}
 			criteria.andProviderIdIn(ids);
-		} else if ((providerId != null && !StringUtils.isNotEmpty(providerId))) {
+		} else if (StringUtils.isNotEmpty(providerId)) {
 			criteria.andProviderIdEqualTo(providerId);
 		}
 		metadataExample.setOrderByClause(getOrderByClause(sortBy, sortOrder));
@@ -272,7 +273,7 @@ public class ActionRepositoryImpl extends BaseRepositoryImpl<Action> implements 
 	}
 	
 	protected Long retrievePrimaryKey(Action entity) {
-		if (entity == null) {
+		if (entity == null || entity.getId() == null) {
 			return null;
 		}
 		String documentId = entity.getId();
@@ -290,9 +291,11 @@ public class ActionRepositoryImpl extends BaseRepositoryImpl<Action> implements 
 	private ActionMetadata createMetadata(Action entity, Long primaryKey) {
 		ActionMetadata actionMetadata = new ActionMetadata();
 		actionMetadata.setActionId(primaryKey);
+		actionMetadata.setDocumentId(entity.getId());
 		actionMetadata.setBaseEntityId(entity.baseEntityId());
 		actionMetadata.setServerVersion(entity.getTimeStamp());
 		actionMetadata.setProviderId(entity.providerId());
+		
 		//TODO implement review if in future to support Location, Team and TeamId
 		return actionMetadata;
 	}

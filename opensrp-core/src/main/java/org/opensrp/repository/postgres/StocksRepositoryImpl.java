@@ -15,7 +15,7 @@ import org.opensrp.search.StockSearchBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-@Repository
+@Repository("stocksRepositoryPostgres")
 public class StocksRepositoryImpl extends BaseRepositoryImpl<Stock> implements StocksRepository {
 	
 	@Autowired
@@ -81,19 +81,20 @@ public class StocksRepositoryImpl extends BaseRepositoryImpl<Stock> implements S
 			return;
 		}
 		
-		StockMetadata reportMetadata = createMetadata(entity, id);
-		if (reportMetadata == null) {
+		StockMetadata stockMetadata = createMetadata(entity, id);
+		if (stockMetadata == null) {
 			return;
 		}
 		
-		int rowsAffected = stockMapper.updateByPrimaryKeySelective(pgStock);
+		int rowsAffected = stockMapper.updateByPrimaryKey(pgStock);
 		if (rowsAffected < 1) {
 			return;
 		}
 		
 		StockMetadataExample stockMetadataExample = new StockMetadataExample();
 		stockMetadataExample.createCriteria().andStockIdEqualTo(id);
-		stockMetadataMapper.updateByExampleSelective(reportMetadata, stockMetadataExample);
+		stockMetadata.setId(stockMetadataMapper.selectByExample(stockMetadataExample).get(0).getId());
+		stockMetadataMapper.updateByPrimaryKey(stockMetadata);
 		
 	}
 	
@@ -133,6 +134,12 @@ public class StocksRepositoryImpl extends BaseRepositoryImpl<Stock> implements S
 		return convert(stockMetadataMapper.selectMany(stockMetadataExample, 0, DEFAULT_FETCH_SIZE));
 	}
 	
+	/**
+	 * implements the method equivalent in couch repository that return stocks matching stock type id
+	 * @param stockType  the stock type
+	 * @param stockTypeId the stock type id
+	 * @return list of stock of a particluar stock type id 
+	 */
 	@Override
 	public List<Stock> findAllByIdentifier(String stockType, String stockTypeId) {
 		return convert(stockMetadataMapper.selectByIdentifier(stockTypeId, 0, DEFAULT_FETCH_SIZE));
@@ -162,7 +169,7 @@ public class StocksRepositoryImpl extends BaseRepositoryImpl<Stock> implements S
 	
 	@Override
 	protected Long retrievePrimaryKey(Stock entity) {
-		if (entity == null) {
+		if (entity == null || entity.getId() == null) {
 			return null;
 		}
 		String documentId = entity.getId();
