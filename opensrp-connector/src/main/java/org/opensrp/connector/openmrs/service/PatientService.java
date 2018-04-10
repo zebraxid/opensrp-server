@@ -48,6 +48,8 @@ public class PatientService extends OpenmrsService {
 	//person methods should be separate
 	private static final String PERSON_URL = "ws/rest/v1/person";
 
+	private static final String OBS_URL = "ws/rest/v1/obs";
+
 	private static final String PATIENT_URL = "ws/rest/v1/patient";
 
 	private static final String PATIENT_IMAGE_URL = "ws/rest/v1/patientimage/uploadimage";
@@ -406,7 +408,7 @@ public class PatientService extends OpenmrsService {
 
 		List<Event> registrationEvents = eventService.findByBaseEntityId(be.getBaseEntityId());
 		for (Event event : registrationEvents) {
-			if (event.getEventType().equals("Birth Registration")|| event.getEventType().equals("New Woman Registration")) {
+			if (event.getEventType().equals("Birth Registration") || event.getEventType().equals("New Woman Registration")) {
 				List<Obs> obs = event.getObs();
 				for (Obs obs2 : obs) {
 					if (obs2 != null && obs2.getFieldType().equals("formsubmissionField") && obs2.getFormSubmissionField()
@@ -680,19 +682,40 @@ public class PatientService extends OpenmrsService {
 	}
 
 	public JSONObject updatePersonAsDeceased(Event deathEvent) throws JSONException {
+		List<Obs> ol = deathEvent.getObs();
+		JSONObject obsBody = new JSONObject();
 		JSONObject requestBody = new JSONObject();
-
 		String patientUUID = getPatientByIdentifierUUID(deathEvent.getBaseEntityId());
+
+		if (ol == null || ol.isEmpty()) {
+			throw new IllegalArgumentException(
+					"Death Encounter does not have any observations for the required causeOfDeath ");
+		}
+		for (Obs obs : ol) {
+			if (obs.getFormSubmissionField().equals("Cause_Death") && obs.getValue() != null) {
+				obsBody.put("person", patientUUID);
+				obsBody.put("concept", PROBABLE_CAUSE_OF_DEATH_CONCEPT);
+				obsBody.put("obsDatetime", OPENMRS_DATE.format(deathEvent.getEventDate().toDate()));
+				obsBody.put("value", obs.getValue().toString());
+				break;
+			}
+		}
 
 		requestBody.put("dead", true);
 		requestBody.put("deathDate", OPENMRS_DATE.format(deathEvent.getEventDate().toDate()));
-		requestBody.put("causeOfDeath", PROBABLE_CAUSE_PARENT_CONCEPT);
+		requestBody.put("causeOfDeath", OTHER_NON_CODED_CONCEPT);
 
-		HttpResponse op = HttpUtil
-				.post(HttpUtil.removeEndingSlash(OPENMRS_BASE_URL) + "/" + PERSON_URL + "/" + patientUUID, "",
+		HttpResponse op = HttpUtil.post(HttpUtil.removeEndingSlash(OPENMRS_BASE_URL) + "/" + PERSON_URL + "/" + patientUUID, "",
 						requestBody.toString(), OPENMRS_USER, OPENMRS_PWD);
 
-		return new JSONObject(op.body());
+		if (new JSONObject(op.body()).has("uuid"))
+		{
+			HttpResponse obsResponse = HttpUtil
+					.post(HttpUtil.removeEndingSlash(OPENMRS_BASE_URL) + "/" + OBS_URL, "", obsBody.toString(), OPENMRS_USER,
+							OPENMRS_PWD);
+			return new JSONObject(obsResponse.body());
+		}
+		return null;
 
 	}
 

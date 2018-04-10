@@ -122,12 +122,12 @@ public class EncounterService extends OpenmrsService {
 		String ptuuid = patientService.getPatientByIdentifierUUID(e.getBaseEntityId());
 		if (ptuuid == null) {
 			return null;
-		}
-
-		if (e.getEventType().equals("Update Birth Registration")) {
-			return patientService.updatePersonAddress(e);
 		} else {
-
+			if (e.getEventType().equals("Update Birth Registration")) {
+				patientService.updatePersonAddress(e);
+			} else if (e.getEventType().equals("Death")) {
+				patientService.updatePersonAsDeceased(e);
+			}
 			JSONObject enc = new JSONObject();
 
 			String pruuid = userService.getPersonUUIDByUser(e.getProviderId());
@@ -304,9 +304,6 @@ public class EncounterService extends OpenmrsService {
 
 	private String getObsUuid(JSONObject obs, JSONArray obsUuids) throws JSONException {
 		String uuid = "";
-		// obs = {"concept":"163137AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"}
-		// obsUuids = [{"concept":{"uuid":"163137AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"},"uuid":"b267b2f5-94be-43e8-85c4-4e36f2eb8471"}, {}]
-
 		for (int i = 0; i < obsUuids.length(); i++) {
 			JSONObject obsUuid = obsUuids.getJSONObject(i);
 			JSONObject conceptObj = obsUuid.getJSONObject("concept");
@@ -399,15 +396,5 @@ public class EncounterService extends OpenmrsService {
 		}
 
 		return e;
-	}
-
-	public synchronized Event processUpdateEvents(Event event) throws JSONException {
-		if (event.getEventType().equals("Death")) {
-			patientService.updatePersonAsDeceased(event);
-		} else if (event.getEventType().equals("Update Birth Registration")) {
-			patientService.updatePersonAddress(event);
-		}
-
-		return event;
 	}
 }
