@@ -705,11 +705,11 @@ public class PatientService extends OpenmrsService {
 		requestBody.put("deathDate", OPENMRS_DATE.format(deathEvent.getEventDate().toDate()));
 		requestBody.put("causeOfDeath", OTHER_NON_CODED_CONCEPT);
 
-		HttpResponse op = HttpUtil.post(HttpUtil.removeEndingSlash(OPENMRS_BASE_URL) + "/" + PERSON_URL + "/" + patientUUID, "",
+		HttpResponse op = HttpUtil
+				.post(HttpUtil.removeEndingSlash(OPENMRS_BASE_URL) + "/" + PERSON_URL + "/" + patientUUID, "",
 						requestBody.toString(), OPENMRS_USER, OPENMRS_PWD);
 
-		if (new JSONObject(op.body()).has("uuid"))
-		{
+		if (new JSONObject(op.body()).has("uuid")) {
 			HttpResponse obsResponse = HttpUtil
 					.post(HttpUtil.removeEndingSlash(OPENMRS_BASE_URL) + "/" + OBS_URL, "", obsBody.toString(), OPENMRS_USER,
 							OPENMRS_PWD);
