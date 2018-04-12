@@ -143,8 +143,7 @@ public class EventService {
 			List<org.opensrp.domain.Client> clients = clientService.findAllByIdentifier(Client.ZEIR_ID.toUpperCase(),
 			    identifier);
 			if (clients != null && !clients.isEmpty()) {
-				org.opensrp.domain.Client client = clients.get(0);
-				
+				org.opensrp.domain.Client client = clients.get(0);				
 				//set providerid to the last providerid who served this client in their catchment (assumption)
 				List<Event> existingEvents = findByBaseEntityAndType(client.getBaseEntityId(), "Birth Registration");
 				if (existingEvents != null && !existingEvents.isEmpty()) {
