@@ -254,7 +254,7 @@ public class ANCService {
 		allMothers.update(mother);
 		
 		ancSchedulesService.enrollMother(motherId, LocalDate.parse(submission.getField(MOTHER_REFERENCE_DATE)),
-		    submission.anmId(), submission.instanceId(), submission.getField(MOTHER_REFERENCE_DATE));
+		    submission.anmId(), submission.instanceId(), submission.getField(MOTHER_REFERENCE_DATE), false);
 	}
 	
 	private void addDetailsToMother(FormSubmission submission, Mother mother, Elco elco) {

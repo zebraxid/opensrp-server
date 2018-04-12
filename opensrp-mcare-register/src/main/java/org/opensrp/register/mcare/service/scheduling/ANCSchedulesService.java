@@ -44,11 +44,9 @@ public class ANCSchedulesService extends ANCScheduleImplementation {
 	}
 	
 	public void enrollMother(String caseId, LocalDate referenceDateForSchedule, String provider, String instanceId,
-	                         String startDate) {
-		/*for (String schedule : NON_ANC_SCHEDULES) {
-			scheduler.enrollIntoSchedule(caseId, schedule, referenceDateForSchedule);
-		}*/
-		scheduleCheckAndSaveOrNot(caseId, referenceDateForSchedule, provider, instanceId, startDate, true);
+	                         String startDate, boolean isCorrected) {
+		
+		scheduleCheckAndSaveOrNot(caseId, referenceDateForSchedule, provider, instanceId, startDate, true, isCorrected);
 	}
 	
 	/**
@@ -61,7 +59,8 @@ public class ANCSchedulesService extends ANCScheduleImplementation {
 	 * @param startDate LMP Date as String format
 	 */
 	public Map<String, String> scheduleCheckAndSaveOrNot(String entityId, LocalDate referenceDateForSchedule,
-	                                                     String provider, String instanceId, String startDate, boolean isSave) {
+	                                                     String provider, String instanceId, String startDate,
+	                                                     boolean isSave, boolean isCorrected) {
 		
 		String milestone = null;
 		Map<String, String> map = new HashMap<String, String>();
@@ -84,27 +83,27 @@ public class ANCSchedulesService extends ANCScheduleImplementation {
 			
 			milestone = SCHEDULE_ANC_1;
 			scheduleParamData = saveANCC1Schedule(datediff, start, milestone, entityId, referenceDateForSchedule, provider,
-			    instanceId, startDate, isSave);
+			    instanceId, startDate, isSave, isCorrected);
 			map.put("alert", scheduleParamData.getAlertStaus());
 			
 		} else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(31).toPeriod()
 		        .plusDays(1))) {
 			milestone = SCHEDULE_ANC_2;
 			scheduleParamData = saveANC2Schedule(datediff, start, milestone, entityId, referenceDateForSchedule, provider,
-			    instanceId, startDate, isSave);
+			    instanceId, startDate, isSave, isCorrected);
 			map.put("alert", scheduleParamData.getAlertStaus());
 			
 		} else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(35).toPeriod()
 		        .plusDays(1))) {
 			milestone = SCHEDULE_ANC_3;
 			scheduleParamData = saveANC3Schedule(datediff, start, milestone, entityId, referenceDateForSchedule, provider,
-			    instanceId, startDate, isSave);
+			    instanceId, startDate, isSave, isCorrected);
 			map.put("alert", scheduleParamData.getAlertStaus());
 			
 		} else if (DateUtil.isDateWithinGivenPeriodBeforeToday(referenceDateForSchedule, Weeks.weeks(44).toPeriod())) {
 			milestone = SCHEDULE_ANC_4;
 			scheduleParamData = saveANC4Schedule(datediff, start, milestone, entityId, referenceDateForSchedule, provider,
-			    instanceId, startDate, isSave);
+			    instanceId, startDate, isSave, isCorrected);
 			map.put("alert", scheduleParamData.getAlertStaus());
 		} else {
 			milestone = SCHEDULE_ANC_4;

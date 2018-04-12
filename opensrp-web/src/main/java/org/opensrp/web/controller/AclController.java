@@ -521,7 +521,7 @@ public class AclController {
 				try {
 					lmp = mother.details().get("LMP");
 					Map<String, String> ancParam = ancSchedulesService.scheduleCheckAndSaveOrNot("", LocalDate.parse(lmp),
-					    "", "", lmp, false);
+					    "", "", lmp, false, true);
 					
 					boolean ancStatus = isANCSubmited(mother, visitCode);
 					List<Action> pncs = allActions.findAlertByANMIdEntityIdScheduleName(action.anmIdentifier(),
@@ -912,7 +912,7 @@ public class AclController {
 	private void scheduleRefreshANC(Action action, String refDate, String provider, String instance, String scheduleName) {
 		
 		try {
-			ancSchedulesService.enrollMother(action.caseId(), LocalDate.parse(refDate), provider, instance, refDate);
+			ancSchedulesService.enrollMother(action.caseId(), LocalDate.parse(refDate), provider, instance, refDate, true);
 		}
 		catch (Exception e) {
 			e.printStackTrace();

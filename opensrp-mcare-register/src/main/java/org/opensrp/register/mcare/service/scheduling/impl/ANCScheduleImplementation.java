@@ -26,7 +26,7 @@ public abstract class ANCScheduleImplementation {
 	
 	public ScheduleParamData saveANCC1Schedule(long datediff, DateTime start, String milestone, String entityId,
 	                                           LocalDate referenceDateForSchedule, String provider, String instanceId,
-	                                           String startDate, boolean isSave) {
+	                                           String startDate, boolean isSave, boolean isCorrected) {
 		ScheduleParamData scheduleParamData = new ScheduleParamData();
 		DateTime ancStartDate = null;
 		DateTime ancExpireDate = null;
@@ -66,15 +66,16 @@ public abstract class ANCScheduleImplementation {
 	
 	public ScheduleParamData saveANC2Schedule(long datediff, DateTime start, String milestone, String entityId,
 	                                          LocalDate referenceDateForSchedule, String provider, String instanceId,
-	                                          String startDate, boolean isSave) {
+	                                          String startDate, boolean isSave, boolean isCorrected) {
 		DateTime ancStartDate = null;
 		DateTime ancExpireDate = null;
 		AlertStatus alertStaus = null;
-		if (datediff == -DateTimeDuration.LASTDAYOFANC1) {
+		
+		if (datediff == DateTimeDuration.LASTDAYOFANC1) {
 			alertStaus = AlertStatus.urgent;
 			ancStartDate = new DateTime(start).plusDays(DateTimeDuration.ANC1URGENTSTART);
 			ancExpireDate = new DateTime(ancStartDate).plusDays(DateTimeDuration.ANC1URGENTEND);
-			if (isSave) {
+			if (isSave && !isCorrected) {
 				scheduleLogService.saveAction(entityId, instanceId, provider, SCHEDULE_ANC, SCHEDULE_ANC_1,
 				    BeneficiaryType.mother, alertStaus, ancStartDate, ancExpireDate);
 			}
@@ -107,15 +108,16 @@ public abstract class ANCScheduleImplementation {
 	
 	public ScheduleParamData saveANC3Schedule(long datediff, DateTime start, String milestone, String entityId,
 	                                          LocalDate referenceDateForSchedule, String provider, String instanceId,
-	                                          String startDate, boolean isSave) {
+	                                          String startDate, boolean isSave, boolean isCorrected) {
 		DateTime ancStartDate = null;
 		DateTime ancExpireDate = null;
 		AlertStatus alertStaus = null;
+		
 		if (datediff == DateTimeDuration.LASTDAYOFANC2) {
 			alertStaus = AlertStatus.urgent;
 			ancStartDate = new DateTime(start).plusDays(DateTimeDuration.ANC2URGENTSTART);
 			ancExpireDate = new DateTime(ancStartDate).plusDays(DateTimeDuration.ANC2URGENTEND);
-			if (isSave) {
+			if (isSave && !isCorrected) {
 				scheduleLogService.saveAction(entityId, instanceId, provider, SCHEDULE_ANC, SCHEDULE_ANC_2,
 				    BeneficiaryType.mother, alertStaus, ancStartDate, ancExpireDate);
 			}
@@ -147,16 +149,17 @@ public abstract class ANCScheduleImplementation {
 	
 	public ScheduleParamData saveANC4Schedule(long datediff, DateTime start, String milestone, String entityId,
 	                                          LocalDate referenceDateForSchedule, String provider, String instanceId,
-	                                          String startDate, boolean isSave) {
+	                                          String startDate, boolean isSave, boolean isCorrected) {
 		DateTime ancStartDate = null;
 		DateTime ancExpireDate = null;
 		AlertStatus alertStaus = null;
+		
 		if (datediff == DateTimeDuration.LASTDAYOFAN3) {
 			
 			alertStaus = AlertStatus.urgent;
 			ancStartDate = new DateTime(start).plusDays(DateTimeDuration.ANC3URGENTSTART);
 			ancExpireDate = new DateTime(ancStartDate).plusDays(DateTimeDuration.ANC3URGENTEND);
-			if (isSave) {
+			if (isSave && !isCorrected) {
 				scheduleLogService.saveAction(entityId, instanceId, provider, SCHEDULE_ANC, SCHEDULE_ANC_3,
 				    BeneficiaryType.mother, alertStaus, ancStartDate, ancExpireDate);
 			}
