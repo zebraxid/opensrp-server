@@ -136,8 +136,7 @@ public class EventService {
 	 * @return
 	 */
 	public synchronized Event processOutOfArea(Event event) {
-		if (event.getBaseEntityId() == null || event.getBaseEntityId().isEmpty()) {
-			
+		if (event.getBaseEntityId() == null || event.getBaseEntityId().isEmpty()) {		
 			//get events identifiers;
 			String identifier = event.getIdentifier(Client.ZEIR_ID);
 			List<org.opensrp.domain.Client> clients = clientService.findAllByIdentifier(Client.ZEIR_ID.toUpperCase(),
