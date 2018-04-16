@@ -118,8 +118,8 @@ public class EventResource extends RestResource<Event> {
 			List<Event> events = new ArrayList<Event>();
 			List<String> clientIds = new ArrayList<String>();
 			List<Client> clients = new ArrayList<Client>();
-			if (team != null || providerId != null || locationId != null || baseEntityId != null) {		
-				long startTime = System.currentTimeMillis();
+			long startTime = System.currentTimeMillis();
+			if (team != null || providerId != null || locationId != null || baseEntityId != null) {
 				EventSearchBean eventSearchBean = new EventSearchBean();
 				eventSearchBean.setTeam(team);
 				eventSearchBean.setTeamId(teamId);
@@ -142,25 +142,26 @@ public class EventResource extends RestResource<Event> {
 						clients.addAll(clientService.findByFieldValue(BASE_ENTITY_ID, clientIds.subList(i, end)));
 					}
 					logger.info("fetching clients took: " + (System.currentTimeMillis() - startTime));
-					
-					List<String> foundClientIds = new ArrayList<>();
-					for (Client client : clients) {
-						foundClientIds.add(client.getBaseEntityId());
-					}
-					
-					boolean removed = clientIds.removeAll(foundClientIds);
-					if (removed) {
-						for (String clientId : clientIds) {
-							Client client = clientService.getByBaseEntityId(clientId);
-							if (client != null) {
-								clients.add(client);
-							}
-						}
-						
-					}
-					
-					logger.info("fetching missing clients took: " + (System.currentTimeMillis() - startTime));
 				}
+			}
+			
+			if (searchMissingClients) {
+				
+				List<String> foundClientIds = new ArrayList<>();
+				for (Client client : clients) {
+					foundClientIds.add(client.getBaseEntityId());
+				}
+				
+				boolean removed = clientIds.removeAll(foundClientIds);
+				if (removed) {
+					for (String clientId : clientIds) {
+						Client client = clientService.getByBaseEntityId(clientId);
+						if (client != null) {
+							clients.add(client);
+						}
+					}
+				}
+				logger.info("fetching missing clients took: " + (System.currentTimeMillis() - startTime));
 			}
 			
 			JsonArray eventsArray = (JsonArray) gson.toJsonTree(events, new TypeToken<List<Event>>() {}.getType());
