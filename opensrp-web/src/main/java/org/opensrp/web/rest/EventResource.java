@@ -39,6 +39,7 @@ import org.opensrp.util.DateTimeTypeConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -65,6 +66,9 @@ public class EventResource extends RestResource<Event> {
 	
 	Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
 	        .registerTypeAdapter(DateTime.class, new DateTimeTypeConverter()).create();
+	
+	@Value("#{opensrp['opensrp.sync.search.missing.client']}")
+	private boolean searchMissingClients;
 	
 	@Autowired
 	public EventResource(ClientService clientService, EventService eventService) {
@@ -124,7 +128,7 @@ public class EventResource extends RestResource<Event> {
 				eventSearchBean.setBaseEntityId(baseEntityId);
 				eventSearchBean.setServerVersion(lastSyncedServerVersion);
 				events = eventService.findEvents(eventSearchBean, BaseEntity.SERVER_VERSIOIN, "asc", limit);
-				logger.info("fetching events took: " + (System.currentTimeMillis() - startTime) / 1000);
+				logger.info("fetching events took: " + (System.currentTimeMillis() - startTime));
 				if (!events.isEmpty()) {
 					for (Event event : events) {
 						if (event.getBaseEntityId() != null && !event.getBaseEntityId().isEmpty()
@@ -137,25 +141,28 @@ public class EventResource extends RestResource<Event> {
 						        : clientIds.size();
 						clients.addAll(clientService.findByFieldValue(BASE_ENTITY_ID, clientIds.subList(i, end)));
 					}
-					logger.info("fetching clients took: " + (System.currentTimeMillis() - startTime) / 1000);
+					logger.info("fetching clients took: " + (System.currentTimeMillis() - startTime));
 				}
 			}
 			
-			List<String> foundClientIds = new ArrayList<>();
-			for (Client client : clients) {
-				foundClientIds.add(client.getBaseEntityId());
-			}
-			
-			boolean removed = clientIds.removeAll(foundClientIds);
-			if (removed) {
-				for (String clientId : clientIds) {
-					Client client = clientService.getByBaseEntityId(clientId);
-					if (client != null) {
-						clients.add(client);
+			if (searchMissingClients) {
+				
+				List<String> foundClientIds = new ArrayList<>();
+				for (Client client : clients) {
+					foundClientIds.add(client.getBaseEntityId());
+				}
+				
+				boolean removed = clientIds.removeAll(foundClientIds);
+				if (removed) {
+					for (String clientId : clientIds) {
+						Client client = clientService.getByBaseEntityId(clientId);
+						if (client != null) {
+							clients.add(client);
+						}
 					}
 				}
+				logger.info("fetching missing clients took: " + (System.currentTimeMillis() - startTime));
 			}
-			logger.info("fetching missing clients took: " + (System.currentTimeMillis() - startTime) / 1000);
 			
 			JsonArray eventsArray = (JsonArray) gson.toJsonTree(events, new TypeToken<List<Event>>() {}.getType());
 			
