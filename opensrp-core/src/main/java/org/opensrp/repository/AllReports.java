@@ -73,6 +73,14 @@ public class AllReports extends MotechBaseRepository<Report> {
 		        .key(ComplexKey.of(baseEntityId, formSubmissionId)).includeDocs(true),
 		    Report.class);
 	}
+
+	//Get reports by type and locationID
+	@View(name = "all_reports_by_location_and_type", map = "function(doc) { if (doc.type === 'Report'){  emit([doc.locationId, doc.reportType], doc); } }")
+	public List<Report> findByLocationAndType(String locationId, String reportType) {
+		return db.queryView(createQuery("all_reports_by_location_and_type").key(ComplexKey.of(locationId, reportType))
+						.includeDocs(true),
+				Report.class);
+	}
 	
 	public List<Report> findReports(String team, String providerId, String locationId, String baseEntityId,
 	                                Long serverVersion, String sortBy, String sortOrder, int limit) {

@@ -24,6 +24,10 @@ public class ReportService {
 	public List<Report> findAllByIdentifier(String identifier) {
 		return allReports.findAllByIdentifier(identifier);
 	}
+
+	public List<Report> findAllByLocationReportType(String location, String reportType) {
+		return allReports.findByLocationAndType(location,reportType);
+	}
 	
 	public List<Report> findByServerVersion(long serverVersion) {
 		return allReports.findByServerVersion(serverVersion);
