@@ -221,7 +221,7 @@ public class PatientService extends OpenmrsService {
 						if (relationShipPersonB.equals(personB) && relationShipPersonA.equals(personA)) {
 							return true;
 						} else {
-							if (relationship.equals(PARENT_CHILD_RELATIONSHIP) && !personA.equals(relationShipPersonA))
+							if (relationshipType.equals(PARENT_CHILD_RELATIONSHIP) && !personA.equals(relationShipPersonA))
 								voidPatientRelationShip(relationShipUUID);
 						}
 					}
