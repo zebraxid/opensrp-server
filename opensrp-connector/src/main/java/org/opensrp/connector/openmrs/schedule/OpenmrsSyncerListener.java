@@ -123,7 +123,6 @@ public class OpenmrsSyncerListener {
 			if (cl != null && !cl.isEmpty()) {
 				patientService.processClients(cl, patientsJsonArray,
 				    SchedulerConfig.openmrs_syncer_sync_client_by_date_updated, "OPENMRS FAILED CLIENT PUSH");
-				
 				logger.info("RUNNING FOR RELATIONSHIPS");
 				patientService.createRelationShip(cl, "OPENMRS FAILED CLIENT RELATIONSHIP PUSH");
 			}
