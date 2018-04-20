@@ -26,7 +26,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.opensrp.BaseIntegrationTest;
-import org.opensrp.common.AllConstants;
 import org.opensrp.domain.Address;
 import org.opensrp.domain.Client;
 import org.opensrp.repository.couch.AllClients;
@@ -365,7 +364,7 @@ public class LuceneClientRepositoryTest extends BaseIntegrationTest {
 		
 		addObjectToRepository(Collections.singletonList(expectedClient), allClients);
 		
-		List<Client> actualClients = luceneClientRepository.getByFieldValue(AllConstants.BaseEntity.BASE_ENTITY_ID, value);
+		List<Client> actualClients = luceneClientRepository.getByFieldValue(BASE_ENTITY_ID, value);
 		assertEquals(0, actualClients.size());
 	}
 	
@@ -385,7 +384,7 @@ public class LuceneClientRepositoryTest extends BaseIntegrationTest {
 		
 		addObjectToRepository(asList(expectedClient, expectedClient2), allClients);
 		
-		List<Client> actualClients = luceneClientRepository.getByFieldValue(AllConstants.BaseEntity.BASE_ENTITY_ID,
+		List<Client> actualClients = luceneClientRepository.getByFieldValue(BASE_ENTITY_ID,
 		    asList(BASE_ENTITY_ID, DIFFERENT_BASE_ENTITY_ID));
 		assertEquals(2, actualClients.size());
 		assertTwoListAreSameIgnoringOrder(asList(expectedClient, expectedClient2), actualClients);
@@ -407,12 +406,12 @@ public class LuceneClientRepositoryTest extends BaseIntegrationTest {
 		
 		addObjectToRepository(asList(expectedClient, expectedClient2), allClients);
 		
-		List<Client> actualClients = luceneClientRepository.getByFieldValue(AllConstants.BaseEntity.BASE_ENTITY_ID,
+		List<Client> actualClients = luceneClientRepository.getByFieldValue(BASE_ENTITY_ID,
 		    Collections.EMPTY_LIST);
 		assertEquals(0, actualClients.size());
 		
 		List<String> nullList = null;
-		actualClients = luceneClientRepository.getByFieldValue(AllConstants.BaseEntity.BASE_ENTITY_ID, nullList);
+		actualClients = luceneClientRepository.getByFieldValue(BASE_ENTITY_ID, nullList);
 		assertEquals(0, actualClients.size());
 		
 	}
