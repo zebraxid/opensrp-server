@@ -26,7 +26,7 @@ public class AllActions extends MotechBaseRepository<Action> implements ActionsR
 	
 	private static Logger logger = LoggerFactory.getLogger(AllActions.class.toString());
 	
-	LuceneActionRepository luceneActionRepo;
+	private LuceneActionRepository luceneActionRepo;
 	
 	@Autowired
 	protected AllActions(@Qualifier(AllConstants.OPENSRP_DATABASE_CONNECTOR) CouchDbConnector db,
@@ -138,4 +138,5 @@ public class AllActions extends MotechBaseRepository<Action> implements ActionsR
 	public List<Action> findAllActionNotExpired() {
 		return db.queryView(createQuery("action_by_alertStatus_not_expired").includeDocs(true), Action.class);
 	}
+
 }
