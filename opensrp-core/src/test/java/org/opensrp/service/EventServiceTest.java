@@ -149,7 +149,7 @@ public class EventServiceTest extends BaseRepositoryTest {
 		Event outOfAreaEvent = eventService.processOutOfArea(event);
 		assertEquals(1, outOfAreaEvent.getDetails().size());
 		assertEquals("biddemo", outOfAreaEvent.getDetails().get("out_of_catchment_provider_id"));
-		assertEquals("42abc582-6658-488b-922e-7be500c070f3", outOfAreaEvent.getLocationId());
+		assertEquals("2242342-23dsfsdfds", outOfAreaEvent.getLocationId());
 		assertEquals("biddemo", outOfAreaEvent.getProviderId());
 		
 		event = new Event().withEventType("Out of Area Service").withProviderId("tester111")
@@ -167,7 +167,7 @@ public class EventServiceTest extends BaseRepositoryTest {
 		outOfAreaEvent = eventService.processOutOfArea(event);
 		assertEquals(event, outOfAreaEvent);
 		
-		assertEquals(16, eventService.getAll().size());
+		assertEquals(15, eventService.getAll().size());
 		
 	}
 	

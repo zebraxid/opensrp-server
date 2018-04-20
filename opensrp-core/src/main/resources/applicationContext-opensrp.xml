@@ -26,7 +26,7 @@
 
 	<bean id="statsdAgent" class="org.motechproject.metrics.impl.LoggingAgentBackendImpl" />
 
-	<import resource="persistence_couchdb.xml"/>
-	<!-- <import resource="persistence_postgres.xml"/>-->
+	<!-- <import resource="persistence_couchdb.xml"/> -->
+	<import resource="persistence_postgres.xml"/>
 
 </beans>
