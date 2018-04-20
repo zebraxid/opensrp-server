@@ -348,7 +348,7 @@ public class LuceneClientRepositoryTest extends BaseIntegrationTest {
 		
 		addObjectToRepository(Collections.singletonList(expectedClient), allClients);
 		
-		List<Client> actualClients = luceneClientRepository.getByFieldValue(AllConstants.BaseEntity.BASE_ENTITY_ID,
+		List<Client> actualClients = luceneClientRepository.getByFieldValue(BASE_ENTITY_ID,
 		    BASE_ENTITY_ID);
 		assertEquals(1, actualClients.size());
 		assertEquals(expectedClient, actualClients.get(0));

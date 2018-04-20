@@ -8,7 +8,6 @@ import static org.opensrp.util.SampleFullDomainObject.ATTRIBUTES_VALUE;
 import static org.opensrp.util.SampleFullDomainObject.EPOCH_DATE_TIME;
 import static org.opensrp.util.SampleFullDomainObject.FEMALE;
 import static org.opensrp.util.SampleFullDomainObject.FIRST_NAME;
-import static org.opensrp.util.SampleFullDomainObject.IDENTIFIER_VALUE;
 import static org.opensrp.util.SampleFullDomainObject.LAST_NAME;
 import static org.opensrp.util.SampleFullDomainObject.MIDDLE_NAME;
 import static org.opensrp.util.SampleFullDomainObject.attributes;

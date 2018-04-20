@@ -18,8 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import com.mysql.jdbc.StringUtils;
-
 /**
  * @author onamacuser This service fetches existing form submissions data from couchdb and converts
  *         them to events and clients
