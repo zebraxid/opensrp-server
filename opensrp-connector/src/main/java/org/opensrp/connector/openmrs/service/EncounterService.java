@@ -149,8 +149,7 @@ public class EncounterService extends OpenmrsService {
 				for (Obs obs : ol) {
 					if (!StringUtils.isEmptyOrWhitespaceOnly(obs.getFieldCode()) && (obs.getFieldType() == null || obs
 							.getFieldType().equalsIgnoreCase("concept"))) {
-						//					skipping empty obs and fields that don't have concepts if no parent simply make it root obs
-
+						//						skipping empty obs and fields that don't have concepts if no parent simply make it root obs
 						if (obs.getFieldType().equals("concept") && obs.getFormSubmissionField()
 								.equals("Birth_Facility_Name") && obs.getValue() != null) {
 							Location location = openmrsLocationService.getLocation(obs.getValue().toString());
@@ -158,43 +157,31 @@ public class EncounterService extends OpenmrsService {
 								obs.setValue(location.getName());
 							}
 						}
-						if (StringUtils.isEmptyOrWhitespaceOnly(obs.getParentCode())) {
-							p.put(obs.getFieldCode(), convertObsToJson(obs));
-						} else {
-							//find parent obs if not found search and fill or create one
-							JSONArray parentObs = p.get(obs.getParentCode());
-							if (parentObs == null) {
-								p.put(obs.getParentCode(), convertObsToJson(getOrCreateParent(ol, obs)));
-							}
-							// find if any other exists with same parent if so add to the list otherwise create new list
-							JSONArray obl = pc.get(obs.getParentCode());
-							if (obl == null) {
-								obl = new JSONArray();
-							}
-							JSONArray addobs = convertObsToJson(obs);
-							for (int i = 0; i < addobs.length(); i++) {
-								obl.put(addobs.getJSONObject(i));
-							}
-							pc.put(obs.getParentCode(), obl);
-						}
+						generateObs(p, pc, obs, ol);
 					}
 				}
 
 			JSONArray obar = new JSONArray();
+			JSONObject vaccineParent = new JSONObject();
 			for (String ok : p.keySet()) {
 				for (int i = 0; i < p.get(ok).length(); i++) {
 					JSONObject obo = p.get(ok).getJSONObject(i);
-
 					JSONArray cob = pc.get(ok);
 					if (cob != null && cob.length() > 0) {
-						obo.put("groupMembers", cob);
+						//fix for vaccines wrong parent concept remove the if-condition once the right concepts are passed
+						if (e.getEventType().equals("Vaccination")) {
+							vaccineParent.put("concept", ok);
+							cob.put(vaccineParent);
+							obar.put(cob);
+							obar = cob;
+						} else {
+							obo.put("groupMembers", cob);
+							obar.put(obo);
+						}
 					}
-
-					obar.put(obo);
 				}
 			}
 			enc.put("obs", obar);
-
 			HttpResponse op = HttpUtil
 					.post(HttpUtil.removeEndingSlash(OPENMRS_BASE_URL) + "/" + ENCOUNTER_URL, "", enc.toString(),
 							OPENMRS_USER, OPENMRS_PWD);
@@ -203,6 +190,7 @@ public class EncounterService extends OpenmrsService {
 	}
 
 	public JSONObject buildUpdateEncounter(Event e) throws JSONException {
+
 		String openmrsuuid = e.getIdentifier(OPENMRS_UUID_IDENTIFIER_TYPE);
 		JSONObject encounterObsUuids = getObsByEncounterUuid(openmrsuuid);
 		JSONArray obsUuids = encounterObsUuids.getJSONArray("obs");
@@ -236,25 +224,7 @@ public class EncounterService extends OpenmrsService {
 							&& openmrsLocationService.getLocation(obs.getValue().toString()).getName() != null) {
 						obs.setValue(openmrsLocationService.getLocation(obs.getValue().toString()).getName());
 					}
-					if (StringUtils.isEmptyOrWhitespaceOnly(obs.getParentCode())) {
-						p.put(obs.getFieldCode(), convertObsToJson(obs));
-					} else {
-						//find parent obs if not found search and fill or create one
-						JSONArray parentObs = p.get(obs.getParentCode());
-						if (parentObs == null) {
-							p.put(obs.getParentCode(), convertObsToJson(getOrCreateParent(ol, obs)));
-						}
-						// find if any other exists with same parent if so add to the list otherwise create new list
-						JSONArray obl = pc.get(obs.getParentCode());
-						if (obl == null) {
-							obl = new JSONArray();
-						}
-						JSONArray addobs = convertObsToJson(obs);
-						for (int i = 0; i < addobs.length(); i++) {
-							obl.put(addobs.getJSONObject(i));
-						}
-						pc.put(obs.getParentCode(), obl);
-					}
+					generateObs(p, pc, obs, ol);
 				}
 			}
 
@@ -284,6 +254,35 @@ public class EncounterService extends OpenmrsService {
 		enc.put("obs", obar);
 
 		return enc;
+	}
+
+	private void generateObs(Map<String, JSONArray> p, Map<String, JSONArray> pc, Obs obs, List<Obs> ol) {
+		try {
+			if (StringUtils.isEmptyOrWhitespaceOnly(obs.getParentCode())) {
+
+				p.put(obs.getFieldCode(), convertObsToJson(obs));
+
+			} else {
+				//find parent obs if not found search and fill or create one
+				JSONArray parentObs = p.get(obs.getParentCode());
+				if (parentObs == null) {
+					p.put(obs.getParentCode(), convertObsToJson(getOrCreateParent(ol, obs)));
+				}
+				// find if any other exists with same parent if so add to the list otherwise create new list
+				JSONArray obl = pc.get(obs.getParentCode());
+				if (obl == null) {
+					obl = new JSONArray();
+				}
+				JSONArray addobs = convertObsToJson(obs);
+				for (int i = 0; i < addobs.length(); i++) {
+					obl.put(addobs.getJSONObject(i));
+				}
+				pc.put(obs.getParentCode(), obl);
+			}
+		}
+		catch (JSONException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public JSONObject updateEncounter(Event e) throws JSONException {
