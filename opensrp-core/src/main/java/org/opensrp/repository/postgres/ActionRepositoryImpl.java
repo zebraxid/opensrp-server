@@ -241,8 +241,7 @@ public class ActionRepositoryImpl extends BaseRepositoryImpl<Action> implements 
 	
 	@Override
 	public List<Action> findAllActionNotExpired() {
-		// TODO Auto-generated method stub
-		return null;
+		return convert(actionMapper.selectNotExpired(0, DEFAULT_FETCH_SIZE));
 	}
 	
 	//private methods
