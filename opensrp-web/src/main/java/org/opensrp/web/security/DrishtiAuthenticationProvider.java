@@ -4,6 +4,7 @@ import static java.text.MessageFormat.format;
 
 import java.util.List;
 
+import org.json.JSONException;
 import org.opensrp.api.domain.User;
 import org.opensrp.connector.openmrs.service.OpenmrsUserService;
 import org.slf4j.Logger;
@@ -29,7 +30,7 @@ public class DrishtiAuthenticationProvider implements AuthenticationProvider {
 	
 	public static final String INVALID_CREDENTIALS = "The username or password you entered is incorrect. Please enter the correct credentials.";
 	
-	public static final String USER_NOT_FOUND = "The user has not been found. Please try again later.";
+	public static final String USER_NOT_FOUND = "The user was not found. Please try again later.";
 	
 	public static final String USER_NOT_ACTIVATED = "The user has been registered but not activated. Please contact your local administrator.";
 	
@@ -81,15 +82,10 @@ public class DrishtiAuthenticationProvider implements AuthenticationProvider {
 	
 	public User getDrishtiUser(Authentication authentication, String username) {
 		User user = null;
+		
+		checkIsAuthenticated(authentication.getName(), authentication.getCredentials().toString());
+		
 		try {
-			Boolean isAuthenticated = openmrsUserService.authenticate(authentication.getName(),
-			    authentication.getCredentials().toString());
-			if (isAuthenticated == null) {
-				throw new BadCredentialsException(INTERNAL_ERROR);
-			} else if (!isAuthenticated) {
-				throw new BadCredentialsException(INVALID_CREDENTIALS);
-			}
-			
 			boolean response = openmrsUserService.deleteSession(authentication.getName(),
 			    authentication.getCredentials().toString());
 			user = openmrsUserService.getUser(username);
@@ -104,5 +100,21 @@ public class DrishtiAuthenticationProvider implements AuthenticationProvider {
 			throw new BadCredentialsException(INTERNAL_ERROR);
 		}
 		return user;
+	}
+	
+	private void checkIsAuthenticated(String username, String password) {
+		try {
+			Boolean isAuthenticated = openmrsUserService.authenticate(username, password);
+			if (isAuthenticated == null) {
+				throw new BadCredentialsException(INTERNAL_ERROR);
+			} else if (!isAuthenticated) {
+				throw new BadCredentialsException(INVALID_CREDENTIALS);
+			}
+		}
+		catch (JSONException e) {
+			logger.error(format("{0}. Exception: {1}", INTERNAL_ERROR, e));
+			e.printStackTrace();
+			throw new BadCredentialsException(INTERNAL_ERROR);
+		}
 	}
 }
