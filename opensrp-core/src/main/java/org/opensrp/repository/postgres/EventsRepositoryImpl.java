@@ -374,6 +374,13 @@ public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements E
 	}
 	
 	@Override
+	public List<Event> findByProvider(String provider) {
+		EventMetadataExample example = new EventMetadataExample();
+		example.createCriteria().andProviderIdEqualTo(provider);
+		return convert(eventMetadataMapper.selectManyWithRowBounds(example, 0, DEFAULT_FETCH_SIZE));
+	}
+	
+	@Override
 	protected Long retrievePrimaryKey(Event t) {
 		Object uniqueId = getUniqueField(t);
 		if (uniqueId == null) {
@@ -398,12 +405,6 @@ public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements E
 			return null;
 		}
 		return t.getId();
-	}
-	
-	@Override
-	public List<Event> findByProvider(String provider) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 	
 	// Private Methods	
