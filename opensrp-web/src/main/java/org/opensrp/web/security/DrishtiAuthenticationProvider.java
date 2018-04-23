@@ -4,8 +4,6 @@ import static java.text.MessageFormat.format;
 
 import java.util.List;
 
-import org.apache.activemq.transport.stomp.Stomp.Headers.Connect;
-import org.json.JSONException;
 import org.opensrp.api.domain.User;
 import org.opensrp.connector.openmrs.service.OpenmrsUserService;
 import org.slf4j.Logger;
