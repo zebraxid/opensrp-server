@@ -4,6 +4,7 @@ import static java.text.MessageFormat.format;
 
 import java.util.List;
 
+import org.apache.activemq.transport.stomp.Stomp.Headers.Connect;
 import org.json.JSONException;
 import org.opensrp.api.domain.User;
 import org.opensrp.connector.openmrs.service.OpenmrsUserService;
@@ -30,7 +31,7 @@ public class DrishtiAuthenticationProvider implements AuthenticationProvider {
 	
 	public static final String INVALID_CREDENTIALS = "The username or password you entered is incorrect. Please enter the correct credentials.";
 	
-	public static final String USER_NOT_FOUND = "The user was not found. Please try again later.";
+	public static final String USER_NOT_FOUND = "The user details not found. Please try again later.";
 	
 	public static final String USER_NOT_ACTIVATED = "The user has been registered but not activated. Please contact your local administrator.";
 	
@@ -111,7 +112,7 @@ public class DrishtiAuthenticationProvider implements AuthenticationProvider {
 				throw new BadCredentialsException(INVALID_CREDENTIALS);
 			}
 		}
-		catch (JSONException e) {
+		catch (Exception e) {
 			logger.error(format("{0}. Exception: {1}", INTERNAL_ERROR, e));
 			e.printStackTrace();
 			throw new BadCredentialsException(INTERNAL_ERROR);
