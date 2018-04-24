@@ -1,5 +1,6 @@
 package org.opensrp.connector.openmrs.service;
 
+import org.apache.commons.lang.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,10 +31,19 @@ public class OpenmrsUserService extends OpenmrsService {
 		super(openmrsUrl, user, password);
 	}
 	
-	public boolean authenticate(String username, String password) throws JSONException {
+	public Boolean authenticate(String username, String password) throws JSONException {
 		HttpResponse op = HttpUtil.get(HttpUtil.removeEndingSlash(OPENMRS_BASE_URL) + "/" + AUTHENTICATION_URL, "", username,
 		    password);
-		return new JSONObject(op.body()).getBoolean("authenticated");
+		if (!op.isSuccess() || StringUtils.isBlank(op.body())) {
+			return null;
+		}
+		
+		final String AUTHENTICATED = "authenticated";
+		JSONObject jo = new JSONObject(op.body());
+		if (jo.has(AUTHENTICATED)) {
+			return jo.getBoolean(AUTHENTICATED);
+		}
+		return null;
 	}
 	
 	public boolean deleteSession(String username, String password) throws JSONException {
