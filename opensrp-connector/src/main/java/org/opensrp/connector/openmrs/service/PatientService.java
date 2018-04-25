@@ -759,16 +759,14 @@ public class PatientService extends OpenmrsService {
 		JSONObject requestBody = new JSONObject();
 		requestBody.put("givenName", fn);
 		requestBody.put("familyName", ln);
-		String url = "ws/rest/v1/person/" + patientObject.getString("uuid") + "/name/" + nameObject.getString("uuid");
+		String url = PERSON_URL + "/" + patientObject.getString("uuid") + "/name/" + nameObject.getString("uuid");
 
 		return new JSONObject(
 				HttpUtil.post(getURL() + "/" + url, "", requestBody.toString(), OPENMRS_USER, OPENMRS_PWD).body());
 
 	}
 
-	public JSONObject updatePersonAddress(Event addressUpdateEvent) throws JSONException {
-		JSONObject patientObject = getPatientByIdentifierPerson(addressUpdateEvent.getBaseEntityId());
-		JSONObject addressObject = patientObject.getJSONObject("preferredAddress");
+	public JSONObject updatePersonAddress(Event addressUpdateEvent) {
 		String clientAddress4 = null;
 		List<Obs> obs = addressUpdateEvent.getObs();
 		for (Obs obs2 : obs) {
@@ -781,19 +779,11 @@ public class PatientService extends OpenmrsService {
 		if (clientAddress4 == null) {
 			return null;
 		}
-		Client client = clientService.getByBaseEntityId(addressUpdateEvent.getBaseEntityId());
-		JSONObject updateAddress = convertAddressesToOpenmrsJson(client, clientAddress4).getJSONObject(0);
-		String url = "ws/rest/v1/person/" + patientObject.getString("uuid") + "/address/" + addressObject.getString("uuid");
-		return new JSONObject(
-				HttpUtil.post(getURL() + "/" + url, "", updateAddress.toString(), OPENMRS_USER, OPENMRS_PWD).body());
+		return postNewAddress(addressUpdateEvent, clientAddress4);
 
 	}
 
-	public JSONObject moveToCatchment(Event event) throws JSONException {
-		Client client = clientService.getByBaseEntityId(event.getBaseEntityId());
-		JSONObject patientObject = getPatientByIdentifierPerson(client.getBaseEntityId());
-		JSONObject addressObject = patientObject.getJSONObject("preferredAddress");
-
+	public JSONObject moveToCatchment(Event event) {
 		String clientAddress4 = null;
 		List<Obs> obs = event.getObs();
 		for (Obs obs2 : obs) {
@@ -807,11 +797,24 @@ public class PatientService extends OpenmrsService {
 		if (clientAddress4 == null) {
 			return null;
 		}
-		JSONObject updateAddress = convertAddressesToOpenmrsJson(client, clientAddress4).getJSONObject(0);
-		String url = "ws/rest/v1/person/" + patientObject.getString("uuid") + "/address/" + addressObject.getString("uuid");
-		return new JSONObject(
-				HttpUtil.post(getURL() + "/" + url, "", updateAddress.toString(), OPENMRS_USER, OPENMRS_PWD).body());
+		return postNewAddress(event, clientAddress4);
+	}
 
+	public JSONObject postNewAddress(Event event, String clientAddress4) {
+		try {
+
+			Client client = clientService.getByBaseEntityId(event.getBaseEntityId());
+			JSONObject patientObject = getPatientByIdentifierPerson(client.getBaseEntityId());
+			JSONObject addressObject = patientObject.getJSONObject("preferredAddress");
+			JSONObject updateAddress = convertAddressesToOpenmrsJson(client, clientAddress4).getJSONObject(0);
+			String url = PERSON_URL + "/" + patientObject.getString("uuid") + "/address/" + addressObject.getString("uuid");
+			return new JSONObject(
+					HttpUtil.post(getURL() + "/" + url, "", updateAddress.toString(), OPENMRS_USER, OPENMRS_PWD).body());
+		}
+		catch (JSONException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	public void updateIdentifiers(String personUUID, Client c) throws JSONException {
