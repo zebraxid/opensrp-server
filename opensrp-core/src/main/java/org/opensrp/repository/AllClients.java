@@ -195,7 +195,7 @@ public class AllClients extends MotechBaseRepository<Client> {
 		return lcr.getByFieldValue(field, ids);
 	}
 
-	@View(name = "clients_not_in_OpenMRS", map = "function(doc) { if (doc.type === 'Client' && doc.serverVersion) { var noId = true; for(var key in doc.identifiers) {if(key == 'OPENMRS_UUID') {noId = false;}}if(noId){emit([doc.serverVersion],  null); }} }")
+	@View(name = "clients_not_in_OpenMRS", map = "function(doc) { if (doc.type === 'Client' && doc.serverVersion) { var noId = true; for(var key in doc.identifiers) {if(key == 'OPENMRS_UUID' && doc.identifiers.OPENMRS_UUID !== null) {noId = false;}}if(noId){emit([doc.serverVersion],  null); }} }")
 	public List<Client> notInOpenMRSByServerVersion(long serverVersion, Calendar calendar) {
 		long serverStartKey = serverVersion + 1;
 		long serverEndKey = calendar.getTimeInMillis();
