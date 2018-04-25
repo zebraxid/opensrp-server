@@ -129,6 +129,8 @@ public class EncounterService extends OpenmrsService {
 				patientService.updatePersonAddress(e);
 			} else if (e.getEventType().equals("Death")) {
 				patientService.updatePersonAsDeceased(e);
+			}else if (e.getEventType().equals("Move To Catchment")) {
+				patientService.moveToCatchment(e);
 			}
 			JSONObject enc = new JSONObject();
 
