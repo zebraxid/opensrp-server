@@ -127,6 +127,8 @@ public class EncounterService extends OpenmrsService {
 				patientService.updatePersonAddress(e);
 			} else if (e.getEventType().equals("Death")) {
 				patientService.updatePersonAsDeceased(e);
+			}else if (e.getEventType().equals("Move To Catchment")) {
+				patientService.moveToCatchment(e);
 			}
 			JSONObject enc = new JSONObject();
 
@@ -172,7 +174,6 @@ public class EncounterService extends OpenmrsService {
 						if (e.getEventType().equals("Vaccination")) {
 							vaccineParent.put("concept", ok);
 							cob.put(vaccineParent);
-							obar.put(cob);
 							obar = cob;
 						} else {
 							obo.put("groupMembers", cob);

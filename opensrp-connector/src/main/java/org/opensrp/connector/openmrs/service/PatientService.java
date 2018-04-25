@@ -425,6 +425,7 @@ public class PatientService extends OpenmrsService {
 			ln = ln.replaceAll("[^A-Za-z0-9\\s]+", "");
 		}
 		ln = convertToOpenmrsString(ln);
+		String address4UUID = null;
 
 		List<Event> registrationEvents = eventService.findByBaseEntityId(be.getBaseEntityId());
 		for (Event event : registrationEvents) {
@@ -433,7 +434,8 @@ public class PatientService extends OpenmrsService {
 				for (Obs obs2 : obs) {
 					if (obs2 != null && obs2.getFieldType().equals("formsubmissionField") && obs2.getFormSubmissionField()
 							.equals("Home_Facility") && obs2.getValue() != null) {
-						String clientAddress4 = openmrsLocationService.getLocation(obs2.getValue().toString()).getName();
+						address4UUID = obs2.getValue().toString();
+						String clientAddress4 = openmrsLocationService.getLocation(address4UUID).getName();
 						if (be.getAttribute("Home_Facility") != null) {
 							be.removeAttribute("Home_Facility");
 						}
@@ -444,7 +446,9 @@ public class PatientService extends OpenmrsService {
 					per.put("names", new JSONArray(
 							"[{\"givenName\":\"" + fn + "\",\"middleName\":\"" + mn + "\", \"familyName\":\"" + ln
 									+ "\"}]"));
-					per.put("addresses", convertAddressesToOpenmrsJson(be, event));
+					if (address4UUID != null) {
+						per.put("addresses", convertAddressesToOpenmrsJson(be, address4UUID));
+					}
 				}
 			}
 			break;
@@ -472,7 +476,7 @@ public class PatientService extends OpenmrsService {
 		return attrs;
 	}
 
-	public JSONArray convertAddressesToOpenmrsJson(Client client, Event event) throws JSONException {
+	public JSONArray convertAddressesToOpenmrsJson(Client client, String clientAddress4UUID) throws JSONException {
 		List<Address> adl = client.getAddresses();
 		if (adl.isEmpty() && !client.getRelationships().isEmpty()) {
 			adl = clientService.getByBaseEntityId(client.getRelationships().get("mother").get(0)).getAddresses();
@@ -504,32 +508,27 @@ public class PatientService extends OpenmrsService {
 				}
 			}
 		}
-		List<Obs> obs = event.getObs();
-		for (Obs obs2 : obs) {
-			if (obs2 != null && obs2.getFieldType().equals("formsubmissionField") && obs2.getFormSubmissionField()
-					.equals("Home_Facility") && obs2.getValue() != null) {
-				String clientAddress4 = fetchLocationByUUID(obs2.getValue().toString());
-				jao.put("address4", convertToOpenmrsString(clientAddress4));
 
-				try {
-					LocationTree locationTree = openmrsLocationService
-							.getLocationTreeWithUpperHierachyOf(obs2.getValue().toString());
-					Map<String, String> locationsHierarchyMap = openmrsLocationService.getLocationsHierarchy(locationTree);
+		if (clientAddress4UUID != null) {
+			String clientAddress4 = fetchLocationByUUID(clientAddress4UUID);
+			jao.put("address4", convertToOpenmrsString(clientAddress4));
 
-					jao.put("countyDistrict", locationsHierarchyMap.containsKey(AllowedLevels.DISTRICT.toString()) ?
-							locationsHierarchyMap.get(AllowedLevels.DISTRICT.toString()) :
-							"");
-					jao.put("stateProvince", locationsHierarchyMap.containsKey(AllowedLevels.PROVINCE.toString()) ?
-							locationsHierarchyMap.get(AllowedLevels.PROVINCE.toString()) :
-							"");
-					jao.put("country", locationsHierarchyMap.containsKey(AllowedLevels.COUNTRY.toString()) ?
-							locationsHierarchyMap.get(AllowedLevels.COUNTRY.toString()) :
-							"");
-				}
-				catch (Exception e) {
-					logger.error("", e);
-				}
-				break;
+			try {
+				LocationTree locationTree = openmrsLocationService.getLocationTreeWithUpperHierachyOf(clientAddress4UUID);
+				Map<String, String> locationsHierarchyMap = openmrsLocationService.getLocationsHierarchy(locationTree);
+
+				jao.put("countyDistrict", locationsHierarchyMap.containsKey(AllowedLevels.DISTRICT.toString()) ?
+						locationsHierarchyMap.get(AllowedLevels.DISTRICT.toString()) :
+						"");
+				jao.put("stateProvince", locationsHierarchyMap.containsKey(AllowedLevels.PROVINCE.toString()) ?
+						locationsHierarchyMap.get(AllowedLevels.PROVINCE.toString()) :
+						"");
+				jao.put("country", locationsHierarchyMap.containsKey(AllowedLevels.COUNTRY.toString()) ?
+						locationsHierarchyMap.get(AllowedLevels.COUNTRY.toString()) :
+						"");
+			}
+			catch (Exception e) {
+				logger.error("", e);
 			}
 		}
 
@@ -770,9 +769,45 @@ public class PatientService extends OpenmrsService {
 	public JSONObject updatePersonAddress(Event addressUpdateEvent) throws JSONException {
 		JSONObject patientObject = getPatientByIdentifierPerson(addressUpdateEvent.getBaseEntityId());
 		JSONObject addressObject = patientObject.getJSONObject("preferredAddress");
-
+		String clientAddress4 = null;
+		List<Obs> obs = addressUpdateEvent.getObs();
+		for (Obs obs2 : obs) {
+			if (obs2 != null && obs2.getFieldType().equals("formsubmissionField") && obs2.getFormSubmissionField()
+					.equals("Home_Facility") && obs2.getValue() != null) {
+				clientAddress4 = fetchLocationByUUID(obs2.getValue().toString());
+				break;
+			}
+		}
+		if (clientAddress4 == null) {
+			return null;
+		}
 		Client client = clientService.getByBaseEntityId(addressUpdateEvent.getBaseEntityId());
-		JSONObject updateAddress = convertAddressesToOpenmrsJson(client, addressUpdateEvent).getJSONObject(0);
+		JSONObject updateAddress = convertAddressesToOpenmrsJson(client, clientAddress4).getJSONObject(0);
+		String url = "ws/rest/v1/person/" + patientObject.getString("uuid") + "/address/" + addressObject.getString("uuid");
+		return new JSONObject(
+				HttpUtil.post(getURL() + "/" + url, "", updateAddress.toString(), OPENMRS_USER, OPENMRS_PWD).body());
+
+	}
+
+	public JSONObject moveToCatchment(Event event) throws JSONException {
+		Client client = clientService.getByBaseEntityId(event.getBaseEntityId());
+		JSONObject patientObject = getPatientByIdentifierPerson(client.getBaseEntityId());
+		JSONObject addressObject = patientObject.getJSONObject("preferredAddress");
+
+		String clientAddress4 = null;
+		List<Obs> obs = event.getObs();
+		for (Obs obs2 : obs) {
+			if (obs2.getFieldCode() != null && obs2.getFieldCode().equals("To_LocationId") && obs2.getValue() != null) {
+				{
+					clientAddress4 = fetchLocationByUUID(obs2.getValue().toString());
+					break;
+				}
+			}
+		}
+		if (clientAddress4 == null) {
+			return null;
+		}
+		JSONObject updateAddress = convertAddressesToOpenmrsJson(client, clientAddress4).getJSONObject(0);
 		String url = "ws/rest/v1/person/" + patientObject.getString("uuid") + "/address/" + addressObject.getString("uuid");
 		return new JSONObject(
 				HttpUtil.post(getURL() + "/" + url, "", updateAddress.toString(), OPENMRS_USER, OPENMRS_PWD).body());
