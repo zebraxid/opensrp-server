@@ -11,6 +11,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.opensrp.domain.Client;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.form.service.FormSubmissionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,7 +63,7 @@ public class FormSubmissionResource extends RestResource<FormSubmission>{
 	}
 	
 	@Override
-	public List<FormSubmission> search(HttpServletRequest request) throws ParseException {
+	public List<FormSubmission> search(HttpServletRequest request, String query, String sort, Integer limit, Integer skip, Boolean fts) throws ParseException {
 		String formName = getStringFilter("formName", request);
 		String entityId = getStringFilter("entityId", request);
 		String version = getStringFilter("version", request);//TODO

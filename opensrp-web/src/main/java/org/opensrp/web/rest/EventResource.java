@@ -26,6 +26,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.lucene.search.Query;
 import org.joda.time.DateTime;
 import org.json.JSONObject;
 import org.opensrp.common.AllConstants.BaseEntity;
@@ -223,29 +224,67 @@ public class EventResource extends RestResource<Event> {
 	}
 	
 	@Override
-	public List<Event> search(HttpServletRequest request) throws ParseException {
-		String clientId = getStringFilter("identifier", request);
-		DateTime[] eventDate = getDateRangeFilter(EVENT_DATE, request);//TODO
-		String eventType = getStringFilter(EVENT_TYPE, request);
-		String location = getStringFilter(LOCATION_ID, request);
-		String provider = getStringFilter(PROVIDER_ID, request);
-		String entityType = getStringFilter(ENTITY_TYPE, request);
-		DateTime[] lastEdit = getDateRangeFilter(LAST_UPDATE, request);
-		String team = getStringFilter(TEAM, request);
-		String teamId = getStringFilter(TEAM_ID, request);
-		
-		if (!StringUtils.isEmptyOrWhitespaceOnly(clientId)) {
-			Client c = clientService.find(clientId);
-			if (c == null) {
-				return new ArrayList<>();
+	public List<Event> search(HttpServletRequest request, String query, String sort, Integer limit, Integer skip, Boolean fts) throws ParseException {
+		if(fts == null || fts == false){
+			Map<String, Query> fields = RestUtils.parseClauses(query);
+			if(fields.containsKey(LAST_UPDATE) == false){
+				throw new IllegalArgumentException("A valid date/long range for field "+LAST_UPDATE+" must be specified");
+			}
+			if(fields.containsKey("type") == false){
+				throw new IllegalArgumentException("A valid value for field type must be specified");
 			}
 			
-			clientId = c.getBaseEntityId();
+			DateTime from = RestUtils.getLowerDateFilter(fields.get(LAST_UPDATE));
+			DateTime to = RestUtils.getUpperDateFilter(fields.get(LAST_UPDATE));
+			String searchType = RestUtils.getStringFilter(fields.get("type"));
+			
+			if(searchType.equalsIgnoreCase("full")){
+				return eventService.findAllByTimestamp(from, to);
+			}
+			if(searchType.toLowerCase().contains("event")){
+				String entityOrEventType = RestUtils.getStringFilter(fields.get(EVENT_TYPE));
+				if(entityOrEventType == null){
+					entityOrEventType = RestUtils.getStringFilter(fields.get(ENTITY_TYPE));
+				}
+				if(entityOrEventType != null){
+					return eventService.findAllByEntityOrEventType(entityOrEventType, from, to);
+				}
+
+				String locationOrProvider = RestUtils.getStringFilter(fields.get(PROVIDER_ID));
+				if(locationOrProvider == null){
+					locationOrProvider = RestUtils.getStringFilter(fields.get(LOCATION_ID));
+				}
+				if(locationOrProvider != null){
+					return eventService.findAllByLocationOrProvider(locationOrProvider, from, to);
+				}
+			}
 		}
+		else {
+			String clientId = getStringFilter("identifier", request);
+			DateTime[] eventDate = getDateRangeFilter(EVENT_DATE, request);//TODO
+			String eventType = getStringFilter(EVENT_TYPE, request);
+			String location = getStringFilter(LOCATION_ID, request);
+			String provider = getStringFilter(PROVIDER_ID, request);
+			String entityType = getStringFilter(ENTITY_TYPE, request);
+			DateTime[] lastEdit = getDateRangeFilter(LAST_UPDATE, request);
+			String team = getStringFilter(TEAM, request);
+			String teamId = getStringFilter(TEAM_ID, request);
+			
+			if (!StringUtils.isEmptyOrWhitespaceOnly(clientId)) {
+				Client c = clientService.find(clientId);
+				if (c == null) {
+					return new ArrayList<>();
+				}
+				
+				clientId = c.getBaseEntityId();
+			}
+			
+			return eventService.findEventsBy(clientId, eventDate == null ? null : eventDate[0],
+			    eventDate == null ? null : eventDate[1], eventType, entityType, provider, location,
+			    lastEdit == null ? null : lastEdit[0], lastEdit == null ? null : lastEdit[1], team, teamId);
 		
-		return eventService.findEventsBy(clientId, eventDate == null ? null : eventDate[0],
-		    eventDate == null ? null : eventDate[1], eventType, entityType, provider, location,
-		    lastEdit == null ? null : lastEdit[0], lastEdit == null ? null : lastEdit[1], team, teamId);
+		}
+		return null;
 	}
 	
 	@Override

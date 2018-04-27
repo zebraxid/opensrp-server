@@ -12,6 +12,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.opensrp.api.domain.User;
 import org.opensrp.connector.openmrs.service.OpenmrsUserService;
+import org.opensrp.domain.Client;
 import org.opensrp.domain.Provider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -87,7 +88,7 @@ public class ProviderResource extends RestResource<Provider>{
 	}
 	
 	@Override
-	public List<Provider> search(HttpServletRequest request) throws ParseException {
+	public List<Provider> search(HttpServletRequest request, String query, String sort, Integer limit, Integer skip, Boolean fts) throws ParseException {
 		// TODO Auto-generated method stub
 		return null;
 	}

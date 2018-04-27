@@ -13,6 +13,7 @@ public class OpenmrsConstants {
 	public static final String ENROLLMENT_TRACK_UUID = "openmrsTrackUuid";
 	
 	public static final String SCHEDULER_OPENMRS_DATA_PUSH_SUBJECT = "OpenMRS Data Pusher";
+	public static final String SCHEDULER_OPENMRS_DATA_PULL_SUBJECT = "OpenMRS Data Puller";
 	
 	public static final String ATOMFEED_URL = "ws/atomfeed";
 	

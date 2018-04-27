@@ -10,9 +10,11 @@ import static org.opensrp.web.rest.RestUtils.*;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.lucene.search.Query;
 import org.joda.time.DateTime;
 import org.opensrp.domain.Client;
 import org.opensrp.service.ClientService;
@@ -58,7 +60,38 @@ public class ClientResource extends RestResource<Client>{
 	}
 	
 	@Override
-	public List<Client> search(HttpServletRequest request) throws ParseException {//TODO search should not call different url but only add params
+	public List<Client> search(HttpServletRequest request, String query, String sort, Integer limit, Integer skip, Boolean fts) throws ParseException {
+		if(fts == null || fts == false){
+			Map<String, Query> fields = RestUtils.parseClauses(query);
+			if(fields.containsKey(LAST_UPDATE) == false){
+				throw new IllegalArgumentException("A valid date/long range for field "+LAST_UPDATE+" must be specified");
+			}
+			if(fields.containsKey("type") == false){
+				throw new IllegalArgumentException("A valid value for field type must be specified");
+			}
+			
+			DateTime from = RestUtils.getLowerDateFilter(fields.get(LAST_UPDATE));
+			DateTime to = RestUtils.getUpperDateFilter(fields.get(LAST_UPDATE));
+			String searchType = RestUtils.getStringFilter(fields.get("type"));
+			
+			if(searchType.equalsIgnoreCase("full")){
+				return clientService.findAllByTimestamp(from, to);				
+			}
+			else if(searchType.equalsIgnoreCase("address")){
+				String addressType = RestUtils.getStringFilter(fields.get(ADDRESS_TYPE));
+				String addressField = RestUtils.getStringFilter(fields.get("field"));
+				String value = RestUtils.getStringFilter(fields.get("value"));
+				
+				return clientService.findAllByAddress(addressType, addressField, value, from, to);
+			}
+			else if(searchType.equalsIgnoreCase("attribute")){
+				String attributeType = RestUtils.getStringFilter(fields.get("field"));
+				String attribute = RestUtils.getStringFilter(fields.get("value"));
+				
+				return clientService.findAllByAttribute(attributeType, attribute, from, to);
+			}
+	    }
+		else {
 		String nameLike = getStringFilter("name", request);
 		String gender = getStringFilter(GENDER, request);
 		DateTime[] birthdate = getDateRangeFilter(BIRTH_DATE, request);//TODO add ranges like fhir do http://hl7.org/fhir/search.html
@@ -83,8 +116,10 @@ public class ClientResource extends RestResource<Client>{
 				deathdate == null?null:deathdate[0], deathdate == null?null:deathdate[1], attributeType, attributeValue,
 				addressType, country, stateProvince, cityVillage, countyDistrict, subDistrict, town, subTown,
 				lastEdit==null?null:lastEdit[0], lastEdit==null?null:lastEdit[1]);
+		}
+		return new ArrayList<>();
 	}
-
+	
 	@Override
 	public List<Client> filter(String query) {
 		return clientService.findByDynamicQuery(query);

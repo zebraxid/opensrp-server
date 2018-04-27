@@ -55,7 +55,8 @@ public class SearchResource extends RestResource<Client> {
 	}
 	
 	@Override
-	public List<Client> search(HttpServletRequest request) throws ParseException {//TODO search should not call different url but only add params
+	public List<Client> search(HttpServletRequest request, String query, String sort, Integer limit, Integer skip, Boolean fts) throws ParseException {
+		//TODO search should not call different url but only add params
 		String firstName = getStringFilter(FIRST_NAME, request);
 		String middleName = getStringFilter(MIDDLE_NAME, request);
 		String lastName = getStringFilter(LAST_NAME, request);

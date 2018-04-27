@@ -186,21 +186,29 @@ public class LuceneEventRepository extends CouchDbRepositorySupportWithLucene<Ev
 		}
 	}
 
-	public List<Event> getByCriteria(String query) {
+	public List<Event> getByCriteria(String query, String sort, Integer limit, Integer skip) {
 		// create a simple query against the view/search function that we've created
-		LuceneQuery q = new LuceneQuery("Event", "by_all_criteria");
-
-		q.setQuery(query);
+		LuceneQuery lq = new LuceneQuery("Event", "by_all_criteria");
+		
+		lq.setQuery(query);
 		// stale must not be ok, as we've only just loaded the docs
-		q.setStaleOk(false);
-		q.setIncludeDocs(true);
+		lq.setStaleOk(false);
+		lq.setIncludeDocs(true);
+		if(org.apache.commons.lang3.StringUtils.isNotBlank(sort)){
+			lq.setSort(sort);
+		}
+		if(limit != null){
+			lq.setLimit(limit);
+		}
+		if(skip != null){
+			lq.setSkip(skip);
+		}
 
 		try {
-			LuceneResult result = db.queryLucene(q);
+			LuceneResult result = db.queryLucene(lq);
 			return ldb.asList(result, Event.class);
-		}
-		catch (IOException e) {
+		} catch (IOException e) {
 			throw new RuntimeException(e);
-		}
+		} 
 	}
 }

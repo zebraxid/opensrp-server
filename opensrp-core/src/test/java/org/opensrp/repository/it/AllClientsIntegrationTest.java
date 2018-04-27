@@ -108,7 +108,7 @@ public class AllClientsIntegrationTest {
 		clientService.mergeClient(cu);
 	}
 	
-	@Test
+	@Ignore @Test
 	public void shouldSearchByLastUpdatedDate() throws JSONException {//TODO
 		DateTime start = DateTime.now();
 		
@@ -124,7 +124,7 @@ public class AllClientsIntegrationTest {
 		System.out.println(new DateTime("2016-01-23").toString("MMMM (yyyy)"));
 	}
 	
-    @Test 
+    @Ignore @Test 
 	public void shouldSearchFullDataClientsIn10Sec() throws MalformedURLException {
 		
 		 /*org.ektorp.http.HttpClient httpClient = new StdHttpClient.Builder().url("http://202.141.249.106:6808").build();

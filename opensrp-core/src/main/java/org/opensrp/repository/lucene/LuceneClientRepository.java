@@ -136,6 +136,32 @@ public class LuceneClientRepository extends CouchDbRepositorySupportWithLucene<C
 		}
 	}
 	
+	public List<Client> query(String query, String sort, Integer limit, Integer skip) {
+		// create a simple query against the view/search function that we've created
+		LuceneQuery lq = new LuceneQuery("Client", "by_all_criteria");
+		
+		lq.setQuery(query);
+		// stale must not be ok, as we've only just loaded the docs
+		lq.setStaleOk(false);
+		lq.setIncludeDocs(true);
+		if(org.apache.commons.lang3.StringUtils.isNotBlank(sort)){
+			lq.setSort(sort);
+		}
+		if(limit != null){
+			lq.setLimit(limit);
+		}
+		if(skip != null){
+			lq.setSkip(skip);
+		}
+
+		try {
+			LuceneResult result = db.queryLucene(lq);
+			return ldb.asList(result, Client.class);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		} 
+	}
+	
 	public List<Client> getByCriteria(String query) {
 		// create a simple query against the view/search function that we've created
 		LuceneQuery lq = new LuceneQuery("Client", "by_all_criteria");

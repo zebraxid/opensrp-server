@@ -38,18 +38,22 @@ public abstract class RestResource <T>{
 	@RequestMapping(method=RequestMethod.GET, value="/search")
 	@ResponseBody
 	private List<T> searchBy(HttpServletRequest request) throws ParseException{
-		return search(request);
+		return search(request, null, null, 0, 1000, true);
 	}
 	
 	@RequestMapping(method=RequestMethod.GET)
 	@ResponseBody
-	private List<T> filterBy(@RequestParam(value="q", required=true) String query){
-		return filter(query);
+	private List<T> searchBy(HttpServletRequest request, @RequestParam(value="q", required=true) String query, 
+			@RequestParam(value="sort", required=false) String sort,
+			@RequestParam(value="limit", required=false) Integer limit, 
+			@RequestParam(value="skip", required=false) Integer skip,
+			@RequestParam(value="fts", required=false) Boolean fts) throws ParseException{
+		return search(request, query, sort, limit, skip, fts);
 	}
 	
 	public abstract List<T> filter(String query) ;
 
-	public abstract List<T> search(HttpServletRequest request) throws ParseException;
+	public abstract List<T> search(HttpServletRequest request, String query, String sort, Integer limit, Integer skip, Boolean fts) throws ParseException ;
 	
 	public abstract T getByUniqueId(String uniqueId);
 	

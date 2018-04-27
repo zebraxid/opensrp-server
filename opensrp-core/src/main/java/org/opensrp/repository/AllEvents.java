@@ -58,6 +58,50 @@ public class AllEvents extends MotechBaseRepository<Event> {
 		return queryView("by_baseEntityId", baseEntityId);
 	}
 	
+	@View(name = "all_events_by_location_or_provider_and_timestamp", map = "function (doc) {  if(doc.type === 'Event'){   "
+			+ " var modified = Date.parse(doc.dateCreated);   "
+			+ " if(doc.dateEdited){ modified = Date.parse(doc.dateEdited); }   "
+			+ " else if(doc.dateVoided && Date.parse(doc.dateVoided) > modified){ modified = Date.parse(doc.dateVoided); }   "
+			+ " emit([doc.locationId.toLowerCase(), modified]);   "
+			+ " emit([doc.providerId.toLowerCase(), modified]);  "
+			+ " }}")
+	public List<Event> findAllByLocationOrProvider(String locationOrProvider, DateTime from, DateTime to) {
+		//couchdb does left to right match and also we want sort by timestamp
+		ComplexKey skey = ComplexKey.of(locationOrProvider.toLowerCase(), from.getMillis());
+		ComplexKey ekey = ComplexKey.of(locationOrProvider.toLowerCase(), to.getMillis());
+
+		return db.queryView(createQuery("all_events_by_location_or_provider_and_timestamp").startKey(skey).endKey(ekey).includeDocs(true), Event.class);
+	}
+	
+	@View(name = "all_events_by_entity_or_event_type_and_timestamp", map = "function (doc) {  if(doc.type === 'Event'){   "
+			+ " var modified = Date.parse(doc.dateCreated);   "
+			+ " if(doc.dateEdited){ modified = Date.parse(doc.dateEdited); }   "
+			+ " else if(doc.dateVoided && Date.parse(doc.dateVoided) > modified){ modified = Date.parse(doc.dateVoided); }   "
+			+ " emit([doc.eventType.toLowerCase(), modified]);   "
+			+ " emit([doc.entityType.toLowerCase(), modified]);  "
+			+ " }}")
+	public List<Event> findAllByEntityOrEventType(String entityOrEventType, DateTime from, DateTime to) {
+		//couchdb does left to right match and also we want sort by timestamp
+		ComplexKey skey = ComplexKey.of(entityOrEventType.toLowerCase(), from.getMillis());
+		ComplexKey ekey = ComplexKey.of(entityOrEventType.toLowerCase(), to.getMillis());
+
+		return db.queryView(createQuery("all_events_by_entity_or_event_type_and_timestamp").startKey(skey).endKey(ekey).includeDocs(true), Event.class);
+	}
+	
+	@View(name = "all_events_by_timestamp", map = "function (doc) {  if(doc.type === 'Event'){   "
+			+ " var modified = Date.parse(doc.dateCreated);   "
+			+ " if(doc.dateEdited){ modified = Date.parse(doc.dateEdited); } "
+			+ " else if(doc.dateVoided && Date.parse(doc.dateVoided) > modified){ modified = Date.parse(doc.dateVoided); }   "
+			+ " emit(modified);"
+			+ " }}")	
+	public List<Event> findByTimestamp(DateTime from, DateTime to) {
+		return db.queryView(createQuery("all_events_by_timestamp").startKey(from.getMillis()).endKey(to.getMillis()).includeDocs(true), Event.class);		
+	}
+	
+	public List<Event> findEventsByDynamicQuery(String query, String sort, Integer limit, Integer skip){
+		return ler.getByCriteria(query, sort, limit, skip);
+	}
+	
 	@View(name = "all_events_by_base_entity_and_form_submission", map = "function(doc) { if (doc.type === 'Event'){  emit([doc.baseEntityId, doc.formSubmissionId], doc); } }")
 	public List<Event> findByBaseEntityAndFormSubmissionId(String baseEntityId, String formSubmissionId) {
 		return db.queryView(createQuery("all_events_by_base_entity_and_form_submission")
@@ -88,7 +132,7 @@ public class AllEvents extends MotechBaseRepository<Event> {
 	}
 	
 	public List<Event> findEventsByDynamicQuery(String query) {
-		return ler.getByCriteria(query);
+		return ler.getByCriteria(query, null, null, null);
 	}
 	
 	/**

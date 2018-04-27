@@ -9,6 +9,7 @@ import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.motechproject.util.DateUtil;
 import org.opensrp.form.domain.FormSubmission;
@@ -97,7 +98,7 @@ public class FormSubmissionServiceTest extends TestDatabaseConfig{
         assertNotSame("pro", formSubmissionService.getNewSubmissionsForANM(provider,0l,1).get(0).anmId());
     }
 
-    @Test
+    @Ignore @Test
     public void shouldGetAllFormSubmissions(){
         long baseTimeStamp = DateUtil.now().getMillis();
         FormSubmission firstFormSubmission = new FormSubmission("ANM 1", "instance id 1", "DemoForm Name", "entity id 1", 0L, "1", null, baseTimeStamp);

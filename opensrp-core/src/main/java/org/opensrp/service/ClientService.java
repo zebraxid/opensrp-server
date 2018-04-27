@@ -55,6 +55,22 @@ public class ClientService {
 	public List<Client> findAllByAttribute(String attributeType, String attribute) {
 		return allClients.findAllByAttribute(attributeType, attribute);
 	}
+	
+	public List<Client> findAllByAttribute(String attributeType, String attribute, DateTime from, DateTime to) {
+		return allClients.findAllByAttribute(attributeType, attribute, from, to);
+	}
+	
+	public List<Client> findAllByAddress(String addressType, String addressField, String value, DateTime from, DateTime to) {
+		return allClients.findByAddress(addressType, addressField, value, from, to);
+	}
+	
+	public List<Client> findAllByTimestamp(DateTime from, DateTime to) {
+		return allClients.findByTimestamp(from, to);
+	}
+	
+	public List<Client> findByDynamicQuery(String query, String sort, Integer limit, Integer skip) {
+		return allClients.findByDynamicQuery(query, sort, limit, skip);
+	}
 
 	public List<Client> findAllByMatchingName(String nameMatches) {
 		return allClients.findAllByMatchingName(nameMatches);

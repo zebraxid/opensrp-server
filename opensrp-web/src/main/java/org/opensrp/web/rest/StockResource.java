@@ -28,6 +28,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.joda.time.DateTime;
 import org.json.JSONObject;
 import org.opensrp.common.AllConstants.BaseEntity;
+import org.opensrp.domain.Client;
 import org.opensrp.domain.Stock;
 import org.opensrp.service.StockService;
 import org.opensrp.util.DateTimeTypeConverter;
@@ -186,7 +187,7 @@ public class StockResource extends RestResource<Stock> {
 	}
 	
 	@Override
-	public List<Stock> search(HttpServletRequest request) throws ParseException {
+	public List<Stock> search(HttpServletRequest request, String query, String sort, Integer limit, Integer skip, Boolean fts) throws ParseException {
 		String stockId = getStringFilter("identifier", request);
 		String vaccine_type_id = getStringFilter(VACCINE_TYPE_ID, request);
 		String transaction_type = getStringFilter(TRANSACTION_TYPE, request);

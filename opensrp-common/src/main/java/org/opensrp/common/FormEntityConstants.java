@@ -58,4 +58,14 @@ public class FormEntityConstants {
 		public String entity(){return "encounter";}
 		public String entityId(){return this.name();}
 	}
+	
+	public enum PersonRelationship implements FormEntity{
+		relationship_type,
+		person_b,
+		start_date,
+		end_date;
+				
+		public String entity(){return "person_relationship";}
+		public String entityId(){return this.name();}
+	}
 }

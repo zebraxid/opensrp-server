@@ -64,6 +64,48 @@ public class AllClients extends MotechBaseRepository<Client> {
 		return db.queryView(createQuery("all_clients_by_identifier").key(identifier).includeDocs(true), Client.class);
 	}
 
+	@View(name = "all_clients_by_attribute_and_timestamp", map = "function (doc) {  if(doc.type === 'Client'){   "
+			+ " var modified = Date.parse(doc.dateCreated);   "
+			+ " if(doc.dateEdited){ modified = Date.parse(doc.dateEdited); }   "
+			+ " else if(doc.dateVoided && Date.parse(doc.dateVoided) > modified){ modified = Date.parse(doc.dateVoided); }   "
+			+ " for(var att in doc.attributes){ var val = doc.attributes[att];     "
+			+ " emit([att.toLowerCase(), val.toLowerCase(), modified]);   "
+			+ " }  }}")
+	public List<Client> findAllByAttribute(String attributeType, String attribute, DateTime from, DateTime to) {
+		//couchdb does left to right match and also we want sort by timestamp
+		ComplexKey skey = ComplexKey.of(attributeType.toLowerCase(), attribute.toLowerCase(), from.getMillis());
+		ComplexKey ekey = ComplexKey.of(attributeType.toLowerCase(), attribute.toLowerCase(), to.getMillis());
+		return db.queryView(createQuery("all_clients_by_attribute_and_timestamp").startKey(skey).endKey(ekey).includeDocs(true), Client.class);
+	}
+	
+	@View(name = "all_clients_by_address_and_timestamp", map = "function (doc) {  if(doc.type === 'Client'){   "
+			+ " var keys = ['subTown','town','subDistrict','countyDistrict','cityVillage','stateProvince','country'];   "
+			+ " var modified = Date.parse(doc.dateCreated);   if(doc.dateEdited){ modified = Date.parse(doc.dateEdited); } else if(doc.dateVoided && Date.parse(doc.dateVoided) > modified){ modified = Date.parse(doc.dateVoided); }   "
+			+ " for(var i in doc.addresses){     var addr = doc.addresses[i];     "
+			+ " for (var j in keys){      var fld = keys[j];      if(addr[fld]){       "
+			+ " emit([addr.addressType.toLowerCase(), fld.toLowerCase(), addr[fld].toLowerCase(), modified]);      "
+			+ " }     }   }  }}")	
+	public List<Client> findByAddress(String addressType, String addressField, String value, DateTime from, DateTime to) {
+		//couchdb does left to right match and also we want sort by timestamp
+		ComplexKey skey = ComplexKey.of(addressType.toLowerCase(), addressField.toLowerCase(), value.toLowerCase(), from.getMillis());
+		ComplexKey ekey = ComplexKey.of(addressType.toLowerCase(), addressField.toLowerCase(), value.toLowerCase(), to.getMillis());
+		return db.queryView(createQuery("all_clients_by_address_and_timestamp").startKey(skey).endKey(ekey).includeDocs(true), Client.class);		
+	}
+	
+	@View(name = "all_clients_by_timestamp", map = "function (doc) {  if(doc.type === 'Client'){   "
+			+ " var modified = Date.parse(doc.dateCreated);   "
+			+ " if(doc.dateEdited){ modified = Date.parse(doc.dateEdited); } "
+			+ " else if(doc.dateVoided && Date.parse(doc.dateVoided) > modified){ modified = Date.parse(doc.dateVoided); }   "
+			+ " emit(modified);"
+			+ " }}")	
+	public List<Client> findByTimestamp(DateTime from, DateTime to) {
+		return db.queryView(createQuery("all_clients_by_timestamp").startKey(from.getMillis()).endKey(to.getMillis()).includeDocs(true), Client.class);		
+	}
+	
+	public List<Client> findByDynamicQuery(String query, String sort, Integer limit, Integer skip) {
+		return lcr.query(query, sort, limit, skip);//db.queryView(q.includeDocs(true), Client.class);
+	}
+	
 	@View(name = "all_clients_by_identifier", map = "function(doc) {if (doc.type === 'Client') {for(var key in doc.identifiers) {emit(doc.identifiers[key]);}}}")
 	public List<Client> findAllByIdentifier(CouchDbConnector targetDb, String identifier) {
 		return targetDb.queryView(createQuery("all_clients_by_identifier").key(identifier).includeDocs(true), Client.class);

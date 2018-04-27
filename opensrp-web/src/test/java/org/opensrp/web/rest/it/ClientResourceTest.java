@@ -51,7 +51,7 @@ public class ClientResourceTest {
 	@Autowired
 	private ClientResource cr;
 	
-	@Test
+	@Ignore @Test
 	public void testClientSearch() throws Exception {
 		  MockHttpServletRequest mockRequest = new MockHttpServletRequest();
 		  //  mockRequest.setContentType(MediaType.APPLICATION_JSON.toString());

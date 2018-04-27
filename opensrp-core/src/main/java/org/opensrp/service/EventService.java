@@ -107,6 +107,18 @@ public class EventService {
 		return null;
 	}
 	
+	public List<Event> findAllByLocationOrProvider(String locationOrProvider, DateTime from, DateTime to) {
+		return allEvents.findAllByLocationOrProvider(locationOrProvider, from, to);
+	}
+	
+	public List<Event> findAllByEntityOrEventType(String entityOrEventType, DateTime from, DateTime to) {
+		return allEvents.findAllByEntityOrEventType(entityOrEventType, from, to);
+	}
+	
+	public List<Event> findAllByTimestamp(DateTime from, DateTime to) {
+		return allEvents.findByTimestamp(from, to);
+	}
+	
 	public Event find(Event event) {
 		for (String idt : event.getIdentifiers().keySet()) {
 			List<Event> el = allEvents.findAllByIdentifier(event.getIdentifier(idt));
