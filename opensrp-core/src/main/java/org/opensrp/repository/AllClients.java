@@ -1,8 +1,16 @@
 package org.opensrp.repository;
 
+import static org.opensrp.common.AllConstants.Client.FIRST_NAME;
+import static org.opensrp.common.AllConstants.Client.GENDER;
+import static org.opensrp.common.AllConstants.Client.LAST_NAME;
+
+import com.github.ldriscoll.ektorplucene.LuceneQuery;
+import com.github.ldriscoll.ektorplucene.LuceneResult;
 import com.mysql.jdbc.StringUtils;
+
 import org.ektorp.ComplexKey;
 import org.ektorp.CouchDbConnector;
+import org.ektorp.ViewQuery;
 import org.ektorp.support.GenerateView;
 import org.ektorp.support.View;
 import org.ektorp.util.Assert;
@@ -11,11 +19,14 @@ import org.joda.time.DateTime;
 import org.motechproject.dao.MotechBaseRepository;
 import org.opensrp.common.AllConstants;
 import org.opensrp.domain.Client;
+import org.opensrp.repository.lucene.FilterType;
 import org.opensrp.repository.lucene.LuceneClientRepository;
+import org.opensrp.repository.lucene.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -78,6 +89,25 @@ public class AllClients extends MotechBaseRepository<Client> {
 		return db.queryView(createQuery("all_clients_by_attribute_and_timestamp").startKey(skey).endKey(ekey).includeDocs(true), Client.class);
 	}
 	
+	
+	@View(name = "all_clients_by_user_data", map = "function (doc) {  if(doc.type === 'Client'){"+
+  "for(var att in doc.attributes){"+
+    "var val = doc.attributes[att]; "+
+    "if(att.toLowerCase().indexOf('primary contact') !== -1)"+
+   "{ emit([doc.gender, att.toLowerCase(), val.toLowerCase()], doc);  }  }"+
+  
+  "for(var ide in doc.identifiers){"+
+   " var val = doc.identifiers[ide]; "+
+    "if(ide.toLowerCase().indexOf('tbreach id') !== -1){ emit([doc.gender, ide.toLowerCase(), val.toLowerCase()], doc);  }}"+
+	"emit([doc.gender, doc.firstName], doc); emit([doc.gender, doc.lastName], doc);"+
+	"var dob = Date.parse(doc.birthdate);emit([doc.gender, dob], doc);}}")
+	public List<Client> findAllByUserData(String gender, String query1, String query2) {
+		ComplexKey fkey = ComplexKey.of(gender.toUpperCase(), query1);
+		ComplexKey lkey = ComplexKey.of(gender.toUpperCase(), query2);
+		List<Client> query = db.queryView(createQuery("all_clients_by_user_data").startKey(fkey).endKey(lkey).includeDocs(true), Client.class);
+		return query;
+	}
+	
 	@View(name = "all_clients_by_address_and_timestamp", map = "function (doc) {  if(doc.type === 'Client'){   "
 			+ " var keys = ['subTown','town','subDistrict','countyDistrict','cityVillage','stateProvince','country'];   "
 			+ " var modified = Date.parse(doc.dateCreated);   if(doc.dateEdited){ modified = Date.parse(doc.dateEdited); } else if(doc.dateVoided && Date.parse(doc.dateVoided) > modified){ modified = Date.parse(doc.dateVoided); }   "
@@ -122,7 +152,7 @@ public class AllClients extends MotechBaseRepository<Client> {
 		ComplexKey ckey = ComplexKey.of(attributeType, attribute);
 		return db.queryView(createQuery("all_clients_by_attribute_of_type").key(ckey).includeDocs(true), Client.class);
 	}
-
+	
 	@View(name = "all_clients_by_matching_name", map = "function(doc) {if(doc.type === 'Client'){emit(doc.firstName, doc);emit(doc.lastName, doc);}}")
 	public List<Client> findAllByMatchingName(String nameMatches) {
 		return db.queryView(createQuery("all_clients_by_matching_name").startKey(nameMatches).endKey(nameMatches + "z")
@@ -155,6 +185,7 @@ public class AllClients extends MotechBaseRepository<Client> {
 		return db.queryView(createQuery("client_by_relationship").startKey(entityId).endKey(entityId).includeDocs(true),
 				Client.class);
 	}
+	
 
 	//	@View(name = "clients_by_relationship", map = "function(doc) {if (doc.type === 'Client' && doc.relationships.mother) {for(var key in doc.relationships) {emit(doc.relationships.mother[key]);}}}")
 	//	public List<Client> findByRelationshipId(String identifier) {
@@ -187,7 +218,7 @@ public class AllClients extends MotechBaseRepository<Client> {
 		return lcr.getByCriteria(null, null, null, null, null, null, null, null, addressType, country, stateProvince,
 				cityVillage, countyDistrict, subDistrict, town, subTown, lastEditFrom, lastEditTo, null);
 	}
-
+	
 	public List<Client> findByRelationShip(String motherIndentier) {
 		return lcr.getByClientByMother("mother", motherIndentier);
 	}

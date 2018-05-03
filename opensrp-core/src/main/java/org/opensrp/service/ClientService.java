@@ -86,6 +86,10 @@ public class ClientService {
 						attributeValue, addressType, country, stateProvince, cityVillage, countyDistrict, subDistrict, town,
 						subTown, lastEditFrom, lastEditTo);//db.queryView(q.includeDocs(true), Client.class);
 	}
+	
+	public List<Client> findAllByUserData(String gender, String query1, String query2) {
+		return allClients.findAllByUserData(gender,query1,query2);//db.queryView(q.includeDocs(true), Client.class);
+}
 
 	public List<Client> findByCriteria(String nameLike, String gender, DateTime birthdateFrom, DateTime birthdateTo,
 	                                   DateTime deathdateFrom, DateTime deathdateTo, String attributeType,

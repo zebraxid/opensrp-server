@@ -90,6 +90,38 @@ public class ClientResource extends RestResource<Client>{
 				
 				return clientService.findAllByAttribute(attributeType, attribute, from, to);
 			}
+			else {
+				String firstName = RestUtils.getStringFilter(fields.get("firstName"));
+				String participantID =  RestUtils.getStringFilter(fields.get("participantID"));
+				String lastName = RestUtils.getStringFilter(fields.get("lastName"));
+				String gender = RestUtils.getStringFilter(fields.get(GENDER));
+				String status = RestUtils.getStringFilter(fields.get("status"));
+				String phoneNumber = RestUtils.getStringFilter(fields.get("phoneNumber"));
+				String query1="",query2="";
+				
+				if(!StringUtils.isEmptyOrWhitespaceOnly(participantID))
+				{
+					query1=participantID;
+					query2=participantID;
+				}
+				else if(!StringUtils.isEmptyOrWhitespaceOnly(phoneNumber))
+				{
+					query1=phoneNumber;
+					query2=phoneNumber;
+				}
+				else if(!StringUtils.isEmptyOrWhitespaceOnly(firstName))
+				{
+					query1=firstName; 
+					query2=firstName+"zzz";
+				}
+				else if(!StringUtils.isEmptyOrWhitespaceOnly(lastName))
+				{
+					query1=lastName; 
+					query2=lastName+"zzz";
+				}
+				
+				return clientService.findAllByUserData(gender,query1,query2);					
+			}
 	    }
 		else {
 		String nameLike = getStringFilter("name", request);
@@ -105,7 +137,7 @@ public class ClientResource extends RestResource<Client>{
 		String town = getStringFilter(TOWN, request);
 		String subTown = getStringFilter(SUB_TOWN, request);
 		DateTime[] lastEdit = getDateRangeFilter(LAST_UPDATE, request);//TODO client by provider id
-		//TODO lookinto Swagger https://slack-files.com/files-pri-safe/T0EPSEJE9-F0TBD0N77/integratingswagger.pdf?c=1458211183-179d2bfd2e974585c5038fba15a86bf83097810a
+		//TODO lookinto Swagger https://slack-files.com/f1iles-pri-safe/T0EPSEJE9-F0TBD0N77/integratingswagger.pdf?c=1458211183-179d2bfd2e974585c5038fba15a86bf83097810a
 		
 		String attributes = getStringFilter("attribute", request);
 		String attributeType = StringUtils.isEmptyOrWhitespaceOnly(attributes)?null:attributes.split(":",-1)[0];
@@ -117,7 +149,8 @@ public class ClientResource extends RestResource<Client>{
 				addressType, country, stateProvince, cityVillage, countyDistrict, subDistrict, town, subTown,
 				lastEdit==null?null:lastEdit[0], lastEdit==null?null:lastEdit[1]);
 		}
-		return new ArrayList<>();
+		
+		
 	}
 	
 	@Override
@@ -126,3 +159,4 @@ public class ClientResource extends RestResource<Client>{
 	}
 
 }
+

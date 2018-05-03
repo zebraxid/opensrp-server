@@ -1,13 +1,6 @@
 package org.opensrp.repository.lucene;
 
 import static org.opensrp.common.AllConstants.BaseEntity.*;
-import static org.opensrp.common.AllConstants.BaseEntity.CITY_VILLAGE;
-import static org.opensrp.common.AllConstants.BaseEntity.COUNTRY;
-import static org.opensrp.common.AllConstants.BaseEntity.COUNTY_DISTRICT;
-import static org.opensrp.common.AllConstants.BaseEntity.STATE_PROVINCE;
-import static org.opensrp.common.AllConstants.BaseEntity.SUB_DISTRICT;
-import static org.opensrp.common.AllConstants.BaseEntity.SUB_TOWN;
-import static org.opensrp.common.AllConstants.BaseEntity.TOWN;
 import static org.opensrp.common.AllConstants.Client.BIRTH_DATE;
 import static org.opensrp.common.AllConstants.Client.DEATH_DATE;
 import static org.opensrp.common.AllConstants.Client.FIRST_NAME;
@@ -64,7 +57,6 @@ public class LuceneClientRepository extends CouchDbRepositorySupportWithLucene<C
 		return getByCriteria(null, null, null, null, null, null, null, null, addressType, country, stateProvince,
 		    cityVillage, countyDistrict, subDistrict, town, subTown, lastEditFrom, lastEditTo, motherIdentifier);
 	}
-	
 	public List<Client> getByCriteria(String nameLike, String gender, DateTime birthdateFrom, DateTime birthdateTo,
 	                                  DateTime deathdateFrom, DateTime deathdateTo, String attributeType,
 	                                  String attributeValue, String addressType, String country, String stateProvince,
