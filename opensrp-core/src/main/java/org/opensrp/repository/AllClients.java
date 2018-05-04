@@ -91,14 +91,13 @@ public class AllClients extends MotechBaseRepository<Client> {
 	
 	
 	@View(name = "all_clients_by_user_data", map = "function (doc) {  if(doc.type === 'Client'){"+
-  "for(var att in doc.attributes){"+
+   "for(var att in doc.attributes){"+
     "var val = doc.attributes[att]; "+
     "if(att.toLowerCase().indexOf('primary contact') !== -1)"+
-   "{ emit([doc.gender, att.toLowerCase(), val.toLowerCase()], doc);  }  }"+
-  
-  "for(var ide in doc.identifiers){"+
-   " var val = doc.identifiers[ide]; "+
-    "if(ide.toLowerCase().indexOf('tbreach id') !== -1){ emit([doc.gender, ide.toLowerCase(), val.toLowerCase()], doc);  }}"+
+    "{ emit([doc.gender, val.toLowerCase()], doc);  }  }"+
+    "for(var ide in doc.identifiers){"+
+    " var val = doc.identifiers[ide]; "+
+    "if(ide.toLowerCase().indexOf('tbreach id') !== -1){ emit([doc.gender, val.toLowerCase()], doc);  }}"+
 	"emit([doc.gender, doc.firstName], doc); emit([doc.gender, doc.lastName], doc);"+
 	"var dob = Date.parse(doc.birthdate);emit([doc.gender, dob], doc);}}")
 	public List<Client> findAllByUserData(String gender, String query1, String query2) {
