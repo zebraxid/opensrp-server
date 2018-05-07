@@ -1,6 +1,17 @@
 package org.opensrp.web.rest.it;
 
-import ch.lambdaj.function.convert.Converter;
+import static ch.lambdaj.collection.LambdaCollections.with;
+import static java.util.Arrays.asList;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.opensrp.common.AllConstants.Stock.PROVIDERID;
+import static org.opensrp.common.AllConstants.Stock.TIMESTAMP;
+import static org.springframework.test.web.server.result.MockMvcResultMatchers.status;
+
+import java.util.Collections;
+import java.util.List;
+
 import org.codehaus.jackson.JsonNode;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
@@ -9,20 +20,12 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.opensrp.domain.Stock;
-import org.opensrp.repository.AllStocks;
+import org.opensrp.repository.couch.AllStocks;
 import org.opensrp.web.rest.StockResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.util.NestedServletException;
 
-import java.util.Collections;
-import java.util.List;
-
-import static ch.lambdaj.collection.LambdaCollections.with;
-import static java.util.Arrays.asList;
-import static org.junit.Assert.*;
-import static org.opensrp.common.AllConstants.Stock.PROVIDERID;
-import static org.opensrp.common.AllConstants.Stock.TIMESTAMP;
-import static org.springframework.test.web.server.result.MockMvcResultMatchers.status;
+import ch.lambdaj.function.convert.Converter;
 
 /**
  * TODO: Solve bug at source {@link StockResource} and refactor like {@link EventResourceTest}

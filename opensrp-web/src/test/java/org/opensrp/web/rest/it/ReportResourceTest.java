@@ -1,18 +1,18 @@
 package org.opensrp.web.rest.it;
 
+import static java.util.Arrays.asList;
+import static org.junit.Assert.assertEquals;
+import static org.springframework.test.web.server.result.MockMvcResultMatchers.status;
+
+import java.util.List;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.opensrp.domain.Hia2Indicator;
 import org.opensrp.domain.Report;
-import org.opensrp.repository.AllReports;
+import org.opensrp.repository.couch.AllReports;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.List;
-
-import static java.util.Arrays.asList;
-import static org.junit.Assert.assertEquals;
-import static org.springframework.test.web.server.result.MockMvcResultMatchers.status;
 
 public class ReportResourceTest extends BaseResourceTest {
 

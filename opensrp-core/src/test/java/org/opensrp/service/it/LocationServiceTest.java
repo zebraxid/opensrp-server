@@ -1,23 +1,23 @@
 package org.opensrp.service.it;
 
+import static org.junit.Assert.assertEquals;
+import static org.opensrp.util.SampleFullDomainObject.getApiLocation;
+import static org.opensrp.util.SampleFullDomainObject.getDomainLocation;
+import static org.utils.AssertionUtil.assertTwoDifferentTypeLocationSame;
+import static org.utils.CouchDbAccessUtils.addObjectToRepository;
+
+import java.util.Collections;
+import java.util.List;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.opensrp.BaseIntegrationTest;
 import org.opensrp.domain.Location;
-import org.opensrp.repository.AllLocations;
+import org.opensrp.repository.couch.AllLocations;
 import org.opensrp.service.LocationService;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.Collections;
-import java.util.List;
-
-import static org.junit.Assert.assertEquals;
-import static org.opensrp.util.SampleFullDomainObject.getApiLocation;
-import static org.opensrp.util.SampleFullDomainObject.getDomainLocation;
-import static org.utils.AssertionUtil.assertTwoDifferentTypeLocationSame;
-import static org.utils.CouchDbAccessUtils.addObjectToRepository;
 
 public class LocationServiceTest extends BaseIntegrationTest {
 

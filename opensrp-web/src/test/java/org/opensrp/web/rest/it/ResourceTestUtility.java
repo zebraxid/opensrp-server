@@ -1,15 +1,15 @@
 package org.opensrp.web.rest.it;
 
+import java.util.List;
+
 import org.opensrp.domain.Client;
 import org.opensrp.domain.ErrorTrace;
-import org.opensrp.repository.AllClients;
-import org.opensrp.repository.AllErrorTrace;
+import org.opensrp.repository.couch.AllClients;
+import org.opensrp.repository.couch.AllErrorTrace;
 import org.opensrp.scheduler.Action;
 import org.opensrp.scheduler.Alert;
-import org.opensrp.scheduler.repository.AllActions;
-import org.opensrp.scheduler.repository.AllAlerts;
-
-import java.util.List;
+import org.opensrp.scheduler.repository.couch.AllActions;
+import org.opensrp.scheduler.repository.couch.AllAlerts;
 
 public final class ResourceTestUtility {
 

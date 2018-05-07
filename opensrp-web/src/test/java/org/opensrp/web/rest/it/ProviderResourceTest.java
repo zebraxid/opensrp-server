@@ -1,18 +1,18 @@
 package org.opensrp.web.rest.it;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.springframework.test.web.server.result.MockMvcResultMatchers.status;
+
+import java.util.Map;
+
 import org.codehaus.jackson.JsonNode;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.opensrp.domain.User;
-import org.opensrp.repository.AllUsers;
+import org.opensrp.repository.couch.AllUsers;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.Map;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.springframework.test.web.server.result.MockMvcResultMatchers.status;
 
 public class ProviderResourceTest extends BaseResourceTest {
 

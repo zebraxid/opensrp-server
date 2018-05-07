@@ -10,39 +10,37 @@ import org.opensrp.scheduler.Action;
 import org.opensrp.scheduler.Alert;
 import org.opensrp.scheduler.Alert.AlertType;
 import org.opensrp.scheduler.Alert.TriggerType;
-import org.opensrp.scheduler.repository.AllActions;
-import org.opensrp.scheduler.repository.AllAlerts;
+import org.opensrp.scheduler.repository.ActionsRepository;
+import org.opensrp.scheduler.repository.AlertsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ActionService {
 	
-	public static final String ALL_PROVIDERS = "all_providers";
-	
-	private AllActions allActions;
-	
-	private AllAlerts allAlerts;
-	
-	@Autowired
-	public ActionService(AllActions allActions, AllAlerts allAlerts) {
-		this.allActions = allActions;
-		this.allAlerts = allAlerts;
-	}
-	
-	public List<Action> getNewAlertsForANM(String anmIdentifier, long timeStamp) {
-		return allActions.findByProviderIdAndTimeStamp(anmIdentifier, timeStamp);
-	}
-	
-	public List<Alert> getAlertsForProvider(String providerId, long timeStamp) {
-		return allAlerts.findByProviderAndTimestamp(providerId, timeStamp);
-	}
-	
-	public List<Alert> getAlertsActiveForProvider(String providerId, long timeStamp) {
-		return allAlerts.findActiveByProviderAndTimestamp(providerId, timeStamp);
-	}
-	
-	public List<Action> findByCaseIdScheduleAndTimeStamp(String caseId, String schedule, DateTime start, DateTime end) {
+    public static final String ALL_PROVIDERS = "all_providers";
+    private ActionsRepository allActions;
+    private AlertsRepository allAlerts;
+
+    @Autowired
+    public ActionService(ActionsRepository allActions, AlertsRepository allAlerts) {
+        this.allActions = allActions;
+        this.allAlerts = allAlerts;
+    }
+
+    public List<Action> getNewAlertsForANM(String anmIdentifier, long timeStamp) {
+        return allActions.findByProviderIdAndTimeStamp(anmIdentifier, timeStamp);
+    }
+    
+    public List<Alert> getAlertsForProvider(String providerId, long timeStamp) {
+        return allAlerts.findByProviderAndTimestamp(providerId, timeStamp);
+    }
+    
+    public List<Alert> getAlertsActiveForProvider(String providerId, long timeStamp) {
+        return allAlerts.findActiveByProviderAndTimestamp(providerId, timeStamp);
+    }
+    
+    public List<Action> findByCaseIdScheduleAndTimeStamp(String caseId, String schedule, DateTime start, DateTime end) {
 		return allActions.findByCaseIdScheduleAndTimeStamp(caseId, schedule, start, end);
 	}
 	
