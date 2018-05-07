@@ -18,6 +18,7 @@ import org.apache.lucene.search.Query;
 import org.joda.time.DateTime;
 import org.opensrp.domain.Client;
 import org.opensrp.service.ClientService;
+import org.opensrp.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,10 +29,16 @@ import com.mysql.jdbc.StringUtils;
 @RequestMapping(value = "/rest/client")
 public class ClientResource extends RestResource<Client>{
 	private ClientService clientService;
+	private EventService eventService;
 	
 	@Autowired
 	public ClientResource(ClientService clientService) {
 		this.clientService = clientService;
+	}
+	
+	@Autowired
+	public void EventResource(EventService eventService) {
+		this.eventService = eventService;
 	}
 
 	@Override
@@ -90,38 +97,6 @@ public class ClientResource extends RestResource<Client>{
 				
 				return clientService.findAllByAttribute(attributeType, attribute, from, to);
 			}
-			else {
-				String firstName = RestUtils.getStringFilter(fields.get("firstName"));
-				String participantID =  RestUtils.getStringFilter(fields.get("participantID"));
-				String lastName = RestUtils.getStringFilter(fields.get("lastName"));
-				String gender = RestUtils.getStringFilter(fields.get(GENDER));
-				String status = RestUtils.getStringFilter(fields.get("status"));
-				String phoneNumber = RestUtils.getStringFilter(fields.get("phoneNumber"));
-				String query1="",query2="";
-				
-				if(!StringUtils.isEmptyOrWhitespaceOnly(participantID))
-				{
-					query1=participantID;
-					query2=participantID;
-				}
-				else if(!StringUtils.isEmptyOrWhitespaceOnly(phoneNumber))
-				{
-					query1=phoneNumber;
-					query2=phoneNumber;
-				}
-				else if(!StringUtils.isEmptyOrWhitespaceOnly(firstName))
-				{
-					query1=firstName; 
-					query2=firstName+"zzz";
-				}
-				else if(!StringUtils.isEmptyOrWhitespaceOnly(lastName))
-				{
-					query1=lastName; 
-					query2=lastName+"zzz";
-				}
-				
-				return clientService.findAllByUserData(gender,query1,query2);					
-			}
 	    }
 		else {
 		String nameLike = getStringFilter("name", request);
@@ -149,6 +124,7 @@ public class ClientResource extends RestResource<Client>{
 				addressType, country, stateProvince, cityVillage, countyDistrict, subDistrict, town, subTown,
 				lastEdit==null?null:lastEdit[0], lastEdit==null?null:lastEdit[1]);
 		}
+		return null;
 		
 		
 	}

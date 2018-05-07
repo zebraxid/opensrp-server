@@ -99,7 +99,10 @@ public class AllClients extends MotechBaseRepository<Client> {
     " var val = doc.identifiers[ide]; "+
     "if(ide.toLowerCase().indexOf('tbreach id') !== -1){ emit([doc.gender, val.toLowerCase()], doc);  }}"+
 	"emit([doc.gender, doc.firstName], doc); emit([doc.gender, doc.lastName], doc);"+
-	"var dob = Date.parse(doc.birthdate);emit([doc.gender, dob], doc);}}")
+	"  var curdate = new Date(); "+
+	" var dob = Date.parse(doc.birthdate);"+
+	"var age=curdate-dob;"+
+	"emit([doc.gender, age], doc);}}")
 	public List<Client> findAllByUserData(String gender, String query1, String query2) {
 		ComplexKey fkey = ComplexKey.of(gender.toUpperCase(), query1);
 		ComplexKey lkey = ComplexKey.of(gender.toUpperCase(), query2);
