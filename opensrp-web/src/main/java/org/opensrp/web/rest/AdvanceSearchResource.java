@@ -114,7 +114,7 @@ public class AdvanceSearchResource extends RestResource<HashMap<JsonObject, List
 					ob.addProperty("lastName", client.getLastName());
 					ob.addProperty("gender", client.getGender());
 					ob.addProperty("dob", String.valueOf(client.getBirthdate()));
-					map.put(ob,eventService.findByBaseEntityAndType(client.getBaseEntityId(), status));
+					map.put(ob,eventService.findAllByBaseEntityAndType(client.getBaseEntityId(), status));
 				}
 				List<HashMap<JsonObject, List<Event>>> list=new ArrayList<HashMap<JsonObject, List<Event>>>();
 				list.add(map);				

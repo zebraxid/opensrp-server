@@ -104,8 +104,8 @@ public class AllClients extends MotechBaseRepository<Client> {
 	"var age=curdate-dob;"+
 	"emit([doc.gender, age], doc);}}")
 	public List<Client> findAllByUserData(String gender, String query1, String query2) {
-		ComplexKey fkey = ComplexKey.of(gender.toUpperCase(), query1);
-		ComplexKey lkey = ComplexKey.of(gender.toUpperCase(), query2);
+		ComplexKey fkey = ComplexKey.of(gender.toLowerCase(), query1);
+		ComplexKey lkey = ComplexKey.of(gender.toLowerCase(), query2);
 		List<Client> query = db.queryView(createQuery("all_clients_by_user_data").startKey(fkey).endKey(lkey).includeDocs(true), Client.class);
 		return query;
 	}

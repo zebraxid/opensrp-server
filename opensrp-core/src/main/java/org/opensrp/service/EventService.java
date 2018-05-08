@@ -371,6 +371,11 @@ public class EventService {
 		
 	}
 	
+	public List<Event> findAllByBaseEntityAndType(String baseEntityId, String eventType) {
+		return allEvents.findAllByBaseEntityAndType(baseEntityId, eventType);
+		
+	}
+	
 	public List<Event> findByBaseEntityAndType(String baseEntityId, String eventType) {
 		return allEvents.findByBaseEntityAndType(baseEntityId, eventType);
 		
