@@ -109,11 +109,20 @@ public class AllEvents extends MotechBaseRepository<Event> {
 		    Event.class);
 	}
 	
-	@View(name = "all_events_by_base_entity_and_type", map = "function(doc) { if (doc.type === 'Event'){  emit([doc.baseEntityId, doc.eventType], doc); } }")
+	@View(name = "events_by_base_entity_and_type", map = "function(doc) { if (doc.type === 'Event'){  emit([doc.baseEntityId, doc.eventType], doc); } }")
 	public List<Event> findByBaseEntityAndType(String baseEntityId, String eventType) {
 		return db.queryView(
-		    createQuery("all_events_by_base_entity_and_type").key(ComplexKey.of(baseEntityId, eventType)).includeDocs(true),
+		    createQuery("events_by_base_entity_and_type").key(ComplexKey.of(baseEntityId, eventType)).includeDocs(true),
 		    Event.class);
+	}
+	
+	@View(name = "all_events_by_base_entity_and_type", map = "function(doc) { if (doc.type === 'Event'){  emit([doc.baseEntityId, doc.eventType], doc); } }")
+	public List<Event> findAllByBaseEntityAndType(String baseEntityId, String eventType) {
+		if(!db.queryView(createQuery("all_events_by_base_entity_and_type").key(ComplexKey.of(baseEntityId, eventType)).includeDocs(true),Event.class).isEmpty())
+		{
+			return findByBaseEntityId(baseEntityId);
+		}
+		return null;
 	}
 	
 	@View(name = "all_events_by_base_entity_and_form_submission", map = "function(doc) { if (doc.type === 'Event'){  emit([doc.baseEntityId, doc.formSubmissionId], doc); } }")
