@@ -7,6 +7,7 @@ import static org.opensrp.common.AllConstants.Client.FIRST_NAME;
 import static org.opensrp.common.AllConstants.Client.GENDER;
 import static org.opensrp.web.rest.RestUtils.*;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -17,7 +18,10 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.lucene.search.Query;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.joda.time.DateTime;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.opensrp.domain.Event;
 import org.opensrp.domain.Client;
 import org.opensrp.service.ClientService;
@@ -28,11 +32,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.mysql.jdbc.StringUtils;
 
 @Controller
 @RequestMapping(value = "/rest/advanceSearch")
-public class AdvanceSearchResource extends RestResource<HashMap<JsonObject, List<Event>>>{
+public class AdvanceSearchResource extends RestResource<Map<String, Object>>{
 	private ClientService clientService;
 	private EventService eventService;
 	
@@ -43,12 +48,12 @@ public class AdvanceSearchResource extends RestResource<HashMap<JsonObject, List
 	}
 	
 	@Override
-	public HashMap<JsonObject, List<Event>> getByUniqueId(String uniqueId) {
+	public HashMap<String, Object> getByUniqueId(String uniqueId) {
 		return null;
 	}
 	
 	@Override
-    public HashMap<JsonObject, List<Event>> create(HashMap<JsonObject, List<Event>> o) {
+    public Map<String, Object> create(Map<String, Object> o) {
 		return null;
 	}
 
@@ -63,12 +68,12 @@ public class AdvanceSearchResource extends RestResource<HashMap<JsonObject, List
 	}
 
 	@Override
-	public HashMap<JsonObject, List<Event>> update(HashMap<JsonObject, List<Event>> entity) {//TODO check if send property and id matches
+	public Map<String, Object> update(Map<String, Object> entity) {//TODO check if send property and id matches
 		return null;//TODO update should only be based on baseEntityId
 	}
 	
 	@Override
-	public List<HashMap<JsonObject, List<Event>>> search(HttpServletRequest request, String query, String sort, Integer limit, Integer skip, Boolean fts) throws ParseException {
+	public List<Map<String, Object>> search(HttpServletRequest request, String query, String sort, Integer limit, Integer skip, Boolean fts) throws ParseException {
 				Map<String, Query> fields = RestUtils.parseClauses(query);
 				String firstName = RestUtils.getStringFilter(fields.get("firstName"));
 				String participantID =  RestUtils.getStringFilter(fields.get("participantID"));
@@ -106,23 +111,41 @@ public class AdvanceSearchResource extends RestResource<HashMap<JsonObject, List
 					query2=ageTo;
 				}
 				List<Client> clients = clientService.findAllByUserData(gender,query1,query2);
-				HashMap<JsonObject, List<Event>> map = new HashMap<JsonObject, List<Event>>();
+//				HashMap<JsonObject, List<Event>> map = new HashMap<JsonObject, List<Event>>();
+				List<Map<String, Object>> newList = new ArrayList<Map<String,Object>>();
+				ObjectMapper obm = new ObjectMapper();
 				for (Client client : clients) {
-					JsonObject ob=new JsonObject();
+/*					String clientStr = null;
+					try {
+						clientStr = obm.writeValueAsString(client);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}*/
+					
+					Map<String, Object> newJson = new HashMap<String, Object>();
+					newJson = obm.convertValue(client, Map.class);
+					List<Event> listEvents = eventService.findAllByBaseEntityAndType(client.getBaseEntityId(), status);
+					List<Map<String,Object>> eventList = new ArrayList<Map<String, Object>>();
+					for(Event e : listEvents){
+						eventList.add(obm.convertValue(e, Map.class));
+					}
+					newJson.put("events", eventList);
+					newList.add(newJson);
+/*					JsonObject ob=new JsonObject();
 					ob.addProperty("baseEntityId", client.getBaseEntityId());
 					ob.addProperty("firstName", client.getFirstName());
 					ob.addProperty("lastName", client.getLastName());
 					ob.addProperty("gender", client.getGender());
 					ob.addProperty("dob", String.valueOf(client.getBirthdate()));
-					map.put(ob,eventService.findAllByBaseEntityAndType(client.getBaseEntityId(), status));
+					map.put(ob,eventService.findAllByBaseEntityAndType(client.getBaseEntityId(), status));*/
 				}
-				List<HashMap<JsonObject, List<Event>>> list=new ArrayList<HashMap<JsonObject, List<Event>>>();
-				list.add(map);				
-				return list;
+/*				List<HashMap<JsonObject, List<Event>>> list=new ArrayList<HashMap<JsonObject, List<Event>>>();
+				list.add(map);		*/		
+				return newList;
 	}
 	
 	@Override
-	public List<HashMap<JsonObject, List<Event>>> filter(String query) {
+	public List<Map<String, Object>> filter(String query) {
 		return null;
 	}
 
