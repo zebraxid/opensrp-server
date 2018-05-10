@@ -111,37 +111,20 @@ public class AdvanceSearchResource extends RestResource<Map<String, Object>>{
 					query2=ageTo;
 				}
 				List<Client> clients = clientService.findAllByUserData(gender,query1,query2);
-//				HashMap<JsonObject, List<Event>> map = new HashMap<JsonObject, List<Event>>();
-				List<Map<String, Object>> newList = new ArrayList<Map<String,Object>>();
+				List<Map<String, Object>> ecList = new ArrayList<Map<String,Object>>();
 				ObjectMapper obm = new ObjectMapper();
 				for (Client client : clients) {
-/*					String clientStr = null;
-					try {
-						clientStr = obm.writeValueAsString(client);
-					} catch (IOException e) {
-						e.printStackTrace();
-					}*/
-					
-					Map<String, Object> newJson = new HashMap<String, Object>();
-					newJson = obm.convertValue(client, Map.class);
+					Map<String, Object> clientMap = new HashMap<String, Object>();
+					clientMap = obm.convertValue(client, Map.class);
 					List<Event> listEvents = eventService.findAllByBaseEntityAndType(client.getBaseEntityId(), status);
 					List<Map<String,Object>> eventList = new ArrayList<Map<String, Object>>();
 					for(Event e : listEvents){
 						eventList.add(obm.convertValue(e, Map.class));
 					}
-					newJson.put("events", eventList);
-					newList.add(newJson);
-/*					JsonObject ob=new JsonObject();
-					ob.addProperty("baseEntityId", client.getBaseEntityId());
-					ob.addProperty("firstName", client.getFirstName());
-					ob.addProperty("lastName", client.getLastName());
-					ob.addProperty("gender", client.getGender());
-					ob.addProperty("dob", String.valueOf(client.getBirthdate()));
-					map.put(ob,eventService.findAllByBaseEntityAndType(client.getBaseEntityId(), status));*/
-				}
-/*				List<HashMap<JsonObject, List<Event>>> list=new ArrayList<HashMap<JsonObject, List<Event>>>();
-				list.add(map);		*/		
-				return newList;
+					clientMap.put("events", eventList);
+					ecList.add(clientMap);
+				}	
+				return ecList;
 	}
 	
 	@Override
