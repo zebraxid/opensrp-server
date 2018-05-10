@@ -113,17 +113,21 @@ public class AdvanceSearchResource extends RestResource<Map<String, Object>>{
 				List<Client> clients = clientService.findAllByUserData(gender,query1,query2);
 				List<Map<String, Object>> ecList = new ArrayList<Map<String,Object>>();
 				ObjectMapper obm = new ObjectMapper();
-				for (Client client : clients) {
-					Map<String, Object> clientMap = new HashMap<String, Object>();
-					clientMap = obm.convertValue(client, Map.class);
-					List<Event> listEvents = eventService.findAllByBaseEntityAndType(client.getBaseEntityId(), status);
-					List<Map<String,Object>> eventList = new ArrayList<Map<String, Object>>();
-					for(Event e : listEvents){
-						eventList.add(obm.convertValue(e, Map.class));
-					}
-					clientMap.put("events", eventList);
-					ecList.add(clientMap);
-				}	
+				if(clients != null && clients.size() > 0){
+					for (Client client : clients) {
+						Map<String, Object> clientMap = new HashMap<String, Object>();
+						clientMap = obm.convertValue(client, Map.class);
+						List<Event> listEvents = eventService.findAllByBaseEntityAndType(client.getBaseEntityId(), status);
+						List<Map<String,Object>> eventList = new ArrayList<Map<String, Object>>();
+						if(listEvents != null && listEvents.size() > 0){
+							for(Event e : listEvents){
+								eventList.add(obm.convertValue(e, Map.class));
+							}
+							clientMap.put("events", eventList);
+						}
+						ecList.add(clientMap);
+					}				
+				}
 				return ecList;
 	}
 	
