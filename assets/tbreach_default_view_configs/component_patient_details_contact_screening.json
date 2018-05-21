@@ -1,6 +1,5 @@
 {
    "_id": "a80b874fb4022105231dff6fe4267819",
-   "_rev": "28-8559e717075cad0299df3c4383f4fc56",
    "type": "ViewConfiguration",
    "serverVersion": 1517562025517,
    "identifier": "component_patient_details_contact_screening",

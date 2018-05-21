@@ -256,4 +256,20 @@ public class AllEvents extends MotechBaseRepository<Event> {
 		
 		return events;
 	}
+
+	@View(name = "all_events_by_baseEntityId", map = "function(doc) { if (doc.type === 'Event'){  emit([doc.baseEntityId], doc); } }")
+	public List<Event> findAllEventsByBaseEntityId(String baseEntityId) {
+		return db.queryView(createQuery("all_events_by_baseEntityId").key(ComplexKey.of(baseEntityId)).includeDocs(true), Event.class);
+	}
+	
+	@View(name = "baseEntityId_by_positive_event", map = "function (doc) {"+
+			"if(doc.type === 'Event' && doc.eventType == 'TB Diagnosis'){"+
+			"for(i=0; i<doc.obs.length; i++){"+
+			"if(doc.obs[i]['formSubmissionField'] == 'confirmed_tb'){"+
+			"if(doc.obs[i]['humanReadableValues'][0] == 'yes')"+
+			"emit([doc.baseEntityId],doc.baseEntityId);"+
+			"} }  }}")
+	public List<Event> findBaseEntityIdsByPositiveEvent(String baseEntityId) {
+		return db.queryView(createQuery("baseEntityId_by_positive_event").key(ComplexKey.of(baseEntityId)).includeDocs(true), Event.class);
+	}
 }

@@ -1,6 +1,5 @@
 {
    "_id": "719d5e5852173b7b68e938730d0b6b4d",
-   "_rev": "21-7ec7bc4d2159eba9af9d70bbfd6bbe2e",
    "type": "ViewConfiguration",
    "serverVersion": 1518177659188,
    "identifier": "intreatment_register",
@@ -9,7 +8,7 @@
        "enableAdvancedSearch": true,
        "enableSortList": true,
        "enableFilterList": true,
-       "searchBarText": "Search name or ID"
+       "searchBarText": "Search name or ID",
    },
    "views": [
        {

@@ -1,6 +1,5 @@
 {
    "_id": "dc2853c2ad8ee200b30a9c100003d2b2",
-   "_rev": "41-bfed7b58106544192e2998803787cdfd",
    "type": "ViewConfiguration",
    "serverVersion": 1517564785784,
    "identifier": "component_patient_details_demographics",

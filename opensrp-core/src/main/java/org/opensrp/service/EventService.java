@@ -380,4 +380,12 @@ public class EventService {
 		return allEvents.findByBaseEntityAndType(baseEntityId, eventType);
 		
 	}
+
+	public List<Event> findAllEventsByBaseEntityId(String baseEntityId) {
+		return allEvents.findAllEventsByBaseEntityId(baseEntityId);
+	}
+	
+	public List<Event> findBaseEntityIdsByPositiveEvent(String baseEntityId) {
+		return allEvents.findBaseEntityIdsByPositiveEvent(baseEntityId);
+	}
 }

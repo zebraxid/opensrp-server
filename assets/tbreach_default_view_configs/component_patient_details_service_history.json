@@ -1,6 +1,5 @@
 {
    "_id": "fae0b977321bc4ab1a9f8ae0f2037b7d",
-   "_rev": "34-44aadd24627bb3cbbd5b8a1bdbd19f3c",
    "type": "ViewConfiguration",
    "serverVersion": 1517564785788,
    "identifier": "component_patient_details_service_history",

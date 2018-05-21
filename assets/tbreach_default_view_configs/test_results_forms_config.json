@@ -1,0 +1,34 @@
+{
+  "_id": "ffc058ea633e84139a15c9686191766b",
+  "_rev": "5-20d877341092e4ca222bcab437906c04",
+  "type": "ViewConfiguration",
+  "serverVersion": 1517998250373,
+  "identifier": "test_results_forms_config",
+  "metadata": {
+    "type": "TestResults",
+    "language": "en",
+    "applicationName": "TB REACH",
+    "followupOverduePeriod": 1,
+    "smearOverduePeriod": 1,
+    "resultsConfig": {
+      "presumptive": {
+        "Smear (Smr)": true,
+        "Gene Xpert (Xpe)": true,
+        "Chest X–ray (CXR)": true,
+        "Culture (Cul)": true
+      },
+      "positive": {
+        "Smear (Smr)": true,
+        "Gene Xpert (Xpe)": true,
+        "Chest X–ray (CXR)": true,
+        "Culture (Cul)": true
+      },
+      "intreatment": {
+        "Smear (Smr)": true,
+        "Gene Xpert (Xpe)": true,
+        "Chest X–ray (CXR)": true,
+        "Culture (Cul)": true
+      }
+    }
+  }
+}

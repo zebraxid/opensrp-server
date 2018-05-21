@@ -2,6 +2,8 @@ package org.opensrp.domain.viewconfiguration;
 
 import java.util.List;
 
+import org.junit.Ignore;
+
 public class RegisterConfiguration extends BaseConfiguration {
 	
 	private boolean enableAdvancedSearch;
@@ -52,6 +54,5 @@ public class RegisterConfiguration extends BaseConfiguration {
 	
 	public void setSearchableFields(List<String> searchableFields) {
 		this.searchableFields = searchableFields;
-	}
-	
+	}	
 }

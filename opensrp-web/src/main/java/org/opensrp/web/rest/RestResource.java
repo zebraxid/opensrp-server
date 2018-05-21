@@ -2,6 +2,7 @@ package org.opensrp.web.rest;
 
 import java.text.ParseException;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -51,10 +52,27 @@ public abstract class RestResource <T>{
 		return search(request, query, sort, limit, skip, fts);
 	}
 	
+	/****
+	 * Advance Search
+	 */
+	@RequestMapping(method=RequestMethod.GET, value="/advanceSearchBy")
+	@ResponseBody
+	private Map<String,Object> advanceSearchBy(HttpServletRequest request, @RequestParam(value="q", required=true) String query, 
+			@RequestParam(value="sort", required=false) String sort,
+			@RequestParam(value="limit", required=false) Integer limit, 
+			@RequestParam(value="skip", required=false) Integer skip,
+			@RequestParam(value="fts", required=false) Boolean fts) throws ParseException{
+		return advanceSearch(request, query, sort, limit, skip, fts);
+	}
+	
 	public abstract List<T> filter(String query) ;
 
 	public abstract List<T> search(HttpServletRequest request, String query, String sort, Integer limit, Integer skip, Boolean fts) throws ParseException ;
 	
+	public Map<String,Object> advanceSearch(HttpServletRequest request, String query, String sort, Integer limit, Integer skip, Boolean fts) throws ParseException {
+		return null;
+	}
+
 	public abstract T getByUniqueId(String uniqueId);
 	
 	public abstract List<String> requiredProperties();

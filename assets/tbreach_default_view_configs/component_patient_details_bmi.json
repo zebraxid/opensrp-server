@@ -1,6 +1,5 @@
 {
    "_id": "f9a6a9f8e584302f2dd202a5814a2686",
-   "_rev": "4-2c774aa14804dd81a004aca335d39f0d",
    "type": "ViewConfiguration",
    "serverVersion": 1517565746097,
    "identifier": "component_patient_details_bmi",

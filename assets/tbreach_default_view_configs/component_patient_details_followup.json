@@ -1,6 +1,5 @@
 {
    "_id": "f9a6a9f8e584302f2dd202a5814a2c98",
-   "_rev": "9-e622459e0e10cc53331249e72ab4df56",
    "type": "ViewConfiguration",
    "serverVersion": 1518073133603,
    "identifier": "component_patient_details_followup",

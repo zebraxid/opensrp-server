@@ -56,6 +56,10 @@ public class ClientService {
 		return allClients.findAllByAttribute(attributeType, attribute);
 	}
 	
+	public List<Client> findAllByLastTenPhoneDigits(String phone) {
+		return allClients.findAllByLastTenPhoneDigits(phone);
+	}
+	
 	public List<Client> findAllByAttribute(String attributeType, String attribute, DateTime from, DateTime to) {
 		return allClients.findAllByAttribute(attributeType, attribute, from, to);
 	}
@@ -87,9 +91,17 @@ public class ClientService {
 						subTown, lastEditFrom, lastEditTo);//db.queryView(q.includeDocs(true), Client.class);
 	}
 	
-	public List<Client> findAllByUserData(String gender, String query1, String query2) {
+	/*public List<Client> findAllByUserData(String gender, String query1, String query2) {
 		return allClients.findAllByUserData(gender,query1,query2);//db.queryView(q.includeDocs(true), Client.class);
-}
+	}*/
+	
+	public List<Client> findClientsByGAGFN(String gender, String status, String ageGroup, String firstName) {
+		return allClients.findCLientsByGenderAgeGroupFirstName(gender,status, ageGroup, firstName);//db.queryView(q.includeDocs(true), Client.class);
+	}
+	
+	public List<Client> findBaseEntityIdsByStatus(String status) {
+		return allClients.findBaseEntityIdsByStatus(status);
+	}
 
 	public List<Client> findByCriteria(String nameLike, String gender, DateTime birthdateFrom, DateTime birthdateTo,
 	                                   DateTime deathdateFrom, DateTime deathdateTo, String attributeType,

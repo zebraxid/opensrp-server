@@ -90,7 +90,7 @@ public class AllClients extends MotechBaseRepository<Client> {
 	}
 	
 	
-	@View(name = "all_clients_by_user_data", map = "function (doc) {  if(doc.type === 'Client'){"+
+	/*@View(name = "all_clients_by_user_data", map = "function (doc) {  if(doc.type === 'Client'){"+
    "for(var att in doc.attributes){"+
     "var val = doc.attributes[att]; "+
     "if(att.toLowerCase().indexOf('primary contact') !== -1)"+
@@ -106,9 +106,77 @@ public class AllClients extends MotechBaseRepository<Client> {
 	public List<Client> findAllByUserData(String gender, String query1, String query2) {
 		ComplexKey fkey = ComplexKey.of(gender.toLowerCase(), query1);
 		ComplexKey lkey = ComplexKey.of(gender.toLowerCase(), query2);
+		ViewQuery vq = createQuery("all_clients_by_user_data").startKey(fkey).endKey(lkey).includeDocs(true);
 		List<Client> query = db.queryView(createQuery("all_clients_by_user_data").startKey(fkey).endKey(lkey).includeDocs(true), Client.class);
 		return query;
+	}*/
+	
+	/***
+	 * 
+	 * 		Modified findByUserData
+	 * @param addressType
+	 * @param addressField
+	 * @param value
+	 * @param from
+	 * @param to
+	 * @return
+	 */
+	@View(name = "all_clients_by_gender_ageGroup_firstName", map = "function (doc) {  if(doc.type === 'Client'){"+
+			"var status = '';"+
+			"if (doc.type === 'Client') {"+
+			"if ((Object.keys(doc.attributes).length > 0) && ('baseline' in doc.attributes)) {"+
+			"status = 'in-treatment';"+
+			"} else if ((Object.keys(doc.attributes).length > 0) && ('diagnosis_date' in doc.attributes)) {"+
+			"status = 'positive';"+
+			"} else if ((Object.keys(doc.attributes).length > 0) && ('Primary Contact Number' in doc.attributes)) {"+
+			"status = 'presumptive';"+
+			"}"+
+			"else status = 'non-presumtpive';"+
+			"}"+	
+			"var curdate = new Date();"+
+				"var dob = new Date(doc.birthdate);"+
+				"var age = curdate.getFullYear() - dob.getFullYear();"+
+				"if(age >=0 && age <= 15){"+
+				"emit([doc.gender, status, '0to15', doc.firstName], doc);"+
+				"}"+
+				"else if(age >=16 && age <=30){"+
+				"emit([doc.gender.toLowerCase(), status, '16to30', doc.firstName], doc);"+
+				"}"+
+				"else if(age >=31 && age <=45){"+
+				"emit([doc.gender.toLowerCase(), status, '31to45', doc.firstName], doc);"+
+				"}"+
+				"else if(age >=46 && age <=60){"+
+				"emit([doc.gender.toLowerCase(), status, '46to60', doc.firstName], doc);"+
+				"}"+
+				"else if(age >=61 && age <=75){"+
+				"emit([doc.gender.toLowerCase(), status, '61to75', doc.firstName], doc);"+
+				"}"+
+				"else if(age >= 76){"+
+				"emit([doc.gender.toLowerCase(), status, '76+', doc.firstName], doc);"+
+				"}}}")
+	public List<Client> findCLientsByGenderAgeGroupFirstName(String gender, String status, String ageGroup, String firstName) {
+		ComplexKey fkey = ComplexKey.of(gender.toLowerCase(),status, ageGroup, firstName);
+		ComplexKey lkey = ComplexKey.of(gender.toLowerCase(),status, ageGroup, firstName+"zzz");
+		List<Client> query = db.queryView(createQuery("all_clients_by_gender_ageGroup_firstName").startKey(fkey).endKey(lkey).includeDocs(true), Client.class);
+		return query;
 	}
+	
+	@View(name = "baseEntityIds_by_status", map = "function (doc) {  if(doc.type === 'Client'){"+
+			"if( (Object.keys(doc.attributes).length > 0) && ('baseline' in doc.attributes)){"+
+			      "emit('in-treatment',doc);"+
+			    "}"+
+			    "else if((Object.keys(doc.attributes).length > 0) && ('diagnosis_date' in doc.attributes)){"+
+			      "emit('positive',doc);"+
+			    "}"+
+			    "else if( (Object.keys(doc.attributes).length > 0) && ('Primary Contact Number' in doc.attributes)){"+
+			      "emit('presumptive', doc);"+
+			    "}"+
+			"}}")
+public List<Client> findBaseEntityIdsByStatus(String status) {
+	List<Client> query = db.queryView(createQuery("baseEntityIds_by_status").key(status).includeDocs(true), Client.class);
+	return query;
+}
+	   
 	
 	@View(name = "all_clients_by_address_and_timestamp", map = "function (doc) {  if(doc.type === 'Client'){   "
 			+ " var keys = ['subTown','town','subDistrict','countyDistrict','cityVillage','stateProvince','country'];   "
@@ -281,5 +349,11 @@ public class AllClients extends MotechBaseRepository<Client> {
 					Client.class);
 		}
 		return new ArrayList<>();
+	}
+
+	@View(name = "client_by_last_ten_phone_digits", map = "function (doc) {if(doc.type === 'Client'){  var phone = doc.attributes['Primary Contact Number']; emit([phone.substring(phone.length - 10, phone.length)],doc);}}")
+	public List<Client> findAllByLastTenPhoneDigits(String phone) {
+		ComplexKey ckey = ComplexKey.of(phone);
+		return db.queryView(createQuery("client_by_last_ten_phone_digits").key(ckey).includeDocs(true), Client.class);
 	}
 }
