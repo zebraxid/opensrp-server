@@ -3,6 +3,9 @@ package org.opensrp.web.security;
 import static java.text.MessageFormat.format;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import javax.annotation.Resource;
 
 import org.opensrp.api.domain.User;
 import org.opensrp.connector.openmrs.service.OpenmrsUserService;
@@ -10,6 +13,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.redis.core.HashOperations;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -17,6 +22,7 @@ import org.springframework.security.authentication.encoding.PasswordEncoder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Component;
 
 import ch.lambdaj.Lambda;
@@ -35,10 +41,18 @@ public class DrishtiAuthenticationProvider implements AuthenticationProvider {
 	
 	public static final String INTERNAL_ERROR = "Failed to authenticate user due to internal server error. Please try again later.";
 	
+	private static final Integer HASH_KEY = 1;
+	
 	//private AllOpenSRPUsers allOpenSRPUsers;
 	private PasswordEncoder passwordEncoder;
 	
 	private OpenmrsUserService openmrsUserService;
+	
+	@Resource(name = "redisTemplate")
+	private HashOperations<String, Integer, Authentication> hashOps;
+	
+	@Autowired
+	private RedisTemplate<String, String> redisTemplate;
 	
 	@Autowired
 	public DrishtiAuthenticationProvider(OpenmrsUserService openmrsUserService,
@@ -49,18 +63,30 @@ public class DrishtiAuthenticationProvider implements AuthenticationProvider {
 	
 	@Override
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-		User user = getDrishtiUser(authentication, authentication.getName());
-		// get user after authentication
-		if (user == null) {
-			throw new BadCredentialsException(USER_NOT_FOUND);
+		String userAddress = ((WebAuthenticationDetails) authentication.getDetails()).getRemoteAddress();
+		String key = userAddress + "|" + authentication.getName();
+		if (hashOps.hasKey(key, HASH_KEY)) {
+			logger.debug("Cache hit for: " + key);
+			return hashOps.get(key, HASH_KEY);
+		} else {
+			logger.debug("Cache miss for: " + key);
+			User user = getDrishtiUser(authentication, authentication.getName());
+			// get user after authentication
+			if (user == null) {
+				throw new BadCredentialsException(USER_NOT_FOUND);
+			}
+			
+			if (user.getVoided() != null && user.getVoided()) {
+				throw new BadCredentialsException(USER_NOT_ACTIVATED);
+			}
+			
+			Authentication auth = new UsernamePasswordAuthenticationToken(authentication.getName(),
+			        authentication.getCredentials(), getRolesAsAuthorities(user));
+			hashOps.put(key, HASH_KEY, auth);
+			redisTemplate.expire(key, 10, TimeUnit.MINUTES);
+			return new UsernamePasswordAuthenticationToken(authentication.getName(), authentication.getCredentials(),
+			        getRolesAsAuthorities(user));
 		}
-		
-		if (user.getVoided() != null && user.getVoided()) {
-			throw new BadCredentialsException(USER_NOT_ACTIVATED);
-		}
-		
-		return new UsernamePasswordAuthenticationToken(authentication.getName(), authentication.getCredentials(),
-		        getRolesAsAuthorities(user));
 	}
 	
 	@Override
