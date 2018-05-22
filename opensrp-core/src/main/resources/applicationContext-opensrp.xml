@@ -31,7 +31,7 @@
 	<!-- <import resource="persistence_couchdb.xml"/> -->
 	<import resource="persistence_postgres.xml" />
 
-	<bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig"
+	<!-- <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig"
 		p:max-total="5" p:test-on-borrow="true" p:test-on-return="true" />
 
 	<bean id="jedisConnectionFactory"
@@ -39,15 +39,19 @@
 		p:host-name="${redis.host}" p:port="${redis.port}" p:password="${redis.password}"
 		p:use-pool="true">
 		<constructor-arg ref="jedisPoolConfig" />
-	</bean>
+	</bean> -->
+
+	<bean id="lettuceConnectionFactory"
+	class="org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory"
+	p:host-name="${redis.host}" p:port="${redis.port}" p:password="${redis.password}" />
 
 	<bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate"
-		p:connection-factory-ref="jedisConnectionFactory"
+		p:connection-factory-ref="lettuceConnectionFactory"
 		p:enable-transaction-support="true" />
 
 	<task:scheduler id="applicationScheduler" pool-size="10" />
 
-	<task:scheduled-tasks scheduler="applicationScheduler">
+	<!-- <task:scheduled-tasks scheduler="applicationScheduler">
 		<task:scheduled ref="eventsListener" method="processEvent"
 			fixed-delay="180000" />
 		<task:scheduled ref="openmrsSyncerListener" method="pushToOpenMRS"
@@ -56,8 +60,8 @@
 			fixed-delay="420000" />
 		<task:scheduled ref="DHIS2DatasetPush" method="pushToDHIS2"
 			fixed-delay="600000" />
-		<!--<task:scheduled ref="openmrsAtomfeedListener" method="syncAtomfeeds"-->
-			<!--fixed-delay="900000" />-->
-	</task:scheduled-tasks>
+		<task:scheduled ref="openmrsAtomfeedListener" method="syncAtomfeeds"
+		fixed-delay="900000" />
+	</task:scheduled-tasks> -->
 
 </beans>
