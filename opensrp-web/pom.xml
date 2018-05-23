@@ -275,11 +275,11 @@
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/redis.clients/jedis -->
-		<!-- <dependency>
+		<dependency>
 		    <groupId>redis.clients</groupId>
 		    <artifactId>jedis</artifactId>
 		    <version>2.4.1</version>
-		</dependency> -->
+		</dependency> 
 		
 		<!-- https://mvnrepository.com/artifact/com.lambdaworks/lettuce -->
 		<dependency>
@@ -292,6 +292,5 @@
               <artifactId>spring-tx</artifactId>
               <version>3.1.1.RELEASE</version>
            </dependency>
-
     </dependencies>
 </project>
