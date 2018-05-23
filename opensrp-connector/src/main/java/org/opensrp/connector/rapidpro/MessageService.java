@@ -16,6 +16,7 @@ import org.opensrp.domain.Camp;
 import org.opensrp.domain.Client;
 import org.opensrp.domain.Event;
 import org.opensrp.domain.SMSLog;
+import org.opensrp.dto.rapidpro.AnnouncedClient;
 import org.opensrp.repository.AllSMSLog;
 import org.opensrp.service.ClientService;
 import org.opensrp.service.RapidProServiceImpl;
@@ -89,6 +90,36 @@ public class MessageService {
 			}
 			catch (Exception e) {
 				logger.error("sentMessageToClient error: " + e.getMessage() + " ,cause:" + e.getCause());
+			}
+		}
+		
+	}
+	
+	public void sentMessageToClientNew(MessageFactory messageFactory, List<AnnouncedClient> announcedClients, Camp camp) {
+		
+		for (AnnouncedClient client : announcedClients) {
+			try {
+				if (client.getClientType().equalsIgnoreCase(ClientType.child.name())) {
+					Client child = clientService.find(client.getBaseEntityId());
+					if (child != null) {
+						Map<String, List<String>> relationships = child.getRelationships();
+						String motherId = relationships.get("mother").get(0);
+						Client mother = clientService.find(motherId);
+						logger.info("sending message to mother moterBaseEntityId:" + mother.getBaseEntityId());
+						generateDataAndsendMessageToRapidpro(mother, ClientType.child, messageFactory, camp);
+					}
+				} else if (client.getClientType().equalsIgnoreCase(ClientType.mother.name())) {
+					Client mother = clientService.find(client.getBaseEntityId());
+					if (mother != null) {
+						generateDataAndsendMessageToRapidpro(mother, ClientType.mother, messageFactory, camp);
+					}
+					
+				} else {
+					logger.info("invalid client entity type:" + client.getBaseEntityId());
+				}
+			}
+			catch (Exception e) {
+				logger.error("sentMessageToClientNew error: " + e.getMessage() + " ,cause:" + e.getCause());
 			}
 		}
 		

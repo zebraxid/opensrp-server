@@ -8,6 +8,7 @@ import org.opensrp.connector.rapidpro.MessageService;
 import org.opensrp.connector.rapidpro.MessageType;
 import org.opensrp.domain.Camp;
 import org.opensrp.domain.Event;
+import org.opensrp.dto.rapidpro.AnnouncedClient;
 import org.opensrp.repository.AllCamp;
 import org.opensrp.scheduler.service.ActionService;
 import org.opensrp.service.EventService;
@@ -54,16 +55,19 @@ public class RapidproMessageListener {
 			for (Camp camp : camps) {
 				try {
 					if (DateUtil.dateDiff(camp.getDate()) == 0) {
+						allCamp.updateCamp(camp);
 						List<Event> events = eventService.findByProviderAndEntityType(camp.getProviderName());
 						logger.info("total events found for announcement eventSize: " + events.size() + " ,provider:"
 						        + camp.getProviderName());
 						messageService.sentMessageToClient(messageFactory, events, camp);
-						allCamp.updateCamp(camp);
+						
 					} else {
 						logger.info("no camp found for camp announchment message provider:" + camp.getProviderName());
 					}
 				}
 				catch (Exception e) {
+					logger.warn("could not complete announchment for provider: " + camp.getProviderName() + " ,campdate: "
+					        + camp.getDate());
 					logger.error("camp announcement error: " + e.getMessage() + " ,cause:" + e.getCause());
 				}
 			}
@@ -71,6 +75,37 @@ public class RapidproMessageListener {
 			logger.info("no camp found for camp announchment message provider:" + provider);
 		}
 		
+	}
+	
+	public int campAnnouncementListener(String provider, List<AnnouncedClient> announcedClients) {
+		MessageFactory messageFactory = null;
+		messageFactory = MessageFactory.getMessageFactory(MessageType.ANNOUNCEMENT);
+		
+		List<Camp> camps = allCamp.findAllActiveByProvider(provider);
+		if (camps == null) {
+			logger.info("no active camp found for announchment provider:" + provider);
+			return 0;
+		} else {
+			for (Camp camp : camps) {
+				try {
+					if (DateUtil.dateDiff(camp.getDate()) != 0) {
+						logger.info("no active camp found today for announchment  provider:" + camp.getProviderName());
+						return 0;
+						
+					} else {
+						allCamp.updateCamp(camp);
+						messageService.sentMessageToClientNew(messageFactory, announcedClients, camp);
+					}
+				}
+				catch (Exception e) {
+					logger.warn("could not complete announchment for provider: " + camp.getProviderName() + " ,campdate: "
+					        + camp.getDate());
+					logger.error("camp announcement error: " + e.getMessage() + " ,cause:" + e.getCause());
+					return -1;
+				}
+			}
+		}
+		return 1;
 	}
 	
 	public void fetchClient() {

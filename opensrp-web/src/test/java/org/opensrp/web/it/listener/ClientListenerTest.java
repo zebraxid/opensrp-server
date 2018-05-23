@@ -4,6 +4,7 @@
 package org.opensrp.web.it.listener;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -19,6 +20,7 @@ import org.opensrp.domain.Client;
 import org.opensrp.repository.AllCamp;
 import org.opensrp.repository.AllClients;
 import org.opensrp.scheduler.repository.AllActions;
+import org.opensrp.service.RapidProServiceImpl;
 import org.opensrp.web.listener.RapidproMessageListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -43,6 +45,9 @@ public class ClientListenerTest {
 	
 	@Autowired
 	private AllCamp allCamp;
+	
+	@Autowired
+	private RapidProServiceImpl rapidproService;
 	
 	@Before
 	public void setup() throws IOException {
@@ -94,6 +99,16 @@ public class ClientListenerTest {
 		Client client = allClients.findByBaseEntityId("0001644c-799a-4c5f-b466-99c32025fa61");
 		
 		System.err.println("subunit" + getClientSubunit(client));
+		
+	}
+	
+	public void sendTestMessage() {
+		List<String> urns = new ArrayList<String>();
+		List<String> contacts = new ArrayList<String>();
+		List<String> groups = new ArrayList<String>();
+		urns.add("tel:" + "+8801711082537");
+		rapidproService.sendMessage(urns, contacts, groups, "test message", "");
+		System.err.println("send message to rapidpro" + "01711082537");
 		
 	}
 	
