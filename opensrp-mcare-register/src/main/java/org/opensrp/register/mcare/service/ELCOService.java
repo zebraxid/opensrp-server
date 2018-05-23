@@ -119,8 +119,10 @@ import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ELCOSchedulesC
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
+import org.opensrp.common.AllConstants.ELCOSchedulesConstantsImediate;
 import org.opensrp.common.ErrorDocType;
 import org.opensrp.common.util.DateTimeUtil;
 import org.opensrp.common.util.DateUtil;
@@ -134,6 +136,8 @@ import org.opensrp.register.mcare.service.scheduling.ELCOScheduleService;
 import org.opensrp.register.mcare.service.scheduling.HHSchedulesService;
 import org.opensrp.register.mcare.service.scheduling.ScheduleLogService;
 import org.opensrp.repository.AllErrorTrace;
+import org.opensrp.scheduler.Action;
+import org.opensrp.scheduler.repository.AllActions;
 import org.opensrp.scheduler.service.ActionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -162,6 +166,9 @@ public class ELCOService {
 	private AllErrorTrace allErrorTrace;
 	
 	private ActionService actionService;
+	
+	@Autowired
+	private AllActions allActions;
 	
 	@Autowired
 	public ELCOService(AllHouseHolds allHouseHolds, AllElcos allEcos, HHSchedulesService hhSchedulesService,
@@ -219,8 +226,13 @@ public class ELCOService {
 			String fieldName = "FWWOMFNAME";
 			
 			if (!elcoFields.get(fieldName).equalsIgnoreCase("") || elcoFields.get(fieldName) != null) {
-				elcoScheduleService.imediateEnrollIntoMilestoneOfPSRF(elcoFields.get(ID),
-				    submission.getField(REFERENCE_DATE), submission.anmId(), submission.instanceId());
+				List<Action> existingAlerts = allActions.findAlertByANMIdEntityIdScheduleName(submission.anmId(),
+				    elcoFields.get(ID), ELCOSchedulesConstantsImediate.ELCO_SCHEDULE_PSRF);
+				logger.info("existingAlerts Size" + existingAlerts.size() + "existingAlerts" + existingAlerts.toString());
+				if (existingAlerts.size() == 0) {
+					elcoScheduleService.imediateEnrollIntoMilestoneOfPSRF(elcoFields.get(ID),
+					    submission.getField(REFERENCE_DATE), submission.anmId(), submission.instanceId());
+				}
 			}
 			
 		}

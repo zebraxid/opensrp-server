@@ -945,9 +945,8 @@ public class AclController {
 	
 	private void makeScheduleFalse(Action action) {
 		action.markAsInActive();
-		action.timestamp(System.currentTimeMillis());
 		action.setRevision(action.getRevision());
-		allActions.update(action);
+		//allActions.update(action);
 	}
 	
 	private String getBnfDate(List<Map<String, String>> bnfVisitDetails) {
