@@ -68,7 +68,6 @@ import static org.opensrp.common.AllConstants.PSRFFields.clientVersion;
 import static org.opensrp.common.AllConstants.PSRFFields.timeStamp;
 import static org.opensrp.common.AllConstants.UserType.FD;
 import static org.opensrp.common.util.EasyMap.create;
-import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ChildScheduleConstants.SCHEDULE_ENCC;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ELCOSchedulesConstants.ELCO_SCHEDULE_PSRF;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_PNC;
 
@@ -223,16 +222,11 @@ public class PNCService {
 				} else {
 					
 					if (submission.getField("user_type").equalsIgnoreCase(FD)) {
-						List<Action> existingAlerts = allActions.findAlertByANMIdEntityIdScheduleName(submission.anmId(),
-						    submission.entityId(), SCHEDULE_PNC);
-						logger.info("SCHEDULE_PNC existingAlerts Size:" + existingAlerts.size() + "existingAlerts"
-						        + existingAlerts.toString());
-						if (existingAlerts.size() == 0) {
-							pncSchedulesService.enrollPNCRVForMother(submission.entityId(), submission.instanceId(),
-							    submission.anmId(), LocalDate.parse(referenceDate), referenceDate);
-							logger.info("Generating schedule for Child when Child is Live Birth. Mother Id: "
-							        + mother.caseId());
-						}
+						
+						pncSchedulesService.enrollPNCRVForMother(submission.entityId(), submission.instanceId(),
+						    submission.anmId(), LocalDate.parse(referenceDate), referenceDate);
+						logger.info("Generating schedule for Child when Child is Live Birth. Mother Id: " + mother.caseId());
+						
 					}
 				}
 				SubFormData subFormData = submission.getSubFormByName(CHILD_REGISTRATION_SUB_FORM_NAME);
@@ -280,14 +274,10 @@ public class PNCService {
 					} else {
 						
 						if (submission.getField("user_type").equalsIgnoreCase(FD)) {
-							List<Action> existingAlerts = allActions.findAlertByANMIdEntityIdScheduleName(
-							    submission.anmId(), childFields.get(ID), SCHEDULE_ENCC);
-							logger.info("SCHEDULE_ENCC existingAlerts Size:" + existingAlerts.size() + "existingAlerts"
-							        + existingAlerts.toString());
-							if (existingAlerts.size() == 0) {
-								childSchedulesService.enrollENCCForChild(childFields.get(ID), submission.instanceId(),
-								    submission.anmId(), LocalDate.parse(referenceDate), referenceDate);
-							}
+							
+							childSchedulesService.enrollENCCForChild(childFields.get(ID), submission.instanceId(),
+							    submission.anmId(), LocalDate.parse(referenceDate), referenceDate);
+							
 						}
 					}
 				}
@@ -295,16 +285,10 @@ public class PNCService {
 			} else if (submission.getField(FWBNFSTS).equals(STS_SB)) {
 				if (submission.getField("user_type").equalsIgnoreCase(FD)) {
 					
-					List<Action> existingAlerts = allActions.findAlertByANMIdEntityIdScheduleName(submission.anmId(),
-					    submission.entityId(), SCHEDULE_PNC);
-					logger.info("SCHEDULE_PNC existingAlerts Size:" + existingAlerts.size() + "existingAlerts"
-					        + existingAlerts.toString());
-					if (existingAlerts.size() == 0) {
-						logger.info("Generating schedule for Mother when Child is Still Birth. Mother Id: "
-						        + mother.caseId());
-						pncSchedulesService.enrollPNCRVForMother(submission.entityId(), submission.instanceId(),
-						    submission.anmId(), LocalDate.parse(referenceDate), referenceDate);
-					}
+					logger.info("Generating schedule for Mother when Child is Still Birth. Mother Id: " + mother.caseId());
+					pncSchedulesService.enrollPNCRVForMother(submission.entityId(), submission.instanceId(),
+					    submission.anmId(), LocalDate.parse(referenceDate), referenceDate);
+					
 				} else {
 					logger.info("FWA submit form for Still Birth so nothing happend ");
 				}

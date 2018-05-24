@@ -252,13 +252,10 @@ public class ANCService {
 		addDetailsToMother(submission, mother, lco);
 		
 		allMothers.update(mother);
-		List<Action> existingAlerts = allActions.findAlertByANMIdEntityIdScheduleName(submission.anmId(), motherId,
-		    SCHEDULE_ANC);
-		logger.info("existingAlerts Size" + existingAlerts.size() + "existingAlerts" + existingAlerts.toString());
-		if (existingAlerts.size() == 0) {
-			ancSchedulesService.enrollMother(motherId, LocalDate.parse(submission.getField(MOTHER_REFERENCE_DATE)),
-			    submission.anmId(), submission.instanceId(), submission.getField(MOTHER_REFERENCE_DATE), false);
-		}
+		
+		ancSchedulesService.enrollMother(motherId, LocalDate.parse(submission.getField(MOTHER_REFERENCE_DATE)),
+		    submission.anmId(), submission.instanceId(), submission.getField(MOTHER_REFERENCE_DATE), false);
+		
 	}
 	
 	private void addDetailsToMother(FormSubmission submission, Mother mother, Elco elco) {

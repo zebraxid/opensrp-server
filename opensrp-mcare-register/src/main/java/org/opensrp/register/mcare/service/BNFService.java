@@ -40,7 +40,6 @@ import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherSchedule
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 
 import org.joda.time.LocalDate;
@@ -59,7 +58,6 @@ import org.opensrp.register.mcare.service.scheduling.BNFSchedulesService;
 import org.opensrp.register.mcare.service.scheduling.ELCOScheduleService;
 import org.opensrp.register.mcare.service.scheduling.ScheduleLogService;
 import org.opensrp.repository.AllErrorTrace;
-import org.opensrp.scheduler.Action;
 import org.opensrp.scheduler.repository.AllActions;
 import org.opensrp.scheduler.service.ActionService;
 import org.slf4j.Logger;
@@ -133,13 +131,8 @@ public class BNFService {
 		mother.withSUBMISSIONDATE(DateUtil.getTimestampToday());
 		allMothers.update(mother);
 		
-		List<Action> existingAlerts = allActions.findAlertByANMIdEntityIdScheduleName(submission.anmId(), motherId,
-		    SCHEDULE_BNF);
-		logger.info("existingAlerts Size: " + existingAlerts.size() + "existingAlerts" + existingAlerts.toString());
-		if (existingAlerts.size() == 0) {
-			bnfSchedulesService.enrollBNF(motherId, LocalDate.parse(submission.getField(MOTHER_REFERENCE_DATE)),
-			    submission.anmId(), submission.instanceId(), submission.getField(MOTHER_REFERENCE_DATE));
-		}
+		bnfSchedulesService.enrollBNF(motherId, LocalDate.parse(submission.getField(MOTHER_REFERENCE_DATE)),
+		    submission.anmId(), submission.instanceId(), submission.getField(MOTHER_REFERENCE_DATE));
 		
 	}
 	

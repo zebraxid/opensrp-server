@@ -3,6 +3,7 @@ package org.opensrp.register.mcare.listener;
 import static ch.lambdaj.collection.LambdaCollections.with;
 import static java.text.MessageFormat.format;
 import static org.apache.commons.lang.exception.ExceptionUtils.getFullStackTrace;
+import static org.opensrp.common.AllConstants.Form.PROCESSING;
 
 import java.text.MessageFormat;
 import java.util.List;
@@ -109,8 +110,13 @@ public class FormEventListener {
 	
 	private void sentDataToOpenMRS(List<FormSubmission> formSubmissions) {
 		for (FormSubmission formSubmission : formSubmissions) {
-			logger.info("CaseId: " + formSubmission.entityId());
-			openMRSService.sendDataToOpenMRS(formSubmission);
+			if (!formSubmission.formDataDefinitionVersion().equalsIgnoreCase(PROCESSING)) {
+				logger.info("CaseId: " + formSubmission.entityId());
+				openMRSService.sendDataToOpenMRS(formSubmission);
+			} else {
+				logger.info("no need to send openmrs:" + formSubmission.entityId() + " ,formDataDefinitionVersion:"
+				        + formSubmission.formDataDefinitionVersion());
+			}
 		}
 	}
 }

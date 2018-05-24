@@ -73,6 +73,8 @@ public class AllConstants {
 		
 		public static final String ANM_ID = "anmId";
 		
+		public static final String PROCESSING = "999";
+		
 		public static final String FORM_NAME = "formName";
 		
 		public static final String INSTANCE_ID = "instanceId";
