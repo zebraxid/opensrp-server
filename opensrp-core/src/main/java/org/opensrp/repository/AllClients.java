@@ -123,16 +123,20 @@ public class AllClients extends MotechBaseRepository<Client> {
 	 */
 	@View(name = "all_clients_by_gender_ageGroup_firstName", map = "function (doc) {  if(doc.type === 'Client'){"+
 			"var status = '';"+
-			"if (doc.type === 'Client') {"+
-			"if ((Object.keys(doc.attributes).length > 0) && ('baseline' in doc.attributes)) {"+
+			"if((Object.keys(doc.attributes).length > 0)){"+
+			"if(!('dateRemoved' in doc.attributes)){"+
+			"if (('baseline' in doc.attributes)) {"+
 			"status = 'in-treatment';"+
-			"} else if ((Object.keys(doc.attributes).length > 0) && ('diagnosis_date' in doc.attributes)) {"+
+			"} else if (('diagnosis_date' in doc.attributes)) {"+
 			"status = 'positive';"+
-			"} else if ((Object.keys(doc.attributes).length > 0) && ('Primary Contact Number' in doc.attributes)) {"+
+			"} else if (('Primary Contact Number' in doc.attributes)) {"+
 			"status = 'presumptive';"+
 			"}"+
 			"else status = 'non-presumtpive';"+
-			"}"+	
+			"}"+
+			"else status = 'patient_removed'"+
+			"}"+
+			"else status = 'undefined';"+
 			"var curdate = new Date();"+
 				"var dob = new Date(doc.birthdate);"+
 				"var age = curdate.getFullYear() - dob.getFullYear();"+
