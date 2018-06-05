@@ -21,8 +21,20 @@ public class ViewConfigurationService {
 		this.viewConfigurationRepository = viewConfigurationRepository;
 	}
 	
+	public void save(ViewConfiguration vc){
+		this.viewConfigurationRepository.add(vc);
+	}
+	
+	public void update(ViewConfiguration vc){
+		this.viewConfigurationRepository.update(vc);
+	}
+	
 	public List<ViewConfiguration> findViewConfigurationsByVersion(Long lastSyncedServerVersion) {
 		return viewConfigurationRepository.findViewConfigurationsByVersion(lastSyncedServerVersion);
+	}
+	
+	public List<ViewConfiguration> findAllViewConfigurations() {
+		return viewConfigurationRepository.findAllViewConfigurations();
 	}
 	
 	public void addServerVersion() {
