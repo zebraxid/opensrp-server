@@ -19,7 +19,7 @@ margin:auto;
 </style>
 <script type="text/javascript">
 $(document).ready(function(){
-	$("#jsonDiv").hide();
+	$("#jsonEditDiv").hide();
 	$.ajax({
         url: "${pageContext.request.contextPath}/rest/viewconfiguration/getAll"
     }).then(function(data) {
@@ -28,7 +28,7 @@ $(document).ready(function(){
 	       	table.id = "view_config_table";
 	       	table.className = "table table-sm table-bordered";
 	       	var thead = document.createElement("thead");
-	       	thead.className = "thead-dark";
+	       	thead.className = "thead-light";
 	       	var tr = document.createElement("tr");   
 	       	var th = document.createElement("th");
 	       	th.className += " text-center"; 
@@ -42,7 +42,7 @@ $(document).ready(function(){
 	       	
 	       	thead.appendChild(tr);
 	       	table.appendChild(thead);
-	
+
 		    for(var i=0; i<data.length; i++){
 	    		var tr = table.insertRow(-1);
 	    	   	var firstCell = tr.insertCell(-1);
