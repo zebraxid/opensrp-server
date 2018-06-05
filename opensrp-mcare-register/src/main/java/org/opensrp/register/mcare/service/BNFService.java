@@ -44,6 +44,7 @@ import java.util.Map;
 
 import org.joda.time.LocalDate;
 import org.opensrp.common.AllConstants;
+import org.opensrp.common.AllConstants.BnfFollowUpVisitFields;
 import org.opensrp.common.ErrorDocType;
 import org.opensrp.common.util.DateTimeUtil;
 import org.opensrp.common.util.DateUtil;
@@ -92,6 +93,9 @@ public class BNFService {
 	private AllActions allActions;
 	
 	@Autowired
+	private RegisterService registerService;
+	
+	@Autowired
 	public BNFService(AllElcos allElcos, AllMothers allMothers, BNFSchedulesService bnfSchedulesService,
 	    PNCService pncService, ScheduleLogService scheduleLogService, ActionService actionService,
 	    ANCSchedulesService ancSchedulesService, ELCOScheduleService elcoScheduleService, AllErrorTrace allErrorTrace) {
@@ -130,9 +134,14 @@ public class BNFService {
 		}
 		mother.withSUBMISSIONDATE(DateUtil.getTimestampToday());
 		allMothers.update(mother);
-		
-		bnfSchedulesService.enrollBNF(motherId, LocalDate.parse(submission.getField(MOTHER_REFERENCE_DATE)),
-		    submission.anmId(), submission.instanceId(), submission.getField(MOTHER_REFERENCE_DATE));
+		if (submission.getField("user_type").equalsIgnoreCase(FD)
+		        && AllConstants.BNF_VISIT_STATUS.contains(submission.getField(BnfFollowUpVisitFields.FWBNFSTS))) {
+			registerService.deleteMotherAndActionAndUnenrollSchedule(submission.anmId(), motherId);
+			registerService.deleteChildAndActionAndUnenrollSchedule(motherId);
+		} else {
+			bnfSchedulesService.enrollBNF(motherId, LocalDate.parse(submission.getField(MOTHER_REFERENCE_DATE)),
+			    submission.anmId(), submission.instanceId(), submission.getField(MOTHER_REFERENCE_DATE));
+		}
 		
 	}
 	

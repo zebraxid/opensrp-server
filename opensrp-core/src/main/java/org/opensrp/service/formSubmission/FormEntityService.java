@@ -8,7 +8,7 @@ import static org.opensrp.common.AllConstants.Form.CLIENT_VERSION;
 import static org.opensrp.common.AllConstants.Form.ENTITY_ID;
 import static org.opensrp.common.AllConstants.Form.FORM_NAME;
 import static org.opensrp.common.AllConstants.Form.INSTANCE_ID;
-import static org.opensrp.common.AllConstants.Form.PROCESSING;
+import static org.opensrp.common.AllConstants.Form.NOTPROCESSING;
 import static org.opensrp.common.AllConstants.Form.SERVER_VERSION;
 import static org.opensrp.common.util.EasyMap.create;
 
@@ -44,7 +44,7 @@ public class FormEntityService {
 		sort(formSubmissions, serverVersionComparator());
 		FormExportToken exportToken = allFormExportTokens.getAll().get(0);
 		for (FormSubmission submission : formSubmissions) {
-			if (!submission.formDataDefinitionVersion().equalsIgnoreCase(PROCESSING)) {
+			if (!submission.formDataDefinitionVersion().equalsIgnoreCase(NOTPROCESSING)) {
 				String params = getParams(submission);
 				logger.info(format("Invoking save for form with instance Id: {0} and for entity Id: {1}",
 				    submission.instanceId(), submission.entityId()));

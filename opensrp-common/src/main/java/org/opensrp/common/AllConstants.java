@@ -73,7 +73,7 @@ public class AllConstants {
 		
 		public static final String ANM_ID = "anmId";
 		
-		public static final String PROCESSING = "999";
+		public static final String NOTPROCESSING = "999";
 		
 		public static final String FORM_NAME = "formName";
 		
@@ -1838,5 +1838,35 @@ public class AllConstants {
 		ALERTSTATUS.put("upcoming", 1);
 		ALERTSTATUS.put("urgent", 2);
 		ALERTSTATUS.put("expired", 3);
+	}
+	
+	/**
+	 * 03 : বয়সের কারনে মাসিক একেবারে উঠে গেছে Women Menopausal, 04: মহিলা স্থায়ী পদ্ধতি গ্রহণ
+	 * করেছেন Woman Sterilized, 44: স্বামী স্থায়ী পদ্ধতি গ্রহণ করেছেন Husband Sterilized, 05:
+	 * তালাকপ্রাপ্তা/আলাদা থাকেন Divorced / Separated, 08: মহিলা মারা গেছেন Woman Died, 88: স্বামী
+	 * মারা গেছেন Husband Died, 999: DMC ONLY DMC ONLY
+	 */
+	public static List<String> PSR_VISIT_STATUS = new ArrayList<String>();
+	static {
+		PSR_VISIT_STATUS.add("03");
+		PSR_VISIT_STATUS.add("04");
+		PSR_VISIT_STATUS.add("44");
+		PSR_VISIT_STATUS.add("05");
+		PSR_VISIT_STATUS.add("08");
+		PSR_VISIT_STATUS.add("88");
+		PSR_VISIT_STATUS.add("999");
+	}
+	
+	/**
+	 * 0: মহিলার গর্ভবতী হওয়ার তথ্যটি ভুল ছিল False pregnancy report, 3: জীবিত বাচ্চা জন্ম দিয়েছেন
+	 * Woman had live birth, 4: গর্ভনষ্ট হয়েছে / মৃতবাচ্চা প্রসব হয়েছে Miscarriage / Stillbirth, 8:
+	 * বাচ্চা জন্ম দেওয়ার আগেই মহিলা মারা গেছেন Woman died before birth, 999: DMC ONLY DMC ONLY
+	 */
+	public static List<String> BNF_VISIT_STATUS = new ArrayList<String>();
+	static {
+		BNF_VISIT_STATUS.add("0");
+		BNF_VISIT_STATUS.add("8");
+		BNF_VISIT_STATUS.add("999");
+		
 	}
 }

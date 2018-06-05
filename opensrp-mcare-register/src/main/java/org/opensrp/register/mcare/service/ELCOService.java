@@ -121,6 +121,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
 
+import org.opensrp.common.AllConstants;
 import org.opensrp.common.ErrorDocType;
 import org.opensrp.common.util.DateTimeUtil;
 import org.opensrp.common.util.DateUtil;
@@ -166,6 +167,9 @@ public class ELCOService {
 	
 	@Autowired
 	private AllActions allActions;
+	
+	@Autowired
+	private RegisterService registerService;
 	
 	@Autowired
 	public ELCOService(AllHouseHolds allHouseHolds, AllElcos allEcos, HHSchedulesService hhSchedulesService,
@@ -479,6 +483,17 @@ public class ELCOService {
 					    submission.anmId(), submission.instanceId());
 					actionService.markAlertAsInactive(submission.anmId(), submission.entityId(), ELCO_SCHEDULE_PSRF);
 					actionService.markAlertAsInactive(submission.anmId(), submission.entityId(), IMD_ELCO_SCHEDULE_PSRF);
+				}
+				
+			} else if (submission.getField("user_type").equalsIgnoreCase(FD)
+			        && AllConstants.PSR_VISIT_STATUS.contains(submission.getField(FW_PSRSTS))) {
+				try {
+					registerService.deleteMotherAndActionAndUnenrollSchedule(submission.anmId(), submission.entityId());
+					logger.info("PSR_VISIT_STATUS:" + submission.getField(FW_PSRSTS) + ",caseid:" + submission.entityId());
+				}
+				catch (Exception e) {
+					logger.info("exception in prsf form submission with caseid:" + submission.entityId() + ", error:"
+					        + e.getMessage());
 				}
 				
 			} else if (submission.getField(FW_PSRSTS).equalsIgnoreCase("02")
