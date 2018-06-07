@@ -133,7 +133,7 @@
        <activation>
           <activeByDefault>true</activeByDefault>
         </activation>
-        
+
         	<build>
 		<!-- <pluginManagement> -->
 			<plugins>
@@ -221,7 +221,7 @@
 								<username>${jdbc.username}</username>
 								<password>${jdbc.password}</password>
 								<autocommit>true</autocommit>
-								<sqlCommand> 
+								<sqlCommand>
 								drop database if exists ${db.quartz};
 								create database ${db.quartz};
 								</sqlCommand>
@@ -272,7 +272,7 @@
 	</build>
    </profile>
 	<profile>
-		<id>CoachDB</id>
+		<id>couchDb</id>
 		<activation>
 			<property>
 				<name>opensrp.database.type</name>
@@ -280,11 +280,11 @@
 			</property>
 		</activation>
 		<properties>
-			<opensrp.database.profile>CoachDB</opensrp.database.profile>
+			<opensrp.database.profile>couchDb</opensrp.database.profile>
 		</properties>
 	</profile>
 	<profile>
-		<id>Postgres</id>
+		<id>postgres</id>
 		<activation>
 			<activeByDefault>true</activeByDefault>
 			<property>
@@ -293,7 +293,7 @@
 			</property>
 		</activation>
 		<properties>
-			<opensrp.database.profile>Postgres</opensrp.database.profile>
+			<opensrp.database.profile>postgres</opensrp.database.profile>
 		</properties>
 	</profile>
 </profiles>
@@ -353,10 +353,10 @@
 						<excludes>
 							<exclude>**/it/**</exclude>
 						</excludes>
-						
+
 					</configuration>
 				</plugin>
-				
+
 				<plugin>
 					<groupId>org.jacoco</groupId>
 					<artifactId>jacoco-maven-plugin</artifactId>
@@ -386,7 +386,7 @@
 					<artifactId>coveralls-maven-plugin</artifactId>
 					<version>4.0.0</version>
 				</plugin>
-				
+
 			</plugins>
 		<!-- </pluginManagement> -->
 		<pluginManagement>
