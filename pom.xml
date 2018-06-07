@@ -276,7 +276,7 @@
 		<activation>
 			<property>
 				<name>opensrp.database.type</name>
-				<value>coachdb</value>
+				<value>couchdb</value>
 			</property>
 		</activation>
 		<properties>
