@@ -20,7 +20,6 @@ import static org.opensrp.common.AllConstants.BnfFollowUpVisitFields.FWBNFSTS;
 import static org.opensrp.common.AllConstants.BnfFollowUpVisitFields.FWBNFWOMVITSTS;
 import static org.opensrp.common.AllConstants.BnfFollowUpVisitFields.FWDISPLAYTEXT1;
 import static org.opensrp.common.AllConstants.BnfFollowUpVisitFields.SCHEDULE_BNF_IME;
-import static org.opensrp.common.AllConstants.BnfFollowUpVisitFields.STS_FALSE_PREGNANCY_IDENTIFICATION;
 import static org.opensrp.common.AllConstants.BnfFollowUpVisitFields.STS_GONE;
 import static org.opensrp.common.AllConstants.BnfFollowUpVisitFields.STS_LB;
 import static org.opensrp.common.AllConstants.BnfFollowUpVisitFields.STS_SB;
@@ -58,6 +57,7 @@ import org.opensrp.register.mcare.service.scheduling.ANCSchedulesService;
 import org.opensrp.register.mcare.service.scheduling.BNFSchedulesService;
 import org.opensrp.register.mcare.service.scheduling.ELCOScheduleService;
 import org.opensrp.register.mcare.service.scheduling.ScheduleLogService;
+import org.opensrp.register.mcare.visit.activity.VisitActivityService;
 import org.opensrp.repository.AllErrorTrace;
 import org.opensrp.scheduler.repository.AllActions;
 import org.opensrp.scheduler.service.ActionService;
@@ -93,7 +93,7 @@ public class BNFService {
 	private AllActions allActions;
 	
 	@Autowired
-	private RegisterService registerService;
+	private VisitActivityService visitActivityService;
 	
 	@Autowired
 	public BNFService(AllElcos allElcos, AllMothers allMothers, BNFSchedulesService bnfSchedulesService,
@@ -134,14 +134,9 @@ public class BNFService {
 		}
 		mother.withSUBMISSIONDATE(DateUtil.getTimestampToday());
 		allMothers.update(mother);
-		if (submission.getField("user_type").equalsIgnoreCase(FD)
-		        && AllConstants.BNF_VISIT_STATUS.contains(submission.getField(BnfFollowUpVisitFields.FWBNFSTS))) {
-			registerService.deleteMotherAndActionAndUnenrollSchedule(submission.anmId(), motherId);
-			registerService.deleteChildAndActionAndUnenrollSchedule(motherId);
-		} else {
-			bnfSchedulesService.enrollBNF(motherId, LocalDate.parse(submission.getField(MOTHER_REFERENCE_DATE)),
-			    submission.anmId(), submission.instanceId(), submission.getField(MOTHER_REFERENCE_DATE));
-		}
+		
+		bnfSchedulesService.enrollBNF(motherId, LocalDate.parse(submission.getField(MOTHER_REFERENCE_DATE)),
+		    submission.anmId(), submission.instanceId(), submission.getField(MOTHER_REFERENCE_DATE));
 		
 	}
 	
@@ -207,6 +202,11 @@ public class BNFService {
 				actionService.markAlertAsInactive(submission.anmId(), submission.entityId(), SCHEDULE_BNF_IME);
 			}
 			
+		} else if (submission.getField("user_type").equalsIgnoreCase(FD)
+		        && AllConstants.BNF_VISIT_STATUS.contains(submission.getField(BnfFollowUpVisitFields.FWBNFSTS))) {
+			visitActivityService.doBNFVisitActivities(submission.anmId(), submission.entityId(),
+			    submission.getField(BnfFollowUpVisitFields.FWBNFSTS));
+			
 		} else if (submission.getField(FWBNFSTS).equalsIgnoreCase(STS_GONE)
 		        || submission.getField(FWBNFSTS).equalsIgnoreCase(STS_WD)) {
 			if (submission.getField("user_type").equalsIgnoreCase(FD)) {
@@ -224,28 +224,6 @@ public class BNFService {
 			} else {
 				pncService.deleteBlankChild(submission);
 				logger.info("FWA says mother gone or died , so nothing hapened & BNF schedule continue.");
-				bnfSchedulesService.enrollIntoMilestoneOfBNF(submission.entityId(), submission.getField(REFERENCE_DATE),
-				    submission.anmId(), submission.instanceId());
-				actionService.markAlertAsInactive(submission.anmId(), submission.entityId(), SCHEDULE_BNF);
-				actionService.markAlertAsInactive(submission.anmId(), submission.entityId(), SCHEDULE_BNF_IME);
-			}
-			
-		} else if (submission.getField(FWBNFSTS).equalsIgnoreCase(STS_FALSE_PREGNANCY_IDENTIFICATION)) {
-			if (submission.getField("user_type").equalsIgnoreCase(FD)) {
-				pncService.deleteBlankChild(submission);
-				bnfSchedulesService.unEnrollBNFSchedule(submission.entityId(), submission.anmId());
-				pncService.closeMother(mother);
-				
-				/**
-				 * Close Corresponding ANC schedule
-				 */
-				scheduleLogService.ancScheduleUnEnroll(submission.entityId(), submission.anmId(), SCHEDULE_ANC);
-				elcoScheduleService.imediateEnrollIntoMilestoneOfPSRF(submission.entityId(),
-				    submission.getField(REFERENCE_DATE), submission.anmId(), submission.instanceId());
-				
-			} else {
-				pncService.deleteBlankChild(submission);
-				logger.info("FWA says false pregnancy , so nothing hapened & BNF schedule continue.");
 				bnfSchedulesService.enrollIntoMilestoneOfBNF(submission.entityId(), submission.getField(REFERENCE_DATE),
 				    submission.anmId(), submission.instanceId());
 				actionService.markAlertAsInactive(submission.anmId(), submission.entityId(), SCHEDULE_BNF);

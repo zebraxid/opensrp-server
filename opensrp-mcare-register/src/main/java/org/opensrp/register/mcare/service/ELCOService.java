@@ -134,6 +134,7 @@ import org.opensrp.register.mcare.repository.AllHouseHolds;
 import org.opensrp.register.mcare.service.scheduling.ELCOScheduleService;
 import org.opensrp.register.mcare.service.scheduling.HHSchedulesService;
 import org.opensrp.register.mcare.service.scheduling.ScheduleLogService;
+import org.opensrp.register.mcare.visit.activity.VisitActivityService;
 import org.opensrp.repository.AllErrorTrace;
 import org.opensrp.scheduler.repository.AllActions;
 import org.opensrp.scheduler.service.ActionService;
@@ -169,7 +170,7 @@ public class ELCOService {
 	private AllActions allActions;
 	
 	@Autowired
-	private RegisterService registerService;
+	private VisitActivityService visitActivityService;
 	
 	@Autowired
 	public ELCOService(AllHouseHolds allHouseHolds, AllElcos allEcos, HHSchedulesService hhSchedulesService,
@@ -488,7 +489,7 @@ public class ELCOService {
 			} else if (submission.getField("user_type").equalsIgnoreCase(FD)
 			        && AllConstants.PSR_VISIT_STATUS.contains(submission.getField(FW_PSRSTS))) {
 				try {
-					registerService.deleteMotherAndActionAndUnenrollSchedule(submission.anmId(), submission.entityId());
+					visitActivityService.doPSRFVisitActivities(submission.anmId(), submission.entityId());
 					logger.info("PSR_VISIT_STATUS:" + submission.getField(FW_PSRSTS) + ",caseid:" + submission.entityId());
 				}
 				catch (Exception e) {
