@@ -4,11 +4,15 @@ import org.opensrp.connector.etl.service.VisitActivityApiService;
 import org.opensrp.register.mcare.domain.Child;
 import org.opensrp.register.mcare.repository.AllChilds;
 import org.opensrp.register.mcare.visit.activity.service.ActionAndScheduleActivityService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class BNFVisitActivityServiceImpl extends ActionAndScheduleActivityService {
+	
+	private static Logger logger = LoggerFactory.getLogger(BNFVisitActivityServiceImpl.class.toString());
 	
 	@Autowired
 	private AllChilds allChilds;
@@ -20,19 +24,19 @@ public class BNFVisitActivityServiceImpl extends ActionAndScheduleActivityServic
 	private VisitActivityApiService registerApiService;
 	
 	public void deleteMotherAndChildWithRelatedActionByCaseId(String provider, String caseId, String visitCode) {
-		System.err.println("CAESID:" + caseId);
-		try {
-			Child child = allChilds.findByRelationalId(caseId);
-			if (child != null) {
-				allChilds.remove(child);
-				deleteAllActionAndUnenrollScheduleByCaseId(child.caseId());
-			}
-		}
-		catch (Exception e) {
-			// TODO: handle exception
+		boolean isVisitActivityApiServiceCall = false;
+		
+		Child child = allChilds.findByRelationalId(caseId);
+		if (child != null) {
+			allChilds.remove(child);
+			deleteAllActionAndUnenrollScheduleByCaseId(child.caseId());
+		} else {
+			
+			logger.error("no child found at case id: " + caseId);
 		}
 		
-		psrfVisitActivityServiceImpl.deleteMotherWithPSRFAndANCAndPNCAndBNFActionByCaseId(provider, caseId);
+		psrfVisitActivityServiceImpl.deleteMotherWithPSRFAndANCAndPNCAndBNFActionByCaseId(provider, caseId,
+		    isVisitActivityApiServiceCall);
 		
 		registerApiService.deleteChildAndRelatedInformation(caseId, visitCode);
 		
@@ -44,15 +48,12 @@ public class BNFVisitActivityServiceImpl extends ActionAndScheduleActivityServic
 	
 	public void deleteMotherAndChildAndRelatedActionExceptPSRFByCaseId(String provider, String caseId, String visitCode) {
 		
-		try {
-			Child child = allChilds.findByRelationalId(caseId);
-			if (child != null) {
-				allChilds.remove(child);
-				deleteAllActionAndUnenrollScheduleByCaseId(child.caseId());
-			}
-		}
-		catch (Exception e) {
-			// TODO: handle exception
+		Child child = allChilds.findByRelationalId(caseId);
+		if (child != null) {
+			allChilds.remove(child);
+			deleteAllActionAndUnenrollScheduleByCaseId(child.caseId());
+		} else {
+			logger.error("no child found at case id: " + caseId);
 		}
 		psrfVisitActivityServiceImpl.deleteMotherWithANCAndPNCAndBNFActionByCaseId(provider, caseId);
 		registerApiService.deleteChildAndRelatedInformation(caseId, visitCode);

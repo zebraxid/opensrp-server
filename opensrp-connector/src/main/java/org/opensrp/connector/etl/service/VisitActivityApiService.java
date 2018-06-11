@@ -20,7 +20,7 @@ public class VisitActivityApiService extends ETLService {
 			        .body();
 		}
 		catch (Exception e) {
-			// TODO: handle exception
+			logger.error("error occured at case id: " + caseid + ",cause:" + e.getCause());
 		}
 		
 	}
@@ -30,7 +30,7 @@ public class VisitActivityApiService extends ETLService {
 			HttpUtil.get(getURL() + "/" + PSRFURL + "?caseid=" + caseid, "", ETL_USER, ETL_PWD).body();
 		}
 		catch (Exception e) {
-			// TODO: handle exception
+			logger.error("error occured at case id: " + caseid + ",cause:" + e.getCause());
 		}
 		
 	}

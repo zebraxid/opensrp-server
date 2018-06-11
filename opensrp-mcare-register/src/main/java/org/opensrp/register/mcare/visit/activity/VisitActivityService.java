@@ -21,7 +21,9 @@ public class VisitActivityService {
 	 * মারা গেছেন Husband Died, 999: DMC ONLY DMC ONLY
 	 */
 	public void doPSRFVisitActivities(String provider, String caseId) {
-		psrfVisitActivity.deleteMotherWithPSRFAndANCAndPNCAndBNFActionByCaseId(provider, caseId);
+		boolean isVisitActivityApiServiceCall = true;
+		psrfVisitActivity.deleteMotherWithPSRFAndANCAndPNCAndBNFActionByCaseId(provider, caseId,
+		    isVisitActivityApiServiceCall);
 	}
 	
 	/**

@@ -199,15 +199,7 @@ public class PNCService {
 			if (elco != null) {
 				logger.info("Closing EC case. Ec Id: " + elco.caseId());
 				elco.setIsClosed(false);
-				/*elco.withTODAY(submission.getField(REFERENCE_DATE));
-				synchronized (elco) {
-					elco.setTimeStamp(System.currentTimeMillis());
-				}
-				elco.withClientVersion(DateTimeUtil.getTimestampOfADate(submission.getField(REFERENCE_DATE)));
-				*/
 				allElcos.update(elco);
-				/*elcoSchedulesService.imediateEnrollIntoMilestoneOfPSRF(elco.caseId(), elco.TODAY(), elco.PROVIDERID(),
-				    elco.INSTANCEID());*/
 				scheduler.enrollIntoSchedule(elco.caseId(), ELCO_SCHEDULE_PSRF, elco.TODAY());
 			}
 			

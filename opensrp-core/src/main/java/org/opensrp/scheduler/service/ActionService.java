@@ -125,8 +125,7 @@ public class ActionService {
 				        + existingAlerts.get(0).getIsActionActive());
 				
 			} else {
-				/*allActions.addOrUpdateAlert(new Action(caseID, anmIdentifier, ActionData.createAlert(beneficiaryType,
-				    scheduleName, visitCode, alertStatus, startDate, expiryDate)));*/
+				
 				logger.info("schedule not found caseId: " + caseID + " ,scheduleName: " + scheduleName);
 			}
 		}
@@ -140,8 +139,14 @@ public class ActionService {
 	                                     List<Action> existingAlerts) {
 		Integer existingAlertStatus = ALERTSTATUS.get(existingAlerts.get(0).data().get("alertStatus"));
 		Integer currentAlertStatus = ALERTSTATUS.get(alertStatus.name());
-		if (currentAlertStatus > existingAlertStatus) {
+		boolean isActionActive = existingAlerts.get(0).getIsActionActive();
+		
+		if (!isActionActive) {
 			updateDataAction(visitCode, alertStatus, startDate, expiryDate, existingAlerts);
+		} else if (currentAlertStatus > existingAlertStatus) {
+			updateDataAction(visitCode, alertStatus, startDate, expiryDate, existingAlerts);
+		} else {
+			
 		}
 	}
 	

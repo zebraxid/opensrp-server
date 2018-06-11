@@ -33,6 +33,7 @@ import static org.opensrp.common.AllConstants.PSRFFields.clientVersion;
 import static org.opensrp.common.AllConstants.PSRFFields.timeStamp;
 import static org.opensrp.common.AllConstants.UserType.FD;
 import static org.opensrp.common.util.EasyMap.create;
+import static org.opensrp.register.mcare.OpenSRPScheduleConstants.ELCOSchedulesConstants.ELCO_SCHEDULE_PSRF;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_ANC;
 import static org.opensrp.register.mcare.OpenSRPScheduleConstants.MotherScheduleConstants.SCHEDULE_BNF;
 
@@ -59,6 +60,7 @@ import org.opensrp.register.mcare.service.scheduling.ELCOScheduleService;
 import org.opensrp.register.mcare.service.scheduling.ScheduleLogService;
 import org.opensrp.register.mcare.visit.activity.VisitActivityService;
 import org.opensrp.repository.AllErrorTrace;
+import org.opensrp.scheduler.HealthSchedulerService;
 import org.opensrp.scheduler.repository.AllActions;
 import org.opensrp.scheduler.service.ActionService;
 import org.slf4j.Logger;
@@ -91,6 +93,9 @@ public class BNFService {
 	
 	@Autowired
 	private AllActions allActions;
+	
+	@Autowired
+	private HealthSchedulerService scheduler;
 	
 	@Autowired
 	private VisitActivityService visitActivityService;
@@ -204,6 +209,7 @@ public class BNFService {
 			
 		} else if (submission.getField("user_type").equalsIgnoreCase(FD)
 		        && AllConstants.BNF_VISIT_STATUS.contains(submission.getField(BnfFollowUpVisitFields.FWBNFSTS))) {
+			scheduler.enrollIntoSchedule(submission.entityId(), ELCO_SCHEDULE_PSRF, submission.getField(REFERENCE_DATE));
 			visitActivityService.doBNFVisitActivities(submission.anmId(), submission.entityId(),
 			    submission.getField(BnfFollowUpVisitFields.FWBNFSTS));
 			
