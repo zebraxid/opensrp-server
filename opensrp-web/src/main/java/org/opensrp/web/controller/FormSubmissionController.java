@@ -10,6 +10,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.http.client.ClientProtocolException;
@@ -137,69 +138,6 @@ public class FormSubmissionController {
 				logger.info("form submission received and registered notify event dtosize: " + formSubmissionsDTO.size());
 			}
 			
-			/*try {
-				
-				String json = new Gson().toJson(formSubmissionsDTO);
-				List<FormSubmissionDTO> formSubmissions = new Gson().fromJson(json,
-				    new TypeToken<List<FormSubmissionDTO>>() {}.getType());
-				
-				List<FormSubmission> fsl = with(formSubmissions).convert(new Converter<FormSubmissionDTO, FormSubmission>() {
-					
-					@Override
-					public FormSubmission convert(FormSubmissionDTO submission) {
-						return FormSubmissionConverter.toFormSubmission(submission);
-					}
-				});
-				for (FormSubmission formSubmission : fsl) {
-					if (openmrsConnector.isOpenmrsForm(formSubmission)) {
-						
-						JSONObject p = patientService.getPatientByIdentifier(formSubmission.entityId());
-						JSONObject r = patientService.getPatientByIdentifier(formSubmission.getField("relationalid"));
-						
-						if (p != null || r != null) { // HO           		
-							logger.debug("existing patient found into openmrs with id : " + p == null ? formSubmission
-							        .getField("relationalid") : formSubmission.entityId());
-							Event e;
-							Map<String, Map<String, Object>> dep;
-							dep = openmrsConnector.getDependentClientsFromFormSubmission(formSubmission);
-							if (dep.size() > 0) { //HOW(n)
-								logger.info("dependent client exist into formsubmission ");
-								for (Map<String, Object> cm : dep.values()) {
-									patientService.createPatient((Client) cm.get("client"));
-									encounterService.createEncounter((Event) cm.get("event"));
-								}
-							}
-							//HOW(0)
-							e = openmrsConnector.getEventFromFormSubmission(formSubmission);
-							logger.info("Creates encounter for client id: " + e.getBaseEntityId());
-							encounterService.createEncounter(e);
-						} else { //Hn
-							Map<String, Map<String, Object>> dep;
-							dep = openmrsConnector.getDependentClientsFromFormSubmission(formSubmission);
-							if (dep.size() > 0) { //HnW(n)
-								logger.info("dependent client exist into formsubmission ");
-								Client hhhClient = openmrsConnector.getClientFromFormSubmission(formSubmission);
-								Event hhhEvent = openmrsConnector.getEventFromFormSubmission(formSubmission);
-								OpenmrsHouseHold hh = new OpenmrsHouseHold(hhhClient, hhhEvent);
-								for (Map<String, Object> cm : dep.values()) {
-									hh.addHHMember((Client) cm.get("client"), (Event) cm.get("event"));
-								}
-								householdService.saveHH(hh);
-							} else {//HnW(0)
-								logger.info("patient and dependent client not exist into openmrs  ");
-								Client c = openmrsConnector.getClientFromFormSubmission(formSubmission);
-								patientService.createPatient(c);
-								Event e = openmrsConnector.getEventFromFormSubmission(formSubmission);
-								encounterService.createEncounter(e);
-							}
-						}
-					}
-				}
-			}
-			catch (Exception e) {
-				e.printStackTrace();
-			}*/
-			
 			logger.debug(format("Added Form submissions to queue.\nSubmissions: {0}", formSubmissionsDTO));
 		}
 		catch (Exception e) {
@@ -269,5 +207,17 @@ public class FormSubmissionController {
 	public ResponseEntity<String> sendToOpmenMRS() {
 		
 		return new ResponseEntity<>("", OK);
+	}
+	
+	@RequestMapping(headers = { "Accept=application/json" }, method = GET, value = "/delete/list")
+	@ResponseBody
+	public ResponseEntity<String> getByProviderAndFormDefinition(@RequestParam String provider) {
+		List<FormSubmission> formSubmissions = formSubmissionService.getByProviderAndFormDefinition(provider);
+		List<String> households = new ArrayList<String>();
+		for (FormSubmission formSubmission : formSubmissions) {
+			households.add(formSubmission.entityId());
+		}
+		
+		return new ResponseEntity<>(new Gson().toJson(households), HttpStatus.OK);
 	}
 }

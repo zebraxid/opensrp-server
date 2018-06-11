@@ -110,4 +110,8 @@ public class FormSubmissionService {
 			}
 		};
 	}
+	
+	public List<FormSubmission> getByProviderAndFormDefinition(String provider) {
+		return allFormSubmissions.getByProviderAndFormDefinition(provider);
+	}
 }
