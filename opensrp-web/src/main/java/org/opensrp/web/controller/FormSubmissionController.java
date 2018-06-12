@@ -209,7 +209,7 @@ public class FormSubmissionController {
 		return new ResponseEntity<>("", OK);
 	}
 	
-	@RequestMapping(headers = { "Accept=application/json" }, method = GET, value = "/delete/list")
+	@RequestMapping(headers = { "Accept=application/json" }, method = GET, value = "/api/deleting/entity/list")
 	@ResponseBody
 	public ResponseEntity<String> getByProviderAndFormDefinition(@RequestParam String provider) {
 		List<FormSubmission> formSubmissions = formSubmissionService.getByProviderAndFormDefinition(provider);

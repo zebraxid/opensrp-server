@@ -23,8 +23,8 @@ public class PSRFVisitActivityServiceImpl extends ActionAndScheduleActivityServi
 	public void deleteMotherWithPSRFAndANCAndPNCAndBNFActionByCaseId(String provider, String caseId,
 	                                                                 boolean isVisitActivityApiServiceCall) {
 		Mother mother = allMothers.findByCaseId(caseId);
-		
 		if (mother != null) {
+			logger.error("mother found at case id: " + caseId);
 			allMothers.remove(mother);
 		} else {
 			logger.error("no mother found at case id: " + caseId);
@@ -40,6 +40,7 @@ public class PSRFVisitActivityServiceImpl extends ActionAndScheduleActivityServi
 	void deleteMotherWithANCAndPNCAndBNFActionByCaseId(String provider, String caseId) {
 		Mother mother = allMothers.findByCaseId(caseId);
 		if (mother != null) {
+			logger.error("mother found at case id: " + caseId);
 			allMothers.remove(mother);
 			deleteANCActionAndUnenrollScheduleByCaseId(provider, caseId);
 			deleteBNFActionAndUnenrollScheduleByCaseId(provider, caseId);

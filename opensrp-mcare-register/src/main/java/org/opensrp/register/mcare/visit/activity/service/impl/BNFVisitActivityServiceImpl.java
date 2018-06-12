@@ -21,13 +21,14 @@ public class BNFVisitActivityServiceImpl extends ActionAndScheduleActivityServic
 	private PSRFVisitActivityServiceImpl psrfVisitActivityServiceImpl;
 	
 	@Autowired
-	private VisitActivityApiService registerApiService;
+	private VisitActivityApiService visitActivityApiService;
 	
 	public void deleteMotherAndChildWithRelatedActionByCaseId(String provider, String caseId, String visitCode) {
 		boolean isVisitActivityApiServiceCall = false;
 		
 		Child child = allChilds.findByRelationalId(caseId);
 		if (child != null) {
+			logger.error("child found at case id: " + caseId);
 			allChilds.remove(child);
 			deleteAllActionAndUnenrollScheduleByCaseId(child.caseId());
 		} else {
@@ -38,7 +39,7 @@ public class BNFVisitActivityServiceImpl extends ActionAndScheduleActivityServic
 		psrfVisitActivityServiceImpl.deleteMotherWithPSRFAndANCAndPNCAndBNFActionByCaseId(provider, caseId,
 		    isVisitActivityApiServiceCall);
 		
-		registerApiService.deleteChildAndRelatedInformation(caseId, visitCode);
+		visitActivityApiService.deleteChildAndRelatedInformation(caseId, visitCode);
 		
 	}
 	
@@ -50,13 +51,14 @@ public class BNFVisitActivityServiceImpl extends ActionAndScheduleActivityServic
 		
 		Child child = allChilds.findByRelationalId(caseId);
 		if (child != null) {
+			logger.error("child found at case id: " + caseId);
 			allChilds.remove(child);
 			deleteAllActionAndUnenrollScheduleByCaseId(child.caseId());
 		} else {
 			logger.error("no child found at case id: " + caseId);
 		}
 		psrfVisitActivityServiceImpl.deleteMotherWithANCAndPNCAndBNFActionByCaseId(provider, caseId);
-		registerApiService.deleteChildAndRelatedInformation(caseId, visitCode);
+		visitActivityApiService.deleteChildAndRelatedInformation(caseId, visitCode);
 	}
 	
 }

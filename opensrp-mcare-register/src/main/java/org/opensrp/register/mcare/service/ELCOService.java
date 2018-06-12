@@ -490,11 +490,12 @@ public class ELCOService {
 			        && AllConstants.PSR_VISIT_STATUS.contains(submission.getField(FW_PSRSTS))) {
 				try {
 					visitActivityService.doPSRFVisitActivities(submission.anmId(), submission.entityId());
-					logger.info("PSR_VISIT_STATUS:" + submission.getField(FW_PSRSTS) + ",caseid:" + submission.entityId());
+					logger.info("found psrf with visit status :" + submission.getField(FW_PSRSTS) + ",caseid:"
+					        + submission.entityId());
 				}
 				catch (Exception e) {
-					logger.info("exception in prsf form submission with caseid:" + submission.entityId() + ", error:"
-					        + e.getMessage());
+					logger.info("exception in prsf form submission of caseid:" + submission.entityId() + ",visit status:"
+					        + submission.getField(FW_PSRSTS) + ", error:" + e.getMessage());
 				}
 				
 			} else if (submission.getField(FW_PSRSTS).equalsIgnoreCase("02")

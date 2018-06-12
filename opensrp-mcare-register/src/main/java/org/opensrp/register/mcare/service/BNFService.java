@@ -209,9 +209,17 @@ public class BNFService {
 			
 		} else if (submission.getField("user_type").equalsIgnoreCase(FD)
 		        && AllConstants.BNF_VISIT_STATUS.contains(submission.getField(BnfFollowUpVisitFields.FWBNFSTS))) {
-			scheduler.enrollIntoSchedule(submission.entityId(), ELCO_SCHEDULE_PSRF, submission.getField(REFERENCE_DATE));
-			visitActivityService.doBNFVisitActivities(submission.anmId(), submission.entityId(),
-			    submission.getField(BnfFollowUpVisitFields.FWBNFSTS));
+			try {
+				logger.info("found bnf with visit status :" + submission.getField(BnfFollowUpVisitFields.FWBNFSTS)
+				        + ",caseid:" + submission.entityId());
+				scheduler.enrollIntoSchedule(submission.entityId(), ELCO_SCHEDULE_PSRF, submission.getField(REFERENCE_DATE));
+				visitActivityService.doBNFVisitActivities(submission.anmId(), submission.entityId(),
+				    submission.getField(BnfFollowUpVisitFields.FWBNFSTS));
+			}
+			catch (Exception e) {
+				logger.info("exception in bnf form submission of caseid:" + submission.entityId() + ",with visit status:"
+				        + submission.getField(BnfFollowUpVisitFields.FWBNFSTS) + ", error:" + e.getMessage());
+			}
 			
 		} else if (submission.getField(FWBNFSTS).equalsIgnoreCase(STS_GONE)
 		        || submission.getField(FWBNFSTS).equalsIgnoreCase(STS_WD)) {

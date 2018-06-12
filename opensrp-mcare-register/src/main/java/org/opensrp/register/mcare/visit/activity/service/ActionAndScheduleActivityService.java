@@ -32,6 +32,7 @@ public abstract class ActionAndScheduleActivityService {
 		List<Action> psrfs = allActions.findAlertByANMIdEntityIdScheduleName(provider, caseId, ELCO_SCHEDULE_PSRF);
 		for (Action action : psrfs) {
 			if (action != null) {
+				logger.error("psrf action found at case id: " + caseId);
 				action.timestamp(System.currentTimeMillis());
 				allActions.update(action);
 			} else {
@@ -45,6 +46,7 @@ public abstract class ActionAndScheduleActivityService {
 		List<Action> ancs = allActions.findAlertByANMIdEntityIdScheduleName(provider, caseId, SCHEDULE_ANC);
 		for (Action action : ancs) {
 			if (action != null) {
+				logger.error("anc action found at case id: " + caseId);
 				allActions.remove(action);
 			} else {
 				logger.error("no action found at case id: " + caseId);
@@ -57,6 +59,7 @@ public abstract class ActionAndScheduleActivityService {
 		List<Action> bnfs = allActions.findAlertByANMIdEntityIdScheduleName(provider, caseId, SCHEDULE_BNF);
 		for (Action action : bnfs) {
 			if (action != null) {
+				logger.error("bnf action found at case id: " + caseId);
 				allActions.remove(action);
 			} else {
 				logger.error("no action found at case id: " + caseId);
@@ -69,9 +72,10 @@ public abstract class ActionAndScheduleActivityService {
 		List<Action> pncs = allActions.findAlertByANMIdEntityIdScheduleName(provider, caseId, SCHEDULE_PNC);
 		for (Action action : pncs) {
 			if (action != null) {
+				logger.error("pnc action found at case id: " + caseId);
 				allActions.remove(action);
 			} else {
-				logger.error("no action found at case id: " + caseId);
+				logger.error("no pnc action found at case id: " + caseId);
 			}
 		}
 		scheduler.unEnrollFromSchedule(caseId, "", SCHEDULE_PNC);
@@ -81,6 +85,7 @@ public abstract class ActionAndScheduleActivityService {
 		List<Action> actions = allActions.findByCaseID(caseId);
 		for (Action action : actions) {
 			if (action != null) {
+				logger.error("action found at case id: " + caseId);
 				allActions.remove(action);
 			} else {
 				logger.error("no action found at case id: " + caseId);
