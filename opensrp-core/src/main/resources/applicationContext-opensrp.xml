@@ -30,7 +30,7 @@
 
 	<task:scheduler id="applicationScheduler" pool-size="10" />
 
-	<!-- <task:scheduled-tasks scheduler="applicationScheduler">
+	<task:scheduled-tasks scheduler="applicationScheduler">
 		<task:scheduled ref="eventsListener" method="processEvent"
 			fixed-delay="180000" />
 		<task:scheduled ref="openmrsSyncerListener" method="pushToOpenMRS"
@@ -41,7 +41,7 @@
 			fixed-delay="600000" />
 		<task:scheduled ref="openmrsAtomfeedListener" method="syncAtomfeeds"
 		fixed-delay="900000" />
-	</task:scheduled-tasks> -->
+	</task:scheduled-tasks>
 
 	<beans profile="Postgres">
 		<import resource="persistence_postgres.xml" />
