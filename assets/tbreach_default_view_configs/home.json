@@ -1,32 +1,58 @@
 {
-   "_id": "d243bc5737fb389e52601cb850172005",
-   "type": "ViewConfiguration",
-   "serverVersion": 1516117938893,
-   "identifier": "home",
-   "views": [
-       {
-           "identifier": "presumptive_patients",
-           "label": "presumptive_patients",
-           "visible": true,
-           "residence": {
-               "position": 0
-           }
-       },
-       {
-           "identifier": "positive_patients",
-           "label": "positive_patients",
-           "visible": true,
-           "residence": {
-               "position": 1
-           }
-       },
-       {
-           "identifier": "in_treatment_patients",
-           "label": "in_treatment_patients",
-           "visible": true,
-           "residence": {
-               "position": 2
-           }
-       }
-   ]
+  "_id": "d243bc5737fb389e52601cb850172005",
+  "_rev": "14-b12b65329b3b25a97bbf5d6f82b969e8",
+  "type": "ViewConfiguration",
+  "serverVersion": 1516117938893,
+  "identifier": "home",
+  "metadata": {
+    "type": "TestResults",
+    "language": "en",
+    "applicationName": "TB REACH",
+    "followupOverduePeriod": 1,
+    "smearOverduePeriod": 1,
+    "resultsConfig": [
+      {
+        "item": "nutrition",
+        "digest": "fb7ccff85df3a7631299055cfc5f9e3813781"
+      },
+      {
+        "item": "quiz",
+        "digest": "e7f26c0a20ac2ff5c1804c253abfe61013789"
+      }
+    ]
+  },
+  "views": [
+    {
+      "identifier": "child",
+      "label": "child",
+      "visible": true,
+      "residence": {
+        "position": 0
+      }
+    },
+    {
+      "identifier": "nutrition",
+      "label": "nutrition",
+      "visible": true,
+      "residence": {
+        "position": 1
+      }
+    },
+    {
+      "identifier": "quiz",
+      "label": "quiz",
+      "visible": true,
+      "residence": {
+        "position": 1
+      }
+    },
+    {
+      "identifier": "in_treatment_patients",
+      "label": "in_treatment_patients",
+      "visible": false,
+      "residence": {
+        "position": 2
+      }
+    }
+  ]
 }

@@ -1,335 +1,515 @@
 {
-   "_id": "3a065d7c3354eb2bc23c8a3bc303dab7",
-   "type": "ViewConfiguration",
-   "serverVersion": 1517991769889,
-   "identifier": "presumptive_register_row",
-   "jsonView": {
-       "views": [
-           {
-               "views": [
-                   {
-                       "views": [
-                       ],
-                       "properties": [
-                           {
-                               "value": "result_details",
-                               "type": "ref",
-                               "name": "id"
-                           },
-                           {
-                               "value": "match_parent",
-                               "type": "dimen",
-                               "name": "layout_width"
-                           },
-                           {
-                               "value": "wrap_content",
-                               "type": "dimen",
-                               "name": "layout_height"
-                           },
-                           {
-                               "value": "center",
-                               "type": "string",
-                               "name": "gravity"
-                           },
-                           {
-                               "value": "#757575",
-                               "type": "color",
-                               "name": "textColor"
-                           },
-                           {
-                               "value": "16sp",
-                               "type": "dimen",
-                               "name": "textSize"
-                           },
-                           {
-                               "value": "gone",
-                               "type": "string",
-                               "name": "visibility"
-                           }
-                       ],
-                       "widget": "TextView"
-                   },
-                   {
-                       "views": [
-                       ],
-                       "properties": [
-                           {
-                               "value": "result_lnk",
-                               "type": "ref",
-                               "name": "id"
-                           },
-                           {
-                               "value": "match_parent",
-                               "type": "dimen",
-                               "name": "layout_width"
-                           },
-                           {
-                               "value": "match_parent",
-                               "type": "dimen",
-                               "name": "layout_height"
-                           },
-                           {
-                               "value": "center",
-                               "type": "string",
-                               "name": "gravity"
-                           },
-                           {
-                               "value": "3dp",
-                               "type": "dimen",
-                               "name": "layout_marginBottom"
-                           },
-                           {
-                               "value": "@string/result",
-                               "type": "ref",
-                               "name": "text"
-                           },
-                           {
-                               "value": "center",
-                               "type": "string",
-                               "name": "textAlignment"
-                           },
-                           {
-                               "value": "true",
-                               "type": "BOOLEAN",
-                               "name": "textAllCaps"
-                           },
-                           {
-                               "value": "#3269D4",
-                               "type": "color",
-                               "name": "textColor"
-                           },
-                           {
-                               "value": "18sp",
-                               "type": "dimen",
-                               "name": "textSize"
-                           }
-                       ],
-                       "widget": "TextView"
-                   }
-               ],
-               "properties": [
-                   {
-                       "value": "results_column",
-                       "type": "ref",
-                       "name": "id"
-                   },
-                   {
-                       "value": "0dp",
-                       "type": "dimen",
-                       "name": "layout_width"
-                   },
-                   {
-                       "value": "match_parent",
-                       "type": "dimen",
-                       "name": "layout_height"
-                   },
-                   {
-                       "value": "1dp",
-                       "type": "dimen",
-                       "name": "layout_marginRight"
-                   },
-                   {
-                       "value": "3.4",
-                       "type": "float",
-                       "name": "layout_weight"
-                   },
-                   {
-                       "value": "#ffffff",
-                       "type": "color",
-                       "name": "background"
-                   },
-                   {
-                       "value": "center_vertical",
-                       "type": "string",
-                       "name": "gravity"
-                   },
-                   {
-                       "value": "vertical",
-                       "type": "string",
-                       "name": "orientation"
-                   }
-               ],
-               "widget": "LinearLayout"
-           },
-           {
-               "views": [
-                   {
-                       "views": [
-                       ],
-                       "properties": [
-                           {
-                               "value": "diagnose_lnk",
-                               "type": "ref",
-                               "name": "id"
-                           },
-                           {
-                               "value": "match_parent",
-                               "type": "dimen",
-                               "name": "layout_width"
-                           },
-                           {
-                               "value": "wrap_content",
-                               "type": "dimen",
-                               "name": "layout_height"
-                           },
-                           {
-                               "value": "center",
-                               "type": "string",
-                               "name": "gravity"
-                           },
-                           {
-                               "value": "5dp",
-                               "type": "dimen",
-                               "name": "layout_marginBottom"
-                           },
-                           {
-                               "value": "@string/diagnose",
-                               "type": "ref",
-                               "name": "text"
-                           },
-                           {
-                               "value": "center",
-                               "type": "string",
-                               "name": "textAlignment"
-                           },
-                           {
-                               "value": "true",
-                               "type": "BOOLEAN",
-                               "name": "textAllCaps"
-                           },
-                           {
-                               "value": "#3269D4",
-                               "type": "color",
-                               "name": "textColor"
-                           },
-                           {
-                               "value": "18sp",
-                               "type": "dimen",
-                               "name": "textSize"
-                           }
-                       ],
-                       "widget": "TextView"
-                   },
-                   {
-                       "views": [
-                       ],
-                       "properties": [
-                           {
-                               "value": "encounter",
-                               "type": "ref",
-                               "name": "id"
-                           },
-                           {
-                               "value": "match_parent",
-                               "type": "dimen",
-                               "name": "layout_width"
-                           },
-                           {
-                               "value": "wrap_content",
-                               "type": "dimen",
-                               "name": "layout_height"
-                           },
-                           {
-                               "value": "center",
-                               "type": "string",
-                               "name": "gravity"
-                           },
-                           {
-                               "value": "5dp",
-                               "type": "dimen",
-                               "name": "layout_marginBottom"
-                           },
-                           {
-                               "value": "center",
-                               "type": "string",
-                               "name": "textAlignment"
-                           },
-                           {
-                               "value": "#757575",
-                               "type": "color",
-                               "name": "textColor"
-                           },
-                           {
-                               "value": "16sp",
-                               "type": "dimen",
-                               "name": "textSize"
-                           }
-                       ],
-                       "widget": "TextView"
-                   }
-               ],
-               "properties": [
-                   {
-                       "value": "diagnose_column",
-                       "type": "ref",
-                       "name": "id"
-                   },
-                   {
-                       "value": "0dp",
-                       "type": "dimen",
-                       "name": "layout_width"
-                   },
-                   {
-                       "value": "match_parent",
-                       "type": "dimen",
-                       "name": "layout_height"
-                   },
-                   {
-                       "value": "1dp",
-                       "type": "dimen",
-                       "name": "layout_marginRight"
-                   },
-                   {
-                       "value": "2.6",
-                       "type": "float",
-                       "name": "layout_weight"
-                   },
-                   {
-                       "value": "#ffffff",
-                       "type": "color",
-                       "name": "background"
-                   },
-                   {
-                       "value": "center_vertical",
-                       "type": "string",
-                       "name": "gravity"
-                   },
-                   {
-                       "value": "vertical",
-                       "type": "string",
-                       "name": "orientation"
-                   }
-               ],
-               "widget": "LinearLayout"
-           }
-       ],
-       "properties": [
-           {
-               "value": "register_columns",
-               "type": "ref",
-               "name": "id"
-           },
-           {
-               "value": "fill_parent",
-               "type": "dimen",
-               "name": "layout_width"
-           },
-           {
-               "value": "72dp",
-               "type": "dimen",
-               "name": "layout_height"
-           },
-           {
-               "value": "#eeeeee",
-               "type": "color",
-               "name": "background"
-           },
-           {
-               "value": "horizontal",
-               "type": "string",
-               "name": "orientation"
-           }
-       ],
-       "widget": "LinearLayout"
-   }
+  "_id": "3a065d7c3354eb2bc23c8a3bc303dab7",
+  "_rev": "45-acd2ea673edcdee0cec79e7321505e83",
+  "type": "ViewConfiguration",
+  "serverVersion": 1517991769889,
+  "identifier": "presumptive_register_row",
+  "metadata": {
+    "type": "TestResults",
+    "language": "en",
+    "applicationName": "TB REACH",
+    "followupOverduePeriod": 1,
+    "smearOverduePeriod": 1,
+    "resultsConfig": [
+      {
+        "item": "help",
+        "digest": "e7f26c0a20ac2ff5c1804c253abfe61013789"
+      }
+    ]
+  },
+  "jsonView": {
+    "views": [
+      {
+        "views": [
+          {
+            "views": [],
+            "properties": [
+              {
+                "value": "result_details",
+                "type": "ref",
+                "name": "id"
+              },
+              {
+                "value": "match_parent",
+                "type": "dimen",
+                "name": "layout_width"
+              },
+              {
+                "value": "wrap_content",
+                "type": "dimen",
+                "name": "layout_height"
+              },
+              {
+                "value": "center",
+                "type": "string",
+                "name": "gravity"
+              },
+              {
+                "value": "#757575",
+                "type": "color",
+                "name": "textColor"
+              },
+              {
+                "value": "16sp",
+                "type": "dimen",
+                "name": "textSize"
+              },
+              {
+                "value": "gone",
+                "type": "string",
+                "name": "visibility"
+              }
+            ],
+            "widget": "TextView"
+          },
+          {
+            "views": [],
+            "properties": [
+              {
+                "value": "help",
+                "type": "ref",
+                "name": "id"
+              },
+              {
+                "value": "match_parent",
+                "type": "dimen",
+                "name": "layout_width"
+              },
+              {
+                "value": "wrap_content",
+                "type": "dimen",
+                "name": "layout_height"
+              },
+              {
+                "value": "center",
+                "type": "string",
+                "name": "gravity"
+              },
+              {
+                "value": "#757575",
+                "type": "color",
+                "name": "textColor"
+              },
+              {
+                "value": "Help",
+                "type": "string",
+                "name": "text"
+              },
+              {
+                "value": "#3269D4",
+                "type": "color",
+                "name": "textColor"
+              },
+              {
+                "value": "16sp",
+                "type": "dimen",
+                "name": "textSize"
+              },
+              {
+                "value": "visible",
+                "type": "string",
+                "name": "visibility"
+              }
+            ],
+            "widget": "TextView"
+          }
+        ],
+        "properties": [
+          {
+            "value": "results_column",
+            "type": "ref",
+            "name": "id"
+          },
+          {
+            "value": "0dp",
+            "type": "dimen",
+            "name": "layout_width"
+          },
+          {
+            "value": "match_parent",
+            "type": "dimen",
+            "name": "layout_height"
+          },
+          {
+            "value": "1dp",
+            "type": "dimen",
+            "name": "layout_marginRight"
+          },
+          {
+            "value": "3.4",
+            "type": "float",
+            "name": "layout_weight"
+          },
+          {
+            "value": "#ffffff",
+            "type": "color",
+            "name": "background"
+          },
+          {
+            "value": "center_vertical",
+            "type": "string",
+            "name": "gravity"
+          },
+          {
+            "value": "vertical",
+            "type": "string",
+            "name": "orientation"
+          }
+        ],
+        "widget": "LinearLayout"
+      },
+      {
+        "views": [
+          {
+            "views": [],
+            "properties": [
+              {
+                "value": "tv_last_visit_date",
+                "type": "ref",
+                "name": "id"
+              },
+              {
+                "value": "match_parent",
+                "type": "dimen",
+                "name": "layout_width"
+              },
+              {
+                "value": "wrap_content",
+                "type": "dimen",
+                "name": "layout_height"
+              },
+              {
+                "value": "center",
+                "type": "string",
+                "name": "gravity"
+              },
+              {
+                "value": "5dp",
+                "type": "dimen",
+                "name": "layout_marginBottom"
+              },
+              {
+                "value": "center",
+                "type": "string",
+                "name": "textAlignment"
+              },
+              {
+                "value": "#757575",
+                "type": "color",
+                "name": "textColor"
+              },
+              {
+                "value": "16sp",
+                "type": "dimen",
+                "name": "textSize"
+              }
+            ],
+            "widget": "TextView"
+          },
+          {
+            "views": [],
+            "properties": [
+              {
+                "value": "outcome",
+                "type": "ref",
+                "name": "id"
+              },
+              {
+                "value": "match_parent",
+                "type": "dimen",
+                "name": "layout_width"
+              },
+              {
+                "value": "wrap_content",
+                "type": "dimen",
+                "name": "layout_height"
+              },
+              {
+                "value": "center",
+                "type": "string",
+                "name": "gravity"
+              },
+              {
+                "value": "#3269D4",
+                "type": "color",
+                "name": "textColor"
+              },
+              {
+                "value": "Close",
+                "type": "string",
+                "name": "text"
+              },
+              {
+                "value": "18sp",
+                "type": "dimen",
+                "name": "textSize"
+              },
+              {
+                "value": "visible",
+                "type": "string",
+                "name": "visibility"
+              }
+            ],
+            "widget": "TextView"
+          }
+        ],
+        "properties": [
+          {
+            "value": "diagnose_column",
+            "type": "ref",
+            "name": "id"
+          },
+          {
+            "value": "0dp",
+            "type": "dimen",
+            "name": "layout_width"
+          },
+          {
+            "value": "match_parent",
+            "type": "dimen",
+            "name": "layout_height"
+          },
+          {
+            "value": "1dp",
+            "type": "dimen",
+            "name": "layout_marginRight"
+          },
+          {
+            "value": "2.6",
+            "type": "float",
+            "name": "layout_weight"
+          },
+          {
+            "value": "#ffffff",
+            "type": "color",
+            "name": "background"
+          },
+          {
+            "value": "center_vertical",
+            "type": "string",
+            "name": "gravity"
+          },
+          {
+            "value": "vertical",
+            "type": "string",
+            "name": "orientation"
+          }
+        ],
+        "widget": "LinearLayout"
+      },
+      {
+        "views": [
+          {
+            "views": [],
+            "properties": [
+              {
+                "value": "tv_next_visit_date",
+                "type": "ref",
+                "name": "id"
+              },
+              {
+                "value": "match_parent",
+                "type": "dimen",
+                "name": "layout_width"
+              },
+              {
+                "value": "wrap_content",
+                "type": "dimen",
+                "name": "layout_height"
+              },
+              {
+                "value": "center",
+                "type": "string",
+                "name": "gravity"
+              },
+              {
+                "value": "#757575",
+                "type": "color",
+                "name": "textColor"
+              },
+              {
+                "value": "16sp",
+                "type": "dimen",
+                "name": "textSize"
+              },
+              {
+                "value": "visible",
+                "type": "string",
+                "name": "visibility"
+              }
+            ],
+            "widget": "TextView"
+          },
+          {
+            "views": [],
+            "properties": [
+              {
+                "value": "child_followup",
+                "type": "ref",
+                "name": "id"
+              },
+              {
+                "value": "match_parent",
+                "type": "dimen",
+                "name": "layout_width"
+              },
+              {
+                "value": "wrap_content",
+                "type": "dimen",
+                "name": "layout_height"
+              },
+              {
+                "value": "center",
+                "type": "string",
+                "name": "gravity"
+              },
+              {
+                "value": "5dp",
+                "type": "dimen",
+                "name": "layout_marginBottom"
+              },
+              {
+                "value": "center",
+                "type": "string",
+                "name": "textAlignment"
+              },
+              {
+                "value": "true",
+                "type": "BOOLEAN",
+                "name": "textAllCaps"
+              },
+              {
+                "value": "#3269D4",
+                "type": "color",
+                "name": "textColor"
+              },
+              {
+                "value": "16sp",
+                "type": "dimen",
+                "name": "textSize"
+              },
+              {
+                "value": "Follow up",
+                "type": "string",
+                "name": "text"
+              }
+            ],
+            "widget": "TextView"
+          },
+          {
+            "views": [],
+            "properties": [
+              {
+                "value": "tv_next_visit_date",
+                "type": "ref",
+                "name": "id"
+              },
+              {
+                "value": "match_parent",
+                "type": "dimen",
+                "name": "layout_width"
+              },
+              {
+                "value": "wrap_content",
+                "type": "dimen",
+                "name": "layout_height"
+              },
+              {
+                "value": "5dp",
+                "type": "dimen",
+                "name": "layout_marginBottom"
+              },
+              {
+                "value": "center",
+                "type": "string",
+                "name": "textAlignment"
+              },
+              {
+                "value": "16sp",
+                "type": "dimen",
+                "name": "textSize"
+              },
+              {
+                "value": "Hey",
+                "type": "string",
+                "name": "text"
+              }
+            ],
+            "widget": "TextView"
+          }
+        ],
+        "properties": [
+          {
+            "value": "next_visit_column",
+            "type": "ref",
+            "name": "id"
+          },
+          {
+            "value": "0dp",
+            "type": "dimen",
+            "name": "layout_width"
+          },
+          {
+            "value": "match_parent",
+            "type": "dimen",
+            "name": "layout_height"
+          },
+          {
+            "value": "1dp",
+            "type": "dimen",
+            "name": "layout_marginRight"
+          },
+          {
+            "value": "2.6",
+            "type": "float",
+            "name": "layout_weight"
+          },
+          {
+            "value": "#ffffff",
+            "type": "color",
+            "name": "background"
+          },
+          {
+            "value": "center_vertical",
+            "type": "string",
+            "name": "gravity"
+          },
+          {
+            "value": "vertical",
+            "type": "string",
+            "name": "orientation"
+          }
+        ],
+        "widget": "LinearLayout"
+      }
+    ],
+    "properties": [
+      {
+        "value": "register_columns",
+        "type": "ref",
+        "name": "id"
+      },
+      {
+        "value": "fill_parent",
+        "type": "dimen",
+        "name": "layout_width"
+      },
+      {
+        "value": "100dp",
+        "type": "dimen",
+        "name": "layout_height"
+      },
+      {
+        "value": "#eeeeee",
+        "type": "color",
+        "name": "background"
+      },
+      {
+        "value": "horizontal",
+        "type": "string",
+        "name": "orientation"
+      }
+    ],
+    "widget": "LinearLayout"
+  }
 }

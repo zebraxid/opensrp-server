@@ -1,12 +1,13 @@
 {
-   "_id": "19a2e8aa6739d77a2b780199c6122867",
-   "type": "ViewConfiguration",
-   "serverVersion": 1517998250373,
-   "identifier": "main",
-   "metadata": {
-       "type": "Main",
-       "language": "en",
-       "applicationName": "TB REACH",
-       "enableJsonViews": true
-   }
+  "_id": "19a2e8aa6739d77a2b780199c6122867",
+  "_rev": "2-79cc8014999e2c69aebb16b30c9c49bb",
+  "type": "ViewConfiguration",
+  "serverVersion": 1517998250373,
+  "identifier": "main",
+  "metadata": {
+    "type": "Main",
+    "language": "en",
+    "applicationName": "Open Deliver",
+    "enableJsonViews": true
+  }
 }

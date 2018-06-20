@@ -1,11 +1,14 @@
 {
-   "_id": "d243bc5737fb389e52601cb85022098d",
-   "serverVersion": 1513941712045,
-   "type": "ViewConfiguration",
-   "identifier": "lang_en",
-   "labels": {
-       "presumptive_patients": "Presumptive Patients",
-       "positive_patients": "Positive Patients",
-       "in_treatment_patients": "In-treatment Patients"
-   }
+  "_id": "d243bc5737fb389e52601cb85022098d",
+  "_rev": "8-df0a060b0a938a650d8ee64c28f83c40",
+  "serverVersion": 1513941712045,
+  "type": "ViewConfiguration",
+  "identifier": "lang_en",
+  "labels": {
+    "presumptive_patients": "Child",
+    "positive_patients": "Nutrition",
+    "quiz": "Take Quiz",
+    "nutrition": "An Introduction to Nutrition",
+    "in_treatment_patients": "In-treatment Patients"
+  }
 }

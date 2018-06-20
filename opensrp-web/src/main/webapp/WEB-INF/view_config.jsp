@@ -63,7 +63,7 @@ $(document).ready(function(){
 	       
 	       var container = document.getElementById("jsoneditor");
 	       var options = {
-	    		   "mode": "text", 
+	    		   "mode": "code", 
 	    		   'modes': ['code',"tree","text"],
 	    		   "search": true,
 	    		   onError: function (err) {
@@ -87,7 +87,6 @@ $(document).ready(function(){
 	    		   type:"POST",
 	    		   data:JSON.stringify(editor.get()),
 	    		   contentType:"application/json; charset=utf-8",
-	    		   dataType:"json",
 	    		   success: function(returnedData){
 	    			   data = returnedData;
 	    	    	   $("#"+ident).parent().prev().first().html(returnedData[ident].identifier);
