@@ -15,7 +15,7 @@ public class VisitActivityApiService extends ETLService {
 	private static Logger logger = LoggerFactory.getLogger(VisitActivityApiService.class.toString());
 	
 	public void deleteChildAndRelatedInformation(String caseid, String visitCode) {
-		logger.error("get child at relational id: " + caseid);
+		logger.info("get child at relational id: " + caseid);
 		try {
 			HttpUtil.get(getURL() + "/" + BNFURL + "?caseid=" + caseid + "&visitCode=" + visitCode, "", ETL_USER, ETL_PWD)
 			        .body();
@@ -27,7 +27,7 @@ public class VisitActivityApiService extends ETLService {
 	}
 	
 	public void deleteMotherAndRelatedInformation(String caseid) {
-		logger.error("get mother at case id: " + caseid);
+		logger.info("get mother at case id: " + caseid);
 		try {
 			HttpUtil.get(getURL() + "/" + PSRFURL + "?caseid=" + caseid, "", ETL_USER, ETL_PWD).body();
 		}
