@@ -180,7 +180,7 @@ public class RapidProResource {
 					client = clients.get(count);
 					rapidProContact.setBirthDate(new SimpleDateFormat(MVACC_DATE_FORMAT).format(client.getBirthdate().toDate()));
 					rapidProContact.setChildName(client.fullName());
-					rapidProContact.setZeir_id(client.getIdentifier("ZEIR_ID"));
+					rapidProContact.setZeirID(client.getIdentifier("ZEIR_ID"));
 				} else if (count == 1) {
 					client = clients.get(count);
 					rapidProContact.setC2dob(new SimpleDateFormat(MVACC_DATE_FORMAT).format(client.getBirthdate().toDate()));
