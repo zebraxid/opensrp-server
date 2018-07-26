@@ -862,7 +862,7 @@ public class PatientService extends OpenmrsService {
 
 	}
 
-	private String fetchLocationByUUID(String locationUUID) {
+	public String fetchLocationByUUID(String locationUUID) {
 		try {
 			if (locationUUID == null || StringUtils.isEmptyOrWhitespaceOnly(locationUUID) || locationUUID
 					.equalsIgnoreCase("Other")) {
