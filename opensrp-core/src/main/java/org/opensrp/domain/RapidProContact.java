@@ -28,15 +28,21 @@ public class RapidProContact implements Comparable<Client> {
 
 	private String childName;
 
+	private String zeir_id;
+
 	private String mvaccUuid;
 
 	private String baseEntityId;
 
 	private String c2dob;
 
+	private String c2zeir;
+
 	private String c2name;
 
 	private String c3dob;
+
+	private String c3zeir;
 
 	private String c3name;
 
@@ -192,6 +198,30 @@ public class RapidProContact implements Comparable<Client> {
 
 	public void setDateCreated(DateTime dateCreated) {
 		this.dateCreated = dateCreated;
+	}
+
+	public String getZeir_id() {
+		return zeir_id;
+	}
+
+	public void setZeir_id(String zeir_id) {
+		this.zeir_id = zeir_id;
+	}
+
+	public String getC2zeir() {
+		return c2zeir;
+	}
+
+	public void setC2zeir(String c2zeir) {
+		this.c2zeir = c2zeir;
+	}
+
+	public String getC3zeir() {
+		return c3zeir;
+	}
+
+	public void setC3zeir(String c3zeir) {
+		this.c3zeir = c3zeir;
 	}
 
 	@Override

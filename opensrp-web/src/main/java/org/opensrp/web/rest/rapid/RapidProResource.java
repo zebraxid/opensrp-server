@@ -180,15 +180,17 @@ public class RapidProResource {
 					client = clients.get(count);
 					rapidProContact.setBirthDate(new SimpleDateFormat(MVACC_DATE_FORMAT).format(client.getBirthdate().toDate()));
 					rapidProContact.setChildName(client.fullName());
-
+					rapidProContact.setZeir_id(client.getIdentifier("ZEIR_ID"));
 				} else if (count == 1) {
 					client = clients.get(count);
 					rapidProContact.setC2dob(new SimpleDateFormat(MVACC_DATE_FORMAT).format(client.getBirthdate().toDate()));
 					rapidProContact.setC2name(client.fullName());
+					rapidProContact.setC2zeir(client.getIdentifier("ZEIR_ID"));
 				} else if (count == 2) {
 					client = clients.get(count);
 					rapidProContact.setC3dob(new SimpleDateFormat(MVACC_DATE_FORMAT).format(client.getBirthdate().toDate()));
 					rapidProContact.setC3name(client.fullName());
+					rapidProContact.setC3zeir(client.getIdentifier("ZEIR_ID"));
 				}
 			}
 			rapidProContact.setDateJoined(new SimpleDateFormat(MVACC_DATE_FORMAT).format(new Date()));
