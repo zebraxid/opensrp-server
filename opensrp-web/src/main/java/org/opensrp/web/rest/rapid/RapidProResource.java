@@ -102,7 +102,6 @@ public class RapidProResource {
 						}
 						catch (Exception e) {
 							e.printStackTrace();
-							continue;
 						}
 					}
 				}
