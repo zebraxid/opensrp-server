@@ -88,7 +88,12 @@ public class RapidProServiceImpl implements RapidProService {
 			HttpResponse response = client.execute(post);
 			HttpEntity entity = response.getEntity();
 			String responseString = EntityUtils.toString(entity, "UTF-8");
-			logger.info("rapidpro response:" + responseString + " ,jsonParams:" + jsonParams);
+			if (responseString.isEmpty() || responseString == null) {
+				logger.info("rapidpro service unavilable:" + responseString + " ,jsonParams:" + jsonParams);
+			} else {
+				logger.info("successfully reached to rapidpro response:" + responseString + " ,jsonParams:" + jsonParams);
+			}
+			
 			return responseString;
 		}
 		catch (Exception e) {

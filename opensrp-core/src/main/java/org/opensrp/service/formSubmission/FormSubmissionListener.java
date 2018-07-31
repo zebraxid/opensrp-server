@@ -61,7 +61,7 @@ public class FormSubmissionListener {
 		formSubmissionService.submit(formSubmissions);
 	}
 	
-	@MotechListener(subjects = AllConstants.FORM_SCHEDULE_SUBJECT)
+	//@MotechListener(subjects = AllConstants.FORM_SCHEDULE_SUBJECT)
 	public void parseForms(MotechEvent event) {
 		if (!lock.tryLock()) {
 			logger.warn("Not fetching forms from Message Queue. It is already in progress.");

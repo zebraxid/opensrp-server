@@ -64,7 +64,8 @@ public class DHIS2SyncerListener {
 			} else {
 				start = clientSync == null || clientSync.get(0).getValue() == null ? 0 : clientSync.get(0).getValue();
 			}
-			System.err.println("start:" + start);
+			
+			logger.info("running dhis2sync listener  start time: " + start);
 			List<Client> cl = clientService.findByServerVersion(start);
 			if (eventSync.size() == 0) {
 				allDHIS2Marker.addEventMarker();

@@ -96,6 +96,7 @@ public class EventResource extends RestResource<Event> {
 			String locationId = getStringFilter(LOCATION_ID, request);
 			String baseEntityId = getStringFilter(BASE_ENTITY_ID, request);
 			String serverVersion = getStringFilter(BaseEntity.SERVER_VERSIOIN, request);
+			logger.info("received sync reqeust provider: " + providerId + " ,serverVersion: " + serverVersion);
 			Long lastSyncedServerVersion = null;
 			if (serverVersion != null) {
 				lastSyncedServerVersion = Long.valueOf(serverVersion) + 1;
@@ -156,10 +157,11 @@ public class EventResource extends RestResource<Event> {
 				    new TypeToken<ArrayList<Client>>() {}.getType());
 				for (Client client : clients) {
 					try {
-					    clientService.addorUpdate(client);
+						clientService.addorUpdate(client);
 					}
 					catch (Exception e) {
-						logger.error("Client" + client.getBaseEntityId()==null?"":client.getBaseEntityId()+" failed to sync", e);
+						logger.error("Client" + client.getBaseEntityId() == null ? "" : client.getBaseEntityId()
+						        + " failed to sync", e);
 					}
 				}
 				
@@ -173,7 +175,9 @@ public class EventResource extends RestResource<Event> {
 						eventService.addorUpdateEvent(event);
 					}
 					catch (Exception e) {
-						logger.error("Event of type "+event.getEventType()+" for client " + event.getBaseEntityId()==null?"":event.getBaseEntityId()+" failed to sync", e);
+						logger.error(
+						    "Event of type " + event.getEventType() + " for client " + event.getBaseEntityId() == null ? ""
+						            : event.getBaseEntityId() + " failed to sync", e);
 					}
 				}
 			}
@@ -238,9 +242,9 @@ public class EventResource extends RestResource<Event> {
 			clientId = c.getBaseEntityId();
 		}
 		
-		return eventService.findEventsBy(clientId, eventDate == null ? null : eventDate[0],
-		    eventDate == null ? null : eventDate[1], eventType, entityType, provider, location,
-		    lastEdit == null ? null : lastEdit[0], lastEdit == null ? null : lastEdit[1]);
+		return eventService.findEventsBy(clientId, eventDate == null ? null : eventDate[0], eventDate == null ? null
+		        : eventDate[1], eventType, entityType, provider, location, lastEdit == null ? null : lastEdit[0],
+		    lastEdit == null ? null : lastEdit[1]);
 	}
 	
 	@Override

@@ -102,13 +102,14 @@ public class ClientListenerTest {
 		
 	}
 	
+	@Test
 	public void sendTestMessage() {
 		List<String> urns = new ArrayList<String>();
 		List<String> contacts = new ArrayList<String>();
 		List<String> groups = new ArrayList<String>();
 		urns.add("tel:" + "+8801711082537");
 		rapidproService.sendMessage(urns, contacts, groups, "test message", "");
-		System.err.println("send message to rapidpro" + "01711082537");
+		System.err.println("send message to rapidpro" + "+8801711082537");
 		
 	}
 	

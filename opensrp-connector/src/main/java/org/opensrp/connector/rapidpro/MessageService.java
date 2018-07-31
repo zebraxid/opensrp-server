@@ -98,20 +98,34 @@ public class MessageService {
 	public void sentMessageToClientNew(MessageFactory messageFactory, List<AnnouncedClient> announcedClients, Camp camp) {
 		
 		for (AnnouncedClient client : announcedClients) {
+			logger.info("trying to send message to client clientBaseEntityId:" + client.getBaseEntityId());
 			try {
 				if (client.getClientType().equalsIgnoreCase(ClientType.child.name())) {
 					Client child = clientService.find(client.getBaseEntityId());
 					if (child != null) {
-						Map<String, List<String>> relationships = child.getRelationships();
-						String motherId = relationships.get("mother").get(0);
-						Client mother = clientService.find(motherId);
-						logger.info("sending message to mother moterBaseEntityId:" + mother.getBaseEntityId());
-						generateDataAndsendMessageToRapidpro(mother, ClientType.child, messageFactory, camp);
+						String clientSubUnit = getClientSubunit(child);
+						if (clientSubUnit != null && clientSubUnit.equalsIgnoreCase(camp.getSubUnit())) {
+							/*						Map<String, List<String>> relationships = child.getRelationships();
+													String motherId = relationships.get("mother").get(0);
+													Client mother = clientService.find(motherId);*/
+							logger.info("sending message to child childBaseEntityId:" + child.getBaseEntityId()
+							        + " ,mobileNo:" + client.getMobileNo());
+							child.addAttribute("phoneNumber", client.getMobileNo());
+							generateDataAndsendMessageToRapidpro(child, ClientType.child, messageFactory, camp);
+						} else {
+							logger.info("child subunit is not correct: " + child.getBaseEntityId());
+						}
 					}
 				} else if (client.getClientType().equalsIgnoreCase(ClientType.mother.name())) {
 					Client mother = clientService.find(client.getBaseEntityId());
 					if (mother != null) {
-						generateDataAndsendMessageToRapidpro(mother, ClientType.mother, messageFactory, camp);
+						String clientSubUnit = getClientSubunit(mother);
+						if (clientSubUnit != null && clientSubUnit.equalsIgnoreCase(camp.getSubUnit())) {
+							logger.info("sending message to mother motherBaseEntityId:" + mother.getBaseEntityId());
+							generateDataAndsendMessageToRapidpro(mother, ClientType.mother, messageFactory, camp);
+						} else {
+							logger.info("mother subunit is not correct: " + mother.getBaseEntityId());
+						}
 					}
 					
 				} else {
