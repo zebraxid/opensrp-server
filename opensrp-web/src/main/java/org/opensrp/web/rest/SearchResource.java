@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -77,28 +78,11 @@ public class SearchResource extends RestResource<Client> {
 			searchBean.setLastEditFrom(lastEdit[0]);
 			searchBean.setLastEditTo(lastEdit[1]);
 		}
-		Map<String, String> attributeMap = null;
 		String attributes = getStringFilter("attribute", request);
-		if (!StringUtils.isEmptyOrWhitespaceOnly(attributes)) {
-			String attributeType = StringUtils.isEmptyOrWhitespaceOnly(attributes) ? null : attributes.split(":", -1)[0];
-			String attributeValue = StringUtils.isEmptyOrWhitespaceOnly(attributes) ? null : attributes.split(":", -1)[1];
-			
-			attributeMap = new HashMap<String, String>();
-			attributeMap.put(attributeType, attributeValue);
-		}
-		searchBean.setAttributes(attributeMap);
+		searchBean.setAttributes(generateItemsHashMap(attributes));
 		
-		Map<String, String> identifierMap = null;
 		String identifiers = getStringFilter("identifier", request);
-		if (!StringUtils.isEmptyOrWhitespaceOnly(identifiers)) {
-			String identifierType = StringUtils.isEmptyOrWhitespaceOnly(identifiers) ? null : identifiers.split(":", -1)[0];
-			String identifierValue = StringUtils.isEmptyOrWhitespaceOnly(identifiers) ? null : identifiers.split(":", -1)[1];
-			
-			identifierMap = new HashMap<String, String>();
-			identifierMap.put(identifierType, identifierValue);
-		}
-		
-		searchBean.setIdentifiers(identifierMap);
+		searchBean.setIdentifiers(generateItemsHashMap(identifiers));
 		return searchService.searchClient(searchBean, firstName, middleName, lastName, null);
 	}
 	
@@ -435,5 +419,23 @@ public class SearchResource extends RestResource<Client> {
 		}
 		
 		return list;
+	}
+	
+	/**
+	 *
+	 * Creates a map from the different items passed into it. The items can be Attributes or identifiers.
+	 *
+	 * @param items
+	 * @return HashMap<String, String> itemMap
+	 */
+	private Map<String, String> generateItemsHashMap(String items) {
+		Map<String,String>	itemsMap = new HashMap<>();
+			if (!StringUtils.isEmptyOrWhitespaceOnly(items)) {
+				String itemType = StringUtils.isEmptyOrWhitespaceOnly(items) ? null : items.split(":", -1)[0];
+				String itemValue = StringUtils.isEmptyOrWhitespaceOnly(items) ? null : items.split(":", -1)[1];
+				
+				itemsMap.put(itemType, itemValue);
+			}
+		return itemsMap;
 	}
 }
