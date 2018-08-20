@@ -5,6 +5,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -63,6 +64,9 @@ public class RestUtils {
 	  return new DateTime[]{d1,d2};
 	}
 	
+	public static String[] getStringArrayFilter(String filter, HttpServletRequest req) throws ParseException {
+		return Objects.requireNonNull(getStringFilter(filter, req)).split(",");
+	}
 	
 	public static void main(String[] args) {
 		System.out.println(new DateTime("​1458932400000"));
