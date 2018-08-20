@@ -18,6 +18,7 @@
     <import resource="classpath:applicationContext-connector.xml"/>
     <import resource="securityContext.xml"/>
 
+    <import resource="classpath*:openlmis-application-context.xml"/>
     <mvc:default-servlet-handler/>
 <!--     <tx:annotation-driven proxy-target-class="true" />
     <aop:aspectj-autoproxy proxy-target-class="true"/>--> 

@@ -266,10 +266,11 @@
     <artifactId>cglib</artifactId>
     <version>3.1</version>
 </dependency>-->
-		
-		
-		
-		
-		
+
+        <dependency>
+            <groupId>org.opensrp</groupId>
+            <artifactId>openlmis-stock</artifactId>
+            <version>${release.version}</version>
+        </dependency>
     </dependencies>
 </project>
