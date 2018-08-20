@@ -1,24 +1,6 @@
 package org.opensrp.web.rest;
 
-import static org.opensrp.common.AllConstants.BaseEntity.LAST_UPDATE;
-import static org.opensrp.common.AllConstants.Client.BIRTH_DATE;
-import static org.opensrp.common.AllConstants.Client.FIRST_NAME;
-import static org.opensrp.common.AllConstants.Client.GENDER;
-import static org.opensrp.common.AllConstants.Client.LAST_NAME;
-import static org.opensrp.common.AllConstants.Client.MIDDLE_NAME;
-import static org.opensrp.web.rest.RestUtils.getDateRangeFilter;
-import static org.opensrp.web.rest.RestUtils.getIntegerFilter;
-import static org.opensrp.web.rest.RestUtils.getStringFilter;
-
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.function.BiConsumer;
-
-import javax.servlet.http.HttpServletRequest;
-
+import com.mysql.jdbc.StringUtils;
 import org.joda.time.DateTime;
 import org.opensrp.common.AllConstants.BaseEntity;
 import org.opensrp.domain.Client;
@@ -35,7 +17,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.mysql.jdbc.StringUtils;
+import javax.servlet.http.HttpServletRequest;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static org.opensrp.common.AllConstants.BaseEntity.LAST_UPDATE;
+import static org.opensrp.common.AllConstants.Client.BIRTH_DATE;
+import static org.opensrp.common.AllConstants.Client.FIRST_NAME;
+import static org.opensrp.common.AllConstants.Client.GENDER;
+import static org.opensrp.common.AllConstants.Client.LAST_NAME;
+import static org.opensrp.common.AllConstants.Client.MIDDLE_NAME;
+import static org.opensrp.web.rest.RestUtils.getDateRangeFilter;
+import static org.opensrp.web.rest.RestUtils.getIntegerFilter;
+import static org.opensrp.web.rest.RestUtils.getStringArrayFilter;
+import static org.opensrp.web.rest.RestUtils.getStringFilter;
 
 @Controller
 @RequestMapping(value = "/rest/search")
@@ -78,10 +76,11 @@ public class SearchResource extends RestResource<Client> {
 			searchBean.setLastEditFrom(lastEdit[0]);
 			searchBean.setLastEditTo(lastEdit[1]);
 		}
-		String attributes = getStringFilter("attribute", request);
+		
+		String [] attributes = getStringArrayFilter("attribute", request);
 		searchBean.setAttributes(generateItemsHashMap(attributes));
 		
-		String identifiers = getStringFilter("identifier", request);
+		String [] identifiers = getStringArrayFilter("identifier", request);
 		searchBean.setIdentifiers(generateItemsHashMap(identifiers));
 		return searchService.searchClient(searchBean, firstName, middleName, lastName, null);
 	}
@@ -428,14 +427,16 @@ public class SearchResource extends RestResource<Client> {
 	 * @param items
 	 * @return HashMap<String, String> itemMap
 	 */
-	private Map<String, String> generateItemsHashMap(String items) {
+	public Map<String, String> generateItemsHashMap(String[] items) {
 		Map<String,String>	itemsMap = new HashMap<>();
-			if (!StringUtils.isEmptyOrWhitespaceOnly(items)) {
-				String itemType = StringUtils.isEmptyOrWhitespaceOnly(items) ? null : items.split(":", -1)[0];
-				String itemValue = StringUtils.isEmptyOrWhitespaceOnly(items) ? null : items.split(":", -1)[1];
+		for (String item: items) {
+			if (!StringUtils.isEmptyOrWhitespaceOnly(item)) {
+				String itemType = StringUtils.isEmptyOrWhitespaceOnly(item) ? null : item.split(":", -1)[0];
+				String itemValue = StringUtils.isEmptyOrWhitespaceOnly(item) ? null : item.split(":", -1)[1];
 				
 				itemsMap.put(itemType, itemValue);
 			}
+		}
 		return itemsMap;
 	}
 }
