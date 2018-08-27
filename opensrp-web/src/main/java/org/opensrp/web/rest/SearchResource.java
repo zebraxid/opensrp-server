@@ -1,6 +1,7 @@
 package org.opensrp.web.rest;
 
 import com.mysql.jdbc.StringUtils;
+import org.bouncycastle.math.ec.ScaleYPointMap;
 import org.joda.time.DateTime;
 import org.opensrp.common.AllConstants.BaseEntity;
 import org.opensrp.domain.Client;
@@ -20,14 +21,17 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import static org.opensrp.common.AllConstants.BaseEntity.LAST_UPDATE;
+import static org.opensrp.common.AllConstants.Client.ATTRIBUTES;
 import static org.opensrp.common.AllConstants.Client.BIRTH_DATE;
 import static org.opensrp.common.AllConstants.Client.FIRST_NAME;
 import static org.opensrp.common.AllConstants.Client.GENDER;
+import static org.opensrp.common.AllConstants.Client.IDENTIFIERS;
 import static org.opensrp.common.AllConstants.Client.LAST_NAME;
 import static org.opensrp.common.AllConstants.Client.MIDDLE_NAME;
 import static org.opensrp.web.rest.RestUtils.getDateRangeFilter;
@@ -77,10 +81,10 @@ public class SearchResource extends RestResource<Client> {
 			searchBean.setLastEditTo(lastEdit[1]);
 		}
 		
-		String [] attributes = getStringArrayFilter("attribute", request);
+		String [] attributes = getStringArrayFilter(ATTRIBUTES, request);
 		searchBean.setAttributes(generateItemsHashMap(attributes));
 		
-		String [] identifiers = getStringArrayFilter("identifier", request);
+		String [] identifiers = getStringArrayFilter(IDENTIFIERS, request);
 		searchBean.setIdentifiers(generateItemsHashMap(identifiers));
 		return searchService.searchClient(searchBean, firstName, middleName, lastName, null);
 	}
@@ -429,14 +433,17 @@ public class SearchResource extends RestResource<Client> {
 	 */
 	public Map<String, String> generateItemsHashMap(String[] items) {
 		Map<String,String>	itemsMap = new HashMap<>();
-		for (String item: items) {
-			if (!StringUtils.isEmptyOrWhitespaceOnly(item)) {
-				String itemType = StringUtils.isEmptyOrWhitespaceOnly(item) ? null : item.split(":", -1)[0];
-				String itemValue = StringUtils.isEmptyOrWhitespaceOnly(item) ? null : item.split(":", -1)[1];
-				
-				itemsMap.put(itemType, itemValue);
+		if (items != null && items.length > 0) {
+			for (String item: items) {
+				if (!StringUtils.isEmptyOrWhitespaceOnly(item)) {
+					String itemType = StringUtils.isEmptyOrWhitespaceOnly(item) ? null : item.split(":", -1)[0];
+					String itemValue = StringUtils.isEmptyOrWhitespaceOnly(item) ? null : item.split(":", -1)[1];
+					
+					itemsMap.put(itemType, itemValue);
+				}
 			}
 		}
+		
 		return itemsMap;
 	}
 }

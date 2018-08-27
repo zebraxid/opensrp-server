@@ -65,7 +65,11 @@ public class RestUtils {
 	}
 	
 	public static String[] getStringArrayFilter(String filter, HttpServletRequest req) throws ParseException {
-		return Objects.requireNonNull(getStringFilter(filter, req)).split(",");
+		String stringVal = getStringFilter(filter,req);
+		if (stringVal == null) {
+			return  null;
+		}
+		return getStringFilter(filter, req).split(",");
 	}
 	
 	public static void main(String[] args) {

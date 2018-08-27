@@ -45,7 +45,22 @@ public class SearchResourceTest {
 		String[] myAttributesArray = RestUtils.getStringArrayFilter(AllConstants.Client.ATTRIBUTES, request);
 		Map<String, String> attributeMap = searchResource.generateItemsHashMap(myAttributesArray);
 		
-		Assert.assertTrue(attributeMap != null);
+		Assert.assertNotNull(attributeMap);
+		System.out.println(attributeMap);
+	}
+	
+	@Test
+	public void testGenerateItemsMapWithNull() throws ParseException {
+		MockHttpServletRequest request = new MockHttpServletRequest();
+		String attributes = "";
+		request.addParameter(AllConstants.Client.ATTRIBUTES, attributes);
+		
+		Assert.assertNotNull(request);
+		
+		String[] myAttributesArray = RestUtils.getStringArrayFilter(AllConstants.Client.ATTRIBUTES, request);
+		Map<String, String> attributeMap = searchResource.generateItemsHashMap(myAttributesArray);
+		
+		Assert.assertEquals(attributeMap.size(),0);
 		System.out.println(attributeMap);
 	}
 }
