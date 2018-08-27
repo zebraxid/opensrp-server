@@ -1,7 +1,6 @@
 package org.opensrp.web.rest;
 
 import com.mysql.jdbc.StringUtils;
-import org.bouncycastle.math.ec.ScaleYPointMap;
 import org.joda.time.DateTime;
 import org.opensrp.common.AllConstants.BaseEntity;
 import org.opensrp.domain.Client;
@@ -21,7 +20,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
