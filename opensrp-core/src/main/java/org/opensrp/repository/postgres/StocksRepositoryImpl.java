@@ -15,6 +15,8 @@ import org.opensrp.search.StockSearchBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import static org.opensrp.util.Utils.getCurrentTime;
+
 @Repository("stocksRepositoryPostgres")
 public class StocksRepositoryImpl extends BaseRepositoryImpl<Stock> implements StocksRepository {
 	
@@ -233,9 +235,8 @@ public class StocksRepositoryImpl extends BaseRepositoryImpl<Stock> implements S
 		metadata.setStockId(id);
 		metadata.setDocumentId(entity.getId());
 		metadata.setProviderId(entity.getProviderid());
+		metadata.setServerVersion(getCurrentTime());
 		//metadata.setLocationId(entity.get);
-		metadata.setServerVersion(entity.getServerVersion());
 		return metadata;
 	}
-	
 }

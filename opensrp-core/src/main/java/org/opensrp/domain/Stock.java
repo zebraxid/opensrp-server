@@ -16,6 +16,9 @@ public class Stock extends BaseDataObject {
 	
 	@JsonProperty
 	private String transaction_type;
+
+	@JsonProperty
+	private String lot_id;
 	
 	@JsonProperty
 	private String providerid;
@@ -28,7 +31,19 @@ public class Stock extends BaseDataObject {
 	
 	@JsonProperty
 	private String to_from;
-	
+
+	@JsonProperty
+	private String locationId;
+
+	@JsonProperty
+	private String childLocationId;
+
+	@JsonProperty
+	private String team;
+
+	@JsonProperty
+	private String teamId;
+
 	@JsonProperty
 	private Long date_updated;
 	
@@ -99,23 +114,7 @@ public class Stock extends BaseDataObject {
 	public void setDate_created(Long date_created) {
 		this.date_created = date_created;
 	}
-	
-	public String getTo_from() {
-		return to_from;
-	}
-	
-	public void setTo_from(String to_from) {
-		this.to_from = to_from;
-	}
-	
-	public Long getDate_updated() {
-		return date_updated;
-	}
-	
-	public void setDate_updated(Long date_updated) {
-		this.date_updated = date_updated;
-	}
-	
+
 	public long getVersion() {
 		return version;
 	}
@@ -123,5 +122,68 @@ public class Stock extends BaseDataObject {
 	public void setVersion(long version) {
 		this.version = version;
 	}
-	
+
+	public String getLocationId() {
+		return locationId;
+	}
+
+	public void setLocationId(String locationId) {
+		this.locationId = locationId;
+	}
+
+	public String getChildLocationId() {
+		return childLocationId;
+	}
+
+	public void setChildLocationId(String childLocationId) {
+		this.childLocationId = childLocationId;
+	}
+
+	public String getTeam() {
+		return team;
+	}
+
+	public void setTeam(String team) {
+		this.team = team;
+	}
+
+	public String getTeamId() {
+		return teamId;
+	}
+
+	public void setTeamId(String teamId) {
+		this.teamId = teamId;
+	}
+
+	public String getLotId() {
+		return lot_id;
+	}
+
+	public void setLotId(String lotId) {
+		this.lot_id = lotId;
+	}
+
+	public String getLot_id() {
+		return lot_id;
+	}
+
+	public void setLot_id(String lot_id) {
+		this.lot_id = lot_id;
+	}
+
+	public String getTo_from() {
+		return to_from;
+	}
+
+	public void setTo_from(String to_from) {
+		this.to_from = to_from;
+	}
+
+	public Long getDate_updated() {
+		return date_updated;
+	}
+
+	public void setDate_updated(Long date_updated) {
+		this.date_updated = date_updated;
+	}
 }

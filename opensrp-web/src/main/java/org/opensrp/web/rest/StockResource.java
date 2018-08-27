@@ -154,7 +154,7 @@ public class StockResource extends RestResource<Stock> {
 			if (!syncData.has("stocks")) {
 				return new ResponseEntity<>(BAD_REQUEST);
 			}
-			ArrayList<Stock> stocks = (ArrayList<Stock>) gson.fromJson(syncData.getString("stocks"),
+			ArrayList<Stock> stocks = gson.fromJson(syncData.getString("stocks"),
 			    new TypeToken<ArrayList<Stock>>() {}.getType());
 			for (Stock stock : stocks) {
 				try {
