@@ -1,17 +1,14 @@
 package org.opensrp.web.rest;
 
+import com.mysql.jdbc.StringUtils;
+import org.joda.time.DateTime;
+
+import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Field;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.joda.time.DateTime;
-
-import com.mysql.jdbc.StringUtils;
 
 public class RestUtils {
 	public static final String DATE_FORMAT = "dd-MM-yyyy";
