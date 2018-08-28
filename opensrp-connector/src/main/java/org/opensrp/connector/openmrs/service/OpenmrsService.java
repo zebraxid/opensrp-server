@@ -18,11 +18,16 @@ public abstract class OpenmrsService {
 	@Value("#{opensrp['openmrs.password']}")
 	protected String OPENMRS_PWD;
 
+	@Value("#{opensrp['openmrs.version']}")
+	protected String OPENMRS_VERSION;
+
 	public static final SimpleDateFormat OPENMRS_DATE = new SimpleDateFormat("yyyy-MM-dd");
 	public static final String PROBABLE_CAUSE_OF_DEATH_CONCEPT= "5002AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
 	public static final String OTHER_NON_CODED_CONCEPT= "5622AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
 	public static final String PARENT_CHILD_RELATIONSHIP= "8d91a210-c2cc-11de-8d13-0010c6dffd0f";
 	public static final String SIBLING_SIBLING_RELATIONSHIP= "8d91a01c-c2cc-11de-8d13-0010c6dffd0f";
+	public static final String OPENMRS_PROVIDER= "provider";
+	public static final String CUSTOM_UUID_PARAM = "v=custom:(uuid)";
 
 	public OpenmrsService() {	}
 

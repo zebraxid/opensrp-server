@@ -168,9 +168,28 @@ public class RapidProResource {
 
 	private void addNewContacts(Event event) {
 		if (event.getBaseEntityId() != null && !event.getBaseEntityId().isEmpty() && event.getEventType() != null && event.getEventType().equals(BIRTH_REGISTRATION)) {
+			rapidProContact = new RapidProContact();
 			contactChild = clientService.getByBaseEntityId(event.getBaseEntityId());
 			contactMother = clientService.getByBaseEntityId(contactChild.getRelationships().get("mother").get(0));
-			rapidProContact = new RapidProContact();
+			rapidProContact.setServerVersion(event.getServerVersion());
+			if (contactMother.getIdentifier(MVACC_UUID_IDENTIFIER_TYPE) != null && !contactMother.getIdentifier(MVACC_UUID_IDENTIFIER_TYPE).isEmpty()) {
+				rapidProContact.setMvaccUuid(contactMother.getIdentifier(MVACC_UUID_IDENTIFIER_TYPE));
+			}
+
+			obs = event.getObs();
+			for (Obs obs2 : obs) {
+				if (obs2 != null && obs2.getFieldType().equals("concept") && obs2.getFormSubmissionField().equals("Mother_Guardian_Number") && obs2.getValue() != null) {
+					rapidProContact.setMotherTel(obs2.getValue().toString());
+				}
+				if (obs2 != null && obs2.getFieldType().equals("formsubmissionField") && obs2.getFormSubmissionField().equals("Home_Facility") && obs2.getValue() != null) {
+					rapidProContact.setHomeFacility(getLocationNameIfId(obs2.getValue().toString()));
+				}
+			}
+			if ((rapidProContact.getMotherTel() == null || StringUtils.isEmptyOrWhitespaceOnly(rapidProContact.getMotherTel())) && rapidProContact.getMvaccUuid() == null || !StringUtils.isEmptyOrWhitespaceOnly(rapidProContact.getMvaccUuid())) {
+				rapidProContacts.add(rapidProContact);
+				return;
+			}
+
 			List<Client> clients = clientService.findByRelationship(contactMother.getBaseEntityId());
 
 			Collections.sort(clients, COMPARATOR);
@@ -195,11 +214,6 @@ public class RapidProResource {
 			}
 			rapidProContact.setDateJoined(new SimpleDateFormat(MVACC_DATE_FORMAT).format(new Date()));
 			rapidProContact.setBaseEntityId(contactMother.getBaseEntityId());
-
-			if (contactMother.getIdentifier(MVACC_UUID_IDENTIFIER_TYPE) != null && !contactMother.getIdentifier(MVACC_UUID_IDENTIFIER_TYPE).isEmpty()) {
-				rapidProContact.setMvaccUuid(contactMother.getIdentifier(MVACC_UUID_IDENTIFIER_TYPE));
-			}
-
 			rapidProContact.setMotherFirstName(contactMother.getFirstName());
 			rapidProContact.setMotherSecondName(contactMother.getLastName());
 			rapidProContact.setMotherZeirID(contactMother.getIdentifier("M_ZEIR_ID"));
@@ -212,20 +226,9 @@ public class RapidProResource {
 					rapidProContact.setLandMark(getLocationNameIfId(ad.getAddressFieldMatchingRegex("(?i)(ADDRESS1|HOUSE_NUMBER|HOUSE|HOUSE_NO|UNIT|UNIT_NUMBER|UNIT_NO)")));
 				}
 			}
-			obs = event.getObs();
-			for (Obs obs2 : obs) {
-				if (obs2 != null && obs2.getFieldType().equals("concept") && obs2.getFormSubmissionField().equals("Mother_Guardian_Number") && obs2.getValue() != null) {
-					rapidProContact.setMotherTel(obs2.getValue().toString());
-				}
-				if (obs2 != null && obs2.getFieldType().equals("formsubmissionField") && obs2.getFormSubmissionField().equals("Home_Facility") && obs2.getValue() != null) {
-					rapidProContact.setHomeFacility(getLocationNameIfId(obs2.getValue().toString()));
-				}
-			}
-			if ((rapidProContact.getMotherTel() != null && !StringUtils.isEmptyOrWhitespaceOnly(rapidProContact.getMotherTel())) || rapidProContact.getMvaccUuid() != null && !StringUtils.isEmptyOrWhitespaceOnly(rapidProContact.getMvaccUuid())) {
-				rapidProContacts.add(rapidProContact);
-			}
 
 		}
+		rapidProContacts.add(rapidProContact);
 	}
 
 	private static Comparator<Client> COMPARATOR = new Comparator<Client>() {
