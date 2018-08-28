@@ -6,6 +6,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -127,11 +130,14 @@ public class UniqueIdController {
 	 * Fetch unique Ids from OMRS
 	 * 
 	 * @return json array object with ids
+	 * @throws KeyStoreException 
+	 * @throws NoSuchAlgorithmException 
+	 * @throws KeyManagementException 
 	 */
 	
 	@RequestMapping(value = "/get", method = RequestMethod.GET)
 	@ResponseBody
-	protected ResponseEntity<String> get(HttpServletRequest request) throws JSONException {
+	protected ResponseEntity<String> get(HttpServletRequest request) throws JSONException, KeyManagementException, NoSuchAlgorithmException, KeyStoreException {
 		
 		String numberToGenerate = getStringFilter("numberToGenerate", request);
 		String source = getStringFilter("source", request);

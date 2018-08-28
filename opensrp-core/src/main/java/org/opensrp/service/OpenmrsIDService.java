@@ -1,15 +1,27 @@
 package org.opensrp.service;
 
 import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLContext;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.conn.ssl.NoopHostnameVerifier;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.ssl.SSLContextBuilder;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -52,14 +64,27 @@ public class OpenmrsIDService {
 	@Autowired
 	private UniqueIdRepository uniqueIdRepository;
 	
-	public static OpenmrsIDService createInstanceWithOpenMrsUrl(String openmrsUrl) {
+	public static OpenmrsIDService createInstanceWithOpenMrsUrl(String openmrsUrl) throws KeyManagementException, NoSuchAlgorithmException, KeyStoreException {
 		OpenmrsIDService openmrsIDService = new OpenmrsIDService();
 		openmrsIDService.openmrsUrl = openmrsUrl;
 		return openmrsIDService;
 	}
 	
-	public OpenmrsIDService() {
-		this.client = HttpClientBuilder.create().build();
+	public OpenmrsIDService() throws KeyManagementException, NoSuchAlgorithmException, KeyStoreException {
+		SSLContext sslContext = SSLContextBuilder
+                .create()
+                .loadTrustMaterial(new TrustSelfSignedStrategy())
+                .build();
+
+        // we can optionally disable hostname verification. 
+        // if you don't want to further weaken the security, you don't have to include this.
+        HostnameVerifier allowAllHosts = new NoopHostnameVerifier();
+        
+        // create an SSL Socket Factory to use the SSLContext with the trust self signed certificate strategy
+        // and allow all hosts verifier.
+        SSLConnectionSocketFactory connectionFactory = new SSLConnectionSocketFactory(sslContext, allowAllHosts);
+        
+		this.client = HttpClientBuilder.create().setSSLSocketFactory(connectionFactory).build();
 	}
 	
 	public List<String> downloadOpenmrsIds(int size) {
@@ -185,15 +210,15 @@ public class OpenmrsIDService {
 	}
 	
 	public List<String> getOpenMRSIdentifiers(String source, String numberToGenerate, String userName, String password)
-	    throws JSONException {
+	    throws JSONException, KeyManagementException, NoSuchAlgorithmException, KeyStoreException {
+		 
 		List<String> ids = new ArrayList<>();
 		String openMRSUrl = this.openmrsUrl + OPENMRS_IDGEN_URL;
 		openMRSUrl += "?source=" + this.openmrsSourceId + "&numberToGenerate=" + numberToGenerate;
-		openMRSUrl += "&username=" + userName + "&password=" + password;
-		
-		HttpGet get = new HttpGet(openMRSUrl);
-		try {
-			HttpResponse response = client.execute(get);
+		openMRSUrl += "&username=" + userName + "&password=" + password;		
+		try (CloseableHttpClient httpclient = createAcceptSelfSignedCertificateClient()) {
+			HttpGet get = new HttpGet(openMRSUrl);
+			HttpResponse response = httpclient.execute(get);
 			String jsonResponse = EntityUtils.toString(response.getEntity());
 			
 			JSONObject responseJson = new JSONObject(jsonResponse);
@@ -214,4 +239,23 @@ public class OpenmrsIDService {
 		}
 		
 	}
+	
+	
+	private static CloseableHttpClient createAcceptSelfSignedCertificateClient()
+            throws KeyManagementException, NoSuchAlgorithmException, KeyStoreException {
+        
+        SSLContext sslContext = SSLContextBuilder
+                .create()
+                .loadTrustMaterial(new TrustSelfSignedStrategy())
+                .build();
+        
+        HostnameVerifier allowAllHosts = new NoopHostnameVerifier();
+        SSLConnectionSocketFactory connectionFactory = new SSLConnectionSocketFactory(sslContext, allowAllHosts);
+        
+        
+        return HttpClients
+                .custom()
+                .setSSLSocketFactory(connectionFactory)
+                .build();
+    }
 }
