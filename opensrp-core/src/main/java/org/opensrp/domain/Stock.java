@@ -45,6 +45,12 @@ public class Stock extends BaseDataObject {
 	private String teamId;
 
 	@JsonProperty
+	String reasonId;
+
+	@JsonProperty
+	String programId;
+
+	@JsonProperty
 	private Long date_updated;
 	
 	@JsonProperty
@@ -177,6 +183,22 @@ public class Stock extends BaseDataObject {
 
 	public void setTo_from(String to_from) {
 		this.to_from = to_from;
+	}
+
+	public String getReason() {
+		return reasonId;
+	}
+
+	public void setReason(String reasonId) {
+		this.reasonId = reasonId;
+	}
+
+	public String getProgramId() {
+		return programId;
+	}
+
+	public void setProgramId(String programId) {
+		this.programId = programId;
 	}
 
 	public Long getDate_updated() {
