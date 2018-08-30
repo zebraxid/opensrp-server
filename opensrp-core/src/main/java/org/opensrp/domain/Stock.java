@@ -18,7 +18,7 @@ public class Stock extends BaseDataObject {
 	private String transaction_type;
 
 	@JsonProperty
-	private String lot_id;
+	private String lotId;
 	
 	@JsonProperty
 	private String providerid;
@@ -45,10 +45,10 @@ public class Stock extends BaseDataObject {
 	private String teamId;
 
 	@JsonProperty
-	String reasonId;
+	private String reasonId;
 
 	@JsonProperty
-	String programId;
+	private String programId;
 
 	@JsonProperty
 	private Long date_updated;
@@ -162,19 +162,19 @@ public class Stock extends BaseDataObject {
 	}
 
 	public String getLotId() {
-		return lot_id;
+		return lotId;
 	}
 
 	public void setLotId(String lotId) {
-		this.lot_id = lotId;
+		this.lotId = lotId;
 	}
 
-	public String getLot_id() {
-		return lot_id;
+	public String getReasonId() {
+		return reasonId;
 	}
 
-	public void setLot_id(String lot_id) {
-		this.lot_id = lot_id;
+	public void setReasonId(String reasonId) {
+		this.reasonId = reasonId;
 	}
 
 	public String getTo_from() {
