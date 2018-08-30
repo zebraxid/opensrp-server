@@ -15,6 +15,7 @@ import org.json.JSONObject;
 import org.opensrp.common.util.HttpResponse;
 import org.opensrp.common.util.HttpUtil;
 import org.opensrp.common.util.HttpUtil.AuthType;
+import org.opensrp.common.util.TurnOffCertificateValidation;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 

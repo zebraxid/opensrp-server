@@ -46,6 +46,8 @@ public class PatientService extends OpenmrsService {
 	// This ID should start with opensrp and end with uid. As matched by atomefeed module`s patient service
 	public static final String OPENSRP_IDENTIFIER_TYPE = "OpenSRP Thrive UID";
 	
+	public static final String OPENMRS_BAHMNI_IDENTIFIER_TYPE = "OpenSRP Thrive UID";
+	
 	public static final String OPENSRP_IDENTIFIER_TYPE_MATCHER = "(?i)opensrp.*uid";
 	
 	public static final String OPENMRS_UUID_IDENTIFIER_TYPE = "OPENMRS_UUID";

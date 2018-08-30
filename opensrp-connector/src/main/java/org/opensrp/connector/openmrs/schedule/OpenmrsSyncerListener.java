@@ -183,12 +183,17 @@ public class OpenmrsSyncerListener {
 		for (Client c : cl) {
 			try {
 				// FIXME This is to deal with existing records and should be
-				// removed later
-				if (c.getIdentifiers().containsKey("M_ZEIR_ID")) {
+				// removed later				
+				if (c.getAttributes().containsKey("spouseName")) {
 					if (c.getBirthdate() == null) {
 						c.setBirthdate(new DateTime("1970-01-01"));
 					}
 					c.setGender("Female");
+				}
+				if (c.getRelationships() == null) {
+					if (c.getBirthdate() == null) {
+						c.setBirthdate(new DateTime("1970-01-01"));
+					}
 				}
 				String uuid = c.getIdentifier(PatientService.OPENMRS_UUID_IDENTIFIER_TYPE);
 				
@@ -211,6 +216,7 @@ public class OpenmrsSyncerListener {
 					    c.getServerVersion());
 					
 				} else {
+					
 					JSONObject patientJson = patientService.createPatient(c);
 					patient = patientJson;//only for test code purpose					
 					if (patientJson != null && patientJson.has("uuid")) {

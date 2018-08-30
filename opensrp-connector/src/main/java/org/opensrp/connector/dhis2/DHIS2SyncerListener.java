@@ -45,7 +45,7 @@ public class DHIS2SyncerListener {
 		this.clientService = clientService;
 	}
 	
-	@MotechListener(subjects = DHIS2Constants.DHIS2_TRACK_DATA_SYNCER_SUBJECT)
+	//@MotechListener(subjects = DHIS2Constants.DHIS2_TRACK_DATA_SYNCER_SUBJECT)
 	public JSONObject pushToDHIS2(MotechEvent event) {
 		JSONObject response = null;
 		try {
