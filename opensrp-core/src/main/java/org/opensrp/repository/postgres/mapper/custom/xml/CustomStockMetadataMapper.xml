@@ -114,15 +114,32 @@
 			<if test="searchBean.toFrom != null">
 				and json->>'to_from' = #{searchBean.toFrom,jdbcType=VARCHAR}
 			</if>
+			<if test="searchBean.toFrom != null">
+				and json->>'to_from' = #{searchBean.toFrom,jdbcType=VARCHAR}
+			</if>
 			<if test="searchBean.dateUpdated != null">
 				and json->>'date_updated' = #{searchBean.dateUpdated,jdbcType=VARCHAR}
+			</if>
+			<if test="searchBean.locationId != null">
+				and json->>'location_id' = #{searchBean.locationId,jdbcType=VARCHAR}
+			</if>
+			<if test="searchBean.childLocationId != null">
+				and json->>'child_location_id' = #{searchBean.childLocationId,jdbcType=VARCHAR}
+			</if>
+			<if test="searchBean.team != null">
+				and json->>'team' = #{searchBean.team,jdbcType=VARCHAR}
+			</if>
+			<if test="searchBean.teamId != null">
+				and json->>'team_id' = #{searchBean.teamId,jdbcType=VARCHAR}
+			</if>
+			<if test="searchBean.programId != null">
+				and json->>'program_id' = #{searchBean.programId,jdbcType=VARCHAR}
 			</if>
 			<if test="orderByClause != null">
 				order by sm.${orderByClause}
 			</if>
 		</trim>
 		</where>
-
 		LIMIT #{limit} OFFSET #{offset}
 	</select>
 
