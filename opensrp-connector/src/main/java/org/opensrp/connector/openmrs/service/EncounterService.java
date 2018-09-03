@@ -17,6 +17,7 @@ import org.opensrp.domain.Event;
 import org.opensrp.domain.Obs;
 import org.opensrp.domain.User;
 import org.opensrp.service.ClientService;
+import org.opensrp.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,11 +42,15 @@ public class EncounterService extends OpenmrsService {
 	
 	private ClientService clientService;
 	
+	private EventService eventService;
+	
 	@Autowired
-	public EncounterService(PatientService patientService, OpenmrsUserService userService, ClientService clientService) {
+	public EncounterService(PatientService patientService, OpenmrsUserService userService, ClientService clientService,
+	    EventService eventService) {
 		this.patientService = patientService;
 		this.userService = userService;
 		this.clientService = clientService;
+		this.eventService = eventService;
 	}
 	
 	public EncounterService(String openmrsUrl, String user, String password) {
@@ -324,12 +329,13 @@ public class EncounterService extends OpenmrsService {
 	
 	// TODO needs review and refactor
 	public Event convertToEvent(JSONObject encounter) throws JSONException {
-		if (encounter.has("patient") == false) {
+		if (encounter.has("patientUuid") == false) {
 			throw new IllegalStateException("No 'patient' object found in given encounter");
 		}
 		Event e = new Event();
-		String patientUuid = encounter.getJSONObject("patient").getString("uuid");
-		Client c = clientService.find(patientUuid);
+		String patientId = encounter.getString("patientId");
+		String patientUuid = encounter.getString("patientUuid");
+		Client c = clientService.find(patientId);
 		if (c == null || c.getBaseEntityId() == null) {
 			//try to get the client from openmrs based on the uuid
 			JSONObject openmrsPatient = patientService.getPatientByUuid(patientUuid, false);
@@ -341,25 +347,27 @@ public class EncounterService extends OpenmrsService {
 				clientService.addClient(c);
 			}
 		}
-		
+		List<Event> events = eventService.findByBaseEntityId(c.getBaseEntityId());
+		String providerId = "";
+		if (events.size() != 0) {
+			providerId = events.get(0).getProviderId();
+		}
 		//JSONObject creator = encounter.getJSONObject("auditInfo").getJSONObject("creator");
 		e.withBaseEntityId(c.getBaseEntityId())
 		//.withCreator(new User(creator.getString("uuid"), creator.getString("display"), null, null))
 		        .withDateCreated(DateTime.now());
 		
-		e.withEventDate(new DateTime(encounter.getString("encounterDatetime")))
-		//.withEntityType(entityType) //TODO
-		        .withEventType(encounter.getJSONObject("encounterType").getString("display"))
-		        //.withFormSubmissionId(formSubmissionId)//TODO
-		        .withLocationId(
-		            (encounter.has("location") && encounter.get("location") instanceof JSONObject) ? encounter
-		                    .getJSONObject("location").getString("display") : "")
+		e.withEventDate(new DateTime(encounter.getString("encounterDateTime")))
+		        //.withEntityType(entityType) //TODO
+		        .withEventType(encounter.getString("encounterType"))
+		        .withFormSubmissionId(encounter.getString("encounterUuid"))//TODO
+		        .withLocationId(encounter.getString("locationUuid"))
 		        //TODO manage providers and uuid in couch
-		        .withProviderId("default").withVoided(encounter.getBoolean("voided"));
+		        .withProviderId(providerId);
 		
-		e.addIdentifier(OPENMRS_UUID_IDENTIFIER_TYPE, encounter.getString("uuid"));
+		e.addIdentifier(OPENMRS_UUID_IDENTIFIER_TYPE, encounter.getString("encounterUuid"));
 		
-		JSONArray ol = encounter.getJSONArray("obs");
+		JSONArray ol = encounter.getJSONArray("observations");
 		for (int i = 0; i < ol.length(); i++) {
 			JSONObject o = ol.getJSONObject(i);
 			List<Object> values = new ArrayList<Object>();
@@ -368,8 +376,30 @@ public class EncounterService extends OpenmrsService {
 			} else if (o.has("value")) {
 				values.add(o.getString("value"));
 			}
-			e.addObs(new Obs(null, null, o.getJSONObject("concept").getString("uuid"), null /*//TODO handle parent*/,
-			        values, null/*comments*/, null/*formSubmissionField*/));
+			String fieldDataType = o.getJSONObject("concept").getString("dataType");
+			if ("N/A".equalsIgnoreCase(fieldDataType)) {
+				fieldDataType = "text";
+			}
+			
+			e.addObs(new Obs("concept", fieldDataType, o.getJSONObject("concept").getString("uuid"),
+			        "" /*//TODO handle parent*/, values, ""/*comments*/, o.getJSONObject("concept").getString("shortName")/*formSubmissionField*/));
+		}
+		
+		JSONArray bahmniDiagnoses = encounter.getJSONArray("bahmniDiagnoses");
+		for (int i = 0; i < bahmniDiagnoses.length(); i++) {
+			JSONObject o = bahmniDiagnoses.getJSONObject(i);
+			List<Object> values = new ArrayList<Object>();
+			if (o.optJSONObject("firstDiagnosis") != null) {
+				values.add(o.getJSONObject("firstDiagnosis").getString("certainty"));
+			}
+			String fieldDataType = o.getJSONObject("codedAnswer").getString("dataType");
+			if ("N/A".equalsIgnoreCase(fieldDataType)) {
+				fieldDataType = "text";
+			}
+			
+			e.addObs(new Obs("concept", fieldDataType, o.getJSONObject("codedAnswer").getString("uuid"),
+			        "" /*//TODO handle parent*/, values, ""/*comments*/, o.getJSONObject("codedAnswer").getString(
+			            "shortName")/*formSubmissionField*/));
 		}
 		
 		return e;

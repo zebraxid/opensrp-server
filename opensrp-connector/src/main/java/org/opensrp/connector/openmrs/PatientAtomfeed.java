@@ -81,6 +81,7 @@ public class PatientAtomfeed extends OpenmrsService implements EventWorker, Atom
 				throw new RuntimeException("Patient uuid specified in atomfeed content (" + content
 				        + ") did not return any patient.");
 			}
+			log.info(p.toString());
 			Client c = patientService.convertToClient(p);
 			Client existing = clientService.findClient(c);
 			if (existing == null) {
