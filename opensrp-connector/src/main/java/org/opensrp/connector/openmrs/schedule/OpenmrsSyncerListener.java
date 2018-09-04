@@ -211,7 +211,7 @@ public class OpenmrsSyncerListener {
 				}
 				if (uuid != null) {
 					logger.info("Updating patient " + uuid);
-					patient = patientService.updatePatient(c, uuid);
+					//patient = patientService.updatePatient(c, uuid); // currently no reqired
 					config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_client_by_date_updated,
 					    c.getServerVersion());
 					
@@ -285,7 +285,7 @@ public class OpenmrsSyncerListener {
 			try {
 				String uuid = e.getIdentifier(EncounterService.OPENMRS_UUID_IDENTIFIER_TYPE);
 				if (uuid != null) {
-					encounter = encounterService.updateEncounter(e);
+					//encounter = encounterService.updateEncounter(e);// curently no required
 					config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_event_by_date_updated,
 					    e.getServerVersion());
 				} else {

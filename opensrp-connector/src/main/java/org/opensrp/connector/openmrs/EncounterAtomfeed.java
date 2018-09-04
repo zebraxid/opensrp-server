@@ -85,7 +85,7 @@ public class EncounterAtomfeed extends OpenmrsService implements EventWorker, At
 			
 			org.opensrp.domain.Event enc = encounterService.convertToEvent(e);
 			org.opensrp.domain.Event existing = eventService.find(e.getString("encounterUuid"));
-			System.out.println("enc::::" + enc);
+			
 			if (existing == null) {
 				log.info("New Event");
 				eventService.addEvent(enc);

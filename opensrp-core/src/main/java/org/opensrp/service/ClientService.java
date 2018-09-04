@@ -109,8 +109,8 @@ public class ClientService {
 		for (String idt : client.getIdentifiers().keySet()) {
 			List<Client> cl = allClients.findAllByIdentifier(client.getIdentifier(idt));
 			if (cl.size() > 1) {
-				throw new IllegalArgumentException(
-				        "Multiple clients with identifier type " + idt + " and ID " + client.getIdentifier(idt) + " exist.");
+				throw new IllegalArgumentException("Multiple clients with identifier type " + idt + " and ID "
+				        + client.getIdentifier(idt) + " exist.");
 			} else if (cl.size() != 0) {
 				return cl.get(0);
 			}
@@ -158,8 +158,8 @@ public class ClientService {
 				throw new IllegalArgumentException("No client found with given list of identifiers. Consider adding new!");
 			}
 			
-			original = (Client) Utils.getMergedJSON(original, updatedClient, Arrays.asList(Client.class.getDeclaredFields()),
-				Client.class);
+			original = (Client) Utils.getMergedJSON(original, updatedClient,
+			    Arrays.asList(Client.class.getDeclaredFields()), Client.class);
 			
 			for (Address a : updatedClient.getAddresses()) {
 				if (original.getAddress(a.getAddressType()) == null) {
@@ -177,6 +177,7 @@ public class ClientService {
 			}
 			
 			original.setDateEdited(DateTime.now());
+			original.setServerVersion(System.currentTimeMillis());
 			allClients.update(original);
 			return original;
 		}
@@ -237,7 +238,7 @@ public class ClientService {
 			allClients.update(client);
 			
 		} else {
-
+			
 			client.setDateCreated(DateTime.now());
 			allClients.add(client);
 		}

@@ -3,6 +3,7 @@ package org.opensrp.connector.openmrs.service;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -126,7 +127,16 @@ public class PatientService extends OpenmrsService {
 	
 	public JSONObject convertBaseEntityToOpenmrsJson(Client be) throws JSONException {
 		JSONObject per = new JSONObject();
-		per.put("gender", be.getGender());
+		// need to be removed after source correction
+		String gender = "";
+		if (be.getGender().equalsIgnoreCase("Female")) {
+			gender = "F";
+		} else if (be.getGender().equalsIgnoreCase("Male")) {
+			gender = "M";
+		} else {
+			gender = be.getGender();
+		}
+		per.put("gender", gender);
 		per.put("birthdate", OPENMRS_DATE.format(be.getBirthdate().toDate()));
 		per.put("birthdateEstimated", be.getBirthdateApprox());
 		if (be.getDeathdate() != null) {
@@ -181,38 +191,33 @@ public class PatientService extends OpenmrsService {
 			if (ad.getAddressFields() != null) {
 				jao.put("address1",
 				    ad.getAddressFieldMatchingRegex("(?i)(ADDRESS1|HOUSE_NUMBER|HOUSE|HOUSE_NO|UNIT|UNIT_NUMBER|UNIT_NO)"));
-				jao.put("address2", ad.getAddressField("(?i)(ADDRESS2|STREET|STREET_NUMBER|STREET_NO|LANE)"));
-				jao.put("address3", ad.getAddressField("(?i)(ADDRESS3|SECTOR|AREA)"));
-				String a4 = ad.getAddressField("(?i)(ADDRESS4|SUB_DISTRICT|MUNICIPALITY|TOWN|LOCALITY|REGION)");
+				jao.put("address2", ad.getAddressFieldMatchingRegex("(?i)(ADDRESS2|STREET|STREET_NUMBER|STREET_NO|LANE)"));
+				jao.put("address3", ad.getAddressFieldMatchingRegex("(?i)(ADDRESS3|SECTOR|AREA)"));
+				String a4 = ad.getAddressFieldMatchingRegex("(?i)(ADDRESS4|SUB_DISTRICT|MUNICIPALITY|TOWN|LOCALITY|REGION)");
 				a4 = StringUtils.isEmptyOrWhitespaceOnly(a4) ? "" : a4;
 				String subd = StringUtils.isEmptyOrWhitespaceOnly(ad.getSubDistrict()) ? "" : ad.getSubDistrict();
 				String tow = StringUtils.isEmptyOrWhitespaceOnly(ad.getTown()) ? "" : ad.getTown();
 				jao.put("address4", a4 + subd + tow);
-				jao.put("countyDistrict", ad.getCountyDistrict());
-				jao.put("cityVillage", ad.getCityVillage());
+				jao.put("countyDistrict", ad.getAddressFieldMatchingRegex("(?i)(countyDistrict)"));
+				jao.put("cityVillage", ad.getAddressFieldMatchingRegex("(?i)(cityVillage)"));
 				
-				String ad5V = "";
-				for (Entry<String, String> af : ad.getAddressFields().entrySet()) {
-					if (!af.getKey().matches(
-					    "(?i)(ADDRESS1|HOUSE_NUMBER|HOUSE|HOUSE_NO|UNIT|UNIT_NUMBER|UNIT_NO|"
-					            + "ADDRESS2|STREET|STREET_NUMBER|STREET_NO|LANE|" + "ADDRESS3|SECTOR|AREA|"
-					            + "ADDRESS4|SUB_DISTRICT|MUNICIPALITY|TOWN|LOCALITY|REGION|"
-					            + "countyDistrict|county_district|COUNTY|DISTRICT|"
-					            + "cityVillage|city_village|CITY|VILLAGE)")) {
-						ad5V += af.getKey() + ":" + af.getValue() + ";";
+				jao.put("address5", ad.getAddressFieldMatchingRegex("(?i)(address5)"));
+				jao.put("address6", ad.getAddressFieldMatchingRegex("(?i)(address6)"));
+				jao.put("stateProvince", ad.getAddressFieldMatchingRegex("(?i)(stateProvince)"));
+				jao.put("country", ad.getAddressFieldMatchingRegex("(?i)(country)"));
+				jao.put("address7", ad.getAddressType());
+				String gps = ad.getAddressFieldMatchingRegex("(?i)(gps)");
+				if (gps != null) {
+					String[] latln = gps.split(" ");
+					if (latln.length != 0) {
+						jao.put("latitude", latln[0]);
+						jao.put("longitude", latln[1]);
 					}
 				}
-				if (!StringUtils.isEmptyOrWhitespaceOnly(ad5V)) {
-					jao.put("address5", ad5V);
-				}
+				jao.put("postalCode", ad.getPostalCode());
 				
 			}
-			jao.put("address6", ad.getAddressType());
-			jao.put("stateProvince", ad.getStateProvince());
-			jao.put("country", ad.getCountry());
-			jao.put("postalCode", ad.getPostalCode());
-			jao.put("latitude", ad.getLatitude());
-			jao.put("longitude", ad.getLongitude());
+			
 			if (ad.getStartDate() != null) {
 				jao.put("startDate", OPENMRS_DATE.format(ad.getStartDate().toDate()));
 			}
@@ -360,25 +365,28 @@ public class PatientService extends OpenmrsService {
 		if (pr.has("addresses")) {
 			for (int i = 0; i < pr.getJSONArray("addresses").length(); i++) {
 				JSONObject ad = pr.getJSONArray("addresses").getJSONObject(i);
-				DateTime startDate = ad.has("startDate") && !ad.getString("startDate").equalsIgnoreCase("null") ? new DateTime(
-				        ad.getString("startDate")) : null;
-				DateTime endDate = ad.has("startDate") && !ad.getString("endDate").equalsIgnoreCase("null") ? new DateTime(
-				        ad.getString("endDate")) : null;
-				;
-				Address a = new Address(ad.getString("address6"), startDate, endDate, null, ad.getString("latitude"),
-				        ad.getString("longitude"), ad.getString("postalCode"), ad.getString("stateProvince"),
-				        ad.getString("country"));
-				//a.setGeopoint(geopoint);
-				a.setSubTown(ad.getString("address2"));//TODO
-				a.setTown(ad.getString("address3"));
-				a.setSubDistrict(ad.getString("address4"));
-				a.setCountyDistrict(ad.getString("countyDistrict"));
-				a.setCityVillage(ad.getString("cityVillage"));
 				
-				c.addAddress(a);
+				Map<String, String> addressFields = new HashMap<String, String>();
+				addressFields.put("cityVillage", ad.getString("cityVillage"));
+				addressFields.put("country", ad.getString("country"));
+				addressFields.put("address1", ad.getString("address1"));
+				addressFields.put("address2", ad.getString("address2"));
+				addressFields.put("address3", ad.getString("address3"));
+				addressFields.put("address4", ad.getString("address4"));
+				addressFields.put("address5", ad.getString("address5"));
+				addressFields.put("address6", ad.getString("address6"));
+				addressFields.put("stateProvince", ad.getString("stateProvince"));
+				addressFields.put("countyDistrict", ad.getString("countyDistrict"));
+				addressFields.put("gps", ad.getString("latitude") + " " + ad.getString("longitude"));
+				Address address = new Address();
+				c.getAddresses().clear();
+				address.setAddressFields(addressFields);
+				address.setAddressType(ad.getString("address7"));
+				c.addAddress(address);
 			}
 			
 		}
+		
 		return c;
 	}
 	

@@ -88,8 +88,8 @@ public class EventService {
 				return getUniqueEventFromEventList(el);
 			}
 			catch (IllegalArgumentException e) {
-				throw new IllegalArgumentException(
-				        "Multiple events with identifier type " + idt + " and ID " + event.getIdentifier(idt) + " exist.");
+				throw new IllegalArgumentException("Multiple events with identifier type " + idt + " and ID "
+				        + event.getIdentifier(idt) + " exist.");
 			}
 		}
 		return null;
@@ -131,18 +131,18 @@ public class EventService {
 	 * The event usually will have a client unique identifier(ZEIR_ID) as the only way to identify
 	 * the client.This method finds the client based on the identifier and assigns a basentityid to
 	 * the event
-	 *
+	 * 
 	 * @param event
 	 * @return
 	 */
 	public synchronized Event processOutOfArea(Event event) {
-		if (event.getBaseEntityId() == null || event.getBaseEntityId().isEmpty()) {		
+		if (event.getBaseEntityId() == null || event.getBaseEntityId().isEmpty()) {
 			//get events identifiers;
 			String identifier = event.getIdentifier(Client.ZEIR_ID);
 			List<org.opensrp.domain.Client> clients = clientService.findAllByIdentifier(Client.ZEIR_ID.toUpperCase(),
 			    identifier);
 			if (clients != null && !clients.isEmpty()) {
-				org.opensrp.domain.Client client = clients.get(0);				
+				org.opensrp.domain.Client client = clients.get(0);
 				//set providerid to the last providerid who served this client in their catchment (assumption)
 				List<Event> existingEvents = findByBaseEntityAndType(client.getBaseEntityId(), "Birth Registration");
 				if (existingEvents != null && !existingEvents.isEmpty()) {
@@ -230,8 +230,8 @@ public class EventService {
 					} else {
 						original.getObs(null, o.getFieldCode()).setComments(o.getComments());
 						original.getObs(null, o.getFieldCode()).setEffectiveDatetime(o.getEffectiveDatetime());
-						original.getObs(null, o.getFieldCode())
-						        .setValue(o.getValues().size() < 2 ? o.getValue() : o.getValues());
+						original.getObs(null, o.getFieldCode()).setValue(
+						    o.getValues().size() < 2 ? o.getValue() : o.getValues());
 					}
 				}
 				for (String k : updatedEvent.getIdentifiers().keySet()) {
@@ -241,7 +241,7 @@ public class EventService {
 			for (String k : updatedEvent.getIdentifiers().keySet()) {
 				original.addIdentifier(k, updatedEvent.getIdentifier(k));
 			}
-			
+			original.setServerVersion(System.currentTimeMillis());
 			original.setDateEdited(DateTime.now());
 			allEvents.update(original);
 			return original;

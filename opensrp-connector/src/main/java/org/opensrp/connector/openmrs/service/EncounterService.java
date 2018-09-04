@@ -385,22 +385,7 @@ public class EncounterService extends OpenmrsService {
 			        "" /*//TODO handle parent*/, values, ""/*comments*/, o.getJSONObject("concept").getString("shortName")/*formSubmissionField*/));
 		}
 		
-		JSONArray bahmniDiagnoses = encounter.getJSONArray("bahmniDiagnoses");
-		for (int i = 0; i < bahmniDiagnoses.length(); i++) {
-			JSONObject o = bahmniDiagnoses.getJSONObject(i);
-			List<Object> values = new ArrayList<Object>();
-			if (o.optJSONObject("firstDiagnosis") != null) {
-				values.add(o.getJSONObject("firstDiagnosis").getString("certainty"));
-			}
-			String fieldDataType = o.getJSONObject("codedAnswer").getString("dataType");
-			if ("N/A".equalsIgnoreCase(fieldDataType)) {
-				fieldDataType = "text";
-			}
-			
-			e.addObs(new Obs("concept", fieldDataType, o.getJSONObject("codedAnswer").getString("uuid"),
-			        "" /*//TODO handle parent*/, values, ""/*comments*/, o.getJSONObject("codedAnswer").getString(
-			            "shortName")/*formSubmissionField*/));
-		}
+		
 		
 		return e;
 	}
