@@ -28,9 +28,8 @@ CREATE TABLE core.view_configuration_metadata
 )
 WITH (
     OIDS = FALSE
-); 
+);
 
 -- //@UNDO
 -- SQL to undo the change goes here.
 DROP TABLE core.view_configuration_metadata;
-
