@@ -2,6 +2,7 @@ package org.opensrp.connector.openmrs;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
 import java.util.UUID;
 import java.util.logging.Logger;
 
@@ -24,6 +25,7 @@ import org.opensrp.connector.openmrs.service.OpenmrsService;
 import org.opensrp.connector.openmrs.service.PatientService;
 import org.opensrp.domain.Client;
 import org.opensrp.service.ClientService;
+import org.opensrp.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -45,10 +47,12 @@ public class PatientAtomfeed extends OpenmrsService implements EventWorker, Atom
 	
 	private ClientService clientService;
 	
+	private EventService eventService;
+	
 	@Autowired
 	public PatientAtomfeed(AllMarkers allMarkers, AllFailedEvents allFailedEvents,
-	    @Value("#{opensrp['openmrs.url']}") String baseUrl, PatientService patientService, ClientService clientService)
-	    throws URISyntaxException {
+	    @Value("#{opensrp['openmrs.url']}") String baseUrl, PatientService patientService, ClientService clientService,
+	    EventService eventService) throws URISyntaxException {
 		if (baseUrl != null) {
 			OPENMRS_BASE_URL = baseUrl;
 		}
@@ -69,6 +73,7 @@ public class PatientAtomfeed extends OpenmrsService implements EventWorker, Atom
 		
 		this.patientService = patientService;
 		this.clientService = clientService;
+		this.eventService = eventService;
 	}
 	
 	@Override
@@ -86,11 +91,16 @@ public class PatientAtomfeed extends OpenmrsService implements EventWorker, Atom
 			Client existing = clientService.findClient(c);
 			if (existing == null) {
 				c.setBaseEntityId(UUID.randomUUID().toString());
-				clientService.addClient(c);
-				
+				//clientService.addClient(c); // currently not valid
 				JSONObject newId = patientService.addThriveId(c.getBaseEntityId(), p);
 				log.info("New Client -> Posted Thrive ID back to OpenMRS : " + newId);
 			} else {
+				List<org.opensrp.domain.Event> events = eventService.findByBaseEntityAndEventTypeContaining(
+				    c.getBaseEntityId(), "Registration");
+				System.err.println("List<org.opensrp.domain.Event> events:" + events);
+				if (events.size() != 0) {
+					eventService.updateEventServerVersion(events.get(0));
+				}
 				String srpIdInOpenmrs = c.getBaseEntityId();
 				Client cmerged = clientService.mergeClient(c);
 				//TODO what if in any case thrive id is assigned to some other patient 

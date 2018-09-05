@@ -22,6 +22,8 @@ public interface EventsRepository extends BaseRepository<Event> {
 	
 	List<Event> findByBaseEntityAndType(String baseEntityId, String eventType);
 	
+	List<Event> findByBaseEntityAndEventTypeContaining(String baseEntityId, String eventType);
+	
 	List<Event> findEvents(EventSearchBean eventSearchBean);
 	
 	List<Event> findEventsByDynamicQuery(String query);

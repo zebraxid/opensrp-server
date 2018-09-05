@@ -192,7 +192,18 @@ public class EventService {
 		}
 		
 		updatedEvent.setDateEdited(DateTime.now());
+		allEvents.update(updatedEvent);
+	}
+	
+	public void updateEventServerVersion(Event updatedEvent) {
+		// If update is on original entity
+		if (updatedEvent.isNew()) {
+			throw new IllegalArgumentException(
+			        "Event to be updated is not an existing and persisting domain object. Update database object instead of new pojo");
+		}
 		
+		updatedEvent.setDateEdited(DateTime.now());
+		updatedEvent.setServerVersion(System.currentTimeMillis());
 		allEvents.update(updatedEvent);
 	}
 	
@@ -282,6 +293,11 @@ public class EventService {
 	
 	public List<Event> findByBaseEntityAndType(String baseEntityId, String eventType) {
 		return allEvents.findByBaseEntityAndType(baseEntityId, eventType);
+		
+	}
+	
+	public List<Event> findByBaseEntityAndEventTypeContaining(String baseEntityId, String eventType) {
+		return allEvents.findByBaseEntityAndEventTypeContaining(baseEntityId, eventType);
 		
 	}
 	

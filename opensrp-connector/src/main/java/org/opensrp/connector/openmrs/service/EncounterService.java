@@ -205,7 +205,7 @@ public class EncounterService extends OpenmrsService {
 		//TODO	enc.put("patientUuid", pt.getString("uuid"));
 		enc.put("encounterType", e.getEventType());
 		enc.put("location", e.getLocationId());
-		enc.put("provider", pr.has("uuid") ? pr.getString("uuid") : "");
+		//enc.put("provider", pr.has("uuid") ? pr.getString("uuid") : "");
 		
 		List<Obs> ol = e.getObs();
 		Map<String, JSONArray> p = new HashMap<>();
@@ -261,7 +261,7 @@ public class EncounterService extends OpenmrsService {
 				obar.put(obo);
 			}
 		}
-		enc.put("obs", obar);
+		//enc.put("obs", obar);
 		
 		return enc;
 	}
@@ -344,7 +344,7 @@ public class EncounterService extends OpenmrsService {
 				throw new IllegalStateException(
 				        "Client was not found registered while converting Encounter to an Event in OpenSRP");
 			} else {
-				clientService.addClient(c);
+				//clientService.addClient(c);// currently not valid
 			}
 		}
 		List<Event> events = eventService.findByBaseEntityId(c.getBaseEntityId());
@@ -384,8 +384,6 @@ public class EncounterService extends OpenmrsService {
 			e.addObs(new Obs("concept", fieldDataType, o.getJSONObject("concept").getString("uuid"),
 			        "" /*//TODO handle parent*/, values, ""/*comments*/, o.getJSONObject("concept").getString("shortName")/*formSubmissionField*/));
 		}
-		
-		
 		
 		return e;
 	}

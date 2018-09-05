@@ -214,7 +214,7 @@ public class OpenmrsSyncerListener {
 					//patient = patientService.updatePatient(c, uuid); // currently no reqired
 					config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_client_by_date_updated,
 					    c.getServerVersion());
-					
+					return returnJsonObject;
 				} else {
 					
 					JSONObject patientJson = patientService.createPatient(c);

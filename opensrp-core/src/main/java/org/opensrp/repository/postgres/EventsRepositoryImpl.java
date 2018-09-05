@@ -110,8 +110,8 @@ public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements E
 	public List<Event> getAll() {
 		EventMetadataExample eventMetadataExample = new EventMetadataExample();
 		eventMetadataExample.createCriteria().andDateDeletedIsNull();
-		List<org.opensrp.domain.postgres.Event> events = eventMetadataMapper.selectManyWithRowBounds(eventMetadataExample, 0,
-		    DEFAULT_FETCH_SIZE);
+		List<org.opensrp.domain.postgres.Event> events = eventMetadataMapper.selectManyWithRowBounds(eventMetadataExample,
+		    0, DEFAULT_FETCH_SIZE);
 		return convert(events);
 	}
 	
@@ -207,14 +207,22 @@ public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements E
 	}
 	
 	@Override
+	public List<Event> findByBaseEntityAndEventTypeContaining(String baseEntityId, String eventType) {
+		EventMetadataExample example = new EventMetadataExample();
+		example.createCriteria().andBaseEntityIdEqualTo(baseEntityId).andEventTypeLike("%" + eventType + "%")
+		        .andDateDeletedIsNull();
+		return convert(eventMetadataMapper.selectMany(example));
+	}
+	
+	@Override
 	public List<Event> findEvents(EventSearchBean eventSearchBean) {
 		EventMetadataExample example = new EventMetadataExample();
 		Criteria criteria = example.createCriteria();
 		if (StringUtils.isNotEmpty(eventSearchBean.getBaseEntityId()))
 			criteria.andBaseEntityIdEqualTo(eventSearchBean.getBaseEntityId());
 		if (eventSearchBean.getEventDateFrom() != null && eventSearchBean.getEventDateTo() != null)
-			criteria.andEventDateBetween(eventSearchBean.getEventDateFrom().toDate(),
-			    eventSearchBean.getEventDateTo().toDate());
+			criteria.andEventDateBetween(eventSearchBean.getEventDateFrom().toDate(), eventSearchBean.getEventDateTo()
+			        .toDate());
 		if (StringUtils.isNotEmpty(eventSearchBean.getEventType()))
 			criteria.andEventTypeEqualTo(eventSearchBean.getEventType());
 		if (StringUtils.isNotEmpty(eventSearchBean.getEntityType()))
@@ -224,8 +232,8 @@ public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements E
 		if (StringUtils.isNotEmpty(eventSearchBean.getLocationId()))
 			criteria.andLocationIdEqualTo(eventSearchBean.getLocationId());
 		if (eventSearchBean.getLastEditFrom() != null && eventSearchBean.getLastEditTo() != null)
-			criteria.andDateEditedBetween(eventSearchBean.getLastEditFrom().toDate(),
-			    eventSearchBean.getLastEditTo().toDate());
+			criteria.andDateEditedBetween(eventSearchBean.getLastEditFrom().toDate(), eventSearchBean.getLastEditTo()
+			        .toDate());
 		if (StringUtils.isNotEmpty(eventSearchBean.getTeam()))
 			criteria.andTeamEqualTo(eventSearchBean.getTeam());
 		if (StringUtils.isNotEmpty(eventSearchBean.getTeamId()))

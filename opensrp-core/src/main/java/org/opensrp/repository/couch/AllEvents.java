@@ -69,9 +69,9 @@ public class AllEvents extends MotechBaseRepository<Event> implements EventsRepo
 	
 	@View(name = "all_events_by_base_entity_and_form_submission", map = "function(doc) { if (doc.type === 'Event'){  emit([doc.baseEntityId, doc.formSubmissionId], doc); } }")
 	public Event findByBaseEntityAndFormSubmissionId(String baseEntityId, String formSubmissionId) {
-		List<Event> events = db.queryView(createQuery("all_events_by_base_entity_and_form_submission")
-		        .key(ComplexKey.of(baseEntityId, formSubmissionId)).includeDocs(true),
-		    Event.class);
+		List<Event> events = db.queryView(
+		    createQuery("all_events_by_base_entity_and_form_submission").key(ComplexKey.of(baseEntityId, formSubmissionId))
+		            .includeDocs(true), Event.class);
 		if (events == null || events.isEmpty())
 			return null;
 		else if (events.size() > 1) {
@@ -84,17 +84,16 @@ public class AllEvents extends MotechBaseRepository<Event> implements EventsRepo
 	
 	@View(name = "all_events_by_base_entity_and_type", map = "function(doc) { if (doc.type === 'Event'){  emit([doc.baseEntityId, doc.eventType], doc); } }")
 	public List<Event> findByBaseEntityAndType(String baseEntityId, String eventType) {
-		return db.queryView(
-		    createQuery("all_events_by_base_entity_and_type").key(ComplexKey.of(baseEntityId, eventType)).includeDocs(true),
-		    Event.class);
+		return db.queryView(createQuery("all_events_by_base_entity_and_type").key(ComplexKey.of(baseEntityId, eventType))
+		        .includeDocs(true), Event.class);
 	}
 	
 	@View(name = "all_events_by_base_entity_and_form_submission", map = "function(doc) { if (doc.type === 'Event'){  emit([doc.baseEntityId, doc.formSubmissionId], doc); } }")
 	public List<Event> findByBaseEntityAndFormSubmissionId(CouchDbConnector targetDb, String baseEntityId,
 	                                                       String formSubmissionId) {
-		return targetDb.queryView(createQuery("all_events_by_base_entity_and_form_submission")
-		        .key(ComplexKey.of(baseEntityId, formSubmissionId)).includeDocs(true),
-		    Event.class);
+		return targetDb.queryView(
+		    createQuery("all_events_by_base_entity_and_form_submission").key(ComplexKey.of(baseEntityId, formSubmissionId))
+		            .includeDocs(true), Event.class);
 	}
 	
 	public List<Event> findEvents(EventSearchBean eventSearchBean) {
@@ -137,9 +136,8 @@ public class AllEvents extends MotechBaseRepository<Event> implements EventsRepo
 	                                                 String dateFrom, String dateTo) {
 		ComplexKey startKey = ComplexKey.of(baseEntityId, concept, conceptValue, dateFrom);
 		ComplexKey endKey = ComplexKey.of(baseEntityId, concept, conceptValue, dateTo);
-		List<Event> events = db.queryView(
-		    createQuery("event_by_concept_and_date_created").startKey(startKey).endKey(endKey).includeDocs(true),
-		    Event.class);
+		List<Event> events = db.queryView(createQuery("event_by_concept_and_date_created").startKey(startKey).endKey(endKey)
+		        .includeDocs(true), Event.class);
 		return events;
 	}
 	
@@ -148,16 +146,14 @@ public class AllEvents extends MotechBaseRepository<Event> implements EventsRepo
 		ComplexKey startKey = ComplexKey.of(baseEntityId, concept, parentCode);
 		ComplexKey endKey = ComplexKey.of(baseEntityId, concept, parentCode);
 		List<Event> events = db.queryView(createQuery("event_by_concept_parent_code_and_base_entity_id").startKey(startKey)
-		        .endKey(endKey).includeDocs(true),
-		    Event.class);
+		        .endKey(endKey).includeDocs(true), Event.class);
 		return events;
 	}
 	
 	@View(name = "event_by_concept_and_value", map = "function(doc) {if (doc.type === 'Event' && doc.obs) {for (var obs in doc.obs) {var fieldCode = doc.obs[obs].fieldCode;var value = doc.obs[obs].values[0];emit([fieldCode,value],null);}}}")
 	public List<Event> findByConceptAndValue(String concept, String conceptValue) {
-		List<Event> events = db.queryView(
-		    createQuery("event_by_concept_and_value").key(ComplexKey.of(concept, conceptValue)).includeDocs(true),
-		    Event.class);
+		List<Event> events = db.queryView(createQuery("event_by_concept_and_value")
+		        .key(ComplexKey.of(concept, conceptValue)).includeDocs(true), Event.class);
 		return events;
 	}
 	
@@ -182,8 +178,8 @@ public class AllEvents extends MotechBaseRepository<Event> implements EventsRepo
 		System.err.println("calendar.getTime():" + calendar.getTime().getTime());
 		ComplexKey start = ComplexKey.of(eventType, calendar.getTime().getTime());
 		ComplexKey end = ComplexKey.of(eventType, System.currentTimeMillis());
-		List<Event> events = db.queryView(
-		    createQuery("all_events_by_event_type_and_version").startKey(start).endKey(end).includeDocs(true), Event.class);
+		List<Event> events = db.queryView(createQuery("all_events_by_event_type_and_version").startKey(start).endKey(end)
+		        .includeDocs(true), Event.class);
 		
 		return events;
 	}
@@ -200,9 +196,8 @@ public class AllEvents extends MotechBaseRepository<Event> implements EventsRepo
 		if (serverStartKey < serverEndKey) {
 			ComplexKey startKey = ComplexKey.of(serverStartKey);
 			ComplexKey endKey = ComplexKey.of(serverEndKey);
-			return db.queryView(
-			    createQuery("events_not_in_OpenMRS").startKey(startKey).endKey(endKey).limit(1000).includeDocs(true),
-			    Event.class);
+			return db.queryView(createQuery("events_not_in_OpenMRS").startKey(startKey).endKey(endKey).limit(1000)
+			        .includeDocs(true), Event.class);
 		}
 		return new ArrayList<>();
 	}
@@ -214,9 +209,8 @@ public class AllEvents extends MotechBaseRepository<Event> implements EventsRepo
 		if (serverStartKey < serverEndKey) {
 			ComplexKey startKey = ComplexKey.of(type, serverStartKey);
 			ComplexKey endKey = ComplexKey.of(type, serverEndKey);
-			return db.queryView(
-			    createQuery("events_by_type_not_in_OpenMRS").startKey(startKey).endKey(endKey).limit(1000).includeDocs(true),
-			    Event.class);
+			return db.queryView(createQuery("events_by_type_not_in_OpenMRS").startKey(startKey).endKey(endKey).limit(1000)
+			        .includeDocs(true), Event.class);
 		}
 		return new ArrayList<>();
 	}
@@ -226,8 +220,8 @@ public class AllEvents extends MotechBaseRepository<Event> implements EventsRepo
 		//		if(e != null){
 		//			throw new IllegalArgumentException("An event already exists with given list of identifiers. Consider updating data.["+e+"]");
 		//		}
-		if (event.getFormSubmissionId() != null && getByBaseEntityAndFormSubmissionId(targetDb, event.getBaseEntityId(),
-		    event.getFormSubmissionId()) != null) {
+		if (event.getFormSubmissionId() != null
+		        && getByBaseEntityAndFormSubmissionId(targetDb, event.getBaseEntityId(), event.getFormSubmissionId()) != null) {
 			throw new IllegalArgumentException(
 			        "An event already exists with given baseEntity and formSubmission combination. Consider updating");
 		}
@@ -238,8 +232,7 @@ public class AllEvents extends MotechBaseRepository<Event> implements EventsRepo
 		return event;
 	}
 	
-	public Event getByBaseEntityAndFormSubmissionId(CouchDbConnector targetDb, String baseEntityId,
-	                                                String formSubmissionId) {
+	public Event getByBaseEntityAndFormSubmissionId(CouchDbConnector targetDb, String baseEntityId, String formSubmissionId) {
 		try {
 			List<Event> events = findByBaseEntityAndFormSubmissionId(targetDb, baseEntityId, formSubmissionId);
 			if (events.size() > 1) {
@@ -257,6 +250,12 @@ public class AllEvents extends MotechBaseRepository<Event> implements EventsRepo
 		catch (Exception e) {
 			return null;
 		}
+	}
+	
+	@Override
+	public List<Event> findByBaseEntityAndEventTypeContaining(String baseEntityId, String eventType) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }
