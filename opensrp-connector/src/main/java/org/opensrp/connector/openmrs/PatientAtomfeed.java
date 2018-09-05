@@ -86,7 +86,7 @@ public class PatientAtomfeed extends OpenmrsService implements EventWorker, Atom
 				throw new RuntimeException("Patient uuid specified in atomfeed content (" + content
 				        + ") did not return any patient.");
 			}
-			log.info(p.toString());
+			
 			Client c = patientService.convertToClient(p);
 			Client existing = clientService.findClient(c);
 			if (existing == null) {
@@ -97,7 +97,6 @@ public class PatientAtomfeed extends OpenmrsService implements EventWorker, Atom
 			} else {
 				List<org.opensrp.domain.Event> events = eventService.findByBaseEntityAndEventTypeContaining(
 				    c.getBaseEntityId(), "Registration");
-				System.err.println("List<org.opensrp.domain.Event> events:" + events);
 				if (events.size() != 0) {
 					eventService.updateEventServerVersion(events.get(0));
 				}
