@@ -89,9 +89,10 @@ public class PatientAtomfeed extends OpenmrsService implements EventWorker, Atom
 			
 			Client c = patientService.convertToClient(p);
 			Client existing = clientService.findClient(c);
+			c.withIsSendToOpenMRS("no");
 			if (existing == null) {
 				c.setBaseEntityId(UUID.randomUUID().toString());
-				//clientService.addClient(c); // currently not valid
+				clientService.addClient(c);
 				JSONObject newId = patientService.addThriveId(c.getBaseEntityId(), p);
 				log.info("New Client -> Posted Thrive ID back to OpenMRS : " + newId);
 			} else {
@@ -101,6 +102,7 @@ public class PatientAtomfeed extends OpenmrsService implements EventWorker, Atom
 					eventService.updateEventServerVersion(events.get(0));
 				}
 				String srpIdInOpenmrs = c.getBaseEntityId();
+				
 				Client cmerged = clientService.mergeClient(c);
 				//TODO what if in any case thrive id is assigned to some other patient 
 				if (StringUtils.isBlank(srpIdInOpenmrs) || !srpIdInOpenmrs.equalsIgnoreCase(cmerged.getBaseEntityId())) {

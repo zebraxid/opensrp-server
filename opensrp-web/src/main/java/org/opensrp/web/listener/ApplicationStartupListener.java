@@ -51,9 +51,9 @@ public class ApplicationStartupListener implements ApplicationListener<ContextRe
 		        TimeUnit.MINUTES);
 		
 		// TODO openmrsScheduleSyncerScheduler = new RepeatingSchedule(OpenmrsConstants.SCHEDULER_TRACKER_SYNCER_SUBJECT, 2, TimeUnit.MINUTES, openmrsSchSyncerMin, TimeUnit.MINUTES);
-		atomfeedSchedule = new RepeatingSchedule(OpenmrsConstants.SCHEDULER_OPENMRS_ATOMFEED_SYNCER_SUBJECT, 5,
+		atomfeedSchedule = new RepeatingSchedule(OpenmrsConstants.SCHEDULER_OPENMRS_ATOMFEED_SYNCER_SUBJECT, 1,
 		        TimeUnit.MINUTES, 1, TimeUnit.MINUTES);
-		encounterSchedule = new RepeatingSchedule(OpenmrsConstants.SCHEDULER_OPENMRS_DATA_PUSH_SUBJECT, 5, TimeUnit.MINUTES,
+		encounterSchedule = new RepeatingSchedule(OpenmrsConstants.SCHEDULER_OPENMRS_DATA_PUSH_SUBJECT, 1, TimeUnit.MINUTES,
 		        1, TimeUnit.MINUTES);
 		DHIS2Syncer = new RepeatingSchedule(DHIS2Constants.DHIS2_TRACK_DATA_SYNCER_SUBJECT, 1, TimeUnit.MINUTES, 1,
 		        TimeUnit.MINUTES);

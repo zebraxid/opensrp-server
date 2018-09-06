@@ -137,8 +137,8 @@ public class EventResource extends RestResource<Event> {
 						}
 					}
 					for (int i = 0; i < clientIds.size(); i = i + CLIENTS_FETCH_BATCH_SIZE) {
-						int end = i + CLIENTS_FETCH_BATCH_SIZE < clientIds.size() ? i + CLIENTS_FETCH_BATCH_SIZE
-						        : clientIds.size();
+						int end = i + CLIENTS_FETCH_BATCH_SIZE < clientIds.size() ? i + CLIENTS_FETCH_BATCH_SIZE : clientIds
+						        .size();
 						clients.addAll(clientService.findByFieldValue(BASE_ENTITY_ID, clientIds.subList(i, end)));
 					}
 					logger.info("fetching clients took: " + (System.currentTimeMillis() - startTime));
@@ -197,12 +197,12 @@ public class EventResource extends RestResource<Event> {
 				    new TypeToken<ArrayList<Client>>() {}.getType());
 				for (Client client : clients) {
 					try {
+						client.withIsSendToOpenMRS("yes");
 						clientService.addorUpdate(client);
 					}
 					catch (Exception e) {
-						logger.error(
-						    "Client" + client.getBaseEntityId() == null ? "" : client.getBaseEntityId() + " failed to sync",
-						    e);
+						logger.error("Client" + client.getBaseEntityId() == null ? "" : client.getBaseEntityId()
+						        + " failed to sync", e);
 					}
 				}
 				
@@ -213,13 +213,13 @@ public class EventResource extends RestResource<Event> {
 				for (Event event : events) {
 					try {
 						event = eventService.processOutOfArea(event);
+						event.withIsSendToOpenMRS("yes");
 						eventService.addorUpdateEvent(event);
 					}
 					catch (Exception e) {
 						logger.error(
 						    "Event of type " + event.getEventType() + " for client " + event.getBaseEntityId() == null ? ""
-						            : event.getBaseEntityId() + " failed to sync",
-						    e);
+						            : event.getBaseEntityId() + " failed to sync", e);
 					}
 				}
 			}

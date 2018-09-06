@@ -211,10 +211,16 @@ public class OpenmrsSyncerListener {
 				}
 				if (uuid != null) {
 					logger.info("Updating patient " + uuid);
-					//patient = patientService.updatePatient(c, uuid); // currently no reqired
+					String isSendToOpenMRS = c.getIsSendToOpenMRS();
+					if (isSendToOpenMRS.equalsIgnoreCase("yes") || isSendToOpenMRS == null) {
+						patient = patientService.updatePatient(c, uuid);
+					} else {
+						logger.info("this client doesn't go to openMRS at baseentityid: " + uuid);
+					}
+					
 					config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_client_by_date_updated,
 					    c.getServerVersion());
-					return returnJsonObject;
+					
 				} else {
 					
 					JSONObject patientJson = patientService.createPatient(c);
@@ -239,7 +245,9 @@ public class OpenmrsSyncerListener {
 		}
 		
 		for (Client c : cl) {
-			if (c.getRelationships() != null) {// Mother has no relations. 
+			String isSendToOpenMRS = c.getIsSendToOpenMRS();
+			if (c.getRelationships() != null && isSendToOpenMRS.equalsIgnoreCase("yes")) {// Mother has no relations. 
+			
 				JSONObject motherJson = patientService.getPatientByIdentifier(c.getRelationships().get("mother").get(0)
 				        .toString());
 				JSONObject person = motherJson.getJSONObject("person");
@@ -285,7 +293,14 @@ public class OpenmrsSyncerListener {
 			try {
 				String uuid = e.getIdentifier(EncounterService.OPENMRS_UUID_IDENTIFIER_TYPE);
 				if (uuid != null) {
-					//encounter = encounterService.updateEncounter(e);// curently no required
+					String isSendToOpenMRS = e.getIsSendToOpenMRS();
+					if (isSendToOpenMRS.equalsIgnoreCase("yes") || isSendToOpenMRS == null) {
+						encounter = encounterService.updateEncounter(e);// curently no required
+						
+					} else {
+						logger.info("this event doesn't go to openMRS at baseentityid: " + uuid + ", and event type:"
+						        + e.getEventType());
+					}
 					config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_event_by_date_updated,
 					    e.getServerVersion());
 				} else {

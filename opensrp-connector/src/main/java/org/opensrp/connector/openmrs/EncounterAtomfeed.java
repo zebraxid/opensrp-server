@@ -70,6 +70,9 @@ public class EncounterAtomfeed extends OpenmrsService implements EventWorker, At
 		this.eventService = eventService;
 	}
 	
+	/**
+	 * 
+	 * */
 	@Override
 	public void process(Event event) {
 		log.info("Processing item : " + event.getContent());
@@ -85,7 +88,7 @@ public class EncounterAtomfeed extends OpenmrsService implements EventWorker, At
 			
 			org.opensrp.domain.Event enc = encounterService.convertToEvent(e);
 			org.opensrp.domain.Event existing = eventService.find(e.getString("encounterUuid"));
-			
+			enc.withIsSendToOpenMRS("no");
 			if (existing == null) {
 				log.info("New Event");
 				eventService.addEvent(enc);
