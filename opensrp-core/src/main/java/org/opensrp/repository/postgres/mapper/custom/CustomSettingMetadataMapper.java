@@ -15,3 +15,4 @@ public interface CustomSettingMetadataMapper extends SettingsMetadataMapper {
 	Settings selectByDocumentId(String documentId);
 	
 }
+
