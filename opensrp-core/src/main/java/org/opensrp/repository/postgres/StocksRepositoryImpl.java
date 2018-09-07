@@ -234,7 +234,9 @@ public class StocksRepositoryImpl extends BaseRepositoryImpl<Stock> implements S
 		metadata.setDocumentId(entity.getId());
 		metadata.setProviderId(entity.getProviderid());
 		metadata.setServerVersion(entity.getServerVersion());
-		//metadata.setLocationId(entity.get);
+		metadata.setLocationId(entity.getLocationId());
+		metadata.setTeam(entity.getTeam());
+		metadata.setTeamId(entity.getTeamId());
 		return metadata;
 	}
 }

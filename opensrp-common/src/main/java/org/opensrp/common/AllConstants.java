@@ -137,15 +137,15 @@ public class AllConstants {
 
 		public static final String TIMESTAMP = "timeStamp";
 
-		public static String LOCATION_ID = "location_id";
+		public static final String LOCATION_ID = "location_id";
 
-		public static String CHILD_LOCATION_ID = "child_location_id";
+		public static final String CHILD_LOCATION_ID = "child_location_id";
 
-		public static String TEAM = "team";
+		public static final String TEAM = "team";
 
-		public static String TEAM_ID = "team_id";
+		public static final String TEAM_ID = "team_id";
 
-		public static String PROGRAM_ID = "program_id";
+		public static final String PROGRAM_ID = "program_id";
 	}
 
 	public static class Action {
