@@ -7,7 +7,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.opensrp.common.AllConstants.BaseEntity;
-import org.opensrp.domain.setting.Setting;
+import org.opensrp.domain.setting.SettingConfiguration;
 import org.opensrp.service.SettingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,7 +28,7 @@ public class SettingResource {
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/sync")
 	@ResponseBody
-	public List<Setting> findSettingsByVersion(HttpServletRequest request) {
+	public List<SettingConfiguration> findSettingsByVersion(HttpServletRequest request) {
 		String serverVersion = getStringFilter(BaseEntity.SERVER_VERSIOIN, request);
 		Long lastSyncedServerVersion = null;
 		if (serverVersion != null) {

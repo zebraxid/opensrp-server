@@ -6,7 +6,7 @@
 	<insert id="insertSelectiveAndSetId"
 		parameterType="org.opensrp.domain.postgres.Settings"
 		useGeneratedKeys="true" keyProperty="id" keyColumn="id">
-		insert into core.view_configuration
+		insert into core.settings
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 			<if test="id != null">
 				id,

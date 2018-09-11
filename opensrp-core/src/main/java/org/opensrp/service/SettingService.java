@@ -2,7 +2,7 @@ package org.opensrp.service;
 
 import java.util.List;
 
-import org.opensrp.domain.setting.Setting;
+import org.opensrp.domain.setting.SettingConfiguration;
 import org.opensrp.repository.SettingRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,20 +21,20 @@ public class SettingService {
 		this.settingRepository = settingRepository;
 	}
 	
-	public List<Setting> findSettingsByVersion(Long lastSyncedServerVersion) {
+	public List<SettingConfiguration> findSettingsByVersion(Long lastSyncedServerVersion) {
 		return settingRepository.findAllSettingsByVersion(lastSyncedServerVersion);
 	}
 	
 	public void addServerVersion() {
 		try {
-			List<Setting> settings = settingRepository.findByEmptyServerVersion();
-			logger.info("RUNNING addServerVersion settings size: " + settings.size());
+			List<SettingConfiguration> settingConfigurations = settingRepository.findByEmptyServerVersion();
+			logger.info("RUNNING addServerVersion settings size: " + settingConfigurations.size());
 			long currentTimeMillis = System.currentTimeMillis();
-			for (Setting setting : settings) {
+			for (SettingConfiguration settingConfiguration : settingConfigurations) {
 				try {
 					Thread.sleep(1);
-					setting.setServerVersion(currentTimeMillis);
-					settingRepository.update(setting);
+					settingConfiguration.setServerVersion(currentTimeMillis);
+					settingRepository.update(settingConfiguration);
 					currentTimeMillis += 1;
 				}
 				catch (InterruptedException e) {

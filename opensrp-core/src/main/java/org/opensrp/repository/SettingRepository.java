@@ -2,13 +2,13 @@ package org.opensrp.repository;
 
 import java.util.List;
 
-import org.opensrp.domain.setting.Setting;
+import org.opensrp.domain.setting.SettingConfiguration;
 
-public interface SettingRepository extends BaseRepository<Setting> {
+public interface SettingRepository extends BaseRepository<SettingConfiguration> {
 	
-	List<Setting> findAllSettings();
+	List<SettingConfiguration> findAllSettings();
 	
-	List<Setting> findAllSettingsByVersion(Long lastSyncedServerVersion);
+	List<SettingConfiguration> findAllSettingsByVersion(Long lastSyncedServerVersion);
 	
-	List<Setting> findByEmptyServerVersion();
+	List<SettingConfiguration> findByEmptyServerVersion();
 }

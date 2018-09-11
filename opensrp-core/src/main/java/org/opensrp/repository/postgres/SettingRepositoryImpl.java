@@ -6,7 +6,7 @@ import java.util.UUID;
 
 import org.opensrp.domain.postgres.SettingsMetadata;
 import org.opensrp.domain.postgres.SettingsMetadataExample;
-import org.opensrp.domain.setting.Setting;
+import org.opensrp.domain.setting.SettingConfiguration;
 import org.opensrp.repository.SettingRepository;
 import org.opensrp.repository.postgres.mapper.custom.CustomSettingMapper;
 import org.opensrp.repository.postgres.mapper.custom.CustomSettingMetadataMapper;
@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 @Repository("settingRepositoryPostgres")
-public class SettingRepositoryImpl extends BaseRepositoryImpl<Setting> implements SettingRepository {
+public class SettingRepositoryImpl extends BaseRepositoryImpl<SettingConfiguration> implements SettingRepository {
 	
 	@Autowired
 	private CustomSettingMapper settingMapper;
@@ -23,13 +23,13 @@ public class SettingRepositoryImpl extends BaseRepositoryImpl<Setting> implement
 	private CustomSettingMetadataMapper settingMetadataMapper;
 	
 	@Override
-	public Setting get(String id) {
+	public SettingConfiguration get(String id) {
 		return convert(settingMetadataMapper.selectByDocumentId(id));
 	}
 	
 	@Override
-	public void add(Setting entity) {
-		if (entity == null || entity.getKey() == null) {
+	public void add(SettingConfiguration entity) {
+		if (entity == null || entity.getIdentifier() == null) {
 			return;
 		}
 		
@@ -58,8 +58,8 @@ public class SettingRepositoryImpl extends BaseRepositoryImpl<Setting> implement
 	}
 	
 	@Override
-	public void update(Setting entity) {
-		if (entity == null || entity.getId() == null || entity.getKey() == null) {
+	public void update(SettingConfiguration entity) {
+		if (entity == null || entity.getId() == null || entity.getIdentifier() == null) {
 			return;
 		}
 		
@@ -95,12 +95,12 @@ public class SettingRepositoryImpl extends BaseRepositoryImpl<Setting> implement
 	}
 	
 	@Override
-	public List<Setting> getAll() {
+	public List<SettingConfiguration> getAll() {
 		return convert(settingMetadataMapper.selectMany(new SettingsMetadataExample(), 0, DEFAULT_FETCH_SIZE));
 	}
 	
 	@Override
-	public void safeRemove(Setting entity) {
+	public void safeRemove(SettingConfiguration entity) {
 		if (entity == null) {
 			return;
 		}
@@ -122,19 +122,19 @@ public class SettingRepositoryImpl extends BaseRepositoryImpl<Setting> implement
 	}
 	
 	@Override
-	public List<Setting> findAllSettings() {
+	public List<SettingConfiguration> findAllSettings() {
 		return getAll();
 	}
 	
 	@Override
-	public List<Setting> findAllSettingsByVersion(Long lastSyncedServerVersion) {
+	public List<SettingConfiguration> findAllSettingsByVersion(Long lastSyncedServerVersion) {
 		SettingsMetadataExample metadataExample = new SettingsMetadataExample();
 		metadataExample.createCriteria().andServerVersionGreaterThanOrEqualTo(lastSyncedServerVersion);
 		return convert(settingMetadataMapper.selectMany(metadataExample, 0, DEFAULT_FETCH_SIZE));
 	}
 	
 	@Override
-	public List<Setting> findByEmptyServerVersion() {
+	public List<SettingConfiguration> findByEmptyServerVersion() {
 		SettingsMetadataExample metadataExample = new SettingsMetadataExample();
 		metadataExample.createCriteria().andServerVersionIsNull();
 		metadataExample.or(metadataExample.createCriteria().andServerVersionEqualTo(0l));
@@ -142,11 +142,11 @@ public class SettingRepositoryImpl extends BaseRepositoryImpl<Setting> implement
 	}
 	
 	@Override
-	protected Long retrievePrimaryKey(Setting setting) {
-		if (getUniqueField(setting) == null) {
+	protected Long retrievePrimaryKey(SettingConfiguration settingConfiguration) {
+		if (getUniqueField(settingConfiguration) == null) {
 			return null;
 		}
-		String documentId = setting.getId();
+		String documentId = settingConfiguration.getId();
 		
 		SettingsMetadataExample metadataExample = new SettingsMetadataExample();
 		metadataExample.createCriteria().andDocumentIdEqualTo(documentId);
@@ -159,19 +159,19 @@ public class SettingRepositoryImpl extends BaseRepositoryImpl<Setting> implement
 	}
 	
 	@Override
-	protected Object getUniqueField(Setting setting) {
-		return setting == null ? null : setting.getId();
+	protected Object getUniqueField(SettingConfiguration settingConfiguration) {
+		return settingConfiguration == null ? null : settingConfiguration.getId();
 	}
 	
 	//private Methods
-	private Setting convert(org.opensrp.domain.postgres.Settings setting) {
-		if (setting == null || setting.getJson() == null || !(setting.getJson() instanceof Setting)) {
+	private SettingConfiguration convert(org.opensrp.domain.postgres.Settings setting) {
+		if (setting == null || setting.getJson() == null || !(setting.getJson() instanceof SettingConfiguration)) {
 			return null;
 		}
-		return (Setting) setting.getJson();
+		return (SettingConfiguration) setting.getJson();
 	}
 	
-	private org.opensrp.domain.postgres.Settings convert(Setting entity, Long id) {
+	private org.opensrp.domain.postgres.Settings convert(SettingConfiguration entity, Long id) {
 		if (entity == null) {
 			return null;
 		}
@@ -183,14 +183,14 @@ public class SettingRepositoryImpl extends BaseRepositoryImpl<Setting> implement
 		return pgSetting;
 	}
 	
-	private List<Setting> convert(List<org.opensrp.domain.postgres.Settings> settings) {
+	private List<SettingConfiguration> convert(List<org.opensrp.domain.postgres.Settings> settings) {
 		if (settings == null || settings.isEmpty()) {
 			return new ArrayList<>();
 		}
 		
-		List<Setting> settingValues = new ArrayList<>();
+		List<SettingConfiguration> settingValues = new ArrayList<>();
 		for (org.opensrp.domain.postgres.Settings setting : settings) {
-			Setting convertedSetting = convert(setting);
+			SettingConfiguration convertedSetting = convert(setting);
 			if (convertedSetting != null) {
 				settingValues.add(convertedSetting);
 			}
@@ -198,11 +198,11 @@ public class SettingRepositoryImpl extends BaseRepositoryImpl<Setting> implement
 		return settingValues;
 	}
 	
-	private SettingsMetadata createMetadata(Setting entity, Long id) {
+	private SettingsMetadata createMetadata(SettingConfiguration entity, Long id) {
 		SettingsMetadata metadata = new SettingsMetadata();
 		metadata.setSettingsId(id);
 		metadata.setDocumentId(entity.getId());
-		metadata.setIdentifier(entity.getKey());
+		metadata.setIdentifier(entity.getIdentifier());
 		metadata.setServerVersion(entity.getServerVersion());
 		return metadata;
 	}

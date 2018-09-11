@@ -8,9 +8,9 @@
 	</sql>
 
 	<sql id="Base_Table_List">
-		from core.view_configuration_metadata m
+		from core.settings_metadata m
 		join
-		core.view_configuration v on m.view_configuration_id = v.id
+		core.settings v on m.settings_id = v.id
 	</sql>
 
 	<select id="selectByDocumentId" parameterType="java.lang.String"
