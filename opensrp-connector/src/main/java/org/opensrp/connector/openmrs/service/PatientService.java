@@ -161,7 +161,7 @@ public class PatientService extends OpenmrsService {
 		JSONArray attrs = new JSONArray();
 		for (Entry<String, Object> at : attributes.entrySet()) {
 			JSONObject a = new JSONObject();
-			a.put("attributeType", getPersonAttributeType(at.getKey()).getString("uuid"));
+			a.put("attributeType", (getPersonAttributeType(at.getKey()) == null)? "" : getPersonAttributeType(at.getKey()).getString("uuid"));
 			a.put("value", at.getValue());
 			attrs.put(a);
 		}
@@ -226,7 +226,7 @@ public class PatientService extends OpenmrsService {
 	
 	public JSONObject createPatient(Client c) throws JSONException {
 		JSONObject p = new JSONObject();
-		p.put("person", createPerson(c).getString("uuid"));
+		p.put("person", (createPerson(c).has("uuid")) ? createPerson(c).getString("uuid") : "");
 		JSONArray ids = new JSONArray();
 		if (c.getIdentifiers() != null) {
 			for (Entry<String, String> id : c.getIdentifiers().entrySet()) {
