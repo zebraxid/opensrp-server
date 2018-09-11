@@ -1,15 +1,7 @@
 package org.opensrp.web.rest;
 
 import static java.text.MessageFormat.format;
-import static org.opensrp.common.AllConstants.Stock.DATE_CREATED;
-import static org.opensrp.common.AllConstants.Stock.DATE_UPDATED;
-import static org.opensrp.common.AllConstants.Stock.IDENTIFIER;
-import static org.opensrp.common.AllConstants.Stock.PROVIDERID;
-import static org.opensrp.common.AllConstants.Stock.TO_FROM;
-import static org.opensrp.common.AllConstants.Stock.TRANSACTION_TYPE;
-import static org.opensrp.common.AllConstants.Stock.VACCINE_TYPE_ID;
-import static org.opensrp.common.AllConstants.Stock.VALUE;
-import static org.opensrp.common.AllConstants.Stock.TIMESTAMP;
+import static org.opensrp.common.AllConstants.Stock.*;
 import static org.opensrp.web.rest.RestUtils.getIntegerFilter;
 import static org.opensrp.web.rest.RestUtils.getStringFilter;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
@@ -73,7 +65,7 @@ public class StockResource extends RestResource<Stock> {
 	/**
 	 * Fetch all the stocks
 	 * 
-	 * @param none
+	 * @param uniqueId
 	 * @return a map response with stocks, and optionally msg when an error occurs
 	 */
 	
@@ -82,8 +74,7 @@ public class StockResource extends RestResource<Stock> {
 	protected ResponseEntity<String> getAll() {
 		Map<String, Object> response = new HashMap<String, Object>();
 		try {
-			List<Stock> stocks = new ArrayList<Stock>();
-			stocks = stockService.findAllStocks();
+			List<Stock> stocks = stockService.findAllStocks();
 			JsonArray stocksArray = (JsonArray) gson.toJsonTree(stocks, new TypeToken<List<Stock>>() {}.getType());
 			response.put("stocks", stocksArray);
 			return new ResponseEntity<>(gson.toJson(response), HttpStatus.OK);
@@ -96,6 +87,7 @@ public class StockResource extends RestResource<Stock> {
 	}
 	
 	private StockSearchBean populateSearchBean(HttpServletRequest request) {
+
 		StockSearchBean searchBean = new StockSearchBean();
 		searchBean.setIdentifier(getStringFilter(IDENTIFIER, request));
 		searchBean.setStockTypeId(getStringFilter(VACCINE_TYPE_ID, request));
@@ -105,6 +97,11 @@ public class StockResource extends RestResource<Stock> {
 		searchBean.setDateCreated(getStringFilter(DATE_CREATED, request));
 		searchBean.setToFrom(getStringFilter(TO_FROM, request));
 		searchBean.setDateUpdated(getStringFilter(DATE_UPDATED, request));
+		searchBean.setLocationId(getStringFilter(LOCATION_ID, request));
+		searchBean.setChildLocationId(getStringFilter(CHILD_LOCATION_ID, request));
+		searchBean.setTeam(getStringFilter(TEAM, request));
+		searchBean.setTeamId(getStringFilter(TEAM_ID, request));
+		searchBean.setProgramId(getStringFilter(PROGRAM_ID, request));
 		return searchBean;
 	}
 	
@@ -117,7 +114,7 @@ public class StockResource extends RestResource<Stock> {
 	@RequestMapping(value = "/sync", method = RequestMethod.GET)
 	@ResponseBody
 	protected ResponseEntity<String> sync(HttpServletRequest request) {
-		Map<String, Object> response = new HashMap<String, Object>();
+		Map<String, Object> response = new HashMap<>();
 		
 		try {
 			StockSearchBean searchBean = populateSearchBean(request);
@@ -130,16 +127,13 @@ public class StockResource extends RestResource<Stock> {
 				limit = 25;
 			}
 			
-			List<Stock> stocks = new ArrayList<Stock>();
-			stocks = stockService.findStocks(searchBean, BaseEntity.SERVER_VERSIOIN, "asc", limit);
+			List<Stock> stocks = stockService.findStocks(searchBean, BaseEntity.SERVER_VERSIOIN, "asc", limit);
 			JsonArray stocksArray = (JsonArray) gson.toJsonTree(stocks, new TypeToken<List<Stock>>() {}.getType());
 			
 			response.put("stocks", stocksArray);
 			
 			return new ResponseEntity<>(gson.toJson(response), HttpStatus.OK);
-			
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			response.put("msg", "Error occurred");
 			logger.error("", e);
 			return new ResponseEntity<>(new Gson().toJson(response), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -154,7 +148,7 @@ public class StockResource extends RestResource<Stock> {
 			if (!syncData.has("stocks")) {
 				return new ResponseEntity<>(BAD_REQUEST);
 			}
-			ArrayList<Stock> stocks = (ArrayList<Stock>) gson.fromJson(syncData.getString("stocks"),
+			ArrayList<Stock> stocks = gson.fromJson(syncData.getString("stocks"),
 			    new TypeToken<ArrayList<Stock>>() {}.getType());
 			for (Stock stock : stocks) {
 				try {

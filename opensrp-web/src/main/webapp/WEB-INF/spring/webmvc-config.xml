@@ -7,6 +7,9 @@
     <context:component-scan base-package="org.opensrp.web" use-default-filters="false">
         <context:include-filter expression="org.springframework.stereotype.Controller" type="annotation"/>
     </context:component-scan>
+    <context:component-scan base-package="org.opensrp.stock.openlmis.rest" use-default-filters="false">
+        <context:include-filter expression="org.springframework.stereotype.Controller" type="annotation"/>
+    </context:component-scan>
     <mvc:annotation-driven/>
 <!--     <mvc:resources location="/" mapping="/resources/**"/> -->
   <!--    <mvc:resources mapping="/resources/**" location="/WEB-INF/" />-->

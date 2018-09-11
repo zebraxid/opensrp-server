@@ -15,10 +15,22 @@ public class StockSearchBean {
 	private String dateCreated;
 	
 	private String toFrom;
-	
+
+	private String locationId;
+
+	private String childLocationId;
+
+	private String team;
+
+	private String teamId;
+
+	private String programId;
+
 	private String dateUpdated;
 	
 	private Long serverVersion;
+
+
 	
 	public String getIdentifier() {
 		return identifier;
@@ -91,5 +103,44 @@ public class StockSearchBean {
 	public void setServerVersion(Long serverVersion) {
 		this.serverVersion = serverVersion;
 	}
-	
+
+	public String getLocationId() {
+		return locationId;
+	}
+
+	public void setLocationId(String locationId) {
+		this.locationId = locationId;
+	}
+
+	public String getChildLocationId() {
+		return childLocationId;
+	}
+
+	public void setChildLocationId(String childLocationId) {
+		this.childLocationId = childLocationId;
+	}
+
+	public String getTeam() {
+		return team;
+	}
+
+	public void setTeam(String team) {
+		this.team = team;
+	}
+
+	public String getTeamId() {
+		return teamId;
+	}
+
+	public void setTeamId(String teamId) {
+		this.teamId = teamId;
+	}
+
+	public String getProgramId() {
+		return programId;
+	}
+
+	public void setProgramId(String programId) {
+		this.programId = programId;
+	}
 }

@@ -144,6 +144,10 @@ public class Utils {
 		return true;
 	}
 
+	public static Long getCurrentTime() {
+		return System.nanoTime();
+	}
+
 	private static List<String> getRowContent(HSSFSheet sheet, int rowNum) {
 		List<String> hc = new ArrayList<>();
 		HSSFRow r = sheet.getRow(rowNum);
