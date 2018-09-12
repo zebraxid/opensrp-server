@@ -67,6 +67,7 @@
 					<artifactId>spring-tx</artifactId>
 					<version>3.1.1.RELEASE</version>
 				</dependency>
+
 			</dependencies>
 		</profile>
     </profiles>
@@ -338,6 +339,5 @@
 		    <artifactId>spring-data-redis</artifactId>
 		    <version>1.3.6.RELEASE</version>
 		</dependency>
-			
     </dependencies>
 </project>
