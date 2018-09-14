@@ -47,8 +47,4 @@
 		<property name="basePackage"
 			value="org.opensrp.repository.postgres.mapper;org.opensrp.repository.postgres.mapper.custom" />
 	</bean>
-<<<<<<< HEAD
 </beans>
-=======
-</beans>
->>>>>>> tb-reach
