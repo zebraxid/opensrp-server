@@ -272,7 +272,7 @@
 	</build>
    </profile>
 	<profile>
-		<id>couchDb</id>
+		<id>couchdb</id>
 		<activation>
 			<property>
 				<name>opensrp.database.type</name>
