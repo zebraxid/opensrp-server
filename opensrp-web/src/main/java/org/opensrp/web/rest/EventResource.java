@@ -119,7 +119,7 @@ public class EventResource extends RestResource<Event> {
 			List<String> clientIds = new ArrayList<String>();
 			List<Client> clients = new ArrayList<Client>();
 			long startTime = System.currentTimeMillis();
-			if (team != null || providerId != null || locationId != null || baseEntityId != null) {
+			if (team != null || providerId != null || locationId != null || baseEntityId != null || teamId != null) {
 				EventSearchBean eventSearchBean = new EventSearchBean();
 				eventSearchBean.setTeam(team);
 				eventSearchBean.setTeamId(teamId);
@@ -143,6 +143,7 @@ public class EventResource extends RestResource<Event> {
 					}
 					logger.info("fetching clients took: " + (System.currentTimeMillis() - startTime));
 				}
+				logger.info("fetching missing clients took: " + (System.currentTimeMillis() - startTime));
 			}
 			
 			if (searchMissingClients) {
@@ -175,7 +176,9 @@ public class EventResource extends RestResource<Event> {
 			return new ResponseEntity<>(gson.toJson(response), HttpStatus.OK);
 			
 		}
-		catch (Exception e) {
+		catch (
+		
+		Exception e) {
 			response.put("msg", "Error occurred");
 			logger.error("", e);
 			return new ResponseEntity<>(new Gson().toJson(response), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -225,7 +228,9 @@ public class EventResource extends RestResource<Event> {
 			}
 			
 		}
-		catch (Exception e) {
+		catch (
+		
+		Exception e) {
 			logger.error(format("Sync data processing failed with exception {0}.- ", e));
 			return new ResponseEntity<>(INTERNAL_SERVER_ERROR);
 		}

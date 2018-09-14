@@ -6,10 +6,10 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
                http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
                http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
-                http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.0.xsd">
+               http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.0.xsd">
 
 	<bean
-		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+			class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="location" value="classpath:activemq.properties" />
 		<property name="ignoreUnresolvablePlaceholders" value="true" />
 	</bean>
@@ -32,15 +32,17 @@
 
 	<task:scheduled-tasks scheduler="applicationScheduler">
 		<task:scheduled ref="eventsListener" method="processEvent"
-			fixed-delay="180000" />
+						fixed-delay="180000" />
 		<task:scheduled ref="openmrsSyncerListener" method="pushToOpenMRS"
-			fixed-delay="300000" />
+						fixed-delay="300000" />
 		<task:scheduled ref="openmrsValidateDataSync" method="syncToOpenMRS"
-			fixed-delay="420000" />
+						fixed-delay="420000" />
 		<task:scheduled ref="DHIS2DatasetPush" method="pushToDHIS2"
 			fixed-delay="600000" />
 		<!--<task:scheduled ref="openmrsAtomfeedListener" method="syncAtomfeeds"-->
 			<!--fixed-delay="900000" />-->
+		<task:scheduled ref="viewConfigurationService" method="addServerVersion"
+						fixed-delay="120000" />
 	</task:scheduled-tasks>
 
 	<beans profile="postgres">
@@ -66,7 +68,6 @@
 		<bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate"
 			p:connection-factory-ref="jedisConnectionFactory"
 			p:enable-transaction-support="true" />
-
 	</beans>
 
 	<beans profile="lettuce">
