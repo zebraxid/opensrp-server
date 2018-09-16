@@ -224,11 +224,10 @@ public class OpenmrsSyncerListener {
 				} else {
 					
 					JSONObject patientJson = patientService.createPatient(c);
-					patient = patientJson;//only for test code purpose					
+					patient = patientJson;
 					if (patientJson != null && patientJson.has("uuid")) {
 						c.addIdentifier(PatientService.OPENMRS_UUID_IDENTIFIER_TYPE, patientJson.getString("uuid"));
 						clientService.addorUpdate(c, false);
-						
 						config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_client_by_date_updated,
 						    c.getServerVersion());
 						
@@ -237,6 +236,7 @@ public class OpenmrsSyncerListener {
 				}
 			}
 			catch (Exception ex1) {
+				config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_client_by_date_updated, c.getServerVersion());
 				ex1.printStackTrace();
 				errorTraceService.log("OPENMRS FAILED CLIENT PUSH", Client.class.getName(), c.getBaseEntityId(),
 				    ExceptionUtils.getStackTrace(ex1), "");
@@ -295,7 +295,7 @@ public class OpenmrsSyncerListener {
 				if (uuid != null) {
 					String isSendToOpenMRS = e.getIsSendToOpenMRS();
 					if (isSendToOpenMRS.equalsIgnoreCase("yes") || isSendToOpenMRS == null) {
-						encounter = encounterService.updateEncounter(e);// curently no required
+						encounter = encounterService.updateEncounter(e);
 						
 					} else {
 						logger.info("this event doesn't go to openMRS at baseentityid: " + uuid + ", and event type:"
@@ -305,7 +305,7 @@ public class OpenmrsSyncerListener {
 					    e.getServerVersion());
 				} else {
 					JSONObject eventJson = encounterService.createEncounter(e);
-					encounter = eventJson;// only for test code purpose
+					encounter = eventJson;
 					if (eventJson != null && eventJson.has("uuid")) {
 						e.addIdentifier(EncounterService.OPENMRS_UUID_IDENTIFIER_TYPE, eventJson.getString("uuid"));
 						eventService.updateEvent(e);
@@ -315,6 +315,7 @@ public class OpenmrsSyncerListener {
 				}
 			}
 			catch (Exception ex2) {
+				config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_event_by_date_updated, e.getServerVersion());
 				logger.error("", ex2);
 				errorTraceService.log("OPENMRS FAILED EVENT PUSH", Event.class.getName(), e.getId(),
 				    ExceptionUtils.getStackTrace(ex2), "");

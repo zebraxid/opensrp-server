@@ -94,7 +94,7 @@ public class EventResource extends RestResource<Event> {
 	 * @param request
 	 * @return a map response with events, clients and optionally msg when an error occurs
 	 */
-	@RequestMapping(value = "/sync", method = RequestMethod.GET)
+	@RequestMapping(headers = { "Accept=application/json;charset=UTF-8" }, value = "/sync", method = RequestMethod.GET)
 	@ResponseBody
 	protected ResponseEntity<String> sync(HttpServletRequest request) {
 		Map<String, Object> response = new HashMap<String, Object>();
@@ -119,7 +119,7 @@ public class EventResource extends RestResource<Event> {
 			List<String> clientIds = new ArrayList<String>();
 			List<Client> clients = new ArrayList<Client>();
 			long startTime = System.currentTimeMillis();
-			if (team != null || providerId != null || locationId != null || baseEntityId != null) {
+			if (teamId != null || team != null || providerId != null || locationId != null || baseEntityId != null) {
 				EventSearchBean eventSearchBean = new EventSearchBean();
 				eventSearchBean.setTeam(team);
 				eventSearchBean.setTeamId(teamId);
@@ -183,7 +183,7 @@ public class EventResource extends RestResource<Event> {
 	}
 	
 	@SuppressWarnings("unchecked")
-	@RequestMapping(headers = { "Accept=application/json" }, method = POST, value = "/add")
+	@RequestMapping(headers = { "Accept=application/json;charset=UTF-8" }, method = POST, value = "/add")
 	public ResponseEntity<HttpStatus> save(@RequestBody String data) {
 		try {
 			JSONObject syncData = new JSONObject(data);
