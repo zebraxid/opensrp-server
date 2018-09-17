@@ -169,13 +169,16 @@ public class EventService {
 	
 	public synchronized Event addorUpdateEvent(Event event) {
 		Event existingEvent = findById(event.getId());
+		System.err.println("event.getId():::::::::::" + event.getId());
 		if (existingEvent != null) {
 			event.setDateEdited(DateTime.now());
-			event.setServerVersion(null);
+			event.setServerVersion(System.currentTimeMillis());
 			event.setRevision(existingEvent.getRevision());
+			event.setId(event.getId());
 			allEvents.update(event);
 			
 		} else {
+			event.setServerVersion(System.currentTimeMillis());
 			event.setDateCreated(DateTime.now());
 			allEvents.add(event);
 			

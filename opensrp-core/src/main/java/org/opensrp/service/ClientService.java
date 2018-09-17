@@ -211,12 +211,12 @@ public class ClientService {
 			client.setRevision(c.getRevision());
 			client.setId(c.getId());
 			c.setDateEdited(DateTime.now());
-			client.setServerVersion(null);
+			client.setServerVersion(System.currentTimeMillis());
 			client.addIdentifier("OPENMRS_UUID", c.getIdentifier("OPENMRS_UUID"));
 			allClients.update(client);
 			
 		} else {
-			
+			client.setServerVersion(System.currentTimeMillis());
 			client.setDateCreated(DateTime.now());
 			allClients.add(client);
 		}
