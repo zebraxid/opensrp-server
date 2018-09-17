@@ -22,11 +22,13 @@ import org.opensrp.service.EventService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -90,6 +92,9 @@ public class PatientService extends OpenmrsService {
 	public static final String OTHER_NON_CODED_CONCEPT = "5622AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
 
 	public static final String OPENSRP_ID_TYPE_KEY = "OpenSRP_ID";
+
+	@Value("#{opensrp['registration.events']}")
+	protected String REGESTRTIONEVENTS;
 
 	public PatientService() {
 	}
@@ -398,26 +403,31 @@ public class PatientService extends OpenmrsService {
 		String address4UUID = null;
 
 		List<Event> registrationEvents = eventService.findByBaseEntityId(be.getBaseEntityId());
+		List<String> registrationEventTypes = Arrays.asList(REGESTRTIONEVENTS.split("\\s*,\\s*"));
+
 		for (Event event : registrationEvents) {
-			if (event.getEventType().equals("Birth Registration") || event.getEventType().equals("New Woman Registration")) {
-				List<Obs> obs = event.getObs();
-				for (Obs obs2 : obs) {
-					if (obs2 != null && obs2.getFieldType().equals("formsubmissionField") && obs2.getFormSubmissionField().equals("Home_Facility") && obs2.getValue() != null) {
-						address4UUID = obs2.getValue().toString();
-						String clientAddress4 = openmrsLocationService.getLocation(address4UUID).getName();
-						if (be.getAttribute("Home_Facility") != null) {
-							be.removeAttribute("Home_Facility");
+			for (String registrationEvent : registrationEventTypes) {
+				if (event.getEventType().equals(registrationEvent)) {
+					List<Obs> obs = event.getObs();
+					for (Obs obs2 : obs) {
+						if (obs2 != null && obs2.getFieldType().equals("formsubmissionField") && obs2.getFormSubmissionField().equals("Home_Facility") && obs2.getValue() != null) {
+							address4UUID = obs2.getValue().toString();
+							String clientAddress4 = openmrsLocationService.getLocation(address4UUID).getName();
+							if (be.getAttribute("Home_Facility") != null) {
+								be.removeAttribute("Home_Facility");
+							}
+							be.addAttribute("Home_Facility", clientAddress4);
 						}
-						be.addAttribute("Home_Facility", clientAddress4);
 					}
-				}
-				if (!update) {
-					per.put("names", new JSONArray("[{\"givenName\":\"" + fn + "\",\"middleName\":\"" + mn + "\", \"familyName\":\"" + ln + "\"}]"));
-					if (address4UUID != null) {
-						per.put("addresses", convertAddressesToOpenmrsJson(be, address4UUID));
+					if (!update) {
+						per.put("names", new JSONArray("[{\"givenName\":\"" + fn + "\",\"middleName\":\"" + mn + "\", \"familyName\":\"" + ln + "\"}]"));
+						if (address4UUID != null) {
+							per.put("addresses", convertAddressesToOpenmrsJson(be, address4UUID));
+						}
 					}
 				}
 			}
+
 			break;
 		}
 		per.put("attributes", convertAttributesToOpenmrsJson(be.getAttributes()));
@@ -448,7 +458,7 @@ public class PatientService extends OpenmrsService {
 		if (adl.isEmpty() && !client.getRelationships().isEmpty()) {
 			adl = clientService.getByBaseEntityId(client.getRelationships().get("mother").get(0)).getAddresses();
 		}
-		
+
 		String address5 = null;
 
 		JSONArray jaar = new JSONArray();
@@ -460,17 +470,16 @@ public class PatientService extends OpenmrsService {
 				String address3 = ad.getAddressFieldMatchingRegex("(?i)(ADDRESS3|SECTOR|AREA)");
 				address3 = fetchLocationByUUID(address3);
 				jao.put("address3", convertToOpenmrsString(address3));
-				
-				address5 = convertToOpenmrsString(
-					ad.getAddressFieldMatchingRegex("(?i)(ADDRESS5|OTHER_RESIDENTIAL_AREA)"));
-				if(org.apache.commons.lang3.StringUtils.isNotBlank(address5) ) {
-					if(isUUID(address5)) {
+
+				address5 = convertToOpenmrsString(ad.getAddressFieldMatchingRegex("(?i)(ADDRESS5|OTHER_RESIDENTIAL_AREA)"));
+				if (org.apache.commons.lang3.StringUtils.isNotBlank(address5)) {
+					if (isUUID(address5)) {
 						jao.put("address5", openmrsLocationService.getLocation(address5).getName());
-					}else {
+					} else {
 						jao.put("address5", convertToOpenmrsString(address5));
 					}
 				}
-				
+
 				jao.put("cityVillage", convertToOpenmrsString(ad.getCityVillage()));
 				jao.put("address6", convertToOpenmrsString(ad.getAddressType()));
 				jao.put("postalCode", convertToOpenmrsString(ad.getPostalCode()));
@@ -484,33 +493,22 @@ public class PatientService extends OpenmrsService {
 				}
 			}
 		}
-		
-		if(org.apache.commons.lang3.StringUtils.isNotBlank(address5) && isUUID(address5)) {
+
+		if (org.apache.commons.lang3.StringUtils.isNotBlank(address5) && isUUID(address5)) {
 			LocationTree locationTree = openmrsLocationService.getLocationTreeWithUpperHierachyOf(address5);
 
 			try {
 
-				Map<String, String> locationsHierarchyMap = openmrsLocationService
-						.getLocationsHierarchy(locationTree);
+				Map<String, String> locationsHierarchyMap = openmrsLocationService.getLocationsHierarchy(locationTree);
 
-				jao.put("country", locationsHierarchyMap.containsKey(AllowedLevels.COUNTRY.toString()) ?
-						locationsHierarchyMap.get(AllowedLevels.COUNTRY.toString()) :
-						"");
+				jao.put("country", locationsHierarchyMap.containsKey(AllowedLevels.COUNTRY.toString()) ? locationsHierarchyMap.get(AllowedLevels.COUNTRY.toString()) : "");
 
-				jao.put("countyDistrict", locationsHierarchyMap.containsKey(AllowedLevels.DISTRICT.toString()) ?
-						locationsHierarchyMap.get(AllowedLevels.DISTRICT.toString()) :
-						"");
+				jao.put("countyDistrict", locationsHierarchyMap.containsKey(AllowedLevels.DISTRICT.toString()) ? locationsHierarchyMap.get(AllowedLevels.DISTRICT.toString()) : "");
 
-				jao.put("address2", locationsHierarchyMap.containsKey(AllowedLevels.COUNTY.toString()) ?
-						locationsHierarchyMap.get(AllowedLevels.COUNTY.toString()) :
-						"");
-				jao.put("address3", locationsHierarchyMap.containsKey(AllowedLevels.SUB_COUNTY.toString()) ?
-						locationsHierarchyMap.get(AllowedLevels.SUB_COUNTY.toString()) :
-						"");
+				jao.put("address2", locationsHierarchyMap.containsKey(AllowedLevels.COUNTY.toString()) ? locationsHierarchyMap.get(AllowedLevels.COUNTY.toString()) : "");
+				jao.put("address3", locationsHierarchyMap.containsKey(AllowedLevels.SUB_COUNTY.toString()) ? locationsHierarchyMap.get(AllowedLevels.SUB_COUNTY.toString()) : "");
 
-				jao.put("address4", locationsHierarchyMap.containsKey(AllowedLevels.DISTRICT.toString()) ?
-						locationsHierarchyMap.get(AllowedLevels.HEALTH_FACILITY.toString()) :
-						"");
+				jao.put("address4", locationsHierarchyMap.containsKey(AllowedLevels.DISTRICT.toString()) ? locationsHierarchyMap.get(AllowedLevels.HEALTH_FACILITY.toString()) : "");
 
 			}
 			catch (Exception e) {
@@ -629,13 +627,9 @@ public class PatientService extends OpenmrsService {
 
 		JSONObject pr = patient.getJSONObject("person");
 
-		String mn = pr.getJSONObject("preferredName").has("middleName") ? 
-				pr.getJSONObject("preferredName").getString("middleName") : null;
-		DateTime dd = pr.has("deathDate") && !pr.getString("deathDate").equalsIgnoreCase("null") ? 
-				new DateTime(pr.getString("deathDate")) : null;
-		c.withFirstName(pr.getJSONObject("preferredName").getString("givenName")).withMiddleName(mn)
-			.withLastName(pr.getJSONObject("preferredName").getString("familyName")).withGender(pr.getString("gender"))
-			.withBirthdate(new DateTime(pr.getString("birthdate")), pr.getBoolean("birthdateEstimated"))
+		String mn = pr.getJSONObject("preferredName").has("middleName") ? pr.getJSONObject("preferredName").getString("middleName") : null;
+		DateTime dd = pr.has("deathDate") && !pr.getString("deathDate").equalsIgnoreCase("null") ? new DateTime(pr.getString("deathDate")) : null;
+		c.withFirstName(pr.getJSONObject("preferredName").getString("givenName")).withMiddleName(mn).withLastName(pr.getJSONObject("preferredName").getString("familyName")).withGender(pr.getString("gender")).withBirthdate(new DateTime(pr.getString("birthdate")), pr.getBoolean("birthdateEstimated"))
 				.withDeathdate(dd, false);
 
 		if (pr.has("attributes")) {
@@ -652,13 +646,9 @@ public class PatientService extends OpenmrsService {
 		if (pr.has("addresses")) {
 			for (int i = 0; i < pr.getJSONArray("addresses").length(); i++) {
 				JSONObject ad = pr.getJSONArray("addresses").getJSONObject(i);
-				DateTime startDate = ad.has("startDate") && !ad.getString("startDate").equalsIgnoreCase("null") ? 
-						new DateTime(ad.getString("startDate")) : null;
-				DateTime endDate = ad.has("startDate") && !ad.getString("endDate").equalsIgnoreCase("null") ? 
-						new DateTime(ad.getString("endDate")) : null;
-				Address a = new Address(ad.getString("address6"), startDate, endDate, null, ad.getString("latitude"), 
-					ad.getString("longitude"), ad.getString("postalCode"), ad.getString("stateProvince"), 
-					ad.getString("country"));
+				DateTime startDate = ad.has("startDate") && !ad.getString("startDate").equalsIgnoreCase("null") ? new DateTime(ad.getString("startDate")) : null;
+				DateTime endDate = ad.has("startDate") && !ad.getString("endDate").equalsIgnoreCase("null") ? new DateTime(ad.getString("endDate")) : null;
+				Address a = new Address(ad.getString("address6"), startDate, endDate, null, ad.getString("latitude"), ad.getString("longitude"), ad.getString("postalCode"), ad.getString("stateProvince"), ad.getString("country"));
 				//a.setGeopoint(geopoint);
 				a.setSubTown(ad.getString("address2"));
 				a.setTown(ad.getString("address3"));
@@ -898,13 +888,14 @@ public class PatientService extends OpenmrsService {
 		String tail = openmrsId.substring(lastIndex);
 		return openmrsId.substring(0, lastIndex) + "-" + tail;
 	}
-	
+
 	public boolean isUUID(String string) {
-	    try {
-	        UUID.fromString(string);
-	        return true;
-	    } catch (IllegalArgumentException ex) {
-	        return false;
-	    }
+		try {
+			UUID.fromString(string);
+			return true;
+		}
+		catch (IllegalArgumentException ex) {
+			return false;
+		}
 	}
 }
