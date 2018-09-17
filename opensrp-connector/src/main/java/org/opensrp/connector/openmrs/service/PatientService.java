@@ -403,34 +403,28 @@ public class PatientService extends OpenmrsService {
 		String address4UUID = null;
 
 		List<Event> registrationEvents = eventService.findByBaseEntityId(be.getBaseEntityId());
-		List<String> registrationEventTypes = Arrays.asList(REGESTRTIONEVENTS.split("\\s*,\\s*"));
-
 		for (Event event : registrationEvents) {
-			for (String registrationEvent : registrationEventTypes) {
-				if (event.getEventType().equals(registrationEvent)) {
-					List<Obs> obs = event.getObs();
-					for (Obs obs2 : obs) {
-						if (obs2 != null && obs2.getFieldType().equals("formsubmissionField") && obs2.getFormSubmissionField().equals("Home_Facility") && obs2.getValue() != null) {
-							address4UUID = obs2.getValue().toString();
-							String clientAddress4 = openmrsLocationService.getLocation(address4UUID).getName();
-							if (be.getAttribute("Home_Facility") != null) {
-								be.removeAttribute("Home_Facility");
-							}
-							be.addAttribute("Home_Facility", clientAddress4);
+			if (event.getEventType().equals("Birth Registration") || event.getEventType().equals("New Woman Registration")) {
+				List<Obs> obs = event.getObs();
+				for (Obs obs2 : obs) {
+					if (obs2 != null && obs2.getFieldType().equals("formsubmissionField") && obs2.getFormSubmissionField().equals("Home_Facility") && obs2.getValue() != null) {
+						address4UUID = obs2.getValue().toString();
+						String clientAddress4 = openmrsLocationService.getLocation(address4UUID).getName();
+						if (be.getAttribute("Home_Facility") != null) {
+							be.removeAttribute("Home_Facility");
 						}
-					}
-					if (!update) {
-						per.put("names", new JSONArray("[{\"givenName\":\"" + fn + "\",\"middleName\":\"" + mn + "\", \"familyName\":\"" + ln + "\"}]"));
-						if (address4UUID != null) {
-							per.put("addresses", convertAddressesToOpenmrsJson(be, address4UUID));
-						}
+						be.addAttribute("Home_Facility", clientAddress4);
 					}
 				}
 			}
-
 			break;
 		}
 		per.put("attributes", convertAttributesToOpenmrsJson(be.getAttributes()));
+
+		if (!update) {
+			per.put("names", new JSONArray("[{\"givenName\":\"" + fn + "\",\"middleName\":\"" + mn + "\", \"familyName\":\"" + ln + "\"}]"));
+			per.put("addresses", convertAddressesToOpenmrsJson(be, address4UUID));
+		}
 
 		return per;
 	}
