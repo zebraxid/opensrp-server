@@ -150,10 +150,8 @@ public class EncounterService extends OpenmrsService {
 								}
 							}
 
-							if (obs.getFieldCode() != null) {
-								if (e.getEventType().equals("Remove") && obs.getFieldCode().equalsIgnoreCase(CONCEPT_REMOVE_REASON_DEATH)) {
-									patientService.updatePersonAsDeceased(e);
-								}
+							if (obs.getFieldCode() != null && e.getEventType().equals("Remove") && obs.getFieldCode().equalsIgnoreCase(CONCEPT_REMOVE_REASON_DEATH)) {
+								patientService.updatePersonAsDeceased(e);
 							}
 						}
 

@@ -132,7 +132,7 @@ public class HttpUtil {
 		}
 	}
 
-	static HttpRequestBase makeConnection(String baseUrl, String payload, RequestMethod method, AuthType authType,
+	public static HttpRequestBase makeConnection(String baseUrl, String payload, RequestMethod method, AuthType authType,
 			String authString) throws URISyntaxException {
 		String charset = "UTF-8";
 		String url = baseUrl;
