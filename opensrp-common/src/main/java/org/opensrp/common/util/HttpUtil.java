@@ -132,10 +132,10 @@ public class HttpUtil {
 		}
 	}
 
-	static HttpRequestBase makeConnection(String url, String payload, RequestMethod method, AuthType authType,
+	static HttpRequestBase makeConnection(String baseUrl, String payload, RequestMethod method, AuthType authType,
 			String authString) throws URISyntaxException {
 		String charset = "UTF-8";
-
+		String url = baseUrl;
 		if (url.endsWith("/")) {
 			url = url.substring(0, url.lastIndexOf("/"));
 		}

@@ -44,8 +44,8 @@ public class EncounterService extends OpenmrsService {
 
 	private OpenmrsLocationService openmrsLocationService;
 
-    private static final String CONCEPT_REMOVE_REASON_DEATH = "161641AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
-    
+	private static final String CONCEPT_REMOVE_REASON_DEATH = "161641AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+
 	@Autowired
 	public EncounterService(PatientService patientService, OpenmrsUserService userService, ClientService clientService, OpenmrsLocationService openmrsLocationService) {
 		this.patientService = patientService;
@@ -111,7 +111,7 @@ public class EncounterService extends OpenmrsService {
 		a.put("description", description);
 		return a;
 	}
-	
+
 	public JSONObject createEncounter(Event e) throws JSONException {
 		String ptuuid = patientService.getPatientByIdentifierUUID(e.getBaseEntityId());
 		if (ptuuid == null) {
@@ -142,23 +142,25 @@ public class EncounterService extends OpenmrsService {
 				for (Obs obs : ol) {
 					if (!StringUtils.isEmptyOrWhitespaceOnly(obs.getFieldCode()) && (obs.getFieldType() == null || obs.getFieldType().equalsIgnoreCase("concept"))) {
 						//						skipping empty obs and fields that don't have concepts if no parent simply make it root obs
-						if (obs.getFieldType().equals("concept") && obs.getFormSubmissionField().equals("Birth_Facility_Name") && obs.getValue() != null) {
-							Location location = openmrsLocationService.getLocation(obs.getValue().toString());
-							if (location != null && location.getName() != null) {
-								obs.setValue(location.getName());
+						if (obs.getFieldType().equals("concept")) {
+							if (obs.getFormSubmissionField().equals("Birth_Facility_Name") && obs.getValue() != null) {
+								Location location = openmrsLocationService.getLocation(obs.getValue().toString());
+								if (location != null && location.getName() != null) {
+									obs.setValue(location.getName());
+								}
+							}
+
+							if (obs.getFieldCode() != null) {
+								if (e.getEventType().equals("Remove") && obs.getFieldCode().equalsIgnoreCase(CONCEPT_REMOVE_REASON_DEATH)) {
+									patientService.updatePersonAsDeceased(e);
+								}
 							}
 						}
-						
-						if (obs.getFieldType().equals("concept") && obs.getFieldCode() != null) {
-                            if (e.getEventType().equals("Remove") && obs.getFieldCode().equalsIgnoreCase(CONCEPT_REMOVE_REASON_DEATH)) {
-                                patientService.updatePersonAsDeceased(e);
-                            }
-                        }
-						
+
 						generateObs(p, pc, obs, ol);
 					}
 				}
-			
+
 			JSONArray obar = new JSONArray();
 
 			for (String ok : p.keySet()) {
@@ -181,7 +183,7 @@ public class EncounterService extends OpenmrsService {
 					}
 				}
 			}
-			
+
 			enc.put("obs", obar);
 			HttpResponse op = HttpUtil.post(HttpUtil.removeEndingSlash(OPENMRS_BASE_URL) + "/" + ENCOUNTER_URL, "", enc.toString(), OPENMRS_USER, OPENMRS_PWD);
 			return new JSONObject(op.body());
@@ -342,7 +344,7 @@ public class EncounterService extends OpenmrsService {
 		}
 		return arr;
 	}
-	
+
 	private Obs getOrCreateParent(List<Obs> obl, Obs o) {
 		for (Obs obs : obl) {
 			if (o.getParentCode().equalsIgnoreCase(obs.getFieldCode())) {
@@ -351,7 +353,7 @@ public class EncounterService extends OpenmrsService {
 		}
 		return new Obs("concept", "parent", o.getParentCode(), null, null, null, null);
 	}
-	
+
 	// TODO needs review and refactor
 	public Event convertToEvent(JSONObject encounter) throws JSONException {
 		if (encounter.has("patient") == false) {
@@ -411,5 +413,5 @@ public class EncounterService extends OpenmrsService {
 		}
 		return result;
 	}
-   
+
 }

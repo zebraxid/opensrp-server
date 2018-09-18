@@ -11,7 +11,7 @@ import javax.net.ssl.SSLParameters;
 
 public class ServerNameIndicationSSLContext extends SSLContext {
 
-	String hostname;
+	private String hostname;
 
 	public ServerNameIndicationSSLContext(String hostname, int port) {
 		super(new ServerNameIndicationSSLContextSpi(hostname, port), null, "Default");

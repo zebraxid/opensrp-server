@@ -31,7 +31,7 @@ public class HostNameSetter {
 	}
 
 	private static void initFail(Exception e) {
-		// ignore
+		e.printStackTrace();
 	}
 
 	private Method reuse(Class<?> cls) {
@@ -72,6 +72,6 @@ public class HostNameSetter {
 	}
 
 	private static void setServerNameIndicationFail(Exception e) {
-		// ignore
+		e.printStackTrace();
 	}
 }
