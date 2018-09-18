@@ -13,7 +13,7 @@ import org.junit.Test;
 import junit.framework.Assert;
 
 public class EventTest {
-	
+
     @Test
     public void shouldTestEvent(){
         Event firstEvent = new Event();
@@ -45,32 +45,32 @@ public class EventTest {
         obs.setFieldDataType("calculate");
         obs.setFieldType("concept");
         obs.setParentCode("783AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-        obs.setFormSubmissionField("opv1_dose");        
+        obs.setFormSubmissionField("opv1_dose");
         List<Object> value = new ArrayList<>();
         value.add("1");
-        obs.setValues(value); 
+        obs.setValues(value);
         List<Obs> observations = new ArrayList<>();
         firstEvent.withObs(obs);
         observations.add(obs);
         firstEvent.withObs(observations);
-        
+
         firstEvent.setObs(null);
         firstEvent.addObs(obs);
-        
+
         firstEvent.setObs(observations);
         Assert.assertEquals(firstEvent.getObs(), observations);
-        
+
         Map<String, String> identifiers = new HashMap<>();
         identifiers.put("identifier1", "identifier");
-        
+
         firstEvent.withIdentifier("identifier2", "identifier2");
         firstEvent.setIdentifiers(identifiers);
         Assert.assertEquals(firstEvent.getIdentifiers(), identifiers);
-        Assert.assertEquals(firstEvent.getIdentifier("identifier1"), "identifier");        
+        Assert.assertEquals(firstEvent.getIdentifier("identifier1"), "identifier");
         Assert.assertEquals(firstEvent.getIdentifierMatchingRegex("identifier1"), "identifier");
         firstEvent.setIdentifiers(null);
         firstEvent.addIdentifier("identifierType", "identifier");
-        firstEvent.removeIdentifier("identifierType"); 
+        firstEvent.removeIdentifier("identifierType");
         firstEvent.withIdentifiers(identifiers);
         Assert.assertNull(firstEvent.getIdentifier("identifierType"));
         firstEvent.setLocationId("locationId");
@@ -78,16 +78,16 @@ public class EventTest {
         firstEvent.setFormSubmissionId("formSubmissionId");
         Assert.assertEquals(firstEvent.getFormSubmissionId(), "formSubmissionId");
         firstEvent.addDetails("key1", "value1");
-        
+
         Map<String, String> details = new HashMap<>();
         details.put("key", "value");
         firstEvent.setDetails(details);
-        Assert.assertEquals(firstEvent.getDetails(), details);        
+        Assert.assertEquals(firstEvent.getDetails(), details);
         firstEvent.setVersion(0L);
-        Assert.assertEquals(firstEvent.getVersion(), 0l);       
-        
+        Assert.assertEquals(firstEvent.getVersion(), 0l);
+
     }
-    
+
     @Test
     public void shouldTestParentClassBaseObject(){
         Event event = new Event();
@@ -96,46 +96,46 @@ public class EventTest {
         event.setCreator(user);
         Assert.assertEquals(user, event.getCreator());
         Assert.assertNotSame(user1, event.getCreator());
-        
+
         user.setDateCreated(new Date());
         Assert.assertEquals(new Date(), user.getDateCreated());
-        
+
         User editor = new User("oooo-r34444-jgu45");
         editor.setEditor(editor);
         user.setEditor(editor);
         User editor1 = new User("oooo-r34444-jgu45");
         Assert.assertEquals(editor, user.getEditor());
         Assert.assertNotSame(editor1, user.getEditor());
-        
+
         Date now =new Date();
         event.setDateEdited(now);
         Assert.assertEquals(now, event.getDateEdited());
         Date dt = new Date();
-        Calendar c = Calendar.getInstance(); 
-        c.setTime(dt); 
+        Calendar c = Calendar.getInstance();
+        c.setTime(dt);
         c.add(Calendar.DATE, 1);
-        dt = c.getTime();        
+        dt = c.getTime();
         Assert.assertNotSame(dt, event.getDateEdited());
-        
+
         event.setVoided(true);
         Assert.assertTrue(event.getVoided());
         Assert.assertFalse(!event.getVoided());
-        
+
         event.setDateVoided(now);
         Assert.assertEquals(now, event.getDateVoided());
-        
+
         event.setVoider(user);
         Assert.assertEquals(user, event.getVoider());
         Assert.assertNotSame(user1, event.getVoider());
-        
+
         event.setVoidReason("fake data");
         Assert.assertEquals("fake data", event.getVoidReason());
         Assert.assertNotSame("fakes data", event.getVoidReason());
-        
+
         event.withCreator(user);
         Assert.assertEquals(user, event.getCreator());
         Assert.assertNotSame(user1, event.getCreator());
-        
+
         event.withDateCreated(new Date());
         event.withEditor(user);
         Assert.assertEquals(editor, user.getEditor());
@@ -144,7 +144,7 @@ public class EventTest {
         event.withVoided(true);
         Assert.assertTrue(event.getVoided());
         Assert.assertFalse(!event.getVoided());
-        
+
         event.withDateVoided(new Date());
         event.withVoider(editor);
         Assert.assertEquals(editor, user.getEditor());
@@ -152,8 +152,8 @@ public class EventTest {
         event.withVoidReason("fake data");
         Assert.assertEquals("fake data", event.getVoidReason());
         Assert.assertNotSame("fakes data", event.getVoidReason());
-        
-    	
+
+
     }
 
 }

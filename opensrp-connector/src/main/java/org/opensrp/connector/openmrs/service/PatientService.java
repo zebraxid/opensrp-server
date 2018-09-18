@@ -22,6 +22,7 @@ import org.opensrp.service.EventService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -30,6 +31,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.UUID;
 
 @Service
 public class PatientService extends OpenmrsService {
@@ -62,6 +64,8 @@ public class PatientService extends OpenmrsService {
 
 	private static final String PATIENT_RELATIONSHIP_URL = "ws/rest/v1/relationship";
 
+	private static final String CUSTOM_UUID_PARAM = "v=custom:(uuid)";
+
 	private static final String CUSTOM_PERSON_PARAM = "v=custom:(person)";
 
 	public static final String CUSTOM_PERSON_UUID_PARAM = "v=custom:(person:(uuid))";
@@ -83,6 +87,13 @@ public class PatientService extends OpenmrsService {
 	private ConfigService config;
 
 	private ErrorTraceService errorTraceService;
+
+	public static final String OTHER_NON_CODED_CONCEPT = "5622AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+
+	public static final String OPENSRP_ID_TYPE_KEY = "OpenSRP_ID";
+
+	@Value("#{opensrp['registration.events']}")
+	protected String REGESTRTIONEVENTS;
 
 	public PatientService() {
 	}
@@ -404,16 +415,15 @@ public class PatientService extends OpenmrsService {
 						be.addAttribute("Home_Facility", clientAddress4);
 					}
 				}
-				if (!update) {
-					per.put("names", new JSONArray("[{\"givenName\":\"" + fn + "\",\"middleName\":\"" + mn + "\", \"familyName\":\"" + ln + "\"}]"));
-					if (address4UUID != null) {
-						per.put("addresses", convertAddressesToOpenmrsJson(be, address4UUID));
-					}
-				}
 			}
 			break;
 		}
 		per.put("attributes", convertAttributesToOpenmrsJson(be.getAttributes()));
+
+		if (!update) {
+			per.put("names", new JSONArray("[{\"givenName\":\"" + fn + "\",\"middleName\":\"" + mn + "\", \"familyName\":\"" + ln + "\"}]"));
+			per.put("addresses", convertAddressesToOpenmrsJson(be, address4UUID));
+		}
 
 		return per;
 	}
@@ -442,6 +452,8 @@ public class PatientService extends OpenmrsService {
 			adl = clientService.getByBaseEntityId(client.getRelationships().get("mother").get(0)).getAddresses();
 		}
 
+		String address5 = null;
+
 		JSONArray jaar = new JSONArray();
 		JSONObject jao = new JSONObject();
 		for (Address ad : adl) {
@@ -451,7 +463,16 @@ public class PatientService extends OpenmrsService {
 				String address3 = ad.getAddressFieldMatchingRegex("(?i)(ADDRESS3|SECTOR|AREA)");
 				address3 = fetchLocationByUUID(address3);
 				jao.put("address3", convertToOpenmrsString(address3));
-				jao.put("address5", convertToOpenmrsString(ad.getAddressFieldMatchingRegex("(?i)(ADDRESS5|OTHER_RESIDENTIAL_AREA)")));
+
+				address5 = convertToOpenmrsString(ad.getAddressFieldMatchingRegex("(?i)(ADDRESS5|OTHER_RESIDENTIAL_AREA)"));
+				if (org.apache.commons.lang3.StringUtils.isNotBlank(address5)) {
+					if (isUUID(address5)) {
+						jao.put("address5", openmrsLocationService.getLocation(address5).getName());
+					} else {
+						jao.put("address5", convertToOpenmrsString(address5));
+					}
+				}
+
 				jao.put("cityVillage", convertToOpenmrsString(ad.getCityVillage()));
 				jao.put("address6", convertToOpenmrsString(ad.getAddressType()));
 				jao.put("postalCode", convertToOpenmrsString(ad.getPostalCode()));
@@ -466,7 +487,27 @@ public class PatientService extends OpenmrsService {
 			}
 		}
 
-		if (clientAddress4UUID != null) {
+		if (org.apache.commons.lang3.StringUtils.isNotBlank(address5) && isUUID(address5)) {
+			LocationTree locationTree = openmrsLocationService.getLocationTreeWithUpperHierachyOf(address5);
+
+			try {
+
+				Map<String, String> locationsHierarchyMap = openmrsLocationService.getLocationsHierarchy(locationTree);
+
+				jao.put("country", locationsHierarchyMap.containsKey(AllowedLevels.COUNTRY.toString()) ? locationsHierarchyMap.get(AllowedLevels.COUNTRY.toString()) : "");
+
+				jao.put("countyDistrict", locationsHierarchyMap.containsKey(AllowedLevels.DISTRICT.toString()) ? locationsHierarchyMap.get(AllowedLevels.DISTRICT.toString()) : "");
+
+				jao.put("address2", locationsHierarchyMap.containsKey(AllowedLevels.COUNTY.toString()) ? locationsHierarchyMap.get(AllowedLevels.COUNTY.toString()) : "");
+				jao.put("address3", locationsHierarchyMap.containsKey(AllowedLevels.SUB_COUNTY.toString()) ? locationsHierarchyMap.get(AllowedLevels.SUB_COUNTY.toString()) : "");
+
+				jao.put("address4", locationsHierarchyMap.containsKey(AllowedLevels.DISTRICT.toString()) ? locationsHierarchyMap.get(AllowedLevels.HEALTH_FACILITY.toString()) : "");
+
+			}
+			catch (Exception e) {
+				logger.error("", e);
+			}
+		} else if (clientAddress4UUID != null) {
 			String clientAddress4 = fetchLocationByUUID(clientAddress4UUID);
 			jao.put("address4", convertToOpenmrsString(clientAddress4));
 
@@ -477,6 +518,7 @@ public class PatientService extends OpenmrsService {
 				jao.put("countyDistrict", locationsHierarchyMap.containsKey(AllowedLevels.DISTRICT.toString()) ? locationsHierarchyMap.get(AllowedLevels.DISTRICT.toString()) : "");
 				jao.put("stateProvince", locationsHierarchyMap.containsKey(AllowedLevels.PROVINCE.toString()) ? locationsHierarchyMap.get(AllowedLevels.PROVINCE.toString()) : "");
 				jao.put("country", locationsHierarchyMap.containsKey(AllowedLevels.COUNTRY.toString()) ? locationsHierarchyMap.get(AllowedLevels.COUNTRY.toString()) : "");
+
 			}
 			catch (Exception e) {
 				logger.error("", e);
@@ -490,6 +532,7 @@ public class PatientService extends OpenmrsService {
 
 	public JSONObject createPatient(Client c) throws JSONException {
 		JSONObject p = new JSONObject();
+
 		p.put("person", createPerson(c).getString("uuid"));
 
 		JSONArray ids = new JSONArray();
@@ -497,7 +540,11 @@ public class PatientService extends OpenmrsService {
 			for (Entry<String, String> id : c.getIdentifiers().entrySet()) {
 				JSONObject jio = new JSONObject();
 				jio.put("identifierType", fetchIdentifierTypeUUID(id.getKey()));
-				jio.put("identifier", id.getValue());
+				if (id.getKey().equalsIgnoreCase(OPENSRP_ID_TYPE_KEY)) {
+					jio.put("identifier", cleanIdentifierWithCheckDigit(id.getValue()));
+				} else {
+					jio.put("identifier", id.getValue());
+				}
 				Object cloc = c.getAttribute("Location");
 				jio.put("location", cloc == null ? "Unknown Location" : cloc);
 				ids.put(jio);
@@ -686,6 +733,7 @@ public class PatientService extends OpenmrsService {
 		JSONObject requestBody = new JSONObject();
 		requestBody.put("givenName", fn);
 		requestBody.put("familyName", ln);
+
 		String url = PERSON_URL + "/" + patientObject.getString("uuid") + "/name/" + nameObject.getString("uuid");
 
 		return new JSONObject(HttpUtil.post(getURL() + "/" + url, "", requestBody.toString(), OPENMRS_USER, OPENMRS_PWD).body());
@@ -811,5 +859,36 @@ public class PatientService extends OpenmrsService {
 			uuid = json.getString("uuid");
 		}
 		return uuid;
+	}
+
+	private String cleanIdentifierWithCheckDigit(String rawId) {
+
+		if (StringUtils.isNullOrEmpty(rawId)) {
+			return rawId;
+		}
+
+		boolean containsHyphen = rawId.contains("-");
+
+		if (!containsHyphen) {
+			return formatId(rawId);
+		} else {
+			return rawId;
+		}
+	}
+
+	private String formatId(String openmrsId) {
+		int lastIndex = openmrsId.length() - 1;
+		String tail = openmrsId.substring(lastIndex);
+		return openmrsId.substring(0, lastIndex) + "-" + tail;
+	}
+
+	public boolean isUUID(String string) {
+		try {
+			UUID.fromString(string);
+			return true;
+		}
+		catch (IllegalArgumentException ex) {
+			return false;
+		}
 	}
 }

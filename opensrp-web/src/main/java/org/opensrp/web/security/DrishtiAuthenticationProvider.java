@@ -36,7 +36,7 @@ public class DrishtiAuthenticationProvider implements AuthenticationProvider {
 	
 	public static final String INVALID_CREDENTIALS = "The username or password you entered is incorrect. Please enter the correct credentials.";
 	
-	public static final String USER_NOT_FOUND = "The user details not found. Please try again later.";
+	public static final String USER_NOT_FOUND = "The username or password you entered is incorrect. Please enter the correct credentials.";
 	
 	public static final String USER_NOT_ACTIVATED = "The user has been registered but not activated. Please contact your local administrator.";
 	
@@ -92,8 +92,7 @@ public class DrishtiAuthenticationProvider implements AuthenticationProvider {
 		        authentication.getCredentials(), getRolesAsAuthorities(user));
 		hashOps.put(key, AUTH_HASH_KEY, auth);
 		redisTemplate.expire(key, cacheTTL, TimeUnit.SECONDS);
-		return new UsernamePasswordAuthenticationToken(authentication.getName(), authentication.getCredentials(),
-		        getRolesAsAuthorities(user));
+		return auth;
 		
 	}
 	

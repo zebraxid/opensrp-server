@@ -44,6 +44,8 @@ public class EncounterService extends OpenmrsService {
 
 	private OpenmrsLocationService openmrsLocationService;
 
+	private static final String CONCEPT_REMOVE_REASON_DEATH = "161641AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+
 	@Autowired
 	public EncounterService(PatientService patientService, OpenmrsUserService userService, ClientService clientService, OpenmrsLocationService openmrsLocationService) {
 		this.patientService = patientService;
@@ -140,12 +142,19 @@ public class EncounterService extends OpenmrsService {
 				for (Obs obs : ol) {
 					if (!StringUtils.isEmptyOrWhitespaceOnly(obs.getFieldCode()) && (obs.getFieldType() == null || obs.getFieldType().equalsIgnoreCase("concept"))) {
 						//						skipping empty obs and fields that don't have concepts if no parent simply make it root obs
-						if (obs.getFieldType().equals("concept") && obs.getFormSubmissionField().equals("Birth_Facility_Name") && obs.getValue() != null) {
-							Location location = openmrsLocationService.getLocation(obs.getValue().toString());
-							if (location != null && location.getName() != null) {
-								obs.setValue(location.getName());
+						if (obs.getFieldType().equals("concept")) {
+							if (obs.getFormSubmissionField().equals("Birth_Facility_Name") && obs.getValue() != null) {
+								Location location = openmrsLocationService.getLocation(obs.getValue().toString());
+								if (location != null && location.getName() != null) {
+									obs.setValue(location.getName());
+								}
+							}
+
+							if (obs.getFieldCode() != null && e.getEventType().equals("Remove") && obs.getFieldCode().equalsIgnoreCase(CONCEPT_REMOVE_REASON_DEATH)) {
+								patientService.updatePersonAsDeceased(e);
 							}
 						}
+
 						generateObs(p, pc, obs, ol);
 					}
 				}
@@ -158,7 +167,7 @@ public class EncounterService extends OpenmrsService {
 					JSONArray cob = pc.get(ok);
 					if (cob != null && cob.length() > 0) {
 						//fix for vaccines wrong parent concept remove the if-condition once the right concepts are passed
-						if (e.getEventType().equals("Vaccination")) {
+						if (e.getEventType().equals("Vaccination") || e.getEventType().equals("HPV Vaccination")) {
 							JSONObject vaccineParent = new JSONObject();
 							vaccineParent.put("concept", ok);
 							cob.put(vaccineParent);
@@ -172,6 +181,7 @@ public class EncounterService extends OpenmrsService {
 					}
 				}
 			}
+
 			enc.put("obs", obar);
 			HttpResponse op = HttpUtil.post(HttpUtil.removeEndingSlash(OPENMRS_BASE_URL) + "/" + ENCOUNTER_URL, "", enc.toString(), OPENMRS_USER, OPENMRS_PWD);
 			return new JSONObject(op.body());
@@ -206,8 +216,6 @@ public class EncounterService extends OpenmrsService {
 
 		String ptuuid = patientService.getPatientByIdentifierUUID(e.getBaseEntityId());//TODO find by any identifier
 		JSONObject enc = new JSONObject();
-
-		String pruuid = userService.getPersonUUIDByUser(e.getProviderId());
 
 		enc.put("encounterDatetime", OPENMRS_DATE.format(e.getEventDate().toDate()));
 		// patient must be existing in OpenMRS before it submits an encounter. if it doesnot it would throw NPE
@@ -403,4 +411,5 @@ public class EncounterService extends OpenmrsService {
 		}
 		return result;
 	}
+
 }
