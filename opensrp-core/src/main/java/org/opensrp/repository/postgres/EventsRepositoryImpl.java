@@ -483,4 +483,30 @@ public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements E
 		}
 	}
 	
+	@Override
+	public void deleteByPrimaryKey(Event entity) {
+		if (entity == null || entity.getBaseEntityId() == null) {
+			return;
+		}
+		
+		Long id = retrievePrimaryKey(entity);
+		if (id == null) {
+			return;
+		}
+		
+		Date dateDeleted = entity.getDateVoided() == null ? new Date() : entity.getDateVoided().toDate();
+		EventMetadata eventMetadata = new EventMetadata();
+		eventMetadata.setDateDeleted(dateDeleted);
+		
+		EventMetadataExample eventMetadataExample = new EventMetadataExample();
+		eventMetadataExample.createCriteria().andEventIdEqualTo(id).andDateDeletedIsNull();
+		eventMetadataMapper.deleteByPrimaryKey(id);
+		
+		org.opensrp.domain.postgres.Event pgEvent = new org.opensrp.domain.postgres.Event();
+		pgEvent.setId(id);
+		pgEvent.setDateDeleted(dateDeleted);
+		eventMapper.deleteByPrimaryKey(id);
+		
+	}
+	
 }

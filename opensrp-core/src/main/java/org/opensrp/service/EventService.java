@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.hamcrest.text.pattern.Parse;
 import org.joda.time.DateTime;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -169,12 +170,17 @@ public class EventService {
 	
 	public synchronized Event addorUpdateEvent(Event event) {
 		Event existingEvent = findById(event.getId());
-		System.err.println("event.getId():::::::::::" + event.getId());
+		List<Event> events = findByBaseEntityAndEventTypeContaining(event.getBaseEntityId(), "Registration");
+		
+		if (events.size() != 0) {
+			for (Event event2 : events) {
+				deleteByPrimaryKey(event2);
+			}
+		}
 		if (existingEvent != null) {
 			event.setDateEdited(DateTime.now());
 			event.setServerVersion(System.currentTimeMillis());
 			event.setRevision(existingEvent.getRevision());
-			event.setId(event.getId());
 			allEvents.update(event);
 			
 		} else {
@@ -316,5 +322,10 @@ public class EventService {
 	
 	public List<Event> findByProviderAndEntityType(String provider) {
 		return allEvents.findByProvider(provider);
+	}
+	
+	public void deleteByPrimaryKey(Event event) {
+		allEvents.deleteByPrimaryKey(event);
+		
 	}
 }

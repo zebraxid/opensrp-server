@@ -258,4 +258,10 @@ public class AllEvents extends MotechBaseRepository<Event> implements EventsRepo
 		return null;
 	}
 	
+	@Override
+	public void deleteByPrimaryKey(Event event) {
+		// TODO Auto-generated method stub
+		
+	}
+	
 }

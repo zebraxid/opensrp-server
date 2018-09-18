@@ -49,4 +49,6 @@ public interface EventsRepository extends BaseRepository<Event> {
 	
 	List<Event> findByProvider(String provider);
 	
+	void deleteByPrimaryKey(Event event);
+	
 }

@@ -30,6 +30,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.opensrp.common.util.TurnOffCertificateValidation;
+import org.opensrp.connector.openmrs.service.OpenmrsLocationService;
 import org.opensrp.domain.Address;
 import org.opensrp.domain.Client;
 import org.opensrp.domain.Event;
@@ -62,6 +63,9 @@ public class DataMigrationController {
 	
 	@Autowired
 	private ClientService clientService;
+	
+	@Autowired
+	private OpenmrsLocationService openmrsLocationService;
 	
 	@RequestMapping(value = "migration.html", method = RequestMethod.GET)
 	public String csvUpload(ModelMap model, HttpSession session) throws JSONException {
@@ -105,7 +109,7 @@ public class DataMigrationController {
 			return new ModelAndView("/upload_csv");
 		}
 		logger.info("CSV FIle:" + csvFile);
-		addMember(csvFile);
+		addHousehold(csvFile);
 		return new ModelAndView("redirect:/data/migration.html");
 	}
 	
@@ -140,6 +144,10 @@ public class DataMigrationController {
 				        .withDeathdate(null, false);
 				client.setServerVersion(System.currentTimeMillis());
 				/// attribute
+				
+				org.opensrp.api.domain.Location location = openmrsLocationService.getLocation("BAIRATI: WARD 1");
+				
+				System.err.println("location::::::::::" + location.getLocationId() + ",::::" + location);
 				client.addAttribute("MaritalStatus", member[10]);
 				client.addAttribute("education", member[11]);
 				client.addAttribute("occupation", member[12]);
@@ -173,6 +181,11 @@ public class DataMigrationController {
 					client.addAttribute("Family Disease History", FamilyDiseaseHistory);
 				}
 				
+				List<Event> events = eventService.findAllByIdentifier("householdCode", member[0]);
+				if (events.size() != 0) {
+					client.addRelationship("household", events.get(0).getBaseEntityId());
+				}
+				
 				// address put
 				Map<String, String> addressFields = new HashMap<String, String>();
 				addressFields.put("cityVillage", member[3]);// upazilla
@@ -204,6 +217,7 @@ public class DataMigrationController {
 				event.setEventDate(new DateTime());
 				event.withProviderId("ftp");
 				event.setVersion(System.currentTimeMillis());
+				event.setLocationId(location.getLocationId());
 				event.withIsSendToOpenMRS("yes").withEventType("Woman Member Registration").withEntityType("ec_woman");
 				
 				List<Object> values = new ArrayList<Object>();
@@ -212,6 +226,7 @@ public class DataMigrationController {
 				event.addObs(new Obs("formsubmissionField", fieldDataType, "Date_Of_Reg", "" /*//TODO handle parent*/,
 				        values, ""/*comments*/, "Date_Of_Reg"/*formSubmissionField*/));
 				//eventService.addorUpdateEvent(event);
+				System.err.println("Event:::::::::::::::" + event.toString());
 				
 			}
 			
@@ -231,7 +246,7 @@ public class DataMigrationController {
 		String cvsSplitBy = ",";
 		
 		int position = 0;
-		String[] tags = null;
+		
 		try {
 			br = new BufferedReader(new FileReader(csvFile));
 			while ((line = br.readLine()) != null) {
@@ -274,6 +289,8 @@ public class DataMigrationController {
 				
 				//clientService.addorUpdate(client);
 				
+				org.opensrp.api.domain.Location location = openmrsLocationService.getLocation("BAIRATI: WARD 1");
+				
 				Event event = new Event();
 				event.setServerVersion(System.currentTimeMillis());
 				event.setTeam("");
@@ -283,7 +300,8 @@ public class DataMigrationController {
 				event.setEventDate(new DateTime());
 				event.withProviderId("ftp");
 				event.setVersion(System.currentTimeMillis());
-				event.withIsSendToOpenMRS("yes").withEventType("Woman Member Registration").withEntityType("ec_woman");
+				event.setLocationId(location.getLocationId());
+				event.withIsSendToOpenMRS("yes").withEventType("Household Registration").withEntityType("ec_woman");
 				// drinking water source 
 				
 				String TubewellRed = member[8];
@@ -294,6 +312,10 @@ public class DataMigrationController {
 				String Tap = member[13];
 				String Pond = member[15];
 				String WaterOthers = member[16];
+				
+				System.err.println("TubewellRed:::::" + TubewellRed + ",TubewellGreen::::::" + TubewellGreen
+				        + ",TubewellNotTested:" + TubewellNotTested + ",RainWater:" + RainWater + ",RiverCanal:"
+				        + RiverCanal + ",Tap:" + Tap + ",Pond::::" + Pond);
 				String dws = "";
 				String dwsConceptId = "";
 				if (!TubewellRed.equalsIgnoreCase("NULL")) {
@@ -321,7 +343,7 @@ public class DataMigrationController {
 					dws = WaterOthers;
 					dwsConceptId = "";
 				}
-				
+				System.err.println("dws:::::" + dws + ",dwsConceptId::::::" + dwsConceptId);
 				List<Object> values = new ArrayList<Object>();
 				values.add(dwsConceptId);
 				List<Object> humanReadableValues = new ArrayList<Object>();
@@ -360,9 +382,9 @@ public class DataMigrationController {
 				}
 				
 				List<Object> latrine_values = new ArrayList<Object>();
-				values.add(latrine_valueConceptId);
+				latrine_values.add(latrine_valueConceptId);
 				List<Object> latrine_humanReadableValues = new ArrayList<Object>();
-				humanReadableValues.add(latrine_value);
+				latrine_humanReadableValues.add(latrine_value);
 				String latrine_fieldDataType = "text";
 				event.addObs(new Obs("concept", latrine_fieldDataType, "163137AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
 				        "" /*//TODO handle parent*/, latrine_values, latrine_humanReadableValues, ""/*comments*/,
@@ -394,14 +416,14 @@ public class DataMigrationController {
 				}
 				
 				List<Object> financial_values = new ArrayList<Object>();
-				values.add(financial_valueConceptId);
+				financial_values.add(financial_valueConceptId);
 				List<Object> financial_humanReadableValues = new ArrayList<Object>();
-				humanReadableValues.add(financial_value);
+				financial_humanReadableValues.add(financial_value);
 				String financial_fieldDataType = "text";
 				event.addObs(new Obs("concept", financial_fieldDataType, "163137AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
 				        "" /*//TODO handle parent*/, financial_values, financial_humanReadableValues, ""/*comments*/,
 				        "financial_status"/*formSubmissionField*/));
-				
+				System.err.println("Event:::::::::::::::" + event.toString());
 				//eventService.addorUpdateEvent(event);
 				
 			}
