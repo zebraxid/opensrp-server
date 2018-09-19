@@ -60,17 +60,17 @@ public class UniqueIdController {
 	@Value("#{opensrp['qrcodes.directory.name']}")
 	private String qrCodesDir;
 
-	Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
+	private Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
 			.registerTypeAdapter(DateTime.class, new DateTimeTypeConverter()).create();
 
 	@Autowired
-	OpenmrsIDService openmrsIdService;
+	private OpenmrsIDService openmrsIdService;
 
 	@Autowired
 	private UserController userController;
 
 	@Autowired
-	OpenmrsUserService openmrsUserService;
+	private OpenmrsUserService openmrsUserService;
 
 	/**
 	 * Download extra ids from openmrs if less than the specified batch size, convert the ids to qr
@@ -83,11 +83,10 @@ public class UniqueIdController {
 	 */
 	@RequestMapping(method = RequestMethod.GET, value = "/print")
 	@ResponseBody
-	public ResponseEntity<String> thisMonthDataSendTODHIS2(HttpServletRequest request, HttpServletResponse response)
-			throws JSONException {
+	public ResponseEntity<String> thisMonthDataSendTODHIS2(HttpServletRequest request, HttpServletResponse response){
 
-		String message = "";
-		User user = null;
+		String message;
+		User user;
 		try {
 			Integer numberToGenerate = Integer.valueOf(getStringFilter("batchSize", request));
 

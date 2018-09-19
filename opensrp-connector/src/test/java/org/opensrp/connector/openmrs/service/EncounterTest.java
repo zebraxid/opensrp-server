@@ -82,11 +82,7 @@ public class EncounterTest extends TestResourceLoader {
 		assertEquals(e.getLocationId(), "unknown location");
 		
 		if (pushToOpenmrsForTest) {
-			JSONObject p = null;
 			String puuid = ps.getPatientByIdentifierUUID(c.getBaseEntityId());
-			if (puuid == null) {
-				p = ps.createPatient(c);
-			}
 			JSONObject en = s.createEncounter(e);
 			System.out.println(en);
 		}

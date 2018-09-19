@@ -119,7 +119,7 @@ public class OpenmrsSchedulerService extends OpenmrsService {
 		}
 		for (MilestoneFulfillment f : e.getFulfillments()) {
 			if (getCreatedAction(f.getMilestoneName(), alertActions) == null) {
-				JSONObject tm = fromMilestoneToTrackMilestone(false, f, trackuuid, e, alertActions);
+				JSONObject tm = fromMilestoneToTrackMilestone(false, f, trackuuid, alertActions);
 				
 				JSONObject tmo = new JSONObject(HttpUtil
 				        .post(getURL() + "/" + TRACK_MILESTONE_URL, "", tm.toString(), OPENMRS_USER, OPENMRS_PWD).body());
@@ -169,7 +169,7 @@ public class OpenmrsSchedulerService extends OpenmrsService {
 				JSONArray j = new JSONObject(HttpUtil.get(getURL() + "/" + TRACK_MILESTONE_URL,
 				    "v=full&track=" + trackuuid + "&milestone=" + milestone, OPENMRS_USER, OPENMRS_PWD).body())
 				            .getJSONArray("results");
-				JSONObject tm = fromMilestoneToTrackMilestone(j.length() > 0, f, trackuuid, e, alertActions);
+				JSONObject tm = fromMilestoneToTrackMilestone(j.length() > 0, f, trackuuid, alertActions);
 				
 				String uuid = j.length() > 0 ? j.getJSONObject(0).getString("uuid") : "";
 				JSONObject tmo = new JSONObject(HttpUtil.post(getURL() + "/" + TRACK_MILESTONE_URL + "/" + uuid, "",
@@ -212,8 +212,7 @@ public class OpenmrsSchedulerService extends OpenmrsService {
 		return tm;
 	}
 	
-	private JSONObject fromMilestoneToTrackMilestone(boolean isUpdate, MilestoneFulfillment m, String trackUuid,
-	                                                 Enrollment e, List<Action> alertActions)
+	private JSONObject fromMilestoneToTrackMilestone(boolean isUpdate, MilestoneFulfillment m, String trackUuid, List<Action> alertActions)
 	    throws JSONException, ParseException {
 		JSONObject tm = new JSONObject();
 		if (!isUpdate) {

@@ -24,8 +24,7 @@ public class ServerNameIndicationSSLContextSpi extends SSLContextSpi {
 	}
 
 	@Override
-	protected void engineInit(KeyManager[] keyManagers, TrustManager[] trustManagers, SecureRandom secureRandom)
-			throws KeyManagementException {
+	protected void engineInit(KeyManager[] keyManagers, TrustManager[] trustManagers, SecureRandom secureRandom){
 
 	}
 

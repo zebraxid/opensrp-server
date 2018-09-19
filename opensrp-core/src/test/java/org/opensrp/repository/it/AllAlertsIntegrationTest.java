@@ -24,7 +24,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration("classpath:test-applicationContext-opensrp.xml")
 public class AllAlertsIntegrationTest {
     @Autowired
-    AllAlerts allAlerts;
+    public AllAlerts allAlerts;
 
     @Before
     public void setUp() throws Exception {
@@ -166,7 +166,7 @@ public class AllAlertsIntegrationTest {
     	allAlerts.addOrUpdateScheduleNotificationAlert("mother", "Entity 1", "ANM 1", "Penta 1", "penta1", AlertStatus.upcoming, dueDate, expiryDate);
         assertTrue(allAlerts.findActiveAlertByEntityId("Entity 1").size() == 1);
 
-        allAlerts.addOrUpdateScheduleNotificationAlert("mother", "Entity 1", "ANM 1", "Penta 1", "penta1", AlertStatus.normal, dueDate, expiryDate);
+        allAlerts.addOrUpdateScheduleNotificationAlert("mother", "Entity 1", "ANM 1", "Penta 1", "penta1", normal, dueDate, expiryDate);
 
         List<Alert> al = allAlerts.findActiveAlertByEntityId("Entity 1");
         assertTrue(al.size() == 1);

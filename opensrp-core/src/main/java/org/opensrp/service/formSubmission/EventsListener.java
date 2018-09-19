@@ -109,7 +109,7 @@ public class EventsListener {
 			}
 		}
 		catch (Exception e) {
-			logger.error(MessageFormat.format("{0} occurred while trying to fetch events. Message: {1} with stack trace {2}",
+			logger.error(format("{0} occurred while trying to fetch events. Message: {1} with stack trace {2}",
 			    e.toString(), e.getMessage(), getFullStackTrace(e)));
 		}
 		finally {

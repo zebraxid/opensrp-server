@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class OpenmrsAtomfeedListener {
 	
-	Logger log = LoggerFactory.getLogger(getClass().getName());
+	private Logger log = LoggerFactory.getLogger(getClass().getName());
 	
 	private static final ReentrantLock lock = new ReentrantLock();
 	

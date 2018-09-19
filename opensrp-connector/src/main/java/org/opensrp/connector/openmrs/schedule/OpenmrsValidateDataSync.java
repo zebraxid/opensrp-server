@@ -46,11 +46,11 @@ public class OpenmrsValidateDataSync {
 	
 	private static int WAIT_TIME_IN_HOURS = 12;
 	
-	final String BIRTH_REGISTRATION_EVENT = "Birth Registration";
+	private final String BIRTH_REGISTRATION_EVENT = "Birth Registration";
 	
-	final String GROWTH_MONITORING_EVENT = "Growth Monitoring";
+	private final String GROWTH_MONITORING_EVENT = "Growth Monitoring";
 	
-	final String VACCINATION_EVENT = "Vaccination";
+	private final String VACCINATION_EVENT = "Vaccination";
 	
 	@Autowired
 	public OpenmrsValidateDataSync(ConfigService config, PatientService patientService, ClientService clientService,

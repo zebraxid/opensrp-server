@@ -3,7 +3,6 @@ package org.opensrp.web.listener;
 import java.util.concurrent.TimeUnit;
 
 import org.opensrp.common.AllConstants;
-import org.opensrp.common.AllConstants.DHIS2Constants;
 import org.opensrp.connector.dhis2.DHIS2DatasetPush;
 import org.opensrp.connector.openmrs.constants.OpenmrsConstants;
 import org.opensrp.scheduler.RepeatingCronSchedule;

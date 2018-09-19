@@ -295,7 +295,7 @@ public class PatientService extends OpenmrsService {
 							createPatientRelationShip(c.getIdentifier("OPENMRS_UUID"), personUUID, PARENT_CHILD_RELATIONSHIP);
 						}
 						List<Client> siblings = clientService.findByRelationship(motherBaseId);
-						if (!siblings.isEmpty() || siblings != null) {
+						if (siblings != null && !siblings.isEmpty() ) {
 							for (Client client : siblings) {
 								if (motherBaseId.equals(client.getRelationships().get("mother").get(0)) && !c.getBaseEntityId().equals(client.getBaseEntityId())) {
 									String siblingUUID = getPatientByIdentifierPersonUUID(client.getBaseEntityId());
@@ -434,8 +434,8 @@ public class PatientService extends OpenmrsService {
 						be.addAttribute("Home_Facility", clientAddress4);
 					}
 				}
+				break;
 			}
-			break;
 		}
 
 		if (!update) {
@@ -832,7 +832,8 @@ public class PatientService extends OpenmrsService {
 		}
 	}
 
-	private String convertToOpenmrsString(String s) {
+	private String convertToOpenmrsString(String sParam) {
+		String s = sParam;
 		if (org.apache.commons.lang3.StringUtils.isEmpty(s)) {
 			return s;
 		}

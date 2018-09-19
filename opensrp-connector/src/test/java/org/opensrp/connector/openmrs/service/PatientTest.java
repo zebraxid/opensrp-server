@@ -37,12 +37,10 @@ public class PatientTest extends TestResourceLoader {
 		Client c = new Client(UUID.randomUUID().toString()).withFirstName("FN").withMiddleName("MN").withLastName("LN")
 		        .withBirthdate(new DateTime(), true).withDeathdate(new DateTime(), false).withGender("MALE");
 		
-		c.withAddresses(addresses).withAttributes(attribs)
+		c.withAddresses(addresses).withAttributes(attribs);
 		//.withIdentifier("Birth Reg Num", "b-8912819"+new Random().nextInt(99))
 		//.withIdentifier("Death Reg Num", "d-ewj-js3u2"+new Random().nextInt(99))
-		;
-		if (pushToOpenmrsForTest) {
-			if (s.getPatientByIdentifierUUID(c.getBaseEntityId()) == null)
+		if (pushToOpenmrsForTest && s.getPatientByIdentifierUUID(c.getBaseEntityId()) == null){
 				System.out.println(s.createPatient(c));
 		}
 	}
