@@ -82,7 +82,6 @@ public class EncounterTest extends TestResourceLoader {
 		assertEquals(e.getLocationId(), "unknown location");
 		
 		if (pushToOpenmrsForTest) {
-			String puuid = ps.getPatientByIdentifierUUID(c.getBaseEntityId());
 			JSONObject en = s.createEncounter(e);
 			System.out.println(en);
 		}
@@ -302,15 +301,6 @@ public class EncounterTest extends TestResourceLoader {
 			        Matchers.<Obs> hasProperty("fieldType", equalTo("concept")),
 			        Matchers.<Obs> hasProperty("fieldDataType", startsWith("select all")))));
 		}
-		
-		if (pushToOpenmrsForTest) {
-			OpenmrsHouseHold hh = new OpenmrsHouseHold(c, e);
-			for (Map<String, Object> cm : dc.values()) {
-				hh.addHHMember((Client) cm.get("client"), (Event) cm.get("event"));
-			}
-			
-			hhs.saveHH(hh, true);
-		}
 	}
 	
 	@Test
@@ -321,11 +311,6 @@ public class EncounterTest extends TestResourceLoader {
 		Event e = (Event) oc.getEventFromFormSubmission(fs);
 		
 		if (pushToOpenmrsForTest) {
-			JSONObject p = null;
-			String uuid = ps.getPatientByIdentifierUUID(c.getBaseEntityId());
-			if (uuid == null) {
-				p = ps.createPatient(c);
-			}
 			s.createEncounter(e);
 		}
 		
@@ -386,15 +371,6 @@ public class EncounterTest extends TestResourceLoader {
 		        Matchers.<Obs> hasProperty("fieldDataType", startsWith("end")),
 		        Matchers.<Obs> hasProperty("effectiveDatetime", equalTo(e.getEventDate())))));
 		
-		if (pushToOpenmrsForTest) {
-			JSONObject p = null;
-			String puuid = ps.getPatientByIdentifierUUID(c.getBaseEntityId());
-			if (puuid == null) {
-				p = ps.createPatient(c);
-			}
-			s.createEncounter(e);
-		}
-		
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -452,15 +428,6 @@ public class EncounterTest extends TestResourceLoader {
 		        Matchers.<Obs> hasProperty("fieldType", equalTo("concept")),
 		        Matchers.<Obs> hasProperty("fieldDataType", startsWith("end")),
 		        Matchers.<Obs> hasProperty("effectiveDatetime", equalTo(e.getEventDate())))));
-		
-		if (pushToOpenmrsForTest) {
-			JSONObject p = null;
-			String puuid = ps.getPatientByIdentifierUUID(c.getBaseEntityId());
-			if (puuid == null) {
-				p = ps.createPatient(c);
-			}
-			s.createEncounter(e);
-		}
 		
 	}
 	

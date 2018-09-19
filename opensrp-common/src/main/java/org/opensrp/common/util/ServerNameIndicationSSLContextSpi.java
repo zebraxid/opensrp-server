@@ -1,6 +1,5 @@
 package org.opensrp.common.util;
 
-import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 

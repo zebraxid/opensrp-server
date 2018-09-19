@@ -60,9 +60,6 @@ public class UniqueIdController {
 	@Value("#{opensrp['qrcodes.directory.name']}")
 	private String qrCodesDir;
 
-	private Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
-			.registerTypeAdapter(DateTime.class, new DateTimeTypeConverter()).create();
-
 	@Autowired
 	private OpenmrsIDService openmrsIdService;
 

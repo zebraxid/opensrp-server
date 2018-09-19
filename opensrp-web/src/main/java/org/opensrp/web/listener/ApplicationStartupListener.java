@@ -51,8 +51,7 @@ public class ApplicationStartupListener implements ApplicationListener<ContextRe
 //            scheduler.startJob(encounterSchedule);
 //            scheduler.startJob(dhis2Schedule);
 //            scheduler.startJob(validateSyncedToOMRS);
-//
-//        	System.out.println("STARTED ALL SCHEDULES");
+        	System.out.println("STARTED ALL SCHEDULES");
         }
     }
 
