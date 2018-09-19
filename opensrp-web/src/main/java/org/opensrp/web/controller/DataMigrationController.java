@@ -13,7 +13,9 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +28,8 @@ import org.apache.commons.httpclient.HttpStatus;
 
 import org.opensrp.common.util.HttpResponse;
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -108,8 +112,17 @@ public class DataMigrationController {
 			model.put("msg", "failed to process file because : " + e.getMessage());
 			return new ModelAndView("/upload_csv");
 		}
-		logger.info("CSV FIle:" + csvFile);
-		addHousehold(csvFile);
+		logger.info("CSV FIle:" + csvFile.getName());
+		String fileName = csvFile.getName();
+		if (fileName.equalsIgnoreCase("hh.csv")) {
+			addHousehold(csvFile);
+		} else if (fileName.equalsIgnoreCase("member.csv")) {
+			addMember(csvFile);
+		} else {
+			logger.info("Please give coorect file");
+		}
+		
+		//addHousehold(csvFile);
 		return new ModelAndView("redirect:/data/migration.html");
 	}
 	
@@ -123,24 +136,48 @@ public class DataMigrationController {
 		BufferedReader br = null;
 		String line = "";
 		String cvsSplitBy = ",";
-		
-		int position = 0;
-		String[] tags = null;
+		SimpleDateFormat getYYYYMMDDTHHMMSSFormat = new SimpleDateFormat("mm/dd/yyy");
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:sss");
+		DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:sss");
+		SimpleDateFormat format2 = new SimpleDateFormat("yyyy-MM-dd");
 		try {
 			br = new BufferedReader(new FileReader(csvFile));
 			while ((line = br.readLine()) != null) {
 				String tag = "";
 				String code = "";
 				String name = "";
-				String parent = "";
+				
 				String[] member = line.split(cvsSplitBy);
 				System.err.println("member:" + member[1] + ",generateID:" + generateID());
 				Client client = new Client(null);
 				client.addIdentifier("Patient_Identifier", generateID());
 				String baseEntityId = UUID.randomUUID().toString().trim();
 				client.setBaseEntityId(baseEntityId);
-				//member[35]  DOB
-				client.withFirstName(member[15]).withLastName("").withGender(member[9]).withBirthdate(new DateTime(), false)
+				String gender = member[9];
+				String firstName = member[15];
+				if (!firstName.isEmpty()) {
+					firstName = firstName.trim();
+				}
+				if (!gender.isEmpty()) {
+					gender = gender.trim();
+				}
+				DateTime dt = null;
+				Date defaultDate = new Date();
+				String dd = "";
+				String reg = "";
+				String dob = member[35];
+				if (!dob.isEmpty()) {
+					dob = dob.trim();
+					java.util.Date date = getYYYYMMDDTHHMMSSFormat.parse(dob);
+					dd = format.format(date);
+					reg = format2.format(date);
+					dt = formatter.parseDateTime(dd);
+				} else {
+					dd = format.format(defaultDate);
+					reg = format2.format(dd);
+					dt = formatter.parseDateTime(dd);
+				}
+				client.withFirstName(firstName).withLastName("").withGender(gender).withBirthdate(dt, false)
 				        .withDeathdate(null, false);
 				client.setServerVersion(System.currentTimeMillis());
 				/// attribute
@@ -148,20 +185,60 @@ public class DataMigrationController {
 				org.opensrp.api.domain.Location location = openmrsLocationService.getLocation("BAIRATI: WARD 1");
 				
 				System.err.println("location::::::::::" + location.getLocationId() + ",::::" + location);
-				client.addAttribute("MaritalStatus", member[10]);
-				client.addAttribute("education", member[11]);
-				client.addAttribute("occupation", member[12]);
-				client.addAttribute("Religion", member[13]);
-				client.addAttribute("Religion", member[13]);
-				client.addAttribute("nationalId", member[16]);
+				
+				String MaritalStatus = member[10];
+				if (!MaritalStatus.isEmpty()) {
+					MaritalStatus = MaritalStatus.trim();
+				}
+				String education = member[11];
+				if (!education.isEmpty()) {
+					education = education.trim();
+				}
+				String occupation = member[12];
+				if (!occupation.isEmpty()) {
+					occupation = occupation.trim();
+				}
+				String Religion = member[13];
+				if (!Religion.isEmpty()) {
+					Religion = Religion.trim();
+				}
+				String nationalId = member[16];
+				if (!nationalId.isEmpty()) {
+					nationalId = nationalId.trim();
+				}
+				client.addAttribute("MaritalStatus", MaritalStatus);
+				client.addAttribute("education", education);
+				client.addAttribute("occupation", occupation);
+				client.addAttribute("Religion", Religion);
+				
+				client.addAttribute("nationalId", nationalId);
+				client.addAttribute("idtype", "NID");
 				client.withIsSendToOpenMRS("yes");
 				String FamilyDiseaseHistory = "";
 				String diabetes = member[17];
+				if (!diabetes.isEmpty()) {
+					diabetes = diabetes.trim();
+				}
 				String hypertension = member[18];
+				if (!hypertension.isEmpty()) {
+					hypertension = hypertension.trim();
+				}
 				String cancer = member[19];
+				if (!cancer.isEmpty()) {
+					cancer = cancer.trim();
+				}
 				String respiratoryDisease = member[20];
+				if (!respiratoryDisease.isEmpty()) {
+					respiratoryDisease = respiratoryDisease.trim();
+				}
 				String phycologicalDisease = member[21];
+				if (!phycologicalDisease.isEmpty()) {
+					phycologicalDisease = phycologicalDisease.trim();
+				}
 				String obesity = member[22];
+				if (!obesity.isEmpty()) {
+					obesity = obesity.trim();
+				}
 				if (!diabetes.equalsIgnoreCase("NULL")) {
 					FamilyDiseaseHistory = diabetes;
 				} else if (!hypertension.equalsIgnoreCase("NULL")) {
@@ -180,34 +257,65 @@ public class DataMigrationController {
 				if (!FamilyDiseaseHistory.isEmpty()) {
 					client.addAttribute("Family Disease History", FamilyDiseaseHistory);
 				}
-				
-				List<Event> events = eventService.findAllByIdentifier("householdCode", member[0]);
-				if (events.size() != 0) {
-					client.addRelationship("household", events.get(0).getBaseEntityId());
+				String householdCode = member[0];
+				if (!householdCode.isEmpty()) {
+					householdCode = householdCode.trim();
+				}
+				System.err.println("householdCode:::::::::" + householdCode);
+				List<Client> clients = clientService.findAllByAttribute("householdCode", householdCode);
+				System.err.println("Size::::::::::::::::" + clients.size());
+				if (clients.size() != 0) {
+					client.addRelationship("household", clients.get(0).getBaseEntityId());
 				}
 				
+				String address1 = member[4];
+				if (!address1.isEmpty()) {
+					address1 = address1.trim();
+				}
+				String address2 = member[5];
+				if (!address2.isEmpty()) {
+					address2 = address2.trim();
+				}
+				String stateProvince = member[1];
+				if (!stateProvince.isEmpty()) {
+					stateProvince = stateProvince.trim();
+				}
+				String countyDistrict = member[2];
+				if (!countyDistrict.isEmpty()) {
+					countyDistrict = countyDistrict.trim();
+				}
+				String cityVillage = member[3];
+				if (!cityVillage.isEmpty()) {
+					cityVillage = cityVillage.trim();
+				}
 				// address put
 				Map<String, String> addressFields = new HashMap<String, String>();
-				addressFields.put("cityVillage", member[3]);// upazilla
+				addressFields.put("cityVillage", cityVillage);// upazilla
 				addressFields.put("country", "BANGLADESH"); // country
-				addressFields.put("address1", member[4]); // union
-				addressFields.put("address2", member[5]); // ward
+				addressFields.put("address1", address1); // union
+				addressFields.put("address2", address2); // ward
 				addressFields.put("address3", null);
 				addressFields.put("address4", null);
 				addressFields.put("address5", null);
 				addressFields.put("address6", null);
-				addressFields.put("stateProvince", member[1]); // division
-				addressFields.put("countyDistrict", member[2]); // district
+				addressFields.put("stateProvince", stateProvince); // division
+				addressFields.put("countyDistrict", countyDistrict); // district
 				addressFields.put("gps", null + " " + null);
 				Address address = new Address();
 				address.setAddressFields(addressFields);
 				address.setAddressType("usual_residence");
 				client.addAddress(address);
-				position++;
+				
 				System.err.println("Client:" + client.toString());
 				
-				//clientService.addorUpdate(client);
-				
+				clientService.addorUpdate(client);
+				String RelationshipWithHH = member[14];
+				String eventType = "Woman Member Registration";
+				String entityType = "ec_woman";
+				if (RelationshipWithHH.equalsIgnoreCase("0") && gender.equalsIgnoreCase("M")) {
+					eventType = "Member Registration";
+					entityType = "ec_member";
+				}
 				Event event = new Event();
 				event.setServerVersion(System.currentTimeMillis());
 				event.setTeam("");
@@ -218,14 +326,15 @@ public class DataMigrationController {
 				event.withProviderId("ftp");
 				event.setVersion(System.currentTimeMillis());
 				event.setLocationId(location.getLocationId());
-				event.withIsSendToOpenMRS("yes").withEventType("Woman Member Registration").withEntityType("ec_woman");
+				event.setFormSubmissionId(UUID.randomUUID().toString().trim());
+				event.withIsSendToOpenMRS("yes").withEventType(eventType).withEntityType(entityType);
 				
 				List<Object> values = new ArrayList<Object>();
-				values.add("13-09-2018");
+				values.add(reg);
 				String fieldDataType = "text";
 				event.addObs(new Obs("formsubmissionField", fieldDataType, "Date_Of_Reg", "" /*//TODO handle parent*/,
 				        values, ""/*comments*/, "Date_Of_Reg"/*formSubmissionField*/));
-				//eventService.addorUpdateEvent(event);
+				eventService.addorUpdateEvent(event);
 				System.err.println("Event:::::::::::::::" + event.toString());
 				
 			}
@@ -233,7 +342,8 @@ public class DataMigrationController {
 		}
 		catch (Exception e) {
 			logger.info("Some problem occured, please contact with admin..");
-			msg = "Some problem occured, please contact with admin..";
+			
+			e.printStackTrace();
 		}
 		return msg;
 	}
@@ -245,49 +355,71 @@ public class DataMigrationController {
 		String line = "";
 		String cvsSplitBy = ",";
 		
-		int position = 0;
-		
 		try {
 			br = new BufferedReader(new FileReader(csvFile));
 			while ((line = br.readLine()) != null) {
 				
 				String[] member = line.split(cvsSplitBy);
-				System.err.println("member:" + member[1] + ",generateID:" + generateID());
+				
 				Client client = new Client(null);
 				client.addIdentifier("Patient_Identifier", generateID());
 				String baseEntityId = UUID.randomUUID().toString().trim();
 				client.setBaseEntityId(baseEntityId);
-				//member[35]  DOB
-				client.withFirstName(member[15]).withLastName("").withGender(member[9]).withBirthdate(new DateTime(), false)
+				String firstName = member[63];
+				if (!firstName.isEmpty()) {
+					firstName = firstName.trim();
+				}
+				client.withFirstName(firstName).withLastName("").withGender("M").withBirthdate(new DateTime(), false)
 				        .withDeathdate(null, false);
 				client.setServerVersion(System.currentTimeMillis());
 				/// attribute
+				String householdCode = member[0];
+				if (!householdCode.isEmpty()) {
+					householdCode = householdCode.trim();
+				}
+				client.addAttribute("householdCode", householdCode);
 				
-				client.addAttribute("householdCode", member[6]);
-				client.addAttribute("familyIncome", member[28]);
-				client.addAttribute("phoneNumber", member[29]);
-				
+				String address1 = member[4];
+				if (!address1.isEmpty()) {
+					address1 = address1.trim();
+				}
+				String address2 = member[5];
+				if (!address2.isEmpty()) {
+					address2 = address2.trim();
+				}
+				String stateProvince = member[1];
+				if (!stateProvince.isEmpty()) {
+					stateProvince = stateProvince.trim();
+				}
+				String countyDistrict = member[2];
+				if (!countyDistrict.isEmpty()) {
+					countyDistrict = countyDistrict.trim();
+				}
+				String cityVillage = member[3];
+				if (!cityVillage.isEmpty()) {
+					cityVillage = cityVillage.trim();
+				}
 				// address put
 				Map<String, String> addressFields = new HashMap<String, String>();
-				addressFields.put("cityVillage", member[3]);// upazilla
+				addressFields.put("cityVillage", cityVillage);// upazilla
 				addressFields.put("country", "BANGLADESH"); // country
-				addressFields.put("address1", member[4]); // union
-				addressFields.put("address2", member[5]); // ward
+				addressFields.put("address1", address1); // union
+				addressFields.put("address2", address2); // ward
 				addressFields.put("address3", null);
 				addressFields.put("address4", null);
 				addressFields.put("address5", null);
 				addressFields.put("address6", null);
-				addressFields.put("stateProvince", member[1]); // division
-				addressFields.put("countyDistrict", member[2]); // district
+				addressFields.put("stateProvince", stateProvince); // division
+				addressFields.put("countyDistrict", countyDistrict); // district
 				addressFields.put("gps", null + " " + null);
 				Address address = new Address();
 				address.setAddressFields(addressFields);
 				address.setAddressType("usual_residence");
 				client.addAddress(address);
-				position++;
+				
 				System.err.println("Client:" + client.toString());
 				
-				//clientService.addorUpdate(client);
+				clientService.addorUpdate(client);
 				
 				org.opensrp.api.domain.Location location = openmrsLocationService.getLocation("BAIRATI: WARD 1");
 				
@@ -301,21 +433,46 @@ public class DataMigrationController {
 				event.withProviderId("ftp");
 				event.setVersion(System.currentTimeMillis());
 				event.setLocationId(location.getLocationId());
-				event.withIsSendToOpenMRS("yes").withEventType("Household Registration").withEntityType("ec_woman");
+				event.setFormSubmissionId(UUID.randomUUID().toString().trim());
+				event.withIsSendToOpenMRS("yes").withEventType("Household Registration").withEntityType("ec_household");
 				// drinking water source 
 				
 				String TubewellRed = member[8];
+				if (!TubewellRed.isEmpty()) {
+					TubewellRed = TubewellRed.trim();
+				}
 				String TubewellGreen = member[9];
+				if (!TubewellGreen.isEmpty()) {
+					TubewellGreen = TubewellGreen.trim();
+					
+				}
 				String TubewellNotTested = member[10];
-				String RainWater = member[11];
-				String RiverCanal = member[12];
-				String Tap = member[13];
-				String Pond = member[15];
-				String WaterOthers = member[16];
 				
-				System.err.println("TubewellRed:::::" + TubewellRed + ",TubewellGreen::::::" + TubewellGreen
-				        + ",TubewellNotTested:" + TubewellNotTested + ",RainWater:" + RainWater + ",RiverCanal:"
-				        + RiverCanal + ",Tap:" + Tap + ",Pond::::" + Pond);
+				if (!TubewellNotTested.isEmpty()) {
+					TubewellNotTested = TubewellNotTested.trim();
+				}
+				String RainWater = member[11];
+				if (!RainWater.isEmpty()) {
+					RainWater = RainWater.trim();
+				}
+				
+				String RiverCanal = member[12];
+				if (!RiverCanal.isEmpty()) {
+					RiverCanal = RiverCanal.trim();
+				}
+				String Tap = member[13];
+				if (!Tap.isEmpty()) {
+					Tap = Tap.trim();
+				}
+				String Pond = member[15];
+				if (!Pond.isEmpty()) {
+					Pond = Pond.trim();
+				}
+				String WaterOthers = member[16];
+				if (!WaterOthers.isEmpty()) {
+					WaterOthers = WaterOthers.trim();
+				}
+				
 				String dws = "";
 				String dwsConceptId = "";
 				if (!TubewellRed.equalsIgnoreCase("NULL")) {
@@ -345,20 +502,37 @@ public class DataMigrationController {
 				}
 				System.err.println("dws:::::" + dws + ",dwsConceptId::::::" + dwsConceptId);
 				List<Object> values = new ArrayList<Object>();
-				values.add(dwsConceptId);
+				values.add(dws);
 				List<Object> humanReadableValues = new ArrayList<Object>();
 				humanReadableValues.add(dws);
 				String fieldDataType = "text";
-				event.addObs(new Obs("concept", fieldDataType, "163137AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-				        "" /*//TODO handle parent*/, values, humanReadableValues, ""/*comments*/, "source_of_water"/*formSubmissionField*/));
-				String latrine = "";
-				String Sanitary = member[17];
-				String Construction = member[18];
-				String UnderConstruction = member[19];
-				String OpenArea = member[20];
-				String Bush = member[21];
-				String LatrineOthers = member[22];
+				event.addObs(new Obs("concept", fieldDataType, "13a46b207-dc8b-4e5b-8b1f-162fca3905ca",
+				        "" /*//TODO handle parent*/, values, ""/*comments*/, "water_source"/*formSubmissionField*/));
 				
+				String Sanitary = member[17];
+				if (!Sanitary.isEmpty()) {
+					Sanitary = Sanitary.trim();
+				}
+				String Construction = member[18];
+				if (!Construction.isEmpty()) {
+					Construction = Construction.trim();
+				}
+				String UnderConstruction = member[19];
+				if (!UnderConstruction.isEmpty()) {
+					UnderConstruction = UnderConstruction.trim();
+				}
+				String OpenArea = member[20];
+				if (!OpenArea.isEmpty()) {
+					OpenArea = OpenArea.trim();
+				}
+				String Bush = member[21];
+				if (!Bush.isEmpty()) {
+					Bush = Bush.trim();
+				}
+				String LatrineOthers = member[22];
+				if (!LatrineOthers.isEmpty()) {
+					LatrineOthers = LatrineOthers.trim();
+				}
 				String latrine_value = "";
 				String latrine_valueConceptId = "";
 				if (!Sanitary.equalsIgnoreCase("NULL")) {
@@ -382,19 +556,33 @@ public class DataMigrationController {
 				}
 				
 				List<Object> latrine_values = new ArrayList<Object>();
-				latrine_values.add(latrine_valueConceptId);
+				latrine_values.add(latrine_value);
 				List<Object> latrine_humanReadableValues = new ArrayList<Object>();
 				latrine_humanReadableValues.add(latrine_value);
 				String latrine_fieldDataType = "text";
-				event.addObs(new Obs("concept", latrine_fieldDataType, "163137AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-				        "" /*//TODO handle parent*/, latrine_values, latrine_humanReadableValues, ""/*comments*/,
-				        "latrine_structure"/*formSubmissionField*/));
+				event.addObs(new Obs("concept", latrine_fieldDataType, "bd437fcc-f42f-40a6-8baf-b3d3af725ad4",
+				        "" /*//TODO handle parent*/, latrine_values, ""/*comments*/, "latrine_structure"/*formSubmissionField*/));
 				
 				String LowerMiddleClass = member[23];
+				if (!LowerMiddleClass.isEmpty()) {
+					LowerMiddleClass = LowerMiddleClass.trim();
+				}
 				String UpperMiddleClass = member[24];
+				if (!UpperMiddleClass.isEmpty()) {
+					UpperMiddleClass = UpperMiddleClass.trim();
+				}
 				String MiddleClass = member[25];
+				if (!MiddleClass.isEmpty()) {
+					MiddleClass = MiddleClass.trim();
+				}
 				String Solvent = member[26];
+				if (!Solvent.isEmpty()) {
+					Solvent = Solvent.trim();
+				}
 				String Rich = member[27];
+				if (!Rich.isEmpty()) {
+					Rich = Rich.trim();
+				}
 				String financial_value = "";
 				String financial_valueConceptId = "";
 				
@@ -416,22 +604,22 @@ public class DataMigrationController {
 				}
 				
 				List<Object> financial_values = new ArrayList<Object>();
-				financial_values.add(financial_valueConceptId);
+				financial_values.add(financial_value);
 				List<Object> financial_humanReadableValues = new ArrayList<Object>();
 				financial_humanReadableValues.add(financial_value);
 				String financial_fieldDataType = "text";
-				event.addObs(new Obs("concept", financial_fieldDataType, "163137AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-				        "" /*//TODO handle parent*/, financial_values, financial_humanReadableValues, ""/*comments*/,
-				        "financial_status"/*formSubmissionField*/));
+				event.addObs(new Obs("concept", financial_fieldDataType, "95066bce-55eb-405e-9664-9be70e5c17b2",
+				        "" /*//TODO handle parent*/, financial_values, ""/*comments*/, "financial_status"/*formSubmissionField*/));
 				System.err.println("Event:::::::::::::::" + event.toString());
-				//eventService.addorUpdateEvent(event);
+				eventService.addorUpdateEvent(event);
 				
 			}
 			
 		}
 		catch (Exception e) {
 			logger.info("Some problem occured, please contact with admin..");
-			msg = "Some problem occured, please contact with admin..";
+			
+			e.printStackTrace();
 		}
 		return msg;
 	}
