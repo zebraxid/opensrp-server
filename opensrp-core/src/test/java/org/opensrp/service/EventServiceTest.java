@@ -167,7 +167,7 @@ public class EventServiceTest extends BaseRepositoryTest {
 		outOfAreaEvent = eventService.processOutOfArea(event);
 		assertEquals(event, outOfAreaEvent);
 
-		assertEquals(15, eventService.getAll().size());
+		assertEquals(16, eventService.getAll().size());
 
 	}
 	
