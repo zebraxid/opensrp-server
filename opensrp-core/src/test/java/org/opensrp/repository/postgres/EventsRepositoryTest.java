@@ -585,4 +585,18 @@ public class EventsRepositoryTest extends BaseRepositoryTest {
 		
 	}
 	
+	@Test
+	public void testFindByProvider() {
+		List<Event> events = eventsRepository.findByProvider("biddemo");
+		assertEquals(13, events.size());
+		events = eventsRepository.findByProvider("biddemo2");
+		assertEquals(2, events.size());
+		for (Event event : events) {
+			assertEquals("biddemo2", event.getProviderId());
+			assertTrue(event.getId().equals("05934ae338431f28bf6793b241781149")
+			        || event.getId().equals("05934ae338431f28bf6793b241781a1e"));
+		}
+		assertTrue(eventsRepository.findByProvider("biddemo9").isEmpty());
+	}
+	
 }

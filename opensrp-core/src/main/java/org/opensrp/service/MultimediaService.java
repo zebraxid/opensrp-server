@@ -16,7 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class MultimediaService {
-	
+
 	private static Logger logger = LoggerFactory.getLogger(MultimediaService.class.toString());
 	
 	public static final String IMAGES_DIR = "patient_images";
@@ -67,14 +67,14 @@ public class MultimediaService {
 		
 		return "fail";
 	}
-	
+
 	public boolean uploadFile(MultimediaDTO multimediaDTO, MultipartFile multimediaFile) {
 		
 		// String baseMultimediaDirPath = System.getProperty("user.home");
 		
 		if (!multimediaFile.isEmpty()) {
 			try {
-				
+
 				multimediaDirPath = baseMultimediaDirPath + File.separator;
 				String fileExt = ".jpg";
 				switch (multimediaDTO.getContentType()) {
@@ -83,30 +83,28 @@ public class MultimediaService {
 						multimediaDirPath += VIDEOS_DIR;
 						fileExt = ".mp4";
 						break;
-					
 					case "image/jpeg":
 						multimediaDirPath += IMAGES_DIR;
 						fileExt = ".jpg";
 						break;
-					
 					case "image/gif":
 						multimediaDirPath += IMAGES_DIR;
 						fileExt = ".gif";
 						break;
-					
 					case "image/png":
 						multimediaDirPath += IMAGES_DIR;
 						fileExt = ".png";
 						break;
-					
+					default:
+						throw new IllegalArgumentException("Unknown content type : " + multimediaDTO.getContentType());
 				}
-				new File(multimediaDirPath).mkdir();
+				new File(multimediaDirPath).mkdirs();
 				String fileName = multimediaDirPath + File.separator + multimediaDTO.getCaseId() + fileExt;
 				multimediaDTO.withFilePath(fileName);
 				File multimediaDir = new File(fileName);
 				
 				multimediaFile.transferTo(multimediaDir);
-				
+
 				/*
 				 byte[] bytes = multimediaFile.getBytes();
 				 	
@@ -126,13 +124,13 @@ public class MultimediaService {
 			return false;
 		}
 	}
-	
+
 	@SuppressWarnings("unused")
 	private void makeMultimediaDir(String dirPath) {
 		File file = new File(dirPath);
 		if (!file.exists())
 			file.mkdirs();
-		
+
 	}
 	
 	public List<Multimedia> getMultimediaFiles(String providerId) {

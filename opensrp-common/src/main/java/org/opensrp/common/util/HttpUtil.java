@@ -59,7 +59,7 @@ public class HttpUtil {
 	}
 
 	public static HttpResponse post(String url, String payload, String data, String contentType, AuthType authType,
-			String authString) {
+	                                String authString) {
 		try {
 			HttpPost request = (HttpPost) makeConnection(url, payload, RequestMethod.POST, authType, authString);
 			request.setHeader(HTTP.CONTENT_TYPE, contentType);
@@ -133,7 +133,7 @@ public class HttpUtil {
 	}
 
 	public static HttpRequestBase makeConnection(String baseUrl, String payload, RequestMethod method, AuthType authType,
-			String authString) throws URISyntaxException {
+	                                             String authString) throws URISyntaxException {
 		String charset = "UTF-8";
 		String url = baseUrl;
 		if (url.endsWith("/")) {

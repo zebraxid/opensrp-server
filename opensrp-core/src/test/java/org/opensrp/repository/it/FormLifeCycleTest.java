@@ -1,6 +1,9 @@
 package org.opensrp.repository.it;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -51,62 +54,77 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:test-applicationContext-opensrp.xml")
-public class FormLifeCycleTest extends TestResourceLoader{
+public class FormLifeCycleTest extends TestResourceLoader {
+	
 	public FormLifeCycleTest() throws IOException {
 		super();
 	}
 	
 	private List<MotechBaseDataObject> docsToRemove = new ArrayList<>();
-
+	
 	@Autowired
-	@Qualifier(AllConstants.OPENSRP_DATABASE_CONNECTOR) 
+	@Qualifier(AllConstants.OPENSRP_DATABASE_CONNECTOR)
 	private CouchDbConnector db;
+	
 	@Autowired
 	private FormSubmissionProcessor fsp;
+	
 	@Autowired
 	private ZiggyService ziggyService;
+	
 	@Autowired
 	private FormSubmissionRouter formSubmissionRouter;
+	
 	@Autowired
 	private FormEntityConverter formEntityConverter;
+	
 	/*@Autowired
 	private ActionService actionService;
 	@Autowired
 	private ScheduleService schService;*/
 	@Autowired
 	private HealthSchedulerService scheduleService;
+	
 	@Autowired
 	private ClientService clientService;
+	
 	@Autowired
 	private EventService eventService;
+	
 	@Autowired
 	private HandlerMapper hmap;
+	
 	@Autowired
 	private EntityDataMap edmap;
-
+	
 	@Mock
 	private FormSubmissionService formSubmissionService;
 	
-    private AlertCreationAction reminderAction;
-    
-    private DateTime dueWindowStart;
-    private DateTime lateWindowStart;
-    private DateTime maxWindowStart;
-
-    @Autowired
-    private AllActions allActions;
-    @Autowired
-    private AllAlerts allAlerts;
-    @Autowired
-    private AllClients allClients;
-    @Autowired
-    private AllEvents allEvents;
-    
-    @Autowired
-    private AllEnrollments allEnrollments;
-    
+	private AlertCreationAction reminderAction;
+	
+	private DateTime dueWindowStart;
+	
+	private DateTime lateWindowStart;
+	
+	private DateTime maxWindowStart;
+	
+	@Autowired
+	private AllActions allActions;
+	
+	@Autowired
+	private AllAlerts allAlerts;
+	
+	@Autowired
+	private AllClients allClients;
+	
+	@Autowired
+	private AllEvents allEvents;
+	
+	@Autowired
+	private AllEnrollments allEnrollments;
+	
 	@Before
-	public void setup() throws IOException{
+	public void setup() throws IOException {
 		initMocks(this);
 		
 		allEnrollments.removeAll();
@@ -114,19 +132,20 @@ public class FormLifeCycleTest extends TestResourceLoader{
 		allEvents.removeAll();
 		allActions.removeAll();
 		allAlerts.removeAll();
-		
+
 		fsp = new FormSubmissionProcessor(ziggyService, formSubmissionRouter, 
 				formEntityConverter, scheduleService, clientService,allClients, eventService,allEvents);
 		reminderAction = new AlertCreationAction(scheduleService, formSubmissionService);
-
-        dueWindowStart = DateTime.now();
-        lateWindowStart = DateTime.now().plusDays(10);
-        maxWindowStart = DateTime.now().plusDays(20);
+		
+		dueWindowStart = DateTime.now();
+		lateWindowStart = DateTime.now().plusDays(10);
+		maxWindowStart = DateTime.now().plusDays(20);
 	}
 	
-	@Ignore @Test //TODO 
+	@Ignore
+	@Test //TODO 
 	public void shouldCreateClientAndEventAndSchedulesAllDynamic() throws Exception {
-		FormSubmission fs = getFormSubmissionFor("child_enrollment",1);
+		FormSubmission fs = getFormSubmissionFor("child_enrollment", 1);
 		//child birthdate is 10/Nov/2015
 		fsp.processFormSubmission(fs);
 		
@@ -149,14 +168,16 @@ public class FormLifeCycleTest extends TestResourceLoader{
 		assertEquals(m1schedule.getStatus(), EnrollmentStatus.ACTIVE);
 		assertEquals(m1schedule.getLastFulfilledDate(), null);
 		assertTrue(m1schedule.getFulfillments().isEmpty());
-
+		
 		when(formSubmissionService.findByInstanceId(fs.instanceId())).thenReturn(fs);
 		
-		reminderAction.invoke(ScheduleBuilder.event(fs.entityId(), "PENTAVALENT 1", "penta1", 
-				WindowName.earliest, p1schedule.getStartOfWindowForCurrentMilestone(WindowName.due),
-				p1schedule.getStartOfWindowForCurrentMilestone(WindowName.late), p1schedule.getStartOfWindowForCurrentMilestone(WindowName.max)), null);
+		reminderAction.invoke(ScheduleBuilder.event(fs.entityId(), "PENTAVALENT 1", "penta1", WindowName.earliest,
+		    p1schedule.getStartOfWindowForCurrentMilestone(WindowName.due),
+		    p1schedule.getStartOfWindowForCurrentMilestone(WindowName.late),
+		    p1schedule.getStartOfWindowForCurrentMilestone(WindowName.max)), null);
 		
-		List<Action> acl = allActions.findByCaseIdScheduleAndTimeStamp(fs.entityId(), p1schedule.getScheduleName(), new DateTime(0), new DateTime(System.currentTimeMillis()));
+		List<Action> acl = allActions.findByCaseIdScheduleAndTimeStamp(fs.entityId(), p1schedule.getScheduleName(),
+		    new DateTime(0), new DateTime(System.currentTimeMillis()));
 		assertTrue(acl.size() == 1);
 		Action ac = acl.get(0);
 		assertEquals(fs.anmId(), ac.providerId());
@@ -167,10 +188,13 @@ public class FormLifeCycleTest extends TestResourceLoader{
 		assertEquals(fs.bindType(), ac.data().get("beneficiaryType"));
 		assertEquals(p1schedule.getScheduleName(), ac.data().get("scheduleName"));
 		assertEquals("pentavalent_1", ac.data().get("visitCode"));
-		assertEquals(p1schedule.getStartOfWindowForCurrentMilestone(WindowName.due).toLocalDate().toString(), ac.data().get("startDate"));
-		assertEquals(p1schedule.getStartOfWindowForCurrentMilestone(WindowName.late).toLocalDate().toString(), ac.data().get("expiryDate"));
+		assertEquals(p1schedule.getStartOfWindowForCurrentMilestone(WindowName.due).toLocalDate().toString(),
+		    ac.data().get("startDate"));
+		assertEquals(p1schedule.getStartOfWindowForCurrentMilestone(WindowName.late).toLocalDate().toString(),
+		    ac.data().get("expiryDate"));
 		
-		List<Alert> all = allAlerts.findByEntityIdTriggerAndTimeStamp(fs.entityId(), p1schedule.getScheduleName(), new DateTime(0), new DateTime(System.currentTimeMillis()));
+		List<Alert> all = allAlerts.findByEntityIdTriggerAndTimeStamp(fs.entityId(), p1schedule.getScheduleName(),
+		    new DateTime(0), new DateTime(System.currentTimeMillis()));
 		assertTrue(all.size() == 1);
 		Alert al = all.get(0);
 		assertEquals(fs.anmId(), al.providerId());
@@ -178,13 +202,15 @@ public class FormLifeCycleTest extends TestResourceLoader{
 		assertEquals("upcoming", al.alertStatus());
 		assertEquals("notification", al.alertType());
 		assertEquals("pkchild", al.beneficiaryType());
-		assertEquals(p1schedule.getStartOfWindowForCurrentMilestone(WindowName.late).toLocalDate().toString(), al.expiryDate());
-		assertEquals(p1schedule.getStartOfWindowForCurrentMilestone(WindowName.due).toLocalDate().toString(), al.startDate());
+		assertEquals(p1schedule.getStartOfWindowForCurrentMilestone(WindowName.late).toLocalDate().toString(),
+		    al.expiryDate());
+		assertEquals(p1schedule.getStartOfWindowForCurrentMilestone(WindowName.due).toLocalDate().toString(),
+		    al.startDate());
 		assertEquals(true, al.isActive());
 		assertEquals("penta1", al.triggerCode());
 		assertEquals("PENTAVALENT 1", al.triggerName());
 		assertEquals("schedule", al.triggerType());
-
+		
 		//TODO followup handling
 	}
 	
@@ -192,6 +218,7 @@ public class FormLifeCycleTest extends TestResourceLoader{
 	@Ignore //FIXME
 	public void shouldCreateClientAndEventAndSchedulesWithRouter() throws Exception {
 		hmap.addCustomFormSubmissionHandler("pnc_1st_registration", new CustomFormSubmissionHandler() {
+			
 			@Override
 			public void handle(FormSubmission submission) {
 				assertEquals("pnc_1st_registration", submission.formName());
@@ -206,9 +233,11 @@ public class FormLifeCycleTest extends TestResourceLoader{
 		
 	}
 	
-	@Test@Ignore
+	@Test
+	@Ignore
 	public void shouldCreateClientAndEventAndSchedulesWithZiggy() throws Exception {
 		hmap.addCustomFormSubmissionHandler("new_household_registration", new CustomFormSubmissionHandler() {
+			
 			@Override
 			public void handle(FormSubmission submission) {
 				assertEquals("new_household_registration", submission.formName());
@@ -218,10 +247,10 @@ public class FormLifeCycleTest extends TestResourceLoader{
 				System.out.println("I am Ziggy scheduler");
 			}
 		});
-        edmap.addEntity("household", Client.class);
-
-        FormSubmission fs = getFormSubmissionFor("new_household_registration", 1);
-        
-        fsp.processFormSubmission(fs);
+		edmap.addEntity("household", Client.class);
+		
+		FormSubmission fs = getFormSubmissionFor("new_household_registration", 1);
+		
+		fsp.processFormSubmission(fs);
 	}
 }

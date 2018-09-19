@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
@@ -15,7 +17,6 @@ import org.joda.time.Years;
 import org.opensrp.common.AddressField;
 
 public class Address {
-	
 	@JsonProperty
 	private Boolean preferred;
 	
@@ -107,7 +108,7 @@ public class Address {
 	public Map<String, String> getAddressFields() {
 		return addressFields;
 	}
-	
+
 	public String getAddressField(String addressField) {
 		return addressFields.get(addressField);
 	}
@@ -115,12 +116,11 @@ public class Address {
 	public String getAddressField(AddressField addressField) {
 		return addressFields.get(addressField.name());
 	}
-	
 	/**
 	 * TODO: functionality if multiple entry matches single regex Returns field matching the regex.
 	 * Note that incase of multiple fields matching criteria function would return first match. The
 	 * must be well formed to find out a single value
-	 * 
+	 *
 	 * @param regex
 	 * @return
 	 */
@@ -132,10 +132,10 @@ public class Address {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * WARNING: Overrides all existing fields
-	 * 
+	 *
 	 * @param addressFields
 	 * @return
 	 */
@@ -149,10 +149,10 @@ public class Address {
 		}
 		addressFields.put(field, value);
 	}
-	
+
 	/**
 	 * Add field name from a list of predefined options from enum {@link AddressField}
-	 * 
+	 *
 	 * @param field
 	 * @param value
 	 */
@@ -162,15 +162,15 @@ public class Address {
 		}
 		addressFields.put(field.name(), value);
 	}
-	
+
 	public void removeAddressField(AddressField field) {
 		addressFields.remove(field.name());
 	}
-	
+
 	public void removeAddressField(String field) {
 		addressFields.remove(field);
 	}
-	
+
 	public String getLatitude() {
 		return latitude;
 	}
@@ -258,10 +258,10 @@ public class Address {
 	public void setCountry(String country) {
 		this.country = country;
 	}
-	
+
 	/**
 	 * True if endDate is null or endDate is in future
-	 * 
+	 *
 	 * @return
 	 */
 	@JsonIgnore
@@ -336,10 +336,10 @@ public class Address {
 		}
 		return endDate;
 	}
-	
+
 	/**
 	 * The type address represents
-	 * 
+	 *
 	 * @param addressType
 	 * @return
 	 */
@@ -350,7 +350,7 @@ public class Address {
 	
 	/**
 	 * The date when address was started or owned
-	 * 
+	 *
 	 * @param endDate
 	 * @return
 	 */
@@ -361,7 +361,6 @@ public class Address {
 	
 	/**
 	 * The date when address was outdated or abandoned
-	 * 
 	 * @param endDate
 	 * @return
 	 */
@@ -372,7 +371,7 @@ public class Address {
 	
 	/**
 	 * WARNING: Overrides all existing fields
-	 * 
+	 *
 	 * @param addressFields
 	 * @return
 	 */
@@ -388,7 +387,7 @@ public class Address {
 		addressFields.put(field, value);
 		return this;
 	}
-	
+
 	public Address withAddressField(AddressField field, String value) {
 		if (addressFields == null) {
 			addressFields = new HashMap<>();
@@ -406,7 +405,7 @@ public class Address {
 		this.longitude = longitude;
 		return this;
 	}
-	
+
 	public Address withGeopoint(String geopoint) {
 		this.geopoint = geopoint;
 		return this;
@@ -421,22 +420,22 @@ public class Address {
 		this.town = town;
 		return this;
 	}
-	
+
 	public Address withSubDistrict(String subDistrict) {
 		this.subDistrict = subDistrict;
 		return this;
 	}
-	
+
 	public Address withCountyDistrict(String countyDistrict) {
 		this.countyDistrict = countyDistrict;
 		return this;
 	}
-	
+
 	public Address withCityVillage(String cityVillage) {
 		this.cityVillage = cityVillage;
 		return this;
 	}
-	
+
 	public Address withStateProvince(String stateProvince) {
 		this.stateProvince = stateProvince;
 		return this;
@@ -446,7 +445,17 @@ public class Address {
 		this.country = country;
 		return this;
 	}
-	
+
+	@Override
+	public final boolean equals(Object o) {
+		return EqualsBuilder.reflectionEquals(this, o);
+	}
+
+	@Override
+	public final int hashCode() {
+		return HashCodeBuilder.reflectionHashCode(this);
+	}
+
 	@Override
 	public String toString() {
 		return ToStringBuilder.reflectionToString(this);

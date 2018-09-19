@@ -3,6 +3,20 @@ package org.opensrp.web.controller;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ibm.icu.text.SimpleDateFormat;
+import static org.opensrp.web.rest.RestUtils.getStringFilter;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 import org.json.JSONException;
@@ -126,7 +140,6 @@ public class UniqueIdController {
 				return true;
 		return false;
 	}
-
 	/**
 	 * Fetch unique Ids from OMRS
 	 *

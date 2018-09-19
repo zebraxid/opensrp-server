@@ -69,23 +69,24 @@ public class EventService {
 	private static Logger logger = LoggerFactory.getLogger(EventService.class.toString());
 	
 	public Event find(String uniqueId) {
-		List<Event> el = allEvents.findAllByIdentifier(uniqueId);
-		if (el.size() > 1) {
-			throw new IllegalArgumentException("Multiple events with identifier " + uniqueId + " exist.");
-		} else if (el.size() != 0) {
-			return el.get(0);
+		try {
+			List<Event> el = allEvents.findAllByIdentifier(uniqueId);
+			return getUniqueEventFromEventList(el);
 		}
-		return null;
+		catch (IllegalArgumentException e) {
+			throw new IllegalArgumentException("Multiple events with identifier " + uniqueId + " exist.");
+		}
 	}
 	
 	public Event find(Event event) {
 		for (String idt : event.getIdentifiers().keySet()) {
-			List<Event> el = allEvents.findAllByIdentifier(event.getIdentifier(idt));
-			if (el.size() > 1) {
+			try {
+				List<Event> el = allEvents.findAllByIdentifier(event.getIdentifier(idt));
+				return getUniqueEventFromEventList(el);
+			}
+			catch (IllegalArgumentException e) {
 				throw new IllegalArgumentException(
 				        "Multiple events with identifier type " + idt + " and ID " + event.getIdentifier(idt) + " exist.");
-			} else if (el.size() != 0) {
-				return el.get(0);
 			}
 		}
 		return null;
@@ -127,7 +128,7 @@ public class EventService {
 	 * The event usually will have a client unique identifier(ZEIR_ID) as the only way to identify
 	 * the client.This method finds the client based on the identifier and assigns a basentityid to
 	 * the event
-	 * 
+	 *
 	 * @param event
 	 * @return
 	 */
@@ -150,7 +151,7 @@ public class EventService {
 			
 			List<org.opensrp.domain.Client> clients = clientService.findAllByIdentifier(Client.ZEIR_ID.toUpperCase(),
 			    identifier);
-			
+
 			if (clients == null || clients.isEmpty()) {
 				return event;
 			}
@@ -197,6 +198,7 @@ public class EventService {
 		catch (Exception e) {
 			logger.error("", e);
 		}
+
 		return event;
 	}
 	
@@ -295,5 +297,19 @@ public class EventService {
 	public List<Event> findByBaseEntityAndType(String baseEntityId, String eventType) {
 		return allEvents.findByBaseEntityAndType(baseEntityId, eventType);
 		
+	}
+	
+	private Event getUniqueEventFromEventList(List<Event> events) throws IllegalArgumentException {
+		if (events.size() > 1) {
+			throw new IllegalArgumentException();
+		}
+		if (events.size() == 0) {
+			return null;
+		}
+		return events.get(0);
+	}
+	
+	public List<Event> findByProviderAndEntityType(String provider) {
+		return allEvents.findByProvider(provider);
 	}
 }

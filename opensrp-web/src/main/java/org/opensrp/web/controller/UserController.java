@@ -41,6 +41,7 @@ import static org.springframework.http.HttpStatus.OK;
 @Controller
 public class UserController {
 
+	@Value("#{opensrp['opensrp.site.url']}")
 	private String opensrpSiteUrl;
 
 	private DrishtiAuthenticationProvider opensrpAuthenticationProvider;
@@ -102,11 +103,13 @@ public class UserController {
 	@ResponseBody
 	public ResponseEntity<String> authenticate(HttpServletRequest request) throws JSONException {
 		User u = currentUser(request);
+		System.out.println(u);
 		String lid = "";
 		JSONObject tm = null;
 		try {
 			tm = openmrsUserService.getTeamMember(u.getAttribute("_PERSON_UUID").toString());
 			JSONArray locs = tm.getJSONArray(OpenMRSCrossVariables.LOCATIONS_JSON_KEY.makeVariable(OPENMRS_VERSION));
+
 			for (int i = 0; i < locs.length(); i++) {
 				lid += locs.getJSONObject(i).getString("uuid") + ";;";
 			}

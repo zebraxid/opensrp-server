@@ -10,6 +10,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 import static org.motechproject.util.DateUtil.inRange;
 
@@ -43,6 +44,23 @@ public class DateUtil {
         return referenceDateForSchedule.toDateTime(new LocalTime(0, 0));
     }
 
+    public static long dateDiff(String day) {
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		Date today = Calendar.getInstance().getTime();
+		long days = 0;
+		try {
+			Date previousDay = format.parse(day.toString());
+			String todayDate = format.format(today);
+			Date today_date = format.parse(todayDate);
+			long diff = today_date.getTime() - previousDay.getTime();
+			days = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+		}
+		catch (ParseException e) {
+			
+			e.printStackTrace();
+		}
+		return days;
+	}
     /**
      * Parses dates of following formats
      * - yyyy-MM-dd

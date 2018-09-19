@@ -3,6 +3,7 @@ package org.opensrp.web.listener;
 import java.util.concurrent.TimeUnit;
 
 import org.opensrp.common.AllConstants;
+import org.opensrp.common.AllConstants.DHIS2Constants;
 import org.opensrp.connector.dhis2.DHIS2DatasetPush;
 import org.opensrp.connector.openmrs.constants.OpenmrsConstants;
 import org.opensrp.scheduler.RepeatingCronSchedule;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ApplicationStartupListener implements ApplicationListener<ContextRefreshedEvent> {
+	
 	public static final String APPLICATION_ID = "/opensrp";
     public static final String APPLICATION_ID_FULL = "org.springframework.web.context.WebApplicationContext:"+APPLICATION_ID;
 
@@ -45,13 +47,14 @@ public class ApplicationStartupListener implements ApplicationListener<ContextRe
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
     	System.out.println(contextRefreshedEvent.getApplicationContext().getId());
         if (contextRefreshedEvent.getApplicationContext().getId().endsWith(APPLICATION_ID)) {
-            scheduler.startJob(eventsSchedule);
-            scheduler.startJob(atomfeedSchedule);
-            scheduler.startJob(encounterSchedule);
-            scheduler.startJob(dhis2Schedule);
-            scheduler.startJob(validateSyncedToOMRS);
-
-        	System.out.println("STARTED ALL SCHEDULES");
+//            scheduler.startJob(eventsSchedule);
+//            scheduler.startJob(atomfeedSchedule);
+//            scheduler.startJob(encounterSchedule);
+//            scheduler.startJob(dhis2Schedule);
+//            scheduler.startJob(validateSyncedToOMRS);
+//
+//        	System.out.println("STARTED ALL SCHEDULES");
         }
     }
+
 }

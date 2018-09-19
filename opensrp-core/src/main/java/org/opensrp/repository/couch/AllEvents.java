@@ -11,6 +11,7 @@ import org.ektorp.support.GenerateView;
 import org.ektorp.support.View;
 import org.ektorp.util.Assert;
 import org.ektorp.util.Documents;
+import org.joda.time.DateTime;
 import org.motechproject.dao.MotechBaseRepository;
 import org.opensrp.common.AllConstants;
 import org.opensrp.domain.Event;
@@ -135,6 +136,7 @@ public class AllEvents extends MotechBaseRepository<Event> implements EventsRepo
 		}
 		return new ArrayList<>();
 	}
+
 	
 	@View(name = "events_by_type_not_in_OpenMRS", map = "function(doc) { if (doc.type === 'Event' && doc.serverVersion) { var noId = true; for(var key in doc.identifiers) {if(key == 'OPENMRS_UUID') {noId = false;}}if(noId){emit([doc.eventType, doc.serverVersion], null); }} }")
 	public List<Event> notInOpenMRSByServerVersionAndType(String type, long serverVersion, Calendar calendar) {
@@ -214,4 +216,48 @@ public class AllEvents extends MotechBaseRepository<Event> implements EventsRepo
 		
 		return events;
 	}
+	
+	@View(name = "events_by_provider_and_entity_type", map = "function(doc) { if (doc.type === 'Event' && (doc.entityType=='child' || doc.entityType=='mother')) { emit(doc.providerId, null); } }")
+	public List<Event> findByProvider(String provider) {
+		return db.queryView(createQuery("events_by_provider_and_entity_type").key(provider).includeDocs(true), Event.class);
+	}
+
+	public synchronized Event addEvent(CouchDbConnector targetDb, Event event) {
+		//		Event e = find(targetDb,event);
+		//		if(e != null){
+		//			throw new IllegalArgumentException("An event already exists with given list of identifiers. Consider updating data.["+e+"]");
+		//		}
+		if (event.getFormSubmissionId() != null && getByBaseEntityAndFormSubmissionId(targetDb, event.getBaseEntityId(),
+		    event.getFormSubmissionId()) != null) {
+			throw new IllegalArgumentException(
+			        "An event already exists with given baseEntity and formSubmission combination. Consider updating");
+		}
+		
+		event.setDateCreated(new DateTime());
+		
+		add(targetDb, event);
+		return event;
+	}
+	
+	public Event getByBaseEntityAndFormSubmissionId(CouchDbConnector targetDb, String baseEntityId,
+	                                                String formSubmissionId) {
+		try {
+			List<Event> events = findByBaseEntityAndFormSubmissionId(targetDb, baseEntityId, formSubmissionId);
+			if (events.size() > 1) {
+				throw new IllegalArgumentException();
+			}
+			if (events.size() == 0) {
+				return null;
+			}
+			return events.get(0);
+		}
+		catch (IllegalArgumentException e) {
+			throw new IllegalStateException("Multiple events for baseEntityId and formSubmissionId combination ("
+			        + baseEntityId + "," + formSubmissionId + ")");
+		}
+		catch (Exception e) {
+			return null;
+		}
+	}
+	
 }

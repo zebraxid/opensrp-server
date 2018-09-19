@@ -114,6 +114,7 @@ public class ReportService {
 			allReports.update(report);
 			
 		} else {
+			report.setDateCreated(DateTime.now());
 			allReports.add(report);
 			
 		}

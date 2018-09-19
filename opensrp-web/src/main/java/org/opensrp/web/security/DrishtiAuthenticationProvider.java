@@ -35,12 +35,13 @@ public class DrishtiAuthenticationProvider implements AuthenticationProvider {
 	private static Logger logger = LoggerFactory.getLogger(DrishtiAuthenticationProvider.class.toString());
 	
 	public static final String INVALID_CREDENTIALS = "The username or password you entered is incorrect. Please enter the correct credentials.";
-	
+
 	public static final String USER_NOT_FOUND = "The username or password you entered is incorrect. Please enter the correct credentials.";
 	
 	public static final String USER_NOT_ACTIVATED = "The user has been registered but not activated. Please contact your local administrator.";
 	
 	public static final String INTERNAL_ERROR = "Failed to authenticate user due to internal server error. Please try again later.";
+
 	
 	private static final String AUTH_HASH_KEY = "_auth";
 	
@@ -114,7 +115,6 @@ public class DrishtiAuthenticationProvider implements AuthenticationProvider {
 	
 	public User getDrishtiUser(Authentication authentication, String username) {
 		User user = null;
-		
 		checkIsAuthenticated(authentication.getName(), authentication.getCredentials().toString());
 		
 		try {
@@ -148,5 +148,6 @@ public class DrishtiAuthenticationProvider implements AuthenticationProvider {
 			e.printStackTrace();
 			throw new BadCredentialsException(INTERNAL_ERROR);
 		}
+
 	}
 }

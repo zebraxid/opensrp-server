@@ -64,13 +64,13 @@ public class FormEventListenerTest {
 
     @Test
     public void shouldFetchFormSubmissionsFromSubmissionService() throws Exception {
-    	FormSubmission fs1 = new FormSubmission("anm id 1", "instance id 1", "form name", "entity id 1", "1.0", 0L, new FormInstance(new FormData("test","def/bindpath", new ArrayList<FormField>(), null))),
-        fs2 = new FormSubmission("anm id 2", "instance id 2", "form name", "entity id 2", "1.0", 0L, new FormInstance(new FormData("test","def/bindpath", new ArrayList<FormField>(), null)));
+        FormSubmission fs1 = new FormSubmission("anm id 1", "instance id 1", "form name", "entity id 1", "1.0", 0L, new FormInstance(new FormData("test","def/bindpath", new ArrayList<FormField>(), null))),
+                fs2 = new FormSubmission("anm id 2", "instance id 2", "form name", "entity id 2", "1.0", 0L, new FormInstance(new FormData("test","def/bindpath", new ArrayList<FormField>(), null)));
         List<FormSubmission> formSubmissions = asList(fs1,fs2);
         when(configService.getAppStateTokenByName(Config.FORM_ENTITY_PARSER_LAST_SYNCED_FORM_SUBMISSION)).thenReturn(new AppStateToken("token", 1L, 0));
         when(formSubmissionService.getAllSubmissions(1L, null)).thenReturn(formSubmissions);
 
-        listener.parseForms(new MotechEvent("SUBJECT", null));
+        listener.parseForms();
 
         verify(fsp).processFormSubmission(fs1);
         verify(fsp).processFormSubmission(fs2);
@@ -83,7 +83,7 @@ public class FormEventListenerTest {
         when(configService.getAppStateTokenByName(Config.FORM_ENTITY_PARSER_LAST_SYNCED_FORM_SUBMISSION)).thenReturn(new AppStateToken("token", 1L, 0));
         when(formSubmissionService.getAllSubmissions(1L, null)).thenReturn(Collections.EMPTY_LIST);
 
-        listener.parseForms(new MotechEvent("SUBJECT", null));
+        listener.parseForms();
 
         verifyZeroInteractions(fsp);
     }

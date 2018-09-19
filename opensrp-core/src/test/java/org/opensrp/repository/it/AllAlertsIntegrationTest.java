@@ -207,4 +207,5 @@ public class AllAlertsIntegrationTest {
         assertEquals(asList(), allAlerts.findActiveAlertByProviderEntityIdTriggerName("ANM 1", "Entity 1", "Penta 1"));
         assertEquals(asList(alert2), allAlerts.findActiveAlertByProviderEntityIdTriggerName("ANM 1", "Entity 1", "Penta 2"));
     }
+
 }

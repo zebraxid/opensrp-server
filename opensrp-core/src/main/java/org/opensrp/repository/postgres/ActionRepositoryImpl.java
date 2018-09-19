@@ -239,6 +239,11 @@ public class ActionRepositoryImpl extends BaseRepositoryImpl<Action> implements 
 			return convert(actionMetadataMapper.selectMany(metadataExample, 0, limit));
 	}
 	
+	@Override
+	public List<Action> findAllActionNotExpired() {
+		return convert(actionMapper.selectNotExpired(0, DEFAULT_FETCH_SIZE));
+	}
+	
 	//private methods
 	private Action convert(org.opensrp.domain.postgres.Action action) {
 		if (action == null || action.getJson() == null || !(action.getJson() instanceof Action)) {

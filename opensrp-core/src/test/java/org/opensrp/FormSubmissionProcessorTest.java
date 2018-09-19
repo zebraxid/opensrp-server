@@ -49,25 +49,23 @@ public class FormSubmissionProcessorTest extends TestResourceLoader{
 	private ClientService clientService;
 	@Mock
 	private EventService eventService;
-	
 	@Mock
 	private AllClients allClients;
-	
 	@Mock
 	private AllEvents allEvents;
-	
+
 	public FormSubmissionProcessorTest() throws IOException {
 		super();
 	}
-	
+
 	@Before
 	public void setup() throws IOException{
 		initMocks(this);
 		FormEntityConverter fec = new FormEntityConverter(new FormAttributeParser("/form"));
-		fsp = new FormSubmissionProcessor(ziggyService, formSubmissionRouter, 
+		fsp = new FormSubmissionProcessor(ziggyService, formSubmissionRouter,
 				fec, scheduleService, clientService,allClients, eventService,allEvents);
 	}
-	
+
 	@Test
 	@Ignore//FIXME
 	public void testFormSubmission() throws Exception{
@@ -76,17 +74,17 @@ public class FormSubmissionProcessorTest extends TestResourceLoader{
 		List<Schedule> schl = new ArrayList<Schedule>();
 		schl.add(new Schedule(ActionType.enroll, new String[]{submission.formName()}, "Boosters", "REMINDER", new String[]{"birthdate"}, "child", ""));
 		when(scheduleService.findAutomatedSchedules(submission.formName())).thenReturn(schl);
-		
+
 		fsp.processFormSubmission(submission);
-		
-		
+
+
 		int totalEntities = 1;
 		for (SubFormData e : submission.subForms()) {
 			totalEntities += e.instances().size();
 		}
 		verify(clientService, times(totalEntities)).addClient(any(Client.class));
 		verify(eventService, times(totalEntities)).addEvent(any(Event.class));
-		verify(scheduleService, times(totalEntities-1)).enrollIntoSchedule(any(String.class), 
+		verify(scheduleService, times(totalEntities-1)).enrollIntoSchedule(any(String.class),
 				eq("Boosters"), eq("REMINDER"), any(String.class), eq(submission.getInstanceId()));
 	}
 }

@@ -75,24 +75,24 @@ public class HouseholdService extends OpenmrsService {
 	public HouseholdService(String openmrsUrl, String user, String password) {
 		super(openmrsUrl, user, password);
 	}
-	
+
 	public void saveHH(OpenmrsHouseHold household, boolean ignoreExisting) throws JSONException {
 		String hhrel = "Household Head";
 		JSONObject hhheadrel = findRelationshipTypeMatching(hhrel);
 		if (hhheadrel == null) {
 			createRelationshipType(hhrel, "Dependent", "Household Head and Member relationship created by OpenSRP");
 		}
-		
+
 		String hhheadEx = patientService
-		        .getPatientByIdentifierUUID(household.getHouseholdHead().getClient().getBaseEntityId());
+				.getPatientByIdentifierUUID(household.getHouseholdHead().getClient().getBaseEntityId());
 		if (hhheadEx == null) {
 			hhheadEx = patientService.createPatient(household.getHouseholdHead().getClient()).getString("uuid");
 		}
 		JSONObject hhe = encounterService.createEncounter(household.getHouseholdHead().getEvent().get(0));
-		
+
 		for (HouseholdMember m : household.getMembers()) {
 			if (StringUtils.isEmptyOrWhitespaceOnly(m.getClient().getFirstName())
-			        && m.getClient().getIdentifiers().size() < 2) {//we need to ignore uuid of entity
+					&& m.getClient().getIdentifiers().size() < 2) {//we need to ignore uuid of entity
 				//skip Data push for now
 			} else {
 				String hhMemEx = patientService.getPatientByIdentifierUUID(m.getClient().getBaseEntityId());
@@ -100,7 +100,7 @@ public class HouseholdService extends OpenmrsService {
 					hhMemEx = patientService.createPatient(m.getClient()).getString("uuid");
 				}
 				JSONObject me = encounterService.createEncounter(m.getEvent().get(0));
-				
+
 				createRelationship(hhheadEx, hhrel, hhMemEx);
 			}
 		}

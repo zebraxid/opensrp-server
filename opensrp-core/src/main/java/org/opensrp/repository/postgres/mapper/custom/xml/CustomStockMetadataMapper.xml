@@ -122,7 +122,10 @@
 			</if>
 		</trim>
 		</where>
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
 		LIMIT #{limit} OFFSET #{offset}
 	</select>
 

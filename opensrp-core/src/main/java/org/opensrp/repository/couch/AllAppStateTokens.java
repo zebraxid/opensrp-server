@@ -2,6 +2,7 @@ package org.opensrp.repository.couch;
 
 import java.util.List;
 
+import com.mysql.jdbc.StringUtils;
 import org.ektorp.CouchDbConnector;
 import org.ektorp.UpdateConflictException;
 import org.ektorp.support.GenerateView;
@@ -60,6 +61,52 @@ public class AllAppStateTokens extends MotechBaseRepository<AppStateToken> imple
 		Assert.notNull(entity, "entity may not be null");
 		Assert.isTrue(Documents.isNew(entity), "entity must be new");
 		db.create(entity);
+	}
+
+	public AppStateToken registerAppStateToken(CouchDbConnector db, Enum<?> tokenName, Object defaultValue,
+	                                           String description, boolean suppressExceptionIfExists) {
+		if (tokenName == null || StringUtils.isEmptyOrWhitespaceOnly(description)) {
+			throw new IllegalArgumentException("Token name and description must be provided");
+		}
+
+		List<AppStateToken> atl = findByName(db, tokenName.name());
+		if (atl.size() > 0) {
+			if (!suppressExceptionIfExists) {
+				throw new IllegalArgumentException("Token with given name (" + tokenName.name() + ") already exists.");
+			}
+			return atl.get(0);
+		}
+
+		AppStateToken token = new AppStateToken(tokenName.name(), defaultValue, 0L, description);
+		add(db, token);
+		return token;
+	}
+
+	public void updateAppStateToken(CouchDbConnector db, Enum<?> tokenName, Object value) {
+		List<AppStateToken> ol = findByName(db, tokenName.name());
+		if (ol.size() > 1) {
+			throw new IllegalStateException("System was found to have multiple token with same name (" + tokenName.name()
+					+ "). This can lead to potential critical inconsistencies.");
+		}
+
+		if (ol.size() == 0) {
+			throw new IllegalStateException("Property with name (" + tokenName.name() + ") not found.");
+		}
+
+		AppStateToken ast = ol.get(0);
+		ast.setValue(value);
+		ast.setLastEditDate(System.currentTimeMillis());
+		db.update(ast);
+	}
+
+	public AppStateToken getAppStateTokenByName(CouchDbConnector db, Enum<?> tokenName) {
+		List<AppStateToken> ol = findByName(db, tokenName.name());
+		if (ol.size() > 1) {
+			throw new IllegalStateException("System was found to have multiple token with same name (" + tokenName.name()
+					+ "). This can lead to potential critical inconsistencies.");
+		}
+
+		return ol.size() == 0 ? null : ol.get(0);
 	}
 
 }

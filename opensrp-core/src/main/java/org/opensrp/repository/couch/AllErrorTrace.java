@@ -16,32 +16,29 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
 /**
- * @author muhammad.ahmed@ihsinformatics.com
- *  Created on May 25, 2015
+ * @author muhammad.ahmed@ihsinformatics.com Created on May 25, 2015
  */
 @Repository("couchErrorTraceRepository")
 @Primary
 public class AllErrorTrace extends MotechBaseRepository<ErrorTrace> implements ErrorTraceRepository {
-	
-	
+
 	@Autowired
-	protected AllErrorTrace(
-			@Qualifier(AllConstants.OPENSRP_ERRORTRACE_DATABASE) CouchDbConnector db) {
+	protected AllErrorTrace(@Qualifier(AllConstants.OPENSRP_ERRORTRACE_DATABASE) CouchDbConnector db) {
 		super(ErrorTrace.class, db);
 	}
-
+	
 	//@GenerateView
-	public ErrorTrace findById(String _id) throws DocumentNotFoundException{
+	public ErrorTrace findById(String _id) throws DocumentNotFoundException {
 		
 		/*db.queryView(createQuery("_id").keys(_id)
 				.includeDocs(true), ErrorTrace.class);*/
-	ErrorTrace errors=	(ErrorTrace)get(_id);
+		ErrorTrace errors = (ErrorTrace) get(_id);
 		//List<ErrorTrace> errors = queryView("_id", _id);
-		if (errors == null ) {
+		if (errors == null) {
 			System.out.println("Error by id : =  found nothing !");
 			return null;
 		}
-		System.out.println("Error by id : = "+errors);
+		System.out.println("Error by id : = " + errors);
 		return errors;
 	}
 	
@@ -50,21 +47,18 @@ public class AllErrorTrace extends MotechBaseRepository<ErrorTrace> implements E
 	}
 	
 	@View(name = "all_errors", map = "function(doc) {  emit(doc.id);  }")
-	public List<ErrorTrace> findAllErrors()  throws DocumentNotFoundException{
-		return db.queryView(createQuery("all_errors").includeDocs(true),
-				ErrorTrace.class);
+	public List<ErrorTrace> findAllErrors() throws DocumentNotFoundException {
+		return db.queryView(createQuery("all_errors").includeDocs(true), ErrorTrace.class);
 	}
-
+	
 	@View(name = "all_unsolved_errors", map = "function(doc) { if (doc.status === 'unsolved') { emit(doc.id); } }")
 	public List<ErrorTrace> findAllUnSolvedErrors() throws DocumentNotFoundException {
-		return db.queryView(createQuery("all_unsolved_errors").includeDocs(true),
-				ErrorTrace.class);
+		return db.queryView(createQuery("all_unsolved_errors").includeDocs(true), ErrorTrace.class);
 	}
 	
 	@View(name = "all_solved_errors", map = "function(doc) { if (doc.status === 'solved') { emit(doc.id); } }")
 	public List<ErrorTrace> findAllSolvedErrors() throws DocumentNotFoundException {
-		return db.queryView(createQuery("all_solved__errors").includeDocs(true),
-				ErrorTrace.class);
+		return db.queryView(createQuery("all_solved_errors").includeDocs(true), ErrorTrace.class);
 	}
-
+	
 }

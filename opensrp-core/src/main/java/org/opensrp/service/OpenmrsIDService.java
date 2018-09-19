@@ -1,5 +1,11 @@
 package org.opensrp.service;
 
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
@@ -16,12 +22,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 @Service
 public class OpenmrsIDService {
@@ -68,12 +68,12 @@ public class OpenmrsIDService {
 		// Add query parameters
 		openmrsQueryUrl += "?source=" + this.openmrsSourceId + "&numberToGenerate=" + size;
 		openmrsQueryUrl += "&username=" + this.openmrsUserName + "&password=" + this.openmrsPassword;
-
+		
 		HttpGet get = new HttpGet(openmrsQueryUrl);
 		try {
 			HttpResponse response = client.execute(get);
 			String jsonResponse = EntityUtils.toString(response.getEntity());
-
+			
 			JSONObject responseJson = new JSONObject(jsonResponse);
 			JSONArray jsonArray = responseJson.getJSONArray("identifiers");
 
@@ -184,6 +184,7 @@ public class OpenmrsIDService {
 	public int[] markIdsAsUsed(List<String> ids) {
 		return uniqueIdRepository.markAsUsed(ids);
 	}
+
 
 	public List<String> getOpenMRSIdentifiers(String source, String numberToGenerate, String userName, String password)
 			throws JSONException {

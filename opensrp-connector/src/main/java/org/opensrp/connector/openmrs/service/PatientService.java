@@ -2,6 +2,13 @@ package org.opensrp.connector.openmrs.service;
 
 import com.mysql.jdbc.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -128,6 +135,19 @@ public class PatientService extends OpenmrsService {
 						return personJoson.getString(UUID_KEY);
 					}
 				}
+			}
+		}
+		return null;
+	}
+
+	public JSONObject getIdentifierType(String identifierType) throws JSONException {
+		// we have to use this ugly approach because identifier not found throws exception and 
+		// its hard to find whether it was network error or object not found or server error
+		JSONArray res = new JSONObject(HttpUtil.get(getURL() + "/" + PATIENT_IDENTIFIER_TYPE_URL, "v=full", OPENMRS_USER,
+		    OPENMRS_PWD).body()).getJSONArray("results");
+		for (int i = 0; i < res.length(); i++) {
+			if (res.getJSONObject(i).getString("display").equalsIgnoreCase(identifierType)) {
+				return res.getJSONObject(i);
 			}
 		}
 		return null;
@@ -348,7 +368,6 @@ public class PatientService extends OpenmrsService {
 			}
 			patientsJsonArray.put(patient);
 		}
-
 	}
 
 	public String getPersonAttributeTypeUUID(String attributeName) throws JSONException {
@@ -418,7 +437,6 @@ public class PatientService extends OpenmrsService {
 			}
 			break;
 		}
-		per.put("attributes", convertAttributesToOpenmrsJson(be.getAttributes()));
 
 		if (!update) {
 			per.put("names", new JSONArray("[{\"givenName\":\"" + fn + "\",\"middleName\":\"" + mn + "\", \"familyName\":\"" + ln + "\"}]"));
@@ -592,6 +610,7 @@ public class PatientService extends OpenmrsService {
 		p.put("identifiers", ids);
 		updatePersonName(getPatientByUuid(uuid, false).getJSONObject(PERSON_KEY), c);
 		return new JSONObject(HttpUtil.post(getURL() + "/" + PATIENT_URL + "/" + uuid, "", p.toString(), OPENMRS_USER, OPENMRS_PWD).body());
+
 	}
 
 	public JSONObject addThriveId(String baseEntityId, JSONObject patient) throws JSONException {
@@ -600,7 +619,6 @@ public class PatientService extends OpenmrsService {
 		jio.put("identifier", baseEntityId);
 		jio.put("location", "Unknown Location");
 		jio.put("preferred", true);
-
 		return new JSONObject(HttpUtil.post(getURL() + "/" + PATIENT_URL + "/" + patient.getString("uuid") + "/" + PATIENT_IDENTIFIER_URL, "", jio.toString(), OPENMRS_USER, OPENMRS_PWD).body());
 	}
 
@@ -656,18 +674,16 @@ public class PatientService extends OpenmrsService {
 		return c;
 	}
 
-	public void patientImageUpload(Multimedia multimedia) throws IOException {
+	public List<String> patientImageUpload(Multimedia multimedia) throws IOException {
 		//String requestURL =  "http://46.101.51.199:8080/openmrs/ws/rest/v1/patientimage/uploadimage";
-
+		List<String> response = new ArrayList<>();
 		try {
 			File convFile = new File("/opt" + multimedia.getFilePath());
 			MultipartUtility multipart = new MultipartUtility(getURL() + "/" + PATIENT_IMAGE_URL, OPENMRS_USER, OPENMRS_PWD);
 			multipart.addFormField("patientidentifier", multimedia.getCaseId());
 			multipart.addFormField("category", multimedia.getFileCategory());
 			multipart.addFilePart("file", convFile);
-
-			List<String> response = multipart.finish();
-
+			response = multipart.finish();
 			System.out.println("SERVER REPLIED:");
 
 			for (String line : response) {
@@ -677,6 +693,7 @@ public class PatientService extends OpenmrsService {
 		catch (IOException ex) {
 			logger.error("", ex);
 		}
+		return response;
 	}
 
 	public JSONObject updatePersonAsDeceased(Event deathEvent) throws JSONException {

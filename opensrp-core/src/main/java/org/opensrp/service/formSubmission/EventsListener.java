@@ -58,7 +58,7 @@ public class EventsListener {
 		this.configService.registerAppStateToken(AllConstants.Config.EVENTS_PARSER_LAST_PROCESSED_EVENT, 0,
 		    "Token to keep track of events processed for client n event parsing and schedule handling", true);
 	}
-	
+
 	public EventsListener(EventsRouter eventsRouter, ConfigService configService, EventsRepository allEvents,
 	    EventService eventService, ErrorTraceService errorTraceService, ClientsRepository allClients) {
 		this.configService = configService;

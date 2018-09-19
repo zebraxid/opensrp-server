@@ -106,7 +106,6 @@ public class EventTest {
         User editor1 = new User("oooo-r34444-jgu45");
         Assert.assertEquals(editor, user.getEditor());
         Assert.assertNotSame(editor1, user.getEditor());
-
         Date now =new Date();
         event.setDateEdited(now);
         Assert.assertEquals(now, event.getDateEdited());

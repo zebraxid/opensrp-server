@@ -133,4 +133,10 @@ public class AllActions extends MotechBaseRepository<Action> implements ActionsR
 	                                   int limit) {
 		return luceneActionRepo.getByCriteria(team, providerId, timeStamp, sortBy, sortOrder, limit);
 	}
+
+	@View(name = "action_by_alertStatus_not_expired", map = "function(doc) { if (doc.type === 'Action' && doc.data.alertStatus!='urgent') { emit(doc.id, null); } }")
+	public List<Action> findAllActionNotExpired() {
+		return db.queryView(createQuery("action_by_alertStatus_not_expired").includeDocs(true), Action.class);
+	}
+
 }

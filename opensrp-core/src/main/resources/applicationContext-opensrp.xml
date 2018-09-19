@@ -31,6 +31,8 @@
 	<task:scheduler id="applicationScheduler" pool-size="10" />
 
 	<task:scheduled-tasks scheduler="applicationScheduler">
+        <task:scheduled ref="formSubmissionListener" method="parseForms"
+                        fixed-delay="180000" />
 		<task:scheduled ref="eventsListener" method="processEvent"
 						fixed-delay="180000" />
 		<task:scheduled ref="openmrsSyncerListener" method="pushToOpenMRS"
@@ -93,5 +95,5 @@
 			p:enable-transaction-support="true" />
 			
 	</beans>
-	
+
 </beans>

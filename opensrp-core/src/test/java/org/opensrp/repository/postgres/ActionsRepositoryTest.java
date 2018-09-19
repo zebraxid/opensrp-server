@@ -240,4 +240,11 @@ public class ActionsRepositoryTest extends BaseRepositoryTest {
 		assertEquals("2018-04-23", actions.get(0).data().get("completionDate"));
 	}
 	
+	@Test
+	public void testFindAllActionNotExpired() {
+		List<Action> actions = actionsRepository.findAllActionNotExpired();
+		assertEquals(1, actions.size());
+		assertEquals("05934ae338431f28bf6793b2417dba2d", actions.get(0).getId());
+		
+	}
 }
