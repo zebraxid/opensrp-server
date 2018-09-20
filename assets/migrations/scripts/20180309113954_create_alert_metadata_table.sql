@@ -37,7 +37,6 @@ WITH (
     OIDS = FALSE
 ) TABLESPACE core_space;
 
-
 CREATE INDEX alert_metadata_composite_index ON core.alert_metadata (base_entity_id,provider_id,server_version,trigger_name);
 
 

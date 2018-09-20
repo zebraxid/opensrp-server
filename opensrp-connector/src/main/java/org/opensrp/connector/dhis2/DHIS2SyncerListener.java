@@ -5,8 +5,6 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.motechproject.scheduler.domain.MotechEvent;
-import org.motechproject.server.event.annotations.MotechListener;
 import org.opensrp.common.AllConstants.DHIS2Constants;
 import org.opensrp.common.util.DateUtil;
 import org.opensrp.domain.Client;
@@ -45,8 +43,7 @@ public class DHIS2SyncerListener {
 		this.clientService = clientService;
 	}
 	
-	@MotechListener(subjects = DHIS2Constants.DHIS2_TRACK_DATA_SYNCER_SUBJECT)
-	public JSONObject pushToDHIS2(MotechEvent event) {
+	public JSONObject pushToDHIS2() {
 		JSONObject response = null;
 		try {
 			Long start = 0l;

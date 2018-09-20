@@ -13,6 +13,6 @@ public interface CustomActionMapper extends ActionMapper {
 	Action selectByDocumentId(String documentId);
 	
 	List<Long> selectIdsByTarget(String actionTarget);
-	
+
 	List<Action> selectNotExpired(@Param("offset") int offset, @Param("limit") int limit);
 }

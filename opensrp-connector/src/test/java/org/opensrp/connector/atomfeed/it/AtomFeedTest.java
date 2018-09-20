@@ -126,7 +126,7 @@ public class AtomFeedTest extends OpenmrsApiService {
 		
 		openmrsUserService.createProvider(userName, IdentifierType);
 		
-		JSONObject provider = openmrsUserService.getProvider(IdentifierType);
+		JSONObject provider = openmrsUserService.getProvider(IdentifierType, null);
 		JSONObject person = provider.getJSONObject(personKey);
 		
 		JSONObject returnEncounterType = encounterService.createEncounterType(encounterType, "Test desc");
@@ -139,7 +139,7 @@ public class AtomFeedTest extends OpenmrsApiService {
 		
 		/**** start atomfeed for patient ****/
 		PatientAtomfeed paf = new PatientAtomfeed(new AllMarkersInMemoryImpl(), new AllFailedEventsInMemoryImpl(),
-		        openmrsOpenmrsUrl, patientService, cs);
+		        openmrsOpenmrsUrl, patientService, cs,es);
 		
 		paf.processEvents();
 		

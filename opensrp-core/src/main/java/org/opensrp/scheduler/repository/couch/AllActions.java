@@ -48,25 +48,27 @@ public class AllActions extends MotechBaseRepository<Action> implements ActionsR
 	        + "emit([doc.providerId, doc.baseEntityId, doc.data.scheduleName], null)} " + "}")
 	public List<Action> findAlertByANMIdEntityIdScheduleName(String providerId, String baseEntityId, String scheduleName) {
 		ComplexKey key = ComplexKey.of(providerId, baseEntityId, scheduleName);
-		return db
-		        .queryView(createQuery("action_by_provider_entityId_scheduleName").key(key).includeDocs(true), Action.class);
+		return db.queryView(createQuery("action_by_provider_entityId_scheduleName").key(key).includeDocs(true),
+		    Action.class);
 	}
 	
 	@View(name = "action_by_baseEntityId_and_schedule_and_time", map = "function(doc) { if (doc.type === 'Action') { emit([doc.baseEntityId, doc.data.scheduleName, doc.timeStamp], null); } }")
-	public List<Action> findByCaseIdScheduleAndTimeStamp(String baseEntityId, String schedule, DateTime start, DateTime end) {
+	public List<Action> findByCaseIdScheduleAndTimeStamp(String baseEntityId, String schedule, DateTime start,
+	                                                     DateTime end) {
 		ComplexKey startKey = ComplexKey.of(baseEntityId, schedule, start.getMillis());
 		ComplexKey endKey = ComplexKey.of(baseEntityId, schedule, end.getMillis() + 1);
-		return db.queryView(createQuery("action_by_baseEntityId_and_schedule_and_time").startKey(startKey).endKey(endKey)
-		        .includeDocs(true), Action.class);
+		return db.queryView(
+		    createQuery("action_by_baseEntityId_and_schedule_and_time").startKey(startKey).endKey(endKey).includeDocs(true),
+		    Action.class);
 	}
 	
 	@View(name = "action_by_baseEntityId_and_time", map = "function(doc) { if (doc.type === 'Action') { emit([doc.baseEntityId,doc.timeStamp], null); } }")
 	public List<Action> findByCaseIdAndTimeStamp(String baseEntityId, long timeStamp) {
 		ComplexKey startKey = ComplexKey.of(baseEntityId, timeStamp);
 		ComplexKey endKey = ComplexKey.of(baseEntityId, Long.MAX_VALUE);
-		return db
-		        .queryView(createQuery("action_by_baseEntityId_and_time").startKey(startKey).endKey(endKey)
-		                .includeDocs(true), Action.class);
+		return db.queryView(
+		    createQuery("action_by_baseEntityId_and_time").startKey(startKey).endKey(endKey).includeDocs(true),
+		    Action.class);
 	}
 	
 	public void deleteAllByTarget(String target) {
@@ -103,11 +105,10 @@ public class AllActions extends MotechBaseRepository<Action> implements ActionsR
 		List<Action> existingAlerts = findAlertByANMIdEntityIdScheduleName(alertAction.providerId(),
 		    alertAction.baseEntityId(), alertAction.data().get("scheduleName"));
 		if (existingAlerts.size() > 1) {
-			logger.warn(MessageFormat
-			        .format(
-			            "Found more than one alert for the combination of providerId: {0}, entityId: {1} and scheduleName : {2}. Alerts : {3}",
-			            alertAction.providerId(), alertAction.baseEntityId(), alertAction.data().get("scheduleName"),
-			            existingAlerts));
+			logger.warn(MessageFormat.format(
+			    "Found more than one alert for the combination of providerId: {0}, entityId: {1} and scheduleName : {2}. Alerts : {3}",
+			    alertAction.providerId(), alertAction.baseEntityId(), alertAction.data().get("scheduleName"),
+			    existingAlerts));
 		}
 		for (Action existingAlert : existingAlerts) {
 			safeRemove(existingAlert);
@@ -118,10 +119,9 @@ public class AllActions extends MotechBaseRepository<Action> implements ActionsR
 	public void markAlertAsInactiveFor(String providerId, String baseEntityId, String scheduleName) {
 		List<Action> existingAlerts = findAlertByANMIdEntityIdScheduleName(providerId, baseEntityId, scheduleName);
 		if (existingAlerts.size() > 1) {
-			logger.warn(MessageFormat
-			        .format(
-			            "Found more than one alert for the combination of providerId: {0}, entityId: {1} and scheduleName : {2}. Alerts : {3}",
-			            providerId, baseEntityId, scheduleName, existingAlerts));
+			logger.warn(MessageFormat.format(
+			    "Found more than one alert for the combination of providerId: {0}, entityId: {1} and scheduleName : {2}. Alerts : {3}",
+			    providerId, baseEntityId, scheduleName, existingAlerts));
 		}
 		for (Action existingAlert : existingAlerts) {
 			existingAlert.markAsInActive();
@@ -133,7 +133,7 @@ public class AllActions extends MotechBaseRepository<Action> implements ActionsR
 	                                   int limit) {
 		return luceneActionRepo.getByCriteria(team, providerId, timeStamp, sortBy, sortOrder, limit);
 	}
-	
+
 	@View(name = "action_by_alertStatus_not_expired", map = "function(doc) { if (doc.type === 'Action' && doc.data.alertStatus!='urgent') { emit(doc.id, null); } }")
 	public List<Action> findAllActionNotExpired() {
 		return db.queryView(createQuery("action_by_alertStatus_not_expired").includeDocs(true), Action.class);

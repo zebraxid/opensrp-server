@@ -1,26 +1,25 @@
 package org.opensrp.domain;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.ektorp.support.TypeDiscriminator;
-import org.opensrp.domain.Location;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 @TypeDiscriminator("doc.type == 'Location'")
-public class Location extends BaseDataObject{
+public class Location extends BaseDataObject {
 
 	@JsonProperty
 	private String locationId;
 	@JsonProperty
 	private String name;
 	@JsonProperty
-	private Address	address;
+	private Address address;
 	@JsonProperty
 	private Map<String, String> identifiers;
 	@JsonProperty
@@ -40,8 +39,8 @@ public class Location extends BaseDataObject{
 	}
 	
 	public Location(String locationId, String name, Address address,
-			Map<String, String> identifiers, Location parentLocation,
-			Set<String> tags, Map<String, Object> attributes) {
+	                Map<String, String> identifiers, Location parentLocation,
+	                Set<String> tags, Map<String, Object> attributes) {
 		this.locationId = locationId;
 		this.name = name;
 		this.address = address;

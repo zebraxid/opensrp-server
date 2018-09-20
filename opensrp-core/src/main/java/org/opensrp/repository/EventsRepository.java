@@ -44,7 +44,7 @@ public interface EventsRepository extends BaseRepository<Event> {
 	List<Event> findEvents(EventSearchBean eventSearchBean, String sortBy, String sortOrder, int limit);
 	
 	List<Event> findEventByEventTypeBetweenTwoDates(String eventType);
-	
+
 	List<Event> findByProvider(String provider);
-	
+
 }

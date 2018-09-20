@@ -4,14 +4,11 @@ import static java.text.MessageFormat.format;
 import static java.util.Collections.sort;
 import static org.apache.commons.lang.exception.ExceptionUtils.getFullStackTrace;
 
-import java.text.MessageFormat;
 import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;
 
 import org.joda.time.DateTime;
-import org.motechproject.scheduler.domain.MotechEvent;
-import org.motechproject.server.event.annotations.MotechListener;
 import org.opensrp.common.AllConstants;
 import org.opensrp.domain.AppStateToken;
 import org.opensrp.domain.Client;
@@ -61,7 +58,6 @@ public class EventsListener {
 		    "Token to keep track of events processed for client n event parsing and schedule handling", true);
 	}
 
-	
 	public EventsListener(EventsRouter eventsRouter, ConfigService configService, EventsRepository allEvents,
 	    EventService eventService, ErrorTraceService errorTraceService, ClientsRepository allClients) {
 		this.configService = configService;
@@ -71,11 +67,10 @@ public class EventsListener {
 		this.eventService = eventService;
 		this.allClients = allClients;
 		this.configService.registerAppStateToken(AllConstants.Config.EVENTS_PARSER_LAST_PROCESSED_EVENT, 0,
-				"Token to keep track of events processed for client n event parsing and schedule handling", true);
+		    "Token to keep track of events processed for client n event parsing and schedule handling", true);
 	}
 	
-	@MotechListener(subjects = AllConstants.EVENTS_SCHEDULE_SUBJECT)
-	public void processEvent(MotechEvent motechEvent) {
+	public void processEvent() {
 		if (!lock.tryLock()) {
 			logger.warn("Not fetching events from Message Queue. It is already in progress.");
 			return;
@@ -99,7 +94,7 @@ public class EventsListener {
 			
 			for (Event event : events) {
 				try {
-					event=eventService.processOutOfArea(event);
+					event = eventService.processOutOfArea(event);
 					eventsRouter.route(event);
 					configService.updateAppStateToken(AllConstants.Config.EVENTS_PARSER_LAST_PROCESSED_EVENT,
 					    event.getServerVersion());
@@ -113,7 +108,7 @@ public class EventsListener {
 			}
 		}
 		catch (Exception e) {
-			logger.error(MessageFormat.format("{0} occurred while trying to fetch forms. Message: {1} with stack trace {2}",
+			logger.error(format("{0} occurred while trying to fetch events. Message: {1} with stack trace {2}",
 			    e.toString(), e.getMessage(), getFullStackTrace(e)));
 		}
 		finally {
@@ -166,11 +161,11 @@ public class EventsListener {
 		}
 		
 	}
-
+	
 	public long getCurrentMilliseconds() {
 		return System.currentTimeMillis();
 	}
-
+	
 	private long getVersion() {
 		AppStateToken token = configService.getAppStateTokenByName(AllConstants.Config.EVENTS_PARSER_LAST_PROCESSED_EVENT);
 		return token == null ? 0L : token.longValue();

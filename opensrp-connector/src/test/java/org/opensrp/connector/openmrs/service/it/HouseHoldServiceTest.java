@@ -159,7 +159,7 @@ public class HouseHoldServiceTest extends OpenmrsApiService {
 			household.addHHMember((Client) dep.get(hhmid).get("client"), (Event) dep.get(hhmid).get("event"));
 		}
 		
-		JSONObject pr = us.getProvider(fs.anmId());
+		JSONObject pr = us.getProvider(fs.anmId(),null);
 		if (pr == null) {
 			us.createProvider(fs.anmId(), fs.anmId());
 		}
@@ -176,45 +176,43 @@ public class HouseHoldServiceTest extends OpenmrsApiService {
 				es.createEncounterType(ein.getEventType(), "Encounter type created to fullfill scheduling test pre-reqs");
 			}
 			
+			JSONObject response = hhs.saveHH(household, true);
+			
+			JSONArray encounters = response.getJSONArray(encountersKey);
+			JSONArray relationships = response.getJSONArray(relationshipsKey);
+			JSONObject hhEncounter = encounters.getJSONObject(firstIndex);
+			String hhEncounterUUID = hhEncounter.getString(uuidKey);
+			JSONObject hhEncounterType = hhEncounter.getJSONObject(encounterTypeKey);
+			String actualHHEncounterTypeName = hhEncounterType.getString(displayKey);
+			
+			JSONObject memberEncounter = encounters.getJSONObject(secondIndex);
+			String memberEncounterUUID = memberEncounter.getString(uuidKey);
+			
+			JSONObject meEncounterType = memberEncounter.getJSONObject(encounterTypeKey);
+			String actualMEEncounterTypeName = meEncounterType.getString(displayKey);
+			
+			JSONObject relationship = relationships.getJSONObject(firstIndex);
+			String relationshipUUID = relationship.getString(uuidKey);
+			JSONObject personB = relationship.getJSONObject("personB");
+			JSONObject personA = relationship.getJSONObject("personA");
+			String actualPersonBName = personB.getString(displayKey);
+			String actualPersonAName = personA.getString(displayKey);
+			
+			/* cleaning openmrs data */
+			deleteEncounter(hhEncounterUUID);
+			deleteEncounter(memberEncounterUUID);
+			deleteRelation(relationshipUUID);
+			
+			String uuid = firstPatient.getString(uuidKey);
+			deletePerson(uuid);
+			String uuids = secondPatient.getString(uuidKey);
+			deletePerson(uuids);
+			deletePersonAttributeType(attribute.getString(uuidKey));
+			assertEquals("New Household Registration", actualHHEncounterTypeName);
+			assertEquals("Census and New Woman Registration", actualMEEncounterTypeName);
+			assertEquals(fn + " " + mn + " " + ln, actualPersonBName);
+			assertEquals(fn + " " + mn + " " + ln, actualPersonAName);
 		}
-		
-		JSONObject response = hhs.saveHH(household, true);
-		
-		JSONArray encounters = response.getJSONArray(encountersKey);
-		JSONArray relationships = response.getJSONArray(relationshipsKey);
-		JSONObject hhEncounter = encounters.getJSONObject(firstIndex);
-		String hhEncounterUUID = hhEncounter.getString(uuidKey);
-		JSONObject hhEncounterType = hhEncounter.getJSONObject(encounterTypeKey);
-		String actualHHEncounterTypeName = hhEncounterType.getString(displayKey);
-		
-		JSONObject memberEncounter = encounters.getJSONObject(secondIndex);
-		String memberEncounterUUID = memberEncounter.getString(uuidKey);
-		
-		JSONObject meEncounterType = memberEncounter.getJSONObject(encounterTypeKey);
-		String actualMEEncounterTypeName = meEncounterType.getString(displayKey);
-		
-		JSONObject relationship = relationships.getJSONObject(firstIndex);
-		String relationshipUUID = relationship.getString(uuidKey);
-		JSONObject personB = relationship.getJSONObject("personB");
-		JSONObject personA = relationship.getJSONObject("personA");
-		String actualPersonBName = personB.getString(displayKey);
-		String actualPersonAName = personA.getString(displayKey);
-		
-		/* cleaning openmrs data */
-		deleteEncounter(hhEncounterUUID);
-		deleteEncounter(memberEncounterUUID);
-		deleteRelation(relationshipUUID);
-		
-		String uuid = firstPatient.getString(uuidKey);
-		deletePerson(uuid);
-		String uuids = secondPatient.getString(uuidKey);
-		deletePerson(uuids);
-		deletePersonAttributeType(attribute.getString(uuidKey));
-		assertEquals("New Household Registration", actualHHEncounterTypeName);
-		assertEquals("Census and New Woman Registration", actualMEEncounterTypeName);
-		assertEquals(fn + " " + mn + " " + ln, actualPersonBName);
-		assertEquals(fn + " " + mn + " " + ln, actualPersonAName);
-		
 	}
 	
 }

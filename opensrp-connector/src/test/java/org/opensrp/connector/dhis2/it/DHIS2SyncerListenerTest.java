@@ -16,8 +16,6 @@ import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.motechproject.scheduler.domain.MotechEvent;
-import org.opensrp.common.AllConstants.DHIS2Constants;
 import org.opensrp.connector.dhis2.DHIS2SyncerListener;
 import org.opensrp.connector.dhis2.Dhis2HttpUtils;
 import org.opensrp.connector.openmrs.service.TestResourceLoader;
@@ -74,9 +72,7 @@ public class DHIS2SyncerListenerTest extends TestResourceLoader {
 		householdEvent.setObs(householdOservations);
 		allEvents.add(householdEvent);
 		
-		MotechEvent event = new MotechEvent(DHIS2Constants.DHIS2_TRACK_DATA_SYNCER_SUBJECT);
-		JSONObject returns = dhis2SyncerListener.pushToDHIS2(event);
-		
+		JSONObject returns = dhis2SyncerListener.pushToDHIS2();
 		JSONObject response = returns.getJSONObject("response");
 		String expectedImport = "1";
 		String actualImport = response.getString("imported");

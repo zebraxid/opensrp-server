@@ -38,7 +38,7 @@ import com.google.gson.Gson;
 
 public class FormEntityServiceTest extends TestResourceLoader{
 
-	@Mock
+    @Mock
     private ZiggyService ziggyService;
     @Mock
     private FormSubmissionRouter formSubmissionRouter;
@@ -50,39 +50,39 @@ public class FormEntityServiceTest extends TestResourceLoader{
     private ClientService clientService;
     @Mock
     private EventService eventService;
-    
+
     @Spy
     private ScheduleConfig scheduleConfig;
     @Mock
     private ScheduleService schService;
-    @Mock 
+    @Mock
     private ActionService actionService;
-    
-    @Mock 
+
+    @Mock
     private AllClients allClients;
-    
-    @Mock 
+
+    @Mock
     private AllEvents allEvents;
-    
+
     @InjectMocks
     private HealthSchedulerService scheduleService;
-    
+
     @Mock
     private FormEntityConverter fec;
-    
+
     public FormEntityServiceTest() throws IOException {
-		super();
-	}
+        super();
+    }
 
     @Before
     public void setUp() throws Exception {
-    	scheduleConfig = new ScheduleConfig("/schedules/schedule-config.xls"); 
+        scheduleConfig = new ScheduleConfig("/schedules/schedule-config.xls");
         initMocks(this);
         fsp = new FormSubmissionProcessor(ziggyService, formSubmissionRouter, formEntityConverter, scheduleService, clientService,allClients, eventService,allEvents);
         fec = new FormEntityConverter(new FormAttributeParser("/form"));
     }
 
-	@Test
+    @Test
     public void shouldProcessNonZiggySubmission() throws Exception {
         FormSubmission fs = getFormSubmissionFor("new_household_registration", 1);
 
@@ -105,8 +105,8 @@ public class FormEntityServiceTest extends TestResourceLoader{
         verifyNoMoreInteractions(ziggyService);
         verifyNoMoreInteractions(formSubmissionRouter);
     }
-	
-    @Test 
+
+    @Test
     public void shouldProcessNonZiggyWomanTTEnrollmentSubmission() throws Exception {
         FormSubmission fs = getFormSubmissionFor("woman_enrollment");
 
@@ -129,13 +129,13 @@ public class FormEntityServiceTest extends TestResourceLoader{
         verifyNoMoreInteractions(ziggyService);
         verifyNoMoreInteractions(formSubmissionRouter);
     }
-	
-	@Test
+
+    @Test
     public void shouldProcessZiggySubmission() throws Exception {
         FormSubmission fs = getFormSubmissionFor("new_household_registration", 1);
 
         when(ziggyService.isZiggyCompliant("household")).thenReturn(true);
-        
+
         fsp.processFormSubmission(fs);
 
         InOrder inOrder = inOrder(formEntityConverter, clientService, eventService, schService, ziggyService, formSubmissionRouter);
@@ -150,12 +150,12 @@ public class FormEntityServiceTest extends TestResourceLoader{
 
         verifyZeroInteractions(formSubmissionRouter);
         verifyNoMoreInteractions(formEntityConverter);
-       // verifyNoMoreInteractions(clientService);
-       // verifyNoMoreInteractions(eventService);
-       // verifyNoMoreInteractions(schService);
+        // verifyNoMoreInteractions(clientService);
+        // verifyNoMoreInteractions(eventService);
+        // verifyNoMoreInteractions(schService);
         verifyNoMoreInteractions(ziggyService);
     }
-    
+
     /*TODO
     @Test
     public void shouldSortAllSubmissionsAndSaveEachOne() throws Exception {

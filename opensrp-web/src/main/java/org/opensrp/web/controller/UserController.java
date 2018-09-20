@@ -11,6 +11,7 @@ import org.opensrp.api.domain.Time;
 import org.opensrp.api.domain.User;
 import org.opensrp.api.util.LocationTree;
 import org.opensrp.common.domain.UserDetail;
+import org.opensrp.common.util.OpenMRSCrossVariables;
 import org.opensrp.connector.openmrs.service.OpenmrsLocationService;
 import org.opensrp.connector.openmrs.service.OpenmrsUserService;
 import org.opensrp.web.security.DrishtiAuthenticationProvider;
@@ -49,9 +50,11 @@ public class UserController {
 
 	private OpenmrsUserService openmrsUserService;
 
+	@Value("#{opensrp['openmrs.version']}")
+	protected String OPENMRS_VERSION;
+
 	@Autowired
-	public UserController(OpenmrsLocationService openmrsLocationService, OpenmrsUserService openmrsUserService,
-	                      DrishtiAuthenticationProvider opensrpAuthenticationProvider) {
+	public UserController(OpenmrsLocationService openmrsLocationService, OpenmrsUserService openmrsUserService, DrishtiAuthenticationProvider opensrpAuthenticationProvider) {
 		this.openmrsLocationService = openmrsLocationService;
 		this.openmrsUserService = openmrsUserService;
 		this.opensrpAuthenticationProvider = opensrpAuthenticationProvider;
@@ -105,7 +108,8 @@ public class UserController {
 		JSONObject tm = null;
 		try {
 			tm = openmrsUserService.getTeamMember(u.getAttribute("_PERSON_UUID").toString());
-			JSONArray locs = tm.getJSONArray("location");
+			JSONArray locs = tm.getJSONArray(OpenMRSCrossVariables.LOCATIONS_JSON_KEY.makeVariable(OPENMRS_VERSION));
+
 			for (int i = 0; i < locs.length(); i++) {
 				lid += locs.getJSONObject(i).getString("uuid") + ";;";
 			}
@@ -116,14 +120,11 @@ public class UserController {
 		if (StringUtils.isEmptyOrWhitespaceOnly(lid)) {
 			lid = (String) u.getAttribute("Location");
 			if (StringUtils.isEmptyOrWhitespaceOnly(lid)) {
-				String lids = (String) u.getAttribute("Locations");
-
-				if (lids == null) {
-					throw new RuntimeException(
-							"User not mapped on any location. Make sure that user have a person attribute Location or Locations with uuid(s) of valid OpenMRS Location(s) separated by ;;");
+				lid = (String) u.getAttribute("Locations");
+				if (lid == null) {
+					throw new RuntimeException("User not mapped on any location. Make sure that user have a person attribute Location or Locations with uuid(s) of valid OpenMRS Location(s) separated by ;;");
 				}
 
-				lid = lids;
 			}
 		}
 		LocationTree l = openmrsLocationService.getLocationTreeOf(lid.split(";;"));

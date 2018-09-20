@@ -119,8 +119,37 @@ public class AllEvents extends MotechBaseRepository<Event> implements EventsRepo
 	public List<Event> findByServerVersion(long serverVersion) {
 		ComplexKey startKey = ComplexKey.of(serverVersion + 1);
 		ComplexKey endKey = ComplexKey.of(Long.MAX_VALUE);
-		return db.queryView(createQuery("events_by_version").startKey(startKey).endKey(endKey).includeDocs(true),
+		return db.queryView(createQuery("events_by_version").startKey(startKey).endKey(endKey).limit(1000).includeDocs(true),
 		    Event.class);
+	}
+	
+	@View(name = "events_not_in_OpenMRS", map = "function(doc) { if (doc.type === 'Event' && doc.serverVersion) { var noId = true; for(var key in doc.identifiers) {if(key == 'OPENMRS_UUID') {noId = false;}}if(noId){emit([doc.serverVersion],  null); }} }")
+	public List<Event> notInOpenMRSByServerVersion(long serverVersion, Calendar calendar) {
+		long serverStartKey = serverVersion + 1;
+		long serverEndKey = calendar.getTimeInMillis();
+		if (serverStartKey < serverEndKey) {
+			ComplexKey startKey = ComplexKey.of(serverStartKey);
+			ComplexKey endKey = ComplexKey.of(serverEndKey);
+			return db.queryView(
+			    createQuery("events_not_in_OpenMRS").startKey(startKey).endKey(endKey).limit(1000).includeDocs(true),
+			    Event.class);
+		}
+		return new ArrayList<>();
+	}
+
+	
+	@View(name = "events_by_type_not_in_OpenMRS", map = "function(doc) { if (doc.type === 'Event' && doc.serverVersion) { var noId = true; for(var key in doc.identifiers) {if(key == 'OPENMRS_UUID') {noId = false;}}if(noId){emit([doc.eventType, doc.serverVersion], null); }} }")
+	public List<Event> notInOpenMRSByServerVersionAndType(String type, long serverVersion, Calendar calendar) {
+		long serverStartKey = serverVersion + 1;
+		long serverEndKey = calendar.getTimeInMillis();
+		if (serverStartKey < serverEndKey) {
+			ComplexKey startKey = ComplexKey.of(type, serverStartKey);
+			ComplexKey endKey = ComplexKey.of(type, serverEndKey);
+			return db.queryView(
+			    createQuery("events_by_type_not_in_OpenMRS").startKey(startKey).endKey(endKey).limit(1000).includeDocs(true),
+			    Event.class);
+		}
+		return new ArrayList<>();
 	}
 	
 	/**
@@ -192,35 +221,7 @@ public class AllEvents extends MotechBaseRepository<Event> implements EventsRepo
 	public List<Event> findByProvider(String provider) {
 		return db.queryView(createQuery("events_by_provider_and_entity_type").key(provider).includeDocs(true), Event.class);
 	}
-	
-	@View(name = "events_not_in_OpenMRS", map = "function(doc) { if (doc.type === 'Event' && doc.serverVersion) { var noId = true; for(var key in doc.identifiers) {if(key == 'OPENMRS_UUID') {noId = false;}}if(noId){emit([doc.serverVersion],  null); }} }")
-	public List<Event> notInOpenMRSByServerVersion(long serverVersion, Calendar calendar) {
-		long serverStartKey = serverVersion + 1;
-		long serverEndKey = calendar.getTimeInMillis();
-		if (serverStartKey < serverEndKey) {
-			ComplexKey startKey = ComplexKey.of(serverStartKey);
-			ComplexKey endKey = ComplexKey.of(serverEndKey);
-			return db.queryView(
-			    createQuery("events_not_in_OpenMRS").startKey(startKey).endKey(endKey).limit(1000).includeDocs(true),
-			    Event.class);
-		}
-		return new ArrayList<>();
-	}
-	
-	@View(name = "events_by_type_not_in_OpenMRS", map = "function(doc) { if (doc.type === 'Event' && doc.serverVersion) { var noId = true; for(var key in doc.identifiers) {if(key == 'OPENMRS_UUID') {noId = false;}}if(noId){emit([doc.eventType, doc.serverVersion], null); }} }")
-	public List<Event> notInOpenMRSByServerVersionAndType(String type, long serverVersion, Calendar calendar) {
-		long serverStartKey = serverVersion + 1;
-		long serverEndKey = calendar.getTimeInMillis();
-		if (serverStartKey < serverEndKey) {
-			ComplexKey startKey = ComplexKey.of(type, serverStartKey);
-			ComplexKey endKey = ComplexKey.of(type, serverEndKey);
-			return db.queryView(
-			    createQuery("events_by_type_not_in_OpenMRS").startKey(startKey).endKey(endKey).limit(1000).includeDocs(true),
-			    Event.class);
-		}
-		return new ArrayList<>();
-	}
-	
+
 	public synchronized Event addEvent(CouchDbConnector targetDb, Event event) {
 		//		Event e = find(targetDb,event);
 		//		if(e != null){

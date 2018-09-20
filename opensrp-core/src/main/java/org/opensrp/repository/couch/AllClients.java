@@ -96,9 +96,8 @@ public class AllClients extends MotechBaseRepository<Client> implements ClientsR
 	
 	/**
 	 * Find a client based on the relationship id and between a range of date created dates e.g
-	 * given mother's id get children born at a given time Use Beans to search for methods with very
-	 * many search params
-	 * 
+	 * given mother's id get children born at a given time
+	 *
 	 * @param relationalId
 	 * @param dateFrom
 	 * @param dateTo
@@ -117,6 +116,7 @@ public class AllClients extends MotechBaseRepository<Client> implements ClientsR
 	//	@View(name = "client_by_relationship", map = "function(doc) {if (doc.type === 'Client') {for(var key in doc.relationships) {emit([key, doc.relationships[key]]);}}}")
 	//	@View(name = "client_by_relationship", map = "function(doc) { if(doc.type == 'Client' && doc.relationships.mother[0]) {emit(null, doc._id)} }")
 	@View(name = "client_by_relationship", map = "function(doc) { if(doc.type === 'Client' && doc.relationships) { for (var key in doc.relationships) { var entityid = doc.relationships[key][0]; if (key === 'mother') {emit([key, entityid], doc);}}}}")
+	
 	public List<Client> findByRelationshipId(String relationshipType, String entityId) {
 		return db.queryView(createQuery("client_by_relationship").startKey(entityId).endKey(entityId).includeDocs(true),
 		    Client.class);
@@ -126,7 +126,6 @@ public class AllClients extends MotechBaseRepository<Client> implements ClientsR
 	//	public List<Client> findByRelationshipId(String identifier) {
 	//		return db.queryView(createQuery("clients_by_relationship").key(identifier).includeDocs(true), Client.class);
 	//	}
-
 	public List<Client> findByCriteria(ClientSearchBean searchBean, AddressSearchBean addressSearchBean) {
 		return lcr.getByCriteria(searchBean, addressSearchBean, null);//db.queryView(q.includeDocs(true), Client.class);
 	}
@@ -151,7 +150,7 @@ public class AllClients extends MotechBaseRepository<Client> implements ClientsR
 	
 	/**
 	 * Query view from the specified db
-	 * 
+	 *
 	 * @param targetDb
 	 * @param viewName
 	 * @param key
@@ -163,7 +162,7 @@ public class AllClients extends MotechBaseRepository<Client> implements ClientsR
 	
 	/**
 	 * Save client to the specified db
-	 * 
+	 *
 	 * @param targetDb
 	 * @param client
 	 */
@@ -174,7 +173,7 @@ public class AllClients extends MotechBaseRepository<Client> implements ClientsR
 	
 	/**
 	 * Get all clients without a server version
-	 * 
+	 *
 	 * @return
 	 */
 	@View(name = "clients_by_empty_server_version", map = "function(doc) { if ( doc.type == 'Client' && !doc.serverVersion) { emit(doc._id, doc); } }")
@@ -182,19 +181,19 @@ public class AllClients extends MotechBaseRepository<Client> implements ClientsR
 		return db.queryView(createQuery("clients_by_empty_server_version").limit(200).includeDocs(true), Client.class);
 	}
 	
-	@View(name = "clients_by__server_version", map = "function(doc) { if (doc.type === 'Client') { emit([doc.serverVersion], null); } }")
+	@View(name = "events_by_version", map = "function(doc) { if (doc.type === 'Client') { emit([doc.serverVersion], null); } }")
 	public List<Client> findByServerVersion(long serverVersion) {
 		ComplexKey startKey = ComplexKey.of(serverVersion + 1);
 		ComplexKey endKey = ComplexKey.of(System.currentTimeMillis());
-		return db.queryView(createQuery("clients_by__server_version").startKey(startKey).endKey(endKey).includeDocs(true),
+		return db.queryView(createQuery("events_by_version").startKey(startKey).endKey(endKey).limit(1000).includeDocs(true),
 		    Client.class);
 	}
 	
 	public List<Client> findByFieldValue(String field, List<String> ids) {
 		return lcr.getByFieldValue(field, ids);
 	}
-	
-	@View(name = "clients_not_in_OpenMRS", map = "function(doc) { if (doc.type === 'Client' && doc.serverVersion) { var noId = true; for(var key in doc.identifiers) {if(key == 'OPENMRS_UUID') {noId = false;}}if(noId){emit([doc.serverVersion],  null); }} }")
+
+	@View(name = "clients_not_in_OpenMRS", map = "function(doc) { if (doc.type === 'Client' && doc.serverVersion) { var noId = true; for(var key in doc.identifiers) {if(key == 'OPENMRS_UUID' && doc.identifiers.OPENMRS_UUID !== null) {noId = false;}}if(noId){emit([doc.serverVersion],  null); }} }")
 	public List<Client> notInOpenMRSByServerVersion(long serverVersion, Calendar calendar) {
 		long serverStartKey = serverVersion + 1;
 		long serverEndKey = calendar.getTimeInMillis();
@@ -206,54 +205,5 @@ public class AllClients extends MotechBaseRepository<Client> implements ClientsR
 			    Client.class);
 		}
 		return new ArrayList<>();
-	}
-	
-	public Client addClient(CouchDbConnector targetDb, Client client) {
-		if (client.getBaseEntityId() == null) {
-			throw new RuntimeException("No baseEntityId");
-		}
-		Client c = findClient(targetDb, client);
-		if (c != null) {
-			throw new IllegalArgumentException(
-			        "A client already exists with given list of identifiers. Consider updating data.[" + c + "]");
-		}
-		
-		client.setDateCreated(new DateTime());
-		add(targetDb, client);
-		return client;
-	}
-	
-	/**
-	 * Find a client from the specified db
-	 *
-	 * @param targetDb
-	 * @param client
-	 * @return
-	 */
-	public Client findClient(CouchDbConnector targetDb, Client client) {
-		// find by auto assigned entity id
-		try {
-			Client c = findByBaseEntityId(client.getBaseEntityId());
-			if (c != null) {
-				return c;
-			}
-			
-			//still not found!! search by generic identifiers
-			
-			for (String idt : client.getIdentifiers().keySet()) {
-				List<Client> cl = findAllByIdentifier(targetDb, client.getIdentifier(idt));
-				if (cl.size() > 1) {
-					throw new IllegalArgumentException("Multiple clients with identifier type " + idt + " and ID "
-					        + client.getIdentifier(idt) + " exist.");
-				} else if (cl.size() != 0) {
-					return cl.get(0);
-				}
-			}
-			return c;
-		}
-		catch (Exception e) {
-			
-			return null;
-		}
 	}
 }

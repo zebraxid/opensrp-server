@@ -596,7 +596,6 @@ public class EventsRepositoryTest extends BaseRepositoryTest {
 			assertTrue(event.getId().equals("05934ae338431f28bf6793b241781149")
 			        || event.getId().equals("05934ae338431f28bf6793b241781a1e"));
 		}
-		
 		assertTrue(eventsRepository.findByProvider("biddemo9").isEmpty());
 	}
 	

@@ -67,7 +67,7 @@ public class OpenmrsUserServiceTest extends OpenmrsApiService {
 		
 		openmrsUserService.createProvider(userName, IdentifierType);
 		
-		JSONObject provider = openmrsUserService.getProvider(IdentifierType);
+		JSONObject provider = openmrsUserService.getProvider(IdentifierType,null);
 		JSONObject personObject = provider.getJSONObject(personKey);
 		
 		assertEquals("Should equal IdentifierType:", IdentifierType, provider.get(identifierKey));

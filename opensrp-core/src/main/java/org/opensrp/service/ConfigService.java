@@ -36,7 +36,7 @@ public class ConfigService {
 		AppStateToken ast = updateUniqueAppStateToken(ol, tokenName, value);
 		allAppStateTokens.update(ast);
 	}
-	
+
 	/**
 	 * Registers a new token to manage the specified variable state (by token name) of App. Throws
 	 * IllegalArgumentException if tokenName or description is not provided or if name is not unique

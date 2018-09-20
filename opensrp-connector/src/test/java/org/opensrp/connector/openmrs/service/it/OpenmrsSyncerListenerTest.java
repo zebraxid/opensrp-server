@@ -144,7 +144,7 @@ public class OpenmrsSyncerListenerTest extends OpenmrsApiService {
 		
 		openmrsUserService.createProvider(userName, IdentifierType);
 		
-		JSONObject provider = openmrsUserService.getProvider(IdentifierType);
+		JSONObject provider = openmrsUserService.getProvider(IdentifierType,null);
 		JSONObject personObject = provider.getJSONObject(personKey);
 		String actualEncounterType = "TestEncounterType";
 		JSONObject returnEncounterType = encounterService.createEncounterType(actualEncounterType, "Test desc");

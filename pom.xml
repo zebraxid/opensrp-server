@@ -28,7 +28,7 @@
         <motech.contrib.group>org.motechproject.contrib-drishti</motech.contrib.group>
         <motech.contrib.version>0.1-SNAPSHOT</motech.contrib.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <spring.version>3.1.1.RELEASE</spring.version>
+        <spring.version>3.1.0.RELEASE</spring.version>
         <mysql.connector.version>5.1.36</mysql.connector.version>
         <jackson.version>1.9.7</jackson.version>
         <opensrp.updatePolicy>always</opensrp.updatePolicy>
@@ -146,17 +146,17 @@
                                 <phase>process-test-classes</phase>
                                 <configuration>
                                     <target>
-                                        <echo message="Dropping Couch DBs: START"/>
+                                        <echo message="Dropping Couch DBs: START" />
                                         <exec executable="curl">
-                                            <arg value="-s"/>
-                                            <arg value="-S"/>
-                                            <arg value="-X"/>
-                                            <arg value="DELETE"/>
-                                            <arg value="http://${couchdb.username}:${couchdb.password}@${couchdb.server}:${couchdb.port}/${couchdb.db.opensrp}"/>
-                                            <arg value="http://${couchdb.username}:${couchdb.password}@${couchdb.server}:${couchdb.port}/${couchdb.db.form}"/>
-                                            <arg value="http://${couchdb.username}:${couchdb.password}@${couchdb.server}:${couchdb.port}/${couchdb.db.motech-scheduletracking}"/>
+                                            <arg value="-s" />
+                                            <arg value="-S" />
+                                            <arg value="-X" />
+                                            <arg value="DELETE" />
+                                            <arg value="http://${couchdb.username}:${couchdb.password}@${couchdb.server}:${couchdb.port}/${couchdb.db.opensrp}" />
+                                            <arg value="http://${couchdb.username}:${couchdb.password}@${couchdb.server}:${couchdb.port}/${couchdb.db.form}" />
+                                            <arg value="http://${couchdb.username}:${couchdb.password}@${couchdb.server}:${couchdb.port}/${couchdb.db.motech-scheduletracking}" />
                                         </exec>
-                                        <echo message="Dropping Couch DBs: END"/>
+                                        <echo message="Dropping Couch DBs: END" />
                                     </target>
                                 </configuration>
                                 <goals>
@@ -168,13 +168,13 @@
                                 <phase>pre-integration-test</phase>
                                 <configuration>
                                     <target>
-                                        <echo message="CREATING OPENSRP START"/>
+                                        <echo message="CREATING OPENSRP START" />
                                         <exec executable="curl">
-                                            <arg value="-X"/>
-                                            <arg value="PUT"/>
-                                            <arg value="http://${couchdb.username}:${couchdb.password}@${couchdb.server}:${couchdb.port}/${couchdb.db.opensrp}"/>
+                                            <arg value="-X" />
+                                            <arg value="PUT" />
+                                            <arg value="http://${couchdb.username}:${couchdb.password}@${couchdb.server}:${couchdb.port}/${couchdb.db.opensrp}" />
                                         </exec>
-                                        <echo message="CREATED OPENSRP END"/>
+                                        <echo message="CREATED OPENSRP END" />
                                     </target>
                                 </configuration>
                                 <goals>
@@ -222,9 +222,9 @@
                                     <password>${jdbc.password}</password>
                                     <autocommit>true</autocommit>
                                     <sqlCommand>
-                                        drop database if exists ${db.quartz};
-                                        create database ${db.quartz};
-                                    </sqlCommand>
+								drop database if exists ${db.quartz};
+								create database ${db.quartz};
+								</sqlCommand>
                                     <onError>abort</onError>
                                 </configuration>
                             </execution>
@@ -272,7 +272,7 @@
             </build>
         </profile>
         <profile>
-            <id>couchDb</id>
+            <id>couchdb</id>
             <activation>
                 <property>
                     <name>opensrp.database.type</name>
@@ -280,7 +280,7 @@
                 </property>
             </activation>
             <properties>
-                <opensrp.database.profile>couchdb</opensrp.database.profile>
+                <opensrp.database.profile>couchDb</opensrp.database.profile>
             </properties>
         </profile>
         <profile>
@@ -316,7 +316,7 @@
                 <version>2.5</version>
                 <configuration>
                     <encoding>UTF-8</encoding>
-                    <outputDirectory/>
+                    <outputDirectory />
                 </configuration>
             </plugin>
             <plugin>

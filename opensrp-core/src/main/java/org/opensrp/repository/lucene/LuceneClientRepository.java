@@ -63,7 +63,7 @@ public class LuceneClientRepository extends CouchDbRepositorySupportWithLucene<C
 		clientSearchBean.setLastEditTo(lastEditTo);
 		return getByCriteria(clientSearchBean, addressSearchBean, motherIdentifier);
 	}
-	
+
 	public List<Client> getByCriteria(ClientSearchBean searchBean, AddressSearchBean addressSearchBean,
 	                                  String motherIdentifier) {
 		// create a simple query against the view/search function that we've created

@@ -1,19 +1,13 @@
 package org.opensrp.service;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.HashSet;
-import java.util.Set;
-
+import org.joda.time.DateTime;
+import org.joda.time.Minutes;
 import org.junit.Before;
 import org.junit.Test;
+import org.opensrp.domain.Client;
 import org.opensrp.domain.Multimedia;
 import org.opensrp.dto.form.MultimediaDTO;
+import org.opensrp.repository.ClientsRepository;
 import org.opensrp.repository.MultimediaRepository;
 import org.opensrp.repository.postgres.BaseRepositoryTest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,20 +16,36 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.HashSet;
+import java.util.Set;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 public class MultiMediaServiceTest extends BaseRepositoryTest {
 	
 	private MultimediaService multimediaService;
 	
+	private ClientService clientService;
 	@Autowired
 	@Qualifier("multimediaRepositoryPostgres")
 	private MultimediaRepository multimediaRepository;
+	
+	@Autowired
+	@Qualifier("clientsRepositoryPostgres")
+	private ClientsRepository clientsRepository;
 	
 	@Value("#{opensrp['multimedia.directory.name']}")
 	private String baseMultimediaDirPath;
 	
 	@Before
 	public void setUp() {
-		multimediaService = new MultimediaService(multimediaRepository);
+		clientService = new ClientService(clientsRepository);
+		multimediaService = new MultimediaService(multimediaRepository, clientService);
 		multimediaService.baseMultimediaDirPath = baseMultimediaDirPath;
 	}
 	
@@ -86,8 +96,7 @@ public class MultiMediaServiceTest extends BaseRepositoryTest {
 		assertTrue(file.canRead());
 		
 		assertEquals(content, new String(Files.readAllBytes(Paths.get(file.getAbsolutePath()))));
-		
-		
+		Client client = clientService.find(baseEntityId);
 		Multimedia savedMultimedia = multimediaService.findByCaseId(baseEntityId);
 		assertEquals(multimediaDTO.getFilePath(), savedMultimedia.getFilePath());
 		assertEquals(file.getAbsolutePath(), savedMultimedia.getFilePath());
@@ -96,7 +105,8 @@ public class MultiMediaServiceTest extends BaseRepositoryTest {
 		
 		assertEquals(5, multimediaService.getMultimediaFiles("biddemo").size());
 		assertEquals(6, multimediaRepository.getAll().size());
-		
+		assertEquals(baseEntityId + ".jpg", client.getAttribute("Patient Image"));
+		assertEquals(0, Minutes.minutesBetween(client.getDateEdited(), DateTime.now()).getMinutes());
 	}
 	
 }

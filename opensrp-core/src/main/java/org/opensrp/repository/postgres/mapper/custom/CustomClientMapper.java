@@ -7,8 +7,8 @@ import org.apache.ibatis.annotations.Param;
 import org.opensrp.domain.postgres.Client;
 import org.opensrp.repository.postgres.mapper.ClientMapper;
 
-public interface CustomClientMapper extends ClientMapper {
-	
+public interface CustomClientMapper extends ClientMapper{
+
 	int insertSelectiveAndSetId(Client record);
 	
 	Client selectByDocumentId(String documentId);

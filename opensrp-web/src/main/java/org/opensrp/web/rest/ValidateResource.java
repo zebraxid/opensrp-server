@@ -40,7 +40,7 @@ public class ValidateResource {
 	private ClientService clientService;
 	
 	private EventService eventService;
-	
+
 	private Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
 	        .registerTypeAdapter(DateTime.class, new DateTimeTypeConverter()).create();
 	

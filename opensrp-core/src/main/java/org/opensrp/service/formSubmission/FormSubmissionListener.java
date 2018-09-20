@@ -6,7 +6,6 @@ import static org.apache.commons.lang.exception.ExceptionUtils.getFullStackTrace
 
 import java.text.MessageFormat;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -56,8 +55,7 @@ public class FormSubmissionListener {
         formSubmissionService.submit(formSubmissions);
     }
 
-    @MotechListener(subjects = AllConstants.FORM_SCHEDULE_SUBJECT)
-    public void parseForms(MotechEvent event) {
+    public void parseForms() {
         if (!lock.tryLock()) {
             logger.warn("Not fetching forms from Message Queue. It is already in progress.");
             return;

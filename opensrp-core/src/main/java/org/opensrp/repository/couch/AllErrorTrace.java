@@ -21,7 +21,7 @@ import org.springframework.stereotype.Repository;
 @Repository("couchErrorTraceRepository")
 @Primary
 public class AllErrorTrace extends MotechBaseRepository<ErrorTrace> implements ErrorTraceRepository {
-	
+
 	@Autowired
 	protected AllErrorTrace(@Qualifier(AllConstants.OPENSRP_ERRORTRACE_DATABASE) CouchDbConnector db) {
 		super(ErrorTrace.class, db);

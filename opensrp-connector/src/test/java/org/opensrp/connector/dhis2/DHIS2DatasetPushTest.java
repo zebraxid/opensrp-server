@@ -19,7 +19,6 @@ import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
-import org.motechproject.scheduler.domain.MotechEvent;
 import org.opensrp.api.domain.Location;
 import org.opensrp.connector.openmrs.service.OpenmrsLocationService;
 import org.opensrp.connector.openmrs.service.TestResourceLoader;
@@ -163,7 +162,6 @@ public class DHIS2DatasetPushTest extends TestResourceLoader {
 	@Test
 	public void testPushToDHIS2() throws JSONException {
 		// Test Data setup
-		MotechEvent event = new MotechEvent(DHIS2DatasetPush.SCHEDULER_DHIS2_DATA_PUSH_SUBJECT);
 		JSONObject apiResponse = new JSONObject();
 		apiResponse.put("status", "SUCCESS");
 		
@@ -188,10 +186,9 @@ public class DHIS2DatasetPushTest extends TestResourceLoader {
 		dhis2DatasetPush.openmrsLocationService = this.mockOpenmrsLocationService;
 		dhis2DatasetPush.config = mockConfig;
 		dhis2DatasetPush.reportService = mockReportService;
-		
+
 		// Test payload is synced with DHIS2
-		dhis2DatasetPush.pushToDHIS2(event);
-		
+		dhis2DatasetPush.pushToDHIS2();
 		verify(dhis2HttpUtils, times(1)).post(anyString(), anyString(), anyString());
 		verify(mockReportService, times(1)).updateReport(report);
 	}

@@ -100,7 +100,6 @@ public class Event extends BaseDataObject {
 		this.formSubmissionId = formSubmissionId;
 		this.version = System.currentTimeMillis();
 	}
-
 	public Event(String baseEntityId, String eventType, DateTime eventDate, String entityType, String providerId,
 	    String locationId, String formSubmissionId, String teamId, String team) {
 		this(baseEntityId, eventType, eventDate, entityType, providerId, locationId, formSubmissionId);
@@ -284,7 +283,6 @@ public class Event extends BaseDataObject {
 	public void setVersion(long version) {
 		this.version = version;
 	}
-
 	public String getTeamId() {
 		return teamId;
 	}
