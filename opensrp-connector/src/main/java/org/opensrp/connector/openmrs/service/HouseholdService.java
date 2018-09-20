@@ -76,7 +76,7 @@ public class HouseholdService extends OpenmrsService {
 		super(openmrsUrl, user, password);
 	}
 
-	public void saveHH(OpenmrsHouseHold household, boolean ignoreExisting) throws JSONException {
+	public JSONObject saveHH(OpenmrsHouseHold household, boolean ignoreExisting) throws JSONException {
 		String hhrel = "Household Head";
 		JSONObject hhheadrel = findRelationshipTypeMatching(hhrel);
 		if (hhheadrel == null) {
@@ -88,6 +88,10 @@ public class HouseholdService extends OpenmrsService {
 		if (hhheadEx == null) {
 			hhheadEx = patientService.createPatient(household.getHouseholdHead().getClient()).getString("uuid");
 		}
+		JSONObject hhe = encounterService.createEncounter(household.getHouseholdHead().getEvent().get(0));
+		JSONArray encounters = new JSONArray();
+		JSONArray relationships = new JSONArray();
+		encounters.put(hhe);
 		for (HouseholdMember m : household.getMembers()) {
 			if (StringUtils.isEmptyOrWhitespaceOnly(m.getClient().getFirstName())
 					&& m.getClient().getIdentifiers().size() < 2) {//we need to ignore uuid of entity
@@ -97,9 +101,17 @@ public class HouseholdService extends OpenmrsService {
 				if (hhMemEx == null) {
 					hhMemEx = patientService.createPatient(m.getClient()).getString("uuid");
 				}
-				createRelationship(hhheadEx, hhrel, hhMemEx);
+				JSONObject mp =  patientService.createPatient(m.getClient());
+				JSONObject me = encounterService.createEncounter(m.getEvent().get(0));
+				JSONObject relationship = createRelationship(hhheadEx, hhrel, hhMemEx);
+				encounters.put(me);
+				relationships.put(relationship);
 			}
 		}
+		JSONObject response = new JSONObject();
+		response.put("encounters", encounters);
+		response.put("relationships", relationships);
+		return response;
 	}
 	
 	public PatientService getPatientService() {
