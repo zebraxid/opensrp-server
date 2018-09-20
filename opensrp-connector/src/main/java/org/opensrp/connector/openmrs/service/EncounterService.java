@@ -371,10 +371,13 @@ public class EncounterService extends OpenmrsService {
 		for (int i = 0; i < ol.length(); i++) {
 			JSONObject o = ol.getJSONObject(i);
 			List<Object> values = new ArrayList<Object>();
+			List<Object> humanReadableValues = new ArrayList<Object>();
 			if (o.optJSONObject("value") != null) {
-				values.add(o.getJSONObject("value").getString("uuid"));
+				values.add(o.getString("valueAsString"));
+				humanReadableValues.add(o.getJSONObject("value").getString("name"));
 			} else if (o.has("value")) {
 				values.add(o.getString("value"));
+				humanReadableValues.add(o.getString("value"));
 			}
 			String fieldDataType = o.getJSONObject("concept").getString("dataType");
 			if ("N/A".equalsIgnoreCase(fieldDataType)) {
@@ -382,7 +385,8 @@ public class EncounterService extends OpenmrsService {
 			}
 			
 			e.addObs(new Obs("concept", fieldDataType, o.getJSONObject("concept").getString("uuid"),
-			        "" /*//TODO handle parent*/, values, ""/*comments*/, o.getJSONObject("concept").getString("shortName")/*formSubmissionField*/));
+			        "" /*//TODO handle parent*/, values, humanReadableValues, ""/*comments*/, o.getJSONObject("concept")
+			                .getString("shortName")/*formSubmissionField*/));
 		}
 		
 		return e;

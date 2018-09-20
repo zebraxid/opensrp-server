@@ -106,6 +106,7 @@ public class EventResource extends RestResource<Event> {
 			String serverVersion = getStringFilter(BaseEntity.SERVER_VERSIOIN, request);
 			String team = getStringFilter(TEAM, request);
 			String teamId = getStringFilter(TEAM_ID, request);
+			logger.info("synced user " + providerId + locationId + ", timestamp : " + serverVersion);
 			Long lastSyncedServerVersion = null;
 			if (serverVersion != null) {
 				lastSyncedServerVersion = Long.valueOf(serverVersion) + 1;
@@ -195,6 +196,7 @@ public class EventResource extends RestResource<Event> {
 				
 				ArrayList<Client> clients = (ArrayList<Client>) gson.fromJson(syncData.getString("clients"),
 				    new TypeToken<ArrayList<Client>>() {}.getType());
+				logger.info("received client size:" + clients.size());
 				for (Client client : clients) {
 					try {
 						client.withIsSendToOpenMRS("yes");
@@ -210,6 +212,7 @@ public class EventResource extends RestResource<Event> {
 			if (syncData.has("events")) {
 				ArrayList<Event> events = (ArrayList<Event>) gson.fromJson(syncData.getString("events"),
 				    new TypeToken<ArrayList<Event>>() {}.getType());
+				logger.info("received event size:" + events.size());
 				for (Event event : events) {
 					try {
 						event = eventService.processOutOfArea(event);
