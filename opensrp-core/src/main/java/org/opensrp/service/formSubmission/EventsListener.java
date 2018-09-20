@@ -4,7 +4,6 @@ import static java.text.MessageFormat.format;
 import static java.util.Collections.sort;
 import static org.apache.commons.lang.exception.ExceptionUtils.getFullStackTrace;
 
-import java.text.MessageFormat;
 import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;

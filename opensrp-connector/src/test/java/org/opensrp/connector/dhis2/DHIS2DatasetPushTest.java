@@ -163,7 +163,6 @@ public class DHIS2DatasetPushTest extends TestResourceLoader {
 	@Test
 	public void testPushToDHIS2() throws JSONException {
 		// Test Data setup
-		MotechEvent event = new MotechEvent(DHIS2DatasetPush.SCHEDULER_DHIS2_DATA_PUSH_SUBJECT);
 		JSONObject apiResponse = new JSONObject();
 		apiResponse.put("status", "SUCCESS");
 		
@@ -191,6 +190,8 @@ public class DHIS2DatasetPushTest extends TestResourceLoader {
 
 		// Test payload is synced with DHIS2
 		dhis2DatasetPush.pushToDHIS2();
+		verify(dhis2HttpUtils, times(1)).post(anyString(), anyString(), anyString());
+		verify(mockReportService, times(1)).updateReport(report);
 	}
 	
 }

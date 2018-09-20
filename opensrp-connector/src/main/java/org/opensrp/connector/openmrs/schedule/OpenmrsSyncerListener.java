@@ -1,9 +1,11 @@
 package org.opensrp.connector.openmrs.schedule;
 
+import java.util.List;
+import java.util.concurrent.locks.ReentrantLock;
+
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.joda.time.DateTime;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.opensrp.connector.dhis2.Dhis2TrackCaptureConnector;
 import org.opensrp.connector.openmrs.constants.OpenmrsConstants.SchedulerConfig;
@@ -23,17 +25,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-import java.util.concurrent.locks.ReentrantLock;
-
 @Component
 public class OpenmrsSyncerListener {
 
 	private static final ReentrantLock lock = new ReentrantLock();
 
 	private static Logger logger = LoggerFactory.getLogger(OpenmrsSyncerListener.class.toString());
-
-	//private final OpenmrsSchedulerService openmrsSchedulerService;
 
 	private final ScheduleService opensrpScheduleService;
 
@@ -51,15 +48,12 @@ public class OpenmrsSyncerListener {
 
 	private final ClientService clientService;
 
-	// private RelationShipService relationShipService;
-
 	@Autowired
 	private Dhis2TrackCaptureConnector dhis2TrackCaptureConnector;
 
 	@Autowired
 	public OpenmrsSyncerListener(ScheduleService opensrpScheduleService, ActionService actionService, ConfigService config, ErrorTraceService errorTraceService, PatientService patientService, EncounterService encounterService, ClientService clientService, EventService eventService) {
 
-		//this.openmrsSchedulerService = openmrsSchedulerService;
 		this.opensrpScheduleService = opensrpScheduleService;
 		this.actionService = actionService;
 		this.config = config;

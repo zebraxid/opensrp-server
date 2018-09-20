@@ -15,7 +15,6 @@ import static org.utils.AssertionUtil.assertNewObjectCreation;
 import static org.utils.AssertionUtil.assertObjectUpdate;
 import static org.utils.AssertionUtil.assertTwoListAreSameIgnoringOrder;
 import static org.utils.CouchDbAccessUtils.addObjectToRepository;
-import static org.utils.CouchDbAccessUtils.getCouchDbConnector;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -258,8 +257,6 @@ public class ClientServiceTest extends BaseIntegrationTest {
 	public void shouldThrowRuntimeExceptionWhileAddIfNoBaseEntityIdFoundWithCouchDbConnector() throws IOException {
 		Client expectedClient = getClient();
 		expectedClient.setBaseEntityId(null);
-		CouchDbConnector couchDbConnector = CouchDbAccessUtils.getCouchDbConnector("opensrp");
-
 		clientService.addClient(expectedClient);
 	}
 

@@ -8,7 +8,6 @@ import java.text.ParseException;
 import java.util.Map;
 import java.util.UUID;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Before;
@@ -177,9 +176,6 @@ public class HouseHoldServiceTest extends OpenmrsApiService {
 			}
 			
 		}
-		
-
-		
 	}
 	
 }

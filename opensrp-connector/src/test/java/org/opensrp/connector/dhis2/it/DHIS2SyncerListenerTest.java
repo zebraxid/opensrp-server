@@ -74,9 +74,7 @@ public class DHIS2SyncerListenerTest extends TestResourceLoader {
 		householdEvent.setObs(householdOservations);
 		allEvents.add(householdEvent);
 		
-		MotechEvent event = new MotechEvent(DHIS2Constants.DHIS2_TRACK_DATA_SYNCER_SUBJECT);
 		JSONObject returns = dhis2SyncerListener.pushToDHIS2();
-		
 		JSONObject response = returns.getJSONObject("response");
 		String expectedImport = "1";
 		String actualImport = response.getString("imported");
