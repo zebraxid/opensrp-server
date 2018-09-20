@@ -88,8 +88,6 @@ public class HouseholdService extends OpenmrsService {
 		if (hhheadEx == null) {
 			hhheadEx = patientService.createPatient(household.getHouseholdHead().getClient()).getString("uuid");
 		}
-		JSONObject hhe = encounterService.createEncounter(household.getHouseholdHead().getEvent().get(0));
-
 		for (HouseholdMember m : household.getMembers()) {
 			if (StringUtils.isEmptyOrWhitespaceOnly(m.getClient().getFirstName())
 					&& m.getClient().getIdentifiers().size() < 2) {//we need to ignore uuid of entity
@@ -99,8 +97,6 @@ public class HouseholdService extends OpenmrsService {
 				if (hhMemEx == null) {
 					hhMemEx = patientService.createPatient(m.getClient()).getString("uuid");
 				}
-				JSONObject me = encounterService.createEncounter(m.getEvent().get(0));
-
 				createRelationship(hhheadEx, hhrel, hhMemEx);
 			}
 		}

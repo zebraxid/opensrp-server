@@ -16,8 +16,6 @@ import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.motechproject.scheduler.domain.MotechEvent;
-import org.opensrp.common.AllConstants.DHIS2Constants;
 import org.opensrp.connector.dhis2.DHIS2SyncerListener;
 import org.opensrp.connector.dhis2.Dhis2HttpUtils;
 import org.opensrp.connector.openmrs.service.TestResourceLoader;
