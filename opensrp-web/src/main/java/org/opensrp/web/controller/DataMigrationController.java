@@ -25,6 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.httpclient.HttpStatus;
+import org.apache.poi.hssf.record.CountryRecord;
 
 import org.opensrp.common.util.HttpResponse;
 import org.joda.time.DateTime;
@@ -80,6 +81,7 @@ public class DataMigrationController {
 	@RequestMapping(value = "/migration.html", method = RequestMethod.POST)
 	public ModelAndView csvUpload(@RequestParam MultipartFile file, HttpServletRequest request, ModelMap model)
 	    throws Exception {
+		String msg = "";
 		if (file.isEmpty()) {
 			model.put("msg", "failed to upload file because its empty");
 			model.addAttribute("msg", "failed to upload file because its empty");
@@ -115,15 +117,20 @@ public class DataMigrationController {
 		logger.info("CSV FIle:" + csvFile.getName());
 		String fileName = csvFile.getName();
 		if (fileName.equalsIgnoreCase("hh.csv")) {
-			addHousehold(csvFile);
+			msg = addHousehold(csvFile);
 		} else if (fileName.equalsIgnoreCase("member.csv")) {
-			addMember(csvFile);
+			msg = addMember(csvFile);
 		} else {
 			logger.info("Please give coorect file");
 		}
+		if (!msg.isEmpty()) {
+			model.put("msg", msg);
+			
+		} else {
+			model.put("msg", "successfully uploaded  " + fileName);
+		}
+		return new ModelAndView("/upload_csv");
 		
-		//addHousehold(csvFile);
-		return new ModelAndView("redirect:/data/migration.html");
 	}
 	
 	public class Location {
@@ -143,9 +150,6 @@ public class DataMigrationController {
 		try {
 			br = new BufferedReader(new FileReader(csvFile));
 			while ((line = br.readLine()) != null) {
-				String tag = "";
-				String code = "";
-				String name = "";
 				
 				String[] member = line.split(cvsSplitBy);
 				System.err.println("member:" + member[1] + ",generateID:" + generateID());
@@ -181,10 +185,6 @@ public class DataMigrationController {
 				        .withDeathdate(null, false);
 				client.setServerVersion(System.currentTimeMillis());
 				/// attribute
-				
-				org.opensrp.api.domain.Location location = openmrsLocationService.getLocation("BAIRATI: WARD 1");
-				
-				System.err.println("location::::::::::" + location.getLocationId() + ",::::" + location);
 				
 				String MaritalStatus = member[10];
 				if (!MaritalStatus.isEmpty()) {
@@ -308,7 +308,16 @@ public class DataMigrationController {
 				
 				System.err.println("Client:" + client.toString());
 				
-				clientService.addorUpdate(client);
+				String locationId = "";
+				org.opensrp.api.domain.Location location = null;
+				try {
+					location = openmrsLocationService.getLocation(address2);
+					locationId = location.getLocationId();
+				}
+				catch (Exception e) {
+					
+				}
+				
 				String RelationshipWithHH = member[14];
 				String eventType = "Woman Member Registration";
 				String entityType = "ec_woman";
@@ -325,15 +334,28 @@ public class DataMigrationController {
 				event.setEventDate(new DateTime());
 				event.withProviderId("ftp");
 				event.setVersion(System.currentTimeMillis());
-				event.setLocationId(location.getLocationId());
+				event.setLocationId(locationId);
 				event.setFormSubmissionId(UUID.randomUUID().toString().trim());
 				event.withIsSendToOpenMRS("yes").withEventType(eventType).withEntityType(entityType);
+				
+				List<String> eventAddress = new ArrayList<String>();
+				eventAddress.add("BANGLADESH");
+				eventAddress.add(stateProvince);
+				eventAddress.add(countyDistrict);
+				eventAddress.add(cityVillage);
+				eventAddress.add(address1);
+				eventAddress.add(address2);
+				JSONArray addressFieldValue = new JSONArray(eventAddress);
+				
+				event.addObs(new Obs("formsubmissionField", "text", "HIE_FACILITIES", "" /*//TODO handle parent*/,
+				        addressFieldValue.toString(), ""/*comments*/, "HIE_FACILITIES"/*formSubmissionField*/));
 				
 				List<Object> values = new ArrayList<Object>();
 				values.add(reg);
 				String fieldDataType = "text";
 				event.addObs(new Obs("formsubmissionField", fieldDataType, "Date_Of_Reg", "" /*//TODO handle parent*/,
 				        values, ""/*comments*/, "Date_Of_Reg"/*formSubmissionField*/));
+				clientService.addorUpdate(client);
 				eventService.addorUpdateEvent(event);
 				System.err.println("Event:::::::::::::::" + event.toString());
 				
@@ -342,7 +364,7 @@ public class DataMigrationController {
 		}
 		catch (Exception e) {
 			logger.info("Some problem occured, please contact with admin..");
-			
+			msg = "failed to process file because : " + e.fillInStackTrace();
 			e.printStackTrace();
 		}
 		return msg;
@@ -418,10 +440,16 @@ public class DataMigrationController {
 				client.addAddress(address);
 				
 				System.err.println("Client:" + client.toString());
-				
-				clientService.addorUpdate(client);
-				
-				org.opensrp.api.domain.Location location = openmrsLocationService.getLocation("BAIRATI: WARD 1");
+				String locationId = "";
+				org.opensrp.api.domain.Location location = null;
+				try {
+					location = openmrsLocationService.getLocation(address2);
+					locationId = location.getLocationId();
+					
+				}
+				catch (Exception e) {
+					
+				}
 				
 				Event event = new Event();
 				event.setServerVersion(System.currentTimeMillis());
@@ -432,7 +460,7 @@ public class DataMigrationController {
 				event.setEventDate(new DateTime());
 				event.withProviderId("ftp");
 				event.setVersion(System.currentTimeMillis());
-				event.setLocationId(location.getLocationId());
+				event.setLocationId(locationId);
 				event.setFormSubmissionId(UUID.randomUUID().toString().trim());
 				event.withIsSendToOpenMRS("yes").withEventType("Household Registration").withEntityType("ec_household");
 				// drinking water source 
@@ -608,9 +636,22 @@ public class DataMigrationController {
 				List<Object> financial_humanReadableValues = new ArrayList<Object>();
 				financial_humanReadableValues.add(financial_value);
 				String financial_fieldDataType = "text";
+				List<String> eventAddress = new ArrayList<String>();
+				eventAddress.add("BANGLADESH");
+				eventAddress.add(stateProvince);
+				eventAddress.add(countyDistrict);
+				eventAddress.add(cityVillage);
+				eventAddress.add(address1);
+				eventAddress.add(address2);
+				JSONArray addressFieldValue = new JSONArray(eventAddress);
+				
+				event.addObs(new Obs("formsubmissionField", "text", "HIE_FACILITIES", "" /*//TODO handle parent*/,
+				        addressFieldValue.toString(), ""/*comments*/, "HIE_FACILITIES"/*formSubmissionField*/));
+				
 				event.addObs(new Obs("concept", financial_fieldDataType, "95066bce-55eb-405e-9664-9be70e5c17b2",
 				        "" /*//TODO handle parent*/, financial_values, ""/*comments*/, "financial_status"/*formSubmissionField*/));
 				System.err.println("Event:::::::::::::::" + event.toString());
+				clientService.addorUpdate(client);
 				eventService.addorUpdateEvent(event);
 				
 			}
@@ -618,7 +659,7 @@ public class DataMigrationController {
 		}
 		catch (Exception e) {
 			logger.info("Some problem occured, please contact with admin..");
-			
+			msg = "failed to process file because : " + e.getMessage();
 			e.printStackTrace();
 		}
 		return msg;

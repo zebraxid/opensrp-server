@@ -180,7 +180,7 @@ public class EncounterService extends OpenmrsService {
 				obar.put(obo);
 			}
 		}
-		//enc.put("obs", obar);
+		enc.put("obs", obar);
 		
 		HttpResponse op = HttpUtil.post(HttpUtil.removeEndingSlash(OPENMRS_BASE_URL) + "/" + ENCOUNTER_URL, "",
 		    enc.toString(), OPENMRS_USER, OPENMRS_PWD);

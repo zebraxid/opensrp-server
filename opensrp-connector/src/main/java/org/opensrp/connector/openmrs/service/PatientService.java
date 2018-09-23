@@ -14,9 +14,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.opensrp.common.util.HttpUtil;
 import org.opensrp.connector.MultipartUtility;
+import org.opensrp.connector.openmrs.schedule.OpenmrsSyncerListener;
 import org.opensrp.domain.Address;
 import org.opensrp.domain.Client;
 import org.opensrp.domain.Multimedia;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -28,6 +31,8 @@ public class PatientService extends OpenmrsService {
 	//TODO include everything for patient registration. i.e. person, person name, patient identifier
 	// include get for patient on different params like name, identifier, location, uuid, attribute,etc
 	//person methods should be separate
+	private static Logger logger = LoggerFactory.getLogger(PatientService.class.toString());
+	
 	private static final String PERSON_URL = "ws/rest/v1/person";
 	
 	private static final String PATIENT_URL = "ws/rest/v1/patient";
@@ -172,10 +177,17 @@ public class PatientService extends OpenmrsService {
 		}
 		JSONArray attrs = new JSONArray();
 		for (Entry<String, Object> at : attributes.entrySet()) {
-			JSONObject a = new JSONObject();
-			a.put("attributeType", getPersonAttributeType(at.getKey()).getString("uuid"));
-			a.put("value", at.getValue());
-			attrs.put(a);
+			
+			try {
+				JSONObject a = new JSONObject();
+				a.put("attributeType", getPersonAttributeType(at.getKey()).getString("uuid"));
+				a.put("value", at.getValue());
+				attrs.put(a);
+			}
+			catch (Exception e) {
+				logger.error("attribute name " + at.getValue() + ", message" + e.getMessage());
+			}
+			
 		}
 		
 		return attrs;

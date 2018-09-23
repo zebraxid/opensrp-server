@@ -16,7 +16,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>Uplaod location</title>
+<title>Uplaod household and member</title>
 
 </head>
 
@@ -24,13 +24,15 @@
 
 <body class="fixed-nav sticky-footer bg-dark" id="page-top">
 	
-	<div class="content-wrapper">
+	<div class="content-wrapper" style="text-align: center;">
 		<div class="container-fluid">
 		
 			<div class="card mb-3">
 				<div class="card-header">
-					<i class="fa fa-table"></i> Upload location
+					<i class="fa fa-table"></i> Upload household and member
 				</div>
+				<br />
+				<br />
 				<div class="card-body">				
 					<form:form method="POST" action="${saveUrl}?${_csrf.parameterName}=${_csrf.token}" modelAttribute="location" enctype="multipart/form-data">
 						<div class="form-group">
@@ -43,6 +45,8 @@
 							</div>
 							<span class="text-red">${msg}</span>
 						</div>
+						<br />
+						<br />
 						<div class="form-group">
 							<div class="row">
 								<div class="col-3">
