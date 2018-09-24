@@ -247,34 +247,39 @@ public class OpenmrsSyncerListener {
 		for (Client c : cl) {
 			String isSendToOpenMRS = c.getIsSendToOpenMRS();
 			if (c.getRelationships() != null && isSendToOpenMRS.equalsIgnoreCase("yes")) {// Mother has no relations. 
-			
-				JSONObject motherJson = patientService.getPatientByIdentifier(c.getRelationships().get("mother").get(0)
-				        .toString());
-				JSONObject person = motherJson.getJSONObject("person");
-				
-				if (person.getString("uuid") != null) {
-					JSONObject relation = patientService.createPatientRelationShip(c.getIdentifier("OPENMRS_UUID"),
-					    person.getString("uuid"), "8d91a210-c2cc-11de-8d13-0010c6dffd0f");
-					relationshipsArray.put(relation); // only for test code purpose
-					logger.info("RelationshipsCreated check openrs" + c.getIdentifier("OPENMRS_UUID"));
-				}
-				
-				List<Client> siblings = clientService.findByRelationship(c.getRelationships().get("mother").get(0)
-				        .toString());
-				if (!siblings.isEmpty() || siblings != null) {
-					JSONObject siblingJson;
-					JSONObject sibling;
-					for (Client client : siblings) {
-						if (!c.getBaseEntityId().equals(client.getBaseEntityId())) {
-							siblingJson = patientService.getPatientByIdentifier(client.getBaseEntityId());
-							sibling = siblingJson.getJSONObject("person");
-							patientService.createPatientRelationShip(c.getIdentifier("OPENMRS_UUID"),
-							    sibling.getString("uuid"), "8d91a01c-c2cc-11de-8d13-0010c6dffd0f");
+				try {
+					JSONObject motherJson = patientService.getPatientByIdentifier(c.getRelationships().get("mother").get(0)
+					        .toString());
+					JSONObject person = motherJson.getJSONObject("person");
+					
+					if (person.getString("uuid") != null) {
+						JSONObject relation = patientService.createPatientRelationShip(c.getIdentifier("OPENMRS_UUID"),
+						    person.getString("uuid"), "8d91a210-c2cc-11de-8d13-0010c6dffd0f");
+						relationshipsArray.put(relation); // only for test code purpose
+						logger.info("RelationshipsCreated check openrs" + c.getIdentifier("OPENMRS_UUID"));
+					}
+					
+					List<Client> siblings = clientService.findByRelationship(c.getRelationships().get("mother").get(0)
+					        .toString());
+					if (!siblings.isEmpty() || siblings != null) {
+						JSONObject siblingJson;
+						JSONObject sibling;
+						for (Client client : siblings) {
+							if (!c.getBaseEntityId().equals(client.getBaseEntityId())) {
+								siblingJson = patientService.getPatientByIdentifier(client.getBaseEntityId());
+								sibling = siblingJson.getJSONObject("person");
+								patientService.createPatientRelationShip(c.getIdentifier("OPENMRS_UUID"),
+								    sibling.getString("uuid"), "8d91a01c-c2cc-11de-8d13-0010c6dffd0f");
+							}
+							
 						}
 						
 					}
-					
 				}
+				catch (Exception e) {
+					logger.error("no relationship found at case id " + c.getBaseEntityId());
+				}
+				
 			}
 			logger.info("RelationshipsCreated sibling1 ");
 			

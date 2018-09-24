@@ -255,7 +255,7 @@ public class DataMigrationController {
 					
 				}
 				if (!FamilyDiseaseHistory.isEmpty()) {
-					client.addAttribute("Family Disease History", FamilyDiseaseHistory);
+					client.addAttribute("family_diseases_details", FamilyDiseaseHistory);
 				}
 				String householdCode = member[0];
 				if (!householdCode.isEmpty()) {
@@ -332,7 +332,7 @@ public class DataMigrationController {
 				event.setBaseEntityId(baseEntityId);
 				event.setDateCreated(new DateTime());
 				event.setEventDate(new DateTime());
-				event.withProviderId("ftp");
+				event.withProviderId("mcv");
 				event.setVersion(System.currentTimeMillis());
 				event.setLocationId(locationId);
 				event.setFormSubmissionId(UUID.randomUUID().toString().trim());
@@ -388,8 +388,12 @@ public class DataMigrationController {
 				String baseEntityId = UUID.randomUUID().toString().trim();
 				client.setBaseEntityId(baseEntityId);
 				String firstName = member[63];
+				String phoneNumber = member[29];
 				if (!firstName.isEmpty()) {
 					firstName = firstName.trim();
+				}
+				if (!phoneNumber.isEmpty()) {
+					phoneNumber = phoneNumber.trim();
 				}
 				client.withFirstName(firstName).withLastName("").withGender("M").withBirthdate(new DateTime(), false)
 				        .withDeathdate(null, false);
@@ -399,8 +403,9 @@ public class DataMigrationController {
 				if (!householdCode.isEmpty()) {
 					householdCode = householdCode.trim();
 				}
-				client.addAttribute("householdCode", householdCode);
 				
+				client.addAttribute("householdCode", householdCode);
+				client.addAttribute("phoneNumber", phoneNumber);
 				String address1 = member[4];
 				if (!address1.isEmpty()) {
 					address1 = address1.trim();
@@ -458,7 +463,7 @@ public class DataMigrationController {
 				event.setBaseEntityId(baseEntityId);
 				event.setDateCreated(new DateTime());
 				event.setEventDate(new DateTime());
-				event.withProviderId("ftp");
+				event.withProviderId("mcv");
 				event.setVersion(System.currentTimeMillis());
 				event.setLocationId(locationId);
 				event.setFormSubmissionId(UUID.randomUUID().toString().trim());
@@ -534,7 +539,7 @@ public class DataMigrationController {
 				List<Object> humanReadableValues = new ArrayList<Object>();
 				humanReadableValues.add(dws);
 				String fieldDataType = "text";
-				event.addObs(new Obs("concept", fieldDataType, "13a46b207-dc8b-4e5b-8b1f-162fca3905ca",
+				event.addObs(new Obs("concept", fieldDataType, "3a46b207-dc8b-4e5b-8b1f-162fca3905ca",
 				        "" /*//TODO handle parent*/, values, ""/*comments*/, "water_source"/*formSubmissionField*/));
 				
 				String Sanitary = member[17];
