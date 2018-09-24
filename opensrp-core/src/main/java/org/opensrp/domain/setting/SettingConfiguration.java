@@ -30,9 +30,6 @@ public class SettingConfiguration extends BaseDataObject {
 	private String version;
 	
 	@JsonProperty
-	private String type;
-	
-	@JsonProperty
 	private List<Setting> settings;
 	
 	public String getIdentifier() {

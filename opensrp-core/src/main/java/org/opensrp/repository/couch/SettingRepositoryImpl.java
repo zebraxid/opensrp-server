@@ -7,6 +7,7 @@ import org.ektorp.CouchDbConnector;
 import org.ektorp.support.CouchDbRepositorySupport;
 import org.ektorp.support.View;
 import org.opensrp.common.AllConstants;
+import org.opensrp.domain.postgres.SettingsMetadata;
 import org.opensrp.domain.setting.SettingConfiguration;
 import org.opensrp.repository.SettingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,8 +34,8 @@ public class SettingRepositoryImpl extends CouchDbRepositorySupport<SettingConfi
 	public List<SettingConfiguration> findAllSettingsByVersion(Long lastSyncedServerVersion) {
 		ComplexKey startKey = ComplexKey.of(lastSyncedServerVersion);
 		ComplexKey endKey = ComplexKey.of(Long.MAX_VALUE);
-		return db.queryView(
-		    createQuery("settings_by_version").includeDocs(true).startKey(startKey).endKey(endKey), SettingConfiguration.class);
+		return db.queryView(createQuery("settings_by_version").includeDocs(true).startKey(startKey).endKey(endKey),
+		    SettingConfiguration.class);
 	}
 	
 	/**
@@ -44,12 +45,19 @@ public class SettingRepositoryImpl extends CouchDbRepositorySupport<SettingConfi
 	 */
 	@View(name = "settings_by_empty_server_version", map = "function(doc) { if ( doc.type == 'Setting' && !doc.serverVersion) { emit(doc._id, doc); } }")
 	public List<SettingConfiguration> findByEmptyServerVersion() {
-		return db.queryView(createQuery("settings_by_empty_server_version").limit(200).includeDocs(true), SettingConfiguration.class);
+		return db.queryView(createQuery("settings_by_empty_server_version").limit(200).includeDocs(true),
+		    SettingConfiguration.class);
 	}
 	
 	@Override
 	public void safeRemove(SettingConfiguration entity) {
 		remove(entity);
+	}
+	
+	@Override
+	public SettingsMetadata saveSetting(SettingConfiguration settingConfiguration) {
+		//To Be Implemented		
+		return null;
 	}
 	
 }

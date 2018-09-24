@@ -2,6 +2,7 @@ package org.opensrp.service;
 
 import java.util.List;
 
+import org.opensrp.domain.postgres.SettingsMetadata;
 import org.opensrp.domain.setting.SettingConfiguration;
 import org.opensrp.repository.SettingRepository;
 import org.slf4j.Logger;
@@ -25,6 +26,10 @@ public class SettingService {
 		return settingRepository.findAllSettingsByVersion(lastSyncedServerVersion);
 	}
 	
+	public List<SettingConfiguration> findLatestSettingsByVersion(Long lastSyncedServerVersion) {
+		return settingRepository.findAllLatestSettingsByVersion(lastSyncedServerVersion);
+	}
+	
 	public void addServerVersion() {
 		try {
 			List<SettingConfiguration> settingConfigurations = settingRepository.findByEmptyServerVersion();
@@ -45,6 +50,17 @@ public class SettingService {
 		catch (Exception e) {
 			logger.error(e.getMessage(), e);
 		}
+	}
+	
+	public synchronized SettingsMetadata saveSetting(SettingConfiguration settingConfiguration) {
+		
+		if (settingConfiguration.getIdentifier() == null) {
+			throw new IllegalArgumentException(
+			        "An event already exists with given baseEntity and formSubmission combination. Consider updating");
+			
+		}
+		
+		return settingRepository.saveSetting(settingConfiguration);
 	}
 	
 }

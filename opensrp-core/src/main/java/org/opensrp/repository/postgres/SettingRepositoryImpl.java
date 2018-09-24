@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import org.opensrp.domain.postgres.Settings;
 import org.opensrp.domain.postgres.SettingsMetadata;
 import org.opensrp.domain.postgres.SettingsMetadataExample;
 import org.opensrp.domain.setting.SettingConfiguration;
@@ -27,34 +28,37 @@ public class SettingRepositoryImpl extends BaseRepositoryImpl<SettingConfigurati
 		return convert(settingMetadataMapper.selectByDocumentId(id));
 	}
 	
-	@Override
-	public void add(SettingConfiguration entity) {
+	public Settings addSetting(SettingConfiguration entity) {
+		org.opensrp.domain.postgres.Settings pgSetting = null;
+		
 		if (entity == null || entity.getIdentifier() == null) {
-			return;
+			return pgSetting;
 		}
 		
 		if (retrievePrimaryKey(entity) != null) { //Setting already added
-			return;
+			return pgSetting;
 		}
 		
 		if (entity.getId() == null)
 			entity.setId(UUID.randomUUID().toString());
 		setRevision(entity);
 		
-		org.opensrp.domain.postgres.Settings pgSetting = convert(entity, null);
+		pgSetting = convert(entity, null);
 		if (pgSetting == null) {
-			return;
+			return pgSetting;
 		}
 		
 		int rowsAffected = settingMapper.insertSelectiveAndSetId(pgSetting);
 		if (rowsAffected < 1 || pgSetting.getId() == null) {
-			return;
+			return pgSetting;
 		}
 		
 		SettingsMetadata metadata = createMetadata(entity, pgSetting.getId());
 		if (metadata != null) {
 			settingMetadataMapper.insertSelective(metadata);
 		}
+		
+		return pgSetting;
 	}
 	
 	@Override
@@ -134,6 +138,15 @@ public class SettingRepositoryImpl extends BaseRepositoryImpl<SettingConfigurati
 	}
 	
 	@Override
+	public List<SettingConfiguration> findAllLatestSettingsByVersion(Long lastSyncedServerVersion) {
+		SettingsMetadataExample metadataExample = new SettingsMetadataExample();
+		metadataExample.createCriteria().andServerVersionGreaterThanOrEqualTo(lastSyncedServerVersion);
+		metadataExample.setOrderByClause("server_version DESC");
+		metadataExample.gr("server_version DESC");
+		return convert(settingMetadataMapper.selectMany(metadataExample, 0, DEFAULT_FETCH_SIZE));
+	}
+	
+	@Override
 	public List<SettingConfiguration> findByEmptyServerVersion() {
 		SettingsMetadataExample metadataExample = new SettingsMetadataExample();
 		metadataExample.createCriteria().andServerVersionIsNull();
@@ -207,4 +220,67 @@ public class SettingRepositoryImpl extends BaseRepositoryImpl<SettingConfigurati
 		return metadata;
 	}
 	
+	@Override
+	public SettingsMetadata saveSetting(SettingConfiguration entity) {
+		if (entity == null || entity.getIdentifier() == null) {
+			return null;
+		}
+		
+		if (retrievePrimaryKey(entity) != null) { //Event already added
+			return null;
+		}
+		
+		if (entity.getId() == null)
+			entity.setId(UUID.randomUUID().toString());
+		setRevision(entity);
+		
+		Settings settings = convert(entity, null);
+		if (settings == null) {
+			return null;
+		}
+		
+		int rowsAffected = settingMapper.insertSelectiveAndSetId(settings);
+		if (rowsAffected < 1 || settings.getId() == null) {
+			return null;
+		}
+		
+		SettingsMetadata settingsMetadata = createMetadata(entity, settings.getId());
+		if (settingsMetadata != null) {
+			settingMetadataMapper.insertSelective(settingsMetadata);
+		}
+		
+		return settingsMetadata;
+		
+	}
+	
+	@Override
+	public void add(SettingConfiguration entity) {
+		if (entity == null || entity.getIdentifier() == null) {
+			return;
+		}
+		
+		if (retrievePrimaryKey(entity) != null) { //Event already added
+			return;
+		}
+		
+		if (entity.getId() == null)
+			entity.setId(UUID.randomUUID().toString());
+		setRevision(entity);
+		
+		Settings settings = convert(entity, null);
+		if (settings == null) {
+			return;
+		}
+		
+		int rowsAffected = settingMapper.insertSelectiveAndSetId(settings);
+		if (rowsAffected < 1 || settings.getId() == null) {
+			return;
+		}
+		
+		SettingsMetadata settingsMetadata = createMetadata(entity, settings.getId());
+		if (settingsMetadata != null) {
+			settingMetadataMapper.insertSelective(settingsMetadata);
+		}
+		
+	}
 }
