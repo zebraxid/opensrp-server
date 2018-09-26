@@ -73,7 +73,7 @@
 		and cm.date_deleted is null
 		LIMIT #{limit} OFFSET #{offset}
 	</select>	
-
+	
 	<select id="selectOne" parameterType="java.lang.String"
 		resultMap="org.opensrp.repository.postgres.mapper.ClientMapper.BaseResultMap">
 		select

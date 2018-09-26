@@ -59,5 +59,11 @@ public class SettingRepositoryImpl extends CouchDbRepositorySupport<SettingConfi
 		//To Be Implemented		
 		return null;
 	}
+
+	@Override
+	public List<SettingConfiguration> findAllLatestSettingsByVersion(Long lastSyncedServerVersion) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }

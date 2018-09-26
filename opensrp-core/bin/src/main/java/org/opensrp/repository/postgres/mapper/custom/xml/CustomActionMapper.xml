@@ -36,4 +36,13 @@
 		select id from core.action 
 		where json->>'actionTarget' = #{actionTarget,jdbcType=VARCHAR}
 	</select>
+	<select id="selectNotExpired"
+	resultMap="org.opensrp.repository.postgres.mapper.ActionMapper.BaseResultMap">
+	select
+	<include
+		refid="org.opensrp.repository.postgres.mapper.ActionMapper.Base_Column_List" />
+	from core.action
+	where json->'data'->>'alertStatus' !='urgent'
+	LIMIT #{limit} OFFSET #{offset}
+	</select>
 </mapper>
