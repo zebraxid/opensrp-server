@@ -4,7 +4,6 @@ import static java.text.MessageFormat.format;
 import static org.opensrp.web.rest.RestUtils.getStringFilter;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.opensrp.common.AllConstants;
 import org.opensrp.common.AllConstants.BaseEntity;
 import org.opensrp.domain.postgres.SettingsMetadata;
 import org.opensrp.domain.setting.SettingConfiguration;
@@ -30,7 +30,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 
 @Controller
 @RequestMapping(value = "/rest/settings")
@@ -59,7 +58,6 @@ public class SettingResource {
 		return settingService.findLatestSettingsByVersion(lastSyncedServerVersion);
 	}
 	
-	@SuppressWarnings("unchecked")
 	@RequestMapping(headers = { "Accept=application/json" }, method = POST, value = "/sync")
 	public ResponseEntity<JSONObject> saveSetting(@RequestBody String data) {
 		JSONObject response = new JSONObject();
@@ -71,23 +69,19 @@ public class SettingResource {
 				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 			} else {
 				
-				ArrayList<SettingConfiguration> settingConfigurations = (ArrayList<SettingConfiguration>) gson.fromJson(
-				    syncData.getString("settingConfigurations"),
-				    new TypeToken<ArrayList<SettingConfiguration>>() {}.getType());
-				SettingsMetadata dbSettingMetadata = null;
+				JSONArray clientSettings = syncData.getJSONArray(AllConstants.Event.SETTING_CONFIGURATIONS);
 				JSONArray dbSettingsArray = new JSONArray();
 				
-				for (SettingConfiguration settingConfiguration : settingConfigurations) {
-					try {
-						dbSettingMetadata = settingService.saveSetting(settingConfiguration);
-						dbSettingsArray.put(dbSettingMetadata.getIdentifier());
-					}
-					catch (Exception e) {
-						logger.error("Setting " + settingConfiguration.getIdentifier() == null ? ""
-						        : settingConfiguration.getIdentifier() + " failed to sync",
-						    e);
-					}
+				SettingsMetadata dbSettingMetadata = null;
+				
+				for (int i = 0; i < clientSettings.length(); i++) {
+					
+					dbSettingMetadata = settingService.saveSetting(clientSettings.getString(i).toString());
+					dbSettingsArray.put(dbSettingMetadata.getIdentifier());
+					
 				}
+				
+				response.append("validated_records", dbSettingsArray);
 				
 			}
 			

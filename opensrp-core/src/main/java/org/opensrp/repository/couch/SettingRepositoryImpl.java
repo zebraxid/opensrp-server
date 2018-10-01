@@ -7,6 +7,7 @@ import org.ektorp.CouchDbConnector;
 import org.ektorp.support.CouchDbRepositorySupport;
 import org.ektorp.support.View;
 import org.opensrp.common.AllConstants;
+import org.opensrp.domain.postgres.Settings;
 import org.opensrp.domain.postgres.SettingsMetadata;
 import org.opensrp.domain.setting.SettingConfiguration;
 import org.opensrp.repository.SettingRepository;
@@ -55,13 +56,25 @@ public class SettingRepositoryImpl extends CouchDbRepositorySupport<SettingConfi
 	}
 	
 	@Override
-	public SettingsMetadata saveSetting(SettingConfiguration settingConfiguration) {
+	public SettingsMetadata saveSetting(SettingConfiguration settingConfiguration, SettingsMetadata settingMetadata) {
 		//To Be Implemented		
 		return null;
 	}
-
+	
 	@Override
 	public List<SettingConfiguration> findAllLatestSettingsByVersion(Long lastSyncedServerVersion) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public SettingsMetadata getSettingMetadataByIdentifier(String identifier) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public Settings getSettingById(Long id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
