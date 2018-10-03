@@ -76,7 +76,6 @@ public class SettingService {
 			settingConfigurations.setId(String.valueOf(settings.getId()));
 			
 		}
-		
 		return settingRepository.saveSetting(settingConfigurations, metadata);
 	}
 	

@@ -1,6 +1,7 @@
 package org.opensrp.repository.postgres;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.UUID;
 
@@ -243,6 +244,7 @@ public class SettingRepositoryImpl extends BaseRepositoryImpl<SettingConfigurati
 		}
 		
 		SettingsMetadata settingsMetadata = metadata != null ? metadata : createMetadata(entity, settings.getId());
+		settingsMetadata.setServerVersion(Calendar.getInstance().getTimeInMillis());
 		if (settingsMetadata != null) {
 			
 			if (settingsMetadata.getId() != null) {
