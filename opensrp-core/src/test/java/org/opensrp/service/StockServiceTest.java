@@ -37,9 +37,9 @@ public class StockServiceTest extends BaseRepositoryTest {
 	public void populateDatabase() throws SQLException {
 		super.populateDatabase();
 		stockService = new StockService(stocksRepository);
-		Stock stock1 = new Stock(Long.parseLong("123"), "VT", "TT", "4-2", 10, Long.parseLong("20062017"), "TF",
+		Stock stock1 = new Stock("123", "VT", "TT", "4-2", 10, Long.parseLong("20062017"), "TF",
 		        Long.parseLong("20062017"), Long.parseLong("12345"));
-		Stock stock2 = new Stock(Long.parseLong("123"), "VT", "TT", "4-2", 10, Long.parseLong("20062017"), "TF",
+		Stock stock2 = new Stock("123", "VT", "TT", "4-2", 10, Long.parseLong("20062017"), "TF",
 		        Long.parseLong("20062017"), Long.parseLong("12345"));
 		stockService.addStock(stock1);
 		stockService.addStock(stock2);
@@ -47,7 +47,7 @@ public class StockServiceTest extends BaseRepositoryTest {
 	
 	@Test
 	public void shouldSaveStock() {
-		Stock stock = new Stock(Long.parseLong("124"), "VT1", "TT1", "4-2", 10, Long.parseLong("20062017"), "	TF",
+		Stock stock = new Stock("124", "VT1", "TT1", "4-2", 10, Long.parseLong("20062017"), "	TF",
 		        Long.parseLong("20062017"), Long.parseLong("12345"));
 		
 		Stock savedStock = stockService.addorUpdateStock(stock);
@@ -94,7 +94,7 @@ public class StockServiceTest extends BaseRepositoryTest {
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void shouldNotUpdateStockForNewStock() {
-		Stock stock = new Stock(Long.parseLong("124"), "VT1", "TT1", "4-2", 10, Long.parseLong("20062017"), "	TF",
+		Stock stock = new Stock("124", "VT1", "TT1", "4-2", 10, Long.parseLong("20062017"), "	TF",
 		        Long.parseLong("20062017"), Long.parseLong("12345"));
 		stockService.updateStock(stock);
 	}
