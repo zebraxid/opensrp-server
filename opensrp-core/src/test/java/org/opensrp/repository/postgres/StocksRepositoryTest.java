@@ -33,7 +33,7 @@ public class StocksRepositoryTest extends BaseRepositoryTest {
 	@Test
 	public void testGet() {
 		Stock stock = stocksRepository.get("05934ae338431f28bf6793b241978ad9");
-		assertEquals(5l, stock.getIdentifier().longValue());
+		assertEquals("5", stock.getIdentifier());
 		assertEquals(20, stock.getValue());
 		assertEquals("1", stock.getVaccine_type_id());
 		assertEquals(1521009418783l, stock.getServerVersion().longValue());
@@ -42,7 +42,7 @@ public class StocksRepositoryTest extends BaseRepositoryTest {
 	
 	@Test
 	public void testAdd() {
-		Stock stock = new Stock(521l, "VC1", "received", "tester1", 31, 1521499800000l, "VCC1", 1521536143239l,
+		Stock stock = new Stock("521", "VC1", "received", "tester1", 31, 1521499800000l, "VCC1", 1521536143239l,
 		        1521536179443l);
 		stocksRepository.add(stock);
 		assertEquals(16, stocksRepository.getAll().size());
@@ -118,7 +118,7 @@ public class StocksRepositoryTest extends BaseRepositoryTest {
 	@Test
 	public void testFindById() {
 		Stock stock = stocksRepository.findById("05934ae338431f28bf6793b241b2df09");
-		assertEquals(12l, stock.getIdentifier().longValue());
+		assertEquals("12", stock.getIdentifier());
 		assertEquals(-2, stock.getValue());
 		assertEquals("1", stock.getVaccine_type_id());
 		assertEquals("Physical_recount", stock.getTo_from());
@@ -170,7 +170,7 @@ public class StocksRepositoryTest extends BaseRepositoryTest {
 		searchBean.setValue("2");
 		stocks = stocksRepository.findStocks(searchBean);
 		assertEquals(1, stocks.size());
-		assertEquals(14l, stocks.get(0).getIdentifier().longValue());
+		assertEquals("14", stocks.get(0).getIdentifier());
 		assertEquals("1", stocks.get(0).getVaccine_type_id());
 		assertEquals("DHO", stocks.get(0).getTo_from());
 		assertEquals("received", stocks.get(0).getTransaction_type());
@@ -185,7 +185,7 @@ public class StocksRepositoryTest extends BaseRepositoryTest {
 		searchBean.setDateUpdated("1521007053945");
 		stocks = stocksRepository.findStocks(searchBean);
 		assertEquals(1, stocks.size());
-		assertEquals(2l, stocks.get(0).getIdentifier().longValue());
+		assertEquals("2", stocks.get(0).getIdentifier());
 		assertEquals("1", stocks.get(0).getVaccine_type_id());
 		assertEquals("DHO", stocks.get(0).getTo_from());
 		assertEquals("received", stocks.get(0).getTransaction_type());
