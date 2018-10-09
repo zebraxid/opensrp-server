@@ -9,7 +9,7 @@ import org.ektorp.support.TypeDiscriminator;
 public class Stock extends BaseDataObject {
 
 	@JsonProperty
-	private Long identifier;
+	private String identifier;
 
 	@JsonProperty
 	private String vaccine_type_id;
@@ -69,7 +69,7 @@ public class Stock extends BaseDataObject {
 		this.version = System.currentTimeMillis();
 	}
 
-	public Stock(Long identifier, String vaccine_type_id, String transaction_type, String providerid, int value,
+	public Stock(String identifier, String vaccine_type_id, String transaction_type, String providerid, int value,
 			Long date_created, String to_from, Long date_updated, long version) {
 		this.identifier = identifier;
 		this.vaccine_type_id = vaccine_type_id;
@@ -82,11 +82,11 @@ public class Stock extends BaseDataObject {
 		this.version = version;
 	}
 
-	public Long getIdentifier() {
+	public String getIdentifier() {
 		return identifier;
 	}
 
-	public void setIdentifier(Long identifier) {
+	public void setIdentifier(String identifier) {
 		this.identifier = identifier;
 	}
 
