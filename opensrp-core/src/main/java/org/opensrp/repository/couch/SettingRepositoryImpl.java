@@ -32,7 +32,7 @@ public class SettingRepositoryImpl extends CouchDbRepositorySupport<SettingConfi
 	}
 	
 	@View(name = "settings_by_version", map = "function(doc) { if (doc.type==='Setting') { emit([doc.serverVersion], null); }}")
-	public List<SettingConfiguration> findAllSettingsByVersion(Long lastSyncedServerVersion) {
+	public List<SettingConfiguration> findAllSettingsByVersion(Long lastSyncedServerVersion, String teamId) {
 		ComplexKey startKey = ComplexKey.of(lastSyncedServerVersion);
 		ComplexKey endKey = ComplexKey.of(Long.MAX_VALUE);
 		return db.queryView(createQuery("settings_by_version").includeDocs(true).startKey(startKey).endKey(endKey),
@@ -62,7 +62,7 @@ public class SettingRepositoryImpl extends CouchDbRepositorySupport<SettingConfi
 	}
 	
 	@Override
-	public List<SettingConfiguration> findAllLatestSettingsByVersion(Long lastSyncedServerVersion) {
+	public List<SettingConfiguration> findAllLatestSettingsByVersion(Long lastSyncedServerVersion, String t) {
 		// TODO Auto-generated method stub
 		return null;
 	}

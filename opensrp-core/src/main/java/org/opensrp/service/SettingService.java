@@ -32,12 +32,12 @@ public class SettingService {
 		this.settingRepository = settingRepository;
 	}
 	
-	public List<SettingConfiguration> findSettingsByVersion(Long lastSyncedServerVersion) {
-		return settingRepository.findAllSettingsByVersion(lastSyncedServerVersion);
+	public List<SettingConfiguration> findSettingsByVersionAndTeamId(Long lastSyncedServerVersion, String teamId) {
+		return settingRepository.findAllSettingsByVersion(lastSyncedServerVersion, teamId);
 	}
 	
-	public List<SettingConfiguration> findLatestSettingsByVersion(Long lastSyncedServerVersion) {
-		return settingRepository.findAllLatestSettingsByVersion(lastSyncedServerVersion);
+	public List<SettingConfiguration> findLatestSettingsByVersionAndTeamId(Long lastSyncedServerVersion, String teamId) {
+		return settingRepository.findAllLatestSettingsByVersion(lastSyncedServerVersion, teamId);
 	}
 	
 	public void addServerVersion() {

@@ -39,6 +39,8 @@ public class SettingResource {
 	
 	private static Logger logger = LoggerFactory.getLogger(EventResource.class.toString());
 	
+	private String TEAM_ID = "teamId";
+	
 	Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
 	        .registerTypeAdapter(DateTime.class, new DateTimeTypeConverter()).create();
 	
@@ -51,11 +53,12 @@ public class SettingResource {
 	@ResponseBody
 	public List<SettingConfiguration> findSettingsByVersion(HttpServletRequest request) {
 		String serverVersion = getStringFilter(BaseEntity.SERVER_VERSIOIN, request);
+		String teamId = getStringFilter(TEAM_ID, request);
 		Long lastSyncedServerVersion = null;
 		if (serverVersion != null) {
 			lastSyncedServerVersion = Long.valueOf(serverVersion) + 1;
 		}
-		return settingService.findLatestSettingsByVersion(lastSyncedServerVersion);
+		return settingService.findLatestSettingsByVersionAndTeamId(lastSyncedServerVersion, teamId);
 	}
 	
 	@RequestMapping(headers = { "Accept=application/json" }, method = POST, value = "/sync")

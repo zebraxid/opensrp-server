@@ -10,9 +10,9 @@ public interface SettingRepository extends BaseRepository<SettingConfiguration> 
 	
 	List<SettingConfiguration> findAllSettings();
 	
-	List<SettingConfiguration> findAllSettingsByVersion(Long lastSyncedServerVersion);
+	List<SettingConfiguration> findAllSettingsByVersion(Long lastSyncedServerVersion, String teamId);
 	
-	List<SettingConfiguration> findAllLatestSettingsByVersion(Long lastSyncedServerVersion);
+	List<SettingConfiguration> findAllLatestSettingsByVersion(Long lastSyncedServerVersion, String teamId);
 	
 	List<SettingConfiguration> findByEmptyServerVersion();
 	

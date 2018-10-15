@@ -132,16 +132,22 @@ public class SettingRepositoryImpl extends BaseRepositoryImpl<SettingConfigurati
 	}
 	
 	@Override
-	public List<SettingConfiguration> findAllSettingsByVersion(Long lastSyncedServerVersion) {
+	public List<SettingConfiguration> findAllSettingsByVersion(Long lastSyncedServerVersion, String teamId) {
 		SettingsMetadataExample metadataExample = new SettingsMetadataExample();
-		metadataExample.createCriteria().andServerVersionGreaterThanOrEqualTo(lastSyncedServerVersion);
+		metadataExample.createCriteria().andTeamIdEqualTo(teamId)
+		        .andServerVersionGreaterThanOrEqualTo(lastSyncedServerVersion);
+		metadataExample.or(metadataExample.createCriteria().andTeamIdIsNull()
+		        .andServerVersionGreaterThanOrEqualTo(lastSyncedServerVersion));
 		return convert(settingMetadataMapper.selectMany(metadataExample, 0, DEFAULT_FETCH_SIZE));
 	}
 	
 	@Override
-	public List<SettingConfiguration> findAllLatestSettingsByVersion(Long lastSyncedServerVersion) {
+	public List<SettingConfiguration> findAllLatestSettingsByVersion(Long lastSyncedServerVersion, String teamId) {
 		SettingsMetadataExample metadataExample = new SettingsMetadataExample();
-		metadataExample.createCriteria().andServerVersionGreaterThanOrEqualTo(lastSyncedServerVersion);
+		metadataExample.createCriteria().andTeamIdEqualTo(teamId)
+		        .andServerVersionGreaterThanOrEqualTo(lastSyncedServerVersion);
+		metadataExample.or(metadataExample.createCriteria().andTeamIdIsNull()
+		        .andServerVersionGreaterThanOrEqualTo(lastSyncedServerVersion));
 		metadataExample.setOrderByClause("server_version DESC");
 		// metadataExample.gr("server_version DESC");
 		return convert(settingMetadataMapper.selectMany(metadataExample, 0, DEFAULT_FETCH_SIZE));
