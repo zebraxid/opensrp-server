@@ -67,7 +67,7 @@ public class SettingService {
 		SettingConfiguration settingConfigurations = gson.fromJson(jsonSettingConfiguration,
 		    new TypeToken<SettingConfiguration>() {}.getType());
 		
-		SettingsMetadata metadata = settingRepository.getSettingMetadataByIdentifier(settingConfigurations.getIdentifier());
+		SettingsMetadata metadata = settingRepository.getSettingMetadataByIdentifierAndTeamId(settingConfigurations.getIdentifier(), settingConfigurations.getTeamId());
 		Settings settings;
 		
 		if (metadata != null) {

@@ -298,9 +298,9 @@ public class SettingRepositoryImpl extends BaseRepositoryImpl<SettingConfigurati
 	}
 	
 	@Override
-	public SettingsMetadata getSettingMetadataByIdentifier(String identifier) {
+	public SettingsMetadata getSettingMetadataByIdentifierAndTeamId(String identifier, String teamId) {
 		SettingsMetadataExample example = new SettingsMetadataExample();
-		example.createCriteria().andIdentifierEqualTo(identifier);
+		example.createCriteria().andIdentifierEqualTo(identifier).andTeamIdEqualTo(teamId);
 		
 		List<SettingsMetadata> settingsMetadata = settingMetadataMapper.selectByExample(example);
 		

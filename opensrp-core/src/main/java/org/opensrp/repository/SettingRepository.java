@@ -18,7 +18,7 @@ public interface SettingRepository extends BaseRepository<SettingConfiguration> 
 	
 	SettingsMetadata saveSetting(SettingConfiguration settingConfiguration, SettingsMetadata settingMetadata);
 	
-	SettingsMetadata getSettingMetadataByIdentifier(String identifier);
+	SettingsMetadata getSettingMetadataByIdentifierAndTeamId(String identifier, String teamId);
 	
 	Settings getSettingById(Long id);
 	

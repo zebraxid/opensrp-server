@@ -68,7 +68,7 @@ public class SettingRepositoryImpl extends CouchDbRepositorySupport<SettingConfi
 	}
 	
 	@Override
-	public SettingsMetadata getSettingMetadataByIdentifier(String identifier) {
+	public SettingsMetadata getSettingMetadataByIdentifierAndTeamId(String identifier, String teamId) {
 		// TODO Auto-generated method stub
 		return null;
 	}
