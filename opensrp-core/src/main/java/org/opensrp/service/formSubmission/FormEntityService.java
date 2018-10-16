@@ -44,6 +44,7 @@ public class FormEntityService {
 		sort(formSubmissions, serverVersionComparator());
 		FormExportToken exportToken = allFormExportTokens.getAll().get(0);
 		for (FormSubmission submission : formSubmissions) {
+			System.err.println("submission.formDataDefinitionVersion():" + submission.formDataDefinitionVersion());
 			if (!submission.formDataDefinitionVersion().equalsIgnoreCase(NOTPROCESSING)) {
 				String params = getParams(submission);
 				logger.info(format("Invoking save for form with instance Id: {0} and for entity Id: {1}",

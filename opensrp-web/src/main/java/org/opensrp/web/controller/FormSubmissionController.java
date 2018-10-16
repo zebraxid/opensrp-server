@@ -10,8 +10,9 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.http.client.ClientProtocolException;
 import org.json.JSONException;
@@ -25,6 +26,7 @@ import org.opensrp.domain.Multimedia;
 import org.opensrp.dto.form.FormSubmissionDTO;
 import org.opensrp.dto.form.MultimediaDTO;
 import org.opensrp.form.domain.FormSubmission;
+import org.opensrp.form.repository.AllFormSubmissions;
 import org.opensrp.form.service.FormSubmissionConverter;
 import org.opensrp.form.service.FormSubmissionService;
 import org.opensrp.register.mcare.OpenSRPScheduleConstants.OpenSRPEvent;
@@ -73,6 +75,9 @@ public class FormSubmissionController {
 	private MultimediaService multimediaService;
 	
 	private MultimediaRepository multimediaRepository;
+	
+	@Autowired
+	private AllFormSubmissions allFormSubmissions;
 	
 	@Autowired
 	public FormSubmissionController(FormSubmissionService formSubmissionService, TaskSchedulerService scheduler,
@@ -213,11 +218,13 @@ public class FormSubmissionController {
 	@ResponseBody
 	public ResponseEntity<String> getByProviderAndFormDefinition(@RequestParam String provider) {
 		List<FormSubmission> formSubmissions = formSubmissionService.getByProviderAndFormDefinition(provider);
-		List<String> households = new ArrayList<String>();
+		Set<String> households = new HashSet<String>();
 		for (FormSubmission formSubmission : formSubmissions) {
+			formSubmission.setFormDataDefinitionVersion("16");
+			allFormSubmissions.update(formSubmission);
 			households.add(formSubmission.entityId());
 		}
-		
+		logger.info("Provider:" + provider);
 		return new ResponseEntity<>(new Gson().toJson(households), HttpStatus.OK);
 	}
 }
