@@ -15,6 +15,7 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.opensrp.common.util.HttpUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -100,6 +101,31 @@ public class RapidProServiceImpl implements RapidProService {
 			logger.error("sendMessage error: " + e.getMessage() + " ,cause:" + e.getCause());
 			return "error";
 		}
+	}
+	
+	public String sendDirectToCarrier(String mobileNo, String message) {
+		
+		String uri = rapidproUrl + mobileNo + "&message=" + message;
+		logger.info("uri:" + uri);
+		HttpResponse response = (HttpResponse) HttpUtil.get(uri, "", "", "");
+		
+		HttpEntity entity = response.getEntity();
+		String responseString;
+		try {
+			responseString = EntityUtils.toString(entity, "UTF-8");
+			if (responseString.isEmpty() || responseString == null) {
+				logger.info("rapidpro service unavilable:" + responseString + " ,mobileNo:" + mobileNo);
+			} else {
+				logger.info("successfully reached to rapidpro response:" + responseString + " ,mobileNo:" + mobileNo);
+			}
+		}
+		catch (Exception e) {
+			logger.error("sendMessage error: " + e.getMessage() + " ,cause:" + e.getCause());
+			return "error";
+		}
+		
+		return responseString;
+		
 	}
 	
 	/**

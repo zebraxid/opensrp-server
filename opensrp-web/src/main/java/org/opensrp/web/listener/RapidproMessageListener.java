@@ -89,8 +89,8 @@ public class RapidproMessageListener {
 			for (Camp camp : camps) {
 				try {
 					if (DateUtil.dateDiff(camp.getDate()) != 0) {
-						logger.info("no active camp found today for announchment  provider:" + camp.getProviderName());
-						return 0;
+						logger.info("no active camp found today for announchment  provider:" + camp.getProviderName()
+						        + " ,campDate:" + camp.getDate());
 						
 					} else {
 						allCamp.updateCamp(camp);

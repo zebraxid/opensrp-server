@@ -108,7 +108,9 @@ public class ClientListenerTest {
 		List<String> contacts = new ArrayList<String>();
 		List<String> groups = new ArrayList<String>();
 		urns.add("tel:" + "+8801711082537");
-		rapidproService.sendMessage(urns, contacts, groups, "test message", "");
+		//rapidproService.sendMessage(urns, contacts, groups, "test message", "");
+		System.err.println("sendDirectToCarrier: " + "+8801711082537");
+		rapidproService.sendDirectToCarrier("+8801711082537", "test");
 		System.err.println("send message to rapidpro" + "+8801711082537");
 		
 	}

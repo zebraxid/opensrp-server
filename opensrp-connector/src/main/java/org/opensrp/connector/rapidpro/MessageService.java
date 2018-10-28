@@ -188,7 +188,8 @@ public class MessageService {
 			smsText = messageFactory.getClientType(clientType).message(client, camp, null);
 			logger.info("sending mesage to mobileno:" + mobileNo);
 			urns.add("tel:" + mobileNo);
-			rapidproService.sendMessage(urns, contacts, groups, smsText, "");
+			//rapidproService.sendMessage(urns, contacts, groups, smsText, "");
+			rapidproService.sendDirectToCarrier(mobileNo, smsText);
 			SMSLog smsLog = new SMSLog();
 			smsLog.setMobileNo(mobileNo);
 			smsLog.setSmsText(smsText);

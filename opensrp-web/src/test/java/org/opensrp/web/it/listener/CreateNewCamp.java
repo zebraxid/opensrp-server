@@ -25,7 +25,7 @@ public class CreateNewCamp {
 		CouchDbInstance dbInstance;
 		StdCouchDbConnector stdCouchDbConnector;
 		HttpClient httpClient = new StdHttpClient.Builder().host("localhost").port(5984).username("rootuser")
-		        .password("adminpass").socketTimeout(10000000).build();
+		        .password("adminpass").socketTimeout(50000000).build();
 		dbInstance = new StdCouchDbInstance(httpClient);
 		stdCouchDbConnector = new StdCouchDbConnector("opensrp", dbInstance, new StdObjectMapperFactory());
 		stdCouchDbConnector.createDatabaseIfNotExists();
