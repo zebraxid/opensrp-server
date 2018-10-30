@@ -110,25 +110,33 @@ public class EncounterService extends OpenmrsService{
 		
 		enc.put("encounterDatetime", OPENMRS_DATE.format(e.getEventDate().toDate()));
 		// patient must be existing in OpenMRS before it submits an encounter. if it doesnot it would throw NPE
-		enc.put("patient", pt.getString("uuid"));
+		System.out.println("Debug:Encounter:1"+pt.toString());
+		enc.put("patient", (pt.has("uuid"))?pt.getString("uuid"):"");
+		System.out.println("Debug:Encounter:2");
 		//TODO enc.put("patientUuid", pt.getString("uuid"));
 		enc.put("encounterType", e.getEventType());
 		//TODO enc.put("encounterTypeUuid", e.getEventType());
 		enc.put("location", e.getLocationId());
-		enc.put("provider", pr.getString("uuid"));
-
+		System.out.println("Debug:Encounter:3"+pr.toString());
+		enc.put("provider", (pr.has("uuid"))?pr.getString("uuid"):"");
+		System.out.println("Debug:Encounter:4");
+		
 		List<Obs> ol = e.getObs();
 		Map<String, JSONArray> p = new HashMap<>();
 		Map<String, JSONArray> pc = new HashMap<>();
 		
+		System.out.println("Debug:Encounter:5");
 		if(ol != null)
 		for (Obs obs : ol) {
+			System.out.println("Debug:Encounter:5.1");
 			if(!StringUtils.isEmptyOrWhitespaceOnly(obs.getFieldCode()) && (obs.getFieldType()==null||  obs.getFieldType().equalsIgnoreCase("concept"))){//skipping empty obs and fields that don't have concepts
 				//if no parent simply make it root obs
 				if(StringUtils.isEmptyOrWhitespaceOnly(obs.getParentCode())){
+					System.out.println("Debug:Encounter:5.2");
 					p.put(obs.getFieldCode(), convertObsToJson(obs));
 				}
 				else {
+					System.out.println("Debug:Encounter:5.3");
 					//find parent obs if not found search and fill or create one
 					JSONArray parentObs = p.get(obs.getParentCode());
 					if(parentObs == null){
@@ -144,12 +152,17 @@ public class EncounterService extends OpenmrsService{
 						obl.put(addobs.getJSONObject(i));
 					}
 					pc.put(obs.getParentCode(), obl);
+
+					System.out.println("Debug:Encounter:5.4");
 				}
 			}
 		}
 		
+		System.out.println("Debug:Encounter:6");
 		JSONArray obar = new JSONArray();
 		for (String ok : p.keySet()) {
+
+			System.out.println("Debug:Encounter:6.1");
 			for (int i = 0; i < p.get(ok).length(); i++) {
 				JSONObject obo = p.get(ok).getJSONObject(i);
 				
@@ -157,13 +170,21 @@ public class EncounterService extends OpenmrsService{
 				if(cob != null && cob.length() > 0) {
 					obo.put("groupMembers", cob);
 				}
+				System.out.println("Debug:Encounter:6.2");
 				
 				obar.put(obo);
 			}
 		}
 		enc.put("obs", obar);
 		
+		System.out.println("Debug:Encounter:7");
+		System.out.println("Debug:Encounter:7.1"+HttpUtil.removeEndingSlash(OPENMRS_BASE_URL)+"/"+ENCOUNTER_URL);
+		System.out.println("Debug:Encounter:7.2"+enc.toString());
+		System.out.println("Debug:Encounter:7.3"+OPENMRS_USER);
+		System.out.println("Debug:Encounter:7.4"+OPENMRS_PWD);
 		HttpResponse op = HttpUtil.post(HttpUtil.removeEndingSlash(OPENMRS_BASE_URL)+"/"+ENCOUNTER_URL, "", enc.toString(), OPENMRS_USER, OPENMRS_PWD);
+		
+		System.out.println("Debug:Encounter:8");
 		return new JSONObject(op.body());
 	}
 	
@@ -182,7 +203,7 @@ public class EncounterService extends OpenmrsService{
 		
 		enc.put("encounterDatetime", OPENMRS_DATE.format(e.getEventDate().toDate()));
 		// patient must be existing in OpenMRS before it submits an encounter. if it doesnot it would throw NPE
-		enc.put("patient", pt.getString("uuid"));
+		enc.put("patient", (pt.has("uuid"))?pt.getString("uuid"):"");
 	//TODO	enc.put("patientUuid", pt.getString("uuid"));
 		enc.put("encounterType", e.getEventType());
 		enc.put("location", e.getLocationId());

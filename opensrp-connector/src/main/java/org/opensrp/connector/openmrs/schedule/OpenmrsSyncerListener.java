@@ -278,18 +278,36 @@ public class OpenmrsSyncerListener {
 		for (Event e : el) {
 			try {
 				String uuid = e.getIdentifier(EncounterService.OPENMRS_UUID_IDENTIFIER_TYPE);
+
+				logger.error("Debug:PushEvent:1 "+EncounterService.OPENMRS_UUID_IDENTIFIER_TYPE, uuid);
+				errorTraceService.log("Debug:PushEvent:1", Event.class.getName(), "e.getId(Debug:PushEvent:1)",
+					EncounterService.OPENMRS_UUID_IDENTIFIER_TYPE, uuid);
 				if (uuid != null) {
+					logger.error("Debug:PushEvent:2.0");
 					encounter = encounterService.updateEncounter(e);
+					logger.error("Debug:PushEvent:2.1");
 					config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_event_by_date_updated,
-					    e.getServerVersion());
+						e.getServerVersion());
+						
+					logger.error("Debug:PushEvent:2 "+SchedulerConfig.openmrs_syncer_sync_event_by_date_updated.toString(), encounter.toString());
+					errorTraceService.log("Debug:PushEvent:2", Event.class.getName(), "e.getId(Debug:PushEvent:2)",
+						SchedulerConfig.openmrs_syncer_sync_event_by_date_updated.toString(), encounter.toString());
 				} else {
+					logger.error("Debug:PushEvent:3.0");
 					JSONObject eventJson = encounterService.createEncounter(e);
+					logger.error("Debug:PushEvent:3.1"+eventJson.toString());
 					encounter = eventJson;// only for test code purpose
+					logger.error("Debug:PushEvent:3.2"+eventJson.toString());
 					if (eventJson != null && eventJson.has("uuid")) {
+						logger.error("Debug:PushEvent:3.3"+eventJson.toString());
 						e.addIdentifier(EncounterService.OPENMRS_UUID_IDENTIFIER_TYPE, eventJson.getString("uuid"));
 						eventService.updateEvent(e);
 						config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_event_by_date_updated,
-						    e.getServerVersion());
+							e.getServerVersion());
+							
+						logger.error("Debug:PushEvent:1 "+eventJson.getString("uuid"), eventJson.toString());
+						errorTraceService.log("Debug:PushEvent:3", Event.class.getName(), "e.getId(Debug:PushEvent:3)",
+							eventJson.getString("uuid"), eventJson.toString());
 					}
 				}
 			}
