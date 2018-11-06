@@ -234,6 +234,7 @@ public class OpenmrsSyncerListener {
 		
 		for (Client c : cl) {
 			if (c.getRelationships() != null) {// Mother has no relations. 
+				logger.error("Debug:PushClient:1 ", c.getRelationships().toString());
 				JSONObject motherJson = patientService.getPatientByIdentifier(c.getRelationships().get("mother").get(0)
 				        .toString());
 				JSONObject person = motherJson.getJSONObject("person");
