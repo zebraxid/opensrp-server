@@ -103,6 +103,10 @@ public class EncounterService extends OpenmrsService{
 	}
 	
 	public JSONObject createEncounter(Event e) throws JSONException{
+		
+		System.out.println("Debug:Encounter:0");
+		System.out.println(e.getBaseEntityId());
+		
 		JSONObject pt = patientService.getPatientByIdentifier(e.getBaseEntityId());
 		JSONObject enc = new JSONObject();
 		
