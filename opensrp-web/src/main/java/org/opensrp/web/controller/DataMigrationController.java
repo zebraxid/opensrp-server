@@ -23,11 +23,12 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.poi.hssf.record.CountryRecord;
-
 import org.opensrp.common.util.HttpResponse;
+import org.opensrp.common.util.HttpUtil;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -53,6 +54,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+
 import com.mysql.jdbc.StringUtils;
 
 @Controller
@@ -309,10 +311,21 @@ public class DataMigrationController {
 				System.err.println("Client:" + client.toString());
 				
 				String locationId = "";
+				String teamId = "";
+				String team = "";
 				org.opensrp.api.domain.Location location = null;
 				try {
-					location = openmrsLocationService.getLocation(address2);
-					locationId = location.getLocationId();
+					/*location = openmrsLocationService.getLocation(address2);
+					locationId = location.getLocationId();*/
+					HttpResponse op = HttpUtil.get(
+					    "http://192.168.22.249:8080/opensrp-dashboard/rest/api/v1/team/team-by-location" + "/?name="
+					            + address2, "", "admin", "admin");
+					JSONObject jsonObj = new JSONObject(op.body());
+					JSONObject map = jsonObj.getJSONObject("map");
+					locationId = (String) map.get("locationUuid");
+					teamId = (String) map.get("teamUuid");
+					team = (String) map.get("team");
+					
 				}
 				catch (Exception e) {
 					
@@ -327,12 +340,12 @@ public class DataMigrationController {
 				}
 				Event event = new Event();
 				event.setServerVersion(System.currentTimeMillis());
-				event.setTeam("");
-				event.setTeamId("");
+				event.setTeam(team);
+				event.setTeamId(teamId);
 				event.setBaseEntityId(baseEntityId);
 				event.setDateCreated(new DateTime());
 				event.setEventDate(new DateTime());
-				event.withProviderId("mcv");
+				event.withProviderId("");
 				event.setVersion(System.currentTimeMillis());
 				event.setLocationId(locationId);
 				event.setFormSubmissionId(UUID.randomUUID().toString().trim());
@@ -444,26 +457,34 @@ public class DataMigrationController {
 				address.setAddressType("usual_residence");
 				client.addAddress(address);
 				
-				System.err.println("Client:" + client.toString());
 				String locationId = "";
+				String teamId = "";
+				String team = "";
 				org.opensrp.api.domain.Location location = null;
 				try {
-					location = openmrsLocationService.getLocation(address2);
-					locationId = location.getLocationId();
-					
+					//location = openmrsLocationService.getLocation(address2);
+					//locationId = location.getLocationId();
+					HttpResponse op = HttpUtil.get(
+					    "http://192.168.22.249:8080/opensrp-dashboard/rest/api/v1/team/team-by-location" + "/?name="
+					            + address2, "", "admin", "admin");
+					JSONObject jsonObj = new JSONObject(op.body());
+					JSONObject map = jsonObj.getJSONObject("map");
+					locationId = (String) map.get("locationUuid");
+					teamId = (String) map.get("teamUuid");
+					team = (String) map.get("team");
 				}
 				catch (Exception e) {
-					
+					e.printStackTrace();
 				}
 				
 				Event event = new Event();
 				event.setServerVersion(System.currentTimeMillis());
-				event.setTeam("");
-				event.setTeamId("");
+				event.setTeam(team);
+				event.setTeamId(teamId);
 				event.setBaseEntityId(baseEntityId);
 				event.setDateCreated(new DateTime());
 				event.setEventDate(new DateTime());
-				event.withProviderId("mcv");
+				event.withProviderId("");
 				event.setVersion(System.currentTimeMillis());
 				event.setLocationId(locationId);
 				event.setFormSubmissionId(UUID.randomUUID().toString().trim());
