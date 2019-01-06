@@ -208,11 +208,12 @@ public class DataMigrationController {
 				if (!nationalId.isEmpty()) {
 					nationalId = nationalId.trim();
 				}
+				String RelationshipWithHH = member[14];
 				client.addAttribute("MaritalStatus", MaritalStatus);
 				client.addAttribute("education", education);
 				client.addAttribute("occupation", occupation);
 				client.addAttribute("Religion", Religion);
-				
+				client.addAttribute("Realtion_With_Household_Head", RelationshipWithHH);
 				client.addAttribute("nationalId", nationalId);
 				client.addAttribute("idtype", "NID");
 				client.withIsSendToOpenMRS("yes");
@@ -290,6 +291,7 @@ public class DataMigrationController {
 				if (!cityVillage.isEmpty()) {
 					cityVillage = cityVillage.trim();
 				}
+				
 				// address put
 				Map<String, String> addressFields = new HashMap<String, String>();
 				addressFields.put("cityVillage", cityVillage);// upazilla
@@ -318,7 +320,7 @@ public class DataMigrationController {
 					/*location = openmrsLocationService.getLocation(address2);
 					locationId = location.getLocationId();*/
 					HttpResponse op = HttpUtil.get(
-					    "http://192.168.22.249:8080/opensrp-dashboard/rest/api/v1/team/team-by-location" + "/?name="
+					    "http://192.168.19.152:8080/opensrp-dashboard/rest/api/v1/team/team-by-location" + "/?name="
 					            + address2, "", "admin", "admin");
 					JSONObject jsonObj = new JSONObject(op.body());
 					JSONObject map = jsonObj.getJSONObject("map");
@@ -331,10 +333,9 @@ public class DataMigrationController {
 					
 				}
 				
-				String RelationshipWithHH = member[14];
 				String eventType = "Woman Member Registration";
 				String entityType = "ec_woman";
-				if (RelationshipWithHH.equalsIgnoreCase("0") && gender.equalsIgnoreCase("M")) {
+				if (RelationshipWithHH.equalsIgnoreCase("Household_Head") && gender.equalsIgnoreCase("M")) {
 					eventType = "Member Registration";
 					entityType = "ec_member";
 				}
@@ -465,7 +466,7 @@ public class DataMigrationController {
 					//location = openmrsLocationService.getLocation(address2);
 					//locationId = location.getLocationId();
 					HttpResponse op = HttpUtil.get(
-					    "http://192.168.22.249:8080/opensrp-dashboard/rest/api/v1/team/team-by-location" + "/?name="
+					    "http://192.168.19.152:8080/opensrp-dashboard/rest/api/v1/team/team-by-location" + "/?name="
 					            + address2, "", "admin", "admin");
 					JSONObject jsonObj = new JSONObject(op.body());
 					JSONObject map = jsonObj.getJSONObject("map");
