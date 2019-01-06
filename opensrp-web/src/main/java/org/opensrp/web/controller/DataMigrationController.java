@@ -401,7 +401,7 @@ public class DataMigrationController {
 				client.addIdentifier("Patient_Identifier", generateID());
 				String baseEntityId = UUID.randomUUID().toString().trim();
 				client.setBaseEntityId(baseEntityId);
-				String firstName = member[63];
+				String firstName = member[55];
 				String phoneNumber = member[29];
 				if (!firstName.isEmpty()) {
 					firstName = firstName.trim();
@@ -428,15 +428,15 @@ public class DataMigrationController {
 				if (!address2.isEmpty()) {
 					address2 = address2.trim();
 				}
-				String stateProvince = member[1];
+				String stateProvince = member[52];
 				if (!stateProvince.isEmpty()) {
 					stateProvince = stateProvince.trim();
 				}
-				String countyDistrict = member[2];
+				String countyDistrict = member[53];
 				if (!countyDistrict.isEmpty()) {
 					countyDistrict = countyDistrict.trim();
 				}
-				String cityVillage = member[3];
+				String cityVillage = member[54];
 				if (!cityVillage.isEmpty()) {
 					cityVillage = cityVillage.trim();
 				}
