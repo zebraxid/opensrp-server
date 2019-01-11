@@ -127,6 +127,7 @@ public class PatientService extends OpenmrsService {
 	public JSONObject createPerson(Client be) throws JSONException {
 		JSONObject per = convertBaseEntityToOpenmrsJson(be);
 		String response = HttpUtil.post(getURL() + "/" + PERSON_URL, "", per.toString(), OPENMRS_USER, OPENMRS_PWD).body();
+		System.err.println("response:" + response.toString());
 		return new JSONObject(response);
 	}
 	
@@ -258,7 +259,9 @@ public class PatientService extends OpenmrsService {
 				jio.put("identifier", id.getValue());
 				Object cloc = c.getAttribute("Location");
 				jio.put("location", cloc == null ? "Unknown Location" : cloc);
+				/*if(idobj.getString("")){
 				//jio.put("preferred", true);
+				}*/
 				
 				ids.put(jio);
 			}
@@ -276,9 +279,10 @@ public class PatientService extends OpenmrsService {
 		jio.put("preferred", true);
 		
 		ids.put(jio);
-		
+		// Patient_Identifier
 		p.put("identifiers", ids);
 		String response = HttpUtil.post(getURL() + "/" + PATIENT_URL, "", p.toString(), OPENMRS_USER, OPENMRS_PWD).body();
+		System.err.println("response" + response);
 		return new JSONObject(response);
 	}
 	
