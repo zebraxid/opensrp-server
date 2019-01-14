@@ -145,7 +145,7 @@ public class DataMigrationController {
 		BufferedReader br = null;
 		String line = "";
 		String cvsSplitBy = ",";
-		SimpleDateFormat getYYYYMMDDTHHMMSSFormat = new SimpleDateFormat("mm/dd/yyy");
+		SimpleDateFormat getYYYYMMDDTHHMMSSFormat = new SimpleDateFormat("mm/dd/yyyy");
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:sss");
 		DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:sss");
 		SimpleDateFormat format2 = new SimpleDateFormat("yyyy-MM-dd");
@@ -160,7 +160,7 @@ public class DataMigrationController {
 				String baseEntityId = UUID.randomUUID().toString().trim();
 				client.setBaseEntityId(baseEntityId);
 				String gender = member[9];
-				String firstName = member[15];
+				String firstName = member[23];
 				if (!firstName.isEmpty()) {
 					firstName = firstName.trim();
 				}
@@ -171,7 +171,8 @@ public class DataMigrationController {
 				Date defaultDate = new Date();
 				String dd = "";
 				String reg = "";
-				String dob = member[35];
+				//format datetime in db. make shortDate in csv then upload. 
+				String dob = member[8];
 				if (!dob.isEmpty()) {
 					dob = dob.trim();
 					java.util.Date date = getYYYYMMDDTHHMMSSFormat.parse(dob);
@@ -192,23 +193,23 @@ public class DataMigrationController {
 				if (!MaritalStatus.isEmpty()) {
 					MaritalStatus = MaritalStatus.trim();
 				}
-				String education = member[11];
+				String education = member[20];
 				if (!education.isEmpty()) {
 					education = education.trim();
 				}
-				String occupation = member[12];
+				String occupation = member[21];
 				if (!occupation.isEmpty()) {
 					occupation = occupation.trim();
 				}
-				String Religion = member[13];
+				String Religion = member[11];
 				if (!Religion.isEmpty()) {
 					Religion = Religion.trim();
 				}
-				String nationalId = member[16];
+				String nationalId = member[12];
 				if (!nationalId.isEmpty()) {
 					nationalId = nationalId.trim();
 				}
-				String RelationshipWithHH = member[14];
+				String RelationshipWithHH = member[25];
 				client.addAttribute("MaritalStatus", MaritalStatus);
 				client.addAttribute("education", education);
 				client.addAttribute("occupation", occupation);
@@ -218,27 +219,27 @@ public class DataMigrationController {
 				client.addAttribute("idtype", "NID");
 				client.withIsSendToOpenMRS("yes");
 				String FamilyDiseaseHistory = "";
-				String diabetes = member[17];
+				String diabetes = member[13];
 				if (!diabetes.isEmpty()) {
 					diabetes = diabetes.trim();
 				}
-				String hypertension = member[18];
+				String hypertension = member[14];
 				if (!hypertension.isEmpty()) {
 					hypertension = hypertension.trim();
 				}
-				String cancer = member[19];
+				String cancer = member[15];
 				if (!cancer.isEmpty()) {
 					cancer = cancer.trim();
 				}
-				String respiratoryDisease = member[20];
+				String respiratoryDisease = member[16];
 				if (!respiratoryDisease.isEmpty()) {
 					respiratoryDisease = respiratoryDisease.trim();
 				}
-				String phycologicalDisease = member[21];
+				String phycologicalDisease = member[17];
 				if (!phycologicalDisease.isEmpty()) {
 					phycologicalDisease = phycologicalDisease.trim();
 				}
-				String obesity = member[22];
+				String obesity = member[18];
 				if (!obesity.isEmpty()) {
 					obesity = obesity.trim();
 				}
@@ -260,7 +261,7 @@ public class DataMigrationController {
 				if (!FamilyDiseaseHistory.isEmpty()) {
 					client.addAttribute("family_diseases_details", FamilyDiseaseHistory);
 				}
-				String householdCode = member[0];
+				String householdCode = member[26];
 				if (!householdCode.isEmpty()) {
 					householdCode = householdCode.trim();
 				}
@@ -401,7 +402,7 @@ public class DataMigrationController {
 				client.addIdentifier("Patient_Identifier", generateID());
 				String baseEntityId = UUID.randomUUID().toString().trim();
 				client.setBaseEntityId(baseEntityId);
-				String firstName = member[63];
+				String firstName = member[55];
 				String phoneNumber = member[29];
 				if (!firstName.isEmpty()) {
 					firstName = firstName.trim();
@@ -428,15 +429,15 @@ public class DataMigrationController {
 				if (!address2.isEmpty()) {
 					address2 = address2.trim();
 				}
-				String stateProvince = member[1];
+				String stateProvince = member[52];
 				if (!stateProvince.isEmpty()) {
 					stateProvince = stateProvince.trim();
 				}
-				String countyDistrict = member[2];
+				String countyDistrict = member[53];
 				if (!countyDistrict.isEmpty()) {
 					countyDistrict = countyDistrict.trim();
 				}
-				String cityVillage = member[3];
+				String cityVillage = member[54];
 				if (!cityVillage.isEmpty()) {
 					cityVillage = cityVillage.trim();
 				}
