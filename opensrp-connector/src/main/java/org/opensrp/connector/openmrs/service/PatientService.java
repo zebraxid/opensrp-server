@@ -3,11 +3,13 @@ package org.opensrp.connector.openmrs.service;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.apache.commons.io.FileUtils;
 import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -38,6 +40,8 @@ public class PatientService extends OpenmrsService {
 	private static final String PATIENT_URL = "ws/rest/v1/patient";
 	
 	private static final String PATIENT_IMAGE_URL = "ws/rest/v1/patientimage/uploadimage";
+	
+	private static final String PERSON_IMAGE_URL = "ws/rest/v1/personimage";
 	
 	private static final String PATIENT_IDENTIFIER_URL = "identifier";
 	
@@ -255,13 +259,15 @@ public class PatientService extends OpenmrsService {
 				if (idobj == null) {
 					idobj = createIdentifierType(id.getKey(), id.getKey() + " - FOR THRIVE OPENSRP");
 				}
+				System.err.println("idobj:::::" + idobj);
 				jio.put("identifierType", idobj.getString("uuid"));
 				jio.put("identifier", id.getValue());
 				Object cloc = c.getAttribute("Location");
 				jio.put("location", cloc == null ? "Unknown Location" : cloc);
-				/*if(idobj.getString("")){
-				//jio.put("preferred", true);
-				}*/
+				
+				if (idobj.getString("display").equalsIgnoreCase("Patient_Identifier")) {
+					jio.put("preferred", true);
+				}
 				
 				ids.put(jio);
 			}
@@ -276,7 +282,7 @@ public class PatientService extends OpenmrsService {
 		jio.put("identifier", c.getBaseEntityId());
 		Object cloc = c.getAttribute("Location");
 		jio.put("location", cloc == null ? "Unknown Location" : cloc);
-		jio.put("preferred", true);
+		jio.put("preferred", false);
 		
 		ids.put(jio);
 		// Patient_Identifier
@@ -426,6 +432,25 @@ public class PatientService extends OpenmrsService {
 		}
 		catch (IOException ex) {
 			System.err.println(ex);
+		}
+		return response;
+	}
+	
+	public JSONObject personImageUpload(Multimedia multimedia, String uuid) {
+		JSONObject response = new JSONObject();
+		try {
+			File convFile = new File("" + multimedia.getFilePath());
+			byte[] fileContent = FileUtils.readFileToByteArray(convFile);
+			String encodedString = Base64.getEncoder().encodeToString(fileContent);
+			JSONObject personImage = new JSONObject();
+			personImage.put("person", uuid);
+			personImage.put("base64EncodedImage", encodedString);
+			response = new JSONObject(HttpUtil.post(getURL() + "/" + PERSON_IMAGE_URL + "/" + uuid + "/", "",
+			    personImage.toString(), OPENMRS_USER, OPENMRS_PWD).body());
+			
+		}
+		catch (Exception ex) {
+			ex.printStackTrace();
 		}
 		return response;
 	}

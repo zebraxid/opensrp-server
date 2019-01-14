@@ -19,12 +19,14 @@ import org.opensrp.connector.openmrs.service.PatientService;
 import org.opensrp.domain.AppStateToken;
 import org.opensrp.domain.Client;
 import org.opensrp.domain.Event;
+import org.opensrp.domain.Multimedia;
 import org.opensrp.scheduler.service.ActionService;
 import org.opensrp.scheduler.service.ScheduleService;
 import org.opensrp.service.ClientService;
 import org.opensrp.service.ConfigService;
 import org.opensrp.service.ErrorTraceService;
 import org.opensrp.service.EventService;
+import org.opensrp.service.MultimediaService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,6 +61,9 @@ public class OpenmrsSyncerListener {
 	
 	@Autowired
 	private Dhis2TrackCaptureConnector dhis2TrackCaptureConnector;
+	
+	@Autowired
+	MultimediaService multimediaService;
 	
 	@Autowired
 	public OpenmrsSyncerListener(ScheduleService opensrpScheduleService, ActionService actionService, ConfigService config,
@@ -182,6 +187,7 @@ public class OpenmrsSyncerListener {
 		JSONObject returnJsonObject = new JSONObject();// only for test code purpose
 		for (Client c : cl) {
 			try {
+				Multimedia multiMedia = multimediaService.findByCaseId(c.getBaseEntityId());
 				// FIXME This is to deal with existing records and should be
 				// removed later				
 				if (c.getAttributes().containsKey("spouseName")) {
@@ -220,6 +226,9 @@ public class OpenmrsSyncerListener {
 					
 					config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_client_by_date_updated,
 					    c.getServerVersion());
+					if (multiMedia != null) {
+						patientService.personImageUpload(multiMedia, patient.getString("uuid"));
+					}
 					
 				} else {
 					
@@ -230,6 +239,10 @@ public class OpenmrsSyncerListener {
 						clientService.addorUpdate(c, false);
 						config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_client_by_date_updated,
 						    c.getServerVersion());
+						
+						if (multiMedia != null) {
+							patientService.personImageUpload(multiMedia, patient.getString("uuid"));
+						}
 						
 					}
 					

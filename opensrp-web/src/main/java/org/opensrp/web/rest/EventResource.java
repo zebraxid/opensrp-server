@@ -187,7 +187,6 @@ public class EventResource extends RestResource<Event> {
 	@SuppressWarnings("unchecked")
 	@RequestMapping(headers = { "Accept=application/json;charset=UTF-8" }, method = POST, value = "/add")
 	public ResponseEntity<HttpStatus> save(@RequestBody String data) {
-		logger.info("Data:" + data);
 		try {
 			JSONObject syncData = new JSONObject(data);
 			if (!syncData.has("clients") && !syncData.has("events")) {
@@ -236,12 +235,11 @@ public class EventResource extends RestResource<Event> {
 								clientService.addorUpdate(client);
 							}
 							
-						} else if (eventType.equalsIgnoreCase("Followup Pregnant Status")) {
+						} else if (eventType.equalsIgnoreCase("Followup Marital Status")) {
 							
 						} else if (eventType.equalsIgnoreCase("Followup Delivery")) {
 							obs = event.getObs("", "Delivery_date");
 							Object deliveryDate = obs.getValue();
-							System.err.println("Delivery Data:::" + deliveryDate);
 							client.addAttribute("Disease_status", "Postnatal");
 							client.addAttribute("DeliveryDate", deliveryDate);
 							clientService.addorUpdate(client);
