@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.joda.time.DateTime;
 import org.json.JSONArray;
@@ -43,6 +44,9 @@ public class EncounterService extends OpenmrsService {
 	private ClientService clientService;
 	
 	private EventService eventService;
+	
+	@Autowired
+	private OpenmrsLocationService openmrsLocationService;
 	
 	@Autowired
 	public EncounterService(PatientService patientService, OpenmrsUserService userService, ClientService clientService,
@@ -328,6 +332,48 @@ public class EncounterService extends OpenmrsService {
 	}
 	
 	// TODO needs review and refactor
+	public Event makeNewEventForNewClient(Client c, String eventType, String entityType) {
+		Event event = new Event();
+		try {
+			String locationId = "";
+			String ward = c.getAddresses().get(0).getAddressField("address2");
+			org.opensrp.api.domain.Location location = null;
+			location = openmrsLocationService.getLocation(ward);
+			locationId = location.getLocationId();
+			
+			event.setServerVersion(System.currentTimeMillis());
+			event.setTeam("");
+			event.setTeamId("");
+			event.setBaseEntityId(c.getBaseEntityId());
+			event.setDateCreated(new DateTime());
+			event.setEventDate(new DateTime());
+			event.withProviderId("");
+			event.setVersion(System.currentTimeMillis());
+			event.setLocationId(locationId);
+			event.setFormSubmissionId(UUID.randomUUID().toString().trim());
+			event.withIsSendToOpenMRS("no").withEventType(eventType).withEntityType(entityType);
+			List<String> eventAddress = new ArrayList<String>();
+			eventAddress.add("BANGLADESH");
+			eventAddress.add(c.getAddresses().get(0).getAddressField("stateProvince"));
+			eventAddress.add(c.getAddresses().get(0).getAddressField("countyDistrict"));
+			eventAddress.add(c.getAddresses().get(0).getAddressField("cityVillage"));
+			eventAddress.add(c.getAddresses().get(0).getAddressField("address1"));
+			eventAddress.add(c.getAddresses().get(0).getAddressField("address2"));
+			JSONArray addressFieldValue = new JSONArray(eventAddress);
+			event.addObs(new Obs("formsubmissionField", "text", "HIE_FACILITIES", "" /*//TODO handle parent*/,
+			        addressFieldValue.toString(), ""/*comments*/, "HIE_FACILITIES"/*formSubmissionField*/));
+			
+			eventService.addorUpdateEvent(event);
+		}
+		catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return event;
+		
+	}
+	
 	public Event convertToEvent(JSONObject encounter) throws JSONException {
 		if (encounter.has("patientUuid") == false) {
 			throw new IllegalStateException("No 'patient' object found in given encounter");

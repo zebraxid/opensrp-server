@@ -319,18 +319,16 @@ public class OpenmrsSyncerListener {
 						logger.info("this event doesn't go to openMRS at baseentityid: " + uuid + ", and event type:"
 						        + e.getEventType());
 					}
-					config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_event_by_date_updated,
-					    e.getServerVersion());
+					
 				} else {
 					JSONObject eventJson = encounterService.createEncounter(e);
 					encounter = eventJson;
 					if (eventJson != null && eventJson.has("uuid")) {
 						e.addIdentifier(EncounterService.OPENMRS_UUID_IDENTIFIER_TYPE, eventJson.getString("uuid"));
 						eventService.updateEvent(e);
-						config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_event_by_date_updated,
-						    e.getServerVersion());
 					}
 				}
+				config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_event_by_date_updated, e.getServerVersion());
 			}
 			catch (Exception ex2) {
 				config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_event_by_date_updated, e.getServerVersion());

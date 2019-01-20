@@ -107,7 +107,7 @@ public class EventResource extends RestResource<Event> {
 			String serverVersion = getStringFilter(BaseEntity.SERVER_VERSIOIN, request);
 			String team = getStringFilter(TEAM, request);
 			String teamId = getStringFilter(TEAM_ID, request);
-			logger.info("synced user " + providerId + locationId + ", timestamp : " + serverVersion);
+			logger.info("synced user " + providerId + locationId + teamId + ", timestamp : " + serverVersion);
 			Long lastSyncedServerVersion = null;
 			if (serverVersion != null) {
 				lastSyncedServerVersion = Long.valueOf(serverVersion) + 1;
