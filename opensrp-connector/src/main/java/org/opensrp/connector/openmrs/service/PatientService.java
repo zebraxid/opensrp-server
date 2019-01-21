@@ -3,11 +3,13 @@ package org.opensrp.connector.openmrs.service;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.apache.commons.io.FileUtils;
 import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -39,6 +41,8 @@ public class PatientService extends OpenmrsService {
 	
 	private static final String PATIENT_IMAGE_URL = "ws/rest/v1/patientimage/uploadimage";
 	
+	private static final String PERSON_IMAGE_URL = "ws/rest/v1/personimage";
+	
 	private static final String PATIENT_IDENTIFIER_URL = "identifier";
 	
 	private static final String PERSON_ATTRIBUTE_URL = "attribute";
@@ -47,7 +51,7 @@ public class PatientService extends OpenmrsService {
 	
 	private static final String PATIENT_IDENTIFIER_TYPE_URL = "ws/rest/v1/patientidentifiertype";
 	
-	private static final String PATIENT_CREATE_RELATIONSHIP_URL = "ws/rest/v1/relationship";
+	private static final String PATIENT_RELATIONSHIP_URL = "ws/rest/v1/relationship";
 	
 	// This ID should start with opensrp and end with uid. As matched by atomefeed module`s patient service
 	public static final String OPENSRP_IDENTIFIER_TYPE = "OpenSRP Thrive UID";
@@ -95,11 +99,17 @@ public class PatientService extends OpenmrsService {
 		    OPENMRS_PWD).body());
 	}
 	
+	public JSONObject getPersonRelationShip(String uuid) throws JSONException {
+		JSONArray p = new JSONObject(HttpUtil.get(getURL() + "/" + PATIENT_RELATIONSHIP_URL, "v=full&person=" + uuid,
+		    OPENMRS_USER, OPENMRS_PWD).body()).getJSONArray("results");
+		return p.length() > 0 ? p.getJSONObject(0) : null;
+	}
+	
 	public JSONObject createPatientRelationShip(String personB, String personA, String relationshipType)
 	    throws JSONException {
 		JSONObject o = convertRaleationsShipToOpenmrsJson(personB, personA, relationshipType);
-		return new JSONObject(HttpUtil.post(getURL() + "/" + PATIENT_CREATE_RELATIONSHIP_URL, "", o.toString(),
-		    OPENMRS_USER, OPENMRS_PWD).body());
+		return new JSONObject(HttpUtil.post(getURL() + "/" + PATIENT_RELATIONSHIP_URL, "", o.toString(), OPENMRS_USER,
+		    OPENMRS_PWD).body());
 	}
 	
 	public JSONObject convertIdentifierToOpenmrsJson(String name, String description) throws JSONException {
@@ -127,6 +137,7 @@ public class PatientService extends OpenmrsService {
 	public JSONObject createPerson(Client be) throws JSONException {
 		JSONObject per = convertBaseEntityToOpenmrsJson(be);
 		String response = HttpUtil.post(getURL() + "/" + PERSON_URL, "", per.toString(), OPENMRS_USER, OPENMRS_PWD).body();
+		System.err.println("response:" + response.toString());
 		return new JSONObject(response);
 	}
 	
@@ -254,11 +265,15 @@ public class PatientService extends OpenmrsService {
 				if (idobj == null) {
 					idobj = createIdentifierType(id.getKey(), id.getKey() + " - FOR THRIVE OPENSRP");
 				}
+				System.err.println("idobj:::::" + idobj);
 				jio.put("identifierType", idobj.getString("uuid"));
 				jio.put("identifier", id.getValue());
 				Object cloc = c.getAttribute("Location");
 				jio.put("location", cloc == null ? "Unknown Location" : cloc);
-				//jio.put("preferred", true);
+				
+				if (idobj.getString("display").equalsIgnoreCase("Patient_Identifier")) {
+					jio.put("preferred", true);
+				}
 				
 				ids.put(jio);
 			}
@@ -273,12 +288,13 @@ public class PatientService extends OpenmrsService {
 		jio.put("identifier", c.getBaseEntityId());
 		Object cloc = c.getAttribute("Location");
 		jio.put("location", cloc == null ? "Unknown Location" : cloc);
-		jio.put("preferred", true);
+		jio.put("preferred", false);
 		
 		ids.put(jio);
-		
+		// Patient_Identifier
 		p.put("identifiers", ids);
 		String response = HttpUtil.post(getURL() + "/" + PATIENT_URL, "", p.toString(), OPENMRS_USER, OPENMRS_PWD).body();
+		System.err.println("response" + response);
 		return new JSONObject(response);
 	}
 	
@@ -422,6 +438,25 @@ public class PatientService extends OpenmrsService {
 		}
 		catch (IOException ex) {
 			System.err.println(ex);
+		}
+		return response;
+	}
+	
+	public JSONObject personImageUpload(Multimedia multimedia, String uuid) {
+		JSONObject response = new JSONObject();
+		try {
+			File convFile = new File("" + multimedia.getFilePath());
+			byte[] fileContent = FileUtils.readFileToByteArray(convFile);
+			String encodedString = Base64.getEncoder().encodeToString(fileContent);
+			JSONObject personImage = new JSONObject();
+			personImage.put("person", uuid);
+			personImage.put("base64EncodedImage", encodedString);
+			response = new JSONObject(HttpUtil.post(getURL() + "/" + PERSON_IMAGE_URL + "/" + uuid + "/", "",
+			    personImage.toString(), OPENMRS_USER, OPENMRS_PWD).body());
+			
+		}
+		catch (Exception ex) {
+			ex.printStackTrace();
 		}
 		return response;
 	}

@@ -21,6 +21,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.opensrp.connector.atomfeed.AtomfeedService;
 import org.opensrp.connector.openmrs.constants.OpenmrsConstants;
+import org.opensrp.connector.openmrs.service.EncounterService;
 import org.opensrp.connector.openmrs.service.OpenmrsService;
 import org.opensrp.connector.openmrs.service.PatientService;
 import org.opensrp.domain.Client;
@@ -48,6 +49,9 @@ public class PatientAtomfeed extends OpenmrsService implements EventWorker, Atom
 	private ClientService clientService;
 	
 	private EventService eventService;
+	
+	@Autowired
+	private EncounterService encounterService;
 	
 	@Autowired
 	public PatientAtomfeed(AllMarkers allMarkers, AllFailedEvents allFailedEvents,
@@ -86,15 +90,38 @@ public class PatientAtomfeed extends OpenmrsService implements EventWorker, Atom
 				throw new RuntimeException("Patient uuid specified in atomfeed content (" + content
 				        + ") did not return any patient.");
 			}
-			
 			Client c = patientService.convertToClient(p);
 			Client existing = clientService.findClient(c);
 			c.withIsSendToOpenMRS("no");
 			if (existing == null) {
+				/// back sync to opensrp APP
+				String eventType = "Household Registration";
+				String entityType = "ec_household";
 				c.setBaseEntityId(UUID.randomUUID().toString());
+				c.getAddresses().get(0).withAddressField("country", "BANGLADESH");
+				JSONObject relationship = patientService.getPersonRelationShip(p.getString("uuid"));
+				JSONObject pr = p.getJSONObject("person");
+				String age = pr.getString("age");
+				int ageYear = Integer.parseInt(age);
+				if (relationship != null) {
+					eventType = "Woman Member Registration";
+					entityType = "ec_woman";
+					if (c.getGender().equalsIgnoreCase("F") && ageYear >= 5) {
+						eventType = "Member Registration";
+						entityType = "ec_member";
+					} else if (ageYear <= 5) {
+						eventType = "Child Registration";
+						entityType = "ec_child";
+					}
+					JSONObject personB = relationship.getJSONObject("personB");
+					List<Client> clients = clientService.findAllByIdentifier("OPENMRS_UUID", personB.getString("uuid"));
+					c.addRelationship("household", clients.get(0).getBaseEntityId());
+				}
+				
 				clientService.addClient(c);
 				JSONObject newId = patientService.addThriveId(c.getBaseEntityId(), p);
 				log.info("New Client -> Posted Thrive ID back to OpenMRS : " + newId);
+				encounterService.makeNewEventForNewClient(c, eventType, entityType);
 			} else {
 				List<org.opensrp.domain.Event> events = eventService.findByBaseEntityAndEventTypeContaining(
 				    c.getBaseEntityId(), "Registration");
@@ -113,6 +140,7 @@ public class PatientAtomfeed extends OpenmrsService implements EventWorker, Atom
 			}
 		}
 		catch (JSONException e) {
+			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
 	}

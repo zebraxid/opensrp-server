@@ -32,6 +32,7 @@ import org.json.JSONObject;
 import org.opensrp.common.AllConstants.BaseEntity;
 import org.opensrp.domain.Client;
 import org.opensrp.domain.Event;
+import org.opensrp.domain.Obs;
 import org.opensrp.search.EventSearchBean;
 import org.opensrp.service.ClientService;
 import org.opensrp.service.EventService;
@@ -106,7 +107,7 @@ public class EventResource extends RestResource<Event> {
 			String serverVersion = getStringFilter(BaseEntity.SERVER_VERSIOIN, request);
 			String team = getStringFilter(TEAM, request);
 			String teamId = getStringFilter(TEAM_ID, request);
-			logger.info("synced user " + providerId + locationId + ", timestamp : " + serverVersion);
+			logger.info("synced user " + providerId + locationId + teamId + ", timestamp : " + serverVersion);
 			Long lastSyncedServerVersion = null;
 			if (serverVersion != null) {
 				lastSyncedServerVersion = Long.valueOf(serverVersion) + 1;
@@ -217,7 +218,33 @@ public class EventResource extends RestResource<Event> {
 					try {
 						event = eventService.processOutOfArea(event);
 						event.withIsSendToOpenMRS("yes");
+						
 						eventService.addorUpdateEvent(event);
+						Client client = clientService.find(event.getBaseEntityId());
+						String eventType = event.getEventType();
+						Obs obs = new Obs();
+						if (eventType.equalsIgnoreCase("Followup Pregnant Status")) {
+							obs = event.getObs("", "pregnant_status");
+							logger.info("value:" + obs.getValue());
+							String value = (String) obs.getValue();
+							if (value.equalsIgnoreCase("গর্ভবতী")) {
+								client.addAttribute("Disease_status", "Antenatal Period");
+								clientService.addorUpdate(client);
+							} else if (value.equalsIgnoreCase("প্রসব")) {
+								client.addAttribute("Disease_status", "Postnatal");
+								clientService.addorUpdate(client);
+							}
+							
+						} else if (eventType.equalsIgnoreCase("Followup Marital Status")) {
+							
+						} else if (eventType.equalsIgnoreCase("Followup Delivery")) {
+							obs = event.getObs("", "Delivery_date");
+							Object deliveryDate = obs.getValue();
+							client.addAttribute("Disease_status", "Postnatal");
+							client.addAttribute("DeliveryDate", deliveryDate);
+							clientService.addorUpdate(client);
+						}
+						
 					}
 					catch (Exception e) {
 						logger.error(
@@ -226,7 +253,6 @@ public class EventResource extends RestResource<Event> {
 					}
 				}
 			}
-			
 		}
 		catch (Exception e) {
 			logger.error(format("Sync data processing failed with exception {0}.- ", e));
