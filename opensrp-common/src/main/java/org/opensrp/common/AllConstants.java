@@ -115,6 +115,8 @@ public class AllConstants {
 
 		public static final String BIRTH_REGISTRATION = "Birth Registration";
 
+		public static final String VACCINE_SEARCH_INDENTIFIER = "identifier";
+
 	}
 
 	public static class Stock {
