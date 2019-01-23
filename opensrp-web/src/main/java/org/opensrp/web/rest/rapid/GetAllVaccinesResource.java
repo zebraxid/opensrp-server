@@ -122,6 +122,7 @@ public class GetAllVaccinesResource {
 			for (int i = 0; i < jsonArray.length(); i++) {
 				JSONObject vaccine = jsonArray.getJSONObject(i);
 				if (vaccine.getString("eventType").equals("Vaccination")) {
+					vaccineObjects = new Vaccines();
 					JSONArray eventObs = vaccine.getJSONArray("obs");
 					for (int j = 0; j < eventObs.length(); j++) {
 						JSONObject obsObject = eventObs.getJSONObject(j);
@@ -136,9 +137,10 @@ public class GetAllVaccinesResource {
 						} else if (obsObject.optString("fieldDataType").equals("calculate")) {
 							vaccineObjects.setSequence(obsObject.getJSONArray("values").get(0).toString());
 						}
+
 					}
-					vaccines.add(vaccineObjects);
 				}
+				vaccines.add(vaccineObjects);
 			}
 			return vaccines;
 		}
