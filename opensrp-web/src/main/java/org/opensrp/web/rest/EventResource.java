@@ -99,10 +99,9 @@ public class EventResource extends RestResource<Event> {
 	@ResponseBody
 	protected ResponseEntity<String> sync(HttpServletRequest request) {
 		Map<String, Object> response = new HashMap<String, Object>();
-		System.err.println("request:" + request.getRemoteUser());
+		
 		try {
 			String providerId = getStringFilter(PROVIDER_ID, request);
-			String requestProviderName = request.getRemoteUser();
 			String locationId = getStringFilter(LOCATION_ID, request);
 			String baseEntityId = getStringFilter(BASE_ENTITY_ID, request);
 			String serverVersion = getStringFilter(BaseEntity.SERVER_VERSIOIN, request);
@@ -117,10 +116,8 @@ public class EventResource extends RestResource<Event> {
 			if (limit == null || limit.intValue() == 0) {
 				limit = 25;
 			}
-			String getProviderName = "";
-			List<Event> eventList = new ArrayList<Event>();
-			List<Event> events = new ArrayList<Event>();
 			
+			List<Event> events = new ArrayList<Event>();
 			List<String> clientIds = new ArrayList<String>();
 			List<Client> clients = new ArrayList<Client>();
 			long startTime = System.currentTimeMillis();
@@ -132,21 +129,9 @@ public class EventResource extends RestResource<Event> {
 				eventSearchBean.setLocationId(locationId);
 				eventSearchBean.setBaseEntityId(baseEntityId);
 				eventSearchBean.setServerVersion(lastSyncedServerVersion);
-				eventList = eventService.findEvents(eventSearchBean, BaseEntity.SERVER_VERSIOIN, "asc", limit);
+				events = eventService.findEvents(eventSearchBean, BaseEntity.SERVER_VERSIOIN, "asc", limit);
 				logger.info("fetching events took: " + (System.currentTimeMillis() - startTime));
-				logger.info("Initial Size:" + eventList.size());
-				if (!eventList.isEmpty()) {
-					for (Event event : eventList) {
-						getProviderName = event.getProviderId();
-						logger.info("getProviderName:" + getProviderName + ": request provider name" + requestProviderName);
-						if (getProviderName.isEmpty()) {
-							events.add(event);
-						} else if (!getProviderName.equalsIgnoreCase(requestProviderName)) {} else {
-							events.add(event);
-						}
-					}
-					
-					logger.info("After cleaning Size:" + events.size());
+				if (!events.isEmpty()) {
 					for (Event event : events) {
 						if (event.getBaseEntityId() != null && !event.getBaseEntityId().isEmpty()
 						        && !clientIds.contains(event.getBaseEntityId())) {
