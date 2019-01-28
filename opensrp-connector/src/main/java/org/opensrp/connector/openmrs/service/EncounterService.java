@@ -174,21 +174,41 @@ public class EncounterService extends OpenmrsService {
 		//observations for Followup Disease Female and Male
 		JSONArray obar = null;
 		if (e.getEventType().equalsIgnoreCase("Followup Disease Female")) {
-			obar = createDiseaseJSON(dummnyArray);
+			//pass list of obs instead of dummyArray
+			//createDiseaseJSON needs massive change
+			obar = createDiseaseJSON(e, dummnyArray);
 		}
 		enc.put("observations", obar);
 		return enc;
 	}
 
-	private JSONArray createDiseaseJSON(JSONArray dummnyArray)
+	private JSONArray createDiseaseJSON(Event e, JSONArray dummnyArray)
 			throws JSONException {
 		JSONArray obar;
 		obar = new JSONArray();
 		JSONObject observationObject1 = new JSONObject();
 		JSONObject observationObject2 = new JSONObject();
 		JSONObject observationObject3 = new JSONObject();
+		
 
-		JSONObject conceptObject = new JSONObject();
+		Client client = clientService.getByBaseEntityId(e.getBaseEntityId());
+		boolean hasDisease =false;
+		if(client.getAttributes().containsKey("Disease_status")){
+			hasDisease = true;
+		}
+		// added on january 28
+		HashMap<String, Object> commonValuesMap = new HashMap<String, Object>();
+		commonValuesMap.put("concept_uuid", "60155ecd-9084-410f-ab44-17b4d05f216d");
+		commonValuesMap.put("concept_name","স্বাস্থ্য সেবা দেওয়া হয়েছে");
+		commonValuesMap.put("formNamespace", "Bahmni");
+		commonValuesMap.put("formFieldPath", "সাধারন রোগীর সেবা");
+		commonValuesMap.put("voided", false);
+		commonValuesMap.put("interpretation", JSONObject.NULL);
+		commonValuesMap.put("groupMembers", dummnyArray);
+		commonValuesMap.put("inactive", false);
+		observationObject1 = setCommonObservationInfo(commonValuesMap);
+		//end: added on january 28
+		/*JSONObject conceptObject = new JSONObject();
 		String uuid = "60155ecd-9084-410f-ab44-17b4d05f216d";
 		String name = "স্বাস্থ্য সেবা দেওয়া হয়েছে";
 		conceptObject.put("uuid", uuid);
@@ -196,21 +216,32 @@ public class EncounterService extends OpenmrsService {
 		observationObject1.put("concept", conceptObject);
 
 		observationObject1.put("formNamespace", "Bahmni");
-		observationObject1.put("formFieldPath", "");
+		observationObject1.put("formFieldPath", "সাধারন রোগীর সেবা");
 		observationObject1.put("voided", false);
 		observationObject1.put("interpretation", JSONObject.NULL);
 		observationObject1.put("groupMembers", dummnyArray);
-		observationObject1.put("inactive", false);
+		observationObject1.put("inactive", false);*/
 
 		JSONObject valueObject = new JSONObject();
 		JSONObject nameObject = new JSONObject();
-		nameObject.put("display", "");
-		nameObject.put("uuid", "");
-		nameObject.put("name", "");
-		nameObject.put("locale", "");
-		nameObject.put("localePreferred", "");
-		nameObject.put("conceptNameType", "");
-		nameObject.put("links", "");
+		if(hasDisease){
+			nameObject.put("display", "হ্যাঁ");
+			nameObject.put("uuid", "a2065636-5326-40f5-aed6-0cc2cca81ccc");
+			nameObject.put("name", "হ্যাঁ");
+			nameObject.put("locale", "en");
+			nameObject.put("localePreferred", true);
+			nameObject.put("conceptNameType", JSONObject.NULL);
+			nameObject.put("links", dummnyArray);
+		}else{
+			nameObject.put("display", "না");
+			nameObject.put("uuid", "b497171e-0410-4d8d-bbd4-7e1a8f8b504e");
+			nameObject.put("name", "না");
+			nameObject.put("locale", "en");
+			nameObject.put("localePreferred", true);
+			nameObject.put("conceptNameType", JSONObject.NULL);
+			nameObject.put("links", dummnyArray);
+		}
+		
 		valueObject.put("name", nameObject);
 		valueObject.put("uuid", "");
 		observationObject1.put("value", valueObject);
@@ -240,6 +271,30 @@ public class EncounterService extends OpenmrsService {
 			//ss}
 		//}
 		return obar;
+	}
+	
+	public JSONObject setCommonObservationInfo(HashMap<String, Object> commonValuesMap) throws JSONException {
+		JSONObject observationObject = new JSONObject();
+		JSONObject conceptObject = new JSONObject();
+		String uuid = (String) commonValuesMap.get("concept_uuid");
+		String name = (String) commonValuesMap.get("concept_name");
+		conceptObject.put("uuid", uuid);
+		conceptObject.put("name", name);
+		observationObject.put("concept", conceptObject);
+
+		String formNamespace = (String) commonValuesMap.get("formNamespace");
+		observationObject.put("formNamespace", formNamespace);
+		String formFieldPath = (String) commonValuesMap.get("formFieldPath");
+		observationObject.put("formFieldPath", formFieldPath);
+		boolean voided = (boolean) commonValuesMap.get("voided");
+		observationObject.put("voided", voided);
+		Object interpretation = commonValuesMap.get("interpretation");
+		observationObject.put("interpretation", interpretation);
+		JSONArray groupMembers = (JSONArray)commonValuesMap.get("groupMembers");
+		observationObject.put("groupMembers", groupMembers);
+		boolean inactive = (boolean) commonValuesMap.get("inactive");
+		observationObject.put("inactive", inactive);
+		return observationObject;
 	}
 	
 	public JSONObject buildUpdateEncounter(Event e) throws JSONException {
