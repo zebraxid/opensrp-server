@@ -410,7 +410,7 @@ public class DataMigrationController {
 				if (!phoneNumber.isEmpty()) {
 					phoneNumber = phoneNumber.trim();
 				}
-				client.withFirstName(firstName).withLastName("").withGender("M").withBirthdate(new DateTime(), false)
+				client.withFirstName(firstName).withLastName("").withGender("H").withBirthdate(new DateTime(), false)
 				        .withDeathdate(null, false);
 				client.setServerVersion(System.currentTimeMillis());
 				/// attribute

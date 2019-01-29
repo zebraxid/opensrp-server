@@ -172,7 +172,8 @@ public class UniqueIdController {
 		HttpResponse op = HttpUtil.get(opensrpWebUurl + "/rest/api/v1/health-id/reserved", "", opensrpWebUsername,
 		    opensrpWebPassword);
 		JSONObject jsonObj = new JSONObject(op.body());
-		return new ResponseEntity<>(jsonObj.getJSONObject("map").toString(), HttpStatus.OK);
+		logger.info("health id fetched :" + jsonObj.length());
+		return new ResponseEntity<>(jsonObj.toString(), HttpStatus.OK);
 	}
 	
 }
