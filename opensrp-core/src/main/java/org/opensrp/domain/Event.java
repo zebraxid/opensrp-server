@@ -88,6 +88,9 @@ public class Event extends BaseDataObject {
 	@JsonProperty
 	private String isSendToOpenMRS;
 	
+	@JsonProperty
+	private String encounterCreator;
+	
 	public Event() {
 		this.version = System.currentTimeMillis();
 	}
@@ -375,6 +378,15 @@ public class Event extends BaseDataObject {
 		}
 		obs.add(observation);
 		return this;
+	}
+	
+	public Event withEncounterCreator(String creator) {
+		this.encounterCreator = creator;
+		return this;
+	}
+	
+	public String getEncounterCreator() {
+		return encounterCreator;
 	}
 	
 	public String getIsSendToOpenMRS() {
