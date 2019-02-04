@@ -142,7 +142,7 @@ public class EncounterService extends OpenmrsService {
 	private JSONObject createEncounterJson(Event e) throws JSONException {
 		JSONObject pt = patientService.getPatientByIdentifier(e.getBaseEntityId());
 		Client client = clientService.getByBaseEntityId(e.getBaseEntityId());
-		JSONObject enc = getStaticJsonObjects("normalDisease");
+		JSONObject enc = getStaticJsonObject("normalDisease");
 		JSONObject pr = userService.getPersonByUser(e.getProviderId());
 		JSONArray dummnyArray = new JSONArray();
 		
@@ -198,13 +198,14 @@ public class EncounterService extends OpenmrsService {
 		}
 
 		if(hasDisease){
-			//to do
+			obar.put(getStaticJsonObject("healthCareGivenYes"));
+			obar.put(getStaticJsonObject("highBloodPressure"));
+			obar.put(getStaticJsonObject("diabetes"));
+			obar.put(getStaticJsonObject("tuberculosis"));
+			obar.put(getStaticJsonObject("otherSymptoms"));
 		}else{
-			//to do
+			obar.put(getStaticJsonObject("healthCareGivenNo"));
 		}
-		obar.put(getStaticJsonObjects("healthCareGivenYes"));
-		obar.put(getStaticJsonObjects("highBloodPressure"));
-		obar.put(getStaticJsonObjects("diabetes"));
 		
 		return obar;
 	}
@@ -482,17 +483,23 @@ public class EncounterService extends OpenmrsService {
 	}
 	
 	
-	public JSONObject getStaticJsonObjects(String nameOfJSONObject) {
+	public JSONObject getStaticJsonObject(String nameOfJSONObject) {
 		JSONObject normalDisease = null;
 		JSONObject objectToReturn = null;
 		JSONObject diabetes = null;
 		JSONObject highBloodPressure = null;
 		JSONObject healthCareGivenYes = null;
+		JSONObject healthCareGivenNo = null;
+		JSONObject tuberculosis = null;
+		JSONObject otherSymptoms = null;
 		try {
 			normalDisease = new JSONObject("{\"encounterTypeUuid\":\"81852aee-3f10-11e4-adec-0800271c1b75\",\"visitType\":\"Community clinic service\",\"patientUuid\":\"391ec594-5381-4075-9b1d-7608ed19332d\",\"locationUuid\":\"ec9bfa0e-14f2-440d-bf22-606605d021b2\",\"providers\":[{\"uuid\":\"313c8507-9821-40e4-8a70-71a5c7693d72\"}]}");
 			diabetes = new JSONObject("{\"concept\":{\"uuid\":\"a725f0d7-067b-492d-a450-4ce7e535c371\",\"name\":\"Possible_Disease\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"সাধারন রোগীর সেবা.19/31-0\",\"voided\":false,\"value\":{\"uuid\":\"1e3f1870-b252-4808-8edb-f86fad050ebd\",\"name\":{\"display\":\"Diabetes\",\"uuid\":\"befce65b-9e80-45ec-b8b7-05234cd5cb9c\",\"name\":\"Diabetes\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"resourceVersion\":\"1.9\"},\"displayString\":\"Diabetes\",\"resourceVersion\":\"2.0\",\"translationKey\":\"ডায়াবেটিস_31\"},\"inactive\":false,\"groupMembers\":[]}");
 			healthCareGivenYes = new JSONObject("{\"concept\":{\"uuid\":\"f2671938-ffc5-4547-91c0-fcd28b6e29b4\",\"name\":\"Provide_Health_Service\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"সাধারন রোগীর সেবা.19/43-0\",\"voided\":false,\"value\":{\"uuid\":\"a2065636-5326-40f5-aed6-0cc2cca81ccc\",\"name\":{\"display\":\"Yes\",\"uuid\":\"b5a4d83a-7158-4477-b81c-71144f5a7232\",\"name\":\"Yes\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"resourceVersion\":\"1.9\"},\"displayString\":\"Yes\",\"resourceVersion\":\"2.0\",\"translationKey\":\"হ্যাঁ_43\"},\"interpretation\":null,\"inactive\":false,\"groupMembers\":[]}");
 			highBloodPressure = new JSONObject("{\"concept\":{\"uuid\":\"a725f0d7-067b-492d-a450-4ce7e535c371\",\"name\":\"Possible_Disease\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"সাধারন রোগীর সেবা.19/31-0\",\"voided\":false,\"value\":{\"uuid\":\"c2bb6edf-18cb-4c7f-ad91-7c8dd561a437\",\"name\":{\"display\":\"High Blood Pressure\",\"uuid\":\"c2bb6edf-18cb-4c7f-ad91-7c8dd561a437\",\"name\":\"High Blood Pressure\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"resourceVersion\":\"1.9\"},\"displayString\":\"High Blood Pressure\",\"resourceVersion\":\"2.0\",\"translationKey\":\"উচ্চ_রক্তচাপ_31\"},\"inactive\":false,\"groupMembers\":[]}");
+			healthCareGivenNo = new JSONObject("{\"groupMembers\":[],\"inactive\":false,\"interpretation\":null,\"concept\":{\"name\":\"Provide_Health_Service\",\"uuid\":\"f2671938-ffc5-4547-91c0-fcd28b6e29b4\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"সাধারন রোগীর সেবা.19/43-0\",\"voided\":false,\"value\":{\"translationKey\":\"না_43\",\"displayString\":\"No\",\"resourceVersion\":\"2.0\",\"name\":{\"display\":\"No\",\"resourceVersion\":\"1.9\",\"name\":\"No\",\"localePreferred\":true,\"locale\":\"en\",\"uuid\":\"17432139-eeca-4cf5-b0fd-00a6a4f83395\",\"conceptNameType\":null},\"uuid\":\"b497171e-0410-4d8d-bbd4-7e1a8f8b504e\"}}");
+			tuberculosis = new JSONObject("{\"groupMembers\":[],\"inactive\":false,\"concept\":{\"name\":\"Possible_Disease\",\"uuid\":\"a725f0d7-067b-492d-a450-4ce7e535c371\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"সাধারন রোগীর সেবা.19/31-0\",\"voided\":false,\"value\":{\"translationKey\":\"যক্ষ্মা_31\",\"displayString\":\"Tuberculosis\",\"resourceVersion\":\"2.0\",\"name\":{\"display\":\"Tuberculosis\",\"resourceVersion\":\"1.9\",\"name\":\"Tuberculosis\",\"localePreferred\":true,\"locale\":\"en\",\"uuid\":\"d1183ae6-825f-478b-abd7-225d2a234da5\",\"conceptNameType\":null},\"uuid\":\"0622f52f-0c95-41c1-ab5d-ee9bc335c839\"}}");
+			otherSymptoms = new JSONObject("{\"groupMembers\":[],\"inactive\":false,\"concept\":{\"name\":\"রোগের লক্ষণ\",\"uuid\":\"2cee2850-1a33-4a22-b933-35fbe6409c0e\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"সাধারন রোগীর সেবা.19/29-0\",\"voided\":false,\"value\":{\"translationKey\":\"অন্যান্য_লক্ষন_29\",\"displayString\":\"Other_Symptoms\",\"resourceVersion\":\"2.0\",\"name\":{\"display\":\"Other_Symptoms\",\"resourceVersion\":\"1.9\",\"name\":\"Other_Symptoms\",\"localePreferred\":true,\"locale\":\"en\",\"uuid\":\"ea20fe61-50f9-4c75-aa1f-9d4490d16513\",\"conceptNameType\":null},\"uuid\":\"37e04caf-e1cb-4438-bc55-3dbfa19cc14a\"}}");
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -502,10 +509,16 @@ public class EncounterService extends OpenmrsService {
 			objectToReturn = normalDisease;
 		}else if(nameOfJSONObject.equals("healthCareGivenYes")){
 			objectToReturn = healthCareGivenYes;
+		}else if(nameOfJSONObject.equals("healthCareGivenNo")){
+			objectToReturn = healthCareGivenNo;
 		}else if(nameOfJSONObject.equals("highBloodPressure")){
 			objectToReturn = highBloodPressure;
 		}else if(nameOfJSONObject.equals("diabetes")){
 			objectToReturn = diabetes;
+		}else if(nameOfJSONObject.equals("tuberculosis")){
+			objectToReturn = tuberculosis;
+		}else if(nameOfJSONObject.equals("otherSymptoms")){
+			objectToReturn = otherSymptoms;
 		}
 		return objectToReturn;
 	}
