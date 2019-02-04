@@ -1,6 +1,7 @@
 package org.opensrp.connector.openmrs.service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -191,20 +192,38 @@ public class EncounterService extends OpenmrsService {
 	private JSONArray createDiseaseJSON(Event e, JSONArray dummnyArray)
 			throws JSONException {
 		JSONArray obar= new JSONArray();
+		List<String> diseaseList = null;
 		//JSONObject observationObject1 = new JSONObject();
 
 		Client client = clientService.getByBaseEntityId(e.getBaseEntityId());
 		boolean hasDisease =false;
-		if(client.getAttributes().containsKey("Disease_status")){
-			hasDisease = true;
+		if(client.getAttributes().containsKey("has_disease")){
+			String hasDiseaseStr = (String)client.getAttributes().get("has_disease");
+			if(hasDiseaseStr.equals("হ্যাঁ")){
+				hasDisease = true;
+			}
+		}
+		
+		if(client.getAttributes().containsKey("Disease_status") && hasDisease == true){
+			String diseaseString = (String)client.getAttributes().get("Disease_status");
+			diseaseList = Arrays.asList(diseaseString.split(","));
 		}
 
 		if(hasDisease){
 			obar.put(getStaticJsonObject("healthCareGivenYes"));
-			obar.put(getStaticJsonObject("highBloodPressure"));
-			obar.put(getStaticJsonObject("diabetes"));
-			obar.put(getStaticJsonObject("tuberculosis"));
-			obar.put(getStaticJsonObject("otherSymptoms"));
+			if(diseaseList!=null){
+				for(String diseaseName : diseaseList){
+					if(diseaseName.equals("High Blood Pressure")){
+						obar.put(getStaticJsonObject("highBloodPressure"));
+					}else if(diseaseName.equals("Diabetes")){
+						obar.put(getStaticJsonObject("diabetes"));
+					}else if(diseaseName.equals("Tuberculosis")){
+						obar.put(getStaticJsonObject("tuberculosis"));
+					}else if(diseaseName.equals("Other_Symptoms")){
+						obar.put(getStaticJsonObject("otherSymptoms"));
+					}
+				}
+			}
 		}else{
 			obar.put(getStaticJsonObject("healthCareGivenNo"));
 		}
