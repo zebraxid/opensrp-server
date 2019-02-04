@@ -219,7 +219,7 @@ public class EncounterService extends OpenmrsService {
 						obar.put(getStaticJsonObject("diabetes"));
 					}else if(diseaseName.equals("Tuberculosis")){
 						obar.put(getStaticJsonObject("tuberculosis"));
-					}else if(diseaseName.equals("Other_Symptoms")){
+					}else if(diseaseName.equals("Others_member_disease")){
 						obar.put(getStaticJsonObject("otherSymptoms"));
 					}
 				}
