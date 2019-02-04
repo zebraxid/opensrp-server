@@ -146,7 +146,8 @@ public class EncounterService extends OpenmrsService {
 		JSONObject pr = userService.getPersonByUser(e.getProviderId());
 		
 		//Main JSON Structure
-		enc.put("encounterDatetime", OPENMRS_DATE.format(e.getEventDate().toDate()));
+		//enc.put("encounterDatetime", OPENMRS_DATE.format(e.getEventDate().toDate()));
+		enc.put("encounterDatetime", JSONObject.NULL);
 		// patient must be existing in OpenMRS before it submits an encounter. if it doesnot it would throw NPE
 		enc.put("patientUuid", pt.getString("uuid"));
 		enc.put("locationUuid", e.getLocationId());
@@ -155,7 +156,8 @@ public class EncounterService extends OpenmrsService {
 		//enc.put("encounterType", e.getEventType());
 		//TODO enc.put("encounterTypeUuid", e.getEventType());
 		JSONObject dummbyObject = new JSONObject();
-		enc.put("context", dummbyObject);
+		//enc.put("context", dummbyObject);
+		enc.put("context", JSONObject.NULL);
 		enc.put("encounterUuid", JSONObject.NULL);
 		enc.put("visitUuid", JSONObject.NULL);
 		enc.put("disposition", JSONObject.NULL);
@@ -168,8 +170,8 @@ public class EncounterService extends OpenmrsService {
 		providerUUID.put("uuid", "313c8507-9821-40e4-8a70-71a5c7693d72");
 		prov.put(providerUUID);
 		enc.put("providers", prov);
-		enc.put("visitType", "OPD");
-		enc.put("encounterTypeUuid", "");
+		enc.put("visitType", "Community clinic service");
+		enc.put("encounterTypeUuid", "81852aee-3f10-11e4-adec-0800271c1b75");
 		dummbyObject.put("mdrtbSpecimen", dummnyArray);
 		enc.put("extensions", dummbyObject);
 
@@ -186,98 +188,29 @@ public class EncounterService extends OpenmrsService {
 
 	private JSONArray createDiseaseJSON(Event e, JSONArray dummnyArray)
 			throws JSONException {
-		JSONArray obar;
-		obar = new JSONArray();
-		JSONObject observationObject1 = new JSONObject();
-		JSONObject observationObject2 = new JSONObject();
-		JSONObject observationObject3 = new JSONObject();
-		
+		JSONArray obar= new JSONArray();
+		//JSONObject observationObject1 = new JSONObject();
 
 		Client client = clientService.getByBaseEntityId(e.getBaseEntityId());
 		boolean hasDisease =false;
 		if(client.getAttributes().containsKey("Disease_status")){
 			hasDisease = true;
 		}
-		// added on january 28: common values will be added on all observations
-		HashMap<String, Object> commonValuesMap = new HashMap<String, Object>();
-		commonValuesMap.put("concept_uuid", "f2671938-ffc5-4547-91c0-fcd28b6e29b4");
-		commonValuesMap.put("concept_name","Provide_Health_Service");
-		commonValuesMap.put("formNamespace", "Bahmni");
-		commonValuesMap.put("formFieldPath", "সাধারন রোগীর সেবা");
-		commonValuesMap.put("voided", false);
-		commonValuesMap.put("interpretation", JSONObject.NULL);
-		commonValuesMap.put("groupMembers", dummnyArray);
-		commonValuesMap.put("inactive", false);
-		observationObject1 = setCommonObservationInfo(commonValuesMap);
-		//end: added on january 28
-		/*JSONObject conceptObject = new JSONObject();
-		String uuid = "60155ecd-9084-410f-ab44-17b4d05f216d";
-		String name = "স্বাস্থ্য সেবা দেওয়া হয়েছে";
-		conceptObject.put("uuid", uuid);
-		conceptObject.put("name", name);
-		observationObject1.put("concept", conceptObject);
 
-		observationObject1.put("formNamespace", "Bahmni");
-		observationObject1.put("formFieldPath", "সাধারন রোগীর সেবা");
-		observationObject1.put("voided", false);
-		observationObject1.put("interpretation", JSONObject.NULL);
-		observationObject1.put("groupMembers", dummnyArray);
-		observationObject1.put("inactive", false);*/
-
-		JSONObject valueObject = new JSONObject();
-		JSONObject nameObject = new JSONObject();
 		if(hasDisease){
-			nameObject.put("display", "Yes");
-			nameObject.put("uuid", "a2065636-5326-40f5-aed6-0cc2cca81ccc");
-			nameObject.put("name", "Yes");
-			nameObject.put("locale", "en");
-			nameObject.put("localePreferred", true);
-			nameObject.put("conceptNameType", JSONObject.NULL);
-			nameObject.put("links", dummnyArray);
+			//to do
 		}else{
-			nameObject.put("display", "No");
-			nameObject.put("uuid", "b497171e-0410-4d8d-bbd4-7e1a8f8b504e");
-			nameObject.put("name", "No");
-			nameObject.put("locale", "en");
-			nameObject.put("localePreferred", true);
-			nameObject.put("conceptNameType", JSONObject.NULL);
-			nameObject.put("links", dummnyArray);
+			//to do
 		}
+		obar.put(getStaticJsonObjects("healthCareGivenYes"));
+		obar.put(getStaticJsonObjects("highBloodPressure"));
+		obar.put(getStaticJsonObjects("diabetes"));
 		
-		valueObject.put("name", nameObject);
-		valueObject.put("uuid", "");
-		observationObject1.put("value", valueObject);
-		obar.put(observationObject1);
-		observationObject2 = setCommonObservationInfo(commonValuesMap);
-		observationObject3 = setCommonObservationInfo(commonValuesMap);
-		//obar.put(observationObject2);
-		//obar.put(observationObject3);
-		//JSONObject testObs = new JSONObject("{\r\n      \"concept\": {\r\n        \"uuid\": \"f8ca5471-4e76-4737-8ea4-7555f6d5af0f\",\r\n        \"name\": \"Blood Group\"\r\n      },\r\n      \"formNamespace\": \"Bahmni\",\r\n      \"formFieldPath\": \"test2.1/1-0\",\r\n      \"voided\": false,\r\n      \"value\": \"A+\",\r\n      \"interpretation\": null,\r\n      \"inactive\": false,\r\n      \"groupMembers\": []\r\n    },"); 
-		//obar.put(testObs);
-		//List<Obs> ol = e.getObs();
-		//logger.info("observationssssssssssssssss: " + ol.size() + " object String: " + ol.get(0).toString());
-		//for (Obs obs : ol) {
-			//if (obs.getFieldType().equalsIgnoreCase("concept")) {
-				/*JSONObject conceptObject = new JSONObject();
-				conceptObject.put("uuid", "");
-				conceptObject.put("name", "");
-				observationObject.put("concept", conceptObject);*/
-
-				//observationObject.put("value", client.getAttribute(""));
-				/*observationObject.put("formNamespace", obs.getFieldType());
-				observationObject.put("formFieldPath", obs.getFieldCode());
-				observationObject.put("voided", obs.getFieldDataType());
-				observationObject.put("inactive", obs.getParentCode());
-				observationObject.put("groupMembers", obs.getValues());
-				observationObject.put("interpretation", obs.getHumanReadableValues());
-
-				obar.put(observationObject);*/
-			//ss}
-		//}
 		return obar;
 	}
 	
-	public JSONObject setCommonObservationInfo(HashMap<String, Object> commonValuesMap) throws JSONException {
+// not needed if we put static json object in observation : February 4, 2019
+/*	public JSONObject setCommonObservationInfo(HashMap<String, Object> commonValuesMap) throws JSONException {
 		JSONObject observationObject = new JSONObject();
 		JSONObject conceptObject = new JSONObject();
 		String uuid = (String) commonValuesMap.get("concept_uuid");
@@ -299,7 +232,7 @@ public class EncounterService extends OpenmrsService {
 		boolean inactive = (boolean) commonValuesMap.get("inactive");
 		observationObject.put("inactive", inactive);
 		return observationObject;
-	}
+	}*/
 	
 	public JSONObject buildUpdateEncounter(Event e) throws JSONException {
 		String openmrsuuid = e.getIdentifier(OPENMRS_UUID_IDENTIFIER_TYPE);
@@ -549,15 +482,26 @@ public class EncounterService extends OpenmrsService {
 	}
 	
 	
-	public void getStaticJsonObjects() {
-		JSONObject fever = null;
+	public JSONObject getStaticJsonObjects(String nameOfJSONObject) {
+		JSONObject objectToReturn = null;
 		JSONObject diabetes = null;
+		JSONObject highBloodPressure = null;
+		JSONObject healthCareGivenYes = null;
 		try {
-			fever = new JSONObject("{\"concept\":{\"uuid\":\"2cee2850-1a33-4a22-b933-35fbe6409c0e\",\"name\":\"Disease_Symptoms_General_Patient\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"সাধারন রোগীর সেবা.19/29-0\",\"voided\":false,\"value\":{\"uuid\":\"1f0f8ec6-4e15-11e4-8a57-0800271c1b75\",\"name\":{\"display\":\"Fever\",\"uuid\":\"d922012d-78cc-468c-9839-52f7f460f51e\",\"name\":\"Fever\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"links\":[{\"rel\":\"self\",\"uri\":\"http://192.168.19.44/openmrs/ws/rest/v1/concept/1f0f8ec6-4e15-11e4-8a57-0800271c1b75/name/d922012d-78cc-468c-9839-52f7f460f51e\"},{\"rel\":\"full\",\"uri\":\"http://192.168.19.44/openmrs/ws/rest/v1/concept/1f0f8ec6-4e15-11e4-8a57-0800271c1b75/name/d922012d-78cc-468c-9839-52f7f460f51e?v=full\"}],\"resourceVersion\":\"1.9\"},\"names\":[{\"display\":\"Fever\",\"uuid\":\"ccd90688-18b4-407c-affa-f6d529fbc036\",\"name\":\"Fever\",\"locale\":\"en\",\"localePreferred\":false,\"conceptNameType\":\"SHORT\",\"links\":[{\"rel\":\"self\",\"uri\":\"http://192.168.19.44/openmrs/ws/rest/v1/concept/1f0f8ec6-4e15-11e4-8a57-0800271c1b75/name/ccd90688-18b4-407c-affa-f6d529fbc036\"},{\"rel\":\"full\",\"uri\":\"http://192.168.19.44/openmrs/ws/rest/v1/concept/1f0f8ec6-4e15-11e4-8a57-0800271c1b75/name/ccd90688-18b4-407c-affa-f6d529fbc036?v=full\"}],\"resourceVersion\":\"1.9\"},{\"display\":\"Fever\",\"uuid\":\"1f102ac0-4e15-11e4-8a57-0800271c1b75\",\"name\":\"Fever\",\"locale\":\"en\",\"localePreferred\":false,\"conceptNameType\":\"FULLY_SPECIFIED\",\"links\":[{\"rel\":\"self\",\"uri\":\"http://192.168.19.44/openmrs/ws/rest/v1/concept/1f0f8ec6-4e15-11e4-8a57-0800271c1b75/name/1f102ac0-4e15-11e4-8a57-0800271c1b75\"},{\"rel\":\"full\",\"uri\":\"http://192.168.19.44/openmrs/ws/rest/v1/concept/1f0f8ec6-4e15-11e4-8a57-0800271c1b75/name/1f102ac0-4e15-11e4-8a57-0800271c1b75?v=full\"}],\"resourceVersion\":\"1.9\"},{\"display\":\"Fever\",\"uuid\":\"d922012d-78cc-468c-9839-52f7f460f51e\",\"name\":\"Fever\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"links\":[{\"rel\":\"self\",\"uri\":\"http://192.168.19.44/openmrs/ws/rest/v1/concept/1f0f8ec6-4e15-11e4-8a57-0800271c1b75/name/d922012d-78cc-468c-9839-52f7f460f51e\"},{\"rel\":\"full\",\"uri\":\"http://192.168.19.44/openmrs/ws/rest/v1/concept/1f0f8ec6-4e15-11e4-8a57-0800271c1b75/name/d922012d-78cc-468c-9839-52f7f460f51e?v=full\"}],\"resourceVersion\":\"1.9\"}],\"displayString\":\"Fever\",\"resourceVersion\":\"2.0\",\"translationKey\":\"Fever_29\"},\"inactive\":false,\"groupMembers\":[]}");
-			diabetes = new JSONObject();
+			diabetes = new JSONObject("{\"concept\":{\"uuid\":\"a725f0d7-067b-492d-a450-4ce7e535c371\",\"name\":\"Possible_Disease\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"সাধারন রোগীর সেবা.19/31-0\",\"voided\":false,\"value\":{\"uuid\":\"1e3f1870-b252-4808-8edb-f86fad050ebd\",\"name\":{\"display\":\"Diabetes\",\"uuid\":\"befce65b-9e80-45ec-b8b7-05234cd5cb9c\",\"name\":\"Diabetes\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"resourceVersion\":\"1.9\"},\"displayString\":\"Diabetes\",\"resourceVersion\":\"2.0\",\"translationKey\":\"ডায়াবেটিস_31\"},\"inactive\":false,\"groupMembers\":[]}");
+			healthCareGivenYes = new JSONObject("{\"concept\":{\"uuid\":\"f2671938-ffc5-4547-91c0-fcd28b6e29b4\",\"name\":\"Provide_Health_Service\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"সাধারন রোগীর সেবা.19/43-0\",\"voided\":false,\"value\":{\"uuid\":\"a2065636-5326-40f5-aed6-0cc2cca81ccc\",\"name\":{\"display\":\"Yes\",\"uuid\":\"b5a4d83a-7158-4477-b81c-71144f5a7232\",\"name\":\"Yes\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"resourceVersion\":\"1.9\"},\"displayString\":\"Yes\",\"resourceVersion\":\"2.0\",\"translationKey\":\"হ্যাঁ_43\"},\"interpretation\":null,\"inactive\":false,\"groupMembers\":[]}");
+			highBloodPressure = new JSONObject("{\"concept\":{\"uuid\":\"a725f0d7-067b-492d-a450-4ce7e535c371\",\"name\":\"Possible_Disease\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"সাধারন রোগীর সেবা.19/31-0\",\"voided\":false,\"value\":{\"uuid\":\"c2bb6edf-18cb-4c7f-ad91-7c8dd561a437\",\"name\":{\"display\":\"High Blood Pressure\",\"uuid\":\"c2bb6edf-18cb-4c7f-ad91-7c8dd561a437\",\"name\":\"High Blood Pressure\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"resourceVersion\":\"1.9\"},\"displayString\":\"High Blood Pressure\",\"resourceVersion\":\"2.0\",\"translationKey\":\"উচ্চ_রক্তচাপ_31\"},\"inactive\":false,\"groupMembers\":[]}");
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		if(nameOfJSONObject.equals("healthCareGivenYes")){
+			objectToReturn = healthCareGivenYes;
+		}else if(nameOfJSONObject.equals("highBloodPressure")){
+			objectToReturn = highBloodPressure;
+		}else if(nameOfJSONObject.equals("diabetes")){
+			objectToReturn = diabetes;
+		}
+		return objectToReturn;
 	}
 }
