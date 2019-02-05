@@ -549,6 +549,13 @@ public class EncounterService extends OpenmrsService {
 		JSONObject otherPossibleDisease = null;
 		JSONObject unionSubCenter = null;
 		JSONObject unionFamilyWelfareCenter = null;
+		JSONObject unionHealthAndFamilyWelfareCenter = null;
+		JSONObject metarnalAndChildWelfareCenter = null;
+		JSONObject tenBedHospital = null;
+		JSONObject twentyBedHospital = null;
+		JSONObject upazilaHealthComplex = null;
+		JSONObject medicalCollegeAndHospital = null;
+		JSONObject otherHealthFacility = null;
 		try {
 			//normalDisease = new JSONObject("{\"encounterTypeUuid\":\"81852aee-3f10-11e4-adec-0800271c1b75\",\"visitType\":\"Community clinic service\",\"patientUuid\":\"391ec594-5381-4075-9b1d-7608ed19332d\",\"locationUuid\":\"ec9bfa0e-14f2-440d-bf22-606605d021b2\",\"providers\":[{\"uuid\":\"313c8507-9821-40e4-8a70-71a5c7693d72\"}]}");
 			normalDisease = new JSONObject("{\"encounterTypeUuid\":\"81852aee-3f10-11e4-adec-0800271c1b75\",\"providers\":[{\"uuid\":\"313c8507-9821-40e4-8a70-71a5c7693d72\"}],\"visitType\":\"Community clinic service\"}");
@@ -583,6 +590,20 @@ public class EncounterService extends OpenmrsService {
 			objectToReturn = unionSubCenter;
 		}else if(nameOfJSONObject.equals("unionFamilyWelfareCenter")){
 			objectToReturn = unionFamilyWelfareCenter;
+		}else if(nameOfJSONObject.equals("unionHealthAndFamilyWelfareCenter")){
+			objectToReturn = unionHealthAndFamilyWelfareCenter;
+		}else if(nameOfJSONObject.equals("metarnalAndChildWelfareCenter")){
+			objectToReturn = metarnalAndChildWelfareCenter;
+		}else if(nameOfJSONObject.equals("tenBedHospital")){
+			objectToReturn = tenBedHospital;
+		}else if(nameOfJSONObject.equals("twentyBedHospital")){
+			objectToReturn = twentyBedHospital;
+		}else if(nameOfJSONObject.equals("upazilaHealthComplex")){
+			objectToReturn = upazilaHealthComplex;
+		}else if(nameOfJSONObject.equals("medicalCollegeAndHospital")){
+			objectToReturn = medicalCollegeAndHospital;
+		}else if(nameOfJSONObject.equals("otherHealthFacility")){
+			objectToReturn = otherHealthFacility;
 		}
 		return objectToReturn;
 	}
