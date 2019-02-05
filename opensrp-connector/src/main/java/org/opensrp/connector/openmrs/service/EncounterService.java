@@ -241,27 +241,27 @@ public class EncounterService extends OpenmrsService {
 						}else if(obsValue.equals("Union_Family_Welfare_Center")){
 							obar.put(getStaticJsonObject("unionFamilyWelfareCenter"));
 						}else if(obsValue.equals("Union_Health_and_Family_Welfare_Center")){
-							//obar.put(getStaticJsonObject("unionFamilyWelfareCenter"));
+							obar.put(getStaticJsonObject("unionHealthAndFamilyWelfareCenter"));
 						}else if(obsValue.equals("Metarnal_and_Child_Wellfare_Center")){
-							//obar.put(getStaticJsonObject("unionFamilyWelfareCenter"));
+							obar.put(getStaticJsonObject("metarnalAndChildWelfareCenter"));
 						}else if(obsValue.equals("10_Bed_Hospital")){
-							//obar.put(getStaticJsonObject("unionFamilyWelfareCenter"));
+							obar.put(getStaticJsonObject("tenBedHospital"));
 						}else if(obsValue.equals("20_Beds_Hospital")){
-							//obar.put(getStaticJsonObject("unionFamilyWelfareCenter"));
+							obar.put(getStaticJsonObject("twentyBedHospital"));
 						}else if(obsValue.equals("Upazila_Health_Complex")){
-							//obar.put(getStaticJsonObject("unionFamilyWelfareCenter"));
+							obar.put(getStaticJsonObject("upazilaHealthComplex"));
 						}else if(obsValue.equals("District_Hospital")){
-							//obar.put(getStaticJsonObject("unionFamilyWelfareCenter"));
+							obar.put(getStaticJsonObject("districtHospital"));
 						}else if(obsValue.equals("Medical_College_and_Hospital")){
-							//obar.put(getStaticJsonObject("unionFamilyWelfareCenter"));
+							obar.put(getStaticJsonObject("medicalCollegeAndHospital"));
 						}else if(obsValue.equals("Others_Health_Facility")){
-							//obar.put(getStaticJsonObject("unionFamilyWelfareCenter"));
+							obar.put(getStaticJsonObject("otherHealthFacility"));
 						}
 					}
 				}
 			}
 		}
-		
+	
 		return obar;
 	}
 	
