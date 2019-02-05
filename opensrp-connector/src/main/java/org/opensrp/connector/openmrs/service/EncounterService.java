@@ -177,7 +177,7 @@ public class EncounterService extends OpenmrsService {
 		enc.put("encounterTypeUuid", "81852aee-3f10-11e4-adec-0800271c1b75");
 		dummbyObject.put("mdrtbSpecimen", dummnyArray);
 		enc.put("extensions", dummbyObject);*/
-
+		
 		//observations for Followup Disease Female and Male
 		JSONArray obar = null;
 		if (e.getEventType().equalsIgnoreCase("Followup Disease Female")) {
@@ -197,6 +197,7 @@ public class EncounterService extends OpenmrsService {
 
 		Client client = clientService.getByBaseEntityId(e.getBaseEntityId());
 		boolean hasDisease =false;
+		boolean idReffered =false;
 		if(client.getAttributes().containsKey("has_disease")){
 			String hasDiseaseStr = (String)client.getAttributes().get("has_disease");
 			if(hasDiseaseStr.equals("হ্যাঁ")){
@@ -226,6 +227,39 @@ public class EncounterService extends OpenmrsService {
 			}
 		}else{
 			obar.put(getStaticJsonObject("healthCareGivenNo"));
+		}
+
+		List<Obs> eventObs = e.getObs();
+		if(eventObs!= null){
+			for(Obs o: eventObs){
+				String formSubmissionField = o.getFormSubmissionField();
+				if(formSubmissionField!= null){
+					String obsValue = (String) o.getValues().get(0);
+					if(formSubmissionField.equals("Place_of_Refer") && obsValue!= null){
+						if(obsValue.equals("Union_Sub_Center")){
+							obar.put(getStaticJsonObject("unionSubCenter"));
+						}else if(obsValue.equals("Union_Family_Welfare_Center")){
+							obar.put(getStaticJsonObject("unionFamilyWelfareCenter"));
+						}else if(obsValue.equals("Union_Health_and_Family_Welfare_Center")){
+							//obar.put(getStaticJsonObject("unionFamilyWelfareCenter"));
+						}else if(obsValue.equals("Metarnal_and_Child_Wellfare_Center")){
+							//obar.put(getStaticJsonObject("unionFamilyWelfareCenter"));
+						}else if(obsValue.equals("10_Bed_Hospital")){
+							//obar.put(getStaticJsonObject("unionFamilyWelfareCenter"));
+						}else if(obsValue.equals("20_Beds_Hospital")){
+							//obar.put(getStaticJsonObject("unionFamilyWelfareCenter"));
+						}else if(obsValue.equals("Upazila_Health_Complex")){
+							//obar.put(getStaticJsonObject("unionFamilyWelfareCenter"));
+						}else if(obsValue.equals("District_Hospital")){
+							//obar.put(getStaticJsonObject("unionFamilyWelfareCenter"));
+						}else if(obsValue.equals("Medical_College_and_Hospital")){
+							//obar.put(getStaticJsonObject("unionFamilyWelfareCenter"));
+						}else if(obsValue.equals("Others_Health_Facility")){
+							//obar.put(getStaticJsonObject("unionFamilyWelfareCenter"));
+						}
+					}
+				}
+			}
 		}
 		
 		return obar;
@@ -513,6 +547,8 @@ public class EncounterService extends OpenmrsService {
 		JSONObject healthCareGivenNo = null;
 		JSONObject tuberculosis = null;
 		JSONObject otherPossibleDisease = null;
+		JSONObject unionSubCenter = null;
+		JSONObject unionFamilyWelfareCenter = null;
 		try {
 			//normalDisease = new JSONObject("{\"encounterTypeUuid\":\"81852aee-3f10-11e4-adec-0800271c1b75\",\"visitType\":\"Community clinic service\",\"patientUuid\":\"391ec594-5381-4075-9b1d-7608ed19332d\",\"locationUuid\":\"ec9bfa0e-14f2-440d-bf22-606605d021b2\",\"providers\":[{\"uuid\":\"313c8507-9821-40e4-8a70-71a5c7693d72\"}]}");
 			normalDisease = new JSONObject("{\"encounterTypeUuid\":\"81852aee-3f10-11e4-adec-0800271c1b75\",\"providers\":[{\"uuid\":\"313c8507-9821-40e4-8a70-71a5c7693d72\"}],\"visitType\":\"Community clinic service\"}");
@@ -522,6 +558,8 @@ public class EncounterService extends OpenmrsService {
 			healthCareGivenNo = new JSONObject("{\"groupMembers\":[],\"inactive\":false,\"interpretation\":null,\"concept\":{\"name\":\"Provide_Health_Service\",\"uuid\":\"f2671938-ffc5-4547-91c0-fcd28b6e29b4\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"সাধারন রোগীর সেবা.19/43-0\",\"voided\":false,\"value\":{\"translationKey\":\"না_43\",\"displayString\":\"No\",\"resourceVersion\":\"2.0\",\"name\":{\"display\":\"No\",\"resourceVersion\":\"1.9\",\"name\":\"No\",\"localePreferred\":true,\"locale\":\"en\",\"uuid\":\"17432139-eeca-4cf5-b0fd-00a6a4f83395\",\"conceptNameType\":null},\"uuid\":\"b497171e-0410-4d8d-bbd4-7e1a8f8b504e\"}}");
 			tuberculosis = new JSONObject("{\"groupMembers\":[],\"inactive\":false,\"concept\":{\"name\":\"Possible_Disease\",\"uuid\":\"a725f0d7-067b-492d-a450-4ce7e535c371\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"সাধারন রোগীর সেবা.19/31-0\",\"voided\":false,\"value\":{\"translationKey\":\"যক্ষ্মা_31\",\"displayString\":\"Tuberculosis\",\"resourceVersion\":\"2.0\",\"name\":{\"display\":\"Tuberculosis\",\"resourceVersion\":\"1.9\",\"name\":\"Tuberculosis\",\"localePreferred\":true,\"locale\":\"en\",\"uuid\":\"d1183ae6-825f-478b-abd7-225d2a234da5\",\"conceptNameType\":null},\"uuid\":\"0622f52f-0c95-41c1-ab5d-ee9bc335c839\"}}");
 			otherPossibleDisease = new JSONObject("{\"concept\":{\"uuid\":\"a725f0d7-067b-492d-a450-4ce7e535c371\",\"name\":\"Possible_Disease\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"সাধারন রোগীর সেবা.19/31-0\",\"voided\":false,\"value\":{\"uuid\":\"2531ef53-76fe-4f71-b5ce-675701a3e02a\",\"name\":{\"display\":\"Other_Possible_Diseases\",\"uuid\":\"d838f73b-5bd9-43bd-accd-974da1efc1f2\",\"name\":\"Other_Possible_Diseases\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"resourceVersion\":\"1.9\"},\"displayString\":\"Other_Possible_Diseases\",\"resourceVersion\":\"2.0\",\"translationKey\":\"অন্যান্য_সম্ভাব্য_রোগ_31\"},\"inactive\":false,\"groupMembers\":[]}");
+			unionSubCenter = new JSONObject("{\"concept\":{\"uuid\":\"953bc1ec-ca20-4db1-8de2-48feb51377e3\",\"name\":\"CHCP_PLACE_OF_REFER\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"সাধারন রোগীর সেবা.19/47-0\",\"voided\":false,\"value\":{\"uuid\":\"094fcced-08c3-484f-9260-00f9f852d695\",\"name\":{\"display\":\"Union_Sub_Center\",\"uuid\":\"0ce085be-4e2e-4b55-884d-a438157a2d10\",\"name\":\"Union_Sub_Center\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"resourceVersion\":\"1.9\"},\"displayString\":\"Union_Sub_Center\",\"resourceVersion\":\"2.0\",\"translationKey\":\"ইউনিয়ন_উপস্বাস্থ্য_কেন্দ্র_47\"},\"inactive\":false,\"groupMembers\":[],\"interpretation\":null}");
+			unionFamilyWelfareCenter = new JSONObject("{\"concept\":{\"uuid\":\"953bc1ec-ca20-4db1-8de2-48feb51377e3\",\"name\":\"CHCP_PLACE_OF_REFER\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"সাধারন রোগীর সেবা.19/47-0\",\"voided\":false,\"value\":{\"uuid\":\"729aa7bb-4270-4e1f-bb37-8dc4acedae70\",\"name\":{\"display\":\"Union_Family_Welfare_Center\",\"uuid\":\"a2db6720-0e59-42c1-821a-16df38077a2c\",\"name\":\"Union_Family_Welfare_Center\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"resourceVersion\":\"1.9\"},\"displayString\":\"Union_Family_Welfare_Center\",\"resourceVersion\":\"2.0\",\"translationKey\":\"ইউনিয়ন_পরিবার_কল্যাণ_কেন্দ্র_47\"},\"inactive\":false,\"groupMembers\":[],\"interpretation\":null}");
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -541,6 +579,10 @@ public class EncounterService extends OpenmrsService {
 			objectToReturn = tuberculosis;
 		}else if(nameOfJSONObject.equals("otherPossibleDisease")){
 			objectToReturn = otherPossibleDisease;
+		}else if(nameOfJSONObject.equals("unionSubCenter")){
+			objectToReturn = unionSubCenter;
+		}else if(nameOfJSONObject.equals("unionFamilyWelfareCenter")){
+			objectToReturn = unionFamilyWelfareCenter;
 		}
 		return objectToReturn;
 	}
