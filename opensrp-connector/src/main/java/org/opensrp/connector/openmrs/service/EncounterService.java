@@ -554,6 +554,7 @@ public class EncounterService extends OpenmrsService {
 		JSONObject tenBedHospital = null;
 		JSONObject twentyBedHospital = null;
 		JSONObject upazilaHealthComplex = null;
+		JSONObject districtHospital = null;
 		JSONObject medicalCollegeAndHospital = null;
 		JSONObject otherHealthFacility = null;
 		try {
@@ -572,6 +573,7 @@ public class EncounterService extends OpenmrsService {
 			tenBedHospital = new JSONObject("{\"groupMembers\":[],\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"সাধারন রোগীর সেবা.19/47-0\",\"interpretation\":null,\"voided\":false,\"concept\":{\"uuid\":\"953bc1ec-ca20-4db1-8de2-48feb51377e3\",\"name\":\"CHCP_PLACE_OF_REFER\"},\"value\":{\"uuid\":\"7a34aa8e-f6f7-4abc-ad62-79bae8386155\",\"name\":{\"display\":\"10_Bed_Hospital\",\"uuid\":\"346f4ebd-9403-49cd-a301-e7f3bff92853\",\"name\":\"10_Bed_Hospital\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"resourceVersion\":\"1.9\"},\"displayString\":\"10_Bed_Hospital\",\"resourceVersion\":\"2.0\",\"translationKey\":\"১০_শয্যা_বিশিষ্ট_হাসপাতাল_47\"},\"inactive\":false}");
 			twentyBedHospital = new JSONObject("{\"concept\":{\"uuid\":\"953bc1ec-ca20-4db1-8de2-48feb51377e3\",\"name\":\"CHCP_PLACE_OF_REFER\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"সাধারন রোগীর সেবা.19/47-0\",\"voided\":false,\"value\":{\"uuid\":\"8be604e8-ca58-4bdb-b611-07cd3c553428\",\"name\":{\"display\":\"20_Beds_Hospital\",\"uuid\":\"3de85581-fcac-4c85-9dbc-782e637490f6\",\"name\":\"20_Beds_Hospital\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"resourceVersion\":\"1.9\"},\"displayString\":\"20_Beds_Hospital\",\"resourceVersion\":\"2.0\",\"translationKey\":\"২০_শয্যা_বিশিষ্ট_হাসপাতাল_47\"},\"interpretation\":null,\"inactive\":false,\"groupMembers\":[]}");
 			upazilaHealthComplex = new JSONObject("{\"concept\":{\"uuid\":\"953bc1ec-ca20-4db1-8de2-48feb51377e3\",\"name\":\"CHCP_PLACE_OF_REFER\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"সাধারন রোগীর সেবা.19/47-0\",\"voided\":false,\"value\":{\"uuid\":\"8f6e53ef-f23a-41d3-8474-0d654d453068\",\"name\":{\"display\":\"Upazila_Health_Complex\",\"uuid\":\"35cc74c1-707e-45b6-b1b4-379e1ab8bd25\",\"name\":\"Upazila_Health_Complex\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"resourceVersion\":\"1.9\"},\"displayString\":\"Upazila_Health_Complex\",\"resourceVersion\":\"2.0\",\"translationKey\":\"উপজেলা_স্বাস্থ্য_কমপ্লেক্স_47\"},\"interpretation\":null,\"inactive\":false,\"groupMembers\":[]}");
+			districtHospital = new JSONObject("{\"concept\":{\"uuid\":\"953bc1ec-ca20-4db1-8de2-48feb51377e3\",\"name\":\"CHCP_PLACE_OF_REFER\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"সাধারন রোগীর সেবা.19/47-0\",\"voided\":false,\"value\":{\"uuid\":\"077bbfb9-a7b6-485c-9d8d-12cf32eaf47c\",\"name\":{\"display\":\"District_Hospital\",\"uuid\":\"30018807-1c8d-46a8-8978-1377a76e7fc5\",\"name\":\"District_Hospital\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"resourceVersion\":\"1.9\"},\"displayString\":\"District_Hospital\",\"resourceVersion\":\"2.0\",\"translationKey\":\"সদর_হাসপাতাল_47\"},\"interpretation\":null,\"inactive\":false,\"groupMembers\":[]}");
 			
 			medicalCollegeAndHospital = new JSONObject("");
 			otherHealthFacility = new JSONObject("");
@@ -608,6 +610,8 @@ public class EncounterService extends OpenmrsService {
 			objectToReturn = twentyBedHospital;
 		}else if(nameOfJSONObject.equals("upazilaHealthComplex")){
 			objectToReturn = upazilaHealthComplex;
+		}else if(nameOfJSONObject.equals("districtHospital")){
+			objectToReturn = districtHospital;
 		}else if(nameOfJSONObject.equals("medicalCollegeAndHospital")){
 			objectToReturn = medicalCollegeAndHospital;
 		}else if(nameOfJSONObject.equals("otherHealthFacility")){
