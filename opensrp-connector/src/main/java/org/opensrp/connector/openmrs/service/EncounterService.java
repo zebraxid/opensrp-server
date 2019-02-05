@@ -220,7 +220,7 @@ public class EncounterService extends OpenmrsService {
 					}else if(diseaseName.equals("Tuberculosis")){
 						obar.put(getStaticJsonObject("tuberculosis"));
 					}else if(diseaseName.equals("Others_member_disease")){
-						obar.put(getStaticJsonObject("otherSymptoms"));
+						obar.put(getStaticJsonObject("otherPossibleDisease"));
 					}
 				}
 			}
@@ -512,7 +512,7 @@ public class EncounterService extends OpenmrsService {
 		JSONObject healthCareGivenYes = null;
 		JSONObject healthCareGivenNo = null;
 		JSONObject tuberculosis = null;
-		JSONObject otherSymptoms = null;
+		JSONObject otherPossibleDisease = null;
 		try {
 			//normalDisease = new JSONObject("{\"encounterTypeUuid\":\"81852aee-3f10-11e4-adec-0800271c1b75\",\"visitType\":\"Community clinic service\",\"patientUuid\":\"391ec594-5381-4075-9b1d-7608ed19332d\",\"locationUuid\":\"ec9bfa0e-14f2-440d-bf22-606605d021b2\",\"providers\":[{\"uuid\":\"313c8507-9821-40e4-8a70-71a5c7693d72\"}]}");
 			normalDisease = new JSONObject("{\"encounterTypeUuid\":\"81852aee-3f10-11e4-adec-0800271c1b75\",\"providers\":[{\"uuid\":\"313c8507-9821-40e4-8a70-71a5c7693d72\"}],\"visitType\":\"Community clinic service\"}");
@@ -521,7 +521,7 @@ public class EncounterService extends OpenmrsService {
 			highBloodPressure = new JSONObject("{\"concept\":{\"uuid\":\"a725f0d7-067b-492d-a450-4ce7e535c371\",\"name\":\"Possible_Disease\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"সাধারন রোগীর সেবা.19/31-0\",\"voided\":false,\"value\":{\"uuid\":\"c2bb6edf-18cb-4c7f-ad91-7c8dd561a437\",\"name\":{\"display\":\"High Blood Pressure\",\"uuid\":\"c2bb6edf-18cb-4c7f-ad91-7c8dd561a437\",\"name\":\"High Blood Pressure\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"resourceVersion\":\"1.9\"},\"displayString\":\"High Blood Pressure\",\"resourceVersion\":\"2.0\",\"translationKey\":\"উচ্চ_রক্তচাপ_31\"},\"inactive\":false,\"groupMembers\":[]}");
 			healthCareGivenNo = new JSONObject("{\"groupMembers\":[],\"inactive\":false,\"interpretation\":null,\"concept\":{\"name\":\"Provide_Health_Service\",\"uuid\":\"f2671938-ffc5-4547-91c0-fcd28b6e29b4\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"সাধারন রোগীর সেবা.19/43-0\",\"voided\":false,\"value\":{\"translationKey\":\"না_43\",\"displayString\":\"No\",\"resourceVersion\":\"2.0\",\"name\":{\"display\":\"No\",\"resourceVersion\":\"1.9\",\"name\":\"No\",\"localePreferred\":true,\"locale\":\"en\",\"uuid\":\"17432139-eeca-4cf5-b0fd-00a6a4f83395\",\"conceptNameType\":null},\"uuid\":\"b497171e-0410-4d8d-bbd4-7e1a8f8b504e\"}}");
 			tuberculosis = new JSONObject("{\"groupMembers\":[],\"inactive\":false,\"concept\":{\"name\":\"Possible_Disease\",\"uuid\":\"a725f0d7-067b-492d-a450-4ce7e535c371\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"সাধারন রোগীর সেবা.19/31-0\",\"voided\":false,\"value\":{\"translationKey\":\"যক্ষ্মা_31\",\"displayString\":\"Tuberculosis\",\"resourceVersion\":\"2.0\",\"name\":{\"display\":\"Tuberculosis\",\"resourceVersion\":\"1.9\",\"name\":\"Tuberculosis\",\"localePreferred\":true,\"locale\":\"en\",\"uuid\":\"d1183ae6-825f-478b-abd7-225d2a234da5\",\"conceptNameType\":null},\"uuid\":\"0622f52f-0c95-41c1-ab5d-ee9bc335c839\"}}");
-			otherSymptoms = new JSONObject("{\"groupMembers\":[],\"inactive\":false,\"concept\":{\"name\":\"রোগের লক্ষণ\",\"uuid\":\"2cee2850-1a33-4a22-b933-35fbe6409c0e\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"সাধারন রোগীর সেবা.19/29-0\",\"voided\":false,\"value\":{\"translationKey\":\"অন্যান্য_লক্ষন_29\",\"displayString\":\"Other_Symptoms\",\"resourceVersion\":\"2.0\",\"name\":{\"display\":\"Other_Symptoms\",\"resourceVersion\":\"1.9\",\"name\":\"Other_Symptoms\",\"localePreferred\":true,\"locale\":\"en\",\"uuid\":\"ea20fe61-50f9-4c75-aa1f-9d4490d16513\",\"conceptNameType\":null},\"uuid\":\"37e04caf-e1cb-4438-bc55-3dbfa19cc14a\"}}");
+			otherPossibleDisease = new JSONObject("{\"concept\":{\"uuid\":\"a725f0d7-067b-492d-a450-4ce7e535c371\",\"name\":\"Possible_Disease\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"সাধারন রোগীর সেবা.19/31-0\",\"voided\":false,\"value\":{\"uuid\":\"2531ef53-76fe-4f71-b5ce-675701a3e02a\",\"name\":{\"display\":\"Other_Possible_Diseases\",\"uuid\":\"d838f73b-5bd9-43bd-accd-974da1efc1f2\",\"name\":\"Other_Possible_Diseases\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"resourceVersion\":\"1.9\"},\"displayString\":\"Other_Possible_Diseases\",\"resourceVersion\":\"2.0\",\"translationKey\":\"অন্যান্য_সম্ভাব্য_রোগ_31\"},\"inactive\":false,\"groupMembers\":[]}");
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -539,8 +539,8 @@ public class EncounterService extends OpenmrsService {
 			objectToReturn = diabetes;
 		}else if(nameOfJSONObject.equals("tuberculosis")){
 			objectToReturn = tuberculosis;
-		}else if(nameOfJSONObject.equals("otherSymptoms")){
-			objectToReturn = otherSymptoms;
+		}else if(nameOfJSONObject.equals("otherPossibleDisease")){
+			objectToReturn = otherPossibleDisease;
 		}
 		return objectToReturn;
 	}
