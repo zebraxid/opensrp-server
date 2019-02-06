@@ -181,35 +181,43 @@ public class EncounterService extends OpenmrsService {
 		//observations for Followup Disease Female and Male
 		JSONArray obar = null;
 		if (e.getEventType().equalsIgnoreCase("Followup Disease Female")) {
-			//pass list of obs instead of dummyArray
-			//createDiseaseJSON needs massive change
-			obar = createDiseaseJSON(e, dummnyArray);
+			obar = createObservationNormalDisease(e);
+		}else if (e.getEventType().equalsIgnoreCase("Followup Family Planning")) {
+			obar = createObservationFamilyPlanning(e);
 		}
 		enc.put("observations", obar);
 		return enc;
 	}
 
-	private JSONArray createDiseaseJSON(Event e, JSONArray dummnyArray)
+	private JSONArray createObservationFamilyPlanning(Event e)
+			throws JSONException {
+		JSONArray obar= new JSONArray();
+		Client client = clientService.getByBaseEntityId(e.getBaseEntityId());
+		if(client.getAttributes().containsKey("familyplanning")){
+			String familyplanning = (String)client.getAttributes().get("familyplanning");
+			if(familyplanning.equals("খাবার বড়ি")){
+				//obar.put(getStaticJsonObject("highBloodPressure"));
+			}
+		}
+		return obar;
+	}
+	
+	private JSONArray createObservationNormalDisease(Event e)
 			throws JSONException {
 		JSONArray obar= new JSONArray();
 		List<String> diseaseList = null;
-		//JSONObject observationObject1 = new JSONObject();
-
 		Client client = clientService.getByBaseEntityId(e.getBaseEntityId());
 		boolean hasDisease =false;
-		boolean idReffered =false;
 		if(client.getAttributes().containsKey("has_disease")){
 			String hasDiseaseStr = (String)client.getAttributes().get("has_disease");
 			if(hasDiseaseStr.equals("হ্যাঁ")){
 				hasDisease = true;
 			}
 		}
-		
 		if(client.getAttributes().containsKey("Disease_status") && hasDisease == true){
 			String diseaseString = (String)client.getAttributes().get("Disease_status");
 			diseaseList = Arrays.asList(diseaseString.split(","));
 		}
-
 		if(hasDisease){
 			obar.put(getStaticJsonObject("healthCareGivenYes"));
 			if(diseaseList!=null){
@@ -228,7 +236,6 @@ public class EncounterService extends OpenmrsService {
 		}else{
 			obar.put(getStaticJsonObject("healthCareGivenNo"));
 		}
-
 		List<Obs> eventObs = e.getObs();
 		if(eventObs!= null){
 			for(Obs o: eventObs){
@@ -261,7 +268,6 @@ public class EncounterService extends OpenmrsService {
 				}
 			}
 		}
-	
 		return obar;
 	}
 	
@@ -557,6 +563,8 @@ public class EncounterService extends OpenmrsService {
 		JSONObject districtHospital = null;
 		JSONObject medicalCollegeAndHospital = null;
 		JSONObject otherHealthFacility = null;
+		
+		JSONObject oralContraceptives = null;
 		try {
 			//normalDisease = new JSONObject("{\"encounterTypeUuid\":\"81852aee-3f10-11e4-adec-0800271c1b75\",\"visitType\":\"Community clinic service\",\"patientUuid\":\"391ec594-5381-4075-9b1d-7608ed19332d\",\"locationUuid\":\"ec9bfa0e-14f2-440d-bf22-606605d021b2\",\"providers\":[{\"uuid\":\"313c8507-9821-40e4-8a70-71a5c7693d72\"}]}");
 			normalDisease = new JSONObject("{\"encounterTypeUuid\":\"81852aee-3f10-11e4-adec-0800271c1b75\",\"providers\":[{\"uuid\":\"313c8507-9821-40e4-8a70-71a5c7693d72\"}],\"visitType\":\"Community clinic service\"}");
@@ -576,6 +584,8 @@ public class EncounterService extends OpenmrsService {
 			districtHospital = new JSONObject("{\"concept\":{\"uuid\":\"953bc1ec-ca20-4db1-8de2-48feb51377e3\",\"name\":\"CHCP_PLACE_OF_REFER\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"সাধারন রোগীর সেবা.19/47-0\",\"voided\":false,\"value\":{\"uuid\":\"077bbfb9-a7b6-485c-9d8d-12cf32eaf47c\",\"name\":{\"display\":\"District_Hospital\",\"uuid\":\"30018807-1c8d-46a8-8978-1377a76e7fc5\",\"name\":\"District_Hospital\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"resourceVersion\":\"1.9\"},\"displayString\":\"District_Hospital\",\"resourceVersion\":\"2.0\",\"translationKey\":\"সদর_হাসপাতাল_47\"},\"interpretation\":null,\"inactive\":false,\"groupMembers\":[]}");
 			medicalCollegeAndHospital = new JSONObject("{\"concept\":{\"uuid\":\"953bc1ec-ca20-4db1-8de2-48feb51377e3\",\"name\":\"CHCP_PLACE_OF_REFER\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"সাধারন রোগীর সেবা.19/47-0\",\"voided\":false,\"value\":{\"uuid\":\"cdb1918b-08aa-4d27-829f-44759e1b8a24\",\"name\":{\"display\":\"Medical_College_and_Hospital\",\"uuid\":\"cd22cdf6-cceb-48fb-b079-9f0e840b5e1f\",\"name\":\"Medical_College_and_Hospital\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"resourceVersion\":\"1.9\"},\"displayString\":\"Medical_College_and_Hospital\",\"resourceVersion\":\"2.0\",\"translationKey\":\"মেডিকেল_কলেজ_হাসপাতাল_47\"},\"interpretation\":null,\"inactive\":false,\"groupMembers\":[]}");
 			otherHealthFacility = new JSONObject("{\"concept\":{\"uuid\":\"953bc1ec-ca20-4db1-8de2-48feb51377e3\",\"name\":\"CHCP_PLACE_OF_REFER\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"সাধারন রোগীর সেবা.19/47-0\",\"voided\":false,\"value\":{\"uuid\":\"41bbac3f-5164-4dac-a2ec-8648bf8a7d89\",\"name\":{\"display\":\"Others_Health_Facility\",\"uuid\":\"fe8c216a-fa59-499f-aa8d-22c1a724506e\",\"name\":\"Others_Health_Facility\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"resourceVersion\":\"1.9\"},\"displayString\":\"Others_Health_Facility\",\"resourceVersion\":\"2.0\",\"translationKey\":\"অন্যান্য_স্বাস্থ্য_সেবা_কেন্দ্র_47\"},\"interpretation\":null,\"inactive\":false,\"groupMembers\":[]}");
+		
+			oralContraceptives = new JSONObject("{\"concept\":{\"uuid\":\"a7526490-7b21-44ec-8174-bcb4647703ca\",\"name\":\"FAMILY_PLANNING_CHCP\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"পরিবার পরিকল্পনা সেবা.2/7-0\",\"voided\":false,\"groupMembers\":[],\"inactive\":false,\"value\":{\"uuid\":\"9b76de10-cbee-4b8a-901e-81e39936dd7e\",\"name\":{\"display\":\"Oral Contraceptives\",\"uuid\":\"21e0f743-08fe-4a4d-b1c9-708dea051933\",\"name\":\"Oral Contraceptives\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"resourceVersion\":\"1.9\"},\"displayString\":\"Oral Contraceptives\",\"resourceVersion\":\"2.0\",\"translationKey\":\"খাবার_বড়ি_7\"},\"interpretation\":null}");
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
