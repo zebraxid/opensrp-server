@@ -231,7 +231,6 @@ public class OpenmrsSyncerListener {
 					}
 					
 				} else {
-					
 					JSONObject patientJson = patientService.createPatient(c);
 					patient = patientJson;
 					if (patientJson != null && patientJson.has("uuid")) {
@@ -239,9 +238,8 @@ public class OpenmrsSyncerListener {
 						clientService.addorUpdate(c, false);
 						config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_client_by_date_updated,
 						    c.getServerVersion());
-						
 						if (multiMedia != null) {
-							patientService.personImageUpload(multiMedia, patient.getString("uuid"));
+							patientService.personImageUpload(multiMedia, patientJson.getString("uuid"));
 						}
 						
 					}
@@ -261,18 +259,18 @@ public class OpenmrsSyncerListener {
 			String isSendToOpenMRS = c.getIsSendToOpenMRS();
 			if (c.getRelationships() != null && isSendToOpenMRS.equalsIgnoreCase("yes")) {// Mother has no relations. 
 				try {
-					JSONObject motherJson = patientService.getPatientByIdentifier(c.getRelationships().get("mother").get(0)
-					        .toString());
+					JSONObject motherJson = patientService.getPatientByIdentifier(c.getRelationships().get("household")
+					        .get(0).toString());
 					JSONObject person = motherJson.getJSONObject("person");
 					
 					if (person.getString("uuid") != null) {
 						JSONObject relation = patientService.createPatientRelationShip(c.getIdentifier("OPENMRS_UUID"),
-						    person.getString("uuid"), "8d91a210-c2cc-11de-8d13-0010c6dffd0f");
+						    person.getString("uuid"), "03ed3084-4c7a-11e5-9192-080027b662ec");
 						relationshipsArray.put(relation); // only for test code purpose
 						logger.info("RelationshipsCreated check openrs" + c.getIdentifier("OPENMRS_UUID"));
 					}
 					
-					List<Client> siblings = clientService.findByRelationship(c.getRelationships().get("mother").get(0)
+					/*List<Client> siblings = clientService.findByRelationship(c.getRelationships().get("mother").get(0)
 					        .toString());
 					if (!siblings.isEmpty() || siblings != null) {
 						JSONObject siblingJson;
@@ -287,7 +285,7 @@ public class OpenmrsSyncerListener {
 							
 						}
 						
-					}
+					}*/
 				}
 				catch (Exception e) {
 					logger.error("no relationship found at case id " + c.getBaseEntityId());

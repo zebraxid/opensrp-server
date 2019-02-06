@@ -265,7 +265,6 @@ public class PatientService extends OpenmrsService {
 				if (idobj == null) {
 					idobj = createIdentifierType(id.getKey(), id.getKey() + " - FOR THRIVE OPENSRP");
 				}
-				System.err.println("idobj:::::" + idobj);
 				jio.put("identifierType", idobj.getString("uuid"));
 				jio.put("identifier", id.getValue());
 				Object cloc = c.getAttribute("Location");
