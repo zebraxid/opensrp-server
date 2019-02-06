@@ -196,7 +196,7 @@ public class EncounterService extends OpenmrsService {
 		if(client.getAttributes().containsKey("familyplanning")){
 			String familyplanning = (String)client.getAttributes().get("familyplanning");
 			if(familyplanning.equals("খাবার বড়ি")){
-				//obar.put(getStaticJsonObject("highBloodPressure"));
+				obar.put(getStaticJsonObject("oralContraceptives"));
 			}
 		}
 		return obar;
@@ -625,6 +625,8 @@ public class EncounterService extends OpenmrsService {
 			objectToReturn = medicalCollegeAndHospital;
 		}else if(nameOfJSONObject.equals("otherHealthFacility")){
 			objectToReturn = otherHealthFacility;
+		}else if(nameOfJSONObject.equals("oralContraceptives")){
+			objectToReturn = oralContraceptives;
 		}
 		return objectToReturn;
 	}
