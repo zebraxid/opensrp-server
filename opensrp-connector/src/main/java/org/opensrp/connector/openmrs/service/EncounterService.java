@@ -196,10 +196,23 @@ public class EncounterService extends OpenmrsService {
 		if(client.getAttributes().containsKey("familyplanning")){
 			String familyplanning = (String)client.getAttributes().get("familyplanning");
 			if(familyplanning.equals("খাবার বড়ি")){
-				obar.put(getStaticJsonObject("oralContraceptives"));
+				JSONObject familyPlanningCHCP = createJsonFamilyPlanningCHCP("oralContraceptives");
+				/*JSONArray groupMembers= new JSONArray();
+				groupMembers.put(getStaticJsonObject("oralContraceptives"));
+				familyPlanningCHCP.put("groupMembers", groupMembers);*/
+				obar.put(familyPlanningCHCP);
+				//obar.put(getStaticJsonObject("oralContraceptives"));
 			}
 		}
 		return obar;
+	}
+	
+	private JSONObject createJsonFamilyPlanningCHCP(String processName) throws JSONException{
+		JSONObject familyPlanningCHCP = getStaticJsonObject("familyPlanningCHCP");
+		JSONArray groupMembers= new JSONArray();
+		groupMembers.put(getStaticJsonObject(processName));
+		familyPlanningCHCP.put("groupMembers", groupMembers);
+		return familyPlanningCHCP;
 	}
 	
 	private JSONArray createObservationNormalDisease(Event e)
@@ -563,6 +576,7 @@ public class EncounterService extends OpenmrsService {
 		JSONObject districtHospital = null;
 		JSONObject medicalCollegeAndHospital = null;
 		JSONObject otherHealthFacility = null;
+		JSONObject familyPlanningCHCP = null;
 		
 		JSONObject oralContraceptives = null;
 		try {
@@ -585,6 +599,7 @@ public class EncounterService extends OpenmrsService {
 			medicalCollegeAndHospital = new JSONObject("{\"concept\":{\"uuid\":\"953bc1ec-ca20-4db1-8de2-48feb51377e3\",\"name\":\"CHCP_PLACE_OF_REFER\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"সাধারন রোগীর সেবা.19/47-0\",\"voided\":false,\"value\":{\"uuid\":\"cdb1918b-08aa-4d27-829f-44759e1b8a24\",\"name\":{\"display\":\"Medical_College_and_Hospital\",\"uuid\":\"cd22cdf6-cceb-48fb-b079-9f0e840b5e1f\",\"name\":\"Medical_College_and_Hospital\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"resourceVersion\":\"1.9\"},\"displayString\":\"Medical_College_and_Hospital\",\"resourceVersion\":\"2.0\",\"translationKey\":\"মেডিকেল_কলেজ_হাসপাতাল_47\"},\"interpretation\":null,\"inactive\":false,\"groupMembers\":[]}");
 			otherHealthFacility = new JSONObject("{\"concept\":{\"uuid\":\"953bc1ec-ca20-4db1-8de2-48feb51377e3\",\"name\":\"CHCP_PLACE_OF_REFER\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"সাধারন রোগীর সেবা.19/47-0\",\"voided\":false,\"value\":{\"uuid\":\"41bbac3f-5164-4dac-a2ec-8648bf8a7d89\",\"name\":{\"display\":\"Others_Health_Facility\",\"uuid\":\"fe8c216a-fa59-499f-aa8d-22c1a724506e\",\"name\":\"Others_Health_Facility\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"resourceVersion\":\"1.9\"},\"displayString\":\"Others_Health_Facility\",\"resourceVersion\":\"2.0\",\"translationKey\":\"অন্যান্য_স্বাস্থ্য_সেবা_কেন্দ্র_47\"},\"interpretation\":null,\"inactive\":false,\"groupMembers\":[]}");
 		
+			familyPlanningCHCP = new JSONObject("{\"concept\":{\"uuid\":\"5265ff17-2936-4be3-af95-f817a0c5e4b1\",\"name\":\"FAMILY_PLANNING_CHCP\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"পরিবার পরিকল্পনা সেবা.2/6-0\",\"voided\":false,\"inactive\":false}");
 			oralContraceptives = new JSONObject("{\"concept\":{\"uuid\":\"a7526490-7b21-44ec-8174-bcb4647703ca\",\"name\":\"FAMILY_PLANNING_CHCP\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"পরিবার পরিকল্পনা সেবা.2/7-0\",\"voided\":false,\"groupMembers\":[],\"inactive\":false,\"value\":{\"uuid\":\"9b76de10-cbee-4b8a-901e-81e39936dd7e\",\"name\":{\"display\":\"Oral Contraceptives\",\"uuid\":\"21e0f743-08fe-4a4d-b1c9-708dea051933\",\"name\":\"Oral Contraceptives\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"resourceVersion\":\"1.9\"},\"displayString\":\"Oral Contraceptives\",\"resourceVersion\":\"2.0\",\"translationKey\":\"খাবার_বড়ি_7\"},\"interpretation\":null}");
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
@@ -625,6 +640,8 @@ public class EncounterService extends OpenmrsService {
 			objectToReturn = medicalCollegeAndHospital;
 		}else if(nameOfJSONObject.equals("otherHealthFacility")){
 			objectToReturn = otherHealthFacility;
+		}else if(nameOfJSONObject.equals("familyPlanningCHCP")){
+			objectToReturn = familyPlanningCHCP;
 		}else if(nameOfJSONObject.equals("oralContraceptives")){
 			objectToReturn = oralContraceptives;
 		}
