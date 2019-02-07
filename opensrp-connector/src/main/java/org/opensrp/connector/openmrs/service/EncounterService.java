@@ -197,11 +197,16 @@ public class EncounterService extends OpenmrsService {
 			String familyplanning = (String)client.getAttributes().get("familyplanning");
 			if(familyplanning.equals("খাবার বড়ি")){
 				JSONObject familyPlanningCHCP = createJsonFamilyPlanningCHCP("oralContraceptives");
-				/*JSONArray groupMembers= new JSONArray();
-				groupMembers.put(getStaticJsonObject("oralContraceptives"));
-				familyPlanningCHCP.put("groupMembers", groupMembers);*/
 				obar.put(familyPlanningCHCP);
-				//obar.put(getStaticJsonObject("oralContraceptives"));
+			}else if(familyplanning.equals("কনডম")){
+				JSONObject familyPlanningCHCP = createJsonFamilyPlanningCHCP("condoms");
+				obar.put(familyPlanningCHCP);
+			}else if(familyplanning.equals("ইনজেক্টবল")){
+				JSONObject familyPlanningCHCP = createJsonFamilyPlanningCHCP("injectable");
+				obar.put(familyPlanningCHCP);
+			}else if(familyplanning.equals("অন্যান্য পদ্ধতি")){
+				JSONObject familyPlanningCHCP = createJsonFamilyPlanningCHCP("otherMethod");
+				obar.put(familyPlanningCHCP);
 			}
 		}
 		return obar;
@@ -576,9 +581,12 @@ public class EncounterService extends OpenmrsService {
 		JSONObject districtHospital = null;
 		JSONObject medicalCollegeAndHospital = null;
 		JSONObject otherHealthFacility = null;
-		JSONObject familyPlanningCHCP = null;
 		
+		JSONObject familyPlanningCHCP = null;
 		JSONObject oralContraceptives = null;
+		JSONObject condoms = null;
+		JSONObject injectable = null;
+		JSONObject otherMethod = null;
 		try {
 			//normalDisease = new JSONObject("{\"encounterTypeUuid\":\"81852aee-3f10-11e4-adec-0800271c1b75\",\"visitType\":\"Community clinic service\",\"patientUuid\":\"391ec594-5381-4075-9b1d-7608ed19332d\",\"locationUuid\":\"ec9bfa0e-14f2-440d-bf22-606605d021b2\",\"providers\":[{\"uuid\":\"313c8507-9821-40e4-8a70-71a5c7693d72\"}]}");
 			normalDisease = new JSONObject("{\"encounterTypeUuid\":\"81852aee-3f10-11e4-adec-0800271c1b75\",\"providers\":[{\"uuid\":\"313c8507-9821-40e4-8a70-71a5c7693d72\"}],\"visitType\":\"Community clinic service\"}");
@@ -601,6 +609,9 @@ public class EncounterService extends OpenmrsService {
 		
 			familyPlanningCHCP = new JSONObject("{\"concept\":{\"uuid\":\"5265ff17-2936-4be3-af95-f817a0c5e4b1\",\"name\":\"FAMILY_PLANNING_CHCP\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"পরিবার পরিকল্পনা সেবা.2/6-0\",\"voided\":false,\"inactive\":false}");
 			oralContraceptives = new JSONObject("{\"concept\":{\"uuid\":\"a7526490-7b21-44ec-8174-bcb4647703ca\",\"name\":\"FAMILY_PLANNING_CHCP\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"পরিবার পরিকল্পনা সেবা.2/7-0\",\"voided\":false,\"groupMembers\":[],\"inactive\":false,\"value\":{\"uuid\":\"9b76de10-cbee-4b8a-901e-81e39936dd7e\",\"name\":{\"display\":\"Oral Contraceptives\",\"uuid\":\"21e0f743-08fe-4a4d-b1c9-708dea051933\",\"name\":\"Oral Contraceptives\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"resourceVersion\":\"1.9\"},\"displayString\":\"Oral Contraceptives\",\"resourceVersion\":\"2.0\",\"translationKey\":\"খাবার_বড়ি_7\"},\"interpretation\":null}");
+			condoms = new JSONObject("{\"concept\":{\"uuid\":\"a7526490-7b21-44ec-8174-bcb4647703ca\",\"name\":\"FAMILY_PLANNING_CHCP\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"পরিবার পরিকল্পনা সেবা.2/7-0\",\"voided\":false,\"groupMembers\":[],\"inactive\":false,\"value\":{\"uuid\":\"1fe0597e-470d-49bd-9d82-9c7b7342dab0\",\"name\":{\"display\":\"Condoms\",\"uuid\":\"d4300218-a8fa-4ca4-b0a3-5b8cef1a4249\",\"name\":\"Condoms\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"resourceVersion\":\"1.9\"},\"displayString\":\"Condoms\",\"resourceVersion\":\"2.0\",\"translationKey\":\"কনডম_7\"},\"interpretation\":null}");
+			injectable = new JSONObject("");
+			otherMethod = new JSONObject("");
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -644,6 +655,12 @@ public class EncounterService extends OpenmrsService {
 			objectToReturn = familyPlanningCHCP;
 		}else if(nameOfJSONObject.equals("oralContraceptives")){
 			objectToReturn = oralContraceptives;
+		}else if(nameOfJSONObject.equals("condoms")){
+			objectToReturn = condoms;
+		}else if(nameOfJSONObject.equals("injectable")){
+			objectToReturn = injectable;
+		}else if(nameOfJSONObject.equals("otherMethod")){
+			objectToReturn = otherMethod;
 		}
 		return objectToReturn;
 	}
