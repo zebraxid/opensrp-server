@@ -194,17 +194,19 @@ public class EncounterService extends OpenmrsService {
 		JSONArray obar= new JSONArray();
 		Client client = clientService.getByBaseEntityId(e.getBaseEntityId());
 		if(client.getAttributes().containsKey("familyplanning")){
-			String familyplanning = (String)client.getAttributes().get("familyplanning");
-			if(familyplanning.equals("খাবার বড়ি")){
+			String familyPlanning = (String)client.getAttributes().get("familyplanning");
+			familyPlanning = familyPlanning.trim();
+			logger.info("\n\n\n<><><><><><><><> Family Planning Process :"+ familyPlanning + "<><><><><><><><>\n\n\n ");
+			if(familyPlanning.equals("খাবার বড়ি")){
 				JSONObject familyPlanningCHCP = createJsonFamilyPlanningCHCP("oralContraceptives");
 				obar.put(familyPlanningCHCP);
-			}else if(familyplanning.equals("কনডম")){
+			}else if(familyPlanning.equals("কনডম")){
 				JSONObject familyPlanningCHCP = createJsonFamilyPlanningCHCP("condoms");
 				obar.put(familyPlanningCHCP);
-			}else if(familyplanning.equals("ইনজেক্টবল")){
+			}else if(familyPlanning.equals("ইনজেক্টবল")){
 				JSONObject familyPlanningCHCP = createJsonFamilyPlanningCHCP("injectable");
 				obar.put(familyPlanningCHCP);
-			}else if(familyplanning.equals("অন্যান্য পদ্ধতি")){
+			}else if(familyPlanning.equals("অন্যান্য পদ্ধতি")){
 				JSONObject familyPlanningCHCP = createJsonFamilyPlanningCHCP("otherMethod");
 				obar.put(familyPlanningCHCP);
 			}
@@ -213,10 +215,12 @@ public class EncounterService extends OpenmrsService {
 	}
 	
 	private JSONObject createJsonFamilyPlanningCHCP(String processName) throws JSONException{
+		logger.info("\n\n\n<><><><><><><><> Family Planning Process in createJSON function :"+ processName + "<><><><><><><><>\n\n\n ");
 		JSONObject familyPlanningCHCP = getStaticJsonObject("familyPlanningCHCP");
 		JSONArray groupMembers= new JSONArray();
 		groupMembers.put(getStaticJsonObject(processName));
 		familyPlanningCHCP.put("groupMembers", groupMembers);
+		logger.info("\n \n \n Final JSON <<>> <<>> <<>>" + familyPlanningCHCP.toString()+"\n \n \n");
 		return familyPlanningCHCP;
 	}
 	
