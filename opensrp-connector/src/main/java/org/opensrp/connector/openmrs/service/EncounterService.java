@@ -201,7 +201,7 @@ public class EncounterService extends OpenmrsService {
 			if(dangerSignsDuringPregnancyList.size()>0){
 				obar.put(getStaticJsonObject("healthCareGivenYes"));
 				obar.put(getStaticJsonObject("haveDangerSignsPregnancyYes"));
-				obar.put(getStaticJsonObject("bleedingThroughBirthCanal"));
+				//obar.put(getStaticJsonObject("bleedingThroughBirthCanal"));
 				for(String dangerSign : dangerSignsDuringPregnancyList){
 					JSONObject staticJSONObject = getStaticJsonObject(dangerSign);
 					logger.info("\n\n\n<><><><><> Danger sign static JSON :"+dangerSign+"->>"+ staticJSONObject + "<><><><><>\n\n\n ");
@@ -209,6 +209,8 @@ public class EncounterService extends OpenmrsService {
 						obar.put(staticJSONObject);
 					}
 				}	
+			}else{
+				obar.put(getStaticJsonObject("healthCareGivenNo"));
 			}
 			
 		}
@@ -620,6 +622,12 @@ public class EncounterService extends OpenmrsService {
 		
 		JSONObject haveDangerSignsPregnancyYes = null;
 		JSONObject bleedingThroughBirthCanal = null;
+		JSONObject prolongedDelivery = null;
+		JSONObject edema = null;
+		JSONObject jaundice = null;
+		JSONObject convulsion = null;
+		JSONObject highTemperature = null;
+		JSONObject weaknessBlurredVision = null;
 		try {
 			//normalDisease = new JSONObject("{\"encounterTypeUuid\":\"81852aee-3f10-11e4-adec-0800271c1b75\",\"visitType\":\"Community clinic service\",\"patientUuid\":\"391ec594-5381-4075-9b1d-7608ed19332d\",\"locationUuid\":\"ec9bfa0e-14f2-440d-bf22-606605d021b2\",\"providers\":[{\"uuid\":\"313c8507-9821-40e4-8a70-71a5c7693d72\"}]}");
 			normalDisease = new JSONObject("{\"encounterTypeUuid\":\"81852aee-3f10-11e4-adec-0800271c1b75\",\"providers\":[{\"uuid\":\"313c8507-9821-40e4-8a70-71a5c7693d72\"}],\"visitType\":\"Community clinic service\"}");
@@ -648,6 +656,12 @@ public class EncounterService extends OpenmrsService {
 		
 			haveDangerSignsPregnancyYes = new JSONObject("{\"concept\":{\"uuid\":\"519c7a61-b3bc-45db-a437-897c640c7c62\",\"name\":\"Have_Danger_Signs_Pregnancy\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"প্রসব পূর্ব সেবা.86/112-0\",\"voided\":false,\"value\":{\"uuid\":\"a2065636-5326-40f5-aed6-0cc2cca81ccc\",\"name\":{\"display\":\"Yes\",\"uuid\":\"b5a4d83a-7158-4477-b81c-71144f5a7232\",\"name\":\"Yes\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"resourceVersion\":\"1.9\"},\"displayString\":\"Yes\",\"resourceVersion\":\"2.0\",\"translationKey\":\"হ্যাঁ_112\"},\"interpretation\":null,\"inactive\":false,\"groupMembers\":[]}");
 			bleedingThroughBirthCanal = new JSONObject("{\"concept\":{\"uuid\":\"d84040fb-d3b6-40fa-b292-a26f90079464\",\"name\":\"Have_Danger_Signs_Pregnancy\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"প্রসব পূর্ব সেবা.86/78-0\",\"voided\":false,\"value\":{\"uuid\":\"3cdc7795-8305-4d43-a279-d9a1bb8f04a7\",\"name\":{\"display\":\"Bleeding_Through_Birth_Canal\",\"uuid\":\"07b2678c-dcf2-4c4d-90b1-cd22cdaeeac3\",\"name\":\"Bleeding_Through_Birth_Canal\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"resourceVersion\":\"1.9\"},\"displayString\":\"Bleeding_Through_Birth_Canal\",\"resourceVersion\":\"2.0\",\"translationKey\":\"যোনিপথে_রক্তক্ষরণ_78\"},\"inactive\":false,\"groupMembers\":[]}");
+			prolongedDelivery = new JSONObject("{\"concept\":{\"uuid\":\"d84040fb-d3b6-40fa-b292-a26f90079464\",\"name\":\"Have_Danger_Signs_Pregnancy\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"প্রসব পূর্ব সেবা.86/78-0\",\"voided\":false,\"value\":{\"uuid\":\"09d1e5f0-86f3-4a69-a137-2e941d31883c\",\"name\":{\"display\":\"Prolonged_Delivery_or_Child_Coming_Out_Before\",\"uuid\":\"6d2de0be-0551-48e2-85bc-a20637995019\",\"name\":\"Prolonged_Delivery_or_Child_Coming_Out_Before\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"resourceVersion\":\"1.9\"},\"displayString\":\"Prolonged_Delivery_or_Child_Coming_Out_Before\",\"resourceVersion\":\"2.0\",\"translationKey\":\"প্রলম্বিত_প্রসব/_বাচ্চা_আগে_বের_হওয়া_78\"},\"inactive\":false,\"groupMembers\":[]}");
+			edema = new JSONObject("{\"concept\":{\"uuid\":\"d84040fb-d3b6-40fa-b292-a26f90079464\",\"name\":\"Have_Danger_Signs_Pregnancy\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"প্রসব পূর্ব সেবা.86/78-0\",\"voided\":false,\"value\":{\"uuid\":\"5da2db65-3dc0-4ad8-8ce3-b15f9cef3bc0\",\"name\":{\"display\":\"Edema\",\"uuid\":\"08d59498-27be-40b1-8478-f87b65bbf5bf\",\"name\":\"Edema\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"resourceVersion\":\"1.9\"},\"displayString\":\"Edema\",\"resourceVersion\":\"2.0\",\"translationKey\":\"ইডেমা_78\"},\"inactive\":false,\"groupMembers\":[]}");
+			jaundice = new JSONObject("{\"concept\":{\"uuid\":\"d84040fb-d3b6-40fa-b292-a26f90079464\",\"name\":\"Have_Danger_Signs_Pregnancy\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"প্রসব পূর্ব সেবা.86/78-0\",\"voided\":false,\"value\":{\"uuid\":\"f20b15b2-4e14-11e4-8a57-0800271c1b75\",\"name\":{\"display\":\"Jaundice\",\"uuid\":\"40b3fb68-6ddd-4e5f-a94e-5dd758190a50\",\"name\":\"Jaundice\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"resourceVersion\":\"1.9\"},\"displayString\":\"Jaundice\",\"resourceVersion\":\"2.0\",\"translationKey\":\"জন্ডিস_78\"},\"inactive\":false,\"groupMembers\":[]}");
+			convulsion = new JSONObject("{\"concept\":{\"uuid\":\"d84040fb-d3b6-40fa-b292-a26f90079464\",\"name\":\"Have_Danger_Signs_Pregnancy\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"প্রসব পূর্ব সেবা.86/78-0\",\"voided\":false,\"value\":{\"uuid\":\"f1806ea3-da0b-4442-827a-b85f26f038db\",\"name\":{\"display\":\"Convulsion\",\"uuid\":\"5fab5283-1e6b-4653-95bf-cbbae8f4f8d3\",\"name\":\"Convulsion\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"resourceVersion\":\"1.9\"},\"displayString\":\"Convulsion\",\"resourceVersion\":\"2.0\",\"translationKey\":\"খিঁচুনি_78\"},\"inactive\":false,\"groupMembers\":[]}");
+			highTemperature = new JSONObject("{\"concept\":{\"uuid\":\"d84040fb-d3b6-40fa-b292-a26f90079464\",\"name\":\"Have_Danger_Signs_Pregnancy\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"প্রসব পূর্ব সেবা.86/78-0\",\"voided\":false,\"value\":{\"uuid\":\"86c06eec-beee-4d0e-9d16-db57139dd857\",\"name\":{\"display\":\"High_Temperature_102_Degree_or_More\",\"uuid\":\"694c67b4-ff16-4326-ac25-3c00e561d052\",\"name\":\"High_Temperature_102_Degree_or_More\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"resourceVersion\":\"1.9\"},\"displayString\":\"High_Temperature_102_Degree_or_More\",\"resourceVersion\":\"2.0\",\"translationKey\":\"উচ্চ_তাপমাত্রা_১০২_ডিগ্রি_বা_তদুর্ধ_78\"},\"inactive\":false,\"groupMembers\":[]}");
+			weaknessBlurredVision = new JSONObject("{\"concept\":{\"uuid\":\"d84040fb-d3b6-40fa-b292-a26f90079464\",\"name\":\"Have_Danger_Signs_Pregnancy\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"প্রসব পূর্ব সেবা.86/78-0\",\"voided\":false,\"value\":{\"uuid\":\"982d4b88-67e1-4fe4-a030-948ad9146847\",\"name\":{\"display\":\"Weakness_Blurred_vision\",\"uuid\":\"a700e629-73a8-435b-9448-929be26e5045\",\"name\":\"Weakness_Blurred_vision\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"resourceVersion\":\"1.9\"},\"displayString\":\"Weakness_Blurred_vision\",\"resourceVersion\":\"2.0\",\"translationKey\":\"দুর্বলতা,_চোখে_ঝাপসা_দেখা_78\"},\"inactive\":false,\"groupMembers\":[]}");
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -699,8 +713,20 @@ public class EncounterService extends OpenmrsService {
 			objectToReturn = otherMethod;
 		}else if(nameOfJSONObject.equals("haveDangerSignsPregnancyYes")){
 			objectToReturn = haveDangerSignsPregnancyYes;
-		}else if(nameOfJSONObject.equals("bleedingThroughBirthCanal")){
+		}else if(nameOfJSONObject.equals("Bleeding_Through_Birth_Canal")){
 			objectToReturn = bleedingThroughBirthCanal;
+		}else if(nameOfJSONObject.equals("Prolonged_Delivery_or_Child_Coming_Out_Before")){
+			objectToReturn = prolongedDelivery;
+		}else if(nameOfJSONObject.equals("Edema")){
+			objectToReturn = edema;
+		}else if(nameOfJSONObject.equals("Jaundice")){
+			objectToReturn = jaundice;
+		}else if(nameOfJSONObject.equals("Convulsion")){
+			objectToReturn = convulsion;
+		}else if(nameOfJSONObject.equals("High_Temperature_102_Degree_or_More")){
+			objectToReturn = highTemperature;
+		}else if(nameOfJSONObject.equals("Weakness_Blurred_vision")){
+			objectToReturn = weaknessBlurredVision;
 		}
 		return objectToReturn;
 	}
