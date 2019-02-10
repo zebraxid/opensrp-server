@@ -186,9 +186,21 @@ public class EncounterService extends OpenmrsService {
 			obar = createObservationFamilyPlanning(e);
 		}else if (e.getEventType().equalsIgnoreCase("Followup ANC")) {
 			obar = createObservationFollowupANC(e);
+		}else if (e.getEventType().equalsIgnoreCase("Followup PNC")) {
+			obar = createObservationFollowupPNC(e);
 		}
 		enc.put("observations", obar);
 		return enc;
+	}
+	
+	
+	private JSONArray createObservationFollowupPNC(Event e)
+			throws JSONException {
+		JSONArray obar= new JSONArray();
+		String formFieldPath = "প্রসব পরবর্তী সেবা.43/52-0";
+		Client client = clientService.getByBaseEntityId(e.getBaseEntityId());
+		obar = addRefferedPlaceInObservationArray(e, obar,formFieldPath);
+		return obar;
 	}
 
 	private JSONArray createObservationFollowupANC(Event e)
