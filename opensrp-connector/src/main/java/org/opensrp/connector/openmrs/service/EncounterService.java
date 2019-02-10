@@ -194,14 +194,17 @@ public class EncounterService extends OpenmrsService {
 	private JSONArray createObservationFollowupANC(Event e)
 			throws JSONException {
 		JSONArray obar= new JSONArray();
+		String formFieldPath = "প্রসব পূর্ব সেবা.86/134-0";
 		Client client = clientService.getByBaseEntityId(e.getBaseEntityId());
 		if(client.getAttributes().containsKey("Denger_Signs_During_Pregnancy")){
 			String dangerSignsDuringPregnancyString = (String)client.getAttributes().get("Denger_Signs_During_Pregnancy");
 			List<String> dangerSignsDuringPregnancyList = Arrays.asList(dangerSignsDuringPregnancyString.split(","));
 			if(dangerSignsDuringPregnancyList.size()>0){
-				obar.put(getStaticJsonObject("healthCareGivenYes"));
+				//"formFieldPath": "প্রসব পূর্ব সেবা.86/134-0"
+				JSONObject healthCareGivenYes = getStaticJsonObject("healthCareGivenYes");
+				healthCareGivenYes.put("formFieldPath", formFieldPath);
+				obar.put(healthCareGivenYes);
 				obar.put(getStaticJsonObject("haveDangerSignsPregnancyYes"));
-				//obar.put(getStaticJsonObject("bleedingThroughBirthCanal"));
 				for(String dangerSign : dangerSignsDuringPregnancyList){
 					JSONObject staticJSONObject = getStaticJsonObject(dangerSign);
 					logger.info("\n\n\n<><><><><> Danger sign static JSON :"+dangerSign+"->>"+ staticJSONObject + "<><><><><>\n\n\n ");
@@ -210,12 +213,16 @@ public class EncounterService extends OpenmrsService {
 					}
 				}	
 			}else{
-				obar.put(getStaticJsonObject("healthCareGivenNo"));
+				JSONObject healthCareGivenNo = getStaticJsonObject("healthCareGivenNo");
+				healthCareGivenNo.put("formFieldPath", formFieldPath);
+				obar.put(healthCareGivenNo);
 			}
 		}else{
-			obar.put(getStaticJsonObject("healthCareGivenNo"));
+			JSONObject healthCareGivenNo = getStaticJsonObject("healthCareGivenNo");
+			healthCareGivenNo.put("formFieldPath", formFieldPath);
+			obar.put(healthCareGivenNo);
 		}
-		obar = addRefferedPlaceInObservationArray(e, obar);
+		obar = addRefferedPlaceInObservationArray(e, obar,formFieldPath);
 		return obar;
 	}
 	
@@ -258,6 +265,7 @@ public class EncounterService extends OpenmrsService {
 			throws JSONException {
 		JSONArray obar= new JSONArray();
 		List<String> diseaseList = null;
+		String formFieldPath = "সাধারন রোগীর সেবা.19/43-0";
 		Client client = clientService.getByBaseEntityId(e.getBaseEntityId());
 		boolean hasDisease =false;
 		if(client.getAttributes().containsKey("has_disease")){
@@ -289,11 +297,11 @@ public class EncounterService extends OpenmrsService {
 			obar.put(getStaticJsonObject("healthCareGivenNo"));
 		}
 		
-		obar = addRefferedPlaceInObservationArray(e, obar);
+		obar = addRefferedPlaceInObservationArray(e, obar, formFieldPath);
 		return obar;
 	}
 	
-	private JSONArray addRefferedPlaceInObservationArray(Event e, JSONArray obar){
+	private JSONArray addRefferedPlaceInObservationArray(Event e, JSONArray obar, String formFieldPath) throws JSONException{
 		List<Obs> eventObs = e.getObs();
 		if(eventObs!= null){
 			for(Obs o: eventObs){
@@ -301,7 +309,13 @@ public class EncounterService extends OpenmrsService {
 				if(formSubmissionField!= null){
 					String obsValue = (String) o.getValues().get(0);
 					if(formSubmissionField.equals("Place_of_Refer") && obsValue!= null){
-						obar.put(getStaticJsonObject(obsValue));
+						if(!formFieldPath.isEmpty()){
+							JSONObject refferedPlace = getStaticJsonObject(obsValue);
+							refferedPlace.put("formFieldPath", formFieldPath);
+							obar.put(refferedPlace);
+						}else{
+							obar.put(getStaticJsonObject(obsValue));
+						}
 					}
 				}
 			}
