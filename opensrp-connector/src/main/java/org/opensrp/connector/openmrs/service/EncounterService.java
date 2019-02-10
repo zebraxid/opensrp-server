@@ -212,8 +212,10 @@ public class EncounterService extends OpenmrsService {
 			}else{
 				obar.put(getStaticJsonObject("healthCareGivenNo"));
 			}
-			
+		}else{
+			obar.put(getStaticJsonObject("healthCareGivenNo"));
 		}
+		obar = addRefferedPlaceInObservationArray(e, obar);
 		return obar;
 	}
 	
@@ -286,6 +288,12 @@ public class EncounterService extends OpenmrsService {
 		}else{
 			obar.put(getStaticJsonObject("healthCareGivenNo"));
 		}
+		
+		obar = addRefferedPlaceInObservationArray(e, obar);
+		return obar;
+	}
+	
+	private JSONArray addRefferedPlaceInObservationArray(Event e, JSONArray obar){
 		List<Obs> eventObs = e.getObs();
 		if(eventObs!= null){
 			for(Obs o: eventObs){
@@ -293,27 +301,7 @@ public class EncounterService extends OpenmrsService {
 				if(formSubmissionField!= null){
 					String obsValue = (String) o.getValues().get(0);
 					if(formSubmissionField.equals("Place_of_Refer") && obsValue!= null){
-						if(obsValue.equals("Union_Sub_Center")){
-							obar.put(getStaticJsonObject("unionSubCenter"));
-						}else if(obsValue.equals("Union_Family_Welfare_Center")){
-							obar.put(getStaticJsonObject("unionFamilyWelfareCenter"));
-						}else if(obsValue.equals("Union_Health_and_Family_Welfare_Center")){
-							obar.put(getStaticJsonObject("unionHealthAndFamilyWelfareCenter"));
-						}else if(obsValue.equals("Metarnal_and_Child_Wellfare_Center")){
-							obar.put(getStaticJsonObject("metarnalAndChildWelfareCenter"));
-						}else if(obsValue.equals("10_Bed_Hospital")){
-							obar.put(getStaticJsonObject("tenBedHospital"));
-						}else if(obsValue.equals("20_Beds_Hospital")){
-							obar.put(getStaticJsonObject("twentyBedHospital"));
-						}else if(obsValue.equals("Upazila_Health_Complex")){
-							obar.put(getStaticJsonObject("upazilaHealthComplex"));
-						}else if(obsValue.equals("District_Hospital")){
-							obar.put(getStaticJsonObject("districtHospital"));
-						}else if(obsValue.equals("Medical_College_and_Hospital")){
-							obar.put(getStaticJsonObject("medicalCollegeAndHospital"));
-						}else if(obsValue.equals("Others_Health_Facility")){
-							obar.put(getStaticJsonObject("otherHealthFacility"));
-						}
+						obar.put(getStaticJsonObject(obsValue));
 					}
 				}
 			}
@@ -681,25 +669,25 @@ public class EncounterService extends OpenmrsService {
 			objectToReturn = tuberculosis;
 		}else if(nameOfJSONObject.equals("otherPossibleDisease")){
 			objectToReturn = otherPossibleDisease;
-		}else if(nameOfJSONObject.equals("unionSubCenter")){
+		}else if(nameOfJSONObject.equals("Union_Sub_Center")){
 			objectToReturn = unionSubCenter;
-		}else if(nameOfJSONObject.equals("unionFamilyWelfareCenter")){
+		}else if(nameOfJSONObject.equals("Union_Family_Welfare_Center")){
 			objectToReturn = unionFamilyWelfareCenter;
-		}else if(nameOfJSONObject.equals("unionHealthAndFamilyWelfareCenter")){
+		}else if(nameOfJSONObject.equals("Union_Health_and_Family_Welfare_Center")){
 			objectToReturn = unionHealthAndFamilyWelfareCenter;
-		}else if(nameOfJSONObject.equals("metarnalAndChildWelfareCenter")){
+		}else if(nameOfJSONObject.equals("Metarnal_and_Child_Wellfare_Center")){
 			objectToReturn = metarnalAndChildWelfareCenter;
-		}else if(nameOfJSONObject.equals("tenBedHospital")){
+		}else if(nameOfJSONObject.equals("10_Bed_Hospital")){
 			objectToReturn = tenBedHospital;
-		}else if(nameOfJSONObject.equals("twentyBedHospital")){
+		}else if(nameOfJSONObject.equals("20_Beds_Hospital")){
 			objectToReturn = twentyBedHospital;
-		}else if(nameOfJSONObject.equals("upazilaHealthComplex")){
+		}else if(nameOfJSONObject.equals("Upazila_Health_Complex")){
 			objectToReturn = upazilaHealthComplex;
-		}else if(nameOfJSONObject.equals("districtHospital")){
+		}else if(nameOfJSONObject.equals("District_Hospital")){
 			objectToReturn = districtHospital;
-		}else if(nameOfJSONObject.equals("medicalCollegeAndHospital")){
+		}else if(nameOfJSONObject.equals("Medical_College_and_Hospital")){
 			objectToReturn = medicalCollegeAndHospital;
-		}else if(nameOfJSONObject.equals("otherHealthFacility")){
+		}else if(nameOfJSONObject.equals("Others_Health_Facility")){
 			objectToReturn = otherHealthFacility;
 		}else if(nameOfJSONObject.equals("familyPlanningCHCP")){
 			objectToReturn = familyPlanningCHCP;
