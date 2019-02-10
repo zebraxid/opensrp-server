@@ -184,11 +184,37 @@ public class EncounterService extends OpenmrsService {
 			obar = createObservationNormalDisease(e);
 		}else if (e.getEventType().equalsIgnoreCase("Followup Family Planning")) {
 			obar = createObservationFamilyPlanning(e);
+		}else if (e.getEventType().equalsIgnoreCase("Followup ANC")) {
+			obar = createObservationFollowupANC(e);
 		}
 		enc.put("observations", obar);
 		return enc;
 	}
 
+	private JSONArray createObservationFollowupANC(Event e)
+			throws JSONException {
+		JSONArray obar= new JSONArray();
+		Client client = clientService.getByBaseEntityId(e.getBaseEntityId());
+		if(client.getAttributes().containsKey("Denger_Signs_During_Pregnancy")){
+			String dangerSignsDuringPregnancyString = (String)client.getAttributes().get("Denger_Signs_During_Pregnancy");
+			List<String> dangerSignsDuringPregnancyList = Arrays.asList(dangerSignsDuringPregnancyString.split(","));
+			if(dangerSignsDuringPregnancyList.size()>0){
+				obar.put(getStaticJsonObject("healthCareGivenYes"));
+				obar.put(getStaticJsonObject("haveDangerSignsPregnancyYes"));
+				obar.put(getStaticJsonObject("bleedingThroughBirthCanal"));
+				for(String dangerSign : dangerSignsDuringPregnancyList){
+					JSONObject staticJSONObject = getStaticJsonObject(dangerSign);
+					logger.info("\n\n\n<><><><><> Danger sign static JSON :"+dangerSign+"->>"+ staticJSONObject + "<><><><><>\n\n\n ");
+					if(staticJSONObject!= null){
+						obar.put(staticJSONObject);
+					}
+				}	
+			}
+			
+		}
+		return obar;
+	}
+	
 	private JSONArray createObservationFamilyPlanning(Event e)
 			throws JSONException {
 		JSONArray obar= new JSONArray();
@@ -591,6 +617,9 @@ public class EncounterService extends OpenmrsService {
 		JSONObject condoms = null;
 		JSONObject injectable = null;
 		JSONObject otherMethod = null;
+		
+		JSONObject haveDangerSignsPregnancyYes = null;
+		JSONObject bleedingThroughBirthCanal = null;
 		try {
 			//normalDisease = new JSONObject("{\"encounterTypeUuid\":\"81852aee-3f10-11e4-adec-0800271c1b75\",\"visitType\":\"Community clinic service\",\"patientUuid\":\"391ec594-5381-4075-9b1d-7608ed19332d\",\"locationUuid\":\"ec9bfa0e-14f2-440d-bf22-606605d021b2\",\"providers\":[{\"uuid\":\"313c8507-9821-40e4-8a70-71a5c7693d72\"}]}");
 			normalDisease = new JSONObject("{\"encounterTypeUuid\":\"81852aee-3f10-11e4-adec-0800271c1b75\",\"providers\":[{\"uuid\":\"313c8507-9821-40e4-8a70-71a5c7693d72\"}],\"visitType\":\"Community clinic service\"}");
@@ -616,6 +645,9 @@ public class EncounterService extends OpenmrsService {
 			condoms = new JSONObject("{\"concept\":{\"uuid\":\"a7526490-7b21-44ec-8174-bcb4647703ca\",\"name\":\"FAMILY_PLANNING_CHCP\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"পরিবার পরিকল্পনা সেবা.2/7-0\",\"voided\":false,\"groupMembers\":[],\"inactive\":false,\"value\":{\"uuid\":\"1fe0597e-470d-49bd-9d82-9c7b7342dab0\",\"name\":{\"display\":\"Condoms\",\"uuid\":\"d4300218-a8fa-4ca4-b0a3-5b8cef1a4249\",\"name\":\"Condoms\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"resourceVersion\":\"1.9\"},\"displayString\":\"Condoms\",\"resourceVersion\":\"2.0\",\"translationKey\":\"কনডম_7\"},\"interpretation\":null}");
 			injectable = new JSONObject("{\"concept\":{\"uuid\":\"a7526490-7b21-44ec-8174-bcb4647703ca\",\"name\":\"FAMILY_PLANNING_CHCP\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"পরিবার পরিকল্পনা সেবা.2/7-0\",\"voided\":false,\"value\":{\"uuid\":\"f80264f6-ba9d-4b8c-a15a-9076bef6ac8a\",\"name\":{\"display\":\"Injectable\",\"uuid\":\"c5e9ff44-06d8-4d69-8cf4-9b51aee71fdd\",\"name\":\"Injectable\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"resourceVersion\":\"1.9\"},\"displayString\":\"Injectable\",\"resourceVersion\":\"2.0\",\"translationKey\":\"ইনজেক্টবল_7\"},\"interpretation\":null,\"inactive\":false,\"groupMembers\":[]}");
 			otherMethod = new JSONObject("{\"concept\":{\"uuid\":\"a7526490-7b21-44ec-8174-bcb4647703ca\",\"name\":\"FAMILY_PLANNING_CHCP\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"পরিবার পরিকল্পনা সেবা.2/7-0\",\"voided\":false,\"value\":{\"uuid\":\"4fdc5b5b-ff7a-4bdf-920f-92276ef6c07f\",\"name\":{\"display\":\"Other_Method\",\"uuid\":\"4774fe09-e957-4c53-955a-a2b43ee9fe98\",\"name\":\"Other_Method\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"resourceVersion\":\"1.9\"},\"displayString\":\"Other_Method\",\"resourceVersion\":\"2.0\",\"translationKey\":\"অন্যান্য_পদ্ধতি_7\"},\"interpretation\":null,\"inactive\":false,\"groupMembers\":[]}");
+		
+			haveDangerSignsPregnancyYes = new JSONObject("{\"concept\":{\"uuid\":\"519c7a61-b3bc-45db-a437-897c640c7c62\",\"name\":\"Have_Danger_Signs_Pregnancy\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"প্রসব পূর্ব সেবা.86/112-0\",\"voided\":false,\"value\":{\"uuid\":\"a2065636-5326-40f5-aed6-0cc2cca81ccc\",\"name\":{\"display\":\"Yes\",\"uuid\":\"b5a4d83a-7158-4477-b81c-71144f5a7232\",\"name\":\"Yes\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"resourceVersion\":\"1.9\"},\"displayString\":\"Yes\",\"resourceVersion\":\"2.0\",\"translationKey\":\"হ্যাঁ_112\"},\"interpretation\":null,\"inactive\":false,\"groupMembers\":[]}");
+			bleedingThroughBirthCanal = new JSONObject("{\"concept\":{\"uuid\":\"d84040fb-d3b6-40fa-b292-a26f90079464\",\"name\":\"Have_Danger_Signs_Pregnancy\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"প্রসব পূর্ব সেবা.86/78-0\",\"voided\":false,\"value\":{\"uuid\":\"3cdc7795-8305-4d43-a279-d9a1bb8f04a7\",\"name\":{\"display\":\"Bleeding_Through_Birth_Canal\",\"uuid\":\"07b2678c-dcf2-4c4d-90b1-cd22cdaeeac3\",\"name\":\"Bleeding_Through_Birth_Canal\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"resourceVersion\":\"1.9\"},\"displayString\":\"Bleeding_Through_Birth_Canal\",\"resourceVersion\":\"2.0\",\"translationKey\":\"যোনিপথে_রক্তক্ষরণ_78\"},\"inactive\":false,\"groupMembers\":[]}");
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -665,6 +697,10 @@ public class EncounterService extends OpenmrsService {
 			objectToReturn = injectable;
 		}else if(nameOfJSONObject.equals("otherMethod")){
 			objectToReturn = otherMethod;
+		}else if(nameOfJSONObject.equals("haveDangerSignsPregnancyYes")){
+			objectToReturn = haveDangerSignsPregnancyYes;
+		}else if(nameOfJSONObject.equals("bleedingThroughBirthCanal")){
+			objectToReturn = bleedingThroughBirthCanal;
 		}
 		return objectToReturn;
 	}
