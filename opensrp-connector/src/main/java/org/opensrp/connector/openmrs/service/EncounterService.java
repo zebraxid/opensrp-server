@@ -223,6 +223,8 @@ public class EncounterService extends OpenmrsService {
 					if(diseaseName!= null && !diseaseName.isEmpty()){
 						if(diseaseName.equals("Pneumonia") || diseaseName.equals("unspec.")){
 							String nextDiseaseName = diseaseList.get(i+1);
+							logger.info("\n\n\n<><><><><> "+ diseaseName +" --> "+nextDiseaseName+ "<><><><><>\n\n\n ");
+							
 							if(diseaseName.equals("Pneumonia")){
 								if(nextDiseaseName.equals("unspec.")){
 									JSONObject staticJSONObject = getStaticJsonObject("coldAndCough");
@@ -234,7 +236,7 @@ public class EncounterService extends OpenmrsService {
 									i++;
 								}else{
 									JSONObject staticJSONObject = getStaticJsonObject(diseaseName);
-									logger.info("\n\n\n<><><><><> Child disease static JSON :"+diseaseName+"->>"+ staticJSONObject + "<><><><><>\n\n\n ");
+									logger.info("\n\n\n<><><> Child disease static JSON :"+diseaseName+"->>"+ staticJSONObject + "<><><><><>\n\n\n ");
 									if(staticJSONObject!= null){
 										staticJSONObject.put("formFieldPath", formFieldPath);
 										obar.put(staticJSONObject);
