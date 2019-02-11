@@ -223,6 +223,7 @@ public class EncounterService extends OpenmrsService {
 					if(diseaseName!= null && !diseaseName.isEmpty()){
 						if(diseaseName.equals("Pneumonia") || diseaseName.equals("unspec.")){
 							String nextDiseaseName = diseaseList.get(i+1);
+							nextDiseaseName = nextDiseaseName.trim();
 							logger.info("\n\n\n<><><><><> "+ diseaseName +" --> "+nextDiseaseName+ "<><><><><>\n\n\n ");
 							
 							if(diseaseName.equals("Pneumonia")){
