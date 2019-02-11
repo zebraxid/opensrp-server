@@ -215,6 +215,10 @@ public class EncounterService extends OpenmrsService {
 		if(hasDisease){
 			JSONObject healthCareGivenYes = getStaticJsonObject("healthCareGivenYes");
 			healthCareGivenYes.put("formFieldPath", formFieldPath);
+			//JSONObject concept = staticJSONObject.getJSONObject("concept");
+			JSONObject concept = new JSONObject();
+			concept.put("name", "Disease_Below_2Month_CHCP");
+			concept.put("uuid", "1031ee9f-460c-433d-b0f9-e6aac203d857");
 			obar.put(healthCareGivenYes);
 			if(diseaseList!=null){
 				//for(String diseaseName : diseaseList){
@@ -248,9 +252,6 @@ public class EncounterService extends OpenmrsService {
 							JSONObject staticJSONObject = getStaticJsonObject(diseaseName);
 							logger.info("\n\n\n<><><><><> Child disease static JSON :"+diseaseName+"->>"+ staticJSONObject + "<><><><><>\n\n\n ");
 							if(staticJSONObject!= null){
-								JSONObject concept = staticJSONObject.getJSONObject("concept");
-								concept.put("name", "Disease_Below_2Month_CHCP");
-								concept.put("uuid", "1031ee9f-460c-433d-b0f9-e6aac203d857");
 								staticJSONObject.put("concept", concept);
 								staticJSONObject.put("formFieldPath", formFieldPath);
 								obar.put(staticJSONObject);
