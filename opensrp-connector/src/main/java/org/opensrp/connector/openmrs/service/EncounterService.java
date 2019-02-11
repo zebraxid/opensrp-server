@@ -801,6 +801,14 @@ public class EncounterService extends OpenmrsService {
 		JSONObject coldAndCough = null;
 		JSONObject diarrhoeaNoDehydration = null;
 		JSONObject othersMemberDisease = null;
+		
+		JSONObject diarrhoeaAndDysentery = null;
+		JSONObject maleria = null;
+		JSONObject hearingLoss = null;
+		JSONObject measles = null;
+		JSONObject conjunctivitis = null;
+		JSONObject malnutrition = null;
+		JSONObject anemia = null;
 		try {
 			//normalDisease = new JSONObject("{\"encounterTypeUuid\":\"81852aee-3f10-11e4-adec-0800271c1b75\",\"visitType\":\"Community clinic service\",\"patientUuid\":\"391ec594-5381-4075-9b1d-7608ed19332d\",\"locationUuid\":\"ec9bfa0e-14f2-440d-bf22-606605d021b2\",\"providers\":[{\"uuid\":\"313c8507-9821-40e4-8a70-71a5c7693d72\"}]}");
 			normalDisease = new JSONObject("{\"encounterTypeUuid\":\"81852aee-3f10-11e4-adec-0800271c1b75\",\"providers\":[{\"uuid\":\"313c8507-9821-40e4-8a70-71a5c7693d72\"}],\"visitType\":\"Community clinic service\"}");
@@ -845,6 +853,14 @@ public class EncounterService extends OpenmrsService {
 			coldAndCough = new JSONObject("{\"concept\":{\"uuid\":\"1031ee9f-460c-433d-b0f9-e6aac203d857\",\"name\":\"Disease_Below_2Month_CHCP\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"শিশু (০ থেকে ২ মাস) স্বাস্থ্য সেবা.35/69-0\",\"voided\":false,\"value\":{\"uuid\":\"e6b508fd-4e14-11e4-8a57-0800271c1b75\",\"name\":{\"display\":\"Pneumonia, unspec.\",\"uuid\":\"dfadf888-252c-4231-96e4-ea1b440e2e9c\",\"name\":\"Pneumonia, unspec.\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"resourceVersion\":\"1.9\"},\"displayString\":\"Pneumonia, unspec.\",\"resourceVersion\":\"2.0\",\"translationKey\":\"কাশি/সর্দি_69\"},\"inactive\":false,\"groupMembers\":[]}");
 			diarrhoeaNoDehydration = new JSONObject("{\"concept\":{\"uuid\":\"1031ee9f-460c-433d-b0f9-e6aac203d857\",\"name\":\"Disease_Below_2Month_CHCP\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"শিশু (০ থেকে ২ মাস) স্বাস্থ্য সেবা.35/69-0\",\"voided\":false,\"value\":{\"uuid\":\"a611cef5-da8f-425d-80e6-cc7025400fba\",\"name\":{\"display\":\"Diarrhoea_No_Dehydration\",\"uuid\":\"3a61f525-81eb-4413-82b5-038f3ed07126\",\"name\":\"Diarrhoea_No_Dehydration\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"resourceVersion\":\"1.9\"},\"displayString\":\"Diarrhoea_No_Dehydration\",\"resourceVersion\":\"2.0\",\"translationKey\":\"পানি_স্বল্পতাহীন_ডায়রিয়া_69\"},\"inactive\":false,\"groupMembers\":[]}");
 			othersMemberDisease = new JSONObject("{\"concept\":{\"uuid\":\"1031ee9f-460c-433d-b0f9-e6aac203d857\",\"name\":\"Disease_Below_2Month_CHCP\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"শিশু (০ থেকে ২ মাস) স্বাস্থ্য সেবা.35/69-0\",\"voided\":false,\"value\":{\"uuid\":\"af6d9f1e-2e7e-4a61-86ea-f2c001a90781\",\"name\":{\"display\":\"Others_member_disease\",\"uuid\":\"1d074959-b389-4008-9121-f83c4bd9a5ee\",\"name\":\"Others_member_disease\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"resourceVersion\":\"1.9\"},\"displayString\":\"Others_member_disease\",\"resourceVersion\":\"2.0\",\"translationKey\":\"অন্যান্য_অসুখ_69\"},\"inactive\":false,\"groupMembers\":[]}");
+		
+			diarrhoeaAndDysentery = new JSONObject("");
+			maleria = new JSONObject("");
+			hearingLoss = new JSONObject("");
+			measles = new JSONObject("");
+			conjunctivitis = new JSONObject("");
+			malnutrition = new JSONObject("");
+			anemia = new JSONObject("");
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -928,6 +944,20 @@ public class EncounterService extends OpenmrsService {
 			objectToReturn = diarrhoeaNoDehydration;
 		}else if(nameOfJSONObject.equals("Others_member_disease")){
 			objectToReturn = othersMemberDisease;
+		}else if(nameOfJSONObject.equals("dieriaanddysentry")){
+			objectToReturn = diarrhoeaAndDysentery;
+		}else if(nameOfJSONObject.equals("maleria")){
+			objectToReturn = maleria;
+		}else if(nameOfJSONObject.equals("hearingLoss")){
+			objectToReturn = hearingLoss;
+		}else if(nameOfJSONObject.equals("Measles")){
+			objectToReturn = measles;
+		}else if(nameOfJSONObject.equals("Conjunctivitis")){
+			objectToReturn = conjunctivitis;
+		}else if(nameOfJSONObject.equals("Malnutrition")){
+			objectToReturn = malnutrition;
+		}else if(nameOfJSONObject.equals("Anemia")){
+			objectToReturn = anemia;
 		}
 		return objectToReturn;
 	}
