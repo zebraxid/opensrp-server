@@ -188,9 +188,73 @@ public class EncounterService extends OpenmrsService {
 			obar = createObservationFollowupANC(e);
 		}else if (e.getEventType().equalsIgnoreCase("Followup PNC")) {
 			obar = createObservationFollowupPNC(e);
+		}else if (e.getEventType().equalsIgnoreCase("Followup Disease Child")) {
+			obar = createObservationFollowupDiseaseChild(e);
 		}
 		enc.put("observations", obar);
 		return enc;
+	}
+	
+	private JSONArray createObservationFollowupDiseaseChild(Event e)
+			throws JSONException {
+		JSONArray obar= new JSONArray();
+		List<String> diseaseList = null;
+		String formFieldPath = "শিশু (০ থেকে ২ মাস) স্বাস্থ্য সেবা.35/73-0";
+		Client client = clientService.getByBaseEntityId(e.getBaseEntityId());
+		boolean hasDisease =false;
+		if(client.getAttributes().containsKey("has_disease")){
+			String hasDiseaseStr = (String)client.getAttributes().get("has_disease");
+			if(hasDiseaseStr.equals("হ্যাঁ")){
+				hasDisease = true;
+			}
+		}
+		if(client.getAttributes().containsKey("Disease_status") && hasDisease == true){
+			String diseaseString = (String)client.getAttributes().get("Disease_status");
+			diseaseList = Arrays.asList(diseaseString.split(","));
+		}
+		if(hasDisease){
+			obar.put(getStaticJsonObject("healthCareGivenYes"));
+			if(diseaseList!=null){
+				//for(String diseaseName : diseaseList){
+				for(int i=0; i< diseaseList.size()-1; i++){
+					String diseaseName = diseaseList.get(i);
+					if(diseaseName!= null && !diseaseName.isEmpty()){
+						if(diseaseName.equals("Pneumonia") || diseaseName.equals("unspec.")){
+							String nextDiseaseName = diseaseList.get(i+1);
+							if(diseaseName.equals("Pneumonia")){
+								if(nextDiseaseName.equals("unspec.")){
+									JSONObject staticJSONObject = getStaticJsonObject("coldAndCough");
+									logger.info("\n\n\n<><><><><> Child disease static JSON :"+diseaseName+"->>"+ staticJSONObject + "<><><><><>\n\n\n ");
+									if(staticJSONObject!= null){
+										obar.put(staticJSONObject);
+									}
+									i++;
+								}else{
+									JSONObject staticJSONObject = getStaticJsonObject(diseaseName);
+									logger.info("\n\n\n<><><><><> Child disease static JSON :"+diseaseName+"->>"+ staticJSONObject + "<><><><><>\n\n\n ");
+									if(staticJSONObject!= null){
+										obar.put(staticJSONObject);
+									}
+								}
+							}
+						}else{
+							JSONObject staticJSONObject = getStaticJsonObject(diseaseName);
+							logger.info("\n\n\n<><><><><> Child disease static JSON :"+diseaseName+"->>"+ staticJSONObject + "<><><><><>\n\n\n ");
+							if(staticJSONObject!= null){
+								obar.put(staticJSONObject);
+							}
+						}
+					}
+				}
+			}
+		}else{
+			JSONObject healthCareGivenNo = getStaticJsonObject("healthCareGivenNo");
+			healthCareGivenNo.put("formFieldPath", formFieldPath);
+			obar.put(healthCareGivenNo);
+		}
+		
+		obar = addRefferedPlaceInObservationArray(e, obar, formFieldPath);
+		return obar;
 	}
 	
 	
@@ -642,6 +706,16 @@ public class EncounterService extends OpenmrsService {
 		JSONObject convulsion = null;
 		JSONObject highTemperature = null;
 		JSONObject weaknessBlurredVision = null;
+		
+		JSONObject verySevereDisease = null;
+		JSONObject probableLimitedInfection = null;
+		JSONObject bellyButtonInfection = null;
+		JSONObject injury = null;
+		JSONObject fever = null;
+		JSONObject pneumonia = null;
+		JSONObject coldAndCough = null;
+		JSONObject diarrhoeaNoDehydration = null;
+		JSONObject othersMemberDisease = null;
 		try {
 			//normalDisease = new JSONObject("{\"encounterTypeUuid\":\"81852aee-3f10-11e4-adec-0800271c1b75\",\"visitType\":\"Community clinic service\",\"patientUuid\":\"391ec594-5381-4075-9b1d-7608ed19332d\",\"locationUuid\":\"ec9bfa0e-14f2-440d-bf22-606605d021b2\",\"providers\":[{\"uuid\":\"313c8507-9821-40e4-8a70-71a5c7693d72\"}]}");
 			normalDisease = new JSONObject("{\"encounterTypeUuid\":\"81852aee-3f10-11e4-adec-0800271c1b75\",\"providers\":[{\"uuid\":\"313c8507-9821-40e4-8a70-71a5c7693d72\"}],\"visitType\":\"Community clinic service\"}");
@@ -676,6 +750,16 @@ public class EncounterService extends OpenmrsService {
 			convulsion = new JSONObject("{\"concept\":{\"uuid\":\"d84040fb-d3b6-40fa-b292-a26f90079464\",\"name\":\"Have_Danger_Signs_Pregnancy\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"প্রসব পূর্ব সেবা.86/78-0\",\"voided\":false,\"value\":{\"uuid\":\"f1806ea3-da0b-4442-827a-b85f26f038db\",\"name\":{\"display\":\"Convulsion\",\"uuid\":\"5fab5283-1e6b-4653-95bf-cbbae8f4f8d3\",\"name\":\"Convulsion\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"resourceVersion\":\"1.9\"},\"displayString\":\"Convulsion\",\"resourceVersion\":\"2.0\",\"translationKey\":\"খিঁচুনি_78\"},\"inactive\":false,\"groupMembers\":[]}");
 			highTemperature = new JSONObject("{\"concept\":{\"uuid\":\"d84040fb-d3b6-40fa-b292-a26f90079464\",\"name\":\"Have_Danger_Signs_Pregnancy\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"প্রসব পূর্ব সেবা.86/78-0\",\"voided\":false,\"value\":{\"uuid\":\"86c06eec-beee-4d0e-9d16-db57139dd857\",\"name\":{\"display\":\"High_Temperature_102_Degree_or_More\",\"uuid\":\"694c67b4-ff16-4326-ac25-3c00e561d052\",\"name\":\"High_Temperature_102_Degree_or_More\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"resourceVersion\":\"1.9\"},\"displayString\":\"High_Temperature_102_Degree_or_More\",\"resourceVersion\":\"2.0\",\"translationKey\":\"উচ্চ_তাপমাত্রা_১০২_ডিগ্রি_বা_তদুর্ধ_78\"},\"inactive\":false,\"groupMembers\":[]}");
 			weaknessBlurredVision = new JSONObject("{\"concept\":{\"uuid\":\"d84040fb-d3b6-40fa-b292-a26f90079464\",\"name\":\"Have_Danger_Signs_Pregnancy\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"প্রসব পূর্ব সেবা.86/78-0\",\"voided\":false,\"value\":{\"uuid\":\"982d4b88-67e1-4fe4-a030-948ad9146847\",\"name\":{\"display\":\"Weakness_Blurred_vision\",\"uuid\":\"a700e629-73a8-435b-9448-929be26e5045\",\"name\":\"Weakness_Blurred_vision\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"resourceVersion\":\"1.9\"},\"displayString\":\"Weakness_Blurred_vision\",\"resourceVersion\":\"2.0\",\"translationKey\":\"দুর্বলতা,_চোখে_ঝাপসা_দেখা_78\"},\"inactive\":false,\"groupMembers\":[]}");
+		
+			verySevereDisease = new JSONObject("");
+			probableLimitedInfection = new JSONObject("");
+			bellyButtonInfection = new JSONObject("");
+			injury = new JSONObject("");
+			fever = new JSONObject("");
+			pneumonia = new JSONObject("");
+			coldAndCough = new JSONObject("");
+			diarrhoeaNoDehydration = new JSONObject("");
+			othersMemberDisease = new JSONObject("");
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -741,6 +825,24 @@ public class EncounterService extends OpenmrsService {
 			objectToReturn = highTemperature;
 		}else if(nameOfJSONObject.equals("Weakness_Blurred_vision")){
 			objectToReturn = weaknessBlurredVision;
+		}else if(nameOfJSONObject.equals("Very_severe_disease")){
+			objectToReturn = verySevereDisease;
+		}else if(nameOfJSONObject.equals("Probable_Limited_Infection")){
+			objectToReturn = probableLimitedInfection;
+		}else if(nameOfJSONObject.equals("Bellybutton_infection")){
+			objectToReturn = bellyButtonInfection;
+		}else if(nameOfJSONObject.equals("Injury")){
+			objectToReturn = injury;
+		}else if(nameOfJSONObject.equals("Fever")){
+			objectToReturn = fever;
+		}else if(nameOfJSONObject.equals("Pneumonia")){
+			objectToReturn = pneumonia;
+		}else if(nameOfJSONObject.equals("coldAndCough")){
+			objectToReturn = coldAndCough;
+		}else if(nameOfJSONObject.equals("Diarrhoea_No_Dehydration")){
+			objectToReturn = diarrhoeaNoDehydration;
+		}else if(nameOfJSONObject.equals("Others_member_disease")){
+			objectToReturn = othersMemberDisease;
 		}
 		return objectToReturn;
 	}
