@@ -213,7 +213,9 @@ public class EncounterService extends OpenmrsService {
 			diseaseList = Arrays.asList(diseaseString.split(","));
 		}
 		if(hasDisease){
-			obar.put(getStaticJsonObject("healthCareGivenYes"));
+			JSONObject healthCareGivenYes = getStaticJsonObject("healthCareGivenYes");
+			healthCareGivenYes.put("formFieldPath", formFieldPath);
+			obar.put(healthCareGivenYes);
 			if(diseaseList!=null){
 				//for(String diseaseName : diseaseList){
 				for(int i=0; i< diseaseList.size()-1; i++){
@@ -226,6 +228,7 @@ public class EncounterService extends OpenmrsService {
 									JSONObject staticJSONObject = getStaticJsonObject("coldAndCough");
 									logger.info("\n\n\n<><><><><> Child disease static JSON :"+"coldAndCough"+"->>"+ staticJSONObject + "<><><><><>\n\n\n ");
 									if(staticJSONObject!= null){
+										staticJSONObject.put("formFieldPath", formFieldPath);
 										obar.put(staticJSONObject);
 									}
 									i++;
@@ -233,6 +236,7 @@ public class EncounterService extends OpenmrsService {
 									JSONObject staticJSONObject = getStaticJsonObject(diseaseName);
 									logger.info("\n\n\n<><><><><> Child disease static JSON :"+diseaseName+"->>"+ staticJSONObject + "<><><><><>\n\n\n ");
 									if(staticJSONObject!= null){
+										staticJSONObject.put("formFieldPath", formFieldPath);
 										obar.put(staticJSONObject);
 									}
 								}
@@ -241,6 +245,7 @@ public class EncounterService extends OpenmrsService {
 							JSONObject staticJSONObject = getStaticJsonObject(diseaseName);
 							logger.info("\n\n\n<><><><><> Child disease static JSON :"+diseaseName+"->>"+ staticJSONObject + "<><><><><>\n\n\n ");
 							if(staticJSONObject!= null){
+								staticJSONObject.put("formFieldPath", formFieldPath);
 								obar.put(staticJSONObject);
 							}
 						}
