@@ -190,9 +190,81 @@ public class EncounterService extends OpenmrsService {
 			obar = createObservationFollowupPNC(e);
 		}else if (e.getEventType().equalsIgnoreCase("Followup Disease Child")) {
 			obar = createObservationFollowupDiseaseChild(e);
+		}else if (e.getEventType().equalsIgnoreCase("Followup Disease Toddler")) {
+			obar = createObservationFollowupDiseaseToddler(e);
 		}
 		enc.put("observations", obar);
 		return enc;
+	}
+	
+	private JSONArray createObservationFollowupDiseaseToddler(Event e)
+			throws JSONException {
+		JSONArray obar= new JSONArray();
+		List<String> diseaseList = null;
+		String formFieldPath = "শিশু (২ মাস থেকে ৫ বছর) স্বাস্থ্য সেবা.32/61-0";
+		Client client = clientService.getByBaseEntityId(e.getBaseEntityId());
+		boolean hasDisease =false;
+		if(client.getAttributes().containsKey("has_disease")){
+			String hasDiseaseStr = (String)client.getAttributes().get("has_disease");
+			if(hasDiseaseStr.equals("হ্যাঁ")){
+				hasDisease = true;
+			}
+		}
+		if(client.getAttributes().containsKey("Disease_status") && hasDisease == true){
+			String diseaseString = (String)client.getAttributes().get("Disease_status");
+			diseaseList = Arrays.asList(diseaseString.split(","));
+		}
+		if(hasDisease){
+			JSONObject healthCareGivenYes = getStaticJsonObject("healthCareGivenYes");
+			healthCareGivenYes.put("formFieldPath", formFieldPath);
+			//JSONObject concept = staticJSONObject.getJSONObject("concept");
+			JSONObject concept = new JSONObject();
+			concept.put("name", "Disease_2Months_To_5Years_CHCP");
+			concept.put("uuid", "ed6dedbf-7bd3-4642-b497-0535e3ee1986");
+			obar.put(healthCareGivenYes);
+			if(diseaseList!=null){
+				//for(String diseaseName : diseaseList){
+				for(int i=0; i< diseaseList.size()-1; i++){
+					String diseaseName = diseaseList.get(i);
+					if(diseaseName!= null && !diseaseName.isEmpty()){
+						if(diseaseName.equals("Pneumonia") || diseaseName.equals("unspec.")){
+							String nextDiseaseName = diseaseList.get(i+1);
+							nextDiseaseName = nextDiseaseName.trim();
+							logger.info("\n\n\n<><><><><> "+ diseaseName +" --> "+nextDiseaseName+ "<><><><><>\n\n\n ");
+							
+							if(diseaseName.equals("Pneumonia")){
+								if(nextDiseaseName.equals("unspec.")){
+									//JSONObject staticJSONObject = getStaticJsonObject("coldAndCough");
+									obar =addDiseaseInObservationArray("coldAndCough", obar, formFieldPath, concept);
+									i++;
+								}else{
+									obar =addDiseaseInObservationArray(diseaseName, obar, formFieldPath, concept);
+								}
+							}
+						}else{
+							obar =addDiseaseInObservationArray(diseaseName, obar, formFieldPath, concept);
+						}
+					}
+				}
+			}
+		}else{
+			JSONObject healthCareGivenNo = getStaticJsonObject("healthCareGivenNo");
+			healthCareGivenNo.put("formFieldPath", formFieldPath);
+			obar.put(healthCareGivenNo);
+		}
+		obar = addRefferedPlaceInObservationArray(e, obar, formFieldPath);
+		return obar;
+	}
+	
+	private JSONArray addDiseaseInObservationArray(String diseaseName, JSONArray obar, String formFieldPath, JSONObject concept) throws JSONException{
+		JSONObject staticJSONObject = getStaticJsonObject(diseaseName);
+		logger.info("\n\n\n<><><><><>"+formFieldPath+"-->"+diseaseName+"-->"+ staticJSONObject + "<><><><><>\n\n\n ");
+		if(staticJSONObject!= null){
+			staticJSONObject.put("concept", concept);
+			staticJSONObject.put("formFieldPath", formFieldPath);
+			obar.put(staticJSONObject);
+		}
+		return obar;
 	}
 	
 	private JSONArray createObservationFollowupDiseaseChild(Event e)
