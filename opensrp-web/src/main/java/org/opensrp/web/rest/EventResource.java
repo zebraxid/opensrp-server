@@ -22,8 +22,10 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -99,9 +101,9 @@ public class EventResource extends RestResource<Event> {
 	@ResponseBody
 	protected ResponseEntity<String> sync(HttpServletRequest request) {
 		Map<String, Object> response = new HashMap<String, Object>();
-		
 		try {
 			String providerId = getStringFilter(PROVIDER_ID, request);
+			String requestProviderName = request.getRemoteUser();
 			String locationId = getStringFilter(LOCATION_ID, request);
 			String baseEntityId = getStringFilter(BASE_ENTITY_ID, request);
 			String serverVersion = getStringFilter(BaseEntity.SERVER_VERSIOIN, request);
@@ -116,8 +118,10 @@ public class EventResource extends RestResource<Event> {
 			if (limit == null || limit.intValue() == 0) {
 				limit = 25;
 			}
-			
+			String getProviderName = "";
+			List<Event> eventList = new ArrayList<Event>();
 			List<Event> events = new ArrayList<Event>();
+			
 			List<String> clientIds = new ArrayList<String>();
 			List<Client> clients = new ArrayList<Client>();
 			long startTime = System.currentTimeMillis();
@@ -129,9 +133,21 @@ public class EventResource extends RestResource<Event> {
 				eventSearchBean.setLocationId(locationId);
 				eventSearchBean.setBaseEntityId(baseEntityId);
 				eventSearchBean.setServerVersion(lastSyncedServerVersion);
-				events = eventService.findEvents(eventSearchBean, BaseEntity.SERVER_VERSIOIN, "asc", limit);
+				eventList = eventService.findEvents(eventSearchBean, BaseEntity.SERVER_VERSIOIN, "asc", limit);
 				logger.info("fetching events took: " + (System.currentTimeMillis() - startTime));
-				if (!events.isEmpty()) {
+				logger.info("Initial Size:" + eventList.size());
+				if (!eventList.isEmpty()) {
+					for (Event event : eventList) {
+						getProviderName = event.getProviderId();
+						logger.info("getProviderName:" + getProviderName + ": request provider name" + requestProviderName);
+						if (getProviderName.isEmpty()) {
+							events.add(event);
+						} else if (!getProviderName.equalsIgnoreCase(requestProviderName)) {} else {
+							events.add(event);
+						}
+					}
+					
+					logger.info("After cleaning Size:" + events.size());
 					for (Event event : events) {
 						if (event.getBaseEntityId() != null && !event.getBaseEntityId().isEmpty()
 						        && !clientIds.contains(event.getBaseEntityId())) {
@@ -176,6 +192,54 @@ public class EventResource extends RestResource<Event> {
 			
 			return new ResponseEntity<>(gson.toJson(response), HttpStatus.OK);
 			
+		}
+		catch (Exception e) {
+			response.put("msg", "Error occurred");
+			logger.error("", e);
+			return new ResponseEntity<>(new Gson().toJson(response), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@RequestMapping(headers = { "Accept=application/json;charset=UTF-8" }, value = "/client-list-to-delete", method = RequestMethod.GET)
+	@ResponseBody
+	protected ResponseEntity<String> clientListToDelete(HttpServletRequest request) {
+		Map<String, Object> response = new HashMap<String, Object>();
+		try {
+			String providerId = getStringFilter(PROVIDER_ID, request);
+			String requestProviderName = request.getRemoteUser();
+			String locationId = getStringFilter(LOCATION_ID, request);
+			String serverVersion = getStringFilter(BaseEntity.SERVER_VERSIOIN, request);
+			logger.info("synced user " + providerId + locationId + ", timestamp : " + serverVersion);
+			Long lastSyncedServerVersion = null;
+			if (serverVersion != null) {
+				lastSyncedServerVersion = Long.valueOf(serverVersion) + 1;
+			}
+			Integer limit = getIntegerFilter("limit", request);
+			if (limit == null || limit.intValue() == 0) {
+				limit = 25;
+			}
+			String getProviderName = "";
+			List<Event> eventList = new ArrayList<Event>();
+			Set<String> clientIds = new HashSet<String>();
+			long startTime = System.currentTimeMillis();
+			if (locationId != null) {
+				EventSearchBean eventSearchBean = new EventSearchBean();
+				eventSearchBean.setLocationId(locationId);
+				eventSearchBean.setServerVersion(lastSyncedServerVersion);
+				eventList = eventService.findEvents(eventSearchBean, BaseEntity.SERVER_VERSIOIN, "asc", limit);
+				logger.info("fetching events took: " + (System.currentTimeMillis() - startTime));
+				logger.info("Initial Size:" + eventList.size());
+				if (!eventList.isEmpty()) {
+					for (Event event : eventList) {
+						getProviderName = event.getProviderId();
+						logger.info("getProviderName:" + getProviderName + ": request provider name" + requestProviderName);
+						if (getProviderName.isEmpty()) {} else if (!getProviderName.equalsIgnoreCase(requestProviderName)) {
+							clientIds.add(event.getBaseEntityId());
+						} else {}
+					}
+				}
+			}
+			return new ResponseEntity<>(gson.toJson(clientIds), HttpStatus.OK);
 		}
 		catch (Exception e) {
 			response.put("msg", "Error occurred");
