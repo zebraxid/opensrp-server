@@ -17,6 +17,7 @@ import org.ict4h.atomfeed.client.service.AtomFeedClient;
 import org.ict4h.atomfeed.client.service.EventWorker;
 import org.ict4h.atomfeed.transaction.AFTransactionManager;
 import org.ict4h.atomfeed.transaction.AFTransactionWork;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.opensrp.connector.atomfeed.AtomfeedService;
@@ -49,6 +50,12 @@ public class PatientAtomfeed extends OpenmrsService implements EventWorker, Atom
 	private ClientService clientService;
 	
 	private EventService eventService;
+	
+	@Value("#{opensrp['opensrp.household.relationship']}")
+	protected String householdRelationType;
+	
+	@Value("#{opensrp['opensrp.mother.relationship']}")
+	protected String motherRelationType;
 	
 	@Autowired
 	private EncounterService encounterService;
@@ -93,13 +100,15 @@ public class PatientAtomfeed extends OpenmrsService implements EventWorker, Atom
 			Client c = patientService.convertToClient(p);
 			Client existing = clientService.findClient(c);
 			c.withIsSendToOpenMRS("no");
+			JSONArray relationships = patientService.getPersonRelationShip(p.getString("uuid"));
+			JSONObject relationship = getRelationship(relationships, householdRelationType);
 			if (existing == null) {
 				/// back sync to opensrp APP
 				String eventType = "Household Registration";
 				String entityType = "ec_household";
 				c.setBaseEntityId(UUID.randomUUID().toString());
 				c.getAddresses().get(0).withAddressField("country", "BANGLADESH");
-				JSONObject relationship = patientService.getPersonRelationShip(p.getString("uuid"));
+				
 				JSONObject pr = p.getJSONObject("person");
 				String age = pr.getString("age");
 				int ageYear = Integer.parseInt(age);
@@ -114,6 +123,7 @@ public class PatientAtomfeed extends OpenmrsService implements EventWorker, Atom
 						entityType = "ec_child";
 					}
 					JSONObject personB = relationship.getJSONObject("personB");
+					System.err.println("RelationNEW::" + relationship);
 					List<Client> clients = clientService.findAllByIdentifier("OPENMRS_UUID", personB.getString("uuid"));
 					if (clients != null) {
 						c.addRelationship("household", clients.get(0).getBaseEntityId());
@@ -133,7 +143,7 @@ public class PatientAtomfeed extends OpenmrsService implements EventWorker, Atom
 				}
 				String srpIdInOpenmrs = c.getBaseEntityId();
 				
-				Client cmerged = clientService.mergeClient(c);
+				Client cmerged = clientService.mergeClient(c, relationship);
 				//TODO what if in any case thrive id is assigned to some other patient 
 				if (StringUtils.isBlank(srpIdInOpenmrs) || !srpIdInOpenmrs.equalsIgnoreCase(cmerged.getBaseEntityId())) {
 					// if openmrs doesnot have openSRP UID or have a different UID then update
@@ -146,6 +156,18 @@ public class PatientAtomfeed extends OpenmrsService implements EventWorker, Atom
 			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
+	}
+	
+	private JSONObject getRelationship(JSONArray relationships, String relationshipType) throws JSONException {
+		JSONObject relationship = new JSONObject();
+		for (int i = 0; i < relationships.length(); i++) {
+			relationship = relationships.getJSONObject(i);
+			if (relationshipType.equalsIgnoreCase(relationship.getJSONObject("relationshipType").getString("uuid"))) {
+				return relationship;
+			}
+		}
+		return null;
+		
 	}
 	
 	@Override
