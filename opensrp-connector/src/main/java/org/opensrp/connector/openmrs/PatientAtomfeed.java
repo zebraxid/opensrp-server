@@ -123,14 +123,11 @@ public class PatientAtomfeed extends OpenmrsService implements EventWorker, Atom
 						entityType = "ec_child";
 					}
 					JSONObject personB = relationship.getJSONObject("personB");
-					System.err.println("RelationNEW::" + relationship);
 					List<Client> clients = clientService.findAllByIdentifier("OPENMRS_UUID", personB.getString("uuid"));
 					if (clients != null) {
 						c.addRelationship("household", clients.get(0).getBaseEntityId());
 					}
-					
 				}
-				
 				clientService.addClient(c);
 				JSONObject newId = patientService.addThriveId(c.getBaseEntityId(), p);
 				log.info("New Client -> Posted Thrive ID back to OpenMRS : " + newId);
@@ -142,7 +139,6 @@ public class PatientAtomfeed extends OpenmrsService implements EventWorker, Atom
 					eventService.updateEventServerVersion(events.get(0));
 				}
 				String srpIdInOpenmrs = c.getBaseEntityId();
-				
 				Client cmerged = clientService.mergeClient(c, relationship);
 				//TODO what if in any case thrive id is assigned to some other patient 
 				if (StringUtils.isBlank(srpIdInOpenmrs) || !srpIdInOpenmrs.equalsIgnoreCase(cmerged.getBaseEntityId())) {
@@ -159,15 +155,16 @@ public class PatientAtomfeed extends OpenmrsService implements EventWorker, Atom
 	}
 	
 	private JSONObject getRelationship(JSONArray relationships, String relationshipType) throws JSONException {
-		JSONObject relationship = new JSONObject();
 		for (int i = 0; i < relationships.length(); i++) {
+			JSONObject relationship = new JSONObject();
 			relationship = relationships.getJSONObject(i);
-			if (relationshipType.equalsIgnoreCase(relationship.getJSONObject("relationshipType").getString("uuid"))) {
+			JSONObject relationType = relationship.getJSONObject("relationshipType");
+			String relationTypeUuid = relationType.getString("uuid");
+			if (relationshipType.equalsIgnoreCase(relationTypeUuid)) {
 				return relationship;
 			}
 		}
 		return null;
-		
 	}
 	
 	@Override

@@ -176,7 +176,14 @@ public class ClientService {
 			for (String k : updatedClient.getAttributes().keySet()) {
 				original.addAttribute(k, updatedClient.getAttribute(k));
 			}
-			System.err.println("Relation::" + relationship);
+			if (relationship != null) {
+				JSONObject personB = relationship.getJSONObject("personB");
+				List<Client> clients = findAllByIdentifier("OPENMRS_UUID", personB.getString("uuid"));
+				original.getRelationships().clear();
+				if (clients != null) {
+					original.addRelationship("household", clients.get(0).getBaseEntityId());
+				}
+			}
 			original.setDateEdited(DateTime.now());
 			original.setServerVersion(System.currentTimeMillis());
 			allClients.update(original);
