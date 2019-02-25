@@ -58,9 +58,14 @@ public class PatientService extends OpenmrsService {
 	}
 	
 	public JSONObject getPatientByIdentifier(String identifier) throws JSONException {
-		JSONArray p = new JSONObject(HttpUtil.get(getURL() + "/" + PATIENT_URL, "v=full&identifier=" + identifier,
-		    OPENMRS_USER, OPENMRS_PWD).body()).getJSONArray("results");
-		return p.length() > 0 ? p.getJSONObject(0) : null;
+		JSONArray jsonObj = new JSONObject(HttpUtil.get(getURL() + "/" + PATIENT_URL, "v=full&identifier=" + identifier,
+			OPENMRS_USER, OPENMRS_PWD).body());
+		if(jsonObj.has("results")){
+			JSONArray p	= jsonObj.getJSONArray("results");
+			return p.length() > 0 ? p.getJSONObject(0) : null;
+		}else{
+			return null;
+		}
 	}
 	
 	public JSONObject getPatientByUuid(String uuid, boolean noRepresentationTag) throws JSONException {
