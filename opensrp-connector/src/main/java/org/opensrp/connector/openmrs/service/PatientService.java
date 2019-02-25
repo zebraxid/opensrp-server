@@ -58,7 +58,7 @@ public class PatientService extends OpenmrsService {
 	}
 	
 	public JSONObject getPatientByIdentifier(String identifier) throws JSONException {
-		JSONArray jsonObj = new JSONObject(HttpUtil.get(getURL() + "/" + PATIENT_URL, "v=full&identifier=" + identifier,
+		JSONObject jsonObj = new JSONObject(HttpUtil.get(getURL() + "/" + PATIENT_URL, "v=full&identifier=" + identifier,
 			OPENMRS_USER, OPENMRS_PWD).body());
 		if(jsonObj.has("results")){
 			JSONArray p	= jsonObj.getJSONArray("results");
