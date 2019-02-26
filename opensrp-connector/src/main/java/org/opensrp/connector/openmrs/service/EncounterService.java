@@ -472,8 +472,11 @@ public class EncounterService extends OpenmrsService {
 					if(formSubmissionField.equals("Place_of_Refer") && obsValue!= null){
 						if(!formFieldPath.isEmpty()){
 							JSONObject refferedPlace = getStaticJsonObject(obsValue);
-							refferedPlace.put("formFieldPath", formFieldPath);
-							obar.put(refferedPlace);
+							//To prevent null pointer exception
+							if(refferedPlace!= null){
+								refferedPlace.put("formFieldPath", formFieldPath);
+								obar.put(refferedPlace);
+							}
 						}else{
 							obar.put(getStaticJsonObject(obsValue));
 						}
@@ -803,8 +806,9 @@ public class EncounterService extends OpenmrsService {
 	
 	
 	public JSONObject getStaticJsonObject(String nameOfJSONObject) {
-		JSONObject normalDisease = null;
 		JSONObject objectToReturn = null;
+		
+		JSONObject normalDisease = null;
 		JSONObject diabetes = null;
 		JSONObject highBloodPressure = null;
 		JSONObject healthCareGivenYes = null;
