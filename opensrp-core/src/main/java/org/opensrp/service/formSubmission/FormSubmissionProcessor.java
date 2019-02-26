@@ -65,7 +65,7 @@ public class FormSubmissionProcessor {
 		this.clientService = clientService;
 		this.eventService = eventService;
 		this.allClients = allClients;
-		this.allEvents=allEvents;
+		this.allEvents = allEvents;
 	}
 	
 	public void processFormSubmission(FormSubmission submission) throws Exception {
@@ -151,7 +151,7 @@ public class FormSubmissionProcessor {
 		Map<String, Map<String, Object>> dep = formEntityConverter.getDependentClientsFromFormSubmission(submission);
 		
 		if (clientService.findClient(c) != null) {
-			clientService.mergeClient(c);
+			clientService.mergeClient(c, null);
 		} else
 			clientService.addClient(c);
 		
@@ -220,8 +220,8 @@ public class FormSubmissionProcessor {
 		//		if(e != null){
 		//			throw new IllegalArgumentException("An event already exists with given list of identifiers. Consider updating data.["+e+"]");
 		//		}
-		if (event.getFormSubmissionId() != null && getByBaseEntityAndFormSubmissionId(targetDb, event.getBaseEntityId(),
-		    event.getFormSubmissionId()) != null) {
+		if (event.getFormSubmissionId() != null
+		        && getByBaseEntityAndFormSubmissionId(targetDb, event.getBaseEntityId(), event.getFormSubmissionId()) != null) {
 			throw new IllegalArgumentException(
 			        "An event already exists with given baseEntity and formSubmission combination. Consider updating");
 		}
@@ -232,8 +232,7 @@ public class FormSubmissionProcessor {
 		return event;
 	}
 	
-	public Event getByBaseEntityAndFormSubmissionId(CouchDbConnector targetDb, String baseEntityId,
-	                                                String formSubmissionId) {
+	public Event getByBaseEntityAndFormSubmissionId(CouchDbConnector targetDb, String baseEntityId, String formSubmissionId) {
 		try {
 			List<Event> el = allEvents.findByBaseEntityAndFormSubmissionId(targetDb, baseEntityId, formSubmissionId);
 			if (el.size() > 1) {
@@ -263,7 +262,7 @@ public class FormSubmissionProcessor {
 		Map<String, Map<String, Object>> dep = formEntityConverter.getDependentClientsFromFormSubmission(submission);
 		
 		if (findClient(targetDb, c) != null) {
-			clientService.mergeClient(c);
+			clientService.mergeClient(c, null);
 		} else
 			addClient(targetDb, c);
 		

@@ -57,7 +57,7 @@ public class ClientResource extends RestResource<Client> {
 	
 	@Override
 	public Client update(Client entity) {//TODO check if send property and id matches
-		return clientService.mergeClient(entity);//TODO update should only be based on baseEntityId
+		return clientService.mergeClient(entity, null);//TODO update should only be based on baseEntityId
 	}
 	
 	@Override
@@ -92,7 +92,7 @@ public class ClientResource extends RestResource<Client> {
 		searchBean.setAttributeType(StringUtils.isEmptyOrWhitespaceOnly(attributes) ? null : attributes.split(":", -1)[0]);
 		searchBean.setAttributeValue(StringUtils.isEmptyOrWhitespaceOnly(attributes) ? null : attributes.split(":", -1)[1]);
 		
-		return clientService.findByCriteria(searchBean, addressSearchBean,  lastEdit == null ? null : lastEdit[0],
+		return clientService.findByCriteria(searchBean, addressSearchBean, lastEdit == null ? null : lastEdit[0],
 		    lastEdit == null ? null : lastEdit[1]);
 	}
 	

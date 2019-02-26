@@ -46,6 +46,7 @@ import org.opensrp.service.EventService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -60,6 +61,18 @@ import com.mysql.jdbc.StringUtils;
 @Controller
 @RequestMapping("/data/")
 public class DataMigrationController {
+	
+	@Value("#{opensrp['qrcodes.directory.name']}")
+	private String qrCodesDir;
+	
+	@Value("#{opensrp['opensrp.web.url']}")
+	private String opensrpWebUurl;
+	
+	@Value("#{opensrp['opensrp.web.username']}")
+	private String opensrpWebUsername;
+	
+	@Value("#{opensrp['opensrp.web.password']}")
+	private String opensrpWebPassword;
 	
 	private static Logger logger = LoggerFactory.getLogger(DataMigrationController.class.toString());
 	
@@ -152,11 +165,19 @@ public class DataMigrationController {
 		try {
 			br = new BufferedReader(new FileReader(csvFile));
 			while ((line = br.readLine()) != null) {
-				
+				HttpResponse op1 = HttpUtil.get(opensrpWebUurl + "/rest/api/v1/health-id/reserved/single", "",
+				    opensrpWebUsername, opensrpWebPassword);
+				JSONObject healthObj = new JSONObject(op1.body());
+				String healthId = "";
+				if (healthObj.has("identifiers")) {
+					healthId = healthObj.getString("identifiers");
+				} else {
+					logger.info("No health id found...");
+				}
 				String[] member = line.split(cvsSplitBy);
-				System.err.println("member:" + member[1] + ",generateID:" + generateID());
+				System.err.println("member:" + member[1] + ",generateID:" + healthId);
 				Client client = new Client(null);
-				client.addIdentifier("Patient_Identifier", generateID());
+				client.addIdentifier("Patient_Identifier", healthId);
 				String baseEntityId = UUID.randomUUID().toString().trim();
 				client.setBaseEntityId(baseEntityId);
 				String gender = member[9];
@@ -320,9 +341,8 @@ public class DataMigrationController {
 				try {
 					/*location = openmrsLocationService.getLocation(address2);
 					locationId = location.getLocationId();*/
-					HttpResponse op = HttpUtil.get(
-					    "http://192.168.19.152:8080/opensrp-dashboard/rest/api/v1/team/team-by-location" + "/?name="
-					            + address2, "", "admin", "admin");
+					HttpResponse op = HttpUtil.get(opensrpWebUurl + "/rest/api/v1/team/team-by-location" + "/?name="
+					        + address2, "", opensrpWebUsername, opensrpWebPassword);
 					JSONObject jsonObj = new JSONObject(op.body());
 					JSONObject map = jsonObj.getJSONObject("map");
 					locationId = (String) map.get("locationUuid");
@@ -410,7 +430,7 @@ public class DataMigrationController {
 				if (!phoneNumber.isEmpty()) {
 					phoneNumber = phoneNumber.trim();
 				}
-				client.withFirstName(firstName).withLastName("").withGender("M").withBirthdate(new DateTime(), false)
+				client.withFirstName(firstName).withLastName("").withGender("H").withBirthdate(new DateTime(), false)
 				        .withDeathdate(null, false);
 				client.setServerVersion(System.currentTimeMillis());
 				/// attribute
@@ -466,9 +486,8 @@ public class DataMigrationController {
 				try {
 					//location = openmrsLocationService.getLocation(address2);
 					//locationId = location.getLocationId();
-					HttpResponse op = HttpUtil.get(
-					    "http://192.168.19.152:8080/opensrp-dashboard/rest/api/v1/team/team-by-location" + "/?name="
-					            + address2, "", "admin", "admin");
+					HttpResponse op = HttpUtil.get(opensrpWebUurl + "/rest/api/v1/team/team-by-location" + "/?name="
+					        + address2, "", opensrpWebUsername, opensrpWebPassword);
 					JSONObject jsonObj = new JSONObject(op.body());
 					JSONObject map = jsonObj.getJSONObject("map");
 					locationId = (String) map.get("locationUuid");

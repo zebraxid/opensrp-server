@@ -99,10 +99,10 @@ public class PatientService extends OpenmrsService {
 		    OPENMRS_PWD).body());
 	}
 	
-	public JSONObject getPersonRelationShip(String uuid) throws JSONException {
+	public JSONArray getPersonRelationShip(String uuid) throws JSONException {
 		JSONArray p = new JSONObject(HttpUtil.get(getURL() + "/" + PATIENT_RELATIONSHIP_URL, "v=full&person=" + uuid,
 		    OPENMRS_USER, OPENMRS_PWD).body()).getJSONArray("results");
-		return p.length() > 0 ? p.getJSONObject(0) : null;
+		return p;
 	}
 	
 	public JSONObject createPatientRelationShip(String personB, String personA, String relationshipType)
@@ -265,7 +265,6 @@ public class PatientService extends OpenmrsService {
 				if (idobj == null) {
 					idobj = createIdentifierType(id.getKey(), id.getKey() + " - FOR THRIVE OPENSRP");
 				}
-				System.err.println("idobj:::::" + idobj);
 				jio.put("identifierType", idobj.getString("uuid"));
 				jio.put("identifier", id.getValue());
 				Object cloc = c.getAttribute("Location");

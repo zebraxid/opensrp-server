@@ -22,8 +22,10 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -99,9 +101,9 @@ public class EventResource extends RestResource<Event> {
 	@ResponseBody
 	protected ResponseEntity<String> sync(HttpServletRequest request) {
 		Map<String, Object> response = new HashMap<String, Object>();
-		
 		try {
 			String providerId = getStringFilter(PROVIDER_ID, request);
+			String requestProviderName = request.getRemoteUser();
 			String locationId = getStringFilter(LOCATION_ID, request);
 			String baseEntityId = getStringFilter(BASE_ENTITY_ID, request);
 			String serverVersion = getStringFilter(BaseEntity.SERVER_VERSIOIN, request);
@@ -116,8 +118,10 @@ public class EventResource extends RestResource<Event> {
 			if (limit == null || limit.intValue() == 0) {
 				limit = 25;
 			}
-			
+			String getProviderName = "";
+			List<Event> eventList = new ArrayList<Event>();
 			List<Event> events = new ArrayList<Event>();
+			
 			List<String> clientIds = new ArrayList<String>();
 			List<Client> clients = new ArrayList<Client>();
 			long startTime = System.currentTimeMillis();
@@ -129,9 +133,21 @@ public class EventResource extends RestResource<Event> {
 				eventSearchBean.setLocationId(locationId);
 				eventSearchBean.setBaseEntityId(baseEntityId);
 				eventSearchBean.setServerVersion(lastSyncedServerVersion);
-				events = eventService.findEvents(eventSearchBean, BaseEntity.SERVER_VERSIOIN, "asc", limit);
+				eventList = eventService.findEvents(eventSearchBean, BaseEntity.SERVER_VERSIOIN, "asc", limit);
 				logger.info("fetching events took: " + (System.currentTimeMillis() - startTime));
-				if (!events.isEmpty()) {
+				logger.info("Initial Size:" + eventList.size());
+				if (!eventList.isEmpty()) {
+					for (Event event : eventList) {
+						getProviderName = event.getProviderId();
+						logger.info("getProviderName:" + getProviderName + ": request provider name" + requestProviderName);
+						if (getProviderName.isEmpty()) {
+							events.add(event);
+						} else if (!getProviderName.equalsIgnoreCase(requestProviderName)) {} else {
+							events.add(event);
+						}
+					}
+					
+					logger.info("After cleaning Size:" + events.size());
 					for (Event event : events) {
 						if (event.getBaseEntityId() != null && !event.getBaseEntityId().isEmpty()
 						        && !clientIds.contains(event.getBaseEntityId())) {
@@ -184,15 +200,65 @@ public class EventResource extends RestResource<Event> {
 		}
 	}
 	
+	@RequestMapping(headers = { "Accept=application/json;charset=UTF-8" }, value = "/client-list-to-delete", method = RequestMethod.GET)
+	@ResponseBody
+	protected ResponseEntity<String> clientListToDelete(HttpServletRequest request) {
+		Map<String, Object> response = new HashMap<String, Object>();
+		try {
+			String providerId = getStringFilter(PROVIDER_ID, request);
+			String requestProviderName = request.getRemoteUser();
+			String locationId = getStringFilter(LOCATION_ID, request);
+			String serverVersion = getStringFilter(BaseEntity.SERVER_VERSIOIN, request);
+			logger.info("synced user " + providerId + locationId + ", timestamp : " + serverVersion);
+			Long lastSyncedServerVersion = null;
+			if (serverVersion != null) {
+				lastSyncedServerVersion = Long.valueOf(serverVersion) + 1;
+			}
+			Integer limit = getIntegerFilter("limit", request);
+			if (limit == null || limit.intValue() == 0) {
+				limit = 25;
+			}
+			String getProviderName = "";
+			List<Event> eventList = new ArrayList<Event>();
+			Set<String> clientIds = new HashSet<String>();
+			long startTime = System.currentTimeMillis();
+			if (locationId != null) {
+				EventSearchBean eventSearchBean = new EventSearchBean();
+				eventSearchBean.setLocationId(locationId);
+				eventSearchBean.setServerVersion(lastSyncedServerVersion);
+				eventList = eventService.findEvents(eventSearchBean, BaseEntity.SERVER_VERSIOIN, "asc", limit);
+				logger.info("fetching events took: " + (System.currentTimeMillis() - startTime));
+				logger.info("Initial Size:" + eventList.size());
+				if (!eventList.isEmpty()) {
+					for (Event event : eventList) {
+						getProviderName = event.getProviderId();
+						logger.info("getProviderName:" + getProviderName + ": request provider name" + requestProviderName);
+						if (getProviderName.isEmpty()) {} else if (!getProviderName.equalsIgnoreCase(requestProviderName)) {
+							clientIds.add(event.getBaseEntityId());
+						} else {}
+					}
+				}
+			}
+			return new ResponseEntity<>(gson.toJson(clientIds), HttpStatus.OK);
+		}
+		catch (Exception e) {
+			response.put("msg", "Error occurred");
+			logger.error("", e);
+			return new ResponseEntity<>(new Gson().toJson(response), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
 	@SuppressWarnings("unchecked")
 	@RequestMapping(headers = { "Accept=application/json;charset=UTF-8" }, method = POST, value = "/add")
-	public ResponseEntity<HttpStatus> save(@RequestBody String data) {
+	public ResponseEntity<HttpStatus> save(@RequestBody String data, HttpServletRequest request) {
 		try {
 			JSONObject syncData = new JSONObject(data);
 			if (!syncData.has("clients") && !syncData.has("events")) {
 				return new ResponseEntity<>(BAD_REQUEST);
 			}
-			
+			String getProvider = "";
+			String dataProvider = request.getRemoteUser();
+			logger.info("dataProvider:" + dataProvider);
 			if (syncData.has("clients")) {
 				
 				ArrayList<Client> clients = (ArrayList<Client>) gson.fromJson(syncData.getString("clients"),
@@ -200,8 +266,21 @@ public class EventResource extends RestResource<Event> {
 				logger.info("received client size:" + clients.size());
 				for (Client client : clients) {
 					try {
-						client.withIsSendToOpenMRS("yes");
-						clientService.addorUpdate(client);
+						List<Event> events = eventService.findByBaseEntityAndEventTypeContaining(client.getBaseEntityId(),
+						    "Registration");
+						if (events.size() != 0) {
+							Event event = events.get(0);
+							getProvider = event.getProviderId();
+							logger.info("getProvider:" + getProvider);
+						} else {
+							getProvider = "";
+						}
+						if (getProvider.isEmpty() || (dataProvider.equalsIgnoreCase(getProvider) && !getProvider.isEmpty())) {
+							client.withIsSendToOpenMRS("yes");
+							clientService.addorUpdate(client);
+						} else {
+							logger.info("already updated by another");
+						}
 					}
 					catch (Exception e) {
 						logger.error("Client" + client.getBaseEntityId() == null ? "" : client.getBaseEntityId()
@@ -216,33 +295,44 @@ public class EventResource extends RestResource<Event> {
 				logger.info("received event size:" + events.size());
 				for (Event event : events) {
 					try {
-						event = eventService.processOutOfArea(event);
-						event.withIsSendToOpenMRS("yes");
-						
-						eventService.addorUpdateEvent(event);
-						Client client = clientService.find(event.getBaseEntityId());
-						String eventType = event.getEventType();
-						Obs obs = new Obs();
-						if (eventType.equalsIgnoreCase("Followup Pregnant Status")) {
-							obs = event.getObs("", "pregnant_status");
-							logger.info("value:" + obs.getValue());
-							String value = (String) obs.getValue();
-							if (value.equalsIgnoreCase("গর্ভবতী")) {
-								client.addAttribute("Disease_status", "Antenatal Period");
-								clientService.addorUpdate(client);
-							} else if (value.equalsIgnoreCase("প্রসব")) {
+						List<Event> getEvents = eventService.findByBaseEntityAndEventTypeContaining(event.getBaseEntityId(),
+						    "Registration");
+						if (getEvents.size() != 0) {
+							Event getEvent = getEvents.get(0);
+							getProvider = getEvent.getProviderId();
+						} else {
+							getProvider = "";
+						}
+						if (getProvider.isEmpty() || (dataProvider.equalsIgnoreCase(getProvider) && !getProvider.isEmpty())) {
+							event = eventService.processOutOfArea(event);
+							event.withIsSendToOpenMRS("yes");
+							eventService.addorUpdateEvent(event);
+							Client client = clientService.find(event.getBaseEntityId());
+							String eventType = event.getEventType();
+							Obs obs = new Obs();
+							if (eventType.equalsIgnoreCase("Followup Pregnant Status")) {
+								obs = event.getObs("", "pregnant_status");
+								logger.info("value:" + obs.getValue());
+								String value = (String) obs.getValue();
+								if (value.equalsIgnoreCase("গর্ভবতী")) {
+									client.addAttribute("Disease_status", "Antenatal Period");
+									clientService.addorUpdate(client);
+								} else if (value.equalsIgnoreCase("প্রসব")) {
+									client.addAttribute("Disease_status", "Postnatal");
+									clientService.addorUpdate(client);
+								}
+								
+							} else if (eventType.equalsIgnoreCase("Followup Marital Status")) {
+								
+							} else if (eventType.equalsIgnoreCase("Followup Delivery")) {
+								obs = event.getObs("", "Delivery_date");
+								Object deliveryDate = obs.getValue();
 								client.addAttribute("Disease_status", "Postnatal");
+								client.addAttribute("DeliveryDate", deliveryDate);
 								clientService.addorUpdate(client);
 							}
-							
-						} else if (eventType.equalsIgnoreCase("Followup Marital Status")) {
-							
-						} else if (eventType.equalsIgnoreCase("Followup Delivery")) {
-							obs = event.getObs("", "Delivery_date");
-							Object deliveryDate = obs.getValue();
-							client.addAttribute("Disease_status", "Postnatal");
-							client.addAttribute("DeliveryDate", deliveryDate);
-							clientService.addorUpdate(client);
+						} else {
+							logger.info("already updated by another");
 						}
 						
 					}

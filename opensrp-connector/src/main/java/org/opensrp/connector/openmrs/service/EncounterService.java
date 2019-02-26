@@ -696,6 +696,7 @@ public class EncounterService extends OpenmrsService {
 		if (encounter.has("patientUuid") == false) {
 			throw new IllegalStateException("No 'patient' object found in given encounter");
 		}
+		
 		Event e = new Event();
 		String patientId = encounter.getString("patientId");
 		String patientUuid = encounter.getString("patientUuid");
@@ -730,30 +731,74 @@ public class EncounterService extends OpenmrsService {
 		        .withProviderId(providerId);
 		
 		e.addIdentifier(OPENMRS_UUID_IDENTIFIER_TYPE, encounter.getString("encounterUuid"));
+		String formFieldPath = "";
+		String[] splitFormFieldPath;
+		String formName = "";
+		JSONArray providers = encounter.getJSONArray("providers");
+		if (providers.length() > 0) {
+			String provider = providers.getJSONObject(0).getString("name");
+			e.withEncounterCreator(provider);
+		}
 		
 		JSONArray ol = encounter.getJSONArray("observations");
 		for (int i = 0; i < ol.length(); i++) {
 			JSONObject o = ol.getJSONObject(i);
-			List<Object> values = new ArrayList<Object>();
-			List<Object> humanReadableValues = new ArrayList<Object>();
-			if (o.optJSONObject("value") != null) {
-				values.add(o.getString("valueAsString"));
-				humanReadableValues.add(o.getJSONObject("value").getString("name"));
-			} else if (o.has("value")) {
-				values.add(o.getString("value"));
-				humanReadableValues.add(o.getString("value"));
+			if (formFieldPath.isEmpty()) {
+				formFieldPath = o.getString("formFieldPath");
 			}
-			String fieldDataType = o.getJSONObject("concept").getString("dataType");
-			if ("N/A".equalsIgnoreCase(fieldDataType)) {
-				fieldDataType = "text";
+			JSONArray groupmembers = o.getJSONArray("groupMembers");
+			int groupmembersLength = groupmembers.length();
+			if (groupmembersLength > 0) {
+				for (int j = 0; j < groupmembersLength; j++) {
+					JSONObject ogroupMemberObj = groupmembers.getJSONObject(j);
+					JSONArray groupmembersInner = ogroupMemberObj.getJSONArray("groupMembers");
+					int groupmembersInnerLength = groupmembersInner.length();
+					if (groupmembersInnerLength > 0) {
+						for (int k = 0; k < groupmembersInnerLength; k++) {
+							JSONObject groupMemberInnerObj = groupmembersInner.getJSONObject(k);
+							getEvent(e, groupMemberInnerObj);
+						}
+					} else {
+						
+					}
+					if (groupmembersInnerLength == 0) {
+						getEvent(e, ogroupMemberObj);
+					}
+				}
+			} else {
+				getEvent(e, o);
 			}
 			
-			e.addObs(new Obs("concept", fieldDataType, o.getJSONObject("concept").getString("uuid"),
-			        "" /*//TODO handle parent*/, values, humanReadableValues, ""/*comments*/, o.getJSONObject("concept")
-			                .getString("shortName")/*formSubmissionField*/));
+		}
+		splitFormFieldPath = formFieldPath.split("\\.");
+		if (splitFormFieldPath.length > 0) {
+			formName = splitFormFieldPath[0];
 		}
 		
+		System.err.println("formFieldPathformFieldPathformFieldPath::::" + formName);
 		return e;
+	}
+	
+	private Event getEvent(Event e, JSONObject o) throws JSONException {
+		List<Object> values = new ArrayList<Object>();
+		List<Object> humanReadableValues = new ArrayList<Object>();
+		if (o.optJSONObject("value") != null) {
+			values.add(o.getString("valueAsString"));
+			humanReadableValues.add(o.getJSONObject("value").getString("name"));
+		} else if (o.has("value")) {
+			values.add(o.getString("value"));
+			humanReadableValues.add(o.getString("value"));
+		}
+		String fieldDataType = o.getJSONObject("concept").getString("dataType");
+		if ("N/A".equalsIgnoreCase(fieldDataType)) {
+			fieldDataType = "text";
+		}
+		
+		e.addObs(new Obs("concept", fieldDataType, o.getJSONObject("concept").getString("uuid"),
+		        "" /*//TODO handle parent*/, values, humanReadableValues, ""/*comments*/, o.getJSONObject("concept")
+		                .getString("shortName")/*formSubmissionField*/));
+		return e;
+		
 	}
 	
 	

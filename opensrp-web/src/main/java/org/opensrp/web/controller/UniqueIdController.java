@@ -19,7 +19,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
 import org.json.JSONException;
+import org.json.JSONObject;
 import org.opensrp.api.domain.User;
+import org.opensrp.common.util.HttpResponse;
+import org.opensrp.common.util.HttpUtil;
 import org.opensrp.connector.openmrs.service.OpenmrsUserService;
 import org.opensrp.service.OpenmrsIDService;
 import org.opensrp.web.utils.PdfUtil;
@@ -47,6 +50,15 @@ public class UniqueIdController {
 	
 	@Value("#{opensrp['qrcodes.directory.name']}")
 	private String qrCodesDir;
+	
+	@Value("#{opensrp['opensrp.web.url']}")
+	private String opensrpWebUurl;
+	
+	@Value("#{opensrp['opensrp.web.username']}")
+	private String opensrpWebUsername;
+	
+	@Value("#{opensrp['opensrp.web.password']}")
+	private String opensrpWebPassword;
 	
 	@Autowired
 	OpenmrsIDService openmrsIdService;
@@ -130,14 +142,15 @@ public class UniqueIdController {
 	 * Fetch unique Ids from OMRS
 	 * 
 	 * @return json array object with ids
-	 * @throws KeyStoreException 
-	 * @throws NoSuchAlgorithmException 
-	 * @throws KeyManagementException 
+	 * @throws KeyStoreException
+	 * @throws NoSuchAlgorithmException
+	 * @throws KeyManagementException
 	 */
 	
 	@RequestMapping(value = "/get", method = RequestMethod.GET)
 	@ResponseBody
-	protected ResponseEntity<String> get(HttpServletRequest request) throws JSONException, KeyManagementException, NoSuchAlgorithmException, KeyStoreException {
+	protected ResponseEntity<String> get(HttpServletRequest request) throws JSONException, KeyManagementException,
+	    NoSuchAlgorithmException, KeyStoreException {
 		
 		String numberToGenerate = getStringFilter("numberToGenerate", request);
 		String source = getStringFilter("source", request);
@@ -150,6 +163,17 @@ public class UniqueIdController {
 		            .toString()));
 		
 		return new ResponseEntity<>(new Gson().toJson(map), HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/get/health-id", method = RequestMethod.GET)
+	@ResponseBody
+	protected ResponseEntity<String> getHealthId(HttpServletRequest request) throws JSONException, KeyManagementException,
+	    NoSuchAlgorithmException, KeyStoreException {
+		HttpResponse op = HttpUtil.get(opensrpWebUurl + "/rest/api/v1/health-id/reserved", "", opensrpWebUsername,
+		    opensrpWebPassword);
+		JSONObject jsonObj = new JSONObject(op.body());
+		logger.info("health id fetched :" + jsonObj.length());
+		return new ResponseEntity<>(jsonObj.toString(), HttpStatus.OK);
 	}
 	
 }

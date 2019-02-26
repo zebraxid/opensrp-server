@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.joda.time.DateTime;
 import org.json.JSONException;
+import org.json.JSONObject;
 import org.opensrp.domain.Address;
 import org.opensrp.domain.Client;
 import org.opensrp.repository.ClientsRepository;
@@ -151,7 +152,7 @@ public class ClientService {
 		allClients.update(updatedClient);
 	}
 	
-	public Client mergeClient(Client updatedClient) {
+	public Client mergeClient(Client updatedClient, JSONObject relationship) {
 		try {
 			Client original = findClient(updatedClient);
 			if (original == null) {
@@ -175,7 +176,14 @@ public class ClientService {
 			for (String k : updatedClient.getAttributes().keySet()) {
 				original.addAttribute(k, updatedClient.getAttribute(k));
 			}
-			
+			if (relationship != null) {
+				JSONObject personB = relationship.getJSONObject("personB");
+				List<Client> clients = findAllByIdentifier("OPENMRS_UUID", personB.getString("uuid"));
+				original.getRelationships().clear();
+				if (clients != null) {
+					original.addRelationship("household", clients.get(0).getBaseEntityId());
+				}
+			}
 			original.setDateEdited(DateTime.now());
 			original.setServerVersion(System.currentTimeMillis());
 			allClients.update(original);
