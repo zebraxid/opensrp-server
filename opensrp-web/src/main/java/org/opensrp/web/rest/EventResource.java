@@ -315,10 +315,10 @@ public class EventResource extends RestResource<Event> {
 								logger.info("value:" + obs.getValue());
 								String value = (String) obs.getValue();
 								if (value.equalsIgnoreCase("গর্ভবতী")) {
-									client.addAttribute("Disease_status", "Antenatal Period");
+									client.addAttribute("PregnancyStatus", "Antenatal Period");
 									clientService.addorUpdate(client);
 								} else if (value.equalsIgnoreCase("প্রসব")) {
-									client.addAttribute("Disease_status", "Postnatal");
+									client.addAttribute("PregnancyStatus", "Postnatal");
 									clientService.addorUpdate(client);
 								}
 								

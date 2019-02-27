@@ -202,7 +202,7 @@ public class OpenmrsSyncerListener {
 					}
 				}
 				String uuid = c.getIdentifier(PatientService.OPENMRS_UUID_IDENTIFIER_TYPE);
-				
+				logger.info("uuid>>>>>>>>>"+uuid);
 				if (uuid == null) {
 					JSONObject p = patientService.getPatientByIdentifier(c.getBaseEntityId());
 					for (Entry<String, String> id : c.getIdentifiers().entrySet()) {
@@ -227,12 +227,12 @@ public class OpenmrsSyncerListener {
 					config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_client_by_date_updated,
 					    c.getServerVersion());
 					if (multiMedia != null) {
-						patientService.personImageUpload(multiMedia, patient.getString("uuid"));
+						patientService.personImageUpload(multiMedia, uuid);
 					}
 					
 				} else {
 					JSONObject patientJson = patientService.createPatient(c);
-					patient = patientJson;
+					patient = patientJson;					
 					if (patientJson != null && patientJson.has("uuid")) {
 						c.addIdentifier(PatientService.OPENMRS_UUID_IDENTIFIER_TYPE, patientJson.getString("uuid"));
 						clientService.addorUpdate(c, false);
@@ -264,10 +264,16 @@ public class OpenmrsSyncerListener {
 					JSONObject person = motherJson.getJSONObject("person");
 					
 					if (person.getString("uuid") != null) {
-						JSONObject relation = patientService.createPatientRelationShip(c.getIdentifier("OPENMRS_UUID"),
-						    person.getString("uuid"), "03ed3084-4c7a-11e5-9192-080027b662ec");
-						relationshipsArray.put(relation); // only for test code purpose
-						logger.info("RelationshipsCreated check openrs" + c.getIdentifier("OPENMRS_UUID"));
+						JSONArray relationships = patientService.getPersonRelationShip(c.getIdentifier("OPENMRS_UUID"));						
+						if(relationships.length() == 0){
+							JSONObject relation = patientService.createPatientRelationShip(c.getIdentifier("OPENMRS_UUID"),
+								    person.getString("uuid"), "03ed3084-4c7a-11e5-9192-080027b662ec");
+								relationshipsArray.put(relation); // only for test code purpose
+								logger.info("RelationshipsCreated check openrs" + c.getIdentifier("OPENMRS_UUID"));
+						}else {
+							logger.info("Relationship aleady created");
+						}
+						
 					}
 					
 					/*List<Client> siblings = clientService.findByRelationship(c.getRelationships().get("mother").get(0)

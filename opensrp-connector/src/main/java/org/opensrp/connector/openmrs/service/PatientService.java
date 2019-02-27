@@ -61,6 +61,7 @@ public class PatientService extends OpenmrsService {
 	public static final String OPENSRP_IDENTIFIER_TYPE_MATCHER = "(?i)opensrp.*uid";
 	
 	public static final String OPENMRS_UUID_IDENTIFIER_TYPE = "OPENMRS_UUID";
+	public static final String CONCEPT_URL = "ws/rest/v1/concept";
 	
 	public PatientService() {
 	}
@@ -103,7 +104,7 @@ public class PatientService extends OpenmrsService {
 		JSONArray p = new JSONObject(HttpUtil.get(getURL() + "/" + PATIENT_RELATIONSHIP_URL, "v=full&person=" + uuid,
 		    OPENMRS_USER, OPENMRS_PWD).body()).getJSONArray("results");
 		return p;
-	}
+	}	
 	
 	public JSONObject createPatientRelationShip(String personB, String personA, String relationshipType)
 	    throws JSONException {
@@ -352,6 +353,22 @@ public class PatientService extends OpenmrsService {
 		    jio.toString(), OPENMRS_USER, OPENMRS_PWD).body());
 	}
 	
+	public JSONObject getConcept(String uuid) throws JSONException {
+		JSONObject p = new JSONObject(HttpUtil.get(getURL() + "/" + CONCEPT_URL+"/"+uuid, "v=full",
+		    OPENMRS_USER, OPENMRS_PWD).body());
+		return p;
+	}
+	private String getConceptName(JSONArray conceptsNames ) throws JSONException{
+		for (int i = 0; i < conceptsNames.length(); i++) {
+			JSONObject name = conceptsNames.getJSONObject(i);
+			String conceptNameType = name.getString("conceptNameType");			
+			if(conceptNameType.equalsIgnoreCase("FULLY_SPECIFIED")){
+				return name.getString("display") ;
+			}
+		}
+		return null;
+	}
+	
 	public Client convertToClient(JSONObject patient) throws JSONException {
 		Client c = new Client(null);
 		JSONArray ar = patient.getJSONArray("identifiers");
@@ -375,7 +392,7 @@ public class PatientService extends OpenmrsService {
 		c.withFirstName(pr.getJSONObject("preferredName").getString("givenName")).withMiddleName(mn)
 		        .withLastName(pr.getJSONObject("preferredName").getString("familyName")).withGender(pr.getString("gender"))
 		        .withBirthdate(new DateTime(pr.getString("birthdate")), pr.getBoolean("birthdateEstimated"))
-		        .withDeathdate(dd, false);
+		        .withDeathdate(dd, false);		
 		
 		if (pr.has("attributes")) {
 			for (int i = 0; i < pr.getJSONArray("attributes").length(); i++) {
@@ -383,8 +400,9 @@ public class PatientService extends OpenmrsService {
 				if (at.optJSONObject("value") == null) {
 					c.addAttribute(at.getJSONObject("attributeType").getString("display"), at.getString("value"));
 				} else {
-					c.addAttribute(at.getJSONObject("attributeType").getString("display"), at.getJSONObject("value")
-					        .getString("display"));
+					JSONObject concept = getConcept(at.getJSONObject("value").getString("uuid"));
+					JSONArray conceptsNames = concept.getJSONArray("names");					
+					c.addAttribute(at.getJSONObject("attributeType").getString("display"), getConceptName(conceptsNames));
 				}
 			}
 		}

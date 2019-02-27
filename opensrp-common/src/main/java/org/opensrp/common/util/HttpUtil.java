@@ -148,7 +148,7 @@ public class HttpUtil {
 	
 	static HttpRequestBase makeConnection(String url, String payload, RequestMethod method, AuthType authType,
 	                                      String authString) throws URISyntaxException {
-		String charset = "UTF-8";
+		String charset = "ISO 8859-1";
 		
 		if (url.endsWith("/")) {
 			url = url.substring(0, url.lastIndexOf("/"));
@@ -168,6 +168,7 @@ public class HttpUtil {
 		}
 		requestBase.setURI(urlo);
 		requestBase.addHeader("Accept-Charset", charset);
+		//requestBase.addHeader("Accept-Language", "en-US,bn");
 		
 		if (authType.name().equalsIgnoreCase("basic")) {
 			String encoded = authString.matches(".+:.+") ? new String(Base64.encodeBase64(authString.getBytes()))
@@ -177,7 +178,7 @@ public class HttpUtil {
 			requestBase.addHeader("Authorization", "Token " + authString);
 		}
 		
-		System.out.println(url);
+		System.out.println(requestBase);
 		return requestBase;
 	}
 	
