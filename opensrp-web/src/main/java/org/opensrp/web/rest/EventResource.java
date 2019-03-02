@@ -310,27 +310,25 @@ public class EventResource extends RestResource<Event> {
 							Client client = clientService.find(event.getBaseEntityId());
 							String eventType = event.getEventType();
 							Obs obs = new Obs();
-							if (eventType.equalsIgnoreCase("Followup Pregnant Status")) {
-								obs = event.getObs("", "pregnant_status");
-								logger.info("value:" + obs.getValue());
+							System.err.println("eventType>>>>>>>>>>>"+eventType);
+							/*if (eventType.equalsIgnoreCase("Followup Pregnant Status")) {
+								obs = event.getObs("", "pregnant_status");								
 								String value = (String) obs.getValue();
-								if (value.equalsIgnoreCase("গর্ভবতী")) {
+								System.err.println("value>>>>>>>>>>>"+value);
+								if (value.equalsIgnoreCase("প্রসব পূর্ব")) {
 									client.addAttribute("PregnancyStatus", "Antenatal Period");
 									clientService.addorUpdate(client);
-								} else if (value.equalsIgnoreCase("প্রসব")) {
+								} else if (value.equalsIgnoreCase("প্রসবোত্তর")) {
+									obs = event.getObs("", "Delivery_date");
+									Object deliveryDate = obs.getValue();									
+									client.addAttribute("delivery_date", deliveryDate);
 									client.addAttribute("PregnancyStatus", "Postnatal");
 									clientService.addorUpdate(client);
 								}
 								
 							} else if (eventType.equalsIgnoreCase("Followup Marital Status")) {
 								
-							} else if (eventType.equalsIgnoreCase("Followup Delivery")) {
-								obs = event.getObs("", "Delivery_date");
-								Object deliveryDate = obs.getValue();
-								client.addAttribute("Disease_status", "Postnatal");
-								client.addAttribute("DeliveryDate", deliveryDate);
-								clientService.addorUpdate(client);
-							}
+							} */
 						} else {
 							logger.info("already updated by another");
 						}

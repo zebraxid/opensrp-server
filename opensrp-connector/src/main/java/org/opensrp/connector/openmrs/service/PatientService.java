@@ -401,6 +401,7 @@ public class PatientService extends OpenmrsService {
 					c.addAttribute(at.getJSONObject("attributeType").getString("display"), at.getString("value"));
 				} else {
 					JSONObject concept = getConcept(at.getJSONObject("value").getString("uuid"));
+					System.err.println("concept::>>>>>>>>>>>>>>>>>>>>>>>>>>"+concept);
 					JSONArray conceptsNames = concept.getJSONArray("names");					
 					c.addAttribute(at.getJSONObject("attributeType").getString("display"), getConceptName(conceptsNames));
 				}
