@@ -215,6 +215,7 @@ public class OpenmrsSyncerListener {
 						uuid = p.getString("uuid");
 					}
 				}
+				logger.info("uuidss>>>>>>>>>"+uuid);
 				if (uuid != null) {
 					logger.info("Updating patient " + uuid);
 					String isSendToOpenMRS = c.getIsSendToOpenMRS();
@@ -232,7 +233,8 @@ public class OpenmrsSyncerListener {
 					
 				} else {
 					JSONObject patientJson = patientService.createPatient(c);
-					patient = patientJson;					
+					patient = patientJson;
+					System.err.println("patientJson::"+ patientJson);
 					if (patientJson != null && patientJson.has("uuid")) {
 						c.addIdentifier(PatientService.OPENMRS_UUID_IDENTIFIER_TYPE, patientJson.getString("uuid"));
 						clientService.addorUpdate(c, false);

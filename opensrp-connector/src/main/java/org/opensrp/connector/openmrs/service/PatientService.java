@@ -273,9 +273,9 @@ public class PatientService extends OpenmrsService {
 				
 				if (idobj.getString("display").equalsIgnoreCase("Patient_Identifier")) {
 					jio.put("preferred", true);
-				}
+					ids.put(jio);
+				}			
 				
-				ids.put(jio);
 			}
 		}
 		
@@ -291,7 +291,7 @@ public class PatientService extends OpenmrsService {
 		jio.put("preferred", false);
 		
 		ids.put(jio);
-		// Patient_Identifier
+		//Patient_Identifier
 		p.put("identifiers", ids);
 		String response = HttpUtil.post(getURL() + "/" + PATIENT_URL, "", p.toString(), OPENMRS_USER, OPENMRS_PWD).body();
 		System.err.println("response" + response);
@@ -314,8 +314,10 @@ public class PatientService extends OpenmrsService {
 				Object cloc = c.getAttribute("Location");
 				jio.put("location", cloc == null ? "Unknown Location" : cloc);
 				//jio.put("preferred", true);
-				
-				ids.put(jio);
+				if (idobj.getString("display").equalsIgnoreCase("Patient_Identifier")) {
+					jio.put("preferred", true);
+					ids.put(jio);
+				}					
 			}
 		}
 		
@@ -400,10 +402,13 @@ public class PatientService extends OpenmrsService {
 				if (at.optJSONObject("value") == null) {
 					c.addAttribute(at.getJSONObject("attributeType").getString("display"), at.getString("value"));
 				} else {
-					JSONObject concept = getConcept(at.getJSONObject("value").getString("uuid"));
-					System.err.println("concept::>>>>>>>>>>>>>>>>>>>>>>>>>>"+concept);
+					try{
+					JSONObject concept = getConcept(at.getJSONObject("value").getString("uuid"));					
 					JSONArray conceptsNames = concept.getJSONArray("names");					
 					c.addAttribute(at.getJSONObject("attributeType").getString("display"), getConceptName(conceptsNames));
+					}catch(Exception e){
+						
+					}
 				}
 			}
 		}
