@@ -271,7 +271,8 @@ public class EncounterService extends OpenmrsService {
 			throws JSONException {
 		JSONArray obar= new JSONArray();
 		List<String> diseaseList = null;
-		String formFieldPath = "শিশু (০ থেকে ২ মাস) স্বাস্থ্য সেবা.35/73-0";
+		//String formFieldPath = "শিশু (০ থেকে ২ মাস) স্বাস্থ্য সেবা.35/73-0";
+		String formFieldPath = "শিশু (০ থেকে ২ মাস) এমএইচভি.4/4-0";
 		Client client = clientService.getByBaseEntityId(e.getBaseEntityId());
 		boolean hasDisease =false;
 		if(client.getAttributes().containsKey("has_disease")){
@@ -285,7 +286,8 @@ public class EncounterService extends OpenmrsService {
 			diseaseList = Arrays.asList(diseaseString.split(","));
 		}
 		if(hasDisease){
-			JSONObject healthCareGivenYes = getStaticJsonObject("healthCareGivenYes");
+			//JSONObject healthCareGivenYes = getStaticJsonObject("healthCareGivenYes");
+			JSONObject healthCareGivenYes = getStaticJsonObject("hasDiseaseYes");
 			healthCareGivenYes.put("formFieldPath", formFieldPath);
 			//JSONObject concept = staticJSONObject.getJSONObject("concept");
 			JSONObject concept = new JSONObject();
@@ -858,6 +860,8 @@ public class EncounterService extends OpenmrsService {
 		JSONObject conjunctivitis = null;
 		JSONObject malnutrition = null;
 		JSONObject anemia = null;
+		
+		JSONObject hasDiseaseYes = null;
 		try {
 			//normalDisease = new JSONObject("{\"encounterTypeUuid\":\"81852aee-3f10-11e4-adec-0800271c1b75\",\"visitType\":\"Community clinic service\",\"patientUuid\":\"391ec594-5381-4075-9b1d-7608ed19332d\",\"locationUuid\":\"ec9bfa0e-14f2-440d-bf22-606605d021b2\",\"providers\":[{\"uuid\":\"313c8507-9821-40e4-8a70-71a5c7693d72\"}]}");
 			normalDisease = new JSONObject("{\"encounterTypeUuid\":\"81852aee-3f10-11e4-adec-0800271c1b75\",\"providers\":[{\"uuid\":\"313c8507-9821-40e4-8a70-71a5c7693d72\"}],\"visitType\":\"Community clinic service\"}");
@@ -910,6 +914,8 @@ public class EncounterService extends OpenmrsService {
 			conjunctivitis = new JSONObject("{\"concept\":{\"uuid\":\"ed6dedbf-7bd3-4642-b497-0535e3ee1986\",\"name\":\"Disease_2Months_To_5Years_CHCP\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"শিশু (২ মাস থেকে ৫ বছর) স্বাস্থ্য সেবা.32/49-0\",\"voided\":false,\"value\":{\"uuid\":\"e2b14b2b-4e14-11e4-8a57-0800271c1b75\",\"name\":{\"display\":\"Conjunctivitis, unspec.\",\"uuid\":\"aa3e374b-fd72-4213-a796-478e614f6022\",\"name\":\"Conjunctivitis, unspec.\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"resourceVersion\":\"1.9\"},\"displayString\":\"Conjunctivitis, unspec.\",\"resourceVersion\":\"2.0\",\"translationKey\":\"চোখ_উঠা_49\"},\"inactive\":false,\"groupMembers\":[]}");
 			//malnutrition = new JSONObject("");
 			//anemia = new JSONObject("");
+			
+			hasDiseaseYes = new JSONObject("{\"concept\":{\"uuid\":\"cc3f9af9-772f-4830-a1cb-b9fdd30c5076\",\"name\":\"রোগ আছে কিনা\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"শিশু (০ থেকে ২ মাস) এমএইচভি.4/4-0\",\"voided\":false,\"value\":{\"uuid\":\"a2065636-5326-40f5-aed6-0cc2cca81ccc\",\"name\":{\"display\":\"হ্যাঁ\",\"uuid\":\"b5a4d83a-7158-4477-b81c-71144f5a7232\",\"name\":\"হ্যাঁ\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"resourceVersion\":\"1.9\"},\"displayString\":\"হ্যাঁ\",\"resourceVersion\":\"2.0\",\"translationKey\":\"হ্যাঁ_4\"},\"interpretation\":null,\"inactive\":false,\"groupMembers\":[]}");
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -1007,6 +1013,8 @@ public class EncounterService extends OpenmrsService {
 			objectToReturn = malnutrition;
 		}else if(nameOfJSONObject.equals("Anemia")){
 			objectToReturn = anemia;
+		}else if(nameOfJSONObject.equals("hasDiseaseYes")){
+			objectToReturn = hasDiseaseYes;
 		}
 		return objectToReturn;
 	}
