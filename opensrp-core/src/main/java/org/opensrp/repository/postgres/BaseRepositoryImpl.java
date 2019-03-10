@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 
 public abstract class BaseRepositoryImpl<T> {
 	
-	public static int DEFAULT_FETCH_SIZE = 1000;
+	public static int DEFAULT_FETCH_SIZE = 100;
 	
 	public static String REVISION_PREFIX = "v";
 	
@@ -29,8 +29,8 @@ public abstract class BaseRepositoryImpl<T> {
 		if (entity.isNew())
 			entity.setRevision(REVISION_PREFIX + 1);
 		else if (entity.getRevision().startsWith(REVISION_PREFIX))
-			entity.setRevision(
-			    REVISION_PREFIX + (Integer.parseInt(entity.getRevision().substring(REVISION_PREFIX.length())) + 1));
+			entity.setRevision(REVISION_PREFIX
+			        + (Integer.parseInt(entity.getRevision().substring(REVISION_PREFIX.length())) + 1));
 		else {
 			String[] revision = entity.getRevision().split("-");
 			entity.setRevision((Integer.parseInt(revision[0]) + 1) + "-" + revision[1]);

@@ -130,29 +130,32 @@
 					between #{clientBean.lastEditFrom,typeHandler=org.opensrp.repository.postgres.handler.DateTimeTypeHandler} 
 					and	 	#{clientBean.lastEditTo,typeHandler=org.opensrp.repository.postgres.handler.DateTimeTypeHandler}
 				</if>
+				<if test="clientBean.serverVersion != null">
+					and (c.json->>'serverVersion')::BIGINT >= #{clientBean.serverVersion,jdbcType=BIGINT}
+				</if>
 				<if test="addressBean.addressType != null">
 					and address ->> 'addressType' = #{addressBean.addressType,jdbcType=VARCHAR}
 				</if>
 				<if test="addressBean.country != null">
-					and address ->> 'country' = #{addressBean.country,jdbcType=VARCHAR}
+					and address ->'addressFields' ->> 'country' = #{addressBean.country,jdbcType=VARCHAR}
 				</if>
 				<if test="addressBean.stateProvince != null">
-					and address ->> 'stateProvince' = #{addressBean.stateProvince,jdbcType=VARCHAR}
+					and address ->'addressFields' ->> 'stateProvince' = #{addressBean.stateProvince,jdbcType=VARCHAR}
 				</if>
 				<if test="addressBean.cityVillage != null">
 					and address ->> 'cityVillage' = #{addressBean.cityVillage,jdbcType=VARCHAR}
 				</if>
 				<if test="addressBean.countyDistrict != null">
-					and address ->> 'countyDistrict' = #{addressBean.countyDistrict,jdbcType=VARCHAR}
+					and address ->'addressFields' ->> 'countyDistrict' = #{addressBean.countyDistrict,jdbcType=VARCHAR}
 				</if>
 				<if test="addressBean.town != null">
-					and address ->> 'town' = #{addressBean.town,jdbcType=VARCHAR}
+					and address ->'addressFields' ->> 'town' = #{addressBean.town,jdbcType=VARCHAR}
 				</if>
 				<if test="addressBean.countyDistrict != null">
-					and address ->> 'subTown' = #{addressBean.subTown,jdbcType=VARCHAR}
+					and address ->'addressFields' ->> 'subTown' = #{addressBean.subTown,jdbcType=VARCHAR}
 				</if>
 				<if test="addressBean.countyDistrict != null">
-					and address ->> 'subTown' = #{addressBean.subTown,jdbcType=VARCHAR}
+					and address ->'addressFields' ->> 'subTown' = #{addressBean.subTown,jdbcType=VARCHAR}
 				</if>
 				<!-- Params for SearchRepository -->
 				<if test="clientBean.firstName != null">	
@@ -183,7 +186,7 @@
 				</if>
 			</trim>
 		</where>
-		LIMIT #{limit} OFFSET #{offset}
+		LIMIT #{limit}
 	</select>	
 	
 	

@@ -97,6 +97,118 @@ public class EventResource extends RestResource<Event> {
 	 * @param request
 	 * @return a map response with events, clients and optionally msg when an error occurs
 	 */
+	/*@RequestMapping(headers = { "Accept=application/json;charset=UTF-8" }, value = "/sync", method = RequestMethod.GET)
+	@ResponseBody
+	protected ResponseEntity<String> sync(HttpServletRequest request) {
+		Map<String, Object> response = new HashMap<String, Object>();
+		try {
+			String providerId = getStringFilter(PROVIDER_ID, request);
+			String requestProviderName = request.getRemoteUser();
+			String locationId = getStringFilter(LOCATION_ID, request);
+			String baseEntityId = getStringFilter(BASE_ENTITY_ID, request);
+			String serverVersion = getStringFilter(BaseEntity.SERVER_VERSIOIN, request);
+			String team = getStringFilter(TEAM, request);
+			String teamId = getStringFilter(TEAM_ID, request);
+			logger.info("synced user " + providerId + locationId + teamId + ", timestamp : " + serverVersion);
+			Long lastSyncedServerVersion = null;
+			if (serverVersion != null) {
+				lastSyncedServerVersion = Long.valueOf(serverVersion) + 1;
+			}
+			Integer limit = getIntegerFilter("limit", request);
+			if (limit == null || limit.intValue() == 0) {
+				limit = 25;
+			}
+			String getProviderName = "";
+			List<Event> eventList = new ArrayList<Event>();
+			List<Event> events = new ArrayList<Event>();
+			List<Event> allEvent = new ArrayList<Event>();
+			
+			List<String> clientIds = new ArrayList<String>();
+			List<Client> clients = new ArrayList<Client>();
+			long startTime = System.currentTimeMillis();
+			if (teamId != null || team != null || providerId != null || locationId != null || baseEntityId != null) {
+				EventSearchBean eventSearchBean = new EventSearchBean();
+				eventSearchBean.setTeam(team);
+				eventSearchBean.setTeamId(teamId);
+				eventSearchBean.setProviderId(providerId);
+				eventSearchBean.setLocationId(locationId);
+				eventSearchBean.setBaseEntityId(baseEntityId);
+				eventSearchBean.setServerVersion(lastSyncedServerVersion);
+				eventList = eventService.findEvents(eventSearchBean, BaseEntity.SERVER_VERSIOIN, "asc", limit);
+				allEvent.addAll(eventList);
+				logger.info("fetching events took: " + (System.currentTimeMillis() - startTime));
+				logger.info("Initial Size:" + eventList.size());
+				if (!eventList.isEmpty()) {
+					for (Event event : eventList) {
+						getProviderName = event.getProviderId();
+						logger.info("getProviderName:" + getProviderName + ": request provider name" + requestProviderName);
+						if (getProviderName.isEmpty()) {
+							events.add(event);
+						} else if (!getProviderName.equalsIgnoreCase(requestProviderName)) {} else {
+							events.add(event);
+						}
+					}
+					
+					logger.info("After cleaning Size:" + events.size());
+					for (Event event : events) {
+						if (event.getBaseEntityId() != null && !event.getBaseEntityId().isEmpty()
+						        && !clientIds.contains(event.getBaseEntityId())) {
+							clientIds.add(event.getBaseEntityId());
+						}
+					}
+					for (int i = 0; i < clientIds.size(); i = i + CLIENTS_FETCH_BATCH_SIZE) {
+						int end = i + CLIENTS_FETCH_BATCH_SIZE < clientIds.size() ? i + CLIENTS_FETCH_BATCH_SIZE : clientIds
+						        .size();
+						clients.addAll(clientService.findByFieldValue(BASE_ENTITY_ID, clientIds.subList(i, end)));
+					}
+					logger.info("fetching clients took: " + (System.currentTimeMillis() - startTime));
+				}
+			}
+			
+			if (searchMissingClients) {
+				
+				List<String> foundClientIds = new ArrayList<>();
+				for (Client client : clients) {
+					foundClientIds.add(client.getBaseEntityId());
+				}
+				
+				boolean removed = clientIds.removeAll(foundClientIds);
+				if (removed) {
+					for (String clientId : clientIds) {
+						Client client = clientService.getByBaseEntityId(clientId);
+						if (client != null) {
+							clients.add(client);
+						}
+					}
+				}
+				logger.info("fetching missing clients took: " + (System.currentTimeMillis() - startTime));
+			}
+			
+			JsonArray eventsArray = (JsonArray) gson.toJsonTree(events, new TypeToken<List<Event>>() {}.getType());
+			
+			JsonArray clientsArray = (JsonArray) gson.toJsonTree(clients, new TypeToken<List<Client>>() {}.getType());
+			
+			response.put("events", eventsArray);
+			response.put("clients", clientsArray);
+			response.put("no_of_events", events.size());
+			
+			return new ResponseEntity<>(gson.toJson(response), HttpStatus.OK);
+			
+		}
+		catch (Exception e) {
+			response.put("msg", "Error occurred");
+			logger.error("", e);
+			return new ResponseEntity<>(new Gson().toJson(response), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}*/
+	
+	/**
+	 * Fetch events ordered by serverVersion ascending order and return the clients associated with
+	 * the events
+	 * 
+	 * @param request
+	 * @return a map response with events, clients and optionally msg when an error occurs
+	 */
 	@RequestMapping(headers = { "Accept=application/json;charset=UTF-8" }, value = "/sync", method = RequestMethod.GET)
 	@ResponseBody
 	protected ResponseEntity<String> sync(HttpServletRequest request) {
@@ -121,6 +233,7 @@ public class EventResource extends RestResource<Event> {
 			String getProviderName = "";
 			List<Event> eventList = new ArrayList<Event>();
 			List<Event> events = new ArrayList<Event>();
+			List<Event> allEvent = new ArrayList<Event>();
 			
 			List<String> clientIds = new ArrayList<String>();
 			List<Client> clients = new ArrayList<Client>();
@@ -134,6 +247,7 @@ public class EventResource extends RestResource<Event> {
 				eventSearchBean.setBaseEntityId(baseEntityId);
 				eventSearchBean.setServerVersion(lastSyncedServerVersion);
 				eventList = eventService.findEvents(eventSearchBean, BaseEntity.SERVER_VERSIOIN, "asc", limit);
+				allEvent.addAll(eventList);
 				logger.info("fetching events took: " + (System.currentTimeMillis() - startTime));
 				logger.info("Initial Size:" + eventList.size());
 				if (!eventList.isEmpty()) {
@@ -310,7 +424,6 @@ public class EventResource extends RestResource<Event> {
 							Client client = clientService.find(event.getBaseEntityId());
 							String eventType = event.getEventType();
 							Obs obs = new Obs();
-							System.err.println("eventType>>>>>>>>>>>"+eventType);
 							/*if (eventType.equalsIgnoreCase("Followup Pregnant Status")) {
 								obs = event.getObs("", "pregnant_status");								
 								String value = (String) obs.getValue();

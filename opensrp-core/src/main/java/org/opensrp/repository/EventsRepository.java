@@ -3,6 +3,7 @@ package org.opensrp.repository;
 import java.util.Calendar;
 import java.util.List;
 
+import org.opensrp.domain.Client;
 import org.opensrp.domain.Event;
 import org.opensrp.search.EventSearchBean;
 
@@ -48,6 +49,8 @@ public interface EventsRepository extends BaseRepository<Event> {
 	List<Event> findEventByEventTypeBetweenTwoDates(String eventType);
 	
 	List<Event> findByProvider(String provider);
+	
+	List<Event> findByFieldValue(String field, List<String> ids, long serverVersion);
 	
 	void deleteByPrimaryKey(Event event);
 	

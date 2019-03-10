@@ -36,6 +36,8 @@ public class ClientSearchBean {
 	
 	private String lastName;
 	
+	private Long serverVersion;
+	
 	public String getNameLike() {
 		return nameLike;
 	}
@@ -154,6 +156,14 @@ public class ClientSearchBean {
 	
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
+	}
+	
+	public Long getServerVersion() {
+		return serverVersion;
+	}
+	
+	public void setServerVersion(Long serverVersion) {
+		this.serverVersion = serverVersion;
 	}
 	
 }

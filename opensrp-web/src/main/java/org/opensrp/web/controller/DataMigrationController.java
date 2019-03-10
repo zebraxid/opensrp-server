@@ -41,11 +41,15 @@ import org.opensrp.domain.Address;
 import org.opensrp.domain.Client;
 import org.opensrp.domain.Event;
 import org.opensrp.domain.Obs;
+import org.opensrp.repository.ClientsRepository;
+import org.opensrp.search.AddressSearchBean;
+import org.opensrp.search.ClientSearchBean;
 import org.opensrp.service.ClientService;
 import org.opensrp.service.EventService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Controller;
@@ -73,6 +77,13 @@ public class DataMigrationController {
 	
 	@Value("#{opensrp['opensrp.web.password']}")
 	private String opensrpWebPassword;
+	
+	@Value("#{opensrp['openmrs.url']}")
+	private String openMRSURL;
+	
+	@Autowired
+	@Qualifier("clientsRepositoryPostgres")
+	private ClientsRepository clientsRepository;
 	
 	private static Logger logger = LoggerFactory.getLogger(DataMigrationController.class.toString());
 	
@@ -162,20 +173,23 @@ public class DataMigrationController {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:sss");
 		DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:sss");
 		SimpleDateFormat format2 = new SimpleDateFormat("yyyy-MM-dd");
+		
 		try {
 			br = new BufferedReader(new FileReader(csvFile));
 			while ((line = br.readLine()) != null) {
-				HttpResponse op1 = HttpUtil.get(opensrpWebUurl + "/rest/api/v1/health-id/reserved/single", "",
+				
+				HttpResponse op1 = HttpUtil.get(opensrpWebUurl + "/rest/api/v1/health-id/reserved/single/migration", "",
 				    opensrpWebUsername, opensrpWebPassword);
 				JSONObject healthObj = new JSONObject(op1.body());
 				String healthId = "";
+				
 				if (healthObj.has("identifiers")) {
 					healthId = healthObj.getString("identifiers");
 				} else {
 					logger.info("No health id found...");
 				}
 				String[] member = line.split(cvsSplitBy);
-				System.err.println("member:" + member[1] + ",generateID:" + healthId);
+				
 				Client client = new Client(null);
 				client.addIdentifier("Patient_Identifier", healthId);
 				String baseEntityId = UUID.randomUUID().toString().trim();
@@ -346,12 +360,12 @@ public class DataMigrationController {
 					JSONObject jsonObj = new JSONObject(op.body());
 					JSONObject map = jsonObj.getJSONObject("map");
 					locationId = (String) map.get("locationUuid");
-					teamId = (String) map.get("teamUuid");
-					team = (String) map.get("team");
+					//teamId = (String) map.get("teamUuid");
+					//team = (String) map.get("team");
 					
 				}
 				catch (Exception e) {
-					
+					e.printStackTrace();
 				}
 				
 				String eventType = "Woman Member Registration";
@@ -407,19 +421,38 @@ public class DataMigrationController {
 	
 	@SuppressWarnings("resource")
 	public String addHousehold(File csvFile) throws Exception {
+		List<String> ids = new ArrayList<String>();
+		ids.add("a59876eb-691c-4840-b9c7-88cb59c4c8e5");
+		ids.add("d43bb068-ee72-4dee-bde5-0e684ab87f19");
+		String field = "baseEntityId";
+		eventService.findByFieldValue(field, ids, 2549279507797l);
+		ClientSearchBean searchBean = new ClientSearchBean();
+		searchBean.setServerVersion(1551783879608l);
+		AddressSearchBean addressSearchBean = new AddressSearchBean();
+		addressSearchBean.setStateProvince("DHAKA");
+		System.err.println("Size:" + clientsRepository.findByCriteria(searchBean, addressSearchBean));
 		String msg = "";
 		BufferedReader br = null;
 		String line = "";
 		String cvsSplitBy = ",";
 		
-		try {
+		/*try {
 			br = new BufferedReader(new FileReader(csvFile));
 			while ((line = br.readLine()) != null) {
 				
 				String[] member = line.split(cvsSplitBy);
 				
 				Client client = new Client(null);
-				client.addIdentifier("Patient_Identifier", generateID());
+				HttpResponse op1 = HttpUtil.get(opensrpWebUurl + "/rest/api/v1/health-id/reserved/single/migration", "",
+				    opensrpWebUsername, opensrpWebPassword);
+				JSONObject healthObj = new JSONObject(op1.body());
+				String healthId = "";
+				if (healthObj.has("identifiers")) {
+					healthId = healthObj.getString("identifiers");
+				} else {
+					logger.info("No health id found...");
+				}
+				client.addIdentifier("Patient_Identifier", healthId);
 				String baseEntityId = UUID.randomUUID().toString().trim();
 				client.setBaseEntityId(baseEntityId);
 				String firstName = member[55];
@@ -433,7 +466,7 @@ public class DataMigrationController {
 				client.withFirstName(firstName).withLastName("").withGender("H").withBirthdate(new DateTime(), false)
 				        .withDeathdate(null, false);
 				client.setServerVersion(System.currentTimeMillis());
-				/// attribute
+				
 				String householdCode = member[0];
 				if (!householdCode.isEmpty()) {
 					householdCode = householdCode.trim();
@@ -461,7 +494,7 @@ public class DataMigrationController {
 				if (!cityVillage.isEmpty()) {
 					cityVillage = cityVillage.trim();
 				}
-				// address put
+				
 				Map<String, String> addressFields = new HashMap<String, String>();
 				addressFields.put("cityVillage", cityVillage);// upazilla
 				addressFields.put("country", "BANGLADESH"); // country
@@ -491,8 +524,8 @@ public class DataMigrationController {
 					JSONObject jsonObj = new JSONObject(op.body());
 					JSONObject map = jsonObj.getJSONObject("map");
 					locationId = (String) map.get("locationUuid");
-					teamId = (String) map.get("teamUuid");
-					team = (String) map.get("team");
+					//teamId = (String) map.get("teamUuid");
+					//team = (String) map.get("team");
 				}
 				catch (Exception e) {
 					e.printStackTrace();
@@ -581,8 +614,8 @@ public class DataMigrationController {
 				List<Object> humanReadableValues = new ArrayList<Object>();
 				humanReadableValues.add(dws);
 				String fieldDataType = "text";
-				event.addObs(new Obs("concept", fieldDataType, "3a46b207-dc8b-4e5b-8b1f-162fca3905ca",
-				        "" /*//TODO handle parent*/, values, ""/*comments*/, "water_source"/*formSubmissionField*/));
+				event.addObs(new Obs("concept", fieldDataType, "3a46b207-dc8b-4e5b-8b1f-162fca3905ca", "", values, "",
+				        "water_source"));
 				
 				String Sanitary = member[17];
 				if (!Sanitary.isEmpty()) {
@@ -635,8 +668,8 @@ public class DataMigrationController {
 				List<Object> latrine_humanReadableValues = new ArrayList<Object>();
 				latrine_humanReadableValues.add(latrine_value);
 				String latrine_fieldDataType = "text";
-				event.addObs(new Obs("concept", latrine_fieldDataType, "bd437fcc-f42f-40a6-8baf-b3d3af725ad4",
-				        "" /*//TODO handle parent*/, latrine_values, ""/*comments*/, "latrine_structure"/*formSubmissionField*/));
+				event.addObs(new Obs("concept", latrine_fieldDataType, "bd437fcc-f42f-40a6-8baf-b3d3af725ad4", "",
+				        latrine_values, "", "latrine_structure"));
 				
 				String LowerMiddleClass = member[23];
 				if (!LowerMiddleClass.isEmpty()) {
@@ -692,11 +725,12 @@ public class DataMigrationController {
 				eventAddress.add(address2);
 				JSONArray addressFieldValue = new JSONArray(eventAddress);
 				
-				event.addObs(new Obs("formsubmissionField", "text", "HIE_FACILITIES", "" /*//TODO handle parent*/,
-				        addressFieldValue.toString(), ""/*comments*/, "HIE_FACILITIES"/*formSubmissionField*/));
+				event.addObs(new Obs("formsubmissionField", "text", "HIE_FACILITIES", "", addressFieldValue.toString(), "",
+				        "HIE_FACILITIES"));
 				
-				event.addObs(new Obs("concept", financial_fieldDataType, "95066bce-55eb-405e-9664-9be70e5c17b2",
-				        "" /*//TODO handle parent*/, financial_values, ""/*comments*/, "financial_status"/*formSubmissionField*/));
+				event.addObs(new Obs("concept", financial_fieldDataType, "95066bce-55eb-405e-9664-9be70e5c17b2", "",
+				        financial_values, "", "financial_status"));
+				
 				System.err.println("Event:::::::::::::::" + event.toString());
 				clientService.addorUpdate(client);
 				eventService.addorUpdateEvent(event);
@@ -708,7 +742,7 @@ public class DataMigrationController {
 			logger.info("Some problem occured, please contact with admin..");
 			msg = "failed to process file because : " + e.getMessage();
 			e.printStackTrace();
-		}
+		}*/
 		return msg;
 	}
 	
@@ -724,7 +758,7 @@ public class DataMigrationController {
 		JSONObject data = new JSONObject();
 		data.put("identifierSourceName", prefix);
 		
-		return post("https://192.168.19.44/openmrs" + "/" + GEN_ID_URL, "", data.toString(), "sohel", "Sohel@123").body();
+		return post(openMRSURL + GEN_ID_URL, "", data.toString(), "sohel", "Sohel@123").body();
 	}
 	
 	public static HttpResponse post(String url, String payload, String data, String username, String password) {

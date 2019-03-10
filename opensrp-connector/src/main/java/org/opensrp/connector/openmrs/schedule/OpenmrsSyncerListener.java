@@ -154,13 +154,13 @@ public class OpenmrsSyncerListener {
 			        .getAppStateTokenByName(SchedulerConfig.openmrs_syncer_sync_client_by_date_updated);
 			Long start = lastsync == null || lastsync.getValue() == null ? 0 : lastsync.longValue();
 			
-			pushClient(start);
+			//pushClient(start);
 			
 			logger.info("RUNNING FOR EVENTS");
 			
 			lastsync = config.getAppStateTokenByName(SchedulerConfig.openmrs_syncer_sync_event_by_date_updated);
 			start = lastsync == null || lastsync.getValue() == null ? 0 : lastsync.longValue();
-			pushEvent(start);
+			// pushEvent(start);
 			logger("PUSH TO OPENMRS FINISHED AT ", "");
 			
 		}
@@ -202,7 +202,6 @@ public class OpenmrsSyncerListener {
 					}
 				}
 				String uuid = c.getIdentifier(PatientService.OPENMRS_UUID_IDENTIFIER_TYPE);
-				logger.info("uuid>>>>>>>>>"+uuid);
 				if (uuid == null) {
 					JSONObject p = patientService.getPatientByIdentifier(c.getBaseEntityId());
 					for (Entry<String, String> id : c.getIdentifiers().entrySet()) {
@@ -215,7 +214,6 @@ public class OpenmrsSyncerListener {
 						uuid = p.getString("uuid");
 					}
 				}
-				logger.info("uuidss>>>>>>>>>"+uuid);
 				if (uuid != null) {
 					logger.info("Updating patient " + uuid);
 					String isSendToOpenMRS = c.getIsSendToOpenMRS();
@@ -234,7 +232,6 @@ public class OpenmrsSyncerListener {
 				} else {
 					JSONObject patientJson = patientService.createPatient(c);
 					patient = patientJson;
-					System.err.println("patientJson::"+ patientJson);
 					if (patientJson != null && patientJson.has("uuid")) {
 						c.addIdentifier(PatientService.OPENMRS_UUID_IDENTIFIER_TYPE, patientJson.getString("uuid"));
 						clientService.addorUpdate(c, false);
@@ -266,13 +263,13 @@ public class OpenmrsSyncerListener {
 					JSONObject person = motherJson.getJSONObject("person");
 					
 					if (person.getString("uuid") != null) {
-						JSONArray relationships = patientService.getPersonRelationShip(c.getIdentifier("OPENMRS_UUID"));						
-						if(relationships.length() == 0){
+						JSONArray relationships = patientService.getPersonRelationShip(c.getIdentifier("OPENMRS_UUID"));
+						if (relationships.length() == 0) {
 							JSONObject relation = patientService.createPatientRelationShip(c.getIdentifier("OPENMRS_UUID"),
-								    person.getString("uuid"), "03ed3084-4c7a-11e5-9192-080027b662ec");
-								relationshipsArray.put(relation); // only for test code purpose
-								logger.info("RelationshipsCreated check openrs" + c.getIdentifier("OPENMRS_UUID"));
-						}else {
+							    person.getString("uuid"), "03ed3084-4c7a-11e5-9192-080027b662ec");
+							relationshipsArray.put(relation); // only for test code purpose
+							logger.info("RelationshipsCreated check openrs" + c.getIdentifier("OPENMRS_UUID"));
+						} else {
 							logger.info("Relationship aleady created");
 						}
 						
