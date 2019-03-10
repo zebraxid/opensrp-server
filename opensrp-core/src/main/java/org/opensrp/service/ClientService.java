@@ -69,6 +69,10 @@ public class ClientService {
 		return allClients.findByCriteria(clientSearchBean, new AddressSearchBean());
 	}
 	
+	public List<Client> findByCriteria(ClientSearchBean clientSearchBean, AddressSearchBean addressSearchBean) {
+		return allClients.findByCriteria(clientSearchBean, addressSearchBean);
+	}
+	
 	/*	public List<Client> findByCriteria(String addressType, String country, String stateProvince, String cityVillage, String countyDistrict, 
 				String  subDistrict, String town, String subTown, DateTime lastEditFrom, DateTime lastEditTo) {
 			return allClients.findByCriteria(null, null, null, null, null, null, null, null, addressType, country, stateProvince, cityVillage, countyDistrict, subDistrict, town, subTown, lastEditFrom, lastEditTo);

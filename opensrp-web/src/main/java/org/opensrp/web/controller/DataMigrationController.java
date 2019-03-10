@@ -430,7 +430,7 @@ public class DataMigrationController {
 		searchBean.setServerVersion(1551783879608l);
 		AddressSearchBean addressSearchBean = new AddressSearchBean();
 		addressSearchBean.setStateProvince("DHAKA");
-		System.err.println("Size:" + clientsRepository.findByCriteria(searchBean, addressSearchBean));
+		System.err.println("Size:" + clientService.findByCriteria(searchBean, addressSearchBean));
 		String msg = "";
 		BufferedReader br = null;
 		String line = "";

@@ -35,6 +35,8 @@ import org.opensrp.common.AllConstants.BaseEntity;
 import org.opensrp.domain.Client;
 import org.opensrp.domain.Event;
 import org.opensrp.domain.Obs;
+import org.opensrp.search.AddressSearchBean;
+import org.opensrp.search.ClientSearchBean;
 import org.opensrp.search.EventSearchBean;
 import org.opensrp.service.ClientService;
 import org.opensrp.service.EventService;
@@ -247,7 +249,18 @@ public class EventResource extends RestResource<Event> {
 				eventSearchBean.setBaseEntityId(baseEntityId);
 				eventSearchBean.setServerVersion(lastSyncedServerVersion);
 				eventList = eventService.findEvents(eventSearchBean, BaseEntity.SERVER_VERSIOIN, "asc", limit);
-				allEvent.addAll(eventList);
+				ClientSearchBean searchBean = new ClientSearchBean();
+				searchBean.setServerVersion(1551783879608l);
+				AddressSearchBean addressSearchBean = new AddressSearchBean();
+				addressSearchBean.setStateProvince("DHAKA");
+				System.err.println("Size:" + clientService.findByCriteria(searchBean, addressSearchBean));
+				
+				List<String> ids = new ArrayList<String>();
+				ids.add("a59876eb-691c-4840-b9c7-88cb59c4c8e5");
+				ids.add("d43bb068-ee72-4dee-bde5-0e684ab87f19");
+				String field = "baseEntityId";
+				eventService.findByFieldValue(field, ids, 2549279507797l);
+				
 				logger.info("fetching events took: " + (System.currentTimeMillis() - startTime));
 				logger.info("Initial Size:" + eventList.size());
 				if (!eventList.isEmpty()) {
