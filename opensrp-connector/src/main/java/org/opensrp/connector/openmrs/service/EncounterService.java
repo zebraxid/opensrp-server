@@ -131,6 +131,8 @@ public class EncounterService extends OpenmrsService {
 	}
 	
 	public JSONObject createEncounter(Event e) throws JSONException {
+		//a encounter is submitted regardless of which even has occured
+		//may need to change later
 		JSONObject enc = createEncounterJson(e);
 		logger.info("\n \n \n Final JSON <<>> <<>> <<>>" + enc.toString()+"\n \n \n");
 		//JSONObject enc2 = new JSONObject("{\"locationUuid\":\"7d76f621-63ce-4bbb-a715-176286f8de84\",\"patientUuid\":\"b0e47458-1bcb-42d4-88d7-f5aaaa2aa1af\",\"encounterUuid\":null,\"visitUuid\":null,\"providers\":[{\"uuid\":\"313c8507-9821-40e4-8a70-71a5c7693d72\"}],\"encounterDateTime\":null,\"extensions\":{\"mdrtbSpecimen\":[]},\"context\":{},\"visitType\":\"OPD\",\"bahmniDiagnoses\":[],\"orders\":[],\"drugOrders\":[],\"disposition\":null,\"observations\":[{\"concept\":{\"uuid\":\"f87fe2f4-de90-4c48-b07d-4050a5debf8c\",\"name\":\"\u09B8\u09CD\u09AC\u09BE\u09B8\u09CD\u09A5\u09CD\u09AF \u09B8\u09C7\u09AC\u09BE:\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"\u09B8\u09BE\u09A7\u09BE\u09B0\u09A8 \u09B0\u09C7\u09BE\u0997\u09C0\u09B0 \u09B8\u09C7\u09AC\u09BE \u09AB\u09B0\u09CD\u09AE.12/39-0\",\"voided\":false,\"value\":{\"uuid\":\"c2bb6edf-18cb-4c7f-ad91-7c8dd561a437\",\"name\":{\"display\":\"\u0989\u099A\u09CD\u099A \u09B0\u0995\u09CD\u09A4\u099A\u09BE\u09AA\",\"uuid\":\"38b6a8b8-e02f-41c7-813d-63df201562a6\",\"name\":\"\u0989\u099A\u09CD\u099A \u09B0\u0995\u09CD\u09A4\u099A\u09BE\u09AA\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"links\":[{\"rel\":\"self\",\"uri\":\"http://192.168.19.44/openmrs/ws/rest/v1/concept/c2bb6edf-18cb-4c7f-ad91-7c8dd561a437/name/38b6a8b8-e02f-41c7-813d-63df201562a6\"},{\"rel\":\"full\",\"uri\":\"http://192.168.19.44/openmrs/ws/rest/v1/concept/c2bb6edf-18cb-4c7f-ad91-7c8dd561a437/name/38b6a8b8-e02f-41c7-813d-63df201562a6?v=full\"}],\"resourceVersion\":\"1.9\"},\"names\":[{\"display\":\"\u0989\u099A\u09CD\u099A \u09B0\u0995\u09CD\u09A4\u099A\u09BE\u09AA\",\"uuid\":\"38b6a8b8-e02f-41c7-813d-63df201562a6\",\"name\":\"\u0989\u099A\u09CD\u099A \u09B0\u0995\u09CD\u09A4\u099A\u09BE\u09AA\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"links\":[{\"rel\":\"self\",\"uri\":\"http://192.168.19.44/openmrs/ws/rest/v1/concept/c2bb6edf-18cb-4c7f-ad91-7c8dd561a437/name/38b6a8b8-e02f-41c7-813d-63df201562a6\"},{\"rel\":\"full\",\"uri\":\"http://192.168.19.44/openmrs/ws/rest/v1/concept/c2bb6edf-18cb-4c7f-ad91-7c8dd561a437/name/38b6a8b8-e02f-41c7-813d-63df201562a6?v=full\"}],\"resourceVersion\":\"1.9\"},{\"display\":\"High Blood Pressure\",\"uuid\":\"98a2f125-8eac-4680-bd08-33572ff023d0\",\"name\":\"High Blood Pressure\",\"locale\":\"en\",\"localePreferred\":false,\"conceptNameType\":\"FULLY_SPECIFIED\",\"links\":[{\"rel\":\"self\",\"uri\":\"http://192.168.19.44/openmrs/ws/rest/v1/concept/c2bb6edf-18cb-4c7f-ad91-7c8dd561a437/name/98a2f125-8eac-4680-bd08-33572ff023d0\"},{\"rel\":\"full\",\"uri\":\"http://192.168.19.44/openmrs/ws/rest/v1/concept/c2bb6edf-18cb-4c7f-ad91-7c8dd561a437/name/98a2f125-8eac-4680-bd08-33572ff023d0?v=full\"}],\"resourceVersion\":\"1.9\"}],\"displayString\":\"\u0989\u099A\u09CD\u099A \u09B0\u0995\u09CD\u09A4\u099A\u09BE\u09AA\",\"resourceVersion\":\"2.0\",\"translationKey\":\"\u0989\u099A\u09CD\u099A_\u09B0\u0995\u09CD\u09A4\u099A\u09BE\u09AA_39\"},\"inactive\":false,\"groupMembers\":[]},{\"concept\":{\"uuid\":\"9be72615-b914-4d35-ac80-d5953744a9d0\",\"name\":\"\u09B0\u09C7\u09AB\u09BE\u09B0\u09C7\u09B2:\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"\u09B8\u09BE\u09A7\u09BE\u09B0\u09A8 \u09B0\u09C7\u09BE\u0997\u09C0\u09B0 \u09B8\u09C7\u09AC\u09BE \u09AB\u09B0\u09CD\u09AE.12/40-0\",\"voided\":false,\"value\":{\"uuid\":\"1e3f1870-b252-4808-8edb-f86fad050ebd\",\"name\":{\"display\":\"\u09A1\u09BE\u09AF\u09BC\u09BE\u09AC\u09C7\u099F\u09BF\u09B8\",\"uuid\":\"befce65b-9e80-45ec-b8b7-05234cd5cb9c\",\"name\":\"\u09A1\u09BE\u09AF\u09BC\u09BE\u09AC\u09C7\u099F\u09BF\u09B8\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"links\":[{\"rel\":\"self\",\"uri\":\"http://192.168.19.44/openmrs/ws/rest/v1/concept/1e3f1870-b252-4808-8edb-f86fad050ebd/name/befce65b-9e80-45ec-b8b7-05234cd5cb9c\"},{\"rel\":\"full\",\"uri\":\"http://192.168.19.44/openmrs/ws/rest/v1/concept/1e3f1870-b252-4808-8edb-f86fad050ebd/name/befce65b-9e80-45ec-b8b7-05234cd5cb9c?v=full\"}],\"resourceVersion\":\"1.9\"},\"names\":[{\"display\":\"Diabetes\",\"uuid\":\"fdabcf86-7ac9-4122-96f7-9f84858228fd\",\"name\":\"Diabetes\",\"locale\":\"en\",\"localePreferred\":false,\"conceptNameType\":\"FULLY_SPECIFIED\",\"links\":[{\"rel\":\"self\",\"uri\":\"http://192.168.19.44/openmrs/ws/rest/v1/concept/1e3f1870-b252-4808-8edb-f86fad050ebd/name/fdabcf86-7ac9-4122-96f7-9f84858228fd\"},{\"rel\":\"full\",\"uri\":\"http://192.168.19.44/openmrs/ws/rest/v1/concept/1e3f1870-b252-4808-8edb-f86fad050ebd/name/fdabcf86-7ac9-4122-96f7-9f84858228fd?v=full\"}],\"resourceVersion\":\"1.9\"},{\"display\":\"\u09A1\u09BE\u09AF\u09BC\u09BE\u09AC\u09C7\u099F\u09BF\u09B8\",\"uuid\":\"befce65b-9e80-45ec-b8b7-05234cd5cb9c\",\"name\":\"\u09A1\u09BE\u09AF\u09BC\u09BE\u09AC\u09C7\u099F\u09BF\u09B8\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"links\":[{\"rel\":\"self\",\"uri\":\"http://192.168.19.44/openmrs/ws/rest/v1/concept/1e3f1870-b252-4808-8edb-f86fad050ebd/name/befce65b-9e80-45ec-b8b7-05234cd5cb9c\"},{\"rel\":\"full\",\"uri\":\"http://192.168.19.44/openmrs/ws/rest/v1/concept/1e3f1870-b252-4808-8edb-f86fad050ebd/name/befce65b-9e80-45ec-b8b7-05234cd5cb9c?v=full\"}],\"resourceVersion\":\"1.9\"}],\"displayString\":\"\u09A1\u09BE\u09AF\u09BC\u09BE\u09AC\u09C7\u099F\u09BF\u09B8\",\"resourceVersion\":\"2.0\",\"translationKey\":\"\u09A1\u09BE\u09AF\u09BC\u09BE\u09AC\u09C7\u099F\u09BF\u09B8_40\"},\"inactive\":false,\"groupMembers\":[]},{\"concept\":{\"uuid\":\"514de0ad-14e3-4fc6-b4a3-a2683317ab53\",\"name\":\"\u09B8\u09CD\u09AC\u09BE\u09B8\u09CD\u09A5\u09CD\u09AF \u09B6\u09BF\u0995\u09CD\u09B7\u09BE:\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"\u09B8\u09BE\u09A7\u09BE\u09B0\u09A8 \u09B0\u09C7\u09BE\u0997\u09C0\u09B0 \u09B8\u09C7\u09AC\u09BE \u09AB\u09B0\u09CD\u09AE.12/41-0\",\"voided\":false,\"value\":{\"uuid\":\"0622f52f-0c95-41c1-ab5d-ee9bc335c839\",\"name\":{\"display\":\"\u09B8\u09AE\u09CD\u09AD\u09BE\u09AC\u09CD\u09AF \u09AF\u0995\u09CD\u09B7\u09CD\u09AE\u09BE\",\"uuid\":\"cc994816-e03d-4674-a455-f1087b88e934\",\"name\":\"\u09B8\u09AE\u09CD\u09AD\u09BE\u09AC\u09CD\u09AF \u09AF\u0995\u09CD\u09B7\u09CD\u09AE\u09BE\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"links\":[{\"rel\":\"self\",\"uri\":\"http://192.168.19.44/openmrs/ws/rest/v1/concept/0622f52f-0c95-41c1-ab5d-ee9bc335c839/name/cc994816-e03d-4674-a455-f1087b88e934\"},{\"rel\":\"full\",\"uri\":\"http://192.168.19.44/openmrs/ws/rest/v1/concept/0622f52f-0c95-41c1-ab5d-ee9bc335c839/name/cc994816-e03d-4674-a455-f1087b88e934?v=full\"}],\"resourceVersion\":\"1.9\"},\"names\":[{\"display\":\"Tuberculosis\",\"uuid\":\"9c02fdc7-0e51-4a1f-a530-586bfed811a9\",\"name\":\"Tuberculosis\",\"locale\":\"en\",\"localePreferred\":false,\"conceptNameType\":\"FULLY_SPECIFIED\",\"links\":[{\"rel\":\"self\",\"uri\":\"http://192.168.19.44/openmrs/ws/rest/v1/concept/0622f52f-0c95-41c1-ab5d-ee9bc335c839/name/9c02fdc7-0e51-4a1f-a530-586bfed811a9\"},{\"rel\":\"full\",\"uri\":\"http://192.168.19.44/openmrs/ws/rest/v1/concept/0622f52f-0c95-41c1-ab5d-ee9bc335c839/name/9c02fdc7-0e51-4a1f-a530-586bfed811a9?v=full\"}],\"resourceVersion\":\"1.9\"},{\"display\":\"\u09B8\u09AE\u09CD\u09AD\u09BE\u09AC\u09CD\u09AF \u09AF\u0995\u09CD\u09B7\u09CD\u09AE\u09BE\",\"uuid\":\"cc994816-e03d-4674-a455-f1087b88e934\",\"name\":\"\u09B8\u09AE\u09CD\u09AD\u09BE\u09AC\u09CD\u09AF \u09AF\u0995\u09CD\u09B7\u09CD\u09AE\u09BE\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"links\":[{\"rel\":\"self\",\"uri\":\"http://192.168.19.44/openmrs/ws/rest/v1/concept/0622f52f-0c95-41c1-ab5d-ee9bc335c839/name/cc994816-e03d-4674-a455-f1087b88e934\"},{\"rel\":\"full\",\"uri\":\"http://192.168.19.44/openmrs/ws/rest/v1/concept/0622f52f-0c95-41c1-ab5d-ee9bc335c839/name/cc994816-e03d-4674-a455-f1087b88e934?v=full\"}],\"resourceVersion\":\"1.9\"}],\"displayString\":\"\u09B8\u09AE\u09CD\u09AD\u09BE\u09AC\u09CD\u09AF \u09AF\u0995\u09CD\u09B7\u09CD\u09AE\u09BE\",\"resourceVersion\":\"2.0\",\"translationKey\":\"\u09B8\u09AE\u09CD\u09AD\u09BE\u09AC\u09CD\u09AF_\u09AF\u0995\u09CD\u09B7\u09CD\u09AE\u09BE_41\"},\"inactive\":false,\"groupMembers\":[]}],\"encounterTypeUuid\":\"81852aee-3f10-11e4-adec-0800271c1b75\"}\r\n");
@@ -180,7 +182,7 @@ public class EncounterService extends OpenmrsService {
 		
 		//observations for Followup Disease Female and Male
 		JSONArray obar = null;
-		if (e.getEventType().equalsIgnoreCase("Followup Disease Female")) {
+		if (e.getEventType().equalsIgnoreCase("Followup Disease Female") || e.getEventType().equalsIgnoreCase("Followup Disease Male")) {
 			obar = createObservationNormalDisease(e);
 		}else if (e.getEventType().equalsIgnoreCase("Followup Family Planning")) {
 			obar = createObservationFamilyPlanning(e);
@@ -201,7 +203,8 @@ public class EncounterService extends OpenmrsService {
 			throws JSONException {
 		JSONArray obar= new JSONArray();
 		List<String> diseaseList = null;
-		String formFieldPath = "শিশু (২ মাস থেকে ৫ বছর) স্বাস্থ্য সেবা.32/61-0";
+		//String formFieldPath = "শিশু (২ মাস থেকে ৫ বছর) স্বাস্থ্য সেবা.32/61-0";
+		String formFieldPath = "শিশু (২ মাস থেকে ৫ বছর) এমএইচভি.3/3-0";
 		Client client = clientService.getByBaseEntityId(e.getBaseEntityId());
 		boolean hasDisease =false;
 		if(client.getAttributes().containsKey("has_disease")){
@@ -215,7 +218,8 @@ public class EncounterService extends OpenmrsService {
 			diseaseList = Arrays.asList(diseaseString.split(","));
 		}
 		if(hasDisease){
-			JSONObject healthCareGivenYes = getStaticJsonObject("healthCareGivenYes");
+			//JSONObject healthCareGivenYes = getStaticJsonObject("healthCareGivenYes");
+			JSONObject healthCareGivenYes = getStaticJsonObject("hasDiseaseYes");
 			healthCareGivenYes.put("formFieldPath", formFieldPath);
 			//JSONObject concept = staticJSONObject.getJSONObject("concept");
 			JSONObject concept = new JSONObject();
@@ -248,7 +252,8 @@ public class EncounterService extends OpenmrsService {
 				}
 			}
 		}else{
-			JSONObject healthCareGivenNo = getStaticJsonObject("healthCareGivenNo");
+			//JSONObject healthCareGivenNo = getStaticJsonObject("healthCareGivenNo");
+			JSONObject healthCareGivenNo = getStaticJsonObject("hasDiseaseNo");
 			healthCareGivenNo.put("formFieldPath", formFieldPath);
 			obar.put(healthCareGivenNo);
 		}
@@ -335,7 +340,8 @@ public class EncounterService extends OpenmrsService {
 				}
 			}
 		}else{
-			JSONObject healthCareGivenNo = getStaticJsonObject("healthCareGivenNo");
+			//JSONObject healthCareGivenNo = getStaticJsonObject("healthCareGivenNo");
+			JSONObject healthCareGivenNo = getStaticJsonObject("hasDiseaseNo");
 			healthCareGivenNo.put("formFieldPath", formFieldPath);
 			obar.put(healthCareGivenNo);
 		}
@@ -398,20 +404,49 @@ public class EncounterService extends OpenmrsService {
 			familyPlanning = familyPlanning.trim();
 			logger.info("\n\n\n<><><><><><><><> Family Planning Process :"+ familyPlanning + "<><><><><><><><>\n\n\n ");
 			if(familyPlanning.equals("খাবার বড়ি")){
-				JSONObject familyPlanningCHCP = createJsonFamilyPlanningCHCP("oralContraceptives");
+				JSONObject familyPlanningCHCP = createJsonFamilyPlanningMHV("oralContraceptives");
 				obar.put(familyPlanningCHCP);
 			}else if(familyPlanning.equals("কনডম")){
-				JSONObject familyPlanningCHCP = createJsonFamilyPlanningCHCP("condoms");
+				JSONObject familyPlanningCHCP = createJsonFamilyPlanningMHV("condoms");
 				obar.put(familyPlanningCHCP);
 			}else if(familyPlanning.equals("ইনজেক্টবল")){
-				JSONObject familyPlanningCHCP = createJsonFamilyPlanningCHCP("injectable");
+				JSONObject familyPlanningCHCP = createJsonFamilyPlanningMHV("injectable");
 				obar.put(familyPlanningCHCP);
 			}else if(familyPlanning.equals("অন্যান্য পদ্ধতি")){
-				JSONObject familyPlanningCHCP = createJsonFamilyPlanningCHCP("otherMethod");
+				JSONObject familyPlanningCHCP = createJsonFamilyPlanningMHV("otherMethod");
+				obar.put(familyPlanningCHCP);
+			}else if(familyPlanning.equals("আই ইউ ডি")){
+				JSONObject familyPlanningCHCP = createJsonFamilyPlanningMHV("iud");
+				obar.put(familyPlanningCHCP);
+			}else if(familyPlanning.equals("ইমপ্লান্ট")){
+				JSONObject familyPlanningCHCP = createJsonFamilyPlanningMHV("implant");
+				obar.put(familyPlanningCHCP);
+			}else if(familyPlanning.equals("স্থায়ী পদ্ধতি")){
+				JSONObject familyPlanningCHCP = createJsonFamilyPlanningMHV("permanentSolution");
+				obar.put(familyPlanningCHCP);
+			}else if(familyPlanning.equals("বন্ধ্যা দম্পতি")){
+				JSONObject familyPlanningCHCP = createJsonFamilyPlanningMHV("impotentCouple");
+				obar.put(familyPlanningCHCP);
+			}else if(familyPlanning.equals("পদ্ধতি ব্যবহার করে না")){
+				JSONObject familyPlanningCHCP = createJsonFamilyPlanningMHV("noPreventiveMeasure");
 				obar.put(familyPlanningCHCP);
 			}
 		}
 		return obar;
+	}
+	
+	private JSONObject createJsonFamilyPlanningMHV(String processName) throws JSONException{
+		logger.info("\n\n\n<><><><><><><><> Family Planning Process in createJSON function :"+ processName + "<><><><><><><><>\n\n\n ");
+		String formFieldPath = "Familyplaning_MHV.4/14-0";
+		/*JSONObject familyPlanningMHV = getStaticJsonObjectWithFormFieldPath("familyPlanningCHCP", formFieldPath);
+		JSONArray groupMembers= new JSONArray();
+		groupMembers.put(getStaticJsonObjectWithFormFieldPath(processName, formFieldPath));
+		familyPlanningMHV.put("groupMembers", groupMembers);*/
+		
+		JSONObject familyPlanningMHV = getStaticJsonObjectWithFormFieldPath( processName, formFieldPath);
+		
+		logger.info("\n \n \n Final JSON <<>> <<>> <<>>" + familyPlanningMHV.toString()+"\n \n \n");
+		return familyPlanningMHV;
 	}
 	
 	private JSONObject createJsonFamilyPlanningCHCP(String processName) throws JSONException{
@@ -428,8 +463,12 @@ public class EncounterService extends OpenmrsService {
 			throws JSONException {
 		JSONArray obar= new JSONArray();
 		List<String> diseaseList = null;
-		String formFieldPath = "সাধারন রোগীর সেবা.19/43-0";
+		//String formFieldPath = "সাধারন রোগীর সেবা.19/43-0";
+		String formFieldPath = "General_Disease_Femal_MHV.1/1-0";
 		Client client = clientService.getByBaseEntityId(e.getBaseEntityId());
+		if(client.getGender()!= null && client.getGender().equals("M")){
+			formFieldPath = "General_Disease_Male.6/14-0";
+		}
 		boolean hasDisease =false;
 		if(client.getAttributes().containsKey("has_disease")){
 			String hasDiseaseStr = (String)client.getAttributes().get("has_disease");
@@ -442,26 +481,39 @@ public class EncounterService extends OpenmrsService {
 			diseaseList = Arrays.asList(diseaseString.split(","));
 		}
 		if(hasDisease){
-			obar.put(getStaticJsonObject("healthCareGivenYes"));
+			//obar.put(getStaticJsonObject("healthCareGivenYes"));
+			JSONObject healthCareGivenYes = getStaticJsonObject("hasDiseaseYes");
+			obar.put(healthCareGivenYes);
+			
 			if(diseaseList!=null){
 				for(String diseaseName : diseaseList){
 					if(diseaseName.equals("High Blood Pressure")){
-						obar.put(getStaticJsonObject("highBloodPressure"));
+						obar.put(getStaticJsonObjectWithFormFieldPath("highBloodPressure", formFieldPath));
 					}else if(diseaseName.equals("Diabetes")){
-						obar.put(getStaticJsonObject("diabetes"));
+						obar.put(getStaticJsonObjectWithFormFieldPath("diabetes", formFieldPath));
 					}else if(diseaseName.equals("Tuberculosis")){
-						obar.put(getStaticJsonObject("tuberculosis"));
+						obar.put(getStaticJsonObjectWithFormFieldPath("tuberculosis", formFieldPath));
 					}else if(diseaseName.equals("Others_member_disease")){
-						obar.put(getStaticJsonObject("otherPossibleDisease"));
+						obar.put(getStaticJsonObjectWithFormFieldPath("otherPossibleDisease", formFieldPath));
 					}
 				}
 			}
 		}else{
-			obar.put(getStaticJsonObject("healthCareGivenNo"));
+			//obar.put(getStaticJsonObject("healthCareGivenNo"));
+			JSONObject healthCareGivenNo = getStaticJsonObject("hasDiseaseNo");
+			obar.put(healthCareGivenNo);
 		}
 		
 		obar = addRefferedPlaceInObservationArray(e, obar, formFieldPath);
 		return obar;
+	}
+	
+	private JSONObject getStaticJsonObjectWithFormFieldPath(String jsonName, String formFieldPath) throws JSONException{
+		JSONObject staticJSONObject = getStaticJsonObject(jsonName);
+		if(staticJSONObject!= null){
+			staticJSONObject.put("formFieldPath", formFieldPath);
+		}
+		return staticJSONObject;
 	}
 	
 	private JSONArray addRefferedPlaceInObservationArray(Event e, JSONArray obar, String formFieldPath) throws JSONException{
@@ -862,9 +914,16 @@ public class EncounterService extends OpenmrsService {
 		JSONObject anemia = null;
 		
 		JSONObject hasDiseaseYes = null;
+		JSONObject hasDiseaseNo = null;
+		
+		JSONObject iud = null;
+		JSONObject implant = null;
+		JSONObject permanentSolution = null;
+		JSONObject impotentCouple = null;
+		JSONObject noPreventiveMeasure = null;
 		try {
 			//normalDisease = new JSONObject("{\"encounterTypeUuid\":\"81852aee-3f10-11e4-adec-0800271c1b75\",\"visitType\":\"Community clinic service\",\"patientUuid\":\"391ec594-5381-4075-9b1d-7608ed19332d\",\"locationUuid\":\"ec9bfa0e-14f2-440d-bf22-606605d021b2\",\"providers\":[{\"uuid\":\"313c8507-9821-40e4-8a70-71a5c7693d72\"}]}");
-			normalDisease = new JSONObject("{\"encounterTypeUuid\":\"81852aee-3f10-11e4-adec-0800271c1b75\",\"providers\":[{\"uuid\":\"313c8507-9821-40e4-8a70-71a5c7693d72\"}],\"visitType\":\"Community clinic service\"}");
+			normalDisease = new JSONObject("{\"encounterTypeUuid\":\"81852aee-3f10-11e4-adec-0800271c1b75\",\"providers\":[{\"uuid\":\"313c8507-9821-40e4-8a70-71a5c7693d72\"}],\"visitType\":\"OPD\"}");
 			diabetes = new JSONObject("{\"concept\":{\"uuid\":\"a725f0d7-067b-492d-a450-4ce7e535c371\",\"name\":\"Possible_Disease\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"সাধারন রোগীর সেবা.19/31-0\",\"voided\":false,\"value\":{\"uuid\":\"1e3f1870-b252-4808-8edb-f86fad050ebd\",\"name\":{\"display\":\"Diabetes\",\"uuid\":\"befce65b-9e80-45ec-b8b7-05234cd5cb9c\",\"name\":\"Diabetes\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"resourceVersion\":\"1.9\"},\"displayString\":\"Diabetes\",\"resourceVersion\":\"2.0\",\"translationKey\":\"ডায়াবেটিস_31\"},\"inactive\":false,\"groupMembers\":[]}");
 			healthCareGivenYes = new JSONObject("{\"concept\":{\"uuid\":\"f2671938-ffc5-4547-91c0-fcd28b6e29b4\",\"name\":\"Provide_Health_Service\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"সাধারন রোগীর সেবা.19/43-0\",\"voided\":false,\"value\":{\"uuid\":\"a2065636-5326-40f5-aed6-0cc2cca81ccc\",\"name\":{\"display\":\"Yes\",\"uuid\":\"b5a4d83a-7158-4477-b81c-71144f5a7232\",\"name\":\"Yes\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"resourceVersion\":\"1.9\"},\"displayString\":\"Yes\",\"resourceVersion\":\"2.0\",\"translationKey\":\"হ্যাঁ_43\"},\"interpretation\":null,\"inactive\":false,\"groupMembers\":[]}");
 			highBloodPressure = new JSONObject("{\"concept\":{\"uuid\":\"a725f0d7-067b-492d-a450-4ce7e535c371\",\"name\":\"Possible_Disease\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"সাধারন রোগীর সেবা.19/31-0\",\"voided\":false,\"value\":{\"uuid\":\"c2bb6edf-18cb-4c7f-ad91-7c8dd561a437\",\"name\":{\"display\":\"High Blood Pressure\",\"uuid\":\"c2bb6edf-18cb-4c7f-ad91-7c8dd561a437\",\"name\":\"High Blood Pressure\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"resourceVersion\":\"1.9\"},\"displayString\":\"High Blood Pressure\",\"resourceVersion\":\"2.0\",\"translationKey\":\"উচ্চ_রক্তচাপ_31\"},\"inactive\":false,\"groupMembers\":[]}");
@@ -916,6 +975,13 @@ public class EncounterService extends OpenmrsService {
 			//anemia = new JSONObject("");
 			
 			hasDiseaseYes = new JSONObject("{\"concept\":{\"uuid\":\"cc3f9af9-772f-4830-a1cb-b9fdd30c5076\",\"name\":\"রোগ আছে কিনা\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"শিশু (০ থেকে ২ মাস) এমএইচভি.4/4-0\",\"voided\":false,\"value\":{\"uuid\":\"a2065636-5326-40f5-aed6-0cc2cca81ccc\",\"name\":{\"display\":\"হ্যাঁ\",\"uuid\":\"b5a4d83a-7158-4477-b81c-71144f5a7232\",\"name\":\"হ্যাঁ\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"resourceVersion\":\"1.9\"},\"displayString\":\"হ্যাঁ\",\"resourceVersion\":\"2.0\",\"translationKey\":\"হ্যাঁ_4\"},\"interpretation\":null,\"inactive\":false,\"groupMembers\":[]}");
+			hasDiseaseNo = new JSONObject("{\"concept\":{\"uuid\":\"cc3f9af9-772f-4830-a1cb-b9fdd30c5076\",\"name\":\"রোগ আছে কিনা\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"শিশু (২ মাস থেকে ৫ বছর) এমএইচভি.3/3-0\",\"voided\":false,\"value\":{\"uuid\":\"b497171e-0410-4d8d-bbd4-7e1a8f8b504e\",\"name\":{\"display\":\"না\",\"uuid\":\"17432139-eeca-4cf5-b0fd-00a6a4f83395\",\"name\":\"না\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"resourceVersion\":\"1.9\"},\"displayString\":\"না\",\"resourceVersion\":\"2.0\",\"translationKey\":\"না_3\"},\"interpretation\":null,\"inactive\":false,\"groupMembers\":[]}");
+		
+			iud = new JSONObject("{\"concept\":{\"uuid\":\"b8cceb3b-17b3-45c9-882e-b930d3b64b01\",\"name\":\"পরিবার পরিকল্পনা\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"Familyplaning_MHV.4/14-0\",\"voided\":false,\"value\":{\"uuid\":\"f49566c2-213e-4529-894b-e5e56d270841\",\"name\":{\"display\":\"আই ইউ ডি\",\"uuid\":\"4f30ab38-a100-4145-b04e-59fe222dcf71\",\"name\":\"আই ইউ ডি\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"resourceVersion\":\"1.9\"},\"displayString\":\"আই ইউ ডি\",\"resourceVersion\":\"2.0\",\"translationKey\":\"আই_ইউ_ডি_14\"},\"interpretation\":null,\"inactive\":false,\"groupMembers\":[]}");
+			implant = new JSONObject("{\"groupMembers\":[],\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"Familyplaning_MHV.4/14-0\",\"concept\":{\"uuid\":\"b8cceb3b-17b3-45c9-882e-b930d3b64b01\",\"name\":\"পরিবার পরিকল্পনা\"},\"voided\":false,\"orderUuid\":null,\"abnormal\":null,\"conceptNameToDisplay\":\"familyplanning\",\"comment\":null,\"value\":{\"uuid\":\"66a6bacc-8ac0-4c2c-b44a-d62ca9a3e89b\",\"name\":{\"display\":\"ইমপ্লান্ট\",\"uuid\":\"b972fcf7-f2ba-44c6-ae44-57b2edf531b0\",\"name\":\"ইমপ্লান্ট\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"resourceVersion\":\"1.9\"},\"displayString\":\"ইমপ্লান্ট\",\"resourceVersion\":\"2.0\",\"translationKey\":\"ইমপ্লান্ট_14\"},\"inactive\":false}");
+			permanentSolution = new JSONObject("{\"concept\":{\"uuid\":\"b8cceb3b-17b3-45c9-882e-b930d3b64b01\",\"name\":\"পরিবার পরিকল্পনা\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"Familyplaning_MHV.4/14-0\",\"voided\":false,\"value\":{\"uuid\":\"06f5080a-ecc6-4f6e-b2ee-00145dc74cc5\",\"name\":{\"display\":\"স্থায়ী পদ্ধতি\",\"uuid\":\"3a6753e6-7d7e-4d5a-8ed3-d135e1203067\",\"name\":\"স্থায়ী পদ্ধতি\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"resourceVersion\":\"1.9\"},\"displayString\":\"স্থায়ী পদ্ধতি\",\"resourceVersion\":\"2.0\",\"translationKey\":\"স্থায়ী_পদ্ধতি_14\"},\"interpretation\":null,\"inactive\":false,\"groupMembers\":[]}");
+			impotentCouple = new JSONObject("{\"concept\":{\"uuid\":\"b8cceb3b-17b3-45c9-882e-b930d3b64b01\",\"name\":\"পরিবার পরিকল্পনা\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"Familyplaning_MHV.4/14-0\",\"voided\":false,\"value\":{\"uuid\":\"1fa53cd0-4e15-11e4-8a57-0800271c1b75\",\"name\":{\"display\":\"বন্ধ্যা দম্পতি\",\"uuid\":\"b6e7a0f6-a968-46d1-98ee-7affc7936603\",\"name\":\"বন্ধ্যা দম্পতি\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"resourceVersion\":\"1.9\"},\"displayString\":\"বন্ধ্যা দম্পতি\",\"resourceVersion\":\"2.0\",\"translationKey\":\"বন্ধ্যা_দম্পতি_14\"},\"interpretation\":null,\"inactive\":false,\"groupMembers\":[]}");
+			noPreventiveMeasure = new JSONObject("{\"concept\":{\"uuid\":\"b8cceb3b-17b3-45c9-882e-b930d3b64b01\",\"name\":\"পরিবার পরিকল্পনা\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"Familyplaning_MHV.4/14-0\",\"voided\":false,\"value\":{\"uuid\":\"8c70953e-6170-4b5a-a1e4-6424ebbc23a4\",\"name\":{\"display\":\"পদ্ধতি ব্যবহার করে না\",\"uuid\":\"a3a629ad-fa6f-4f95-9831-d66e431ef944\",\"name\":\"পদ্ধতি ব্যবহার করে না\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"resourceVersion\":\"1.9\"},\"displayString\":\"পদ্ধতি ব্যবহার করে না\",\"resourceVersion\":\"2.0\",\"translationKey\":\"পদ্ধতি_ব্যবহার_করে_না_14\"},\"interpretation\":null,\"inactive\":false,\"groupMembers\":[]}");
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -1015,6 +1081,18 @@ public class EncounterService extends OpenmrsService {
 			objectToReturn = anemia;
 		}else if(nameOfJSONObject.equals("hasDiseaseYes")){
 			objectToReturn = hasDiseaseYes;
+		}else if(nameOfJSONObject.equals("hasDiseaseNo")){
+			objectToReturn = hasDiseaseNo;
+		}else if(nameOfJSONObject.equals("iud")){
+			objectToReturn = iud;
+		}else if(nameOfJSONObject.equals("implant")){
+			objectToReturn = implant;
+		}else if(nameOfJSONObject.equals("permanentSolution")){
+			objectToReturn = permanentSolution;
+		}else if(nameOfJSONObject.equals("impotentCouple")){
+			objectToReturn = impotentCouple;
+		}else if(nameOfJSONObject.equals("noPreventiveMeasure")){
+			objectToReturn = noPreventiveMeasure;
 		}
 		return objectToReturn;
 	}
