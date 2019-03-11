@@ -354,9 +354,12 @@ public class EncounterService extends OpenmrsService {
 	private JSONArray createObservationFollowupPNC(Event e)
 			throws JSONException {
 		JSONArray obar= new JSONArray();
-		String formFieldPath = "প্রসব পরবর্তী সেবা.43/52-0";
+		//String formFieldPath = "প্রসব পরবর্তী সেবা.43/52-0";
+		String formFieldPath = "PNC_MHV.2/1-0";
 		Client client = clientService.getByBaseEntityId(e.getBaseEntityId());
+		obar = addServiceDateAndNumberInObservationArray(e, obar,formFieldPath);
 		obar = addRefferedPlaceInObservationArray(e, obar,formFieldPath);
+		obar = addPlaceOfServiceInObservationArray(e, obar,formFieldPath);
 		return obar;
 	}
 
@@ -383,14 +386,14 @@ public class EncounterService extends OpenmrsService {
 					}
 				}	
 			}else{
-				JSONObject healthCareGivenNo = getStaticJsonObject("healthCareGivenNo");
+				/*JSONObject healthCareGivenNo = getStaticJsonObject("healthCareGivenNo");
 				healthCareGivenNo.put("formFieldPath", formFieldPath);
-				obar.put(healthCareGivenNo);
+				obar.put(healthCareGivenNo);*/
 			}
 		}else{
-			JSONObject healthCareGivenNo = getStaticJsonObject("healthCareGivenNo");
+			/*JSONObject healthCareGivenNo = getStaticJsonObject("healthCareGivenNo");
 			healthCareGivenNo.put("formFieldPath", formFieldPath);
-			obar.put(healthCareGivenNo);
+			obar.put(healthCareGivenNo);*/
 		}
 		
 		if(client.getAttributes().containsKey("Have_EDEMA")){
@@ -408,10 +411,69 @@ public class EncounterService extends OpenmrsService {
 				}
 			}
 		}
+		if(client.getAttributes().containsKey("Have_Jaundice\t")){
+			String hasEdema = (String)client.getAttributes().get("Have_Jaundice\t");
+			if(hasEdema!= null && !hasEdema.isEmpty()){
+				JSONObject hasJaundiceConcept = getStaticJsonObject("hasJaundice");
+				if(hasEdema.equals("Yes")){
+					JSONObject hasJaundiceYes = getStaticJsonObjectWithFormFieldPath("yes", formFieldPath);
+					hasJaundiceYes.put("concept", hasJaundiceConcept);
+					obar.put(hasJaundiceYes);
+				}else if(hasEdema.equals("No")){
+					JSONObject hasJaundiceNo = getStaticJsonObjectWithFormFieldPath("no", formFieldPath);
+					hasJaundiceNo.put("concept", hasJaundiceConcept);
+					obar.put(hasJaundiceNo);
+				}
+			}
+		}
+		obar = addServiceDateAndNumberInObservationArray(e, obar,formFieldPath);
 		obar = addRefferedPlaceInObservationArray(e, obar,formFieldPath);
 		obar = addPlaceOfServiceInObservationArray(e, obar,formFieldPath);
 		return obar;
 	}
+	
+	private JSONArray addServiceDateAndNumberInObservationArray(Event e, JSONArray obar, String formFieldPath) throws JSONException{
+		List<Obs> eventObs = e.getObs();
+		if(eventObs!= null){
+			for(Obs o: eventObs){
+				String formSubmissionField = o.getFormSubmissionField();
+				if(formSubmissionField!= null){
+					String obsValue = (String) o.getValues().get(0);
+					if(formSubmissionField.equals("Service_Received_Date") && obsValue!= null){
+						if(!formFieldPath.isEmpty()){
+							JSONObject latestServiceDate = getStaticJsonObjectWithFormFieldPath("latestServiceDate", formFieldPath);
+							latestServiceDate.put("value", obsValue);
+							obar.put(latestServiceDate);
+						}else{
+							obar.put(getStaticJsonObject(obsValue));
+						}
+					}
+					if(formSubmissionField.equals("Number_Of_Service_Received_Last_three_Months") && obsValue!= null){
+						if(!formFieldPath.isEmpty()){
+							JSONObject numberOfService = getStaticJsonObjectWithFormFieldPath("serviceNumberInLastThreeMonths", formFieldPath);
+							numberOfService.put("value", obsValue);
+							obar.put(numberOfService);
+						}else{
+							obar.put(getStaticJsonObject(obsValue));
+						}
+					}
+					
+					if(formSubmissionField.equals("Number_Of_PNC_Service") && obsValue!= null){
+						if(!formFieldPath.isEmpty()){
+							JSONObject numberOfService = getStaticJsonObjectWithFormFieldPath("numberOfPncService", formFieldPath);
+							numberOfService.put("value", obsValue);
+							obar.put(numberOfService);
+						}else{
+							obar.put(getStaticJsonObject(obsValue));
+						}
+					}
+					
+				}
+			}
+		}
+		return obar;
+	}
+	
 	
 	private JSONArray createObservationFamilyPlanning(Event e)
 			throws JSONException {
@@ -543,14 +605,14 @@ public class EncounterService extends OpenmrsService {
 					String obsValue = (String) o.getValues().get(0);
 					if(formSubmissionField.equals("Place_of_Refer") && obsValue!= null){
 						if(!formFieldPath.isEmpty()){
-							/*JSONObject refferedPlace = getStaticJsonObject(obsValue);
+							JSONObject refferedPlace = getStaticJsonObject(obsValue);
 							//To prevent null pointer exception
 							if(refferedPlace!= null){
 								refferedPlace.put("formFieldPath", formFieldPath);
 								obar.put(refferedPlace);
-							}*/
-							JSONObject refferedPlace = getStaticJsonObjectWithFormFieldPath(obsValue, formFieldPath);
-							obar.put(refferedPlace);
+							}
+							//JSONObject refferedPlace = getStaticJsonObjectWithFormFieldPath(obsValue, formFieldPath);
+							//obar.put(refferedPlace);
 						}else{
 							obar.put(getStaticJsonObject(obsValue));
 						}
@@ -974,6 +1036,7 @@ public class EncounterService extends OpenmrsService {
 		JSONObject no = null;
 		JSONObject hasJaundice = null;
 		
+		JSONObject numberOfPncService = null;
 		try {
 			//normalDisease = new JSONObject("{\"encounterTypeUuid\":\"81852aee-3f10-11e4-adec-0800271c1b75\",\"visitType\":\"Community clinic service\",\"patientUuid\":\"391ec594-5381-4075-9b1d-7608ed19332d\",\"locationUuid\":\"ec9bfa0e-14f2-440d-bf22-606605d021b2\",\"providers\":[{\"uuid\":\"313c8507-9821-40e4-8a70-71a5c7693d72\"}]}");
 			normalDisease = new JSONObject("{\"encounterTypeUuid\":\"81852aee-3f10-11e4-adec-0800271c1b75\",\"providers\":[{\"uuid\":\"313c8507-9821-40e4-8a70-71a5c7693d72\"}],\"visitType\":\"OPD\"}");
@@ -1043,6 +1106,8 @@ public class EncounterService extends OpenmrsService {
 			yes = new JSONObject("{\"concept\":{\"uuid\":\"f2671938-ffc5-4547-91c0-fcd28b6e29b4\",\"name\":\"Provide_Health_Service\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"সাধারন রোগীর সেবা.19/43-0\",\"voided\":false,\"value\":{\"uuid\":\"a2065636-5326-40f5-aed6-0cc2cca81ccc\",\"name\":{\"display\":\"Yes\",\"uuid\":\"b5a4d83a-7158-4477-b81c-71144f5a7232\",\"name\":\"Yes\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"resourceVersion\":\"1.9\"},\"displayString\":\"Yes\",\"resourceVersion\":\"2.0\",\"translationKey\":\"হ্যাঁ_43\"},\"interpretation\":null,\"inactive\":false,\"groupMembers\":[]}");
 			no = new JSONObject("{\"groupMembers\":[],\"inactive\":false,\"interpretation\":null,\"concept\":{\"name\":\"Provide_Health_Service\",\"uuid\":\"f2671938-ffc5-4547-91c0-fcd28b6e29b4\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"সাধারন রোগীর সেবা.19/43-0\",\"voided\":false,\"value\":{\"translationKey\":\"না_43\",\"displayString\":\"No\",\"resourceVersion\":\"2.0\",\"name\":{\"display\":\"No\",\"resourceVersion\":\"1.9\",\"name\":\"No\",\"localePreferred\":true,\"locale\":\"en\",\"uuid\":\"17432139-eeca-4cf5-b0fd-00a6a4f83395\",\"conceptNameType\":null},\"uuid\":\"b497171e-0410-4d8d-bbd4-7e1a8f8b504e\"}}");
 			hasJaundice = new JSONObject("{\"uuid\":\"8ebb781f-17f5-415f-a66a-1f1473de5938\",\"name\":\"জন্ডিস আছে\"}");
+		
+			numberOfPncService = new JSONObject("{\"groupMembers\":[],\"inactive\":false,\"interpretation\":null,\"concept\":{\"name\":\"সেবার সংখ্যা\",\"uuid\":\"4f3c1381-c037-479c-b40c-98bf4ac2c5e7\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"PNC_MHV.2/1-0\",\"voided\":false,\"value\":\"3\"}");
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -1168,6 +1233,8 @@ public class EncounterService extends OpenmrsService {
 			objectToReturn = no;
 		}else if(nameOfJSONObject.equals("hasJaundice")){
 			objectToReturn = hasJaundice;
+		}else if(nameOfJSONObject.equals("numberOfPncService")){
+			objectToReturn = numberOfPncService;
 		}
 		return objectToReturn;
 	}
