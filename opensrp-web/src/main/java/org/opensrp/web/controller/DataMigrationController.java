@@ -436,7 +436,7 @@ public class DataMigrationController {
 		String line = "";
 		String cvsSplitBy = ",";
 		
-		/*try {
+		try {
 			br = new BufferedReader(new FileReader(csvFile));
 			while ((line = br.readLine()) != null) {
 				
@@ -742,7 +742,7 @@ public class DataMigrationController {
 			logger.info("Some problem occured, please contact with admin..");
 			msg = "failed to process file because : " + e.getMessage();
 			e.printStackTrace();
-		}*/
+		}
 		return msg;
 	}
 	

@@ -239,58 +239,69 @@ public class EventResource extends RestResource<Event> {
 			
 			List<String> clientIds = new ArrayList<String>();
 			List<Client> clients = new ArrayList<Client>();
+			List<Client> clientList = new ArrayList<Client>();
+			List<String> uniqueBaseEntityIdIds = new ArrayList<String>();
 			long startTime = System.currentTimeMillis();
-			if (teamId != null || team != null || providerId != null || locationId != null || baseEntityId != null) {
-				EventSearchBean eventSearchBean = new EventSearchBean();
-				eventSearchBean.setTeam(team);
-				eventSearchBean.setTeamId(teamId);
-				eventSearchBean.setProviderId(providerId);
-				eventSearchBean.setLocationId(locationId);
-				eventSearchBean.setBaseEntityId(baseEntityId);
-				eventSearchBean.setServerVersion(lastSyncedServerVersion);
-				eventList = eventService.findEvents(eventSearchBean, BaseEntity.SERVER_VERSIOIN, "asc", limit);
-				ClientSearchBean searchBean = new ClientSearchBean();
-				searchBean.setServerVersion(1551783879608l);
-				AddressSearchBean addressSearchBean = new AddressSearchBean();
-				addressSearchBean.setStateProvince("DHAKA");
-				System.err.println("Size:" + clientService.findByCriteria(searchBean, addressSearchBean));
-				
-				List<String> ids = new ArrayList<String>();
-				ids.add("a59876eb-691c-4840-b9c7-88cb59c4c8e5");
-				ids.add("d43bb068-ee72-4dee-bde5-0e684ab87f19");
-				String field = "baseEntityId";
-				eventService.findByFieldValue(field, ids, 2549279507797l);
-				
-				logger.info("fetching events took: " + (System.currentTimeMillis() - startTime));
-				logger.info("Initial Size:" + eventList.size());
-				if (!eventList.isEmpty()) {
-					for (Event event : eventList) {
-						getProviderName = event.getProviderId();
-						logger.info("getProviderName:" + getProviderName + ": request provider name" + requestProviderName);
-						if (getProviderName.isEmpty()) {
-							events.add(event);
-						} else if (!getProviderName.equalsIgnoreCase(requestProviderName)) {} else {
-							events.add(event);
-						}
-					}
-					
-					logger.info("After cleaning Size:" + events.size());
-					for (Event event : events) {
-						if (event.getBaseEntityId() != null && !event.getBaseEntityId().isEmpty()
-						        && !clientIds.contains(event.getBaseEntityId())) {
-							clientIds.add(event.getBaseEntityId());
-						}
-					}
-					for (int i = 0; i < clientIds.size(); i = i + CLIENTS_FETCH_BATCH_SIZE) {
-						int end = i + CLIENTS_FETCH_BATCH_SIZE < clientIds.size() ? i + CLIENTS_FETCH_BATCH_SIZE : clientIds
-						        .size();
-						clients.addAll(clientService.findByFieldValue(BASE_ENTITY_ID, clientIds.subList(i, end)));
-					}
-					logger.info("fetching clients took: " + (System.currentTimeMillis() - startTime));
-				}
+			//if (teamId != null || team != null || providerId != null || locationId != null || baseEntityId != null) {
+			EventSearchBean eventSearchBean = new EventSearchBean();
+			eventSearchBean.setTeam(team);
+			eventSearchBean.setTeamId(teamId);
+			eventSearchBean.setProviderId(providerId);
+			eventSearchBean.setLocationId(locationId);
+			eventSearchBean.setBaseEntityId(baseEntityId);
+			eventSearchBean.setServerVersion(lastSyncedServerVersion);
+			eventList = eventService.findEvents(eventSearchBean, BaseEntity.SERVER_VERSIOIN, "asc", limit);
+			ClientSearchBean searchBean = new ClientSearchBean();
+			searchBean.setServerVersion(lastSyncedServerVersion);
+			AddressSearchBean addressSearchBean = new AddressSearchBean();
+			
+			String address = "'JOSAR:Ward 4','AYUBPUR:WARD 4'";
+			List<String> addres = new ArrayList<String>();
+			addres.add("JOSAR:Ward 4");
+			addres.add("AYUBPUR:WARD 4");
+			addressSearchBean.setAddress2(addres);
+			clientList = clientService.findByCriteria(searchBean, addressSearchBean);
+			System.err.println("Size:" + clientService.findByCriteria(searchBean, addressSearchBean));
+			
+			for (Client client : clientList) {
+				uniqueBaseEntityIdIds.add(client.getBaseEntityId());
 			}
 			
-			if (searchMissingClients) {
+			List<String> ids = new ArrayList<String>();
+			ids.addAll(uniqueBaseEntityIdIds);
+			String field = "baseEntityId";
+			eventList = eventService.findByFieldValue(field, ids, lastSyncedServerVersion);
+			System.err.println("Size::" + eventList.size());
+			logger.info("fetching events took: " + (System.currentTimeMillis() - startTime));
+			logger.info("Initial Size:" + eventList.size());
+			if (!eventList.isEmpty()) {
+				for (Event event : eventList) {
+					getProviderName = event.getProviderId();
+					logger.info("getProviderName:" + getProviderName + ": request provider name" + requestProviderName);
+					if (getProviderName.isEmpty()) {
+						events.add(event);
+					} else if (!getProviderName.equalsIgnoreCase(requestProviderName)) {} else {
+						events.add(event);
+					}
+				}
+				
+				logger.info("After cleaning Size:" + events.size());
+				/*for (Event event : events) {
+					if (event.getBaseEntityId() != null && !event.getBaseEntityId().isEmpty()
+					        && !clientIds.contains(event.getBaseEntityId())) {
+						clientIds.add(event.getBaseEntityId());
+					}
+				}
+				for (int i = 0; i < clientIds.size(); i = i + CLIENTS_FETCH_BATCH_SIZE) {
+					int end = i + CLIENTS_FETCH_BATCH_SIZE < clientIds.size() ? i + CLIENTS_FETCH_BATCH_SIZE : clientIds
+					        .size();
+					clients.addAll(clientService.findByFieldValue(BASE_ENTITY_ID, clientIds.subList(i, end)));
+				}*/
+				logger.info("fetching clients took: " + (System.currentTimeMillis() - startTime));
+			}
+			//}
+			
+			/*if (searchMissingClients) {
 				
 				List<String> foundClientIds = new ArrayList<>();
 				for (Client client : clients) {
@@ -308,10 +319,10 @@ public class EventResource extends RestResource<Event> {
 				}
 				logger.info("fetching missing clients took: " + (System.currentTimeMillis() - startTime));
 			}
-			
+			*/
 			JsonArray eventsArray = (JsonArray) gson.toJsonTree(events, new TypeToken<List<Event>>() {}.getType());
 			
-			JsonArray clientsArray = (JsonArray) gson.toJsonTree(clients, new TypeToken<List<Client>>() {}.getType());
+			JsonArray clientsArray = (JsonArray) gson.toJsonTree(clientList, new TypeToken<List<Client>>() {}.getType());
 			
 			response.put("events", eventsArray);
 			response.put("clients", clientsArray);

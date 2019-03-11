@@ -143,7 +143,7 @@
 					and address ->'addressFields' ->> 'stateProvince' = #{addressBean.stateProvince,jdbcType=VARCHAR}
 				</if>
 				<if test="addressBean.cityVillage != null">
-					and address ->> 'cityVillage' = #{addressBean.cityVillage,jdbcType=VARCHAR}
+					and address ->'addressFields' ->> 'cityVillage' = #{addressBean.cityVillage,jdbcType=VARCHAR}
 				</if>
 				<if test="addressBean.countyDistrict != null">
 					and address ->'addressFields' ->> 'countyDistrict' = #{addressBean.countyDistrict,jdbcType=VARCHAR}
@@ -151,11 +151,14 @@
 				<if test="addressBean.town != null">
 					and address ->'addressFields' ->> 'town' = #{addressBean.town,jdbcType=VARCHAR}
 				</if>
-				<if test="addressBean.countyDistrict != null">
+				<if test="addressBean.subTown != null">
 					and address ->'addressFields' ->> 'subTown' = #{addressBean.subTown,jdbcType=VARCHAR}
 				</if>
-				<if test="addressBean.countyDistrict != null">
-					and address ->'addressFields' ->> 'subTown' = #{addressBean.subTown,jdbcType=VARCHAR}
+				<!-- <if test="addressBean.address2 != null">
+					and address ->'addressFields' ->> 'address2' IN(#{addressBean.address2,jdbcType=VARCHAR})
+				</if> -->
+				<if test="addressBean.address3 != null">
+					and address ->'addressFields' ->> 'address3' = #{addressBean.address3,jdbcType=VARCHAR}
 				</if>
 				<!-- Params for SearchRepository -->
 				<if test="clientBean.firstName != null">	
@@ -170,6 +173,12 @@
 					<bind name="lastName" value="'%' + clientBean.lastName + '%'" />
 					and c.json->>'lastName' ilike #{lastName}
 				</if>
+				
+				and address ->'addressFields' ->> 'address2' IN				
+		    	<foreach close=")" collection="addressBean.address2" item="listItem" open="(" separator=",">
+						#{listItem}
+				</foreach>		    		
+				
 				<if test="clientBean.identifiers != null" >
 					<trim prefix="and ("  suffix=")" >
 					 <foreach collection="clientBean.identifiers" index="key" item="value" separator=" or " >
@@ -186,7 +195,7 @@
 				</if>
 			</trim>
 		</where>
-		LIMIT #{limit}
+		order by json->>'serverVersion' asc LIMIT #{limit} 
 	</select>	
 	
 	
