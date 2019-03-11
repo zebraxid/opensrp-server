@@ -363,19 +363,20 @@ public class EncounterService extends OpenmrsService {
 	private JSONArray createObservationFollowupANC(Event e)
 			throws JSONException {
 		JSONArray obar= new JSONArray();
-		String formFieldPath = "প্রসব পূর্ব সেবা.86/134-0";
+		//String formFieldPath = "প্রসব পূর্ব সেবা.86/134-0";
+		String formFieldPath = "ANC_MHV.3/1-0";
 		Client client = clientService.getByBaseEntityId(e.getBaseEntityId());
 		if(client.getAttributes().containsKey("Denger_Signs_During_Pregnancy")){
 			String dangerSignsDuringPregnancyString = (String)client.getAttributes().get("Denger_Signs_During_Pregnancy");
 			List<String> dangerSignsDuringPregnancyList = Arrays.asList(dangerSignsDuringPregnancyString.split(","));
 			if(dangerSignsDuringPregnancyList.size()>0){
 				//"formFieldPath": "প্রসব পূর্ব সেবা.86/134-0"
-				JSONObject healthCareGivenYes = getStaticJsonObject("healthCareGivenYes");
+				/*JSONObject healthCareGivenYes = getStaticJsonObject("healthCareGivenYes");
 				healthCareGivenYes.put("formFieldPath", formFieldPath);
-				obar.put(healthCareGivenYes);
-				obar.put(getStaticJsonObject("haveDangerSignsPregnancyYes"));
+				obar.put(healthCareGivenYes);*/
+				//obar.put(getStaticJsonObject("haveDangerSignsPregnancyYes"));
 				for(String dangerSign : dangerSignsDuringPregnancyList){
-					JSONObject staticJSONObject = getStaticJsonObject(dangerSign);
+					JSONObject staticJSONObject = getStaticJsonObjectWithFormFieldPath(dangerSign, formFieldPath);
 					logger.info("\n\n\n<><><><><> Danger sign static JSON :"+dangerSign+"->>"+ staticJSONObject + "<><><><><>\n\n\n ");
 					if(staticJSONObject!= null){
 						obar.put(staticJSONObject);
@@ -391,7 +392,24 @@ public class EncounterService extends OpenmrsService {
 			healthCareGivenNo.put("formFieldPath", formFieldPath);
 			obar.put(healthCareGivenNo);
 		}
+		
+		if(client.getAttributes().containsKey("Have_EDEMA")){
+			String hasEdema = (String)client.getAttributes().get("Have_EDEMA");
+			if(hasEdema!= null && !hasEdema.isEmpty()){
+				JSONObject hasEdomaConcept = getStaticJsonObject("hasEdoma");
+				if(hasEdema.equals("Yes")){
+					JSONObject hasEdomaYes = getStaticJsonObjectWithFormFieldPath("yes", formFieldPath);
+					hasEdomaYes.put("concept", hasEdomaConcept);
+					obar.put(hasEdomaYes);
+				}else if(hasEdema.equals("No")){
+					JSONObject hasEdomaNo = getStaticJsonObjectWithFormFieldPath("no", formFieldPath);
+					hasEdomaNo.put("concept", hasEdomaConcept);
+					obar.put(hasEdomaNo);
+				}
+			}
+		}
 		obar = addRefferedPlaceInObservationArray(e, obar,formFieldPath);
+		obar = addPlaceOfServiceInObservationArray(e, obar,formFieldPath);
 		return obar;
 	}
 	
@@ -525,12 +543,38 @@ public class EncounterService extends OpenmrsService {
 					String obsValue = (String) o.getValues().get(0);
 					if(formSubmissionField.equals("Place_of_Refer") && obsValue!= null){
 						if(!formFieldPath.isEmpty()){
-							JSONObject refferedPlace = getStaticJsonObject(obsValue);
+							/*JSONObject refferedPlace = getStaticJsonObject(obsValue);
 							//To prevent null pointer exception
 							if(refferedPlace!= null){
 								refferedPlace.put("formFieldPath", formFieldPath);
 								obar.put(refferedPlace);
-							}
+							}*/
+							JSONObject refferedPlace = getStaticJsonObjectWithFormFieldPath(obsValue, formFieldPath);
+							obar.put(refferedPlace);
+						}else{
+							obar.put(getStaticJsonObject(obsValue));
+						}
+					}
+				}
+			}
+		}
+		return obar;
+	}
+	
+	
+	private JSONArray addPlaceOfServiceInObservationArray(Event e, JSONArray obar, String formFieldPath) throws JSONException{
+		List<Obs> eventObs = e.getObs();
+		if(eventObs!= null){
+			for(Obs o: eventObs){
+				String formSubmissionField = o.getFormSubmissionField();
+				if(formSubmissionField!= null){
+					String obsValue = (String) o.getValues().get(0);
+					if(formSubmissionField.equals("Place_of_Service") && obsValue!= null){
+						if(!formFieldPath.isEmpty()){
+							JSONObject placeOfService = getStaticJsonObjectWithFormFieldPath(obsValue, formFieldPath);
+							JSONObject placeOfServiceConcept = getStaticJsonObject("placeOfServiceConcept");
+							placeOfService.put("concept", placeOfServiceConcept);
+							obar.put(placeOfService);
 						}else{
 							obar.put(getStaticJsonObject(obsValue));
 						}
@@ -921,6 +965,15 @@ public class EncounterService extends OpenmrsService {
 		JSONObject permanentSolution = null;
 		JSONObject impotentCouple = null;
 		JSONObject noPreventiveMeasure = null;
+		
+		JSONObject serviceNumberInLastThreeMonths = null;
+		JSONObject latestServiceDate = null;
+		JSONObject placeOfServiceConcept = null;
+		JSONObject hasEdoma = null;
+		JSONObject yes = null;
+		JSONObject no = null;
+		JSONObject hasJaundice = null;
+		
 		try {
 			//normalDisease = new JSONObject("{\"encounterTypeUuid\":\"81852aee-3f10-11e4-adec-0800271c1b75\",\"visitType\":\"Community clinic service\",\"patientUuid\":\"391ec594-5381-4075-9b1d-7608ed19332d\",\"locationUuid\":\"ec9bfa0e-14f2-440d-bf22-606605d021b2\",\"providers\":[{\"uuid\":\"313c8507-9821-40e4-8a70-71a5c7693d72\"}]}");
 			normalDisease = new JSONObject("{\"encounterTypeUuid\":\"81852aee-3f10-11e4-adec-0800271c1b75\",\"providers\":[{\"uuid\":\"313c8507-9821-40e4-8a70-71a5c7693d72\"}],\"visitType\":\"OPD\"}");
@@ -982,6 +1035,14 @@ public class EncounterService extends OpenmrsService {
 			permanentSolution = new JSONObject("{\"concept\":{\"uuid\":\"b8cceb3b-17b3-45c9-882e-b930d3b64b01\",\"name\":\"পরিবার পরিকল্পনা\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"Familyplaning_MHV.4/14-0\",\"voided\":false,\"value\":{\"uuid\":\"06f5080a-ecc6-4f6e-b2ee-00145dc74cc5\",\"name\":{\"display\":\"স্থায়ী পদ্ধতি\",\"uuid\":\"3a6753e6-7d7e-4d5a-8ed3-d135e1203067\",\"name\":\"স্থায়ী পদ্ধতি\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"resourceVersion\":\"1.9\"},\"displayString\":\"স্থায়ী পদ্ধতি\",\"resourceVersion\":\"2.0\",\"translationKey\":\"স্থায়ী_পদ্ধতি_14\"},\"interpretation\":null,\"inactive\":false,\"groupMembers\":[]}");
 			impotentCouple = new JSONObject("{\"concept\":{\"uuid\":\"b8cceb3b-17b3-45c9-882e-b930d3b64b01\",\"name\":\"পরিবার পরিকল্পনা\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"Familyplaning_MHV.4/14-0\",\"voided\":false,\"value\":{\"uuid\":\"1fa53cd0-4e15-11e4-8a57-0800271c1b75\",\"name\":{\"display\":\"বন্ধ্যা দম্পতি\",\"uuid\":\"b6e7a0f6-a968-46d1-98ee-7affc7936603\",\"name\":\"বন্ধ্যা দম্পতি\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"resourceVersion\":\"1.9\"},\"displayString\":\"বন্ধ্যা দম্পতি\",\"resourceVersion\":\"2.0\",\"translationKey\":\"বন্ধ্যা_দম্পতি_14\"},\"interpretation\":null,\"inactive\":false,\"groupMembers\":[]}");
 			noPreventiveMeasure = new JSONObject("{\"concept\":{\"uuid\":\"b8cceb3b-17b3-45c9-882e-b930d3b64b01\",\"name\":\"পরিবার পরিকল্পনা\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"Familyplaning_MHV.4/14-0\",\"voided\":false,\"value\":{\"uuid\":\"8c70953e-6170-4b5a-a1e4-6424ebbc23a4\",\"name\":{\"display\":\"পদ্ধতি ব্যবহার করে না\",\"uuid\":\"a3a629ad-fa6f-4f95-9831-d66e431ef944\",\"name\":\"পদ্ধতি ব্যবহার করে না\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"resourceVersion\":\"1.9\"},\"displayString\":\"পদ্ধতি ব্যবহার করে না\",\"resourceVersion\":\"2.0\",\"translationKey\":\"পদ্ধতি_ব্যবহার_করে_না_14\"},\"interpretation\":null,\"inactive\":false,\"groupMembers\":[]}");
+		
+			serviceNumberInLastThreeMonths = new JSONObject("{\"groupMembers\":[],\"inactive\":false,\"concept\":{\"name\":\"গত তিন মাসে সেবার সংখ্যা\",\"uuid\":\"1fdbcade-c12a-4f22-8d72-2ee317417071\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"ANC_MHV.3/1-0\",\"voided\":false,\"value\":\"1\",\"interpretation\":null}");
+			latestServiceDate = new JSONObject("{\"concept\":{\"uuid\":\"29a26c15-cd3e-4e8f-999b-7b91428ea863\",\"name\":\"সর্বশেষ সেবার তারিখ\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"ANC_MHV.3/8-0\",\"voided\":false,\"value\":\"2019-03-01\",\"interpretation\":null,\"inactive\":false,\"groupMembers\":[]}");
+			placeOfServiceConcept = new JSONObject("{\"uuid\":\"45c9babc-419d-42e3-8fa3-bce5aa7187e4\",\"name\":\"সেবার স্থান\"}");
+			hasEdoma = new JSONObject("{\"uuid\":\"b05955f9-ce61-439c-b921-c74b4eaa4abb\",\"name\":\"ইডেমা আছে\"}");
+			yes = new JSONObject("{\"concept\":{\"uuid\":\"f2671938-ffc5-4547-91c0-fcd28b6e29b4\",\"name\":\"Provide_Health_Service\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"সাধারন রোগীর সেবা.19/43-0\",\"voided\":false,\"value\":{\"uuid\":\"a2065636-5326-40f5-aed6-0cc2cca81ccc\",\"name\":{\"display\":\"Yes\",\"uuid\":\"b5a4d83a-7158-4477-b81c-71144f5a7232\",\"name\":\"Yes\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"resourceVersion\":\"1.9\"},\"displayString\":\"Yes\",\"resourceVersion\":\"2.0\",\"translationKey\":\"হ্যাঁ_43\"},\"interpretation\":null,\"inactive\":false,\"groupMembers\":[]}");
+			no = new JSONObject("{\"groupMembers\":[],\"inactive\":false,\"interpretation\":null,\"concept\":{\"name\":\"Provide_Health_Service\",\"uuid\":\"f2671938-ffc5-4547-91c0-fcd28b6e29b4\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"সাধারন রোগীর সেবা.19/43-0\",\"voided\":false,\"value\":{\"translationKey\":\"না_43\",\"displayString\":\"No\",\"resourceVersion\":\"2.0\",\"name\":{\"display\":\"No\",\"resourceVersion\":\"1.9\",\"name\":\"No\",\"localePreferred\":true,\"locale\":\"en\",\"uuid\":\"17432139-eeca-4cf5-b0fd-00a6a4f83395\",\"conceptNameType\":null},\"uuid\":\"b497171e-0410-4d8d-bbd4-7e1a8f8b504e\"}}");
+			hasJaundice = new JSONObject("{\"uuid\":\"8ebb781f-17f5-415f-a66a-1f1473de5938\",\"name\":\"জন্ডিস আছে\"}");
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -1093,6 +1154,20 @@ public class EncounterService extends OpenmrsService {
 			objectToReturn = impotentCouple;
 		}else if(nameOfJSONObject.equals("noPreventiveMeasure")){
 			objectToReturn = noPreventiveMeasure;
+		}else if(nameOfJSONObject.equals("serviceNumberInLastThreeMonths")){
+			objectToReturn = serviceNumberInLastThreeMonths;
+		}else if(nameOfJSONObject.equals("latestServiceDate")){
+			objectToReturn = latestServiceDate;
+		}else if(nameOfJSONObject.equals("placeOfServiceConcept")){
+			objectToReturn = placeOfServiceConcept;
+		}else if(nameOfJSONObject.equals("hasEdoma")){
+			objectToReturn = hasEdoma;
+		}else if(nameOfJSONObject.equals("yes")){
+			objectToReturn = yes;
+		}else if(nameOfJSONObject.equals("no")){
+			objectToReturn = no;
+		}else if(nameOfJSONObject.equals("hasJaundice")){
+			objectToReturn = hasJaundice;
 		}
 		return objectToReturn;
 	}
