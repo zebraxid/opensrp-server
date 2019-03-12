@@ -21,6 +21,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -32,6 +33,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.joda.time.DateTime;
 import org.json.JSONObject;
 import org.opensrp.common.AllConstants.BaseEntity;
+import org.opensrp.common.util.HttpResponse;
+import org.opensrp.common.util.HttpUtil;
 import org.opensrp.domain.Client;
 import org.opensrp.domain.Event;
 import org.opensrp.domain.Obs;
@@ -68,6 +71,21 @@ public class EventResource extends RestResource<Event> {
 	private EventService eventService;
 	
 	private ClientService clientService;
+	
+	@Value("#{opensrp['opensrp.web.url']}")
+	private String opensrpWebUurl;
+	
+	@Value("#{opensrp['opensrp.web.username']}")
+	private String opensrpWebUsername;
+	
+	@Value("#{opensrp['opensrp.web.password']}")
+	private String opensrpWebPassword;
+	
+	@Value("#{opensrp['opensrp.provider']}")
+	private String provider;
+	
+	@Value("#{opensrp['opensrp.HA']}")
+	private String HA;
 	
 	Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
 	        .registerTypeAdapter(DateTime.class, new DateTimeTypeConverter()).create();
@@ -216,6 +234,23 @@ public class EventResource extends RestResource<Event> {
 	protected ResponseEntity<String> sync(HttpServletRequest request) {
 		Map<String, Object> response = new HashMap<String, Object>();
 		try {
+			HttpResponse op = HttpUtil.get(
+			    opensrpWebUurl + "/rest/api/v1/location/location-name?name=" + request.getRemoteUser(), "",
+			    opensrpWebUsername, opensrpWebPassword);
+			JSONObject locations = new JSONObject(op.body());
+			String location = "";
+			String userType = "";
+			List<String> address = new ArrayList<String>();
+			if (locations.has("locations")) {
+				location = locations.getString("locations");
+				address = new ArrayList<String>(Arrays.asList(location.split(",")));
+				userType = locations.getString("role");
+				
+			} else {
+				logger.info("No location found..");
+				return new ResponseEntity<>(new Gson().toJson(response), HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+			
 			String providerId = getStringFilter(PROVIDER_ID, request);
 			String requestProviderName = request.getRemoteUser();
 			String locationId = getStringFilter(LOCATION_ID, request);
@@ -235,14 +270,11 @@ public class EventResource extends RestResource<Event> {
 			String getProviderName = "";
 			List<Event> eventList = new ArrayList<Event>();
 			List<Event> events = new ArrayList<Event>();
-			List<Event> allEvent = new ArrayList<Event>();
-			
 			List<String> clientIds = new ArrayList<String>();
 			List<Client> clients = new ArrayList<Client>();
 			List<Client> clientList = new ArrayList<Client>();
-			List<String> uniqueBaseEntityIdIds = new ArrayList<String>();
+			List<String> excludeEvents = new ArrayList<String>();
 			long startTime = System.currentTimeMillis();
-			//if (teamId != null || team != null || providerId != null || locationId != null || baseEntityId != null) {
 			EventSearchBean eventSearchBean = new EventSearchBean();
 			eventSearchBean.setTeam(team);
 			eventSearchBean.setTeamId(teamId);
@@ -254,24 +286,20 @@ public class EventResource extends RestResource<Event> {
 			ClientSearchBean searchBean = new ClientSearchBean();
 			searchBean.setServerVersion(lastSyncedServerVersion);
 			AddressSearchBean addressSearchBean = new AddressSearchBean();
-			
-			String address = "'JOSAR:Ward 4','AYUBPUR:WARD 4'";
-			List<String> addres = new ArrayList<String>();
-			addres.add("JOSAR:Ward 4");
-			addres.add("AYUBPUR:WARD 4");
-			addressSearchBean.setAddress2(addres);
+			if (userType.equalsIgnoreCase(provider)) {
+				addressSearchBean.setAddress2(address);
+			} else if (userType.equalsIgnoreCase(HA)) {
+				addressSearchBean.setAddress3(address);
+			}
 			clientList = clientService.findByCriteria(searchBean, addressSearchBean);
-			System.err.println("Size:" + clientService.findByCriteria(searchBean, addressSearchBean));
-			
 			for (Client client : clientList) {
-				uniqueBaseEntityIdIds.add(client.getBaseEntityId());
+				clientIds.add(client.getBaseEntityId());
 			}
 			
 			List<String> ids = new ArrayList<String>();
-			ids.addAll(uniqueBaseEntityIdIds);
+			ids.addAll(clientIds);
 			String field = "baseEntityId";
 			eventList = eventService.findByFieldValue(field, ids, lastSyncedServerVersion);
-			System.err.println("Size::" + eventList.size());
 			logger.info("fetching events took: " + (System.currentTimeMillis() - startTime));
 			logger.info("Initial Size:" + eventList.size());
 			if (!eventList.isEmpty()) {
@@ -280,49 +308,28 @@ public class EventResource extends RestResource<Event> {
 					logger.info("getProviderName:" + getProviderName + ": request provider name" + requestProviderName);
 					if (getProviderName.isEmpty()) {
 						events.add(event);
-					} else if (!getProviderName.equalsIgnoreCase(requestProviderName)) {} else {
+					} else if (!getProviderName.equalsIgnoreCase(requestProviderName)) {
+						excludeEvents.add(event.getBaseEntityId());
+					} else {
 						events.add(event);
 					}
 				}
 				
 				logger.info("After cleaning Size:" + events.size());
-				/*for (Event event : events) {
-					if (event.getBaseEntityId() != null && !event.getBaseEntityId().isEmpty()
-					        && !clientIds.contains(event.getBaseEntityId())) {
-						clientIds.add(event.getBaseEntityId());
-					}
-				}
-				for (int i = 0; i < clientIds.size(); i = i + CLIENTS_FETCH_BATCH_SIZE) {
-					int end = i + CLIENTS_FETCH_BATCH_SIZE < clientIds.size() ? i + CLIENTS_FETCH_BATCH_SIZE : clientIds
-					        .size();
-					clients.addAll(clientService.findByFieldValue(BASE_ENTITY_ID, clientIds.subList(i, end)));
-				}*/
+				
 				logger.info("fetching clients took: " + (System.currentTimeMillis() - startTime));
 			}
-			//}
-			
-			/*if (searchMissingClients) {
-				
-				List<String> foundClientIds = new ArrayList<>();
-				for (Client client : clients) {
-					foundClientIds.add(client.getBaseEntityId());
+			for (Client client : clientList) {
+				if (!excludeEvents.contains(client.getBaseEntityId())) {
+					clients.add(client);
+				} else {
+					logger.info("exclude client :" + client.getBaseEntityId());
 				}
-				
-				boolean removed = clientIds.removeAll(foundClientIds);
-				if (removed) {
-					for (String clientId : clientIds) {
-						Client client = clientService.getByBaseEntityId(clientId);
-						if (client != null) {
-							clients.add(client);
-						}
-					}
-				}
-				logger.info("fetching missing clients took: " + (System.currentTimeMillis() - startTime));
 			}
-			*/
+			
 			JsonArray eventsArray = (JsonArray) gson.toJsonTree(events, new TypeToken<List<Event>>() {}.getType());
 			
-			JsonArray clientsArray = (JsonArray) gson.toJsonTree(clientList, new TypeToken<List<Client>>() {}.getType());
+			JsonArray clientsArray = (JsonArray) gson.toJsonTree(clients, new TypeToken<List<Client>>() {}.getType());
 			
 			response.put("events", eventsArray);
 			response.put("clients", clientsArray);

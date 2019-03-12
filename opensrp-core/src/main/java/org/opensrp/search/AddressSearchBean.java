@@ -24,7 +24,7 @@ public class AddressSearchBean {
 	
 	private List<String> address2;
 	
-	private String address3;
+	private List<String> address3;
 	
 	public String getAddressType() {
 		return addressType;
@@ -98,11 +98,11 @@ public class AddressSearchBean {
 		this.address2 = address2;
 	}
 	
-	public String getAddress3() {
+	public List<String> getAddress3() {
 		return address3;
 	}
 	
-	public void setAddress3(String address3) {
+	public void setAddress3(List<String> address3) {
 		this.address3 = address3;
 	}
 	
@@ -110,6 +110,6 @@ public class AddressSearchBean {
 		return StringUtils.isNotEmpty(addressType) || StringUtils.isNotEmpty(country)
 		        || StringUtils.isNotEmpty(stateProvince) || StringUtils.isNotEmpty(cityVillage)
 		        || StringUtils.isNotEmpty(countyDistrict) || StringUtils.isNotEmpty(town) || StringUtils.isNotEmpty(subTown)
-		        || !address2.isEmpty() || StringUtils.isNotEmpty(address3);
+		        || !address2.isEmpty() || !address3.isEmpty();
 	}
 }
