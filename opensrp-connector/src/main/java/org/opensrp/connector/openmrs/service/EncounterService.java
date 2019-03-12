@@ -198,10 +198,134 @@ public class EncounterService extends OpenmrsService {
 			obar = createObservationFollowupDiseaseChild(e);
 		}else if (e.getEventType().equalsIgnoreCase("Followup Disease Toddler")) {
 			obar = createObservationFollowupDiseaseToddler(e);
+		}else if (e.getEventType().equalsIgnoreCase("Followup Pregnant Status")) {
+			obar = createObservationFollowupPregnantStatus(e);
 		}
+		
 		enc.put("observations", obar);
 		return enc;
 	}
+	
+	private String getObsValueFromEventJSON(Event e, String key) throws JSONException{
+		String value= null;
+		List<Obs> eventObs = e.getObs();
+		if(eventObs!= null){
+			for(Obs o: eventObs){
+				String formSubmissionField = o.getFormSubmissionField();
+				if(formSubmissionField!= null){
+					String obsValue = (String) o.getValues().get(0);
+					if(formSubmissionField.equals(key) && obsValue!= null){
+						value = obsValue;
+					}
+				}
+			}
+		}
+		return value;
+	}
+	
+	private JSONArray addEventObsDateInObservationArray(Event e, JSONArray obar,
+			String formFieldPath, String dateFieldName, String conceptUuid, 
+			String conceptName) throws JSONException{
+		String date = getObsValueFromEventJSON(e, dateFieldName);
+		date = convertddMMyyyyDateToyyyyMMdd(date);
+		JSONObject dateJSONObject = getStaticJsonObjectWithFormFieldPath("date", formFieldPath);
+		dateJSONObject.put("value", date);
+		
+		JSONObject concept = new JSONObject();
+		concept.put("uuid", conceptUuid);
+		concept.put("name", conceptName);
+		dateJSONObject.put("concept", concept);
+		
+		obar.put(dateJSONObject);
+		return obar;
+	}
+	
+	private JSONArray createObservationFollowupPregnantStatus(Event e)
+			throws JSONException {
+		JSONArray obar= new JSONArray();
+		String formFieldPath = "Pragnant_Status_MHV.5/5-0";
+		Client client = clientService.getByBaseEntityId(e.getBaseEntityId());
+		if(client.getAttributes().containsKey("PregnancyStatus")){
+			String pregnancyStatusString = (String)client.getAttributes().get("PregnancyStatus");
+			JSONObject pregnancyInfoJSONObject = getStaticJsonObjectWithFormFieldPath("pregnancyInfo", formFieldPath);
+			JSONObject pregnancyInfoValue = new JSONObject();
+			if(pregnancyStatusString.equals("Antenatal Period")){
+				pregnancyInfoValue.put("uuid", "4ff3c186-047d-42f3-aa6f-d79c969834ec");
+				pregnancyInfoValue.put("displayString", "প্রসব পূর্ব");
+				/*JSONObject lmpConcept = new JSONObject();
+				lmpConcept.put("uuid", "c45a7e4b-3f10-11e4-adec-0800271c1b75");
+				lmpConcept.put("name", "শেষ মাসিকের তারিখ");*/
+				String lmpConceptUuid = "c45a7e4b-3f10-11e4-adec-0800271c1b75";
+				String lmpConceptName = "শেষ মাসিকের তারিখ";
+				addEventObsDateInObservationArray(e, obar, formFieldPath,"lmp_date", lmpConceptUuid, lmpConceptName);
+			}else if(pregnancyStatusString.equals("Postnatal")){
+				pregnancyInfoValue.put("uuid", "898bd550-eb0f-4cc1-92c4-1e0c73453484");
+				pregnancyInfoValue.put("displayString", "প্রসবোত্তর");
+			}else if(pregnancyStatusString.equals("Miscarriage")){
+				pregnancyInfoValue.put("uuid", "1fb646c4-c837-44e3-a13f-54a4b4c34e44");
+				pregnancyInfoValue.put("displayString", "গর্ভ নষ্ট হয়েছে");
+			}else if(pregnancyStatusString.equals("Did_MR")){
+				pregnancyInfoValue.put("uuid", "ccf38163-2050-48dc-9783-0922509c4ac3");
+				pregnancyInfoValue.put("displayString", "MR করেছে");
+			}else if(pregnancyStatusString.equals("None_Above")){
+				pregnancyInfoValue.put("uuid", "86c63bac-b58f-46a0-b94d-1b186eeb28c9");
+				pregnancyInfoValue.put("displayString", "কোনোটিই নয়");
+			}
+			
+			pregnancyInfoJSONObject.put("value", pregnancyInfoValue);
+			obar.put(pregnancyInfoJSONObject);
+		}
+		/*if(client.getAttributes().containsKey("Denger_Signs_During_Pregnancy")){
+			String dangerSignsDuringPregnancyString = (String)client.getAttributes().get("Denger_Signs_During_Pregnancy");
+			List<String> dangerSignsDuringPregnancyList = Arrays.asList(dangerSignsDuringPregnancyString.split(","));
+			if(dangerSignsDuringPregnancyList.size()>0){
+				for(String dangerSign : dangerSignsDuringPregnancyList){
+					JSONObject staticJSONObject = getStaticJsonObjectWithFormFieldPath(dangerSign, formFieldPath);
+					logger.info("\n\n\n<><><><><> Danger sign static JSON :"+dangerSign+"->>"+ staticJSONObject + "<><><><><>\n\n\n ");
+					if(staticJSONObject!= null){
+						obar.put(staticJSONObject);
+					}
+				}	
+			}
+		}
+		
+		if(client.getAttributes().containsKey("Have_EDEMA")){
+			String hasEdema = (String)client.getAttributes().get("Have_EDEMA");
+			if(hasEdema!= null && !hasEdema.isEmpty()){
+				JSONObject hasEdomaConcept = getStaticJsonObject("hasEdoma");
+				if(hasEdema.equals("Yes")){
+					JSONObject hasEdomaYes = getStaticJsonObjectWithFormFieldPath("yes", formFieldPath);
+					hasEdomaYes.put("concept", hasEdomaConcept);
+					obar.put(hasEdomaYes);
+				}else if(hasEdema.equals("No")){
+					JSONObject hasEdomaNo = getStaticJsonObjectWithFormFieldPath("no", formFieldPath);
+					hasEdomaNo.put("concept", hasEdomaConcept);
+					obar.put(hasEdomaNo);
+				}
+			}
+		}
+		if(client.getAttributes().containsKey("Have_Jaundice\t")){
+			String hasEdema = (String)client.getAttributes().get("Have_Jaundice\t");
+			if(hasEdema!= null && !hasEdema.isEmpty()){
+				JSONObject hasJaundiceConcept = getStaticJsonObject("hasJaundice");
+				if(hasEdema.equals("Yes")){
+					JSONObject hasJaundiceYes = getStaticJsonObjectWithFormFieldPath("yes", formFieldPath);
+					hasJaundiceYes.put("concept", hasJaundiceConcept);
+					obar.put(hasJaundiceYes);
+				}else if(hasEdema.equals("No")){
+					JSONObject hasJaundiceNo = getStaticJsonObjectWithFormFieldPath("no", formFieldPath);
+					hasJaundiceNo.put("concept", hasJaundiceConcept);
+					obar.put(hasJaundiceNo);
+				}
+			}
+		}
+		obar = addServiceDateAndNumberInObservationArray(e, obar,formFieldPath);
+		obar = addRefferedPlaceInObservationArray(e, obar,formFieldPath);
+		obar = addPlaceOfServiceInObservationArray(e, obar,formFieldPath);*/
+		return obar;
+	}
+	
+	
 	
 	private JSONArray createObservationFollowupDiseaseToddler(Event e)
 			throws JSONException {
@@ -435,6 +559,19 @@ public class EncounterService extends OpenmrsService {
 		obar = addPlaceOfServiceInObservationArray(e, obar,formFieldPath);
 		return obar;
 	}
+	public String convertddMMyyyyDateToyyyyMMdd(String inputDateString){
+		String convertedDate = null;
+		try {
+			DateFormat format = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
+			Date inputDate = format.parse(inputDateString);
+			DateFormat dateFormatForOpenMRS = new SimpleDateFormat("yyyy-MM-dd");
+			convertedDate = dateFormatForOpenMRS.format(inputDate);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return convertedDate;
+	}
 	
 	private JSONArray addServiceDateAndNumberInObservationArray(Event e, JSONArray obar, String formFieldPath) throws JSONException{
 		List<Obs> eventObs = e.getObs();
@@ -446,18 +583,9 @@ public class EncounterService extends OpenmrsService {
 					if(formSubmissionField.equals("Service_Received_Date") && obsValue!= null){
 						if(!formFieldPath.isEmpty()){
 							JSONObject latestServiceDate = getStaticJsonObjectWithFormFieldPath("latestServiceDate", formFieldPath);
-							//latestServiceDate.put("value", obsValue);
-							try {
-								DateFormat format = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
-								Date serviceDate = format.parse(obsValue);
-								DateFormat dateFormatForOpenMRS = new SimpleDateFormat("yyyy-MM-dd");
-								String convertedServiceDate = dateFormatForOpenMRS.format(serviceDate);
-								latestServiceDate.put("value", convertedServiceDate);
-								obar.put(latestServiceDate);
-							} catch (Exception e1) {
-								// TODO Auto-generated catch block
-								e1.printStackTrace();
-							}
+							String convertedServiceDate = convertddMMyyyyDateToyyyyMMdd(obsValue);
+							latestServiceDate.put("value", convertedServiceDate);
+							obar.put(latestServiceDate);
 						}else{
 							obar.put(getStaticJsonObject(obsValue));
 						}
@@ -1051,6 +1179,8 @@ public class EncounterService extends OpenmrsService {
 		JSONObject hasJaundice = null;
 		
 		JSONObject numberOfPncService = null;
+		JSONObject pregnancyInfo = null;
+		JSONObject date = null;
 		try {
 			//normalDisease = new JSONObject("{\"encounterTypeUuid\":\"81852aee-3f10-11e4-adec-0800271c1b75\",\"visitType\":\"Community clinic service\",\"patientUuid\":\"391ec594-5381-4075-9b1d-7608ed19332d\",\"locationUuid\":\"ec9bfa0e-14f2-440d-bf22-606605d021b2\",\"providers\":[{\"uuid\":\"313c8507-9821-40e4-8a70-71a5c7693d72\"}]}");
 			normalDisease = new JSONObject("{\"encounterTypeUuid\":\"81852aee-3f10-11e4-adec-0800271c1b75\",\"providers\":[{\"uuid\":\"313c8507-9821-40e4-8a70-71a5c7693d72\"}],\"visitType\":\"OPD\"}");
@@ -1122,6 +1252,8 @@ public class EncounterService extends OpenmrsService {
 			hasJaundice = new JSONObject("{\"uuid\":\"8ebb781f-17f5-415f-a66a-1f1473de5938\",\"name\":\"জন্ডিস আছে\"}");
 		
 			numberOfPncService = new JSONObject("{\"groupMembers\":[],\"inactive\":false,\"interpretation\":null,\"concept\":{\"name\":\"সেবার সংখ্যা\",\"uuid\":\"4f3c1381-c037-479c-b40c-98bf4ac2c5e7\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"PNC_MHV.2/1-0\",\"voided\":false,\"value\":\"3\"}");
+			pregnancyInfo = new JSONObject("{\"concept\":{\"uuid\":\"e3162bc6-7c67-4620-af44-6d66d6ff664f\",\"name\":\"গর্ভাবস্থা সম্পর্কিত তথ্য\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"Pragnant_Status_MHV.5/5-0\",\"voided\":false,\"value\":null,\"interpretation\":null,\"inactive\":false,\"groupMembers\":[]}");
+			date = new JSONObject("{\"concept\":null,\"formNamespace\":\"Bahmni\",\"formFieldPath\":null,\"voided\":false,\"value\":null,\"interpretation\":null,\"inactive\":false,\"groupMembers\":[]}");
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -1249,6 +1381,10 @@ public class EncounterService extends OpenmrsService {
 			objectToReturn = hasJaundice;
 		}else if(nameOfJSONObject.equals("numberOfPncService")){
 			objectToReturn = numberOfPncService;
+		}else if(nameOfJSONObject.equals("pregnancyInfo")){
+			objectToReturn = pregnancyInfo;
+		}else if(nameOfJSONObject.equals("date")){
+			objectToReturn = date;
 		}
 		return objectToReturn;
 	}
