@@ -230,9 +230,11 @@ public class EncounterService extends OpenmrsService {
 			for(Obs o: eventObs){
 				String formSubmissionField = o.getFormSubmissionField();
 				if(formSubmissionField!= null){
-					String obsValue = (String) o.getHumanReadableValues().get(0);
-					if(formSubmissionField.equals(key) && obsValue!= null){
-						value = obsValue;
+					if(o.getHumanReadableValues().size()> 0){
+						String obsValue = (String) o.getHumanReadableValues().get(0);
+						if(formSubmissionField.equals(key) && obsValue!= null){
+							value = obsValue;
+						}
 					}
 				}
 			}
