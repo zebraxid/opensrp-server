@@ -223,6 +223,23 @@ public class EncounterService extends OpenmrsService {
 		return value;
 	}
 	
+	private String getObsHumanRedableValueFromEventJSON(Event e, String key) throws JSONException{
+		String value= null;
+		List<Obs> eventObs = e.getObs();
+		if(eventObs!= null){
+			for(Obs o: eventObs){
+				String formSubmissionField = o.getFormSubmissionField();
+				if(formSubmissionField!= null){
+					String obsValue = (String) o.getHumanReadableValues().get(0);
+					if(formSubmissionField.equals(key) && obsValue!= null){
+						value = obsValue;
+					}
+				}
+			}
+		}
+		return value;
+	}
+	
 	private JSONArray addEventObsDateInObservationArray(Event e, JSONArray obar,
 			String formFieldPath, String dateFieldName, String conceptUuid, 
 			String conceptName) throws JSONException{
@@ -304,6 +321,56 @@ public class EncounterService extends OpenmrsService {
 					stillBirthJSON.put("value", stillBirthNumber);
 					obar.put(stillBirthJSON);
 				}
+				//delivery Type
+				String deliveryType = getObsHumanRedableValueFromEventJSON(e, "delivery_type");
+				if(deliveryType!= null){
+					JSONObject deliveryTypeJSON = getStaticJsonObjectWithFormFieldPath("deliveryType", formFieldPath);
+					if(deliveryType.equals("regulardelivery")){
+						deliveryTypeJSON = putValueIntoJSONObject(deliveryTypeJSON, "80e74f1f-b980-47b9-bbf2-c112bff9af22", "স্বাভাবিক প্রসব");
+					}else if(deliveryType.equals("Caesarean Section")){
+						deliveryTypeJSON = putValueIntoJSONObject(deliveryTypeJSON, "c5e79619-de35-498c-90a4-2b254d4eb7ca", "অস্ত্রোপচার");
+					}else if(deliveryType.equals("Other_Instrumental")){
+						deliveryTypeJSON = putValueIntoJSONObject(deliveryTypeJSON, "40e53eeb-c8ad-459a-9c15-259b21c6ee66", "অন্যান্য উপায়ে");
+					}
+					obar.put(deliveryTypeJSON);
+				}
+				
+				//place of delivery
+				String placeOfDelivery = getObsHumanRedableValueFromEventJSON(e, "Place_of_Delivery");
+				if(placeOfDelivery!= null){
+					JSONObject placeOfDeliveryJSON = getStaticJsonObjectWithFormFieldPath("placeOfDelivery", formFieldPath);
+					if(placeOfDelivery.equals("at_house")){
+						placeOfDeliveryJSON = putValueIntoJSONObject(placeOfDeliveryJSON, "76260f76-2d8b-4ef2-aaad-01f575db1b1a", "বাড়িতে");
+					}else if(placeOfDelivery.equals("Community_Clinic")){
+						placeOfDeliveryJSON = putValueIntoJSONObject(placeOfDeliveryJSON, "8a17c9ca-398c-49c8-824b-0b4e6d9a58c5", "কমিউনিটি ক্লিনিক");
+					}else if(placeOfDelivery.equals("Union_Sub_Center")){
+						placeOfDeliveryJSON = putValueIntoJSONObject(placeOfDeliveryJSON, "094fcced-08c3-484f-9260-00f9f852d695", "ইউনিয়ন উপস্বাস্থ্য কেন্দ্র");
+					}else if(placeOfDelivery.equals("Union_Family_Welfare_Center")){
+						placeOfDeliveryJSON = putValueIntoJSONObject(placeOfDeliveryJSON, "729aa7bb-4270-4e1f-bb37-8dc4acedae70", "ইউনিয়ন পরিবার কল্যাণ কেন্দ্র");
+					}else if(placeOfDelivery.equals("Union_Health_and_Family_Welfare_Center")){
+						placeOfDeliveryJSON = putValueIntoJSONObject(placeOfDeliveryJSON, "2b4e02e2-11b2-48e4-b218-8adca3dc1731", "ইউনিয়ন স্বাস্থ্য ও পরিবার কল্যাণ কেন্দ্র");
+					}else if(placeOfDelivery.equals("Metarnal_and_Child_Wellfare_Center")){
+						placeOfDeliveryJSON = putValueIntoJSONObject(placeOfDeliveryJSON, "ff45d730-5c44-45e8-a869-64e4cdf2f2ca", "মা ও শিশু কল্যাণ কেন্দ্র");
+					}else if(placeOfDelivery.equals("10_Bed_Hospital")){
+						placeOfDeliveryJSON = putValueIntoJSONObject(placeOfDeliveryJSON, "7a34aa8e-f6f7-4abc-ad62-79bae8386155", "১০ শয্যা বিশিষ্ট হাসপাতাল");
+					}else if(placeOfDelivery.equals("20_Beds_Hospital")){
+						placeOfDeliveryJSON = putValueIntoJSONObject(placeOfDeliveryJSON, "8be604e8-ca58-4bdb-b611-07cd3c553428", "২০ শয্যা বিশিষ্ট হাসপাতাল");
+					}else if(placeOfDelivery.equals("Upazila_Health_Complex")){
+						placeOfDeliveryJSON = putValueIntoJSONObject(placeOfDeliveryJSON, "8f6e53ef-f23a-41d3-8474-0d654d453068", "উপজেলা স্বাস্থ্য কমপ্লেক্স");
+					}else if(placeOfDelivery.equals("District_Hospital")){
+						placeOfDeliveryJSON = putValueIntoJSONObject(placeOfDeliveryJSON, "077bbfb9-a7b6-485c-9d8d-12cf32eaf47c", "সদর হাসপাতাল");
+					}else if(placeOfDelivery.equals("Medical_College_and_Hospital")){
+						placeOfDeliveryJSON = putValueIntoJSONObject(placeOfDeliveryJSON, "cdb1918b-08aa-4d27-829f-44759e1b8a24", "মেডিকেল কলেজ হাসপাতাল");
+					}else if(placeOfDelivery.equals("Non-governmental_Organization")){
+						placeOfDeliveryJSON = putValueIntoJSONObject(placeOfDeliveryJSON, "38a380e4-b4d0-4a1a-ab1f-77a009024e11", "এনজিও");
+					}else if(placeOfDelivery.equals("Specialized_Hospital")){
+						placeOfDeliveryJSON = putValueIntoJSONObject(placeOfDeliveryJSON, "964d4a60-8857-4117-bff3-29b23172ede9", "বিশেষায়িত হাসপাতাল");
+					}else if(placeOfDelivery.equals("Others_Health_Facility")){
+						placeOfDeliveryJSON = putValueIntoJSONObject(placeOfDeliveryJSON, "41bbac3f-5164-4dac-a2ec-8648bf8a7d89", "অন্যান্য স্বাস্থ্য সেবা কেন্দ্র");
+					}
+					obar.put(placeOfDeliveryJSON);
+				}
+				
 			}else if(pregnancyStatusString.equals("Miscarriage")){
 				pregnancyInfoValue.put("uuid", "1fb646c4-c837-44e3-a13f-54a4b4c34e44");
 				pregnancyInfoValue.put("displayString", "গর্ভ নষ্ট হয়েছে");
@@ -1228,6 +1295,9 @@ public class EncounterService extends OpenmrsService {
 		
 		JSONObject liveBirthJSON = null;
 		JSONObject stillBirthJSON = null;
+		JSONObject deliveryType = null;
+		
+		JSONObject placeOfDelivery = null;
 		try {
 			//normalDisease = new JSONObject("{\"encounterTypeUuid\":\"81852aee-3f10-11e4-adec-0800271c1b75\",\"visitType\":\"Community clinic service\",\"patientUuid\":\"391ec594-5381-4075-9b1d-7608ed19332d\",\"locationUuid\":\"ec9bfa0e-14f2-440d-bf22-606605d021b2\",\"providers\":[{\"uuid\":\"313c8507-9821-40e4-8a70-71a5c7693d72\"}]}");
 			normalDisease = new JSONObject("{\"encounterTypeUuid\":\"81852aee-3f10-11e4-adec-0800271c1b75\",\"providers\":[{\"uuid\":\"313c8507-9821-40e4-8a70-71a5c7693d72\"}],\"visitType\":\"OPD\"}");
@@ -1305,6 +1375,8 @@ public class EncounterService extends OpenmrsService {
 		
 			liveBirthJSON = new JSONObject("{\"concept\":{\"uuid\":\"462960fb-4e2a-4eb4-be56-7aaa63730ea5\",\"name\":\"জীবিত জন্মের সংখ্যা\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"Pragnant_Status_MHV.5/10-0\",\"voided\":false,\"value\":\"0\",\"interpretation\":null,\"inactive\":false,\"groupMembers\":[]}");
 			stillBirthJSON = new JSONObject("{\"concept\":{\"uuid\":\"a104278d-b155-437c-b530-ddbc08903707\",\"name\":\"মৃত জন্মের সংখ্যা\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"Pragnant_Status_MHV.5/11-0\",\"value\":\"0\",\"voided\":false,\"interpretation\":null,\"inactive\":false,\"groupMembers\":[]}");
+			deliveryType = new JSONObject("{\"concept\":{\"uuid\":\"050739a2-5e26-44c5-8a51-9658dedf5455\",\"name\":\"প্রসবের ধরণ\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"Pragnant_Status_MHV.5/12-0\",\"voided\":false,\"value\":null,\"interpretation\":null,\"inactive\":false,\"groupMembers\":[]}");
+			placeOfDelivery = new JSONObject("{\"concept\":{\"uuid\":\"6544f312-e596-4249-86f0-ba1361c0b9eb\",\"name\":\"প্রসবের স্থান\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"Pragnant_Status_MHV.5/13-0\",\"voided\":false,\"value\":null,\"interpretation\":null,\"inactive\":false,\"groupMembers\":[]}");
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -1442,6 +1514,10 @@ public class EncounterService extends OpenmrsService {
 			objectToReturn = liveBirthJSON;
 		}else if(nameOfJSONObject.equals("stillBirthJSON")){
 			objectToReturn = stillBirthJSON;
+		}else if(nameOfJSONObject.equals("deliveryType")){
+			objectToReturn = deliveryType;
+		}else if(nameOfJSONObject.equals("placeOfDelivery")){
+			objectToReturn = placeOfDelivery;
 		}
 		return objectToReturn;
 	}
