@@ -1,10 +1,14 @@
 package org.opensrp.connector.openmrs.service;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 
@@ -442,8 +446,18 @@ public class EncounterService extends OpenmrsService {
 					if(formSubmissionField.equals("Service_Received_Date") && obsValue!= null){
 						if(!formFieldPath.isEmpty()){
 							JSONObject latestServiceDate = getStaticJsonObjectWithFormFieldPath("latestServiceDate", formFieldPath);
-							latestServiceDate.put("value", obsValue);
-							obar.put(latestServiceDate);
+							//latestServiceDate.put("value", obsValue);
+							try {
+								DateFormat format = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
+								Date serviceDate = format.parse(obsValue);
+								DateFormat dateFormatForOpenMRS = new SimpleDateFormat("yyyy-MM-dd");
+								String convertedServiceDate = dateFormatForOpenMRS.format(serviceDate);
+								latestServiceDate.put("value", convertedServiceDate);
+								obar.put(latestServiceDate);
+							} catch (Exception e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
 						}else{
 							obar.put(getStaticJsonObject(obsValue));
 						}
