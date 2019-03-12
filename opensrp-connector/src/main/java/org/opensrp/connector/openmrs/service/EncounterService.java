@@ -240,6 +240,14 @@ public class EncounterService extends OpenmrsService {
 		return obar;
 	}
 	
+	private JSONObject putValueIntoJSONObject(JSONObject inputJSON, String valueUuid, String valueDisplayString) throws JSONException{
+		JSONObject valueJSON = new JSONObject();
+		valueJSON.put("uuid", valueUuid);
+		valueJSON.put("displayString", valueDisplayString);
+		inputJSON.put("value", valueJSON);
+		return inputJSON;
+	}
+	
 	private JSONArray createObservationFollowupPregnantStatus(Event e)
 			throws JSONException {
 		JSONArray obar= new JSONArray();
@@ -252,15 +260,50 @@ public class EncounterService extends OpenmrsService {
 			if(pregnancyStatusString.equals("Antenatal Period")){
 				pregnancyInfoValue.put("uuid", "4ff3c186-047d-42f3-aa6f-d79c969834ec");
 				pregnancyInfoValue.put("displayString", "প্রসব পূর্ব");
-				/*JSONObject lmpConcept = new JSONObject();
-				lmpConcept.put("uuid", "c45a7e4b-3f10-11e4-adec-0800271c1b75");
-				lmpConcept.put("name", "শেষ মাসিকের তারিখ");*/
 				String lmpConceptUuid = "c45a7e4b-3f10-11e4-adec-0800271c1b75";
 				String lmpConceptName = "শেষ মাসিকের তারিখ";
 				addEventObsDateInObservationArray(e, obar, formFieldPath,"lmp_date", lmpConceptUuid, lmpConceptName);
 			}else if(pregnancyStatusString.equals("Postnatal")){
+				//pregnancy stage
 				pregnancyInfoValue.put("uuid", "898bd550-eb0f-4cc1-92c4-1e0c73453484");
 				pregnancyInfoValue.put("displayString", "প্রসবোত্তর");
+				//delivery date
+				//time may be added later
+				String deliveryDateConceptUuid= "7150e240-d92d-4f72-9262-ef32d62952c5";
+				String deliveryDateConceptName= "প্রসবের তারিখ ও সময়";
+				addEventObsDateInObservationArray(e, obar, formFieldPath,"Delivery_date", deliveryDateConceptUuid, deliveryDateConceptName);
+				// mother vital
+				String motherVitalString = getObsValueFromEventJSON(e, "MOTHER_VITAL");
+				if(motherVitalString!= null){
+					JSONObject motherVitalJSONObject = getStaticJsonObjectWithFormFieldPath("motherVital", formFieldPath);
+					//JSONObject motherVitalValue = new JSONObject();
+					if(motherVitalString.equals("ALIVE")){
+						/*motherVitalValue.put("uuid", "97d12039-6178-4713-adaf-235b19a1d9f7");
+						motherVitalValue.put("displayString", "বেঁচে আছেন");
+						motherVitalJSONObject.put("value", motherVitalValue);*/
+						motherVitalJSONObject = putValueIntoJSONObject(motherVitalJSONObject, "97d12039-6178-4713-adaf-235b19a1d9f7", "বেঁচে আছেন");
+					}else if(motherVitalString.equals("Dead")){
+						/*motherVitalValue.put("uuid", "bc1bdd23-0264-4831-8b13-1bdbc45f1763");
+						motherVitalValue.put("displayString", "মারা গেছেন");
+						motherVitalJSONObject.put("value", motherVitalValue);*/
+						motherVitalJSONObject = putValueIntoJSONObject(motherVitalJSONObject, "bc1bdd23-0264-4831-8b13-1bdbc45f1763", "মারা গেছেন");
+					}
+					obar.put(motherVitalJSONObject);
+				}
+				//live birth number
+				String liveBirthNumber = getObsValueFromEventJSON(e, "Live Birth");
+				if(liveBirthNumber!= null){
+					JSONObject liveBirthJSON = getStaticJsonObjectWithFormFieldPath("liveBirthJSON", formFieldPath);
+					liveBirthJSON.put("value", liveBirthNumber);
+					obar.put(liveBirthJSON);
+				}
+				//still birth number
+				String stillBirthNumber = getObsValueFromEventJSON(e, "Stillbirth");
+				if(stillBirthNumber!= null){
+					JSONObject stillBirthJSON = getStaticJsonObjectWithFormFieldPath("stillBirthJSON", formFieldPath);
+					stillBirthJSON.put("value", stillBirthNumber);
+					obar.put(stillBirthJSON);
+				}
 			}else if(pregnancyStatusString.equals("Miscarriage")){
 				pregnancyInfoValue.put("uuid", "1fb646c4-c837-44e3-a13f-54a4b4c34e44");
 				pregnancyInfoValue.put("displayString", "গর্ভ নষ্ট হয়েছে");
@@ -1181,6 +1224,10 @@ public class EncounterService extends OpenmrsService {
 		JSONObject numberOfPncService = null;
 		JSONObject pregnancyInfo = null;
 		JSONObject date = null;
+		JSONObject motherVital = null;
+		
+		JSONObject liveBirthJSON = null;
+		JSONObject stillBirthJSON = null;
 		try {
 			//normalDisease = new JSONObject("{\"encounterTypeUuid\":\"81852aee-3f10-11e4-adec-0800271c1b75\",\"visitType\":\"Community clinic service\",\"patientUuid\":\"391ec594-5381-4075-9b1d-7608ed19332d\",\"locationUuid\":\"ec9bfa0e-14f2-440d-bf22-606605d021b2\",\"providers\":[{\"uuid\":\"313c8507-9821-40e4-8a70-71a5c7693d72\"}]}");
 			normalDisease = new JSONObject("{\"encounterTypeUuid\":\"81852aee-3f10-11e4-adec-0800271c1b75\",\"providers\":[{\"uuid\":\"313c8507-9821-40e4-8a70-71a5c7693d72\"}],\"visitType\":\"OPD\"}");
@@ -1254,6 +1301,10 @@ public class EncounterService extends OpenmrsService {
 			numberOfPncService = new JSONObject("{\"groupMembers\":[],\"inactive\":false,\"interpretation\":null,\"concept\":{\"name\":\"সেবার সংখ্যা\",\"uuid\":\"4f3c1381-c037-479c-b40c-98bf4ac2c5e7\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"PNC_MHV.2/1-0\",\"voided\":false,\"value\":\"3\"}");
 			pregnancyInfo = new JSONObject("{\"concept\":{\"uuid\":\"e3162bc6-7c67-4620-af44-6d66d6ff664f\",\"name\":\"গর্ভাবস্থা সম্পর্কিত তথ্য\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"Pragnant_Status_MHV.5/5-0\",\"voided\":false,\"value\":null,\"interpretation\":null,\"inactive\":false,\"groupMembers\":[]}");
 			date = new JSONObject("{\"concept\":null,\"formNamespace\":\"Bahmni\",\"formFieldPath\":null,\"voided\":false,\"value\":null,\"interpretation\":null,\"inactive\":false,\"groupMembers\":[]}");
+			motherVital = new JSONObject("{\"concept\":{\"uuid\":\"1bc12372-1635-4b27-a5c4-5d22ed8b7a93\",\"name\":\"মায়ের অবস্থা\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"Pragnant_Status_MHV.5/8-0\",\"voided\":false,\"interpretation\":null,\"inactive\":false,\"groupMembers\":[]}");
+		
+			liveBirthJSON = new JSONObject("{\"concept\":{\"uuid\":\"462960fb-4e2a-4eb4-be56-7aaa63730ea5\",\"name\":\"জীবিত জন্মের সংখ্যা\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"Pragnant_Status_MHV.5/10-0\",\"voided\":false,\"value\":\"0\",\"interpretation\":null,\"inactive\":false,\"groupMembers\":[]}");
+			stillBirthJSON = new JSONObject("{\"concept\":{\"uuid\":\"a104278d-b155-437c-b530-ddbc08903707\",\"name\":\"মৃত জন্মের সংখ্যা\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"Pragnant_Status_MHV.5/11-0\",\"value\":\"0\",\"voided\":false,\"interpretation\":null,\"inactive\":false,\"groupMembers\":[]}");
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -1385,6 +1436,12 @@ public class EncounterService extends OpenmrsService {
 			objectToReturn = pregnancyInfo;
 		}else if(nameOfJSONObject.equals("date")){
 			objectToReturn = date;
+		}else if(nameOfJSONObject.equals("motherVital")){
+			objectToReturn = motherVital;
+		}else if(nameOfJSONObject.equals("liveBirthJSON")){
+			objectToReturn = liveBirthJSON;
+		}else if(nameOfJSONObject.equals("stillBirthJSON")){
+			objectToReturn = stillBirthJSON;
 		}
 		return objectToReturn;
 	}
