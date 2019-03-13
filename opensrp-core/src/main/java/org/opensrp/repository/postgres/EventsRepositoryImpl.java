@@ -1,5 +1,7 @@
 package org.opensrp.repository.postgres;
 
+import static org.opensrp.common.AllConstants.BaseEntity.BASE_ENTITY_ID;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -507,6 +509,18 @@ public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements E
 		pgEvent.setDateDeleted(dateDeleted);
 		eventMapper.deleteByPrimaryKey(id);
 		
+	}
+	
+	@Override
+	public List<Event> findByFieldValue(String field, List<String> ids, long serverVersion) {
+		if (field.equals(BASE_ENTITY_ID) && ids != null && !ids.isEmpty()) {
+			EventMetadataExample eventMetadataExample = new EventMetadataExample();
+			eventMetadataExample.createCriteria().andBaseEntityIdIn(ids).andDateDeletedIsNull()
+			        .andServerVersionGreaterThanOrEqualTo(serverVersion);
+			List<org.opensrp.domain.postgres.Event> events = eventMetadataMapper.selectMany(eventMetadataExample);
+			return convert(events);
+		}
+		return new ArrayList<>();
 	}
 	
 }

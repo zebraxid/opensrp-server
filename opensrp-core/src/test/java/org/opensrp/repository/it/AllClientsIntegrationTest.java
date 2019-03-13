@@ -37,6 +37,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:test-applicationContext-opensrp.xml")
 public class AllClientsIntegrationTest {
+	
 	//TODO detailed testign
 	
 	@Autowired
@@ -87,7 +88,7 @@ public class AllClientsIntegrationTest {
 		cu.withAddress(new Address().withAddressType("deathplace").withCityVillage("city").withTown("town"));
 		cu.withAttribute("at2", "atval2");
 		
-		clientService.mergeClient(cu);
+		clientService.mergeClient(cu, null);
 	}
 	
 	@Test
@@ -114,30 +115,29 @@ public class AllClientsIntegrationTest {
 	@Test
 	public void shouldSearchFullDataClientsIn10Sec() throws MalformedURLException {
 		
-		 /*org.ektorp.http.HttpClient httpClient = new StdHttpClient.Builder().url("http://202.141.249.106:6808").build();
-		    CouchDbInstance dbInstance = new StdCouchDbInstance(httpClient);
+		/*org.ektorp.http.HttpClient httpClient = new StdHttpClient.Builder().url("http://202.141.249.106:6808").build();
+		   CouchDbInstance dbInstance = new StdCouchDbInstance(httpClient);
 
-		    CouchDbConnector db = new StdCouchDbConnector("opensrp", dbInstance);
-		    
+		   CouchDbConnector db = new StdCouchDbConnector("opensrp", dbInstance);
+		   
 		Logger.getLogger("FileLogger").info("Starting at "+new DateTime());*/
-
+		
 		final long start = System.currentTimeMillis();
-
+		
 		for (int i = 0; i < 100; i++) {
 			addClient(i, false, null);
 		}
-		Logger.getLogger("FileLogger")
-				.info("10K entries complete at " + new DateTime() + " in " + ((System.currentTimeMillis() - start) / 1000)
-						+ " sec");
-
+		Logger.getLogger("FileLogger").info(
+		    "10K entries complete at " + new DateTime() + " in " + ((System.currentTimeMillis() - start) / 1000) + " sec");
+		
 		Logger.getLogger("FileLogger").info("Going for First search by Couch");
 		clientService.findAllByIdentifier("1234556" + "786");
 		Logger.getLogger("FileLogger").info("Completed First search by Couch");
-
+		
 		Logger.getLogger("FileLogger").info("Going for 2nd search by Couch");
 		clientService.findAllByIdentifier("1234556" + "786");
 		Logger.getLogger("FileLogger").info("Completed 2nd search by Couch");
-
+		
 		Logger.getLogger("FileLogger").info("Going for First search by Lucene");
 		ClientSearchBean clientSearchBean = new ClientSearchBean();
 		clientSearchBean.setNameLike("first");
@@ -146,11 +146,11 @@ public class AllClientsIntegrationTest {
 		clientSearchBean.setAttributeType("ethnicity");
 		clientSearchBean.setAttributeValue("eth3");
 		List<Client> l = clientService.findByCriteria(clientSearchBean, null);
-		Logger.getLogger("FileLogger").info("Completed First search of size "+l.size()+" by Lucene");
+		Logger.getLogger("FileLogger").info("Completed First search of size " + l.size() + " by Lucene");
 		
 		Logger.getLogger("FileLogger").info("Going for 2nd search by Lucene");
 		l = clientService.findByCriteria(clientSearchBean, null);
-
+		
 		Logger.getLogger("FileLogger").info("Completed 2nd search of size " + l.size() + " by Lucene");
 	}
 	
@@ -158,8 +158,8 @@ public class AllClientsIntegrationTest {
 		int ageInWeeks = new Random().nextInt(2860);// assuming average age of people is 55 years
 		DateTime birthdate = new DateTime().minusWeeks(ageInWeeks);
 		DateTime deathdate = i % 7 == 0 ? new DateTime() : null;// every 7th person died today
-		Client c = new Client("entityId" + i, "firstName" + i, "middleName" + i, "lastName" + i, birthdate, deathdate, false,
-		        false, i % 2 == 0 ? "FEMALE" : "MALE");
+		Client c = new Client("entityId" + i, "firstName" + i, "middleName" + i, "lastName" + i, birthdate, deathdate,
+		        false, false, i % 2 == 0 ? "FEMALE" : "MALE");
 		
 		Map<String, String> am = new HashMap<>();
 		Address ab = new Address("birthplace", null, null, am, null, null, null, "Sindh", "Pakistan");
@@ -193,25 +193,25 @@ public class AllClientsIntegrationTest {
 	@Test
 	public void shouldGetByDynamicView() {
 		addClients();
-
+		
 		ClientSearchBean clientSearchBean = new ClientSearchBean();
 		clientSearchBean.setGender("MALE");
-		List<Client> l2 = clientService.findByCriteria(clientSearchBean,new AddressSearchBean(), null, null);
+		List<Client> l2 = clientService.findByCriteria(clientSearchBean, new AddressSearchBean(), null, null);
 		assertTrue(l2.size() == 10);
 		
 		clientSearchBean = new ClientSearchBean();
 		clientSearchBean.setGender("FEMALE");
-		l2 = clientService.findByCriteria(clientSearchBean,new AddressSearchBean(), null, null);
+		l2 = clientService.findByCriteria(clientSearchBean, new AddressSearchBean(), null, null);
 		assertTrue(l2.size() == 0);
-
+		
 		clientSearchBean = new ClientSearchBean();
 		clientSearchBean.setGender("FEMALE");
 		clientSearchBean.setNameLike("fn");
-		l2 = clientService.findByCriteria(clientSearchBean,new AddressSearchBean(), null, null);
+		l2 = clientService.findByCriteria(clientSearchBean, new AddressSearchBean(), null, null);
 		assertTrue(l2.size() == 10);
 		
 		clientSearchBean.setNameLike("fn1");
-		l2 = clientService.findByCriteria(clientSearchBean,new AddressSearchBean(), null, null);
+		l2 = clientService.findByCriteria(clientSearchBean, new AddressSearchBean(), null, null);
 		assertTrue(l2.size() == 1);
 	}
 	
@@ -220,8 +220,8 @@ public class AllClientsIntegrationTest {
 		String baseEntityId = "testclient2";
 		Client c = new Client(baseEntityId).withBirthdate(new DateTime(), false).withFirstName("C first n")
 		        .withLastName("C last n").withMiddleName("C middle n").withGender(Gender.MALE);
-		c.withAddress(new Address("birthplace", new DateTime(System.currentTimeMillis() - 1000 * 60 * 60 * 24 * 2),
-		        DateTime.now(), null, "lat", "lon", "75210", "Sindh", "Pakistan"));
+		c.withAddress(new Address("birthplace", new DateTime(System.currentTimeMillis() - 1000 * 60 * 60 * 24 * 2), DateTime
+		        .now(), null, "lat", "lon", "75210", "Sindh", "Pakistan"));
 		c.withAttribute("ETHNICITY", "Mughal");
 		c.withIdentifier("Program ID", "01001222");
 		
@@ -248,8 +248,8 @@ public class AllClientsIntegrationTest {
 		String baseEntityId = "testclient2";
 		Client c = new Client(baseEntityId).withBirthdate(new DateTime(), false).withFirstName("C first n")
 		        .withLastName("C last n").withMiddleName("C middle n").withGender(Gender.MALE);
-		c.withAddress(new Address("birthplace", new DateTime(System.currentTimeMillis() - 1000 * 60 * 60 * 24 * 2),
-		        DateTime.now(), null, "lat", "lon", "75210", "Sindh", "Pakistan"));
+		c.withAddress(new Address("birthplace", new DateTime(System.currentTimeMillis() - 1000 * 60 * 60 * 24 * 2), DateTime
+		        .now(), null, "lat", "lon", "75210", "Sindh", "Pakistan"));
 		c.withAttribute("ETHNICITY", "Mughal");
 		c.withIdentifier("Program ID", "01001222");
 		

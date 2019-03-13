@@ -264,4 +264,10 @@ public class AllEvents extends MotechBaseRepository<Event> implements EventsRepo
 		
 	}
 	
+	@Override
+	public List<Event> findByFieldValue(String field, List<String> ids, long serverVersion) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 }

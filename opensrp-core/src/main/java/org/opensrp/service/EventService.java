@@ -62,6 +62,10 @@ public class EventService {
 		return allEvents.findByFormSubmissionId(formSubmissionId);
 	}
 	
+	public List<Event> findByFieldValue(String field, List<String> ids, long serverVersion) {
+		return allEvents.findByFieldValue(field, ids, serverVersion);
+	}
+	
 	public List<Event> findEventsBy(EventSearchBean eventSearchBean) {
 		return allEvents.findEvents(eventSearchBean);
 	}

@@ -21,6 +21,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -32,9 +33,13 @@ import javax.servlet.http.HttpServletRequest;
 import org.joda.time.DateTime;
 import org.json.JSONObject;
 import org.opensrp.common.AllConstants.BaseEntity;
+import org.opensrp.common.util.HttpResponse;
+import org.opensrp.common.util.HttpUtil;
 import org.opensrp.domain.Client;
 import org.opensrp.domain.Event;
 import org.opensrp.domain.Obs;
+import org.opensrp.search.AddressSearchBean;
+import org.opensrp.search.ClientSearchBean;
 import org.opensrp.search.EventSearchBean;
 import org.opensrp.service.ClientService;
 import org.opensrp.service.EventService;
@@ -67,6 +72,21 @@ public class EventResource extends RestResource<Event> {
 	
 	private ClientService clientService;
 	
+	@Value("#{opensrp['opensrp.web.url']}")
+	private String opensrpWebUurl;
+	
+	@Value("#{opensrp['opensrp.web.username']}")
+	private String opensrpWebUsername;
+	
+	@Value("#{opensrp['opensrp.web.password']}")
+	private String opensrpWebPassword;
+	
+	@Value("#{opensrp['opensrp.provider']}")
+	private String provider;
+	
+	@Value("#{opensrp['opensrp.HA']}")
+	private String HA;
+	
 	Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
 	        .registerTypeAdapter(DateTime.class, new DateTimeTypeConverter()).create();
 	
@@ -97,7 +117,7 @@ public class EventResource extends RestResource<Event> {
 	 * @param request
 	 * @return a map response with events, clients and optionally msg when an error occurs
 	 */
-	@RequestMapping(headers = { "Accept=application/json;charset=UTF-8" }, value = "/sync", method = RequestMethod.GET)
+	/*@RequestMapping(headers = { "Accept=application/json;charset=UTF-8" }, value = "/sync", method = RequestMethod.GET)
 	@ResponseBody
 	protected ResponseEntity<String> sync(HttpServletRequest request) {
 		Map<String, Object> response = new HashMap<String, Object>();
@@ -121,6 +141,7 @@ public class EventResource extends RestResource<Event> {
 			String getProviderName = "";
 			List<Event> eventList = new ArrayList<Event>();
 			List<Event> events = new ArrayList<Event>();
+			List<Event> allEvent = new ArrayList<Event>();
 			
 			List<String> clientIds = new ArrayList<String>();
 			List<Client> clients = new ArrayList<Client>();
@@ -134,6 +155,7 @@ public class EventResource extends RestResource<Event> {
 				eventSearchBean.setBaseEntityId(baseEntityId);
 				eventSearchBean.setServerVersion(lastSyncedServerVersion);
 				eventList = eventService.findEvents(eventSearchBean, BaseEntity.SERVER_VERSIOIN, "asc", limit);
+				allEvent.addAll(eventList);
 				logger.info("fetching events took: " + (System.currentTimeMillis() - startTime));
 				logger.info("Initial Size:" + eventList.size());
 				if (!eventList.isEmpty()) {
@@ -180,6 +202,129 @@ public class EventResource extends RestResource<Event> {
 					}
 				}
 				logger.info("fetching missing clients took: " + (System.currentTimeMillis() - startTime));
+			}
+			
+			JsonArray eventsArray = (JsonArray) gson.toJsonTree(events, new TypeToken<List<Event>>() {}.getType());
+			
+			JsonArray clientsArray = (JsonArray) gson.toJsonTree(clients, new TypeToken<List<Client>>() {}.getType());
+			
+			response.put("events", eventsArray);
+			response.put("clients", clientsArray);
+			response.put("no_of_events", events.size());
+			
+			return new ResponseEntity<>(gson.toJson(response), HttpStatus.OK);
+			
+		}
+		catch (Exception e) {
+			response.put("msg", "Error occurred");
+			logger.error("", e);
+			return new ResponseEntity<>(new Gson().toJson(response), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}*/
+	
+	/**
+	 * Fetch events ordered by serverVersion ascending order and return the clients associated with
+	 * the events
+	 * 
+	 * @param request
+	 * @return a map response with events, clients and optionally msg when an error occurs
+	 */
+	@RequestMapping(headers = { "Accept=application/json;charset=UTF-8" }, value = "/sync", method = RequestMethod.GET)
+	@ResponseBody
+	protected ResponseEntity<String> sync(HttpServletRequest request) {
+		Map<String, Object> response = new HashMap<String, Object>();
+		try {
+			HttpResponse op = HttpUtil.get(
+			    opensrpWebUurl + "/rest/api/v1/location/location-name?name=" + request.getRemoteUser(), "",
+			    opensrpWebUsername, opensrpWebPassword);
+			JSONObject locations = new JSONObject(op.body());
+			String location = "";
+			String userType = "";
+			List<String> address = new ArrayList<String>();
+			if (locations.has("locations")) {
+				location = locations.getString("locations");
+				address = new ArrayList<String>(Arrays.asList(location.split(",")));
+				userType = locations.getString("role");
+				
+			} else {
+				logger.info("No location found..");
+				return new ResponseEntity<>(new Gson().toJson(response), HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+			
+			String providerId = getStringFilter(PROVIDER_ID, request);
+			String requestProviderName = request.getRemoteUser();
+			String locationId = getStringFilter(LOCATION_ID, request);
+			String baseEntityId = getStringFilter(BASE_ENTITY_ID, request);
+			String serverVersion = getStringFilter(BaseEntity.SERVER_VERSIOIN, request);
+			String team = getStringFilter(TEAM, request);
+			String teamId = getStringFilter(TEAM_ID, request);
+			logger.info("synced user " + providerId + locationId + teamId + ", timestamp : " + serverVersion);
+			Long lastSyncedServerVersion = null;
+			if (serverVersion != null) {
+				lastSyncedServerVersion = Long.valueOf(serverVersion) + 1;
+			}
+			Integer limit = getIntegerFilter("limit", request);
+			if (limit == null || limit.intValue() == 0) {
+				limit = 25;
+			}
+			String getProviderName = "";
+			List<Event> eventList = new ArrayList<Event>();
+			List<Event> events = new ArrayList<Event>();
+			List<String> clientIds = new ArrayList<String>();
+			List<Client> clients = new ArrayList<Client>();
+			List<Client> clientList = new ArrayList<Client>();
+			List<String> excludeEvents = new ArrayList<String>();
+			long startTime = System.currentTimeMillis();
+			EventSearchBean eventSearchBean = new EventSearchBean();
+			eventSearchBean.setTeam(team);
+			eventSearchBean.setTeamId(teamId);
+			eventSearchBean.setProviderId(providerId);
+			eventSearchBean.setLocationId(locationId);
+			eventSearchBean.setBaseEntityId(baseEntityId);
+			eventSearchBean.setServerVersion(lastSyncedServerVersion);
+			eventList = eventService.findEvents(eventSearchBean, BaseEntity.SERVER_VERSIOIN, "asc", limit);
+			ClientSearchBean searchBean = new ClientSearchBean();
+			searchBean.setServerVersion(lastSyncedServerVersion);
+			AddressSearchBean addressSearchBean = new AddressSearchBean();
+			if (userType.equalsIgnoreCase(provider)) {
+				addressSearchBean.setAddress2(address);
+			} else if (userType.equalsIgnoreCase(HA)) {
+				addressSearchBean.setAddress3(address);
+			}
+			clientList = clientService.findByCriteria(searchBean, addressSearchBean);
+			for (Client client : clientList) {
+				clientIds.add(client.getBaseEntityId());
+			}
+			
+			List<String> ids = new ArrayList<String>();
+			ids.addAll(clientIds);
+			String field = "baseEntityId";
+			eventList = eventService.findByFieldValue(field, ids, lastSyncedServerVersion);
+			logger.info("fetching events took: " + (System.currentTimeMillis() - startTime));
+			logger.info("Initial Size:" + eventList.size());
+			if (!eventList.isEmpty()) {
+				for (Event event : eventList) {
+					getProviderName = event.getProviderId();
+					logger.info("getProviderName:" + getProviderName + ": request provider name" + requestProviderName);
+					if (getProviderName.isEmpty()) {
+						events.add(event);
+					} else if (!getProviderName.equalsIgnoreCase(requestProviderName)) {
+						excludeEvents.add(event.getBaseEntityId());
+					} else {
+						events.add(event);
+					}
+				}
+				
+				logger.info("After cleaning Size:" + events.size());
+				
+				logger.info("fetching clients took: " + (System.currentTimeMillis() - startTime));
+			}
+			for (Client client : clientList) {
+				if (!excludeEvents.contains(client.getBaseEntityId())) {
+					clients.add(client);
+				} else {
+					logger.info("exclude client :" + client.getBaseEntityId());
+				}
 			}
 			
 			JsonArray eventsArray = (JsonArray) gson.toJsonTree(events, new TypeToken<List<Event>>() {}.getType());
@@ -310,7 +455,6 @@ public class EventResource extends RestResource<Event> {
 							Client client = clientService.find(event.getBaseEntityId());
 							String eventType = event.getEventType();
 							Obs obs = new Obs();
-							System.err.println("eventType>>>>>>>>>>>"+eventType);
 							/*if (eventType.equalsIgnoreCase("Followup Pregnant Status")) {
 								obs = event.getObs("", "pregnant_status");								
 								String value = (String) obs.getValue();

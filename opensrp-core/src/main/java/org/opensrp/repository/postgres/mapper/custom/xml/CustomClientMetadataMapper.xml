@@ -130,30 +130,36 @@
 					between #{clientBean.lastEditFrom,typeHandler=org.opensrp.repository.postgres.handler.DateTimeTypeHandler} 
 					and	 	#{clientBean.lastEditTo,typeHandler=org.opensrp.repository.postgres.handler.DateTimeTypeHandler}
 				</if>
+				<if test="clientBean.serverVersion != null">
+					and (c.json->>'serverVersion')::BIGINT >= #{clientBean.serverVersion,jdbcType=BIGINT}
+				</if>
 				<if test="addressBean.addressType != null">
 					and address ->> 'addressType' = #{addressBean.addressType,jdbcType=VARCHAR}
 				</if>
 				<if test="addressBean.country != null">
-					and address ->> 'country' = #{addressBean.country,jdbcType=VARCHAR}
+					and address ->'addressFields' ->> 'country' = #{addressBean.country,jdbcType=VARCHAR}
 				</if>
 				<if test="addressBean.stateProvince != null">
-					and address ->> 'stateProvince' = #{addressBean.stateProvince,jdbcType=VARCHAR}
+					and address ->'addressFields' ->> 'stateProvince' = #{addressBean.stateProvince,jdbcType=VARCHAR}
 				</if>
 				<if test="addressBean.cityVillage != null">
-					and address ->> 'cityVillage' = #{addressBean.cityVillage,jdbcType=VARCHAR}
+					and address ->'addressFields' ->> 'cityVillage' = #{addressBean.cityVillage,jdbcType=VARCHAR}
 				</if>
 				<if test="addressBean.countyDistrict != null">
-					and address ->> 'countyDistrict' = #{addressBean.countyDistrict,jdbcType=VARCHAR}
+					and address ->'addressFields' ->> 'countyDistrict' = #{addressBean.countyDistrict,jdbcType=VARCHAR}
 				</if>
 				<if test="addressBean.town != null">
-					and address ->> 'town' = #{addressBean.town,jdbcType=VARCHAR}
+					and address ->'addressFields' ->> 'town' = #{addressBean.town,jdbcType=VARCHAR}
 				</if>
-				<if test="addressBean.countyDistrict != null">
-					and address ->> 'subTown' = #{addressBean.subTown,jdbcType=VARCHAR}
+				<if test="addressBean.subTown != null">
+					and address ->'addressFields' ->> 'subTown' = #{addressBean.subTown,jdbcType=VARCHAR}
 				</if>
-				<if test="addressBean.countyDistrict != null">
-					and address ->> 'subTown' = #{addressBean.subTown,jdbcType=VARCHAR}
-				</if>
+				<!-- <if test="addressBean.address2 != null">
+					and address ->'addressFields' ->> 'address2' IN(#{addressBean.address2,jdbcType=VARCHAR})
+				</if> -->
+				<!-- <if test="addressBean.address3 != null">
+					and address ->'addressFields' ->> 'address3' = #{addressBean.address3,jdbcType=VARCHAR}
+				</if> -->
 				<!-- Params for SearchRepository -->
 				<if test="clientBean.firstName != null">	
 					<bind name="firstName" value="'%' + clientBean.firstName + '%'" />
@@ -167,6 +173,19 @@
 					<bind name="lastName" value="'%' + clientBean.lastName + '%'" />
 					and c.json->>'lastName' ilike #{lastName}
 				</if>
+				<if test="addressBean.address2 != null">
+					and address ->'addressFields' ->> 'address2' IN				
+			    	<foreach close=")" collection="addressBean.address2" item="listItem" open="(" separator=",">
+							#{listItem}
+					</foreach>	
+				</if>
+				<if test="addressBean.address3 != null">
+					and address ->'addressFields' ->> 'address3' IN				
+			    	<foreach close=")" collection="addressBean.address3" item="listItem" open="(" separator=",">
+							#{listItem}
+					</foreach>	
+				</if>	    		
+				
 				<if test="clientBean.identifiers != null" >
 					<trim prefix="and ("  suffix=")" >
 					 <foreach collection="clientBean.identifiers" index="key" item="value" separator=" or " >
@@ -183,7 +202,7 @@
 				</if>
 			</trim>
 		</where>
-		LIMIT #{limit} OFFSET #{offset}
+		order by json->>'serverVersion' asc LIMIT #{limit} 
 	</select>	
 	
 	

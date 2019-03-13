@@ -113,6 +113,7 @@ public class HttpUtil {
 			return createCustomResponseFrom(response);
 		}
 		catch (Exception e) {
+			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
 	}
