@@ -290,7 +290,20 @@ public class EncounterService extends OpenmrsService {
 				//time may be added later
 				String deliveryDateConceptUuid= "7150e240-d92d-4f72-9262-ef32d62952c5";
 				String deliveryDateConceptName= "প্রসবের তারিখ ও সময়";
-				addEventObsDateInObservationArray(e, obar, formFieldPath,"Delivery_date", deliveryDateConceptUuid, deliveryDateConceptName);
+				//addEventObsDateInObservationArray(e, obar, formFieldPath,"Delivery_date", deliveryDateConceptUuid, deliveryDateConceptName);
+				String date = getObsValueFromEventJSON(e, "Delivery_date");
+				String time = getObsValueFromEventJSON(e, "Delivery_time");
+				date = convertddMMyyyyDateToyyyyMMdd(date);
+				date = date + " "+ time;
+				JSONObject dateJSONObject = getStaticJsonObjectWithFormFieldPath("date", formFieldPath);
+				dateJSONObject.put("value", date);
+				
+				JSONObject concept = new JSONObject();
+				concept.put("uuid", deliveryDateConceptUuid);
+				concept.put("name", deliveryDateConceptName);
+				dateJSONObject.put("concept", concept);
+				
+				obar.put(dateJSONObject);
 				// mother vital
 				String motherVitalString = getObsValueFromEventJSON(e, "MOTHER_VITAL");
 				if(motherVitalString!= null){
@@ -329,12 +342,14 @@ public class EncounterService extends OpenmrsService {
 					JSONObject deliveryTypeJSON = getStaticJsonObjectWithFormFieldPath("deliveryType", formFieldPath);
 					if(deliveryType.equals("regulardelivery")){
 						deliveryTypeJSON = putValueIntoJSONObject(deliveryTypeJSON, "80e74f1f-b980-47b9-bbf2-c112bff9af22", "স্বাভাবিক প্রসব");
+						obar.put(deliveryTypeJSON);
 					}else if(deliveryType.equals("Caesarean Section")){
 						deliveryTypeJSON = putValueIntoJSONObject(deliveryTypeJSON, "c5e79619-de35-498c-90a4-2b254d4eb7ca", "অস্ত্রোপচার");
+						obar.put(deliveryTypeJSON);
 					}else if(deliveryType.equals("Other_Instrumental")){
 						deliveryTypeJSON = putValueIntoJSONObject(deliveryTypeJSON, "40e53eeb-c8ad-459a-9c15-259b21c6ee66", "অন্যান্য উপায়ে");
+						obar.put(deliveryTypeJSON);
 					}
-					obar.put(deliveryTypeJSON);
 				}
 				
 				//place of delivery
