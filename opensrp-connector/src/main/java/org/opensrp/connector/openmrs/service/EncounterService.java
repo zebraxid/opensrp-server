@@ -1,10 +1,14 @@
 package org.opensrp.connector.openmrs.service;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 
@@ -131,6 +135,8 @@ public class EncounterService extends OpenmrsService {
 	}
 	
 	public JSONObject createEncounter(Event e) throws JSONException {
+		//a encounter is submitted regardless of which even has occured
+		//may need to change later
 		JSONObject enc = createEncounterJson(e);
 		logger.info("\n \n \n Final JSON <<>> <<>> <<>>" + enc.toString()+"\n \n \n");
 		//JSONObject enc2 = new JSONObject("{\"locationUuid\":\"7d76f621-63ce-4bbb-a715-176286f8de84\",\"patientUuid\":\"b0e47458-1bcb-42d4-88d7-f5aaaa2aa1af\",\"encounterUuid\":null,\"visitUuid\":null,\"providers\":[{\"uuid\":\"313c8507-9821-40e4-8a70-71a5c7693d72\"}],\"encounterDateTime\":null,\"extensions\":{\"mdrtbSpecimen\":[]},\"context\":{},\"visitType\":\"OPD\",\"bahmniDiagnoses\":[],\"orders\":[],\"drugOrders\":[],\"disposition\":null,\"observations\":[{\"concept\":{\"uuid\":\"f87fe2f4-de90-4c48-b07d-4050a5debf8c\",\"name\":\"\u09B8\u09CD\u09AC\u09BE\u09B8\u09CD\u09A5\u09CD\u09AF \u09B8\u09C7\u09AC\u09BE:\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"\u09B8\u09BE\u09A7\u09BE\u09B0\u09A8 \u09B0\u09C7\u09BE\u0997\u09C0\u09B0 \u09B8\u09C7\u09AC\u09BE \u09AB\u09B0\u09CD\u09AE.12/39-0\",\"voided\":false,\"value\":{\"uuid\":\"c2bb6edf-18cb-4c7f-ad91-7c8dd561a437\",\"name\":{\"display\":\"\u0989\u099A\u09CD\u099A \u09B0\u0995\u09CD\u09A4\u099A\u09BE\u09AA\",\"uuid\":\"38b6a8b8-e02f-41c7-813d-63df201562a6\",\"name\":\"\u0989\u099A\u09CD\u099A \u09B0\u0995\u09CD\u09A4\u099A\u09BE\u09AA\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"links\":[{\"rel\":\"self\",\"uri\":\"http://192.168.19.44/openmrs/ws/rest/v1/concept/c2bb6edf-18cb-4c7f-ad91-7c8dd561a437/name/38b6a8b8-e02f-41c7-813d-63df201562a6\"},{\"rel\":\"full\",\"uri\":\"http://192.168.19.44/openmrs/ws/rest/v1/concept/c2bb6edf-18cb-4c7f-ad91-7c8dd561a437/name/38b6a8b8-e02f-41c7-813d-63df201562a6?v=full\"}],\"resourceVersion\":\"1.9\"},\"names\":[{\"display\":\"\u0989\u099A\u09CD\u099A \u09B0\u0995\u09CD\u09A4\u099A\u09BE\u09AA\",\"uuid\":\"38b6a8b8-e02f-41c7-813d-63df201562a6\",\"name\":\"\u0989\u099A\u09CD\u099A \u09B0\u0995\u09CD\u09A4\u099A\u09BE\u09AA\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"links\":[{\"rel\":\"self\",\"uri\":\"http://192.168.19.44/openmrs/ws/rest/v1/concept/c2bb6edf-18cb-4c7f-ad91-7c8dd561a437/name/38b6a8b8-e02f-41c7-813d-63df201562a6\"},{\"rel\":\"full\",\"uri\":\"http://192.168.19.44/openmrs/ws/rest/v1/concept/c2bb6edf-18cb-4c7f-ad91-7c8dd561a437/name/38b6a8b8-e02f-41c7-813d-63df201562a6?v=full\"}],\"resourceVersion\":\"1.9\"},{\"display\":\"High Blood Pressure\",\"uuid\":\"98a2f125-8eac-4680-bd08-33572ff023d0\",\"name\":\"High Blood Pressure\",\"locale\":\"en\",\"localePreferred\":false,\"conceptNameType\":\"FULLY_SPECIFIED\",\"links\":[{\"rel\":\"self\",\"uri\":\"http://192.168.19.44/openmrs/ws/rest/v1/concept/c2bb6edf-18cb-4c7f-ad91-7c8dd561a437/name/98a2f125-8eac-4680-bd08-33572ff023d0\"},{\"rel\":\"full\",\"uri\":\"http://192.168.19.44/openmrs/ws/rest/v1/concept/c2bb6edf-18cb-4c7f-ad91-7c8dd561a437/name/98a2f125-8eac-4680-bd08-33572ff023d0?v=full\"}],\"resourceVersion\":\"1.9\"}],\"displayString\":\"\u0989\u099A\u09CD\u099A \u09B0\u0995\u09CD\u09A4\u099A\u09BE\u09AA\",\"resourceVersion\":\"2.0\",\"translationKey\":\"\u0989\u099A\u09CD\u099A_\u09B0\u0995\u09CD\u09A4\u099A\u09BE\u09AA_39\"},\"inactive\":false,\"groupMembers\":[]},{\"concept\":{\"uuid\":\"9be72615-b914-4d35-ac80-d5953744a9d0\",\"name\":\"\u09B0\u09C7\u09AB\u09BE\u09B0\u09C7\u09B2:\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"\u09B8\u09BE\u09A7\u09BE\u09B0\u09A8 \u09B0\u09C7\u09BE\u0997\u09C0\u09B0 \u09B8\u09C7\u09AC\u09BE \u09AB\u09B0\u09CD\u09AE.12/40-0\",\"voided\":false,\"value\":{\"uuid\":\"1e3f1870-b252-4808-8edb-f86fad050ebd\",\"name\":{\"display\":\"\u09A1\u09BE\u09AF\u09BC\u09BE\u09AC\u09C7\u099F\u09BF\u09B8\",\"uuid\":\"befce65b-9e80-45ec-b8b7-05234cd5cb9c\",\"name\":\"\u09A1\u09BE\u09AF\u09BC\u09BE\u09AC\u09C7\u099F\u09BF\u09B8\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"links\":[{\"rel\":\"self\",\"uri\":\"http://192.168.19.44/openmrs/ws/rest/v1/concept/1e3f1870-b252-4808-8edb-f86fad050ebd/name/befce65b-9e80-45ec-b8b7-05234cd5cb9c\"},{\"rel\":\"full\",\"uri\":\"http://192.168.19.44/openmrs/ws/rest/v1/concept/1e3f1870-b252-4808-8edb-f86fad050ebd/name/befce65b-9e80-45ec-b8b7-05234cd5cb9c?v=full\"}],\"resourceVersion\":\"1.9\"},\"names\":[{\"display\":\"Diabetes\",\"uuid\":\"fdabcf86-7ac9-4122-96f7-9f84858228fd\",\"name\":\"Diabetes\",\"locale\":\"en\",\"localePreferred\":false,\"conceptNameType\":\"FULLY_SPECIFIED\",\"links\":[{\"rel\":\"self\",\"uri\":\"http://192.168.19.44/openmrs/ws/rest/v1/concept/1e3f1870-b252-4808-8edb-f86fad050ebd/name/fdabcf86-7ac9-4122-96f7-9f84858228fd\"},{\"rel\":\"full\",\"uri\":\"http://192.168.19.44/openmrs/ws/rest/v1/concept/1e3f1870-b252-4808-8edb-f86fad050ebd/name/fdabcf86-7ac9-4122-96f7-9f84858228fd?v=full\"}],\"resourceVersion\":\"1.9\"},{\"display\":\"\u09A1\u09BE\u09AF\u09BC\u09BE\u09AC\u09C7\u099F\u09BF\u09B8\",\"uuid\":\"befce65b-9e80-45ec-b8b7-05234cd5cb9c\",\"name\":\"\u09A1\u09BE\u09AF\u09BC\u09BE\u09AC\u09C7\u099F\u09BF\u09B8\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"links\":[{\"rel\":\"self\",\"uri\":\"http://192.168.19.44/openmrs/ws/rest/v1/concept/1e3f1870-b252-4808-8edb-f86fad050ebd/name/befce65b-9e80-45ec-b8b7-05234cd5cb9c\"},{\"rel\":\"full\",\"uri\":\"http://192.168.19.44/openmrs/ws/rest/v1/concept/1e3f1870-b252-4808-8edb-f86fad050ebd/name/befce65b-9e80-45ec-b8b7-05234cd5cb9c?v=full\"}],\"resourceVersion\":\"1.9\"}],\"displayString\":\"\u09A1\u09BE\u09AF\u09BC\u09BE\u09AC\u09C7\u099F\u09BF\u09B8\",\"resourceVersion\":\"2.0\",\"translationKey\":\"\u09A1\u09BE\u09AF\u09BC\u09BE\u09AC\u09C7\u099F\u09BF\u09B8_40\"},\"inactive\":false,\"groupMembers\":[]},{\"concept\":{\"uuid\":\"514de0ad-14e3-4fc6-b4a3-a2683317ab53\",\"name\":\"\u09B8\u09CD\u09AC\u09BE\u09B8\u09CD\u09A5\u09CD\u09AF \u09B6\u09BF\u0995\u09CD\u09B7\u09BE:\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"\u09B8\u09BE\u09A7\u09BE\u09B0\u09A8 \u09B0\u09C7\u09BE\u0997\u09C0\u09B0 \u09B8\u09C7\u09AC\u09BE \u09AB\u09B0\u09CD\u09AE.12/41-0\",\"voided\":false,\"value\":{\"uuid\":\"0622f52f-0c95-41c1-ab5d-ee9bc335c839\",\"name\":{\"display\":\"\u09B8\u09AE\u09CD\u09AD\u09BE\u09AC\u09CD\u09AF \u09AF\u0995\u09CD\u09B7\u09CD\u09AE\u09BE\",\"uuid\":\"cc994816-e03d-4674-a455-f1087b88e934\",\"name\":\"\u09B8\u09AE\u09CD\u09AD\u09BE\u09AC\u09CD\u09AF \u09AF\u0995\u09CD\u09B7\u09CD\u09AE\u09BE\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"links\":[{\"rel\":\"self\",\"uri\":\"http://192.168.19.44/openmrs/ws/rest/v1/concept/0622f52f-0c95-41c1-ab5d-ee9bc335c839/name/cc994816-e03d-4674-a455-f1087b88e934\"},{\"rel\":\"full\",\"uri\":\"http://192.168.19.44/openmrs/ws/rest/v1/concept/0622f52f-0c95-41c1-ab5d-ee9bc335c839/name/cc994816-e03d-4674-a455-f1087b88e934?v=full\"}],\"resourceVersion\":\"1.9\"},\"names\":[{\"display\":\"Tuberculosis\",\"uuid\":\"9c02fdc7-0e51-4a1f-a530-586bfed811a9\",\"name\":\"Tuberculosis\",\"locale\":\"en\",\"localePreferred\":false,\"conceptNameType\":\"FULLY_SPECIFIED\",\"links\":[{\"rel\":\"self\",\"uri\":\"http://192.168.19.44/openmrs/ws/rest/v1/concept/0622f52f-0c95-41c1-ab5d-ee9bc335c839/name/9c02fdc7-0e51-4a1f-a530-586bfed811a9\"},{\"rel\":\"full\",\"uri\":\"http://192.168.19.44/openmrs/ws/rest/v1/concept/0622f52f-0c95-41c1-ab5d-ee9bc335c839/name/9c02fdc7-0e51-4a1f-a530-586bfed811a9?v=full\"}],\"resourceVersion\":\"1.9\"},{\"display\":\"\u09B8\u09AE\u09CD\u09AD\u09BE\u09AC\u09CD\u09AF \u09AF\u0995\u09CD\u09B7\u09CD\u09AE\u09BE\",\"uuid\":\"cc994816-e03d-4674-a455-f1087b88e934\",\"name\":\"\u09B8\u09AE\u09CD\u09AD\u09BE\u09AC\u09CD\u09AF \u09AF\u0995\u09CD\u09B7\u09CD\u09AE\u09BE\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"links\":[{\"rel\":\"self\",\"uri\":\"http://192.168.19.44/openmrs/ws/rest/v1/concept/0622f52f-0c95-41c1-ab5d-ee9bc335c839/name/cc994816-e03d-4674-a455-f1087b88e934\"},{\"rel\":\"full\",\"uri\":\"http://192.168.19.44/openmrs/ws/rest/v1/concept/0622f52f-0c95-41c1-ab5d-ee9bc335c839/name/cc994816-e03d-4674-a455-f1087b88e934?v=full\"}],\"resourceVersion\":\"1.9\"}],\"displayString\":\"\u09B8\u09AE\u09CD\u09AD\u09BE\u09AC\u09CD\u09AF \u09AF\u0995\u09CD\u09B7\u09CD\u09AE\u09BE\",\"resourceVersion\":\"2.0\",\"translationKey\":\"\u09B8\u09AE\u09CD\u09AD\u09BE\u09AC\u09CD\u09AF_\u09AF\u0995\u09CD\u09B7\u09CD\u09AE\u09BE_41\"},\"inactive\":false,\"groupMembers\":[]}],\"encounterTypeUuid\":\"81852aee-3f10-11e4-adec-0800271c1b75\"}\r\n");
@@ -180,7 +186,7 @@ public class EncounterService extends OpenmrsService {
 		
 		//observations for Followup Disease Female and Male
 		JSONArray obar = null;
-		if (e.getEventType().equalsIgnoreCase("Followup Disease Female")) {
+		if (e.getEventType().equalsIgnoreCase("Followup Disease Female") || e.getEventType().equalsIgnoreCase("Followup Disease Male")) {
 			obar = createObservationNormalDisease(e);
 		}else if (e.getEventType().equalsIgnoreCase("Followup Family Planning")) {
 			obar = createObservationFamilyPlanning(e);
@@ -192,16 +198,268 @@ public class EncounterService extends OpenmrsService {
 			obar = createObservationFollowupDiseaseChild(e);
 		}else if (e.getEventType().equalsIgnoreCase("Followup Disease Toddler")) {
 			obar = createObservationFollowupDiseaseToddler(e);
+		}else if (e.getEventType().equalsIgnoreCase("Followup Pregnant Status")) {
+			obar = createObservationFollowupPregnantStatus(e);
 		}
+		
 		enc.put("observations", obar);
 		return enc;
 	}
+	
+	private String getObsValueFromEventJSON(Event e, String key) throws JSONException{
+		String value= null;
+		List<Obs> eventObs = e.getObs();
+		if(eventObs!= null){
+			for(Obs o: eventObs){
+				String formSubmissionField = o.getFormSubmissionField();
+				if(formSubmissionField!= null){
+					String obsValue = (String) o.getValues().get(0);
+					if(formSubmissionField.equals(key) && obsValue!= null){
+						value = obsValue;
+					}
+				}
+			}
+		}
+		return value;
+	}
+	
+	private String getObsHumanRedableValueFromEventJSON(Event e, String key) throws JSONException{
+		String value= null;
+		List<Obs> eventObs = e.getObs();
+		if(eventObs!= null){
+			for(Obs o: eventObs){
+				String formSubmissionField = o.getFormSubmissionField();
+				if(formSubmissionField!= null){
+					if(o.getHumanReadableValues().size()> 0){
+						String obsValue = (String) o.getHumanReadableValues().get(0);
+						if(formSubmissionField.equals(key) && obsValue!= null){
+							value = obsValue;
+						}
+					}
+				}
+			}
+		}
+		return value;
+	}
+	
+	private JSONArray addEventObsDateInObservationArray(Event e, JSONArray obar,
+			String formFieldPath, String dateFieldName, String conceptUuid, 
+			String conceptName) throws JSONException{
+		String date = getObsValueFromEventJSON(e, dateFieldName);
+		date = convertddMMyyyyDateToyyyyMMdd(date);
+		JSONObject dateJSONObject = getStaticJsonObjectWithFormFieldPath("date", formFieldPath);
+		dateJSONObject.put("value", date);
+		
+		JSONObject concept = new JSONObject();
+		concept.put("uuid", conceptUuid);
+		concept.put("name", conceptName);
+		dateJSONObject.put("concept", concept);
+		
+		obar.put(dateJSONObject);
+		return obar;
+	}
+	
+	private JSONObject putValueIntoJSONObject(JSONObject inputJSON, String valueUuid, String valueDisplayString) throws JSONException{
+		JSONObject valueJSON = new JSONObject();
+		valueJSON.put("uuid", valueUuid);
+		valueJSON.put("displayString", valueDisplayString);
+		inputJSON.put("value", valueJSON);
+		return inputJSON;
+	}
+	
+	private JSONArray createObservationFollowupPregnantStatus(Event e)
+			throws JSONException {
+		JSONArray obar= new JSONArray();
+		String formFieldPath = "Pragnant_Status_MHV.5/5-0";
+		Client client = clientService.getByBaseEntityId(e.getBaseEntityId());
+		if(client.getAttributes().containsKey("PregnancyStatus")){
+			String pregnancyStatusString = (String)client.getAttributes().get("PregnancyStatus");
+			JSONObject pregnancyInfoJSONObject = getStaticJsonObjectWithFormFieldPath("pregnancyInfo", formFieldPath);
+			JSONObject pregnancyInfoValue = new JSONObject();
+			if(pregnancyStatusString.equals("Antenatal Period")){
+				pregnancyInfoValue.put("uuid", "4ff3c186-047d-42f3-aa6f-d79c969834ec");
+				pregnancyInfoValue.put("displayString", "প্রসব পূর্ব");
+				String lmpConceptUuid = "c45a7e4b-3f10-11e4-adec-0800271c1b75";
+				String lmpConceptName = "শেষ মাসিকের তারিখ";
+				addEventObsDateInObservationArray(e, obar, formFieldPath,"lmp_date", lmpConceptUuid, lmpConceptName);
+			}else if(pregnancyStatusString.equals("Postnatal")){
+				//pregnancy stage
+				pregnancyInfoValue.put("uuid", "898bd550-eb0f-4cc1-92c4-1e0c73453484");
+				pregnancyInfoValue.put("displayString", "প্রসবোত্তর");
+				//delivery date
+				//time may be added later
+				String deliveryDateConceptUuid= "7150e240-d92d-4f72-9262-ef32d62952c5";
+				String deliveryDateConceptName= "প্রসবের তারিখ ও সময়";
+				//addEventObsDateInObservationArray(e, obar, formFieldPath,"Delivery_date", deliveryDateConceptUuid, deliveryDateConceptName);
+				String date = getObsValueFromEventJSON(e, "Delivery_date");
+				String time = getObsValueFromEventJSON(e, "Delivery_time");
+				date = convertddMMyyyyDateToyyyyMMdd(date);
+				date = date + " "+ time;
+				JSONObject dateJSONObject = getStaticJsonObjectWithFormFieldPath("date", formFieldPath);
+				dateJSONObject.put("value", date);
+				
+				JSONObject concept = new JSONObject();
+				concept.put("uuid", deliveryDateConceptUuid);
+				concept.put("name", deliveryDateConceptName);
+				dateJSONObject.put("concept", concept);
+				
+				obar.put(dateJSONObject);
+				// mother vital
+				String motherVitalString = getObsValueFromEventJSON(e, "MOTHER_VITAL");
+				if(motherVitalString!= null){
+					JSONObject motherVitalJSONObject = getStaticJsonObjectWithFormFieldPath("motherVital", formFieldPath);
+					//JSONObject motherVitalValue = new JSONObject();
+					if(motherVitalString.equals("ALIVE")){
+						/*motherVitalValue.put("uuid", "97d12039-6178-4713-adaf-235b19a1d9f7");
+						motherVitalValue.put("displayString", "বেঁচে আছেন");
+						motherVitalJSONObject.put("value", motherVitalValue);*/
+						motherVitalJSONObject = putValueIntoJSONObject(motherVitalJSONObject, "97d12039-6178-4713-adaf-235b19a1d9f7", "বেঁচে আছেন");
+					}else if(motherVitalString.equals("Dead")){
+						/*motherVitalValue.put("uuid", "bc1bdd23-0264-4831-8b13-1bdbc45f1763");
+						motherVitalValue.put("displayString", "মারা গেছেন");
+						motherVitalJSONObject.put("value", motherVitalValue);*/
+						motherVitalJSONObject = putValueIntoJSONObject(motherVitalJSONObject, "bc1bdd23-0264-4831-8b13-1bdbc45f1763", "মারা গেছেন");
+					}
+					obar.put(motherVitalJSONObject);
+				}
+				//live birth number
+				String liveBirthNumber = getObsValueFromEventJSON(e, "Live Birth");
+				if(liveBirthNumber!= null){
+					JSONObject liveBirthJSON = getStaticJsonObjectWithFormFieldPath("liveBirthJSON", formFieldPath);
+					liveBirthJSON.put("value", liveBirthNumber);
+					obar.put(liveBirthJSON);
+				}
+				//still birth number
+				String stillBirthNumber = getObsValueFromEventJSON(e, "Stillbirth");
+				if(stillBirthNumber!= null){
+					JSONObject stillBirthJSON = getStaticJsonObjectWithFormFieldPath("stillBirthJSON", formFieldPath);
+					stillBirthJSON.put("value", stillBirthNumber);
+					obar.put(stillBirthJSON);
+				}
+				//delivery Type
+				String deliveryType = getObsHumanRedableValueFromEventJSON(e, "delivery_type");
+				if(deliveryType!= null){
+					JSONObject deliveryTypeJSON = getStaticJsonObjectWithFormFieldPath("deliveryType", formFieldPath);
+					if(deliveryType.equals("regulardelivery")){
+						deliveryTypeJSON = putValueIntoJSONObject(deliveryTypeJSON, "80e74f1f-b980-47b9-bbf2-c112bff9af22", "স্বাভাবিক প্রসব");
+						obar.put(deliveryTypeJSON);
+					}else if(deliveryType.equals("Caesarean Section")){
+						deliveryTypeJSON = putValueIntoJSONObject(deliveryTypeJSON, "c5e79619-de35-498c-90a4-2b254d4eb7ca", "অস্ত্রোপচার");
+						obar.put(deliveryTypeJSON);
+					}else if(deliveryType.equals("Other_Instrumental")){
+						deliveryTypeJSON = putValueIntoJSONObject(deliveryTypeJSON, "40e53eeb-c8ad-459a-9c15-259b21c6ee66", "অন্যান্য উপায়ে");
+						obar.put(deliveryTypeJSON);
+					}
+				}
+				
+				//place of delivery
+				String placeOfDelivery = getObsHumanRedableValueFromEventJSON(e, "Place_of_Delivery");
+				if(placeOfDelivery!= null){
+					JSONObject placeOfDeliveryJSON = getStaticJsonObjectWithFormFieldPath("placeOfDelivery", formFieldPath);
+					if(placeOfDelivery.equals("at_house")){
+						placeOfDeliveryJSON = putValueIntoJSONObject(placeOfDeliveryJSON, "76260f76-2d8b-4ef2-aaad-01f575db1b1a", "বাড়িতে");
+					}else if(placeOfDelivery.equals("Community_Clinic")){
+						placeOfDeliveryJSON = putValueIntoJSONObject(placeOfDeliveryJSON, "8a17c9ca-398c-49c8-824b-0b4e6d9a58c5", "কমিউনিটি ক্লিনিক");
+					}else if(placeOfDelivery.equals("Union_Sub_Center")){
+						placeOfDeliveryJSON = putValueIntoJSONObject(placeOfDeliveryJSON, "094fcced-08c3-484f-9260-00f9f852d695", "ইউনিয়ন উপস্বাস্থ্য কেন্দ্র");
+					}else if(placeOfDelivery.equals("Union_Family_Welfare_Center")){
+						placeOfDeliveryJSON = putValueIntoJSONObject(placeOfDeliveryJSON, "729aa7bb-4270-4e1f-bb37-8dc4acedae70", "ইউনিয়ন পরিবার কল্যাণ কেন্দ্র");
+					}else if(placeOfDelivery.equals("Union_Health_and_Family_Welfare_Center")){
+						placeOfDeliveryJSON = putValueIntoJSONObject(placeOfDeliveryJSON, "2b4e02e2-11b2-48e4-b218-8adca3dc1731", "ইউনিয়ন স্বাস্থ্য ও পরিবার কল্যাণ কেন্দ্র");
+					}else if(placeOfDelivery.equals("Metarnal_and_Child_Wellfare_Center")){
+						placeOfDeliveryJSON = putValueIntoJSONObject(placeOfDeliveryJSON, "ff45d730-5c44-45e8-a869-64e4cdf2f2ca", "মা ও শিশু কল্যাণ কেন্দ্র");
+					}else if(placeOfDelivery.equals("10_Bed_Hospital")){
+						placeOfDeliveryJSON = putValueIntoJSONObject(placeOfDeliveryJSON, "7a34aa8e-f6f7-4abc-ad62-79bae8386155", "১০ শয্যা বিশিষ্ট হাসপাতাল");
+					}else if(placeOfDelivery.equals("20_Beds_Hospital")){
+						placeOfDeliveryJSON = putValueIntoJSONObject(placeOfDeliveryJSON, "8be604e8-ca58-4bdb-b611-07cd3c553428", "২০ শয্যা বিশিষ্ট হাসপাতাল");
+					}else if(placeOfDelivery.equals("Upazila_Health_Complex")){
+						placeOfDeliveryJSON = putValueIntoJSONObject(placeOfDeliveryJSON, "8f6e53ef-f23a-41d3-8474-0d654d453068", "উপজেলা স্বাস্থ্য কমপ্লেক্স");
+					}else if(placeOfDelivery.equals("District_Hospital")){
+						placeOfDeliveryJSON = putValueIntoJSONObject(placeOfDeliveryJSON, "077bbfb9-a7b6-485c-9d8d-12cf32eaf47c", "সদর হাসপাতাল");
+					}else if(placeOfDelivery.equals("Medical_College_and_Hospital")){
+						placeOfDeliveryJSON = putValueIntoJSONObject(placeOfDeliveryJSON, "cdb1918b-08aa-4d27-829f-44759e1b8a24", "মেডিকেল কলেজ হাসপাতাল");
+					}else if(placeOfDelivery.equals("Non-governmental_Organization")){
+						placeOfDeliveryJSON = putValueIntoJSONObject(placeOfDeliveryJSON, "38a380e4-b4d0-4a1a-ab1f-77a009024e11", "এনজিও");
+					}else if(placeOfDelivery.equals("Specialized_Hospital")){
+						placeOfDeliveryJSON = putValueIntoJSONObject(placeOfDeliveryJSON, "964d4a60-8857-4117-bff3-29b23172ede9", "বিশেষায়িত হাসপাতাল");
+					}else if(placeOfDelivery.equals("Others_Health_Facility")){
+						placeOfDeliveryJSON = putValueIntoJSONObject(placeOfDeliveryJSON, "41bbac3f-5164-4dac-a2ec-8648bf8a7d89", "অন্যান্য স্বাস্থ্য সেবা কেন্দ্র");
+					}
+					obar.put(placeOfDeliveryJSON);
+				}
+				
+			}else if(pregnancyStatusString.equals("Miscarriage")){
+				pregnancyInfoValue.put("uuid", "1fb646c4-c837-44e3-a13f-54a4b4c34e44");
+				pregnancyInfoValue.put("displayString", "গর্ভ নষ্ট হয়েছে");
+			}else if(pregnancyStatusString.equals("Did_MR")){
+				pregnancyInfoValue.put("uuid", "ccf38163-2050-48dc-9783-0922509c4ac3");
+				pregnancyInfoValue.put("displayString", "MR করেছে");
+			}else if(pregnancyStatusString.equals("None_Above")){
+				pregnancyInfoValue.put("uuid", "86c63bac-b58f-46a0-b94d-1b186eeb28c9");
+				pregnancyInfoValue.put("displayString", "কোনোটিই নয়");
+			}
+			
+			pregnancyInfoJSONObject.put("value", pregnancyInfoValue);
+			obar.put(pregnancyInfoJSONObject);
+		}
+		/*if(client.getAttributes().containsKey("Denger_Signs_During_Pregnancy")){
+			String dangerSignsDuringPregnancyString = (String)client.getAttributes().get("Denger_Signs_During_Pregnancy");
+			List<String> dangerSignsDuringPregnancyList = Arrays.asList(dangerSignsDuringPregnancyString.split(","));
+			if(dangerSignsDuringPregnancyList.size()>0){
+				for(String dangerSign : dangerSignsDuringPregnancyList){
+					JSONObject staticJSONObject = getStaticJsonObjectWithFormFieldPath(dangerSign, formFieldPath);
+					logger.info("\n\n\n<><><><><> Danger sign static JSON :"+dangerSign+"->>"+ staticJSONObject + "<><><><><>\n\n\n ");
+					if(staticJSONObject!= null){
+						obar.put(staticJSONObject);
+					}
+				}	
+			}
+		}
+		
+		if(client.getAttributes().containsKey("Have_EDEMA")){
+			String hasEdema = (String)client.getAttributes().get("Have_EDEMA");
+			if(hasEdema!= null && !hasEdema.isEmpty()){
+				JSONObject hasEdomaConcept = getStaticJsonObject("hasEdoma");
+				if(hasEdema.equals("Yes")){
+					JSONObject hasEdomaYes = getStaticJsonObjectWithFormFieldPath("yes", formFieldPath);
+					hasEdomaYes.put("concept", hasEdomaConcept);
+					obar.put(hasEdomaYes);
+				}else if(hasEdema.equals("No")){
+					JSONObject hasEdomaNo = getStaticJsonObjectWithFormFieldPath("no", formFieldPath);
+					hasEdomaNo.put("concept", hasEdomaConcept);
+					obar.put(hasEdomaNo);
+				}
+			}
+		}
+		if(client.getAttributes().containsKey("Have_Jaundice\t")){
+			String hasEdema = (String)client.getAttributes().get("Have_Jaundice\t");
+			if(hasEdema!= null && !hasEdema.isEmpty()){
+				JSONObject hasJaundiceConcept = getStaticJsonObject("hasJaundice");
+				if(hasEdema.equals("Yes")){
+					JSONObject hasJaundiceYes = getStaticJsonObjectWithFormFieldPath("yes", formFieldPath);
+					hasJaundiceYes.put("concept", hasJaundiceConcept);
+					obar.put(hasJaundiceYes);
+				}else if(hasEdema.equals("No")){
+					JSONObject hasJaundiceNo = getStaticJsonObjectWithFormFieldPath("no", formFieldPath);
+					hasJaundiceNo.put("concept", hasJaundiceConcept);
+					obar.put(hasJaundiceNo);
+				}
+			}
+		}
+		obar = addServiceDateAndNumberInObservationArray(e, obar,formFieldPath);
+		obar = addRefferedPlaceInObservationArray(e, obar,formFieldPath);
+		obar = addPlaceOfServiceInObservationArray(e, obar,formFieldPath);*/
+		return obar;
+	}
+	
+	
 	
 	private JSONArray createObservationFollowupDiseaseToddler(Event e)
 			throws JSONException {
 		JSONArray obar= new JSONArray();
 		List<String> diseaseList = null;
-		String formFieldPath = "শিশু (২ মাস থেকে ৫ বছর) স্বাস্থ্য সেবা.32/61-0";
+		//String formFieldPath = "শিশু (২ মাস থেকে ৫ বছর) স্বাস্থ্য সেবা.32/61-0";
+		String formFieldPath = "শিশু (২ মাস থেকে ৫ বছর) এমএইচভি.3/3-0";
 		Client client = clientService.getByBaseEntityId(e.getBaseEntityId());
 		boolean hasDisease =false;
 		if(client.getAttributes().containsKey("has_disease")){
@@ -215,7 +473,8 @@ public class EncounterService extends OpenmrsService {
 			diseaseList = Arrays.asList(diseaseString.split(","));
 		}
 		if(hasDisease){
-			JSONObject healthCareGivenYes = getStaticJsonObject("healthCareGivenYes");
+			//JSONObject healthCareGivenYes = getStaticJsonObject("healthCareGivenYes");
+			JSONObject healthCareGivenYes = getStaticJsonObject("hasDiseaseYes");
 			healthCareGivenYes.put("formFieldPath", formFieldPath);
 			//JSONObject concept = staticJSONObject.getJSONObject("concept");
 			JSONObject concept = new JSONObject();
@@ -248,7 +507,8 @@ public class EncounterService extends OpenmrsService {
 				}
 			}
 		}else{
-			JSONObject healthCareGivenNo = getStaticJsonObject("healthCareGivenNo");
+			//JSONObject healthCareGivenNo = getStaticJsonObject("healthCareGivenNo");
+			JSONObject healthCareGivenNo = getStaticJsonObject("hasDiseaseNo");
 			healthCareGivenNo.put("formFieldPath", formFieldPath);
 			obar.put(healthCareGivenNo);
 		}
@@ -271,7 +531,8 @@ public class EncounterService extends OpenmrsService {
 			throws JSONException {
 		JSONArray obar= new JSONArray();
 		List<String> diseaseList = null;
-		String formFieldPath = "শিশু (০ থেকে ২ মাস) স্বাস্থ্য সেবা.35/73-0";
+		//String formFieldPath = "শিশু (০ থেকে ২ মাস) স্বাস্থ্য সেবা.35/73-0";
+		String formFieldPath = "শিশু (০ থেকে ২ মাস) এমএইচভি.4/4-0";
 		Client client = clientService.getByBaseEntityId(e.getBaseEntityId());
 		boolean hasDisease =false;
 		if(client.getAttributes().containsKey("has_disease")){
@@ -285,7 +546,8 @@ public class EncounterService extends OpenmrsService {
 			diseaseList = Arrays.asList(diseaseString.split(","));
 		}
 		if(hasDisease){
-			JSONObject healthCareGivenYes = getStaticJsonObject("healthCareGivenYes");
+			//JSONObject healthCareGivenYes = getStaticJsonObject("healthCareGivenYes");
+			JSONObject healthCareGivenYes = getStaticJsonObject("hasDiseaseYes");
 			healthCareGivenYes.put("formFieldPath", formFieldPath);
 			//JSONObject concept = staticJSONObject.getJSONObject("concept");
 			JSONObject concept = new JSONObject();
@@ -333,7 +595,8 @@ public class EncounterService extends OpenmrsService {
 				}
 			}
 		}else{
-			JSONObject healthCareGivenNo = getStaticJsonObject("healthCareGivenNo");
+			//JSONObject healthCareGivenNo = getStaticJsonObject("healthCareGivenNo");
+			JSONObject healthCareGivenNo = getStaticJsonObject("hasDiseaseNo");
 			healthCareGivenNo.put("formFieldPath", formFieldPath);
 			obar.put(healthCareGivenNo);
 		}
@@ -346,46 +609,140 @@ public class EncounterService extends OpenmrsService {
 	private JSONArray createObservationFollowupPNC(Event e)
 			throws JSONException {
 		JSONArray obar= new JSONArray();
-		String formFieldPath = "প্রসব পরবর্তী সেবা.43/52-0";
+		//String formFieldPath = "প্রসব পরবর্তী সেবা.43/52-0";
+		String formFieldPath = "PNC_MHV.2/1-0";
 		Client client = clientService.getByBaseEntityId(e.getBaseEntityId());
+		obar = addServiceDateAndNumberInObservationArray(e, obar,formFieldPath);
 		obar = addRefferedPlaceInObservationArray(e, obar,formFieldPath);
+		obar = addPlaceOfServiceInObservationArray(e, obar,formFieldPath);
 		return obar;
 	}
 
 	private JSONArray createObservationFollowupANC(Event e)
 			throws JSONException {
 		JSONArray obar= new JSONArray();
-		String formFieldPath = "প্রসব পূর্ব সেবা.86/134-0";
+		//String formFieldPath = "প্রসব পূর্ব সেবা.86/134-0";
+		String formFieldPath = "ANC_MHV.3/1-0";
 		Client client = clientService.getByBaseEntityId(e.getBaseEntityId());
 		if(client.getAttributes().containsKey("Denger_Signs_During_Pregnancy")){
 			String dangerSignsDuringPregnancyString = (String)client.getAttributes().get("Denger_Signs_During_Pregnancy");
 			List<String> dangerSignsDuringPregnancyList = Arrays.asList(dangerSignsDuringPregnancyString.split(","));
 			if(dangerSignsDuringPregnancyList.size()>0){
 				//"formFieldPath": "প্রসব পূর্ব সেবা.86/134-0"
-				JSONObject healthCareGivenYes = getStaticJsonObject("healthCareGivenYes");
+				/*JSONObject healthCareGivenYes = getStaticJsonObject("healthCareGivenYes");
 				healthCareGivenYes.put("formFieldPath", formFieldPath);
-				obar.put(healthCareGivenYes);
-				obar.put(getStaticJsonObject("haveDangerSignsPregnancyYes"));
+				obar.put(healthCareGivenYes);*/
+				//obar.put(getStaticJsonObject("haveDangerSignsPregnancyYes"));
 				for(String dangerSign : dangerSignsDuringPregnancyList){
-					JSONObject staticJSONObject = getStaticJsonObject(dangerSign);
+					JSONObject staticJSONObject = getStaticJsonObjectWithFormFieldPath(dangerSign, formFieldPath);
 					logger.info("\n\n\n<><><><><> Danger sign static JSON :"+dangerSign+"->>"+ staticJSONObject + "<><><><><>\n\n\n ");
 					if(staticJSONObject!= null){
 						obar.put(staticJSONObject);
 					}
 				}	
 			}else{
-				JSONObject healthCareGivenNo = getStaticJsonObject("healthCareGivenNo");
+				/*JSONObject healthCareGivenNo = getStaticJsonObject("healthCareGivenNo");
 				healthCareGivenNo.put("formFieldPath", formFieldPath);
-				obar.put(healthCareGivenNo);
+				obar.put(healthCareGivenNo);*/
 			}
 		}else{
-			JSONObject healthCareGivenNo = getStaticJsonObject("healthCareGivenNo");
+			/*JSONObject healthCareGivenNo = getStaticJsonObject("healthCareGivenNo");
 			healthCareGivenNo.put("formFieldPath", formFieldPath);
-			obar.put(healthCareGivenNo);
+			obar.put(healthCareGivenNo);*/
 		}
+		
+		if(client.getAttributes().containsKey("Have_EDEMA")){
+			String hasEdema = (String)client.getAttributes().get("Have_EDEMA");
+			if(hasEdema!= null && !hasEdema.isEmpty()){
+				JSONObject hasEdomaConcept = getStaticJsonObject("hasEdoma");
+				if(hasEdema.equals("Yes")){
+					JSONObject hasEdomaYes = getStaticJsonObjectWithFormFieldPath("yes", formFieldPath);
+					hasEdomaYes.put("concept", hasEdomaConcept);
+					obar.put(hasEdomaYes);
+				}else if(hasEdema.equals("No")){
+					JSONObject hasEdomaNo = getStaticJsonObjectWithFormFieldPath("no", formFieldPath);
+					hasEdomaNo.put("concept", hasEdomaConcept);
+					obar.put(hasEdomaNo);
+				}
+			}
+		}
+		if(client.getAttributes().containsKey("Have_Jaundice\t")){
+			String hasEdema = (String)client.getAttributes().get("Have_Jaundice\t");
+			if(hasEdema!= null && !hasEdema.isEmpty()){
+				JSONObject hasJaundiceConcept = getStaticJsonObject("hasJaundice");
+				if(hasEdema.equals("Yes")){
+					JSONObject hasJaundiceYes = getStaticJsonObjectWithFormFieldPath("yes", formFieldPath);
+					hasJaundiceYes.put("concept", hasJaundiceConcept);
+					obar.put(hasJaundiceYes);
+				}else if(hasEdema.equals("No")){
+					JSONObject hasJaundiceNo = getStaticJsonObjectWithFormFieldPath("no", formFieldPath);
+					hasJaundiceNo.put("concept", hasJaundiceConcept);
+					obar.put(hasJaundiceNo);
+				}
+			}
+		}
+		obar = addServiceDateAndNumberInObservationArray(e, obar,formFieldPath);
 		obar = addRefferedPlaceInObservationArray(e, obar,formFieldPath);
+		obar = addPlaceOfServiceInObservationArray(e, obar,formFieldPath);
 		return obar;
 	}
+	public String convertddMMyyyyDateToyyyyMMdd(String inputDateString){
+		String convertedDate = null;
+		try {
+			DateFormat format = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
+			Date inputDate = format.parse(inputDateString);
+			DateFormat dateFormatForOpenMRS = new SimpleDateFormat("yyyy-MM-dd");
+			convertedDate = dateFormatForOpenMRS.format(inputDate);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return convertedDate;
+	}
+	
+	private JSONArray addServiceDateAndNumberInObservationArray(Event e, JSONArray obar, String formFieldPath) throws JSONException{
+		List<Obs> eventObs = e.getObs();
+		if(eventObs!= null){
+			for(Obs o: eventObs){
+				String formSubmissionField = o.getFormSubmissionField();
+				if(formSubmissionField!= null){
+					String obsValue = (String) o.getValues().get(0);
+					if(formSubmissionField.equals("Service_Received_Date") && obsValue!= null){
+						if(!formFieldPath.isEmpty()){
+							JSONObject latestServiceDate = getStaticJsonObjectWithFormFieldPath("latestServiceDate", formFieldPath);
+							String convertedServiceDate = convertddMMyyyyDateToyyyyMMdd(obsValue);
+							latestServiceDate.put("value", convertedServiceDate);
+							obar.put(latestServiceDate);
+						}else{
+							obar.put(getStaticJsonObject(obsValue));
+						}
+					}
+					if(formSubmissionField.equals("Number_Of_Service_Received_Last_three_Months") && obsValue!= null){
+						if(!formFieldPath.isEmpty()){
+							JSONObject numberOfService = getStaticJsonObjectWithFormFieldPath("serviceNumberInLastThreeMonths", formFieldPath);
+							numberOfService.put("value", obsValue);
+							obar.put(numberOfService);
+						}else{
+							obar.put(getStaticJsonObject(obsValue));
+						}
+					}
+					
+					if(formSubmissionField.equals("Number_Of_PNC_Service") && obsValue!= null){
+						if(!formFieldPath.isEmpty()){
+							JSONObject numberOfService = getStaticJsonObjectWithFormFieldPath("numberOfPncService", formFieldPath);
+							numberOfService.put("value", obsValue);
+							obar.put(numberOfService);
+						}else{
+							obar.put(getStaticJsonObject(obsValue));
+						}
+					}
+					
+				}
+			}
+		}
+		return obar;
+	}
+	
 	
 	private JSONArray createObservationFamilyPlanning(Event e)
 			throws JSONException {
@@ -396,20 +753,49 @@ public class EncounterService extends OpenmrsService {
 			familyPlanning = familyPlanning.trim();
 			logger.info("\n\n\n<><><><><><><><> Family Planning Process :"+ familyPlanning + "<><><><><><><><>\n\n\n ");
 			if(familyPlanning.equals("খাবার বড়ি")){
-				JSONObject familyPlanningCHCP = createJsonFamilyPlanningCHCP("oralContraceptives");
+				JSONObject familyPlanningCHCP = createJsonFamilyPlanningMHV("oralContraceptives");
 				obar.put(familyPlanningCHCP);
 			}else if(familyPlanning.equals("কনডম")){
-				JSONObject familyPlanningCHCP = createJsonFamilyPlanningCHCP("condoms");
+				JSONObject familyPlanningCHCP = createJsonFamilyPlanningMHV("condoms");
 				obar.put(familyPlanningCHCP);
 			}else if(familyPlanning.equals("ইনজেক্টবল")){
-				JSONObject familyPlanningCHCP = createJsonFamilyPlanningCHCP("injectable");
+				JSONObject familyPlanningCHCP = createJsonFamilyPlanningMHV("injectable");
 				obar.put(familyPlanningCHCP);
 			}else if(familyPlanning.equals("অন্যান্য পদ্ধতি")){
-				JSONObject familyPlanningCHCP = createJsonFamilyPlanningCHCP("otherMethod");
+				JSONObject familyPlanningCHCP = createJsonFamilyPlanningMHV("otherMethod");
+				obar.put(familyPlanningCHCP);
+			}else if(familyPlanning.equals("আই ইউ ডি")){
+				JSONObject familyPlanningCHCP = createJsonFamilyPlanningMHV("iud");
+				obar.put(familyPlanningCHCP);
+			}else if(familyPlanning.equals("ইমপ্লান্ট")){
+				JSONObject familyPlanningCHCP = createJsonFamilyPlanningMHV("implant");
+				obar.put(familyPlanningCHCP);
+			}else if(familyPlanning.equals("স্থায়ী পদ্ধতি")){
+				JSONObject familyPlanningCHCP = createJsonFamilyPlanningMHV("permanentSolution");
+				obar.put(familyPlanningCHCP);
+			}else if(familyPlanning.equals("বন্ধ্যা দম্পতি")){
+				JSONObject familyPlanningCHCP = createJsonFamilyPlanningMHV("impotentCouple");
+				obar.put(familyPlanningCHCP);
+			}else if(familyPlanning.equals("পদ্ধতি ব্যবহার করে না")){
+				JSONObject familyPlanningCHCP = createJsonFamilyPlanningMHV("noPreventiveMeasure");
 				obar.put(familyPlanningCHCP);
 			}
 		}
 		return obar;
+	}
+	
+	private JSONObject createJsonFamilyPlanningMHV(String processName) throws JSONException{
+		logger.info("\n\n\n<><><><><><><><> Family Planning Process in createJSON function :"+ processName + "<><><><><><><><>\n\n\n ");
+		String formFieldPath = "Familyplaning_MHV.4/14-0";
+		/*JSONObject familyPlanningMHV = getStaticJsonObjectWithFormFieldPath("familyPlanningCHCP", formFieldPath);
+		JSONArray groupMembers= new JSONArray();
+		groupMembers.put(getStaticJsonObjectWithFormFieldPath(processName, formFieldPath));
+		familyPlanningMHV.put("groupMembers", groupMembers);*/
+		
+		JSONObject familyPlanningMHV = getStaticJsonObjectWithFormFieldPath( processName, formFieldPath);
+		
+		logger.info("\n \n \n Final JSON <<>> <<>> <<>>" + familyPlanningMHV.toString()+"\n \n \n");
+		return familyPlanningMHV;
 	}
 	
 	private JSONObject createJsonFamilyPlanningCHCP(String processName) throws JSONException{
@@ -426,12 +812,16 @@ public class EncounterService extends OpenmrsService {
 			throws JSONException {
 		JSONArray obar= new JSONArray();
 		List<String> diseaseList = null;
-		String formFieldPath = "সাধারন রোগীর সেবা.19/43-0";
+		//String formFieldPath = "সাধারন রোগীর সেবা.19/43-0";
+		String formFieldPath = "General_Disease_Femal_MHV.1/1-0";
 		Client client = clientService.getByBaseEntityId(e.getBaseEntityId());
+		if(client.getGender()!= null && client.getGender().equals("M")){
+			formFieldPath = "General_Disease_Male.6/14-0";
+		}
 		boolean hasDisease =false;
 		if(client.getAttributes().containsKey("has_disease")){
 			String hasDiseaseStr = (String)client.getAttributes().get("has_disease");
-			if(hasDiseaseStr.equals("হ্যাঁ")){
+			if(hasDiseaseStr.equals("হ্যাঁ") || hasDiseaseStr.equals("Yes")){
 				hasDisease = true;
 			}
 		}
@@ -440,26 +830,39 @@ public class EncounterService extends OpenmrsService {
 			diseaseList = Arrays.asList(diseaseString.split(","));
 		}
 		if(hasDisease){
-			obar.put(getStaticJsonObject("healthCareGivenYes"));
+			//obar.put(getStaticJsonObject("healthCareGivenYes"));
+			JSONObject healthCareGivenYes = getStaticJsonObject("hasDiseaseYes");
+			obar.put(healthCareGivenYes);
+			
 			if(diseaseList!=null){
 				for(String diseaseName : diseaseList){
 					if(diseaseName.equals("High Blood Pressure")){
-						obar.put(getStaticJsonObject("highBloodPressure"));
+						obar.put(getStaticJsonObjectWithFormFieldPath("highBloodPressure", formFieldPath));
 					}else if(diseaseName.equals("Diabetes")){
-						obar.put(getStaticJsonObject("diabetes"));
+						obar.put(getStaticJsonObjectWithFormFieldPath("diabetes", formFieldPath));
 					}else if(diseaseName.equals("Tuberculosis")){
-						obar.put(getStaticJsonObject("tuberculosis"));
+						obar.put(getStaticJsonObjectWithFormFieldPath("tuberculosis", formFieldPath));
 					}else if(diseaseName.equals("Others_member_disease")){
-						obar.put(getStaticJsonObject("otherPossibleDisease"));
+						obar.put(getStaticJsonObjectWithFormFieldPath("otherPossibleDisease", formFieldPath));
 					}
 				}
 			}
 		}else{
-			obar.put(getStaticJsonObject("healthCareGivenNo"));
+			//obar.put(getStaticJsonObject("healthCareGivenNo"));
+			JSONObject healthCareGivenNo = getStaticJsonObjectWithFormFieldPath("hasDiseaseNo", formFieldPath);
+			obar.put(healthCareGivenNo);
 		}
 		
 		obar = addRefferedPlaceInObservationArray(e, obar, formFieldPath);
 		return obar;
+	}
+	
+	private JSONObject getStaticJsonObjectWithFormFieldPath(String jsonName, String formFieldPath) throws JSONException{
+		JSONObject staticJSONObject = getStaticJsonObject(jsonName);
+		if(staticJSONObject!= null){
+			staticJSONObject.put("formFieldPath", formFieldPath);
+		}
+		return staticJSONObject;
 	}
 	
 	private JSONArray addRefferedPlaceInObservationArray(Event e, JSONArray obar, String formFieldPath) throws JSONException{
@@ -477,6 +880,32 @@ public class EncounterService extends OpenmrsService {
 								refferedPlace.put("formFieldPath", formFieldPath);
 								obar.put(refferedPlace);
 							}
+							//JSONObject refferedPlace = getStaticJsonObjectWithFormFieldPath(obsValue, formFieldPath);
+							//obar.put(refferedPlace);
+						}else{
+							obar.put(getStaticJsonObject(obsValue));
+						}
+					}
+				}
+			}
+		}
+		return obar;
+	}
+	
+	
+	private JSONArray addPlaceOfServiceInObservationArray(Event e, JSONArray obar, String formFieldPath) throws JSONException{
+		List<Obs> eventObs = e.getObs();
+		if(eventObs!= null){
+			for(Obs o: eventObs){
+				String formSubmissionField = o.getFormSubmissionField();
+				if(formSubmissionField!= null){
+					String obsValue = (String) o.getValues().get(0);
+					if(formSubmissionField.equals("Place_of_Service") && obsValue!= null){
+						if(!formFieldPath.isEmpty()){
+							JSONObject placeOfService = getStaticJsonObjectWithFormFieldPath(obsValue, formFieldPath);
+							JSONObject placeOfServiceConcept = getStaticJsonObject("placeOfServiceConcept");
+							placeOfService.put("concept", placeOfServiceConcept);
+							obar.put(placeOfService);
 						}else{
 							obar.put(getStaticJsonObject(obsValue));
 						}
@@ -858,9 +1287,37 @@ public class EncounterService extends OpenmrsService {
 		JSONObject conjunctivitis = null;
 		JSONObject malnutrition = null;
 		JSONObject anemia = null;
+		
+		JSONObject hasDiseaseYes = null;
+		JSONObject hasDiseaseNo = null;
+		
+		JSONObject iud = null;
+		JSONObject implant = null;
+		JSONObject permanentSolution = null;
+		JSONObject impotentCouple = null;
+		JSONObject noPreventiveMeasure = null;
+		
+		JSONObject serviceNumberInLastThreeMonths = null;
+		JSONObject latestServiceDate = null;
+		JSONObject placeOfServiceConcept = null;
+		JSONObject hasEdoma = null;
+		JSONObject yes = null;
+		JSONObject no = null;
+		JSONObject hasJaundice = null;
+		
+		JSONObject numberOfPncService = null;
+		JSONObject pregnancyInfo = null;
+		JSONObject date = null;
+		JSONObject motherVital = null;
+		
+		JSONObject liveBirthJSON = null;
+		JSONObject stillBirthJSON = null;
+		JSONObject deliveryType = null;
+		
+		JSONObject placeOfDelivery = null;
 		try {
 			//normalDisease = new JSONObject("{\"encounterTypeUuid\":\"81852aee-3f10-11e4-adec-0800271c1b75\",\"visitType\":\"Community clinic service\",\"patientUuid\":\"391ec594-5381-4075-9b1d-7608ed19332d\",\"locationUuid\":\"ec9bfa0e-14f2-440d-bf22-606605d021b2\",\"providers\":[{\"uuid\":\"313c8507-9821-40e4-8a70-71a5c7693d72\"}]}");
-			normalDisease = new JSONObject("{\"encounterTypeUuid\":\"81852aee-3f10-11e4-adec-0800271c1b75\",\"providers\":[{\"uuid\":\"313c8507-9821-40e4-8a70-71a5c7693d72\"}],\"visitType\":\"Community clinic service\"}");
+			normalDisease = new JSONObject("{\"encounterTypeUuid\":\"81852aee-3f10-11e4-adec-0800271c1b75\",\"providers\":[{\"uuid\":\"313c8507-9821-40e4-8a70-71a5c7693d72\"}],\"visitType\":\"Household Followup\"}");
 			diabetes = new JSONObject("{\"concept\":{\"uuid\":\"a725f0d7-067b-492d-a450-4ce7e535c371\",\"name\":\"Possible_Disease\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"সাধারন রোগীর সেবা.19/31-0\",\"voided\":false,\"value\":{\"uuid\":\"1e3f1870-b252-4808-8edb-f86fad050ebd\",\"name\":{\"display\":\"Diabetes\",\"uuid\":\"befce65b-9e80-45ec-b8b7-05234cd5cb9c\",\"name\":\"Diabetes\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"resourceVersion\":\"1.9\"},\"displayString\":\"Diabetes\",\"resourceVersion\":\"2.0\",\"translationKey\":\"ডায়াবেটিস_31\"},\"inactive\":false,\"groupMembers\":[]}");
 			healthCareGivenYes = new JSONObject("{\"concept\":{\"uuid\":\"f2671938-ffc5-4547-91c0-fcd28b6e29b4\",\"name\":\"Provide_Health_Service\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"সাধারন রোগীর সেবা.19/43-0\",\"voided\":false,\"value\":{\"uuid\":\"a2065636-5326-40f5-aed6-0cc2cca81ccc\",\"name\":{\"display\":\"Yes\",\"uuid\":\"b5a4d83a-7158-4477-b81c-71144f5a7232\",\"name\":\"Yes\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"resourceVersion\":\"1.9\"},\"displayString\":\"Yes\",\"resourceVersion\":\"2.0\",\"translationKey\":\"হ্যাঁ_43\"},\"interpretation\":null,\"inactive\":false,\"groupMembers\":[]}");
 			highBloodPressure = new JSONObject("{\"concept\":{\"uuid\":\"a725f0d7-067b-492d-a450-4ce7e535c371\",\"name\":\"Possible_Disease\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"সাধারন রোগীর সেবা.19/31-0\",\"voided\":false,\"value\":{\"uuid\":\"c2bb6edf-18cb-4c7f-ad91-7c8dd561a437\",\"name\":{\"display\":\"High Blood Pressure\",\"uuid\":\"c2bb6edf-18cb-4c7f-ad91-7c8dd561a437\",\"name\":\"High Blood Pressure\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"resourceVersion\":\"1.9\"},\"displayString\":\"High Blood Pressure\",\"resourceVersion\":\"2.0\",\"translationKey\":\"উচ্চ_রক্তচাপ_31\"},\"inactive\":false,\"groupMembers\":[]}");
@@ -910,6 +1367,33 @@ public class EncounterService extends OpenmrsService {
 			conjunctivitis = new JSONObject("{\"concept\":{\"uuid\":\"ed6dedbf-7bd3-4642-b497-0535e3ee1986\",\"name\":\"Disease_2Months_To_5Years_CHCP\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"শিশু (২ মাস থেকে ৫ বছর) স্বাস্থ্য সেবা.32/49-0\",\"voided\":false,\"value\":{\"uuid\":\"e2b14b2b-4e14-11e4-8a57-0800271c1b75\",\"name\":{\"display\":\"Conjunctivitis, unspec.\",\"uuid\":\"aa3e374b-fd72-4213-a796-478e614f6022\",\"name\":\"Conjunctivitis, unspec.\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"resourceVersion\":\"1.9\"},\"displayString\":\"Conjunctivitis, unspec.\",\"resourceVersion\":\"2.0\",\"translationKey\":\"চোখ_উঠা_49\"},\"inactive\":false,\"groupMembers\":[]}");
 			//malnutrition = new JSONObject("");
 			//anemia = new JSONObject("");
+			
+			hasDiseaseYes = new JSONObject("{\"concept\":{\"uuid\":\"cc3f9af9-772f-4830-a1cb-b9fdd30c5076\",\"name\":\"রোগ আছে কিনা\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"শিশু (০ থেকে ২ মাস) এমএইচভি.4/4-0\",\"voided\":false,\"value\":{\"uuid\":\"a2065636-5326-40f5-aed6-0cc2cca81ccc\",\"name\":{\"display\":\"হ্যাঁ\",\"uuid\":\"b5a4d83a-7158-4477-b81c-71144f5a7232\",\"name\":\"হ্যাঁ\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"resourceVersion\":\"1.9\"},\"displayString\":\"হ্যাঁ\",\"resourceVersion\":\"2.0\",\"translationKey\":\"হ্যাঁ_4\"},\"interpretation\":null,\"inactive\":false,\"groupMembers\":[]}");
+			hasDiseaseNo = new JSONObject("{\"concept\":{\"uuid\":\"cc3f9af9-772f-4830-a1cb-b9fdd30c5076\",\"name\":\"রোগ আছে কিনা\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"শিশু (২ মাস থেকে ৫ বছর) এমএইচভি.3/3-0\",\"voided\":false,\"value\":{\"uuid\":\"b497171e-0410-4d8d-bbd4-7e1a8f8b504e\",\"name\":{\"display\":\"না\",\"uuid\":\"17432139-eeca-4cf5-b0fd-00a6a4f83395\",\"name\":\"না\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"resourceVersion\":\"1.9\"},\"displayString\":\"না\",\"resourceVersion\":\"2.0\",\"translationKey\":\"না_3\"},\"interpretation\":null,\"inactive\":false,\"groupMembers\":[]}");
+		
+			iud = new JSONObject("{\"concept\":{\"uuid\":\"b8cceb3b-17b3-45c9-882e-b930d3b64b01\",\"name\":\"পরিবার পরিকল্পনা\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"Familyplaning_MHV.4/14-0\",\"voided\":false,\"value\":{\"uuid\":\"f49566c2-213e-4529-894b-e5e56d270841\",\"name\":{\"display\":\"আই ইউ ডি\",\"uuid\":\"4f30ab38-a100-4145-b04e-59fe222dcf71\",\"name\":\"আই ইউ ডি\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"resourceVersion\":\"1.9\"},\"displayString\":\"আই ইউ ডি\",\"resourceVersion\":\"2.0\",\"translationKey\":\"আই_ইউ_ডি_14\"},\"interpretation\":null,\"inactive\":false,\"groupMembers\":[]}");
+			implant = new JSONObject("{\"groupMembers\":[],\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"Familyplaning_MHV.4/14-0\",\"concept\":{\"uuid\":\"b8cceb3b-17b3-45c9-882e-b930d3b64b01\",\"name\":\"পরিবার পরিকল্পনা\"},\"voided\":false,\"orderUuid\":null,\"abnormal\":null,\"conceptNameToDisplay\":\"familyplanning\",\"comment\":null,\"value\":{\"uuid\":\"66a6bacc-8ac0-4c2c-b44a-d62ca9a3e89b\",\"name\":{\"display\":\"ইমপ্লান্ট\",\"uuid\":\"b972fcf7-f2ba-44c6-ae44-57b2edf531b0\",\"name\":\"ইমপ্লান্ট\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"resourceVersion\":\"1.9\"},\"displayString\":\"ইমপ্লান্ট\",\"resourceVersion\":\"2.0\",\"translationKey\":\"ইমপ্লান্ট_14\"},\"inactive\":false}");
+			permanentSolution = new JSONObject("{\"concept\":{\"uuid\":\"b8cceb3b-17b3-45c9-882e-b930d3b64b01\",\"name\":\"পরিবার পরিকল্পনা\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"Familyplaning_MHV.4/14-0\",\"voided\":false,\"value\":{\"uuid\":\"06f5080a-ecc6-4f6e-b2ee-00145dc74cc5\",\"name\":{\"display\":\"স্থায়ী পদ্ধতি\",\"uuid\":\"3a6753e6-7d7e-4d5a-8ed3-d135e1203067\",\"name\":\"স্থায়ী পদ্ধতি\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"resourceVersion\":\"1.9\"},\"displayString\":\"স্থায়ী পদ্ধতি\",\"resourceVersion\":\"2.0\",\"translationKey\":\"স্থায়ী_পদ্ধতি_14\"},\"interpretation\":null,\"inactive\":false,\"groupMembers\":[]}");
+			impotentCouple = new JSONObject("{\"concept\":{\"uuid\":\"b8cceb3b-17b3-45c9-882e-b930d3b64b01\",\"name\":\"পরিবার পরিকল্পনা\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"Familyplaning_MHV.4/14-0\",\"voided\":false,\"value\":{\"uuid\":\"1fa53cd0-4e15-11e4-8a57-0800271c1b75\",\"name\":{\"display\":\"বন্ধ্যা দম্পতি\",\"uuid\":\"b6e7a0f6-a968-46d1-98ee-7affc7936603\",\"name\":\"বন্ধ্যা দম্পতি\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"resourceVersion\":\"1.9\"},\"displayString\":\"বন্ধ্যা দম্পতি\",\"resourceVersion\":\"2.0\",\"translationKey\":\"বন্ধ্যা_দম্পতি_14\"},\"interpretation\":null,\"inactive\":false,\"groupMembers\":[]}");
+			noPreventiveMeasure = new JSONObject("{\"concept\":{\"uuid\":\"b8cceb3b-17b3-45c9-882e-b930d3b64b01\",\"name\":\"পরিবার পরিকল্পনা\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"Familyplaning_MHV.4/14-0\",\"voided\":false,\"value\":{\"uuid\":\"8c70953e-6170-4b5a-a1e4-6424ebbc23a4\",\"name\":{\"display\":\"পদ্ধতি ব্যবহার করে না\",\"uuid\":\"a3a629ad-fa6f-4f95-9831-d66e431ef944\",\"name\":\"পদ্ধতি ব্যবহার করে না\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"resourceVersion\":\"1.9\"},\"displayString\":\"পদ্ধতি ব্যবহার করে না\",\"resourceVersion\":\"2.0\",\"translationKey\":\"পদ্ধতি_ব্যবহার_করে_না_14\"},\"interpretation\":null,\"inactive\":false,\"groupMembers\":[]}");
+		
+			serviceNumberInLastThreeMonths = new JSONObject("{\"groupMembers\":[],\"inactive\":false,\"concept\":{\"name\":\"গত তিন মাসে সেবার সংখ্যা\",\"uuid\":\"1fdbcade-c12a-4f22-8d72-2ee317417071\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"ANC_MHV.3/1-0\",\"voided\":false,\"value\":\"1\",\"interpretation\":null}");
+			latestServiceDate = new JSONObject("{\"concept\":{\"uuid\":\"29a26c15-cd3e-4e8f-999b-7b91428ea863\",\"name\":\"সর্বশেষ সেবার তারিখ\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"ANC_MHV.3/8-0\",\"voided\":false,\"value\":\"2019-03-01\",\"interpretation\":null,\"inactive\":false,\"groupMembers\":[]}");
+			placeOfServiceConcept = new JSONObject("{\"uuid\":\"45c9babc-419d-42e3-8fa3-bce5aa7187e4\",\"name\":\"সেবার স্থান\"}");
+			hasEdoma = new JSONObject("{\"uuid\":\"b05955f9-ce61-439c-b921-c74b4eaa4abb\",\"name\":\"ইডেমা আছে\"}");
+			yes = new JSONObject("{\"concept\":{\"uuid\":\"f2671938-ffc5-4547-91c0-fcd28b6e29b4\",\"name\":\"Provide_Health_Service\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"সাধারন রোগীর সেবা.19/43-0\",\"voided\":false,\"value\":{\"uuid\":\"a2065636-5326-40f5-aed6-0cc2cca81ccc\",\"name\":{\"display\":\"Yes\",\"uuid\":\"b5a4d83a-7158-4477-b81c-71144f5a7232\",\"name\":\"Yes\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"resourceVersion\":\"1.9\"},\"displayString\":\"Yes\",\"resourceVersion\":\"2.0\",\"translationKey\":\"হ্যাঁ_43\"},\"interpretation\":null,\"inactive\":false,\"groupMembers\":[]}");
+			no = new JSONObject("{\"groupMembers\":[],\"inactive\":false,\"interpretation\":null,\"concept\":{\"name\":\"Provide_Health_Service\",\"uuid\":\"f2671938-ffc5-4547-91c0-fcd28b6e29b4\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"সাধারন রোগীর সেবা.19/43-0\",\"voided\":false,\"value\":{\"translationKey\":\"না_43\",\"displayString\":\"No\",\"resourceVersion\":\"2.0\",\"name\":{\"display\":\"No\",\"resourceVersion\":\"1.9\",\"name\":\"No\",\"localePreferred\":true,\"locale\":\"en\",\"uuid\":\"17432139-eeca-4cf5-b0fd-00a6a4f83395\",\"conceptNameType\":null},\"uuid\":\"b497171e-0410-4d8d-bbd4-7e1a8f8b504e\"}}");
+			hasJaundice = new JSONObject("{\"uuid\":\"8ebb781f-17f5-415f-a66a-1f1473de5938\",\"name\":\"জন্ডিস আছে\"}");
+		
+			numberOfPncService = new JSONObject("{\"groupMembers\":[],\"inactive\":false,\"interpretation\":null,\"concept\":{\"name\":\"সেবার সংখ্যা\",\"uuid\":\"4f3c1381-c037-479c-b40c-98bf4ac2c5e7\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"PNC_MHV.2/1-0\",\"voided\":false,\"value\":\"3\"}");
+			pregnancyInfo = new JSONObject("{\"concept\":{\"uuid\":\"e3162bc6-7c67-4620-af44-6d66d6ff664f\",\"name\":\"গর্ভাবস্থা সম্পর্কিত তথ্য\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"Pragnant_Status_MHV.5/5-0\",\"voided\":false,\"value\":null,\"interpretation\":null,\"inactive\":false,\"groupMembers\":[]}");
+			date = new JSONObject("{\"concept\":null,\"formNamespace\":\"Bahmni\",\"formFieldPath\":null,\"voided\":false,\"value\":null,\"interpretation\":null,\"inactive\":false,\"groupMembers\":[]}");
+			motherVital = new JSONObject("{\"concept\":{\"uuid\":\"1bc12372-1635-4b27-a5c4-5d22ed8b7a93\",\"name\":\"মায়ের অবস্থা\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"Pragnant_Status_MHV.5/8-0\",\"voided\":false,\"interpretation\":null,\"inactive\":false,\"groupMembers\":[]}");
+		
+			liveBirthJSON = new JSONObject("{\"concept\":{\"uuid\":\"462960fb-4e2a-4eb4-be56-7aaa63730ea5\",\"name\":\"জীবিত জন্মের সংখ্যা\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"Pragnant_Status_MHV.5/10-0\",\"voided\":false,\"value\":\"0\",\"interpretation\":null,\"inactive\":false,\"groupMembers\":[]}");
+			stillBirthJSON = new JSONObject("{\"concept\":{\"uuid\":\"a104278d-b155-437c-b530-ddbc08903707\",\"name\":\"মৃত জন্মের সংখ্যা\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"Pragnant_Status_MHV.5/11-0\",\"value\":\"0\",\"voided\":false,\"interpretation\":null,\"inactive\":false,\"groupMembers\":[]}");
+			deliveryType = new JSONObject("{\"concept\":{\"uuid\":\"050739a2-5e26-44c5-8a51-9658dedf5455\",\"name\":\"প্রসবের ধরণ\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"Pragnant_Status_MHV.5/12-0\",\"voided\":false,\"value\":null,\"interpretation\":null,\"inactive\":false,\"groupMembers\":[]}");
+			placeOfDelivery = new JSONObject("{\"concept\":{\"uuid\":\"6544f312-e596-4249-86f0-ba1361c0b9eb\",\"name\":\"প্রসবের স্থান\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"Pragnant_Status_MHV.5/13-0\",\"voided\":false,\"value\":null,\"interpretation\":null,\"inactive\":false,\"groupMembers\":[]}");
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -1007,6 +1491,50 @@ public class EncounterService extends OpenmrsService {
 			objectToReturn = malnutrition;
 		}else if(nameOfJSONObject.equals("Anemia")){
 			objectToReturn = anemia;
+		}else if(nameOfJSONObject.equals("hasDiseaseYes")){
+			objectToReturn = hasDiseaseYes;
+		}else if(nameOfJSONObject.equals("hasDiseaseNo")){
+			objectToReturn = hasDiseaseNo;
+		}else if(nameOfJSONObject.equals("iud")){
+			objectToReturn = iud;
+		}else if(nameOfJSONObject.equals("implant")){
+			objectToReturn = implant;
+		}else if(nameOfJSONObject.equals("permanentSolution")){
+			objectToReturn = permanentSolution;
+		}else if(nameOfJSONObject.equals("impotentCouple")){
+			objectToReturn = impotentCouple;
+		}else if(nameOfJSONObject.equals("noPreventiveMeasure")){
+			objectToReturn = noPreventiveMeasure;
+		}else if(nameOfJSONObject.equals("serviceNumberInLastThreeMonths")){
+			objectToReturn = serviceNumberInLastThreeMonths;
+		}else if(nameOfJSONObject.equals("latestServiceDate")){
+			objectToReturn = latestServiceDate;
+		}else if(nameOfJSONObject.equals("placeOfServiceConcept")){
+			objectToReturn = placeOfServiceConcept;
+		}else if(nameOfJSONObject.equals("hasEdoma")){
+			objectToReturn = hasEdoma;
+		}else if(nameOfJSONObject.equals("yes")){
+			objectToReturn = yes;
+		}else if(nameOfJSONObject.equals("no")){
+			objectToReturn = no;
+		}else if(nameOfJSONObject.equals("hasJaundice")){
+			objectToReturn = hasJaundice;
+		}else if(nameOfJSONObject.equals("numberOfPncService")){
+			objectToReturn = numberOfPncService;
+		}else if(nameOfJSONObject.equals("pregnancyInfo")){
+			objectToReturn = pregnancyInfo;
+		}else if(nameOfJSONObject.equals("date")){
+			objectToReturn = date;
+		}else if(nameOfJSONObject.equals("motherVital")){
+			objectToReturn = motherVital;
+		}else if(nameOfJSONObject.equals("liveBirthJSON")){
+			objectToReturn = liveBirthJSON;
+		}else if(nameOfJSONObject.equals("stillBirthJSON")){
+			objectToReturn = stillBirthJSON;
+		}else if(nameOfJSONObject.equals("deliveryType")){
+			objectToReturn = deliveryType;
+		}else if(nameOfJSONObject.equals("placeOfDelivery")){
+			objectToReturn = placeOfDelivery;
 		}
 		return objectToReturn;
 	}
