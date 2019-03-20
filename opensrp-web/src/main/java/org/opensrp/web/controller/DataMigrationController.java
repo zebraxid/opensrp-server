@@ -104,6 +104,18 @@ public class DataMigrationController {
 		return "/upload_csv";
 	}
 	
+	@RequestMapping(value = "/event.html", method = RequestMethod.GET)
+	public String eventUpdate(ModelMap model, HttpSession session) throws JSONException {
+		List<Event> events = eventService.getAll();
+		for (Event event : events) {
+			event.setProviderId("");
+			eventService.updateEvent(event);
+		}
+		model.addAttribute("location", new Location());
+		return "/upload_csv";
+		
+	}
+	
 	@RequestMapping(value = "/migration.html", method = RequestMethod.POST)
 	public ModelAndView csvUpload(@RequestParam MultipartFile file, HttpServletRequest request, ModelMap model)
 	    throws Exception {
@@ -300,9 +312,9 @@ public class DataMigrationController {
 				if (!householdCode.isEmpty()) {
 					householdCode = householdCode.trim();
 				}
-				System.err.println("householdCode:::::::::" + householdCode);
+				//System.err.println("householdCode:::::::::" + householdCode);
 				List<Client> clients = clientService.findAllByAttribute("householdCode", householdCode);
-				System.err.println("Size::::::::::::::::" + clients.size());
+				//System.err.println("Size::::::::::::::::" + clients.size());
 				if (clients.size() != 0) {
 					client.addRelationship("household", clients.get(0).getBaseEntityId());
 				}
@@ -346,7 +358,7 @@ public class DataMigrationController {
 				address.setAddressType("usual_residence");
 				client.addAddress(address);
 				
-				System.err.println("Client:" + client.toString());
+				//System.err.println("Client:" + client.toString());
 				
 				String locationId = "";
 				String teamId = "";
@@ -406,7 +418,8 @@ public class DataMigrationController {
 				        values, ""/*comments*/, "Date_Of_Reg"/*formSubmissionField*/));
 				clientService.addorUpdate(client);
 				eventService.addorUpdateEvent(event);
-				System.err.println("Event:::::::::::::::" + event.toString());
+				clientService.addorUpdate(client);
+				//System.err.println("Event:::::::::::::::" + event.toString());
 				
 			}
 			
@@ -608,7 +621,7 @@ public class DataMigrationController {
 					dws = WaterOthers;
 					dwsConceptId = "";
 				}
-				System.err.println("dws:::::" + dws + ",dwsConceptId::::::" + dwsConceptId);
+				//System.err.println("dws:::::" + dws + ",dwsConceptId::::::" + dwsConceptId);
 				List<Object> values = new ArrayList<Object>();
 				values.add(dws);
 				List<Object> humanReadableValues = new ArrayList<Object>();
@@ -731,9 +744,9 @@ public class DataMigrationController {
 				event.addObs(new Obs("concept", financial_fieldDataType, "95066bce-55eb-405e-9664-9be70e5c17b2", "",
 				        financial_values, "", "financial_status"));
 				
-				System.err.println("Event:::::::::::::::" + event.toString());
-				clientService.addorUpdate(client);
+				//System.err.println("Event:::::::::::::::" + event.toString());				
 				eventService.addorUpdateEvent(event);
+				clientService.addorUpdate(client);
 				
 			}
 			

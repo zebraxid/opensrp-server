@@ -248,6 +248,7 @@ public class EventResource extends RestResource<Event> {
 				
 			} else {
 				logger.info("No location found..");
+				response.put("msg", "Error occurred");
 				return new ResponseEntity<>(new Gson().toJson(response), HttpStatus.INTERNAL_SERVER_ERROR);
 			}
 			
@@ -347,14 +348,34 @@ public class EventResource extends RestResource<Event> {
 	
 	@RequestMapping(headers = { "Accept=application/json;charset=UTF-8" }, value = "/client-list-to-delete", method = RequestMethod.GET)
 	@ResponseBody
-	protected ResponseEntity<String> clientListToDelete(HttpServletRequest request) {
+	protected ResponseEntity<String> clientListToDeleteFromAPP(HttpServletRequest request) {
 		Map<String, Object> response = new HashMap<String, Object>();
 		try {
+			HttpResponse op = HttpUtil.get(
+			    opensrpWebUurl + "/rest/api/v1/location/location-name?name=" + request.getRemoteUser(), "",
+			    opensrpWebUsername, opensrpWebPassword);
+			JSONObject locations = new JSONObject(op.body());
+			String location = "";
+			String userType = "";
+			List<String> address = new ArrayList<String>();
+			if (locations.has("locations")) {
+				location = locations.getString("locations");
+				address = new ArrayList<String>(Arrays.asList(location.split(",")));
+				userType = locations.getString("role");
+				
+			} else {
+				logger.info("No location found..");
+				return new ResponseEntity<>(new Gson().toJson(response), HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+			
 			String providerId = getStringFilter(PROVIDER_ID, request);
 			String requestProviderName = request.getRemoteUser();
 			String locationId = getStringFilter(LOCATION_ID, request);
+			String baseEntityId = getStringFilter(BASE_ENTITY_ID, request);
 			String serverVersion = getStringFilter(BaseEntity.SERVER_VERSIOIN, request);
-			logger.info("synced user " + providerId + locationId + ", timestamp : " + serverVersion);
+			String team = getStringFilter(TEAM, request);
+			String teamId = getStringFilter(TEAM_ID, request);
+			logger.info("synced user " + providerId + locationId + teamId + ", timestamp : " + serverVersion);
 			Long lastSyncedServerVersion = null;
 			if (serverVersion != null) {
 				lastSyncedServerVersion = Long.valueOf(serverVersion) + 1;
@@ -365,26 +386,49 @@ public class EventResource extends RestResource<Event> {
 			}
 			String getProviderName = "";
 			List<Event> eventList = new ArrayList<Event>();
-			Set<String> clientIds = new HashSet<String>();
+			
+			List<String> clientIds = new ArrayList<String>();
+			List<String> clients = new ArrayList<String>();
+			List<Client> clientList = new ArrayList<Client>();
+			
 			long startTime = System.currentTimeMillis();
-			if (locationId != null) {
-				EventSearchBean eventSearchBean = new EventSearchBean();
-				eventSearchBean.setLocationId(locationId);
-				eventSearchBean.setServerVersion(lastSyncedServerVersion);
-				eventList = eventService.findEvents(eventSearchBean, BaseEntity.SERVER_VERSIOIN, "asc", limit);
-				logger.info("fetching events took: " + (System.currentTimeMillis() - startTime));
-				logger.info("Initial Size:" + eventList.size());
-				if (!eventList.isEmpty()) {
-					for (Event event : eventList) {
-						getProviderName = event.getProviderId();
-						logger.info("getProviderName:" + getProviderName + ": request provider name" + requestProviderName);
-						if (getProviderName.isEmpty()) {} else if (!getProviderName.equalsIgnoreCase(requestProviderName)) {
-							clientIds.add(event.getBaseEntityId());
-						} else {}
-					}
+			EventSearchBean eventSearchBean = new EventSearchBean();
+			eventSearchBean.setTeam(team);
+			eventSearchBean.setTeamId(teamId);
+			eventSearchBean.setProviderId(providerId);
+			eventSearchBean.setLocationId(locationId);
+			eventSearchBean.setBaseEntityId(baseEntityId);
+			eventSearchBean.setServerVersion(lastSyncedServerVersion);
+			eventList = eventService.findEvents(eventSearchBean, BaseEntity.SERVER_VERSIOIN, "asc", limit);
+			ClientSearchBean searchBean = new ClientSearchBean();
+			searchBean.setServerVersion(lastSyncedServerVersion);
+			AddressSearchBean addressSearchBean = new AddressSearchBean();
+			if (userType.equalsIgnoreCase(provider)) {
+				addressSearchBean.setAddress2(address);
+			} else if (userType.equalsIgnoreCase(HA)) {
+				addressSearchBean.setAddress3(address);
+			}
+			clientList = clientService.findByCriteria(searchBean, addressSearchBean);
+			for (Client client : clientList) {
+				clientIds.add(client.getBaseEntityId());
+			}
+			
+			List<String> ids = new ArrayList<String>();
+			ids.addAll(clientIds);
+			String field = "baseEntityId";
+			eventList = eventService.findByFieldValue(field, ids, lastSyncedServerVersion);
+			logger.info("fetching events took: " + (System.currentTimeMillis() - startTime));
+			logger.info("Initial Size:" + eventList.size());
+			if (!eventList.isEmpty()) {
+				for (Event event : eventList) {
+					getProviderName = event.getProviderId();
+					logger.info("getProviderName:" + getProviderName + ": request provider name" + requestProviderName);
+					if (getProviderName.isEmpty()) {} else if (!getProviderName.equalsIgnoreCase(requestProviderName)) {
+						clients.add(event.getBaseEntityId());
+					} else {}
 				}
 			}
-			return new ResponseEntity<>(gson.toJson(clientIds), HttpStatus.OK);
+			return new ResponseEntity<>(gson.toJson(clients), HttpStatus.OK);
 		}
 		catch (Exception e) {
 			response.put("msg", "Error occurred");
@@ -404,6 +448,41 @@ public class EventResource extends RestResource<Event> {
 			String getProvider = "";
 			String dataProvider = request.getRemoteUser();
 			logger.info("dataProvider:" + dataProvider);
+			
+			if (syncData.has("events")) {
+				ArrayList<Event> events = (ArrayList<Event>) gson.fromJson(syncData.getString("events"),
+				    new TypeToken<ArrayList<Event>>() {}.getType());
+				logger.info("received event size:" + events.size());
+				for (Event event : events) {
+					try {
+						List<Event> getEvents = eventService.findByBaseEntityAndEventTypeContaining(event.getBaseEntityId(),
+						    "Registration");
+						if (getEvents.size() != 0) {
+							Event getEvent = getEvents.get(0);
+							getProvider = getEvent.getProviderId();
+						} else {
+							getProvider = "";
+						}
+						if (getProvider.isEmpty() || (dataProvider.equalsIgnoreCase(getProvider) && !getProvider.isEmpty())) {
+							event = eventService.processOutOfArea(event);
+							event.withIsSendToOpenMRS("yes");
+							eventService.addorUpdateEvent(event);
+							Client client = clientService.find(event.getBaseEntityId());
+							client.setServerVersion(System.currentTimeMillis());
+							clientService.addorUpdate(client);
+						} else {
+							logger.info("already updated by another");
+						}
+						
+					}
+					catch (Exception e) {
+						logger.error(
+						    "Event of type " + event.getEventType() + " for client " + event.getBaseEntityId() == null ? ""
+						            : event.getBaseEntityId() + " failed to sync", e);
+					}
+				}
+			}
+			
 			if (syncData.has("clients")) {
 				
 				ArrayList<Client> clients = (ArrayList<Client>) gson.fromJson(syncData.getString("clients"),
@@ -434,57 +513,7 @@ public class EventResource extends RestResource<Event> {
 				}
 				
 			}
-			if (syncData.has("events")) {
-				ArrayList<Event> events = (ArrayList<Event>) gson.fromJson(syncData.getString("events"),
-				    new TypeToken<ArrayList<Event>>() {}.getType());
-				logger.info("received event size:" + events.size());
-				for (Event event : events) {
-					try {
-						List<Event> getEvents = eventService.findByBaseEntityAndEventTypeContaining(event.getBaseEntityId(),
-						    "Registration");
-						if (getEvents.size() != 0) {
-							Event getEvent = getEvents.get(0);
-							getProvider = getEvent.getProviderId();
-						} else {
-							getProvider = "";
-						}
-						if (getProvider.isEmpty() || (dataProvider.equalsIgnoreCase(getProvider) && !getProvider.isEmpty())) {
-							event = eventService.processOutOfArea(event);
-							event.withIsSendToOpenMRS("yes");
-							eventService.addorUpdateEvent(event);
-							Client client = clientService.find(event.getBaseEntityId());
-							String eventType = event.getEventType();
-							Obs obs = new Obs();
-							/*if (eventType.equalsIgnoreCase("Followup Pregnant Status")) {
-								obs = event.getObs("", "pregnant_status");								
-								String value = (String) obs.getValue();
-								System.err.println("value>>>>>>>>>>>"+value);
-								if (value.equalsIgnoreCase("প্রসব পূর্ব")) {
-									client.addAttribute("PregnancyStatus", "Antenatal Period");
-									clientService.addorUpdate(client);
-								} else if (value.equalsIgnoreCase("প্রসবোত্তর")) {
-									obs = event.getObs("", "Delivery_date");
-									Object deliveryDate = obs.getValue();									
-									client.addAttribute("delivery_date", deliveryDate);
-									client.addAttribute("PregnancyStatus", "Postnatal");
-									clientService.addorUpdate(client);
-								}
-								
-							} else if (eventType.equalsIgnoreCase("Followup Marital Status")) {
-								
-							} */
-						} else {
-							logger.info("already updated by another");
-						}
-						
-					}
-					catch (Exception e) {
-						logger.error(
-						    "Event of type " + event.getEventType() + " for client " + event.getBaseEntityId() == null ? ""
-						            : event.getBaseEntityId() + " failed to sync", e);
-					}
-				}
-			}
+			
 		}
 		catch (Exception e) {
 			logger.error(format("Sync data processing failed with exception {0}.- ", e));
