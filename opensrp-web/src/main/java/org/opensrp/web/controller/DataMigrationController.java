@@ -104,6 +104,18 @@ public class DataMigrationController {
 		return "/upload_csv";
 	}
 	
+	@RequestMapping(value = "/event.html", method = RequestMethod.GET)
+	public String eventUpdate(ModelMap model, HttpSession session) throws JSONException {
+		List<Event> events = eventService.getAll();
+		for (Event event : events) {
+			event.setProviderId("");
+			eventService.updateEvent(event);
+		}
+		model.addAttribute("location", new Location());
+		return "/upload_csv";
+		
+	}
+	
 	@RequestMapping(value = "/migration.html", method = RequestMethod.POST)
 	public ModelAndView csvUpload(@RequestParam MultipartFile file, HttpServletRequest request, ModelMap model)
 	    throws Exception {

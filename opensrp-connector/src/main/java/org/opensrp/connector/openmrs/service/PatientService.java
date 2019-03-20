@@ -74,7 +74,14 @@ public class PatientService extends OpenmrsService {
 	public JSONObject getPatientByIdentifier(String identifier) throws JSONException {
 		JSONArray p = new JSONObject(HttpUtil.get(getURL() + "/" + PATIENT_URL, "v=full&identifier=" + identifier,
 		    OPENMRS_USER, OPENMRS_PWD).body()).getJSONArray("results");
-		return p.length() > 0 ? p.getJSONObject(0) : null;
+		
+		try {
+			return p.length() > 0 ? p.getJSONObject(0) : null;
+		}
+		catch (Exception e) {
+			return null;
+		}
+		
 	}
 	
 	public JSONObject getPatientByUuid(String uuid, boolean noRepresentationTag) throws JSONException {
@@ -139,7 +146,7 @@ public class PatientService extends OpenmrsService {
 	public JSONObject createPerson(Client be) throws JSONException {
 		JSONObject per = convertBaseEntityToOpenmrsJson(be);
 		String response = HttpUtil.post(getURL() + "/" + PERSON_URL, "", per.toString(), OPENMRS_USER, OPENMRS_PWD).body();
-		//System.err.println("response:" + response.toString());
+		System.err.println("response:" + response.toString());
 		return new JSONObject(response);
 	}
 	
@@ -295,7 +302,7 @@ public class PatientService extends OpenmrsService {
 		//Patient_Identifier
 		p.put("identifiers", ids);
 		String response = HttpUtil.post(getURL() + "/" + PATIENT_URL, "", p.toString(), OPENMRS_USER, OPENMRS_PWD).body();
-		//System.err.println("response" + response);
+		System.err.println("response" + response);
 		return new JSONObject(response);
 	}
 	
