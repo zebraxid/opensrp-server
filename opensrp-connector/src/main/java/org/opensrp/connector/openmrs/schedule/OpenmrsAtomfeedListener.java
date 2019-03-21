@@ -32,7 +32,7 @@ public class OpenmrsAtomfeedListener {
 			new TurnOffCertificateValidation().ForHTTPSConnections();
 			log.info("Running " + OpenmrsConstants.SCHEDULER_OPENMRS_ATOMFEED_SYNCER_SUBJECT);
 			
-			//patientAtomfeed.processEvents();
+			patientAtomfeed.processEvents();
 			
 			//encounterAtomfeed.processEvents();
 		}

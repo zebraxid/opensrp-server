@@ -124,7 +124,7 @@ public class PatientAtomfeed extends OpenmrsService implements EventWorker, Atom
 					}
 					JSONObject personB = relationship.getJSONObject("personB");
 					List<Client> clients = clientService.findAllByIdentifier("OPENMRS_UUID", personB.getString("uuid"));
-					if (clients != null) {
+					if (clients.size() != 0) {
 						c.addRelationship("household", clients.get(0).getBaseEntityId());
 					}
 				}
