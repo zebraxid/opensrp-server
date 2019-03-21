@@ -286,23 +286,19 @@ public class EncounterService extends OpenmrsService {
 				//pregnancy stage
 				pregnancyInfoValue.put("uuid", "898bd550-eb0f-4cc1-92c4-1e0c73453484");
 				pregnancyInfoValue.put("displayString", "প্রসবোত্তর");
-				//delivery date
-				//time may be added later
+				//delivery date and time
 				String deliveryDateConceptUuid= "7150e240-d92d-4f72-9262-ef32d62952c5";
 				String deliveryDateConceptName= "প্রসবের তারিখ ও সময়";
-				//addEventObsDateInObservationArray(e, obar, formFieldPath,"Delivery_date", deliveryDateConceptUuid, deliveryDateConceptName);
 				String date = getObsValueFromEventJSON(e, "Delivery_date");
 				String time = getObsValueFromEventJSON(e, "Delivery_time");
 				date = convertddMMyyyyDateToyyyyMMdd(date);
 				date = date + " "+ time;
 				JSONObject dateJSONObject = getStaticJsonObjectWithFormFieldPath("date", formFieldPath);
 				dateJSONObject.put("value", date);
-				
 				JSONObject concept = new JSONObject();
 				concept.put("uuid", deliveryDateConceptUuid);
 				concept.put("name", deliveryDateConceptName);
 				dateJSONObject.put("concept", concept);
-				
 				obar.put(dateJSONObject);
 				// mother vital
 				String motherVitalString = getObsValueFromEventJSON(e, "MOTHER_VITAL");
@@ -310,14 +306,8 @@ public class EncounterService extends OpenmrsService {
 					JSONObject motherVitalJSONObject = getStaticJsonObjectWithFormFieldPath("motherVital", formFieldPath);
 					//JSONObject motherVitalValue = new JSONObject();
 					if(motherVitalString.equals("ALIVE")){
-						/*motherVitalValue.put("uuid", "97d12039-6178-4713-adaf-235b19a1d9f7");
-						motherVitalValue.put("displayString", "বেঁচে আছেন");
-						motherVitalJSONObject.put("value", motherVitalValue);*/
 						motherVitalJSONObject = putValueIntoJSONObject(motherVitalJSONObject, "97d12039-6178-4713-adaf-235b19a1d9f7", "বেঁচে আছেন");
 					}else if(motherVitalString.equals("Dead")){
-						/*motherVitalValue.put("uuid", "bc1bdd23-0264-4831-8b13-1bdbc45f1763");
-						motherVitalValue.put("displayString", "মারা গেছেন");
-						motherVitalJSONObject.put("value", motherVitalValue);*/
 						motherVitalJSONObject = putValueIntoJSONObject(motherVitalJSONObject, "bc1bdd23-0264-4831-8b13-1bdbc45f1763", "মারা গেছেন");
 					}
 					obar.put(motherVitalJSONObject);
@@ -351,15 +341,17 @@ public class EncounterService extends OpenmrsService {
 						obar.put(deliveryTypeJSON);
 					}
 				}
-				
 				//place of delivery
+				//value in event not available. in this case human readable value is available.
+				//when value in event will be available then we would use this function
+				//obar = addPlaceOfDeliveryInObservationArray(e, obar,formFieldPath);
+				
 				String placeOfDelivery = getObsHumanRedableValueFromEventJSON(e, "Place_of_Delivery");
 				if(placeOfDelivery!= null){
 					JSONObject placeOfDeliveryJSON = getStaticJsonObjectWithFormFieldPath("placeOfDelivery", formFieldPath);
 					placeOfDeliveryJSON = setServicePointValue( placeOfDeliveryJSON, placeOfDelivery);
 					obar.put(placeOfDeliveryJSON);
 				}
-				
 			}else if(pregnancyStatusString.equals("Miscarriage")){
 				pregnancyInfoValue.put("uuid", "1fb646c4-c837-44e3-a13f-54a4b4c34e44");
 				pregnancyInfoValue.put("displayString", "গর্ভ নষ্ট হয়েছে");
@@ -370,57 +362,9 @@ public class EncounterService extends OpenmrsService {
 				pregnancyInfoValue.put("uuid", "86c63bac-b58f-46a0-b94d-1b186eeb28c9");
 				pregnancyInfoValue.put("displayString", "কোনোটিই নয়");
 			}
-			
 			pregnancyInfoJSONObject.put("value", pregnancyInfoValue);
 			obar.put(pregnancyInfoJSONObject);
 		}
-		/*if(client.getAttributes().containsKey("Denger_Signs_During_Pregnancy")){
-			String dangerSignsDuringPregnancyString = (String)client.getAttributes().get("Denger_Signs_During_Pregnancy");
-			List<String> dangerSignsDuringPregnancyList = Arrays.asList(dangerSignsDuringPregnancyString.split(","));
-			if(dangerSignsDuringPregnancyList.size()>0){
-				for(String dangerSign : dangerSignsDuringPregnancyList){
-					JSONObject staticJSONObject = getStaticJsonObjectWithFormFieldPath(dangerSign, formFieldPath);
-					logger.info("\n\n\n<><><><><> Danger sign static JSON :"+dangerSign+"->>"+ staticJSONObject + "<><><><><>\n\n\n ");
-					if(staticJSONObject!= null){
-						obar.put(staticJSONObject);
-					}
-				}	
-			}
-		}
-		
-		if(client.getAttributes().containsKey("Have_EDEMA")){
-			String hasEdema = (String)client.getAttributes().get("Have_EDEMA");
-			if(hasEdema!= null && !hasEdema.isEmpty()){
-				JSONObject hasEdomaConcept = getStaticJsonObject("hasEdoma");
-				if(hasEdema.equals("Yes")){
-					JSONObject hasEdomaYes = getStaticJsonObjectWithFormFieldPath("yes", formFieldPath);
-					hasEdomaYes.put("concept", hasEdomaConcept);
-					obar.put(hasEdomaYes);
-				}else if(hasEdema.equals("No")){
-					JSONObject hasEdomaNo = getStaticJsonObjectWithFormFieldPath("no", formFieldPath);
-					hasEdomaNo.put("concept", hasEdomaConcept);
-					obar.put(hasEdomaNo);
-				}
-			}
-		}
-		if(client.getAttributes().containsKey("Have_Jaundice\t")){
-			String hasEdema = (String)client.getAttributes().get("Have_Jaundice\t");
-			if(hasEdema!= null && !hasEdema.isEmpty()){
-				JSONObject hasJaundiceConcept = getStaticJsonObject("hasJaundice");
-				if(hasEdema.equals("Yes")){
-					JSONObject hasJaundiceYes = getStaticJsonObjectWithFormFieldPath("yes", formFieldPath);
-					hasJaundiceYes.put("concept", hasJaundiceConcept);
-					obar.put(hasJaundiceYes);
-				}else if(hasEdema.equals("No")){
-					JSONObject hasJaundiceNo = getStaticJsonObjectWithFormFieldPath("no", formFieldPath);
-					hasJaundiceNo.put("concept", hasJaundiceConcept);
-					obar.put(hasJaundiceNo);
-				}
-			}
-		}
-		obar = addServiceDateAndNumberInObservationArray(e, obar,formFieldPath);
-		obar = addRefferedPlaceInObservationArray(e, obar,formFieldPath);
-		obar = addPlaceOfServiceInObservationArray(e, obar,formFieldPath);*/
 		return obar;
 	}
 
@@ -457,8 +401,6 @@ public class EncounterService extends OpenmrsService {
 			}
 			return placeOfDeliveryJSON;
   }
-	
-	
 	
 	private JSONArray createObservationFollowupDiseaseToddler(Event e)
 			throws JSONException {
@@ -620,7 +562,8 @@ public class EncounterService extends OpenmrsService {
 		Client client = clientService.getByBaseEntityId(e.getBaseEntityId());
 		obar = addServiceDateAndNumberInObservationArray(e, obar,formFieldPath);
 		obar = addRefferedPlaceInObservationArray(e, obar,formFieldPath);
-		obar = addPlaceOfServiceInObservationArray(e, obar,formFieldPath);
+		//obar = addPlaceOfServiceInObservationArray(e, obar,formFieldPath);
+		obar = addPlaceOfDeliveryInObservationArray(e, obar,formFieldPath);
 		return obar;
 	}
 
@@ -874,28 +817,18 @@ public class EncounterService extends OpenmrsService {
 	private JSONArray addPlaceOfServiceInObservationArray(Event e, JSONArray obar, String formFieldPath) throws JSONException{
 		String servicePlaceValue = getObsValueFromEventJSON(e, "Place_of_Service");
 		logger.info("\n\n\n servicePlaceValue"+servicePlaceValue+"\n\n\n");
+		JSONObject placeOfServiceJSON = getStaticJsonObjectWithFormFieldPath("placeOfService", formFieldPath);
+		placeOfServiceJSON = setServicePointValue( placeOfServiceJSON, servicePlaceValue);
+		obar.put(placeOfServiceJSON);
+		return obar;
+	}
+	
+	private JSONArray addPlaceOfDeliveryInObservationArray(Event e, JSONArray obar, String formFieldPath) throws JSONException{
+		String servicePlaceValue = getObsValueFromEventJSON(e, "Place_of_Service");
+		logger.info("\n\n\n serviceDeliveryValue - "+servicePlaceValue+"\n\n\n");
 		JSONObject placeOfServiceJSON = getStaticJsonObjectWithFormFieldPath("placeOfDelivery", formFieldPath);
 		placeOfServiceJSON = setServicePointValue( placeOfServiceJSON, servicePlaceValue);
 		obar.put(placeOfServiceJSON);
-		/*List<Obs> eventObs = e.getObs();
-		if(eventObs!= null){
-			for(Obs o: eventObs){
-				String formSubmissionField = o.getFormSubmissionField();
-				if(formSubmissionField!= null){
-					String obsValue = (String) o.getValues().get(0);
-					if(formSubmissionField.equals("Place_of_Service") && obsValue!= null){
-						if(!formFieldPath.isEmpty()){
-							JSONObject placeOfService = getStaticJsonObjectWithFormFieldPath(obsValue, formFieldPath);
-							JSONObject placeOfServiceConcept = getStaticJsonObject("placeOfServiceConcept");
-							placeOfService.put("concept", placeOfServiceConcept);
-							obar.put(placeOfService);
-						}else{
-							obar.put(getStaticJsonObject(obsValue));
-						}
-					}
-				}
-			}
-		}*/
 		return obar;
 	}
 	
@@ -903,7 +836,10 @@ public class EncounterService extends OpenmrsService {
 		String refferedPlaceValue = getObsHumanRedableValueFromEventJSON(e, "Place_of_Refer");
 		if(refferedPlaceValue!= null && !refferedPlaceValue.isEmpty() 
 				&& !refferedPlaceValue.equals("null") && !refferedPlaceValue.equals("Null")){
-			JSONObject placeOfReferJSON = getStaticJsonObjectWithFormFieldPath(refferedPlaceValue, formFieldPath);
+			/*JSONObject placeOfReferJSON = getStaticJsonObjectWithFormFieldPath(refferedPlaceValue, formFieldPath);
+			obar.put(placeOfReferJSON);*/
+			JSONObject placeOfReferJSON = getStaticJsonObjectWithFormFieldPath("placeOfRefer", formFieldPath);
+			placeOfReferJSON = setServicePointValue( placeOfReferJSON, refferedPlaceValue);
 			obar.put(placeOfReferJSON);
 		}	
 	/*	List<Obs> eventObs = e.getObs();
@@ -1336,6 +1272,7 @@ public class EncounterService extends OpenmrsService {
 		
 		JSONObject placeOfDelivery = null;
 		JSONObject placeOfRefer = null;
+		JSONObject placeOfService = null;
 		try {
 			//normalDisease = new JSONObject("{\"encounterTypeUuid\":\"81852aee-3f10-11e4-adec-0800271c1b75\",\"visitType\":\"Community clinic service\",\"patientUuid\":\"391ec594-5381-4075-9b1d-7608ed19332d\",\"locationUuid\":\"ec9bfa0e-14f2-440d-bf22-606605d021b2\",\"providers\":[{\"uuid\":\"313c8507-9821-40e4-8a70-71a5c7693d72\"}]}");
 			normalDisease = new JSONObject("{\"encounterTypeUuid\":\"81852aee-3f10-11e4-adec-0800271c1b75\",\"providers\":[{\"uuid\":\"313c8507-9821-40e4-8a70-71a5c7693d72\"}],\"visitType\":\"Household Followup\"}");
@@ -1414,8 +1351,10 @@ public class EncounterService extends OpenmrsService {
 			liveBirthJSON = new JSONObject("{\"concept\":{\"uuid\":\"462960fb-4e2a-4eb4-be56-7aaa63730ea5\",\"name\":\"জীবিত জন্মের সংখ্যা\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"Pragnant_Status_MHV.5/10-0\",\"voided\":false,\"value\":\"0\",\"interpretation\":null,\"inactive\":false,\"groupMembers\":[]}");
 			stillBirthJSON = new JSONObject("{\"concept\":{\"uuid\":\"a104278d-b155-437c-b530-ddbc08903707\",\"name\":\"মৃত জন্মের সংখ্যা\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"Pragnant_Status_MHV.5/11-0\",\"value\":\"0\",\"voided\":false,\"interpretation\":null,\"inactive\":false,\"groupMembers\":[]}");
 			deliveryType = new JSONObject("{\"concept\":{\"uuid\":\"050739a2-5e26-44c5-8a51-9658dedf5455\",\"name\":\"প্রসবের ধরণ\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"Pragnant_Status_MHV.5/12-0\",\"voided\":false,\"value\":null,\"interpretation\":null,\"inactive\":false,\"groupMembers\":[]}");
+			
 			placeOfDelivery = new JSONObject("{\"concept\":{\"uuid\":\"6544f312-e596-4249-86f0-ba1361c0b9eb\",\"name\":\"প্রসবের স্থান\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"Pragnant_Status_MHV.5/13-0\",\"voided\":false,\"value\":null,\"interpretation\":null,\"inactive\":false,\"groupMembers\":[]}");
 			placeOfRefer = new JSONObject("{\"concept\":{\"uuid\":\"953bc1ec-ca20-4db1-8de2-48feb51377e3\",\"name\":\"CHCP_PLACE_OF_REFER\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"সাধারন রোগীর সেবা.19/47-0\",\"voided\":false,\"inactive\":false,\"interpretation\":null}");
+			placeOfService = new JSONObject("{\"concept\":{\"uuid\":\"45c9babc-419d-42e3-8fa3-bce5aa7187e4\",\"name\":\"Place_of_Service\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"সাধারন রোগীর সেবা.19/47-0\",\"voided\":false,\"inactive\":false,\"interpretation\":null}");
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -1559,6 +1498,8 @@ public class EncounterService extends OpenmrsService {
 			objectToReturn = placeOfDelivery;
 		}else if(nameOfJSONObject.equals("placeOfRefer")){
 			objectToReturn = placeOfRefer;
+		}else if(nameOfJSONObject.equals("placeOfService")){
+			objectToReturn = placeOfService;
 		}
 		return objectToReturn;
 	}
