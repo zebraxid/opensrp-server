@@ -356,35 +356,7 @@ public class EncounterService extends OpenmrsService {
 				String placeOfDelivery = getObsHumanRedableValueFromEventJSON(e, "Place_of_Delivery");
 				if(placeOfDelivery!= null){
 					JSONObject placeOfDeliveryJSON = getStaticJsonObjectWithFormFieldPath("placeOfDelivery", formFieldPath);
-					if(placeOfDelivery.equals("at_house")){
-						placeOfDeliveryJSON = putValueIntoJSONObject(placeOfDeliveryJSON, "76260f76-2d8b-4ef2-aaad-01f575db1b1a", "বাড়িতে");
-					}else if(placeOfDelivery.equals("Community_Clinic")){
-						placeOfDeliveryJSON = putValueIntoJSONObject(placeOfDeliveryJSON, "8a17c9ca-398c-49c8-824b-0b4e6d9a58c5", "কমিউনিটি ক্লিনিক");
-					}else if(placeOfDelivery.equals("Union_Sub_Center")){
-						placeOfDeliveryJSON = putValueIntoJSONObject(placeOfDeliveryJSON, "094fcced-08c3-484f-9260-00f9f852d695", "ইউনিয়ন উপস্বাস্থ্য কেন্দ্র");
-					}else if(placeOfDelivery.equals("Union_Family_Welfare_Center")){
-						placeOfDeliveryJSON = putValueIntoJSONObject(placeOfDeliveryJSON, "729aa7bb-4270-4e1f-bb37-8dc4acedae70", "ইউনিয়ন পরিবার কল্যাণ কেন্দ্র");
-					}else if(placeOfDelivery.equals("Union_Health_and_Family_Welfare_Center")){
-						placeOfDeliveryJSON = putValueIntoJSONObject(placeOfDeliveryJSON, "2b4e02e2-11b2-48e4-b218-8adca3dc1731", "ইউনিয়ন স্বাস্থ্য ও পরিবার কল্যাণ কেন্দ্র");
-					}else if(placeOfDelivery.equals("Metarnal_and_Child_Wellfare_Center")){
-						placeOfDeliveryJSON = putValueIntoJSONObject(placeOfDeliveryJSON, "ff45d730-5c44-45e8-a869-64e4cdf2f2ca", "মা ও শিশু কল্যাণ কেন্দ্র");
-					}else if(placeOfDelivery.equals("10_Bed_Hospital")){
-						placeOfDeliveryJSON = putValueIntoJSONObject(placeOfDeliveryJSON, "7a34aa8e-f6f7-4abc-ad62-79bae8386155", "১০ শয্যা বিশিষ্ট হাসপাতাল");
-					}else if(placeOfDelivery.equals("20_Beds_Hospital")){
-						placeOfDeliveryJSON = putValueIntoJSONObject(placeOfDeliveryJSON, "8be604e8-ca58-4bdb-b611-07cd3c553428", "২০ শয্যা বিশিষ্ট হাসপাতাল");
-					}else if(placeOfDelivery.equals("Upazila_Health_Complex")){
-						placeOfDeliveryJSON = putValueIntoJSONObject(placeOfDeliveryJSON, "8f6e53ef-f23a-41d3-8474-0d654d453068", "উপজেলা স্বাস্থ্য কমপ্লেক্স");
-					}else if(placeOfDelivery.equals("District_Hospital")){
-						placeOfDeliveryJSON = putValueIntoJSONObject(placeOfDeliveryJSON, "077bbfb9-a7b6-485c-9d8d-12cf32eaf47c", "সদর হাসপাতাল");
-					}else if(placeOfDelivery.equals("Medical_College_and_Hospital")){
-						placeOfDeliveryJSON = putValueIntoJSONObject(placeOfDeliveryJSON, "cdb1918b-08aa-4d27-829f-44759e1b8a24", "মেডিকেল কলেজ হাসপাতাল");
-					}else if(placeOfDelivery.equals("Non-governmental_Organization")){
-						placeOfDeliveryJSON = putValueIntoJSONObject(placeOfDeliveryJSON, "38a380e4-b4d0-4a1a-ab1f-77a009024e11", "এনজিও");
-					}else if(placeOfDelivery.equals("Specialized_Hospital")){
-						placeOfDeliveryJSON = putValueIntoJSONObject(placeOfDeliveryJSON, "964d4a60-8857-4117-bff3-29b23172ede9", "বিশেষায়িত হাসপাতাল");
-					}else if(placeOfDelivery.equals("Others_Health_Facility")){
-						placeOfDeliveryJSON = putValueIntoJSONObject(placeOfDeliveryJSON, "41bbac3f-5164-4dac-a2ec-8648bf8a7d89", "অন্যান্য স্বাস্থ্য সেবা কেন্দ্র");
-					}
+					placeOfDeliveryJSON = setServicePointValue( placeOfDeliveryJSON, placeOfDelivery);
 					obar.put(placeOfDeliveryJSON);
 				}
 				
@@ -451,6 +423,40 @@ public class EncounterService extends OpenmrsService {
 		obar = addPlaceOfServiceInObservationArray(e, obar,formFieldPath);*/
 		return obar;
 	}
+
+  private JSONObject setServicePointValue(JSONObject placeOfDeliveryJSON, String placeOfDelivery) throws JSONException{
+			logger.info("\n\n\n<><><><><><><><> placeOfDelivery = "+ placeOfDelivery+"\n\n\n");
+	  		if(placeOfDelivery.equals("at_house")){
+				placeOfDeliveryJSON = putValueIntoJSONObject(placeOfDeliveryJSON, "76260f76-2d8b-4ef2-aaad-01f575db1b1a", "বাড়িতে");
+			}else if(placeOfDelivery.equals("Community_Clinic")){
+				placeOfDeliveryJSON = putValueIntoJSONObject(placeOfDeliveryJSON, "8a17c9ca-398c-49c8-824b-0b4e6d9a58c5", "কমিউনিটি ক্লিনিক");
+			}else if(placeOfDelivery.equals("Union_Sub_Center")){
+				placeOfDeliveryJSON = putValueIntoJSONObject(placeOfDeliveryJSON, "094fcced-08c3-484f-9260-00f9f852d695", "ইউনিয়ন উপস্বাস্থ্য কেন্দ্র");
+			}else if(placeOfDelivery.equals("Union_Family_Welfare_Center")){
+				placeOfDeliveryJSON = putValueIntoJSONObject(placeOfDeliveryJSON, "729aa7bb-4270-4e1f-bb37-8dc4acedae70", "ইউনিয়ন পরিবার কল্যাণ কেন্দ্র");
+			}else if(placeOfDelivery.equals("Union_Health_and_Family_Welfare_Center")){
+				placeOfDeliveryJSON = putValueIntoJSONObject(placeOfDeliveryJSON, "2b4e02e2-11b2-48e4-b218-8adca3dc1731", "ইউনিয়ন স্বাস্থ্য ও পরিবার কল্যাণ কেন্দ্র");
+			}else if(placeOfDelivery.equals("Metarnal_and_Child_Wellfare_Center")){
+				placeOfDeliveryJSON = putValueIntoJSONObject(placeOfDeliveryJSON, "ff45d730-5c44-45e8-a869-64e4cdf2f2ca", "মা ও শিশু কল্যাণ কেন্দ্র");
+			}else if(placeOfDelivery.equals("10_Bed_Hospital")){
+				placeOfDeliveryJSON = putValueIntoJSONObject(placeOfDeliveryJSON, "7a34aa8e-f6f7-4abc-ad62-79bae8386155", "১০ শয্যা বিশিষ্ট হাসপাতাল");
+			}else if(placeOfDelivery.equals("20_Beds_Hospital")){
+				placeOfDeliveryJSON = putValueIntoJSONObject(placeOfDeliveryJSON, "8be604e8-ca58-4bdb-b611-07cd3c553428", "২০ শয্যা বিশিষ্ট হাসপাতাল");
+			}else if(placeOfDelivery.equals("Upazila_Health_Complex")){
+				placeOfDeliveryJSON = putValueIntoJSONObject(placeOfDeliveryJSON, "8f6e53ef-f23a-41d3-8474-0d654d453068", "উপজেলা স্বাস্থ্য কমপ্লেক্স");
+			}else if(placeOfDelivery.equals("District_Hospital")){
+				placeOfDeliveryJSON = putValueIntoJSONObject(placeOfDeliveryJSON, "077bbfb9-a7b6-485c-9d8d-12cf32eaf47c", "সদর হাসপাতাল");
+			}else if(placeOfDelivery.equals("Medical_College_and_Hospital")){
+				placeOfDeliveryJSON = putValueIntoJSONObject(placeOfDeliveryJSON, "cdb1918b-08aa-4d27-829f-44759e1b8a24", "মেডিকেল কলেজ হাসপাতাল");
+			}else if(placeOfDelivery.equals("Non-governmental_Organization")){
+				placeOfDeliveryJSON = putValueIntoJSONObject(placeOfDeliveryJSON, "38a380e4-b4d0-4a1a-ab1f-77a009024e11", "এনজিও");
+			}else if(placeOfDelivery.equals("Specialized_Hospital")){
+				placeOfDeliveryJSON = putValueIntoJSONObject(placeOfDeliveryJSON, "964d4a60-8857-4117-bff3-29b23172ede9", "বিশেষায়িত হাসপাতাল");
+			}else if(placeOfDelivery.equals("Others_Health_Facility")){
+				placeOfDeliveryJSON = putValueIntoJSONObject(placeOfDeliveryJSON, "41bbac3f-5164-4dac-a2ec-8648bf8a7d89", "অন্যান্য স্বাস্থ্য সেবা কেন্দ্র");
+			}
+			return placeOfDeliveryJSON;
+  }
 	
 	
 	
@@ -464,7 +470,7 @@ public class EncounterService extends OpenmrsService {
 		boolean hasDisease =false;
 		if(client.getAttributes().containsKey("has_disease")){
 			String hasDiseaseStr = (String)client.getAttributes().get("has_disease");
-			if(hasDiseaseStr.equals("হ্যাঁ")){
+			if(hasDiseaseStr.equals("হ্যাঁ") || hasDiseaseStr.equals("Yes")){
 				hasDisease = true;
 			}
 		}
@@ -537,7 +543,7 @@ public class EncounterService extends OpenmrsService {
 		boolean hasDisease =false;
 		if(client.getAttributes().containsKey("has_disease")){
 			String hasDiseaseStr = (String)client.getAttributes().get("has_disease");
-			if(hasDiseaseStr.equals("হ্যাঁ")){
+			if(hasDiseaseStr.equals("হ্যাঁ") || hasDiseaseStr.equals("Yes")){
 				hasDisease = true;
 			}
 		}
@@ -752,31 +758,31 @@ public class EncounterService extends OpenmrsService {
 			String familyPlanning = (String)client.getAttributes().get("familyplanning");
 			familyPlanning = familyPlanning.trim();
 			logger.info("\n\n\n<><><><><><><><> Family Planning Process :"+ familyPlanning + "<><><><><><><><>\n\n\n ");
-			if(familyPlanning.equals("খাবার বড়ি")){
+			if(familyPlanning.equals("খাবার বড়ি")||familyPlanning.equals("Oral_Contraceptives")){
 				JSONObject familyPlanningCHCP = createJsonFamilyPlanningMHV("oralContraceptives");
 				obar.put(familyPlanningCHCP);
-			}else if(familyPlanning.equals("কনডম")){
+			}else if(familyPlanning.equals("কনডম")|| familyPlanning.equals("Condoms")){
 				JSONObject familyPlanningCHCP = createJsonFamilyPlanningMHV("condoms");
 				obar.put(familyPlanningCHCP);
-			}else if(familyPlanning.equals("ইনজেক্টবল")){
+			}else if(familyPlanning.equals("ইনজেক্টবল")||familyPlanning.equals("Injectable")){
 				JSONObject familyPlanningCHCP = createJsonFamilyPlanningMHV("injectable");
 				obar.put(familyPlanningCHCP);
-			}else if(familyPlanning.equals("অন্যান্য পদ্ধতি")){
+			}else if(familyPlanning.equals("অন্যান্য পদ্ধতি")||familyPlanning.equals("Other_Method")){
 				JSONObject familyPlanningCHCP = createJsonFamilyPlanningMHV("otherMethod");
 				obar.put(familyPlanningCHCP);
-			}else if(familyPlanning.equals("আই ইউ ডি")){
+			}else if(familyPlanning.equals("আই ইউ ডি")||familyPlanning.equals("IUD")){
 				JSONObject familyPlanningCHCP = createJsonFamilyPlanningMHV("iud");
 				obar.put(familyPlanningCHCP);
-			}else if(familyPlanning.equals("ইমপ্লান্ট")){
+			}else if(familyPlanning.equals("ইমপ্লান্ট")||familyPlanning.equals("Implant")){
 				JSONObject familyPlanningCHCP = createJsonFamilyPlanningMHV("implant");
 				obar.put(familyPlanningCHCP);
-			}else if(familyPlanning.equals("স্থায়ী পদ্ধতি")){
+			}else if(familyPlanning.equals("স্থায়ী পদ্ধতি")||familyPlanning.equals("Permanent_FP_Method")){
 				JSONObject familyPlanningCHCP = createJsonFamilyPlanningMHV("permanentSolution");
 				obar.put(familyPlanningCHCP);
-			}else if(familyPlanning.equals("বন্ধ্যা দম্পতি")){
+			}else if(familyPlanning.equals("বন্ধ্যা দম্পতি")||familyPlanning.equals("Infertility")){
 				JSONObject familyPlanningCHCP = createJsonFamilyPlanningMHV("impotentCouple");
 				obar.put(familyPlanningCHCP);
-			}else if(familyPlanning.equals("পদ্ধতি ব্যবহার করে না")){
+			}else if(familyPlanning.equals("পদ্ধতি ব্যবহার করে না")||familyPlanning.equals("No_Method_Usage")){
 				JSONObject familyPlanningCHCP = createJsonFamilyPlanningMHV("noPreventiveMeasure");
 				obar.put(familyPlanningCHCP);
 			}
@@ -865,8 +871,42 @@ public class EncounterService extends OpenmrsService {
 		return staticJSONObject;
 	}
 	
+	private JSONArray addPlaceOfServiceInObservationArray(Event e, JSONArray obar, String formFieldPath) throws JSONException{
+		String servicePlaceValue = getObsValueFromEventJSON(e, "Place_of_Service");
+		logger.info("\n\n\n servicePlaceValue"+servicePlaceValue+"\n\n\n");
+		JSONObject placeOfServiceJSON = getStaticJsonObjectWithFormFieldPath("placeOfDelivery", formFieldPath);
+		placeOfServiceJSON = setServicePointValue( placeOfServiceJSON, servicePlaceValue);
+		obar.put(placeOfServiceJSON);
+		/*List<Obs> eventObs = e.getObs();
+		if(eventObs!= null){
+			for(Obs o: eventObs){
+				String formSubmissionField = o.getFormSubmissionField();
+				if(formSubmissionField!= null){
+					String obsValue = (String) o.getValues().get(0);
+					if(formSubmissionField.equals("Place_of_Service") && obsValue!= null){
+						if(!formFieldPath.isEmpty()){
+							JSONObject placeOfService = getStaticJsonObjectWithFormFieldPath(obsValue, formFieldPath);
+							JSONObject placeOfServiceConcept = getStaticJsonObject("placeOfServiceConcept");
+							placeOfService.put("concept", placeOfServiceConcept);
+							obar.put(placeOfService);
+						}else{
+							obar.put(getStaticJsonObject(obsValue));
+						}
+					}
+				}
+			}
+		}*/
+		return obar;
+	}
+	
 	private JSONArray addRefferedPlaceInObservationArray(Event e, JSONArray obar, String formFieldPath) throws JSONException{
-		List<Obs> eventObs = e.getObs();
+		String refferedPlaceValue = getObsHumanRedableValueFromEventJSON(e, "Place_of_Refer");
+		if(refferedPlaceValue!= null && !refferedPlaceValue.isEmpty() 
+				&& !refferedPlaceValue.equals("null") && !refferedPlaceValue.equals("Null")){
+			JSONObject placeOfReferJSON = getStaticJsonObjectWithFormFieldPath(refferedPlaceValue, formFieldPath);
+			obar.put(placeOfReferJSON);
+		}	
+	/*	List<Obs> eventObs = e.getObs();
 		if(eventObs!= null){
 			for(Obs o: eventObs){
 				String formSubmissionField = o.getFormSubmissionField();
@@ -889,33 +929,12 @@ public class EncounterService extends OpenmrsService {
 					}
 				}
 			}
-		}
+		}*/
 		return obar;
 	}
 	
 	
-	private JSONArray addPlaceOfServiceInObservationArray(Event e, JSONArray obar, String formFieldPath) throws JSONException{
-		List<Obs> eventObs = e.getObs();
-		if(eventObs!= null){
-			for(Obs o: eventObs){
-				String formSubmissionField = o.getFormSubmissionField();
-				if(formSubmissionField!= null){
-					String obsValue = (String) o.getValues().get(0);
-					if(formSubmissionField.equals("Place_of_Service") && obsValue!= null){
-						if(!formFieldPath.isEmpty()){
-							JSONObject placeOfService = getStaticJsonObjectWithFormFieldPath(obsValue, formFieldPath);
-							JSONObject placeOfServiceConcept = getStaticJsonObject("placeOfServiceConcept");
-							placeOfService.put("concept", placeOfServiceConcept);
-							obar.put(placeOfService);
-						}else{
-							obar.put(getStaticJsonObject(obsValue));
-						}
-					}
-				}
-			}
-		}
-		return obar;
-	}
+	
 	
 // not needed if we put static json object in observation : February 4, 2019
 /*	public JSONObject setCommonObservationInfo(HashMap<String, Object> commonValuesMap) throws JSONException {
@@ -1316,6 +1335,7 @@ public class EncounterService extends OpenmrsService {
 		JSONObject deliveryType = null;
 		
 		JSONObject placeOfDelivery = null;
+		JSONObject placeOfRefer = null;
 		try {
 			//normalDisease = new JSONObject("{\"encounterTypeUuid\":\"81852aee-3f10-11e4-adec-0800271c1b75\",\"visitType\":\"Community clinic service\",\"patientUuid\":\"391ec594-5381-4075-9b1d-7608ed19332d\",\"locationUuid\":\"ec9bfa0e-14f2-440d-bf22-606605d021b2\",\"providers\":[{\"uuid\":\"313c8507-9821-40e4-8a70-71a5c7693d72\"}]}");
 			normalDisease = new JSONObject("{\"encounterTypeUuid\":\"81852aee-3f10-11e4-adec-0800271c1b75\",\"providers\":[{\"uuid\":\"313c8507-9821-40e4-8a70-71a5c7693d72\"}],\"visitType\":\"Household Followup\"}");
@@ -1395,6 +1415,7 @@ public class EncounterService extends OpenmrsService {
 			stillBirthJSON = new JSONObject("{\"concept\":{\"uuid\":\"a104278d-b155-437c-b530-ddbc08903707\",\"name\":\"মৃত জন্মের সংখ্যা\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"Pragnant_Status_MHV.5/11-0\",\"value\":\"0\",\"voided\":false,\"interpretation\":null,\"inactive\":false,\"groupMembers\":[]}");
 			deliveryType = new JSONObject("{\"concept\":{\"uuid\":\"050739a2-5e26-44c5-8a51-9658dedf5455\",\"name\":\"প্রসবের ধরণ\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"Pragnant_Status_MHV.5/12-0\",\"voided\":false,\"value\":null,\"interpretation\":null,\"inactive\":false,\"groupMembers\":[]}");
 			placeOfDelivery = new JSONObject("{\"concept\":{\"uuid\":\"6544f312-e596-4249-86f0-ba1361c0b9eb\",\"name\":\"প্রসবের স্থান\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"Pragnant_Status_MHV.5/13-0\",\"voided\":false,\"value\":null,\"interpretation\":null,\"inactive\":false,\"groupMembers\":[]}");
+			placeOfRefer = new JSONObject("{\"concept\":{\"uuid\":\"953bc1ec-ca20-4db1-8de2-48feb51377e3\",\"name\":\"CHCP_PLACE_OF_REFER\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"সাধারন রোগীর সেবা.19/47-0\",\"voided\":false,\"inactive\":false,\"interpretation\":null}");
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -1536,6 +1557,8 @@ public class EncounterService extends OpenmrsService {
 			objectToReturn = deliveryType;
 		}else if(nameOfJSONObject.equals("placeOfDelivery")){
 			objectToReturn = placeOfDelivery;
+		}else if(nameOfJSONObject.equals("placeOfRefer")){
+			objectToReturn = placeOfRefer;
 		}
 		return objectToReturn;
 	}
