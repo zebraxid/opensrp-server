@@ -160,7 +160,7 @@ public class OpenmrsSyncerListener {
 			
 			lastsync = config.getAppStateTokenByName(SchedulerConfig.openmrs_syncer_sync_event_by_date_updated);
 			start = lastsync == null || lastsync.getValue() == null ? 0 : lastsync.longValue();
-			pushEvent(start);
+			// pushEvent(start);
 			logger("PUSH TO OPENMRS FINISHED AT ", "");
 			
 		}
