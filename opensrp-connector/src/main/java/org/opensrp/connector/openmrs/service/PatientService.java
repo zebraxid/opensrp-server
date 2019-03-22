@@ -327,8 +327,15 @@ public class PatientService extends OpenmrsService {
 						jio.put("identifier", id.getValue());
 						Object cloc = c.getAttribute("Location");
 						jio.put("location", cloc == null ? "Unknown Location" : cloc);
-						
 						jio.put("preferred", true);
+						ids.put(jio);
+						
+					} else if (id.getKey().equalsIgnoreCase("OPENMRS_UUID")) {
+						jio.put("identifierType", "8347581d-a066-4615-b834-9332e7d744ed");
+						jio.put("identifier", id.getValue());
+						Object cloc = c.getAttribute("Location");
+						jio.put("location", cloc == null ? "Unknown Location" : cloc);
+						jio.put("preferred", false);
 						ids.put(jio);
 						
 					} else {
