@@ -146,7 +146,7 @@ public class PatientService extends OpenmrsService {
 	public JSONObject createPerson(Client be) throws JSONException {
 		JSONObject per = convertBaseEntityToOpenmrsJson(be);
 		String response = HttpUtil.post(getURL() + "/" + PERSON_URL, "", per.toString(), OPENMRS_USER, OPENMRS_PWD).body();
-		System.err.println("response:" + response.toString());
+		//System.err.println("response:" + response.toString());
 		return new JSONObject(response);
 	}
 	
@@ -200,9 +200,11 @@ public class PatientService extends OpenmrsService {
 			
 			try {
 				JSONObject a = new JSONObject();
-				a.put("attributeType", getPersonAttributeType(at.getKey()).getString("uuid"));
-				a.put("value", at.getValue());
-				attrs.put(a);
+				if (ATTRIBUTES.containsKey(at.getKey())) {
+					a.put("attributeType", ATTRIBUTES.get(at.getKey()));
+					a.put("value", at.getValue());
+					attrs.put(a);
+				}
 			}
 			catch (Exception e) {
 				logger.error("attribute name " + at.getValue() + ", message" + e.getMessage());
@@ -269,30 +271,36 @@ public class PatientService extends OpenmrsService {
 		JSONArray ids = new JSONArray();
 		if (c.getIdentifiers() != null) {
 			for (Entry<String, String> id : c.getIdentifiers().entrySet()) {
-				JSONObject jio = new JSONObject();
-				JSONObject idobj = getIdentifierType(id.getKey());
-				if (idobj == null) {
-					idobj = createIdentifierType(id.getKey(), id.getKey() + " - FOR THRIVE OPENSRP");
-				}
-				jio.put("identifierType", idobj.getString("uuid"));
-				jio.put("identifier", id.getValue());
-				Object cloc = c.getAttribute("Location");
-				jio.put("location", cloc == null ? "Unknown Location" : cloc);
-				
-				if (idobj.getString("display").equalsIgnoreCase("Patient_Identifier")) {
-					jio.put("preferred", true);
-					ids.put(jio);
+				if (id.getValue() != null) {
+					JSONObject jio = new JSONObject();
+					if (id.getKey().equalsIgnoreCase("Patient_Identifier")) {
+						jio.put("identifierType", "81433852-3f10-11e4-adec-0800271c1b75");
+						jio.put("identifier", id.getValue());
+						Object cloc = c.getAttribute("Location");
+						jio.put("location", cloc == null ? "Unknown Location" : cloc);
+						
+						jio.put("preferred", true);
+						ids.put(jio);
+						
+					} else {
+						JSONObject idobj = getIdentifierType(id.getKey());
+						if (idobj == null) {
+							idobj = createIdentifierType(id.getKey(), id.getKey() + " - FOR THRIVE OPENSRP");
+						}
+						jio.put("identifierType", idobj.getString("uuid"));
+						jio.put("identifier", id.getValue());
+						Object cloc = c.getAttribute("Location");
+						jio.put("location", cloc == null ? "Unknown Location" : cloc);
+						jio.put("preferred", false);
+						ids.put(jio);
+					}
 				}
 				
 			}
 		}
 		
 		JSONObject jio = new JSONObject();
-		JSONObject ido = getIdentifierType(OPENSRP_IDENTIFIER_TYPE);
-		if (ido == null) {
-			ido = createIdentifierType(OPENSRP_IDENTIFIER_TYPE, OPENSRP_IDENTIFIER_TYPE + " - FOR THRIVE OPENSRP");
-		}
-		jio.put("identifierType", ido.getString("uuid"));
+		jio.put("identifierType", "d21d0aa9-9324-4a1d-91f7-48819d408755"); // OpenSRP Thrive UID
 		jio.put("identifier", c.getBaseEntityId());
 		Object cloc = c.getAttribute("Location");
 		jio.put("location", cloc == null ? "Unknown Location" : cloc);
@@ -302,7 +310,7 @@ public class PatientService extends OpenmrsService {
 		//Patient_Identifier
 		p.put("identifiers", ids);
 		String response = HttpUtil.post(getURL() + "/" + PATIENT_URL, "", p.toString(), OPENMRS_USER, OPENMRS_PWD).body();
-		System.err.println("response" + response);
+		//System.err.println("response" + response);
 		return new JSONObject(response);
 	}
 	
@@ -312,33 +320,48 @@ public class PatientService extends OpenmrsService {
 		JSONArray ids = new JSONArray();
 		if (c.getIdentifiers() != null) {
 			for (Entry<String, String> id : c.getIdentifiers().entrySet()) {
-				JSONObject jio = new JSONObject();
-				JSONObject idobj = getIdentifierType(id.getKey());
-				if (idobj == null) {
-					idobj = createIdentifierType(id.getKey(), id.getKey() + " - FOR THRIVE OPENSRP");
+				if (id.getValue() != null) {
+					JSONObject jio = new JSONObject();
+					if (id.getKey().equalsIgnoreCase("Patient_Identifier")) {
+						jio.put("identifierType", "81433852-3f10-11e4-adec-0800271c1b75");
+						jio.put("identifier", id.getValue());
+						Object cloc = c.getAttribute("Location");
+						jio.put("location", cloc == null ? "Unknown Location" : cloc);
+						jio.put("preferred", true);
+						ids.put(jio);
+						
+					} else if (id.getKey().equalsIgnoreCase("OPENMRS_UUID")) {
+						jio.put("identifierType", "8347581d-a066-4615-b834-9332e7d744ed");
+						jio.put("identifier", id.getValue());
+						Object cloc = c.getAttribute("Location");
+						jio.put("location", cloc == null ? "Unknown Location" : cloc);
+						jio.put("preferred", false);
+						ids.put(jio);
+						
+					} else {
+						JSONObject idobj = getIdentifierType(id.getKey());
+						if (idobj == null) {
+							idobj = createIdentifierType(id.getKey(), id.getKey() + " - FOR THRIVE OPENSRP");
+						}
+						jio.put("identifierType", idobj.getString("uuid"));
+						jio.put("identifier", id.getValue());
+						Object cloc = c.getAttribute("Location");
+						jio.put("location", cloc == null ? "Unknown Location" : cloc);
+						jio.put("preferred", false);
+						ids.put(jio);
+					}
 				}
-				jio.put("identifierType", idobj.getString("uuid"));
-				jio.put("identifier", id.getValue());
-				Object cloc = c.getAttribute("Location");
-				jio.put("location", cloc == null ? "Unknown Location" : cloc);
-				//jio.put("preferred", true);
-				if (idobj.getString("display").equalsIgnoreCase("Patient_Identifier")) {
-					jio.put("preferred", true);
-					ids.put(jio);
-				}
+				
 			}
 		}
 		
 		JSONObject jio = new JSONObject();
-		JSONObject ido = getIdentifierType(OPENSRP_IDENTIFIER_TYPE);
-		if (ido == null) {
-			ido = createIdentifierType(OPENSRP_IDENTIFIER_TYPE, OPENSRP_IDENTIFIER_TYPE + " - FOR THRIVE OPENSRP");
-		}
-		jio.put("identifierType", ido.getString("uuid"));
+		
+		jio.put("identifierType", "d21d0aa9-9324-4a1d-91f7-48819d408755"); // OpenSRP Thrive UID
 		jio.put("identifier", c.getBaseEntityId());
 		Object cloc = c.getAttribute("Location");
 		jio.put("location", cloc == null ? "Unknown Location" : cloc);
-		jio.put("preferred", true);
+		jio.put("preferred", false);
 		
 		ids.put(jio);
 		
@@ -382,13 +405,16 @@ public class PatientService extends OpenmrsService {
 	
 	public Client convertToClient(JSONObject patient) throws JSONException {
 		Client c = new Client(null);
-		JSONArray ar = patient.getJSONArray("identifiers");
-		for (int i = 0; i < ar.length(); i++) {
-			JSONObject ji = ar.getJSONObject(i);
-			if (ji.getJSONObject("identifierType").getString("display").equalsIgnoreCase(OPENSRP_IDENTIFIER_TYPE)) {
-				c.setBaseEntityId(ji.getString("identifier"));
-			} else {
-				c.addIdentifier(ji.getJSONObject("identifierType").getString("display"), ji.getString("identifier"));
+		
+		if (patient.has("identifiers")) {
+			JSONArray ar = patient.getJSONArray("identifiers");
+			for (int i = 0; i < ar.length(); i++) {
+				JSONObject ji = ar.getJSONObject(i);
+				if (ji.getJSONObject("identifierType").getString("display").equalsIgnoreCase(OPENSRP_IDENTIFIER_TYPE)) {
+					c.setBaseEntityId(ji.getString("identifier"));
+				} else {
+					c.addIdentifier(ji.getJSONObject("identifierType").getString("display"), ji.getString("identifier"));
+				}
 			}
 		}
 		
@@ -492,5 +518,46 @@ public class PatientService extends OpenmrsService {
 			ex.printStackTrace();
 		}
 		return response;
+	}
+	
+	static Map<String, String> ATTRIBUTES = new HashMap<String, String>();
+	static {
+		ATTRIBUTES.put("idtype", "ef653bc8-4dca-40ca-bbdd-c12884a87bea");
+		ATTRIBUTES.put("primaryContact", "c1f7fd17-3f10-11e4-adec-0800271c1b75");
+		ATTRIBUTES.put("nationalId", "7721334a-c907-4861-bbff-89011541a998");
+		ATTRIBUTES.put("birthRegistrationID", "2721c627-b0c3-4df6-8bca-82e4fbcafa6f");
+		ATTRIBUTES.put("epicardnumber", "66b465d6-d73a-4a9c-bb0c-c340c4182c44");
+		ATTRIBUTES.put("Realtion_With_Household_Head", "78a4f2d7-503a-494a-aa0f-680437aa7af2");
+		ATTRIBUTES.put("motherNameEnglish", "93bbf6fc-e04c-4eb1-8ce3-952dbe46249a");
+		ATTRIBUTES.put("motherNameBangla", "becd3b62-ff30-4d19-ac25-82804f234ab7");
+		ATTRIBUTES.put("fatherNameEnglish", "7c6efc5a-190a-4b3d-89ae-e238b18f7235");
+		ATTRIBUTES.put("fathernameBangla", "5e3999ef-0770-49be-bec0-d4a4631d54a1");
+		ATTRIBUTES.put("BirthWeight", "0f7263eb-ed90-4dd2-b6c8-12bc89cf0296");
+		ATTRIBUTES.put("Used_7.1%_Chlorohexidin", "babfc3e2-4650-4979-9b12-08d3b03b7d3a");
+		ATTRIBUTES.put("MaritalStatus", "2009a9a3-d221-4253-bfdb-bd77d23aa401");
+		ATTRIBUTES.put("Husband Name_English", "be1bc435-73fb-4d44-9d32-cc4bd5ba9ffa");
+		ATTRIBUTES.put("Husband Name_Bangla", "90d99d66-6c96-4598-ae67-077b23945f19");
+		ATTRIBUTES.put("distanceFromCenter", "d1314f0f-c2d9-4223-88d9-ec4d2827c9da");
+		ATTRIBUTES.put("Wife Name_English", "b9196222-c9d9-48c1-a7e7-14dd3c53b37a");
+		ATTRIBUTES.put("phoneNumber", "837089ba-2503-46d6-b067-ebeaa059af3c");
+		ATTRIBUTES.put("RationCard", "6f32179b-c6b9-465e-a278-c15da2637630");
+		ATTRIBUTES.put("birthPlace", "4e98178f-09cf-4876-8e29-3d83956aac38");
+		ATTRIBUTES.put("familyIncome", "a10fe690-1c44-4ba8-a244-8fe51f9e61f7");
+		ATTRIBUTES.put("disable", "9fdb104b-41fa-4fb7-8fcf-53819be5460b");
+		ATTRIBUTES.put("Disability_Type", "3ac43545-8fae-4576-974f-25d0175190d1");
+		ATTRIBUTES.put("householdCode", "11fd9a5f-7f21-474b-a7a9-c1d97253c9a7");
+		ATTRIBUTES.put("ethnicity", "0058f73b-ecf1-4dfa-9976-c2a0fb6bdf78");
+		ATTRIBUTES.put("education", "c1f4a004-3f10-11e4-adec-0800271c1b75");
+		ATTRIBUTES.put("Religion", "b1dfc809-332e-4fc9-9060-599a46123c42");
+		ATTRIBUTES.put("bloodgroup", "7b9f5ada-256c-42dc-bcb7-a3996152084e");
+		ATTRIBUTES.put("has_disease", "8f846da0-2dd0-42e2-a90f-cb6bd719033e");
+		ATTRIBUTES.put("PregnancyStatus", "44a5a1e0-fa14-4119-a08b-b7ce38e751e1");
+		ATTRIBUTES.put("LMP", "f4732414-9db7-48ca-a806-7b806b59569c");
+		ATTRIBUTES.put("delivery_date", "f8a74ac8-dd11-45cd-a867-58a40b071e7e");
+		ATTRIBUTES.put("familyplanning", "ab2bd0cc-3e0c-4b50-a69b-8f09f9df6eca");
+		ATTRIBUTES.put("RiskyHabit", "3e1b26a7-1fa6-450d-a94d-f7f9df7c8f11");
+		ATTRIBUTES.put("family_diseases_details", "abf3b684-bdbb-453c-ab30-6fba53d98614");
+		ATTRIBUTES.put("Disease_status", "d131c367-2487-4a03-a6fc-3102f8fbff24");
+		
 	}
 }
