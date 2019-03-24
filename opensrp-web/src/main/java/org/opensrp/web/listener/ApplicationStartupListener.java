@@ -68,9 +68,9 @@ public class ApplicationStartupListener implements ApplicationListener<ContextRe
 			//scheduler.startJob(anmReportScheduler);
 			//scheduler.startJob(mctsReportScheduler);
 			// scheduler.startJob(openmrsScheduleSyncerScheduler);
-			/*scheduler.startJob(atomfeedSchedule);
+			scheduler.startJob(atomfeedSchedule);
 			scheduler.startJob(encounterSchedule);
-			scheduler.startJob(DHIS2Syncer);*/
+			scheduler.startJob(DHIS2Syncer);
 			
 			System.out.println("STARTED ALL SCHEDULES");
 		}

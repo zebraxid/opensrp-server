@@ -34,7 +34,7 @@ public class OpenmrsAtomfeedListener {
 			
 			patientAtomfeed.processEvents();
 			
-			//encounterAtomfeed.processEvents();
+			encounterAtomfeed.processEvents();
 		}
 		catch (Exception e) {
 			e.printStackTrace();
