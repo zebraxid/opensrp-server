@@ -182,8 +182,7 @@ public class ClientService {
 			}
 			if (relationship != null) {
 				JSONObject personB = relationship.getJSONObject("personB");
-				List<Client> clients = findAllByIdentifier("OPENMRS_UUID", personB.getString("uuid"));
-				original.getRelationships().clear();
+				List<Client> clients = findAllByIdentifier("OPENMRS_UUID", personB.getString("uuid"));				
 				if (clients.size() != 0) {
 					original.addRelationship("household", clients.get(0).getBaseEntityId());
 				}
