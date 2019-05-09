@@ -281,7 +281,7 @@ public class EncounterService extends OpenmrsService {
 				pregnancyInfoValue.put("displayString", "প্রসব পূর্ব");
 				String lmpConceptUuid = "c45a7e4b-3f10-11e4-adec-0800271c1b75";
 				String lmpConceptName = "শেষ মাসিকের তারিখ";
-				addEventObsDateInObservationArray(e, obar, formFieldPath,"lmp_date", lmpConceptUuid, lmpConceptName);
+				addEventObsDateInObservationArray(e, obar, formFieldPath,"LMP", lmpConceptUuid, lmpConceptName);
 			}else if(pregnancyStatusString.equals("Postnatal")){
 				//pregnancy stage
 				pregnancyInfoValue.put("uuid", "898bd550-eb0f-4cc1-92c4-1e0c73453484");
@@ -760,13 +760,15 @@ public class EncounterService extends OpenmrsService {
 	private JSONArray createObservationNormalDisease(Event e)
 			throws JSONException {
 		JSONArray obar= new JSONArray();
-		List<String> diseaseList = null;
 		//String formFieldPath = "সাধারন রোগীর সেবা.19/43-0";
 		String formFieldPath = "General_Disease_Femal_MHV.1/1-0";
 		Client client = clientService.getByBaseEntityId(e.getBaseEntityId());
 		if(client.getGender()!= null && client.getGender().equals("M")){
 			formFieldPath = "General_Disease_Male.6/14-0";
 		}
+		obar = addDiseaseInObservationArray(e, obar, formFieldPath);
+		// new method
+	   /*List<String> diseaseList = null;
 		boolean hasDisease =false;
 		if(client.getAttributes().containsKey("has_disease")){
 			String hasDiseaseStr = (String)client.getAttributes().get("has_disease");
@@ -800,7 +802,8 @@ public class EncounterService extends OpenmrsService {
 			//obar.put(getStaticJsonObject("healthCareGivenNo"));
 			JSONObject healthCareGivenNo = getStaticJsonObjectWithFormFieldPath("hasDiseaseNo", formFieldPath);
 			obar.put(healthCareGivenNo);
-		}
+		}*/
+		// new method
 		
 		obar = addRefferedPlaceInObservationArray(e, obar, formFieldPath);
 		return obar;
@@ -829,6 +832,103 @@ public class EncounterService extends OpenmrsService {
 		JSONObject placeOfServiceJSON = getStaticJsonObjectWithFormFieldPath("placeOfDelivery", formFieldPath);
 		placeOfServiceJSON = setServicePointValue( placeOfServiceJSON, servicePlaceValue);
 		obar.put(placeOfServiceJSON);
+		return obar;
+	}
+	
+	//for getting disease form client and set it to disease list -- may 9, 2019
+	private List<String> setDiseaseFromClientToDiseaseList(Client client, boolean hasDisease, List<String> diseaseList, String diseaseType){
+		if(client.getAttributes().containsKey(diseaseType) && hasDisease == true){
+			String diseaseString = (String)client.getAttributes().get(diseaseType);
+			List<String> communicableDiseaseList = null;
+			communicableDiseaseList = Arrays.asList(diseaseString.split(","));
+			if(communicableDiseaseList!= null && !communicableDiseaseList.isEmpty()){
+				diseaseList.addAll(communicableDiseaseList);
+			}
+		}
+		logger.info("\n\n\n<><><><><> "+ "DiseaseType : "+ diseaseType + "\n "
+				+"DiseaseList : "+ diseaseList.toString()+ "<><><><><>\n\n\n ");
+		return diseaseList;
+	}
+	//end : for getting disease form client and set it to disease list
+	
+	//for setting disease in observationArray - may 8, 2019
+	private JSONArray addDiseaseInObservationArray(Event e, JSONArray obar, String formFieldPath) throws JSONException {
+		//List<String> diseaseList = null;
+		List<String> diseaseList = new ArrayList<String>();
+		Client client = clientService.getByBaseEntityId(e.getBaseEntityId());
+		boolean hasDisease =false;
+		if(client.getAttributes().containsKey("has_disease")){
+			String hasDiseaseStr = (String)client.getAttributes().get("has_disease");
+			if(hasDiseaseStr.equals("হ্যাঁ") || hasDiseaseStr.equals("Yes")){
+				hasDisease = true;
+			}
+		}
+		diseaseList = setDiseaseFromClientToDiseaseList(client, hasDisease, diseaseList, "Communicable Disease");
+		diseaseList = setDiseaseFromClientToDiseaseList(client, hasDisease, diseaseList, "Non Communicable Disease");
+		diseaseList = setDiseaseFromClientToDiseaseList(client, hasDisease, diseaseList, "Disease_Below_2Month_Age");
+		diseaseList = setDiseaseFromClientToDiseaseList(client, hasDisease, diseaseList, "Disease_2Month_5Years");
+		//make another method
+		/*
+		if(client.getAttributes().containsKey("Communicable Disease") && hasDisease == true){
+			String diseaseString = (String)client.getAttributes().get("Communicable Disease");
+			List<String> communicableDiseaseList = null;
+			communicableDiseaseList = Arrays.asList(diseaseString.split(","));
+			if(communicableDiseaseList!= null && !communicableDiseaseList.isEmpty()){
+				diseaseList.addAll(communicableDiseaseList);
+			}
+		}*/
+		//end method
+		if(hasDisease){
+			JSONObject healthCareGivenYes = getStaticJsonObject("hasDiseaseYes");
+			healthCareGivenYes.put("formFieldPath", formFieldPath);
+			JSONObject concept = new JSONObject();
+			concept.put("name", "Disease_Below_2Month_CHCP");
+			concept.put("uuid", "1031ee9f-460c-433d-b0f9-e6aac203d857");
+			obar.put(healthCareGivenYes);
+			if(diseaseList!=null){
+				for(int i=0; i< diseaseList.size()-1; i++){
+					String diseaseName = diseaseList.get(i);
+					if(diseaseName!= null && !diseaseName.isEmpty()){
+						if(diseaseName.equals("Pneumonia") || diseaseName.equals("unspec.")){
+							String nextDiseaseName = diseaseList.get(i+1);
+							nextDiseaseName = nextDiseaseName.trim();
+							logger.info("\n\n\n<><><><><> "+ diseaseName +" --> "+nextDiseaseName+ "<><><><><>\n\n\n ");
+							
+							if(diseaseName.equals("Pneumonia")){
+								if(nextDiseaseName.equals("unspec.")){
+									JSONObject staticJSONObject = getStaticJsonObject("coldAndCough");
+									logger.info("\n\n\n<><><><><> DiscreteFunction disease static JSON :"+"coldAndCough"+"->>"+ staticJSONObject + "<><><><><>\n\n\n ");
+									if(staticJSONObject!= null){
+										staticJSONObject.put("formFieldPath", formFieldPath);
+										obar.put(staticJSONObject);
+									}
+									i++;
+								}else{
+									JSONObject staticJSONObject = getStaticJsonObject(diseaseName);
+									logger.info("\n\n\n<><><> DiscreteFunction disease static JSON :"+diseaseName+"->>"+ staticJSONObject + "<><><><><>\n\n\n ");
+									if(staticJSONObject!= null){
+										staticJSONObject.put("formFieldPath", formFieldPath);
+										obar.put(staticJSONObject);
+									}
+								}
+							}
+						}else{
+							JSONObject staticJSONObject = getStaticJsonObject(diseaseName);
+							logger.info("\n\n\n<><><><><> DiscreteFunction disease static JSON :"+diseaseName+"->>"+ staticJSONObject + "<><><><><>\n\n\n ");
+							if(staticJSONObject!= null){
+								staticJSONObject.put("concept", concept);
+								staticJSONObject.put("formFieldPath", formFieldPath);
+								obar.put(staticJSONObject);
+							}
+						}
+					}
+				}
+			}
+		}else{
+			JSONObject healthCareGivenNo = getStaticJsonObject("hasDiseaseNo");
+			healthCareGivenNo.put("formFieldPath", formFieldPath);
+			obar.put(healthCareGivenNo);
+		}
 		return obar;
 	}
 	
@@ -1189,7 +1289,9 @@ public class EncounterService extends OpenmrsService {
 		
 	}
 	
-	
+	// need to re-factor. This method should be static 
+	// and json objects should be kept in a static map
+	// the map object will be initialized in a static block 
 	public JSONObject getStaticJsonObject(String nameOfJSONObject) {
 		JSONObject objectToReturn = null;
 		
