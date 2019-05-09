@@ -1,9 +1,12 @@
 package org.opensrp.connector.openmrs.schedule;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.hl7.fhir.dstu3.model.HumanName;
+import org.hl7.fhir.dstu3.model.Patient;
 import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -24,6 +27,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import ca.uhn.fhir.context.FhirContext;
+import ca.uhn.fhir.rest.api.MethodOutcome;
+import ca.uhn.fhir.rest.client.api.IGenericClient;
 
 @Component
 public class OpenmrsSyncerListener {
@@ -99,7 +106,7 @@ public class OpenmrsSyncerListener {
 			pushEvent(start);
 
 			logger("PUSH TO OPENMRS FINISHED AT ", "");
-
+			pushToFire();
 		}
 		catch (Exception ex) {
 			logger.error("", ex);
@@ -107,6 +114,49 @@ public class OpenmrsSyncerListener {
 		finally {
 			lock.unlock();
 		}
+	}
+	private void pushToFire(){
+		Patient thePatient = new Patient();
+		thePatient.addName().setFamily("Smith").addGiven("Rob").addGiven("Bruce");
+		FhirContext ctx = FhirContext.forDstu3();
+		String serverBase = "http://hapi.fhir.org/baseDstu3";
+		System.err.println("client:"+serverBase);
+		IGenericClient client = ctx.newRestfulGenericClient(serverBase);
+		System.err.println("clientsss:"+client.getServerBase());
+		System.err.println("Coextnt:"+client.getFhirContext());
+		// ..populate the patient object..
+		Patient patient = new Patient();
+		patient.setId("555");
+		List<HumanName> names = thePatient.getName();
+		String familyName = "";
+		List<org.hl7.fhir.dstu3.model.StringType> givenNames= new ArrayList<org.hl7.fhir.dstu3.model.StringType>();
+		for (HumanName humanName : names) {
+			familyName =humanName.getFamily();
+			givenNames = humanName.getGiven();
+			
+		}
+		//patient.addIdentifier("urn:mrns", "253345");
+		patient.addName().setFamily(familyName);
+		for (org.hl7.fhir.dstu3.model.StringType stringType : givenNames) {
+			patient.addName().addGiven(stringType.toString());
+		}
+		
+		patient.setGender(thePatient.getGender());
+		System.err.println("Gender:"+thePatient.getGender());
+		//patient.getManagingOrganization().setReference("Organization/124362")
+		
+		
+		
+		System.out.println("thePatient:"+thePatient.getName());
+		System.err.println("Patient JSON:"+patient.toString());
+		// Invoke the server create method (and send pretty-printed JSON
+		// encoding to the server
+		// instead of the default which is non-pretty printed XML)
+		MethodOutcome outcome = client.create()
+		   .resource(patient)
+		   .prettyPrint()
+		   .encodedJson()
+		   .execute();
 	}
 
 	public DateTime logger(String message, String subject) {
