@@ -290,9 +290,17 @@ public class EncounterService extends OpenmrsService {
 				basicDiseaseJSONObject = putValueIntoJSONObject(basicDiseaseJSONObject, "f01b98d4-6a06-41b0-b3be-ffda7a96cb25", "জলাতঙ্ক");
 			}else if(diseaseName.equals("Other_Possible_Diseases")){
 				basicDiseaseJSONObject = putValueIntoJSONObject(basicDiseaseJSONObject, "2531ef53-76fe-4f71-b5ce-675701a3e02a", "অন্যান্য সম্ভাব্য রোগ");
-			}
+			}/*else{
+				basicDiseaseJSONObject = putValueIntoJSONObject(basicDiseaseJSONObject, "2531ef53-76fe-4f71-b5ce-675701a3e02a", "অন্যান্য সম্ভাব্য রোগ");
+			}*/
 			logger.info("\n\n\n<><><><><> CreateDiseaseJSONFunction :"+diseaseName+"->>"+ basicDiseaseJSONObject + "<><><><><>\n\n\n ");
 		}
+		//check if disease has value - may 12, 2019
+		//if disease json has no value then return null as disease
+		if(basicDiseaseJSONObject.isNull("value")){
+			basicDiseaseJSONObject = null;
+		}
+		//end
 		return basicDiseaseJSONObject;
 	}
 	
@@ -915,50 +923,12 @@ public class EncounterService extends OpenmrsService {
 					String diseaseName = diseaseList.get(i);
 					if(diseaseName!= null && !diseaseName.isEmpty()){
 						JSONObject diseaseJson = createDiseaseJSON(concept, formFieldPath, diseaseName);
-						obar.put(diseaseJson);
-					}
-				}
-			}
-			/*
-			if(diseaseList!=null){
-				for(int i=0; i< diseaseList.size()-1; i++){
-					String diseaseName = diseaseList.get(i);
-					if(diseaseName!= null && !diseaseName.isEmpty()){
-						if(diseaseName.equals("Pneumonia") || diseaseName.equals("unspec.")){
-							String nextDiseaseName = diseaseList.get(i+1);
-							nextDiseaseName = nextDiseaseName.trim();
-							logger.info("\n\n\n<><><><><> "+ diseaseName +" --> "+nextDiseaseName+ "<><><><><>\n\n\n ");
-							
-							if(diseaseName.equals("Pneumonia")){
-								if(nextDiseaseName.equals("unspec.")){
-									JSONObject staticJSONObject = getStaticJsonObject("coldAndCough");
-									logger.info("\n\n\n<><><><><> DiscreteFunction disease static JSON :"+"coldAndCough"+"->>"+ staticJSONObject + "<><><><><>\n\n\n ");
-									if(staticJSONObject!= null){
-										staticJSONObject.put("formFieldPath", formFieldPath);
-										obar.put(staticJSONObject);
-									}
-									i++;
-								}else{
-									JSONObject staticJSONObject = getStaticJsonObject(diseaseName);
-									logger.info("\n\n\n<><><> DiscreteFunction disease static JSON :"+diseaseName+"->>"+ staticJSONObject + "<><><><><>\n\n\n ");
-									if(staticJSONObject!= null){
-										staticJSONObject.put("formFieldPath", formFieldPath);
-										obar.put(staticJSONObject);
-									}
-								}
-							}
-						}else{
-							JSONObject staticJSONObject = getStaticJsonObject(diseaseName);
-							logger.info("\n\n\n<><><><><> DiscreteFunction disease static JSON :"+diseaseName+"->>"+ staticJSONObject + "<><><><><>\n\n\n ");
-							if(staticJSONObject!= null){
-								staticJSONObject.put("concept", concept);
-								staticJSONObject.put("formFieldPath", formFieldPath);
-								obar.put(staticJSONObject);
-							}
+						if(diseaseJson!= null){
+							obar.put(diseaseJson);
 						}
 					}
 				}
-			}*/
+			}
 		}else{
 			JSONObject healthCareGivenNo = getStaticJsonObject("hasDiseaseNo");
 			healthCareGivenNo.put("formFieldPath", formFieldPath);
@@ -975,7 +945,12 @@ public class EncounterService extends OpenmrsService {
 			obar.put(placeOfReferJSON);*/
 			JSONObject placeOfReferJSON = getStaticJsonObjectWithFormFieldPath("placeOfRefer", formFieldPath);
 			placeOfReferJSON = setServicePointValue( placeOfReferJSON, refferedPlaceValue);
-			obar.put(placeOfReferJSON);
+			//check if json contains value
+			//add to obar if only it contains value
+			if(!placeOfReferJSON.isNull("value")){
+				obar.put(placeOfReferJSON);
+			}
+			//end
 		}	
 	/*	List<Obs> eventObs = e.getObs();
 		if(eventObs!= null){
