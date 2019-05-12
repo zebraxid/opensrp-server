@@ -139,7 +139,6 @@ public class EncounterService extends OpenmrsService {
 		//may need to change later
 		JSONObject enc = createEncounterJson(e);
 		logger.info("\n \n \n Final JSON <<>> <<>> <<>>" + enc.toString()+"\n \n \n");
-		//JSONObject enc2 = new JSONObject("{\"locationUuid\":\"7d76f621-63ce-4bbb-a715-176286f8de84\",\"patientUuid\":\"b0e47458-1bcb-42d4-88d7-f5aaaa2aa1af\",\"encounterUuid\":null,\"visitUuid\":null,\"providers\":[{\"uuid\":\"313c8507-9821-40e4-8a70-71a5c7693d72\"}],\"encounterDateTime\":null,\"extensions\":{\"mdrtbSpecimen\":[]},\"context\":{},\"visitType\":\"OPD\",\"bahmniDiagnoses\":[],\"orders\":[],\"drugOrders\":[],\"disposition\":null,\"observations\":[{\"concept\":{\"uuid\":\"f87fe2f4-de90-4c48-b07d-4050a5debf8c\",\"name\":\"\u09B8\u09CD\u09AC\u09BE\u09B8\u09CD\u09A5\u09CD\u09AF \u09B8\u09C7\u09AC\u09BE:\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"\u09B8\u09BE\u09A7\u09BE\u09B0\u09A8 \u09B0\u09C7\u09BE\u0997\u09C0\u09B0 \u09B8\u09C7\u09AC\u09BE \u09AB\u09B0\u09CD\u09AE.12/39-0\",\"voided\":false,\"value\":{\"uuid\":\"c2bb6edf-18cb-4c7f-ad91-7c8dd561a437\",\"name\":{\"display\":\"\u0989\u099A\u09CD\u099A \u09B0\u0995\u09CD\u09A4\u099A\u09BE\u09AA\",\"uuid\":\"38b6a8b8-e02f-41c7-813d-63df201562a6\",\"name\":\"\u0989\u099A\u09CD\u099A \u09B0\u0995\u09CD\u09A4\u099A\u09BE\u09AA\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"links\":[{\"rel\":\"self\",\"uri\":\"http://192.168.19.44/openmrs/ws/rest/v1/concept/c2bb6edf-18cb-4c7f-ad91-7c8dd561a437/name/38b6a8b8-e02f-41c7-813d-63df201562a6\"},{\"rel\":\"full\",\"uri\":\"http://192.168.19.44/openmrs/ws/rest/v1/concept/c2bb6edf-18cb-4c7f-ad91-7c8dd561a437/name/38b6a8b8-e02f-41c7-813d-63df201562a6?v=full\"}],\"resourceVersion\":\"1.9\"},\"names\":[{\"display\":\"\u0989\u099A\u09CD\u099A \u09B0\u0995\u09CD\u09A4\u099A\u09BE\u09AA\",\"uuid\":\"38b6a8b8-e02f-41c7-813d-63df201562a6\",\"name\":\"\u0989\u099A\u09CD\u099A \u09B0\u0995\u09CD\u09A4\u099A\u09BE\u09AA\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"links\":[{\"rel\":\"self\",\"uri\":\"http://192.168.19.44/openmrs/ws/rest/v1/concept/c2bb6edf-18cb-4c7f-ad91-7c8dd561a437/name/38b6a8b8-e02f-41c7-813d-63df201562a6\"},{\"rel\":\"full\",\"uri\":\"http://192.168.19.44/openmrs/ws/rest/v1/concept/c2bb6edf-18cb-4c7f-ad91-7c8dd561a437/name/38b6a8b8-e02f-41c7-813d-63df201562a6?v=full\"}],\"resourceVersion\":\"1.9\"},{\"display\":\"High Blood Pressure\",\"uuid\":\"98a2f125-8eac-4680-bd08-33572ff023d0\",\"name\":\"High Blood Pressure\",\"locale\":\"en\",\"localePreferred\":false,\"conceptNameType\":\"FULLY_SPECIFIED\",\"links\":[{\"rel\":\"self\",\"uri\":\"http://192.168.19.44/openmrs/ws/rest/v1/concept/c2bb6edf-18cb-4c7f-ad91-7c8dd561a437/name/98a2f125-8eac-4680-bd08-33572ff023d0\"},{\"rel\":\"full\",\"uri\":\"http://192.168.19.44/openmrs/ws/rest/v1/concept/c2bb6edf-18cb-4c7f-ad91-7c8dd561a437/name/98a2f125-8eac-4680-bd08-33572ff023d0?v=full\"}],\"resourceVersion\":\"1.9\"}],\"displayString\":\"\u0989\u099A\u09CD\u099A \u09B0\u0995\u09CD\u09A4\u099A\u09BE\u09AA\",\"resourceVersion\":\"2.0\",\"translationKey\":\"\u0989\u099A\u09CD\u099A_\u09B0\u0995\u09CD\u09A4\u099A\u09BE\u09AA_39\"},\"inactive\":false,\"groupMembers\":[]},{\"concept\":{\"uuid\":\"9be72615-b914-4d35-ac80-d5953744a9d0\",\"name\":\"\u09B0\u09C7\u09AB\u09BE\u09B0\u09C7\u09B2:\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"\u09B8\u09BE\u09A7\u09BE\u09B0\u09A8 \u09B0\u09C7\u09BE\u0997\u09C0\u09B0 \u09B8\u09C7\u09AC\u09BE \u09AB\u09B0\u09CD\u09AE.12/40-0\",\"voided\":false,\"value\":{\"uuid\":\"1e3f1870-b252-4808-8edb-f86fad050ebd\",\"name\":{\"display\":\"\u09A1\u09BE\u09AF\u09BC\u09BE\u09AC\u09C7\u099F\u09BF\u09B8\",\"uuid\":\"befce65b-9e80-45ec-b8b7-05234cd5cb9c\",\"name\":\"\u09A1\u09BE\u09AF\u09BC\u09BE\u09AC\u09C7\u099F\u09BF\u09B8\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"links\":[{\"rel\":\"self\",\"uri\":\"http://192.168.19.44/openmrs/ws/rest/v1/concept/1e3f1870-b252-4808-8edb-f86fad050ebd/name/befce65b-9e80-45ec-b8b7-05234cd5cb9c\"},{\"rel\":\"full\",\"uri\":\"http://192.168.19.44/openmrs/ws/rest/v1/concept/1e3f1870-b252-4808-8edb-f86fad050ebd/name/befce65b-9e80-45ec-b8b7-05234cd5cb9c?v=full\"}],\"resourceVersion\":\"1.9\"},\"names\":[{\"display\":\"Diabetes\",\"uuid\":\"fdabcf86-7ac9-4122-96f7-9f84858228fd\",\"name\":\"Diabetes\",\"locale\":\"en\",\"localePreferred\":false,\"conceptNameType\":\"FULLY_SPECIFIED\",\"links\":[{\"rel\":\"self\",\"uri\":\"http://192.168.19.44/openmrs/ws/rest/v1/concept/1e3f1870-b252-4808-8edb-f86fad050ebd/name/fdabcf86-7ac9-4122-96f7-9f84858228fd\"},{\"rel\":\"full\",\"uri\":\"http://192.168.19.44/openmrs/ws/rest/v1/concept/1e3f1870-b252-4808-8edb-f86fad050ebd/name/fdabcf86-7ac9-4122-96f7-9f84858228fd?v=full\"}],\"resourceVersion\":\"1.9\"},{\"display\":\"\u09A1\u09BE\u09AF\u09BC\u09BE\u09AC\u09C7\u099F\u09BF\u09B8\",\"uuid\":\"befce65b-9e80-45ec-b8b7-05234cd5cb9c\",\"name\":\"\u09A1\u09BE\u09AF\u09BC\u09BE\u09AC\u09C7\u099F\u09BF\u09B8\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"links\":[{\"rel\":\"self\",\"uri\":\"http://192.168.19.44/openmrs/ws/rest/v1/concept/1e3f1870-b252-4808-8edb-f86fad050ebd/name/befce65b-9e80-45ec-b8b7-05234cd5cb9c\"},{\"rel\":\"full\",\"uri\":\"http://192.168.19.44/openmrs/ws/rest/v1/concept/1e3f1870-b252-4808-8edb-f86fad050ebd/name/befce65b-9e80-45ec-b8b7-05234cd5cb9c?v=full\"}],\"resourceVersion\":\"1.9\"}],\"displayString\":\"\u09A1\u09BE\u09AF\u09BC\u09BE\u09AC\u09C7\u099F\u09BF\u09B8\",\"resourceVersion\":\"2.0\",\"translationKey\":\"\u09A1\u09BE\u09AF\u09BC\u09BE\u09AC\u09C7\u099F\u09BF\u09B8_40\"},\"inactive\":false,\"groupMembers\":[]},{\"concept\":{\"uuid\":\"514de0ad-14e3-4fc6-b4a3-a2683317ab53\",\"name\":\"\u09B8\u09CD\u09AC\u09BE\u09B8\u09CD\u09A5\u09CD\u09AF \u09B6\u09BF\u0995\u09CD\u09B7\u09BE:\"},\"formNamespace\":\"Bahmni\",\"formFieldPath\":\"\u09B8\u09BE\u09A7\u09BE\u09B0\u09A8 \u09B0\u09C7\u09BE\u0997\u09C0\u09B0 \u09B8\u09C7\u09AC\u09BE \u09AB\u09B0\u09CD\u09AE.12/41-0\",\"voided\":false,\"value\":{\"uuid\":\"0622f52f-0c95-41c1-ab5d-ee9bc335c839\",\"name\":{\"display\":\"\u09B8\u09AE\u09CD\u09AD\u09BE\u09AC\u09CD\u09AF \u09AF\u0995\u09CD\u09B7\u09CD\u09AE\u09BE\",\"uuid\":\"cc994816-e03d-4674-a455-f1087b88e934\",\"name\":\"\u09B8\u09AE\u09CD\u09AD\u09BE\u09AC\u09CD\u09AF \u09AF\u0995\u09CD\u09B7\u09CD\u09AE\u09BE\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"links\":[{\"rel\":\"self\",\"uri\":\"http://192.168.19.44/openmrs/ws/rest/v1/concept/0622f52f-0c95-41c1-ab5d-ee9bc335c839/name/cc994816-e03d-4674-a455-f1087b88e934\"},{\"rel\":\"full\",\"uri\":\"http://192.168.19.44/openmrs/ws/rest/v1/concept/0622f52f-0c95-41c1-ab5d-ee9bc335c839/name/cc994816-e03d-4674-a455-f1087b88e934?v=full\"}],\"resourceVersion\":\"1.9\"},\"names\":[{\"display\":\"Tuberculosis\",\"uuid\":\"9c02fdc7-0e51-4a1f-a530-586bfed811a9\",\"name\":\"Tuberculosis\",\"locale\":\"en\",\"localePreferred\":false,\"conceptNameType\":\"FULLY_SPECIFIED\",\"links\":[{\"rel\":\"self\",\"uri\":\"http://192.168.19.44/openmrs/ws/rest/v1/concept/0622f52f-0c95-41c1-ab5d-ee9bc335c839/name/9c02fdc7-0e51-4a1f-a530-586bfed811a9\"},{\"rel\":\"full\",\"uri\":\"http://192.168.19.44/openmrs/ws/rest/v1/concept/0622f52f-0c95-41c1-ab5d-ee9bc335c839/name/9c02fdc7-0e51-4a1f-a530-586bfed811a9?v=full\"}],\"resourceVersion\":\"1.9\"},{\"display\":\"\u09B8\u09AE\u09CD\u09AD\u09BE\u09AC\u09CD\u09AF \u09AF\u0995\u09CD\u09B7\u09CD\u09AE\u09BE\",\"uuid\":\"cc994816-e03d-4674-a455-f1087b88e934\",\"name\":\"\u09B8\u09AE\u09CD\u09AD\u09BE\u09AC\u09CD\u09AF \u09AF\u0995\u09CD\u09B7\u09CD\u09AE\u09BE\",\"locale\":\"en\",\"localePreferred\":true,\"conceptNameType\":null,\"links\":[{\"rel\":\"self\",\"uri\":\"http://192.168.19.44/openmrs/ws/rest/v1/concept/0622f52f-0c95-41c1-ab5d-ee9bc335c839/name/cc994816-e03d-4674-a455-f1087b88e934\"},{\"rel\":\"full\",\"uri\":\"http://192.168.19.44/openmrs/ws/rest/v1/concept/0622f52f-0c95-41c1-ab5d-ee9bc335c839/name/cc994816-e03d-4674-a455-f1087b88e934?v=full\"}],\"resourceVersion\":\"1.9\"}],\"displayString\":\"\u09B8\u09AE\u09CD\u09AD\u09BE\u09AC\u09CD\u09AF \u09AF\u0995\u09CD\u09B7\u09CD\u09AE\u09BE\",\"resourceVersion\":\"2.0\",\"translationKey\":\"\u09B8\u09AE\u09CD\u09AD\u09BE\u09AC\u09CD\u09AF_\u09AF\u0995\u09CD\u09B7\u09CD\u09AE\u09BE_41\"},\"inactive\":false,\"groupMembers\":[]}],\"encounterTypeUuid\":\"81852aee-3f10-11e4-adec-0800271c1b75\"}\r\n");
 		HttpResponse op = HttpUtil.post(HttpUtil.removeEndingSlash(OPENMRS_BASE_URL) + "/" + BAHMNI_ENCOUNTER_URL, "",
 		    enc.toString(), OPENMRS_USER, OPENMRS_PWD);
 		logger.info("\n \n \n"+ "Response From Openmrs <<>> <<>> <<>>" + op.body()+"\n \n \n");
@@ -154,35 +153,6 @@ public class EncounterService extends OpenmrsService {
 		enc.put("locationUuid", e.getLocationId());
 		JSONObject pr = userService.getPersonByUser(e.getProviderId());
 		JSONArray dummnyArray = new JSONArray();
-		
-/*		//Main JSON Structure
-		//enc.put("encounterDatetime", OPENMRS_DATE.format(e.getEventDate().toDate()));
-		enc.put("encounterDatetime", JSONObject.NULL);
-		// patient must be existing in OpenMRS before it submits an encounter. if it doesnot it would throw NPE
-		enc.put("patientUuid", pt.getString("uuid"));
-		enc.put("locationUuid", e.getLocationId());
-		//enc.put("provider", pr.getString("uuid"));
-		//TODO enc.put("patientUuid", pt.getString("uuid"));
-		//enc.put("encounterType", e.getEventType());
-		//TODO enc.put("encounterTypeUuid", e.getEventType());
-		JSONObject dummbyObject = new JSONObject();
-		//enc.put("context", dummbyObject);
-		enc.put("context", JSONObject.NULL);
-		enc.put("encounterUuid", JSONObject.NULL);
-		enc.put("visitUuid", JSONObject.NULL);
-		enc.put("disposition", JSONObject.NULL);
-		enc.put("orders", dummnyArray);
-		enc.put("drugOrders", dummnyArray);
-		enc.put("bahmniDiagnoses", dummnyArray);
-		JSONArray prov = new JSONArray();
-		JSONObject providerUUID = new JSONObject();
-		providerUUID.put("uuid", "313c8507-9821-40e4-8a70-71a5c7693d72");
-		prov.put(providerUUID);
-		enc.put("providers", prov);
-		enc.put("visitType", "Community clinic service");
-		enc.put("encounterTypeUuid", "81852aee-3f10-11e4-adec-0800271c1b75");
-		dummbyObject.put("mdrtbSpecimen", dummnyArray);
-		enc.put("extensions", dummbyObject);*/
 		
 		//observations for Followup Disease Female and Male
 		JSONArray obar = null;
@@ -201,7 +171,6 @@ public class EncounterService extends OpenmrsService {
 		}else if (e.getEventType().equalsIgnoreCase("Followup Pregnant Status")) {
 			obar = createObservationFollowupPregnantStatus(e);
 		}
-		
 		enc.put("observations", obar);
 		return enc;
 	}
@@ -290,9 +259,7 @@ public class EncounterService extends OpenmrsService {
 				basicDiseaseJSONObject = putValueIntoJSONObject(basicDiseaseJSONObject, "f01b98d4-6a06-41b0-b3be-ffda7a96cb25", "জলাতঙ্ক");
 			}else if(diseaseName.equals("Other_Possible_Diseases")){
 				basicDiseaseJSONObject = putValueIntoJSONObject(basicDiseaseJSONObject, "2531ef53-76fe-4f71-b5ce-675701a3e02a", "অন্যান্য সম্ভাব্য রোগ");
-			}/*else{
-				basicDiseaseJSONObject = putValueIntoJSONObject(basicDiseaseJSONObject, "2531ef53-76fe-4f71-b5ce-675701a3e02a", "অন্যান্য সম্ভাব্য রোগ");
-			}*/
+			}
 			logger.info("\n\n\n<><><><><> CreateDiseaseJSONFunction :"+diseaseName+"->>"+ basicDiseaseJSONObject + "<><><><><>\n\n\n ");
 		}
 		//check if disease has value - may 12, 2019
@@ -815,44 +782,6 @@ public class EncounterService extends OpenmrsService {
 		concept.put("name", "সম্ভাব্য রোগ");
 		concept.put("uuid", "a725f0d7-067b-492d-a450-4ce7e535c371");
 		obar = addDiseaseInObservationArray(e, obar, formFieldPath, concept);
-		// new method
-	   /*List<String> diseaseList = null;
-		boolean hasDisease =false;
-		if(client.getAttributes().containsKey("has_disease")){
-			String hasDiseaseStr = (String)client.getAttributes().get("has_disease");
-			if(hasDiseaseStr.equals("হ্যাঁ") || hasDiseaseStr.equals("Yes")){
-				hasDisease = true;
-			}
-		}
-		if(client.getAttributes().containsKey("Disease_status") && hasDisease == true){
-			String diseaseString = (String)client.getAttributes().get("Disease_status");
-			diseaseList = Arrays.asList(diseaseString.split(","));
-		}
-		if(hasDisease){
-			//obar.put(getStaticJsonObject("healthCareGivenYes"));
-			JSONObject healthCareGivenYes = getStaticJsonObjectWithFormFieldPath("hasDiseaseYes", formFieldPath);
-			obar.put(healthCareGivenYes);
-			
-			if(diseaseList!=null){
-				for(String diseaseName : diseaseList){
-					if(diseaseName.equals("High Blood Pressure")){
-						obar.put(getStaticJsonObjectWithFormFieldPath("highBloodPressure", formFieldPath));
-					}else if(diseaseName.equals("Diabetes")){
-						obar.put(getStaticJsonObjectWithFormFieldPath("diabetes", formFieldPath));
-					}else if(diseaseName.equals("Tuberculosis")){
-						obar.put(getStaticJsonObjectWithFormFieldPath("tuberculosis", formFieldPath));
-					}else if(diseaseName.equals("Others_member_disease")){
-						obar.put(getStaticJsonObjectWithFormFieldPath("otherPossibleDisease", formFieldPath));
-					}
-				}
-			}
-		}else{
-			//obar.put(getStaticJsonObject("healthCareGivenNo"));
-			JSONObject healthCareGivenNo = getStaticJsonObjectWithFormFieldPath("hasDiseaseNo", formFieldPath);
-			obar.put(healthCareGivenNo);
-		}*/
-		// new method
-		
 		obar = addRefferedPlaceInObservationArray(e, obar, formFieldPath);
 		return obar;
 	}
@@ -941,71 +870,17 @@ public class EncounterService extends OpenmrsService {
 		String refferedPlaceValue = getObsHumanRedableValueFromEventJSON(e, "Place_of_Refer");
 		if(refferedPlaceValue!= null && !refferedPlaceValue.isEmpty() 
 				&& !refferedPlaceValue.equals("null") && !refferedPlaceValue.equals("Null")){
-			/*JSONObject placeOfReferJSON = getStaticJsonObjectWithFormFieldPath(refferedPlaceValue, formFieldPath);
-			obar.put(placeOfReferJSON);*/
 			JSONObject placeOfReferJSON = getStaticJsonObjectWithFormFieldPath("placeOfRefer", formFieldPath);
 			placeOfReferJSON = setServicePointValue( placeOfReferJSON, refferedPlaceValue);
-			//check if json contains value
-			//add to obar if only it contains value
+			//check if json contains value -- may 12, 2019
+			//add to obar if only it contains 'value'
 			if(!placeOfReferJSON.isNull("value")){
 				obar.put(placeOfReferJSON);
 			}
 			//end
 		}	
-	/*	List<Obs> eventObs = e.getObs();
-		if(eventObs!= null){
-			for(Obs o: eventObs){
-				String formSubmissionField = o.getFormSubmissionField();
-				if(formSubmissionField!= null){
-					String obsValue = (String) o.getValues().get(0);
-					if(formSubmissionField.equals("Place_of_Refer") && obsValue!= null 
-							&& !obsValue.equals("null") && !obsValue.equals("Null")){
-						if(!formFieldPath.isEmpty()){
-							JSONObject refferedPlace = getStaticJsonObject(obsValue);
-							//To prevent null pointer exception
-							if(refferedPlace!= null){
-								refferedPlace.put("formFieldPath", formFieldPath);
-								obar.put(refferedPlace);
-							}
-							//JSONObject refferedPlace = getStaticJsonObjectWithFormFieldPath(obsValue, formFieldPath);
-							//obar.put(refferedPlace);
-						}else{
-							obar.put(getStaticJsonObject(obsValue));
-						}
-					}
-				}
-			}
-		}*/
 		return obar;
 	}
-	
-	
-	
-	
-// not needed if we put static json object in observation : February 4, 2019
-/*	public JSONObject setCommonObservationInfo(HashMap<String, Object> commonValuesMap) throws JSONException {
-		JSONObject observationObject = new JSONObject();
-		JSONObject conceptObject = new JSONObject();
-		String uuid = (String) commonValuesMap.get("concept_uuid");
-		String name = (String) commonValuesMap.get("concept_name");
-		conceptObject.put("uuid", uuid);
-		conceptObject.put("name", name);
-		observationObject.put("concept", conceptObject);
-
-		String formNamespace = (String) commonValuesMap.get("formNamespace");
-		observationObject.put("formNamespace", formNamespace);
-		String formFieldPath = (String) commonValuesMap.get("formFieldPath");
-		observationObject.put("formFieldPath", formFieldPath);
-		boolean voided = (boolean) commonValuesMap.get("voided");
-		observationObject.put("voided", voided);
-		Object interpretation = commonValuesMap.get("interpretation");
-		observationObject.put("interpretation", interpretation);
-		JSONArray groupMembers = (JSONArray)commonValuesMap.get("groupMembers");
-		observationObject.put("groupMembers", groupMembers);
-		boolean inactive = (boolean) commonValuesMap.get("inactive");
-		observationObject.put("inactive", inactive);
-		return observationObject;
-	}*/
 	
 	public JSONObject buildUpdateEncounter(Event e) throws JSONException {
 		String openmrsuuid = e.getIdentifier(OPENMRS_UUID_IDENTIFIER_TYPE);
