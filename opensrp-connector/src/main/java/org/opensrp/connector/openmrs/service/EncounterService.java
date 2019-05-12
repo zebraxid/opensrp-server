@@ -609,20 +609,32 @@ public class EncounterService extends OpenmrsService {
 		return obar;
 	}
 
+	//put jsonObject into observation array - may 12, 2019
+	private JSONArray putJSONObjectIntoObservationArray(JSONArray obar, JSONObject inputJSONObject){
+		if(inputJSONObject!= null){
+			//check if json contains key - 'value'
+			//add to obar if only it contains 'value'
+			if(!inputJSONObject.isNull("value")){
+				obar.put(inputJSONObject);
+			}
+			//end
+		}
+		return obar;
+	}
+	
 	private JSONArray createObservationFollowupANC(Event e)
 			throws JSONException {
 		JSONArray obar= new JSONArray();
-		//String formFieldPath = "প্রসব পূর্ব সেবা.86/134-0";
 		String formFieldPath = "ANC_MHV.3/1-0";
 		Client client = clientService.getByBaseEntityId(e.getBaseEntityId());
-		if(client.getAttributes().containsKey("Denger_Signs_During_Pregnancy")){
+		/*if(client.getAttributes().containsKey("Denger_Signs_During_Pregnancy")){
 			String dangerSignsDuringPregnancyString = (String)client.getAttributes().get("Denger_Signs_During_Pregnancy");
 			List<String> dangerSignsDuringPregnancyList = Arrays.asList(dangerSignsDuringPregnancyString.split(","));
 			if(dangerSignsDuringPregnancyList.size()>0){
 				//"formFieldPath": "প্রসব পূর্ব সেবা.86/134-0"
-				/*JSONObject healthCareGivenYes = getStaticJsonObject("healthCareGivenYes");
+				JSONObject healthCareGivenYes = getStaticJsonObject("healthCareGivenYes");
 				healthCareGivenYes.put("formFieldPath", formFieldPath);
-				obar.put(healthCareGivenYes);*/
+				obar.put(healthCareGivenYes);
 				//obar.put(getStaticJsonObject("haveDangerSignsPregnancyYes"));
 				for(String dangerSign : dangerSignsDuringPregnancyList){
 					JSONObject staticJSONObject = getStaticJsonObjectWithFormFieldPath(dangerSign, formFieldPath);
@@ -632,17 +644,39 @@ public class EncounterService extends OpenmrsService {
 					}
 				}	
 			}else{
-				/*JSONObject healthCareGivenNo = getStaticJsonObject("healthCareGivenNo");
+				JSONObject healthCareGivenNo = getStaticJsonObject("healthCareGivenNo");
 				healthCareGivenNo.put("formFieldPath", formFieldPath);
-				obar.put(healthCareGivenNo);*/
+				obar.put(healthCareGivenNo);
 			}
 		}else{
-			/*JSONObject healthCareGivenNo = getStaticJsonObject("healthCareGivenNo");
+			JSONObject healthCareGivenNo = getStaticJsonObject("healthCareGivenNo");
 			healthCareGivenNo.put("formFieldPath", formFieldPath);
-			obar.put(healthCareGivenNo);*/
-		}
+			obar.put(healthCareGivenNo);
+		}*/
 		
-		if(client.getAttributes().containsKey("Have_EDEMA")){
+		// get danger signs form event -- may 12, 2019
+		String dangerSignsDuringPregnancyString = (String)getObsValueFromEventJSON(e, "Denger_Signs_During_Pregnancy");
+		List<String> dangerSignsDuringPregnancyList = Arrays.asList(dangerSignsDuringPregnancyString.split(","));
+		if(dangerSignsDuringPregnancyList.size()>0){
+			for(String dangerSign : dangerSignsDuringPregnancyList){
+				JSONObject staticJSONObject = getStaticJsonObjectWithFormFieldPath(dangerSign, formFieldPath);
+				logger.info("\n\n\n<><><><><> Danger sign static JSON :"+dangerSign+"->>"+ staticJSONObject + "<><><><><>\n\n\n ");
+				
+				
+				/*if(staticJSONObject!= null){
+					//check if json contains value -- may 12, 2019
+					//add to obar if only it contains 'value'
+					if(!staticJSONObject.isNull("value")){
+						obar.put(staticJSONObject);
+					}
+					//end
+				}*/
+				obar = putJSONObjectIntoObservationArray(obar, staticJSONObject);
+			}	
+		}
+		//end: get danger signs form event
+		
+		/*if(client.getAttributes().containsKey("Have_EDEMA")){
 			String hasEdema = (String)client.getAttributes().get("Have_EDEMA");
 			if(hasEdema!= null && !hasEdema.isEmpty()){
 				JSONObject hasEdomaConcept = getStaticJsonObject("hasEdoma");
@@ -671,7 +705,36 @@ public class EncounterService extends OpenmrsService {
 					obar.put(hasJaundiceNo);
 				}
 			}
-		}
+		}*/
+		
+		//for jaundice and edoma form event -- may 12, 2019
+			String hasEdema = (String)getObsValueFromEventJSON(e, "Have_EDEMA");
+			if(hasEdema!= null && !hasEdema.isEmpty()){
+				JSONObject hasEdomaConcept = getStaticJsonObject("hasEdoma");
+				if(hasEdema.equals("Yes")){
+					JSONObject hasEdomaYes = getStaticJsonObjectWithFormFieldPath("yes", formFieldPath);
+					hasEdomaYes.put("concept", hasEdomaConcept);
+					obar.put(hasEdomaYes);
+				}else if(hasEdema.equals("No")){
+					JSONObject hasEdomaNo = getStaticJsonObjectWithFormFieldPath("no", formFieldPath);
+					hasEdomaNo.put("concept", hasEdomaConcept);
+					obar.put(hasEdomaNo);
+				}
+			}
+			String hasJaundice = (String)getObsValueFromEventJSON(e, "Have_Jaundice\t");
+			if(hasJaundice!= null && !hasJaundice.isEmpty()){
+				JSONObject hasJaundiceConcept = getStaticJsonObject("hasJaundice");
+				if(hasJaundice.equals("Yes")){
+					JSONObject hasJaundiceYes = getStaticJsonObjectWithFormFieldPath("yes", formFieldPath);
+					hasJaundiceYes.put("concept", hasJaundiceConcept);
+					obar.put(hasJaundiceYes);
+				}else if(hasJaundice.equals("No")){
+					JSONObject hasJaundiceNo = getStaticJsonObjectWithFormFieldPath("no", formFieldPath);
+					hasJaundiceNo.put("concept", hasJaundiceConcept);
+					obar.put(hasJaundiceNo);
+				}
+			}
+		//end: jaundice and edoma form event
 		obar = addServiceDateAndNumberInObservationArray(e, obar,formFieldPath);
 		obar = addRefferedPlaceInObservationArray(e, obar,formFieldPath);
 		obar = addPlaceOfServiceInObservationArray(e, obar,formFieldPath);
@@ -826,19 +889,27 @@ public class EncounterService extends OpenmrsService {
 	
 	private JSONArray addPlaceOfServiceInObservationArray(Event e, JSONArray obar, String formFieldPath) throws JSONException{
 		String servicePlaceValue = getObsValueFromEventJSON(e, "Place_of_Service");
-		logger.info("\n\n\n servicePlaceValue"+servicePlaceValue+"\n\n\n");
-		JSONObject placeOfServiceJSON = getStaticJsonObjectWithFormFieldPath("placeOfService", formFieldPath);
-		placeOfServiceJSON = setServicePointValue( placeOfServiceJSON, servicePlaceValue);
-		obar.put(placeOfServiceJSON);
+		logger.info("\n\n\n servicePlaceValue = "+servicePlaceValue+"\n\n\n");
+		if(servicePlaceValue!= null && !servicePlaceValue.isEmpty()){
+			JSONObject placeOfServiceJSON = getStaticJsonObjectWithFormFieldPath("placeOfService", formFieldPath);
+			placeOfServiceJSON = setServicePointValue( placeOfServiceJSON, servicePlaceValue);
+			//may 12, 2019
+			obar = putJSONObjectIntoObservationArray(obar, placeOfServiceJSON);
+			//obar.put(placeOfServiceJSON);
+		}
 		return obar;
 	}
 	
 	private JSONArray addPlaceOfDeliveryInObservationArray(Event e, JSONArray obar, String formFieldPath) throws JSONException{
 		String servicePlaceValue = getObsValueFromEventJSON(e, "Place_of_Service");
 		logger.info("\n\n\n serviceDeliveryValue - "+servicePlaceValue+"\n\n\n");
-		JSONObject placeOfServiceJSON = getStaticJsonObjectWithFormFieldPath("placeOfDelivery", formFieldPath);
-		placeOfServiceJSON = setServicePointValue( placeOfServiceJSON, servicePlaceValue);
-		obar.put(placeOfServiceJSON);
+		if(servicePlaceValue!= null && !servicePlaceValue.isEmpty()){
+			JSONObject placeOfServiceJSON = getStaticJsonObjectWithFormFieldPath("placeOfDelivery", formFieldPath);
+			placeOfServiceJSON = setServicePointValue( placeOfServiceJSON, servicePlaceValue);
+			//obar.put(placeOfServiceJSON);
+			//may 12, 2019
+			obar = putJSONObjectIntoObservationArray(obar, placeOfServiceJSON);
+		}
 		return obar;
 	}
 	
