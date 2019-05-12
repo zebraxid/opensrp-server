@@ -174,6 +174,20 @@ public class EncounterService extends OpenmrsService {
 		enc.put("observations", obar);
 		return enc;
 	}
+
+	// get attribute value form client - may 12, 2019
+	private String getAttributeValueFromClientJSON(Event e, String key) throws JSONException{
+		String value= null;
+		Client client = clientService.getByBaseEntityId(e.getBaseEntityId());
+		if(client!= null){
+			if(client.getAttributes().containsKey(key)){
+				value = (String)client.getAttributes().get(key);
+			}
+		}
+		return value;
+	}
+	//end
+	
 	
 	private String getObsValueFromEventJSON(Event e, String key) throws JSONException{
 		String value= null;
@@ -211,6 +225,23 @@ public class EncounterService extends OpenmrsService {
 		return value;
 	}
 	
+	// add clientAttributeDate in observation array - may 12, 2019
+	private JSONArray addClientAttributeDateInObservationArray(Event e, JSONArray obar,
+			String formFieldPath, String dateFieldName, String conceptUuid, 
+			String conceptName) throws JSONException{
+		String date = getAttributeValueFromClientJSON(e, dateFieldName);
+		logger.info("\n\n\n<><><> Date : "+dateFieldName+" \n"+ date+"\n\n\n");
+		JSONObject dateJSONObject = getStaticJsonObjectWithFormFieldPath("date", formFieldPath);
+		dateJSONObject.put("value", date);
+		JSONObject concept = new JSONObject();
+		concept.put("uuid", conceptUuid);
+		concept.put("name", conceptName);
+		dateJSONObject.put("concept", concept);
+		logger.info("\n\n\n<><><> Date : "+dateFieldName+" \n"+ dateJSONObject.toString()+"\n\n\n");
+		obar.put(dateJSONObject);
+		return obar;
+	}
+	
 	private JSONArray addEventObsDateInObservationArray(Event e, JSONArray obar,
 			String formFieldPath, String dateFieldName, String conceptUuid, 
 			String conceptName) throws JSONException{
@@ -218,12 +249,10 @@ public class EncounterService extends OpenmrsService {
 		date = convertddMMyyyyDateToyyyyMMdd(date);
 		JSONObject dateJSONObject = getStaticJsonObjectWithFormFieldPath("date", formFieldPath);
 		dateJSONObject.put("value", date);
-		
 		JSONObject concept = new JSONObject();
 		concept.put("uuid", conceptUuid);
 		concept.put("name", conceptName);
 		dateJSONObject.put("concept", concept);
-		
 		obar.put(dateJSONObject);
 		return obar;
 	}
@@ -293,7 +322,8 @@ public class EncounterService extends OpenmrsService {
 				pregnancyInfoValue.put("displayString", "প্রসব পূর্ব");
 				String lmpConceptUuid = "c45a7e4b-3f10-11e4-adec-0800271c1b75";
 				String lmpConceptName = "শেষ মাসিকের তারিখ";
-				addEventObsDateInObservationArray(e, obar, formFieldPath,"LMP", lmpConceptUuid, lmpConceptName);
+				addClientAttributeDateInObservationArray(e, obar, formFieldPath,"LMP", lmpConceptUuid, lmpConceptName);
+				//addEventObsDateInObservationArray(e, obar, formFieldPath,"LMP", lmpConceptUuid, lmpConceptName);
 			}else if(pregnancyStatusString.equals("Postnatal")){
 				//pregnancy stage
 				pregnancyInfoValue.put("uuid", "898bd550-eb0f-4cc1-92c4-1e0c73453484");
