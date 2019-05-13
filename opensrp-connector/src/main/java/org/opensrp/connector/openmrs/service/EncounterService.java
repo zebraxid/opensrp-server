@@ -288,6 +288,26 @@ public class EncounterService extends OpenmrsService {
 				basicDiseaseJSONObject = putValueIntoJSONObject(basicDiseaseJSONObject, "f01b98d4-6a06-41b0-b3be-ffda7a96cb25", "জলাতঙ্ক");
 			}else if(diseaseName.equals("Other_Possible_Diseases")){
 				basicDiseaseJSONObject = putValueIntoJSONObject(basicDiseaseJSONObject, "2531ef53-76fe-4f71-b5ce-675701a3e02a", "অন্যান্য সম্ভাব্য রোগ");
+			}else if(diseaseName.equals("Very_severe_disease")){
+				basicDiseaseJSONObject = putValueIntoJSONObject(basicDiseaseJSONObject, "8b4bab1a-8ec6-4da8-8725-97a81d7c0ab8", "খুব মারাত্বক রোগ");
+			}else if(diseaseName.equals("Probable_Limited_Infection")){
+				basicDiseaseJSONObject = putValueIntoJSONObject(basicDiseaseJSONObject, "	f571a834-5caa-49d9-b702-0023999c7808", "সম্ভাব্য সীমিত সংক্রামণ");
+			}else if(diseaseName.equals("Jaundice")){
+				basicDiseaseJSONObject = putValueIntoJSONObject(basicDiseaseJSONObject, "f20b15b2-4e14-11e4-8a57-0800271c1b75", "জন্ডিস");
+			}else if(diseaseName.equals("Diarrhoea_No_Dehydration")){
+				basicDiseaseJSONObject = putValueIntoJSONObject(basicDiseaseJSONObject, "a611cef5-da8f-425d-80e6-cc7025400fba", "পানি স্বল্পতাহীন ডায়রিয়া");
+			}else if(diseaseName.equals("Bellybutton_infection")){
+				basicDiseaseJSONObject = putValueIntoJSONObject(basicDiseaseJSONObject, "dec2d127-e774-41ab-a5dc-cbe7b7d5224a", "নাভিতে সংক্রামন");
+			}else if(diseaseName.equals("Injury")){
+				basicDiseaseJSONObject = putValueIntoJSONObject(basicDiseaseJSONObject, "1faa5af3-4e15-11e4-8a57-0800271c1b75", "আঘাত");
+			}else if(diseaseName.equals("Fever")){
+				basicDiseaseJSONObject = putValueIntoJSONObject(basicDiseaseJSONObject, "1f0f8ec6-4e15-11e4-8a57-0800271c1b75", "জ্বর");
+			}else if(diseaseName.equals("Pneumonia")){
+				basicDiseaseJSONObject = putValueIntoJSONObject(basicDiseaseJSONObject, "bfe80a20-d10e-4920-8fc2-16870bf7c600", "নিউমোনিয়া");
+			}else if(diseaseName.equals("Pneumonia, unspec.")){
+				basicDiseaseJSONObject = putValueIntoJSONObject(basicDiseaseJSONObject, "e6b508fd-4e14-11e4-8a57-0800271c1b75", "কাশি/সর্দি");
+			}else if(diseaseName.equals("Others_member_disease")){
+				basicDiseaseJSONObject = putValueIntoJSONObject(basicDiseaseJSONObject, "af6d9f1e-2e7e-4a61-86ea-f2c001a90781", "অন্যান্য অসুখ");
 			}
 			logger.info("\n\n\n<><><><><> CreateDiseaseJSONFunction :"+diseaseName+"->>"+ basicDiseaseJSONObject + "<><><><><>\n\n\n ");
 		}
@@ -331,8 +351,13 @@ public class EncounterService extends OpenmrsService {
 				//delivery date and time
 				String deliveryDateConceptUuid= "7150e240-d92d-4f72-9262-ef32d62952c5";
 				String deliveryDateConceptName= "প্রসবের তারিখ ও সময়";
-				String date = getObsValueFromEventJSON(e, "Delivery_date");
-				String time = getObsValueFromEventJSON(e, "Delivery_time");
+				//String date = getObsValueFromEventJSON(e, "Delivery_date");
+				String date = getAttributeValueFromClientJSON(e, "delivery_date");
+				//String time = getObsValueFromEventJSON(e, "Delivery_time");
+				String time = getAttributeValueFromClientJSON(e, "delivery_time");
+				if(time== null || time.isEmpty()){
+					time = "00:01";
+				}
 				date = convertddMMyyyyDateToyyyyMMdd(date);
 				date = date + " "+ time;
 				JSONObject dateJSONObject = getStaticJsonObjectWithFormFieldPath("date", formFieldPath);
@@ -524,7 +549,15 @@ public class EncounterService extends OpenmrsService {
 		//String formFieldPath = "শিশু (০ থেকে ২ মাস) স্বাস্থ্য সেবা.35/73-0";
 		String formFieldPath = "শিশু (০ থেকে ২ মাস) এমএইচভি.4/4-0";
 		Client client = clientService.getByBaseEntityId(e.getBaseEntityId());
-		boolean hasDisease =false;
+		
+		//may 12, 2019
+		JSONObject concept = new JSONObject();
+		concept.put("name", "Disease_Below_2Month_Age");
+		concept.put("uuid", "ef990e64-5165-487c-a784-4d1d32f2503e");
+		//getting null pointer exception from openmrs
+		//obar = addDiseaseInObservationArray(e, obar, formFieldPath, concept);
+		
+		/*boolean hasDisease =false;
 		if(client.getAttributes().containsKey("has_disease")){
 			String hasDiseaseStr = (String)client.getAttributes().get("has_disease");
 			if(hasDiseaseStr.equals("হ্যাঁ") || hasDiseaseStr.equals("Yes")){
@@ -589,7 +622,7 @@ public class EncounterService extends OpenmrsService {
 			JSONObject healthCareGivenNo = getStaticJsonObject("hasDiseaseNo");
 			healthCareGivenNo.put("formFieldPath", formFieldPath);
 			obar.put(healthCareGivenNo);
-		}
+		}*/
 		
 		obar = addRefferedPlaceInObservationArray(e, obar, formFieldPath);
 		return obar;
@@ -952,9 +985,24 @@ public class EncounterService extends OpenmrsService {
 				for(int i=0; i< diseaseList.size()-1; i++){
 					String diseaseName = diseaseList.get(i);
 					if(diseaseName!= null && !diseaseName.isEmpty()){
-						JSONObject diseaseJson = createDiseaseJSON(concept, formFieldPath, diseaseName);
-						if(diseaseJson!= null){
-							obar.put(diseaseJson);
+						if(diseaseName.equals("Pneumonia")){
+							//for Pneumonia, unspec.
+							if((i+1) <= (diseaseList.size()-1)){
+								String nextDiseaseName = diseaseList.get(i+1);
+								if(nextDiseaseName!= null && !nextDiseaseName.isEmpty()){
+									nextDiseaseName = nextDiseaseName.trim();
+									if(diseaseName.equals("Pneumonia") && nextDiseaseName.equals("unspec.")){
+										JSONObject diseaseJson = createDiseaseJSON(concept, formFieldPath, "Pneumonia, unspec.");
+										obar = putJSONObjectIntoObservationArray(obar, diseaseJson);
+									}else{
+										JSONObject diseaseJson = createDiseaseJSON(concept, formFieldPath, "Pneumonia");
+										obar = putJSONObjectIntoObservationArray(obar, diseaseJson);
+									}
+								}
+							}
+						}else{
+							JSONObject diseaseJson = createDiseaseJSON(concept, formFieldPath, diseaseName);
+							obar = putJSONObjectIntoObservationArray(obar, diseaseJson);
 						}
 					}
 				}
