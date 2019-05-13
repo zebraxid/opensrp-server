@@ -13,6 +13,8 @@ import org.opensrp.repository.ClientsRepository;
 import org.opensrp.search.AddressSearchBean;
 import org.opensrp.search.ClientSearchBean;
 import org.opensrp.util.Utils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +22,8 @@ import org.springframework.stereotype.Service;
 public class ClientService {
 	
 	private final ClientsRepository allClients;
+	
+	private static Logger logger = LoggerFactory.getLogger(ClientService.class.toString());
 	
 	@Autowired
 	public ClientService(ClientsRepository allClients) {
@@ -110,6 +114,7 @@ public class ClientService {
 		}
 		
 		//still not found!! search by generic identifiers
+		logger.info("\n\n\n Identifiers : "+client.getIdentifiers());
 		
 		for (String idt : client.getIdentifiers().keySet()) {
 			List<Client> cl = allClients.findAllByIdentifier(client.getIdentifier(idt));
@@ -120,6 +125,7 @@ public class ClientService {
 				return cl.get(0);
 			}
 		}
+		logger.info("\n\n\n C :"+ client.toString()+"\n\n");
 		return c;
 	}
 	
@@ -217,19 +223,25 @@ public class ClientService {
 		if (client.getBaseEntityId() == null) {
 			throw new RuntimeException("No baseEntityId");
 		}
+		logger.info("\n\n\n Client in addOrUpdate :"+ client.toString()+"\n\n");
 		Client c = findClient(client);
-		if (c != null) {
-			client.setRevision(c.getRevision());
-			client.setId(c.getId());
-			c.setDateEdited(DateTime.now());
-			client.setServerVersion(System.currentTimeMillis());
-			client.addIdentifier("OPENMRS_UUID", c.getIdentifier("OPENMRS_UUID"));
-			allClients.update(client);
-			
-		} else {
-			client.setServerVersion(System.currentTimeMillis());
-			client.setDateCreated(DateTime.now());
-			allClients.add(client);
+		try {
+			if (c != null) {
+				client.setRevision(c.getRevision());
+				client.setId(c.getId());
+				c.setDateEdited(DateTime.now());
+				client.setServerVersion(System.currentTimeMillis());
+				client.addIdentifier("OPENMRS_UUID", c.getIdentifier("OPENMRS_UUID"));
+				allClients.update(client);
+				
+			} else {
+				client.setServerVersion(System.currentTimeMillis());
+				client.setDateCreated(DateTime.now());
+				logger.info("\n\n\n Client in addOrUpdate before add :"+ client.toString()+"\n\n");
+				allClients.add(client);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		return client;
 	}

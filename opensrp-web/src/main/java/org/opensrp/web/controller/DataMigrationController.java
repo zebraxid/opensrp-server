@@ -190,20 +190,20 @@ public class DataMigrationController {
 			br = new BufferedReader(new FileReader(csvFile));
 			while ((line = br.readLine()) != null) {
 				
-				HttpResponse op1 = HttpUtil.get(opensrpWebUurl + "/rest/api/v1/health-id/reserved/single/migration", "",
+				/*HttpResponse op1 = HttpUtil.get(opensrpWebUurl + "/rest/api/v1/health-id/reserved/single/migration", "",
 				    opensrpWebUsername, opensrpWebPassword);
-				JSONObject healthObj = new JSONObject(op1.body());
+				JSONObject healthObj = new JSONObject(op1.body());*/
 				String healthId = "";
 				
-				if (healthObj.has("identifiers")) {
+				/*if (healthObj.has("identifiers")) {
 					healthId = healthObj.getString("identifiers");
 				} else {
 					logger.info("No health id found...");
-				}
+				}*/
 				String[] member = line.split(cvsSplitBy);
 				
 				Client client = new Client(null);
-				client.addIdentifier("Patient_Identifier", healthId);
+				//client.addIdentifier("Patient_Identifier", healthId);
 				String baseEntityId = UUID.randomUUID().toString().trim();
 				client.setBaseEntityId(baseEntityId);
 				String gender = member[9];
@@ -264,7 +264,8 @@ public class DataMigrationController {
 				client.addAttribute("Realtion_With_Household_Head", RelationshipWithHH);
 				client.addAttribute("nationalId", nationalId);
 				client.addAttribute("idtype", "NID");
-				client.withIsSendToOpenMRS("yes");
+				//client.withIsSendToOpenMRS("yes");
+				client.withIsSendToOpenMRS("no");
 				String FamilyDiseaseHistory = "";
 				String diabetes = member[13];
 				if (!diabetes.isEmpty()) {
@@ -364,9 +365,9 @@ public class DataMigrationController {
 				String teamId = "";
 				String team = "";
 				org.opensrp.api.domain.Location location = null;
-				try {
-					/*location = openmrsLocationService.getLocation(address2);
-					locationId = location.getLocationId();*/
+				/*try {
+					location = openmrsLocationService.getLocation(address2);
+					locationId = location.getLocationId();
 					HttpResponse op = HttpUtil.get(opensrpWebUurl + "/rest/api/v1/team/team-by-location" + "/?name="
 					        + address2, "", opensrpWebUsername, opensrpWebPassword);
 					JSONObject jsonObj = new JSONObject(op.body());
@@ -378,7 +379,7 @@ public class DataMigrationController {
 				}
 				catch (Exception e) {
 					e.printStackTrace();
-				}
+				}*/
 				
 				String eventType = "Woman Member Registration";
 				String entityType = "ec_woman";
@@ -397,7 +398,7 @@ public class DataMigrationController {
 				event.setVersion(System.currentTimeMillis());
 				event.setLocationId(locationId);
 				event.setFormSubmissionId(UUID.randomUUID().toString().trim());
-				event.withIsSendToOpenMRS("yes").withEventType(eventType).withEntityType(entityType);
+				event.withIsSendToOpenMRS("no").withEventType(eventType).withEntityType(entityType);
 				
 				List<String> eventAddress = new ArrayList<String>();
 				eventAddress.add("BANGLADESH");
@@ -456,16 +457,16 @@ public class DataMigrationController {
 				String[] member = line.split(cvsSplitBy);
 				
 				Client client = new Client(null);
-				HttpResponse op1 = HttpUtil.get(opensrpWebUurl + "/rest/api/v1/health-id/reserved/single/migration", "",
+				/*HttpResponse op1 = HttpUtil.get(opensrpWebUurl + "/rest/api/v1/health-id/reserved/single/migration", "",
 				    opensrpWebUsername, opensrpWebPassword);
-				JSONObject healthObj = new JSONObject(op1.body());
+				JSONObject healthObj = new JSONObject(op1.body());*/
 				String healthId = "";
-				if (healthObj.has("identifiers")) {
+				/*if (healthObj.has("identifiers")) {
 					healthId = healthObj.getString("identifiers");
 				} else {
 					logger.info("No health id found...");
-				}
-				client.addIdentifier("Patient_Identifier", healthId);
+				}*/
+				//client.addIdentifier("Patient_Identifier", healthId);
 				String baseEntityId = UUID.randomUUID().toString().trim();
 				client.setBaseEntityId(baseEntityId);
 				String firstName = member[55];
@@ -484,7 +485,7 @@ public class DataMigrationController {
 				if (!householdCode.isEmpty()) {
 					householdCode = householdCode.trim();
 				}
-				
+				client.withIsSendToOpenMRS("no");
 				client.addAttribute("householdCode", householdCode);
 				client.addAttribute("phoneNumber", phoneNumber);
 				String address1 = member[4];
@@ -528,7 +529,7 @@ public class DataMigrationController {
 				String locationId = "";
 				String teamId = "";
 				String team = "";
-				org.opensrp.api.domain.Location location = null;
+				/*org.opensrp.api.domain.Location location = null;
 				try {
 					//location = openmrsLocationService.getLocation(address2);
 					//locationId = location.getLocationId();
@@ -543,7 +544,7 @@ public class DataMigrationController {
 				catch (Exception e) {
 					e.printStackTrace();
 				}
-				
+				*/
 				Event event = new Event();
 				event.setServerVersion(System.currentTimeMillis());
 				event.setTeam(team);
@@ -555,7 +556,7 @@ public class DataMigrationController {
 				event.setVersion(System.currentTimeMillis());
 				event.setLocationId(locationId);
 				event.setFormSubmissionId(UUID.randomUUID().toString().trim());
-				event.withIsSendToOpenMRS("yes").withEventType("Household Registration").withEntityType("ec_household");
+				event.withIsSendToOpenMRS("no").withEventType("Household Registration").withEntityType("ec_household");
 				// drinking water source 
 				
 				String TubewellRed = member[8];
@@ -746,6 +747,7 @@ public class DataMigrationController {
 				
 				//System.err.println("Event:::::::::::::::" + event.toString());				
 				eventService.addorUpdateEvent(event);
+				logger.info("\n\n\n Client : "+ client.toString()+" \n\n\n");
 				clientService.addorUpdate(client);
 				
 			}

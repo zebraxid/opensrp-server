@@ -214,9 +214,10 @@ public class OpenmrsSyncerListener {
 						uuid = p.getString("uuid");
 					}
 				}
+				String isSendToOpenMRS = c.getIsSendToOpenMRS();
 				if (uuid != null) {
 					logger.info("Updating patient " + uuid);
-					String isSendToOpenMRS = c.getIsSendToOpenMRS();
+					//String isSendToOpenMRS = c.getIsSendToOpenMRS();
 					if (isSendToOpenMRS.equalsIgnoreCase("yes") || isSendToOpenMRS == null) {
 						patient = patientService.updatePatient(c, uuid);
 					} else {
@@ -230,17 +231,19 @@ public class OpenmrsSyncerListener {
 					}
 					
 				} else {
-					JSONObject patientJson = patientService.createPatient(c);
-					patient = patientJson;
-					if (patientJson != null && patientJson.has("uuid")) {
-						c.addIdentifier(PatientService.OPENMRS_UUID_IDENTIFIER_TYPE, patientJson.getString("uuid"));
-						clientService.addorUpdate(c, false);
-						config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_client_by_date_updated,
-						    c.getServerVersion());
-						if (multiMedia != null) {
-							patientService.personImageUpload(multiMedia, patientJson.getString("uuid"));
+					if (isSendToOpenMRS.equalsIgnoreCase("yes") || isSendToOpenMRS == null) {
+						JSONObject patientJson = patientService.createPatient(c);
+						patient = patientJson;
+						if (patientJson != null && patientJson.has("uuid")) {
+							c.addIdentifier(PatientService.OPENMRS_UUID_IDENTIFIER_TYPE, patientJson.getString("uuid"));
+							clientService.addorUpdate(c, false);
+							config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_client_by_date_updated,
+							    c.getServerVersion());
+							if (multiMedia != null) {
+								patientService.personImageUpload(multiMedia, patientJson.getString("uuid"));
+							}
+							
 						}
-						
 					}
 					
 				}
@@ -313,8 +316,8 @@ public class OpenmrsSyncerListener {
 		for (Event e : el) {
 			try {
 				String uuid = e.getIdentifier(EncounterService.OPENMRS_UUID_IDENTIFIER_TYPE);
+				String isSendToOpenMRS = e.getIsSendToOpenMRS();
 				if (uuid != null) {
-					String isSendToOpenMRS = e.getIsSendToOpenMRS();
 					if (isSendToOpenMRS.equalsIgnoreCase("yes") || isSendToOpenMRS == null) {
 						encounter = encounterService.updateEncounter(e);
 						
@@ -324,12 +327,15 @@ public class OpenmrsSyncerListener {
 					}
 					
 				} else {
-					JSONObject eventJson = encounterService.createEncounter(e);
-					encounter = eventJson;
-					if (eventJson != null && eventJson.has("uuid")) {
-						e.addIdentifier(EncounterService.OPENMRS_UUID_IDENTIFIER_TYPE, eventJson.getString("uuid"));
-						eventService.updateEvent(e);
+					if (isSendToOpenMRS.equalsIgnoreCase("yes") || isSendToOpenMRS == null) {
+						JSONObject eventJson = encounterService.createEncounter(e);
+						encounter = eventJson;
+						if (eventJson != null && eventJson.has("uuid")) {
+							e.addIdentifier(EncounterService.OPENMRS_UUID_IDENTIFIER_TYPE, eventJson.getString("uuid"));
+							eventService.updateEvent(e);
+						}
 					}
+					
 				}
 				config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_event_by_date_updated, e.getServerVersion());
 			}
