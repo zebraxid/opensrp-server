@@ -244,6 +244,10 @@ public class OpenmrsSyncerListener {
 							}
 							
 						}
+					}else{
+						// data not sent to openMRS but timestamp is updated
+						config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_client_by_date_updated,
+							    c.getServerVersion());
 					}
 					
 				}
@@ -334,8 +338,7 @@ public class OpenmrsSyncerListener {
 							e.addIdentifier(EncounterService.OPENMRS_UUID_IDENTIFIER_TYPE, eventJson.getString("uuid"));
 							eventService.updateEvent(e);
 						}
-					}
-					
+					}	
 				}
 				config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_event_by_date_updated, e.getServerVersion());
 			}

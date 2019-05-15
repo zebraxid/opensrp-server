@@ -457,16 +457,19 @@ public class DataMigrationController {
 				String[] member = line.split(cvsSplitBy);
 				
 				Client client = new Client(null);
-				/*HttpResponse op1 = HttpUtil.get(opensrpWebUurl + "/rest/api/v1/health-id/reserved/single/migration", "",
+				//for health id
+				HttpResponse op1 = HttpUtil.get(opensrpWebUurl + "/rest/api/v1/health-id/reserved/single/migration", "",
 				    opensrpWebUsername, opensrpWebPassword);
-				JSONObject healthObj = new JSONObject(op1.body());*/
+				JSONObject healthObj = new JSONObject(op1.body());
+				
 				String healthId = "";
-				/*if (healthObj.has("identifiers")) {
+				if (healthObj.has("identifiers")) {
 					healthId = healthObj.getString("identifiers");
 				} else {
 					logger.info("No health id found...");
-				}*/
-				//client.addIdentifier("Patient_Identifier", healthId);
+				}
+				client.addIdentifier("Patient_Identifier", healthId);
+				//end: for health id
 				String baseEntityId = UUID.randomUUID().toString().trim();
 				client.setBaseEntityId(baseEntityId);
 				String firstName = member[55];
