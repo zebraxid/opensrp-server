@@ -108,24 +108,30 @@ public class ClientService {
 	
 	public Client findClient(Client client) {
 		// find by auto assigned entity id
-		Client c = allClients.findByBaseEntityId(client.getBaseEntityId());
-		if (c != null) {
-			return c;
-		}
-		
-		//still not found!! search by generic identifiers
-		logger.info("\n\n\n Identifiers : "+client.getIdentifiers());
-		
-		for (String idt : client.getIdentifiers().keySet()) {
-			List<Client> cl = allClients.findAllByIdentifier(client.getIdentifier(idt));
-			if (cl.size() > 1) {
-				throw new IllegalArgumentException("Multiple clients with identifier type " + idt + " and ID "
-				        + client.getIdentifier(idt) + " exist.");
-			} else if (cl.size() != 0) {
-				return cl.get(0);
+		Client c= null;
+		try {
+			c = allClients.findByBaseEntityId(client.getBaseEntityId());
+			if (c != null) {
+				return c;
 			}
+			
+			//still not found!! search by generic identifiers
+			logger.info("\n\n Client in findClient : "+client.toString()+"\n\n");
+			logger.info("\n\n Identifiers : "+client.getIdentifiers()+"\n\n");
+			
+			for (String idt : client.getIdentifiers().keySet()) {
+				List<Client> cl = allClients.findAllByIdentifier(client.getIdentifier(idt));
+				if (cl.size() > 1) {
+					throw new IllegalArgumentException("Multiple clients with identifier type " + idt + " and ID "
+					        + client.getIdentifier(idt) + " exist.");
+				} else if (cl.size() != 0) {
+					return cl.get(0);
+				}
+			}
+			logger.info("\n\n Client after finding : "+ client.toString()+"\n\n");
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		logger.info("\n\n\n C :"+ client.toString()+"\n\n");
 		return c;
 	}
 	
@@ -224,8 +230,9 @@ public class ClientService {
 			throw new RuntimeException("No baseEntityId");
 		}
 		logger.info("\n\n\n Client in addOrUpdate :"+ client.toString()+"\n\n");
-		Client c = findClient(client);
+		//Client c = findClient(client);
 		try {
+			Client c = findClient(client);
 			if (c != null) {
 				client.setRevision(c.getRevision());
 				client.setId(c.getId());

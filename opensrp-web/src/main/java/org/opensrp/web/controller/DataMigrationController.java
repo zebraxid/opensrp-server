@@ -435,7 +435,7 @@ public class DataMigrationController {
 	
 	@SuppressWarnings("resource")
 	public String addHousehold(File csvFile) throws Exception {
-		List<String> ids = new ArrayList<String>();
+		/*List<String> ids = new ArrayList<String>();
 		ids.add("a59876eb-691c-4840-b9c7-88cb59c4c8e5");
 		ids.add("d43bb068-ee72-4dee-bde5-0e684ab87f19");
 		String field = "baseEntityId";
@@ -444,7 +444,7 @@ public class DataMigrationController {
 		searchBean.setServerVersion(1551783879608l);
 		AddressSearchBean addressSearchBean = new AddressSearchBean();
 		addressSearchBean.setStateProvince("DHAKA");
-		System.err.println("Size:" + clientService.findByCriteria(searchBean, addressSearchBean));
+		System.err.println("Size:" + clientService.findByCriteria(searchBean, addressSearchBean));*/
 		String msg = "";
 		BufferedReader br = null;
 		String line = "";
@@ -458,7 +458,7 @@ public class DataMigrationController {
 				
 				Client client = new Client(null);
 				//for health id
-				HttpResponse op1 = HttpUtil.get(opensrpWebUurl + "/rest/api/v1/health-id/reserved/single/migration", "",
+				/*HttpResponse op1 = HttpUtil.get(opensrpWebUurl + "/rest/api/v1/health-id/reserved/single/migration", "",
 				    opensrpWebUsername, opensrpWebPassword);
 				JSONObject healthObj = new JSONObject(op1.body());
 				
@@ -468,7 +468,7 @@ public class DataMigrationController {
 				} else {
 					logger.info("No health id found...");
 				}
-				client.addIdentifier("Patient_Identifier", healthId);
+				client.addIdentifier("Patient_Identifier", healthId);*/
 				//end: for health id
 				String baseEntityId = UUID.randomUUID().toString().trim();
 				client.setBaseEntityId(baseEntityId);
