@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.opensrp.domain.Client;
 import org.opensrp.domain.Event;
+import org.opensrp.domain.postgres.CustomQuery;
 import org.opensrp.search.EventSearchBean;
 
 public interface EventsRepository extends BaseRepository<Event> {
@@ -53,5 +54,7 @@ public interface EventsRepository extends BaseRepository<Event> {
 	List<Event> findByFieldValue(String field, List<String> ids, long serverVersion);
 	
 	void deleteByPrimaryKey(Event event);
+	List<CustomQuery> getLocations(int userId);
 	
+	CustomQuery getUser(String userName);
 }

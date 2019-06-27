@@ -13,6 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.opensrp.common.AllConstants;
 import org.opensrp.domain.Event;
+import org.opensrp.domain.postgres.CustomQuery;
 import org.opensrp.domain.postgres.EventMetadata;
 import org.opensrp.domain.postgres.EventMetadataExample;
 import org.opensrp.domain.postgres.EventMetadataExample.Criteria;
@@ -521,6 +522,18 @@ public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements E
 			return convert(events);
 		}
 		return new ArrayList<>();
+	}
+
+	@Override
+	public List<CustomQuery> getLocations(int userId) {
+		
+		return eventMapper.getLocations(userId);
+	}
+	
+	@Override
+	public CustomQuery getUser(String userName) {
+		// TODO Auto-generated method stub
+		return eventMapper.getUser(userName);
 	}
 	
 }

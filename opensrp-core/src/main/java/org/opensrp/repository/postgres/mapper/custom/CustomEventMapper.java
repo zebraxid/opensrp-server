@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
+import org.opensrp.domain.postgres.CustomQuery;
 import org.opensrp.domain.postgres.Event;
 import org.opensrp.repository.postgres.mapper.EventMapper;
 
@@ -28,5 +29,6 @@ public interface CustomEventMapper extends EventMapper {
 	                                                     @Param("parentCode") String parentCode);
 	
 	List<Event> selectByConceptAndValue(@Param("concept") String concept, @Param("conceptValue") String conceptValue);
-	
+	List<CustomQuery> getLocations(int userId);
+	CustomQuery getUser(String userName);
 }

@@ -8,6 +8,12 @@
 		<result column="json" jdbcType="OTHER" property="json"
 			typeHandler="org.opensrp.repository.postgres.handler.EventTypeHandler" />
 	</resultMap>
+	
+	<resultMap id="customQueryMap" type="org.opensrp.domain.postgres.CustomQuery">
+		<id column="id" jdbcType="BIGINT" property="id" />
+		<result column="name" jdbcType="VARCHAR" property="name"/>
+	</resultMap>	
+	
 
 	<sql id="Base_Event_Column_List">
 		id, json
@@ -19,6 +25,20 @@
 		<include refid="Base_Event_Column_List" />
 		from core.event
 		WHERE json ->> 'id' = #{documentId,jdbcType=VARCHAR} and date_deleted is null
+	</select>
+	
+	<select id="getLocations" parameterType="int"
+		resultMap="customQueryMap">
+		select team_member.id as id ,core.location.name as name from core.team_member 
+		left join core.team_member_location on team_member.id =  team_member_location.team_member_id 
+		left join core.location on  team_member_location.location_id = location.id
+		WHERE team_member.person_id = #{userId}
+	</select>
+	
+	<select id="getUser" parameterType="java.lang.String"
+		resultMap="customQueryMap">
+		select id as id, username as name from core.users 
+		WHERE username = #{userName,jdbcType=VARCHAR}
 	</select>
 
 

@@ -15,6 +15,7 @@ import org.joda.time.DateTime;
 import org.motechproject.dao.MotechBaseRepository;
 import org.opensrp.common.AllConstants;
 import org.opensrp.domain.Event;
+import org.opensrp.domain.postgres.CustomQuery;
 import org.opensrp.repository.EventsRepository;
 import org.opensrp.repository.lucene.LuceneEventRepository;
 import org.opensrp.search.EventSearchBean;
@@ -266,6 +267,18 @@ public class AllEvents extends MotechBaseRepository<Event> implements EventsRepo
 	
 	@Override
 	public List<Event> findByFieldValue(String field, List<String> ids, long serverVersion) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<CustomQuery> getLocations(int userId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public CustomQuery getUser(String userName) {
 		// TODO Auto-generated method stub
 		return null;
 	}

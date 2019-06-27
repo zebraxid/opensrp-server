@@ -14,6 +14,7 @@ import org.json.JSONObject;
 import org.opensrp.common.AllConstants.Client;
 import org.opensrp.domain.Event;
 import org.opensrp.domain.Obs;
+import org.opensrp.domain.postgres.CustomQuery;
 import org.opensrp.repository.EventsRepository;
 import org.opensrp.search.EventSearchBean;
 import org.opensrp.util.DateTimeTypeConverter;
@@ -331,5 +332,10 @@ public class EventService {
 	public void deleteByPrimaryKey(Event event) {
 		allEvents.deleteByPrimaryKey(event);
 		
+	}
+	
+	public List<CustomQuery> getLocations(String userName){
+		CustomQuery user = allEvents.getUser(userName);
+		return allEvents.getLocations(user.getId());		
 	}
 }
