@@ -17,6 +17,7 @@ import org.opensrp.domain.postgres.CustomQuery;
 import org.opensrp.domain.postgres.EventMetadata;
 import org.opensrp.domain.postgres.EventMetadataExample;
 import org.opensrp.domain.postgres.EventMetadataExample.Criteria;
+import org.opensrp.domain.postgres.HealthId;
 import org.opensrp.repository.EventsRepository;
 import org.opensrp.repository.postgres.mapper.custom.CustomEventMapper;
 import org.opensrp.repository.postgres.mapper.custom.CustomEventMetadataMapper;
@@ -534,6 +535,18 @@ public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements E
 	public CustomQuery getUser(String userName) {
 		// TODO Auto-generated method stub
 		return eventMapper.getUser(userName);
+	}
+
+	@Override
+	public int updateHealthId(HealthId healthId) {
+		return eventMapper.updateHealthId(healthId);
+		
+	}
+
+	@Override
+	public List<HealthId> gethealthIds(boolean status, String type) {
+		List<HealthId> healthIds = eventMapper.gethealthIds(status, type);
+		return null;
 	}
 	
 }

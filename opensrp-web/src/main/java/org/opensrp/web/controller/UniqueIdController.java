@@ -24,6 +24,7 @@ import org.opensrp.api.domain.User;
 import org.opensrp.common.util.HttpResponse;
 import org.opensrp.common.util.HttpUtil;
 import org.opensrp.connector.openmrs.service.OpenmrsUserService;
+import org.opensrp.service.EventService;
 import org.opensrp.service.OpenmrsIDService;
 import org.opensrp.web.utils.PdfUtil;
 import org.slf4j.Logger;
@@ -47,6 +48,9 @@ import com.ibm.icu.text.SimpleDateFormat;
 public class UniqueIdController {
 	
 	private static Logger logger = LoggerFactory.getLogger(UniqueIdController.class.toString());
+	
+	@Autowired
+	private EventService eventService;
 	
 	@Value("#{opensrp['qrcodes.directory.name']}")
 	private String qrCodesDir;
@@ -169,6 +173,8 @@ public class UniqueIdController {
 	@ResponseBody
 	protected ResponseEntity<String> getHealthId(HttpServletRequest request) throws JSONException, KeyManagementException,
 	    NoSuchAlgorithmException, KeyStoreException {
+		
+		/*System.err.println("getHealthId:"+eventService.getHealthId());*/
 		HttpResponse op = HttpUtil.get(opensrpWebUurl + "/rest/api/v1/health-id/reserved", "", opensrpWebUsername,
 		    opensrpWebPassword);
 		JSONObject jsonObj = new JSONObject(op.body());

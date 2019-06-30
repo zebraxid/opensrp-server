@@ -12,6 +12,12 @@
 	<resultMap id="customQueryMap" type="org.opensrp.domain.postgres.CustomQuery">
 		<id column="id" jdbcType="BIGINT" property="id" />
 		<result column="name" jdbcType="VARCHAR" property="name"/>
+	</resultMap>
+	
+	<resultMap id="healthIdMap" type="org.opensrp.domain.postgres.HealthId">
+		<id column="id" jdbcType="BIGINT" property="id" />
+		<result column="hId" jdbcType="VARCHAR" property="hId"/>
+		<result column="type" jdbcType="VARCHAR" property="type"/>		
 	</resultMap>	
 	
 
@@ -126,6 +132,15 @@
 			  and obs_value=#{conceptValue,jdbcType=VARCHAR}
 			  and date_deleted is null
 	</select>
+	
+	<select id="gethealthIds" parameterType="map" resultMap="healthIdMap">
+		select id as id, h_id as hId, type  from core.health_id 
+		WHERE status = false order by id desc limit 10
+	</select>
+	
+	<update id="updateHealthId" parameterType="org.opensrp.domain.postgres.HealthId">
+		update core.health_id set status = false WHERE id = #{id}
+	</update>
 	
 
 </mapper>

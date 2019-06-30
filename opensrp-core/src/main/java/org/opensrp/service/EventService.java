@@ -15,6 +15,7 @@ import org.opensrp.common.AllConstants.Client;
 import org.opensrp.domain.Event;
 import org.opensrp.domain.Obs;
 import org.opensrp.domain.postgres.CustomQuery;
+import org.opensrp.domain.postgres.HealthId;
 import org.opensrp.repository.EventsRepository;
 import org.opensrp.search.EventSearchBean;
 import org.opensrp.util.DateTimeTypeConverter;
@@ -337,5 +338,17 @@ public class EventService {
 	public List<CustomQuery> getLocations(String userName){
 		CustomQuery user = allEvents.getUser(userName);
 		return allEvents.getLocations(user.getId());		
+	}
+	public JSONObject getHealthId() {
+		List<HealthId> gethHealthIds = allEvents.gethealthIds(false, "Reserved");		
+		for (HealthId healthId : gethHealthIds) {
+			System.err.println(healthId.getId());
+		}
+		HealthId h = new HealthId();
+		h.setId(530139);
+		
+		allEvents.updateHealthId(h);
+		return null;
+		
 	}
 }

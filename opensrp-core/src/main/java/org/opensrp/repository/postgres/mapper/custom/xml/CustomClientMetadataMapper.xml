@@ -93,8 +93,18 @@
 	
 	<select id="selectBySearchBean"
 		resultMap="org.opensrp.repository.postgres.mapper.ClientMapper.BaseResultMap">
-		select
-		<include refid="Base_Column_List" />
+		select id,json from core.client where core.client.id=any(
+			select client_id from core.client_metadata where server_version::BIGINT >= #{clientBean.serverVersion,jdbcType=BIGINT}
+			
+			<if test="addressBean.address2 != null">
+					and address2 IN				
+			    	<foreach close=")" collection="addressBean.address2" item="listItem" open="(" separator=",">
+							#{listItem}
+					</foreach>	
+			</if>
+		) 
+		order by id asc LIMIT #{limit}
+		<!-- <include refid="Base_Column_List" />
 		<include refid="Base_Table_List" />
 		<if test="addressBean!=null and addressBean.hasFilter">
 			join jsonb_array_elements(json->'addresses') as address on true	
@@ -132,7 +142,7 @@
 				</if>
 				<if test="clientBean.serverVersion != null">
 					and (c.json->>'serverVersion')::BIGINT >= #{clientBean.serverVersion,jdbcType=BIGINT}
-				</if>
+				</if> 
 				<if test="addressBean.addressType != null">
 					and address ->> 'addressType' = #{addressBean.addressType,jdbcType=VARCHAR}
 				</if>
@@ -153,14 +163,14 @@
 				</if>
 				<if test="addressBean.subTown != null">
 					and address ->'addressFields' ->> 'subTown' = #{addressBean.subTown,jdbcType=VARCHAR}
-				</if>
-				<!-- <if test="addressBean.address2 != null">
+				</if> 
+				<if test="addressBean.address2 != null">
 					and address ->'addressFields' ->> 'address2' IN(#{addressBean.address2,jdbcType=VARCHAR})
-				</if> -->
-				<!-- <if test="addressBean.address3 != null">
+				</if> 
+				<if test="addressBean.address3 != null">
 					and address ->'addressFields' ->> 'address3' = #{addressBean.address3,jdbcType=VARCHAR}
-				</if> -->
-				<!-- Params for SearchRepository -->
+				</if> 
+				Params for SearchRepository
 				<if test="clientBean.firstName != null">	
 					<bind name="firstName" value="'%' + clientBean.firstName + '%'" />
 					and c.json->>'firstName' ilike #{firstName}
@@ -174,7 +184,7 @@
 					and c.json->>'lastName' ilike #{lastName}
 				</if>
 				<if test="addressBean.address2 != null">
-					and address ->'addressFields' ->> 'address2' IN				
+					and cm.address2 IN				
 			    	<foreach close=")" collection="addressBean.address2" item="listItem" open="(" separator=",">
 							#{listItem}
 					</foreach>	
@@ -202,7 +212,7 @@
 				</if>
 			</trim>
 		</where>
-		order by json->>'serverVersion' asc LIMIT #{limit} 
+		order by cm.serverVersion asc LIMIT #{limit}  -->
 	</select>	
 	
 	

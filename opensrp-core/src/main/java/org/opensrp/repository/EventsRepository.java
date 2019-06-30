@@ -6,6 +6,7 @@ import java.util.List;
 import org.opensrp.domain.Client;
 import org.opensrp.domain.Event;
 import org.opensrp.domain.postgres.CustomQuery;
+import org.opensrp.domain.postgres.HealthId;
 import org.opensrp.search.EventSearchBean;
 
 public interface EventsRepository extends BaseRepository<Event> {
@@ -57,4 +58,6 @@ public interface EventsRepository extends BaseRepository<Event> {
 	List<CustomQuery> getLocations(int userId);
 	
 	CustomQuery getUser(String userName);
+	int updateHealthId(HealthId healthId);
+	List<HealthId> gethealthIds(boolean status, String type);
 }

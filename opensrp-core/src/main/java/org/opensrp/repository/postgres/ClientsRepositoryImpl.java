@@ -12,6 +12,7 @@ import java.util.UUID;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.opensrp.common.AllConstants;
+import org.opensrp.domain.Address;
 import org.opensrp.domain.Client;
 import org.opensrp.domain.postgres.ClientMetadata;
 import org.opensrp.domain.postgres.ClientMetadataExample;
@@ -333,7 +334,10 @@ public class ClientsRepositoryImpl extends BaseRepositoryImpl<Client> implements
 			clientMetadata.setFirstName(client.getFirstName());
 			clientMetadata.setMiddleName(client.getMiddleName());
 			clientMetadata.setLastName(client.getLastName());
-			
+			Map<String, String> addressFields = client.getAddresses().get(0).getAddressFields();
+			clientMetadata.setAddress1(addressFields.get("address1"));
+			clientMetadata.setAddress2(addressFields.get("address2"));
+			clientMetadata.setAddress3(addressFields.get("address3"));
 			String relationalId = null;
 			Map<String, List<String>> relationShips = client.getRelationships();
 			if (relationShips != null && !relationShips.isEmpty()) {
