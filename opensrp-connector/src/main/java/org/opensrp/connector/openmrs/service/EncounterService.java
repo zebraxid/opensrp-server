@@ -1297,7 +1297,7 @@ public class EncounterService extends OpenmrsService {
 			formName = splitFormFieldPath[0];
 		}
 		
-		System.err.println("formFieldPathformFieldPathformFieldPath::::" + formName);
+		
 		return e;
 	}
 	

@@ -177,16 +177,16 @@ public class EventService {
 	public synchronized Event addorUpdateEvent(Event event) {
 		Event existingEvent = findById(event.getId());
 		List<Event> events = findByBaseEntityAndEventTypeContaining(event.getBaseEntityId(), "Registration");
-		
-		if (events.size() != 0) {
+		// does not reqiured
+		/*if (events.size() != 0) {
 			for (Event event2 : events) {
 				deleteByPrimaryKey(event2);
 			}
-		}
-		if (existingEvent != null) {
+		}*/
+		if (events.size() != 0) {
 			event.setDateEdited(DateTime.now());
 			event.setServerVersion(System.currentTimeMillis());
-			event.setRevision(existingEvent.getRevision());
+			event.setRevision(events.get(0).getRevision());
 			allEvents.update(event);
 			
 		} else {
@@ -335,12 +335,13 @@ public class EventService {
 		
 	}
 	
-	public List<CustomQuery> getLocations(String userName){
+	public List<CustomQuery> getLocations(String userName) {
 		CustomQuery user = allEvents.getUser(userName);
-		return allEvents.getLocations(user.getId());		
+		return allEvents.getLocations(user.getId());
 	}
+	
 	public JSONObject getHealthId() {
-		List<HealthId> gethHealthIds = allEvents.gethealthIds(false, "Reserved");		
+		List<HealthId> gethHealthIds = allEvents.gethealthIds(false, "Reserved");
 		for (HealthId healthId : gethHealthIds) {
 			System.err.println(healthId.getId());
 		}

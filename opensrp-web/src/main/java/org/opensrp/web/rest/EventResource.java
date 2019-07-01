@@ -236,7 +236,7 @@ public class EventResource extends RestResource<Event> {
 		Map<String, Object> response = new HashMap<String, Object>();
 		try {
 			List<CustomQuery> locations = eventService.getLocations(request.getRemoteUser());
-			logger.info("request.getRemoteUser():"+request.getRemoteUser());
+			logger.info("request.getRemoteUser():" + request.getRemoteUser());
 			
 			String location = "";
 			String userType = "";
@@ -244,7 +244,7 @@ public class EventResource extends RestResource<Event> {
 			if (locations.size() != 0) {
 				for (CustomQuery locName : locations) {
 					address.add(locName.getName());
-				}				
+				}
 				userType = "Provider";
 				String providerId = getStringFilter(PROVIDER_ID, request);
 				String requestProviderName = request.getRemoteUser();
@@ -336,7 +336,7 @@ public class EventResource extends RestResource<Event> {
 				logger.info("No location found..");
 				response.put("msg", "Error occurred");
 				return new ResponseEntity<>(new Gson().toJson(response), HttpStatus.INTERNAL_SERVER_ERROR);
-			}		
+			}
 			
 		}
 		catch (Exception e) {
@@ -358,7 +358,7 @@ public class EventResource extends RestResource<Event> {
 			if (locations.size() != 0) {
 				for (CustomQuery locName : locations) {
 					address.add(locName.getName());
-				}				
+				}
 				userType = "Provider";
 				String providerId = getStringFilter(PROVIDER_ID, request);
 				String requestProviderName = request.getRemoteUser();
@@ -427,7 +427,6 @@ public class EventResource extends RestResource<Event> {
 				return new ResponseEntity<>(new Gson().toJson(response), HttpStatus.INTERNAL_SERVER_ERROR);
 			}
 			
-			
 		}
 		catch (Exception e) {
 			response.put("msg", "Error occurred");
@@ -467,8 +466,10 @@ public class EventResource extends RestResource<Event> {
 							event.withIsSendToOpenMRS("yes");
 							eventService.addorUpdateEvent(event);
 							Client client = clientService.find(event.getBaseEntityId());
-							client.setServerVersion(System.currentTimeMillis());
-							clientService.addorUpdate(client);
+							if (client != null) {
+								client.setServerVersion(System.currentTimeMillis());
+								clientService.addorUpdate(client);
+							}
 						} else {
 							logger.info("already updated by another");
 						}
