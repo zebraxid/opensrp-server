@@ -1,6 +1,7 @@
 package org.opensrp.service;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -337,7 +338,12 @@ public class EventService {
 	
 	public List<CustomQuery> getLocations(String userName) {
 		CustomQuery user = allEvents.getUser(userName);
-		return allEvents.getLocations(user.getId());
+		if (user != null) {
+			return allEvents.getLocations(user.getId());
+		} else {
+			return new ArrayList<CustomQuery>();
+		}
+		
 	}
 	
 	public JSONObject getHealthId() {

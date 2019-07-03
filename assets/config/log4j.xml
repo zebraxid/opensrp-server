@@ -54,15 +54,15 @@
     </logger>
 
     <logger name="org.springframework">
-        <level value="INFO"/>
+        <level value="WARN"/>
     </logger>
 
     <logger name="org.ei">
-        <level value="INFO"/>
+        <level value="WARN"/>
     </logger>
     
     <logger name="org.opensrp">
-        <level value="DEBUG"/>
+        <level value="WARN"/>
     </logger>
 
     <logger name="DRISHTI_REPORT_MONITOR">
@@ -76,7 +76,7 @@
     </logger>
     
     <root>
-        <priority value="INFO"/>
+        <priority value="WARN"/>
         <!--<appender-ref ref="RollingLog"/>-->
         <appender-ref ref="CONSOLE"/>
     </root>
