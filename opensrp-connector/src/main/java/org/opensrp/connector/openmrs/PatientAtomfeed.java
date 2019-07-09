@@ -154,6 +154,7 @@ public class PatientAtomfeed extends OpenmrsService implements EventWorker, Atom
 		}
 		catch (JSONException e) {
 			e.printStackTrace();
+			log.warning("client atomfeed error message:" + e.getMessage() + ", and cause :" + e.getCause());
 			throw new RuntimeException(e);
 		}
 	}

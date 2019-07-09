@@ -72,10 +72,9 @@ public class PatientService extends OpenmrsService {
 	}
 	
 	public JSONObject getPatientByIdentifier(String identifier) throws JSONException {
-		JSONArray p = new JSONObject(HttpUtil.get(getURL() + "/" + PATIENT_URL, "v=full&identifier=" + identifier,
-		    OPENMRS_USER, OPENMRS_PWD).body()).getJSONArray("results");
-		
 		try {
+			JSONArray p = new JSONObject(HttpUtil.get(getURL() + "/" + PATIENT_URL, "v=full&identifier=" + identifier,
+			    OPENMRS_USER, OPENMRS_PWD).body()).getJSONArray("results");
 			return p.length() > 0 ? p.getJSONObject(0) : null;
 		}
 		catch (Exception e) {
@@ -145,8 +144,9 @@ public class PatientService extends OpenmrsService {
 	
 	public JSONObject createPerson(Client be) throws JSONException {
 		JSONObject per = convertBaseEntityToOpenmrsJson(be);
+		logger.warn("Person Json:" + per.toString());
 		String response = HttpUtil.post(getURL() + "/" + PERSON_URL, "", per.toString(), OPENMRS_USER, OPENMRS_PWD).body();
-		//System.err.println("response:" + response.toString());
+		
 		return new JSONObject(response);
 	}
 	

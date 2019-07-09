@@ -20,6 +20,7 @@ import org.opensrp.domain.AppStateToken;
 import org.opensrp.domain.Client;
 import org.opensrp.domain.Event;
 import org.opensrp.domain.Multimedia;
+import org.opensrp.domain.postgres.ErrorTrace;
 import org.opensrp.scheduler.service.ActionService;
 import org.opensrp.scheduler.service.ScheduleService;
 import org.opensrp.service.ClientService;
@@ -218,7 +219,7 @@ public class OpenmrsSyncerListener {
 				if (uuid != null) {
 					logger.info("Updating patient " + uuid);
 					//String isSendToOpenMRS = c.getIsSendToOpenMRS();
-					if (isSendToOpenMRS.equalsIgnoreCase("yes") || isSendToOpenMRS == null) {
+					if (isSendToOpenMRS == null || isSendToOpenMRS.equalsIgnoreCase("yes")) {
 						patient = patientService.updatePatient(c, uuid);
 					} else {
 						logger.info("this client doesn't go to openMRS at baseentityid: " + uuid);
@@ -231,7 +232,7 @@ public class OpenmrsSyncerListener {
 					}
 					
 				} else {
-					if (isSendToOpenMRS.equalsIgnoreCase("yes") || isSendToOpenMRS == null) {
+					if (isSendToOpenMRS == null || isSendToOpenMRS.equalsIgnoreCase("yes")) {
 						JSONObject patientJson = patientService.createPatient(c);
 						patient = patientJson;
 						if (patientJson != null && patientJson.has("uuid")) {
@@ -244,19 +245,21 @@ public class OpenmrsSyncerListener {
 							}
 							
 						}
-					}else{
+					} else {
 						// data not sent to openMRS but timestamp is updated
 						config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_client_by_date_updated,
-							    c.getServerVersion());
+						    c.getServerVersion());
 					}
 					
 				}
 			}
 			catch (Exception ex1) {
 				config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_client_by_date_updated, c.getServerVersion());
-				ex1.printStackTrace();
 				errorTraceService.log("OPENMRS FAILED CLIENT PUSH", Client.class.getName(), c.getBaseEntityId(),
 				    ExceptionUtils.getStackTrace(ex1), "");
+				//ex1.printStackTrace();
+				logger.error("client error message:" + ex1.getMessage() + ", and cause :" + ex1.getCause()
+				        + ", baseEntityId:" + c.getBaseEntityId());
 			}
 			patientsJsonArray.put(patient);
 		}
@@ -331,25 +334,122 @@ public class OpenmrsSyncerListener {
 					}
 					
 				} else {
-					if (isSendToOpenMRS.equalsIgnoreCase("yes") || isSendToOpenMRS == null) {
+					if (isSendToOpenMRS == null || isSendToOpenMRS.equalsIgnoreCase("yes")) {
 						JSONObject eventJson = encounterService.createEncounter(e);
 						encounter = eventJson;
 						if (eventJson != null && eventJson.has("uuid")) {
 							e.addIdentifier(EncounterService.OPENMRS_UUID_IDENTIFIER_TYPE, eventJson.getString("uuid"));
 							eventService.updateEvent(e);
 						}
-					}	
+					}
 				}
 				config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_event_by_date_updated, e.getServerVersion());
 			}
 			catch (Exception ex2) {
 				config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_event_by_date_updated, e.getServerVersion());
-				logger.error("", ex2);
 				errorTraceService.log("OPENMRS FAILED EVENT PUSH", Event.class.getName(), e.getId(),
 				    ExceptionUtils.getStackTrace(ex2), "");
+				//ex2.printStackTrace();
+				logger.error("event error message:" + ex2.getMessage() + ", and cause :" + ex2.getCause()
+				        + ", baseEntityId:" + e.getBaseEntityId());
 			}
 		}
 		return encounter;
+		
+	}
+	
+	@MotechListener(subjects = OpenmrsConstants.SCHEDULER_OPENMRS_DATA_PUSH_RESYNC_SUBJECT)
+	public void reSyncToOpenMRS(MotechEvent event) {
+		List<org.opensrp.domain.ErrorTrace> errorTraces = errorTraceService.findAllUnSyncErrors("org.opensrp.domain.Client");
+		JSONObject patient = new JSONObject();// only for test code purpose
+		JSONArray patientsJsonArray = new JSONArray();// only for test code purpose
+		JSONArray relationshipsArray = new JSONArray();// only for test code purpose
+		JSONObject returnJsonObject = new JSONObject();// only for test code purpose
+		for (org.opensrp.domain.ErrorTrace errorTrace : errorTraces) {
+			Client c = clientService.find(errorTrace.getRecordId());
+			if (c != null) {
+				try {
+					Multimedia multiMedia = multimediaService.findByCaseId(c.getBaseEntityId());
+					// FIXME This is to deal with existing records and should be
+					// removed later				
+					if (c.getAttributes().containsKey("spouseName")) {
+						if (c.getBirthdate() == null) {
+							c.setBirthdate(new DateTime("1970-01-01"));
+						}
+						c.setGender("Female");
+					}
+					if (c.getRelationships() == null) {
+						if (c.getBirthdate() == null) {
+							c.setBirthdate(new DateTime("1970-01-01"));
+						}
+					}
+					String uuid = c.getIdentifier(PatientService.OPENMRS_UUID_IDENTIFIER_TYPE);
+					if (uuid == null) {
+						JSONObject p = patientService.getPatientByIdentifier(c.getBaseEntityId());
+						for (Entry<String, String> id : c.getIdentifiers().entrySet()) {
+							p = patientService.getPatientByIdentifier(id.getValue());
+							if (p != null) {
+								break;
+							}
+						}
+						if (p != null) {
+							uuid = p.getString("uuid");
+						}
+					}
+					String isSendToOpenMRS = c.getIsSendToOpenMRS();
+					if (uuid != null) {
+						logger.info("Updating patient " + uuid);
+						//String isSendToOpenMRS = c.getIsSendToOpenMRS();
+						if (isSendToOpenMRS == null || isSendToOpenMRS.equalsIgnoreCase("yes")) {
+							patient = patientService.updatePatient(c, uuid);
+						} else {
+							logger.info("this client doesn't go to openMRS at baseentityid: " + uuid);
+						}
+						
+						config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_client_by_date_updated,
+						    c.getServerVersion());
+						if (multiMedia != null) {
+							patientService.personImageUpload(multiMedia, uuid);
+						}
+						
+					} else {
+						if (isSendToOpenMRS == null || isSendToOpenMRS.equalsIgnoreCase("yes")) {
+							JSONObject patientJson = patientService.createPatient(c);
+							patient = patientJson;
+							if (patientJson != null && patientJson.has("uuid")) {
+								c.addIdentifier(PatientService.OPENMRS_UUID_IDENTIFIER_TYPE, patientJson.getString("uuid"));
+								clientService.addorUpdate(c, false);
+								config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_client_by_date_updated,
+								    c.getServerVersion());
+								if (multiMedia != null) {
+									patientService.personImageUpload(multiMedia, patientJson.getString("uuid"));
+								}
+								
+							}
+						} else {
+							// data not sent to openMRS but timestamp is updated
+							config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_client_by_date_updated,
+							    c.getServerVersion());
+						}
+						
+					}
+					errorTrace.setStatus("solved");
+					errorTraceService.updateError(errorTrace);
+				}
+				catch (Exception ex1) {
+					config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_client_by_date_updated,
+					    c.getServerVersion());
+					logger.error("client error message:" + ex1.getMessage() + ", and cause :" + ex1.getCause()
+					        + ",at baseEntityId:" + errorTrace.getRecordId());
+					errorTrace.setStatus("unsolved");
+					errorTraceService.updateError(errorTrace);
+					
+				}
+				
+			} else {
+				logger.error("no client found at baseEntityId:" + errorTrace.getRecordId());
+			}
+		}
 		
 	}
 	

@@ -17,4 +17,6 @@ public interface ErrorTraceRepository extends BaseRepository<ErrorTrace> {
 	
 	List<ErrorTrace> findAllSolvedErrors() throws DocumentNotFoundException;
 	
+	List<ErrorTrace> findAllUnSyncErrors(String type) throws DocumentNotFoundException;
+	
 }

@@ -191,4 +191,10 @@ public class ErrorTraceRepositoryImpl extends BaseRepositoryImpl<ErrorTrace> imp
 		
 		return errorTraces;
 	}
+	
+	@Override
+	public List<ErrorTrace> findAllUnSyncErrors(String type) throws DocumentNotFoundException {
+		// TODO Auto-generated method stub
+		return convert(errorTraceMapper.findAllUnSyncErrors(type));
+	}
 }

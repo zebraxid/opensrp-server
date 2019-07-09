@@ -1,4 +1,3 @@
-
 package org.opensrp.repository.couch;
 
 import java.util.List;
@@ -59,6 +58,12 @@ public class AllErrorTrace extends MotechBaseRepository<ErrorTrace> implements E
 	@View(name = "all_solved_errors", map = "function(doc) { if (doc.status === 'solved') { emit(doc.id); } }")
 	public List<ErrorTrace> findAllSolvedErrors() throws DocumentNotFoundException {
 		return db.queryView(createQuery("all_solved_errors").includeDocs(true), ErrorTrace.class);
+	}
+	
+	@Override
+	public List<ErrorTrace> findAllUnSyncErrors(String type) throws DocumentNotFoundException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

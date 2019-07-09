@@ -98,6 +98,8 @@ public class EncounterAtomfeed extends OpenmrsService implements EventWorker, At
 			}
 		}
 		catch (JSONException e) {
+			e.printStackTrace();
+			log.warning("event atomfeed error message:" + e.getMessage() + ", and cause :" + e.getCause());
 			throw new RuntimeException(e);
 		}
 	}

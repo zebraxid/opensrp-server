@@ -35,6 +35,8 @@ public class ApplicationStartupListener implements ApplicationListener<ContextRe
 	
 	private final RepeatingSchedule encounterSchedule;
 	
+	private final RepeatingSchedule openmrsScheduleReSync;
+	
 	private final RepeatingSchedule DHIS2Syncer;
 	
 	@Autowired
@@ -57,6 +59,8 @@ public class ApplicationStartupListener implements ApplicationListener<ContextRe
 		        1, TimeUnit.MINUTES);
 		DHIS2Syncer = new RepeatingSchedule(DHIS2Constants.DHIS2_TRACK_DATA_SYNCER_SUBJECT, 1, TimeUnit.MINUTES, 1,
 		        TimeUnit.MINUTES);
+		openmrsScheduleReSync = new RepeatingSchedule(OpenmrsConstants.SCHEDULER_OPENMRS_DATA_PUSH_RESYNC_SUBJECT, 1,
+		        TimeUnit.MINUTES, 1, TimeUnit.MINUTES);
 	}
 	
 	@Override
@@ -71,6 +75,7 @@ public class ApplicationStartupListener implements ApplicationListener<ContextRe
 			scheduler.startJob(atomfeedSchedule);
 			scheduler.startJob(encounterSchedule);
 			scheduler.startJob(DHIS2Syncer);
+			scheduler.startJob(openmrsScheduleReSync);
 			
 			System.out.println("STARTED ALL SCHEDULES");
 		}

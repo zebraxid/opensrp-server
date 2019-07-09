@@ -16,10 +16,10 @@ import org.springframework.stereotype.Service;
 public class ErrorTraceService {
 	
 	private final ErrorTraceRepository allErrorTrace;
-
+	
 	@Autowired
-	public ErrorTraceService(ErrorTraceRepository allErrorTrace)  {
-		this.allErrorTrace=allErrorTrace;
+	public ErrorTraceService(ErrorTraceRepository allErrorTrace) {
+		this.allErrorTrace = allErrorTrace;
 	}
 	
 	public void addError(ErrorTrace entity) {
@@ -42,6 +42,7 @@ public class ErrorTraceService {
 		error.setRecordId(recordId);
 		error.setStackTrace(stackTrace);
 		error.setRetryUrl(retryURL);
+		error.setStatus("error");
 		error.setDateOccurred(DateTime.now());
 		addError(error);
 		
@@ -91,6 +92,11 @@ public class ErrorTraceService {
 		
 		return allErrorTrace.findById(id);
 		
+	}
+	
+	public List<ErrorTrace> findAllUnSyncErrors(String type) throws DocumentNotFoundException {
+		// TODO Auto-generated method stub
+		return allErrorTrace.findAllUnSyncErrors(type);
 	}
 	
 }
