@@ -144,7 +144,7 @@ public class PatientService extends OpenmrsService {
 	
 	public JSONObject createPerson(Client be) throws JSONException {
 		JSONObject per = convertBaseEntityToOpenmrsJson(be);
-		logger.warn("Person Json:" + per.toString());
+		//logger.warn("Person Json:" + per.toString());
 		String response = HttpUtil.post(getURL() + "/" + PERSON_URL, "", per.toString(), OPENMRS_USER, OPENMRS_PWD).body();
 		
 		return new JSONObject(response);

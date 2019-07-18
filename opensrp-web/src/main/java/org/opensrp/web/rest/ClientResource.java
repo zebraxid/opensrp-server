@@ -6,6 +6,9 @@ import static org.opensrp.common.AllConstants.Client.DEATH_DATE;
 import static org.opensrp.common.AllConstants.Client.FIRST_NAME;
 import static org.opensrp.common.AllConstants.Client.GENDER;
 import static org.opensrp.web.rest.RestUtils.*;
+import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -14,14 +17,21 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.joda.time.DateTime;
+import org.opensrp.common.AllConstants;
 import org.opensrp.domain.Client;
+import org.opensrp.domain.DataApprove;
 import org.opensrp.search.AddressSearchBean;
 import org.opensrp.search.ClientSearchBean;
 import org.opensrp.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.mysql.jdbc.StringUtils;
 
 @Controller
@@ -99,6 +109,32 @@ public class ClientResource extends RestResource<Client> {
 	@Override
 	public List<Client> filter(String query) {
 		return clientService.findByDynamicQuery(query);
+	}
+	
+	@SuppressWarnings("unchecked")
+	@RequestMapping(headers = { "Accept=application/json;charset=UTF-8" }, method = POST, value = "/data-approval")
+	public ResponseEntity<HttpStatus> dataApprove(@RequestBody String requestData, HttpServletRequest request) {
+		try {
+			boolean isApproved = true;
+			Gson jsonObject = new Gson();
+			DataApprove approvalData = jsonObject.fromJson(requestData, DataApprove.class);
+			String baseEntityId = approvalData.getBaseEntityId();
+			String comments = approvalData.getComment();
+			String status = approvalData.getStatus();
+			Client client = clientService.find(baseEntityId);
+			client.withDataApprovalComments(comments);
+			client.withDataApprovalStatus(status);
+			if (status.equalsIgnoreCase(AllConstants.APPROVED)) {
+				isApproved = false;
+			}
+			clientService.addorUpdate(client, isApproved);
+		}
+		catch (JsonSyntaxException e) {
+			// TODO Auto-generated catch block
+			return new ResponseEntity<>(INTERNAL_SERVER_ERROR);
+		}
+		return new ResponseEntity<>(CREATED);
+		
 	}
 	
 }

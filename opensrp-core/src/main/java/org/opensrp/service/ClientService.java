@@ -108,7 +108,7 @@ public class ClientService {
 	
 	public Client findClient(Client client) {
 		// find by auto assigned entity id
-		Client c= null;
+		Client c = null;
 		try {
 			c = allClients.findByBaseEntityId(client.getBaseEntityId());
 			if (c != null) {
@@ -116,8 +116,8 @@ public class ClientService {
 			}
 			
 			//still not found!! search by generic identifiers
-			logger.info("\n\n Client in findClient : "+client.toString()+"\n\n");
-			logger.info("\n\n Identifiers : "+client.getIdentifiers()+"\n\n");
+			logger.info("\n\n Client in findClient : " + client.toString() + "\n\n");
+			logger.info("\n\n Identifiers : " + client.getIdentifiers() + "\n\n");
 			
 			for (String idt : client.getIdentifiers().keySet()) {
 				List<Client> cl = allClients.findAllByIdentifier(client.getIdentifier(idt));
@@ -128,8 +128,9 @@ public class ClientService {
 					return cl.get(0);
 				}
 			}
-			logger.info("\n\n Client after finding : "+ client.toString()+"\n\n");
-		} catch (Exception e) {
+			logger.info("\n\n Client after finding : " + client.toString() + "\n\n");
+		}
+		catch (Exception e) {
 			e.printStackTrace();
 		}
 		return c;
@@ -194,7 +195,7 @@ public class ClientService {
 			}
 			if (relationship != null) {
 				JSONObject personB = relationship.getJSONObject("personB");
-				List<Client> clients = findAllByIdentifier("OPENMRS_UUID", personB.getString("uuid"));				
+				List<Client> clients = findAllByIdentifier("OPENMRS_UUID", personB.getString("uuid"));
 				if (clients.size() != 0) {
 					original.addRelationship("household", clients.get(0).getBaseEntityId());
 				}
@@ -229,7 +230,6 @@ public class ClientService {
 		if (client.getBaseEntityId() == null) {
 			throw new RuntimeException("No baseEntityId");
 		}
-		logger.info("\n\n\n Client in addOrUpdate :"+ client.toString()+"\n\n");
 		//Client c = findClient(client);
 		try {
 			Client c = findClient(client);
@@ -244,10 +244,11 @@ public class ClientService {
 			} else {
 				client.setServerVersion(System.currentTimeMillis());
 				client.setDateCreated(DateTime.now());
-				logger.info("\n\n\n Client in addOrUpdate before add :"+ client.toString()+"\n\n");
+				logger.info("\n\n\n Client in addOrUpdate before add :" + client.toString() + "\n\n");
 				allClients.add(client);
 			}
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			e.printStackTrace();
 		}
 		return client;
@@ -257,20 +258,26 @@ public class ClientService {
 		if (client.getBaseEntityId() == null) {
 			throw new RuntimeException("No baseEntityId");
 		}
-		Client c = findClient(client);
-		if (c != null) {
-			client.setRevision(c.getRevision());
-			client.setId(c.getId());
-			client.setDateEdited(DateTime.now());
-			if (resetServerVersion) {
-				client.setServerVersion(System.currentTimeMillis());
+		try {
+			Client c = findClient(client);
+			if (c != null) {
+				client.setRevision(c.getRevision());
+				client.setId(c.getId());
+				client.setDateEdited(DateTime.now());
+				if (resetServerVersion) {
+					client.setServerVersion(System.currentTimeMillis());
+				}
+				allClients.update(client);
+				
+			} else {
+				
+				client.setDateCreated(DateTime.now());
+				allClients.add(client);
 			}
-			allClients.update(client);
-			
-		} else {
-			
-			client.setDateCreated(DateTime.now());
-			allClients.add(client);
+		}
+		catch (Exception e) {
+			// TODO Auto-generated catch block
+			logger.info("update failed with caseId" + client.getBaseEntityId() + ", cause:" + e.getMessage());
 		}
 		return client;
 	}

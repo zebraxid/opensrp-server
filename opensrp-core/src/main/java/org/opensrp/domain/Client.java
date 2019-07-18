@@ -51,6 +51,12 @@ public class Client extends BaseEntity {
 	@JsonProperty
 	private String isSendToOpenMRS;
 	
+	@JsonProperty
+	private String dataApprovalComments;
+	
+	@JsonProperty
+	private String dataApprovalStatus;
+	
 	protected Client() {
 		
 	}
@@ -313,6 +319,24 @@ public class Client extends BaseEntity {
 	
 	public Client withIsSendToOpenMRS(String isSendToOpenMRS) {
 		this.isSendToOpenMRS = isSendToOpenMRS;
+		return this;
+	}
+	
+	public String getDataApprovalComments() {
+		return dataApprovalComments;
+	}
+	
+	public Client withDataApprovalComments(String dataApprovalComments) {
+		this.dataApprovalComments = dataApprovalComments;
+		return this;
+	}
+	
+	public String getDataApprovalStatus() {
+		return dataApprovalStatus;
+	}
+	
+	public Client withDataApprovalStatus(String dataApprovalStatus) {
+		this.dataApprovalStatus = dataApprovalStatus;
 		return this;
 	}
 	
