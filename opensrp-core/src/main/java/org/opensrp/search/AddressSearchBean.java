@@ -22,8 +22,10 @@ public class AddressSearchBean {
 	
 	private String subTown;
 	
+	private List<String> address1;
+
 	private List<String> address2;
-	
+
 	private List<String> address3;
 	
 	public String getAddressType() {
@@ -89,7 +91,15 @@ public class AddressSearchBean {
 	public void setSubTown(String subTown) {
 		this.subTown = subTown;
 	}
-	
+
+	public List<String> getAddress1() {
+		return address1;
+	}
+
+	public void setAddress1(List<String> address1) {
+		this.address1 = address1;
+	}
+
 	public List<String> getAddress2() {
 		return address2;
 	}

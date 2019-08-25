@@ -102,6 +102,12 @@
 							#{listItem}
 					</foreach>	
 			</if>
+			<if test="addressBean.address1 != null">
+				and address1 IN
+				<foreach close=")" collection="addressBean.address1" item="listItem" open="(" separator=",">
+					#{listItem}
+				</foreach>
+			</if>
 		) 
 		order by id asc LIMIT #{limit}
 		<!-- <include refid="Base_Column_List" />

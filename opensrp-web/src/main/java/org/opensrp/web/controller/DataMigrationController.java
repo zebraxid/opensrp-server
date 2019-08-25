@@ -115,6 +115,11 @@ public class DataMigrationController {
 		return "/upload_csv";
 		
 	}
+
+	public String updateAddressByClientUnion() {
+		List<String> addresses = new ArrayList<>();
+		return "";
+	}
 	
 	@RequestMapping(value = "/migration.html", method = RequestMethod.POST)
 	public ModelAndView csvUpload(@RequestParam MultipartFile file, HttpServletRequest request, ModelMap model)
