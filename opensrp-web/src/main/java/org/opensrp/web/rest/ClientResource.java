@@ -17,12 +17,16 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.joda.time.DateTime;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.opensrp.common.AllConstants;
 import org.opensrp.domain.Client;
 import org.opensrp.domain.DataApprove;
+import org.opensrp.domain.Event;
 import org.opensrp.search.AddressSearchBean;
 import org.opensrp.search.ClientSearchBean;
 import org.opensrp.service.ClientService;
+import org.opensrp.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,9 +44,12 @@ public class ClientResource extends RestResource<Client> {
 	
 	private ClientService clientService;
 	
+	private EventService eventService;
+	
 	@Autowired
-	public ClientResource(ClientService clientService) {
+	public ClientResource(ClientService clientService, EventService eventService) {
 		this.clientService = clientService;
+		this.eventService = eventService;
 	}
 	
 	@Override
@@ -113,7 +120,9 @@ public class ClientResource extends RestResource<Client> {
 	
 	@SuppressWarnings("unchecked")
 	@RequestMapping(headers = { "Accept=application/json;charset=UTF-8" }, method = POST, value = "/data-approval")
-	public ResponseEntity<HttpStatus> dataApprove(@RequestBody String requestData, HttpServletRequest request) {
+	public ResponseEntity<String> dataApprove(@RequestBody String requestData, HttpServletRequest request)
+	    throws JSONException {
+		JSONObject jsonObj = new JSONObject();
 		try {
 			boolean isApproved = true;
 			Gson jsonObject = new Gson();
@@ -128,12 +137,20 @@ public class ClientResource extends RestResource<Client> {
 				isApproved = false;
 			}
 			clientService.addorUpdate(client, isApproved);
+			
+			/*List<Event> getEvents = eventService.findByBaseEntityAndEventTypeContaining(baseEntityId, "Registration");
+			if (getEvents.size() != 0) {
+				Event getEvent = getEvents.get(0);
+				getEvent.withIsSendToOpenMRS("no");
+				eventService.addorUpdateEvent(getEvent);
+			}*/
 		}
 		catch (JsonSyntaxException e) {
-			// TODO Auto-generated catch block
-			return new ResponseEntity<>(INTERNAL_SERVER_ERROR);
+			jsonObj.put("msg", INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(jsonObj.toString(), HttpStatus.OK);
 		}
-		return new ResponseEntity<>(CREATED);
+		jsonObj.put("msg", CREATED);
+		return new ResponseEntity<>(jsonObj.toString(), HttpStatus.OK);
 		
 	}
 	
