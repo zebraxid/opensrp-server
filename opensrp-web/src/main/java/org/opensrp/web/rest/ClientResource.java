@@ -22,7 +22,6 @@ import org.json.JSONObject;
 import org.opensrp.common.AllConstants;
 import org.opensrp.domain.Client;
 import org.opensrp.domain.DataApprove;
-import org.opensrp.domain.Event;
 import org.opensrp.search.AddressSearchBean;
 import org.opensrp.search.ClientSearchBean;
 import org.opensrp.service.ClientService;
@@ -37,6 +36,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.mysql.jdbc.StringUtils;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping(value = "/rest/client")
@@ -136,7 +136,7 @@ public class ClientResource extends RestResource<Client> {
 			if (status.equalsIgnoreCase(AllConstants.APPROVED)) {
 				isApproved = false;
 			}
-			clientService.addorUpdate(client, isApproved);
+			clientService.addOrUpdate(client, isApproved);
 			
 			/*List<Event> getEvents = eventService.findByBaseEntityAndEventTypeContaining(baseEntityId, "Registration");
 			if (getEvents.size() != 0) {
@@ -152,6 +152,30 @@ public class ClientResource extends RestResource<Client> {
 		jsonObj.put("msg", CREATED);
 		return new ResponseEntity<>(jsonObj.toString(), HttpStatus.OK);
 		
+	}
+
+	@RequestMapping(headers = { "Accept=application/json;charset=UTF-8" }, method = POST, value = "/update-union")
+	public ResponseEntity<String> updateClientByUpazila(@RequestParam("upazilaName") String upazilaName,
+													  @RequestParam("upazila") String upazila) throws JSONException {
+
+		System.out.println("CALL ASHCHHE->");
+		System.out.println(upazilaName);
+		System.out.println(upazila);
+
+		List<Client> clients = clientService.findAllClientByUpazila(upazilaName);
+
+		System.out.println(clients.size());
+
+		try {
+			for (Client client : clients) {
+				client.getAddresses().get(0).setCityVillage(upazila);
+				clientService.updateClient(client);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return new ResponseEntity<>("done", HttpStatus.OK);
 	}
 	
 }

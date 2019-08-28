@@ -149,7 +149,7 @@ public class ClientServiceTest extends BaseRepositoryTest {
 		Client client = new Client("f67823b0-378e-4a35-93fc-bb00def74e2f").withBirthdate(new DateTime("2017-03-31"), true)
 		        .withGender("Male").withFirstName("xobili").withLastName("mbangwa");
 		client.withIdentifier("ZEIR_ID", "233864-8").withAttribute("Home_Facility", "Linda");
-		clientService.addorUpdate(client);
+		clientService.addOrUpdate(client);
 		assertEquals(16, clientService.findAllClients().size());
 		
 		Client savedClient = clientService.find("f67823b0-378e-4a35-93fc-bb00def74e2f");
@@ -162,7 +162,7 @@ public class ClientServiceTest extends BaseRepositoryTest {
 		//test adding existing client is updated
 		DateTime timeBeforeUpdate = new DateTime();
 		savedClient.withMiddleName("Rustus");
-		clientService.addorUpdate(savedClient);
+		clientService.addOrUpdate(savedClient);
 		
 		Client updatedClient = clientService.find(savedClient.getBaseEntityId());
 		assertEquals("Rustus", updatedClient.getMiddleName());
@@ -175,7 +175,7 @@ public class ClientServiceTest extends BaseRepositoryTest {
 		Client client = new Client("f67823b0-378e-4a35-93fc-bb00def74e2f").withBirthdate(new DateTime("2017-03-31"), true)
 		        .withGender("Male").withFirstName("xobili").withLastName("mbangwa");
 		client.withIdentifier("ZEIR_ID", "233864-8").withAttribute("Home_Facility", "Linda");
-		clientService.addorUpdate(client, false);
+		clientService.addOrUpdate(client, false);
 		assertEquals(16, clientService.findAllClients().size());
 		
 		Client savedClient = clientService.find("f67823b0-378e-4a35-93fc-bb00def74e2f");
@@ -189,7 +189,7 @@ public class ClientServiceTest extends BaseRepositoryTest {
 		//test adding existing client is updated
 		DateTime timeBeforeUpdate = new DateTime();
 		savedClient.withMiddleName("Rustus");
-		clientService.addorUpdate(savedClient, false);
+		clientService.addOrUpdate(savedClient, false);
 		
 		Client updatedClient = clientService.find(savedClient.getBaseEntityId());
 		assertEquals("Rustus", updatedClient.getMiddleName());
@@ -197,7 +197,7 @@ public class ClientServiceTest extends BaseRepositoryTest {
 		assertTrue(timeBeforeUpdate.isBefore(updatedClient.getDateEdited()));
 		assertEquals(existingServerVesion, updatedClient.getServerVersion().longValue());
 		
-		clientService.addorUpdate(savedClient, true);
+		clientService.addOrUpdate(savedClient, true);
 		assertTrue(clientService.find(savedClient.getBaseEntityId()).getServerVersion() > existingServerVesion);
 	}
 	

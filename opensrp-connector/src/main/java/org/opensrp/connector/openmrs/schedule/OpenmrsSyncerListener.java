@@ -20,7 +20,6 @@ import org.opensrp.domain.AppStateToken;
 import org.opensrp.domain.Client;
 import org.opensrp.domain.Event;
 import org.opensrp.domain.Multimedia;
-import org.opensrp.domain.postgres.ErrorTrace;
 import org.opensrp.scheduler.service.ActionService;
 import org.opensrp.scheduler.service.ScheduleService;
 import org.opensrp.service.ClientService;
@@ -237,7 +236,7 @@ public class OpenmrsSyncerListener {
 						patient = patientJson;
 						if (patientJson != null && patientJson.has("uuid")) {
 							c.addIdentifier(PatientService.OPENMRS_UUID_IDENTIFIER_TYPE, patientJson.getString("uuid"));
-							clientService.addorUpdate(c, false);
+							clientService.addOrUpdate(c, false);
 							config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_client_by_date_updated,
 							    c.getServerVersion());
 							if (multiMedia != null) {
@@ -418,7 +417,7 @@ public class OpenmrsSyncerListener {
 							patient = patientJson;
 							if (patientJson != null && patientJson.has("uuid")) {
 								c.addIdentifier(PatientService.OPENMRS_UUID_IDENTIFIER_TYPE, patientJson.getString("uuid"));
-								clientService.addorUpdate(c, false);
+								clientService.addOrUpdate(c, false);
 								config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_client_by_date_updated,
 								    c.getServerVersion());
 								if (multiMedia != null) {

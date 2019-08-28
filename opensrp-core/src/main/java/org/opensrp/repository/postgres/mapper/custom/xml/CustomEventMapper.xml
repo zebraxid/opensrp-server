@@ -40,12 +40,6 @@
 		left join core.location on  team_member_location.location_id = location.id
 		WHERE team_member.person_id = #{userId}
 	</select>
-
-	<select id="getLocationsByUnion" parameterType="java.lang.String"
-			resultMap="customQueryMap">
-		select (json->'addresses'->0->'addressFields'->>'address1') as name from core.client
-		WHERE json->'addresses'->0->'addressFields'->>'cityVillage' = #{unionName}
-	</select>
 	
 	<select id="getUser" parameterType="java.lang.String"
 		resultMap="customQueryMap">

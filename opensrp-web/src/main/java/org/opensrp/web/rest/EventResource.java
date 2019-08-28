@@ -1,7 +1,6 @@
 package org.opensrp.web.rest;
 
 import static java.text.MessageFormat.format;
-import static org.opensrp.common.AllConstants.CLIENTS_FETCH_BATCH_SIZE;
 import static org.opensrp.common.AllConstants.BaseEntity.BASE_ENTITY_ID;
 import static org.opensrp.common.AllConstants.BaseEntity.LAST_UPDATE;
 import static org.opensrp.common.AllConstants.Event.ENTITY_TYPE;
@@ -21,23 +20,17 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.joda.time.DateTime;
 import org.json.JSONObject;
 import org.opensrp.common.AllConstants.BaseEntity;
-import org.opensrp.common.util.HttpResponse;
-import org.opensrp.common.util.HttpUtil;
 import org.opensrp.domain.Client;
 import org.opensrp.domain.Event;
-import org.opensrp.domain.Obs;
 import org.opensrp.domain.postgres.CustomQuery;
 import org.opensrp.search.AddressSearchBean;
 import org.opensrp.search.ClientSearchBean;
@@ -468,7 +461,7 @@ public class EventResource extends RestResource<Event> {
 							Client client = clientService.find(event.getBaseEntityId());
 							if (client != null) {
 								client.setServerVersion(System.currentTimeMillis());
-								clientService.addorUpdate(client);
+								clientService.addOrUpdate(client);
 							}
 						} else {
 							logger.info("already updated by another");
@@ -501,7 +494,7 @@ public class EventResource extends RestResource<Event> {
 						}
 						if (getProvider.isEmpty() || (dataProvider.equalsIgnoreCase(getProvider) && !getProvider.isEmpty())) {
 							client.withIsSendToOpenMRS("yes");
-							clientService.addorUpdate(client);
+							clientService.addOrUpdate(client);
 						} else {
 							logger.info("already updated by another");
 						}

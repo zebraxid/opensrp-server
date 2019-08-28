@@ -1,5 +1,6 @@
 package org.opensrp.service;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
@@ -226,7 +227,7 @@ public class ClientService {
 		return allClients.findByRelationShip(id);
 	}
 	
-	public Client addorUpdate(Client client) {
+	public Client addOrUpdate(Client client) {
 		if (client.getBaseEntityId() == null) {
 			throw new RuntimeException("No baseEntityId");
 		}
@@ -254,7 +255,7 @@ public class ClientService {
 		return client;
 	}
 	
-	public Client addorUpdate(Client client, boolean resetServerVersion) {
+	public Client addOrUpdate(Client client, boolean resetServerVersion) {
 		if (client.getBaseEntityId() == null) {
 			throw new RuntimeException("No baseEntityId");
 		}
@@ -280,5 +281,9 @@ public class ClientService {
 			logger.info("update failed with caseId" + client.getBaseEntityId() + ", cause:" + e.getMessage());
 		}
 		return client;
+	}
+
+	public List<Client> findAllClientByUpazila(String upazilaName) {
+		return allClients.findAllClientByUpazila(upazilaName);
 	}
 }

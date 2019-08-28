@@ -52,4 +52,6 @@ public interface ClientsRepository extends BaseRepository<Client> {
 	List<Client> findByFieldValue(String field, List<String> ids);
 	
 	List<Client> notInOpenMRSByServerVersion(long serverVersion, Calendar calendar);
+
+	List<Client> findAllClientByUpazila(String upazilaName);
 }

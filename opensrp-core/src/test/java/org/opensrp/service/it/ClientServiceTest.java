@@ -455,7 +455,7 @@ public class ClientServiceTest extends BaseIntegrationTest {
 	public void shouldAddIfNewEntityInAddOrUpdateMethod() {
 		Client expectedClient = getClient();
 
-		Client actualClient = clientService.addorUpdate(expectedClient);
+		Client actualClient = clientService.addOrUpdate(expectedClient);
 
 		List<Client> dbClients = allClients.getAll();
 		assertEquals(1, dbClients.size());
@@ -472,7 +472,7 @@ public class ClientServiceTest extends BaseIntegrationTest {
 		expectedClient.setFirstName(LAST_NAME);
 		Long expectedServerVersion = expectedClient.getServerVersion();
 
-		Client actualClient = clientService.addorUpdate(expectedClient);
+		Client actualClient = clientService.addOrUpdate(expectedClient);
 
 		List<Client> dbClients = allClients.getAll();
 		assertEquals(1, dbClients.size());
@@ -487,7 +487,7 @@ public class ClientServiceTest extends BaseIntegrationTest {
 		addObjectToRepository(Collections.singletonList(getClient()), allClients);
 		Client expectedClient = allClients.getAll().get(0);
 		expectedClient.setBaseEntityId(null);
-		clientService.addorUpdate(expectedClient);
+		clientService.addOrUpdate(expectedClient);
 	}
 
 	@Test
@@ -495,7 +495,7 @@ public class ClientServiceTest extends BaseIntegrationTest {
 		addObjectToRepository(Collections.singletonList(getClient()), allClients);
 		Client expectedClient = allClients.getAll().get(0);
 		expectedClient.setFirstName(LAST_NAME);
-		Client actualClient = clientService.addorUpdate(expectedClient, false);
+		Client actualClient = clientService.addOrUpdate(expectedClient, false);
 
 		List<Client> dbClients = allClients.getAll();
 		assertEquals(1, dbClients.size());

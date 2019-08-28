@@ -166,8 +166,8 @@ public class XlsDataImportController {
 				    	eventCounter++;
 				    }
 
-				    clientService.addorUpdate(motherClient);
-				    clientService.addorUpdate(childClient);
+				    clientService.addOrUpdate(motherClient);
+				    clientService.addOrUpdate(childClient);
 				    eventCount += eventCounter;
 				    clientCount +=2;
 				    counter++;

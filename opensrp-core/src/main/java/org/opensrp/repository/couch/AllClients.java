@@ -207,7 +207,12 @@ public class AllClients extends MotechBaseRepository<Client> implements ClientsR
 		}
 		return new ArrayList<>();
 	}
-	
+
+	@Override
+	public List<Client> findAllClientByUpazila(String upazilaName) {
+		return null;
+	}
+
 	public Client addClient(CouchDbConnector targetDb, Client client) {
 		if (client.getBaseEntityId() == null) {
 			throw new RuntimeException("No baseEntityId");

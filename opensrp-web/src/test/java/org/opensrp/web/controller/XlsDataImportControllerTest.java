@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Before;
@@ -26,7 +25,6 @@ import org.opensrp.domain.Event;
 import org.opensrp.service.ClientService;
 import org.opensrp.service.EventService;
 import org.opensrp.service.OpenmrsIDService;
-import org.opensrp.web.controller.XlsDataImportController;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockMultipartFile;
 
@@ -70,7 +68,7 @@ public class XlsDataImportControllerTest {
 		
 		assertEquals(summaryClientCount, 4);
 		assertEquals(summaryEventCount, 28);
-		verify(clientService, times(4)).addorUpdate(any(Client.class));
+		verify(clientService, times(4)).addOrUpdate(any(Client.class));
 		verify(eventService, times(28)).addEvent(any(Event.class));
 	}
 }

@@ -72,7 +72,12 @@
 		where j.value  ?? #{relationalId,jdbcType=VARCHAR}  and date_deleted is null
 			and (json ->> 'dateCreated')::date between #{dateFrom,jdbcType=DATE} and #{dateTo,jdbcType=DATE}
 	</select>
-	
+
+	<select id="getClientByUpazila" parameterType="java.lang.String"
+			resultMap="org.opensrp.repository.postgres.mapper.ClientMapper.BaseResultMap">
+		select * from core.client
+		where json->'addresses'->0->'addressFields'->>'cityVillage' = #{upazilaName} limit 1000
+	</select>
 	
 	<select id="selectByRelationshipIdOfType" parameterType="map"
 		resultMap="org.opensrp.repository.postgres.mapper.ClientMapper.BaseResultMap">

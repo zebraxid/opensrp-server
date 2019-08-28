@@ -284,7 +284,12 @@ public class ClientsRepositoryImpl extends BaseRepositoryImpl<Client> implements
 		}
 		return new ArrayList<>();
 	}
-	
+
+	@Override
+	public List<Client> findAllClientByUpazila(String upazilaName) {
+		return convert(clientMapper.getClientByUpazila(upazilaName));
+	}
+
 	// Private Methods
 	protected List<Client> convert(List<org.opensrp.domain.postgres.Client> clients) {
 		if (clients == null || clients.isEmpty()) {

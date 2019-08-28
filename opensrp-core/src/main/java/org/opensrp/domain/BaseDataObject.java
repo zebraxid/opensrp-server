@@ -5,6 +5,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.joda.time.DateTime;
 import org.motechproject.model.MotechBaseDataObject;
+import org.opensrp.search.AddressSearchBean;
 
 public abstract class BaseDataObject extends MotechBaseDataObject {
 

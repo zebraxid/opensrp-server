@@ -26,9 +26,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.httpclient.HttpStatus;
-import org.apache.poi.hssf.record.CountryRecord;
 import org.opensrp.common.util.HttpResponse;
-import org.opensrp.common.util.HttpUtil;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -42,8 +40,6 @@ import org.opensrp.domain.Client;
 import org.opensrp.domain.Event;
 import org.opensrp.domain.Obs;
 import org.opensrp.repository.ClientsRepository;
-import org.opensrp.search.AddressSearchBean;
-import org.opensrp.search.ClientSearchBean;
 import org.opensrp.service.ClientService;
 import org.opensrp.service.EventService;
 import org.slf4j.Logger;
@@ -422,9 +418,9 @@ public class DataMigrationController {
 				String fieldDataType = "text";
 				event.addObs(new Obs("formsubmissionField", fieldDataType, "Date_Of_Reg", "" /*//TODO handle parent*/,
 				        values, ""/*comments*/, "Date_Of_Reg"/*formSubmissionField*/));
-				clientService.addorUpdate(client);
+				clientService.addOrUpdate(client);
 				eventService.addorUpdateEvent(event);
-				clientService.addorUpdate(client);
+				clientService.addOrUpdate(client);
 				//System.err.println("Event:::::::::::::::" + event.toString());
 				
 			}
@@ -756,7 +752,7 @@ public class DataMigrationController {
 				//System.err.println("Event:::::::::::::::" + event.toString());				
 				eventService.addorUpdateEvent(event);
 				logger.info("\n\n\n Client : "+ client.toString()+" \n\n\n");
-				clientService.addorUpdate(client);
+				clientService.addOrUpdate(client);
 				
 			}
 			
