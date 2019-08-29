@@ -286,8 +286,8 @@ public class ClientsRepositoryImpl extends BaseRepositoryImpl<Client> implements
 	}
 
 	@Override
-	public List<Client> findAllClientByUpazila(String upazilaName) {
-		return convert(clientMapper.getClientByUpazila(upazilaName));
+	public List<Client> findAllClientByUpazila(String name) {
+		return convert(clientMapper.getClientByUpazila(name));
 	}
 
 	// Private Methods

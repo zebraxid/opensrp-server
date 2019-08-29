@@ -28,5 +28,5 @@ public interface CustomClientMapper extends ClientMapper {
 	
 	List<Client> selectByRelationShip(String relationshipId);
 
-	List<Client> getClientByUpazila(@Param("upazilaName") String upazilaName);
+	List<Client> getClientByUpazila(@Param("name") String name);
 }

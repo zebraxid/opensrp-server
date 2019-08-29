@@ -209,7 +209,7 @@ public class AllClients extends MotechBaseRepository<Client> implements ClientsR
 	}
 
 	@Override
-	public List<Client> findAllClientByUpazila(String upazilaName) {
+	public List<Client> findAllClientByUpazila(String name) {
 		return null;
 	}
 

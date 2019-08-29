@@ -53,5 +53,5 @@ public interface ClientsRepository extends BaseRepository<Client> {
 	
 	List<Client> notInOpenMRSByServerVersion(long serverVersion, Calendar calendar);
 
-	List<Client> findAllClientByUpazila(String upazilaName);
+	List<Client> findAllClientByUpazila(String name);
 }

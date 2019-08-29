@@ -283,7 +283,7 @@ public class ClientService {
 		return client;
 	}
 
-	public List<Client> findAllClientByUpazila(String upazilaName) {
-		return allClients.findAllClientByUpazila(upazilaName);
+	public List<Client> findAllClientByUpazila(String name) {
+		return allClients.findAllClientByUpazila(name);
 	}
 }

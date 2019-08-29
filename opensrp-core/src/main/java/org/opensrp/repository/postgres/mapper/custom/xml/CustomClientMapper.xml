@@ -76,7 +76,7 @@
 	<select id="getClientByUpazila" parameterType="java.lang.String"
 			resultMap="org.opensrp.repository.postgres.mapper.ClientMapper.BaseResultMap">
 		select * from core.client
-		where json->'addresses'->0->'addressFields'->>'cityVillage' = #{upazilaName} limit 1000
+		where json->'addresses'->0->'addressFields'->>'cityVillage' = #{name}
 	</select>
 	
 	<select id="selectByRelationshipIdOfType" parameterType="map"

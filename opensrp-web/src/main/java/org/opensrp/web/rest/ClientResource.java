@@ -13,6 +13,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -155,20 +156,20 @@ public class ClientResource extends RestResource<Client> {
 	}
 
 	@RequestMapping(headers = { "Accept=application/json;charset=UTF-8" }, method = POST, value = "/update-union")
-	public ResponseEntity<String> updateClientByUpazila(@RequestParam("upazilaName") String upazilaName,
-													  @RequestParam("upazila") String upazila) throws JSONException {
+	public ResponseEntity<String> updateClientByUpazila(@RequestParam("changeAbleField") String changeAbleField,
+														@RequestParam("currentName") String currentName,
+														@RequestParam("rightName") String rightName) throws JSONException {
 
-		System.out.println("CALL ASHCHHE->");
-		System.out.println(upazilaName);
-		System.out.println(upazila);
+		List<Client> clients = clientService.findAllClientByUpazila(currentName);
 
-		List<Client> clients = clientService.findAllClientByUpazila(upazilaName);
-
+		System.out.println("TOTAL SIZE:->");
 		System.out.println(clients.size());
 
 		try {
 			for (Client client : clients) {
-				client.getAddresses().get(0).setCityVillage(upazila);
+				Map<String, String> addressFields = client.getAddresses().get(0).getAddressFields();
+				addressFields.put(changeAbleField, rightName);
+				client.getAddresses().get(0).setAddressFields(addressFields);
 				clientService.updateClient(client);
 			}
 		} catch (Exception e) {
