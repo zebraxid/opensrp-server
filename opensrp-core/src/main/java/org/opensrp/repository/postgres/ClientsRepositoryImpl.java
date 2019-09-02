@@ -16,6 +16,7 @@ import org.opensrp.domain.Address;
 import org.opensrp.domain.Client;
 import org.opensrp.domain.postgres.ClientMetadata;
 import org.opensrp.domain.postgres.ClientMetadataExample;
+import org.opensrp.domain.postgres.CustomQuery;
 import org.opensrp.repository.ClientsRepository;
 import org.opensrp.repository.postgres.mapper.custom.CustomClientMapper;
 import org.opensrp.repository.postgres.mapper.custom.CustomClientMetadataMapper;
@@ -288,6 +289,11 @@ public class ClientsRepositoryImpl extends BaseRepositoryImpl<Client> implements
 	@Override
 	public List<Client> findAllClientByUpazila(String name) {
 		return convert(clientMapper.getClientByUpazila(name));
+	}
+
+	@Override
+	public CustomQuery findTeamInfo(String username) {
+		return clientMapper.getTeamInfo(username);
 	}
 
 	// Private Methods

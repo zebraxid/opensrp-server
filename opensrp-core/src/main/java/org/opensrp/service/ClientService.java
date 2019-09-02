@@ -10,6 +10,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.opensrp.domain.Address;
 import org.opensrp.domain.Client;
+import org.opensrp.domain.postgres.CustomQuery;
 import org.opensrp.repository.ClientsRepository;
 import org.opensrp.search.AddressSearchBean;
 import org.opensrp.search.ClientSearchBean;
@@ -285,5 +286,9 @@ public class ClientService {
 
 	public List<Client> findAllClientByUpazila(String name) {
 		return allClients.findAllClientByUpazila(name);
+	}
+
+	public CustomQuery findTeamInfo(String username) {
+		return allClients.findTeamInfo(username);
 	}
 }

@@ -13,6 +13,8 @@ import org.opensrp.api.util.LocationTree;
 import org.opensrp.common.domain.UserDetail;
 import org.opensrp.connector.openmrs.service.OpenmrsLocationService;
 import org.opensrp.connector.openmrs.service.OpenmrsUserService;
+import org.opensrp.domain.postgres.CustomQuery;
+import org.opensrp.service.ClientService;
 import org.opensrp.web.security.DrishtiAuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -48,6 +50,9 @@ public class UserController {
 	private OpenmrsLocationService openmrsLocationService;
 	
 	private OpenmrsUserService openmrsUserService;
+
+	@Autowired
+	private ClientService clientService;
 	
 	@Autowired
 	public UserController(OpenmrsLocationService openmrsLocationService, OpenmrsUserService openmrsUserService,
@@ -100,7 +105,6 @@ public class UserController {
 	@ResponseBody
 	public ResponseEntity<String> authenticate(HttpServletRequest request) throws JSONException {
 		User u = currentUser(request);
-		System.out.println(u);
 		String lid = "";
 		JSONObject tm = null;
 		try {
@@ -130,6 +134,12 @@ public class UserController {
 		Map<String, Object> map = new HashMap<>();
 		map.put("user", u);
 		try {
+			CustomQuery customQuery = clientService.findTeamInfo(u.getUsername());
+
+			tm.getJSONObject("team").put("teamName", customQuery.getName());
+			tm.getJSONObject("team").put("display", customQuery.getName());
+			tm.getJSONObject("team").put("uuid", customQuery.getUuid());
+
 			Map<String, Object> tmap = new Gson().fromJson(tm.toString(), new TypeToken<HashMap<String, Object>>() {
 				
 			}.getType());

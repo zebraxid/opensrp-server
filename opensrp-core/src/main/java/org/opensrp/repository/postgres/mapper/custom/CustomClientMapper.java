@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 import org.opensrp.domain.postgres.Client;
+import org.opensrp.domain.postgres.CustomQuery;
 import org.opensrp.repository.postgres.mapper.ClientMapper;
 
 public interface CustomClientMapper extends ClientMapper {
@@ -29,4 +30,6 @@ public interface CustomClientMapper extends ClientMapper {
 	List<Client> selectByRelationShip(String relationshipId);
 
 	List<Client> getClientByUpazila(@Param("name") String name);
+
+	CustomQuery getTeamInfo(@Param("username") String username);
 }

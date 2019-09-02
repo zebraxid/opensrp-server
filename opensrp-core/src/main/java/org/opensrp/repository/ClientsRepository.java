@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.joda.time.DateTime;
 import org.opensrp.domain.Client;
+import org.opensrp.domain.postgres.CustomQuery;
 import org.opensrp.search.AddressSearchBean;
 import org.opensrp.search.ClientSearchBean;
 
@@ -54,4 +55,6 @@ public interface ClientsRepository extends BaseRepository<Client> {
 	List<Client> notInOpenMRSByServerVersion(long serverVersion, Calendar calendar);
 
 	List<Client> findAllClientByUpazila(String name);
+
+	CustomQuery findTeamInfo(String username);
 }

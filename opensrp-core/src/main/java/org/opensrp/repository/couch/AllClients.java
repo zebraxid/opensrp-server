@@ -14,6 +14,7 @@ import org.joda.time.DateTime;
 import org.motechproject.dao.MotechBaseRepository;
 import org.opensrp.common.AllConstants;
 import org.opensrp.domain.Client;
+import org.opensrp.domain.postgres.CustomQuery;
 import org.opensrp.repository.ClientsRepository;
 import org.opensrp.repository.lucene.LuceneClientRepository;
 import org.opensrp.search.AddressSearchBean;
@@ -210,6 +211,11 @@ public class AllClients extends MotechBaseRepository<Client> implements ClientsR
 
 	@Override
 	public List<Client> findAllClientByUpazila(String name) {
+		return null;
+	}
+
+	@Override
+	public CustomQuery findTeamInfo(String username) {
 		return null;
 	}
 
