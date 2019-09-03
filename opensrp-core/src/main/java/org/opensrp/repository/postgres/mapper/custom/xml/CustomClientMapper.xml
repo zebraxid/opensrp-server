@@ -5,6 +5,7 @@
 	<resultMap id="customQueryMap" type="org.opensrp.domain.postgres.CustomQuery">
 		<id column="id" jdbcType="BIGINT" property="id" />
 		<result column="name" jdbcType="VARCHAR" property="name"/>
+		<result column="uuid" jdbcType="VARCHAR" property="uuid"/>
 	</resultMap>
 
 	<insert id="insertSelectiveAndSetId" parameterType="org.opensrp.domain.postgres.Client"

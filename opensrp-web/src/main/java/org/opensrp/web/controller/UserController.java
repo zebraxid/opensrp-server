@@ -134,7 +134,10 @@ public class UserController {
 		Map<String, Object> map = new HashMap<>();
 		map.put("user", u);
 		try {
+            System.out.println("USERNAME---------------->");
+            System.out.println(u.getUsername());
 			CustomQuery customQuery = clientService.findTeamInfo(u.getUsername());
+            System.out.println(customQuery);
 
 			tm.getJSONObject("team").put("teamName", customQuery.getName());
 			tm.getJSONObject("team").put("display", customQuery.getName());
