@@ -345,6 +345,14 @@ public class EventService {
 		}
 		
 	}
+
+	public CustomQuery getUser(String username) {
+		return allEvents.getUser(username);
+	}
+
+	public CustomQuery getTeamMemberId(int userId) {
+		return allEvents.getTeamMemberId(userId);
+	}
 	
 	public JSONObject getHealthId() {
 		List<HealthId> gethHealthIds = allEvents.gethealthIds(false, "Reserved");

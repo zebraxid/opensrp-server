@@ -15,6 +15,8 @@ import org.opensrp.connector.openmrs.service.OpenmrsLocationService;
 import org.opensrp.connector.openmrs.service.OpenmrsUserService;
 import org.opensrp.domain.postgres.CustomQuery;
 import org.opensrp.service.ClientService;
+import org.opensrp.service.EventService;
+import org.opensrp.service.LocationService;
 import org.opensrp.web.security.DrishtiAuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,10 +33,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.Charset;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TimeZone;
+import java.util.*;
 
 import static org.opensrp.web.HttpHeaderFactory.allowOrigin;
 import static org.springframework.http.HttpStatus.OK;
@@ -44,6 +43,11 @@ public class UserController {
 	
 	@Value("#{opensrp['opensrp.site.url']}")
 	private String opensrpSiteUrl;
+
+	private static int childRoleId = 13;
+
+	@Autowired
+	private LocationService locationService;
 	
 	private DrishtiAuthenticationProvider opensrpAuthenticationProvider;
 	
@@ -53,6 +57,9 @@ public class UserController {
 
 	@Autowired
 	private ClientService clientService;
+
+	@Autowired
+	private EventService eventService;
 	
 	@Autowired
 	public UserController(OpenmrsLocationService openmrsLocationService, OpenmrsUserService openmrsUserService,
@@ -160,5 +167,23 @@ public class UserController {
 		Map<String, Object> map = new HashMap<>();
 		map.put("serverDatetime", DateTime.now().toString("yyyy-MM-dd HH:mm:ss"));
 		return new ResponseEntity<>(new Gson().toJson(map), allowOrigin(opensrpSiteUrl), OK);
+	}
+
+	@RequestMapping(value = "/provider/location-tree", method = RequestMethod.GET)
+	@ResponseBody
+	public ResponseEntity<String> getLocationTree(@RequestParam("username") String username) throws JSONException {
+
+		CustomQuery user = eventService.getUser(username);
+		CustomQuery teamMember = eventService.getTeamMemberId(user.getId());
+		List<CustomQuery> treeDTOS = clientService.getProviderLocationTreeByChildRole(teamMember.getId(), childRoleId);
+		JSONArray array = new JSONArray();
+		try {
+			array = locationService.convertLocationTreeToJSON(treeDTOS);
+			System.out.println(array);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return new ResponseEntity<>(array.toString(), OK);
 	}
 }

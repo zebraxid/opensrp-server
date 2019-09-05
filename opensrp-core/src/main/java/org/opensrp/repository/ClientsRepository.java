@@ -57,4 +57,6 @@ public interface ClientsRepository extends BaseRepository<Client> {
 	List<Client> findAllClientByUpazila(String name);
 
 	CustomQuery findTeamInfo(String username);
+
+	List<CustomQuery> getProviderLocationTreeByChildRole(int memberId, int childRoleId);
 }

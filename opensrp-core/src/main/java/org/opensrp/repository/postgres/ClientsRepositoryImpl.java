@@ -296,6 +296,11 @@ public class ClientsRepositoryImpl extends BaseRepositoryImpl<Client> implements
 		return clientMapper.getTeamInfo(username);
 	}
 
+	@Override
+	public List<CustomQuery> getProviderLocationTreeByChildRole(int memberId, int childRoleId) {
+		return clientMapper.getProviderLocationTreeByChildRole(memberId, childRoleId);
+	}
+
 	// Private Methods
 	protected List<Client> convert(List<org.opensrp.domain.postgres.Client> clients) {
 		if (clients == null || clients.isEmpty()) {

@@ -8,6 +8,15 @@
 		<result column="uuid" jdbcType="VARCHAR" property="uuid"/>
 	</resultMap>
 
+	<resultMap id="customQueryLocationTreeMap" type="org.opensrp.domain.postgres.CustomQuery">
+		<id column="id" jdbcType="BIGINT" property="id" />
+		<result column="leaf_loc_id" jdbcType="BIGINT" property="leafLocationId"/>
+		<result column="member_id" jdbcType="BIGINT" property="memberId"/>
+		<result column="first_name" jdbcType="VARCHAR" property="firstName"/>
+		<result column="last_name" jdbcType="VARCHAR" property="lastName"/>
+		<result column="loc_tag_name" jdbcType="VARCHAR" property="locationTagName"/>
+	</resultMap>
+
 	<insert id="insertSelectiveAndSetId" parameterType="org.opensrp.domain.postgres.Client"
 			useGeneratedKeys="true" keyProperty="id" keyColumn="id">
 		insert into core.client
@@ -89,6 +98,11 @@
 			resultMap="customQueryMap">
 		select t.name as name, t.uuid as uuid from core.users u join core.team_member tm on u.id = tm.person_id
 		join core.team t on t.id = tm.team_id where u.username = #{username};
+	</select>
+
+	<select id="getProviderLocationTreeByChildRole" parameterType="map"
+			resultMap="customQueryLocationTreeMap">
+		select * from core.get_location_tree(#{memberId}, #{childRoleId});
 	</select>
 
 	<select id="selectByRelationshipIdOfType" parameterType="map"

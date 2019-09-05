@@ -219,6 +219,11 @@ public class AllClients extends MotechBaseRepository<Client> implements ClientsR
 		return null;
 	}
 
+	@Override
+	public List<CustomQuery> getProviderLocationTreeByChildRole(int memberId, int childRoleId) {
+		return null;
+	}
+
 	public Client addClient(CouchDbConnector targetDb, Client client) {
 		if (client.getBaseEntityId() == null) {
 			throw new RuntimeException("No baseEntityId");

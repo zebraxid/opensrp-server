@@ -285,6 +285,11 @@ public class AllEvents extends MotechBaseRepository<Event> implements EventsRepo
 	}
 
 	@Override
+	public CustomQuery getTeamMemberId(int userId) {
+		return null;
+	}
+
+	@Override
 	public int updateHealthId(HealthId healthId) {
 		// TODO Auto-generated method stub
 		return 0;

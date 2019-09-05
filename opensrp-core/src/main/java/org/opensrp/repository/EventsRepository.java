@@ -55,9 +55,14 @@ public interface EventsRepository extends BaseRepository<Event> {
 	List<Event> findByFieldValue(String field, List<String> ids, long serverVersion);
 	
 	void deleteByPrimaryKey(Event event);
+
 	List<CustomQuery> getLocations(int userId);
 	
 	CustomQuery getUser(String userName);
+
+	CustomQuery getTeamMemberId(int userId);
+
 	int updateHealthId(HealthId healthId);
+
 	List<HealthId> gethealthIds(boolean status, String type);
 }

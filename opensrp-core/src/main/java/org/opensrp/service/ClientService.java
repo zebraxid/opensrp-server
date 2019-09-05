@@ -291,4 +291,8 @@ public class ClientService {
 	public CustomQuery findTeamInfo(String username) {
 		return allClients.findTeamInfo(username);
 	}
+
+	public List<CustomQuery> getProviderLocationTreeByChildRole(int memberId, int childRoleId) {
+		return allClients.getProviderLocationTreeByChildRole(memberId, childRoleId);
+	}
 }

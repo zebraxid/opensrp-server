@@ -41,12 +41,14 @@
 		WHERE team_member.person_id = #{userId}
 	</select>
 
-	<select id="getUser" parameterType="java.lang.String"
-			resultMap="customQueryMap">
+	<select id="getUser" parameterType="java.lang.String" resultMap="customQueryMap">
 		select id as id, username as name from core.users
 		WHERE username = #{userName,jdbcType=VARCHAR}
 	</select>
 
+	<select id="getTeamMemberId" parameterType="int" resultMap="customQueryMap">
+		select id from core.team_member where person_id = #{userId}
+	</select>
 
 	<insert id="insertSelectiveAndSetId" parameterType="org.opensrp.domain.postgres.Event"
 			useGeneratedKeys="true" keyProperty="id" keyColumn="id">

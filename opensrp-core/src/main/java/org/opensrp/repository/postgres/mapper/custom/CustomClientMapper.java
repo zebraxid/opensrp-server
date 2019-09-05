@@ -32,4 +32,6 @@ public interface CustomClientMapper extends ClientMapper {
 	List<Client> getClientByUpazila(@Param("name") String name);
 
 	CustomQuery getTeamInfo(@Param("username") String username);
+
+	List<CustomQuery> getProviderLocationTreeByChildRole(@Param("memberId") int memberId, @Param("childRoleId") int childRoleId);
 }

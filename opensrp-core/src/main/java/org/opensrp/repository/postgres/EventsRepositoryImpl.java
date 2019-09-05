@@ -538,6 +538,11 @@ public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements E
 	}
 
 	@Override
+	public CustomQuery getTeamMemberId(int userId) {
+		return eventMapper.getTeamMemberId(userId);
+	}
+
+	@Override
 	public int updateHealthId(HealthId healthId) {
 		return eventMapper.updateHealthId(healthId);
 		
