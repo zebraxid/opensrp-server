@@ -179,7 +179,6 @@ public class UserController {
 		JSONArray array = new JSONArray();
 		try {
 			array = locationService.convertLocationTreeToJSON(treeDTOS);
-			System.out.println(array);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

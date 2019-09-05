@@ -88,51 +88,49 @@ public class LocationService {
 		JSONArray locations = new JSONArray();
 		JSONObject fullLocation = new JSONObject();
 
-		int counter = 0;
+		int counter = 0, limit = 0;
 		String username = "";
 
 		for (CustomQuery treeDTO: treeDTOS) {
-			try {
-				counter++;
-				if (mp.get(treeDTO.getUsername()) == null || !mp.get(treeDTO.getUsername())) {
-					if (counter > 1) {
-						object.put("username", username);
-						object.put("locations", locations);
-						locationTree.put(object);
-						locations = new JSONArray();
-						object = new JSONObject();
-					}
-					mp.put(treeDTO.getUsername(), true);
-				}
-
-				username = treeDTO.getUsername();
-
-				if (treeDTO.getLocationTagName().equalsIgnoreCase("country")) {
-					if (counter > 1) {
-						fullLocation = setEmptyValues(fullLocation);
-						locations.put(fullLocation);
-						fullLocation = new JSONObject();
-					}
-				}
-
-				JSONObject location = new JSONObject();
-				location.put("code", treeDTO.getCode());
-				location.put("id", treeDTO.getId());
-				location.put("name", treeDTO.getName());
-				System.out.println("tree");
-				System.out.println(treeDTO);
-				fullLocation.put(treeDTO.getLocationTagName(), location);
-
-				if (counter == treeDTOS.size()) {
+			counter++;
+			limit++;
+			if (mp.get(treeDTO.getUsername()) == null || !mp.get(treeDTO.getUsername())) {
+				if (counter > 1) {
 					locations.put(fullLocation);
 					object.put("username", username);
 					object.put("locations", locations);
 					locationTree.put(object);
-					object = new JSONObject();
 					locations = new JSONArray();
+					object = new JSONObject();
+					fullLocation = new JSONObject();
+					counter = 1;
 				}
-			} catch (Exception e) {
-				e.printStackTrace();
+				mp.put(treeDTO.getUsername(), true);
+			}
+
+			username = treeDTO.getUsername();
+
+			if (treeDTO.getLocationTagName().equalsIgnoreCase("country")) {
+				if (counter > 1) {
+					fullLocation = setEmptyValues(fullLocation);
+					locations.put(fullLocation);
+					fullLocation = new JSONObject();
+				}
+			}
+
+			JSONObject location = new JSONObject();
+			location.put("code", treeDTO.getCode());
+			location.put("id", treeDTO.getId());
+			location.put("name", treeDTO.getName());
+			fullLocation.put(treeDTO.getLocationTagName().toLowerCase().replaceAll(" ", "_"), location);
+
+			if (limit == treeDTOS.size()) {
+				locations.put(fullLocation);
+				object.put("username", username);
+				object.put("locations", locations);
+				locationTree.put(object);
+				object = new JSONObject();
+				locations = new JSONArray();
 			}
 		}
 		return locationTree;
@@ -147,31 +145,31 @@ public class LocationService {
 	}
 
 	private JSONObject setEmptyValues(JSONObject fullLocation) throws JSONException {
-		if (!fullLocation.has("Country")) {
+		if (!fullLocation.has("country")) {
 			fullLocation.put("country", getLocationProperty());
 		}
-		if (!fullLocation.has("Division")) {
+		if (!fullLocation.has("division")) {
 			fullLocation.put("division", getLocationProperty());
 		}
-		if (!fullLocation.has("District")) {
+		if (!fullLocation.has("district")) {
 			fullLocation.put("district", getLocationProperty());
 		}
-		if (!fullLocation.has("City corporation")) {
+		if (!fullLocation.has("city_corporation")) {
 			fullLocation.put("city_corporation", getLocationProperty());
 		}
-		if (!fullLocation.has("Upazilla")) {
+		if (!fullLocation.has("upazilla")) {
 			fullLocation.put("upazilla", getLocationProperty());
 		}
-		if (!fullLocation.has("Union")) {
+		if (!fullLocation.has("union")) {
 			fullLocation.put("union", getLocationProperty());
 		}
-		if (!fullLocation.has("Ward")) {
+		if (!fullLocation.has("ward")) {
 			fullLocation.put("ward", getLocationProperty());
 		}
-		if (!fullLocation.has("Block")) {
+		if (!fullLocation.has("block")) {
 			fullLocation.put("block", getLocationProperty());
 		}
-		if (!fullLocation.has("Village")) {
+		if (!fullLocation.has("village")) {
 			fullLocation.put("village", getLocationProperty());
 		}
 		return fullLocation;
