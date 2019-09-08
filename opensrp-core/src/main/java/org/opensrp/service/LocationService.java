@@ -124,7 +124,6 @@ public class LocationService {
 			location.put("id", treeDTO.getId());
 			location.put("name", treeDTO.getName());
 			String name = treeDTO.getLocationTagName().toLowerCase().replaceAll(" ", "_");
-			name = name.replaceAll("/", "_");
 			fullLocation.put(name, location);
 
 			if (limit == treeDTOS.size()) {
