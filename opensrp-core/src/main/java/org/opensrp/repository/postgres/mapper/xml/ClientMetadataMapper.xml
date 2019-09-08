@@ -224,6 +224,28 @@
        <if test="address3 != null">
         address3,
       </if>
+      <if test="division != null">
+        division,
+      </if>
+      <if test="district != null">
+        district,
+      </if>
+      <if test="cityCorporation != null">
+        city_corporation,
+      </if>
+      <if test="upazila != null">
+        upazila,
+      </if>
+      <if test="union != null">
+        city_union,
+      </if>
+      <if test="ward != null">
+        ward,
+      </if>
+      <if test="village != null">
+        village,
+      </if>
+
       
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">

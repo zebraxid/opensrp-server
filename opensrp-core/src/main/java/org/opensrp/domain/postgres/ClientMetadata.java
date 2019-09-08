@@ -120,7 +120,21 @@ public class ClientMetadata {
 	private String address1;
 	
 	private String address3;
-	
+
+	private String division;
+
+	private String district;
+
+	private String cityCorporation;
+
+	private String upazila;
+
+	private String cityUnion;
+
+	private String ward;
+
+	private String village;
+
 	public String getAddress2() {
 		return address2;
 	}
@@ -422,5 +436,61 @@ public class ClientMetadata {
 	 */
 	public void setDateDeleted(Date dateDeleted) {
 		this.dateDeleted = dateDeleted;
+	}
+
+	public String getDivision() {
+		return division;
+	}
+
+	public void setDivision(String division) {
+		this.division = division;
+	}
+
+	public String getDistrict() {
+		return district;
+	}
+
+	public void setDistrict(String district) {
+		this.district = district;
+	}
+
+	public String getCityCorporation() {
+		return cityCorporation;
+	}
+
+	public void setCityCorporation(String cityCorporation) {
+		this.cityCorporation = cityCorporation;
+	}
+
+	public String getUpazila() {
+		return upazila;
+	}
+
+	public void setUpazila(String upazila) {
+		this.upazila = upazila;
+	}
+
+	public String getCityUnion() {
+		return cityUnion;
+	}
+
+	public void setCityUnion(String cityUnion) {
+		this.cityUnion = cityUnion;
+	}
+
+	public String getWard() {
+		return ward;
+	}
+
+	public void setWard(String ward) {
+		this.ward = ward;
+	}
+
+	public String getVillage() {
+		return village;
+	}
+
+	public void setVillage(String village) {
+		this.village = village;
 	}
 }

@@ -354,6 +354,13 @@ public class ClientsRepositoryImpl extends BaseRepositoryImpl<Client> implements
 			clientMetadata.setAddress1(addressFields.get("address1"));
 			clientMetadata.setAddress2(addressFields.get("address2"));
 			clientMetadata.setAddress3(addressFields.get("address3"));
+			clientMetadata.setDivision(addressFields.get("division"));
+			clientMetadata.setDistrict(addressFields.get("district"));
+			clientMetadata.setCityCorporation(addressFields.get("cityCorporation"));
+			clientMetadata.setUpazila(addressFields.get("upazila"));
+			clientMetadata.setCityUnion("union");
+			clientMetadata.setWard("ward");
+			clientMetadata.setVillage("village");
 			String relationalId = null;
 			Map<String, List<String>> relationShips = client.getRelationships();
 			if (relationShips != null && !relationShips.isEmpty()) {

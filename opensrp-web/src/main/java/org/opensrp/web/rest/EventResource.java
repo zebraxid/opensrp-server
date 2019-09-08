@@ -67,7 +67,7 @@ public class EventResource extends RestResource<Event> {
 	private ClientService clientService;
 	
 	@Value("#{opensrp['opensrp.web.url']}")
-	private String opensrpWebUurl;
+	private String opensrpWebUrl;
 	
 	@Value("#{opensrp['opensrp.web.username']}")
 	private String opensrpWebUsername;

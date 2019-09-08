@@ -11,6 +11,8 @@ import org.opensrp.api.domain.Time;
 import org.opensrp.api.domain.User;
 import org.opensrp.api.util.LocationTree;
 import org.opensrp.common.domain.UserDetail;
+import org.opensrp.common.util.HttpResponse;
+import org.opensrp.common.util.HttpUtil;
 import org.opensrp.connector.openmrs.service.OpenmrsLocationService;
 import org.opensrp.connector.openmrs.service.OpenmrsUserService;
 import org.opensrp.domain.postgres.CustomQuery;
@@ -43,6 +45,15 @@ public class UserController {
 	
 	@Value("#{opensrp['opensrp.site.url']}")
 	private String opensrpSiteUrl;
+
+	@Value("#{opensrp['opensrp.web.url']}")
+	protected String OPENSRP_BASE_URL;
+
+	@Value("#{opensrp['opensrp.web.username']}")
+	protected String OPENSRP_USER;
+
+	@Value("#{opensrp['opensrp.web.password']}")
+	protected String OPENSRP_PWD;
 
 	private static int childRoleId = 13;
 
@@ -184,5 +195,14 @@ public class UserController {
 		}
 
 		return new ResponseEntity<>(array.toString(), OK);
+	}
+
+	@RequestMapping(value = "/household/generated-code", method = RequestMethod.GET)
+	@ResponseBody
+	public ResponseEntity<String> getHouseholdUniqueId(@RequestParam("username") String username,
+													   @RequestParam("villageId") String villageId) throws JSONException {
+		HttpResponse op = HttpUtil.get(OPENSRP_BASE_URL+"/household/generated-code?username="+username+"&villageId="+villageId, "", OPENSRP_USER, OPENSRP_PWD);
+		JSONArray res = new JSONArray(op.body());
+		return new ResponseEntity<>(res.toString(), OK);
 	}
 }

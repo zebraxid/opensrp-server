@@ -96,6 +96,7 @@ public class LocationService {
 			limit++;
 			if (mp.get(treeDTO.getUsername()) == null || !mp.get(treeDTO.getUsername())) {
 				if (counter > 1) {
+					fullLocation = setEmptyValues(fullLocation);
 					locations.put(fullLocation);
 					object.put("username", username);
 					object.put("locations", locations);
@@ -122,9 +123,12 @@ public class LocationService {
 			location.put("code", treeDTO.getCode());
 			location.put("id", treeDTO.getId());
 			location.put("name", treeDTO.getName());
-			fullLocation.put(treeDTO.getLocationTagName().toLowerCase().replaceAll(" ", "_"), location);
+			String name = treeDTO.getLocationTagName().toLowerCase().replaceAll(" ", "_");
+			name = name.replaceAll("/", "_");
+			fullLocation.put(name, location);
 
 			if (limit == treeDTOS.size()) {
+				fullLocation = setEmptyValues(fullLocation);
 				locations.put(fullLocation);
 				object.put("username", username);
 				object.put("locations", locations);
@@ -154,20 +158,17 @@ public class LocationService {
 		if (!fullLocation.has("district")) {
 			fullLocation.put("district", getLocationProperty());
 		}
-		if (!fullLocation.has("city_corporation")) {
-			fullLocation.put("city_corporation", getLocationProperty());
+		if (!fullLocation.has("city_corporation_upazila")) {
+			fullLocation.put("city_corporation_upazila", getLocationProperty());
 		}
 		if (!fullLocation.has("upazilla")) {
 			fullLocation.put("upazilla", getLocationProperty());
 		}
-		if (!fullLocation.has("union")) {
-			fullLocation.put("union", getLocationProperty());
+		if (!fullLocation.has("pourosava")) {
+			fullLocation.put("pourosava", getLocationProperty());
 		}
-		if (!fullLocation.has("ward")) {
-			fullLocation.put("ward", getLocationProperty());
-		}
-		if (!fullLocation.has("block")) {
-			fullLocation.put("block", getLocationProperty());
+		if (!fullLocation.has("union_ward")) {
+			fullLocation.put("union_ward", getLocationProperty());
 		}
 		if (!fullLocation.has("village")) {
 			fullLocation.put("village", getLocationProperty());
