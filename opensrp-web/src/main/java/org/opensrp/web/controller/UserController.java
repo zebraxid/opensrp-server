@@ -202,8 +202,6 @@ public class UserController {
 	public ResponseEntity<String> getHouseholdUniqueId(@RequestParam("username") String username,
 													   @RequestParam("villageId") String villageId) throws JSONException {
 		HttpResponse op = HttpUtil.get(OPENSRP_BASE_URL+"/household/generated-code?username="+username+"&villageId="+villageId, "", OPENSRP_USER, OPENSRP_PWD);
-		System.out.println("RESULT BODY:->");
-		System.out.println(op.body());
 		JSONArray res = new JSONArray(op.body());
 		return new ResponseEntity<>(res.toString(), OK);
 	}
