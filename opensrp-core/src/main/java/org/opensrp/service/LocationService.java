@@ -160,9 +160,6 @@ public class LocationService {
 		if (!fullLocation.has("city_corporation_upazila")) {
 			fullLocation.put("city_corporation_upazila", getLocationProperty());
 		}
-		if (!fullLocation.has("upazilla")) {
-			fullLocation.put("upazilla", getLocationProperty());
-		}
 		if (!fullLocation.has("pourosava")) {
 			fullLocation.put("pourosava", getLocationProperty());
 		}
