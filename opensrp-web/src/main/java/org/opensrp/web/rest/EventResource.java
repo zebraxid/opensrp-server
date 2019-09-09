@@ -226,6 +226,7 @@ public class EventResource extends RestResource<Event> {
 	@RequestMapping(headers = { "Accept=application/json;charset=UTF-8" }, value = "/sync", method = RequestMethod.GET)
 	@ResponseBody
 	protected ResponseEntity<String> sync(HttpServletRequest request) {
+		System.out.println("SYNC REQUEST:-> "+ request.getRequestURL());
 		Map<String, Object> response = new HashMap<String, Object>();
 		try {
 			List<CustomQuery> locations = eventService.getLocations(request.getRemoteUser());
@@ -431,6 +432,8 @@ public class EventResource extends RestResource<Event> {
 	@SuppressWarnings("unchecked")
 	@RequestMapping(headers = { "Accept=application/json;charset=UTF-8" }, method = POST, value = "/add")
 	public ResponseEntity<HttpStatus> save(@RequestBody String data, HttpServletRequest request) {
+
+		System.out.println("ADD REQUEST:-> "+ request.getRequestURL());
 		try {
 			JSONObject syncData = new JSONObject(data);
 			if (!syncData.has("clients") && !syncData.has("events")) {

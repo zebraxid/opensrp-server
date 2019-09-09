@@ -155,7 +155,7 @@ public class UniqueIdController {
 	@ResponseBody
 	protected ResponseEntity<String> get(HttpServletRequest request) throws JSONException, KeyManagementException,
 	    NoSuchAlgorithmException, KeyStoreException {
-		
+		System.out.println("GET HEALTH ID CONTROLLER:-> "+ request.getRequestURL());
 		String numberToGenerate = getStringFilter("numberToGenerate", request);
 		String source = getStringFilter("source", request);
 		Map<String, Object> map = new HashMap<>();
@@ -173,7 +173,7 @@ public class UniqueIdController {
 	@ResponseBody
 	protected ResponseEntity<String> getHealthId(HttpServletRequest request) throws JSONException, KeyManagementException,
 	    NoSuchAlgorithmException, KeyStoreException {
-		
+		System.out.println("GET HEALTH ID:-> "+ request.getRequestURL());
 		/*System.err.println("getHealthId:"+eventService.getHealthId());*/
 		HttpResponse op = HttpUtil.get(opensrpWebUurl + "/rest/api/v1/health-id/reserved", "", opensrpWebUsername,
 		    opensrpWebPassword);

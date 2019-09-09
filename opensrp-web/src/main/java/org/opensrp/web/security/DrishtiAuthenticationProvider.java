@@ -68,6 +68,10 @@ public class DrishtiAuthenticationProvider implements AuthenticationProvider {
 		String userAddress = ((WebAuthenticationDetails) authentication.getDetails()).getRemoteAddress();
 		String key = userAddress + authentication.getName();
 
+		if(authentication.getName() == null || authentication.getName().isEmpty()) {
+			throw new BadCredentialsException(USER_NOT_FOUND);
+		}
+
         System.out.println("startTime:"+System.currentTimeMillis() + " username: "+ authentication.getName());
 		if (hashOps.hasKey(key, AUTH_HASH_KEY)) {
 			Authentication auth = hashOps.get(key, AUTH_HASH_KEY);
