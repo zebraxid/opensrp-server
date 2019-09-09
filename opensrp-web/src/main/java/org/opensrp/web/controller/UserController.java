@@ -97,6 +97,7 @@ public class UserController {
 	@RequestMapping(method = RequestMethod.GET, value = "/user-details")
 	public ResponseEntity<UserDetail> userDetail(@RequestParam("anm-id") String anmIdentifier, HttpServletRequest request) {
 		Authentication a = getAuthenticationAdvisor(request);
+        System.out.println("user details:-> "+ request.getRequestURL() + " USER anmIdentifier:-> "+ anmIdentifier);
 		User user = opensrpAuthenticationProvider.getDrishtiUser(a, anmIdentifier);
 		return new ResponseEntity<>(new UserDetail(user.getUsername(), user.getRoles()), allowOrigin(opensrpSiteUrl), OK);
 	}
@@ -105,6 +106,7 @@ public class UserController {
 	@ResponseBody
 	public ResponseEntity<String> authenticate(HttpServletRequest request) throws JSONException {
 		User u = currentUser(request);
+        System.out.println("AUTHENTICATE:-> "+request.getRequestURL() + " User:-> "+u.getUsername());
 		String lid = "";
 		JSONObject tm = null;
 		try {
