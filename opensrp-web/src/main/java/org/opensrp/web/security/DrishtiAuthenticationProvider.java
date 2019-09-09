@@ -68,7 +68,7 @@ public class DrishtiAuthenticationProvider implements AuthenticationProvider {
 		String userAddress = ((WebAuthenticationDetails) authentication.getDetails()).getRemoteAddress();
 		String key = userAddress + authentication.getName();
 
-        System.out.println("startTime:"+System.currentTimeMillis());
+        System.out.println("startTime:"+System.currentTimeMillis() + " username: "+ authentication.getName());
 		if (hashOps.hasKey(key, AUTH_HASH_KEY)) {
 			Authentication auth = hashOps.get(key, AUTH_HASH_KEY);
 			//if credentials is same as cached returned cached else eject cached authentication
@@ -92,7 +92,7 @@ public class DrishtiAuthenticationProvider implements AuthenticationProvider {
 		        authentication.getCredentials(), getRolesAsAuthorities(user));
 		hashOps.put(key, AUTH_HASH_KEY, auth);
 		redisTemplate.expire(key, cacheTTL, TimeUnit.SECONDS);
-        System.out.println("endTime: "+System.currentTimeMillis());
+        System.out.println("endTime: "+System.currentTimeMillis() + " username: "+ authentication.getName());
 		return auth;
 		
 	}
@@ -115,7 +115,7 @@ public class DrishtiAuthenticationProvider implements AuthenticationProvider {
 	
 	public User getDrishtiUser(Authentication authentication, String username) {
 		User user = null;
-        System.out.println("startTime(getDrishtiUser): "+ System.currentTimeMillis());
+        System.out.println("startTime(getDrishtiUser): "+ System.currentTimeMillis() + " username: "+ username);
 		try {
 			if (openmrsUserService.authenticate(authentication.getName(), authentication.getCredentials().toString())) {
 				boolean response = openmrsUserService.deleteSession(authentication.getName(),
@@ -128,12 +128,12 @@ public class DrishtiAuthenticationProvider implements AuthenticationProvider {
 			}
 		}
 		catch (Exception e) {
-            System.out.println("endTime(getDrishtiUser) Exception: "+ System.currentTimeMillis());
+            System.out.println("endTime(getDrishtiUser) Exception: "+ System.currentTimeMillis() + " username: "+ username);
 			logger.error(format("{0}. Exception: {1}", INTERNAL_ERROR, e));
 			e.printStackTrace();
 			throw new BadCredentialsException(INTERNAL_ERROR);
 		}
-        System.out.println("endTime(getDrishtiUser): "+ System.currentTimeMillis());
+        System.out.println("endTime(getDrishtiUser): "+ System.currentTimeMillis() + " username: "+ username);
 		return user;
 	}
 }
