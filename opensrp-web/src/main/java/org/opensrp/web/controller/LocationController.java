@@ -26,6 +26,7 @@ public class LocationController {
 	@RequestMapping("location-tree")
 	@ResponseBody
 	public ResponseEntity<String> getLocationTree() throws JSONException {
+		
 		System.out.println("location-tree");
 
 		return new ResponseEntity<>(new Gson().toJson(openmrsLocationService.getLocationTree()),HttpStatus.OK);
@@ -35,6 +36,7 @@ public class LocationController {
 	@ResponseBody
 	public ResponseEntity<String> getLocationTree(@PathVariable("uuid") String uuid) throws JSONException {
 		System.out.println("location-tree/{uuid}");
+		System.out.println("line number 230@EventResource uuid:"+uuid);
 		return new ResponseEntity<>(new Gson().toJson(openmrsLocationService.getLocationTreeOf(uuid)),HttpStatus.OK);
 	}
 }

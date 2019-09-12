@@ -86,7 +86,7 @@ public class UniqueIdController {
 	@ResponseBody
 	public ResponseEntity<String> thisMonthDataSendTODHIS2(HttpServletRequest request, HttpServletResponse response)
 	    throws JSONException {
-		
+		 System.out.println("line 89 @UniqueIdController");
 		String message = "";
 		User user = null;
 		try {

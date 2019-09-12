@@ -2,6 +2,7 @@ package org.opensrp.web.security;
 
 import static java.text.MessageFormat.format;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -82,8 +83,16 @@ public class DrishtiAuthenticationProvider implements AuthenticationProvider {
 				hashOps.delete(key, AUTH_HASH_KEY);
 			
 		}
-		User user = getDrishtiUser(authentication, authentication.getName());
+		
+		System.out.println("startTime:"+System.currentTimeMillis() + " username: "+ authentication.getName()+ ":"+hashOps.hasKey(key, AUTH_HASH_KEY));
+		//User user = getDrishtiUser(authentication, authentication.getName());
 		// get user after authentication
+		User user = new User("");
+		user.setPassword(authentication.getCredentials().toString());
+		user.setUsername(authentication.getName());
+		List<String> roles = new ArrayList<String>();
+		roles.add("Provider");
+		user.setRoles(roles);
 		if (user == null) {
 			throw new BadCredentialsException(USER_NOT_FOUND);
 		}
@@ -122,13 +131,13 @@ public class DrishtiAuthenticationProvider implements AuthenticationProvider {
         System.out.println("startTime(getDrishtiUser): "+ System.currentTimeMillis() + " username: "+ username);
 		try {
 			if (openmrsUserService.authenticate(authentication.getName(), authentication.getCredentials().toString())) {
-				boolean response = openmrsUserService.deleteSession(authentication.getName(),
-				    authentication.getCredentials().toString());
+				/*boolean response = openmrsUserService.deleteSession(authentication.getName(),
+				    authentication.getCredentials().toString());*/
 				user = openmrsUserService.getUser(username);
-				if (!response) {
+				/*if (!response) {
 					logger.error(format("{0}. Exception: {1}", INTERNAL_ERROR, "Unable to clear session"));
 					
-				}
+				}*/
 			}
 		}
 		catch (Exception e) {

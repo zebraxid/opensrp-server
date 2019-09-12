@@ -31,6 +31,7 @@ public class ProviderResource extends RestResource<Provider> {
 	@RequestMapping(value = "authenticate", method = RequestMethod.GET)
 	@ResponseBody
 	public Map<String, Object> authenticate(HttpServletRequest request) throws JSONException {
+		System.out.println("line number 34@ProviderResource username:"+request.getRemoteUser());
 		Map<String, Object> resp = new HashMap<String, Object>();
 		String u = request.getParameter("u");
 		String p = request.getParameter("p");

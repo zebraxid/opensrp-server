@@ -26,11 +26,13 @@ public class ReportController {
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/report/report-definitions")
     public ResponseEntity<String> reportDefinitions() throws JSONException {
+		System.out.println("line 29 @ReportController");
 		return new ResponseEntity<>(reportService.getReportDefinitions().toString(),HttpStatus.OK);
     }
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/report/report-data")
     public ResponseEntity<String> reportData(@RequestParam("uuid") String uuid, @RequestParam Map<String, String> params) throws JSONException {
+		System.out.println("line 35 @ReportController");
 		return new ResponseEntity<>(reportService.getReportData(uuid, params).toString(),HttpStatus.OK);
     }
 }

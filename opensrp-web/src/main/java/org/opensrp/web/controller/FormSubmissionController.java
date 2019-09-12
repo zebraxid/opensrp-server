@@ -88,6 +88,7 @@ public class FormSubmissionController {
                                                             Integer batchSize) {
         List<FormSubmission> newSubmissionsForANM = formSubmissionService
                 .getNewSubmissionsForANM(anmIdentifier, timeStamp, batchSize);
+        System.out.println("line 91 @FormSubmissionController username:"+anmIdentifier);
         return with(newSubmissionsForANM).convert(new Converter<FormSubmission, FormSubmissionDTO>() {
             @Override
             public FormSubmissionDTO convert(FormSubmission submission) {
@@ -103,6 +104,7 @@ public class FormSubmissionController {
                                                           Integer batchSize) {
         List<FormSubmission> allSubmissions = formSubmissionService
                 .getAllSubmissions(timeStamp, batchSize);
+        System.out.println("line 107 @FormSubmissionController");
         return with(allSubmissions).convert(new Converter<FormSubmission, FormSubmissionDTO>() {
             @Override
             public FormSubmissionDTO convert(FormSubmission submission) {
@@ -115,7 +117,8 @@ public class FormSubmissionController {
 
     @RequestMapping(headers = {"Accept=application/json"}, method = POST, value = "/form-submissions")
     public ResponseEntity<HttpStatus> submitForms(@RequestBody List<FormSubmissionDTO> formSubmissionsDTO) {
-        try {
+    	 System.out.println("line 119 @FormSubmissionController");
+    	try {
             if (formSubmissionsDTO.isEmpty()) {
                 return new ResponseEntity<>(BAD_REQUEST);
             }

@@ -57,6 +57,7 @@ public class SearchResource extends RestResource<Client> {
 	
 	@Override
 	public List<Client> search(HttpServletRequest request) throws ParseException {//TODO search should not call different url but only add params
+		System.out.println("line number 60@SearchResource username:"+request.getRemoteUser());
 		String firstName = getStringFilter(FIRST_NAME, request);
 		String middleName = getStringFilter(MIDDLE_NAME, request);
 		String lastName = getStringFilter(LAST_NAME, request);
@@ -105,6 +106,7 @@ public class SearchResource extends RestResource<Client> {
 	@RequestMapping(method = RequestMethod.GET, value = "/path")
 	@ResponseBody
 	private List<ChildMother> searchPathBy(HttpServletRequest request) throws ParseException {
+		System.out.println("line number 109@SearchResource username:"+request.getRemoteUser());
 		List<ChildMother> childMotherList = new ArrayList<ChildMother>();
 		ClientSearchBean searchBean = new ClientSearchBean();
 		try {

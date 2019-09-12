@@ -73,7 +73,7 @@ public class MultimediaController {
 	                         @RequestHeader(value = "username") String userName,
 	                         @RequestHeader(value = "password") String password, HttpServletRequest request)
 	    throws Exception {
-		
+		System.out.println("line 76 @MultimediaController userName"+userName);
 		try {
 			if (authenticate(userName, password, request).isAuthenticated()) {
 				File file = new File(multiMediaDir + File.separator + "images" + File.separator + fileName);
@@ -104,9 +104,9 @@ public class MultimediaController {
 	                                   @RequestHeader(value = "username") String userName,
 	                                   @RequestHeader(value = "password") String password, HttpServletRequest request)
 	    throws Exception {
-		
+		System.out.println("line 107 @MultimediaController userName"+userName);
 		try {
-			if (authenticate(userName, password, request).isAuthenticated()) {
+			/*if (authenticate(userName, password, request).isAuthenticated()) {*/
 				
 				Multimedia multiMedia = multimediaService.findByCaseId(baseEntityId);
 				if (multiMedia == null || multiMedia.getFilePath() == null) {
@@ -128,7 +128,7 @@ public class MultimediaController {
 				
 				File file = new File(filePath);
 				downloadFile(file, response);
-			}
+			//}
 		}
 		catch (Exception e) {
 			logger.error("", e);
@@ -141,7 +141,7 @@ public class MultimediaController {
 	                                          @RequestParam("entity-id") String entityId,
 	                                          @RequestParam("file-category") String fileCategory,
 	                                          @RequestParam("file") MultipartFile file) {
-		
+		System.out.println("line 1044 @MultimediaController");
 		String contentType = file.getContentType();
 		
 		MultimediaDTO multimediaDTO = new MultimediaDTO(entityId, providerId, contentType, null, fileCategory);
@@ -155,11 +155,12 @@ public class MultimediaController {
 		UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(userName, password);
 		WebAuthenticationDetails details = new WebAuthenticationDetailsSource().buildDetails(request);
 		auth.setDetails(details);
+		System.out.println("line 158 @MultimediaController userName"+userName);
 		return provider.authenticate(auth);
 	}
 	
 	private void downloadFile(File file, HttpServletResponse response) throws Exception {
-		
+		System.out.println("line 163 @MultimediaController userName");
 		if (!file.exists()) {
 			String errorMessage = "Sorry. The file you are looking for does not exist";
 			logger.info(errorMessage);

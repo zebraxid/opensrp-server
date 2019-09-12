@@ -37,6 +37,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.mysql.jdbc.StringUtils;
+
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
@@ -80,6 +81,7 @@ public class ClientResource extends RestResource<Client> {
 	
 	@Override
 	public List<Client> search(HttpServletRequest request) throws ParseException {//TODO search should not call different url but only add params
+		System.out.println("line number 84@ClientResource username:"+request.getRemoteUser());
 		ClientSearchBean searchBean = new ClientSearchBean();
 		searchBean.setNameLike(getStringFilter("name", request));
 		searchBean.setGender(getStringFilter(GENDER, request));
@@ -124,6 +126,7 @@ public class ClientResource extends RestResource<Client> {
 	public ResponseEntity<String> dataApprove(@RequestBody String requestData, HttpServletRequest request)
 	    throws JSONException {
 		JSONObject jsonObj = new JSONObject();
+		System.out.println("line number 129@ClientResource username:"+request.getRemoteUser());
 		try {
 			boolean isApproved = true;
 			Gson jsonObject = new Gson();

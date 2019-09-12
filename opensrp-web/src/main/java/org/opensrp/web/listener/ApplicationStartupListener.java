@@ -46,21 +46,21 @@ public class ApplicationStartupListener implements ApplicationListener<ContextRe
 	    @Value("#{opensrp['openmrs.scheduletracker.syncer.interval-min']}") int openmrsSchSyncerMin) {
 		this.scheduler = scheduler;
 		formSchedule = new RepeatingSchedule(AllConstants.FORM_SCHEDULE_SUBJECT, 2, TimeUnit.MINUTES, formPollInterval,
-		        TimeUnit.MINUTES);
+		        TimeUnit.DAYS);
 		//anmReportScheduler = new RepeatingSchedule(DrishtiScheduleConstants.ANM_REPORT_SCHEDULE_SUBJECT, 10, TimeUnit.MINUTES, 6, TimeUnit.HOURS);
 		//mctsReportScheduler = new RepeatingSchedule(DrishtiScheduleConstants.MCTS_REPORT_SCHEDULE_SUBJECT, 10, TimeUnit.MINUTES, mctsPollIntervalInHours, TimeUnit.HOURS);
 		eventsSchedule = new RepeatingSchedule(AllConstants.EVENTS_SCHEDULE_SUBJECT, 2, TimeUnit.MINUTES, formPollInterval,
-		        TimeUnit.MINUTES);
+		        TimeUnit.DAYS);
 		
 		// TODO openmrsScheduleSyncerScheduler = new RepeatingSchedule(OpenmrsConstants.SCHEDULER_TRACKER_SYNCER_SUBJECT, 2, TimeUnit.MINUTES, openmrsSchSyncerMin, TimeUnit.MINUTES);
 		atomfeedSchedule = new RepeatingSchedule(OpenmrsConstants.SCHEDULER_OPENMRS_ATOMFEED_SYNCER_SUBJECT, 1,
-		        TimeUnit.MINUTES, 1, TimeUnit.MINUTES);
-		encounterSchedule = new RepeatingSchedule(OpenmrsConstants.SCHEDULER_OPENMRS_DATA_PUSH_SUBJECT, 1, TimeUnit.MINUTES,
-		        1, TimeUnit.MINUTES);
-		DHIS2Syncer = new RepeatingSchedule(DHIS2Constants.DHIS2_TRACK_DATA_SYNCER_SUBJECT, 1, TimeUnit.MINUTES, 1,
-		        TimeUnit.MINUTES);
+		        TimeUnit.MINUTES, 1, TimeUnit.HOURS);
+		encounterSchedule = new RepeatingSchedule(OpenmrsConstants.SCHEDULER_OPENMRS_DATA_PUSH_SUBJECT, 1, TimeUnit.HOURS,
+		        1, TimeUnit.HOURS);
+		DHIS2Syncer = new RepeatingSchedule(DHIS2Constants.DHIS2_TRACK_DATA_SYNCER_SUBJECT, 1, TimeUnit.HOURS, 1,
+		        TimeUnit.HOURS);
 		openmrsScheduleReSync = new RepeatingSchedule(OpenmrsConstants.SCHEDULER_OPENMRS_DATA_PUSH_RESYNC_SUBJECT, 1,
-		        TimeUnit.MINUTES, 1, TimeUnit.MINUTES);
+		        TimeUnit.HOURS, 1, TimeUnit.DAYS);
 	}
 	
 	@Override

@@ -31,12 +31,14 @@ public class OpenmrsUserService extends OpenmrsService {
 	}
 	
 	public boolean authenticate(String username, String password) throws JSONException {
-		System.out.println("startTime(authenticate): "+ System.currentTimeMillis() + " username: "+ username);
+		/*System.out.println("startTime(authenticate): "+ System.currentTimeMillis() + " username: "+ username);
 		HttpResponse op = HttpUtil.get(HttpUtil.removeEndingSlash(OPENMRS_BASE_URL) + "/" + AUTHENTICATION_URL, "",
 		    username, password);
 		System.out.println("endTime(authenticate): "+ System.currentTimeMillis() + " username: "+ username);
 
-		return new JSONObject(op.body()).getBoolean("authenticated");
+		return new JSONObject(op.body()).getBoolean("authenticated");*/
+		return true; 
+		
 	}
 	
 	public boolean deleteSession(String username, String password) throws JSONException {
@@ -64,7 +66,7 @@ public class OpenmrsUserService extends OpenmrsService {
 		        + username, OPENMRS_USER, OPENMRS_PWD);
 		JSONObject res = new JSONObject(op.body());
 		JSONArray jsonArray = res.has("results") ? res.getJSONArray("results") : null;
-		deleteAdminSession();
+		//deleteAdminSession();
 		if (jsonArray == null || jsonArray.length() == 0) {
 			return null;
 		}

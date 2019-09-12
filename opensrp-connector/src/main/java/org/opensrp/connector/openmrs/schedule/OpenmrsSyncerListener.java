@@ -142,7 +142,7 @@ public class OpenmrsSyncerListener {
 	
 	@MotechListener(subjects = OpenmrsConstants.SCHEDULER_OPENMRS_DATA_PUSH_SUBJECT)
 	public void pushToOpenMRS(MotechEvent event) {
-		
+		System.out.println("144 start data send to openmrs");
 		if (!lock.tryLock()) {
 			logger.warn("Not fetching forms from Message Queue. It is already in progress.");
 			return;
@@ -359,6 +359,7 @@ public class OpenmrsSyncerListener {
 	
 	@MotechListener(subjects = OpenmrsConstants.SCHEDULER_OPENMRS_DATA_PUSH_RESYNC_SUBJECT)
 	public void reSyncToOpenMRS(MotechEvent event) {
+		System.out.println("362 start data send to openmrs");
 		List<org.opensrp.domain.ErrorTrace> errorTraces = errorTraceService.findAllUnSyncErrors("org.opensrp.domain.Client");
 		JSONObject patient = new JSONObject();// only for test code purpose
 		JSONArray patientsJsonArray = new JSONArray();// only for test code purpose

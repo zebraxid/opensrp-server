@@ -80,6 +80,7 @@ public class StockResource extends RestResource<Stock> {
 	@RequestMapping(value = "/getall", method = RequestMethod.GET)
 	@ResponseBody
 	protected ResponseEntity<String> getAll() {
+		System.out.println("line number 83@StockResource username:");
 		Map<String, Object> response = new HashMap<String, Object>();
 		try {
 			List<Stock> stocks = new ArrayList<Stock>();
@@ -118,7 +119,7 @@ public class StockResource extends RestResource<Stock> {
 	@ResponseBody
 	protected ResponseEntity<String> sync(HttpServletRequest request) {
 		Map<String, Object> response = new HashMap<String, Object>();
-		
+		System.out.println("line number 122@StockResource username:"+request.getRemoteUser());
 		try {
 			StockSearchBean searchBean = populateSearchBean(request);
 			String serverVersion = getStringFilter(BaseEntity.SERVER_VERSIOIN, request);
@@ -149,6 +150,7 @@ public class StockResource extends RestResource<Stock> {
 	@SuppressWarnings("unchecked")
 	@RequestMapping(headers = { "Accept=application/json" }, method = POST, value = "/add")
 	public ResponseEntity<HttpStatus> save(@RequestBody String data) {
+		System.out.println("line number 153@StockResource username:");
 		try {
 			JSONObject syncData = new JSONObject(data);
 			if (!syncData.has("stocks")) {

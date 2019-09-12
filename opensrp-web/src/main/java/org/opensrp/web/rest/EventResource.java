@@ -226,7 +226,8 @@ public class EventResource extends RestResource<Event> {
 	@RequestMapping(headers = { "Accept=application/json;charset=UTF-8" }, value = "/sync", method = RequestMethod.GET)
 	@ResponseBody
 	protected ResponseEntity<String> sync(HttpServletRequest request) {
-		System.out.println("SYNC REQUEST:-> "+ request.getRequestURL());
+		
+		System.out.println("line number 230@EventResource username:"+request.getRemoteUser());
 		Map<String, Object> response = new HashMap<String, Object>();
 		try {
 			List<CustomQuery> locations = eventService.getLocations(request.getRemoteUser());
@@ -343,6 +344,8 @@ public class EventResource extends RestResource<Event> {
 	@RequestMapping(headers = { "Accept=application/json;charset=UTF-8" }, value = "/client-list-to-delete", method = RequestMethod.GET)
 	@ResponseBody
 	protected ResponseEntity<String> clientListToDeleteFromAPP(HttpServletRequest request) {
+		System.out.println("line number 247@EventResource username:"+request.getRemoteUser());
+
 		Map<String, Object> response = new HashMap<String, Object>();
 		try {
 			List<CustomQuery> locations = eventService.getLocations(request.getRemoteUser());
@@ -434,6 +437,7 @@ public class EventResource extends RestResource<Event> {
 	public ResponseEntity<HttpStatus> save(@RequestBody String data, HttpServletRequest request) {
 
 		System.out.println("ADD REQUEST:-> "+ request.getRequestURL());
+		System.out.println("line number 440@EventResource username:"+request.getRemoteUser());
 		try {
 			JSONObject syncData = new JSONObject(data);
 			if (!syncData.has("clients") && !syncData.has("events")) {

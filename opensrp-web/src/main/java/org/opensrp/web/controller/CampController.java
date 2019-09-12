@@ -21,6 +21,7 @@ public class CampController {
 	@ResponseBody
 	public ArrayList<String> campAnnouncement(@RequestParam String provider) {
 		rapidproMessageListener.campAnnouncementListener(provider);
+		System.out.println("line number 24@CampController username:"+provider);
 		ArrayList<String> response = new ArrayList<String>();
 		return response;
 	}

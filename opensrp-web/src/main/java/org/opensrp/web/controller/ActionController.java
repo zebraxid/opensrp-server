@@ -49,22 +49,24 @@ public class ActionController {
         this.allAlerts = allAlerts;
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/actions")
+    /*@RequestMapping(method = RequestMethod.GET, value = "/actions")
     @ResponseBody
     public List<Action> getNewActionForANM(@RequestParam("anmIdentifier") String anmIdentifier, @RequestParam("timeStamp") Long timeStamp){
         List<org.opensrp.scheduler.Action> actions = actionService.getNewAlertsForANM(anmIdentifier, timeStamp);
+        System.out.println("line 56 @ActionController userName"+anmIdentifier);
         return with(actions).convert(new Converter<org.opensrp.scheduler.Action, Action>() {
             @Override
             public Action convert(org.opensrp.scheduler.Action action) {
                 return ActionConvertor.from(action);
             }
         });
-    }
+    }*/
     
     @RequestMapping(method = RequestMethod.GET, value = "/useractions")
     @ResponseBody
     public List<Action> getNewActionForClient(@RequestParam("baseEntityId") String baseEntityId, @RequestParam("timeStamp") Long timeStamp){
         List<org.opensrp.scheduler.Action> actions = actionService.findByCaseIdAndTimeStamp(baseEntityId, timeStamp);
+        System.out.println("line 69 @ActionController ");
         return with(actions).convert(new Converter<org.opensrp.scheduler.Action, Action>() {
             @Override
             public Action convert(org.opensrp.scheduler.Action action) {
@@ -76,6 +78,7 @@ public class ActionController {
     @RequestMapping(method = RequestMethod.GET, value = "/alert_delete")
     @ResponseBody
     public void deleteDuplicateAlerts(@RequestParam("key") String key){
+    	 System.out.println("line 81 @ActionController");
     	if(!key.equalsIgnoreCase("20160727KiSafaiMuhim")){
     		throw new RuntimeException("Invalid Key");
     	}
@@ -104,7 +107,7 @@ public class ActionController {
 	@ResponseBody
 	protected ResponseEntity<String> sync(HttpServletRequest request) {
 		Map<String, Object> response = new HashMap<String, Object>();
-		
+		 System.out.println("line 110 @ActionController");
 		try {
 			String providerId = getStringFilter(PROVIDER_ID, request);
 			Long lastSyncedServerVersion = Long.valueOf(getStringFilter(BaseEntity.SERVER_VERSIOIN, request)) + 1;

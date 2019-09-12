@@ -27,6 +27,7 @@ public class ExportResource {
 
 	@RequestMapping(value = "dumpcsv" , method = RequestMethod.GET)
 	public @ResponseBody String dumpCsv(HttpServletRequest request) throws ParseException, IOException {
+		System.out.println("line number 34@ExportResource username:"+request.getRemoteUser());
 		String formName = getStringFilter("formName", request);
 		return IOUtils.toString(fsv.dump_csv(formName));
 	}

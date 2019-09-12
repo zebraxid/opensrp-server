@@ -17,6 +17,7 @@ public abstract class RestResource <T>{
 	@RequestMapping(method=RequestMethod.POST, consumes={MediaType.APPLICATION_JSON_VALUE})
 	@ResponseBody
 	private T createNew(@RequestBody T entity) {
+		System.out.println("line number 20@RestResource username:");
 		RestUtils.verifyRequiredProperties(requiredProperties(), entity);
 		return create(entity);
 	}
@@ -38,6 +39,7 @@ public abstract class RestResource <T>{
 	@RequestMapping(method=RequestMethod.GET, value="/search")
 	@ResponseBody
 	private List<T> searchBy(HttpServletRequest request) throws ParseException{
+		System.out.println("line number 42@RestResource username:"+request.getRemoteUser());
 		return search(request);
 	}
 	
