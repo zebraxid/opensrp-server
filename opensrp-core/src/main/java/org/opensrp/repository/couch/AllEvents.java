@@ -19,6 +19,7 @@ import org.opensrp.domain.postgres.CustomQuery;
 import org.opensrp.domain.postgres.HealthId;
 import org.opensrp.repository.EventsRepository;
 import org.opensrp.repository.lucene.LuceneEventRepository;
+import org.opensrp.search.AddressSearchBean;
 import org.opensrp.search.EventSearchBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -271,30 +272,36 @@ public class AllEvents extends MotechBaseRepository<Event> implements EventsRepo
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
 	@Override
 	public List<CustomQuery> getLocations(int userId) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
 	@Override
 	public CustomQuery getUser(String userName) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
 	@Override
 	public int updateHealthId(HealthId healthId) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
-
+	
 	@Override
 	public List<HealthId> gethealthIds(boolean status, String type) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
+	@Override
+	public List<Event> selectBySearchBean(AddressSearchBean addressSearchBean, long serverVersion, String providerId,
+	                                      int limit) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }

@@ -21,6 +21,7 @@ import org.opensrp.domain.postgres.HealthId;
 import org.opensrp.repository.EventsRepository;
 import org.opensrp.repository.postgres.mapper.custom.CustomEventMapper;
 import org.opensrp.repository.postgres.mapper.custom.CustomEventMetadataMapper;
+import org.opensrp.search.AddressSearchBean;
 import org.opensrp.search.EventSearchBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -518,13 +519,13 @@ public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements E
 		if (field.equals(BASE_ENTITY_ID) && ids != null && !ids.isEmpty()) {
 			EventMetadataExample eventMetadataExample = new EventMetadataExample();
 			eventMetadataExample.createCriteria().andBaseEntityIdIn(ids).andDateDeletedIsNull()
-			        .andServerVersionGreaterThanOrEqualTo(serverVersion);
+			/*.andServerVersionGreaterThanOrEqualTo(serverVersion)*/;
 			List<org.opensrp.domain.postgres.Event> events = eventMetadataMapper.selectMany(eventMetadataExample);
 			return convert(events);
 		}
 		return new ArrayList<>();
 	}
-
+	
 	@Override
 	public List<CustomQuery> getLocations(int userId) {
 		
@@ -536,17 +537,25 @@ public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements E
 		// TODO Auto-generated method stub
 		return eventMapper.getUser(userName);
 	}
-
+	
 	@Override
 	public int updateHealthId(HealthId healthId) {
 		return eventMapper.updateHealthId(healthId);
 		
 	}
-
+	
 	@Override
 	public List<HealthId> gethealthIds(boolean status, String type) {
 		List<HealthId> healthIds = eventMapper.gethealthIds(status, type);
 		return null;
+	}
+	
+	@Override
+	public List<Event> selectBySearchBean(AddressSearchBean addressSearchBean, long serverVersion, String providerId,
+	                                      int limit) {
+		
+		return convert(eventMetadataMapper.selectBySearchBean(addressSearchBean, serverVersion, providerId,
+		    DEFAULT_FETCH_SIZE));
 	}
 	
 }

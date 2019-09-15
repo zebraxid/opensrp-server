@@ -6,8 +6,11 @@ import org.json.JSONObject;
 import org.opensrp.api.domain.User;
 import org.opensrp.common.util.HttpResponse;
 import org.opensrp.common.util.HttpUtil;
+import org.opensrp.service.EventService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,11 +18,16 @@ public class OpenmrsUserService extends OpenmrsService {
 	
 	private static final String AUTHENTICATION_URL = "ws/rest/v1/session";
 	
+	private static final String OPENSRPAUTHENTICATION_URL = "rest/api/v1/user/login";
+	
 	private static final String USER_URL = "ws/rest/v1/user";
 	
 	private static final String PROVIDER_URL = "ws/rest/v1/provider";
 	
 	private static final String TEAM_MEMBER_URL = "ws/rest/v1/team/teammember";
+	
+	@Value("#{opensrp['opensrp.web.url']}")
+	protected String OPENSRP_BASE_URL;
 	
 	private static Logger logger = LoggerFactory.getLogger(OpenmrsUserService.class.toString());
 	
@@ -31,13 +39,18 @@ public class OpenmrsUserService extends OpenmrsService {
 	}
 	
 	public boolean authenticate(String username, String password) throws JSONException {
-		/*System.out.println("startTime(authenticate): "+ System.currentTimeMillis() + " username: "+ username);
-		HttpResponse op = HttpUtil.get(HttpUtil.removeEndingSlash(OPENMRS_BASE_URL) + "/" + AUTHENTICATION_URL, "",
+		
+		System.out.println("40startTime(authenticate): " + System.currentTimeMillis() + " username: " + username
+		        + "OPENSRP_BASE_URL" + OPENSRP_BASE_URL);
+		HttpResponse op = HttpUtil.get(HttpUtil.removeEndingSlash(OPENSRP_BASE_URL) + "/" + OPENSRPAUTHENTICATION_URL, "",
 		    username, password);
-		System.out.println("endTime(authenticate): "+ System.currentTimeMillis() + " username: "+ username);
-
-		return new JSONObject(op.body()).getBoolean("authenticated");*/
-		return true; 
+		System.out.println("44endTime(authenticate): " + System.currentTimeMillis() + " username: " + username + ":::"
+		        + op.body());
+		boolean b = new JSONObject(op.body()).getBoolean("is_authenticated");
+		System.err.println("BB" + b);
+		return new JSONObject(op.body()).getBoolean("is_authenticated");
+		
+		// return true;
 		
 	}
 	
@@ -61,7 +74,7 @@ public class OpenmrsUserService extends OpenmrsService {
 	 * @throws JSONException
 	 */
 	public User getUser(String username) throws JSONException {
-        System.out.println("startTime(getUser): "+System.currentTimeMillis() + " username: "+ username);
+		System.out.println("77startTime(getUser): " + System.currentTimeMillis() + " username: " + username);
 		HttpResponse op = HttpUtil.get(HttpUtil.removeEndingSlash(OPENMRS_BASE_URL) + "/" + USER_URL, "v=full&username="
 		        + username, OPENMRS_USER, OPENMRS_PWD);
 		JSONObject res = new JSONObject(op.body());
@@ -97,7 +110,7 @@ public class OpenmrsUserService extends OpenmrsService {
 		}
 		
 		u.addAttribute("_PERSON_UUID", p.getString("uuid"));
-        System.out.println("endTime(getUser): "+System.currentTimeMillis() + " username: "+ username);
+		System.out.println("113endTime(getUser): " + System.currentTimeMillis() + " username: " + username);
 		return u;
 	}
 	

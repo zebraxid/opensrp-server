@@ -3,10 +3,11 @@ package org.opensrp.repository;
 import java.util.Calendar;
 import java.util.List;
 
-import org.opensrp.domain.Client;
+import org.apache.ibatis.annotations.Param;
 import org.opensrp.domain.Event;
 import org.opensrp.domain.postgres.CustomQuery;
 import org.opensrp.domain.postgres.HealthId;
+import org.opensrp.search.AddressSearchBean;
 import org.opensrp.search.EventSearchBean;
 
 public interface EventsRepository extends BaseRepository<Event> {
@@ -55,9 +56,16 @@ public interface EventsRepository extends BaseRepository<Event> {
 	List<Event> findByFieldValue(String field, List<String> ids, long serverVersion);
 	
 	void deleteByPrimaryKey(Event event);
+	
 	List<CustomQuery> getLocations(int userId);
 	
 	CustomQuery getUser(String userName);
+	
 	int updateHealthId(HealthId healthId);
+	
 	List<HealthId> gethealthIds(boolean status, String type);
+	
+	List<Event> selectBySearchBean(@Param("addressBean") AddressSearchBean addressSearchBean,
+	                               @Param("serverVersion") long serverVersion, @Param("providerId") String providerId,
+	                               @Param("limit") int limit);
 }

@@ -18,6 +18,7 @@ import org.opensrp.domain.Obs;
 import org.opensrp.domain.postgres.CustomQuery;
 import org.opensrp.domain.postgres.HealthId;
 import org.opensrp.repository.EventsRepository;
+import org.opensrp.search.AddressSearchBean;
 import org.opensrp.search.EventSearchBean;
 import org.opensrp.util.DateTimeTypeConverter;
 import org.slf4j.Logger;
@@ -357,5 +358,19 @@ public class EventService {
 		allEvents.updateHealthId(h);
 		return null;
 		
+	}
+	
+	public List<Event> selectBySearchBean(AddressSearchBean addressSearchBean, long serverVersion, String providerId,
+	                                      int limit) {
+		return allEvents.selectBySearchBean(addressSearchBean, serverVersion, providerId, limit);
+	}
+	
+	public CustomQuery getUser(String username) {
+		CustomQuery user = allEvents.getUser(username);
+		if (user != null) {
+			return user;
+		} else {
+			return null;
+		}
 	}
 }

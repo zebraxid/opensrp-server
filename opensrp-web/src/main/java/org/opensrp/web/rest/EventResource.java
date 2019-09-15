@@ -227,7 +227,7 @@ public class EventResource extends RestResource<Event> {
 	@ResponseBody
 	protected ResponseEntity<String> sync(HttpServletRequest request) {
 		
-		System.out.println("line number 230@EventResource username:"+request.getRemoteUser());
+		System.out.println("line number 230@EventResource username:" + request.getRemoteUser());
 		Map<String, Object> response = new HashMap<String, Object>();
 		try {
 			List<CustomQuery> locations = eventService.getLocations(request.getRemoteUser());
@@ -241,7 +241,7 @@ public class EventResource extends RestResource<Event> {
 					address.add(locName.getName());
 				}
 				userType = "Provider";
-				String providerId = getStringFilter(PROVIDER_ID, request);
+				String providerId = request.getRemoteUser();//getStringFilter(PROVIDER_ID, request);
 				String requestProviderName = request.getRemoteUser();
 				String locationId = getStringFilter(LOCATION_ID, request);
 				String baseEntityId = getStringFilter(BASE_ENTITY_ID, request);
@@ -258,11 +258,11 @@ public class EventResource extends RestResource<Event> {
 					limit = 25;
 				}
 				String getProviderName = "";
-				List<Event> eventList = new ArrayList<Event>();
+				//List<Event> eventList = new ArrayList<Event>();
 				List<Event> events = new ArrayList<Event>();
 				List<String> clientIds = new ArrayList<String>();
 				List<Client> clients = new ArrayList<Client>();
-				List<Client> clientList = new ArrayList<Client>();
+				//List<Client> clientList = new ArrayList<Client>();
 				List<String> excludeEvents = new ArrayList<String>();
 				long startTime = System.currentTimeMillis();
 				EventSearchBean eventSearchBean = new EventSearchBean();
@@ -272,7 +272,8 @@ public class EventResource extends RestResource<Event> {
 				eventSearchBean.setLocationId(locationId);
 				eventSearchBean.setBaseEntityId(baseEntityId);
 				eventSearchBean.setServerVersion(lastSyncedServerVersion);
-				eventList = eventService.findEvents(eventSearchBean, BaseEntity.SERVER_VERSIOIN, "asc", limit);
+				
+				//eventList = eventService.findEvents(eventSearchBean, BaseEntity.SERVER_VERSIOIN, "asc", limit);
 				ClientSearchBean searchBean = new ClientSearchBean();
 				searchBean.setServerVersion(lastSyncedServerVersion);
 				AddressSearchBean addressSearchBean = new AddressSearchBean();
@@ -281,41 +282,51 @@ public class EventResource extends RestResource<Event> {
 				} else if (userType.equalsIgnoreCase(HA)) {
 					addressSearchBean.setAddress3(address);
 				}
-				clientList = clientService.findByCriteria(searchBean, addressSearchBean);
-				for (Client client : clientList) {
+				//clientList = clientService.findByCriteria(searchBean, addressSearchBean);
+				/*for (Client client : clientList) {
 					clientIds.add(client.getBaseEntityId());
-				}
+				}*/
 				
+				events = eventService.selectBySearchBean(addressSearchBean, lastSyncedServerVersion, providerId, 0);
+				//System.err.println("Before Clients:"+clientList.toString());
 				List<String> ids = new ArrayList<String>();
-				ids.addAll(clientIds);
+				
 				String field = "baseEntityId";
-				eventList = eventService.findByFieldValue(field, ids, lastSyncedServerVersion);
+				//eventList = eventService.findByFieldValue(field, ids, lastSyncedServerVersion);
 				logger.info("fetching events took: " + (System.currentTimeMillis() - startTime));
-				logger.info("Initial Size:" + eventList.size());
-				if (!eventList.isEmpty()) {
-					for (Event event : eventList) {
-						getProviderName = event.getProviderId();
+				logger.info("Initial Size:" + events.size());
+				if (!events.isEmpty()) {
+					for (Event event : events) {
+						/*getProviderName = event.getProviderId();
 						logger.info("getProviderName:" + getProviderName + ": request provider name" + requestProviderName);
 						if (getProviderName.isEmpty()) {
 							events.add(event);
 						} else if (!getProviderName.equalsIgnoreCase(requestProviderName)) {
+							
 							excludeEvents.add(event.getBaseEntityId());
 						} else {
 							events.add(event);
+						}*/
+						if (!clientIds.contains(event.getBaseEntityId())) {
+							clientIds.add(event.getBaseEntityId());
 						}
+						
 					}
-					
-					logger.info("After cleaning Size:" + events.size());
 					
 					logger.info("fetching clients took: " + (System.currentTimeMillis() - startTime));
 				}
-				for (Client client : clientList) {
+				
+				logger.info("ids size" + clientIds.size() + "IDs:" + clientIds.toString());
+				ids.addAll(clientIds);
+				clients = clientService.findByFieldValue(field, ids);
+				/*for (Client client : clientList) {
 					if (!excludeEvents.contains(client.getBaseEntityId())) {
 						clients.add(client);
+						
 					} else {
 						logger.info("exclude client :" + client.getBaseEntityId());
 					}
-				}
+				}*/
 				
 				JsonArray eventsArray = (JsonArray) gson.toJsonTree(events, new TypeToken<List<Event>>() {}.getType());
 				
@@ -344,8 +355,8 @@ public class EventResource extends RestResource<Event> {
 	@RequestMapping(headers = { "Accept=application/json;charset=UTF-8" }, value = "/client-list-to-delete", method = RequestMethod.GET)
 	@ResponseBody
 	protected ResponseEntity<String> clientListToDeleteFromAPP(HttpServletRequest request) {
-		System.out.println("line number 247@EventResource username:"+request.getRemoteUser());
-
+		System.out.println("line number 247@EventResource username:" + request.getRemoteUser());
+		
 		Map<String, Object> response = new HashMap<String, Object>();
 		try {
 			List<CustomQuery> locations = eventService.getLocations(request.getRemoteUser());
@@ -435,9 +446,9 @@ public class EventResource extends RestResource<Event> {
 	@SuppressWarnings("unchecked")
 	@RequestMapping(headers = { "Accept=application/json;charset=UTF-8" }, method = POST, value = "/add")
 	public ResponseEntity<HttpStatus> save(@RequestBody String data, HttpServletRequest request) {
-
-		System.out.println("ADD REQUEST:-> "+ request.getRequestURL());
-		System.out.println("line number 440@EventResource username:"+request.getRemoteUser());
+		
+		System.out.println("ADD REQUEST:-> " + request.getRequestURL());
+		System.out.println("line number 440@EventResource username:" + request.getRemoteUser());
 		try {
 			JSONObject syncData = new JSONObject(data);
 			if (!syncData.has("clients") && !syncData.has("events")) {

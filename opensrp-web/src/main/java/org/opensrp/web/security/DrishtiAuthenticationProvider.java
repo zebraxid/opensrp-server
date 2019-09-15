@@ -10,6 +10,8 @@ import javax.annotation.Resource;
 
 import org.opensrp.api.domain.User;
 import org.opensrp.connector.openmrs.service.OpenmrsUserService;
+import org.opensrp.domain.postgres.CustomQuery;
+import org.opensrp.service.EventService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +46,11 @@ public class DrishtiAuthenticationProvider implements AuthenticationProvider {
 	private static final String AUTH_HASH_KEY = "_auth";
 	
 	//private AllOpenSRPUsers allOpenSRPUsers;
+	@Autowired
 	private PasswordEncoder passwordEncoder;
+	
+	@Autowired
+	private EventService eventService;
 	
 	private OpenmrsUserService openmrsUserService;
 	
@@ -68,12 +74,12 @@ public class DrishtiAuthenticationProvider implements AuthenticationProvider {
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 		String userAddress = ((WebAuthenticationDetails) authentication.getDetails()).getRemoteAddress();
 		String key = userAddress + authentication.getName();
-
-		if(authentication.getName() == null || authentication.getName().isEmpty()) {
+		
+		if (authentication.getName() == null || authentication.getName().isEmpty()) {
 			throw new BadCredentialsException(USER_NOT_FOUND);
 		}
-
-        System.out.println("startTime:"+System.currentTimeMillis() + " username: "+ authentication.getName());
+		
+		System.out.println("82startTime:" + System.currentTimeMillis() + " username: " + authentication.getName());
 		if (hashOps.hasKey(key, AUTH_HASH_KEY)) {
 			Authentication auth = hashOps.get(key, AUTH_HASH_KEY);
 			//if credentials is same as cached returned cached else eject cached authentication
@@ -83,11 +89,14 @@ public class DrishtiAuthenticationProvider implements AuthenticationProvider {
 				hashOps.delete(key, AUTH_HASH_KEY);
 			
 		}
+		//CustomQuery userInfo = eventService.getUser(authentication.getName());
 		
-		System.out.println("startTime:"+System.currentTimeMillis() + " username: "+ authentication.getName()+ ":"+hashOps.hasKey(key, AUTH_HASH_KEY));
-		//User user = getDrishtiUser(authentication, authentication.getName());
+		System.out.println("94startTime:" + System.currentTimeMillis() + " username: " + authentication.getName()
+		        + "hashKey:" + hashOps.hasKey(key, AUTH_HASH_KEY));
+		User user = getDrishtiUser(authentication, authentication.getName());
+		
 		// get user after authentication
-		User user = new User("");
+		/*User user = new User("");
 		user.setPassword(authentication.getCredentials().toString());
 		user.setUsername(authentication.getName());
 		List<String> roles = new ArrayList<String>();
@@ -95,17 +104,19 @@ public class DrishtiAuthenticationProvider implements AuthenticationProvider {
 		user.setRoles(roles);
 		if (user == null) {
 			throw new BadCredentialsException(USER_NOT_FOUND);
-		}
+		}*/
 		
-		if (user.getVoided() != null && user.getVoided()) {
+		/*if (user.getVoided() != null && user.getVoided()) {
 			throw new BadCredentialsException(USER_NOT_ACTIVATED);
-		}
-		
+		}*/
+		/*List<String> roles = new ArrayList<String>();
+		roles.add("Provider");
+		user.setRoles(roles);*/
 		Authentication auth = new UsernamePasswordAuthenticationToken(authentication.getName(),
 		        authentication.getCredentials(), getRolesAsAuthorities(user));
 		hashOps.put(key, AUTH_HASH_KEY, auth);
 		redisTemplate.expire(key, cacheTTL, TimeUnit.SECONDS);
-        System.out.println("endTime: "+System.currentTimeMillis() + " username: "+ authentication.getName());
+		System.out.println("119endTime: " + System.currentTimeMillis() + " username: " + authentication.getName());
 		return auth;
 		
 	}
@@ -128,25 +139,30 @@ public class DrishtiAuthenticationProvider implements AuthenticationProvider {
 	
 	public User getDrishtiUser(Authentication authentication, String username) {
 		User user = null;
-        System.out.println("startTime(getDrishtiUser): "+ System.currentTimeMillis() + " username: "+ username);
+		
+		System.out.println("134startTime(getDrishtiUser): " + System.currentTimeMillis() + " username: " + username);
 		try {
+			
 			if (openmrsUserService.authenticate(authentication.getName(), authentication.getCredentials().toString())) {
 				/*boolean response = openmrsUserService.deleteSession(authentication.getName(),
 				    authentication.getCredentials().toString());*/
 				user = openmrsUserService.getUser(username);
+				System.out.println("user:" + user);
 				/*if (!response) {
 					logger.error(format("{0}. Exception: {1}", INTERNAL_ERROR, "Unable to clear session"));
 					
 				}*/
 			}
+			
 		}
 		catch (Exception e) {
-            System.out.println("endTime(getDrishtiUser) Exception: "+ System.currentTimeMillis() + " username: "+ username);
+			System.out.println("161endTime(getDrishtiUser) Exception: " + System.currentTimeMillis() + " username: "
+			        + username);
 			logger.error(format("{0}. Exception: {1}", INTERNAL_ERROR, e));
 			e.printStackTrace();
 			throw new BadCredentialsException(INTERNAL_ERROR);
 		}
-        System.out.println("endTime(getDrishtiUser): "+ System.currentTimeMillis() + " username: "+ username);
+		System.out.println("167endTime(getDrishtiUser): " + System.currentTimeMillis() + " username: " + username);
 		return user;
 	}
 }

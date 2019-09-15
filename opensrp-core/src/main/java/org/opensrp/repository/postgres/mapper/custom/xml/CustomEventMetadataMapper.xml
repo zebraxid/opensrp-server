@@ -106,6 +106,27 @@
 		</if>
 	</select>
 
+	<select id="selectBySearchBean"
+		resultMap="BaseEventResultMap">
+		select core.event.id,core.event.json
+			FROM core.event , core.event_metadata where core.event.id=core.event_metadata.event_id
+		and
+		(case provider_id when '' then  #{providerId} else provider_id end)= #{providerId} and 
+		base_entity_id=any(
+		select base_entity_id from core.client_metadata 
+		where server_version::BIGINT >= #{serverVersion,jdbcType=BIGINT}  
+		 
+		 <if test="addressBean.address2 != null">
+				and address2 IN				
+				<foreach close=")" collection="addressBean.address2" item="listItem" open="(" separator=",">
+						#{listItem}
+				</foreach>	
+		</if>
+		) 
+		order by core.event.json->>'serverVersion' asc
+		LIMIT #{limit}
+			
+	</select>
 
 	<select id="selectNotInOpenMRSByServerVersion" parameterType="map"
 		resultMap="BaseEventResultMap">

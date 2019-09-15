@@ -64,26 +64,24 @@ public class OpenmrsIDService {
 	@Autowired
 	private UniqueIdRepository uniqueIdRepository;
 	
-	public static OpenmrsIDService createInstanceWithOpenMrsUrl(String openmrsUrl) throws KeyManagementException, NoSuchAlgorithmException, KeyStoreException {
+	public static OpenmrsIDService createInstanceWithOpenMrsUrl(String openmrsUrl) throws KeyManagementException,
+	    NoSuchAlgorithmException, KeyStoreException {
 		OpenmrsIDService openmrsIDService = new OpenmrsIDService();
 		openmrsIDService.openmrsUrl = openmrsUrl;
 		return openmrsIDService;
 	}
 	
 	public OpenmrsIDService() throws KeyManagementException, NoSuchAlgorithmException, KeyStoreException {
-		SSLContext sslContext = SSLContextBuilder
-                .create()
-                .loadTrustMaterial(new TrustSelfSignedStrategy())
-                .build();
-
-        // we can optionally disable hostname verification. 
-        // if you don't want to further weaken the security, you don't have to include this.
-        HostnameVerifier allowAllHosts = new NoopHostnameVerifier();
-        
-        // create an SSL Socket Factory to use the SSLContext with the trust self signed certificate strategy
-        // and allow all hosts verifier.
-        SSLConnectionSocketFactory connectionFactory = new SSLConnectionSocketFactory(sslContext, allowAllHosts);
-        
+		SSLContext sslContext = SSLContextBuilder.create().loadTrustMaterial(new TrustSelfSignedStrategy()).build();
+		
+		// we can optionally disable hostname verification. 
+		// if you don't want to further weaken the security, you don't have to include this.
+		HostnameVerifier allowAllHosts = new NoopHostnameVerifier();
+		
+		// create an SSL Socket Factory to use the SSLContext with the trust self signed certificate strategy
+		// and allow all hosts verifier.
+		SSLConnectionSocketFactory connectionFactory = new SSLConnectionSocketFactory(sslContext, allowAllHosts);
+		
 		this.client = HttpClientBuilder.create().setSSLSocketFactory(connectionFactory).build();
 	}
 	
@@ -209,13 +207,13 @@ public class OpenmrsIDService {
 		return uniqueIdRepository.markAsUsed(ids);
 	}
 	
-	public List<String> getOpenMRSIdentifiers(String source, String numberToGenerate, String userName, String password)
-	    throws JSONException, KeyManagementException, NoSuchAlgorithmException, KeyStoreException {
-		 
+	public List<String> getOpenMRSIdentifiers(String source, String numberToGenerate) throws JSONException,
+	    KeyManagementException, NoSuchAlgorithmException, KeyStoreException {
+		
 		List<String> ids = new ArrayList<>();
 		String openMRSUrl = this.openmrsUrl + OPENMRS_IDGEN_URL;
-		openMRSUrl += "?source=" + this.openmrsSourceId + "&numberToGenerate=" + numberToGenerate;
-		openMRSUrl += "&username=" + userName + "&password=" + password;		
+		openMRSUrl += "?source=" + this.openmrsSourceId + "&numberToGenerate=" + 250;
+		openMRSUrl += "&username=" + openmrsUserName + "&password=" + openmrsPassword;
 		try (CloseableHttpClient httpclient = createAcceptSelfSignedCertificateClient()) {
 			HttpGet get = new HttpGet(openMRSUrl);
 			HttpResponse response = httpclient.execute(get);
@@ -229,7 +227,7 @@ public class OpenmrsIDService {
 					ids.add(jsonArray.getString(i));
 				}
 			}
-			
+			System.out.println("IDss" + ids.toString());
 			return ids;
 			
 		}
@@ -240,22 +238,14 @@ public class OpenmrsIDService {
 		
 	}
 	
-	
-	private static CloseableHttpClient createAcceptSelfSignedCertificateClient()
-            throws KeyManagementException, NoSuchAlgorithmException, KeyStoreException {
-        
-        SSLContext sslContext = SSLContextBuilder
-                .create()
-                .loadTrustMaterial(new TrustSelfSignedStrategy())
-                .build();
-        
-        HostnameVerifier allowAllHosts = new NoopHostnameVerifier();
-        SSLConnectionSocketFactory connectionFactory = new SSLConnectionSocketFactory(sslContext, allowAllHosts);
-        
-        
-        return HttpClients
-                .custom()
-                .setSSLSocketFactory(connectionFactory)
-                .build();
-    }
+	private static CloseableHttpClient createAcceptSelfSignedCertificateClient() throws KeyManagementException,
+	    NoSuchAlgorithmException, KeyStoreException {
+		
+		SSLContext sslContext = SSLContextBuilder.create().loadTrustMaterial(new TrustSelfSignedStrategy()).build();
+		
+		HostnameVerifier allowAllHosts = new NoopHostnameVerifier();
+		SSLConnectionSocketFactory connectionFactory = new SSLConnectionSocketFactory(sslContext, allowAllHosts);
+		
+		return HttpClients.custom().setSSLSocketFactory(connectionFactory).build();
+	}
 }
