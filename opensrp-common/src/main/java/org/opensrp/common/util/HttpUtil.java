@@ -155,7 +155,7 @@ public class HttpUtil {
 			url = url.substring(0, url.lastIndexOf("/"));
 		}
 		url = (url + (StringUtils.isBlank(payload) ? "" : ("?" + payload))).replaceAll(" ", "%20");
-		System.out.println("Url::::" + url);
+		
 		URI urlo = new URI(url);
 		
 		HttpRequestBase requestBase = null;

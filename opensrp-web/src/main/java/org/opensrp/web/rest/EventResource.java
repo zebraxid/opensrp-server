@@ -257,13 +257,11 @@ public class EventResource extends RestResource<Event> {
 				if (limit == null || limit.intValue() == 0) {
 					limit = 25;
 				}
-				String getProviderName = "";
-				//List<Event> eventList = new ArrayList<Event>();
+				
 				List<Event> events = new ArrayList<Event>();
 				List<String> clientIds = new ArrayList<String>();
 				List<Client> clients = new ArrayList<Client>();
-				//List<Client> clientList = new ArrayList<Client>();
-				List<String> excludeEvents = new ArrayList<String>();
+				
 				long startTime = System.currentTimeMillis();
 				EventSearchBean eventSearchBean = new EventSearchBean();
 				eventSearchBean.setTeam(team);
@@ -273,7 +271,6 @@ public class EventResource extends RestResource<Event> {
 				eventSearchBean.setBaseEntityId(baseEntityId);
 				eventSearchBean.setServerVersion(lastSyncedServerVersion);
 				
-				//eventList = eventService.findEvents(eventSearchBean, BaseEntity.SERVER_VERSIOIN, "asc", limit);
 				ClientSearchBean searchBean = new ClientSearchBean();
 				searchBean.setServerVersion(lastSyncedServerVersion);
 				AddressSearchBean addressSearchBean = new AddressSearchBean();
@@ -282,31 +279,18 @@ public class EventResource extends RestResource<Event> {
 				} else if (userType.equalsIgnoreCase(HA)) {
 					addressSearchBean.setAddress3(address);
 				}
-				//clientList = clientService.findByCriteria(searchBean, addressSearchBean);
-				/*for (Client client : clientList) {
-					clientIds.add(client.getBaseEntityId());
-				}*/
 				
 				events = eventService.selectBySearchBean(addressSearchBean, lastSyncedServerVersion, providerId, 0);
-				//System.err.println("Before Clients:"+clientList.toString());
+				
 				List<String> ids = new ArrayList<String>();
 				
 				String field = "baseEntityId";
-				//eventList = eventService.findByFieldValue(field, ids, lastSyncedServerVersion);
+				
 				logger.info("fetching events took: " + (System.currentTimeMillis() - startTime));
 				logger.info("Initial Size:" + events.size());
 				if (!events.isEmpty()) {
 					for (Event event : events) {
-						/*getProviderName = event.getProviderId();
-						logger.info("getProviderName:" + getProviderName + ": request provider name" + requestProviderName);
-						if (getProviderName.isEmpty()) {
-							events.add(event);
-						} else if (!getProviderName.equalsIgnoreCase(requestProviderName)) {
-							
-							excludeEvents.add(event.getBaseEntityId());
-						} else {
-							events.add(event);
-						}*/
+						
 						if (!clientIds.contains(event.getBaseEntityId())) {
 							clientIds.add(event.getBaseEntityId());
 						}
@@ -319,14 +303,6 @@ public class EventResource extends RestResource<Event> {
 				logger.info("ids size" + clientIds.size() + "IDs:" + clientIds.toString());
 				ids.addAll(clientIds);
 				clients = clientService.findByFieldValue(field, ids);
-				/*for (Client client : clientList) {
-					if (!excludeEvents.contains(client.getBaseEntityId())) {
-						clients.add(client);
-						
-					} else {
-						logger.info("exclude client :" + client.getBaseEntityId());
-					}
-				}*/
 				
 				JsonArray eventsArray = (JsonArray) gson.toJsonTree(events, new TypeToken<List<Event>>() {}.getType());
 				

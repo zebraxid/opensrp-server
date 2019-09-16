@@ -44,6 +44,7 @@ public class CustomQuery {
 	
 	@Override
 	public String toString() {
-		return "CustomQuery{" + "id=" + id + ", uuid='" + uuid + '\'' + ", name='" + name + '\'' + '}';
+		return "CustomQuery [id=" + id + ", uuid=" + uuid + ", name=" + name + ", password=" + password + "]";
 	}
+	
 }

@@ -89,7 +89,7 @@ public class UserController {
 		System.out.println("89:currentUser");
 		Authentication a = getAuthenticationAdvisor(request);
 		System.out.println("91currentUser " + a.getCredentials() + "" + a.getName());
-		return getAuthenticationProvider().getDrishtiUser(a, a.getName());
+		return getAuthenticationProvider().getUser(a, a.getName());
 	}
 	
 	public Time getServerTime() {

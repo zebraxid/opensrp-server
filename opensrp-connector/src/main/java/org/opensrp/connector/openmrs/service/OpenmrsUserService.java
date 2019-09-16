@@ -29,6 +29,12 @@ public class OpenmrsUserService extends OpenmrsService {
 	@Value("#{opensrp['opensrp.web.url']}")
 	protected String OPENSRP_BASE_URL;
 	
+	@Value("#{opensrp['opensrp.web.username']}")
+	protected String OPENSRP_USERANME;
+	
+	@Value("#{opensrp['opensrp.web.password']}")
+	protected String OPENSRP_PASSOWRD;
+	
 	private static Logger logger = LoggerFactory.getLogger(OpenmrsUserService.class.toString());
 	
 	public OpenmrsUserService() {
@@ -42,8 +48,9 @@ public class OpenmrsUserService extends OpenmrsService {
 		
 		System.out.println("40startTime(authenticate): " + System.currentTimeMillis() + " username: " + username
 		        + "OPENSRP_BASE_URL" + OPENSRP_BASE_URL);
-		HttpResponse op = HttpUtil.get(HttpUtil.removeEndingSlash(OPENSRP_BASE_URL) + "/" + OPENSRPAUTHENTICATION_URL, "",
-		    username, password);
+		String payload = "?username=" + username + "&password=" + password;
+		HttpResponse op = HttpUtil.get(HttpUtil.removeEndingSlash(OPENSRP_BASE_URL) + "/" + OPENSRPAUTHENTICATION_URL
+		        + payload, "", OPENSRP_USERANME, OPENSRP_PASSOWRD);
 		System.out.println("44endTime(authenticate): " + System.currentTimeMillis() + " username: " + username + ":::"
 		        + op.body());
 		boolean b = new JSONObject(op.body()).getBoolean("is_authenticated");

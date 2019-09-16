@@ -26,6 +26,7 @@ import org.springframework.security.authentication.encoding.PasswordEncoder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Component;
 
@@ -56,6 +57,9 @@ public class DrishtiAuthenticationProvider implements AuthenticationProvider {
 	
 	@Resource(name = "redisTemplate")
 	private HashOperations<String, String, Authentication> hashOps;
+	
+	@Autowired
+	private BCryptPasswordEncoder bcryptPasswordEncoder;
 	
 	@Autowired
 	private RedisTemplate<String, String> redisTemplate;
@@ -89,7 +93,6 @@ public class DrishtiAuthenticationProvider implements AuthenticationProvider {
 				hashOps.delete(key, AUTH_HASH_KEY);
 			
 		}
-		//CustomQuery userInfo = eventService.getUser(authentication.getName());
 		
 		System.out.println("94startTime:" + System.currentTimeMillis() + " username: " + authentication.getName()
 		        + "hashKey:" + hashOps.hasKey(key, AUTH_HASH_KEY));
@@ -137,21 +140,29 @@ public class DrishtiAuthenticationProvider implements AuthenticationProvider {
 		});
 	}
 	
+	public Boolean getAuthentication(Authentication authentication) {
+		CustomQuery userInfo = eventService.getUser(authentication.getName());
+		Boolean match = false;
+		if (userInfo != null) {
+			match = bcryptPasswordEncoder.matches(authentication.getCredentials().toString(), userInfo.getPassword());
+		}
+		System.out.println(userInfo);
+		
+		System.out.println("Match:" + match);
+		return match;
+	}
+	
 	public User getDrishtiUser(Authentication authentication, String username) {
 		User user = null;
 		
 		System.out.println("134startTime(getDrishtiUser): " + System.currentTimeMillis() + " username: " + username);
 		try {
 			
-			if (openmrsUserService.authenticate(authentication.getName(), authentication.getCredentials().toString())) {
-				/*boolean response = openmrsUserService.deleteSession(authentication.getName(),
-				    authentication.getCredentials().toString());*/
+			if (getAuthentication(authentication)) {
+				
 				user = openmrsUserService.getUser(username);
 				System.out.println("user:" + user);
-				/*if (!response) {
-					logger.error(format("{0}. Exception: {1}", INTERNAL_ERROR, "Unable to clear session"));
-					
-				}*/
+				
 			}
 			
 		}
@@ -163,6 +174,27 @@ public class DrishtiAuthenticationProvider implements AuthenticationProvider {
 			throw new BadCredentialsException(INTERNAL_ERROR);
 		}
 		System.out.println("167endTime(getDrishtiUser): " + System.currentTimeMillis() + " username: " + username);
+		return user;
+	}
+	
+	public User getUser(Authentication authentication, String username) {
+		User user = null;
+		
+		System.out.println("172startTime(getDrishtiUser): " + System.currentTimeMillis() + " username: " + username);
+		try {
+			
+			user = openmrsUserService.getUser(username);
+			System.out.println("user:" + user);
+			
+		}
+		catch (Exception e) {
+			System.out.println("180endTime(getDrishtiUser) Exception: " + System.currentTimeMillis() + " username: "
+			        + username);
+			logger.error(format("{0}. Exception: {1}", INTERNAL_ERROR, e));
+			e.printStackTrace();
+			throw new BadCredentialsException(INTERNAL_ERROR);
+		}
+		System.out.println("186endTime(getDrishtiUser): " + System.currentTimeMillis() + " username: " + username);
 		return user;
 	}
 }

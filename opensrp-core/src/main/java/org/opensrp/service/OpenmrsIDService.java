@@ -227,7 +227,6 @@ public class OpenmrsIDService {
 					ids.add(jsonArray.getString(i));
 				}
 			}
-			System.out.println("IDss" + ids.toString());
 			return ids;
 			
 		}
