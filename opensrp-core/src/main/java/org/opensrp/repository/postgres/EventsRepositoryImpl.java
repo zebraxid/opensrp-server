@@ -83,6 +83,7 @@ public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements E
 		}
 		
 		Long id = retrievePrimaryKey(entity);
+		System.out.println("ID:>>>>>>>>>>>>" + id);
 		if (id == null) { // Event not added
 			return;
 		}

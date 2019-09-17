@@ -91,12 +91,11 @@ public class ValidateResource {
 			if (syncData.has("events")) {
 				List<String> eventIds = gson.fromJson(syncData.getString("events"),
 				    new TypeToken<ArrayList<String>>() {}.getType());
-				System.out.println("eventIds:" + eventIds);
 				for (String eventId : eventIds) {
 					try {
-						System.out.println("eventId:" + eventId);
+						
 						Event event = eventService.findByFormSubmissionId(eventId);
-						System.out.println("event>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + event);
+						
 						if (event == null) {
 							missingEventIds.add(eventId);
 						}

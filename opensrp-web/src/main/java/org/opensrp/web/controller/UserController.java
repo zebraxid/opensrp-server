@@ -86,9 +86,9 @@ public class UserController {
 	}
 	
 	public User currentUser(HttpServletRequest request) {
-		System.out.println("89:currentUser");
+		
 		Authentication a = getAuthenticationAdvisor(request);
-		System.out.println("91currentUser " + a.getCredentials() + "" + a.getName());
+		
 		return getAuthenticationProvider().getUser(a, a.getName());
 	}
 	
@@ -108,7 +108,7 @@ public class UserController {
 	@ResponseBody
 	public ResponseEntity<String> authenticate(HttpServletRequest request) throws JSONException {
 		User u = currentUser(request);
-		System.out.println("109AUTHENTICATE:-> " + request.getRequestURL() + " User:-> " + u.getUsername());
+		
 		String lid = "";
 		JSONObject tm = null;
 		try {
@@ -138,10 +138,8 @@ public class UserController {
 		Map<String, Object> map = new HashMap<>();
 		map.put("user", u);
 		try {
-			System.out.println("USERNAME---------------->");
-			System.out.println(u.getUsername());
+			
 			CustomQuery customQuery = clientService.findTeamInfo(u.getUsername());
-			System.out.println(customQuery);
 			
 			tm.getJSONObject("team").put("teamName", customQuery.getName());
 			tm.getJSONObject("team").put("display", customQuery.getName());

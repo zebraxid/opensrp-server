@@ -177,27 +177,17 @@ public class EventService {
 	}
 	
 	public synchronized Event addorUpdateEvent(Event event) {
-		Event existingEvent = findById(event.getId());
-		List<Event> events = findByBaseEntityAndEventTypeContaining(event.getBaseEntityId(), "Registration");
-		// does not reqiured
-		/*if (events.size() != 0) {
-			for (Event event2 : events) {
-				deleteByPrimaryKey(event2);
-			}
-		}*/
-		if (events.size() != 0) {
+		Event getevent = findByFormSubmissionId(event.getFormSubmissionId());
+		if (getevent != null) {
 			event.setDateEdited(DateTime.now());
 			event.setServerVersion(System.currentTimeMillis());
-			event.setRevision(events.get(0).getRevision());
+			event.setId(getevent.getId());
 			allEvents.update(event);
-			
 		} else {
 			event.setServerVersion(System.currentTimeMillis());
 			event.setDateCreated(DateTime.now());
 			allEvents.add(event);
-			
 		}
-		
 		return event;
 	}
 	

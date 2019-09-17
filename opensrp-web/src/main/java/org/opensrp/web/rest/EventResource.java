@@ -425,8 +425,10 @@ public class EventResource extends RestResource<Event> {
 		
 		System.out.println("ADD REQUEST:-> " + request.getRequestURL());
 		System.out.println("line number 440@EventResource username:" + request.getRemoteUser());
+		
 		try {
 			JSONObject syncData = new JSONObject(data);
+			System.out.println("syncData::::::::>>>>>>>>>>>>>" + syncData);
 			if (!syncData.has("clients") && !syncData.has("events")) {
 				return new ResponseEntity<>(BAD_REQUEST);
 			}
@@ -448,18 +450,18 @@ public class EventResource extends RestResource<Event> {
 						} else {
 							getProvider = "";
 						}
-						if (getProvider.isEmpty() || (dataProvider.equalsIgnoreCase(getProvider) && !getProvider.isEmpty())) {
-							event = eventService.processOutOfArea(event);
-							event.withIsSendToOpenMRS("yes");
-							eventService.addorUpdateEvent(event);
-							Client client = clientService.find(event.getBaseEntityId());
-							if (client != null) {
-								client.setServerVersion(System.currentTimeMillis());
-								clientService.addOrUpdate(client);
-							}
-						} else {
-							logger.info("already updated by another");
+						//if (getProvider.isEmpty() || (dataProvider.equalsIgnoreCase(getProvider) && !getProvider.isEmpty())) {
+						event = eventService.processOutOfArea(event);
+						event.withIsSendToOpenMRS("yes");
+						eventService.addorUpdateEvent(event);
+						Client client = clientService.find(event.getBaseEntityId());
+						if (client != null) {
+							client.setServerVersion(System.currentTimeMillis());
+							clientService.addOrUpdate(client);
 						}
+						/*} else {
+							logger.info("already updated by another");
+						}*/
 						
 					}
 					catch (Exception e) {

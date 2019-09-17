@@ -13,6 +13,9 @@
 		<id column="id" jdbcType="BIGINT" property="id" />
 		<result column="name" jdbcType="VARCHAR" property="name"/>
 		<result column="password" jdbcType="VARCHAR" property="password"/>
+		<result column="person_uuid" jdbcType="VARCHAR" property="personUUID"/>
+		<result column="uuid" jdbcType="VARCHAR" property="userUUID"/>
+		<result column="full_name" jdbcType="VARCHAR" property="fullName"/>
 	</resultMap>
 
 	<resultMap id="healthIdMap" type="org.opensrp.domain.postgres.HealthId">
@@ -44,7 +47,7 @@
 
 	<select id="getUser" parameterType="java.lang.String"
 			resultMap="customQueryMap">
-		select id as id, username as name,password from core.users
+		select id as id, username as name,password,person_uuid, uuid,concat(first_name, ' ',last_name) as full_name  from core.users
 		WHERE username = #{userName,jdbcType=VARCHAR}
 	</select>
 

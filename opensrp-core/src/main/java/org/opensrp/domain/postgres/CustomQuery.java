@@ -10,6 +10,36 @@ public class CustomQuery {
 	
 	private String password;
 	
+	private String personUUID;
+	
+	private String userUUID;
+	
+	private String fullName;
+	
+	public String getPersonUUID() {
+		return personUUID;
+	}
+	
+	public void setPersonUUID(String personUUID) {
+		this.personUUID = personUUID;
+	}
+	
+	public String getUserUUID() {
+		return userUUID;
+	}
+	
+	public void setUserUUID(String userUUID) {
+		this.userUUID = userUUID;
+	}
+	
+	public String getFullName() {
+		return fullName;
+	}
+	
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
+	}
+	
 	public int getId() {
 		return id;
 	}

@@ -8,6 +8,7 @@ import java.util.concurrent.TimeUnit;
 
 import javax.annotation.Resource;
 
+import org.json.JSONArray;
 import org.opensrp.api.domain.User;
 import org.opensrp.connector.openmrs.service.OpenmrsUserService;
 import org.opensrp.domain.postgres.CustomQuery;
@@ -83,7 +84,6 @@ public class DrishtiAuthenticationProvider implements AuthenticationProvider {
 			throw new BadCredentialsException(USER_NOT_FOUND);
 		}
 		
-		System.out.println("82startTime:" + System.currentTimeMillis() + " username: " + authentication.getName());
 		if (hashOps.hasKey(key, AUTH_HASH_KEY)) {
 			Authentication auth = hashOps.get(key, AUTH_HASH_KEY);
 			//if credentials is same as cached returned cached else eject cached authentication
@@ -94,32 +94,13 @@ public class DrishtiAuthenticationProvider implements AuthenticationProvider {
 			
 		}
 		
-		System.out.println("94startTime:" + System.currentTimeMillis() + " username: " + authentication.getName()
-		        + "hashKey:" + hashOps.hasKey(key, AUTH_HASH_KEY));
 		User user = getDrishtiUser(authentication, authentication.getName());
 		
-		// get user after authentication
-		/*User user = new User("");
-		user.setPassword(authentication.getCredentials().toString());
-		user.setUsername(authentication.getName());
-		List<String> roles = new ArrayList<String>();
-		roles.add("Provider");
-		user.setRoles(roles);
-		if (user == null) {
-			throw new BadCredentialsException(USER_NOT_FOUND);
-		}*/
-		
-		/*if (user.getVoided() != null && user.getVoided()) {
-			throw new BadCredentialsException(USER_NOT_ACTIVATED);
-		}*/
-		/*List<String> roles = new ArrayList<String>();
-		roles.add("Provider");
-		user.setRoles(roles);*/
 		Authentication auth = new UsernamePasswordAuthenticationToken(authentication.getName(),
 		        authentication.getCredentials(), getRolesAsAuthorities(user));
 		hashOps.put(key, AUTH_HASH_KEY, auth);
 		redisTemplate.expire(key, cacheTTL, TimeUnit.SECONDS);
-		System.out.println("119endTime: " + System.currentTimeMillis() + " username: " + authentication.getName());
+		
 		return auth;
 		
 	}
@@ -146,22 +127,25 @@ public class DrishtiAuthenticationProvider implements AuthenticationProvider {
 		if (userInfo != null) {
 			match = bcryptPasswordEncoder.matches(authentication.getCredentials().toString(), userInfo.getPassword());
 		}
-		System.out.println(userInfo);
 		
-		System.out.println("Match:" + match);
 		return match;
 	}
 	
 	public User getDrishtiUser(Authentication authentication, String username) {
 		User user = null;
 		
-		System.out.println("134startTime(getDrishtiUser): " + System.currentTimeMillis() + " username: " + username);
 		try {
 			
 			if (getAuthentication(authentication)) {
+				CustomQuery userInfo = eventService.getUser(authentication.getName());
 				
-				user = openmrsUserService.getUser(username);
-				System.out.println("user:" + user);
+				//user = openmrsUserService.getUser(username);
+				user = new User(userInfo.getUserUUID(), userInfo.getName(), null, userInfo.getFullName(), null,
+				        userInfo.getFullName(), null, null);
+				
+				user.addAttribute("_PERSON_UUID", userInfo.getPersonUUID());
+				user.addRole("Provider");
+				user.addPermission(null);
 				
 			}
 			
@@ -173,17 +157,25 @@ public class DrishtiAuthenticationProvider implements AuthenticationProvider {
 			e.printStackTrace();
 			throw new BadCredentialsException(INTERNAL_ERROR);
 		}
-		System.out.println("167endTime(getDrishtiUser): " + System.currentTimeMillis() + " username: " + username);
+		
 		return user;
 	}
 	
 	public User getUser(Authentication authentication, String username) {
 		User user = null;
 		
-		System.out.println("172startTime(getDrishtiUser): " + System.currentTimeMillis() + " username: " + username);
 		try {
 			
-			user = openmrsUserService.getUser(username);
+			CustomQuery userInfo = eventService.getUser(authentication.getName());
+			
+			//user = openmrsUserService.getUser(username);
+			user = new User(userInfo.getUserUUID(), userInfo.getName(), null, userInfo.getFullName(), null,
+			        userInfo.getFullName(), null, null);
+			
+			user.addAttribute("_PERSON_UUID", userInfo.getPersonUUID());
+			user.addRole("Provider");
+			user.addPermission(null);
+			
 			System.out.println("user:" + user);
 			
 		}
