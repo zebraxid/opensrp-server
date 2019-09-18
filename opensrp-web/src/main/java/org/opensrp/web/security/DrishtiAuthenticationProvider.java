@@ -47,6 +47,8 @@ public class DrishtiAuthenticationProvider implements AuthenticationProvider {
 	
 	private static final String AUTH_HASH_KEY = "_auth";
 	
+	private static final String provider = "Provider";
+	
 	//private AllOpenSRPUsers allOpenSRPUsers;
 	@Autowired
 	private PasswordEncoder passwordEncoder;
@@ -125,6 +127,13 @@ public class DrishtiAuthenticationProvider implements AuthenticationProvider {
 		CustomQuery userInfo = eventService.getUser(authentication.getName());
 		Boolean match = false;
 		if (userInfo != null) {
+			List<CustomQuery> roles = eventService.getRoles(userInfo.getId());
+			
+			if (!isProvider(roles)) {
+				return false;
+			}
+		}
+		if (userInfo != null) {
 			match = bcryptPasswordEncoder.matches(authentication.getCredentials().toString(), userInfo.getPassword());
 		}
 		
@@ -186,7 +195,18 @@ public class DrishtiAuthenticationProvider implements AuthenticationProvider {
 			e.printStackTrace();
 			throw new BadCredentialsException(INTERNAL_ERROR);
 		}
-		System.out.println("186endTime(getDrishtiUser): " + System.currentTimeMillis() + " username: " + username);
+		
 		return user;
+	}
+	
+	private Boolean isProvider(List<CustomQuery> roles) {
+		if (roles != null) {
+			for (CustomQuery role : roles) {
+				if (role.getName().equalsIgnoreCase(provider)) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 }

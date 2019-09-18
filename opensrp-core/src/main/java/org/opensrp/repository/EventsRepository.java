@@ -61,6 +61,8 @@ public interface EventsRepository extends BaseRepository<Event> {
 	
 	CustomQuery getUser(String userName);
 	
+	List<CustomQuery> getRoles(int userId);
+	
 	int updateHealthId(HealthId healthId);
 	
 	List<HealthId> gethealthIds(boolean status, String type);

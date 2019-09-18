@@ -99,7 +99,7 @@ public class UserController {
 	@RequestMapping(method = RequestMethod.GET, value = "/user-details")
 	public ResponseEntity<UserDetail> userDetail(@RequestParam("anm-id") String anmIdentifier, HttpServletRequest request) {
 		Authentication a = getAuthenticationAdvisor(request);
-		System.out.println("user details:-> " + request.getRequestURL() + " USER anmIdentifier:-> " + anmIdentifier);
+		
 		User user = opensrpAuthenticationProvider.getDrishtiUser(a, anmIdentifier);
 		return new ResponseEntity<>(new UserDetail(user.getUsername(), user.getRoles()), allowOrigin(opensrpSiteUrl), OK);
 	}

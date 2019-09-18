@@ -559,4 +559,10 @@ public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements E
 		    DEFAULT_FETCH_SIZE));
 	}
 	
+	@Override
+	public List<CustomQuery> getRoles(int userId) {
+		// TODO Auto-generated method stub
+		return eventMapper.getRoles(userId);
+	}
+	
 }

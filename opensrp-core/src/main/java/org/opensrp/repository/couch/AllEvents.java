@@ -304,4 +304,10 @@ public class AllEvents extends MotechBaseRepository<Event> implements EventsRepo
 		return null;
 	}
 	
+	@Override
+	public List<CustomQuery> getRoles(int userId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 }

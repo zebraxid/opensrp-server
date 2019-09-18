@@ -363,4 +363,13 @@ public class EventService {
 			return null;
 		}
 	}
+	
+	public List<CustomQuery> getRoles(int userId) {
+		List<CustomQuery> roles = allEvents.getRoles(userId);
+		if (roles.size() != 0) {
+			return roles;
+		} else {
+			return null;
+		}
+	}
 }

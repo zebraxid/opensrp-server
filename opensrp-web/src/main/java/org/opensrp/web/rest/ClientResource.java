@@ -81,7 +81,7 @@ public class ClientResource extends RestResource<Client> {
 	
 	@Override
 	public List<Client> search(HttpServletRequest request) throws ParseException {//TODO search should not call different url but only add params
-		System.out.println("line number 84@ClientResource username:"+request.getRemoteUser());
+	
 		ClientSearchBean searchBean = new ClientSearchBean();
 		searchBean.setNameLike(getStringFilter("name", request));
 		searchBean.setGender(getStringFilter(GENDER, request));
@@ -126,7 +126,7 @@ public class ClientResource extends RestResource<Client> {
 	public ResponseEntity<String> dataApprove(@RequestBody String requestData, HttpServletRequest request)
 	    throws JSONException {
 		JSONObject jsonObj = new JSONObject();
-		System.out.println("line number 129@ClientResource username:"+request.getRemoteUser());
+		
 		try {
 			boolean isApproved = true;
 			Gson jsonObject = new Gson();
@@ -157,17 +157,14 @@ public class ClientResource extends RestResource<Client> {
 		return new ResponseEntity<>(jsonObj.toString(), HttpStatus.OK);
 		
 	}
-
+	
 	@RequestMapping(headers = { "Accept=application/json;charset=UTF-8" }, method = POST, value = "/update-union")
 	public ResponseEntity<String> updateClientByUpazila(@RequestParam("changeAbleField") String changeAbleField,
-														@RequestParam("currentName") String currentName,
-														@RequestParam("rightName") String rightName) throws JSONException {
-
+	                                                    @RequestParam("currentName") String currentName,
+	                                                    @RequestParam("rightName") String rightName) throws JSONException {
+		
 		List<Client> clients = clientService.findAllClientByUpazila(currentName);
-
-		System.out.println("TOTAL SIZE:->");
-		System.out.println(clients.size());
-
+		
 		try {
 			for (Client client : clients) {
 				Map<String, String> addressFields = client.getAddresses().get(0).getAddressFields();
@@ -175,10 +172,11 @@ public class ClientResource extends RestResource<Client> {
 				client.getAddresses().get(0).setAddressFields(addressFields);
 				clientService.updateClient(client);
 			}
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			e.printStackTrace();
 		}
-
+		
 		return new ResponseEntity<>("done", HttpStatus.OK);
 	}
 	

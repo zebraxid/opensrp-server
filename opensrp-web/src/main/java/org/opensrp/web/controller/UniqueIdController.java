@@ -86,7 +86,7 @@ public class UniqueIdController {
 	@ResponseBody
 	public ResponseEntity<String> thisMonthDataSendTODHIS2(HttpServletRequest request, HttpServletResponse response)
 	    throws JSONException {
-		System.out.println("line 89 @UniqueIdController");
+		logger.info("line 89 @UniqueIdController");
 		String message = "";
 		User user = null;
 		try {
@@ -155,7 +155,7 @@ public class UniqueIdController {
 	@ResponseBody
 	protected ResponseEntity<String> get(HttpServletRequest request) throws JSONException, KeyManagementException,
 	    NoSuchAlgorithmException, KeyStoreException {
-		System.out.println("GET HEALTH ID CONTROLLER:-> " + request.getRequestURL());
+		logger.info("GET HEALTH ID CONTROLLER:-> " + request.getRequestURL());
 		String numberToGenerate = getStringFilter("numberToGenerate", request);
 		String source = getStringFilter("source", request);
 		Map<String, Object> map = new HashMap<>();
@@ -169,7 +169,7 @@ public class UniqueIdController {
 	@ResponseBody
 	protected ResponseEntity<String> getHealthId(HttpServletRequest request) throws JSONException, KeyManagementException,
 	    NoSuchAlgorithmException, KeyStoreException {
-		System.out.println("GET HEALTH ID:-> " + request.getRequestURL());
+		logger.info("GET HEALTH ID:-> " + request.getRequestURL());
 		/*System.err.println("getHealthId:"+eventService.getHealthId());*/
 		HttpResponse op = HttpUtil.get(opensrpWebUurl + "/rest/api/v1/health-id/reserved", "", opensrpWebUsername,
 		    opensrpWebPassword);
