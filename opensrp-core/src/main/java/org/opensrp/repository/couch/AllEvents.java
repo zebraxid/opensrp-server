@@ -310,4 +310,11 @@ public class AllEvents extends MotechBaseRepository<Event> implements EventsRepo
 		return null;
 	}
 	
+	@Override
+	public List<Event> selectBySearchBeanDelete(AddressSearchBean addressSearchBean, long serverVersion, String providerId,
+	                                            int limit) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 }

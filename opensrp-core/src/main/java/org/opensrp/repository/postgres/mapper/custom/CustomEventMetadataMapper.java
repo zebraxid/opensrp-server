@@ -26,4 +26,8 @@ public interface CustomEventMetadataMapper extends EventMetadataMapper {
 	List<Event> selectBySearchBean(@Param("addressBean") AddressSearchBean addressSearchBean,
 	                               @Param("serverVersion") long serverVersion, @Param("providerId") String providerId,
 	                               @Param("limit") int limit);
+	
+	List<Event> selectBySearchBeanDelete(@Param("addressBean") AddressSearchBean addressSearchBean,
+	                                     @Param("serverVersion") long serverVersion, @Param("providerId") String providerId,
+	                                     @Param("limit") int limit);
 }

@@ -334,6 +334,8 @@ public class EventResource extends RestResource<Event> {
 		Map<String, Object> response = new HashMap<String, Object>();
 		try {
 			List<CustomQuery> locations = eventService.getLocations(request.getRemoteUser());
+			logger.info("request.getRemoteUser():" + request.getRemoteUser());
+			
 			String location = "";
 			String userType = "";
 			List<String> address = new ArrayList<String>();
@@ -342,7 +344,7 @@ public class EventResource extends RestResource<Event> {
 					address.add(locName.getName());
 				}
 				userType = "Provider";
-				String providerId = getStringFilter(PROVIDER_ID, request);
+				String providerId = request.getRemoteUser();//getStringFilter(PROVIDER_ID, request);
 				String requestProviderName = request.getRemoteUser();
 				String locationId = getStringFilter(LOCATION_ID, request);
 				String baseEntityId = getStringFilter(BASE_ENTITY_ID, request);
@@ -358,12 +360,10 @@ public class EventResource extends RestResource<Event> {
 				if (limit == null || limit.intValue() == 0) {
 					limit = 25;
 				}
-				String getProviderName = "";
-				List<Event> eventList = new ArrayList<Event>();
 				
+				List<Event> events = new ArrayList<Event>();
 				List<String> clientIds = new ArrayList<String>();
-				List<String> clients = new ArrayList<String>();
-				List<Client> clientList = new ArrayList<Client>();
+				List<Client> clients = new ArrayList<Client>();
 				
 				long startTime = System.currentTimeMillis();
 				EventSearchBean eventSearchBean = new EventSearchBean();
@@ -373,39 +373,50 @@ public class EventResource extends RestResource<Event> {
 				eventSearchBean.setLocationId(locationId);
 				eventSearchBean.setBaseEntityId(baseEntityId);
 				eventSearchBean.setServerVersion(lastSyncedServerVersion);
-				eventList = eventService.findEvents(eventSearchBean, BaseEntity.SERVER_VERSIOIN, "asc", limit);
+				
 				ClientSearchBean searchBean = new ClientSearchBean();
 				searchBean.setServerVersion(lastSyncedServerVersion);
+				searchBean.setMiddleName(request.getRemoteUser());
 				AddressSearchBean addressSearchBean = new AddressSearchBean();
 				if (userType.equalsIgnoreCase(provider)) {
 					addressSearchBean.setAddress2(address);
 				} else if (userType.equalsIgnoreCase(HA)) {
 					addressSearchBean.setAddress3(address);
 				}
-				clientList = clientService.findByCriteria(searchBean, addressSearchBean);
-				for (Client client : clientList) {
-					clientIds.add(client.getBaseEntityId());
-				}
+				
+				events = eventService.selectBySearchBeanDelete(addressSearchBean, lastSyncedServerVersion, providerId, 0);
 				
 				List<String> ids = new ArrayList<String>();
-				ids.addAll(clientIds);
+				
 				String field = "baseEntityId";
-				eventList = eventService.findByFieldValue(field, ids, lastSyncedServerVersion);
+				
 				logger.info("fetching events took: " + (System.currentTimeMillis() - startTime));
-				logger.info("Initial Size:" + eventList.size());
-				if (!eventList.isEmpty()) {
-					for (Event event : eventList) {
-						getProviderName = event.getProviderId();
-						logger.info("getProviderName:" + getProviderName + ": request provider name" + requestProviderName);
-						if (getProviderName.isEmpty()) {} else if (!getProviderName.equalsIgnoreCase(requestProviderName)) {
-							clients.add(event.getBaseEntityId());
-						} else {}
+				logger.info("Initial Size:" + events.size());
+				if (!events.isEmpty()) {
+					for (Event event : events) {
+						
+						if (!clientIds.contains(event.getBaseEntityId())) {
+							clientIds.add(event.getBaseEntityId());
+						}
+						
 					}
+					
+					logger.info("fetching clients took: " + (System.currentTimeMillis() - startTime));
 				}
-				return new ResponseEntity<>(gson.toJson(clients), HttpStatus.OK);
+				
+				logger.info("ids size" + clientIds.size() + "IDs:" + clientIds.toString());
+				ids.addAll(clientIds);
+				/*clients = clientService.findByFieldValue(field, ids);
+				List<String> clientBaseEntityId = new ArrayList<String>();
+				for (Client client : clients) {
+					clientBaseEntityId.add(client.getBaseEntityId());
+				}*/
+				
+				return new ResponseEntity<>(gson.toJson(clientIds), HttpStatus.OK);
 				
 			} else {
 				logger.info("No location found..");
+				response.put("msg", "Error occurred");
 				return new ResponseEntity<>(new Gson().toJson(response), HttpStatus.INTERNAL_SERVER_ERROR);
 			}
 			
@@ -448,18 +459,18 @@ public class EventResource extends RestResource<Event> {
 						} else {
 							getProvider = "";
 						}
-						//if (getProvider.isEmpty() || (dataProvider.equalsIgnoreCase(getProvider) && !getProvider.isEmpty())) {
-						event = eventService.processOutOfArea(event);
-						event.withIsSendToOpenMRS("yes");
-						eventService.addorUpdateEvent(event);
-						Client client = clientService.find(event.getBaseEntityId());
-						if (client != null) {
-							client.setServerVersion(System.currentTimeMillis());
-							clientService.addOrUpdate(client);
-						}
-						/*} else {
+						if (getProvider.isEmpty() || (dataProvider.equalsIgnoreCase(getProvider) && !getProvider.isEmpty())) {
+							event = eventService.processOutOfArea(event);
+							event.withIsSendToOpenMRS("yes");
+							eventService.addorUpdateEvent(event);
+							/*Client client = clientService.find(event.getBaseEntityId());
+							if (client != null) {
+								client.setServerVersion(System.currentTimeMillis());
+								clientService.addOrUpdate(client);
+							}*/
+						} else {
 							logger.info("already updated by another");
-						}*/
+						}
 						
 					}
 					catch (Exception e) {

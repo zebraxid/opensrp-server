@@ -143,7 +143,7 @@ public class UserController {
 			
 			tm.getJSONObject("team").put("teamName", customQuery.getName());
 			tm.getJSONObject("team").put("display", customQuery.getName());
-			tm.getJSONObject("team").put("uuid", customQuery.getUuid());
+			//tm.getJSONObject("team").put("uuid", customQuery.getUuid());
 			
 			Map<String, Object> tmap = new Gson().fromJson(tm.toString(), new TypeToken<HashMap<String, Object>>() {
 				

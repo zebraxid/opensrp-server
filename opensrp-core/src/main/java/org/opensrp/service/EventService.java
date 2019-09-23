@@ -355,6 +355,11 @@ public class EventService {
 		return allEvents.selectBySearchBean(addressSearchBean, serverVersion, providerId, limit);
 	}
 	
+	public List<Event> selectBySearchBeanDelete(AddressSearchBean addressSearchBean, long serverVersion, String providerId,
+	                                            int limit) {
+		return allEvents.selectBySearchBeanDelete(addressSearchBean, serverVersion, providerId, limit);
+	}
+	
 	public CustomQuery getUser(String username) {
 		CustomQuery user = allEvents.getUser(username);
 		if (user != null) {
