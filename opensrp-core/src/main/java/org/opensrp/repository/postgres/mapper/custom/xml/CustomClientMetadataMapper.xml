@@ -92,37 +92,7 @@
 	
 	
 	<select id="selectBySearchBean"
-		resultMap="org.opensrp.repository.postgres.mapper.ClientMapper.BaseResultMap">
-		
-		with t as(
-			SELECT core.event.id,core.event.json,base_entity_id,provider_id,server_version
-			FROM core.event , core.event_metadata where core.event.id=core.event_metadata.event_id and
-			
-			base_entity_id=any(
-			select base_entity_id from core.client_metadata
-			where
-			
-			<if test="addressBean.address2 != null">
-				 address2 IN				
-				<foreach close=")" collection="addressBean.address2" item="listItem" open="(" separator=",">
-						#{listItem}
-				</foreach>	
-			</if>
-			 
-			)
-			), t1 as(select id,json,base_entity_id,
-			first_value(provider_id) over (partition by base_entity_id ORDER by server_version desc) last_provider_id, provider_id,
-			server_version from t 
-			where server_version::BIGINT >=  #{clientBean.serverVersion,jdbcType=BIGINT}
-			order by base_entity_id
-			)
-			select id,json from t1
-			where 
-			
-			last_provider_id <>  #{clientBean.middleName}
-			order by server_version 
-			LIMIT #{limit} 
-			
+		resultMap="org.opensrp.repository.postgres.mapper.ClientMapper.BaseResultMap">		
 		
 		
 		

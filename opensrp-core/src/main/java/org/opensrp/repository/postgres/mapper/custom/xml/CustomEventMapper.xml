@@ -47,7 +47,7 @@
 
 	<select id="getUser" parameterType="java.lang.String"
 			resultMap="customQueryMap">
-		select id as id, username as name,password,person_uuid, uuid,concat(first_name, ' ',last_name) as full_name  from core.users
+		select id as id, username as name,password,person_uuid, uuid,concat(trim(first_name),' ',trim(last_name)) as full_name  from core.users
 		WHERE username = #{userName,jdbcType=VARCHAR}
 	</select>
 	
