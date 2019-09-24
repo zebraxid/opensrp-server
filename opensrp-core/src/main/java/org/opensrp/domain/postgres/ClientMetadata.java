@@ -135,6 +135,8 @@ public class ClientMetadata {
 
 	private String village;
 
+	private Long villageId;
+
 	public String getAddress2() {
 		return address2;
 	}
@@ -492,5 +494,26 @@ public class ClientMetadata {
 
 	public void setVillage(String village) {
 		this.village = village;
+	}
+
+	public Long getVillageId() {
+		return villageId;
+	}
+
+	public void setVillageId(Long villageId) {
+		this.villageId = villageId;
+	}
+
+	@Override
+	public String toString() {
+		return "ClientMetadata{" + "id=" + id + ", clientId=" + clientId + ", documentId='" + documentId + '\''
+				+ ", baseEntityId='" + baseEntityId + '\'' + ", relationalId='" + relationalId + '\'' + ", serverVersion="
+				+ serverVersion + ", openmrsUuid='" + openmrsUuid + '\'' + ", uniqueId='" + uniqueId + '\'' + ", firstName='"
+				+ firstName + '\'' + ", middleName='" + middleName + '\'' + ", lastName='" + lastName + '\'' + ", birthDate="
+				+ birthDate + ", dateDeleted=" + dateDeleted + ", address2='" + address2 + '\'' + ", address1='" + address1
+				+ '\'' + ", address3='" + address3 + '\'' + ", division='" + division + '\'' + ", district='" + district
+				+ '\'' + ", cityCorporation='" + cityCorporation + '\'' + ", upazila='" + upazila + '\'' + ", cityUnion='"
+				+ cityUnion + '\'' + ", ward='" + ward + '\'' + ", village='" + village + '\'' + ", villageId=" + villageId
+				+ '}';
 	}
 }

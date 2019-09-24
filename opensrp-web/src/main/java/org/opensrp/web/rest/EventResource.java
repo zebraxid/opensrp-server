@@ -80,6 +80,12 @@ public class EventResource extends RestResource<Event> {
 	
 	@Value("#{opensrp['opensrp.HA']}")
 	private String HA;
+
+	@Value("#{opensrp['opensrp.role.ss']}")
+	private Integer ss;
+
+	@Value("#{opensrp['opensrp.location.tag.village']}")
+	private Integer village;
 	
 	Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
 	        .registerTypeAdapter(DateTime.class, new DateTimeTypeConverter()).create();
@@ -226,20 +232,23 @@ public class EventResource extends RestResource<Event> {
 	@RequestMapping(headers = { "Accept=application/json;charset=UTF-8" }, value = "/sync", method = RequestMethod.GET)
 	@ResponseBody
 	protected ResponseEntity<String> sync(HttpServletRequest request) {
+
 		Map<String, Object> response = new HashMap<String, Object>();
 		try {
-			List<CustomQuery> locations = eventService.getLocations(request.getRemoteUser());
+			CustomQuery user = eventService.getUser(request.getRemoteUser());
+			CustomQuery teamMember = eventService.getTeamMemberId(user.getId());
+			List<CustomQuery> locations = clientService.getProviderLocationIdByChildRole(teamMember.getId(), ss, village);
 			logger.info("request.getRemoteUser():" + request.getRemoteUser());
-			
+
 			String location = "";
 			String userType = "";
-			List<String> address = new ArrayList<String>();
+			List<Long> address = new ArrayList<Long>();
 			if (locations.size() != 0) {
 				for (CustomQuery locName : locations) {
-					address.add(locName.getName());
+					address.add(Long.valueOf(locName.getId()));
 				}
 				userType = "Provider";
-				String providerId = getStringFilter(PROVIDER_ID, request);
+				String providerId = request.getRemoteUser();//getStringFilter(PROVIDER_ID, request);
 				String requestProviderName = request.getRemoteUser();
 				String locationId = getStringFilter(LOCATION_ID, request);
 				String baseEntityId = getStringFilter(BASE_ENTITY_ID, request);
@@ -255,13 +264,11 @@ public class EventResource extends RestResource<Event> {
 				if (limit == null || limit.intValue() == 0) {
 					limit = 25;
 				}
-				String getProviderName = "";
-				List<Event> eventList = new ArrayList<Event>();
+
 				List<Event> events = new ArrayList<Event>();
 				List<String> clientIds = new ArrayList<String>();
 				List<Client> clients = new ArrayList<Client>();
-				List<Client> clientList = new ArrayList<Client>();
-				List<String> excludeEvents = new ArrayList<String>();
+
 				long startTime = System.currentTimeMillis();
 				EventSearchBean eventSearchBean = new EventSearchBean();
 				eventSearchBean.setTeam(team);
@@ -270,67 +277,53 @@ public class EventResource extends RestResource<Event> {
 				eventSearchBean.setLocationId(locationId);
 				eventSearchBean.setBaseEntityId(baseEntityId);
 				eventSearchBean.setServerVersion(lastSyncedServerVersion);
-				eventList = eventService.findEvents(eventSearchBean, BaseEntity.SERVER_VERSIOIN, "asc", limit);
+
 				ClientSearchBean searchBean = new ClientSearchBean();
 				searchBean.setServerVersion(lastSyncedServerVersion);
 				AddressSearchBean addressSearchBean = new AddressSearchBean();
-				if (userType.equalsIgnoreCase(provider)) {
-					addressSearchBean.setAddress2(address);
-				} else if (userType.equalsIgnoreCase(HA)) {
-					addressSearchBean.setAddress3(address);
-				}
-				clientList = clientService.findByCriteria(searchBean, addressSearchBean);
-				for (Client client : clientList) {
-					clientIds.add(client.getBaseEntityId());
-				}
-				
+
+				addressSearchBean.setVillageId(address);
+
+				events = eventService.selectBySearchBean(addressSearchBean, lastSyncedServerVersion, providerId, 0);
+
 				List<String> ids = new ArrayList<String>();
-				ids.addAll(clientIds);
+
 				String field = "baseEntityId";
-				eventList = eventService.findByFieldValue(field, ids, lastSyncedServerVersion);
+
 				logger.info("fetching events took: " + (System.currentTimeMillis() - startTime));
-				logger.info("Initial Size:" + eventList.size());
-				if (!eventList.isEmpty()) {
-					for (Event event : eventList) {
-						getProviderName = event.getProviderId();
-						logger.info("getProviderName:" + getProviderName + ": request provider name" + requestProviderName);
-						if (getProviderName.isEmpty()) {
-							events.add(event);
-						} else if (!getProviderName.equalsIgnoreCase(requestProviderName)) {
-							excludeEvents.add(event.getBaseEntityId());
-						} else {
-							events.add(event);
+				logger.info("Initial Size:" + events.size());
+				if (!events.isEmpty()) {
+					for (Event event : events) {
+
+						if (!clientIds.contains(event.getBaseEntityId())) {
+							clientIds.add(event.getBaseEntityId());
 						}
+
 					}
-					
-					logger.info("After cleaning Size:" + events.size());
-					
+
 					logger.info("fetching clients took: " + (System.currentTimeMillis() - startTime));
 				}
-				for (Client client : clientList) {
-					if (!excludeEvents.contains(client.getBaseEntityId())) {
-						clients.add(client);
-					} else {
-						logger.info("exclude client :" + client.getBaseEntityId());
-					}
-				}
-				
+
+				logger.info("ids size" + clientIds.size() + "IDs:" + clientIds.toString());
+				ids.addAll(clientIds);
+				clients = clientService.findByFieldValue(field, ids);
+
 				JsonArray eventsArray = (JsonArray) gson.toJsonTree(events, new TypeToken<List<Event>>() {}.getType());
-				
+
 				JsonArray clientsArray = (JsonArray) gson.toJsonTree(clients, new TypeToken<List<Client>>() {}.getType());
-				
+
 				response.put("events", eventsArray);
 				response.put("clients", clientsArray);
 				response.put("no_of_events", events.size());
-				
+
 				return new ResponseEntity<>(gson.toJson(response), HttpStatus.OK);
-				
+
 			} else {
 				logger.info("No location found..");
 				response.put("msg", "Error occurred");
 				return new ResponseEntity<>(new Gson().toJson(response), HttpStatus.INTERNAL_SERVER_ERROR);
 			}
-			
+
 		}
 		catch (Exception e) {
 			response.put("msg", "Error occurred");

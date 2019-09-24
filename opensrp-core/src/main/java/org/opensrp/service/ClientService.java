@@ -295,4 +295,8 @@ public class ClientService {
 	public List<CustomQuery> getProviderLocationTreeByChildRole(int memberId, int childRoleId) {
 		return allClients.getProviderLocationTreeByChildRole(memberId, childRoleId);
 	}
+
+	public List<CustomQuery> getProviderLocationIdByChildRole(int memberId, int childRoleId, int locationTagId) {
+		return allClients.getProviderLocationIdByChildRole(memberId, childRoleId, locationTagId);
+	}
 }

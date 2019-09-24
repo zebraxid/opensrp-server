@@ -59,4 +59,6 @@ public interface ClientsRepository extends BaseRepository<Client> {
 	CustomQuery findTeamInfo(String username);
 
 	List<CustomQuery> getProviderLocationTreeByChildRole(int memberId, int childRoleId);
+
+	List<CustomQuery> getProviderLocationIdByChildRole(int memberId, int childRoleId, int locationTagId);
 }

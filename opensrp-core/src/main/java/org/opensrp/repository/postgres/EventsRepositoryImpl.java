@@ -21,6 +21,7 @@ import org.opensrp.domain.postgres.HealthId;
 import org.opensrp.repository.EventsRepository;
 import org.opensrp.repository.postgres.mapper.custom.CustomEventMapper;
 import org.opensrp.repository.postgres.mapper.custom.CustomEventMetadataMapper;
+import org.opensrp.search.AddressSearchBean;
 import org.opensrp.search.EventSearchBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -553,5 +554,11 @@ public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements E
 		List<HealthId> healthIds = eventMapper.gethealthIds(status, type);
 		return null;
 	}
-	
+
+	@Override
+	public List<Event> selectBySearchBean(AddressSearchBean addressSearchBean, long serverVersion, String providerId,
+	                                      int limit) {
+		return convert(eventMetadataMapper.selectBySearchBean(addressSearchBean, serverVersion, providerId, DEFAULT_FETCH_SIZE));
+	}
+
 }

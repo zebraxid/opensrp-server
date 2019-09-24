@@ -23,6 +23,7 @@
     <result column="address1" jdbcType="VARCHAR" property="address1" />
     <result column="address2" jdbcType="VARCHAR" property="address2" />
     <result column="address3" jdbcType="VARCHAR" property="address3" />
+    <result column="village_id" jdbcType="BIGINT" property="villageId" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <!--
@@ -166,7 +167,8 @@
       #{baseEntityId,jdbcType=VARCHAR}, #{relationalId,jdbcType=VARCHAR}, #{serverVersion,jdbcType=BIGINT}, 
       #{openmrsUuid,jdbcType=VARCHAR}, #{uniqueId,jdbcType=VARCHAR}, #{firstName,jdbcType=VARCHAR}, 
       #{middleName,jdbcType=VARCHAR}, #{lastName,jdbcType=VARCHAR}, #{birthDate,jdbcType=DATE}, 
-      #{dateDeleted,jdbcType=TIMESTAMP},#{address1,jdbcType=VARCHAR},#{address2,jdbcType=VARCHAR},#{address3,jdbcType=VARCHAR})
+      #{dateDeleted,jdbcType=TIMESTAMP},#{address1,jdbcType=VARCHAR},#{address2,jdbcType=VARCHAR},
+      #{address3,jdbcType=VARCHAR}, #{villageId,jdbcType=BIGINT})
   </insert>
   <insert id="insertSelective" parameterType="org.opensrp.domain.postgres.ClientMetadata">
     <!--
@@ -224,29 +226,9 @@
        <if test="address3 != null">
         address3,
       </if>
-      <if test="division != null">
-        division,
+      <if test="villageId != null">
+        village_id,
       </if>
-      <if test="district != null">
-        district,
-      </if>
-      <if test="cityCorporation != null">
-        city_corporation,
-      </if>
-      <if test="upazila != null">
-        upazila,
-      </if>
-      <if test="union != null">
-        city_union,
-      </if>
-      <if test="ward != null">
-        ward,
-      </if>
-      <if test="village != null">
-        village,
-      </if>
-
-      
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -296,6 +278,9 @@
       </if>
        <if test="address3 != null">
         #{address3,jdbcType=VARCHAR},
+      </if>
+      <if test="villageId != null">
+        #{villageId,jdbcType=BIGINT},
       </if>
     </trim>
   </insert>
@@ -384,8 +369,9 @@
       date_deleted = #{record.dateDeleted,jdbcType=TIMESTAMP},
       address1 = #{record.address1,jdbcType=VARCHAR},
       address2 = #{record.address2,jdbcType=VARCHAR},
-      address3 = #{record.address3,jdbcType=VARCHAR}
-      
+      address3 = #{record.address3,jdbcType=VARCHAR},
+      village_id = #{record.villageId,jdbcType=BIGINT}
+
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -443,6 +429,9 @@
       <if test="address3 != null">
         address3 = #{address3,jdbcType=VARCHAR},
       </if>
+      <if test="villageId != null">
+        village_id = #{villageId,jdbcType=BIGINT},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -467,7 +456,9 @@
       date_deleted = #{dateDeleted,jdbcType=TIMESTAMP},
       address1 = #{address1,jdbcType=VARCHAR},
       address2 = #{address2,jdbcType=VARCHAR},
-      address3 = #{address3,jdbcType=VARCHAR}      
+      address3 = #{address3,jdbcType=VARCHAR},
+      village_id = #{villageId,jdbcType=BIGINT}
+
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

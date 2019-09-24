@@ -18,6 +18,7 @@ import org.opensrp.domain.Obs;
 import org.opensrp.domain.postgres.CustomQuery;
 import org.opensrp.domain.postgres.HealthId;
 import org.opensrp.repository.EventsRepository;
+import org.opensrp.search.AddressSearchBean;
 import org.opensrp.search.EventSearchBean;
 import org.opensrp.util.DateTimeTypeConverter;
 import org.slf4j.Logger;
@@ -176,27 +177,17 @@ public class EventService {
 	}
 	
 	public synchronized Event addorUpdateEvent(Event event) {
-		Event existingEvent = findById(event.getId());
-		List<Event> events = findByBaseEntityAndEventTypeContaining(event.getBaseEntityId(), "Registration");
-		// does not reqiured
-		/*if (events.size() != 0) {
-			for (Event event2 : events) {
-				deleteByPrimaryKey(event2);
-			}
-		}*/
-		if (events.size() != 0) {
+		Event getEvent = findByFormSubmissionId(event.getFormSubmissionId());
+		if (getEvent != null) {
 			event.setDateEdited(DateTime.now());
 			event.setServerVersion(System.currentTimeMillis());
-			event.setRevision(events.get(0).getRevision());
+			event.setId(getEvent.getId());
 			allEvents.update(event);
-			
 		} else {
 			event.setServerVersion(System.currentTimeMillis());
 			event.setDateCreated(DateTime.now());
 			allEvents.add(event);
-			
 		}
-		
 		return event;
 	}
 	
@@ -366,4 +357,9 @@ public class EventService {
 		return null;
 		
 	}
+
+	public List<Event> selectBySearchBean(AddressSearchBean addressSearchBean, long serverVersion, String providerId,
+	                                      int limit) {
+		return allEvents.selectBySearchBean(addressSearchBean, serverVersion, providerId, limit);
+	};
 }

@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 import org.opensrp.domain.postgres.Event;
 import org.opensrp.domain.postgres.EventMetadataExample;
 import org.opensrp.repository.postgres.mapper.EventMetadataMapper;
+import org.opensrp.search.AddressSearchBean;
 
 public interface CustomEventMetadataMapper extends EventMetadataMapper {
 	
@@ -21,5 +22,9 @@ public interface CustomEventMetadataMapper extends EventMetadataMapper {
 	
 	List<Event> selectNotInOpenMRSByServerVersionAndType(@Param("eventType") String type, @Param("from") long serverVersion,
 	                                                     @Param("to") long calendar, @Param("limit") int limit);
-	
+
+	List<Event> selectBySearchBean(@Param("addressBean") AddressSearchBean addressSearchBean,
+	                               @Param("serverVersion") long serverVersion,
+	                               @Param("providerId") String providerId,
+	                               @Param("limit") int limit);
 }

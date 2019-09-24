@@ -33,5 +33,10 @@ public interface CustomClientMapper extends ClientMapper {
 
 	CustomQuery getTeamInfo(@Param("username") String username);
 
-	List<CustomQuery> getProviderLocationTreeByChildRole(@Param("memberId") int memberId, @Param("childRoleId") int childRoleId);
+	List<CustomQuery> getProviderLocationTreeByChildRole(@Param("memberId") int memberId,
+	                                                     @Param("childRoleId") int childRoleId);
+
+	List<CustomQuery> getProviderLocationIdByChildRole(@Param("memberId") int memberId,
+	                                                   @Param("childRoleId") int childRoleId,
+	                                                   @Param("locationTagId") int locationTagId);
 }

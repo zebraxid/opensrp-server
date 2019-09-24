@@ -27,6 +27,8 @@ public class AddressSearchBean {
 	private List<String> address2;
 
 	private List<String> address3;
+
+	private List<Long> villageId;
 	
 	public String getAddressType() {
 		return addressType;
@@ -115,7 +117,15 @@ public class AddressSearchBean {
 	public void setAddress3(List<String> address3) {
 		this.address3 = address3;
 	}
-	
+
+	public List<Long> getVillageId() {
+		return villageId;
+	}
+
+	public void setVillageId(List<Long> villageId) {
+		this.villageId = villageId;
+	}
+
 	public boolean isHasFilter() {
 		return StringUtils.isNotEmpty(addressType) || StringUtils.isNotEmpty(country)
 		        || StringUtils.isNotEmpty(stateProvince) || StringUtils.isNotEmpty(cityVillage)

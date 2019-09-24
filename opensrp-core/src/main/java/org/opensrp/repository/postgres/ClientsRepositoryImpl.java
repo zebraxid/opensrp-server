@@ -25,13 +25,20 @@ import org.opensrp.search.ClientSearchBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 @Repository("clientsRepositoryPostgres")
 public class ClientsRepositoryImpl extends BaseRepositoryImpl<Client> implements ClientsRepository {
 	
 	private static Logger logger = LoggerFactory.getLogger(ClientsRepository.class.toString());
-	
+
+	@Value("#{opensrp['address.type']}")
+	private String addressType;
+
+	@Value("#{opensrp['use.address.client.in.metadata']}")
+	private Boolean userAddressInClientMetadata;
+
 	@Autowired
 	private CustomClientMetadataMapper clientMetadataMapper;
 	
@@ -78,12 +85,18 @@ public class ClientsRepositoryImpl extends BaseRepositoryImpl<Client> implements
 		
 		ClientMetadata clientMetadata = createMetadata(entity, pgClient.getId());
 		if (clientMetadata != null) {
+			System.out.println("<-client meta data->");
+			System.out.println(clientMetadata);
 			clientMetadataMapper.insertSelective(clientMetadata);
 		}
 	}
 	
 	@Override
 	public void update(Client entity) {
+
+		System.out.println("<-Entity->");
+		System.out.println(entity);
+
 		if (entity == null || entity.getBaseEntityId() == null) {
 			return;
 		}
@@ -301,6 +314,11 @@ public class ClientsRepositoryImpl extends BaseRepositoryImpl<Client> implements
 		return clientMapper.getProviderLocationTreeByChildRole(memberId, childRoleId);
 	}
 
+	@Override
+	public List<CustomQuery> getProviderLocationIdByChildRole(int memberId, int childRoleId, int locationTagId) {
+		return clientMapper.getProviderLocationIdByChildRole(memberId, childRoleId, locationTagId);
+	}
+
 	// Private Methods
 	protected List<Client> convert(List<org.opensrp.domain.postgres.Client> clients) {
 		if (clients == null || clients.isEmpty()) {
@@ -340,6 +358,10 @@ public class ClientsRepositoryImpl extends BaseRepositoryImpl<Client> implements
 	
 	private ClientMetadata createMetadata(Client client, Long clientId) {
 		try {
+
+			System.out.println("Client DATA:->");
+			System.out.println(client);
+
 			ClientMetadata clientMetadata = new ClientMetadata();
 			clientMetadata.setDocumentId(client.getId());
 			clientMetadata.setBaseEntityId(client.getBaseEntityId());
@@ -351,9 +373,26 @@ public class ClientsRepositoryImpl extends BaseRepositoryImpl<Client> implements
 			clientMetadata.setMiddleName(client.getMiddleName());
 			clientMetadata.setLastName(client.getLastName());
 			Map<String, String> addressFields = client.getAddresses().get(0).getAddressFields();
-			clientMetadata.setAddress1(addressFields.get("address1"));
-			clientMetadata.setAddress2(addressFields.get("address2"));
-			clientMetadata.setAddress3(addressFields.get("address3"));
+
+			if (userAddressInClientMetadata) {
+				Address requiredAddress = new Address();
+
+				for (Address address : client.getAddresses()) {
+					if (address.getAddressType().equalsIgnoreCase(this.addressType)) {
+						requiredAddress = address;
+						break;
+					}
+				}
+
+				if (requiredAddress != null) {
+					clientMetadata.setAddress1(requiredAddress.getAddressField("address2"));
+					clientMetadata.setAddress2(requiredAddress.getAddressField("address7"));
+					clientMetadata.setAddress3(requiredAddress.getCityVillage());
+					if (requiredAddress.getAddressField("address8") != null)
+						clientMetadata.setVillageId(Long.valueOf(requiredAddress.getAddressField("address8")));
+				}
+			}
+
 			clientMetadata.setDivision(addressFields.get("division"));
 			clientMetadata.setDistrict(addressFields.get("district"));
 			clientMetadata.setCityCorporation(addressFields.get("cityCorporation"));

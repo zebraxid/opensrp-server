@@ -349,10 +349,14 @@ public class Client extends BaseEntity {
 	public final int hashCode() {
 		return HashCodeBuilder.reflectionHashCode(this, "id", "revision");
 	}
-	
+
 	@Override
 	public String toString() {
-		return ToStringBuilder.reflectionToString(this);
+		return "Client{" + "firstName='" + firstName + '\'' + ", middleName='" + middleName + '\'' + ", lastName='"
+				+ lastName + '\'' + ", birthdate=" + birthdate + ", deathdate=" + deathdate + ", birthdateApprox="
+				+ birthdateApprox + ", deathdateApprox=" + deathdateApprox + ", gender='" + gender + '\'' + ", clientType='"
+				+ clientType + '\'' + ", relationships=" + relationships + ", isSendToOpenMRS='" + isSendToOpenMRS + '\''
+				+ ", dataApprovalComments='" + dataApprovalComments + '\'' + ", dataApprovalStatus='" + dataApprovalStatus
+				+ '\'' + '}';
 	}
-	
 }

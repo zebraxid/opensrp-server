@@ -160,8 +160,8 @@ public class LocationService {
 		if (!fullLocation.has("city_corporation_upazila")) {
 			fullLocation.put("city_corporation_upazila", getLocationProperty());
 		}
-		if (!fullLocation.has("pourosava")) {
-			fullLocation.put("pourosava", getLocationProperty());
+		if (!fullLocation.has("pourasabha")) {
+			fullLocation.put("pourasabha", getLocationProperty());
 		}
 		if (!fullLocation.has("union_ward")) {
 			fullLocation.put("union_ward", getLocationProperty());
@@ -171,5 +171,4 @@ public class LocationService {
 		}
 		return fullLocation;
 	}
-
 }

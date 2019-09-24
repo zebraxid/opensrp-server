@@ -105,6 +105,11 @@
 		select * from core.get_location_tree(#{memberId}, #{childRoleId});
 	</select>
 
+	<select id="getProviderLocationIdByChildRole" parameterType="map"
+			resultMap="customQueryLocationTreeMap">
+		select * from core.get_location_tree_id(#{memberId}, #{childRoleId}, #{locationTagId});
+	</select>
+
 	<select id="selectByRelationshipIdOfType" parameterType="map"
 			resultMap="org.opensrp.repository.postgres.mapper.ClientMapper.BaseResultMap">
 		select
