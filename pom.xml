@@ -59,6 +59,11 @@
 
 	<repositories>
 		<repository>
+      		<id>africastalking</id>
+    	  	<name>AfricasTalking</name>
+    	  	<url>http://dl.bintray.com/africastalking/java</url>
+	   </repository>
+		<repository>
 			<id>central</id>
 			<url>http://repo1.maven.org/maven2</url>
 			<name>Repository for dependencies</name>

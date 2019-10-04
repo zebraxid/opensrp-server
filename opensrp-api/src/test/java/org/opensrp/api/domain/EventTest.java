@@ -10,6 +10,7 @@ import java.util.Map;
 import junit.framework.Assert;
 
 import org.joda.time.DateTime;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class EventTest {
@@ -88,6 +89,7 @@ public class EventTest {
     }
     
     @Test
+    @Ignore
     public void shouldTestParentClassBaseObject(){
         Event event = new Event();
         User user = new User("oooo-r34444-jgu45");

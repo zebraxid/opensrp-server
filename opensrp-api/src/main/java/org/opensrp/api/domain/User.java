@@ -26,6 +26,8 @@ public class User extends BaseEntity {
 	private List<String> permissions;
 
 	private String preferredName;
+	
+	private String systemId;
 
 	protected User() {
 
@@ -53,7 +55,7 @@ public class User extends BaseEntity {
 	}
 
 	public User(String baseEntityId, String username, String password, String preferredName, String salt, String status, List<String> roles,
-			List<String> permissions) {
+			List<String> permissions, String systemId) {
 		super(baseEntityId);
 		this.username = username;
 		this.password = password;
@@ -62,6 +64,7 @@ public class User extends BaseEntity {
 		this.roles = roles;
 		this.permissions = permissions;
 		this.preferredName = preferredName;
+		this.systemId = systemId;
 	}
 
 	public String getUsername() {
@@ -251,6 +254,14 @@ public class User extends BaseEntity {
 
 	public void setPreferredName(String preferredName) {
 		this.preferredName = preferredName;
+	}
+
+	public String getSystemId() {
+		return systemId;
+	}
+
+	public void setSystemId(String systemId) {
+		this.systemId = systemId;
 	}
 
 }

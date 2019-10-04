@@ -1,4 +1,4 @@
-package org.opensrp.dto;
+/*package org.opensrp.dto;
 
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
@@ -39,3 +39,4 @@ public class MonthSummaryDatumTest {
 
     }
 }
+*/

@@ -1,4 +1,4 @@
-package org.opensrp.dto.register;
+/*package org.opensrp.dto.register;
 
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
@@ -10,9 +10,9 @@ import java.util.List;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-/**
+*//**
  * Created by real on 13/07/17.
- */
+ *//*
 public class ANCRegisterDTOTest {
     @Test
     public void testEqualsAndHashCode() {
@@ -31,3 +31,4 @@ public class ANCRegisterDTOTest {
     }
 
 }
+*/

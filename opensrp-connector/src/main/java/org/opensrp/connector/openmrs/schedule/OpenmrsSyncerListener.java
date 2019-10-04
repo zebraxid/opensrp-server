@@ -25,6 +25,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.mysql.jdbc.StringUtils;
+
 @Component
 public class OpenmrsSyncerListener {
 	
@@ -153,7 +155,9 @@ public class OpenmrsSyncerListener {
 					} else {
 						JSONObject eventJson = encounterService.createEncounter(e);
 						encounter = eventJson;// only for test code purpose
-						if (eventJson != null && eventJson.has("uuid")) {
+						if (eventJson != null && eventJson.has("uuid")
+								&& !StringUtils.isEmptyOrWhitespaceOnly(eventJson.getString("uuid"))
+								&& !eventJson.getString("uuid").equalsIgnoreCase("null")) {
 							e.addIdentifier(EncounterService.OPENMRS_UUID_IDENTIFIER_TYPE, eventJson.getString("uuid"));
 							eventService.updateEvent(e);
 							config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_event_by_date_updated,

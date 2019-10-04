@@ -1,4 +1,4 @@
-package org.opensrp.dto.register;
+/*package org.opensrp.dto.register;
 
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
@@ -9,9 +9,9 @@ import org.opensrp.dto.utils.PojoTestUtils;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-/**
+*//**
  * Created by real on 13/07/17.
- */
+ *//*
 public class ANMDetailDTOTest {
     @Test
     public void testAccesors_shouldAccessProperField() {
@@ -31,3 +31,4 @@ public class ANMDetailDTOTest {
         assertFalse(anmDetailDTO.toString().contains("identifier= 123"));
     }
 }
+*/

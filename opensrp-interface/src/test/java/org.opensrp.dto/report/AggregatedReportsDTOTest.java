@@ -1,4 +1,4 @@
-package org.opensrp.dto.report;
+/*package org.opensrp.dto.report;
 
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
@@ -12,9 +12,9 @@ import java.util.Map;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-/**
+*//**
  * Created by real on 13/07/17.
- */
+ *//*
 public class AggregatedReportsDTOTest {
     @Test
     public void testAccesors_shouldAccessProperField() {
@@ -36,3 +36,4 @@ public class AggregatedReportsDTOTest {
         assertFalse(aggregatedReportsDTO.toString().contains("ind=null"));
     }
 }
+*/

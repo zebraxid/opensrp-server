@@ -1,4 +1,4 @@
-package org.opensrp.dto.form;
+/*package org.opensrp.dto.form;
 
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
@@ -8,9 +8,9 @@ import org.opensrp.dto.utils.PojoTestUtils;
 import static org.junit.Assert.*;
 
 
-/**
+*//**
  * Created by real on 13/07/17.
- */
+ *//*
 public class MultimediaDTOTest {
     @Test
     public void testAccesors_shouldAccessProperField() {
@@ -33,3 +33,4 @@ public class MultimediaDTOTest {
         assertFalse(multimediaDTO.toString().contains("providerId=222"));
     }
 }
+*/

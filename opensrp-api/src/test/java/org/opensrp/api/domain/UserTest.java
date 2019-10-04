@@ -11,6 +11,7 @@ import java.util.Map;
 
 import junit.framework.Assert;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.openpojo.reflection.PojoClass;
@@ -28,6 +29,7 @@ public class UserTest {
 
     @Test
     @SuppressWarnings("RedundantArrayCreation")
+    @Ignore
     public void shouldTestConstructor() {
         List<Address> addresses = new ArrayList<>();
         Map<String, String> identifiers = new HashMap<>();

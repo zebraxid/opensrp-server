@@ -17,6 +17,7 @@ import org.opensrp.domain.Event;
 import org.opensrp.domain.Obs;
 import org.opensrp.domain.User;
 import org.opensrp.service.ClientService;
+import org.opensrp.service.ProviderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,7 +37,7 @@ public class EncounterService extends OpenmrsService {
 	private PatientService patientService;
 	
 	private OpenmrsUserService userService;
-	
+	private OpenmrsService openmrsService;
 	private ClientService clientService;
 	
 	private OpenmrsLocationService openmrsLocationService;
@@ -118,13 +119,27 @@ public class EncounterService extends OpenmrsService {
 	}
 	
 	public JSONObject createEncounter(Event e) throws JSONException {
+		System.out.println(" ************* in Method create Encounter ***************");
 		String ptuuid = patientService.getPatientByIdentifierUUID(e.getBaseEntityId());
 		if (ptuuid == null) {
 			return null;
 		}
 		JSONObject enc = new JSONObject();
 		
-		String pruuid = userService.getPersonUUIDByUser(e.getProviderId());
+		String pruuid =  userService.getPersonUUIDByUser(e.getProviderId());
+
+		org.opensrp.api.domain.User user = userService.getUser(e.getProviderId());
+
+		//Populating encounter provider
+		JSONObject provider = userService.getProvider(user.getSystemId());
+		JSONArray encounterProviders = new JSONArray();
+		JSONObject encounterProvider = new JSONObject();
+		if(provider != null){
+			encounterProvider.put("provider", provider.get("uuid"));
+			encounterProvider.put("encounterRole", "a0b03050-c99b-11e0-9572-0800200c9a66");
+			encounterProviders.put(encounterProvider);
+			enc.put("encounterProviders", encounterProviders);
+		}
 		
 		enc.put("encounterDatetime", OPENMRS_DATE.format(e.getEventDate().toDate()));
 		// patient must be existing in OpenMRS before it submits an encounter. if it doesnot it would throw NPE
@@ -133,7 +148,8 @@ public class EncounterService extends OpenmrsService {
 		enc.put("encounterType", e.getEventType());
 		//TODO enc.put("encounterTypeUuid", e.getEventType());
 		enc.put("location", e.getLocationId());
-		enc.put("provider", pruuid);
+//		enc.put("provider", pruuid);
+		
 		
 		List<Obs> ol = e.getObs();
 		Map<String, JSONArray> p = new HashMap<>();

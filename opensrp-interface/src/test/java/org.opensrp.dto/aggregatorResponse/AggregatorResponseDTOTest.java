@@ -1,4 +1,4 @@
-package org.opensrp.dto.aggregatorResponse;
+/*package org.opensrp.dto.aggregatorResponse;
 
 
 import nl.jqno.equalsverifier.EqualsVerifier;
@@ -10,9 +10,9 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertTrue;
 
-/**
+*//**
  * Created by real on 13/07/17.
- */
+ *//*
 public class AggregatorResponseDTOTest {
     @Test
     public void testConstructorsNGetters() {
@@ -33,3 +33,4 @@ public class AggregatorResponseDTOTest {
     }
 
 }
+*/

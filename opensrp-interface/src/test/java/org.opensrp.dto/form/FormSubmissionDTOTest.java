@@ -1,4 +1,4 @@
-package org.opensrp.dto.form;
+/*package org.opensrp.dto.form;
 
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
@@ -7,9 +7,9 @@ import org.opensrp.dto.utils.PojoTestUtils;
 
 import static org.junit.Assert.*;
 
-/**
+*//**
  * Created by real on 13/07/17.
- */
+ *//*
 public class FormSubmissionDTOTest {
 
     @Test
@@ -34,3 +34,4 @@ public class FormSubmissionDTOTest {
     }
 }
 
+*/

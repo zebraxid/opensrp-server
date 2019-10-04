@@ -321,7 +321,9 @@ public class PatientService extends OpenmrsService {
 				} else {
 					JSONObject patientJson = createPatient(c);
 					patient = patientJson;//only for test code purpose
-					if (patientJson != null && patientJson.has("uuid")) {
+					if (patientJson != null && patientJson.has("uuid") 
+							&& !StringUtils.isEmptyOrWhitespaceOnly(patientJson.getString("uuid"))
+							&& !patientJson.getString("uuid").equalsIgnoreCase("null")) {
 						c.addIdentifier(PatientService.OPENMRS_UUID_IDENTIFIER_TYPE, patientJson.getString("uuid"));
 						clientService.addorUpdate(c, false);
 						config.updateAppStateToken(schedulerConfig, c.getServerVersion());
@@ -532,14 +534,17 @@ public class PatientService extends OpenmrsService {
 		JSONArray ids = new JSONArray();
 		if (c.getIdentifiers() != null) {
 			for (Entry<String, String> id : c.getIdentifiers().entrySet()) {
-				JSONObject jio = new JSONObject();
-				jio.put("identifierType", fetchIndentifierTypeUUID(id.getKey()));
-				jio.put("identifier", id.getValue());
-				Object cloc = c.getAttribute("Location");
-				jio.put("location", cloc == null ? "Unknown Location" : cloc);
-				//jio.put("preferred", true);
-				
-				ids.put(jio);
+				//Added this if check to remove any possibility of adding openmrs_uuid identifier to patient json (CHEST-OpenSRP)
+				if(!id.getKey().equalsIgnoreCase("openmrs_uuid")){
+					JSONObject jio = new JSONObject();
+					jio.put("identifierType", fetchIndentifierTypeUUID(id.getKey()));
+					jio.put("identifier", id.getValue());
+					Object cloc = c.getAttribute("Location");
+					jio.put("location", cloc == null ? "Unknown Location" : cloc);
+					//jio.put("preferred", true);
+					
+					ids.put(jio);
+				}
 			}
 		}
 		
@@ -551,7 +556,16 @@ public class PatientService extends OpenmrsService {
 		jio.put("preferred", true);
 		
 		ids.put(jio);
+
+		/*JSONObject jio1 = new JSONObject();
+		jio1.put("identifierType", fetchIndentifierTypeUUID("OPENMRS ID"));
+		jio1.put("identifier", "1");
+		Object cloc1 = c.getAttribute("Location");
+		jio1.put("location", cloc1 == null ? "Unknown Location" : cloc1);*/
+//		jio1.put("preferred", false);
 		
+//		ids.put(jio1);
+
 		p.put("identifiers", ids);
 		String response = HttpUtil.post(getURL() + "/" + PATIENT_URL, "", p.toString(), OPENMRS_USER, OPENMRS_PWD).body();
 		return new JSONObject(response);

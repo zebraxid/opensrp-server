@@ -3,9 +3,11 @@ package org.opensrp.web.controller;
 import static org.opensrp.web.HttpHeaderFactory.allowOrigin;
 import static org.springframework.http.HttpStatus.OK;
 
+import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
@@ -35,6 +37,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.africastalking.*;
+import com.africastalking.sms.Recipient;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.mysql.jdbc.StringUtils;
@@ -97,7 +101,7 @@ public class UserController {
 	@ResponseBody
 	public ResponseEntity<String> authenticate(HttpServletRequest request) throws JSONException {
         User u = currentUser(request);
-        String lid = "";
+        /*String lid = "";
         JSONObject tm = null;
         try{
         	tm = openmrsUserService.getTeamMember(u.getAttribute("_PERSON_UUID").toString());
@@ -130,11 +134,32 @@ public class UserController {
 		}
 		catch(Exception e){
 			e.printStackTrace();
-		}
-		map.put("locations", l);
+		}*/
+        Map<String, Object> map = new HashMap<>();
+		map.put("user", u);
+		map.put("locations", null);
 		Time t = getServerTime();
 		map.put("time", t);
         return new ResponseEntity<>(new Gson().toJson(map), allowOrigin(opensrpSiteUrl), OK);
+	}
+	
+	@RequestMapping("/sendSMS")
+	@ResponseBody
+	public ResponseEntity<String> sendSMS(HttpServletRequest request) throws JSONException {
+		// Initialize a service e.g. SMS
+		SmsService sms = AfricasTalking.getService(AfricasTalking.SERVICE_SMS);
+		System.out.println(request.getParameter("number"));
+		String number = "+"+request.getParameter("number");
+		// Use the service
+		try {
+			List<Recipient> response = sms.send("Hello Message!", new String[] {number}, false);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+        return new ResponseEntity<>(new Gson().toJson("Successful"), allowOrigin(opensrpSiteUrl), OK);
 	}
 	
 	@RequestMapping("/security/configuration")

@@ -81,6 +81,8 @@ public class HttpUtil {
             entity.setContentEncoding(contentType);
             request.setEntity(entity);
             org.apache.http.HttpResponse response = httpClient.execute(request);
+            System.out.println("****************");
+            System.out.println(response.getStatusLine());
             return createCustomResponseFrom(response);
         } catch (Exception e) {
             e.printStackTrace();

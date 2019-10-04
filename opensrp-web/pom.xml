@@ -277,6 +277,13 @@
 		    <version>2.1</version>
 		</dependency>
 		
+		<!-- Africas talking -->
+		<dependency>
+		  <groupId>com.africastalking</groupId>
+		  <artifactId>core</artifactId>
+		  <version>3.4.2</version>
+		</dependency>
+		
 		<!-- https://mvnrepository.com/artifact/cglib/cglib 
 <dependency>
     <groupId>cglib</groupId>

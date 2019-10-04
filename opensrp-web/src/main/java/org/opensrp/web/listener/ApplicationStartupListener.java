@@ -1,5 +1,6 @@
 package org.opensrp.web.listener;
 
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import org.opensrp.common.AllConstants;
@@ -12,6 +13,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
+
+import com.africastalking.*;
 
 @Component
 public class ApplicationStartupListener implements ApplicationListener<ContextRefreshedEvent> {
@@ -26,6 +29,8 @@ public class ApplicationStartupListener implements ApplicationListener<ContextRe
     private RepeatingCronSchedule dhis2Schedule;
     private RepeatingCronSchedule validateSyncedToOMRS;
     
+    private static final int RPC_PORT = 35897;
+    
 
     @Autowired
     public ApplicationStartupListener(TaskSchedulerService scheduler, 
@@ -39,6 +44,20 @@ public class ApplicationStartupListener implements ApplicationListener<ContextRe
         atomfeedSchedule = new RepeatingCronSchedule(OpenmrsConstants.SCHEDULER_OPENMRS_ATOMFEED_SYNCER_SUBJECT, 8, TimeUnit.MINUTES, "0 0/5 * * * ?");
         dhis2Schedule = new RepeatingCronSchedule(DHIS2DatasetPush.SCHEDULER_DHIS2_DATA_PUSH_SUBJECT, 11, TimeUnit.MINUTES, "0 0/5 * * * ?");
         validateSyncedToOMRS = new RepeatingCronSchedule(OpenmrsConstants.SCHEDULER_OPENMRS_SYNC_VALIDATOR_SUBJECT, 15, TimeUnit.MINUTES, "0 0/10 * * * ?");
+        
+        /*System.out.println("***********************************************");
+        System.out.println("***********************************************");
+        System.out.println("***********************************************");
+        System.out.println("***********************************************");
+        System.out.println("\n\nInitialzing SANDBOX\n\n");
+        System.out.println("***********************************************");
+        System.out.println("***********************************************");
+        System.out.println("***********************************************");
+        System.out.println("***********************************************");
+        
+        String username = "sandbox";    // use 'sandbox' for development in the test environment
+        String apiKey = "c5a419b0799fca9b856d750632af1915e4c23a4ecb4885c5b1b00fbba916bcd0";       // use your sandbox app API key for development in the test environment
+        AfricasTalking.initialize(username, apiKey);*/
     }
 
     @Override
