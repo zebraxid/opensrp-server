@@ -80,7 +80,7 @@ public class LocationService {
 
 	}
 
-	public JSONArray convertLocationTreeToJSON(List<CustomQuery> treeDTOS) throws JSONException {
+	public JSONArray convertLocationTreeToJSON(List<CustomQuery> treeDTOS, Boolean enable) throws JSONException {
 		JSONArray locationTree = new JSONArray();
 
 		Map<String, Boolean> mp = new HashMap<>();
@@ -100,6 +100,7 @@ public class LocationService {
 					locations.put(fullLocation);
 					object.put("username", username);
 					object.put("locations", locations);
+					object.put("simprints_enable", enable);
 					locationTree.put(object);
 					locations = new JSONArray();
 					object = new JSONObject();
@@ -119,10 +120,13 @@ public class LocationService {
 				}
 			}
 
+			String[] names = treeDTO.getName().split(":");
+			String locationName = names[0];
+
 			JSONObject location = new JSONObject();
 			location.put("code", treeDTO.getCode());
 			location.put("id", treeDTO.getId());
-			location.put("name", treeDTO.getName());
+			location.put("name", locationName);
 			String name = treeDTO.getLocationTagName().toLowerCase().replaceAll(" ", "_");
 			fullLocation.put(name, location);
 
@@ -131,6 +135,7 @@ public class LocationService {
 				locations.put(fullLocation);
 				object.put("username", username);
 				object.put("locations", locations);
+				object.put("simprints_enable", enable);
 				locationTree.put(object);
 				object = new JSONObject();
 				locations = new JSONArray();

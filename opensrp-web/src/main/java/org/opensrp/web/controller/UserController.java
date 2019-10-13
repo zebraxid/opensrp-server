@@ -55,7 +55,8 @@ public class UserController {
 	@Value("#{opensrp['opensrp.web.password']}")
 	protected String OPENSRP_PWD;
 
-	private static int childRoleId = 13;
+//	@Value("#{opensrp['opensrp.role.ss']}")
+	private Integer childRoleId = 29;
 
 	@Autowired
 	private LocationService locationService;
@@ -189,7 +190,7 @@ public class UserController {
 		List<CustomQuery> treeDTOS = clientService.getProviderLocationTreeByChildRole(teamMember.getId(), childRoleId);
 		JSONArray array = new JSONArray();
 		try {
-			array = locationService.convertLocationTreeToJSON(treeDTOS);
+			array = locationService.convertLocationTreeToJSON(treeDTOS, user.getEnable());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

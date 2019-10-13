@@ -54,7 +54,7 @@
     </logger>
 
     <logger name="org.springframework">
-        <level value="WARN"/>
+        <level value="INFO"/>
     </logger>
 
     <logger name="org.ei">
@@ -62,7 +62,7 @@
     </logger>
     
     <logger name="org.opensrp">
-        <level value="WARN"/>
+        <level value="DEBUG"/>
     </logger>
 
     <logger name="DRISHTI_REPORT_MONITOR">

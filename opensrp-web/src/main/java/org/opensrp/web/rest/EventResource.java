@@ -81,11 +81,11 @@ public class EventResource extends RestResource<Event> {
 	@Value("#{opensrp['opensrp.HA']}")
 	private String HA;
 
-	@Value("#{opensrp['opensrp.role.ss']}")
-	private Integer ss;
+//	@Value("#{opensrp['opensrp.role.ss']}")
+	private Integer ss = 29;
 
-	@Value("#{opensrp['opensrp.location.tag.village']}")
-	private Integer village;
+//	@Value("#{opensrp['opensrp.location.tag.village']}")
+	private Integer village = 33;
 	
 	Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
 	        .registerTypeAdapter(DateTime.class, new DateTimeTypeConverter()).create();
@@ -233,8 +233,14 @@ public class EventResource extends RestResource<Event> {
 	@ResponseBody
 	protected ResponseEntity<String> sync(HttpServletRequest request) {
 
+		System.out.println("SYNC STARTED");
+
 		Map<String, Object> response = new HashMap<String, Object>();
 		try {
+
+			System.out.println("USER IN SYNC");
+			System.out.println(request.getRemoteUser());
+
 			CustomQuery user = eventService.getUser(request.getRemoteUser());
 			CustomQuery teamMember = eventService.getTeamMemberId(user.getId());
 			List<CustomQuery> locations = clientService.getProviderLocationIdByChildRole(teamMember.getId(), ss, village);
