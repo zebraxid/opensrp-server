@@ -78,7 +78,7 @@ public class ValidateResource {
 					try {
 						Client client = clientService.getByBaseEntityId(clientId);
 						if (client == null) {
-							missingClientIds.add(clientId);
+							//missingClientIds.add(clientId);
 						}
 					}
 					catch (Exception e) {
@@ -95,7 +95,7 @@ public class ValidateResource {
 					try {
 						Event event = eventService.findByFormSubmissionId(eventId);
 						if (event == null) {
-							missingEventIds.add(eventId);
+							//missingEventIds.add(eventId);
 						}
 						
 					}

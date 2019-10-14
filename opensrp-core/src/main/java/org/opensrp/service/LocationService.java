@@ -98,7 +98,7 @@ public class LocationService {
 				if (counter > 1) {
 					fullLocation = setEmptyValues(fullLocation);
 					locations.put(fullLocation);
-					object.put("username", username);
+					object.put("username", username.trim());
 					object.put("locations", locations);
 					object.put("simprints_enable", enable);
 					locationTree.put(object);
@@ -124,16 +124,16 @@ public class LocationService {
 			String locationName = names[0];
 
 			JSONObject location = new JSONObject();
-			location.put("code", treeDTO.getCode());
+			location.put("code", treeDTO.getCode().trim());
 			location.put("id", treeDTO.getId());
-			location.put("name", locationName);
+			location.put("name", locationName.trim());
 			String name = treeDTO.getLocationTagName().toLowerCase().replaceAll(" ", "_");
 			fullLocation.put(name, location);
 
 			if (limit == treeDTOS.size()) {
 				fullLocation = setEmptyValues(fullLocation);
 				locations.put(fullLocation);
-				object.put("username", username);
+				object.put("username", username.trim());
 				object.put("locations", locations);
 				object.put("simprints_enable", enable);
 				locationTree.put(object);
