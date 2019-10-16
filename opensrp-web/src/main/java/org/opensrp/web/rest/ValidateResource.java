@@ -100,7 +100,7 @@ public class ValidateResource {
 						
 					}
 					catch (Exception e) {
-						logger.error("Event Sync Valiation Failed, FormSubmissionId: " + eventId, e);
+						logger.error("Event Sync Validation Failed, FormSubmissionId: " + eventId, e);
 					}
 				}
 			}
