@@ -110,7 +110,7 @@ public class LocationService {
 				mp.put(treeDTO.getUsername(), true);
 			}
 
-			username = treeDTO.getUsername();
+			username = treeDTO.getFirstName();
 
 			if (treeDTO.getLocationTagName().equalsIgnoreCase("country")) {
 				if (counter > 1) {
