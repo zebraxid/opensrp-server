@@ -24,6 +24,8 @@ public abstract class BaseDataObject {
 	
 	private String voidReason;
 
+	private String clientApplicationVersionName;
+
 	public BaseDataObject() {}
 	
 	public User getCreator() {
@@ -102,6 +104,14 @@ public abstract class BaseDataObject {
 
 	public void setVoidReason(String voidReason) {
 		this.voidReason = voidReason;
+	}
+
+	public String getClientApplicationVersionName() {
+		return clientApplicationVersionName;
+	}
+
+	public void setClientApplicationVersionName(String clientApplicationVersionName) {
+		this.clientApplicationVersionName = clientApplicationVersionName;
 	}
 	
 	public BaseDataObject withCreator(User creator) {
