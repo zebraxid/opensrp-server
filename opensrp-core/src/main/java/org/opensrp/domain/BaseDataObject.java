@@ -33,7 +33,9 @@ public abstract class BaseDataObject extends MotechBaseDataObject {
 
 	@JsonProperty
 	private Integer clientDatabaseVersion;
-	
+
+	@JsonProperty
+	private String clientApplicationVersionName;
 
 	public BaseDataObject() {}
 	
@@ -108,7 +110,15 @@ public abstract class BaseDataObject extends MotechBaseDataObject {
 	public void setServerVersion(Long version) {
 		this.serverVersion = version;
 	}
-	
+
+	public String getClientApplicationVersionName() {
+		return clientApplicationVersionName;
+	}
+
+	public void setClientApplicationVersionName(String clientApplicationVersionName) {
+		this.clientApplicationVersionName = clientApplicationVersionName;
+	}
+
 	public BaseDataObject withCreator(User creator) {
 		this.creator = creator;
 		return this;
@@ -158,6 +168,12 @@ public abstract class BaseDataObject extends MotechBaseDataObject {
 		this.clientDatabaseVersion = clientDatabaseVersion;
 		return this;
 	}
+
+	public BaseDataObject withClientApplicationVersionName(String clientApplicationVersionName) {
+		this.clientApplicationVersionName = clientApplicationVersionName;
+		return this;
+	};
+
 	public Integer getClientApplicationVersion() {
 		return clientApplicationVersion;
 	}

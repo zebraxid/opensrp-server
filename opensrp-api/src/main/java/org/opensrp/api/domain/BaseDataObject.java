@@ -153,6 +153,11 @@ public abstract class BaseDataObject {
 		this.voidReason = voidReason;
 		return this;
 	}
+
+	public BaseDataObject withClientApplicationVersionName(String clientApplicationVersionName) {
+		this.clientApplicationVersionName = clientApplicationVersionName;
+		return this;
+	}
 	
     @Override
     public String toString() {

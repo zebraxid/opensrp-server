@@ -318,6 +318,9 @@ public class EventResource extends RestResource<Event> {
 
 				JsonArray clientsArray = (JsonArray) gson.toJsonTree(clients, new TypeToken<List<Client>>() {}.getType());
 
+				System.out.println("Clients Array -->");
+				System.out.println(clientsArray);
+
 				response.put("events", eventsArray);
 				response.put("clients", clientsArray);
 				response.put("no_of_events", events.size());
@@ -476,11 +479,16 @@ public class EventResource extends RestResource<Event> {
 			}
 			
 			if (syncData.has("clients")) {
-				
+
+				System.out.println("SYNC DATA CLIENTS:->");
+				System.out.println(syncData.getString("clients"));
+
 				ArrayList<Client> clients = (ArrayList<Client>) gson.fromJson(syncData.getString("clients"),
 				    new TypeToken<ArrayList<Client>>() {}.getType());
 				logger.info("received client size:" + clients.size());
 				for (Client client : clients) {
+					System.out.println("FOR LOOP DATA CLIENTS:->");
+					System.out.println(client);
 					try {
 						List<Event> events = eventService.findByBaseEntityAndEventTypeContaining(client.getBaseEntityId(),
 						    "Registration");
