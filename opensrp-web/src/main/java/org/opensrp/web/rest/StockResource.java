@@ -80,7 +80,7 @@ public class StockResource extends RestResource<Stock> {
 	@RequestMapping(value = "/getall", method = RequestMethod.GET)
 	@ResponseBody
 	protected ResponseEntity<String> getAll() {
-		System.out.println("line number 83@StockResource username:");
+		logger.info("line number 83@StockResource username:");
 		Map<String, Object> response = new HashMap<String, Object>();
 		try {
 			List<Stock> stocks = new ArrayList<Stock>();
@@ -119,7 +119,7 @@ public class StockResource extends RestResource<Stock> {
 	@ResponseBody
 	protected ResponseEntity<String> sync(HttpServletRequest request) {
 		Map<String, Object> response = new HashMap<String, Object>();
-		System.out.println("line number 122@StockResource username:"+request.getRemoteUser());
+		logger.info("line number 122@StockResource username:" + request.getRemoteUser());
 		try {
 			StockSearchBean searchBean = populateSearchBean(request);
 			String serverVersion = getStringFilter(BaseEntity.SERVER_VERSIOIN, request);
@@ -198,9 +198,8 @@ public class StockResource extends RestResource<Stock> {
 		StockSearchBean searchBean = populateSearchBean(request);
 		
 		String serverVersion = getStringFilter(TIMESTAMP, request);
-		if(serverVersion!=null)
-		searchBean.setServerVersion(Long.valueOf(serverVersion));
-		
+		if (serverVersion != null)
+			searchBean.setServerVersion(Long.valueOf(serverVersion));
 		
 		if (!StringUtils.isEmptyOrWhitespaceOnly(searchBean.getIdentifier())) {
 			Stock stock = stockService.find(searchBean.getIdentifier());

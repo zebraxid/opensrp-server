@@ -92,7 +92,10 @@
 	
 	
 	<select id="selectBySearchBean"
-		resultMap="org.opensrp.repository.postgres.mapper.ClientMapper.BaseResultMap">
+		resultMap="org.opensrp.repository.postgres.mapper.ClientMapper.BaseResultMap">		
+		
+		
+		
 		select id,json from core.client where core.client.id=any(
 			select client_id from core.client_metadata where server_version::BIGINT >= #{clientBean.serverVersion,jdbcType=BIGINT}
 			

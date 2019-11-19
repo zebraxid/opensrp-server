@@ -61,9 +61,14 @@ public interface EventsRepository extends BaseRepository<Event> {
 	
 	CustomQuery getUser(String userName);
 	
+	List<CustomQuery> getRoles(int userId);
+	
 	int updateHealthId(HealthId healthId);
 	
 	List<HealthId> gethealthIds(boolean status, String type);
+	
+	List<Event> selectBySearchBeanDelete(AddressSearchBean addressSearchBean, long serverVersion, String providerId,
+	                                     int limit);
 	
 	List<Event> selectBySearchBean(@Param("addressBean") AddressSearchBean addressSearchBean,
 	                               @Param("serverVersion") long serverVersion, @Param("providerId") String providerId,

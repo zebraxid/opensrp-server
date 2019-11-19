@@ -83,6 +83,7 @@ public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements E
 		}
 		
 		Long id = retrievePrimaryKey(entity);
+		
 		if (id == null) { // Event not added
 			return;
 		}
@@ -556,6 +557,21 @@ public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements E
 		
 		return convert(eventMetadataMapper.selectBySearchBean(addressSearchBean, serverVersion, providerId,
 		    DEFAULT_FETCH_SIZE));
+	}
+	
+	@Override
+	public List<CustomQuery> getRoles(int userId) {
+		// TODO Auto-generated method stub
+		return eventMapper.getRoles(userId);
+	}
+	
+	@Override
+	public List<Event> selectBySearchBeanDelete(AddressSearchBean addressSearchBean, long serverVersion, String providerId,
+	                                            int limit) {
+		// TODO Auto-generated method stub
+		return convert(eventMetadataMapper.selectBySearchBeanDelete(addressSearchBean, serverVersion, providerId,
+		    DEFAULT_FETCH_SIZE));
+		
 	}
 	
 }

@@ -108,23 +108,68 @@
 
 	<select id="selectBySearchBean"
 		resultMap="BaseEventResultMap">
-		select core.event.id,core.event.json
-			FROM core.event , core.event_metadata where core.event.id=core.event_metadata.event_id
-		and server_version::BIGINT >= #{serverVersion,jdbcType=BIGINT}  and
-		(case provider_id when '' then  #{providerId} else provider_id end)= #{providerId} and 
-		base_entity_id=any(
-		select base_entity_id from core.client_metadata 
-		where  
-		 
-		 <if test="addressBean.address2 != null">
+		
+		with t as(
+			SELECT core.event.id,core.event.json,base_entity_id,provider_id,server_version
+			FROM core.event , core.event_metadata where core.event.id=core.event_metadata.event_id and
+			
+			base_entity_id=any(
+			select base_entity_id from core.client_metadata
+			where
+			
+			<if test="addressBean.address2 != null">
 				 address2 IN				
 				<foreach close=")" collection="addressBean.address2" item="listItem" open="(" separator=",">
 						#{listItem}
 				</foreach>	
-		</if>
-		) 
-		order by core.event.json->>'serverVersion' asc
-		LIMIT #{limit}
+			</if>
+			 
+			)
+			), t1 as(select id,json,base_entity_id,
+			first_value(provider_id) over (partition by base_entity_id ORDER by server_version desc) last_provider_id, provider_id,
+			server_version from t 
+			where server_version::BIGINT >=  #{serverVersion,jdbcType=BIGINT}
+			order by base_entity_id
+			)
+			select id,json from t1
+			where 
+			(case last_provider_id when  '' then #{providerId} else last_provider_id end)= #{providerId}
+			order by server_version 
+			LIMIT #{limit} 		
+			
+	</select>
+	
+	<select id="selectBySearchBeanDelete"
+		resultMap="BaseEventResultMap">
+		
+		with t as(
+			SELECT core.event.id,core.event.json,base_entity_id,provider_id,server_version
+			FROM core.event , core.event_metadata where core.event.id=core.event_metadata.event_id and
+			
+			base_entity_id=any(
+			select base_entity_id from core.client_metadata
+			where
+			
+			<if test="addressBean.address2 != null">
+				 address2 IN				
+				<foreach close=")" collection="addressBean.address2" item="listItem" open="(" separator=",">
+						#{listItem}
+				</foreach>	
+			</if>
+			 
+			)
+			), t1 as(select id,json,base_entity_id,
+			first_value(provider_id) over (partition by base_entity_id ORDER by server_version desc) last_provider_id, provider_id,
+			server_version from t 
+			where server_version::BIGINT >=  #{serverVersion,jdbcType=BIGINT}
+			order by base_entity_id
+			)
+			select id,json from t1
+			where 
+			
+			last_provider_id !=  #{providerId}
+			order by server_version 
+			LIMIT #{limit} 		
 			
 	</select>
 
