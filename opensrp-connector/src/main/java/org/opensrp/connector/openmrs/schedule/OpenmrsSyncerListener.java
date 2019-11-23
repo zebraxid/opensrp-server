@@ -209,18 +209,18 @@ public class OpenmrsSyncerListener {
 						c.addIdentifier(PatientService.OPENMRS_UUID_IDENTIFIER_TYPE, patientJson.getString("uuid"));
 						clientService.addOrUpdate(c, false);
 					}
+					patient = patientJson;
 				}
 				config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_client_by_date_updated, c.getServerVersion());
 			} catch (Exception e) {
 				config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_client_by_date_updated, c.getServerVersion());
 				errorTraceService.log("OPENMRS FAILED CLIENT PUSH", Client.class.getName(), c.getBaseEntityId(),
 						ExceptionUtils.getStackTrace(e), "");
-//				e.printStackTrace();
 				logger.error("client error message:" + e.getMessage() + ", and cause :" + e.getCause()
 						+ ", baseEntityId:" + c.getBaseEntityId());
 			}
 		}
-		return null;
+		return patient;
 	}
 	
 	public JSONObject pushClient(long start) throws JSONException {
@@ -401,7 +401,7 @@ public class OpenmrsSyncerListener {
 	
 	@MotechListener(subjects = OpenmrsConstants.SCHEDULER_OPENMRS_DATA_PUSH_RESYNC_SUBJECT)
 	public void reSyncToOpenMRS(MotechEvent event) {
-		System.out.println("362 start data send to openmrs");
+		System.out.println("404 start data send to openmrs");
 		List<org.opensrp.domain.ErrorTrace> errorTraces = errorTraceService.findAllUnSyncErrors("org.opensrp.domain.Client");
 		JSONObject patient = new JSONObject();// only for test code purpose
 		JSONArray patientsJsonArray = new JSONArray();// only for test code purpose

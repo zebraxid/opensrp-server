@@ -488,7 +488,6 @@ public class PatientService extends OpenmrsService {
 				address.setAddressType(ad.getString("address7"));
 				c.addAddress(address);
 			}
-			
 		}
 		
 		return c;
