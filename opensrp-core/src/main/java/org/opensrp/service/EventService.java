@@ -182,6 +182,7 @@ public class EventService {
 			event.setDateEdited(DateTime.now());
 			event.setServerVersion(System.currentTimeMillis());
 			event.setId(getEvent.getId());
+			event.setDateCreated(getEvent.getDateCreated());
 			allEvents.update(event);
 		} else {
 			event.setServerVersion(System.currentTimeMillis());
