@@ -60,7 +60,7 @@ public class ApplicationStartupListener implements ApplicationListener<ContextRe
 		DHIS2Syncer = new RepeatingSchedule(DHIS2Constants.DHIS2_TRACK_DATA_SYNCER_SUBJECT, 1, TimeUnit.HOURS, 1,
 		        TimeUnit.HOURS);
 		openmrsScheduleReSync = new RepeatingSchedule(OpenmrsConstants.SCHEDULER_OPENMRS_DATA_PUSH_RESYNC_SUBJECT, 1,
-		        TimeUnit.HOURS, 1, TimeUnit.DAYS);
+		        TimeUnit.SECONDS, 2, TimeUnit.MINUTES);
 	}
 	
 	@Override

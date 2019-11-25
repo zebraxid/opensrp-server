@@ -70,9 +70,6 @@ public class PatientService extends OpenmrsService {
 	public static final String PARENT_CHILD_RELATION = "03ed79c5-4c7a-11e5-9192-080027b662ec";
 
 	@Autowired
-	private PatientService patientService;
-
-	@Autowired
 	MultimediaService multimediaService;
 	
 	public PatientService() {
@@ -294,7 +291,7 @@ public class PatientService extends OpenmrsService {
 		patient.put("identifiers", preparePatientIdentifier(c, false));
 
 		relationshipType.put("uuid", PARENT_CHILD_RELATION);
-		JSONObject householdJSON = patientService.getPatientByIdentifier(c.getRelationships().get("household").get(0).toString());
+		JSONObject householdJSON = getPatientByIdentifier(c.getRelationships().get("household").get(0).toString());
 
 		personB.put("uuid", householdJSON.getString("uuid"));
 		personB.put("display", householdJSON.getString("display"));
@@ -318,6 +315,47 @@ public class PatientService extends OpenmrsService {
 		return new JSONObject(response);
 	}
 
+
+
+	public JSONArray preparePatientIdentifierRevised(Client c, boolean isUpdate) throws JSONException {
+		JSONArray ids = new JSONArray();
+
+		if (c.getIdentifiers() != null) {
+			for (Entry<String, String> id : c.getIdentifiers().entrySet()) {
+				if (id.getValue() != null) {
+					JSONObject jio = new JSONObject();
+					if (id.getKey().equalsIgnoreCase("Patient_Identifier")) {
+						jio.put("identifierType", "81433852-3f10-11e4-adec-0800271c1b75");
+						jio.put("identifier", id.getValue());
+						jio.put("preferred", true);
+						Object cloc = c.getAttribute("Location");
+						jio.put("location", cloc == null ? "Unknown Location" : cloc);
+						ids.put(jio);
+
+					} else if (id.getKey().equalsIgnoreCase("OPENMRS_UUID") && isUpdate) {
+						jio.put("identifierType", "8347581d-a066-4615-b834-9332e7d744ed");
+						jio.put("identifier", id.getValue());
+						Object cloc = c.getAttribute("Location");
+						jio.put("preferred", false);
+						jio.put("location", cloc == null ? "Unknown Location" : cloc);
+						ids.put(jio);
+					}
+				}
+			}
+		}
+
+		JSONObject jio = new JSONObject();
+		jio.put("identifierType", "d21d0aa9-9324-4a1d-91f7-48819d408755"); // OpenSRP Thrive UID
+		jio.put("identifier", c.getIdentifiers());
+		Object cloc = c.getAttribute("Location");
+		jio.put("location", cloc == null ? "Unknown Location" : cloc);
+		jio.put("preferred", false);
+
+		ids.put(jio);
+		//Patient_Identifier
+
+		return new JSONArray(ids);
+	}
 
 	public JSONArray preparePatientIdentifier(Client c, boolean isUpdate) throws JSONException {
 		JSONArray ids = new JSONArray();
