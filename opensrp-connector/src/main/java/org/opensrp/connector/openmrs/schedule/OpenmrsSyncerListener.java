@@ -1,6 +1,7 @@
 package org.opensrp.connector.openmrs.schedule;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.concurrent.locks.ReentrantLock;
@@ -15,6 +16,9 @@ import org.motechproject.server.event.annotations.MotechListener;
 import org.opensrp.connector.dhis2.Dhis2TrackCaptureConnector;
 import org.opensrp.connector.openmrs.constants.OpenmrsConstants;
 import org.opensrp.connector.openmrs.constants.OpenmrsConstants.SchedulerConfig;
+import org.opensrp.connector.openmrs.exception.HouseholdNotFoundException;
+import org.opensrp.connector.openmrs.exception.IdentifierNotFoundException;
+import org.opensrp.connector.openmrs.exception.RelationshipNotFoundException;
 import org.opensrp.connector.openmrs.service.EncounterService;
 import org.opensrp.connector.openmrs.service.PatientService;
 import org.opensrp.domain.AppStateToken;
@@ -33,43 +37,45 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.management.relation.RelationNotFoundException;
+
 @Component
 public class OpenmrsSyncerListener {
-	
+
 	private static final ReentrantLock lock = new ReentrantLock();
-	
+
 	private static Logger logger = LoggerFactory.getLogger(OpenmrsSyncerListener.class.toString());
-	
+
 	//private final OpenmrsSchedulerService openmrsSchedulerService;
-	
+
 	private final ScheduleService opensrpScheduleService;
-	
+
 	private final ActionService actionService;
-	
+
 	private final ConfigService config;
-	
+
 	private final ErrorTraceService errorTraceService;
-	
+
 	private final PatientService patientService;
-	
+
 	private final EncounterService encounterService;
-	
+
 	private final EventService eventService;
-	
+
 	private final ClientService clientService;
-	
+
 	// private RelationShipService relationShipService;
-	
+
 	@Autowired
 	private Dhis2TrackCaptureConnector dhis2TrackCaptureConnector;
-	
+
 	@Autowired
 	MultimediaService multimediaService;
-	
+
 	@Autowired
 	public OpenmrsSyncerListener(ScheduleService opensrpScheduleService, ActionService actionService, ConfigService config,
-	    ErrorTraceService errorTraceService, PatientService patientService, EncounterService encounterService,
-	    ClientService clientService, EventService eventService) {
+	                             ErrorTraceService errorTraceService, PatientService patientService, EncounterService encounterService,
+	                             ClientService clientService, EventService eventService) {
 		//this.openmrsSchedulerService = openmrsSchedulerService;
 		this.opensrpScheduleService = opensrpScheduleService;
 		this.actionService = actionService;
@@ -79,23 +85,23 @@ public class OpenmrsSyncerListener {
 		this.encounterService = encounterService;
 		this.eventService = eventService;
 		this.clientService = clientService;
-		
+
 		this.config.registerAppStateToken(SchedulerConfig.openmrs_syncer_sync_schedule_tracker_by_last_update_enrollment, 0,
-		    "ScheduleTracker token to keep track of enrollment synced with OpenMRS", true);
-		
+				"ScheduleTracker token to keep track of enrollment synced with OpenMRS", true);
+
 		this.config.registerAppStateToken(SchedulerConfig.openmrs_syncer_sync_client_by_date_updated, 0,
-		    "OpenMRS data pusher token to keep track of new / updated clients synced with OpenMRS", true);
-		
+				"OpenMRS data pusher token to keep track of new / updated clients synced with OpenMRS", true);
+
 		this.config.registerAppStateToken(SchedulerConfig.openmrs_syncer_sync_client_by_date_voided, 0,
-		    "OpenMRS data pusher token to keep track of voided clients synced with OpenMRS", true);
-		
+				"OpenMRS data pusher token to keep track of voided clients synced with OpenMRS", true);
+
 		this.config.registerAppStateToken(SchedulerConfig.openmrs_syncer_sync_event_by_date_updated, 0,
-		    "OpenMRS data pusher token to keep track of new / updated events synced with OpenMRS", true);
-		
+				"OpenMRS data pusher token to keep track of new / updated events synced with OpenMRS", true);
+
 		this.config.registerAppStateToken(SchedulerConfig.openmrs_syncer_sync_event_by_date_voided, 0,
-		    "OpenMRS data pusher token to keep track of voided events synced with OpenMRS", true);
+				"OpenMRS data pusher token to keep track of voided events synced with OpenMRS", true);
 	}
-	
+
 	// @MotechListener(subjects =
 	// OpenmrsConstants.SCHEDULER_TRACKER_SYNCER_SUBJECT)
 	// public void scheduletrackerSyncer(MotechEvent event) {
@@ -140,99 +146,129 @@ public class OpenmrsSyncerListener {
 	// e.printStackTrace();
 	// }
 	// }
-	
+
 	@MotechListener(subjects = OpenmrsConstants.SCHEDULER_OPENMRS_DATA_PUSH_SUBJECT)
 	public void pushToOpenMRS(MotechEvent event) {
 		System.out.println("144 start data send to openmrs");
 		if (!lock.tryLock()) {
 			logger.warn("Not fetching forms from Message Queue. It is already in progress.");
+			System.out.println("Not fetching forms from Message Queue. It is already in progress.");
 			return;
 		}
 		try {
-			
-			logger("RUNNING ", event.getSubject());
+			reSyncToOpenMRS();
+			logger("156 - RUNNING ", event.getSubject());
 			AppStateToken lastsync = config
-			        .getAppStateTokenByName(SchedulerConfig.openmrs_syncer_sync_client_by_date_updated);
+					.getAppStateTokenByName(SchedulerConfig.openmrs_syncer_sync_client_by_date_updated);
+			System.out.println("158 - NEXT RUNNING lastsync = "+ lastsync);
 			Long start = lastsync == null || lastsync.getValue() == null ? 0 : lastsync.longValue();
-			
-			pushClient(start);
-			
-			logger.info("RUNNING FOR EVENTS");
-			
+			System.out.println("START FROM LAST SYNC: "+ start);
+			List<Client> cl = clientService.findByServerVersion(start);
+			System.out.println("Clients list size " + cl.size());
+			for (Client c : cl) {
+				try {
+					System.out.println("163 - PUSH CLIENT REVISED");
+					pushClientRevised(c);
+				} catch (RelationshipNotFoundException rnfException) {
+					config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_client_by_date_updated, c.getServerVersion());
+					errorTraceService.log("OPENMRS FAILED CLIENT PUSH", Client.class.getName(), c.getBaseEntityId(),
+							ExceptionUtils.getStackTrace(rnfException), "");
+				} catch (IdentifierNotFoundException infException){
+					config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_client_by_date_updated, c.getServerVersion());
+					errorTraceService.log("OPENMRS FAILED CLIENT PUSH", Client.class.getName(), c.getBaseEntityId(),
+							ExceptionUtils.getStackTrace(infException), "");
+				} catch (HouseholdNotFoundException hnfException){
+					config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_client_by_date_updated, c.getServerVersion());
+					errorTraceService.log("OPENMRS FAILED CLIENT PUSH", Client.class.getName(), c.getBaseEntityId(),
+							ExceptionUtils.getStackTrace(hnfException), "");
+				} catch (Exception ex1) {
+					config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_client_by_date_updated, c.getServerVersion());
+					errorTraceService.log("OPENMRS FAILED CLIENT PUSH", Client.class.getName(), c.getBaseEntityId(),
+							ExceptionUtils.getStackTrace(ex1), "");
+					//ex1.printStackTrace();
+					logger.error("client error message:" + ex1.getMessage() + ", and cause :" + ex1.getCause()
+							+ ", baseEntityId:" + c.getBaseEntityId());
+				}
+			}
+
+			System.out.println("RUNNING FOR EVENTS");
+
 			lastsync = config.getAppStateTokenByName(SchedulerConfig.openmrs_syncer_sync_event_by_date_updated);
 			start = lastsync == null || lastsync.getValue() == null ? 0 : lastsync.longValue();
-			pushEvent(start);
+//			pushEvent(start);
 			logger("PUSH TO OPENMRS FINISHED AT ", "");
-			
+
 		}
 		catch (Exception ex) {
-			logger.error("", ex);
+			ex.printStackTrace();
 		}
 		finally {
 			lock.unlock();
 		}
 	}
-	
+
 	public DateTime logger(String message, String subject) {
-		logger.info(message + subject + " at " + DateTime.now());
+		System.out.println(message + subject + " at " + DateTime.now());
 		return DateTime.now();
-		
+
 	}
 
-	public JSONObject pushClientRevised() throws JSONException, IOException {
-		List<org.opensrp.domain.ErrorTrace> errorTraces = errorTraceService.findAllUnSyncErrors("org.opensrp.domain.Client");
-		logger.info("Error trace list size " + errorTraces.size());
+	public JSONObject pushClientRevised(Client c)
+			throws JSONException, IOException, RelationshipNotFoundException, IdentifierNotFoundException,
+			HouseholdNotFoundException {
 		JSONObject patient = new JSONObject();
-		for (org.opensrp.domain.ErrorTrace errorTrace : errorTraces) {
-			Client c = clientService.find(errorTrace.getRecordId());
-
-			logger.info("Client: "+c);
-
-			try {
-				if (c.getAttributes().containsKey("spouseName") || c.getRelationships() == null) {
-					if (c.getBirthdate() == null) {
-						c.setBirthdate(new DateTime("1970-01-01"));
-					}
-					if (c.getAttributes().containsKey("spouseName")) {
-						c.setGender("Female");
-					}
-				}
-				String isSendToOpenMRS = c.getIsSendToOpenMRS();
-
-				logger.info("IS SEND TO OPENMRS: "+ isSendToOpenMRS);
-
-				String uuid = c.getIdentifiers().get(patientService.OPENMRS_UUID_IDENTIFIER_TYPE);
-				if (uuid == null) {
-					JSONObject p = patientService.getPatientByIdentifier(c.getBaseEntityId());
-					for (Entry<String, String> id : c.getIdentifiers().entrySet()) {
-						p = patientService.getPatientByIdentifier(id.getValue());
-						if (p != null) break;
-					}
-					uuid = (p != null? p.getString("uuid"):null);
-				}
-				if (isSendToOpenMRS == null || isSendToOpenMRS.equalsIgnoreCase("yes")) {
-					JSONObject patientJson = patientService.createPatientRevised(c, uuid); //save or update at openmrs
-					if (patientJson != null && patientJson.has("uuid") && uuid == null) {
-						c.addIdentifier(PatientService.OPENMRS_UUID_IDENTIFIER_TYPE, patientJson.getString("uuid"));
-						clientService.addOrUpdate(c, false);
-					}
-					patient = patientJson;
-				}
-				config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_client_by_date_updated, c.getServerVersion());
-			} catch (Exception e) {
-				config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_client_by_date_updated, c.getServerVersion());
-				errorTraceService.log("OPENMRS FAILED CLIENT PUSH", Client.class.getName(), c.getBaseEntityId(),
-						ExceptionUtils.getStackTrace(e), "");
-				logger.error("client error message:" + e.getMessage() + ", and cause :" + e.getCause()
-						+ ", baseEntityId:" + c.getBaseEntityId());
+		if (c.getAttributes().containsKey("spouseName") || c.getRelationships() == null) {
+			if (c.getBirthdate() == null) {
+				c.setBirthdate(new DateTime("1970-01-01"));
+			}
+			if (c.getAttributes().containsKey("spouseName")) {
+				c.setGender("Female");
 			}
 		}
+		String isSendToOpenMRS = c.getIsSendToOpenMRS();
+		String uuid = c.getIdentifiers().get(patientService.OPENMRS_UUID_IDENTIFIER_TYPE);
+
+		System.out.println("UUID:-> "+ uuid);
+
+		if (uuid == null) {
+			System.out.println("BASE ENTITY ID: "+ c.getBaseEntityId());
+			System.out.println("isSendToOpenMRS: "+ isSendToOpenMRS);
+//			FIXME -- omitted, followed by proshanto sarker. will be active when atomfeed is activated
+			//			if (isSendToOpenMRS == null || isSendToOpenMRS.equalsIgnoreCase("yes")) {
+				JSONObject patientJson = patientService.createPatientRevised(c, uuid); //save or update at openmrs
+				System.out.println("END TIME: "+System.currentTimeMillis());
+				System.out.println("Patient RESPONSE:-> "+ patientJson);
+				String patientUuid = (patientJson != null && patientJson.getJSONObject("patient").has("uuid")) ?
+						patientJson.getJSONObject("patient").getString("uuid"):null;
+				if (!org.apache.commons.lang.StringUtils.isBlank(patientUuid)) {
+					c.addIdentifier(PatientService.OPENMRS_UUID_IDENTIFIER_TYPE, patientUuid);
+					clientService.addOrUpdate(c, false);
+				}
+				patient = patientJson;
+//			}
+		} else {
+//			FIXME -- omitted, followed by proshanto sarker. will be active when atomfeed is activated
+			System.out.println("Updating patient " + uuid);
+			//String isSendToOpenMRS = c.getIsSendToOpenMRS();
+//			if (isSendToOpenMRS == null || isSendToOpenMRS.equalsIgnoreCase("yes")) {
+				JSONObject patientJson = patientService.createPatientRevised(c, uuid);
+				System.out.println("UPDATE END TIME: "+System.currentTimeMillis());
+				System.out.println("Patient RESPONSE:-> "+ patientJson);
+				patient = patientJson;
+//			} else {
+//				System.out.println("this client doesn't go to openMRS at baseEntityId: " + uuid);
+//			}
+
+			config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_client_by_date_updated,
+					c.getServerVersion());
+		}
+		config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_client_by_date_updated, c.getServerVersion());
 		return patient;
 	}
-	
+
 	public JSONObject pushClient(long start) throws JSONException {
 		List<Client> cl = clientService.findByServerVersion(start);
-		logger.info("Clients list size " + cl.size());
+		System.out.println("Clients list size " + cl.size());
 		JSONObject patient = new JSONObject();// only for test code purpose
 		JSONArray patientsJsonArray = new JSONArray();// only for test code purpose
 		JSONArray relationshipsArray = new JSONArray();// only for test code purpose
@@ -241,7 +277,7 @@ public class OpenmrsSyncerListener {
 			try {
 				Multimedia multiMedia = multimediaService.findByCaseId(c.getBaseEntityId());
 				// FIXME This is to deal with existing records and should be
-				// removed later				
+				// removed later
 				if (c.getAttributes().containsKey("spouseName") || c.getRelationships() == null) {
 					if (c.getBirthdate() == null) {
 						c.setBirthdate(new DateTime("1970-01-01"));
@@ -267,20 +303,20 @@ public class OpenmrsSyncerListener {
 
 				String isSendToOpenMRS = c.getIsSendToOpenMRS();
 				if (uuid != null) {
-					logger.info("Updating patient " + uuid);
+					System.out.println("Updating patient " + uuid);
 					//String isSendToOpenMRS = c.getIsSendToOpenMRS();
 					if (isSendToOpenMRS == null || isSendToOpenMRS.equalsIgnoreCase("yes")) {
 						patient = patientService.updatePatient(c, uuid);
 					} else {
-						logger.info("this client doesn't go to openMRS at baseEntityId: " + uuid);
+						System.out.println("this client doesn't go to openMRS at baseEntityId: " + uuid);
 					}
-					
+
 					config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_client_by_date_updated,
-					    c.getServerVersion());
+							c.getServerVersion());
 					if (multiMedia != null) {
 						patientService.personImageUpload(multiMedia, uuid);
 					}
-					
+
 				} else {
 					if (isSendToOpenMRS == null || isSendToOpenMRS.equalsIgnoreCase("yes")) {
 						JSONObject patientJson = patientService.createPatient(c);
@@ -289,50 +325,50 @@ public class OpenmrsSyncerListener {
 							c.addIdentifier(PatientService.OPENMRS_UUID_IDENTIFIER_TYPE, patientJson.getString("uuid"));
 							clientService.addOrUpdate(c, false);
 							config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_client_by_date_updated,
-							    c.getServerVersion());
+									c.getServerVersion());
 							if (multiMedia != null) {
 								patientService.personImageUpload(multiMedia, patientJson.getString("uuid"));
 							}
-							
+
 						}
 					} else {
 						// data not sent to openMRS but timestamp is updated
 						config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_client_by_date_updated,
-						    c.getServerVersion());
+								c.getServerVersion());
 					}
 				}
 			}
 			catch (Exception ex1) {
 				config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_client_by_date_updated, c.getServerVersion());
 				errorTraceService.log("OPENMRS FAILED CLIENT PUSH", Client.class.getName(), c.getBaseEntityId(),
-				    ExceptionUtils.getStackTrace(ex1), "");
+						ExceptionUtils.getStackTrace(ex1), "");
 				//ex1.printStackTrace();
 				logger.error("client error message:" + ex1.getMessage() + ", and cause :" + ex1.getCause()
-				        + ", baseEntityId:" + c.getBaseEntityId());
+						+ ", baseEntityId:" + c.getBaseEntityId());
 			}
 			patientsJsonArray.put(patient);
 		}
-		
+
 		for (Client c : cl) {
 			String isSendToOpenMRS = c.getIsSendToOpenMRS();
-			if (c.getRelationships() != null && isSendToOpenMRS.equalsIgnoreCase("yes")) {// Mother has no relations. 
+			if (c.getRelationships() != null && isSendToOpenMRS.equalsIgnoreCase("yes")) {// Mother has no relations.
 				try {
 					JSONObject motherJson = patientService.getPatientByIdentifier(c.getRelationships().get("household")
-					        .get(0).toString());
+							.get(0).toString());
 					JSONObject person = motherJson.getJSONObject("person");
-					
+
 					if (person.getString("uuid") != null) {
 						JSONArray relationships = patientService.getPersonRelationShip(c.getIdentifier("OPENMRS_UUID"));
 						if (relationships.length() == 0) {
 							JSONObject relation = patientService.createPatientRelationShip(c.getIdentifier("OPENMRS_UUID"),
-							    person.getString("uuid"), "03ed3084-4c7a-11e5-9192-080027b662ec");
+									person.getString("uuid"), "03ed3084-4c7a-11e5-9192-080027b662ec");
 							relationshipsArray.put(relation); // only for test code purpose
-							logger.info("RelationshipsCreated check openmrs" + c.getIdentifier("OPENMRS_UUID"));
+							System.out.println("RelationshipsCreated check openmrs" + c.getIdentifier("OPENMRS_UUID"));
 						} else {
-							logger.info("Relationship already created");
+							System.out.println("Relationship already created");
 						}
 					}
-					
+
 					/*List<Client> siblings = clientService.findByRelationship(c.getRelationships().get("mother").get(0)
 					        .toString());
 					if (!siblings.isEmpty() || siblings != null) {
@@ -345,28 +381,28 @@ public class OpenmrsSyncerListener {
 								patientService.createPatientRelationShip(c.getIdentifier("OPENMRS_UUID"),
 								    sibling.getString("uuid"), "8d91a01c-c2cc-11de-8d13-0010c6dffd0f");
 							}
-							
+
 						}
-						
+
 					}*/
 				}
 				catch (Exception e) {
 					logger.error("no relationship found at case id " + c.getBaseEntityId());
 				}
-				
+
 			}
-			logger.info("RelationshipsCreated sibling1 ");
-			
+			System.out.println("RelationshipsCreated sibling1 ");
+
 		}
 		returnJsonObject.put("patient", patientsJsonArray); // only for test code purpose
 		returnJsonObject.put("relation", relationshipsArray);// only for test code purpose
 		return returnJsonObject;
-		
+
 	}
-	
+
 	public JSONObject pushEvent(long start) {
 		List<Event> el = eventService.findByServerVersion(start);
-		logger.info("Event list size " + el.size() + " [start]" + start);
+		System.out.println("Event list size " + el.size() + " [start]" + start);
 		JSONObject encounter = null;
 		for (Event e : el) {
 			try {
@@ -375,12 +411,12 @@ public class OpenmrsSyncerListener {
 				if (uuid != null) {
 					if (isSendToOpenMRS.equalsIgnoreCase("yes") || isSendToOpenMRS == null) {
 						encounter = encounterService.updateEncounter(e);
-						
+
 					} else {
-						logger.info("this event doesn't go to openMRS at baseentityid: " + uuid + ", and event type:"
-						        + e.getEventType());
+						System.out.println("this event doesn't go to openMRS at baseentityid: " + uuid + ", and event type:"
+								+ e.getEventType());
 					}
-					
+
 				} else {
 					if (isSendToOpenMRS == null || isSendToOpenMRS.equalsIgnoreCase("yes")) {
 						JSONObject eventJson = encounterService.createEncounter(e);
@@ -396,111 +432,66 @@ public class OpenmrsSyncerListener {
 			catch (Exception ex2) {
 				config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_event_by_date_updated, e.getServerVersion());
 				errorTraceService.log("OPENMRS FAILED EVENT PUSH", Event.class.getName(), e.getId(),
-				    ExceptionUtils.getStackTrace(ex2), "");
+						ExceptionUtils.getStackTrace(ex2), "");
 				//ex2.printStackTrace();
 				logger.error("event error message:" + ex2.getMessage() + ", and cause :" + ex2.getCause()
-				        + ", baseEntityId:" + e.getBaseEntityId());
+						+ ", baseEntityId:" + e.getBaseEntityId());
 			}
 		}
 		return encounter;
-		
+
 	}
-	
-	@MotechListener(subjects = OpenmrsConstants.SCHEDULER_OPENMRS_DATA_PUSH_RESYNC_SUBJECT)
-	public void reSyncToOpenMRS(MotechEvent event) throws IOException, JSONException {
+
+	//	@MotechListener(subjects = OpenmrsConstants.SCHEDULER_OPENMRS_DATA_PUSH_RESYNC_SUBJECT)
+	public void reSyncToOpenMRS() {
 		System.out.println("404 start data send to openmrs");
-		pushClientRevised();
-//		List<org.opensrp.domain.ErrorTrace> errorTraces = errorTraceService.findAllUnSyncErrors("org.opensrp.domain.Client");
-//		JSONObject patient = new JSONObject();// only for test code purpose
-//		JSONArray patientsJsonArray = new JSONArray();// only for test code purpose
-//		JSONArray relationshipsArray = new JSONArray();// only for test code purpose
-//		JSONObject returnJsonObject = new JSONObject();// only for test code purpose
-//		for (org.opensrp.domain.ErrorTrace errorTrace : errorTraces) {
-//			Client c = clientService.find(errorTrace.getRecordId());
-//			if (c != null) {
-//				try {
-//					Multimedia multiMedia = multimediaService.findByCaseId(c.getBaseEntityId());
-//					// FIXME This is to deal with existing records and should be
-//					// removed later
-//					if (c.getAttributes().containsKey("spouseName")) {
-//						if (c.getBirthdate() == null) {
-//							c.setBirthdate(new DateTime("1970-01-01"));
-//						}
-//						c.setGender("Female");
-//					}
-//					if (c.getRelationships() == null) {
-//						if (c.getBirthdate() == null) {
-//							c.setBirthdate(new DateTime("1970-01-01"));
-//						}
-//					}
-//					String uuid = c.getIdentifier(PatientService.OPENMRS_UUID_IDENTIFIER_TYPE);
-//					if (uuid == null) {
-//						JSONObject p = patientService.getPatientByIdentifier(c.getBaseEntityId());
-//						for (Entry<String, String> id : c.getIdentifiers().entrySet()) {
-//							p = patientService.getPatientByIdentifier(id.getValue());
-//							if (p != null) {
-//								break;
-//							}
-//						}
-//						if (p != null) {
-//							uuid = p.getString("uuid");
-//						}
-//					}
-//					String isSendToOpenMRS = c.getIsSendToOpenMRS();
-//					if (uuid != null) {
-//						logger.info("Updating patient " + uuid);
-//						//String isSendToOpenMRS = c.getIsSendToOpenMRS();
-//						if (isSendToOpenMRS == null || isSendToOpenMRS.equalsIgnoreCase("yes")) {
-//							patient = patientService.updatePatient(c, uuid);
-//						} else {
-//							logger.info("this client doesn't go to openMRS at baseentityid: " + uuid);
-//						}
-//
-//						config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_client_by_date_updated,
-//						    c.getServerVersion());
-//						if (multiMedia != null) {
-//							patientService.personImageUpload(multiMedia, uuid);
-//						}
-//
-//					} else {
-//						if (isSendToOpenMRS == null || isSendToOpenMRS.equalsIgnoreCase("yes")) {
-//							JSONObject patientJson = patientService.createPatient(c);
-//							patient = patientJson;
-//							if (patientJson != null && patientJson.has("uuid")) {
-//								c.addIdentifier(PatientService.OPENMRS_UUID_IDENTIFIER_TYPE, patientJson.getString("uuid"));
-//								clientService.addOrUpdate(c, false);
-//								config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_client_by_date_updated,
-//								    c.getServerVersion());
-//								if (multiMedia != null) {
-//									patientService.personImageUpload(multiMedia, patientJson.getString("uuid"));
-//								}
-//
-//							}
-//						} else {
-//							// data not sent to openMRS but timestamp is updated
-//							config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_client_by_date_updated,
-//							    c.getServerVersion());
-//						}
-//
-//					}
-//					errorTrace.setStatus("solved");
-//					errorTraceService.updateError(errorTrace);
-//				}
-//				catch (Exception ex1) {
-//					config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_client_by_date_updated,
-//					    c.getServerVersion());
-//					logger.error("client error message:" + ex1.getMessage() + ", and cause :" + ex1.getCause()
-//					        + ",at baseEntityId:" + errorTrace.getRecordId());
-//					errorTrace.setStatus("unsolved");
-//					errorTraceService.updateError(errorTrace);
-//
-//				}
-//
-//			} else {
-//				logger.error("no client found at baseEntityId:" + errorTrace.getRecordId());
-//			}
-//		}
-		
+		List<org.opensrp.domain.ErrorTrace> errorTraces = errorTraceService.findAllUnSyncErrors("org.opensrp.domain.Client");
+		System.out.println("Error trace list size " + errorTraces.size());
+		for (org.opensrp.domain.ErrorTrace errorTrace : errorTraces) {
+			System.out.println("START TIME: "+System.currentTimeMillis());
+			Client c = clientService.find(errorTrace.getRecordId());
+			try {
+				pushClientRevised(c);
+				errorTrace.setStatus("solved");
+				errorTrace.setDateOccurred(new DateTime());
+				errorTraceService.updateError(errorTrace);
+			} catch (RelationshipNotFoundException rnfException){
+				config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_client_by_date_updated,
+						c.getServerVersion());
+				logger.error("client error message:" + rnfException.getMessage() + ", and cause :" + rnfException.getErrorMessage()
+						+ ",at baseEntityId:" + errorTrace.getRecordId());
+				errorTrace.setStackTrace(rnfException.getErrorMessage());
+				errorTrace.setStatus("unsolved");
+				errorTrace.setDateOccurred(new DateTime());
+				errorTraceService.updateError(errorTrace);
+			} catch (IdentifierNotFoundException infException){
+				config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_client_by_date_updated,
+						c.getServerVersion());
+				logger.error("client error message:" + infException.getMessage() + ", and cause :" + infException.getErrorMessage()
+						+ ",at baseEntityId:" + errorTrace.getRecordId());
+				errorTrace.setDateOccurred(new DateTime());
+				errorTrace.setStackTrace(infException.getErrorMessage());
+				errorTrace.setStatus("unsolved");
+				errorTraceService.updateError(errorTrace);
+			} catch (HouseholdNotFoundException hnfException){
+				config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_client_by_date_updated,
+						c.getServerVersion());
+				logger.error("client error message:" + hnfException.getMessage() + ", and cause :" + hnfException.getErrorMessage()
+						+ ",at baseEntityId:" + errorTrace.getRecordId());
+				errorTrace.setDateOccurred(new DateTime());
+				errorTrace.setStatus("unsolved");
+				errorTrace.setStackTrace(hnfException.getErrorMessage());
+				errorTraceService.updateError(errorTrace);
+			} catch (Exception e) {
+				config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_client_by_date_updated,
+						c.getServerVersion());
+				logger.error("client error message:" + e.getMessage() + ", and cause :" + e.getCause()
+						+ ",at baseEntityId:" + errorTrace.getRecordId());
+				errorTrace.setStatus("unsolved");
+				errorTrace.setDateOccurred(new DateTime());
+				errorTraceService.updateError(errorTrace);
+			}
+		}
 	}
-	
+
 }

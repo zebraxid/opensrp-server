@@ -125,7 +125,7 @@
     select    
     <include refid="Base_Column_List" />
     from error.error_trace
-    where document_type= #{type} and status = 'error' order by id asc limit 500
+    where document_type= #{type} and status = 'error' order by id asc limit 100
     
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">

@@ -1155,4 +1155,10 @@ public class ClientMetadataExample {
             super();
         }
     }
+
+	@Override
+	public String toString() {
+		return "ClientMetadataExample{" + "orderByClause='" + orderByClause + '\'' + ", distinct=" + distinct
+				+ ", oredCriteria=" + oredCriteria + '}';
+	}
 }

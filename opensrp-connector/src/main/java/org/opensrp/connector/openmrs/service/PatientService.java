@@ -16,10 +16,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.opensrp.common.util.HttpUtil;
 import org.opensrp.connector.MultipartUtility;
+import org.opensrp.connector.openmrs.exception.HouseholdNotFoundException;
+import org.opensrp.connector.openmrs.exception.IdentifierNotFoundException;
+import org.opensrp.connector.openmrs.exception.RelationshipNotFoundException;
 import org.opensrp.connector.openmrs.schedule.OpenmrsSyncerListener;
 import org.opensrp.domain.Address;
 import org.opensrp.domain.Client;
 import org.opensrp.domain.Multimedia;
+import org.opensrp.repository.postgres.ClientsRepositoryImpl;
+import org.opensrp.service.ErrorTraceService;
 import org.opensrp.service.MultimediaService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,6 +33,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import com.mysql.jdbc.StringUtils;
+
+import javax.management.relation.RelationNotFoundException;
 
 @Service
 public class PatientService extends OpenmrsService {
@@ -71,6 +78,9 @@ public class PatientService extends OpenmrsService {
 
 	@Autowired
 	MultimediaService multimediaService;
+
+	@Autowired
+	private ClientsRepositoryImpl clientsRepository;
 	
 	public PatientService() {
 	}
@@ -78,7 +88,16 @@ public class PatientService extends OpenmrsService {
 	public PatientService(String openmrsUrl, String user, String password) {
 		super(openmrsUrl, user, password);
 	}
-	
+
+	public Client getPatientByIdentifierRevised(String identifier) throws JSONException {
+		try {
+			return clientsRepository.findByBaseEntityId(identifier);
+		}
+		catch (Exception e) {
+			return null;
+		}
+	}
+
 	public JSONObject getPatientByIdentifier(String identifier) throws JSONException {
 		try {
 			JSONArray p = new JSONObject(HttpUtil.get(getURL() + "/" + PATIENT_URL, "v=full&identifier=" + identifier,
@@ -149,7 +168,12 @@ public class PatientService extends OpenmrsService {
 		    OPENMRS_USER, OPENMRS_PWD).body()).getJSONArray("results");
 		return p.length() > 0 ? p.getJSONObject(0) : null;
 	}
-	
+
+	public JSONObject createPersonRevised(Client be) throws JSONException {
+		JSONObject per = convertBaseEntityToOpenmrsJson(be);
+		return per;
+	}
+
 	public JSONObject createPerson(Client be) throws JSONException {
 		JSONObject per = convertBaseEntityToOpenmrsJson(be);
 		//logger.warn("Person Json:" + per.toString());
@@ -157,50 +181,59 @@ public class PatientService extends OpenmrsService {
 		
 		return new JSONObject(response);
 	}
-
-	public JSONObject createPersonRevised(Client be) throws JSONException {
-		JSONObject per = convertBaseEntityToOpenmrsJson(be);
-		return new JSONObject(per);
-	}
 	
 	public JSONObject convertBaseEntityToOpenmrsJson(Client be) throws JSONException {
 		JSONObject per = new JSONObject();
-		// need to be removed after source correction
-		String gender = "";
-		if (be.getGender().equalsIgnoreCase("Female")) {
-			gender = "F";
-		} else if (be.getGender().equalsIgnoreCase("Male")) {
-			gender = "M";
-		} else {
-			gender = be.getGender();
+
+		try {
+//			System.out.println("PREPARE PATIENT: "+ be);
+
+			// need to be removed after source correction
+			String gender = "";
+			if (be.getGender().equalsIgnoreCase("Female")) {
+				gender = "F";
+			} else if (be.getGender().equalsIgnoreCase("Male")) {
+				gender = "M";
+			} else {
+				gender = be.getGender();
+			}
+			per.put("gender", gender);
+			per.put("birthdate", OPENMRS_DATE.format(be.getBirthdate().toDate()));
+			per.put("birthdateEstimated", be.getBirthdateApprox());
+
+//			System.out.println("SETTING PERSON 1: "+ per);
+
+			if (be.getDeathdate() != null) {
+				per.put("deathDate", OPENMRS_DATE.format(be.getDeathdate().toDate()));
+			}
+
+			String fn = be.getFirstName() == null || be.getFirstName().isEmpty() ? "-" : be.getFirstName();
+			if (!fn.equals("-")) {
+				fn = fn.replaceAll("[^A-Za-z0-9\\s]+", "");
+			}
+
+			String mn = be.getMiddleName() == null ? "" : be.getMiddleName();
+
+			if (!mn.equals("-")) {
+				mn = mn.replaceAll("[^A-Za-z0-9\\s]+", "");
+			}
+
+			String ln = (be.getLastName() == null || be.getLastName().equals(".")) ? "-" : be.getLastName();
+			if (!ln.equals("-")) {
+				ln = ln.replaceAll("[^A-Za-z0-9\\s]+", "");
+			}
+
+//			System.out.println("SETTING PERSON 2: "+ per);
+
+			per.put("names", new JSONArray("[{\"givenName\":\"" + fn + "\",\"middleName\":\"" + mn + "\", \"familyName\":\""
+					+ ln + "\"}]"));
+			per.put("attributes", convertAttributesToOpenmrsJson(be.getAttributes()));
+			per.put("addresses", convertAddressesToOpenmrsJson(be.getAddresses()));
+//			System.out.println("SETTING PERSON 3: "+ per);
+		} catch (Exception e) {
+			System.out.println("ERROR OCCURRED IN CREATE PERSON :( :( :(");
+			e.printStackTrace();
 		}
-		per.put("gender", gender);
-		per.put("birthdate", OPENMRS_DATE.format(be.getBirthdate().toDate()));
-		per.put("birthdateEstimated", be.getBirthdateApprox());
-		if (be.getDeathdate() != null) {
-			per.put("deathDate", OPENMRS_DATE.format(be.getDeathdate().toDate()));
-		}
-		
-		String fn = be.getFirstName() == null || be.getFirstName().isEmpty() ? "-" : be.getFirstName();
-		if (!fn.equals("-")) {
-			fn = fn.replaceAll("[^A-Za-z0-9\\s]+", "");
-		}
-		
-		String mn = be.getMiddleName() == null ? "" : be.getMiddleName();
-		
-		if (!mn.equals("-")) {
-			mn = mn.replaceAll("[^A-Za-z0-9\\s]+", "");
-		}
-		
-		String ln = (be.getLastName() == null || be.getLastName().equals(".")) ? "-" : be.getLastName();
-		if (!ln.equals("-")) {
-			ln = ln.replaceAll("[^A-Za-z0-9\\s]+", "");
-		}
-		
-		per.put("names", new JSONArray("[{\"givenName\":\"" + fn + "\",\"middleName\":\"" + mn + "\", \"familyName\":\""
-		        + ln + "\"}]"));
-		per.put("attributes", convertAttributesToOpenmrsJson(be.getAttributes()));
-		per.put("addresses", convertAddressesToOpenmrsJson(be.getAddresses()));
 		return per;
 	}
 	
@@ -220,7 +253,7 @@ public class PatientService extends OpenmrsService {
 				}
 			}
 			catch (Exception e) {
-				logger.error("attribute name " + at.getValue() + ", message" + e.getMessage());
+				logger.error("attributeCreatePersonRevised name " + at.getValue() + ", message" + e.getMessage());
 			}
 			
 		}
@@ -278,7 +311,65 @@ public class PatientService extends OpenmrsService {
 		return jaar;
 	}
 
-	public JSONObject createPatientRevised(Client c, String uuid) throws JSONException, IOException {
+	public JSONObject setIdentifierProperty(Client c, String idValue, Boolean preferred, String identifierTypeUuid) throws JSONException {
+		JSONObject jio = new JSONObject();
+		jio.put("identifierType", identifierTypeUuid);
+		jio.put("identifier", idValue);
+		Object cloc = c.getAttribute("Location");
+		jio.put("location", cloc == null ? "Unknown Location" : cloc);
+		jio.put("preferred", preferred);
+		return jio;
+	}
+
+	public JSONArray preparePatientIdentifierRevised(Client c) throws JSONException {
+		JSONArray ids = new JSONArray();
+		try {
+			System.out.println("306 - PREPARE PATIENT IDENTIFIER: "+ c.getIdentifiers());
+			if (c.getIdentifiers() != null) {
+				for (Entry<String, String> id : c.getIdentifiers().entrySet()) {
+					if (!org.apache.commons.lang.StringUtils.isBlank(id.getValue())) {
+						if (id.getKey().equalsIgnoreCase("OPENMRS_UUID")) {
+							ids.put(setIdentifierProperty(c, id.getValue(), false, "8347581d-a066-4615-b834-9332e7d744ed"));
+						}
+						if (id.getKey().equalsIgnoreCase("Patient_Identifier")) {
+							ids.put(setIdentifierProperty(c, id.getValue(), true, "81433852-3f10-11e4-adec-0800271c1b75"));
+						}
+					}
+				}
+			}
+			ids.put(setIdentifierProperty(c, c.getBaseEntityId(), true, "d21d0aa9-9324-4a1d-91f7-48819d408755"));
+		} catch (Exception e) {
+			System.out.println("ERROR OCCURRED IN PREPARE PATIENT IDENTIFIER");
+			e.printStackTrace();
+		}
+
+		System.out.println("IDS: "+ ids);
+
+		return ids;
+	}
+
+	public JSONArray preparePatientIdentifier(Client c) throws JSONException {
+		JSONArray ids = new JSONArray();
+		if (c.getIdentifiers() != null) {
+			for (Entry<String, String> id : c.getIdentifiers().entrySet()) {
+				if (id.getValue() != null) {
+					JSONObject jio = new JSONObject();
+					if (id.getKey().equalsIgnoreCase("Patient_Identifier")) {
+						ids.put(setIdentifierProperty(c, id.getValue(), true, "81433852-3f10-11e4-adec-0800271c1b75"));
+					}
+					if (id.getKey().equalsIgnoreCase("OPENMRS_UUID")) {
+						ids.put(setIdentifierProperty(c, id.getValue(), false, "8347581d-a066-4615-b834-9332e7d744ed"));
+					}
+				}
+			}
+		}
+		//Patient_Identifier
+		return new JSONArray(ids);
+	}
+
+	public JSONObject createPatientRevised(Client c, String uuid)
+			throws JSONException, IOException, RelationshipNotFoundException, IdentifierNotFoundException,
+			HouseholdNotFoundException {
 
 		JSONObject completePatient = new JSONObject();
 		JSONArray relationships = new JSONArray();
@@ -287,131 +378,77 @@ public class PatientService extends OpenmrsService {
 		JSONObject relationshipType = new JSONObject();
 		JSONObject personB = new JSONObject();
 
-		patient.put("person", createPersonRevised(c));
-		patient.put("identifiers", preparePatientIdentifier(c, false));
+		JSONObject person = createPersonRevised(c);
+		JSONArray patientIdentifiers = preparePatientIdentifierRevised(c);
 
-		relationshipType.put("uuid", PARENT_CHILD_RELATION);
-		JSONObject householdJSON = getPatientByIdentifier(c.getRelationships().get("household").get(0).toString());
+		System.out.println("PERSON NEW: "+person);
+		System.out.println("IDENTIFIER NEW: "+patientIdentifiers);
+		System.out.println("IDENTIFIERS SIZE: "+ patientIdentifiers.length());
+		if (patientIdentifiers.length() == 0) throw new IdentifierNotFoundException("No identifier found for this client");
 
-		personB.put("uuid", householdJSON.getString("uuid"));
-		personB.put("display", householdJSON.getString("display"));
+		patient.put("person", person);
+		patient.put("identifiers", patientIdentifiers);
 
-		relationship.put("relationshipType", relationshipType);
-		relationship.put("personB", personB);
-		relationships.put(relationship);
+//		System.out.println("PATIENT REVISED: "+ patient);
+
+		if (c.getRelationships() != null && c.getRelationships().containsKey("household")) {
+			String relationShipUuid = c.getRelationships().get("household").get(0).toString();
+
+			System.out.println("RELATIONSHIP UUID: "+ relationShipUuid);
+
+			if (relationShipUuid != null) {
+				Client householdResponse = getPatientByIdentifierRevised(relationShipUuid);
+				if (householdResponse == null) {
+					throw new HouseholdNotFoundException("No household found for this client");
+				}
+				if (householdResponse.getIdentifiers().containsKey("OPENMRS_UUID")) {
+					if (!org.apache.commons.lang.StringUtils.isBlank(householdResponse.getIdentifiers().get("OPENMRS_UUID"))) {
+						personB.put("uuid", householdResponse.getIdentifiers().get("OPENMRS_UUID"));
+						if (householdResponse.getFirstName() != null && householdResponse.getLastName() != null) {
+							personB.put("display", householdResponse.getFirstName()+ " " +householdResponse.getLastName());
+						}
+						relationshipType.put("uuid", PARENT_CHILD_RELATION);
+						relationship.put("relationshipType", relationshipType);
+						relationship.put("personB", personB);
+						relationships.put(relationship);
+					} else {
+						throw new RelationshipNotFoundException("No relationship found for this client");
+					}
+				}
+			}
+
+		}
+
+//		System.out.println("Person B: "+ personB);
+
 
 		Multimedia multiMedia = multimediaService.findByCaseId(c.getBaseEntityId());
-		File convertedFile = new File("" + multiMedia.getFilePath());
-		byte[] fileContent = FileUtils.readFileToByteArray(convertedFile);
-		String encodedString = Base64.getEncoder().encodeToString(fileContent);
-
-		completePatient.put("image", encodedString);
+		if (multiMedia != null) {
+			File convertedFile = new File("" + multiMedia.getFilePath());
+			byte[] fileContent = FileUtils.readFileToByteArray(convertedFile);
+			String encodedString = Base64.getEncoder().encodeToString(fileContent);
+			completePatient.put("image", ""); //FIXME--value will be replace by encodedString
+		}
+		else {
+			completePatient.put("image", "");
+		}
 		completePatient.put("patient", patient);
 		completePatient.put("relationships", relationships);
 
-		String url = getURL() + "/" + PATIENT_PROFILE_URL + (uuid == null? "":uuid);
+		System.out.println("COMPLETE PATIENT: "+ completePatient);
+
+		String url = getURL() + "/" + PATIENT_PROFILE_URL + (uuid == null? "":"/"+uuid);
+
+		System.out.println("PATIENT PROFILE URL: "+ url);
 
 		String response = HttpUtil.post(url, "", completePatient.toString(), OPENMRS_USER, OPENMRS_PWD).body();
 		return new JSONObject(response);
 	}
 
-
-
-	public JSONArray preparePatientIdentifierRevised(Client c, boolean isUpdate) throws JSONException {
-		JSONArray ids = new JSONArray();
-
-		if (c.getIdentifiers() != null) {
-			for (Entry<String, String> id : c.getIdentifiers().entrySet()) {
-				if (id.getValue() != null) {
-					JSONObject jio = new JSONObject();
-					if (id.getKey().equalsIgnoreCase("Patient_Identifier")) {
-						jio.put("identifierType", "81433852-3f10-11e4-adec-0800271c1b75");
-						jio.put("identifier", id.getValue());
-						jio.put("preferred", true);
-						Object cloc = c.getAttribute("Location");
-						jio.put("location", cloc == null ? "Unknown Location" : cloc);
-						ids.put(jio);
-
-					} else if (id.getKey().equalsIgnoreCase("OPENMRS_UUID") && isUpdate) {
-						jio.put("identifierType", "8347581d-a066-4615-b834-9332e7d744ed");
-						jio.put("identifier", id.getValue());
-						Object cloc = c.getAttribute("Location");
-						jio.put("preferred", false);
-						jio.put("location", cloc == null ? "Unknown Location" : cloc);
-						ids.put(jio);
-					}
-				}
-			}
-		}
-
-		JSONObject jio = new JSONObject();
-		jio.put("identifierType", "d21d0aa9-9324-4a1d-91f7-48819d408755"); // OpenSRP Thrive UID
-		jio.put("identifier", c.getIdentifiers());
-		Object cloc = c.getAttribute("Location");
-		jio.put("location", cloc == null ? "Unknown Location" : cloc);
-		jio.put("preferred", false);
-
-		ids.put(jio);
-		//Patient_Identifier
-
-		return new JSONArray(ids);
-	}
-
-	public JSONArray preparePatientIdentifier(Client c, boolean isUpdate) throws JSONException {
-		JSONArray ids = new JSONArray();
-		if (c.getIdentifiers() != null) {
-			for (Entry<String, String> id : c.getIdentifiers().entrySet()) {
-				if (id.getValue() != null) {
-					JSONObject jio = new JSONObject();
-					if (id.getKey().equalsIgnoreCase("Patient_Identifier")) {
-						jio.put("identifierType", "81433852-3f10-11e4-adec-0800271c1b75");
-						jio.put("identifier", id.getValue());
-						Object cloc = c.getAttribute("Location");
-						jio.put("location", cloc == null ? "Unknown Location" : cloc);
-
-						jio.put("preferred", true);
-						ids.put(jio);
-
-					} else if (id.getKey().equalsIgnoreCase("OPENMRS_UUID") && isUpdate) {
-						jio.put("identifierType", "8347581d-a066-4615-b834-9332e7d744ed");
-						jio.put("identifier", id.getValue());
-						Object cloc = c.getAttribute("Location");
-						jio.put("location", cloc == null ? "Unknown Location" : cloc);
-						jio.put("preferred", false);
-						ids.put(jio);
-
-					} else {
-						JSONObject idObj = getIdentifierType(id.getKey());
-						if (idObj == null) {
-							idObj = createIdentifierType(id.getKey(), id.getKey() + " - FOR THRIVE OPENSRP");
-						}
-						jio.put("identifierType", idObj.getString("uuid"));
-						jio.put("identifier", id.getValue());
-						Object cloc = c.getAttribute("Location");
-						jio.put("location", cloc == null ? "Unknown Location" : cloc);
-						jio.put("preferred", false);
-						ids.put(jio);
-					}
-				}
-			}
-		}
-
-		JSONObject jio = new JSONObject();
-		jio.put("identifierType", "d21d0aa9-9324-4a1d-91f7-48819d408755"); // OpenSRP Thrive UID
-		jio.put("identifier", c.getIdentifiers());
-		Object cloc = c.getAttribute("Location");
-		jio.put("location", cloc == null ? "Unknown Location" : cloc);
-		jio.put("preferred", false);
-
-		ids.put(jio);
-		//Patient_Identifier
-		return new JSONArray(ids);
-	}
-
 	public JSONObject createPatient(Client c) throws JSONException {
 		JSONObject p = new JSONObject();
 		p.put("person", createPerson(c).getString("uuid"));
-		p.put("identifiers", preparePatientIdentifier(c, false));
+		p.put("identifiers", preparePatientIdentifier(c));
 		String response = HttpUtil.post(getURL() + "/" + PATIENT_URL, "", p.toString(), OPENMRS_USER, OPENMRS_PWD).body();
 		//System.err.println("response" + response);
 		return new JSONObject(response);
@@ -420,7 +457,7 @@ public class PatientService extends OpenmrsService {
 	public JSONObject updatePatient(Client c, String uuid) throws JSONException {
 		JSONObject p = new JSONObject();
 		p.put("person", convertBaseEntityToOpenmrsJson(c));
-		p.put("identifiers", preparePatientIdentifier(c, true));
+		p.put("identifiers", preparePatientIdentifier(c));
 		return new JSONObject(HttpUtil.post(getURL() + "/" + PATIENT_URL + "/" + uuid, "", p.toString(), OPENMRS_USER,
 		    OPENMRS_PWD).body());
 	}

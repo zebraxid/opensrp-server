@@ -248,13 +248,18 @@ public class ClientsRepositoryImpl extends BaseRepositoryImpl<Client> implements
 	
 	@Override
 	public List<Client> findByServerVersion(long serverVersion) {
+
+		System.out.println("LONG SERVER VERSION: "+ serverVersion);
+
 		ClientMetadataExample clientMetadataExample = new ClientMetadataExample();
 		clientMetadataExample.createCriteria().andServerVersionGreaterThanOrEqualTo(serverVersion + 1)
 		        .andDateDeletedIsNull();
 		clientMetadataExample.setOrderByClause("server_version ASC");
-		
+
+		System.out.println("CLIENT METADATA EXAMPLE: "+clientMetadataExample);
 		List<org.opensrp.domain.postgres.Client> clients = clientMetadataMapper.selectMany(clientMetadataExample, 0,
 		    DEFAULT_FETCH_SIZE);
+		System.out.println("SIZE: "+ clients.size());
 		return convert(clients);
 	}
 	
