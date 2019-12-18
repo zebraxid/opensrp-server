@@ -11,6 +11,7 @@ import org.json.JSONObject;
 import org.opensrp.domain.Address;
 import org.opensrp.domain.Client;
 import org.opensrp.domain.postgres.CustomQuery;
+import org.opensrp.domain.postgres.HH;
 import org.opensrp.repository.ClientsRepository;
 import org.opensrp.search.AddressSearchBean;
 import org.opensrp.search.ClientSearchBean;
@@ -290,5 +291,8 @@ public class ClientService {
 
 	public CustomQuery findTeamInfo(String username) {
 		return allClients.findTeamInfo(username);
+	}
+	public List<HH> getHousehold(long timestamp){
+		return allClients.selectHousehold(timestamp);
 	}
 }

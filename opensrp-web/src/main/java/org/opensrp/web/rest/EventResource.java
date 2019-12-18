@@ -32,6 +32,7 @@ import org.opensrp.common.AllConstants.BaseEntity;
 import org.opensrp.domain.Client;
 import org.opensrp.domain.Event;
 import org.opensrp.domain.postgres.CustomQuery;
+import org.opensrp.domain.postgres.HH;
 import org.opensrp.search.AddressSearchBean;
 import org.opensrp.search.ClientSearchBean;
 import org.opensrp.search.EventSearchBean;
@@ -226,7 +227,8 @@ public class EventResource extends RestResource<Event> {
 	@RequestMapping(headers = { "Accept=application/json;charset=UTF-8" }, value = "/sync", method = RequestMethod.GET)
 	@ResponseBody
 	protected ResponseEntity<String> sync(HttpServletRequest request) {
-		
+		List<HH> hhs = clientService.getHousehold(0);
+		System.err.println("hhs::"+hhs);
 		Map<String, Object> response = new HashMap<String, Object>();
 		try {
 			List<CustomQuery> locations = eventService.getLocations(request.getRemoteUser());

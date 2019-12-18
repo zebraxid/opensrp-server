@@ -15,6 +15,7 @@ import org.motechproject.dao.MotechBaseRepository;
 import org.opensrp.common.AllConstants;
 import org.opensrp.domain.Client;
 import org.opensrp.domain.postgres.CustomQuery;
+import org.opensrp.domain.postgres.HH;
 import org.opensrp.repository.ClientsRepository;
 import org.opensrp.repository.lucene.LuceneClientRepository;
 import org.opensrp.search.AddressSearchBean;
@@ -266,5 +267,11 @@ public class AllClients extends MotechBaseRepository<Client> implements ClientsR
 			
 			return null;
 		}
+	}
+
+	@Override
+	public List<HH> selectHousehold(long timestamp) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

@@ -17,6 +17,7 @@ import org.opensrp.domain.Client;
 import org.opensrp.domain.postgres.ClientMetadata;
 import org.opensrp.domain.postgres.ClientMetadataExample;
 import org.opensrp.domain.postgres.CustomQuery;
+import org.opensrp.domain.postgres.HH;
 import org.opensrp.repository.ClientsRepository;
 import org.opensrp.repository.postgres.mapper.custom.CustomClientMapper;
 import org.opensrp.repository.postgres.mapper.custom.CustomClientMetadataMapper;
@@ -421,5 +422,11 @@ public class ClientsRepositoryImpl extends BaseRepositoryImpl<Client> implements
 			return null;
 		}
 		return t.getBaseEntityId();
+	}
+
+	@Override
+	public List<HH> selectHousehold(long timestamp) {
+		// TODO Auto-generated method stub
+		return clientMetadataMapper.selectHousehold(0);
 	}
 }
