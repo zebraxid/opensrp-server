@@ -480,7 +480,7 @@ public class EventResource extends RestResource<Event> {
 					}
 				}
 			}
-			
+			System.err.println("--------------------------------------------");
 			if (syncData.has("clients")) {
 				
 				ArrayList<Client> clients = (ArrayList<Client>) gson.fromJson(syncData.getString("clients"),
@@ -488,8 +488,10 @@ public class EventResource extends RestResource<Event> {
 				logger.info("received client size:" + clients.size());
 				for (Client client : clients) {
 					try {
+						System.out.println("-,,,,,,,,,,,,,,,,,,,,,,,");
 						List<Event> events = eventService.findByBaseEntityAndEventTypeContaining(client.getBaseEntityId(),
 						    "Registration");
+						System.err.println("5555555555555555555555555555555");
 						if (events.size() != 0) {
 							Event event = events.get(0);
 							getProvider = event.getProviderId();
@@ -498,6 +500,7 @@ public class EventResource extends RestResource<Event> {
 							getProvider = "";
 						}
 						if (getProvider.isEmpty() || (dataProvider.equalsIgnoreCase(getProvider) && !getProvider.isEmpty())) {
+							System.err.println("66666666666");
 							client.withIsSendToOpenMRS("yes");
 							clientService.addOrUpdate(client);
 						} else {

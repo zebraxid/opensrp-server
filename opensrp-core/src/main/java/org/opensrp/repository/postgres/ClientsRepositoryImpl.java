@@ -65,7 +65,7 @@ public class ClientsRepositoryImpl extends BaseRepositoryImpl<Client> implements
 			entity.setId(UUID.randomUUID().toString());
 		
 		setRevision(entity);
-		
+		logger.info("entity:::::::::::::::::::"+entity);
 		org.opensrp.domain.postgres.Client pgClient = convert(entity, null);
 		if (pgClient == null) {
 			return;
@@ -93,8 +93,7 @@ public class ClientsRepositoryImpl extends BaseRepositoryImpl<Client> implements
 			return;
 		}
 		
-		setRevision(entity);
-		
+		setRevision(entity);		
 		org.opensrp.domain.postgres.Client pgClient = convert(entity, id);
 		if (pgClient == null) {
 			return;
@@ -331,10 +330,33 @@ public class ClientsRepositoryImpl extends BaseRepositoryImpl<Client> implements
 			return null;
 		}
 		
+		String baseEntityId = client.getBaseEntityId();
+		Long serverVersion = client.getServerVersion();
+		String relationalId = null;
+		Map<String, List<String>> relationShips = client.getRelationships();
+		if (relationShips != null && !relationShips.isEmpty()) {
+			for (Map.Entry<String, List<String>> maEntry : relationShips.entrySet()) {
+				List<String> values = maEntry.getValue();
+				if (values != null && !values.isEmpty()) {
+					relationalId = values.get(0);
+					break;
+				}
+			}
+		}
+		String relationship = "";
+		try{
+		relationship = (String) client.getAttribute("Realtion_With_Household_Head");
+		}catch(Exception e){
+			
+		}
+		
 		org.opensrp.domain.postgres.Client pgClient = new org.opensrp.domain.postgres.Client();
 		pgClient.setId(primaryKey);
 		pgClient.setJson(client);
-		
+		pgClient.setBaseEntityId(baseEntityId);
+		pgClient.setRelationId(relationalId);
+		pgClient.setServerVersion(serverVersion);
+		pgClient.setRelationship(relationship);
 		return pgClient;
 	}
 	

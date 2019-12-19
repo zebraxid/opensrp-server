@@ -18,6 +18,18 @@
 			<if test="json != null">
 				json,
 			</if>
+			<if test="baseEntityId != null">
+				client_base_entity_id,
+			</if>
+			<if test="relationship != null">
+				relationship,
+			</if>
+			<if test="relationId != null">
+				client_relation_id,
+			</if>
+			<if test="serverVersion != null">
+				clinet_server_version,
+			</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="id != null">
@@ -25,6 +37,18 @@
 			</if>
 			<if test="json != null">
 				#{json,jdbcType=OTHER,typeHandler=org.opensrp.repository.postgres.handler.ClientTypeHandler},
+			</if>
+			<if test="baseEntityId != null">
+				#{baseEntityId,jdbcType=VARCHAR},
+			</if>
+			<if test="relationship != null">
+				#{relationship,jdbcType=VARCHAR},
+			</if>
+			<if test="relationId != null">
+				#{relationId,jdbcType=VARCHAR},
+			</if>
+			<if test="serverVersion != null">
+				#{serverVersion,jdbcType=BIGINT},
 			</if>
 		</trim>
 	</insert>

@@ -147,7 +147,7 @@ public class OpenmrsSyncerListener {
 	// }
 	// }
 
-	@MotechListener(subjects = OpenmrsConstants.SCHEDULER_OPENMRS_DATA_PUSH_SUBJECT)
+	//@MotechListener(subjects = OpenmrsConstants.SCHEDULER_OPENMRS_DATA_PUSH_SUBJECT)
 	public void pushToOpenMRS(MotechEvent event) {
 		System.out.println("144 start data send to openmrs");
 		if (!lock.tryLock()) {
@@ -156,7 +156,7 @@ public class OpenmrsSyncerListener {
 			return;
 		}
 		try {
-			reSyncToOpenMRS();
+			//reSyncToOpenMRS();
 			logger("156 - RUNNING ", event.getSubject());
 			AppStateToken lastsync = config
 					.getAppStateTokenByName(SchedulerConfig.openmrs_syncer_sync_client_by_date_updated);
