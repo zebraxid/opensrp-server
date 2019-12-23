@@ -192,15 +192,15 @@ public class ClientResource extends RestResource<Client> {
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/payment", produces = { MediaType.APPLICATION_JSON_VALUE })
 	@ResponseBody
-	public ResponseEntity<String> getHousehold(HttpServletRequest request) {
-		String type = getStringFilter("type", request);
-		//serverVersion
-		String serverVersion = getStringFilter(BaseEntity.SERVER_VERSIOIN, request);
-		Long lastSyncedServerVersion = null;
-		if (serverVersion != null) {
-			lastSyncedServerVersion = Long.valueOf(serverVersion) + 1;
-		}
-		List<HouseholdInfo> householdInfos = clientService.getHouseholdInfo(lastSyncedServerVersion, type);
+	public ResponseEntity<String> getHousehold(
+			HttpServletRequest request,
+			@RequestParam(value="type", defaultValue="Household Registration") String type,
+			@RequestParam(value="serverVersion", defaultValue="0") Long serverVersion
+
+			) {
+			
+		
+		List<HouseholdInfo> householdInfos = clientService.getHouseholdInfo(serverVersion+1, type);
 		return new ResponseEntity<>(new Gson().toJson(householdInfos), HttpStatus.OK);
 	}
 	

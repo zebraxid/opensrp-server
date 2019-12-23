@@ -480,7 +480,7 @@ public class EventResource extends RestResource<Event> {
 					}
 				}
 			}
-			System.err.println("--------------------------------------------");
+			
 			if (syncData.has("clients")) {
 				
 				ArrayList<Client> clients = (ArrayList<Client>) gson.fromJson(syncData.getString("clients"),
