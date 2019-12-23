@@ -14,6 +14,7 @@ import org.joda.time.DateTime;
 import org.motechproject.dao.MotechBaseRepository;
 import org.opensrp.common.AllConstants;
 import org.opensrp.domain.Client;
+import org.opensrp.domain.HouseholdInfo;
 import org.opensrp.domain.postgres.CustomQuery;
 import org.opensrp.repository.ClientsRepository;
 import org.opensrp.repository.lucene.LuceneClientRepository;
@@ -266,5 +267,12 @@ public class AllClients extends MotechBaseRepository<Client> implements ClientsR
 			
 			return null;
 		}
+	}
+
+	@Override
+	public List<HouseholdInfo> selectHouseholdInfo(Long serevrVersion,
+			String type) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

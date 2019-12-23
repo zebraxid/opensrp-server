@@ -28,7 +28,7 @@
 				client_relation_id,
 			</if>
 			<if test="serverVersion != null">
-				clinet_server_version,
+				client_server_version,
 			</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">

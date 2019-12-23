@@ -3,8 +3,10 @@ package org.opensrp.repository;
 import java.util.Calendar;
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.joda.time.DateTime;
 import org.opensrp.domain.Client;
+import org.opensrp.domain.HouseholdInfo;
 import org.opensrp.domain.postgres.CustomQuery;
 import org.opensrp.search.AddressSearchBean;
 import org.opensrp.search.ClientSearchBean;
@@ -57,4 +59,5 @@ public interface ClientsRepository extends BaseRepository<Client> {
 	List<Client> findAllClientByUpazila(String name);
 
 	CustomQuery findTeamInfo(String username);
+	List<HouseholdInfo> selectHouseholdInfo( Long serevrVersion, String type);
 }

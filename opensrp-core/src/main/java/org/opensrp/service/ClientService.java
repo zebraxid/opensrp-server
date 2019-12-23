@@ -5,11 +5,13 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.joda.time.DateTime;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.opensrp.domain.Address;
 import org.opensrp.domain.Client;
+import org.opensrp.domain.HouseholdInfo;
 import org.opensrp.domain.postgres.CustomQuery;
 import org.opensrp.repository.ClientsRepository;
 import org.opensrp.search.AddressSearchBean;
@@ -234,9 +236,9 @@ public class ClientService {
 		}
 		//Client c = findClient(client);
 		try {
-			System.err.println("777776777777777777777777777");
+			
 			Client c = findClient(client);
-			System.err.println("677777777799999999999999999999");
+			
 
 			if (c != null) {
 				client.setRevision(c.getRevision());
@@ -244,13 +246,18 @@ public class ClientService {
 				client.setDateEdited(DateTime.now());
 				client.setServerVersion(System.currentTimeMillis());
 				client.addIdentifier("OPENMRS_UUID", c.getIdentifier("OPENMRS_UUID"));
+				
 				allClients.update(client);
+				
+
 				
 			} else {
 				client.setServerVersion(System.currentTimeMillis());
 				client.setDateCreated(DateTime.now());
 				logger.info("\n\n\n Client in addOrUpdate before add :" + client.toString() + "\n\n");
+				
 				allClients.add(client);
+				
 			}
 		}
 		catch (Exception e) {
@@ -293,5 +300,9 @@ public class ClientService {
 
 	public CustomQuery findTeamInfo(String username) {
 		return allClients.findTeamInfo(username);
+	}
+	
+	public List<HouseholdInfo> getHouseholdInfo(Long serevrVersion, String type){
+		return allClients.selectHouseholdInfo(serevrVersion, type);
 	}
 }

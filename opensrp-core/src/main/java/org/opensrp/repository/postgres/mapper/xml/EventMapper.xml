@@ -288,7 +288,19 @@
     -->
     update core.event
     set json = #{json,jdbcType=OTHER,typeHandler=org.opensrp.repository.postgres.handler.EventTypeHandler},
-      date_deleted = #{dateDeleted,jdbcType=TIMESTAMP}
+      date_deleted = #{dateDeleted,jdbcType=TIMESTAMP},
+      member_count = #{memberCount,jdbcType=BIGINT},
+      household_type = #{householdType,jdbcType=VARCHAR},
+      latrine_structure = #{latrineStructure,jdbcType=VARCHAR},
+      water_source = #{waterSource,jdbcType=VARCHAR},
+      financial_status = #{financialStatus,jdbcType=VARCHAR},
+      monthly_expenditure = #{monthlyExpenditure,jdbcType=BIGINT},
+      event_date_of_reg = #{dateOfReg,jdbcType=VARCHAR},
+      event_provider_id = #{providerId,jdbcType=VARCHAR},
+      event_team = #{team,jdbcType=VARCHAR},
+      event_event_type = #{eventType,jdbcType=VARCHAR},
+      event_server_version = #{serverVersion,jdbcType=BIGINT},
+      event_base_entity_id = #{baseEntityId,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

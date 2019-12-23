@@ -21,20 +21,27 @@ import org.joda.time.DateTime;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.opensrp.common.AllConstants;
+import org.opensrp.common.AllConstants.BaseEntity;
 import org.opensrp.domain.Client;
 import org.opensrp.domain.DataApprove;
+import org.opensrp.domain.HouseholdInfo;
 import org.opensrp.search.AddressSearchBean;
 import org.opensrp.search.ClientSearchBean;
 import org.opensrp.service.ClientService;
 import org.opensrp.service.EventService;
+import org.opensrp.util.DateTimeTypeConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import com.mysql.jdbc.StringUtils;
 
@@ -47,6 +54,9 @@ public class ClientResource extends RestResource<Client> {
 	private ClientService clientService;
 	
 	private EventService eventService;
+	
+	private Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
+	        .registerTypeAdapter(DateTime.class, new DateTimeTypeConverter()).create();
 	
 	@Autowired
 	public ClientResource(ClientService clientService, EventService eventService) {
@@ -178,6 +188,20 @@ public class ClientResource extends RestResource<Client> {
 		}
 		
 		return new ResponseEntity<>("done", HttpStatus.OK);
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/payment", produces = { MediaType.APPLICATION_JSON_VALUE })
+	@ResponseBody
+	public ResponseEntity<String> getHousehold(HttpServletRequest request) {
+		String type = getStringFilter("type", request);
+		//serverVersion
+		String serverVersion = getStringFilter(BaseEntity.SERVER_VERSIOIN, request);
+		Long lastSyncedServerVersion = null;
+		if (serverVersion != null) {
+			lastSyncedServerVersion = Long.valueOf(serverVersion) + 1;
+		}
+		List<HouseholdInfo> householdInfos = clientService.getHouseholdInfo(lastSyncedServerVersion, type);
+		return new ResponseEntity<>(new Gson().toJson(householdInfos), HttpStatus.OK);
 	}
 	
 }

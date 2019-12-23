@@ -67,6 +67,42 @@
 			<if test="json != null">
 				json,
 			</if>
+			<if test="memberCount != null">
+				member_count,
+			</if>
+			<if test="householdType != null">
+				household_type,
+			</if>
+			<if test="latrineStructure != null">
+				latrine_structure,
+			</if>
+			<if test="waterSource != null">
+				water_source,
+			</if>
+			<if test="financialStatus != null">
+				financial_status,
+			</if>
+			<if test="monthlyExpenditure != null">
+				monthly_expenditure,
+			</if>
+			<if test="dateOfReg != null">
+				event_date_of_reg,
+			</if>
+			<if test="providerId != null">
+				event_provider_id,
+			</if>
+			<if test="team != null">
+				event_team,
+			</if>
+			<if test="eventType != null">
+				event_event_type,
+			</if>
+			<if test="serverVersion != null">
+				event_server_version,
+			</if>
+			<if test="baseEntityId != null">
+				event_base_entity_id,
+			</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="id != null">
@@ -74,6 +110,44 @@
 			</if>
 			<if test="json != null">
 				#{json,jdbcType=OTHER,typeHandler=org.opensrp.repository.postgres.handler.EventTypeHandler},
+			</if>
+			
+			<if test="memberCount != null">
+				#{memberCount,jdbcType=BIGINT},
+			</if>
+			<if test="householdType != null">
+				#{householdType,jdbcType=VARCHAR},
+			</if>		
+			
+			<if test="latrineStructure != null">
+				#{latrineStructure,jdbcType=VARCHAR},
+			</if>
+			<if test="waterSource != null">
+				#{waterSource,jdbcType=VARCHAR},
+			</if>
+			<if test="financialStatus != null">
+				#{financialStatus,jdbcType=VARCHAR},
+			</if>
+			<if test="monthlyExpenditure != null">
+				#{monthlyExpenditure,jdbcType=BIGINT},
+			</if>
+			<if test="dateOfReg != null">
+				#{dateOfReg,jdbcType=VARCHAR},
+			</if>
+			<if test="providerId != null">
+				#{providerId,jdbcType=VARCHAR},
+			</if>
+			<if test="team != null">
+				#{team,jdbcType=VARCHAR},
+			</if>
+			<if test="eventType != null">
+				#{eventType,jdbcType=VARCHAR},
+			</if>
+			<if test="serverVersion != null">
+				#{serverVersion,jdbcType=BIGINT},
+			</if>
+			<if test="baseEntityId != null">
+				#{baseEntityId,jdbcType=VARCHAR},
 			</if>
 		</trim>
 	</insert>

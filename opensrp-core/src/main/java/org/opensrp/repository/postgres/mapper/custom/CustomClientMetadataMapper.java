@@ -3,6 +3,7 @@ package org.opensrp.repository.postgres.mapper.custom;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
+import org.opensrp.domain.HouseholdInfo;
 import org.opensrp.domain.postgres.Client;
 import org.opensrp.domain.postgres.ClientMetadataExample;
 import org.opensrp.repository.postgres.mapper.ClientMetadataMapper;
@@ -24,4 +25,5 @@ public interface CustomClientMetadataMapper extends ClientMetadataMapper {
 	
 	List<Client> selectByName(@Param("name") String nameMatches, @Param("offset") int offset,
 	                                  @Param("limit") int limit);
+	List<HouseholdInfo> selectHouseholdInfo(@Param("serevrVersion") Long serevrVersion,@Param("type") String type);
 }

@@ -14,6 +14,7 @@ import org.joda.time.DateTime;
 import org.opensrp.common.AllConstants;
 import org.opensrp.domain.Address;
 import org.opensrp.domain.Client;
+import org.opensrp.domain.HouseholdInfo;
 import org.opensrp.domain.postgres.ClientMetadata;
 import org.opensrp.domain.postgres.ClientMetadataExample;
 import org.opensrp.domain.postgres.CustomQuery;
@@ -65,7 +66,7 @@ public class ClientsRepositoryImpl extends BaseRepositoryImpl<Client> implements
 			entity.setId(UUID.randomUUID().toString());
 		
 		setRevision(entity);
-		logger.info("entity:::::::::::::::::::"+entity);
+		
 		org.opensrp.domain.postgres.Client pgClient = convert(entity, null);
 		if (pgClient == null) {
 			return;
@@ -443,5 +444,12 @@ public class ClientsRepositoryImpl extends BaseRepositoryImpl<Client> implements
 			return null;
 		}
 		return t.getBaseEntityId();
+	}
+
+	@Override
+	public List<HouseholdInfo> selectHouseholdInfo(Long serevrVersion,
+			String type) {
+		// TODO Auto-generated method stub
+		return clientMetadataMapper.selectHouseholdInfo(serevrVersion, type);
 	}
 }
