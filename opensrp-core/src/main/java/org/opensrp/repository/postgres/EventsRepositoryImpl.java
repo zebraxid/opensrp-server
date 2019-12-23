@@ -454,8 +454,7 @@ public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements E
 			String _memberCount = (String) getObs(event.getObs("", "member_count"));
 			memberCount = Integer.parseInt(_memberCount);
 			pgEvent.setMemberCount(memberCount);
-		}catch (Exception e){
-			e.printStackTrace();
+		}catch (Exception e){			
 		}
 		try{
 			householdType = (String) getObs(event.getObs("", "58a86736-033b-4866-af0c-bc1960a79cfd"));
@@ -467,32 +466,32 @@ public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements E
 			latrineStructure = (String) getObs(event.getObs("", "bd437fcc-f42f-40a6-8baf-b3d3af725ad4"));
 			pgEvent.setLatrineStructure(latrineStructure);
 		}catch (Exception e){
-			e.printStackTrace();	
+				
 		}
 		try{
 			waterSource = (String) getObs(event.getObs("", "3a46b207-dc8b-4e5b-8b1f-162fca3905ca"));
 			pgEvent.setWaterSource(waterSource);
 		}catch (Exception e){
-			e.printStackTrace();	
+				
 		}
 		try{
 			financialStatus = (String) getObs(event.getObs("", "95066bce-55eb-405e-9664-9be70e5c17b2"));
 			pgEvent.setFinancialStatus(financialStatus);
 		}catch (Exception e){
-			e.printStackTrace();
+			
 		}
 		try{
 			String _monthlyExpenditure = (String) getObs(event.getObs("", "66d3c926-8145-4b94-987b-11f250cc6e6f"));
 			monthlyExpenditure = Integer.parseInt(_monthlyExpenditure);
 			pgEvent.setMonthlyExpenditure(monthlyExpenditure);
 		}catch (Exception e){
-			e.printStackTrace();	
+			
 		}
 		try{
 		dateOfReg =  (String) getObs(event.getObs("", "Date_Of_Reg")); 
 		pgEvent.setDateOfReg(dateOfReg);
 		}catch(Exception e){
-			e.printStackTrace();
+			
 		}
 		
 		
@@ -501,7 +500,7 @@ public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements E
 		pgEvent.setEventType(event.getEventType());
 		pgEvent.setServerVersion(event.getServerVersion());
 		pgEvent.setBaseEntityId(event.getBaseEntityId());
-		
+		System.out.println("parse successfully...................");
 		/*************/
 		return pgEvent;
 	}
