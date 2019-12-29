@@ -452,4 +452,12 @@ public class ClientsRepositoryImpl extends BaseRepositoryImpl<Client> implements
 		// TODO Auto-generated method stub
 		return clientMetadataMapper.selectHouseholdInfo(serevrVersion, type);
 	}
+
+	@Override
+	public List<HouseholdInfo> selectHouseholdVisitInfo(
+			Long serevrVersion,
+			String type) {
+		// TODO Auto-generated method stub
+		return clientMetadataMapper.selectHouseholdVisitInfo(serevrVersion, type);
+	}
 }

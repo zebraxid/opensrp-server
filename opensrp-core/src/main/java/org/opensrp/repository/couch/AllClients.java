@@ -275,4 +275,9 @@ public class AllClients extends MotechBaseRepository<Client> implements ClientsR
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+    @Override
+    public List<HouseholdInfo> selectHouseholdVisitInfo(Long serevrVersion, String type) {
+        return null;
+    }
 }

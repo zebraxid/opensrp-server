@@ -302,7 +302,11 @@ public class ClientService {
 		return allClients.findTeamInfo(username);
 	}
 	
-	public List<HouseholdInfo> getHouseholdInfo(Long serevrVersion, String type){
+	public List<HouseholdInfo> getHouseholdInfo(Long serevrVersion, String type) {
 		return allClients.selectHouseholdInfo(serevrVersion, type);
+	}
+
+	public List<HouseholdInfo> getHouseholdVisitInfo(Long serevrVersion, String type){
+		return allClients.selectHouseholdVisitInfo(serevrVersion, type);
 	}
 }

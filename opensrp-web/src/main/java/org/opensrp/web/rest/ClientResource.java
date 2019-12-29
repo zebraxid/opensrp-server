@@ -195,12 +195,15 @@ public class ClientResource extends RestResource<Client> {
 	public ResponseEntity<String> getHousehold(
 			HttpServletRequest request,
 			@RequestParam(value="type", defaultValue="Household Registration") String type,
-			@RequestParam(value="serverVersion", defaultValue="0") Long serverVersion
+			@RequestParam(value="serverVersion", defaultValue="0") Long serverVersion) {
 
-			) {
-			
-		
-		List<HouseholdInfo> householdInfos = clientService.getHouseholdInfo(serverVersion+1, type);
+		List<HouseholdInfo> householdInfos = new ArrayList<>();
+		if(type.equals("Household Registration")) {
+			householdInfos = clientService.getHouseholdInfo(serverVersion + 1, type);
+		}
+		if(type.equals("Household Visit")) {
+			householdInfos = clientService.getHouseholdVisitInfo(serverVersion + 1, type);
+		}
 		return new ResponseEntity<>(new Gson().toJson(householdInfos), HttpStatus.OK);
 	}
 	

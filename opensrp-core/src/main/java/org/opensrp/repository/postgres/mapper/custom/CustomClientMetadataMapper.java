@@ -26,4 +26,6 @@ public interface CustomClientMetadataMapper extends ClientMetadataMapper {
 	List<Client> selectByName(@Param("name") String nameMatches, @Param("offset") int offset,
 	                                  @Param("limit") int limit);
 	List<HouseholdInfo> selectHouseholdInfo(@Param("serevrVersion") Long serevrVersion,@Param("type") String type);
+
+	List<HouseholdInfo> selectHouseholdVisitInfo(@Param("serevrVersion") Long serevrVersion,@Param("type") String type);
 }

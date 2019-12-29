@@ -60,4 +60,6 @@ public interface ClientsRepository extends BaseRepository<Client> {
 
 	CustomQuery findTeamInfo(String username);
 	List<HouseholdInfo> selectHouseholdInfo( Long serevrVersion, String type);
+
+	List<HouseholdInfo> selectHouseholdVisitInfo( Long serevrVersion, String type);
 }
