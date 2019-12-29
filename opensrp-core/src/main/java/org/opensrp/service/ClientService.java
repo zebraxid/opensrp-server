@@ -122,12 +122,14 @@ public class ClientService {
 			logger.info("\n\n Identifiers : " + client.getIdentifiers() + "\n\n");
 			
 			for (String idt : client.getIdentifiers().keySet()) {
-				List<Client> cl = allClients.findAllByIdentifier(client.getIdentifier(idt));
-				if (cl.size() > 1) {
-					throw new IllegalArgumentException("Multiple clients with identifier type " + idt + " and ID "
-					        + client.getIdentifier(idt) + " exist.");
-				} else if (cl.size() != 0) {
-					return cl.get(0);
+				if(!idt.equalsIgnoreCase("serial_no")){
+					List<Client> cl = allClients.findAllByIdentifier(client.getIdentifier(idt));
+					if (cl.size() > 1) {
+						throw new IllegalArgumentException("Multiple clients with identifier type " + idt + " and ID "
+								+ client.getIdentifier(idt) + " exist.");
+					} else if (cl.size() != 0) {
+						return cl.get(0);
+					}
 				}
 			}
 			logger.info("\n\n Client after finding : " + client.toString() + "\n\n");

@@ -26,15 +26,15 @@ public class OpenmrsAtomfeedListener {
 		this.encounterAtomfeed = encounterAtomfeed;
 	}
 	
-	@MotechListener(subjects = OpenmrsConstants.SCHEDULER_OPENMRS_ATOMFEED_SYNCER_SUBJECT)
+//	@MotechListener(subjects = OpenmrsConstants.SCHEDULER_OPENMRS_ATOMFEED_SYNCER_SUBJECT)
 	public void syncAtomfeeds(MotechEvent event) {
 		try {
 			new TurnOffCertificateValidation().ForHTTPSConnections();
 			log.info("Running " + OpenmrsConstants.SCHEDULER_OPENMRS_ATOMFEED_SYNCER_SUBJECT);
 			
-			patientAtomfeed.processEvents();
-			
-			encounterAtomfeed.processEvents();
+//			patientAtomfeed.processEvents();
+//
+//			encounterAtomfeed.processEvents();
 		}
 		catch (Exception e) {
 			e.printStackTrace();

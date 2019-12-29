@@ -243,7 +243,9 @@ public class EventResource extends RestResource<Event> {
 
 			CustomQuery user = eventService.getUser(request.getRemoteUser());
 			CustomQuery teamMember = eventService.getTeamMemberId(user.getId());
-			List<CustomQuery> locations = clientService.getProviderLocationIdByChildRole(teamMember.getId(), ss, village);
+			List<CustomQuery> locations = (teamMember != null)?
+					clientService.getProviderLocationIdByChildRole(teamMember.getId(), ss, village)
+					: new ArrayList<CustomQuery>();
 			logger.info("request.getRemoteUser():" + request.getRemoteUser());
 
 			String location = "";
