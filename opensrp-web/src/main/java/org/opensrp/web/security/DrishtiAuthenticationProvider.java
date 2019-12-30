@@ -85,7 +85,7 @@ public class DrishtiAuthenticationProvider implements AuthenticationProvider {
 		if (user == null) {
 			throw new BadCredentialsException(USER_NOT_FOUND);
 		}
-		System.out.println("customQuery:>>>>>>>>>>>.................."+customQuery);
+		
 		if (customQuery.getEnable() != null && !customQuery.getEnable()) {
 			throw new BadCredentialsException(USER_NOT_ACTIVATED);
 		}

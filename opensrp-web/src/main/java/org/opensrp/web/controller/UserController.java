@@ -232,7 +232,7 @@ public class UserController {
 		String res = "false";
 		HttpResponse op = HttpUtil.get(OPENSRP_BASE_URL+"/user/check-imei?imei="+imei, "", OPENSRP_USER, OPENSRP_PWD);
 		res = op.body();
-		System.out.println(op);
+		
 		return new ResponseEntity<>(res, OK);
 	}
 
@@ -253,8 +253,7 @@ public class UserController {
 			String version = getStringFilter("version", request);
 			String res = "false";
 			CustomQuery query = clientService.getUserStatus(username);
-			System.out.println("customQuery:>>>>>>>>>>>.................."+query);
-			System.err.println(username+" --------------" + version);
+			
 			res = query.getEnable()+"";	
 			try{
 				
