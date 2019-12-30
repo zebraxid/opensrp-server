@@ -240,7 +240,7 @@ public class EventResource extends RestResource<Event> {
 			String dataProvider = request.getRemoteUser();
 			//CustomQuery customQuery = clientService.getUserStatus(dataProvider);
 			
-			
+			System.err.println("ok....................................................................");
 			
 
 			CustomQuery user = eventService.getUser(request.getRemoteUser());
@@ -426,6 +426,7 @@ public class EventResource extends RestResource<Event> {
 		}
 		catch (Exception e) {
 			response.put("msg", "Error occurred");
+			e.printStackTrace();
 			logger.error("", e);
 			return new ResponseEntity<>(new Gson().toJson(response), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
