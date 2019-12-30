@@ -239,12 +239,11 @@ public class EventResource extends RestResource<Event> {
 		try {
 			String dataProvider = request.getRemoteUser();
 			CustomQuery customQuery = clientService.getUserStatus(dataProvider);
-			System.out.println("customQuery:>>>>>>>>>>>.................."+customQuery);
+			
 			if(customQuery.getEnable() != null && !customQuery.getEnable()){
 				return new ResponseEntity<>(INTERNAL_SERVER_ERROR);
 			}
-			System.out.println("USER IN SYNC");
-			System.out.println(request.getRemoteUser());
+			
 
 			CustomQuery user = eventService.getUser(request.getRemoteUser());
 			CustomQuery teamMember = eventService.getTeamMemberId(user.getId());
@@ -441,7 +440,7 @@ public class EventResource extends RestResource<Event> {
 		try {
 			String dataProvider = request.getRemoteUser();
 			CustomQuery customQuery = clientService.getUserStatus(dataProvider);
-			System.out.println("customQuery:>>>>>>>>>>>.................."+customQuery);
+			
 			if(customQuery.getEnable() != null && !customQuery.getEnable()){
 				return new ResponseEntity<>(INTERNAL_SERVER_ERROR);
 			}
