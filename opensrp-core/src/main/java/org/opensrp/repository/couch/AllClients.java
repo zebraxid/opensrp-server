@@ -280,4 +280,14 @@ public class AllClients extends MotechBaseRepository<Client> implements ClientsR
     public List<HouseholdInfo> selectHouseholdVisitInfo(Long serevrVersion, String type) {
         return null;
     }
+
+	@Override
+	public List selectCC(Integer page) {
+		return null;
+	}
+
+	@Override
+	public List selectProviders(Integer type, Integer page) {
+		return null;
+	}
 }

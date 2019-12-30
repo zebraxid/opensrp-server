@@ -206,5 +206,27 @@ public class ClientResource extends RestResource<Client> {
 		}
 		return new ResponseEntity<>(new Gson().toJson(householdInfos), HttpStatus.OK);
 	}
-	
+
+	@RequestMapping(method = RequestMethod.GET, value = "/cc", produces = { MediaType.APPLICATION_JSON_VALUE })
+	public ResponseEntity getCC(
+			@RequestParam(value="page", defaultValue = "0") Integer page) {
+
+		return new ResponseEntity<>(clientService.getCC(page), HttpStatus.OK) ;
+	}
+
+	@RequestMapping(method = RequestMethod.GET, value = "/user", produces = { MediaType.APPLICATION_JSON_VALUE })
+	public ResponseEntity getProviders(
+			@RequestParam(value="type", defaultValue="chcp") String type,
+			@RequestParam(value="page", defaultValue = "0") Integer page ) {
+
+		List result = new ArrayList();
+		if(type.equals("chcp")) {
+			result = clientService.getProviders(1, page);
+		}
+		if(type.equals("mhv")) {
+			result =clientService.getProviders(6, page);
+		}
+
+		return new ResponseEntity<>(result, HttpStatus.OK);
+	}
 }

@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.ibatis.type.JdbcType;
 import org.joda.time.DateTime;
 import org.opensrp.common.AllConstants;
 import org.opensrp.domain.Address;
@@ -459,5 +460,15 @@ public class ClientsRepositoryImpl extends BaseRepositoryImpl<Client> implements
 			String type) {
 		// TODO Auto-generated method stub
 		return clientMetadataMapper.selectHouseholdVisitInfo(serevrVersion, type);
+	}
+
+	public List selectCC(Integer page) {
+
+		return clientMetadataMapper.selectCC(page);
+	}
+
+	@Override
+	public List selectProviders(Integer type, Integer page) {
+		return clientMetadataMapper.selectProviders(type, page);
 	}
 }

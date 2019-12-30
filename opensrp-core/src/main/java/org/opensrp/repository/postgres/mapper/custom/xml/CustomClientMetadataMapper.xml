@@ -47,6 +47,32 @@
 	    <association property="household" resultMap="householdProperties"/>
 	     	    
    	</resultMap>
+
+
+
+	<resultMap id="CCInfoMap" type="org.opensrp.domain.CCInfo">
+		<result column="id" jdbcType="INTEGER" property="id" />
+		<result column="district" jdbcType="VARCHAR" property="district" />
+		<result column="district_code" jdbcType="VARCHAR" property="districtCode" />
+		<result column="division" jdbcType="VARCHAR" property="division" />
+		<result column="division_code" jdbcType="VARCHAR" property="divisionCode" />
+		<result column="name" jdbcType="VARCHAR" property="name" />
+		<result column="union_name" jdbcType="VARCHAR" property="unionName" />
+		<result column="union_code" jdbcType="VARCHAR" property="unionCode" />
+		<result column="upazila" jdbcType="VARCHAR" property="upazila" />
+		<result column="upazila_code" jdbcType="VARCHAR" property="upazilaCode" />
+		<result column="ward" jdbcType="VARCHAR" property="ward" />
+		<result column="ward_code" jdbcType="VARCHAR" property="wardCode" />
+	</resultMap>
+
+	<resultMap id="MHVInfoMap" type="org.opensrp.domain.MHVInfo">
+		<result column="id" jdbcType="INTEGER" property="id" />
+		<result column="name" jdbcType="VARCHAR" property="name" />
+		<result column="cc_id" jdbcType="INTEGER" property="ccId" />
+		<result column="facility_worker_type_id" jdbcType="INTEGER" property="facilityWorkerTypeId" />
+		<result column="username" jdbcType="VARCHAR" property="username" />
+	</resultMap>
+
    	<select id="selectHouseholdInfo" resultMap="HouseholdInfoResultMap">
 	 
 	 with hh_info as(
@@ -139,6 +165,7 @@ with visit_info as (
 	and e.event_event_type != 'Update Household Registration'
     and e.event_provider_id is not null
 	and e.event_provider_id != ''
+	and e.event_server_version > #{serevrVersion,jdbcType=BIGINT}
 	limit 100
 )
 --select * from visit_info
@@ -203,6 +230,33 @@ from
 	hh_info
 join hh_head on
 	hh_info.base_entity_id = hh_head.client_relation_id order by event_server_version asc
+
+	</select>
+	<select id="selectCC" resultMap="CCInfoMap" >
+		SELECT id,
+	district,
+	district_code,
+	division,
+	division_code,
+	name,
+	union_name,
+	union_code,
+	upazila,
+	upazila_code,
+	ward,
+	ward_code
+	from core.facility limit 100 offset 100 * #{page, jdbcType=INTEGER};
+	</select>
+	<select id="selectProviders" resultMap="MHVInfoMap">
+		with providers as (
+			select fw.id, fw.name, fw.facility_id cc_id, fw.facility_worker_type_id
+				from core.facility f
+				join core.facility_worker fw on fw.facility_id = f.id
+				where fw.facility_worker_type_id = #{userType, jdbcType=INTEGER}
+			)select p.*, u.username  from core.users u
+			 join providers p on concat(u.first_name,' ',u.last_name) = p.name limit 100  offset 100 * #{page, jdbcType=INTEGER}
+
+
 
 	</select>
     

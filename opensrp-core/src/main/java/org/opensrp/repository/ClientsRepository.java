@@ -62,4 +62,8 @@ public interface ClientsRepository extends BaseRepository<Client> {
 	List<HouseholdInfo> selectHouseholdInfo( Long serevrVersion, String type);
 
 	List<HouseholdInfo> selectHouseholdVisitInfo( Long serevrVersion, String type);
+
+	List selectCC(Integer page);
+
+	List selectProviders(Integer type, Integer page);
 }

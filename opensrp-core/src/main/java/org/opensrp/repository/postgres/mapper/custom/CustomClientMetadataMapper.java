@@ -28,4 +28,8 @@ public interface CustomClientMetadataMapper extends ClientMetadataMapper {
 	List<HouseholdInfo> selectHouseholdInfo(@Param("serevrVersion") Long serevrVersion,@Param("type") String type);
 
 	List<HouseholdInfo> selectHouseholdVisitInfo(@Param("serevrVersion") Long serevrVersion,@Param("type") String type);
+
+	List selectCC(@Param("page") Integer page);
+
+	List selectProviders(@Param("userType") Integer userType, @Param("page") Integer page);
 }

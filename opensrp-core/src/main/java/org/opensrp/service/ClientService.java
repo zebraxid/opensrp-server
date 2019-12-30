@@ -309,4 +309,12 @@ public class ClientService {
 	public List<HouseholdInfo> getHouseholdVisitInfo(Long serevrVersion, String type){
 		return allClients.selectHouseholdVisitInfo(serevrVersion, type);
 	}
+
+	public List getCC(Integer page) {
+		return allClients.selectCC(page);
+	}
+
+	public List getProviders(Integer type, Integer page) {
+		return allClients.selectProviders(type, page);
+	}
 }
