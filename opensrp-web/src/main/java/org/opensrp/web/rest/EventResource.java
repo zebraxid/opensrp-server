@@ -238,11 +238,9 @@ public class EventResource extends RestResource<Event> {
 		Map<String, Object> response = new HashMap<String, Object>();
 		try {
 			String dataProvider = request.getRemoteUser();
-			CustomQuery customQuery = clientService.getUserStatus(dataProvider);
+			//CustomQuery customQuery = clientService.getUserStatus(dataProvider);
 			
-			if(customQuery.getEnable() != null && !customQuery.getEnable()){
-				return new ResponseEntity<>(INTERNAL_SERVER_ERROR);
-			}
+			
 			
 
 			CustomQuery user = eventService.getUser(request.getRemoteUser());
@@ -439,11 +437,11 @@ public class EventResource extends RestResource<Event> {
 		
 		try {
 			String dataProvider = request.getRemoteUser();
-			CustomQuery customQuery = clientService.getUserStatus(dataProvider);
+			/*CustomQuery customQuery = clientService.getUserStatus(dataProvider);
 			
 			if(customQuery.getEnable() != null && !customQuery.getEnable()){
 				return new ResponseEntity<>(INTERNAL_SERVER_ERROR);
-			}
+			}*/
 			JSONObject syncData = new JSONObject(data);
 			if (!syncData.has("clients") && !syncData.has("events")) {
 				return new ResponseEntity<>(BAD_REQUEST);
