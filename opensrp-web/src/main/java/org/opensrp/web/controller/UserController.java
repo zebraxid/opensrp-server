@@ -3,6 +3,7 @@ package org.opensrp.web.controller;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.mysql.jdbc.StringUtils;
+
 import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -34,6 +35,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+
 import java.nio.charset.Charset;
 import java.util.*;
 
@@ -249,6 +251,7 @@ public class UserController {
 		try{
 			String res = "false";
 			CustomQuery query = clientService.getUserStatus(username);
+			System.out.println("customQuery:>>>>>>>>>>>.................."+query);
 			res = query.getEnable()+"";		
 			return new ResponseEntity<>(res, OK);
 		}catch(Exception e){
