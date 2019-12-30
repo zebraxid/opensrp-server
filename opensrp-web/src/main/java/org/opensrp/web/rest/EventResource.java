@@ -330,6 +330,7 @@ public class EventResource extends RestResource<Event> {
 
 			} else {
 				logger.info("No location found..");
+				System.err.println("NO LOCation found .....................");
 				response.put("msg", "Error occurred");
 				return new ResponseEntity<>(new Gson().toJson(response), HttpStatus.INTERNAL_SERVER_ERROR);
 			}
@@ -338,6 +339,7 @@ public class EventResource extends RestResource<Event> {
 		catch (Exception e) {
 			response.put("msg", "Error occurred");
 			logger.error("", e);
+			e.printStackTrace();
 			return new ResponseEntity<>(new Gson().toJson(response), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
