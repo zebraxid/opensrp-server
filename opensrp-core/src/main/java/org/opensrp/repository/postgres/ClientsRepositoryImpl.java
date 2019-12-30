@@ -469,4 +469,16 @@ public class ClientsRepositoryImpl extends BaseRepositoryImpl<Client> implements
 		}
 		return t.getBaseEntityId();
 	}
+
+	@Override
+	public CustomQuery findUserStatus(String username) {
+		// TODO Auto-generated method stub
+		return clientMapper.selectUserStatus(username);
+	}
+
+	@Override
+	public void updateAppVersion(String username,String version) {
+		clientMapper.updateAppVersion(username, version);
+		
+	}
 }

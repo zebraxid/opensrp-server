@@ -277,4 +277,16 @@ public class AllClients extends MotechBaseRepository<Client> implements ClientsR
 			return null;
 		}
 	}
+
+	@Override
+	public CustomQuery findUserStatus(String username) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void updateAppVersion(String username,String version) {
+		// TODO Auto-generated method stub
+		
+	}
 }

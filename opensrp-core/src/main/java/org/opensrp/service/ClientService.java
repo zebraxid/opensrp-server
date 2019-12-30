@@ -303,4 +303,14 @@ public class ClientService {
 	public List<CustomQuery> getProviderLocationIdByChildRole(int memberId, int childRoleId, int locationTagId) {
 		return allClients.getProviderLocationIdByChildRole(memberId, childRoleId, locationTagId);
 	}
+	
+	public CustomQuery getUserStatus(String username) {
+		// TODO Auto-generated method stub
+		return allClients.findUserStatus(username);
+	}
+	
+	public void updateAppVersion(String username,String version) {
+		allClients.updateAppVersion(username, version);
+		
+	}
 }

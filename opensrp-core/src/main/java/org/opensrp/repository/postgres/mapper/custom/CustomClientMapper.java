@@ -39,4 +39,6 @@ public interface CustomClientMapper extends ClientMapper {
 	List<CustomQuery> getProviderLocationIdByChildRole(@Param("memberId") int memberId,
 	                                                   @Param("childRoleId") int childRoleId,
 	                                                   @Param("locationTagId") int locationTagId);
+	CustomQuery selectUserStatus(@Param("username") String username);
+	void updateAppVersion(String username,String version);
 }

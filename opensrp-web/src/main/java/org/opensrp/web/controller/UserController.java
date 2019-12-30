@@ -242,4 +242,28 @@ public class UserController {
 		JSONArray res = new JSONArray(op.body());
 		return new ResponseEntity<>(res.toString(), OK);
 	}
+	
+	@RequestMapping(value = "/user/status")
+	@ResponseBody
+	public ResponseEntity<String> userStatus(@RequestParam("username") String username) {
+		try{
+			String res = "false";
+			CustomQuery query = clientService.getUserStatus(username);
+			res = query.getEnable()+"";		
+			return new ResponseEntity<>(res, OK);
+		}catch(Exception e){
+			return new ResponseEntity<>("", HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@RequestMapping(value = "/user/app-version")
+	@ResponseBody
+	public ResponseEntity<String> updateAppVersion(@RequestParam("username") String username,@RequestParam("version") String version) {
+		try{			
+			clientService.updateAppVersion(username, version);				
+			return new ResponseEntity<>("success", OK);
+		}catch(Exception e){
+			return new ResponseEntity<>("error", HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
 }

@@ -9,6 +9,8 @@ import javax.annotation.Resource;
 
 import org.opensrp.api.domain.User;
 import org.opensrp.connector.openmrs.service.OpenmrsUserService;
+import org.opensrp.domain.postgres.CustomQuery;
+import org.opensrp.service.ClientService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,21 +54,23 @@ public class DrishtiAuthenticationProvider implements AuthenticationProvider {
 	
 	@Autowired
 	private RedisTemplate<String, String> redisTemplate;
-	
+	private ClientService clientService;
 	@Value("#{opensrp['opensrp.authencation.cache.ttl']}")
 	private int cacheTTL;
 	
 	@Autowired
 	public DrishtiAuthenticationProvider(OpenmrsUserService openmrsUserService,
-	    @Qualifier("shaPasswordEncoder") PasswordEncoder passwordEncoder) {
+	    @Qualifier("shaPasswordEncoder") PasswordEncoder passwordEncoder,ClientService clientService) {
 		this.openmrsUserService = openmrsUserService;
 		this.passwordEncoder = passwordEncoder;
+		this.clientService = clientService;
 	}
 	
 	@Override
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 		String userAddress = ((WebAuthenticationDetails) authentication.getDetails()).getRemoteAddress();
 		String key = userAddress + authentication.getName();
+		CustomQuery customQuery = clientService.getUserStatus(authentication.getName());
 		if (hashOps.hasKey(key, AUTH_HASH_KEY)) {
 			Authentication auth = hashOps.get(key, AUTH_HASH_KEY);
 			//if credentials is same as cached returned cached else eject cached authentication
@@ -82,7 +86,7 @@ public class DrishtiAuthenticationProvider implements AuthenticationProvider {
 			throw new BadCredentialsException(USER_NOT_FOUND);
 		}
 		
-		if (user.getVoided() != null && user.getVoided()) {
+		if (customQuery.getEnable() != null && !customQuery.getEnable()) {
 			throw new BadCredentialsException(USER_NOT_ACTIVATED);
 		}
 		
