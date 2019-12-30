@@ -40,6 +40,7 @@ import java.nio.charset.Charset;
 import java.util.*;
 
 import static org.opensrp.web.HttpHeaderFactory.allowOrigin;
+import static org.opensrp.web.rest.RestUtils.getStringFilter;
 import static org.springframework.http.HttpStatus.OK;
 
 @Controller
@@ -247,12 +248,19 @@ public class UserController {
 	
 	@RequestMapping(value = "/user/status")
 	@ResponseBody
-	public ResponseEntity<String> userStatus(@RequestParam("username") String username) {
+	public ResponseEntity<String> userStatus(HttpServletRequest request) {
 		try{
+			String username = getStringFilter("username", request);
+			String version = getStringFilter("version", request);
 			String res = "false";
 			CustomQuery query = clientService.getUserStatus(username);
 			System.out.println("customQuery:>>>>>>>>>>>.................."+query);
-			res = query.getEnable()+"";		
+			res = query.getEnable()+"";	
+			try{
+				clientService.updateAppVersion(username, version);	
+			}catch(Exception e){
+				
+			}
 			return new ResponseEntity<>(res, OK);
 		}catch(Exception e){
 			return new ResponseEntity<>("", HttpStatus.INTERNAL_SERVER_ERROR);

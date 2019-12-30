@@ -114,17 +114,13 @@ public class CustomQuery {
 
 	@Override
 	public String toString() {
-		return "CustomQuery{" +
-				"id=" + id +
-				", uuid='" + uuid + '\'' +
-				", name='" + name + '\'' +
-				", code='" + code + '\'' +
-				", leafLocationId=" + leafLocationId +
-				", memberId=" + memberId +
-				", username='" + username + '\'' +
-				", firstName='" + firstName + '\'' +
-				", lastName='" + lastName + '\'' +
-				", locationTagName='" + locationTagName + '\'' +
-				'}';
+		return "CustomQuery [id=" + id + ", uuid=" + uuid + ", name=" + name
+				+ ", code=" + code + ", leafLocationId=" + leafLocationId
+				+ ", memberId=" + memberId + ", username=" + username
+				+ ", firstName=" + firstName + ", lastName=" + lastName
+				+ ", locationTagName=" + locationTagName + ", enable=" + enable
+				+ "]";
 	}
+
+	
 }

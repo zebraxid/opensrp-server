@@ -237,7 +237,11 @@ public class EventResource extends RestResource<Event> {
 
 		Map<String, Object> response = new HashMap<String, Object>();
 		try {
-
+			String dataProvider = request.getRemoteUser();
+			CustomQuery customQuery = clientService.getUserStatus(dataProvider);
+			if(customQuery.getEnable() != null && !customQuery.getEnable()){
+				return new ResponseEntity<>(INTERNAL_SERVER_ERROR);
+			}
 			System.out.println("USER IN SYNC");
 			System.out.println(request.getRemoteUser());
 
@@ -432,13 +436,19 @@ public class EventResource extends RestResource<Event> {
 	@SuppressWarnings("unchecked")
 	@RequestMapping(headers = { "Accept=application/json;charset=UTF-8" }, method = POST, value = "/add")
 	public ResponseEntity<HttpStatus> save(@RequestBody String data, HttpServletRequest request) {
+		
 		try {
+			String dataProvider = request.getRemoteUser();
+			CustomQuery customQuery = clientService.getUserStatus(dataProvider);
+			if(customQuery.getEnable() != null && !customQuery.getEnable()){
+				return new ResponseEntity<>(INTERNAL_SERVER_ERROR);
+			}
 			JSONObject syncData = new JSONObject(data);
 			if (!syncData.has("clients") && !syncData.has("events")) {
 				return new ResponseEntity<>(BAD_REQUEST);
 			}
 			String getProvider = "";
-			String dataProvider = request.getRemoteUser();
+			
 			logger.info("dataProvider:" + dataProvider);
 			
 			if (syncData.has("events")) {
