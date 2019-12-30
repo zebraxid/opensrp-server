@@ -255,11 +255,14 @@ public class UserController {
 			String res = "false";
 			CustomQuery query = clientService.getUserStatus(username);
 			System.out.println("customQuery:>>>>>>>>>>>.................."+query);
+			System.err.println(username+" --------------" + version);
 			res = query.getEnable()+"";	
 			try{
-				clientService.updateAppVersion(username, version);	
-			}catch(Exception e){
 				
+				clientService.updateAppVersion(username, version);	
+				
+			}catch(Exception e){
+				e.printStackTrace();
 			}
 			return new ResponseEntity<>(res, OK);
 		}catch(Exception e){
