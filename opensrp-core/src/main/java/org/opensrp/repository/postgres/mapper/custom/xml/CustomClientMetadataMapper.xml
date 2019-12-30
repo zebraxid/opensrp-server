@@ -233,7 +233,7 @@ join hh_head on
 
 	</select>
 	<select id="selectCC" resultMap="CCInfoMap" >
-		SELECT id,
+		SELECT hrm_id id,
 	district,
 	district_code,
 	division,
@@ -249,12 +249,14 @@ join hh_head on
 	</select>
 	<select id="selectProviders" resultMap="MHVInfoMap">
 		with providers as (
-			select fw.id, fw.name, fw.facility_id cc_id, fw.facility_worker_type_id
-				from  core.facility_worker fw
-				where fw.facility_worker_type_id = #{userType, jdbcType=INTEGER}
-			)select p.*, u.username  from core.users u
-			 join providers p on concat(u.first_name,' ',u.last_name) = p.name and (u.chcp)::int = p.cc_id
-			  limit 100  offset 100 * #{page, jdbcType=INTEGER}
+		select fw.id, fw.name, f.hrm_id cc_id, fw.facility_id, fw.facility_worker_type_id
+			from  core.facility_worker fw
+			join core.facility f on fw.facility_id = f.id
+			where fw.facility_worker_type_id = #{userType, jdbcType=INTEGER}
+		) select p.*, u.username  from core.users u
+			 join providers p on concat(u.first_name,' ',u.last_name) = p.name
+			 and (u.chcp)::int = p.facility_id
+			 limit 100  offset 100 * #{page, jdbcType=INTEGER}
 
 
 
