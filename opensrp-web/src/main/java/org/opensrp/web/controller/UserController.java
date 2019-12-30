@@ -215,8 +215,7 @@ public class UserController {
 	public ResponseEntity<String> getLocationTree(@RequestParam("username") String username) throws JSONException {
 
 		CustomQuery user = eventService.getUser(username);
-		CustomQuery teamMember = eventService.getTeamMemberId(user.getId());
-		List<CustomQuery> treeDTOS = clientService.getProviderLocationTreeByChildRole(teamMember.getId(), childRoleId);
+		List<CustomQuery> treeDTOS = clientService.getProviderLocationTreeByChildRole(user.getId(), childRoleId);
 		JSONArray array = new JSONArray();
 		try {
 			array = locationService.convertLocationTreeToJSON(treeDTOS, (user.getEnable()==null)?false:user.getEnable());
