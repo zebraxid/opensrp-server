@@ -413,9 +413,13 @@ public class EventResource extends RestResource<Event> {
 					for (Event event : eventList) {
 						getProviderName = event.getProviderId();
 						logger.info("getProviderName:" + getProviderName + ": request provider name" + requestProviderName);
-						if (getProviderName.isEmpty()) {} else if (!getProviderName.equalsIgnoreCase(requestProviderName)) {
+						if (getProviderName.isEmpty()) {
+
+						} else if (!getProviderName.equalsIgnoreCase(requestProviderName)) {
 							clients.add(event.getBaseEntityId());
-						} else {}
+						} else {
+
+						}
 					}
 				}
 				return new ResponseEntity<>(gson.toJson(clients), HttpStatus.OK);
@@ -459,29 +463,15 @@ public class EventResource extends RestResource<Event> {
 				logger.info("received event size:" + events.size());
 				for (Event event : events) {
 					try {
-						List<Event> getEvents = eventService.findByBaseEntityAndEventTypeContaining(event.getBaseEntityId(),
-						    "Registration");
-						if (getEvents.size() != 0) {
-							Event getEvent = getEvents.get(0);
-							getProvider = getEvent.getProviderId();
-						} else {
-							getProvider = "";
+						event = eventService.processOutOfArea(event);
+						event.withIsSendToOpenMRS("yes");
+						eventService.addorUpdateEvent(event);
+						Client client = clientService.find(event.getBaseEntityId());
+						if (client != null) {
+							client.setServerVersion(System.currentTimeMillis());
+							clientService.addOrUpdate(client);
 						}
-						if (getProvider.isEmpty() || (dataProvider.equalsIgnoreCase(getProvider) && !getProvider.isEmpty())) {
-							event = eventService.processOutOfArea(event);
-							event.withIsSendToOpenMRS("yes");
-							eventService.addorUpdateEvent(event);
-							Client client = clientService.find(event.getBaseEntityId());
-							if (client != null) {
-								client.setServerVersion(System.currentTimeMillis());
-								clientService.addOrUpdate(client);
-							}
-						} else {
-							logger.info("already updated by another");
-						}
-						
-					}
-					catch (Exception e) {
+					} catch (Exception e) {
 						logger.error(
 						    "Event of type " + event.getEventType() + " for client " + event.getBaseEntityId() == null ? ""
 						            : event.getBaseEntityId() + " failed to sync", e);
@@ -496,23 +486,9 @@ public class EventResource extends RestResource<Event> {
 				logger.info("received client size:" + clients.size());
 				for (Client client : clients) {
 					try {
-						List<Event> events = eventService.findByBaseEntityAndEventTypeContaining(client.getBaseEntityId(),
-						    "Registration");
-						if (events.size() != 0) {
-							Event event = events.get(0);
-							getProvider = event.getProviderId();
-							logger.info("getProvider:" + getProvider);
-						} else {
-							getProvider = "";
-						}
-						if (getProvider.isEmpty() || (dataProvider.equalsIgnoreCase(getProvider) && !getProvider.isEmpty())) {
-							client.withIsSendToOpenMRS("yes");
-							clientService.addOrUpdate(client);
-						} else {
-							logger.info("already updated by another");
-						}
-					}
-					catch (Exception e) {
+						client.withIsSendToOpenMRS("yes");
+						clientService.addOrUpdate(client);
+					} catch (Exception e) {
 						logger.error("Client" + client.getBaseEntityId() == null ? "" : client.getBaseEntityId()
 						        + " failed to sync", e);
 					}

@@ -85,16 +85,16 @@
 		select core.event.id,core.event.json
 		FROM core.event , core.event_metadata where core.event.id=core.event_metadata.event_id
 		and server_version::BIGINT >= #{serverVersion,jdbcType=BIGINT}  and
-		provider_id = #{providerId} and
 		base_entity_id=any(
 		select base_entity_id from core.client_metadata
 		where
 
 		<if test="addressBean.villageId != null">
-			village_id IN
-			<foreach close=")" collection="addressBean.villageId" item="listItem" open="(" separator=",">
+			village_id=any(array
+			<foreach close="]" collection="addressBean.villageId" item="listItem" open="[" separator=",">
 				#{listItem}
 			</foreach>
+			)
 		</if>
 		)
 		order by core.event.json->>'serverVersion' asc
