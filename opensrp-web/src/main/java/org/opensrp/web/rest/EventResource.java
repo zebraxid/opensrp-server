@@ -466,11 +466,11 @@ public class EventResource extends RestResource<Event> {
 						event = eventService.processOutOfArea(event);
 						event.withIsSendToOpenMRS("yes");
 						eventService.addorUpdateEvent(event);
-						Client client = clientService.find(event.getBaseEntityId());
-						if (client != null) {
-							client.setServerVersion(System.currentTimeMillis());
-							clientService.addOrUpdate(client);
-						}
+//						Client client = clientService.find(event.getBaseEntityId());
+//						if (client != null) {
+//							client.setServerVersion(System.currentTimeMillis());
+//							clientService.addOrUpdate(client);
+//						}
 					} catch (Exception e) {
 						logger.error(
 						    "Event of type " + event.getEventType() + " for client " + event.getBaseEntityId() == null ? ""
