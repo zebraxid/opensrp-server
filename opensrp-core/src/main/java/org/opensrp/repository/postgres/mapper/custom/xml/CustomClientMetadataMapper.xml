@@ -97,8 +97,7 @@ where
 	and e.event_provider_id is not null
 	and e.event_provider_id != ''
 	and e.event_server_version > #{serevrVersion,jdbcType=BIGINT}
-	and e.member_count > 0
-limit 500 ),
+	and e.member_count > 0 order by event_server_version asc limit 500 ),
 hh_member_count as (
 select
 	c.client_relation_id,
@@ -166,7 +165,7 @@ with visit_info as (
     and e.event_provider_id is not null
 	and e.event_provider_id != ''
 	and e.event_server_version > #{serevrVersion,jdbcType=BIGINT}
-	limit 100
+	order by event_server_version asc limit 500
 )
 --select * from visit_info
 -- need member information to get the hosuehold info
