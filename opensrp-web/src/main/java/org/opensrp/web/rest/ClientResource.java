@@ -190,7 +190,7 @@ public class ClientResource extends RestResource<Client> {
 		return new ResponseEntity<>("done", HttpStatus.OK);
 	}
 	
-	@RequestMapping(method = RequestMethod.GET, value = "/payment", produces = { MediaType.APPLICATION_JSON_VALUE })
+	@RequestMapping(headers = { "Accept=application/json;charset=UTF-8" },method = RequestMethod.GET, value = "/payment", produces = { MediaType.APPLICATION_JSON_VALUE })
 	@ResponseBody
 	public ResponseEntity<String> getHousehold(
 			HttpServletRequest request,

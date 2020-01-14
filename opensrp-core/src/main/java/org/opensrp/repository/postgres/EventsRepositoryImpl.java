@@ -489,9 +489,14 @@ public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements E
 		}
 		try{
 		dateOfReg =  (String) getObs(event.getObs("", "Date_Of_Reg")); 
+		
+		if("today".equalsIgnoreCase(dateOfReg)){
+			dateOfReg = getTodayAsString();		
+		}
+		
 		pgEvent.setDateOfReg(dateOfReg);
 		}catch(Exception e){
-			
+			dateOfReg = getTodayAsString();	
 		}
 		
 		
@@ -503,6 +508,20 @@ public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements E
 		System.out.println("parse successfully...................");
 		/*************/
 		return pgEvent;
+	}
+	
+	private String getTodayAsString(){
+		String dateOfReg ="";
+		Date date = new Date();
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		String month = (cal.get(Calendar.MONTH)+1)+"";
+		month = StringUtils.leftPad(month,2,"0");
+		int year = cal.get(Calendar.YEAR);
+		String day = (cal.get(Calendar.DAY_OF_MONTH))+"";
+		day = StringUtils.leftPad(day,2,"0");					
+		dateOfReg = day+"-"+month+"-"+year;	
+		return dateOfReg;
 	}
 	private Object getObs(Obs obs){
 		List<Object> values = new ArrayList<Object>();
