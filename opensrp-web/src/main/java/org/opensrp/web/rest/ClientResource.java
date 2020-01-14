@@ -221,10 +221,10 @@ public class ClientResource extends RestResource<Client> {
 
 		List result = new ArrayList();
 		if(type.equals("chcp")) {
-			result = clientService.getProviders(1, page);
+			result = clientService.getProviders(type, page);
 		}
 		if(type.equals("mhv")) {
-			result =clientService.getProviders(6, page);
+			result =clientService.getProviders("provider", page);
 		}
 
 		return new ResponseEntity<>(result, HttpStatus.OK);

@@ -69,8 +69,8 @@
 		<result column="id" jdbcType="INTEGER" property="id" />
 		<result column="name" jdbcType="VARCHAR" property="name" />
 		<result column="cc_id" jdbcType="INTEGER" property="ccId" />
-		<result column="facility_worker_type_id" jdbcType="INTEGER" property="facilityWorkerTypeId" />
 		<result column="username" jdbcType="VARCHAR" property="username" />
+		<result column="phone" jdbcType="VARCHAR" property="phone" />
 	</resultMap>
 
    	<select id="selectHouseholdInfo" resultMap="HouseholdInfoResultMap">
@@ -154,112 +154,118 @@ join hh_head on
 	household.base_entity_id = hh_head.client_relation_id order by event_server_version asc
    	</select>
 	<select id="selectHouseholdVisitInfo" resultMap="HouseholdInfoResultMap">
+		with visit_info as (
+			select
+				e.event_base_entity_id as base_entity_id,
+				e.event_event_type as event_type,
+				e.id
+			from core.event e
+			where e.event_event_type != 'Household Registration'
+			and e.event_event_type != 'Update Household Registration'
+			and e.event_provider_id is not null
+			and e.event_provider_id != ''
+			and e.event_server_version > #{serevrVersion,jdbcType=BIGINT}
+			limit 100
+		)
+		--select * from visit_info
+		-- need member information to get the hosuehold info
+		,member_info as (
+			select c.*, vi.event_type as event_type
+				from core.client c, visit_info vi
+				where  c.client_base_entity_id = vi.base_entity_id
+		)
+		-- select * from member_info
+		, hh_short_info as (
+			select c.client_base_entity_id as household_base_entity_id, mi.event_type as event_type
+			from core.client c, member_info mi
+			where c.client_base_entity_id = mi.client_relation_id
+		)
+		--select * from hh_short_info
+		, hh_member_count as (
+			select c.client_relation_id hh_base_entity_id , count(*)  _count from core.client c
+				where c.client_relation_id = any(select household_base_entity_id from hh_short_info)
+				group by c.client_relation_id
+		)
+		, hh_info as (
+			select
+			e.event_base_entity_id as base_entity_id,
+			hhi.event_type as event_type,
+			e.member_count,
+			e.household_type as household_type,
+			e.event_provider_id as provider_id,
+			e.event_team as ccName,
+			e.id,
+			e.water_source as water_source,
+			e.latrine_structure as latrine_structure,
+			e.financial_status as financial_status,
+			e.monthly_expenditure as monthly_expenditure,
+			e.event_date_of_reg as dateCreated,
+			e.event_server_version from core.event e
+			join hh_short_info hhi on e.event_base_entity_id = hhi.household_base_entity_id
+			join hh_member_count hh_mc on e.event_base_entity_id = hh_mc.hh_base_entity_id
+			where hh_mc._count >= e.member_count
 
-with visit_info as (
-	select
-		e.event_base_entity_id as base_entity_id,
-		e.event_event_type as event_type,
-		e.id
-	from core.event e
-	where e.event_event_type != 'Household Registration'
-	and e.event_event_type != 'Update Household Registration'
-    and e.event_provider_id is not null
-	and e.event_provider_id != ''
-	and e.event_server_version > #{serevrVersion,jdbcType=BIGINT}
-	limit 100
-)
---select * from visit_info
--- need member information to get the hosuehold info
-,member_info as (
-	select c.*, vi.event_type as event_type
-		from core.client c, visit_info vi
-		where  c.client_base_entity_id = vi.base_entity_id
-)
--- select * from member_info
-, hh_short_info as (
-	select c.client_base_entity_id as household_base_entity_id, mi.event_type as event_type
-	from core.client c, member_info mi
-	where c.client_base_entity_id = mi.client_relation_id
-)
---select * from hh_short_info
-, hh_member_count as (
-	select c.client_relation_id hh_base_entity_id , count(*)  _count from core.client c
-		where c.client_relation_id = any(select household_base_entity_id from hh_short_info)
-		group by c.client_relation_id
-)
-, hh_info as (
-	select
-	e.event_base_entity_id as base_entity_id,
-	hhi.event_type as event_type,
-	e.member_count,
-	e.household_type as household_type,
-	e.event_provider_id as provider_id,
-	e.event_team as ccName,
-	e.id,
-	e.water_source as water_source,
-	e.latrine_structure as latrine_structure,
-	e.financial_status as financial_status,
-	e.monthly_expenditure as monthly_expenditure,
-	e.event_date_of_reg as dateCreated,
-	e.event_server_version from core.event e
-	join hh_short_info hhi on e.event_base_entity_id = hhi.household_base_entity_id
-	join hh_member_count hh_mc on e.event_base_entity_id = hh_mc.hh_base_entity_id
-	where hh_mc._count >= e.member_count
+		)
 
-)
-
-,hh_head as (
-select c.* from core.client c
-    where c.relationship = 'Household_Head'
-	and c.client_relation_id = any( select hh_info.base_entity_id from hh_info)
-)
---select * from hh_info
-select
-	 hh_info.*,
-	hh_head."json"->>'firstName' as first_name,
-	hh_head."json"->>'lastName' as last_name,
-	hh_head."json"->>'baseEntityId' as member_id,
-	hh_head."json"->>'gender' as gender,
-	hh_head."json"->>'birthdate' as date_of_birth,
-	hh_head."json"->'attributes'->>'bloodgroup' as blood_group,
-	hh_head."json"->'attributes'->>'occupation' as profession,
-	hh_head."json"->'identifiers'->>'Patient_Identifier' as health_id_card,
-	hh_head."json"->'identifiers'->>'Communicable Disease' as communicable_disease,
-	hh_head."json"->'identifiers'->>'Non Communicable Disease' as non_communicable_disease
-from
-	hh_info
-join hh_head on
-	hh_info.base_entity_id = hh_head.client_relation_id order by event_server_version asc
+		,hh_head as (
+		select c.* from core.client c
+			where c.relationship = 'Household_Head'
+			and c.client_relation_id = any( select hh_info.base_entity_id from hh_info)
+		)
+		--select * from hh_info
+		select
+			 hh_info.*,
+			hh_head."json"->>'firstName' as first_name,
+			hh_head."json"->>'lastName' as last_name,
+			hh_head."json"->>'baseEntityId' as member_id,
+			hh_head."json"->>'gender' as gender,
+			hh_head."json"->>'birthdate' as date_of_birth,
+			hh_head."json"->'attributes'->>'bloodgroup' as blood_group,
+			hh_head."json"->'attributes'->>'occupation' as profession,
+			hh_head."json"->'identifiers'->>'Patient_Identifier' as health_id_card,
+			hh_head."json"->'identifiers'->>'Communicable Disease' as communicable_disease,
+			hh_head."json"->'identifiers'->>'Non Communicable Disease' as non_communicable_disease
+		from
+			hh_info
+		join hh_head on
+			hh_info.base_entity_id = hh_head.client_relation_id order by event_server_version asc
 
 	</select>
 	<select id="selectCC" resultMap="CCInfoMap" >
-		SELECT hrm_id id,
-	district,
-	district_code,
-	division,
-	division_code,
-	name,
-	union_name,
-	union_code,
-	upazila,
-	upazila_code,
-	ward,
-	ward_code
-	from core.facility limit 100 offset 100 * #{page, jdbcType=INTEGER};
+		SELECT
+		 	hrm_id id,
+			district,
+			district_code,
+			division,
+			division_code,
+			name,
+			union_name,
+			union_code,
+			upazila,
+			upazila_code,
+			ward,
+			ward_code
+		from core.facility limit 100 offset 100 * #{page, jdbcType=INTEGER};
 	</select>
 	<select id="selectProviders" resultMap="MHVInfoMap">
 		with providers as (
-		select fw.id, fw.name, f.hrm_id cc_id, fw.facility_id, fw.facility_worker_type_id
-			from  core.facility_worker fw
-			join core.facility f on fw.facility_id = f.id
-			where fw.facility_worker_type_id = #{userType, jdbcType=INTEGER}
-		) select p.*, u.username  from core.users u
-			 join providers p on concat(u.first_name,' ',u.last_name) = p.name
-			 and (u.chcp)::int = p.facility_id
-			 limit 100  offset 100 * #{page, jdbcType=INTEGER}
-
-
-
+			select
+				u.id id,
+				concat(trim(u.first_name), ' ', trim(u.last_name)) as name,
+				f.hrm_id cc_id,
+				u.username username,
+				u.mobile phone
+			from
+				core.facility f,
+				core.users u,
+				core.user_role ur,
+				core."role" r
+			where
+				r.id = ur.role_id
+				and u.id = ur.user_id
+				and f.id = u.chcp::int
+				and lower(r.name) = #{userType, jdbcType=VARCHAR}
+		) select * from providers limit 100  offset 100 * #{page, jdbcType=INTEGER}
 	</select>
     
 	<sql id="Example_Where_Clause">

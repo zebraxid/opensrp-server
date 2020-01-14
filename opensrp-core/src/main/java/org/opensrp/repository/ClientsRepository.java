@@ -65,5 +65,5 @@ public interface ClientsRepository extends BaseRepository<Client> {
 
 	List selectCC(Integer page);
 
-	List selectProviders(Integer type, Integer page);
+	List selectProviders(String type, Integer page);
 }

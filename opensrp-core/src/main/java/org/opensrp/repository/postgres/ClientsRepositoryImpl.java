@@ -468,7 +468,7 @@ public class ClientsRepositoryImpl extends BaseRepositoryImpl<Client> implements
 	}
 
 	@Override
-	public List selectProviders(Integer type, Integer page) {
+	public List selectProviders(String type, Integer page) {
 		return clientMetadataMapper.selectProviders(type, page);
 	}
 }

@@ -314,7 +314,7 @@ public class ClientService {
 		return allClients.selectCC(page);
 	}
 
-	public List getProviders(Integer type, Integer page) {
+	public List getProviders(String type, Integer page) {
 		return allClients.selectProviders(type, page);
 	}
 }

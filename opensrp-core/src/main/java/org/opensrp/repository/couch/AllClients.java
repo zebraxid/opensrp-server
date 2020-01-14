@@ -287,7 +287,7 @@ public class AllClients extends MotechBaseRepository<Client> implements ClientsR
 	}
 
 	@Override
-	public List selectProviders(Integer type, Integer page) {
+	public List selectProviders(String type, Integer page) {
 		return null;
 	}
 }

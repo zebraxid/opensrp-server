@@ -5,8 +5,8 @@ public class MHVInfo {
     public Integer id;
     public String name;
     public Integer ccId;
-    public Integer facilityWorkerTypeId;
     public String username;
+    public String phone;
 
     public Integer getId() {
         return id;
@@ -32,19 +32,19 @@ public class MHVInfo {
         this.ccId = ccId;
     }
 
-    public Integer getFacilityWorkerTypeId() {
-        return facilityWorkerTypeId;
-    }
-
-    public void setFacilityWorkerTypeId(Integer facilityWorkerTypeId) {
-        this.facilityWorkerTypeId = facilityWorkerTypeId;
-    }
-
     public String getUsername() {
         return username;
     }
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }

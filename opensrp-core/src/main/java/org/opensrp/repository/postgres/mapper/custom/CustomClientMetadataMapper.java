@@ -31,5 +31,5 @@ public interface CustomClientMetadataMapper extends ClientMetadataMapper {
 
 	List selectCC(@Param("page") Integer page);
 
-	List selectProviders(@Param("userType") Integer userType, @Param("page") Integer page);
+	List selectProviders(@Param("userType") String userType, @Param("page") Integer page);
 }
