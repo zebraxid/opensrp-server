@@ -147,28 +147,38 @@ public class OpenmrsSyncerListener {
 	// }
 	// }
 
-	//@MotechListener(subjects = OpenmrsConstants.SCHEDULER_OPENMRS_DATA_PUSH_SUBJECT)
+	@MotechListener(subjects = OpenmrsConstants.SCHEDULER_OPENMRS_DATA_PUSH_SUBJECT)
 	public void pushToOpenMRS(MotechEvent event) {
 		System.out.println("144 start data send to openmrs");
 		if (!lock.tryLock()) {
-			logger.warn("Not fetching forms from Message Queue. It is already in progress.");
-			System.out.println("Not fetching forms from Message Queue. It is already in progress.");
+//			logger.warn("Not fetching forms from Message Queue. It is already in progress.");
+//			System.out.println("Not fetching forms from Message Queue. It is already in progress.");
 			return;
 		}
 		try {
-			//reSyncToOpenMRS();
-			logger("156 - RUNNING ", event.getSubject());
+			reSyncToOpenMRS();
+//			logger("156 - RUNNING ", event.getSubject());
 			AppStateToken lastsync = config
 					.getAppStateTokenByName(SchedulerConfig.openmrs_syncer_sync_client_by_date_updated);
-			System.out.println("158 - NEXT RUNNING lastsync = "+ lastsync);
+//			System.out.println("158 - NEXT RUNNING lastsync = "+ lastsync);
 			Long start = lastsync == null || lastsync.getValue() == null ? 0 : lastsync.longValue();
-			System.out.println("START FROM LAST SYNC: "+ start);
-			List<Client> cl = clientService.findByServerVersion(start);
+//			System.out.println("START FROM LAST SYNC: "+ start);
+			List<Client> cl = clientService.findByServerVersionWithPatientIdentifier(start);
 			System.out.println("Clients list size " + cl.size());
+
 			for (Client c : cl) {
+
 				try {
-					System.out.println("163 - PUSH CLIENT REVISED");
-					pushClientRevised(c);
+					if(c.getIdentifier("Patient_Identifier") != null){
+						//reSync for failed Client Sending
+						pushClientRevised(c,false);
+					}
+					else {
+						config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_client_by_date_updated,
+								c.getServerVersion());
+					}
+//					System.out.println("163 - PUSH CLIENT REVISED");
+
 				} catch (RelationshipNotFoundException rnfException) {
 					config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_client_by_date_updated, c.getServerVersion());
 					errorTraceService.log("OPENMRS FAILED CLIENT PUSH", Client.class.getName(), c.getBaseEntityId(),
@@ -186,17 +196,17 @@ public class OpenmrsSyncerListener {
 					errorTraceService.log("OPENMRS FAILED CLIENT PUSH", Client.class.getName(), c.getBaseEntityId(),
 							ExceptionUtils.getStackTrace(ex1), "");
 					//ex1.printStackTrace();
-					logger.error("client error message:" + ex1.getMessage() + ", and cause :" + ex1.getCause()
-							+ ", baseEntityId:" + c.getBaseEntityId());
+//					logger.error("client error message:" + ex1.getMessage() + ", and cause :" + ex1.getCause()
+//							+ ", baseEntityId:" + c.getBaseEntityId());
 				}
 			}
 
-			System.out.println("RUNNING FOR EVENTS");
+//			System.out.println("RUNNING FOR EVENTS");
 
 			lastsync = config.getAppStateTokenByName(SchedulerConfig.openmrs_syncer_sync_event_by_date_updated);
 			start = lastsync == null || lastsync.getValue() == null ? 0 : lastsync.longValue();
 //			pushEvent(start);
-			logger("PUSH TO OPENMRS FINISHED AT ", "");
+//			logger("PUSH TO OPENMRS FINISHED AT ", "");
 
 		}
 		catch (Exception ex) {
@@ -213,7 +223,7 @@ public class OpenmrsSyncerListener {
 
 	}
 
-	public JSONObject pushClientRevised(Client c)
+	public JSONObject pushClientRevised(Client c,Boolean reSync)
 			throws JSONException, IOException, RelationshipNotFoundException, IdentifierNotFoundException,
 			HouseholdNotFoundException {
 		JSONObject patient = new JSONObject();
@@ -228,16 +238,16 @@ public class OpenmrsSyncerListener {
 		String isSendToOpenMRS = c.getIsSendToOpenMRS();
 		String uuid = c.getIdentifiers().get(patientService.OPENMRS_UUID_IDENTIFIER_TYPE);
 
-		System.out.println("UUID:-> "+ uuid);
+//		System.out.println("UUID:-> "+ uuid);
 
 		if (uuid == null) {
-			System.out.println("BASE ENTITY ID: "+ c.getBaseEntityId());
-			System.out.println("isSendToOpenMRS: "+ isSendToOpenMRS);
+//			System.out.println("BASE ENTITY ID: "+ c.getBaseEntityId());
+//			System.out.println("isSendToOpenMRS: "+ isSendToOpenMRS);
 //			FIXME -- omitted, followed by proshanto sarker. will be active when atomfeed is activated
 			//			if (isSendToOpenMRS == null || isSendToOpenMRS.equalsIgnoreCase("yes")) {
 				JSONObject patientJson = patientService.createPatientRevised(c, uuid); //save or update at openmrs
-				System.out.println("END TIME: "+System.currentTimeMillis());
-				System.out.println("Patient RESPONSE:-> "+ patientJson);
+//				System.out.println("END TIME: "+System.currentTimeMillis());
+//				System.out.println("Patient RESPONSE:-> "+ patientJson);
 				String patientUuid = (patientJson != null && patientJson.getJSONObject("patient").has("uuid")) ?
 						patientJson.getJSONObject("patient").getString("uuid"):null;
 				if (!org.apache.commons.lang.StringUtils.isBlank(patientUuid)) {
@@ -245,24 +255,31 @@ public class OpenmrsSyncerListener {
 					clientService.addOrUpdate(c, false);
 				}
 				patient = patientJson;
+			    if(reSync == false) {
+					config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_client_by_date_updated,
+							c.getServerVersion());
+				}
 //			}
 		} else {
 //			FIXME -- omitted, followed by proshanto sarker. will be active when atomfeed is activated
-			System.out.println("Updating patient " + uuid);
+//			System.out.println("Updating patient " + uuid);
 			//String isSendToOpenMRS = c.getIsSendToOpenMRS();
 //			if (isSendToOpenMRS == null || isSendToOpenMRS.equalsIgnoreCase("yes")) {
 				JSONObject patientJson = patientService.createPatientRevised(c, uuid);
-				System.out.println("UPDATE END TIME: "+System.currentTimeMillis());
-				System.out.println("Patient RESPONSE:-> "+ patientJson);
+//				System.out.println("UPDATE END TIME: "+System.currentTimeMillis());
+//				System.out.println("Patient RESPONSE:-> "+ patientJson);
 				patient = patientJson;
 //			} else {
 //				System.out.println("this client doesn't go to openMRS at baseEntityId: " + uuid);
 //			}
-
-			config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_client_by_date_updated,
-					c.getServerVersion());
+			if(reSync == false) {
+				config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_client_by_date_updated,
+						c.getServerVersion());
+			}
 		}
-		config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_client_by_date_updated, c.getServerVersion());
+		if(reSync == false) {
+			config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_client_by_date_updated, c.getServerVersion());
+		}
 		return patient;
 	}
 
@@ -444,22 +461,26 @@ public class OpenmrsSyncerListener {
 
 	//	@MotechListener(subjects = OpenmrsConstants.SCHEDULER_OPENMRS_DATA_PUSH_RESYNC_SUBJECT)
 	public void reSyncToOpenMRS() {
-		System.out.println("404 start data send to openmrs");
+//		System.out.println("404 start data send to openmrs");
 		List<org.opensrp.domain.ErrorTrace> errorTraces = errorTraceService.findAllUnSyncErrors("org.opensrp.domain.Client");
-		System.out.println("Error trace list size " + errorTraces.size());
+//		System.out.println("Error trace list size " + errorTraces.size());
 		for (org.opensrp.domain.ErrorTrace errorTrace : errorTraces) {
-			System.out.println("START TIME: "+System.currentTimeMillis());
+//			System.out.println("START TIME: "+System.currentTimeMillis());
 			Client c = clientService.find(errorTrace.getRecordId());
 			try {
-				pushClientRevised(c);
+				if(c.getIdentifier("Patient_Identifier") != null){
+					//reSync for failed Client Sending
+					pushClientRevised(c,true);
+				}
+
 				errorTrace.setStatus("solved");
 				errorTrace.setDateOccurred(new DateTime());
 				errorTraceService.updateError(errorTrace);
 			} catch (RelationshipNotFoundException rnfException){
 				config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_client_by_date_updated,
 						c.getServerVersion());
-				logger.error("client error message:" + rnfException.getMessage() + ", and cause :" + rnfException.getErrorMessage()
-						+ ",at baseEntityId:" + errorTrace.getRecordId());
+//				logger.error("client error message:" + rnfException.getMessage() + ", and cause :" + rnfException.getErrorMessage()
+//						+ ",at baseEntityId:" + errorTrace.getRecordId());
 				errorTrace.setStackTrace(rnfException.getErrorMessage());
 				errorTrace.setStatus("unsolved");
 				errorTrace.setDateOccurred(new DateTime());
@@ -467,8 +488,8 @@ public class OpenmrsSyncerListener {
 			} catch (IdentifierNotFoundException infException){
 				config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_client_by_date_updated,
 						c.getServerVersion());
-				logger.error("client error message:" + infException.getMessage() + ", and cause :" + infException.getErrorMessage()
-						+ ",at baseEntityId:" + errorTrace.getRecordId());
+//				logger.error("client error message:" + infException.getMessage() + ", and cause :" + infException.getErrorMessage()
+//						+ ",at baseEntityId:" + errorTrace.getRecordId());
 				errorTrace.setDateOccurred(new DateTime());
 				errorTrace.setStackTrace(infException.getErrorMessage());
 				errorTrace.setStatus("unsolved");
@@ -476,8 +497,8 @@ public class OpenmrsSyncerListener {
 			} catch (HouseholdNotFoundException hnfException){
 				config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_client_by_date_updated,
 						c.getServerVersion());
-				logger.error("client error message:" + hnfException.getMessage() + ", and cause :" + hnfException.getErrorMessage()
-						+ ",at baseEntityId:" + errorTrace.getRecordId());
+//				logger.error("client error message:" + hnfException.getMessage() + ", and cause :" + hnfException.getErrorMessage()
+//						+ ",at baseEntityId:" + errorTrace.getRecordId());
 				errorTrace.setDateOccurred(new DateTime());
 				errorTrace.setStatus("unsolved");
 				errorTrace.setStackTrace(hnfException.getErrorMessage());
@@ -485,8 +506,8 @@ public class OpenmrsSyncerListener {
 			} catch (Exception e) {
 				config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_client_by_date_updated,
 						c.getServerVersion());
-				logger.error("client error message:" + e.getMessage() + ", and cause :" + e.getCause()
-						+ ",at baseEntityId:" + errorTrace.getRecordId());
+//				logger.error("client error message:" + e.getMessage() + ", and cause :" + e.getCause()
+//						+ ",at baseEntityId:" + errorTrace.getRecordId());
 				errorTrace.setStatus("unsolved");
 				errorTrace.setDateOccurred(new DateTime());
 				errorTraceService.updateError(errorTrace);

@@ -32,4 +32,6 @@ public interface CustomClientMetadataMapper extends ClientMetadataMapper {
 	List selectCC(@Param("page") Integer page);
 
 	List selectProviders(@Param("userType") String userType, @Param("page") Integer page);
+	List<Client> selectByServerVersionWithPatientIdentifier(@Param("example") ClientMetadataExample example, @Param("offset") int offset,
+							@Param("limit") int limit);
 }

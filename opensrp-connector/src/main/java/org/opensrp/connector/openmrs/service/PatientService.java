@@ -14,6 +14,7 @@ import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.opensrp.common.util.HttpResponse;
 import org.opensrp.common.util.HttpUtil;
 import org.opensrp.connector.MultipartUtility;
 import org.opensrp.connector.openmrs.exception.HouseholdNotFoundException;
@@ -114,7 +115,13 @@ public class PatientService extends OpenmrsService {
 		return new JSONObject(HttpUtil.get(getURL() + "/" + PATIENT_URL + "/" + uuid, noRepresentationTag ? "" : "v=full",
 		    OPENMRS_USER, OPENMRS_PWD).body());
 	}
-	
+	public int findPatientByUuid(String uuid, boolean noRepresentationTag) throws JSONException {
+		return HttpUtil.get(getURL() + "/" + PATIENT_URL + "/" + uuid, noRepresentationTag ? "" : "v=full",
+				OPENMRS_USER, OPENMRS_PWD).statusCode();
+
+	}
+
+
 	public JSONObject getIdentifierType(String identifierType) throws JSONException {
 		// we have to use this ugly approach because identifier not found throws exception and 
 		// its hard to find whether it was network error or object not found or server error
@@ -231,7 +238,7 @@ public class PatientService extends OpenmrsService {
 			per.put("addresses", convertAddressesToOpenmrsJson(be.getAddresses()));
 //			System.out.println("SETTING PERSON 3: "+ per);
 		} catch (Exception e) {
-			System.out.println("ERROR OCCURRED IN CREATE PERSON :( :( :(");
+//			System.out.println("ERROR OCCURRED IN CREATE PERSON :( :( :(");
 			e.printStackTrace();
 		}
 		return per;
@@ -327,17 +334,20 @@ public class PatientService extends OpenmrsService {
 			System.out.println("306 - PREPARE PATIENT IDENTIFIER: "+ c.getIdentifiers());
 			if (c.getIdentifiers() != null) {
 				for (Entry<String, String> id : c.getIdentifiers().entrySet()) {
+					System.out.println("Patient_Identifier Id GetValue: "+id.getValue());
 					if (!org.apache.commons.lang.StringUtils.isBlank(id.getValue())) {
 						if (id.getKey().equalsIgnoreCase("OPENMRS_UUID")) {
+							System.out.println("Patient_Identifier Openmrs_uuid Set");
 							ids.put(setIdentifierProperty(c, id.getValue(), false, "8347581d-a066-4615-b834-9332e7d744ed"));
 						}
 						if (id.getKey().equalsIgnoreCase("Patient_Identifier")) {
+							System.out.println("Patient_Identifier Logs Set");
 							ids.put(setIdentifierProperty(c, id.getValue(), true, "81433852-3f10-11e4-adec-0800271c1b75"));
 						}
 					}
 				}
 			}
-			ids.put(setIdentifierProperty(c, c.getBaseEntityId(), true, "d21d0aa9-9324-4a1d-91f7-48819d408755"));
+			ids.put(setIdentifierProperty(c, c.getBaseEntityId(), false, "d21d0aa9-9324-4a1d-91f7-48819d408755"));
 		} catch (Exception e) {
 			System.out.println("ERROR OCCURRED IN PREPARE PATIENT IDENTIFIER");
 			e.printStackTrace();
@@ -381,9 +391,9 @@ public class PatientService extends OpenmrsService {
 		JSONObject person = createPersonRevised(c);
 		JSONArray patientIdentifiers = preparePatientIdentifierRevised(c);
 
-		System.out.println("PERSON NEW: "+person);
-		System.out.println("IDENTIFIER NEW: "+patientIdentifiers);
-		System.out.println("IDENTIFIERS SIZE: "+ patientIdentifiers.length());
+//		System.out.println("PERSON NEW: "+person);
+//		System.out.println("IDENTIFIER NEW: "+patientIdentifiers);
+//		System.out.println("IDENTIFIERS SIZE: "+ patientIdentifiers.length());
 		if (patientIdentifiers.length() == 0) throw new IdentifierNotFoundException("No identifier found for this client");
 
 		patient.put("person", person);
@@ -394,7 +404,7 @@ public class PatientService extends OpenmrsService {
 		if (c.getRelationships() != null && c.getRelationships().containsKey("household")) {
 			String relationShipUuid = c.getRelationships().get("household").get(0).toString();
 
-			System.out.println("RELATIONSHIP UUID: "+ relationShipUuid);
+//			System.out.println("RELATIONSHIP UUID: "+ relationShipUuid);
 
 			if (relationShipUuid != null) {
 				Client householdResponse = getPatientByIdentifierRevised(relationShipUuid);
@@ -435,13 +445,27 @@ public class PatientService extends OpenmrsService {
 		completePatient.put("patient", patient);
 		completePatient.put("relationships", relationships);
 
-		System.out.println("COMPLETE PATIENT: "+ completePatient);
+//		System.out.println("COMPLETE PATIENT: "+ completePatient);
+		int uuidCheckInOpenMRS = findPatientByUuid(uuid,true);
+		System.out.println("Real Uuid Check:" +uuidCheckInOpenMRS);
+//		System.out.println("Test Uuid Check:"+findPatientByUuid("12121",true));
 
-		String url = getURL() + "/" + PATIENT_PROFILE_URL + (uuid == null? "":"/"+uuid);
+		//Checking PatientUuid Exist in OpenMRS server or not
+		Boolean patientExistInOpenMRS = false;
+		if(findPatientByUuid(uuid,true) == 404){
+			patientExistInOpenMRS = false;
+		}
+		else if(findPatientByUuid(uuid,true) == 200){
+			patientExistInOpenMRS = true;
+		}
 
-		System.out.println("PATIENT PROFILE URL: "+ url);
+
+		String url = getURL() + "/" + PATIENT_PROFILE_URL + (uuid == null || patientExistInOpenMRS == false? "":"/"+uuid);
+
+		System.out.println("PATIENT : "+ completePatient.toString());
 
 		String response = HttpUtil.post(url, "", completePatient.toString(), OPENMRS_USER, OPENMRS_PWD).body();
+		System.out.println(response);
 		return new JSONObject(response);
 	}
 

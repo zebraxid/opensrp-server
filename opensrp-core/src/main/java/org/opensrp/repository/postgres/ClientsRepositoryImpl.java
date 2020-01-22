@@ -471,4 +471,18 @@ public class ClientsRepositoryImpl extends BaseRepositoryImpl<Client> implements
 	public List selectProviders(String type, Integer page) {
 		return clientMetadataMapper.selectProviders(type, page);
 	}
+
+	@Override
+	public List<Client> findByServerVersionWithPatientIdentifier(long serverVersion) {
+		ClientMetadataExample clientMetadataExample = new ClientMetadataExample();
+		clientMetadataExample.createCriteria().andServerVersionGreaterThanOrEqualTo(serverVersion + 1)
+				.andDateDeletedIsNull();
+		clientMetadataExample.setOrderByClause("server_version ASC");
+
+		System.out.println("CLIENT METADATA EXAMPLE: "+clientMetadataExample);
+		List<org.opensrp.domain.postgres.Client> clients = clientMetadataMapper.selectByServerVersionWithPatientIdentifier(clientMetadataExample, 0,
+				DEFAULT_FETCH_SIZE);
+		System.out.println("SIZE: "+ clients.size());
+		return convert(clients);
+	}
 }

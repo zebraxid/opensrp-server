@@ -290,4 +290,9 @@ public class AllClients extends MotechBaseRepository<Client> implements ClientsR
 	public List selectProviders(String type, Integer page) {
 		return null;
 	}
+
+	@Override
+	public List<Client> findByServerVersionWithPatientIdentifier(long serverVersion) {
+		return null;
+	}
 }
