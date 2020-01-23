@@ -255,10 +255,7 @@ public class OpenmrsSyncerListener {
 					clientService.addOrUpdate(c, false);
 				}
 				patient = patientJson;
-			    if(reSync == false) {
-					config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_client_by_date_updated,
-							c.getServerVersion());
-				}
+
 //			}
 		} else {
 //			FIXME -- omitted, followed by proshanto sarker. will be active when atomfeed is activated
@@ -268,14 +265,17 @@ public class OpenmrsSyncerListener {
 				JSONObject patientJson = patientService.createPatientRevised(c, uuid);
 //				System.out.println("UPDATE END TIME: "+System.currentTimeMillis());
 //				System.out.println("Patient RESPONSE:-> "+ patientJson);
+				String patientUuid = (patientJson != null && patientJson.getJSONObject("patient").has("uuid")) ?
+					patientJson.getJSONObject("patient").getString("uuid"):null;
+				if (!org.apache.commons.lang.StringUtils.isBlank(patientUuid)) {
+					c.addIdentifier(PatientService.OPENMRS_UUID_IDENTIFIER_TYPE, patientUuid);
+					clientService.addOrUpdate(c, false);
+				}
 				patient = patientJson;
 //			} else {
 //				System.out.println("this client doesn't go to openMRS at baseEntityId: " + uuid);
 //			}
-			if(reSync == false) {
-				config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_client_by_date_updated,
-						c.getServerVersion());
-			}
+
 		}
 		if(reSync == false) {
 			config.updateAppStateToken(SchedulerConfig.openmrs_syncer_sync_client_by_date_updated, c.getServerVersion());
