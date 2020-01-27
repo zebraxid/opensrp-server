@@ -321,15 +321,16 @@ join hh_head on
 			resultMap="org.opensrp.repository.postgres.mapper.ClientMapper.BaseResultMap">
 		select
 		<if test="example.distinct">
-			distinct
+
 		</if>
 		<include refid="Base_Column_List" />
 		<include refid="Base_Table_List" />
 		where
+		cm.server_version >= #{serevrVersion}
+		and
 		c."json"->'identifiers'->>'Patient_Identifier' != ''
-		<if test="example.orderByClause != null">
-			order by cm.${example.orderByClause}
-		</if>
+		order by
+		cm.server_version ASC
 		LIMIT #{limit} OFFSET #{offset}
 	</select>
 

@@ -2,11 +2,7 @@ package org.opensrp.connector.openmrs.service;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
 
 import org.apache.commons.io.FileUtils;
@@ -193,8 +189,6 @@ public class PatientService extends OpenmrsService {
 		JSONObject per = new JSONObject();
 
 		try {
-//			System.out.println("PREPARE PATIENT: "+ be);
-
 			// need to be removed after source correction
 			String gender = "";
 			if (be.getGender().equalsIgnoreCase("Female")) {
@@ -205,10 +199,14 @@ public class PatientService extends OpenmrsService {
 				gender = be.getGender();
 			}
 			per.put("gender", gender);
-			per.put("birthdate", OPENMRS_DATE.format(be.getBirthdate().toDate()));
-			per.put("birthdateEstimated", be.getBirthdateApprox());
 
-//			System.out.println("SETTING PERSON 1: "+ per);
+			if(gender.equalsIgnoreCase("H")) {
+					per.put("birthdate","2020-01-01");
+			}
+			else {
+				per.put("birthdate", OPENMRS_DATE.format(be.getBirthdate().toDate()));
+			}
+			per.put("birthdateEstimated", be.getBirthdateApprox());
 
 			if (be.getDeathdate() != null) {
 				per.put("deathDate", OPENMRS_DATE.format(be.getDeathdate().toDate()));
@@ -230,15 +228,12 @@ public class PatientService extends OpenmrsService {
 				ln = ln.replaceAll("[^A-Za-z0-9\\s]+", "");
 			}
 
-//			System.out.println("SETTING PERSON 2: "+ per);
 
 			per.put("names", new JSONArray("[{\"givenName\":\"" + fn + "\",\"middleName\":\"" + mn + "\", \"familyName\":\""
 					+ ln + "\"}]"));
 			per.put("attributes", convertAttributesToOpenmrsJson(be.getAttributes()));
 			per.put("addresses", convertAddressesToOpenmrsJson(be.getAddresses()));
-//			System.out.println("SETTING PERSON 3: "+ per);
 		} catch (Exception e) {
-//			System.out.println("ERROR OCCURRED IN CREATE PERSON :( :( :(");
 			e.printStackTrace();
 		}
 		return per;
@@ -331,17 +326,13 @@ public class PatientService extends OpenmrsService {
 	public JSONArray preparePatientIdentifierRevised(Client c) throws JSONException {
 		JSONArray ids = new JSONArray();
 		try {
-			System.out.println("306 - PREPARE PATIENT IDENTIFIER: "+ c.getIdentifiers());
 			if (c.getIdentifiers() != null) {
 				for (Entry<String, String> id : c.getIdentifiers().entrySet()) {
-					System.out.println("Patient_Identifier Id GetValue: "+id.getValue());
 					if (!org.apache.commons.lang.StringUtils.isBlank(id.getValue())) {
 						if (id.getKey().equalsIgnoreCase("OPENMRS_UUID")) {
-							System.out.println("Patient_Identifier Openmrs_uuid Set");
 							ids.put(setIdentifierProperty(c, id.getValue(), false, "8347581d-a066-4615-b834-9332e7d744ed"));
 						}
 						if (id.getKey().equalsIgnoreCase("Patient_Identifier")) {
-							System.out.println("Patient_Identifier Logs Set");
 							ids.put(setIdentifierProperty(c, id.getValue(), true, "81433852-3f10-11e4-adec-0800271c1b75"));
 						}
 					}
@@ -349,11 +340,8 @@ public class PatientService extends OpenmrsService {
 			}
 			ids.put(setIdentifierProperty(c, c.getBaseEntityId(), false, "d21d0aa9-9324-4a1d-91f7-48819d408755"));
 		} catch (Exception e) {
-			System.out.println("ERROR OCCURRED IN PREPARE PATIENT IDENTIFIER");
 			e.printStackTrace();
 		}
-
-		System.out.println("IDS: "+ ids);
 
 		return ids;
 	}
@@ -391,20 +379,15 @@ public class PatientService extends OpenmrsService {
 		JSONObject person = createPersonRevised(c);
 		JSONArray patientIdentifiers = preparePatientIdentifierRevised(c);
 
-//		System.out.println("PERSON NEW: "+person);
-//		System.out.println("IDENTIFIER NEW: "+patientIdentifiers);
-//		System.out.println("IDENTIFIERS SIZE: "+ patientIdentifiers.length());
 		if (patientIdentifiers.length() == 0) throw new IdentifierNotFoundException("No identifier found for this client");
 
 		patient.put("person", person);
 		patient.put("identifiers", patientIdentifiers);
 
-//		System.out.println("PATIENT REVISED: "+ patient);
 
+		Map<String,List<String>> relationshipList = c.getRelationships();
 		if (c.getRelationships() != null && c.getRelationships().containsKey("household")) {
 			String relationShipUuid = c.getRelationships().get("household").get(0).toString();
-
-//			System.out.println("RELATIONSHIP UUID: "+ relationShipUuid);
 
 			if (relationShipUuid != null) {
 				Client householdResponse = getPatientByIdentifierRevised(relationShipUuid);
@@ -429,9 +412,6 @@ public class PatientService extends OpenmrsService {
 
 		}
 
-//		System.out.println("Person B: "+ personB);
-
-
 		Multimedia multiMedia = multimediaService.findByCaseId(c.getBaseEntityId());
 		if (multiMedia != null) {
 			File convertedFile = new File("" + multiMedia.getFilePath());
@@ -445,11 +425,6 @@ public class PatientService extends OpenmrsService {
 		completePatient.put("patient", patient);
 		completePatient.put("relationships", relationships);
 
-//		System.out.println("COMPLETE PATIENT: "+ completePatient);
-		int uuidCheckInOpenMRS = findPatientByUuid(uuid,true);
-		System.out.println("Real Uuid Check:" +uuidCheckInOpenMRS);
-//		System.out.println("Test Uuid Check:"+findPatientByUuid("12121",true));
-
 		//Checking PatientUuid Exist in OpenMRS server or not
 		Boolean patientExistInOpenMRS = false;
 		if(findPatientByUuid(uuid,true) == 404){
@@ -460,12 +435,14 @@ public class PatientService extends OpenmrsService {
 		}
 
 
-		String url = getURL() + "/" + PATIENT_PROFILE_URL + (uuid == null || patientExistInOpenMRS == false? "":"/"+uuid);
+		String url = getURL() + "/" + PATIENT_PROFILE_URL + ((uuid == null || patientExistInOpenMRS == false) ?"":"/"+uuid);
+
+		System.out.println("Patient Post URL: "+url);
 
 		System.out.println("PATIENT : "+ completePatient.toString());
 
 		String response = HttpUtil.post(url, "", completePatient.toString(), OPENMRS_USER, OPENMRS_PWD).body();
-		System.out.println(response);
+
 		return new JSONObject(response);
 	}
 

@@ -481,7 +481,7 @@ public class ClientsRepositoryImpl extends BaseRepositoryImpl<Client> implements
 
 		System.out.println("CLIENT METADATA EXAMPLE: "+clientMetadataExample);
 		List<org.opensrp.domain.postgres.Client> clients = clientMetadataMapper.selectByServerVersionWithPatientIdentifier(clientMetadataExample, 0,
-				DEFAULT_FETCH_SIZE);
+				DEFAULT_FETCH_SIZE,serverVersion);
 		System.out.println("SIZE: "+ clients.size());
 		return convert(clients);
 	}
