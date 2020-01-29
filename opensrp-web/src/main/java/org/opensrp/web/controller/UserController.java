@@ -215,8 +215,7 @@ public class UserController {
 	public ResponseEntity<String> getLocationTree(@RequestParam("username") String username) throws JSONException {
 
 		CustomQuery user = eventService.getUser(username);
-		CustomQuery teamMember = eventService.getTeamMemberId(user.getId());
-		List<CustomQuery> treeDTOS = clientService.getProviderLocationTreeByChildRole(teamMember.getId(), childRoleId);
+		List<CustomQuery> treeDTOS = clientService.getProviderLocationTreeByChildRole(user.getId(), childRoleId);
 		JSONArray array = new JSONArray();
 		try {
 			array = locationService.convertLocationTreeToJSON(treeDTOS, (user.getEnable()==null)?false:user.getEnable());
@@ -240,7 +239,11 @@ public class UserController {
 	@RequestMapping(value = "/household/generated-code", method = RequestMethod.GET)
 	@ResponseBody
 	public ResponseEntity<String> getHouseholdUniqueId(@RequestParam("username") String username,
-													   @RequestParam("villageId") String villageId) throws JSONException {
+													   @RequestParam("villageId") String villageId,
+													   @RequestParam(value = "device_imei", required = false) String deviceImei,
+													   @RequestParam(value = "uuid", required = false) String uuid) throws JSONException {
+		System.out.println("DEVICE IMEI: "+ deviceImei);
+		System.out.println("UUID: "+ uuid);
 		HttpResponse op = HttpUtil.get(OPENSRP_BASE_URL+"/household/generated-code?username="+username+"&villageId="+villageId, "", OPENSRP_USER, OPENSRP_PWD);
 		JSONArray res = new JSONArray(op.body());
 		return new ResponseEntity<>(res.toString(), OK);

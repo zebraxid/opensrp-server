@@ -414,9 +414,13 @@ public class EventResource extends RestResource<Event> {
 					for (Event event : eventList) {
 						getProviderName = event.getProviderId();
 						logger.info("getProviderName:" + getProviderName + ": request provider name" + requestProviderName);
-						if (getProviderName.isEmpty()) {} else if (!getProviderName.equalsIgnoreCase(requestProviderName)) {
+						if (getProviderName.isEmpty()) {
+
+						} else if (!getProviderName.equalsIgnoreCase(requestProviderName)) {
 							clients.add(event.getBaseEntityId());
-						} else {}
+						} else {
+
+						}
 					}
 				}
 				return new ResponseEntity<>(gson.toJson(clients), HttpStatus.OK);
@@ -465,14 +469,9 @@ public class EventResource extends RestResource<Event> {
 							eventService.addorUpdateEvent(event);
 						
 					}
-					catch (Exception e) {
-						logger.error(
-						    "Event of type " + event.getEventType() + " for client " + event.getBaseEntityId() == null ? ""
-						            : event.getBaseEntityId() + " failed to sync", e);
-					}
+					catch (Exception e) {}
 				}
 			}
-			
 			if (syncData.has("clients")) {
 				
 				ArrayList<Client> clients = (ArrayList<Client>) gson.fromJson(syncData.getString("clients"),
@@ -480,9 +479,8 @@ public class EventResource extends RestResource<Event> {
 				logger.info("received client size:" + clients.size());
 				for (Client client : clients) {
 					try {
-						
-							client.withIsSendToOpenMRS("yes");
-							clientService.addOrUpdate(client);
+						client.withIsSendToOpenMRS("yes");
+						clientService.addOrUpdate(client);
 						
 					}
 					catch (Exception e) {
