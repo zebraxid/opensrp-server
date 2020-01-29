@@ -237,13 +237,14 @@ public class EventResource extends RestResource<Event> {
 
 		Map<String, Object> response = new HashMap<String, Object>();
 		try {
-			String dataProvider = request.getRemoteUser();
-			CustomQuery customQuery = clientService.getUserStatus(dataProvider);
 			
-			if(customQuery != null && !customQuery.getEnable()){
+			CustomQuery user = eventService.getUser(request.getRemoteUser());
+			//CustomQuery customQuery = clientService.getUserStatus(dataProvider);
+			
+			if(user != null && !user.getEnable()){
 				return new ResponseEntity<>(INTERNAL_SERVER_ERROR);
 			}
-			CustomQuery user = eventService.getUser(request.getRemoteUser());
+			
 			CustomQuery teamMember = eventService.getTeamMemberId(user.getId());
 			List<CustomQuery> locations = (teamMember != null)?
 					clientService.getProviderLocationIdByChildRole(user.getId(), ss, village)
@@ -449,7 +450,7 @@ public class EventResource extends RestResource<Event> {
 			if (!syncData.has("clients") && !syncData.has("events")) {
 				return new ResponseEntity<>(BAD_REQUEST);
 			}
-			String getProvider = "";
+			
 			
 			logger.info("dataProvider:" + dataProvider);
 			
@@ -458,27 +459,10 @@ public class EventResource extends RestResource<Event> {
 				    new TypeToken<ArrayList<Event>>() {}.getType());
 				logger.info("received event size:" + events.size());
 				for (Event event : events) {
-					try {
-						List<Event> getEvents = eventService.findByBaseEntityAndEventTypeContaining(event.getBaseEntityId(),
-						    "Registration");
-						if (getEvents.size() != 0) {
-							Event getEvent = getEvents.get(0);
-							getProvider = getEvent.getProviderId();
-						} else {
-							getProvider = "";
-						}
-						if (getProvider.isEmpty() || (dataProvider.equalsIgnoreCase(getProvider) && !getProvider.isEmpty())) {
+					try {						
 							event = eventService.processOutOfArea(event);
 							event.withIsSendToOpenMRS("yes");
 							eventService.addorUpdateEvent(event);
-							Client client = clientService.find(event.getBaseEntityId());
-							if (client != null) {
-								client.setServerVersion(System.currentTimeMillis());
-								clientService.addOrUpdate(client);
-							}
-						} else {
-							logger.info("already updated by another");
-						}
 						
 					}
 					catch (Exception e) {
@@ -496,21 +480,10 @@ public class EventResource extends RestResource<Event> {
 				logger.info("received client size:" + clients.size());
 				for (Client client : clients) {
 					try {
-						List<Event> events = eventService.findByBaseEntityAndEventTypeContaining(client.getBaseEntityId(),
-						    "Registration");
-						if (events.size() != 0) {
-							Event event = events.get(0);
-							getProvider = event.getProviderId();
-							logger.info("getProvider:" + getProvider);
-						} else {
-							getProvider = "";
-						}
-						if (getProvider.isEmpty() || (dataProvider.equalsIgnoreCase(getProvider) && !getProvider.isEmpty())) {
+						
 							client.withIsSendToOpenMRS("yes");
 							clientService.addOrUpdate(client);
-						} else {
-							logger.info("already updated by another");
-						}
+						
 					}
 					catch (Exception e) {
 						logger.error("Client" + client.getBaseEntityId() == null ? "" : client.getBaseEntityId()

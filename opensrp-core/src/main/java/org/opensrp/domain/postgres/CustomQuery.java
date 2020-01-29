@@ -23,6 +23,7 @@ public class CustomQuery {
 	private String locationTagName;
 
 	private Boolean enable;
+	private Boolean status;
 
 	public int getId() {
 		return id;
@@ -110,6 +111,14 @@ public class CustomQuery {
 
 	public void setEnable(Boolean enable) {
 		this.enable = enable;
+	}
+
+	public Boolean getStatus() {
+		return status;
+	}
+
+	public void setStatus(Boolean status) {
+		this.status = status;
 	}
 
 	@Override
