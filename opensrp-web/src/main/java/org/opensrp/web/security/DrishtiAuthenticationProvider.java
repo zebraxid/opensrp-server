@@ -123,90 +123,30 @@ public class DrishtiAuthenticationProvider implements AuthenticationProvider {
 		});
 	}
 	
-	public Boolean getAuthentication(Authentication authentication) {
-		CustomQuery userInfo = eventService.getUser(authentication.getName());
-		Boolean match = false;
-		if (userInfo != null) {
-			List<CustomQuery> roles = eventService.getRoles(userInfo.getId());
-			
-			if (!isProvider(roles)) {
-				return false;
-			}
-		}
-		if (userInfo != null) {
-			match = bcryptPasswordEncoder.matches(authentication.getCredentials().toString(), userInfo.getPassword());
-		}
-		
-		return match;
-	}
+	
 	
 	public User getDrishtiUser(Authentication authentication, String username) {
 		User user = null;
-		
 		try {
-			
-			if (getAuthentication(authentication)) {
-				CustomQuery userInfo = eventService.getUser(authentication.getName());
-				
-				//user = openmrsUserService.getUser(username);
-				user = new User(userInfo.getUserUUID(), userInfo.getName(), null, userInfo.getFullName(), null,
-				        userInfo.getFullName(), null, null);
-				
-				user.addAttribute("_PERSON_UUID", userInfo.getPersonUUID());
-				user.addRole("Provider");
-				user.addPermission(null);
-				
-			}
-			
-		}
-		catch (Exception e) {
-			System.out.println("161endTime(getDrishtiUser) Exception: " + System.currentTimeMillis() + " username: "
-			        + username);
-			logger.error(format("{0}. Exception: {1}", INTERNAL_ERROR, e));
-			e.printStackTrace();
-			throw new BadCredentialsException(INTERNAL_ERROR);
-		}
-		
-		return user;
-	}
-	
-	public User getUser(Authentication authentication, String username) {
-		User user = null;
-		
-		try {
-			
-			CustomQuery userInfo = eventService.getUser(authentication.getName());
-			
-			//user = openmrsUserService.getUser(username);
-			user = new User(userInfo.getUserUUID(), userInfo.getName(), null, userInfo.getFullName(), null,
-			        userInfo.getFullName(), null, null);
-			
-			user.addAttribute("_PERSON_UUID", userInfo.getPersonUUID());
-			user.addRole("Provider");
-			user.addPermission(null);
-			
-			System.out.println("user:" + user);
-			
-		}
-		catch (Exception e) {
-			System.out.println("180endTime(getDrishtiUser) Exception: " + System.currentTimeMillis() + " username: "
-			        + username);
-			logger.error(format("{0}. Exception: {1}", INTERNAL_ERROR, e));
-			e.printStackTrace();
-			throw new BadCredentialsException(INTERNAL_ERROR);
-		}
-		
-		return user;
-	}
-	
-	private Boolean isProvider(List<CustomQuery> roles) {
-		if (roles != null) {
-			for (CustomQuery role : roles) {
-				if (role.getName().equalsIgnoreCase(provider)) {
-					return true;
+			if (openmrsUserService.authenticate(authentication.getName(), authentication.getCredentials().toString())) {
+				boolean response = openmrsUserService.deleteSession(authentication.getName(),
+				    authentication.getCredentials().toString());
+				user = openmrsUserService.getUser(username);
+				if (!response) {
+					logger.error(format("{0}. Exception: {1}", INTERNAL_ERROR, "Unable to clear session"));
+					
 				}
 			}
 		}
-		return false;
+		catch (Exception e) {
+			logger.error(format("{0}. Exception: {1}", INTERNAL_ERROR, e));
+			e.printStackTrace();
+			throw new BadCredentialsException(INTERNAL_ERROR);
+		}
+		return user;
 	}
+	
+	
+	
+	
 }

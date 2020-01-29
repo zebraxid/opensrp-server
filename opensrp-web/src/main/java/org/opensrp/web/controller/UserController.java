@@ -89,7 +89,7 @@ public class UserController {
 		
 		Authentication a = getAuthenticationAdvisor(request);
 		
-		return getAuthenticationProvider().getUser(a, a.getName());
+		return getAuthenticationProvider().getDrishtiUser(a, a.getName());
 	}
 	
 	public Time getServerTime() {
