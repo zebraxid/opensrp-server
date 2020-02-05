@@ -461,6 +461,7 @@ public class EventResource extends RestResource<Event> {
 				ArrayList<Event> events = (ArrayList<Event>) gson.fromJson(syncData.getString("events"),
 				    new TypeToken<ArrayList<Event>>() {}.getType());
 				logger.info("received event size:" + events.size());
+				System.out.println(dataProvider+": received event size:" + events.size());
 				for (Event event : events) {
 					try {
 						event = eventService.processOutOfArea(event);
@@ -484,6 +485,7 @@ public class EventResource extends RestResource<Event> {
 				ArrayList<Client> clients = (ArrayList<Client>) gson.fromJson(syncData.getString("clients"),
 				    new TypeToken<ArrayList<Client>>() {}.getType());
 				logger.info("received client size:" + clients.size());
+				System.out.println(dataProvider+": received client size:" + clients.size());
 				for (Client client : clients) {
 					try {
 						client.withIsSendToOpenMRS("yes");
