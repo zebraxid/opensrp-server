@@ -233,7 +233,7 @@ public class EventResource extends RestResource<Event> {
 	@ResponseBody
 	protected ResponseEntity<String> sync(HttpServletRequest request) {
 
-		System.out.println("SYNC STARTED");
+		System.out.println(request.getRemoteUser()+": SYNCING");
 
 		Map<String, Object> response = new HashMap<String, Object>();
 		try {
