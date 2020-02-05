@@ -10,6 +10,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.opensrp.domain.Address;
 import org.opensrp.domain.Client;
+import org.opensrp.domain.ErrorTrace;
 import org.opensrp.domain.postgres.CustomQuery;
 import org.opensrp.repository.ClientsRepository;
 import org.opensrp.search.AddressSearchBean;
@@ -31,7 +32,10 @@ public class ClientService {
 	public ClientService(ClientsRepository allClients) {
 		this.allClients = allClients;
 	}
-	
+
+	@Autowired
+	private ErrorTraceService errorTraceService;
+
 	public Client getByBaseEntityId(String baseEntityId) {
 		return allClients.findByBaseEntityId(baseEntityId);
 	}
@@ -232,6 +236,16 @@ public class ClientService {
 	
 	public Client addOrUpdate(Client client) {
 		if (client.getBaseEntityId() == null) {
+			if (client != null) {
+				ErrorTrace errorTrace = new ErrorTrace();
+				errorTrace.setRevision("missing base_entity_id");
+				errorTrace.setDate(new DateTime());
+				errorTrace.setDocumentType("Client");
+				errorTrace.setStackTrace(client.toString());
+				errorTrace.setRecordId(client.getBaseEntityId());
+				errorTrace.setStatus("failed");
+				errorTraceService.addError(errorTrace);
+			}
 			throw new RuntimeException("No baseEntityId");
 		}
 		//Client c = findClient(client);
@@ -254,6 +268,16 @@ public class ClientService {
 			}
 		}
 		catch (Exception e) {
+			if (client != null) {
+				ErrorTrace errorTrace = new ErrorTrace();
+				errorTrace.setDate(new DateTime());
+				errorTrace.setDocumentType("Client");
+				errorTrace.setStackTrace(client.toString());
+				errorTrace.setRecordId("missing");
+				errorTrace.setStatus("failed");
+				errorTrace.setRevision(e.getMessage());
+				errorTraceService.addError(errorTrace);
+			}
 			e.printStackTrace();
 		}
 		return client;
