@@ -184,6 +184,6 @@
 		select
 		e.id, e.json
 		from core.event e
-		where e.id = #{eventId,jdbcType=Integer} limit 1
+		where e.id = #{eventId} limit 1
 	</select>
 </mapper>

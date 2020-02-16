@@ -233,6 +233,6 @@
 		select
 		c.id, c.json
 		from core.client c
-		where c.id = #{clientId,jdbcType=Integer} limit 1
+		where c.id = #{clientId} limit 1
 	</select>
 </mapper>
