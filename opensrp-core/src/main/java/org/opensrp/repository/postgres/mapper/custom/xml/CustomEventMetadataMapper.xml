@@ -180,7 +180,7 @@
 	</select>
 	
 	<select id="findEventByEventId" parameterType="java.lang.Integer"
-		resultMap="org.opensrp.repository.postgres.mapper.ClientMapper.BaseResultMap">
+		resultMap="BaseEventResultMap">
 		select
 		e.id, e.json
 		from core.event e

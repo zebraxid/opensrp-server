@@ -180,9 +180,11 @@ public class EventService {
 		Integer eventId = allEvents.findEventIdByFormSubmissionId(event.getFormSubmissionId());
 		
 		//Event getEvent = findByFormSubmissionId(event.getFormSubmissionId());
-		if (eventId != 0) {
+		if (eventId != null) {
 			Event getEvent = allEvents.findEventByEventId(eventId);
+			System.err.println("getEventgetEventgetEvent"+getEvent);
 			if(getEvent != null){
+				
 				event.setDateEdited(DateTime.now());
 				event.setServerVersion(System.currentTimeMillis());
 				event.setId(getEvent.getId());
