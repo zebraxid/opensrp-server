@@ -12,6 +12,7 @@ import java.util.UUID;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.opensrp.common.AllConstants;
+import org.opensrp.domain.Client;
 import org.opensrp.domain.Event;
 import org.opensrp.domain.postgres.CustomQuery;
 import org.opensrp.domain.postgres.EventMetadata;
@@ -559,6 +560,22 @@ public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements E
 	public List<Event> selectBySearchBean(AddressSearchBean addressSearchBean, long serverVersion, String providerId,
 	                                      int limit) {
 		return convert(eventMetadataMapper.selectBySearchBean(addressSearchBean, serverVersion, providerId, DEFAULT_FETCH_SIZE));
+	}
+
+	@Override
+	public Integer findEventIdByFormSubmissionId(String formSubmissionId) {
+		// TODO Auto-generated method stub
+		return eventMetadataMapper.findEventIdByFormSubmissionId(formSubmissionId);
+	}
+
+	@Override
+	public Event findEventByEventId(Integer eventId) {
+		org.opensrp.domain.postgres.Event pgEvent = eventMetadataMapper.findEventByEventId(eventId);
+		if(pgEvent != null){
+		return convert(pgEvent);
+		}else {
+			return null;
+		}
 	}
 
 }

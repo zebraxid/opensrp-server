@@ -172,5 +172,18 @@
 		LIMIT #{limit} OFFSET #{offset}
 	</select>
 
-
+	<select id="findEventIdByFormSubmissionId" parameterType="java.lang.String"
+		resultType="Integer">
+		select event_id
+		from core.event_metadata em
+		where em.form_submission_id = #{formSubmissionId,jdbcType=VARCHAR} and em.date_deleted is null limit 1
+	</select>
+	
+	<select id="findEventByEventId" parameterType="java.lang.Integer"
+		resultMap="org.opensrp.repository.postgres.mapper.ClientMapper.BaseResultMap">
+		select
+		e.id, e.json
+		from core.event e
+		where e.id = #{eventId,jdbcType=Integer} limit 1
+	</select>
 </mapper>

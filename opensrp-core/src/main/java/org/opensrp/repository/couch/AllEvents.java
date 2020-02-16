@@ -308,4 +308,16 @@ public class AllEvents extends MotechBaseRepository<Event> implements EventsRepo
 		return null;
 	}
 
+	@Override
+	public Integer findEventIdByFormSubmissionId(String formSubmissionId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Event findEventByEventId(Integer eventId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

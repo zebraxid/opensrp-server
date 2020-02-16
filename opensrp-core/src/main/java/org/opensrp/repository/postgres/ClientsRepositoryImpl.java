@@ -481,4 +481,23 @@ public class ClientsRepositoryImpl extends BaseRepositoryImpl<Client> implements
 		clientMapper.updateAppVersion(username, version);
 		
 	}
+
+	@Override
+	public Integer findClientIdByBaseEntityId(String baseEntityId) {
+		// TODO Auto-generated method stub
+		return clientMetadataMapper.findClientIdByBaseEntityId(baseEntityId);
+	}
+
+	@Override
+	public Client findClientByClientId(Integer clientId) {
+		if (clientId!=0) {
+			return null;
+		}
+		org.opensrp.domain.postgres.Client pgClient = clientMetadataMapper.findClientByClientId(clientId);
+		if(pgClient != null){
+			return convert(pgClient);
+		}
+		
+		return null;
+	}
 }

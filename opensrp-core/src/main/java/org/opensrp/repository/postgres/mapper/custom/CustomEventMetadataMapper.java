@@ -27,4 +27,7 @@ public interface CustomEventMetadataMapper extends EventMetadataMapper {
 	                               @Param("serverVersion") long serverVersion,
 	                               @Param("providerId") String providerId,
 	                               @Param("limit") int limit);
+	
+	Integer findEventIdByFormSubmissionId(String formSubmissionId);
+	Event findEventByEventId(Integer eventId);
 }

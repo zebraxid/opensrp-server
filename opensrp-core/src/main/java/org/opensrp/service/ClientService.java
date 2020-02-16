@@ -250,15 +250,19 @@ public class ClientService {
 		}
 		//Client c = findClient(client);
 		try {
-			Client c = findClient(client);
-			if (c != null) {
-				client.setRevision(c.getRevision());
-				client.setId(c.getId());
-				client.setDateEdited(DateTime.now());
-				client.setDateCreated(c.getDateCreated());
-				client.setServerVersion(System.currentTimeMillis());
-				client.addIdentifier("OPENMRS_UUID", c.getIdentifier("OPENMRS_UUID"));
-				allClients.update(client);
+			int clientId = allClients.findClientIdByBaseEntityId(client.getBaseEntityId());
+			
+			if (clientId != 0) {
+				Client c = allClients.findClientByClientId(clientId);
+				if(c != null){
+					client.setRevision(c.getRevision());
+					client.setId(c.getId());
+					client.setDateEdited(DateTime.now());
+					client.setDateCreated(c.getDateCreated());
+					client.setServerVersion(System.currentTimeMillis());
+					client.addIdentifier("OPENMRS_UUID", c.getIdentifier("OPENMRS_UUID"));
+					allClients.update(client);
+				}
 				
 			} else {
 				client.setServerVersion(System.currentTimeMillis());
