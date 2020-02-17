@@ -216,12 +216,12 @@ public class OpenmrsIDService {
 		new TurnOffCertificateValidation().ForHTTPSConnections();
 		List<String> ids = new ArrayList<>();
 		String openMRSUrl = this.openmrsUrl + OPENMRS_IDGEN_URL;
-		openMRSUrl += "?source=" + this.openmrsSourceId + "&numberToGenerate=" + numberToGenerate;
+		openMRSUrl += "?source=" + this.openmrsSourceId + "&numberToGenerate=" + numberToGenerate+"&v=full";
 		//openMRSUrl += "&username=" + userName + "&password=" + password;		
 		JSONObject jsonResponse = new JSONObject();
 		System.err.println("openMRSUrl:"+openMRSUrl);
 		try{
-			jsonResponse =  new JSONObject(HttpUtil.get(openMRSUrl,  "v=full",
+			jsonResponse =  new JSONObject(HttpUtil.get(openMRSUrl,  "",
 					userName, password).body());
 			System.err.println("jsonResponse:"+jsonResponse);
 			JSONObject responseJson = new JSONObject(jsonResponse);
