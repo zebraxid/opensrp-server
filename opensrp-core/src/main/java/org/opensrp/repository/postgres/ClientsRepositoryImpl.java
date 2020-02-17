@@ -490,20 +490,14 @@ public class ClientsRepositoryImpl extends BaseRepositoryImpl<Client> implements
 
 	@Override
 	public Client findClientByClientId(Integer clientId) {
-		System.err.println("okkkkkkkkkkkkkkkkkkkkkkkkkkkk"+clientId);
-		if (clientId != null) {
+		if (clientId == null) {
 			return null;
 		}
-		try{
+
 		org.opensrp.domain.postgres.Client pgClient = clientMetadataMapper.findClientByClientId(clientId);
 		if(pgClient != null){
-			System.err.println("CCCCCCCCCkkkkkkkkkkkkkkkkkkkkkkkkkkkk"+pgClient);
 			return convert(pgClient);
 		}
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		
 		return null;
 	}
 }

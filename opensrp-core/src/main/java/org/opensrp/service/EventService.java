@@ -182,7 +182,6 @@ public class EventService {
 		//Event getEvent = findByFormSubmissionId(event.getFormSubmissionId());
 		if (eventId != null) {
 			Event getEvent = allEvents.findEventByEventId(eventId);
-			System.err.println("getEventgetEventgetEvent"+getEvent);
 			if(getEvent != null){
 				
 				event.setDateEdited(DateTime.now());
