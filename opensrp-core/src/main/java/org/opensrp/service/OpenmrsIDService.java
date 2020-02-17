@@ -221,10 +221,9 @@ public class OpenmrsIDService {
 		JSONObject jsonResponse = new JSONObject();
 		System.err.println("openMRSUrl:"+openMRSUrl);
 		try{
-			jsonResponse =  new JSONObject(HttpUtil.getID(openMRSUrl).body());
-			System.err.println("jsonResponse:"+jsonResponse);
-			JSONObject responseJson = new JSONObject(jsonResponse);
-			JSONArray jsonArray = responseJson.getJSONArray("identifiers");
+			jsonResponse =  new JSONObject(HttpUtil.getGeneratedId(openMRSUrl).body());
+			System.err.println("jsonResponse:"+jsonResponse);			
+			JSONArray jsonArray = jsonResponse.getJSONArray("identifiers");
 			
 			if (jsonArray != null && jsonArray.length() > 0) {
 				for (int i = 0; i < jsonArray.length(); i++) {

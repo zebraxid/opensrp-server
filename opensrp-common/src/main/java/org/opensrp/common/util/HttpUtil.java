@@ -129,7 +129,7 @@ public class HttpUtil {
 		}
 	}
 	
-	public static HttpResponse getID(String url) {
+	public static HttpResponse getGeneratedId(String url) {
 		try {
 			//HttpGet request = (HttpGet) makeConnection(url, payload, RequestMethod.GET, authType, authString);
 			HttpGet get = new HttpGet(url);
