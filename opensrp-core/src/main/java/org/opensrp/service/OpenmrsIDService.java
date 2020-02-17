@@ -219,11 +219,11 @@ public class OpenmrsIDService {
 		//openMRSUrl += "?source=" + this.openmrsSourceId + "&numberToGenerate=" + numberToGenerate;
 		//openMRSUrl += "&username=" + userName + "&password=" + password;		
 		JSONObject jsonResponse = new JSONObject();
-		logger.info("openMRSUrl:"+openMRSUrl);
+		System.err.println("openMRSUrl:"+openMRSUrl);
 		try{
 			jsonResponse =  new JSONObject(HttpUtil.get(openMRSUrl,  "v=full",
 					userName, password).body());
-			
+			System.err.println("jsonResponse:"+jsonResponse);
 			JSONObject responseJson = new JSONObject(jsonResponse);
 			JSONArray jsonArray = responseJson.getJSONArray("identifiers");
 			
@@ -234,6 +234,7 @@ public class OpenmrsIDService {
 			}		
 			return ids;
 		}catch(Exception e){
+			e.printStackTrace();
 			return null;
 		}
 		
