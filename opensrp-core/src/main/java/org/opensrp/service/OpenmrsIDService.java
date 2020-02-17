@@ -26,6 +26,7 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.opensrp.common.util.HttpUtil;
 import org.opensrp.common.util.TurnOffCertificateValidation;
 import org.opensrp.domain.Client;
 import org.opensrp.domain.UniqueId;
@@ -215,11 +216,29 @@ public class OpenmrsIDService {
 		new TurnOffCertificateValidation().ForHTTPSConnections();
 		List<String> ids = new ArrayList<>();
 		String openMRSUrl = this.openmrsUrl + OPENMRS_IDGEN_URL;
-		openMRSUrl += "?source=" + this.openmrsSourceId + "&numberToGenerate=" + numberToGenerate;
-		openMRSUrl += "&username=" + userName + "&password=" + password;		
+		//openMRSUrl += "?source=" + this.openmrsSourceId + "&numberToGenerate=" + numberToGenerate;
+		//openMRSUrl += "&username=" + userName + "&password=" + password;		
+		JSONObject jsonResponse = new JSONObject();
+		logger.info("openMRSUrl:"+openMRSUrl);
+		try{
+			jsonResponse =  new JSONObject(HttpUtil.get(openMRSUrl,  "v=full",
+					userName, password).body());
+			
+			JSONObject responseJson = new JSONObject(jsonResponse);
+			JSONArray jsonArray = responseJson.getJSONArray("identifiers");
+			
+			if (jsonArray != null && jsonArray.length() > 0) {
+				for (int i = 0; i < jsonArray.length(); i++) {
+					ids.add(jsonArray.getString(i));
+				}
+			}		
+			return ids;
+		}catch(Exception e){
+			return null;
+		}
 		
 		
-		try (CloseableHttpClient httpclient = createAcceptSelfSignedCertificateClient()) {
+		/*try (CloseableHttpClient httpclient = createAcceptSelfSignedCertificateClient()) {
 			HttpGet get = new HttpGet(openMRSUrl);
 			HttpResponse response = httpclient.execute(get);
 			String jsonResponse = EntityUtils.toString(response.getEntity());
@@ -239,7 +258,7 @@ public class OpenmrsIDService {
 		catch (IOException | JSONException e) {
 			logger.error("", e);
 			return null;
-		}
+		}*/
 		
 	}
 	
