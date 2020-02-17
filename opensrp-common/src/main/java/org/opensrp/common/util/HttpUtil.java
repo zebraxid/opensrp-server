@@ -77,8 +77,7 @@ public class HttpUtil {
 		try {
 			HttpPost request = (HttpPost) makeConnection(url, payload, RequestMethod.POST, authType, authString);
 			request.setHeader(HTTP.CONTENT_TYPE, contentType);
-			StringEntity entity = new StringEntity(data == null ? "" : data, "UTF-8");
-			System.out.println(data);
+			StringEntity entity = new StringEntity(data == null ? "" : data, "UTF-8");			
 			entity.setContentEncoding(contentType);
 			request.setEntity(entity);
 			org.apache.http.HttpResponse response = httpClient.execute(request);
@@ -179,7 +178,6 @@ public class HttpUtil {
 			requestBase.addHeader("Authorization", "Token " + authString);
 		}
 		
-		System.out.println(requestBase);
 		return requestBase;
 	}
 	

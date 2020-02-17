@@ -26,6 +26,7 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.opensrp.common.util.TurnOffCertificateValidation;
 import org.opensrp.domain.Client;
 import org.opensrp.domain.UniqueId;
 import org.opensrp.repository.UniqueIdRepository;
@@ -211,11 +212,13 @@ public class OpenmrsIDService {
 	
 	public List<String> getOpenMRSIdentifiers(String source, String numberToGenerate, String userName, String password)
 	    throws JSONException, KeyManagementException, NoSuchAlgorithmException, KeyStoreException {
-		 
+		new TurnOffCertificateValidation().ForHTTPSConnections();
 		List<String> ids = new ArrayList<>();
 		String openMRSUrl = this.openmrsUrl + OPENMRS_IDGEN_URL;
 		openMRSUrl += "?source=" + this.openmrsSourceId + "&numberToGenerate=" + numberToGenerate;
 		openMRSUrl += "&username=" + userName + "&password=" + password;		
+		
+		
 		try (CloseableHttpClient httpclient = createAcceptSelfSignedCertificateClient()) {
 			HttpGet get = new HttpGet(openMRSUrl);
 			HttpResponse response = httpclient.execute(get);
