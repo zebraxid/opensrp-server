@@ -131,7 +131,6 @@ public class HttpUtil {
 	
 	public static HttpResponse getGeneratedId(String url) {
 		try {
-			//HttpGet request = (HttpGet) makeConnection(url, payload, RequestMethod.GET, authType, authString);
 			HttpGet get = new HttpGet(url);
 			org.apache.http.HttpResponse response = httpClient.execute(get);
 			
