@@ -138,4 +138,9 @@
     	update core.users set app_version = #{version} where username = #{username}    
     </update>
 
+	<select id="getDistrictAndUpazila" parameterType="java.lang.Integer"
+			resultMap="customQueryMap">
+		select district as name, upazilas as code from core.get_district_and_upazila(#{locationTag})
+	</select>
+
 </mapper>

@@ -301,4 +301,9 @@ public class AllClients extends MotechBaseRepository<Client> implements ClientsR
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public List<CustomQuery> getDistrictAndUpazila(Integer parentLocationTag) {
+		return null;
+	}
 }

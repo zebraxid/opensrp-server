@@ -500,4 +500,11 @@ public class ClientsRepositoryImpl extends BaseRepositoryImpl<Client> implements
 		}
 		return null;
 	}
+
+	@Override
+	public List<CustomQuery> getDistrictAndUpazila(Integer parentLocationTag) {
+		return clientMapper.getDistrictAndUpazila(parentLocationTag);
+	}
+
+
 }

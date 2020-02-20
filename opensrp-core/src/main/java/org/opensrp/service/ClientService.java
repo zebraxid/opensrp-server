@@ -1,11 +1,9 @@
 package org.opensrp.service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.List;
+import java.util.*;
 
 import org.joda.time.DateTime;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.opensrp.domain.Address;
@@ -341,5 +339,22 @@ public class ClientService {
 	public void updateAppVersion(String username,String version) {
 		allClients.updateAppVersion(username, version);
 		
+	}
+
+	public JSONArray getDistrictAndUpazila(Integer parentLocationTag) throws JSONException {
+		List<CustomQuery> districtAndUpazila = allClients.getDistrictAndUpazila(parentLocationTag);
+		JSONArray response = new JSONArray();
+		for (CustomQuery o: districtAndUpazila) {
+			JSONObject disAndUpa = new JSONObject();
+			disAndUpa.put("name", o.getName());
+			String[] upazilas = o.getCode().split(",");
+			JSONArray upa = new JSONArray();
+			for (String upazila: upazilas) {
+				upa.put(upazila);
+			}
+			disAndUpa.put("upazilas", upa);
+			response.put(disAndUpa);
+		}
+		return response;
 	}
 }
