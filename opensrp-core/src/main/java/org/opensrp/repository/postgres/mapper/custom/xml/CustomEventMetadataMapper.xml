@@ -97,7 +97,7 @@
 			)
 		</if>
 		)
-		order by core.event.json->>'serverVersion' asc
+		order by core.event_metadata.server_version asc
 		LIMIT #{limit}
 
 	</select>
