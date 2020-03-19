@@ -249,11 +249,9 @@ public class ClientService {
 		//Client c = findClient(client);
 		try {
 			Integer clientId = allClients.findClientIdByBaseEntityId(client.getBaseEntityId());
-			System.err.println("clientIdclientIdclientIdclientId:"+clientId);
 			if (clientId != null) {
 				Client c = allClients.findClientByClientId(clientId);
 				if(c != null){
-					System.out.println("CCCCC___>>>>>>>>"+c);
 					client.setRevision(c.getRevision());
 					client.setId(c.getId());
 					client.setDateEdited(DateTime.now());
@@ -356,5 +354,9 @@ public class ClientService {
 			response.put(disAndUpa);
 		}
 		return response;
+	}
+
+	public Integer findClientIdByBaseEntityId(String baseEntityId) {
+		return allClients.findClientIdByBaseEntityId(baseEntityId);
 	}
 }

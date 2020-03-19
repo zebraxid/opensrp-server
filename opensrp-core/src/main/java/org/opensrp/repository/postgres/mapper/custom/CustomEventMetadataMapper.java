@@ -29,5 +29,6 @@ public interface CustomEventMetadataMapper extends EventMetadataMapper {
 	                               @Param("limit") int limit);
 	
 	Integer findEventIdByFormSubmissionId(String formSubmissionId);
+
 	Event findEventByEventId(Integer eventId);
 }

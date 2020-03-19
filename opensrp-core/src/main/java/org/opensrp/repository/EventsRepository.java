@@ -73,5 +73,6 @@ public interface EventsRepository extends BaseRepository<Event> {
 	                                                           String providerId,
 	                                                           int limit);
 	Integer findEventIdByFormSubmissionId(String formSubmissionId);
+
 	Event findEventByEventId(Integer eventId);
 }

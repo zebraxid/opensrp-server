@@ -368,5 +368,9 @@ public class EventService {
 	public List<Event> selectBySearchBean(AddressSearchBean addressSearchBean, long serverVersion, String providerId,
 	                                      int limit) {
 		return allEvents.selectBySearchBean(addressSearchBean, serverVersion, providerId, limit);
-	};
+	}
+
+	public Integer findEventIdByFormSubmissionId(String formSubmissionId) {
+		return allEvents.findEventIdByFormSubmissionId(formSubmissionId);
+	}
 }
