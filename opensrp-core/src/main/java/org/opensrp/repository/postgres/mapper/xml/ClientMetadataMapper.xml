@@ -24,6 +24,13 @@
     <result column="address2" jdbcType="VARCHAR" property="address2" />
     <result column="address3" jdbcType="VARCHAR" property="address3" />
     <result column="village_id" jdbcType="BIGINT" property="villageId" />
+    <result column="division" jdbcType="VARCHAR" property="division" />
+    <result column="district" jdbcType="VARCHAR" property="district" />
+    <result column="city_corporation" jdbcType="VARCHAR" property="cityCorporation" />
+    <result column="upazila" jdbcType="VARCHAR" property="upazila" />
+    <result column="city_union" jdbcType="VARCHAR" property="cityUnion" />
+    <result column="ward" jdbcType="VARCHAR" property="ward" />
+    <result column="village" jdbcType="VARCHAR" property="village" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <!--
@@ -168,7 +175,9 @@
       #{openmrsUuid,jdbcType=VARCHAR}, #{uniqueId,jdbcType=VARCHAR}, #{firstName,jdbcType=VARCHAR}, 
       #{middleName,jdbcType=VARCHAR}, #{lastName,jdbcType=VARCHAR}, #{birthDate,jdbcType=DATE}, 
       #{dateDeleted,jdbcType=TIMESTAMP},#{address1,jdbcType=VARCHAR},#{address2,jdbcType=VARCHAR},
-      #{address3,jdbcType=VARCHAR}, #{villageId,jdbcType=BIGINT})
+      #{address3,jdbcType=VARCHAR},#{division,jdbcType=VARCHAR},#{district,jdbcType=VARCHAR}
+      ,#{cityCorporation,jdbcType=VARCHAR},#{upazila,jdbcType=VARCHAR},#{cityUnion,jdbcType=VARCHAR}
+      ,#{ward,jdbcType=VARCHAR},#{village,jdbcType=VARCHAR}, #{villageId,jdbcType=BIGINT})
   </insert>
   <insert id="insertSelective" parameterType="org.opensrp.domain.postgres.ClientMetadata">
     <!--
@@ -226,6 +235,27 @@
        <if test="address3 != null">
         address3,
       </if>
+      <if test="division != null">
+        division,
+      </if>
+       <if test="district != null">
+        district,
+      </if>
+      <if test="cityCorporation != null">
+        city_corporation,
+      </if>
+      <if test="upazila != null">
+        upazila,
+      </if>
+      <if test="cityUnion != null">
+        city_union,
+      </if>
+      <if test="ward != null">
+        ward,
+      </if>
+       <if test="village != null">
+        village,
+      </if>
       <if test="villageId != null">
         village_id,
       </if>
@@ -279,6 +309,27 @@
        <if test="address3 != null">
         #{address3,jdbcType=VARCHAR},
       </if>
+      <if test="division != null">
+        #{division,jdbcType=VARCHAR},
+      </if>
+      <if test="district != null">
+        #{district,jdbcType=VARCHAR},
+      </if>
+       <if test="cityCorporation != null">
+        #{cityCorporation,jdbcType=VARCHAR},
+      </if>      
+       <if test="upazila != null">
+        #{upazila,jdbcType=VARCHAR},
+      </if>      
+      <if test="cityUnion != null">
+        #{cityUnion,jdbcType=VARCHAR},
+      </if>
+      <if test="ward != null">
+        #{ward,jdbcType=VARCHAR},
+      </if>
+      <if test="village != null">
+        #{village,jdbcType=VARCHAR},
+      </if>      
       <if test="villageId != null">
         #{villageId,jdbcType=BIGINT},
       </if>
@@ -370,6 +421,13 @@
       address1 = #{record.address1,jdbcType=VARCHAR},
       address2 = #{record.address2,jdbcType=VARCHAR},
       address3 = #{record.address3,jdbcType=VARCHAR},
+      division = #{record.division,jdbcType=VARCHAR},
+      district = #{record.district,jdbcType=VARCHAR},
+      city_corporation = #{record.cityCorporation,jdbcType=VARCHAR},
+      upazila = #{record.upazila,jdbcType=VARCHAR},
+      city_union = #{record.cityUnion,jdbcType=VARCHAR},
+      ward = #{record.ward,jdbcType=VARCHAR},
+      village = #{record.village,jdbcType=VARCHAR},
       village_id = #{record.villageId,jdbcType=BIGINT}
 
     <if test="_parameter != null">
@@ -429,6 +487,27 @@
       <if test="address3 != null">
         address3 = #{address3,jdbcType=VARCHAR},
       </if>
+      <if test="division != null">
+        division = #{division,jdbcType=VARCHAR},
+      </if>
+      <if test="district != null">
+        district = #{district,jdbcType=VARCHAR},
+      </if>
+      <if test="cityCorporation != null">
+       city_corporation =  #{cityCorporation,jdbcType=VARCHAR},
+      </if>  
+      <if test="upazila != null">
+      	upazila= #{upazila,jdbcType=VARCHAR},
+      </if> 
+      <if test="cityUnion != null">
+        city_union = #{cityUnion,jdbcType=VARCHAR},
+      </if>
+      <if test="ward != null">
+        ward = #{ward,jdbcType=VARCHAR},
+      </if>
+      <if test="village != null">
+        village = #{village,jdbcType=VARCHAR},
+      </if>
       <if test="villageId != null">
         village_id = #{villageId,jdbcType=BIGINT},
       </if>
@@ -454,10 +533,17 @@
       last_name = #{lastName,jdbcType=VARCHAR},
       birth_date = #{birthDate,jdbcType=DATE},
       date_deleted = #{dateDeleted,jdbcType=TIMESTAMP},
-      address1 = #{address1,jdbcType=VARCHAR},
-      address2 = #{address2,jdbcType=VARCHAR},
-      address3 = #{address3,jdbcType=VARCHAR},
-      village_id = #{villageId,jdbcType=BIGINT}
+      address1 = #{record.address1,jdbcType=VARCHAR},
+      address2 = #{record.address2,jdbcType=VARCHAR},
+      address3 = #{record.address3,jdbcType=VARCHAR},
+      division = #{record.division,jdbcType=VARCHAR},
+      district = #{record.district,jdbcType=VARCHAR},
+      city_corporation = #{record.cityCorporation,jdbcType=VARCHAR},
+      upazila = #{record.upazila,jdbcType=VARCHAR},
+      city_union = #{record.cityUnion,jdbcType=VARCHAR},
+      ward = #{record.ward,jdbcType=VARCHAR},
+      village = #{record.village,jdbcType=VARCHAR},
+      village_id = #{record.villageId,jdbcType=BIGINT}
 
     where id = #{id,jdbcType=BIGINT}
   </update>
