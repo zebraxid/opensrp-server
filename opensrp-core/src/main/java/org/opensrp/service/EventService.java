@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.hamcrest.text.pattern.Parse;
 import org.joda.time.DateTime;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -182,7 +181,7 @@ public class EventService {
 		//Event getEvent = findByFormSubmissionId(event.getFormSubmissionId());
 		if (eventId != null) {
 			Event getEvent = allEvents.findEventByEventId(eventId);
-			if(getEvent != null){
+			if (getEvent != null) {
 				
 				event.setDateEdited(DateTime.now());
 				event.setServerVersion(System.currentTimeMillis());
@@ -343,11 +342,11 @@ public class EventService {
 		}
 		
 	}
-
+	
 	public CustomQuery getUser(String username) {
 		return allEvents.getUser(username);
 	}
-
+	
 	public CustomQuery getTeamMemberId(int userId) {
 		return allEvents.getTeamMemberId(userId);
 	}
@@ -364,12 +363,16 @@ public class EventService {
 		return null;
 		
 	}
-
+	
 	public List<Event> selectBySearchBean(AddressSearchBean addressSearchBean, long serverVersion, String providerId,
 	                                      int limit) {
 		return allEvents.selectBySearchBean(addressSearchBean, serverVersion, providerId, limit);
 	}
-
+	
+	public List<Event> findByProvider(long serverVersion, String providerId, int limit) {
+		return allEvents.selectByProvider(serverVersion, providerId, limit);
+	}
+	
 	public Integer findEventIdByFormSubmissionId(String formSubmissionId) {
 		return allEvents.findEventIdByFormSubmissionId(formSubmissionId);
 	}
