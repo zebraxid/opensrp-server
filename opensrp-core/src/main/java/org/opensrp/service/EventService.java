@@ -387,7 +387,7 @@ public class EventService {
 			CustomQuery number = clientService.getMaxHealthId(villageIds[i]);
 
 			List<Integer> listOfInteger = IntStream.rangeClosed(number.getMaxHealthId()+1, number.getMaxHealthId()+HEALTH_ID_LIMIT).boxed().collect(Collectors.toList());
-			List<String> listOfString = convertIntListToStringList( listOfInteger, s -> StringUtils.leftPad(String.valueOf(s), 4, "0"));
+			List<String> listOfString = convertIntListToStringList( listOfInteger, s ->  StringUtils.leftPad(String.valueOf(s), 4, "0"));
 
 			HealthId healthId = new HealthId();
 
