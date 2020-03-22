@@ -325,6 +325,10 @@ public class ClientService {
 		return allClients.getProviderLocationTreeByChildRole(memberId, childRoleId);
 	}
 
+	public List<CustomQuery> getVillageByProviderId(int memberId, int childRoleId, int locationTagId) {
+		return allClients.getVillageByProviderId(memberId, childRoleId, locationTagId);
+	}
+
 	public List<CustomQuery> getProviderLocationIdByChildRole(int memberId, int childRoleId, int locationTagId) {
 		return allClients.getProviderLocationIdByChildRole(memberId, childRoleId, locationTagId);
 	}
@@ -333,10 +337,19 @@ public class ClientService {
 		// TODO Auto-generated method stub
 		return allClients.findUserStatus(username);
 	}
+
+	public CustomQuery getUserId(String username) {
+		// TODO Auto-generated method stub
+		return allClients.findUserId(username);
+	}
+
+	public CustomQuery getMaxHealthId(Integer locationId) {
+		// TODO Auto-generated method stub
+		return allClients.getMaxHealthId(locationId);
+	}
 	
 	public void updateAppVersion(String username,String version) {
 		allClients.updateAppVersion(username, version);
-		
 	}
 
 	public JSONArray getDistrictAndUpazila(Integer parentLocationTag) throws JSONException {

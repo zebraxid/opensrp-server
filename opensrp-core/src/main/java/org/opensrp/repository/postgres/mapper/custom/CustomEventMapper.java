@@ -41,4 +41,5 @@ public interface CustomEventMapper extends EventMapper {
 
 	List<HealthId> gethealthIds(boolean status, String type);
 
+	int insertHealthId(HealthId healthId);
 }

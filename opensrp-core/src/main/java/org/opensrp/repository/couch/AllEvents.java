@@ -320,4 +320,9 @@ public class AllEvents extends MotechBaseRepository<Event> implements EventsRepo
 		return null;
 	}
 
+	@Override
+	public int insertHealthId(HealthId healthId) {
+		return 0;
+	}
+
 }

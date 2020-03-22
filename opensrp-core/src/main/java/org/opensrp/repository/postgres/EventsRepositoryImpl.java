@@ -578,4 +578,9 @@ public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements E
 		}
 	}
 
+
+	@Override
+	public int insertHealthId(HealthId healthId) {
+		return eventMapper.insertHealthId(healthId);
+	}
 }
