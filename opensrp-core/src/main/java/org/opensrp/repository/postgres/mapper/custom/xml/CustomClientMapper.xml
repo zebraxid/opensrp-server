@@ -140,7 +140,7 @@
 		select u.enabled as enable from core.users as u where u.username =  #{username,jdbcType=VARCHAR}
 	</select>
 
-	<select id="selectUserStatus" parameterType="java.lang.String"
+	<select id="findUserId" parameterType="java.lang.String"
 			resultMap="customQueryMap">
 		select u.id as id from core.users as u where u.username =  #{username,jdbcType=VARCHAR}
 	</select>

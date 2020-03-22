@@ -22,15 +22,16 @@ public interface CustomEventMetadataMapper extends EventMetadataMapper {
 	
 	List<Event> selectNotInOpenMRSByServerVersionAndType(@Param("eventType") String type, @Param("from") long serverVersion,
 	                                                     @Param("to") long calendar, @Param("limit") int limit);
-	
+
 	List<Event> selectBySearchBean(@Param("addressBean") AddressSearchBean addressSearchBean,
 	                               @Param("serverVersion") long serverVersion, @Param("providerId") String providerId,
 	                               @Param("limit") int limit);
 	
 	Integer findEventIdByFormSubmissionId(String formSubmissionId);
-	
+
 	Event findEventByEventId(Integer eventId);
-	
+
 	List<Event> selectByProvider(@Param("serverVersion") long serverVersion, @Param("providerId") String providerId,
 	                             @Param("limit") int limit);
+	List<String> getHouseholdId(@Param("maxid") Integer maxId);
 }

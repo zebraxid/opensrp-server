@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import org.apache.commons.lang3.StringUtils;
-import org.hamcrest.text.pattern.Parse;
 import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -390,8 +389,10 @@ public class EventService {
 			if (villageIds[i] == 0)break;
 			CustomQuery number = clientService.getMaxHealthId(villageIds[i]);
 
-			List<Integer> listOfInteger = IntStream.rangeClosed(number.getMaxHealthId()+1, number.getMaxHealthId()+HEALTH_ID_LIMIT).boxed().collect(Collectors.toList());
-			List<String> listOfString = convertIntListToStringList( listOfInteger, s ->  StringUtils.leftPad(String.valueOf(s), 4, "0"));
+			//List<Integer> listOfInteger = IntStream.rangeClosed(number.getMaxHealthId()+1, number.getMaxHealthId()+HEALTH_ID_LIMIT).boxed().collect(Collectors.toList());
+			//List<String> listOfString = convertIntListToStringList( listOfInteger, s -> StringUtils.leftPad(String.valueOf(s), 4, "0"));
+			List<String> listOfString = allEvents.getHouseholdId(number.getMaxHealthId()+1);
+			System.err.println(listOfString);
 
 			HealthId healthId = new HealthId();
 

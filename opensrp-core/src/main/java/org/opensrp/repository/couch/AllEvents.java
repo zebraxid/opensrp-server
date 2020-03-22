@@ -332,4 +332,10 @@ public class AllEvents extends MotechBaseRepository<Event> implements EventsRepo
 		return 0;
 	}
 
+	@Override
+	public List<String> getHouseholdId(Integer maxid) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
