@@ -186,4 +186,11 @@
 		from core.event e
 		where e.id = #{eventId} limit 1
 	</select>
+	
+	<select id="getHouseholdId" parameterType="java.lang.Integer"
+		resultType="java.lang.String">
+		select  to_char(n, 'FM0000')
+			from generate_series(#{maxId},#{maxId}+200) as x(n)
+			order by x.n
+	</select>
 </mapper>

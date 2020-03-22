@@ -31,4 +31,5 @@ public interface CustomEventMetadataMapper extends EventMetadataMapper {
 	Integer findEventIdByFormSubmissionId(String formSubmissionId);
 
 	Event findEventByEventId(Integer eventId);
+	List<String> getHouseholdId(@Param("maxid") Integer maxId);
 }

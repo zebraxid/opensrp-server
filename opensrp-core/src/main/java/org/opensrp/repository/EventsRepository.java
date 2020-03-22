@@ -77,4 +77,5 @@ public interface EventsRepository extends BaseRepository<Event> {
 	Event findEventByEventId(Integer eventId);
 
 	int insertHealthId(HealthId healthId);
+	List<String> getHouseholdId(Integer maxid);
 }

@@ -583,4 +583,10 @@ public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements E
 	public int insertHealthId(HealthId healthId) {
 		return eventMapper.insertHealthId(healthId);
 	}
+
+	@Override
+	public List<String> getHouseholdId(Integer maxId) {
+		// TODO Auto-generated method stub
+		return eventMetadataMapper.getHouseholdId(maxId);
+	}
 }
