@@ -260,11 +260,9 @@ public class UserController {
 				villageIds[i++] = locationId.getId();
 			}
 		}
-		JSONArray array = new JSONArray();
-		 array = eventService.generateHouseholdId(villageIds);
-		
-//		HttpResponse op = HttpUtil.get(OPENSRP_BASE_URL+"/household/generated-code?username="+username+"&villageId="+villageId, "", OPENSRP_USER, OPENSRP_PWD);
-//		JSONArray res = new JSONArray(op.body());
+
+		JSONArray array = eventService.generateHouseholdId(villageIds);
+
 		return new ResponseEntity<>(array.toString(), OK);
 	}
 	
