@@ -75,5 +75,6 @@ public interface EventsRepository extends BaseRepository<Event> {
 	List<Event> selectByProvider(long serverVersion, String providerId, int limit);
 
 	int insertHealthId(HealthId healthId);
+
 	List<String> getHouseholdId(Integer maxid);
 }

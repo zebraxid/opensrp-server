@@ -77,4 +77,6 @@ public interface ClientsRepository extends BaseRepository<Client> {
 	Client findClientByClientId(Integer clientId);
 
 	public List<CustomQuery> getDistrictAndUpazila(Integer parentLocationTag);
+
+	CustomQuery imeiCheck(String imeiNumber);
 }

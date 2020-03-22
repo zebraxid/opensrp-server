@@ -197,9 +197,6 @@ public class UserController {
 		Time t = getServerTime();
 		userInfo.put("time", new JSONObject(t));
 		uss.put("status", u.getStatus());
-
-		System.out.println(userInfo.toString());
-
 		return new ResponseEntity<>(userInfo.toString(), allowOrigin(opensrpSiteUrl), OK);
 	}
 	
@@ -230,11 +227,12 @@ public class UserController {
 	@RequestMapping(value = "/deviceverify/get")
 	@ResponseBody
 	public ResponseEntity<String> verifyIMEI(@RequestParam("imei") String imei) {
-		String res = "false";
-		HttpResponse op = HttpUtil.get(OPENSRP_BASE_URL+"/user/check-imei?imei="+imei, "", OPENSRP_USER, OPENSRP_PWD);
-		res = op.body();
-		
-		return new ResponseEntity<>(res, OK);
+		CustomQuery query = clientService.imeiCheck(imei);
+		Boolean imeiAvailable = query.getAvailable();
+//		String res = "false";
+//		HttpResponse op = HttpUtil.get(OPENSRP_BASE_URL+"/user/check-imei?imei="+imei, "", OPENSRP_USER, OPENSRP_PWD);
+//		res = op.body();
+		return new ResponseEntity<>(imeiAvailable.toString(), OK);
 	}
 
 	@RequestMapping(value = "/household/generated-code", method = RequestMethod.GET)
@@ -243,8 +241,6 @@ public class UserController {
 													   @RequestParam("villageId") String villageId,
 													   @RequestParam(value = "device_imei", required = false) String deviceImei,
 													   @RequestParam(value = "uuid", required = false) String uuid) throws Exception {
-		System.out.println("DEVICE IMEI: "+ deviceImei);
-		System.out.println("UUID: "+ uuid);
 		int[] villageIds = new int[1000];
 		String[] ids = villageId.split(",");
 		for (int i = 0; i < ids.length; i++) {
@@ -253,7 +249,6 @@ public class UserController {
 
 		if (villageIds[0] == 0)  {
 			CustomQuery user = clientService.getUserId(username);
-			System.out.println("User ID:"+ user.getId());
 			List<CustomQuery> locationIds = clientService.getVillageByProviderId(user.getId(), childRoleId, locationTagId);
 			int i = 0;
 			for (CustomQuery locationId : locationIds) {

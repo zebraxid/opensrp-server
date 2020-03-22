@@ -377,4 +377,8 @@ public class ClientService {
 	public Integer findClientIdByBaseEntityId(String baseEntityId) {
 		return allClients.findClientIdByBaseEntityId(baseEntityId);
 	}
+
+	public CustomQuery imeiCheck(String imeiNumber) {
+		return allClients.imeiCheck(imeiNumber);
+	}
 }

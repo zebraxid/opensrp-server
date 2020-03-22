@@ -26,6 +26,8 @@ public class CustomQuery {
 
 	private Integer maxHealthId;
 
+	private Boolean isAvailable;
+
 	public int getId() {
 		return id;
 	}
@@ -120,6 +122,14 @@ public class CustomQuery {
 
 	public void setMaxHealthId(Integer maxHealthId) {
 		this.maxHealthId = maxHealthId;
+	}
+
+	public Boolean getAvailable() {
+		return isAvailable;
+	}
+
+	public void setAvailable(Boolean available) {
+		isAvailable = available;
 	}
 
 	@Override

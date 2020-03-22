@@ -24,7 +24,8 @@ public interface CustomEventMetadataMapper extends EventMetadataMapper {
 	                                                     @Param("to") long calendar, @Param("limit") int limit);
 
 	List<Event> selectBySearchBean(@Param("addressBean") AddressSearchBean addressSearchBean,
-	                               @Param("serverVersion") long serverVersion, @Param("providerId") String providerId,
+	                               @Param("serverVersion") long serverVersion,
+	                               @Param("providerId") String providerId,
 	                               @Param("limit") int limit);
 	
 	Integer findEventIdByFormSubmissionId(String formSubmissionId);
@@ -33,5 +34,6 @@ public interface CustomEventMetadataMapper extends EventMetadataMapper {
 
 	List<Event> selectByProvider(@Param("serverVersion") long serverVersion, @Param("providerId") String providerId,
 	                             @Param("limit") int limit);
-	List<String> getHouseholdId(@Param("maxid") Integer maxId);
+
+	List<String> getHouseholdId(@Param("maxId") Integer maxId, @Param("maxIdPlus") Integer maxIdPlus);
 }

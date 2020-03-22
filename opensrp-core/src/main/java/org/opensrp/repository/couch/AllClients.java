@@ -321,4 +321,9 @@ public class AllClients extends MotechBaseRepository<Client> implements ClientsR
 	public List<CustomQuery> getDistrictAndUpazila(Integer parentLocationTag) {
 		return null;
 	}
+
+	@Override
+	public CustomQuery imeiCheck(String imeiNumber) {
+		return null;
+	}
 }
