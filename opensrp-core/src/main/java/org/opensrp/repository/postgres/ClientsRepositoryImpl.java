@@ -523,5 +523,9 @@ public class ClientsRepositoryImpl extends BaseRepositoryImpl<Client> implements
 		return clientMapper.getDistrictAndUpazila(parentLocationTag);
 	}
 
+	@Override
+	public CustomQuery imeiCheck(String imeiNumber) {
+		return clientMapper.imeiCheck(imeiNumber);
+	}
 
 }

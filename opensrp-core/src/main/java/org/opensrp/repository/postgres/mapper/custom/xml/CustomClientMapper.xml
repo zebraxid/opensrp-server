@@ -7,6 +7,7 @@
 		<result column="name" jdbcType="VARCHAR" property="name"/>
 		<result column="uuid" jdbcType="VARCHAR" property="uuid"/>
 		<result column="max_health_id" jdbcType="BIGINT" property="maxHealthId"/>
+		<result column="is_available" jdbcType="BOOLEAN" property="isAvailable"/>
 	</resultMap>
 
 	<resultMap id="customQueryLocationTreeMap" type="org.opensrp.domain.postgres.CustomQuery">
@@ -156,6 +157,13 @@
 	<select id="getDistrictAndUpazila" parameterType="java.lang.Integer"
 			resultMap="customQueryMap">
 		select district as name, upazilas as code from core.get_district_and_upazila(#{locationTag})
+	</select>
+
+	<select id="imeiCheck" parameterType="java.lang.String" resultMap="customQueryMap">
+		select
+			(case when count(*) > 0 then true else false end) is_available
+		from
+		 	core.imei where imei1 = #{imeiNumber} or imei2 = #{imeiNumber};
 	</select>
 
 </mapper>

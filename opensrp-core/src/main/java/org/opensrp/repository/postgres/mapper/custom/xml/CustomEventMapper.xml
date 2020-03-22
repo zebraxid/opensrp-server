@@ -151,11 +151,13 @@
           This element was generated on Fri Apr 06 15:32:26 EAT 2018.
         -->
 		insert into core.health_id (
+			id,
 			h_id,
 			status,
 			location_id,
 			created_date
 		)values (
+			nextval('health_id_seq'),
 			#{hId,jdbcType=VARCHAR},
 			#{status,jdbcType=BOOLEAN},
 			#{locationId,jdbcType=BIGINT},

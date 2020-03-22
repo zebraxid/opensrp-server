@@ -356,7 +356,6 @@ public class EventService {
 	public JSONObject getHealthId() {
 		List<HealthId> gethHealthIds = allEvents.gethealthIds(false, "Reserved");
 		for (HealthId healthId : gethHealthIds) {
-			System.err.println(healthId.getId());
 		}
 		HealthId h = new HealthId();
 		h.setId(530139);
@@ -384,13 +383,9 @@ public class EventService {
 		for (int i = 0; i < villageIds.length; i++) {
 			if (villageIds[i] == 0)break;
 			CustomQuery number = clientService.getMaxHealthId(villageIds[i]);
-
-
 			//List<Integer> listOfInteger = IntStream.rangeClosed(number.getMaxHealthId()+1, number.getMaxHealthId()+HEALTH_ID_LIMIT).boxed().collect(Collectors.toList());
 			//List<String> listOfString = convertIntListToStringList( listOfInteger, s -> StringUtils.leftPad(String.valueOf(s), 4, "0"));
 			List<String> listOfString = allEvents.getHouseholdId(number.getMaxHealthId()+1);
-			System.err.println(listOfString);
-			
 
 			HealthId healthId = new HealthId();
 
@@ -400,7 +395,6 @@ public class EventService {
 			healthId.setStatus(true);
 
 			long isSaved = insertHealthId(healthId);
-			System.out.println("IS SAVE HEALTH ID: "+ isSaved);
 			if (isSaved > 0) {
 				JSONObject villageCode = new JSONObject();
 				villageCode.put("village_id", villageIds[i]);

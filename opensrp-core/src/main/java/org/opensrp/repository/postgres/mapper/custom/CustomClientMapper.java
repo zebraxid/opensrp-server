@@ -47,9 +47,11 @@ public interface CustomClientMapper extends ClientMapper {
 
 	CustomQuery findUserId(@Param("username") String username);
 
-	CustomQuery getMaxHealthId(@Param("username") Integer locationId);
+	CustomQuery getMaxHealthId(@Param("locationId") Integer locationId);
 
 	void updateAppVersion(@Param("username") String username,@Param("version") String  version);
 
 	List<CustomQuery> getDistrictAndUpazila(@Param("locationTag") Integer locationTag);
+
+	CustomQuery imeiCheck(@Param("imeiNumber") String imeiNumber);
 }

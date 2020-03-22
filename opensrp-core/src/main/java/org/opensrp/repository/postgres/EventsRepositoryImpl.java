@@ -587,6 +587,6 @@ public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements E
 	@Override
 	public List<String> getHouseholdId(Integer maxId) {
 		// TODO Auto-generated method stub
-		return eventMetadataMapper.getHouseholdId(maxId);
+		return eventMetadataMapper.getHouseholdId(maxId, maxId+200);
 	}
 }

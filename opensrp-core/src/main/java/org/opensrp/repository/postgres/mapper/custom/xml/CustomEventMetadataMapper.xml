@@ -189,8 +189,9 @@
 	
 	<select id="getHouseholdId" parameterType="java.lang.Integer"
 		resultType="java.lang.String">
-		select  to_char(n, 'FM0000')
-			from generate_series(#{maxId},#{maxId}+200) as x(n)
-			order by x.n
+		select
+		 	LPAD(n::text, (case when length(n::text)>=4 then length(n::text) else 4 end), '0')
+		from
+		 	generate_series(${maxId}, ${maxIdPlus}) as x(n) order by x.n
 	</select>
 </mapper>
