@@ -1,7 +1,11 @@
 package org.opensrp.service;
 
 import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
+import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -10,6 +14,7 @@ import org.opensrp.domain.Address;
 import org.opensrp.domain.Client;
 import org.opensrp.domain.ErrorTrace;
 import org.opensrp.domain.postgres.CustomQuery;
+import org.opensrp.domain.postgres.HealthId;
 import org.opensrp.repository.ClientsRepository;
 import org.opensrp.search.AddressSearchBean;
 import org.opensrp.search.ClientSearchBean;
