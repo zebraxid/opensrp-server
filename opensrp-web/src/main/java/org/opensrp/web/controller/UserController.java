@@ -60,6 +60,7 @@ public class UserController {
 
 //	@Value("#{opensrp['opensrp.role.ss']}")
 	private Integer childRoleId = 29;
+	private Integer locationTagId = 33;
 
 	@Autowired
 	private LocationService locationService;
@@ -241,12 +242,28 @@ public class UserController {
 	public ResponseEntity<String> getHouseholdUniqueId(@RequestParam("username") String username,
 													   @RequestParam("villageId") String villageId,
 													   @RequestParam(value = "device_imei", required = false) String deviceImei,
-													   @RequestParam(value = "uuid", required = false) String uuid) throws JSONException {
+													   @RequestParam(value = "uuid", required = false) String uuid) throws Exception {
 		System.out.println("DEVICE IMEI: "+ deviceImei);
 		System.out.println("UUID: "+ uuid);
-		HttpResponse op = HttpUtil.get(OPENSRP_BASE_URL+"/household/generated-code?username="+username+"&villageId="+villageId, "", OPENSRP_USER, OPENSRP_PWD);
-		JSONArray res = new JSONArray(op.body());
-		return new ResponseEntity<>(res.toString(), OK);
+		int[] villageIds = new int[1000];
+		String[] ids = villageId.split(",");
+		for (int i = 0; i < ids.length; i++) {
+			villageIds[i] = Integer.parseInt(ids[i]);
+		}
+
+		if (villageIds[0] == 0)  {
+			CustomQuery user = clientService.getUserId(username);
+			System.out.println("User ID:"+ user.getId());
+			List<CustomQuery> locationIds = clientService.getVillageByProviderId(user.getId(), childRoleId, locationTagId);
+			int i = 0;
+			for (CustomQuery locationId : locationIds) {
+				villageIds[i++] = locationId.getId();
+			}
+		}
+		JSONArray array = clientService.generateHouseholdId(villageIds);
+//		HttpResponse op = HttpUtil.get(OPENSRP_BASE_URL+"/household/generated-code?username="+username+"&villageId="+villageId, "", OPENSRP_USER, OPENSRP_PWD);
+//		JSONArray res = new JSONArray(op.body());
+		return new ResponseEntity<>(array.toString(), OK);
 	}
 	
 	@RequestMapping(value = "/user/status")

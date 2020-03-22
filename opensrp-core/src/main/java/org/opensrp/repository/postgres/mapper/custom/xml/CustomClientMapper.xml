@@ -6,6 +6,7 @@
 		<id column="id" jdbcType="BIGINT" property="id" />
 		<result column="name" jdbcType="VARCHAR" property="name"/>
 		<result column="uuid" jdbcType="VARCHAR" property="uuid"/>
+		<result column="max_health_id" jdbcType="BIGINT" property="maxHealthId"/>
 	</resultMap>
 
 	<resultMap id="customQueryLocationTreeMap" type="org.opensrp.domain.postgres.CustomQuery">
@@ -105,6 +106,11 @@
 		select * from core.get_location_tree(#{memberId}, #{childRoleId});
 	</select>
 
+	<select id="getVillageByProviderId" parameterType="map"
+			resultMap="customQueryMap">
+		select * from core.get_location_tree_id(#{memberId}, #{childRoleId}, #{locationTagId});
+	</select>
+
 	<select id="getProviderLocationIdByChildRole" parameterType="map"
 			resultMap="customQueryLocationTreeMap">
 		select * from core.get_location_tree_id(#{memberId}, #{childRoleId}, #{locationTagId});
@@ -133,7 +139,16 @@
 			resultMap="customQueryMap">
 		select u.enabled as enable from core.users as u where u.username =  #{username,jdbcType=VARCHAR}
 	</select>
-	
+
+	<select id="selectUserStatus" parameterType="java.lang.String"
+			resultMap="customQueryMap">
+		select u.id as id from core.users as u where u.username =  #{username,jdbcType=VARCHAR}
+	</select>
+
+	<select id="getMaxHealthId" parameterType="java.lang.Integer"
+			resultMap="customQueryMap">
+		select coalesce(max(cast(h_id as integer)), 0) as  max_health_id from core.health_id where location_id = #{locationId};
+	</select>
 	<update id="updateAppVersion" parameterType="map">
     	update core.users set app_version = #{version} where username = #{username}    
     </update>

@@ -1,14 +1,15 @@
 package org.opensrp.service;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
+import org.apache.commons.lang3.StringUtils;
+import org.hamcrest.text.pattern.Parse;
 import org.joda.time.DateTime;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.opensrp.common.AllConstants.Client;
@@ -34,7 +35,9 @@ public class EventService {
 	private final EventsRepository allEvents;
 	
 	private ClientService clientService;
-	
+
+	private Integer HEALTH_ID_LIMIT = 200;
+
 	@Autowired
 	public EventService(EventsRepository allEvents, ClientService clientService) {
 		this.allEvents = allEvents;
@@ -342,11 +345,11 @@ public class EventService {
 		}
 		
 	}
-	
+
 	public CustomQuery getUser(String username) {
 		return allEvents.getUser(username);
 	}
-	
+
 	public CustomQuery getTeamMemberId(int userId) {
 		return allEvents.getTeamMemberId(userId);
 	}
@@ -363,17 +366,60 @@ public class EventService {
 		return null;
 		
 	}
-	
+
 	public List<Event> selectBySearchBean(AddressSearchBean addressSearchBean, long serverVersion, String providerId,
 	                                      int limit) {
 		return allEvents.selectBySearchBean(addressSearchBean, serverVersion, providerId, limit);
 	}
-	
+
 	public List<Event> findByProvider(long serverVersion, String providerId, int limit) {
 		return allEvents.selectByProvider(serverVersion, providerId, limit);
 	}
-	
+
 	public Integer findEventIdByFormSubmissionId(String formSubmissionId) {
 		return allEvents.findEventIdByFormSubmissionId(formSubmissionId);
 	}
+
+	public int insertHealthId(HealthId healthId) {
+		return allEvents.insertHealthId(healthId);
+	}
+
+	public JSONArray generateHouseholdId(int[] villageIds) throws Exception {
+		JSONArray villageCodes = new JSONArray();
+		for (int i = 0; i < villageIds.length; i++) {
+			if (villageIds[i] == 0)break;
+			CustomQuery number = clientService.getMaxHealthId(villageIds[i]);
+
+			List<Integer> listOfInteger = IntStream.rangeClosed(number.getMaxHealthId()+1, number.getMaxHealthId()+HEALTH_ID_LIMIT).boxed().collect(Collectors.toList());
+			List<String> listOfString = convertIntListToStringList( listOfInteger, s -> StringUtils.leftPad(String.valueOf(s), 4, "0"));
+
+			HealthId healthId = new HealthId();
+
+			healthId.setCreated(new Date());
+			healthId.sethId(String.valueOf(number.getMaxHealthId()+HEALTH_ID_LIMIT));
+			healthId.setLocationId(villageIds[i]);
+			healthId.setStatus(true);
+
+			long isSaved = insertHealthId(healthId);
+			System.out.println("IS SAVE HEALTH ID: "+ isSaved);
+			if (isSaved > 0) {
+				JSONObject villageCode = new JSONObject();
+				villageCode.put("village_id", villageIds[i]);
+				JSONArray ids = new JSONArray();
+				for (String healthId1 : listOfString) {
+					ids.put(healthId1);
+				}
+				villageCode.put("generated_code", ids);
+				villageCodes.put(villageCode);
+			}
+		}
+		return villageCodes;
+	}
+
+	public static <T, U> List<U> convertIntListToStringList(List<T> listOfInteger, Function<T, U> function) {
+		return listOfInteger.stream()
+				.map(function)
+				.collect(Collectors.toList());
+	}
+
 }

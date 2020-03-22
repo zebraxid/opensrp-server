@@ -315,6 +315,11 @@ public class ClientsRepositoryImpl extends BaseRepositoryImpl<Client> implements
 	}
 
 	@Override
+	public List<CustomQuery> getVillageByProviderId(int memberId, int childRoleId, int locationTagId) {
+		return clientMapper.getVillageByProviderId(memberId, childRoleId, locationTagId);
+	}
+
+	@Override
 	public List<CustomQuery> getProviderLocationIdByChildRole(int memberId, int childRoleId, int locationTagId) {
 		return clientMapper.getProviderLocationIdByChildRole(memberId, childRoleId, locationTagId);
 	}
@@ -474,6 +479,18 @@ public class ClientsRepositoryImpl extends BaseRepositoryImpl<Client> implements
 	public CustomQuery findUserStatus(String username) {
 		// TODO Auto-generated method stub
 		return clientMapper.selectUserStatus(username);
+	}
+
+	@Override
+	public CustomQuery findUserId(String username) {
+		// TODO Auto-generated method stub
+		return clientMapper.findUserId(username);
+	}
+
+	@Override
+	public CustomQuery getMaxHealthId(Integer locationId) {
+		// TODO Auto-generated method stub
+		return clientMapper.getMaxHealthId(locationId);
 	}
 
 	@Override

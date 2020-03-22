@@ -60,9 +60,15 @@ public interface ClientsRepository extends BaseRepository<Client> {
 
 	List<CustomQuery> getProviderLocationTreeByChildRole(int memberId, int childRoleId);
 
+	List<CustomQuery> getVillageByProviderId(int memberId, int childRoleId, int locationTagId);
+
 	List<CustomQuery> getProviderLocationIdByChildRole(int memberId, int childRoleId, int locationTagId);
 
 	CustomQuery findUserStatus(String username);
+
+	CustomQuery findUserId(String username);
+
+	CustomQuery getMaxHealthId(Integer locationId);
 
 	void updateAppVersion(String username,String version);
 

@@ -225,6 +225,11 @@ public class AllClients extends MotechBaseRepository<Client> implements ClientsR
 	}
 
 	@Override
+	public List<CustomQuery> getVillageByProviderId(int memberId, int childRoleId, int locationTagId) {
+		return null;
+	}
+
+	@Override
 	public List<CustomQuery> getProviderLocationIdByChildRole(int memberId, int childRoleId, int locationTagId) {
 		return null;
 	}
@@ -281,6 +286,16 @@ public class AllClients extends MotechBaseRepository<Client> implements ClientsR
 	@Override
 	public CustomQuery findUserStatus(String username) {
 		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public CustomQuery findUserId(String username) {
+		return null;
+	}
+
+	@Override
+	public CustomQuery getMaxHealthId(Integer locationId) {
 		return null;
 	}
 

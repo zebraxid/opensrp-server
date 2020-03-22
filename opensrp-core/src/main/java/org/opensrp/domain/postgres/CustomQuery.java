@@ -24,6 +24,8 @@ public class CustomQuery {
 
 	private Boolean enable;
 
+	private Integer maxHealthId;
+
 	public int getId() {
 		return id;
 	}
@@ -110,6 +112,14 @@ public class CustomQuery {
 
 	public void setEnable(Boolean enable) {
 		this.enable = enable;
+	}
+
+	public Integer getMaxHealthId() {
+		return maxHealthId;
+	}
+
+	public void setMaxHealthId(Integer maxHealthId) {
+		this.maxHealthId = maxHealthId;
 	}
 
 	@Override
