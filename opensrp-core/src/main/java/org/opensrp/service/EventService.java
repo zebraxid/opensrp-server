@@ -36,7 +36,6 @@ public class EventService {
 	private ClientService clientService;
 
 	private Integer HEALTH_ID_LIMIT = 200;
-
 	@Autowired
 	public EventService(EventsRepository allEvents, ClientService clientService) {
 		this.allEvents = allEvents;
@@ -393,7 +392,7 @@ public class EventService {
 			//List<String> listOfString = convertIntListToStringList( listOfInteger, s -> StringUtils.leftPad(String.valueOf(s), 4, "0"));
 			List<String> listOfString = allEvents.getHouseholdId(number.getMaxHealthId()+1);
 			System.err.println(listOfString);
-			
+
 
 			HealthId healthId = new HealthId();
 

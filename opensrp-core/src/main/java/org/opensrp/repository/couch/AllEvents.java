@@ -337,5 +337,4 @@ public class AllEvents extends MotechBaseRepository<Event> implements EventsRepo
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 }
