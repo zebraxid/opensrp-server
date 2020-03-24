@@ -232,9 +232,7 @@ public class EventResource extends RestResource<Event> {
 	@RequestMapping(headers = { "Accept=application/json;charset=UTF-8" }, value = "/sync", method = RequestMethod.GET)
 	@ResponseBody
 	protected ResponseEntity<String> sync(HttpServletRequest request) {
-
-		System.out.println(request.getRemoteUser()+": SYNCING");
-
+		String isEmptyToAdd = getStringFilter("isEmptyToAdd", request);
 		Map<String, Object> response = new HashMap<String, Object>();
 		try {
 			String dataProvider = request.getRemoteUser();
@@ -294,7 +292,11 @@ public class EventResource extends RestResource<Event> {
 
 				addressSearchBean.setVillageId(address);
 
-				events = eventService.selectBySearchBean(addressSearchBean, lastSyncedServerVersion, providerId, 0);
+				if (isEmptyToAdd.equalsIgnoreCase("true")) {
+					events = eventService.selectBySearchBean(addressSearchBean, lastSyncedServerVersion, providerId, 0);
+				} else {
+					events = eventService.findByProvider(lastSyncedServerVersion, providerId, 0);
+				}
 
 				List<String> ids = new ArrayList<String>();
 

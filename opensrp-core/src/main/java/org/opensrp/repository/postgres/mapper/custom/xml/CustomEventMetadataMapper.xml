@@ -190,13 +190,21 @@
 	<select id="selectByProvider"
 			resultMap="BaseEventResultMap">
 				with em as (
-				select event_id from core.event_metadata
-				where provider_id=#{providerId,jdbcType=VARCHAR} and
-				server_version::BIGINT >= #{serverVersion,jdbcType=BIGINT}
-				)
-				select core.event.id,core.event.json from core.event where id=any(
-				select event_id from em )
-				order by core.event.json->>'serverVersion' asc
+					select
+						event_id
+					from
+						core.event_metadata
+					where
+						provider_id=#{providerId,jdbcType=VARCHAR}
+						and server_version::BIGINT >= #{serverVersion,jdbcType=BIGINT}
+				)select
+				 	core.event.id,core.event.json
+				from
+				  	core.event
+				where
+				  	id=any(select event_id from em )
+				order by
+				 	core.event.json->>'serverVersion' asc
 	</select>
 
 	<select id="getHouseholdId" parameterType="java.lang.Integer"
