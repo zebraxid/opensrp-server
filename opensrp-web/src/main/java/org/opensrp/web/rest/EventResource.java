@@ -243,21 +243,21 @@ public class EventResource extends RestResource<Event> {
 			}
 			CustomQuery user = eventService.getUser(request.getRemoteUser());
 			CustomQuery teamMember = eventService.getTeamMemberId(user.getId());
-			List<CustomQuery> locations = (teamMember != null)?
-					clientService.getProviderLocationIdByChildRole(user.getId(), ss, village)
-					: new ArrayList<CustomQuery>();
+			List<CustomQuery> locations = eventService.getLocations(request.getRemoteUser());
+//			List<CustomQuery> locations = (teamMember != null)?
+//					clientService.getProviderLocationIdByChildRole(user.getId(), ss, village)
+//					: new ArrayList<CustomQuery>();
 			logger.info("request.getRemoteUser():" + request.getRemoteUser());
 
 			String location = "";
 			String userType = "";
-			List<Long> address = new ArrayList<Long>();
+			List<String> address = new ArrayList<String>();
 			if (locations.size() != 0) {
 				for (CustomQuery locName : locations) {
-					address.add(Long.valueOf(locName.getId()));
+					address.add(locName.getName());
 				}
 				userType = "Provider";
 				String providerId = request.getRemoteUser();//getStringFilter(PROVIDER_ID, request);
-				String requestProviderName = request.getRemoteUser();
 				String locationId = getStringFilter(LOCATION_ID, request);
 				String baseEntityId = getStringFilter(BASE_ENTITY_ID, request);
 				String serverVersion = getStringFilter(BaseEntity.SERVER_VERSIOIN, request);
@@ -290,9 +290,9 @@ public class EventResource extends RestResource<Event> {
 				searchBean.setServerVersion(lastSyncedServerVersion);
 				AddressSearchBean addressSearchBean = new AddressSearchBean();
 
-				addressSearchBean.setVillageId(address);
+				addressSearchBean.setAddress3(address);
 
-				if (isEmptyToAdd.equalsIgnoreCase("true")) {
+				if (isEmptyToAdd == null || isEmptyToAdd.equalsIgnoreCase("true")) {
 					events = eventService.selectBySearchBean(addressSearchBean, lastSyncedServerVersion, providerId, 0);
 				} else {
 					events = eventService.findByProvider(lastSyncedServerVersion, providerId, 0);
