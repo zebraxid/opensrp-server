@@ -42,7 +42,7 @@
 	</select>
 
 	<select id="getUser" parameterType="java.lang.String" resultMap="customQueryMap">
-		select id as id, username as name, enable_sim_print as enable from core.users
+		select id as id, username as name from core.users
 		WHERE username = #{userName,jdbcType=VARCHAR}
 	</select>
 

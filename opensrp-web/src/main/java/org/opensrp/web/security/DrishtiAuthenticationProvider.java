@@ -7,7 +7,11 @@ import java.util.concurrent.TimeUnit;
 
 import javax.annotation.Resource;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.opensrp.api.domain.User;
+import org.opensrp.common.util.HttpResponse;
+import org.opensrp.common.util.HttpUtil;
 import org.opensrp.connector.openmrs.service.OpenmrsUserService;
 import org.opensrp.domain.postgres.CustomQuery;
 import org.opensrp.service.ClientService;
@@ -43,6 +47,15 @@ public class DrishtiAuthenticationProvider implements AuthenticationProvider {
 	public static final String INTERNAL_ERROR = "Failed to authenticate user due to internal server error.";
 	
 	private static final String AUTH_HASH_KEY = "_auth";
+
+	@Value("#{opensrp['opensrp.web.url']}")
+	protected String OPENSRP_BASE_URL;
+
+	@Value("#{opensrp['opensrp.web.username']}")
+	protected String OPENSRP_USER;
+
+	@Value("#{opensrp['opensrp.web.password']}")
+	protected String OPENSRP_PWD;
 	
 	//private AllOpenSRPUsers allOpenSRPUsers;
 	private PasswordEncoder passwordEncoder;
@@ -70,6 +83,7 @@ public class DrishtiAuthenticationProvider implements AuthenticationProvider {
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 		String userAddress = ((WebAuthenticationDetails) authentication.getDetails()).getRemoteAddress();
 		String key = userAddress + authentication.getName();
+		System.out.println("IN DRISHTI USER: "+authentication.getName());
 		CustomQuery customQuery = clientService.getUserStatus(authentication.getName());
 		if (hashOps.hasKey(key, AUTH_HASH_KEY)) {
 			Authentication auth = hashOps.get(key, AUTH_HASH_KEY);
@@ -81,8 +95,25 @@ public class DrishtiAuthenticationProvider implements AuthenticationProvider {
 			
 		}
 		User user = getDrishtiUser(authentication, authentication.getName());
+
+		if (user == null) {
+			try {
+				HttpResponse op = HttpUtil.get(
+						OPENSRP_BASE_URL+"/rest/api/v1/user/create/provider?username="+authentication.getName()+"&password="+authentication.getCredentials().toString(),
+						"",
+						OPENSRP_USER,
+						OPENSRP_PWD);
+				JSONArray res = new JSONArray(op.body());
+				System.out.println("RESULT: "+res.toString());
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+			user = getDrishtiUser(authentication, authentication.getName());
+		}
+
 		// get user after authentication
 		if (user == null) {
+			System.out.println("CREDENTIALS: "+authentication.getCredentials().toString());
 			throw new BadCredentialsException(USER_NOT_FOUND);
 		}
 		

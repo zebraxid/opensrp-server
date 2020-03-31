@@ -21,6 +21,8 @@ import org.opensrp.service.ClientService;
 import org.opensrp.service.EventService;
 import org.opensrp.service.LocationService;
 import org.opensrp.web.security.DrishtiAuthenticationProvider;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -45,7 +47,9 @@ import static org.springframework.http.HttpStatus.OK;
 
 @Controller
 public class UserController {
-	
+
+	private static Logger logger = LoggerFactory.getLogger(UniqueIdController.class.toString());
+
 	@Value("#{opensrp['opensrp.site.url']}")
 	private String opensrpSiteUrl;
 
@@ -100,6 +104,9 @@ public class UserController {
 			String credentials = new String(Base64.decode(base64Credentials.getBytes()), Charset.forName("UTF-8"));
 			// credentials = username:password
 			final String[] values = credentials.split(":", 2);
+
+			System.err.println(values[0] + " : "+ values[1]);
+			logger.debug(values[0] + " : " + values[1]);
 			
 			return new UsernamePasswordAuthenticationToken(values[0], values[1]);
 		}
@@ -112,6 +119,8 @@ public class UserController {
 	
 	public User currentUser(HttpServletRequest request) {
 		Authentication a = getAuthenticationAdvisor(request);
+		System.err.println(a.toString());
+		logger.debug("CURRENT USER: "+a.toString());
 		return getAuthenticationProvider().getDrishtiUser(a, a.getName());
 	}
 	
@@ -129,75 +138,56 @@ public class UserController {
 	@RequestMapping("/security/authenticate")
 	@ResponseBody
 	public ResponseEntity<String> authenticate(HttpServletRequest request) throws JSONException {
+		System.out.println("USER ID: "+ request.getRemoteUser());
+		logger.debug("USER ID: "+ request.getRemoteUser());
 		User u = currentUser(request);
-//		String lid = "";
-//		JSONObject tm = null;
-//		try {
-//			tm = openmrsUserService.getTeamMember(u.getAttribute("_PERSON_UUID").toString());
-//			JSONArray locs = tm.getJSONArray("locations");
-//			for (int i = 0; i < locs.length(); i++) {
-//				lid += locs.getJSONObject(i).getString("uuid") + ";;";
-//			}
-//		}
-//		catch (Exception e) {
-//			System.out.println("USER Location info not mapped in team management module. Now trying Person Attribute");
-//		}
-//		if (StringUtils.isEmptyOrWhitespaceOnly(lid)) {
-//			lid = (String) u.getAttribute("Location");
-//			if (StringUtils.isEmptyOrWhitespaceOnly(lid)) {
-//				String lids = (String) u.getAttribute("Locations");
-//
-//				if (lids == null) {
-//					throw new RuntimeException(
-//					        "User not mapped on any location. Make sure that user have a person attribute Location or Locations with uuid(s) of valid OpenMRS Location(s) separated by ;;");
-//				}
-//
-//				lid = lids;
-//			}
-//		}
-//		LocationTree l = openmrsLocationService.getLocationTreeOf(lid.split(";;"));
-//		Map<String, Object> map = new HashMap<>();
-//		map.put("user", u);
-//		try {
-//			CustomQuery customQuery = clientService.findTeamInfo(u.getUsername());
-//
-//			tm.getJSONObject("team").put("teamName", customQuery.getName());
-//			tm.getJSONObject("team").put("display", customQuery.getName());
-//			tm.getJSONObject("team").put("uuid", customQuery.getUuid());
-//
-//			Map<String, Object> tmap = new Gson().fromJson(tm.toString(), new TypeToken<HashMap<String, Object>>() {
-//
-//			}.getType());
-//			map.put("team", tmap);
-//		}
-//		catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//		map.put("locations", l);
-//		Time t = getServerTime();
-//		map.put("time", t);
-//		return new ResponseEntity<>(new Gson().toJson(map), allowOrigin(opensrpSiteUrl), OK);
+		String lid = "";
+		JSONObject tm = null;
+		try {
+			tm = openmrsUserService.getTeamMember(u.getAttribute("_PERSON_UUID").toString());
+			JSONArray locs = tm.getJSONArray("locations");
+			for (int i = 0; i < locs.length(); i++) {
+				lid += locs.getJSONObject(i).getString("uuid") + ";;";
+			}
+		}
+		catch (Exception e) {
+			System.out.println("USER Location info not mapped in team management module. Now trying Person Attribute");
+		}
+		if (StringUtils.isEmptyOrWhitespaceOnly(lid)) {
+			lid = (String) u.getAttribute("Location");
+			if (StringUtils.isEmptyOrWhitespaceOnly(lid)) {
+				String lids = (String) u.getAttribute("Locations");
 
+				if (lids == null) {
+					throw new RuntimeException(
+					        "User not mapped on any location. Make sure that user have a person attribute Location or Locations with uuid(s) of valid OpenMRS Location(s) separated by ;;");
+				}
 
-		JSONObject userInfo = new JSONObject(user);
-//		JSONObject userJson = new JSONObject(u);
-//		userInfo.put("user", userJson);
-		JSONObject uss = new JSONObject();
-		uss.put("username", u.getUsername());
-		uss.put("preferredName", u.getPreferredName());
-		JSONArray roles = new JSONArray();
-		roles.put("Provider");
+				lid = lids;
+			}
+		}
+		LocationTree l = openmrsLocationService.getLocationTreeOf(lid.split(";;"));
+		Map<String, Object> map = new HashMap<>();
+		map.put("user", u);
+		try {
+			CustomQuery customQuery = clientService.findTeamInfo(u.getUsername());
 
-		uss.put("roles", roles);
-		JSONObject attri = new JSONObject();
-		attri.put("_PERSON_UUID", u.getAttribute("_PERSON_UUID"));
-		uss.put("attributes", attri);
-		userInfo.put("user", uss);
+			tm.getJSONObject("team").put("teamName", customQuery.getName());
+			tm.getJSONObject("team").put("display", customQuery.getName());
+			tm.getJSONObject("team").put("uuid", customQuery.getUuid());
 
+			Map<String, Object> tmap = new Gson().fromJson(tm.toString(), new TypeToken<HashMap<String, Object>>() {
+
+			}.getType());
+			map.put("team", tmap);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		map.put("locations", l);
 		Time t = getServerTime();
-		userInfo.put("time", new JSONObject(t));
-		uss.put("status", u.getStatus());
-		return new ResponseEntity<>(userInfo.toString(), allowOrigin(opensrpSiteUrl), OK);
+		map.put("time", t);
+		return new ResponseEntity<>(new Gson().toJson(map), allowOrigin(opensrpSiteUrl), OK);
 	}
 	
 	@RequestMapping("/security/configuration")
@@ -270,6 +260,7 @@ public class UserController {
 			String username = getStringFilter("username", request);
 			String version = getStringFilter("version", request);
 			String res = "false";
+			System.out.println("USERNAME: "+ username);
 			CustomQuery query = clientService.getUserStatus(username);
 			
 			res = query.getEnable()+"";	
