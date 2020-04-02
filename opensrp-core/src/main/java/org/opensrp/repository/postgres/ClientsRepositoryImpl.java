@@ -392,7 +392,7 @@ public class ClientsRepositoryImpl extends BaseRepositoryImpl<Client> implements
 				if (requiredAddress != null) {
 					clientMetadata.setAddress1(requiredAddress.getAddressField("address1"));
 					clientMetadata.setAddress2(requiredAddress.getAddressField("address2"));
-					clientMetadata.setAddress3(requiredAddress.getCityVillage());
+					clientMetadata.setAddress3(requiredAddress.getAddressField("address3"));
 					if (requiredAddress.getAddressField("address8") != null)
 						clientMetadata.setVillageId(Long.valueOf(requiredAddress.getAddressField("address8")));
 				}

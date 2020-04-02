@@ -6,11 +6,15 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import org.apache.commons.lang3.StringUtils;
+import com.google.gson.reflect.TypeToken;
+import com.mysql.jdbc.StringUtils;
 import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.opensrp.api.domain.Time;
+import org.opensrp.api.domain.User;
+import org.opensrp.api.util.LocationTree;
 import org.opensrp.common.AllConstants.Client;
 import org.opensrp.domain.Event;
 import org.opensrp.domain.Obs;
@@ -27,6 +31,8 @@ import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Service
 public class EventService {
@@ -341,7 +347,17 @@ public class EventService {
 		} else {
 			return new ArrayList<CustomQuery>();
 		}
-		
+	}
+
+	public List<CustomQuery> getBlockList(String username) {
+		return allEvents.getBlockList(username);
+	}
+
+	public List<CustomQuery> getChildLocationsByName(String username, String name) {
+		return allEvents.getChildLocationsByName(username, name);
+	}
+	public CustomQuery getWardByUser(String username) {
+		return allEvents.getWardByUser(username);
 	}
 
 	public CustomQuery getUser(String username) {
@@ -421,5 +437,4 @@ public class EventService {
 				.map(function)
 				.collect(Collectors.toList());
 	}
-
 }

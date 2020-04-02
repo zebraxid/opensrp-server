@@ -33,6 +33,12 @@ public interface CustomEventMapper extends EventMapper {
 
 	List<CustomQuery> getLocations(int userId);
 
+	List<CustomQuery> getBlockList(@Param("username") String username);
+
+	List<CustomQuery> getChildLocationsByName(@Param("username")String username, @Param("name")String name);
+
+	CustomQuery getWardByUser(@Param("username") String username);
+
 	CustomQuery getUser(String userName);
 
 	CustomQuery getTeamMemberId(int userId);

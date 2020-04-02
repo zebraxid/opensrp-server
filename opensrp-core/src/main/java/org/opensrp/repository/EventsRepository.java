@@ -57,7 +57,13 @@ public interface EventsRepository extends BaseRepository<Event> {
 	void deleteByPrimaryKey(Event event);
 
 	List<CustomQuery> getLocations(int userId);
-	
+
+	List<CustomQuery> getBlockList(String username);
+
+	List<CustomQuery> getChildLocationsByName(String username, String name);
+
+	CustomQuery getWardByUser(String username);
+
 	CustomQuery getUser(String userName);
 
 	CustomQuery getTeamMemberId(int userId);

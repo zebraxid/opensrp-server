@@ -138,55 +138,21 @@ public class UserController {
 	@RequestMapping("/security/authenticate")
 	@ResponseBody
 	public ResponseEntity<String> authenticate(HttpServletRequest request) throws JSONException {
-		System.out.println("USER ID: "+ request.getRemoteUser());
-		logger.debug("USER ID: "+ request.getRemoteUser());
-		User u = currentUser(request);
-		String lid = "";
-		JSONObject tm = null;
-		try {
-			tm = openmrsUserService.getTeamMember(u.getAttribute("_PERSON_UUID").toString());
-			JSONArray locs = tm.getJSONArray("locations");
-			for (int i = 0; i < locs.length(); i++) {
-				lid += locs.getJSONObject(i).getString("uuid") + ";;";
-			}
-		}
-		catch (Exception e) {
-			System.out.println("USER Location info not mapped in team management module. Now trying Person Attribute");
-		}
-		if (StringUtils.isEmptyOrWhitespaceOnly(lid)) {
-			lid = (String) u.getAttribute("Location");
-			if (StringUtils.isEmptyOrWhitespaceOnly(lid)) {
-				String lids = (String) u.getAttribute("Locations");
+		Map<String, Object> map = userAuthentication(request);
+		return new ResponseEntity<>(new Gson().toJson(map), allowOrigin(opensrpSiteUrl), OK);
+	}
 
-				if (lids == null) {
-					throw new RuntimeException(
-					        "User not mapped on any location. Make sure that user have a person attribute Location or Locations with uuid(s) of valid OpenMRS Location(s) separated by ;;");
-				}
-
-				lid = lids;
-			}
-		}
-		LocationTree l = openmrsLocationService.getLocationTreeOf(lid.split(";;"));
+	@RequestMapping(value = "/save/user/block", method = RequestMethod.GET)
+	@ResponseBody
+	public ResponseEntity<String> saveBlock(HttpServletRequest request) throws JSONException {
+		String username = getStringFilter("username", request);
+		String blocks = getStringFilter("blocks", request);
+		HttpResponse op = HttpUtil.get(OPENSRP_BASE_URL+"/rest/api/v1/location/save/user/block?username="+username+"&blocks="+blocks, "", OPENSRP_USER, OPENSRP_PWD);
+		String res = op.body();
 		Map<String, Object> map = new HashMap<>();
-		map.put("user", u);
-		try {
-			CustomQuery customQuery = clientService.findTeamInfo(u.getUsername());
-
-			tm.getJSONObject("team").put("teamName", customQuery.getName());
-			tm.getJSONObject("team").put("display", customQuery.getName());
-			tm.getJSONObject("team").put("uuid", customQuery.getUuid());
-
-			Map<String, Object> tmap = new Gson().fromJson(tm.toString(), new TypeToken<HashMap<String, Object>>() {
-
-			}.getType());
-			map.put("team", tmap);
+		if (res.equalsIgnoreCase("success")) {
+			map = userAuthentication(request);
 		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-		map.put("locations", l);
-		Time t = getServerTime();
-		map.put("time", t);
 		return new ResponseEntity<>(new Gson().toJson(map), allowOrigin(opensrpSiteUrl), OK);
 	}
 	
@@ -286,5 +252,56 @@ public class UserController {
 		}catch(Exception e){
 			return new ResponseEntity<>("error", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
+	}
+
+	public Map<String, Object> userAuthentication(HttpServletRequest request) throws JSONException {
+		User u = currentUser(request);
+		String lid = "";
+		JSONObject tm = null;
+		try {
+			tm = openmrsUserService.getTeamMember(u.getAttribute("_PERSON_UUID").toString());
+			JSONArray locs = tm.getJSONArray("locations");
+			for (int i = 0; i < locs.length(); i++) {
+				lid += locs.getJSONObject(i).getString("uuid") + ";;";
+			}
+		}
+		catch (Exception e) {
+			System.out.println("USER Location info not mapped in team management module. Now trying Person Attribute");
+		}
+		if (com.mysql.jdbc.StringUtils.isEmptyOrWhitespaceOnly(lid)) {
+			lid = (String) u.getAttribute("Location");
+			if (StringUtils.isEmptyOrWhitespaceOnly(lid)) {
+				String lids = (String) u.getAttribute("Locations");
+
+				if (lids == null) {
+					throw new RuntimeException(
+							"User not mapped on any location. Make sure that user have a person attribute Location or Locations with uuid(s) of valid OpenMRS Location(s) separated by ;;");
+				}
+
+				lid = lids;
+			}
+		}
+		LocationTree l = openmrsLocationService.getLocationTreeOf(lid.split(";;"));
+		Map<String, Object> map = new HashMap<>();
+		map.put("user", u);
+		try {
+			CustomQuery customQuery = clientService.findTeamInfo(u.getUsername());
+
+			tm.getJSONObject("team").put("teamName", customQuery.getName());
+			tm.getJSONObject("team").put("display", customQuery.getName());
+			tm.getJSONObject("team").put("uuid", customQuery.getUuid());
+
+			Map<String, Object> tmap = new Gson().fromJson(tm.toString(), new TypeToken<HashMap<String, Object>>() {
+
+			}.getType());
+			map.put("team", tmap);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		map.put("locations", l);
+		Time t = getServerTime();
+		map.put("time", t);
+		return map;
 	}
 }

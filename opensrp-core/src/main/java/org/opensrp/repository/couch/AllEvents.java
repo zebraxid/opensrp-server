@@ -280,6 +280,21 @@ public class AllEvents extends MotechBaseRepository<Event> implements EventsRepo
 	}
 
 	@Override
+	public List<CustomQuery> getBlockList(String username) {
+		return null;
+	}
+
+	@Override
+	public List<CustomQuery> getChildLocationsByName(String username, String name) {
+		return null;
+	}
+
+	@Override
+	public CustomQuery getWardByUser(String username) {
+		return null;
+	}
+
+	@Override
 	public CustomQuery getUser(String userName) {
 		// TODO Auto-generated method stub
 		return null;

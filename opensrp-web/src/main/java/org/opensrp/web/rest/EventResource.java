@@ -13,9 +13,7 @@ import static org.opensrp.common.AllConstants.Event.TEAM_ID;
 import static org.opensrp.web.rest.RestUtils.getDateRangeFilter;
 import static org.opensrp.web.rest.RestUtils.getIntegerFilter;
 import static org.opensrp.web.rest.RestUtils.getStringFilter;
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.CREATED;
-import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+import static org.springframework.http.HttpStatus.*;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 import java.text.ParseException;
@@ -27,6 +25,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.joda.time.DateTime;
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.opensrp.common.AllConstants.BaseEntity;
 import org.opensrp.domain.Client;
@@ -45,10 +45,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -237,7 +234,11 @@ public class EventResource extends RestResource<Event> {
 		try {
 			String dataProvider = request.getRemoteUser();
 			CustomQuery customQuery = clientService.getUserStatus(dataProvider);
-			
+			List<CustomQuery> blocks = eventService.getBlockList(dataProvider);
+			if (blocks.size() == 0) {
+				response.put("msg", "Block not found");
+				return new ResponseEntity<>(new Gson().toJson(response), OK);
+			}
 			if(customQuery != null && !customQuery.getEnable()){
 				return new ResponseEntity<>(INTERNAL_SERVER_ERROR);
 			}
@@ -332,7 +333,7 @@ public class EventResource extends RestResource<Event> {
 
 			} else {
 				logger.info("No location found..");
-				System.err.println("NO LOCation found .....................");
+				System.err.println("No Location found .....................");
 				response.put("msg", "Error occurred");
 				return new ResponseEntity<>(new Gson().toJson(response), HttpStatus.INTERNAL_SERVER_ERROR);
 			}
@@ -463,7 +464,6 @@ public class EventResource extends RestResource<Event> {
 				ArrayList<Event> events = (ArrayList<Event>) gson.fromJson(syncData.getString("events"),
 				    new TypeToken<ArrayList<Event>>() {}.getType());
 				logger.info("received event size:" + events.size());
-				System.out.println(dataProvider+": received event size:" + events.size());
 				for (Event event : events) {
 					try {
 						event = eventService.processOutOfArea(event);
@@ -487,7 +487,6 @@ public class EventResource extends RestResource<Event> {
 				ArrayList<Client> clients = (ArrayList<Client>) gson.fromJson(syncData.getString("clients"),
 				    new TypeToken<ArrayList<Client>>() {}.getType());
 				logger.info("received client size:" + clients.size());
-				System.out.println(dataProvider+": received client size:" + clients.size());
 				for (Client client : clients) {
 					try {
 						client.withIsSendToOpenMRS("yes");
@@ -581,5 +580,35 @@ public class EventResource extends RestResource<Event> {
 	public List<Event> filter(String query) {
 		return eventService.findEventsByDynamicQuery(query);
 	}
-	
+
+	@RequestMapping(value = "user/ward/block", method = RequestMethod.GET)
+	@ResponseBody
+	public ResponseEntity<String> getBlockByUser(@RequestParam("username") String username) throws JSONException {
+		CustomQuery query = eventService.getWardByUser(username);
+		String wardCommaSeparated = query.getName();
+		String[] wards = wardCommaSeparated.split(";");
+		JSONArray wardArray = getBlockList(wards, username);
+		return new ResponseEntity<>(wardArray.toString(), OK);
+	}
+
+
+	private JSONArray getBlockList(String[] wards, String username) throws JSONException {
+		JSONArray wardArray = new JSONArray();
+		for (String wardName: wards) {
+			JSONObject child = new JSONObject();
+			List<CustomQuery> blocks = eventService.getChildLocationsByName(username, wardName);
+			JSONArray nodes = new JSONArray();
+			for (CustomQuery block: blocks) {
+				JSONObject blockJSON = new JSONObject();
+				blockJSON.put("name", block.getName());
+				blockJSON.put("id", block.getUuid());
+				blockJSON.put("assigned", block.getEnable());
+				nodes.put(blockJSON);
+			}
+			child.put("name", wardName);
+			child.put("node", nodes);
+			wardArray.put(child);
+		}
+		return wardArray;
+	}
 }

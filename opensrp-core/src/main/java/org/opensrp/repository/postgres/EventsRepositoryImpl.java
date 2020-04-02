@@ -528,10 +528,24 @@ public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements E
 
 	@Override
 	public List<CustomQuery> getLocations(int userId) {
-		
 		return eventMapper.getLocations(userId);
 	}
-	
+
+	@Override
+	public List<CustomQuery> getBlockList(String username) {
+		return eventMapper.getBlockList(username);
+	}
+
+	@Override
+	public List<CustomQuery> getChildLocationsByName(String username, String name) {
+		return eventMapper.getChildLocationsByName(username, name);
+	}
+
+	@Override
+	public CustomQuery getWardByUser(String username) {
+		return eventMapper.getWardByUser(username);
+	}
+
 	@Override
 	public CustomQuery getUser(String userName) {
 		// TODO Auto-generated method stub

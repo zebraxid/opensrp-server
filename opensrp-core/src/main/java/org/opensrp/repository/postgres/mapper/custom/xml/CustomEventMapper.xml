@@ -33,6 +33,22 @@
 		WHERE json ->> 'id' = #{documentId,jdbcType=VARCHAR} and date_deleted is null
 	</select>
 
+	<select id="getChildLocationsByName" parameterType="java.lang.String"
+			resultMap="customQueryMap">
+		select
+			l2."name",
+			l2.uuid,
+			case when u.username = #{username, jdbcType=VARCHAR} then true else false end as enable
+		from
+			core."location" l1
+			join core."location" l2 on l1.id = l2.parent_location_id
+			full join core.team_member_location tml on tml.location_id = l2.id
+			full join core.team_member tm on tml.team_member_id = tm.id
+			full join core.users u on u.id = tm.person_id
+		where
+			l1."name" = #{name, jdbcType=VARCHAR}
+	</select>
+
 	<select id="getLocations" parameterType="int"
 			resultMap="customQueryMap">
 		select team_member.id as id ,core.location.name as name from core.team_member
@@ -41,9 +57,44 @@
 		WHERE team_member.person_id = #{userId}
 	</select>
 
+	<select id="getBlockList" parameterType="java.lang.String" resultMap="customQueryMap">
+		select
+			l."name"
+		from
+			core.users u,
+			core.team_member tm,
+			core.team_member_location tml,
+			core."location" l,
+			core.location_tag lt
+		where
+			u.id = tm.person_id
+			and tm.id = tml.team_member_id
+			and l.id = tml.location_id
+			and l.location_tag_id = lt.id
+			and lt."name" = 'Block'
+			and u.username = #{username, jdbcType=VARCHAR}
+	</select>
+
+	<select id="getWardByUser" parameterType="java.lang.String" resultMap="customQueryMap">
+		select
+			string_agg(l."name", ';') as name
+		from
+			core.users u,
+			core.provider_initial_catchment pic,
+			core.initial_catchment_ward icw,
+			core."location" l
+		where
+			u.id = pic.user_id
+			and pic.id = icw.provider_initial_catchment_id
+			and l.id = icw.ward_id
+			and u.username = #{username, jdbcType=VARCHAR}
+	</select>
+
+
+
 	<select id="getUser" parameterType="java.lang.String" resultMap="customQueryMap">
 		select id as id, username as name from core.users
-		WHERE username = #{userName,jdbcType=VARCHAR}
+		WHERE username = #{userName, jdbcType=VARCHAR}
 	</select>
 
 	<select id="getTeamMemberId" parameterType="int" resultMap="customQueryMap">
