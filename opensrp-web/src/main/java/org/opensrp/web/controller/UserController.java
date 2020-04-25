@@ -6,6 +6,7 @@ import static org.springframework.http.HttpStatus.OK;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
+import java.sql.Time;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -73,6 +74,10 @@ public class UserController {
     public DrishtiAuthenticationProvider getAuthenticationProvider() {
 		return opensrpAuthenticationProvider;
 	}
+
+	public Time getServerTime() {
+		return new Time(Calendar.getInstance().getTime(), TimeZone.getDefault());
+	}
     
     public User currentUser(HttpServletRequest request) {
     	Authentication a = getAuthenticationAdvisor(request);
@@ -125,6 +130,8 @@ public class UserController {
 			e.printStackTrace();
 		}
 		map.put("locations", l);
+		Time t = getServerTime();
+		map.put("time", t);
         return new ResponseEntity<>(new Gson().toJson(map), allowOrigin(opensrpSiteUrl), OK);
 	}
 	
