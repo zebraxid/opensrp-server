@@ -78,7 +78,7 @@ public class UserController {
 	}
 
 	public Time getServerTime() {
-		return new Time(Calendar.getInstance().getTime(), TimeZone.getDefault());
+		return new Time(Calendar.getInstance().getTimeInMillis());
 	}
     
     public User currentUser(HttpServletRequest request) {
