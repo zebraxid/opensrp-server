@@ -6,7 +6,7 @@ import static org.springframework.http.HttpStatus.OK;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
-import java.sql.Time;
+import org.opensrp.api.domain.Time;
 import java.util.TimeZone;
 import java.util.Calendar;
 
@@ -78,7 +78,7 @@ public class UserController {
 	}
 
 	public Time getServerTime() {
-		return new Time(Calendar.getInstance().getTimeInMillis());
+		return new Time(Calendar.getInstance().getTime(), TimeZone.getDefault());
 	}
     
     public User currentUser(HttpServletRequest request) {
