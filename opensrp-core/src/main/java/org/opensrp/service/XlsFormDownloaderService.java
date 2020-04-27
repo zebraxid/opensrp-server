@@ -129,7 +129,8 @@ public class XlsFormDownloaderService {
         try {
             final org.w3c.dom.Document document = parseXmlFile(unformattedXml);
 
-            OutputFormat format = new OutputFormat(document);
+            @SuppressWarnings("deprecation")
+			OutputFormat format = new OutputFormat();
             format.setLineWidth(380);
             //format.setIndenting(true);
             format.setIndent(2);

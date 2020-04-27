@@ -32,7 +32,7 @@ public class FormSubmissionBuilder {
 
     public FormSubmission build() {
         FormInstance formInstance = new FormInstance(new FormData(bind_type, default_bind_path, fields, asList(subFormData)));
-        return new FormSubmission(anmId, instanceId, formName, entityId, timestamp, formDataDefinitionVersion, formInstance, serverVersion);
+        return new FormSubmission(anmId, instanceId, formName, entityId, anmId, timestamp, formDataDefinitionVersion, formInstance, serverVersion);
     }
 
     public FormSubmissionBuilder addFormField(String name, String value) {

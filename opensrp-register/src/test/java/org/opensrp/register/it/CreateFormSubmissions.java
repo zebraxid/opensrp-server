@@ -44,7 +44,7 @@ public class CreateFormSubmissions {
 			FormData form = new FormData("pkchild", "/model/instance/Child_Vaccination_Enrollment/", 
 					generateChildFields(eid, insId, "Zaman Town", "demotest", "Homeopathic Center", DateTime.now().minusDays(2), i+1+new Random().nextInt(1850)), null);
 			FormInstance formInstance = new FormInstance(form, "1");
-			FormSubmission fs = new FormSubmission("demotest", insId, "child_enrollment", eid, DateTime.now().minusDays(5).getMillis(), "1", formInstance, DateTime.now().minusDays(5).getMillis());
+			FormSubmission fs = new FormSubmission("demotest", insId, "child_enrollment", eid, eid, DateTime.now().minusDays(5).getMillis(), "1", formInstance, DateTime.now().minusDays(5).getMillis());
 			fService.add(fs);	
 		}
 		
