@@ -187,11 +187,11 @@ public class EventResource extends RestResource<Event> {
 	
 	@SuppressWarnings("unchecked")
 	@RequestMapping(headers = { "Accept=application/json" }, method = POST, value = "/add")
-	public ResponseEntity<HttpStatus> save(@RequestBody String data) {
+	public ResponseEntity<String> save(@RequestBody String data) {
 		try {
 			JSONObject syncData = new JSONObject(data);
 			if (!syncData.has("clients") && !syncData.has("events")) {
-				return new ResponseEntity<>(BAD_REQUEST);
+				return new ResponseEntity<>("bad_request", BAD_REQUEST);
 			}
 			
 			if (syncData.has("clients")) {
@@ -232,9 +232,11 @@ public class EventResource extends RestResource<Event> {
 		
 		Exception e) {
 			logger.error(format("Sync data processing failed with exception {0}.- ", e));
-			return new ResponseEntity<>(INTERNAL_SERVER_ERROR);
+			e.printStackTrace();
+			System.out.println(data);
+			return new ResponseEntity<>(e.getMessage(), INTERNAL_SERVER_ERROR);
 		}
-		return new ResponseEntity<>(CREATED);
+		return new ResponseEntity<>("created", CREATED);
 	}
 	
 	/*	@RequestMapping(method=RequestMethod.GET)
