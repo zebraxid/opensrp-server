@@ -20,7 +20,7 @@ public class GZipCompressionFilter implements Filter {
 		if (req instanceof HttpServletRequest) {
 			HttpServletRequest request = (HttpServletRequest) req;
 			HttpServletResponse response = (HttpServletResponse) res;
-			String ae = request.getHeader("accept-encoding");
+			String ae = request.getHeader("Content-Encoding");
 			if (ae != null && ae.indexOf("gzip") != -1) {
 				GzipResponseWrapper wrappedResponse = new GzipResponseWrapper(response);
 				chain.doFilter(req, wrappedResponse);
